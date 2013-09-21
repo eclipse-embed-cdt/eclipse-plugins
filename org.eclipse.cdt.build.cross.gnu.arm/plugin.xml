@@ -21,7 +21,7 @@
       </managedBuildRevision>
       <toolChain
             archList="all"
-            configurationEnvironmentSupplier="org.eclipse.cdt.internal.build.cross.gnu.arm.CrossEnvironmentVariableSupplier"
+            configurationEnvironmentSupplier="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossEnvironmentVariableSupplier"
             id="cdt.managedbuild.toolchain.cross.gnu.arm.base"
             isAbstract="false"
             name="%toolChain.name"
@@ -60,21 +60,21 @@
                valueType="string">
          </option>
          <tool
-               commandLineGenerator="org.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
+               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
                id="cdt.managedbuild.tool.cross.gnu.arm.c.compiler"
                isAbstract="false"
                name="%tool.gcc.compiler"
                superClass="cdt.managedbuild.tool.gnu.c.compiler">
          </tool>
          <tool
-               commandLineGenerator="org.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
+               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
                id="cdt.managedbuild.tool.cross.gnu.arm.cpp.compiler"
                isAbstract="false"
                name="%tool.gpp.compiler"
                superClass="cdt.managedbuild.tool.gnu.cpp.compiler">
          </tool>
          <tool
-               commandLineGenerator="org.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
+               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
                id="cdt.managedbuild.tool.cross.gnu.arm.c.linker"
                isAbstract="false"
                name="%tool.gcc.linker"
@@ -90,7 +90,7 @@
             </enablement>
          </tool>
          <tool
-               commandLineGenerator="org.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
+               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
                id="cdt.managedbuild.tool.cross.gnu.arm.cpp.linker"
                isAbstract="false"
                name="%tool.gpp.linker"
@@ -106,7 +106,7 @@
             </enablement>
          </tool>
          <tool
-               commandLineGenerator="org.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
+               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
                id="cdt.managedbuild.tool.cross.gnu.arm.archiver"
                isAbstract="false"
                name="%tool.gcc.archiver"
@@ -120,7 +120,7 @@
             </enablement>
          </tool>
          <tool
-               commandLineGenerator="org.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
+               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
                id="cdt.managedbuild.tool.cross.gnu.arm.assembler"
                isAbstract="false"
                name="%tool.gcc.assembler"
@@ -235,9 +235,9 @@
    <extension
          point="org.eclipse.cdt.managedbuilder.ui.newWizardPages">
       <wizardPage
-            ID="org.eclipse.cdt.build.cross.gnu.arm.setcCrossCommandWizardPage"
-            operationClass="org.eclipse.cdt.internal.build.cross.gnu.arm.SetCrossCommandOperation"
-            pageClass="org.eclipse.cdt.internal.build.cross.gnu.arm.SetCrossCommandWizardPage">
+            ID="ilg.eclipse.cdt.build.cross.gnu.arm.setCrossCommandWizardPage"
+            operationClass="ilg.eclipse.cdt.internal.build.cross.gnu.arm.SetCrossCommandOperation"
+            pageClass="ilg.eclipse.cdt.internal.build.cross.gnu.arm.SetCrossCommandWizardPage">
          <toolchain
                toolchainID="cdt.managedbuild.toolchain.cross.gnu.arm.exe.debug">
          </toolchain>

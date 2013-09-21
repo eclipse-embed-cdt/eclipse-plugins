@@ -8,7 +8,7 @@
  * Contributors:
  *     Doug Schaefer - initial API and implementation
  *******************************************************************************/
-package org.eclipse.cdt.internal.build.cross.gnu.arm;
+package ilg.eclipse.cdt.internal.build.cross.gnu.arm;
 
 import java.io.File;
 

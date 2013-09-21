@@ -8,7 +8,7 @@
  * Contributors:
  *     Doug Schaefer - initial API and implementation
  *******************************************************************************/
-package org.eclipse.cdt.internal.build.cross.gnu.arm;
+package ilg.eclipse.cdt.internal.build.cross.gnu.arm;
 
 import org.eclipse.cdt.managedbuilder.core.IBuildObject;
 import org.eclipse.cdt.managedbuilder.core.IManagedCommandLineInfo;
