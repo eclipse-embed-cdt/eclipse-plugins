@@ -10,6 +10,7 @@
 # Contributors:
 # Doug Schaefer   (Wind River)     - initial API and implementation 
 # Anna Dushistova (Mentor Graphics)- [329531][crossgcc] crossgcc fails to build a project
+# Liviu Ionescu - ARM version   
 -->
 <plugin>
 
@@ -20,30 +21,30 @@
       </managedBuildRevision>
       <toolChain
             archList="all"
-            configurationEnvironmentSupplier="org.eclipse.cdt.internal.build.crossgcc.CrossEnvironmentVariableSupplier"
-            id="cdt.managedbuild.toolchain.gnu.cross.base"
+            configurationEnvironmentSupplier="org.eclipse.cdt.internal.build.cross.gnu.arm.CrossEnvironmentVariableSupplier"
+            id="cdt.managedbuild.toolchain.cross.gnu.arm.base"
             isAbstract="false"
             name="%toolChain.name"
-            targetTool="cdt.managedbuild.tool.gnu.cross.c.linker;cdt.managedbuild.tool.gnu.cross.cpp.linker;cdt.managedbuild.tool.gnu.archiver"
+            targetTool="cdt.managedbuild.tool.cross.gnu.arm.c.linker;cdt.managedbuild.tool.cross.gnu.arm.cpp.linker;cdt.managedbuild.tool.gnu.archiver"
             osList="all">
          <targetPlatform
                archList="all"
                binaryParser="org.eclipse.cdt.core.ELF"
-               id="cdt.managedbuild.targetPlatform.gnu.cross"
+               id="cdt.managedbuild.targetPlatform.cross.gnu.arm"
                isAbstract="false"
                osList="all">
          </targetPlatform>
          <builder
-               id="cdt.managedbuild.builder.gnu.cross"
+               id="cdt.managedbuild.builder.cross.gnu.arm"
                superClass="cdt.managedbuild.target.gnu.builder">
          </builder>
          <optionCategory
-               id="cdt.managedbuild.optionCategory.gnu.cross.settings"
+               id="cdt.managedbuild.optionCategory.cross.gnu.arm.settings"
                name="%optionCategory.name">
          </optionCategory>
          <option
-               category="cdt.managedbuild.optionCategory.gnu.cross.settings"
-               id="cdt.managedbuild.option.gnu.cross.prefix"
+               category="cdt.managedbuild.optionCategory.cross.gnu.arm.settings"
+               id="cdt.managedbuild.option.cross.gnu.arm.prefix"
                isAbstract="false"
                name="%option.prefix"
                resourceFilter="all"
@@ -51,30 +52,30 @@
          </option>
          <option
                browseType="directory"
-               category="cdt.managedbuild.optionCategory.gnu.cross.settings"
-               id="cdt.managedbuild.option.gnu.cross.path"
+               category="cdt.managedbuild.optionCategory.cross.gnu.arm.settings"
+               id="cdt.managedbuild.option.cross.gnu.arm.path"
                isAbstract="false"
                name="%option.path"
                resourceFilter="all"
                valueType="string">
          </option>
          <tool
-               commandLineGenerator="org.eclipse.cdt.internal.build.crossgcc.CrossCommandLineGenerator"
-               id="cdt.managedbuild.tool.gnu.cross.c.compiler"
+               commandLineGenerator="org.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
+               id="cdt.managedbuild.tool.cross.gnu.arm.c.compiler"
                isAbstract="false"
                name="%tool.gcc.compiler"
                superClass="cdt.managedbuild.tool.gnu.c.compiler">
          </tool>
          <tool
-               commandLineGenerator="org.eclipse.cdt.internal.build.crossgcc.CrossCommandLineGenerator"
-               id="cdt.managedbuild.tool.gnu.cross.cpp.compiler"
+               commandLineGenerator="org.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
+               id="cdt.managedbuild.tool.cross.gnu.arm.cpp.compiler"
                isAbstract="false"
                name="%tool.gpp.compiler"
                superClass="cdt.managedbuild.tool.gnu.cpp.compiler">
          </tool>
          <tool
-               commandLineGenerator="org.eclipse.cdt.internal.build.crossgcc.CrossCommandLineGenerator"
-               id="cdt.managedbuild.tool.gnu.cross.c.linker"
+               commandLineGenerator="org.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
+               id="cdt.managedbuild.tool.cross.gnu.arm.c.linker"
                isAbstract="false"
                name="%tool.gcc.linker"
                superClass="cdt.managedbuild.tool.gnu.c.linker">
@@ -89,8 +90,8 @@
             </enablement>
          </tool>
          <tool
-               commandLineGenerator="org.eclipse.cdt.internal.build.crossgcc.CrossCommandLineGenerator"
-               id="cdt.managedbuild.tool.gnu.cross.cpp.linker"
+               commandLineGenerator="org.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
+               id="cdt.managedbuild.tool.cross.gnu.arm.cpp.linker"
                isAbstract="false"
                name="%tool.gpp.linker"
                superClass="cdt.managedbuild.tool.gnu.cpp.linker">
@@ -105,8 +106,8 @@
             </enablement>
          </tool>
          <tool
-               commandLineGenerator="org.eclipse.cdt.internal.build.crossgcc.CrossCommandLineGenerator"
-               id="cdt.managedbuild.tool.gnu.cross.archiver"
+               commandLineGenerator="org.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
+               id="cdt.managedbuild.tool.cross.gnu.arm.archiver"
                isAbstract="false"
                name="%tool.gcc.archiver"
                superClass="cdt.managedbuild.tool.gnu.archiver">
@@ -119,8 +120,8 @@
             </enablement>
          </tool>
          <tool
-               commandLineGenerator="org.eclipse.cdt.internal.build.crossgcc.CrossCommandLineGenerator"
-               id="cdt.managedbuild.tool.gnu.cross.assembler"
+               commandLineGenerator="org.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
+               id="cdt.managedbuild.tool.cross.gnu.arm.assembler"
                isAbstract="false"
                name="%tool.gcc.assembler"
                superClass="cdt.managedbuild.tool.gnu.assembler">
@@ -128,37 +129,37 @@
       </toolChain>
 	     <projectType
 	        buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe"
-	        id="cdt.managedbuild.target.gnu.cross.exe"
+	        id="cdt.managedbuild.target.cross.gnu.arm.exe"
 	        isAbstract="false"
 	        isTest="false"
 	        >                                  
 	     <configuration
 	           name="Debug"
 	           cleanCommand="rm -rf"
-	           id="cdt.managedbuild.config.gnu.cross.exe.debug"
+	           id="cdt.managedbuild.config.cross.gnu.arm.exe.debug"
 	           parent="cdt.managedbuild.config.gnu.base"
 	           buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug">
 	           <toolChain
-	           		 superClass="cdt.managedbuild.toolchain.gnu.cross.base"
-	                 id="cdt.managedbuild.toolchain.gnu.cross.exe.debug">
+	           		 superClass="cdt.managedbuild.toolchain.cross.gnu.arm.base"
+	                 id="cdt.managedbuild.toolchain.cross.gnu.arm.exe.debug">
 	           </toolChain>                                   
 	     </configuration>
 	     <configuration
 	           name="Release"
 	           cleanCommand="rm -rf"
-	           id="cdt.managedbuild.config.gnu.cross.exe.release"
+	           id="cdt.managedbuild.config.cross.gnu.arm.exe.release"
 	           parent="cdt.managedbuild.config.gnu.base"
 	           buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release">
 	           <toolChain
-	                 superClass="cdt.managedbuild.toolchain.gnu.cross.base"
-	                 id="cdt.managedbuild.toolchain.gnu.cross.exe.release">
+	                 superClass="cdt.managedbuild.toolchain.cross.gnu.arm.base"
+	                 id="cdt.managedbuild.toolchain.cross.gnu.arm.exe.release">
 	           </toolChain>                                                     
 	     </configuration>
 	  </projectType>              
 	     
 	  <projectType
 	        buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib"
-	        id="cdt.managedbuild.target.gnu.cross.so"
+	        id="cdt.managedbuild.target.cross.gnu.arm.so"
 	        isAbstract="false"
 	        isTest="false"
 	        >            
@@ -167,10 +168,10 @@
 	           cleanCommand="rm -rf"
 	           parent="cdt.managedbuild.config.gnu.base"
 	           buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug"
-	           id="cdt.managedbuild.config.gnu.cross.so.debug">
+	           id="cdt.managedbuild.config.cross.gnu.arm.so.debug">
 	           <toolChain
-	                 superClass="cdt.managedbuild.toolchain.gnu.cross.base"
-	                 id="cdt.managedbuild.toolchain.gnu.cross.so.debug">
+	                 superClass="cdt.managedbuild.toolchain.cross.gnu.arm.base"
+	                 id="cdt.managedbuild.toolchain.cross.gnu.arm.so.debug">
 	           </toolChain>                                                     
 	     </configuration>
 	     <configuration
@@ -178,17 +179,17 @@
 	           cleanCommand="rm -rf"
 	           parent="cdt.managedbuild.config.gnu.base"
 	           buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release"
-	           id="cdt.managedbuild.config.gnu.cross.so.release">               
+	           id="cdt.managedbuild.config.cross.gnu.arm.so.release">               
 	           <toolChain
-	                 superClass="cdt.managedbuild.toolchain.gnu.cross.base"
-	                 id="cdt.managedbuild.toolchain.gnu.cross.so.release">
+	                 superClass="cdt.managedbuild.toolchain.cross.gnu.arm.base"
+	                 id="cdt.managedbuild.toolchain.cross.gnu.arm.so.release">
 	           </toolChain>                                                                                
 	     </configuration>
 	  </projectType>
 	                   
 	  <projectType
 	        buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib"
-	        id="cdt.managedbuild.target.gnu.cross.lib"
+	        id="cdt.managedbuild.target.cross.gnu.arm.lib"
 	        isAbstract="false"
 	        isTest="false"
 	        >            
@@ -197,10 +198,10 @@
 	           parent="cdt.managedbuild.config.gnu.base"
 	           buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug"
 	           cleanCommand="rm -rf"
-	           id="cdt.managedbuild.config.gnu.cross.lib.debug">
+	           id="cdt.managedbuild.config.cross.gnu.arm.lib.debug">
 	           <toolChain
-	                 superClass="cdt.managedbuild.toolchain.gnu.cross.base"
-	                 id="cdt.managedbuild.toolchain.gnu.cross.lib.debug">
+	                 superClass="cdt.managedbuild.toolchain.cross.gnu.arm.base"
+	                 id="cdt.managedbuild.toolchain.cross.gnu.arm.lib.debug">
 	           </toolChain>                                                                                				               				  
 	     </configuration>
 	     <configuration
@@ -208,10 +209,10 @@
 	           parent="cdt.managedbuild.config.gnu.base"
 	           buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release"
 	           cleanCommand="rm -rf"
-	           id="cdt.managedbuild.config.gnu.cross.lib.release">
+	           id="cdt.managedbuild.config.cross.gnu.arm.lib.release">
 	           <toolChain
-	                 superClass="cdt.managedbuild.toolchain.gnu.cross.base"
-	                 id="cdt.managedbuild.toolchain.gnu.cross.lib.release">
+	                 superClass="cdt.managedbuild.toolchain.cross.gnu.arm.base"
+	                 id="cdt.managedbuild.toolchain.cross.gnu.arm.lib.release">
 			</toolChain>                                                                                				                    
          </configuration>         
       </projectType>
@@ -221,39 +222,39 @@
       <template
             id="org.eclipse.cdt.build.core.templates.HelloWorldCAnsiProject">
          <toolChain
-               id="cdt.managedbuild.toolchain.gnu.cross.base">
+               id="cdt.managedbuild.toolchain.cross.gnu.arm.base">
          </toolChain>
       </template>
       <template
             id="org.eclipse.cdt.build.core.templates.HelloWorldCCProject">
          <toolChain
-               id="cdt.managedbuild.toolchain.gnu.cross.base">
+               id="cdt.managedbuild.toolchain.cross.gnu.arm.base">
          </toolChain>
       </template>
    </extension>
    <extension
          point="org.eclipse.cdt.managedbuilder.ui.newWizardPages">
       <wizardPage
-            ID="org.eclipse.cdt.build.crossgcc.setcCrossCommandWizardPage"
-            operationClass="org.eclipse.cdt.internal.build.crossgcc.SetCrossCommandOperation"
-            pageClass="org.eclipse.cdt.internal.build.crossgcc.SetCrossCommandWizardPage">
+            ID="org.eclipse.cdt.build.cross.gnu.arm.setcCrossCommandWizardPage"
+            operationClass="org.eclipse.cdt.internal.build.cross.gnu.arm.SetCrossCommandOperation"
+            pageClass="org.eclipse.cdt.internal.build.cross.gnu.arm.SetCrossCommandWizardPage">
          <toolchain
-               toolchainID="cdt.managedbuild.toolchain.gnu.cross.exe.debug">
+               toolchainID="cdt.managedbuild.toolchain.cross.gnu.arm.exe.debug">
          </toolchain>
          <toolchain
-               toolchainID="cdt.managedbuild.toolchain.gnu.cross.exe.release">
+               toolchainID="cdt.managedbuild.toolchain.cross.gnu.arm.exe.release">
          </toolchain>
          <toolchain
-               toolchainID="cdt.managedbuild.toolchain.gnu.cross.so.debug">
+               toolchainID="cdt.managedbuild.toolchain.cross.gnu.arm.so.debug">
          </toolchain>
          <toolchain
-               toolchainID="cdt.managedbuild.toolchain.gnu.cross.so.release">
+               toolchainID="cdt.managedbuild.toolchain.cross.gnu.arm.so.release">
          </toolchain>
          <toolchain
-               toolchainID="cdt.managedbuild.toolchain.gnu.cross.lib.debug">
+               toolchainID="cdt.managedbuild.toolchain.cross.gnu.arm.lib.debug">
          </toolchain>
          <toolchain
-               toolchainID="cdt.managedbuild.toolchain.gnu.cross.lib.release">
+               toolchainID="cdt.managedbuild.toolchain.cross.gnu.arm.lib.release">
          </toolchain>
       </wizardPage>
    </extension>

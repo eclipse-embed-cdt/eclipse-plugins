@@ -9,7 +9,7 @@
  *     Doug Schaefer - initial API and implementation
  *     Marc-Andre Laperle
  *******************************************************************************/
-package org.eclipse.cdt.internal.build.crossgcc;
+package org.eclipse.cdt.internal.build.cross.gnu.arm;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
@@ -22,7 +22,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends Plugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "tut.cross.good"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "tut.cross.gnu.arm.good"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;

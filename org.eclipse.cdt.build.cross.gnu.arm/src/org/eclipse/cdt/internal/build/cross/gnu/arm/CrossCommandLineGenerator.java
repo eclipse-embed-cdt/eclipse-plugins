@@ -8,7 +8,7 @@
  * Contributors:
  *     Doug Schaefer - initial API and implementation
  *******************************************************************************/
-package org.eclipse.cdt.internal.build.crossgcc;
+package org.eclipse.cdt.internal.build.cross.gnu.arm;
 
 import org.eclipse.cdt.managedbuilder.core.IBuildObject;
 import org.eclipse.cdt.managedbuilder.core.IManagedCommandLineInfo;
@@ -32,7 +32,7 @@ public class CrossCommandLineGenerator extends ManagedCommandLineGenerator {
 		else
 			toolchain = (IToolChain)parent;
 
-		IOption option = toolchain.getOptionBySuperClassId("cdt.managedbuild.option.gnu.cross.prefix"); //$NON-NLS-1$
+		IOption option = toolchain.getOptionBySuperClassId("cdt.managedbuild.option.cross.gnu.arm.prefix"); //$NON-NLS-1$
 		String prefix = (String)option.getValue();
 		String newCommandName = prefix + commandName;
 		return super.generateCommandLineInfo(tool, newCommandName, flags, outputFlag,

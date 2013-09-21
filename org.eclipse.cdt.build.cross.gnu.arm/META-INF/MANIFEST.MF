@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
-Bundle-SymbolicName: org.eclipse.cdt.build.crossgcc;singleton:=true
+Bundle-SymbolicName: org.eclipse.cdt.build.cross.gnu.arm;singleton:=true
 Bundle-Version: 1.1.0.qualifier
-Bundle-Activator: org.eclipse.cdt.internal.build.crossgcc.Activator
+Bundle-Activator: org.eclipse.cdt.internal.build.cross.gnu.arm.Activator
 Require-Bundle: org.eclipse.core.runtime,
  org.eclipse.cdt.core;bundle-version="5.1.0",
  org.eclipse.cdt.managedbuilder.core;bundle-version="5.0.100",

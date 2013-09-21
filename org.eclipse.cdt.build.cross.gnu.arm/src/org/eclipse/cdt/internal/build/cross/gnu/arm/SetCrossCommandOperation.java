@@ -9,7 +9,7 @@
  *     Doug Schaefer - initial API and implementation
  *     Marc-Andre Laperle - Moved to an operation for a custom wizard page
  *******************************************************************************/
-package org.eclipse.cdt.internal.build.crossgcc;
+package org.eclipse.cdt.internal.build.cross.gnu.arm;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 
@@ -70,9 +70,9 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 		IConfiguration[] configs = buildInfo.getManagedProject().getConfigurations();
 		for (IConfiguration config : configs) {
 			IToolChain toolchain = config.getToolChain();
-			IOption option = toolchain.getOptionBySuperClassId("cdt.managedbuild.option.gnu.cross.prefix"); //$NON-NLS-1$
+			IOption option = toolchain.getOptionBySuperClassId("cdt.managedbuild.option.cross.gnu.arm.prefix"); //$NON-NLS-1$
 			ManagedBuildManager.setOption(config, toolchain, option, prefix);
-			option = toolchain.getOptionBySuperClassId("cdt.managedbuild.option.gnu.cross.path"); //$NON-NLS-1$
+			option = toolchain.getOptionBySuperClassId("cdt.managedbuild.option.cross.gnu.arm.path"); //$NON-NLS-1$
 			ManagedBuildManager.setOption(config, toolchain, option, path);
 			
 			ICfgScannerConfigBuilderInfo2Set cbi = CfgScannerConfigProfileManager.getCfgScannerConfigBuildInfo(config);

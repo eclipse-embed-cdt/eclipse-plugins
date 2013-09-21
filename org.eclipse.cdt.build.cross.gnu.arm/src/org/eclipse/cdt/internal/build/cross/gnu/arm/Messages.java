@@ -8,12 +8,12 @@
  * Contributors:
  *     Marc-Andre Laperle - initial API and implementation
  *******************************************************************************/
-package org.eclipse.cdt.internal.build.crossgcc;
+package org.eclipse.cdt.internal.build.cross.gnu.arm;
 
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = "org.eclipse.cdt.internal.build.crossgcc.messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.cdt.internal.build.cross.gnu.arm.messages"; //$NON-NLS-1$
 	public static String SetCrossCommandWizardPage_browse;
 	public static String SetCrossCommandWizardPage_description;
 	public static String SetCrossCommandWizardPage_name;

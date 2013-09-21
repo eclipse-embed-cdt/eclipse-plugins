@@ -8,7 +8,7 @@
  * Contributors:
  *     Doug Schaefer - initial API and implementation
  *******************************************************************************/
-package org.eclipse.cdt.internal.build.crossgcc;
+package org.eclipse.cdt.internal.build.cross.gnu.arm;
 
 import java.io.File;
 
@@ -49,7 +49,7 @@ public class CrossEnvironmentVariableSupplier implements
 		
 		public static PathEnvironmentVariable create(IConfiguration configuration) {
 			IToolChain toolchain = configuration.getToolChain();
-			IOption option = toolchain.getOptionBySuperClassId("cdt.managedbuild.option.gnu.cross.path"); //$NON-NLS-1$
+			IOption option = toolchain.getOptionBySuperClassId("cdt.managedbuild.option.cross.gnu.arm.path"); //$NON-NLS-1$
 			String path = (String)option.getValue();
 			File sysroot = new File(path);
 			File bin = new File(sysroot, "bin"); //$NON-NLS-1$
