@@ -19,6 +19,1265 @@
       <managedBuildRevision
             fileVersion="4.0.0">
       </managedBuildRevision>
+      <tool
+            id="cdt.managedbuild.tool.cross.gnu.arm.base"
+            isAbstract="true"
+            name="Options Placeholder">
+            
+         <!-- ===== Target ================================================ -->
+         <option
+               id="cdt.managedbuild.option.cross.gnu.arm.base.target.family"
+               name="%optionCategory.target.family"
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  command="-mcpu=arm2"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm2"
+                  name="arm2">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm250"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm250"
+                  name="arm250">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm3"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm3"
+                  name="arm3">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm6"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm6"
+                  name="arm6">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm60"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm60"
+                  name="arm60">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm600"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm600"
+                  name="arm600">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm610"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm610"
+                  name="arm610">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm620"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm620"
+                  name="arm620">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm7"
+                  name="arm7">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7m"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm7m"
+                  name="arm7m">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7d"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm7d"
+                  name="arm7d">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7dm"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm7dm"
+                  name="arm7dm">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7di"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm7di"
+                  name="arm7di">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7dmi"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm7dmi"
+                  name="arm7dmi">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm70"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm70"
+                  name="arm70">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm700"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm700"
+                  name="arm700">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm700i"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm700i"
+                  name="arm700i">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm710"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm710"
+                  name="arm710">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm710c"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm710c"
+                  name="arm710c">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7100"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm7100"
+                  name="arm7100">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm720"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm720"
+                  name="arm720">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7500"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm7500"
+                  name="arm7500">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7500fe"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm7500fe"
+                  name="arm7500fe">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7tdmi"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm7tdmi"
+                  isDefault="false"
+                  name="arm7tdmi">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7tdmi-s"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm7tdmi-s"
+                  name="arm7tdmi-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm710t"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm710t"
+                  name="arm710t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm720t"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm720t"
+                  name="arm720t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm740t"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm740t"
+                  name="arm740t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=strongarm"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.strongarm"
+                  name="strongarm">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=strongarm110"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.strongarm110"
+                  name="strongarm110">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=strongarm1100"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.strongarm1100"
+                  name="strongarm1100">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=strongarm1110"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.strongarm1110"
+                  name="strongarm1110">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm8"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm8"
+                  name="arm8">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm810"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm810"
+                  name="arm810">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm9"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm9"
+                  name="arm9">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm9e"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm9e"
+                  name="arm9e">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm920"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm920"
+                  name="arm920">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm920t"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm920t"
+                  name="arm920t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm922t"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm922t"
+                  name="arm922t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm946e-s"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm946e-s"
+                  name="arm946e-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm966e-s"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm966e-s"
+                  name="arm966e-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm968e-s"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm968e-s"
+                  name="arm968e-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm926ej-s"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm926ej-s"
+                  name="arm926ej-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm940t"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm940t"
+                  name="arm940t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm9tdmi"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm9tdmi"
+                  name="arm9tdmi">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm10tdmi"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm10tdmi"
+                  name="arm10tdmi">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1020t"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm1020t"
+                  name="arm1020t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1026ej-s"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm1026ej-s"
+                  name="arm1026ej-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm10e"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm10e"
+                  name="arm10e">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1020e"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm1020e"
+                  name="arm1020e">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1022e"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm1022e"
+                  name="arm1022e">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1136j-s"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm1136j-s"
+                  name="arm1136j-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1136jf-s"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm1136jf-s"
+                  name="arm1136jf-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=mpcore"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.mpcore"
+                  name="mpcore">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=mpcorenovfp"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.mpcorenovfp"
+                  name="mpcorenovfp">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1156t2-s"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm1156t2-s"
+                  name="arm1156t2-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1156t2f-s"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm1156t2f-s"
+                  name="arm1156t2f-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1176jz-s"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm1176jz-s"
+                  name="arm1176jz-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1176jzf-s"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.arm1176jzf-s"
+                  name="arm1176jzf-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-a5"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-a5"
+                  name="cortex-a5">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-a7"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-a7"
+                  name="cortex-a7">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-a8"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-a8"
+                  name="cortex-a8">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-a9"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-a9"
+                  name="cortex-a9">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-a15"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-a15"
+                  name="cortex-a15">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-a53"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-a53"
+                  name="cortex-a53">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-r4"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-r4"
+                  name="cortex-r4">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-r4f"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-r4f"
+                  name="cortex-r4f">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-m4"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-m4"
+                  name="cortex-m4">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-m3"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-m3"
+                  isDefault="true"
+                  name="cortex-m3">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-m1"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-m1"
+                  name="cortex-m1">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-m0"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-m0"
+                  name="cortex-m0">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-m0plus"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-m0plus"
+                  name="cortex-m0plus">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=marvell-pj4"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.marvell-pj4"
+                  name="marvell-pj4">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=xscale"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.xscale"
+                  name="xscale">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=iwmmxt"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.iwmmxt"
+                  name="iwmmxt">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=iwmmxt2"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.iwmmxt2"
+                  name="iwmmxt2">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=ep9312"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.ep9312"
+                  name="ep9312">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=fa526"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.fa526"
+                  name="fa526">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=fa626"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.fa626"
+                  name="fa626">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=fa606te"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.fa606te"
+                  name="fa606te">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=fa626te"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.fa626te"
+                  name="fa626te">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=fmp626"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.fmp626"
+                  name="fmp626">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=fa726te"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.fa726te"
+                  name="fa726te">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=marvell-f"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.marvell-f"
+                  name="marvell-f">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=native"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.native"
+                  name="Native (-mcpu=native)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.default"
+                  name="Toolchain Default">
+            </enumeratedOptionValue>
+         </option>
+
+         <option
+               id="cdt.managedbuild.option.cross.gnu.arm.base.target.architecture"
+               name="%optionCategory.target.architecture"
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  command="-march=armv2"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv2"
+                  name="armv2">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv2a"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv2a"
+                  name="armv2a">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv3"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv3"
+                  name="armv3">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv3m"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv3m"
+                  name="armv3m">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv4"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv4"
+                  name="armv4">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv4t"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv4t"
+                  name="armv4t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv5"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv5"
+                  name="armv5">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv5t"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv5t"
+                  name="armv5t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv5e"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv5e"
+                  name="armv5e">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv5te"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv5te"
+                  name="armv5te">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv6"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv6"
+                  name="armv6">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv6j"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv6j"
+                  name="armv6j">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv6t2"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv6t2"
+                  name="armv6t2">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv6z"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv6z"
+                  name="armv6z">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv6zk"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv6zk"
+                  name="armv6zk">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv6-m"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv6-m"
+                  name="armv6-m">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv7"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv7"
+                  name="armv7">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv7-a"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv7-a"
+                  name="armv7-a">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv7-r"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv7-r"
+                  name="armv7-r">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv7-m"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv7-m"
+                  name="armv7-m">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv8-a"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.armv8-a"
+                  name="armv8-a">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=iwmmxt"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.iwmmxt"
+                  name="iwmmxt">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=iwmmxt2"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.iwmmxt2"
+                  name="iwmmxt2">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=ep9312"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.ep9312"
+                  name="ep9312">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=native"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.native"
+                  name="Native (-march=native)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.arch.none"
+                  isDefault="true"
+                  name="Toolchain Default">
+            </enumeratedOptionValue>
+         </option>
+
+         <option
+               command="-mthumb"
+               defaultValue="true"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.target.thumb"
+               name="%optionCategory.target.thumb"
+               valueType="boolean">
+         </option>
+         
+         <option
+               command="-mthumb-interwork"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.target.thumbinterwork"
+               name="%optionCategory.target.thumbInterwork"
+               valueType="boolean">
+         </option>
+         
+         <option
+               id="cdt.managedbuild.option.cross.gnu.arm.base.target.endianness"
+               name="%optionCategory.target.endianness"
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.endianness.default"
+                  isDefault="true"
+                  name="Toolchain Default">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mlittle-endian"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.endianness.little"
+                  name="Little Endian (-mlittle-endian)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mbig-endian"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.endianness.big"
+                  name="Big Endian (-mbig-endian)">
+            </enumeratedOptionValue>
+         </option>
+         
+         <option
+               id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.abi"
+               name="%optionCategory.target.floatABI"
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.abi.default"
+                  isDefault="true"
+                  name="Toolchain Default">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfloat-abi=soft"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.abi.soft"
+                  name="Library (soft)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfloat-abi=softfp"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.abi.softfp"
+                  name="Library with FP (softfp)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfloat-abi=hard"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.abi.hard"
+                  name="FP instructions (hard)">
+            </enumeratedOptionValue>
+            <enablement
+                  extensionAdjustment="false"
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <not>
+                  <or>
+                     <checkOption
+                           optionId="cdt.managedbuild.option.cross.gnu.arm.base.target.family"
+                           value="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-m0">
+                     </checkOption>
+                     <checkOption
+                           optionId="cdt.managedbuild.option.cross.gnu.arm.base.target.family"
+                           value="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-m0plus">
+                     </checkOption>
+                     <checkOption
+                           optionId="cdt.managedbuild.option.cross.gnu.arm.base.target.family"
+                           value="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-m1">
+                     </checkOption>
+                     <checkOption
+                           optionId="cdt.managedbuild.option.cross.gnu.arm.base.target.family"
+                           value="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-m3">
+                     </checkOption>
+                  </or>
+               </not>
+            </enablement>
+         </option>
+         
+         <option
+               id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit"
+               name="%optionCategory.target.fpuType"
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.default"
+                  isDefault="true"
+                  name="Toolchain Default">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=fpa"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.fpa"
+                  name="FPA">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=fpe2"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.fpe2"
+                  name="FPE2">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=fpe3"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.fpe3"
+                  name="FPE3">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=maverick"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.maverick"
+                  name="Maverick">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=vfp"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.vfp"
+                  name="VFP">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=vfpv3"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.vfpv3"
+                  name="VFPv3">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=vfpv3-fp16"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.vfpv3fp16"
+                  name="VFPv3 FP16 (VFP3)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=vfpv3-d16"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.vfpv3d16"
+                  name="VFPv3 D16">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=vfpv3-d16-fp16"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.vfpv3d16fp16"
+                  name="VFPv3 D16 FP16">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=vfpv3xd"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.vfpv3xd"
+                  name="VFPv3XD">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=vfpv3xd-fp16"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.vfpv3xdfp16"
+                  name="VFPv3XD FP16">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=neon"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.neon"
+                  name="Neon">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=neon-fp16"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.neonfp16"
+                  name="Neon FP16">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=vfpv4"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.vfpv4"
+                  name="VFPv4">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=vfpv4-d16"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.vfpv4d16"
+                  name="VFPv4 D16">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=fpv4-sp-d16"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.fpv4spd16"
+                  name="FPv4 SP D16">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=neon-vfpv4"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.neonvfpv4"
+                  name="Neon VFPv4">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=fp-armv8"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.fparmv8"
+                  name="FP ARMv8">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=neon-fp-armv8"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.neonfparmv8"
+                  name="Neon FP ARMv8">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=crypto-neon-fp-armv8"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.cryptoneonfparmv8"
+                  name="Crypto Neon FP ARMv8">
+            </enumeratedOptionValue>
+            <enablement
+                  extensionAdjustment="false"
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <not>
+                  <checkOption
+                        optionId="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.abi"
+                        value="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.abi.soft">
+                  </checkOption>
+               </not>
+            </enablement>
+            <enablement
+                  extensionAdjustment="false"
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <not>
+                  <or>
+                     <checkOption
+                           optionId="cdt.managedbuild.option.cross.gnu.arm.base.target.family"
+                           value="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-m0">
+                     </checkOption>
+                     <checkOption
+                           optionId="cdt.managedbuild.option.cross.gnu.arm.base.target.family"
+                           value="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-m0plus">
+                     </checkOption>
+                     <checkOption
+                           optionId="cdt.managedbuild.option.cross.gnu.arm.base.target.family"
+                           value="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-m1">
+                     </checkOption>
+                     <checkOption
+                           optionId="cdt.managedbuild.option.cross.gnu.arm.base.target.family"
+                           value="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-m3">
+                     </checkOption>
+                  </or>
+               </not>
+            </enablement>
+            <enablement
+                  attribute="value"
+                  extensionAdjustment="false"
+                  type="CONTAINER_ATTRIBUTE"
+                  value="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.fpv4spd16">
+               <checkOption
+                     optionId="cdt.managedbuild.option.cross.gnu.arm.base.target.family"
+                     value="cdt.managedbuild.option.cross.gnu.arm.base.mcpu.cortex-m4">
+               </checkOption>
+            </enablement>
+         </option>
+         
+         <option
+               id="cdt.managedbuild.option.cross.gnu.arm.base.target.other"
+               name="%optionCategory.target.other"
+               valueType="string">
+         </option>
+         
+         
+         <!-- ===== Debugging ============================================= -->
+         <option
+               id="cdt.managedbuild.option.cross.gnu.arm.base.debugging.level"
+               name="%optionCategory.debugging.level"
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.debugging.level.none"
+                  name="None">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-g1"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.debugging.level.minimal"
+                  name="Minimal (-g1)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-g"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.debugging.level.default"
+                  isDefault="true"
+                  name="Default (-g)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-g3"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.debugging.level.max"
+                  name="Maximum (-g3)">
+            </enumeratedOptionValue>
+            <enablement
+                  attribute="value"
+                  extensionAdjustment="false"
+                  type="CONTAINER_ATTRIBUTE"
+                  value="cdt.managedbuild.option.cross.gnu.arm.base.debugging.level.default">
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildType"
+                     value="org.eclipse.cdt.build.core.buildType.release">
+               </checkBuildProperty>
+            </enablement>
+            <enablement
+                  attribute="value"
+                  extensionAdjustment="false"
+                  type="CONTAINER_ATTRIBUTE"
+                  value="cdt.managedbuild.option.cross.gnu.arm.base.debugging.level.max">
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildType"
+                     value="org.eclipse.cdt.build.core.buildType.debug">
+               </checkBuildProperty>
+            </enablement>
+         </option>
+         
+         <option
+               id="cdt.managedbuild.option.cross.gnu.arm.base.debugging.format"
+               name="%optionCategory.debugging.format"
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  command="-gdwarf-2"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.debugging.format.dwarf2"
+                  name="dwarf-2">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-gstabs"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.debugging.format.stabs"
+                  name="stabs">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-gstabs+"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.debugging.format.stabsplus"
+                  name="stabs+">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-ggdb"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.debugging.format.gdb"
+                  name="gdb">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.debugging.format.default"
+                  isDefault="true"
+                  name="Toolchain Default">
+            </enumeratedOptionValue>
+            <enablement
+                  attribute="value"
+                  extensionAdjustment="false"
+                  type="CONTAINER_ATTRIBUTE"
+                  value="cdt.managedbuild.option.cross.gnu.arm.base.debugging.format.default">
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildType"
+                     value="org.eclipse.cdt.build.core.buildType.release">
+               </checkBuildProperty>
+            </enablement>
+            <enablement
+                  attribute="value"
+                  extensionAdjustment="false"
+                  type="CONTAINER_ATTRIBUTE"
+                  value="cdt.managedbuild.option.cross.gnu.arm.base.debugging.format.default">
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildType"
+                     value="org.eclipse.cdt.build.core.buildType.debug">
+               </checkBuildProperty>
+            </enablement>
+         </option>
+         
+         <option
+               command="-p"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.debugging.prof"
+               name="%optionCategory.debugging.prof"
+               valueType="boolean">
+         </option>
+         <option
+               command="-pg"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.debugging.gprof"
+               name="%optionCategory.debugging.gprof"
+               valueType="boolean">
+         </option>
+         <option
+               id="cdt.managedbuild.option.cross.gnu.arm.base.debugging.other"
+               name="%optionCategory.debugging.other"
+               valueType="string">
+         </option>
+        
+         <!-- ===== Additional Tools ====================================== --> 
+         <option
+               defaultValue="true"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.addtools.createflash"
+               name="%optionCategory.additional.flash"
+               valueHandler="ilg.eclipse.cdt.internal.build.cross.gnu.arm.AdditionalToolsManagedOptionValueHandler"
+               valueType="boolean">
+            <enablement
+                  type="ALL">
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildArtefactType"
+                     value="org.eclipse.cdt.build.core.buildArtefactType.exe">
+               </checkBuildProperty>
+            </enablement>
+         </option>
+         <option
+               id="cdt.managedbuild.option.cross.gnu.arm.base.addtools.createlisting"
+               name="%optionCategory.additional.listing"
+               value="true"
+               valueHandler="ilg.eclipse.cdt.internal.build.cross.gnu.arm.AdditionalToolsManagedOptionValueHandler"
+               valueType="boolean">
+            <enablement
+                  type="ALL">
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildArtefactType"
+                     value="org.eclipse.cdt.build.core.buildArtefactType.exe">
+               </checkBuildProperty>
+            </enablement>
+         </option>
+         <option
+               id="cdt.managedbuild.option.cross.gnu.arm.base.addtools.printsize"
+               name="%optionCategory.additional.size"
+               value="true"
+               valueHandler="ilg.eclipse.cdt.internal.build.cross.gnu.arm.AdditionalToolsManagedOptionValueHandler"
+               valueType="boolean">
+            <enablement
+                  type="ALL">
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildArtefactType"
+                     value="org.eclipse.cdt.build.core.buildArtefactType.exe">
+               </checkBuildProperty>
+            </enablement>
+         </option>
+                 
+         <!-- ===== Optimisation ========================================== -->
+         <option
+               id="cdt.managedbuild.option.cross.gnu.arm.base.optimization.level"
+               name="Optimization Level"
+               valueType="enumerated">
+            <enablement
+                  attribute="value"
+                  extensionAdjustment="false"
+                  type="CONTAINER_ATTRIBUTE"
+                  value="cdt.managedbuild.option.cross.gnu.arm.base.optimization.level.size">
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildType"
+                     value="org.eclipse.cdt.build.core.buildType.release">
+               </checkBuildProperty>
+            </enablement>
+            <enablement
+                  attribute="value"
+                  extensionAdjustment="false"
+                  type="CONTAINER_ATTRIBUTE"
+                  value="cdt.managedbuild.option.cross.gnu.arm.base.optimization.level.none">
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildType"
+                     value="org.eclipse.cdt.build.core.buildType.debug">
+               </checkBuildProperty>
+            </enablement>
+            <enumeratedOptionValue
+                  command="-O0"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.optimization.level.none"
+                  name="None (-O0)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-O1"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.optimization.level.optimize"
+                  name="Optimize (-O1)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-O2"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.optimization.level.more"
+                  isDefault="true"
+                  name="Optimize more (-O2)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-O3"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.optimization.level.most"
+                  name="Optimize most (-O3)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-Os"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.optimization.level.size"
+                  name="Optimize size (-Os)">
+            </enumeratedOptionValue>
+         </option>
+         
+         <!-- ===== Misc ========================================== -->
+         <option
+               command="-Xlinker --cref"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.other.cref"
+               name="Cross Reference (-Xlinker --cref)"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Xlinker --print-map"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.other.printmap"
+               name="Print link map (-Xlinker --print-map)"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Wl,-Map,"
+               defaultValue="&quot;${BuildArtifactFileBaseName}.map&quot;"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.other.mapfilename"
+               name="Map Filename"
+               valueType="string">
+         </option>
+         <option
+               command="-Wa,"
+               defaultValue="-adhlns=&quot;$@.lst&quot;"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.other.lstfilename"
+               name="Assembler Listing"
+               valueType="string">
+         </option>
+         <!-- ============================================================= -->
+      </tool>
+
+      <tool
+            id="cdt.managedbuild.tool.cross.gnu.arm64.base"
+            isAbstract="true"
+            name="Options Placeholder">
+
+         <!-- ===== AArch64 Target ======================================== -->
+         <option
+               id="cdt.managedbuild.option.cross.gnu.arm64.base.target.family"
+               name="Processor (-mcpu)"
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  command="-mcpu=generic"
+                  id="cdt.managedbuild.option.cross.gnu.arm64.base.target.mcpu.generic"
+                  isDefault="true"
+                  name="Generic (-mcpu=generic)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=large"
+                  id="cdt.managedbuild.option.cross.gnu.arm64.base.target.mcpu.large"
+                  name="Large (-mcpu=large)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="cdt.managedbuild.option.cross.gnu.arm64.base.target.mcpu.default"
+                  name="Toolchain Default">
+            </enumeratedOptionValue>
+         </option>
+         
+         <option
+               id="cdt.managedbuild.option.cross.gnu.arm64.base.target.feature.crc"
+               name="Feature crc"
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  command="crc"
+                  id="cdt.managedbuild.option.cross.gnu.arm64.base.target.feature.crc.yes"
+                  name="Yes (+crc)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="nocrc"
+                  id="cdt.managedbuild.option.cross.gnu.arm64.base.target.feature.crc.no"
+                  name="No (+nocrc)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="cdt.managedbuild.option.cross.gnu.arm64.base.target.feature.crc.default"
+                  isDefault="true"
+                  name="Toolchain Default">
+            </enumeratedOptionValue>
+            <enablement
+                  extensionAdjustment="false"
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <not>
+                  <checkOption
+                        optionId="cdt.managedbuild.option.cross.gnu.arm64.base.target.family"
+                        value="cdt.managedbuild.option.cross.gnu.arm64.base.target.mcpu.default">
+                  </checkOption>
+               </not>
+            </enablement>
+         </option>
+         <option
+               id="cdt.managedbuild.option.cross.gnu.arm64.base.target.feature.crypto"
+               name="Feature crypto"
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  command="crypto"
+                  id="cdt.managedbuild.option.cross.gnu.arm64.base.target.feature.crypto.yes"
+                  name="Yes (+crypto)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="nocrypto"
+                  id="cdt.managedbuild.option.cross.gnu.arm64.base.target.feature.crypto.no"
+                  name="No (+nocrypto)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="cdt.managedbuild.option.cross.gnu.arm64.base.target.feature.crypto.default"
+                  isDefault="true"
+                  name="Toolchain Default">
+            </enumeratedOptionValue>
+            <enablement
+                  extensionAdjustment="false"
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <not>
+                  <checkOption
+                        optionId="cdt.managedbuild.option.cross.gnu.arm64.base.target.family"
+                        value="cdt.managedbuild.option.cross.gnu.arm64.base.target.mcpu.default">
+                  </checkOption>
+               </not>
+            </enablement>
+         </option>
+         <option
+               id="cdt.managedbuild.option.cross.gnu.arm64.base.target.feature.fp"
+               name="Feature fp"
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  command="fp"
+                  id="cdt.managedbuild.option.cross.gnu.arm64.base.target.feature.fp.yes"
+                  name="Yes (+fp)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="nofp"
+                  id="cdt.managedbuild.option.cross.gnu.arm64.base.target.feature.fp.no"
+                  name="No (+nofp)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="cdt.managedbuild.option.cross.gnu.arm64.base.target.feature.fp.default"
+                  isDefault="true"
+                  name="Toolchain Default">
+            </enumeratedOptionValue>
+            <enablement
+                  extensionAdjustment="false"
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <not>
+                  <checkOption
+                        optionId="cdt.managedbuild.option.cross.gnu.arm64.base.target.family"
+                        value="cdt.managedbuild.option.cross.gnu.arm64.base.target.mcpu.default">
+                  </checkOption>
+               </not>
+            </enablement>
+         </option>
+         <option
+               id="cdt.managedbuild.option.cross.gnu.arm64.base.target.feature.simd"
+               name="Feature simd"
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  command="simd"
+                  id="cdt.managedbuild.option.cross.gnu.arm64.base.target.feature.simd.yes"
+                  isDefault="true"
+                  name="Yes (+simd)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="nosimd"
+                  id="cdt.managedbuild.option.cross.gnu.arm64.base.target.feature.simd.no"
+                  name="No (+nosimd)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="cdt.managedbuild.option.cross.gnu.arm64.base.target.feature.simd.default"
+                  name="Toolchain Default">
+            </enumeratedOptionValue>
+            <enablement
+                  extensionAdjustment="false"
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <not>
+                  <checkOption
+                        optionId="cdt.managedbuild.option.cross.gnu.arm64.base.target.family"
+                        value="cdt.managedbuild.option.cross.gnu.arm64.base.target.mcpu.default">
+                  </checkOption>
+               </not>
+            </enablement>
+         </option>
+         <option
+               id="cdt.managedbuild.option.cross.gnu.arm64.base.target.cmodel"
+               name="Code model"
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  command="-mcmodel=tiny"
+                  id="cdt.managedbuild.option.cross.gnu.arm64.base.target.cmodel.tiny"
+                  name="Tiny (-mcmodel=tiny)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcmodel=small"
+                  id="cdt.managedbuild.option.cross.gnu.arm64.base.target.cmodel.small"
+                  isDefault="true"
+                  name="Small (-mcmodel=small)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcmodel=large"
+                  id="cdt.managedbuild.option.cross.gnu.arm64.base.target.cmodel.large"
+                  name="Large (-mcmodel=large)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="cdt.managedbuild.option.cross.gnu.arm64.base.target.cmodel.default"
+                  name="Toolchain Default">
+            </enumeratedOptionValue>
+         </option>
+         <option
+               command="-mstrict-align"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm64.base.target.strictalign"
+               name="Strict align (-mstrict-align)"
+               valueType="boolean">
+         </option>
+         <!-- ============================================================= -->
+
+      </tool>
+
+      
       <toolChain
             archList="all"
             configurationEnvironmentSupplier="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossEnvironmentVariableSupplier"
@@ -39,11 +1298,11 @@
                superClass="cdt.managedbuild.target.gnu.builder">
          </builder>
          <optionCategory
-               id="cdt.managedbuild.optionCategory.cross.gnu.arm.settings"
-               name="%optionCategory.name">
+               id="cdt.managedbuild.optionCategory.cross.gnu.arm.toolchain"
+               name="%optionCategory.toolchain.name">
          </optionCategory>
          <option
-               category="cdt.managedbuild.optionCategory.cross.gnu.arm.settings"
+               category="cdt.managedbuild.optionCategory.cross.gnu.arm.toolchain"
                id="cdt.managedbuild.option.cross.gnu.arm.prefix"
                isAbstract="false"
                name="%option.prefix"
@@ -52,13 +1311,116 @@
          </option>
          <option
                browseType="directory"
-               category="cdt.managedbuild.optionCategory.cross.gnu.arm.settings"
+               category="cdt.managedbuild.optionCategory.cross.gnu.arm.toolchain"
                id="cdt.managedbuild.option.cross.gnu.arm.path"
                isAbstract="false"
                name="%option.path"
                resourceFilter="all"
                valueType="string">
          </option>
+         
+         <!-- ===== Target ================================================ -->
+         <optionCategory
+               id="cdt.managedbuild.optionCategory.cross.gnu.arm.target"
+               name="%optionCategory.target.name">
+         </optionCategory>
+           <option
+               category="cdt.managedbuild.optionCategory.cross.gnu.arm.target"
+               id="cdt.managedbuild.option.cross.gnu.arm.target.family"
+               superClass="cdt.managedbuild.option.cross.gnu.arm.base.target.family">
+           </option>
+           <option
+               category="cdt.managedbuild.optionCategory.cross.gnu.arm.target"
+               id="cdt.managedbuild.option.cross.gnu.arm.target.architecture"
+               superClass="cdt.managedbuild.option.cross.gnu.arm.base.target.architecture">
+           </option>
+           <option
+               category="cdt.managedbuild.optionCategory.cross.gnu.arm.target"
+               id="cdt.managedbuild.option.cross.gnu.arm.target.thumb"
+               superClass="cdt.managedbuild.option.cross.gnu.arm.base.target.thumb">
+           </option>
+           <option
+               category="cdt.managedbuild.optionCategory.cross.gnu.arm.target"
+               id="cdt.managedbuild.option.cross.gnu.arm.target.thumbinterwork"
+               superClass="cdt.managedbuild.option.cross.gnu.arm.base.target.thumbinterwork">
+           </option>
+         
+           <option 
+               category="cdt.managedbuild.optionCategory.cross.gnu.arm.target"
+               id="cdt.managedbuild.option.cross.gnu.arm.target.endianness"
+               superClass="cdt.managedbuild.option.cross.gnu.arm.base.target.endianness">
+           </option>
+           <option 
+               category="cdt.managedbuild.optionCategory.cross.gnu.arm.target"
+               id="cdt.managedbuild.option.cross.gnu.arm.target.fpu.abi"
+               superClass="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.abi">
+           </option>
+           <option 
+               category="cdt.managedbuild.optionCategory.cross.gnu.arm.target"
+               id="cdt.managedbuild.option.cross.gnu.arm.target.fpu.unit"
+               superClass="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit">
+           </option>
+           <option
+               category="cdt.managedbuild.optionCategory.cross.gnu.arm.target"
+               id="cdt.managedbuild.option.cross.gnu.arm.target.other"
+               superClass="cdt.managedbuild.option.cross.gnu.arm.base.target.other">
+           </option>
+           
+            <!-- ===== Debugging ========================================== -->
+           <optionCategory
+               id="cdt.managedbuild.optionCategory.cross.gnu.arm.debugging"
+               name="%optionCategory.debugging.name">
+           </optionCategory>
+           <option
+               category="cdt.managedbuild.optionCategory.cross.gnu.arm.debugging"
+               id="cdt.managedbuild.option.cross.gnu.arm.debugging.level"
+               superClass="cdt.managedbuild.option.cross.gnu.arm.base.debugging.level">
+           </option>
+           <option
+               category="cdt.managedbuild.optionCategory.cross.gnu.arm.debugging"
+               id="cdt.managedbuild.option.cross.gnu.arm.debugging.format"
+               superClass="cdt.managedbuild.option.cross.gnu.arm.base.debugging.format">
+           </option>
+           <option
+               category="cdt.managedbuild.optionCategory.cross.gnu.arm.debugging"
+               id="cdt.managedbuild.option.cross.gnu.arm.debugging.prof"
+               superClass="cdt.managedbuild.option.cross.gnu.arm.base.debugging.prof">
+           </option>
+           <option
+               category="cdt.managedbuild.optionCategory.cross.gnu.arm.debugging"
+               id="cdt.managedbuild.option.cross.gnu.arm.debugging.gprof"
+               superClass="cdt.managedbuild.option.cross.gnu.arm.base.debugging.gprof">
+           </option>
+           <option
+               category="cdt.managedbuild.optionCategory.cross.gnu.arm.debugging"
+               id="cdt.managedbuild.option.cross.gnu.arm.debugging.other"
+               superClass="cdt.managedbuild.option.cross.gnu.arm.base.debugging.other">
+           </option>
+
+
+           <!-- ===== Additional Tools ==================================== -->
+           <optionCategory
+               id="cdt.managedbuild.optionCategory.cross.gnu.arm.addtools"
+               name="%optionCategory.additional.name">
+           </optionCategory>
+           <option
+               category="cdt.managedbuild.optionCategory.cross.gnu.arm.addtools"
+               id="cdt.managedbuild.option.cross.gnu.arm.addtools.createflash"
+               superClass="cdt.managedbuild.option.cross.gnu.arm.base.addtools.createflash">
+           </option>
+           <option
+               category="cdt.managedbuild.optionCategory.cross.gnu.arm.addtools"
+               id="cdt.managedbuild.option.cross.gnu.arm.addtools.createlisting"
+               superClass="cdt.managedbuild.option.cross.gnu.arm.base.addtools.createlisting">
+           </option>
+           <option
+               category="cdt.managedbuild.optionCategory.cross.gnu.arm.addtools"
+               id="cdt.managedbuild.option.cross.gnu.arm.addtools.printsize"
+               superClass="cdt.managedbuild.option.cross.gnu.arm.base.addtools.printsize">
+           </option>
+         
+         
+         
          <tool
                commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
                id="cdt.managedbuild.tool.cross.gnu.arm.c.compiler"
@@ -127,6 +1489,7 @@
                superClass="cdt.managedbuild.tool.gnu.assembler">
          </tool>
       </toolChain>
+      
 	     <projectType
 	        buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe"
 	        id="cdt.managedbuild.target.cross.gnu.arm.exe"
