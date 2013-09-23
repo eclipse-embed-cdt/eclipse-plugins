@@ -697,102 +697,102 @@
             <enumeratedOptionValue
                   command="-mfpu=fpa"
                   id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.fpa"
-                  name="FPA">
+                  name="fpa">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=fpe2"
                   id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.fpe2"
-                  name="FPE2">
+                  name="fpe2">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=fpe3"
                   id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.fpe3"
-                  name="FPE3">
+                  name="fpe3">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=maverick"
                   id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.maverick"
-                  name="Maverick">
+                  name="maverick">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=vfp"
                   id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.vfp"
-                  name="VFP">
+                  name="vfp">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=vfpv3"
                   id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.vfpv3"
-                  name="VFPv3">
+                  name="vfpv3">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=vfpv3-fp16"
                   id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.vfpv3fp16"
-                  name="VFPv3 FP16 (VFP3)">
+                  name="vfpv3-fp16">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=vfpv3-d16"
                   id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.vfpv3d16"
-                  name="VFPv3 D16">
+                  name="vfpv3-d16">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=vfpv3-d16-fp16"
                   id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.vfpv3d16fp16"
-                  name="VFPv3 D16 FP16">
+                  name="vfpv3-d16-fp16">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=vfpv3xd"
                   id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.vfpv3xd"
-                  name="VFPv3XD">
+                  name="vfpv3xd">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=vfpv3xd-fp16"
                   id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.vfpv3xdfp16"
-                  name="VFPv3XD FP16">
+                  name="vfpv3xd-fp16">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=neon"
                   id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.neon"
-                  name="Neon">
+                  name="neon">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=neon-fp16"
                   id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.neonfp16"
-                  name="Neon FP16">
+                  name="neon-fp16">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=vfpv4"
                   id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.vfpv4"
-                  name="VFPv4">
+                  name="vfpv4">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=vfpv4-d16"
                   id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.vfpv4d16"
-                  name="VFPv4 D16">
+                  name="vfpv4-d16">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=fpv4-sp-d16"
                   id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.fpv4spd16"
-                  name="FPv4 SP D16">
+                  name="fpv4-sp-d16">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=neon-vfpv4"
                   id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.neonvfpv4"
-                  name="Neon VFPv4">
+                  name="neon-vfpv4">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=fp-armv8"
                   id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.fparmv8"
-                  name="FP ARMv8">
+                  name="fp-armv8">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=neon-fp-armv8"
                   id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.neonfparmv8"
-                  name="Neon FP ARMv8">
+                  name="neon-fp-armv8">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=crypto-neon-fp-armv8"
                   id="cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.cryptoneonfparmv8"
-                  name="Crypto Neon FP ARMv8">
+                  name="crypto-neon-fp-armv8">
             </enumeratedOptionValue>
             <enablement
                   extensionAdjustment="false"
