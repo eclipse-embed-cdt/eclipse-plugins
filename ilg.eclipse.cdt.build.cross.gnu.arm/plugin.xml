@@ -20,7 +20,7 @@
             fileVersion="4.0.0">
       </managedBuildRevision>
       <tool
-            id="cdt.managedbuild.tool.cross.gnu.arm.base"
+            id="cdt.managedbuild.tool.cross.gnu.arm.base1"
             isAbstract="true"
             name="Options Placeholder ARM">
             
@@ -1008,10 +1008,32 @@
                </checkBuildProperty>
             </enablement>
          </option>
-                 
-         <!-- ===== Optimisation ========================================== -->
+                          
+         <!-- ===== Tools common options ================================== -->
+      </tool>
+      <tool
+            id="cdt.managedbuild.tool.cross.gnu.arm.base2"
+            isAbstract="true"
+            name="Tools common options">
+         <option
+               command="-Wa,"
+               defaultValue="-adhlns=&quot;$@.lst&quot;"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.other.lstfilename"
+               isAbstract="true"
+               name="Assembler Listing"
+               valueType="string">
+         </option>
+         <option
+               command="-Wl,-Map,"
+               defaultValue="&quot;${BuildArtifactFileBaseName}.map&quot;"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.other.mapfilename"
+               isAbstract="true"
+               name="Map Filename"
+               valueType="string">
+         </option>
          <option
                id="cdt.managedbuild.option.cross.gnu.arm.base.optimization.level"
+               isAbstract="true"
                name="Optimization Level"
                valueType="enumerated">
             <enablement
@@ -1061,12 +1083,11 @@
                   name="Optimize size (-Os)">
             </enumeratedOptionValue>
          </option>
-         
-         <!-- ===== Misc ========================================== -->
          <option
                command="-Xlinker --cref"
                defaultValue="false"
                id="cdt.managedbuild.option.cross.gnu.arm.base.other.cref"
+               isAbstract="true"
                name="Cross Reference (-Xlinker --cref)"
                valueType="boolean">
          </option>
@@ -1074,24 +1095,193 @@
                command="-Xlinker --print-map"
                defaultValue="false"
                id="cdt.managedbuild.option.cross.gnu.arm.base.other.printmap"
+               isAbstract="true"
                name="Print link map (-Xlinker --print-map)"
                valueType="boolean">
          </option>
          <option
-               command="-Wl,-Map,"
-               defaultValue="&quot;${BuildArtifactFileBaseName}.map&quot;"
-               id="cdt.managedbuild.option.cross.gnu.arm.base.other.mapfilename"
-               name="Map Filename"
+               command="-nostdinc"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.nostdinc"
+               isAbstract="true"
+               name="Do not search system directories (-nostdinc)"
+               valueType="boolean">
+         </option>
+         <option
+               command="-D"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.defs"
+               isAbstract="true"
+               name="Defined symbols (-D)"
+               valueType="definedSymbols">
+         </option>
+         <option
+               command="-U"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.undefs"
+               isAbstract="true"
+               name="Undefined symbols (-U)"
+               valueType="undefDefinedSymbols">
+         </option>
+         <option
+               command="-E"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.preprocessonly"
+               isAbstract="true"
+               name="Preprocess only (-E)"
+               valueType="boolean">
+         </option>
+         <option
+               browseType="directory"
+               command="-I"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.dirs.includepaths"
+               isAbstract="true"
+               name="Include paths (-I)"
+               valueType="includePath">
+         </option>
+         <option
+               command="-fsyntax-only"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.warnings.syntaxonly"
+               isAbstract="true"
+               name="Check syntax only (-fsyntax-only)"
+               valueType="boolean">
+         </option>
+         <option
+               command="-pedantic"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.warnings.pedantic"
+               isAbstract="true"
+               name="Pedantic (-pedantic)"
+               valueType="boolean">
+         </option>
+         <option
+               command="-pedantic-errors"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.warnings.pedanticerrors"
+               isAbstract="true"
+               name="Pedantic warnings as errors (-pedantic-errors)"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Wall"
+               defaultValue="true"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.warnings.allwarn"
+               isAbstract="true"
+               name="All warnings (-Wall)"
+               valueType="boolean">
+         </option>
+         <option
+               command="-w"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.warnings.nowarn"
+               isAbstract="true"
+               name="Inhibit all warnings (-w)"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Wextra"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.warnings.extrawarn"
+               isAbstract="true"
+               name="Extra warnings (-Wextra)"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Werror"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.warnings.toerrors"
+               isAbstract="true"
+               name="Warnings as errors (-Werror)"
+               valueType="boolean">
+         </option>
+         <option
+               command="-v"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.misc.verbose"
+               isAbstract="true"
+               name="Verbose (-v)"
+               valueType="boolean">
+         </option>
+         <option
+               command="-fpack-struct"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.optimization.packstruct"
+               isAbstract="true"
+               name="Pack structures (-fpack-struct)"
+               resourceFilter="all"
+               valueType="boolean">
+         </option>
+         <option
+               command="-fshort-enums"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.optimization.shortenums"
+               isAbstract="true"
+               name="Short enumerations (-fshort-enums)"
+               resourceFilter="all"
+               valueType="boolean">
+         </option>
+         <option
+               command="-ffunction-sections"
+               defaultValue="true"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.optimization.functionsections"
+               isAbstract="true"
+               name="Function sections (-ffunction-sections)"
+               resourceFilter="all"
+               valueType="boolean">
+         </option>
+         <option
+               command="-fdata-sections"
+               defaultValue="true"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.optimization.datasections"
+               isAbstract="true"
+               name="Data sections (-fdata-sections)"
+               resourceFilter="all"
+               valueType="boolean">
+         </option>
+         <option
+               id="cdt.managedbuild.option.cross.gnu.arm.base.optimization.other"
+               isAbstract="true"
+               name="Other optimization flags"
                valueType="string">
          </option>
          <option
-               command="-Wa,"
-               defaultValue="-adhlns=&quot;$@.lst&quot;"
-               id="cdt.managedbuild.option.cross.gnu.arm.base.other.lstfilename"
-               name="Assembler Listing"
+               command="-fno-common"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.warnings.nocommon"
+               isAbstract="true"
+               name="No common (-fno-common)"
+               valueType="boolean">
+         </option>
+         <option
+               command="-fno-inline-functions"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.misc.noinlinefunctions"
+               isAbstract="true"
+               name="Do not inline functions (-fno-inline-functions)"
+               valueType="boolean">
+         </option>
+         <option
+               command="-fsigned-char"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.misc.signedchar"
+               isAbstract="true"
+               name="&apos;char&apos; is signed (-fsigned-char)"
+               valueType="boolean">
+         </option>
+         <option
+               command="-funsigned-bitfields"
+               defaultValue="false"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.misc.unsignedbitfields"
+               isAbstract="true"
+               name="Bitfields are unsigned (-funsigned-bitfields)"
+               valueType="boolean">
+         </option>
+         <option
+               defaultValue="-c -fmessage-length=0"
+               id="cdt.managedbuild.option.cross.gnu.arm.base.compiler.other"
+               isAbstract="true"
+               name="Other compiler flags"
                valueType="string">
          </option>
-         <!-- ============================================================= -->
       </tool>
 
       <tool
@@ -1418,55 +1608,958 @@
                id="cdt.managedbuild.option.cross.gnu.arm.addtools.printsize"
                superClass="cdt.managedbuild.option.cross.gnu.arm.base.addtools.printsize">
            </option>
-         
+           <!--
+           <tool
+                 commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGeneratorFull"
+                 id="cdt.managedbuild.tool.cross.gnu.arm.assembler"
+                 isAbstract="false"
+                 name="%tool.gcc.assembler"
+                 superClass="cdt.managedbuild.tool.gnu.assembler">
+           </tool>
+           -->
+           
+       <tool
+             command="gcc"
+             commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGeneratorFull"
+             errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser"
+             id="cdt.managedbuild.tool.cross.gnu.arm.assembler"
+             isAbstract="false"
+             name="%tool.gcc.assembler"
+             natureFilter="both"
+             outputFlag="-o">
+          <supportedProperties>
+             <property
+                   id="org.eclipse.cdt.build.core.buildType">
+                <value
+                      id="org.eclipse.cdt.build.core.buildType.debug">
+                </value>
+                <value
+                      id="org.eclipse.cdt.build.core.buildType.release">
+                </value>
+             </property>
+          </supportedProperties>
+          <envVarBuildPath
+                pathType="buildpathInclude"
+                variableList="CPATH,C_INCLUDE_PATH">
+          </envVarBuildPath>
+          <optionCategory
+                id="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.preprocessor"
+                name="Preprocessor">
+          </optionCategory>
+          <option
+                category="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.preprocessor"
+                command="-x assembler-with-cpp"
+                commandFalse="-x assembler"
+                defaultValue="true"
+                id="cdt.managedbuild.option.cross.gnu.arm.assembler.preprocessor.usepp"
+                name="Use preprocessor"
+                valueType="boolean">
+          </option>
+          <option
+                category="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.preprocessor"
+                id="cdt.managedbuild.option.cross.gnu.arm.assembler.preprocessor.nostdinc"
+                superClass="cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.nostdinc">
+          </option>
+          <option
+                category="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.preprocessor"
+                id="cdt.managedbuild.option.cross.gnu.arm.assembler.preprocessor.preprocessonly"
+                superClass="cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.preprocessonly">
+          </option>
+          <option
+                category="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.preprocessor"
+                id="cdt.managedbuild.option.cross.gnu.arm.assembler.preprocessor.defs"
+                superClass="cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.defs">
+          </option>
+          <option
+                category="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.preprocessor"
+                id="cdt.managedbuild.option.cross.gnu.arm.assembler.preprocessor.undefs"
+                superClass="cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.undefs">
+          </option>
+          <optionCategory
+                id="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.dirs"
+                name="Directories">
+          </optionCategory>
+          <option
+                category="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.dirs"
+                id="cdt.managedbuild.option.cross.gnu.arm.assembler.dirs.includepaths"
+                superClass="cdt.managedbuild.option.cross.gnu.arm.base.dirs.includepaths">
+          </option>
+          <optionCategory
+                id="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.warnings"
+                name="Warnings">
+          </optionCategory>
+          <option
+                category="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.warnings"
+                id="cdt.managedbuild.option.cross.gnu.arm.assembler.warnings.syntaxonly"
+                superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.syntaxonly">
+          </option>
+          <option
+                category="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.warnings"
+                id="cdt.managedbuild.option.cross.gnu.arm.assembler.warnings.pedantic"
+                superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.pedantic">
+          </option>
+          <option
+                category="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.warnings"
+                id="cdt.managedbuild.option.cross.gnu.arm.assembler.warnings.pedanticerrors"
+                superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.pedanticerrors">
+          </option>
+          <option
+                category="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.warnings"
+                id="cdt.managedbuild.option.cross.gnu.arm.assembler.warnings.nowarn"
+                superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.nowarn">
+          </option>
+          <option
+                category="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.warnings"
+                id="cdt.managedbuild.option.cross.gnu.arm.assembler.warnings.allwarn"
+                superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.allwarn">
+          </option>
+          <option
+                category="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.warnings"
+                id="cdt.managedbuild.option.cross.gnu.arm.assembler.warnings.extrawarn"
+                superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.extrawarn">
+          </option>
+          <option
+                category="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.warnings"
+                id="cdt.managedbuild.option.cross.gnu.arm.assembler.warnings.toerrors"
+                superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.toerrors">
+          </option>
+          <optionCategory
+                id="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.misc"
+                name="Miscellaneous">
+          </optionCategory>
+          <option
+                category="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.misc"
+                command="-Xassembler ${VALUE}"
+                id="cdt.managedbuild.option.cross.gnu.arm.assembler.misc.flags"
+                name="Assembler flags"
+                valueType="stringList">
+          </option>
+          <option
+                category="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.misc"
+                id="cdt.managedbuild.option.cross.gnu.arm.assembler.misc.lstfilename"
+                superClass="cdt.managedbuild.option.cross.gnu.arm.base.other.lstfilename">
+          </option>
+          <option
+                category="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.misc"
+                id="cdt.managedbuild.option.cross.gnu.arm.assembler.misc.verbose"
+                superClass="cdt.managedbuild.option.cross.gnu.arm.base.misc.verbose">
+          </option>
+          <option
+                category="cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.misc"
+                defaultValue="-c -fmessage-length=0"
+                id="cdt.managedbuild.option.cross.gnu.arm.assembler.misc.other"
+                name="Other assembler flags"
+                valueType="string">
+          </option>
+          <inputType
+                dependencyCalculator="org.eclipse.cdt.managedbuilder.makegen.gnu.DefaultGCCDependencyCalculator"
+                dependencyContentType="org.eclipse.cdt.core.cHeader"
+                dependencyExtensions="h"
+                id="cdt.managedbuild.tool.cross.gnu.arm.assembler.input"
+                sources="s,S,asm"
+                superClass="cdt.managedbuild.tool.gnu.assembler.input">
+          </inputType>
+          <outputType
+                id="cdt.managedbuild.tool.cross.gnu.arm.assembler.output"
+                superClass="cdt.managedbuild.tool.gnu.assembler.output">
+          </outputType>
+       </tool>
          
          
          <tool
+               command="gcc"
                commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGeneratorFull"
+               errorParsers="org.eclipse.cdt.core.GCCErrorParser"
                id="cdt.managedbuild.tool.cross.gnu.arm.c.compiler"
                isAbstract="false"
                name="%tool.gcc.compiler"
-               superClass="cdt.managedbuild.tool.gnu.c.compiler">
+               natureFilter="both"
+               outputFlag="-o">
+            <supportedProperties>
+               <property
+                     id="org.eclipse.cdt.build.core.buildType">
+                  <value
+                        id="org.eclipse.cdt.build.core.buildType.debug">
+                  </value>
+                  <value
+                        id="org.eclipse.cdt.build.core.buildType.release">
+                  </value>
+               </property>
+            </supportedProperties>
+            <envVarBuildPath
+                  pathType="buildpathInclude"
+                  variableList="CPATH,C_INCLUDE_PATH">
+            </envVarBuildPath>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.preprocessor"
+                  name="Preprocessor">
+            </optionCategory>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.preprocessor"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.preprocessor.nostdinc"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.nostdinc">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.preprocessor"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.preprocessor.preprocessonly"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.preprocessonly">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.preprocessor"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.preprocessor.defs"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.defs">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.preprocessor"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.preprocessor.undef"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.undefs">
+            </option>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.dirs"
+                  name="Directories">
+            </optionCategory>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.dirs"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.dirs.includepaths"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.dirs.includepaths">
+            </option>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.optimization"
+                  name="Optimization">
+            </optionCategory>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.optimization"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.optimization.level"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.optimization.level">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.optimization"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.optimization.packstruct"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.optimization.packstruct">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.optimization"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.optimization.shortenums"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.optimization.shortenums">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.optimization"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.optimization.functionsections"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.optimization.functionsections">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.optimization"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.optimization.datasections"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.optimization.datasections">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.optimization"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.optimization.other"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.optimization.other">
+            </option>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.warnings"
+                  name="Warnings">
+            </optionCategory>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.warnings"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.warnings.syntaxonly"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.syntaxonly">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.warnings"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.warnings.nocommon"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.nocommon">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.warnings"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.warnings.pedantic"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.pedantic">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.warnings"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.warnings.pedanticerrors"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.pedanticerrors">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.warnings"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.warnings.nowarn"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.nowarn">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.warnings"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.warnings.allwarn"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.allwarn">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.warnings"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.warnings.extrawarn"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.extrawarn">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.warnings"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.warnings.toerrors"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.toerrors">
+            </option>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.misc"
+                  name="Miscellaneous">
+            </optionCategory>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.std"
+                  name="Language Standard"
+                  valueType="enumerated">
+               <enumeratedOptionValue
+                     command="-ansi"
+                     id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.std.ansi"
+                     name="ISO C90 (-ansi)">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-std=c99"
+                     id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.std.c99"
+                     name="ISO C99 (-std=c99)">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.std.default"
+                     isDefault="true"
+                     name="Compiler Default (ISO C90 with GNU extensions)">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-std=gnu99"
+                     id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.std.gnu99"
+                     name="ISO C99 with GNU Extensions (-std=gnu99)">
+               </enumeratedOptionValue>
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.lstfilename"
+                  superClass="org.eclipse.cdt.cross.arm.gnu.base.option.other.lstfilename">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.noinlinefunctions"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.misc.noinlinefunctions">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.signedchar"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.misc.signedchar">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.unsignedbitfields"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.misc.unsignedbitfields">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.verbose"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.misc.verbose">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.other"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.compiler.other">
+            </option>
+            <inputType
+                  id="cdt.managedbuild.tool.cross.gnu.arm.c.compiler.input"
+                  superClass="cdt.managedbuild.tool.gnu.c.compiler.input">
+            </inputType>
+            <outputType
+                  id="cdt.managedbuild.tool.cross.gnu.arm.c.compiler.output"
+                  superClass="cdt.managedbuild.tool.gnu.c.compiler.output">
+            </outputType>
          </tool>
          <tool
+               command="g++"
                commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGeneratorFull"
+               errorParsers="org.eclipse.cdt.core.GCCErrorParser"
                id="cdt.managedbuild.tool.cross.gnu.arm.cpp.compiler"
                isAbstract="false"
                name="%tool.gpp.compiler"
-               superClass="cdt.managedbuild.tool.gnu.cpp.compiler">
+               natureFilter="ccnature"
+               outputFlag="-o">
+            <supportedProperties>
+               <property
+                     id="org.eclipse.cdt.build.core.buildType">
+                  <value
+                        id="org.eclipse.cdt.build.core.buildType.debug">
+                  </value>
+                  <value
+                        id="org.eclipse.cdt.build.core.buildType.release">
+                  </value>
+               </property>
+            </supportedProperties>
+            <envVarBuildPath
+                  pathType="buildpathInclude"
+                  variableList="CPATH,CPLUS_INCLUDE_PATH">
+            </envVarBuildPath>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.preprocessor"
+                  name="Preprocessor">
+            </optionCategory>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.preprocessor"
+                  id="org.eclipse.cdt.cross.gnu.arm.cpp.compiler.option.preprocessor.nostdinc"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.nostdinc">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.preprocessor"
+                  command="-nostdinc++"
+                  defaultValue="false"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.preprocessor.nostdincpp"
+                  name="Do not search system C++ directories (-nostdinc++)"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.preprocessor"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.preprocessor.preprocessonly"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.preprocessonly">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.preprocessor"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.preprocessor.defs"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.defs">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.preprocessor"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.preprocessor.undef"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.undefs">
+            </option>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.dirs"
+                  name="Directories">
+            </optionCategory>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.dirs"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.includepaths"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.dirs.includepaths">
+            </option>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.optimization"
+                  name="Optimization">
+            </optionCategory>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.optimization"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.optimization.level"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.optimization.level">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.optimization"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.optimization.packstruct"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.optimization.packstruct">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.optimization"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.optimization.shortenums"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.optimization.shortenums">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.optimization"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.optimization.functionsections"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.optimization.functionsections">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.optimization"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.optimization.datasections"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.optimization.datasections">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.optimization"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.optimization.flags"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.optimization.other">
+            </option>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
+                  name="Warnings">
+            </optionCategory>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.syntaxonly"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.syntaxonly">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.nocommon"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.nocommon">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.pedantic"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.pedantic">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.pedanticerrors"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.pedanticerrors">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.nowarn"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.nowarn">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.allwarn"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.allwarn">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.extrawarn"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.extrawarn">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
+                  command="-Wabi"
+                  defaultValue="false"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.abi"
+                  name="ABI warnings (-Wabi)"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
+                  command="-Weffc++"
+                  defaultValue="false"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.effc"
+                  name="Effective C++ warnings (-Weffc++)"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.toerrors"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.warnings.toerrors">
+            </option>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
+                  name="Miscellaneous">
+            </optionCategory>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std"
+                  name="Language Standard"
+                  valueType="enumerated">
+               <enumeratedOptionValue
+                     command="-ansi"
+                     id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std.ansi"
+                     name="ISO 1998 C++ incl. amendments (-ansi)">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std.default"
+                     isDefault="true"
+                     name="Compiler Default (ISO 1998 C++ with GNU extensions)">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-std=c++0x"
+                     id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std.cpp0x"
+                     name="ISO 2009 C++ (-std=c++0x)">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-std=gnu++0x"
+                     id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std.gnucpp0x"
+                     name="ISO 2009 C++ with GNU Extensions (-std=gnu++0x)">
+               </enumeratedOptionValue>
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.lstfilename"
+                  superClass="org.eclipse.cdt.cross.arm.gnu.base.option.other.lstfilename">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.noinlinefunctions"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.misc.noinlinefunctions">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
+                  command="-fno-exceptions"
+                  defaultValue="true"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.noexceptions"
+                  name="Do not use exceptions (-fno-exceptions)"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
+                  command="-fno-rtti"
+                  defaultValue="true"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.nortti"
+                  name="Do not use RTTI (-fno-rtti)"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.signedchar"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.misc.signedchar">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.unsignedbitfields"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.misc.unsignedbitfields">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.other.verbose"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.misc.verbose">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.other"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.compiler.other">
+            </option>
+            <inputType
+                  id="cdt.managedbuild.tool.cross.gnu.arm.cpp.compiler.input"
+                  superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input">
+            </inputType>
+            <outputType
+                  id="cdt.managedbuild.tool.cross.gnu.arm.cpp.compiler.output"
+                  superClass="cdt.managedbuild.tool.gnu.cpp.compiler.output">
+            </outputType>
          </tool>
-         <tool
-               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGeneratorFull"
-               id="cdt.managedbuild.tool.cross.gnu.arm.c.linker"
-               isAbstract="false"
-               name="%tool.gcc.linker"
-               superClass="cdt.managedbuild.tool.gnu.c.linker">
+         
+                  <tool
+                        command="gcc"
+                        commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGeneratorFull"
+                        id="cdt.managedbuild.tool.cross.gnu.arm.c.linker"
+                        name="%tool.gcc.linker"
+                        natureFilter="cnature"
+                        outputFlag="-o">
             <enablement
                   type="ALL">
-               <not>
-                  <checkBuildProperty
-                        property="org.eclipse.cdt.build.core.buildArtefactType"
-                        value="org.eclipse.cdt.build.core.buildArtefactType.staticLib">
-                  </checkBuildProperty>
-               </not>
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildArtefactType"
+                     value="org.eclipse.cdt.build.core.buildArtefactType.exe">
+               </checkBuildProperty>
             </enablement>
+            <supportedProperties>
+               <property
+                     id="org.eclipse.cdt.build.core.buildArtefactType">
+                  <value
+                        id="org.eclipse.cdt.build.core.buildArtefactType.exe">
+                  </value>
+               </property>
+            </supportedProperties>
+            <envVarBuildPath
+                  pathType="buildpathLibrary"
+                  variableList="LIBRARY_PATH">
+            </envVarBuildPath>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.general"
+                  name="General">
+            </optionCategory>
+            <option
+                  browseType="file"
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.general"
+                  command="-T&quot;${VALUE}&quot;"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.linker.scriptfile"
+                  isAbstract="false"
+                  name="Script file (-T)"
+                  resourceFilter="all"
+                  valueType="string">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.general"
+                  command="-nostartfiles"
+                  defaultValue="false"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.linker.nostart"
+                  name="Do not use standard start files (-nostartfiles)"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.general"
+                  command="-nodefaultlibs"
+                  defaultValue="false"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.linker.nodeflibs"
+                  name="Do not use default libraries (-nodefaultlibs)"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.general"
+                  command="-nostdlib"
+                  defaultValue="false"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.linker.nostdlibs"
+                  name="No startup or default libs (-nostdlib)"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.general"
+                  command="-Xlinker --gc-sections"
+                  defaultValue="true"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.linker.gcsections"
+                  name="Remove unused sections (-Xlinker --gc-sections)"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.general"
+                  command="-Xlinker --print-gc-sections"
+                  defaultValue="false"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.linker.printgcsections"
+                  name="Print removed sections (-Xlinker --print-gc-sections)"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.general"
+                  command="-s"
+                  defaultValue="false"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.linker.strip"
+                  name="Omit all symbol information (-s)"
+                  valueType="boolean">
+            </option>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.libs"
+                  name="Libraries">
+            </optionCategory>
+            <option
+                  browseType="none"
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.libs"
+                  command="-l"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.linker.libs"
+                  name="Libraries (-l)"
+                  valueType="libs">
+            </option>
+            <option
+                  browseType="directory"
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.libs"
+                  command="-L"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.linker.paths"
+                  name="Library search path (-L)"
+                  valueType="libPaths">
+            </option>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.misc"
+                  name="Miscellaneous">
+            </optionCategory>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.misc"
+                  command="-Xlinker ${VALUE}"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.linker.misc.ldflags"
+                  name="Linker flags (-Xlinker [option])"
+                  valueType="stringList">
+            </option>
+            <option
+                  browseType="file"
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.linker.misc.otherobjs"
+                  name="Other objects"
+                  valueType="userObjs">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.linker.misc.mapfilename"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.other.mapfilename">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.linker.misc.cref"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.other.cref">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.linker.misc.printmap"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.other.printmap">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.misc"
+                  command="-v"
+                  defaultValue="false"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.linker.misc.verbose"
+                  name="Verbose (-v)"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.c.linker.misc.other"
+                  name="Other link flags"
+                  valueType="string">
+            </option>
+            <inputType
+                  id="cdt.managedbuild.tool.cross.gnu.arm.c.linker.input"
+                  superClass="cdt.managedbuild.tool.gnu.c.linker.input">
+               <additionalInput
+                     kind="additionalinputdependency"
+                     paths="$(USER_OBJS)">
+               </additionalInput>
+               <additionalInput
+                     kind="additionalinput"
+                     paths="$(LIBS)">
+               </additionalInput>
+            </inputType>
+            <outputType
+                  id="cdt.managedbuild.tool.cross.gnu.arm.c.linker.output"
+                  superClass="cdt.managedbuild.tool.gnu.c.linker.output">
+            </outputType>
          </tool>
          <tool
+               command="g++"
                commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGeneratorFull"
                id="cdt.managedbuild.tool.cross.gnu.arm.cpp.linker"
-               isAbstract="false"
                name="%tool.gpp.linker"
-               superClass="cdt.managedbuild.tool.gnu.cpp.linker">
+               natureFilter="ccnature"
+               outputFlag="-o">
             <enablement
                   type="ALL">
-               <not>
-                  <checkBuildProperty
-                        property="org.eclipse.cdt.build.core.buildArtefactType"
-                        value="org.eclipse.cdt.build.core.buildArtefactType.staticLib">
-                  </checkBuildProperty>
-               </not>
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildArtefactType"
+                     value="org.eclipse.cdt.build.core.buildArtefactType.exe">
+               </checkBuildProperty>
             </enablement>
+            <supportedProperties>
+               <property
+                     id="org.eclipse.cdt.build.core.buildArtefactType">
+                  <value
+                        id="org.eclipse.cdt.build.core.buildArtefactType.exe">
+                  </value>
+               </property>
+            </supportedProperties>
+            <envVarBuildPath
+                  pathType="buildpathLibrary"
+                  variableList="LIBRARY_PATH">
+            </envVarBuildPath>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.general"
+                  name="General">
+            </optionCategory>
+            <option
+                  browseType="file"
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.general"
+                  command="-T&quot;${VALUE}&quot;"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.linker.scriptfile"
+                  isAbstract="false"
+                  name="Script file (-T)"
+                  resourceFilter="all"
+                  valueType="string">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.general"
+                  command="-nostartfiles"
+                  defaultValue="false"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.linker.nostart"
+                  name="Do not use standard start files (-nostartfiles)"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.general"
+                  command="-nodefaultlibs"
+                  defaultValue="false"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.linker.nodeflibs"
+                  name="Do not use default libraries (-nodefaultlibs)"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.general"
+                  command="-nostdlib"
+                  defaultValue="false"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.linker.nostdlibs"
+                  name="No startup or default libs (-nostdlib)"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.general"
+                  command="-Xlinker --gc-sections"
+                  defaultValue="true"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.linker.gcsections"
+                  name="Remove unused sections (-Xlinker --gc-sections)"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.general"
+                  command="-Xlinker --print-gc-sections"
+                  defaultValue="false"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.linker.printgcsections"
+                  name="Print removed sections (-Xlinker --print-gc-sections)"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.general"
+                  command="-s"
+                  defaultValue="false"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.linker.strip"
+                  name="Omit all symbol information (-s)"
+                  valueType="boolean">
+            </option>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.libs"
+                  name="Libraries">
+            </optionCategory>
+            <option
+                  browseType="none"
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.libs"
+                  command="-l"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.linker.libs"
+                  name="Libraries (-l)"
+                  valueType="libs">
+            </option>
+            <option
+                  browseType="directory"
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.libs"
+                  command="-L"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.linker.paths"
+                  name="Library search path (-L)"
+                  valueType="libPaths">
+            </option>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.misc"
+                  name="Miscellaneous">
+            </optionCategory>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.misc"
+                  command="-Xlinker ${VALUE}"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.linker.ldflags"
+                  name="Linker flags (-Xlinker [option])"
+                  valueType="stringList">
+            </option>
+            <option
+                  browseType="file"
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.linker.otherobjs"
+                  name="Other objects"
+                  valueType="userObjs">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.linker.mapfilename"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.other.mapfilename">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.linker.cref"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.other.cref">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.linker.printmap"
+                  superClass="cdt.managedbuild.option.cross.gnu.arm.base.other.printmap">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.misc"
+                  command="-v"
+                  defaultValue="false"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.linker.verbose"
+                  name="Verbose (-v)"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.cpp.linker.other"
+                  name="Other flags"
+                  valueType="string">
+            </option>
+            <inputType
+                  id="cdt.managedbuild.tool.cross.gnu.arm.cpp.linker.input"
+                  superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
+               <additionalInput
+                     kind="additionalinputdependency"
+                     paths="$(USER_OBJS)">
+               </additionalInput>
+               <additionalInput
+                     kind="additionalinput"
+                     paths="$(LIBS)">
+               </additionalInput>
+            </inputType>
+            <outputType
+                  id="cdt.managedbuild.tool.cross.gnu.arm.cpp.linker.output"
+                  superClass="cdt.managedbuild.tool.gnu.cpp.linker.output">
+            </outputType>
          </tool>
+         
          <tool
                commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
                id="cdt.managedbuild.tool.cross.gnu.arm.archiver"
@@ -1480,13 +2573,6 @@
                      value="org.eclipse.cdt.build.core.buildArtefactType.staticLib">
                </checkBuildProperty>
             </enablement>
-         </tool>
-         <tool
-               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGeneratorFull"
-               id="cdt.managedbuild.tool.cross.gnu.arm.assembler"
-               isAbstract="false"
-               name="%tool.gcc.assembler"
-               superClass="cdt.managedbuild.tool.gnu.assembler">
          </tool>
          <tool
                command="objcopy"
@@ -1719,6 +2805,7 @@
                   valueType="string">
             </option>
          </tool>
+         
       </toolChain>
       
 	     <projectType
