@@ -22,7 +22,7 @@
       <tool
             id="cdt.managedbuild.tool.cross.gnu.arm.base"
             isAbstract="true"
-            name="Options Placeholder">
+            name="Options Placeholder ARM">
             
          <!-- ===== Target ================================================ -->
          <option
@@ -1097,7 +1097,7 @@
       <tool
             id="cdt.managedbuild.tool.cross.gnu.arm64.base"
             isAbstract="true"
-            name="Options Placeholder">
+            name="Options Placeholder ARM64">
 
          <!-- ===== AArch64 Target ======================================== -->
          <option
@@ -1422,21 +1422,21 @@
          
          
          <tool
-               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
+               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGeneratorFull"
                id="cdt.managedbuild.tool.cross.gnu.arm.c.compiler"
                isAbstract="false"
                name="%tool.gcc.compiler"
                superClass="cdt.managedbuild.tool.gnu.c.compiler">
          </tool>
          <tool
-               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
+               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGeneratorFull"
                id="cdt.managedbuild.tool.cross.gnu.arm.cpp.compiler"
                isAbstract="false"
                name="%tool.gpp.compiler"
                superClass="cdt.managedbuild.tool.gnu.cpp.compiler">
          </tool>
          <tool
-               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
+               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGeneratorFull"
                id="cdt.managedbuild.tool.cross.gnu.arm.c.linker"
                isAbstract="false"
                name="%tool.gcc.linker"
@@ -1452,7 +1452,7 @@
             </enablement>
          </tool>
          <tool
-               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
+               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGeneratorFull"
                id="cdt.managedbuild.tool.cross.gnu.arm.cpp.linker"
                isAbstract="false"
                name="%tool.gpp.linker"
@@ -1482,11 +1482,242 @@
             </enablement>
          </tool>
          <tool
-               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
+               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGeneratorFull"
                id="cdt.managedbuild.tool.cross.gnu.arm.assembler"
                isAbstract="false"
                name="%tool.gcc.assembler"
                superClass="cdt.managedbuild.tool.gnu.assembler">
+         </tool>
+         <tool
+               command="objcopy"
+               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
+               id="cdt.managedbuild.tool.cross.gnu.arm.createflash"
+               isAbstract="false"
+               name="Cross ARM GNU Create Flash Image"
+               natureFilter="both">
+            <enablement
+                  type="ALL">
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildArtefactType"
+                     value="org.eclipse.cdt.build.core.buildArtefactType.exe">
+               </checkBuildProperty>
+            </enablement>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.base.createflash.out"
+                  name="Output">
+            </optionCategory>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.base.createflash.out"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.createflash.choice"
+                  name="Output file format (-O)"
+                  valueType="enumerated">
+               <enumeratedOptionValue
+                     command="-O ihex"
+                     id="cdt.managedbuild.option.cross.gnu.arm.base.createflash.choice.ihex"
+                     isDefault="true"
+                     name="ihex">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-O srec"
+                     id="cdt.managedbuild.option.cross.gnu.arm.base.createflash.choice.srec"
+                     name="srec">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-O symbolsrec"
+                     id="cdt.managedbuild.option.cross.gnu.arm.base.createflash.choice.symbolsrec"
+                     name="symbolsrec">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-O binary"
+                     id="cdt.managedbuild.option.cross.gnu.arm.base.createflash.choice.binary"
+                     name="binary">
+               </enumeratedOptionValue>
+            </option>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.base.createflash.section"
+                  name="Section">
+            </optionCategory>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.base.createflash.section"
+                  command="-j .text"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.createflash.section.text"
+                  isAbstract="false"
+                  name="Section: -j .text"
+                  resourceFilter="all"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.base.createflash.section"
+                  command="-j .data"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.createflash.section.data"
+                  isAbstract="false"
+                  name="Section: -j .data"
+                  resourceFilter="all"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.base.createflash.section"
+                  command="-j "
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.createflash.section.other"
+                  isAbstract="false"
+                  name="Other (-j)"
+                  resourceFilter="all"
+                  valueType="stringList">
+            </option>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.base.createflash.misc"
+                  name="Miscellaneous">
+            </optionCategory>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.base.createflash.misc"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.createflash.misc.other"
+                  name="Other flags"
+                  valueType="string">
+            </option>
+            <outputType
+                  buildVariable="SECONDARY_FLASH"
+                  id="org.eclipse.cdt.cross.gnu.arm.createflash.output"
+                  nameProvider="ilg.eclipse.cdt.internal.build.cross.gnu.arm.FlashImageManagedOutputNameProvider"
+                  outputContentType="org.eclipse.cdt.cross.gnu.arm.content-type.hex"
+                  outputs="hex"
+                  primaryOutput="false">
+            </outputType>
+            <inputType
+                  id="org.eclipse.cdt.cross.gnu.arm.createflash.input"
+                  multipleOfType="true"
+                  option="cdt.managedbuild.option.cross.gnu.arm.base.createflash.InFileName"
+                  sources="elf">
+            </inputType>
+            <option
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.createflash.InFileName"
+                  resourceFilter="all"
+                  value="&quot;${BuildArtifactFileName}&quot;"
+                  valueType="string">
+            </option>
+         </tool>
+         <tool
+               command="objdump"
+               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
+               id="cdt.managedbuild.tool.cross.gnu.arm.createlisting"
+               isAbstract="false"
+               name="Cross ARM GNU Create Listing"
+               natureFilter="both"
+               outputFlag="&gt;">
+            <enablement
+                  type="ALL">
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildArtefactType"
+                     value="org.eclipse.cdt.build.core.buildArtefactType.exe">
+               </checkBuildProperty>
+            </enablement>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.base.createlisting.general"
+                  name="General">
+            </optionCategory>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.base.createlisting.general"
+                  defaultValue="-h -S"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.createlisting.general.other"
+                  name="Other flags"
+                  valueType="string">
+            </option>
+            <outputType
+                  buildVariable="SECONDARY_LIST"
+                  id="org.eclipse.cdt.cross.gnu.arm.createlisting.output"
+                  outputNames="${BuildArtifactFileBaseName}.lst"
+                  outputs="lst"
+                  primaryOutput="false">
+            </outputType>
+            <inputType
+                  id="org.eclipse.cdt.cross.gnu.arm.createlisting.input"
+                  multipleOfType="true"
+                  option="cdt.managedbuild.option.cross.gnu.arm.base.createlisting.InFileName"
+                  sources="elf">
+            </inputType>
+            <option
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.createlisting.InFileName"
+                  resourceFilter="all"
+                  value="&quot;${BuildArtifactFileName}&quot;"
+                  valueType="string">
+            </option>
+         </tool>
+         <tool
+               command="size"
+               commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGenerator"
+               commandLinePattern="${COMMAND} ${INPUTS} ${FLAGS}"
+               id="cdt.managedbuild.tool.cross.gnu.arm.printsize"
+               isAbstract="false"
+               name="Cross ARM GNU Print Size"
+               natureFilter="both">
+            <enablement
+                  type="ALL">
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildArtefactType"
+                     value="org.eclipse.cdt.build.core.buildArtefactType.exe">
+               </checkBuildProperty>
+            </enablement>
+            <optionCategory
+                  id="cdt.managedbuild.optionCategory.cross.gnu.arm.base.printsize.general"
+                  name="General">
+            </optionCategory>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.base.printsize.general"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.printsize.general.format"
+                  name="Size Format"
+                  valueType="enumerated">
+               <enumeratedOptionValue
+                     command="--format=berkeley"
+                     id="cdt.managedbuild.option.cross.gnu.arm.base.printsize.general.format.berkeley"
+                     isDefault="true"
+                     name="Berkeley">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="--format=sysv"
+                     id="cdt.managedbuild.option.cross.gnu.arm.base.printsize.general.format.sysv"
+                     name="SysV">
+               </enumeratedOptionValue>
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.base.printsize.general"
+                  command="-x"
+                  defaultValue="false"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.printsize.general.hex"
+                  name="Hex"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.base.printsize.general"
+                  command="-t"
+                  defaultValue="false"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.printsize.general.totals"
+                  name="Show Totals"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="cdt.managedbuild.optionCategory.cross.gnu.arm.base.printsize.general"
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.printsize.general.other"
+                  name="Other flags"
+                  valueType="string">
+            </option>
+            <outputType
+                  buildVariable="SECONDARY_SIZE"
+                  id="org.eclipse.cdt.cross.gnu.arm.printsize.output"
+                  outputNames="${BuildArtifactFileBaseName}.siz"
+                  outputs="siz"
+                  primaryOutput="false">
+            </outputType>
+            <inputType
+                  id="org.eclipse.cdt.cross.gnu.arm.printsize.input"
+                  multipleOfType="true"
+                  option="cdt.managedbuild.option.cross.gnu.arm.base.printsize.InFileName"
+                  sources="elf">
+            </inputType>
+            <option
+                  id="cdt.managedbuild.option.cross.gnu.arm.base.printsize.InFileName"
+                  resourceFilter="all"
+                  value="&quot;${BuildArtifactFileName}&quot;"
+                  valueType="string">
+            </option>
          </tool>
       </toolChain>
       
@@ -1497,25 +1728,31 @@
 	        isTest="false"
 	        >                                  
 	     <configuration
-	           name="Debug"
-	           cleanCommand="rm -rf"
-	           id="cdt.managedbuild.config.cross.gnu.arm.exe.debug"
-	           parent="cdt.managedbuild.config.gnu.base"
-	           buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug">
+            artifactExtension="elf"
+            buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug"
+            cleanCommand="rm -rf"
+            id="cdt.managedbuild.config.cross.gnu.arm.exe.debug"
+            name="Debug"
+            parent="cdt.managedbuild.config.gnu.base">
 	           <toolChain
-	           		 superClass="cdt.managedbuild.toolchain.cross.gnu.arm.base"
-	                 id="cdt.managedbuild.toolchain.cross.gnu.arm.exe.debug">
+                  id="cdt.managedbuild.toolchain.cross.gnu.arm.exe.debug"
+                  secondaryOutputs="org.eclipse.cdt.cross.gnu.arm.createflash.output;org.eclipse.cdt.cross.gnu.arm.createlisting.output;org.eclipse.cdt.cross.gnu.arm.printsize.output"
+                  superClass="cdt.managedbuild.toolchain.cross.gnu.arm.base"
+                  targetTool="cdt.managedbuild.tool.cross.gnu.arm.c.linker;cdt.managedbuild.tool.cross.gnu.arm.cpp.linker">
 	           </toolChain>                                   
 	     </configuration>
 	     <configuration
-	           name="Release"
-	           cleanCommand="rm -rf"
-	           id="cdt.managedbuild.config.cross.gnu.arm.exe.release"
-	           parent="cdt.managedbuild.config.gnu.base"
-	           buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release">
+            artifactExtension="elf"
+            buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release"
+            cleanCommand="rm -rf"
+            id="cdt.managedbuild.config.cross.gnu.arm.exe.release"
+            name="Release"
+            parent="cdt.managedbuild.config.gnu.base">
 	           <toolChain
-	                 superClass="cdt.managedbuild.toolchain.cross.gnu.arm.base"
-	                 id="cdt.managedbuild.toolchain.cross.gnu.arm.exe.release">
+                  id="cdt.managedbuild.toolchain.cross.gnu.arm.exe.release"
+                  secondaryOutputs="org.eclipse.cdt.cross.gnu.arm.createflash.output;org.eclipse.cdt.cross.gnu.arm.createlisting.output;org.eclipse.cdt.cross.gnu.arm.printsize.output"
+                  superClass="cdt.managedbuild.toolchain.cross.gnu.arm.base"
+                  targetTool="cdt.managedbuild.tool.cross.gnu.arm.c.linker;cdt.managedbuild.tool.cross.gnu.arm.cpp.linker">
 	           </toolChain>                                                     
 	     </configuration>
 	  </projectType>              
@@ -1620,5 +1857,21 @@
                toolchainID="cdt.managedbuild.toolchain.cross.gnu.arm.lib.release">
          </toolchain>
       </wizardPage>
+   </extension>
+   <extension
+         id="ARM_GCC_ContentTypes"
+         name="Content Types"
+         point="org.eclipse.core.runtime.contentTypes">
+      <content-type
+            base-type="org.eclipse.core.runtime.text"
+            file-extensions="hex"
+            id="org.eclipse.cdt.cross.gnu.arm.content-type.hex"
+            name="FLASH Hex file"
+            priority="normal">
+      </content-type>
+      <file-association
+            content-type="org.eclipse.cdt.core.asmSource"
+            file-extensions="s,S,asm">
+      </file-association>
    </extension>
 </plugin>
