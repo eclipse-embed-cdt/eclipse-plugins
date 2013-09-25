@@ -606,6 +606,7 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.target.thumb"
                isAbstract="true"
                name="%optionCategory.target.thumb"
+               tip="Generate code that executes in Thumb states."
                valueType="boolean">
          </option>
          
@@ -615,6 +616,7 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.target.thumbinterwork"
                isAbstract="true"
                name="%optionCategory.target.thumbInterwork"
+               tip="Generate code that supports calling between the ARM and Thumb instruction sets."
                valueType="boolean">
          </option>
          
@@ -644,6 +646,7 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.abi"
                isAbstract="true"
                name="%optionCategory.target.floatABI"
+               tip="Specifies which floating-point ABI to use. Specifying ‘soft’ causes GCC to generate output containing library calls for floating-point operations. ‘softfp’ allows the generation of code using hardware floating-point instructions, but still uses the soft-float calling conventions. ‘hard’ allows generation of floating-point instructions and uses FPU-specific calling conventions. The default depends on the specific target configuration. Note that the hard-float and soft-float ABIs are not link-compatible; you must compile your entire program with the same ABI, and link with a compatible set of libraries."
                valueType="enumerated">
             <enumeratedOptionValue
                   id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.abi.default"
@@ -695,6 +698,7 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit"
                isAbstract="true"
                name="%optionCategory.target.fpuType"
+               tip="This specifies what floating-point hardware (or hardware emulation) is available on the target. If ‘-msoft-float’ is specified this specifies the format of floating-point values."
                valueType="enumerated">
             <enumeratedOptionValue
                   id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.target.fpu.unit.default"
@@ -860,6 +864,7 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.debugging.level"
                isAbstract="true"
                name="%optionCategory.debugging.level"
+               tip="Request debugging information and also use level to specify how much information. The default level is 2. Level 0 produces no debug information at all. Thus, ‘-g0’ negates ‘-g’. Level 1 produces minimal information, enough for making backtraces in parts of the program that you don’t plan to debug. This includes descriptions of functions and external variables, but no information about local variables and no line numbers. Level 3 includes extra information, such as all the macro definitions present in the program. Some debuggers support macro expansion when you use ‘-g3’."
                valueType="enumerated">
             <enumeratedOptionValue
                   id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.debugging.level.none"
@@ -907,11 +912,17 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.debugging.format"
                isAbstract="true"
                name="%optionCategory.debugging.format"
+               tip="Use it if you want to control for certain whether to generate the extra information."
                valueType="enumerated">
             <enumeratedOptionValue
-                  command="-gdwarf-2"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.debugging.format.dwarf2"
-                  name="dwarf-2">
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.debugging.format.default"
+                  isDefault="true"
+                  name="Toolchain Default">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-ggdb"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.debugging.format.gdb"
+                  name="gdb">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-gstabs"
@@ -924,14 +935,19 @@
                   name="stabs+">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  command="-ggdb"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.debugging.format.gdb"
-                  name="gdb">
+                  command="-gdwarf-2"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.debugging.format.dwarf2"
+                  name="dwarf-2">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.debugging.format.default"
-                  isDefault="true"
-                  name="Toolchain Default">
+                  command="-gdwarf-3"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.debugging.format.dwarf3"
+                  name="dwarf-3">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-gdwarf-4"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.debugging.format.dwarf4"
+                  name="dwarf-4">
             </enumeratedOptionValue>
             <enablement
                   attribute="value"
@@ -960,6 +976,7 @@
                defaultValue="false"
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.debugging.prof"
                name="%optionCategory.debugging.prof"
+               tip="Generate extra code to write profile information suitable for the analysis program prof. You must use this option when compiling the source files you want data about, and you must also use it when linking."
                valueType="boolean">
          </option>
          <option
@@ -968,6 +985,7 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.debugging.gprof"
                isAbstract="true"
                name="%optionCategory.debugging.gprof"
+               tip="Generate extra code to write profile information suitable for the analysis program gprof. You must use this option when compiling the source files you want data about, and you must also use it when linking."
                valueType="boolean">
          </option>
          <option
@@ -1035,7 +1053,7 @@
                defaultValue="false"
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.other.lstfilename"
                isAbstract="true"
-               name="Assembler listing (-Wa,-adhlns=&quot;$@.lst&quot;)"
+               name="Generate assembler listing (-Wa,-adhlns=&quot;$@.lst&quot;)"
                valueType="boolean">
          </option>
          <option
@@ -1050,6 +1068,7 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.level"
                isAbstract="true"
                name="Optimization Level"
+               tip="With ‘-O’, the compiler tries to reduce code size and execution time, without performing any optimizations that take a great deal of compilation time. -O2 Optimize even more. GCC performs nearly all supported optimizations that do not involve a space-speed tradeoff. -O3 Optimize yet more. -Os Optimize for size. ‘-Os’ enables all ‘-O2’ optimizations that do not typically increase code size. -Og Optimize debugging experience. ‘-Og’ enables optimizations that do not interfere with debugging. It should be the optimization level of choice for the standard edit-compile-debug cycle, offering a reasonable level of optimization while maintaining fast compilation and a good debugging experience. -O0 Do not optimize. Reduce compilation time and make debugging produce the expected results. This is the default."
                valueType="enumerated">
             <enablement
                   attribute="value"
@@ -1097,6 +1116,11 @@
                   id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.level.size"
                   name="Optimize size (-Os)">
             </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-Og"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.level.debug"
+                  name="Optimize for debugg (-Og)">
+            </enumeratedOptionValue>
          </option>
          <option
                command="-Xlinker --cref"
@@ -1120,6 +1144,7 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.nostdinc"
                isAbstract="true"
                name="Do not search system directories (-nostdinc)"
+               tip="Do not search the standard system directories for header files. Only the directories you have specified with ‘-I’ options (and the directory of the current file, if appropriate) are searched."
                valueType="boolean">
          </option>
          <option
@@ -1142,6 +1167,7 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.preprocessonly"
                isAbstract="true"
                name="Preprocess only (-E)"
+               tip="Stop after the preprocessing stage; do not run the compiler proper. The output is in the form of preprocessed source code, which is sent to the standard output. Input files that don’t require preprocessing are ignored."
                valueType="boolean">
          </option>
          <option
@@ -1158,6 +1184,7 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.syntaxonly"
                isAbstract="true"
                name="Check syntax only (-fsyntax-only)"
+               tip="Check the code for syntax errors, but don’t do anything beyond that."
                valueType="boolean">
          </option>
          <option
@@ -1166,6 +1193,7 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.pedantic"
                isAbstract="true"
                name="Pedantic (-pedantic)"
+               tip="Issue all the warnings demanded by strict ISO C and ISO C++; reject all programs that use forbidden extensions, and some other programs that do not follow ISO C and ISO C++. For ISO C, follows the version of the ISO C standard specified by any ‘-std’ option used."
                valueType="boolean">
          </option>
          <option
@@ -1174,6 +1202,7 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.pedanticerrors"
                isAbstract="true"
                name="Pedantic warnings as errors (-pedantic-errors)"
+               tip="Like ‘-pedantic’, except that errors are produced rather than warnings."
                valueType="boolean">
          </option>
          <option
@@ -1182,6 +1211,7 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.allwarn"
                isAbstract="true"
                name="All warnings (-Wall)"
+               tip="This enables all the warnings about constructions that some users consider questionable, and that are easy to avoid (or modify to prevent the warning), even in conjunction with macros. This also enables some language-specific warnings."
                valueType="boolean">
          </option>
          <option
@@ -1190,6 +1220,7 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.nowarn"
                isAbstract="true"
                name="Inhibit all warnings (-w)"
+               tip="Inhibit all warning messages."
                valueType="boolean">
          </option>
          <option
@@ -1198,6 +1229,7 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.extrawarn"
                isAbstract="true"
                name="Extra warnings (-Wextra)"
+               tip="This enables some extra warning flags that are not enabled by ‘-Wall’."
                valueType="boolean">
          </option>
          <option
@@ -1206,6 +1238,7 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.toerrors"
                isAbstract="true"
                name="Warnings as errors (-Werror)"
+               tip="Make all warnings into errors."
                valueType="boolean">
          </option>
          <option
@@ -1214,24 +1247,7 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.misc.verbose"
                isAbstract="true"
                name="Verbose (-v)"
-               valueType="boolean">
-         </option>
-         <option
-               command="-fpack-struct"
-               defaultValue="false"
-               id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.packstruct"
-               isAbstract="true"
-               name="Pack structures (-fpack-struct)"
-               resourceFilter="all"
-               valueType="boolean">
-         </option>
-         <option
-               command="-fshort-enums"
-               defaultValue="false"
-               id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.shortenums"
-               isAbstract="true"
-               name="Short enumerations (-fshort-enums)"
-               resourceFilter="all"
+               tip="Print (on standard error output) the commands executed to run the stages of compilation. Also print the version number of the compiler driver program and of the preprocessor and the compiler proper."
                valueType="boolean">
          </option>
          <option
@@ -1241,6 +1257,7 @@
                isAbstract="true"
                name="Function sections (-ffunction-sections)"
                resourceFilter="all"
+               tip="Place each function into its own section in the output file if the target supports arbitrary sections. The name of the function determines the section’s name in the output file. Use these options on systems where the linker can perform optimizations to improve locality of reference in the instruction space. Most systems using the ELF object format have linkers with such optimizations."
                valueType="boolean">
          </option>
          <option
@@ -1250,6 +1267,7 @@
                isAbstract="true"
                name="Data sections (-fdata-sections)"
                resourceFilter="all"
+               tip="Place each data item into its own section in the output file if the target supports arbitrary sections. The name of the name of the data item determines the section’s name in the output file. Use these options on systems where the linker can perform optimizations to improve locality of reference in the instruction space. Most systems using the ELF object format have linkers with such optimizations."
                valueType="boolean">
          </option>
          <option
@@ -1264,6 +1282,7 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.nocommon"
                isAbstract="true"
                name="No common (-fno-common)"
+               tip="In C code, controls the placement of uninitialized global variables. Unix C compilers have traditionally permitted multiple definitions of such variables in different compilation units by placing the variables in a common block. This is the behavior specified by ‘-fcommon’, and is the default for GCC on most targets. On the other hand, this behavior is not required by ISO C, and on some targets may carry a speed or code size penalty on variable references. The ‘-fno-common’ option specifies that the compiler should place uninitialized global variables in the data section of the object file, rather than generating them as common blocks. This has the effect that if the same variable is declared (without extern) in two different compilations, you get a multiple-definition error when you link them. In this case, you must compile with ‘-fcommon’ instead. Compiling with ‘-fno-common’ is useful on targets for which it provides better performance, or if you wish to verify that the program will work on other systems that always treat uninitialized variable declarations this way."
                valueType="boolean">
          </option>
          <option
@@ -1280,14 +1299,7 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.misc.signedchar"
                isAbstract="true"
                name="&apos;char&apos; is signed (-fsigned-char)"
-               valueType="boolean">
-         </option>
-         <option
-               command="-funsigned-bitfields"
-               defaultValue="false"
-               id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.misc.unsignedbitfields"
-               isAbstract="true"
-               name="Bitfields are unsigned (-funsigned-bitfields)"
+               tip="Let the type char be signed, like signed char."
                valueType="boolean">
          </option>
          <option
@@ -1849,16 +1861,6 @@
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.optimization"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.optimization.packstruct"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.packstruct">
-            </option>
-            <option
-                  category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.optimization"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.optimization.shortenums"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.shortenums">
-            </option>
-            <option
-                  category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.optimization"
                   id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.optimization.functionsections"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.functionsections">
             </option>
@@ -1866,6 +1868,11 @@
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.optimization"
                   id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.optimization.datasections"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.datasections">
+            </option>
+            <option
+                  category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.optimization"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.warnings.nocommon"
+                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.nocommon">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.optimization"
@@ -1880,11 +1887,6 @@
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.warnings"
                   id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.warnings.syntaxonly"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.syntaxonly">
-            </option>
-            <option
-                  category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.warnings"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.warnings.nocommon"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.nocommon">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.warnings"
@@ -1936,14 +1938,24 @@
                      name="ISO C99 (-std=c99)">
                </enumeratedOptionValue>
                <enumeratedOptionValue
+                     command="-std=c11"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.std.c11"
+                     name="ISO C11 (-std=c11)">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
                      id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.std.default"
                      isDefault="true"
-                     name="Compiler Default (ISO C90 with GNU extensions)">
+                     name="Toolchain Default (GNU ISO C90)">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=gnu99"
                      id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.std.gnu99"
-                     name="ISO C99 with GNU Extensions (-std=gnu99)">
+                     name="GNU ISO C99 (-std=gnu99)">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-std=gnu11"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.std.gnu11"
+                     name="GNU ISO C11 (-std=gnu11)">
                </enumeratedOptionValue>
             </option>
             <option
@@ -1960,11 +1972,6 @@
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.misc"
                   id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.signedchar"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.misc.signedchar">
-            </option>
-            <option
-                  category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.misc"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.unsignedbitfields"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.misc.unsignedbitfields">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.misc"
@@ -2024,6 +2031,7 @@
                   defaultValue="false"
                   id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.preprocessor.nostdincpp"
                   name="Do not search system C++ directories (-nostdinc++)"
+                  tip="Do not search for header files in the C++-specific standard directories, but do still search the other standard directories."
                   valueType="boolean">
             </option>
             <option
@@ -2058,16 +2066,6 @@
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.optimization"
                   id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.optimization.level"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.level">
-            </option>
-            <option
-                  category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.optimization"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.optimization.packstruct"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.packstruct">
-            </option>
-            <option
-                  category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.optimization"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.optimization.shortenums"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.shortenums">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.optimization"
@@ -2129,6 +2127,7 @@
                   defaultValue="false"
                   id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.abi"
                   name="ABI warnings (-Wabi)"
+                  tip="Warn when G++ generates code that is probably not compatible with the vendor-neutral C++ ABI. Although an effort has been made to warn about all such cases, there are probably some cases that are not warned about, even though G++ is generating incompatible code. There may also be cases where warnings are emitted even though the code that is generated is compatible."
                   valueType="boolean">
             </option>
             <option
@@ -2137,6 +2136,7 @@
                   defaultValue="false"
                   id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.effc"
                   name="Effective C++ warnings (-Weffc++)"
+                  tip="Warn about violations of the style guidelines from Scott Meyers’ Effective C++, Second Edition book."
                   valueType="boolean">
             </option>
             <option
@@ -2156,22 +2156,42 @@
                <enumeratedOptionValue
                      command="-ansi"
                      id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std.ansi"
-                     name="ISO 1998 C++ incl. amendments (-ansi)">
+                     name="ISO 1998 C++ incl. 2003 amendments (-ansi)">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std.default"
                      isDefault="true"
-                     name="Compiler Default (ISO 1998 C++ with GNU extensions)">
+                     name="Toolchain Default (GNU ISO 1998 C++)">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=c++0x"
                      id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std.cpp0x"
-                     name="ISO 2009 C++ (-std=c++0x)">
+                     name="ISO 2011 C++ (-std=c++0x)">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-std=c++11"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std.cpp11"
+                     name="ISO 2011 C++ (-std=c++11)">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=gnu++0x"
                      id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std.gnucpp0x"
-                     name="ISO 2009 C++ with GNU Extensions (-std=gnu++0x)">
+                     name="GNU ISO 2011 C++ (-std=gnu++0x)">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-std=gnu++11"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std.gnucpp11"
+                     name="GNU ISO 2011 C++ (-std=gnu++11)">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-std=c++1y"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std.cpp1y"
+                     name="Next ISO C++ (-std=c++1y)">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-std=gnu++1y"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std.gnucpp1y"
+                     name="Next GNU ISO C++ (-std=gnu++1y)">
                </enumeratedOptionValue>
             </option>
             <option
@@ -2190,6 +2210,7 @@
                   defaultValue="true"
                   id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.noexceptions"
                   name="Do not use exceptions (-fno-exceptions)"
+                  tip="Do not generates extra code needed to propagate exceptions."
                   valueType="boolean">
             </option>
             <option
@@ -2198,17 +2219,13 @@
                   defaultValue="true"
                   id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.nortti"
                   name="Do not use RTTI (-fno-rtti)"
+                  tip="Disable generation of information about every class with virtual functions for use by the C++ run-time type identification features (‘dynamic_cast’ and ‘typeid’). If you don’t use those parts of the language, you can save some space by using this flag. Note that exception handling uses the same information, but G++ generates it as needed. The ‘dynamic_cast’ operator can still be used for casts that do not require run-time type information, i.e. casts to void * or to unambiguous base classes."
                   valueType="boolean">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
                   id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.signedchar"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.misc.signedchar">
-            </option>
-            <option
-                  category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.unsignedbitfields"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.misc.unsignedbitfields">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
