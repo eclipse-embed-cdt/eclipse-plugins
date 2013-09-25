@@ -2920,21 +2920,6 @@
       </projectType>
    </extension>
    <extension
-         point="org.eclipse.cdt.core.templateAssociations">
-      <template
-            id="org.eclipse.cdt.build.core.templates.HelloWorldCAnsiProject">
-         <toolChain
-               id="ilg.cdt.managedbuild.toolchain.cross.gnu.arm.base">
-         </toolChain>
-      </template>
-      <template
-            id="org.eclipse.cdt.build.core.templates.HelloWorldCCProject">
-         <toolChain
-               id="ilg.cdt.managedbuild.toolchain.cross.gnu.arm.base">
-         </toolChain>
-      </template>
-   </extension>
-   <extension
          point="org.eclipse.cdt.managedbuilder.ui.newWizardPages">
       <wizardPage
             ID="ilg.eclipse.cdt.build.cross.gnu.arm.setCrossCommandWizardPage"
@@ -2961,8 +2946,6 @@
       </wizardPage>
    </extension>
    <extension
-         id="ARM_GCC_ContentTypes"
-         name="Content Types"
          point="org.eclipse.core.runtime.contentTypes">
       <content-type
             base-type="org.eclipse.core.runtime.text"
@@ -2975,5 +2958,20 @@
             content-type="org.eclipse.cdt.core.asmSource"
             file-extensions="s,S,asm">
       </file-association>
+   </extension>
+   <extension
+         point="org.eclipse.cdt.core.templates">
+      <template
+            filterPattern=".*g\+\+"
+            id="ilg.eclipse.cdt.cross.arm.gnu.templates.ARM_HelloWorld_CPP_Project"
+            location="$nl$/templates/projecttemplates/HelloWorld_CPP_Project/template.xml"
+            projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
+      </template>
+      <template
+            filterPattern=".*gcc"
+            id="ilg.eclipse.cdt.cross.arm.gnu.templates.ARM_HelloWorld_C_Project"
+            location="$nl$/templates/projecttemplates/HelloWorld_C_Project/template.xml"
+            projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
+      </template>
    </extension>
 </plugin>
