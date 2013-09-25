@@ -1051,7 +1051,7 @@
          <option
                command="-Wa,-adhlns=&quot;$@.lst&quot;"
                defaultValue="false"
-               id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.other.lstfilename"
+               id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.lstfilename"
                isAbstract="true"
                name="Generate assembler listing (-Wa,-adhlns=&quot;$@.lst&quot;)"
                valueType="boolean">
@@ -1059,13 +1059,13 @@
          <option
                command="-Wl,-Map,"
                defaultValue="&quot;${BuildArtifactFileBaseName}.map&quot;"
-               id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.other.mapfilename"
+               id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.mapfilename"
                isAbstract="true"
                name="Map Filename"
                valueType="string">
          </option>
          <option
-               id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.level"
+               id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimizationlevel"
                isAbstract="true"
                name="Optimization Level"
                tip="With ‘-O’, the compiler tries to reduce code size and execution time, without performing any optimizations that take a great deal of compilation time. -O2 Optimize even more. GCC performs nearly all supported optimizations that do not involve a space-speed tradeoff. -O3 Optimize yet more. -Os Optimize for size. ‘-Os’ enables all ‘-O2’ optimizations that do not typically increase code size. -Og Optimize debugging experience. ‘-Og’ enables optimizations that do not interfere with debugging. It should be the optimization level of choice for the standard edit-compile-debug cycle, offering a reasonable level of optimization while maintaining fast compilation and a good debugging experience. -O0 Do not optimize. Reduce compilation time and make debugging produce the expected results. This is the default."
@@ -1074,7 +1074,7 @@
                   attribute="value"
                   extensionAdjustment="false"
                   type="CONTAINER_ATTRIBUTE"
-                  value="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.level.size">
+                  value="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimizationlevel.size">
                <checkBuildProperty
                      property="org.eclipse.cdt.build.core.buildType"
                      value="org.eclipse.cdt.build.core.buildType.release">
@@ -1084,7 +1084,7 @@
                   attribute="value"
                   extensionAdjustment="false"
                   type="CONTAINER_ATTRIBUTE"
-                  value="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.level.none">
+                  value="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimizationlevel.none">
                <checkBuildProperty
                      property="org.eclipse.cdt.build.core.buildType"
                      value="org.eclipse.cdt.build.core.buildType.debug">
@@ -1092,40 +1092,40 @@
             </enablement>
             <enumeratedOptionValue
                   command="-O0"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.level.none"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimizationlevel.none"
                   name="None (-O0)">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-O1"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.level.optimize"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimizationlevel.optimize"
                   name="Optimize (-O1)">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-O2"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.level.more"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimizationlevel.more"
                   isDefault="true"
                   name="Optimize more (-O2)">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-O3"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.level.most"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimizationlevel.most"
                   name="Optimize most (-O3)">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-Os"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.level.size"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimizationlevel.size"
                   name="Optimize size (-Os)">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-Og"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.level.debug"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimizationlevel.debug"
                   name="Optimize for debugg (-Og)">
             </enumeratedOptionValue>
          </option>
          <option
                command="-Xlinker --cref"
                defaultValue="false"
-               id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.other.cref"
+               id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.cref"
                isAbstract="true"
                name="Cross Reference (-Xlinker --cref)"
                valueType="boolean">
@@ -1133,7 +1133,7 @@
          <option
                command="-Xlinker --print-map"
                defaultValue="false"
-               id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.other.printmap"
+               id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.printmap"
                isAbstract="true"
                name="Print link map (-Xlinker --print-map)"
                valueType="boolean">
@@ -1244,7 +1244,7 @@
          <option
                command="-v"
                defaultValue="false"
-               id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.misc.verbose"
+               id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.verbose"
                isAbstract="true"
                name="Verbose (-v)"
                tip="Print (on standard error output) the commands executed to run the stages of compilation. Also print the version number of the compiler driver program and of the preprocessor and the compiler proper."
@@ -1288,7 +1288,7 @@
          <option
                command="-fno-inline-functions"
                defaultValue="false"
-               id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.misc.noinlinefunctions"
+               id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.noinlinefunctions"
                isAbstract="true"
                name="Do not inline functions (-fno-inline-functions)"
                valueType="boolean">
@@ -1296,7 +1296,7 @@
          <option
                command="-fsigned-char"
                defaultValue="false"
-               id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.misc.signedchar"
+               id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.signedchar"
                isAbstract="true"
                name="&apos;char&apos; is signed (-fsigned-char)"
                tip="Let the type char be signed, like signed char."
@@ -1635,16 +1635,7 @@
                id="ilg.cdt.managedbuild.option.cross.gnu.arm.addtools.printsize"
                superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.addtools.printsize">
            </option>
-           <!--
-           <tool
-                 commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGeneratorFull"
-                 id="ilg.cdt.managedbuild.tool.cross.gnu.arm.assembler"
-                 isAbstract="false"
-                 name="%tool.gcc.assembler"
-                 superClass="cdt.managedbuild.tool.gnu.assembler">
-           </tool>
-           -->
-           
+               
        <tool
              command="gcc"
              commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGeneratorFull"
@@ -1678,28 +1669,28 @@
                 command="-x assembler-with-cpp"
                 commandFalse="-x assembler"
                 defaultValue="true"
-                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.preprocessor.usepp"
+                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.usepreprocessor"
                 name="Use preprocessor"
                 valueType="boolean">
           </option>
           <option
                 category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.preprocessor"
-                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.preprocessor.nostdinc"
+                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.nostdinc"
                 superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.nostdinc">
           </option>
           <option
                 category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.preprocessor"
-                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.preprocessor.preprocessonly"
+                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.preprocessonly"
                 superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.preprocessonly">
           </option>
           <option
                 category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.preprocessor"
-                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.preprocessor.defs"
+                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.defs"
                 superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.defs">
           </option>
           <option
                 category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.preprocessor"
-                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.preprocessor.undefs"
+                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.undefs"
                 superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.undefs">
           </option>
           <optionCategory
@@ -1708,7 +1699,7 @@
           </optionCategory>
           <option
                 category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.dirs"
-                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.dirs.includepaths"
+                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.includepaths"
                 superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.dirs.includepaths">
           </option>
           <optionCategory
@@ -1717,37 +1708,37 @@
           </optionCategory>
           <option
                 category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.warnings"
-                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.warnings.syntaxonly"
+                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.syntaxonly"
                 superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.syntaxonly">
           </option>
           <option
                 category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.warnings"
-                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.warnings.pedantic"
+                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.pedantic"
                 superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.pedantic">
           </option>
           <option
                 category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.warnings"
-                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.warnings.pedanticerrors"
+                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.pedanticerrors"
                 superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.pedanticerrors">
           </option>
           <option
                 category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.warnings"
-                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.warnings.nowarn"
+                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.nowarn"
                 superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.nowarn">
           </option>
           <option
                 category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.warnings"
-                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.warnings.allwarn"
+                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.allwarn"
                 superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.allwarn">
           </option>
           <option
                 category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.warnings"
-                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.warnings.extrawarn"
+                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.extrawarn"
                 superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.extrawarn">
           </option>
           <option
                 category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.warnings"
-                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.warnings.toerrors"
+                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.toerrors"
                 superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.toerrors">
           </option>
           <optionCategory
@@ -1757,24 +1748,24 @@
           <option
                 category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.misc"
                 command="-Xassembler ${VALUE}"
-                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.misc.flags"
+                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.flags"
                 name="Assembler flags"
                 valueType="stringList">
           </option>
           <option
                 category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.misc"
-                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.misc.lstfilename"
-                superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.other.lstfilename">
+                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.lstfilename"
+                superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.lstfilename">
           </option>
           <option
                 category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.misc"
-                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.misc.verbose"
-                superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.misc.verbose">
+                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.verbose"
+                superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.verbose">
           </option>
           <option
                 category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.assembler.misc"
                 defaultValue="-c -fmessage-length=0"
-                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.misc.other"
+                id="ilg.cdt.managedbuild.option.cross.gnu.arm.assembler.other"
                 name="Other assembler flags"
                 valueType="string">
           </option>
@@ -1823,22 +1814,22 @@
             </optionCategory>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.preprocessor"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.preprocessor.nostdinc"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.nostdinc"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.nostdinc">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.preprocessor"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.preprocessor.preprocessonly"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.preprocessonly"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.preprocessonly">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.preprocessor"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.preprocessor.defs"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.defs"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.defs">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.preprocessor"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.preprocessor.undef"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.undef"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.undefs">
             </option>
             <optionCategory
@@ -1847,7 +1838,7 @@
             </optionCategory>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.dirs"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.dirs.includepaths"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.includepaths"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.dirs.includepaths">
             </option>
             <optionCategory
@@ -1856,27 +1847,27 @@
             </optionCategory>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.optimization"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.optimization.level"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.level">
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.optimizationlevel"
+                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimizationlevel">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.optimization"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.optimization.functionsections"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.functionsections"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.functionsections">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.optimization"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.optimization.datasections"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.datasections"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.datasections">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.optimization"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.warnings.nocommon"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.nocommon"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.nocommon">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.optimization"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.optimization.other"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.otheroptimizations"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.other">
             </option>
             <optionCategory
@@ -1885,37 +1876,37 @@
             </optionCategory>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.warnings"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.warnings.syntaxonly"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.syntaxonly"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.syntaxonly">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.warnings"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.warnings.pedantic"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.pedantic"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.pedantic">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.warnings"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.warnings.pedanticerrors"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.pedanticerrors"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.pedanticerrors">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.warnings"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.warnings.nowarn"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.nowarn"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.nowarn">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.warnings"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.warnings.allwarn"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.allwarn"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.allwarn">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.warnings"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.warnings.extrawarn"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.extrawarn"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.extrawarn">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.warnings"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.warnings.toerrors"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.toerrors"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.toerrors">
             </option>
             <optionCategory
@@ -1924,63 +1915,63 @@
             </optionCategory>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.misc"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.std"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.std"
                   name="Language Standard"
                   valueType="enumerated">
                <enumeratedOptionValue
                      command="-ansi"
-                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.std.ansi"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.std.ansi"
                      name="ISO C90 (-ansi)">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=c99"
-                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.std.c99"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.std.c99"
                      name="ISO C99 (-std=c99)">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=c11"
-                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.std.c11"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.std.c11"
                      name="ISO C11 (-std=c11)">
                </enumeratedOptionValue>
                <enumeratedOptionValue
-                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.std.default"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.std.default"
                      isDefault="true"
                      name="Toolchain Default (GNU ISO C90)">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=gnu99"
-                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.std.gnu99"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.std.gnu99"
                      name="GNU ISO C99 (-std=gnu99)">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=gnu11"
-                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.std.gnu11"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.std.gnu11"
                      name="GNU ISO C11 (-std=gnu11)">
                </enumeratedOptionValue>
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.misc"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.lstfilename"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.other.lstfilename">
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.lstfilename"
+                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.lstfilename">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.misc"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.noinlinefunctions"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.misc.noinlinefunctions">
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.noinlinefunctions"
+                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.noinlinefunctions">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.misc"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.signedchar"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.misc.signedchar">
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.signedchar"
+                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.signedchar">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.misc"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.verbose"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.misc.verbose">
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.verbose"
+                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.verbose">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.compiler.misc"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.misc.other"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.compiler.other"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.compiler.other">
             </option>
             <inputType
@@ -2022,31 +2013,31 @@
             </optionCategory>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.preprocessor"
-                  id="ilg.eclipse.cdt.cross.gnu.arm.cpp.compiler.option.preprocessor.nostdinc"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.nostdinc"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.nostdinc">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.preprocessor"
                   command="-nostdinc++"
                   defaultValue="false"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.preprocessor.nostdincpp"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.nostdincpp"
                   name="Do not search system C++ directories (-nostdinc++)"
                   tip="Do not search for header files in the C++-specific standard directories, but do still search the other standard directories."
                   valueType="boolean">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.preprocessor"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.preprocessor.preprocessonly"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.preprocessonly"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.preprocessonly">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.preprocessor"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.preprocessor.defs"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.defs"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.defs">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.preprocessor"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.preprocessor.undef"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.undef"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.preprocessor.undefs">
             </option>
             <optionCategory
@@ -2064,22 +2055,22 @@
             </optionCategory>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.optimization"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.optimization.level"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.level">
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.optimizationlevel"
+                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimizationlevel">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.optimization"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.optimization.functionsections"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.functionsections"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.functionsections">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.optimization"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.optimization.datasections"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.datasections"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.datasections">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.optimization"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.optimization.flags"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.otheroptimizations"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.optimization.other">
             </option>
             <optionCategory
@@ -2088,44 +2079,44 @@
             </optionCategory>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.syntaxonly"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.syntaxonly"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.syntaxonly">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.nocommon"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.nocommon"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.nocommon">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.pedantic"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.pedantic"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.pedantic">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.pedanticerrors"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.pedanticerrors"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.pedanticerrors">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.nowarn"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.nowarn"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.nowarn">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.allwarn"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.allwarn"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.allwarn">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.extrawarn"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.extrawarn"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.extrawarn">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
                   command="-Wabi"
                   defaultValue="false"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.abi"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnabi"
                   name="ABI warnings (-Wabi)"
                   tip="Warn when G++ generates code that is probably not compatible with the vendor-neutral C++ ABI. Although an effort has been made to warn about all such cases, there are probably some cases that are not warned about, even though G++ is generating incompatible code. There may also be cases where warnings are emitted even though the code that is generated is compatible."
                   valueType="boolean">
@@ -2134,14 +2125,14 @@
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
                   command="-Weffc++"
                   defaultValue="false"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.effc"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warneffc"
                   name="Effective C++ warnings (-Weffc++)"
                   tip="Warn about violations of the style guidelines from Scott Meyers’ Effective C++, Second Edition book."
                   valueType="boolean">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.warnings"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.warnings.toerrors"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.toerrors"
                   superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.warnings.toerrors">
             </option>
             <optionCategory
@@ -2150,65 +2141,65 @@
             </optionCategory>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.std"
                   name="Language Standard"
                   valueType="enumerated">
                <enumeratedOptionValue
                      command="-ansi"
-                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std.ansi"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.std.ansi"
                      name="ISO 1998 C++ incl. 2003 amendments (-ansi)">
                </enumeratedOptionValue>
                <enumeratedOptionValue
-                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std.default"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.std.default"
                      isDefault="true"
                      name="Toolchain Default (GNU ISO 1998 C++)">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=c++0x"
-                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std.cpp0x"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.std.cpp0x"
                      name="ISO 2011 C++ (-std=c++0x)">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=c++11"
-                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std.cpp11"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.std.cpp11"
                      name="ISO 2011 C++ (-std=c++11)">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=gnu++0x"
-                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std.gnucpp0x"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.std.gnucpp0x"
                      name="GNU ISO 2011 C++ (-std=gnu++0x)">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=gnu++11"
-                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std.gnucpp11"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.std.gnucpp11"
                      name="GNU ISO 2011 C++ (-std=gnu++11)">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=c++1y"
-                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std.cpp1y"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.std.cpp1y"
                      name="Next ISO C++ (-std=c++1y)">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=gnu++1y"
-                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.std.gnucpp1y"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.std.gnucpp1y"
                      name="Next GNU ISO C++ (-std=gnu++1y)">
                </enumeratedOptionValue>
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.lstfilename"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.other.lstfilename">
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.lstfilename"
+                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.lstfilename">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.noinlinefunctions"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.misc.noinlinefunctions">
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.noinlinefunctions"
+                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.noinlinefunctions">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
                   command="-fno-exceptions"
                   defaultValue="true"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.noexceptions"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.noexceptions"
                   name="Do not use exceptions (-fno-exceptions)"
                   tip="Do not generates extra code needed to propagate exceptions."
                   valueType="boolean">
@@ -2217,20 +2208,20 @@
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
                   command="-fno-rtti"
                   defaultValue="true"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.nortti"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.nortti"
                   name="Do not use RTTI (-fno-rtti)"
                   tip="Disable generation of information about every class with virtual functions for use by the C++ run-time type identification features (‘dynamic_cast’ and ‘typeid’). If you don’t use those parts of the language, you can save some space by using this flag. Note that exception handling uses the same information, but G++ generates it as needed. The ‘dynamic_cast’ operator can still be used for casts that do not require run-time type information, i.e. casts to void * or to unambiguous base classes."
                   valueType="boolean">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.misc.signedchar"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.misc.signedchar">
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.signedchar"
+                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.signedchar">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.other.verbose"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.misc.verbose">
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.compiler.verbose"
+                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.verbose">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.compiler.misc"
@@ -2247,13 +2238,13 @@
             </outputType>
          </tool>
          
-                  <tool
-                        command="gcc"
-                        commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGeneratorFull"
-                        id="ilg.cdt.managedbuild.tool.cross.gnu.arm.c.linker"
-                        name="%tool.gcc.linker"
-                        natureFilter="cnature"
-                        outputFlag="-o">
+         <tool
+                command="gcc"
+                commandLineGenerator="ilg.eclipse.cdt.internal.build.cross.gnu.arm.CrossCommandLineGeneratorFull"
+                id="ilg.cdt.managedbuild.tool.cross.gnu.arm.c.linker"
+                name="%tool.gcc.linker"
+                natureFilter="cnature"
+                outputFlag="-o">
             <enablement
                   type="ALL">
                <checkBuildProperty
@@ -2362,43 +2353,43 @@
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.misc"
                   command="-Xlinker ${VALUE}"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.linker.misc.ldflags"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.linker.flags"
                   name="Linker flags (-Xlinker [option])"
                   valueType="stringList">
             </option>
             <option
                   browseType="file"
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.misc"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.linker.misc.otherobjs"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.linker.otherobjs"
                   name="Other objects"
                   valueType="userObjs">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.misc"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.linker.misc.mapfilename"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.other.mapfilename">
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.linker.mapfilename"
+                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.mapfilename">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.misc"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.linker.misc.cref"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.other.cref">
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.linker.cref"
+                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.cref">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.misc"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.linker.misc.printmap"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.other.printmap">
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.linker.printmap"
+                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.printmap">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.misc"
                   command="-v"
                   defaultValue="false"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.linker.misc.verbose"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.linker.verbose"
                   name="Verbose (-v)"
                   valueType="boolean">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.c.linker.misc"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.linker.misc.other"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.c.linker.other"
                   name="Other link flags"
                   valueType="string">
             </option>
@@ -2534,7 +2525,7 @@
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.misc"
                   command="-Xlinker ${VALUE}"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.linker.ldflags"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.linker.flags"
                   name="Linker flags (-Xlinker [option])"
                   valueType="stringList">
             </option>
@@ -2548,17 +2539,17 @@
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.misc"
                   id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.linker.mapfilename"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.other.mapfilename">
+                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.mapfilename">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.misc"
                   id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.linker.cref"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.other.cref">
+                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.cref">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.misc"
                   id="ilg.cdt.managedbuild.option.cross.gnu.arm.cpp.linker.printmap"
-                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.other.printmap">
+                  superClass="ilg.cdt.managedbuild.option.cross.gnu.arm.base.printmap">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.cpp.linker.misc"
@@ -2688,7 +2679,7 @@
             </optionCategory>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.base.createflash.misc"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.createflash.misc.other"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.createflash.other"
                   name="Other flags"
                   valueType="string">
             </option>
@@ -2735,7 +2726,7 @@
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.base.createlisting.general"
                   defaultValue="-h -S"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.createlisting.general.other"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.createlisting.other"
                   name="Other flags"
                   valueType="string">
             </option>
@@ -2780,18 +2771,18 @@
             </optionCategory>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.base.printsize.general"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.printsize.general.format"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.printsize.format"
                   name="Size Format"
                   valueType="enumerated">
                <enumeratedOptionValue
                      command="--format=berkeley"
-                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.printsize.general.format.berkeley"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.printsize.format.berkeley"
                      isDefault="true"
                      name="Berkeley">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="--format=sysv"
-                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.printsize.general.format.sysv"
+                     id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.printsize.format.sysv"
                      name="SysV">
                </enumeratedOptionValue>
             </option>
@@ -2799,7 +2790,7 @@
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.base.printsize.general"
                   command="-x"
                   defaultValue="false"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.printsize.general.hex"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.printsize.hex"
                   name="Hex"
                   valueType="boolean">
             </option>
@@ -2807,13 +2798,13 @@
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.base.printsize.general"
                   command="-t"
                   defaultValue="false"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.printsize.general.totals"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.printsize.totals"
                   name="Show Totals"
                   valueType="boolean">
             </option>
             <option
                   category="ilg.cdt.managedbuild.optionCategory.cross.gnu.arm.base.printsize.general"
-                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.printsize.general.other"
+                  id="ilg.cdt.managedbuild.option.cross.gnu.arm.base.printsize.other"
                   name="Other flags"
                   valueType="string">
             </option>
@@ -2854,7 +2845,7 @@
             name="Debug"
             parent="cdt.managedbuild.config.gnu.base">
 	           <toolChain
-                  id="ilg.cdt.managedbuild.toolchain.cross.gnu.arm.exe.debug"
+                  id="ilg.cdt.managedbuild.toolchain.cross.gnu.arm.elf.debug"
                   secondaryOutputs="ilg.eclipse.cdt.cross.gnu.arm.createflash.output;ilg.eclipse.cdt.cross.gnu.arm.createlisting.output;ilg.eclipse.cdt.cross.gnu.arm.printsize.output"
                   superClass="ilg.cdt.managedbuild.toolchain.cross.gnu.arm.base"
                   targetTool="ilg.cdt.managedbuild.tool.cross.gnu.arm.c.linker;ilg.cdt.managedbuild.tool.cross.gnu.arm.cpp.linker">
@@ -2868,7 +2859,7 @@
             name="Release"
             parent="cdt.managedbuild.config.gnu.base">
 	           <toolChain
-                  id="ilg.cdt.managedbuild.toolchain.cross.gnu.arm.exe.release"
+                  id="ilg.cdt.managedbuild.toolchain.cross.gnu.arm.elf.release"
                   secondaryOutputs="ilg.eclipse.cdt.cross.gnu.arm.createflash.output;ilg.eclipse.cdt.cross.gnu.arm.createlisting.output;ilg.eclipse.cdt.cross.gnu.arm.printsize.output"
                   superClass="ilg.cdt.managedbuild.toolchain.cross.gnu.arm.base"
                   targetTool="ilg.cdt.managedbuild.tool.cross.gnu.arm.c.linker;ilg.cdt.managedbuild.tool.cross.gnu.arm.cpp.linker">
@@ -2943,10 +2934,10 @@
             operationClass="ilg.eclipse.cdt.internal.build.cross.gnu.arm.SetCrossCommandOperation"
             pageClass="ilg.eclipse.cdt.internal.build.cross.gnu.arm.SetCrossCommandWizardPage">
          <toolchain
-               toolchainID="ilg.cdt.managedbuild.toolchain.cross.gnu.arm.exe.debug">
+               toolchainID="ilg.cdt.managedbuild.toolchain.cross.gnu.arm.elf.debug">
          </toolchain>
          <toolchain
-               toolchainID="ilg.cdt.managedbuild.toolchain.cross.gnu.arm.exe.release">
+               toolchainID="ilg.cdt.managedbuild.toolchain.cross.gnu.arm.elf.release">
          </toolchain>
          <toolchain
                toolchainID="ilg.cdt.managedbuild.toolchain.cross.gnu.arm.so.debug">
