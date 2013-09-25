@@ -67,19 +67,24 @@ public class AdditionalToolsManagedOptionValueHandler extends
 					option.getId() + ", " + //$NON-NLS-1$
 					"String = " + //$NON-NLS-1$
 					extraArgument + ")"); //$NON-NLS-1$
-		}
+		} // end of debug code
 		
 		if (event == EVENT_APPLY){
-			System.out.println("should update window!");
 			if (configuration instanceof FolderInfo) {
 				FolderInfo oFolderInfo;
 				oFolderInfo = (FolderInfo)configuration;
 				//oFolderInfo.setDirty(true); //does not update interface :-(
 				// TODO: find the proper sequence to update the interface
+				System.out.println("should update configuration window!");
 				
-				return true;	// should we return true?
+				return true; // should we return true?
+				
 			} else if (configuration instanceof ResourceConfiguration) {
 				// TODO: find the proper sequence to update the interface
+				System.out.println("should update resource configuration window!");
+				
+				return true; // should we return true?
+				
 			} else {
 				System.out.println("unexpected instanceof configuration " + configuration.getClass().getCanonicalName());
 			}

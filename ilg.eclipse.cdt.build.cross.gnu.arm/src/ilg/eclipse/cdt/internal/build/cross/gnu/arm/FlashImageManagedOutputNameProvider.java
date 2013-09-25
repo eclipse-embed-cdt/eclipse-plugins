@@ -14,7 +14,7 @@ public class FlashImageManagedOutputNameProvider implements
 		String value = null;
 
 		IOption option = tool
-				.getOptionBySuperClassId("cdt.managedbuild.option.cross.gnu.arm.base.createflash.choice");
+				.getOptionBySuperClassId(Activator.getOptionPrefix()+"option.cross.gnu.arm.base.createflash.choice");
 		if (option != null)
 			value = (String)option.getValue();
 		// System.out.println(value);

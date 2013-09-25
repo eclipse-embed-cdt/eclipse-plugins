@@ -49,7 +49,7 @@ public class CrossEnvironmentVariableSupplier implements
 		
 		public static PathEnvironmentVariable create(IConfiguration configuration) {
 			IToolChain toolchain = configuration.getToolChain();
-			IOption option = toolchain.getOptionBySuperClassId("cdt.managedbuild.option.cross.gnu.arm.path"); //$NON-NLS-1$
+			IOption option = toolchain.getOptionBySuperClassId(Activator.getOptionPrefix()+"option.cross.gnu.arm.path"); //$NON-NLS-1$
 			String path = (String)option.getValue();
 			File sysroot = new File(path);
 			File bin = new File(sysroot, "bin"); //$NON-NLS-1$

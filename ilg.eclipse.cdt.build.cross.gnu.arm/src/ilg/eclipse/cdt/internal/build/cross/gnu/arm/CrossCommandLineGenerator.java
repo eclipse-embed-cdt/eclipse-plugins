@@ -41,7 +41,7 @@ public class CrossCommandLineGenerator extends ManagedCommandLineGenerator {
 			toolchain = (IToolChain) parent;
 
 		IOption option = toolchain
-				.getOptionBySuperClassId("cdt.managedbuild.option.cross.gnu.arm.prefix"); //$NON-NLS-1$
+				.getOptionBySuperClassId(Activator.getOptionPrefix()+"option.cross.gnu.arm.prefix"); //$NON-NLS-1$
 		String prefix = (String) option.getValue();
 		String newCommandName = prefix + commandName;
 
