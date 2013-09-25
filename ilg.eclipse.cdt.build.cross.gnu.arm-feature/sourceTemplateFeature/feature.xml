@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="ilg.eclipse.cdt.build.cross.arm.gnu.source"
+      label="%featureName"
+      version="1.1.0.qualifier"
+      provider-name="%providerName">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <includes
+         id="org.eclipse.cdt.gnu.build.source"
+         version="0.0.0"/>
+
+   <includes
+         id="org.eclipse.cdt.gnu.debug.source"
+         version="0.0.0"/>
+
+   <plugin
+         id="org.eclipse.cdt.source"
+         download-size="0"
+         install-size="0"
+         version="5.0.0.qualifier"/>
+
+   <plugin
+         id="org.eclipse.cdt.source.aix.motif.ppc"
+         os="aix"
+         ws="motif"
+         arch="ppc"
+         download-size="0"
+         install-size="0"
+         version="5.0.0.qualifier"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.cdt.source.linux.gtk.x86"
+         os="linux"
+         ws="gtk"
+         arch="x86"
+         download-size="0"
+         install-size="0"
+         version="5.0.0.qualifier"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.cdt.source.linux.gtk.x86_64"
+         os="linux"
+         ws="gtk"
+         arch="x86_64"
+         download-size="0"
+         install-size="0"
+         version="5.0.0.qualifier"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.cdt.source.linux.gtk.ppc"
+         os="linux"
+         ws="gtk"
+         arch="ppc"
+         download-size="0"
+         install-size="0"
+         version="5.0.0.qualifier"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.cdt.source.linux.gtk.ia64"
+         os="linux"
+         ws="gtk"
+         arch="ia64"
+         download-size="0"
+         install-size="0"
+         version="5.0.0.qualifier"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.cdt.source.macosx.carbon.ppc"
+         os="macosx"
+         ws="carbon"
+         arch="ppc"
+         download-size="0"
+         install-size="0"
+         version="5.0.0.qualifier"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.cdt.source.qnx.photon.x86"
+         os="qnx"
+         ws="photon"
+         arch="x86"
+         download-size="0"
+         install-size="0"
+         version="5.0.0.qualifier"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.cdt.source.solaris.motif.sparc"
+         os="solaris"
+         ws="motif"
+         arch="sparc"
+         download-size="0"
+         install-size="0"
+         version="5.0.0.qualifier"
+         fragment="true"/>
+
+   <plugin
+         id="org.eclipse.cdt.source.win32.win32.x86"
+         os="win32"
+         ws="win32"
+         arch="x86"
+         download-size="0"
+         install-size="0"
+         version="5.0.0.qualifier"
+         fragment="true"/>
+
+</feature>

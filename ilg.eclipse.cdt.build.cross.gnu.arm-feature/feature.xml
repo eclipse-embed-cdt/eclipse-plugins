@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="ilg.eclipse.cdt.build.cross.arm.gnu"
+      label="%featureName"
+      version="1.1.0.qualifier"
+      provider-name="%providerName"
+      plugin="ilg.eclipse.cdt.build.cross.gnu.arm">
+
+   <description>
+      %description
+   </description>
+
+   <copyright>
+      %copyright
+   </copyright>
+
+   <license url="%licenseURL">
+      %license
+   </license>
+
+   <plugin
+         id="ilg.eclipse.cdt.build.cross.gnu.arm"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+</feature>
