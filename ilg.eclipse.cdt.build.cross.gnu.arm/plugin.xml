@@ -2679,11 +2679,11 @@
                </checkBuildProperty>
             </enablement>
             <optionCategory
-                  id="ilg.gnuarmeclipse.optionCategory.base.createflash.out"
-                  name="Output">
+                  id="ilg.gnuarmeclipse.optionCategory.base.createflash.general"
+                  name="General">
             </optionCategory>
             <option
-                  category="ilg.gnuarmeclipse.optionCategory.base.createflash.out"
+                  category="ilg.gnuarmeclipse.optionCategory.base.createflash.general"
                   id="ilg.gnuarmeclipse.option.base.createflash.choice"
                   name="Output file format (-O)"
                   valueType="enumerated">
@@ -2709,43 +2709,35 @@
                      name="binary">
                </enumeratedOptionValue>
             </option>
-            <optionCategory
-                  id="ilg.gnuarmeclipse.optionCategory.base.createflash.section"
-                  name="Section">
-            </optionCategory>
             <option
-                  category="ilg.gnuarmeclipse.optionCategory.base.createflash.section"
+                  category="ilg.gnuarmeclipse.optionCategory.base.createflash.general"
                   command="-j .text"
-                  id="ilg.gnuarmeclipse.option.base.createflash.section.text"
+                  id="ilg.gnuarmeclipse.option.base.createflash.textsection"
                   isAbstract="false"
                   name="Section: -j .text"
                   resourceFilter="all"
                   valueType="boolean">
             </option>
             <option
-                  category="ilg.gnuarmeclipse.optionCategory.base.createflash.section"
+                  category="ilg.gnuarmeclipse.optionCategory.base.createflash.general"
                   command="-j .data"
-                  id="ilg.gnuarmeclipse.option.base.createflash.section.data"
+                  id="ilg.gnuarmeclipse.option.base.createflash.datasection"
                   isAbstract="false"
                   name="Section: -j .data"
                   resourceFilter="all"
                   valueType="boolean">
             </option>
             <option
-                  category="ilg.gnuarmeclipse.optionCategory.base.createflash.section"
+                  category="ilg.gnuarmeclipse.optionCategory.base.createflash.general"
                   command="-j "
-                  id="ilg.gnuarmeclipse.option.base.createflash.section.other"
+                  id="ilg.gnuarmeclipse.option.base.createflash.othersection"
                   isAbstract="false"
-                  name="Other (-j)"
+                  name="Other sections (-j)"
                   resourceFilter="all"
                   valueType="stringList">
             </option>
-            <optionCategory
-                  id="ilg.gnuarmeclipse.optionCategory.base.createflash.misc"
-                  name="Miscellaneous">
-            </optionCategory>
             <option
-                  category="ilg.gnuarmeclipse.optionCategory.base.createflash.misc"
+                  category="ilg.gnuarmeclipse.optionCategory.base.createflash.general"
                   id="ilg.gnuarmeclipse.option.base.createflash.other"
                   name="Other flags"
                   valueType="string">
