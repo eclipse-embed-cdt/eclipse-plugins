@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
 <template type="ProjTempl" version="1.0" supplier="Eclipse.org" revision="1.0" author="Bala Torati (Symbian)"
 		copyright="Copyright (c) 2007 Symbian Software Limited and others. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available athttp://www.eclipse.org/legal/epl-v10.html"
-		id="ARM_HelloWorld_C_Project" label="%HelloWorld.Ctemplate.label" description="%HelloWorld.Ctemplate.description"
+		id="HelloARMWorld_C_Project" label="%HelloWorld.Ctemplate.label" description="%HelloWorld.Ctemplate.description"
 		 help="help.html">
 
 	<property-group id="basics" label="%HelloWorld.basics.label" description="%HelloWorld.basics.description" type="PAGES-ONLY" help="help.html">

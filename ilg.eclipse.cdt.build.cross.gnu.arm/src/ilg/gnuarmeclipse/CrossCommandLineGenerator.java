@@ -8,7 +8,7 @@
  * Contributors:
  *     Doug Schaefer - initial API and implementation
  *******************************************************************************/
-package ilg.eclipse.cdt.internal.build.cross.gnu.arm;
+package ilg.gnuarmeclipse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +41,7 @@ public class CrossCommandLineGenerator extends ManagedCommandLineGenerator {
 			toolchain = (IToolChain) parent;
 
 		IOption option = toolchain
-				.getOptionBySuperClassId(Activator.getOptionPrefix()+"option.cross.gnu.arm.prefix"); //$NON-NLS-1$
+				.getOptionBySuperClassId(Activator.getOptionPrefix()+".prefix"); //$NON-NLS-1$
 		String prefix = (String) option.getValue();
 		String newCommandName = prefix + commandName;
 

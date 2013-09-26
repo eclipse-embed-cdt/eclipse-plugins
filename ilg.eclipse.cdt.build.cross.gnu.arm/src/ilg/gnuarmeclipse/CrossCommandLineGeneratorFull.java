@@ -8,7 +8,7 @@
  * Contributors:
  *     Doug Schaefer - initial API and implementation
  *******************************************************************************/
-package ilg.eclipse.cdt.internal.build.cross.gnu.arm;
+package ilg.gnuarmeclipse;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -44,7 +44,7 @@ public class CrossCommandLineGeneratorFull extends CrossCommandLineGenerator {
 				commandLinePattern);
 	}
 
-	private static final String OPTION_SUFFIX = ".option.cross.gnu.arm.";
+	private static final String OPTION_SUFFIX = ".option.";
 
 	private static final String OPTION_SUFFIX_TARGET = OPTION_SUFFIX
 			+ "target.";

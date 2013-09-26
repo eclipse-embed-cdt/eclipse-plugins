@@ -8,7 +8,7 @@
  * Contributors:
  *     Marc-Andre Laperle - initial API and implementation
  *******************************************************************************/
-package ilg.eclipse.cdt.internal.build.cross.gnu.arm;
+package ilg.gnuarmeclipse;
 
 import org.eclipse.cdt.core.templateengine.SharedDefaults;
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPage;
@@ -42,7 +42,8 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	private Text pathTxt;
 	private Text prefixTxt;
 
-	public static final String PAGE_ID = "ilg.eclipse.cdt.build.cross.gnu.arm.setCrossCommandWizardPage"; //$NON-NLS-1$
+	// must match the plugin.xml <wizardPage ID="">
+	public static final String PAGE_ID = "ilg.gnuarmeclipse.setCrossCommandWizardPage"; //$NON-NLS-1$
 	
 	public static final String CROSS_PROJECT_NAME = "crossGnuArmProjectName"; //$NON-NLS-1$
 	public static final String CROSS_COMMAND_PREFIX = "crossGnuArmCommandPrefix"; //$NON-NLS-1$

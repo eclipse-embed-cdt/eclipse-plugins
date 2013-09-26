@@ -1,4 +1,4 @@
-package ilg.eclipse.cdt.internal.build.cross.gnu.arm;
+package ilg.gnuarmeclipse;
 
 import org.eclipse.cdt.managedbuilder.core.IManagedOutputNameProvider;
 import org.eclipse.cdt.managedbuilder.core.IOption;
@@ -14,7 +14,7 @@ public class FlashImageManagedOutputNameProvider implements
 		String value = null;
 
 		IOption option = tool
-				.getOptionBySuperClassId(Activator.getOptionPrefix()+"option.cross.gnu.arm.base.createflash.choice");
+				.getOptionBySuperClassId(Activator.getOptionPrefix()+".base.createflash.choice");
 		if (option != null)
 			value = (String)option.getValue();
 		// System.out.println(value);
