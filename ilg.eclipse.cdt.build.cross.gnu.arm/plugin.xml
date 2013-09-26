@@ -628,17 +628,17 @@
             <enumeratedOptionValue
                   id="ilg.gnuarmeclipse.option.base.target.endianness.default"
                   isDefault="true"
-                  name="Toolchain Default">
+                  name="%option.target.endianness.default ">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mlittle-endian"
                   id="ilg.gnuarmeclipse.option.base.target.endianness.little"
-                  name="Little Endian (-mlittle-endian)">
+                  name="%option.target.endianness.little">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mbig-endian"
                   id="ilg.gnuarmeclipse.option.base.target.endianness.big"
-                  name="Big Endian (-mbig-endian)">
+                  name="%option.target.endianness.big">
             </enumeratedOptionValue>
          </option>
          
@@ -651,22 +651,22 @@
             <enumeratedOptionValue
                   id="ilg.gnuarmeclipse.option.base.target.fpu.abi.default"
                   isDefault="true"
-                  name="Toolchain Default">
+                  name="%option.target.floatABI.default">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfloat-abi=soft"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.abi.soft"
-                  name="Library (soft)">
+                  name="%option.target.floatABI.soft">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfloat-abi=softfp"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.abi.softfp"
-                  name="Library with FP (softfp)">
+                  name="%option.target.floatABI.softfp">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfloat-abi=hard"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.abi.hard"
-                  name="FP instructions (hard)">
+                  name="%option.target.floatABI.hard">
             </enumeratedOptionValue>
             <enablement
                   extensionAdjustment="false"
@@ -703,107 +703,107 @@
             <enumeratedOptionValue
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.default"
                   isDefault="true"
-                  name="Toolchain Default">
+                  name="%option.target.fpuType.default">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=fpa"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.fpa"
-                  name="fpa">
+                  name="%option.target.fpuType.fpa">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=fpe2"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.fpe2"
-                  name="fpe2">
+                  name="%option.target.fpuType.fpe2">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=fpe3"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.fpe3"
-                  name="fpe3">
+                  name="%option.target.fpuType.fpe3">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=maverick"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.maverick"
-                  name="maverick">
+                  name="%option.target.fpuType.maverick">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=vfp"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.vfp"
-                  name="vfp">
+                  name="%option.target.fpuType.vfp">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=vfpv3"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.vfpv3"
-                  name="vfpv3">
+                  name="%option.target.fpuType.vfpv3">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=vfpv3-fp16"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.vfpv3fp16"
-                  name="vfpv3-fp16">
+                  name="%option.target.fpuType.vfpv3fp16">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=vfpv3-d16"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.vfpv3d16"
-                  name="vfpv3-d16">
+                  name="%option.target.fpuType.vfpv3d16">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=vfpv3-d16-fp16"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.vfpv3d16fp16"
-                  name="vfpv3-d16-fp16">
+                  name="%option.target.fpuType.vfpv3d16fp16">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=vfpv3xd"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.vfpv3xd"
-                  name="vfpv3xd">
+                  name="%option.target.fpuType.vfpv3xd">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=vfpv3xd-fp16"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.vfpv3xdfp16"
-                  name="vfpv3xd-fp16">
+                  name="%option.target.fpuType.vfpv3xdfp16">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=neon"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.neon"
-                  name="neon">
+                  name="%option.target.fpuType.neon">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=neon-fp16"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.neonfp16"
-                  name="neon-fp16">
+                  name="%option.target.fpuType.neonfp16">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=vfpv4"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.vfpv4"
-                  name="vfpv4">
+                  name="%option.target.fpuType.vfpv4">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=vfpv4-d16"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.vfpv4d16"
-                  name="vfpv4-d16">
+                  name="%option.target.fpuType.vfpv4d16">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=fpv4-sp-d16"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.fpv4spd16"
-                  name="fpv4-sp-d16">
+                  name="%option.target.fpuType.fpv4spd16">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=neon-vfpv4"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.neonvfpv4"
-                  name="neon-vfpv4">
+                  name="%option.target.fpuType.neonvfpv4">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=fp-armv8"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.fparmv8"
-                  name="fp-armv8">
+                  name="%option.target.fpuType.fparmv8">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=neon-fp-armv8"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.neonfparmv8"
-                  name="neon-fp-armv8">
+                  name="%option.target.fpuType.neonfparmv8">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mfpu=crypto-neon-fp-armv8"
                   id="ilg.gnuarmeclipse.option.base.target.fpu.unit.cryptoneonfparmv8"
-                  name="crypto-neon-fp-armv8">
+                  name="%option.target.fpuType.cryptoneonfparmv8">
             </enumeratedOptionValue>
             <enablement
                   extensionAdjustment="false"
@@ -868,23 +868,23 @@
                valueType="enumerated">
             <enumeratedOptionValue
                   id="ilg.gnuarmeclipse.option.base.debugging.level.none"
-                  name="None">
+                  name="%option.debugging.level.none">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-g1"
                   id="ilg.gnuarmeclipse.option.base.debugging.level.minimal"
-                  name="Minimal (-g1)">
+                  name="%option.debugging.level.minimal">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-g"
                   id="ilg.gnuarmeclipse.option.base.debugging.level.default"
                   isDefault="true"
-                  name="Default (-g)">
+                  name="%option.debugging.level.default">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-g3"
                   id="ilg.gnuarmeclipse.option.base.debugging.level.max"
-                  name="Maximum (-g3)">
+                  name="%option.debugging.level.max">
             </enumeratedOptionValue>
             <enablement
                   attribute="value"
@@ -917,37 +917,37 @@
             <enumeratedOptionValue
                   id="ilg.gnuarmeclipse.option.base.debugging.format.default"
                   isDefault="true"
-                  name="Toolchain Default">
+                  name="%option.debugging.default">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-ggdb"
                   id="ilg.gnuarmeclipse.option.base.debugging.format.gdb"
-                  name="gdb">
+                  name="%option.debugging.gdb">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-gstabs"
                   id="ilg.gnuarmeclipse.option.base.debugging.format.stabs"
-                  name="stabs">
+                  name="%option.debugging.stabs">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-gstabs+"
                   id="ilg.gnuarmeclipse.option.base.debugging.format.stabsplus"
-                  name="stabs+">
+                  name="%option.debugging.stabsplus">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-gdwarf-2"
                   id="ilg.gnuarmeclipse.option.base.debugging.format.dwarf2"
-                  name="dwarf-2">
+                  name="%option.debugging.dwarf2">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-gdwarf-3"
                   id="ilg.gnuarmeclipse.option.base.debugging.format.dwarf3"
-                  name="dwarf-3">
+                  name="%option.debugging.dwarf3">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-gdwarf-4"
                   id="ilg.gnuarmeclipse.option.base.debugging.format.dwarf4"
-                  name="dwarf-4">
+                  name="%option.debugging.dwarf4">
             </enumeratedOptionValue>
             <enablement
                   attribute="value"
@@ -975,6 +975,7 @@
                command="-p"
                defaultValue="false"
                id="ilg.gnuarmeclipse.option.base.debugging.prof"
+               isAbstract="true"
                name="%option.debugging.prof"
                tip="Generate extra code to write profile information suitable for the analysis program prof. You must use this option when compiling the source files you want data about, and you must also use it when linking."
                valueType="boolean">
@@ -1045,29 +1046,30 @@
          <!-- ===== Tools common options ================================== -->
       </tool>
       <tool
-            id="ilg.gnuarmeclipse.tool.base2"
+            id="ilg.gnuarmeclipse.tool.compiler"
             isAbstract="true"
-            name="Tools common options">
+            name="Compiler common options">
+         <option
+               command="-v"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.option.base.verbose"
+               isAbstract="true"
+               name="%option.compiler.verbose"
+               tip="Print (on standard error output) the commands executed to run the stages of compilation. Also print the version number of the compiler driver program and of the preprocessor and the compiler proper."
+               valueType="boolean">
+         </option>
          <option
                command="-Wa,-adhlns=&quot;$@.lst&quot;"
                defaultValue="false"
                id="ilg.gnuarmeclipse.option.base.lstfilename"
                isAbstract="true"
-               name="Generate assembler listing (-Wa,-adhlns=&quot;$@.lst&quot;)"
+               name="%option.compiler.lstfilename"
                valueType="boolean">
-         </option>
-         <option
-               command="-Wl,-Map,"
-               defaultValue="&quot;${BuildArtifactFileBaseName}.map&quot;"
-               id="ilg.gnuarmeclipse.option.base.mapfilename"
-               isAbstract="true"
-               name="Map Filename"
-               valueType="string">
          </option>
          <option
                id="ilg.gnuarmeclipse.option.base.optimizationlevel"
                isAbstract="true"
-               name="Optimization Level"
+               name="%option.compiler.optimizationlevel"
                tip="With ‘-O’, the compiler tries to reduce code size and execution time, without performing any optimizations that take a great deal of compilation time. -O2 Optimize even more. GCC performs nearly all supported optimizations that do not involve a space-speed tradeoff. -O3 Optimize yet more. -Os Optimize for size. ‘-Os’ enables all ‘-O2’ optimizations that do not typically increase code size. -Og Optimize debugging experience. ‘-Og’ enables optimizations that do not interfere with debugging. It should be the optimization level of choice for the standard edit-compile-debug cycle, offering a reasonable level of optimization while maintaining fast compilation and a good debugging experience. -O0 Do not optimize. Reduce compilation time and make debugging produce the expected results. This is the default."
                valueType="enumerated">
             <enablement
@@ -1093,57 +1095,41 @@
             <enumeratedOptionValue
                   command="-O0"
                   id="ilg.gnuarmeclipse.option.base.optimizationlevel.none"
-                  name="None (-O0)">
+                  name="%option.compiler.optimizationlevel.none">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-O1"
                   id="ilg.gnuarmeclipse.option.base.optimizationlevel.optimize"
-                  name="Optimize (-O1)">
+                  name="%option.compiler.optimizationlevel.optimize">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-O2"
                   id="ilg.gnuarmeclipse.option.base.optimizationlevel.more"
                   isDefault="true"
-                  name="Optimize more (-O2)">
+                  name="%option.compiler.optimizationlevel.more">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-O3"
                   id="ilg.gnuarmeclipse.option.base.optimizationlevel.most"
-                  name="Optimize most (-O3)">
+                  name="%option.compiler.optimizationlevel.most">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-Os"
                   id="ilg.gnuarmeclipse.option.base.optimizationlevel.size"
-                  name="Optimize size (-Os)">
+                  name="%option.compiler.optimizationlevel.size">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-Og"
                   id="ilg.gnuarmeclipse.option.base.optimizationlevel.debug"
-                  name="Optimize for debugg (-Og)">
+                  name="%option.compiler.optimizationlevel.debug">
             </enumeratedOptionValue>
-         </option>
-         <option
-               command="-Xlinker --cref"
-               defaultValue="false"
-               id="ilg.gnuarmeclipse.option.base.cref"
-               isAbstract="true"
-               name="Cross Reference (-Xlinker --cref)"
-               valueType="boolean">
-         </option>
-         <option
-               command="-Xlinker --print-map"
-               defaultValue="false"
-               id="ilg.gnuarmeclipse.option.base.printmap"
-               isAbstract="true"
-               name="Print link map (-Xlinker --print-map)"
-               valueType="boolean">
          </option>
          <option
                command="-nostdinc"
                defaultValue="false"
                id="ilg.gnuarmeclipse.option.base.preprocessor.nostdinc"
                isAbstract="true"
-               name="Do not search system directories (-nostdinc)"
+               name="%option.compiler.nostdinc"
                tip="Do not search the standard system directories for header files. Only the directories you have specified with ‘-I’ options (and the directory of the current file, if appropriate) are searched."
                valueType="boolean">
          </option>
@@ -1151,14 +1137,14 @@
                command="-D"
                id="ilg.gnuarmeclipse.option.base.preprocessor.defs"
                isAbstract="true"
-               name="Defined symbols (-D)"
+               name="%option.compiler.defs"
                valueType="definedSymbols">
          </option>
          <option
                command="-U"
                id="ilg.gnuarmeclipse.option.base.preprocessor.undefs"
                isAbstract="true"
-               name="Undefined symbols (-U)"
+               name="%option.compiler.undefs"
                valueType="undefDefinedSymbols">
          </option>
          <option
@@ -1166,7 +1152,7 @@
                defaultValue="false"
                id="ilg.gnuarmeclipse.option.base.preprocessor.preprocessonly"
                isAbstract="true"
-               name="Preprocess only (-E)"
+               name="%option.compiler.preprocessonly"
                tip="Stop after the preprocessing stage; do not run the compiler proper. The output is in the form of preprocessed source code, which is sent to the standard output. Input files that don’t require preprocessing are ignored."
                valueType="boolean">
          </option>
@@ -1175,7 +1161,7 @@
                command="-I"
                id="ilg.gnuarmeclipse.option.base.dirs.includepaths"
                isAbstract="true"
-               name="Include paths (-I)"
+               name="%option.compiler.includepaths"
                valueType="includePath">
          </option>
          <option
@@ -1183,7 +1169,7 @@
                defaultValue="false"
                id="ilg.gnuarmeclipse.option.base.warnings.syntaxonly"
                isAbstract="true"
-               name="Check syntax only (-fsyntax-only)"
+               name="%option.compiler.syntaxonly"
                tip="Check the code for syntax errors, but don’t do anything beyond that."
                valueType="boolean">
          </option>
@@ -1192,7 +1178,7 @@
                defaultValue="false"
                id="ilg.gnuarmeclipse.option.base.warnings.pedantic"
                isAbstract="true"
-               name="Pedantic (-pedantic)"
+               name="%option.compiler.pedantic"
                tip="Issue all the warnings demanded by strict ISO C and ISO C++; reject all programs that use forbidden extensions, and some other programs that do not follow ISO C and ISO C++. For ISO C, follows the version of the ISO C standard specified by any ‘-std’ option used."
                valueType="boolean">
          </option>
@@ -1201,7 +1187,7 @@
                defaultValue="false"
                id="ilg.gnuarmeclipse.option.base.warnings.pedanticerrors"
                isAbstract="true"
-               name="Pedantic warnings as errors (-pedantic-errors)"
+               name="%option.compiler.pedanticerrors"
                tip="Like ‘-pedantic’, except that errors are produced rather than warnings."
                valueType="boolean">
          </option>
@@ -1210,7 +1196,7 @@
                defaultValue="true"
                id="ilg.gnuarmeclipse.option.base.warnings.allwarn"
                isAbstract="true"
-               name="All warnings (-Wall)"
+               name="%option.compiler.allwarn"
                tip="This enables all the warnings about constructions that some users consider questionable, and that are easy to avoid (or modify to prevent the warning), even in conjunction with macros. This also enables some language-specific warnings."
                valueType="boolean">
          </option>
@@ -1219,8 +1205,8 @@
                defaultValue="false"
                id="ilg.gnuarmeclipse.option.base.warnings.nowarn"
                isAbstract="true"
-               name="Inhibit all warnings (-w)"
-               tip="Inhibit all warning messages."
+               name="%option.compiler.nowarn"
+               tip="Inhibit all warning messages. Not recommended."
                valueType="boolean">
          </option>
          <option
@@ -1228,7 +1214,7 @@
                defaultValue="false"
                id="ilg.gnuarmeclipse.option.base.warnings.extrawarn"
                isAbstract="true"
-               name="Extra warnings (-Wextra)"
+               name="%option.compiler.extrawarn"
                tip="This enables some extra warning flags that are not enabled by ‘-Wall’."
                valueType="boolean">
          </option>
@@ -1237,17 +1223,8 @@
                defaultValue="false"
                id="ilg.gnuarmeclipse.option.base.warnings.toerrors"
                isAbstract="true"
-               name="Warnings as errors (-Werror)"
+               name="%option.compiler.toerrors"
                tip="Make all warnings into errors."
-               valueType="boolean">
-         </option>
-         <option
-               command="-v"
-               defaultValue="false"
-               id="ilg.gnuarmeclipse.option.base.verbose"
-               isAbstract="true"
-               name="Verbose (-v)"
-               tip="Print (on standard error output) the commands executed to run the stages of compilation. Also print the version number of the compiler driver program and of the preprocessor and the compiler proper."
                valueType="boolean">
          </option>
          <option
@@ -1255,7 +1232,7 @@
                defaultValue="true"
                id="ilg.gnuarmeclipse.option.base.optimization.functionsections"
                isAbstract="true"
-               name="Function sections (-ffunction-sections)"
+               name="%option.compiler.functionsections"
                resourceFilter="all"
                tip="Place each function into its own section in the output file if the target supports arbitrary sections. The name of the function determines the section’s name in the output file. Use these options on systems where the linker can perform optimizations to improve locality of reference in the instruction space. Most systems using the ELF object format have linkers with such optimizations."
                valueType="boolean">
@@ -1265,7 +1242,7 @@
                defaultValue="true"
                id="ilg.gnuarmeclipse.option.base.optimization.datasections"
                isAbstract="true"
-               name="Data sections (-fdata-sections)"
+               name="%option.compiler.datasections"
                resourceFilter="all"
                tip="Place each data item into its own section in the output file if the target supports arbitrary sections. The name of the name of the data item determines the section’s name in the output file. Use these options on systems where the linker can perform optimizations to improve locality of reference in the instruction space. Most systems using the ELF object format have linkers with such optimizations."
                valueType="boolean">
@@ -1273,7 +1250,7 @@
          <option
                id="ilg.gnuarmeclipse.option.base.optimization.other"
                isAbstract="true"
-               name="Other optimization flags"
+               name="%option.compiler.otheroptimization"
                valueType="string">
          </option>
          <option
@@ -1281,7 +1258,7 @@
                defaultValue="false"
                id="ilg.gnuarmeclipse.option.base.warnings.nocommon"
                isAbstract="true"
-               name="No common (-fno-common)"
+               name="%option.compiler.nocommon"
                tip="In C code, controls the placement of uninitialized global variables. Unix C compilers have traditionally permitted multiple definitions of such variables in different compilation units by placing the variables in a common block. This is the behavior specified by ‘-fcommon’, and is the default for GCC on most targets. On the other hand, this behavior is not required by ISO C, and on some targets may carry a speed or code size penalty on variable references. The ‘-fno-common’ option specifies that the compiler should place uninitialized global variables in the data section of the object file, rather than generating them as common blocks. This has the effect that if the same variable is declared (without extern) in two different compilations, you get a multiple-definition error when you link them. In this case, you must compile with ‘-fcommon’ instead. Compiling with ‘-fno-common’ is useful on targets for which it provides better performance, or if you wish to verify that the program will work on other systems that always treat uninitialized variable declarations this way."
                valueType="boolean">
          </option>
@@ -1290,7 +1267,7 @@
                defaultValue="false"
                id="ilg.gnuarmeclipse.option.base.noinlinefunctions"
                isAbstract="true"
-               name="Do not inline functions (-fno-inline-functions)"
+               name="%option.compiler.noinlinefunctions"
                valueType="boolean">
          </option>
          <option
@@ -1298,7 +1275,7 @@
                defaultValue="false"
                id="ilg.gnuarmeclipse.option.base.signedchar"
                isAbstract="true"
-               name="&apos;char&apos; is signed (-fsigned-char)"
+               name="%option.compiler.signedchar"
                tip="Let the type char be signed, like signed char."
                valueType="boolean">
          </option>
@@ -1306,7 +1283,128 @@
                defaultValue="-c -fmessage-length=0"
                id="ilg.gnuarmeclipse.option.base.compiler.other"
                isAbstract="true"
-               name="Other compiler flags"
+               name="%option.compiler.other"
+               valueType="string">
+         </option>
+      </tool>
+      <tool
+            id="ilg.gnuarmeclipse.tool.linker"
+            isAbstract="false"
+            name="Linker common options">
+         <option
+               command="-Wl,-Map,"
+               defaultValue="&quot;${BuildArtifactFileBaseName}.map&quot;"
+               id="ilg.gnuarmeclipse.option.base.mapfilename"
+               isAbstract="true"
+               name="%option.linker.mapfilename"
+               valueType="string">
+         </option>
+         <option
+               browseType="none"
+               command="-T&quot;${VALUE}&quot;"
+               id="ilg.gnuarmeclipse.option.base.linker.scriptfile"
+               isAbstract="true"
+               name="%option.linker.scriptfile"
+               valueType="string">
+         </option>
+         <option
+               command="-Xlinker --cref"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.option.base.cref"
+               isAbstract="true"
+               name="%option.linker.cref"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Xlinker --print-map"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.option.base.printmap"
+               isAbstract="true"
+               name="%option.linker.printmap"
+               valueType="boolean">
+         </option>
+         <option
+               command="-nostartfiles"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.option.base.linker.nostart"
+               isAbstract="true"
+               name="%option.linker.nostart"
+               valueType="boolean">
+         </option>
+         <option
+               command="-nodefaultlibs"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.option.base.linker.nodeflibs"
+               isAbstract="true"
+               name="%option.linker.nodeflibs"
+               valueType="boolean">
+         </option>
+         <option
+               command="-nostdlib"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.option.base.linker.nostdlibs"
+               isAbstract="true"
+               name="%option.linker.nostdlibs"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Xlinker --gc-sections"
+               defaultValue="true"
+               id="ilg.gnuarmeclipse.option.base.linker.gcsections"
+               isAbstract="true"
+               name="%option.linker.gcsections"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Xlinker --print-gc-sections"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.option.base.linker.printgcsections"
+               isAbstract="true"
+               name="%option.linker.printgcsections"
+               valueType="boolean">
+         </option>
+         <option
+               command="-s"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.option.base.linker.strip"
+               isAbstract="true"
+               name="%option.linker.strip"
+               valueType="boolean">
+         </option>
+         <option
+               browseType="none"
+               command="-l"
+               id="ilg.gnuarmeclipse.option.base.linker.libs"
+               isAbstract="true"
+               name="%option.linker.libs"
+               valueType="libs">
+         </option>
+         <option
+               browseType="directory"
+               command="-L"
+               id="ilg.gnuarmeclipse.option.base.linker.paths"
+               isAbstract="true"
+               name="%option.linker.paths"
+               valueType="libPaths">
+         </option>
+         <option
+               command="-Xlinker ${VALUE}"
+               id="ilg.gnuarmeclipse.option.base.linker.flags"
+               isAbstract="true"
+               name="%option.linker.flags"
+               valueType="stringList">
+         </option>
+         <option
+               browseType="file"
+               id="ilg.gnuarmeclipse.option.base.linker.otherobjs"
+               isAbstract="true"
+               name="%option.linker.otherobjs"
+               valueType="userObjs">
+         </option>
+         <option
+               id="ilg.gnuarmeclipse.option.base.linker.other"
+               isAbstract="true"
+               name="%option.linker.other"
                valueType="string">
          </option>
       </tool>
@@ -1500,7 +1598,7 @@
             configurationEnvironmentSupplier="ilg.gnuarmeclipse.CrossEnvironmentVariableSupplier"
             id="ilg.gnuarmeclipse.toolchain.base"
             isAbstract="false"
-            name="%toolChain.name"
+            name="%toolchain.name"
             targetTool="ilg.gnuarmeclipse.tool.c.linker;ilg.gnuarmeclipse.tool.cpp.linker;cdt.managedbuild.tool.gnu.archiver"
             osList="all">
          <targetPlatform
@@ -1518,6 +1616,34 @@
                id="ilg.gnuarmeclipse.optionCategory.toolchain"
                name="%optionCategory.toolchain">
          </optionCategory>
+         <option
+               category="ilg.gnuarmeclipse.optionCategory.toolchain"
+               id="ilg.gnuarmeclipse.option.toolchain"
+               isAbstract="false"
+               name="%option.toolchain.select"
+               resourceFilter="all"
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.option.toolchain.embedded"
+                  name="%option.toolchain.select.embedded">
+            </enumeratedOptionValue>
+         </option>
+         <option
+               category="ilg.gnuarmeclipse.optionCategory.toolchain"
+               id="ilg.gnuarmeclipse.option.family"
+               isAbstract="false"
+               name="%option.toolchain.family"
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.option.family.arm"
+                  isDefault="true"
+                  name="%option.toolchain.family.arm">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.option.family.aarch64"
+                  name="%option.toolchain.family.arm64">
+            </enumeratedOptionValue>
+         </option>
          <option
                category="ilg.gnuarmeclipse.optionCategory.toolchain"
                id="ilg.gnuarmeclipse.option.prefix"
@@ -1539,7 +1665,7 @@
                defaultValue="gcc"
                id="ilg.gnuarmeclipse.option.command.cc"
                isAbstract="false"
-               name="C compiler"
+               name="%option.toolchain.command.c"
                resourceFilter="all"
                valueType="string">
          </option>
@@ -1548,7 +1674,7 @@
                defaultValue="g++"
                id="ilg.gnuarmeclipse.option.command.cpp"
                isAbstract="false"
-               name="C++ compiler"
+               name="%option.toolchain.command.cpp"
                resourceFilter="all"
                valueType="string">
          </option>
@@ -1557,7 +1683,7 @@
                defaultValue="objcopy"
                id="ilg.gnuarmeclipse.option.command.objcopy"
                isAbstract="false"
-               name="Hex/Bin converter"
+               name="%option.toolchain.command.objcopy"
                resourceFilter="all"
                valueType="string">
          </option>
@@ -1566,7 +1692,7 @@
                defaultValue="objdump"
                id="ilg.gnuarmeclipse.option.command.objdump"
                isAbstract="false"
-               name="Listing generator"
+               name="%option.toolchain.command.listing"
                resourceFilter="all"
                valueType="string">
          </option>
@@ -1575,7 +1701,7 @@
                defaultValue="size"
                id="ilg.gnuarmeclipse.option.command.size"
                isAbstract="false"
-               name="Size command"
+               name="%option.toolchain.command.size"
                resourceFilter="all"
                valueType="string">
          </option>
@@ -1584,7 +1710,7 @@
                defaultValue="make"
                id="ilg.gnuarmeclipse.option.command.make"
                isAbstract="false"
-               name="Build command"
+               name="%option.toolchain.command.make"
                resourceFilter="all"
                valueType="string">
          </option>
@@ -1593,7 +1719,7 @@
                defaultValue="rm"
                id="ilg.gnuarmeclipse.option.command.rm"
                isAbstract="false"
-               name="Remove command"
+               name="%option.toolchain.command.rm"
                resourceFilter="all"
                valueType="string">
          </option>
@@ -1709,7 +1835,7 @@
              errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser"
              id="ilg.gnuarmeclipse.tool.assembler"
              isAbstract="false"
-             name="%tool.gcc.assembler"
+             name="%tool.assembler"
              natureFilter="both"
              outputFlag="-o">
           <supportedProperties>
@@ -1729,7 +1855,7 @@
           </envVarBuildPath>
           <optionCategory
                 id="ilg.gnuarmeclipse.optionCategory.assembler.preprocessor"
-                name="Preprocessor">
+                name="%optionCategory.compiler.preprocessor">
           </optionCategory>
           <option
                 category="ilg.gnuarmeclipse.optionCategory.assembler.preprocessor"
@@ -1737,7 +1863,7 @@
                 commandFalse="-x assembler"
                 defaultValue="true"
                 id="ilg.gnuarmeclipse.option.assembler.usepreprocessor"
-                name="Use preprocessor"
+                name="%option.assembler.usepreprocessor"
                 valueType="boolean">
           </option>
           <option
@@ -1762,7 +1888,7 @@
           </option>
           <optionCategory
                 id="ilg.gnuarmeclipse.optionCategory.assembler.dirs"
-                name="Directories">
+                name="%optionCategory.compiler.dirs">
           </optionCategory>
           <option
                 category="ilg.gnuarmeclipse.optionCategory.assembler.dirs"
@@ -1771,7 +1897,7 @@
           </option>
           <optionCategory
                 id="ilg.gnuarmeclipse.optionCategory.assembler.warnings"
-                name="Warnings">
+                name="%optionCategory.compiler.warnings">
           </optionCategory>
           <option
                 category="ilg.gnuarmeclipse.optionCategory.assembler.warnings"
@@ -1810,13 +1936,13 @@
           </option>
           <optionCategory
                 id="ilg.gnuarmeclipse.optionCategory.assembler.misc"
-                name="Miscellaneous">
+                name="%optionCategory.compiler.misc">
           </optionCategory>
           <option
                 category="ilg.gnuarmeclipse.optionCategory.assembler.misc"
                 command="-Xassembler ${VALUE}"
                 id="ilg.gnuarmeclipse.option.assembler.flags"
-                name="Assembler flags"
+                name="%option.assembler.flags"
                 valueType="stringList">
           </option>
           <option
@@ -1833,7 +1959,7 @@
                 category="ilg.gnuarmeclipse.optionCategory.assembler.misc"
                 defaultValue="-c -fmessage-length=0"
                 id="ilg.gnuarmeclipse.option.assembler.other"
-                name="Other assembler flags"
+                name="%option.assembler.other"
                 valueType="string">
           </option>
           <inputType
@@ -1857,7 +1983,7 @@
                errorParsers="org.eclipse.cdt.core.GCCErrorParser"
                id="ilg.gnuarmeclipse.tool.c.compiler"
                isAbstract="false"
-               name="%tool.gcc.compiler"
+               name="%tool.c.compiler"
                natureFilter="both"
                outputFlag="-o">
             <supportedProperties>
@@ -1877,7 +2003,7 @@
             </envVarBuildPath>
             <optionCategory
                   id="ilg.gnuarmeclipse.optionCategory.c.compiler.preprocessor"
-                  name="Preprocessor">
+                  name="%optionCategory.compiler.preprocessor">
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.c.compiler.preprocessor"
@@ -1901,7 +2027,7 @@
             </option>
             <optionCategory
                   id="ilg.gnuarmeclipse.optionCategory.c.compiler.dirs"
-                  name="Directories">
+                  name="%optionCategory.compiler.dirs">
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.c.compiler.dirs"
@@ -1910,7 +2036,7 @@
             </option>
             <optionCategory
                   id="ilg.gnuarmeclipse.optionCategory.c.compiler.optimization"
-                  name="Optimization">
+                  name="%optionCategory.compiler.optimization">
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.c.compiler.optimization"
@@ -1939,7 +2065,7 @@
             </option>
             <optionCategory
                   id="ilg.gnuarmeclipse.optionCategory.c.compiler.warnings"
-                  name="Warnings">
+                  name="%optionCategory.compiler.warnings">
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.c.compiler.warnings"
@@ -1978,42 +2104,42 @@
             </option>
             <optionCategory
                   id="ilg.gnuarmeclipse.optionCategory.c.compiler.misc"
-                  name="Miscellaneous">
+                  name="%optionCategory.compiler.misc">
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.c.compiler.misc"
                   id="ilg.gnuarmeclipse.option.c.compiler.std"
-                  name="Language Standard"
+                  name="%option.compiler.std"
                   valueType="enumerated">
                <enumeratedOptionValue
                      command="-ansi"
                      id="ilg.gnuarmeclipse.option.c.compiler.std.ansi"
-                     name="ISO C90 (-ansi)">
+                     name="%option.c.compiler.std.ansi">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=c99"
                      id="ilg.gnuarmeclipse.option.c.compiler.std.c99"
-                     name="ISO C99 (-std=c99)">
+                     name="%option.c.compiler.std.c99">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=c11"
                      id="ilg.gnuarmeclipse.option.c.compiler.std.c11"
-                     name="ISO C11 (-std=c11)">
+                     name="%option.c.compiler.std.c11">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      id="ilg.gnuarmeclipse.option.c.compiler.std.default"
                      isDefault="true"
-                     name="Toolchain Default (GNU ISO C90)">
+                     name="%option.c.compiler.std.default">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=gnu99"
                      id="ilg.gnuarmeclipse.option.c.compiler.std.gnu99"
-                     name="GNU ISO C99 (-std=gnu99)">
+                     name="%option.c.compiler.std.gnu99">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=gnu11"
                      id="ilg.gnuarmeclipse.option.c.compiler.std.gnu11"
-                     name="GNU ISO C11 (-std=gnu11)">
+                     name="%option.c.compiler.std.gnu11">
                </enumeratedOptionValue>
             </option>
             <option
@@ -2056,7 +2182,7 @@
                errorParsers="org.eclipse.cdt.core.GCCErrorParser"
                id="ilg.gnuarmeclipse.tool.cpp.compiler"
                isAbstract="false"
-               name="%tool.gpp.compiler"
+               name="%tool.cpp.compiler"
                natureFilter="ccnature"
                outputFlag="-o">
             <supportedProperties>
@@ -2076,7 +2202,7 @@
             </envVarBuildPath>
             <optionCategory
                   id="ilg.gnuarmeclipse.optionCategory.cpp.compiler.preprocessor"
-                  name="Preprocessor">
+                  name="%optionCategory.compiler.preprocessor">
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.cpp.compiler.preprocessor"
@@ -2088,7 +2214,7 @@
                   command="-nostdinc++"
                   defaultValue="false"
                   id="ilg.gnuarmeclipse.option.cpp.compiler.nostdincpp"
-                  name="Do not search system C++ directories (-nostdinc++)"
+                  name="%option.compiler.nostdincpp"
                   tip="Do not search for header files in the C++-specific standard directories, but do still search the other standard directories."
                   valueType="boolean">
             </option>
@@ -2109,7 +2235,7 @@
             </option>
             <optionCategory
                   id="ilg.gnuarmeclipse.optionCategory.cpp.compiler.dirs"
-                  name="Directories">
+                  name="%optionCategory.compiler.dirs">
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.cpp.compiler.dirs"
@@ -2118,7 +2244,7 @@
             </option>
             <optionCategory
                   id="ilg.gnuarmeclipse.optionCategory.cpp.compiler.optimization"
-                  name="Optimization">
+                  name="%optionCategory.compiler.optimization">
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.cpp.compiler.optimization"
@@ -2142,7 +2268,7 @@
             </option>
             <optionCategory
                   id="ilg.gnuarmeclipse.optionCategory.cpp.compiler.warnings"
-                  name="Warnings">
+                  name="%optionCategory.compiler.warnings">
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.cpp.compiler.warnings"
@@ -2184,7 +2310,7 @@
                   command="-Wabi"
                   defaultValue="false"
                   id="ilg.gnuarmeclipse.option.cpp.compiler.warnabi"
-                  name="ABI warnings (-Wabi)"
+                  name="%option.compiler.warnabi"
                   tip="Warn when G++ generates code that is probably not compatible with the vendor-neutral C++ ABI. Although an effort has been made to warn about all such cases, there are probably some cases that are not warned about, even though G++ is generating incompatible code. There may also be cases where warnings are emitted even though the code that is generated is compatible."
                   valueType="boolean">
             </option>
@@ -2193,7 +2319,7 @@
                   command="-Weffc++"
                   defaultValue="false"
                   id="ilg.gnuarmeclipse.option.cpp.compiler.warneffc"
-                  name="Effective C++ warnings (-Weffc++)"
+                  name="%option.compiler.warneffc"
                   tip="Warn about violations of the style guidelines from Scott Meyers’ Effective C++, Second Edition book."
                   valueType="boolean">
             </option>
@@ -2204,52 +2330,52 @@
             </option>
             <optionCategory
                   id="ilg.gnuarmeclipse.optionCategory.cpp.compiler.misc"
-                  name="Miscellaneous">
+                  name="%optionCategory.compiler.misc">
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.cpp.compiler.misc"
                   id="ilg.gnuarmeclipse.option.cpp.compiler.std"
-                  name="Language Standard"
+                  name="%option.compiler.std"
                   valueType="enumerated">
                <enumeratedOptionValue
                      command="-ansi"
                      id="ilg.gnuarmeclipse.option.cpp.compiler.std.ansi"
-                     name="ISO 1998 C++ incl. 2003 amendments (-ansi)">
+                     name="%option.cpp.compiler.std.ansi">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      id="ilg.gnuarmeclipse.option.cpp.compiler.std.default"
                      isDefault="true"
-                     name="Toolchain Default (GNU ISO 1998 C++)">
+                     name="%option.cpp.compiler.std.default">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=c++0x"
                      id="ilg.gnuarmeclipse.option.cpp.compiler.std.cpp0x"
-                     name="ISO 2011 C++ (-std=c++0x)">
+                     name="%option.cpp.compiler.std.cpp0x">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=c++11"
                      id="ilg.gnuarmeclipse.option.cpp.compiler.std.cpp11"
-                     name="ISO 2011 C++ (-std=c++11)">
+                     name="%option.cpp.compiler.std.cpp11">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=gnu++0x"
                      id="ilg.gnuarmeclipse.option.cpp.compiler.std.gnucpp0x"
-                     name="GNU ISO 2011 C++ (-std=gnu++0x)">
+                     name="%option.cpp.compiler.std.gnucpp0x">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=gnu++11"
                      id="ilg.gnuarmeclipse.option.cpp.compiler.std.gnucpp11"
-                     name="GNU ISO 2011 C++ (-std=gnu++11)">
+                     name="%option.cpp.compiler.std.gnucpp11">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=c++1y"
                      id="ilg.gnuarmeclipse.option.cpp.compiler.std.cpp1y"
-                     name="Next ISO C++ (-std=c++1y)">
+                     name="%option.cpp.compiler.std.cpp1y">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=gnu++1y"
                      id="ilg.gnuarmeclipse.option.cpp.compiler.std.gnucpp1y"
-                     name="Next GNU ISO C++ (-std=gnu++1y)">
+                     name="%option.cpp.compiler.std.gnucpp1y">
                </enumeratedOptionValue>
             </option>
             <option
@@ -2267,7 +2393,7 @@
                   command="-fno-exceptions"
                   defaultValue="true"
                   id="ilg.gnuarmeclipse.option.cpp.compiler.noexceptions"
-                  name="Do not use exceptions (-fno-exceptions)"
+                  name="%option.compiler.noexceptions"
                   tip="Do not generates extra code needed to propagate exceptions."
                   valueType="boolean">
             </option>
@@ -2276,7 +2402,7 @@
                   command="-fno-rtti"
                   defaultValue="true"
                   id="ilg.gnuarmeclipse.option.cpp.compiler.nortti"
-                  name="Do not use RTTI (-fno-rtti)"
+                  name="%option.compiler.nortti"
                   tip="Disable generation of information about every class with virtual functions for use by the C++ run-time type identification features (‘dynamic_cast’ and ‘typeid’). If you don’t use those parts of the language, you can save some space by using this flag. Note that exception handling uses the same information, but G++ generates it as needed. The ‘dynamic_cast’ operator can still be used for casts that do not require run-time type information, i.e. casts to void * or to unambiguous base classes."
                   valueType="boolean">
             </option>
@@ -2309,7 +2435,7 @@
                 command="gcc"
                 commandLineGenerator="ilg.gnuarmeclipse.CrossCommandLineGeneratorFull"
                 id="ilg.gnuarmeclipse.tool.c.linker"
-                name="%tool.gcc.linker"
+                name="%tool.c.linker"
                 natureFilter="cnature"
                 outputFlag="-o">
             <enablement
@@ -2333,103 +2459,70 @@
             </envVarBuildPath>
             <optionCategory
                   id="ilg.gnuarmeclipse.optionCategory.c.linker.general"
-                  name="General">
+                  name="%optionCategory.general">
             </optionCategory>
             <option
-                  browseType="file"
                   category="ilg.gnuarmeclipse.optionCategory.c.linker.general"
-                  command="-T&quot;${VALUE}&quot;"
                   id="ilg.gnuarmeclipse.option.c.linker.scriptfile"
-                  isAbstract="false"
-                  name="Script file (-T)"
-                  resourceFilter="all"
-                  valueType="string">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.scriptfile">
             </option>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.c.linker.general"
-                  command="-nostartfiles"
-                  defaultValue="false"
                   id="ilg.gnuarmeclipse.option.c.linker.nostart"
-                  name="Do not use standard start files (-nostartfiles)"
-                  valueType="boolean">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.nostart">
             </option>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.c.linker.general"
-                  command="-nodefaultlibs"
-                  defaultValue="false"
                   id="ilg.gnuarmeclipse.option.c.linker.nodeflibs"
-                  name="Do not use default libraries (-nodefaultlibs)"
-                  valueType="boolean">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.nodeflibs">
             </option>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.c.linker.general"
-                  command="-nostdlib"
-                  defaultValue="false"
                   id="ilg.gnuarmeclipse.option.c.linker.nostdlibs"
-                  name="No startup or default libs (-nostdlib)"
-                  valueType="boolean">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.nostdlibs">
             </option>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.c.linker.general"
-                  command="-Xlinker --gc-sections"
-                  defaultValue="true"
                   id="ilg.gnuarmeclipse.option.c.linker.gcsections"
-                  name="Remove unused sections (-Xlinker --gc-sections)"
-                  valueType="boolean">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.gcsections">
             </option>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.c.linker.general"
-                  command="-Xlinker --print-gc-sections"
-                  defaultValue="false"
                   id="ilg.gnuarmeclipse.option.c.linker.printgcsections"
-                  name="Print removed sections (-Xlinker --print-gc-sections)"
-                  valueType="boolean">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.printgcsections">
             </option>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.c.linker.general"
-                  command="-s"
-                  defaultValue="false"
                   id="ilg.gnuarmeclipse.option.c.linker.strip"
-                  name="Omit all symbol information (-s)"
-                  valueType="boolean">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.strip">
             </option>
             <optionCategory
                   id="ilg.gnuarmeclipse.optionCategory.c.linker.libs"
-                  name="Libraries">
+                  name="%optionCategory.linker.libraries">
             </optionCategory>
             <option
-                  browseType="none"
                   category="ilg.gnuarmeclipse.optionCategory.c.linker.libs"
-                  command="-l"
                   id="ilg.gnuarmeclipse.option.c.linker.libs"
-                  name="Libraries (-l)"
-                  valueType="libs">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.libs">
             </option>
             <option
-                  browseType="directory"
                   category="ilg.gnuarmeclipse.optionCategory.c.linker.libs"
-                  command="-L"
                   id="ilg.gnuarmeclipse.option.c.linker.paths"
-                  name="Library search path (-L)"
-                  valueType="libPaths">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.paths">
             </option>
             <optionCategory
                   id="ilg.gnuarmeclipse.optionCategory.c.linker.misc"
-                  name="Miscellaneous">
+                  name="%optionCategory.linker.misc">
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.c.linker.misc"
-                  command="-Xlinker ${VALUE}"
                   id="ilg.gnuarmeclipse.option.c.linker.flags"
-                  name="Linker flags (-Xlinker [option])"
-                  valueType="stringList">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.flags">
             </option>
             <option
-                  browseType="file"
                   category="ilg.gnuarmeclipse.optionCategory.c.linker.misc"
                   id="ilg.gnuarmeclipse.option.c.linker.otherobjs"
-                  name="Other objects"
-                  valueType="userObjs">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.otherobjs">
             </option>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.c.linker.misc"
@@ -2448,17 +2541,13 @@
             </option>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.c.linker.misc"
-                  command="-v"
-                  defaultValue="false"
                   id="ilg.gnuarmeclipse.option.c.linker.verbose"
-                  name="Verbose (-v)"
-                  valueType="boolean">
+                  superClass="ilg.gnuarmeclipse.option.base.verbose">
             </option>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.c.linker.misc"
                   id="ilg.gnuarmeclipse.option.c.linker.other"
-                  name="Other link flags"
-                  valueType="string">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.other">
             </option>
             <inputType
                   id="ilg.gnuarmeclipse.tool.c.linker.input"
@@ -2481,7 +2570,7 @@
                command="g++"
                commandLineGenerator="ilg.gnuarmeclipse.CrossCommandLineGeneratorFull"
                id="ilg.gnuarmeclipse.tool.cpp.linker"
-               name="%tool.gpp.linker"
+               name="%tool.cpp.linker"
                natureFilter="ccnature"
                outputFlag="-o">
             <enablement
@@ -2505,103 +2594,70 @@
             </envVarBuildPath>
             <optionCategory
                   id="ilg.gnuarmeclipse.optionCategory.cpp.linker.general"
-                  name="General">
+                  name="%optionCategory.general">
             </optionCategory>
             <option
-                  browseType="file"
                   category="ilg.gnuarmeclipse.optionCategory.cpp.linker.general"
-                  command="-T&quot;${VALUE}&quot;"
                   id="ilg.gnuarmeclipse.option.cpp.linker.scriptfile"
-                  isAbstract="false"
-                  name="Script file (-T)"
-                  resourceFilter="all"
-                  valueType="string">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.scriptfile">
             </option>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.cpp.linker.general"
-                  command="-nostartfiles"
-                  defaultValue="false"
                   id="ilg.gnuarmeclipse.option.cpp.linker.nostart"
-                  name="Do not use standard start files (-nostartfiles)"
-                  valueType="boolean">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.nostart">
             </option>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.cpp.linker.general"
-                  command="-nodefaultlibs"
-                  defaultValue="false"
                   id="ilg.gnuarmeclipse.option.cpp.linker.nodeflibs"
-                  name="Do not use default libraries (-nodefaultlibs)"
-                  valueType="boolean">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.nodeflibs">
             </option>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.cpp.linker.general"
-                  command="-nostdlib"
-                  defaultValue="false"
                   id="ilg.gnuarmeclipse.option.cpp.linker.nostdlibs"
-                  name="No startup or default libs (-nostdlib)"
-                  valueType="boolean">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.nostdlibs">
             </option>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.cpp.linker.general"
-                  command="-Xlinker --gc-sections"
-                  defaultValue="true"
                   id="ilg.gnuarmeclipse.option.cpp.linker.gcsections"
-                  name="Remove unused sections (-Xlinker --gc-sections)"
-                  valueType="boolean">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.gcsections">
             </option>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.cpp.linker.general"
-                  command="-Xlinker --print-gc-sections"
-                  defaultValue="false"
                   id="ilg.gnuarmeclipse.option.cpp.linker.printgcsections"
-                  name="Print removed sections (-Xlinker --print-gc-sections)"
-                  valueType="boolean">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.printgcsections">
             </option>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.cpp.linker.general"
-                  command="-s"
-                  defaultValue="false"
                   id="ilg.gnuarmeclipse.option.cpp.linker.strip"
-                  name="Omit all symbol information (-s)"
-                  valueType="boolean">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.strip">
             </option>
             <optionCategory
                   id="ilg.gnuarmeclipse.optionCategory.cpp.linker.libs"
-                  name="Libraries">
+                  name="%optionCategory.linker.libraries">
             </optionCategory>
             <option
-                  browseType="none"
                   category="ilg.gnuarmeclipse.optionCategory.cpp.linker.libs"
-                  command="-l"
                   id="ilg.gnuarmeclipse.option.cpp.linker.libs"
-                  name="Libraries (-l)"
-                  valueType="libs">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.libs">
             </option>
             <option
-                  browseType="directory"
                   category="ilg.gnuarmeclipse.optionCategory.cpp.linker.libs"
-                  command="-L"
                   id="ilg.gnuarmeclipse.option.cpp.linker.paths"
-                  name="Library search path (-L)"
-                  valueType="libPaths">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.paths">
             </option>
             <optionCategory
                   id="ilg.gnuarmeclipse.optionCategory.cpp.linker.misc"
-                  name="Miscellaneous">
+                  name="%optionCategory.linker.misc">
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.cpp.linker.misc"
-                  command="-Xlinker ${VALUE}"
                   id="ilg.gnuarmeclipse.option.cpp.linker.flags"
-                  name="Linker flags (-Xlinker [option])"
-                  valueType="stringList">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.flags">
             </option>
             <option
-                  browseType="file"
                   category="ilg.gnuarmeclipse.optionCategory.cpp.linker.misc"
                   id="ilg.gnuarmeclipse.option.cpp.linker.otherobjs"
-                  name="Other objects"
-                  valueType="userObjs">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.otherobjs">
             </option>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.cpp.linker.misc"
@@ -2620,17 +2676,13 @@
             </option>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.cpp.linker.misc"
-                  command="-v"
-                  defaultValue="false"
                   id="ilg.gnuarmeclipse.option.cpp.linker.verbose"
-                  name="Verbose (-v)"
-                  valueType="boolean">
+                  superClass="ilg.gnuarmeclipse.option.base.verbose">
             </option>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.cpp.linker.misc"
                   id="ilg.gnuarmeclipse.option.cpp.linker.other"
-                  name="Other flags"
-                  valueType="string">
+                  superClass="ilg.gnuarmeclipse.option.base.linker.other">
             </option>
             <inputType
                   id="ilg.gnuarmeclipse.tool.cpp.linker.input"
@@ -2654,7 +2706,7 @@
                commandLineGenerator="ilg.gnuarmeclipse.CrossCommandLineGenerator"
                id="ilg.gnuarmeclipse.tool.archiver"
                isAbstract="false"
-               name="%tool.gcc.archiver"
+               name="%tool.archiver"
                superClass="cdt.managedbuild.tool.gnu.archiver">
             <enablement
                   type="ALL">
@@ -2669,7 +2721,7 @@
                commandLineGenerator="ilg.gnuarmeclipse.CrossCommandLineGenerator"
                id="ilg.gnuarmeclipse.tool.createflash"
                isAbstract="false"
-               name="Cross ARM GNU Create Flash Image"
+               name="%tool.flash"
                natureFilter="both">
             <enablement
                   type="ALL">
@@ -2680,33 +2732,33 @@
             </enablement>
             <optionCategory
                   id="ilg.gnuarmeclipse.optionCategory.base.createflash.general"
-                  name="General">
+                  name="%optionCategory.general">
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.base.createflash.general"
                   id="ilg.gnuarmeclipse.option.base.createflash.choice"
-                  name="Output file format (-O)"
+                  name="%option.flash.outformat"
                   valueType="enumerated">
                <enumeratedOptionValue
                      command="-O ihex"
                      id="ilg.gnuarmeclipse.option.base.createflash.choice.ihex"
                      isDefault="true"
-                     name="ihex">
+                     name="%option.flash.outformat.ihex">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-O srec"
                      id="ilg.gnuarmeclipse.option.base.createflash.choice.srec"
-                     name="srec">
+                     name="%option.flash.outformat.srec">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-O symbolsrec"
                      id="ilg.gnuarmeclipse.option.base.createflash.choice.symbolsrec"
-                     name="symbolsrec">
+                     name="%option.flash.outformat.symbolsrec">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-O binary"
                      id="ilg.gnuarmeclipse.option.base.createflash.choice.binary"
-                     name="binary">
+                     name="%option.flash.outformat.binary">
                </enumeratedOptionValue>
             </option>
             <option
@@ -2714,7 +2766,7 @@
                   command="-j .text"
                   id="ilg.gnuarmeclipse.option.base.createflash.textsection"
                   isAbstract="false"
-                  name="Section: -j .text"
+                  name="%option.flash.textsections"
                   resourceFilter="all"
                   valueType="boolean">
             </option>
@@ -2723,7 +2775,7 @@
                   command="-j .data"
                   id="ilg.gnuarmeclipse.option.base.createflash.datasection"
                   isAbstract="false"
-                  name="Section: -j .data"
+                  name="%option.flash.datasections"
                   resourceFilter="all"
                   valueType="boolean">
             </option>
@@ -2732,14 +2784,14 @@
                   command="-j "
                   id="ilg.gnuarmeclipse.option.base.createflash.othersection"
                   isAbstract="false"
-                  name="Other sections (-j)"
+                  name="%option.flash.othersections"
                   resourceFilter="all"
                   valueType="stringList">
             </option>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.base.createflash.general"
                   id="ilg.gnuarmeclipse.option.base.createflash.other"
-                  name="Other flags"
+                  name="%option.flash.other"
                   valueType="string">
             </option>
             <outputType
@@ -2768,7 +2820,7 @@
                commandLineGenerator="ilg.gnuarmeclipse.CrossCommandLineGenerator"
                id="ilg.gnuarmeclipse.tool.createlisting"
                isAbstract="false"
-               name="Cross ARM GNU Create Listing"
+               name="%tool.listing"
                natureFilter="both"
                outputFlag="&gt;">
             <enablement
@@ -2780,13 +2832,13 @@
             </enablement>
             <optionCategory
                   id="ilg.gnuarmeclipse.optionCategory.base.createlisting.general"
-                  name="General">
+                  name="%optionCategory.general">
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.base.createlisting.general"
                   defaultValue="-h -S"
                   id="ilg.gnuarmeclipse.option.base.createlisting.other"
-                  name="Other flags"
+                  name="%option.listing.other"
                   valueType="string">
             </option>
             <outputType
@@ -2815,7 +2867,7 @@
                commandLinePattern="${COMMAND} ${INPUTS} ${FLAGS}"
                id="ilg.gnuarmeclipse.tool.printsize"
                isAbstract="false"
-               name="Cross ARM GNU Print Size"
+               name="%tool.size"
                natureFilter="both">
             <enablement
                   type="ALL">
@@ -2826,23 +2878,23 @@
             </enablement>
             <optionCategory
                   id="ilg.gnuarmeclipse.optionCategory.base.printsize.general"
-                  name="General">
+                  name="%optionCategory.general">
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.base.printsize.general"
                   id="ilg.gnuarmeclipse.option.base.printsize.format"
-                  name="Size Format"
+                  name="%option.print.sizeFormat"
                   valueType="enumerated">
                <enumeratedOptionValue
                      command="--format=berkeley"
                      id="ilg.gnuarmeclipse.option.base.printsize.format.berkeley"
                      isDefault="true"
-                     name="Berkeley">
+                     name="%option.print.sizeFormat.berkeley">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="--format=sysv"
                      id="ilg.gnuarmeclipse.option.base.printsize.format.sysv"
-                     name="SysV">
+                     name="%option.print.sizeFormat.sysv">
                </enumeratedOptionValue>
             </option>
             <option
@@ -2850,7 +2902,7 @@
                   command="-x"
                   defaultValue="false"
                   id="ilg.gnuarmeclipse.option.base.printsize.hex"
-                  name="Hex"
+                  name="%option.print.hex"
                   valueType="boolean">
             </option>
             <option
@@ -2858,13 +2910,13 @@
                   command="-t"
                   defaultValue="false"
                   id="ilg.gnuarmeclipse.option.base.printsize.totals"
-                  name="Show Totals"
+                  name="%option.print.totals"
                   valueType="boolean">
             </option>
             <option
                   category="ilg.gnuarmeclipse.optionCategory.base.printsize.general"
                   id="ilg.gnuarmeclipse.option.base.printsize.other"
-                  name="Other flags"
+                  name="%option.print.other"
                   valueType="string">
             </option>
             <outputType
