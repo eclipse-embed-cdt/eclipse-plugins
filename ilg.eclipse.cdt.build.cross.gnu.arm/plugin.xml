@@ -20,846 +20,15 @@
             fileVersion="4.0.0">
       </managedBuildRevision>
       <tool
-            id="ilg.gnuarmeclipse.managedbuild.cross.tool.base1"
-            isAbstract="true"
-            name="ARM Targets common options">
-            
-         <!-- ===== Target ================================================ -->
-         <option
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.family"
-               isAbstract="true"
-               name="%option.target.family"
-               valueType="enumerated">
-            <enumeratedOptionValue
-                  command="-mcpu=arm2"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm2"
-                  name="arm2">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm250"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm250"
-                  name="arm250">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm3"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm3"
-                  name="arm3">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm6"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm6"
-                  name="arm6">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm60"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm60"
-                  name="arm60">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm600"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm600"
-                  name="arm600">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm610"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm610"
-                  name="arm610">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm620"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm620"
-                  name="arm620">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm7"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm7"
-                  name="arm7">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm7m"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm7m"
-                  name="arm7m">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm7d"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm7d"
-                  name="arm7d">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm7dm"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm7dm"
-                  name="arm7dm">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm7di"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm7di"
-                  name="arm7di">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm7dmi"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm7dmi"
-                  name="arm7dmi">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm70"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm70"
-                  name="arm70">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm700"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm700"
-                  name="arm700">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm700i"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm700i"
-                  name="arm700i">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm710"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm710"
-                  name="arm710">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm710c"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm710c"
-                  name="arm710c">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm7100"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm7100"
-                  name="arm7100">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm720"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm720"
-                  name="arm720">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm7500"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm7500"
-                  name="arm7500">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm7500fe"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm7500fe"
-                  name="arm7500fe">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm7tdmi"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm7tdmi"
-                  isDefault="false"
-                  name="arm7tdmi">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm7tdmi-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm7tdmi-s"
-                  name="arm7tdmi-s">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm710t"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm710t"
-                  name="arm710t">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm720t"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm720t"
-                  name="arm720t">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm740t"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm740t"
-                  name="arm740t">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=strongarm"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.strongarm"
-                  name="strongarm">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=strongarm110"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.strongarm110"
-                  name="strongarm110">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=strongarm1100"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.strongarm1100"
-                  name="strongarm1100">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=strongarm1110"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.strongarm1110"
-                  name="strongarm1110">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm8"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm8"
-                  name="arm8">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm810"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm810"
-                  name="arm810">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm9"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm9"
-                  name="arm9">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm9e"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm9e"
-                  name="arm9e">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm920"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm920"
-                  name="arm920">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm920t"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm920t"
-                  name="arm920t">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm922t"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm922t"
-                  name="arm922t">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm946e-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm946e-s"
-                  name="arm946e-s">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm966e-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm966e-s"
-                  name="arm966e-s">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm968e-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm968e-s"
-                  name="arm968e-s">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm926ej-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm926ej-s"
-                  name="arm926ej-s">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm940t"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm940t"
-                  name="arm940t">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm9tdmi"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm9tdmi"
-                  name="arm9tdmi">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm10tdmi"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm10tdmi"
-                  name="arm10tdmi">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm1020t"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm1020t"
-                  name="arm1020t">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm1026ej-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm1026ej-s"
-                  name="arm1026ej-s">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm10e"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm10e"
-                  name="arm10e">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm1020e"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm1020e"
-                  name="arm1020e">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm1022e"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm1022e"
-                  name="arm1022e">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm1136j-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm1136j-s"
-                  name="arm1136j-s">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm1136jf-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm1136jf-s"
-                  name="arm1136jf-s">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=mpcore"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.mpcore"
-                  name="mpcore">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=mpcorenovfp"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.mpcorenovfp"
-                  name="mpcorenovfp">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm1156t2-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm1156t2-s"
-                  name="arm1156t2-s">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm1156t2f-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm1156t2f-s"
-                  name="arm1156t2f-s">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm1176jz-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm1176jz-s"
-                  name="arm1176jz-s">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm1176jzf-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.arm1176jzf-s"
-                  name="arm1176jzf-s">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=cortex-a5"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-a5"
-                  name="cortex-a5">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=cortex-a7"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-a7"
-                  name="cortex-a7">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=cortex-a8"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-a8"
-                  name="cortex-a8">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=cortex-a9"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-a9"
-                  name="cortex-a9">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=cortex-a15"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-a15"
-                  name="cortex-a15">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=cortex-a53"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-a53"
-                  name="cortex-a53">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=cortex-r4"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-r4"
-                  name="cortex-r4">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=cortex-r4f"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-r4f"
-                  name="cortex-r4f">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=cortex-m4"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-m4"
-                  name="cortex-m4">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=cortex-m3"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-m3"
-                  isDefault="true"
-                  name="cortex-m3">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=cortex-m1"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-m1"
-                  name="cortex-m1">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=cortex-m0"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-m0"
-                  name="cortex-m0">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=cortex-m0plus"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-m0plus"
-                  name="cortex-m0plus">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=marvell-pj4"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.marvell-pj4"
-                  name="marvell-pj4">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=xscale"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.xscale"
-                  name="xscale">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=iwmmxt"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.iwmmxt"
-                  name="iwmmxt">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=iwmmxt2"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.iwmmxt2"
-                  name="iwmmxt2">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=ep9312"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.ep9312"
-                  name="ep9312">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=fa526"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.fa526"
-                  name="fa526">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=fa626"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.fa626"
-                  name="fa626">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=fa606te"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.fa606te"
-                  name="fa606te">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=fa626te"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.fa626te"
-                  name="fa626te">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=fmp626"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.fmp626"
-                  name="fmp626">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=fa726te"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.fa726te"
-                  name="fa726te">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=marvell-f"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.marvell-f"
-                  name="marvell-f">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=native"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.native"
-                  name="Native (-mcpu=native)">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.default"
-                  name="Toolchain Default">
-            </enumeratedOptionValue>
-         </option>
-
-         <option
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.architecture"
-               isAbstract="true"
-               name="%option.target.architecture"
-               valueType="enumerated">
-            <enumeratedOptionValue
-                  command="-march=armv2"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv2"
-                  name="armv2">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=armv2a"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv2a"
-                  name="armv2a">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=armv3"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv3"
-                  name="armv3">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=armv3m"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv3m"
-                  name="armv3m">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=armv4"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv4"
-                  name="armv4">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=armv4t"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv4t"
-                  name="armv4t">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=armv5"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv5"
-                  name="armv5">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=armv5t"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv5t"
-                  name="armv5t">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=armv5e"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv5e"
-                  name="armv5e">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=armv5te"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv5te"
-                  name="armv5te">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=armv6"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv6"
-                  name="armv6">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=armv6j"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv6j"
-                  name="armv6j">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=armv6t2"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv6t2"
-                  name="armv6t2">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=armv6z"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv6z"
-                  name="armv6z">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=armv6zk"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv6zk"
-                  name="armv6zk">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=armv6-m"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv6-m"
-                  name="armv6-m">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=armv7"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv7"
-                  name="armv7">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=armv7-a"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv7-a"
-                  name="armv7-a">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=armv7-r"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv7-r"
-                  name="armv7-r">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=armv7-m"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv7-m"
-                  name="armv7-m">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=armv8-a"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv8-a"
-                  name="armv8-a">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=iwmmxt"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.iwmmxt"
-                  name="iwmmxt">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=iwmmxt2"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.iwmmxt2"
-                  name="iwmmxt2">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=ep9312"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.ep9312"
-                  name="ep9312">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=native"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.native"
-                  name="Native (-march=native)">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.none"
-                  isDefault="true"
-                  name="Toolchain Default">
-            </enumeratedOptionValue>
-         </option>
-
-         <option
-               command="-mthumb"
-               defaultValue="true"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.thumb"
-               isAbstract="true"
-               name="%option.target.thumb"
-               tip="Generate code that executes in Thumb states."
-               valueType="boolean">
-         </option>
-         
-         <option
-               command="-mthumb-interwork"
-               defaultValue="false"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.thumbinterwork"
-               isAbstract="true"
-               name="%option.target.thumbInterwork"
-               tip="Generate code that supports calling between the ARM and Thumb instruction sets."
-               valueType="boolean">
-         </option>
-         
-         <option
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.endianness"
-               isAbstract="true"
-               name="%option.target.endianness"
-               valueType="enumerated">
-            <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.endianness.default"
-                  isDefault="true"
-                  name="%option.target.endianness.default ">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mlittle-endian"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.endianness.little"
-                  name="%option.target.endianness.little">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mbig-endian"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.endianness.big"
-                  name="%option.target.endianness.big">
-            </enumeratedOptionValue>
-         </option>
-         
-         <option
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.abi"
-               isAbstract="true"
-               name="%option.target.floatABI"
-               tip="Specifies which floating-point ABI to use. Specifying ‘soft’ causes GCC to generate output containing library calls for floating-point operations. ‘softfp’ allows the generation of code using hardware floating-point instructions, but still uses the soft-float calling conventions. ‘hard’ allows generation of floating-point instructions and uses FPU-specific calling conventions. The default depends on the specific target configuration. Note that the hard-float and soft-float ABIs are not link-compatible; you must compile your entire program with the same ABI, and link with a compatible set of libraries."
-               valueType="enumerated">
-            <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.abi.default"
-                  isDefault="true"
-                  name="%option.target.floatABI.default">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfloat-abi=soft"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.abi.soft"
-                  name="%option.target.floatABI.soft">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfloat-abi=softfp"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.abi.softfp"
-                  name="%option.target.floatABI.softfp">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfloat-abi=hard"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.abi.hard"
-                  name="%option.target.floatABI.hard">
-            </enumeratedOptionValue>
-            <enablement
-                  extensionAdjustment="false"
-                  type="UI_ENABLEMENT|CMD_USAGE">
-               <not>
-                  <or>
-                     <checkOption
-                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.family"
-                           value="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-m0">
-                     </checkOption>
-                     <checkOption
-                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.family"
-                           value="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-m0plus">
-                     </checkOption>
-                     <checkOption
-                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.family"
-                           value="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-m1">
-                     </checkOption>
-                     <checkOption
-                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.family"
-                           value="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-m3">
-                     </checkOption>
-                  </or>
-               </not>
-            </enablement>
-         </option>
-         
-         <option
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit"
-               isAbstract="true"
-               name="%option.target.fpuType"
-               tip="This specifies what floating-point hardware (or hardware emulation) is available on the target. If ‘-msoft-float’ is specified this specifies the format of floating-point values."
-               valueType="enumerated">
-            <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.default"
-                  isDefault="true"
-                  name="%option.target.fpuType.default">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfpu=fpa"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.fpa"
-                  name="%option.target.fpuType.fpa">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfpu=fpe2"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.fpe2"
-                  name="%option.target.fpuType.fpe2">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfpu=fpe3"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.fpe3"
-                  name="%option.target.fpuType.fpe3">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfpu=maverick"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.maverick"
-                  name="%option.target.fpuType.maverick">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfpu=vfp"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.vfp"
-                  name="%option.target.fpuType.vfp">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfpu=vfpv3"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.vfpv3"
-                  name="%option.target.fpuType.vfpv3">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfpu=vfpv3-fp16"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.vfpv3fp16"
-                  name="%option.target.fpuType.vfpv3fp16">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfpu=vfpv3-d16"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.vfpv3d16"
-                  name="%option.target.fpuType.vfpv3d16">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfpu=vfpv3-d16-fp16"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.vfpv3d16fp16"
-                  name="%option.target.fpuType.vfpv3d16fp16">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfpu=vfpv3xd"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.vfpv3xd"
-                  name="%option.target.fpuType.vfpv3xd">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfpu=vfpv3xd-fp16"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.vfpv3xdfp16"
-                  name="%option.target.fpuType.vfpv3xdfp16">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfpu=neon"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.neon"
-                  name="%option.target.fpuType.neon">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfpu=neon-fp16"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.neonfp16"
-                  name="%option.target.fpuType.neonfp16">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfpu=vfpv4"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.vfpv4"
-                  name="%option.target.fpuType.vfpv4">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfpu=vfpv4-d16"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.vfpv4d16"
-                  name="%option.target.fpuType.vfpv4d16">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfpu=fpv4-sp-d16"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.fpv4spd16"
-                  name="%option.target.fpuType.fpv4spd16">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfpu=neon-vfpv4"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.neonvfpv4"
-                  name="%option.target.fpuType.neonvfpv4">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfpu=fp-armv8"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.fparmv8"
-                  name="%option.target.fpuType.fparmv8">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfpu=neon-fp-armv8"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.neonfparmv8"
-                  name="%option.target.fpuType.neonfparmv8">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mfpu=crypto-neon-fp-armv8"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.cryptoneonfparmv8"
-                  name="%option.target.fpuType.cryptoneonfparmv8">
-            </enumeratedOptionValue>
-            <enablement
-                  extensionAdjustment="false"
-                  type="UI_ENABLEMENT|CMD_USAGE">
-               <not>
-                  <checkOption
-                        optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.abi"
-                        value="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.abi.soft">
-                  </checkOption>
-               </not>
-            </enablement>
-            <enablement
-                  extensionAdjustment="false"
-                  type="UI_ENABLEMENT|CMD_USAGE">
-               <not>
-                  <or>
-                     <checkOption
-                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.family"
-                           value="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-m0">
-                     </checkOption>
-                     <checkOption
-                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.family"
-                           value="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-m0plus">
-                     </checkOption>
-                     <checkOption
-                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.family"
-                           value="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-m1">
-                     </checkOption>
-                     <checkOption
-                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.family"
-                           value="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-m3">
-                     </checkOption>
-                  </or>
-               </not>
-            </enablement>
-            <enablement
-                  attribute="value"
-                  extensionAdjustment="false"
-                  type="CONTAINER_ATTRIBUTE"
-                  value="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit.fpv4spd16">
-               <checkOption
-                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.family"
-                     value="ilg.gnuarmeclipse.managedbuild.cross.option.base.mcpu.cortex-m4">
-               </checkOption>
-            </enablement>
-         </option>
-         
+            id="ilg.gnuarmeclipse.managedbuild.cross.tool.common"
+            isAbstract="false"
+            name="Common options">
          <option
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.other"
                isAbstract="true"
                name="%option.target.other"
                valueType="string">
          </option>
-         
-         
-         <!-- ===== Debugging ============================================= -->
          <option
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.debugging.level"
                isAbstract="true"
@@ -907,7 +76,6 @@
                </checkBuildProperty>
             </enablement>
          </option>
-         
          <option
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.debugging.format"
                isAbstract="true"
@@ -970,7 +138,6 @@
                </checkBuildProperty>
             </enablement>
          </option>
-         
          <option
                command="-p"
                defaultValue="false"
@@ -995,8 +162,6 @@
                name="%option.debugging.other"
                valueType="string">
          </option>
-        
-         <!-- ===== Additional Tools ====================================== --> 
          <option
                defaultValue="true"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.toolchain.createflash"
@@ -1042,8 +207,6 @@
                </checkBuildProperty>
             </enablement>
          </option>
-                          
-         <!-- ===== Tools common options ================================== -->
       </tool>
       <tool
             id="ilg.gnuarmeclipse.managedbuild.cross.tool.compiler"
@@ -1408,185 +571,1121 @@
                valueType="string">
          </option>
       </tool>
+      <tool
+            id="ilg.gnuarmeclipse.managedbuild.cross.tool.base.arm32"
+            isAbstract="true"
+            name="ARM32 Targets common options">
+         <option
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.family"
+               isAbstract="true"
+               name="%option.target.arm32.family"
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  command="-mcpu=arm2"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm2"
+                  name="arm2">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm250"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm250"
+                  name="arm250">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm3"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm3"
+                  name="arm3">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm6"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm6"
+                  name="arm6">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm60"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm60"
+                  name="arm60">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm600"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm600"
+                  name="arm600">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm610"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm610"
+                  name="arm610">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm620"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm620"
+                  name="arm620">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm7"
+                  name="arm7">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7m"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm7m"
+                  name="arm7m">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7d"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm7d"
+                  name="arm7d">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7dm"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm7dm"
+                  name="arm7dm">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7di"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm7di"
+                  name="arm7di">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7dmi"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm7dmi"
+                  name="arm7dmi">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm70"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm70"
+                  name="arm70">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm700"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm700"
+                  name="arm700">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm700i"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm700i"
+                  name="arm700i">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm710"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm710"
+                  name="arm710">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm710c"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm710c"
+                  name="arm710c">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7100"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm7100"
+                  name="arm7100">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm720"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm720"
+                  name="arm720">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7500"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm7500"
+                  name="arm7500">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7500fe"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm7500fe"
+                  name="arm7500fe">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7tdmi"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm7tdmi"
+                  isDefault="false"
+                  name="arm7tdmi">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7tdmi-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm7tdmi-s"
+                  name="arm7tdmi-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm710t"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm710t"
+                  name="arm710t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm720t"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm720t"
+                  name="arm720t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm740t"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm740t"
+                  name="arm740t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=strongarm"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.strongarm"
+                  name="strongarm">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=strongarm110"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.strongarm110"
+                  name="strongarm110">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=strongarm1100"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.strongarm1100"
+                  name="strongarm1100">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=strongarm1110"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.strongarm1110"
+                  name="strongarm1110">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm8"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm8"
+                  name="arm8">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm810"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm810"
+                  name="arm810">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm9"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm9"
+                  name="arm9">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm9e"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm9e"
+                  name="arm9e">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm920"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm920"
+                  name="arm920">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm920t"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm920t"
+                  name="arm920t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm922t"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm922t"
+                  name="arm922t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm946e-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm946e-s"
+                  name="arm946e-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm966e-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm966e-s"
+                  name="arm966e-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm968e-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm968e-s"
+                  name="arm968e-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm926ej-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm926ej-s"
+                  name="arm926ej-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm940t"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm940t"
+                  name="arm940t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm9tdmi"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm9tdmi"
+                  name="arm9tdmi">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm10tdmi"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm10tdmi"
+                  name="arm10tdmi">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1020t"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm1020t"
+                  name="arm1020t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1026ej-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm1026ej-s"
+                  name="arm1026ej-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm10e"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm10e"
+                  name="arm10e">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1020e"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm1020e"
+                  name="arm1020e">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1022e"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm1022e"
+                  name="arm1022e">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1136j-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm1136j-s"
+                  name="arm1136j-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1136jf-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm1136jf-s"
+                  name="arm1136jf-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=mpcore"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.mpcore"
+                  name="mpcore">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=mpcorenovfp"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.mpcorenovfp"
+                  name="mpcorenovfp">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1156t2-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm1156t2-s"
+                  name="arm1156t2-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1156t2f-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm1156t2f-s"
+                  name="arm1156t2f-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1176jz-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm1176jz-s"
+                  name="arm1176jz-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1176jzf-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.arm1176jzf-s"
+                  name="arm1176jzf-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-a5"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-a5"
+                  name="cortex-a5">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-a7"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-a7"
+                  name="cortex-a7">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-a8"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-a8"
+                  name="cortex-a8">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-a9"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-a9"
+                  name="cortex-a9">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-a15"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-a15"
+                  name="cortex-a15">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-a53"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-a53"
+                  name="cortex-a53">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-r4"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-r4"
+                  name="cortex-r4">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-r4f"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-r4f"
+                  name="cortex-r4f">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-m4"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-m4"
+                  name="cortex-m4">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-m3"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-m3"
+                  isDefault="true"
+                  name="cortex-m3">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-m1"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-m1"
+                  name="cortex-m1">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-m0"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-m0"
+                  name="cortex-m0">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-m0plus"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-m0plus"
+                  name="cortex-m0plus">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=marvell-pj4"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.marvell-pj4"
+                  name="marvell-pj4">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=xscale"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.xscale"
+                  name="xscale">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=iwmmxt"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.iwmmxt"
+                  name="iwmmxt">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=iwmmxt2"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.iwmmxt2"
+                  name="iwmmxt2">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=ep9312"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.ep9312"
+                  name="ep9312">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=fa526"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.fa526"
+                  name="fa526">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=fa626"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.fa626"
+                  name="fa626">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=fa606te"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.fa606te"
+                  name="fa606te">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=fa626te"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.fa626te"
+                  name="fa626te">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=fmp626"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.fmp626"
+                  name="fmp626">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=fa726te"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.fa726te"
+                  name="fa726te">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=marvell-f"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.marvell-f"
+                  name="marvell-f">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=native"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.native"
+                  name="Native (-mcpu=native)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.default"
+                  name="Toolchain Default">
+            </enumeratedOptionValue>
+            <enablement
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <checkOption
+                     isRegex="false"
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm32">
+               </checkOption>
+            </enablement>
+         </option>
+         <option
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.architecture"
+               isAbstract="true"
+               name="%option.target.arm32.architecture"
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  command="-march=armv2"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv2"
+                  name="armv2">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv2a"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv2a"
+                  name="armv2a">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv3"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv3"
+                  name="armv3">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv3m"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv3m"
+                  name="armv3m">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv4"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv4"
+                  name="armv4">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv4t"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv4t"
+                  name="armv4t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv5"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv5"
+                  name="armv5">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv5t"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv5t"
+                  name="armv5t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv5e"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv5e"
+                  name="armv5e">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv5te"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv5te"
+                  name="armv5te">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv6"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv6"
+                  name="armv6">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv6j"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv6j"
+                  name="armv6j">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv6t2"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv6t2"
+                  name="armv6t2">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv6z"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv6z"
+                  name="armv6z">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv6zk"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv6zk"
+                  name="armv6zk">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv6-m"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv6-m"
+                  name="armv6-m">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv7"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv7"
+                  name="armv7">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv7-a"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv7-a"
+                  name="armv7-a">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv7-r"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv7-r"
+                  name="armv7-r">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv7-m"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv7-m"
+                  name="armv7-m">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv8-a"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.armv8-a"
+                  name="armv8-a">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=iwmmxt"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.iwmmxt"
+                  name="iwmmxt">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=iwmmxt2"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.iwmmxt2"
+                  name="iwmmxt2">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=ep9312"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.ep9312"
+                  name="ep9312">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=native"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.native"
+                  name="Native (-march=native)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.none"
+                  isDefault="true"
+                  name="Toolchain Default">
+            </enumeratedOptionValue>
+            <enablement
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <checkOption
+                     isRegex="false"
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm32">
+               </checkOption>
+            </enablement>
+         </option>
+         <option
+               command="-mthumb"
+               defaultValue="true"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.thumb"
+               isAbstract="true"
+               name="%option.target.arm32.thumb"
+               tip="Generate code that executes in Thumb states."
+               valueType="boolean">
+            <enablement
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <checkOption
+                     isRegex="false"
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm32">
+               </checkOption>
+            </enablement>
+         </option>
+         <option
+               command="-mthumb-interwork"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.thumbinterwork"
+               isAbstract="true"
+               name="%option.target.arm32.thumbInterwork"
+               tip="Generate code that supports calling between the ARM and Thumb instruction sets."
+               valueType="boolean">
+            <enablement
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <checkOption
+                     isRegex="false"
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm32">
+               </checkOption>
+            </enablement>
+         </option>
+         <option
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.endianness"
+               isAbstract="true"
+               name="%option.target.arm32.endianness"
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.endianness.default"
+                  isDefault="true"
+                  name="%option.target.arm32.endianness.default ">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mlittle-endian"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.endianness.little"
+                  name="%option.target.arm32.endianness.little">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mbig-endian"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.endianness.big"
+                  name="%option.target.arm32.endianness.big">
+            </enumeratedOptionValue>
+            <enablement
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <checkOption
+                     isRegex="false"
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm32">
+               </checkOption>
+            </enablement>
+         </option>
+         <option
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.abi"
+               isAbstract="true"
+               name="%option.target.arm32.floatABI"
+               tip="Specifies which floating-point ABI to use. Specifying ‘soft’ causes GCC to generate output containing library calls for floating-point operations. ‘softfp’ allows the generation of code using hardware floating-point instructions, but still uses the soft-float calling conventions. ‘hard’ allows generation of floating-point instructions and uses FPU-specific calling conventions. The default depends on the specific target configuration. Note that the hard-float and soft-float ABIs are not link-compatible; you must compile your entire program with the same ABI, and link with a compatible set of libraries."
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.abi.default"
+                  isDefault="true"
+                  name="%option.target.arm32.floatABI.default">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfloat-abi=soft"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.abi.soft"
+                  name="%option.target.arm32.floatABI.soft">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfloat-abi=softfp"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.abi.softfp"
+                  name="%option.target.arm32.floatABI.softfp">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfloat-abi=hard"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.abi.hard"
+                  name="%option.target.arm32.floatABI.hard">
+            </enumeratedOptionValue>
+            <enablement
+                  extensionAdjustment="false"
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <not>
+                  <or>
+                     <checkOption
+                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.family"
+                           value="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-m0">
+                     </checkOption>
+                     <checkOption
+                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.family"
+                           value="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-m0plus">
+                     </checkOption>
+                     <checkOption
+                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.family"
+                           value="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-m1">
+                     </checkOption>
+                     <checkOption
+                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.family"
+                           value="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-m3">
+                     </checkOption>
+                  </or>
+               </not>
+            </enablement>
+            <enablement
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <checkOption
+                     isRegex="false"
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm32">
+               </checkOption>
+            </enablement>
+         </option>
+         <option
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit"
+               isAbstract="true"
+               name="%option.target.arm32.fpuType"
+               tip="This specifies what floating-point hardware (or hardware emulation) is available on the target. If ‘-msoft-float’ is specified this specifies the format of floating-point values."
+               valueType="enumerated">
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.default"
+                  isDefault="true"
+                  name="%option.target.arm32.fpuType.default">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=fpa"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.fpa"
+                  name="%option.target.arm32.fpuType.fpa">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=fpe2"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.fpe2"
+                  name="%option.target.arm32.fpuType.fpe2">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=fpe3"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.fpe3"
+                  name="%option.target.arm32.fpuType.fpe3">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=maverick"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.maverick"
+                  name="%option.target.arm32.fpuType.maverick">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=vfp"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.vfp"
+                  name="%option.target.arm32.fpuType.vfp">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=vfpv3"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.vfpv3"
+                  name="%option.target.arm32.fpuType.vfpv3">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=vfpv3-fp16"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.vfpv3fp16"
+                  name="%option.target.arm32.fpuType.vfpv3fp16">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=vfpv3-d16"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.vfpv3d16"
+                  name="%option.target.arm32.fpuType.vfpv3d16">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=vfpv3-d16-fp16"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.vfpv3d16fp16"
+                  name="%option.target.arm32.fpuType.vfpv3d16fp16">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=vfpv3xd"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.vfpv3xd"
+                  name="%option.target.arm32.fpuType.vfpv3xd">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=vfpv3xd-fp16"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.vfpv3xdfp16"
+                  name="%option.target.arm32.fpuType.vfpv3xdfp16">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=neon"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.neon"
+                  name="%option.target.arm32.fpuType.neon">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=neon-fp16"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.neonfp16"
+                  name="%option.target.arm32.fpuType.neonfp16">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=vfpv4"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.vfpv4"
+                  name="%option.target.arm32.fpuType.vfpv4">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=vfpv4-d16"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.vfpv4d16"
+                  name="%option.target.arm32.fpuType.vfpv4d16">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=fpv4-sp-d16"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.fpv4spd16"
+                  name="%option.target.arm32.fpuType.fpv4spd16">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=neon-vfpv4"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.neonvfpv4"
+                  name="%option.target.arm32.fpuType.neonvfpv4">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=fp-armv8"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.fparmv8"
+                  name="%option.target.arm32.fpuType.fparmv8">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=neon-fp-armv8"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.neonfparmv8"
+                  name="%option.target.arm32.fpuType.neonfparmv8">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=crypto-neon-fp-armv8"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.cryptoneonfparmv8"
+                  name="%option.target.arm32.fpuType.cryptoneonfparmv8">
+            </enumeratedOptionValue>
+            <enablement
+                  extensionAdjustment="false"
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <not>
+                  <checkOption
+                        optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.abi"
+                        value="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.abi.soft">
+                  </checkOption>
+               </not>
+            </enablement>
+            <enablement
+                  extensionAdjustment="false"
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <not>
+                  <or>
+                     <checkOption
+                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.family"
+                           value="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-m0">
+                     </checkOption>
+                     <checkOption
+                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.family"
+                           value="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-m0plus">
+                     </checkOption>
+                     <checkOption
+                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.family"
+                           value="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-m1">
+                     </checkOption>
+                     <checkOption
+                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.family"
+                           value="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-m3">
+                     </checkOption>
+                  </or>
+               </not>
+            </enablement>
+            <enablement
+                  attribute="value"
+                  extensionAdjustment="false"
+                  type="CONTAINER_ATTRIBUTE"
+                  value="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit.fpv4spd16">
+               <checkOption
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.family"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.cortex-m4">
+               </checkOption>
+            </enablement>
+            <enablement
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <checkOption
+                     isRegex="false"
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm32">
+               </checkOption>
+            </enablement>
+         </option>
+      </tool>
 
       <tool
-            id="ilg.gnuarmeclipse.managedbuild.cross.tool.cross.gnu.arm64.base"
+            id="ilg.gnuarmeclipse.managedbuild.cross.tool.cross.gnu.base.arm64"
             isAbstract="true"
             name="ARM64 Targets common options">
 
          <!-- ===== AArch64 Target ======================================== -->
          <option
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.family"
-               name="Processor (-mcpu)"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.family"
+               name="%option.target.arm64.family"
                valueType="enumerated">
             <enumeratedOptionValue
                   command="-mcpu=generic"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.mcpu.generic"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.mcpu.generic"
                   isDefault="true"
                   name="Generic (-mcpu=generic)">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mcpu=large"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.mcpu.large"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.mcpu.large"
                   name="Large (-mcpu=large)">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.mcpu.default"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.mcpu.default"
                   name="Toolchain Default">
             </enumeratedOptionValue>
+            <enablement
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <checkOption
+                     isRegex="false"
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm64">
+               </checkOption>
+            </enablement>
          </option>
          
          <option
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.feature.crc"
-               name="Feature crc"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.crc"
+               name="%option.target.arm64.feature.crc"
                valueType="enumerated">
             <enumeratedOptionValue
                   command="crc"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.feature.crc.yes"
-                  name="Yes (+crc)">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.crc.yes"
+                  name="%option.target.arm64.feature.crc.yes">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="nocrc"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.feature.crc.no"
-                  name="No (+nocrc)">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.crc.no"
+                  name="%option.target.arm64.feature.crc.no">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.feature.crc.default"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.crc.default"
                   isDefault="true"
-                  name="Toolchain Default">
+                  name="%option.target.arm64.feature.crc.default">
             </enumeratedOptionValue>
             <enablement
                   extensionAdjustment="false"
                   type="UI_ENABLEMENT|CMD_USAGE">
                <not>
                   <checkOption
-                        optionId="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.family"
-                        value="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.mcpu.default">
+                        optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.family"
+                        value="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.mcpu.default">
                   </checkOption>
                </not>
             </enablement>
+            <enablement
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <checkOption
+                     isRegex="false"
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm64">
+               </checkOption>
+            </enablement>
          </option>
          <option
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.feature.crypto"
-               name="Feature crypto"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.crypto"
+               name="%option.target.arm64.feature.crypto"
                valueType="enumerated">
             <enumeratedOptionValue
                   command="crypto"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.feature.crypto.yes"
-                  name="Yes (+crypto)">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.crypto.yes"
+                  name="%option.target.arm64.feature.crypto.yes">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="nocrypto"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.feature.crypto.no"
-                  name="No (+nocrypto)">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.crypto.no"
+                  name="%option.target.arm64.feature.crypto.no">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.feature.crypto.default"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.crypto.default"
                   isDefault="true"
-                  name="Toolchain Default">
+                  name="%option.target.arm64.feature.crypto.default">
             </enumeratedOptionValue>
             <enablement
                   extensionAdjustment="false"
                   type="UI_ENABLEMENT|CMD_USAGE">
                <not>
                   <checkOption
-                        optionId="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.family"
-                        value="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.mcpu.default">
+                        optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.family"
+                        value="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.mcpu.default">
                   </checkOption>
                </not>
             </enablement>
+            <enablement
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <checkOption
+                     isRegex="false"
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm64">
+               </checkOption>
+            </enablement>
          </option>
          <option
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.feature.fp"
-               name="Feature fp"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.fp"
+               name="%option.target.arm64.feature.fp"
                valueType="enumerated">
             <enumeratedOptionValue
                   command="fp"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.feature.fp.yes"
-                  name="Yes (+fp)">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.fp.yes"
+                  name="%option.target.arm64.feature.fp.yes">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="nofp"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.feature.fp.no"
-                  name="No (+nofp)">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.fp.no"
+                  name="%option.target.arm64.feature.fp.no">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.feature.fp.default"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.fp.default"
                   isDefault="true"
-                  name="Toolchain Default">
+                  name="%option.target.arm64.feature.fp.default">
             </enumeratedOptionValue>
             <enablement
                   extensionAdjustment="false"
                   type="UI_ENABLEMENT|CMD_USAGE">
                <not>
                   <checkOption
-                        optionId="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.family"
-                        value="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.mcpu.default">
+                        optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.family"
+                        value="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.mcpu.default">
                   </checkOption>
                </not>
             </enablement>
+            <enablement
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <checkOption
+                     isRegex="false"
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm64">
+               </checkOption>
+            </enablement>
          </option>
          <option
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.feature.simd"
-               name="Feature simd"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.simd"
+               name="%option.target.arm64.feature.simd"
                valueType="enumerated">
             <enumeratedOptionValue
                   command="simd"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.feature.simd.yes"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.simd.yes"
                   isDefault="true"
-                  name="Yes (+simd)">
+                  name="%option.target.arm64.feature.simd.yes">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="nosimd"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.feature.simd.no"
-                  name="No (+nosimd)">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.simd.no"
+                  name="%option.target.arm64.feature.simd.no">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.feature.simd.default"
-                  name="Toolchain Default">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.simd.default"
+                  name="%option.target.arm64.feature.simd.default">
             </enumeratedOptionValue>
             <enablement
                   extensionAdjustment="false"
                   type="UI_ENABLEMENT|CMD_USAGE">
                <not>
                   <checkOption
-                        optionId="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.family"
-                        value="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.mcpu.default">
+                        optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.family"
+                        value="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.mcpu.default">
                   </checkOption>
                </not>
             </enablement>
+            <enablement
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <checkOption
+                     isRegex="false"
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm64">
+               </checkOption>
+            </enablement>
          </option>
          <option
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.cmodel"
-               name="Code model"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.cmodel"
+               name="%option.target.arm64.cmodel"
                valueType="enumerated">
             <enumeratedOptionValue
                   command="-mcmodel=tiny"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.cmodel.tiny"
-                  name="Tiny (-mcmodel=tiny)">
+                  name="%option.target.arm64.cmodel.tiny">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mcmodel=small"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.cmodel.small"
                   isDefault="true"
-                  name="Small (-mcmodel=small)">
+                  name="%option.target.arm64.cmodel.small">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mcmodel=large"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.cmodel.large"
-                  name="Large (-mcmodel=large)">
+                  name="%option.target.arm64.cmodel.large">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.cmodel.default"
-                  name="Toolchain Default">
+                  name="%option.target.arm64.cmodel.default">
             </enumeratedOptionValue>
+            <enablement
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <checkOption
+                     isRegex="false"
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm64">
+               </checkOption>
+            </enablement>
          </option>
          <option
                command="-mstrict-align"
                defaultValue="false"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.arm64.base.target.strictalign"
-               name="Strict align (-mstrict-align)"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.strictalign"
+               name="%option.target.arm64.strictalign"
                valueType="boolean">
+            <enablement
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <checkOption
+                     isRegex="false"
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm64">
+               </checkOption>
+            </enablement>
          </option>
          <!-- ============================================================= -->
 
@@ -1637,12 +1736,12 @@
                name="%option.toolchain.family"
                valueType="enumerated">
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm32"
                   isDefault="true"
-                  name="%option.toolchain.family.arm">
+                  name="%option.toolchain.family.arm32">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.family.aarch64"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm64"
                   name="%option.toolchain.family.arm64">
             </enumeratedOptionValue>
          </option>
@@ -1766,39 +1865,74 @@
          </optionCategory>
            <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.target.family"
-               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.family">
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.arm32.target.family"
+               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.family">
            </option>
            <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.target.architecture"
-               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.architecture">
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.arm32.target.architecture"
+               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.architecture">
            </option>
            <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.target.thumb"
-               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.thumb">
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.arm32.target.thumb"
+               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.thumb">
            </option>
            <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.target.thumbinterwork"
-               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.thumbinterwork">
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.arm32.target.thumbinterwork"
+               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.thumbinterwork">
            </option>
          
            <option 
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.target.endianness"
-               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.endianness">
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.arm32.target.endianness"
+               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.endianness">
            </option>
            <option 
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.target.fpu.abi"
-               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.abi">
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.arm32.target.fpu.abi"
+               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.abi">
            </option>
            <option 
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.target.fpu.unit"
-               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.fpu.unit">
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.arm32.target.fpu.unit"
+               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.arm64.target.family"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.family">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.arm64.target.feature.crc"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.crc">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.arm64.target.feature.crypto"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.crypto">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.arm64.target.feature.fp"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.fp">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.arm64.target.feature.simd"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.simd">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.arm64.target.cmodel"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.cmodel">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.arm64.target.strictalign"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.strictalign">
            </option>
            <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
