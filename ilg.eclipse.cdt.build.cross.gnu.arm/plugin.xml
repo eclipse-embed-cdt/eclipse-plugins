@@ -1595,12 +1595,13 @@
       
       <toolChain
             archList="all"
-            configurationEnvironmentSupplier="ilg.gnuarmeclipse.managedbuild.cross.CrossEnvironmentVariableSupplier"
+            configurationEnvironmentSupplier="ilg.gnuarmeclipse.managedbuild.cross.EnvironmentVariableSupplier"
+            configurationMacroSupplier="ilg.gnuarmeclipse.managedbuild.cross.ConfigurationBuildMacroSupplier"
             id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
             isAbstract="false"
             name="%toolchain.name"
-            targetTool="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker;ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker;cdt.managedbuild.tool.gnu.archiver"
-            osList="all">
+            osList="all"
+            targetTool="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker;ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker;cdt.managedbuild.tool.gnu.archiver">
          <targetPlatform
                archList="all"
                binaryParser="org.eclipse.cdt.core.ELF"
@@ -1609,6 +1610,7 @@
                osList="all">
          </targetPlatform>
          <builder
+               command="${cross_make}"
                id="ilg.gnuarmeclipse.managedbuild.cross.builder"
                superClass="cdt.managedbuild.target.gnu.builder">
          </builder>
@@ -1646,24 +1648,24 @@
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.prefix"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.command.prefix"
                isAbstract="false"
-               name="%option.prefix"
+               name="%option.toolchain.prefix"
                resourceFilter="all"
                valueType="string">
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.suffix"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.command.suffix"
                isAbstract="false"
-               name="%option.suffix"
+               name="%option.toolchain.suffix"
                resourceFilter="all"
                valueType="string">
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
                defaultValue="gcc"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.command.cc"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.command.c"
                isAbstract="false"
                name="%option.toolchain.command.c"
                resourceFilter="all"
@@ -1675,6 +1677,15 @@
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.cpp"
                isAbstract="false"
                name="%option.toolchain.command.cpp"
+               resourceFilter="all"
+               valueType="string">
+         </option>
+         <option
+               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               defaultValue="ar"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.command.ar"
+               isAbstract="false"
+               name="%option.toolchain.command.ar"
                resourceFilter="all"
                valueType="string">
          </option>
@@ -1728,7 +1739,7 @@
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.path"
                isAbstract="false"
-               name="%option.path"
+               name="%option.toolchain.path"
                resourceFilter="all"
                valueType="string">
          </option>
@@ -1830,8 +1841,8 @@
            <!-- ===== Additional Tools ==================================== -->
                
        <tool
-             command="gcc"
-             commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CrossCommandLineGeneratorFull"
+             command="${cross_prefix}${cross_c}${cross_suffix}"
+             commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CommandLineGenerator"
              errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser"
              id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler"
              isAbstract="false"
@@ -1978,8 +1989,8 @@
          
          
          <tool
-               command="gcc"
-               commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CrossCommandLineGeneratorFull"
+               command="${cross_prefix}${cross_c}${cross_suffix}"
+               commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CommandLineGenerator"
                errorParsers="org.eclipse.cdt.core.GCCErrorParser"
                id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler"
                isAbstract="false"
@@ -2177,8 +2188,8 @@
             </outputType>
          </tool>
          <tool
-               command="g++"
-               commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CrossCommandLineGeneratorFull"
+               command="${cross_prefix}${cross_cpp}${cross_suffix}"
+               commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CommandLineGenerator"
                errorParsers="org.eclipse.cdt.core.GCCErrorParser"
                id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler"
                isAbstract="false"
@@ -2432,8 +2443,8 @@
          </tool>
          
          <tool
-                command="gcc"
-                commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CrossCommandLineGeneratorFull"
+                command="${cross_prefix}${cross_c}${cross_suffix}"
+                commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CommandLineGenerator"
                 id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker"
                 name="%tool.c.linker"
                 natureFilter="cnature"
@@ -2567,8 +2578,8 @@
             </outputType>
          </tool>
          <tool
-               command="g++"
-               commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CrossCommandLineGeneratorFull"
+               command="${cross_prefix}${cross_cpp}${cross_suffix}"
+               commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CommandLineGenerator"
                id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker"
                name="%tool.cpp.linker"
                natureFilter="ccnature"
@@ -2703,10 +2714,11 @@
          </tool>
          
          <tool
-               commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CrossCommandLineGenerator"
+               command="${cross_prefix}${cross_ar}${cross_suffix}"
                id="ilg.gnuarmeclipse.managedbuild.cross.tool.archiver"
                isAbstract="false"
                name="%tool.archiver"
+               natureFilter="both"
                superClass="cdt.managedbuild.tool.gnu.archiver">
             <enablement
                   type="ALL">
@@ -2717,8 +2729,7 @@
             </enablement>
          </tool>
          <tool
-               command="objcopy"
-               commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CrossCommandLineGenerator"
+               command="${cross_prefix}${cross_objcopy}${cross_suffix}"
                id="ilg.gnuarmeclipse.managedbuild.cross.tool.createflash"
                isAbstract="false"
                name="%tool.flash"
@@ -2816,8 +2827,7 @@
             </option>
          </tool>
          <tool
-               command="objdump"
-               commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CrossCommandLineGenerator"
+               command="${cross_prefix}${cross_objdump}${cross_suffix}"
                id="ilg.gnuarmeclipse.managedbuild.cross.tool.createlisting"
                isAbstract="false"
                name="%tool.listing"
@@ -2862,8 +2872,7 @@
             </option>
          </tool>
          <tool
-               command="size"
-               commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CrossCommandLineGenerator"
+               command="${cross_prefix}${cross_size}${cross_suffix}"
                commandLinePattern="${COMMAND} ${INPUTS} ${FLAGS}"
                id="ilg.gnuarmeclipse.managedbuild.cross.tool.printsize"
                isAbstract="false"
@@ -2943,15 +2952,14 @@
       </toolChain>
       
 	     <projectType
-	        buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe"
-	        id="ilg.gnuarmeclipse.managedbuild.cross.target.elf"
-	        isAbstract="false"
-	        isTest="false"
-	        >                                  
+            buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe"
+            id="ilg.gnuarmeclipse.managedbuild.cross.target.elf"
+            isAbstract="false"
+            isTest="false">                                  
 	     <configuration
             artifactExtension="elf"
             buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug"
-            cleanCommand="rm -rf"
+            cleanCommand="${cross_rm} -rf"
             id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.debug"
             name="Debug"
             parent="cdt.managedbuild.config.gnu.base">

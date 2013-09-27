@@ -70,7 +70,7 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 		IConfiguration[] configs = buildInfo.getManagedProject().getConfigurations();
 		for (IConfiguration config : configs) {
 			IToolChain toolchain = config.getToolChain();
-			IOption option = toolchain.getOptionBySuperClassId(Activator.getOptionPrefix()+".prefix"); //$NON-NLS-1$
+			IOption option = toolchain.getOptionBySuperClassId(Activator.getOptionPrefix()+".command.prefix"); //$NON-NLS-1$
 			ManagedBuildManager.setOption(config, toolchain, option, prefix);
 			option = toolchain.getOptionBySuperClassId(Activator.getOptionPrefix()+".path"); //$NON-NLS-1$
 			ManagedBuildManager.setOption(config, toolchain, option, path);

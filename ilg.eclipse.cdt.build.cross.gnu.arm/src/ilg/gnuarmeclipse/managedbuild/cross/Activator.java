@@ -8,6 +8,7 @@
  * Contributors:
  *     Doug Schaefer - initial API and implementation
  *     Marc-Andre Laperle
+ *     Liviu Ionescu - ARM version
  *******************************************************************************/
 package ilg.gnuarmeclipse.managedbuild.cross;
 
@@ -22,7 +23,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends Plugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "ilg.eclipse.cdt.build.cross.gnu.arm"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "ilg.gnuarmeclipse.managedbuild.cross"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;

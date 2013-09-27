@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     Marc-Andre Laperle - initial API and implementation
+ *     Liviu Ionescu - ARM version
  *******************************************************************************/
 package ilg.gnuarmeclipse.managedbuild.cross;
 

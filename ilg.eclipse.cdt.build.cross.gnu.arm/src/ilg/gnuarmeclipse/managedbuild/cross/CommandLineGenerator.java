@@ -1,13 +1,3 @@
-/*******************************************************************************
- * Copyright (c) 2009, 2012 Wind River Systems, Inc. and others.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors:
- *     Doug Schaefer - initial API and implementation
- *******************************************************************************/
 package ilg.gnuarmeclipse.managedbuild.cross;
 
 import java.util.ArrayList;
@@ -26,7 +16,7 @@ import org.eclipse.cdt.managedbuilder.core.IToolChain;
 import org.eclipse.cdt.managedbuilder.internal.core.ManagedCommandLineGenerator;
 import org.eclipse.cdt.managedbuilder.internal.core.ResourceConfiguration;
 
-public class CrossCommandLineGeneratorFull extends CrossCommandLineGenerator {
+public class CommandLineGenerator extends ManagedCommandLineGenerator {
 
 	//private static final boolean DEBUG_LOCAL = true;
 	private static final boolean DEBUG_LOCAL = false;

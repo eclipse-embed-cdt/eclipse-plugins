@@ -20,7 +20,7 @@ import org.eclipse.cdt.managedbuilder.envvar.IConfigurationEnvironmentVariableSu
 import org.eclipse.cdt.managedbuilder.envvar.IEnvironmentVariableProvider;
 import org.eclipse.core.runtime.Platform;
 
-public class CrossEnvironmentVariableSupplier implements
+public class EnvironmentVariableSupplier implements
 		IConfigurationEnvironmentVariableSupplier {
 
 	public IBuildEnvironmentVariable getVariable(String variableName,
