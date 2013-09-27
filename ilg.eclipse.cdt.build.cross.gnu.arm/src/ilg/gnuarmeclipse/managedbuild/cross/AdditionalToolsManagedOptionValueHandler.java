@@ -11,6 +11,7 @@ import org.eclipse.cdt.managedbuilder.core.IToolChain;
 import org.eclipse.cdt.managedbuilder.core.ManagedOptionValueHandler;
 import org.eclipse.cdt.managedbuilder.internal.core.FolderInfo;
 import org.eclipse.cdt.managedbuilder.internal.core.ResourceConfiguration;
+import org.eclipse.ui.PlatformUI;
 
 public class AdditionalToolsManagedOptionValueHandler extends
 		ManagedOptionValueHandler {
@@ -76,6 +77,7 @@ public class AdditionalToolsManagedOptionValueHandler extends
 				//oFolderInfo.setDirty(true); //does not update interface :-(
 				// TODO: find the proper sequence to update the interface
 				System.out.println("should update configuration window!");
+				//PlatformUI.getWorkbench().getModalDialogShellProvider().getShell().redraw();
 				
 				return true; // should we return true?
 				
