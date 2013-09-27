@@ -8,7 +8,7 @@
  * Contributors:
  *     Doug Schaefer - initial API and implementation
  *******************************************************************************/
-package ilg.gnuarmeclipse;
+package ilg.gnuarmeclipse.managedbuild.cross;
 
 import java.util.ArrayList;
 import java.util.Arrays;

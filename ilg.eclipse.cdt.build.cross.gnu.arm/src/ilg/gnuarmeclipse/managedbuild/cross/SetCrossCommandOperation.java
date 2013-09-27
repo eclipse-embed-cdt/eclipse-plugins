@@ -9,7 +9,7 @@
  *     Doug Schaefer - initial API and implementation
  *     Marc-Andre Laperle - Moved to an operation for a custom wizard page
  *******************************************************************************/
-package ilg.gnuarmeclipse;
+package ilg.gnuarmeclipse.managedbuild.cross;
 import java.lang.reflect.InvocationTargetException;
 import java.util.Map;
 

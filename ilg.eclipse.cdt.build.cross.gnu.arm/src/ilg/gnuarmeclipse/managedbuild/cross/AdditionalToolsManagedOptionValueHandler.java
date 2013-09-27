@@ -1,4 +1,4 @@
-package ilg.gnuarmeclipse;
+package ilg.gnuarmeclipse.managedbuild.cross;
 
 
 import org.eclipse.cdt.managedbuilder.core.IBuildObject;

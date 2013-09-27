@@ -9,7 +9,7 @@
  *     Doug Schaefer - initial API and implementation
  *     Marc-Andre Laperle
  *******************************************************************************/
-package ilg.gnuarmeclipse;
+package ilg.gnuarmeclipse.managedbuild.cross;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Plugin;
@@ -85,7 +85,7 @@ public class Activator extends Plugin {
 
 	public static String getPrefix()
 	{
-		return "ilg.gnuarmeclipse";
+		return "ilg.gnuarmeclipse.managedbuild.cross";
 	}
 
 	public static String getOptionPrefix()
