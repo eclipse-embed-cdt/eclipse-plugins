@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %Bundle-Name
-Bundle-SymbolicName: ilg.eclipse.cdt.build.cross.gnu.arm;singleton:=true
+Bundle-SymbolicName: ilg.gnuarmeclipse.managedbuild.cross;singleton:=true
 Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: ilg.gnuarmeclipse.managedbuild.cross.Activator
 Require-Bundle: org.eclipse.core.runtime,

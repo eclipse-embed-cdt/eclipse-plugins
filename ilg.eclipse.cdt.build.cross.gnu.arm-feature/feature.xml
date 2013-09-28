@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="ilg.eclipse.cdt.build.cross.arm.gnu"
+      id="ilg.gnuarmeclipse.managedbuild.cross"
       label="%featureName"
       version="1.1.0.qualifier"
       provider-name="%providerName"
-      plugin="ilg.eclipse.cdt.build.cross.gnu.arm">
+      plugin="ilg.gnuarmeclipse.managedbuild.cross">
 
    <description>
       %description
@@ -19,7 +19,7 @@
    </license>
 
    <plugin
-         id="ilg.eclipse.cdt.build.cross.gnu.arm"
+         id="ilg.gnuarmeclipse.managedbuild.cross"
          download-size="0"
          install-size="0"
          version="0.0.0"

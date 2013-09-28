@@ -12,6 +12,6 @@
 	</parent>
 
 	<version>1.1.0-SNAPSHOT</version>
-	<artifactId>ilg.eclipse.cdt.build.cross.gnu.arm</artifactId>
+	<artifactId>ilg.gnuarmeclipse.managedbuild.cross</artifactId>
 	<packaging>eclipse-plugin</packaging>
 </project>
