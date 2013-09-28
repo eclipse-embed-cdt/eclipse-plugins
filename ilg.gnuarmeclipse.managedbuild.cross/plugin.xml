@@ -10,7 +10,7 @@
 # Contributors:
 # Doug Schaefer   (Wind River)     - initial API and implementation 
 # Anna Dushistova (Mentor Graphics)- [329531][crossgcc] crossgcc fails to build a project
-# Liviu Ionescu - ARM version   
+# Liviu Ionescu - ARM version  
 -->
 <plugin>
 
@@ -1009,7 +1009,7 @@
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.mcpu.default"
-                  name="Toolchain Default">
+                  name="%option.toolchain.default">
             </enumeratedOptionValue>
             <enablement
                   type="UI_ENABLEMENT|CMD_USAGE">
@@ -1153,7 +1153,7 @@
             <enumeratedOptionValue
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arch.none"
                   isDefault="true"
-                  name="Toolchain Default">
+                  name="%option.toolchain.default">
             </enumeratedOptionValue>
             <enablement
                   type="UI_ENABLEMENT|CMD_USAGE">
@@ -1165,13 +1165,11 @@
             </enablement>
          </option>
          <option
-               command="-mthumb"
-               defaultValue="true"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.thumb"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.instructionset"
                isAbstract="true"
-               name="%option.target.arm32.thumb"
-               tip="Generate code that executes in Thumb states."
-               valueType="boolean">
+               name="%option.target.arm32.instructionset"
+               tip="Select between generating code that executes in ARM and Thumb states. The default for most configurations is to generate code that executes in ARM state, but the default can be changed by configuring GCC with the --with-mode=state configure option."
+               valueType="enumerated">
             <enablement
                   type="UI_ENABLEMENT|CMD_USAGE">
                <checkOption
@@ -1180,6 +1178,21 @@
                      value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm32">
                </checkOption>
             </enablement>
+            <enumeratedOptionValue
+                  command="-mthumb"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.instructionset.thumb"
+                  isDefault="true"
+                  name="%option.target.arm32.instructionset.thumb">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-marm"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.instructionset.arm"
+                  name="%option.target.arm32.instructionset.arm">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.instructionset.default"
+                  name="%option.target.arm32.instructionset.default">
+            </enumeratedOptionValue>
          </option>
          <option
                command="-mthumb-interwork"
@@ -1450,6 +1463,36 @@
                </checkOption>
             </enablement>
          </option>
+         <option
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.unalignedaccess"
+               isAbstract="true"
+               name="%option.target.arm32.unalignedaccess"
+               tip="Enables (or disables) reading and writing of 16- and 32- bit values from addresses that are not 16- or 32- bit aligned. By default unaligned access is disabled for all pre-ARMv6 and all ARMv6-M architectures, and enabled for all other architectures. If unaligned access is not enabled then words in packed data structures will be accessed a byte at a time."
+               valueType="enumerated">
+            <enablement
+                  type="UI_ENABLEMENT|CMD_USAGE">
+               <checkOption
+                     isRegex="false"
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm32">
+               </checkOption>
+            </enablement>
+            <enumeratedOptionValue
+                  command="-munaligned-access"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.unalignedaccess.enabled"
+                  name="%option.target.arm32.unalignedaccess.enabled">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mno-unaligned-access"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.unalignedaccess.disabled"
+                  name="%option.target.arm32.unalignedaccess.disabled">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.unalignedaccess.default"
+                  isDefault="true"
+                  name="%option.target.arm32.unalignedaccess.default">
+            </enumeratedOptionValue>
+         </option>
       </tool>
 
       <tool
@@ -1493,13 +1536,13 @@
                valueType="enumerated">
             <enumeratedOptionValue
                   command="crc"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.crc.yes"
-                  name="%option.target.arm64.feature.crc.yes">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.crc.enabled"
+                  name="%option.target.arm64.feature.crc.enabled">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="nocrc"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.crc.no"
-                  name="%option.target.arm64.feature.crc.no">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.crc.disabled"
+                  name="%option.target.arm64.feature.crc.disabled">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.crc.default"
@@ -1531,13 +1574,13 @@
                valueType="enumerated">
             <enumeratedOptionValue
                   command="crypto"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.crypto.yes"
-                  name="%option.target.arm64.feature.crypto.yes">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.crypto.enabled"
+                  name="%option.target.arm64.feature.crypto.enabled">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="nocrypto"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.crypto.no"
-                  name="%option.target.arm64.feature.crypto.no">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.crypto.disabled"
+                  name="%option.target.arm64.feature.crypto.disabled">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.crypto.default"
@@ -1569,13 +1612,13 @@
                valueType="enumerated">
             <enumeratedOptionValue
                   command="fp"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.fp.yes"
-                  name="%option.target.arm64.feature.fp.yes">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.fp.enabled"
+                  name="%option.target.arm64.feature.fp.enabled">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="nofp"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.fp.no"
-                  name="%option.target.arm64.feature.fp.no">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.fp.disabled"
+                  name="%option.target.arm64.feature.fp.disabled">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.fp.default"
@@ -1607,14 +1650,14 @@
                valueType="enumerated">
             <enumeratedOptionValue
                   command="simd"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.simd.yes"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.simd.enabled"
                   isDefault="true"
-                  name="%option.target.arm64.feature.simd.yes">
+                  name="%option.target.arm64.feature.simd.enabled">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="nosimd"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.simd.no"
-                  name="%option.target.arm64.feature.simd.no">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.simd.disabled"
+                  name="%option.target.arm64.feature.simd.disabled">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm64.target.feature.simd.default"
@@ -1875,8 +1918,8 @@
            </option>
            <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.arm32.target.thumb"
-               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.thumb">
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.arm32.target.instructionset"
+               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.instructionset">
            </option>
            <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
@@ -1898,6 +1941,11 @@
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.arm32.target.fpu.unit"
                superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.fpu.unit">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.arm32.target.unalignedaccess"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm32.target.unalignedaccess">
            </option>
            <option
                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"

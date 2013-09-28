@@ -18,7 +18,7 @@ import org.eclipse.cdt.managedbuilder.internal.core.ResourceConfiguration;
 
 public class CommandLineGenerator extends ManagedCommandLineGenerator {
 
-	//private static final boolean DEBUG_LOCAL = true;
+	// private static final boolean DEBUG_LOCAL = true;
 	private static final boolean DEBUG_LOCAL = false;
 
 	@Override
@@ -44,8 +44,8 @@ public class CommandLineGenerator extends ManagedCommandLineGenerator {
 			+ "family";
 	private static final String OPTION_SUFFIX_ARM32_TARGET_ARCHITECTURE = OPTION_SUFFIX_ARM32_TARGET
 			+ "architecture";
-	private static final String OPTION_SUFFIX_ARM32_TARGET_THUMB = OPTION_SUFFIX_ARM32_TARGET
-			+ "thumb";
+	private static final String OPTION_SUFFIX_ARM32_TARGET_INSTRUCTIONSET = OPTION_SUFFIX_ARM32_TARGET
+			+ "instructionset";
 	private static final String OPTION_SUFFIX_ARM32_TARGET_THUMB_INTERWORK = OPTION_SUFFIX_ARM32_TARGET
 			+ "thumbinterwork";
 	private static final String OPTION_SUFFIX_ARM32_TARGET_ENDIANNESS = OPTION_SUFFIX_ARM32_TARGET
@@ -54,7 +54,9 @@ public class CommandLineGenerator extends ManagedCommandLineGenerator {
 			+ "fpu.abi";
 	private static final String OPTION_SUFFIX_ARM32_TARGET_FLOAT_UNIT = OPTION_SUFFIX_ARM32_TARGET
 			+ "fpu.unit";
-	
+	private static final String OPTION_SUFFIX_ARM32_TARGET_UNALIGNEDACCESS = OPTION_SUFFIX_ARM32_TARGET
+			+ "unalignedaccess";
+
 	private static final String OPTION_SUFFIX_TARGET_OTHER = OPTION_SUFFIX_TARGET
 			+ "other";
 
@@ -73,7 +75,7 @@ public class CommandLineGenerator extends ManagedCommandLineGenerator {
 			+ "other";
 
 	private String[] gatherFlags(ITool oTool, String[] asFlags) {
-		
+
 		// create a local list to gather options
 		ArrayList<String> oList = new ArrayList<String>();
 
@@ -92,7 +94,7 @@ public class CommandLineGenerator extends ManagedCommandLineGenerator {
 		if (oParent != null && (oParent instanceof IToolChain)) {
 			IToolChain oToolChain = (IToolChain) oParent;
 			// IConfiguration iconfiguration = itoolchain.getParent();
-			
+
 			// get the toolchain options, where common settings are
 			IOption aoOptions[] = oToolChain.getOptions();
 
@@ -101,14 +103,15 @@ public class CommandLineGenerator extends ManagedCommandLineGenerator {
 				System.out.println(oTool.getName() + " tool of toolchain "
 						+ oToolChain.getName());
 			}
-			
+
 			String sTargetFamily = null;
 			String sTargetArchitecture = null;
-			String sTargetThumb = null;
+			String sTargetInstructionSet = null;
 			String sTargetThumbInterwork = null;
 			String sTargetProcessorEndianness = null;
 			String sTargetFloatAbi = null;
 			String sTargetFloatUnit = null;
+			String sTargetUnalignedAccess = null;
 			String sTargetOther = null;
 
 			String sDebugLevel = null;
@@ -176,11 +179,17 @@ public class CommandLineGenerator extends ManagedCommandLineGenerator {
 										+ ".") > 0) {
 							sTargetArchitecture = sEnumCommand;
 						} else if (sID
+								.endsWith(OPTION_SUFFIX_ARM32_TARGET_INSTRUCTIONSET)
+								|| sID.indexOf(OPTION_SUFFIX_ARM32_TARGET_INSTRUCTIONSET
+										+ ".") > 0) {
+							sTargetInstructionSet = sEnumCommand;
+						} else if (sID
 								.endsWith(OPTION_SUFFIX_ARM32_TARGET_ENDIANNESS)
 								|| sID.indexOf(OPTION_SUFFIX_ARM32_TARGET_ENDIANNESS
 										+ ".") > 0) {
 							sTargetProcessorEndianness = sEnumCommand;
-						} else if (sID.endsWith(OPTION_SUFFIX_ARM32_TARGET_FLOAT_ABI)
+						} else if (sID
+								.endsWith(OPTION_SUFFIX_ARM32_TARGET_FLOAT_ABI)
 								|| sID.indexOf(OPTION_SUFFIX_ARM32_TARGET_FLOAT_ABI
 										+ ".") > 0) {
 							sTargetFloatAbi = sEnumCommand;
@@ -189,6 +198,11 @@ public class CommandLineGenerator extends ManagedCommandLineGenerator {
 								|| sID.indexOf(OPTION_SUFFIX_ARM32_TARGET_FLOAT_UNIT
 										+ ".") > 0) {
 							sTargetFloatUnit = sEnumCommand;
+						} else if (sID
+								.endsWith(OPTION_SUFFIX_ARM32_TARGET_UNALIGNEDACCESS)
+								|| sID.indexOf(OPTION_SUFFIX_ARM32_TARGET_UNALIGNEDACCESS
+										+ ".") > 0) {
+							sTargetUnalignedAccess = sEnumCommand;
 						} else if (sID.endsWith(OPTION_SUFFIX_TARGET_OTHER)
 								|| sID.indexOf(OPTION_SUFFIX_TARGET_OTHER + ".") > 0) {
 							sTargetOther = sVal;
@@ -217,12 +231,7 @@ public class CommandLineGenerator extends ManagedCommandLineGenerator {
 							System.out.println(oOption.getName() + " id=" + sID
 									+ " val=" + bVal + " cmd=" + sCommand);
 
-						if (sID.endsWith(OPTION_SUFFIX_ARM32_TARGET_THUMB)
-								|| sID.indexOf(OPTION_SUFFIX_ARM32_TARGET_THUMB + ".") > 0) {
-							if (bVal)
-								sTargetThumb = sCommand;
-						} else if (sID
-								.endsWith(OPTION_SUFFIX_ARM32_TARGET_THUMB_INTERWORK)
+						if (sID.endsWith(OPTION_SUFFIX_ARM32_TARGET_THUMB_INTERWORK)
 								|| sID.indexOf(OPTION_SUFFIX_ARM32_TARGET_THUMB_INTERWORK
 										+ ".") > 0) {
 							if (bVal)
@@ -247,25 +256,36 @@ public class CommandLineGenerator extends ManagedCommandLineGenerator {
 				}
 			}
 
-			if (sTargetFamily != null && sTargetFamily.length() > 0)
-				oList.add(sTargetFamily);
-			if (sTargetArchitecture != null && sTargetArchitecture.length() > 0)
-				oList.add(sTargetArchitecture);
-			if (sTargetThumb != null && sTargetThumb.length() > 0)
-				oList.add(sTargetThumb);
-			if (sTargetThumbInterwork != null
-					&& sTargetThumbInterwork.length() > 0)
-				oList.add(sTargetThumbInterwork);
-			if (sTargetProcessorEndianness != null
-					&& sTargetProcessorEndianness.length() > 0)
-				oList.add(sTargetProcessorEndianness);
-			if (sTargetFloatAbi != null && sTargetFloatAbi.length() > 0) {
-				oList.add(sTargetFloatAbi);
+			if (true) {
+				// ARM32
+				if (sTargetFamily != null && sTargetFamily.length() > 0)
+					oList.add(sTargetFamily);
+				if (sTargetArchitecture != null
+						&& sTargetArchitecture.length() > 0)
+					oList.add(sTargetArchitecture);
+				if (sTargetInstructionSet != null
+						&& sTargetInstructionSet.length() > 0)
+					oList.add(sTargetInstructionSet);
+				if (sTargetThumbInterwork != null
+						&& sTargetThumbInterwork.length() > 0)
+					oList.add(sTargetThumbInterwork);
+				if (sTargetProcessorEndianness != null
+						&& sTargetProcessorEndianness.length() > 0)
+					oList.add(sTargetProcessorEndianness);
+				if (sTargetFloatAbi != null && sTargetFloatAbi.length() > 0) {
+					oList.add(sTargetFloatAbi);
 
-				if (sTargetFloatUnit != null && sTargetFloatUnit.length() > 0)
-					oList.add(sTargetFloatUnit);
+					if (sTargetFloatUnit != null
+							&& sTargetFloatUnit.length() > 0)
+						oList.add(sTargetFloatUnit);
+				}
+
+				if (sTargetUnalignedAccess != null
+						&& sTargetUnalignedAccess.length() > 0)
+					oList.add(sTargetUnalignedAccess);
+			} else {
+				// ARM64
 			}
-
 			if (sTargetOther != null && sTargetOther.length() > 0)
 				oList.add(sTargetOther);
 
@@ -283,7 +303,7 @@ public class CommandLineGenerator extends ManagedCommandLineGenerator {
 				oList.add(sDebugGProf);
 
 		}
-		
+
 		// The initial options are added to the end of the list,
 		// to give chance of individual tools to override common options
 		oList.addAll(((java.util.Collection<String>) (Arrays
