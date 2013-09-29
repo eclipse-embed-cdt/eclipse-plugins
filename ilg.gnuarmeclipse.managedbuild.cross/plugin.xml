@@ -463,7 +463,7 @@
                valueType="string">
          </option>
          <option
-               browseType="none"
+               browseType="file"
                command="-T&quot;${VALUE}&quot;"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.scriptfile"
                isAbstract="true"
@@ -2020,8 +2020,6 @@
            </option>
 
 
-           <!-- ===== Additional Tools ==================================== -->
-               
        <tool
              command="${cross_prefix}${cross_c}${cross_suffix}"
              commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CommandLineGenerator"
@@ -2156,7 +2154,7 @@
                 valueType="string">
           </option>
           <inputType
-                dependencyCalculator="org.eclipse.cdt.managedbuilder.makegen.gnu.DefaultGCCDependencyCalculator"
+                dependencyCalculator="org.eclipse.cdt.managedbuilder.makegen.gnu.DefaultGCCDependencyCalculator2"
                 dependencyContentType="org.eclipse.cdt.core.cHeader"
                 dependencyExtensions="h"
                 id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"
@@ -2910,6 +2908,10 @@
                </checkBuildProperty>
             </enablement>
          </tool>
+         
+         
+         <!-- ===== Additional Tools for secondary targets ================ -->
+
          <tool
                command="${cross_prefix}${cross_objcopy}${cross_suffix}"
                id="ilg.gnuarmeclipse.managedbuild.cross.tool.createflash"
@@ -3130,6 +3132,8 @@
                   valueType="string">
             </option>
          </tool>
+         
+         <!-- ============================================================= -->
          
       </toolChain>
       
