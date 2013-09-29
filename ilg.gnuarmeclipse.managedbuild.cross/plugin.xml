@@ -3159,7 +3159,7 @@
 	     <configuration
             artifactExtension="elf"
             buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release"
-            cleanCommand="rm -rf"
+            cleanCommand="${cross_rm} -rf"
             id="ilg.gnuarmeclipse.managedbuild.cross.config.elf.release"
             name="Release"
             parent="cdt.managedbuild.config.gnu.base">
@@ -3180,7 +3180,7 @@
 	        >            
 	     <configuration
 	           name="Debug"
-	           cleanCommand="rm -rf"
+	           cleanCommand="${cross_rm} -rf"
 	           parent="cdt.managedbuild.config.gnu.base"
 	           buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug"
 	           id="ilg.gnuarmeclipse.managedbuild.cross.config.so.debug">
@@ -3191,7 +3191,7 @@
 	     </configuration>
 	     <configuration
 	           name="Release"
-	           cleanCommand="rm -rf"
+	           cleanCommand="${cross_rm} -rf"
 	           parent="cdt.managedbuild.config.gnu.base"
 	           buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release"
 	           id="ilg.gnuarmeclipse.managedbuild.cross.config.so.release">               
@@ -3212,7 +3212,7 @@
 	           name="Debug"
 	           parent="cdt.managedbuild.config.gnu.base"
 	           buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.debug"
-	           cleanCommand="rm -rf"
+	           cleanCommand="${cross_rm} -rf"
 	           id="ilg.gnuarmeclipse.managedbuild.cross.config.lib.debug">
 	           <toolChain
 	                 superClass="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
@@ -3223,7 +3223,7 @@
 	           name="Release"
 	           parent="cdt.managedbuild.config.gnu.base"
 	           buildProperties="org.eclipse.cdt.build.core.buildType=org.eclipse.cdt.build.core.buildType.release"
-	           cleanCommand="rm -rf"
+	           cleanCommand="${cross_rm} -rf"
 	           id="ilg.gnuarmeclipse.managedbuild.cross.config.lib.release">
 	           <toolChain
 	                 superClass="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
