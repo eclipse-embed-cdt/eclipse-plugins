@@ -20,6 +20,9 @@ public class ConfigurationBuildMacroSupplier implements
 		return null;
 	}
 
+	// Generate a set of configuration specific macros to pass the
+	// toolchain commands (like ${cross_c}) to the make generator.
+	
 	@Override
 	public IBuildMacro[] getMacros(IConfiguration configuration,
 			IBuildMacroProvider provider) {

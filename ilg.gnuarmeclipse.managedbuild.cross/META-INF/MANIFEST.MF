@@ -16,3 +16,4 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %Bundle-Vendor
 Bundle-Localization: plugin
+Import-Package: org.eclipse.cdt.cross.arm.gnu

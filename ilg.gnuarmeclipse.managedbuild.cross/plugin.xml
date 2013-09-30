@@ -1766,10 +1766,51 @@
                isAbstract="false"
                name="%option.toolchain.select"
                resourceFilter="all"
+               valueHandler="ilg.gnuarmeclipse.managedbuild.cross.ToolchainsManagedOptionValueHandler"
                valueType="enumerated">
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.embedded"
-                  name="%option.toolchain.select.embedded">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.0"
+                  name="%option.toolchain.select.0">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.1"
+                  name="%option.toolchain.select.1">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.2"
+                  name="%option.toolchain.select.2">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.3"
+                  name="%option.toolchain.select.3">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.4"
+                  name="%option.toolchain.select.4">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.5"
+                  name="%option.toolchain.select.5">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.6"
+                  name="%option.toolchain.select.6">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.7"
+                  name="%option.toolchain.select.7">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.8"
+                  name="%option.toolchain.select.8">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.9"
+                  name="%option.toolchain.select.9">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.10"
+                  name="%option.toolchain.select.10">
             </enumeratedOptionValue>
          </option>
          <option

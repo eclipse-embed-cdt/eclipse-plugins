@@ -18,6 +18,7 @@ public class Messages extends NLS {
 	public static String SetCrossCommandWizardPage_browse;
 	public static String SetCrossCommandWizardPage_description;
 	public static String SetCrossCommandWizardPage_name;
+	public static String SetCrossCommandWizardPage_toolchain;
 	public static String SetCrossCommandWizardPage_path;
 	public static String SetCrossCommandWizardPage_prefix;
 	public static String SetCrossCommandWizardPage_title;
