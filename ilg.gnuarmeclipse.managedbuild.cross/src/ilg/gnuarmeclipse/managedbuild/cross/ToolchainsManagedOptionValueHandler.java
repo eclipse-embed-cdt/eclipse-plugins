@@ -1,5 +1,18 @@
+/*******************************************************************************
+ * Copyright (c) 2013 Liviu Ionescu.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Liviu Ionescu - initial version
+ *******************************************************************************/
+
 package ilg.gnuarmeclipse.managedbuild.cross;
 
+import org.eclipse.cdt.core.language.settings.providers.LanguageSettingsManager;
+import org.eclipse.cdt.core.templateengine.SharedDefaults;
 import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IBuildObject;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
@@ -15,17 +28,18 @@ import org.eclipse.cdt.managedbuilder.core.IToolChain;
 import org.eclipse.cdt.managedbuilder.internal.core.BooleanExpressionApplicabilityCalculator;
 import org.eclipse.cdt.managedbuilder.internal.core.FolderInfo;
 import org.eclipse.cdt.managedbuilder.internal.core.ResourceConfiguration;
+import org.eclipse.cdt.managedbuilder.language.settings.providers.AbstractBuiltinSpecsDetector;
 
 public class ToolchainsManagedOptionValueHandler implements
 		IManagedOptionValueHandler {
-
+	
 	@Override
 	public boolean handleValue(IBuildObject configuration,
 			IHoldsOptions holder, IOption option, String extraArgument,
 			int event) {
 
-		ManagedOptionValueHandlerDebug.dump(configuration, holder, option,
-				extraArgument, event);
+//		ManagedOptionValueHandlerDebug.dump(configuration, holder, option,
+//				extraArgument, event);
 
 		if (event == EVENT_APPLY) {
 			String val;
@@ -35,14 +49,14 @@ public class ToolchainsManagedOptionValueHandler implements
 
 				int pos = val.lastIndexOf(".");
 				String sToolchainIndex = val.substring(pos + 1);
-				// System.out.println("ToolchainIndex="+sToolchainIndex);
+				System.out.println("ToolchainIndex="+sToolchainIndex);
 
-				int toolchainIndex = Integer.parseInt(sToolchainIndex);
 				ToolchainDefinition td = ToolchainDefinition
-						.getToolchain(toolchainIndex);
+						.getToolchain(sToolchainIndex);
 
-				IConfiguration cfg = ((FolderInfo) configuration).getParent();
-				IToolChain toolchain = cfg.getToolChain();
+				// maybe configuration?
+				//IConfiguration cfg = ((FolderInfo) configuration).getParent();
+				//IToolChain toolchain = cfg.getToolChain();
 
 				IOption selOption;
 
@@ -52,7 +66,6 @@ public class ToolchainsManagedOptionValueHandler implements
 						+ td.getFamily();
 
 				selOption.setValue(sFamily);
-				// cfg.setOption(toolchain, option, sFamily);
 
 				selOption = holder.getOptionBySuperClassId(Activator
 						.getOptionPrefix() + ".command.prefix");
@@ -86,8 +99,24 @@ public class ToolchainsManagedOptionValueHandler implements
 				selOption = holder.getOptionBySuperClassId(Activator
 						.getOptionPrefix() + ".command.rm");
 				selOption.setValue(td.getCmdRm());
-				// cfg.setOption(toolchain, selOption, td.getCmdRm());
 
+				String pathKey = SetCrossCommandWizardPage.SHARED_CROSS_COMMAND_PATH
+						+ "." + sToolchainIndex;
+				String path = SharedDefaults.getInstance().getSharedDefaultsMap().get(pathKey);
+				if (path == null)
+					path = "";
+
+				selOption = holder.getOptionBySuperClassId(Activator
+						.getOptionPrefix() + ".path");
+				selOption.setValue(path);
+
+				// Clear discovered includes and macros, to make room for
+				// new ones
+				SpecsProvider.clear();
+				
+				// the event was handled
+				return true;
+				
 			} catch (IndexOutOfBoundsException e) {
 				System.out.println("Toolchain index out of range");
 
@@ -105,7 +134,8 @@ public class ToolchainsManagedOptionValueHandler implements
 	@Override
 	public boolean isDefaultValue(IBuildObject configuration,
 			IHoldsOptions holder, IOption option, String extraArgument) {
-		// TODO Auto-generated method stub
+		
+		// No explicit default
 		return false;
 	}
 
@@ -113,7 +143,8 @@ public class ToolchainsManagedOptionValueHandler implements
 	public boolean isEnumValueAppropriate(IBuildObject configuration,
 			IHoldsOptions holder, IOption option, String extraArgument,
 			String enumValue) {
-		// TODO Auto-generated method stub
+		
+		// All are appropriate
 		return true;
 	}
 

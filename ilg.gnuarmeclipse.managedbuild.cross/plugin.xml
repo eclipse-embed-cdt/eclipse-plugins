@@ -27,6 +27,7 @@
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.target.other"
                isAbstract="true"
                name="%option.target.other"
+               useByScannerDiscovery="true"
                valueType="string">
          </option>
          <option
@@ -34,6 +35,7 @@
                isAbstract="true"
                name="%option.debugging.level"
                tip="Request debugging information and also use level to specify how much information. The default level is 2. Level 0 produces no debug information at all. Thus, ‘-g0’ negates ‘-g’. Level 1 produces minimal information, enough for making backtraces in parts of the program that you don’t plan to debug. This includes descriptions of functions and external variables, but no information about local variables and no line numbers. Level 3 includes extra information, such as all the macro definitions present in the program. Some debuggers support macro expansion when you use ‘-g3’."
+               useByScannerDiscovery="true"
                valueType="enumerated">
             <enumeratedOptionValue
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.base.debugging.level.none"
@@ -81,6 +83,7 @@
                isAbstract="true"
                name="%option.debugging.format"
                tip="Use it if you want to control for certain whether to generate the extra information."
+               useByScannerDiscovery="true"
                valueType="enumerated">
             <enumeratedOptionValue
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.base.debugging.format.default"
@@ -145,6 +148,7 @@
                isAbstract="true"
                name="%option.debugging.prof"
                tip="Generate extra code to write profile information suitable for the analysis program prof. You must use this option when compiling the source files you want data about, and you must also use it when linking."
+               useByScannerDiscovery="true"
                valueType="boolean">
          </option>
          <option
@@ -154,12 +158,14 @@
                isAbstract="true"
                name="%option.debugging.gprof"
                tip="Generate extra code to write profile information suitable for the analysis program gprof. You must use this option when compiling the source files you want data about, and you must also use it when linking."
+               useByScannerDiscovery="true"
                valueType="boolean">
          </option>
          <option
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.debugging.other"
                isAbstract="true"
                name="%option.debugging.other"
+               useByScannerDiscovery="true"
                valueType="string">
          </option>
          <option
@@ -234,6 +240,7 @@
                isAbstract="true"
                name="%option.compiler.optimizationlevel"
                tip="With ‘-O’, the compiler tries to reduce code size and execution time, without performing any optimizations that take a great deal of compilation time. -O2 Optimize even more. GCC performs nearly all supported optimizations that do not involve a space-speed tradeoff. -O3 Optimize yet more. -Os Optimize for size. ‘-Os’ enables all ‘-O2’ optimizations that do not typically increase code size. -Og Optimize debugging experience. ‘-Og’ enables optimizations that do not interfere with debugging. It should be the optimization level of choice for the standard edit-compile-debug cycle, offering a reasonable level of optimization while maintaining fast compilation and a good debugging experience. -O0 Do not optimize. Reduce compilation time and make debugging produce the expected results. This is the default."
+               useByScannerDiscovery="true"
                valueType="enumerated">
             <enablement
                   attribute="value"
@@ -343,6 +350,7 @@
                isAbstract="true"
                name="%option.compiler.pedantic"
                tip="Issue all the warnings demanded by strict ISO C and ISO C++; reject all programs that use forbidden extensions, and some other programs that do not follow ISO C and ISO C++. For ISO C, follows the version of the ISO C standard specified by any ‘-std’ option used."
+               useByScannerDiscovery="true"
                valueType="boolean">
          </option>
          <option
@@ -352,6 +360,7 @@
                isAbstract="true"
                name="%option.compiler.pedanticerrors"
                tip="Like ‘-pedantic’, except that errors are produced rather than warnings."
+               useByScannerDiscovery="true"
                valueType="boolean">
          </option>
          <option
@@ -447,6 +456,7 @@
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.compiler.other"
                isAbstract="true"
                name="%option.compiler.other"
+               useByScannerDiscovery="true"
                valueType="string">
          </option>
       </tool>
@@ -1741,6 +1751,7 @@
             configurationMacroSupplier="ilg.gnuarmeclipse.managedbuild.cross.ConfigurationBuildMacroSupplier"
             id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
             isAbstract="false"
+            languageSettingsProviders="org.eclipse.cdt.managedbuilder.core.GCCBuildCommandParser;ilg.gnuarmeclipse.managedbuild.cross.GCCBuiltinSpecsDetector"
             name="%toolchain.name"
             osList="all"
             targetTool="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker;ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker;cdt.managedbuild.tool.gnu.archiver">
@@ -1835,6 +1846,7 @@
                isAbstract="false"
                name="%option.toolchain.prefix"
                resourceFilter="all"
+               valueHandler="ilg.gnuarmeclipse.managedbuild.cross.ClearProviderManagedOptionValueHandler"
                valueType="string">
          </option>
          <option
@@ -1843,6 +1855,7 @@
                isAbstract="false"
                name="%option.toolchain.suffix"
                resourceFilter="all"
+               valueHandler="ilg.gnuarmeclipse.managedbuild.cross.ClearProviderManagedOptionValueHandler"
                valueType="string">
          </option>
          <option
@@ -1852,6 +1865,7 @@
                isAbstract="false"
                name="%option.toolchain.command.c"
                resourceFilter="all"
+               valueHandler="ilg.gnuarmeclipse.managedbuild.cross.ClearProviderManagedOptionValueHandler"
                valueType="string">
          </option>
          <option
@@ -1861,6 +1875,7 @@
                isAbstract="false"
                name="%option.toolchain.command.cpp"
                resourceFilter="all"
+               valueHandler="ilg.gnuarmeclipse.managedbuild.cross.ClearProviderManagedOptionValueHandler"
                valueType="string">
          </option>
          <option
@@ -1924,6 +1939,7 @@
                isAbstract="false"
                name="%option.toolchain.path"
                resourceFilter="all"
+               valueHandler="ilg.gnuarmeclipse.managedbuild.cross.ClearProviderManagedOptionValueHandler"
                valueType="string">
          </option>
          <option
@@ -2342,6 +2358,7 @@
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.misc"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std"
                   name="%option.compiler.std"
+                  useByScannerDiscovery="true"
                   valueType="enumerated">
                <enumeratedOptionValue
                      command="-ansi"
@@ -2568,6 +2585,7 @@
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.misc"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std"
                   name="%option.compiler.std"
+                  useByScannerDiscovery="true"
                   valueType="enumerated">
                <enumeratedOptionValue
                      command="-ansi"
@@ -2627,6 +2645,7 @@
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.noexceptions"
                   name="%option.compiler.noexceptions"
                   tip="Do not generates extra code needed to propagate exceptions."
+                  useByScannerDiscovery="true"
                   valueType="boolean">
             </option>
             <option
@@ -2636,6 +2655,7 @@
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nortti"
                   name="%option.compiler.nortti"
                   tip="Disable generation of information about every class with virtual functions for use by the C++ run-time type identification features (‘dynamic_cast’ and ‘typeid’). If you don’t use those parts of the language, you can save some space by using this flag. Note that exception handling uses the same information, but G++ generates it as needed. The ‘dynamic_cast’ operator can still be used for casts that do not require run-time type information, i.e. casts to void * or to unambiguous base classes."
+                  useByScannerDiscovery="true"
                   valueType="boolean">
             </option>
             <option
@@ -3327,5 +3347,21 @@
             location="$nl$/templates/projecttemplates/HelloWorld_C_Project/template.xml"
             projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
       </template>
+   </extension>
+   <extension
+         point="org.eclipse.cdt.core.LanguageSettingsProvider">
+      <provider
+            class="org.eclipse.cdt.managedbuilder.language.settings.providers.GCCBuiltinSpecsDetector"
+            id="ilg.gnuarmeclipse.managedbuild.cross.GCCBuiltinSpecsDetector"
+            name="%GCCBuiltinSpecsDetector.name"
+            parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;"
+            prefer-non-shared="true">
+         <language-scope
+               id="org.eclipse.cdt.core.gcc">
+         </language-scope>
+         <language-scope
+               id="org.eclipse.cdt.core.g++">
+         </language-scope>
+      </provider>
    </extension>
 </plugin>
