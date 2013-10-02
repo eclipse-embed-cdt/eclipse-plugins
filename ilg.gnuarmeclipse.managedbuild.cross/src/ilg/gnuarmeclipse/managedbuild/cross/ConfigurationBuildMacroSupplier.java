@@ -32,18 +32,19 @@ public class ConfigurationBuildMacroSupplier implements
 	public IBuildMacro getMacro(String macroName, IConfiguration configuration,
 			IBuildMacroProvider provider) {
 
-		for (String cmd : m_asCmds) {
-			if (cmd.equals(macroName)) {
+		for (String sCmd : m_asCmds) {
+			if (sCmd.equals(macroName)) {
 				IToolChain toolchain = configuration.getToolChain();
 
 				String sId = Activator.getOptionPrefix() + ".command."
-						+ cmd.replace("cross_", "");
+						+ sCmd.replace("cross_", "");
 
 				IOption option = toolchain.getOptionBySuperClassId(sId); //$NON-NLS-1$
 				if (option != null) {
 					String sVal = (String) option.getValue();
 
-					return new BuildMacro(cmd, BuildMacro.VALUE_TEXT, sVal);
+					System.out.println("Macro " + sCmd + "=" + sVal+" cfg="+configuration+" prj="+configuration.getManagedProject().getOwner().getName());
+					return new BuildMacro(sCmd, BuildMacro.VALUE_TEXT, sVal);
 				}
 
 				System.out.println("Missing value of "+sId);

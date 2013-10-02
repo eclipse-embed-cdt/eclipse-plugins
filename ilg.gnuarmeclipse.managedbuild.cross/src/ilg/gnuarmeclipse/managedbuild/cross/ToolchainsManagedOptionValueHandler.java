@@ -38,78 +38,25 @@ public class ToolchainsManagedOptionValueHandler implements
 			IHoldsOptions holder, IOption option, String extraArgument,
 			int event) {
 
-//		ManagedOptionValueHandlerDebug.dump(configuration, holder, option,
-//				extraArgument, event);
+		ManagedOptionValueHandlerDebug.dump(configuration, holder, option,
+				extraArgument, event);
 
-		if (event == EVENT_APPLY) {
-			String val;
+		if (event == EVENT_OPEN) {
+			
 			try {
-				val = option.getSelectedEnum();
-				// System.out.println("SelectedEnum="+val);
+				updateOptions(holder, option);
+				
+				return true;
+			} catch (BuildException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-				int pos = val.lastIndexOf(".");
-				String sToolchainIndex = val.substring(pos + 1);
-				System.out.println("ToolchainIndex="+sToolchainIndex);
+		}
+		else if (event == EVENT_APPLY) {
+			try {
 
-				ToolchainDefinition td = ToolchainDefinition
-						.getToolchain(sToolchainIndex);
-
-				// maybe configuration?
-				//IConfiguration cfg = ((FolderInfo) configuration).getParent();
-				//IToolChain toolchain = cfg.getToolChain();
-
-				IOption selOption;
-
-				selOption = holder.getOptionBySuperClassId(Activator
-						.getOptionPrefix() + ".family");
-				String sFamily = Activator.getOptionPrefix() + ".family."
-						+ td.getFamily();
-
-				selOption.setValue(sFamily);
-
-				selOption = holder.getOptionBySuperClassId(Activator
-						.getOptionPrefix() + ".command.prefix");
-				selOption.setValue(td.getPrefix());
-				selOption = holder.getOptionBySuperClassId(Activator
-						.getOptionPrefix() + ".command.suffix");
-				selOption.setValue(td.getSuffix());
-
-				selOption = holder.getOptionBySuperClassId(Activator
-						.getOptionPrefix() + ".command.c");
-				selOption.setValue(td.getCmdC());
-				selOption = holder.getOptionBySuperClassId(Activator
-						.getOptionPrefix() + ".command.cpp");
-				selOption.setValue(td.getCmdCpp());
-				selOption = holder.getOptionBySuperClassId(Activator
-						.getOptionPrefix() + ".command.ar");
-				selOption.setValue(td.getCmdAr());
-				selOption = holder.getOptionBySuperClassId(Activator
-						.getOptionPrefix() + ".command.objcopy");
-				selOption.setValue(td.getCmdObjcopy());
-				selOption = holder.getOptionBySuperClassId(Activator
-						.getOptionPrefix() + ".command.objdump");
-				selOption.setValue(td.getCmdObjdump());
-				selOption = holder.getOptionBySuperClassId(Activator
-						.getOptionPrefix() + ".command.size");
-				selOption.setValue(td.getCmdSize());
-
-				selOption = holder.getOptionBySuperClassId(Activator
-						.getOptionPrefix() + ".command.make");
-				selOption.setValue(td.getCmdMake());
-				selOption = holder.getOptionBySuperClassId(Activator
-						.getOptionPrefix() + ".command.rm");
-				selOption.setValue(td.getCmdRm());
-
-				String pathKey = SetCrossCommandWizardPage.SHARED_CROSS_COMMAND_PATH
-						+ "." + sToolchainIndex;
-				String path = SharedDefaults.getInstance().getSharedDefaultsMap().get(pathKey);
-				if (path == null)
-					path = "";
-
-				selOption = holder.getOptionBySuperClassId(Activator
-						.getOptionPrefix() + ".path");
-				selOption.setValue(path);
-
+				updateOptions(holder, option);
 				// Clear discovered includes and macros, to make room for
 				// new ones
 				SpecsProvider.clear();
@@ -131,6 +78,76 @@ public class ToolchainsManagedOptionValueHandler implements
 
 	}
 
+	private void updateOptions(IHoldsOptions holder, IOption option) throws BuildException
+	{
+		String val;
+		val = option.getSelectedEnum();
+		// System.out.println("SelectedEnum="+val);
+
+		int pos = val.lastIndexOf(".");
+		String sToolchainIndex = val.substring(pos + 1);
+		System.out.println("ToolchainIndex="+sToolchainIndex);
+
+		ToolchainDefinition td = ToolchainDefinition
+				.getToolchain(sToolchainIndex);
+
+		// maybe configuration?
+		//IConfiguration cfg = ((FolderInfo) configuration).getParent();
+		//IToolChain toolchain = cfg.getToolChain();
+
+		IOption selOption;
+
+		selOption = holder.getOptionBySuperClassId(Activator
+				.getOptionPrefix() + ".family");
+		String sFamily = Activator.getOptionPrefix() + ".family."
+				+ td.getFamily();
+
+		selOption.setValue(sFamily);
+
+		selOption = holder.getOptionBySuperClassId(Activator
+				.getOptionPrefix() + ".command.prefix");
+		selOption.setValue(td.getPrefix());
+		selOption = holder.getOptionBySuperClassId(Activator
+				.getOptionPrefix() + ".command.suffix");
+		selOption.setValue(td.getSuffix());
+
+		selOption = holder.getOptionBySuperClassId(Activator
+				.getOptionPrefix() + ".command.c");
+		selOption.setValue(td.getCmdC());
+		selOption = holder.getOptionBySuperClassId(Activator
+				.getOptionPrefix() + ".command.cpp");
+		selOption.setValue(td.getCmdCpp());
+		selOption = holder.getOptionBySuperClassId(Activator
+				.getOptionPrefix() + ".command.ar");
+		selOption.setValue(td.getCmdAr());
+		selOption = holder.getOptionBySuperClassId(Activator
+				.getOptionPrefix() + ".command.objcopy");
+		selOption.setValue(td.getCmdObjcopy());
+		selOption = holder.getOptionBySuperClassId(Activator
+				.getOptionPrefix() + ".command.objdump");
+		selOption.setValue(td.getCmdObjdump());
+		selOption = holder.getOptionBySuperClassId(Activator
+				.getOptionPrefix() + ".command.size");
+		selOption.setValue(td.getCmdSize());
+
+		selOption = holder.getOptionBySuperClassId(Activator
+				.getOptionPrefix() + ".command.make");
+		selOption.setValue(td.getCmdMake());
+		selOption = holder.getOptionBySuperClassId(Activator
+				.getOptionPrefix() + ".command.rm");
+		selOption.setValue(td.getCmdRm());
+
+		String pathKey = SetCrossCommandWizardPage.SHARED_CROSS_COMMAND_PATH
+				+ "." + sToolchainIndex;
+		String path = SharedDefaults.getInstance().getSharedDefaultsMap().get(pathKey);
+		if (path == null)
+			path = "";
+
+		selOption = holder.getOptionBySuperClassId(Activator
+				.getOptionPrefix() + ".path");
+		selOption.setValue(path);
+
+	}
 	@Override
 	public boolean isDefaultValue(IBuildObject configuration,
 			IHoldsOptions holder, IOption option, String extraArgument) {
@@ -144,7 +161,10 @@ public class ToolchainsManagedOptionValueHandler implements
 			IHoldsOptions holder, IOption option, String extraArgument,
 			String enumValue) {
 		
-		// All are appropriate
+		if ("none".equals(enumValue))
+			return false;
+		
+		// All other are appropriate
 		return true;
 	}
 

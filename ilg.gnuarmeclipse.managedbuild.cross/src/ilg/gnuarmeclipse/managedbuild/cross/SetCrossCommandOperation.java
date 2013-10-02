@@ -30,6 +30,7 @@ import org.eclipse.cdt.make.internal.core.scannerconfig.DiscoveredPathInfo;
 import org.eclipse.cdt.make.internal.core.scannerconfig.DiscoveredScannerInfoStore;
 import org.eclipse.cdt.make.internal.core.scannerconfig2.SCProfileInstance;
 import org.eclipse.cdt.make.internal.core.scannerconfig2.ScannerConfigProfileManager;
+import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
 import org.eclipse.cdt.managedbuilder.core.IOption;
@@ -53,6 +54,8 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 
 	public void run(IProgressMonitor monitor) throws InvocationTargetException,
 			InterruptedException {
+
+		System.out.println("SetCrossCommandOperation.run() begin");
 
 		// get local properties
 		String projectName = (String) MBSCustomPageManager.getPageProperty(
@@ -94,9 +97,14 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 				.getConfigurations();
 		for (IConfiguration config : configs) {
 
-			updateOptions(config);
+			try {
+				updateOptions(config);
+			} catch (BuildException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-			//updateSpecsDetector(project, config);
+			// updateSpecsDetector(project, config);
 		}
 
 		ManagedBuildManager.saveBuildInfo(project, true);
@@ -109,21 +117,27 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 			}
 		}
 
-		for (IConfiguration config : configs) {
-			IToolChain toolchain = config.getToolChain();
+		if (false) {
+			for (IConfiguration config : configs) {
+				IToolChain toolchain = config.getToolChain();
 
-			IOption option;
+				IOption option;
 
-			String sId = Activator.getOptionPrefix() + ".toolchain";
-			option = toolchain.getOptionBySuperClassId(sId); //$NON-NLS-1$
+				String sId = Activator.getOptionPrefix() + ".toolchain";
+				option = toolchain.getOptionBySuperClassId(sId); //$NON-NLS-1$
 
-			System.out.println("Check " + option.getId() + "=" + (String)option.getValue()
-					+ " config " + config.getName());
+				System.out.println("Check " + option.getId() + "="
+						+ (String) option.getValue() + " config "
+						+ config.getName());
 
+			}
 		}
+
+		System.out.println("SetCrossCommandOperation.run() end");
+
 	}
 
-	private void updateOptions(IConfiguration config) {
+	private void updateOptions(IConfiguration config) throws BuildException {
 		IToolChain toolchain = config.getToolChain();
 
 		IOption option;
@@ -137,12 +151,12 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 		String sId = Activator.getOptionPrefix() + ".toolchain";
 		option = toolchain.getOptionBySuperClassId(sId); //$NON-NLS-1$
 		val = sId + "." + toolchainIndex;
+		// must be saved to config
 		actualOption = ManagedBuildManager.setOption(config, toolchain, option,
 				val);
 
 		System.out.println("Start " + actualOption.getId() + "=" + val
 				+ " config " + config.getName());
-
 
 		if (false) {
 			ToolchainDefinition td = ToolchainDefinition
@@ -202,6 +216,64 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 					.getOptionPrefix() + ".command.rm"); //$NON-NLS-1$
 			ManagedBuildManager.setOption(config, toolchain, option,
 					td.getCmdRm());
+		} else {
+			// initial settings, without events, required to make macros work
+			ToolchainDefinition td = ToolchainDefinition
+					.getToolchain(toolchainIndex);
+
+			option = toolchain.getOptionBySuperClassId(Activator
+					.getOptionPrefix() + ".family"); //$NON-NLS-1$
+			val = Activator.getOptionPrefix() + ".toolchain." + td.getFamily();
+			option.setDefaultValue(val);
+
+			option = toolchain.getOptionBySuperClassId(Activator
+					.getOptionPrefix() + ".command.prefix"); //$NON-NLS-1$
+			//option.setValue(td.getPrefix());
+			option.setDefaultValue(td.getPrefix());
+			//ManagedBuildManager.setOption(config, toolchain, option,
+				//	td.getPrefix());
+
+			option = toolchain.getOptionBySuperClassId(Activator
+					.getOptionPrefix() + ".command.suffix"); //$NON-NLS-1$
+			//option.setValue(td.getSuffix());
+			option.setDefaultValue(td.getSuffix());
+			ManagedBuildManager.setOption(config, toolchain, option,
+					td.getSuffix());
+
+			option = toolchain.getOptionBySuperClassId(Activator
+					.getOptionPrefix() + ".command.c"); //$NON-NLS-1$
+			//option.setValue(td.getCmdC());
+			option.setDefaultValue(td.getCmdC());
+
+			option = toolchain.getOptionBySuperClassId(Activator
+					.getOptionPrefix() + ".command.cpp"); //$NON-NLS-1$
+			//option.setValue(td.getCmdCpp());
+			option.setDefaultValue(td.getCmdCpp());
+
+			option = toolchain.getOptionBySuperClassId(Activator
+					.getOptionPrefix() + ".command.ar"); //$NON-NLS-1$
+			option.setValue(td.getCmdAr());
+
+			option = toolchain.getOptionBySuperClassId(Activator
+					.getOptionPrefix() + ".command.objcopy"); //$NON-NLS-1$
+			option.setValue(td.getCmdObjcopy());
+
+			option = toolchain.getOptionBySuperClassId(Activator
+					.getOptionPrefix() + ".command.objdump"); //$NON-NLS-1$
+			option.setValue(td.getCmdObjdump());
+
+			option = toolchain.getOptionBySuperClassId(Activator
+					.getOptionPrefix() + ".command.size"); //$NON-NLS-1$
+			option.setValue(td.getCmdSize());
+
+			option = toolchain.getOptionBySuperClassId(Activator
+					.getOptionPrefix() + ".command.make"); //$NON-NLS-1$
+			option.setValue(td.getCmdMake());
+
+			option = toolchain.getOptionBySuperClassId(Activator
+					.getOptionPrefix() + ".command.rm"); //$NON-NLS-1$
+			option.setValue(td.getCmdRm());
+
 		}
 
 		String path = (String) MBSCustomPageManager.getPageProperty(
@@ -210,7 +282,13 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 
 		option = toolchain.getOptionBySuperClassId(Activator.getOptionPrefix()
 				+ ".path"); //$NON-NLS-1$
-		ManagedBuildManager.setOption(config, toolchain, option, path);
+		option.setValue(path);
+		//ManagedBuildManager.setOption(config, toolchain, option, path);
+
+		option = toolchain.getOptionBySuperClassId(Activator.getOptionPrefix()
+				+ ".xxx"); //$NON-NLS-1$
+		//option.setValue(path);
+		ManagedBuildManager.setOption(config, toolchain, option, "yyy");
 
 	}
 

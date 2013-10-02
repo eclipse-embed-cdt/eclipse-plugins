@@ -1781,6 +1781,7 @@
                valueType="enumerated">
             <enumeratedOptionValue
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.0"
+                  isDefault="false"
                   name="%option.toolchain.select.0">
             </enumeratedOptionValue>
             <enumeratedOptionValue
@@ -1823,6 +1824,11 @@
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.10"
                   name="%option.toolchain.select.10">
             </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.x"
+                  isDefault="true"
+                  name="none">
+            </enumeratedOptionValue>
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
@@ -1842,6 +1848,7 @@
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               defaultValue="?"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.prefix"
                isAbstract="false"
                name="%option.toolchain.prefix"
@@ -1851,6 +1858,7 @@
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               defaultValue="?"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.suffix"
                isAbstract="false"
                name="%option.toolchain.suffix"
@@ -1860,7 +1868,7 @@
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               defaultValue="gcc"
+               defaultValue="?"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.c"
                isAbstract="false"
                name="%option.toolchain.command.c"
@@ -1870,7 +1878,7 @@
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               defaultValue="g++"
+               defaultValue="?"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.cpp"
                isAbstract="false"
                name="%option.toolchain.command.cpp"
@@ -3193,6 +3201,20 @@
                   valueType="string">
             </option>
          </tool>
+         <option
+               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.xxx"
+               isAbstract="false"
+               resourceFilter="all"
+               value="?"
+               valueType="string">
+            <enablement
+                  type="UI_VISIBILITY">
+               <false>
+                  false body text
+               </false>
+            </enablement>
+         </option>
          
          <!-- ============================================================= -->
          
