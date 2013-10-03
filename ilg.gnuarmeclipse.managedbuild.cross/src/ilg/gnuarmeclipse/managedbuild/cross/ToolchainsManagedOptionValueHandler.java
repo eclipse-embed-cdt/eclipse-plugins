@@ -25,6 +25,7 @@ import org.eclipse.cdt.managedbuilder.core.IResourceConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IResourceInfo;
 import org.eclipse.cdt.managedbuilder.core.ITool;
 import org.eclipse.cdt.managedbuilder.core.IToolChain;
+import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.cdt.managedbuilder.internal.core.BooleanExpressionApplicabilityCalculator;
 import org.eclipse.cdt.managedbuilder.internal.core.FolderInfo;
 import org.eclipse.cdt.managedbuilder.internal.core.ResourceConfiguration;
@@ -41,22 +42,11 @@ public class ToolchainsManagedOptionValueHandler implements
 		ManagedOptionValueHandlerDebug.dump(configuration, holder, option,
 				extraArgument, event);
 
-		if (event == EVENT_OPEN) {
-			
+		if (event == EVENT_APPLY) {
 			try {
+
 				updateOptions(holder, option);
 				
-				return true;
-			} catch (BuildException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
-		else if (event == EVENT_APPLY) {
-			try {
-
-				updateOptions(holder, option);
 				// Clear discovered includes and macros, to make room for
 				// new ones
 				SpecsProvider.clear();
@@ -66,6 +56,8 @@ public class ToolchainsManagedOptionValueHandler implements
 				
 			} catch (IndexOutOfBoundsException e) {
 				System.out.println("Toolchain index out of range");
+			} catch (NumberFormatException e) {
+				System.out.println("Toolchain index not a number");
 
 			} catch (BuildException e) {
 				// TODO Auto-generated catch block
@@ -86,57 +78,15 @@ public class ToolchainsManagedOptionValueHandler implements
 
 		int pos = val.lastIndexOf(".");
 		String sToolchainIndex = val.substring(pos + 1);
+		
 		System.out.println("ToolchainIndex="+sToolchainIndex);
 
-		ToolchainDefinition td = ToolchainDefinition
-				.getToolchain(sToolchainIndex);
-
-		// maybe configuration?
-		//IConfiguration cfg = ((FolderInfo) configuration).getParent();
-		//IToolChain toolchain = cfg.getToolChain();
+		IConfiguration config = Utils.getConfiguration(holder);
+		Utils.updateOptions(config, sToolchainIndex);
 
 		IOption selOption;
 
-		selOption = holder.getOptionBySuperClassId(Activator
-				.getOptionPrefix() + ".family");
-		String sFamily = Activator.getOptionPrefix() + ".family."
-				+ td.getFamily();
-
-		selOption.setValue(sFamily);
-
-		selOption = holder.getOptionBySuperClassId(Activator
-				.getOptionPrefix() + ".command.prefix");
-		selOption.setValue(td.getPrefix());
-		selOption = holder.getOptionBySuperClassId(Activator
-				.getOptionPrefix() + ".command.suffix");
-		selOption.setValue(td.getSuffix());
-
-		selOption = holder.getOptionBySuperClassId(Activator
-				.getOptionPrefix() + ".command.c");
-		selOption.setValue(td.getCmdC());
-		selOption = holder.getOptionBySuperClassId(Activator
-				.getOptionPrefix() + ".command.cpp");
-		selOption.setValue(td.getCmdCpp());
-		selOption = holder.getOptionBySuperClassId(Activator
-				.getOptionPrefix() + ".command.ar");
-		selOption.setValue(td.getCmdAr());
-		selOption = holder.getOptionBySuperClassId(Activator
-				.getOptionPrefix() + ".command.objcopy");
-		selOption.setValue(td.getCmdObjcopy());
-		selOption = holder.getOptionBySuperClassId(Activator
-				.getOptionPrefix() + ".command.objdump");
-		selOption.setValue(td.getCmdObjdump());
-		selOption = holder.getOptionBySuperClassId(Activator
-				.getOptionPrefix() + ".command.size");
-		selOption.setValue(td.getCmdSize());
-
-		selOption = holder.getOptionBySuperClassId(Activator
-				.getOptionPrefix() + ".command.make");
-		selOption.setValue(td.getCmdMake());
-		selOption = holder.getOptionBySuperClassId(Activator
-				.getOptionPrefix() + ".command.rm");
-		selOption.setValue(td.getCmdRm());
-
+		// get the path from the shared storage
 		String pathKey = SetCrossCommandWizardPage.SHARED_CROSS_COMMAND_PATH
 				+ "." + sToolchainIndex;
 		String path = SharedDefaults.getInstance().getSharedDefaultsMap().get(pathKey);
@@ -145,7 +95,11 @@ public class ToolchainsManagedOptionValueHandler implements
 
 		selOption = holder.getOptionBySuperClassId(Activator
 				.getOptionPrefix() + ".path");
+		// Do not use config.setOption() to DO NOT save it on .cproject...
 		selOption.setValue(path);
+		
+		// save path to the project workspace storage
+		PathManagedOptionValueHandler.putPersistent(config, path);
 
 	}
 	@Override
@@ -166,23 +120,6 @@ public class ToolchainsManagedOptionValueHandler implements
 		
 		// All other are appropriate
 		return true;
-	}
-
-	/**
-	 * Extracts a resource info from a build object. If no resource info can be
-	 * found, it returns null.
-	 * 
-	 * @param configuration
-	 * @return
-	 */
-	private IResourceInfo getResourceInfo(IBuildObject configuration) {
-		if (configuration instanceof IFolderInfo)
-			return (IFolderInfo) configuration;
-		if (configuration instanceof IFileInfo)
-			return (IFileInfo) configuration;
-		if (configuration instanceof IConfiguration)
-			return ((IConfiguration) configuration).getRootFolderInfo();
-		return null;
 	}
 
 }

@@ -104,7 +104,6 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 				e.printStackTrace();
 			}
 
-			// updateSpecsDetector(project, config);
 		}
 
 		ManagedBuildManager.saveBuildInfo(project, true);
@@ -117,243 +116,42 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 			}
 		}
 
-		if (false) {
-			for (IConfiguration config : configs) {
-				IToolChain toolchain = config.getToolChain();
-
-				IOption option;
-
-				String sId = Activator.getOptionPrefix() + ".toolchain";
-				option = toolchain.getOptionBySuperClassId(sId); //$NON-NLS-1$
-
-				System.out.println("Check " + option.getId() + "="
-						+ (String) option.getValue() + " config "
-						+ config.getName());
-
-			}
-		}
 
 		System.out.println("SetCrossCommandOperation.run() end");
 
 	}
 
 	private void updateOptions(IConfiguration config) throws BuildException {
-		IToolChain toolchain = config.getToolChain();
 
-		IOption option;
-		IOption actualOption;
-		String val;
-
-		String toolchainIndex = (String) MBSCustomPageManager.getPageProperty(
+		String sToolchainIndex = (String) MBSCustomPageManager.getPageProperty(
 				SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_INDEX);
 
-		String sId = Activator.getOptionPrefix() + ".toolchain";
+		IToolChain toolchain = config.getToolChain();
+		
+		IOption option;
+		String val;
+
+		String sId;
+		sId = Activator.getOptionPrefix() + ".toolchain.index";
 		option = toolchain.getOptionBySuperClassId(sId); //$NON-NLS-1$
-		val = sId + "." + toolchainIndex;
-		// must be saved to config
-		actualOption = ManagedBuildManager.setOption(config, toolchain, option,
-				val);
+		val = sId + "." + sToolchainIndex;
+		// Do not use config.setOption() to DO NOT save it on .cproject...
+		// option.setValue(val);
+		config.setOption(toolchain, option, val); // temporarily
 
-		System.out.println("Start " + actualOption.getId() + "=" + val
-				+ " config " + config.getName());
-
-		if (false) {
-			ToolchainDefinition td = ToolchainDefinition
-					.getToolchain(toolchainIndex);
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".family"); //$NON-NLS-1$
-			val = Activator.getOptionPrefix() + ".toolchain." + td.getFamily();
-			ManagedBuildManager.setOption(config, toolchain, option, val);
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".command.prefix"); //$NON-NLS-1$
-			ManagedBuildManager.setOption(config, toolchain, option,
-					td.getPrefix());
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".command.suffix"); //$NON-NLS-1$
-			ManagedBuildManager.setOption(config, toolchain, option,
-					td.getSuffix());
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".command.c"); //$NON-NLS-1$
-			ManagedBuildManager.setOption(config, toolchain, option,
-					td.getCmdC());
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".command.cpp"); //$NON-NLS-1$
-			ManagedBuildManager.setOption(config, toolchain, option,
-					td.getCmdCpp());
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".command.ar"); //$NON-NLS-1$
-			ManagedBuildManager.setOption(config, toolchain, option,
-					td.getCmdAr());
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".command.objcopy"); //$NON-NLS-1$
-			ManagedBuildManager.setOption(config, toolchain, option,
-					td.getCmdObjcopy());
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".command.objdump"); //$NON-NLS-1$
-			ManagedBuildManager.setOption(config, toolchain, option,
-					td.getCmdObjdump());
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".command.size"); //$NON-NLS-1$
-			ManagedBuildManager.setOption(config, toolchain, option,
-					td.getCmdSize());
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".command.make"); //$NON-NLS-1$
-			ManagedBuildManager.setOption(config, toolchain, option,
-					td.getCmdMake());
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".command.rm"); //$NON-NLS-1$
-			ManagedBuildManager.setOption(config, toolchain, option,
-					td.getCmdRm());
-		} else {
-			// initial settings, without events, required to make macros work
-			ToolchainDefinition td = ToolchainDefinition
-					.getToolchain(toolchainIndex);
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".family"); //$NON-NLS-1$
-			val = Activator.getOptionPrefix() + ".toolchain." + td.getFamily();
-			option.setDefaultValue(val);
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".command.prefix"); //$NON-NLS-1$
-			//option.setValue(td.getPrefix());
-			option.setDefaultValue(td.getPrefix());
-			//ManagedBuildManager.setOption(config, toolchain, option,
-				//	td.getPrefix());
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".command.suffix"); //$NON-NLS-1$
-			//option.setValue(td.getSuffix());
-			option.setDefaultValue(td.getSuffix());
-			ManagedBuildManager.setOption(config, toolchain, option,
-					td.getSuffix());
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".command.c"); //$NON-NLS-1$
-			//option.setValue(td.getCmdC());
-			option.setDefaultValue(td.getCmdC());
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".command.cpp"); //$NON-NLS-1$
-			//option.setValue(td.getCmdCpp());
-			option.setDefaultValue(td.getCmdCpp());
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".command.ar"); //$NON-NLS-1$
-			option.setValue(td.getCmdAr());
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".command.objcopy"); //$NON-NLS-1$
-			option.setValue(td.getCmdObjcopy());
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".command.objdump"); //$NON-NLS-1$
-			option.setValue(td.getCmdObjdump());
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".command.size"); //$NON-NLS-1$
-			option.setValue(td.getCmdSize());
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".command.make"); //$NON-NLS-1$
-			option.setValue(td.getCmdMake());
-
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".command.rm"); //$NON-NLS-1$
-			option.setValue(td.getCmdRm());
-
-		}
-
+		Utils.updateOptions(config, sToolchainIndex);
+		
 		String path = (String) MBSCustomPageManager.getPageProperty(
 				SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_COMMAND_PATH);
-
 		option = toolchain.getOptionBySuperClassId(Activator.getOptionPrefix()
 				+ ".path"); //$NON-NLS-1$
+		// Do not use config.setOption() to DO NOT save it on .cproject...
 		option.setValue(path);
-		//ManagedBuildManager.setOption(config, toolchain, option, path);
 
-		option = toolchain.getOptionBySuperClassId(Activator.getOptionPrefix()
-				+ ".xxx"); //$NON-NLS-1$
-		//option.setValue(path);
-		ManagedBuildManager.setOption(config, toolchain, option, "yyy");
-
+		// ... instead save it to the workspace project storage
+		PathManagedOptionValueHandler.putPersistent(config, path);
 	}
 
-	private void updateSpecsDetector(IProject project, IConfiguration config) {
-
-		ICfgScannerConfigBuilderInfo2Set cbi = CfgScannerConfigProfileManager
-				.getCfgScannerConfigBuildInfo(config);
-		Map<CfgInfoContext, IScannerConfigBuilderInfo2> map = cbi.getInfoMap();
-		for (CfgInfoContext cfgInfoContext : map.keySet()) {
-			IScannerConfigBuilderInfo2 bi = map.get(cfgInfoContext);
-			String providerId = "specsFile"; //$NON-NLS-1$
-			String runCommand = bi.getProviderRunCommand(providerId);
-			// bi.setProviderRunCommand(providerId, prefix + runCommand);
-			// TODO check
-			bi.setProviderRunCommand(providerId, runCommand);
-			try {
-				bi.save();
-			} catch (CoreException e) {
-				Activator.log(e);
-			}
-
-			// Clear the path info that was captured at project creation
-			// time
-			// TODO we need an API to do this to avoid the discouraged
-			// access warnings.
-
-			DiscoveredPathInfo pathInfo = new DiscoveredPathInfo(project);
-			InfoContext infoContext = cfgInfoContext.toInfoContext();
-
-			// 1. Remove scanner info from
-			// .metadata/.plugins/org.eclipse.cdt.make.core/Project.sc
-			DiscoveredScannerInfoStore dsiStore = DiscoveredScannerInfoStore
-					.getInstance();
-			try {
-				dsiStore.saveDiscoveredScannerInfoToState(project, infoContext,
-						pathInfo);
-			} catch (CoreException e) {
-				e.printStackTrace();
-			}
-
-			// 2. Remove scanner info from CfgDiscoveredPathManager cache
-			// and from the Tool
-			CfgDiscoveredPathManager cdpManager = CfgDiscoveredPathManager
-					.getInstance();
-			cdpManager.removeDiscoveredInfo(project, cfgInfoContext);
-
-			// 3. Remove scanner info from SI collector
-			IScannerConfigBuilderInfo2 buildInfo2 = map.get(cfgInfoContext);
-			if (buildInfo2 != null) {
-				ScannerConfigProfileManager scpManager = ScannerConfigProfileManager
-						.getInstance();
-				String selectedProfileId = buildInfo2.getSelectedProfileId();
-				SCProfileInstance profileInstance = scpManager
-						.getSCProfileInstance(project, infoContext,
-								selectedProfileId);
-
-				IScannerInfoCollector collector = profileInstance
-						.getScannerInfoCollector();
-				if (collector instanceof IScannerInfoCollectorCleaner) {
-					((IScannerInfoCollectorCleaner) collector)
-							.deleteAll(project);
-				}
-				buildInfo2 = null;
-			}
-		}
-
-	}
 }

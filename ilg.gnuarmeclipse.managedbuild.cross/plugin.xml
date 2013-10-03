@@ -1773,59 +1773,58 @@
          </optionCategory>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index"
                isAbstract="false"
-               name="%option.toolchain.select"
+               name="%option.toolchain.index"
                resourceFilter="all"
                valueHandler="ilg.gnuarmeclipse.managedbuild.cross.ToolchainsManagedOptionValueHandler"
                valueType="enumerated">
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.0"
-                  isDefault="false"
-                  name="%option.toolchain.select.0">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.0"
+                  name="%option.toolchain.index.0">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.1"
-                  name="%option.toolchain.select.1">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.1"
+                  name="%option.toolchain.index.1">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.2"
-                  name="%option.toolchain.select.2">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.2"
+                  name="%option.toolchain.index.2">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.3"
-                  name="%option.toolchain.select.3">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.3"
+                  name="%option.toolchain.index.3">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.4"
-                  name="%option.toolchain.select.4">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.4"
+                  name="%option.toolchain.index.4">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.5"
-                  name="%option.toolchain.select.5">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.5"
+                  name="%option.toolchain.index.5">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.6"
-                  name="%option.toolchain.select.6">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.6"
+                  name="%option.toolchain.index.6">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.7"
-                  name="%option.toolchain.select.7">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.7"
+                  name="%option.toolchain.index.7">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.8"
-                  name="%option.toolchain.select.8">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.8"
+                  name="%option.toolchain.index.8">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.9"
-                  name="%option.toolchain.select.9">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.9"
+                  name="%option.toolchain.index.9">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.10"
-                  name="%option.toolchain.select.10">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.10"
+                  name="%option.toolchain.index.10">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.x"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.x"
                   isDefault="true"
                   name="none">
             </enumeratedOptionValue>
@@ -1835,15 +1834,15 @@
                id="ilg.gnuarmeclipse.managedbuild.cross.option.family"
                isAbstract="false"
                name="%option.toolchain.family"
+               valueHandler="ilg.gnuarmeclipse.managedbuild.cross.ToolchainFamilyManagedOptionValueHandler"
                valueType="enumerated">
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm32"
-                  isDefault="true"
-                  name="%option.toolchain.family.arm32">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm"
+                  name="%option.toolchain.family.arm">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm64"
-                  name="%option.toolchain.family.arm64">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.family.aarch64"
+                  name="%option.toolchain.family.aarch64">
             </enumeratedOptionValue>
          </option>
          <option
@@ -1858,7 +1857,6 @@
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               defaultValue="?"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.suffix"
                isAbstract="false"
                name="%option.toolchain.suffix"
@@ -1868,7 +1866,6 @@
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               defaultValue="?"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.c"
                isAbstract="false"
                name="%option.toolchain.command.c"
@@ -1878,7 +1875,6 @@
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               defaultValue="?"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.cpp"
                isAbstract="false"
                name="%option.toolchain.command.cpp"
@@ -1888,7 +1884,6 @@
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               defaultValue="ar"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.ar"
                isAbstract="false"
                name="%option.toolchain.command.ar"
@@ -1897,7 +1892,6 @@
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               defaultValue="objcopy"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.objcopy"
                isAbstract="false"
                name="%option.toolchain.command.objcopy"
@@ -1906,7 +1900,6 @@
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               defaultValue="objdump"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.objdump"
                isAbstract="false"
                name="%option.toolchain.command.listing"
@@ -1915,7 +1908,6 @@
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               defaultValue="size"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.size"
                isAbstract="false"
                name="%option.toolchain.command.size"
@@ -1924,7 +1916,6 @@
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               defaultValue="make"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.make"
                isAbstract="false"
                name="%option.toolchain.command.make"
@@ -1933,7 +1924,6 @@
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               defaultValue="rm"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.rm"
                isAbstract="false"
                name="%option.toolchain.command.rm"
@@ -1947,7 +1937,7 @@
                isAbstract="false"
                name="%option.toolchain.path"
                resourceFilter="all"
-               valueHandler="ilg.gnuarmeclipse.managedbuild.cross.ClearProviderManagedOptionValueHandler"
+               valueHandler="ilg.gnuarmeclipse.managedbuild.cross.PathManagedOptionValueHandler"
                valueType="string">
          </option>
          <option
@@ -3203,10 +3193,9 @@
          </tool>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.xxx"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.name"
                isAbstract="false"
                resourceFilter="all"
-               value="?"
                valueType="string">
             <enablement
                   type="UI_VISIBILITY">
