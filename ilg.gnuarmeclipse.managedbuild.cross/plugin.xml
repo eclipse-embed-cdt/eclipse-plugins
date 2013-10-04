@@ -176,16 +176,12 @@
                valueHandler="ilg.gnuarmeclipse.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
                valueType="boolean">
             <enablement
-                  type="UI_ENABLEMENT|CMD_USAGE">
+                  attribute="value"
+                  type="ALL">
                <checkBuildProperty
                      property="org.eclipse.cdt.build.core.buildArtefactType"
                      value="org.eclipse.cdt.build.core.buildArtefactType.exe">
                </checkBuildProperty>
-            </enablement>
-            <enablement
-                  attribute="value"
-                  type="CONTAINER_ATTRIBUTE"
-                  value="true">
             </enablement>
          </option>
          <option
@@ -196,16 +192,12 @@
                valueHandler="ilg.gnuarmeclipse.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
                valueType="boolean">
             <enablement
-                  type="UI_ENABLEMENT|CMD_USAGE">
+                  attribute="value"
+                  type="ALL">
                <checkBuildProperty
                      property="org.eclipse.cdt.build.core.buildArtefactType"
                      value="org.eclipse.cdt.build.core.buildArtefactType.exe">
                </checkBuildProperty>
-            </enablement>
-            <enablement
-                  attribute="value"
-                  type="CONTAINER_ATTRIBUTE"
-                  value="true">
             </enablement>
          </option>
          <option
@@ -216,16 +208,12 @@
                valueHandler="ilg.gnuarmeclipse.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
                valueType="boolean">
             <enablement
-                  type="UI_ENABLEMENT|CMD_USAGE">
+                  attribute="value"
+                  type="ALL">
                <checkBuildProperty
                      property="org.eclipse.cdt.build.core.buildArtefactType"
                      value="org.eclipse.cdt.build.core.buildArtefactType.exe">
                </checkBuildProperty>
-            </enablement>
-            <enablement
-                  attribute="value"
-                  type="CONTAINER_ATTRIBUTE"
-                  value="true">
             </enablement>
          </option>
       </tool>
@@ -386,6 +374,7 @@
                isAbstract="true"
                name="%option.compiler.allwarn"
                tip="This enables all the warnings about constructions that some users consider questionable, and that are easy to avoid (or modify to prevent the warning), even in conjunction with macros. This also enables some language-specific warnings."
+               useByScannerDiscovery="true"
                valueType="boolean">
             <enablement
                   attribute="value"
@@ -400,6 +389,7 @@
                isAbstract="true"
                name="%option.compiler.nowarn"
                tip="Inhibit all warning messages. Not recommended."
+               useByScannerDiscovery="true"
                valueType="boolean">
          </option>
          <option
@@ -409,6 +399,7 @@
                isAbstract="true"
                name="%option.compiler.extrawarn"
                tip="This enables some extra warning flags that are not enabled by ‘-Wall’."
+               useByScannerDiscovery="true"
                valueType="boolean">
          </option>
          <option
@@ -418,6 +409,7 @@
                isAbstract="true"
                name="%option.compiler.toerrors"
                tip="Make all warnings into errors."
+               useByScannerDiscovery="true"
                valueType="boolean">
          </option>
          <option
@@ -1931,6 +1923,13 @@
                name="%option.toolchain.command.ar"
                resourceFilter="all"
                valueType="string">
+            <enablement
+                  type="UI_VISIBILITY|UI_ENABLEMENT|CMD_USAGE">
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildArtefactType"
+                     value="org.eclipse.cdt.build.core.buildArtefactType.staticLib">
+               </checkBuildProperty>
+            </enablement>
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
@@ -1939,6 +1938,13 @@
                name="%option.toolchain.command.objcopy"
                resourceFilter="all"
                valueType="string">
+            <enablement
+                  type="UI_VISIBILITY|UI_ENABLEMENT|CMD_USAGE">
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildArtefactType"
+                     value="org.eclipse.cdt.build.core.buildArtefactType.exe">
+               </checkBuildProperty>
+            </enablement>
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
@@ -1947,6 +1953,13 @@
                name="%option.toolchain.command.listing"
                resourceFilter="all"
                valueType="string">
+            <enablement
+                  type="UI_VISIBILITY|UI_ENABLEMENT|CMD_USAGE">
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildArtefactType"
+                     value="org.eclipse.cdt.build.core.buildArtefactType.exe">
+               </checkBuildProperty>
+            </enablement>
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
@@ -1955,6 +1968,13 @@
                name="%option.toolchain.command.size"
                resourceFilter="all"
                valueType="string">
+            <enablement
+                  type="UI_VISIBILITY|UI_ENABLEMENT|CMD_USAGE">
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildArtefactType"
+                     value="org.eclipse.cdt.build.core.buildArtefactType.exe">
+               </checkBuildProperty>
+            </enablement>
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
@@ -2119,7 +2139,7 @@
 
        <tool
              command="${cross_prefix}${cross_c}${cross_suffix}"
-             commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CommandLineGenerator"
+             commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
              errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser"
              id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler"
              isAbstract="false"
@@ -2149,10 +2169,15 @@
                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.preprocessor"
                 command="-x assembler-with-cpp"
                 commandFalse="-x assembler"
-                defaultValue="true"
+                defaultValue="false"
                 id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.usepreprocessor"
                 name="%option.assembler.usepreprocessor"
                 valueType="boolean">
+             <enablement
+                   attribute="value"
+                   type="CONTAINER_ATTRIBUTE"
+                   value="true">
+             </enablement>
           </option>
           <option
                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.preprocessor"
@@ -2267,7 +2292,7 @@
          
          <tool
                command="${cross_prefix}${cross_c}${cross_suffix}"
-               commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CommandLineGenerator"
+               commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
                errorParsers="org.eclipse.cdt.core.GCCErrorParser"
                id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler"
                isAbstract="false"
@@ -2467,7 +2492,7 @@
          </tool>
          <tool
                command="${cross_prefix}${cross_cpp}${cross_suffix}"
-               commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CommandLineGenerator"
+               commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
                errorParsers="org.eclipse.cdt.core.GCCErrorParser"
                id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler"
                isAbstract="false"
@@ -2602,6 +2627,7 @@
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warnabi"
                   name="%option.compiler.warnabi"
                   tip="Warn when G++ generates code that is probably not compatible with the vendor-neutral C++ ABI. Although an effort has been made to warn about all such cases, there are probably some cases that are not warned about, even though G++ is generating incompatible code. There may also be cases where warnings are emitted even though the code that is generated is compatible."
+                  useByScannerDiscovery="true"
                   valueType="boolean">
             </option>
             <option
@@ -2611,6 +2637,7 @@
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warneffc"
                   name="%option.compiler.warneffc"
                   tip="Warn about violations of the style guidelines from Scott Meyers’ Effective C++, Second Edition book."
+                  useByScannerDiscovery="true"
                   valueType="boolean">
             </option>
             <option
@@ -2725,12 +2752,12 @@
          </tool>
          
          <tool
-                command="${cross_prefix}${cross_c}${cross_suffix}"
-                commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CommandLineGenerator"
-                id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker"
-                name="%tool.c.linker"
-                natureFilter="cnature"
-                outputFlag="-o">
+               command="${cross_prefix}${cross_c}${cross_suffix}"
+               commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
+               id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker"
+               name="%tool.c.linker"
+               natureFilter="cnature"
+               outputFlag="-o">
             <enablement
                   type="ALL">
                <checkBuildProperty
@@ -2862,6 +2889,7 @@
          <tool
                command="${cross_prefix}${cross_cpp}${cross_suffix}"
                commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CommandLineGenerator"
+               commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
                id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker"
                name="%tool.cpp.linker"
                natureFilter="ccnature"
@@ -3408,7 +3436,7 @@
             class="org.eclipse.cdt.managedbuilder.language.settings.providers.GCCBuiltinSpecsDetector"
             id="ilg.gnuarmeclipse.managedbuild.cross.GCCBuiltinSpecsDetector"
             name="%GCCBuiltinSpecsDetector.name"
-            parameter="${COMMAND} ${FLAGS} -E -P -v -dD &quot;${INPUTS}&quot;"
+            parameter="${COMMAND} ${FLAGS} ${cross_toolchain_flags} -E -P -v -dD &quot;${INPUTS}&quot;"
             prefer-non-shared="true">
          <language-scope
                id="org.eclipse.cdt.core.gcc">
