@@ -200,19 +200,19 @@ public class ToolchainDefinition {
 		// 64 bit toolchains
 		// 7
 		ms_list.add(new ToolchainDefinition("Linaro AArch64 bare-metal ELF",
-				"aarch64-none-elf-", "arm64"));
+				"aarch64-none-elf-", "aarch64"));
 
 		// 8
 		ms_list.add(new ToolchainDefinition("Linaro AArch64 big-endian bare-metal ELF",
-				"aarch64_be-none-elf-", "arm64"));
+				"aarch64_be-none-elf-", "aarch64"));
 
 		// 9
 		ms_list.add(new ToolchainDefinition("Linaro AArch64 Linux GNU",
-				"aarch64-linux-gnu-", "arm64"));
+				"aarch64-linux-gnu-", "aarch64"));
 
 		// 10
 		ms_list.add(new ToolchainDefinition("Linaro AArch64 big-endian Linux GNU",
-				"aarch64_be-linux-gnu-", "arm64"));
+				"aarch64_be-linux-gnu-", "aarch64"));
 
 		// 11
 		tc = new ToolchainDefinition("test", "myPrefix");

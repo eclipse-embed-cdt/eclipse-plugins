@@ -49,43 +49,46 @@ public class CommandLineGenerator extends ManagedCommandLineGenerator {
 
 	private static final String OPTION_SUFFIX_FAMILY = OPTION_SUFFIX + "family";
 
+	private static final String FAMILY_ARM = "arm";
+	private static final String FAMILY_AARCH64 = "aarch64";
+
 	private static final String OPTION_SUFFIX_TARGET = OPTION_SUFFIX
 			+ "target.";
 
-	private static final String OPTION_SUFFIX_ARM32_TARGET = OPTION_SUFFIX
-			+ "arm32.target.";
-	private static final String OPTION_SUFFIX_ARM32_TARGET_FAMILY = OPTION_SUFFIX_ARM32_TARGET
+	private static final String OPTION_SUFFIX_ARM_TARGET = OPTION_SUFFIX
+			+ FAMILY_ARM + ".target.";
+	private static final String OPTION_SUFFIX_ARM_TARGET_FAMILY = OPTION_SUFFIX_ARM_TARGET
 			+ "family";
-	private static final String OPTION_SUFFIX_ARM32_TARGET_ARCHITECTURE = OPTION_SUFFIX_ARM32_TARGET
+	private static final String OPTION_SUFFIX_ARM_TARGET_ARCHITECTURE = OPTION_SUFFIX_ARM_TARGET
 			+ "architecture";
-	private static final String OPTION_SUFFIX_ARM32_TARGET_INSTRUCTIONSET = OPTION_SUFFIX_ARM32_TARGET
+	private static final String OPTION_SUFFIX_ARM_TARGET_INSTRUCTIONSET = OPTION_SUFFIX_ARM_TARGET
 			+ "instructionset";
-	private static final String OPTION_SUFFIX_ARM32_TARGET_THUMB_INTERWORK = OPTION_SUFFIX_ARM32_TARGET
+	private static final String OPTION_SUFFIX_ARM_TARGET_THUMB_INTERWORK = OPTION_SUFFIX_ARM_TARGET
 			+ "thumbinterwork";
-	private static final String OPTION_SUFFIX_ARM32_TARGET_ENDIANNESS = OPTION_SUFFIX_ARM32_TARGET
+	private static final String OPTION_SUFFIX_ARM_TARGET_ENDIANNESS = OPTION_SUFFIX_ARM_TARGET
 			+ "endianness";
-	private static final String OPTION_SUFFIX_ARM32_TARGET_FLOAT_ABI = OPTION_SUFFIX_ARM32_TARGET
+	private static final String OPTION_SUFFIX_ARM_TARGET_FLOAT_ABI = OPTION_SUFFIX_ARM_TARGET
 			+ "fpu.abi";
-	private static final String OPTION_SUFFIX_ARM32_TARGET_FLOAT_UNIT = OPTION_SUFFIX_ARM32_TARGET
+	private static final String OPTION_SUFFIX_ARM_TARGET_FLOAT_UNIT = OPTION_SUFFIX_ARM_TARGET
 			+ "fpu.unit";
-	private static final String OPTION_SUFFIX_ARM32_TARGET_UNALIGNEDACCESS = OPTION_SUFFIX_ARM32_TARGET
+	private static final String OPTION_SUFFIX_ARM_TARGET_UNALIGNEDACCESS = OPTION_SUFFIX_ARM_TARGET
 			+ "unalignedaccess";
 
-	private static final String OPTION_SUFFIX_ARM64_TARGET = OPTION_SUFFIX
-			+ "arm64.target.";
-	private static final String OPTION_SUFFIX_ARM64_TARGET_FAMILY = OPTION_SUFFIX_ARM64_TARGET
+	private static final String OPTION_SUFFIX_AARCH64_TARGET = OPTION_SUFFIX
+			+ FAMILY_AARCH64 + ".target.";
+	private static final String OPTION_SUFFIX_AARCH64_TARGET_FAMILY = OPTION_SUFFIX_AARCH64_TARGET
 			+ "family";
-	private static final String OPTION_SUFFIX_ARM64_TARGET_FEATURE_CRC = OPTION_SUFFIX_ARM64_TARGET
+	private static final String OPTION_SUFFIX_AARCH64_TARGET_FEATURE_CRC = OPTION_SUFFIX_AARCH64_TARGET
 			+ "feature.crc";
-	private static final String OPTION_SUFFIX_ARM64_TARGET_FEATURE_CRYPTO = OPTION_SUFFIX_ARM64_TARGET
+	private static final String OPTION_SUFFIX_AARCH64_TARGET_FEATURE_CRYPTO = OPTION_SUFFIX_AARCH64_TARGET
 			+ "feature.crypto";
-	private static final String OPTION_SUFFIX_ARM64_TARGET_FEATURE_FP = OPTION_SUFFIX_ARM64_TARGET
+	private static final String OPTION_SUFFIX_AARCH64_TARGET_FEATURE_FP = OPTION_SUFFIX_AARCH64_TARGET
 			+ "feature.fp";
-	private static final String OPTION_SUFFIX_ARM64_TARGET_FEATURE_SIMD = OPTION_SUFFIX_ARM64_TARGET
+	private static final String OPTION_SUFFIX_AARCH64_TARGET_FEATURE_SIMD = OPTION_SUFFIX_AARCH64_TARGET
 			+ "feature.simd";
-	private static final String OPTION_SUFFIX_ARM64_TARGET_CMODEL = OPTION_SUFFIX_ARM64_TARGET
+	private static final String OPTION_SUFFIX_AARCH64_TARGET_CMODEL = OPTION_SUFFIX_AARCH64_TARGET
 			+ "cmodel";
-	private static final String OPTION_SUFFIX_ARM64_TARGET_STRICTALIGN = OPTION_SUFFIX_ARM64_TARGET
+	private static final String OPTION_SUFFIX_AARCH64_TARGET_STRICTALIGN = OPTION_SUFFIX_AARCH64_TARGET
 			+ "strictalign";
 
 	private static final String OPTION_SUFFIX_TARGET_OTHER = OPTION_SUFFIX_TARGET
@@ -214,73 +217,73 @@ public class CommandLineGenerator extends ManagedCommandLineGenerator {
 
 						if (sID.endsWith(OPTION_SUFFIX_FAMILY)
 								|| sID.indexOf(OPTION_SUFFIX_FAMILY + ".") > 0) {
-							if (sVal.endsWith(".arm32"))
+							if (sVal.endsWith("." + FAMILY_ARM))
 								isArm32 = true;
-							else if (sVal.endsWith(".arm64"))
+							else if (sVal.endsWith("." + FAMILY_AARCH64))
 								isArm64 = true;
 						} else if (sID
-								.endsWith(OPTION_SUFFIX_ARM32_TARGET_FAMILY)
-								|| sID.indexOf(OPTION_SUFFIX_ARM32_TARGET_FAMILY
+								.endsWith(OPTION_SUFFIX_ARM_TARGET_FAMILY)
+								|| sID.indexOf(OPTION_SUFFIX_ARM_TARGET_FAMILY
 										+ ".") > 0) {
 							sTarget32Family = sEnumCommand;
 						} else if (sID
-								.endsWith(OPTION_SUFFIX_ARM32_TARGET_ARCHITECTURE)
-								|| sID.indexOf(OPTION_SUFFIX_ARM32_TARGET_ARCHITECTURE
+								.endsWith(OPTION_SUFFIX_ARM_TARGET_ARCHITECTURE)
+								|| sID.indexOf(OPTION_SUFFIX_ARM_TARGET_ARCHITECTURE
 										+ ".") > 0) {
 							sTarget32Architecture = sEnumCommand;
 						} else if (sID
-								.endsWith(OPTION_SUFFIX_ARM32_TARGET_INSTRUCTIONSET)
-								|| sID.indexOf(OPTION_SUFFIX_ARM32_TARGET_INSTRUCTIONSET
+								.endsWith(OPTION_SUFFIX_ARM_TARGET_INSTRUCTIONSET)
+								|| sID.indexOf(OPTION_SUFFIX_ARM_TARGET_INSTRUCTIONSET
 										+ ".") > 0) {
 							sTarget32InstructionSet = sEnumCommand;
 						} else if (sID
-								.endsWith(OPTION_SUFFIX_ARM32_TARGET_ENDIANNESS)
-								|| sID.indexOf(OPTION_SUFFIX_ARM32_TARGET_ENDIANNESS
+								.endsWith(OPTION_SUFFIX_ARM_TARGET_ENDIANNESS)
+								|| sID.indexOf(OPTION_SUFFIX_ARM_TARGET_ENDIANNESS
 										+ ".") > 0) {
 							sTarget32ProcessorEndianness = sEnumCommand;
 						} else if (sID
-								.endsWith(OPTION_SUFFIX_ARM32_TARGET_FLOAT_ABI)
-								|| sID.indexOf(OPTION_SUFFIX_ARM32_TARGET_FLOAT_ABI
+								.endsWith(OPTION_SUFFIX_ARM_TARGET_FLOAT_ABI)
+								|| sID.indexOf(OPTION_SUFFIX_ARM_TARGET_FLOAT_ABI
 										+ ".") > 0) {
 							sTarget32FloatAbi = sEnumCommand;
 						} else if (sID
-								.endsWith(OPTION_SUFFIX_ARM32_TARGET_FLOAT_UNIT)
-								|| sID.indexOf(OPTION_SUFFIX_ARM32_TARGET_FLOAT_UNIT
+								.endsWith(OPTION_SUFFIX_ARM_TARGET_FLOAT_UNIT)
+								|| sID.indexOf(OPTION_SUFFIX_ARM_TARGET_FLOAT_UNIT
 										+ ".") > 0) {
 							sTarget32FloatUnit = sEnumCommand;
 						} else if (sID
-								.endsWith(OPTION_SUFFIX_ARM32_TARGET_UNALIGNEDACCESS)
-								|| sID.indexOf(OPTION_SUFFIX_ARM32_TARGET_UNALIGNEDACCESS
+								.endsWith(OPTION_SUFFIX_ARM_TARGET_UNALIGNEDACCESS)
+								|| sID.indexOf(OPTION_SUFFIX_ARM_TARGET_UNALIGNEDACCESS
 										+ ".") > 0) {
 							sTarget32UnalignedAccess = sEnumCommand;
 						} else if (sID
-								.endsWith(OPTION_SUFFIX_ARM64_TARGET_FAMILY)
-								|| sID.indexOf(OPTION_SUFFIX_ARM64_TARGET_FAMILY
+								.endsWith(OPTION_SUFFIX_AARCH64_TARGET_FAMILY)
+								|| sID.indexOf(OPTION_SUFFIX_AARCH64_TARGET_FAMILY
 										+ ".") > 0) {
 							sTarget64Family = sEnumCommand;
 						} else if (sID
-								.endsWith(OPTION_SUFFIX_ARM64_TARGET_FEATURE_CRC)
-								|| sID.indexOf(OPTION_SUFFIX_ARM64_TARGET_FEATURE_CRC
+								.endsWith(OPTION_SUFFIX_AARCH64_TARGET_FEATURE_CRC)
+								|| sID.indexOf(OPTION_SUFFIX_AARCH64_TARGET_FEATURE_CRC
 										+ ".") > 0) {
 							sTarget64FeatureCrc = sEnumCommand;
 						} else if (sID
-								.endsWith(OPTION_SUFFIX_ARM64_TARGET_FEATURE_CRYPTO)
-								|| sID.indexOf(OPTION_SUFFIX_ARM64_TARGET_FEATURE_CRYPTO
+								.endsWith(OPTION_SUFFIX_AARCH64_TARGET_FEATURE_CRYPTO)
+								|| sID.indexOf(OPTION_SUFFIX_AARCH64_TARGET_FEATURE_CRYPTO
 										+ ".") > 0) {
 							sTarget64FeatureCrypto = sEnumCommand;
 						} else if (sID
-								.endsWith(OPTION_SUFFIX_ARM64_TARGET_FEATURE_FP)
-								|| sID.indexOf(OPTION_SUFFIX_ARM64_TARGET_FEATURE_FP
+								.endsWith(OPTION_SUFFIX_AARCH64_TARGET_FEATURE_FP)
+								|| sID.indexOf(OPTION_SUFFIX_AARCH64_TARGET_FEATURE_FP
 										+ ".") > 0) {
 							sTarget64FeatureFp = sEnumCommand;
 						} else if (sID
-								.endsWith(OPTION_SUFFIX_ARM64_TARGET_FEATURE_SIMD)
-								|| sID.indexOf(OPTION_SUFFIX_ARM64_TARGET_FEATURE_SIMD
+								.endsWith(OPTION_SUFFIX_AARCH64_TARGET_FEATURE_SIMD)
+								|| sID.indexOf(OPTION_SUFFIX_AARCH64_TARGET_FEATURE_SIMD
 										+ ".") > 0) {
 							sTarget64FeatureSimd = sEnumCommand;
 						} else if (sID
-								.endsWith(OPTION_SUFFIX_ARM64_TARGET_CMODEL)
-								|| sID.indexOf(OPTION_SUFFIX_ARM64_TARGET_CMODEL
+								.endsWith(OPTION_SUFFIX_AARCH64_TARGET_CMODEL)
+								|| sID.indexOf(OPTION_SUFFIX_AARCH64_TARGET_CMODEL
 										+ ".") > 0) {
 							sTarget64Cmodel = sEnumCommand;
 
@@ -312,14 +315,14 @@ public class CommandLineGenerator extends ManagedCommandLineGenerator {
 							System.out.println(oOption.getName() + " id=" + sID
 									+ " val=" + bVal + " cmd=" + sCommand);
 
-						if (sID.endsWith(OPTION_SUFFIX_ARM32_TARGET_THUMB_INTERWORK)
-								|| sID.indexOf(OPTION_SUFFIX_ARM32_TARGET_THUMB_INTERWORK
+						if (sID.endsWith(OPTION_SUFFIX_ARM_TARGET_THUMB_INTERWORK)
+								|| sID.indexOf(OPTION_SUFFIX_ARM_TARGET_THUMB_INTERWORK
 										+ ".") > 0) {
 							if (bVal)
 								sTarget32ThumbInterwork = sCommand;
 						} else if (sID
-								.endsWith(OPTION_SUFFIX_ARM64_TARGET_STRICTALIGN)
-								|| sID.indexOf(OPTION_SUFFIX_ARM64_TARGET_STRICTALIGN
+								.endsWith(OPTION_SUFFIX_AARCH64_TARGET_STRICTALIGN)
+								|| sID.indexOf(OPTION_SUFFIX_AARCH64_TARGET_STRICTALIGN
 										+ ".") > 0) {
 							if (bVal)
 								sTarget64StrictAlign = sCommand;
@@ -399,7 +402,7 @@ public class CommandLineGenerator extends ManagedCommandLineGenerator {
 					oList.add(sTarget64StrictAlign);
 
 			}
-			
+
 			if (sTargetOther != null && sTargetOther.length() > 0)
 				oList.add(sTargetOther);
 

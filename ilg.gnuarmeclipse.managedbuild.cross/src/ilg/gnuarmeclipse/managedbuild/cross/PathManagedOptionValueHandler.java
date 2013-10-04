@@ -24,7 +24,9 @@ public class PathManagedOptionValueHandler extends ManagedOptionValueHandler {
 
 			IConfiguration config = Utils.getConfiguration(configuration);
 			String path = getPersistent(config);
-			if (path != null) {
+			if (path != null && path.length() > 0) {
+				// do not overwrite the .cproject definition if the
+				// workspace definition is not useful
 				IOption optionToSet;
 				try {
 					optionToSet = holder.getOptionToSet(option, false);
