@@ -28,6 +28,8 @@ public class ConfigurationBuildMacroSupplier implements
 			"cross_cpp", "cross_ar", "cross_objcopy", "cross_objdump",
 			"cross_size", "cross_make", "cross_rm" };
 
+	private static String CROSS_FLAGS = "cross_toolchain_flags";
+	
 	@Override
 	public IBuildMacro getMacro(String macroName, IConfiguration configuration,
 			IBuildMacroProvider provider) {
@@ -43,12 +45,28 @@ public class ConfigurationBuildMacroSupplier implements
 				if (option != null) {
 					String sVal = (String) option.getValue();
 
-					System.out.println("Macro " + sCmd + "=" + sVal+" cfg="+configuration+" prj="+configuration.getManagedProject().getOwner().getName());
-					return new BuildMacro(sCmd, BuildMacro.VALUE_TEXT, sVal);
+					System.out.println("Macro "
+							+ sCmd
+							+ "="
+							+ sVal
+							+ " cfg="
+							+ configuration
+							+ " prj="
+							+ configuration.getManagedProject().getOwner()
+									.getName());
+					return new BuildMacro(macroName, BuildMacro.VALUE_TEXT,
+							sVal);
 				}
 
-				System.out.println("Missing value of "+sId);
+				System.out.println("Missing value of " + sId);
 				return null;
+			}
+		}
+
+		if (CROSS_FLAGS.equals(macroName)) {
+			String sValue = Option.getToolChainFlags(configuration);
+			if (sValue != null && sValue.length() > 0) {
+				return new BuildMacro(macroName, BuildMacro.VALUE_TEXT, sValue);
 			}
 		}
 		// TODO Auto-generated method stub
@@ -65,15 +83,24 @@ public class ConfigurationBuildMacroSupplier implements
 		IToolChain toolchain = configuration.getToolChain();
 		ArrayList<IBuildMacro> oMacrosList = new ArrayList<IBuildMacro>();
 
+		String sValue;
 		for (String cmd : m_asCmds) {
-			String sId = Activator.getOptionPrefix() + ".command." + cmd.replace("cross_", "");
+			String sId = Activator.getOptionPrefix() + ".command."
+					+ cmd.replace("cross_", "");
 
 			IOption option = toolchain.getOptionBySuperClassId(sId); //$NON-NLS-1$
 			if (option != null) {
-				String sVal = (String) option.getValue();
+				sValue = (String) option.getValue();
 
-				oMacrosList.add(new BuildMacro(cmd, BuildMacro.VALUE_TEXT, sVal));
+				oMacrosList.add(new BuildMacro(cmd, BuildMacro.VALUE_TEXT,
+						sValue));
 			}
+		}
+
+		sValue = Option.getToolChainFlags(configuration);
+		if (sValue != null && sValue.length() > 0) {
+			oMacrosList.add(new BuildMacro(CROSS_FLAGS,
+					BuildMacro.VALUE_TEXT, sValue));
 		}
 
 		return oMacrosList.toArray(new IBuildMacro[0]);
