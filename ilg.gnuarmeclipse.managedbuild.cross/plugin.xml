@@ -3050,10 +3050,17 @@
                natureFilter="both">
             <enablement
                   type="ALL">
-               <checkBuildProperty
-                     property="org.eclipse.cdt.build.core.buildArtefactType"
-                     value="org.eclipse.cdt.build.core.buildArtefactType.exe">
-               </checkBuildProperty>
+               <and>
+                  <checkBuildProperty
+                        property="org.eclipse.cdt.build.core.buildArtefactType"
+                        value="org.eclipse.cdt.build.core.buildArtefactType.exe">
+                  </checkBuildProperty>
+                  <checkOption
+                        holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
+                        optionId="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash"
+                        value="true">
+                  </checkOption>
+               </and>
             </enablement>
             <optionCategory
                   id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.createflash.general"
@@ -3149,10 +3156,17 @@
                outputFlag="&gt;">
             <enablement
                   type="ALL">
-               <checkBuildProperty
-                     property="org.eclipse.cdt.build.core.buildArtefactType"
-                     value="org.eclipse.cdt.build.core.buildArtefactType.exe">
-               </checkBuildProperty>
+               <and>
+                  <checkBuildProperty
+                        property="org.eclipse.cdt.build.core.buildArtefactType"
+                        value="org.eclipse.cdt.build.core.buildArtefactType.exe">
+                  </checkBuildProperty>
+                  <checkOption
+                        holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
+                        optionId="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createlisting"
+                        value="true">
+                  </checkOption>
+               </and>
             </enablement>
             <optionCategory
                   id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.createlisting.general"
@@ -3194,10 +3208,17 @@
                natureFilter="both">
             <enablement
                   type="ALL">
-               <checkBuildProperty
-                     property="org.eclipse.cdt.build.core.buildArtefactType"
-                     value="org.eclipse.cdt.build.core.buildArtefactType.exe">
-               </checkBuildProperty>
+               <and>
+                  <checkBuildProperty
+                        property="org.eclipse.cdt.build.core.buildArtefactType"
+                        value="org.eclipse.cdt.build.core.buildArtefactType.exe">
+                  </checkBuildProperty>
+                  <checkOption
+                        holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
+                        optionId="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize"
+                        value="true">
+                  </checkOption>
+               </and>
             </enablement>
             <optionCategory
                   id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.printsize.general"
