@@ -14,8 +14,6 @@ package ilg.gnuarmeclipse.managedbuild.cross;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.cdt.cross.arm.gnu.Tools;
-
 public class ToolchainDefinition {
 
 	private String m_sName;
@@ -171,14 +169,14 @@ public class ToolchainDefinition {
 		ToolchainDefinition tc;
 		tc = new ToolchainDefinition("Sourcery CodeBench Lite for ARM EABI",
 				"arm-none-eabi-");
-		if (Tools.isPlatform("windows"))
+		if (Utils.isPlatform("windows"))
 			tc.setWin("cs_make", "cs_rm");
 		ms_list.add(tc);
 
 		// 2
 		tc = new ToolchainDefinition("Sourcery CodeBench Lite for ARM GNU/Linux",
 				"arm-none-linux-gnueabi-");
-		if (Tools.isPlatform("windows"))
+		if (Utils.isPlatform("windows"))
 			tc.setWin("cs_make", "cs_rm");
 		ms_list.add(tc);
 

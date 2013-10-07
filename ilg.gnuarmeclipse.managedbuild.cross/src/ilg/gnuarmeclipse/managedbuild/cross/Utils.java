@@ -12,6 +12,13 @@ import org.eclipse.cdt.managedbuilder.core.IToolChain;
 
 public class Utils {
 
+	private static final String PROPERTY_OS_NAME = "os.name"; //$NON-NLS-1$
+
+	public static boolean isPlatform(String sPlatform) {
+		return (System.getProperty(PROPERTY_OS_NAME).toLowerCase()
+				.startsWith(sPlatform));
+	}
+
 	/**
 	 * Extracts a resource info from a build object. If no resource info can be
 	 * found, it returns null.
