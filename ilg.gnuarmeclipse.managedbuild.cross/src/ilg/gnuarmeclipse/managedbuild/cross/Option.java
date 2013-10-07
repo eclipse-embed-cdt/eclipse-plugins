@@ -67,6 +67,43 @@ public class Option {
 	private static final String OPTION_DEBUGGING_OTHER = OPTION_DEBUGGING
 			+ "other";
 
+	private static final String OPTION_WARNINGS = OPTION_PREFIX + ".warnings.";
+
+	private static final String OPTION_WARNINGS_SYNTAXONLY = OPTION_WARNINGS
+			+ "syntaxonly";
+	private static final String OPTION_WARNINGS_PEDANTIC = OPTION_WARNINGS
+			+ "pedantic";
+	private static final String OPTION_WARNINGS_PEDANTICERRORS = OPTION_WARNINGS
+			+ "pedanticerrors";
+	private static final String OPTION_WARNINGS_ALLWARN = OPTION_WARNINGS
+			+ "allwarn";
+	private static final String OPTION_WARNINGS_NOWARN = OPTION_WARNINGS
+			+ "nowarn";
+	private static final String OPTION_WARNINGS_EXTRAWARN = OPTION_WARNINGS
+			+ "extrawarn";
+	private static final String OPTION_WARNINGS_CONVERSION = OPTION_WARNINGS
+			+ "conversion";
+	private static final String OPTION_WARNINGS_UNITIALIZED = OPTION_WARNINGS
+			+ "unitialized";
+	private static final String OPTION_WARNINGS_FLOATEQUAL = OPTION_WARNINGS
+			+ "floatequal";
+	private static final String OPTION_WARNINGS_SHADOW = OPTION_WARNINGS
+			+ "shadow";
+	private static final String OPTION_WARNINGS_POINTERARITH = OPTION_WARNINGS
+			+ "pointerarith";
+	private static final String OPTION_WARNINGS_BADFUNCTIONCAST = OPTION_WARNINGS
+			+ "badfunctioncast";
+	private static final String OPTION_WARNINGS_LOGICALOP = OPTION_WARNINGS
+			+ "logicalop";
+	private static final String OPTION_WARNINGS_AGREGGATERETURN = OPTION_WARNINGS
+			+ "agreggatereturn";
+	private static final String OPTION_WARNINGS_MISSINGDECLARATION = OPTION_WARNINGS
+			+ "missingdeclaration";
+	private static final String OPTION_WARNINGS_TOERRORS = OPTION_WARNINGS
+			+ "toerrors";
+	private static final String OPTION_WARNINGS_OTHER = OPTION_WARNINGS
+			+ "other";
+
 	public static String getOptionStringValue(IConfiguration config,
 			String sOptionId) {
 		IOption option = config.getToolChain().getOptionBySuperClassId(
@@ -141,7 +178,7 @@ public class Option {
 		return sReturn;
 	}
 
-	public static String getArmTargetOptions(IConfiguration config) {
+	private static String getArmTargetFlags(IConfiguration config) {
 		String sReturn = "";
 		String sValue;
 
@@ -185,7 +222,7 @@ public class Option {
 		return sReturn;
 	}
 
-	public static String getAarch64TargetOptions(IConfiguration config) {
+	private static String getAarch64TargetFlags(IConfiguration config) {
 		String sReturn = "";
 		String sValue;
 
@@ -193,34 +230,149 @@ public class Option {
 		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
 
-			sValue = getOptionEnumCommand(config, OPTION_AARCH64_TARGET_FEATURE_CRC);
-			if (sValue != null && sValue.length() > 0) 
+			sValue = getOptionEnumCommand(config,
+					OPTION_AARCH64_TARGET_FEATURE_CRC);
+			if (sValue != null && sValue.length() > 0)
 				sReturn += "+" + sValue;
 
-			sValue = getOptionEnumCommand(config, OPTION_AARCH64_TARGET_FEATURE_CRYPTO);
-			if (sValue != null && sValue.length() > 0) 
+			sValue = getOptionEnumCommand(config,
+					OPTION_AARCH64_TARGET_FEATURE_CRYPTO);
+			if (sValue != null && sValue.length() > 0)
 				sReturn += "+" + sValue;
 
-			sValue = getOptionEnumCommand(config, OPTION_AARCH64_TARGET_FEATURE_FP);
-			if (sValue != null && sValue.length() > 0) 
+			sValue = getOptionEnumCommand(config,
+					OPTION_AARCH64_TARGET_FEATURE_FP);
+			if (sValue != null && sValue.length() > 0)
 				sReturn += "+" + sValue;
 
-			sValue = getOptionEnumCommand(config, OPTION_AARCH64_TARGET_FEATURE_SIMD);
-			if (sValue != null && sValue.length() > 0) 
+			sValue = getOptionEnumCommand(config,
+					OPTION_AARCH64_TARGET_FEATURE_SIMD);
+			if (sValue != null && sValue.length() > 0)
 				sReturn += "+" + sValue;
 
 		}
-		
+
 		sValue = getOptionEnumCommand(config, OPTION_AARCH64_TARGET_CMODEL);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
-		sValue = getOptionBooleanCommand(config, OPTION_AARCH64_TARGET_STRICTALIGN);
+		sValue = getOptionBooleanCommand(config,
+				OPTION_AARCH64_TARGET_STRICTALIGN);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
 		if (sReturn != null)
 			sReturn = sReturn.trim();
+
+		return sReturn;
+	}
+
+	private static String getWarningFlags(IConfiguration config) {
+
+		String sReturn = "";
+		String sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_SYNTAXONLY);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_PEDANTIC);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_PEDANTICERRORS);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_ALLWARN);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_EXTRAWARN);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_CONVERSION);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_UNITIALIZED);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_FLOATEQUAL);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_SHADOW);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_POINTERARITH);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_BADFUNCTIONCAST);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_LOGICALOP);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_AGREGGATERETURN);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_MISSINGDECLARATION);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_TOERRORS);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_NOWARN);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionStringValue(config, OPTION_WARNINGS_OTHER);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		if (sReturn != null)
+			sReturn = sReturn.trim();
+
+		return sReturn;
+	}
+
+	private static String getDebuggingFlags(IConfiguration config) {
+
+		String sReturn = "";
+		String sValue;
+		if (sReturn != null)
+			sReturn = sReturn.trim();
+
+		sValue = getOptionEnumCommand(config, OPTION_DEBUGGING_LEVEL);
+		if (sValue != null && sValue.length() > 0) {
+			sReturn += " " + sValue;
+
+			sValue = getOptionEnumCommand(config, OPTION_DEBUGGING_FORMAT);
+			if (sValue != null && sValue.length() > 0)
+				sReturn += " " + sValue;
+		}
+
+		sValue = getOptionStringValue(config, OPTION_DEBUGGING_OTHER);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_DEBUGGING_PROF);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_DEBUGGING_GPROF);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
 
 		return sReturn;
 	}
@@ -233,9 +385,9 @@ public class Option {
 		if (sFamilyId != null) {
 			sValue = null;
 			if (sFamilyId.endsWith("." + FAMILY_ARM)) {
-				sValue = getArmTargetOptions(config);
+				sValue = getArmTargetFlags(config);
 			} else if (sFamilyId.endsWith("." + FAMILY_ARM)) {
-				sValue = getAarch64TargetOptions(config);
+				sValue = getAarch64TargetFlags(config);
 			}
 			if (sValue != null && sValue.length() > 0)
 				sReturn += " " + sValue;
@@ -245,24 +397,11 @@ public class Option {
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
-		sValue = getOptionEnumCommand(config, OPTION_DEBUGGING_LEVEL);
-		if (sValue != null && sValue.length() > 0) {
-			sReturn += " " + sValue;
-
-			sValue = getOptionEnumCommand(config, OPTION_DEBUGGING_FORMAT);
-			if (sValue != null && sValue.length() > 0)
-				sReturn += " " + sValue;
-		}
-		
-		sValue = getOptionStringValue(config, OPTION_DEBUGGING_OTHER);
+		sValue = getWarningFlags(config);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
-		sValue = getOptionBooleanCommand(config, OPTION_DEBUGGING_PROF);
-		if (sValue != null && sValue.length() > 0)
-			sReturn += " " + sValue;
-
-		sValue = getOptionBooleanCommand(config, OPTION_DEBUGGING_GPROF);
+		sValue = getDebuggingFlags(config);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 

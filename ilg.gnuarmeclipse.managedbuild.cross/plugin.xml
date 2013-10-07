@@ -30,6 +30,180 @@
                useByScannerDiscovery="true"
                valueType="string">
          </option>
+
+         <option
+               command="-fsyntax-only"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.syntaxonly"
+               isAbstract="true"
+               name="%option.warnings.syntaxonly"
+               tip="Check the code for syntax errors, but don’t do anything beyond that."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-pedantic"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.pedantic"
+               isAbstract="true"
+               name="%option.warnings.pedantic"
+               tip="Issue all the warnings demanded by strict ISO C and ISO C++; reject all programs that use forbidden extensions, and some other programs that do not follow ISO C and ISO C++. For ISO C, follows the version of the ISO C standard specified by any ‘-std’ option used."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-pedantic-errors"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.pedanticerrors"
+               isAbstract="true"
+               name="%option.warnings.pedanticerrors"
+               tip="Like ‘-pedantic’, except that errors are produced rather than warnings."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Wall"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.allwarn"
+               isAbstract="true"
+               name="%option.warnings.allwarn"
+               tip="Enable all the warnings about constructions that some users consider questionable, and that are easy to avoid (or modify to prevent the warning), even in conjunction with macros. This also enables some language-specific warnings."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+            <enablement
+                  attribute="value"
+                  type="CONTAINER_ATTRIBUTE"
+                  value="true">
+            </enablement>
+         </option>
+         <option
+               command="-Wextra"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.extrawarn"
+               isAbstract="true"
+               name="%option.warnings.extrawarn"
+               tip="Enable some extra warning flags that are not enabled by ‘-Wall’."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Wconversion"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.conversion"
+               isAbstract="true"
+               name="%option.warnings.conversion"
+               tip="Warn for implicit conversions that may alter a value. This includes conversions between real and integer, like abs (x) when x is double; conversions between signed and unsigned, like unsigned ui = -1; and conversions to smaller types, like sqrtf (M_PI). Do not warn for explicit casts like abs ((int) x) and ui = (unsigned) -1, or if the value is not changed by the conversion like in abs (2.0). Warnings about conversions between signed and unsigned integers can be disabled by using ‘-Wno-sign-conversion’."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Wuninitialized"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.unitialized"
+               isAbstract="true"
+               name="%option.warnings.unitialized"
+               tip="Warn if an automatic variable is used without first being initialized or if a variable may be clobbered by a setjmp call. In C++, warn if a non-static reference or non-static ‘const’ member appears in a class without constructors. If you want to warn about code that uses the uninitialized value of the variable in its own initializer, use the ‘-Winit-self’ option. These warnings occur for individual uninitialized or clobbered elements of structure, union or array variables as well as for variables that are uninitialized or clobbered as a whole. They do not occur for variables or elements declared volatile. Because these warnings depend on optimization, the exact variables or elements for which there are warnings depends on the precise optimization options and version of GCC used. Note that there may be no warning about a variable that is used only to compute a value that itself is never used, because such computations may be deleted by data flow analysis before the warnings are printed."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Wfloat-equal"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.floatequal"
+               isAbstract="true"
+               name="%option.warnings.floatequal"
+               tip="Warn if floating-point values are used in equality comparisons. The idea behind this is that sometimes it is convenient (for the programmer) to consider floating-point values as approximations to infinitely precise real numbers. If you are doing this, then you need to compute (by analyzing the code, or in some other way) the maximum or likely maximum error that the computation introduces, and allow for it when performing comparisons (and when producing output, but that’s a different problem). In particular, instead of testing for equality, you should check to see whether the two values have ranges that overlap; and this is done with the relational operators, so equality comparisons are probably mistaken."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Wshadow"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.shadow"
+               isAbstract="true"
+               name="%option.warnings.shadow"
+               tip="Warn whenever a local variable or type declaration shadows another variable, parameter, type, or class member (in C++), or whenever a built-in function is shadowed. Note that in C++, the compiler warns if a local variable shadows an explicit typedef, but not if it shadows a struct/class/enum."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Wpointer-arith"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.pointerarith"
+               isAbstract="true"
+               name="%option.warnings.pointerarith"
+               tip="Warn about anything that depends on the “size of” a function type or of void. GNU C assigns these types a size of 1, for convenience in calculations with void * pointers and pointers to functions. In C++, warn also when an arithmetic operation involves NULL. This warning is also enabled by ‘-Wpedantic’."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Wbad-function-cast"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.badfunctioncast"
+               isAbstract="true"
+               name="%option.warnings.badfunctioncast"
+               tip="Warn whenever a function call is cast to a non-matching type. For example, warn if int malloc() is cast to anything *. (C and Objective-C only)"
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Wlogical-op"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.logicalop"
+               isAbstract="true"
+               name="%option.warnings.logicalop"
+               tip="Warn about suspicious uses of logical operators in expressions. This includes using logical operators in contexts where a bit-wise operator is likely to be expected."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Waggregate-return"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.agreggatereturn"
+               isAbstract="true"
+               name="%option.warnings.agreggatereturn"
+               tip="Warn if any functions that return structures or unions are defined or called. (In languages where you can return an array, this also elicits a warning.)"
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Wmissing-declarations"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.missingdeclaration"
+               isAbstract="true"
+               name="%option.warnings.missingdeclaration"
+               tip="Warn if a global function is defined without a previous declaration. Do so even if the definition itself provides a prototype. Use this option to detect global functions that are not declared in header files. In C, no warnings are issued for func- tions with previous non-prototype declarations; use ‘-Wmissing-prototype’ to detect missing prototypes. In C++, no warnings are issued for function tem- plates, or for inline functions, or for functions in anonymous namespaces."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Werror"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.toerrors"
+               isAbstract="true"
+               name="%option.warnings.toerrors"
+               tip="Make all warnings into errors."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-w"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.nowarn"
+               isAbstract="true"
+               name="%option.warnings.nowarn"
+               tip="Inhibit all warning messages. Not recommended."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.other"
+               isAbstract="true"
+               name="%option.warnings.other"
+               useByScannerDiscovery="true"
+               valueType="string">
+         </option>
+         
          <option
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.debugging.level"
                isAbstract="true"
@@ -177,7 +351,8 @@
                valueType="boolean">
             <enablement
                   attribute="value"
-                  type="ALL">
+                  type="ALL"
+                  value="true">
                <checkBuildProperty
                      property="org.eclipse.cdt.build.core.buildArtefactType"
                      value="org.eclipse.cdt.build.core.buildArtefactType.exe">
@@ -193,7 +368,8 @@
                valueType="boolean">
             <enablement
                   attribute="value"
-                  type="ALL">
+                  type="ALL"
+                  value="true">
                <checkBuildProperty
                      property="org.eclipse.cdt.build.core.buildArtefactType"
                      value="org.eclipse.cdt.build.core.buildArtefactType.exe">
@@ -209,7 +385,8 @@
                valueType="boolean">
             <enablement
                   attribute="value"
-                  type="ALL">
+                  type="ALL"
+                  value="true">
                <checkBuildProperty
                      property="org.eclipse.cdt.build.core.buildArtefactType"
                      value="org.eclipse.cdt.build.core.buildArtefactType.exe">
@@ -337,80 +514,6 @@
                isAbstract="true"
                name="%option.compiler.includepaths"
                valueType="includePath">
-         </option>
-         <option
-               command="-fsyntax-only"
-               defaultValue="false"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.syntaxonly"
-               isAbstract="true"
-               name="%option.compiler.syntaxonly"
-               tip="Check the code for syntax errors, but don’t do anything beyond that."
-               valueType="boolean">
-         </option>
-         <option
-               command="-pedantic"
-               defaultValue="false"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.pedantic"
-               isAbstract="true"
-               name="%option.compiler.pedantic"
-               tip="Issue all the warnings demanded by strict ISO C and ISO C++; reject all programs that use forbidden extensions, and some other programs that do not follow ISO C and ISO C++. For ISO C, follows the version of the ISO C standard specified by any ‘-std’ option used."
-               useByScannerDiscovery="true"
-               valueType="boolean">
-         </option>
-         <option
-               command="-pedantic-errors"
-               defaultValue="false"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.pedanticerrors"
-               isAbstract="true"
-               name="%option.compiler.pedanticerrors"
-               tip="Like ‘-pedantic’, except that errors are produced rather than warnings."
-               useByScannerDiscovery="true"
-               valueType="boolean">
-         </option>
-         <option
-               command="-Wall"
-               defaultValue="false"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.allwarn"
-               isAbstract="true"
-               name="%option.compiler.allwarn"
-               tip="This enables all the warnings about constructions that some users consider questionable, and that are easy to avoid (or modify to prevent the warning), even in conjunction with macros. This also enables some language-specific warnings."
-               useByScannerDiscovery="true"
-               valueType="boolean">
-            <enablement
-                  attribute="value"
-                  type="CONTAINER_ATTRIBUTE"
-                  value="true">
-            </enablement>
-         </option>
-         <option
-               command="-w"
-               defaultValue="false"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.nowarn"
-               isAbstract="true"
-               name="%option.compiler.nowarn"
-               tip="Inhibit all warning messages. Not recommended."
-               useByScannerDiscovery="true"
-               valueType="boolean">
-         </option>
-         <option
-               command="-Wextra"
-               defaultValue="false"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.extrawarn"
-               isAbstract="true"
-               name="%option.compiler.extrawarn"
-               tip="This enables some extra warning flags that are not enabled by ‘-Wall’."
-               useByScannerDiscovery="true"
-               valueType="boolean">
-         </option>
-         <option
-               command="-Werror"
-               defaultValue="false"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.toerrors"
-               isAbstract="true"
-               name="%option.compiler.toerrors"
-               tip="Make all warnings into errors."
-               useByScannerDiscovery="true"
-               valueType="boolean">
          </option>
          <option
                command="-ffunction-sections"
@@ -2150,6 +2253,95 @@
                id="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.other"
                superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.debugging.other">
            </option>
+           <optionCategory
+                 id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 name="%optionCategory.warnings">
+           </optionCategory>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.syntaxonly"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.syntaxonly">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.pedantic"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.pedantic">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.pedanticerrors"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.pedanticerrors">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.nowarn"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.nowarn">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.allwarn"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.allwarn">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.extrawarn"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.extrawarn">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.conversion"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.conversion">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.unitialized"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.unitialized">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.floatequal"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.floatequal">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.shadow"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.shadow">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.pointerarith"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.pointerarith">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.badfunctioncast"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.badfunctioncast">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.logicalop"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.logicalop">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.agreggatereturn"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.agreggatereturn">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.missingdeclaration"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.missingdeclaration">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.toerrors"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.toerrors">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.other"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.other">
+           </option>
 
 
        <tool
@@ -2229,38 +2421,8 @@
           </optionCategory>
           <option
                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.warnings"
-                id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.syntaxonly"
-                superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.syntaxonly">
-          </option>
-          <option
-                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.warnings"
-                id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.pedantic"
-                superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.pedantic">
-          </option>
-          <option
-                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.warnings"
-                id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.pedanticerrors"
-                superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.pedanticerrors">
-          </option>
-          <option
-                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.warnings"
-                id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.nowarn"
-                superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.nowarn">
-          </option>
-          <option
-                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.warnings"
-                id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.allwarn"
-                superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.allwarn">
-          </option>
-          <option
-                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.warnings"
-                id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.extrawarn"
-                superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.extrawarn">
-          </option>
-          <option
-                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.warnings"
-                id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.toerrors"
-                superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.toerrors">
+                id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.otherwarnings"
+                superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.other">
           </option>
           <optionCategory
                 id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.misc"
@@ -2397,38 +2559,8 @@
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.syntaxonly"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.syntaxonly">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.pedantic"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.pedantic">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.pedanticerrors"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.pedanticerrors">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.nowarn"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.nowarn">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.allwarn"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.allwarn">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.extrawarn"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.extrawarn">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.toerrors"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.toerrors">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otherwarnings"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.other">
             </option>
             <optionCategory
                   id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.misc"
@@ -2602,41 +2734,6 @@
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.syntaxonly"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.syntaxonly">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nocommon"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.nocommon">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.pedantic"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.pedantic">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.pedanticerrors"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.pedanticerrors">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nowarn"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.nowarn">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.allwarn"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.allwarn">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.extrawarn"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.extrawarn">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
                   command="-Wabi"
                   defaultValue="false"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warnabi"
@@ -2657,8 +2754,8 @@
             </option>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.toerrors"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.toerrors">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.otherwarnings"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.other">
             </option>
             <optionCategory
                   id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.misc"
@@ -3085,6 +3182,7 @@
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.createflash.general"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.base.createflash.choice"
                   name="%option.flash.outformat"
+                  tip="Write the output file using the given object format."
                   valueType="enumerated">
                <enumeratedOptionValue
                      command="-O ihex"
@@ -3115,6 +3213,7 @@
                   isAbstract="false"
                   name="%option.flash.textsections"
                   resourceFilter="all"
+                  tip="Copy only the named section from the input file to the output file. This option may be given more than once."
                   valueType="boolean">
             </option>
             <option
@@ -3124,6 +3223,7 @@
                   isAbstract="false"
                   name="%option.flash.datasections"
                   resourceFilter="all"
+                  tip="Copy only the named section from the input file to the output file. This option may be given more than once."
                   valueType="boolean">
             </option>
             <option
@@ -3133,6 +3233,7 @@
                   isAbstract="false"
                   name="%option.flash.othersections"
                   resourceFilter="all"
+                  tip="Copy only the named section from the input file to the output file. This option may be given more than once."
                   valueType="stringList">
             </option>
             <option
@@ -3189,7 +3290,131 @@
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.createlisting.general"
-                  defaultValue="-h -S"
+                  command="--source"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.createlisting.source"
+                  isAbstract="false"
+                  name="%option.listing.source"
+                  resourceFilter="all"
+                  tip="Display source code intermixed with disassembly, if possible. Implies -d."
+                  valueType="boolean">
+               <enablement
+                     attribute="value"
+                     type="CONTAINER_ATTRIBUTE"
+                     value="true">
+               </enablement>
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.createlisting.general"
+                  command="--all-headers"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.createlisting.allheaders"
+                  isAbstract="false"
+                  name="%option.listing.allheaders"
+                  resourceFilter="all"
+                  tip="Display all available header information, including the symbol table and relocation entries. Using -x is equivalent to specifying all of -a -f -h -p -r -t."
+                  valueType="boolean">
+               <enablement
+                     attribute="value"
+                     type="CONTAINER_ATTRIBUTE"
+                     value="true">
+               </enablement>
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.createlisting.general"
+                  command="--demangle"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.createlisting.demangle"
+                  isAbstract="false"
+                  name="%option.listing.demangle"
+                  resourceFilter="all"
+                  tip="Decode (demangle) low-level symbol names into user-level names. Besides removing any initial underscore prepended by the system, this makes C++ function names readable."
+                  valueType="boolean">
+               <enablement
+                     attribute="value"
+                     type="CONTAINER_ATTRIBUTE"
+                     value="true">
+               </enablement>
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.createlisting.general"
+                  command="--debugging"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.createlisting.debugging"
+                  isAbstract="false"
+                  name="%option.listing.debugging"
+                  resourceFilter="all"
+                  tip="Display debugging information. This attempts to parse STABS and IEEE debugging format information stored in the file and print it out using a C like syntax. If neither of these formats are found this option falls back on the -W option to print any DWARF information in the file."
+                  valueType="boolean">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.createlisting.general"
+                  command="--disassemble"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.createlisting.disassemble"
+                  isAbstract="false"
+                  name="%option.listing.disassemble"
+                  resourceFilter="all"
+                  tip="Display the assembler mnemonics for the machine instructions from objfile. This option only disassembles those sections which are expected to contain instructions."
+                  valueType="boolean">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.createlisting.general"
+                  command="--file-headers"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.createlisting.fileheaders"
+                  isAbstract="false"
+                  name="%option.listing.fileheaders"
+                  resourceFilter="all"
+                  tip="Display summary information from the overall header of each of the objfile files."
+                  valueType="boolean">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.createlisting.general"
+                  command="--line-numbers"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.createlisting.linenumbers"
+                  isAbstract="false"
+                  name="%option.listing.linenumbers"
+                  resourceFilter="all"
+                  tip="Label the display (using debugging information) with the filename and source line numbers corresponding to the object code or relocs shown. Only useful with -d, -D, or -r."
+                  valueType="boolean">
+               <enablement
+                     attribute="value"
+                     type="CONTAINER_ATTRIBUTE"
+                     value="true">
+               </enablement>
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.createlisting.general"
+                  command="--reloc"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.createlisting.reloc"
+                  isAbstract="false"
+                  name="%option.listing.reloc"
+                  resourceFilter="all"
+                  tip="Print the relocation entries of the file. If used with -d or -D, the relocations are printed interspersed with the disassembly."
+                  valueType="boolean">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.createlisting.general"
+                  command="--syms"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.createlisting.symbols"
+                  isAbstract="false"
+                  name="%option.listing.symbols"
+                  resourceFilter="all"
+                  tip="Print the symbol table entries of the file. This is similar to the information provided by the `nm&apos; program, although the display format is different. The format of the output depends upon the format of the file being dumped."
+                  valueType="boolean">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.createlisting.general"
+                  command="--wide"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.createlisting.wide"
+                  isAbstract="false"
+                  name="%option.listing.wide"
+                  resourceFilter="all"
+                  tip="Format some lines for output devices that have more than 80 columns. Also do not truncate symbol names when they are displayed."
+                  valueType="boolean">
+               <enablement
+                     attribute="value"
+                     type="CONTAINER_ATTRIBUTE"
+                     value="true">
+               </enablement>
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.createlisting.general"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.base.createlisting.other"
                   name="%option.listing.other"
                   valueType="string">
@@ -3243,11 +3468,11 @@
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.printsize.general"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.base.printsize.format"
                   name="%option.print.sizeFormat"
+                  tip="Choose whether the output from gnu size resembles output from System V size (using -A, or --format=sysv), or Berkeley size (using -B, or --format=berkeley). The default is the one-line format similar to Berkeley&apos;s."
                   valueType="enumerated">
                <enumeratedOptionValue
                      command="--format=berkeley"
                      id="ilg.gnuarmeclipse.managedbuild.cross.option.base.printsize.format.berkeley"
-                     isDefault="true"
                      name="%option.print.sizeFormat.berkeley">
                </enumeratedOptionValue>
                <enumeratedOptionValue
@@ -3255,6 +3480,11 @@
                      id="ilg.gnuarmeclipse.managedbuild.cross.option.base.printsize.format.sysv"
                      name="%option.print.sizeFormat.sysv">
                </enumeratedOptionValue>
+               <enablement
+                     attribute="value"
+                     type="CONTAINER_ATTRIBUTE"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.base.printsize.format.berkeley">
+               </enablement>
             </option>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.printsize.general"
@@ -3262,14 +3492,25 @@
                   defaultValue="false"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.base.printsize.hex"
                   name="%option.print.hex"
+                  tip="The size of each section is given in hexadecimal."
                   valueType="boolean">
+               <enablement
+                     type="ALL">
+                  <checkOption
+                        holderId="ilg.gnuarmeclipse.managedbuild.cross.tool.printsize"
+                        isRegex="false"
+                        optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.printsize.format"
+                        value="ilg.gnuarmeclipse.managedbuild.cross.option.base.printsize.format.berkeley">
+                  </checkOption>
+               </enablement>
             </option>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.printsize.general"
-                  command="-t"
+                  command="--totals"
                   defaultValue="false"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.base.printsize.totals"
                   name="%option.print.totals"
+                  tip="Show totals of all objects listed (Berkeley format listing mode only). "
                   valueType="boolean">
             </option>
             <option
@@ -3311,6 +3552,7 @@
                </false>
             </enablement>
          </option>
+
          
          <!-- ============================================================= -->
          
