@@ -53,18 +53,32 @@ public class Option {
 
 	private static final String OPTION_TARGET_OTHER = OPTION_TARGET + "other";
 
-	private static final String OPTION_DEBUGGING = OPTION_PREFIX
-			+ ".debugging.";
 
-	private static final String OPTION_DEBUGGING_LEVEL = OPTION_DEBUGGING
+	private static final String OPTION_OPTIMIZATION = OPTION_PREFIX + ".optimization.";
+
+	private static final String OPTION_OPTIMIZATION_LEVEL = OPTION_OPTIMIZATION
 			+ "level";
-	private static final String OPTION_DEBUGGING_FORMAT = OPTION_DEBUGGING
-			+ "format";
-	private static final String OPTION_DEBUGGING_PROF = OPTION_DEBUGGING
-			+ "prof";
-	private static final String OPTION_DEBUGGING_GPROF = OPTION_DEBUGGING
-			+ "gprof";
-	private static final String OPTION_DEBUGGING_OTHER = OPTION_DEBUGGING
+	private static final String OPTION_OPTIMIZATION_MESSAGELENGTH = OPTION_OPTIMIZATION
+			+ "messagelength";
+	private static final String OPTION_OPTIMIZATION_SIGNEDCHAR = OPTION_OPTIMIZATION
+			+ "signedchar";
+	private static final String OPTION_OPTIMIZATION_FUNCTIONSECTIONS = OPTION_OPTIMIZATION
+			+ "functionsections";
+	private static final String OPTION_OPTIMIZATION_DATASECTIONS = OPTION_OPTIMIZATION
+			+ "datasections";
+	private static final String OPTION_OPTIMIZATION_NOCOMMON = OPTION_OPTIMIZATION
+			+ "nocommon";
+	private static final String OPTION_OPTIMIZATION_NOINLINEFUNCTIONS = OPTION_OPTIMIZATION
+			+ "noinlinefunctions";
+	private static final String OPTION_OPTIMIZATION_FREESTANDING = OPTION_OPTIMIZATION
+			+ "freestanding";
+	private static final String OPTION_OPTIMIZATION_NOBUILTIN = OPTION_OPTIMIZATION
+			+ "nobuiltin";
+	private static final String OPTION_OPTIMIZATION_SPCONSTANT = OPTION_OPTIMIZATION
+			+ "spconstant";
+	private static final String OPTION_OPTIMIZATION_PIC = OPTION_OPTIMIZATION
+			+ "PIC";
+	private static final String OPTION_OPTIMIZATION_OTHER = OPTION_OPTIMIZATION
 			+ "other";
 
 	private static final String OPTION_WARNINGS = OPTION_PREFIX + ".warnings.";
@@ -104,8 +118,24 @@ public class Option {
 	private static final String OPTION_WARNINGS_OTHER = OPTION_WARNINGS
 			+ "other";
 
+	private static final String OPTION_DEBUGGING = OPTION_PREFIX
+			+ ".debugging.";
+
+	private static final String OPTION_DEBUGGING_LEVEL = OPTION_DEBUGGING
+			+ "level";
+	private static final String OPTION_DEBUGGING_FORMAT = OPTION_DEBUGGING
+			+ "format";
+	private static final String OPTION_DEBUGGING_PROF = OPTION_DEBUGGING
+			+ "prof";
+	private static final String OPTION_DEBUGGING_GPROF = OPTION_DEBUGGING
+			+ "gprof";
+	private static final String OPTION_DEBUGGING_OTHER = OPTION_DEBUGGING
+			+ "other";
+
+
 	public static String getOptionStringValue(IConfiguration config,
 			String sOptionId) {
+
 		IOption option = config.getToolChain().getOptionBySuperClassId(
 				sOptionId);
 		String sReturn = null;
@@ -124,6 +154,7 @@ public class Option {
 
 	public static String getOptionEnumCommand(IConfiguration config,
 			String sOptionId) {
+
 		IOption option = config.getToolChain().getOptionBySuperClassId(
 				sOptionId);
 		String sReturn = null;
@@ -143,6 +174,7 @@ public class Option {
 
 	public static Boolean getOptionBooleanValue(IConfiguration config,
 			String sOptionId) {
+
 		IOption option = config.getToolChain().getOptionBySuperClassId(
 				sOptionId);
 		Boolean bReturn = null;
@@ -161,6 +193,7 @@ public class Option {
 
 	public static String getOptionBooleanCommand(IConfiguration config,
 			String sOptionId) {
+
 		IOption option = config.getToolChain().getOptionBySuperClassId(
 				sOptionId);
 		String sReturn = null;
@@ -179,6 +212,7 @@ public class Option {
 	}
 
 	private static String getArmTargetFlags(IConfiguration config) {
+
 		String sReturn = "";
 		String sValue;
 
@@ -223,6 +257,7 @@ public class Option {
 	}
 
 	private static String getAarch64TargetFlags(IConfiguration config) {
+
 		String sReturn = "";
 		String sValue;
 
@@ -258,6 +293,68 @@ public class Option {
 
 		sValue = getOptionBooleanCommand(config,
 				OPTION_AARCH64_TARGET_STRICTALIGN);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		if (sReturn != null)
+			sReturn = sReturn.trim();
+
+		return sReturn;
+	}
+
+	private static String getOptimizationFlags(IConfiguration config) {
+
+		String sReturn = "";
+		String sValue;
+		if (sReturn != null)
+			sReturn = sReturn.trim();
+
+		sValue = getOptionEnumCommand(config, OPTION_OPTIMIZATION_LEVEL);
+		if (sValue != null && sValue.length() > 0) {
+			sReturn += " " + sValue;
+		}
+
+		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_MESSAGELENGTH);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_SIGNEDCHAR);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_FUNCTIONSECTIONS);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_DATASECTIONS);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_NOCOMMON);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_NOINLINEFUNCTIONS);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_FREESTANDING);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_NOBUILTIN);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_SPCONSTANT);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_PIC);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionStringValue(config, OPTION_OPTIMIZATION_OTHER);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
@@ -312,7 +409,8 @@ public class Option {
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
-		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_BADFUNCTIONCAST);
+		sValue = getOptionBooleanCommand(config,
+				OPTION_WARNINGS_BADFUNCTIONCAST);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
@@ -320,11 +418,13 @@ public class Option {
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
-		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_AGREGGATERETURN);
+		sValue = getOptionBooleanCommand(config,
+				OPTION_WARNINGS_AGREGGATERETURN);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
-		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_MISSINGDECLARATION);
+		sValue = getOptionBooleanCommand(config,
+				OPTION_WARNINGS_MISSINGDECLARATION);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
@@ -394,6 +494,10 @@ public class Option {
 		}
 
 		sValue = getOptionStringValue(config, OPTION_TARGET_OTHER);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptimizationFlags(config);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 

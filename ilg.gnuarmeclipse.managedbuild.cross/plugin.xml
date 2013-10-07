@@ -342,6 +342,198 @@
                useByScannerDiscovery="true"
                valueType="string">
          </option>
+         
+         
+         <option
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.level"
+               isAbstract="true"
+               name="%option.optimization.level"
+               tip="With ‘-O’, the compiler tries to reduce code size and execution time, without performing any optimizations that take a great deal of compilation time. -O2 Optimize even more. GCC performs nearly all supported optimizations that do not involve a space-speed tradeoff. -O3 Optimize yet more. -Os Optimize for size. ‘-Os’ enables all ‘-O2’ optimizations that do not typically increase code size. -Og Optimize debugging experience. ‘-Og’ enables optimizations that do not interfere with debugging. It should be the optimization level of choice for the standard edit-compile-debug cycle, offering a reasonable level of optimization while maintaining fast compilation and a good debugging experience. -O0 Do not optimize. Reduce compilation time and make debugging produce the expected results. This is the default."
+               useByScannerDiscovery="true"
+               valueType="enumerated">
+            <enablement
+                  attribute="value"
+                  extensionAdjustment="false"
+                  type="CONTAINER_ATTRIBUTE"
+                  value="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.level.size">
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildType"
+                     value="org.eclipse.cdt.build.core.buildType.release">
+               </checkBuildProperty>
+            </enablement>
+            <enablement
+                  attribute="value"
+                  extensionAdjustment="false"
+                  type="CONTAINER_ATTRIBUTE"
+                  value="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.level.none">
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildType"
+                     value="org.eclipse.cdt.build.core.buildType.debug">
+               </checkBuildProperty>
+            </enablement>
+            <enumeratedOptionValue
+                  command="-O0"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.level.none"
+                  name="%option.optimization.level.none">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-O1"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.level.optimize"
+                  name="%option.optimization.level.optimize">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-O2"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.level.more"
+                  isDefault="true"
+                  name="%option.optimization.level.more">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-O3"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.level.most"
+                  name="%option.optimization.level.most">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-Os"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.level.size"
+                  name="%option.optimization.level.size">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-Og"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.level.debug"
+                  name="%option.optimization.level.debug">
+            </enumeratedOptionValue>
+         </option>
+         <option
+               command="-fmessage-length=0"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.messagelength"
+               isAbstract="true"
+               name="%option.optimization.messagelength"
+               tip="Try to format error messages so that they fit on lines of about n characters. The default is 72 characters for g++ and 0 for the rest of the front ends supported by GCC. If n is zero, then no line-wrapping is done; each error message appears on a single line."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+            <enablement
+                  attribute="value"
+                  type="CONTAINER_ATTRIBUTE"
+                  value="true">
+            </enablement>
+         </option>
+         <option
+               command="-fsigned-char"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.signedchar"
+               isAbstract="true"
+               name="%option.optimization.signedchar"
+               tip="Let the type char be signed, like signed char."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+            <enablement
+                  attribute="value"
+                  type="CONTAINER_ATTRIBUTE"
+                  value="true">
+            </enablement>
+         </option>
+         <option
+               command="-ffunction-sections"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.functionsections"
+               isAbstract="true"
+               name="%option.optimization.functionsections"
+               resourceFilter="all"
+               tip="Place each function into its own section in the output file if the target supports arbitrary sections. The name of the function determines the section’s name in the output file. Use these options on systems where the linker can perform optimizations to improve locality of reference in the instruction space. Most systems using the ELF object format have linkers with such optimizations."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+            <enablement
+                  attribute="value"
+                  type="CONTAINER_ATTRIBUTE"
+                  value="true">
+            </enablement>
+         </option>
+         <option
+               command="-fdata-sections"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.datasections"
+               isAbstract="true"
+               name="%option.optimization.datasections"
+               resourceFilter="all"
+               tip="Place each data item into its own section in the output file if the target supports arbitrary sections. The name of the name of the data item determines the section’s name in the output file. Use these options on systems where the linker can perform optimizations to improve locality of reference in the instruction space. Most systems using the ELF object format have linkers with such optimizations."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+            <enablement
+                  attribute="value"
+                  type="CONTAINER_ATTRIBUTE"
+                  value="true">
+            </enablement>
+         </option>
+         <option
+               command="-fno-common"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.nocommon"
+               isAbstract="true"
+               name="%option.optimization.nocommon"
+               tip="In C code, controls the placement of uninitialized global variables. Unix C compilers have traditionally permitted multiple definitions of such variables in different compilation units by placing the variables in a common block. This is the behavior specified by ‘-fcommon’, and is the default for GCC on most targets. On the other hand, this behavior is not required by ISO C, and on some targets may carry a speed or code size penalty on variable references. The ‘-fno-common’ option specifies that the compiler should place uninitialized global variables in the data section of the object file, rather than generating them as common blocks. This has the effect that if the same variable is declared (without extern) in two different compilations, you get a multiple-definition error when you link them. In this case, you must compile with ‘-fcommon’ instead. Compiling with ‘-fno-common’ is useful on targets for which it provides better performance, or if you wish to verify that the program will work on other systems that always treat uninitialized variable declarations this way."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-fno-inline-functions"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.noinlinefunctions"
+               isAbstract="true"
+               name="%option.optimization.noinlinefunctions"
+               tip="Do not consider any functions for inlining, even if they are not declared inline."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-ffreestanding"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.freestanding"
+               isAbstract="true"
+               name="%option.optimization.freestanding"
+               tip="Assert that compilation targets a freestanding environment. This implies ‘-fno-builtin’. A freestanding environment is one in which the standard library may not exist, and program startup may not necessarily be at main. The most obvious example is an OS kernel. This is equivalent to ‘-fno-hosted’."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-fno-builtin"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.nobuiltin"
+               isAbstract="true"
+               name="%option.optimization.nobuiltin"
+               tip="Don’t recognize built-in functions that do not begin with ‘__builtin_’ as prefix."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-fsingle-precision-constant"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.spconstant"
+               isAbstract="true"
+               name="%option.optimization.spconstant"
+               tip="Treat floating-point constants as single precision instead of implicitly converting them to double-precision constants."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-fPIC"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.PIC"
+               isAbstract="true"
+               name="%option.optimization.PIC"
+               tip="If supported for the target machine, emit position-independent code, suitable for dynamic linking and avoiding any limit on the size of the global offset table."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.other"
+               isAbstract="true"
+               name="%option.optimization.other"
+               useByScannerDiscovery="true"
+               valueType="string">
+         </option>
+         
+         
          <option
                defaultValue="false"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.toolchain.createflash"
@@ -416,65 +608,6 @@
                valueType="boolean">
          </option>
          <option
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimizationlevel"
-               isAbstract="true"
-               name="%option.compiler.optimizationlevel"
-               tip="With ‘-O’, the compiler tries to reduce code size and execution time, without performing any optimizations that take a great deal of compilation time. -O2 Optimize even more. GCC performs nearly all supported optimizations that do not involve a space-speed tradeoff. -O3 Optimize yet more. -Os Optimize for size. ‘-Os’ enables all ‘-O2’ optimizations that do not typically increase code size. -Og Optimize debugging experience. ‘-Og’ enables optimizations that do not interfere with debugging. It should be the optimization level of choice for the standard edit-compile-debug cycle, offering a reasonable level of optimization while maintaining fast compilation and a good debugging experience. -O0 Do not optimize. Reduce compilation time and make debugging produce the expected results. This is the default."
-               useByScannerDiscovery="true"
-               valueType="enumerated">
-            <enablement
-                  attribute="value"
-                  extensionAdjustment="false"
-                  type="CONTAINER_ATTRIBUTE"
-                  value="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimizationlevel.size">
-               <checkBuildProperty
-                     property="org.eclipse.cdt.build.core.buildType"
-                     value="org.eclipse.cdt.build.core.buildType.release">
-               </checkBuildProperty>
-            </enablement>
-            <enablement
-                  attribute="value"
-                  extensionAdjustment="false"
-                  type="CONTAINER_ATTRIBUTE"
-                  value="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimizationlevel.none">
-               <checkBuildProperty
-                     property="org.eclipse.cdt.build.core.buildType"
-                     value="org.eclipse.cdt.build.core.buildType.debug">
-               </checkBuildProperty>
-            </enablement>
-            <enumeratedOptionValue
-                  command="-O0"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimizationlevel.none"
-                  name="%option.compiler.optimizationlevel.none">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-O1"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimizationlevel.optimize"
-                  name="%option.compiler.optimizationlevel.optimize">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-O2"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimizationlevel.more"
-                  isDefault="true"
-                  name="%option.compiler.optimizationlevel.more">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-O3"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimizationlevel.most"
-                  name="%option.compiler.optimizationlevel.most">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-Os"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimizationlevel.size"
-                  name="%option.compiler.optimizationlevel.size">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-Og"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimizationlevel.debug"
-                  name="%option.compiler.optimizationlevel.debug">
-            </enumeratedOptionValue>
-         </option>
-         <option
                command="-nostdinc"
                defaultValue="false"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.preprocessor.nostdinc"
@@ -516,75 +649,7 @@
                valueType="includePath">
          </option>
          <option
-               command="-ffunction-sections"
-               defaultValue="false"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.functionsections"
-               isAbstract="true"
-               name="%option.compiler.functionsections"
-               resourceFilter="all"
-               tip="Place each function into its own section in the output file if the target supports arbitrary sections. The name of the function determines the section’s name in the output file. Use these options on systems where the linker can perform optimizations to improve locality of reference in the instruction space. Most systems using the ELF object format have linkers with such optimizations."
-               useByScannerDiscovery="true"
-               valueType="boolean">
-            <enablement
-                  attribute="value"
-                  type="CONTAINER_ATTRIBUTE"
-                  value="true">
-            </enablement>
-         </option>
-         <option
-               command="-fdata-sections"
-               defaultValue="false"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.datasections"
-               isAbstract="true"
-               name="%option.compiler.datasections"
-               resourceFilter="all"
-               tip="Place each data item into its own section in the output file if the target supports arbitrary sections. The name of the name of the data item determines the section’s name in the output file. Use these options on systems where the linker can perform optimizations to improve locality of reference in the instruction space. Most systems using the ELF object format have linkers with such optimizations."
-               useByScannerDiscovery="true"
-               valueType="boolean">
-            <enablement
-                  attribute="value"
-                  type="CONTAINER_ATTRIBUTE"
-                  value="true">
-            </enablement>
-         </option>
-         <option
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.other"
-               isAbstract="true"
-               name="%option.compiler.otheroptimization"
-               useByScannerDiscovery="true"
-               valueType="string">
-         </option>
-         <option
-               command="-fno-common"
-               defaultValue="false"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.nocommon"
-               isAbstract="true"
-               name="%option.compiler.nocommon"
-               tip="In C code, controls the placement of uninitialized global variables. Unix C compilers have traditionally permitted multiple definitions of such variables in different compilation units by placing the variables in a common block. This is the behavior specified by ‘-fcommon’, and is the default for GCC on most targets. On the other hand, this behavior is not required by ISO C, and on some targets may carry a speed or code size penalty on variable references. The ‘-fno-common’ option specifies that the compiler should place uninitialized global variables in the data section of the object file, rather than generating them as common blocks. This has the effect that if the same variable is declared (without extern) in two different compilations, you get a multiple-definition error when you link them. In this case, you must compile with ‘-fcommon’ instead. Compiling with ‘-fno-common’ is useful on targets for which it provides better performance, or if you wish to verify that the program will work on other systems that always treat uninitialized variable declarations this way."
-               useByScannerDiscovery="true"
-               valueType="boolean">
-         </option>
-         <option
-               command="-fno-inline-functions"
-               defaultValue="false"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.noinlinefunctions"
-               isAbstract="true"
-               name="%option.compiler.noinlinefunctions"
-               useByScannerDiscovery="true"
-               valueType="boolean">
-         </option>
-         <option
-               command="-fsigned-char"
-               defaultValue="false"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.signedchar"
-               isAbstract="true"
-               name="%option.compiler.signedchar"
-               tip="Let the type char be signed, like signed char."
-               useByScannerDiscovery="true"
-               valueType="boolean">
-         </option>
-         <option
-               defaultValue="-c -fmessage-length=0"
+               defaultValue="-fmessage-length=0"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.compiler.other"
                isAbstract="true"
                name="%option.compiler.other"
@@ -2225,33 +2290,81 @@
            
             <!-- ===== Debugging ========================================== -->
            <optionCategory
-               id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.debugging"
-               name="%optionCategory.debugging">
+                 id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
+                 name="%optionCategory.optimization">
            </optionCategory>
            <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.debugging"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.level"
-               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.debugging.level">
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.level">
            </option>
            <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.debugging"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.format"
-               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.debugging.format">
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.messagelength"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.messagelength">
            </option>
            <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.debugging"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.prof"
-               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.debugging.prof">
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.signedchar"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.signedchar">
            </option>
            <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.debugging"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.gprof"
-               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.debugging.gprof">
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.functionsections"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.functionsections">
            </option>
            <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.debugging"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.other"
-               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.debugging.other">
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.datasections"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.datasections">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.nocommon"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.nocommon">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.noinlinefunctions"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.noinlinefunctions">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.freestanding"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.freestanding">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.nobuiltin"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.nobuiltin">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.spconstant"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.spconstant">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.PIC"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.PIC">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.other"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.other">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.name"
+                 isAbstract="false"
+                 resourceFilter="all"
+                 valueType="string">
+              <enablement
+                    type="UI_VISIBILITY">
+                 <false>
+                    false body text
+                 </false>
+              </enablement>
            </option>
            <optionCategory
                  id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
@@ -2342,11 +2455,40 @@
                  id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.other"
                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.other">
            </option>
+           <optionCategory
+                 id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.debugging"
+                 name="%optionCategory.debugging">
+           </optionCategory>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.debugging"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.level"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.debugging.level">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.debugging"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.format"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.debugging.format">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.debugging"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.prof"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.debugging.prof">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.debugging"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.gprof"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.debugging.gprof">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.debugging"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.other"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.debugging.other">
+           </option>
 
 
        <tool
              command="${cross_prefix}${cross_c}${cross_suffix}"
-             commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
+             commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
              errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser"
              id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler"
              isAbstract="false"
@@ -2469,7 +2611,7 @@
          
          <tool
                command="${cross_prefix}${cross_c}${cross_suffix}"
-               commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
+               commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
                errorParsers="org.eclipse.cdt.core.GCCErrorParser"
                id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler"
                isAbstract="false"
@@ -2530,44 +2672,6 @@
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.optimization"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.optimizationlevel"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimizationlevel">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.optimization"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.functionsections"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.functionsections">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.optimization"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.datasections"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.datasections">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.optimization"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.nocommon"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.nocommon">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.optimization"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otheroptimizations"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.other">
-            </option>
-            <optionCategory
-                  id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
-                  name="%optionCategory.compiler.warnings">
-            </optionCategory>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otherwarnings"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.other">
-            </option>
-            <optionCategory
-                  id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.misc"
-                  name="%optionCategory.compiler.misc">
-            </optionCategory>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.misc"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std"
                   name="%option.compiler.std"
                   useByScannerDiscovery="true"
@@ -2604,19 +2708,27 @@
                </enumeratedOptionValue>
             </option>
             <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.optimization"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otheroptimizations"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.other">
+            </option>
+            <optionCategory
+                  id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
+                  name="%optionCategory.compiler.warnings">
+            </optionCategory>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otherwarnings"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.other">
+            </option>
+            <optionCategory
+                  id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.misc"
+                  name="%optionCategory.compiler.misc">
+            </optionCategory>
+            <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.misc"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.lstfilename"
                   superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.lstfilename">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.misc"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.noinlinefunctions"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.noinlinefunctions">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.misc"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.signedchar"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.signedchar">
             </option>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.misc"
@@ -2639,7 +2751,7 @@
          </tool>
          <tool
                command="${cross_prefix}${cross_cpp}${cross_suffix}"
-               commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
+               commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
                errorParsers="org.eclipse.cdt.core.GCCErrorParser"
                id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler"
                isAbstract="false"
@@ -2710,59 +2822,6 @@
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.optimization"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.optimizationlevel"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimizationlevel">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.optimization"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.functionsections"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.functionsections">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.optimization"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.datasections"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.datasections">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.optimization"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.otheroptimizations"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.other">
-            </option>
-            <optionCategory
-                  id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
-                  name="%optionCategory.compiler.warnings">
-            </optionCategory>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
-                  command="-Wabi"
-                  defaultValue="false"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warnabi"
-                  name="%option.compiler.warnabi"
-                  tip="Warn when G++ generates code that is probably not compatible with the vendor-neutral C++ ABI. Although an effort has been made to warn about all such cases, there are probably some cases that are not warned about, even though G++ is generating incompatible code. There may also be cases where warnings are emitted even though the code that is generated is compatible."
-                  useByScannerDiscovery="true"
-                  valueType="boolean">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
-                  command="-Weffc++"
-                  defaultValue="false"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warneffc"
-                  name="%option.compiler.warneffc"
-                  tip="Warn about violations of the style guidelines from Scott Meyers’ Effective C++, Second Edition book."
-                  useByScannerDiscovery="true"
-                  valueType="boolean">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.otherwarnings"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.other">
-            </option>
-            <optionCategory
-                  id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.misc"
-                  name="%optionCategory.compiler.misc">
-            </optionCategory>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.misc"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std"
                   name="%option.compiler.std"
                   useByScannerDiscovery="true"
@@ -2809,17 +2868,7 @@
                </enumeratedOptionValue>
             </option>
             <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.misc"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.lstfilename"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.lstfilename">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.misc"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.noinlinefunctions"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.noinlinefunctions">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.misc"
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.optimization"
                   command="-fno-exceptions"
                   defaultValue="false"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.noexceptions"
@@ -2829,7 +2878,7 @@
                   valueType="boolean">
             </option>
             <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.misc"
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.optimization"
                   command="-fno-rtti"
                   defaultValue="false"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nortti"
@@ -2839,9 +2888,47 @@
                   valueType="boolean">
             </option>
             <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.optimization"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.otheroptimizations"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.other">
+            </option>
+            <optionCategory
+                  id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
+                  name="%optionCategory.compiler.warnings">
+            </optionCategory>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
+                  command="-Wabi"
+                  defaultValue="false"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warnabi"
+                  name="%option.compiler.warnabi"
+                  tip="Warn when G++ generates code that is probably not compatible with the vendor-neutral C++ ABI. Although an effort has been made to warn about all such cases, there are probably some cases that are not warned about, even though G++ is generating incompatible code. There may also be cases where warnings are emitted even though the code that is generated is compatible."
+                  useByScannerDiscovery="true"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
+                  command="-Weffc++"
+                  defaultValue="false"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warneffc"
+                  name="%option.compiler.warneffc"
+                  tip="Warn about violations of the style guidelines from Scott Meyers’ Effective C++, Second Edition book."
+                  useByScannerDiscovery="true"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.otherwarnings"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.other">
+            </option>
+            <optionCategory
+                  id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.misc"
+                  name="%optionCategory.compiler.misc">
+            </optionCategory>
+            <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.misc"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.signedchar"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.signedchar">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.lstfilename"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.lstfilename">
             </option>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.misc"
@@ -3539,19 +3626,6 @@
                   valueType="string">
             </option>
          </tool>
-         <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.name"
-               isAbstract="false"
-               resourceFilter="all"
-               valueType="string">
-            <enablement
-                  type="UI_VISIBILITY">
-               <false>
-                  false body text
-               </false>
-            </enablement>
-         </option>
 
          
          <!-- ============================================================= -->
