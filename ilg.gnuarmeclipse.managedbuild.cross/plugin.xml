@@ -466,6 +466,16 @@
             </enablement>
          </option>
          <option
+               command="-fno-use-cxa-atexit"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.nousecxaatexit"
+               isAbstract="true"
+               name="%option.optimization.nousecxaatexit"
+               tip="Do not register destructors for objects with static storage duration with the __cxa_ atexit() function."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
                command="-fno-common"
                defaultValue="false"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.nocommon"
@@ -2356,6 +2366,11 @@
                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
                  id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.datasections"
                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.datasections">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.nousecxaatexit"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.nousecxaatexit">
            </option>
            <option
                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
