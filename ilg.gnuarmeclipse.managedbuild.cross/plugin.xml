@@ -782,6 +782,45 @@
                name="%option.linker.other"
                valueType="string">
          </option>
+         <option
+               command="-shared"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.shared"
+               isAbstract="true"
+               name="%option.linker.shared"
+               valueType="boolean">
+            <enablement
+                  attribute="defaultValue"
+                  extensionAdjustment="false"
+                  type="CONTAINER_ATTRIBUTE"
+                  value="true">
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildArtefactType"
+                     value="org.eclipse.cdt.build.core.buildArtefactType.sharedLib">
+               </checkBuildProperty>
+            </enablement>
+         </option>
+         <option
+               command="-Wl,-soname="
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.soname"
+               isAbstract="true"
+               name="%option.linker.soname"
+               valueType="string">
+         </option>
+         <option
+               command="-Wl,--out-implib="
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.implname"
+               isAbstract="true"
+               name="%option.linker.implname"
+               valueType="string">
+         </option>
+         <option
+               command="-Wl,--output-def="
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.defname"
+               isAbstract="true"
+               name="%option.linker.defname"
+               valueType="string">
+         </option>
       </tool>
       <tool
             id="ilg.gnuarmeclipse.managedbuild.cross.tool.base.arm"
@@ -2510,6 +2549,18 @@
                 pathType="buildpathInclude"
                 variableList="CPATH,C_INCLUDE_PATH">
           </envVarBuildPath>
+          <inputType
+                dependencyCalculator="org.eclipse.cdt.managedbuilder.makegen.gnu.DefaultGCCDependencyCalculator2"
+                dependencyContentType="org.eclipse.cdt.core.cHeader"
+                dependencyExtensions="h"
+                id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"
+                sources="s,S,asm"
+                superClass="cdt.managedbuild.tool.gnu.assembler.input">
+          </inputType>
+          <outputType
+                id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.output"
+                superClass="cdt.managedbuild.tool.gnu.assembler.output">
+          </outputType>
           <optionCategory
                 id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.preprocessor"
                 name="%optionCategory.compiler.preprocessor">
@@ -2594,18 +2645,6 @@
                 name="%option.assembler.other"
                 valueType="string">
           </option>
-          <inputType
-                dependencyCalculator="org.eclipse.cdt.managedbuilder.makegen.gnu.DefaultGCCDependencyCalculator2"
-                dependencyContentType="org.eclipse.cdt.core.cHeader"
-                dependencyExtensions="h"
-                id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.input"
-                sources="s,S,asm"
-                superClass="cdt.managedbuild.tool.gnu.assembler.input">
-          </inputType>
-          <outputType
-                id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler.output"
-                superClass="cdt.managedbuild.tool.gnu.assembler.output">
-          </outputType>
        </tool>
          
          
@@ -2633,6 +2672,14 @@
                   pathType="buildpathInclude"
                   variableList="CPATH,C_INCLUDE_PATH">
             </envVarBuildPath>
+            <inputType
+                  id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"
+                  superClass="cdt.managedbuild.tool.gnu.c.compiler.input">
+            </inputType>
+            <outputType
+                  id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.output"
+                  superClass="cdt.managedbuild.tool.gnu.c.compiler.output">
+            </outputType>
             <optionCategory
                   id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.preprocessor"
                   name="%optionCategory.compiler.preprocessor">
@@ -2740,14 +2787,6 @@
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.other"
                   superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.compiler.other">
             </option>
-            <inputType
-                  id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.input"
-                  superClass="cdt.managedbuild.tool.gnu.c.compiler.input">
-            </inputType>
-            <outputType
-                  id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler.output"
-                  superClass="cdt.managedbuild.tool.gnu.c.compiler.output">
-            </outputType>
          </tool>
          <tool
                command="${cross_prefix}${cross_cpp}${cross_suffix}"
@@ -2773,6 +2812,14 @@
                   pathType="buildpathInclude"
                   variableList="CPATH,CPLUS_INCLUDE_PATH">
             </envVarBuildPath>
+            <inputType
+                  id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"
+                  superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input">
+            </inputType>
+            <outputType
+                  id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.output"
+                  superClass="cdt.managedbuild.tool.gnu.cpp.compiler.output">
+            </outputType>
             <optionCategory
                   id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.preprocessor"
                   name="%optionCategory.compiler.preprocessor">
@@ -2940,14 +2987,6 @@
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.other"
                   superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.compiler.other">
             </option>
-            <inputType
-                  id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.input"
-                  superClass="cdt.managedbuild.tool.gnu.cpp.compiler.input">
-            </inputType>
-            <outputType
-                  id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler.output"
-                  superClass="cdt.managedbuild.tool.gnu.cpp.compiler.output">
-            </outputType>
          </tool>
          
          <tool
@@ -2959,10 +2998,12 @@
                outputFlag="-o">
             <enablement
                   type="ALL">
-               <checkBuildProperty
-                     property="org.eclipse.cdt.build.core.buildArtefactType"
-                     value="org.eclipse.cdt.build.core.buildArtefactType.exe">
-               </checkBuildProperty>
+               <not>
+                  <checkBuildProperty
+                        property="org.eclipse.cdt.build.core.buildArtefactType"
+                        value="org.eclipse.cdt.build.core.buildArtefactType.staticLib">
+                  </checkBuildProperty>
+               </not>
             </enablement>
             <supportedProperties>
                <property
@@ -2976,6 +3017,22 @@
                   pathType="buildpathLibrary"
                   variableList="LIBRARY_PATH">
             </envVarBuildPath>
+            <inputType
+                  id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker.input"
+                  superClass="cdt.managedbuild.tool.gnu.c.linker.input">
+               <additionalInput
+                     kind="additionalinputdependency"
+                     paths="$(USER_OBJS)">
+               </additionalInput>
+               <additionalInput
+                     kind="additionalinput"
+                     paths="$(LIBS)">
+               </additionalInput>
+            </inputType>
+            <outputType
+                  id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker.output"
+                  superClass="cdt.managedbuild.tool.gnu.c.linker.output">
+            </outputType>
             <optionCategory
                   id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.linker.general"
                   name="%optionCategory.general">
@@ -3068,22 +3125,37 @@
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.other"
                   superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.other">
             </option>
-            <inputType
-                  id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker.input"
-                  superClass="cdt.managedbuild.tool.gnu.c.linker.input">
-               <additionalInput
-                     kind="additionalinputdependency"
-                     paths="$(USER_OBJS)">
-               </additionalInput>
-               <additionalInput
-                     kind="additionalinput"
-                     paths="$(LIBS)">
-               </additionalInput>
-            </inputType>
-            <outputType
-                  id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker.output"
-                  superClass="cdt.managedbuild.tool.gnu.c.linker.output">
-            </outputType>
+            <optionCategory
+                  id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.linker.shared"
+                  name="%optionCategory.linker.shared">
+               <enablement
+                     type="ALL">
+                  <checkBuildProperty
+                        property="org.eclipse.cdt.build.core.buildArtefactType"
+                        value="org.eclipse.cdt.build.core.buildArtefactType.sharedLib">
+                  </checkBuildProperty>
+               </enablement>
+            </optionCategory>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.linker.shared"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.shared"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.shared">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.linker.shared"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.soname"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.soname">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.linker.shared"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.implname"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.implname">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.linker.shared"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.defname"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.defname">
+            </option>
          </tool>
          <tool
                command="${cross_prefix}${cross_cpp}${cross_suffix}"
@@ -3095,10 +3167,12 @@
                outputFlag="-o">
             <enablement
                   type="ALL">
-               <checkBuildProperty
-                     property="org.eclipse.cdt.build.core.buildArtefactType"
-                     value="org.eclipse.cdt.build.core.buildArtefactType.exe">
-               </checkBuildProperty>
+               <not>
+                  <checkBuildProperty
+                        property="org.eclipse.cdt.build.core.buildArtefactType"
+                        value="org.eclipse.cdt.build.core.buildArtefactType.staticLib">
+                  </checkBuildProperty>
+               </not>
             </enablement>
             <supportedProperties>
                <property
@@ -3112,6 +3186,22 @@
                   pathType="buildpathLibrary"
                   variableList="LIBRARY_PATH">
             </envVarBuildPath>
+            <inputType
+                  id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker.input"
+                  superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
+               <additionalInput
+                     kind="additionalinputdependency"
+                     paths="$(USER_OBJS)">
+               </additionalInput>
+               <additionalInput
+                     kind="additionalinput"
+                     paths="$(LIBS)">
+               </additionalInput>
+            </inputType>
+            <outputType
+                  id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker.output"
+                  superClass="cdt.managedbuild.tool.gnu.cpp.linker.output">
+            </outputType>
             <optionCategory
                   id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.general"
                   name="%optionCategory.general">
@@ -3171,11 +3261,6 @@
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.misc"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.flags"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.flags">
-            </option>
-            <option
-                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.misc"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.otherobjs"
                   superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.otherobjs">
             </option>
@@ -3204,22 +3289,37 @@
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.other"
                   superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.other">
             </option>
-            <inputType
-                  id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker.input"
-                  superClass="cdt.managedbuild.tool.gnu.cpp.linker.input">
-               <additionalInput
-                     kind="additionalinputdependency"
-                     paths="$(USER_OBJS)">
-               </additionalInput>
-               <additionalInput
-                     kind="additionalinput"
-                     paths="$(LIBS)">
-               </additionalInput>
-            </inputType>
-            <outputType
-                  id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker.output"
-                  superClass="cdt.managedbuild.tool.gnu.cpp.linker.output">
-            </outputType>
+            <optionCategory
+                  id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.shared"
+                  name="%optionCategory.linker.shared">
+               <enablement
+                     type="ALL">
+                  <checkBuildProperty
+                        property="org.eclipse.cdt.build.core.buildArtefactType"
+                        value="org.eclipse.cdt.build.core.buildArtefactType.sharedLib">
+                  </checkBuildProperty>
+               </enablement>
+            </optionCategory>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.shared"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.shared"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.shared">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.shared"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.soname"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.soname">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.shared"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.implname"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.implname">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.shared"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.defname"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.defname">
+            </option>
          </tool>
          
          <tool
@@ -3261,6 +3361,26 @@
                   </checkOption>
                </and>
             </enablement>
+            <option
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.createflash.InFileName"
+                  resourceFilter="all"
+                  value="&quot;${BuildArtifactFileName}&quot;"
+                  valueType="string">
+            </option>
+            <inputType
+                  id="ilg.gnuarmeclipse.managedbuild.cross.createflash.input"
+                  multipleOfType="true"
+                  option="ilg.gnuarmeclipse.managedbuild.cross.option.base.createflash.InFileName"
+                  sources="elf">
+            </inputType>
+            <outputType
+                  buildVariable="SECONDARY_FLASH"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.createflash.output"
+                  nameProvider="ilg.gnuarmeclipse.managedbuild.cross.FlashImageManagedOutputNameProvider"
+                  outputContentType="ilg.gnuarmeclipse.managedbuild.cross.content-type.hex"
+                  outputs="hex"
+                  primaryOutput="false">
+            </outputType>
             <optionCategory
                   id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.createflash.general"
                   name="%optionCategory.general">
@@ -3329,26 +3449,6 @@
                   name="%option.flash.other"
                   valueType="string">
             </option>
-            <outputType
-                  buildVariable="SECONDARY_FLASH"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.createflash.output"
-                  nameProvider="ilg.gnuarmeclipse.managedbuild.cross.FlashImageManagedOutputNameProvider"
-                  outputContentType="ilg.gnuarmeclipse.managedbuild.cross.content-type.hex"
-                  outputs="hex"
-                  primaryOutput="false">
-            </outputType>
-            <inputType
-                  id="ilg.gnuarmeclipse.managedbuild.cross.createflash.input"
-                  multipleOfType="true"
-                  option="ilg.gnuarmeclipse.managedbuild.cross.option.base.createflash.InFileName"
-                  sources="elf">
-            </inputType>
-            <option
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.createflash.InFileName"
-                  resourceFilter="all"
-                  value="&quot;${BuildArtifactFileName}&quot;"
-                  valueType="string">
-            </option>
          </tool>
          <tool
                command="${cross_prefix}${cross_objdump}${cross_suffix}"
@@ -3371,6 +3471,25 @@
                   </checkOption>
                </and>
             </enablement>
+            <option
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.createlisting.InFileName"
+                  resourceFilter="all"
+                  value="&quot;${BuildArtifactFileName}&quot;"
+                  valueType="string">
+            </option>
+            <inputType
+                  id="ilg.gnuarmeclipse.managedbuild.cross.createlisting.input"
+                  multipleOfType="true"
+                  option="ilg.gnuarmeclipse.managedbuild.cross.option.base.createlisting.InFileName"
+                  sources="elf">
+            </inputType>
+            <outputType
+                  buildVariable="SECONDARY_LIST"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.createlisting.output"
+                  outputNames="${BuildArtifactFileBaseName}.lst"
+                  outputs="lst"
+                  primaryOutput="false">
+            </outputType>
             <optionCategory
                   id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.createlisting.general"
                   name="%optionCategory.general">
@@ -3504,25 +3623,6 @@
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.base.createlisting.general"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.base.createlisting.other"
                   name="%option.listing.other"
-                  valueType="string">
-            </option>
-            <outputType
-                  buildVariable="SECONDARY_LIST"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.createlisting.output"
-                  outputNames="${BuildArtifactFileBaseName}.lst"
-                  outputs="lst"
-                  primaryOutput="false">
-            </outputType>
-            <inputType
-                  id="ilg.gnuarmeclipse.managedbuild.cross.createlisting.input"
-                  multipleOfType="true"
-                  option="ilg.gnuarmeclipse.managedbuild.cross.option.base.createlisting.InFileName"
-                  sources="elf">
-            </inputType>
-            <option
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.createlisting.InFileName"
-                  resourceFilter="all"
-                  value="&quot;${BuildArtifactFileName}&quot;"
                   valueType="string">
             </option>
          </tool>
