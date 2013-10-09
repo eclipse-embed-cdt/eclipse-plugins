@@ -66,6 +66,8 @@ public class Option {
 			+ "functionsections";
 	private static final String OPTION_OPTIMIZATION_DATASECTIONS = OPTION_OPTIMIZATION
 			+ "datasections";
+	private static final String OPTION_OPTIMIZATION_NOUSECXAATEXIT = OPTION_OPTIMIZATION
+			+ "nousecxaatexit";
 	private static final String OPTION_OPTIMIZATION_NOCOMMON = OPTION_OPTIMIZATION
 			+ "nocommon";
 	private static final String OPTION_OPTIMIZATION_NOINLINEFUNCTIONS = OPTION_OPTIMIZATION
@@ -327,6 +329,10 @@ public class Option {
 			sReturn += " " + sValue;
 
 		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_DATASECTIONS);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_NOUSECXAATEXIT);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
