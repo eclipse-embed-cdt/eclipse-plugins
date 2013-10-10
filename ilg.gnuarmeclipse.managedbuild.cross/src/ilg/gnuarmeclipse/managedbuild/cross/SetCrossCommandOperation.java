@@ -62,9 +62,13 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 				SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_PROJECT_NAME);
 
-		String toolchainIndex = (String) MBSCustomPageManager.getPageProperty(
+		// String toolchainIndex = (String)
+		// MBSCustomPageManager.getPageProperty(
+		// SetCrossCommandWizardPage.PAGE_ID,
+		// SetCrossCommandWizardPage.CROSS_TOOLCHAIN_INDEX);
+		String toolchainName = (String) MBSCustomPageManager.getPageProperty(
 				SetCrossCommandWizardPage.PAGE_ID,
-				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_INDEX);
+				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_NAME);
 		String path = (String) MBSCustomPageManager.getPageProperty(
 				SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_COMMAND_PATH);
@@ -73,14 +77,14 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 		// workspace/.plugins/org.eclipse.cdt.core/shareddefaults.xml
 
 		String pathKey = SetCrossCommandWizardPage.SHARED_CROSS_COMMAND_PATH
-				+ "." + toolchainIndex;
+				+ "." + toolchainName.hashCode();
 		SharedDefaults.getInstance().getSharedDefaultsMap().put(pathKey, path);
 
 		SharedDefaults
 				.getInstance()
 				.getSharedDefaultsMap()
-				.put(SetCrossCommandWizardPage.SHARED_CROSS_TOOLCHAIN_INDEX,
-						toolchainIndex);
+				.put(SetCrossCommandWizardPage.SHARED_CROSS_TOOLCHAIN_NAME,
+						toolchainName);
 		SharedDefaults.getInstance().updateShareDefaultsMap(
 				SharedDefaults.getInstance().getSharedDefaultsMap());
 
@@ -116,32 +120,37 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 			}
 		}
 
-
 		System.out.println("SetCrossCommandOperation.run() end");
 
 	}
 
 	private void updateOptions(IConfiguration config) throws BuildException {
 
-		String sToolchainIndex = (String) MBSCustomPageManager.getPageProperty(
+		String sToolchainName = (String) MBSCustomPageManager.getPageProperty(
 				SetCrossCommandWizardPage.PAGE_ID,
-				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_INDEX);
+				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_NAME);
 
-		IToolChain toolchain = config.getToolChain();
-		
+		int toolchainIndex;
+		try {
+			toolchainIndex = ToolchainDefinition
+					.findToolchainByName(sToolchainName);
+		} catch (IndexOutOfBoundsException e) {
+			toolchainIndex = ToolchainDefinition.getDefault();
+		}
+
 		IOption option;
-		String val;
+		IToolChain toolchain = config.getToolChain();
 
 		String sId;
 		sId = Activator.getOptionPrefix() + ".toolchain.index";
 		option = toolchain.getOptionBySuperClassId(sId); //$NON-NLS-1$
-		val = sId + "." + sToolchainIndex;
+		String val = sId + "." + String.valueOf(toolchainIndex);
 		// Do not use config.setOption() to DO NOT save it on .cproject...
-		// option.setValue(val);
-		config.setOption(toolchain, option, val); // temporarily
+		option.setValue(val);
+		//config.setOption(toolchain, option, val); // temporarily
 
-		Utils.updateOptions(config, sToolchainIndex);
-		
+		Utils.updateOptions(config, toolchainIndex);
+
 		String path = (String) MBSCustomPageManager.getPageProperty(
 				SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_COMMAND_PATH);

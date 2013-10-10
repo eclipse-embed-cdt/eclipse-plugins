@@ -35,7 +35,7 @@ public class ToolchainDefinition {
 		m_sName = sName;
 		m_sPrefix = sPrefix;
 		m_sSuffix = "";
-		m_sFamily = "arm32";
+		m_sFamily = "arm";
 		m_cmdMake = "make";
 		m_cmdRm = "rm";
 		m_cmdC = "gcc";
@@ -120,13 +120,11 @@ public class ToolchainDefinition {
 		return m_cmdSize;
 	}
 
-	public String getFullCmdC()
-	{
+	public String getFullCmdC() {
 		return getPrefix() + getCmdC() + getSuffix();
 	}
-	
-	private void setTest()
-	{
+
+	private void setTest() {
 		m_sSuffix = "mySuffix";
 		m_sFamily = "myFamily";
 		m_cmdMake = "myMake";
@@ -138,14 +136,14 @@ public class ToolchainDefinition {
 		m_cmdObjdump = "myObjdump";
 		m_cmdSize = "mySize";
 	}
+
 	// Static members
 	private static List<ToolchainDefinition> ms_list;
 
-	public static List<ToolchainDefinition> getList()
-	{
+	public static List<ToolchainDefinition> getList() {
 		return ms_list;
 	}
-	
+
 	public static ToolchainDefinition getToolchain(int index) {
 		return ms_list.get(index);
 	}
@@ -158,13 +156,28 @@ public class ToolchainDefinition {
 		return ms_list.size();
 	}
 
+	public static int findToolchainByName(String sName) {
+		int i = 0;
+		for (ToolchainDefinition td : ms_list) {
+			if (td.m_sName.equals(sName))
+				return i;
+			i++;
+		}
+		// not found
+		throw new IndexOutOfBoundsException();
+	}
+
+	public static int getDefault() {
+		return 0;
+	}
+
 	// Initialise the list of known toolchains
 	static {
 		ms_list = new ArrayList<ToolchainDefinition>();
-		
+
 		// 0
-		ms_list.add(new ToolchainDefinition("GNU Tools for ARM Embedded Processors",
-				"arm-none-eabi-"));
+		ms_list.add(new ToolchainDefinition(
+				"GNU Tools for ARM Embedded Processors", "arm-none-eabi-"));
 		// 1
 		ToolchainDefinition tc;
 		tc = new ToolchainDefinition("Sourcery CodeBench Lite for ARM EABI",
@@ -174,7 +187,8 @@ public class ToolchainDefinition {
 		ms_list.add(tc);
 
 		// 2
-		tc = new ToolchainDefinition("Sourcery CodeBench Lite for ARM GNU/Linux",
+		tc = new ToolchainDefinition(
+				"Sourcery CodeBench Lite for ARM GNU/Linux",
 				"arm-none-linux-gnueabi-");
 		if (Utils.isPlatform("windows"))
 			tc.setWin("cs_make", "cs_rm");
@@ -192,7 +206,8 @@ public class ToolchainDefinition {
 				"arm-linux-gnueabihf-"));
 
 		// 6
-		ms_list.add(new ToolchainDefinition("Linaro ARMv7 Big-Endian Linux GNU EABI HF",
+		ms_list.add(new ToolchainDefinition(
+				"Linaro ARMv7 Big-Endian Linux GNU EABI HF",
 				"armeb-linux-gnueabihf-"));
 
 		// 64 bit toolchains
@@ -201,7 +216,8 @@ public class ToolchainDefinition {
 				"aarch64-none-elf-", "aarch64"));
 
 		// 8
-		ms_list.add(new ToolchainDefinition("Linaro AArch64 big-endian bare-metal ELF",
+		ms_list.add(new ToolchainDefinition(
+				"Linaro AArch64 big-endian bare-metal ELF",
 				"aarch64_be-none-elf-", "aarch64"));
 
 		// 9
@@ -209,13 +225,14 @@ public class ToolchainDefinition {
 				"aarch64-linux-gnu-", "aarch64"));
 
 		// 10
-		ms_list.add(new ToolchainDefinition("Linaro AArch64 big-endian Linux GNU",
-				"aarch64_be-linux-gnu-", "aarch64"));
+		ms_list.add(new ToolchainDefinition(
+				"Linaro AArch64 big-endian Linux GNU", "aarch64_be-linux-gnu-",
+				"aarch64"));
 
 		// 11
-		tc = new ToolchainDefinition("test", "myPrefix");
-		tc.setTest();
-		ms_list.add(tc);
-		
+		// tc = new ToolchainDefinition("test", "myPrefix");
+		// tc.setTest();
+		// ms_list.add(tc);
+
 	}
 }

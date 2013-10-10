@@ -45,23 +45,23 @@ public class Utils {
 			return (IConfiguration) configuration;
 		return null;
 	}
-	
-	public static IConfiguration getConfiguration(IHoldsOptions holder){
+
+	public static IConfiguration getConfiguration(IHoldsOptions holder) {
 		if (holder instanceof IToolChain)
-			return ((IToolChain)holder).getParent();
+			return ((IToolChain) holder).getParent();
 		return null;
 	}
 
 	public static void updateOptions(IConfiguration config,
-			String sToolchainIndex) throws BuildException {
+			int toolchainIndex) throws BuildException {
 
 		IToolChain toolchain = config.getToolChain();
 
 		IOption option;
 		String val;
-		
+
 		ToolchainDefinition td = ToolchainDefinition
-				.getToolchain(sToolchainIndex);
+				.getToolchain(toolchainIndex);
 
 		option = toolchain.getOptionBySuperClassId(Activator.getOptionPrefix()
 				+ ".toolchain.name"); //$NON-NLS-1$
@@ -70,12 +70,6 @@ public class Utils {
 		// since this does not propagate notifications and the
 		// values are not saved to .cproject.
 		config.setOption(toolchain, option, td.getName());
-
-		option = toolchain.getOptionBySuperClassId(Activator.getOptionPrefix()
-				+ ".family"); //$NON-NLS-1$
-		// compose the family ID
-		val = Activator.getOptionPrefix() + ".family." + td.getFamily();
-		config.setOption(toolchain, option, val);
 
 		option = toolchain.getOptionBySuperClassId(Activator.getOptionPrefix()
 				+ ".command.prefix"); //$NON-NLS-1$
@@ -117,5 +111,41 @@ public class Utils {
 				+ ".command.rm"); //$NON-NLS-1$
 		config.setOption(toolchain, option, td.getCmdRm());
 
+		option = toolchain.getOptionBySuperClassId(Activator.getOptionPrefix()
+				+ ".family"); //$NON-NLS-1$
+		// compose the family ID
+		String sFamily = td.getFamily();
+		val = Activator.getOptionPrefix() + ".family." + sFamily;
+		config.setOption(toolchain, option, val);
+
+		if ("arm".equals(sFamily)) {
+			
+			option = toolchain.getOptionBySuperClassId(Activator
+					.getOptionPrefix() + ".base.arm.target.family");
+			config.setOption(toolchain, option, Activator.getOptionPrefix()
+					+ ".base.arm.mcpu.cortex-m3");
+
+			option = toolchain.getOptionBySuperClassId(Activator
+					.getOptionPrefix() + ".base.arm.target.instructionset");
+			config.setOption(toolchain, option, Activator.getOptionPrefix()
+					+ ".base.arm.target.instructionset.thumb");
+
+		} else if ("aarch64".equals(sFamily)) {
+			option = toolchain.getOptionBySuperClassId(Activator
+					.getOptionPrefix() + ".base.aarch64.target.family");
+			config.setOption(toolchain, option, Activator.getOptionPrefix()
+					+ ".base.aarch64.target.mcpu.generic");
+
+			option = toolchain.getOptionBySuperClassId(Activator
+					.getOptionPrefix() + ".base.aarch64.target.feature.simd");
+			config.setOption(toolchain, option, Activator.getOptionPrefix()
+					+ ".base.aarch64.target.cmodel.small");
+
+			option = toolchain.getOptionBySuperClassId(Activator
+					.getOptionPrefix() + ".base.aarch64.target.cmodel");
+			config.setOption(toolchain, option, Activator.getOptionPrefix()
+					+ ".base.aarch64.target.cmodel.small");
+
+		}
 	}
 }

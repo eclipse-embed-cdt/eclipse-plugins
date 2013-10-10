@@ -659,7 +659,6 @@
                valueType="includePath">
          </option>
          <option
-               defaultValue="-fmessage-length=0"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.compiler.other"
                isAbstract="true"
                name="%option.compiler.other"
@@ -840,6 +839,7 @@
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.family"
                isAbstract="true"
                name="%option.target.arm.family"
+               value="?"
                valueType="enumerated">
             <enablement
                   type="UI_ENABLEMENT|CMD_USAGE">
@@ -1432,6 +1432,7 @@
                isAbstract="true"
                name="%option.target.arm.instructionset"
                tip="Select between generating code that executes in ARM and Thumb states. The default for most configurations is to generate code that executes in ARM state, but the default can be changed by configuring GCC with the --with-mode=state configure option."
+               value="?"
                valueType="enumerated">
             <enablement
                   type="UI_ENABLEMENT|CMD_USAGE">
@@ -1773,6 +1774,7 @@
          <option
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.aarch64.target.family"
                name="%option.target.aarch64.family"
+               value="?"
                valueType="enumerated">
             <enablement
                   type="UI_ENABLEMENT|CMD_USAGE">
@@ -1920,6 +1922,7 @@
          <option
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.aarch64.target.feature.simd"
                name="%option.target.aarch64.feature.simd"
+               value="?"
                valueType="enumerated">
             <enablement
                   type="UI_ENABLEMENT|CMD_USAGE">
@@ -1959,6 +1962,7 @@
          <option
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.aarch64.target.cmodel"
                name="%option.target.aarch64.cmodel"
+               value="?"
                valueType="enumerated">
             <enablement
                   type="UI_ENABLEMENT|CMD_USAGE">
@@ -1971,22 +1975,22 @@
             </enablement>
             <enumeratedOptionValue
                   command="-mcmodel=tiny"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.aarch64.base.target.cmodel.tiny"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.aarch64.target.cmodel.tiny"
                   name="%option.target.aarch64.cmodel.tiny">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mcmodel=small"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.aarch64.base.target.cmodel.small"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.aarch64.target.cmodel.small"
                   isDefault="true"
                   name="%option.target.aarch64.cmodel.small">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mcmodel=large"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.aarch64.base.target.cmodel.large"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.aarch64.target.cmodel.large"
                   name="%option.target.aarch64.cmodel.large">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cross.gnu.aarch64.base.target.cmodel.default"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.base.aarch64.target.cmodel.default"
                   name="%option.target.aarch64.cmodel.default">
             </enumeratedOptionValue>
          </option>
@@ -2113,7 +2117,6 @@
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               defaultValue="?"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.prefix"
                isAbstract="false"
                name="%option.toolchain.prefix"
@@ -2132,6 +2135,7 @@
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               defaultValue="echo"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.c"
                isAbstract="false"
                name="%option.toolchain.command.c"
@@ -2141,6 +2145,7 @@
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               defaultValue="echo"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.cpp"
                isAbstract="false"
                name="%option.toolchain.command.cpp"
@@ -2655,7 +2660,6 @@
           </option>
           <option
                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.misc"
-                defaultValue="-c -fmessage-length=0"
                 id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.other"
                 name="%option.assembler.other"
                 valueType="string">

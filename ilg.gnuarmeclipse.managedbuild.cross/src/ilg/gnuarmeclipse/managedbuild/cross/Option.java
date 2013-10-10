@@ -492,7 +492,7 @@ public class Option {
 			sValue = null;
 			if (sFamilyId.endsWith("." + FAMILY_ARM)) {
 				sValue = getArmTargetFlags(config);
-			} else if (sFamilyId.endsWith("." + FAMILY_ARM)) {
+			} else if (sFamilyId.endsWith("." + FAMILY_AARCH64)) {
 				sValue = getAarch64TargetFlags(config);
 			}
 			if (sValue != null && sValue.length() > 0)

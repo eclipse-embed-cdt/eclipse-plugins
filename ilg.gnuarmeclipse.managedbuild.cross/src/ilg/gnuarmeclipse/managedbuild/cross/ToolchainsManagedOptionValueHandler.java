@@ -72,23 +72,26 @@ public class ToolchainsManagedOptionValueHandler implements
 
 	private void updateOptions(IHoldsOptions holder, IOption option) throws BuildException
 	{
-		String val;
-		val = option.getSelectedEnum();
+		String sId;
+		sId = option.getSelectedEnum();
 		// System.out.println("SelectedEnum="+val);
 
-		int pos = val.lastIndexOf(".");
-		String sToolchainIndex = val.substring(pos + 1);
+		int pos = sId.lastIndexOf(".");
+		int toolchainIndex = Integer.parseInt(sId.substring(pos + 1));
 		
-		System.out.println("ToolchainIndex="+sToolchainIndex);
+		System.out.println("ToolchainIndex="+toolchainIndex);
 
 		IConfiguration config = Utils.getConfiguration(holder);
-		Utils.updateOptions(config, sToolchainIndex);
+		Utils.updateOptions(config, toolchainIndex);
 
+		String sToolchainName = ToolchainDefinition.getToolchain(toolchainIndex).getName();
+		System.out.println("ToolchainName="+sToolchainName);
+		
 		IOption selOption;
 
 		// get the path from the shared storage
 		String pathKey = SetCrossCommandWizardPage.SHARED_CROSS_COMMAND_PATH
-				+ "." + sToolchainIndex;
+				+ "." + sToolchainName.hashCode();
 		String path = SharedDefaults.getInstance().getSharedDefaultsMap().get(pathKey);
 		if (path == null)
 			path = "";
