@@ -19,7 +19,7 @@ public class ToolchainDefinition {
 	private String m_sName;
 	private String m_sPrefix;
 	private String m_sSuffix;
-	private String m_sFamily;
+	private String m_sArchitecture;
 	private String m_cmdMake;
 	private String m_cmdRm;
 	private String m_cmdWinMake;
@@ -35,7 +35,7 @@ public class ToolchainDefinition {
 		m_sName = sName;
 		m_sPrefix = sPrefix;
 		m_sSuffix = "";
-		m_sFamily = "arm";
+		m_sArchitecture = "arm";
 		m_cmdMake = "make";
 		m_cmdRm = "rm";
 		m_cmdC = "gcc";
@@ -46,15 +46,15 @@ public class ToolchainDefinition {
 		m_cmdSize = "size";
 	}
 
-	public ToolchainDefinition(String sName, String sPrefix, String sFamily) {
+	public ToolchainDefinition(String sName, String sPrefix, String sArchitecture) {
 		this(sName, sPrefix);
-		m_sFamily = sFamily;
+		m_sArchitecture = sArchitecture;
 	}
 
-	public ToolchainDefinition(String sName, String sPrefix, String sFamily,
+	public ToolchainDefinition(String sName, String sPrefix, String sArchitecture,
 			String cmdMake, String cmdRm) {
-		this(sName, sPrefix, sFamily);
-		m_sFamily = sFamily;
+		this(sName, sPrefix, sArchitecture);
+		m_sArchitecture = sArchitecture;
 		m_cmdMake = cmdMake;
 		m_cmdRm = cmdRm;
 	}
@@ -76,8 +76,8 @@ public class ToolchainDefinition {
 		return m_sSuffix;
 	}
 
-	public String getFamily() {
-		return m_sFamily;
+	public String getArchitecture() {
+		return m_sArchitecture;
 	}
 
 	public String getCmdMake() {
@@ -124,12 +124,16 @@ public class ToolchainDefinition {
 		return getPrefix() + getCmdC() + getSuffix();
 	}
 
+	public String getFullName() {
+		return getName() + " (" + getFullCmdC() + ")";
+	}
+
 	private void setTest() {
 		m_sSuffix = "mySuffix";
-		m_sFamily = "myFamily";
+		m_sArchitecture = "myArch";
 		m_cmdMake = "myMake";
 		m_cmdRm = "myRm";
-		m_cmdC = "myGgcc";
+		m_cmdC = "myGcc";
 		m_cmdCpp = "myG++";
 		m_cmdAr = "myAr";
 		m_cmdObjcopy = "myObjcopy";
@@ -165,6 +169,18 @@ public class ToolchainDefinition {
 		}
 		// not found
 		throw new IndexOutOfBoundsException();
+	}
+
+	public static int findToolchainByFullName(String sName) {
+		int i = 0;
+		for (ToolchainDefinition td : ms_list) {
+			String sFullName = td.getFullName();
+			if (sFullName.equals(sName))
+				return i;
+			i++;
+		}
+		// not found
+		return getDefault();
 	}
 
 	public static int getDefault() {

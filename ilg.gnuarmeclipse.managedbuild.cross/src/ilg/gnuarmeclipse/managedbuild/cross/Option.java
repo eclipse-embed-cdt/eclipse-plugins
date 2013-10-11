@@ -6,134 +6,168 @@ import org.eclipse.cdt.managedbuilder.core.IOption;
 
 public class Option {
 
-	private static final String OPTION_PREFIX = Activator.getOptionPrefix();
+	public static final String OPTION_PREFIX = Activator.getOptionPrefix();
 
-	private static final String OPTION_FAMILY = OPTION_PREFIX + ".family";
+	public static final String OPTION_ARCHITECTURE = OPTION_PREFIX
+			+ ".architecture";
 
-	private static final String FAMILY_ARM = "arm";
-	private static final String FAMILY_AARCH64 = "aarch64";
+	public static final String ARCHITECTURE_ARM = "arm";
+	public static final String ARCHITECTURE_AARCH64 = "aarch64";
 
-	private static final String OPTION_TARGET = OPTION_PREFIX + ".target.";
+	public static final String OPTION_ARCHITECTURE_ARM = OPTION_ARCHITECTURE
+			+ "." + ARCHITECTURE_ARM;
+	public static final String OPTION_ARCHITECTURE_AARCH64 = OPTION_ARCHITECTURE
+			+ "." + ARCHITECTURE_AARCH64;
 
-	private static final String OPTION_ARM_TARGET = OPTION_PREFIX + "."
-			+ FAMILY_ARM + ".target.";
-	private static final String OPTION_ARM_TARGET_FAMILY = OPTION_ARM_TARGET
+	public static final String OPTION_TARGET = OPTION_PREFIX + ".target.";
+
+	public static final String OPTION_ARM_TARGET = OPTION_PREFIX + "."
+			+ ARCHITECTURE_ARM + ".target.";
+	public static final String OPTION_ARM_TARGET_FAMILY = OPTION_ARM_TARGET
 			+ "family";
-	private static final String OPTION_ARM_TARGET_ARCHITECTURE = OPTION_ARM_TARGET
+	public static final String OPTION_ARM_TARGET_ARCHITECTURE = OPTION_ARM_TARGET
 			+ "architecture";
-	private static final String OPTION_ARM_TARGET_INSTRUCTIONSET = OPTION_ARM_TARGET
+	public static final String OPTION_ARM_TARGET_INSTRUCTIONSET = OPTION_ARM_TARGET
 			+ "instructionset";
-	private static final String OPTION_ARM_TARGET_THUMB_INTERWORK = OPTION_ARM_TARGET
+	public static final String OPTION_ARM_TARGET_THUMB_INTERWORK = OPTION_ARM_TARGET
 			+ "thumbinterwork";
-	private static final String OPTION_ARM_TARGET_ENDIANNESS = OPTION_ARM_TARGET
+	public static final String OPTION_ARM_TARGET_ENDIANNESS = OPTION_ARM_TARGET
 			+ "endianness";
-	private static final String OPTION_ARM_TARGET_FLOAT_ABI = OPTION_ARM_TARGET
+	public static final String OPTION_ARM_TARGET_FLOAT_ABI = OPTION_ARM_TARGET
 			+ "fpu.abi";
-	private static final String OPTION_ARM_TARGET_FLOAT_UNIT = OPTION_ARM_TARGET
+	public static final String OPTION_ARM_TARGET_FLOAT_UNIT = OPTION_ARM_TARGET
 			+ "fpu.unit";
-	private static final String OPTION_ARM_TARGET_UNALIGNEDACCESS = OPTION_ARM_TARGET
+	public static final String OPTION_ARM_TARGET_UNALIGNEDACCESS = OPTION_ARM_TARGET
 			+ "unalignedaccess";
 
-	private static final String OPTION_AARCH64_TARGET = OPTION_PREFIX + "."
-			+ FAMILY_AARCH64 + ".target.";
-	private static final String OPTION_AARCH64_TARGET_FAMILY = OPTION_AARCH64_TARGET
+	public static final String OPTION_AARCH64_TARGET = OPTION_PREFIX + "."
+			+ ARCHITECTURE_AARCH64 + ".target.";
+	public static final String OPTION_AARCH64_TARGET_FAMILY = OPTION_AARCH64_TARGET
 			+ "family";
-	private static final String OPTION_AARCH64_TARGET_FEATURE_CRC = OPTION_AARCH64_TARGET
+	public static final String OPTION_AARCH64_TARGET_FEATURE_CRC = OPTION_AARCH64_TARGET
 			+ "feature.crc";
-	private static final String OPTION_AARCH64_TARGET_FEATURE_CRYPTO = OPTION_AARCH64_TARGET
+	public static final String OPTION_AARCH64_TARGET_FEATURE_CRYPTO = OPTION_AARCH64_TARGET
 			+ "feature.crypto";
-	private static final String OPTION_AARCH64_TARGET_FEATURE_FP = OPTION_AARCH64_TARGET
+	public static final String OPTION_AARCH64_TARGET_FEATURE_FP = OPTION_AARCH64_TARGET
 			+ "feature.fp";
-	private static final String OPTION_AARCH64_TARGET_FEATURE_SIMD = OPTION_AARCH64_TARGET
+	public static final String OPTION_AARCH64_TARGET_FEATURE_SIMD = OPTION_AARCH64_TARGET
 			+ "feature.simd";
-	private static final String OPTION_AARCH64_TARGET_CMODEL = OPTION_AARCH64_TARGET
+	public static final String OPTION_AARCH64_TARGET_CMODEL = OPTION_AARCH64_TARGET
 			+ "cmodel";
-	private static final String OPTION_AARCH64_TARGET_STRICTALIGN = OPTION_AARCH64_TARGET
+	public static final String OPTION_AARCH64_TARGET_STRICTALIGN = OPTION_AARCH64_TARGET
 			+ "strictalign";
 
-	private static final String OPTION_TARGET_OTHER = OPTION_TARGET + "other";
+	public static final String OPTION_TARGET_OTHER = OPTION_TARGET + "other";
 
+	public static final String OPTION_OPTIMIZATION = OPTION_PREFIX
+			+ ".optimization.";
 
-	private static final String OPTION_OPTIMIZATION = OPTION_PREFIX + ".optimization.";
-
-	private static final String OPTION_OPTIMIZATION_LEVEL = OPTION_OPTIMIZATION
+	public static final String OPTION_OPTIMIZATION_LEVEL = OPTION_OPTIMIZATION
 			+ "level";
-	private static final String OPTION_OPTIMIZATION_MESSAGELENGTH = OPTION_OPTIMIZATION
+	public static final String OPTION_OPTIMIZATION_MESSAGELENGTH = OPTION_OPTIMIZATION
 			+ "messagelength";
-	private static final String OPTION_OPTIMIZATION_SIGNEDCHAR = OPTION_OPTIMIZATION
+	public static final String OPTION_OPTIMIZATION_SIGNEDCHAR = OPTION_OPTIMIZATION
 			+ "signedchar";
-	private static final String OPTION_OPTIMIZATION_FUNCTIONSECTIONS = OPTION_OPTIMIZATION
+	public static final String OPTION_OPTIMIZATION_FUNCTIONSECTIONS = OPTION_OPTIMIZATION
 			+ "functionsections";
-	private static final String OPTION_OPTIMIZATION_DATASECTIONS = OPTION_OPTIMIZATION
+	public static final String OPTION_OPTIMIZATION_DATASECTIONS = OPTION_OPTIMIZATION
 			+ "datasections";
-	private static final String OPTION_OPTIMIZATION_NOUSECXAATEXIT = OPTION_OPTIMIZATION
+	public static final String OPTION_OPTIMIZATION_NOUSECXAATEXIT = OPTION_OPTIMIZATION
 			+ "nousecxaatexit";
-	private static final String OPTION_OPTIMIZATION_NOCOMMON = OPTION_OPTIMIZATION
+	public static final String OPTION_OPTIMIZATION_NOCOMMON = OPTION_OPTIMIZATION
 			+ "nocommon";
-	private static final String OPTION_OPTIMIZATION_NOINLINEFUNCTIONS = OPTION_OPTIMIZATION
+	public static final String OPTION_OPTIMIZATION_NOINLINEFUNCTIONS = OPTION_OPTIMIZATION
 			+ "noinlinefunctions";
-	private static final String OPTION_OPTIMIZATION_FREESTANDING = OPTION_OPTIMIZATION
+	public static final String OPTION_OPTIMIZATION_FREESTANDING = OPTION_OPTIMIZATION
 			+ "freestanding";
-	private static final String OPTION_OPTIMIZATION_NOBUILTIN = OPTION_OPTIMIZATION
+	public static final String OPTION_OPTIMIZATION_NOBUILTIN = OPTION_OPTIMIZATION
 			+ "nobuiltin";
-	private static final String OPTION_OPTIMIZATION_SPCONSTANT = OPTION_OPTIMIZATION
+	public static final String OPTION_OPTIMIZATION_SPCONSTANT = OPTION_OPTIMIZATION
 			+ "spconstant";
-	private static final String OPTION_OPTIMIZATION_PIC = OPTION_OPTIMIZATION
+	public static final String OPTION_OPTIMIZATION_PIC = OPTION_OPTIMIZATION
 			+ "PIC";
-	private static final String OPTION_OPTIMIZATION_OTHER = OPTION_OPTIMIZATION
+	public static final String OPTION_OPTIMIZATION_OTHER = OPTION_OPTIMIZATION
 			+ "other";
 
-	private static final String OPTION_WARNINGS = OPTION_PREFIX + ".warnings.";
+	public static final String OPTION_WARNINGS = OPTION_PREFIX + ".warnings.";
 
-	private static final String OPTION_WARNINGS_SYNTAXONLY = OPTION_WARNINGS
+	public static final String OPTION_WARNINGS_SYNTAXONLY = OPTION_WARNINGS
 			+ "syntaxonly";
-	private static final String OPTION_WARNINGS_PEDANTIC = OPTION_WARNINGS
+	public static final String OPTION_WARNINGS_PEDANTIC = OPTION_WARNINGS
 			+ "pedantic";
-	private static final String OPTION_WARNINGS_PEDANTICERRORS = OPTION_WARNINGS
+	public static final String OPTION_WARNINGS_PEDANTICERRORS = OPTION_WARNINGS
 			+ "pedanticerrors";
-	private static final String OPTION_WARNINGS_ALLWARN = OPTION_WARNINGS
+	public static final String OPTION_WARNINGS_ALLWARN = OPTION_WARNINGS
 			+ "allwarn";
-	private static final String OPTION_WARNINGS_NOWARN = OPTION_WARNINGS
+	public static final String OPTION_WARNINGS_NOWARN = OPTION_WARNINGS
 			+ "nowarn";
-	private static final String OPTION_WARNINGS_EXTRAWARN = OPTION_WARNINGS
+	public static final String OPTION_WARNINGS_EXTRAWARN = OPTION_WARNINGS
 			+ "extrawarn";
-	private static final String OPTION_WARNINGS_CONVERSION = OPTION_WARNINGS
+	public static final String OPTION_WARNINGS_CONVERSION = OPTION_WARNINGS
 			+ "conversion";
-	private static final String OPTION_WARNINGS_UNITIALIZED = OPTION_WARNINGS
+	public static final String OPTION_WARNINGS_UNITIALIZED = OPTION_WARNINGS
 			+ "unitialized";
-	private static final String OPTION_WARNINGS_FLOATEQUAL = OPTION_WARNINGS
+	public static final String OPTION_WARNINGS_FLOATEQUAL = OPTION_WARNINGS
 			+ "floatequal";
-	private static final String OPTION_WARNINGS_SHADOW = OPTION_WARNINGS
+	public static final String OPTION_WARNINGS_SHADOW = OPTION_WARNINGS
 			+ "shadow";
-	private static final String OPTION_WARNINGS_POINTERARITH = OPTION_WARNINGS
+	public static final String OPTION_WARNINGS_POINTERARITH = OPTION_WARNINGS
 			+ "pointerarith";
-	private static final String OPTION_WARNINGS_BADFUNCTIONCAST = OPTION_WARNINGS
+	public static final String OPTION_WARNINGS_BADFUNCTIONCAST = OPTION_WARNINGS
 			+ "badfunctioncast";
-	private static final String OPTION_WARNINGS_LOGICALOP = OPTION_WARNINGS
+	public static final String OPTION_WARNINGS_LOGICALOP = OPTION_WARNINGS
 			+ "logicalop";
-	private static final String OPTION_WARNINGS_AGREGGATERETURN = OPTION_WARNINGS
+	public static final String OPTION_WARNINGS_AGREGGATERETURN = OPTION_WARNINGS
 			+ "agreggatereturn";
-	private static final String OPTION_WARNINGS_MISSINGDECLARATION = OPTION_WARNINGS
+	public static final String OPTION_WARNINGS_MISSINGDECLARATION = OPTION_WARNINGS
 			+ "missingdeclaration";
-	private static final String OPTION_WARNINGS_TOERRORS = OPTION_WARNINGS
+	public static final String OPTION_WARNINGS_TOERRORS = OPTION_WARNINGS
 			+ "toerrors";
-	private static final String OPTION_WARNINGS_OTHER = OPTION_WARNINGS
+	public static final String OPTION_WARNINGS_OTHER = OPTION_WARNINGS
 			+ "other";
 
-	private static final String OPTION_DEBUGGING = OPTION_PREFIX
-			+ ".debugging.";
+	public static final String OPTION_DEBUGGING = OPTION_PREFIX + ".debugging.";
 
-	private static final String OPTION_DEBUGGING_LEVEL = OPTION_DEBUGGING
+	public static final String OPTION_DEBUGGING_LEVEL = OPTION_DEBUGGING
 			+ "level";
-	private static final String OPTION_DEBUGGING_FORMAT = OPTION_DEBUGGING
+	public static final String OPTION_DEBUGGING_FORMAT = OPTION_DEBUGGING
 			+ "format";
-	private static final String OPTION_DEBUGGING_PROF = OPTION_DEBUGGING
+	public static final String OPTION_DEBUGGING_PROF = OPTION_DEBUGGING
 			+ "prof";
-	private static final String OPTION_DEBUGGING_GPROF = OPTION_DEBUGGING
+	public static final String OPTION_DEBUGGING_GPROF = OPTION_DEBUGGING
 			+ "gprof";
-	private static final String OPTION_DEBUGGING_OTHER = OPTION_DEBUGGING
+	public static final String OPTION_DEBUGGING_OTHER = OPTION_DEBUGGING
 			+ "other";
 
+	// other
+	public static final String OPTION_TOOLCHAIN_NAME = OPTION_PREFIX
+			+ ".toolchain.name";
+	public static final String OPTION_TOOLCHAIN_PATH = OPTION_PREFIX
+			+ ".toolchain.path";
+
+	public static final String OPTION_COMMAND = OPTION_PREFIX + ".command.";
+	public static final String OPTION_COMMAND_PREFIX = OPTION_COMMAND
+			+ "prefix";
+	public static final String OPTION_COMMAND_SUFFIX = OPTION_COMMAND
+			+ "suffix";
+	public static final String OPTION_COMMAND_C = OPTION_COMMAND + "c";
+	public static final String OPTION_COMMAND_CPP = OPTION_COMMAND + "cpp";
+	public static final String OPTION_COMMAND_AR = OPTION_COMMAND + "ar";
+	public static final String OPTION_COMMAND_OBJCOPY = OPTION_COMMAND
+			+ "objcopy";
+	public static final String OPTION_COMMAND_OBJDUMP = OPTION_COMMAND
+			+ "objdump";
+	public static final String OPTION_COMMAND_SIZE = OPTION_COMMAND + "size";
+	public static final String OPTION_COMMAND_MAKE = OPTION_COMMAND + "make";
+	public static final String OPTION_COMMAND_RM = OPTION_COMMAND + "rm";
+
+	public static final String OPTION_ADDTOOLS = OPTION_PREFIX + ".addtools.";
+	public static final String OPTION_ADDTOOLS_CREATEFLASH = OPTION_ADDTOOLS
+			+ "createflash";
+	public static final String OPTION_ADDTOOLS_CREATELISTING = OPTION_ADDTOOLS
+			+ "createlisting";
+	public static final String OPTION_ADDTOOLS_PRINTSIZE = OPTION_ADDTOOLS
+			+ "printsize";
 
 	public static String getOptionStringValue(IConfiguration config,
 			String sOptionId) {
@@ -316,7 +350,8 @@ public class Option {
 			sReturn += " " + sValue;
 		}
 
-		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_MESSAGELENGTH);
+		sValue = getOptionBooleanCommand(config,
+				OPTION_OPTIMIZATION_MESSAGELENGTH);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
@@ -324,15 +359,18 @@ public class Option {
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
-		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_FUNCTIONSECTIONS);
+		sValue = getOptionBooleanCommand(config,
+				OPTION_OPTIMIZATION_FUNCTIONSECTIONS);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
-		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_DATASECTIONS);
+		sValue = getOptionBooleanCommand(config,
+				OPTION_OPTIMIZATION_DATASECTIONS);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
-		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_NOUSECXAATEXIT);
+		sValue = getOptionBooleanCommand(config,
+				OPTION_OPTIMIZATION_NOUSECXAATEXIT);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
@@ -340,11 +378,13 @@ public class Option {
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
-		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_NOINLINEFUNCTIONS);
+		sValue = getOptionBooleanCommand(config,
+				OPTION_OPTIMIZATION_NOINLINEFUNCTIONS);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
-		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_FREESTANDING);
+		sValue = getOptionBooleanCommand(config,
+				OPTION_OPTIMIZATION_FREESTANDING);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
@@ -484,15 +524,16 @@ public class Option {
 	}
 
 	public static String getToolChainFlags(IConfiguration config) {
-		String sFamilyId = getOptionStringValue(config, OPTION_FAMILY);
+		String sArchitectureId = getOptionStringValue(config,
+				OPTION_ARCHITECTURE);
 		String sReturn = "";
 		String sValue;
 
-		if (sFamilyId != null) {
+		if (sArchitectureId != null) {
 			sValue = null;
-			if (sFamilyId.endsWith("." + FAMILY_ARM)) {
+			if (sArchitectureId.endsWith("." + ARCHITECTURE_ARM)) {
 				sValue = getArmTargetFlags(config);
-			} else if (sFamilyId.endsWith("." + FAMILY_AARCH64)) {
+			} else if (sArchitectureId.endsWith("." + ARCHITECTURE_AARCH64)) {
 				sValue = getAarch64TargetFlags(config);
 			}
 			if (sValue != null && sValue.length() > 0)

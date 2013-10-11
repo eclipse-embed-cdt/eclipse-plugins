@@ -45,13 +45,13 @@ public class ARMOptionApplicability implements IOptionApplicability {
 			IOption option) {
 
 		IToolChain toolchain = (IToolChain) holder;
-		String sFamilyId = Activator.getOptionPrefix() + ".family";
-		IOption checkedOption = toolchain.getOptionBySuperClassId(sFamilyId); //$NON-NLS-1$
+		String sArchitectureId = Option.OPTION_ARCHITECTURE;
+		IOption checkedOption = toolchain.getOptionBySuperClassId(sArchitectureId); //$NON-NLS-1$
 		if (checkedOption != null) {
 			String sValue;
 			try {
 				sValue = checkedOption.getStringValue();
-				if (sValue.endsWith(".arm"))
+				if (sValue.endsWith("."+Option.ARCHITECTURE_ARM))
 					return true;
 			} catch (BuildException e) {
 				// TODO Auto-generated catch block

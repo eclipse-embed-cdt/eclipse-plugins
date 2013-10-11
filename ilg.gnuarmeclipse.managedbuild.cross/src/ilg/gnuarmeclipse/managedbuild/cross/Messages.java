@@ -15,7 +15,8 @@ package ilg.gnuarmeclipse.managedbuild.cross;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = Activator.getPrefix()+".messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = Activator.getPrefix()
+			+ ".messages"; //$NON-NLS-1$
 	public static String SetCrossCommandWizardPage_browse;
 	public static String SetCrossCommandWizardPage_description;
 	public static String SetCrossCommandWizardPage_name;
@@ -23,6 +24,29 @@ public class Messages extends NLS {
 	public static String SetCrossCommandWizardPage_path;
 	public static String SetCrossCommandWizardPage_prefix;
 	public static String SetCrossCommandWizardPage_title;
+	public static String ArtifactTab_0;
+	public static String ArtifactTab_1;
+	public static String ArtifactTab_2;
+	public static String ArtifactTab_3;
+
+	public static String ToolChainSettingsTab_name;
+	public static String ToolChainSettingsTab_architecture;
+	public static String ToolChainSettingsTab_prefix;
+	public static String ToolChainSettingsTab_suffix;
+	public static String ToolChainSettingsTab_cCmd;
+	public static String ToolChainSettingsTab_cppCmd;
+	public static String ToolChainSettingsTab_arCmd;
+	public static String ToolChainSettingsTab_objcopyCmd;
+	public static String ToolChainSettingsTab_objdumpCmd;
+	public static String ToolChainSettingsTab_sizeCmd;
+	public static String ToolChainSettingsTab_makeCmd;
+	public static String ToolChainSettingsTab_rmCmd;
+	public static String ToolChainSettingsTab_path;
+	public static String ToolChainSettingsTab_browse;
+	public static String ToolChainSettingsTab_flash;
+	public static String ToolChainSettingsTab_listing;
+	public static String ToolChainSettingsTab_size;
+
 	static {
 		// initialize resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);

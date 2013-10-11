@@ -90,14 +90,13 @@ public class ToolchainsManagedOptionValueHandler implements
 		IOption selOption;
 
 		// get the path from the shared storage
-		String pathKey = SetCrossCommandWizardPage.SHARED_CROSS_COMMAND_PATH
+		String pathKey = SetCrossCommandWizardPage.SHARED_CROSS_TOOLCHAIN_PATH
 				+ "." + sToolchainName.hashCode();
 		String path = SharedDefaults.getInstance().getSharedDefaultsMap().get(pathKey);
 		if (path == null)
 			path = "";
 
-		selOption = holder.getOptionBySuperClassId(Activator
-				.getOptionPrefix() + ".path");
+		selOption = holder.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH);
 		// Do not use config.setOption() to DO NOT save it on .cproject...
 		selOption.setValue(path);
 		

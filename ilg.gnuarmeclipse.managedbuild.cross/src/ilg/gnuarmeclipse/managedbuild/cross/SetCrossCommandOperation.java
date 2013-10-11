@@ -71,12 +71,12 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_NAME);
 		String path = (String) MBSCustomPageManager.getPageProperty(
 				SetCrossCommandWizardPage.PAGE_ID,
-				SetCrossCommandWizardPage.CROSS_COMMAND_PATH);
+				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_PATH);
 
 		// store them on the permanent storage in
 		// workspace/.plugins/org.eclipse.cdt.core/shareddefaults.xml
 
-		String pathKey = SetCrossCommandWizardPage.SHARED_CROSS_COMMAND_PATH
+		String pathKey = SetCrossCommandWizardPage.SHARED_CROSS_TOOLCHAIN_PATH
 				+ "." + toolchainName.hashCode();
 		SharedDefaults.getInstance().getSharedDefaultsMap().put(pathKey, path);
 
@@ -153,9 +153,8 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 
 		String path = (String) MBSCustomPageManager.getPageProperty(
 				SetCrossCommandWizardPage.PAGE_ID,
-				SetCrossCommandWizardPage.CROSS_COMMAND_PATH);
-		option = toolchain.getOptionBySuperClassId(Activator.getOptionPrefix()
-				+ ".path"); //$NON-NLS-1$
+				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_PATH);
+		option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH); //$NON-NLS-1$
 		// Do not use config.setOption() to DO NOT save it on .cproject...
 		option.setValue(path);
 

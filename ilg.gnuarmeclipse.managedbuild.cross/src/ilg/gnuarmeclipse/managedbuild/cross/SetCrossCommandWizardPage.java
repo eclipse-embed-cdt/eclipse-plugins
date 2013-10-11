@@ -57,8 +57,8 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	public static final String CROSS_PROJECT_NAME = "projectName"; //$NON-NLS-1$
 
 	//public static final String CROSS_TOOLCHAIN_INDEX = "toolchainIndex"; //$NON-NLS-1$
-	public static final String CROSS_TOOLCHAIN_NAME = "toolchainName"; //$NON-NLS-1$
-	public static final String CROSS_COMMAND_PATH = "toolchainPath"; //$NON-NLS-1$
+	public static final String CROSS_TOOLCHAIN_NAME = "toolchain.name"; //$NON-NLS-1$
+	public static final String CROSS_TOOLCHAIN_PATH = "toolchain.path"; //$NON-NLS-1$
 
 	// Note: The shared defaults keys don't have "cross" in them because we want
 	// to keep
@@ -67,14 +67,14 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	// + "." + CROSS_TOOLCHAIN_INDEX;
 	static final String SHARED_CROSS_TOOLCHAIN_NAME = Activator.getPrefix()
 			+ "." + CROSS_TOOLCHAIN_NAME;
-	static final String SHARED_CROSS_COMMAND_PATH = Activator.getPrefix() + "."
-			+ CROSS_COMMAND_PATH;
+	static final String SHARED_CROSS_TOOLCHAIN_PATH = Activator.getPrefix() + "."
+			+ CROSS_TOOLCHAIN_PATH;
 
 	public SetCrossCommandWizardPage() {
 		pageID = PAGE_ID;
 
 		// initialise properties in local storage
-		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_COMMAND_PATH, ""); //$NON-NLS-1$
+		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_PATH, ""); //$NON-NLS-1$
 		// MBSCustomPageManager
 		//				.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_INDEX, ""); //$NON-NLS-1$
 		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_NAME, ""); //$NON-NLS-1$
@@ -148,7 +148,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 						m_selectedToolchainIndex).getName();
 				updateToolchainNameProperty();
 
-				String pathKey = SHARED_CROSS_COMMAND_PATH + "."
+				String pathKey = SHARED_CROSS_TOOLCHAIN_PATH + "."
 						+ m_selectedToolchainName.hashCode();
 				String crossCommandPath = SharedDefaults.getInstance()
 						.getSharedDefaultsMap().get(pathKey);
@@ -165,7 +165,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		label.setText(Messages.SetCrossCommandWizardPage_path);
 
 		m_pathTxt = new Text(m_composite, SWT.SINGLE | SWT.BORDER);
-		String pathKey = SHARED_CROSS_COMMAND_PATH + "."
+		String pathKey = SHARED_CROSS_TOOLCHAIN_PATH + "."
 				+ m_selectedToolchainName.hashCode();
 		String crossCommandPath = SharedDefaults.getInstance()
 				.getSharedDefaultsMap().get(pathKey);
@@ -259,7 +259,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	 * SetCrossCommandOperation
 	 */
 	private void updatePathProperty() {
-		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_COMMAND_PATH,
+		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_PATH,
 				m_pathTxt.getText());
 	}
 

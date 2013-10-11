@@ -846,8 +846,8 @@
                <checkOption
                      holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
                      isRegex="false"
-                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
-                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm">
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.arm">
                </checkOption>
             </enablement>
             <enumeratedOptionValue
@@ -1292,8 +1292,8 @@
                <checkOption
                      holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
                      isRegex="false"
-                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
-                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm">
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.arm">
                </checkOption>
             </enablement>
             <enumeratedOptionValue
@@ -1439,8 +1439,8 @@
                <checkOption
                      holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
                      isRegex="false"
-                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
-                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm">
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.arm">
                </checkOption>
             </enablement>
             <enumeratedOptionValue
@@ -1472,8 +1472,8 @@
                <checkOption
                      holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
                      isRegex="false"
-                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
-                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm">
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.arm">
                </checkOption>
             </enablement>
          </option>
@@ -1487,8 +1487,8 @@
                <checkOption
                      holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
                      isRegex="false"
-                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
-                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm">
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.arm">
                </checkOption>
             </enablement>
             <enumeratedOptionValue
@@ -1518,8 +1518,8 @@
                <checkOption
                      holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
                      isRegex="false"
-                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
-                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm">
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.arm">
                </checkOption>
             </enablement>
             <enablement
@@ -1578,8 +1578,8 @@
                <checkOption
                      holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
                      isRegex="false"
-                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
-                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm">
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.arm">
                </checkOption>
             </enablement>
             <enablement
@@ -1743,8 +1743,8 @@
                <checkOption
                      holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
                      isRegex="false"
-                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
-                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm">
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.arm">
                </checkOption>
             </enablement>
             <enumeratedOptionValue
@@ -1781,8 +1781,8 @@
                <checkOption
                      holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
                      isRegex="false"
-                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
-                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.aarch64">
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.aarch64">
                </checkOption>
             </enablement>
             <enumeratedOptionValue
@@ -1811,8 +1811,8 @@
                <checkOption
                      holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
                      isRegex="false"
-                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
-                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.aarch64">
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.aarch64">
                </checkOption>
             </enablement>
             <enablement
@@ -1850,8 +1850,8 @@
                <checkOption
                      holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
                      isRegex="false"
-                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
-                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.aarch64">
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.aarch64">
                </checkOption>
             </enablement>
             <enablement
@@ -1889,8 +1889,8 @@
                <checkOption
                      holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
                      isRegex="false"
-                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
-                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.aarch64">
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.aarch64">
                </checkOption>
             </enablement>
             <enablement
@@ -1929,8 +1929,8 @@
                <checkOption
                      holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
                      isRegex="false"
-                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
-                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.aarch64">
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.aarch64">
                </checkOption>
             </enablement>
             <enablement
@@ -1969,8 +1969,8 @@
                <checkOption
                      holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
                      isRegex="false"
-                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
-                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.aarch64">
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.aarch64">
                </checkOption>
             </enablement>
             <enumeratedOptionValue
@@ -2005,8 +2005,8 @@
                <checkOption
                      holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
                      isRegex="false"
-                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.family"
-                     value="ilg.gnuarmeclipse.managedbuild.cross.option.family.aarch64">
+                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
+                     value="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.aarch64">
                </checkOption>
             </enablement>
          </option>
@@ -2040,6 +2040,12 @@
          <optionCategory
                id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
                name="%optionCategory.toolchain">
+            <enablement
+                  type="UI_VISIBILITY">
+               <false>
+                  false body text
+               </false>
+            </enablement>
          </optionCategory>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
@@ -2101,18 +2107,21 @@
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.family"
+               defaultValue="?"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
                isAbstract="false"
-               name="%option.toolchain.family"
+               name="%option.toolchain.architecture"
+               value="?"
                valueHandler="ilg.gnuarmeclipse.managedbuild.cross.ToolchainFamilyManagedOptionValueHandler"
                valueType="enumerated">
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.family.arm"
-                  name="%option.toolchain.family.arm">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.arm"
+                  isDefault="true"
+                  name="%option.toolchain.architecture.arm">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.family.aarch64"
-                  name="%option.toolchain.family.aarch64">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.aarch64"
+                  name="%option.toolchain.architecture.aarch64">
             </enumeratedOptionValue>
          </option>
          <option
@@ -2232,7 +2241,7 @@
          <option
                browseType="directory"
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.path"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.path"
                isAbstract="false"
                name="%option.toolchain.path"
                resourceFilter="all"
@@ -3917,4 +3926,16 @@
          </language-scope>
       </provider>
    </extension>
+   <extension
+           point="org.eclipse.cdt.ui.cPropertyTab">
+      <tab
+            class="ilg.gnuarmeclipse.managedbuild.cross.ToolchainSettingsTab"
+            helpId="cdt_u_prop_build_setting_tool"
+            icon="icons/elcl16/config-tool.gif"
+            name="%tab.toolchainSettings"
+            parent="org.eclipse.cdt.managedbuilder.ui.properties.Page_BuildSettings"
+            weight="012">
+      </tab>
+   </extension>
+           
 </plugin>
