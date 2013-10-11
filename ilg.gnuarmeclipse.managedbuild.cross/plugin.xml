@@ -2037,76 +2037,8 @@
                id="ilg.gnuarmeclipse.managedbuild.cross.builder"
                superClass="cdt.managedbuild.target.gnu.builder">
          </builder>
-         <optionCategory
-               id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               name="%optionCategory.toolchain">
-            <enablement
-                  type="UI_VISIBILITY">
-               <false>
-                  false body text
-               </false>
-            </enablement>
-         </optionCategory>
          <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index"
-               isAbstract="false"
-               name="%option.toolchain.index"
-               resourceFilter="all"
-               valueHandler="ilg.gnuarmeclipse.managedbuild.cross.ToolchainsManagedOptionValueHandler"
-               valueType="enumerated">
-            <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.0"
-                  name="%option.toolchain.index.0">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.1"
-                  name="%option.toolchain.index.1">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.2"
-                  name="%option.toolchain.index.2">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.3"
-                  name="%option.toolchain.index.3">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.4"
-                  name="%option.toolchain.index.4">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.5"
-                  name="%option.toolchain.index.5">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.6"
-                  name="%option.toolchain.index.6">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.7"
-                  name="%option.toolchain.index.7">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.8"
-                  name="%option.toolchain.index.8">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.9"
-                  name="%option.toolchain.index.9">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.10"
-                  name="%option.toolchain.index.10">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.index.x"
-                  isDefault="true"
-                  name="none">
-            </enumeratedOptionValue>
-         </option>
-         <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
                defaultValue="?"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
                isAbstract="false"
@@ -2123,27 +2055,45 @@
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.aarch64"
                   name="%option.toolchain.architecture.aarch64">
             </enumeratedOptionValue>
+            <enablement
+                  type="UI_VISIBILITY">
+               <false>
+                  false body text
+               </false>
+            </enablement>
          </option>
          <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.prefix"
                isAbstract="false"
                name="%option.toolchain.prefix"
                resourceFilter="all"
                valueHandler="ilg.gnuarmeclipse.managedbuild.cross.ClearProviderManagedOptionValueHandler"
                valueType="string">
+            <enablement
+                  type="UI_VISIBILITY">
+               <false>
+                  false body text
+               </false>
+            </enablement>
          </option>
          <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.suffix"
                isAbstract="false"
                name="%option.toolchain.suffix"
                resourceFilter="all"
                valueHandler="ilg.gnuarmeclipse.managedbuild.cross.ClearProviderManagedOptionValueHandler"
                valueType="string">
+            <enablement
+                  type="UI_VISIBILITY">
+               <false>
+                  false body text
+               </false>
+            </enablement>
          </option>
          <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
                defaultValue="echo"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.c"
                isAbstract="false"
@@ -2151,9 +2101,15 @@
                resourceFilter="all"
                valueHandler="ilg.gnuarmeclipse.managedbuild.cross.ClearProviderManagedOptionValueHandler"
                valueType="string">
+            <enablement
+                  type="UI_VISIBILITY">
+               <false>
+                  false body text
+               </false>
+            </enablement>
          </option>
          <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
                defaultValue="echo"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.cpp"
                isAbstract="false"
@@ -2161,9 +2117,15 @@
                resourceFilter="all"
                valueHandler="ilg.gnuarmeclipse.managedbuild.cross.ClearProviderManagedOptionValueHandler"
                valueType="string">
+            <enablement
+                  type="UI_VISIBILITY">
+               <false>
+                  false body text
+               </false>
+            </enablement>
          </option>
          <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.ar"
                isAbstract="false"
                name="%option.toolchain.command.ar"
@@ -2176,9 +2138,15 @@
                      value="org.eclipse.cdt.build.core.buildArtefactType.staticLib">
                </checkBuildProperty>
             </enablement>
+            <enablement
+                  type="UI_VISIBILITY">
+               <false>
+                  false body text
+               </false>
+            </enablement>
          </option>
          <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.objcopy"
                isAbstract="false"
                name="%option.toolchain.command.objcopy"
@@ -2191,9 +2159,15 @@
                      value="org.eclipse.cdt.build.core.buildArtefactType.exe">
                </checkBuildProperty>
             </enablement>
+            <enablement
+                  type="UI_VISIBILITY">
+               <false>
+                  false body text
+               </false>
+            </enablement>
          </option>
          <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.objdump"
                isAbstract="false"
                name="%option.toolchain.command.listing"
@@ -2206,9 +2180,15 @@
                      value="org.eclipse.cdt.build.core.buildArtefactType.exe">
                </checkBuildProperty>
             </enablement>
+            <enablement
+                  type="UI_VISIBILITY">
+               <false>
+                  false body text
+               </false>
+            </enablement>
          </option>
          <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.size"
                isAbstract="false"
                name="%option.toolchain.command.size"
@@ -2221,47 +2201,89 @@
                      value="org.eclipse.cdt.build.core.buildArtefactType.exe">
                </checkBuildProperty>
             </enablement>
+            <enablement
+                  type="UI_VISIBILITY">
+               <false>
+                  false body text
+               </false>
+            </enablement>
          </option>
          <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.make"
                isAbstract="false"
                name="%option.toolchain.command.make"
                resourceFilter="all"
                valueType="string">
+            <enablement
+                  type="UI_VISIBILITY">
+               <false>
+                  false body text
+               </false>
+            </enablement>
          </option>
          <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.command.rm"
                isAbstract="false"
                name="%option.toolchain.command.rm"
                resourceFilter="all"
                valueType="string">
+            <enablement
+                  type="UI_VISIBILITY">
+               <false>
+                  false body text
+               </false>
+            </enablement>
          </option>
          <option
                browseType="directory"
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.path"
                isAbstract="false"
                name="%option.toolchain.path"
                resourceFilter="all"
                valueHandler="ilg.gnuarmeclipse.managedbuild.cross.PathManagedOptionValueHandler"
                valueType="string">
+            <enablement
+                  type="UI_VISIBILITY">
+               <false>
+                  false body text
+               </false>
+            </enablement>
          </option>
          <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash"
                superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.toolchain.createflash">
+            <enablement
+                  type="UI_VISIBILITY">
+               <false>
+                  false body text
+               </false>
+            </enablement>
          </option>
          <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createlisting"
                superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.toolchain.createlisting">
+            <enablement
+                  type="UI_VISIBILITY">
+               <false>
+                  false body text
+               </false>
+            </enablement>
          </option>
          <option
-               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize"
                superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.toolchain.printsize">
+            <enablement
+                  type="UI_VISIBILITY">
+               <false>
+                  false body text
+               </false>
+            </enablement>
          </option>
          
          <!-- ===== Target ================================================ -->
@@ -2422,7 +2444,7 @@
                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.other">
            </option>
            <option
-                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.toolchain"
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
                  id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.name"
                  isAbstract="false"
                  resourceFilter="all"

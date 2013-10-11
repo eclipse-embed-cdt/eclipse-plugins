@@ -14,22 +14,10 @@
 package ilg.gnuarmeclipse.managedbuild.cross;
 
 import java.lang.reflect.InvocationTargetException;
-import java.util.Map;
 
-import org.eclipse.cdt.build.core.scannerconfig.CfgInfoContext;
-import org.eclipse.cdt.build.core.scannerconfig.ICfgScannerConfigBuilderInfo2Set;
 import org.eclipse.cdt.build.core.scannerconfig.ScannerConfigBuilder;
-import org.eclipse.cdt.build.internal.core.scannerconfig.CfgDiscoveredPathManager;
-import org.eclipse.cdt.build.internal.core.scannerconfig2.CfgScannerConfigProfileManager;
 import org.eclipse.cdt.core.templateengine.SharedDefaults;
-import org.eclipse.cdt.make.core.scannerconfig.IScannerConfigBuilderInfo2;
-import org.eclipse.cdt.make.core.scannerconfig.IScannerInfoCollector;
-import org.eclipse.cdt.make.core.scannerconfig.IScannerInfoCollectorCleaner;
-import org.eclipse.cdt.make.core.scannerconfig.InfoContext;
-import org.eclipse.cdt.make.internal.core.scannerconfig.DiscoveredPathInfo;
-import org.eclipse.cdt.make.internal.core.scannerconfig.DiscoveredScannerInfoStore;
-import org.eclipse.cdt.make.internal.core.scannerconfig2.SCProfileInstance;
-import org.eclipse.cdt.make.internal.core.scannerconfig2.ScannerConfigProfileManager;
+import org.eclipse.cdt.managedbuilder.buildproperties.IBuildPropertyValue;
 import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
@@ -39,7 +27,6 @@ import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPageManager;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
@@ -141,25 +128,142 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 		IOption option;
 		IToolChain toolchain = config.getToolChain();
 
-		String sId;
-		sId = Activator.getOptionPrefix() + ".toolchain.index";
-		option = toolchain.getOptionBySuperClassId(sId); //$NON-NLS-1$
-		String val = sId + "." + String.valueOf(toolchainIndex);
-		// Do not use config.setOption() to DO NOT save it on .cproject...
-		option.setValue(val);
-		//config.setOption(toolchain, option, val); // temporarily
-
-		Utils.updateOptions(config, toolchainIndex);
+		updateOptions(config, toolchainIndex);
 
 		String path = (String) MBSCustomPageManager.getPageProperty(
 				SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_PATH);
-		option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH); //$NON-NLS-1$
+		option = toolchain
+				.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH); //$NON-NLS-1$
 		// Do not use config.setOption() to DO NOT save it on .cproject...
 		option.setValue(path);
 
 		// ... instead save it to the workspace project storage
 		PathManagedOptionValueHandler.putPersistent(config, path);
+	}
+
+	public static void updateOptions(IConfiguration config, int toolchainIndex)
+			throws BuildException {
+
+		boolean m_isExecutable;
+		boolean m_isStaticLibrary;
+
+		IBuildPropertyValue propertyValue = config.getBuildArtefactType();
+		if (Utils.BUILD_ARTEFACT_TYPE_EXE.equals(propertyValue.getId()))
+			m_isExecutable = true;
+		else
+			m_isExecutable = false;
+
+		if (Utils.BUILD_ARTEFACT_TYPE_STATICLIB.equals(propertyValue.getId()))
+			m_isStaticLibrary = true;
+		else
+			m_isStaticLibrary = false;
+
+		IToolChain toolchain = config.getToolChain();
+
+		IOption option;
+		String val;
+
+		ToolchainDefinition td = ToolchainDefinition
+				.getToolchain(toolchainIndex);
+
+		// Do NOT use ManagedBuildManager.setOption() to avoid sending
+		// events to the option. Also do not use option.setValue()
+		// since this does not propagate notifications and the
+		// values are not saved to .cproject.
+		option = toolchain
+				.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); //$NON-NLS-1$
+		config.setOption(toolchain, option, td.getName());
+
+		option = toolchain.getOptionBySuperClassId(Option.OPTION_ARCHITECTURE); //$NON-NLS-1$
+		// compose the architecture ID
+		String sArchitecture = td.getArchitecture();
+		val = Option.OPTION_ARCHITECTURE + "." + sArchitecture;
+		config.setOption(toolchain, option, val);
+
+		if ("arm".equals(sArchitecture)) {
+
+			option = toolchain
+					.getOptionBySuperClassId(Option.OPTION_ARM_TARGET_FAMILY);
+			config.setOption(toolchain, option, Activator.getOptionPrefix()
+					+ ".base.arm.mcpu.cortex-m3");
+
+			option = toolchain.getOptionBySuperClassId(Activator
+					.getOptionPrefix() + ".base.arm.target.instructionset");
+			config.setOption(toolchain, option, Activator.getOptionPrefix()
+					+ ".base.arm.target.instructionset.thumb");
+
+		} else if ("aarch64".equals(sArchitecture)) {
+			option = toolchain
+					.getOptionBySuperClassId(Option.OPTION_AARCH64_TARGET_FAMILY);
+			config.setOption(toolchain, option, Activator.getOptionPrefix()
+					+ ".base.aarch64.target.mcpu.generic");
+
+			option = toolchain.getOptionBySuperClassId(Activator
+					.getOptionPrefix() + ".base.aarch64.target.feature.simd");
+			config.setOption(toolchain, option, Activator.getOptionPrefix()
+					+ ".base.aarch64.target.cmodel.small");
+
+			option = toolchain.getOptionBySuperClassId(Activator
+					.getOptionPrefix() + ".base.aarch64.target.cmodel");
+			config.setOption(toolchain, option, Activator.getOptionPrefix()
+					+ ".base.aarch64.target.cmodel.small");
+		}
+		
+		option = toolchain
+				.getOptionBySuperClassId(Option.OPTION_COMMAND_PREFIX); //$NON-NLS-1$
+		config.setOption(toolchain, option, td.getPrefix());
+
+		option = toolchain
+				.getOptionBySuperClassId(Option.OPTION_COMMAND_SUFFIX); //$NON-NLS-1$
+		config.setOption(toolchain, option, td.getSuffix());
+
+		option = toolchain.getOptionBySuperClassId(Option.OPTION_COMMAND_C); //$NON-NLS-1$
+		config.setOption(toolchain, option, td.getCmdC());
+
+		option = toolchain.getOptionBySuperClassId(Option.OPTION_COMMAND_CPP); //$NON-NLS-1$
+		config.setOption(toolchain, option, td.getCmdCpp());
+
+		if (m_isStaticLibrary) {
+			option = toolchain
+					.getOptionBySuperClassId(Option.OPTION_COMMAND_AR); //$NON-NLS-1$
+			config.setOption(toolchain, option, td.getCmdAr());
+		}
+
+		if (m_isExecutable) {
+			option = toolchain
+					.getOptionBySuperClassId(Option.OPTION_COMMAND_OBJCOPY); //$NON-NLS-1$
+			config.setOption(toolchain, option, td.getCmdObjcopy());
+
+			option = toolchain
+					.getOptionBySuperClassId(Option.OPTION_COMMAND_OBJDUMP); //$NON-NLS-1$
+			config.setOption(toolchain, option, td.getCmdObjdump());
+
+			option = toolchain
+					.getOptionBySuperClassId(Option.OPTION_COMMAND_SIZE); //$NON-NLS-1$
+			config.setOption(toolchain, option, td.getCmdSize());
+		}
+
+		option = toolchain.getOptionBySuperClassId(Option.OPTION_COMMAND_MAKE); //$NON-NLS-1$
+		config.setOption(toolchain, option, td.getCmdMake());
+
+		option = toolchain.getOptionBySuperClassId(Option.OPTION_COMMAND_RM); //$NON-NLS-1$
+		config.setOption(toolchain, option, td.getCmdRm());
+
+		
+		if(m_isExecutable){
+			option = toolchain
+					.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_CREATEFLASH); //$NON-NLS-1$
+			config.setOption(toolchain, option, true);
+
+			option = toolchain
+					.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_CREATELISTING); //$NON-NLS-1$
+			config.setOption(toolchain, option, true);
+
+			option = toolchain
+					.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_PRINTSIZE); //$NON-NLS-1$
+			config.setOption(toolchain, option, true);
+		}
 	}
 
 }
