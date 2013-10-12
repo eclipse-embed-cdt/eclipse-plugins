@@ -49,7 +49,7 @@ public class EnvironmentVariableSupplier implements
 		private File path;
 
 		private PathEnvironmentVariable(File path) {
-			System.out.println("cpath=" + path);
+			//System.out.println("cpath=" + path);
 			this.path = path;
 		}
 
@@ -63,9 +63,9 @@ public class EnvironmentVariableSupplier implements
 			File bin = new File(sysroot, "bin"); //$NON-NLS-1$
 			if (bin.isDirectory())
 				sysroot = bin;
-			System.out.println("path=" + sysroot + " opt=" + path + " cfg="
-					+ configuration + " prj="
-					+ configuration.getManagedProject().getOwner().getName());
+			// System.out.println("path=" + sysroot + " opt=" + path + " cfg="
+			// + configuration + " prj="
+			// + configuration.getManagedProject().getOwner().getName());
 			return new PathEnvironmentVariable(sysroot);
 		}
 

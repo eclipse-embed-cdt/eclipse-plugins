@@ -15,8 +15,7 @@ package ilg.gnuarmeclipse.managedbuild.cross;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = Option.getPrefix()
-			+ ".messages"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = Option.getPrefix() + ".messages"; //$NON-NLS-1$
 	public static String SetCrossCommandWizardPage_browse;
 	public static String SetCrossCommandWizardPage_description;
 	public static String SetCrossCommandWizardPage_name;
@@ -24,10 +23,6 @@ public class Messages extends NLS {
 	public static String SetCrossCommandWizardPage_path;
 	public static String SetCrossCommandWizardPage_prefix;
 	public static String SetCrossCommandWizardPage_title;
-	public static String ArtifactTab_0;
-	public static String ArtifactTab_1;
-	public static String ArtifactTab_2;
-	public static String ArtifactTab_3;
 
 	public static String ToolChainSettingsTab_name;
 	public static String ToolChainSettingsTab_architecture;
@@ -48,7 +43,7 @@ public class Messages extends NLS {
 	public static String ToolChainSettingsTab_size;
 
 	static {
-		// initialize resource bundle
+		// initialise resource bundle
 		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
 	}
 

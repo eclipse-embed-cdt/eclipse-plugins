@@ -45,7 +45,6 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	private Composite m_composite;
 	private boolean m_finish = false;
 	private Text m_pathTxt;
-	// private Text prefixTxt;
 	private Combo m_toolchainCombo;
 	private int m_selectedToolchainIndex;
 	private String m_selectedToolchainName;
@@ -56,15 +55,12 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 
 	public static final String CROSS_PROJECT_NAME = "projectName"; //$NON-NLS-1$
 
-	//public static final String CROSS_TOOLCHAIN_INDEX = "toolchainIndex"; //$NON-NLS-1$
 	public static final String CROSS_TOOLCHAIN_NAME = "toolchain.name"; //$NON-NLS-1$
 	public static final String CROSS_TOOLCHAIN_PATH = "toolchain.path"; //$NON-NLS-1$
 
 	// Note: The shared defaults keys don't have "cross" in them because we want
 	// to keep
 	// compatibility with defaults that were saved when it used to be a template
-	// static final String SHARED_CROSS_TOOLCHAIN_INDEX = Activator.getPrefix()
-	// + "." + CROSS_TOOLCHAIN_INDEX;
 	static final String SHARED_CROSS_TOOLCHAIN_NAME = Option.getPrefix() + "."
 			+ CROSS_TOOLCHAIN_NAME;
 	static final String SHARED_CROSS_TOOLCHAIN_PATH = Option.getPrefix() + "."
@@ -75,8 +71,6 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 
 		// initialise properties in local storage
 		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_PATH, ""); //$NON-NLS-1$
-		// MBSCustomPageManager
-		//				.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_INDEX, ""); //$NON-NLS-1$
 		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_NAME, ""); //$NON-NLS-1$
 	}
 
@@ -121,8 +115,8 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		try {
 			m_selectedToolchainName = (String) SharedDefaults.getInstance()
 					.getSharedDefaultsMap().get(SHARED_CROSS_TOOLCHAIN_NAME);
-			System.out.println("Previous toolchain name "
-					+ m_selectedToolchainName);
+			// System.out.println("Previous toolchain name "
+			// + m_selectedToolchainName);
 			if (m_selectedToolchainName != null
 					&& m_selectedToolchainName.length() > 0) {
 				m_selectedToolchainIndex = ToolchainDefinition
@@ -268,13 +262,6 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_NAME,
 				m_selectedToolchainName);
 	}
-
-	// private void updateToolchainIndexProperty() {
-	// // save current toolchain selection as string index
-	// String sIndex = String.valueOf(m_selectedToolchainIndex);
-	// MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_INDEX,
-	// sIndex);
-	// }
 
 	private void updateProjectNameProperty() {
 		IWizardPage[] pages = getWizard().getPages();

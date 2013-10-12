@@ -31,6 +31,9 @@ public class ToolchainDefinition {
 	private String m_cmdObjdump;
 	private String m_cmdSize;
 
+	private static String m_architectures[] = { "ARM (AArch32)",
+			"ARM64 (AArch64)" };
+
 	public ToolchainDefinition(String sName, String sPrefix) {
 		m_sName = sName;
 		m_sPrefix = sPrefix;
@@ -129,18 +132,12 @@ public class ToolchainDefinition {
 		return getName() + " (" + getFullCmdC() + ")";
 	}
 
-	private void setTest() {
-		m_sSuffix = "mySuffix";
-		m_sArchitecture = "myArch";
-		m_cmdMake = "myMake";
-		m_cmdRm = "myRm";
-		m_cmdC = "myGcc";
-		m_cmdCpp = "myG++";
-		m_cmdAr = "myAr";
-		m_cmdObjcopy = "myObjcopy";
-		m_cmdObjdump = "myObjdump";
-		m_cmdSize = "mySize";
-	}
+	/*
+	 * private void setTest() { m_sSuffix = "mySuffix"; m_sArchitecture =
+	 * "myArch"; m_cmdMake = "myMake"; m_cmdRm = "myRm"; m_cmdC = "myGcc";
+	 * m_cmdCpp = "myG++"; m_cmdAr = "myAr"; m_cmdObjcopy = "myObjcopy";
+	 * m_cmdObjdump = "myObjdump"; m_cmdSize = "mySize"; }
+	 */
 
 	// Static members
 	private static List<ToolchainDefinition> ms_list;
@@ -186,6 +183,14 @@ public class ToolchainDefinition {
 
 	public static int getDefault() {
 		return 0;
+	}
+
+	public static String[] getArchitectures() {
+		return m_architectures;
+	}
+
+	public static String getArchitecture(int index) {
+		return m_architectures[index];
 	}
 
 	// Initialise the list of known toolchains

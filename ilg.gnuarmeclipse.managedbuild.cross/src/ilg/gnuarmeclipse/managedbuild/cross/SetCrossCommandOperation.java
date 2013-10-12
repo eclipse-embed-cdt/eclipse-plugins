@@ -42,17 +42,13 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 	public void run(IProgressMonitor monitor) throws InvocationTargetException,
 			InterruptedException {
 
-		System.out.println("SetCrossCommandOperation.run() begin");
+		// System.out.println("SetCrossCommandOperation.run() begin");
 
 		// get local properties
 		String projectName = (String) MBSCustomPageManager.getPageProperty(
 				SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_PROJECT_NAME);
 
-		// String toolchainIndex = (String)
-		// MBSCustomPageManager.getPageProperty(
-		// SetCrossCommandWizardPage.PAGE_ID,
-		// SetCrossCommandWizardPage.CROSS_TOOLCHAIN_INDEX);
 		String toolchainName = (String) MBSCustomPageManager.getPageProperty(
 				SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_NAME);
@@ -107,7 +103,7 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 			}
 		}
 
-		System.out.println("SetCrossCommandOperation.run() end");
+		// System.out.println("SetCrossCommandOperation.run() end");
 
 	}
 
@@ -185,28 +181,28 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_ARM_TARGET_FAMILY);
-			config.setOption(toolchain, option, Activator.getOptionPrefix()
+			config.setOption(toolchain, option, Option.OPTION_PREFIX
 					+ ".base.arm.mcpu.cortex-m3");
 
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".base.arm.target.instructionset");
-			config.setOption(toolchain, option, Activator.getOptionPrefix()
+			option = toolchain.getOptionBySuperClassId(Option.OPTION_PREFIX
+					+ ".base.arm.target.instructionset");
+			config.setOption(toolchain, option, Option.OPTION_PREFIX
 					+ ".base.arm.target.instructionset.thumb");
 
 		} else if ("aarch64".equals(sArchitecture)) {
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_AARCH64_TARGET_FAMILY);
-			config.setOption(toolchain, option, Activator.getOptionPrefix()
+			config.setOption(toolchain, option, Option.OPTION_PREFIX
 					+ ".base.aarch64.target.mcpu.generic");
 
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".base.aarch64.target.feature.simd");
-			config.setOption(toolchain, option, Activator.getOptionPrefix()
+			option = toolchain.getOptionBySuperClassId(Option.OPTION_PREFIX
+					+ ".base.aarch64.target.feature.simd");
+			config.setOption(toolchain, option, Option.OPTION_PREFIX
 					+ ".base.aarch64.target.cmodel.small");
 
-			option = toolchain.getOptionBySuperClassId(Activator
-					.getOptionPrefix() + ".base.aarch64.target.cmodel");
-			config.setOption(toolchain, option, Activator.getOptionPrefix()
+			option = toolchain.getOptionBySuperClassId(Option.OPTION_PREFIX
+					+ ".base.aarch64.target.cmodel");
+			config.setOption(toolchain, option, Option.OPTION_PREFIX
 					+ ".base.aarch64.target.cmodel.small");
 		}
 

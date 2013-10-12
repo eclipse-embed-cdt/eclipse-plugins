@@ -38,22 +38,22 @@ public class ConfigurationBuildMacroSupplier implements
 			if (sCmd.equals(macroName)) {
 				IToolChain toolchain = configuration.getToolChain();
 
-				String sId = Activator.getOptionPrefix() + ".command."
+				String sId = Option.OPTION_PREFIX + ".command."
 						+ sCmd.replace("cross_", "");
 
 				IOption option = toolchain.getOptionBySuperClassId(sId); //$NON-NLS-1$
 				if (option != null) {
 					String sVal = (String) option.getValue();
 
-					System.out.println("Macro "
-							+ sCmd
-							+ "="
-							+ sVal
-							+ " cfg="
-							+ configuration
-							+ " prj="
-							+ configuration.getManagedProject().getOwner()
-									.getName());
+					// System.out.println("Macro "
+					// + sCmd
+					// + "="
+					// + sVal
+					// + " cfg="
+					// + configuration
+					// + " prj="
+					// + configuration.getManagedProject().getOwner()
+					// .getName());
 					return new BuildMacro(macroName, BuildMacro.VALUE_TEXT,
 							sVal);
 				}
@@ -85,7 +85,7 @@ public class ConfigurationBuildMacroSupplier implements
 
 		String sValue;
 		for (String cmd : m_asCmds) {
-			String sId = Activator.getOptionPrefix() + ".command."
+			String sId = Option.OPTION_PREFIX + ".command."
 					+ cmd.replace("cross_", "");
 
 			IOption option = toolchain.getOptionBySuperClassId(sId); //$NON-NLS-1$

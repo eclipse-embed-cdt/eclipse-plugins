@@ -17,8 +17,8 @@ public class PathManagedOptionValueHandler extends ManagedOptionValueHandler {
 			IHoldsOptions holder, IOption option, String extraArgument,
 			int event) {
 
-		ManagedOptionValueHandlerDebug.dump(configuration, holder, option,
-				extraArgument, event);
+		// ManagedOptionValueHandlerDebug.dump(configuration, holder, option,
+		// extraArgument, event);
 
 		if (event == EVENT_OPEN) {
 

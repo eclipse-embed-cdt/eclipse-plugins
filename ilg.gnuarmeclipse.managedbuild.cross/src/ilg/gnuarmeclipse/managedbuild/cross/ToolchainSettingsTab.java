@@ -50,7 +50,6 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 	private String m_selectedToolchainName;
 
 	private Combo m_architectureCombo;
-	private String m_architectures[] = { "ARM (AArch32)", "ARM64 (AArch64)" };
 
 	private Text m_pathText;
 	private Text m_prefixText;
@@ -109,8 +108,8 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 
 		m_selectedToolchainName = Option.getOptionStringValue(m_config,
 				Option.OPTION_TOOLCHAIN_NAME);
-		System.out
-				.println("Previous toolchain name " + m_selectedToolchainName);
+		// System.out
+		// .println("Previous toolchain name " + m_selectedToolchainName);
 		if (m_selectedToolchainName != null
 				&& m_selectedToolchainName.length() > 0) {
 			m_selectedToolchainIndex = ToolchainDefinition
@@ -140,7 +139,7 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 		layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
 		m_architectureCombo.setLayoutData(layoutData);
 
-		m_architectureCombo.setItems(m_architectures);
+		m_architectureCombo.setItems(ToolchainDefinition.getArchitectures());
 
 		String sSelectedArchitecture = Option.getOptionStringValue(m_config,
 				Option.OPTION_ARCHITECTURE);
@@ -152,7 +151,7 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 			index = 1;
 		else
 			index = 0; // default is ARM
-		m_architectureCombo.setText(m_architectures[index]);
+		m_architectureCombo.setText(ToolchainDefinition.getArchitecture(index));
 
 		// m_toolchainCombo.addSelectionListener(new SelectionAdapter() {
 		// public void widgetSelected(SelectionEvent event) {
@@ -381,7 +380,7 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 			index = 1;
 		else
 			index = 0; // default is ARM
-		m_architectureCombo.setText(m_architectures[index]);
+		m_architectureCombo.setText(ToolchainDefinition.getArchitecture(index));
 
 		m_prefixText.setText(td.getPrefix());
 		m_suffixText.setText(td.getSuffix());
@@ -435,10 +434,14 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 			// values are not saved to .cproject.
 
 			String sSelectedArchitecture = m_architectureCombo.getText();
-			if (m_architectures[0].equals(sSelectedArchitecture)) {
+			if (ToolchainDefinition.getArchitecture(0).equals(
+					sSelectedArchitecture)) {
 				val = Option.OPTION_ARCHITECTURE_ARM;
-			} else {
+			} else if (ToolchainDefinition.getArchitecture(1).equals(
+					sSelectedArchitecture)) {
 				val = Option.OPTION_ARCHITECTURE_AARCH64;
+			} else {
+				val = Option.OPTION_ARCHITECTURE_ARM; // default is ARM
 			}
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_ARCHITECTURE); //$NON-NLS-1$
