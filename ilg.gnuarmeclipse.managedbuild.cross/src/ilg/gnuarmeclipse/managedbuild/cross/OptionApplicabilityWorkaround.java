@@ -43,116 +43,116 @@ import org.eclipse.cdt.managedbuilder.internal.core.Option;
  */
 public class OptionApplicabilityWorkaround implements IOptionApplicability {
 
-    @Override
-    public boolean isOptionEnabled(IBuildObject configuration,
-            IHoldsOptions holder, IOption option) {
+	@Override
+	public boolean isOptionEnabled(IBuildObject configuration,
+			IHoldsOptions holder, IOption option) {
 
-        // Invoke the options enablement expressions
-        if (!(option instanceof Option))
-            throw new AssertionError();
-        Option opt = (Option) option;
-        BooleanExpressionApplicabilityCalculator app = opt
-                .getBooleanExpressionCalculator(false);
+		// Invoke the options enablement expressions
+		if (!(option instanceof Option))
+			throw new AssertionError();
+		Option opt = (Option) option;
+		BooleanExpressionApplicabilityCalculator app = opt
+				.getBooleanExpressionCalculator(false);
 
-        IResourceInfo rcInfo = getResourceInfo(configuration);
+		IResourceInfo rcInfo = getResourceInfo(configuration);
 
-        // Update CONTAINER_ATTRIBUTES
-        app.adjustOption(rcInfo, holder, option, false); // OptionEnablementExpression.FLAG_CONTAINER_ATTRIBUTE
+		// Update CONTAINER_ATTRIBUTES
+		app.adjustOption(rcInfo, holder, option, false); // OptionEnablementExpression.FLAG_CONTAINER_ATTRIBUTE
 
-        // Update UI_ENABLEMENT
-        return app.isOptionEnabled(configuration, holder, option);
-    }
+		// Update UI_ENABLEMENT
+		return app.isOptionEnabled(configuration, holder, option);
+	}
 
-    @Override
-    public boolean isOptionUsedInCommandLine(IBuildObject configuration,
-            IHoldsOptions holder, IOption option) {
+	@Override
+	public boolean isOptionUsedInCommandLine(IBuildObject configuration,
+			IHoldsOptions holder, IOption option) {
 
-        if (!(option instanceof Option))
-            throw new AssertionError();
-        Option opt = (Option) option;
-        BooleanExpressionApplicabilityCalculator app = opt
-                .getBooleanExpressionCalculator(false);
+		if (!(option instanceof Option))
+			throw new AssertionError();
+		Option opt = (Option) option;
+		BooleanExpressionApplicabilityCalculator app = opt
+				.getBooleanExpressionCalculator(false);
 
-        IResourceInfo rcInfo = getResourceInfo(configuration);
+		IResourceInfo rcInfo = getResourceInfo(configuration);
 
-        // Update CONTAINER_ATTRIBUTES
-        app.adjustOption(rcInfo, holder, option, false); // OptionEnablementExpression.FLAG_CONTAINER_ATTRIBUTE
+		// Update CONTAINER_ATTRIBUTES
+		app.adjustOption(rcInfo, holder, option, false); // OptionEnablementExpression.FLAG_CONTAINER_ATTRIBUTE
 
-        // Update UI_CMD_USAGE
-        return app.isOptionUsedInCommandLine(configuration, holder, option);
-    }
+		// Update UI_CMD_USAGE
+		return app.isOptionUsedInCommandLine(configuration, holder, option);
+	}
 
-    @Override
-    public boolean isOptionVisible(IBuildObject configuration,
-            IHoldsOptions holder, IOption option) {
+	@Override
+	public boolean isOptionVisible(IBuildObject configuration,
+			IHoldsOptions holder, IOption option) {
 
-        if (!(option instanceof Option))
-            throw new AssertionError();
-        Option opt = (Option) option;
-        BooleanExpressionApplicabilityCalculator app = opt
-                .getBooleanExpressionCalculator(false);
+		if (!(option instanceof Option))
+			throw new AssertionError();
+		Option opt = (Option) option;
+		BooleanExpressionApplicabilityCalculator app = opt
+				.getBooleanExpressionCalculator(false);
 
-        IResourceInfo rcInfo = getResourceInfo(configuration);
+		IResourceInfo rcInfo = getResourceInfo(configuration);
 
-        // Update CONTAINER_ATTRIBUTES
-        app.adjustOption(rcInfo, holder, option, false); // OptionEnablementExpression.FLAG_CONTAINER_ATTRIBUTE
+		// Update CONTAINER_ATTRIBUTES
+		app.adjustOption(rcInfo, holder, option, false); // OptionEnablementExpression.FLAG_CONTAINER_ATTRIBUTE
 
-        // Update UI_VISIBILITY
-        // Once an option is determined as invisible, it is not updated anymore.
-        // Options deemed as invisible at UI creation will thus remain
-        // invisible.
-        return app.isOptionVisible(configuration, holder, option);
-    }
+		// Update UI_VISIBILITY
+		// Once an option is determined as invisible, it is not updated anymore.
+		// Options deemed as invisible at UI creation will thus remain
+		// invisible.
+		return app.isOptionVisible(configuration, holder, option);
+	}
 
-    /**
-     * Searches for an option in an IConfiguration. The toolchain options are
-     * scanned first, then the individual tools.
-     * 
-     * @param config
-     *            the configuration in which the option must be searched.
-     * @param optionId
-     *            id of the option
-     * @return an IOption instance, or null if no option is found with the given
-     *         id
-     */
-    public IOption searchOption(IBuildObject configuration, String optionId) {
-        IConfiguration config;
+	/**
+	 * Searches for an option in an IConfiguration. The toolchain options are
+	 * scanned first, then the individual tools.
+	 * 
+	 * @param config
+	 *            the configuration in which the option must be searched.
+	 * @param optionId
+	 *            id of the option
+	 * @return an IOption instance, or null if no option is found with the given
+	 *         id
+	 */
+	public IOption searchOption(IBuildObject configuration, String optionId) {
+		IConfiguration config;
 
-        if (configuration instanceof IConfiguration) {
-            config = (IConfiguration) configuration;
-        } else if (configuration instanceof IResourceInfo) {
-            config = ((IResourceInfo) configuration).getParent();
-        } else
-            throw new AssertionError();
+		if (configuration instanceof IConfiguration) {
+			config = (IConfiguration) configuration;
+		} else if (configuration instanceof IResourceInfo) {
+			config = ((IResourceInfo) configuration).getParent();
+		} else
+			throw new AssertionError();
 
-        IOption opt = config.getToolChain().getOptionBySuperClassId(optionId);
-        if (opt == null) {
-            // Scan for option in the tools
-            ITool[] tools = config.getTools();
-            for (ITool t : tools) {
-                opt = t.getOptionBySuperClassId(optionId);
-                if (opt != null)
-                    break;
-            }
-        }
-        return opt;
-    }
+		IOption opt = config.getToolChain().getOptionBySuperClassId(optionId);
+		if (opt == null) {
+			// Scan for option in the tools
+			ITool[] tools = config.getTools();
+			for (ITool t : tools) {
+				opt = t.getOptionBySuperClassId(optionId);
+				if (opt != null)
+					break;
+			}
+		}
+		return opt;
+	}
 
-    /**
-     * Extracts a resource info from a build object. If no resource info can be
-     * found, it returns null.
-     * 
-     * @param configuration
-     * @return
-     */
-    private IResourceInfo getResourceInfo(IBuildObject configuration) {
-        if (configuration instanceof IFolderInfo)
-            return (IFolderInfo) configuration;
-        if (configuration instanceof IFileInfo)
-            return (IFileInfo) configuration;
-        if (configuration instanceof IConfiguration)
-            return ((IConfiguration) configuration).getRootFolderInfo();
-        return null;
-    }
+	/**
+	 * Extracts a resource info from a build object. If no resource info can be
+	 * found, it returns null.
+	 * 
+	 * @param configuration
+	 * @return
+	 */
+	private IResourceInfo getResourceInfo(IBuildObject configuration) {
+		if (configuration instanceof IFolderInfo)
+			return (IFolderInfo) configuration;
+		if (configuration instanceof IFileInfo)
+			return (IFileInfo) configuration;
+		if (configuration instanceof IConfiguration)
+			return ((IConfiguration) configuration).getRootFolderInfo();
+		return null;
+	}
 
 }

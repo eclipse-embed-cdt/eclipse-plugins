@@ -35,40 +35,47 @@ public class EnvironmentVariableSupplier implements
 
 	public IBuildEnvironmentVariable[] getVariables(
 			IConfiguration configuration, IEnvironmentVariableProvider provider) {
-		IBuildEnvironmentVariable path = PathEnvironmentVariable.create(configuration);
-		return path != null ? new IBuildEnvironmentVariable[] { path } : new IBuildEnvironmentVariable[0];
+		IBuildEnvironmentVariable path = PathEnvironmentVariable
+				.create(configuration);
+		return path != null ? new IBuildEnvironmentVariable[] { path }
+				: new IBuildEnvironmentVariable[0];
 	}
 
-	private static class PathEnvironmentVariable implements IBuildEnvironmentVariable {
+	private static class PathEnvironmentVariable implements
+			IBuildEnvironmentVariable {
 
 		public static String name = "PATH"; //$NON-NLS-1$
-		
+
 		private File path;
-		
+
 		private PathEnvironmentVariable(File path) {
-			System.out.println("cpath="+path);
+			System.out.println("cpath=" + path);
 			this.path = path;
 		}
-		
-		public static PathEnvironmentVariable create(IConfiguration configuration) {
+
+		public static PathEnvironmentVariable create(
+				IConfiguration configuration) {
 			IToolChain toolchain = configuration.getToolChain();
-			IOption option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH); //$NON-NLS-1$
-			String path = (String)option.getValue();
+			IOption option = toolchain
+					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH); //$NON-NLS-1$
+			String path = (String) option.getValue();
 			File sysroot = new File(path);
 			File bin = new File(sysroot, "bin"); //$NON-NLS-1$
 			if (bin.isDirectory())
 				sysroot = bin;
-			System.out.println("path="+sysroot+" opt="+path+" cfg="+configuration+" prj="+configuration.getManagedProject().getOwner().getName());
+			System.out.println("path=" + sysroot + " opt=" + path + " cfg="
+					+ configuration + " prj="
+					+ configuration.getManagedProject().getOwner().getName());
 			return new PathEnvironmentVariable(sysroot);
 		}
-		
+
 		public static boolean isVar(String name) {
 			// Windows has case insensitive env var names
-			return Platform.getOS().equals(Platform.OS_WIN32)
-				? name.equalsIgnoreCase(PathEnvironmentVariable.name)
-				: name.equals(PathEnvironmentVariable.name);
+			return Platform.getOS().equals(Platform.OS_WIN32) ? name
+					.equalsIgnoreCase(PathEnvironmentVariable.name) : name
+					.equals(PathEnvironmentVariable.name);
 		}
-		
+
 		public String getDelimiter() {
 			return Platform.getOS().equals(Platform.OS_WIN32) ? ";" : ":"; //$NON-NLS-1$ //$NON-NLS-2$
 		}
@@ -84,6 +91,6 @@ public class EnvironmentVariableSupplier implements
 		public String getValue() {
 			return path.getAbsolutePath();
 		}
-		
+
 	}
 }

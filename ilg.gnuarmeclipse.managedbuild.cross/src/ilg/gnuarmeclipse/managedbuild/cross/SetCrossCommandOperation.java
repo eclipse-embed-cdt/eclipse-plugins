@@ -209,7 +209,7 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 			config.setOption(toolchain, option, Activator.getOptionPrefix()
 					+ ".base.aarch64.target.cmodel.small");
 		}
-		
+
 		option = toolchain
 				.getOptionBySuperClassId(Option.OPTION_COMMAND_PREFIX); //$NON-NLS-1$
 		config.setOption(toolchain, option, td.getPrefix());
@@ -250,8 +250,7 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 		option = toolchain.getOptionBySuperClassId(Option.OPTION_COMMAND_RM); //$NON-NLS-1$
 		config.setOption(toolchain, option, td.getCmdRm());
 
-		
-		if(m_isExecutable){
+		if (m_isExecutable) {
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_CREATEFLASH); //$NON-NLS-1$
 			config.setOption(toolchain, option, true);

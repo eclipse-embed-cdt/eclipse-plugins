@@ -23,9 +23,9 @@ public class ClearProviderManagedOptionValueHandler implements
 	public boolean handleValue(IBuildObject configuration,
 			IHoldsOptions holder, IOption option, String extraArgument,
 			int event) {
-		
-//		ManagedOptionValueHandlerDebug.dump(configuration, holder, option,
-//				extraArgument, event);
+
+		// ManagedOptionValueHandlerDebug.dump(configuration, holder, option,
+		// extraArgument, event);
 
 		if (event == EVENT_APPLY) {
 

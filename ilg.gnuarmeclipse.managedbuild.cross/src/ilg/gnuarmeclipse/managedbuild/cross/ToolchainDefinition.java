@@ -46,13 +46,14 @@ public class ToolchainDefinition {
 		m_cmdSize = "size";
 	}
 
-	public ToolchainDefinition(String sName, String sPrefix, String sArchitecture) {
+	public ToolchainDefinition(String sName, String sPrefix,
+			String sArchitecture) {
 		this(sName, sPrefix);
 		m_sArchitecture = sArchitecture;
 	}
 
-	public ToolchainDefinition(String sName, String sPrefix, String sArchitecture,
-			String cmdMake, String cmdRm) {
+	public ToolchainDefinition(String sName, String sPrefix,
+			String sArchitecture, String cmdMake, String cmdRm) {
 		this(sName, sPrefix, sArchitecture);
 		m_sArchitecture = sArchitecture;
 		m_cmdMake = cmdMake;

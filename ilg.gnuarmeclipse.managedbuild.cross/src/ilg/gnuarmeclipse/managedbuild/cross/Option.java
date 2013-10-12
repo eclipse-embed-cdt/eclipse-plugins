@@ -6,7 +6,11 @@ import org.eclipse.cdt.managedbuilder.core.IOption;
 
 public class Option {
 
-	public static final String OPTION_PREFIX = Activator.getOptionPrefix();
+	public static String getPrefix() {
+		return "ilg.gnuarmeclipse.managedbuild.cross";
+	}
+
+	public static final String OPTION_PREFIX = getPrefix() + ".option";
 
 	public static final String OPTION_ARCHITECTURE = OPTION_PREFIX
 			+ ".architecture";
@@ -374,7 +378,8 @@ public class Option {
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
-		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_NOUSECXAATEXIT);
+		sValue = getOptionBooleanCommand(config,
+				OPTION_OPTIMIZATION_NOUSECXAATEXIT);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 

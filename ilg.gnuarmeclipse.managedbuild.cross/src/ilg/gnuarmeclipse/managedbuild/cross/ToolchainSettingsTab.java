@@ -41,7 +41,6 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 	// public static final String PROPERTY =
 	// ManagedBuildManager.BUILD_ARTEFACT_TYPE_PROPERTY_ID;
 
-
 	private IConfiguration m_config;
 
 	// ---
@@ -146,16 +145,19 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 		String sSelectedArchitecture = Option.getOptionStringValue(m_config,
 				Option.OPTION_ARCHITECTURE);
 		int index;
-		if (sSelectedArchitecture.endsWith(".arm"))
+		if (sSelectedArchitecture.endsWith("." + Option.ARCHITECTURE_ARM))
 			index = 0;
-		else
+		else if (sSelectedArchitecture.endsWith("."
+				+ Option.ARCHITECTURE_AARCH64))
 			index = 1;
+		else
+			index = 0; // default is ARM
 		m_architectureCombo.setText(m_architectures[index]);
 
-//		m_toolchainCombo.addSelectionListener(new SelectionAdapter() {
-//			public void widgetSelected(SelectionEvent event) {
-//			}
-//		});
+		// m_toolchainCombo.addSelectionListener(new SelectionAdapter() {
+		// public void widgetSelected(SelectionEvent event) {
+		// }
+		// });
 
 		// ----- Prefix -------------------------------------------------------
 		Label prefixLabel = new Label(usercomp, SWT.NONE);
@@ -375,8 +377,10 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 		String sArchitecture = td.getArchitecture();
 		if ("arm".equals(sArchitecture))
 			index = 0;
-		else
+		else if ("aarch64".equals(sArchitecture))
 			index = 1;
+		else
+			index = 0; // default is ARM
 		m_architectureCombo.setText(m_architectures[index]);
 
 		m_prefixText.setText(td.getPrefix());

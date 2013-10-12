@@ -27,7 +27,7 @@ public class ToolchainFamilyManagedOptionValueHandler implements
 	public boolean isEnumValueAppropriate(IBuildObject configuration,
 			IHoldsOptions holder, IOption option, String extraArgument,
 			String enumValue) {
-		
+
 		if ("none".equals(enumValue))
 			return false;
 

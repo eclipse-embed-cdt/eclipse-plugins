@@ -24,7 +24,7 @@ public class ManagedOptionValueHandlerDebug {
 
 	public static void dump(IBuildObject configuration, IHoldsOptions holder,
 			IOption option, String extraArgument, int event) {
-		
+
 		String configLabel = "config"; //$NON-NLS-1$
 		String holderLabel = "holder"; //$NON-NLS-1$
 		String eventLabel = "event"; //$NON-NLS-1$

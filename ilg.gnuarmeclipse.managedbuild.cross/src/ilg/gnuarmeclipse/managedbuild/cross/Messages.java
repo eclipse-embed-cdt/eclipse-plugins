@@ -15,7 +15,7 @@ package ilg.gnuarmeclipse.managedbuild.cross;
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = Activator.getPrefix()
+	private static final String BUNDLE_NAME = Option.getPrefix()
 			+ ".messages"; //$NON-NLS-1$
 	public static String SetCrossCommandWizardPage_browse;
 	public static String SetCrossCommandWizardPage_description;

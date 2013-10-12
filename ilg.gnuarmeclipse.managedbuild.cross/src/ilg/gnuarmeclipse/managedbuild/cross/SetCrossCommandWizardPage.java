@@ -51,7 +51,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	private String m_selectedToolchainName;
 
 	// must match the plugin.xml <wizardPage ID="">
-	public static final String PAGE_ID = Activator.getPrefix()
+	public static final String PAGE_ID = Option.getPrefix()
 			+ ".setCrossCommandWizardPage"; //$NON-NLS-1$
 
 	public static final String CROSS_PROJECT_NAME = "projectName"; //$NON-NLS-1$
@@ -65,9 +65,9 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	// compatibility with defaults that were saved when it used to be a template
 	// static final String SHARED_CROSS_TOOLCHAIN_INDEX = Activator.getPrefix()
 	// + "." + CROSS_TOOLCHAIN_INDEX;
-	static final String SHARED_CROSS_TOOLCHAIN_NAME = Activator.getPrefix()
-			+ "." + CROSS_TOOLCHAIN_NAME;
-	static final String SHARED_CROSS_TOOLCHAIN_PATH = Activator.getPrefix() + "."
+	static final String SHARED_CROSS_TOOLCHAIN_NAME = Option.getPrefix() + "."
+			+ CROSS_TOOLCHAIN_NAME;
+	static final String SHARED_CROSS_TOOLCHAIN_PATH = Option.getPrefix() + "."
 			+ CROSS_TOOLCHAIN_PATH;
 
 	public SetCrossCommandWizardPage() {
@@ -86,7 +86,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		// the project name,
 		// the property will be updated
 		updateProjectNameProperty();
-		//System.out.println("isCustomPageComplete() "+m_finish);
+		// System.out.println("isCustomPageComplete() "+m_finish);
 		return m_finish;
 	}
 
@@ -246,7 +246,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	}
 
 	public void dispose() {
-		//System.out.println("dispose() "+m_finish);
+		// System.out.println("dispose() "+m_finish);
 	}
 
 	private String getSelectedCompilerCommand(int index) {
