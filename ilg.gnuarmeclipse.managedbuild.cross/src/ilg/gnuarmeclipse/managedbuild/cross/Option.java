@@ -29,10 +29,12 @@ public class Option {
 			+ ARCHITECTURE_ARM + ".target.";
 	public static final String OPTION_ARM_TARGET_FAMILY = OPTION_ARM_TARGET
 			+ "family";
+
 	public static final String OPTION_ARM_TARGET_ARCHITECTURE = OPTION_ARM_TARGET
 			+ "architecture";
 	public static final String OPTION_ARM_TARGET_INSTRUCTIONSET = OPTION_ARM_TARGET
 			+ "instructionset";
+
 	public static final String OPTION_ARM_TARGET_THUMB_INTERWORK = OPTION_ARM_TARGET
 			+ "thumbinterwork";
 	public static final String OPTION_ARM_TARGET_ENDIANNESS = OPTION_ARM_TARGET
@@ -172,6 +174,27 @@ public class Option {
 			+ "createlisting";
 	public static final String OPTION_ADDTOOLS_PRINTSIZE = OPTION_ADDTOOLS
 			+ "printsize";
+
+	public static final String OPTION_ARM_MCPU_CORTEXM3 = OPTION_PREFIX
+			+ ".base.arm.mcpu.cortex-m3";
+
+	public static final String OPTION_AARCH64_MCPU_GENERIC = OPTION_PREFIX
+			+ ".base.aarch64.target.mcpu.generic";
+
+	public static final String OPTION_ARM_INSTRUCTIONSET_THUMB = OPTION_PREFIX
+			+ ".base.arm.target.instructionset.thumb";
+
+	public static final String OPTION_AARCH64_FEATURE_SIMD = OPTION_PREFIX
+			+ ".base.aarch64.target.feature.simd";
+	public static final String OPTION_AARCH64_FEATURE_SIMD_ENABLED = OPTION_AARCH64_FEATURE_SIMD
+			+ ".enabled";
+
+	public static final String OPTION_AARCH64_CMODEL = OPTION_PREFIX
+			+ ".base.aarch64.target.cmodel";
+	public static final String OPTION_AARCH64_CMODEL_SMALL = OPTION_AARCH64_CMODEL
+			+ ".small";
+
+	// ------------------------------------------------------------------------
 
 	public static String getOptionStringValue(IConfiguration config,
 			String sOptionId) {

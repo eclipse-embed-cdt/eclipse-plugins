@@ -839,7 +839,6 @@
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.family"
                isAbstract="true"
                name="%option.target.arm.family"
-               value="?"
                valueType="enumerated">
             <enablement
                   type="UI_ENABLEMENT|CMD_USAGE">
@@ -1432,7 +1431,6 @@
                isAbstract="true"
                name="%option.target.arm.instructionset"
                tip="Select between generating code that executes in ARM and Thumb states. The default for most configurations is to generate code that executes in ARM state, but the default can be changed by configuring GCC with the --with-mode=state configure option."
-               value="?"
                valueType="enumerated">
             <enablement
                   type="UI_ENABLEMENT|CMD_USAGE">
@@ -1774,7 +1772,6 @@
          <option
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.aarch64.target.family"
                name="%option.target.aarch64.family"
-               value="?"
                valueType="enumerated">
             <enablement
                   type="UI_ENABLEMENT|CMD_USAGE">
@@ -1922,7 +1919,6 @@
          <option
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.aarch64.target.feature.simd"
                name="%option.target.aarch64.feature.simd"
-               value="?"
                valueType="enumerated">
             <enablement
                   type="UI_ENABLEMENT|CMD_USAGE">
@@ -1962,7 +1958,6 @@
          <option
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.aarch64.target.cmodel"
                name="%option.target.aarch64.cmodel"
-               value="?"
                valueType="enumerated">
             <enablement
                   type="UI_ENABLEMENT|CMD_USAGE">
@@ -2039,11 +2034,9 @@
          </builder>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
-               defaultValue="?"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
                isAbstract="false"
                name="%option.toolchain.architecture"
-               value="?"
                valueHandler="ilg.gnuarmeclipse.managedbuild.cross.ToolchainFamilyManagedOptionValueHandler"
                valueType="enumerated">
             <enumeratedOptionValue

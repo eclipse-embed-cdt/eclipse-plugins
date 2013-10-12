@@ -1,10 +1,12 @@
 package ilg.gnuarmeclipse.managedbuild.cross;
 
+import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IBuildObject;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IFileInfo;
 import org.eclipse.cdt.managedbuilder.core.IFolderInfo;
 import org.eclipse.cdt.managedbuilder.core.IHoldsOptions;
+import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.core.IResourceInfo;
 import org.eclipse.cdt.managedbuilder.core.IToolChain;
 
@@ -55,4 +57,16 @@ public class Utils {
 		return null;
 	}
 
+	public static IOption setOptionForced(IConfiguration config,
+			IToolChain toolchain, IOption option, String value)
+			throws BuildException {
+
+		// setOption() does nothing if the new value is identical to the
+		// previous one. this is generally ok, except the initial settings
+		// when we do not want to depend on defaults, so we do this in
+		// two steps, we first set an impossible value, than the actual
+		// one
+		IOption newOption = config.setOption(toolchain, option, "?!");
+		return config.setOption(toolchain, newOption, value);
+	}
 }

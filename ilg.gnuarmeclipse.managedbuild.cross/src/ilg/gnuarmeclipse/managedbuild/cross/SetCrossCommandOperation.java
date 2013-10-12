@@ -175,35 +175,33 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 		// compose the architecture ID
 		String sArchitecture = td.getArchitecture();
 		val = Option.OPTION_ARCHITECTURE + "." + sArchitecture;
-		config.setOption(toolchain, option, val);
+		Utils.setOptionForced(config, toolchain, option, val);
 
 		if ("arm".equals(sArchitecture)) {
-
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_ARM_TARGET_FAMILY);
-			config.setOption(toolchain, option, Option.OPTION_PREFIX
-					+ ".base.arm.mcpu.cortex-m3");
+			Utils.setOptionForced(config, toolchain, option,
+					Option.OPTION_ARM_MCPU_CORTEXM3);
 
-			option = toolchain.getOptionBySuperClassId(Option.OPTION_PREFIX
-					+ ".base.arm.target.instructionset");
-			config.setOption(toolchain, option, Option.OPTION_PREFIX
-					+ ".base.arm.target.instructionset.thumb");
-
+			option = toolchain
+					.getOptionBySuperClassId(Option.OPTION_ARM_TARGET_INSTRUCTIONSET);
+			Utils.setOptionForced(config, toolchain, option,
+					Option.OPTION_ARM_INSTRUCTIONSET_THUMB);
 		} else if ("aarch64".equals(sArchitecture)) {
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_AARCH64_TARGET_FAMILY);
-			config.setOption(toolchain, option, Option.OPTION_PREFIX
-					+ ".base.aarch64.target.mcpu.generic");
+			Utils.setOptionForced(config, toolchain, option,
+					Option.OPTION_AARCH64_MCPU_GENERIC);
 
-			option = toolchain.getOptionBySuperClassId(Option.OPTION_PREFIX
-					+ ".base.aarch64.target.feature.simd");
-			config.setOption(toolchain, option, Option.OPTION_PREFIX
-					+ ".base.aarch64.target.cmodel.small");
+			option = toolchain
+					.getOptionBySuperClassId(Option.OPTION_AARCH64_FEATURE_SIMD);
+			Utils.setOptionForced(config, toolchain, option,
+					Option.OPTION_AARCH64_FEATURE_SIMD_ENABLED);
 
-			option = toolchain.getOptionBySuperClassId(Option.OPTION_PREFIX
-					+ ".base.aarch64.target.cmodel");
-			config.setOption(toolchain, option, Option.OPTION_PREFIX
-					+ ".base.aarch64.target.cmodel.small");
+			option = toolchain
+					.getOptionBySuperClassId(Option.OPTION_AARCH64_CMODEL);
+			Utils.setOptionForced(config, toolchain, option,
+					Option.OPTION_AARCH64_CMODEL_SMALL);
 		}
 
 		option = toolchain
