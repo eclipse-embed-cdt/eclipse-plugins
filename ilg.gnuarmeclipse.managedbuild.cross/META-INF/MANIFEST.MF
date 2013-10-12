@@ -1,19 +1,19 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %Bundle-Name
+Bundle-Name: %bundle.name
 Bundle-SymbolicName: ilg.gnuarmeclipse.managedbuild.cross;singleton:=true
 Bundle-Version: 1.1.0.qualifier
 Bundle-Activator: ilg.gnuarmeclipse.managedbuild.cross.Activator
 Require-Bundle: org.eclipse.core.runtime,
- org.eclipse.cdt.core;bundle-version="5.1.0",
- org.eclipse.cdt.managedbuilder.core;bundle-version="5.0.100",
- org.eclipse.cdt.managedbuilder.gnu.ui;bundle-version="5.0.100",
- org.eclipse.core.resources;bundle-version="3.5.0",
- org.eclipse.cdt.managedbuilder.ui;bundle-version="8.1.0",
+ org.eclipse.cdt.core;bundle-version="5.5.0",
+ org.eclipse.cdt.managedbuilder.core;bundle-version="8.2.0",
+ org.eclipse.cdt.managedbuilder.gnu.ui;bundle-version="8.2.0",
+ org.eclipse.core.resources;bundle-version="3.8.100",
+ org.eclipse.cdt.managedbuilder.ui;bundle-version="8.2.0",
  org.eclipse.jface,
  org.eclipse.ui.ide,
- org.eclipse.cdt.ui;bundle-version="5.5.0"
+ org.eclipse.cdt.ui;bundle-version="5.6.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Bundle-Vendor: %Bundle-Vendor
+Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
