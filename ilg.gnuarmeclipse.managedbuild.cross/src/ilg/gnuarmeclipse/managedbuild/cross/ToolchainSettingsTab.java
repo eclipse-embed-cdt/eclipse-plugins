@@ -18,6 +18,7 @@ import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.core.IToolChain;
+import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.cdt.managedbuilder.ui.properties.AbstractCBuildPropertyTab;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -30,7 +31,9 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * @noextend This class is not intended to be subclassed by clients.
@@ -404,26 +407,20 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 		m_commandMakeText.setText(td.getCmdMake());
 		m_commandRmText.setText(td.getCmdRm());
 
-		String pathKey = SetCrossCommandWizardPage.SHARED_CROSS_TOOLCHAIN_PATH
-				+ "." + td.getName().hashCode();
-		String path = SharedDefaults.getInstance().getSharedDefaultsMap()
-				.get(pathKey);
-		if (path == null)
-			path = "";
-
+		String path = SharedStorage.getToolchainPath(td.getName());
 		m_pathText.setText(path);
 
 		// leave the bottom three buttons as the user set them
 	}
 
-	// This event comes when the tab is selected after the windows is 
+	// This event comes when the tab is selected after the windows is
 	// displayed, to account for content change
 	@Override
 	public void updateData(ICResourceDescription cfgd) {
 		if (cfgd == null)
 			return;
 
-		// currently there is no content to change since createControls() 
+		// currently there is no content to change since createControls()
 	}
 
 	@Override
@@ -525,6 +522,36 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 				config.setOption(toolchain, option, m_sizeButton.getSelection());
 			}
 
+			option = toolchain
+					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH); //$NON-NLS-1$
+			ManagedBuildManager.setOption(config, toolchain, option,
+					m_pathText.getText());
+
+			String sToolchainWizardPath = SharedStorage.getToolchainPath(td
+					.getName());
+			String sNewToolchainPath = m_pathText.getText().trim();
+
+			if (sToolchainWizardPath.length() == 0) {
+				SharedStorage.putToolchainPath(td.getName(), sNewToolchainPath);
+				SharedStorage.update();
+			} else if (!sToolchainWizardPath.equals(sNewToolchainPath)) {
+
+				// Create message box
+				MessageBox box = new MessageBox(PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getShell(), SWT.YES
+						| SWT.NO | SWT.APPLICATION_MODAL | SWT.ICON_QUESTION);
+				// Set title
+				box.setText("Path");
+				// Set message
+				box.setMessage("Do you want to remember '" + sNewToolchainPath
+						+ "' for toolchain '" + td.getName() + "'?");
+				// Open message box
+				if (box.open() == SWT.YES) {
+					SharedStorage.putToolchainPath(td.getName(),
+							sNewToolchainPath);
+					SharedStorage.update();
+				}
+			}
 		} catch (BuildException e) {
 			e.printStackTrace();
 		}

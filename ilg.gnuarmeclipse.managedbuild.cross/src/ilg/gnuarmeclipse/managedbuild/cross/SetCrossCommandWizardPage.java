@@ -12,7 +12,6 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross;
 
-import org.eclipse.cdt.core.templateengine.SharedDefaults;
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPage;
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPageManager;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -58,14 +57,6 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	public static final String CROSS_TOOLCHAIN_NAME = "toolchain.name"; //$NON-NLS-1$
 	public static final String CROSS_TOOLCHAIN_PATH = "toolchain.path"; //$NON-NLS-1$
 
-	// Note: The shared defaults keys don't have "cross" in them because we want
-	// to keep
-	// compatibility with defaults that were saved when it used to be a template
-	static final String SHARED_CROSS_TOOLCHAIN_NAME = Activator.getIdPrefix()
-			+ "." + CROSS_TOOLCHAIN_NAME;
-	static final String SHARED_CROSS_TOOLCHAIN_PATH = Activator.getIdPrefix()
-			+ "." + CROSS_TOOLCHAIN_PATH;
-
 	public SetCrossCommandWizardPage() {
 		pageID = PAGE_ID;
 
@@ -106,15 +97,13 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		// create the selection array
 		String[] toolchains = new String[ToolchainDefinition.getSize()];
 		for (int i = 0; i < ToolchainDefinition.getSize(); ++i) {
-			toolchains[i] = ToolchainDefinition.getToolchain(i).getName()
-					+ " (" + getSelectedCompilerCommand(i) + ")";
+			toolchains[i] = ToolchainDefinition.getToolchain(i).getFullName();
 		}
 		m_toolchainCombo.setItems(toolchains);
 
 		// decide which one is selected
 		try {
-			m_selectedToolchainName = (String) SharedDefaults.getInstance()
-					.getSharedDefaultsMap().get(SHARED_CROSS_TOOLCHAIN_NAME);
+			m_selectedToolchainName = SharedStorage.getToolchainName();
 			// System.out.println("Previous toolchain name "
 			// + m_selectedToolchainName);
 			if (m_selectedToolchainName != null
@@ -142,13 +131,8 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 						m_selectedToolchainIndex).getName();
 				updateToolchainNameProperty();
 
-				String pathKey = SHARED_CROSS_TOOLCHAIN_PATH + "."
-						+ m_selectedToolchainName.hashCode();
-				String crossCommandPath = SharedDefaults.getInstance()
-						.getSharedDefaultsMap().get(pathKey);
-				if (crossCommandPath == null) {
-					crossCommandPath = "";
-				}
+				String crossCommandPath = SharedStorage
+						.getToolchainPath(m_selectedToolchainName);
 				m_pathTxt.setText(crossCommandPath);
 
 			}
@@ -159,14 +143,11 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		label.setText(Messages.SetCrossCommandWizardPage_path);
 
 		m_pathTxt = new Text(m_composite, SWT.SINGLE | SWT.BORDER);
-		String pathKey = SHARED_CROSS_TOOLCHAIN_PATH + "."
-				+ m_selectedToolchainName.hashCode();
-		String crossCommandPath = SharedDefaults.getInstance()
-				.getSharedDefaultsMap().get(pathKey);
-		if (crossCommandPath != null) {
-			m_pathTxt.setText(crossCommandPath);
-			updatePathProperty();
-		}
+		String crossCommandPath = SharedStorage
+				.getToolchainPath(m_selectedToolchainName);
+		m_pathTxt.setText(crossCommandPath);
+		updatePathProperty();
+
 		layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 		m_pathTxt.setLayoutData(layoutData);
 		m_pathTxt.addModifyListener(new ModifyListener() {
@@ -241,11 +222,6 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 
 	public void dispose() {
 		// System.out.println("dispose() "+m_finish);
-	}
-
-	private String getSelectedCompilerCommand(int index) {
-		ToolchainDefinition td = ToolchainDefinition.getToolchain(index);
-		return td.getFullCmdC();
 	}
 
 	/**

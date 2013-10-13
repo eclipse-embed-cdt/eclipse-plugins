@@ -16,7 +16,6 @@ package ilg.gnuarmeclipse.managedbuild.cross;
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.cdt.build.core.scannerconfig.ScannerConfigBuilder;
-import org.eclipse.cdt.core.templateengine.SharedDefaults;
 import org.eclipse.cdt.managedbuilder.buildproperties.IBuildPropertyValue;
 import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
@@ -59,18 +58,11 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 		// store them on the permanent storage in
 		// workspace/.plugins/org.eclipse.cdt.core/shareddefaults.xml
 
-		String pathKey = SetCrossCommandWizardPage.SHARED_CROSS_TOOLCHAIN_PATH
-				+ "." + toolchainName.hashCode();
-		SharedDefaults.getInstance().getSharedDefaultsMap().put(pathKey, path);
+		SharedStorage.putToolchainPath(toolchainName, path);
+		SharedStorage.putToolchainName(toolchainName);
 
-		SharedDefaults
-				.getInstance()
-				.getSharedDefaultsMap()
-				.put(SetCrossCommandWizardPage.SHARED_CROSS_TOOLCHAIN_NAME,
-						toolchainName);
-		SharedDefaults.getInstance().updateShareDefaultsMap(
-				SharedDefaults.getInstance().getSharedDefaultsMap());
-
+		SharedStorage.update();
+		
 		IProject project = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(projectName);
 		if (!project.exists())
@@ -90,7 +82,6 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-
 		}
 
 		ManagedBuildManager.saveBuildInfo(project, true);
@@ -135,7 +126,7 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 		option.setValue(path);
 
 		// ... instead save it to the workspace project storage
-		PathManagedOptionValueHandler.putPersistent(config, path);
+		ProjectStorage.putPath(config, path);
 	}
 
 	public static void updateOptions(IConfiguration config, int toolchainIndex)
