@@ -172,22 +172,32 @@ public class Option {
 	public static final String OPTION_ADDTOOLS_PRINTSIZE = OPTION_ADDTOOLS
 			+ "printsize";
 
-	public static final String OPTION_ARM_MCPU_CORTEXM3 = OPTION_PREFIX
-			+ ".base.arm.mcpu.cortex-m3";
+	public static final String OPTION_ADDTOOLS_CREATEFLASH_CHOICE = OPTION_ADDTOOLS_CREATEFLASH
+			+ ".choice";
 
-	public static final String OPTION_AARCH64_MCPU_GENERIC = OPTION_PREFIX
-			+ ".base.aarch64.target.mcpu.generic";
+	public static final String CHOICE_IHEX = "ihex";
+	public static final String CHOICE_SREC = "srec";
+	public static final String CHOICE_SYMBOLSREC = "symbolsrec";
+	public static final String CHOICE_BINARY = "binary";
+
+	// ARM enumeration values
+	public static final String OPTION_ARM_MCPU_CORTEXM3 = OPTION_PREFIX
+			+ ".arm.target.mcpu.cortex-m3";
 
 	public static final String OPTION_ARM_INSTRUCTIONSET_THUMB = OPTION_PREFIX
-			+ ".base.arm.target.instructionset.thumb";
+			+ ".arm.target.instructionset.thumb";
+
+	// AARCH64 enumeration values
+	public static final String OPTION_AARCH64_MCPU_GENERIC = OPTION_PREFIX
+			+ ".aarch64.target.mcpu.generic";
 
 	public static final String OPTION_AARCH64_FEATURE_SIMD = OPTION_PREFIX
-			+ ".base.aarch64.target.feature.simd";
+			+ ".aarch64.target.feature.simd";
 	public static final String OPTION_AARCH64_FEATURE_SIMD_ENABLED = OPTION_AARCH64_FEATURE_SIMD
 			+ ".enabled";
 
 	public static final String OPTION_AARCH64_CMODEL = OPTION_PREFIX
-			+ ".base.aarch64.target.cmodel";
+			+ ".aarch64.target.cmodel";
 	public static final String OPTION_AARCH64_CMODEL_SMALL = OPTION_AARCH64_CMODEL
 			+ ".small";
 

@@ -24,21 +24,21 @@ public class FlashImageManagedOutputNameProvider implements
 
 		String value = null;
 
-		IOption option = tool.getOptionBySuperClassId(Option.OPTION_PREFIX
-				+ ".base.createflash.choice");
+		IOption option = tool
+				.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_CREATEFLASH_CHOICE);
 		if (option != null)
 			value = (String) option.getValue();
 		// System.out.println(value);
 
 		String ext = "unknown";
 		if (value != null) {
-			if (value.endsWith(".choice.ihex"))
+			if (value.endsWith("." + Option.CHOICE_IHEX))
 				ext = "hex";
-			else if (value.endsWith(".choice.srec"))
+			else if (value.endsWith("." + Option.CHOICE_SREC))
 				ext = "srec";
-			else if (value.endsWith(".choice.symbolsrec"))
+			else if (value.endsWith("." + Option.CHOICE_SYMBOLSREC))
 				ext = "symbolsrec";
-			else if (value.endsWith(".choice.binary"))
+			else if (value.endsWith("." + Option.CHOICE_BINARY))
 				ext = "bin";
 		}
 
