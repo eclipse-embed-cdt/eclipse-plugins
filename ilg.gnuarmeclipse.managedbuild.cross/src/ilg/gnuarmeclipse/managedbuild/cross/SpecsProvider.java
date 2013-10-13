@@ -17,8 +17,9 @@ import org.eclipse.cdt.managedbuilder.language.settings.providers.AbstractBuilti
 
 public class SpecsProvider {
 
-	private static String PROVIDER_ID = Option.getPrefix()
+	private static String PROVIDER_ID = Activator.getIdPrefix()
 			+ ".GCCBuiltinSpecsDetector";
+
 	// private static String PROVIDER_ID =
 	// "org.eclipse.cdt.managedbuilder.core.GCCBuiltinSpecsDetector";
 
@@ -31,6 +32,6 @@ public class SpecsProvider {
 	public static void clear() {
 		ILanguageSettingsProvider provider = getProvider();
 		((AbstractBuiltinSpecsDetector) provider).clear();
-		//System.out.println("clear " + provider.getName());
+		// System.out.println("clear " + provider.getName());
 	}
 }

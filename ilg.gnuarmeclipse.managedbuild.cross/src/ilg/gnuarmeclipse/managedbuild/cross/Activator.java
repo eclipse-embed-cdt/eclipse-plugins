@@ -26,6 +26,15 @@ public class Activator extends Plugin {
 	// The plug-in ID
 	public static final String PLUGIN_ID = "ilg.gnuarmeclipse.managedbuild.cross"; //$NON-NLS-1$
 
+	public static String getIdPrefix() {
+		// keep it explicitly defined, since it must not be changed, even if the
+		// plug-in id is changed
+		return "ilg.gnuarmeclipse.managedbuild.cross";
+	}
+
+	public static final String TOOLCHAIN_ID = Activator.getIdPrefix()
+			+ ".toolchain";
+
 	// The shared instance
 	private static Activator plugin;
 

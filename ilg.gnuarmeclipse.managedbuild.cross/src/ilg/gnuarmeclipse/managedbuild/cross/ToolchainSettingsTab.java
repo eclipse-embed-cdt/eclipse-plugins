@@ -72,6 +72,13 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 
 	@Override
 	public void createControls(Composite parent) {
+
+		if (!isThisPlugin())
+			return;
+
+		if (!page.isForProject())
+			return;
+
 		super.createControls(parent);
 
 		m_config = getCfg();
@@ -409,12 +416,14 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 		// leave the bottom three buttons as the user set them
 	}
 
+	// This event comes when the tab is selected after the windows is 
+	// displayed, to account for content change
 	@Override
 	public void updateData(ICResourceDescription cfgd) {
 		if (cfgd == null)
 			return;
 
-		// nothing more?
+		// currently there is no content to change since createControls() 
 	}
 
 	@Override
@@ -538,6 +547,10 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 
 	@Override
 	public boolean canBeVisible() {
+
+		if (!isThisPlugin())
+			return false;
+
 		if (page.isForProject()) {
 			if (page.isMultiCfg()) {
 				// ICMultiItemsHolder mih = (ICMultiItemsHolder) getCfg();
@@ -547,8 +560,10 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 				// return true;
 				// }
 				return false;
-			} else
+			} else {
+
 				return getCfg().getBuilder().isManagedBuildOn();
+			}
 		} else
 			return false;
 	}
@@ -557,4 +572,13 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 	protected void updateButtons() {
 	} // Do nothing. No buttons to update.
 
+	private boolean isThisPlugin() {
+		m_config = getCfg();
+		IToolChain toolchain = m_config.getToolChain();
+		String sToolchainId = toolchain.getBaseId();
+		if (sToolchainId.startsWith(Activator.TOOLCHAIN_ID + "."))
+			return true;
+
+		return false;
+	}
 }

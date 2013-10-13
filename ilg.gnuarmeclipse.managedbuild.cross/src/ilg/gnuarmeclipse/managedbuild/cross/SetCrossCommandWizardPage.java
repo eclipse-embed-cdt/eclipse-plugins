@@ -50,7 +50,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	private String m_selectedToolchainName;
 
 	// must match the plugin.xml <wizardPage ID="">
-	public static final String PAGE_ID = Option.getPrefix()
+	public static final String PAGE_ID = Activator.getIdPrefix()
 			+ ".setCrossCommandWizardPage"; //$NON-NLS-1$
 
 	public static final String CROSS_PROJECT_NAME = "projectName"; //$NON-NLS-1$
@@ -61,10 +61,10 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	// Note: The shared defaults keys don't have "cross" in them because we want
 	// to keep
 	// compatibility with defaults that were saved when it used to be a template
-	static final String SHARED_CROSS_TOOLCHAIN_NAME = Option.getPrefix() + "."
-			+ CROSS_TOOLCHAIN_NAME;
-	static final String SHARED_CROSS_TOOLCHAIN_PATH = Option.getPrefix() + "."
-			+ CROSS_TOOLCHAIN_PATH;
+	static final String SHARED_CROSS_TOOLCHAIN_NAME = Activator.getIdPrefix()
+			+ "." + CROSS_TOOLCHAIN_NAME;
+	static final String SHARED_CROSS_TOOLCHAIN_PATH = Activator.getIdPrefix()
+			+ "." + CROSS_TOOLCHAIN_PATH;
 
 	public SetCrossCommandWizardPage() {
 		pageID = PAGE_ID;
