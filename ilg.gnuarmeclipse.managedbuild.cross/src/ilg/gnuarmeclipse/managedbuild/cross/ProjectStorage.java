@@ -22,6 +22,10 @@ public class ProjectStorage {
 			e.printStackTrace();
 			return "";
 		}
+		
+		if (value == null)
+			value = "";
+		
 		return value.trim();
 	}
 
