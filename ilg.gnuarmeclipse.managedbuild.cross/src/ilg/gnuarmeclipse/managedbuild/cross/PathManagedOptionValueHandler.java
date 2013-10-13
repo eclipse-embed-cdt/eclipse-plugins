@@ -35,9 +35,11 @@ public class PathManagedOptionValueHandler extends ManagedOptionValueHandler {
 			}
 
 		} else if (event == EVENT_APPLY) {
+			
 			// Clear discovered includes and macros, to make room for
 			// new ones
-			SpecsProvider.clear();
+			// does not work like this :-(
+			// SpecsProvider.clear();
 
 			// save (quite often to my taste) the value
 			String path = (String) option.getValue();

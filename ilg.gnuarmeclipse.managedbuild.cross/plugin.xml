@@ -2061,7 +2061,6 @@
                isAbstract="false"
                name="%option.toolchain.prefix"
                resourceFilter="all"
-               valueHandler="ilg.gnuarmeclipse.managedbuild.cross.ClearProviderManagedOptionValueHandler"
                valueType="string">
             <enablement
                   type="UI_VISIBILITY">
@@ -2076,7 +2075,6 @@
                isAbstract="false"
                name="%option.toolchain.suffix"
                resourceFilter="all"
-               valueHandler="ilg.gnuarmeclipse.managedbuild.cross.ClearProviderManagedOptionValueHandler"
                valueType="string">
             <enablement
                   type="UI_VISIBILITY">
@@ -2092,7 +2090,6 @@
                isAbstract="false"
                name="%option.toolchain.command.c"
                resourceFilter="all"
-               valueHandler="ilg.gnuarmeclipse.managedbuild.cross.ClearProviderManagedOptionValueHandler"
                valueType="string">
             <enablement
                   type="UI_VISIBILITY">
@@ -2108,7 +2105,6 @@
                isAbstract="false"
                name="%option.toolchain.command.cpp"
                resourceFilter="all"
-               valueHandler="ilg.gnuarmeclipse.managedbuild.cross.ClearProviderManagedOptionValueHandler"
                valueType="string">
             <enablement
                   type="UI_VISIBILITY">

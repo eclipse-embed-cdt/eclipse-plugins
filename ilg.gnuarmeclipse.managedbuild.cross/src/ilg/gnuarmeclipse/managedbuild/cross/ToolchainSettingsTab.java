@@ -555,7 +555,8 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 			e.printStackTrace();
 		}
 		
-		SpecsProvider.clear();
+		// does not work like this
+		// SpecsProvider.clear();
 
 		// System.out.println("performApply()");
 

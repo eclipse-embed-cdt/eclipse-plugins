@@ -29,7 +29,7 @@ public class ClearProviderManagedOptionValueHandler implements
 
 		if (event == EVENT_APPLY) {
 
-			SpecsProvider.clear();
+			// SpecsProvider.clear();
 
 			// the event was handled
 			return true;

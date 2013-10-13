@@ -29,7 +29,7 @@ public class SpecsProvider {
 		return LanguageSettingsManager.getRawProvider(p);// ;
 	}
 
-	public static void clear() {
+	private static void clear() {
 		ILanguageSettingsProvider provider = getProvider();
 		((AbstractBuiltinSpecsDetector) provider).clear();
 		// System.out.println("clear " + provider.getName());
