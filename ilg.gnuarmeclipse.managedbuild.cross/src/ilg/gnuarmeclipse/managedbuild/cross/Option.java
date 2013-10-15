@@ -408,11 +408,6 @@ public class Option {
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
-		sValue = getOptionBooleanCommand(config,
-				OPTION_OPTIMIZATION_NOUSECXAATEXIT);
-		if (sValue != null && sValue.length() > 0)
-			sReturn += " " + sValue;
-
 		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_NOCOMMON);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
