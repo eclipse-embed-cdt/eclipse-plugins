@@ -172,8 +172,8 @@ public class Option {
 	public static final String OPTION_ADDTOOLS_PRINTSIZE = OPTION_ADDTOOLS
 			+ "printsize";
 
-	public static final String OPTION_ADDTOOLS_CREATEFLASH_CHOICE = OPTION_ADDTOOLS_CREATEFLASH
-			+ ".choice";
+	public static final String OPTION_CREATEFLASH_CHOICE = OPTION_PREFIX
+			+ ".createflash.choice";
 
 	public static final String CHOICE_IHEX = "ihex";
 	public static final String CHOICE_SREC = "srec";

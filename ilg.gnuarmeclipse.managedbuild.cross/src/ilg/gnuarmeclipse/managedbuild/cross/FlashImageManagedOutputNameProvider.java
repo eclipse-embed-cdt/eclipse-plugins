@@ -25,7 +25,7 @@ public class FlashImageManagedOutputNameProvider implements
 		String value = null;
 
 		IOption option = tool
-				.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_CREATEFLASH_CHOICE);
+				.getOptionBySuperClassId(Option.OPTION_CREATEFLASH_CHOICE);
 		if (option != null)
 			value = (String) option.getValue();
 		// System.out.println(value);
