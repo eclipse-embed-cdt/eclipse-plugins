@@ -1,0 +1,50 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  
+  <groupId>ilg</groupId>
+  <artifactId>ilg.gnuarmeclipse.parent</artifactId>
+  <version>1.1.0-SNAPSHOT</version>
+  <packaging>pom</packaging>
+  <name>GNU ARM Eclipse plug-in parent</name>
+  
+  <properties>
+    <tycho.version>0.18.1</tycho.version>
+  </properties>
+  
+  <modules>
+    <module>ilg.gnuarmeclipse.managedbuild.cross</module>
+    <module>ilg.gnuarmeclipse.managedbuild.cross-feature</module>
+    <module>ilg.gnuarmeclipse-repository</module>
+  </modules>
+  
+  <repositories>
+    <repository>
+      <id>eclipse-kepler</id>
+      <layout>p2</layout>
+      <url>http://download.eclipse.org/releases/kepler</url>
+    </repository>
+  </repositories>
+  
+  <profiles>
+    <profile>
+    </profile>
+  </profiles>
+  
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-maven-plugin</artifactId>
+        <version>${tycho.version}</version>
+        <extensions>true</extensions>
+      </plugin>
+    </plugins>
+    
+    <pluginManagement>
+      <plugins>
+      </plugins>
+    </pluginManagement>
+  </build>
+  
+</project>

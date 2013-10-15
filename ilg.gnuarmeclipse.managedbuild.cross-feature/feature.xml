@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="ilg.gnuarmeclipse.managedbuild.cross"
+      id="ilg.gnuarmeclipse.managedbuild.cross-feature"
       label="%featureName"
       version="1.1.0.qualifier"
       provider-name="%providerName"
@@ -17,6 +17,10 @@
    <license url="%licenseURL">
       %license
    </license>
+
+   <url>
+      <update label="%updateSiteName" url="http://gnuarmeclipse.sourceforge.net/updates"/>
+   </url>
 
    <plugin
          id="ilg.gnuarmeclipse.managedbuild.cross"
