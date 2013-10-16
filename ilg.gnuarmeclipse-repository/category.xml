@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/ilg.gnuarmeclipse.managedbuild.cross-feature_1.1.0.qualifier.jar" id="ilg.gnuarmeclipse.managedbuild.cross-feature" version="1.1.0.qualifier">
+   <feature url="features/ilg.gnuarmeclipse.managedbuild.cross-feature_1.1.0.qualifier.jar" id="ilg.gnuarmeclipse.managedbuild.cross" version="1.1.0.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
    <category-def name="ilg.gnuarmeclipse.category" label="CDT GNU Cross Development Tools"/>
