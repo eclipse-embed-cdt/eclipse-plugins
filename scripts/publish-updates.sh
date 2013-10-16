@@ -38,6 +38,12 @@ then
   RSYNC_OPTS+=" -n"
 fi
 
+if [ ! -d ../ilg.gnuarmeclipse-repository/target/repository ]
+then
+  echo "No repository folder found"
+  exit 1
+fi
+
 cd ../ilg.gnuarmeclipse-repository/target
 
 echo "Rsync-ing SourceForge $SF_FOLDER$TEST site"
