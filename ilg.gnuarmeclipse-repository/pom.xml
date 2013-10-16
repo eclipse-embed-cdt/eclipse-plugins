@@ -46,7 +46,7 @@
         <artifactId>tycho-p2-repository-plugin</artifactId>
         <version>${tycho.version}</version>
         <configuration>
-            <compress>true</compress>
+            <compress>false</compress>
         </configuration>
         
     </plugin>
@@ -54,4 +54,6 @@
   </plugins>
 </build>
   
+    <name>GNU ARM Eclipse plug-in repository</name>
+	<url>http://gnuarmeclipse.livius.net</url>
 </project>
