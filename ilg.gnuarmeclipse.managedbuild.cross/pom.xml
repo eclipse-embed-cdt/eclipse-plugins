@@ -15,4 +15,6 @@
   	<relativePath>../pom.xml</relativePath>
   </parent>
   
+  <name>GNU ARM Eclipse plug-in managed build code</name>
+  <url>http://gnuarmeclipse.livius.net</url>
 </project>

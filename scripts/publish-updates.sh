@@ -28,7 +28,9 @@ SF_USER=ilg-ul
 SF_DESTINATION="$SF_USER,gnuarmeclipse@frs.sourceforge.net:/home/frs/project/g/gn/gnuarmeclipse/$SF_FOLDER$TEST"
 SOURCE_LIST="."
 
-RSYNC_OPTS="-vrCt --exclude=scripts --exclude=.*"
+# -c skip based on checksum, not mod-time & size
+
+RSYNC_OPTS="-vrCct --exclude=scripts --exclude=.*"
 RSYNC_OPTS+=" --delete"
 
 if [ "$DRY" = "dry" ]
@@ -43,7 +45,7 @@ echo "Rsync-ing SourceForge $SF_FOLDER$TEST site"
 
 if [ -f *-SNAPSHOT.zip ]
 then
-  NUMDATE=$(ls repository/plugins/ | sed -e 's/.*_[0-9]*[.][0-9]*[.][0-9]*[.]\([0-9]*\)[.]jar/\1/')
+  NUMDATE=$(ls repository/plugins/ilg* | sed -e 's/.*_[0-9]*[.][0-9]*[.][0-9]*[.]\([0-9]*\)[.]jar/\1/')
   ARCHIVE_PREFIX=$(ls *-SNAPSHOT.zip | sed -e 's/\(.*\)-SNAPSHOT[.]zip/\1/')
 
   ARCHIVE_FOLDER=~/tmp/gnuarmeclipse-archive
