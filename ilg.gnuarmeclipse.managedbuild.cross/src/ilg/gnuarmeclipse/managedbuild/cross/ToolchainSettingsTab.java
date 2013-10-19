@@ -9,6 +9,7 @@
  *    Intel Corporation - Initial API and implementation
  *    James Blackburn (Broadcom Corp.)
  *******************************************************************************/
+
 package ilg.gnuarmeclipse.managedbuild.cross;
 
 import org.eclipse.cdt.core.settings.model.ICResourceDescription;
