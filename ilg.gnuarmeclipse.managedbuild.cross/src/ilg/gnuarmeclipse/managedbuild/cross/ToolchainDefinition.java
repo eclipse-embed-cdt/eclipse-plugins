@@ -252,6 +252,10 @@ public class ToolchainDefinition {
 				"aarch64"));
 
 		// 11
+		ms_list.add(new ToolchainDefinition(
+				"Custom", "arm-none-eabi-"));
+
+		// 12
 		// tc = new ToolchainDefinition("test", "myPrefix");
 		// tc.setTest();
 		// ms_list.add(tc);
