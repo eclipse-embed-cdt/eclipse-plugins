@@ -26,6 +26,6 @@
 int
 main(void)
 {
-  printf("$(messagearm)");
+  printf("$(messagearm)" "\n");
   return 0;
 }
