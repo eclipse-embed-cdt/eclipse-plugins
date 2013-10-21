@@ -26,7 +26,7 @@
 void
 SystemInit()
 {
-  // add your system hardware initialisations here
+  /* add your system hardware initialisations here */
 }
 
 
