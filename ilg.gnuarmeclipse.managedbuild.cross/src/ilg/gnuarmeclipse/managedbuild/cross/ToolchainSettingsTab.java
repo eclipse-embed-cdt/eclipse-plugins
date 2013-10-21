@@ -428,6 +428,21 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 			ICResourceDescription dst) {
 
 		IConfiguration config = getCfg(src.getConfiguration());
+
+		updateOptions(config);
+		// does not work like this
+		// SpecsProvider.clear();
+
+		// System.out.println("performApply()");
+
+	}
+
+	@Override
+	protected void performOK() {
+		updateOptions(m_config);
+	}
+
+	private void updateOptions(IConfiguration config){
 		IToolChain toolchain = config.getToolChain();
 
 		IOption option;
@@ -555,14 +570,8 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 		} catch (BuildException e) {
 			e.printStackTrace();
 		}
-		
-		// does not work like this
-		// SpecsProvider.clear();
-
-		// System.out.println("performApply()");
 
 	}
-
 	@Override
 	protected void performDefaults() {
 
