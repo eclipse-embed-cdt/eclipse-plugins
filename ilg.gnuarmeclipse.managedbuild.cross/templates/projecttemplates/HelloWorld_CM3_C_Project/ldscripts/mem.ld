@@ -1,4 +1,10 @@
-/* Memory layout for STM32F103[CRTV]B */
+/* Linker script to configure memory regions. 
+ * Need modifying for a specific board. 
+ *   FLASH.ORIGIN: starting address of flash
+ *   FLASH.LENGTH: length of flash
+ *   RAM.ORIGIN: starting address of RAM bank 0
+ *   RAM.LENGTH: length of RAM bank 0
+ */
 
 MEMORY
 {
