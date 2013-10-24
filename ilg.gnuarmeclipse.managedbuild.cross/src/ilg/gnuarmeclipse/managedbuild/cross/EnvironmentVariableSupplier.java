@@ -14,12 +14,15 @@ package ilg.gnuarmeclipse.managedbuild.cross;
 
 import java.io.File;
 
+import org.eclipse.cdt.core.cdtvariables.CdtVariableException;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.core.IToolChain;
+import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.cdt.managedbuilder.envvar.IBuildEnvironmentVariable;
 import org.eclipse.cdt.managedbuilder.envvar.IConfigurationEnvironmentVariableSupplier;
 import org.eclipse.cdt.managedbuilder.envvar.IEnvironmentVariableProvider;
+import org.eclipse.cdt.managedbuilder.macros.IBuildMacroProvider;
 import org.eclipse.core.runtime.Platform;
 
 public class EnvironmentVariableSupplier implements
@@ -59,14 +62,47 @@ public class EnvironmentVariableSupplier implements
 			IOption option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH); //$NON-NLS-1$
 			String path = (String) option.getValue();
-			File sysroot = new File(path);
-			File bin = new File(sysroot, "bin"); //$NON-NLS-1$
-			if (bin.isDirectory())
-				sysroot = bin;
-			// System.out.println("path=" + sysroot + " opt=" + path + " cfg="
-			// + configuration + " prj="
-			// + configuration.getManagedProject().getOwner().getName());
-			return new PathEnvironmentVariable(sysroot);
+
+			if (path != null) {
+				path = path.trim();
+
+				if (path.length() > 0) {
+
+					// if present, substitute macros
+					if (path.indexOf("${") >= 0) {
+						path = resolveMacros(path, configuration);
+					}
+
+					File sysroot = new File(path);
+					File bin = new File(sysroot, "bin"); //$NON-NLS-1$
+					if (bin.isDirectory())
+						sysroot = bin;
+					// System.out.println("path=" + sysroot + " opt=" + path +
+					// " cfg="
+					// + configuration + " prj="
+					// +
+					// configuration.getManagedProject().getOwner().getName());
+					return new PathEnvironmentVariable(sysroot);
+				}
+			}
+			return null;
+		}
+
+		private static String resolveMacros(String str,
+				IConfiguration configuration) {
+			
+			String result = str;
+			try {
+				result = ManagedBuildManager
+						.getBuildMacroProvider()
+						.resolveValue(
+								str,
+								"", " ", IBuildMacroProvider.CONTEXT_CONFIGURATION, configuration); //$NON-NLS-1$	//$NON-NLS-2$
+			} catch (CdtVariableException e) {
+			}
+
+			return result;
+
 		}
 
 		public static boolean isVar(String name) {
