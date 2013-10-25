@@ -11,14 +11,12 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross;
 
-import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IBuildObject;
 import org.eclipse.cdt.managedbuilder.core.IHoldsOptions;
 import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.core.IOptionApplicability;
-import org.eclipse.cdt.managedbuilder.core.IToolChain;
 
-public class ARMOptionApplicability implements IOptionApplicability {
+public class CommonOptionApplicability implements IOptionApplicability {
 
 	@Override
 	public boolean isOptionUsedInCommandLine(IBuildObject configuration,
@@ -44,22 +42,9 @@ public class ARMOptionApplicability implements IOptionApplicability {
 	private boolean isOption(IBuildObject configuration, IHoldsOptions holder,
 			IOption option) {
 
-		IToolChain toolchain = (IToolChain) holder;
-		String sArchitectureId = Option.OPTION_ARCHITECTURE;
-		IOption checkedOption = toolchain
-				.getOptionBySuperClassId(sArchitectureId); //$NON-NLS-1$
-		if (checkedOption != null) {
-			String sValue;
-			try {
-				sValue = checkedOption.getStringValue();
-				if (sValue.endsWith("." + Option.ARCHITECTURE_ARM))
-					return true;
-			} catch (BuildException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-		}
-		return false;
+		//IToolChain toolchain = (IToolChain) holder;
+		// not yet used
+		
+		return true;
 	}
 }
