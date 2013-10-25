@@ -612,9 +612,9 @@
          <option
                command="-Wa,-adhlns=&quot;$@.lst&quot;"
                defaultValue="false"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.lstfilename"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.asmlisting"
                isAbstract="true"
-               name="%option.compiler.lstfilename"
+               name="%option.compiler.asmlisting"
                valueType="boolean">
          </option>
          <option
@@ -2683,8 +2683,8 @@
           </option>
           <option
                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.misc"
-                id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.lstfilename"
-                superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.lstfilename">
+                id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.asmlisting"
+                superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.asmlisting">
           </option>
           <option
                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.misc"
@@ -2831,8 +2831,8 @@
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.misc"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.lstfilename"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.lstfilename">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.asmlisting"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.asmlisting">
             </option>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.misc"
@@ -3036,8 +3036,8 @@
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.misc"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.lstfilename"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.lstfilename">
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.asmlisting"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.asmlisting">
             </option>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.misc"
