@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %bundle.name
+Bundle-SymbolicName: ilg.gnuarmeclipse.templates.st;singleton:=true
+Bundle-Version: 1.1.0.qualifier
+Bundle-Activator: ilg.gnuarmeclipse.templates.st.Activator
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-ActivationPolicy: lazy
+Bundle-Vendor: %bundle.vendor
