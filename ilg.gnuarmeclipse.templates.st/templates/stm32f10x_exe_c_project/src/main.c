@@ -20,7 +20,7 @@
  semi-hosting or similar.
 
  For example, for toolchains derived from GNU Tools for Embedded,
- to enable semi-hosting, the following should be added to the linker:
+ to enable semi-hosting, the following was added to the linker:
 
  --specs=rdimon.specs -Wl,--start-group -lgcc -lc -lc -lm -lrdimon -Wl,--end-group
 
@@ -60,15 +60,17 @@ main(void)
 
   while (1)
     {
-      /* Set pin */
-      GPIO_SetBits(BLINK_PORT, (1 << BLINK_PIN));
+      /* Assume the LED is active low */
+
+      /* Turn on led by setting the pin low */
+      GPIO_ResetBits(BLINK_PORT, (1 << BLINK_PIN));
 
       i = 2 * BLINK_LOOPS;
       while (--i)
-        ;
+              ;
 
-      /* Reset pin */
-      GPIO_ResetBits(BLINK_PORT, (1 << BLINK_PIN));
+      /* Turn off led by setting the pin high */
+      GPIO_SetBits(BLINK_PORT, (1 << BLINK_PIN));
 
       i = BLINK_LOOPS;
       while (--i)
