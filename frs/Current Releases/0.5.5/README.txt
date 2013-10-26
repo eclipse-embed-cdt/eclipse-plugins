@@ -1,6 +1,7 @@
 WARNING: Not recommended for new designs!
 
-Please note that this will be last 0.5.x version, and is marked "End of life"; the 1.1.0 version is included, and has 'experimental' status.
+Please note that this will be the last 0.5.x version, and is marked "End of life"; 
+the new 1.x version is included as a demo, if you like it, please update.
 
 -----------------------------------------------------------------------
 
