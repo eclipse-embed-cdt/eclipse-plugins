@@ -133,14 +133,14 @@
 			<element>
 				<simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths" />
 				<simple-array name="values">
-					<element value="&quot;${ProjDirPath}/$(includeDir)&quot;" />
+					<element value="&quot;../$(includeDir)&quot;" />
 				</simple-array>
 				<simple name="path" value="" />
 			</element>
 			<element>
 				<simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" />
 				<simple-array name="values">
-					<element value="&quot;${ProjDirPath}/$(includeDir)&quot;" />
+					<element value="&quot;../$(includeDir)&quot;" />
 				</simple-array>
 				<simple name="path" value="" />
 			</element>
@@ -186,14 +186,14 @@
 			<element>
 				<simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths" />
 				<simple-array name="values">
-					<element value="&quot;${ProjDirPath}/$(libsDir)/$(cmsisDir)/$(includeDir)&quot;" />
+					<element value="&quot;../$(libsDir)/$(cmsisDir)/$(includeDir)&quot;" />
 				</simple-array>
 				<simple name="path" value="" />
 			</element>
 			<element>
 				<simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" />
 				<simple-array name="values">
-					<element value="&quot;${ProjDirPath}/$(libsDir)/$(cmsisDir)/$(includeDir)&quot;" />
+					<element value="&quot;../$(libsDir)/$(cmsisDir)/$(includeDir)&quot;" />
 				</simple-array>
 				<simple name="path" value="" />
 			</element>
@@ -311,14 +311,14 @@
 			<element>
 				<simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths" />
 				<simple-array name="values">
-					<element value="&quot;${ProjDirPath}/$(libsDir)/$(periphDir)/$(includeDir)&quot;" />
+					<element value="&quot;../$(libsDir)/$(periphDir)/$(includeDir)&quot;" />
 				</simple-array>
 				<simple name="path" value="" />
 			</element>
 			<element>
 				<simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" />
 				<simple-array name="values">
-					<element value="&quot;${ProjDirPath}/$(libsDir)/$(periphDir)/$(includeDir)&quot;" />
+					<element value="&quot;../$(libsDir)/$(periphDir)/$(includeDir)&quot;" />
 				</simple-array>
 				<simple name="path" value="" />
 			</element>
@@ -588,7 +588,7 @@
 			<element>
 				<simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.paths" />
 				<simple-array name="values">
-					<element value="&quot;${ProjDirPath}/$(ldscriptsDir)&quot;" />
+					<element value="&quot;../$(ldscriptsDir)&quot;" />
 				</simple-array>
 				<simple name="path" value="" />
 			</element>
