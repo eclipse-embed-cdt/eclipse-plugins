@@ -78,6 +78,43 @@
 		</complex-array>
 	</process>
 
+	<!-- include -->
+	<process type="org.eclipse.cdt.core.CreateFolder">
+		<simple name="projectName" value="$(projectName)"/>
+		<simple name="path" value="include"/>
+	</process>
+
+	<process type="org.eclipse.cdt.core.AddFiles">
+		<simple name="projectName" value="$(projectName)"/>
+		<complex-array name="files">
+			<element>
+				<simple name="source" value="src/stm32f10x_conf.h"/>
+				<simple name="target" value="include/stm32f10x_conf.h"/>
+				<simple name="replaceable" value="true"/>
+			</element>
+		</complex-array>
+	</process>
+
+	<process type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+		<simple name="projectName" value="$(projectName)" />		
+		<complex-array name="resourcePaths">
+			<element>
+				<simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths" />
+				<simple-array name="values">
+					<element value="../include" />
+				</simple-array>
+				<simple name="path" value="" />
+			</element>
+			<element>
+				<simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" />
+				<simple-array name="values">
+					<element value="../include" />
+				</simple-array>
+				<simple name="path" value="" />
+			</element>
+		</complex-array>
+	</process>
+
 	<!-- ldscripts -->
 	<process type="org.eclipse.cdt.core.CreateFolder">
 		<simple name="projectName" value="$(projectName)"/>
@@ -99,23 +136,6 @@
 			</element>
 		</complex-array>
 	</process>
-
-<!-- 
-	<process type="org.eclipse.cdt.core.CreateFolder">
-		<simple name="projectName" value="$(projectName)"/>
-		<simple name="path" value="libs"/>
-	</process>
-
-	<process type="org.eclipse.cdt.core.CreateFolder">
-		<simple name="projectName" value="$(projectName)"/>
-		<simple name="path" value="libs/CMSIS"/>
-	</process>
-
-	<process type="org.eclipse.cdt.core.CreateFolder">
-		<simple name="projectName" value="$(projectName)"/>
-		<simple name="path" value="libs/StdPeriph"/>
-	</process>
- -->
  
 	<!-- CMSIS -->
 	<process type="org.eclipse.cdt.core.CreateSourceFolder">
@@ -123,9 +143,29 @@
 		<simple name="path" value="libs/CMSIS/src"/>
 	</process>
 
-	<process type="org.eclipse.cdt.managedbuilder.core.CreateIncludeFolder">
+	<process type="org.eclipse.cdt.core.CreateFolder">
 		<simple name="projectName" value="$(projectName)"/>
 		<simple name="path" value="libs/CMSIS/include"/>
+	</process>
+
+	<process type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+		<simple name="projectName" value="$(projectName)" />		
+		<complex-array name="resourcePaths">
+			<element>
+				<simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths" />
+				<simple-array name="values">
+					<element value="../libs/CMSIS/include" />
+				</simple-array>
+				<simple name="path" value="" />
+			</element>
+			<element>
+				<simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" />
+				<simple-array name="values">
+					<element value="../libs/CMSIS/include" />
+				</simple-array>
+				<simple name="path" value="" />
+			</element>
+		</complex-array>
 	</process>
 
 	<process type="org.eclipse.cdt.core.CreateFolder">
@@ -227,9 +267,29 @@
 		<simple name="path" value="libs/StdPeriph/src"/>
 	</process>
 
-	<process type="org.eclipse.cdt.managedbuilder.core.CreateIncludeFolder">
+	<process type="org.eclipse.cdt.core.CreateFolder">
 		<simple name="projectName" value="$(projectName)"/>
 		<simple name="path" value="libs/StdPeriph/include"/>
+	</process>
+
+	<process type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+		<simple name="projectName" value="$(projectName)" />		
+		<complex-array name="resourcePaths">
+			<element>
+				<simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths" />
+				<simple-array name="values">
+					<element value="../libs/StdPeriph/include" />
+				</simple-array>
+				<simple name="path" value="" />
+			</element>
+			<element>
+				<simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" />
+				<simple-array name="values">
+					<element value="../libs/StdPeriph/include" />
+				</simple-array>
+				<simple name="path" value="" />
+			</element>
+		</complex-array>
 	</process>
 
 	<process type="org.eclipse.cdt.core.AddFiles">
@@ -508,6 +568,39 @@
 			<element>
 				<simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.other" />
 				<simple name="value" value="$(semihostingOptions)" />
+				<simple name="path" value="" />
+			</element>
+		</complex-array>
+	</process>
+
+	<process type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+		<simple name="projectName" value="$(projectName)" />		
+		<complex-array name="resourcePaths">
+			<element>
+				<simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" />
+				<simple-array name="values">
+					<element value="STM32F10X_MD" />
+				</simple-array>
+				<simple name="path" value="" />
+			</element>
+			<element>
+				<simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" />
+				<simple-array name="values">
+					<element value="STM32F10X_MD" />
+				</simple-array>
+				<simple name="path" value="" />
+			</element>
+		</complex-array>
+	</process>
+
+	<process type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+		<simple name="projectName" value="$(projectName)" />		
+		<complex-array name="resourcePaths">
+			<element>
+				<simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.files" />
+				<simple-array name="values">
+					<element value="stm32f10x_conf.h" />
+				</simple-array>
 				<simple name="path" value="" />
 			</element>
 		</complex-array>
