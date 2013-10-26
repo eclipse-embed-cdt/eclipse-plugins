@@ -656,6 +656,7 @@
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.dirs.include.paths"
                isAbstract="true"
                name="%option.compiler.include.paths"
+               useByScannerDiscovery="false"
                valueType="includePath">
          </option>
          <option
@@ -664,6 +665,7 @@
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.dirs.include.files"
                isAbstract="true"
                name="%option.compiler.include.files"
+               useByScannerDiscovery="false"
                valueType="includeFiles">
          </option>
          <option
