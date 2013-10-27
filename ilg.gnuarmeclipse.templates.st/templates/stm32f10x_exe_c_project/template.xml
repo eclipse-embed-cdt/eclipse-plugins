@@ -33,6 +33,8 @@
 		<property id="ramSize" label="%STM32F10x.ramSize.label"
 			description="%STM32F10x.ramSize.description" type="input" pattern="[0-9]*"
 			default="%STM32F10x.ramSize.default" hidden="false" persist="true" />
+
+		<!-- 
 		<property id="includeUsb" label="%STM32F10x.includeUsb.label"
 			description="%STM32F10x.includeUsb.description" type="select"
 			default="%STM32F10x.includeUsb.default" hidden="false" persist="true">
@@ -41,6 +43,7 @@
 			<item value="host" label="Host" />
 			<item value="otg" label="OTG" />
 		</property>
+		 -->
 	</property-group>
 
 	<property-group id="folders" label="%STM32F10x.group.folders.label"
@@ -719,6 +722,7 @@
 	</process>
 
 	<!-- USB -->
+	<!-- 
 	<if condition="$(includeUsb)!=none">
 
 		<process type="org.eclipse.cdt.core.CreateSourceFolder">
@@ -763,6 +767,8 @@
 		</process>
 
 	</if>
+	-->
+	 
 	<!-- Options -->
 	<process
 		type="org.eclipse.cdt.managedbuilder.core.SetMBSStringListOptionValues">
