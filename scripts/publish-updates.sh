@@ -51,7 +51,7 @@ echo "Rsync-ing SourceForge $SF_FOLDER$TEST site"
 
 if [ -f *-SNAPSHOT.zip ]
 then
-  NUMDATE=$(ls repository/plugins/ilg* | sed -e 's/.*_[0-9]*[.][0-9]*[.][0-9]*[.]\([0-9]*\)[.]jar/\1/')
+  NUMDATE=$(ls repository/plugins/ilg.gnuarmeclipse.managedbuild.cross* | sed -e 's/.*_[0-9]*[.][0-9]*[.][0-9]*[.]\([0-9]*\)[.]jar/\1/')
   ARCHIVE_PREFIX=$(ls *-SNAPSHOT.zip | sed -e 's/\(.*\)-SNAPSHOT[.]zip/\1/')
 
   ARCHIVE_FOLDER=~/tmp/gnuarmeclipse-archive
