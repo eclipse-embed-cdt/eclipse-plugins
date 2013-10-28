@@ -17,5 +17,5 @@ to
 to address the strex limitation of having different input/output registers.
 
 
-For more details manuals and the complete set of samples, please refer to the
+For more details, manuals and the complete set of samples, please refer to the
 original ST archives.

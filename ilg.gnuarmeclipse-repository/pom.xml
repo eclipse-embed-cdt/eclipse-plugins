@@ -46,7 +46,7 @@
         <artifactId>tycho-p2-repository-plugin</artifactId>
         <version>${tycho.version}</version>
         <configuration>
-            <compress>false</compress>
+            <compress>true</compress>
         </configuration>
         
     </plugin>

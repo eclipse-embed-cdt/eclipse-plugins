@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
-Bundle-SymbolicName: ilg.gnuarmeclipse.templates.st;singleton:=true
+Bundle-SymbolicName: ilg.gnuarmeclipse.templates.stm;singleton:=true
 Bundle-Version: 1.1.0.qualifier
-Bundle-Activator: ilg.gnuarmeclipse.templates.st.Activator
+Bundle-Activator: ilg.gnuarmeclipse.templates.stm.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  ilg.gnuarmeclipse.templates.core;bundle-version="1.1.0"
