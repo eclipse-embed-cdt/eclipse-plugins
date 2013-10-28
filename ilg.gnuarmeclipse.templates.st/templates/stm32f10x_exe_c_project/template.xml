@@ -139,23 +139,7 @@
 		<complex-array name="resourcePaths">
 			<element>
 				<simple name="id"
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths" />
-				<simple-array name="values">
-					<element value="&quot;../$(includeDir)&quot;" />
-				</simple-array>
-				<simple name="path" value="" />
-			</element>
-			<element>
-				<simple name="id"
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" />
-				<simple-array name="values">
-					<element value="&quot;../$(includeDir)&quot;" />
-				</simple-array>
-				<simple name="path" value="" />
-			</element>
-			<element>
-				<simple name="id"
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths" />
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
 				<simple-array name="values">
 					<element value="&quot;../$(includeDir)&quot;" />
 				</simple-array>
@@ -203,23 +187,7 @@
 		<complex-array name="resourcePaths">
 			<element>
 				<simple name="id"
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths" />
-				<simple-array name="values">
-					<element value="&quot;../$(libsDir)/$(cmsisDir)/$(includeDir)&quot;" />
-				</simple-array>
-				<simple name="path" value="" />
-			</element>
-			<element>
-				<simple name="id"
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" />
-				<simple-array name="values">
-					<element value="&quot;../$(libsDir)/$(cmsisDir)/$(includeDir)&quot;" />
-				</simple-array>
-				<simple name="path" value="" />
-			</element>
-			<element>
-				<simple name="id"
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths" />
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
 				<simple-array name="values">
 					<element value="&quot;../$(libsDir)/$(cmsisDir)/$(includeDir)&quot;" />
 				</simple-array>
@@ -238,21 +206,20 @@
 		<complex-array name="files">
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/$(cmsisDir)/CM3/CoreSupport/core_cm3.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/CoreSupport/core_cm3.h" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cm3.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
-				<!-- <simple name="source" value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/$(cmsisDir)/CM3/DeviceSupport/ST/STM32F10x/stm32f10x.h"/> -->
-				<simple name="source" value="src/stm32f10x.h" />
+				<simple name="source" value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/stm32f10x.h"/>
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/$(includeDir)/stm32f10x.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/$(cmsisDir)/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.h" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/$(includeDir)/system_stm32f10x.h" />
 				<simple name="replaceable" value="true" />
@@ -265,7 +232,7 @@
 
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/$(cmsisDir)/CM3/CoreSupport/core_cm3.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/CoreSupport/core_cm3-patched.c" />
 				<simple name="target" value="$(libsDir)/$(cmsisDir)/$(sourceDir)/core_cm3.c" />
 				<simple name="replaceable" value="true" />
 			</element>
@@ -282,7 +249,7 @@
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/$(cmsisDir)/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/$(sourceDir)/system_stm32f10x.c" />
 				<simple name="replaceable" value="true" />
@@ -290,56 +257,56 @@
 
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/$(cmsisDir)/CM3/DeviceSupport/ST/STM32F10x/startup/gcc_ride7/startup_stm32f10x_cl.s" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/gcc_ride7/startup_stm32f10x_cl.s" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/startup/startup_stm32f10x_cl.s" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/$(cmsisDir)/CM3/DeviceSupport/ST/STM32F10x/startup/gcc_ride7/startup_stm32f10x_hd_vl.s" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/gcc_ride7/startup_stm32f10x_hd_vl.s" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/startup/startup_stm32f10x_hd_vl.s" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/$(cmsisDir)/CM3/DeviceSupport/ST/STM32F10x/startup/gcc_ride7/startup_stm32f10x_hd.s" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/gcc_ride7/startup_stm32f10x_hd.s" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/startup/startup_stm32f10x_hd.s" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/$(cmsisDir)/CM3/DeviceSupport/ST/STM32F10x/startup/gcc_ride7/startup_stm32f10x_ld_vl.s" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/gcc_ride7/startup_stm32f10x_ld_vl.s" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/startup/startup_stm32f10x_ld_vl.s" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/$(cmsisDir)/CM3/DeviceSupport/ST/STM32F10x/startup/gcc_ride7/startup_stm32f10x_ld.s" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/gcc_ride7/startup_stm32f10x_ld.s" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/startup/startup_stm32f10x_ld.s" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/$(cmsisDir)/CM3/DeviceSupport/ST/STM32F10x/startup/gcc_ride7/startup_stm32f10x_md_vl.s" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/gcc_ride7/startup_stm32f10x_md_vl.s" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/startup/startup_stm32f10x_md_vl.s" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/$(cmsisDir)/CM3/DeviceSupport/ST/STM32F10x/startup/gcc_ride7/startup_stm32f10x_md.s" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/gcc_ride7/startup_stm32f10x_md.s" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/startup/startup_stm32f10x_md.s" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/$(cmsisDir)/CM3/DeviceSupport/ST/STM32F10x/startup/gcc_ride7/startup_stm32f10x_xl.s" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/startup/gcc_ride7/startup_stm32f10x_xl.s" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/startup/startup_stm32f10x_xl.s" />
 				<simple name="replaceable" value="true" />
@@ -364,23 +331,7 @@
 		<complex-array name="resourcePaths">
 			<element>
 				<simple name="id"
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths" />
-				<simple-array name="values">
-					<element value="&quot;../$(libsDir)/$(periphDir)/$(includeDir)&quot;" />
-				</simple-array>
-				<simple name="path" value="" />
-			</element>
-			<element>
-				<simple name="id"
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" />
-				<simple-array name="values">
-					<element value="&quot;../$(libsDir)/$(periphDir)/$(includeDir)&quot;" />
-				</simple-array>
-				<simple name="path" value="" />
-			</element>
-			<element>
-				<simple name="id"
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths" />
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
 				<simple-array name="values">
 					<element value="&quot;../$(libsDir)/$(periphDir)/$(includeDir)&quot;" />
 				</simple-array>
@@ -394,160 +345,160 @@
 		<complex-array name="files">
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/misc.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/misc.c" />
 				<simple name="target" value="$(libsDir)/$(periphDir)/$(sourceDir)/misc.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_adc.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_adc.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_adc.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_bkp.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_bkp.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_bkp.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_can.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_can.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_can.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_cec.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_cec.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_cec.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_crc.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_crc.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_crc.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_dac.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_dac.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_dac.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_dbgmcu.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_dbgmcu.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_dbgmcu.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_dma.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_dma.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_dma.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_exti.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_exti.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_exti.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_flash.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_flash.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_flash.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_fsmc.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_fsmc.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_fsmc.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_gpio.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_gpio.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_gpio.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_i2c.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_i2c.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_i2c.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_iwdg.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_iwdg.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_iwdg.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_pwr.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_pwr.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_pwr.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_rcc.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_rcc.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_rcc.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_rtc.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_rtc.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_rtc.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_sdio.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_sdio.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_sdio.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_spi.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_spi.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_spi.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_tim.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_tim.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_tim.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_usart.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_usart.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_usart.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/src/stm32f10x_wwdg.c" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/src/stm32f10x_wwdg.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f10x_wwdg.c" />
 				<simple name="replaceable" value="true" />
@@ -560,162 +511,186 @@
 		<complex-array name="files">
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/misc.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/misc.h" />
 				<simple name="target" value="$(libsDir)/$(periphDir)/$(includeDir)/misc.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_adc.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_adc.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_adc.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_bkp.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_bkp.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_bkp.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_can.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_can.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_can.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_cec.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_cec.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_cec.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_crc.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_crc.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_crc.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_dac.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_dac.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_dac.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_dbgmcu.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_dbgmcu.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_dbgmcu.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_dma.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_dma.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_dma.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_exti.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_exti.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_exti.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_flash.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_flash.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_flash.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_fsmc.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_fsmc.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_fsmc.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_gpio.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_gpio.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_gpio.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_i2c.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_i2c.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_i2c.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_iwdg.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_iwdg.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_iwdg.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_pwr.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_pwr.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_pwr.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_rcc.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_rcc.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_rcc.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_rtc.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_rtc.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_rtc.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_sdio.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_sdio.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_sdio.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_spi.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_spi.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_spi.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_tim.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_tim.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_tim.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_usart.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_usart.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_usart.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_$(periphDir)_Driver/inc/stm32f10x_wwdg.h" />
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_wwdg.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f10x_wwdg.h" />
+				<simple name="replaceable" value="true" />
+			</element>
+		</complex-array>
+	</process>
+
+	<process type="org.eclipse.cdt.core.AddFiles">
+		<simple name="projectName" value="$(projectName)" />
+		<complex-array name="files">
+			<element>
+				<simple name="source"
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/README.txt" />
+				<simple name="target" value="$(libsDir)/README.txt" />
+				<simple name="replaceable" value="true" />
+			</element>
+			<element>
+				<simple name="source"
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/Release_Notes.html" />
+				<simple name="target" value="$(libsDir)/$(cmsisDir)/Release_Notes.html" />
+				<simple name="replaceable" value="true" />
+			</element>
+			<element>
+				<simple name="source"
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Release_Notes.html" />
+				<simple name="target" value="$(libsDir)/$(periphDir)/Release_Notes.html" />
 				<simple name="replaceable" value="true" />
 			</element>
 		</complex-array>
@@ -776,16 +751,7 @@
 		<complex-array name="resourcePaths">
 			<element>
 				<simple name="id"
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.scriptfile" />
-				<simple-array name="values">
-					<element value="mem.ld" />
-					<element value="sections.ld" />
-				</simple-array>
-				<simple name="path" value="" />
-			</element>
-			<element>
-				<simple name="id"
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.scriptfile" />
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.scriptfile" />
 				<simple-array name="values">
 					<element value="mem.ld" />
 					<element value="sections.ld" />
@@ -801,15 +767,7 @@
 		<complex-array name="resourcePaths">
 			<element>
 				<simple name="id"
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.paths" />
-				<simple-array name="values">
-					<element value="&quot;../$(ldscriptsDir)&quot;" />
-				</simple-array>
-				<simple name="path" value="" />
-			</element>
-			<element>
-				<simple name="id"
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.paths" />
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.paths" />
 				<simple-array name="values">
 					<element value="&quot;../$(ldscriptsDir)&quot;" />
 				</simple-array>
@@ -824,13 +782,7 @@
 		<complex-array name="resourcePaths">
 			<element>
 				<simple name="id"
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.other" />
-				<simple name="value" value="$(semihostingOptions)" />
-				<simple name="path" value="" />
-			</element>
-			<element>
-				<simple name="id"
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.other" />
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.other" />
 				<simple name="value" value="$(semihostingOptions)" />
 				<simple name="path" value="" />
 			</element>
@@ -843,27 +795,42 @@
 		<complex-array name="resourcePaths">
 			<element>
 				<simple name="id"
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.defs" />
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
 				<simple-array name="values">
 					<element value="$(chipFamily)" />
 				</simple-array>
 				<simple name="path" value="" />
 			</element>
+		</complex-array>
+	</process>
+
+	<process
+		type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+		<simple name="projectName" value="$(projectName)" />
+		<complex-array name="resourcePaths">
 			<element>
 				<simple name="id"
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.defs" />
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
 				<simple-array name="values">
-					<element value="$(chipFamily)" />
+					<element value="USE_STDPERIPH_DRIVER" />
 				</simple-array>
 				<simple name="path" value="" />
 			</element>
+		</complex-array>
+	</process>
+
+	<process
+		type="ilg.gnuarmeclipse.templates.core.AppendToMBSStringListOptionValues">
+		<simple name="projectName" value="$(projectName)" />
+		<complex-array name="resourcePaths">
 			<element>
 				<simple name="id"
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.defs" />
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
 				<simple-array name="values">
-					<element value="$(chipFamily)" />
+					<element value="DEBUG" />
 				</simple-array>
 				<simple name="path" value="" />
+				<simple name="buildType" value="debug" />
 			</element>
 		</complex-array>
 	</process>

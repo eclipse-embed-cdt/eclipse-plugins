@@ -14,9 +14,12 @@
 
 /*
 
- Print a greeting message on standard output and start blink a led.
+ In debug configurations, demonstrate how to print a greeting message
+ on standard output.
 
- On embedded platforms printing the message might require
+ Then enter a continuous loop and blink a led.
+
+ On embedded platforms printing the greeting might require
  semi-hosting or similar.
 
  For example, for toolchains derived from GNU Tools for Embedded,
@@ -33,14 +36,20 @@
 
 #define BLINK_LOOPS     1000000
 
+extern void initialise_monitor_handles(void);
+
 int
 main(void)
 {
+#if defined(DEBUG)
+  /* required for semi-hosting initialisation */
+  initialise_monitor_handles();
+
+  /* send greeting to semi-hosting output */
   printf("$(messagearm)" "\n");
+#endif
 
   GPIO_InitTypeDef GPIO_InitStructure;
-
-  uint32_t i;
 
   /*!< At this stage the microcontroller clock setting is already configured,
    this is done through SystemInit() function which is called from startup
@@ -53,7 +62,7 @@ main(void)
   RCC_APB2PeriphClockCmd(BLINK_RCC_BIT, ENABLE);
 
   /* Configure pin in output push/pull mode */
-  GPIO_InitStructure.GPIO_Pin = BLINK_PIN;
+  GPIO_InitStructure.GPIO_Pin = (1 << BLINK_PIN);
   GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
   GPIO_Init(BLINK_PORT, &GPIO_InitStructure);
@@ -64,6 +73,8 @@ main(void)
 
       /* Turn on led by setting the pin low */
       GPIO_ResetBits(BLINK_PORT, (1 << BLINK_PIN));
+
+      uint32_t i;
 
       i = 2 * BLINK_LOOPS;
       while (--i)

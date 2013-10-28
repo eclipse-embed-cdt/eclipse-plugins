@@ -14,6 +14,7 @@
   <modules>
     <module>ilg.gnuarmeclipse.managedbuild.cross</module>
     <module>ilg.gnuarmeclipse.managedbuild.cross-feature</module>
+    <module>ilg.gnuarmeclipse.templates.core</module>
     <module>ilg.gnuarmeclipse.templates.st</module>
     <module>ilg.gnuarmeclipse.templates.st-feature</module>
     <module>../gnuarmeclipse-svn/Eclipse/current/org.eclipse.cdt.cross.arm.gnu</module>

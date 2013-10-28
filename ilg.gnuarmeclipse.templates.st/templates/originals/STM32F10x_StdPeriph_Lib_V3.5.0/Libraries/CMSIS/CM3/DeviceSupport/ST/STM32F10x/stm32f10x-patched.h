@@ -8319,12 +8319,13 @@ typedef struct
   * @}
   */
 
-// Added by ILG
-#include "stm32f10x_conf.h"
-
 #ifdef __cplusplus
 }
 #endif
+
+// Added by ILG
+#include "stm32f10x_conf.h"
+
 
 #endif /* __STM32F10x_H */
 
