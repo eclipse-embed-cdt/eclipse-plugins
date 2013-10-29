@@ -755,7 +755,7 @@
 	</process>
 
 	<process
-		type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringOptionValue">
+		type="ilg.gnuarmeclipse.templates.core.AppendToMBSStringOptionValue">
 		<simple name="projectName" value="$(projectName)" />
 		<complex-array name="resourcePaths">
 			<element>
@@ -763,6 +763,7 @@
 					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.other" />
 				<simple name="value" value="$(semihostingOptions)" />
 				<simple name="path" value="" />
+				<simple name="buildType" value="debug" />
 			</element>
 		</complex-array>
 	</process>
