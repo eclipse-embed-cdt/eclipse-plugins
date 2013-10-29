@@ -49,6 +49,13 @@ cd ../ilg.gnuarmeclipse-repository/target
 echo "Rsync-ing SourceForge $SF_FOLDER$TEST site"
 (cd repository; rsync -e ssh $RSYNC_OPTS $SOURCE_LIST $SF_DESTINATION)
 
+if [ "$TEST" = "test" ]
+then
+  echo "Published on the test site"
+else
+  echo "Published on the main site. Don't forget to publish the archive too!"
+fi
+
 if [ -f *-SNAPSHOT.zip ]
 then
   NUMDATE=$(ls repository/plugins/ilg.gnuarmeclipse.managedbuild.cross* | sed -e 's/.*_[0-9]*[.][0-9]*[.][0-9]*[.]\([0-9]*\)[.]jar/\1/')
