@@ -72,6 +72,9 @@ public class Utils {
 			IToolChain toolchain, IOption option, String value)
 			throws BuildException {
 
+		// System.out.println("setOptionForced(" + config.getName() + ", "
+		// + toolchain.getName() + ", " + option.getName() + ", " + value
+		// + ") was " + option.getStringValue());
 		// setOption() does nothing if the new value is identical to the
 		// previous one. this is generally ok, except the initial settings
 		// when we do not want to depend on defaults, so we do this in
@@ -80,4 +83,21 @@ public class Utils {
 		IOption newOption = config.setOption(toolchain, option, "?!");
 		return config.setOption(toolchain, newOption, value);
 	}
+
+	public static IOption forceOptionRewrite(IConfiguration config,
+			IToolChain toolchain, IOption option) throws BuildException {
+
+		String value = option.getStringValue();
+		// System.out.println("setOptionForced(" + config.getName() + ", "
+		// + toolchain.getName() + ", " + option.getName() + ") was "
+		// + option.getStringValue());
+		// setOption() does nothing if the new value is identical to the
+		// previous one. this is generally ok, except the initial settings
+		// when we do not want to depend on defaults, so we do this in
+		// two steps, we first set an impossible value, than the actual
+		// one
+		IOption newOption = config.setOption(toolchain, option, "?!");
+		return config.setOption(toolchain, newOption, value);
+	}
+
 }

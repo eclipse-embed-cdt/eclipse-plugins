@@ -171,13 +171,11 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 		if ("arm".equals(sArchitecture)) {
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_ARM_TARGET_FAMILY);
-			Utils.setOptionForced(config, toolchain, option,
-					Option.OPTION_ARM_MCPU_CORTEXM3);
+			Utils.forceOptionRewrite(config, toolchain, option);
 
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_ARM_TARGET_INSTRUCTIONSET);
-			Utils.setOptionForced(config, toolchain, option,
-					Option.OPTION_ARM_INSTRUCTIONSET_THUMB);
+			Utils.forceOptionRewrite(config, toolchain, option);
 		} else if ("aarch64".equals(sArchitecture)) {
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_AARCH64_TARGET_FAMILY);

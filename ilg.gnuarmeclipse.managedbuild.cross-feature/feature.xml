@@ -2,7 +2,7 @@
 <feature
       id="ilg.gnuarmeclipse.managedbuild.cross"
       label="%featureName"
-      version="1.1.3.qualifier"
+      version="1.1.4.qualifier"
       provider-name="%providerName"
       plugin="ilg.gnuarmeclipse.managedbuild.cross">
 
