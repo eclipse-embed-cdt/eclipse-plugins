@@ -5,6 +5,9 @@ with the following folders removed to save space:
 - Project
 - Utilities
 
+Also the following files were removed:
+- stm32f10x_stdperiph_lib_um.chm
+
 The only modified file is core_cm3.c, where the strexb, strexh, strex calls 
 were changed from:
 
