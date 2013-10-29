@@ -49,7 +49,7 @@ cd ../ilg.gnuarmeclipse-repository/target
 echo "Rsync-ing SourceForge $SF_FOLDER$TEST site"
 (cd repository; rsync -e ssh $RSYNC_OPTS $SOURCE_LIST $SF_DESTINATION)
 
-if [ "$TEST" = "test" ]
+if [ "$TEST" = "-test" ]
 then
   echo "Published on the test site"
 else
