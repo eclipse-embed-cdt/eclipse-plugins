@@ -1,6 +1,6 @@
 /**
   ******************************************************************************
-  * @file    stm32f10x_conf.h
+  * @file    Project/STM32F10x_StdPeriph_Template/stm32f10x_conf.h
   * @author  MCD Application Team
   * @version V3.5.0
   * @date    08-April-2011
@@ -72,7 +72,7 @@
   #define assert_param(expr) ((void)0)
 #endif /* USE_FULL_ASSERT */
 
-#define  VECT_TAB_SRAM
+//#define  VECT_TAB_SRAM
 
 #endif /* __STM32F10x_CONF_H */
 

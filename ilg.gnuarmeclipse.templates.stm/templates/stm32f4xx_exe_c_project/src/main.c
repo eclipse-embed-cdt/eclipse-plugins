@@ -62,7 +62,7 @@ Delay(__IO uint32_t nTime);
 
 /* LED definitions -----------------------------------------------------------*/
 
-/* The GREEN LED on STM32F4DISCOVERY */
+/* STM32F4DISCOVERY definitions (the GREEN LED) */
 /* Adjust it for your own board */
 
 #define BLINK_PORT      GPIOD
@@ -86,7 +86,7 @@ main(void)
   initialise_monitor_handles();
 
   /* send greeting to semi-hosting output */
-  printf("$(messagearm)" "\n");
+  printf("Hello ARM World!\n");
 #endif
 
   /*!< At this stage the microcontroller clock setting is already configured, 

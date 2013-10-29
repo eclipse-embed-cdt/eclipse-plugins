@@ -64,20 +64,6 @@
 			mandatory="false" persist="true" />
 	</property-group>
 
-	<property-group id="author" label="%STM32F4xx.group.author.label"
-		description="%STM32F4xx.group.author.description" type="PAGES-ONLY"
-		help="help.html">
-		<property id="author" label="%STM32F4xx.author.label"
-			description="%STM32F4xx.author.description" type="input" pattern=".*"
-			default="" hidden="false" persist="true" />
-		<property id="copyright" label="%STM32F4xx.copyright.label"
-			description="%STM32F4xx.copyright.description" type="input" pattern=".*"
-			default="%STM32F4xx.copyright.default" hidden="false" persist="true" />
-		<property id="messagearm" label="%STM32F4xx.message.label"
-			description="%STM32F4xx.message.description" type="input" pattern=".*"
-			default="%STM32F4xx.message.default" hidden="false" persist="true" />
-	</property-group>
-
 	<process type="org.eclipse.cdt.managedbuilder.core.NewManagedProject">
 		<simple name="name" value="$(projectName)" />
 		<simple name="artifactExtension" value="elf" />

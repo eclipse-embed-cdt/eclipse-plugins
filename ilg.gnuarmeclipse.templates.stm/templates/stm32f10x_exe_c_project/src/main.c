@@ -1,14 +1,23 @@
-/*
- ============================================================================
- Name        : $(baseName).c
- Author      : $(author)
- Version     :
- Copyright   : $(copyright)
- Description : Hello World in C
- ============================================================================
- */
-
-#include <stdio.h>
+/**
+  ******************************************************************************
+  * @file    Project/STM32F10x_StdPeriph_Template/main.c (modified)
+  * @author  MCD Application Team
+  * @version V3.5.0
+  * @date    08-April-2011
+  * @brief   Main program body
+  ******************************************************************************
+  * @attention
+  *
+  * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  *
+  * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  ******************************************************************************
+  */
 
 #include "stm32f10x.h"
 
@@ -36,7 +45,13 @@
 
 #define BLINK_LOOPS     1000000
 
+#if defined(DEBUG)
+
+#include <stdio.h>
+
 extern void initialise_monitor_handles(void);
+
+#endif
 
 int
 main(void)
@@ -46,7 +61,7 @@ main(void)
   initialise_monitor_handles();
 
   /* send greeting to semi-hosting output */
-  printf("$(messagearm)" "\n");
+  printf("Hello ARM World!\n");
 #endif
 
   GPIO_InitTypeDef GPIO_InitStructure;

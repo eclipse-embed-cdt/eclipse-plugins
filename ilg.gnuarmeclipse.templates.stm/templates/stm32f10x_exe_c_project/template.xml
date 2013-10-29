@@ -7,7 +7,7 @@
 	<property-group id="chip" label="%STM32F10x.group.target.label"
 		description="%STM32F10x.group.target.description" type="PAGES-ONLY"
 		help="help.html">
-		<property id="chipFamily" label="%STM32F10x.chipFamily.label"
+		<property id="STM32F1chipFamily" label="%STM32F10x.chipFamily.label"
 			description="%STM32F10x.chipFamily.description" type="select"
 			default="%STM32F10x.chipFamily.default" hidden="false" persist="true">
 			<item value="STM32F10X_LD" label="STM32f10x Low Density" />
@@ -18,19 +18,11 @@
 			<item value="STM32F10X_HD_VL" label="STM32f10x High Density Value Line" />
 			<item value="STM32F10X_CL" label="STM32f10x Connectivity line" />
 			<item value="STM32F10X_XL" label="STM32f10x Extra Large Density" />
-			<!-- <item value="%STM32F10x.chipFamily.ld.value" label="%STM32F10x.chipFamily.ld.label"/> 
-				<item value="%STM32F10x.chipFamily.ldvl.value" label="%STM32F10x.chipFamily.ldvl.label"/> 
-				<item value="%STM32F10x.chipFamily.md.value" label="%STM32F10x.chipFamily.md.label"/> 
-				<item value="%STM32F10x.chipFamily.mdvl.value" label="%STM32F10x.chipFamily.mdvl.label"/> 
-				<item value="%STM32F10x.chipFamily.hd.value" label="%STM32F10x.chipFamily.hd.label"/> 
-				<item value="%STM32F10x.chipFamily.hdvl.value" label="%STM32F10x.chipFamily.hdvl.label"/> 
-				<item value="%STM32F10x.chipFamily.cl.value" label="%STM32F10x.chipFamily.cl.label"/> 
-				<item value="%STM32F10x.chipFamily.xl.value" label="%STM32F10x.chipFamily.xl.label"/> -->
 		</property>
-		<property id="flashSize" label="%STM32F10x.flashSize.label"
+		<property id="STM32F1flashSize" label="%STM32F10x.flashSize.label"
 			description="%STM32F10x.flashSize.description" type="input" pattern="[0-9]*"
 			default="%STM32F10x.flashSize.default" hidden="false" persist="true" />
-		<property id="ramSize" label="%STM32F10x.ramSize.label"
+		<property id="STM32F1ramSize" label="%STM32F10x.ramSize.label"
 			description="%STM32F10x.ramSize.description" type="input" pattern="[0-9]*"
 			default="%STM32F10x.ramSize.default" hidden="false" persist="true" />
 
@@ -77,20 +69,6 @@
 			description="%STM32F10x.semihostingOptions.description" type="input"
 			default="%STM32F10x.semihostingOptions.default" pattern=".*"
 			mandatory="false" persist="true" />
-	</property-group>
-
-	<property-group id="author" label="%STM32F10x.group.author.label"
-		description="%STM32F10x.group.author.description" type="PAGES-ONLY"
-		help="help.html">
-		<property id="author" label="%STM32F10x.author.label"
-			description="%STM32F10x.author.description" type="input" pattern=".*"
-			default="" hidden="false" persist="true" />
-		<property id="copyright" label="%STM32F10x.copyright.label"
-			description="%STM32F10x.copyright.description" type="input" pattern=".*"
-			default="%STM32F10x.copyright.default" hidden="false" persist="true" />
-		<property id="messagearm" label="%STM32F10x.message.label"
-			description="%STM32F10x.message.description" type="input" pattern=".*"
-			default="%STM32F10x.message.default" hidden="false" persist="true" />
 	</property-group>
 
 	<process type="org.eclipse.cdt.managedbuilder.core.NewManagedProject">
@@ -797,7 +775,7 @@
 				<simple name="id"
 					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
 				<simple-array name="values">
-					<element value="$(chipFamily)" />
+					<element value="$(STM32F1chipFamily)" />
 				</simple-array>
 				<simple name="path" value="" />
 			</element>

@@ -1,175 +1,181 @@
-/* Based on the linker script from CMSIS for GCC for ARM Embedded Processors.
- * Should be included after memory layout script.
- */
+/*
+Default linker script for STM32F10x_1024K_1024K
+Copyright RAISONANCE S.A.S. 2008
+*/
 
-/* Library configurations */
-GROUP(libgcc.a libc.a libm.a)
+/* include the common STM32F10x sub-script */
 
-/* Linker script to place sections and symbol values. Should be used together
- * with other linker script that defines memory regions FLASH and RAM.
- * It references following symbols, which must be defined in code:
- *   Reset_Handler : Entry of reset handler
- * 
- * It defines following symbols, which code can use without definition:
- *   __exidx_start
- *   __exidx_end
- *   __etext
- *   __data_start__
- *   __preinit_array_start
- *   __preinit_array_end
- *   __init_array_start
- *   __init_array_end
- *   __fini_array_start
- *   __fini_array_end
- *   __data_end__
- *   __bss_start__
- *   __bss_end__
- *   __end__
- *   end
- *   __HeapLimit
- *   __StackLimit
- *   __StackTop
- *   __stack
- */
- 
-/* Used in QEMU, the embedded images entry point is in the interrupts table */
-ENTRY(Reset_Handler)
+/* Common part of the linker scripts for STM32 devices*/
+
+
+/* default stack sizes. 
+
+These are used by the startup in order to allocate stacks for the different modes.
+*/
+
+__Stack_Size = 1024 ;
+
+PROVIDE ( _Stack_Size = __Stack_Size ) ;
+
+__Stack_Init = _estack  - __Stack_Size ;
+
+/*"PROVIDE" allows to easily override these values from an object file or the commmand line.*/
+PROVIDE ( _Stack_Init = __Stack_Init ) ;
+
+/*
+There will be a link error if there is not this amount of RAM free at the end.
+*/
+_Minimum_Stack_Size = 0x100 ;
+
+
+
+/* include the sections management sub-script for FLASH mode */
+
+/* Sections Definitions */
 
 SECTIONS
 {
-	.text :
-	{
-		KEEP(*(.core_isr_vectors))
-		KEEP(*(.family_isr_vectors))
-		KEEP(*(.device_isr_vectors))
-		KEEP(*(.isr_vector))
-		*(.text*)
-
-		KEEP(*(.init))
-		KEEP(*(.fini))
-
-		/* .ctors */
-		*crtbegin.o(.ctors)
-		*crtbegin?.o(.ctors)
-		*(EXCLUDE_FILE(*crtend?.o *crtend.o) .ctors)
-		*(SORT(.ctors.*))
-		*(.ctors)
-
-		/* .dtors */
- 		*crtbegin.o(.dtors)
- 		*crtbegin?.o(.dtors)
- 		*(EXCLUDE_FILE(*crtend?.o *crtend.o) .dtors)
- 		*(SORT(.dtors.*))
- 		*(.dtors)
-
-		. = ALIGN(4);
-		/* preinit data */
-		PROVIDE_HIDDEN (__preinit_array_start = .);
-		KEEP(*(.preinit_array))
-		PROVIDE_HIDDEN (__preinit_array_end = .);
-
-		. = ALIGN(4);
-		/* init data */
-		PROVIDE_HIDDEN (__init_array_start = .);
-		KEEP(*(SORT(.init_array.*)))
-		KEEP(*(.init_array))
-		PROVIDE_HIDDEN (__init_array_end = .);
-
-
-		. = ALIGN(4);
-		/* finit data */
-		PROVIDE_HIDDEN (__fini_array_start = .);
-		KEEP(*(SORT(.fini_array.*)))
-		KEEP(*(.fini_array))
-		PROVIDE_HIDDEN (__fini_array_end = .);
-
-		*(.rodata*)
-
-		KEEP(*(.eh_frame*))
-	} > FLASH
-
-	.ARM.extab : 
-	{
-		*(.ARM.extab* .gnu.linkonce.armextab.*)
-	} > FLASH
-
-	__exidx_start = .;
-	.ARM.exidx :
-	{
-		*(.ARM.exidx* .gnu.linkonce.armexidx.*)
-	} > FLASH
-	__exidx_end = .;
-
-	__etext = .;
-	_sidata = .; /* STM libs specifics */
-
-	/* The initialised data section is stored immediately 
-	at the end of the text section */
-	.data : AT (__etext)
-	{
-		__data_start__ = .;
-        _sdata = .; /* STM libs specifics */
-
-		*(vtable)
-		*(.data*)
-
-		. = ALIGN(4);
-		/* init_array/fini_array moved to flash, align preserved */
-		
-		KEEP(*(.jcr*))
-		. = ALIGN(4);
-		/* All data end */
-
-		__data_end__ = .;
-        _edata = .; /* STM libs specifics */
-
-	} > RAM
-
-	.bss :
-	{
-		. = ALIGN(4);
-		__bss_start__ = .;
-        _sbss = .; /* STM libs specifics */
-
-		*(.bss*)
-		*(COMMON)
-		. = ALIGN(4);
-		__bss_end__ = .;
-        _ebss = .; /* STM libs specifics */
-
-	} > RAM
-	
-	.heap (COPY):
-	{
-		__end__ = .;
-		end = __end__;
-		*(.heap*)
-		__HeapLimit = .;
-	} > RAM
-
-	/* .stack_dummy section doesn't contains any symbols. It is only
-	 * used for linker to calculate size of stack sections, and assign
-	 * values to stack symbols later */
-	.stack_dummy (COPY):
-	{
-		*(.stack*)
-	} > RAM
-
-	/* Set stack top to end of RAM, and stack limit move down by
-	 * size of stack_dummy section */
-	__StackTop = ORIGIN(RAM) + LENGTH(RAM);
-	__StackLimit = __StackTop - SIZEOF(.stack_dummy);
+    /* for Cortex devices, the beginning of the startup code is stored in the .isr_vector section, which goes to FLASH */
+    .isr_vector :
+    {
+	. = ALIGN(4);
+        KEEP(*(.isr_vector))            /* Startup code */
+	. = ALIGN(4);
+    } >FLASH
+ 
+    /* for some STRx devices, the beginning of the startup code is stored in the .flashtext section, which goes to FLASH */
+    .flashtext :
+    {
+	. = ALIGN(4);
+        *(.flashtext)            /* Startup code */
+	. = ALIGN(4);
+    } >FLASH
+ 
     
-	PROVIDE(__stack = __StackTop);
-	PROVIDE(_estack = __StackTop); /* STM libs specifics */
+    /* the program code is stored in the .text section, which goes to Flash */
+    .text :
+    {
+	    . = ALIGN(4);
+	    
+        *(.text)                   /* remaining code */
+        *(.text.*)                   /* remaining code */
+        *(.rodata)                 /* read-only data (constants) */
+        *(.rodata*)
+        *(.glue_7)
+        *(.glue_7t)
 
-	/* Check if data + heap + stack exceeds RAM limit */
-	ASSERT(__StackLimit >= __HeapLimit, "region RAM overflowed with stack")
-	
-	
-	/* The following is from F4 linker scripts */
-	
-	/* after that it's only debugging information. */
+	    . = ALIGN(4);
+   	 _etext = .;
+	    /* This is used by the startup in order to initialize the .data secion */
+   	 _sidata = _etext;
+    } >FLASH
+    
+ 
+
+    /* This is the initialized data section
+    The program executes knowing that the data is in the RAM
+    but the loader puts the initial values in the FLASH (inidata).
+    It is one task of the startup to copy the initial values from FLASH to RAM. */
+    .data  : AT ( _sidata )
+    {
+	    . = ALIGN(4);
+        /* This is used by the startup in order to initialize the .data secion */
+        _sdata = . ;
+        
+        *(.data)
+        *(.data.*)
+
+	    . = ALIGN(4);
+	    /* This is used by the startup in order to initialize the .data secion */
+   	 _edata = . ;
+    } >RAM
+    
+    
+
+    /* This is the uninitialized data section */
+    .bss :
+    {
+	    . = ALIGN(4);
+        /* This is used by the startup in order to initialize the .bss secion */
+        _sbss = .;
+        
+        *(.bss)
+        *(COMMON)
+        
+	    . = ALIGN(4);
+	    /* This is used by the startup in order to initialize the .bss secion */
+   	 _ebss = . ;
+    } >RAM
+    
+    PROVIDE ( end = _ebss );
+    PROVIDE ( _end = _ebss );
+    
+    /* This is the user stack section 
+    This is just to check that there is enough RAM left for the User mode stack
+    It should generate an error if it's full.
+     */
+    ._usrstack :
+    {
+	    . = ALIGN(4);
+        _susrstack = . ;
+        
+        . = . + _Minimum_Stack_Size ;
+        
+	    . = ALIGN(4);
+        _eusrstack = . ;
+    } >RAM
+    
+
+   
+    /* this is the FLASH Bank1 */
+    /* the C or assembly source must explicitly place the code or data there
+    using the "section" attribute */
+    .b1text :
+    {
+        *(.b1text)                   /* remaining code */
+        *(.b1rodata)                 /* read-only data (constants) */
+        *(.b1rodata*)
+    } >FLASHB1
+    
+    /* this is the EXTMEM */
+    /* the C or assembly source must explicitly place the code or data there
+    using the "section" attribute */
+    
+    /* EXTMEM Bank0 */
+    .eb0text :
+    {
+        *(.eb0text)                   /* remaining code */
+        *(.eb0rodata)                 /* read-only data (constants) */
+        *(.eb0rodata*)
+    } >EXTMEMB0
+    
+    /* EXTMEM Bank1 */
+    .eb1text :
+    {
+        *(.eb1text)                   /* remaining code */
+        *(.eb1rodata)                 /* read-only data (constants) */
+        *(.eb1rodata*)
+    } >EXTMEMB1
+    
+    /* EXTMEM Bank2 */
+    .eb2text :
+    {
+        *(.eb2text)                   /* remaining code */
+        *(.eb2rodata)                 /* read-only data (constants) */
+        *(.eb2rodata*)
+    } >EXTMEMB2
+    
+    /* EXTMEM Bank0 */
+    .eb3text :
+    {
+        *(.eb3text)                   /* remaining code */
+        *(.eb3rodata)                 /* read-only data (constants) */
+        *(.eb3rodata*)
+    } >EXTMEMB3
+    
+    
+    
+    /* after that it's only debugging information. */
     
     /* remove the debugging information from the standard libraries */
     DISCARD :
@@ -178,8 +184,7 @@ SECTIONS
      libm.a ( * )
      libgcc.a ( * )
      }
-  
-  
+
     /* Stabs debugging sections.  */
     .stab          0 : { *(.stab) }
     .stabstr       0 : { *(.stabstr) }
@@ -212,6 +217,5 @@ SECTIONS
     .debug_weaknames 0 : { *(.debug_weaknames) }
     .debug_funcnames 0 : { *(.debug_funcnames) }
     .debug_typenames 0 : { *(.debug_typenames) }
-    .debug_varnames  0 : { *(.debug_varnames) }    
-   
+    .debug_varnames  0 : { *(.debug_varnames) }
 }
