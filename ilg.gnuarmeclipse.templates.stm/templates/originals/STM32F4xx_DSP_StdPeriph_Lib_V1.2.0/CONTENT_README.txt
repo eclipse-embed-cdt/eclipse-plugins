@@ -8,6 +8,8 @@ with the following folders removed to save space:
 - Libraries/CMSIS/DSP_Lib
 - Libraries/CMSIS/RTOS
 - Libraries/CMSIS/SVD
+- Libraries/CMSIS/Lib
+
 
 Also the following files were removed:
 - stm32f4xx_dsp_stdperiph_lib_um.chm
