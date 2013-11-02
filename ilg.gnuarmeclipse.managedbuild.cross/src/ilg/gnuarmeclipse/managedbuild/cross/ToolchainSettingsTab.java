@@ -19,8 +19,16 @@ import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.core.IToolChain;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
+import org.eclipse.cdt.managedbuilder.makegen.IManagedBuilderMakefileGenerator;
 import org.eclipse.cdt.managedbuilder.ui.properties.AbstractCBuildPropertyTab;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
@@ -73,6 +81,8 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 	private boolean m_isExecutable;
 	private boolean m_isStaticLibrary;
 
+	private boolean m_isCommandRmModified;
+
 	@Override
 	public void createControls(Composite parent) {
 
@@ -95,6 +105,8 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 			m_isStaticLibrary = true;
 		else
 			m_isStaticLibrary = false;
+
+		m_isCommandRmModified = false;
 
 		usercomp.setLayout(new GridLayout(3, false));
 		GridData layoutData = new GridData();
@@ -304,6 +316,15 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 		layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
 		m_commandRmText.setLayoutData(layoutData);
 
+		m_commandRmText.addModifyListener(new ModifyListener() {
+
+			@Override
+			public void modifyText(ModifyEvent e) {
+				m_isCommandRmModified = true;
+				//System.out.println("commandRm modified");
+			}
+		});
+
 		// ----- Path ---------------------------------------------------------
 		Label pathLabel = new Label(usercomp, SWT.NONE);
 		pathLabel.setText(Messages.ToolChainSettingsTab_path);
@@ -405,7 +426,12 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 			m_commandSizeText.setText(td.getCmdSize());
 		}
 		m_commandMakeText.setText(td.getCmdMake());
-		m_commandRmText.setText(td.getCmdRm());
+		String oldCommandRm = m_commandRmText.getText();
+		String newCommandRm = td.getCmdRm();
+		if (oldCommandRm == null || !oldCommandRm.equals(newCommandRm)) {
+			// if same value skip it, to avoid remove the makefile
+			m_commandRmText.setText(newCommandRm);
+		}
 
 		String path = SharedStorage.getToolchainPath(td.getName());
 		m_pathText.setText(path);
@@ -442,7 +468,7 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 		updateOptions(m_config);
 	}
 
-	private void updateOptions(IConfiguration config){
+	private void updateOptions(IConfiguration config) {
 		IToolChain toolchain = config.getToolChain();
 
 		IOption option;
@@ -520,6 +546,10 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_COMMAND_RM); //$NON-NLS-1$
 			config.setOption(toolchain, option, m_commandRmText.getText());
+			if (m_isCommandRmModified) {
+				propagateCommandRmUpdate(config);
+				m_isCommandRmModified = false;
+			}
 
 			if (m_isExecutable) {
 				option = toolchain
@@ -572,6 +602,26 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 		}
 
 	}
+
+	private void propagateCommandRmUpdate(IConfiguration config) {
+		// System.out.println("propagateCommandRmUpdate()");
+		if (true) {
+			IProject project = (IProject) config.getOwner();
+
+			IPath makefilePath = project.getFullPath().append(config.getName())
+					.append(IManagedBuilderMakefileGenerator.MAKEFILE_NAME);
+			IResource makefileResource = project.findMember(makefilePath
+					.removeFirstSegments(1));
+			if (makefileResource != null && makefileResource.exists()) {
+				try {
+					makefileResource.delete(true, new NullProgressMonitor());
+				} catch (CoreException e) {
+					// This had better be allowed during a build
+				}
+			}
+		}
+	}
+
 	@Override
 	protected void performDefaults() {
 
