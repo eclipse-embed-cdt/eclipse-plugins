@@ -20,6 +20,7 @@ import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.core.IToolChain;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.cdt.managedbuilder.makegen.IManagedBuilderMakefileGenerator;
+import org.eclipse.cdt.managedbuilder.makegen.gnu.GnuMakefileGenerator;
 import org.eclipse.cdt.managedbuilder.ui.properties.AbstractCBuildPropertyTab;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
@@ -615,9 +616,14 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 			if (makefileResource != null && makefileResource.exists()) {
 				try {
 					makefileResource.delete(true, new NullProgressMonitor());
+					
+					GnuMakefileGenerator makefileGenerator = new GnuMakefileGenerator();
+					makefileGenerator.initialize(0, config, config.getBuilder(), new NullProgressMonitor());
+					makefileGenerator.regenerateMakefiles();
 				} catch (CoreException e) {
 					// This had better be allowed during a build
 				}
+				
 			}
 		}
 	}
