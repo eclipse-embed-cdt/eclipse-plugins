@@ -106,12 +106,6 @@
 				<simple name="replaceable" value="true" />
 			</element>
 	
-			<element>
-				<simple name="source" value="src/stm32f4xx_it.h" />
-				<simple name="target" value="$(includeDir)/stm32f4xx_it.h" />
-				<simple name="replaceable" value="true" />
-			</element>
- 			
 		</complex-array>
 	</process>
  
@@ -128,11 +122,6 @@
 			<element>
 				<simple name="source" value="src/main.c" />
 				<simple name="target" value="$(sourceDir)/main.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source" value="src/stm32f4xx_it.c" />
-				<simple name="target" value="$(sourceDir)/stm32f4xx_it.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 		</complex-array>

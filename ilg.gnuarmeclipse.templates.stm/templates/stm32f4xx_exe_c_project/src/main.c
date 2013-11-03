@@ -108,7 +108,7 @@ main(void)
   /* GPIO Periph clock enable */
   RCC_AHB1PeriphClockCmd(BLINK_RCC_BIT, ENABLE);
 
-  GPIO_InitTypeDef  GPIO_InitStructure;
+  GPIO_InitTypeDef GPIO_InitStructure;
 
   /* Configure pin in output push/pull mode */
   GPIO_InitStructure.GPIO_Pin = (1 << BLINK_PIN);
@@ -161,6 +161,17 @@ TimingDelay_Decrement(void)
     {
       uwTimingDelay--;
     }
+}
+
+/**
+  * @brief  This function is the SysTick Handler.
+  * @param  None
+  * @retval None
+  */
+void
+SysTick_Handler(void)
+{
+  TimingDelay_Decrement();
 }
 
 #ifdef  USE_FULL_ASSERT

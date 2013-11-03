@@ -39,6 +39,9 @@
 void
 TimingDelay_Decrement(void);
 
+void
+SysTick_Handler(void);
+
 #if defined(DEBUG)
 #include <stdio.h>
 
