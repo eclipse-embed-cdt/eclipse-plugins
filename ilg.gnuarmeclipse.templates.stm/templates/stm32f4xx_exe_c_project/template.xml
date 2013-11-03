@@ -273,9 +273,9 @@
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
-				<simple name="source" value="src/startup_stm32f4xx.S" />
+				<simple name="source" value="src/startup_stm32f4xx.c" />
 				<simple name="target"
-					value="$(libsDir)/$(cmsisDir)/$(sourceDir)/startup_stm32f4xx.S" />
+					value="$(libsDir)/$(cmsisDir)/$(sourceDir)/startup_stm32f4xx.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 		</complex-array>
