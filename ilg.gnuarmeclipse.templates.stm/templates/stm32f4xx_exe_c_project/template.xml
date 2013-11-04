@@ -54,14 +54,20 @@
 			description="%STM32F4xx.periphDir.description" type="input"
 			default="%STM32F4xx.periphDir.default" pattern="[a-zA-Z0-9]+"
 			mandatory="true" persist="true" />
+		<property id="miscDir" label="%STM32F4xx.miscDir.label"
+			description="%STM32F4xx.miscDir.description" type="input"
+			default="%STM32F4xx.miscDir.default" pattern="[a-zA-Z0-9]+"
+			mandatory="true" persist="true" />
 		<property id="ldscriptsDir" label="%STM32F4xx.ldscriptsDir.label"
 			description="%STM32F4xx.ldscriptsDir.description" type="input"
 			default="%STM32F4xx.ldscriptsDir.default" pattern="[a-zA-Z0-9]+"
 			mandatory="true" persist="true" />
+		<!-- 
 		<property id="semihostingOptions" label="%STM32F4xx.semihostingOptions.label"
 			description="%STM32F4xx.semihostingOptions.description" type="input"
 			default="%STM32F4xx.semihostingOptions.default" pattern=".*"
 			mandatory="false" persist="true" />
+		-->
 	</property-group>
 
 	<process type="org.eclipse.cdt.managedbuilder.core.NewManagedProject">
@@ -95,17 +101,10 @@
 		<simple name="projectName" value="$(projectName)" />
 		<complex-array name="files">
 			<element>
-				<simple name="source" value="src/main.h" />
-				<simple name="target" value="$(includeDir)/main.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-
-			<element>
 				<simple name="source" value="src/stm32f4xx_conf.h" />
 				<simple name="target" value="$(includeDir)/stm32f4xx_conf.h" />
 				<simple name="replaceable" value="true" />
 			</element>
-	
 		</complex-array>
 	</process>
  
@@ -138,13 +137,18 @@
 		<simple name="projectName" value="$(projectName)" />
 		<complex-array name="files">
 			<element>
-				<simple name="source" value="ldscripts/sections.ld" />
-				<simple name="target" value="$(ldscriptsDir)/sections.ld" />
+				<simple name="source" value="ldscripts/mem.ld" />
+				<simple name="target" value="$(ldscriptsDir)/mem.ld" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
-				<simple name="source" value="ldscripts/mem.ld" />
-				<simple name="target" value="$(ldscriptsDir)/mem.ld" />
+				<simple name="source" value="ldscripts/libs.ld" />
+				<simple name="target" value="$(ldscriptsDir)/libs.ld" />
+				<simple name="replaceable" value="true" />
+			</element>
+			<element>
+				<simple name="source" value="ldscripts/sections.ld" />
+				<simple name="target" value="$(ldscriptsDir)/sections.ld" />
 				<simple name="replaceable" value="true" />
 			</element>
 		</complex-array>
@@ -849,6 +853,61 @@
 		</complex-array>
 	</process>
 
+	<process type="org.eclipse.cdt.core.CreateSourceFolder">
+		<simple name="projectName" value="$(projectName)" />
+		<simple name="path" value="$(libsDir)/$(miscDir)/$(sourceDir)" />
+	</process>
+
+	<process type="org.eclipse.cdt.core.AddFiles">
+		<simple name="projectName" value="$(projectName)" />
+		<complex-array name="files">
+			<element>
+				<simple name="source"
+					value="../misc/src/_write.c" />
+				<simple name="target" value="$(libsDir)/$(miscDir)/$(sourceDir)/_write.c" />
+				<simple name="replaceable" value="true" />
+			</element>
+			<element>
+				<simple name="source"
+					value="../misc/src/debug_impl.c" />
+				<simple name="target" value="$(libsDir)/$(miscDir)/$(sourceDir)/debug_impl.c" />
+				<simple name="replaceable" value="true" />
+			</element>
+		</complex-array>
+	</process>
+
+	<process type="org.eclipse.cdt.core.CreateFolder">
+		<simple name="projectName" value="$(projectName)" />
+		<simple name="path" value="$(libsDir)/$(miscDir)/$(includeDir)" />
+	</process>
+
+	<process
+		type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+		<simple name="projectName" value="$(projectName)" />
+		<complex-array name="resourcePaths">
+			<element>
+				<simple name="id"
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
+				<simple-array name="values">
+					<element value="&quot;../$(libsDir)/$(miscDir)/$(includeDir)&quot;" />
+				</simple-array>
+				<simple name="path" value="" />
+			</element>
+		</complex-array>
+	</process>
+
+	<process type="org.eclipse.cdt.core.AddFiles">
+		<simple name="projectName" value="$(projectName)" />
+		<complex-array name="files">
+			<element>
+				<simple name="source"
+					value="../misc/include/debug_impl.h" />
+				<simple name="target" value="$(libsDir)/$(miscDir)/$(includeDir)/debug_impl.h" />
+				<simple name="replaceable" value="true" />
+			</element>
+		</complex-array>
+	</process>
+	 
 	<!-- USB -->
 	<!-- 
 	<if condition="$(includeUsb)!=none">
@@ -925,6 +984,7 @@
 				<simple name="id"
 					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.scriptfile" />
 				<simple-array name="values">
+					<element value="libs.ld" />
 					<element value="mem.ld" />
 					<element value="sections.ld" />
 				</simple-array>
@@ -949,15 +1009,14 @@
 	</process>
 
 	<process
-		type="ilg.gnuarmeclipse.templates.core.AppendToMBSStringOptionValue">
+		type="org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue">
 		<simple name="projectName" value="$(projectName)" />
 		<complex-array name="resourcePaths">
 			<element>
 				<simple name="id"
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.other" />
-				<simple name="value" value="$(semihostingOptions)" />
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.nostart" />
+				<simple name="value" value="true" />
 				<simple name="path" value="" />
-				<simple name="buildType" value="debug" />
 			</element>
 		</complex-array>
 	</process>

@@ -1,16 +1,12 @@
 /*
-Default linker script for STM32F4xx_1024K_192K
-*/
+ * Default linker script for STM32F4xx_1024K_192K
+ */
 
-/* include the common STM32F4xx  sub-script */
-
-/* Common part of the linker scripts for STM32F devices*/
-
-
-/* default stack sizes. 
-
-These are used by the startup in order to allocate stacks for the different modes.
-*/
+/*
+ * Default stack sizes.
+ * These are used by the startup in order to allocate stacks 
+ * for the different modes.
+ */
 
 __Stack_Size = 1024 ;
 
@@ -18,56 +14,79 @@ PROVIDE ( _Stack_Size = __Stack_Size ) ;
 
 __Stack_Init = _estack  - __Stack_Size ;
 
-/*"PROVIDE" allows to easily override these values from an object file or the commmand line.*/
+/*"PROVIDE" allows to easily override these values from an object file or the command line. */
 PROVIDE ( _Stack_Init = __Stack_Init ) ;
 
-/*
-There will be a link error if there is not this amount of RAM free at the end.
-*/
+/* There will be a link error if there is not this amount of RAM free at the end. */
 _Minimum_Stack_Size = 0x100 ;
 
 
+/* 
+ * Informative, for debuggers and simulators,
+ * the Cortex-M vector points to it anyway 
+ */
+ENTRY(Reset_Handler)
 
-/* include the sections management sub-script for FLASH mode */
 
 /* Sections Definitions */
 
 SECTIONS
 {
-    /* for Cortex devices, the beginning of the startup code is stored in the .isr_vector section, which goes to FLASH */
+    /*
+     * For Cortex devices, the beginning of the startup code is stored in
+     * the .isr_vector section, which goes to FLASH 
+     */
     .isr_vector :
     {
-	. = ALIGN(4);
+        . = ALIGN(4);
         KEEP(*(.isr_vector))            /* Startup code */
-	. = ALIGN(4);
+        . = ALIGN(4);
     } >FLASH
  
-    /* for some STRx devices, the beginning of the startup code is stored in the .flashtext section, which goes to FLASH */
+    /*
+     * for some STRx devices, the beginning of the startup code 
+     * is stored in the .flashtext section, which goes to FLASH 
+     */
     .flashtext :
     {
-	. = ALIGN(4);
+        . = ALIGN(4);
         *(.flashtext)            /* Startup code */
-	. = ALIGN(4);
+        . = ALIGN(4);
     } >FLASH
  
     
-    /* the program code is stored in the .text section, which goes to Flash */
+    /*
+     * The program code is stored in the .text section, 
+     * which goes to FLASH.
+     */
     .text :
     {
-	    . = ALIGN(4);
+        . = ALIGN(4);
 	    
         *(.text)                   /* remaining code */
         *(.text.*)                 /* remaining code */
         *(.rodata)                 /* read-only data (constants) */
-        *(.rodata*)
+        *(.rodata.*)
         *(.glue_7)
         *(.glue_7t)
 
-	    . = ALIGN(4);
-   	 _etext = .;
-	    /* This is used by the startup in order to initialize the .data secion */
-   	 _sidata = _etext;
     } >FLASH
+
+	.ARM.extab :
+   	{
+       *(.ARM.extab* .gnu.linkonce.armextab.*)
+   	} > FLASH
+   	__exidx_start = .;   	
+   	.ARM.exidx :
+   	{
+       *(.ARM.exidx* .gnu.linkonce.armexidx.*)
+   	} > FLASH
+   	__exidx_end = .;
+   	
+    . = ALIGN(4);
+    _etext = .;
+	/* This is used by the startup in order to initialise the .data section */
+    _sidata = _etext;
     
     /* MEMORY_ARRAY */
     .ROarraySection :
@@ -76,47 +95,53 @@ SECTIONS
     } >MEMORY_ARRAY
      
 
-    /* This is the initialized data section
-    The program executes knowing that the data is in the RAM
-    but the loader puts the initial values in the FLASH (inidata).
-    It is one task of the startup to copy the initial values from FLASH to RAM. */
+    /*
+     * This is the initialised data section.
+     * The program executes knowing that the data is in the RAM
+     * but the loader puts the initial values in the FLASH (inidata).
+     * It is one task of the startup to copy the initial values from FLASH to RAM. 
+     */
     .data  : AT ( _sidata )
     {
 	    . = ALIGN(4);
-        /* This is used by the startup in order to initialize the .data secion */
+        /* This is used by the startup in order to initialise the .data section */
         _sdata = . ;
         
         *(.data)
         *(.data.*)
 
 	    . = ALIGN(4);
-	    /* This is used by the startup in order to initialize the .data secion */
-   	 _edata = . ;
+	    /* This is used by the startup in order to initialise the .data section */
+        _edata = . ;
     } >RAM
     
     
 
-    /* This is the uninitialized data section */
+    /*
+     * This is the uninitialised data section.
+     */
     .bss :
     {
 	    . = ALIGN(4);
-        /* This is used by the startup in order to initialize the .bss secion */
+        /* This is used by the startup in order to initialise the .bss section */
         _sbss = .;
         
         *(.bss)
+        *(.bss.*)
         *(COMMON)
         
 	    . = ALIGN(4);
-	    /* This is used by the startup in order to initialize the .bss secion */
-   	 _ebss = . ;
+	    /* This is used by the startup in order to initialise the .bss section */
+        _ebss = . ;
     } >RAM
     
     PROVIDE ( end = _ebss );
     PROVIDE ( _end = _ebss );
     
-    /* This is the user stack section 
-    This is just to check that there is enough RAM left for the User mode stack
-    It should generate an error if it's full.
+    /*
+     * This is the user stack section.
+     * This is just to check that there is enough RAM left for the User mode stack
+     * It should generate an error if it's full.
      */
     ._usrstack :
     {
@@ -129,28 +154,39 @@ SECTIONS
         _eusrstack = . ;
     } >RAM
     
-
+    /*
+     * This is the Core Coupled Memory.
+     */
+	.bss_CCMRAM : ALIGN(4)
+	{
+		*(.bss.CCMRAM)
+		*(.bss.CCMRAM.*)
+	} > CCMRAM
    
-    /* this is the FLASH Bank1 */
-    /* the C or assembly source must explicitly place the code or data there
-    using the "section" attribute */
+    /*
+     * This is the FLASH Bank1.
+     * The C or assembly source must explicitly place the code 
+     * or data there using the "section" attribute 
+     */
     .b1text :
     {
         *(.b1text)                   /* remaining code */
         *(.b1rodata)                 /* read-only data (constants) */
-        *(.b1rodata*)
+        *(.b1rodata.*)
     } >FLASHB1
     
-    /* this is the EXTMEM */
-    /* the C or assembly source must explicitly place the code or data there
-    using the "section" attribute */
-    
+    /*
+     * This is the EXTMEM.
+     * The C or assembly source must explicitly place the code or data there
+     * using the "section" attribute 
+     */
+
     /* EXTMEM Bank0 */
     .eb0text :
     {
         *(.eb0text)                   /* remaining code */
         *(.eb0rodata)                 /* read-only data (constants) */
-        *(.eb0rodata*)
+        *(.eb0rodata.*)
     } >EXTMEMB0
     
     /* EXTMEM Bank1 */
@@ -158,7 +194,7 @@ SECTIONS
     {
         *(.eb1text)                   /* remaining code */
         *(.eb1rodata)                 /* read-only data (constants) */
-        *(.eb1rodata*)
+        *(.eb1rodata.*)
     } >EXTMEMB1
     
     /* EXTMEM Bank2 */
@@ -166,7 +202,7 @@ SECTIONS
     {
         *(.eb2text)                   /* remaining code */
         *(.eb2rodata)                 /* read-only data (constants) */
-        *(.eb2rodata*)
+        *(.eb2rodata.*)
     } >EXTMEMB2
     
     /* EXTMEM Bank0 */
@@ -174,12 +210,12 @@ SECTIONS
     {
         *(.eb3text)                   /* remaining code */
         *(.eb3rodata)                 /* read-only data (constants) */
-        *(.eb3rodata*)
+        *(.eb3rodata.*)
     } >EXTMEMB3
    
 
     
-    /* after that it's only debugging information. */
+    /* After that it's only debugging information. */
     
     /* remove the debugging information from the standard libraries */
     DISCARD :
@@ -190,7 +226,9 @@ SECTIONS
      }
   
   
-    /* Stabs debugging sections.  */
+    /* 
+     * Stabs debugging sections.  
+     */
     .stab          0 : { *(.stab) }
     .stabstr       0 : { *(.stabstr) }
     .stab.excl     0 : { *(.stab.excl) }
@@ -223,5 +261,4 @@ SECTIONS
     .debug_funcnames 0 : { *(.debug_funcnames) }
     .debug_typenames 0 : { *(.debug_typenames) }
     .debug_varnames  0 : { *(.debug_varnames) }    
-    
 }

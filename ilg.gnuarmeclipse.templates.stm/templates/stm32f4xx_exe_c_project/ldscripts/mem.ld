@@ -1,4 +1,5 @@
-/* Linker script to configure memory regions. 
+/*
+ * Linker script to configure memory regions.
  * Need modifying for a specific board. 
  *   FLASH.ORIGIN: starting address of flash
  *   FLASH.LENGTH: length of flash
