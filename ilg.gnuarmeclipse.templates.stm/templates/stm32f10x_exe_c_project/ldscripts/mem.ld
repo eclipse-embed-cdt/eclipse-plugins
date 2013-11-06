@@ -30,4 +30,3 @@ MEMORY
   RAM (xrw) : ORIGIN = 0x68000000, LENGTH = $(STM32F1ramSize)K
 
  */
-*/

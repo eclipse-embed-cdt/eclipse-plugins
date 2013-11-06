@@ -1,80 +1,85 @@
-/**
-  ******************************************************************************
-  * @file    Project/STM32F10x_StdPeriph_Template/main.c (modified)
-  * @author  MCD Application Team
-  * @version V3.5.0
-  * @date    08-April-2011
-  * @brief   Main program body
-  ******************************************************************************
-  * @attention
-  *
-  * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
-  * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
-  * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
-  * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
-  * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
-  * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
-  *
-  * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
-  ******************************************************************************
-  */
-
 #include "stm32f10x.h"
+#include <stdio.h>
 
 /*
-
- In debug configurations, demonstrate how to print a greeting message
- on standard output.
-
- Then enter a continuous loop and blink a led.
-
- On embedded platforms printing the greeting might require
- semi-hosting or similar.
-
- For example, for toolchains derived from GNU Tools for Embedded,
- to enable semi-hosting, the following was added to the linker:
-
- --specs=rdimon.specs -Wl,--start-group -lgcc -lc -lc -lm -lrdimon -Wl,--end-group
-
+ * STM32F1 led blink sample.
+ *
+ * In debug configurations, demonstrate how to print a greeting message
+ * on the standard output. In release configurations the message is
+ * simply discarded.
+ *
+ * Then enter a continuous loop and blink a led with 1Hz.
+ *
+ * The external clock frequency is specified as HSE_VALUE=8000000,
+ * adjust it for your own board. Also adjust the PLL constants to
+ * reach the maximum frequency, or special clock configurations.
+ *
+ * The build does not use startup files, and on Release it does not even use
+ * any standard library function (on Debug the printf() brigs lots of
+ * functions; removing it should also use no other standard lib functions).
+ *
+ * If the application requires to use a special initialisation code present
+ * in some other libraries (for example librdimon.a, for semi-hosting),
+ * define USE_STARTUP_FILES and uncheck the corresponding option in the
+ * linker configuration.
  */
 
+/* ------------------------------------------------------------------------- */
+
+static __IO uint32_t uwTimingDelay;
+
+static void
+Delay(__IO uint32_t nTime);
+
+static void
+TimingDelay_Decrement(void);
+
+void
+SysTick_Handler(void);
+
+/* ----- SysTick definitions ----------------------------------------------- */
+
+#define SYSTICK_FREQUENCY_HZ       1000
+
+/* ----- LED definitions --------------------------------------------------- */
+
 /* Olimex STM32-H103 LED definitions */
+/* Adjust them for your own board. */
+
 #define BLINK_PORT      GPIOC
 #define BLINK_PIN       12
 #define BLINK_RCC_BIT   RCC_APB2Periph_GPIOC
 
-#define BLINK_LOOPS     1000000
+#define BLINK_TICKS     SYSTICK_FREQUENCY_HZ/2
 
-#if defined(DEBUG)
-
-#include <stdio.h>
-
-extern void initialise_monitor_handles(void);
-
-#endif
+/* ------------------------------------------------------------------------- */
 
 int
 main(void)
 {
 #if defined(DEBUG)
-  /* required for semi-hosting initialisation */
-  initialise_monitor_handles();
-
-  /* send greeting to semi-hosting output */
+  /*
+   * Send a greeting to the standard output (the semi-hosting debug channel
+   * on Debug, ignored on Release).
+   */
   printf("Hello ARM World!\n");
 #endif
 
-  GPIO_InitTypeDef GPIO_InitStructure;
-
-  /*!< At this stage the microcontroller clock setting is already configured,
-   this is done through SystemInit() function which is called from startup
-   file (startup_stm32f10x_xx.s) before to branch to application main.
-   To reconfigure the default setting of SystemInit() function, refer to
-   system_stm32f10x.c file
+  /*
+   * At this stage the microcontroller clock setting is already configured,
+   * this is done through SystemInit() function which is called from startup
+   * file (startup_cm.c) before to branch to application main.
+   * To reconfigure the default setting of SystemInit() function, refer to
+   * system_stm32f10x.c file
    */
+
+  /* Use SysTick as reference for the timer */
+  SysTick_Config(SystemCoreClock / SYSTICK_FREQUENCY_HZ);
 
   /* GPIO Periph clock enable */
   RCC_APB2PeriphClockCmd(BLINK_RCC_BIT, ENABLE);
+
+  GPIO_InitTypeDef GPIO_InitStructure;
 
   /* Configure pin in output push/pull mode */
   GPIO_InitStructure.GPIO_Pin = (1 << BLINK_PIN);
@@ -89,19 +94,51 @@ main(void)
       /* Turn on led by setting the pin low */
       GPIO_ResetBits(BLINK_PORT, (1 << BLINK_PIN));
 
-      uint32_t i;
-
-      i = 2 * BLINK_LOOPS;
-      while (--i)
-              ;
+      Delay(BLINK_TICKS);
 
       /* Turn off led by setting the pin high */
       GPIO_SetBits(BLINK_PORT, (1 << BLINK_PIN));
 
-      i = BLINK_LOOPS;
-      while (--i)
-        ;
+      Delay(BLINK_TICKS);
     }
-
-  return 0;
 }
+
+/**
+ * @brief  Inserts a delay time.
+ * @param  nTime: specifies the delay time length, in SysTick ticks.
+ * @retval None
+ */
+void
+Delay(__IO uint32_t nTime)
+{
+  uwTimingDelay = nTime;
+
+  while (uwTimingDelay != 0)
+    ;
+}
+
+/**
+ * @brief  Decrements the TimingDelay variable.
+ * @param  None
+ * @retval None
+ */
+void
+TimingDelay_Decrement(void)
+{
+  if (uwTimingDelay != 0x00)
+    {
+      uwTimingDelay--;
+    }
+}
+
+/**
+ * @brief  This function is the SysTick Handler.
+ * @param  None
+ * @retval None
+ */
+void
+SysTick_Handler(void)
+{
+  TimingDelay_Decrement();
+}
+
