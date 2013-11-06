@@ -11,9 +11,10 @@ with the following changes:
 Startup
 -------
 
-The original multiple assembly startup files were replaced by a single
-C file (startup_stm32f4xx.c), containing the C run time initialisations 
-and default interrupt handlers for all interrupts.
+The original multiple assembly startup files were replaced by 
+- a portable startup_cm.c 
+- a family initialisation file (startup_stm32f4xx.c)
+- the interrupt vectors (vectors_stm32f4xx.c)
 
 
 Application interrupt handlers
@@ -22,7 +23,7 @@ Application interrupt handlers
 It is recommended that interrupt handlers redefined by applications
 to be located in the same files where the application drivers are; 
 there is no need to use the stm32f4xx_it.* files, since the default
-system handlers are already defined in the startup_stm32f4xx.c file.
+system handlers are already defined in the vectors_stm32f4xx.c file.
 
 
 Manuals and samples

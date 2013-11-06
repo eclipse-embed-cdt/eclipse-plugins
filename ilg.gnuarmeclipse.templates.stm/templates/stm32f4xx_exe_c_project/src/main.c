@@ -1,11 +1,8 @@
 #include "stm32f4xx.h"
 #include <stdio.h>
 
-void
-SysTick_Handler(void);
-
 /*
- * STM32F4DISCOVERY led blink sample.
+ * STM32F4 led blink sample.
  *
  * In debug configurations, demonstrate how to print a greeting message
  * on the standard output. In release configurations the message is
@@ -27,6 +24,8 @@ SysTick_Handler(void);
  * linker configuration.
  */
 
+/* ------------------------------------------------------------------------- */
+
 static __IO uint32_t uwTimingDelay;
 RCC_ClocksTypeDef RCC_Clocks;
 
@@ -35,6 +34,9 @@ Delay(__IO uint32_t nTime);
 
 static void
 TimingDelay_Decrement(void);
+
+void
+SysTick_Handler(void);
 
 /* ----- SysTick definitions ----------------------------------------------- */
 
@@ -67,7 +69,7 @@ main(void)
   /*
    * At this stage the microcontroller clock setting is already configured,
    * this is done through SystemInit() function which is called from startup
-   * files (startup_stm32f4xx.c) before to branch to the
+   * files (startup_cm.c) before to branch to the
    * application main. To reconfigure the default setting of SystemInit()
    * function, refer to system_stm32f4xx.c file.
    */
@@ -144,25 +146,3 @@ SysTick_Handler(void)
 {
   TimingDelay_Decrement();
 }
-
-#ifdef  USE_FULL_ASSERT
-
-/**
- * @brief  Reports the name of the source file and the source line number
- *         where the assert_param error has occurred.
- * @param  file: pointer to the source file name
- * @param  line: assert_param error line source number
- * @retval None
- */
-void assert_failed(uint8_t* file, uint32_t line)
-  {
-    /* User can add his own implementation to report the file name and line number,
-     ex: printf("Wrong parameters value: file %s on line %d\r\n", file, line) */
-
-    /* Infinite loop */
-    while (1)
-      {
-      }
-  }
-#endif
-

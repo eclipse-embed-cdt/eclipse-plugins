@@ -23,16 +23,10 @@
 			description="%STM32F4xx.hseValue.description" type="input" pattern="[0-9]*"
 			default="%STM32F4xx.hseValue.default" hidden="false" persist="true" />
 
-		<!-- 
-		<property id="includeUsb" label="%STM32F4xx.includeUsb.label"
-			description="%STM32F4xx.includeUsb.description" type="select"
-			default="%STM32F4xx.includeUsb.default" hidden="false" persist="true">
-			<item value="none" label="None" />
-			<item value="device" label="Device" />
-			<item value="host" label="Host" />
-			<item value="otg" label="OTG" />
-		</property>
-		 -->
+		<!-- <property id="includeUsb" label="%STM32F4xx.includeUsb.label" description="%STM32F4xx.includeUsb.description" 
+			type="select" default="%STM32F4xx.includeUsb.default" hidden="false" persist="true"> 
+			<item value="none" label="None" /> <item value="device" label="Device" /> 
+			<item value="host" label="Host" /> <item value="otg" label="OTG" /> </property> -->
 	</property-group>
 
 	<property-group id="folders" label="%STM32F4xx.group.folders.label"
@@ -66,12 +60,9 @@
 			description="%STM32F4xx.ldscriptsDir.description" type="input"
 			default="%STM32F4xx.ldscriptsDir.default" pattern="[a-zA-Z0-9]+"
 			mandatory="true" persist="true" />
-		<!-- 
-		<property id="semihostingOptions" label="%STM32F4xx.semihostingOptions.label"
-			description="%STM32F4xx.semihostingOptions.description" type="input"
-			default="%STM32F4xx.semihostingOptions.default" pattern=".*"
-			mandatory="false" persist="true" />
-		-->
+		<!-- <property id="semihostingOptions" label="%STM32F4xx.semihostingOptions.label" 
+			description="%STM32F4xx.semihostingOptions.description" type="input" default="%STM32F4xx.semihostingOptions.default" 
+			pattern=".*" mandatory="false" persist="true" /> -->
 	</property-group>
 
 	<process type="org.eclipse.cdt.managedbuilder.core.NewManagedProject">
@@ -111,7 +102,7 @@
 			</element>
 		</complex-array>
 	</process>
- 
+
 
 	<!-- src -->
 	<process type="org.eclipse.cdt.core.CreateSourceFolder">
@@ -183,77 +174,47 @@
 		<simple name="projectName" value="$(projectName)" />
 		<complex-array name="files">
 			<element>
-				<simple name="source" value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h"/>
+				<simple name="source"
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/$(includeDir)/stm32f4xx.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
-				<simple name="source" value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h"/>
+				<simple name="source"
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/$(includeDir)/system_stm32f4xx.h" />
 				<simple name="replaceable" value="true" />
 			</element>
- 
+
 		</complex-array>
 	</process>
 
-<!-- 
-	<process type="org.eclipse.cdt.core.CreateFolder">
-		<simple name="projectName" value="$(projectName)" />
-		<simple name="path" value="$(libsDir)/$(cmsisDir)/startup" />
-	</process>
+	<!-- <process type="org.eclipse.cdt.core.CreateFolder"> <simple name="projectName" 
+		value="$(projectName)" /> <simple name="path" value="$(libsDir)/$(cmsisDir)/startup" 
+		/> </process> <process type="org.eclipse.cdt.core.AddFiles"> <simple name="projectName" 
+		value="$(projectName)" /> <complex-array name="files"> <element> <simple 
+		name="source" value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc_ride7/startup_stm32f40_41xxx.s" 
+		/> <simple name="target" value="$(libsDir)/$(cmsisDir)/startup/startup_stm32f40_41xxx.s" 
+		/> <simple name="replaceable" value="true" /> </element> <element> <simple 
+		name="source" value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc_ride7/startup_stm32f40xx.s" 
+		/> <simple name="target" value="$(libsDir)/$(cmsisDir)/startup/startup_stm32f40xx.s" 
+		/> <simple name="replaceable" value="true" /> </element> <element> <simple 
+		name="source" value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc_ride7/startup_stm32f401xx.s" 
+		/> <simple name="target" value="$(libsDir)/$(cmsisDir)/startup/startup_stm32f401xx.s" 
+		/> <simple name="replaceable" value="true" /> </element> <element> <simple 
+		name="source" value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc_ride7/startup_stm32f427_437xx.s" 
+		/> <simple name="target" value="$(libsDir)/$(cmsisDir)/startup/startup_stm32f427_437xx.s" 
+		/> <simple name="replaceable" value="true" /> </element> <element> <simple 
+		name="source" value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc_ride7/startup_stm32f427x.s" 
+		/> <simple name="target" value="$(libsDir)/$(cmsisDir)/startup/startup_stm32f427x.s" 
+		/> <simple name="replaceable" value="true" /> </element> <element> <simple 
+		name="source" value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc_ride7/startup_stm32f429_439xx.s" 
+		/> <simple name="target" value="$(libsDir)/$(cmsisDir)/startup/startup_stm32f429_439xx.s" 
+		/> <simple name="replaceable" value="true" /> </element> </complex-array> 
+		</process> -->
 
-	<process type="org.eclipse.cdt.core.AddFiles">
-		<simple name="projectName" value="$(projectName)" />
-		<complex-array name="files">
-			<element>
-				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc_ride7/startup_stm32f40_41xxx.s" />
-				<simple name="target"
-					value="$(libsDir)/$(cmsisDir)/startup/startup_stm32f40_41xxx.s" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc_ride7/startup_stm32f40xx.s" />
-				<simple name="target"
-					value="$(libsDir)/$(cmsisDir)/startup/startup_stm32f40xx.s" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc_ride7/startup_stm32f401xx.s" />
-				<simple name="target"
-					value="$(libsDir)/$(cmsisDir)/startup/startup_stm32f401xx.s" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc_ride7/startup_stm32f427_437xx.s" />
-				<simple name="target"
-					value="$(libsDir)/$(cmsisDir)/startup/startup_stm32f427_437xx.s" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc_ride7/startup_stm32f427x.s" />
-				<simple name="target"
-					value="$(libsDir)/$(cmsisDir)/startup/startup_stm32f427x.s" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc_ride7/startup_stm32f429_439xx.s" />
-				<simple name="target"
-					value="$(libsDir)/$(cmsisDir)/startup/startup_stm32f429_439xx.s" />
-				<simple name="replaceable" value="true" />
-			</element>
- 
-		</complex-array>
-	</process>
- -->
- 
 	<process type="org.eclipse.cdt.core.CreateSourceFolder">
 		<simple name="projectName" value="$(projectName)" />
 		<simple name="path" value="$(libsDir)/$(cmsisDir)/$(sourceDir)" />
@@ -289,7 +250,7 @@
 			</element>
 		</complex-array>
 	</process>
-			
+
 	<process type="org.eclipse.cdt.core.AddFiles">
 		<simple name="projectName" value="$(projectName)" />
 		<complex-array name="files">
@@ -878,15 +839,14 @@
 		<simple name="projectName" value="$(projectName)" />
 		<complex-array name="files">
 			<element>
-				<simple name="source"
-					value="../misc/src/_write.c" />
+				<simple name="source" value="../misc/src/_write.c" />
 				<simple name="target" value="$(libsDir)/$(miscDir)/$(sourceDir)/_write.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
-				<simple name="source"
-					value="../misc/src/debug_impl.c" />
-				<simple name="target" value="$(libsDir)/$(miscDir)/$(sourceDir)/debug_impl.c" />
+				<simple name="source" value="../misc/src/debug_impl.c" />
+				<simple name="target"
+					value="$(libsDir)/$(miscDir)/$(sourceDir)/debug_impl.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 		</complex-array>
@@ -916,82 +876,53 @@
 		<simple name="projectName" value="$(projectName)" />
 		<complex-array name="files">
 			<element>
-				<simple name="source"
-					value="../misc/include/debug_impl.h" />
-				<simple name="target" value="$(libsDir)/$(miscDir)/$(includeDir)/debug_impl.h" />
+				<simple name="source" value="../misc/include/debug_impl.h" />
+				<simple name="target"
+					value="$(libsDir)/$(miscDir)/$(includeDir)/debug_impl.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 		</complex-array>
 	</process>
-	 
+
 	<!-- USB -->
-	<!-- 
-	<if condition="$(includeUsb)!=none">
+	<!-- <if condition="$(includeUsb)!=none"> <process type="org.eclipse.cdt.core.CreateSourceFolder"> 
+		<simple name="projectName" value="$(projectName)" /> <simple name="path" 
+		value="$(libsDir)/USB/$(sourceDir)" /> </process> <process type="org.eclipse.cdt.core.CreateFolder"> 
+		<simple name="projectName" value="$(projectName)" /> <simple name="path" 
+		value="$(libsDir)/USB/$(includeDir)" /> </process> <process type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues"> 
+		<simple name="projectName" value="$(projectName)" /> <complex-array name="resourcePaths"> 
+		<element> <simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths" 
+		/> <simple-array name="values"> <element value="&quot;../$(libsDir)/USB/$(includeDir)&quot;" 
+		/> </simple-array> <simple name="path" value="" /> </element> <element> <simple 
+		name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" 
+		/> <simple-array name="values"> <element value="&quot;../$(libsDir)/USB/$(includeDir)&quot;" 
+		/> </simple-array> <simple name="path" value="" /> </element> <element> <simple 
+		name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths" 
+		/> <simple-array name="values"> <element value="&quot;../$(libsDir)/USB/$(includeDir)&quot;" 
+		/> </simple-array> <simple name="path" value="" /> </element> </complex-array> 
+		</process> </if> -->
 
-		<process type="org.eclipse.cdt.core.CreateSourceFolder">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="path" value="$(libsDir)/USB/$(sourceDir)" />
-		</process>
-
-		<process type="org.eclipse.cdt.core.CreateFolder">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="path" value="$(libsDir)/USB/$(includeDir)" />
-		</process>
-
-		<process
-			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="resourcePaths">
-				<element>
-					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths" />
-					<simple-array name="values">
-						<element value="&quot;../$(libsDir)/USB/$(includeDir)&quot;" />
-					</simple-array>
-					<simple name="path" value="" />
-				</element>
-				<element>
-					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" />
-					<simple-array name="values">
-						<element value="&quot;../$(libsDir)/USB/$(includeDir)&quot;" />
-					</simple-array>
-					<simple name="path" value="" />
-				</element>
-				<element>
-					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths" />
-					<simple-array name="values">
-						<element value="&quot;../$(libsDir)/USB/$(includeDir)&quot;" />
-					</simple-array>
-					<simple name="path" value="" />
-				</element>
-			</complex-array>
-		</process>
-
-	</if>
-	-->
-	 
 	<!-- Options -->
-	<process
-		type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
+	<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
 		<simple name="projectName" value="$(projectName)" />
 		<complex-array name="resourcePaths">
 			<element>
 				<simple name="id"
 					value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.family" />
-				<simple name="value" value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m4"/>
+				<simple name="value"
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m4" />
 				<simple name="path" value="" />
 			</element>
 			<element>
 				<simple name="id"
 					value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.abi" />
-				<simple name="value" value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.abi.soft"/>
+				<simple name="value"
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.abi.soft" />
 				<simple name="path" value="" />
 			</element>
 		</complex-array>
 	</process>
-	
+
 	<process
 		type="org.eclipse.cdt.managedbuilder.core.SetMBSStringListOptionValues">
 		<simple name="projectName" value="$(projectName)" />
@@ -1024,8 +955,7 @@
 		</complex-array>
 	</process>
 
-	<process
-		type="org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue">
+	<process type="org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue">
 		<simple name="projectName" value="$(projectName)" />
 		<complex-array name="resourcePaths">
 			<element>
