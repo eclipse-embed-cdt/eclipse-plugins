@@ -146,12 +146,12 @@
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
-				<simple name="source" value="ldscripts/libs.ld" />
+				<simple name="source" value="../ldscripts/libs.ld" />
 				<simple name="target" value="$(ldscriptsDir)/libs.ld" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
-				<simple name="source" value="ldscripts/sections.ld" />
+				<simple name="source" value="../ldscripts/sections.ld" />
 				<simple name="target" value="$(ldscriptsDir)/sections.ld" />
 				<simple name="replaceable" value="true" />
 			</element>
@@ -270,7 +270,7 @@
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
-				<simple name="source" value="src/startup_cm.c" />
+				<simple name="source" value="../common/src/startup_cm.c" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/$(sourceDir)/startup_cm.c" />
 				<simple name="replaceable" value="true" />
