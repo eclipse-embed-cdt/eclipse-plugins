@@ -1,6 +1,13 @@
 /*
- * Default linker script for STM32F4xx_1024K_192K
+ * Default linker script for STM32Fxxx.
  */
+
+/*
+ * The '__stack' definition is required by crt0, do not remove it.
+ */
+__stack = ORIGIN(RAM) + LENGTH(RAM);
+
+_estack = __stack; 	/* STM specific definition */
 
 /*
  * Default stack sizes.
@@ -12,18 +19,21 @@ __Stack_Size = 1024 ;
 
 PROVIDE ( _Stack_Size = __Stack_Size ) ;
 
-__Stack_Init = _estack  - __Stack_Size ;
+__Stack_Init = __stack  - __Stack_Size ;
 
 /*"PROVIDE" allows to easily override these values from an object file or the command line. */
 PROVIDE ( _Stack_Init = __Stack_Init ) ;
 
-/* There will be a link error if there is not this amount of RAM free at the end. */
+/*
+ * There will be a link error if there is not this amount of 
+ * RAM free at the end. 
+ */
 _Minimum_Stack_Size = 0x100 ;
 
 
 /* 
- * Informative, for debuggers and simulators,
- * the Cortex-M vector points to it anyway 
+ * The entry point is informative, for debuggers and simulators,
+ * since the Cortex-M vector points to it anyway.
  */
 ENTRY(Reset_Handler)
 
@@ -33,24 +43,94 @@ ENTRY(Reset_Handler)
 SECTIONS
 {
     /*
-     * For Cortex devices, the beginning of the startup code is stored in
+     * For Cortex-M devices, the beginning of the startup code is stored in
      * the .isr_vector section, which goes to FLASH 
      */
     .isr_vector :
     {
         . = ALIGN(4);
-        KEEP(*(.isr_vector))            /* Startup code */
+        KEEP(*(.isr_vector))     	/* Interrupt vectors */
+        
+        /* 
+         * This section is here for convenience, to store the
+         * startup code at the beginning of the flash area, hoping that
+         * this will increase the readbility of the listing.
+         */
+        *(.after_vectors .after_vectors.*)	/* Startup code and ISR */
+
         . = ALIGN(4);
     } >FLASH
- 
+
+    ._inits :
+    {
+        . = ALIGN(4);
+        
+        /*
+         * These are the old initialisation sections, intended to contain
+         * naked code, with the prologue/epilogue added by crti.o/crtn.o
+         * when linking with startup files. The standalone startup code
+         * currently does not run these, better use the init arrays below.
+         */
+		KEEP(*(.init))
+		KEEP(*(.fini))
+
+		. = ALIGN(4);
+
+		/*
+         * The preinit code, i.e. an array of pointers to initialisation 
+         * functions to be performed before constructors.
+         */
+		PROVIDE_HIDDEN (__preinit_array_start = .);
+        
+        /*
+         * Used to run the SystemInit() before anything else.
+         */
+		KEEP(*(.preinit_array_sysinit .preinit_array_sysinit.*))
+        
+        /* 
+         * Used for other platform inits.
+         */
+		KEEP(*(.preinit_array_platform .preinit_array_platform.*))
+        
+        /*
+         * The application inits. If you need to enforce some order in 
+         * execution, create new sections, as before.
+         */
+		KEEP(*(.preinit_array .preinit_array.*))
+
+		PROVIDE_HIDDEN (__preinit_array_end = .);
+
+		. = ALIGN(4);
+
+		/*
+         * The init code, i.e. an array of pointers to static constructors.
+         */
+		PROVIDE_HIDDEN (__init_array_start = .);
+		KEEP(*(SORT(.init_array.*)))
+		KEEP(*(.init_array))
+		PROVIDE_HIDDEN (__init_array_end = .);
+
+		. = ALIGN(4);
+
+		/*
+         * The fini code, i.e. an array of pointers to static destructors.
+         */
+		PROVIDE_HIDDEN (__fini_array_start = .);
+		KEEP(*(SORT(.fini_array.*)))
+		KEEP(*(.fini_array))
+		PROVIDE_HIDDEN (__fini_array_end = .);
+        . = ALIGN(4);
+
+    } >FLASH
+
     /*
-     * for some STRx devices, the beginning of the startup code 
-     * is stored in the .flashtext section, which goes to FLASH 
+     * For some STRx devices, the beginning of the startup code
+     * is stored in the .flashtext section, which goes to FLASH.
      */
     .flashtext :
     {
         . = ALIGN(4);
-        *(.flashtext)            /* Startup code */
+        *(.flashtext .flashtext.*)	/* Startup code */
         . = ALIGN(4);
     } >FLASH
  
@@ -63,19 +143,23 @@ SECTIONS
     {
         . = ALIGN(4);
 	    
-        *(.text)                   /* remaining code */
-        *(.text.*)                 /* remaining code */
-        *(.rodata)                 /* read-only data (constants) */
-        *(.rodata.*)
+        *(.text .text.*)			/* all remaining code */
+ 
+        *(.rodata .rodata.*) 		/* read-only data (constants) */
+
+		KEEP(*(.eh_frame*))
+
         *(.glue_7)
         *(.glue_7t)
 
     } >FLASH
 
+	/* ARM magic sections */
 	.ARM.extab :
    	{
        *(.ARM.extab* .gnu.linkonce.armextab.*)
    	} > FLASH
+   	
    	__exidx_start = .;   	
    	.ARM.exidx :
    	{
@@ -85,63 +169,73 @@ SECTIONS
    	
     . = ALIGN(4);
     _etext = .;
-	/* This is used by the startup in order to initialise the .data section */
+
+	/* 
+     * This address is used by the startup code to 
+     * initialise the .data section.
+     */
     _sidata = _etext;
     
     /* MEMORY_ARRAY */
     .ROarraySection :
     {
-            *(.ROarraySection)                          
+     	*(.ROarraySection .ROarraySection.*)                          
     } >MEMORY_ARRAY
      
 
     /*
-     * This is the initialised data section.
+     * The initialised data section.
      * The program executes knowing that the data is in the RAM
      * but the loader puts the initial values in the FLASH (inidata).
-     * It is one task of the startup to copy the initial values from FLASH to RAM. 
+     * It is one task of the startup to copy the initial values from 
+     * FLASH to RAM.
      */
     .data  : AT ( _sidata )
     {
 	    . = ALIGN(4);
-        /* This is used by the startup in order to initialise the .data section */
-        _sdata = . ;
-        
-        *(.data)
-        *(.data.*)
+
+        /* This is used by the startup code to initialise the .data section */
+        _sdata = . ;        	/* STM specific definition */
+        __data_start__ = . ;
+
+        *(vtable)
+
+        *(.data .data.*)
 
 	    . = ALIGN(4);
-	    /* This is used by the startup in order to initialise the .data section */
-        _edata = . ;
+
+	    /* This is used by the startup code to initialise the .data section */
+        _edata = . ;        	/* STM specific definition */
+        __data_end__ = . ;
+
     } >RAM
     
     
 
     /*
-     * This is the uninitialised data section.
+     * The uninitialised data section.
      */
     .bss :
     {
 	    . = ALIGN(4);
-        /* This is used by the startup in order to initialise the .bss section */
-        _sbss = .;
-        
-        *(.bss)
-        *(.bss.*)
+        __bss_start__ = .;     	/* standard newlib definition */
+        _sbss = .;              /* STM specific definition */
+
+        *(.bss .bss.*)
         *(COMMON)
         
 	    . = ALIGN(4);
-	    /* This is used by the startup in order to initialise the .bss section */
-        _ebss = . ;
+        __bss_end__ = .;        /* standard newlib definition */
+        _ebss = . ;             /* STM specific definition */
     } >RAM
     
     PROVIDE ( end = _ebss );
     PROVIDE ( _end = _ebss );
     
     /*
-     * This is the user stack section.
-     * This is just to check that there is enough RAM left for the User mode stack
-     * It should generate an error if it's full.
+     * The user stack section.
+     * This is just to check that there is enough RAM left for the User
+     *  mode stack. It should generate an error if it's full.
      */
     ._usrstack :
     {
@@ -154,19 +248,15 @@ SECTIONS
         _eusrstack = . ;
     } >RAM
     
-    /*
-     * This is the Core Coupled Memory.
-     */
 	.bss_CCMRAM : ALIGN(4)
 	{
-		*(.bss.CCMRAM)
-		*(.bss.CCMRAM.*)
+		*(.bss.CCMRAM .bss.CCMRAM.*)
 	} > CCMRAM
    
     /*
-     * This is the FLASH Bank1.
+     * The FLASH Bank1.
      * The C or assembly source must explicitly place the code 
-     * or data there using the "section" attribute 
+     * or data there using the "section" attribute.
      */
     .b1text :
     {
@@ -176,9 +266,9 @@ SECTIONS
     } >FLASHB1
     
     /*
-     * This is the EXTMEM.
+     * The EXTMEM.
      * The C or assembly source must explicitly place the code or data there
-     * using the "section" attribute 
+     * using the "section" attribute.
      */
 
     /* EXTMEM Bank0 */
@@ -215,9 +305,9 @@ SECTIONS
    
 
     
-    /* After that it's only debugging information. */
+    /* After that there are only debugging sections. */
     
-    /* remove the debugging information from the standard libraries */
+    /* This removes the debugging information from the standard libraries */
     DISCARD :
     {
      libc.a ( * )
@@ -226,9 +316,7 @@ SECTIONS
      }
   
   
-    /* 
-     * Stabs debugging sections.  
-     */
+    /* Stabs debugging sections.  */
     .stab          0 : { *(.stab) }
     .stabstr       0 : { *(.stabstr) }
     .stab.excl     0 : { *(.stab.excl) }

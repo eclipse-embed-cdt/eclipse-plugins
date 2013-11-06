@@ -14,7 +14,7 @@
  * When using librdimon.a, the startup files are required to
  * provide all specific initialisation, and the rdimon.specs
  * must be added to the linker. Also, the Reset_Handlers must jump
- * to crt0 _start().
+ * to crt0 _start() (define USE_STARTUP_FILES to enable this).
  */
 
 GROUP(

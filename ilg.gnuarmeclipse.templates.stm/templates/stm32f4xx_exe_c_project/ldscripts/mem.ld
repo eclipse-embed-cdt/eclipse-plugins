@@ -1,13 +1,15 @@
 /*
- * Linker script to configure memory regions.
+ * Memory Spaces Definitions.
+ *
  * Need modifying for a specific board. 
  *   FLASH.ORIGIN: starting address of flash
  *   FLASH.LENGTH: length of flash
  *   RAM.ORIGIN: starting address of RAM bank 0
  *   RAM.LENGTH: length of RAM bank 0
+ *
+ * The values below can be addressed in further linker scripts
+ * using functions like 'ORIGIN(RAM)' or 'LENGTH(RAM)'.
  */
-
-/* Memory Spaces Definitions */
 
 MEMORY
 {
@@ -22,12 +24,9 @@ MEMORY
   MEMORY_ARRAY (xrw)  : ORIGIN = 0x20002000, LENGTH = 32
 }
 
-/* higher address of the user mode stack (end of 128K RAM on AHB bus)*/
-_estack = 0x20000000 + 128*1024;
-
 /*
- For external ram use 
+ * For external ram use something like:
+
    RAM (xrw) : ORIGIN = 0x64000000, LENGTH = 2048K
 
-_estack = 0x64200000;
-*/
+ */

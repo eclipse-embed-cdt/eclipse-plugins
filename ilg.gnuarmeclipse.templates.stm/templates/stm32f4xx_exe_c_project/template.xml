@@ -19,6 +19,10 @@
 			description="%STM32F4xx.flashSize.description" type="input" pattern="[0-9]*"
 			default="%STM32F4xx.flashSize.default" hidden="false" persist="true" />
 
+		<property id="STM32F4hseValue" label="%STM32F4xx.hseValue.label"
+			description="%STM32F4xx.hseValue.description" type="input" pattern="[0-9]*"
+			default="%STM32F4xx.hseValue.default" hidden="false" persist="true" />
+
 		<!-- 
 		<property id="includeUsb" label="%STM32F4xx.includeUsb.label"
 			description="%STM32F4xx.includeUsb.description" type="select"
@@ -266,9 +270,21 @@
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
+				<simple name="source" value="src/startup_cm.c" />
+				<simple name="target"
+					value="$(libsDir)/$(cmsisDir)/$(sourceDir)/startup_cm.c" />
+				<simple name="replaceable" value="true" />
+			</element>
+			<element>
 				<simple name="source" value="src/startup_stm32f4xx.c" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/$(sourceDir)/startup_stm32f4xx.c" />
+				<simple name="replaceable" value="true" />
+			</element>
+			<element>
+				<simple name="source" value="src/vectors_stm32f4xx.c" />
+				<simple name="target"
+					value="$(libsDir)/$(cmsisDir)/$(sourceDir)/vectors_stm32f4xx.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 		</complex-array>
@@ -1045,6 +1061,14 @@
 					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
 				<simple-array name="values">
 					<element value="USE_STDPERIPH_DRIVER" />
+				</simple-array>
+				<simple name="path" value="" />
+			</element>
+			<element>
+				<simple name="id"
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
+				<simple-array name="values">
+					<element value="HSE_VALUE=$(STM32F4hseValue)" />
 				</simple-array>
 				<simple name="path" value="" />
 			</element>

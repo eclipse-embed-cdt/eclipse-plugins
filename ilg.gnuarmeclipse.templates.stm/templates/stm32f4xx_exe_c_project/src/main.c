@@ -5,14 +5,26 @@ void
 SysTick_Handler(void);
 
 /*
- STM32F4DISCOVERY led blink sample.
-
- In debug configurations, demonstrate how to print a greeting message
- on the standard output. In release configurations the messages are
- simply discarded.
-
- Then enter a continuous loop and blink a led.
- (the clock setting is not accurate, so do not expect a 1Hz blink rate).
+ * STM32F4DISCOVERY led blink sample.
+ *
+ * In debug configurations, demonstrate how to print a greeting message
+ * on the standard output. In release configurations the message is
+ * simply discarded.
+ *
+ * Then enter a continuous loop and blink a led with 1Hz.
+ *
+ * The external clock frequency is specified as HSE_VALUE=8000000,
+ * adjust it for your own board. Also adjust the PLL constants to
+ * reach the maximum frequency, or special clock configurations.
+ *
+ * The build does not use startup files, and on Release it does not even use
+ * any standard library function (on Debug the printf() brigs lots of
+ * functions; removing it should also use no other standard lib functions).
+ *
+ * If the application requires to use a special initialisation code present
+ * in some other libraries (for example librdimon.a, for semi-hosting),
+ * define USE_STARTUP_FILES and uncheck the corresponding option in the
+ * linker configuration.
  */
 
 static __IO uint32_t uwTimingDelay;
@@ -24,16 +36,20 @@ Delay(__IO uint32_t nTime);
 static void
 TimingDelay_Decrement(void);
 
+/* ----- SysTick definitions ----------------------------------------------- */
+
+#define SYSTICK_FREQUENCY_HZ       1000
+
 /* ----- LED definitions --------------------------------------------------- */
 
 /* STM32F4DISCOVERY definitions (the GREEN LED) */
-/* Adjust it for your own board */
+/* Adjust them for your own board. */
 
 #define BLINK_PORT      GPIOD
 #define BLINK_PIN       12
 #define BLINK_RCC_BIT   RCC_AHB1Periph_GPIOD
 
-#define BLINK_LOOPS     100/2
+#define BLINK_TICKS     SYSTICK_FREQUENCY_HZ/2
 
 /* ------------------------------------------------------------------------- */
 
@@ -51,18 +67,14 @@ main(void)
   /*
    * At this stage the microcontroller clock setting is already configured,
    * this is done through SystemInit() function which is called from startup
-   * files (startup_stm32f4xx.c) before to branch to
+   * files (startup_stm32f4xx.c) before to branch to the
    * application main. To reconfigure the default setting of SystemInit()
    * function, refer to system_stm32f4xx.c file.
    */
 
-  /* SysTick end of count event each 10ms */
+  /* Use SysTick as reference for the timer */
   RCC_GetClocksFreq(&RCC_Clocks);
-  SysTick_Config(RCC_Clocks.HCLK_Frequency / 100);
-
-  /* Add your application code here */
-  /* Insert 50 ms delay */
-  Delay(5);
+  SysTick_Config(RCC_Clocks.HCLK_Frequency / SYSTICK_FREQUENCY_HZ);
 
   /* GPIO Periph clock enable */
   RCC_AHB1PeriphClockCmd(BLINK_RCC_BIT, ENABLE);
@@ -85,18 +97,18 @@ main(void)
       /* Turn on led by setting the pin low */
       GPIO_ResetBits(BLINK_PORT, (1 << BLINK_PIN));
 
-      Delay(BLINK_LOOPS);
+      Delay(BLINK_TICKS);
 
       /* Turn off led by setting the pin high */
       GPIO_SetBits(BLINK_PORT, (1 << BLINK_PIN));
 
-      Delay(BLINK_LOOPS);
+      Delay(BLINK_TICKS);
     }
 }
 
 /**
  * @brief  Inserts a delay time.
- * @param  nTime: specifies the delay time length, in milliseconds.
+ * @param  nTime: specifies the delay time length, in SysTick ticks.
  * @retval None
  */
 void
