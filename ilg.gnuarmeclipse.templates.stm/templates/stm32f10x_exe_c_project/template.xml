@@ -59,10 +59,6 @@
 			description="%STM32F10x.ldscriptsDir.description" type="input"
 			default="%STM32F10x.ldscriptsDir.default" pattern="[a-zA-Z0-9]+"
 			mandatory="true" persist="true" />
-		<property id="semihostingOptions" label="%STM32F10x.semihostingOptions.label"
-			description="%STM32F10x.semihostingOptions.description" type="input"
-			default="%STM32F10x.semihostingOptions.default" pattern=".*"
-			mandatory="false" persist="true" />
 	</property-group>
 
 	<process type="org.eclipse.cdt.managedbuilder.core.NewManagedProject">
@@ -754,13 +750,6 @@
 			</element>
 		</complex-array>
 	</process>
-
-	<!-- <process type="ilg.gnuarmeclipse.templates.core.AppendToMBSStringOptionValue"> 
-		<simple name="projectName" value="$(projectName)" /> <complex-array name="resourcePaths"> 
-		<element> <simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.other" 
-		/> <simple name="value" value="$(semihostingOptions)" /> <simple name="path" 
-		value="" /> <simple name="buildType" value="debug" /> </element> </complex-array> 
-		</process> -->
 
 	<process
 		type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
