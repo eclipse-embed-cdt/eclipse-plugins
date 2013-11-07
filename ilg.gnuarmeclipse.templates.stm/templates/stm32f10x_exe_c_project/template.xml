@@ -55,6 +55,10 @@
 			description="%STM32F10x.periphDir.description" type="input"
 			default="%STM32F10x.periphDir.default" pattern="[a-zA-Z0-9]+"
 			mandatory="true" persist="true" />
+		<property id="miscDir" label="%STM32F4xx.miscDir.label"
+			description="%STM32F4xx.miscDir.description" type="input"
+			default="%STM32F4xx.miscDir.default" pattern="[a-zA-Z0-9]+"
+			mandatory="true" persist="true" />
 		<property id="ldscriptsDir" label="%STM32F10x.ldscriptsDir.label"
 			description="%STM32F10x.ldscriptsDir.description" type="input"
 			default="%STM32F10x.ldscriptsDir.default" pattern="[a-zA-Z0-9]+"
