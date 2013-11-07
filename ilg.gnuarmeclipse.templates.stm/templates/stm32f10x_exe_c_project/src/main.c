@@ -87,6 +87,9 @@ main(void)
   GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
   GPIO_Init(BLINK_PORT, &GPIO_InitStructure);
 
+  int seconds = 0;
+
+  /* Infinite loop */
   while (1)
     {
       /* Assume the LED is active low */
@@ -100,6 +103,15 @@ main(void)
       GPIO_SetBits(BLINK_PORT, (1 << BLINK_PIN));
 
       Delay(BLINK_TICKS);
+
+      ++seconds;
+
+#if defined(DEBUG)
+      /*
+       * Count seconds on the debug channel.
+       */
+      printf("Second %d\n", seconds);
+#endif
     }
 }
 
