@@ -1,4 +1,9 @@
-#include "debug_impl.h"
+//
+// This file is part of the GNU ARM Eclipse Plug-in
+// Copyright (c) 2013 Liviu Ionescu
+//
+
+#include "trace_impl.h"
 
 // The standard write() system call, after a long way inside newlib,
 // finally calls this implementation function.
@@ -11,7 +16,7 @@
 
 // The usual method to display trace messages is via printf().
 
-// The preprocessor definitions used for selection are in debug_impl.h.
+// The preprocessor definitions used for selection are in trace_impl.h.
 
 int
 _write(int fd, char* ptr, int len)
@@ -20,15 +25,17 @@ _write(int fd, char* ptr, int len)
     {
 #if defined(DEBUG)
 
-#if defined(INCLUDE_SWO)
-      return swo_write(ptr, len);
-#elif defined(INCLUDE_SEMIHOSTING_DEBUG)
-      return semihostig_debug_write(ptr, len);
-#elif defined(INCLUDE_SEMIHOSTING_STDOUT)
-      return semihostig_stdout_write(ptr, len);
+#if defined(INCLUDE_TRACE_SWO)
+      return _write_trace_swo(ptr, len);
+#elif defined(INCLUDE_TRACE_SEMIHOSTING_STDOUT)
+      return _write_trace_semihosting_stdout(ptr, len);
+#elif defined(INCLUDE_TRACE_SEMIHOSTING_DEBUG)
+      return _write_trace_semihosting_debug(ptr, len);
+#else
+#warning "no trace implementation"
 #endif
 
-#endif
+#endif // DEBUG
     }
   return -1;
 }

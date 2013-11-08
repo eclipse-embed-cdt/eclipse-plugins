@@ -844,9 +844,9 @@
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
-				<simple name="source" value="../misc/src/debug_impl.c" />
+				<simple name="source" value="../misc/src/trace_impl.c" />
 				<simple name="target"
-					value="$(libsDir)/$(miscDir)/$(sourceDir)/debug_impl.c" />
+					value="$(libsDir)/$(miscDir)/$(sourceDir)/trace_impl.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 		</complex-array>
@@ -876,9 +876,9 @@
 		<simple name="projectName" value="$(projectName)" />
 		<complex-array name="files">
 			<element>
-				<simple name="source" value="../misc/include/debug_impl.h" />
+				<simple name="source" value="../misc/include/trace_impl.h" />
 				<simple name="target"
-					value="$(libsDir)/$(miscDir)/$(includeDir)/debug_impl.h" />
+					value="$(libsDir)/$(miscDir)/$(includeDir)/trace_impl.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 		</complex-array>

@@ -1,6 +1,11 @@
-#include "debug_impl.h"
+//
+// This file is part of the GNU ARM Eclipse Plug-in
+// Copyright (c) 2013 Liviu Ionescu
+//
 
-#if defined(INCLUDE_SWO)
+#include "trace_impl.h"
+
+#if defined(INCLUDE_TRACE_SWO)
 
 // Define everything here, to pass standalone compilations
 
@@ -14,7 +19,7 @@
 #define ITM_TCR      (*(volatile unsigned int*)0xE0000E80)
 
 int
-swo_write(char* ptr, int len)
+_write_trace_swo(char* ptr, int len)
 {
   static int isInitialised;
   if (isInitialised == 0) {
@@ -49,12 +54,12 @@ swo_write(char* ptr, int len)
 
     }
 
-  return len; // we successfully sent all characters
+  return len; // all characters successfully sent
 }
 
-#endif
+#endif // INCLUDE_TRACE_SWO
 
-#if defined(INCLUDE_SEMIHOSTING_DEBUG) || defined(INCLUDE_SEMIHOSTING_STDOUT)
+#if defined(INCLUDE_TRACE_SEMIHOSTING_DEBUG) || defined(INCLUDE_TRACE_SEMIHOSTING_STDOUT)
 
 #define SYS_OPEN        0x01
 #define SYS_WRITEC      0x03
@@ -62,7 +67,7 @@ swo_write(char* ptr, int len)
 #define SYS_WRITE       0x05
 
 int
-SemiHostingBKPT(int op, void* p1, void* p2)
+semihosting_bkpt(int op, void* p1, void* p2)
 {
   register int r0 asm("r0");
   register int r1 asm("r1") __attribute__((unused));
@@ -81,36 +86,13 @@ SemiHostingBKPT(int op, void* p1, void* p2)
   return r0;
 }
 
-#endif
+#endif // INCLUDE_TRACE_SEMIHOSTING_*
 
-#if defined(INCLUDE_SEMIHOSTING_DEBUG)
 
-int
-semihostig_debug_write(char* ptr, int len)
-{
-  // Since the single character debug channel is quite slow, we try to
-  // optimise and send a null terminated string, if possible.
-  if (ptr[len] == '\0')
-    {
-      SemiHostingBKPT(SYS_WRITE0, (void*) ptr, (void*) 0);
-    }
-  else
-    {
-      int i;
-      for (i = 0; i < len; ++i, ++ptr)
-        {
-          SemiHostingBKPT(SYS_WRITEC, (void*) ptr, (void*) 0);
-        }
-    }
-  return len;
-}
-
-#endif
-
-#if defined(INCLUDE_SEMIHOSTING_STDOUT)
+#if defined(INCLUDE_TRACE_SEMIHOSTING_STDOUT)
 
 int
-semihostig_stdout_write(char* ptr, int len)
+_write_trace_semihosting_stdout(char* ptr, int len)
 {
   static int handle;
   void* block[3];
@@ -118,14 +100,13 @@ semihostig_stdout_write(char* ptr, int len)
 
   if (handle == 0)
     {
-      // On the first call we need to get the file handle from the
-      // host
+      // On the first call get the file handle from the host
       block[0] = ":tt"; // special filename to be used for stdin/out/err
       block[1] = (void*) 4; // mode "w"
-      // length of ":tt", except
+      // length of ":tt", except null terminator
       block[2] = (void*) sizeof(":tt")-1;
 
-      ret = SemiHostingBKPT(SYS_OPEN, (void*) block, (void*) 0);
+      ret = semihosting_bkpt(SYS_OPEN, (void*) block, (void*) 0);
       if (ret == -1)
         return -1;
 
@@ -135,12 +116,38 @@ semihostig_stdout_write(char* ptr, int len)
   block[0] = (void*) handle;
   block[1] = ptr;
   block[2] = (void*) len;
-
-  ret = SemiHostingBKPT(SYS_WRITE, (void*) block, (void*) 0);
-  // this call return the number of bytes NOT written (0 if all ok)
+  // send character array to host file/device
+  ret = semihosting_bkpt(SYS_WRITE, (void*) block, (void*) 0);
+  // this call returns the number of bytes NOT written (0 if all ok)
 
   return len - ret;
 }
 
-#endif
+#endif // INCLUDE_TRACE_SEMIHOSTING_STDOUT
+
+#if defined(INCLUDE_TRACE_SEMIHOSTING_DEBUG)
+
+int
+_write_trace_semihosting_debug(char* ptr, int len)
+{
+  // Since the single character debug channel is quite slow, try to
+  // optimise and send a null terminated string, if possible.
+  if (ptr[len] == '\0')
+    {
+      // send string
+      semihosting_bkpt(SYS_WRITE0, (void*) ptr, (void*) 0);
+    }
+  else
+    {
+      int i;
+      for (i = 0; i < len; ++i, ++ptr)
+        {
+          // send character
+          semihosting_bkpt(SYS_WRITEC, (void*) ptr, (void*) 0);
+        }
+    }
+  return len;
+}
+
+#endif // INCLUDE_TRACE_SEMIHOSTING_DEBUG
 
