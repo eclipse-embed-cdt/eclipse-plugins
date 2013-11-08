@@ -35,8 +35,10 @@ Reset_Handler(void);
 //
 //*****************************************************************************
 
+#if defined(USE_STARTUP_FILES)
 extern void
 _start(void);
+#endif
 
 extern void
 SystemInit(void);
