@@ -120,7 +120,32 @@
 		<simple name="path" value="$(sourceDir)" />
 	</process>
 
-	<process type="org.eclipse.cdt.core.AddFiles">
+	<if condition="$(STM32F3chipFamily)==STM32F30X">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="src/includeF30x.c" />
+					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F3chipFamily)==STM32F37X">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="src/includeF37x.c" />
+					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<process type="org.eclipse.cdt.core.AppendCreate">
 		<simple name="projectName" value="$(projectName)" />
 		<complex-array name="files">
 			<element>

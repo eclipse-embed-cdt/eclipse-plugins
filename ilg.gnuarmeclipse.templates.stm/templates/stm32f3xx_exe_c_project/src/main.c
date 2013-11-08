@@ -1,9 +1,3 @@
-#if defined(STM32F30X)
-#include "stm32f30x.h"
-#elif defined(STM32F37X)
-#include "stm32f37x.h"
-#endif
-
 #include <stdio.h>
 
 /*
