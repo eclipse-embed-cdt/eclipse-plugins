@@ -1,6 +1,6 @@
 /**
  ******************************************************************************
- * @file      vectors_stm32f30x.c
+ * @file      vectors_stm32f37x.c
  * @author    Liviu Ionescu
  * @author    MCD Application Team
  * @author    Code Red Technologies Ltd.
@@ -105,11 +105,11 @@ DMA1_Channel6_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 DMA1_Channel7_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-ADC1_2_IRQHandler(void);
+ADC1_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-USB_HP_CAN1_TX_IRQHandler(void);
+CAN1_TX_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-USB_LP_CAN1_RX0_IRQHandler(void);
+CAN1_RX0_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 CAN1_RX1_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
@@ -117,13 +117,13 @@ CAN1_SCE_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 EXTI9_5_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-TIM1_BRK_TIM15_IRQHandler(void);
+TIM15_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-TIM1_UP_TIM16_IRQHandler(void);
+TIM16_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-TIM1_TRG_COM_TIM17_IRQHandler(void);
+TIM17_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-TIM1_CC_IRQHandler(void);
+TIM18_DAC2_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 TIM2_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
@@ -153,25 +153,19 @@ EXTI15_10_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 RTC_Alarm_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-USBWakeUp_IRQHandler(void);
+CEC_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-TIM8_BRK_IRQHandler(void);
+TIM12_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-TIM8_UP_IRQHandler(void);
+TIM13_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-TIM8_TRG_COM_IRQHandler(void);
+TIM14_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-TIM8_CC_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-ADC3_IRQHandler(void);
+TIM5_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 SPI3_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-UART4_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-UART5_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-TIM6_DAC_IRQHandler(void);
+TIM6_DAC1_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 TIM7_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
@@ -185,19 +179,21 @@ DMA2_Channel4_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 DMA2_Channel5_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-ADC4_IRQHandler(void);
+SDADC1_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-COMP1_2_3_IRQHandler(void);
+SDADC2_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-COMP4_5_6_IRQHandler(void);
+SDADC3_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-COMP7_IRQHandler(void);
+COMP_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 USB_HP_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 USB_LP_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-USBWakeUp_RMP_IRQHandler(void);
+USBWakeUp_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+TIM19_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 FPU_IRQHandler(void);
 
@@ -241,89 +237,88 @@ pfn g_pfnVectors[] =
       PendSV_Handler,                           // The PendSV handler
       SysTick_Handler,                          // The SysTick handler
 
-      // Chip Level - STM32F30x
-      WWDG_IRQHandler,                           // Window WatchDog
-      PVD_IRQHandler,                            // PVD
-      TAMPER_STAMP_IRQHandler,                   // Tamper and TimeStamps
-      RTC_WKUP_IRQHandler,                       // RTC Wakeup
-      FLASH_IRQHandler,                          // FLASH
-      RCC_IRQHandler,                            // RCC
-      EXTI0_IRQHandler,                          // EXTI Line0
-      EXTI1_IRQHandler,                          // EXTI Line1
-      EXTI2_IRQHandler,                          // EXTI Line2
-      EXTI3_IRQHandler,                          // EXTI Line3
-      EXTI4_IRQHandler,                          // EXTI Line4
-      DMA1_Channel1_IRQHandler,                  // DMA1 Channel 1
-      DMA1_Channel2_IRQHandler,                  // DMA1 Channel 2
-      DMA1_Channel3_IRQHandler,                  // DMA1 Channel 3
-      DMA1_Channel4_IRQHandler,                  // DMA1 Channel 4
-      DMA1_Channel5_IRQHandler,                  // DMA1 Channel 5
-      DMA1_Channel6_IRQHandler,                  // DMA1 Channel 6
-      DMA1_Channel7_IRQHandler,                  // DMA1 Channel 7
-      ADC1_2_IRQHandler,                         // ADC1, 2
-      USB_HP_CAN1_TX_IRQHandler,                 // USB HP & CAN1 TX
-      USB_LP_CAN1_RX0_IRQHandler,                // USB LP & CAN1 RX0
-      CAN1_RX1_IRQHandler,                       // CAN1 RX1
-      CAN1_SCE_IRQHandler,                       // CAN1 SCE
-      EXTI9_5_IRQHandler,                        // External Line[9:5]s
-      TIM1_BRK_TIM15_IRQHandler,                 // TIM1 Break and TIM15
-      TIM1_UP_TIM16_IRQHandler,                  // TIM1 Update and TIM16
-      TIM1_TRG_COM_TIM17_IRQHandler,             // TIM1 and TIM17
-      TIM1_CC_IRQHandler,                        // TIM1 Capture Compare
-      TIM2_IRQHandler,                           // TIM2
-      TIM3_IRQHandler,                           // TIM3
-      TIM4_IRQHandler,                           // TIM4
-      I2C1_EV_IRQHandler,                        // I2C1 Event
-      I2C1_ER_IRQHandler,                        // I2C1 Error
-      I2C2_EV_IRQHandler,                        // I2C2 Event
-      I2C2_ER_IRQHandler,                        // I2C2 Error
-      SPI1_IRQHandler,                           // SPI1
-      SPI2_IRQHandler,                           // SPI2
-      USART1_IRQHandler,                         // USART1
-      USART2_IRQHandler,                         // USART2
-      USART3_IRQHandler,                         // USART3
-      EXTI15_10_IRQHandler,                      // External Line[15:10]s
-      RTC_Alarm_IRQHandler,                      // RTC Alarm (A and B)
-      USBWakeUp_IRQHandler,                      // USB  Wakeup
-      TIM8_BRK_IRQHandler,                       // TIM8 Break
-      TIM8_UP_IRQHandler,                        // TIM8 Update
-      TIM8_TRG_COM_IRQHandler,                   // TIM8
-      TIM8_CC_IRQHandler,                        // TIM8 Capture Compare
-      ADC3_IRQHandler,                           // ADC3
-      0,                                         // Reserved
-      0,                                         // Reserved
-      0,                                         // Reserved
-      SPI3_IRQHandler,                           // SPI3
-      UART4_IRQHandler,                          // UART4
-      UART5_IRQHandler,                          // UART5
-      TIM6_DAC_IRQHandler,                       // TIM6 and DAC
-      TIM7_IRQHandler,                           // TIM7
-      DMA2_Channel1_IRQHandler,                  // DMA2 Channel 1
-      DMA2_Channel2_IRQHandler,                  // DMA2 Channel 2
-      DMA2_Channel3_IRQHandler,                  // DMA2 Channel 3
-      DMA2_Channel4_IRQHandler,                  // DMA2 Channel 4
-      DMA2_Channel5_IRQHandler,                  // DMA2 Channel 5
-      ADC4_IRQHandler,                           // ADC4
-      0,                                         // Reserved
-      0,                                         // Reserved
-      COMP1_2_3_IRQHandler,                      // COMP 1,2,3
-      COMP4_5_6_IRQHandler,                      // COMP 4,5,6
-      COMP7_IRQHandler,                          // COMP 7
-      0,                                         // Reserved
-      0,                                         // Reserved
-      0,                                         // Reserved
-      0,                                         // Reserved
-      0,                                         // Reserved
-      0,                                         // Reserved
-      0,                                         // Reserved
-      USB_HP_IRQHandler,                         // USB HP
-      USB_LP_IRQHandler,                         // USB LP
-      USBWakeUp_RMP_IRQHandler,                  // USB Wakeup through EXTI
-      0,                                         // Reserved
-      0,                                         // Reserved
-      0,                                         // Reserved
-      0,                                         // Reserved
-      FPU_IRQHandler                             // FPU
+      // Chip Level - STM32F37x
+      WWDG_IRQHandler,                          // Window WatchDog
+      PVD_IRQHandler,                           // PVD
+      TAMPER_STAMP_IRQHandler,                  // Tamper and TimeStamps
+      RTC_WKUP_IRQHandler,                      // RTC Wakeup
+      FLASH_IRQHandler,                         // FLASH
+      RCC_IRQHandler,                           // RCC
+      EXTI0_IRQHandler,                         // EXTI Line0
+      EXTI1_IRQHandler,                         // EXTI Line1
+      EXTI2_IRQHandler,                         // EXTI Line2
+      EXTI3_IRQHandler,                         // EXTI Line3
+      EXTI4_IRQHandler,                         // EXTI Line4
+      DMA1_Channel1_IRQHandler,                 // DMA1 Channel 1
+      DMA1_Channel2_IRQHandler,                 // DMA1 Channel 2
+      DMA1_Channel3_IRQHandler,                 // DMA1 Channel 3
+      DMA1_Channel4_IRQHandler,                 // DMA1 Channel 4
+      DMA1_Channel5_IRQHandler,                 // DMA1 Channel 5
+      DMA1_Channel6_IRQHandler,                 // DMA1 Channel 6
+      DMA1_Channel7_IRQHandler,                 // DMA1 Channel 7
+      ADC1_IRQHandler,                          // ADC1
+      CAN1_TX_IRQHandler,                       // CAN1 TX
+      CAN1_RX0_IRQHandler,                      // CAN1 RX0
+      CAN1_RX1_IRQHandler,                      // CAN1 RX1
+      CAN1_SCE_IRQHandler,                      // CAN1 SCE
+      EXTI9_5_IRQHandler,                       // External Line[9:5]s
+      TIM15_IRQHandler,                         // TIM15
+      TIM16_IRQHandler,                         // TIM16
+      TIM17_IRQHandler,                         // TIM17
+      TIM18_DAC2_IRQHandler,                    // TIM18
+      TIM2_IRQHandler,                          // TIM2
+      TIM3_IRQHandler,                          // TIM3
+      TIM4_IRQHandler,                          // TIM4
+      I2C1_EV_IRQHandler,                       // I2C1 Event
+      I2C1_ER_IRQHandler,                       // I2C1 Error
+      I2C2_EV_IRQHandler,                       // I2C2 Event
+      I2C2_ER_IRQHandler,                       // I2C2 Error
+      SPI1_IRQHandler,                          // SPI1
+      SPI2_IRQHandler,                          // SPI2
+      USART1_IRQHandler,                        // USART1
+      USART2_IRQHandler,                        // USART2
+      USART3_IRQHandler,                        // USART3
+      EXTI15_10_IRQHandler,                     // External Line[15:10]s
+      RTC_Alarm_IRQHandler,                     // RTC Alarm
+      CEC_IRQHandler,                           // CEC
+      TIM12_IRQHandler,                         // TIM12
+      TIM13_IRQHandler,                         // TIM13
+      TIM14_IRQHandler,                         // TIM14
+      0,                                        // Reserved
+      0,                                        // Reserved
+      0,                                        // Reserved
+      0,                                        // Reserved
+      TIM5_IRQHandler,                          // TIM5
+      SPI3_IRQHandler,                          // SPI3
+      0,                                        // Reserved
+      0,                                        // Reserved
+      TIM6_DAC1_IRQHandler,                     // TIM6 and DAC1
+      TIM7_IRQHandler,                          // TIM7
+      DMA2_Channel1_IRQHandler,                 // DMA2 Channel 1
+      DMA2_Channel2_IRQHandler,                 // DMA2 Channel 2
+      DMA2_Channel3_IRQHandler,                 // DMA2 Channel 3
+      DMA2_Channel4_IRQHandler,                 // DMA2 Channel 4
+      DMA2_Channel5_IRQHandler,                 // DMA2 Channel 5
+      SDADC1_IRQHandler,                        // SDADC1
+      SDADC2_IRQHandler,                        // SDADC2
+      SDADC3_IRQHandler,                        // SDADC3
+      COMP_IRQHandler,                          // COMP
+      0,                                        // Reserved
+      0,                                        // Reserved
+      0,                                        // Reserved
+      0,                                        // Reserved
+      0,                                        // Reserved
+      0,                                        // Reserved
+      0,                                        // Reserved
+      0,                                        // Reserved
+      0,                                        // Reserved
+      USB_HP_IRQHandler,                        // USB HP
+      USB_LP_IRQHandler,                        // USB LP
+      USBWakeUp_IRQHandler,                     // USB Wakeup through EXTI
+      0,                                        // Reserved
+      TIM19_IRQHandler,                         // TIM19
+      0,                                        // Reserved
+      FPU_IRQHandler                            // FPU
     };
 
 //*****************************************************************************

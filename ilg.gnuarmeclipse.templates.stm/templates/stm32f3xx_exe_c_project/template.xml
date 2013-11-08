@@ -10,8 +10,8 @@
 		<property id="STM32F3chipFamily" label="%STM32F3xx.chipFamily.label"
 			description="%STM32F3xx.chipFamily.description" type="select"
 			default="%STM32F3xx.chipFamily.default" hidden="false" persist="true">
-			<item value="STM32F30x" label="STM32F30x/31x" />
-			<item value="STM32F37x" label="STM32F37x/38x" />
+			<item value="STM32F30X" label="STM32F30x/31x" />
+			<item value="STM32F37X" label="STM32F37x/38x" />
 		</property>
 		<property id="STM32F3flashSize" label="%STM32F3xx.flashSize.label"
 			description="%STM32F3xx.flashSize.description" type="input" pattern="[0-9]*"
@@ -89,17 +89,30 @@
 		</complex-array>
 	</process>
 
-	<process type="org.eclipse.cdt.core.AddFiles">
-		<simple name="projectName" value="$(projectName)" />
-		<complex-array name="files">
-			<element>
-				<simple name="source" value="src/stm32f30x_conf.h" />
-				<simple name="target" value="$(includeDir)/stm32f30x_conf.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-		</complex-array>
-	</process>
-
+	<if condition="$(STM32F3chipFamily)==STM32F30X">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="src/stm32f30x_conf.h" />
+					<simple name="target" value="$(includeDir)/stm32f30x_conf.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F3chipFamily)==STM32F37X">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="src/stm32f37x_conf.h" />
+					<simple name="target" value="$(includeDir)/stm32f37x_conf.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
 
 	<!-- src -->
 	<process type="org.eclipse.cdt.core.CreateSourceFolder">
@@ -167,112 +180,213 @@
 		</complex-array>
 	</process>
 
-	<process type="org.eclipse.cdt.core.AddFiles">
-		<simple name="projectName" value="$(projectName)" />
-		<complex-array name="files">
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Device/ST/STM32F30x/Include/stm32f30x.h" />
-				<simple name="target"
-					value="$(libsDir)/$(cmsisDir)/$(includeDir)/stm32f30x.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Device/ST/STM32F30x/Include/system_stm32f30x.h" />
-				<simple name="target"
-					value="$(libsDir)/$(cmsisDir)/$(includeDir)/system_stm32f30x.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-
-		</complex-array>
-	</process>
+	<if condition="$(STM32F3chipFamily)==STM32F30X">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Device/ST/STM32F30x/Include/stm32f30x.h" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(includeDir)/stm32f30x.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Device/ST/STM32F30x/Include/system_stm32f30x.h" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(includeDir)/system_stm32f30x.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F3chipFamily)==STM32F37X">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Device/ST/STM32F37x/Include/stm32f37x.h" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(includeDir)/stm32f37x.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Device/ST/STM32F37x/Include/system_stm32f37x.h" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(includeDir)/system_stm32f37x.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
 
 	<process type="org.eclipse.cdt.core.CreateSourceFolder">
 		<simple name="projectName" value="$(projectName)" />
 		<simple name="path" value="$(libsDir)/$(cmsisDir)/$(sourceDir)" />
 	</process>
 
-	<process type="org.eclipse.cdt.core.AddFiles">
-		<simple name="projectName" value="$(projectName)" />
-		<complex-array name="files">
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Device/ST/STM32F30x/Source/Templates/system_stm32f30x.c" />
-				<simple name="target"
-					value="$(libsDir)/$(cmsisDir)/$(sourceDir)/system_stm32f30x.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source" value="../common/src/startup_cm.c" />
-				<simple name="target"
-					value="$(libsDir)/$(cmsisDir)/$(sourceDir)/startup_cm.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source" value="src/startup_stm32f30x.c" />
-				<simple name="target"
-					value="$(libsDir)/$(cmsisDir)/$(sourceDir)/startup_stm32f30x.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source" value="src/vectors_stm32f30x.c" />
-				<simple name="target"
-					value="$(libsDir)/$(cmsisDir)/$(sourceDir)/vectors_stm32f30x.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-		</complex-array>
-	</process>
+	<if condition="$(STM32F3chipFamily)==STM32F30X">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Device/ST/STM32F30x/Source/Templates/system_stm32f30x.c" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/system_stm32f30x.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/startup_cm.c" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/startup_cm.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="src/startup_stm32f30x.c" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/startup_stm32f30x.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="src/vectors_stm32f30x.c" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/vectors_stm32f30x.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
 
-	<process type="org.eclipse.cdt.core.AddFiles">
-		<simple name="projectName" value="$(projectName)" />
-		<complex-array name="files">
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Include/arm_common_tables.h" />
-				<simple name="target"
-					value="$(libsDir)/$(cmsisDir)/$(includeDir)/arm_common_tables.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Include/arm_math.h" />
-				<simple name="target"
-					value="$(libsDir)/$(cmsisDir)/$(includeDir)/arm_math.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Include/core_cm4.h" />
-				<simple name="target"
-					value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cm4.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Include/core_cm4_simd.h" />
-				<simple name="target"
-					value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cm4_simd.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Include/core_cmFunc.h" />
-				<simple name="target"
-					value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cmFunc.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Include/core_cmInstr.h" />
-				<simple name="target"
-					value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cmInstr.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-
-		</complex-array>
-	</process>
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Include/arm_common_tables.h" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(includeDir)/arm_common_tables.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Include/arm_math.h" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(includeDir)/arm_math.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Include/core_cm4_simd.h" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cm4_simd.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Include/core_cm4.h" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cm4.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Include/core_cmFunc.h" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cmFunc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Include/core_cmInstr.h" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cmInstr.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F3chipFamily)==STM32F37X">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Device/ST/STM32F37x/Source/Templates/system_stm32f37x.c" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/system_stm32f37x.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/startup_cm.c" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/startup_cm.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="src/startup_stm32f37x.c" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/startup_stm32f37x.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="src/vectors_stm32f37x.c" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/vectors_stm32f37x.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Include/arm_common_tables.h" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(includeDir)/arm_common_tables.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Include/arm_math.h" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(includeDir)/arm_math.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Include/core_cm4_simd.h" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cm4_simd.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Include/core_cm4.h" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cm4.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Include/core_cmFunc.h" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cmFunc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Include/core_cmInstr.h" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cmInstr.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
 
 	<!-- $(periphDir) -->
 	<process type="org.eclipse.cdt.core.CreateFolder">
@@ -295,361 +409,730 @@
 		</complex-array>
 	</process>
 
-	<process type="org.eclipse.cdt.core.AddFiles">
-		<simple name="projectName" value="$(projectName)" />
-		<complex-array name="files">
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_adc.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_adc.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_can.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_can.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_comp.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_comp.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_crc.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_crc.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_dac.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_dac.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_dbgmcu.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_dbgmcu.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_dma.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_dma.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_exti.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_exti.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_flash.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_flash.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_gpio.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_gpio.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_i2c.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_i2c.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_iwdg.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_iwdg.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_misc.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_misc.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_opamp.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_opamp.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_pwr.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_pwr.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_rcc.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_rcc.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_rtc.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_rtc.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_spi.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_spi.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_syscfg.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_syscfg.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_tim.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_tim.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_usart.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_usart.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_wwdg.h" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_wwdg.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-		</complex-array>
-	</process>
+	<if condition="$(STM32F3chipFamily)==STM32F30X">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_adc.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_adc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_can.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_can.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_comp.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_comp.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_crc.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_crc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_dac.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_dac.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_dbgmcu.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_dbgmcu.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_dma.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_dma.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_exti.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_exti.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_flash.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_flash.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_gpio.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_gpio.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_i2c.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_i2c.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_iwdg.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_iwdg.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_misc.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_misc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_opamp.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_opamp.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_pwr.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_pwr.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_rcc.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_rcc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_rtc.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_rtc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_spi.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_spi.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_syscfg.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_syscfg.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_tim.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_tim.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_usart.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_usart.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/inc/stm32f30x_wwdg.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f30x_wwdg.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F3chipFamily)==STM32F37X">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_adc.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_adc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_can.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_can.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_cec.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_cec.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_comp.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_comp.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_crc.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_crc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_dac.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_dac.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_dbgmcu.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_dbgmcu.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_dma.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_dma.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_exti.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_exti.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_flash.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_flash.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_gpio.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_gpio.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_i2c.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_i2c.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_iwdg.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_iwdg.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_misc.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_misc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_pwr.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_pwr.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_rcc.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_rcc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_rtc.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_rtc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_sdadc.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_sdadc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_spi.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_spi.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_syscfg.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_syscfg.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_tim.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_tim.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_usart.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_usart.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/inc/stm32f37x_wwdg.h" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f37x_wwdg.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
 
 	<process type="org.eclipse.cdt.core.CreateSourceFolder">
 		<simple name="projectName" value="$(projectName)" />
 		<simple name="path" value="$(libsDir)/$(periphDir)/$(sourceDir)" />
 	</process>
 
-	<process type="org.eclipse.cdt.core.AddFiles">
-		<simple name="projectName" value="$(projectName)" />
-		<complex-array name="files">
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_adc.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_adc.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_can.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_can.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_comp.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_comp.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_crc.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_crc.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_dac.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_dac.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_dbgmcu.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_dbgmcu.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_dma.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_dma.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_exti.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_exti.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_flash.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_flash.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_gpio.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_gpio.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_i2c.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_i2c.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_iwdg.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_iwdg.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_misc.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_misc.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_opamp.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_opamp.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_pwr.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_pwr.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_rcc.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_rcc.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_rtc.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_rtc.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_spi.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_spi.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_syscfg.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_syscfg.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_tim.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_tim.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_usart.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_usart.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_wwdg.c" />
-				<simple name="target"
-					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_wwdg.c" />
-				<simple name="replaceable" value="true" />
-			</element>
-		</complex-array>
-	</process>
+	<if condition="$(STM32F3chipFamily)==STM32F30X">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_adc.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_adc.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_can.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_can.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_comp.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_comp.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_crc.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_crc.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_dac.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_dac.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_dbgmcu.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_dbgmcu.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_dma.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_dma.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_exti.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_exti.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_flash.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_flash.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_gpio.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_gpio.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_i2c.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_i2c.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_iwdg.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_iwdg.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_misc.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_misc.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_opamp.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_opamp.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_pwr.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_pwr.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_rcc.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_rcc.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_rtc.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_rtc.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_spi.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_spi.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_syscfg.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_syscfg.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_tim.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_tim.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_usart.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_usart.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/src/stm32f30x_wwdg.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f30x_wwdg.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
 
 
-	<process type="org.eclipse.cdt.core.AddFiles">
-		<simple name="projectName" value="$(projectName)" />
-		<complex-array name="files">
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/README.txt" />
-				<simple name="target" value="$(libsDir)/README.txt" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Device/ST/STM32F30x/Release_Notes.html" />
-				<simple name="target" value="$(libsDir)/$(cmsisDir)/Release_Notes.html" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/Release_Notes.html" />
-				<simple name="target" value="$(libsDir)/$(periphDir)/Release_Notes.html" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Release_Notes.html" />
-				<simple name="target" value="$(libsDir)/Release_Notes.html" />
-				<simple name="replaceable" value="true" />
-			</element>
-		</complex-array>
-	</process>
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/README.txt" />
+					<simple name="target" value="$(libsDir)/README.txt" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Device/ST/STM32F30x/Release_Notes.html" />
+					<simple name="target" value="$(libsDir)/$(cmsisDir)/Release_Notes.html" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F30x_StdPeriph_Driver/Release_Notes.html" />
+					<simple name="target" value="$(libsDir)/$(periphDir)/Release_Notes.html" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F30x_DSP_StdPeriph_Lib_V1.0.0/Release_Notes.html" />
+					<simple name="target" value="$(libsDir)/Release_Notes.html" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F3chipFamily)==STM32F37X">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_adc.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_adc.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_can.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_can.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_cec.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_cec.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_comp.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_comp.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_crc.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_crc.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_dac.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_dac.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_dbgmcu.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_dbgmcu.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_dma.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_dma.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_exti.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_exti.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_flash.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_flash.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_gpio.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_gpio.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_i2c.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_i2c.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_iwdg.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_iwdg.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_misc.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_misc.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_pwr.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_pwr.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_rcc.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_rcc.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_rtc.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_rtc.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_sdadc.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_sdadc.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_spi.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_spi.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_syscfg.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_syscfg.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_tim.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_tim.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_usart.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_usart.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/src/stm32f37x_wwdg.c" />
+					<simple name="target"
+						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f37x_wwdg.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/README.txt" />
+					<simple name="target" value="$(libsDir)/README.txt" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/CMSIS/Device/ST/STM32F37x/Release_Notes.html" />
+					<simple name="target" value="$(libsDir)/$(cmsisDir)/Release_Notes.html" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Libraries/STM32F37x_StdPeriph_Driver/Release_Notes.html" />
+					<simple name="target" value="$(libsDir)/$(periphDir)/Release_Notes.html" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/STM32F37x_DSP_StdPeriph_Lib_V1.0.0/Release_Notes.html" />
+					<simple name="target" value="$(libsDir)/Release_Notes.html" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
 
 	<process type="org.eclipse.cdt.core.CreateSourceFolder">
 		<simple name="projectName" value="$(projectName)" />

@@ -1,12 +1,12 @@
 /**
  ******************************************************************************
- * @file      startup_stm32f30x.c
+ * @file      startup_stm32f37x.c
  * @author    Liviu Ionescu
  * @brief     This module performs initialisations for the Cortex-M4 FPU
  ******************************************************************************
  */
 
-#include "stm32f30x.h"
+#include "stm32f37x.h"
 
 // Usually main() doesn't return, but if it does, on debug
 // we'll just enter an infinite loop, while on Release we restart.
