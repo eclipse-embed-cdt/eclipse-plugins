@@ -11,6 +11,12 @@
       </template>
       <template
             filterPattern=".*g[c\+][c\+]"
+            id="ilg.gnuarmeclipse.templates.stm.stm32f3xx.exe.c.project"
+            location="$nl$/templates/stm32f3xx_exe_c_project/template.xml"
+            projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
+      </template>
+      <template
+            filterPattern=".*g[c\+][c\+]"
             id="ilg.gnuarmeclipse.templates.stm.stm32f4xx.exe.c.project"
             location="$nl$/templates/stm32f4xx_exe_c_project/template.xml"
             projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
