@@ -14,7 +14,7 @@ with the following folders removed to save space:
 - Libraries/CMSIS/Device/ST/STM32F4xx/Source/Templates/iar
 - Libraries/CMSIS/Device/ST/STM32F4xx/Source/Templates/TASKING
 - Libraries/CMSIS/Device/ST/STM32F4xx/Source/Templates/TrueSTUDIO
-
+- Libraries/STM32F30x_I2C_CPAL_Driver
 
 Also the following files were removed:
 - stm32f30x_dsp_stdperiph_lib_um.chm
