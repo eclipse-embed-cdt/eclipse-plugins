@@ -6,7 +6,9 @@
  *
  * In debug configurations, demonstrate how to print a greeting message
  * on the standard output. In release configurations the message is
- * simply discarded.
+ * simply discarded. By default the trace messages are forwarded to the SWO,
+ * but can be rerouted to semi-hosting or completely suppressed by changing
+ * the definitions in misc/include/trace_impl.h.
  *
  * Then enter a continuous loop and blink a led with 1Hz.
  *
