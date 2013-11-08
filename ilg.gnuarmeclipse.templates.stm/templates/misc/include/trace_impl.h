@@ -3,8 +3,8 @@
 // Copyright (c) 2013 Liviu Ionescu
 //
 
-#ifndef _DEBUG_IMPL_H
-#define _DEBUG_IMPL_H
+#ifndef _TRACE_IMPL_H
+#define _TRACE_IMPL_H
 
 // SWO is the ARM standard mechanism, running over SWD, and is the
 // recommended setting.
@@ -33,4 +33,4 @@ _write_trace_semihosting_debug(char* ptr, int len);
 #endif
 
 
-#endif // _DEBUG_IMPL_H
+#endif // _TRACE_IMPL_H
