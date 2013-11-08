@@ -1,10 +1,7 @@
-/**
- ******************************************************************************
- * @file      startup_stm32f4xx.c
- * @author    Liviu Ionescu
- * @brief     This module performs initialisations for the Cortex-M4 FPU
- ******************************************************************************
- */
+//
+// This file is part of the GNU ARM Eclipse Plug-in
+// Copyright (c) 2013 Liviu Ionescu
+//
 
 #include "stm32f4xx.h"
 
