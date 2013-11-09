@@ -1,22 +1,28 @@
-/**
- ******************************************************************************
- * @file      startup_cm.c
- * @author    Liviu Ionescu
- * @author    Code Red Technologies Ltd.
- * @brief     This module performs:
- *                - Set the vector table entries with the exceptions ISR address
- *                - Configure the clock system via the SystemInit()
- *                - Branches to main in the C library.
- *            After Reset the Cortex-M processor is in Thread mode,
- *            priority is Privileged, and the Stack is set to Main.
- *
- *            The normal configuration is standalone, with all support
- *            functions implemented locally.
- *
- *            If required, the standard startup files can be called to
- *            perform all initialisations (define USE_STARTUP_FILES).
- ******************************************************************************
- */
+//
+// This file is part of the GNU ARM Eclipse Plug-in
+// Copyright (c) 2013 Liviu Ionescu
+//
+// This module contains the startup code for a portable Cortex-M
+// C/C++ application, built with CMSIS and newlib.
+//
+// The actual steps performed are:
+// - clear the BSS area
+// - run the preinit array, where, as the first entry, a separate routine
+// is used to copy the initialised data section and to configure the
+// system call via the CMSIS SystemInit()
+// - run the init array (for the C++ static constructors)
+// - branch to main()
+// - run the fini array (for the C++ static destructors)
+// - call _exit(), directly or via exit()
+//
+// After Reset the Cortex-M processor is in Thread mode,
+// priority is Privileged, and the Stack is set to Main.
+//
+// The normal configuration is standalone, with all support
+// functions implemented locally.
+//
+// If required, the standard startup files can be called to
+// perform all initialisations (define USE_STARTUP_FILES).
 
 #include <sys/types.h>
 
@@ -28,48 +34,54 @@ extern "C"
 void __attribute__((weak))
 Reset_Handler(void);
 
-//*****************************************************************************
-//
-// The entry point for the application.
-// main() is the entry point for Newlib based applications
-//
-//*****************************************************************************
-
 #if defined(USE_STARTUP_FILES)
 extern void
 _start(void);
 #endif
 
+// The CMSIS system initialisation routine.
 extern void
 SystemInit(void);
 
+// Initialise the data section
 inline void
-data_init(unsigned int romstart, unsigned int start, unsigned int len);
+data_init(unsigned int* from, unsigned int* section_begin,
+    unsigned int* section_end);
 
-// start address for the initialisation values of the .data section.
+// Begin address for the initialisation values of the .data section.
 // defined in linker script
 extern unsigned int _sidata;
-// start address for the .data section; defined in linker script
+// Begin address for the .data section; defined in linker script
 extern unsigned int _sdata;
-// end address for the .data section; defined in linker script
+// End address for the .data section; defined in linker script
 extern unsigned int _edata;
 
 #if !defined(USE_STARTUP_FILES)
 
+// Clear the bss section
 inline void
-bss_init(unsigned int start, unsigned int len);
+bss_init(unsigned int* section_begin, unsigned int* section_end);
 
-// start address for the .bss section; defined in linker script
+// Begin address for the .bss section; defined in linker script
 extern unsigned int __bss_start__;
-// end address for the .bss section; defined in linker script
+// End address for the .bss section; defined in linker script
 extern unsigned int __bss_end__;
 
+// Iterate over all the preinit/init routines.
 extern void
 __libc_init_array(void);
 
+// Run all the cleanup routines.
+extern void
+__libc_fini_array(void);
+
+// The entry point for the application.
+// main() is the entry point for Newlib based applications
 extern int
 main(void);
 
+// The implementation for the exit routine, where for embedded
+// applications, a system reset is performed.
 extern void
 _exit(int);
 
@@ -82,25 +94,27 @@ _exit(int);
 
 inline void
 __attribute__((always_inline))
-data_init(unsigned int romstart, unsigned int start, unsigned int len)
+data_init(unsigned int* from, unsigned int* section_begin,
+    unsigned int* section_end)
 {
-  unsigned int *pulDest = (unsigned int*) start;
-  unsigned int *pulSrc = (unsigned int*) romstart;
-  unsigned int loop;
-  for (loop = 0; loop < len; loop = loop + 4)
-    *pulDest++ = *pulSrc++;
+  // Iterate and copy word by word.
+  // It is assumed that the pointers are word aligned.
+  unsigned int *p = section_begin;
+  while (p < section_end)
+    *p++ = *from++;
 }
 
 #if !defined(USE_STARTUP_FILES)
 
 inline void
 __attribute__((always_inline))
-bss_init(unsigned int start, unsigned int len)
+bss_init(unsigned int* section_begin, unsigned int* section_end)
 {
-  unsigned int *pulDest = (unsigned int*) start;
-  unsigned int loop;
-  for (loop = 0; loop < len; loop = loop + 4)
-    *pulDest++ = 0;
+  // Iterate and clear word by word.
+  // It is assumed that the pointers are word aligned.
+  unsigned int *p = section_begin;
+  while (p < section_end)
+    *p++ = 0;
 }
 
 #endif
@@ -109,7 +123,12 @@ bss_init(unsigned int start, unsigned int len)
 void __attribute__ ((section(".after_vectors"), naked))
 Reset_Handler(void)
   {
-    // simply go to the startup code
+    // This is useful when using certain libraries that came with custom
+    // startup files, like librdimon.a.
+
+    // Go to the startup code, that is expected to perform the
+    // usual initialisations, i.e. clear the BSS, run the
+    // init arrays and call main().
     asm volatile
     (
         " b _start \n"
@@ -172,60 +191,54 @@ __libc_fini_array(void)
   //_fini();
 }
 
+// This is the place where Cortex-M core will go immediately after reset.
 void __attribute__ ((section(".after_vectors")))
 Reset_Handler(void)
 {
 
-  // Use Old Style Data and BSS section initialisation.
-  // This will only initialise a single RAM bank.
-  unsigned int *ExeAddr;
-  unsigned int *EndAddr;
-  unsigned int SectionLen;
+  // Use Old Style Data and BSS section initialisation,
+  // That will initialise a single BSS sections.
 
   // Zero fill the bss segment
-  ExeAddr = &__bss_start__;
-  EndAddr = &__bss_end__;
-  SectionLen = (void*) EndAddr - (void*) ExeAddr;
-  bss_init((unsigned int) ExeAddr, SectionLen);
+  bss_init(&__bss_start__, &__bss_end__);
 
   // Call the standard library initialisation (mandatory, SystemInit()
-  // and C++ constructors are called from here).
+  // and C++ static constructors are called from here).
   __libc_init_array();
 
+  // Call the main entry point, and save the exit code.
   int r = main();
 
+  // Run the static destructors.
   __libc_fini_array();
 
+  // On test platforms, like semi-hosting, this can be used to inform
+  // the host on the test result.
+  // On embedded platforms, usually reset the processor.
   _exit(r);
 
 }
 
 #endif
 
+// System initialisation, executed before constructors.
 void
 __attribute__((section(".after_vectors")))
 system_init()
 {
-  unsigned int *LoadAddr;
-  unsigned int *ExeAddr;
-  unsigned int *EndAddr;
-  unsigned int SectionLen;
+  // Copy the data segment from Flash to RAM.
+  // This is here since some library crt0 code does not perform it there
+  // so we must be sure it is executed somewhere.
+  // (for example librdimon)
+  data_init(&_sidata, &_sdata, &_edata);
 
-  // Copy the data segment from flash to RAM.
-  LoadAddr = &_sidata;
-  ExeAddr = &_sdata;
-  EndAddr = &_edata;
-  SectionLen = (void*) EndAddr - (void*) ExeAddr;
-  data_init((unsigned int) LoadAddr, (unsigned int) ExeAddr, SectionLen);
-
+  // Call the CSMSIS system initialisation routine
   SystemInit();
-
 }
 
 // The .preinit_array_sysinit section is defined in sections.ld as the first
 // sub-section in the .preinit_array, so it is guaranteed that this function
 // is executed before all other initialisations.
-void *
-__attribute__((section(".preinit_array_sysinit")))
+void * __attribute__((section(".preinit_array_sysinit")))
 p_system_init = system_init; // pointer to the above function
 
