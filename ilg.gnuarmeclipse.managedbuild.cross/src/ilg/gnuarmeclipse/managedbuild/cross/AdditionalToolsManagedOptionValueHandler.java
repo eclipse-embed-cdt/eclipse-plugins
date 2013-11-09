@@ -16,6 +16,7 @@ import org.eclipse.cdt.managedbuilder.core.IHoldsOptions;
 import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.core.ManagedOptionValueHandler;
 import org.eclipse.cdt.managedbuilder.internal.core.FolderInfo;
+import org.eclipse.cdt.managedbuilder.internal.core.MultiFolderInfo;
 import org.eclipse.cdt.managedbuilder.internal.core.ResourceConfiguration;
 
 public class AdditionalToolsManagedOptionValueHandler extends
@@ -42,15 +43,22 @@ public class AdditionalToolsManagedOptionValueHandler extends
 				oFolderInfo = (FolderInfo) configuration;
 				// oFolderInfo.setDirty(true); //does not update interface :-(
 				// TODO: find the proper sequence to update the interface
-				System.out.println("should update configuration window!");
+				// System.out.println("should update FolderInfo");
 				// PlatformUI.getWorkbench().getModalDialogShellProvider().getShell().redraw();
 
 				return false; // should we return true?
 
 			} else if (configuration instanceof ResourceConfiguration) {
 				// TODO: find the proper sequence to update the interface
-				System.out
-						.println("should update resource configuration window!");
+				// System.out
+				//		.println("should update ResourceConfiguration");
+
+				return false; // should we return true?
+
+			} else if (configuration instanceof MultiFolderInfo) {
+				// TODO: find the proper sequence to update the interface
+				// System.out
+				//		.println("should update MultiFolderInfo");
 
 				return false; // should we return true?
 
