@@ -12,6 +12,7 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross;
 
+import org.eclipse.cdt.core.settings.model.ICMultiItemsHolder;
 import org.eclipse.cdt.core.settings.model.ICResourceDescription;
 import org.eclipse.cdt.managedbuilder.buildproperties.IBuildPropertyValue;
 import org.eclipse.cdt.managedbuilder.core.BuildException;
@@ -19,6 +20,7 @@ import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.core.IToolChain;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
+import org.eclipse.cdt.managedbuilder.internal.core.MultiConfiguration;
 import org.eclipse.cdt.managedbuilder.makegen.IManagedBuilderMakefileGenerator;
 import org.eclipse.cdt.managedbuilder.makegen.gnu.GnuMakefileGenerator;
 import org.eclipse.cdt.managedbuilder.ui.properties.AbstractCBuildPropertyTab;
@@ -470,6 +472,15 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 	}
 
 	private void updateOptions(IConfiguration config) {
+		
+		if (config instanceof MultiConfiguration){
+			MultiConfiguration multi = (MultiConfiguration)config;
+			for (Object obj : multi.getItems()){
+				IConfiguration cfg = (IConfiguration)obj;
+				updateOptions(cfg);
+			}
+			return;
+		}
 		IToolChain toolchain = config.getToolChain();
 
 		IOption option;
@@ -649,12 +660,12 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 
 		if (page.isForProject()) {
 			if (page.isMultiCfg()) {
-				// ICMultiItemsHolder mih = (ICMultiItemsHolder) getCfg();
-				// IConfiguration[] cfs = (IConfiguration[]) mih.getItems();
-				// for (int i = 0; i < cfs.length; i++) {
-				// if (cfs[i].getBuilder().isManagedBuildOn())
-				// return true;
-				// }
+				ICMultiItemsHolder mih = (ICMultiItemsHolder) getCfg();
+				IConfiguration[] cfs = (IConfiguration[]) mih.getItems();
+				for (int i = 0; i < cfs.length; i++) {
+					if (cfs[i].getBuilder().isManagedBuildOn())
+						return true;
+				}
 				return false;
 			} else {
 
@@ -664,6 +675,11 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 			return false;
 	}
 
+	// Must be true, otherwise the page is not shown
+	public boolean canSupportMultiCfg() {
+		return true;
+	}
+	
 	@Override
 	protected void updateButtons() {
 	} // Do nothing. No buttons to update.
