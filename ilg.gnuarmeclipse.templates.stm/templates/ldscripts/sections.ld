@@ -229,8 +229,19 @@ SECTIONS
         _ebss = . ;             /* STM specific definition */
     } >RAM
     
-    PROVIDE ( end = _ebss );
-    PROVIDE ( _end = _ebss );
+    .noinit (NOLOAD):
+    {
+	    . = ALIGN(4);
+        _noinit = .;
+        
+        *(.noinit .noinit.*) 
+        
+         . = ALIGN(4) ;
+        _end_noinit = .;   
+    } > RAM
+    
+    PROVIDE ( end = _end_noinit ); /* was _ebss */
+    PROVIDE ( _end = end );
     
     /*
      * The user stack section.
