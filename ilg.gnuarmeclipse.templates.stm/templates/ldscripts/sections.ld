@@ -241,7 +241,7 @@ SECTIONS
     } > RAM
     
     PROVIDE ( end = _end_noinit ); /* was _ebss */
-    PROVIDE ( _end = end );
+    PROVIDE ( _end = _end_noinit );
     
     /*
      * The user stack section.
