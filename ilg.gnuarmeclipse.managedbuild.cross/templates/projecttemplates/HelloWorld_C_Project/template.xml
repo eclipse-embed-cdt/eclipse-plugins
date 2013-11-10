@@ -37,6 +37,11 @@
 				pattern="[a-zA-Z0-9]+"
 				mandatory="false"
 				persist="true"/>
+		<property id="semihostingOptions" label="%HelloWorld.semihostingOptions.label"
+			description="%HelloWorld.semihostingOptions.description" type="input"
+			default="%HelloWorld.semihostingOptions.default" pattern=".*"
+			mandatory="false" persist="true" />
+				
 	</property-group>
 
 	<process type="org.eclipse.cdt.managedbuilder.core.NewManagedProject">
@@ -57,6 +62,18 @@
 				<simple name="source" value="src/Basename.c"/>
 				<simple name="target" value="$(sourceDir)/$(projectName).c"/>
 				<simple name="replaceable" value="true"/>
+			</element>
+		</complex-array>
+	</process>
+
+	<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
+		<simple name="projectName" value="$(projectName)" />
+		<complex-array name="resourcePaths">
+			<element>
+				<simple name="id"
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.other" />
+				<simple name="value" value="$(semihostingOptions)" />
+				<simple name="path" value="" />
 			</element>
 		</complex-array>
 	</process>
