@@ -239,6 +239,6 @@ system_init()
 // The .preinit_array_sysinit section is defined in sections.ld as the first
 // sub-section in the .preinit_array, so it is guaranteed that this function
 // is executed before all other initialisations.
-void * __attribute__((section(".preinit_array_sysinit")))
-p_system_init = system_init; // pointer to the above function
+void* __attribute__((section(".preinit_array_sysinit")))
+p_system_init = (void*)system_init; // pointer to the above function
 

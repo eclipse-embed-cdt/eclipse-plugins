@@ -29,9 +29,9 @@ fpu_init()
 // The .preinit_array_platform section is defined in sections.ld as the second
 // sub-section in the .preinit_array, so it is guaranteed that this function
 // is executed after SystemInit and before all other initialisations.
-void *
+void*
 __attribute__((section(".preinit_array_platform")))
-p_fpu_init = fpu_init;
+p_fpu_init = (void*)fpu_init;
 #endif // (__VFP_FP__) && !(__SOFTFP__)
 
 // Usually main() doesn't return, but if it does, on debug
