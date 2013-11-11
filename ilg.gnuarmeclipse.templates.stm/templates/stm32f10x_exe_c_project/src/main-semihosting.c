@@ -62,7 +62,7 @@ main(int argc, char* argv[])
   /*
    * Dump the semihosting parameters, if any.
    */
-  printf("'%s', argc=%d, argv=[", argv[0], argc);
+  printf("%s, argc=%d, argv=[", argv[0], argc);
   for (int i = 0; i < argc; ++i)
     {
       if (i != 0)
