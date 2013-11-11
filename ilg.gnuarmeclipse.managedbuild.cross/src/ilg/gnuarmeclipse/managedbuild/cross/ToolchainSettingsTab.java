@@ -84,8 +84,6 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 	private boolean m_isExecutable;
 	private boolean m_isStaticLibrary;
 
-	private boolean m_isCommandRmModified;
-
 	@Override
 	public void createControls(Composite parent) {
 
@@ -108,8 +106,6 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 			m_isStaticLibrary = true;
 		else
 			m_isStaticLibrary = false;
-
-		m_isCommandRmModified = false;
 
 		usercomp.setLayout(new GridLayout(3, false));
 		GridData layoutData = new GridData();
@@ -323,8 +319,7 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 
 			@Override
 			public void modifyText(ModifyEvent e) {
-				m_isCommandRmModified = true;
-				//System.out.println("commandRm modified");
+				// System.out.println("commandRm modified");
 			}
 		});
 
@@ -472,11 +467,11 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 	}
 
 	private void updateOptions(IConfiguration config) {
-		
-		if (config instanceof MultiConfiguration){
-			MultiConfiguration multi = (MultiConfiguration)config;
-			for (Object obj : multi.getItems()){
-				IConfiguration cfg = (IConfiguration)obj;
+
+		if (config instanceof MultiConfiguration) {
+			MultiConfiguration multi = (MultiConfiguration) config;
+			for (Object obj : multi.getItems()) {
+				IConfiguration cfg = (IConfiguration) obj;
 				updateOptions(cfg);
 			}
 			return;
@@ -557,10 +552,14 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_COMMAND_RM); //$NON-NLS-1$
-			config.setOption(toolchain, option, m_commandRmText.getText());
-			if (m_isCommandRmModified) {
+			String oldValue = option.getStringValue();
+			String newValue = m_commandRmText.getText();
+
+			if (newValue != null && !newValue.equals(oldValue)) {
+				config.setOption(toolchain, option, newValue);
+				
+				// propagate is expensive, run it only if needed
 				propagateCommandRmUpdate(config);
-				m_isCommandRmModified = false;
 			}
 
 			if (m_isExecutable) {
@@ -627,14 +626,15 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 			if (makefileResource != null && makefileResource.exists()) {
 				try {
 					makefileResource.delete(true, new NullProgressMonitor());
-					
+
 					GnuMakefileGenerator makefileGenerator = new GnuMakefileGenerator();
-					makefileGenerator.initialize(0, config, config.getBuilder(), new NullProgressMonitor());
+					makefileGenerator.initialize(0, config,
+							config.getBuilder(), new NullProgressMonitor());
 					makefileGenerator.regenerateMakefiles();
 				} catch (CoreException e) {
 					// This had better be allowed during a build
 				}
-				
+
 			}
 		}
 	}
@@ -679,7 +679,7 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 	public boolean canSupportMultiCfg() {
 		return true;
 	}
-	
+
 	@Override
 	protected void updateButtons() {
 	} // Do nothing. No buttons to update.
