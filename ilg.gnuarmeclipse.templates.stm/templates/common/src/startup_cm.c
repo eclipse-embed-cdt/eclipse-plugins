@@ -120,15 +120,29 @@ bss_init(unsigned int* section_begin, unsigned int* section_end)
 #endif
 
 #if defined(USE_STARTUP_FILES)
+
+// This is useful when using certain libraries that came with custom
+// startup files, like librdimon.a.
+
+// Go to the startup code, that is expected to perform the
+// usual initialisations, i.e. clear the BSS, run the
+// init arrays and call main().
+
+#if defined(DEBUG)
+
+// The DEBUG version is not naked, to allow breakpoints at Reset_Handler
+void __attribute__ ((section(".after_vectors")))
+Reset_Handler(void)
+  {
+    _start();
+  }
+
+#else
+
+// The Release version is optimised to a quick branch to _start.
 void __attribute__ ((section(".after_vectors"), naked))
 Reset_Handler(void)
   {
-    // This is useful when using certain libraries that came with custom
-    // startup files, like librdimon.a.
-
-    // Go to the startup code, that is expected to perform the
-    // usual initialisations, i.e. clear the BSS, run the
-    // init arrays and call main().
     asm volatile
     (
         " b _start \n"
@@ -137,6 +151,9 @@ Reset_Handler(void)
         :
     );
   }
+
+#endif
+
 #else
 
 // These magic symbols are provided by the linker.
@@ -240,5 +257,5 @@ system_init()
 // sub-section in the .preinit_array, so it is guaranteed that this function
 // is executed before all other initialisations.
 void* __attribute__((section(".preinit_array_sysinit")))
-p_system_init = (void*)system_init; // pointer to the above function
+p_system_init = (void*) system_init; // pointer to the above function
 
