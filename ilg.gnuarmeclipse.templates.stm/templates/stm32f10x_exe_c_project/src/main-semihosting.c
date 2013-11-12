@@ -59,6 +59,7 @@ int
 main(int argc, char* argv[])
 {
 #if defined(DEBUG)
+
   /*
    * Dump the semihosting parameters, if any.
    */

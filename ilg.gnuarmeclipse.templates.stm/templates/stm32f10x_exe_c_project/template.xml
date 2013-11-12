@@ -240,6 +240,13 @@
 		<complex-array name="files">
 			<element>
 				<simple name="source"
+					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/CoreSupport/core_cm3.h" />
+				<simple name="target"
+					value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cm3.h" />
+				<simple name="replaceable" value="true" />
+			</element>
+			<element>
+				<simple name="source"
 					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/stm32f10x.h" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/$(includeDir)/stm32f10x.h" />
@@ -250,13 +257,6 @@
 					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.h" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/$(includeDir)/system_stm32f10x.h" />
-				<simple name="replaceable" value="true" />
-			</element>
-			<element>
-				<simple name="source"
-					value="../originals/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/CoreSupport/core_cm3.h" />
-				<simple name="target"
-					value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cm3.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 		</complex-array>
@@ -937,7 +937,6 @@
 				</element>
 			</complex-array>
 		</process>
-
 	</if>
 
 	<!-- Open -->
