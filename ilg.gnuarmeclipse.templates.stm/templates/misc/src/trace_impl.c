@@ -120,6 +120,14 @@ _write_trace_semihosting_stdout(char* ptr, int len)
   ret = semihosting_bkpt(SYS_WRITE, (void*) block, (void*) 0);
   // this call returns the number of bytes NOT written (0 if all ok)
 
+  // -1 is not a legal value, but SEGGER seems to return it
+  if (ret == -1)
+    return -1;
+
+  // The compliant way of returning errors
+  if (ret == len)
+    return -1;
+
   return len - ret;
 }
 
