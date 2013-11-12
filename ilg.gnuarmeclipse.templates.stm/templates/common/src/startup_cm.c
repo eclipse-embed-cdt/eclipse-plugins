@@ -37,6 +37,9 @@ Reset_Handler(void);
 #if defined(USE_STARTUP_FILES)
 extern void
 _start(void);
+
+extern int
+__register_exitproc(int type, void (*fn) (void), void *arg, void *d);
 #endif
 
 // The CMSIS system initialisation routine.
@@ -259,3 +262,18 @@ system_init()
 void* __attribute__((section(".preinit_array_sysinit")))
 p_system_init = (void*) system_init; // pointer to the above function
 
+#if defined(USE_STARTUP_FILES)
+
+// This function is required since the one included in newlib seems buggy
+// and the startup files crash when using the semi-hosting configuration.
+// The problem requires further investigations, but in the meantime
+// considering that embedded applications rarely return from main,
+// it is patched to return -1.
+
+int
+__register_exitproc(int type, void (*fn) (void), void *arg, void *d)
+{
+  return -1;
+}
+
+#endif
