@@ -156,6 +156,16 @@
 			</complex-array>
 		</process>
 	</if>
+	<process type="org.eclipse.cdt.core.AppendCreate">
+		<simple name="projectName" value="$(projectName)" />
+		<complex-array name="files">
+			<element>
+				<simple name="source" value="../common/src/main-tail.c" />
+				<simple name="target" value="$(sourceDir)/main.c" />
+				<simple name="replaceable" value="true" />
+			</element>
+		</complex-array>
+	</process>
 
 	<!-- ldscripts -->
 	<process type="org.eclipse.cdt.core.CreateFolder">
