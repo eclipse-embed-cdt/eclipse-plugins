@@ -925,6 +925,23 @@
 			</complex-array>
 		</process>
 	</if>
+	<if condition="$(STM32F4syscalls)==none">
+		<process type="org.eclipse.cdt.core.CreateSourceFolder">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="path" value="$(libsDir)/$(miscDir)/$(sourceDir)" />
+		</process>
+
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="../misc/src/_sbrk.c" />
+					<simple name="target" value="$(libsDir)/$(miscDir)/$(sourceDir)/_sbrk.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
 
 	<!-- USB -->
 	<!-- <if condition="$(includeUsb)!=none"> <process type="org.eclipse.cdt.core.CreateSourceFolder"> 
