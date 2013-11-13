@@ -880,12 +880,26 @@
 		</complex-array>
 	</process>
 
-	<if condition="$(STM32F4syscalls)==retarget">
-		<process type="org.eclipse.cdt.core.CreateSourceFolder">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="path" value="$(libsDir)/$(miscDir)/$(sourceDir)" />
-		</process>
+	<process type="org.eclipse.cdt.core.CreateSourceFolder">
+		<simple name="projectName" value="$(projectName)" />
+		<simple name="path" value="$(libsDir)/$(miscDir)/$(sourceDir)" />
+	</process>
 
+	<process type="org.eclipse.cdt.core.AddFiles">
+		<simple name="projectName" value="$(projectName)" />
+		<complex-array name="files">
+			<element>
+				<simple name="source" value="../misc/src/_sbrk.c" />
+				<simple name="target" value="$(libsDir)/$(miscDir)/$(sourceDir)/_sbrk.c" />
+				<simple name="replaceable" value="true" />
+			</element>
+		</complex-array>
+	</process>
+	
+	<if condition="$(STM32F4syscalls)==none">
+	</if>
+
+	<if condition="$(STM32F4syscalls)==retarget">
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
@@ -935,18 +949,56 @@
 			</complex-array>
 		</process>
 	</if>
-	<if condition="$(STM32F4syscalls)==none">
-		<process type="org.eclipse.cdt.core.CreateSourceFolder">
+
+	<if condition="$(STM32F4syscalls)==semihosting">
+		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
-			<simple name="path" value="$(libsDir)/$(miscDir)/$(sourceDir)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="../misc/src/syscalls.c" />
+					<simple name="target" value="$(libsDir)/$(miscDir)/$(sourceDir)/syscalls.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="org.eclipse.cdt.core.CreateFolder">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="path" value="$(libsDir)/$(miscDir)/$(includeDir)" />
+		</process>
+
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;../$(libsDir)/$(miscDir)/$(includeDir)&quot;" />
+					</simple-array>
+					<simple name="path" value="" />
+				</element>
+			</complex-array>
 		</process>
 
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="../misc/src/_sbrk.c" />
-					<simple name="target" value="$(libsDir)/$(miscDir)/$(sourceDir)/_sbrk.c" />
+					<simple name="source" value="../misc/include/arm.h" />
+					<simple name="target" value="$(libsDir)/$(miscDir)/$(includeDir)/arm.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../misc/include/swi.h" />
+					<simple name="target" value="$(libsDir)/$(miscDir)/$(includeDir)/swi.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../misc/include/syscall.h" />
+					<simple name="target"
+						value="$(libsDir)/$(miscDir)/$(includeDir)/syscall.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
