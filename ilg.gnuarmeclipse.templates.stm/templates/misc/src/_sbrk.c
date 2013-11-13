@@ -21,6 +21,7 @@ _sbrk(int incr)
 
   prev_heap_end = heap_end;
 
+  incr = (incr + 3) & (~3); // align value to 4
   if (heap_end + incr > stack_ptr)
     {
       /* Some of the libstdc++-v3 tests rely upon detecting

@@ -240,6 +240,7 @@ SECTIONS
         _end_noinit = .;   
     } > RAM
     
+    /* Mandatory to be word aligned, _sbrk assumes this */
     PROVIDE ( end = _end_noinit ); /* was _ebss */
     PROVIDE ( _end = _end_noinit );
     
