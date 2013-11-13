@@ -194,9 +194,20 @@ public class Option {
 	// ARM enumeration values
 	public static final String OPTION_ARM_MCPU_CORTEXM3 = OPTION_PREFIX
 			+ ".arm.target.mcpu.cortex-m3";
+	public static final String OPTION_ARM_MCPU_CORTEXM4 = OPTION_PREFIX
+			+ ".arm.target.mcpu.cortex-m4";
 
 	public static final String OPTION_ARM_INSTRUCTIONSET_THUMB = OPTION_PREFIX
 			+ ".arm.target.instructionset.thumb";
+
+	public static final String OPTION_ARM_FPU_ABI_HARD = OPTION_PREFIX
+			+ ".arm.target.fpu.abi.hard";
+
+	public static final String OPTION_ARM_FPU_ABI_SOFTFP = OPTION_PREFIX
+			+ ".arm.target.fpu.abi.softfp";
+	
+	public static final String OPTION_ARM_FPU_UNIT_FPV4SPD16 = OPTION_PREFIX
+			+ ".arm.target.fpu.unit.fpv4spd16";
 
 	// AARCH64 enumeration values
 	public static final String OPTION_AARCH64_MCPU_GENERIC = OPTION_PREFIX
