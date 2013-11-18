@@ -9,7 +9,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "ilg.gnuarmeclipse.debug.gdbjtag.jlink2"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "ilg.gnuarmeclipse.debug.gdbjtag.jlink"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;
@@ -18,7 +18,7 @@ public class Activator extends AbstractUIPlugin {
 	 * The constructor
 	 */
 	public Activator() {
-		System.out.println("ilg.gnuarmeclipse.debug.gdbjtag.jlink2.Activator()");
+		System.out.println("ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator()");
 	}
 
 	/*

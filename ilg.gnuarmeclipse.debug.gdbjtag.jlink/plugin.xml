@@ -29,9 +29,17 @@
    </extension>
 
    <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationType"
+            icon="icons/obj16/c_app.gif"
+            id="ilg.gnuarmeclipset.debug.gdbjtag.jlink.launchConfigurationTypeImage"/>
+   </extension>
+
+   <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-            class="org.eclipse.cdt.debug.gdbjtag.ui.GDBJtagLaunchConfigurationTabGroup"
+            class="ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.LaunchConfigurationTabGroup"
             id="ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationTabGroup"
             type="ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationType"/>
    </extension>
@@ -44,10 +52,11 @@
             name="%JTagDevice.generic.name">
       </device>
    </extension>
-
+ 
+ 
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabs">
-         <!--
+         
       <tab
             class="org.eclipse.cdt.debug.gdbjtag.internal.ui.GDBJtagDSFCMainTab"
             group="ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationTabGroup"
@@ -57,7 +66,7 @@
                delegate="org.eclipse.cdt.debug.gdbjtag.core.dsfLaunchDelegate">
          </associatedDelegate>
       </tab>
-      -->
+      
       <tab
             class="org.eclipse.cdt.debug.gdbjtag.ui.GDBJtagDSFDebuggerTab"
             group="ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationTabGroup"
