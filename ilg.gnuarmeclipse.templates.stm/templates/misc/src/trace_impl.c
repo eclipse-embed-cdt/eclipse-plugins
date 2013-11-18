@@ -30,6 +30,7 @@ _write_trace_swo(char* ptr, int len)
       isInitialised = 1;
   }
 
+  // Use Stimulus port channel 0
   int i = 0;
   for (; i < len; i++)
     {
@@ -40,7 +41,7 @@ _write_trace_swo(char* ptr, int len)
           return i; // return the number of sent characters (may be 0)
         }
 
-      // Check if stimulus port is enabled
+      // Check if stimulus port 0 is enabled
       if ((ITM_ENA & 1) == 0)
         {
           return i; // return the number of sent characters (may be 0)
