@@ -18,6 +18,7 @@ public class Activator extends AbstractUIPlugin {
 	 * The constructor
 	 */
 	public Activator() {
+		System.out.println("ilg.gnuarmeclipse.templates.core.Activator()");
 	}
 
 	/*
