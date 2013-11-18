@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            id="ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationType"
+            modes="debug"
+            name="%launchConfig.name"
+            public="true"/>
+   </extension>
+
+   <!-- delegate="org.eclipse.cdt.debug.gdbjtag.core.GDBJtagDSFLaunchConfigurationDelegate" -->
+   <!-- delegate="ilg.gnuarmeclipse.debug.gdbjtag.jlink.GDBJtagDSFLaunchConfigurationDelegate2" -->
+
+   <extension
+         point="org.eclipse.debug.core.launchDelegates">
+      <launchDelegate
+            delegate="org.eclipse.cdt.debug.gdbjtag.core.GDBJtagDSFLaunchConfigurationDelegate"
+            delegateDescription="%launchDelegate.jtagDsf.description"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.jlink.core.dsfLaunchDelegate"
+            modes="debug"
+            name="%launchDelegate.jtagDsf.name"
+            sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
+            sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer"
+            type="ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationType">
+      </launchDelegate>
+   </extension>
+
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="org.eclipse.cdt.debug.gdbjtag.ui.GDBJtagLaunchConfigurationTabGroup"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationTabGroup"
+            type="ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationType"/>
+   </extension>
+
+   <extension
+         point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
+      <device
+            class="org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.GenericDevice"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.jlink.core.jtagdevice.genericDevice"
+            name="%JTagDevice.generic.name">
+      </device>
+   </extension>
+
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabs">
+         <!--
+      <tab
+            class="org.eclipse.cdt.debug.gdbjtag.internal.ui.GDBJtagDSFCMainTab"
+            group="ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationTabGroup"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.cmaintab.dsf2"
+            name="%launchtab.cmaintab.name">
+         <associatedDelegate
+               delegate="org.eclipse.cdt.debug.gdbjtag.core.dsfLaunchDelegate">
+         </associatedDelegate>
+      </tab>
+      -->
+      <tab
+            class="org.eclipse.cdt.debug.gdbjtag.ui.GDBJtagDSFDebuggerTab"
+            group="ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationTabGroup"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.debuggertab.dsf"
+            name="%launchtab.debuggertab.name">
+         <associatedDelegate
+               delegate="org.eclipse.cdt.debug.gdbjtag.core.dsfLaunchDelegate">
+         </associatedDelegate>
+         <!--
+         <placement
+               after="org.eclipse.cdt.dsf.gdb.launch.mainTab">
+         </placement>
+         -->
+      </tab>
+      <tab
+            class="org.eclipse.cdt.debug.gdbjtag.ui.GDBJtagStartupTab"
+            group="ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationTabGroup"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.startuptab.dsf"
+            name="%launchtab.startuptab.name">
+         <associatedDelegate
+               delegate="org.eclipse.cdt.debug.gdbjtag.core.dsfLaunchDelegate">
+         </associatedDelegate>
+         <placement
+               after="org.eclipse.cdt.debug.gdbjtag.ui.debuggertab.dsf">
+         </placement>
+      </tab>
+      <tab
+            class="org.eclipse.debug.ui.sourcelookup.SourceLookupTab"
+            group="ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationTabGroup"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.sourcelookuptab.dsf"
+            name="%launchTab.sourceLookup.name">
+         <associatedDelegate
+               delegate="org.eclipse.cdt.debug.gdbjtag.core.dsfLaunchDelegate">
+         </associatedDelegate>
+         <placement
+               after="org.eclipse.cdt.debug.gdbjtag.ui.startuptab">
+         </placement>
+      </tab>
+      <tab
+            class="org.eclipse.debug.ui.CommonTab"
+            group="ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationTabGroup"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.commontab.dsf"
+            name="%launchTab.common.name">
+         <associatedDelegate
+               delegate="org.eclipse.cdt.debug.gdbjtag.core.dsfLaunchDelegate">
+         </associatedDelegate>
+         <placement
+               after="org.eclipse.debug.ui.sourceLookupTab">
+         </placement>
+      </tab>
+   </extension>
+
+</plugin>
