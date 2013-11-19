@@ -15,7 +15,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.ui.ide,
  org.eclipse.cdt.debug.core,
  org.eclipse.cdt.dsf.gdb,
- org.eclipse.cdt.dsf.gdb.ui
+ org.eclipse.cdt.dsf.gdb.ui,
+ org.eclipse.cdt.dsf
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %bundle.vendor
 Bundle-ActivationPolicy: lazy

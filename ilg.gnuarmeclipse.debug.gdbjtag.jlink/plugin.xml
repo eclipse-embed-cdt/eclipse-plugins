@@ -11,13 +11,10 @@
             public="true"/>
    </extension>
 
-   <!-- delegate="org.eclipse.cdt.debug.gdbjtag.core.GDBJtagDSFLaunchConfigurationDelegate" -->
-   <!-- delegate="ilg.gnuarmeclipse.debug.gdbjtag.jlink.GDBJtagDSFLaunchConfigurationDelegate2" -->
-
    <extension
          point="org.eclipse.debug.core.launchDelegates">
       <launchDelegate
-            delegate="org.eclipse.cdt.debug.gdbjtag.core.GDBJtagDSFLaunchConfigurationDelegate"
+            delegate="ilg.gnuarmeclipse.debug.gdbjtag.jlink.LaunchConfigurationDelegate"
             delegateDescription="%launchDelegate.jtagDsf.description"
             id="ilg.gnuarmeclipse.debug.gdbjtag.jlink.core.dsfLaunchDelegate"
             modes="debug"
@@ -39,11 +36,12 @@
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabGroups">
       <launchConfigurationTabGroup
-            class="ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.LaunchConfigurationTabGroup"
+            class="ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.TabGroupLaunchConfiguration"
             id="ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationTabGroup"
             type="ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationType"/>
    </extension>
 
+<!--
    <extension
          point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
       <device
@@ -52,8 +50,7 @@
             name="%JTagDevice.generic.name">
       </device>
    </extension>
- 
- 
+  
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabs">
          
@@ -75,11 +72,9 @@
          <associatedDelegate
                delegate="org.eclipse.cdt.debug.gdbjtag.core.dsfLaunchDelegate">
          </associatedDelegate>
-         <!--
          <placement
                after="org.eclipse.cdt.dsf.gdb.launch.mainTab">
          </placement>
-         -->
       </tab>
       <tab
             class="org.eclipse.cdt.debug.gdbjtag.ui.GDBJtagStartupTab"
@@ -118,5 +113,6 @@
          </placement>
       </tab>
    </extension>
+-->
 
 </plugin>
