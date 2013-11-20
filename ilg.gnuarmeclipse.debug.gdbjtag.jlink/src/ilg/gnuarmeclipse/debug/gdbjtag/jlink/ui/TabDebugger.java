@@ -20,16 +20,14 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.PreferenceConstants;
+
 import java.io.File;
-import java.net.URI;
-import java.net.URISyntaxException;
 
 import org.eclipse.cdt.debug.gdbjtag.core.Activator;
-import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConnection;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
 import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.GDBJtagDeviceContribution;
 import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.GDBJtagDeviceContributionFactory;
-import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.IGDBJtagDevice;
 import org.eclipse.cdt.debug.gdbjtag.ui.GDBJtagImages;
 import org.eclipse.cdt.debug.mi.core.IMILaunchConfigurationConstants;
 import org.eclipse.cdt.debug.mi.core.MIPlugin;
@@ -57,7 +55,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
@@ -75,16 +72,16 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			+ ".ui.debuggertab";
 
 	private Text gdbCommand;
-	private Button useRemote;
-	private Combo jtagDevice;
+	// private Button useRemote;
+	// private Combo jtagDevice;
 	private Composite remoteConnectionParameters;
 	private StackLayout remoteConnectParmsLayout;
 	private Composite remoteTcpipBox;
 	private Text ipAddress;
 	private Text portNumber;
-	private Composite remoteConnectionBox;
-	private Text connection;
-	private String savedJtagDevice;
+	//private Composite remoteConnectionBox;
+	//private Text connection;
+	//private String savedJtagDevice;
 	protected Button fUpdateThreadlistOnSuspend;
 
 	@Override
@@ -215,23 +212,21 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		group.setLayoutData(gd);
 		group.setText(Messages.getString("GDBJtagDebuggerTab.remoteGroup_Text"));
 
-		useRemote = new Button(group, SWT.CHECK);
-		useRemote.setText(Messages
-				.getString("GDBJtagDebuggerTab.useRemote_Text"));
-		useRemote.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				useRemoteChanged();
-				updateLaunchConfigurationDialog();
-			}
-		});
-
+		Label label;
+		
+		/*
+		 * useRemote = new Button(group, SWT.CHECK); useRemote.setText(Messages
+		 * .getString("GDBJtagDebuggerTab.useRemote_Text"));
+		 * useRemote.addSelectionListener(new SelectionAdapter() {
+		 * 
+		 * @Override public void widgetSelected(SelectionEvent e) {
+		 * useRemoteChanged(); updateLaunchConfigurationDialog(); } });
 		Composite comp = new Composite(group, SWT.NONE);
 		layout = new GridLayout();
 		layout.numColumns = 2;
 		comp.setLayout(layout);
 
-		Label label = new Label(comp, SWT.NONE);
+		label = new Label(comp, SWT.NONE);
 		label.setText(Messages.getString("GDBJtagDebuggerTab.jtagDeviceLabel"));
 
 		jtagDevice = new Combo(comp, SWT.READ_ONLY | SWT.DROP_DOWN);
@@ -250,6 +245,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 										// Text listeners
 			}
 		});
+		 */
 
 		remoteConnectionParameters = new Composite(group, SWT.NO_TRIM
 				| SWT.NO_FOCUS);
@@ -290,23 +286,23 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		// Create entry fields for other types of connections
 		//
 
-		{
-			remoteConnectionBox = new Composite(remoteConnectionParameters,
-					SWT.NO_TRIM | SWT.NO_FOCUS);
-			layout = new GridLayout();
-			layout.numColumns = 2;
-			remoteConnectionBox.setLayout(layout);
-			remoteConnectionBox.setBackground(remoteConnectionParameters
-					.getParent().getBackground());
-
-			label = new Label(remoteConnectionBox, SWT.NONE);
-			label.setText(Messages
-					.getString("GDBJtagDebuggerTab.connectionLabel")); //$NON-NLS-1$
-			connection = new Text(remoteConnectionBox, SWT.BORDER);
-			gd = new GridData();
-			gd.widthHint = 125;
-			connection.setLayoutData(gd);
-		}
+//		{
+//			remoteConnectionBox = new Composite(remoteConnectionParameters,
+//					SWT.NO_TRIM | SWT.NO_FOCUS);
+//			layout = new GridLayout();
+//			layout.numColumns = 2;
+//			remoteConnectionBox.setLayout(layout);
+//			remoteConnectionBox.setBackground(remoteConnectionParameters
+//					.getParent().getBackground());
+//
+//			label = new Label(remoteConnectionBox, SWT.NONE);
+//			label.setText(Messages
+//					.getString("GDBJtagDebuggerTab.connectionLabel")); //$NON-NLS-1$
+//			connection = new Text(remoteConnectionBox, SWT.BORDER);
+//			gd = new GridData();
+//			gd.widthHint = 125;
+//			connection.setLayoutData(gd);
+//		}
 
 		//
 		// Add watchers for user data entry
@@ -334,71 +330,72 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 		});
 
-		connection.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				scheduleUpdateJob(); // provides much better performance for
-										// Text listeners
-			}
-		});
+//		connection.addModifyListener(new ModifyListener() {
+//			@Override
+//			public void modifyText(ModifyEvent e) {
+//				scheduleUpdateJob(); // provides much better performance for
+//										// Text listeners
+//			}
+//		});
 	}
 
 	/**
 	 * @param text
 	 */
-	@SuppressWarnings("deprecation")
-	protected void updateDeviceIpPort(String selectedDeviceName) {
-		if (selectedDeviceName.equals(savedJtagDevice)) {
-			return;
-		}
-		GDBJtagDeviceContribution[] availableDevices = GDBJtagDeviceContributionFactory
-				.getInstance().getGDBJtagDeviceContribution();
-		IGDBJtagDevice selectedDevice = null;
-		for (int i = 0; i < availableDevices.length; i++) {
-			String name = availableDevices[i].getDeviceName();
-			if (name.equals(selectedDeviceName)) {
-				selectedDevice = availableDevices[i].getDevice();
-				if (selectedDevice != null) {
-					if (selectedDevice instanceof IGDBJtagConnection) {
-						IGDBJtagConnection connectionDevice = (IGDBJtagConnection) selectedDevice;
-						connection.setText(connectionDevice
-								.getDefaultDeviceConnection());
-					} else {
-						// support for deprecated TCP/IP based methods
-						ipAddress.setText(selectedDevice.getDefaultIpAddress());
-						portNumber.setText(selectedDevice
-								.getDefaultPortNumber());
-					}
-					useRemoteChanged();
-					updateLaunchConfigurationDialog();
-					break;
-				}
-			}
-		}
-	}
+//	@SuppressWarnings("deprecation")
+//	protected void updateDeviceIpPort(String selectedDeviceName) {
+//		if (selectedDeviceName.equals(savedJtagDevice)) {
+//			return;
+//		}
+//		GDBJtagDeviceContribution[] availableDevices = GDBJtagDeviceContributionFactory
+//				.getInstance().getGDBJtagDeviceContribution();
+//		IGDBJtagDevice selectedDevice = null;
+//		for (int i = 0; i < availableDevices.length; i++) {
+//			String name = availableDevices[i].getDeviceName();
+//			if (name.equals(selectedDeviceName)) {
+//				selectedDevice = availableDevices[i].getDevice();
+//				if (selectedDevice != null) {
+//					if (selectedDevice instanceof IGDBJtagConnection) {
+//						IGDBJtagConnection connectionDevice = (IGDBJtagConnection) selectedDevice;
+//						connection.setText(connectionDevice
+//								.getDefaultDeviceConnection());
+//					} else {
+//						// support for deprecated TCP/IP based methods
+//						ipAddress.setText(selectedDevice.getDefaultIpAddress());
+//						portNumber.setText(selectedDevice
+//								.getDefaultPortNumber());
+//					}
+//					useRemoteChanged();
+//					updateLaunchConfigurationDialog();
+//					break;
+//				}
+//			}
+//		}
+//	}
 
 	private void useRemoteChanged() {
-		boolean enabled = useRemote.getSelection();
-		jtagDevice.setEnabled(enabled);
+		boolean enabled = true; //useRemote.getSelection();
+		//jtagDevice.setEnabled(enabled);
 		ipAddress.setEnabled(enabled);
 		portNumber.setEnabled(enabled);
-		connection.setEnabled(enabled);
-		GDBJtagDeviceContribution selectedDeviceEntry = findJtagDeviceByName(jtagDevice
-				.getText());
-		if ((selectedDeviceEntry == null)
-				|| (selectedDeviceEntry.getDevice() == null)) {
-			remoteConnectParmsLayout.topControl = null;
-			remoteConnectionParameters.layout();
-		} else {
-			IGDBJtagDevice device = selectedDeviceEntry.getDevice();
-			if (device instanceof IGDBJtagConnection) {
-				remoteConnectParmsLayout.topControl = remoteConnectionBox;
-				remoteConnectionBox.getParent().layout();
-			} else {
+		//connection.setEnabled(enabled);
+		
+//		GDBJtagDeviceContribution selectedDeviceEntry = findJtagDeviceByName(jtagDevice
+//				.getText());
+//		if ((selectedDeviceEntry == null)
+//				|| (selectedDeviceEntry.getDevice() == null)) {
+//			remoteConnectParmsLayout.topControl = null;
+//			remoteConnectionParameters.layout();
+//		} else {
+//			IGDBJtagDevice device = selectedDeviceEntry.getDevice();
+//			if (device instanceof IGDBJtagConnection) {
+//				remoteConnectParmsLayout.topControl = remoteConnectionBox;
+//				remoteConnectionBox.getParent().layout();
+//			} else {
 				remoteConnectParmsLayout.topControl = remoteTcpipBox;
 				remoteTcpipBox.getParent().layout();
-			}
-		}
+//			}
+//		}
 	}
 
 	private GDBJtagDeviceContribution findJtagDeviceByName(String name) {
@@ -426,50 +423,54 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					defaultGdbCommand);
 			gdbCommand.setText(gdbCommandAttr);
 
-			boolean useRemoteAttr = configuration.getAttribute(
-					IGDBJtagConstants.ATTR_USE_REMOTE_TARGET,
-					IGDBJtagConstants.DEFAULT_USE_REMOTE_TARGET);
-			useRemote.setSelection(useRemoteAttr);
 
-			savedJtagDevice = configuration.getAttribute(
-					IGDBJtagConstants.ATTR_JTAG_DEVICE, "");
-			if (savedJtagDevice.length() == 0) {
-				jtagDevice.select(0);
-			} else {
+//			boolean useRemoteAttr = configuration.getAttribute(
+//					IGDBJtagConstants.ATTR_USE_REMOTE_TARGET,
+//					IGDBJtagConstants.DEFAULT_USE_REMOTE_TARGET);
+//			useRemote.setSelection(useRemoteAttr);
+
+//			savedJtagDevice = configuration.getAttribute(
+//					IGDBJtagConstants.ATTR_JTAG_DEVICE, "");
+//			if (savedJtagDevice.length() == 0) {
+//				jtagDevice.select(0);
+//			} else {
 				String storedAddress = ""; //$NON-NLS-1$
 				int storedPort = 0;
-				String storedConnection = ""; //$NON-NLS-1$
+//				String storedConnection = ""; //$NON-NLS-1$
 
-				for (int i = 0; i < jtagDevice.getItemCount(); i++) {
-					if (jtagDevice.getItem(i).equals(savedJtagDevice)) {
+//				for (int i = 0; i < jtagDevice.getItemCount(); i++) {
+//					if (jtagDevice.getItem(i).equals(savedJtagDevice)) {
 						storedAddress = configuration.getAttribute(
 								IGDBJtagConstants.ATTR_IP_ADDRESS, ""); //$NON-NLS-1$
 						storedPort = configuration.getAttribute(
 								IGDBJtagConstants.ATTR_PORT_NUMBER, 0);
-						storedConnection = configuration.getAttribute(
-								IGDBJtagConstants.ATTR_CONNECTION, ""); //$NON-NLS-1$
-						jtagDevice.select(i);
-						break;
-					}
-				}
+//						storedConnection = configuration.getAttribute(
+//								IGDBJtagConstants.ATTR_CONNECTION, ""); //$NON-NLS-1$
+//						jtagDevice.select(i);
+//						break;
+//					}
+//				}
 
-				if (storedConnection != null) {
-					try {
-						connection.setText(new URI(storedConnection)
-								.getSchemeSpecificPart());
-					} catch (URISyntaxException e) {
-						Activator.log(e);
-					}
-				}
-				if (storedAddress != null) {
+//				if (storedConnection != null) {
+//					try {
+//						connection.setText(new URI(storedConnection)
+//								.getSchemeSpecificPart());
+//					} catch (URISyntaxException e) {
+//						Activator.log(e);
+//					}
+//				}
+				if (storedAddress != null && storedAddress.length() > 0) {
 					// Treat as legacy network probe
 					ipAddress.setText(storedAddress);
 					String portString = (0 < storedPort)
 							&& (storedPort <= 65535) ? Integer.valueOf(
 							storedPort).toString() : ""; //$NON-NLS-1$
 					portNumber.setText(portString);
+				} else {
+					ipAddress.setText("localhost");
+					portNumber.setText("2331");					
 				}
-			}
+//			}
 			boolean updateThreadsOnSuspend = configuration
 					.getAttribute(
 							IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
@@ -501,21 +502,23 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(
 				IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME, gdbCommand
 						.getText().trim()); // DSF
-		savedJtagDevice = jtagDevice.getText();
-		configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE,
-				savedJtagDevice);
+//		savedJtagDevice = jtagDevice.getText();
+//		configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE,
+//				savedJtagDevice);
+		
 		configuration.setAttribute(IGDBJtagConstants.ATTR_USE_REMOTE_TARGET,
-				useRemote.getSelection());
-		if (savedJtagDevice.length() > 0) {
+				true); //useRemote.getSelection());
+		
+//		if (savedJtagDevice.length() > 0) {
 			try {
-				IGDBJtagDevice device = findJtagDeviceByName(
-						jtagDevice.getText()).getDevice();
-				if (device instanceof IGDBJtagConnection) {
-					String conn = connection.getText().trim();
-					URI uri = new URI("gdb", conn, ""); //$NON-NLS-1$ //$NON-NLS-2$
-					configuration.setAttribute(
-							IGDBJtagConstants.ATTR_CONNECTION, uri.toString());
-				} else {
+//				IGDBJtagDevice device = findJtagDeviceByName(
+//						jtagDevice.getText()).getDevice();
+//				if (device instanceof IGDBJtagConnection) {
+//					String conn = connection.getText().trim();
+//					URI uri = new URI("gdb", conn, ""); //$NON-NLS-1$ //$NON-NLS-2$
+//					configuration.setAttribute(
+//							IGDBJtagConstants.ATTR_CONNECTION, uri.toString());
+//				} else {
 					String ip = ipAddress.getText().trim();
 					configuration.setAttribute(
 							IGDBJtagConstants.ATTR_IP_ADDRESS, ip);
@@ -523,13 +526,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							.intValue();
 					configuration.setAttribute(
 							IGDBJtagConstants.ATTR_PORT_NUMBER, port);
-				}
-			} catch (URISyntaxException e) {
-				Activator.log(e);
+//				}
+//			} catch (URISyntaxException e) {
+//				Activator.log(e);
 			} catch (NumberFormatException e) {
 				Activator.log(e);
 			}
-		}
+//		}
 		configuration
 				.setAttribute(
 						IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
@@ -538,10 +541,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-		String defaultGdbCommand = Platform.getPreferencesService()
-				.getString(GdbPlugin.PLUGIN_ID,
-						IGdbDebugPreferenceConstants.PREF_DEFAULT_GDB_COMMAND,
-						"", null); //$NON-NLS-1$
+
+		String defaultGdbCommand = Platform.getPreferencesService().getString(
+				GdbPlugin.PLUGIN_ID, PreferenceConstants.DEFAULT_GDB_COMMAND,
+				"", null); //$NON-NLS-1$
 		configuration.setAttribute(
 				IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
 				defaultGdbCommand);

@@ -14,6 +14,8 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
+
 import java.io.File;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
@@ -59,9 +61,15 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	private static final String TAB_ID = Activator.PLUGIN_ID + ".ui.startuptab";
 
 	Text initCommands;
-	Text delay;
-	Button doReset;
-	Button doHalt;
+	//Text delay;
+	//Button doReset;  
+	//Button doHalt;
+
+	Button doFirstReset;
+	Text firstResetType;
+	
+	Button enableSemihosting;
+	Button enableSwo;
 
 	Button loadImage;
 	Text imageFileName;
@@ -165,7 +173,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		group.setLayout(layout);
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		group.setLayoutData(gd);
-		group.setText(Messages.getString("GDBJtagStartupTab.initGroup_Text"));
+		group.setText(Messages.getString("StartupTab.initGroup_Text"));
 
 		Composite comp = new Composite(group, SWT.NONE);
 		layout = new GridLayout();
@@ -173,52 +181,116 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		layout.marginHeight = 0;
 		comp.setLayout(layout);
 
-		doReset = new Button(comp, SWT.CHECK);
-		doReset.setText(Messages.getString("GDBJtagStartupTab.doReset_Text"));
-		doReset.addSelectionListener(new SelectionAdapter() {
+//		doReset = new Button(comp, SWT.CHECK);
+//		doReset.setText(Messages.getString("GDBJtagStartupTab.doReset_Text"));
+//		doReset.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//				doResetChanged();
+//				updateLaunchConfigurationDialog();
+//			}
+//		});
+//		delay = new Text(comp, SWT.BORDER);
+//		gd = new GridData();
+//		gd.horizontalSpan = 1;
+//		gd.widthHint = 60;
+//		delay.setLayoutData(gd);
+//		delay.addVerifyListener(new VerifyListener() {
+//			@Override
+//			public void verifyText(VerifyEvent e) {
+//				e.doit = (Character.isDigit(e.character) || Character
+//						.isISOControl(e.character));
+//			}
+//		});
+//		delay.addModifyListener(new ModifyListener() {
+//			@Override
+//			public void modifyText(ModifyEvent e) {
+//				scheduleUpdateJob();
+//			}
+//		});
+//
+//		comp = new Composite(group, SWT.NONE);
+//		layout = new GridLayout();
+//		layout.numColumns = 1;
+//		layout.marginHeight = 0;
+//		comp.setLayout(layout);
+//
+//		doHalt = new Button(comp, SWT.CHECK);
+//		doHalt.setText(Messages.getString("GDBJtagStartupTab.doHalt_Text"));
+//		gd = new GridData();
+//		gd.horizontalSpan = 1;
+//		doHalt.setLayoutData(gd);
+//		doHalt.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//				updateLaunchConfigurationDialog();
+//			}
+//		});
+
+		
+		comp = new Composite(group, SWT.NONE);
+		layout = new GridLayout();
+		layout.numColumns = 2;
+		layout.marginHeight = 0;
+		comp.setLayout(layout);
+
+		doFirstReset = new Button(comp, SWT.CHECK);
+		doFirstReset.setText(Messages.getString("StartupTab.doFirstReset_Text"));
+		doFirstReset.setToolTipText(Messages.getString("StartupTab.doFirstReset_ToolTipText"));
+		doFirstReset.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				doResetChanged();
+				//doResetChanged();
+				doFirstResetChanged();
 				updateLaunchConfigurationDialog();
 			}
 		});
-		delay = new Text(comp, SWT.BORDER);
+		firstResetType = new Text(comp, SWT.BORDER);
 		gd = new GridData();
 		gd.horizontalSpan = 1;
-		gd.widthHint = 60;
-		delay.setLayoutData(gd);
-		delay.addVerifyListener(new VerifyListener() {
+		gd.widthHint = 30;
+		firstResetType.setLayoutData(gd);
+		firstResetType.addVerifyListener(new VerifyListener() {
 			@Override
 			public void verifyText(VerifyEvent e) {
 				e.doit = (Character.isDigit(e.character) || Character
 						.isISOControl(e.character));
 			}
 		});
-		delay.addModifyListener(new ModifyListener() {
+		firstResetType.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				scheduleUpdateJob();
+				// ! scheduleUpdateJob();
 			}
 		});
-
+		
 		comp = new Composite(group, SWT.NONE);
 		layout = new GridLayout();
 		layout.numColumns = 1;
 		layout.marginHeight = 0;
 		comp.setLayout(layout);
 
-		doHalt = new Button(comp, SWT.CHECK);
-		doHalt.setText(Messages.getString("GDBJtagStartupTab.doHalt_Text"));
-		gd = new GridData();
-		gd.horizontalSpan = 1;
-		doHalt.setLayoutData(gd);
-		doHalt.addSelectionListener(new SelectionAdapter() {
+		enableSemihosting = new Button(comp, SWT.CHECK);
+		enableSemihosting.setText(Messages.getString("StartupTab.enableSemihosting_Text"));
+		enableSemihosting.setToolTipText(Messages.getString("StartupTab.enableSemihosting_ToolTipText"));
+		enableSemihosting.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				updateLaunchConfigurationDialog();
 			}
 		});
 
+		// use the same layout as before
+		enableSwo = new Button(comp, SWT.CHECK);
+		enableSwo.setText(Messages.getString("StartupTab.enableSwo_Text"));
+		enableSwo.setToolTipText(Messages.getString("StartupTab.enableSwo_ToolTipText"));
+		enableSwo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updateLaunchConfigurationDialog();
+			}
+		});
+		
 		initCommands = new Text(group, SWT.MULTI | SWT.WRAP | SWT.BORDER
 				| SWT.V_SCROLL);
 		gd = new GridData(GridData.FILL_BOTH);
@@ -227,7 +299,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		initCommands.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent evt) {
-				scheduleUpdateJob();
+				//scheduleUpdateJob();
+				updateLaunchConfigurationDialog();
 			}
 		});
 
@@ -557,8 +630,12 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		});
 	}
 
-	private void doResetChanged() {
-		delay.setEnabled(doReset.getSelection());
+//	private void doResetChanged() {
+//		delay.setEnabled(doReset.getSelection());
+//	}
+
+	private void doFirstResetChanged() {
+		firstResetType.setEnabled(doFirstReset.getSelection());
 	}
 
 	private void loadImageChanged() {
@@ -728,18 +805,34 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
 			// Initialization Commands
-			doReset.setSelection(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_DO_RESET,
-					IGDBJtagConstants.DEFAULT_DO_RESET));
-			delay.setText(String.valueOf(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_DELAY,
-					IGDBJtagConstants.DEFAULT_DELAY)));
-			doHalt.setSelection(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_DO_HALT,
-					IGDBJtagConstants.DEFAULT_DO_HALT));
+//			doReset.setSelection(configuration.getAttribute(
+//					IGDBJtagConstants.ATTR_DO_RESET,
+//					IGDBJtagConstants.DEFAULT_DO_RESET));
+//			delay.setText(String.valueOf(configuration.getAttribute(
+//					IGDBJtagConstants.ATTR_DELAY,
+//					IGDBJtagConstants.DEFAULT_DELAY)));
+//			doHalt.setSelection(configuration.getAttribute(
+//					IGDBJtagConstants.ATTR_DO_HALT,
+//					IGDBJtagConstants.DEFAULT_DO_HALT));
+//			initCommands.setText(configuration.getAttribute(
+//					IGDBJtagConstants.ATTR_INIT_COMMANDS,
+//					IGDBJtagConstants.DEFAULT_INIT_COMMANDS));
+			
+			doFirstReset.setSelection(configuration.getAttribute(
+					ConfigurationAttributes.DO_FIRST_RESET,
+					ConfigurationAttributes.DO_FIRST_RESET_DEFAULT));
+			firstResetType.setText(configuration.getAttribute(
+					ConfigurationAttributes.FIRST_RESET_TYPE,
+					ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT));
+			enableSemihosting.setSelection(configuration.getAttribute(
+					ConfigurationAttributes.ENABLE_SEMIHOSTING,
+					ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT));
+			enableSwo.setSelection(configuration.getAttribute(
+					ConfigurationAttributes.ENABLE_SWO,
+					ConfigurationAttributes.ENABLE_SWO_DEFAULT));
 			initCommands.setText(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_INIT_COMMANDS,
-					IGDBJtagConstants.DEFAULT_INIT_COMMANDS));
+					ConfigurationAttributes.OTHER_INIT_COMMANDS,
+					ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT));
 
 			// Load Image...
 			loadImage.setSelection(configuration.getAttribute(
@@ -811,7 +904,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				projBinaryLabel2.setText(programName);
 			}
 
-			doResetChanged();
+//			doResetChanged();
+			doFirstResetChanged();
 			loadImageChanged();
 			loadSymbolsChanged();
 			pcRegisterChanged();
@@ -834,14 +928,14 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 
-		// Initialization Commands
-		configuration.setAttribute(IGDBJtagConstants.ATTR_DO_RESET,
-				doReset.getSelection());
-		configuration.setAttribute(IGDBJtagConstants.ATTR_DELAY,
-				Integer.parseInt(delay.getText()));
-		configuration.setAttribute(IGDBJtagConstants.ATTR_DO_HALT,
-				doHalt.getSelection());
-		configuration.setAttribute(IGDBJtagConstants.ATTR_INIT_COMMANDS,
+		// Initialisation Commands
+		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
+				doFirstReset.getSelection());
+		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
+				firstResetType.getText());
+		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING,
+				enableSemihosting.getSelection());
+		configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS,
 				initCommands.getText());
 
 		// Load Image...
@@ -896,15 +990,18 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	 */
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-		// Initialization Commands
-		configuration.setAttribute(IGDBJtagConstants.ATTR_DO_RESET,
-				IGDBJtagConstants.DEFAULT_DO_RESET);
-		configuration.setAttribute(IGDBJtagConstants.ATTR_DELAY,
-				IGDBJtagConstants.DEFAULT_DELAY);
-		configuration.setAttribute(IGDBJtagConstants.ATTR_DO_HALT,
-				IGDBJtagConstants.DEFAULT_DO_HALT);
-		configuration.setAttribute(IGDBJtagConstants.ATTR_INIT_COMMANDS,
-				IGDBJtagConstants.DEFAULT_INIT_COMMANDS);
+		
+		// Initialisation Commands
+		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
+				ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
+		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
+				ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
+		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING,
+				ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
+		configuration.setAttribute(ConfigurationAttributes.ENABLE_SWO,
+				ConfigurationAttributes.ENABLE_SWO_DEFAULT);		
+		configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS,
+				ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
 
 		// Load Image...
 		configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_IMAGE,
