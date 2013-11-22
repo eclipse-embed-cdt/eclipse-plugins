@@ -26,9 +26,9 @@
 		<property id="STM32F4syscalls" label="%STM32F4xx.syscalls.label"
 			description="%STM32F4xx.syscalls.description" type="select" default="retarget"
 			hidden="false" persist="true">
+			<item value="none" label="Standalone (no syscalls)" />
 			<item value="retarget" label="Retargetting (libnosys)" />
 			<item value="semihosting" label="Semihosting (librdimon)" />
-			<item value="none" label="Standalone (no syscalls)" />
 		</property>
 
 		<!-- <property id="includeUsb" label="%STM32F4xx.includeUsb.label" description="%STM32F4xx.includeUsb.description" 

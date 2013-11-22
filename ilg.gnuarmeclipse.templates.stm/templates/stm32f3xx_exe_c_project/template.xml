@@ -30,9 +30,9 @@
 		<property id="STM32F3syscalls" label="%STM32F3xx.syscalls.label"
 			description="%STM32F3xx.syscalls.description" type="select" default="retarget"
 			hidden="false" persist="true">
+			<item value="none" label="Standalone (no syscalls)" />
 			<item value="retarget" label="Retargetting (libnosys)" />
 			<item value="semihosting" label="Semihosting (librdimon)" />
-			<item value="none" label="Standalone (no syscalls)" />
 		</property>
 
 	</property-group>
