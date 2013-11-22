@@ -13,7 +13,7 @@
  * any standard library function.
  *
  * If the application requires to use a special initialisation code present
- * in some other libraries (for example librdimon.a, for semi-hosting),
+ * in some other libraries (for example librdimon.a, for semihosting),
  * define USE_STARTUP_FILES and uncheck the corresponding option in the
  * linker configuration.
  */

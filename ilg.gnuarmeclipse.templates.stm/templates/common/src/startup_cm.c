@@ -232,7 +232,7 @@ Reset_Handler(void)
   // Run the static destructors.
   __libc_fini_array();
 
-  // On test platforms, like semi-hosting, this can be used to inform
+  // On test platforms, like semihosting, this can be used to inform
   // the host on the test result.
   // On embedded platforms, usually reset the processor.
   _exit(r);
@@ -265,7 +265,7 @@ p_system_init = (void*) system_init; // pointer to the above function
 #if defined(USE_STARTUP_FILES)
 
 // This function is required since the one included in newlib seems buggy
-// and the startup files crash when using the semi-hosting configuration.
+// and the startup files crash when using the semihosting configuration.
 // The problem requires further investigations, but in the meantime
 // considering that embedded applications rarely return from main,
 // it is patched to return -1.
