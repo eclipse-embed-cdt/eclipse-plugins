@@ -11,6 +11,8 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -63,6 +65,18 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static Activator getDefault() {
 		return plugin;
+	}
+
+	public static void log(IStatus status) {
+		getDefault().getLog().log(status);
+	}
+
+	public static void log(Throwable e) {
+		log(new Status(IStatus.ERROR, PLUGIN_ID, 1, "Internal Error", e)); //$NON-NLS-1$
+	}
+
+	public static void log(int severity, String message) {
+		getDefault().getLog().log(new Status(severity, PLUGIN_ID, message));;
 	}
 
 }
