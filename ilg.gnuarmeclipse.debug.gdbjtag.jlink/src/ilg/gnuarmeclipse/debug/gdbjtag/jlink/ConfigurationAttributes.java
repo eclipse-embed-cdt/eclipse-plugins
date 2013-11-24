@@ -24,4 +24,27 @@ public interface ConfigurationAttributes {
 	public static final String OTHER_INIT_COMMANDS = PREFIX + ".otherInitCommands"; //$NON-NLS-1$
 	public static final String OTHER_INIT_COMMANDS_DEFAULT = "";
 
+	public static final String INTERFACE = PREFIX + ".interface"; //$NON-NLS-1$
+	public static final String INTERFACE_SWD = "swd";
+	public static final String INTERFACE_JTAG = "jtag";
+	public static final String INTERFACE_DEFAULT = INTERFACE_SWD;
+
+	public static final String INTERFACE_SPEED = PREFIX + ".interfaceSpeed"; //$NON-NLS-1$
+	public static final String INTERFACE_SPEED_AUTO = "auto";
+	public static final String INTERFACE_SPEED_ADAPTIVE = "adaptive";
+	public static final String INTERFACE_SPEED_DEFAULT = INTERFACE_SPEED_AUTO;
+	
+	public static final String NO_RESET = PREFIX + ".noReset"; //$NON-NLS-1$
+	public static final boolean NO_RESET_DEFAULT = false;
+	
+	public static final String FLASH_DEVICE = PREFIX + ".flashDevice"; //$NON-NLS-1$
+	public static final String FLASH_DEVICE_DEFAULT = "";
+	
+	public static final String ENDIANNESS = PREFIX + ".endianness"; //$NON-NLS-1$
+	public static final String ENDIANNESS_LITTLE = "little";	
+	public static final String ENDIANNESS_BIG = "big";	
+	public static final String ENDIANNESS_DEFAULT = ENDIANNESS_LITTLE;	
+
+	public static final String GDB_CLIENT_OTHER_COMMANDS = PREFIX + ".gdbClientOtherCommands"; //$NON-NLS-1$
+	public static final String GDB_CLIENT_OTHER_COMMANDS_DEFAULT = "";
 }
