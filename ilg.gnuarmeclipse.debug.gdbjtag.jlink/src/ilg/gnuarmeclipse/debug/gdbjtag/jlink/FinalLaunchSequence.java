@@ -9,10 +9,12 @@ import java.util.Map;
 import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.debug.gdbjtag.core.Activator;
 import org.eclipse.cdt.debug.gdbjtag.core.GDBJtagDSFFinalLaunchSequence;
+import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
 import org.eclipse.cdt.dsf.concurrent.CountingRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitorWithProgress;
+import org.eclipse.cdt.dsf.concurrent.ReflectionSequence.Execute;
 import org.eclipse.cdt.dsf.gdb.service.IGDBBackend;
 import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
 import org.eclipse.cdt.dsf.mi.service.IMIProcesses;
@@ -108,18 +110,75 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	}
 
 	@Execute
+	public void stepResumeScript(final RequestMonitor rm) {
+				rm.done();
+	}
+
+	@Execute
 	public void stepUserInitCommands(final RequestMonitor rm) {
 		try {
 			List<String> commandsList = new ArrayList<String>();
 
-			if (CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.DO_FIRST_RESET,
-					ConfigurationAttributes.DO_FIRST_RESET_DEFAULT)) {
-				String commandStr = ConfigurationAttributes.DO_FIRST_RESET_COMMAND;
-				String resetType = CDebugUtils.getAttribute(fAttributes,
-						ConfigurationAttributes.FIRST_RESET_TYPE,
-						ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
-				commandsList.add(commandStr + resetType);
+			String attr;
+			attr = CDebugUtils.getAttribute(fAttributes,
+					ConfigurationAttributes.INTERFACE,
+					ConfigurationAttributes.INTERFACE_SWD);
+			if (ConfigurationAttributes.INTERFACE_SWD.equals(attr)) {
+				commandsList.add(ConfigurationAttributes.INTERFACE_SWD_COMMAND);
+			} else if (ConfigurationAttributes.INTERFACE_JTAG.equals(attr)) {
+				commandsList
+						.add(ConfigurationAttributes.INTERFACE_JTAG_COMMAND);
+			}
+
+			attr = CDebugUtils.getAttribute(fAttributes,
+					ConfigurationAttributes.INTERFACE_SPEED,
+					ConfigurationAttributes.INTERFACE_SPEED_AUTO);
+			if (ConfigurationAttributes.INTERFACE_SPEED_AUTO.equals(attr)) {
+				commandsList
+						.add(ConfigurationAttributes.INTERFACE_SPEED_AUTO_COMMAND);
+			} else if (ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE
+					.equals(attr)) {
+				commandsList
+						.add(ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE_COMMAND);
+			} else {
+				commandsList
+						.add(ConfigurationAttributes.INTERFACE_SPEED_FIXED_COMMAND
+								+ attr);
+			}
+
+			attr = CDebugUtils.getAttribute(fAttributes,
+					ConfigurationAttributes.FLASH_DEVICE,
+					ConfigurationAttributes.FLASH_DEVICE_DEFAULT);
+			attr = attr.trim();
+			if (attr.length() > 0) {
+				commandsList.add(ConfigurationAttributes.FLASH_DEVICE_COMMAND
+						+ attr);
+			}
+
+			attr = CDebugUtils.getAttribute(fAttributes,
+					ConfigurationAttributes.ENDIANNESS,
+					ConfigurationAttributes.ENDIANNESS_LITTLE);
+			if (ConfigurationAttributes.ENDIANNESS_LITTLE.equals(attr)) {
+				commandsList
+						.add(ConfigurationAttributes.ENDIANNESS_LITTLE_COMMAND);
+			} else if (ConfigurationAttributes.ENDIANNESS_BIG.equals(attr)) {
+				commandsList
+						.add(ConfigurationAttributes.ENDIANNESS_BIG_COMMAND);
+			}
+
+			boolean noReset = CDebugUtils.getAttribute(fAttributes,
+					ConfigurationAttributes.NO_RESET,
+					ConfigurationAttributes.NO_RESET_DEFAULT);
+			if (!noReset) {
+				if (CDebugUtils.getAttribute(fAttributes,
+						ConfigurationAttributes.DO_FIRST_RESET,
+						ConfigurationAttributes.DO_FIRST_RESET_DEFAULT)) {
+					String commandStr = ConfigurationAttributes.DO_FIRST_RESET_COMMAND;
+					String resetType = CDebugUtils.getAttribute(fAttributes,
+							ConfigurationAttributes.FIRST_RESET_TYPE,
+							ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
+					commandsList.add(commandStr + resetType);
+				}
 			}
 
 			if (CDebugUtils.getAttribute(fAttributes,
@@ -168,6 +227,64 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		} catch (CoreException e) {
 			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
 					"Cannot run user defined init commands", e)); //$NON-NLS-1$
+			rm.done();
+		}
+	}
+
+	@Execute
+	public void stepUserDebugCommands(final RequestMonitor rm) {
+		try {
+			List<String> commandsList = new ArrayList<String>();
+
+			boolean noReset = CDebugUtils.getAttribute(fAttributes,
+					ConfigurationAttributes.NO_RESET,
+					ConfigurationAttributes.NO_RESET_DEFAULT);
+			if (!noReset) {
+				if (CDebugUtils.getAttribute(fAttributes,
+						ConfigurationAttributes.DO_SECOND_RESET,
+						ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
+					String commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
+					String resetType = CDebugUtils.getAttribute(fAttributes,
+							ConfigurationAttributes.SECOND_RESET_TYPE,
+							ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+					commandsList.add(commandStr + resetType);
+				}
+			}
+
+			String userCmd = CDebugUtils.getAttribute(fAttributes,
+					ConfigurationAttributes.OTHER_RUN_COMMANDS,
+					ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
+			
+			if (userCmd.length() > 0) {
+				userCmd = VariablesPlugin.getDefault()
+						.getStringVariableManager()
+						.performStringSubstitution(userCmd);
+				String[] commandsStr = userCmd.split("\\r?\\n"); //$NON-NLS-1$
+				for (String str : commandsStr) {
+					str = str.trim();
+					if (str.length() > 0) {
+						commandsList.add(str);
+					}
+				}
+			}
+			
+			if (CDebugUtils.getAttribute(fAttributes,
+					ConfigurationAttributes.DO_CONTINUE,
+					ConfigurationAttributes.DO_CONTINUE_DEFAULT)) {
+				commandsList.add(ConfigurationAttributes.DO_CONTINUE_COMMAND);
+			}
+			
+			if (commandsList.size() > 0) {
+				CountingRequestMonitor crm = new CountingRequestMonitor(
+						getExecutor(), rm);
+				crm.setDoneCount(commandsList.size());
+				queueCommands(commandsList, rm);
+			} else {
+				rm.done();
+			}
+		} catch (CoreException e) {
+			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
+					"Cannot run user defined run commands", e)); //$NON-NLS-1$
 			rm.done();
 		}
 	}

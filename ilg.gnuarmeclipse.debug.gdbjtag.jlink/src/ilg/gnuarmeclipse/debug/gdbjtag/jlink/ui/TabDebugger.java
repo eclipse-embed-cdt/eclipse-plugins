@@ -253,7 +253,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			gdbClientOtherCommands.setLayoutData(gd);
 		}
 
-		// Actions
+		// ----- Actions ------------------------------------------------------
 		gdbClientCommand.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
@@ -303,9 +303,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		comp.setLayoutData(gd);
 
-		//
 		// Create entry fields for TCP/IP connections
-		//
 		Label label;
 		{
 			label = new Label(comp, SWT.NONE);
@@ -324,9 +322,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			gd.widthHint = 125;
 			portNumber.setLayoutData(gd);
 		}
-		//
+
+		// ---- Actions -------------------------------------------------------
 		// Add watchers for user data entry
-		//
 		ipAddress.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
@@ -410,7 +408,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 		}
 
-		// Actions
+		// ----- Actions ------------------------------------------------------
 		deviceName.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
@@ -523,7 +521,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			interfaceSpeedFixedValue.setLayoutData(gd);
 		}
 
-		// Actions
+		// ----- Actions ------------------------------------------------------
 		interfaceSwd.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -569,7 +567,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 		});
 
-		// TODO
 	}
 
 	private void createGdbServerGroup(Composite parent) {
@@ -775,7 +772,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			gdbServerAllocateSemihostingConsole.setLayoutData(gd);
 
 		}
-		// Actions
+		// ----- Actions ------------------------------------------------------
 		// TODO
 	}
 
@@ -996,41 +993,32 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
+		
+		// To satisfy the references, always point to the Generic
+		configuration.setAttribute(
+				IGDBJtagConstants.ATTR_JTAG_DEVICE,
+				ConfigurationAttributes.JTAG_DEVICE);
+
 		configuration.setAttribute(
 				IMILaunchConfigurationConstants.ATTR_DEBUG_NAME,
 				gdbClientCommand.getText().trim());
 		configuration.setAttribute(
 				IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
 				gdbClientCommand.getText().trim()); // DSF
-		// savedJtagDevice = jtagDevice.getText();
-		// configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE,
-		// savedJtagDevice);
 
 		configuration.setAttribute(IGDBJtagConstants.ATTR_USE_REMOTE_TARGET,
-				true); // useRemote.getSelection());
+				true); 
 
-		// if (savedJtagDevice.length() > 0) {
 		try {
-			// IGDBJtagDevice device = findJtagDeviceByName(
-			// jtagDevice.getText()).getDevice();
-			// if (device instanceof IGDBJtagConnection) {
-			// String conn = connection.getText().trim();
-			//					URI uri = new URI("gdb", conn, ""); //$NON-NLS-1$ //$NON-NLS-2$
-			// configuration.setAttribute(
-			// IGDBJtagConstants.ATTR_CONNECTION, uri.toString());
-			// } else {
 			String ip = ipAddress.getText().trim();
 			configuration.setAttribute(IGDBJtagConstants.ATTR_IP_ADDRESS, ip);
 			int port = Integer.valueOf(portNumber.getText().trim()).intValue();
 			configuration
 					.setAttribute(IGDBJtagConstants.ATTR_PORT_NUMBER, port);
-			// }
-			// } catch (URISyntaxException e) {
-			// Activator.log(e);
 		} catch (NumberFormatException e) {
 			Activator.log(e);
 		}
-		// }
+
 		configuration
 				.setAttribute(
 						IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
@@ -1091,6 +1079,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
+
+		configuration.setAttribute(
+				IGDBJtagConstants.ATTR_JTAG_DEVICE,
+				ConfigurationAttributes.JTAG_DEVICE);
 
 		String defaultGdbCommand = Platform.getPreferencesService().getString(
 				GdbPlugin.PLUGIN_ID, PreferenceConstants.DEFAULT_GDB_COMMAND,

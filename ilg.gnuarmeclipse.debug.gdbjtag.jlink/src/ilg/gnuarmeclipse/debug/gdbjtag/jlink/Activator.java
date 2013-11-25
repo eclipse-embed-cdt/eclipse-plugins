@@ -67,6 +67,11 @@ public class Activator extends AbstractUIPlugin {
 		return plugin;
 	}
 
+	public static BundleContext getBundleContext() {
+		return getDefault().getBundle().getBundleContext();
+	}
+
+
 	public static void log(IStatus status) {
 		getDefault().getLog().log(status);
 	}

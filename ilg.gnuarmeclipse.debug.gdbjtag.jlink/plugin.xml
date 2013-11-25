@@ -41,16 +41,16 @@
             type="ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationType"/>
    </extension>
 
-<!--
    <extension
          point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
       <device
-            class="org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.GenericDevice"
-            id="ilg.gnuarmeclipse.debug.gdbjtag.jlink.core.jtagdevice.genericDevice"
+            class="ilg.gnuarmeclipse.debug.gdbjtag.jlink.JTagDevice"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.jlink.core.jtagdevice"
             name="%JTagDevice.generic.name">
       </device>
    </extension>
-  
+
+<!--  
    <extension
          point="org.eclipse.debug.ui.launchConfigurationTabs">
          
