@@ -40,11 +40,11 @@ public interface ConfigurationAttributes {
 	public static final String ENDIANNESS_BIG_COMMAND = "monitor endian big";	
 
 	public static final String GDB_CLIENT_OTHER_COMMANDS = PREFIX + ".gdbClientOtherCommands"; //$NON-NLS-1$
-	public static final String GDB_CLIENT_OTHER_COMMANDS_DEFAULT = "";
+	public static final String GDB_CLIENT_OTHER_COMMANDS_DEFAULT = "set mem inaccessible-by-default off";
 	
 	// TabStartup
 	public static final String DO_FIRST_RESET = PREFIX + ".doFirstReset"; //$NON-NLS-1$
-	public static final boolean DO_FIRST_RESET_DEFAULT = false;
+	public static final boolean DO_FIRST_RESET_DEFAULT = true;
 	public static final String DO_FIRST_RESET_COMMAND = "monitor reset ";
 	
 	public static final String FIRST_RESET_TYPE = PREFIX + ".firstResetType"; //$NON-NLS-1$
