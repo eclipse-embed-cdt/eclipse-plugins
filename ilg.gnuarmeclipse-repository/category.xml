@@ -6,6 +6,9 @@
    <feature url="features/ilg.gnuarmeclipse.templates.stm-feature_1.1.4.qualifier.jar" id="ilg.gnuarmeclipse.templates.stm" version="1.1.4.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
+   <feature url="features/ilg.gnuarmeclipse.debug.gdbjtag.jlink-feature_1.1.0.qualifier.jar" id="ilg.gnuarmeclipse.debug.gdbjtag.jlink" version="1.1.0.qualifier">
+      <category name="ilg.gnuarmeclipse.category"/>
+   </feature>
    <feature url="features/org.eclipse.cdt.cross.arm.gnu_0.5.5.201310221100.jar" id="org.eclipse.cdt.cross.arm.gnu" version="0.5.5.201310221100" os="linux,macosx,win32">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>

@@ -1,7 +1,6 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
 import org.eclipse.cdt.debug.gdbjtag.core.GDBJtagDSFLaunchConfigurationDelegate;
-import org.eclipse.cdt.debug.gdbjtag.core.dsf.gdb.service.GdbJtagDebugServicesFactory;
 import org.eclipse.cdt.dsf.debug.service.IDsfDebugServicesFactory;
 import org.eclipse.debug.core.ILaunchConfiguration;
 
