@@ -7,17 +7,22 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
+import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.debug.gdbjtag.core.Activator;
 import org.eclipse.cdt.debug.gdbjtag.core.GDBJtagDSFFinalLaunchSequence;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
+import org.eclipse.cdt.debug.internal.core.DebugStringVariableSubstitutor;
 import org.eclipse.cdt.dsf.concurrent.CountingRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitorWithProgress;
 import org.eclipse.cdt.dsf.concurrent.ReflectionSequence.Execute;
+import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
+import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.gdb.service.IGDBBackend;
 import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
 import org.eclipse.cdt.dsf.mi.service.IMIProcesses;
+import org.eclipse.cdt.dsf.mi.service.command.CommandFactory;
 import org.eclipse.cdt.dsf.mi.service.command.commands.CLICommand;
 import org.eclipse.cdt.dsf.mi.service.command.output.MIInfo;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
@@ -36,6 +41,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	private IGDBBackend fGDBBackend;
 	private IGDBControl fCommandControl;
 	private IMIProcesses fProcService;
+	private CommandFactory fCommandFactory;
 
 	// public FinalLaunchSequence(DsfExecutor executor, GdbLaunch launch,
 	// SessionType sessionType, boolean attach,
@@ -76,6 +82,43 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		return sb.toString();
 	}
 
+	// This function is used to capture the private objects
+	@Execute
+	public void stepInitializeFinalLaunchSequence(RequestMonitor requestMonitor) {
+		fTracker = new DsfServicesTracker(GdbPlugin.getBundleContext(),
+				fSession.getId());
+		fGDBBackend = fTracker.getService(IGDBBackend.class);
+		if (fGDBBackend == null) {
+			requestMonitor.setStatus(new Status(IStatus.ERROR,
+					GdbPlugin.PLUGIN_ID, -1,
+					"Cannot obtain GDBBackend service", null)); //$NON-NLS-1$
+			requestMonitor.done();
+			return;
+		}
+
+		fCommandControl = fTracker.getService(IGDBControl.class);
+		if (fCommandControl == null) {
+			requestMonitor.setStatus(new Status(IStatus.ERROR,
+					GdbPlugin.PLUGIN_ID, -1,
+					"Cannot obtain control service", null)); //$NON-NLS-1$
+			requestMonitor.done();
+			return;
+		}
+
+		fCommandFactory = fCommandControl.getCommandFactory();
+
+		fProcService = fTracker.getService(IMIProcesses.class);
+		if (fProcService == null) {
+			requestMonitor.setStatus(new Status(IStatus.ERROR,
+					GdbPlugin.PLUGIN_ID, -1,
+					"Cannot obtain process service", null)); //$NON-NLS-1$
+			requestMonitor.done();
+			return;
+		}
+
+		super.stepInitializeFinalLaunchSequence(requestMonitor);
+	}
+
 	@Execute
 	public void stepInitializeJTAGFinalLaunchSequence(RequestMonitor rm) {
 		fTracker = new DsfServicesTracker(Activator.getBundleContext(),
@@ -102,84 +145,136 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		}
 
 		super.stepInitializeJTAGFinalLaunchSequence(rm);
+
+	}
+
+	@Execute
+	public void stepSourceGDBInitFile(final RequestMonitor requestMonitor) {
+		try {
+
+			List<String> commandsList = new ArrayList<String>();
+
+			String otherInits = CDebugUtils.getAttribute(fAttributes,
+					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
+					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
+			otherInits = VariablesPlugin.getDefault()
+					.getStringVariableManager()
+					.performStringSubstitution(otherInits);
+			if (otherInits.length() > 0) {
+				String[] commandsStr = otherInits.split("\\r?\\n"); //$NON-NLS-1$
+				for (String str : commandsStr) {
+					str = str.trim();
+					if (str.length() > 0) {
+						commandsList.add(str);
+					}
+				}
+			}
+
+			if (commandsList.size() > 0) {
+				CountingRequestMonitor crm = new CountingRequestMonitor(
+						getExecutor(), requestMonitor);
+				crm.setDoneCount(commandsList.size());
+
+				queueCommands(commandsList, requestMonitor);
+			} else {
+				requestMonitor.done();
+			}
+		} catch (CoreException e) {
+			requestMonitor.setStatus(new Status(IStatus.ERROR,
+					Activator.PLUGIN_ID, -1,
+					"Cannot run other gdb client commands", e)); //$NON-NLS-1$
+			requestMonitor.done();
+		}
+
+		super.stepSourceGDBInitFile(requestMonitor);
 	}
 
 	@Execute
 	public void stepResetBoard(final RequestMonitor rm) {
-		rm.done();
+
+		List<String> commandsList = new ArrayList<String>();
+
+		String attr;
+		attr = CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.INTERFACE,
+				ConfigurationAttributes.INTERFACE_SWD);
+		if (ConfigurationAttributes.INTERFACE_SWD.equals(attr)) {
+			commandsList.add(ConfigurationAttributes.INTERFACE_SWD_COMMAND);
+		} else if (ConfigurationAttributes.INTERFACE_JTAG.equals(attr)) {
+			commandsList.add(ConfigurationAttributes.INTERFACE_JTAG_COMMAND);
+		}
+
+		attr = CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.INTERFACE_SPEED,
+				ConfigurationAttributes.INTERFACE_SPEED_AUTO);
+		if (ConfigurationAttributes.INTERFACE_SPEED_AUTO.equals(attr)) {
+			commandsList
+					.add(ConfigurationAttributes.INTERFACE_SPEED_AUTO_COMMAND);
+		} else if (ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE
+				.equals(attr)) {
+			commandsList
+					.add(ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE_COMMAND);
+		} else {
+			commandsList
+					.add(ConfigurationAttributes.INTERFACE_SPEED_FIXED_COMMAND
+							+ attr);
+		}
+
+		attr = CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.FLASH_DEVICE,
+				ConfigurationAttributes.FLASH_DEVICE_DEFAULT);
+		attr = attr.trim();
+		if (attr.length() > 0) {
+			commandsList.add(ConfigurationAttributes.FLASH_DEVICE_COMMAND
+					+ attr);
+		}
+
+		attr = CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.ENDIANNESS,
+				ConfigurationAttributes.ENDIANNESS_LITTLE);
+		if (ConfigurationAttributes.ENDIANNESS_LITTLE.equals(attr)) {
+			commandsList.add(ConfigurationAttributes.ENDIANNESS_LITTLE_COMMAND);
+		} else if (ConfigurationAttributes.ENDIANNESS_BIG.equals(attr)) {
+			commandsList.add(ConfigurationAttributes.ENDIANNESS_BIG_COMMAND);
+		}
+
+		boolean noReset = CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.NO_RESET,
+				ConfigurationAttributes.NO_RESET_DEFAULT);
+		if (!noReset) {
+			if (CDebugUtils.getAttribute(fAttributes,
+					ConfigurationAttributes.DO_FIRST_RESET,
+					ConfigurationAttributes.DO_FIRST_RESET_DEFAULT)) {
+				String commandStr = ConfigurationAttributes.DO_FIRST_RESET_COMMAND;
+				String resetType = CDebugUtils.getAttribute(fAttributes,
+						ConfigurationAttributes.FIRST_RESET_TYPE,
+						ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
+				commandsList.add(commandStr + resetType);
+			}
+		}
+
+		if (commandsList.size() > 0) {
+			CountingRequestMonitor crm = new CountingRequestMonitor(
+					getExecutor(), rm);
+			crm.setDoneCount(commandsList.size());
+
+			queueCommands(commandsList, rm);
+		} else {
+			rm.done();
+		}
 	}
 
 	@Execute
 	public void stepResumeScript(final RequestMonitor rm) {
-				rm.done();
+
+		rm.done();
+
 	}
 
 	@Execute
 	public void stepUserInitCommands(final RequestMonitor rm) {
 		try {
 			List<String> commandsList = new ArrayList<String>();
-
-			String attr;
-			attr = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.INTERFACE,
-					ConfigurationAttributes.INTERFACE_SWD);
-			if (ConfigurationAttributes.INTERFACE_SWD.equals(attr)) {
-				commandsList.add(ConfigurationAttributes.INTERFACE_SWD_COMMAND);
-			} else if (ConfigurationAttributes.INTERFACE_JTAG.equals(attr)) {
-				commandsList
-						.add(ConfigurationAttributes.INTERFACE_JTAG_COMMAND);
-			}
-
-			attr = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.INTERFACE_SPEED,
-					ConfigurationAttributes.INTERFACE_SPEED_AUTO);
-			if (ConfigurationAttributes.INTERFACE_SPEED_AUTO.equals(attr)) {
-				commandsList
-						.add(ConfigurationAttributes.INTERFACE_SPEED_AUTO_COMMAND);
-			} else if (ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE
-					.equals(attr)) {
-				commandsList
-						.add(ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE_COMMAND);
-			} else {
-				commandsList
-						.add(ConfigurationAttributes.INTERFACE_SPEED_FIXED_COMMAND
-								+ attr);
-			}
-
-			attr = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.FLASH_DEVICE,
-					ConfigurationAttributes.FLASH_DEVICE_DEFAULT);
-			attr = attr.trim();
-			if (attr.length() > 0) {
-				commandsList.add(ConfigurationAttributes.FLASH_DEVICE_COMMAND
-						+ attr);
-			}
-
-			attr = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.ENDIANNESS,
-					ConfigurationAttributes.ENDIANNESS_LITTLE);
-			if (ConfigurationAttributes.ENDIANNESS_LITTLE.equals(attr)) {
-				commandsList
-						.add(ConfigurationAttributes.ENDIANNESS_LITTLE_COMMAND);
-			} else if (ConfigurationAttributes.ENDIANNESS_BIG.equals(attr)) {
-				commandsList
-						.add(ConfigurationAttributes.ENDIANNESS_BIG_COMMAND);
-			}
-
-			boolean noReset = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.NO_RESET,
-					ConfigurationAttributes.NO_RESET_DEFAULT);
-			if (!noReset) {
-				if (CDebugUtils.getAttribute(fAttributes,
-						ConfigurationAttributes.DO_FIRST_RESET,
-						ConfigurationAttributes.DO_FIRST_RESET_DEFAULT)) {
-					String commandStr = ConfigurationAttributes.DO_FIRST_RESET_COMMAND;
-					String resetType = CDebugUtils.getAttribute(fAttributes,
-							ConfigurationAttributes.FIRST_RESET_TYPE,
-							ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
-					commandsList.add(commandStr + resetType);
-				}
-			}
 
 			if (CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.ENABLE_SEMIHOSTING,
@@ -214,12 +309,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 				CountingRequestMonitor crm = new CountingRequestMonitor(
 						getExecutor(), rm);
 				crm.setDoneCount(commandsList.size());
-				// for (int i = 0; i < commands.length; ++i) {
-				// fCommandControl.queueCommand(
-				// new CLICommand<MIInfo>(fCommandControl.getContext(),
-				// commands[i]),
-				// new DataRequestMonitor<MIInfo>(getExecutor(), crm));
-				// }
+
 				queueCommands(commandsList, rm);
 			} else {
 				rm.done();
@@ -254,7 +344,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 			String userCmd = CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.OTHER_RUN_COMMANDS,
 					ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
-			
+
 			if (userCmd.length() > 0) {
 				userCmd = VariablesPlugin.getDefault()
 						.getStringVariableManager()
@@ -267,13 +357,13 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					}
 				}
 			}
-			
+
 			if (CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.DO_CONTINUE,
 					ConfigurationAttributes.DO_CONTINUE_DEFAULT)) {
 				commandsList.add(ConfigurationAttributes.DO_CONTINUE_COMMAND);
 			}
-			
+
 			if (commandsList.size() > 0) {
 				CountingRequestMonitor crm = new CountingRequestMonitor(
 						getExecutor(), rm);
