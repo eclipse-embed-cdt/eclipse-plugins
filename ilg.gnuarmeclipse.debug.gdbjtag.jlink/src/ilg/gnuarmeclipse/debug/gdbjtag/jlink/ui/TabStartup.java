@@ -748,6 +748,15 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	}
 
+	public void noResetChanged(boolean flag){
+		//System.out.println(flag);
+		doFirstReset.setEnabled(!flag);
+		firstResetType.setEnabled(!flag);
+
+		doSecondReset.setEnabled(!flag);
+		secondResetType.setEnabled(!flag);
+	}
+	
 	@Override
 	public boolean isValid(ILaunchConfiguration launchConfig) {
 		if (!super.isValid(launchConfig))

@@ -120,6 +120,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	protected Button fUpdateThreadlistOnSuspend;
 
+	private TabStartup tabStartup;
+	
+	TabDebugger(TabStartup tabStartup){
+		super();
+		this.tabStartup = tabStartup;		
+	}
+	
 	@Override
 	public String getName() {
 		return TAB_NAME;
@@ -564,6 +571,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				updateLaunchConfigurationDialog();
+				
+				tabStartup.noResetChanged(noReset.getSelection());
 			}
 		});
 
@@ -776,41 +785,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		// TODO
 	}
 
-	/**
-	 * @param text
-	 */
-	// @SuppressWarnings("deprecation")
-	// protected void updateDeviceIpPort(String selectedDeviceName) {
-	// if (selectedDeviceName.equals(savedJtagDevice)) {
-	// return;
-	// }
-	// GDBJtagDeviceContribution[] availableDevices =
-	// GDBJtagDeviceContributionFactory
-	// .getInstance().getGDBJtagDeviceContribution();
-	// IGDBJtagDevice selectedDevice = null;
-	// for (int i = 0; i < availableDevices.length; i++) {
-	// String name = availableDevices[i].getDeviceName();
-	// if (name.equals(selectedDeviceName)) {
-	// selectedDevice = availableDevices[i].getDevice();
-	// if (selectedDevice != null) {
-	// if (selectedDevice instanceof IGDBJtagConnection) {
-	// IGDBJtagConnection connectionDevice = (IGDBJtagConnection)
-	// selectedDevice;
-	// connection.setText(connectionDevice
-	// .getDefaultDeviceConnection());
-	// } else {
-	// // support for deprecated TCP/IP based methods
-	// ipAddress.setText(selectedDevice.getDefaultIpAddress());
-	// portNumber.setText(selectedDevice
-	// .getDefaultPortNumber());
-	// }
-	// useRemoteChanged();
-	// updateLaunchConfigurationDialog();
-	// break;
-	// }
-	// }
-	// }
-	// }
 
 	private void useRemoteChanged() {
 		boolean enabled = true; // useRemote.getSelection();
@@ -818,25 +792,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		ipAddress.setEnabled(enabled);
 		portNumber.setEnabled(enabled);
 		// connection.setEnabled(enabled);
-
-		// GDBJtagDeviceContribution selectedDeviceEntry =
-		// findJtagDeviceByName(jtagDevice
-		// .getText());
-		// if ((selectedDeviceEntry == null)
-		// || (selectedDeviceEntry.getDevice() == null)) {
-		// remoteConnectParmsLayout.topControl = null;
-		// remoteConnectionParameters.layout();
-		// } else {
-		// IGDBJtagDevice device = selectedDeviceEntry.getDevice();
-		// if (device instanceof IGDBJtagConnection) {
-		// remoteConnectParmsLayout.topControl = remoteConnectionBox;
-		// remoteConnectionBox.getParent().layout();
-		// } else {
-
-		// remoteConnectParmsLayout.topControl = remoteTcpipBox;
-		// remoteTcpipBox.getParent().layout();
-		// }
-		// }
 	}
 
 	@Override

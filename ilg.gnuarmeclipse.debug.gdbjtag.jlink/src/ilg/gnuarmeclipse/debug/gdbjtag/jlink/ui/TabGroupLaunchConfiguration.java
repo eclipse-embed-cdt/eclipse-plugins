@@ -33,8 +33,10 @@ public class TabGroupLaunchConfiguration extends
 		// To avoid these problems and for a better control,
 		// we manually define the tabs here.
 
+		TabStartup tabStartup = new TabStartup();
+		
 		ILaunchConfigurationTab tabs[] = new ILaunchConfigurationTab[] {
-				new TabMain(), new TabDebugger(), new TabStartup(),
+				new TabMain(), new TabDebugger(tabStartup), tabStartup,
 				new SourceLookupTab(), new CommonTab() };
 
 		setTabs(tabs);
