@@ -221,11 +221,11 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		}
 
 		attr = CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.FLASH_DEVICE,
-				ConfigurationAttributes.FLASH_DEVICE_DEFAULT);
+				ConfigurationAttributes.FLASH_DEVICE_NAME,
+				ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
 		attr = attr.trim();
 		if (attr.length() > 0) {
-			commandsList.add(ConfigurationAttributes.FLASH_DEVICE_COMMAND
+			commandsList.add(ConfigurationAttributes.FLASH_DEVICE_NAME_COMMAND
 					+ attr);
 		}
 

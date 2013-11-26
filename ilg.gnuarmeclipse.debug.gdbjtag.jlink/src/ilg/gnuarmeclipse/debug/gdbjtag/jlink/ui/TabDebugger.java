@@ -23,23 +23,22 @@ package ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.PreferenceConstants;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.SharedStorage;
 
 import java.io.File;
 
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
-import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.GDBJtagDeviceContribution;
-import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.GDBJtagDeviceContributionFactory;
 import org.eclipse.cdt.debug.gdbjtag.ui.GDBJtagImages;
 import org.eclipse.cdt.debug.mi.core.IMILaunchConfigurationConstants;
 import org.eclipse.cdt.debug.mi.core.MIPlugin;
 import org.eclipse.cdt.debug.mi.core.command.factories.CommandFactoryDescriptor;
 import org.eclipse.cdt.debug.mi.core.command.factories.CommandFactoryManager;
 import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
-import org.eclipse.cdt.dsf.gdb.IGdbDebugPreferenceConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.IPreferencesService;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
@@ -74,7 +73,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			+ ".ui.debuggertab";
 
 	private Button doStartGdbServer;
-	private Text gdbClientCommand;
+	private Text gdbClientExecutable;
+	private boolean gdbClientExecutableChanged;
 	private Text gdbClientOtherCommands;
 	// private Button useRemote;
 	// private Combo jtagDevice;
@@ -86,7 +86,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	// private Composite remoteConnectionBox;
 	// private Text connection;
 	// private String savedJtagDevice;
-	private Text deviceName;
+	private Text flashDeviceName;
+	private boolean flashDeviceNameChanged;
 	private Button endiannessLittle;
 	private Button endiannessBig;
 	private Button interfaceJtag;
@@ -121,12 +122,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	protected Button fUpdateThreadlistOnSuspend;
 
 	private TabStartup tabStartup;
-	
-	TabDebugger(TabStartup tabStartup){
+
+	TabDebugger(TabStartup tabStartup) {
 		super();
-		this.tabStartup = tabStartup;		
+		this.tabStartup = tabStartup;
 	}
-	
+
 	@Override
 	public String getName() {
 		return TAB_NAME;
@@ -229,9 +230,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			gd = new GridData(GridData.FILL_HORIZONTAL);
 			local.setLayoutData(gd);
 			{
-				gdbClientCommand = new Text(local, SWT.SINGLE | SWT.BORDER);
+				gdbClientExecutable = new Text(local, SWT.SINGLE | SWT.BORDER);
 				gd = new GridData(GridData.FILL_HORIZONTAL);
-				gdbClientCommand.setLayoutData(gd);
+				gdbClientExecutable.setLayoutData(gd);
+
+				gdbClientExecutableChanged = false;
 
 				browseButton = new Button(local, SWT.NONE);
 				browseButton.setText(Messages
@@ -261,9 +264,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		// ----- Actions ------------------------------------------------------
-		gdbClientCommand.addModifyListener(new ModifyListener() {
+		gdbClientExecutable.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
+
+				gdbClientExecutableChanged = true;
+
 				scheduleUpdateJob(); // provides much better performance for
 										// Text listeners
 			}
@@ -281,14 +287,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent e) {
 				browseButtonSelected(Messages
 						.getString("DebuggerTab.gdbCommandBrowse_Title"),
-						gdbClientCommand);
+						gdbClientExecutable);
 			}
 		});
 
 		variableButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				variablesButtonSelected(gdbClientCommand);
+				variablesButtonSelected(gdbClientExecutable);
 			}
 		});
 	}
@@ -381,10 +387,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			label.setToolTipText(Messages
 					.getString("DebuggerTab.deviceName_ToolTipText"));
 
-			deviceName = new Text(comp, SWT.BORDER);
+			flashDeviceName = new Text(comp, SWT.BORDER);
 			gd = new GridData();
 			gd.widthHint = 180;
-			deviceName.setLayoutData(gd);
+			flashDeviceName.setLayoutData(gd);
+
+			flashDeviceNameChanged = false;
 
 			link = new Link(comp, SWT.NONE);
 			link.setText(Messages.getString("DebuggerTab.deviceName_Link"));
@@ -395,7 +403,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		{
 			label = new Label(comp, SWT.NONE);
 			label.setText(Messages.getString("DebuggerTab.endianness_Label")); //$NON-NLS-1$
-			label.setToolTipText(Messages.getString("DebuggerTab.endianness_ToolTipText")); //$NON-NLS-1$
+			label.setToolTipText(Messages
+					.getString("DebuggerTab.endianness_ToolTipText")); //$NON-NLS-1$
 
 			Composite endiannessGroup = new Composite(comp, SWT.NONE);
 			layout = new GridLayout();
@@ -416,10 +425,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		// ----- Actions ------------------------------------------------------
-		deviceName.addModifyListener(new ModifyListener() {
+		flashDeviceName.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
 				updateLaunchConfigurationDialog();
+
+				flashDeviceNameChanged = true;
 			}
 		});
 
@@ -571,7 +582,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				updateLaunchConfigurationDialog();
-				
+
 				tabStartup.noResetChanged(noReset.getSelection());
 			}
 		});
@@ -785,7 +796,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		// TODO
 	}
 
-
 	private void useRemoteChanged() {
 		boolean enabled = true; // useRemote.getSelection();
 		// jtagDevice.setEnabled(enabled);
@@ -798,18 +808,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
 
-			// First try the globally persistent storage
-			String defaultGdbCommand = Platform
-					.getPreferencesService()
-					.getString(
-							GdbPlugin.PLUGIN_ID,
-							IGdbDebugPreferenceConstants.PREF_DEFAULT_GDB_COMMAND,
-							"", null); //$NON-NLS-1$
-
 			String gdbCommandAttr = configuration.getAttribute(
 					IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
-					defaultGdbCommand);
-			gdbClientCommand.setText(gdbCommandAttr);
+					SharedStorage.getGdbClientExecutable(null));
+			gdbClientExecutable.setText(gdbCommandAttr);
+			gdbClientExecutableChanged = false;
 
 			String storedAddress = ""; //$NON-NLS-1$
 			int storedPort = 0;
@@ -858,8 +861,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			String physicalInterfaceSpeed = configuration.getAttribute(
 					ConfigurationAttributes.INTERFACE_SPEED,
-					ConfigurationAttributes.INTERFACE_SPEED_DEFAULT);			
-			
+					ConfigurationAttributes.INTERFACE_SPEED_DEFAULT);
+
 			if (ConfigurationAttributes.INTERFACE_SPEED_AUTO
 					.equals(physicalInterfaceSpeed)) {
 				interfaceSpeedAuto.setSelection(true);
@@ -884,9 +887,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				}
 			}
 
-			deviceName.setText(configuration.getAttribute(
-					ConfigurationAttributes.FLASH_DEVICE,
-					ConfigurationAttributes.FLASH_DEVICE_DEFAULT));
+			flashDeviceName
+					.setText(configuration
+							.getAttribute(
+									ConfigurationAttributes.FLASH_DEVICE_NAME,
+									SharedStorage
+											.getFlashDeviceName(ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT)));
+			flashDeviceNameChanged = false;
 
 			String endianness = configuration.getAttribute(
 					ConfigurationAttributes.ENDIANNESS,
@@ -948,21 +955,24 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
-		
+
 		// To satisfy the references, always point to the Generic
-		configuration.setAttribute(
-				IGDBJtagConstants.ATTR_JTAG_DEVICE,
+		configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE,
 				ConfigurationAttributes.JTAG_DEVICE);
 
 		configuration.setAttribute(
 				IMILaunchConfigurationConstants.ATTR_DEBUG_NAME,
-				gdbClientCommand.getText().trim());
+				gdbClientExecutable.getText().trim());
 		configuration.setAttribute(
 				IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
-				gdbClientCommand.getText().trim()); // DSF
+				gdbClientExecutable.getText().trim()); // DSF
 
+		if (gdbClientExecutableChanged) {
+			SharedStorage.putGdbClientExecutable(gdbClientExecutable.getText().trim());
+			gdbClientExecutableChanged = true;
+		}
 		configuration.setAttribute(IGDBJtagConstants.ATTR_USE_REMOTE_TARGET,
-				true); 
+				true);
 
 		try {
 			String ip = ipAddress.getText().trim();
@@ -1003,14 +1013,19 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE);
 		} else if (interfaceSpeedFixed.getSelection()) {
 			configuration.setAttribute(ConfigurationAttributes.INTERFACE_SPEED,
-					interfaceSpeedFixedValue.getText());
+					interfaceSpeedFixedValue.getText().trim());
 		}
 
 		configuration.setAttribute(ConfigurationAttributes.NO_RESET,
 				noReset.getSelection());
 
-		configuration.setAttribute(ConfigurationAttributes.FLASH_DEVICE,
-				deviceName.getText());
+		configuration.setAttribute(ConfigurationAttributes.FLASH_DEVICE_NAME,
+				flashDeviceName.getText().trim());
+		if (flashDeviceNameChanged) {
+			SharedStorage.putFlashDeviceName(flashDeviceName.getText().trim());
+			SharedStorage.update();
+			flashDeviceNameChanged = false;
+		}
 
 		if (endiannessLittle.getSelection()) {
 			configuration.setAttribute(ConfigurationAttributes.ENDIANNESS,
@@ -1028,23 +1043,19 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		configuration.setAttribute(
 				ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
-				gdbClientOtherCommands.getText());
+				gdbClientOtherCommands.getText().trim());
 
 	}
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 
-		configuration.setAttribute(
-				IGDBJtagConstants.ATTR_JTAG_DEVICE,
+		configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE,
 				ConfigurationAttributes.JTAG_DEVICE);
 
-		String defaultGdbCommand = Platform.getPreferencesService().getString(
-				GdbPlugin.PLUGIN_ID, PreferenceConstants.DEFAULT_GDB_COMMAND,
-				"", null); //$NON-NLS-1$
 		configuration.setAttribute(
 				IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
-				defaultGdbCommand);
+				SharedStorage.getGdbClientExecutable(null));
 
 		CommandFactoryManager cfManager = MIPlugin.getDefault()
 				.getCommandFactoryManager();
@@ -1076,8 +1087,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(ConfigurationAttributes.NO_RESET,
 				ConfigurationAttributes.NO_RESET_DEFAULT);
 
-		configuration.setAttribute(ConfigurationAttributes.FLASH_DEVICE,
-				ConfigurationAttributes.FLASH_DEVICE_DEFAULT);
+		configuration
+				.setAttribute(
+						ConfigurationAttributes.FLASH_DEVICE_NAME,
+						SharedStorage
+								.getFlashDeviceName(ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT));
 
 		configuration.setAttribute(ConfigurationAttributes.ENDIANNESS,
 				ConfigurationAttributes.ENDIANNESS_DEFAULT);

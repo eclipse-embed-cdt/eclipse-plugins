@@ -4,7 +4,7 @@ import org.eclipse.cdt.debug.gdbjtag.core.Activator;
 
 public interface ConfigurationAttributes {
 
-	public static final String PREFIX = Activator.PLUGIN_ID;
+	public static final String PREFIX = Activator.PLUGIN_ID;	
 	
 	// TabDebugger
 	
@@ -28,9 +28,9 @@ public interface ConfigurationAttributes {
 	public static final String NO_RESET = PREFIX + ".noReset"; //$NON-NLS-1$
 	public static final boolean NO_RESET_DEFAULT = false;
 	
-	public static final String FLASH_DEVICE = PREFIX + ".flashDevice"; //$NON-NLS-1$
-	public static final String FLASH_DEVICE_DEFAULT = "";
-	public static final String FLASH_DEVICE_COMMAND = "monitor flash device = ";
+	public static final String FLASH_DEVICE_NAME = PREFIX + ".flashDeviceName"; //$NON-NLS-1$
+	public static final String FLASH_DEVICE_NAME_DEFAULT = "";
+	public static final String FLASH_DEVICE_NAME_COMMAND = "monitor flash device = ";
 	
 	public static final String ENDIANNESS = PREFIX + ".endianness"; //$NON-NLS-1$
 	public static final String ENDIANNESS_LITTLE = "little";	
