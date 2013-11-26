@@ -974,6 +974,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING,
 				enableSemihosting.getSelection());
+		configuration.setAttribute(ConfigurationAttributes.ENABLE_SWO,
+				enableSwo.getSelection());
 		configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS,
 				initCommands.getText());
 
