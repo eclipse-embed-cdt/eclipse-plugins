@@ -1003,12 +1003,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE,
 				ConfigurationAttributes.JTAG_DEVICE);
 
+		String clientExecutable = gdbClientExecutable.getText().trim();
 		configuration.setAttribute(
 				IMILaunchConfigurationConstants.ATTR_DEBUG_NAME,
-				gdbClientExecutable.getText().trim());
+				clientExecutable);
 		configuration.setAttribute(
 				IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
-				gdbClientExecutable.getText().trim()); // DSF
+				clientExecutable); // DSF
 
 		if (gdbClientExecutableChanged) {
 			SharedStorage.putGdbClientExecutable(gdbClientExecutable.getText()

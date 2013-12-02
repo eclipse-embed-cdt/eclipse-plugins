@@ -17,7 +17,8 @@ public interface ConfigurationAttributes {
 	public static final String INTERFACE_SWD_COMMAND = "monitor interface SWD";
 	public static final String INTERFACE_JTAG_COMMAND = "monitor interface JTAG";
 
-	public static final String DO_CONNECT_TO_RUNNING = PREFIX + ".doConnectToRunning"; //$NON-NLS-1$
+	public static final String DO_CONNECT_TO_RUNNING = PREFIX
+			+ ".doConnectToRunning"; //$NON-NLS-1$
 	public static final boolean DO_CONNECT_TO_RUNNING_DEFAULT = false;
 
 	public static final String INTERFACE_SPEED = PREFIX + ".interfaceSpeed"; //$NON-NLS-1$
@@ -78,15 +79,19 @@ public interface ConfigurationAttributes {
 	public static final String ENABLE_SWO = PREFIX + ".enableSwo"; //$NON-NLS-1$
 	public static final boolean ENABLE_SWO_DEFAULT = true;
 	public static final String ENABLE_SWO_COMMAND = "monitor SWO EnableTarget ";
-	//public static final String ENABLE_SWO_GETSPEEDINFO_COMMAND = "monitor SWO GetSpeedInfo";
+	// public static final String ENABLE_SWO_GETSPEEDINFO_COMMAND =
+	// "monitor SWO GetSpeedInfo";
 
-	public static final String SWO_ENABLETARGET_CPUFREQ = PREFIX + ".swoEnableTargetCpuFreq"; //$NON-NLS-1$
+	public static final String SWO_ENABLETARGET_CPUFREQ = PREFIX
+			+ ".swoEnableTargetCpuFreq"; //$NON-NLS-1$
 	public static final int SWO_ENABLETARGET_CPUFREQ_DEFAULT = 0;
 
-	public static final String SWO_ENABLETARGET_SWOFREQ = PREFIX + ".swoEnableTargetSwoFreq"; //$NON-NLS-1$
+	public static final String SWO_ENABLETARGET_SWOFREQ = PREFIX
+			+ ".swoEnableTargetSwoFreq"; //$NON-NLS-1$
 	public static final int SWO_ENABLETARGET_SWOFREQ_DEFAULT = 0;
 
-	public static final String SWO_ENABLETARGET_PORTMASK = PREFIX + ".swoEnableTargetPortMask"; //$NON-NLS-1$
+	public static final String SWO_ENABLETARGET_PORTMASK = PREFIX
+			+ ".swoEnableTargetPortMask"; //$NON-NLS-1$
 	public static final int SWO_ENABLETARGET_PORTMASK_DEFAULT = 1;
 
 	public static final String OTHER_INIT_COMMANDS = PREFIX

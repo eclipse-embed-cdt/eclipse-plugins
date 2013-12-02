@@ -7,22 +7,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
-import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.debug.gdbjtag.core.Activator;
 import org.eclipse.cdt.debug.gdbjtag.core.GDBJtagDSFFinalLaunchSequence;
-import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
-import org.eclipse.cdt.debug.internal.core.DebugStringVariableSubstitutor;
 import org.eclipse.cdt.dsf.concurrent.CountingRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitorWithProgress;
-import org.eclipse.cdt.dsf.concurrent.ReflectionSequence.Execute;
-import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.gdb.service.IGDBBackend;
 import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
 import org.eclipse.cdt.dsf.mi.service.IMIProcesses;
-import org.eclipse.cdt.dsf.mi.service.command.CommandFactory;
 import org.eclipse.cdt.dsf.mi.service.command.commands.CLICommand;
 import org.eclipse.cdt.dsf.mi.service.command.output.MIInfo;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
@@ -41,7 +35,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	private IGDBBackend fGDBBackend;
 	private IGDBControl fCommandControl;
 	private IMIProcesses fProcService;
-	private CommandFactory fCommandFactory;
+	
 
 	// public FinalLaunchSequence(DsfExecutor executor, GdbLaunch launch,
 	// SessionType sessionType, boolean attach,
@@ -74,7 +68,11 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		StringBuffer sb = new StringBuffer();
 		Iterator<String> it = commands.iterator();
 		while (it.hasNext()) {
-			sb.append(it.next().trim());
+			String s = it.next().trim();
+			if (s.length() == 0 || s.startsWith("#"))
+				continue; // ignore empty lines and comment
+			
+			sb.append(s);
 			if (it.hasNext()) {
 				sb.append("\n");
 			}
@@ -105,7 +103,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 			return;
 		}
 
-		fCommandFactory = fCommandControl.getCommandFactory();
+		fCommandControl.getCommandFactory();
 
 		fProcService = fTracker.getService(IMIProcesses.class);
 		if (fProcService == null) {
@@ -420,4 +418,32 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		}
 	}
 
+	@Execute
+	public void stepRestartCommands(final RequestMonitor rm) {
+
+		List<String> commandsList = new ArrayList<String>();
+
+		commandsList.add("monitor halt");
+
+		String commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
+		String resetType = "";
+		
+		if (CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.DO_SECOND_RESET,
+				ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
+			 resetType = CDebugUtils.getAttribute(fAttributes,
+					ConfigurationAttributes.SECOND_RESET_TYPE,
+					ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+		}
+		commandsList.add(commandStr + resetType);
+
+		commandsList.add("continue");
+		
+		CountingRequestMonitor crm = new CountingRequestMonitor(
+				getExecutor(), rm);
+		crm.setDoneCount(commandsList.size());
+		queueCommands(commandsList, rm);
+
+	}
+	
 }
