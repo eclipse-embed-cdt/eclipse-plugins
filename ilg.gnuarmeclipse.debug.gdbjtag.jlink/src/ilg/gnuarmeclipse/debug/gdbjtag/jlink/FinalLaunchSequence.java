@@ -205,16 +205,9 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		}
 
 		attr = CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.INTERFACE_SPEED,
-				ConfigurationAttributes.INTERFACE_SPEED_AUTO);
-		if (ConfigurationAttributes.INTERFACE_SPEED_AUTO.equals(attr)) {
-			commandsList
-					.add(ConfigurationAttributes.INTERFACE_SPEED_AUTO_COMMAND);
-		} else if (ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE
-				.equals(attr)) {
-			commandsList
-					.add(ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE_COMMAND);
-		} else {
+				ConfigurationAttributes.FIRST_RESET_SPEED,
+				ConfigurationAttributes.FIRST_RESET_SPEED_DEFAULT);
+		if (attr.length() > 0) {
 			commandsList
 					.add(ConfigurationAttributes.INTERFACE_SPEED_FIXED_COMMAND
 							+ attr);
@@ -239,8 +232,8 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		}
 
 		boolean noReset = CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.NO_RESET,
-				ConfigurationAttributes.NO_RESET_DEFAULT);
+				ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+				ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
 		if (!noReset) {
 			if (CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.DO_FIRST_RESET,
@@ -252,6 +245,23 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 				commandsList.add(commandStr + resetType);
 			}
 		}
+
+		attr = CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.INTERFACE_SPEED,
+				ConfigurationAttributes.INTERFACE_SPEED_AUTO);
+		if (ConfigurationAttributes.INTERFACE_SPEED_AUTO.equals(attr)) {
+			commandsList
+					.add(ConfigurationAttributes.INTERFACE_SPEED_AUTO_COMMAND);
+		} else if (ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE
+				.equals(attr)) {
+			commandsList
+					.add(ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE_COMMAND);
+		} else {
+			commandsList
+					.add(ConfigurationAttributes.INTERFACE_SPEED_FIXED_COMMAND
+							+ attr);
+		}
+
 
 		if (commandsList.size() > 0) {
 			CountingRequestMonitor crm = new CountingRequestMonitor(
@@ -281,13 +291,44 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT)) {
 				String commandStr = ConfigurationAttributes.ENABLE_SEMIHOSTING_COMMAND;
 				commandsList.add(commandStr);
+				
+				int ioclientMask = 0;
+				if (CDebugUtils.getAttribute(fAttributes,
+						ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
+						ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_DEFAULT)) {
+					ioclientMask |= ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_MASK;
+				}
+				if (CDebugUtils.getAttribute(fAttributes,
+						ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
+						ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_DEFAULT)) {
+					ioclientMask |= ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_MASK;
+				}
+				
+				commandStr = ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_COMMAND + String.valueOf(ioclientMask);
+				commandsList.add(commandStr);
 			}
 
 			if (CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.ENABLE_SWO,
 					ConfigurationAttributes.ENABLE_SWO_DEFAULT)) {
 				String commandStr = ConfigurationAttributes.ENABLE_SWO_COMMAND;
+				commandStr += CDebugUtils.getAttribute(fAttributes,
+						ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
+						ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
+				commandStr += " ";
+				commandStr += CDebugUtils.getAttribute(fAttributes,
+						ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
+						ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
+				commandStr += " ";
+				commandStr += CDebugUtils.getAttribute(fAttributes,
+						ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
+						ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT);
+				commandStr += " 0";
+				
 				commandsList.add(commandStr);
+				
+				//commandStr = ConfigurationAttributes.ENABLE_SWO_GETSPEEDINFO_COMMAND;
+				//commandsList.add(commandStr);
 			}
 
 			String otherInits = CDebugUtils.getAttribute(fAttributes,
@@ -327,8 +368,8 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 			List<String> commandsList = new ArrayList<String>();
 
 			boolean noReset = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.NO_RESET,
-					ConfigurationAttributes.NO_RESET_DEFAULT);
+					ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+					ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
 			if (!noReset) {
 				if (CDebugUtils.getAttribute(fAttributes,
 						ConfigurationAttributes.DO_SECOND_RESET,

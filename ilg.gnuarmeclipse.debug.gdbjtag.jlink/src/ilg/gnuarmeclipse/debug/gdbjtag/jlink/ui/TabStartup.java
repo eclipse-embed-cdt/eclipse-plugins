@@ -27,6 +27,7 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -60,42 +61,54 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	private static final String TAB_NAME = "Startup";
 	private static final String TAB_ID = Activator.PLUGIN_ID + ".ui.startuptab";
 
-	Text initCommands;
+	private Text initCommands;
 	// Text delay;
 	// Button doReset;
 	// Button doHalt;
 
-	Button doFirstReset;
-	Text firstResetType;
+	private Button doFirstReset;
+	private Text firstResetType;
+	private Text firstResetSpeed;
 
-	Button doSecondReset;
-	Text secondResetType;
+	private Button interfaceSpeedAuto;
+	private Button interfaceSpeedAdaptive;
+	private Button interfaceSpeedFixed;
+	private Text interfaceSpeedFixedValue;
 
+	private Button doSecondReset;
+	private Text secondResetType;
 
-	Button enableSemihosting;
-	Button enableSwo;
+	private Button enableSemihosting;
 
-	Button loadImage;
-	Text imageFileName;
-	Button imageFileBrowseWs;
-	Button imageFileBrowse;
-	Text imageOffset;
+	private Button semihostingTelnet;
+	private Button semihostingGdbClient;
 
-	Button loadSymbols;
-	Text symbolsFileName;
+	private Button enableSwo;
+	private Text swoEnableTargetCpuFreq;
+	private Text swoEnableTargetSwoFreq;
+	private Text swoEnableTargetPortMask;
 
-	Button symbolsFileBrowseWs;
-	Button symbolsFileBrowse;
-	Text symbolsOffset;
+	private Button loadImage;
+	private Text imageFileName;
+	private Button imageFileBrowseWs;
+	private Button imageFileBrowse;
+	private Text imageOffset;
 
-	Button setPcRegister;
-	Text pcRegister;
+	private Button loadSymbols;
+	private Text symbolsFileName;
 
-	Button setStopAt;
-	Text stopAt;
+	private Button symbolsFileBrowseWs;
+	private Button symbolsFileBrowse;
+	private Text symbolsOffset;
 
-	Text runCommands;
-	Button doContinue;
+	private Button setPcRegister;
+	private Text pcRegister;
+
+	private Button setStopAt;
+	private Text stopAt;
+
+	private Text runCommands;
+	private Button doContinue;
 
 	// New GUI added to address bug 310304
 	private Button useProjectBinaryForImage;
@@ -179,44 +192,176 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		Composite comp = new Composite(group, SWT.NONE);
 		layout = new GridLayout();
-		layout.numColumns = 2;
+		layout.numColumns = 1;
 		layout.marginHeight = 0;
 		comp.setLayout(layout);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		comp.setLayoutData(gd);
 
 		{
-			doFirstReset = new Button(comp, SWT.CHECK);
+			Composite local = new Composite(comp, SWT.NONE);
+			layout = new GridLayout();
+			layout.numColumns = 6;
+			layout.marginHeight = 0;
+			layout.marginWidth = 0;
+			local.setLayout(layout);
+			// local.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+			doFirstReset = new Button(local, SWT.CHECK);
 			doFirstReset.setText(Messages
 					.getString("StartupTab.doFirstReset_Text"));
 			doFirstReset.setToolTipText(Messages
 					.getString("StartupTab.doFirstReset_ToolTipText"));
 
-			firstResetType = new Text(comp, SWT.BORDER);
+			Label label = new Label(local, SWT.NONE);
+			label.setText(Messages.getString("StartupTab.firstResetType_Text"));
+			label.setToolTipText(Messages
+					.getString("StartupTab.firstResetType_ToolTipText"));
+
+			firstResetType = new Text(local, SWT.BORDER);
 			gd = new GridData();
 			gd.widthHint = 30;
 			firstResetType.setLayoutData(gd);
+
+			label = new Label(local, SWT.NONE);
+			label.setText(Messages.getString("StartupTab.firstResetSpeed_Text"));
+			label.setToolTipText(Messages
+					.getString("StartupTab.firstResetSpeed_ToolTipText"));
+
+			firstResetSpeed = new Text(local, SWT.BORDER);
+			gd = new GridData();
+			gd.widthHint = 40;
+			firstResetSpeed.setLayoutData(gd);
+
+			label = new Label(local, SWT.NONE);
+			label.setText(Messages
+					.getString("StartupTab.firstResetSpeedUnit_Text"));
 		}
 
 		{
-			enableSemihosting = new Button(comp, SWT.CHECK);
+			Composite local = new Composite(comp, SWT.NONE);
+			layout = new GridLayout();
+			layout.numColumns = 6;
+			layout.marginHeight = 0;
+			layout.marginWidth = 0;
+			local.setLayout(layout);
+
+			Label label = new Label(local, SWT.NONE);
+			label.setText(Messages
+					.getString("StartupTab.interfaceSpeed_Label")); //$NON-NLS-1$
+			label.setToolTipText(Messages
+					.getString("StartupTab.interfaceSpeed_ToolTipText"));
+
+			interfaceSpeedAuto = new Button(local, SWT.RADIO);
+			interfaceSpeedAuto.setText(Messages
+					.getString("StartupTab.interfaceSpeedAuto_Text"));
+
+			interfaceSpeedAdaptive = new Button(local, SWT.RADIO);
+			interfaceSpeedAdaptive.setText(Messages
+					.getString("StartupTab.interfaceSpeedAdaptive_Text"));
+
+			interfaceSpeedFixed = new Button(local, SWT.RADIO);
+			interfaceSpeedFixed.setText(Messages
+					.getString("StartupTab.interfaceSpeedFixed_Text"));
+
+			interfaceSpeedFixedValue = new Text(local, SWT.BORDER);
+			gd = new GridData();
+			gd.widthHint = 40;
+			interfaceSpeedFixedValue.setLayoutData(gd);
+			
+			label = new Label(local, SWT.NONE);
+			label.setText(Messages
+					.getString("StartupTab.interfaceSpeedFixedUnit_Text"));
+		}
+
+		{
+			Composite local = new Composite(comp, SWT.NONE);
+			layout = new GridLayout();
+			layout.numColumns = 4;
+			layout.marginHeight = 0;
+			layout.marginWidth = 0;
+			local.setLayout(layout);
+			// local.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+			enableSemihosting = new Button(local, SWT.CHECK);
 			enableSemihosting.setText(Messages
 					.getString("StartupTab.enableSemihosting_Text"));
 			enableSemihosting.setToolTipText(Messages
 					.getString("StartupTab.enableSemihosting_ToolTipText"));
-			gd = new GridData();
-			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
-			enableSemihosting.setLayoutData(gd);
+
+			Label label = new Label(local, SWT.NONE);
+			label.setText(Messages
+					.getString("StartupTab.enableSemihostingRouted_Text"));
+			label.setToolTipText(Messages
+					.getString("StartupTab.enableSemihostingRouted_ToolTipText"));
+
+			semihostingTelnet = new Button(local, SWT.CHECK);
+			semihostingTelnet.setText(Messages
+					.getString("StartupTab.semihostingTelnet_Text"));
+			semihostingTelnet.setToolTipText(Messages
+					.getString("StartupTab.semihostingTelnet_ToolTipText"));
+
+			semihostingGdbClient = new Button(local, SWT.CHECK);
+			semihostingGdbClient.setText(Messages
+					.getString("StartupTab.semihostingGdbClient_Text"));
+			semihostingGdbClient.setToolTipText(Messages
+					.getString("StartupTab.semihostingGdbClient_ToolTipText"));
 		}
 
 		{
-			enableSwo = new Button(comp, SWT.CHECK);
+			Composite local = new Composite(comp, SWT.NONE);
+			layout = new GridLayout();
+			layout.numColumns = 9;
+			layout.marginHeight = 0;
+			layout.marginWidth = 0;
+			local.setLayout(layout);
+			// local.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+			enableSwo = new Button(local, SWT.CHECK);
 			enableSwo.setText(Messages.getString("StartupTab.enableSwo_Text"));
 			enableSwo.setToolTipText(Messages
 					.getString("StartupTab.enableSwo_ToolTipText"));
+
+			Label label = new Label(local, SWT.NONE);
+			label.setText(Messages
+					.getString("StartupTab.swoEnableTargetCpuFreq_Text"));
+			label.setToolTipText(Messages
+					.getString("StartupTab.swoEnableTargetCpuFreq_ToolTipText"));
+
+			swoEnableTargetCpuFreq = new Text(local, SWT.BORDER);
 			gd = new GridData();
-			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
-			enableSwo.setLayoutData(gd);
+			gd.widthHint = 60;
+			swoEnableTargetCpuFreq.setLayoutData(gd);
+
+			label = new Label(local, SWT.NONE);
+			label.setText(Messages
+					.getString("StartupTab.swoEnableTargetCpuFreqUnit_Text"));
+
+			label = new Label(local, SWT.NONE);
+			label.setText(Messages
+					.getString("StartupTab.swoEnableTargetSwoFreq_Text"));
+			label.setToolTipText(Messages
+					.getString("StartupTab.swoEnableTargetSwoFreq_ToolTipText"));
+
+			swoEnableTargetSwoFreq = new Text(local, SWT.BORDER);
+			gd = new GridData();
+			gd.widthHint = 60;
+			swoEnableTargetSwoFreq.setLayoutData(gd);
+
+			label = new Label(local, SWT.NONE);
+			label.setText(Messages
+					.getString("StartupTab.swoEnableTargetSwoFreqUnit_Text"));
+
+			label = new Label(local, SWT.NONE);
+			label.setText(Messages
+					.getString("StartupTab.swoEnableTargetPortMask_Text"));
+			label.setToolTipText(Messages
+					.getString("StartupTab.swoEnableTargetPortMask_ToolTipText"));
+
+			swoEnableTargetPortMask = new Text(local, SWT.BORDER);
+			gd = new GridData();
+			gd.widthHint = 60;
+			swoEnableTargetPortMask.setLayoutData(gd);
 		}
 
 		{
@@ -224,7 +369,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					| SWT.V_SCROLL);
 			gd = new GridData(GridData.FILL_BOTH);
 			gd.heightHint = 60;
-			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
 			initCommands.setLayoutData(gd);
 		}
 
@@ -239,23 +383,68 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			}
 		});
 
-		firstResetType.addVerifyListener(new VerifyListener() {
+		VerifyListener numericVerifyListener = new VerifyListener() {
 			@Override
 			public void verifyText(VerifyEvent e) {
 				e.doit = (Character.isDigit(e.character) || Character
 						.isISOControl(e.character));
 			}
-		});
+		};
 
-		firstResetType.addModifyListener(new ModifyListener() {
+		ModifyListener scheduleUpdateJobModifyListener = new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
+				scheduleUpdateJob();
+			}
+		};
+
+		firstResetType.addVerifyListener(numericVerifyListener);
+		firstResetType.addModifyListener(scheduleUpdateJobModifyListener);
+
+		firstResetSpeed.addVerifyListener(numericVerifyListener);
+		firstResetSpeed.addModifyListener(scheduleUpdateJobModifyListener);
+
+		interfaceSpeedAuto.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				interfaceSpeedFixedValue.setEnabled(false);
+				scheduleUpdateJob();
+			}
+		});
+
+		interfaceSpeedAdaptive.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				interfaceSpeedFixedValue.setEnabled(false);
+				scheduleUpdateJob();
+			}
+		});
+
+		interfaceSpeedFixed.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				interfaceSpeedFixedValue.setEnabled(true);
+				scheduleUpdateJob();
+			}
+		});
+
+		enableSemihosting.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				enableSemihostingChanged();
 				scheduleUpdateJob();
 				// updateLaunchConfigurationDialog();
 			}
 		});
 
-		enableSemihosting.addSelectionListener(new SelectionAdapter() {
+		semihostingTelnet.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				scheduleUpdateJob();
+				// updateLaunchConfigurationDialog();
+			}
+		});
+		semihostingGdbClient.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				scheduleUpdateJob();
@@ -266,19 +455,51 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		enableSwo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+				enableSwoChanged();
 				scheduleUpdateJob();
 				// updateLaunchConfigurationDialog();
 			}
 		});
 
-		initCommands.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent evt) {
-				scheduleUpdateJob();
-				// updateLaunchConfigurationDialog();
-			}
-		});
+		swoEnableTargetCpuFreq.addVerifyListener(numericVerifyListener);
+		swoEnableTargetCpuFreq
+				.addModifyListener(scheduleUpdateJobModifyListener);
 
+		swoEnableTargetSwoFreq.addVerifyListener(numericVerifyListener);
+		swoEnableTargetSwoFreq
+				.addModifyListener(scheduleUpdateJobModifyListener);
+
+		swoEnableTargetPortMask.addVerifyListener(numericVerifyListener);
+		swoEnableTargetPortMask
+				.addModifyListener(scheduleUpdateJobModifyListener);
+
+		initCommands.addModifyListener(scheduleUpdateJobModifyListener);
+
+	}
+
+	private void doFirstResetChanged() {
+
+		boolean enabled = doFirstReset.getSelection();
+
+		firstResetType.setEnabled(enabled);
+		firstResetSpeed.setEnabled(enabled);
+	}
+
+	private void enableSemihostingChanged() {
+
+		boolean enabled = enableSemihosting.getSelection();
+
+		semihostingTelnet.setEnabled(enabled);
+		semihostingGdbClient.setEnabled(enabled);
+	}
+
+	private void enableSwoChanged() {
+
+		boolean enabled = enableSwo.getSelection();
+
+		swoEnableTargetCpuFreq.setEnabled(enabled);
+		swoEnableTargetSwoFreq.setEnabled(enabled);
+		swoEnableTargetPortMask.setEnabled(enabled);
 	}
 
 	private void createLoadGroup(Composite parent) {
@@ -624,10 +845,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	}
 
-	private void doFirstResetChanged() {
-		firstResetType.setEnabled(doFirstReset.getSelection());
-	}
-
 	private void doSecondResetChanged() {
 		secondResetType.setEnabled(doSecondReset.getSelection());
 	}
@@ -669,7 +886,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		Composite comp = new Composite(group, SWT.NONE);
 		layout = new GridLayout();
-		layout.numColumns = 2;
+		layout.numColumns = 3;
 		layout.marginHeight = 0;
 		comp.setLayout(layout);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -682,6 +899,10 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			doSecondReset.setToolTipText(Messages
 					.getString("StartupTab.doSecondReset_ToolTipText"));
 
+			Label label = new Label(comp, SWT.NONE);
+			label.setText(Messages
+					.getString("StartupTab.secondResetType_Text"));
+			
 			secondResetType = new Text(comp, SWT.BORDER);
 			gd = new GridData();
 			gd.widthHint = 30;
@@ -748,15 +969,15 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	}
 
-	public void noResetChanged(boolean flag){
-		//System.out.println(flag);
+	public void doConnectToRunningChanged(boolean flag) {
+		// System.out.println(flag);
 		doFirstReset.setEnabled(!flag);
 		firstResetType.setEnabled(!flag);
 
 		doSecondReset.setEnabled(!flag);
 		secondResetType.setEnabled(!flag);
 	}
-	
+
 	@Override
 	public boolean isValid(ILaunchConfiguration launchConfig) {
 		if (!super.isValid(launchConfig))
@@ -860,13 +1081,71 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			firstResetType.setText(configuration.getAttribute(
 					ConfigurationAttributes.FIRST_RESET_TYPE,
 					ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT));
+			firstResetSpeed.setText(configuration.getAttribute(
+					ConfigurationAttributes.FIRST_RESET_SPEED,
+					ConfigurationAttributes.FIRST_RESET_SPEED_DEFAULT));
+
+			String physicalInterfaceSpeed = configuration.getAttribute(
+					ConfigurationAttributes.INTERFACE_SPEED,
+					ConfigurationAttributes.INTERFACE_SPEED_DEFAULT);
+
+			if (ConfigurationAttributes.INTERFACE_SPEED_AUTO
+					.equals(physicalInterfaceSpeed)) {
+				interfaceSpeedAuto.setSelection(true);
+				interfaceSpeedFixedValue.setEnabled(false);
+
+			} else if (ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE
+					.equals(physicalInterfaceSpeed)) {
+				interfaceSpeedAdaptive.setSelection(true);
+				interfaceSpeedFixedValue.setEnabled(false);
+			} else {
+				try {
+					Integer.parseInt(physicalInterfaceSpeed);
+					interfaceSpeedFixed.setSelection(true);
+					interfaceSpeedFixedValue.setEnabled(true);
+					interfaceSpeedFixedValue.setText(physicalInterfaceSpeed);
+				} catch (NumberFormatException e) {
+					String message = "unknown interface speed "
+							+ physicalInterfaceSpeed + ", using auto";
+					Activator.log(Status.ERROR, message);
+					interfaceSpeedAuto.setSelection(true);
+					interfaceSpeedFixedValue.setEnabled(false);
+				}
+			}
 
 			enableSemihosting.setSelection(configuration.getAttribute(
 					ConfigurationAttributes.ENABLE_SEMIHOSTING,
 					ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT));
+			semihostingTelnet
+					.setSelection(configuration
+							.getAttribute(
+									ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
+									ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_DEFAULT));
+			semihostingGdbClient
+					.setSelection(configuration
+							.getAttribute(
+									ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
+									ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_DEFAULT));
+
 			enableSwo.setSelection(configuration.getAttribute(
 					ConfigurationAttributes.ENABLE_SWO,
 					ConfigurationAttributes.ENABLE_SWO_DEFAULT));
+			swoEnableTargetCpuFreq
+					.setText(String.valueOf(configuration
+							.getAttribute(
+									ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
+									ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT)));
+			swoEnableTargetSwoFreq
+					.setText(String.valueOf(configuration
+							.getAttribute(
+									ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
+									ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT)));
+			swoEnableTargetPortMask
+					.setText(String.valueOf(configuration
+							.getAttribute(
+									ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
+									ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT)));
+
 			initCommands.setText(configuration.getAttribute(
 					ConfigurationAttributes.OTHER_INIT_COMMANDS,
 					ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT));
@@ -951,6 +1230,9 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			}
 
 			doFirstResetChanged();
+			enableSemihostingChanged();
+			enableSwoChanged();
+
 			doSecondResetChanged();
 			loadImageChanged();
 			loadSymbolsChanged();
@@ -971,11 +1253,56 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				doFirstReset.getSelection());
 		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
 				firstResetType.getText());
+		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_SPEED,
+				firstResetSpeed.getText());
+
+		if (interfaceSpeedAuto.getSelection()) {
+			configuration.setAttribute(ConfigurationAttributes.INTERFACE_SPEED,
+					ConfigurationAttributes.INTERFACE_SPEED_AUTO);
+		} else if (interfaceSpeedAdaptive.getSelection()) {
+			configuration.setAttribute(ConfigurationAttributes.INTERFACE_SPEED,
+					ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE);
+		} else if (interfaceSpeedFixed.getSelection()) {
+			configuration.setAttribute(ConfigurationAttributes.INTERFACE_SPEED,
+					interfaceSpeedFixedValue.getText().trim());
+		}
 
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING,
 				enableSemihosting.getSelection());
+		configuration.setAttribute(
+				ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
+				semihostingTelnet.getSelection());
+		configuration.setAttribute(
+				ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
+				semihostingGdbClient.getSelection());
+
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SWO,
 				enableSwo.getSelection());
+
+		int value;
+
+		try {
+			value = Integer.parseInt(swoEnableTargetCpuFreq.getText());
+		} catch (NumberFormatException e) {
+			value = ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT;
+		}
+		configuration.setAttribute(
+				ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ, value);
+		try {
+			value = Integer.parseInt(swoEnableTargetSwoFreq.getText());
+		} catch (NumberFormatException e) {
+			value = ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT;
+		}
+		configuration.setAttribute(
+				ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ, value);
+		try {
+			value = Integer.parseInt(swoEnableTargetPortMask.getText());
+		} catch (NumberFormatException e) {
+			value = ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT;
+		}
+		configuration.setAttribute(
+				ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK, value);
+
 		configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS,
 				initCommands.getText());
 
@@ -1037,11 +1364,35 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
 				ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
+		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_SPEED,
+				ConfigurationAttributes.FIRST_RESET_SPEED_DEFAULT);
+
+		configuration.setAttribute(ConfigurationAttributes.INTERFACE_SPEED,
+				ConfigurationAttributes.INTERFACE_SPEED_DEFAULT);
 
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING,
 				ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
+		configuration
+				.setAttribute(
+						ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
+						ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_DEFAULT);
+		configuration
+				.setAttribute(
+						ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
+						ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_DEFAULT);
+
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SWO,
 				ConfigurationAttributes.ENABLE_SWO_DEFAULT);
+		configuration.setAttribute(
+				ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
+				ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
+		configuration.setAttribute(
+				ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
+				ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
+		configuration.setAttribute(
+				ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
+				ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT);
+
 		configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS,
 				ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
 
