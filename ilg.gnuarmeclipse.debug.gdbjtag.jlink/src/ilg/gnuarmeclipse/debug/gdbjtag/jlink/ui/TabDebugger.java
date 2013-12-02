@@ -153,8 +153,19 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		GridLayout layout = new GridLayout();
 		comp.setLayout(layout);
 
-		createInterfaceControl(comp);
-		createDeviceControls(comp);
+		{
+			Composite dual = new Composite(comp, SWT.NONE);
+			layout = new GridLayout();
+			layout.numColumns = 2;
+			layout.marginHeight = 0;
+			layout.marginWidth = 0;
+			dual.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			dual.setLayoutData(gd);
+			
+			createInterfaceControl(dual);
+			createDeviceControls(dual);
+		}
 
 		createGdbServerGroup(comp);
 
@@ -204,7 +215,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				label.setToolTipText(Messages
 						.getString("DebuggerTab.interface_ToolTipText"));
 
-
 				interfaceSwd = new Button(radio, SWT.RADIO);
 				interfaceSwd.setText(Messages
 						.getString("DebuggerTab.interfaceSWD_Text"));
@@ -217,7 +227,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						.getString("DebuggerTab.interfaceJtag_Text"));
 			}
 		}
-		
+
 		{
 			doConnectToRunning = new Button(comp, SWT.CHECK);
 			doConnectToRunning.setText(Messages
@@ -452,19 +462,19 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		{
-				label = new Label(comp, SWT.NONE);
-				label.setText(Messages
-						.getString("DebuggerTab.gdbServerGdbPort_Label"));
-				label.setToolTipText(Messages
-						.getString("DebuggerTab.gdbServerGdbPort_ToolTipText"));
+			label = new Label(comp, SWT.NONE);
+			label.setText(Messages
+					.getString("DebuggerTab.gdbServerGdbPort_Label"));
+			label.setToolTipText(Messages
+					.getString("DebuggerTab.gdbServerGdbPort_ToolTipText"));
 
-				gdbServerGdbPort = new Text(comp, SWT.SINGLE | SWT.BORDER);
-				gd = new GridData();
-				gd.widthHint = 60;
-				gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
-				gdbServerGdbPort.setLayoutData(gd);
+			gdbServerGdbPort = new Text(comp, SWT.SINGLE | SWT.BORDER);
+			gd = new GridData();
+			gd.widthHint = 60;
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
+			gdbServerGdbPort.setLayoutData(gd);
 		}
-		
+
 		{
 			label = new Label(comp, SWT.NONE);
 			label.setText(Messages
