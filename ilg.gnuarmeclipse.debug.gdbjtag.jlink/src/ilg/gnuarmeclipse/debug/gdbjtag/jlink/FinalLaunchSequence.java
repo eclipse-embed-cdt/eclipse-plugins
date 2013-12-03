@@ -1,8 +1,6 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -55,30 +53,13 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		if (!commands.isEmpty()) {
 			fCommandControl.queueCommand(
 					new CLICommand<MIInfo>(fCommandControl.getContext(),
-							composeCommandWithLf(commands)),
+							Utils.composeCommandWithLf(commands)),
 					new DataRequestMonitor<MIInfo>(getExecutor(), rm));
 		} else {
 			rm.done();
 		}
 	}
 
-	private String composeCommandWithLf(Collection<String> commands) {
-		if (commands.isEmpty())
-			return null;
-		StringBuffer sb = new StringBuffer();
-		Iterator<String> it = commands.iterator();
-		while (it.hasNext()) {
-			String s = it.next().trim();
-			if (s.length() == 0 || s.startsWith("#"))
-				continue; // ignore empty lines and comment
-			
-			sb.append(s);
-			if (it.hasNext()) {
-				sb.append("\n");
-			}
-		}
-		return sb.toString();
-	}
 
 	// This function is used to capture the private objects
 	@Execute
@@ -143,7 +124,6 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		}
 
 		super.stepInitializeJTAGFinalLaunchSequence(rm);
-
 	}
 
 	@Execute
@@ -276,7 +256,6 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	public void stepResumeScript(final RequestMonitor rm) {
 
 		rm.done();
-
 	}
 
 	@Execute
@@ -416,34 +395,6 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					"Cannot run user defined run commands", e)); //$NON-NLS-1$
 			rm.done();
 		}
-	}
-
-	@Execute
-	public void stepRestartCommands(final RequestMonitor rm) {
-
-		List<String> commandsList = new ArrayList<String>();
-
-		commandsList.add("monitor halt");
-
-		String commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
-		String resetType = "";
-		
-		if (CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.DO_SECOND_RESET,
-				ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
-			 resetType = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.SECOND_RESET_TYPE,
-					ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
-		}
-		commandsList.add(commandStr + resetType);
-
-		commandsList.add("continue");
-		
-		CountingRequestMonitor crm = new CountingRequestMonitor(
-				getExecutor(), rm);
-		crm.setDoneCount(commandsList.size());
-		queueCommands(commandsList, rm);
-
 	}
 	
 }
