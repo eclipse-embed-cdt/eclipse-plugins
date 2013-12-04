@@ -247,8 +247,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			local.setLayout(layout);
 
 			Label label = new Label(local, SWT.NONE);
-			label.setText(Messages
-					.getString("StartupTab.interfaceSpeed_Label")); //$NON-NLS-1$
+			label.setText(Messages.getString("StartupTab.interfaceSpeed_Label")); //$NON-NLS-1$
 			label.setToolTipText(Messages
 					.getString("StartupTab.interfaceSpeed_ToolTipText"));
 
@@ -268,7 +267,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			gd = new GridData();
 			gd.widthHint = 40;
 			interfaceSpeedFixedValue.setLayoutData(gd);
-			
+
 			label = new Label(local, SWT.NONE);
 			label.setText(Messages
 					.getString("StartupTab.interfaceSpeedFixedUnit_Text"));
@@ -330,7 +329,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			swoEnableTargetCpuFreq = new Text(local, SWT.BORDER);
 			gd = new GridData();
-			gd.widthHint = 60;
+			gd.widthHint = 70;
 			swoEnableTargetCpuFreq.setLayoutData(gd);
 
 			label = new Label(local, SWT.NONE);
@@ -388,6 +387,15 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			public void verifyText(VerifyEvent e) {
 				e.doit = (Character.isDigit(e.character) || Character
 						.isISOControl(e.character));
+			}
+		};
+
+		VerifyListener hexVerifyListener = new VerifyListener() {
+			@Override
+			public void verifyText(VerifyEvent e) {
+				e.doit = (Character.isDigit(e.character)
+						|| Character.isISOControl(e.character) || "abcdefx"
+						.contains(String.valueOf(e.character).toLowerCase()));
 			}
 		};
 
@@ -469,12 +477,11 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		swoEnableTargetSwoFreq
 				.addModifyListener(scheduleUpdateJobModifyListener);
 
-		swoEnableTargetPortMask.addVerifyListener(numericVerifyListener);
+		swoEnableTargetPortMask.addVerifyListener(hexVerifyListener);
 		swoEnableTargetPortMask
 				.addModifyListener(scheduleUpdateJobModifyListener);
 
 		initCommands.addModifyListener(scheduleUpdateJobModifyListener);
-
 	}
 
 	private void doFirstResetChanged() {
@@ -900,9 +907,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					.getString("StartupTab.doSecondReset_ToolTipText"));
 
 			Label label = new Label(comp, SWT.NONE);
-			label.setText(Messages
-					.getString("StartupTab.secondResetType_Text"));
-			
+			label.setText(Messages.getString("StartupTab.secondResetType_Text"));
+
 			secondResetType = new Text(comp, SWT.BORDER);
 			gd = new GridData();
 			gd.widthHint = 30;
@@ -966,10 +972,10 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		runCommands.addModifyListener(scheduleUpdateJobModifyListener);
 
 		doContinue.addSelectionListener(scheduleUpdateJobSelectionAdapter);
-
 	}
 
 	public void doConnectToRunningChanged(boolean flag) {
+		
 		// System.out.println(flag);
 		doFirstReset.setEnabled(!flag);
 		firstResetType.setEnabled(!flag);

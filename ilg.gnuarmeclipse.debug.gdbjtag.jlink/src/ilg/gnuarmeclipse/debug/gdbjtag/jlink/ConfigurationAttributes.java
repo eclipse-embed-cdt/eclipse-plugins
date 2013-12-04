@@ -1,7 +1,5 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
-import org.eclipse.cdt.debug.gdbjtag.core.Activator;
-
 public interface ConfigurationAttributes {
 
 	public static final String PREFIX = Activator.PLUGIN_ID;
@@ -22,11 +20,11 @@ public interface ConfigurationAttributes {
 	public static final boolean DO_CONNECT_TO_RUNNING_DEFAULT = false;
 
 	public static final String INTERFACE_SPEED = PREFIX + ".interfaceSpeed"; //$NON-NLS-1$
-	public static final String GDBSERVER_SPEED = PREFIX + ".gdbServerSpeed"; //$NON-NLS-1$
+	public static final String GDB_SERVER_SPEED = PREFIX + ".gdbServerSpeed"; //$NON-NLS-1$
 	public static final String INTERFACE_SPEED_AUTO = "auto";
 	public static final String INTERFACE_SPEED_ADAPTIVE = "adaptive";
 	public static final String INTERFACE_SPEED_DEFAULT = INTERFACE_SPEED_AUTO;
-	public static final String GDBSERVER_SPEED_DEFAULT = INTERFACE_SPEED_AUTO;
+	public static final String GDB_SERVER_SPEED_DEFAULT = INTERFACE_SPEED_AUTO;
 	public static final String INTERFACE_SPEED_AUTO_COMMAND = "monitor speed auto";
 	public static final String INTERFACE_SPEED_ADAPTIVE_COMMAND = "monitor speed adaptive";
 	public static final String INTERFACE_SPEED_FIXED_COMMAND = "monitor speed ";
@@ -42,11 +40,68 @@ public interface ConfigurationAttributes {
 	public static final String ENDIANNESS_LITTLE_COMMAND = "monitor endian little";
 	public static final String ENDIANNESS_BIG_COMMAND = "monitor endian big";
 
+	public static final String DO_START_GDB_SERVER = PREFIX
+			+ ".doStartGdbServer"; //$NON-NLS-1$
+	public static final boolean DO_START_GDB_SERVER_DEFAULT = true;
+
+	public static final String GDB_SERVER_EXECUTABLE = PREFIX
+			+ ".gdbServerExecutable"; //$NON-NLS-1$
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_MAC = "/Application/SEGGER/JLink/JLinkGDBServer";
+
+	public static final String GDB_SERVER_GDB_PORT_NUMBER = PREFIX
+			+ ".gdbServerGdbPortNumber"; //$NON-NLS-1$
+	public static final int GDB_SERVER_GDB_PORT_NUMBER_DEFAULT = 2331;
+
+	public static final String GDB_SERVER_SWO_PORT_NUMBER = PREFIX
+			+ ".gdbServerSwoPortNumber"; //$NON-NLS-1$
+	public static final int GDB_SERVER_SWO_PORT_NUMBER_DEFAULT = 2332;
+
+	public static final String GDB_SERVER_TELNET_PORT_NUMBER = PREFIX
+			+ ".gdbServerTelnetPortNumber"; //$NON-NLS-1$
+	public static final int GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT = 2333;
+
+	public static final String DO_GDB_SERVER_VERIFY_DOWNLOAD = PREFIX
+			+ ".doGdbServerVerifyDownload"; //$NON-NLS-1$
+	public static final boolean DO_GDB_SERVER_VERIFY_DOWNLOAD_DEFAULT = true;
+
+	public static final String DO_GDB_SERVER_INIT_REGS = PREFIX
+			+ ".doGdbServerInitRegs"; //$NON-NLS-1$
+	public static final boolean DO_GDB_SERVER_INIT_REGS_DEFAULT = true;
+
+	public static final String DO_GDB_SERVER_LOCAL_ONLY = PREFIX
+			+ ".doGdbServerLocalOnly"; //$NON-NLS-1$
+	public static final boolean DO_GDB_SERVER_LOCAL_ONLY_DEFAULT = false;
+
+	public static final String DO_GDB_SERVER_SILENT = PREFIX
+			+ ".doGdbServerSilent"; //$NON-NLS-1$
+	public static final boolean DO_GDB_SERVER_SILENT_DEFAULT = false;
+
+	public static final String GDB_SERVER_LOG = PREFIX
+			+ ".gdbServerLog"; //$NON-NLS-1$
+	public static final String GDB_SERVER_LOG_DEFAULT = ""; //$NON-NLS-1$
+
+	public static final String GDB_SERVER_OTHER = PREFIX
+			+ ".gdbServerOther"; //$NON-NLS-1$
+	public static final String GDB_SERVER_OTHER_DEFAULT = ""; //$NON-NLS-1$
+	
+	public static final String DO_GDB_SERVER_ALLOCATE_CONSOLE = PREFIX
+			+ ".doGdbServerAllocateConsole"; //$NON-NLS-1$
+	public static final boolean DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT = true;
+
+	public static final String DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE = PREFIX
+			+ ".doGdbServerAllocateSemihostingConsole"; //$NON-NLS-1$
+	public static final boolean DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT = false;
+
 	public static final String GDB_CLIENT_OTHER_COMMANDS = PREFIX
 			+ ".gdbClientOtherCommands"; //$NON-NLS-1$
-	public static final String GDB_CLIENT_OTHER_COMMANDS_DEFAULT = "set mem inaccessible-by-default off\n"
-			+ "set remote memory-write-packet-size 4096\n"
-			+ "set remote memory-write-packet-size fixed";
+	public static final String GDB_CLIENT_OTHER_COMMANDS_DEFAULT = "set mem inaccessible-by-default off\n";
+
+	public static final boolean USE_REMOTE_TARGET_DEFAULT = true;
+	public static final String REMOTE_IP_ADDRESS_LOCALHOST = "localhost"; //$NON-NLS-1$
+	public static final String REMOTE_IP_ADDRESS_DEFAULT = REMOTE_IP_ADDRESS_LOCALHOST; //$NON-NLS-1$
+	public static final int REMOTE_PORT_NUMBER_DEFAULT = GDB_SERVER_GDB_PORT_NUMBER_DEFAULT;
+
+	public static final boolean UPDATE_THREAD_LIST_DEFAULT = false;
 
 	// TabStartup
 	public static final String DO_FIRST_RESET = PREFIX + ".doFirstReset"; //$NON-NLS-1$

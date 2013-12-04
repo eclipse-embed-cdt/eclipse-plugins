@@ -19,6 +19,8 @@ public class SharedStorage {
 			+ ".flashDeviceName";
 	public static final String GDB_CLIENT_EXECUTABLE = Activator.PLUGIN_ID
 			+ ".gdbClientExecutable";
+	public static final String GDB_SERVER_EXECUTABLE = Activator.PLUGIN_ID
+			+ ".gdbServerExecutable";
 
 	// ----- getter & setter --------------------------------------------------
 	private static String getValueForId(String id, String defaultValue) {
@@ -61,6 +63,17 @@ public class SharedStorage {
 	public static void putGdbClientExecutable(String value){
 
 		putValueForId(GDB_CLIENT_EXECUTABLE, value);
+	}
+
+	// ----- gdb server executable --------------------------------------------
+	public static String getGdbServerExecutable(String defaultValue) {
+
+		return getValueForId(GDB_SERVER_EXECUTABLE, defaultValue);
+	}
+	
+	public static void putGdbServerExecutable(String value){
+
+		putValueForId(GDB_SERVER_EXECUTABLE, value);
 	}
 
 	// ----- update -----------------------------------------------------------
