@@ -24,6 +24,7 @@ import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.PreferenceConstants;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.SharedStorage;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Utils;
 
 import java.io.File;
 
@@ -103,11 +104,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Text gdbServerGdbPort;
 	private Text gdbServerSwoPort;
 	private Text gdbServerTelnetPort;
-	// private Label gdbServerCommandLabel;
+
 	private Text gdbServerExecutable;
 	private boolean didGdbServerExecutableChanged;
-	private Button gdbServerBrowse;
-	private Button gdbServerVariables;
+	private Button gdbServerBrowseButton;
+	private Button gdbServerVariablesButton;
 
 	private Button doGdbServerVerifyDownload;
 	private Button doGdbServerInitRegs;
@@ -186,6 +187,26 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				updateLaunchConfigurationDialog();
 			}
 		});
+	}
+
+	private void browseButtonSelected(String title, Text text) {
+		FileDialog dialog = new FileDialog(getShell(), SWT.NONE);
+		dialog.setText(title);
+		String str = text.getText().trim();
+		int lastSeparatorIndex = str.lastIndexOf(File.separator);
+		if (lastSeparatorIndex != -1)
+			dialog.setFilterPath(str.substring(0, lastSeparatorIndex));
+		str = dialog.open();
+		if (str != null)
+			text.setText(str);
+	}
+
+	private void variablesButtonSelected(Text text) {
+		StringVariableSelectionDialog dialog = new StringVariableSelectionDialog(
+				getShell());
+		if (dialog.open() == StringVariableSelectionDialog.OK) {
+			text.insert(dialog.getVariableExpression());
+		}
 	}
 
 	private void createInterfaceControl(Composite parent) {
@@ -392,9 +413,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		{
 			label = new Label(comp, SWT.NONE);
 			label.setText(Messages
-					.getString("DebuggerTab.gdbServerCommand_Label"));
+					.getString("DebuggerTab.gdbServerExecutable_Label"));
 			label.setToolTipText(Messages
-					.getString("DebuggerTab.gdbServerCommand_ToolTipText"));
+					.getString("DebuggerTab.gdbServerExecutable_ToolTipText"));
 
 			Composite local = new Composite(comp, SWT.NONE);
 			layout = new GridLayout();
@@ -411,13 +432,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				gdbServerExecutable.setLayoutData(gd);
 				didGdbServerExecutableChanged = false;
 
-				gdbServerBrowse = new Button(local, SWT.NONE);
-				gdbServerBrowse.setText(Messages
-						.getString("DebuggerTab.gdbServerCommandBrowse"));
+				gdbServerBrowseButton = new Button(local, SWT.NONE);
+				gdbServerBrowseButton.setText(Messages
+						.getString("DebuggerTab.gdbServerExecutableBrowse"));
 
-				gdbServerVariables = new Button(local, SWT.NONE);
-				gdbServerVariables.setText(Messages
-						.getString("DebuggerTab.gdbServerCommandVariable"));
+				gdbServerVariablesButton = new Button(local, SWT.NONE);
+				gdbServerVariablesButton.setText(Messages
+						.getString("DebuggerTab.gdbServerExecutableVariable"));
 			}
 		}
 
@@ -572,7 +593,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 				gdbServerLogBrowse = new Button(local, SWT.NONE);
 				gdbServerLogBrowse.setText(Messages
-						.getString("DebuggerTab.gdbServerLog_Button"));
+						.getString("DebuggerTab.gdbServerLogBrowse_Button"));
 			}
 		}
 
@@ -658,6 +679,22 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 		});
 
+		gdbServerBrowseButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				browseButtonSelected(
+						Messages.getString("DebuggerTab.gdbServerExecutableBrowse_Title"),
+						gdbServerExecutable);
+			}
+		});
+
+		gdbServerVariablesButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				variablesButtonSelected(gdbServerExecutable);
+			}
+		});
+
 		gdbServerSpeedAuto.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -705,32 +742,21 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				.addSelectionListener(scheduleUpdateJobSelectionAdapter);
 
 		gdbServerLog.addModifyListener(scheduleUpdateJobModifyListener);
+		gdbServerLogBrowse.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				browseButtonSelected(Messages
+						.getString("DebuggerTab.gdbServerLogBrowse_Title"),
+						gdbServerLog);
+			}
+		});
+
 		gdbServerOther.addModifyListener(scheduleUpdateJobModifyListener);
 
 		doGdbServerAllocateConsole
 				.addSelectionListener(scheduleUpdateJobSelectionAdapter);
 		doGdbServerAllocateSemihostingConsole
 				.addSelectionListener(scheduleUpdateJobSelectionAdapter);
-	}
-
-	private void browseButtonSelected(String title, Text text) {
-		FileDialog dialog = new FileDialog(getShell(), SWT.NONE);
-		dialog.setText(title);
-		String str = text.getText().trim();
-		int lastSeparatorIndex = str.lastIndexOf(File.separator);
-		if (lastSeparatorIndex != -1)
-			dialog.setFilterPath(str.substring(0, lastSeparatorIndex));
-		str = dialog.open();
-		if (str != null)
-			text.setText(str);
-	}
-
-	private void variablesButtonSelected(Text text) {
-		StringVariableSelectionDialog dialog = new StringVariableSelectionDialog(
-				getShell());
-		if (dialog.open() == StringVariableSelectionDialog.OK) {
-			text.insert(dialog.getVariableExpression());
-		}
 	}
 
 	private void createGdbClientControls(Composite parent) {
@@ -918,8 +944,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		// gdbServerSpeedFixedValue.setEnabled(enabled);
 
 		gdbServerExecutable.setEnabled(enabled);
-		gdbServerBrowse.setEnabled(enabled);
-		gdbServerVariables.setEnabled(enabled);
+		gdbServerBrowseButton.setEnabled(enabled);
+		gdbServerVariablesButton.setEnabled(enabled);
 		gdbServerOther.setEnabled(enabled);
 
 		gdbServerLog.setEnabled(enabled);
@@ -1340,6 +1366,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		if (doSharedUpdate) {
 			SharedStorage.update();
 		}
+		
+		System.out.println(getGdbServerCommandLine(configuration));
 	}
 
 	@Override
@@ -1479,8 +1507,115 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	}
 
-	private String getGdbServerExecutableDefault() {
+	private static String getGdbServerExecutableDefault() {
 		return ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_MAC;
+	}
+
+	public static String getGdbServerCommandLine(
+			ILaunchConfiguration configuration) {
+		StringBuffer sb = new StringBuffer();
+
+		try {
+			if (!configuration.getAttribute(
+					ConfigurationAttributes.DO_START_GDB_SERVER,
+					ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT))
+				return null;
+
+			String executable = configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
+					getGdbServerExecutableDefault());
+			executable = Utils.escapeWhitespaces(executable).trim();
+			if (executable.length() == 0)
+				return null;
+			
+			sb.append(executable);
+
+			sb.append(" -if ");
+			sb.append(configuration.getAttribute(
+					ConfigurationAttributes.INTERFACE,
+					ConfigurationAttributes.INTERFACE_DEFAULT));
+
+			String name = configuration.getAttribute(
+					ConfigurationAttributes.FLASH_DEVICE_NAME,
+					ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT).trim();
+			if (name.length() > 0) {
+				sb.append(" -device ");
+				sb.append(name);
+			}
+
+			sb.append(" -endian ");
+			sb.append(configuration.getAttribute(
+					ConfigurationAttributes.ENDIANNESS,
+					ConfigurationAttributes.ENDIANNESS_DEFAULT));
+
+			sb.append(" -speed ");
+			sb.append(configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_SPEED,
+					ConfigurationAttributes.GDB_SERVER_SPEED_DEFAULT));
+
+			sb.append(" -port ");
+			sb.append(Integer.toString(configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
+					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
+
+			sb.append(" -swoport ");
+			sb.append(Integer.toString(configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_SWO_PORT_NUMBER,
+					ConfigurationAttributes.GDB_SERVER_SWO_PORT_NUMBER_DEFAULT)));
+
+			sb.append(" -telnetport ");
+			sb.append(Integer.toString(configuration
+					.getAttribute(
+							ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
+							ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
+
+			if (configuration
+					.getAttribute(
+							ConfigurationAttributes.DO_GDB_SERVER_VERIFY_DOWNLOAD,
+							ConfigurationAttributes.DO_GDB_SERVER_VERIFY_DOWNLOAD_DEFAULT)) {
+				sb.append(" -vd ");
+			}
+
+			if (configuration.getAttribute(
+					ConfigurationAttributes.DO_GDB_SERVER_INIT_REGS,
+					ConfigurationAttributes.DO_GDB_SERVER_INIT_REGS_DEFAULT)) {
+				sb.append(" -ir ");
+			}
+
+			if (configuration.getAttribute(
+					ConfigurationAttributes.DO_GDB_SERVER_LOCAL_ONLY,
+					ConfigurationAttributes.DO_GDB_SERVER_LOCAL_ONLY_DEFAULT)) {
+				sb.append(" -localhostonly ");
+			}
+
+			if (configuration.getAttribute(
+					ConfigurationAttributes.DO_GDB_SERVER_SILENT,
+					ConfigurationAttributes.DO_GDB_SERVER_SILENT_DEFAULT)) {
+				sb.append(" -silent ");
+			}
+
+			String logFile = configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_LOG,
+					ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT).trim();
+
+			if (logFile.length() > 0) {
+				sb.append(" -log ");
+				sb.append(logFile);
+			}
+
+			String other = configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_OTHER,
+					ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT).trim();
+			if (other.length() > 0) {
+				sb.append(other);
+			}
+		} catch (CoreException e) {
+			Activator.log(e);
+			return null;
+		}
+
+		return sb.toString();
+
 	}
 
 }
