@@ -23,4 +23,21 @@ public class Utils {
 		return sb.toString();
 	}
 
+	static public String escapeWhitespaces(String path) {
+		// Escape the spaces in the path/filename if it has any
+		String[] segments = path.split("\\s"); //$NON-NLS-1$
+		if (segments.length > 1) {
+			StringBuffer escapedPath = new StringBuffer();
+			for (int index = 0; index < segments.length; ++index) {
+				escapedPath.append(segments[index]);
+				if (index + 1 < segments.length) {
+					escapedPath.append("\\ "); //$NON-NLS-1$
+				}
+			}
+			return escapedPath.toString().trim();
+		} else {
+			return path;
+		}
+	}
+
 }
