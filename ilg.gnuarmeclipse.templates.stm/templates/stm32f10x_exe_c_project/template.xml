@@ -26,6 +26,10 @@
 			description="%STM32F10x.ramSize.description" type="input" pattern="[0-9]*"
 			default="%STM32F10x.ramSize.default" hidden="false" persist="true" />
 
+		<property id="STM32F1hseValue" label="%STM32F10x.hseValue.label"
+			description="%STM32F10x.hseValue.description" type="input" pattern="[0-9]*"
+			default="%STM32F10x.hseValue.default" hidden="false" persist="true" />
+
 		<property id="STM32F1syscalls" label="%STM32F10x.syscalls.label"
 			description="%STM32F10x.syscalls.description" type="select" default="retarget"
 			hidden="false" persist="true">
@@ -967,6 +971,14 @@
 					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
 				<simple-array name="values">
 					<element value="USE_STDPERIPH_DRIVER" />
+				</simple-array>
+				<simple name="path" value="" />
+			</element>
+			<element>
+				<simple name="id"
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
+				<simple-array name="values">
+					<element value="HSE_VALUE=$(STM32F1hseValue)" />
 				</simple-array>
 				<simple name="path" value="" />
 			</element>

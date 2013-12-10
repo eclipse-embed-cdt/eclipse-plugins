@@ -1,29 +1,31 @@
 #include "stm32f4xx.h"
-#include <stdio.h>
+//#include <stdio.h>
 
 /*
- * STM32F4 led blink sample.
+ * Standalone STM32F4 led blink sample.
  *
- * In debug configurations, demonstrate how to print a greeting message
- * on the standard output. In release configurations the message is
- * simply discarded. By default the trace messages are forwarded to the SWO,
- * but can be rerouted to semihosting or completely suppressed by changing
- * the definitions in misc/include/trace_impl.h.
+ * This program demonstrates how to blink a led with 1Hz, using a
+ * continuous loop and SysTick delays.
  *
- * Then enter a continuous loop and blink a led with 1Hz.
+ * The external clock frequency is specified as a preprocessor definition
+ * passed to the compiler via a command line option (see the 'C/C++ General' ->
+ * 'Paths and Symbols' -> the 'Symbols' tab, if you want to change it).
+ * The value selected during project creation was HSE_VALUE=$(STM32F4hseValue).
  *
- * The external clock frequency is specified as HSE_VALUE=8000000,
- * adjust it for your own board. Also adjust the PLL constants to
- * reach the maximum frequency, or special clock configurations.
+ * Note: The default clock settings assume that the HSE_VALUE is a multiple
+ * of 1MHz, and try to reach the maximum speed available for the
+ * board. It does NOT guarantee that the required USB clock of 48MHz is
+ * available. If you need this, please update the settings of PLL_M, PLL_N,
+ * PLL_P, PLL_Q in libs/CMSIS/src/system_stm32f4xx.c to match your needs.
  *
- * The build does not use startup files, and on Release it does not even use
- * any standard library function (on Debug the printf() brigs lots of
- * functions; removing it should also use no other standard lib functions).
+ * The build does not use startup files, and, in the simple template version,
+ * does not even use any standard library function.
  *
- * If the application requires to use a special initialisation code present
+ * If the application requires special initialisation code present
  * in some other libraries (for example librdimon.a, for semihosting),
  * define USE_STARTUP_FILES and uncheck the corresponding option in the
  * linker configuration.
+ *
  */
 
 // ----------------------------------------------------------------------------
@@ -103,6 +105,5 @@ main(void)
       Delay(BLINK_TICKS);
 
       ++seconds;
-
     }
 }

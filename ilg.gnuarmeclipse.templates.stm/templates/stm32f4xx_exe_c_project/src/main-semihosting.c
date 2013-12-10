@@ -2,27 +2,37 @@
 #include <stdio.h>
 
 /*
- * STM32F4 led blink sample.
+ * Semihosting STM32F4 led blink sample.
  *
  * In debug configurations, demonstrate how to print a greeting message
  * on the standard output. In release configurations the message is
  * simply discarded. By default the trace messages are forwarded to
  * the semihosting output.
  *
- * Then enter a continuous loop and blink a led with 1Hz.
+ * Then demonstrates how to blink a led with 1Hz, using a
+ * continuous loop and SysTick delays.
  *
- * The external clock frequency is specified as HSE_VALUE=8000000,
- * adjust it for your own board. Also adjust the PLL constants to
- * reach the maximum frequency, or special clock configurations.
+ * On DEBUG, the uptime in seconds is also displayed on the standard output.
  *
- * The build does not use startup files, and on Release it does not even use
- * any standard library function (on Debug the printf() brigs lots of
+ * The external clock frequency is specified as a preprocessor definition
+ * passed to the compiler via a command line option (see the 'C/C++ General' ->
+ * 'Paths and Symbols' -> the 'Symbols' tab, if you want to change it).
+ * The value selected during project creation was HSE_VALUE=$(STM32F4hseValue).
+ *
+ * Note: The default clock settings assume that the HSE_VALUE is a multiple
+ * of 1MHz, and try to reach the maximum speed available for the
+ * board. It does NOT guarantee that the required USB clock of 48MHz is
+ * available. If you need this, please update the settings of PLL_M, PLL_N,
+ * PLL_P, PLL_Q in libs/CMSIS/src/system_stm32f4xx.c to match your needs.
+ *
+ * The build uses the startup files; on Release it does not use
+ * any standard library function (on Debug the printf() brings lots of
  * functions; removing it should also use no other standard lib functions).
  *
- * If the application requires to use a special initialisation code present
- * in some other libraries (for example librdimon.a, for semihosting),
- * define USE_STARTUP_FILES and uncheck the corresponding option in the
- * linker configuration.
+ * To use the special initialisation code present in librdimon.a, for
+ * semihosting, the definition USE_STARTUP_FILES is added for the
+ * startup code.
+ *
  */
 
 // ----------------------------------------------------------------------------

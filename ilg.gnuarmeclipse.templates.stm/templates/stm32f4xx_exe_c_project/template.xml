@@ -277,7 +277,7 @@
 		<complex-array name="files">
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Device/ST/STM32F4xx/Source/Templates/system_stm32f4xx.c" />
+					value="src/system_stm32f4xx.c" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/$(sourceDir)/system_stm32f4xx.c" />
 				<simple name="replaceable" value="true" />
