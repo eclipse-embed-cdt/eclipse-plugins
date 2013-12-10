@@ -42,7 +42,7 @@ public interface ConfigurationAttributes {
 
 	public static final String DO_START_GDB_SERVER = PREFIX
 			+ ".doStartGdbServer"; //$NON-NLS-1$
-	public static final boolean DO_START_GDB_SERVER_DEFAULT = true;
+	public static final boolean DO_START_GDB_SERVER_DEFAULT = false; // true; <-----
 
 	public static final String GDB_SERVER_EXECUTABLE = PREFIX
 			+ ".gdbServerExecutable"; //$NON-NLS-1$

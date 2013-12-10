@@ -1173,7 +1173,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		} catch (CoreException e) {
 			Activator.getDefault().getLog().log(e.getStatus());
 		}
-
 	}
 
 	/*
@@ -1366,7 +1365,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		if (doSharedUpdate) {
 			SharedStorage.update();
 		}
-		
+
 		System.out.println(getGdbServerCommandLine(configuration));
 	}
 
@@ -1504,7 +1503,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				.setAttribute(
 						IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
 						ConfigurationAttributes.UPDATE_THREAD_LIST_DEFAULT);
-
 	}
 
 	private static String getGdbServerExecutableDefault() {
@@ -1527,7 +1525,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			executable = Utils.escapeWhitespaces(executable).trim();
 			if (executable.length() == 0)
 				return null;
-			
+
 			sb.append(executable);
 
 			sb.append(" -if ");
