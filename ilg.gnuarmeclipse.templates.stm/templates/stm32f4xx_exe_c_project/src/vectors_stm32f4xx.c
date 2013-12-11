@@ -359,7 +359,7 @@ pfn g_pfnVectors[] =
 
       UART4_IRQHandler,                         // UART4
       UART5_IRQHandler,                         // UART5
-      TIM6_DAC_IRQHandler,                    // TIM6 and DAC1&2 underrun errors
+      TIM6_DAC_IRQHandler,                      // TIM6 and DAC1&2 underrun errors
       TIM7_IRQHandler,                          // TIM7
 #endif
       DMA2_Stream0_IRQHandler,                  // DMA2 Stream 0
@@ -376,7 +376,7 @@ pfn g_pfnVectors[] =
       0,
 #else
       ETH_IRQHandler,                           // Ethernet
-      ETH_WKUP_IRQHandler,                  // Ethernet Wakeup through EXTI line
+      ETH_WKUP_IRQHandler,                      // Ethernet Wakeup through EXTI line
       CAN2_TX_IRQHandler,                       // CAN2 TX
       CAN2_RX0_IRQHandler,                      // CAN2 RX0
       CAN2_RX1_IRQHandler,                      // CAN2 RX1
@@ -400,23 +400,23 @@ pfn g_pfnVectors[] =
 #else
       OTG_HS_EP1_OUT_IRQHandler,                // USB OTG HS End Point 1 Out
       OTG_HS_EP1_IN_IRQHandler,                 // USB OTG HS End Point 1 In
-      OTG_HS_WKUP_IRQHandler,                  // USB OTG HS Wakeup through EXTI
+      OTG_HS_WKUP_IRQHandler,                   // USB OTG HS Wakeup through EXTI
       OTG_HS_IRQHandler,                        // USB OTG HS
       DCMI_IRQHandler,                          // DCMI
       CRYP_IRQHandler,                          // CRYP crypto
       HASH_RNG_IRQHandler,                      // Hash and Rng
 #endif
-      FPU_IRQHandler                      // FPU
+      FPU_IRQHandler,                           // FPU
 #if defined(STM32F427_437xx) || defined(STM32F429_439xx)
-    UART7_IRQHandler                  // UART7
-    UART8_IRQHandler// UART8
-    SPI4_IRQHandler// SPI4
-    SPI5_IRQHandler// SPI5
-    SPI6_IRQHandler// SPI6
-    SAI1_IRQHandler// SAI1
-    LTDC_IRQHandler// LTDC
-    LTDC_ER_IRQHandler// LTDC error
-    DMA2D_IRQHandler// DMA2D
+    UART7_IRQHandler,                           // UART7
+    UART8_IRQHandler,                           // UART8
+    SPI4_IRQHandler,                            // SPI4
+    SPI5_IRQHandler,                            // SPI5
+    SPI6_IRQHandler,                            // SPI6
+    SAI1_IRQHandler,                            // SAI1
+    LTDC_IRQHandler,                            // LTDC
+    LTDC_ER_IRQHandler,                         // LTDC error
+    DMA2D_IRQHandler,                           // DMA2D
 #endif
 };
 

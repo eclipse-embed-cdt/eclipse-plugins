@@ -716,7 +716,7 @@
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fsmc.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fsmc.patched.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_fsmc.c" />
 				<simple name="replaceable" value="true" />
