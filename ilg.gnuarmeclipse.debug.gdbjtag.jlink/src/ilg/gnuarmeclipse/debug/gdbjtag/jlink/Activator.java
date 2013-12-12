@@ -31,7 +31,7 @@ public class Activator extends AbstractUIPlugin {
 	 * The constructor
 	 */
 	public Activator() {
-		System.out.println("ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator()");
+		// System.out.println("ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator()");
 	}
 
 	/*

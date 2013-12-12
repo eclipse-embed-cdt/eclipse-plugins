@@ -42,7 +42,7 @@ public class Activator extends Plugin {
 	 * The constructor
 	 */
 	public Activator() {
-		System.out.println("ilg.gnuarmeclipse.managedbuild.cross.Activator()");
+		// System.out.println("ilg.gnuarmeclipse.managedbuild.cross.Activator()");
 	}
 
 	/*
