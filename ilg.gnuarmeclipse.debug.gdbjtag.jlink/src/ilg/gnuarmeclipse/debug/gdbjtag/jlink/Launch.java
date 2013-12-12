@@ -20,6 +20,7 @@ public class Launch extends GdbLaunch {
 	}
 
 	public void initialize() {
+		
 		try {
 			if (fConfig.getAttribute(
 					ConfigurationAttributes.DO_START_GDB_SERVER,

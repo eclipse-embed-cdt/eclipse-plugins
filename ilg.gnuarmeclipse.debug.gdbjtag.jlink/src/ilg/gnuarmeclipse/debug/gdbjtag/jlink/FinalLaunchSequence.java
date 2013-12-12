@@ -122,7 +122,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					"Cannot obtain process service", null)); //$NON-NLS-1$
 			return;
 		}
-
+		
 		super.stepInitializeJTAGFinalLaunchSequence(rm);
 	}
 

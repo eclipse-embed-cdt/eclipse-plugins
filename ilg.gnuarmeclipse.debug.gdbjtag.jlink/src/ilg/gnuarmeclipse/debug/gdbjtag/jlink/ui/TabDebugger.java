@@ -1130,9 +1130,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			// J-Link client
 			{
-				String gdbCommandAttr = configuration.getAttribute(
-						IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
-						SharedStorage.getGdbClientExecutable(null));
+				String gdbCommandAttr = configuration
+						.getAttribute(
+								IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
+								SharedStorage
+										.getGdbClientExecutable(ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT));
 				gdbClientExecutable.setText(gdbCommandAttr);
 				didGdbClientExecutableChanged = false;
 
@@ -1365,8 +1367,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		if (doSharedUpdate) {
 			SharedStorage.update();
 		}
-
-		System.out.println(getGdbServerCommandLine(configuration));
 	}
 
 	@Override
@@ -1485,9 +1485,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		// J-Link GDB client setup
 		{
-			configuration.setAttribute(
-					IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
-					SharedStorage.getGdbClientExecutable(null));
+			configuration
+					.setAttribute(
+							IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
+							SharedStorage
+									.getGdbClientExecutable(ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT));
 
 			configuration.setAttribute(
 					IGDBJtagConstants.ATTR_USE_REMOTE_TARGET,

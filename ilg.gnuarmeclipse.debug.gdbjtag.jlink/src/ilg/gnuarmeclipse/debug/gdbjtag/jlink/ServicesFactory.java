@@ -37,8 +37,9 @@ public class ServicesFactory extends GdbDebugServicesFactory {
 
 	protected IMIBackend createBackendGDBService(DsfSession session,
 			ILaunchConfiguration lc) {
-		return new GDBBackend(session, lc);
-		// return new Backend(session, lc);
+		
+		// return new GDBBackend(session, lc);
+		return new Backend(session, lc);
 	}
 
 	@Override
