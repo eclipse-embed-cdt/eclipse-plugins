@@ -927,14 +927,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	}
 
-	private void useRemoteChanged() {
-		boolean enabled = true; // useRemote.getSelection();
-		// jtagDevice.setEnabled(enabled);
-		targetIpAddress.setEnabled(enabled);
-		targetPortNumber.setEnabled(enabled);
-		// connection.setEnabled(enabled);
-	}
-
 	private void doStartGdbServerChanged() {
 
 		boolean enabled = doStartGdbServer.getSelection();
@@ -963,6 +955,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		doGdbServerAllocateConsole.setEnabled(enabled);
 		doGdbServerAllocateSemihostingConsole.setEnabled(enabled);
+		
+		// Disable remote target params when the server is started
+		targetIpAddress.setEnabled(!enabled);
+		targetPortNumber.setEnabled(!enabled);
 	}
 
 	@Override
@@ -1126,7 +1122,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 										ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
 										ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT));
 
-				doStartGdbServerChanged();
 			}
 
 			// J-Link client
@@ -1163,8 +1158,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				String portString = Integer.toString(storedPort); //$NON-NLS-1$
 				targetPortNumber.setText(portString);
 
-				useRemoteChanged();
+				//useRemoteChanged();
 			}
+			
+			doStartGdbServerChanged();
 
 			// Force thread update
 			boolean updateThreadsOnSuspend = configuration
