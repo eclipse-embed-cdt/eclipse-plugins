@@ -40,6 +40,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IPreferencesService;
+import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
@@ -1508,7 +1509,73 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	}
 
 	private static String getGdbServerExecutableDefault() {
-		return ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_MAC;
+
+		if (Utils.isWindows()) {
+			return ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_WINDOWS;
+		} else if (Utils.isLinux()) {
+			return ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_LINUX;
+		} else if (Utils.isMacOSX()) {
+			return ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_MAC;
+		} else {
+			return ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT;
+		}
+	}
+
+	public static String getGdbClientCommand(ILaunchConfiguration configuration) {
+
+		String executable = null;
+
+		try {
+			executable = configuration.getAttribute(
+					IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
+					ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT);
+			executable = Utils.escapeWhitespaces(executable).trim();
+			if (executable.length() == 0)
+				return null;
+		} catch (CoreException e) {
+			Activator.log(e);
+			return null;
+		}
+
+		String str = null;
+		try {
+			str = VariablesPlugin.getDefault().getStringVariableManager()
+					.performStringSubstitution(executable, false);
+		} catch (CoreException e) {
+		}
+
+		return str;
+	}
+
+	public static String getGdbServerCommand(ILaunchConfiguration configuration) {
+
+		String executable = null;
+
+		try {
+			if (!configuration.getAttribute(
+					ConfigurationAttributes.DO_START_GDB_SERVER,
+					ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT))
+				return null;
+
+			executable = configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
+					getGdbServerExecutableDefault());
+			executable = Utils.escapeWhitespaces(executable).trim();
+			if (executable.length() == 0)
+				return null;
+		} catch (CoreException e) {
+			Activator.log(e);
+			return null;
+		}
+
+		String str = null;
+		try {
+			str = VariablesPlugin.getDefault().getStringVariableManager()
+					.performStringSubstitution(executable, false);
+		} catch (CoreException e) {
+		}
+
+		return str;
 	}
 
 	public static String getGdbServerCommandLine(
@@ -1614,8 +1681,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			return null;
 		}
 
-		return sb.toString();
+		String str = null;
+		try {
+			str = VariablesPlugin.getDefault().getStringVariableManager()
+					.performStringSubstitution(sb.toString(), false);
+		} catch (CoreException e) {
+		}
 
+		return str;
 	}
 
 }

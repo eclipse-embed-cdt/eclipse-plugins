@@ -46,7 +46,10 @@ public interface ConfigurationAttributes {
 
 	public static final String GDB_SERVER_EXECUTABLE = PREFIX
 			+ ".gdbServerExecutable"; //$NON-NLS-1$
-	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_MAC = "/Applications/SEGGER/JLink/JLinkGDBServer";
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT = "${JLinkFolderPath}/JLinkGDBServer";
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_WINDOWS = "${JLinkFolderPath}/JLinkGDBServerCL";
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_LINUX = GDB_SERVER_EXECUTABLE_DEFAULT;
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_MAC = "${JLinkFolderPath}/JLinkGDBServer";
 
 	public static final String GDB_SERVER_GDB_PORT_NUMBER = PREFIX
 			+ ".gdbServerGdbPortNumber"; //$NON-NLS-1$

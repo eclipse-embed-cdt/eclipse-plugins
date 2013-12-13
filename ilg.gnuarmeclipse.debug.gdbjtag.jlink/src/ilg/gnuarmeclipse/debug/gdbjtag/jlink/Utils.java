@@ -5,6 +5,11 @@ import java.util.Iterator;
 
 public class Utils {
 
+	private static final String PROPERTY_OS_NAME = "os.name"; //$NON-NLS-1$
+	public static final String PROPERTY_OS_VALUE_WINDOWS = "windows";//$NON-NLS-1$
+	public static final String PROPERTY_OS_VALUE_LINUX = "linux";//$NON-NLS-1$
+	public static final String PROPERTY_OS_VALUE_MACOSX = "macosx";//$NON-NLS-1$
+
 	public static String composeCommandWithLf(Collection<String> commands) {
 		if (commands.isEmpty())
 			return null;
@@ -38,6 +43,21 @@ public class Utils {
 		} else {
 			return path;
 		}
+	}
+
+	static public boolean isWindows(){
+		return System.getProperty(PROPERTY_OS_NAME).toLowerCase()
+		.startsWith(PROPERTY_OS_VALUE_WINDOWS);
+	}
+	
+	static public boolean isLinux(){
+		return System.getProperty(PROPERTY_OS_NAME).toLowerCase()
+		.startsWith(PROPERTY_OS_VALUE_LINUX);
+	}
+	
+	static public boolean isMacOSX(){
+		return System.getProperty(PROPERTY_OS_NAME).toLowerCase()
+		.startsWith(PROPERTY_OS_VALUE_MACOSX);
 	}
 
 }

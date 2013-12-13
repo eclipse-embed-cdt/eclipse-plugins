@@ -23,12 +23,14 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
 
 public class LaunchConfigurationDelegate extends
@@ -61,29 +63,11 @@ public class LaunchConfigurationDelegate extends
 			monitor = new NullProgressMonitor();
 		}
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
-			try {
-				if (config.getAttribute(
-						ConfigurationAttributes.DO_START_GDB_SERVER,
-						ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT)) {
-
-					launchGdbServer(config, launch, monitor);
-				}
-			} catch (CoreException e) {
-			}
-			launchGdbClient(config, launch, monitor);
+			launchDebugger(config, launch, monitor);
 		}
 	}
 
-	private void launchGdbServer(ILaunchConfiguration config, ILaunch launch,
-			IProgressMonitor monitor) throws CoreException {
-
-		// Configuration is used at cleanup()
-		fConfig = config;
-		
-		//System.out.println("must launch server "+TabDebugger.getGdbServerCommandLine(config));
-	}
-
-	private void launchGdbClient(ILaunchConfiguration config, ILaunch launch,
+	private void launchDebugger(ILaunchConfiguration config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
 		monitor.beginTask(LaunchMessages.getString("GdbLaunchDelegate.0"), 10); //$NON-NLS-1$
 		if (monitor.isCanceled()) {
@@ -206,13 +190,17 @@ public class LaunchConfigurationDelegate extends
 		// through an ICommandControlShutdownDMEvent
 		launch.initializeControl();
 
-		// Add the GDB process object to the launch.
-		launch.addCLIProcess("arm-none-eabi-gdb"); //$NON-NLS-1$
+		// Add the GDB server process object to the launch.
+		IProcess newProcess;
+		newProcess = ((Launch)launch).addServerProcess(getServerCommandName(config));
+	    newProcess.setAttribute(IProcess.ATTR_CMDLINE, TabDebugger.getGdbServerCommandLine(config));
 
 		monitor.worked(1);
 
-		((Launch)launch).addServerProcess("JLinkGDBServer");
-		
+		// Add the GDB client process object to the launch.
+		newProcess = ((Launch)launch).addClientProcess(getClientCommandName(config)); //$NON-NLS-1$
+	    newProcess.setAttribute(IProcess.ATTR_CMDLINE, TabDebugger.getGdbClientCommand(config));
+
 		monitor.worked(1);
 
 		// Create and invoke the final launch sequence to setup GDB
@@ -266,6 +254,24 @@ public class LaunchConfigurationDelegate extends
 				cleanupLaunch();
 			}
 		}
+	}
+	
+	private String getServerCommandName(ILaunchConfiguration config){
+		String fullCommand = TabDebugger.getGdbServerCommand(config);
+		if (fullCommand == null)
+			return null;
+		
+		String parts[] = fullCommand.trim().split(""+Path.SEPARATOR);
+		return parts[parts.length-1];
+	}
+
+	private String getClientCommandName(ILaunchConfiguration config){
+		String fullCommand = TabDebugger.getGdbClientCommand(config);
+		if (fullCommand == null)
+			return null;
+		
+		String parts[] = fullCommand.trim().split(""+Path.SEPARATOR);
+		return parts[parts.length-1];
 	}
 
 }
