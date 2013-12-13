@@ -29,6 +29,7 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
+import org.eclipse.debug.core.model.ISourceLocator;
 
 public class LaunchConfigurationDelegate extends
 		GDBJtagDSFLaunchConfigurationDelegate {
@@ -36,7 +37,7 @@ public class LaunchConfigurationDelegate extends
 	private final static String NON_STOP_FIRST_VERSION = "6.8.50"; //$NON-NLS-1$
 
 	ILaunchConfiguration fConfig = null;
-	private GdbLaunch fGdbLaunch;
+	//private GdbLaunch fGdbLaunch;
 
 	@Override
 	protected IDsfDebugServicesFactory newServiceFactory(
@@ -45,6 +46,11 @@ public class LaunchConfigurationDelegate extends
 		return new ServicesFactory(version);
 		// return new GdbJtagDebugServicesFactory(version);
 	}
+
+    protected GdbLaunch createGdbLaunch(ILaunchConfiguration configuration, String mode, ISourceLocator locator) throws CoreException {
+    	//return new GdbLaunch(configuration, mode, locator);
+    	return new Launch(configuration, mode, locator);
+    }
 
 	@Override
 	public void launch(ILaunchConfiguration config, String mode,
@@ -201,8 +207,12 @@ public class LaunchConfigurationDelegate extends
 		launch.initializeControl();
 
 		// Add the GDB process object to the launch.
-		launch.addCLIProcess("gdb"); //$NON-NLS-1$
+		launch.addCLIProcess("arm-none-eabi-gdb"); //$NON-NLS-1$
 
+		monitor.worked(1);
+
+		((Launch)launch).addServerProcess("JLinkGDBServer");
+		
 		monitor.worked(1);
 
 		// Create and invoke the final launch sequence to setup GDB
@@ -255,66 +265,6 @@ public class LaunchConfigurationDelegate extends
 				// services including any GDB process are shutdown. (bug 251486)
 				cleanupLaunch();
 			}
-		}
-	}
-
-	@Override
-	public ILaunch getLaunch(ILaunchConfiguration configuration, String mode)
-			throws CoreException {
-		fGdbLaunch = (GdbLaunch) super.getLaunch(configuration, mode);
-		return fGdbLaunch;
-	}
-
-	/**
-	 * This method takes care of cleaning up any resources allocated by the
-	 * launch, as early as the call to getLaunch(), whenever the launch is
-	 * cancelled or does not complete properly.
-	 * 
-	 * @since 4.1
-	 */
-	protected void cleanupLaunch() throws DebugException {
-
-		if (fGdbLaunch != null) {
-			Query<Object> launchShutdownQuery = new Query<Object>() {
-				@Override
-				protected void execute(DataRequestMonitor<Object> rm) {
-					fGdbLaunch.shutdownSession(rm);
-				}
-			};
-
-			fGdbLaunch.getSession().getExecutor().execute(launchShutdownQuery);
-
-			// wait for the shutdown to finish.
-			// The Query.get() method is a synchronous call which blocks until
-			// the
-			// query completes.
-			try {
-				launchShutdownQuery.get();
-			} catch (InterruptedException e) {
-				throw new DebugException(
-						new Status(
-								IStatus.ERROR,
-								Activator.PLUGIN_ID,
-								DebugException.INTERNAL_ERROR,
-								"InterruptedException while shutting down debugger launch " + fGdbLaunch, e)); //$NON-NLS-1$ 
-			} catch (ExecutionException e) {
-				throw new DebugException(
-						new Status(
-								IStatus.ERROR,
-								Activator.PLUGIN_ID,
-								DebugException.REQUEST_FAILED,
-								"Error in shutting down debugger launch " + fGdbLaunch, e)); //$NON-NLS-1$
-			}
-		}
-
-		try {
-			if (fConfig.getAttribute(
-					ConfigurationAttributes.DO_START_GDB_SERVER,
-					ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT)) {
-
-				//System.out.println("must shutdown server");
-			}
-		} catch (CoreException e) {
 		}
 	}
 

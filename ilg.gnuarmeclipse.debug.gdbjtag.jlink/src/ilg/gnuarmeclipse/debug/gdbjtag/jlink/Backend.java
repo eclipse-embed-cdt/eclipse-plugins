@@ -15,7 +15,6 @@ import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.Sequence;
 import org.eclipse.cdt.dsf.gdb.service.GDBBackend;
 import org.eclipse.cdt.dsf.gdb.service.command.GDBControl.InitializationShutdownStep;
-import org.eclipse.cdt.dsf.mi.service.IMIBackend.State;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -49,6 +48,10 @@ public class Backend extends GDBBackend {
 		}
 	}
 
+	public Process getServerProcess(){
+		return fServerProcess;
+	}
+	
 	@Override
     public void destroy() {
     	// Don't close the streams ourselves as it may be too early.
@@ -204,59 +207,7 @@ public class Backend extends GDBBackend {
 						return Status.CANCEL_STATUS; //OK_STATUS;
 					}
 
-					if (false) {
-					BufferedReader inputReader = null;
-					BufferedReader errorReader = null;
-					boolean success = false;
-					try {
-						// Read initial GDB prompt
-						inputReader = new BufferedReader(new InputStreamReader(
-								fServerProcess.getInputStream()));
-						String line;
-						while ((line = inputReader.readLine()) != null) {
-							line = line.trim();
-							if (line.startsWith("SEGGER")) { //$NON-NLS-1$
-								success = true;
-								break;
-							}
-						}
-
-						// Failed to read initial prompt, check for error
-						if (!success) {
-							errorReader = new BufferedReader(
-									new InputStreamReader(fServerProcess.getErrorStream()));
-							String errorInfo = errorReader.readLine();
-							if (errorInfo == null) {
-								errorInfo = "GDB prompt not read"; //$NON-NLS-1$
-							}
-							gdbLaunchRequestMonitor.setStatus(new Status(
-									IStatus.ERROR, Activator.PLUGIN_ID, -1,
-									errorInfo, null));
-						}
-					} catch (IOException e) {
-						success = false;
-						gdbLaunchRequestMonitor.setStatus(new Status(
-								IStatus.ERROR, Activator.PLUGIN_ID, -1,
-								"Error reading GDB output", e)); //$NON-NLS-1$
-					}
-
-					// In the case of failure, close the MI streams so
-					// they are not leaked.
-					if (!success) {
-						if (inputReader != null) {
-							try {
-								inputReader.close();
-							} catch (IOException e) {
-							}
-						}
-						if (errorReader != null) {
-							try {
-								errorReader.close();
-							} catch (IOException e) {
-							}
-						}
-					}
-					}
+					// TODO: check if the server started properly
 					
 					gdbLaunchRequestMonitor.done();
 					return Status.OK_STATUS;

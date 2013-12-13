@@ -69,7 +69,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		fGDBBackend = fTracker.getService(IGDBBackend.class);
 		if (fGDBBackend == null) {
 			requestMonitor.setStatus(new Status(IStatus.ERROR,
-					GdbPlugin.PLUGIN_ID, -1,
+					Activator.PLUGIN_ID, -1,
 					"Cannot obtain GDBBackend service", null)); //$NON-NLS-1$
 			requestMonitor.done();
 			return;
@@ -78,7 +78,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		fCommandControl = fTracker.getService(IGDBControl.class);
 		if (fCommandControl == null) {
 			requestMonitor.setStatus(new Status(IStatus.ERROR,
-					GdbPlugin.PLUGIN_ID, -1,
+					Activator.PLUGIN_ID, -1,
 					"Cannot obtain control service", null)); //$NON-NLS-1$
 			requestMonitor.done();
 			return;
@@ -89,7 +89,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		fProcService = fTracker.getService(IMIProcesses.class);
 		if (fProcService == null) {
 			requestMonitor.setStatus(new Status(IStatus.ERROR,
-					GdbPlugin.PLUGIN_ID, -1,
+					Activator.PLUGIN_ID, -1,
 					"Cannot obtain process service", null)); //$NON-NLS-1$
 			requestMonitor.done();
 			return;
@@ -100,7 +100,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	@Execute
 	public void stepInitializeJTAGFinalLaunchSequence(RequestMonitor rm) {
-		fTracker = new DsfServicesTracker(Activator.getBundleContext(),
+		fTracker = new DsfServicesTracker(GdbPlugin.getBundleContext(),
 				fSession.getId());
 		fGDBBackend = fTracker.getService(IGDBBackend.class);
 		if (fGDBBackend == null) {
