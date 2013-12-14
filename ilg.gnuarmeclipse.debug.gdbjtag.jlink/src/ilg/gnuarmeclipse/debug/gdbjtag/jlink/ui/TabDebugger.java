@@ -1603,7 +1603,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.GDB_SERVER_SWO_PORT_NUMBER,
 					ConfigurationAttributes.GDB_SERVER_SWO_PORT_NUMBER_DEFAULT)));
 
-			sb.append(" -telnetport ");
+			sb.append(" -semiport ");
 			sb.append(Integer.toString(configuration
 					.getAttribute(
 							ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
