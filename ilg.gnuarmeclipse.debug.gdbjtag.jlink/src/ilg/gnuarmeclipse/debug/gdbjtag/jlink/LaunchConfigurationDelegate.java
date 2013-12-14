@@ -56,7 +56,8 @@ public class LaunchConfigurationDelegate extends
 		return new Launch(configuration, mode, locator);
 	}
 
-	protected String getGDBVersion(ILaunchConfiguration config) throws CoreException {
+	protected String getGDBVersion(ILaunchConfiguration config)
+			throws CoreException {
 		return Utils.getGDBVersion(config);
 	}
 
@@ -220,8 +221,9 @@ public class LaunchConfigurationDelegate extends
 		// Add the GDB client process object to the launch.
 		newProcess = ((Launch) launch)
 				.addClientProcess(getClientCommandName(config)); //$NON-NLS-1$
-		newProcess.setAttribute(IProcess.ATTR_CMDLINE,
-				Utils.getGDBPath(config).toString());
+
+		newProcess.setAttribute(IProcess.ATTR_CMDLINE, Utils.getGDBPath(config)
+				.toString());
 
 		monitor.worked(1);
 

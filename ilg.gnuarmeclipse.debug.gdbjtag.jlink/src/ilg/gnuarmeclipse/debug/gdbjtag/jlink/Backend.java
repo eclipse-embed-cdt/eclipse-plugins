@@ -52,40 +52,42 @@ public class Backend extends GDBBackend {
 		}
 	}
 
-	public Process getServerProcess(){
+	public Process getServerProcess() {
 		return fServerProcess;
 	}
-	
-    protected IPath getGDBPath() {
-        return Utils.getGDBPath(fLaunchConfiguration);
-    }
+
+	protected IPath getGDBPath() {
+		return Utils.getGDBPath(fLaunchConfiguration);
+	}
 
 	protected Process launchGDBProcess(String commandLine) throws CoreException {
-        Process proc = null;
+		Process proc = null;
 		try {
-			proc = ProcessFactory.getFactory().exec(commandLine, Utils.getLaunchEnvironment(fLaunchConfiguration));
+			proc = ProcessFactory.getFactory().exec(commandLine,
+					Utils.getLaunchEnvironment(fLaunchConfiguration));
 		} catch (IOException e) {
-            String message = "Error while launching command " + commandLine;   //$NON-NLS-1$
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, message, e));
+			String message = "Error while launching command " + commandLine; //$NON-NLS-1$
+			throw new CoreException(new Status(IStatus.ERROR,
+					Activator.PLUGIN_ID, -1, message, e));
 		}
-		
+
 		return proc;
 	}
 
 	@Override
-    public void destroy() {
-    	// Don't close the streams ourselves as it may be too early.
-    	// Wait for the actual user of the streams to close it.
-    	// Bug 339379
-    	
+	public void destroy() {
+		// Don't close the streams ourselves as it may be too early.
+		// Wait for the actual user of the streams to close it.
+		// Bug 339379
+
 		// kill client first
-		super.destroy(); 
-		
-    	// destroy() should be supported even if it's not spawner. 
-    	if (fServerBackendState == State.STARTED) {
-    		fServerProcess.destroy();
-    	}
-    }
+		super.destroy();
+
+		// destroy() should be supported even if it's not spawner.
+		if (fServerBackendState == State.STARTED) {
+			fServerProcess.destroy();
+		}
+	}
 
 	@Override
 	public void initialize(final RequestMonitor requestMonitor) {
@@ -107,7 +109,12 @@ public class Backend extends GDBBackend {
 					new RequestMonitor(getExecutor(), requestMonitor) {
 						@Override
 						protected void handleCompleted() {
-							Backend.super.initialize(requestMonitor);
+							if (isSuccess()) {
+								Backend.super.initialize(requestMonitor);
+							} else {
+								requestMonitor.setStatus(getStatus());
+								requestMonitor.done();
+							}
 						}
 					}) {
 				@Override
@@ -189,7 +196,7 @@ public class Backend extends GDBBackend {
 				}
 			};
 
-			final Job startGdbServerJob = new Job("Start GDB Process Job") { //$NON-NLS-1$
+			final Job startGdbServerJob = new Job("Start GDB Server Job") { //$NON-NLS-1$
 				{
 					setSystem(true);
 				}
@@ -200,6 +207,24 @@ public class Backend extends GDBBackend {
 						gdbLaunchRequestMonitor.setStatus(new Status(
 								IStatus.CANCEL, Activator.PLUGIN_ID, -1,
 								"Canceled starting GDB", null)); //$NON-NLS-1$
+						gdbLaunchRequestMonitor.done();
+						return Status.OK_STATUS;
+					}
+
+					String deviceName = "";
+					try {
+						deviceName = fLaunchConfiguration
+								.getAttribute(
+										ConfigurationAttributes.FLASH_DEVICE_NAME,
+										ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT)
+								.trim();
+					} catch (CoreException e1) {
+					}
+
+					if (deviceName.length() == 0) {
+						gdbLaunchRequestMonitor.setStatus(new Status(
+								IStatus.ERROR, Activator.PLUGIN_ID, -1,
+								"Missing device name", null)); //$NON-NLS-1$
 						gdbLaunchRequestMonitor.done();
 						return Status.OK_STATUS;
 					}
@@ -224,11 +249,11 @@ public class Backend extends GDBBackend {
 								IStatus.ERROR, Activator.PLUGIN_ID, -1, e
 										.getMessage(), e));
 						gdbLaunchRequestMonitor.done();
-						return Status.CANCEL_STATUS; //OK_STATUS;
+						return Status.OK_STATUS;
 					}
 
 					// TODO: check if the server started properly
-					
+
 					gdbLaunchRequestMonitor.done();
 					return Status.OK_STATUS;
 				}
@@ -394,12 +419,13 @@ public class Backend extends GDBBackend {
 
 		@Override
 		public void initialize(final RequestMonitor requestMonitor) {
-			fServerMonitorJob = new MonitorJob(fServerProcess, new DsfRunnable() {
-				@Override
-				public void run() {
-					requestMonitor.done();
-				}
-			});
+			fServerMonitorJob = new MonitorJob(fServerProcess,
+					new DsfRunnable() {
+						@Override
+						public void run() {
+							requestMonitor.done();
+						}
+					});
 			fServerMonitorJob.schedule();
 		}
 

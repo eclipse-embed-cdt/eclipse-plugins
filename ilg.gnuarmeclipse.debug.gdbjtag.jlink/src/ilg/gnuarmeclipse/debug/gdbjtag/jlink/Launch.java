@@ -106,7 +106,6 @@ public class Launch extends GdbLaunch {
 					IGdbDebugConstants.GDB_PROCESS_CREATION_VALUE);
 			newProcess = DebugPlugin.newProcess(this, serverProc, label,
 					attributes);
-
 		} catch (InterruptedException e) {
 			throw new CoreException(new Status(IStatus.ERROR,
 					Activator.PLUGIN_ID, 0,
@@ -122,39 +121,45 @@ public class Launch extends GdbLaunch {
 		return newProcess;
 	}
 
-    public IProcess addClientProcess(String label) throws CoreException {
+	public IProcess addClientProcess(String label) throws CoreException {
 		IProcess newProcess = null;
-        try {
-            // Add the CLI process object to the launch.
-    		AbstractCLIProcess cliProc =
-    			getDsfExecutor().submit( new Callable<AbstractCLIProcess>() {
-    				@Override
-    				public AbstractCLIProcess call() throws CoreException {
-    					IGDBControl gdb = fTracker.getService(IGDBControl.class);
-    					if (gdb != null) {
-    						return gdb.getCLIProcess();
-    					}
-    					return null;
-    				}
-    			}).get();
+		try {
+			// Add the CLI process object to the launch.
+			AbstractCLIProcess cliProc = getDsfExecutor().submit(
+					new Callable<AbstractCLIProcess>() {
+						@Override
+						public AbstractCLIProcess call() throws CoreException {
+							IGDBControl gdb = fTracker
+									.getService(IGDBControl.class);
+							if (gdb != null) {
+								return gdb.getCLIProcess();
+							}
+							return null;
+						}
+					}).get();
 
-			// Need to go through DebugPlugin.newProcess so that we can use 
+			// Need to go through DebugPlugin.newProcess so that we can use
 			// the overrideable process factory to allow others to override.
 			// First set attribute to specify we want to create the gdb process.
 			// Bug 210366
 			Map<String, String> attributes = new HashMap<String, String>();
-		    attributes.put(IGdbDebugConstants.PROCESS_TYPE_CREATION_ATTR, 
-		    		       IGdbDebugConstants.GDB_PROCESS_CREATION_VALUE);
-		    newProcess = DebugPlugin.newProcess(this, cliProc, label, attributes);
-        } catch (InterruptedException e) {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "Interrupted while waiting for get process callable.", e)); //$NON-NLS-1$
-        } catch (ExecutionException e) {
-            throw (CoreException)e.getCause();
-        } catch (RejectedExecutionException e) {
-            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0, "Debugger shut down before launch was completed.", e)); //$NON-NLS-1$
-        } 
-        
-        return newProcess;
-    }
+			attributes.put(IGdbDebugConstants.PROCESS_TYPE_CREATION_ATTR,
+					IGdbDebugConstants.GDB_PROCESS_CREATION_VALUE);
+			newProcess = DebugPlugin.newProcess(this, cliProc, label,
+					attributes);
+		} catch (InterruptedException e) {
+			throw new CoreException(new Status(IStatus.ERROR,
+					Activator.PLUGIN_ID, 0,
+					"Interrupted while waiting for get process callable.", e)); //$NON-NLS-1$
+		} catch (ExecutionException e) {
+			throw (CoreException) e.getCause();
+		} catch (RejectedExecutionException e) {
+			throw new CoreException(new Status(IStatus.ERROR,
+					Activator.PLUGIN_ID, 0,
+					"Debugger shut down before launch was completed.", e)); //$NON-NLS-1$
+		}
+
+		return newProcess;
+	}
 
 }
