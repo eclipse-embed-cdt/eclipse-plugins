@@ -56,6 +56,10 @@ public class LaunchConfigurationDelegate extends
 		return new Launch(configuration, mode, locator);
 	}
 
+	protected String getGDBVersion(ILaunchConfiguration config) throws CoreException {
+		return Utils.getGDBVersion(config);
+	}
+
 	@Override
 	public void launch(ILaunchConfiguration config, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
@@ -217,7 +221,7 @@ public class LaunchConfigurationDelegate extends
 		newProcess = ((Launch) launch)
 				.addClientProcess(getClientCommandName(config)); //$NON-NLS-1$
 		newProcess.setAttribute(IProcess.ATTR_CMDLINE,
-				TabDebugger.getGdbClientCommand(config));
+				Utils.getGDBPath(config).toString());
 
 		monitor.worked(1);
 
@@ -284,7 +288,7 @@ public class LaunchConfigurationDelegate extends
 	}
 
 	private String getClientCommandName(ILaunchConfiguration config) {
-		String fullCommand = TabDebugger.getGdbClientCommand(config);
+		String fullCommand = Utils.getGDBPath(config).toString();
 		if (fullCommand == null)
 			return null;
 

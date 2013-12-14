@@ -1520,32 +1520,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 	}
 
-	public static String getGdbClientCommand(ILaunchConfiguration configuration) {
-
-		String executable = null;
-
-		try {
-			executable = configuration.getAttribute(
-					IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
-					ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT);
-			executable = Utils.escapeWhitespaces(executable).trim();
-			if (executable.length() == 0)
-				return null;
-		} catch (CoreException e) {
-			Activator.log(e);
-			return null;
-		}
-
-		String str = null;
-		try {
-			str = VariablesPlugin.getDefault().getStringVariableManager()
-					.performStringSubstitution(executable, false);
-		} catch (CoreException e) {
-		}
-
-		return str;
-	}
-
 	public static String getGdbServerCommand(ILaunchConfiguration configuration) {
 
 		String executable = null;
@@ -1642,10 +1616,15 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				sb.append(" -vd ");
 			}
 
-			if (configuration.getAttribute(
-					ConfigurationAttributes.DO_GDB_SERVER_INIT_REGS,
-					ConfigurationAttributes.DO_GDB_SERVER_INIT_REGS_DEFAULT)) {
-				sb.append(" -ir ");
+			if (!configuration.getAttribute(
+					ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+					ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT)) {
+				if (configuration
+						.getAttribute(
+								ConfigurationAttributes.DO_GDB_SERVER_INIT_REGS,
+								ConfigurationAttributes.DO_GDB_SERVER_INIT_REGS_DEFAULT)) {
+					sb.append(" -ir ");
+				}
 			}
 
 			if (configuration.getAttribute(

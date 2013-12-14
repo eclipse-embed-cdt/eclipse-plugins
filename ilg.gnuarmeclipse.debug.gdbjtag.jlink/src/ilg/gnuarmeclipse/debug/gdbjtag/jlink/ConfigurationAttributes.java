@@ -42,14 +42,18 @@ public interface ConfigurationAttributes {
 
 	public static final String DO_START_GDB_SERVER = PREFIX
 			+ ".doStartGdbServer"; //$NON-NLS-1$
-	public static final boolean DO_START_GDB_SERVER_DEFAULT = false; // true; <-----
+	public static final boolean DO_START_GDB_SERVER_DEFAULT = true;
 
 	public static final String GDB_SERVER_EXECUTABLE = PREFIX
 			+ ".gdbServerExecutable"; //$NON-NLS-1$
-	public static final String GDB_SERVER_EXECUTABLE_DEFAULT = "${JLinkFolderPath}/JLinkGDBServer";
-	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_WINDOWS = "${JLinkFolderPath}/JLinkGDBServerCL";
+	public static final String JLINK_PATH = "${jlink_path}";
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT = JLINK_PATH
+			+ "/JLinkGDBServer";
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_WINDOWS = JLINK_PATH
+			+ "/JLinkGDBServerCL";
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_MAC = JLINK_PATH
+			+ "/JLinkGDBServer";
 	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_LINUX = GDB_SERVER_EXECUTABLE_DEFAULT;
-	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_MAC = "${JLinkFolderPath}/JLinkGDBServer";
 
 	public static final String GDB_SERVER_GDB_PORT_NUMBER = PREFIX
 			+ ".gdbServerGdbPortNumber"; //$NON-NLS-1$
@@ -79,14 +83,12 @@ public interface ConfigurationAttributes {
 			+ ".doGdbServerSilent"; //$NON-NLS-1$
 	public static final boolean DO_GDB_SERVER_SILENT_DEFAULT = false;
 
-	public static final String GDB_SERVER_LOG = PREFIX
-			+ ".gdbServerLog"; //$NON-NLS-1$
+	public static final String GDB_SERVER_LOG = PREFIX + ".gdbServerLog"; //$NON-NLS-1$
 	public static final String GDB_SERVER_LOG_DEFAULT = ""; //$NON-NLS-1$
 
-	public static final String GDB_SERVER_OTHER = PREFIX
-			+ ".gdbServerOther"; //$NON-NLS-1$
+	public static final String GDB_SERVER_OTHER = PREFIX + ".gdbServerOther"; //$NON-NLS-1$
 	public static final String GDB_SERVER_OTHER_DEFAULT = ""; //$NON-NLS-1$
-	
+
 	public static final String DO_GDB_SERVER_ALLOCATE_CONSOLE = PREFIX
 			+ ".doGdbServerAllocateConsole"; //$NON-NLS-1$
 	public static final boolean DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT = true;

@@ -23,3 +23,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %bundle.vendor
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
+Import-Package: org.eclipse.cdt.managedbuilder.core,
+ org.eclipse.cdt.managedbuilder.macros

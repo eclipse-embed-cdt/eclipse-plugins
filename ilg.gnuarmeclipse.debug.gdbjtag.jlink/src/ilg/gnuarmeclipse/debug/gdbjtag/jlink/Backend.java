@@ -13,10 +13,14 @@ import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
 import org.eclipse.cdt.dsf.concurrent.ImmediateRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.Sequence;
+import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
+import org.eclipse.cdt.dsf.gdb.launching.LaunchUtils;
 import org.eclipse.cdt.dsf.gdb.service.GDBBackend;
 import org.eclipse.cdt.dsf.gdb.service.command.GDBControl.InitializationShutdownStep;
 import org.eclipse.cdt.dsf.service.DsfSession;
+import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -52,6 +56,22 @@ public class Backend extends GDBBackend {
 		return fServerProcess;
 	}
 	
+    protected IPath getGDBPath() {
+        return Utils.getGDBPath(fLaunchConfiguration);
+    }
+
+	protected Process launchGDBProcess(String commandLine) throws CoreException {
+        Process proc = null;
+		try {
+			proc = ProcessFactory.getFactory().exec(commandLine, Utils.getLaunchEnvironment(fLaunchConfiguration));
+		} catch (IOException e) {
+            String message = "Error while launching command " + commandLine;   //$NON-NLS-1$
+            throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, message, e));
+		}
+		
+		return proc;
+	}
+
 	@Override
     public void destroy() {
     	// Don't close the streams ourselves as it may be too early.
