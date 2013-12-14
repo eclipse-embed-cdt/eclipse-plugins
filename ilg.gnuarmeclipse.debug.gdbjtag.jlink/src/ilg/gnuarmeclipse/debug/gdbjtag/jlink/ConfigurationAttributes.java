@@ -157,7 +157,10 @@ public interface ConfigurationAttributes {
 
 	public static final String OTHER_INIT_COMMANDS = PREFIX
 			+ ".otherInitCommands"; //$NON-NLS-1$
-	public static final String OTHER_INIT_COMMANDS_DEFAULT = "monitor flash download = 1";
+	public static final String OTHER_INIT_COMMANDS_DEFAULT = "monitor flash breakpoints = 1";
+
+	public static final String ENABLE_FLASH_DOWNLOAD_COMMAND = "monitor flash download = 1";
+	public static final String DISABLE_FLASH_DOWNLOAD_COMMAND = "monitor flash download = 0";
 
 	public static final String DO_SECOND_RESET = PREFIX + ".doSecondReset"; //$NON-NLS-1$
 	public static final boolean DO_SECOND_RESET_DEFAULT = true;

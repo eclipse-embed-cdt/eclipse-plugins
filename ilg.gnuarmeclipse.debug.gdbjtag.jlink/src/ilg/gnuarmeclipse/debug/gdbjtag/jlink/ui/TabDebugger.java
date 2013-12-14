@@ -954,8 +954,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		doGdbServerSilent.setEnabled(enabled);
 
 		doGdbServerAllocateConsole.setEnabled(enabled);
-		doGdbServerAllocateSemihostingConsole.setEnabled(enabled);
-		
+
+		// Keep this one enabled always
+		// doGdbServerAllocateSemihostingConsole.setEnabled(enabled);
+
 		// Disable remote target params when the server is started
 		targetIpAddress.setEnabled(!enabled);
 		targetPortNumber.setEnabled(!enabled);
@@ -1158,9 +1160,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				String portString = Integer.toString(storedPort); //$NON-NLS-1$
 				targetPortNumber.setText(portString);
 
-				//useRemoteChanged();
+				// useRemoteChanged();
 			}
-			
+
 			doStartGdbServerChanged();
 
 			// Force thread update

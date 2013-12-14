@@ -39,7 +39,8 @@ public class LaunchConfigurationDelegate extends
 	private final static String NON_STOP_FIRST_VERSION = "6.8.50"; //$NON-NLS-1$
 
 	ILaunchConfiguration fConfig = null;
-	//private GdbLaunch fGdbLaunch;
+
+	// private GdbLaunch fGdbLaunch;
 
 	@Override
 	protected IDsfDebugServicesFactory newServiceFactory(
@@ -49,10 +50,11 @@ public class LaunchConfigurationDelegate extends
 		// return new GdbJtagDebugServicesFactory(version);
 	}
 
-    protected GdbLaunch createGdbLaunch(ILaunchConfiguration configuration, String mode, ISourceLocator locator) throws CoreException {
-    	//return new GdbLaunch(configuration, mode, locator);
-    	return new Launch(configuration, mode, locator);
-    }
+	protected GdbLaunch createGdbLaunch(ILaunchConfiguration configuration,
+			String mode, ISourceLocator locator) throws CoreException {
+		// return new GdbLaunch(configuration, mode, locator);
+		return new Launch(configuration, mode, locator);
+	}
 
 	@Override
 	public void launch(ILaunchConfiguration config, String mode,
@@ -183,23 +185,39 @@ public class LaunchConfigurationDelegate extends
 
 		// The initializeControl method should be called after the
 		// ICommandControlService
-		// is initialized in the ServicesLaunchSequence above. This is because
+		// is initialised in the ServicesLaunchSequence above. This is because
 		// it is that
 		// service that will trigger the launch cleanup (if we need it during
 		// this launch)
 		// through an ICommandControlShutdownDMEvent
 		launch.initializeControl();
 
-		// Add the GDB server process object to the launch.
 		IProcess newProcess;
-		newProcess = ((Launch)launch).addServerProcess(getServerCommandName(config));
-	    newProcess.setAttribute(IProcess.ATTR_CMDLINE, TabDebugger.getGdbServerCommandLine(config));
+		boolean doAddServerConsole = config.getAttribute(
+				ConfigurationAttributes.DO_START_GDB_SERVER,
+				ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT)
+				&& config
+						.getAttribute(
+								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
+								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
 
-		monitor.worked(1);
+		if (doAddServerConsole) {
+
+			// Add the GDB server process object to the launch and create
+			// console
+			newProcess = ((Launch) launch)
+					.addServerProcess(getServerCommandName(config));
+			newProcess.setAttribute(IProcess.ATTR_CMDLINE,
+					TabDebugger.getGdbServerCommandLine(config));
+
+			monitor.worked(1);
+		}
 
 		// Add the GDB client process object to the launch.
-		newProcess = ((Launch)launch).addClientProcess(getClientCommandName(config)); //$NON-NLS-1$
-	    newProcess.setAttribute(IProcess.ATTR_CMDLINE, TabDebugger.getGdbClientCommand(config));
+		newProcess = ((Launch) launch)
+				.addClientProcess(getClientCommandName(config)); //$NON-NLS-1$
+		newProcess.setAttribute(IProcess.ATTR_CMDLINE,
+				TabDebugger.getGdbClientCommand(config));
 
 		monitor.worked(1);
 
@@ -255,23 +273,23 @@ public class LaunchConfigurationDelegate extends
 			}
 		}
 	}
-	
-	private String getServerCommandName(ILaunchConfiguration config){
+
+	private String getServerCommandName(ILaunchConfiguration config) {
 		String fullCommand = TabDebugger.getGdbServerCommand(config);
 		if (fullCommand == null)
 			return null;
-		
-		String parts[] = fullCommand.trim().split(""+Path.SEPARATOR);
-		return parts[parts.length-1];
+
+		String parts[] = fullCommand.trim().split("" + Path.SEPARATOR);
+		return parts[parts.length - 1];
 	}
 
-	private String getClientCommandName(ILaunchConfiguration config){
+	private String getClientCommandName(ILaunchConfiguration config) {
 		String fullCommand = TabDebugger.getGdbClientCommand(config);
 		if (fullCommand == null)
 			return null;
-		
-		String parts[] = fullCommand.trim().split(""+Path.SEPARATOR);
-		return parts[parts.length-1];
+
+		String parts[] = fullCommand.trim().split("" + Path.SEPARATOR);
+		return parts[parts.length - 1];
 	}
 
 }

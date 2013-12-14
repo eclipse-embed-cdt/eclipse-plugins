@@ -33,7 +33,6 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	private IGDBBackend fGDBBackend;
 	private IGDBControl fCommandControl;
 	private IMIProcesses fProcService;
-	
 
 	// public FinalLaunchSequence(DsfExecutor executor, GdbLaunch launch,
 	// SessionType sessionType, boolean attach,
@@ -52,14 +51,13 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	private void queueCommands(List<String> commands, RequestMonitor rm) {
 		if (!commands.isEmpty()) {
 			fCommandControl.queueCommand(
-					new CLICommand<MIInfo>(fCommandControl.getContext(),
-							Utils.composeCommandWithLf(commands)),
+					new CLICommand<MIInfo>(fCommandControl.getContext(), Utils
+							.composeCommandWithLf(commands)),
 					new DataRequestMonitor<MIInfo>(getExecutor(), rm));
 		} else {
 			rm.done();
 		}
 	}
-
 
 	// This function is used to capture the private objects
 	@Execute
@@ -122,7 +120,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					"Cannot obtain process service", null)); //$NON-NLS-1$
 			return;
 		}
-		
+
 		super.stepInitializeJTAGFinalLaunchSequence(rm);
 	}
 
@@ -240,7 +238,6 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 							+ attr);
 		}
 
-
 		if (commandsList.size() > 0) {
 			CountingRequestMonitor crm = new CountingRequestMonitor(
 					getExecutor(), rm);
@@ -268,20 +265,25 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT)) {
 				String commandStr = ConfigurationAttributes.ENABLE_SEMIHOSTING_COMMAND;
 				commandsList.add(commandStr);
-				
+
 				int ioclientMask = 0;
-				if (CDebugUtils.getAttribute(fAttributes,
-						ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
-						ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_DEFAULT)) {
+				if (CDebugUtils
+						.getAttribute(
+								fAttributes,
+								ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
+								ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_DEFAULT)) {
 					ioclientMask |= ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_MASK;
 				}
-				if (CDebugUtils.getAttribute(fAttributes,
-						ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
-						ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_DEFAULT)) {
+				if (CDebugUtils
+						.getAttribute(
+								fAttributes,
+								ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
+								ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_DEFAULT)) {
 					ioclientMask |= ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_MASK;
 				}
-				
-				commandStr = ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_COMMAND + String.valueOf(ioclientMask);
+
+				commandStr = ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_COMMAND
+						+ String.valueOf(ioclientMask);
 				commandsList.add(commandStr);
 			}
 
@@ -289,28 +291,45 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					ConfigurationAttributes.ENABLE_SWO,
 					ConfigurationAttributes.ENABLE_SWO_DEFAULT)) {
 				String commandStr = ConfigurationAttributes.ENABLE_SWO_COMMAND;
-				commandStr += CDebugUtils.getAttribute(fAttributes,
-						ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
-						ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
+				commandStr += CDebugUtils
+						.getAttribute(
+								fAttributes,
+								ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
+								ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
 				commandStr += " ";
-				commandStr += CDebugUtils.getAttribute(fAttributes,
-						ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
-						ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
+				commandStr += CDebugUtils
+						.getAttribute(
+								fAttributes,
+								ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
+								ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
 				commandStr += " ";
-				commandStr += CDebugUtils.getAttribute(fAttributes,
-						ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
-						ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT);
+				commandStr += CDebugUtils
+						.getAttribute(
+								fAttributes,
+								ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
+								ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT);
 				commandStr += " 0";
-				
+
 				commandsList.add(commandStr);
-				
-				//commandStr = ConfigurationAttributes.ENABLE_SWO_GETSPEEDINFO_COMMAND;
-				//commandsList.add(commandStr);
+
+				// commandStr =
+				// ConfigurationAttributes.ENABLE_SWO_GETSPEEDINFO_COMMAND;
+				// commandsList.add(commandStr);
 			}
 
 			String otherInits = CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.OTHER_INIT_COMMANDS,
 					ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
+
+			boolean doConnectToRunning = CDebugUtils.getAttribute(fAttributes,
+					ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+					ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
+
+			String flashDownload = doConnectToRunning ? ConfigurationAttributes.DISABLE_FLASH_DOWNLOAD_COMMAND
+					: ConfigurationAttributes.ENABLE_FLASH_DOWNLOAD_COMMAND;
+
+			otherInits += "\n" + flashDownload;
+			
 			otherInits = VariablesPlugin.getDefault()
 					.getStringVariableManager()
 					.performStringSubstitution(otherInits);
@@ -396,5 +415,5 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 			rm.done();
 		}
 	}
-	
+
 }
