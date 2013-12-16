@@ -330,18 +330,8 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 			otherInits += "\n" + flashDownload;
 			
-			otherInits = VariablesPlugin.getDefault()
-					.getStringVariableManager()
-					.performStringSubstitution(otherInits);
-			if (otherInits.length() > 0) {
-				String[] commandsStr = otherInits.split("\\r?\\n"); //$NON-NLS-1$
-				for (String str : commandsStr) {
-					str = str.trim();
-					if (str.length() > 0) {
-						commandsList.add(str);
-					}
-				}
-			}
+			Utils.addMultiLine(otherInits, commandsList);
+
 			if (commandsList.size() > 0) {
 				CountingRequestMonitor crm = new CountingRequestMonitor(
 						getExecutor(), rm);
@@ -382,18 +372,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					ConfigurationAttributes.OTHER_RUN_COMMANDS,
 					ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
 
-			if (userCmd.length() > 0) {
-				userCmd = VariablesPlugin.getDefault()
-						.getStringVariableManager()
-						.performStringSubstitution(userCmd);
-				String[] commandsStr = userCmd.split("\\r?\\n"); //$NON-NLS-1$
-				for (String str : commandsStr) {
-					str = str.trim();
-					if (str.length() > 0) {
-						commandsList.add(str);
-					}
-				}
-			}
+			Utils.addMultiLine(userCmd, commandsList);
 
 			if (CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.DO_CONTINUE,

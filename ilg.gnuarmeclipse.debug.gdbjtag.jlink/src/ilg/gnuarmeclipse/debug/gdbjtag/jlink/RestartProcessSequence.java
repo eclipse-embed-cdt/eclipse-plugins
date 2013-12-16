@@ -1,13 +1,12 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
+import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
 import org.eclipse.cdt.dsf.concurrent.CountingRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DsfExecutor;
@@ -23,6 +22,7 @@ import org.eclipse.cdt.dsf.mi.service.command.CommandFactory;
 import org.eclipse.cdt.dsf.mi.service.command.commands.CLICommand;
 import org.eclipse.cdt.dsf.mi.service.command.output.MIInfo;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -120,7 +120,7 @@ public class RestartProcessSequence extends ReflectionSequence {
 
 		if (fCommandControl == null || fCommandFactory == null
 				|| fProcService == null) {
-			rm.setStatus(new Status(IStatus.ERROR, GdbPlugin.PLUGIN_ID,
+			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					IDsfStatusConstants.INTERNAL_ERROR,
 					"Cannot obtain service", null)); //$NON-NLS-1$
 			rm.done();
@@ -147,6 +147,19 @@ public class RestartProcessSequence extends ReflectionSequence {
 
 		commandsList.add("monitor halt");
 
+		if (CDebugUtils.getAttribute(fAttributes,
+				IGDBJtagConstants.ATTR_SET_STOP_AT,
+				ConfigurationAttributes.DO_STOP_AT_DEFAULT)) {
+
+			String stopAtName = CDebugUtils.getAttribute(fAttributes,
+					IGDBJtagConstants.ATTR_STOP_AT,
+					ConfigurationAttributes.STOP_AT_NAME_DEFAULT).trim();
+
+			if (stopAtName.length() > 0) {
+				commandsList.add("tbreak " + stopAtName);
+			}
+		}
+
 		String commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
 		String resetType = "";
 
@@ -158,6 +171,17 @@ public class RestartProcessSequence extends ReflectionSequence {
 					ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
 		}
 		commandsList.add(commandStr + resetType);
+
+		String otherCmds = CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.OTHER_RUN_COMMANDS,
+				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT).trim();
+
+		try {
+			Utils.addMultiLine(otherCmds, commandsList);
+		} catch (CoreException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 		commandsList.add("continue");
 

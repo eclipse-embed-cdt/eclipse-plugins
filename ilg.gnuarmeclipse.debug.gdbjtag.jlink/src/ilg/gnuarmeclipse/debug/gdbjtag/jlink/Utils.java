@@ -24,9 +24,6 @@ import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
 import org.eclipse.cdt.dsf.gdb.IGdbDebugPreferenceConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.gdb.launching.LaunchUtils;
-import org.eclipse.cdt.managedbuilder.core.IConfiguration;
-import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
-import org.eclipse.cdt.managedbuilder.macros.IBuildMacroProvider;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
@@ -49,6 +46,22 @@ public class Utils {
 	public static final String PROPERTY_OS_VALUE_LINUX = "linux";//$NON-NLS-1$
 	public static final String PROPERTY_OS_VALUE_MACOSX = "macosx";//$NON-NLS-1$
 
+	public static void addMultiLine(String multiLine, List<String> commandsList) throws CoreException{
+
+		if (multiLine.length() > 0) {
+			multiLine = VariablesPlugin.getDefault()
+					.getStringVariableManager()
+					.performStringSubstitution(multiLine);
+			String[] commandsStr = multiLine.split("\\r?\\n"); //$NON-NLS-1$
+			for (String str : commandsStr) {
+				str = str.trim();
+				if (str.length() > 0) {
+					commandsList.add(str);
+				}
+			}
+		}
+	}
+	
 	public static String composeCommandWithLf(Collection<String> commands) {
 		if (commands.isEmpty())
 			return null;
