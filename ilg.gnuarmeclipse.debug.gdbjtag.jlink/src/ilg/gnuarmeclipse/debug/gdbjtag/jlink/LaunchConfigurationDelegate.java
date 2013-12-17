@@ -208,8 +208,7 @@ public class LaunchConfigurationDelegate extends
 
 		if (doAddServerConsole) {
 
-			// Add the GDB server process object to the launch and create
-			// console
+			// Add the GDB server process to the launch tree
 			newProcess = ((Launch) launch)
 					.addServerProcess(getServerCommandName(config));
 			newProcess.setAttribute(IProcess.ATTR_CMDLINE,
@@ -218,14 +217,33 @@ public class LaunchConfigurationDelegate extends
 			monitor.worked(1);
 		}
 
-		// Add the GDB client process object to the launch.
-		newProcess = ((Launch) launch)
-				.addClientProcess(getClientCommandName(config)); //$NON-NLS-1$
+		{
+			// Add the GDB client process to the launch tree.
+			newProcess = ((Launch) launch)
+					.addClientProcess(getClientCommandName(config)); //$NON-NLS-1$
 
-		newProcess.setAttribute(IProcess.ATTR_CMDLINE, Utils.getGDBPath(config)
-				.toString());
+			newProcess.setAttribute(IProcess.ATTR_CMDLINE,
+					Utils.getGDBPath(config).toString());
 
-		monitor.worked(1);
+			monitor.worked(1);
+		}
+
+		boolean doAddSemihostingConsole = config.getAttribute(
+				ConfigurationAttributes.DO_START_GDB_SERVER,
+				ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT)
+				&& config
+						.getAttribute(
+								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
+								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
+
+		if (doAddSemihostingConsole) {
+
+			// Add the special semihosting and SWV process to the launch tree
+			newProcess = ((Launch) launch)
+					.addSemihostingProcess("Semihosting and SWV");
+
+			monitor.worked(1);
+		}
 
 		// Create and invoke the final launch sequence to setup GDB
 		final IProgressMonitor subMon2 = new SubProgressMonitor(monitor, 4,

@@ -102,8 +102,10 @@ public class Launch extends GdbLaunch {
 			// First set attribute to specify we want to create the gdb process.
 			// Bug 210366
 			Map<String, String> attributes = new HashMap<String, String>();
-			attributes.put(IGdbDebugConstants.PROCESS_TYPE_CREATION_ATTR,
-					IGdbDebugConstants.GDB_PROCESS_CREATION_VALUE);
+			if (true) {
+				attributes.put(IGdbDebugConstants.PROCESS_TYPE_CREATION_ATTR,
+						IGdbDebugConstants.GDB_PROCESS_CREATION_VALUE);
+			}
 			newProcess = DebugPlugin.newProcess(this, serverProc, label,
 					attributes);
 		} catch (InterruptedException e) {
@@ -143,8 +145,10 @@ public class Launch extends GdbLaunch {
 			// First set attribute to specify we want to create the gdb process.
 			// Bug 210366
 			Map<String, String> attributes = new HashMap<String, String>();
-			attributes.put(IGdbDebugConstants.PROCESS_TYPE_CREATION_ATTR,
-					IGdbDebugConstants.GDB_PROCESS_CREATION_VALUE);
+			if (true) {
+				attributes.put(IGdbDebugConstants.PROCESS_TYPE_CREATION_ATTR,
+						IGdbDebugConstants.GDB_PROCESS_CREATION_VALUE);
+			}
 			newProcess = DebugPlugin.newProcess(this, cliProc, label,
 					attributes);
 		} catch (InterruptedException e) {
@@ -162,4 +166,47 @@ public class Launch extends GdbLaunch {
 		return newProcess;
 	}
 
+	public IProcess addSemihostingProcess(String label) throws CoreException {
+		IProcess newProcess = null;
+		try {
+			// Add the server process object to the launch.
+			Process serverProc = getDsfExecutor().submit(
+					new Callable<Process>() {
+						@Override
+						public Process call() throws CoreException {
+							Backend backend = (Backend) fTracker
+									.getService(IGDBBackend.class);
+							if (backend != null) {
+								return backend.getSemihostingProcess();
+							}
+							return null;
+						}
+					}).get();
+
+			// Need to go through DebugPlugin.newProcess so that we can use
+			// the overrideable process factory to allow others to override.
+			// First set attribute to specify we want to create the gdb process.
+			// Bug 210366
+			Map<String, String> attributes = new HashMap<String, String>();
+
+			// Not necessary, to simplify process factory
+			// attributes.put(IGdbDebugConstants.PROCESS_TYPE_CREATION_ATTR,
+			// IGdbDebugConstants.GDB_PROCESS_CREATION_VALUE);
+
+			newProcess = DebugPlugin.newProcess(this, serverProc, label,
+					attributes);
+		} catch (InterruptedException e) {
+			throw new CoreException(new Status(IStatus.ERROR,
+					Activator.PLUGIN_ID, 0,
+					"Interrupted while waiting for get process callable.", e)); //$NON-NLS-1$
+		} catch (ExecutionException e) {
+			throw (CoreException) e.getCause();
+		} catch (RejectedExecutionException e) {
+			throw new CoreException(new Status(IStatus.ERROR,
+					Activator.PLUGIN_ID, 0,
+					"Debugger shut down before launch was completed.", e)); //$NON-NLS-1$
+		}
+
+		return newProcess;
+	}
 }
