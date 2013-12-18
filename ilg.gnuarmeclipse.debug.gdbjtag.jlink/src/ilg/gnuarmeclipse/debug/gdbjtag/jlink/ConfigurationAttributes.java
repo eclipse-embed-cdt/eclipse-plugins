@@ -114,6 +114,8 @@ public interface ConfigurationAttributes {
 	public static final String DO_FIRST_RESET = PREFIX + ".doFirstReset"; //$NON-NLS-1$
 	public static final boolean DO_FIRST_RESET_DEFAULT = true;
 	public static final String DO_FIRST_RESET_COMMAND = "monitor reset ";
+	
+	public static final String HALT_COMMAND = "monitor halt";
 
 	public static final String FIRST_RESET_TYPE = PREFIX + ".firstResetType"; //$NON-NLS-1$
 	public static final String FIRST_RESET_TYPE_DEFAULT = "";

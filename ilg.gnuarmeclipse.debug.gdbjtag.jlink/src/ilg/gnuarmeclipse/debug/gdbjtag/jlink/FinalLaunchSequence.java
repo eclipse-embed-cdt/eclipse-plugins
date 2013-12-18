@@ -219,6 +219,11 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 						ConfigurationAttributes.FIRST_RESET_TYPE,
 						ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
 				commandsList.add(commandStr + resetType);
+				
+				// Although the manual claims that reset always does a
+				// halt, better issue it explicitly
+				commandStr = ConfigurationAttributes.HALT_COMMAND;
+				commandsList.add(commandStr);
 			}
 		}
 
@@ -365,6 +370,11 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 							ConfigurationAttributes.SECOND_RESET_TYPE,
 							ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
 					commandsList.add(commandStr + resetType);
+
+					// Although the manual claims that reset always does a
+					// halt, better issue it explicitly
+					commandStr = ConfigurationAttributes.HALT_COMMAND;
+					commandsList.add(commandStr);
 				}
 			}
 
