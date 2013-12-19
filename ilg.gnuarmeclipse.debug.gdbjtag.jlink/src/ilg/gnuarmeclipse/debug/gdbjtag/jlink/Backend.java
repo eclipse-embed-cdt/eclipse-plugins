@@ -58,7 +58,7 @@ public class Backend extends GDBBackend {
 					ConfigurationAttributes.DO_START_GDB_SERVER,
 					ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
 
-			doStartSemihostingConsole = fLaunchConfiguration
+			doStartSemihostingConsole = doStartGdbServer && fLaunchConfiguration
 					.getAttribute(
 							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
 							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
@@ -600,10 +600,7 @@ public class Backend extends GDBBackend {
 					}
 
 					try {
-						String host = fLaunchConfiguration
-								.getAttribute(
-										IGDBJtagConstants.ATTR_IP_ADDRESS,
-										ConfigurationAttributes.REMOTE_IP_ADDRESS_DEFAULT);
+						String host = "localhost";
 
 						int port = fLaunchConfiguration
 								.getAttribute(

@@ -955,8 +955,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		doGdbServerAllocateConsole.setEnabled(enabled);
 
-		// Keep this one enabled always
-		// doGdbServerAllocateSemihostingConsole.setEnabled(enabled);
+		doGdbServerAllocateSemihostingConsole.setEnabled(enabled);
 
 		// Disable remote target params when the server is started
 		targetIpAddress.setEnabled(!enabled);
