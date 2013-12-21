@@ -27,6 +27,8 @@ import ilg.gnuarmeclipse.debug.gdbjtag.jlink.SharedStorage;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Utils;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
 import org.eclipse.cdt.debug.gdbjtag.ui.GDBJtagImages;
@@ -202,6 +204,18 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			text.setText(str);
 	}
 
+	private void browseSaveButtonSelected(String title, Text text) {
+		FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
+		dialog.setText(title);
+		String str = text.getText().trim();
+		int lastSeparatorIndex = str.lastIndexOf(File.separator);
+		if (lastSeparatorIndex != -1)
+			dialog.setFilterPath(str.substring(0, lastSeparatorIndex));
+		str = dialog.open();
+		if (str != null)
+			text.setText(str);
+	}
+
 	private void variablesButtonSelected(Text text) {
 		StringVariableSelectionDialog dialog = new StringVariableSelectionDialog(
 				getShell());
@@ -279,6 +293,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent e) {
 				updateLaunchConfigurationDialog();
 
+				doConnectToRunningChanged();
 				tabStartup.doConnectToRunningChanged(doConnectToRunning
 						.getSelection());
 			}
@@ -746,7 +761,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		gdbServerLogBrowse.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				browseButtonSelected(Messages
+				browseSaveButtonSelected(Messages
 						.getString("DebuggerTab.gdbServerLogBrowse_Title"),
 						gdbServerLog);
 			}
@@ -962,6 +977,16 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		targetPortNumber.setEnabled(!enabled);
 	}
 
+	private void doConnectToRunningChanged() {
+
+		if (doStartGdbServer.getSelection()) {
+
+			boolean enabled = doConnectToRunning.getSelection();
+
+			doGdbServerInitRegs.setEnabled(!enabled);
+		}
+	}
+
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
@@ -1163,6 +1188,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 
 			doStartGdbServerChanged();
+			doConnectToRunningChanged();
 
 			// Force thread update
 			boolean updateThreadsOnSuspend = configuration
@@ -1552,8 +1578,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	public static String getGdbServerCommandLine(
 			ILaunchConfiguration configuration) {
-		StringBuffer sb = new StringBuffer();
 
+		List<String> lst = new ArrayList<String>();
+		
 		try {
 			if (!configuration.getAttribute(
 					ConfigurationAttributes.DO_START_GDB_SERVER,
@@ -1567,10 +1594,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			if (executable.length() == 0)
 				return null;
 
-			sb.append(executable);
+			lst.add(executable);
 
-			sb.append(" -if ");
-			sb.append(configuration.getAttribute(
+			lst.add("-if");
+			lst.add(configuration.getAttribute(
 					ConfigurationAttributes.INTERFACE,
 					ConfigurationAttributes.INTERFACE_DEFAULT));
 
@@ -1578,32 +1605,32 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.FLASH_DEVICE_NAME,
 					ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT).trim();
 			if (name.length() > 0) {
-				sb.append(" -device ");
-				sb.append(name);
+				lst.add("-device");
+				lst.add(name);
 			}
 
-			sb.append(" -endian ");
-			sb.append(configuration.getAttribute(
+			lst.add("-endian");
+			lst.add(configuration.getAttribute(
 					ConfigurationAttributes.ENDIANNESS,
 					ConfigurationAttributes.ENDIANNESS_DEFAULT));
 
-			sb.append(" -speed ");
-			sb.append(configuration.getAttribute(
+			lst.add("-speed");
+			lst.add(configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_SPEED,
 					ConfigurationAttributes.GDB_SERVER_SPEED_DEFAULT));
 
-			sb.append(" -port ");
-			sb.append(Integer.toString(configuration.getAttribute(
+			lst.add("-port");
+			lst.add(Integer.toString(configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
 					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
 
-			sb.append(" -swoport ");
-			sb.append(Integer.toString(configuration.getAttribute(
+			lst.add("-swoport");
+			lst.add(Integer.toString(configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_SWO_PORT_NUMBER,
 					ConfigurationAttributes.GDB_SERVER_SWO_PORT_NUMBER_DEFAULT)));
 
-			sb.append(" -semiport ");
-			sb.append(Integer.toString(configuration
+			lst.add("-telnetport");
+			lst.add(Integer.toString(configuration
 					.getAttribute(
 							ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 							ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
@@ -1612,30 +1639,35 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.getAttribute(
 							ConfigurationAttributes.DO_GDB_SERVER_VERIFY_DOWNLOAD,
 							ConfigurationAttributes.DO_GDB_SERVER_VERIFY_DOWNLOAD_DEFAULT)) {
-				sb.append(" -vd ");
+				lst.add("-vd");
 			}
 
-			if (!configuration.getAttribute(
+			if (configuration.getAttribute(
 					ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
 					ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT)) {
+				lst.add("-noreset");
+				lst.add("-noir");
+			} else {
 				if (configuration
 						.getAttribute(
 								ConfigurationAttributes.DO_GDB_SERVER_INIT_REGS,
 								ConfigurationAttributes.DO_GDB_SERVER_INIT_REGS_DEFAULT)) {
-					sb.append(" -ir ");
+					lst.add("-ir");
+				} else {
+					lst.add("-noir");
 				}
 			}
 
 			if (configuration.getAttribute(
 					ConfigurationAttributes.DO_GDB_SERVER_LOCAL_ONLY,
 					ConfigurationAttributes.DO_GDB_SERVER_LOCAL_ONLY_DEFAULT)) {
-				sb.append(" -localhostonly ");
+				lst.add("-localhostonly");
 			}
 
 			if (configuration.getAttribute(
 					ConfigurationAttributes.DO_GDB_SERVER_SILENT,
 					ConfigurationAttributes.DO_GDB_SERVER_SILENT_DEFAULT)) {
-				sb.append(" -silent ");
+				lst.add("-silent");
 			}
 
 			String logFile = configuration.getAttribute(
@@ -1643,21 +1675,27 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT).trim();
 
 			if (logFile.length() > 0) {
-				sb.append(" -log ");
-				sb.append(logFile);
+				lst.add("-log");
+				lst.add(Utils.escapeWhitespaces(logFile));
 			}
 
 			String other = configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_OTHER,
 					ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT).trim();
 			if (other.length() > 0) {
-				sb.append(other);
+				lst.add(other);
 			}
 		} catch (CoreException e) {
 			Activator.log(e);
 			return null;
 		}
 
+		StringBuffer sb = new StringBuffer();
+		for (String item: lst) {
+		    sb.append(item);
+		    sb.append(' ');
+		}
+		
 		String str = null;
 		try {
 			str = VariablesPlugin.getDefault().getStringVariableManager()
