@@ -58,12 +58,25 @@ SysTick_Handler(void);
 
 /* ----- LED definitions --------------------------------------------------- */
 
-/* STM32F4DISCOVERY definitions (the GREEN LED) */
 /* Adjust them for your own board. */
+
+#if defined(BOARD_OLIMEX_STM32_E407)
+
+/* STM32-E407 definitions (the GREEN LED) */
+
+#define BLINK_PORT      GPIOC
+#define BLINK_PIN       13
+#define BLINK_RCC_BIT   RCC_AHB1Periph_GPIOC
+
+#else
+
+/* STM32F4DISCOVERY definitions (the GREEN LED) */
 
 #define BLINK_PORT      GPIOD
 #define BLINK_PIN       12
 #define BLINK_RCC_BIT   RCC_AHB1Periph_GPIOD
+
+#endif
 
 #define BLINK_TICKS     SYSTICK_FREQUENCY_HZ/2
 
