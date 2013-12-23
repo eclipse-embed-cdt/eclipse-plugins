@@ -46,11 +46,11 @@ public class Utils {
 	public static final String PROPERTY_OS_VALUE_LINUX = "linux";//$NON-NLS-1$
 	public static final String PROPERTY_OS_VALUE_MACOSX = "macosx";//$NON-NLS-1$
 
-	public static void addMultiLine(String multiLine, List<String> commandsList) throws CoreException{
+	public static void addMultiLine(String multiLine, List<String> commandsList)
+			throws CoreException {
 
 		if (multiLine.length() > 0) {
-			multiLine = VariablesPlugin.getDefault()
-					.getStringVariableManager()
+			multiLine = VariablesPlugin.getDefault().getStringVariableManager()
 					.performStringSubstitution(multiLine);
 			String[] commandsStr = multiLine.split("\\r?\\n"); //$NON-NLS-1$
 			for (String str : commandsStr) {
@@ -61,7 +61,7 @@ public class Utils {
 			}
 		}
 	}
-	
+
 	public static String composeCommandWithLf(Collection<String> commands) {
 		if (commands.isEmpty())
 			return null;
@@ -81,17 +81,22 @@ public class Utils {
 	}
 
 	static public String escapeWhitespaces(String path) {
+		path = path.trim();
 		// Escape the spaces in the path/filename if it has any
 		String[] segments = path.split("\\s"); //$NON-NLS-1$
 		if (segments.length > 1) {
-			StringBuffer escapedPath = new StringBuffer();
-			for (int index = 0; index < segments.length; ++index) {
-				escapedPath.append(segments[index]);
-				if (index + 1 < segments.length) {
-					escapedPath.append("\\ "); //$NON-NLS-1$
+			if (isWindows()) {
+				return "\"" + path + "\"";
+			} else {
+				StringBuffer escapedPath = new StringBuffer();
+				for (int index = 0; index < segments.length; ++index) {
+					escapedPath.append(segments[index]);
+					if (index + 1 < segments.length) {
+						escapedPath.append("\\ "); //$NON-NLS-1$
+					}
 				}
+				return escapedPath.toString().trim();
 			}
-			return escapedPath.toString().trim();
 		} else {
 			return path;
 		}
