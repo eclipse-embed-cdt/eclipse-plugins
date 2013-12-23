@@ -439,7 +439,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		enableSemihosting.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				enableSemihostingChanged();
+				doEnableSemihostingChanged();
 				scheduleUpdateJob();
 				// updateLaunchConfigurationDialog();
 			}
@@ -463,7 +463,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		enableSwo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				enableSwoChanged();
+				doEnableSwoChanged();
 				scheduleUpdateJob();
 				// updateLaunchConfigurationDialog();
 			}
@@ -492,7 +492,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		firstResetSpeed.setEnabled(enabled);
 	}
 
-	private void enableSemihostingChanged() {
+	private void doEnableSemihostingChanged() {
 
 		boolean enabled = enableSemihosting.getSelection();
 
@@ -500,7 +500,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		semihostingGdbClient.setEnabled(enabled);
 	}
 
-	private void enableSwoChanged() {
+	private void doEnableSwoChanged() {
 
 		boolean enabled = enableSwo.getSelection();
 
@@ -984,6 +984,12 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		secondResetType.setEnabled(!flag);
 	}
 
+	// flag is true when interface is SWD
+	public void doInterfaceSwdChanged(boolean flag){
+		
+		enableSwo.setEnabled(flag);
+	}
+	
 	@Override
 	public boolean isValid(ILaunchConfiguration launchConfig) {
 		if (!super.isValid(launchConfig))
@@ -1236,8 +1242,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			}
 
 			doFirstResetChanged();
-			enableSemihostingChanged();
-			enableSwoChanged();
+			doEnableSemihostingChanged();
+			doEnableSwoChanged();
 
 			doSecondResetChanged();
 			loadImageChanged();

@@ -223,7 +223,7 @@ public class LaunchConfigurationDelegate extends
 					.addClientProcess(getClientCommandName(config)); //$NON-NLS-1$
 
 			newProcess.setAttribute(IProcess.ATTR_CMDLINE,
-					Utils.getGDBPath(config).toString());
+					TabDebugger.getGdbClientCommand(config));
 
 			monitor.worked(1);
 		}
@@ -308,12 +308,11 @@ public class LaunchConfigurationDelegate extends
 	}
 
 	private String getClientCommandName(ILaunchConfiguration config) {
-		String fullCommand = Utils.getGDBPath(config).toString();
+		String fullCommand = TabDebugger.getGdbClientCommand(config);
 		if (fullCommand == null)
 			return null;
 
 		String parts[] = fullCommand.trim().split("" + Path.SEPARATOR);
 		return parts[parts.length - 1];
 	}
-
 }

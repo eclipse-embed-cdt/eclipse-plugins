@@ -219,7 +219,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 						ConfigurationAttributes.FIRST_RESET_TYPE,
 						ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
 				commandsList.add(commandStr + resetType);
-				
+
 				// Although the manual claims that reset always does a
 				// halt, better issue it explicitly
 				commandStr = ConfigurationAttributes.HALT_COMMAND;
@@ -292,34 +292,41 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 				commandsList.add(commandStr);
 			}
 
-			if (CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.ENABLE_SWO,
-					ConfigurationAttributes.ENABLE_SWO_DEFAULT)) {
-				String commandStr = ConfigurationAttributes.ENABLE_SWO_COMMAND;
-				commandStr += CDebugUtils
-						.getAttribute(
-								fAttributes,
-								ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
-								ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
-				commandStr += " ";
-				commandStr += CDebugUtils
-						.getAttribute(
-								fAttributes,
-								ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
-								ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
-				commandStr += " ";
-				commandStr += CDebugUtils
-						.getAttribute(
-								fAttributes,
-								ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
-								ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT);
-				commandStr += " 0";
+			String attr;
+			attr = CDebugUtils.getAttribute(fAttributes,
+					ConfigurationAttributes.INTERFACE,
+					ConfigurationAttributes.INTERFACE_SWD);
+			if (ConfigurationAttributes.INTERFACE_SWD.equals(attr)) {
 
-				commandsList.add(commandStr);
+				if (CDebugUtils.getAttribute(fAttributes,
+						ConfigurationAttributes.ENABLE_SWO,
+						ConfigurationAttributes.ENABLE_SWO_DEFAULT)) {
+					String commandStr = ConfigurationAttributes.ENABLE_SWO_COMMAND;
+					commandStr += CDebugUtils
+							.getAttribute(
+									fAttributes,
+									ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
+									ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
+					commandStr += " ";
+					commandStr += CDebugUtils
+							.getAttribute(
+									fAttributes,
+									ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
+									ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
+					commandStr += " ";
+					commandStr += CDebugUtils
+							.getAttribute(
+									fAttributes,
+									ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
+									ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT);
+					commandStr += " 0";
 
-				// commandStr =
-				// ConfigurationAttributes.ENABLE_SWO_GETSPEEDINFO_COMMAND;
-				// commandsList.add(commandStr);
+					commandsList.add(commandStr);
+
+					// commandStr =
+					// ConfigurationAttributes.ENABLE_SWO_GETSPEEDINFO_COMMAND;
+					// commandsList.add(commandStr);
+				}
 			}
 
 			String otherInits = CDebugUtils.getAttribute(fAttributes,
@@ -334,7 +341,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					: ConfigurationAttributes.ENABLE_FLASH_DOWNLOAD_COMMAND;
 
 			otherInits += "\n" + flashDownload;
-			
+
 			Utils.addMultiLine(otherInits, commandsList);
 
 			if (commandsList.size() > 0) {

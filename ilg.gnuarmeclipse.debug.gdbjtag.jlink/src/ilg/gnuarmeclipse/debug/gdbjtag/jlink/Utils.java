@@ -1,5 +1,7 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.TabDebugger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -151,14 +153,17 @@ public class Utils {
 	public static String getGDBVersion(final ILaunchConfiguration configuration)
 			throws CoreException {
 		final Process process;
-		String cmd = getGDBPath(configuration).toOSString() + " --version"; //$NON-NLS-1$ 
+		String[] cmdArray = new String[2];
+		cmdArray[0] = TabDebugger.getGdbClientCommand(configuration);
+		cmdArray[1] = "--version";
+
 		try {
-			process = ProcessFactory.getFactory().exec(cmd,
+			process = ProcessFactory.getFactory().exec(cmdArray,
 					getLaunchEnvironment(configuration));
 		} catch (IOException e) {
 			throw new DebugException(new Status(IStatus.ERROR,
 					Activator.PLUGIN_ID, DebugException.REQUEST_FAILED,
-					"Error while launching command: " + cmd, e.getCause()));//$NON-NLS-1$
+					"Error while launching command: " + Utils.join(cmdArray, " "), e.getCause()));//$NON-NLS-1$
 		}
 
 		// Start a timeout job to make sure we don't get stuck waiting for
@@ -197,7 +202,7 @@ public class Utils {
 							IStatus.ERROR,
 							Activator.PLUGIN_ID,
 							DebugException.REQUEST_FAILED,
-							"Error reading GDB STDOUT after sending: " + cmd, e.getCause()));//$NON-NLS-1$
+							"Error reading GDB STDOUT after sending: " + cmdArray, e.getCause()));//$NON-NLS-1$
 		} finally {
 			// If we get here we are obviously not stuck so we can cancel the
 			// timeout job.
@@ -225,7 +230,7 @@ public class Utils {
 							IStatus.ERROR,
 							Activator.PLUGIN_ID,
 							DebugException.REQUEST_FAILED,
-							"Could not determine GDB version after sending: " + cmd, null));//$NON-NLS-1$
+							"Could not determine GDB version after sending: " + cmdArray, null));//$NON-NLS-1$
 		}
 		return gdbVersion;
 	}
@@ -335,6 +340,16 @@ public class Utils {
 			Activator.log(e);
 		}
 		return value;
+	}
+
+	public static String join(String[] strArray, String joiner) {
+
+		StringBuffer sb = new StringBuffer();
+		for (String item : strArray) {
+			sb.append(item);
+			sb.append(joiner);
+		}
+		return sb.toString().trim();
 	}
 
 }

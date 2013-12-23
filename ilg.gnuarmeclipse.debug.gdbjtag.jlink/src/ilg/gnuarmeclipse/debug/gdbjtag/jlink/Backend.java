@@ -6,13 +6,11 @@ import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
-import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
 import org.eclipse.cdt.dsf.concurrent.DsfRunnable;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
 import org.eclipse.cdt.dsf.concurrent.ImmediateRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.Sequence;
-import org.eclipse.cdt.dsf.gdb.service.GDBBackend;
 import org.eclipse.cdt.dsf.gdb.service.command.GDBControl.InitializationShutdownStep;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
@@ -25,7 +23,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 
-public class Backend extends GDBBackend {
+public class Backend extends Backend0 {
 
 	private final ILaunchConfiguration fLaunchConfiguration;
 
@@ -75,12 +73,12 @@ public class Backend extends GDBBackend {
 		return fSemihostingProcess;
 	}
 
-	protected IPath getGDBPath() {
-		return Utils.getGDBPath(fLaunchConfiguration);
-	}
+//	protected IPath getGDBPath() {
+//		return Utils.getGDBPath(fLaunchConfiguration);
+//	}
 
 	// do not rename!
-	protected Process launchGDBProcess(String commandLine) throws CoreException {
+/*	protected Process launchGDBProcess(String commandLine) throws CoreException {
 		Process proc = null;
 		try {
 			proc = ProcessFactory.getFactory().exec(commandLine,
@@ -93,6 +91,7 @@ public class Backend extends GDBBackend {
 
 		return proc;
 	}
+*/
 
 	protected Process launchSemihostingProcess(String host, int port)
 			throws CoreException {
@@ -289,11 +288,11 @@ public class Backend extends GDBBackend {
 						return Status.OK_STATUS;
 					}
 
-					String commandLine = TabDebugger
-							.getGdbServerCommandLine(fLaunchConfiguration);
+					String[] commandLineArray = TabDebugger
+							.getGdbServerCommandLineArray(fLaunchConfiguration);
 
 					try {
-						fServerProcess = launchGDBProcess(commandLine);
+						fServerProcess = launchGDBProcess(commandLineArray);
 						// Need to do this on the executor for thread-safety
 						getExecutor().submit(new DsfRunnable() {
 							@Override

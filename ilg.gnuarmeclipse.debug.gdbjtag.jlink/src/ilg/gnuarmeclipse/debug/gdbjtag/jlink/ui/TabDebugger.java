@@ -30,6 +30,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
 import org.eclipse.cdt.debug.gdbjtag.ui.GDBJtagImages;
 import org.eclipse.cdt.debug.mi.core.IMILaunchConfigurationConstants;
@@ -37,8 +38,11 @@ import org.eclipse.cdt.debug.mi.core.MIPlugin;
 import org.eclipse.cdt.debug.mi.core.command.factories.CommandFactoryDescriptor;
 import org.eclipse.cdt.debug.mi.core.command.factories.CommandFactoryManager;
 import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
+import org.eclipse.cdt.dsf.gdb.IGdbDebugPreferenceConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.IPreferencesService;
@@ -277,6 +281,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		interfaceSwd.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+
+				tabStartup.doInterfaceSwdChanged(true);
 				updateLaunchConfigurationDialog();
 			}
 		});
@@ -284,6 +290,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		interfaceJtag.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+
+				tabStartup.doInterfaceSwdChanged(false);
 				updateLaunchConfigurationDialog();
 			}
 		});
@@ -997,12 +1005,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						ConfigurationAttributes.INTERFACE,
 						ConfigurationAttributes.INTERFACE_DEFAULT);
 				if (ConfigurationAttributes.INTERFACE_SWD
-						.equals(physicalInterface))
+						.equals(physicalInterface)) {
 					interfaceSwd.setSelection(true);
-				else if (ConfigurationAttributes.INTERFACE_JTAG
-						.equals(physicalInterface))
+					tabStartup.doInterfaceSwdChanged(true);
+				} else if (ConfigurationAttributes.INTERFACE_JTAG
+						.equals(physicalInterface)) {
 					interfaceJtag.setSelection(true);
-				else {
+					tabStartup.doInterfaceSwdChanged(false);
+				} else {
 					String message = "unknown interface " + physicalInterface
 							+ ", using swd";
 					Activator.log(Status.ERROR, message);
@@ -1558,40 +1568,50 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			executable = configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
 					getGdbServerExecutableDefault());
-			executable = Utils.escapeWhitespaces(executable).trim();
+			// executable = Utils.escapeWhitespaces(executable).trim();
+			executable = executable.trim();
 			if (executable.length() == 0)
 				return null;
+
+			executable = VariablesPlugin.getDefault()
+					.getStringVariableManager()
+					.performStringSubstitution(executable, false).trim();
+
+			ICConfigurationDescription buildConfig = Utils
+					.getBuildConfig(configuration);
+			if (buildConfig != null) {
+				executable = Utils.resolveAll(executable, buildConfig);
+			}
+
 		} catch (CoreException e) {
 			Activator.log(e);
 			return null;
 		}
 
-		String str = null;
-		try {
-			str = VariablesPlugin.getDefault().getStringVariableManager()
-					.performStringSubstitution(executable, false);
-		} catch (CoreException e) {
-		}
-
-		return str;
+		return executable;
 	}
 
 	public static String getGdbServerCommandLine(
 			ILaunchConfiguration configuration) {
 
+		String cmdLineArray[] = getGdbServerCommandLineArray(configuration);
+
+		return Utils.join(cmdLineArray, " ");
+	}
+
+	public static String[] getGdbServerCommandLineArray(
+			ILaunchConfiguration configuration) {
+
 		List<String> lst = new ArrayList<String>();
-		
+
 		try {
 			if (!configuration.getAttribute(
 					ConfigurationAttributes.DO_START_GDB_SERVER,
 					ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT))
 				return null;
 
-			String executable = configuration.getAttribute(
-					ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
-					getGdbServerExecutableDefault());
-			executable = Utils.escapeWhitespaces(executable).trim();
-			if (executable.length() == 0)
+			String executable = getGdbServerCommand(configuration);
+			if (executable == null || executable.length() == 0)
 				return null;
 
 			lst.add(executable);
@@ -1606,7 +1626,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT).trim();
 			if (name.length() > 0) {
 				lst.add("-device");
-				lst.add(name);
+				// lst.add(name);
+				lst.add(VariablesPlugin.getDefault().getStringVariableManager()
+						.performStringSubstitution(name, false));
 			}
 
 			lst.add("-endian");
@@ -1676,7 +1698,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			if (logFile.length() > 0) {
 				lst.add("-log");
-				lst.add(Utils.escapeWhitespaces(logFile));
+
+				// lst.add(Utils.escapeWhitespaces(logFile));
+				lst.add(VariablesPlugin.getDefault().getStringVariableManager()
+						.performStringSubstitution(logFile, false));
 			}
 
 			String other = configuration.getAttribute(
@@ -1685,25 +1710,71 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			if (other.length() > 0) {
 				lst.add(other);
 			}
+
 		} catch (CoreException e) {
 			Activator.log(e);
 			return null;
 		}
 
-		StringBuffer sb = new StringBuffer();
-		for (String item: lst) {
-		    sb.append(item);
-		    sb.append(' ');
-		}
-		
-		String str = null;
+		return lst.toArray(new String[0]);
+	}
+
+	// --------------
+
+	public static String getGdbClientCommand(ILaunchConfiguration configuration) {
+
+		String executable = null;
 		try {
-			str = VariablesPlugin.getDefault().getStringVariableManager()
-					.performStringSubstitution(sb.toString(), false);
+			String defaultGdbCommand = Platform
+					.getPreferencesService()
+					.getString(
+							GdbPlugin.PLUGIN_ID,
+							IGdbDebugPreferenceConstants.PREF_DEFAULT_GDB_COMMAND,
+							IGDBLaunchConfigurationConstants.DEBUGGER_DEBUG_NAME_DEFAULT,
+							null);
+
+			executable = configuration.getAttribute(
+					IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
+					defaultGdbCommand);
+			executable = VariablesPlugin.getDefault()
+					.getStringVariableManager()
+					.performStringSubstitution(executable, false).trim();
+
+			ICConfigurationDescription buildConfig = Utils
+					.getBuildConfig(configuration);
+			if (buildConfig != null) {
+				executable = Utils.resolveAll(executable, buildConfig);
+			}
+
 		} catch (CoreException e) {
+			Activator.log(e);
+			return null;
 		}
 
-		return str;
+		return executable;
+	}
+
+	public static String[] getGdbClientCommandLineArray(
+			ILaunchConfiguration configuration) {
+
+		List<String> lst = new ArrayList<String>();
+
+		String executable = getGdbClientCommand(configuration);
+		if (executable == null || executable.length() == 0)
+			return null;
+
+		lst.add(executable);
+
+		lst.add("--interpreter"); //$NON-NLS-1$
+		// We currently work with MI version 2. Don't use just 'mi' because
+		// it
+		// points to the latest MI version, while we want mi2 specifically.
+		lst.add("mi2"); //$NON-NLS-1$
+		// Don't read the gdbinit file here. It is read explicitly in
+		// the LaunchSequence to make it easier to customize.
+		lst.add("--nx"); //$NON-NLS-1$
+
+		return lst.toArray(new String[0]);
 	}
 
 }
