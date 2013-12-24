@@ -51,9 +51,9 @@ echo "Rsync-ing SourceForge $SF_FOLDER$TEST site"
 
 if [ "$TEST" = "-test" ]
 then
-  echo "Published on the test site"
+  echo "Published on the test site."
 else
-  echo "Published on the main site. Don't forget to publish the archive too!"
+  echo "Published on the main site."
 fi
 
 if [ -f *-SNAPSHOT.zip ]
@@ -68,6 +68,12 @@ then
     mkdir -p $ARCHIVE_FOLDER
   fi
   mv -fv $ARCHIVE_PREFIX-SNAPSHOT.zip $ARCHIVE_FOLDER/$ARCHIVE_PREFIX-$NUMDATE.zip
+fi
+
+if [ "$TEST" != "-test" ]
+then
+  echo "Don't forget to publish the archive too!"
+  echo "It is available from $ARCHIVE_FOLDER/$ARCHIVE_PREFIX-$NUMDATE.zip"
 fi
 
 
