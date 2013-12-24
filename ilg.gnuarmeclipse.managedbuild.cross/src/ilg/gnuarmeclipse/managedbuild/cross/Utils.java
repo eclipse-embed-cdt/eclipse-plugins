@@ -29,10 +29,18 @@ public class Utils {
 			+ ".staticLib";
 
 	private static final String PROPERTY_OS_NAME = "os.name"; //$NON-NLS-1$
+	public static final String PROPERTY_OS_VALUE_WINDOWS = "windows";//$NON-NLS-1$
+	public static final String PROPERTY_OS_VALUE_LINUX = "linux";//$NON-NLS-1$
+	public static final String PROPERTY_OS_VALUE_MACOSX = "macosx";//$NON-NLS-1$
 
 	public static boolean isPlatform(String sPlatform) {
 		return (System.getProperty(PROPERTY_OS_NAME).toLowerCase()
 				.startsWith(sPlatform));
+	}
+
+	static public boolean isWindows() {
+		return System.getProperty(PROPERTY_OS_NAME).toLowerCase()
+				.startsWith(PROPERTY_OS_VALUE_WINDOWS);
 	}
 
 	/**
@@ -98,6 +106,31 @@ public class Utils {
 		// one
 		IOption newOption = config.setOption(toolchain, option, "?!");
 		return config.setOption(toolchain, newOption, value);
+	}
+
+	static public String escapeWhitespaces(String path) {
+		path = path.trim();
+		// Escape the spaces in the path/filename if it has any
+		String[] segments = path.split("\\s"); //$NON-NLS-1$
+		if (segments.length > 1) {
+			if (isWindows()) {
+				if (path.startsWith("\"") || path.startsWith("'"))
+					return path;
+					
+				return "\"" + path + "\"";
+			} else {
+				StringBuffer escapedPath = new StringBuffer();
+				for (int index = 0; index < segments.length; ++index) {
+					escapedPath.append(segments[index]);
+					if (index + 1 < segments.length) {
+						escapedPath.append("\\ "); //$NON-NLS-1$
+					}
+				}
+				return escapedPath.toString().trim();
+			}
+		} else {
+			return path;
+		}
 	}
 
 }
