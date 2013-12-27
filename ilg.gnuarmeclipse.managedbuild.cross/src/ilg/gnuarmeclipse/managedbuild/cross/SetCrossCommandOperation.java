@@ -115,7 +115,7 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 		IOption option;
 		IToolChain toolchain = config.getToolChain();
 
-		updateOptions(config, toolchainIndex);
+		ToolchainSettingsTab.setOptionsForToolchain(config, toolchainIndex);
 
 		String path = (String) MBSCustomPageManager.getPageProperty(
 				SetCrossCommandWizardPage.PAGE_ID,
@@ -129,123 +129,5 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 		ProjectStorage.putPath(config, path);
 	}
 
-	public static void updateOptions(IConfiguration config, int toolchainIndex)
-			throws BuildException {
-
-		boolean m_isExecutable;
-		boolean m_isStaticLibrary;
-
-		IBuildPropertyValue propertyValue = config.getBuildArtefactType();
-		if (Utils.BUILD_ARTEFACT_TYPE_EXE.equals(propertyValue.getId()))
-			m_isExecutable = true;
-		else
-			m_isExecutable = false;
-
-		if (Utils.BUILD_ARTEFACT_TYPE_STATICLIB.equals(propertyValue.getId()))
-			m_isStaticLibrary = true;
-		else
-			m_isStaticLibrary = false;
-
-		IToolChain toolchain = config.getToolChain();
-
-		IOption option;
-		String val;
-
-		ToolchainDefinition td = ToolchainDefinition
-				.getToolchain(toolchainIndex);
-
-		// Do NOT use ManagedBuildManager.setOption() to avoid sending
-		// events to the option. Also do not use option.setValue()
-		// since this does not propagate notifications and the
-		// values are not saved to .cproject.
-		option = toolchain
-				.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); //$NON-NLS-1$
-		config.setOption(toolchain, option, td.getName());
-
-		option = toolchain.getOptionBySuperClassId(Option.OPTION_ARCHITECTURE); //$NON-NLS-1$
-		// compose the architecture ID
-		String sArchitecture = td.getArchitecture();
-		val = Option.OPTION_ARCHITECTURE + "." + sArchitecture;
-		Utils.setOptionForced(config, toolchain, option, val);
-
-		if ("arm".equals(sArchitecture)) {
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_ARM_TARGET_FAMILY);
-			Utils.forceOptionRewrite(config, toolchain, option);
-
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_ARM_TARGET_INSTRUCTIONSET);
-			Utils.forceOptionRewrite(config, toolchain, option);
-		} else if ("aarch64".equals(sArchitecture)) {
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_AARCH64_TARGET_FAMILY);
-			Utils.setOptionForced(config, toolchain, option,
-					Option.OPTION_AARCH64_MCPU_GENERIC);
-
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_AARCH64_FEATURE_SIMD);
-			Utils.setOptionForced(config, toolchain, option,
-					Option.OPTION_AARCH64_FEATURE_SIMD_ENABLED);
-
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_AARCH64_CMODEL);
-			Utils.setOptionForced(config, toolchain, option,
-					Option.OPTION_AARCH64_CMODEL_SMALL);
-		}
-
-		option = toolchain
-				.getOptionBySuperClassId(Option.OPTION_COMMAND_PREFIX); //$NON-NLS-1$
-		config.setOption(toolchain, option, td.getPrefix());
-
-		option = toolchain
-				.getOptionBySuperClassId(Option.OPTION_COMMAND_SUFFIX); //$NON-NLS-1$
-		config.setOption(toolchain, option, td.getSuffix());
-
-		option = toolchain.getOptionBySuperClassId(Option.OPTION_COMMAND_C); //$NON-NLS-1$
-		config.setOption(toolchain, option, td.getCmdC());
-
-		option = toolchain.getOptionBySuperClassId(Option.OPTION_COMMAND_CPP); //$NON-NLS-1$
-		config.setOption(toolchain, option, td.getCmdCpp());
-
-		if (m_isStaticLibrary) {
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_COMMAND_AR); //$NON-NLS-1$
-			config.setOption(toolchain, option, td.getCmdAr());
-		}
-
-		if (m_isExecutable) {
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_COMMAND_OBJCOPY); //$NON-NLS-1$
-			config.setOption(toolchain, option, td.getCmdObjcopy());
-
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_COMMAND_OBJDUMP); //$NON-NLS-1$
-			config.setOption(toolchain, option, td.getCmdObjdump());
-
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_COMMAND_SIZE); //$NON-NLS-1$
-			config.setOption(toolchain, option, td.getCmdSize());
-		}
-
-		option = toolchain.getOptionBySuperClassId(Option.OPTION_COMMAND_MAKE); //$NON-NLS-1$
-		config.setOption(toolchain, option, td.getCmdMake());
-
-		option = toolchain.getOptionBySuperClassId(Option.OPTION_COMMAND_RM); //$NON-NLS-1$
-		config.setOption(toolchain, option, td.getCmdRm());
-
-		if (m_isExecutable) {
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_CREATEFLASH); //$NON-NLS-1$
-			config.setOption(toolchain, option, true);
-
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_CREATELISTING); //$NON-NLS-1$
-			config.setOption(toolchain, option, true);
-
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_PRINTSIZE); //$NON-NLS-1$
-			config.setOption(toolchain, option, true);
-		}
-	}
 
 }
