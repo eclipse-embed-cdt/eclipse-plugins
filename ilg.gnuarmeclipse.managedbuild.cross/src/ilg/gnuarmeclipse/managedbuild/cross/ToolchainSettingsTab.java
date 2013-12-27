@@ -87,11 +87,11 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 	@Override
 	public void createControls(Composite parent) {
 
-		if (!isThisPlugin())
-			return;
+		// if (!isThisPlugin())
+		// return;
 
-		if (!page.isForProject())
-			return;
+		//if (!page.isForProject())
+		//	return;
 
 		super.createControls(parent);
 
@@ -165,13 +165,17 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 		String sSelectedArchitecture = Option.getOptionStringValue(m_config,
 				Option.OPTION_ARCHITECTURE);
 		int index;
-		if (sSelectedArchitecture.endsWith("." + Option.ARCHITECTURE_ARM))
-			index = 0;
-		else if (sSelectedArchitecture.endsWith("."
-				+ Option.ARCHITECTURE_AARCH64))
-			index = 1;
-		else
+		try {
+			if (sSelectedArchitecture.endsWith("." + Option.ARCHITECTURE_ARM))
+				index = 0;
+			else if (sSelectedArchitecture.endsWith("."
+					+ Option.ARCHITECTURE_AARCH64))
+				index = 1;
+			else
+				index = 0; // default is ARM
+		} catch (NullPointerException e) {
 			index = 0; // default is ARM
+		}
 		m_architectureCombo.setText(ToolchainDefinition.getArchitecture(index));
 
 		// m_toolchainCombo.addSelectionListener(new SelectionAdapter() {
@@ -557,7 +561,7 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 
 			if (newValue != null && !newValue.equals(oldValue)) {
 				config.setOption(toolchain, option, newValue);
-				
+
 				// propagate is expensive, run it only if needed
 				propagateCommandRmUpdate(config);
 			}
