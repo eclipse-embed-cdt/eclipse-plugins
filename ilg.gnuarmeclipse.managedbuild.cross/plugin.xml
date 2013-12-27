@@ -3099,6 +3099,10 @@
                   id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker.output"
                   superClass="cdt.managedbuild.tool.gnu.c.linker.output">
             </outputType>
+            <outputType
+                  id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.linker.output.so"
+                  superClass="cdt.managedbuild.tool.gnu.c.linker.output.so">
+            </outputType>
             <optionCategory
                   id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.linker.general"
                   name="%optionCategory.general">
@@ -3268,6 +3272,10 @@
                   id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker.output"
                   superClass="cdt.managedbuild.tool.gnu.cpp.linker.output">
             </outputType>
+            <outputType
+                  id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker.output.so"
+                  superClass="cdt.managedbuild.tool.gnu.cpp.linker.output.so">
+            </outputType>
             <optionCategory
                   id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.general"
                   name="%optionCategory.general">
@@ -3409,6 +3417,7 @@
 
          <tool
                command="${cross_prefix}${cross_objcopy}${cross_suffix}"
+               commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT}"
                id="ilg.gnuarmeclipse.managedbuild.cross.tool.createflash"
                isAbstract="false"
                name="%tool.flash"
@@ -3427,12 +3436,6 @@
                   </checkOption>
                </and>
             </enablement>
-            <option
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.createflash.InFileName"
-                  resourceFilter="all"
-                  value="&quot;${BuildArtifactFileName}&quot;"
-                  valueType="string">
-            </option>
             <inputType
                   id="ilg.gnuarmeclipse.managedbuild.cross.createflash.input"
                   multipleOfType="true"
@@ -3515,9 +3518,16 @@
                   name="%option.flash.other"
                   valueType="string">
             </option>
+            <option
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.createflash.InFileName"
+                  resourceFilter="all"
+                  value="&quot;${BuildArtifactFileName}&quot;"
+                  valueType="string">
+            </option>
          </tool>
          <tool
                command="${cross_prefix}${cross_objdump}${cross_suffix}"
+               commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT}"
                id="ilg.gnuarmeclipse.managedbuild.cross.tool.createlisting"
                isAbstract="false"
                name="%tool.listing"
@@ -3537,12 +3547,6 @@
                   </checkOption>
                </and>
             </enablement>
-            <option
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.InFileName"
-                  resourceFilter="all"
-                  value="&quot;${BuildArtifactFileName}&quot;"
-                  valueType="string">
-            </option>
             <inputType
                   id="ilg.gnuarmeclipse.managedbuild.cross.createlisting.input"
                   multipleOfType="true"
@@ -3691,10 +3695,16 @@
                   name="%option.listing.other"
                   valueType="string">
             </option>
+            <option
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.InFileName"
+                  resourceFilter="all"
+                  value="&quot;${BuildArtifactFileName}&quot;"
+                  valueType="string">
+            </option>
          </tool>
          <tool
                command="${cross_prefix}${cross_size}${cross_suffix}"
-               commandLinePattern="${COMMAND} ${INPUTS} ${FLAGS}"
+               commandLinePattern="${COMMAND} ${FLAGS}"
                id="ilg.gnuarmeclipse.managedbuild.cross.tool.printsize"
                isAbstract="false"
                name="%tool.size"
@@ -3713,6 +3723,19 @@
                   </checkOption>
                </and>
             </enablement>
+            <inputType
+                  id="ilg.gnuarmeclipse.managedbuild.cross.printsize.input"
+                  multipleOfType="true"
+                  option="ilg.gnuarmeclipse.managedbuild.cross.option.printsize.InFileName"
+                  sources="elf">
+            </inputType>
+            <outputType
+                  buildVariable="SECONDARY_SIZE"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.printsize.output"
+                  outputNames="${BuildArtifactFileBaseName}.siz"
+                  outputs="siz"
+                  primaryOutput="false">
+            </outputType>
             <optionCategory
                   id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.printsize.general"
                   name="%optionCategory.general">
@@ -3772,19 +3795,6 @@
                   name="%option.print.other"
                   valueType="string">
             </option>
-            <outputType
-                  buildVariable="SECONDARY_SIZE"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.printsize.output"
-                  outputNames="${BuildArtifactFileBaseName}.siz"
-                  outputs="siz"
-                  primaryOutput="false">
-            </outputType>
-            <inputType
-                  id="ilg.gnuarmeclipse.managedbuild.cross.printsize.input"
-                  multipleOfType="true"
-                  option="ilg.gnuarmeclipse.managedbuild.cross.option.printsize.InFileName"
-                  sources="elf">
-            </inputType>
             <option
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.printsize.InFileName"
                   resourceFilter="all"

@@ -38,7 +38,7 @@ public class LikerScriptCommandGenerator implements IOptionCommandGenerator {
 						macroSubstitutor);
 
 				command.append("-T ");
-				command.append(Utils.escapeWhitespaces(value));
+				command.append(Utils.quoteWhitespaces(value));
 			} else if (valueType == IOption.STRING_LIST) {
 				for (String value : option.getStringListValue()) {
 
@@ -51,7 +51,7 @@ public class LikerScriptCommandGenerator implements IOptionCommandGenerator {
 						value = CdtVariableResolver.resolveToString(value,
 								macroSubstitutor);
 						command.append("-T ");
-						command.append(Utils.escapeWhitespaces(value));
+						command.append(Utils.quoteWhitespaces(value));
 						command.append(" ");
 					}
 				}

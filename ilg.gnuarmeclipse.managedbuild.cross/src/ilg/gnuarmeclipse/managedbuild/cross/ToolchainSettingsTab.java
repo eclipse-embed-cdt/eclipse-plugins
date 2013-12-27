@@ -385,7 +385,7 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 			m_sizeButton.setText(Messages.ToolChainSettingsTab_size);
 
 			Boolean isPrintSize = Option.getOptionBooleanValue(m_config,
-					Option.OPTION_ADDTOOLS_CREATELISTING);
+					Option.OPTION_ADDTOOLS_PRINTSIZE);
 			if (isPrintSize != null) {
 				m_sizeButton.setSelection(isPrintSize);
 			}

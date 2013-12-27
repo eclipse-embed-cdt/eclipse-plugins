@@ -116,7 +116,7 @@ public class Utils {
 			if (isWindows()) {
 				if (path.startsWith("\"") || path.startsWith("'"))
 					return path;
-					
+
 				return "\"" + path + "\"";
 			} else {
 				StringBuffer escapedPath = new StringBuffer();
@@ -128,6 +128,20 @@ public class Utils {
 				}
 				return escapedPath.toString().trim();
 			}
+		} else {
+			return path;
+		}
+	}
+
+	static public String quoteWhitespaces(String path) {
+		path = path.trim();
+		// Escape the spaces in the path/filename if it has any
+		String[] segments = path.split("\\s"); //$NON-NLS-1$
+		if (segments.length > 1) {
+			if (path.startsWith("\"") || path.startsWith("'"))
+				return path;
+
+			return "\"" + path + "\"";
 		} else {
 			return path;
 		}
