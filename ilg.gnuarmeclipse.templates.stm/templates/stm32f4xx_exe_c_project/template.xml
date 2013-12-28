@@ -269,6 +269,11 @@
 
 	<process type="org.eclipse.cdt.core.CreateSourceFolder">
 		<simple name="projectName" value="$(projectName)" />
+		<simple name="path" value="$(libsDir)" />
+	</process>
+
+	<process type="org.eclipse.cdt.core.CreateFolder">
+		<simple name="projectName" value="$(projectName)" />
 		<simple name="path" value="$(libsDir)/$(cmsisDir)/$(sourceDir)" />
 	</process>
 
@@ -595,7 +600,7 @@
 		</complex-array>
 	</process>
 
-	<process type="org.eclipse.cdt.core.CreateSourceFolder">
+	<process type="org.eclipse.cdt.core.CreateFolder">
 		<simple name="projectName" value="$(projectName)" />
 		<simple name="path" value="$(libsDir)/$(periphDir)/$(sourceDir)" />
 	</process>
@@ -880,7 +885,7 @@
 		</complex-array>
 	</process>
 
-	<process type="org.eclipse.cdt.core.CreateSourceFolder">
+	<process type="org.eclipse.cdt.core.CreateFolder">
 		<simple name="projectName" value="$(projectName)" />
 		<simple name="path" value="$(libsDir)/$(miscDir)/$(sourceDir)" />
 	</process>
@@ -1004,24 +1009,6 @@
 			</complex-array>
 		</process>
 	</if>
-
-	<!-- USB -->
-	<!-- <if condition="$(includeUsb)!=none"> <process type="org.eclipse.cdt.core.CreateSourceFolder"> 
-		<simple name="projectName" value="$(projectName)" /> <simple name="path" 
-		value="$(libsDir)/USB/$(sourceDir)" /> </process> <process type="org.eclipse.cdt.core.CreateFolder"> 
-		<simple name="projectName" value="$(projectName)" /> <simple name="path" 
-		value="$(libsDir)/USB/$(includeDir)" /> </process> <process type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues"> 
-		<simple name="projectName" value="$(projectName)" /> <complex-array name="resourcePaths"> 
-		<element> <simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.paths" 
-		/> <simple-array name="values"> <element value="&quot;../$(libsDir)/USB/$(includeDir)&quot;" 
-		/> </simple-array> <simple name="path" value="" /> </element> <element> <simple 
-		name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths" 
-		/> <simple-array name="values"> <element value="&quot;../$(libsDir)/USB/$(includeDir)&quot;" 
-		/> </simple-array> <simple name="path" value="" /> </element> <element> <simple 
-		name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths" 
-		/> <simple-array name="values"> <element value="&quot;../$(libsDir)/USB/$(includeDir)&quot;" 
-		/> </simple-array> <simple name="path" value="" /> </element> </complex-array> 
-		</process> </if> -->
 
 	<!-- Options -->
 	<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">

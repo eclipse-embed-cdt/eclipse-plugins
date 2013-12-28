@@ -123,7 +123,7 @@
 	</if>
 
 	<!-- src -->
-	<process type="org.eclipse.cdt.core.CreateSourceFolder">
+	<process type="org.eclipse.cdt.core.CreateFolder">
 		<simple name="projectName" value="$(projectName)" />
 		<simple name="path" value="$(sourceDir)" />
 	</process>
@@ -322,7 +322,12 @@
 		</process>
 	</if>
 
-	<process type="org.eclipse.cdt.core.CreateSourceFolder">
+	<process type="org.eclipse.cdt.core.CreateFolder">
+		<simple name="projectName" value="$(projectName)" />
+		<simple name="path" value="$(libsDir)" />
+	</process>
+
+	<process type="org.eclipse.cdt.core.CreateFolder">
 		<simple name="projectName" value="$(projectName)" />
 		<simple name="path" value="$(libsDir)/$(cmsisDir)/$(sourceDir)" />
 	</process>
@@ -838,7 +843,7 @@
 		</process>
 	</if>
 
-	<process type="org.eclipse.cdt.core.CreateSourceFolder">
+	<process type="org.eclipse.cdt.core.CreateFolder">
 		<simple name="projectName" value="$(projectName)" />
 		<simple name="path" value="$(libsDir)/$(periphDir)/$(sourceDir)" />
 	</process>
@@ -1234,7 +1239,7 @@
 		</process>
 	</if>
 
-	<process type="org.eclipse.cdt.core.CreateSourceFolder">
+	<process type="org.eclipse.cdt.core.CreateFolder">
 		<simple name="projectName" value="$(projectName)" />
 		<simple name="path" value="$(libsDir)/$(miscDir)/$(sourceDir)" />
 	</process>
