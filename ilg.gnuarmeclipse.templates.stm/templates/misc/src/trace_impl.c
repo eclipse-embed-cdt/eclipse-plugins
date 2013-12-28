@@ -5,7 +5,7 @@
 
 #include "trace_impl.h"
 
-#if defined(INCLUDE_TRACE_SWO)
+#if defined(INCLUDE_TRACE_ITM)
 
 // Define everything here, to pass standalone compilations
 
@@ -19,7 +19,7 @@
 #define ITM_TCR      (*(volatile unsigned int*)0xE0000E80)
 
 int
-_write_trace_swo(char* ptr, int len)
+_write_trace_itm(char* ptr, int len)
 {
   static int isInitialised;
   if (isInitialised == 0) {
@@ -58,7 +58,7 @@ _write_trace_swo(char* ptr, int len)
   return len; // all characters successfully sent
 }
 
-#endif // INCLUDE_TRACE_SWO
+#endif // INCLUDE_TRACE_ITM
 
 #if defined(INCLUDE_TRACE_SEMIHOSTING_DEBUG) || defined(INCLUDE_TRACE_SEMIHOSTING_STDOUT)
 

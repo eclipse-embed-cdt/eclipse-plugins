@@ -25,8 +25,8 @@ _write(int fd, char* ptr, int len)
     {
 #if defined(DEBUG)
 
-#if defined(INCLUDE_TRACE_SWO)
-      return _write_trace_swo(ptr, len);
+#if defined(INCLUDE_TRACE_ITM)
+      return _write_trace_itm(ptr, len);
 #elif defined(INCLUDE_TRACE_SEMIHOSTING_STDOUT)
       return _write_trace_semihosting_stdout(ptr, len);
 #elif defined(INCLUDE_TRACE_SEMIHOSTING_DEBUG)

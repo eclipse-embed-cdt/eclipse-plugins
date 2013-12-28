@@ -13,8 +13,8 @@
 // nothing is displayed until a \n; DEBUG is not buffered, but can be very
 // slow.
 
-#define INCLUDE_TRACE_ITM
-//#define INCLUDE_TRACE_SEMIHOSTING_STDOUT
+//#define INCLUDE_TRACE_ITM
+#define INCLUDE_TRACE_SEMIHOSTING_STDOUT
 //#define INCLUDE_TRACE_SEMIHOSTING_DEBUG
 
 #if defined (__cplusplus)
