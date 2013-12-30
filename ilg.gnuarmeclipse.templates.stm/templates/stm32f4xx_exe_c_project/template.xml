@@ -251,14 +251,14 @@
 		<complex-array name="files">
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/$(includeDir)/stm32f4xx.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/$(includeDir)/system_stm32f4xx.h" />
 				<simple name="replaceable" value="true" />
@@ -313,21 +313,21 @@
 		<complex-array name="files">
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Include/arm_common_tables.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Include/arm_common_tables.h" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/$(includeDir)/arm_common_tables.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Include/arm_const_structs.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Include/arm_const_structs.h" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/$(includeDir)/arm_const_structs.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Include/arm_math.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Include/arm_math.h" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/$(includeDir)/arm_math.h" />
 				<simple name="replaceable" value="true" />
@@ -335,28 +335,28 @@
 
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Include/core_cm4.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Include/core_cm4.h" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cm4.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Include/core_cm4_simd.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Include/core_cm4_simd.h" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cm4_simd.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Include/core_cmFunc.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Include/core_cmFunc.h" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cmFunc.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Include/core_cmInstr.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Include/core_cmInstr.h" />
 				<simple name="target"
 					value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cmInstr.h" />
 				<simple name="replaceable" value="true" />
@@ -390,209 +390,209 @@
 		<complex-array name="files">
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/misc.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/misc.h" />
 				<simple name="target" value="$(libsDir)/$(periphDir)/$(includeDir)/misc.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_adc.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_adc.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_adc.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_can.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_can.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_can.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_crc.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_crc.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_crc.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_cryp.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_cryp.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_cryp.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_dac.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_dac.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_dac.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_dbgmcu.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_dbgmcu.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_dbgmcu.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_dcmi.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_dcmi.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_dcmi.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_dma.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_dma.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_dma.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_dma2d.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_dma2d.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_dma2d.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_exti.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_exti.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_exti.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_flash.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_flash.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_flash.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_fmc.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_fmc.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_fmc.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_fsmc.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_fsmc.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_fsmc.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_gpio.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_gpio.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_gpio.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_hash.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_hash.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_hash.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_i2c.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_i2c.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_i2c.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_iwdg.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_iwdg.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_iwdg.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_ltdc.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_ltdc.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_ltdc.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_pwr.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_pwr.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_pwr.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_rcc.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_rcc.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_rcc.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_rng.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_rng.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_rng.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_rtc.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_rtc.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_rtc.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_sai.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_sai.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_sai.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_sdio.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_sdio.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_sdio.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_spi.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_spi.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_spi.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_syscfg.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_syscfg.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_syscfg.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_tim.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_tim.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_tim.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_usart.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_usart.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_usart.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_wwdg.h" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_wwdg.h" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_wwdg.h" />
 				<simple name="replaceable" value="true" />
@@ -610,244 +610,244 @@
 		<complex-array name="files">
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/misc.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/misc.c" />
 				<simple name="target" value="$(libsDir)/$(periphDir)/$(sourceDir)/misc.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_adc.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_adc.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_adc.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_can.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_can.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_can.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_crc.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_crc.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_crc.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_aes.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_aes.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_cryp_aes.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_des.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_des.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_cryp_des.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_tdes.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_tdes.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_cryp_tdes.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_cryp.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dac.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dac.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_dac.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dbgmcu.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dbgmcu.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_dbgmcu.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dcmi.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dcmi.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_dcmi.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dma.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dma.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_dma.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dma2d.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dma2d.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_dma2d.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_exti.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_exti.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_exti.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_flash.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_flash.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_flash.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fmc.patched.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fmc.patched.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_fmc.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fsmc.patched.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fsmc.patched.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_fsmc.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_gpio.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_gpio.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_gpio.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_md5.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_md5.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_hash_md5.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_sha1.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_sha1.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_hash_sha1.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_hash.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_i2c.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_i2c.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_i2c.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_iwdg.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_iwdg.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_iwdg.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_ltdc.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_ltdc.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_ltdc.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_pwr.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_pwr.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_pwr.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rcc.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rcc.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_rcc.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rng.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rng.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_rng.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rtc.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rtc.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_rtc.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sai.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sai.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_sai.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sdio.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sdio.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_sdio.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spi.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spi.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_spi.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_syscfg.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_syscfg.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_syscfg.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_tim.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_tim.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_tim.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_usart.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_usart.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_usart.c" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_wwdg.c" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_wwdg.c" />
 				<simple name="target"
 					value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_wwdg.c" />
 				<simple name="replaceable" value="true" />
@@ -860,25 +860,25 @@
 		<complex-array name="files">
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/README.txt" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/README.txt" />
 				<simple name="target" value="$(libsDir)/README.txt" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/CMSIS/Device/ST/STM32F4xx/Release_Notes.html" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Device/ST/STM32F4xx/Release_Notes.html" />
 				<simple name="target" value="$(libsDir)/$(cmsisDir)/Release_Notes.html" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Libraries/STM32F4xx_StdPeriph_Driver/Release_Notes.html" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/Release_Notes.html" />
 				<simple name="target" value="$(libsDir)/$(periphDir)/Release_Notes.html" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
-					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.2.0/Release_Notes.html" />
+					value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Release_Notes.html" />
 				<simple name="target" value="$(libsDir)/Release_Notes.html" />
 				<simple name="replaceable" value="true" />
 			</element>

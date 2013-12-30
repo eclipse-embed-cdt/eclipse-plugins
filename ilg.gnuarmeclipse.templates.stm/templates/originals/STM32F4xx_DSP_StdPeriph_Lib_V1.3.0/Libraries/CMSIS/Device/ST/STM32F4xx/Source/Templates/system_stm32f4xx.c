@@ -32,9 +32,8 @@
   *    function will do nothing and HSI still used as system clock source. User can 
   *    add some code to deal with this issue inside the SetSysClock() function.
   *
-  * 4. The default value of HSE crystal is set to $(STM32F4hseValue),
-  *    refer to "HSE_VALUE" define in "stm32f4xx.h" file.
-  *    When HSE is used as system clock source, directly or
+  * 4. The default value of HSE crystal is set to 25MHz, refer to "HSE_VALUE" define
+  *    in "stm32f4xx.h" file. When HSE is used as system clock source, directly or
   *    through PLL, and you are using different crystal you have to adapt the HSE
   *    value to your own configuration.
   *
@@ -55,9 +54,9 @@
   *-----------------------------------------------------------------------------
   *        APB2 Prescaler                         | 2
   *-----------------------------------------------------------------------------
-  *        HSE Frequency(Hz)                      | $(STM32F4hseValue)
+  *        HSE Frequency(Hz)                      | 25000000
   *-----------------------------------------------------------------------------
-  *        PLL_M                                  | HSE_VALUE/1000000
+  *        PLL_M                                  | 25
   *-----------------------------------------------------------------------------
   *        PLL_N                                  | 336
   *-----------------------------------------------------------------------------
@@ -102,9 +101,9 @@
   *-----------------------------------------------------------------------------
   *        APB2 Prescaler                         | 2
   *-----------------------------------------------------------------------------
-  *        HSE Frequency(Hz)                      | $(STM32F4hseValue)
+  *        HSE Frequency(Hz)                      | 25000000
   *-----------------------------------------------------------------------------
-  *        PLL_M                                  | HSE_VALUE/1000000
+  *        PLL_M                                  | 25
   *-----------------------------------------------------------------------------
   *        PLL_N                                  | 360
   *-----------------------------------------------------------------------------
@@ -149,9 +148,9 @@
   *-----------------------------------------------------------------------------
   *        APB2 Prescaler                         | 1
   *-----------------------------------------------------------------------------
-  *        HSE Frequency(Hz)                      | $(STM32F4hseValue)
+  *        HSE Frequency(Hz)                      | 25000000
   *-----------------------------------------------------------------------------
-  *        PLL_M                                  | HSE_VALUE/1000000
+  *        PLL_M                                  | 25
   *-----------------------------------------------------------------------------
   *        PLL_N                                  | 336
   *-----------------------------------------------------------------------------
@@ -252,12 +251,7 @@
 
 /************************* PLL Parameters *************************************/
 /* PLL_VCO = (HSE_VALUE or HSI_VALUE / PLL_M) * PLL_N */
-#define PLL_M      (HSE_VALUE/1000000)
-
-#if (PLL_M*1000000) != HSE_VALUE
-#error "HSE_VALUE not multiple of 1MHz, adjust the PLL settings"
-#endif
-
+#define PLL_M      25
 /* USB OTG FS, SDIO and RNG Clock =  PLL_VCO / PLLQ */
 #define PLL_Q      7
 
