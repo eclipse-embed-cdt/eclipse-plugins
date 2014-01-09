@@ -1625,6 +1625,7 @@
                   </or>
                </not>
             </enablement>
+            <!--
             <enablement
                   attribute="defaultValue"
                   extensionAdjustment="false"
@@ -1636,6 +1637,7 @@
                      value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m4">
                </checkOption>
             </enablement>
+            -->
             <enumeratedOptionValue
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.default"
                   isDefault="true"
