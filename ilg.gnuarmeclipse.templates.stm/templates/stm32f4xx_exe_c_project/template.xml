@@ -173,14 +173,58 @@
 		<simple name="path" value="$(ldscriptsDir)" />
 	</process>
 
+	<if condition="$(STM32F4chipFamily)==STM32F401xx">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="ldscripts/mem64.ld" />
+					<simple name="target" value="$(ldscriptsDir)/mem.ld" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F4chipFamily)==STM32F40_41xxx">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="ldscripts/mem128.ld" />
+					<simple name="target" value="$(ldscriptsDir)/mem.ld" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F4chipFamily)==STM32F427_437xx">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="ldscripts/mem192.ld" />
+					<simple name="target" value="$(ldscriptsDir)/mem.ld" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F4chipFamily)==STM32F429_439xx">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="ldscripts/mem192.ld" />
+					<simple name="target" value="$(ldscriptsDir)/mem.ld" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	
 	<process type="org.eclipse.cdt.core.AddFiles">
 		<simple name="projectName" value="$(projectName)" />
 		<complex-array name="files">
-			<element>
-				<simple name="source" value="ldscripts/mem.ld" />
-				<simple name="target" value="$(ldscriptsDir)/mem.ld" />
-				<simple name="replaceable" value="true" />
-			</element>
 			<element>
 				<simple name="source" value="../ldscripts/sections.ld" />
 				<simple name="target" value="$(ldscriptsDir)/sections.ld" />
