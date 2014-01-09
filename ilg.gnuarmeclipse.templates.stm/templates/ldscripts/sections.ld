@@ -256,6 +256,8 @@ SECTIONS
     /* Mandatory to be word aligned, _sbrk assumes this */
     PROVIDE ( end = _end_noinit ); /* was _ebss */
     PROVIDE ( _end = _end_noinit );
+    PROVIDE ( __end = _end_noinit );
+    PROVIDE ( __end__ = _end_noinit );
     
     /*
      * Used for validation only, do not allocate anything here!
