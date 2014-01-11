@@ -70,9 +70,9 @@ then
   mv -fv $ARCHIVE_PREFIX-SNAPSHOT.zip $ARCHIVE_FOLDER/$ARCHIVE_PREFIX-$NUMDATE.zip
 fi
 
-if [ "$TEST" != "-test" ]
+if [ "$TEST" == "-test" ]
 then
-  echo "Don't forget to publish the archive too!"
+  echo "When final, don't forget to publish the archive too!"
   echo "It is available from $ARCHIVE_FOLDER/$ARCHIVE_PREFIX-$NUMDATE.zip"
 fi
 
