@@ -571,7 +571,7 @@
             <enablement
                   attribute="value"
                   type="ALL"
-                  value="true">
+                  value="false">
                <checkBuildProperty
                      property="org.eclipse.cdt.build.core.buildArtefactType"
                      value="org.eclipse.cdt.build.core.buildArtefactType.exe">

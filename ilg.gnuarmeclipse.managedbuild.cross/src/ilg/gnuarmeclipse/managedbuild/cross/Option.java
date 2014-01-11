@@ -186,6 +186,11 @@ public class Option {
 	public static final String OPTION_CREATEFLASH_CHOICE = OPTION_PREFIX
 			+ ".createflash.choice";
 
+	// These should be in sync with plugin.xml definitions
+	public static final boolean OPTION_ADDTOOLS_CREATEFLASH_DEFAULT = true;
+	public static final boolean OPTION_ADDTOOLS_CREATELISTING_DEFAULT = false;
+	public static final boolean OPTION_ADDTOOLS_PRINTSIZE_DEFAULT = true;
+	
 	public static final String CHOICE_IHEX = "ihex";
 	public static final String CHOICE_SREC = "srec";
 	public static final String CHOICE_SYMBOLSREC = "symbolsrec";

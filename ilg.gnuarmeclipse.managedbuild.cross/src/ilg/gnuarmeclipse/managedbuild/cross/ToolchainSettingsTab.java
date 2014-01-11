@@ -798,15 +798,15 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 		if (isExecutable) {
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_CREATEFLASH); //$NON-NLS-1$
-			config.setOption(toolchain, option, true);
+			config.setOption(toolchain, option, Option.OPTION_ADDTOOLS_CREATEFLASH_DEFAULT);
 
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_CREATELISTING); //$NON-NLS-1$
-			config.setOption(toolchain, option, true);
+			config.setOption(toolchain, option, Option.OPTION_ADDTOOLS_CREATELISTING_DEFAULT);
 
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_PRINTSIZE); //$NON-NLS-1$
-			config.setOption(toolchain, option, true);
+			config.setOption(toolchain, option, Option.OPTION_ADDTOOLS_PRINTSIZE_DEFAULT);
 		}
 	}
 
@@ -842,9 +842,9 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 		updateInterfaceAfterToolchainChange();
 
 		if (m_isExecutable) {
-			m_flashButton.setSelection(true);
-			m_listingButton.setSelection(true);
-			m_sizeButton.setSelection(true);
+			m_flashButton.setSelection(Option.OPTION_ADDTOOLS_CREATEFLASH_DEFAULT);
+			m_listingButton.setSelection(Option.OPTION_ADDTOOLS_CREATELISTING_DEFAULT);
+			m_sizeButton.setSelection(Option.OPTION_ADDTOOLS_PRINTSIZE_DEFAULT);
 		}
 		// System.out.println("performDefaults()");
 	}
