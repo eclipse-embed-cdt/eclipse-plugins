@@ -88,7 +88,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	private Text swoEnableTargetSwoFreq;
 	private Text swoEnableTargetPortMask;
 
-	private Button loadImage;
+	private Button loadExecutable;
 	private Text imageFileName;
 	private Button imageFileBrowseWs;
 	private Button imageFileBrowse;
@@ -526,62 +526,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		comp.setLayoutData(gd);
 
-		{
-			loadImage = new Button(comp, SWT.CHECK);
-			loadImage.setText(Messages.getString("StartupTab.loadImage_Text"));
-		}
-
 		Composite local;
-		{
-			local = new Composite(comp, SWT.NONE);
-			layout = new GridLayout();
-			layout.numColumns = 4;
-			layout.marginHeight = 0;
-			local.setLayout(layout);
-			local.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-			{
-				useProjectBinaryForImage = new Button(local, SWT.RADIO);
-				useProjectBinaryForImage.setText(Messages
-						.getString("StartupTab.useProjectBinary_Label"));
-				useProjectBinaryForImage.setToolTipText(Messages
-						.getString("StartupTab.useProjectBinary_ToolTipText"));
-
-				projBinaryLabel1 = new Label(local, SWT.NONE);
-				gd = new GridData(GridData.FILL_HORIZONTAL);
-				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
-				projBinaryLabel1.setLayoutData(gd);
-			}
-
-			{
-				useFileForImage = new Button(local, SWT.RADIO);
-				useFileForImage.setText(Messages
-						.getString("StartupTab.useFile_Label"));
-
-				imageFileName = new Text(local, SWT.BORDER);
-				gd = new GridData(GridData.FILL_HORIZONTAL);
-				imageFileName.setLayoutData(gd);
-
-				imageFileBrowseWs = createPushButton(local,
-						Messages.getString("StartupTab.FileBrowseWs_Label"),
-						null);
-
-				imageFileBrowse = createPushButton(local,
-						Messages.getString("StartupTab.FileBrowse_Label"), null);
-			}
-
-			{
-				imageOffsetLabel = new Label(local, SWT.NONE);
-				imageOffsetLabel.setText(Messages
-						.getString("StartupTab.imageOffsetLabel_Text"));
-
-				imageOffset = new Text(local, SWT.BORDER);
-				gd = new GridData();
-				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
-				gd.widthHint = 100;
-				imageOffset.setLayoutData(gd);
-			}
-		}
 
 		{
 			loadSymbols = new Button(comp, SWT.CHECK);
@@ -635,16 +580,72 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				symbolsOffset = new Text(local, SWT.BORDER);
 				gd = new GridData();
 				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
-				gd.widthHint = ((GridData) imageOffset.getLayoutData()).widthHint;
+				gd.widthHint = 100; 
 				symbolsOffset.setLayoutData(gd);
 			}
 		}
 
+		{
+			loadExecutable = new Button(comp, SWT.CHECK);
+			loadExecutable.setText(Messages.getString("StartupTab.loadImage_Text"));
+		}
+
+		{
+			local = new Composite(comp, SWT.NONE);
+			layout = new GridLayout();
+			layout.numColumns = 4;
+			layout.marginHeight = 0;
+			local.setLayout(layout);
+			local.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+			{
+				useProjectBinaryForImage = new Button(local, SWT.RADIO);
+				useProjectBinaryForImage.setText(Messages
+						.getString("StartupTab.useProjectBinary_Label"));
+				useProjectBinaryForImage.setToolTipText(Messages
+						.getString("StartupTab.useProjectBinary_ToolTipText"));
+
+				projBinaryLabel1 = new Label(local, SWT.NONE);
+				gd = new GridData(GridData.FILL_HORIZONTAL);
+				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
+				projBinaryLabel1.setLayoutData(gd);
+			}
+
+			{
+				useFileForImage = new Button(local, SWT.RADIO);
+				useFileForImage.setText(Messages
+						.getString("StartupTab.useFile_Label"));
+
+				imageFileName = new Text(local, SWT.BORDER);
+				gd = new GridData(GridData.FILL_HORIZONTAL);
+				imageFileName.setLayoutData(gd);
+
+				imageFileBrowseWs = createPushButton(local,
+						Messages.getString("StartupTab.FileBrowseWs_Label"),
+						null);
+
+				imageFileBrowse = createPushButton(local,
+						Messages.getString("StartupTab.FileBrowse_Label"), null);
+			}
+
+			{
+				imageOffsetLabel = new Label(local, SWT.NONE);
+				imageOffsetLabel.setText(Messages
+						.getString("StartupTab.imageOffsetLabel_Text"));
+
+				imageOffset = new Text(local, SWT.BORDER);
+				gd = new GridData();
+				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
+				gd.widthHint = ((GridData) symbolsOffset.getLayoutData()).widthHint;;
+				imageOffset.setLayoutData(gd);
+			}
+		}
+
 		// ----- Actions ------------------------------------------------------
-		loadImage.addSelectionListener(new SelectionAdapter() {
+		loadExecutable.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				loadImageChanged();
+				loadExecutableChanged();
 				updateLaunchConfigurationDialog();
 			}
 		});
@@ -759,7 +760,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	private void updateUseFileEnablement() {
 
-		boolean enabled = loadImage.getSelection()
+		boolean enabled = loadExecutable.getSelection()
 				&& useFileForImage.getSelection();
 		imageFileName.setEnabled(enabled);
 		imageFileBrowseWs.setEnabled(enabled);
@@ -856,8 +857,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		secondResetType.setEnabled(doSecondReset.getSelection());
 	}
 
-	private void loadImageChanged() {
-		boolean enabled = loadImage.getSelection();
+	private void loadExecutableChanged() {
+		boolean enabled = loadExecutable.getSelection();
 		useProjectBinaryForImage.setEnabled(enabled);
 		useFileForImage.setEnabled(enabled);
 		imageOffset.setEnabled(enabled);
@@ -975,21 +976,23 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	}
 
 	public void doConnectToRunningChanged(boolean flag) {
-		
+
 		// System.out.println(flag);
 		doFirstReset.setEnabled(!flag);
 		firstResetType.setEnabled(!flag);
 
 		doSecondReset.setEnabled(!flag);
 		secondResetType.setEnabled(!flag);
+		
+		loadExecutable.setEnabled(!flag);
 	}
 
 	// flag is true when interface is SWD
-	public void doInterfaceSwdChanged(boolean flag){
-		
+	public void doInterfaceSwdChanged(boolean flag) {
+
 		enableSwo.setEnabled(flag);
 	}
-	
+
 	@Override
 	public boolean isValid(ILaunchConfiguration launchConfig) {
 		if (!super.isValid(launchConfig))
@@ -997,7 +1000,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		setErrorMessage(null);
 		setMessage(null);
 
-		if (loadImage.getSelection()) {
+		if (loadExecutable.getSelection()) {
 			if (!useProjectBinaryForImage.getSelection()) {
 				if (imageFileName.getText().trim().length() == 0) {
 					setErrorMessage(Messages
@@ -1163,7 +1166,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT));
 
 			// Load Image...
-			loadImage.setSelection(configuration.getAttribute(
+			loadExecutable.setSelection(configuration.getAttribute(
 					IGDBJtagConstants.ATTR_LOAD_IMAGE,
 					IGDBJtagConstants.DEFAULT_LOAD_IMAGE));
 			useProjectBinaryForImage.setSelection(configuration.getAttribute(
@@ -1246,7 +1249,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			doEnableSwoChanged();
 
 			doSecondResetChanged();
-			loadImageChanged();
+			loadExecutableChanged();
 			loadSymbolsChanged();
 			pcRegisterChanged();
 			stopAtChanged();
@@ -1320,7 +1323,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		// Load Image...
 		configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_IMAGE,
-				loadImage.getSelection());
+				loadExecutable.getSelection());
 		configuration.setAttribute(
 				IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
 				useProjectBinaryForImage.getSelection());

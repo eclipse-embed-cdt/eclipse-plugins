@@ -7,6 +7,7 @@ public interface ConfigurationAttributes {
 	// TabDebugger
 
 	public static final String JTAG_DEVICE = "J-Link";
+	// public static final String JTAG_DEVICE = "Generic TCP/IP";
 
 	public static final String INTERFACE = PREFIX + ".interface"; //$NON-NLS-1$
 	public static final String INTERFACE_SWD = "swd";
@@ -114,7 +115,7 @@ public interface ConfigurationAttributes {
 	public static final String DO_FIRST_RESET = PREFIX + ".doFirstReset"; //$NON-NLS-1$
 	public static final boolean DO_FIRST_RESET_DEFAULT = true;
 	public static final String DO_FIRST_RESET_COMMAND = "monitor reset ";
-	
+
 	public static final String HALT_COMMAND = "monitor halt";
 
 	public static final String FIRST_RESET_TYPE = PREFIX + ".firstResetType"; //$NON-NLS-1$
