@@ -15,6 +15,6 @@
   	<relativePath>../pom.xml</relativePath>
   </parent>
   
-  <name>GNU ARM Eclipse plug-in templates core</name>
+  <name>GNU ARM Eclipse templates core</name>
   <url>http://gnuarmeclipse.livius.net</url>
 </project>

@@ -15,6 +15,6 @@
   	<relativePath>../pom.xml</relativePath>
   </parent>
   
-  <name>GNU ARM Eclipse plug-in J-link debug</name>
+  <name>GNU ARM Eclipse J-Link debug</name>
   <url>http://gnuarmeclipse.livius.net</url>
 </project>

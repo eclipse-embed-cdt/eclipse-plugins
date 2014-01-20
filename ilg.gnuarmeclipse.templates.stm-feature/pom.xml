@@ -15,6 +15,6 @@
   	<relativePath>../pom.xml</relativePath>
   </parent>
   
-  <name>GNU ARM Eclipse plug-in STM32Fx templates feature</name>
+  <name>GNU ARM Eclipse STM32Fx templates feature</name>
   <url>http://gnuarmeclipse.livius.net</url>
 </project>

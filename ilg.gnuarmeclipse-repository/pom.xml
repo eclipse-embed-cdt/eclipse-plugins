@@ -54,6 +54,6 @@
   </plugins>
 </build>
   
-    <name>GNU ARM Eclipse plug-in repository</name>
+    <name>GNU ARM Eclipse repository</name>
 	<url>http://gnuarmeclipse.livius.net</url>
 </project>
