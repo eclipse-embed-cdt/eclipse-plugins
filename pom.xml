@@ -17,6 +17,8 @@
     <module>ilg.gnuarmeclipse.templates.core</module>
     <module>ilg.gnuarmeclipse.templates.stm</module>
     <module>ilg.gnuarmeclipse.templates.stm-feature</module>
+    <module>ilg.gnuarmeclipse.templates.freescale</module>
+    <module>ilg.gnuarmeclipse.templates.freescale-feature</module>
     <module>ilg.gnuarmeclipse.debug.gdbjtag.jlink</module>
     <module>ilg.gnuarmeclipse.debug.gdbjtag.jlink-feature</module>
     <module>../gnuarmeclipse-svn/Eclipse/current/org.eclipse.cdt.cross.arm.gnu</module>
@@ -109,6 +111,6 @@
     </pluginManagement>
   </build>
   
-  <name>GNU ARM Eclipse plug-in parent</name>
+  <name>GNU ARM Eclipse parent</name>
   <url>http://gnuarmeclipse.livius.net</url>
 </project>
