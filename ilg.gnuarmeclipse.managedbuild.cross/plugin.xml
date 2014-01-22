@@ -689,7 +689,7 @@
                valueType="string">
          </option>
          <option
-               browseType="none"
+               browseType="file"
                commandGenerator="ilg.gnuarmeclipse.managedbuild.cross.LikerScriptCommandGenerator"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.scriptfile"
                isAbstract="true"
