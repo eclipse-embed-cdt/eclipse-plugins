@@ -56,6 +56,16 @@ public interface ConfigurationAttributes {
 			+ "/JLinkGDBServer";
 	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_LINUX = GDB_SERVER_EXECUTABLE_DEFAULT;
 
+	public static final String GDB_SERVER_CONNECTION = PREFIX
+			+ ".gdbServerConnection"; //$NON-NLS-1$
+	public static final String GDB_SERVER_CONNECTION_USB = "usb"; //$NON-NLS-1$
+	public static final String GDB_SERVER_CONNECTION_IP = "ip"; //$NON-NLS-1$
+	public static final String GDB_SERVER_CONNECTION_DEFAULT = GDB_SERVER_CONNECTION_USB;
+
+	public static final String GDB_SERVER_CONNECTION_ADDRESS = PREFIX
+			+ ".gdbServerConnectionAddress"; //$NON-NLS-1$
+	public static final String GDB_SERVER_CONNECTION_ADDRESS_DEFAULT = "";
+
 	public static final String GDB_SERVER_GDB_PORT_NUMBER = PREFIX
 			+ ".gdbServerGdbPortNumber"; //$NON-NLS-1$
 	public static final int GDB_SERVER_GDB_PORT_NUMBER_DEFAULT = 2331;

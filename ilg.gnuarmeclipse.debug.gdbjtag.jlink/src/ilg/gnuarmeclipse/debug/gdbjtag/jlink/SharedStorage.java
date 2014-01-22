@@ -22,6 +22,11 @@ public class SharedStorage {
 	public static final String GDB_SERVER_EXECUTABLE = Activator.PLUGIN_ID
 			+ ".gdbServerExecutable";
 
+	public static final String GDB_SERVER_CONNECTION = Activator.PLUGIN_ID
+			+ ".gdbServerConnection";
+	public static final String GDB_SERVER_CONNECTION_ADDRESS = Activator.PLUGIN_ID
+			+ ".gdbServerConnectionAddress";
+
 	// ----- getter & setter --------------------------------------------------
 	private static String getValueForId(String id, String defaultValue) {
 		String value = SharedDefaults.getInstance().getSharedDefaultsMap()
@@ -74,6 +79,28 @@ public class SharedStorage {
 	public static void putGdbServerExecutable(String value){
 
 		putValueForId(GDB_SERVER_EXECUTABLE, value);
+	}
+
+	// ----- gdb server connection --------------------------------------------
+	public static String getGdbServerConnection(String defaultValue) {
+
+		return getValueForId(GDB_SERVER_CONNECTION, defaultValue);
+	}
+	
+	public static void putGdbServerConnection(String value){
+
+		putValueForId(GDB_SERVER_CONNECTION, value);
+	}
+
+	// ----- gdb server connection address ------------------------------------
+	public static String getGdbServerConnectionAddress(String defaultValue) {
+
+		return getValueForId(GDB_SERVER_CONNECTION_ADDRESS, defaultValue);
+	}
+	
+	public static void putGdbServerConnectionAddress(String value){
+
+		putValueForId(GDB_SERVER_CONNECTION_ADDRESS, value);
 	}
 
 	// ----- update -----------------------------------------------------------

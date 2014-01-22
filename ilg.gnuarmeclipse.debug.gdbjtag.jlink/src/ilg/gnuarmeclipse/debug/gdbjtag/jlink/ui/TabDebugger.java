@@ -101,6 +101,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Button interfaceJtag;
 	private Button interfaceSwd;
 
+	private Button gdbServerConnectionUsb;
+	private Button gdbServerConnectionIp;
+	private Text gdbServerConnectionAddress;
+	private boolean didGdbServerConnectionChange;
+
 	private Button gdbServerSpeedAuto;
 	private Button gdbServerSpeedAdaptive;
 	private Button gdbServerSpeedFixed;
@@ -113,7 +118,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Text gdbServerTelnetPort;
 
 	private Text gdbServerExecutable;
-	private boolean didGdbServerExecutableChanged;
+	private boolean didGdbServerExecutableChange;
 	private Button gdbServerBrowseButton;
 	private Button gdbServerVariablesButton;
 
@@ -454,7 +459,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				gdbServerExecutable = new Text(local, SWT.SINGLE | SWT.BORDER);
 				gd = new GridData(GridData.FILL_HORIZONTAL);
 				gdbServerExecutable.setLayoutData(gd);
-				didGdbServerExecutableChanged = false;
+				didGdbServerExecutableChange = false;
 
 				gdbServerBrowseButton = new Button(local, SWT.NONE);
 				gdbServerBrowseButton.setText(Messages
@@ -463,6 +468,51 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				gdbServerVariablesButton = new Button(local, SWT.NONE);
 				gdbServerVariablesButton.setText(Messages
 						.getString("DebuggerTab.gdbServerExecutableVariable"));
+			}
+		}
+
+		{
+			label = new Label(comp, SWT.NONE);
+			label.setText(Messages
+					.getString("DebuggerTab.gdbServerConnection_Label"));
+			label.setToolTipText(Messages
+					.getString("DebuggerTab.gdbServerConnection_ToolTipText"));
+
+			Composite local = new Composite(comp, SWT.NONE);
+			layout = new GridLayout();
+			layout.numColumns = 4;
+			layout.marginHeight = 0;
+			// layout.marginWidth = 0;
+			local.setLayout(layout);
+			gd = new GridData(GridData.FILL_HORIZONTAL);
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
+			local.setLayoutData(gd);
+			{
+				didGdbServerConnectionChange = false;
+
+				gdbServerConnectionUsb = new Button(local, SWT.RADIO);
+				gdbServerConnectionUsb.setText(Messages
+						.getString("DebuggerTab.connectionUsb_Text"));
+				gd = new GridData();
+				gd.widthHint = 70;
+				gdbServerConnectionUsb.setLayoutData(gd);
+
+				gdbServerConnectionIp = new Button(local, SWT.RADIO);
+				gdbServerConnectionIp.setText(Messages
+						.getString("DebuggerTab.connectionTcp_Text"));
+				gd = new GridData();
+				gd.widthHint = 70;
+				gdbServerConnectionIp.setLayoutData(gd);
+
+				gdbServerConnectionAddress = new Text(local, SWT.BORDER);
+				gd = new GridData();
+				gd.widthHint = 145;
+				gdbServerConnectionAddress.setLayoutData(gd);
+
+				label = new Label(local, SWT.NONE);
+				label.setText(Messages
+						.getString("DebuggerTab.connectionAfter_Text")); //$NON-NLS-1$
+
 			}
 		}
 
@@ -486,20 +536,24 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				gdbServerSpeedAuto.setText(Messages
 						.getString("DebuggerTab.gdbServerSpeedAuto_Text"));
 				gd = new GridData();
-				gd.widthHint = ((GridData) interfaceSwd.getLayoutData()).widthHint;
+				gd.widthHint = 70;
 				gdbServerSpeedAuto.setLayoutData(gd);
 
 				gdbServerSpeedAdaptive = new Button(radio, SWT.RADIO);
 				gdbServerSpeedAdaptive.setText(Messages
 						.getString("DebuggerTab.gdbServerSpeedAdaptive_Text"));
+				gd.widthHint = 70;
+				gdbServerSpeedAdaptive.setLayoutData(gd);
 
 				gdbServerSpeedFixed = new Button(radio, SWT.RADIO);
 				gdbServerSpeedFixed.setText(Messages
 						.getString("DebuggerTab.gdbServerSpeedFixed_Text"));
+				gd.widthHint = 70;
+				gdbServerSpeedFixed.setLayoutData(gd);
 
 				gdbServerSpeedFixedValue = new Text(radio, SWT.BORDER);
 				gd = new GridData();
-				gd.widthHint = 60;
+				gd.widthHint = 70;
 				gdbServerSpeedFixedValue.setLayoutData(gd);
 
 				label = new Label(radio, SWT.NONE);
@@ -696,7 +750,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			@Override
 			public void modifyText(ModifyEvent e) {
 
-				didGdbServerExecutableChanged = true;
+				didGdbServerExecutableChange = true;
 
 				scheduleUpdateJob(); // provides much better performance for
 										// Text listeners
@@ -716,6 +770,41 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				variablesButtonSelected(gdbServerExecutable);
+			}
+		});
+
+		gdbServerConnectionUsb.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				didGdbServerConnectionChange = true;
+				scheduleUpdateJob();
+			}
+		});
+
+		gdbServerConnectionIp.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				didGdbServerConnectionChange = true;
+				scheduleUpdateJob();
+			}
+		});
+
+		gdbServerConnectionAddress.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+
+				didGdbServerConnectionChange = true;
+				scheduleUpdateJob();
+			}
+		});
+
+		gdbServerSpeedAdaptive.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				gdbServerSpeedFixedValue.setEnabled(false);
+				scheduleUpdateJob();
 			}
 		});
 
@@ -1058,7 +1147,33 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				gdbServerExecutable.setText(configuration.getAttribute(
 						ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
 						getGdbServerExecutableDefault()));
-				didGdbServerExecutableChanged = false;
+				didGdbServerExecutableChange = false;
+
+				String sharedConnection = SharedStorage
+						.getGdbServerConnection(ConfigurationAttributes.GDB_SERVER_CONNECTION_DEFAULT);
+
+				String connection = configuration.getAttribute(
+						ConfigurationAttributes.GDB_SERVER_CONNECTION,
+						sharedConnection);
+
+				if (ConfigurationAttributes.GDB_SERVER_CONNECTION_USB
+						.equals(connection)) {
+					gdbServerConnectionUsb.setSelection(true);
+					gdbServerConnectionIp.setSelection(false);
+				} else if (ConfigurationAttributes.GDB_SERVER_CONNECTION_IP
+						.equals(connection)) {
+					gdbServerConnectionUsb.setSelection(false);
+					gdbServerConnectionIp.setSelection(true);
+				}
+
+				String sharedConnectionAddress = SharedStorage
+						.getGdbServerConnectionAddress(ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS_DEFAULT);
+
+				String connectionAddress = configuration
+						.getAttribute(
+								ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
+								sharedConnectionAddress);
+				gdbServerConnectionAddress.setText(connectionAddress);
 
 				String physicalInterfaceSpeed = configuration.getAttribute(
 						ConfigurationAttributes.GDB_SERVER_SPEED,
@@ -1284,10 +1399,34 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
 					serverExecutable);
-			if (didGdbServerExecutableChanged) {
+			if (didGdbServerExecutableChange) {
 				SharedStorage.putGdbServerExecutable(serverExecutable);
 				doSharedUpdate = true;
-				didGdbServerExecutableChanged = false;
+				didGdbServerExecutableChange = false;
+			}
+
+			String connection = ConfigurationAttributes.GDB_SERVER_CONNECTION_DEFAULT;
+			if (gdbServerConnectionUsb.getSelection()) {
+				connection = ConfigurationAttributes.GDB_SERVER_CONNECTION_USB;
+
+			} else if (gdbServerConnectionIp.getSelection()) {
+				connection = ConfigurationAttributes.GDB_SERVER_CONNECTION_IP;
+			}
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_CONNECTION, connection);
+
+			String connectionAddress = gdbServerConnectionAddress.getText()
+					.trim();
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
+					connectionAddress);
+
+			if (didGdbServerConnectionChange) {
+				SharedStorage.putGdbServerConnection(connection);
+				SharedStorage.putGdbServerConnectionAddress(connectionAddress);
+
+				doSharedUpdate = true;
+				didGdbServerConnectionChange = false;
 			}
 
 			if (gdbServerSpeedAuto.getSelection()) {
@@ -1471,6 +1610,15 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.GDB_SERVER_SPEED_DEFAULT);
 
 			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_CONNECTION,
+					ConfigurationAttributes.GDB_SERVER_CONNECTION_DEFAULT);
+
+			configuration
+					.setAttribute(
+							ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
+							ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS_DEFAULT);
+
+			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
 					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT);
 
@@ -1616,6 +1764,26 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			lst.add(executable);
 
+			String connection = configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_CONNECTION,
+					ConfigurationAttributes.GDB_SERVER_CONNECTION_DEFAULT);
+			String connectionAddress = configuration
+					.getAttribute(
+							ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
+							ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS_DEFAULT);
+			if (connectionAddress.trim().length() > 0) {
+				if (ConfigurationAttributes.GDB_SERVER_CONNECTION_USB
+						.equals(connection)) {
+
+					lst.add("-select");
+					lst.add("usb=" + connectionAddress);
+				} else if (ConfigurationAttributes.GDB_SERVER_CONNECTION_IP
+						.equals(connection)) {
+					lst.add("-select");
+					lst.add("ip=" + connectionAddress);
+				}
+			}
+
 			lst.add("-if");
 			lst.add(configuration.getAttribute(
 					ConfigurationAttributes.INTERFACE,
@@ -1708,7 +1876,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.GDB_SERVER_OTHER,
 					ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT).trim();
 			if (other.length() > 0) {
-				lst.add(other);
+				lst.addAll(splitOptions(other));
 			}
 
 		} catch (CoreException e) {
@@ -1717,6 +1885,70 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		return lst.toArray(new String[0]);
+	}
+
+	private enum State {
+		None, InOption, InString
+	};
+
+	private static List<String> splitOptions(String str) {
+
+		List<String> lst = new ArrayList<String>();
+		State state = State.None;
+
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < str.length(); ++i) {
+			char ch = str.charAt(i);
+
+			// a small state machine to split a string in substrings,
+			// preserving quoted parts
+			switch (state) {
+			case None:
+
+				if (ch == '"') {
+					sb.setLength(0);
+
+					state = State.InString;
+				} else if (ch != ' ') {
+					sb.setLength(0);
+					sb.append(ch);
+
+					state = State.InOption;
+				}
+				break;
+
+			case InOption:
+
+				if (ch != ' ') {
+					sb.append(ch);
+				} else {
+					lst.add(sb.toString());
+
+					state = State.None;
+				}
+
+				break;
+
+			case InString:
+
+				if (ch != '"') {
+					sb.append(ch);
+				} else {
+					lst.add(sb.toString());
+
+					state = State.None;
+				}
+
+				break;
+			}
+
+		}
+
+		if (state == State.InOption || state == State.InString) {
+			lst.add(sb.toString());
+		}
+		return lst;
+
 	}
 
 	// --------------
