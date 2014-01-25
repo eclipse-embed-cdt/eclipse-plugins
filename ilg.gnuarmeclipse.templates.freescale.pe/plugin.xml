@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.cdt.core.templates">
+      <template
+            filterPattern=".*g[c\+][c\+]"
+            id="ilg.gnuarmeclipse.templates.freescale.pe.pex.c.project"
+            location="$nl$/templates/pex_c_project/template.xml"
+            pagesAfterTemplateSelectionProvider="ilg.gnuarmeclipse.templates.freescale.pe.ui.ExtraPagesProvider"
+            projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
+      </template>
+   </extension>
+<!--
+   <extension
+         point="org.eclipse.cdt.managedbuilder.ui.newWizardPages">
+      <wizardPage
+            ID="ilg.gnuarmeclipse.templates.freescale.pe.wizardPage"
+            operationClass="ilg.gnuarmeclipse.templates.freescale.pe.ui.WizardPageOperation"
+            pageClass="ilg.gnuarmeclipse.templates.freescale.pe.ui.WizardPage">
+         <nature
+               natureID="com.freescale.processorexpert.core.expertprojectnature">
+         </nature>
+      </wizardPage>
+   </extension>
+   -->
+
+   <extension
+         point="org.eclipse.cdt.core.templateProcessTypes">
+      <processType
+            name="ProcessorExpertWizard"
+            processRunner="ilg.gnuarmeclipse.templates.freescale.pe.processes.ProcessorExpertWizard">
+         <simple
+               name="projectName">
+         </simple>
+      </processType>
+   </extension>
+</plugin>

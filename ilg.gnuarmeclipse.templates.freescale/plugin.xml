@@ -5,10 +5,9 @@
          point="org.eclipse.cdt.core.templates">
       <template
             filterPattern=".*g[c\+][c\+]"
-            id="ilg.gnuarmeclipse.templates.freescale.pex.c.project"
-            location="$nl$/templates/pex_c_project/template.xml"
+            id="ilg.gnuarmeclipse.templates.freescale.klxx.c.project"
+            location="$nl$/templates/klxx_c_project/template.xml"
             projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
       </template>
    </extension>
-
 </plugin>

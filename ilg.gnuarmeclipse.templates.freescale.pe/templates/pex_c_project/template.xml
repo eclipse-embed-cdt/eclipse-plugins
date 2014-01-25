@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<template type="ProjTempl" version="1.0" supplier="Eclipse.org"
+	revision="1.0" author="Liviu Ionescu"
+	copyright="Copyright (c) 2014 Liviu Ionescu. All rights reserved. This program and the accompanying materials are made available under the terms of the Eclipse Public License v1.0 which accompanies this distribution, and is available athttp://www.eclipse.org/legal/epl-v10.html"
+	id="ProcessorExpert_C_Project" label="%PEx.template.label" description="%PEx.template.description"
+	help="help.html">
+
+	<process type="org.eclipse.cdt.managedbuilder.core.NewManagedProject">
+		<simple name="name" value="$(projectName)" />
+		<simple name="artifactExtension" value="elf" />
+		<simple name="isCProject" value="true" />
+	</process>
+
+	<process
+		type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+		<simple name="projectName" value="$(projectName)" />
+		<complex-array name="resourcePaths">
+			<element>
+				<simple name="id"
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
+				<simple-array name="values">
+					<element value="../Generated_Code" />
+					<element value="../Sources" />
+					<element value="../Project_Settings/Startup_Code" />
+					<element value="&quot;${ProcessorExpertPath}/lib/Kinetis/iofiles&quot;" />
+					<element value="&quot;${ProcessorExpertPath}/lib/Kinetis/pdd/inc&quot;" />
+				</simple-array>
+				<simple name="path" value="" />
+			</element>
+		</complex-array>
+	</process>
+
+	<process
+		type="org.eclipse.cdt.managedbuilder.core.SetMBSStringListOptionValues">
+		<simple name="projectName" value="$(projectName)" />
+		<complex-array name="resourcePaths">
+			<element>
+				<simple name="id"
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.scriptfile" />
+				<simple-array name="values">
+					<element value="..\Project_Settings\Linker_Files\ProcessorExpert.ld" />
+				</simple-array>
+				<simple name="path" value="" />
+			</element>
+		</complex-array>
+	</process>
+
+	<process type="org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue">
+		<simple name="projectName" value="$(projectName)" />
+		<complex-array name="resourcePaths">
+			<element>
+				<simple name="id"
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.nostart" />
+				<simple name="value" value="true" />
+				<simple name="path" value="" />
+			</element>
+		</complex-array>
+	</process>
+
+	<process type="org.eclipse.cdt.core.AddNature">
+		<simple name="projectName" value="$(projectName)" />
+		<simple name="natureId"
+			value="com.freescale.processorexpert.core.expertprojectnature" />
+	</process>
+
+	<process type="ilg.gnuarmeclipse.templates.freescale.pe.ProcessorExpertWizard">
+		<simple name="projectName" value="$(projectName)" />
+	</process>
+</template>
+
