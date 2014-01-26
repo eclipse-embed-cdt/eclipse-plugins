@@ -1,0 +1,52 @@
+
+// ----------------------------------------------------------------------------
+
+static void
+Delay(__IO uint32_t nTime);
+
+static void
+TimingDelay_Decrement(void);
+
+void
+SysTick_Handler(void);
+
+/* ----- Timing definitions ----------------------------------------------- */
+
+#define SYSTICK_FREQUENCY_HZ       1000
+
+#define BLINK_TICKS     SYSTICK_FREQUENCY_HZ/2
+
+/* ----- LED definitions --------------------------------------------------- */
+
+/* Adjust them for your own board. */
+
+/* FRDM-KL25Z definitions (the GREEN LED, active low) */
+
+#define BLINK_PORT      PTB
+#define BLINK_PIN       9
+
+void
+blink_led_on()
+{
+  BLINK_PORT->PCOR = (1 << BLINK_PIN);
+}
+
+void
+blink_led_off()
+{
+  BLINK_PORT->PSOR = (1 << BLINK_PIN);
+}
+
+void
+blink_led_init()
+{
+  BLINK_PORT->PDDR |= (1 << BLINK_PIN);
+
+  blink_led_off();
+}
+
+// ----------------------------------------------------------------------------
+
+int
+main(void)
+{

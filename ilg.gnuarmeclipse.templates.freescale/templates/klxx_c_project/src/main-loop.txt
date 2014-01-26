@@ -1,0 +1,32 @@
+
+  /*
+   * At this stage the microcontroller clock setting is already configured,
+   * this is done through SystemInit() function which is called from startup
+   * files (startup_cm.c) before to branch to the
+   * application main. To reconfigure the default setting of SystemInit()
+   * function, refer to system_stm32f4xx.c file.
+   */
+
+  /* Use SysTick as reference for the timer */
+  SysTick_Config(SystemCoreClock / SYSTICK_FREQUENCY_HZ);
+
+  blink_led_init();
+  
+  int seconds = 0;
+
+  /* Infinite loop */
+  while (1)
+    {
+
+      /* Turn on led by setting the pin low */
+      blink_led_on();
+
+      Delay(BLINK_TICKS);
+
+      /* Turn off led by setting the pin high */
+      blink_led_off();
+
+      Delay(BLINK_TICKS);
+
+      ++seconds;
+

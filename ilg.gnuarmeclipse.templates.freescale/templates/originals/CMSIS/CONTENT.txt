@@ -1,0 +1,12 @@
+This is the original ARM CMSIS-SP-00300-r3p2-00rel1.zip archive,
+the CMSIS folder, with the following folders removed to save space:
+
+- Documentation
+- DSP_Lib
+- Lib
+- SVD
+
+Also the following files were removed:
+- CMSIS END USER LICENCE AGREEMENT.pdf
+- index.html
+
