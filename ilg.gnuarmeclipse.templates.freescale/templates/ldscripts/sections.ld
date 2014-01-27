@@ -1,5 +1,5 @@
 /*
- * Default linker script for STM32Fxxx.
+ * Default linker script for KLxx.
  */
 
 /*
@@ -229,17 +229,6 @@ SECTIONS
     } >RAM
 
   	___data_size = _edata - _sdata;
-      
-  	___m_data_1FFFF000_ROMStart = ___ROM_AT + SIZEOF(.data);
-  	.m_data_1FFFF000 : AT(___m_data_1FFFF000_ROMStart)
-  	{
-     	. = ALIGN(4);
-     	___m_data_1FFFF000_RAMStart = .;
-     	*(.m_data_1FFFF000) /* This is an User defined section */
-     	___m_data_1FFFF000_RAMEnd = .;
-     	. = ALIGN(4);
-  	} > LOW_RAM
-  	___m_data_1FFFF000_ROMSize = ___m_data_1FFFF000_RAMEnd - ___m_data_1FFFF000_RAMStart;
 
     /*
      * The uninitialised data section.
