@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+   <extension
+         point="org.eclipse.debug.core.launchConfigurationTypes">
+      <launchConfigurationType
+            id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.launchConfigurationType"
+            modes="debug"
+            name="%launchConfig.name"
+            public="true"/>
+   </extension>
+
+   <extension
+         point="org.eclipse.debug.core.launchDelegates">
+      <launchDelegate
+            delegate="ilg.gnuarmeclipse.debug.gdbjtag.openocd.LaunchConfigurationDelegate"
+            delegateDescription="%launchDelegate.jtagDsf.description"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.core.dsfLaunchDelegate"
+            modes="debug"
+            name="%launchDelegate.jtagDsf.name"
+            sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
+            sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer"
+            type="ilg.gnuarmeclipse.debug.gdbjtag.openocd.launchConfigurationType">
+      </launchDelegate>
+   </extension>
+
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+      <launchConfigurationTypeImage
+            configTypeID="ilg.gnuarmeclipse.debug.gdbjtag.openocd.launchConfigurationType"
+            icon="icons/obj16/c_app.gif"
+            id="ilg.gnuarmeclipset.debug.gdbjtag.openocd.launchConfigurationTypeImage"/>
+   </extension>
+
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+      <launchConfigurationTabGroup
+            class="ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.TabGroupLaunchConfiguration"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.launchConfigurationTabGroup"
+            type="ilg.gnuarmeclipse.debug.gdbjtag.openocd.launchConfigurationType"/>
+   </extension>
+
+   <extension
+         point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
+      <device
+            class="ilg.gnuarmeclipse.debug.gdbjtag.openocd.JTagDevice"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.core.jtagdevice"
+            name="%JTagDevice.generic.name">
+      </device>
+   </extension>
+   
+   <!--
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <toolbar
+               id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.toolbar.restart"
+               label="Restart Toolbar">
+            <separator
+                  name="Restart group"
+                  visible="true">
+            </separator>
+            <command
+                  commandId="ilg.gnuarmeclipse.debug.gdbjtag.openocd.command.restart"
+                  disabledIcon="icons/dlcl16/restart_co.gif"
+                  icon="icons/elcl16/restart_co.gif"
+                  label="%restartButton.label"
+                  style="push"
+                  tooltip="%restartButton.tooltip">
+            </command>
+         </toolbar>
+      </menuContribution>
+   </extension>
+   -->
+   <!--
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.category.restart"
+            name="Restart category">
+      </category>
+      <command
+            categoryId="ilg.gnuarmeclipse.debug.gdbjtag.openocd.category.restart"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.command.restart"
+            name="Restart command">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.ButtonRestartHandler"
+            commandId="ilg.gnuarmeclipse.debug.gdbjtag.openocd.command.restart">
+      </handler>
+   </extension>
+   -->
+   <!--
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar">
+         <toolbar
+               id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.toolbar.restart">
+            <command
+                  commandId="ilg.gnuarmeclipse.debug.gdbjtag.openocd.command.restart"
+                  disabledIcon="icons/dlcl16/restart_co.gif"
+                  icon="icons/elcl16/restart_co.gif"
+                  label="%restartButton.label"
+                  style="push"
+                  tooltip="%restartButton.tooltip">
+            </command>
+         </toolbar>
+      </menuContribution>
+   </extension>
+   -->
+   <!--
+   <extension
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            description="Restart Action Set Description"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.actionSet.restart"
+            label="Restart Action Set"
+            visible="true">
+         <action
+               class="ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.ButtonRestartActionDelegate"
+               disabledIcon="icons/dlcl16/restart_co.gif"
+               icon="icons/elcl16/restart_co.gif"
+               id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.action.restart"
+               label="%restartButton.label"
+               retarget="false"
+               style="push"
+               toolbarPath="ilg.gnuarmeclipse.debug.gdbjtag.openocd.toolbar.restart/restartGroup"
+               tooltip="%restartButton.tooltip">
+               
+         </action>
+      </actionSet>
+   </extension>
+   -->
+   <!--
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.category.restart"
+            name="Restart category">
+      </category>
+      <command
+            category="ilg.gnuarmeclipse.debug.gdbjtag.openocd.category.restart"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.command.restart"
+            name="Restart command">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.ButtonResetHandler"
+            commandId="ilg.gnuarmeclipse.debug.gdbjtag.openocd.command.restart">
+         <enabledWhen>
+            <with
+                  variable="ilg.gnuarmeclipse.debug.gdbjtag.openocd.variable.isResetEnabled">
+               <equals
+                     value="yes">
+               </equals>
+            </with>
+         </enabledWhen>
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.services">
+      <sourceProvider
+            provider="ilg.gnuarmeclipse.debug.gdbjtag.openocd.SourceProvider">
+         <variable
+               name="ilg.gnuarmeclipse.debug.gdbjtag.openocd.variable.isResetEnabled"
+               priorityLevel="workbench">
+         </variable>
+      </sourceProvider>
+   </extension>
+   -->
+<!--  
+   <extension
+         point="org.eclipse.ui.commandImages">
+      <image
+            commandId="ilg.gnuarmeclipse.debug.gdbjtag.openocd.command.restart"
+            disabledIcon="icons/dlcl16/restart_co.gif"
+            icon="icons/elcl16/restart_co.gif">
+      </image>
+   </extension>
+-->
+<!--  
+   <extension
+         point="org.eclipse.debug.ui.launchConfigurationTabs">
+         
+      <tab
+            class="org.eclipse.cdt.debug.gdbjtag.internal.ui.GDBJtagDSFCMainTab"
+            group="ilg.gnuarmeclipse.debug.gdbjtag.openocd.launchConfigurationTabGroup"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.cmaintab.dsf2"
+            name="%launchtab.cmaintab.name">
+         <associatedDelegate
+               delegate="org.eclipse.cdt.debug.gdbjtag.core.dsfLaunchDelegate">
+         </associatedDelegate>
+      </tab>
+      
+      <tab
+            class="org.eclipse.cdt.debug.gdbjtag.ui.GDBJtagDSFDebuggerTab"
+            group="ilg.gnuarmeclipse.debug.gdbjtag.openocd.launchConfigurationTabGroup"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.debuggertab.dsf"
+            name="%launchtab.debuggertab.name">
+         <associatedDelegate
+               delegate="org.eclipse.cdt.debug.gdbjtag.core.dsfLaunchDelegate">
+         </associatedDelegate>
+         <placement
+               after="org.eclipse.cdt.dsf.gdb.launch.mainTab">
+         </placement>
+      </tab>
+      <tab
+            class="org.eclipse.cdt.debug.gdbjtag.ui.GDBJtagStartupTab"
+            group="ilg.gnuarmeclipse.debug.gdbjtag.openocd.launchConfigurationTabGroup"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.startuptab.dsf"
+            name="%launchtab.startuptab.name">
+         <associatedDelegate
+               delegate="org.eclipse.cdt.debug.gdbjtag.core.dsfLaunchDelegate">
+         </associatedDelegate>
+         <placement
+               after="org.eclipse.cdt.debug.gdbjtag.ui.debuggertab.dsf">
+         </placement>
+      </tab>
+      <tab
+            class="org.eclipse.debug.ui.sourcelookup.SourceLookupTab"
+            group="ilg.gnuarmeclipse.debug.gdbjtag.openocd.launchConfigurationTabGroup"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.sourcelookuptab.dsf"
+            name="%launchTab.sourceLookup.name">
+         <associatedDelegate
+               delegate="org.eclipse.cdt.debug.gdbjtag.core.dsfLaunchDelegate">
+         </associatedDelegate>
+         <placement
+               after="org.eclipse.cdt.debug.gdbjtag.ui.startuptab">
+         </placement>
+      </tab>
+      <tab
+            class="org.eclipse.debug.ui.CommonTab"
+            group="ilg.gnuarmeclipse.debug.gdbjtag.openocd.launchConfigurationTabGroup"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.commontab.dsf"
+            name="%launchTab.common.name">
+         <associatedDelegate
+               delegate="org.eclipse.cdt.debug.gdbjtag.core.dsfLaunchDelegate">
+         </associatedDelegate>
+         <placement
+               after="org.eclipse.debug.ui.sourceLookupTab">
+         </placement>
+      </tab>
+   </extension>
+-->
+
+<!--
+   <extension
+         point="org.eclipse.ui.viewActions">
+
+      <viewContribution
+            targetID="org.eclipse.debug.ui.DebugView"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.debugview.toolbar.threadGroup.ButtonRestart">
+         <action
+               class="ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.ButtonRestartActionDelegate"
+               disabledIcon="icons/dlcl16/restart_co.gif"
+               icon="icons/elcl16/restart_co.gif"
+               id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.toolbar.threadGroup.ButtonRestart"
+               label="%restartButton.label"
+               style="push"
+               toolbarPath="org.eclipse.debug.ui.main.toolbar/restartGroup"
+               tooltip="%restartButton.tooltip">
+            <enablement>
+               <pluginState
+                     value="activated"
+                     id="ilg.gnuarmeclipse.debug.gdbjtag.openocd">
+               </pluginState>
+            </enablement>
+         </action>
+      </viewContribution>
+    </extension>
+-->
+
+     <extension
+        point="org.eclipse.ui.menus">
+     <menuContribution
+           locationURI="toolbar:org.eclipse.debug.ui.main.toolbar?after=additions">
+        <command
+           commandId="org.eclipse.debug.ui.commands.Restart"
+           icon="icons/elcl16/restart_co.gif"
+           disabledIcon="icons/dlcl16/restart_co.gif"
+           label="%restartButton.label"
+           style="push"
+           tooltip="%restartButton.tooltip">
+        </command>
+     </menuContribution>
+  </extension>
+   
+</plugin>
