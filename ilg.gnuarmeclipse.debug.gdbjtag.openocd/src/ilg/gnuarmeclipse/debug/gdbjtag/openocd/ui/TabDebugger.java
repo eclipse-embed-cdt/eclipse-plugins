@@ -1088,7 +1088,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT).trim();
 
 			if (logFile.length() > 0) {
-				lst.add("-log");
+				lst.add("--log_output");
 
 				lst.add(VariablesPlugin.getDefault().getStringVariableManager()
 						.performStringSubstitution(logFile, false));
