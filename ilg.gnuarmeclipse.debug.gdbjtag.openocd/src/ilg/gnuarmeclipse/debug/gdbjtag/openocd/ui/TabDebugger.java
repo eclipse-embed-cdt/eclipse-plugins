@@ -385,6 +385,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							.getString("DebuggerTab.gdbServerAllocateTelnetConsole_ToolTipText"));
 			gd = new GridData(GridData.FILL_HORIZONTAL);
 			doGdbServerAllocateTelnetConsole.setLayoutData(gd);
+			
+			// update doStartGdbServerChanged() too
+			doGdbServerAllocateTelnetConsole.setEnabled(false);
 
 		}
 		// ----- Actions ------------------------------------------------------
@@ -659,7 +662,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		doGdbServerAllocateConsole.setEnabled(enabled);
 
-		doGdbServerAllocateTelnetConsole.setEnabled(enabled);
+		//doGdbServerAllocateTelnetConsole.setEnabled(enabled);
 
 		// Disable remote target params when the server is started
 		targetIpAddress.setEnabled(!enabled);

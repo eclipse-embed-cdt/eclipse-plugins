@@ -246,6 +246,17 @@ class SemihostingProcess extends Process implements Runnable {
 					break;
 				} else {
 					if (nRawBytes > 0) {
+						/*
+						 * int nOutBytes = 0; // filter out all non-printable
+						 * characters // might not be enough, but at least it
+						 * cleans the // console a bit for (i = 0; i <
+						 * nRawBytes; i++) { byte b = rawBytes[i]; if (b >=
+						 * 0x7F) continue; if ((b < 0x20) && (b != 0x0A) && (b
+						 * != 0x0D)) continue;
+						 * 
+						 * rawBytes[nOutBytes++] = b; } if (nOutBytes > 0) {
+						 * fPipeOut.write(rawBytes, 0, nOutBytes); }
+						 */
 						fPipeOut.write(rawBytes, 0, nRawBytes);
 					}
 				}
