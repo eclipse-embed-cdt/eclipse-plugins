@@ -1049,6 +1049,17 @@
 
 	</if>
 
+	<process type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringOptionValue">
+		<simple name="projectName" value="$(projectName)" />		
+		<complex-array name="resourcePaths">
+			<element>
+				<simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.other" />
+				<simple name="value" value="-Wno-format" />
+				<simple name="path" value="" />
+			</element>
+		</complex-array>
+	</process>
+
 	<!-- Open -->
 	<process type="org.eclipse.cdt.ui.OpenFiles">
 		<simple name="projectName" value="$(projectName)" />

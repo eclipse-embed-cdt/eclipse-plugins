@@ -1,10 +1,10 @@
 
   /*
-   * At this stage the microcontroller clock setting is already configured,
-   * this is done through SystemInit() function which is called from startup
-   * files (startup_cm.c) before to branch to the
-   * application main. To reconfigure the default setting of SystemInit()
-   * function, refer to system_stm32f4xx.c file.
+   * At this stage the microcontroller clock is already configured, this
+   * is done with the SystemInit() function, called from the startup
+   * file (startup_cm.c) before calling the application main. 
+   * To reconfigure the default setting of SystemInit() function,
+   * refer to system_MKL25Z4.c file.
    */
 
   /* Use SysTick as reference for the timer */
@@ -18,15 +18,17 @@
   while (1)
     {
 
-      /* Turn on led by setting the pin low */
+      /* Turn led ON */
       blink_led_on();
 
-      Delay(BLINK_TICKS);
+	  /* Keep the led ON 2/3 of the interval */
+      delay(BLINK_TICKS*2);
 
-      /* Turn off led by setting the pin high */
+      /* Turn led OFF */
       blink_led_off();
 
-      Delay(BLINK_TICKS);
+	  /* Keep the led OFF 1/3 of the interval */
+      delay(BLINK_TICKS);
 
       ++seconds;
 

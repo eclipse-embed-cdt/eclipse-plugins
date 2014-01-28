@@ -3,7 +3,13 @@
 
 // ----------------------------------------------------------------------------
 
-static __IO uint32_t uwTimingDelay;
+static void
+delay_decrement(void);
+
+void
+SysTick_Handler(void);
+
+static __IO uint32_t delay_count;
 
 /**
  * @brief  Inserts a delay time.
@@ -11,25 +17,26 @@ static __IO uint32_t uwTimingDelay;
  * @retval None
  */
 void
-Delay(__IO uint32_t nTime)
+delay(__IO uint32_t nTime)
 {
-  uwTimingDelay = nTime;
+  delay_count = nTime;
 
-  while (uwTimingDelay != 0)
+  /* Busy wait until the interrupt routine decrements the counter to zero */
+  while (delay_count != 0)
     ;
 }
 
 /**
- * @brief  Decrements the TimingDelay variable.
+ * @brief  Decrement the delay_count variable.
  * @param  None
  * @retval None
  */
 void
-TimingDelay_Decrement(void)
+delay_decrement(void)
 {
-  if (uwTimingDelay != 0x00)
+  if (delay_count != 0)
     {
-      uwTimingDelay--;
+      delay_count--;
     }
 }
 
@@ -43,7 +50,7 @@ TimingDelay_Decrement(void)
 void
 SysTick_Handler(void)
 {
-  TimingDelay_Decrement();
+  delay_decrement();
 }
 
 // ----------------------------------------------------------------------------
