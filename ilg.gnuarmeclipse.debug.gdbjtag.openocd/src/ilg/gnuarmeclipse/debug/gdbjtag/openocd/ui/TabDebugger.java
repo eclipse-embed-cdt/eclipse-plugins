@@ -138,11 +138,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		GridLayout layout = new GridLayout();
 		comp.setLayout(layout);
 
-		createInterfaceControl(comp);
-
 		createGdbServerGroup(comp);
 
 		createGdbClientControls(comp);
+		
+		createOptionsControl(comp);
+
 		createRemoteControl(comp);
 
 		fUpdateThreadlistOnSuspend = new Button(comp, SWT.CHECK);
@@ -192,7 +193,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 	}
 
-	private void createInterfaceControl(Composite parent) {
+	private void createOptionsControl(Composite parent) {
 
 		Group group = new Group(parent, SWT.NONE);
 		group.setText(Messages.getString("DebuggerTab.interfaceGroup_Text"));
