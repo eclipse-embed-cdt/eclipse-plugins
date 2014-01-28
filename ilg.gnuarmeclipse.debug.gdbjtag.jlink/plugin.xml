@@ -278,20 +278,5 @@
       </viewContribution>
     </extension>
 -->
-
-     <extension
-        point="org.eclipse.ui.menus">
-     <menuContribution
-           locationURI="toolbar:org.eclipse.debug.ui.main.toolbar?after=additions">
-        <command
-           commandId="org.eclipse.debug.ui.commands.Restart"
-           icon="icons/elcl16/restart_co.gif"
-           disabledIcon="icons/dlcl16/restart_co.gif"
-           label="%restartButton.label"
-           style="push"
-           tooltip="%restartButton.tooltip">
-        </command>
-     </menuContribution>
-  </extension>
    
 </plugin>

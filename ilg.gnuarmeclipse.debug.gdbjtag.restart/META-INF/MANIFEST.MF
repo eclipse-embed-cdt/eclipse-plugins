@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: %bundle.name
+Bundle-SymbolicName: ilg.gnuarmeclipse.debug.gdbjtag.restart;singleton:=true
+Bundle-Version: 1.1.1.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-Vendor: %bundle.vendor
+Bundle-ActivationPolicy: lazy
+Bundle-Localization: plugin
+Import-Package: org.eclipse.cdt.managedbuilder.core,
+ org.eclipse.cdt.managedbuilder.macros

@@ -24,6 +24,7 @@
     <module>ilg.gnuarmeclipse.debug.gdbjtag.jlink-feature</module>
     <module>ilg.gnuarmeclipse.debug.gdbjtag.openocd</module>
     <module>ilg.gnuarmeclipse.debug.gdbjtag.openocd-feature</module>
+    <module>ilg.gnuarmeclipse.debug.gdbjtag.restart</module>
     <module>../gnuarmeclipse-svn/Eclipse/current/org.eclipse.cdt.cross.arm.gnu</module>
     <module>../gnuarmeclipse-svn/Eclipse/current/org.eclipse.cdt.cross.arm.gnu-feature</module>
     <module>ilg.gnuarmeclipse-repository</module>
