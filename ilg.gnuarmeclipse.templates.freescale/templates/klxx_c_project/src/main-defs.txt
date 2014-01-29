@@ -18,6 +18,7 @@ delay(__IO uint32_t nTime);
 #define BLINK_PORT      		PTB
 #define BLINK_PIN       		19
 #define BLINK_SCGC5_MASK		SIM_SCGC5_PORTB_MASK
+
 void
 blink_led_on()
 {
@@ -46,7 +47,7 @@ blink_led_init()
   blink_led_off();
 }
 
-// ----------------------------------------------------------------------------
+/* ------------------------------------------------------------------------- */
 
 int
 main(void)

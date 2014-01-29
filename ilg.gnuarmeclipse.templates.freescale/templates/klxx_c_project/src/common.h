@@ -1,6 +1,7 @@
 /*
  * File:        common.h
- * Purpose:     File to be included by all project files
+ * Purpose:     File included by non-standard Freescale drivers.
+ *              Do not use in your projects, use CMSIS files!
  *
  * Notes:
  */
@@ -20,6 +21,7 @@
 #define CMSIS
 #define CPU_MKL25Z128LK4
 #define FREEDOM
+//#define INCLUDE_TINY_STDLIB
 
 #ifndef CMSIS // If using CMSIS, do not include arm_cm0.h
   /* 
@@ -98,6 +100,7 @@
 #warning "No toolchain specific header included"
 #endif
 
+#if defined INCLUDE_TINY_STDLIB
 /* 
  * Include common utilities
  */
@@ -107,6 +110,10 @@
 #include "stdlib.h"
 #ifdef IAR
 #include "intrinsics.h"
+#endif
+#else
+#include <stdio.h>
+#include <stdlib.h>
 #endif
 
 #ifdef CMSIS  // If we are conforming to CMSIS, we need to include these definitions
@@ -156,9 +163,9 @@ typedef unsigned char		uint8;  /*  8 bits */
 typedef unsigned short int	uint16; /* 16 bits */
 typedef unsigned long int	uint32; /* 32 bits */
 
-typedef char			    int8;   /*  8 bits */
+typedef char			int8;   /*  8 bits */
 typedef short int	        int16;  /* 16 bits */
-typedef int		            int32;  /* 32 bits */
+typedef int		        int32;  /* 32 bits */
 
 typedef volatile int8		vint8;  /*  8 bits */
 typedef volatile int16		vint16; /* 16 bits */

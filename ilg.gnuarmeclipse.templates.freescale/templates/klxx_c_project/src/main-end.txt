@@ -1,7 +1,7 @@
     }
 }
 
-// ----------------------------------------------------------------------------
+/* ------------------------------------------------------------------------- */
 
 static void
 delay_decrement(void);
@@ -12,7 +12,7 @@ SysTick_Handler(void);
 static __IO uint32_t delay_count;
 
 /**
- * @brief  Inserts a delay time.
+ * @brief  Insert a delay time.
  * @param  nTime: specifies the delay time length, in SysTick ticks.
  * @retval None
  */
@@ -40,7 +40,7 @@ delay_decrement(void)
     }
 }
 
-// ----------------------------------------------------------------------------
+/* ------------------------------------------------------------------------- */
 
 /**
  * @brief  This function is the SysTick Handler.
@@ -53,4 +53,4 @@ SysTick_Handler(void)
   delay_decrement();
 }
 
-// ----------------------------------------------------------------------------
+/* ------------------------------------------------------------------------- */

@@ -49,9 +49,9 @@
 			description="%KLxx.cmsisDir.description" type="input"
 			default="%KLxx.cmsisDir.default" pattern="[a-zA-Z0-9]+" mandatory="true"
 			persist="true" />
-		<property id="commonDir" label="%KLxx.commonDir.label"
-			description="%KLxx.commonDir.description" type="input"
-			default="%KLxx.commonDir.default" pattern="[a-zA-Z0-9]+" mandatory="true"
+		<property id="tinylibDir" label="%KLxx.tinylibDir.label"
+			description="%KLxx.tinylibDir.description" type="input"
+			default="%KLxx.tinylibDir.default" pattern="[a-zA-Z0-9]+" mandatory="true"
 			persist="true" />
 		<property id="driversDir" label="%KLxx.driversDir.label"
 			description="%KLxx.driversDir.description" type="input"
@@ -383,13 +383,6 @@
 			<complex-array name="files">
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/cpu/headers/CMSIS/MemMapPtr_KL25Z4.h" />
-					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/MemMapPtr_KL25Z4.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
 						value="../originals/klxx-sc-baremetal/src/cpu/headers/CMSIS/MKL25Z4/Include/MKL25Z4.h" />
 					<simple name="target"
 						value="$(libsDir)/$(cmsisDir)/$(includeDir)/MKL25Z4.h" />
@@ -400,13 +393,6 @@
 						value="../originals/klxx-sc-baremetal/src/cpu/headers/CMSIS/MKL25Z4/Include/system_MKL25Z4.h" />
 					<simple name="target"
 						value="$(libsDir)/$(cmsisDir)/$(includeDir)/system_MKL25Z4.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/cpu/vectors.h" />
-					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/vectors.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -428,8 +414,7 @@
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source"
-						value="src/system_MKL25Z4.c.patched" />
+					<simple name="source" value="src/system_MKL25Z4.c.patched" />
 					<simple name="target"
 						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/system_MKL25Z4.c" />
 					<simple name="replaceable" value="true" />
@@ -444,15 +429,15 @@
 		</process>
 	</if>
 
-	<!-- common -->
+	<!-- tinylib -->
 	<process type="org.eclipse.cdt.core.CreateFolder">
 		<simple name="projectName" value="$(projectName)" />
-		<simple name="path" value="$(libsDir)/$(commonDir)/$(includeDir)" />
+		<simple name="path" value="$(libsDir)/$(tinylibDir)/$(includeDir)" />
 	</process>
 
 	<process type="org.eclipse.cdt.core.CreateFolder">
 		<simple name="projectName" value="$(projectName)" />
-		<simple name="path" value="$(libsDir)/$(commonDir)/$(sourceDir)" />
+		<simple name="path" value="$(libsDir)/$(tinylibDir)/$(sourceDir)" />
 	</process>
 
 	<process
@@ -463,7 +448,7 @@
 				<simple name="id"
 					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
 				<simple-array name="values">
-					<element value="&quot;../$(libsDir)/$(commonDir)/$(includeDir)&quot;" />
+					<element value="&quot;../$(libsDir)/$(tinylibDir)/$(includeDir)&quot;" />
 				</simple-array>
 				<simple name="path" value="" />
 			</element>
@@ -475,52 +460,67 @@
 		<complex-array name="files">
 			<element>
 				<simple name="source"
+					value="../common/tinylib_readme.txt" />
+				<simple name="target"
+					value="$(libsDir)/$(tinylibDir)/README.txt" />
+				<simple name="replaceable" value="true" />
+			</element>
+		</complex-array>
+	</process>
+
+	<process type="org.eclipse.cdt.core.AddFiles">
+		<simple name="projectName" value="$(projectName)" />
+		<complex-array name="files">
+			<element>
+				<simple name="source"
 					value="../originals/klxx-sc-baremetal/src/common/assert.h" />
-				<simple name="target" value="$(libsDir)/$(commonDir)/$(includeDir)/assert.h" />
+				<simple name="target"
+					value="$(libsDir)/$(tinylibDir)/$(includeDir)/assert.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source" value="../originals/klxx-sc-baremetal/src/common/io.h" />
-				<simple name="target" value="$(libsDir)/$(commonDir)/$(includeDir)/io.h" />
+				<simple name="target" value="$(libsDir)/$(tinylibDir)/$(includeDir)/io.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
 					value="../originals/klxx-sc-baremetal/src/common/memtest.h" />
 				<simple name="target"
-					value="$(libsDir)/$(commonDir)/$(includeDir)/memtest.h" />
+					value="$(libsDir)/$(tinylibDir)/$(includeDir)/memtest.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
 					value="../originals/klxx-sc-baremetal/src/common/queue.h" />
-				<simple name="target" value="$(libsDir)/$(commonDir)/$(includeDir)/queue.h" />
+				<simple name="target" value="$(libsDir)/$(tinylibDir)/$(includeDir)/queue.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
 					value="../originals/klxx-sc-baremetal/src/common/startup.h" />
 				<simple name="target"
-					value="$(libsDir)/$(commonDir)/$(includeDir)/startup.h" />
+					value="$(libsDir)/$(tinylibDir)/$(includeDir)/startup.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
 					value="../originals/klxx-sc-baremetal/src/common/stdlib.h" />
-				<simple name="target" value="$(libsDir)/$(commonDir)/$(includeDir)/stdlib.h" />
+				<simple name="target"
+					value="$(libsDir)/$(tinylibDir)/$(includeDir)/stdlib.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
 					value="../originals/klxx-sc-baremetal/src/common/typedef.h" />
 				<simple name="target"
-					value="$(libsDir)/$(commonDir)/$(includeDir)/typedef.h" />
+					value="$(libsDir)/$(tinylibDir)/$(includeDir)/typedef.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
 					value="../originals/klxx-sc-baremetal/src/common/uif.h" />
-				<simple name="target" value="$(libsDir)/$(commonDir)/$(includeDir)/uif.h" />
+				<simple name="target" value="$(libsDir)/$(tinylibDir)/$(includeDir)/uif.h" />
 				<simple name="replaceable" value="true" />
 			</element>
 		</complex-array>
@@ -531,36 +531,39 @@
 		<complex-array name="files">
 			<element>
 				<simple name="source" value="../common/src/alloc.c.patched" />
-				<simple name="target" value="$(libsDir)/$(commonDir)/$(sourceDir)/alloc.c_" />
+				<simple name="target" value="$(libsDir)/$(tinylibDir)/$(sourceDir)/alloc.c_" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
 					value="../originals/klxx-sc-baremetal/src/common/assert.c" />
-				<simple name="target" value="$(libsDir)/$(commonDir)/$(sourceDir)/assert.c_" />
+				<simple name="target"
+					value="$(libsDir)/$(tinylibDir)/$(sourceDir)/assert.c_" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source" value="../originals/klxx-sc-baremetal/src/common/io.c" />
-				<simple name="target" value="$(libsDir)/$(commonDir)/$(sourceDir)/io.c_" />
+				<simple name="target" value="$(libsDir)/$(tinylibDir)/$(sourceDir)/io.c_" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
 					value="../originals/klxx-sc-baremetal/src/common/printf.c" />
-				<simple name="target" value="$(libsDir)/$(commonDir)/$(sourceDir)/printf.c_" />
+				<simple name="target"
+					value="$(libsDir)/$(tinylibDir)/$(sourceDir)/printf.c_" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
 					value="../originals/klxx-sc-baremetal/src/common/stdlib.c" />
-				<simple name="target" value="$(libsDir)/$(commonDir)/$(sourceDir)/stdlib.c_" />
+				<simple name="target"
+					value="$(libsDir)/$(tinylibDir)/$(sourceDir)/stdlib.c_" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
 				<simple name="source"
 					value="../originals/klxx-sc-baremetal/src/common/uif.c" />
-				<simple name="target" value="$(libsDir)/$(commonDir)/$(sourceDir)/uif.c_" />
+				<simple name="target" value="$(libsDir)/$(tinylibDir)/$(sourceDir)/uif.c_" />
 				<simple name="replaceable" value="true" />
 			</element>
 		</complex-array>
@@ -597,6 +600,34 @@
 	<process type="org.eclipse.cdt.core.AddFiles">
 		<simple name="projectName" value="$(projectName)" />
 		<complex-array name="files">
+			<element>
+				<simple name="source"
+					value="../common/drivers_readme.txt" />
+				<simple name="target"
+					value="$(libsDir)/$(driversDir)/README.txt" />
+				<simple name="replaceable" value="true" />
+			</element>
+		</complex-array>
+	</process>
+
+	<process type="org.eclipse.cdt.core.AddFiles">
+		<simple name="projectName" value="$(projectName)" />
+		<complex-array name="files">
+
+			<element>
+				<simple name="source"
+					value="../originals/klxx-sc-baremetal/src/cpu/headers/CMSIS/MemMapPtr_KL25Z4.h" />
+				<simple name="target"
+					value="$(libsDir)/$(driversDir)/$(includeDir)/MemMapPtr_KL25Z4.h" />
+				<simple name="replaceable" value="true" />
+			</element>
+			<element>
+				<simple name="source"
+					value="../originals/klxx-sc-baremetal/src/cpu/vectors.h" />
+				<simple name="target"
+					value="$(libsDir)/$(driversDir)/$(includeDir)/vectors.h" />
+				<simple name="replaceable" value="true" />
+			</element>
 			<element>
 				<simple name="source"
 					value="../originals/klxx-sc-baremetal/src/drivers/adc16/adc16.h" />
@@ -636,7 +667,7 @@
 			<element>
 				<simple name="source"
 					value="../originals/klxx-sc-baremetal/src/drivers/mcg/readme.txt" />
-				<simple name="target" value="$(libsDir)/$(driversDir)/mcg_readme.txt" />
+				<simple name="target" value="$(libsDir)/$(driversDir)/$(includeDir)/mcg_readme.txt" />
 				<simple name="replaceable" value="true" />
 			</element>
 			<element>
@@ -772,6 +803,19 @@
 					<element value="&quot;../$(libsDir)/$(miscDir)/$(includeDir)&quot;" />
 				</simple-array>
 				<simple name="path" value="" />
+			</element>
+		</complex-array>
+	</process>
+
+	<process type="org.eclipse.cdt.core.AddFiles">
+		<simple name="projectName" value="$(projectName)" />
+		<complex-array name="files">
+			<element>
+				<simple name="source"
+					value="../common/misc_readme.txt" />
+				<simple name="target"
+					value="$(libsDir)/$(miscDir)/README.txt" />
+				<simple name="replaceable" value="true" />
 			</element>
 		</complex-array>
 	</process>
@@ -1049,11 +1093,13 @@
 
 	</if>
 
-	<process type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringOptionValue">
-		<simple name="projectName" value="$(projectName)" />		
+	<process
+		type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringOptionValue">
+		<simple name="projectName" value="$(projectName)" />
 		<complex-array name="resourcePaths">
 			<element>
-				<simple name="id" value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.other" />
+				<simple name="id"
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.other" />
 				<simple name="value" value="-Wno-format" />
 				<simple name="path" value="" />
 			</element>

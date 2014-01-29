@@ -1,5 +1,5 @@
 //
-// This file is part of the GNU ARM Eclipse Plug-in
+// This file is part of the GNU ARM Eclipse Plug-ins project
 // Copyright (c) 2014 Liviu Ionescu
 //
 // This module contains the startup code for a portable Cortex-M
