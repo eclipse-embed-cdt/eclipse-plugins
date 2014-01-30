@@ -6,15 +6,20 @@ import java.util.Map;
 import org.eclipse.cdt.ui.templateengine.AbstractWizardDataPage;
 import org.eclipse.cdt.ui.templateengine.IPagesAfterTemplateSelectionProvider;
 import org.eclipse.cdt.ui.templateengine.IWizardDataPage;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.wizard.IWizard;
+import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.wizards.IWizardDescriptor;
 
-
-public class ExtraPagesProvider implements IPagesAfterTemplateSelectionProvider{
+public class ExtraPagesProvider implements IPagesAfterTemplateSelectionProvider {
 
 	IWizardDataPage[] pages;
 
@@ -22,8 +27,9 @@ public class ExtraPagesProvider implements IPagesAfterTemplateSelectionProvider{
 	public IWizardDataPage[] createAdditionalPages(IWorkbenchWizard wizard,
 			IWorkbench workbench, IStructuredSelection selection) {
 
-		pages= new IWizardDataPage[1];
-		pages[0]= new ProcessorExpertPage();
+		pages = new IWizardDataPage[1];
+		pages[0] = new ProcessorExpertPage();
+
 		return pages;
 	}
 
@@ -36,13 +42,14 @@ public class ExtraPagesProvider implements IPagesAfterTemplateSelectionProvider{
 	/**
 	 * An example implementation of {@link IWizardDataPage} for test purposes.
 	 */
-	static class ProcessorExpertPage extends AbstractWizardDataPage implements IWizardDataPage {
-		
+	static class ProcessorExpertPage extends AbstractWizardDataPage implements
+			IWizardDataPage {
+
 		public ProcessorExpertPage() {
 			super("Processor Expert", "Processor Expert Wizard", null);
 			setMessage("Populate project with Processor Expert specifics");
 		}
-		
+
 		@Override
 		public Map<String, String> getPageData() {
 			return Collections.singletonMap("myKey", "myData");
@@ -50,10 +57,10 @@ public class ExtraPagesProvider implements IPagesAfterTemplateSelectionProvider{
 
 		@Override
 		public void createControl(Composite parent) {
-			Label l= new Label(parent, SWT.NONE);
+			Label l = new Label(parent, SWT.NONE);
 			l.setText("Currently this can only be done with New -> Processor Expert -> Enable ProcessExpert...");
 			setControl(l);
 		}
 	}
-
+	
 }
