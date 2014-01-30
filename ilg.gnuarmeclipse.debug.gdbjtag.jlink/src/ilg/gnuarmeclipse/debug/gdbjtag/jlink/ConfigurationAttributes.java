@@ -13,8 +13,8 @@ public interface ConfigurationAttributes {
 	public static final String INTERFACE_SWD = "swd";
 	public static final String INTERFACE_JTAG = "jtag";
 	public static final String INTERFACE_DEFAULT = INTERFACE_SWD;
-	public static final String INTERFACE_SWD_COMMAND = "monitor interface SWD";
-	public static final String INTERFACE_JTAG_COMMAND = "monitor interface JTAG";
+	// public static final String INTERFACE_SWD_COMMAND = "monitor interface SWD";
+	// public static final String INTERFACE_JTAG_COMMAND = "monitor interface JTAG";
 
 	public static final String DO_CONNECT_TO_RUNNING = PREFIX
 			+ ".doConnectToRunning"; //$NON-NLS-1$
@@ -32,14 +32,14 @@ public interface ConfigurationAttributes {
 
 	public static final String FLASH_DEVICE_NAME = PREFIX + ".flashDeviceName"; //$NON-NLS-1$
 	public static final String FLASH_DEVICE_NAME_DEFAULT = "";
-	public static final String FLASH_DEVICE_NAME_COMMAND = "monitor flash device = ";
+	// public static final String FLASH_DEVICE_NAME_COMMAND = "monitor flash device = ";
 
 	public static final String ENDIANNESS = PREFIX + ".endianness"; //$NON-NLS-1$
 	public static final String ENDIANNESS_LITTLE = "little";
 	public static final String ENDIANNESS_BIG = "big";
 	public static final String ENDIANNESS_DEFAULT = ENDIANNESS_LITTLE;
-	public static final String ENDIANNESS_LITTLE_COMMAND = "monitor endian little";
-	public static final String ENDIANNESS_BIG_COMMAND = "monitor endian big";
+	// public static final String ENDIANNESS_LITTLE_COMMAND = "monitor endian little";
+	// public static final String ENDIANNESS_BIG_COMMAND = "monitor endian big";
 
 	public static final String DO_START_GDB_SERVER = PREFIX
 			+ ".doStartGdbServer"; //$NON-NLS-1$

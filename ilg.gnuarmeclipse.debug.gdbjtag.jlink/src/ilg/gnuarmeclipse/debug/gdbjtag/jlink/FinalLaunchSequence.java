@@ -178,14 +178,14 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		List<String> commandsList = new ArrayList<String>();
 
 		String attr;
-		attr = CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.INTERFACE,
-				ConfigurationAttributes.INTERFACE_SWD);
-		if (ConfigurationAttributes.INTERFACE_SWD.equals(attr)) {
-			commandsList.add(ConfigurationAttributes.INTERFACE_SWD_COMMAND);
-		} else if (ConfigurationAttributes.INTERFACE_JTAG.equals(attr)) {
-			commandsList.add(ConfigurationAttributes.INTERFACE_JTAG_COMMAND);
-		}
+//		attr = CDebugUtils.getAttribute(fAttributes,
+//				ConfigurationAttributes.INTERFACE,
+//				ConfigurationAttributes.INTERFACE_SWD);
+//		if (ConfigurationAttributes.INTERFACE_SWD.equals(attr)) {
+//			commandsList.add(ConfigurationAttributes.INTERFACE_SWD_COMMAND);
+//		} else if (ConfigurationAttributes.INTERFACE_JTAG.equals(attr)) {
+//			commandsList.add(ConfigurationAttributes.INTERFACE_JTAG_COMMAND);
+//		}
 
 		attr = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.FIRST_RESET_SPEED,
@@ -196,23 +196,23 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 							+ attr);
 		}
 
-		attr = CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.FLASH_DEVICE_NAME,
-				ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
-		attr = attr.trim();
-		if (attr.length() > 0) {
-			commandsList.add(ConfigurationAttributes.FLASH_DEVICE_NAME_COMMAND
-					+ attr);
-		}
-
-		attr = CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.ENDIANNESS,
-				ConfigurationAttributes.ENDIANNESS_LITTLE);
-		if (ConfigurationAttributes.ENDIANNESS_LITTLE.equals(attr)) {
-			commandsList.add(ConfigurationAttributes.ENDIANNESS_LITTLE_COMMAND);
-		} else if (ConfigurationAttributes.ENDIANNESS_BIG.equals(attr)) {
-			commandsList.add(ConfigurationAttributes.ENDIANNESS_BIG_COMMAND);
-		}
+//		attr = CDebugUtils.getAttribute(fAttributes,
+//				ConfigurationAttributes.FLASH_DEVICE_NAME,
+//				ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
+//		attr = attr.trim();
+//		if (attr.length() > 0) {
+//			commandsList.add(ConfigurationAttributes.FLASH_DEVICE_NAME_COMMAND
+//					+ attr);
+//		}
+//
+//		attr = CDebugUtils.getAttribute(fAttributes,
+//				ConfigurationAttributes.ENDIANNESS,
+//				ConfigurationAttributes.ENDIANNESS_LITTLE);
+//		if (ConfigurationAttributes.ENDIANNESS_LITTLE.equals(attr)) {
+//			commandsList.add(ConfigurationAttributes.ENDIANNESS_LITTLE_COMMAND);
+//		} else if (ConfigurationAttributes.ENDIANNESS_BIG.equals(attr)) {
+//			commandsList.add(ConfigurationAttributes.ENDIANNESS_BIG_COMMAND);
+//		}
 
 		boolean noReset = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
