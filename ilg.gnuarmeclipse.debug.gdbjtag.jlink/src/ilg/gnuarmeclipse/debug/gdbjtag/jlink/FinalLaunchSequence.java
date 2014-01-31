@@ -221,15 +221,27 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 			if (CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.DO_FIRST_RESET,
 					ConfigurationAttributes.DO_FIRST_RESET_DEFAULT)) {
-				String commandStr = ConfigurationAttributes.DO_FIRST_RESET_COMMAND;
+
+				String commandStr;
+				
+				// Since reset does not clear breakpoints, we do it explicitly
+				commandStr = ConfigurationAttributes.CLRBP_COMMAND;
+				commandsList.add(commandStr);
+				
+				commandStr = ConfigurationAttributes.DO_FIRST_RESET_COMMAND;
 				String resetType = CDebugUtils.getAttribute(fAttributes,
 						ConfigurationAttributes.FIRST_RESET_TYPE,
-						ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
+						ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);				
 				commandsList.add(commandStr + resetType);
 
 				// Although the manual claims that reset always does a
 				// halt, better issue it explicitly
 				commandStr = ConfigurationAttributes.HALT_COMMAND;
+				commandsList.add(commandStr);
+
+				// Also add a command to see the registers in the
+				// location where execution halted
+				commandStr = ConfigurationAttributes.REGS_COMMAND;
 				commandsList.add(commandStr);
 			}
 		}
@@ -380,15 +392,27 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 				if (CDebugUtils.getAttribute(fAttributes,
 						ConfigurationAttributes.DO_SECOND_RESET,
 						ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
-					String commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
+					
+					String commandStr;
+					
+					// Since reset does not clear breakpoints, we do it explicitly
+					commandStr = ConfigurationAttributes.CLRBP_COMMAND;
+					commandsList.add(commandStr);
+					
+					commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
 					String resetType = CDebugUtils.getAttribute(fAttributes,
 							ConfigurationAttributes.SECOND_RESET_TYPE,
-							ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+							ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);					
 					commandsList.add(commandStr + resetType);
 
 					// Although the manual claims that reset always does a
 					// halt, better issue it explicitly
 					commandStr = ConfigurationAttributes.HALT_COMMAND;
+					commandsList.add(commandStr);
+
+					// Also add a command to see the registers in the
+					// location where execution halted
+					commandStr = ConfigurationAttributes.REGS_COMMAND;
 					commandsList.add(commandStr);
 				}
 			}
