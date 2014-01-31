@@ -197,7 +197,7 @@
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="src/main-hello.txt" />
+					<simple name="source" value="src/main-hello-args.txt" />
 					<simple name="target" value="$(sourceDir)/main.c" />
 					<simple name="replaceable" value="true" />
 				</element>

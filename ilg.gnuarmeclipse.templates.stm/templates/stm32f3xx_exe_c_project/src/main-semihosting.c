@@ -69,22 +69,22 @@ main(int argc, char* argv[])
 #if defined(DEBUG)
 
   /*
-   * Dump the semihosting parameters, if any.
+   * Show the program parameters (passed via semihosting).
+   * Output is via the semihosting output channel.
    */
-  printf("%s, argc=%d, argv=[", argv[0], argc);
+  printf("main(argc=%d, argv=[", argc);
   for (int i = 0; i < argc; ++i)
     {
       if (i != 0)
         {
           printf(", ");
         }
-      printf("%s", argv[i+1]);
+      printf("'%s'", argv[i]);
     }
-  printf("]\n");
+  printf("])\n");
 
   /*
-   * Send a greeting to the standard output (the semihosting debug channel
-   * on Debug, ignored on Release).
+   * Send a greeting.
    */
   printf("Hello ARM World!\n");
 
