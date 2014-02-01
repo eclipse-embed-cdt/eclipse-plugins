@@ -170,7 +170,7 @@ public interface ConfigurationAttributes {
 
 	public static final String SWO_ENABLETARGET_PORTMASK = PREFIX
 			+ ".swoEnableTargetPortMask"; //$NON-NLS-1$
-	public static final int SWO_ENABLETARGET_PORTMASK_DEFAULT = 1;
+	public static final String SWO_ENABLETARGET_PORTMASK_DEFAULT = "0x1";
 
 	public static final String OTHER_INIT_COMMANDS = PREFIX
 			+ ".otherInitCommands"; //$NON-NLS-1$
