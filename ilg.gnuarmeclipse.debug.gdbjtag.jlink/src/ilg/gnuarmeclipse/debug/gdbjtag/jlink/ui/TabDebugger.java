@@ -82,7 +82,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private Button doStartGdbServer;
 	private Text gdbClientExecutable;
-	private boolean didGdbClientExecutableChanged;
+	private boolean didGdbClientExecutableChange;
 	private Text gdbClientOtherCommands;
 	// private Button useRemote;
 	// private Combo jtagDevice;
@@ -95,7 +95,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	// private Text connection;
 	// private String savedJtagDevice;
 	private Text gdbFlashDeviceName;
-	private boolean didFlashDeviceNameChanged;
+	private boolean didFlashDeviceNameChange;
 	private Button gdbEndiannessLittle;
 	private Button gdbEndiannessBig;
 	private Button gdbInterfaceJtag;
@@ -324,7 +324,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				gd.widthHint = 180;
 				gdbFlashDeviceName.setLayoutData(gd);
 
-				didFlashDeviceNameChanged = false;
+				didFlashDeviceNameChange = false;
 
 				Composite empty = new Composite(local, SWT.NONE);
 				layout = new GridLayout();
@@ -803,7 +803,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			public void modifyText(ModifyEvent e) {
 				updateLaunchConfigurationDialog();
 
-				didFlashDeviceNameChanged = true;
+				didFlashDeviceNameChange = true;
 			}
 		});
 
@@ -908,7 +908,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				gd = new GridData(GridData.FILL_HORIZONTAL);
 				gdbClientExecutable.setLayoutData(gd);
 
-				didGdbClientExecutableChanged = false;
+				didGdbClientExecutableChange = false;
 
 				browseButton = new Button(local, SWT.NONE);
 				browseButton.setText(Messages
@@ -942,7 +942,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			@Override
 			public void modifyText(ModifyEvent e) {
 
-				didGdbClientExecutableChanged = true;
+				didGdbClientExecutableChange = true;
 
 				scheduleUpdateJob(); // provides much better performance for
 										// Text listeners
@@ -1124,7 +1124,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						.getFlashDeviceName(ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
 				gdbFlashDeviceName.setText(configuration.getAttribute(
 						ConfigurationAttributes.FLASH_DEVICE_NAME, sharedName));
-				didFlashDeviceNameChanged = false;
+				didFlashDeviceNameChange = false;
 
 				String endianness = configuration.getAttribute(
 						ConfigurationAttributes.ENDIANNESS,
@@ -1287,7 +1287,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 								SharedStorage
 										.getGdbClientExecutable(ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT));
 				gdbClientExecutable.setText(gdbCommandAttr);
-				didGdbClientExecutableChanged = false;
+				didGdbClientExecutableChange = false;
 
 				gdbClientOtherCommands
 						.setText(configuration
@@ -1372,10 +1372,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			String name = gdbFlashDeviceName.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.FLASH_DEVICE_NAME, name);
-			if (didFlashDeviceNameChanged) {
+			if (didFlashDeviceNameChange) {
 				SharedStorage.putFlashDeviceName(name);
 				doSharedUpdate = true;
-				didFlashDeviceNameChanged = false;
+				didFlashDeviceNameChange = false;
 			}
 
 			if (gdbEndiannessLittle.getSelection()) {
@@ -1511,9 +1511,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
 					clientExecutable); // DSF
 
-			if (didGdbClientExecutableChanged) {
+			if (didGdbClientExecutableChange) {
 				SharedStorage.putGdbClientExecutable(clientExecutable);
-				didGdbClientExecutableChanged = true;
+				didGdbClientExecutableChange = true;
 			}
 
 			configuration.setAttribute(

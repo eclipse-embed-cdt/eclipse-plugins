@@ -16,6 +16,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.SharedStorage;
 
 import java.io.File;
 
@@ -87,6 +88,9 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	private Text swoEnableTargetCpuFreq;
 	private Text swoEnableTargetSwoFreq;
 	private Text swoEnableTargetPortMask;
+
+	private boolean didSwoEnableTargetCpuFreqChange;
+	private boolean didSwoEnableTargetSwoFreqChange;
 
 	private Button loadExecutable;
 	private Text imageFileName;
@@ -332,6 +336,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			gd.widthHint = 70;
 			swoEnableTargetCpuFreq.setLayoutData(gd);
 
+			didSwoEnableTargetCpuFreqChange = false;
+
 			label = new Label(local, SWT.NONE);
 			label.setText(Messages
 					.getString("StartupTab.swoEnableTargetCpuFreqUnit_Text"));
@@ -346,6 +352,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			gd = new GridData();
 			gd.widthHint = 60;
 			swoEnableTargetSwoFreq.setLayoutData(gd);
+
+			didSwoEnableTargetSwoFreqChange = false;
 
 			label = new Label(local, SWT.NONE);
 			label.setText(Messages
@@ -470,12 +478,24 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		});
 
 		swoEnableTargetCpuFreq.addVerifyListener(numericVerifyListener);
-		swoEnableTargetCpuFreq
-				.addModifyListener(scheduleUpdateJobModifyListener);
+		swoEnableTargetCpuFreq.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+
+				didSwoEnableTargetCpuFreqChange = true;
+				scheduleUpdateJob();
+			}
+		});
 
 		swoEnableTargetSwoFreq.addVerifyListener(numericVerifyListener);
-		swoEnableTargetSwoFreq
-				.addModifyListener(scheduleUpdateJobModifyListener);
+		swoEnableTargetSwoFreq.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+
+				didSwoEnableTargetSwoFreqChange = true;
+				scheduleUpdateJob();
+			}
+		});
 
 		swoEnableTargetPortMask.addVerifyListener(hexVerifyListener);
 		swoEnableTargetPortMask
@@ -580,14 +600,15 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				symbolsOffset = new Text(local, SWT.BORDER);
 				gd = new GridData();
 				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
-				gd.widthHint = 100; 
+				gd.widthHint = 100;
 				symbolsOffset.setLayoutData(gd);
 			}
 		}
 
 		{
 			loadExecutable = new Button(comp, SWT.CHECK);
-			loadExecutable.setText(Messages.getString("StartupTab.loadImage_Text"));
+			loadExecutable.setText(Messages
+					.getString("StartupTab.loadImage_Text"));
 		}
 
 		{
@@ -636,7 +657,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				imageOffset = new Text(local, SWT.BORDER);
 				gd = new GridData();
 				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
-				gd.widthHint = ((GridData) symbolsOffset.getLayoutData()).widthHint;;
+				gd.widthHint = ((GridData) symbolsOffset.getLayoutData()).widthHint;
 				imageOffset.setLayoutData(gd);
 			}
 		}
@@ -983,7 +1004,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		doSecondReset.setEnabled(!flag);
 		secondResetType.setEnabled(!flag);
-		
+
 		loadExecutable.setEnabled(!flag);
 	}
 
@@ -1145,16 +1166,19 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			enableSwo.setSelection(configuration.getAttribute(
 					ConfigurationAttributes.ENABLE_SWO,
 					ConfigurationAttributes.ENABLE_SWO_DEFAULT));
-			swoEnableTargetCpuFreq
-					.setText(String.valueOf(configuration
-							.getAttribute(
-									ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
-									ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT)));
-			swoEnableTargetSwoFreq
-					.setText(String.valueOf(configuration
-							.getAttribute(
-									ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
-									ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT)));
+
+			int sharedCpuFreq = SharedStorage
+					.getSwoEnableTargetCpuFreq(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
+			swoEnableTargetCpuFreq.setText(String.valueOf(configuration
+					.getAttribute(
+							ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
+							sharedCpuFreq)));
+			int sharedSwoFreq = SharedStorage
+					.getSwoEnableTargetSwoFreq(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
+			swoEnableTargetSwoFreq.setText(String.valueOf(configuration
+					.getAttribute(
+							ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
+							sharedSwoFreq)));
 			swoEnableTargetPortMask
 					.setText(String.valueOf(configuration
 							.getAttribute(
@@ -1263,6 +1287,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 
+		boolean doSharedUpdate = false;
+
 		// Initialisation Commands
 		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
 				doFirstReset.getSelection());
@@ -1294,8 +1320,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SWO,
 				enableSwo.getSelection());
 
-		int value;
-
+		int value;		
 		try {
 			value = Integer.parseInt(swoEnableTargetCpuFreq.getText());
 		} catch (NumberFormatException e) {
@@ -1303,6 +1328,12 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		}
 		configuration.setAttribute(
 				ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ, value);
+		if (didSwoEnableTargetCpuFreqChange){
+			SharedStorage.putSwoEnableTargetCpuFreq(value);
+			didSwoEnableTargetCpuFreqChange = false;
+			doSharedUpdate = true;
+		}
+
 		try {
 			value = Integer.parseInt(swoEnableTargetSwoFreq.getText());
 		} catch (NumberFormatException e) {
@@ -1310,6 +1341,12 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		}
 		configuration.setAttribute(
 				ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ, value);
+		if (didSwoEnableTargetSwoFreqChange){
+			SharedStorage.putSwoEnableTargetSwoFreq(value);
+			didSwoEnableTargetSwoFreqChange = false;
+			doSharedUpdate = true;
+		}
+
 		try {
 			value = Integer.parseInt(swoEnableTargetPortMask.getText());
 		} catch (NumberFormatException e) {
@@ -1369,6 +1406,9 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(ConfigurationAttributes.DO_CONTINUE,
 				doContinue.getSelection());
 
+		if (doSharedUpdate) {
+			SharedStorage.update();
+		}
 	}
 
 	@Override
@@ -1398,12 +1438,19 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SWO,
 				ConfigurationAttributes.ENABLE_SWO_DEFAULT);
-		configuration.setAttribute(
-				ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
-				ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
-		configuration.setAttribute(
-				ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
-				ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
+
+		int sharedCpuFreq = SharedStorage
+				.getSwoEnableTargetCpuFreq(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
+		configuration
+				.setAttribute(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
+						sharedCpuFreq);
+
+		int sharedSwoFreq = SharedStorage
+				.getSwoEnableTargetSwoFreq(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
+		configuration
+				.setAttribute(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
+						sharedSwoFreq);
+
 		configuration.setAttribute(
 				ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
 				ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT);

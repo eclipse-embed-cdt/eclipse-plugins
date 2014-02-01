@@ -27,6 +27,11 @@ public class SharedStorage {
 	public static final String GDB_SERVER_CONNECTION_ADDRESS = Activator.PLUGIN_ID
 			+ ".gdbServerConnectionAddress";
 
+	public static final String GDB_SWO_ENABLE_TARGET_CPU_FREQ = Activator.PLUGIN_ID
+			+ ".gdbSwoEnableTargetCpuFreq";
+	public static final String GDB_SWO_ENABLE_TARGET_SWO_FREQ = Activator.PLUGIN_ID
+			+ ".gdbSwoEnableTargetSwoFreq";
+
 	// ----- getter & setter --------------------------------------------------
 	private static String getValueForId(String id, String defaultValue) {
 		String value = SharedDefaults.getInstance().getSharedDefaultsMap()
@@ -42,12 +47,12 @@ public class SharedStorage {
 		return value;
 	}
 
-	private static void putValueForId(String id, String value){
+	private static void putValueForId(String id, String value) {
 
 		SharedDefaults.getInstance().getSharedDefaultsMap()
-		.put(id, value.trim());
+				.put(id, value.trim());
 	}
-	
+
 	// ----- flash device id --------------------------------------------------
 	public static String getFlashDeviceName(String defaultValue) {
 
@@ -64,8 +69,8 @@ public class SharedStorage {
 
 		return getValueForId(GDB_CLIENT_EXECUTABLE, defaultValue);
 	}
-	
-	public static void putGdbClientExecutable(String value){
+
+	public static void putGdbClientExecutable(String value) {
 
 		putValueForId(GDB_CLIENT_EXECUTABLE, value);
 	}
@@ -75,8 +80,8 @@ public class SharedStorage {
 
 		return getValueForId(GDB_SERVER_EXECUTABLE, defaultValue);
 	}
-	
-	public static void putGdbServerExecutable(String value){
+
+	public static void putGdbServerExecutable(String value) {
 
 		putValueForId(GDB_SERVER_EXECUTABLE, value);
 	}
@@ -86,8 +91,8 @@ public class SharedStorage {
 
 		return getValueForId(GDB_SERVER_CONNECTION, defaultValue);
 	}
-	
-	public static void putGdbServerConnection(String value){
+
+	public static void putGdbServerConnection(String value) {
 
 		putValueForId(GDB_SERVER_CONNECTION, value);
 	}
@@ -97,10 +102,34 @@ public class SharedStorage {
 
 		return getValueForId(GDB_SERVER_CONNECTION_ADDRESS, defaultValue);
 	}
-	
-	public static void putGdbServerConnectionAddress(String value){
+
+	public static void putGdbServerConnectionAddress(String value) {
 
 		putValueForId(GDB_SERVER_CONNECTION_ADDRESS, value);
+	}
+
+	// ----- gdb server cpu frequency -----------------------------------------
+	public static int getSwoEnableTargetCpuFreq(int defaultValue) {
+
+		return Integer.valueOf(getValueForId(GDB_SWO_ENABLE_TARGET_CPU_FREQ,
+				Integer.toString(defaultValue)));
+	}
+
+	public static void putSwoEnableTargetCpuFreq(int value) {
+
+		putValueForId(GDB_SWO_ENABLE_TARGET_CPU_FREQ, Integer.toString(value));
+	}
+
+	// ----- gdb server swo frequency -----------------------------------------
+	public static int getSwoEnableTargetSwoFreq(int defaultValue) {
+
+		return Integer.valueOf(getValueForId(GDB_SWO_ENABLE_TARGET_SWO_FREQ,
+				Integer.toString(defaultValue)));
+	}
+
+	public static void putSwoEnableTargetSwoFreq(int value) {
+
+		putValueForId(GDB_SWO_ENABLE_TARGET_SWO_FREQ, Integer.toString(value));
 	}
 
 	// ----- update -----------------------------------------------------------
