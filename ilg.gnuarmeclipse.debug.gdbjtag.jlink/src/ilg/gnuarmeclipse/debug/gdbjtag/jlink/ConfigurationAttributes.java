@@ -88,7 +88,7 @@ public interface ConfigurationAttributes {
 
 	public static final String DO_GDB_SERVER_LOCAL_ONLY = PREFIX
 			+ ".doGdbServerLocalOnly"; //$NON-NLS-1$
-	public static final boolean DO_GDB_SERVER_LOCAL_ONLY_DEFAULT = false;
+	public static final boolean DO_GDB_SERVER_LOCAL_ONLY_DEFAULT = true;
 
 	public static final String DO_GDB_SERVER_SILENT = PREFIX
 			+ ".doGdbServerSilent"; //$NON-NLS-1$
