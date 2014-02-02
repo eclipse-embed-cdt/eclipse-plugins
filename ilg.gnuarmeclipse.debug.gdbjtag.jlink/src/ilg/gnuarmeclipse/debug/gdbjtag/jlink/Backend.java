@@ -274,7 +274,7 @@ public class Backend extends Backend0 {
 					try {
 						deviceName = fLaunchConfiguration
 								.getAttribute(
-										ConfigurationAttributes.FLASH_DEVICE_NAME,
+										ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
 										ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT)
 								.trim();
 					} catch (CoreException e1) {

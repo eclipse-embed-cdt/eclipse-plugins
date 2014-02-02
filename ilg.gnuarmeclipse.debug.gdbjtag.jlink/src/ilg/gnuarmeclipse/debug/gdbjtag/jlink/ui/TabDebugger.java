@@ -1049,9 +1049,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		gdbServerBrowseButton.setEnabled(enabled);
 		gdbServerVariablesButton.setEnabled(enabled);
 
-		//doConnectToRunning.setEnabled(enabled);
+		// doConnectToRunning.setEnabled(enabled);
 		doConnectToRunning.setEnabled(false);
-		
+
 		gdbFlashDeviceName.setEnabled(enabled);
 
 		gdbServerConnectionAddress.setEnabled(enabled);
@@ -1095,9 +1095,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			// J-Link interface
 			{
-				String physicalInterface = configuration.getAttribute(
-						ConfigurationAttributes.INTERFACE,
+				String defaultPhysicalInterface = configuration.getAttribute(
+						ConfigurationAttributes.INTERFACE_COMPAT,
 						ConfigurationAttributes.INTERFACE_DEFAULT);
+				String physicalInterface = configuration.getAttribute(
+						ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
+						defaultPhysicalInterface);
+
 				if (ConfigurationAttributes.INTERFACE_SWD
 						.equals(physicalInterface)) {
 					gdbInterfaceSwd.setSelection(true);
@@ -1122,13 +1126,22 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			{
 				String sharedName = SharedStorage
 						.getFlashDeviceName(ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
-				gdbFlashDeviceName.setText(configuration.getAttribute(
-						ConfigurationAttributes.FLASH_DEVICE_NAME, sharedName));
+
+				String defaultDeviceName = configuration.getAttribute(
+						ConfigurationAttributes.FLASH_DEVICE_NAME_COMPAT,
+						sharedName);
+				String deviceName = configuration.getAttribute(
+						ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
+						defaultDeviceName);
+				gdbFlashDeviceName.setText(deviceName);
 				didFlashDeviceNameChange = false;
 
-				String endianness = configuration.getAttribute(
-						ConfigurationAttributes.ENDIANNESS,
+				String defaultEndianness = configuration.getAttribute(
+						ConfigurationAttributes.ENDIANNESS_COMPAT,
 						ConfigurationAttributes.ENDIANNESS_DEFAULT);
+				String endianness = configuration.getAttribute(
+						ConfigurationAttributes.GDB_SERVER_DEVICE_ENDIANNESS,
+						defaultEndianness);
 				if (ConfigurationAttributes.ENDIANNESS_LITTLE
 						.equals(endianness))
 					gdbEndiannessLittle.setSelection(true);
@@ -1179,9 +1192,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						sharedConnectionAddress);
 				gdbServerConnectionAddress.setText(connectionAddress);
 
+				String defaultPhysicalInterfaceSpeed = configuration
+						.getAttribute(
+								ConfigurationAttributes.GDB_SERVER_SPEED_COMPAT,
+								ConfigurationAttributes.GDB_SERVER_SPEED_DEFAULT);
+
 				String physicalInterfaceSpeed = configuration.getAttribute(
-						ConfigurationAttributes.GDB_SERVER_SPEED,
-						ConfigurationAttributes.GDB_SERVER_SPEED_DEFAULT);
+						ConfigurationAttributes.GDB_SERVER_DEVICE_SPEED,
+						defaultPhysicalInterfaceSpeed);
 
 				if (ConfigurationAttributes.INTERFACE_SPEED_AUTO
 						.equals(physicalInterfaceSpeed)) {
@@ -1348,17 +1366,20 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		// J-Link interface
 		{
 			if (gdbInterfaceSwd.getSelection()) {
-				configuration.setAttribute(ConfigurationAttributes.INTERFACE,
+				configuration.setAttribute(
+						ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
 						ConfigurationAttributes.INTERFACE_SWD);
 			} else if (gdbInterfaceJtag.getSelection()) {
-				configuration.setAttribute(ConfigurationAttributes.INTERFACE,
+				configuration.setAttribute(
+						ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
 						ConfigurationAttributes.INTERFACE_JTAG);
 			} else {
 				String message = "interface not selected, setting swd";
 				Activator.log(Status.ERROR, message);
 				gdbInterfaceSwd.setSelection(true);
 
-				configuration.setAttribute(ConfigurationAttributes.INTERFACE,
+				configuration.setAttribute(
+						ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
 						ConfigurationAttributes.INTERFACE_SWD);
 			}
 
@@ -1371,7 +1392,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		{
 			String name = gdbFlashDeviceName.getText().trim();
 			configuration.setAttribute(
-					ConfigurationAttributes.FLASH_DEVICE_NAME, name);
+					ConfigurationAttributes.GDB_SERVER_DEVICE_NAME, name);
 			if (didFlashDeviceNameChange) {
 				SharedStorage.putFlashDeviceName(name);
 				doSharedUpdate = true;
@@ -1379,16 +1400,19 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 
 			if (gdbEndiannessLittle.getSelection()) {
-				configuration.setAttribute(ConfigurationAttributes.ENDIANNESS,
+				configuration.setAttribute(
+						ConfigurationAttributes.GDB_SERVER_DEVICE_ENDIANNESS,
 						ConfigurationAttributes.ENDIANNESS_LITTLE);
 			} else if (gdbEndiannessBig.getSelection()) {
-				configuration.setAttribute(ConfigurationAttributes.ENDIANNESS,
+				configuration.setAttribute(
+						ConfigurationAttributes.GDB_SERVER_DEVICE_ENDIANNESS,
 						ConfigurationAttributes.ENDIANNESS_BIG);
 			} else {
 				String message = "endianness not selected, setting little";
 				Activator.log(Status.ERROR, message);
 
-				configuration.setAttribute(ConfigurationAttributes.ENDIANNESS,
+				configuration.setAttribute(
+						ConfigurationAttributes.GDB_SERVER_DEVICE_ENDIANNESS,
 						ConfigurationAttributes.ENDIANNESS_LITTLE);
 			}
 		}
@@ -1435,15 +1459,15 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			if (gdbServerSpeedAuto.getSelection()) {
 				configuration.setAttribute(
-						ConfigurationAttributes.GDB_SERVER_SPEED,
+						ConfigurationAttributes.GDB_SERVER_DEVICE_SPEED,
 						ConfigurationAttributes.INTERFACE_SPEED_AUTO);
 			} else if (gdbServerSpeedAdaptive.getSelection()) {
 				configuration.setAttribute(
-						ConfigurationAttributes.GDB_SERVER_SPEED,
+						ConfigurationAttributes.GDB_SERVER_DEVICE_SPEED,
 						ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE);
 			} else if (gdbServerSpeedFixed.getSelection()) {
 				configuration.setAttribute(
-						ConfigurationAttributes.GDB_SERVER_SPEED,
+						ConfigurationAttributes.GDB_SERVER_DEVICE_SPEED,
 						gdbServerSpeedFixedValue.getText().trim());
 			}
 
@@ -1579,7 +1603,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		// J-Link interface
 		{
-			configuration.setAttribute(ConfigurationAttributes.INTERFACE,
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
 					ConfigurationAttributes.INTERFACE_DEFAULT);
 
 			configuration.setAttribute(
@@ -1592,9 +1617,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			String sharedName = SharedStorage
 					.getFlashDeviceName(ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
 			configuration.setAttribute(
-					ConfigurationAttributes.FLASH_DEVICE_NAME, sharedName);
+					ConfigurationAttributes.GDB_SERVER_DEVICE_NAME, sharedName);
 
-			configuration.setAttribute(ConfigurationAttributes.ENDIANNESS,
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_DEVICE_ENDIANNESS,
 					ConfigurationAttributes.ENDIANNESS_DEFAULT);
 		}
 
@@ -1610,7 +1636,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.GDB_SERVER_EXECUTABLE, sharedName);
 
 			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_SPEED,
+					ConfigurationAttributes.GDB_SERVER_DEVICE_SPEED,
 					ConfigurationAttributes.GDB_SERVER_SPEED_DEFAULT);
 
 			configuration.setAttribute(
@@ -1790,12 +1816,17 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			lst.add("-if");
 			lst.add(configuration.getAttribute(
-					ConfigurationAttributes.INTERFACE,
+					ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
 					ConfigurationAttributes.INTERFACE_DEFAULT));
 
-			String name = configuration.getAttribute(
-					ConfigurationAttributes.FLASH_DEVICE_NAME,
-					ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT).trim();
+			String defaultName = configuration.getAttribute(
+					ConfigurationAttributes.FLASH_DEVICE_NAME_COMPAT,
+					ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
+
+			String name = configuration
+					.getAttribute(
+							ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
+							defaultName).trim();
 			if (name.length() > 0) {
 				lst.add("-device");
 				// lst.add(name);
@@ -1805,12 +1836,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			lst.add("-endian");
 			lst.add(configuration.getAttribute(
-					ConfigurationAttributes.ENDIANNESS,
+					ConfigurationAttributes.GDB_SERVER_DEVICE_ENDIANNESS,
 					ConfigurationAttributes.ENDIANNESS_DEFAULT));
 
 			lst.add("-speed");
 			lst.add(configuration.getAttribute(
-					ConfigurationAttributes.GDB_SERVER_SPEED,
+					ConfigurationAttributes.GDB_SERVER_DEVICE_SPEED,
 					ConfigurationAttributes.GDB_SERVER_SPEED_DEFAULT));
 
 			lst.add("-port");

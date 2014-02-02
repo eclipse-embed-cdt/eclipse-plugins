@@ -9,7 +9,8 @@ public interface ConfigurationAttributes {
 	public static final String JTAG_DEVICE = "J-Link";
 	// public static final String JTAG_DEVICE = "Generic TCP/IP";
 
-	public static final String INTERFACE = PREFIX + ".interface"; //$NON-NLS-1$
+	public static final String INTERFACE_COMPAT = PREFIX + ".interface"; //$NON-NLS-1$
+	public static final String GDB_SERVER_DEBUG_INTERFACE = PREFIX + ".gdbServerDebugInterface"; //$NON-NLS-1$
 	public static final String INTERFACE_SWD = "swd";
 	public static final String INTERFACE_JTAG = "jtag";
 	public static final String INTERFACE_DEFAULT = INTERFACE_SWD;
@@ -21,7 +22,8 @@ public interface ConfigurationAttributes {
 	public static final boolean DO_CONNECT_TO_RUNNING_DEFAULT = false;
 
 	public static final String INTERFACE_SPEED = PREFIX + ".interfaceSpeed"; //$NON-NLS-1$
-	public static final String GDB_SERVER_SPEED = PREFIX + ".gdbServerSpeed"; //$NON-NLS-1$
+	public static final String GDB_SERVER_SPEED_COMPAT = PREFIX + ".gdbServerSpeed"; //$NON-NLS-1$
+	public static final String GDB_SERVER_DEVICE_SPEED = PREFIX + ".gdbServerDeviceSpeed"; //$NON-NLS-1$
 	public static final String INTERFACE_SPEED_AUTO = "auto";
 	public static final String INTERFACE_SPEED_ADAPTIVE = "adaptive";
 	public static final String INTERFACE_SPEED_DEFAULT = INTERFACE_SPEED_AUTO;
@@ -30,11 +32,13 @@ public interface ConfigurationAttributes {
 	public static final String INTERFACE_SPEED_ADAPTIVE_COMMAND = "monitor speed adaptive";
 	public static final String INTERFACE_SPEED_FIXED_COMMAND = "monitor speed ";
 
-	public static final String FLASH_DEVICE_NAME = PREFIX + ".flashDeviceName"; //$NON-NLS-1$
+	public static final String FLASH_DEVICE_NAME_COMPAT = PREFIX + ".flashDeviceName"; //$NON-NLS-1$
+	public static final String GDB_SERVER_DEVICE_NAME = PREFIX + ".gdbServerDeviceName"; //$NON-NLS-1$
 	public static final String FLASH_DEVICE_NAME_DEFAULT = "";
 	// public static final String FLASH_DEVICE_NAME_COMMAND = "monitor flash device = ";
 
-	public static final String ENDIANNESS = PREFIX + ".endianness"; //$NON-NLS-1$
+	public static final String ENDIANNESS_COMPAT = PREFIX + ".endianness"; //$NON-NLS-1$
+	public static final String GDB_SERVER_DEVICE_ENDIANNESS = PREFIX + ".gdbServerDeviceEndianness"; //$NON-NLS-1$
 	public static final String ENDIANNESS_LITTLE = "little";
 	public static final String ENDIANNESS_BIG = "big";
 	public static final String ENDIANNESS_DEFAULT = ENDIANNESS_LITTLE;

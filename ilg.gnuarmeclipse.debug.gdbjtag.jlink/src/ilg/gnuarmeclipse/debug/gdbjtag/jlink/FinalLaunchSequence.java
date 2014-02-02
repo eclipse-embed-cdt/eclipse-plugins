@@ -313,7 +313,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 			String attr;
 			attr = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.INTERFACE,
+					ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
 					ConfigurationAttributes.INTERFACE_SWD);
 			if (ConfigurationAttributes.INTERFACE_SWD.equals(attr)) {
 
