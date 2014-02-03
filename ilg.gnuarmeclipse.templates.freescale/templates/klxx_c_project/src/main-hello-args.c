@@ -1,6 +1,3 @@
-int
-main(int argc, char* argv[])
-{
 #if defined(DEBUG)
 
   /*
@@ -24,3 +21,4 @@ main(int argc, char* argv[])
   printf("Hello ARM World!\n");
 
 #endif
+

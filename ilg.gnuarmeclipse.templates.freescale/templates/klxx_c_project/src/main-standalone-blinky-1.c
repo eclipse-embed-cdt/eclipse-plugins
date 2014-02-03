@@ -1,4 +1,3 @@
-#include "MKL25Z4.h"
 
 /*
  * Standalone Kinetis KLxx led blink sample.

@@ -1,12 +1,7 @@
 
-/* ----- Delay function -----------------------------------------------------*/
-
-static void
-delay(__IO uint32_t nTime);
-
 /* ----- Timing definitions ------------------------------------------------ */
 
-#define SYSTICK_FREQUENCY_HZ	1000
+#define SYSTICK_FREQUENCY_HZ	        1000
 
 #define BLINK_TICKS     		SYSTICK_FREQUENCY_HZ/3
 
@@ -46,6 +41,11 @@ blink_led_init()
   /* Turn off led */
   blink_led_off();
 }
+
+/* ----- Delay function -----------------------------------------------------*/
+
+static void
+delay(__IO uint32_t nTime);
 
 /* ------------------------------------------------------------------------- */
 

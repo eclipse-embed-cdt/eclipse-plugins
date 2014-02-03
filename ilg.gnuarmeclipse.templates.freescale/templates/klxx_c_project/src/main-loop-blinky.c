@@ -1,4 +1,3 @@
-
   /*
    * At this stage the microcontroller clock is already configured; this
    * happened within the CMSIS SystemInit() function, called from the 
@@ -18,18 +17,16 @@
   /* Infinite loop */
   while (1)
     {
-
       /* Turn led ON */
       blink_led_on();
 
-	  /* Keep the led ON 2/3 of the interval */
+      /* Keep the led ON 2/3 of the interval */
       delay(BLINK_TICKS*2);
 
       /* Turn led OFF */
       blink_led_off();
 
-	  /* Keep the led OFF 1/3 of the interval */
+      /* Keep the led OFF 1/3 of the interval */
       delay(BLINK_TICKS);
 
       ++seconds;
-
