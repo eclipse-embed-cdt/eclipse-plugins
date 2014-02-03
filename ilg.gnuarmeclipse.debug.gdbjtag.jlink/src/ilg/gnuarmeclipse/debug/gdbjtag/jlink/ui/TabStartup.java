@@ -224,7 +224,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			firstResetType = new Text(local, SWT.BORDER);
 			gd = new GridData();
-			gd.widthHint = 30;
+			gd.widthHint = 100;
 			firstResetType.setLayoutData(gd);
 
 			label = new Label(local, SWT.NONE);
@@ -333,7 +333,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			swoEnableTargetCpuFreq = new Text(local, SWT.BORDER);
 			gd = new GridData();
-			gd.widthHint = 70;
+			gd.widthHint = 80;
 			swoEnableTargetCpuFreq.setLayoutData(gd);
 
 			didSwoEnableTargetCpuFreqChange = false;
@@ -933,7 +933,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			secondResetType = new Text(comp, SWT.BORDER);
 			gd = new GridData();
-			gd.widthHint = 30;
+			gd.widthHint = 100;
 			secondResetType.setLayoutData(gd);
 		}
 		{
