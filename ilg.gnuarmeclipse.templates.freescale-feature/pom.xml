@@ -5,7 +5,7 @@
   
   <groupId>ilg.gnuarmeclipse.features</groupId>
   <artifactId>ilg.gnuarmeclipse.templates.freescale</artifactId>
-  <version>1.1.1-SNAPSHOT</version>
+  <version>1.2.1-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
   
   <parent>
