@@ -3967,6 +3967,27 @@
       </template>
    </extension>
    <extension
+         point="org.eclipse.cdt.core.templateAssociations">
+      <template
+            id="ilg.gnuarmeclipse.managedbuild.cross.templates.HelloARMWorld_CPP_Project">
+         <toolChain
+               id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
+         </toolChain>
+      </template>
+      <template
+            id="ilg.gnuarmeclipse.managedbuild.cross.templates.HelloARMWorld_C_Project">
+         <toolChain
+               id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
+         </toolChain>
+      </template>
+      <template
+            id="ilg.gnuarmeclipse.managedbuild.cross.templates.HelloARMWorld_CM3_C_Project">
+         <toolChain
+               id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
+         </toolChain>
+      </template>
+   </extension>
+   <extension
          point="org.eclipse.cdt.core.LanguageSettingsProvider">
       <provider
             class="org.eclipse.cdt.managedbuilder.language.settings.providers.GCCBuiltinSpecsDetector"

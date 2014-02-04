@@ -29,4 +29,32 @@
       </template>
    </extension>
 
+   <extension
+         point="org.eclipse.cdt.core.templateAssociations">
+      <template
+            id="ilg.gnuarmeclipse.templates.stm.stm32f0xx.exe.c.project">
+         <toolChain
+               id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
+         </toolChain>
+      </template>
+      <template
+            id="ilg.gnuarmeclipse.templates.stm.stm32f10x.exe.c.project">
+         <toolChain
+               id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
+         </toolChain>
+      </template>
+      <template
+            id="ilg.gnuarmeclipse.templates.stm.stm32f3xx.exe.c.project">
+         <toolChain
+               id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
+         </toolChain>
+      </template>
+      <template
+            id="ilg.gnuarmeclipse.templates.stm.stm32f4xx.exe.c.project">
+         <toolChain
+               id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
+         </toolChain>
+      </template>
+   </extension>
+
 </plugin>
