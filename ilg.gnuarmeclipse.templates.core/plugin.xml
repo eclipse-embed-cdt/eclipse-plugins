@@ -64,10 +64,132 @@
                <simple name="id"/>
                <simpleArray name="values"/>
                <simple name="path"/>
-               <simple name="buildType"/>
+               <simple
+                     name="buildType"
+                     nullable="true"/>
             </baseType>
          </complexArray>
       </processType>
+      <processType
+            name="ConditionalSetMBSStringOptionValue"
+            processRunner="ilg.gnuarmeclipse.templates.core.processes.ConditionalSetMBSStringOptionValue">
+         <simple
+               name="projectName">
+         </simple>
+         <simple
+               name="condition"
+               nullable="true">
+         </simple>
+         <complexArray
+               name="resourcePaths">
+            <baseType>
+               <simple
+                     name="id">
+               </simple>
+               <simple
+                     name="value">
+               </simple>
+               <simple
+                     name="path">
+               </simple>
+               <simple
+                     name="buildType">
+               </simple>
+            </baseType>
+         </complexArray>
+      </processType>
+      <processType
+            name="ConditionalAppendToMBSStringListOptionValues"
+            processRunner="ilg.gnuarmeclipse.templates.core.processes.ConditionalAppendToMBSStringListOptionValues">
+         <simple
+               name="projectName">
+         </simple>
+         <simple
+               name="condition"
+               nullable="true">
+         </simple>
+         <complexArray
+               name="resourcePaths">
+            <baseType>
+               <simple
+                     name="id">
+               </simple>
+               <simpleArray
+                     name="values">
+               </simpleArray>
+               <simple
+                     name="path">
+               </simple>
+               <simple
+                     name="buildType"
+                     nullable="true">
+               </simple>
+            </baseType>
+         </complexArray>
+      </processType>
+      <processType
+            name="ConditionalSetMBSBooleanOptionValue"
+            processRunner="ilg.gnuarmeclipse.templates.core.processes.ConditionalSetMBSBooleanOptionValue">
+         <simple
+               name="projectName">
+         </simple>
+         <simple
+               name="condition"
+               nullable="true">
+         </simple>
+         <complexArray
+               name="resourcePaths">
+            <baseType>
+               <simple
+                     name="id">
+               </simple>
+               <simple
+                     name="value">
+               </simple>
+               <simple
+                     name="path">
+               </simple>
+               <simple
+                     name="buildType">
+               </simple>
+            </baseType>
+         </complexArray>
+      </processType>
+      
+      <processType
+            name="ConditionalAddFiles"
+            processRunner="ilg.gnuarmeclipse.templates.core.processes.ConditionalAddFiles">
+         <simple name="projectName"/>
+         <simple
+               name="condition"
+               nullable="true">
+         </simple>
+         <complexArray name="files">
+            <baseType>
+               <simple name="source"/>
+               <simple name="target"/>
+               <simple name="replaceable"/>
+            </baseType>
+         </complexArray>
+      </processType>
+  
+      <processType
+            name="ConditionalAppendCreate"
+            processRunner="ilg.gnuarmeclipse.templates.core.processes.ConditionalAppendCreate">
+         <simple name="projectName"/>
+         <simple
+               name="condition"
+               nullable="true">
+         </simple>
+         <complexArray name="files">
+            <baseType>
+               <simple name="source"/>
+               <simple name="target"/>
+               <simple name="replaceable"/>
+            </baseType>
+         </complexArray>
+      </processType>
+      
    </extension>
 
 </plugin>
