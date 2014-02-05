@@ -39,8 +39,8 @@
    <extension
          point="org.eclipse.cdt.core.templateProcessTypes">
       <processType
-            name="ProcessorExpertWizard"
-            processRunner="ilg.gnuarmeclipse.templates.freescale.pe.processes.ProcessorExpertWizard">
+            name="RunProcessorExpertWizard"
+            processRunner="ilg.gnuarmeclipse.templates.freescale.pe.processes.RunProcessorExpertWizard">
          <simple
                name="projectName">
          </simple>

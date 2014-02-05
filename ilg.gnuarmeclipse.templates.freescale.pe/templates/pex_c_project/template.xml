@@ -5,6 +5,16 @@
 	id="ProcessorExpert_C_Project" label="%PEx.template.label" description="%PEx.template.description"
 	help="help.html">
 
+	<property-group id="Wizard" label="Wizard Selection"
+		description="Wizard selection page" type="PAGES-ONLY" help="help.html">
+		<property id="PEaction" label="Wizard Invocation:"
+			description="Select how you want to start the wizard" type="select"
+			default="manual" hidden="false" persist="true">
+			<item value="manual" label="Manually, after the project is created" />
+			<item value="auto" label="Automatically (for testing only, not functional)" />
+		</property>
+	</property-group>
+
 	<process type="org.eclipse.cdt.managedbuilder.core.NewManagedProject">
 		<simple name="name" value="$(projectName)" />
 		<simple name="artifactExtension" value="elf" />
@@ -63,8 +73,12 @@
 			value="com.freescale.processorexpert.core.expertprojectnature" />
 	</process>
 
-	<process type="ilg.gnuarmeclipse.templates.freescale.pe.ProcessorExpertWizard">
-		<simple name="projectName" value="$(projectName)" />
-	</process>
+	<if condition="$(PEaction)==auto">
+		<process
+			type="ilg.gnuarmeclipse.templates.freescale.pe.RunProcessorExpertWizard">
+			<simple name="projectName" value="$(projectName)" />
+		</process>
+	</if>
+
 </template>
 
