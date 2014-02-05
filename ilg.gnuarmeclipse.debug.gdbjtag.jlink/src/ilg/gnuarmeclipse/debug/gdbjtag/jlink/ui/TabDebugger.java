@@ -105,6 +105,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Button gdbServerConnectionIp;
 	private Text gdbServerConnectionAddress;
 	private boolean didGdbServerConnectionChange;
+	// private String gdbPrevUsbAddress;
+	// private String gdbPrevIpAddress;
 
 	private Button gdbServerSpeedAuto;
 	private Button gdbServerSpeedAdaptive;
@@ -155,6 +157,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void createControl(Composite parent) {
+
+		// gdbPrevUsbAddress = "";
+		// gdbPrevIpAddress = "";
 
 		ScrolledComposite sc = new ScrolledComposite(parent, SWT.V_SCROLL
 				| SWT.H_SCROLL);
@@ -655,6 +660,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 		// ----- Actions ------------------------------------------------------
 
+		VerifyListener numericVerifyListener = new VerifyListener() {
+			@Override
+			public void verifyText(VerifyEvent e) {
+				e.doit = (Character.isDigit(e.character) || Character
+						.isISOControl(e.character));
+			}
+		};
+
 		ModifyListener scheduleUpdateJobModifyListener = new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
@@ -721,23 +734,19 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 		});
 
-		gdbServerConnectionUsb.addSelectionListener(new SelectionAdapter() {
+		SelectionAdapter selectionAdapter = new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
+
+				gdbServerConnectionAddress.setText("");
 
 				didGdbServerConnectionChange = true;
 				scheduleUpdateJob();
 			}
-		});
+		};
 
-		gdbServerConnectionIp.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				didGdbServerConnectionChange = true;
-				scheduleUpdateJob();
-			}
-		});
+		gdbServerConnectionUsb.addSelectionListener(selectionAdapter);
+		gdbServerConnectionIp.addSelectionListener(selectionAdapter);
 
 		gdbServerConnectionAddress.addModifyListener(new ModifyListener() {
 			@Override
@@ -745,6 +754,24 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 				didGdbServerConnectionChange = true;
 				scheduleUpdateJob();
+			}
+		});
+
+		gdbServerConnectionAddress.addVerifyListener(new VerifyListener() {
+			@Override
+			public void verifyText(VerifyEvent e) {
+
+				if (gdbServerConnectionUsb.getSelection()) {
+					e.doit = Character.isDigit(e.character)
+							|| Character.isISOControl(e.character);
+				} else if (gdbServerConnectionIp.getSelection()) {
+					e.doit = Character.isLetterOrDigit(e.character)
+							|| e.character == '.' || e.character == '-'
+							|| e.character == '_'
+							|| Character.isISOControl(e.character);
+				} else {
+					e.doit = false;
+				}
 			}
 		});
 
@@ -763,14 +790,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 				tabStartup.doInterfaceSwdChanged(false);
 				updateLaunchConfigurationDialog();
-			}
-		});
-
-		gdbServerSpeedAdaptive.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				gdbServerSpeedFixedValue.setEnabled(false);
-				scheduleUpdateJob();
 			}
 		});
 
@@ -797,6 +816,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				scheduleUpdateJob();
 			}
 		});
+
+		gdbServerSpeedFixedValue.addVerifyListener(numericVerifyListener);
 
 		gdbFlashDeviceName.addModifyListener(new ModifyListener() {
 			@Override
@@ -839,8 +860,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 		});
 
+		gdbServerGdbPort.addVerifyListener(numericVerifyListener);
+
 		gdbServerSwoPort.addModifyListener(scheduleUpdateJobModifyListener);
+		gdbServerSwoPort.addVerifyListener(numericVerifyListener);
+
 		gdbServerTelnetPort.addModifyListener(scheduleUpdateJobModifyListener);
+		gdbServerTelnetPort.addVerifyListener(numericVerifyListener);
 
 		doGdbServerVerifyDownload
 				.addSelectionListener(scheduleUpdateJobSelectionAdapter);
@@ -1019,6 +1045,17 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 										// Text listeners
 			}
 		});
+
+		targetIpAddress.addVerifyListener(new VerifyListener() {
+			@Override
+			public void verifyText(VerifyEvent e) {
+				e.doit = Character.isLetterOrDigit(e.character)
+						|| e.character == '.' || e.character == '-'
+						|| e.character == '_'
+						|| Character.isISOControl(e.character);
+			}
+		});
+
 		targetPortNumber.addVerifyListener(new VerifyListener() {
 			@Override
 			public void verifyText(VerifyEvent e) {

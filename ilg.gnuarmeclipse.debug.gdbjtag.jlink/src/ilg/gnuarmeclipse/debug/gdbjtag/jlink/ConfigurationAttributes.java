@@ -130,15 +130,23 @@ public interface ConfigurationAttributes {
 	public static final boolean DO_FIRST_RESET_DEFAULT = true;
 	public static final String DO_FIRST_RESET_COMMAND = "monitor reset ";
 
+	// Usually these commands are issues together
 	public static final String CLRBP_COMMAND = "monitor clrbp";
 	public static final String HALT_COMMAND = "monitor halt";
 	public static final String REGS_COMMAND = "monitor regs";
+	public static final String FLUSH_REGISTERS_COMMAND = "flushreg";
+	
 
 	public static final String FIRST_RESET_TYPE = PREFIX + ".firstResetType"; //$NON-NLS-1$
 	public static final String FIRST_RESET_TYPE_DEFAULT = "";
 
 	public static final String FIRST_RESET_SPEED = PREFIX + ".firstResetSpeed"; //$NON-NLS-1$
 	public static final String FIRST_RESET_SPEED_DEFAULT = "30";
+
+	public static final String ENABLE_FLASH_BREAKPOINTS = PREFIX
+			+ ".enableFlashBreakpoints"; //$NON-NLS-1$
+	public static final boolean ENABLE_FLASH_BREAKPOINTS_DEFAULT = true;
+	public static final String ENABLE_FLASH_BREAKPOINTS_COMMAND = "monitor flash breakpoints ";
 
 	public static final String ENABLE_SEMIHOSTING = PREFIX
 			+ ".enableSemihosting"; //$NON-NLS-1$
@@ -178,7 +186,7 @@ public interface ConfigurationAttributes {
 
 	public static final String OTHER_INIT_COMMANDS = PREFIX
 			+ ".otherInitCommands"; //$NON-NLS-1$
-	public static final String OTHER_INIT_COMMANDS_DEFAULT = "monitor flash breakpoints = 1";
+	public static final String OTHER_INIT_COMMANDS_DEFAULT = "";
 
 	//public static final String ENABLE_FLASH_DOWNLOAD_COMMAND = "monitor flash download = 1";
 	//public static final String DISABLE_FLASH_DOWNLOAD_COMMAND = "monitor flash download = 0";

@@ -16,6 +16,7 @@ import org.eclipse.cdt.dsf.concurrent.CountingRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitorWithProgress;
+import org.eclipse.cdt.dsf.concurrent.ReflectionSequence.Execute;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.gdb.service.IGDBBackend;
 import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
@@ -178,14 +179,14 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		List<String> commandsList = new ArrayList<String>();
 
 		String attr;
-//		attr = CDebugUtils.getAttribute(fAttributes,
-//				ConfigurationAttributes.INTERFACE,
-//				ConfigurationAttributes.INTERFACE_SWD);
-//		if (ConfigurationAttributes.INTERFACE_SWD.equals(attr)) {
-//			commandsList.add(ConfigurationAttributes.INTERFACE_SWD_COMMAND);
-//		} else if (ConfigurationAttributes.INTERFACE_JTAG.equals(attr)) {
-//			commandsList.add(ConfigurationAttributes.INTERFACE_JTAG_COMMAND);
-//		}
+		// attr = CDebugUtils.getAttribute(fAttributes,
+		// ConfigurationAttributes.INTERFACE,
+		// ConfigurationAttributes.INTERFACE_SWD);
+		// if (ConfigurationAttributes.INTERFACE_SWD.equals(attr)) {
+		// commandsList.add(ConfigurationAttributes.INTERFACE_SWD_COMMAND);
+		// } else if (ConfigurationAttributes.INTERFACE_JTAG.equals(attr)) {
+		// commandsList.add(ConfigurationAttributes.INTERFACE_JTAG_COMMAND);
+		// }
 
 		attr = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.FIRST_RESET_SPEED,
@@ -196,23 +197,23 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 							+ attr);
 		}
 
-//		attr = CDebugUtils.getAttribute(fAttributes,
-//				ConfigurationAttributes.FLASH_DEVICE_NAME,
-//				ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
-//		attr = attr.trim();
-//		if (attr.length() > 0) {
-//			commandsList.add(ConfigurationAttributes.FLASH_DEVICE_NAME_COMMAND
-//					+ attr);
-//		}
-//
-//		attr = CDebugUtils.getAttribute(fAttributes,
-//				ConfigurationAttributes.ENDIANNESS,
-//				ConfigurationAttributes.ENDIANNESS_LITTLE);
-//		if (ConfigurationAttributes.ENDIANNESS_LITTLE.equals(attr)) {
-//			commandsList.add(ConfigurationAttributes.ENDIANNESS_LITTLE_COMMAND);
-//		} else if (ConfigurationAttributes.ENDIANNESS_BIG.equals(attr)) {
-//			commandsList.add(ConfigurationAttributes.ENDIANNESS_BIG_COMMAND);
-//		}
+		// attr = CDebugUtils.getAttribute(fAttributes,
+		// ConfigurationAttributes.FLASH_DEVICE_NAME,
+		// ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
+		// attr = attr.trim();
+		// if (attr.length() > 0) {
+		// commandsList.add(ConfigurationAttributes.FLASH_DEVICE_NAME_COMMAND
+		// + attr);
+		// }
+		//
+		// attr = CDebugUtils.getAttribute(fAttributes,
+		// ConfigurationAttributes.ENDIANNESS,
+		// ConfigurationAttributes.ENDIANNESS_LITTLE);
+		// if (ConfigurationAttributes.ENDIANNESS_LITTLE.equals(attr)) {
+		// commandsList.add(ConfigurationAttributes.ENDIANNESS_LITTLE_COMMAND);
+		// } else if (ConfigurationAttributes.ENDIANNESS_BIG.equals(attr)) {
+		// commandsList.add(ConfigurationAttributes.ENDIANNESS_BIG_COMMAND);
+		// }
 
 		boolean noReset = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
@@ -223,15 +224,15 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					ConfigurationAttributes.DO_FIRST_RESET_DEFAULT)) {
 
 				String commandStr;
-				
+
 				// Since reset does not clear breakpoints, we do it explicitly
 				commandStr = ConfigurationAttributes.CLRBP_COMMAND;
 				commandsList.add(commandStr);
-				
+
 				commandStr = ConfigurationAttributes.DO_FIRST_RESET_COMMAND;
 				String resetType = CDebugUtils.getAttribute(fAttributes,
 						ConfigurationAttributes.FIRST_RESET_TYPE,
-						ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);				
+						ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
 				commandsList.add(commandStr + resetType);
 
 				// Although the manual claims that reset always does a
@@ -242,6 +243,10 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 				// Also add a command to see the registers in the
 				// location where execution halted
 				commandStr = ConfigurationAttributes.REGS_COMMAND;
+				commandsList.add(commandStr);
+
+				// Flush registers, GDB should read them again
+				commandStr = ConfigurationAttributes.FLUSH_REGISTERS_COMMAND;
 				commandsList.add(commandStr);
 			}
 		}
@@ -284,10 +289,20 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		try {
 			List<String> commandsList = new ArrayList<String>();
 
+			String commandStr;
+			commandStr = ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS_COMMAND;
+			if (CDebugUtils.getAttribute(fAttributes,
+					ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
+					ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS_DEFAULT))
+				commandStr += "1";
+			else
+				commandStr += "0";
+			commandsList.add(commandStr);
+
 			if (CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.ENABLE_SEMIHOSTING,
 					ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT)) {
-				String commandStr = ConfigurationAttributes.ENABLE_SEMIHOSTING_COMMAND;
+				commandStr = ConfigurationAttributes.ENABLE_SEMIHOSTING_COMMAND;
 				commandsList.add(commandStr);
 
 				int ioclientMask = 0;
@@ -320,7 +335,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 				if (CDebugUtils.getAttribute(fAttributes,
 						ConfigurationAttributes.ENABLE_SWO,
 						ConfigurationAttributes.ENABLE_SWO_DEFAULT)) {
-					String commandStr = ConfigurationAttributes.ENABLE_SWO_COMMAND;
+					commandStr = ConfigurationAttributes.ENABLE_SWO_COMMAND;
 					commandStr += CDebugUtils
 							.getAttribute(
 									fAttributes,
@@ -392,17 +407,18 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 				if (CDebugUtils.getAttribute(fAttributes,
 						ConfigurationAttributes.DO_SECOND_RESET,
 						ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
-					
+
 					String commandStr;
-					
-					// Since reset does not clear breakpoints, we do it explicitly
+
+					// Since reset does not clear breakpoints, we do it
+					// explicitly
 					commandStr = ConfigurationAttributes.CLRBP_COMMAND;
 					commandsList.add(commandStr);
-					
+
 					commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
 					String resetType = CDebugUtils.getAttribute(fAttributes,
 							ConfigurationAttributes.SECOND_RESET_TYPE,
-							ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);					
+							ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
 					commandsList.add(commandStr + resetType);
 
 					// Although the manual claims that reset always does a
@@ -413,6 +429,10 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					// Also add a command to see the registers in the
 					// location where execution halted
 					commandStr = ConfigurationAttributes.REGS_COMMAND;
+					commandsList.add(commandStr);
+
+					// Flush registers, GDB should read them again
+					commandStr = ConfigurationAttributes.FLUSH_REGISTERS_COMMAND;
 					commandsList.add(commandStr);
 				}
 			}
@@ -641,6 +661,25 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 						"Cannot load image", e)); //$NON-NLS-1$
 				rm.done();
 			}
+		}
+	}
+
+	@Execute
+	public void stepStopScript(final RequestMonitor rm) {
+		
+		if (CDebugUtils.getAttribute(getAttributes(),
+				IGDBJtagConstants.ATTR_SET_STOP_AT,
+				IGDBJtagConstants.DEFAULT_SET_STOP_AT)) {
+			String stopAt = CDebugUtils.getAttribute(getAttributes(),
+					IGDBJtagConstants.ATTR_STOP_AT,
+					IGDBJtagConstants.DEFAULT_STOP_AT);
+			List<String> commands = new ArrayList<String>();
+            
+            // The tbreak is not optional if we want execution to halt
+			fGdbJtagDevice.doStopAt(stopAt, commands);
+			queueCommands(commands, rm);
+		} else {
+			rm.done();
 		}
 	}
 

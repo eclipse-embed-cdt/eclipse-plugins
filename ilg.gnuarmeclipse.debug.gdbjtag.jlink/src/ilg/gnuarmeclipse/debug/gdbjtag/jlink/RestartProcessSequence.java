@@ -145,7 +145,10 @@ public class RestartProcessSequence extends ReflectionSequence {
 
 		List<String> commandsList = new ArrayList<String>();
 
-		commandsList.add("monitor halt");
+		commandsList.add(ConfigurationAttributes.HALT_COMMAND);
+		commandsList.add(ConfigurationAttributes.REGS_COMMAND);
+
+		commandsList.add(ConfigurationAttributes.CLRBP_COMMAND);
 
 		if (CDebugUtils.getAttribute(fAttributes,
 				IGDBJtagConstants.ATTR_SET_STOP_AT,
@@ -171,6 +174,10 @@ public class RestartProcessSequence extends ReflectionSequence {
 					ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
 		}
 		commandsList.add(commandStr + resetType);
+		
+		commandsList.add(ConfigurationAttributes.HALT_COMMAND);
+		commandsList.add(ConfigurationAttributes.REGS_COMMAND);
+		commandsList.add(ConfigurationAttributes.FLUSH_REGISTERS_COMMAND);
 
 		String otherCmds = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.OTHER_RUN_COMMANDS,

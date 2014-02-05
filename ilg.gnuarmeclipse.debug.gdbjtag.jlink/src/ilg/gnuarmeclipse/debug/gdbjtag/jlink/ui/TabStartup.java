@@ -79,6 +79,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	private Button doSecondReset;
 	private Text secondResetType;
 
+	private Button enableFlashBreakpoints;
+
 	private Button enableSemihosting;
 
 	private Button semihostingTelnet;
@@ -280,6 +282,21 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		{
 			Composite local = new Composite(comp, SWT.NONE);
 			layout = new GridLayout();
+			layout.numColumns = 1;
+			layout.marginHeight = 0;
+			layout.marginWidth = 0;
+			local.setLayout(layout);
+
+			enableFlashBreakpoints = new Button(local, SWT.CHECK);
+			enableFlashBreakpoints.setText(Messages
+					.getString("StartupTab.enableFlashBreakpoints_Text"));
+			enableFlashBreakpoints.setToolTipText(Messages
+					.getString("StartupTab.enableFlashBreakpoints_ToolTipText"));
+		}
+		
+		{
+			Composite local = new Composite(comp, SWT.NONE);
+			layout = new GridLayout();
 			layout.numColumns = 4;
 			layout.marginHeight = 0;
 			layout.marginWidth = 0;
@@ -444,6 +461,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			}
 		});
 
+		interfaceSpeedFixedValue.addVerifyListener(numericVerifyListener);
+		
 		enableSemihosting.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -1149,6 +1168,10 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				}
 			}
 
+			enableFlashBreakpoints.setSelection(configuration.getAttribute(
+					ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
+					ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS_DEFAULT));
+
 			enableSemihosting.setSelection(configuration.getAttribute(
 					ConfigurationAttributes.ENABLE_SEMIHOSTING,
 					ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT));
@@ -1314,6 +1337,9 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					interfaceSpeedFixedValue.getText().trim());
 		}
 
+		configuration.setAttribute(ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
+				enableFlashBreakpoints.getSelection());
+
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING,
 				enableSemihosting.getSelection());
 		configuration.setAttribute(
@@ -1426,6 +1452,9 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		configuration.setAttribute(ConfigurationAttributes.INTERFACE_SPEED,
 				ConfigurationAttributes.INTERFACE_SPEED_DEFAULT);
+
+		configuration.setAttribute(ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
+				ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS_DEFAULT);
 
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING,
 				ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
