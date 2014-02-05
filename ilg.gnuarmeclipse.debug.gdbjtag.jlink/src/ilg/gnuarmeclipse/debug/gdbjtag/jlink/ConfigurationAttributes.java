@@ -102,7 +102,7 @@ public interface ConfigurationAttributes {
 	public static final String GDB_SERVER_LOG_DEFAULT = ""; //$NON-NLS-1$
 
 	public static final String GDB_SERVER_OTHER = PREFIX + ".gdbServerOther"; //$NON-NLS-1$
-	public static final String GDB_SERVER_OTHER_DEFAULT = ""; //$NON-NLS-1$
+	public static final String GDB_SERVER_OTHER_DEFAULT = "-s"; //$NON-NLS-1$
 
 	public static final String DO_GDB_SERVER_ALLOCATE_CONSOLE = PREFIX
 			+ ".doGdbServerAllocateConsole"; //$NON-NLS-1$
