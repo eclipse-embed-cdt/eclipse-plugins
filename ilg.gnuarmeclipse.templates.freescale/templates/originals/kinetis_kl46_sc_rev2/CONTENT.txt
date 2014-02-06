@@ -1,0 +1,9 @@
+These files are from the KL46 sample code archive (KL46_SC.exe), rev. 2,
+the kinetis_kl46_sc_rev2 folder, with the following folders removed to save space:
+
+- klxx-sc-pex
+- klxx-sc-baremetal/build
+- klxx-sc-baremetal/tools
+- klxx-sc-baremetal/utils
+- klxx-sc-baremetal/src/Device
+- klxx-sc-baremetal/src/projects

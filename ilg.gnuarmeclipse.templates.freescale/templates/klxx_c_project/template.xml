@@ -172,6 +172,42 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="target" value="$(sourceDir)/main.c" />
 					<simple name="replaceable" value="true" />
 				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="$(KLchipFamily)==MKL25Z4">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(KLsyscalls) == retarget" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="src/main-led-blinky-MKL25Z4.c" />
+					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(KLchipFamily)==MKL46Z4">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(KLsyscalls) == retarget" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="src/main-led-blinky-MKL46Z4.c" />
+					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(KLsyscalls) == retarget" />
+			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/main-defs-blinky.c" />
 					<simple name="target" value="$(sourceDir)/main.c" />
@@ -245,6 +281,42 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="target" value="$(sourceDir)/main.c" />
 					<simple name="replaceable" value="true" />
 				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="$(KLchipFamily)==MKL25Z4">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(KLsyscalls) == semihosting" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="src/main-led-blinky-MKL25Z4.c" />
+					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(KLchipFamily)==MKL46Z4">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(KLsyscalls) == semihosting" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="src/main-led-blinky-MKL46Z4.c" />
+					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(KLsyscalls) == semihosting" />
+			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/main-defs-blinky.c" />
 					<simple name="target" value="$(sourceDir)/main.c" />
@@ -318,6 +390,42 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="target" value="$(sourceDir)/main.c" />
 					<simple name="replaceable" value="true" />
 				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="$(KLchipFamily)==MKL25Z4">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(KLsyscalls) == none" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="src/main-led-blinky-MKL25Z4.c" />
+					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(KLchipFamily)==MKL46Z4">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(KLsyscalls) == none" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="src/main-led-blinky-MKL46Z4.c" />
+					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(KLsyscalls) == none" />
+			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/main-defs-blinky.c" />
 					<simple name="target" value="$(sourceDir)/main.c" />
@@ -503,7 +611,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="src/system_MKL25Z4.c.patched" />
+					<simple name="source" value="src/system_MKL25Z4-patched.c" />
 					<simple name="target"
 						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/system_MKL25Z4.c" />
 					<simple name="replaceable" value="true" />
@@ -512,6 +620,57 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="source" value="src/vectors_MKL25Z4.c" />
 					<simple name="target"
 						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/vectors_MKL25Z4.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(KLchipFamily)==MKL46Z4">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/cpu/headers/MKL46Z4_CMSIS.h" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(includeDir)/MKL46Z4.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/cpu/system_MKL46Z4.h" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(includeDir)/system_MKL46Z4.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="../common/src/startup_cm.c" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/startup_cm.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="src/startup_MKL46Z4.c" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/startup_MKL46Z4.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="src/system_MKL46Z4-patched.c" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/system_MKL46Z4.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="src/vectors_MKL46Z4.c" />
+					<simple name="target"
+						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/vectors_MKL46Z4.c" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -664,6 +823,113 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		</process>
 	</if>
 
+	<if condition="$(KLchipFamily)==MKL46Z4">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/common/assert.h" />
+					<simple name="target"
+						value="$(libsDir)/$(tinylibDir)/$(includeDir)/assert.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/common/io.h" />
+					<simple name="target" value="$(libsDir)/$(tinylibDir)/$(includeDir)/io.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/common/memtest.h" />
+					<simple name="target"
+						value="$(libsDir)/$(tinylibDir)/$(includeDir)/memtest.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/common/queue.h" />
+					<simple name="target"
+						value="$(libsDir)/$(tinylibDir)/$(includeDir)/queue.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/common/startup.h" />
+					<simple name="target"
+						value="$(libsDir)/$(tinylibDir)/$(includeDir)/startup.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/common/stdlib.h" />
+					<simple name="target"
+						value="$(libsDir)/$(tinylibDir)/$(includeDir)/stdlib.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/common/typedef.h" />
+					<simple name="target"
+						value="$(libsDir)/$(tinylibDir)/$(includeDir)/typedef.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/common/uif.h" />
+					<simple name="target" value="$(libsDir)/$(tinylibDir)/$(includeDir)/uif.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="../common/src/alloc.c.patched" />
+					<simple name="target"
+						value="$(libsDir)/$(tinylibDir)/$(sourceDir)/alloc.c_" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/common/assert.c" />
+					<simple name="target"
+						value="$(libsDir)/$(tinylibDir)/$(sourceDir)/assert.c_" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/common/io.c" />
+					<simple name="target" value="$(libsDir)/$(tinylibDir)/$(sourceDir)/io.c_" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/common/printf.c" />
+					<simple name="target"
+						value="$(libsDir)/$(tinylibDir)/$(sourceDir)/printf.c_" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/common/stdlib.c" />
+					<simple name="target"
+						value="$(libsDir)/$(tinylibDir)/$(sourceDir)/stdlib.c_" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/common/uif.c" />
+					<simple name="target" value="$(libsDir)/$(tinylibDir)/$(sourceDir)/uif.c_" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
 	<if condition="1==1">
 		<!-- exclude the above from build -->
 
@@ -704,6 +970,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			</complex-array>
 		</process>
 	</if>
+
 
 	<if condition="$(KLchipFamily)==MKL25Z4">
 		<process type="org.eclipse.cdt.core.AddFiles">
@@ -874,6 +1141,170 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple name="source"
 						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/uart/uart.c" />
+					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/uart.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="$(KLchipFamily)==MKL46Z4">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+
+				<element>
+					<simple name="source"
+						value="src/MemMapPtr_KL46Z4-patched.h" />
+					<simple name="target"
+						value="$(libsDir)/$(driversDir)/$(includeDir)/MemMapPtr_KL46Z4.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/cpu/vectors.h" />
+					<simple name="target"
+						value="$(libsDir)/$(driversDir)/$(includeDir)/vectors.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/adc16/adc16.h" />
+					<simple name="target"
+						value="$(libsDir)/$(driversDir)/$(includeDir)/adc16.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/cmp/cmp.h" />
+					<simple name="target" value="$(libsDir)/$(driversDir)/$(includeDir)/cmp.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/llwu/llwu.h" />
+					<simple name="target" value="$(libsDir)/$(driversDir)/$(includeDir)/llwu.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/lptmr/lptmr.h" />
+					<simple name="target"
+						value="$(libsDir)/$(driversDir)/$(includeDir)/lptmr.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/mcg/mcg.h" />
+					<simple name="target" value="$(libsDir)/$(driversDir)/$(includeDir)/mcg.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/mcg/readme.txt" />
+					<simple name="target"
+						value="$(libsDir)/$(driversDir)/$(includeDir)/mcg_readme.txt" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/pmc/pmc.h" />
+					<simple name="target" value="$(libsDir)/$(driversDir)/$(includeDir)/pmc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/rcm/rcm.h" />
+					<simple name="target" value="$(libsDir)/$(driversDir)/$(includeDir)/rcm.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/rtc/rtc.h" />
+					<simple name="target" value="$(libsDir)/$(driversDir)/$(includeDir)/rtc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/smc/smc.h" />
+					<simple name="target" value="$(libsDir)/$(driversDir)/$(includeDir)/smc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/uart/uart.h" />
+					<simple name="target" value="$(libsDir)/$(driversDir)/$(includeDir)/uart.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/adc16/adc16.c" />
+					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/adc16.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/cmp/cmp.c" />
+					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/cmp.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/llwu/llwu.c" />
+					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/llwu.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/lptmr/lptmr.c" />
+					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/lptmr.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/mcg/mcg.c" />
+					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/mcg.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/pmc/pmc.c" />
+					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/pmc.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/rcm/rcm.c" />
+					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/rcm.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/adc16/adc16.c" />
+					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/adc16.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/rtc/rtc.c" />
+					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/rtc.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/smc/smc.c" />
+					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/smc.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/drivers/uart/uart.c" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/uart.c" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -1074,6 +1505,27 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			</complex-array>
 		</process>
 	</if>
+	<if condition="$(KLchipFamily)==MKL46Z4">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/platforms/freedom.h" />
+					<simple name="target"
+						value="$(libsDir)/$(platformsDir)/$(includeDir)/freedom.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="../originals/kinetis_kl46_sc_rev2/klxx-sc-baremetal/src/platforms/tower.h" />
+					<simple name="target"
+						value="$(libsDir)/$(platformsDir)/$(includeDir)/tower.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
 
 	<if condition="1==1">
 		<!-- Options -->
@@ -1208,15 +1660,37 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				</element>
 			</complex-array>
 		</process>
+	</if>
 
+	<if condition="$(KLchipFamily)==MKL25Z4">
 		<process
 			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringOptionValue">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.other" />
-					<simple name="value" value="-Wno-format" />
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otherwarnings" />
+					<simple name="value" value=" -Wno-format" />
+					<simple name="path" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(KLchipFamily)==MKL46Z4">
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otherwarnings" />
+					<simple name="value" value=" -Wno-format" />
+					<simple name="path" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otherwarnings" />
+					<simple name="value" value=" -Wno-unused-but-set-variable" />
 					<simple name="path" value="" />
 				</element>
 			</complex-array>
