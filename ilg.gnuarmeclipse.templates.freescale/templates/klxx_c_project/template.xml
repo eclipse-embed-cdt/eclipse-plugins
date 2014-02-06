@@ -11,9 +11,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 	<property-group id="chip" label="%KLxx.group.target.label"
 		description="%KLxx.group.target.description" type="PAGES-ONLY" help="help.html">
 		<property id="KLchipFamily" label="%KLxx.chipFamily.label"
-			description="%KLxx.chipFamily.description" type="select" default="MKL25Z"
+			description="%KLxx.chipFamily.description" type="select" default="MKL25Z4"
 			hidden="false" persist="true">
-			<item value="MKL25Z" label="MKL25Z" />
+			<item value="MKL25Z4" label="Kinetis KL25x" />
+			<item value="MKL46Z4" label="Kinetis KL46x" />
 		</property>
 		<property id="KLflashSize" label="%KLxx.flashSize.label"
 			description="%KLxx.flashSize.description" type="input" pattern="[0-9]*"
@@ -26,10 +27,12 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			description="%KLxx.xtalValue.description" type="input" pattern="[0-9]*"
 			default="%KLxx.xtalValue.default" hidden="false" persist="true" />
 
-		<!-- <property id="KLcontent" label="%KLxx.content.label" description="%KLxx.content.description" 
-			type="select" default="blinky" hidden="false" persist="true"> <item value="empty" 
-			label="Empty (no content)" /> <item value="blinky" label="Blinky (blink a 
-			led)" /> </property> -->
+		<property id="KLcontent" label="%KLxx.content.label"
+			description="%KLxx.content.description" type="select" default="blinky"
+			hidden="false" persist="true">
+			<item value="empty" label="Empty (no content)" />
+			<item value="blinky" label="Blinky (blink a led)" />
+		</property>
 
 		<property id="KLsyscalls" label="%KLxx.syscalls.label"
 			description="%KLxx.syscalls.description" type="select" default="retarget"
@@ -105,18 +108,34 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				</element>
 			</complex-array>
 		</process>
+	</if>
 
+	<if condition="$(KLchipFamily)==MKL25Z4">
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/common.h" />
+					<simple name="source" value="src/common-MKL25Z4.h" />
 					<simple name="target" value="$(includeDir)/common.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
 		</process>
+	</if>
+	<if condition="$(KLchipFamily)==MKL46Z4">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="src/common-MKL46Z4.h" />
+					<simple name="target" value="$(includeDir)/common.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
 
+	<if condition="1==1">
 		<!-- src -->
 		<process type="org.eclipse.cdt.core.CreateSourceFolder">
 			<simple name="projectName" value="$(projectName)" />
@@ -128,7 +147,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="condition" value="$(KLsyscalls) == retarget" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/main-include-MKL254Z.c" />
+					<simple name="source" value="src/main-include.c" />
 					<simple name="target" value="$(sourceDir)/main.c" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -201,7 +220,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="condition" value="$(KLsyscalls) == semihosting" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/main-include-MKL254Z.c" />
+					<simple name="source" value="src/main-include.c" />
 					<simple name="target" value="$(sourceDir)/main.c" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -274,7 +293,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="condition" value="$(KLsyscalls) == none" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/main-include-MKL254Z.c" />
+					<simple name="source" value="src/main-include.c" />
 					<simple name="target" value="$(sourceDir)/main.c" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -445,10 +464,11 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				</element>
 			</complex-array>
 		</process>
+	</if>
 
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
+	<if condition="$(KLchipFamily)==MKL25Z4">
+		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLchipFamily) == MKL25Z" />
 			<complex-array name="files">
 				<element>
 					<simple name="source"
@@ -467,9 +487,8 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			</complex-array>
 		</process>
 
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
+		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLchipFamily) == MKL25Z" />
 			<complex-array name="files">
 				<element>
 					<simple name="source" value="../common/src/startup_cm.c" />
@@ -497,7 +516,9 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				</element>
 			</complex-array>
 		</process>
+	</if>
 
+	<if condition="1==1">
 		<!-- tinylib -->
 		<process type="org.eclipse.cdt.core.CreateFolder">
 			<simple name="projectName" value="$(projectName)" />
@@ -534,7 +555,9 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				</element>
 			</complex-array>
 		</process>
+	</if>
 
+	<if condition="$(KLchipFamily)==MKL25Z4">
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
@@ -639,7 +662,9 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				</element>
 			</complex-array>
 		</process>
+	</if>
 
+	<if condition="1==1">
 		<!-- exclude the above from build -->
 
 		<!-- drivers -->
@@ -678,7 +703,9 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				</element>
 			</complex-array>
 		</process>
+	</if>
 
+	<if condition="$(KLchipFamily)==MKL25Z4">
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
@@ -852,7 +879,9 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				</element>
 			</complex-array>
 		</process>
+	</if>
 
+	<if condition="1==1">
 		<!-- misc -->
 		<process type="org.eclipse.cdt.core.CreateFolder">
 			<simple name="projectName" value="$(projectName)" />
@@ -906,7 +935,26 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="condition" value="$(KLsyscalls) == retarget" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="../misc/include/trace_impl.h" />
+					<simple name="source" value="../misc/include/trace_impl-comments.h" />
+					<simple name="target"
+						value="$(libsDir)/$(miscDir)/$(includeDir)/trace_impl.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(KLsyscalls) == retarget" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="../misc/include/trace_impl-semihosting.h" />
+					<simple name="target"
+						value="$(libsDir)/$(miscDir)/$(includeDir)/trace_impl.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../misc/include/trace_impl-defs.h" />
 					<simple name="target"
 						value="$(libsDir)/$(miscDir)/$(includeDir)/trace_impl.h" />
 					<simple name="replaceable" value="true" />
@@ -1003,7 +1051,9 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				</element>
 			</complex-array>
 		</process>
+	</if>
 
+	<if condition="$(KLchipFamily)==MKL25Z4">
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
@@ -1023,9 +1073,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				</element>
 			</complex-array>
 		</process>
+	</if>
 
+	<if condition="1==1">
 		<!-- Options -->
-
 		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="resourcePaths">

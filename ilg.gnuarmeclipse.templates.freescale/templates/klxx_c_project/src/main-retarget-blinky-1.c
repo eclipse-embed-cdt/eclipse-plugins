@@ -1,7 +1,7 @@
 #include <stdio.h>
 
 /*
- * Kinetis KLxx led blink sample (retargetted to semihosting).
+ * Kinetis $(KLchipFamily) led blink sample (retargetted to semihosting).
  *
  * In debug configurations, demonstrate how to print a greeting message
  * on the standard output. In release configurations the message is

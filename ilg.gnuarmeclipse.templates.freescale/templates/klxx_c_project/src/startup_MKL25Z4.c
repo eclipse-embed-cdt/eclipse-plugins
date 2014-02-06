@@ -5,7 +5,7 @@
 
 #include "MKL25Z4.h"
 
-// Usually main() doesn't return, but if it does, on debug
+// Usually main() doesn't return, but if it does, on Debug
 // we'll just enter an infinite loop, while on Release we restart.
 // You can redefine it in the application, if more functionality
 // is required

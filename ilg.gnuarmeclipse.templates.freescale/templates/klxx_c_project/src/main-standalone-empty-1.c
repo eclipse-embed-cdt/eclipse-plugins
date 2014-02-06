@@ -1,5 +1,5 @@
-#include "MKL25Z4.h"
+#include "$(KLchipFamily).h"
 
 /*
- * Standalone Kinetis KLxx empty sample.
+ * Standalone Kinetis $(KLchipFamily) empty sample.
  *

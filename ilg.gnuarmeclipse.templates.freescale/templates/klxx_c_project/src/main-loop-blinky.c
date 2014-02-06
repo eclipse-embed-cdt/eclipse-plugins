@@ -4,7 +4,7 @@
    * startup file (libs/CMSIS/src/startup_cm.c) before calling main().
    * 
    * To reconfigure the default setting of the SystemInit() function,
-   * refer to the libs/CMSIS/src/system_MKL25Z4.c file.
+   * refer to the libs/CMSIS/src/system_$(KLchipFamily).c file.
    */
 
   /* Use SysTick as reference for the timer */
