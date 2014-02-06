@@ -1,8 +1,0 @@
-These files are from the KL25 sample code archive (KL25_SC.exe), rev. 10,
-the kl-sc-baremetal folder, with the following folders removed to save space:
-
-- build
-- projects
-
-
-

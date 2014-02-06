@@ -452,14 +452,14 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<complex-array name="files">
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/cpu/headers/CMSIS/MKL25Z4/Include/MKL25Z4.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/cpu/headers/CMSIS/MKL25Z4/Include/MKL25Z4.h" />
 					<simple name="target"
 						value="$(libsDir)/$(cmsisDir)/$(includeDir)/MKL25Z4.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/cpu/headers/CMSIS/MKL25Z4/Include/system_MKL25Z4.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/cpu/headers/CMSIS/MKL25Z4/Include/system_MKL25Z4.h" />
 					<simple name="target"
 						value="$(libsDir)/$(cmsisDir)/$(includeDir)/system_MKL25Z4.h" />
 					<simple name="replaceable" value="true" />
@@ -540,55 +540,55 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<complex-array name="files">
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/common/assert.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/common/assert.h" />
 					<simple name="target"
 						value="$(libsDir)/$(tinylibDir)/$(includeDir)/assert.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/common/io.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/common/io.h" />
 					<simple name="target" value="$(libsDir)/$(tinylibDir)/$(includeDir)/io.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/common/memtest.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/common/memtest.h" />
 					<simple name="target"
 						value="$(libsDir)/$(tinylibDir)/$(includeDir)/memtest.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/common/queue.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/common/queue.h" />
 					<simple name="target"
 						value="$(libsDir)/$(tinylibDir)/$(includeDir)/queue.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/common/startup.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/common/startup.h" />
 					<simple name="target"
 						value="$(libsDir)/$(tinylibDir)/$(includeDir)/startup.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/common/stdlib.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/common/stdlib.h" />
 					<simple name="target"
 						value="$(libsDir)/$(tinylibDir)/$(includeDir)/stdlib.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/common/typedef.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/common/typedef.h" />
 					<simple name="target"
 						value="$(libsDir)/$(tinylibDir)/$(includeDir)/typedef.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/common/uif.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/common/uif.h" />
 					<simple name="target" value="$(libsDir)/$(tinylibDir)/$(includeDir)/uif.h" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -606,34 +606,34 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/common/assert.c" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/common/assert.c" />
 					<simple name="target"
 						value="$(libsDir)/$(tinylibDir)/$(sourceDir)/assert.c_" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/common/io.c" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/common/io.c" />
 					<simple name="target" value="$(libsDir)/$(tinylibDir)/$(sourceDir)/io.c_" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/common/printf.c" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/common/printf.c" />
 					<simple name="target"
 						value="$(libsDir)/$(tinylibDir)/$(sourceDir)/printf.c_" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/common/stdlib.c" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/common/stdlib.c" />
 					<simple name="target"
 						value="$(libsDir)/$(tinylibDir)/$(sourceDir)/stdlib.c_" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/common/uif.c" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/common/uif.c" />
 					<simple name="target" value="$(libsDir)/$(tinylibDir)/$(sourceDir)/uif.c_" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -685,90 +685,90 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/cpu/headers/CMSIS/MemMapPtr_KL25Z4.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/cpu/headers/CMSIS/MemMapPtr_KL25Z4.h" />
 					<simple name="target"
 						value="$(libsDir)/$(driversDir)/$(includeDir)/MemMapPtr_KL25Z4.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/cpu/vectors.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/cpu/vectors.h" />
 					<simple name="target"
 						value="$(libsDir)/$(driversDir)/$(includeDir)/vectors.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/adc16/adc16.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/adc16/adc16.h" />
 					<simple name="target"
 						value="$(libsDir)/$(driversDir)/$(includeDir)/adc16.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/cmp/cmp.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/cmp/cmp.h" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(includeDir)/cmp.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/i2c/i2c.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/i2c/i2c.h" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(includeDir)/i2c.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/llwu/llwu.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/llwu/llwu.h" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(includeDir)/llwu.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/lptmr/lptmr.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/lptmr/lptmr.h" />
 					<simple name="target"
 						value="$(libsDir)/$(driversDir)/$(includeDir)/lptmr.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/mcg/mcg.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/mcg/mcg.h" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(includeDir)/mcg.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/mcg/readme.txt" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/mcg/readme.txt" />
 					<simple name="target"
 						value="$(libsDir)/$(driversDir)/$(includeDir)/mcg_readme.txt" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/pmc/pmc.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/pmc/pmc.h" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(includeDir)/pmc.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/rcm/rcm.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/rcm/rcm.h" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(includeDir)/rcm.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/rtc/rtc.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/rtc/rtc.h" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(includeDir)/rtc.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/smc/smc.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/smc/smc.h" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(includeDir)/smc.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/uart/uart.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/uart/uart.h" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(includeDir)/uart.h" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -780,73 +780,73 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<complex-array name="files">
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/adc16/adc16.c" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/adc16/adc16.c" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/adc16.c" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/cmp/cmp.c" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/cmp/cmp.c" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/cmp.c" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/i2c/i2c.c" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/i2c/i2c.c" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/i2c.c" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/llwu/llwu.c" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/llwu/llwu.c" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/llwu.c" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/lptmr/lptmr.c" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/lptmr/lptmr.c" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/lptmr.c" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/mcg/mcg.c" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/mcg/mcg.c" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/mcg.c" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/pmc/pmc.c" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/pmc/pmc.c" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/pmc.c" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/rcm/rcm.c" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/rcm/rcm.c" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/rcm.c" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/adc16/adc16.c" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/adc16/adc16.c" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/adc16.c" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/rtc/rtc.c" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/rtc/rtc.c" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/rtc.c" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/smc/smc.c" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/smc/smc.c" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/smc.c" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/drivers/uart/uart.c" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/drivers/uart/uart.c" />
 					<simple name="target" value="$(libsDir)/$(driversDir)/$(sourceDir)/uart.c" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -1009,14 +1009,14 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<complex-array name="files">
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/platforms/freedom.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/platforms/freedom.h" />
 					<simple name="target"
 						value="$(libsDir)/$(platformsDir)/$(includeDir)/freedom.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../originals/klxx-sc-baremetal/src/platforms/tower.h" />
+						value="../originals/kl25_sc_rev10/klxx-sc-baremetal/src/platforms/tower.h" />
 					<simple name="target"
 						value="$(libsDir)/$(platformsDir)/$(includeDir)/tower.h" />
 					<simple name="replaceable" value="true" />
