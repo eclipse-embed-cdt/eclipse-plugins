@@ -19,7 +19,8 @@ public class RunProcessorExpertWizard extends ProcessRunner {
 			String processId, IProgressMonitor monitor)
 			throws ProcessFailureException {
 
-		System.out.println("ProcessorExpertWizard.process()");
+		String projectName = args[0].getSimpleValue();
+		System.out.println("ProcessorExpertWizard.process(projectName='"+projectName+"')");
 
 		String id = "com.processorexpert.ui.pewizard.newprjwizard";
 
@@ -32,6 +33,11 @@ public class RunProcessorExpertWizard extends ProcessRunner {
 				IWizard wizard = descriptor.createWizard();
 				Display display = Display.getCurrent();
 
+				// We need a method to pass the project name to the wizard.
+				// This can be done either with a separate constructor or a 
+				// new method, for example:
+				// wizard.setProjectName(projectName);
+				
 				WizardDialog wd = new WizardDialog(
 						display.getActiveShell(), wizard);
 				wd.setTitle(wizard.getWindowTitle());
