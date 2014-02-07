@@ -37,9 +37,11 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		<property id="KLsyscalls" label="%KLxx.syscalls.label"
 			description="%KLxx.syscalls.description" type="select" default="retarget"
 			hidden="false" persist="true">
-			<item value="none" label="Standalone (no syscalls)" />
-			<item value="retarget" label="Retargetting (libnosys)" />
-			<item value="semihosting" label="Semihosting (librdimon)" />
+			<item value="none"
+				label="Standalone (no printf() or other POSIX system calls)" />
+			<item value="retarget"
+				label="POSIX (system calls redirected to application code)" />
+			<item value="semihosting" label="Semihosting (POSIX system calls via librdimon)" />
 		</property>
 	</property-group>
 
@@ -81,6 +83,9 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			mandatory="true" persist="true" />
 	</property-group>
 
+	<!-- Note: the redundant 'condition="1==1"' is a workaround to control the 
+		evaluation order. Without it, processes are evaluated after all ifs. -->
+
 	<if condition="1==1">
 		<process type="org.eclipse.cdt.managedbuilder.core.NewManagedProject">
 			<simple name="name" value="$(projectName)" />
@@ -108,40 +113,28 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				</element>
 			</complex-array>
 		</process>
-	</if>
 
-	<if condition="$(KLchipFamily)==MKL25Z4">
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/common-MKL25Z4.h" />
+					<!-- all KL families -->
+					<simple name="source" value="src/common-$(KLchipFamily).h" />
 					<simple name="target" value="$(includeDir)/common.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
 		</process>
-	</if>
-	<if condition="$(KLchipFamily)==MKL46Z4">
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="src/common-MKL46Z4.h" />
-					<simple name="target" value="$(includeDir)/common.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-	</if>
 
-	<if condition="1==1">
 		<!-- src -->
 		<process type="org.eclipse.cdt.core.CreateSourceFolder">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="path" value="$(sourceDir)" />
 		</process>
+	</if>
 
+	<if condition="$(KLcontent)==blinky">
+		<!-- main.c - retarget - blinky -->
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="condition" value="$(KLsyscalls) == retarget" />
@@ -172,42 +165,12 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="target" value="$(sourceDir)/main.c" />
 					<simple name="replaceable" value="true" />
 				</element>
-			</complex-array>
-		</process>
-	</if>
-
-	<if condition="$(KLchipFamily)==MKL25Z4">
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == retarget" />
-			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/main-led-blinky-MKL25Z4.c" />
+					<!-- all KL families -->
+					<simple name="source" value="src/main-led-blinky-$(KLchipFamily).c" />
 					<simple name="target" value="$(sourceDir)/main.c" />
 					<simple name="replaceable" value="true" />
 				</element>
-			</complex-array>
-		</process>
-	</if>
-	<if condition="$(KLchipFamily)==MKL46Z4">
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == retarget" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="src/main-led-blinky-MKL46Z4.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-	</if>
-
-	<if condition="1==1">
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == retarget" />
-			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/main-defs-blinky.c" />
 					<simple name="target" value="$(sourceDir)/main.c" />
@@ -251,6 +214,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			</complex-array>
 		</process>
 
+		<!-- main.c - semihosting - blinky -->
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="condition" value="$(KLsyscalls) == semihosting" />
@@ -281,42 +245,12 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="target" value="$(sourceDir)/main.c" />
 					<simple name="replaceable" value="true" />
 				</element>
-			</complex-array>
-		</process>
-	</if>
-
-	<if condition="$(KLchipFamily)==MKL25Z4">
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == semihosting" />
-			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/main-led-blinky-MKL25Z4.c" />
+					<!-- all KL families -->
+					<simple name="source" value="src/main-led-blinky-$(KLchipFamily).c" />
 					<simple name="target" value="$(sourceDir)/main.c" />
 					<simple name="replaceable" value="true" />
 				</element>
-			</complex-array>
-		</process>
-	</if>
-	<if condition="$(KLchipFamily)==MKL46Z4">
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == semihosting" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="src/main-led-blinky-MKL46Z4.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-	</if>
-
-	<if condition="1==1">
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == semihosting" />
-			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/main-defs-blinky.c" />
 					<simple name="target" value="$(sourceDir)/main.c" />
@@ -360,6 +294,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			</complex-array>
 		</process>
 
+		<!-- main.c - none - blinky -->
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="condition" value="$(KLsyscalls) == none" />
@@ -390,42 +325,12 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="target" value="$(sourceDir)/main.c" />
 					<simple name="replaceable" value="true" />
 				</element>
-			</complex-array>
-		</process>
-	</if>
-
-	<if condition="$(KLchipFamily)==MKL25Z4">
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == none" />
-			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/main-led-blinky-MKL25Z4.c" />
+					<!-- all KL families -->
+					<simple name="source" value="src/main-led-blinky-$(KLchipFamily).c" />
 					<simple name="target" value="$(sourceDir)/main.c" />
 					<simple name="replaceable" value="true" />
 				</element>
-			</complex-array>
-		</process>
-	</if>
-	<if condition="$(KLchipFamily)==MKL46Z4">
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == none" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="src/main-led-blinky-MKL46Z4.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-	</if>
-
-	<if condition="1==1">
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == none" />
-			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/main-defs-blinky.c" />
 					<simple name="target" value="$(sourceDir)/main.c" />
@@ -458,7 +363,13 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				</element>
 			</complex-array>
 		</process>
+	</if>
 
+	<if condition="$(KLcontent)==empty">
+		<!-- to be implemented -->
+	</if>
+
+	<if condition="1==1">
 		<!-- ldscripts -->
 		<process type="org.eclipse.cdt.core.CreateFolder">
 			<simple name="projectName" value="$(projectName)" />
@@ -971,7 +882,6 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		</process>
 	</if>
 
-
 	<if condition="$(KLchipFamily)==MKL25Z4">
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
@@ -1154,8 +1064,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<complex-array name="files">
 
 				<element>
-					<simple name="source"
-						value="src/MemMapPtr_KL46Z4-patched.h" />
+					<simple name="source" value="src/MemMapPtr_KL46Z4-patched.h" />
 					<simple name="target"
 						value="$(libsDir)/$(driversDir)/$(includeDir)/MemMapPtr_KL46Z4.h" />
 					<simple name="replaceable" value="true" />
@@ -1708,4 +1617,3 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 	</process>
 
 </template>
-
