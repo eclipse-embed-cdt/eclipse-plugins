@@ -189,6 +189,15 @@
             </baseType>
          </complexArray>
       </processType>
+
+      <processType
+            name="SetPropertyIfHasNature"
+            processRunner="ilg.gnuarmeclipse.templates.core.processes.SetPropertyIfHasNature">
+         <simple name="projectName"/>
+         <simple name="natureString"/>
+         <simple name="propertyName"/>
+         <simple name="propertyValue"/>
+      </processType>
       
    </extension>
 

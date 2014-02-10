@@ -81,6 +81,11 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			description="%KLxx.ldscriptsDir.description" type="input"
 			default="%KLxx.ldscriptsDir.default" pattern="[a-zA-Z0-9]+"
 			mandatory="true" persist="true" />
+
+		<property id="fileExtension" label="Source file extension"
+			description="Will be set to cpp for ccnature" mandatory="true"
+			hidden="true" default="c" persist="false" />
+
 	</property-group>
 
 	<!-- Note: the redundant 'condition="1==1"' is a workaround to control the 
@@ -91,6 +96,13 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="name" value="$(projectName)" />
 			<simple name="artifactExtension" value="elf" />
 			<simple name="isCProject" value="true" />
+		</process>
+
+		<process type="ilg.gnuarmeclipse.templates.core.SetPropertyIfHasNature">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="natureString" value="org.eclipse.cdt.core.ccnature" />
+			<simple name="propertyName" value="fileExtension" />
+			<simple name="propertyValue" value="cpp" />
 		</process>
 
 		<!-- include -->
@@ -141,7 +153,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/main-include.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -152,68 +164,68 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/main-retarget-blinky-1.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-comment.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-retarget-2.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<!-- all KL families -->
 					<simple name="source" value="src/main-led-blinky-$(KLchipFamily).c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-defs-blinky.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-begin.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-hello.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-clock.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-loop-blinky.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-print.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-loopend.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-end.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-end-blinky.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -226,7 +238,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/main-include.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -237,68 +249,68 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/main-semihosting-blinky-1.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-comment.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-semihosting-2.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<!-- all KL families -->
 					<simple name="source" value="src/main-led-blinky-$(KLchipFamily).c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-defs-blinky.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-args-begin.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-hello-args.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-clock.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-loop-blinky.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-print.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-loopend.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-end.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-end-blinky.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -311,7 +323,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/main-include.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -322,58 +334,58 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/main-standalone-blinky-1.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-comment.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-standalone-2.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<!-- all KL families -->
 					<simple name="source" value="src/main-led-blinky-$(KLchipFamily).c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-defs-blinky.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-begin.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-clock.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-loop-blinky.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-loopend.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-end.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-end-blinky.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -388,7 +400,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/main-include.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -399,42 +411,42 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/main-retarget-empty-1.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-comment.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-retarget-2.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-begin.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-hello.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-clock.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-loop-empty.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-end.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -447,7 +459,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/main-include.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -458,42 +470,42 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/main-semihosting-empty-1.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-comment.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-semihosting-2.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-args-begin.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-hello-args.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-clock.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-loop-empty.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-end.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -506,7 +518,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/main-include.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -517,37 +529,37 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/main-standalone-empty-1.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-comment.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-standalone-2.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-begin.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-clock.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-loop-empty.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="src/main-end.c" />
-					<simple name="target" value="$(sourceDir)/main.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -1796,7 +1808,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		<simple name="projectName" value="$(projectName)" />
 		<complex-array name="files">
 			<element>
-				<simple name="target" value="$(sourceDir)/main.c" />
+				<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 			</element>
 		</complex-array>
 	</process>
