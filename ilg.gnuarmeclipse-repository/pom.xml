@@ -5,13 +5,13 @@
   
   <groupId>ilg.gnuarmeclipse</groupId>
   <artifactId>ilg.gnuarmeclipse.repository</artifactId>
-  <version>1.8.2-SNAPSHOT</version>
+  <version>2.1.1-SNAPSHOT</version>
   <packaging>eclipse-repository</packaging>
   
   <parent>
   	<groupId>ilg.gnuarmeclipse</groupId>
   	<artifactId>ilg.gnuarmeclipse.parent</artifactId>
-  	<version>1.8.2-SNAPSHOT</version>
+  	<version>2.1.1-SNAPSHOT</version>
   	<relativePath>../pom.xml</relativePath>
   </parent>
   
