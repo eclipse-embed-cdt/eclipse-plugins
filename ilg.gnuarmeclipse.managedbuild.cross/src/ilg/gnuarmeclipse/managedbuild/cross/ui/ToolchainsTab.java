@@ -10,7 +10,12 @@
  *    James Blackburn (Broadcom Corp.)
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.managedbuild.cross;
+package ilg.gnuarmeclipse.managedbuild.cross.ui;
+
+import ilg.gnuarmeclipse.managedbuild.cross.Activator;
+import ilg.gnuarmeclipse.managedbuild.cross.Option;
+import ilg.gnuarmeclipse.managedbuild.cross.ToolchainDefinition;
+import ilg.gnuarmeclipse.managedbuild.cross.Utils;
 
 import org.eclipse.cdt.core.settings.model.ICMultiItemsHolder;
 import org.eclipse.cdt.core.settings.model.ICResourceDescription;
@@ -50,7 +55,7 @@ import org.eclipse.ui.PlatformUI;
  * @noextend This class is not intended to be subclassed by clients.
  * @noinstantiate This class is not intended to be instantiated by clients.
  */
-public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
+public class ToolchainsTab extends AbstractCBuildPropertyTab {
 
 	// public static final String PROPERTY =
 	// ManagedBuildManager.BUILD_ARTEFACT_TYPE_PROPERTY_ID;
@@ -77,6 +82,8 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 	private Text m_commandMakeText;
 	private Text m_commandRmText;
 
+	private Button m_preferButton;
+
 	private Button m_flashButton;
 	private Button m_listingButton;
 	private Button m_sizeButton;
@@ -84,14 +91,16 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 	private boolean m_isExecutable;
 	private boolean m_isStaticLibrary;
 
-	private boolean m_isCreated = false;
+	private boolean m_wasUpdateRefused;
 
-	private Composite m_composite;
+	// private boolean m_isCreated = false;
+
+	// private Composite m_composite;
 
 	@Override
 	public void createControls(Composite parent) {
 
-		m_composite = parent;
+		// m_composite = parent;
 		// Disabled, otherwise toolchain changes fail
 		System.out.println("createControls()");
 		if (!isThisPlugin()) {
@@ -128,6 +137,8 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 		usercomp.setLayout(new GridLayout(3, false));
 		GridData layoutData = new GridData();
 		usercomp.setLayoutData(layoutData);
+
+		m_wasUpdateRefused = false;
 
 		// ----- Toolchain ------------------------------------------------
 		Label toolchainLbl = new Label(usercomp, SWT.NONE);
@@ -368,37 +379,55 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 			}
 		});
 
-		// ----- Path -----------------------------------------------------
-		Label pathLabel = new Label(usercomp, SWT.NONE);
-		pathLabel.setText(Messages.ToolChainSettingsTab_path);
+		{
+			// ----- Prefer ---------------------------------------------------
 
-		m_pathText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-		String toolchainPath = Option.getOptionStringValue(m_config,
-				Option.OPTION_TOOLCHAIN_PATH);
-		if (toolchainPath != null) {
-			m_pathText.setText(toolchainPath);
+			m_preferButton = new Button(usercomp, SWT.CHECK);
+			m_preferButton.setText(Messages.ToolChainSettingsTab_prefer);
+
+			Boolean doPreferGlobalPath = Option.getOptionBooleanValue(m_config,
+					Option.OPTION_TOOLCHAIN_DO_PREFER_GLOBAL_PATH);
+			if (doPreferGlobalPath != null) {
+				m_preferButton.setSelection(doPreferGlobalPath);
+			}
+
+			layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1);
+			m_preferButton.setLayoutData(layoutData);
 		}
-		layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
-		m_pathText.setLayoutData(layoutData);
 
-		Button pathButton = new Button(usercomp, SWT.NONE);
-		pathButton.setText(Messages.ToolChainSettingsTab_browse);
-		pathButton.addSelectionListener(new SelectionListener() {
+		{
+			// ----- Path -----------------------------------------------------
+			Label pathLabel = new Label(usercomp, SWT.NONE);
+			pathLabel.setText(Messages.ToolChainSettingsTab_path);
 
-			public void widgetDefaultSelected(SelectionEvent e) {
+			m_pathText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
+			String toolchainPath = Option.getOptionStringValue(m_config,
+					Option.OPTION_TOOLCHAIN_PATH);
+			if (toolchainPath != null) {
+				m_pathText.setText(toolchainPath);
 			}
+			layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
+			m_pathText.setLayoutData(layoutData);
 
-			public void widgetSelected(SelectionEvent e) {
-				DirectoryDialog dirDialog = new DirectoryDialog(usercomp
-						.getShell(), SWT.APPLICATION_MODAL);
-				String browsedDirectory = dirDialog.open();
-				if (browsedDirectory != null) {
-					m_pathText.setText(browsedDirectory);
+			Button pathButton = new Button(usercomp, SWT.NONE);
+			pathButton.setText(Messages.ToolChainSettingsTab_browse);
+			pathButton.addSelectionListener(new SelectionListener() {
+
+				public void widgetDefaultSelected(SelectionEvent e) {
 				}
-			}
-		});
-		layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1);
-		pathButton.setLayoutData(layoutData);
+
+				public void widgetSelected(SelectionEvent e) {
+					DirectoryDialog dirDialog = new DirectoryDialog(usercomp
+							.getShell(), SWT.APPLICATION_MODAL);
+					String browsedDirectory = dirDialog.open();
+					if (browsedDirectory != null) {
+						m_pathText.setText(browsedDirectory);
+					}
+				}
+			});
+			layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1);
+			pathButton.setLayoutData(layoutData);
+		}
 
 		if (m_isExecutable) {
 			// ----- Flash ------------------------------------------------
@@ -438,7 +467,7 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 			m_sizeButton.setLayoutData(layoutData);
 		}
 
-		m_isCreated = true;
+		// m_isCreated = true;
 
 		// --------------------------------------------------------------------
 
@@ -485,8 +514,10 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 			m_commandRmText.setText(newCommandRm);
 		}
 
-		String path = SharedStorage.getToolchainPath(td.getName());
-		m_pathText.setText(path);
+		if (m_preferButton.getSelection()) {
+			String path = SharedStorage.getToolchainPath(td.getName());
+			m_pathText.setText(path);
+		}
 
 		// leave the bottom three buttons as the user set them
 	}
@@ -637,6 +668,13 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 			}
 
 			option = toolchain
+					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_DO_PREFER_GLOBAL_PATH); //$NON-NLS-1$
+
+			// trick to force update
+			config.setOption(toolchain, option, !m_preferButton.getSelection());
+			config.setOption(toolchain, option, m_preferButton.getSelection());
+
+			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH); //$NON-NLS-1$
 			ManagedBuildManager.setOption(config, toolchain, option,
 					m_pathText.getText());
@@ -648,7 +686,8 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 			if (sToolchainWizardPath.length() == 0) {
 				SharedStorage.putToolchainPath(td.getName(), sNewToolchainPath);
 				SharedStorage.update();
-			} else if (!sToolchainWizardPath.equals(sNewToolchainPath)) {
+			} else if (!sToolchainWizardPath.equals(sNewToolchainPath)
+					&& m_preferButton.getSelection() && !m_wasUpdateRefused) {
 
 				// Create message box
 				MessageBox box = new MessageBox(PlatformUI.getWorkbench()
@@ -664,6 +703,9 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 					SharedStorage.putToolchainPath(td.getName(),
 							sNewToolchainPath);
 					SharedStorage.update();
+				} else {
+					// To avoid asking twice
+					m_wasUpdateRefused = true;
 				}
 			}
 		} catch (NullPointerException e) {
@@ -798,16 +840,25 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 		if (isExecutable) {
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_CREATEFLASH); //$NON-NLS-1$
-			config.setOption(toolchain, option, Option.OPTION_ADDTOOLS_CREATEFLASH_DEFAULT);
+			config.setOption(toolchain, option,
+					Option.OPTION_ADDTOOLS_CREATEFLASH_DEFAULT);
 
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_CREATELISTING); //$NON-NLS-1$
-			config.setOption(toolchain, option, Option.OPTION_ADDTOOLS_CREATELISTING_DEFAULT);
+			config.setOption(toolchain, option,
+					Option.OPTION_ADDTOOLS_CREATELISTING_DEFAULT);
 
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_PRINTSIZE); //$NON-NLS-1$
-			config.setOption(toolchain, option, Option.OPTION_ADDTOOLS_PRINTSIZE_DEFAULT);
+			config.setOption(toolchain, option,
+					Option.OPTION_ADDTOOLS_PRINTSIZE_DEFAULT);
 		}
+
+		option = toolchain
+				.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_DO_PREFER_GLOBAL_PATH); //$NON-NLS-1$
+		config.setOption(toolchain, option,
+				Option.OPTION_TOOLCHAIN_DO_PREFER_GLOBAL_PATH_DEFAULT);
+
 	}
 
 	private void propagateCommandRmUpdate(IConfiguration config) {
@@ -842,8 +893,10 @@ public class ToolchainSettingsTab extends AbstractCBuildPropertyTab {
 		updateInterfaceAfterToolchainChange();
 
 		if (m_isExecutable) {
-			m_flashButton.setSelection(Option.OPTION_ADDTOOLS_CREATEFLASH_DEFAULT);
-			m_listingButton.setSelection(Option.OPTION_ADDTOOLS_CREATELISTING_DEFAULT);
+			m_flashButton
+					.setSelection(Option.OPTION_ADDTOOLS_CREATEFLASH_DEFAULT);
+			m_listingButton
+					.setSelection(Option.OPTION_ADDTOOLS_CREATELISTING_DEFAULT);
 			m_sizeButton.setSelection(Option.OPTION_ADDTOOLS_PRINTSIZE_DEFAULT);
 		}
 		// System.out.println("performDefaults()");

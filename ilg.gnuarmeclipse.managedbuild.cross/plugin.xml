@@ -595,6 +595,23 @@
                </checkBuildProperty>
             </enablement>
          </option>
+         <option
+               defaultValue="true"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.toolchain.preferGlobalPath"
+               isAbstract="true"
+               name="%option.toolchain.preferGlobalPath"
+               valueHandler="ilg.gnuarmeclipse.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
+               valueType="boolean">
+            <enablement
+                  attribute="value"
+                  type="ALL"
+                  value="true">
+               <checkBuildProperty
+                     property="org.eclipse.cdt.build.core.buildArtefactType"
+                     value="org.eclipse.cdt.build.core.buildArtefactType.exe">
+               </checkBuildProperty>
+            </enablement>
+         </option>
       </tool>
       <tool
             id="ilg.gnuarmeclipse.managedbuild.cross.tool.compiler"
@@ -2232,6 +2249,18 @@
                name="%option.toolchain.command.rm"
                resourceFilter="all"
                valueType="string">
+            <enablement
+                  type="UI_VISIBILITY">
+               <false>
+                  false body text
+               </false>
+            </enablement>
+         </option>
+         <option
+               category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.preferGlobalPath"
+               name="%option.toolchain.preferGlobalPath"
+               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.toolchain.preferGlobalPath">
             <enablement
                   type="UI_VISIBILITY">
                <false>
@@ -3909,8 +3938,8 @@
          point="org.eclipse.cdt.managedbuilder.ui.newWizardPages">
       <wizardPage
             ID="ilg.gnuarmeclipse.managedbuild.cross.setCrossCommandWizardPage"
-            operationClass="ilg.gnuarmeclipse.managedbuild.cross.SetCrossCommandOperation"
-            pageClass="ilg.gnuarmeclipse.managedbuild.cross.SetCrossCommandWizardPage">
+            operationClass="ilg.gnuarmeclipse.managedbuild.cross.ui.SetCrossCommandWizardOperation"
+            pageClass="ilg.gnuarmeclipse.managedbuild.cross.ui.SetCrossCommandWizardPage">
          <toolchain
                toolchainID="ilg.gnuarmeclipse.managedbuild.cross.toolchain.elf.debug">
          </toolchain>
@@ -4006,7 +4035,7 @@
    <extension
            point="org.eclipse.cdt.ui.cPropertyTab">
       <tab
-            class="ilg.gnuarmeclipse.managedbuild.cross.ToolchainSettingsTab"
+            class="ilg.gnuarmeclipse.managedbuild.cross.ui.ToolchainsTab"
             helpId="cdt_u_prop_build_setting_tool"
             icon="icons/elcl16/config-tool.gif"
             name="%tab.toolchainSettings"

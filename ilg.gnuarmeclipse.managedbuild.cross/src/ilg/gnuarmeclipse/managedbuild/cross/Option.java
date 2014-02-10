@@ -158,6 +158,9 @@ public class Option {
 			+ ".toolchain.name";
 	public static final String OPTION_TOOLCHAIN_PATH = OPTION_PREFIX
 			+ ".toolchain.path";
+	public static final String OPTION_TOOLCHAIN_DO_PREFER_GLOBAL_PATH = OPTION_PREFIX
+			+ ".toolchain.preferGlobalPath";
+	public static final boolean OPTION_TOOLCHAIN_DO_PREFER_GLOBAL_PATH_DEFAULT = true;
 
 	public static final String OPTION_COMMAND = OPTION_PREFIX + ".command.";
 	public static final String OPTION_COMMAND_PREFIX = OPTION_COMMAND

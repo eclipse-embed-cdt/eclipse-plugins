@@ -10,7 +10,10 @@
  *     Liviu Ionescu - ARM version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.managedbuild.cross;
+package ilg.gnuarmeclipse.managedbuild.cross.ui;
+
+import ilg.gnuarmeclipse.managedbuild.cross.Activator;
+import ilg.gnuarmeclipse.managedbuild.cross.ToolchainDefinition;
 
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPage;
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPageManager;
@@ -36,7 +39,7 @@ import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
 /**
  * A wizard page that allows the user to specify the prefix and the path of a
- * Cross GCC command. The values are passed to {@link SetCrossCommandOperation}
+ * Cross GCC command. The values are passed to {@link SetCrossCommandWizardOperation}
  * using the {@link MBSCustomPageManager}
  */
 public class SetCrossCommandWizardPage extends MBSCustomPage {

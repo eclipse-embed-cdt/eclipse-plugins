@@ -9,7 +9,9 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.managedbuild.cross;
+package ilg.gnuarmeclipse.managedbuild.cross.ui;
+
+import ilg.gnuarmeclipse.managedbuild.cross.Activator;
 
 import org.eclipse.cdt.core.templateengine.SharedDefaults;
 

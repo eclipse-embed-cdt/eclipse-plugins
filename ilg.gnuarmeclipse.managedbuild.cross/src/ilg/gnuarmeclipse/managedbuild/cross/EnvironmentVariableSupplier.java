@@ -12,6 +12,8 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross;
 
+import ilg.gnuarmeclipse.managedbuild.cross.ui.SharedStorage;
+
 import java.io.File;
 
 import org.eclipse.cdt.core.cdtvariables.CdtVariableException;
@@ -59,9 +61,26 @@ public class EnvironmentVariableSupplier implements
 		public static PathEnvironmentVariable create(
 				IConfiguration configuration) {
 			IToolChain toolchain = configuration.getToolChain();
-			IOption option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH); //$NON-NLS-1$
-			String path = (String) option.getValue();
+
+			String path;
+
+			IOption option;
+			option = toolchain
+					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_DO_PREFER_GLOBAL_PATH); //$NON-NLS-1$
+
+			Boolean doPreferGlobal = (Boolean) option.getValue();
+
+			if (doPreferGlobal != null && doPreferGlobal) {
+				option = toolchain
+						.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); //$NON-NLS-1$
+				String toolchainName = (String)option.getValue();
+				
+				path = SharedStorage.getToolchainPath(toolchainName);
+			} else {
+				option = toolchain
+						.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH); //$NON-NLS-1$
+				path = (String) option.getValue();
+			}
 
 			if (path != null) {
 				path = path.trim();
@@ -90,7 +109,7 @@ public class EnvironmentVariableSupplier implements
 
 		private static String resolveMacros(String str,
 				IConfiguration configuration) {
-			
+
 			String result = str;
 			try {
 				result = ManagedBuildManager

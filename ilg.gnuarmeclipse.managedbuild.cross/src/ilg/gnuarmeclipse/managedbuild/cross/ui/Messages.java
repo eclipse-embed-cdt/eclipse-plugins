@@ -10,13 +10,17 @@
  *     Liviu Ionescu - ARM version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.managedbuild.cross;
+package ilg.gnuarmeclipse.managedbuild.cross.ui;
+
+import ilg.gnuarmeclipse.managedbuild.cross.Activator;
 
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
-	private static final String BUNDLE_NAME = Activator.getIdPrefix()
-			+ ".messages"; //$NON-NLS-1$
+
+	private static final String MESSAGES = Activator.getIdPrefix()
+			+ ".ui.messages"; //$NON-NLS-1$
+
 	public static String SetCrossCommandWizardPage_browse;
 	public static String SetCrossCommandWizardPage_description;
 	public static String SetCrossCommandWizardPage_name;
@@ -39,13 +43,14 @@ public class Messages extends NLS {
 	public static String ToolChainSettingsTab_rmCmd;
 	public static String ToolChainSettingsTab_path;
 	public static String ToolChainSettingsTab_browse;
+	public static String ToolChainSettingsTab_prefer;
 	public static String ToolChainSettingsTab_flash;
 	public static String ToolChainSettingsTab_listing;
 	public static String ToolChainSettingsTab_size;
 
 	static {
 		// initialise resource bundle
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+		NLS.initializeMessages(MESSAGES, Messages.class);
 	}
 
 	private Messages() {

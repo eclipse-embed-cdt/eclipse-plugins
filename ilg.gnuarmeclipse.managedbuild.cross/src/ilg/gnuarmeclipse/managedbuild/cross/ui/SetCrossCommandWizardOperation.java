@@ -11,12 +11,15 @@
  *     Liviu Ionescu - ARM version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.managedbuild.cross;
+package ilg.gnuarmeclipse.managedbuild.cross.ui;
+
+import ilg.gnuarmeclipse.managedbuild.cross.Option;
+import ilg.gnuarmeclipse.managedbuild.cross.ProjectStorage;
+import ilg.gnuarmeclipse.managedbuild.cross.ToolchainDefinition;
 
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.cdt.build.core.scannerconfig.ScannerConfigBuilder;
-import org.eclipse.cdt.managedbuilder.buildproperties.IBuildPropertyValue;
 import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
@@ -36,7 +39,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
  * to store options (index and path) in persistent storage.
  * 
  */
-public class SetCrossCommandOperation implements IRunnableWithProgress {
+public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 
 	public void run(IProgressMonitor monitor) throws InvocationTargetException,
 			InterruptedException {
@@ -115,7 +118,7 @@ public class SetCrossCommandOperation implements IRunnableWithProgress {
 		IOption option;
 		IToolChain toolchain = config.getToolChain();
 
-		ToolchainSettingsTab.setOptionsForToolchain(config, toolchainIndex);
+		ToolchainsTab.setOptionsForToolchain(config, toolchainIndex);
 
 		String path = (String) MBSCustomPageManager.getPageProperty(
 				SetCrossCommandWizardPage.PAGE_ID,
