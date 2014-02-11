@@ -9,7 +9,7 @@
 		help="help.html">
 		<property id="STM32F0chipFamily" label="%STM32F0xx.chipFamily.label"
 			description="%STM32F0xx.chipFamily.description" type="select"
-			default="%STM32F0xx.chipFamily.default" hidden="false" persist="true">
+			default="STM32F0XX_MD" hidden="false" persist="true">
 			<item value="STM32F0XX_LD" label="STM32F0xx Low Density" />
 			<item value="STM32F0XX_MD" label="STM32F0xx Medium Density" />
 			<item value="STM32F030" label="STM32F030" />

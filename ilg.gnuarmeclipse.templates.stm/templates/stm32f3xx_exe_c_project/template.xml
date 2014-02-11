@@ -9,7 +9,7 @@
 		help="help.html">
 		<property id="STM32F3chipFamily" label="%STM32F3xx.chipFamily.label"
 			description="%STM32F3xx.chipFamily.description" type="select"
-			default="%STM32F3xx.chipFamily.default" hidden="false" persist="true">
+			default="STM32F30X" hidden="false" persist="true">
 			<item value="STM32F30X" label="STM32F30x/31x" />
 			<item value="STM32F37X" label="STM32F37x/38x" />
 		</property>

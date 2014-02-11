@@ -9,7 +9,7 @@
 		help="help.html">
 		<property id="STM32F4chipFamily" label="%STM32F4xx.chipFamily.label"
 			description="%STM32F4xx.chipFamily.description" type="select"
-			default="%STM32F4xx.chipFamily.default" hidden="false" persist="true">
+			default="STM32F40_41xxx" hidden="false" persist="true">
 			<item value="STM32F401xx" label="STM32F401xx" />
 			<item value="STM32F40_41xxx" label="STM32F40_41xxx" />
 			<item value="STM32F427_437xx" label="STM32F427_437xx" />
