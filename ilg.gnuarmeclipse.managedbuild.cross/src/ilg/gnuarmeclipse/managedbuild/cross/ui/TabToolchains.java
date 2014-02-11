@@ -17,7 +17,6 @@ import ilg.gnuarmeclipse.managedbuild.cross.Option;
 import ilg.gnuarmeclipse.managedbuild.cross.ToolchainDefinition;
 import ilg.gnuarmeclipse.managedbuild.cross.Utils;
 
-import org.eclipse.cdt.core.settings.model.ICMultiItemsHolder;
 import org.eclipse.cdt.core.settings.model.ICResourceDescription;
 import org.eclipse.cdt.managedbuilder.buildproperties.IBuildPropertyValue;
 import org.eclipse.cdt.managedbuilder.core.BuildException;
@@ -47,15 +46,13 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Text;
-import org.eclipse.ui.PlatformUI;
 
 /**
  * @noextend This class is not intended to be subclassed by clients.
  * @noinstantiate This class is not intended to be instantiated by clients.
  */
-public class ToolchainsTab extends AbstractCBuildPropertyTab {
+public class TabToolchains extends AbstractCBuildPropertyTab {
 
 	// public static final String PROPERTY =
 	// ManagedBuildManager.BUILD_ARTEFACT_TYPE_PROPERTY_ID;
@@ -70,7 +67,6 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 
 	private Combo m_architectureCombo;
 
-	private Text m_pathText;
 	private Text m_prefixText;
 	private Text m_suffixText;
 	private Text m_commandCText;
@@ -82,7 +78,11 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 	private Text m_commandMakeText;
 	private Text m_commandRmText;
 
-	private Button m_preferButton;
+	private Button m_useGlobalCheckButton;
+	private Text m_globalPathText;
+	private Button m_globalPathButton;
+	private Text m_projectPathText;
+	private Button m_projectPathButton;
 
 	private Button m_flashButton;
 	private Button m_listingButton;
@@ -91,12 +91,14 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 	private boolean m_isExecutable;
 	private boolean m_isStaticLibrary;
 
-	private boolean m_wasUpdateRefused;
+	// private boolean m_wasUpdateRefused;
 
 	// private boolean m_isCreated = false;
 
 	// private Composite m_composite;
 
+	private static final int WIDTH_HINT = 120;
+	
 	@Override
 	public void createControls(Composite parent) {
 
@@ -134,11 +136,19 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 			m_isExecutable = true;
 			m_isStaticLibrary = false;
 		}
-		usercomp.setLayout(new GridLayout(3, false));
-		GridData layoutData = new GridData();
+		
+		// usercomp is defined in parent class
+		
+		GridLayout layout = new GridLayout();
+		layout.numColumns = 3;
+		// layout.marginHeight = 0;
+		// layout.marginWidth = 0;
+		usercomp.setLayout(layout);
+		
+		GridData layoutData = new GridData(GridData.FILL_HORIZONTAL);
 		usercomp.setLayoutData(layoutData);
 
-		m_wasUpdateRefused = false;
+		// m_wasUpdateRefused = false;
 
 		// ----- Toolchain ------------------------------------------------
 		Label toolchainLbl = new Label(usercomp, SWT.NONE);
@@ -183,13 +193,16 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 				// e1.printStackTrace();
 			}
 
-			// Set toolchain path
-			String path = SharedStorage
-					.getToolchainPath(m_selectedToolchainName);
-			IToolChain toolchain = m_config.getToolChain();
-			IOption option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH); //$NON-NLS-1$
-			ManagedBuildManager.setOption(m_config, toolchain, option, path);
+			if (false) {
+				// Set project toolchain path
+				String path = SharedStorage
+						.getToolchainPath(m_selectedToolchainName);
+				IToolChain toolchain = m_config.getToolChain();
+				IOption option = toolchain
+						.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH); //$NON-NLS-1$
+				ManagedBuildManager
+						.setOption(m_config, toolchain, option, path);
+			}
 
 		}
 
@@ -209,7 +222,9 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 		architectureLbl.setText(Messages.ToolChainSettingsTab_architecture);
 
 		m_architectureCombo = new Combo(usercomp, SWT.DROP_DOWN);
-		layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
+		layoutData = new GridData();
+		layoutData.horizontalSpan = 2;
+		layoutData.widthHint = WIDTH_HINT;
 		m_architectureCombo.setLayoutData(layoutData);
 
 		m_architectureCombo.setItems(ToolchainDefinition.getArchitectures());
@@ -229,7 +244,7 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 			index = 0; // default is ARM
 		}
 		m_architectureCombo.setText(ToolchainDefinition.getArchitecture(index));
-
+		
 		// m_toolchainCombo.addSelectionListener(new SelectionAdapter() {
 		// public void widgetSelected(SelectionEvent event) {
 		// }
@@ -245,7 +260,10 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 		if (prefix != null) {
 			m_prefixText.setText(prefix);
 		}
-		layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
+		
+		layoutData = new GridData();
+		layoutData.horizontalSpan = 2;
+		layoutData.widthHint = WIDTH_HINT;
 		m_prefixText.setLayoutData(layoutData);
 
 		// ----- Suffix ---------------------------------------------------
@@ -258,7 +276,10 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 		if (suffix != null) {
 			m_suffixText.setText(suffix);
 		}
-		layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
+		
+		layoutData = new GridData();
+		layoutData.horizontalSpan = 2;
+		layoutData.widthHint = WIDTH_HINT;
 		m_suffixText.setLayoutData(layoutData);
 
 		// ----- Command c ------------------------------------------------
@@ -271,7 +292,10 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 		if (commandC != null) {
 			m_commandCText.setText(commandC);
 		}
-		layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
+		
+		layoutData = new GridData();
+		layoutData.horizontalSpan = 2;
+		layoutData.widthHint = WIDTH_HINT;
 		m_commandCText.setLayoutData(layoutData);
 
 		// ----- Command cpp ----------------------------------------------
@@ -284,7 +308,10 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 		if (commandCpp != null) {
 			m_commandCppText.setText(commandCpp);
 		}
-		layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
+		
+		layoutData = new GridData();
+		layoutData.horizontalSpan = 2;
+		layoutData.widthHint = WIDTH_HINT;
 		m_commandCppText.setLayoutData(layoutData);
 
 		if (m_isStaticLibrary) {
@@ -298,7 +325,10 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 			if (commandAr != null) {
 				m_commandArText.setText(commandAr);
 			}
-			layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
+			
+			layoutData = new GridData();
+			layoutData.horizontalSpan = 2;
+			layoutData.widthHint = WIDTH_HINT;
 			m_commandArText.setLayoutData(layoutData);
 		}
 
@@ -314,7 +344,10 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 			if (commandObjcopy != null) {
 				m_commandObjcopyText.setText(commandObjcopy);
 			}
-			layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
+			
+			layoutData = new GridData();
+			layoutData.horizontalSpan = 2;
+			layoutData.widthHint = WIDTH_HINT;
 			m_commandObjcopyText.setLayoutData(layoutData);
 
 			// ----- Command objdump --------------------------------------
@@ -328,7 +361,10 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 			if (commandObjdump != null) {
 				m_commandObjdumpText.setText(commandObjdump);
 			}
-			layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
+			
+			layoutData = new GridData();
+			layoutData.horizontalSpan = 2;
+			layoutData.widthHint = WIDTH_HINT;
 			m_commandObjdumpText.setLayoutData(layoutData);
 
 			// ----- Command size -----------------------------------------
@@ -341,7 +377,10 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 			if (commandSize != null) {
 				m_commandSizeText.setText(commandSize);
 			}
-			layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
+			
+			layoutData = new GridData();
+			layoutData.horizontalSpan = 2;
+			layoutData.widthHint = WIDTH_HINT;
 			m_commandSizeText.setLayoutData(layoutData);
 		}
 
@@ -355,7 +394,10 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 		if (commandMake != null) {
 			m_commandMakeText.setText(commandMake);
 		}
-		layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
+		
+		layoutData = new GridData();
+		layoutData.horizontalSpan = 2;
+		layoutData.widthHint = WIDTH_HINT;
 		m_commandMakeText.setLayoutData(layoutData);
 
 		// ----- Command rm -----------------------------------------------
@@ -368,7 +410,10 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 		if (commandRm != null) {
 			m_commandRmText.setText(commandRm);
 		}
-		layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
+		
+		layoutData = new GridData();
+		layoutData.horizontalSpan = 2;
+		layoutData.widthHint = WIDTH_HINT;
 		m_commandRmText.setLayoutData(layoutData);
 
 		m_commandRmText.addModifyListener(new ModifyListener() {
@@ -380,38 +425,50 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 		});
 
 		{
-			// ----- Prefer ---------------------------------------------------
+			// ----- Use Global Path ------------------------------------------
 
-			m_preferButton = new Button(usercomp, SWT.CHECK);
-			m_preferButton.setText(Messages.ToolChainSettingsTab_prefer);
-
-			Boolean doPreferGlobalPath = Option.getOptionBooleanValue(m_config,
-					Option.OPTION_TOOLCHAIN_DO_PREFER_GLOBAL_PATH);
-			if (doPreferGlobalPath != null) {
-				m_preferButton.setSelection(doPreferGlobalPath);
+			m_useGlobalCheckButton = new Button(usercomp, SWT.CHECK);
+			m_useGlobalCheckButton
+					.setText(Messages.ToolChainSettingsTab_useGlobal);
+			m_useGlobalCheckButton
+			.setToolTipText(Messages.ToolChainSettingsTab_useGlobal_toolTip);
+			
+			Boolean useGlobalPath = Option.getOptionBooleanValue(m_config,
+					Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH);
+			if (useGlobalPath != null) {
+				m_useGlobalCheckButton.setSelection(useGlobalPath.booleanValue());
+			} else {
+				m_useGlobalCheckButton.setSelection(Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH_DEFAULT);
 			}
 
 			layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1);
-			m_preferButton.setLayoutData(layoutData);
+			m_useGlobalCheckButton.setLayoutData(layoutData);
+
+			m_useGlobalCheckButton.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					useGlobalChanged();
+				}
+			});
 		}
 
 		{
-			// ----- Path -----------------------------------------------------
+			// ----- Global Path ----------------------------------------------
 			Label pathLabel = new Label(usercomp, SWT.NONE);
-			pathLabel.setText(Messages.ToolChainSettingsTab_path);
+			pathLabel.setText(Messages.ToolChainSettingsTab_globalPath);
 
-			m_pathText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-			String toolchainPath = Option.getOptionStringValue(m_config,
-					Option.OPTION_TOOLCHAIN_PATH);
+			m_globalPathText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
+			String toolchainPath = SharedStorage
+					.getToolchainPath(m_selectedToolchainName);
 			if (toolchainPath != null) {
-				m_pathText.setText(toolchainPath);
+				m_globalPathText.setText(toolchainPath);
 			}
 			layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
-			m_pathText.setLayoutData(layoutData);
+			m_globalPathText.setLayoutData(layoutData);
 
-			Button pathButton = new Button(usercomp, SWT.NONE);
-			pathButton.setText(Messages.ToolChainSettingsTab_browse);
-			pathButton.addSelectionListener(new SelectionListener() {
+			m_globalPathButton = new Button(usercomp, SWT.NONE);
+			m_globalPathButton.setText(Messages.ToolChainSettingsTab_browse);
+			m_globalPathButton.addSelectionListener(new SelectionListener() {
 
 				public void widgetDefaultSelected(SelectionEvent e) {
 				}
@@ -421,12 +478,45 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 							.getShell(), SWT.APPLICATION_MODAL);
 					String browsedDirectory = dirDialog.open();
 					if (browsedDirectory != null) {
-						m_pathText.setText(browsedDirectory);
+						m_globalPathText.setText(browsedDirectory);
 					}
 				}
 			});
 			layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1);
-			pathButton.setLayoutData(layoutData);
+			m_globalPathButton.setLayoutData(layoutData);
+		}
+		{
+			// ----- Project Path ---------------------------------------------
+			Label pathLabel = new Label(usercomp, SWT.NONE);
+			pathLabel.setText(Messages.ToolChainSettingsTab_projectPath);
+
+			m_projectPathText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
+			String toolchainPath = Option.getOptionStringValue(m_config,
+					Option.OPTION_TOOLCHAIN_PATH);
+			if (toolchainPath != null) {
+				m_projectPathText.setText(toolchainPath);
+			}
+			layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
+			m_projectPathText.setLayoutData(layoutData);
+
+			m_projectPathButton = new Button(usercomp, SWT.NONE);
+			m_projectPathButton.setText(Messages.ToolChainSettingsTab_browse);
+			m_projectPathButton.addSelectionListener(new SelectionListener() {
+
+				public void widgetDefaultSelected(SelectionEvent e) {
+				}
+
+				public void widgetSelected(SelectionEvent e) {
+					DirectoryDialog dirDialog = new DirectoryDialog(usercomp
+							.getShell(), SWT.APPLICATION_MODAL);
+					String browsedDirectory = dirDialog.open();
+					if (browsedDirectory != null) {
+						m_projectPathText.setText(browsedDirectory);
+					}
+				}
+			});
+			layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1);
+			m_projectPathButton.setLayoutData(layoutData);
 		}
 
 		if (m_isExecutable) {
@@ -469,8 +559,21 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 
 		// m_isCreated = true;
 
+		useGlobalChanged();
+		
 		// --------------------------------------------------------------------
 
+	}
+
+	private void useGlobalChanged() {
+
+		boolean enabled = m_useGlobalCheckButton.getSelection();
+		
+		m_globalPathText.setEnabled(enabled);
+		m_globalPathButton.setEnabled(enabled);
+		
+		m_projectPathText.setEnabled(!enabled);
+		m_projectPathButton.setEnabled(!enabled);		
 	}
 
 	private void updateInterfaceAfterToolchainChange() {
@@ -514,12 +617,11 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 			m_commandRmText.setText(newCommandRm);
 		}
 
-		if (m_preferButton.getSelection()) {
-			String path = SharedStorage.getToolchainPath(td.getName());
-			m_pathText.setText(path);
-		}
+		String path = SharedStorage.getToolchainPath(td.getName());
+		m_globalPathText.setText(path);
 
 		// leave the bottom three buttons as the user set them
+		// leave the project toolchain path as the user set it
 	}
 
 	// This event comes when the tab is selected after the windows is
@@ -600,49 +702,53 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_COMMAND_PREFIX); //$NON-NLS-1$
-			config.setOption(toolchain, option, m_prefixText.getText());
+			config.setOption(toolchain, option, m_prefixText.getText().trim());
 
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_COMMAND_SUFFIX); //$NON-NLS-1$
-			config.setOption(toolchain, option, m_suffixText.getText());
+			config.setOption(toolchain, option, m_suffixText.getText().trim());
 
 			option = toolchain.getOptionBySuperClassId(Option.OPTION_COMMAND_C); //$NON-NLS-1$
-			config.setOption(toolchain, option, m_commandCText.getText());
+			config.setOption(toolchain, option, m_commandCText.getText().trim());
 
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_COMMAND_CPP); //$NON-NLS-1$
-			config.setOption(toolchain, option, m_commandCppText.getText());
+			config.setOption(toolchain, option, m_commandCppText.getText()
+					.trim());
 
 			if (m_isStaticLibrary) {
 				option = toolchain
 						.getOptionBySuperClassId(Option.OPTION_COMMAND_AR); //$NON-NLS-1$
-				config.setOption(toolchain, option, m_commandArText.getText());
+				config.setOption(toolchain, option, m_commandArText.getText()
+						.trim());
 			}
 
 			if (m_isExecutable) {
 				option = toolchain
 						.getOptionBySuperClassId(Option.OPTION_COMMAND_OBJCOPY); //$NON-NLS-1$
-				config.setOption(toolchain, option,
-						m_commandObjcopyText.getText());
+				config.setOption(toolchain, option, m_commandObjcopyText
+						.getText().trim());
 
 				option = toolchain
 						.getOptionBySuperClassId(Option.OPTION_COMMAND_OBJDUMP); //$NON-NLS-1$
-				config.setOption(toolchain, option,
-						m_commandObjdumpText.getText());
+				config.setOption(toolchain, option, m_commandObjdumpText
+						.getText().trim());
 
 				option = toolchain
 						.getOptionBySuperClassId(Option.OPTION_COMMAND_SIZE); //$NON-NLS-1$
-				config.setOption(toolchain, option, m_commandSizeText.getText());
+				config.setOption(toolchain, option, m_commandSizeText.getText()
+						.trim());
 			}
 
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_COMMAND_MAKE); //$NON-NLS-1$
-			config.setOption(toolchain, option, m_commandMakeText.getText());
+			config.setOption(toolchain, option, m_commandMakeText.getText()
+					.trim());
 
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_COMMAND_RM); //$NON-NLS-1$
 			String oldValue = option.getStringValue();
-			String newValue = m_commandRmText.getText();
+			String newValue = m_commandRmText.getText().trim();
 
 			if (newValue != null && !newValue.equals(oldValue)) {
 				config.setOption(toolchain, option, newValue);
@@ -667,46 +773,27 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 				config.setOption(toolchain, option, m_sizeButton.getSelection());
 			}
 
+			// trick to enforce update
 			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_DO_PREFER_GLOBAL_PATH); //$NON-NLS-1$
-
-			// trick to force update
-			config.setOption(toolchain, option, !m_preferButton.getSelection());
-			config.setOption(toolchain, option, m_preferButton.getSelection());
+					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH); //$NON-NLS-1$
+			config.setOption(toolchain, option, !m_useGlobalCheckButton.getSelection());
+			option = toolchain
+					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH); //$NON-NLS-1$
+			config.setOption(toolchain, option, m_useGlobalCheckButton.getSelection());
 
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH); //$NON-NLS-1$
-			ManagedBuildManager.setOption(config, toolchain, option,
-					m_pathText.getText());
+			config.setOption(toolchain, option, m_projectPathText.getText()
+					.trim());
 
-			String sToolchainWizardPath = SharedStorage.getToolchainPath(td
+			String sGlobalToolchainPath = SharedStorage.getToolchainPath(td
 					.getName());
-			String sNewToolchainPath = m_pathText.getText().trim();
+			String sNewToolchainPath = m_globalPathText.getText().trim();
 
-			if (sToolchainWizardPath.length() == 0) {
+			if (sGlobalToolchainPath.length() == 0
+					|| !sGlobalToolchainPath.equals(sNewToolchainPath)) {
 				SharedStorage.putToolchainPath(td.getName(), sNewToolchainPath);
 				SharedStorage.update();
-			} else if (!sToolchainWizardPath.equals(sNewToolchainPath)
-					&& m_preferButton.getSelection() && !m_wasUpdateRefused) {
-
-				// Create message box
-				MessageBox box = new MessageBox(PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow().getShell(), SWT.YES
-						| SWT.NO | SWT.APPLICATION_MODAL | SWT.ICON_QUESTION);
-				// Set title
-				box.setText("Path");
-				// Set message
-				box.setMessage("Do you want to remember '" + sNewToolchainPath
-						+ "' for toolchain '" + td.getName() + "'?");
-				// Open message box
-				if (box.open() == SWT.YES) {
-					SharedStorage.putToolchainPath(td.getName(),
-							sNewToolchainPath);
-					SharedStorage.update();
-				} else {
-					// To avoid asking twice
-					m_wasUpdateRefused = true;
-				}
 			}
 		} catch (NullPointerException e) {
 			e.printStackTrace();
@@ -854,11 +941,17 @@ public class ToolchainsTab extends AbstractCBuildPropertyTab {
 					Option.OPTION_ADDTOOLS_PRINTSIZE_DEFAULT);
 		}
 
+		// trick to enforce update
 		option = toolchain
-				.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_DO_PREFER_GLOBAL_PATH); //$NON-NLS-1$
+				.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH); //$NON-NLS-1$
 		config.setOption(toolchain, option,
-				Option.OPTION_TOOLCHAIN_DO_PREFER_GLOBAL_PATH_DEFAULT);
+				!Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH_DEFAULT);
+		option = toolchain
+				.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH); //$NON-NLS-1$
+		config.setOption(toolchain, option,
+				Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH_DEFAULT);
 
+		// do not set the project toolchain path
 	}
 
 	private void propagateCommandRmUpdate(IConfiguration config) {

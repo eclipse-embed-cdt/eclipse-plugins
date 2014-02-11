@@ -41,9 +41,11 @@ public class Messages extends NLS {
 	public static String ToolChainSettingsTab_sizeCmd;
 	public static String ToolChainSettingsTab_makeCmd;
 	public static String ToolChainSettingsTab_rmCmd;
-	public static String ToolChainSettingsTab_path;
+	public static String ToolChainSettingsTab_globalPath;
+	public static String ToolChainSettingsTab_projectPath;
 	public static String ToolChainSettingsTab_browse;
-	public static String ToolChainSettingsTab_prefer;
+	public static String ToolChainSettingsTab_useGlobal;
+	public static String ToolChainSettingsTab_useGlobal_toolTip;
 	public static String ToolChainSettingsTab_flash;
 	public static String ToolChainSettingsTab_listing;
 	public static String ToolChainSettingsTab_size;

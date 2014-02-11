@@ -65,7 +65,7 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 		SharedStorage.putToolchainName(toolchainName);
 
 		SharedStorage.update();
-		
+
 		IProject project = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(projectName);
 		if (!project.exists())
@@ -118,19 +118,21 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 		IOption option;
 		IToolChain toolchain = config.getToolChain();
 
-		ToolchainsTab.setOptionsForToolchain(config, toolchainIndex);
+		TabToolchains.setOptionsForToolchain(config, toolchainIndex);
 
-		String path = (String) MBSCustomPageManager.getPageProperty(
-				SetCrossCommandWizardPage.PAGE_ID,
-				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_PATH);
-		option = toolchain
-				.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH); //$NON-NLS-1$
-		// Do not use config.setOption() to DO NOT save it on .cproject...
-		option.setValue(path);
+		if (false) {
+			String path = (String) MBSCustomPageManager.getPageProperty(
+					SetCrossCommandWizardPage.PAGE_ID,
+					SetCrossCommandWizardPage.CROSS_TOOLCHAIN_PATH);
 
-		// ... instead save it to the workspace project storage
-		ProjectStorage.putPath(config, path);
+			option = toolchain
+					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH); //$NON-NLS-1$
+			// Do not use config.setOption() to DO NOT save it on .cproject...
+			option.setValue(path);
+
+			// ... instead save it to the workspace project storage
+			ProjectStorage.putPath(config, path);
+		}
 	}
-
 
 }

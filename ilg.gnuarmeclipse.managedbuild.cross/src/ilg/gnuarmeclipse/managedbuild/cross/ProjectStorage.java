@@ -18,8 +18,10 @@ import org.eclipse.core.runtime.QualifiedName;
 
 public class ProjectStorage {
 
-	private static String PATH_ID = "path";
+	private static String TOOLCHAIN_PATH_ID = "toolchain.path";
 
+	// Was used from PathManagedOptionValueHandler
+	
 	public static String getPath(IConfiguration config) {
 
 		IProject project = (IProject) config.getManagedProject().getOwner();
@@ -27,7 +29,7 @@ public class ProjectStorage {
 		String value;
 		try {
 			value = project.getPersistentProperty(new QualifiedName(config
-					.getId(), PATH_ID));
+					.getId(), TOOLCHAIN_PATH_ID));
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -46,7 +48,7 @@ public class ProjectStorage {
 
 		try {
 			project.setPersistentProperty(new QualifiedName(config.getId(),
-					PATH_ID), value.trim());
+					TOOLCHAIN_PATH_ID), value.trim());
 		} catch (CoreException e) {
 			e.printStackTrace();
 			return false;

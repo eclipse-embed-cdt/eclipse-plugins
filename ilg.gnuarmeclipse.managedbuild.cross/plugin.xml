@@ -597,9 +597,9 @@
          </option>
          <option
                defaultValue="true"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.toolchain.preferGlobalPath"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.toolchain.useglobalpath"
                isAbstract="true"
-               name="%option.toolchain.preferGlobalPath"
+               name="%option.toolchain.useglobalpath"
                valueHandler="ilg.gnuarmeclipse.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
                valueType="boolean">
             <enablement
@@ -2258,9 +2258,9 @@
          </option>
          <option
                category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.preferGlobalPath"
-               name="%option.toolchain.preferGlobalPath"
-               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.toolchain.preferGlobalPath">
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.useglobalpath"
+               name="%option.toolchain.useglobalpath"
+               superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.toolchain.useglobalpath">
             <enablement
                   type="UI_VISIBILITY">
                <false>
@@ -2275,7 +2275,6 @@
                isAbstract="false"
                name="%option.toolchain.path"
                resourceFilter="all"
-               valueHandler="ilg.gnuarmeclipse.managedbuild.cross.PathManagedOptionValueHandler"
                valueType="string">
             <enablement
                   type="UI_VISIBILITY">
@@ -4035,7 +4034,7 @@
    <extension
            point="org.eclipse.cdt.ui.cPropertyTab">
       <tab
-            class="ilg.gnuarmeclipse.managedbuild.cross.ui.ToolchainsTab"
+            class="ilg.gnuarmeclipse.managedbuild.cross.ui.TabToolchains"
             helpId="cdt_u_prop_build_setting_tool"
             icon="icons/elcl16/config-tool.gif"
             name="%tab.toolchainSettings"

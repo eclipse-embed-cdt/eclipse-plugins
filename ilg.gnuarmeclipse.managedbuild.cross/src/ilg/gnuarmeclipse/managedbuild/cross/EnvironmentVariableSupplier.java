@@ -66,15 +66,20 @@ public class EnvironmentVariableSupplier implements
 
 			IOption option;
 			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_DO_PREFER_GLOBAL_PATH); //$NON-NLS-1$
+					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH); //$NON-NLS-1$
 
-			Boolean doPreferGlobal = (Boolean) option.getValue();
+			Boolean useGlobal;
+			if (option != null) {
+				useGlobal = (Boolean) option.getValue();
+			} else {
+				useGlobal = Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH_DEFAULT;
+			}
 
-			if (doPreferGlobal != null && doPreferGlobal) {
+			if (useGlobal != null && useGlobal) {
 				option = toolchain
 						.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); //$NON-NLS-1$
-				String toolchainName = (String)option.getValue();
-				
+				String toolchainName = (String) option.getValue();
+
 				path = SharedStorage.getToolchainPath(toolchainName);
 			} else {
 				option = toolchain

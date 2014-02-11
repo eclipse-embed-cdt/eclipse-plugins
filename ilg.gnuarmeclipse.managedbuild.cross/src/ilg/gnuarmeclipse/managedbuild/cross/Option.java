@@ -158,9 +158,9 @@ public class Option {
 			+ ".toolchain.name";
 	public static final String OPTION_TOOLCHAIN_PATH = OPTION_PREFIX
 			+ ".toolchain.path";
-	public static final String OPTION_TOOLCHAIN_DO_PREFER_GLOBAL_PATH = OPTION_PREFIX
-			+ ".toolchain.preferGlobalPath";
-	public static final boolean OPTION_TOOLCHAIN_DO_PREFER_GLOBAL_PATH_DEFAULT = true;
+	public static final String OPTION_TOOLCHAIN_USE_GLOBAL_PATH = OPTION_PREFIX
+			+ ".toolchain.useglobalpath";
+	public static final boolean OPTION_TOOLCHAIN_USE_GLOBAL_PATH_DEFAULT = true;
 
 	public static final String OPTION_COMMAND = OPTION_PREFIX + ".command.";
 	public static final String OPTION_COMMAND_PREFIX = OPTION_COMMAND
@@ -193,7 +193,7 @@ public class Option {
 	public static final boolean OPTION_ADDTOOLS_CREATEFLASH_DEFAULT = true;
 	public static final boolean OPTION_ADDTOOLS_CREATELISTING_DEFAULT = false;
 	public static final boolean OPTION_ADDTOOLS_PRINTSIZE_DEFAULT = true;
-	
+
 	public static final String CHOICE_IHEX = "ihex";
 	public static final String CHOICE_SREC = "srec";
 	public static final String CHOICE_SYMBOLSREC = "symbolsrec";
@@ -213,7 +213,7 @@ public class Option {
 
 	public static final String OPTION_ARM_FPU_ABI_SOFTFP = OPTION_PREFIX
 			+ ".arm.target.fpu.abi.softfp";
-	
+
 	public static final String OPTION_ARM_FPU_UNIT_FPV4SPD16 = OPTION_PREFIX
 			+ ".arm.target.fpu.unit.fpv4spd16";
 
@@ -280,6 +280,29 @@ public class Option {
 		Boolean bReturn = null;
 		if (option != null) {
 			try {
+				bReturn = new Boolean(option.getBooleanValue());
+			} catch (BuildException e) {
+				System.out.println(sOptionId + " not value");
+			}
+		} else {
+			System.out.println(sOptionId + " not found");
+		}
+
+		return bReturn;
+	}
+	
+	public static Boolean getOptionBooleanValue2(IConfiguration config,
+			String sOptionId) {
+
+		IOption option = config.getToolChain().getOptionBySuperClassId(
+				sOptionId);
+		Boolean bReturn = null;
+		if (option != null) {
+			try {
+				IOption option2 = config.getToolChain().getOptionToSet(option, false);
+				if (option2 == null)
+					return null;
+				
 				bReturn = new Boolean(option.getBooleanValue());
 			} catch (BuildException e) {
 				System.out.println(sOptionId + " not value");

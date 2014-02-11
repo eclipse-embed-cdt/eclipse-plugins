@@ -9,6 +9,8 @@ import org.eclipse.cdt.managedbuilder.core.ManagedOptionValueHandler;
 
 public class PathManagedOptionValueHandler extends ManagedOptionValueHandler {
 
+	// Used in the hidden path field
+	
 	@Override
 	public boolean handleValue(IBuildObject configuration,
 			IHoldsOptions holder, IOption option, String extraArgument,
