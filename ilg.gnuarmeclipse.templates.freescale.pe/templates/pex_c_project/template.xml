@@ -5,13 +5,13 @@
 	id="ProcessorExpert_C_Project" label="%PEx.template.label" description="%PEx.template.description"
 	help="help.html">
 
-	<property-group id="Wizard" label="Wizard Selection"
-		description="Wizard selection page" type="PAGES-ONLY" help="help.html">
-		<property id="PEaction" label="Wizard Invocation:"
+	<property-group id="Wizard" label="Processor Expert"
+		description="Select how to invoke the Processor Expert Wizard" type="PAGES-ONLY" help="help.html">
+		<property id="PEaction" label="Wizard invocation:"
 			description="Select how you want to start the wizard" type="select"
 			default="manual" hidden="false" persist="true">
 			<item value="manual" label="Manually, after the project is created" />
-			<item value="auto" label="Automatically (for testing only, not functional)" />
+			<item value="auto" label="Automatically (from vPEx_DRV_10.4 up)" />
 		</property>
 	</property-group>
 
