@@ -6,8 +6,7 @@ public interface ConfigurationAttributes {
 
 	// TabDebugger
 
-	public static final String JTAG_DEVICE = "J-Link";
-	// public static final String JTAG_DEVICE = "Generic TCP/IP";
+	public static final String JTAG_DEVICE = "Generic TCP/IP";
 
 	public static final String DO_CONNECT_TO_RUNNING = PREFIX
 			+ ".doConnectToRunning"; //$NON-NLS-1$

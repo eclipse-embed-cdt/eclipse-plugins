@@ -141,7 +141,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		createGdbServerGroup(comp);
 
 		createGdbClientControls(comp);
-		
+
 		createOptionsControl(comp);
 
 		createRemoteControl(comp);
@@ -348,9 +348,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			label = new Label(comp, SWT.NONE);
 			label.setText(Messages
 					.getString("DebuggerTab.gdbServerOther_Label")); //$NON-NLS-1$
+			gd = new GridData();
+			gd.verticalAlignment = SWT.TOP;
+			label.setLayoutData(gd);
 
-			gdbServerOther = new Text(comp, SWT.BORDER);
-			gd = new GridData(GridData.FILL_HORIZONTAL);
+			gdbServerOther = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER
+					| SWT.V_SCROLL);
+			gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+			gd.heightHint = 60;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			gdbServerOther.setLayoutData(gd);
 		}
@@ -385,7 +390,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							.getString("DebuggerTab.gdbServerAllocateTelnetConsole_ToolTipText"));
 			gd = new GridData(GridData.FILL_HORIZONTAL);
 			doGdbServerAllocateTelnetConsole.setLayoutData(gd);
-			
+
 			// update doStartGdbServerChanged() too
 			doGdbServerAllocateTelnetConsole.setEnabled(false);
 
@@ -662,7 +667,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		doGdbServerAllocateConsole.setEnabled(enabled);
 
-		//doGdbServerAllocateTelnetConsole.setEnabled(enabled);
+		// doGdbServerAllocateTelnetConsole.setEnabled(enabled);
 
 		// Disable remote target params when the server is started
 		targetIpAddress.setEnabled(!enabled);
@@ -682,14 +687,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
 
-			// J-Link interface
 			{
 				doConnectToRunning.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
 						ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT));
 			}
 
-			// J-Link GDB server
+			// OpenOCD GDB server
 			{
 				doStartGdbServer.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.DO_START_GDB_SERVER,
@@ -734,7 +738,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			}
 
-			// J-Link client
+			// GDB client
 			{
 				String gdbCommandAttr = configuration
 						.getAttribute(
@@ -801,14 +805,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		boolean doSharedUpdate = false;
 
-		// J-Link interface
 		{
 			configuration.setAttribute(
 					ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
 					doConnectToRunning.getSelection());
 		}
 
-		// J-Link GDB server
+		// OpenOCD server
 		{
 			configuration.setAttribute(
 					ConfigurationAttributes.DO_START_GDB_SERVER,
@@ -852,7 +855,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							doGdbServerAllocateTelnetConsole.getSelection());
 		}
 
-		// J-Link GDB client
+		// GDB client
 		{
 			// always use remote
 			configuration.setAttribute(
@@ -933,14 +936,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							IGDBLaunchConfigurationConstants.DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND_DEFAULT);
 		}
 
-		// J-Link interface
 		{
 			configuration.setAttribute(
 					ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
 					ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
 		}
 
-		// J-Link GDB server setup
+		// OpenOCD GDB server setup
 		{
 			configuration.setAttribute(
 					ConfigurationAttributes.DO_START_GDB_SERVER,
@@ -983,7 +985,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE_DEFAULT);
 		}
 
-		// J-Link GDB client setup
+		// GDB client setup
 		{
 			configuration
 					.setAttribute(
@@ -1101,6 +1103,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			String other = configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_OTHER,
 					ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT).trim();
+			
+			other = VariablesPlugin.getDefault()
+					.getStringVariableManager()
+					.performStringSubstitution(other);
 			if (other.length() > 0) {
 				lst.addAll(splitOptions(other));
 			}
@@ -1135,7 +1141,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					sb.setLength(0);
 
 					state = State.InString;
-				} else if (ch != ' ') {
+				} else if (ch != ' ' && ch != '\n' && ch != '\r') {
 					sb.setLength(0);
 					sb.append(ch);
 
@@ -1145,7 +1151,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			case InOption:
 
-				if (ch != ' ') {
+				if (ch != ' ' && ch != '\n' && ch != '\r') {
 					sb.append(ch);
 				} else {
 					lst.add(sb.toString());

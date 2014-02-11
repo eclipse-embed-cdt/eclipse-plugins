@@ -41,6 +41,7 @@
             type="ilg.gnuarmeclipse.debug.gdbjtag.openocd.launchConfigurationType"/>
    </extension>
 
+<!--
    <extension
          point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
       <device
@@ -49,5 +50,5 @@
             name="%JTagDevice.generic.name">
       </device>
    </extension>
-   
+-->
 </plugin>
