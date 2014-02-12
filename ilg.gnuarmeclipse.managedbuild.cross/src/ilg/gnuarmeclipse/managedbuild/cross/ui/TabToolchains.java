@@ -54,9 +54,6 @@ import org.eclipse.swt.widgets.Text;
  */
 public class TabToolchains extends AbstractCBuildPropertyTab {
 
-	// public static final String PROPERTY =
-	// ManagedBuildManager.BUILD_ARTEFACT_TYPE_PROPERTY_ID;
-
 	private IConfiguration m_config;
 
 	// ---
@@ -91,16 +88,14 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	private boolean m_isExecutable;
 	private boolean m_isStaticLibrary;
 
-	// private boolean m_wasUpdateRefused;
+	private static int WIDTH_HINT = 120;
 
-	// private boolean m_isCreated = false;
-
-	// private Composite m_composite;
-
-	private static final int WIDTH_HINT = 120;
-	
 	@Override
 	public void createControls(Composite parent) {
+
+		if (Utils.isLinux()) {
+			WIDTH_HINT = 150;
+		}
 
 		// m_composite = parent;
 		// Disabled, otherwise toolchain changes fail
@@ -136,15 +131,15 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			m_isExecutable = true;
 			m_isStaticLibrary = false;
 		}
-		
+
 		// usercomp is defined in parent class
-		
+
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 3;
 		// layout.marginHeight = 0;
 		// layout.marginWidth = 0;
 		usercomp.setLayout(layout);
-		
+
 		GridData layoutData = new GridData(GridData.FILL_HORIZONTAL);
 		usercomp.setLayoutData(layoutData);
 
@@ -244,7 +239,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			index = 0; // default is ARM
 		}
 		m_architectureCombo.setText(ToolchainDefinition.getArchitecture(index));
-		
+
 		// m_toolchainCombo.addSelectionListener(new SelectionAdapter() {
 		// public void widgetSelected(SelectionEvent event) {
 		// }
@@ -260,7 +255,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		if (prefix != null) {
 			m_prefixText.setText(prefix);
 		}
-		
+
 		layoutData = new GridData();
 		layoutData.horizontalSpan = 2;
 		layoutData.widthHint = WIDTH_HINT;
@@ -276,7 +271,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		if (suffix != null) {
 			m_suffixText.setText(suffix);
 		}
-		
+
 		layoutData = new GridData();
 		layoutData.horizontalSpan = 2;
 		layoutData.widthHint = WIDTH_HINT;
@@ -292,7 +287,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		if (commandC != null) {
 			m_commandCText.setText(commandC);
 		}
-		
+
 		layoutData = new GridData();
 		layoutData.horizontalSpan = 2;
 		layoutData.widthHint = WIDTH_HINT;
@@ -308,7 +303,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		if (commandCpp != null) {
 			m_commandCppText.setText(commandCpp);
 		}
-		
+
 		layoutData = new GridData();
 		layoutData.horizontalSpan = 2;
 		layoutData.widthHint = WIDTH_HINT;
@@ -325,7 +320,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			if (commandAr != null) {
 				m_commandArText.setText(commandAr);
 			}
-			
+
 			layoutData = new GridData();
 			layoutData.horizontalSpan = 2;
 			layoutData.widthHint = WIDTH_HINT;
@@ -344,7 +339,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			if (commandObjcopy != null) {
 				m_commandObjcopyText.setText(commandObjcopy);
 			}
-			
+
 			layoutData = new GridData();
 			layoutData.horizontalSpan = 2;
 			layoutData.widthHint = WIDTH_HINT;
@@ -361,7 +356,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			if (commandObjdump != null) {
 				m_commandObjdumpText.setText(commandObjdump);
 			}
-			
+
 			layoutData = new GridData();
 			layoutData.horizontalSpan = 2;
 			layoutData.widthHint = WIDTH_HINT;
@@ -377,7 +372,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			if (commandSize != null) {
 				m_commandSizeText.setText(commandSize);
 			}
-			
+
 			layoutData = new GridData();
 			layoutData.horizontalSpan = 2;
 			layoutData.widthHint = WIDTH_HINT;
@@ -394,7 +389,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		if (commandMake != null) {
 			m_commandMakeText.setText(commandMake);
 		}
-		
+
 		layoutData = new GridData();
 		layoutData.horizontalSpan = 2;
 		layoutData.widthHint = WIDTH_HINT;
@@ -410,7 +405,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		if (commandRm != null) {
 			m_commandRmText.setText(commandRm);
 		}
-		
+
 		layoutData = new GridData();
 		layoutData.horizontalSpan = 2;
 		layoutData.widthHint = WIDTH_HINT;
@@ -431,14 +426,16 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			m_useGlobalCheckButton
 					.setText(Messages.ToolChainSettingsTab_useGlobal);
 			m_useGlobalCheckButton
-			.setToolTipText(Messages.ToolChainSettingsTab_useGlobal_toolTip);
-			
+					.setToolTipText(Messages.ToolChainSettingsTab_useGlobal_toolTip);
+
 			Boolean useGlobalPath = Option.getOptionBooleanValue(m_config,
 					Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH);
 			if (useGlobalPath != null) {
-				m_useGlobalCheckButton.setSelection(useGlobalPath.booleanValue());
+				m_useGlobalCheckButton.setSelection(useGlobalPath
+						.booleanValue());
 			} else {
-				m_useGlobalCheckButton.setSelection(Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH_DEFAULT);
+				m_useGlobalCheckButton
+						.setSelection(Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH_DEFAULT);
 			}
 
 			layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1);
@@ -560,7 +557,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		// m_isCreated = true;
 
 		useGlobalChanged();
-		
+
 		// --------------------------------------------------------------------
 
 	}
@@ -568,12 +565,12 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	private void useGlobalChanged() {
 
 		boolean enabled = m_useGlobalCheckButton.getSelection();
-		
+
 		m_globalPathText.setEnabled(enabled);
 		m_globalPathButton.setEnabled(enabled);
-		
+
 		m_projectPathText.setEnabled(!enabled);
-		m_projectPathButton.setEnabled(!enabled);		
+		m_projectPathButton.setEnabled(!enabled);
 	}
 
 	private void updateInterfaceAfterToolchainChange() {
@@ -776,10 +773,12 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			// trick to enforce update
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH); //$NON-NLS-1$
-			config.setOption(toolchain, option, !m_useGlobalCheckButton.getSelection());
+			config.setOption(toolchain, option,
+					!m_useGlobalCheckButton.getSelection());
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH); //$NON-NLS-1$
-			config.setOption(toolchain, option, m_useGlobalCheckButton.getSelection());
+			config.setOption(toolchain, option,
+					m_useGlobalCheckButton.getSelection());
 
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH); //$NON-NLS-1$

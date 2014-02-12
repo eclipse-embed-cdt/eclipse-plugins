@@ -22,7 +22,6 @@ package ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
-import ilg.gnuarmeclipse.debug.gdbjtag.jlink.PreferenceConstants;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.SharedStorage;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Utils;
 
@@ -41,11 +40,8 @@ import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
 import org.eclipse.cdt.dsf.gdb.IGdbDebugPreferenceConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.preferences.IPreferencesService;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -133,6 +129,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private TabStartup tabStartup;
 
+	private static int COLUMN_WIDTH = 70;
+
 	TabDebugger(TabStartup tabStartup) {
 		super();
 		this.tabStartup = tabStartup;
@@ -153,6 +151,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		// gdbPrevUsbAddress = "";
 		// gdbPrevIpAddress = "";
+
+		if (Utils.isLinux()) {
+			COLUMN_WIDTH = 85;
+		}
 
 		ScrolledComposite sc = new ScrolledComposite(parent, SWT.V_SCROLL
 				| SWT.H_SCROLL);
@@ -359,14 +361,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				gdbEndiannessLittle.setText(Messages
 						.getString("DebuggerTab.endiannesslittle_Text"));
 				gd = new GridData();
-				gd.widthHint = 70;
+				gd.widthHint = COLUMN_WIDTH;
 				gdbEndiannessLittle.setLayoutData(gd);
 
 				gdbEndiannessBig = new Button(radio, SWT.RADIO);
 				gdbEndiannessBig.setText(Messages
 						.getString("DebuggerTab.endiannessBig_Text"));
 				gd = new GridData();
-				gd.widthHint = 70;
+				gd.widthHint = COLUMN_WIDTH;
 				gdbEndiannessBig.setLayoutData(gd);
 
 			}
@@ -395,14 +397,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				gdbServerConnectionUsb.setText(Messages
 						.getString("DebuggerTab.connectionUsb_Text"));
 				gd = new GridData();
-				gd.widthHint = 70;
+				gd.widthHint = COLUMN_WIDTH;
 				gdbServerConnectionUsb.setLayoutData(gd);
 
 				gdbServerConnectionIp = new Button(local, SWT.RADIO);
 				gdbServerConnectionIp.setText(Messages
 						.getString("DebuggerTab.connectionTcp_Text"));
 				gd = new GridData();
-				gd.widthHint = 70;
+				gd.widthHint = COLUMN_WIDTH;
 				gdbServerConnectionIp.setLayoutData(gd);
 
 				gdbServerConnectionAddress = new Text(local, SWT.BORDER);
@@ -437,14 +439,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				gdbInterfaceSwd.setText(Messages
 						.getString("DebuggerTab.interfaceSWD_Text"));
 				gd = new GridData();
-				gd.widthHint = 70;
+				gd.widthHint = COLUMN_WIDTH;
 				gdbInterfaceSwd.setLayoutData(gd);
 
 				gdbInterfaceJtag = new Button(local, SWT.RADIO);
 				gdbInterfaceJtag.setText(Messages
 						.getString("DebuggerTab.interfaceJtag_Text"));
 				gd = new GridData();
-				gd.widthHint = 70;
+				gd.widthHint = COLUMN_WIDTH;
 				gdbInterfaceJtag.setLayoutData(gd);
 			}
 		}
@@ -469,24 +471,24 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				gdbServerSpeedAuto.setText(Messages
 						.getString("DebuggerTab.gdbServerSpeedAuto_Text"));
 				gd = new GridData();
-				gd.widthHint = 70;
+				gd.widthHint = COLUMN_WIDTH;
 				gdbServerSpeedAuto.setLayoutData(gd);
 
 				gdbServerSpeedAdaptive = new Button(radio, SWT.RADIO);
 				gdbServerSpeedAdaptive.setText(Messages
 						.getString("DebuggerTab.gdbServerSpeedAdaptive_Text"));
-				gd.widthHint = 70;
+				gd.widthHint = COLUMN_WIDTH;
 				gdbServerSpeedAdaptive.setLayoutData(gd);
 
 				gdbServerSpeedFixed = new Button(radio, SWT.RADIO);
 				gdbServerSpeedFixed.setText(Messages
 						.getString("DebuggerTab.gdbServerSpeedFixed_Text"));
-				gd.widthHint = 70;
+				gd.widthHint = COLUMN_WIDTH;
 				gdbServerSpeedFixed.setLayoutData(gd);
 
 				gdbServerSpeedFixedValue = new Text(radio, SWT.BORDER);
 				gd = new GridData();
-				gd.widthHint = 70;
+				gd.widthHint = 40;
 				gdbServerSpeedFixedValue.setLayoutData(gd);
 
 				label = new Label(radio, SWT.NONE);
@@ -2097,11 +2099,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		// We currently work with MI version 2. Don't use just 'mi' because
 		// it points to the latest MI version, while we want mi2 specifically.
 		lst.add("--interpreter=mi2");
-		
+
 		// Don't read the gdbinit file here. It is read explicitly in
 		// the LaunchSequence to make it easier to customise.
 		lst.add("--nx");
-				
+
 		String other;
 		try {
 			other = configuration.getAttribute(

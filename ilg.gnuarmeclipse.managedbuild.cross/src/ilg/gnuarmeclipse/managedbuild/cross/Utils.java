@@ -43,6 +43,16 @@ public class Utils {
 				.startsWith(PROPERTY_OS_VALUE_WINDOWS);
 	}
 
+	static public boolean isLinux() {
+		return System.getProperty(PROPERTY_OS_NAME).toLowerCase()
+				.startsWith(PROPERTY_OS_VALUE_LINUX);
+	}
+
+	static public boolean isMacOSX() {
+		return System.getProperty(PROPERTY_OS_NAME).toLowerCase()
+				.startsWith(PROPERTY_OS_VALUE_MACOSX);
+	}
+
 	/**
 	 * Extracts a resource info from a build object. If no resource info can be
 	 * found, it returns null.
