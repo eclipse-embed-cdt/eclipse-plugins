@@ -223,7 +223,7 @@ public class LaunchConfigurationDelegate extends
 					.addClientProcess(getClientCommandName(config)); //$NON-NLS-1$
 
 			newProcess.setAttribute(IProcess.ATTR_CMDLINE,
-					TabDebugger.getGdbClientCommand(config));
+					TabDebugger.getGdbClientCommandLine(config));
 
 			monitor.worked(1);
 		}
