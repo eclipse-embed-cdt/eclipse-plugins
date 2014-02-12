@@ -163,7 +163,8 @@ public class Utils {
 		} catch (IOException e) {
 			throw new DebugException(new Status(IStatus.ERROR,
 					Activator.PLUGIN_ID, DebugException.REQUEST_FAILED,
-					"Error while launching command: " + Utils.join(cmdArray, " "), e.getCause()));//$NON-NLS-1$
+					"Error while launching command: "
+							+ Utils.join(cmdArray, " "), e.getCause()));//$NON-NLS-1$
 		}
 
 		// Start a timeout job to make sure we don't get stuck waiting for
@@ -197,12 +198,11 @@ public class Utils {
 				cmdOutput.append('\n');
 			}
 		} catch (IOException e) {
-			throw new DebugException(
-					new Status(
-							IStatus.ERROR,
-							Activator.PLUGIN_ID,
-							DebugException.REQUEST_FAILED,
-							"Error reading GDB STDOUT after sending: " + cmdArray, e.getCause()));//$NON-NLS-1$
+			throw new DebugException(new Status(IStatus.ERROR,
+					Activator.PLUGIN_ID, DebugException.REQUEST_FAILED,
+					"Error reading GDB STDOUT after sending: "
+							+ Utils.join(cmdArray, " ") + ", response: "
+							+ cmdOutput, e.getCause()));//$NON-NLS-1$
 		} finally {
 			// If we get here we are obviously not stuck so we can cancel the
 			// timeout job.
@@ -225,12 +225,11 @@ public class Utils {
 		String gdbVersion = LaunchUtils.getGDBVersionFromText(cmdOutput
 				.toString());
 		if (gdbVersion == null || gdbVersion.isEmpty()) {
-			throw new DebugException(
-					new Status(
-							IStatus.ERROR,
-							Activator.PLUGIN_ID,
-							DebugException.REQUEST_FAILED,
-							"Could not determine GDB version after sending: " + cmdArray, null));//$NON-NLS-1$
+			throw new DebugException(new Status(IStatus.ERROR,
+					Activator.PLUGIN_ID, DebugException.REQUEST_FAILED,
+					"Could not determine GDB version after sending: "
+							+ Utils.join(cmdArray, " ") + ", response: "
+							+ cmdOutput, null));//$NON-NLS-1$
 		}
 		return gdbVersion;
 	}
