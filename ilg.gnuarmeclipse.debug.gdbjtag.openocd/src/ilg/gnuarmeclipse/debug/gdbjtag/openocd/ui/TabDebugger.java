@@ -83,6 +83,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Button doStartGdbServer;
 	private Text gdbClientExecutable;
 	private boolean didGdbClientExecutableChanged;
+	private Text gdbClientOtherOptions;
 	private Text gdbClientOtherCommands;
 
 	private Text targetIpAddress;
@@ -100,7 +101,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private Text gdbServerLog;
 	private Button gdbServerLogBrowse;
-	private Text gdbServerOther;
+	private Text gdbServerOtherOptions;
 
 	private Button doGdbServerAllocateConsole;
 	private Button doGdbServerAllocateTelnetConsole;
@@ -352,12 +353,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			gd.verticalAlignment = SWT.TOP;
 			label.setLayoutData(gd);
 
-			gdbServerOther = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER
-					| SWT.V_SCROLL);
+			gdbServerOtherOptions = new Text(comp, SWT.MULTI | SWT.WRAP
+					| SWT.BORDER | SWT.V_SCROLL);
 			gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 			gd.heightHint = 60;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
-			gdbServerOther.setLayoutData(gd);
+			gdbServerOtherOptions.setLayoutData(gd);
 		}
 
 		{
@@ -470,7 +471,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 		});
 
-		gdbServerOther.addModifyListener(scheduleUpdateJobModifyListener);
+		gdbServerOtherOptions
+				.addModifyListener(scheduleUpdateJobModifyListener);
 
 		doGdbServerAllocateConsole
 				.addSelectionListener(scheduleUpdateJobSelectionAdapter);
@@ -527,6 +529,20 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				variableButton.setText(Messages
 						.getString("DebuggerTab.gdbCommandVariable"));
 			}
+		}
+
+		{
+			label = new Label(comp, SWT.NONE);
+			label.setText(Messages
+					.getString("DebuggerTab.gdbOtherOptions_Label"));
+			label.setToolTipText(Messages
+					.getString("DebuggerTab.gdbOtherOptions_ToolTipText"));
+			gd = new GridData();
+			label.setLayoutData(gd);
+
+			gdbClientOtherOptions = new Text(comp, SWT.SINGLE | SWT.BORDER);
+			gd = new GridData(GridData.FILL_HORIZONTAL);
+			gdbClientOtherOptions.setLayoutData(gd);
 		}
 
 		{
@@ -657,7 +673,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		gdbServerExecutable.setEnabled(enabled);
 		gdbServerBrowseButton.setEnabled(enabled);
 		gdbServerVariablesButton.setEnabled(enabled);
-		gdbServerOther.setEnabled(enabled);
+		gdbServerOtherOptions.setEnabled(enabled);
 
 		gdbServerLog.setEnabled(enabled);
 		gdbServerLogBrowse.setEnabled(enabled);
@@ -720,7 +736,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						ConfigurationAttributes.GDB_SERVER_LOG,
 						ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT));
 
-				gdbServerOther.setText(configuration.getAttribute(
+				gdbServerOtherOptions.setText(configuration.getAttribute(
 						ConfigurationAttributes.GDB_SERVER_OTHER,
 						ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT));
 
@@ -747,6 +763,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 										.getGdbClientExecutable(ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT));
 				gdbClientExecutable.setText(gdbCommandAttr);
 				didGdbClientExecutableChanged = false;
+
+				gdbClientOtherOptions
+						.setText(configuration
+								.getAttribute(
+										ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
+										ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT));
 
 				gdbClientOtherCommands
 						.setText(configuration
@@ -842,8 +864,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					gdbServerLog.getText().trim());
 
 			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_OTHER, gdbServerOther
-							.getText().trim());
+					ConfigurationAttributes.GDB_SERVER_OTHER,
+					gdbServerOtherOptions.getText().trim());
 
 			configuration.setAttribute(
 					ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
@@ -874,6 +896,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				SharedStorage.putGdbClientExecutable(clientExecutable);
 				didGdbClientExecutableChanged = true;
 			}
+
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
+					gdbClientOtherOptions.getText().trim());
 
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
@@ -998,6 +1024,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.USE_REMOTE_TARGET_DEFAULT);
 
 			configuration.setAttribute(
+					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
+					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT);
+
+			configuration.setAttribute(
 					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
 					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
 		}
@@ -1103,9 +1133,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			String other = configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_OTHER,
 					ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT).trim();
-			
-			other = VariablesPlugin.getDefault()
-					.getStringVariableManager()
+
+			other = VariablesPlugin.getDefault().getStringVariableManager()
 					.performStringSubstitution(other);
 			if (other.length() > 0) {
 				lst.addAll(splitOptions(other));
@@ -1229,16 +1258,36 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		lst.add(executable);
 
-		lst.add("--interpreter"); //$NON-NLS-1$
 		// We currently work with MI version 2. Don't use just 'mi' because
-		// it
-		// points to the latest MI version, while we want mi2 specifically.
-		lst.add("mi2"); //$NON-NLS-1$
+		// it points to the latest MI version, while we want mi2 specifically.
+		lst.add("--interpreter=mi2");
+
 		// Don't read the gdbinit file here. It is read explicitly in
-		// the LaunchSequence to make it easier to customize.
-		lst.add("--nx"); //$NON-NLS-1$
+		// the LaunchSequence to make it easier to customise.
+		lst.add("--nx");
+
+		String other;
+		try {
+			other = configuration.getAttribute(
+					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
+					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT)
+					.trim();
+			if (other.length() > 0) {
+				lst.addAll(splitOptions(other));
+			}
+		} catch (CoreException e) {
+			Activator.log(e);
+		}
 
 		return lst.toArray(new String[0]);
+	}
+
+	public static String getGdbClientCommandLine(
+			ILaunchConfiguration configuration) {
+
+		String cmdLineArray[] = getGdbClientCommandLineArray(configuration);
+
+		return Utils.join(cmdLineArray, " ");
 	}
 
 }
