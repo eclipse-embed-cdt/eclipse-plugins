@@ -6,7 +6,8 @@ public interface ConfigurationAttributes {
 
 	// TabDebugger
 
-	public static final String JTAG_DEVICE = "Generic TCP/IP";
+	// Must be in sync with plugin.xml definition
+	public static final String JTAG_DEVICE = "GNU ARM OpenOCD";
 
 	public static final String DO_CONNECT_TO_RUNNING = PREFIX
 			+ ".doConnectToRunning"; //$NON-NLS-1$

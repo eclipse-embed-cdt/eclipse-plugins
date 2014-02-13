@@ -1416,6 +1416,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 
 		boolean doSharedUpdate = false;
+		{
+			configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE,
+					ConfigurationAttributes.JTAG_DEVICE);
+		}
+
 		// J-Link interface
 		{
 			if (gdbInterfaceSwd.getSelection()) {

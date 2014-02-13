@@ -470,6 +470,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	private IGDBJtagDevice getGDBJtagDevice() {
 		IGDBJtagDevice gdbJtagDevice = null;
+		
 		String jtagDeviceName = CDebugUtils.getAttribute(getAttributes(),
 				IGDBJtagConstants.ATTR_JTAG_DEVICE,
 				IGDBJtagConstants.DEFAULT_JTAG_DEVICE);

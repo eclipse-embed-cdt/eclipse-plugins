@@ -6,8 +6,8 @@ public interface ConfigurationAttributes {
 
 	// TabDebugger
 
-	public static final String JTAG_DEVICE = "J-Link";
-	// public static final String JTAG_DEVICE = "Generic TCP/IP";
+	// Must be in sync with plugin.xml definition
+	public static final String JTAG_DEVICE = "GNU ARM J-Link";
 
 	public static final String INTERFACE_COMPAT = PREFIX + ".interface"; //$NON-NLS-1$
 	public static final String GDB_SERVER_DEBUG_INTERFACE = PREFIX + ".gdbServerDebugInterface"; //$NON-NLS-1$
