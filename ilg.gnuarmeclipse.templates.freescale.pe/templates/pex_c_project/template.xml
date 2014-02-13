@@ -73,11 +73,17 @@
 			value="com.freescale.processorexpert.core.expertprojectnature" />
 	</process>
 
-	<if condition="$(PEaction)==auto">
+	<if condition="$(PEaction)==auto">	
+		<process
+			type="com.freescale.processorexpert.ui.pewizard.RunCdtProcessorExpertWizard">
+			<simple name="projectName" value="$(projectName)" />
+		</process>
+		<!-- 
 		<process
 			type="ilg.gnuarmeclipse.templates.freescale.pe.RunProcessorExpertWizard">
 			<simple name="projectName" value="$(projectName)" />
 		</process>
+		 -->
 	</if>
 
 </template>
