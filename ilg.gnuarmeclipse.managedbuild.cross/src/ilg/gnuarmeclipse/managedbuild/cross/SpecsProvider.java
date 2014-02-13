@@ -13,7 +13,6 @@ package ilg.gnuarmeclipse.managedbuild.cross;
 
 import org.eclipse.cdt.core.language.settings.providers.ILanguageSettingsProvider;
 import org.eclipse.cdt.core.language.settings.providers.LanguageSettingsManager;
-import org.eclipse.cdt.managedbuilder.language.settings.providers.AbstractBuiltinSpecsDetector;
 
 public class SpecsProvider {
 
@@ -29,9 +28,9 @@ public class SpecsProvider {
 		return LanguageSettingsManager.getRawProvider(p);// ;
 	}
 
-	private static void clear() {
-		ILanguageSettingsProvider provider = getProvider();
-		((AbstractBuiltinSpecsDetector) provider).clear();
-		// System.out.println("clear " + provider.getName());
-	}
+//	private static void clear() {
+//		ILanguageSettingsProvider provider = getProvider();
+//		((AbstractBuiltinSpecsDetector) provider).clear();
+//		// System.out.println("clear " + provider.getName());
+//	}
 }

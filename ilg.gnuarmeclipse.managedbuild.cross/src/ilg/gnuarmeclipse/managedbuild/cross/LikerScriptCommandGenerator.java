@@ -15,7 +15,6 @@ import org.eclipse.cdt.core.cdtvariables.CdtVariableException;
 import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.core.IOptionCommandGenerator;
-import org.eclipse.cdt.managedbuilder.makegen.gnu.GnuMakefileGenerator;
 import org.eclipse.cdt.utils.cdtvariables.CdtVariableResolver;
 import org.eclipse.cdt.utils.cdtvariables.IVariableSubstitutor;
 
@@ -57,10 +56,8 @@ public class LikerScriptCommandGenerator implements IOptionCommandGenerator {
 				}
 			}
 		} catch (BuildException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (CdtVariableException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

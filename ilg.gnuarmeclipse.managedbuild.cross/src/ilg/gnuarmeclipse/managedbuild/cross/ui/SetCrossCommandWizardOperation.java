@@ -13,8 +13,6 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross.ui;
 
-import ilg.gnuarmeclipse.managedbuild.cross.Option;
-import ilg.gnuarmeclipse.managedbuild.cross.ProjectStorage;
 import ilg.gnuarmeclipse.managedbuild.cross.ToolchainDefinition;
 
 import java.lang.reflect.InvocationTargetException;
@@ -23,8 +21,6 @@ import org.eclipse.cdt.build.core.scannerconfig.ScannerConfigBuilder;
 import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
-import org.eclipse.cdt.managedbuilder.core.IOption;
-import org.eclipse.cdt.managedbuilder.core.IToolChain;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPageManager;
 import org.eclipse.core.resources.IProject;
@@ -115,24 +111,7 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 			toolchainIndex = ToolchainDefinition.getDefault();
 		}
 
-		IOption option;
-		IToolChain toolchain = config.getToolChain();
-
 		TabToolchains.setOptionsForToolchain(config, toolchainIndex);
-
-		if (false) {
-			String path = (String) MBSCustomPageManager.getPageProperty(
-					SetCrossCommandWizardPage.PAGE_ID,
-					SetCrossCommandWizardPage.CROSS_TOOLCHAIN_PATH);
-
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH); //$NON-NLS-1$
-			// Do not use config.setOption() to DO NOT save it on .cproject...
-			option.setValue(path);
-
-			// ... instead save it to the workspace project storage
-			ProjectStorage.putPath(config, path);
-		}
 	}
 
 }

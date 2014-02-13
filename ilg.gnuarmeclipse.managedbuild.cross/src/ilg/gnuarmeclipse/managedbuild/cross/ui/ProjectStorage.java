@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.managedbuild.cross;
+package ilg.gnuarmeclipse.managedbuild.cross.ui;
 
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.core.resources.IProject;
@@ -18,37 +18,71 @@ import org.eclipse.core.runtime.QualifiedName;
 
 public class ProjectStorage {
 
-	private static String TOOLCHAIN_PATH_ID = "toolchain.path";
+	private static String TOOLCHAIN_PATH = "toolchain.path";
+	private static String IS_TOOLCHAIN_PATH_PER_PROJECT = "is.toolchain.path.per.project";
 
 	// Was used from PathManagedOptionValueHandler
-	
-	public static String getPath(IConfiguration config) {
+
+	public static boolean isToolchainPathPerProject(IConfiguration config) {
 
 		IProject project = (IProject) config.getManagedProject().getOwner();
 
 		String value;
 		try {
 			value = project.getPersistentProperty(new QualifiedName(config
-					.getId(), TOOLCHAIN_PATH_ID));
+					.getId(), IS_TOOLCHAIN_PATH_PER_PROJECT));
 		} catch (CoreException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
-			return "";
+			return false;
 		}
-		
+
 		if (value == null)
 			value = "";
-		
-		return value.trim();
+
+		return "true".equalsIgnoreCase(value.trim());
 	}
 
-	public static boolean putPath(IConfiguration config, String value) {
+	public static boolean putToolchainPathPerProject(IConfiguration config, boolean value) {
 
 		IProject project = (IProject) config.getManagedProject().getOwner();
 
 		try {
 			project.setPersistentProperty(new QualifiedName(config.getId(),
-					TOOLCHAIN_PATH_ID), value.trim());
+					IS_TOOLCHAIN_PATH_PER_PROJECT), String.valueOf(value));
+		} catch (CoreException e) {
+			e.printStackTrace();
+			return false;
+		}
+
+		return true;
+	}
+
+	public static String getToolchainPath(IConfiguration config) {
+
+		IProject project = (IProject) config.getManagedProject().getOwner();
+
+		String value;
+		try {
+			value = project.getPersistentProperty(new QualifiedName(config
+					.getId(), TOOLCHAIN_PATH));
+		} catch (CoreException e) {
+			e.printStackTrace();
+			return "";
+		}
+
+		if (value == null)
+			value = "";
+
+		return value.trim();
+	}
+
+	public static boolean putToolchainPath(IConfiguration config, String value) {
+
+		IProject project = (IProject) config.getManagedProject().getOwner();
+
+		try {
+			project.setPersistentProperty(new QualifiedName(config.getId(),
+					TOOLCHAIN_PATH), value.trim());
 		} catch (CoreException e) {
 			e.printStackTrace();
 			return false;

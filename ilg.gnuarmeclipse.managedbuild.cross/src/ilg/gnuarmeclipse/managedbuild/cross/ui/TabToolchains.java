@@ -187,18 +187,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 				System.out.println("cannot setOptionsForToolchain");
 				// e1.printStackTrace();
 			}
-
-			if (false) {
-				// Set project toolchain path
-				String path = SharedStorage
-						.getToolchainPath(m_selectedToolchainName);
-				IToolChain toolchain = m_config.getToolChain();
-				IOption option = toolchain
-						.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH); //$NON-NLS-1$
-				ManagedBuildManager
-						.setOption(m_config, toolchain, option, path);
-			}
-
 		}
 
 		String toolchainSel = toolchains[m_selectedToolchainIndex];
@@ -428,15 +416,11 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			m_useGlobalCheckButton
 					.setToolTipText(Messages.ToolChainSettingsTab_useGlobal_toolTip);
 
-			Boolean useGlobalPath = Option.getOptionBooleanValue(m_config,
-					Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH);
-			if (useGlobalPath != null) {
-				m_useGlobalCheckButton.setSelection(useGlobalPath
-						.booleanValue());
-			} else {
-				m_useGlobalCheckButton
-						.setSelection(Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH_DEFAULT);
-			}
+			// Initialise field from per project storage
+			boolean useGlobalPath = !ProjectStorage
+					.isToolchainPathPerProject(m_config);
+
+			m_useGlobalCheckButton.setSelection(useGlobalPath);
 
 			layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1);
 			m_useGlobalCheckButton.setLayoutData(layoutData);
@@ -453,6 +437,8 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			// ----- Global Path ----------------------------------------------
 			Label pathLabel = new Label(usercomp, SWT.NONE);
 			pathLabel.setText(Messages.ToolChainSettingsTab_globalPath);
+			pathLabel
+					.setToolTipText(Messages.ToolChainSettingsTab_globalPath_toolTip);
 
 			m_globalPathText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
 			String toolchainPath = SharedStorage
@@ -486,10 +472,12 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			// ----- Project Path ---------------------------------------------
 			Label pathLabel = new Label(usercomp, SWT.NONE);
 			pathLabel.setText(Messages.ToolChainSettingsTab_projectPath);
+			pathLabel
+					.setToolTipText(Messages.ToolChainSettingsTab_projectPath_toolTip);
 
 			m_projectPathText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-			String toolchainPath = Option.getOptionStringValue(m_config,
-					Option.OPTION_TOOLCHAIN_PATH);
+			String toolchainPath = ProjectStorage.getToolchainPath(m_config);
+
 			if (toolchainPath != null) {
 				m_projectPathText.setText(toolchainPath);
 			}
@@ -770,19 +758,10 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 				config.setOption(toolchain, option, m_sizeButton.getSelection());
 			}
 
-			// trick to enforce update
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH); //$NON-NLS-1$
-			config.setOption(toolchain, option,
+			ProjectStorage.putToolchainPathPerProject(config,
 					!m_useGlobalCheckButton.getSelection());
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH); //$NON-NLS-1$
-			config.setOption(toolchain, option,
-					m_useGlobalCheckButton.getSelection());
 
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH); //$NON-NLS-1$
-			config.setOption(toolchain, option, m_projectPathText.getText()
+			ProjectStorage.putToolchainPath(config, m_projectPathText.getText()
 					.trim());
 
 			String sGlobalToolchainPath = SharedStorage.getToolchainPath(td
@@ -794,6 +773,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 				SharedStorage.putToolchainPath(td.getName(), sNewToolchainPath);
 				SharedStorage.update();
 			}
+
 		} catch (NullPointerException e) {
 			e.printStackTrace();
 			Activator.log(e);
@@ -939,16 +919,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			config.setOption(toolchain, option,
 					Option.OPTION_ADDTOOLS_PRINTSIZE_DEFAULT);
 		}
-
-		// trick to enforce update
-		option = toolchain
-				.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH); //$NON-NLS-1$
-		config.setOption(toolchain, option,
-				!Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH_DEFAULT);
-		option = toolchain
-				.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH); //$NON-NLS-1$
-		config.setOption(toolchain, option,
-				Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH_DEFAULT);
 
 		// do not set the project toolchain path
 	}

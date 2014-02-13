@@ -156,11 +156,12 @@ public class Option {
 	// other
 	public static final String OPTION_TOOLCHAIN_NAME = OPTION_PREFIX
 			+ ".toolchain.name";
-	public static final String OPTION_TOOLCHAIN_PATH = OPTION_PREFIX
-			+ ".toolchain.path";
-	public static final String OPTION_TOOLCHAIN_USE_GLOBAL_PATH = OPTION_PREFIX
-			+ ".toolchain.useglobalpath";
-	public static final boolean OPTION_TOOLCHAIN_USE_GLOBAL_PATH_DEFAULT = true;
+	
+	//public static final String OPTION_TOOLCHAIN_PATH = OPTION_PREFIX
+	//		+ ".toolchain.path";
+	//public static final String OPTION_TOOLCHAIN_USE_GLOBAL_PATH = OPTION_PREFIX
+	//		+ ".toolchain.useglobalpath";
+	//public static final boolean OPTION_TOOLCHAIN_USE_GLOBAL_PATH_DEFAULT = true;
 
 	public static final String OPTION_COMMAND = OPTION_PREFIX + ".command.";
 	public static final String OPTION_COMMAND_PREFIX = OPTION_COMMAND

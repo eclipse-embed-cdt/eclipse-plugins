@@ -12,6 +12,7 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross;
 
+import ilg.gnuarmeclipse.managedbuild.cross.ui.ProjectStorage;
 import ilg.gnuarmeclipse.managedbuild.cross.ui.SharedStorage;
 
 import java.io.File;
@@ -62,29 +63,20 @@ public class EnvironmentVariableSupplier implements
 				IConfiguration configuration) {
 			IToolChain toolchain = configuration.getToolChain();
 
-			String path;
+			String path = null;
 
-			IOption option;
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH); //$NON-NLS-1$
+			boolean isPathPerProject = ProjectStorage
+					.isToolchainPathPerProject(configuration);
 
-			Boolean useGlobal;
-			if (option != null) {
-				useGlobal = (Boolean) option.getValue();
+			if (isPathPerProject) {
+				path = ProjectStorage.getToolchainPath(configuration);
 			} else {
-				useGlobal = Option.OPTION_TOOLCHAIN_USE_GLOBAL_PATH_DEFAULT;
-			}
-
-			if (useGlobal != null && useGlobal) {
+				IOption option;
 				option = toolchain
 						.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); //$NON-NLS-1$
 				String toolchainName = (String) option.getValue();
 
 				path = SharedStorage.getToolchainPath(toolchainName);
-			} else {
-				option = toolchain
-						.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_PATH); //$NON-NLS-1$
-				path = (String) option.getValue();
 			}
 
 			if (path != null) {

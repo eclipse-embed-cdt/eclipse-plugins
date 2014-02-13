@@ -1,5 +1,7 @@
 package ilg.gnuarmeclipse.managedbuild.cross;
 
+import ilg.gnuarmeclipse.managedbuild.cross.ui.ProjectStorage;
+
 import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IBuildObject;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
@@ -22,7 +24,7 @@ public class PathManagedOptionValueHandler extends ManagedOptionValueHandler {
 		if (event == EVENT_OPEN) {
 
 			IConfiguration config = Utils.getConfiguration(configuration);
-			String path = ProjectStorage.getPath(config);
+			String path = ProjectStorage.getToolchainPath(config);
 			if (path.length() > 0) {
 				// overwrite the .cproject definition only if the
 				// workspace definition is useful
@@ -46,7 +48,7 @@ public class PathManagedOptionValueHandler extends ManagedOptionValueHandler {
 			// save (quite often to my taste) the value
 			String path = (String) option.getValue();
 			IConfiguration config = Utils.getConfiguration(configuration);
-			ProjectStorage.putPath(config, path);
+			ProjectStorage.putToolchainPath(config, path);
 
 			// the event was handled
 			return true;
