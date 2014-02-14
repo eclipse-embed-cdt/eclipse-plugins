@@ -49,6 +49,15 @@
             name="%JTagDevice.generic.name">
       </device>
    </extension>
+
+   <extension
+         point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
+      <device
+            class="ilg.gnuarmeclipse.debug.gdbjtag.jlink.JTagDevice"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.jlink.core.jtagdevice.compat"
+            name="J-Link">
+      </device>
+   </extension>
    
    <!--
    <extension
