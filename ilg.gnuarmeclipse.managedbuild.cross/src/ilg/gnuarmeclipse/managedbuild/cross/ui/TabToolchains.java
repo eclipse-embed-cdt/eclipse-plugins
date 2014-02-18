@@ -23,7 +23,6 @@ import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.core.IToolChain;
-import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.cdt.managedbuilder.internal.core.MultiConfiguration;
 import org.eclipse.cdt.managedbuilder.makegen.IManagedBuilderMakefileGenerator;
 import org.eclipse.cdt.managedbuilder.makegen.gnu.GnuMakefileGenerator;
@@ -54,6 +53,7 @@ import org.eclipse.swt.widgets.Text;
  */
 public class TabToolchains extends AbstractCBuildPropertyTab {
 
+	//private Composite m_composite;
 	private IConfiguration m_config;
 
 	// ---
@@ -97,9 +97,9 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			WIDTH_HINT = 150;
 		}
 
-		// m_composite = parent;
+		//m_composite = parent;
 		// Disabled, otherwise toolchain changes fail
-		System.out.println("createControls()");
+		System.out.println("Toolchains.createControls()");
 		if (!isThisPlugin()) {
 			System.out.println("not this plugin");
 			return;
@@ -563,7 +563,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 	private void updateInterfaceAfterToolchainChange() {
 
-		System.out.println("updateInterfaceAfterToolchainChange()");
+		System.out.println("Toolchains.updateInterfaceAfterToolchainChange()");
 		int index;
 		try {
 			String sSelectedCombo = m_toolchainCombo.getText();
@@ -616,14 +616,14 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		if (cfgd == null)
 			return;
 
-		// currently there is no content to change since createControls()
+		System.out.println("Toolchains.updateData()");
 	}
 
 	@Override
 	protected void performApply(ICResourceDescription src,
 			ICResourceDescription dst) {
 
-		System.out.println("performApply()");
+		System.out.println("Toolchains.performApply()");
 		IConfiguration config = getCfg(src.getConfiguration());
 
 		updateOptions(config);
@@ -631,13 +631,12 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		// SpecsProvider.clear();
 
 		// System.out.println("performApply()");
-
 	}
 
 	@Override
 	protected void performOK() {
 
-		System.out.println("performOK()");
+		System.out.println("Toolchains.performOK()");
 
 		updateOptions(m_config);
 	}
@@ -789,33 +788,36 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	public static void setOptionsForToolchain(IConfiguration config,
 			int toolchainIndex) throws BuildException {
 
-		boolean isExecutable;
-		boolean isStaticLibrary;
+		boolean isExecutable = true;
+		boolean isStaticLibrary = true;
 
-		IBuildPropertyValue propertyValue = config.getBuildArtefactType();
-		if (propertyValue != null) {
-			String artefactId = propertyValue.getId();
-			if (Utils.BUILD_ARTEFACT_TYPE_EXE.equals(artefactId)
-					|| artefactId.endsWith(".exe"))
+		if (false) {
+			IBuildPropertyValue propertyValue = config.getBuildArtefactType();
+			if (propertyValue != null) {
+				String artefactId = propertyValue.getId();
+				if (Utils.BUILD_ARTEFACT_TYPE_EXE.equals(artefactId)
+						|| artefactId.endsWith(".exe"))
+					isExecutable = true;
+				else
+					isExecutable = false;
+
+				if (Utils.BUILD_ARTEFACT_TYPE_STATICLIB.equals(artefactId)
+						|| artefactId.endsWith("Lib"))
+					isStaticLibrary = true;
+				else
+					isStaticLibrary = false;
+			} else {
+
+				try {
+					System.out.println(config.getProjectType().getId());
+				} catch (Exception e) {
+					;
+				}
 				isExecutable = true;
-			else
-				isExecutable = false;
-
-			if (Utils.BUILD_ARTEFACT_TYPE_STATICLIB.equals(artefactId)
-					|| artefactId.endsWith("Lib"))
-				isStaticLibrary = true;
-			else
 				isStaticLibrary = false;
-		} else {
-
-			try {
-				System.out.println(config.getProjectType().getId());
-			} catch (Exception e) {
-				;
 			}
-			isExecutable = true;
-			isStaticLibrary = false;
 		}
+
 		IToolChain toolchain = config.getToolChain();
 
 		IOption option;
@@ -951,7 +953,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	@Override
 	protected void performDefaults() {
 
-		System.out.println("performDefaults()");
+		System.out.println("Toolchains.performDefaults()");
 		updateInterfaceAfterToolchainChange();
 
 		if (m_isExecutable) {
