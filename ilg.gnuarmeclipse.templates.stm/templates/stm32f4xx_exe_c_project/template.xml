@@ -1180,7 +1180,7 @@
 		</process>
 	</if>
 
-	<if condition="$(STM32F4syscalls)==semihosting">
+	<if condition="1==1">
 		<process
 			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
 			<simple name="projectName" value="$(projectName)" />
