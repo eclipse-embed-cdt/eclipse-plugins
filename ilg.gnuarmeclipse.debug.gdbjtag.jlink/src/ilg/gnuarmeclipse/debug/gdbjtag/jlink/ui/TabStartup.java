@@ -541,7 +541,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	private void doEnableSwoChanged() {
 
-		boolean enabled = enableSwo.getSelection();
+		boolean enabled = enableSwo.getSelection() && enableSwo.getEnabled();
 
 		swoEnableTargetCpuFreq.setEnabled(enabled);
 		swoEnableTargetSwoFreq.setEnabled(enabled);
@@ -1031,6 +1031,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	public void doInterfaceSwdChanged(boolean flag) {
 
 		enableSwo.setEnabled(flag);
+		
+		doEnableSwoChanged();
 	}
 
 	@Override
