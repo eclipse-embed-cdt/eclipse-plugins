@@ -37,14 +37,25 @@
 
 // ----------------------------------------------------------------------------
 
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
+
+void
+SysTick_Handler(void);
+
+#if defined(__cplusplus)
+}
+#endif
+
+// ----------------------------------------------------------------------------
+
 static void
 Delay(__IO uint32_t nTime);
 
 static void
 TimingDelay_Decrement(void);
-
-void
-SysTick_Handler(void);
 
 /* ----- SysTick definitions ----------------------------------------------- */
 

@@ -1,10 +1,21 @@
 /* ------------------------------------------------------------------------- */
 
-static void
-delay_decrement(void);
+#if defined(__cplusplus)
+extern "C"
+{
+#endif
 
 void
 SysTick_Handler(void);
+
+#if defined(__cplusplus)
+}
+#endif
+
+/* ------------------------------------------------------------------------- */
+
+static void
+delay_decrement(void);
 
 static __IO uint32_t delay_count;
 
