@@ -110,7 +110,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private TabStartup tabStartup;
 
-	TabDebugger(TabStartup tabStartup) {
+	protected TabDebugger(TabStartup tabStartup) {
 		super();
 		this.tabStartup = tabStartup;
 	}

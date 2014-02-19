@@ -131,7 +131,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private static int COLUMN_WIDTH = 70;
 
-	TabDebugger(TabStartup tabStartup) {
+	protected TabDebugger(TabStartup tabStartup) {
 		super();
 		this.tabStartup = tabStartup;
 	}

@@ -25,3 +25,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Import-Package: org.eclipse.cdt.managedbuilder.core,
  org.eclipse.cdt.managedbuilder.macros
+Export-Package: ilg.gnuarmeclipse.debug.gdbjtag.openocd,
+ ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui
