@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/ilg.gnuarmeclipse.managedbuild.cross-feature_1.8.1.qualifier.jar" id="ilg.gnuarmeclipse.managedbuild.cross" version="1.8.2.qualifier">
+   <feature url="features/ilg.gnuarmeclipse.managedbuild.cross-feature_1.9.1.qualifier.jar" id="ilg.gnuarmeclipse.managedbuild.cross" version="1.9.1.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
    <feature url="features/ilg.gnuarmeclipse.templates.stm-feature_1.7.2.qualifier.jar" id="ilg.gnuarmeclipse.templates.stm" version="1.7.2.qualifier">
