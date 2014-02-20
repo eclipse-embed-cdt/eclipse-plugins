@@ -877,6 +877,66 @@
                </checkOption>
             </enablement>
             <enumeratedOptionValue
+                  command="-mcpu=arm1020e"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm1020e"
+                  name="arm1020e">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1020t"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm1020t"
+                  name="arm1020t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1022e"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm1022e"
+                  name="arm1022e">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1026ej-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm1026ej-s"
+                  name="arm1026ej-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm10e"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm10e"
+                  name="arm10e">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm10tdmi"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm10tdmi"
+                  name="arm10tdmi">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1136j-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm1136j-s"
+                  name="arm1136j-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1136jf-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm1136jf-s"
+                  name="arm1136jf-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1156t2-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm1156t2-s"
+                  name="arm1156t2-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1156t2f-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm1156t2f-s"
+                  name="arm1156t2f-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1176jz-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm1176jz-s"
+                  name="arm1176jz-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm1176jzf-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm1176jzf-s"
+                  name="arm1176jzf-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
                   command="-mcpu=arm2"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm2"
                   name="arm2">
@@ -922,31 +982,6 @@
                   name="arm7">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  command="-mcpu=arm7m"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm7m"
-                  name="arm7m">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm7d"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm7d"
-                  name="arm7d">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm7dm"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm7dm"
-                  name="arm7dm">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm7di"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm7di"
-                  name="arm7di">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm7dmi"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm7dmi"
-                  name="arm7dmi">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
                   command="-mcpu=arm70"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm70"
                   name="arm70">
@@ -967,45 +1002,24 @@
                   name="arm710">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  command="-mcpu=arm710c"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm710c"
-                  name="arm710c">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
                   command="-mcpu=arm7100"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm7100"
                   name="arm7100">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  command="-mcpu=arm720"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm720"
-                  name="arm720">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm7500"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm7500"
-                  name="arm7500">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm7500fe"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm7500fe"
-                  name="arm7500fe">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm7tdmi"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm7tdmi"
-                  isDefault="false"
-                  name="arm7tdmi">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm7tdmi-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm7tdmi-s"
-                  name="arm7tdmi-s">
+                  command="-mcpu=arm710c"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm710c"
+                  name="arm710c">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mcpu=arm710t"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm710t"
                   name="arm710t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm720"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm720"
+                  name="arm720">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mcpu=arm720t"
@@ -1018,24 +1032,50 @@
                   name="arm740t">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  command="-mcpu=strongarm"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.strongarm"
-                  name="strongarm">
+                  command="-mcpu=arm7500"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm7500"
+                  name="arm7500">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  command="-mcpu=strongarm110"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.strongarm110"
-                  name="strongarm110">
+                  command="-mcpu=arm7500fe"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm7500fe"
+                  name="arm7500fe">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  command="-mcpu=strongarm1100"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.strongarm1100"
-                  name="strongarm1100">
+                  command="-mcpu=arm7d"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm7d"
+                  name="arm7d">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  command="-mcpu=strongarm1110"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.strongarm1110"
-                  name="strongarm1110">
+                  command="-mcpu=arm7di"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm7di"
+                  name="arm7di">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7dm"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm7dm"
+                  name="arm7dm">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7dmi"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm7dmi"
+                  name="arm7dmi">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7m"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm7m"
+                  name="arm7m">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7tdmi"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm7tdmi"
+                  isDefault="false"
+                  name="arm7tdmi">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm7tdmi-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm7tdmi-s"
+                  name="arm7tdmi-s">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mcpu=arm8"
@@ -1053,11 +1093,6 @@
                   name="arm9">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  command="-mcpu=arm9e"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm9e"
-                  name="arm9e">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
                   command="-mcpu=arm920"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm920"
                   name="arm920">
@@ -1071,6 +1106,16 @@
                   command="-mcpu=arm922t"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm922t"
                   name="arm922t">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm926ej-s"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm926ej-s"
+                  name="arm926ej-s">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=arm940t"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm940t"
+                  name="arm940t">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mcpu=arm946e-s"
@@ -1088,14 +1133,9 @@
                   name="arm968e-s">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  command="-mcpu=arm926ej-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm926ej-s"
-                  name="arm926ej-s">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm940t"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm940t"
-                  name="arm940t">
+                  command="-mcpu=arm9e"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm9e"
+                  name="arm9e">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mcpu=arm9tdmi"
@@ -1103,74 +1143,9 @@
                   name="arm9tdmi">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  command="-mcpu=arm10tdmi"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm10tdmi"
-                  name="arm10tdmi">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm1020t"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm1020t"
-                  name="arm1020t">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm1026ej-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm1026ej-s"
-                  name="arm1026ej-s">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm10e"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm10e"
-                  name="arm10e">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm1020e"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm1020e"
-                  name="arm1020e">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm1022e"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm1022e"
-                  name="arm1022e">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm1136j-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm1136j-s"
-                  name="arm1136j-s">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm1136jf-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm1136jf-s"
-                  name="arm1136jf-s">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=mpcore"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.mpcore"
-                  name="mpcore">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=mpcorenovfp"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.mpcorenovfp"
-                  name="mpcorenovfp">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm1156t2-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm1156t2-s"
-                  name="arm1156t2-s">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm1156t2f-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm1156t2f-s"
-                  name="arm1156t2f-s">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm1176jz-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm1176jz-s"
-                  name="arm1176jz-s">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=arm1176jzf-s"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm1176jzf-s"
-                  name="arm1176jzf-s">
+                  command="-mcpu=cortex-a15"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-a15"
+                  name="cortex-a15">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mcpu=cortex-a5"
@@ -1193,14 +1168,30 @@
                   name="cortex-a9">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  command="-mcpu=cortex-a15"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-a15"
-                  name="cortex-a15">
+                  command="-mcpu=cortex-m0"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m0"
+                  name="cortex-m0">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  command="-mcpu=cortex-a53"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-a53"
-                  name="cortex-a53">
+                  command="-mcpu=cortex-m0plus"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m0plus"
+                  name="cortex-m0plus">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-m1"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m1"
+                  name="cortex-m1">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-m3"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m3"
+                  isDefault="true"
+                  name="cortex-m3">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-m4"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m4"
+                  name="cortex-m4">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mcpu=cortex-r4"
@@ -1213,50 +1204,14 @@
                   name="cortex-r4f">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  command="-mcpu=cortex-m4"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m4"
-                  name="cortex-m4">
+                  command="-mcpu=cortex-r5"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-r5"
+                  name="cortex-r5">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  command="-mcpu=cortex-m3"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m3"
-                  isDefault="true"
-                  name="cortex-m3">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=cortex-m1"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m1"
-                  name="cortex-m1">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=cortex-m0"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m0"
-                  name="cortex-m0">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=cortex-m0plus"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m0plus"
-                  name="cortex-m0plus">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=marvell-pj4"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.marvell-pj4"
-                  name="marvell-pj4">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=xscale"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.xscale"
-                  name="xscale">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=iwmmxt"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.iwmmxt"
-                  name="iwmmxt">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-mcpu=iwmmxt2"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.iwmmxt2"
-                  name="iwmmxt2">
+                  command="-mcpu=cortex-r7"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-r7"
+                  name="cortex-r7">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mcpu=ep9312"
@@ -1269,14 +1224,14 @@
                   name="fa526">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  command="-mcpu=fa626"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.fa626"
-                  name="fa626">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
                   command="-mcpu=fa606te"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.fa606te"
                   name="fa606te">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=fa626"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.fa626"
+                  name="fa626">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mcpu=fa626te"
@@ -1284,24 +1239,80 @@
                   name="fa626te">
             </enumeratedOptionValue>
             <enumeratedOptionValue
+                  command="-mcpu=fa726te"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.fa726te"
+                  name="fa726te">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
                   command="-mcpu=fmp626"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.fmp626"
                   name="fmp626">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  command="-mcpu=fa726te"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.fa726te"
-                  name="fa726te">
+                  command="-mcpu=generic-armv7-a"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.generic-armv7-a"
+                  name="generic-armv7-a">
             </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=iwmmxt"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.iwmmxt"
+                  name="iwmmxt">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=iwmmxt2"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.iwmmxt2"
+                  name="iwmmxt2">
+            </enumeratedOptionValue>
+            <!-- not supported in 4.8 -->
             <enumeratedOptionValue
                   command="-mcpu=marvell-f"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.marvell-f"
                   name="marvell-f">
             </enumeratedOptionValue>
             <enumeratedOptionValue
+                  command="-mcpu=marvell-pj4"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.marvell-pj4"
+                  name="marvell-pj4">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=mpcore"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.mpcore"
+                  name="mpcore">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=mpcorenovfp"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.mpcorenovfp"
+                  name="mpcorenovfp">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
                   command="-mcpu=native"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.native"
                   name="Native (-mcpu=native)">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=strongarm"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.strongarm"
+                  name="strongarm">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=strongarm110"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.strongarm110"
+                  name="strongarm110">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=strongarm1100"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.strongarm1100"
+                  name="strongarm1100">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=strongarm1110"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.strongarm1110"
+                  name="strongarm1110">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=xscale"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.xscale"
+                  name="xscale">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.default"
@@ -1358,14 +1369,14 @@
                   name="armv5">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  command="-march=armv5t"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv5t"
-                  name="armv5t">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
                   command="-march=armv5e"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv5e"
                   name="armv5e">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv5t"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv5t"
+                  name="armv5t">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-march=armv5te"
@@ -1378,10 +1389,25 @@
                   name="armv6">
             </enumeratedOptionValue>
             <enumeratedOptionValue
+                  command="-march=armv6-m"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv6-m"
+                  name="armv6-m">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
                   command="-march=armv6j"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv6j"
                   name="armv6j">
             </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv6k"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv6k"
+                  name="armv6j">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv6s-m"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv6s-m"
+                  name="armv6s-m">
+            </enumeratedOptionValue>        
             <enumeratedOptionValue
                   command="-march=armv6t2"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv6t2"
@@ -1398,11 +1424,6 @@
                   name="armv6zk">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  command="-march=armv6-m"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv6-m"
-                  name="armv6-m">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
                   command="-march=armv7"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv7"
                   name="armv7">
@@ -1413,14 +1434,19 @@
                   name="armv7-a">
             </enumeratedOptionValue>
             <enumeratedOptionValue
+                  command="-march=armv7-m"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv7-m"
+                  name="armv7-m">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
                   command="-march=armv7-r"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv7-r"
                   name="armv7-r">
             </enumeratedOptionValue>
             <enumeratedOptionValue
-                  command="-march=armv7-m"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv7-m"
-                  name="armv7-m">
+                  command="-march=armv7e-m"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv7e-m"
+                  name="armv7e-m">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-march=armv8-a"
