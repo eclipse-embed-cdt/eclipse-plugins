@@ -205,7 +205,7 @@ public class ToolchainDefinition {
 		tc = new ToolchainDefinition("Sourcery CodeBench Lite for ARM EABI",
 				"arm-none-eabi-");
 		if (Utils.isPlatform("windows"))
-			tc.setWin("cs_make", "cs_rm");
+			tc.setWin("cs-make", "cs-rm");
 		ms_list.add(tc);
 
 		// 2
