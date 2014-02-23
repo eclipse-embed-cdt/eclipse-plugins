@@ -99,6 +99,35 @@
          </complexArray>
       </processType>
       <processType
+            name="ConditionalAppendToMBSStringOptionValue"
+            processRunner="ilg.gnuarmeclipse.templates.core.processes.ConditionalAppendToMBSStringOptionValue">
+         <simple
+               name="projectName">
+         </simple>
+         <simple
+               name="condition"
+               nullable="true">
+         </simple>
+         <complexArray
+               name="resourcePaths">
+            <baseType>
+               <simple
+                     name="id">
+               </simple>
+               <simple
+                     name="value">
+               </simple>
+               <simple
+                     name="path">
+               </simple>
+               <simple
+                     name="buildType"
+                     nullable="true">
+               </simple>
+            </baseType>
+         </complexArray>
+      </processType>
+      <processType
             name="ConditionalAppendToMBSStringListOptionValues"
             processRunner="ilg.gnuarmeclipse.templates.core.processes.ConditionalAppendToMBSStringListOptionValues">
          <simple

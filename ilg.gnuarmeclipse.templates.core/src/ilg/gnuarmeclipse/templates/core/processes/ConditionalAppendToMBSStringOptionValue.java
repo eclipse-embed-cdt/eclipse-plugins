@@ -40,7 +40,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
  * @noextend This class is not intended to be subclassed by clients.
  * @noinstantiate This class is not intended to be instantiated by clients.
  */
-public class AppendToMBSStringOptionValue extends ProcessRunner {
+public class ConditionalAppendToMBSStringOptionValue extends ProcessRunner {
 
 	/**
 	 * This method Appends contents to Managed Build System StringList Option Values.
@@ -59,7 +59,11 @@ public class AppendToMBSStringOptionValue extends ProcessRunner {
 			//ignore
 		}
 
-		ProcessArgument[][] resourcePathObjects = args[1].getComplexArrayValue();
+		String condition = args[1].getSimpleValue();
+		if (!Utils.isConditionSatisfied(condition))
+			return;
+		
+		ProcessArgument[][] resourcePathObjects = args[2].getComplexArrayValue();
 		boolean modified = false;
 		for (ProcessArgument[] resourcePathObject : resourcePathObjects) {
 			String id = resourcePathObject[0].getSimpleValue();
