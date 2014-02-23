@@ -1,6 +1,6 @@
 
-  /* Infinite loop */
+  // Infinite loop
   while (1)
     {
-       /* Add your code here. */
+       // Add your code here.
     }

@@ -1,10 +1,10 @@
 
-/* ----- LED definitions --------------------------------------------------- */
+// ----- LED definitions ------------------------------------------------------
 
-/* FRDM-KL465Z definitions (the GREEN LED, active low, D5). */
-/* (adjust them for your own board) */
+// FRDM-KL465Z definitions (the GREEN LED, active low, D5).
+// (adjust them for your own board)
 
-/* Port numbers: 0=A, 1=B, 2=C, 3=D, 4=E */
+// Port numbers: 0=A, 1=B, 2=C, 3=D, 4=E
 #define BLINK_PORT_NUMBER               (3)
 #define BLINK_PIN_NUMBER                (5)
 
@@ -27,15 +27,15 @@ blink_led_off()
 void
 blink_led_init()
 {
-  /* Turn on clock for port module */
+  // Turn on clock for port module
   SIM->SCGC5 |= BLINK_SCGC5_MASKx(BLINK_PORT_NUMBER);
  
-  /* Set the pin multiplexer to GPIO mode */
+  // Set the pin multiplexer to GPIO mode
   BLINK_PORTx(BLINK_PORT_NUMBER)->PCR[BLINK_PIN_NUMBER] = PORT_PCR_MUX(1);
  
-  /* Set the pin as output */
+  // Set the pin as output
   BLINK_GPIOx(BLINK_PORT_NUMBER)->PDDR |= (1 << BLINK_PIN_NUMBER);
 
-  /* Turn off led */
+  // Turn off led
   blink_led_off();
 }

@@ -43,6 +43,11 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				label="POSIX (system calls redirected to application code)" />
 			<item value="semihosting" label="Semihosting (POSIX system calls via librdimon)" />
 		</property>
+
+		<property id="KLuseNano" label="%KLxx.useNano.label"
+			description="%KLxx.useNano.description" type="boolean" default="true"
+			hidden="false" persist="true" />
+
 	</property-group>
 
 	<property-group id="folders" label="%KLxx.group.folders.label"
@@ -146,10 +151,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 	</if>
 
 	<if condition="$(KLcontent)==blinky">
-		<!-- main.c - retarget - blinky -->
+		<!-- main.c - retarget/semihosting/none - blinky -->
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
 			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == retarget" />
+			<simple name="condition" value="" />
 			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/main-include.c" />
@@ -160,10 +165,15 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		</process>
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
 			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == retarget" />
+			<simple name="condition" value="" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/main-retarget-blinky-1.c" />
+					<simple name="source" value="src/main-include-blinky.$(fileExtension)" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="src/main-$(KLsyscalls)-blinky-1.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -173,28 +183,28 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="src/main-retarget-2.c" />
+					<simple name="source" value="src/main-$(KLsyscalls)-2.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<!-- all KL families -->
-					<simple name="source" value="src/main-led-blinky-$(KLchipFamily).c" />
+					<simple name="source" value="src/main-led-blinky-$(KLchipFamily).$(fileExtension)" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="src/main-defs-blinky.c" />
+					<simple name="source" value="src/main-defs-blinky.$(fileExtension)" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="src/main-begin.c" />
+					<simple name="source" value="src/main-$(KLsyscalls)-begin.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="src/main-hello.c" />
+					<simple name="source" value="src/main-$(KLsyscalls)-hello.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -204,12 +214,12 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="src/main-loop-blinky.c" />
+					<simple name="source" value="src/main-loop-blinky.$(fileExtension)" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="src/main-print.c" />
+					<simple name="source" value="src/main-$(KLsyscalls)-print.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -224,167 +234,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="src/main-end-blinky.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-
-		<!-- main.c - semihosting - blinky -->
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == semihosting" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="src/main-include.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == semihosting" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="src/main-semihosting-blinky-1.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-comment.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-semihosting-2.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<!-- all KL families -->
-					<simple name="source" value="src/main-led-blinky-$(KLchipFamily).c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-defs-blinky.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-args-begin.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-hello-args.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-clock.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-loop-blinky.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-print.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-loopend.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-end.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-end-blinky.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-
-		<!-- main.c - none - blinky -->
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == none" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="src/main-include.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == none" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="src/main-standalone-blinky-1.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-comment.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-standalone-2.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<!-- all KL families -->
-					<simple name="source" value="src/main-led-blinky-$(KLchipFamily).c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-defs-blinky.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-begin.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-clock.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-loop-blinky.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-loopend.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-end.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-end-blinky.c" />
+					<simple name="source" value="src/main-end-blinky.$(fileExtension)" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -393,10 +243,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 	</if>
 
 	<if condition="$(KLcontent)==empty">
-		<!-- main.c - retarget - empty -->
+		<!-- main.c - retarget/semihosting/none - empty -->
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
 			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == retarget" />
+			<simple name="condition" value="" />
 			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/main-include.c" />
@@ -407,10 +257,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		</process>
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
 			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == retarget" />
+			<simple name="condition" value="" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/main-retarget-empty-1.c" />
+					<simple name="source" value="src/main-$(KLsyscalls)-empty-1.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -420,130 +270,24 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="src/main-retarget-2.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-begin.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-hello.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-clock.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-loop-empty.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-end.c" />
+					<simple name="source" value="src/main-$(KLsyscalls)-2.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
 		</process>
 
-		<!-- main.c - semihosting - empty -->
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == semihosting" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="src/main-include.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
 			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == semihosting" />
+			<simple name="condition" value="" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/main-semihosting-empty-1.c" />
+					<simple name="source" value="src/main-$(KLsyscalls)-begin.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="src/main-comment.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-semihosting-2.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-args-begin.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-hello-args.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-clock.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-loop-empty.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-end.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-
-		<!-- main.c - none - empty -->
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == none" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="src/main-include.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(KLsyscalls) == none" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="src/main-standalone-empty-1.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-comment.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-standalone-2.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-begin.c" />
+					<simple name="source" value="src/main-$(KLsyscalls)-hello.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -1753,7 +1497,22 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		</process>
 
 		<process
-			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(KLuseNano) == true" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.other" />
+					<simple name="value" value="--specs=nano.specs" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringOptionValue">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="condition" value="$(KLsyscalls) == semihosting" />
 			<complex-array name="resourcePaths">
@@ -1763,6 +1522,46 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="value" value="--specs=rdimon.specs" />
 					<simple name="path" value="" />
 					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="$(fileExtension)==cpp">
+
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="../misc/include/klxx/GpioPin.h" />
+					<simple name="target"
+						value="$(libsDir)/$(miscDir)/$(includeDir)/klxx/GpioPin.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../misc/include/klxx/LedActiveLow.h" />
+					<simple name="target"
+						value="$(libsDir)/$(miscDir)/$(includeDir)/klxx/LedActiveLow.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.noexceptions" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nortti" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
 				</element>
 			</complex-array>
 		</process>
