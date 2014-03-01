@@ -48,7 +48,7 @@
 				<simple name="id"
 					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.scriptfile" />
 				<simple-array name="values">
-					<element value="..\Project_Settings\Linker_Files\ProcessorExpert.ld" />
+					<element value="../Project_Settings/Linker_Files/$(projectName).ld" />
 				</simple-array>
 				<simple name="path" value="" />
 			</element>
