@@ -227,6 +227,18 @@
          <simple name="propertyName"/>
          <simple name="propertyValue"/>
       </processType>
+
+      <processType
+            name="ConditionalSetProperty"
+            processRunner="ilg.gnuarmeclipse.templates.core.processes.ConditionalSetProperty">
+         <simple name="projectName"/>
+         <simple
+               name="condition"
+               nullable="true">
+         </simple>
+         <simple name="propertyName"/>
+         <simple name="propertyValue"/>
+      </processType>
       
    </extension>
 

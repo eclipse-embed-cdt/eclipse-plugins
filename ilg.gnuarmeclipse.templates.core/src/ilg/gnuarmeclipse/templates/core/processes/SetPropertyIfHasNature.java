@@ -27,12 +27,15 @@ public class SetPropertyIfHasNature extends ProcessRunner {
 				.getProject(projectName);
 		try {
 			if (projectHandle.hasNature(natureString)) {
-				//System.out.println("is " + natureString + " set "
-				//		+ propertyName + "=" + propertyValue);
-				
-				Map<String,String> values = template.getValueStore();
-				if (values.containsKey(propertyName)){
+				// System.out.println("is " + natureString + " set "
+				// + propertyName + "=" + propertyValue);
+
+				Map<String, String> values = template.getValueStore();
+				if (values.containsKey(propertyName)) {
 					values.put(propertyName, propertyValue);
+				} else {
+					System.out.println("Property " + propertyName
+							+ " not defined.");
 				}
 			}
 		} catch (CoreException e1) {
