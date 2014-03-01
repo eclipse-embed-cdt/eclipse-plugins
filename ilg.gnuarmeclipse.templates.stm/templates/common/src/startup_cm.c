@@ -1,6 +1,6 @@
 //
-// This file is part of the GNU ARM Eclipse Plug-in
-// Copyright (c) 2013 Liviu Ionescu
+// This file is part of the GNU ARM Eclipse project
+// Copyright (c) 2014 Liviu Ionescu
 //
 // This module contains the startup code for a portable Cortex-M
 // C/C++ application, built with CMSIS and newlib.
@@ -26,30 +26,24 @@
 
 #include <sys/types.h>
 
-#if defined (__cplusplus)
-extern "C"
-  {
-#endif
-
-void __attribute__((weak))
-Reset_Handler(void);
-
 #if defined(USE_STARTUP_FILES)
 extern void
 _start(void);
 
-extern int
+int
 __register_exitproc(int type, void (*fn) (void), void *arg, void *d);
+
+#else
+
+void
+__attribute__((noreturn))
+_start(void);
+
 #endif
 
 // The CMSIS system initialisation routine.
 extern void
 SystemInit(void);
-
-// Initialise the data section
-inline void
-data_init(unsigned int* from, unsigned int* section_begin,
-    unsigned int* section_end);
 
 // Begin address for the initialisation values of the .data section.
 // defined in linker script
@@ -61,43 +55,29 @@ extern unsigned int _edata;
 
 #if !defined(USE_STARTUP_FILES)
 
-// Clear the bss section
-inline void
-bss_init(unsigned int* section_begin, unsigned int* section_end);
-
 // Begin address for the .bss section; defined in linker script
 extern unsigned int __bss_start__;
 // End address for the .bss section; defined in linker script
 extern unsigned int __bss_end__;
 
-// Iterate over all the preinit/init routines.
-extern void
-__libc_init_array(void);
-
-// Run all the cleanup routines.
-extern void
-__libc_fini_array(void);
-
 // The entry point for the application.
 // main() is the entry point for Newlib based applications
 extern int
-main(void);
+main(int argc, char* argv[]);
 
 // The implementation for the exit routine, where for embedded
 // applications, a system reset is performed.
 extern void
+__attribute__((noreturn))
 _exit(int);
 
 #endif
 
-//*****************************************************************************
-#if defined (__cplusplus)
-} // extern "C"
-#endif
+// ----------------------------------------------------------------------------
 
 inline void
 __attribute__((always_inline))
-data_init(unsigned int* from, unsigned int* section_begin,
+__initialise_data(unsigned int* from, unsigned int* section_begin,
     unsigned int* section_end)
 {
   // Iterate and copy word by word.
@@ -111,7 +91,7 @@ data_init(unsigned int* from, unsigned int* section_begin,
 
 inline void
 __attribute__((always_inline))
-bss_init(unsigned int* section_begin, unsigned int* section_end)
+__initialise_bss(unsigned int* section_begin, unsigned int* section_end)
 {
   // Iterate and clear word by word.
   // It is assumed that the pointers are word aligned.
@@ -119,45 +99,6 @@ bss_init(unsigned int* section_begin, unsigned int* section_end)
   while (p < section_end)
     *p++ = 0;
 }
-
-#endif
-
-#if defined(USE_STARTUP_FILES)
-
-// This is useful when using certain libraries that came with custom
-// startup files, like librdimon.a.
-
-// Go to the startup code, that is expected to perform the
-// usual initialisations, i.e. clear the BSS, run the
-// init arrays and call main().
-
-#if defined(DEBUG)
-
-// The DEBUG version is not naked, to allow breakpoints at Reset_Handler
-void __attribute__ ((section(".after_vectors")))
-Reset_Handler(void)
-  {
-    _start();
-  }
-
-#else
-
-// The Release version is optimised to a quick branch to _start.
-void __attribute__ ((section(".after_vectors"), naked))
-Reset_Handler(void)
-  {
-    asm volatile
-    (
-        " b _start \n"
-        :
-        :
-        :
-    );
-  }
-
-#endif
-
-#else
 
 // These magic symbols are provided by the linker.
 extern void
@@ -175,7 +116,8 @@ extern void
 
 // Iterate over all the preinit/init routines.
 inline void
-__libc_init_array(void)
+__attribute__((always_inline))
+__run_init_array(void)
 {
   size_t count;
   size_t i;
@@ -196,7 +138,8 @@ __libc_init_array(void)
 
 // Run all the cleanup routines.
 inline void
-__libc_fini_array(void)
+__attribute__((always_inline))
+__run_fini_array(void)
 {
   size_t count;
   size_t i;
@@ -211,56 +154,82 @@ __libc_fini_array(void)
   //_fini();
 }
 
-// This is the place where Cortex-M core will go immediately after reset.
+// This is the place where Cortex-M core will go immediately after reset,
+// via a call or jump from the Reset_Handler
 void __attribute__ ((section(".after_vectors")))
-Reset_Handler(void)
+_start(void)
 {
 
   // Use Old Style Data and BSS section initialisation,
   // That will initialise a single BSS sections.
 
   // Zero fill the bss segment
-  bss_init(&__bss_start__, &__bss_end__);
+  __initialise_bss(&__bss_start__, &__bss_end__);
+
+#if !defined(USE_STARTUP_FILES)
+  // Copy the data segment from Flash to RAM.
+  // When using startup files, this code is executed via the preinit array.
+  __initialise_data(&_sidata, &_sdata, &_edata);
+#endif
 
   // Call the standard library initialisation (mandatory, SystemInit()
   // and C++ static constructors are called from here).
-  __libc_init_array();
+  __run_init_array();
 
+  char* argv[2] = { "", 0 };
   // Call the main entry point, and save the exit code.
-  int r = main();
+  int code = main(1, &argv[0]);
 
   // Run the static destructors.
-  __libc_fini_array();
+  __run_fini_array();
 
   // On test platforms, like semihosting, this can be used to inform
   // the host on the test result.
   // On embedded platforms, usually reset the processor.
-  _exit(r);
+  _exit(code);
 
 }
 
 #endif
 
 // System initialisation, executed before constructors.
-void
+static void
 __attribute__((section(".after_vectors")))
-system_init()
+__initialise_system()
 {
+#if defined(USE_STARTUP_FILES)
   // Copy the data segment from Flash to RAM.
-  // This is here since some library crt0 code does not perform it there
-  // so we must be sure it is executed somewhere.
-  // (for example librdimon)
-  data_init(&_sidata, &_sdata, &_edata);
+  // This is also here since some library crt0 code (for example librdimon)
+  // does not perform it, so make sure it is executed somewhere.
+  __initialise_data(&_sidata, &_sdata, &_edata);
+#endif
 
   // Call the CSMSIS system initialisation routine
   SystemInit();
+
+#if defined (__VFP_FP__) && !defined (__SOFTFP__)
+
+  // Enable the Cortex-M4 FPU only when -mfloat-abi=hard.
+  // Code taken from Section 7.1, Cortex-M4 TRM (DDI0439C)
+  asm volatile
+  (
+      " LDR.W           R0, =0xE000ED88 \n"// CPACR is located at address 0xE000ED88
+      " LDR             R1, [R0] \n"// Read CPACR
+      " ORR             R1, R1, #(0xF << 20) \n"// Set bits 20-23 to enable CP10 and CP11 coprocessor
+      " STR             R1, [R0]"// Write back the modified value to the CPACR
+      : /* out */
+      : /* in */
+      : /* clobber */
+  );
+
+#endif // (__VFP_FP__) && !(__SOFTFP__)
 }
 
 // The .preinit_array_sysinit section is defined in sections.ld as the first
 // sub-section in the .preinit_array, so it is guaranteed that this function
 // is executed before all other initialisations.
-void* __attribute__((section(".preinit_array_sysinit")))
-p_system_init = (void*) system_init; // pointer to the above function
+static void* __attribute__((section(".preinit_array_sysinit"),used))
+__p_initialise_system = (void*) __initialise_system; // pointer to the above function
 
 #if defined(USE_STARTUP_FILES)
 
@@ -272,8 +241,8 @@ p_system_init = (void*) system_init; // pointer to the above function
 
 int
 __register_exitproc(int type, void (*fn) (void), void *arg, void *d)
-{
-  return -1;
-}
+  {
+    return -1;
+  }
 
 #endif

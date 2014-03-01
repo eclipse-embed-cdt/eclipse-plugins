@@ -30,6 +30,13 @@
 			description="%STM32F10x.hseValue.description" type="input" pattern="[0-9]*"
 			default="%STM32F10x.hseValue.default" hidden="false" persist="true" />
 
+		<property id="STM32F1content" label="%STM32F1xx.content.label"
+			description="%STM32F1xx.content.description" type="select" default="blinky"
+			hidden="false" persist="true">
+			<item value="empty" label="Empty (add your own content)" />
+			<item value="blinky" label="Blinky (blink a led)" />
+		</property>
+
 		<property id="STM32F1syscalls" label="%STM32F10x.syscalls.label"
 			description="%STM32F10x.syscalls.description" type="select" default="retarget"
 			hidden="false" persist="true">
@@ -38,10 +45,10 @@
 			<item value="semihosting" label="Semihosting (librdimon)" />
 		</property>
 
-		<!-- <property id="includeUsb" label="%STM32F10x.includeUsb.label" description="%STM32F10x.includeUsb.description" 
-			type="select" default="%STM32F10x.includeUsb.default" hidden="false" persist="true"> 
-			<item value="none" label="None" /> <item value="device" label="Device" /> 
-			<item value="host" label="Host" /> <item value="otg" label="OTG" /> </property> -->
+		<property id="STM32F1useNano" label="%STM32F10x.useNano.label"
+			description="%STM32F10x.useNano.description" type="boolean" default="true"
+			hidden="false" persist="true" />
+
 	</property-group>
 
 	<property-group id="folders" label="%STM32F10x.group.folders.label"
@@ -80,6 +87,22 @@
 			description="Will be set to cpp for ccnature" mandatory="true"
 			hidden="true" default="c" persist="false" />
 
+		<property id="CMSIS_name" label="CMSIS specific header name"
+			description="Will be set to the vendor specific part of header names" mandatory="true"
+			hidden="true" default="undefined" persist="false" />
+
+		<property id="chipFamily" label="Chip family"
+			description="Will be set to STM32F1chipFamily" mandatory="true"
+			hidden="true" default="undefined" persist="false" />
+
+		<property id="shortChipFamily" label="Shortened chip family"
+			description="Will be set to STM32F1" mandatory="true"
+			hidden="true" default="STM32F1" persist="false" />
+
+		<property id="traceDestination" label="Trace destination"
+			description="Will be set to SWO" mandatory="true"
+			hidden="true" default="SWO" persist="false" />
+
 	</property-group>
 
 	<!-- Note: the redundant 'condition="1==1"' is a workaround to control the 
@@ -97,6 +120,20 @@
 			<simple name="natureString" value="org.eclipse.cdt.core.ccnature" />
 			<simple name="propertyName" value="fileExtension" />
 			<simple name="propertyValue" value="cpp" />
+		</process>
+
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalSetProperty">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<simple name="propertyName" value="chipFamily" />
+			<simple name="propertyValue" value="$(STM32F1chipFamily)" />
+		</process>
+
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalSetProperty">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<simple name="propertyName" value="CMSIS_name" />
+			<simple name="propertyValue" value="stm32f10x" />
 		</process>
 
 		<!-- include -->
@@ -139,54 +176,217 @@
 		</process>
 	</if>
 
-	<if condition="$(STM32F1syscalls)==retarget">
-		<process type="org.eclipse.cdt.core.AddFiles">
+	<if condition="$(STM32F1content)==blinky">
+		<!-- main.c - retarget/semihosting/none - blinky -->
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
 			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/main-retarget.c" />
+					<simple name="source" value="../common/src/main/main-include.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
 		</process>
-	</if>
-	<if condition="$(STM32F1syscalls)==semihosting">
-		<process type="org.eclipse.cdt.core.AddFiles">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
 			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/main-semihosting.c" />
+					<simple name="source" value="../common/src/main/main-include-blinky.$(fileExtension)" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/main/main-$(STM32F1syscalls)-blinky-1.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="src/main-clock-comment.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/main/main-$(STM32F1syscalls)-2.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/main/main-defs-blinky.$(fileExtension)" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/main/main-$(STM32F1syscalls)-begin.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/main/main-$(STM32F1syscalls)-hello.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/main/main-clock.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/main/main-loop-blinky.$(fileExtension)" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/main/main-$(STM32F1syscalls)-print.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/main/main-loopend.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/main/main-end.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/main/main-end-blinky.$(fileExtension)" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
 		</process>
-	</if>
-	<if condition="$(STM32F1syscalls)==none">
-		<process type="org.eclipse.cdt.core.AddFiles">
+		
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
 			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/main-standalone.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="source" value="../common/src/Timer.$(fileExtension)" />
+					<simple name="target" value="$(sourceDir)/Timer.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
-			</complex-array>
-		</process>
-	</if>
-	<if condition="1==1">
-		<process type="org.eclipse.cdt.core.AppendCreate">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
 				<element>
-					<simple name="source" value="../common/src/main-tail.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="source" value="../common/src/Timer-$(fileExtension).h" />
+					<simple name="target" value="$(includeDir)/Timer.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
 		</process>
 
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="src/BlinkLed.$(fileExtension)" />
+					<simple name="target" value="$(sourceDir)/BlinkLed.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+		
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="../common/src/BlinkLed-begin.h" />
+					<simple name="target" value="$(includeDir)/BlinkLed.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="src/BlinkLed-defs.h" />
+					<simple name="target" value="$(includeDir)/BlinkLed.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/BlinkLed-$(fileExtension).h" />
+					<simple name="target" value="$(includeDir)/BlinkLed.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/BlinkLed-end.h" />
+					<simple name="target" value="$(includeDir)/BlinkLed.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+		
+	</if>
+
+	<if condition="$(STM32F1content)==empty">
+		<!-- main.c - retarget/semihosting/none - empty -->
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="../common/src/main/main-include.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="../common/src/main/main-$(STM32F1syscalls)-empty-1.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="src/main-clock-comment.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/main/main-$(STM32F1syscalls)-2.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/main/main-$(STM32F1syscalls)-begin.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/main/main-$(STM32F1syscalls)-hello.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/main/main-clock.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/main/main-loop-empty.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/src/main/main-end.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
 		<!-- ldscripts -->
 		<process type="org.eclipse.cdt.core.CreateFolder">
 			<simple name="projectName" value="$(projectName)" />
@@ -206,40 +406,8 @@
 					<simple name="target" value="$(ldscriptsDir)/sections.ld" />
 					<simple name="replaceable" value="true" />
 				</element>
-			</complex-array>
-		</process>
-	</if>
-
-	<if condition="$(STM32F1syscalls)==retarget">
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
 				<element>
-					<simple name="source" value="../ldscripts/libs-nosys.ld" />
-					<simple name="target" value="$(ldscriptsDir)/libs.ld" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-	</if>
-	<if condition="$(STM32F1syscalls)==semihosting">
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="../ldscripts/libs-rdimon.ld" />
-					<simple name="target" value="$(ldscriptsDir)/libs.ld" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-	</if>
-	<if condition="$(STM32F1syscalls)==none">
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="../ldscripts/libs.ld" />
+					<simple name="source" value="../ldscripts/libs-$(STM32F4syscalls).ld" />
 					<simple name="target" value="$(ldscriptsDir)/libs.ld" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -324,9 +492,9 @@
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="src/startup_stm32f10x.c" />
+					<simple name="source" value="../common/src/core_handlers.c" />
 					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/startup_stm32f10x.c" />
+						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/core_handlers.c" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
@@ -736,9 +904,58 @@
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
+					<simple name="source" value="../common/misc_readme.txt" />
+					<simple name="target" value="$(libsDir)/$(miscDir)/$(sourceDir)/README.txt" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
 					<simple name="source" value="../misc/src/_sbrk.c" />
 					<simple name="target" value="$(libsDir)/$(miscDir)/$(sourceDir)/_sbrk.c" />
 					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../misc/src/_exit.c" />
+					<simple name="target" value="$(libsDir)/$(miscDir)/$(sourceDir)/_exit.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+		
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(STM32F1syscalls) != semihosting" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="../misc/src/nosyscalls.c" />
+					<simple name="target"
+						value="$(libsDir)/$(miscDir)/$(sourceDir)/nosyscalls.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+		
+		<process type="org.eclipse.cdt.core.CreateFolder">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="path" value="$(libsDir)/$(miscDir)/$(includeDir)" />
+		</process>
+
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;../$(libsDir)/$(miscDir)/$(includeDir)&quot;" />
+					</simple-array>
+					<simple name="path" value="" />
 				</element>
 			</complex-array>
 		</process>
@@ -761,26 +978,6 @@
 					<simple name="target"
 						value="$(libsDir)/$(miscDir)/$(sourceDir)/trace_impl.c" />
 					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-
-		<process type="org.eclipse.cdt.core.CreateFolder">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="path" value="$(libsDir)/$(miscDir)/$(includeDir)" />
-		</process>
-
-		<process
-			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="resourcePaths">
-				<element>
-					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
-					<simple-array name="values">
-						<element value="&quot;../$(libsDir)/$(miscDir)/$(includeDir)&quot;" />
-					</simple-array>
-					<simple name="path" value="" />
 				</element>
 			</complex-array>
 		</process>
@@ -810,26 +1007,6 @@
 			</complex-array>
 		</process>
 
-		<process type="org.eclipse.cdt.core.CreateFolder">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="path" value="$(libsDir)/$(miscDir)/$(includeDir)" />
-		</process>
-
-		<process
-			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="resourcePaths">
-				<element>
-					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
-					<simple-array name="values">
-						<element value="&quot;../$(libsDir)/$(miscDir)/$(includeDir)&quot;" />
-					</simple-array>
-					<simple name="path" value="" />
-				</element>
-			</complex-array>
-		</process>
-
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
@@ -847,6 +1024,28 @@
 					<simple name="source" value="../misc/include/syscall.h" />
 					<simple name="target" value="$(libsDir)/$(miscDir)/$(includeDir)/syscall.h" />
 					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="$(fileExtension)==cpp">
+	
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.noexceptions" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nortti" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
 				</element>
 			</complex-array>
 		</process>
@@ -1009,17 +1208,33 @@
 				</element>
 			</complex-array>
 		</process>
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(STM32F1useNano) == true" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.other" />
+					<simple name="value" value="--specs=nano.specs" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
 	</if>
 
 	<if condition="$(STM32F1syscalls)==semihosting">
-		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringOptionValue">
 			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.other" />
 					<simple name="value" value="--specs=rdimon.specs" />
 					<simple name="path" value="" />
+					<simple name="buildType" value="" />
 				</element>
 			</complex-array>
 		</process>
