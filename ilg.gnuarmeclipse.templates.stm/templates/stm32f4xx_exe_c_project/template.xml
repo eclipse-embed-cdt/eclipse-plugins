@@ -11,9 +11,9 @@
 			description="%STM32F4xx.chipFamily.description" type="select"
 			default="STM32F40_41xxx" hidden="false" persist="true">
 			<item value="STM32F401xx" label="STM32F401xx" />
-			<item value="STM32F40_41xxx" label="STM32F40_41xxx" />
-			<item value="STM32F427_437xx" label="STM32F427_437xx" />
-			<item value="STM32F429_439xx" label="STM32F429_439xx" />
+			<item value="STM32F40_41xxx" label="STM32F40xxx/41xxx" />
+			<item value="STM32F427_437xx" label="STM32F427xx/437xx" />
+			<item value="STM32F429_439xx" label="STM32F429xx/439xx" />
 		</property>
 		<property id="STM32F4flashSize" label="%STM32F4xx.flashSize.label"
 			description="%STM32F4xx.flashSize.description" type="input" pattern="[0-9]*"
