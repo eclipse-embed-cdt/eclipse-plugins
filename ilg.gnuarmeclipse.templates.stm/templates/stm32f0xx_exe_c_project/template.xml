@@ -98,10 +98,12 @@
 			description="Will be set to semihosting" mandatory="true"
 			hidden="true" default="semihosting" persist="false" />
 
+<!-- 
 		<property id="uOsDir" label="µOS++ folder"
 			description="Will be set to micro-os-plus" mandatory="true"
 			hidden="true" default="micro-os-plus" persist="false" />
-
+-->
+ 
 	</property-group>
 
 	<!-- Note: the redundant 'condition="1==1"' is a workaround to control the 

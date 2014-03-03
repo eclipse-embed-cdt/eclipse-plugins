@@ -99,10 +99,10 @@
 		<property id="traceDestination" label="Trace destination"
 			description="Will be set to SWO" mandatory="true" hidden="true"
 			default="SWO" persist="false" />
-
+<!-- 
 		<property id="uOsDir" label="µOS++ folder" description="Will be set to micro-os-plus"
 			mandatory="true" hidden="true" default="micro-os-plus" persist="false" />
-
+-->
 	</property-group>
 
 	<if condition="1==1">
