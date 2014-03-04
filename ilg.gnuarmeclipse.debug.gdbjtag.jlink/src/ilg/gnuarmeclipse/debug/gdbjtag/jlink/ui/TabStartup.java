@@ -78,6 +78,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	private Button doSecondReset;
 	private Text secondResetType;
+	private Label secondResetWarning;
 
 	private Button enableFlashBreakpoints;
 
@@ -290,10 +291,11 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			enableFlashBreakpoints = new Button(local, SWT.CHECK);
 			enableFlashBreakpoints.setText(Messages
 					.getString("StartupTab.enableFlashBreakpoints_Text"));
-			enableFlashBreakpoints.setToolTipText(Messages
-					.getString("StartupTab.enableFlashBreakpoints_ToolTipText"));
+			enableFlashBreakpoints
+					.setToolTipText(Messages
+							.getString("StartupTab.enableFlashBreakpoints_ToolTipText"));
 		}
-		
+
 		{
 			Composite local = new Composite(comp, SWT.NONE);
 			layout = new GridLayout();
@@ -462,7 +464,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		});
 
 		interfaceSpeedFixedValue.addVerifyListener(numericVerifyListener);
-		
+
 		enableSemihosting.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -894,7 +896,9 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	}
 
 	private void doSecondResetChanged() {
-		secondResetType.setEnabled(doSecondReset.getSelection());
+		boolean enabled = doSecondReset.getSelection();
+		secondResetType.setEnabled(enabled);
+		secondResetWarning.setEnabled(enabled);
 	}
 
 	private void loadExecutableChanged() {
@@ -934,7 +938,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		Composite comp = new Composite(group, SWT.NONE);
 		layout = new GridLayout();
-		layout.numColumns = 3;
+		layout.numColumns = 4;
 		layout.marginHeight = 0;
 		comp.setLayout(layout);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -954,6 +958,10 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			gd = new GridData();
 			gd.widthHint = 100;
 			secondResetType.setLayoutData(gd);
+
+			secondResetWarning = new Label(comp, SWT.NONE);
+			secondResetWarning.setText(Messages
+					.getString("StartupTab.secondResetWarning_Text"));
 		}
 		{
 			runCommands = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER
@@ -1023,6 +1031,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		doSecondReset.setEnabled(!flag);
 		secondResetType.setEnabled(!flag);
+		secondResetWarning.setEnabled(!flag);
 
 		loadExecutable.setEnabled(!flag);
 	}
@@ -1031,7 +1040,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	public void doInterfaceSwdChanged(boolean flag) {
 
 		enableSwo.setEnabled(flag);
-		
+
 		doEnableSwoChanged();
 	}
 
@@ -1204,16 +1213,16 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					.getAttribute(
 							ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
 							sharedSwoFreq)));
-			
+
 			Object oValue = configuration.getAttribute(
 					ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
 					ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT);
-			String sValue;	
+			String sValue;
 			sValue = String.valueOf(oValue);
-			if (sValue.length() == 0){
+			if (sValue.length() == 0) {
 				sValue = ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT;
 			}
-			
+
 			swoEnableTargetPortMask.setText(sValue);
 
 			initCommands.setText(configuration.getAttribute(
@@ -1339,7 +1348,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					interfaceSpeedFixedValue.getText().trim());
 		}
 
-		configuration.setAttribute(ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
+		configuration.setAttribute(
+				ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
 				enableFlashBreakpoints.getSelection());
 
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING,
@@ -1455,7 +1465,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(ConfigurationAttributes.INTERFACE_SPEED,
 				ConfigurationAttributes.INTERFACE_SPEED_DEFAULT);
 
-		configuration.setAttribute(ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
+		configuration.setAttribute(
+				ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
 				ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS_DEFAULT);
 
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING,
