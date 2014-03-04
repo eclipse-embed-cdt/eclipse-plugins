@@ -70,6 +70,8 @@ public class ConfigurationBuildMacroSupplier implements
 			}
 		}
 		// TODO Auto-generated method stub
+		// System.out.println("Missing value of " + macroName + " in "
+		//		+ configuration.getName());
 		return null;
 	}
 

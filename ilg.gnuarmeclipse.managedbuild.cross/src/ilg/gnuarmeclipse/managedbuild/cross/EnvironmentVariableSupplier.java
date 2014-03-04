@@ -33,18 +33,26 @@ public class EnvironmentVariableSupplier implements
 
 	public IBuildEnvironmentVariable getVariable(String variableName,
 			IConfiguration configuration, IEnvironmentVariableProvider provider) {
-		if (PathEnvironmentVariable.isVar(variableName))
+		if (PathEnvironmentVariable.isVar(variableName)) {
 			return PathEnvironmentVariable.create(configuration);
-		else
+		} else {
+			// System.out.println("getVariable(" + variableName + ","
+			//		+ configuration.getName() + ") returns null");
 			return null;
+		}
 	}
 
 	public IBuildEnvironmentVariable[] getVariables(
 			IConfiguration configuration, IEnvironmentVariableProvider provider) {
 		IBuildEnvironmentVariable path = PathEnvironmentVariable
 				.create(configuration);
-		return path != null ? new IBuildEnvironmentVariable[] { path }
-				: new IBuildEnvironmentVariable[0];
+		if (path != null) {
+			return new IBuildEnvironmentVariable[] { path };
+		} else {
+			// System.out.println("getVariables(" + configuration.getName()
+			//		+ ") returns empty array");
+			return new IBuildEnvironmentVariable[0];
+		}
 	}
 
 	private static class PathEnvironmentVariable implements
@@ -101,6 +109,8 @@ public class EnvironmentVariableSupplier implements
 					return new PathEnvironmentVariable(sysroot);
 				}
 			}
+			System.out.println("create(" + configuration.getName()
+					+ ") returns null");
 			return null;
 		}
 
@@ -115,6 +125,7 @@ public class EnvironmentVariableSupplier implements
 								str,
 								"", " ", IBuildMacroProvider.CONTEXT_CONFIGURATION, configuration); //$NON-NLS-1$	//$NON-NLS-2$
 			} catch (CdtVariableException e) {
+				System.out.println("resolveMacros " + e.getMessage());
 			}
 
 			return result;

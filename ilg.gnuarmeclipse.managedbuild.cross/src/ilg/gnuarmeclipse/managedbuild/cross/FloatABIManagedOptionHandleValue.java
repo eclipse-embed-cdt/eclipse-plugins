@@ -63,6 +63,7 @@ public class FloatABIManagedOptionHandleValue extends ManagedOptionValueHandler 
 				} catch (BuildException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
+					System.out.println("handleValue " + e.getMessage());
 				}
 				return false; // should we return true?
 			}

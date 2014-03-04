@@ -913,6 +913,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 					makefileGenerator.regenerateMakefiles();
 				} catch (CoreException e) {
 					// This had better be allowed during a build
+					System.out.println("propagateCommandRmUpdate " + e.getMessage());
 				}
 
 			}

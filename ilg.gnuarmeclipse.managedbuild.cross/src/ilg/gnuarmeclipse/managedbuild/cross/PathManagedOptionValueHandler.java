@@ -34,6 +34,7 @@ public class PathManagedOptionValueHandler extends ManagedOptionValueHandler {
 					optionToSet.setValue(path);
 				} catch (BuildException e) {
 					// TODO Auto-generated catch block
+					System.out.println("handleValue " + e.getMessage());
 					e.printStackTrace();
 				}
 			}
