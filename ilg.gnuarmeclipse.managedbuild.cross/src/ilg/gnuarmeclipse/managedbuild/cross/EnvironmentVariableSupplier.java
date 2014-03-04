@@ -109,8 +109,8 @@ public class EnvironmentVariableSupplier implements
 					return new PathEnvironmentVariable(sysroot);
 				}
 			}
-			System.out.println("create(" + configuration.getName()
-					+ ") returns null");
+			//System.out.println("create(" + configuration.getName()
+			//		+ ") returns null");
 			return null;
 		}
 
