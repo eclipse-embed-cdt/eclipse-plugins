@@ -420,13 +420,14 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 	 * 
 	 * return proc; }
 	 */
-	protected Process launchGDBProcess(String[] commandLineArray)
+	protected Process launchGDBProcess(String[] commandLineArray, File dir)
 			throws CoreException {
 		Process proc = null;
 		System.out.println("exec " + Utils.join(commandLineArray, " "));
+		System.out.println("dir " + dir);
 		try {
 			proc = ProcessFactory.getFactory().exec(commandLineArray,
-					Utils.getLaunchEnvironment(fLaunchConfiguration));
+					Utils.getLaunchEnvironment(fLaunchConfiguration), dir);
 		} catch (IOException e) {
 			String message = "Error while launching command " + Utils.join(commandLineArray, " "); //$NON-NLS-1$
 			throw new CoreException(new Status(IStatus.ERROR,
@@ -619,7 +620,7 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 							.getGdbClientCommandLineArray(fLaunchConfiguration);
 
 					try {
-						fProcess = launchGDBProcess(commandLineArray);
+						fProcess = launchGDBProcess(commandLineArray, null);
 						// Need to do this on the executor for thread-safety
 						getExecutor().submit(new DsfRunnable() {
 							@Override

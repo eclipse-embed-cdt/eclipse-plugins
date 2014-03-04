@@ -2,7 +2,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.TabDebugger;
 
-import java.io.IOException;
+import java.io.File;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
@@ -13,7 +13,9 @@ import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.Sequence;
 import org.eclipse.cdt.dsf.gdb.service.command.GDBControl.InitializationShutdownStep;
 import org.eclipse.cdt.dsf.service.DsfSession;
-import org.eclipse.cdt.utils.spawner.ProcessFactory;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -56,10 +58,11 @@ public class Backend extends Backend0 {
 					ConfigurationAttributes.DO_START_GDB_SERVER,
 					ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
 
-			doStartSemihostingConsole = doStartGdbServer && fLaunchConfiguration
-					.getAttribute(
-							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE,
-							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE_DEFAULT);
+			doStartSemihostingConsole = doStartGdbServer
+					&& fLaunchConfiguration
+							.getAttribute(
+									ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE,
+									ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE_DEFAULT);
 
 		} catch (CoreException e) {
 		}
@@ -73,25 +76,22 @@ public class Backend extends Backend0 {
 		return fSemihostingProcess;
 	}
 
-//	protected IPath getGDBPath() {
-//		return Utils.getGDBPath(fLaunchConfiguration);
-//	}
+	// protected IPath getGDBPath() {
+	// return Utils.getGDBPath(fLaunchConfiguration);
+	// }
 
 	// do not rename!
-/*	protected Process launchGDBProcess(String commandLine) throws CoreException {
-		Process proc = null;
-		try {
-			proc = ProcessFactory.getFactory().exec(commandLine,
-					Utils.getLaunchEnvironment(fLaunchConfiguration));
-		} catch (IOException e) {
-			String message = "Error while launching command " + commandLine; //$NON-NLS-1$
-			throw new CoreException(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, -1, message, e));
-		}
-
-		return proc;
-	}
-*/
+	/*
+	 * protected Process launchGDBProcess(String commandLine) throws
+	 * CoreException { Process proc = null; try { proc =
+	 * ProcessFactory.getFactory().exec(commandLine,
+	 * Utils.getLaunchEnvironment(fLaunchConfiguration)); } catch (IOException
+	 * e) { String message = "Error while launching command " + commandLine;
+	 * //$NON-NLS-1$ throw new CoreException(new Status(IStatus.ERROR,
+	 * Activator.PLUGIN_ID, -1, message, e)); }
+	 * 
+	 * return proc; }
+	 */
 
 	protected Process launchSemihostingProcess(String host, int port)
 			throws CoreException {
@@ -274,7 +274,16 @@ public class Backend extends Backend0 {
 							.getGdbServerCommandLineArray(fLaunchConfiguration);
 
 					try {
-						fServerProcess = launchGDBProcess(commandLineArray);
+						String projectName = fLaunchConfiguration.getAttribute(
+								"org.eclipse.cdt.launch.PROJECT_ATTR", "");
+						IPath path = null;
+						if (projectName.length() > 0) {
+							IWorkspace workspace = ResourcesPlugin.getWorkspace();
+							IProject project = workspace.getRoot().getProject(projectName);
+							path = project.getLocation();
+						}
+						File dir = new File(path.toOSString());
+						fServerProcess = launchGDBProcess(commandLineArray, dir);
 						// Need to do this on the executor for thread-safety
 						getExecutor().submit(new DsfRunnable() {
 							@Override
