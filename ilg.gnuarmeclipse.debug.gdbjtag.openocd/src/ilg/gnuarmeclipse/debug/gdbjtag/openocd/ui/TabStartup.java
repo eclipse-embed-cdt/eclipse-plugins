@@ -27,7 +27,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -71,6 +70,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	private Button doSecondReset;
 	private Text secondResetType;
+	private Label secondResetWarning;
 
 	private Button enableSemihosting;
 
@@ -610,7 +610,9 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	}
 
 	private void doSecondResetChanged() {
-		secondResetType.setEnabled(doSecondReset.getSelection());
+		boolean enabled=doSecondReset.getSelection();
+		secondResetType.setEnabled(enabled);
+		secondResetWarning.setEnabled(enabled);
 	}
 
 	private void loadExecutableChanged() {
@@ -650,7 +652,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		Composite comp = new Composite(group, SWT.NONE);
 		layout = new GridLayout();
-		layout.numColumns = 3;
+		layout.numColumns = 4;
 		layout.marginHeight = 0;
 		comp.setLayout(layout);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -670,6 +672,10 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			gd = new GridData();
 			gd.widthHint = 30;
 			secondResetType.setLayoutData(gd);
+			
+			secondResetWarning = new Label(comp, SWT.NONE);
+			secondResetWarning.setText(Messages
+					.getString("StartupTab.secondResetWarning_Text"));			
 		}
 		{
 			runCommands = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER
@@ -731,6 +737,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		doSecondReset.setEnabled(!flag);
 		secondResetType.setEnabled(!flag);
+		secondResetWarning.setEnabled(!flag);
 		
 		loadExecutable.setEnabled(!flag);
 	}
