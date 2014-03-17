@@ -991,7 +991,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		gdbClientOtherCommands.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				updateLaunchConfigurationDialog();
+				scheduleUpdateJob();
+			}
+		});
+
+		gdbClientOtherOptions.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				scheduleUpdateJob();
 			}
 		});
 
