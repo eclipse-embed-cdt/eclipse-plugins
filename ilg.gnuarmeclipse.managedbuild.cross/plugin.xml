@@ -2462,11 +2462,6 @@
            </option>
            <option
                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
-                 id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.nousecxaatexit"
-                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.nousecxaatexit">
-           </option>
-           <option
-                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
                  id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.nocommon"
                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.nocommon">
            </option>
@@ -2571,11 +2566,6 @@
                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
                  id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.pointerarith"
                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.pointerarith">
-           </option>
-           <option
-                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
-                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.badfunctioncast"
-                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.badfunctioncast">
            </option>
            <option
                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
@@ -2857,7 +2847,6 @@
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.default"
-                     isDefault="true"
                      name="%option.c.compiler.std.default">
                </enumeratedOptionValue>
                <enumeratedOptionValue
@@ -2868,6 +2857,7 @@
                <enumeratedOptionValue
                      command="-std=gnu11"
                      id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.gnu11"
+                     isDefault="true"
                      name="%option.c.compiler.std.gnu11">
                </enumeratedOptionValue>
             </option>
@@ -2880,6 +2870,11 @@
                   id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
                   name="%optionCategory.compiler.warnings">
             </optionCategory>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.badfunctioncast"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.badfunctioncast">
+            </option>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otherwarnings"
@@ -3002,7 +2997,6 @@
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.default"
-                     isDefault="true"
                      name="%option.cpp.compiler.std.default">
                </enumeratedOptionValue>
                <enumeratedOptionValue
@@ -3023,6 +3017,7 @@
                <enumeratedOptionValue
                      command="-std=gnu++11"
                      id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp11"
+                     isDefault="true"
                      name="%option.cpp.compiler.std.gnucpp11">
                </enumeratedOptionValue>
                <enumeratedOptionValue
@@ -3055,6 +3050,11 @@
                   tip="Disable generation of information about every class with virtual functions for use by the C++ run-time type identification features (‘dynamic_cast’ and ‘typeid’). If you don’t use those parts of the language, you can save some space by using this flag. Note that exception handling uses the same information, but G++ generates it as needed. The ‘dynamic_cast’ operator can still be used for casts that do not require run-time type information, i.e. casts to void * or to unambiguous base classes."
                   useByScannerDiscovery="true"
                   valueType="boolean">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.optimization"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nousecxaatexit"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.nousecxaatexit">
             </option>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.optimization"

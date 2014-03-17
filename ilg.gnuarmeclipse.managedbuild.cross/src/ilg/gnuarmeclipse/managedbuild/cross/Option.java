@@ -86,8 +86,6 @@ public class Option {
 			+ "functionsections";
 	public static final String OPTION_OPTIMIZATION_DATASECTIONS = OPTION_OPTIMIZATION
 			+ "datasections";
-	public static final String OPTION_OPTIMIZATION_NOUSECXAATEXIT = OPTION_OPTIMIZATION
-			+ "nousecxaatexit";
 	public static final String OPTION_OPTIMIZATION_NOCOMMON = OPTION_OPTIMIZATION
 			+ "nocommon";
 	public static final String OPTION_OPTIMIZATION_NOINLINEFUNCTIONS = OPTION_OPTIMIZATION
@@ -127,8 +125,6 @@ public class Option {
 			+ "shadow";
 	public static final String OPTION_WARNINGS_POINTERARITH = OPTION_WARNINGS
 			+ "pointerarith";
-	public static final String OPTION_WARNINGS_BADFUNCTIONCAST = OPTION_WARNINGS
-			+ "badfunctioncast";
 	public static final String OPTION_WARNINGS_LOGICALOP = OPTION_WARNINGS
 			+ "logicalop";
 	public static final String OPTION_WARNINGS_AGREGGATERETURN = OPTION_WARNINGS
@@ -457,11 +453,6 @@ public class Option {
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
-		sValue = getOptionBooleanCommand(config,
-				OPTION_OPTIMIZATION_NOUSECXAATEXIT);
-		if (sValue != null && sValue.length() > 0)
-			sReturn += " " + sValue;
-
 		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_NOCOMMON);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
@@ -540,11 +531,6 @@ public class Option {
 			sReturn += " " + sValue;
 
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_POINTERARITH);
-		if (sValue != null && sValue.length() > 0)
-			sReturn += " " + sValue;
-
-		sValue = getOptionBooleanCommand(config,
-				OPTION_WARNINGS_BADFUNCTIONCAST);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
