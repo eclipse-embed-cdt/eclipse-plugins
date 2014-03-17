@@ -51,10 +51,12 @@ import org.eclipse.swt.widgets.Text;
  * @noextend This class is not intended to be subclassed by clients.
  * @noinstantiate This class is not intended to be instantiated by clients.
  */
+@SuppressWarnings("restriction")
 public class TabToolchains extends AbstractCBuildPropertyTab {
 
 	// private Composite m_composite;
 	private IConfiguration m_config;
+	private IConfiguration m_lastUpdatedConfig = null;
 
 	// ---
 
@@ -113,18 +115,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		super.createControls(parent);
 
 		m_config = getCfg();
-		IBuildPropertyValue propertyValue = m_config.getBuildArtefactType();
-		if (propertyValue != null) {
-			String artefactId = propertyValue.getId();
-			if (Utils.BUILD_ARTEFACT_TYPE_EXE.equals(artefactId)
-					|| artefactId.endsWith(".exe"))
-				m_isExecutable = true;
-			else
-				m_isExecutable = false;
-
-		} else {
-			m_isExecutable = true;
-		}
+		System.out.println("createControls() m_config=" + m_config);
 
 		// usercomp is defined in parent class
 
@@ -148,44 +139,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1);
 		m_toolchainCombo.setLayoutData(layoutData);
 
-		// create the selection array
-		String[] toolchains = new String[ToolchainDefinition.getSize()];
-		for (int i = 0; i < ToolchainDefinition.getSize(); ++i) {
-			toolchains[i] = ToolchainDefinition.getToolchain(i).getFullName();
-		}
-		m_toolchainCombo.setItems(toolchains);
-
-		m_selectedToolchainName = Option.getOptionStringValue(m_config,
-				Option.OPTION_TOOLCHAIN_NAME);
-
-		// System.out
-		// .println("Previous toolchain name " + m_selectedToolchainName);
-		if (m_selectedToolchainName != null
-				&& m_selectedToolchainName.length() > 0) {
-			m_selectedToolchainIndex = ToolchainDefinition
-					.findToolchainByName(m_selectedToolchainName);
-		} else {
-			System.out.println("No toolchain selected");
-			// This is not a project created with the wizard
-			// (most likely it is the result of a toolchain change)
-			m_selectedToolchainIndex = ToolchainDefinition.getDefault();
-			m_selectedToolchainName = ToolchainDefinition.getToolchain(
-					m_selectedToolchainIndex).getName();
-
-			// Initialise .cproject options that were not done at project
-			// creation by the toolchain wizard
-			try {
-				setOptionsForToolchain(m_config, m_selectedToolchainIndex);
-
-			} catch (BuildException e1) {
-				System.out.println("cannot setOptionsForToolchain");
-				// e1.printStackTrace();
-			}
-		}
-
-		String toolchainSel = toolchains[m_selectedToolchainIndex];
-		m_toolchainCombo.setText(toolchainSel);
-
 		m_toolchainCombo.addSelectionListener(new SelectionAdapter() {
 			public void widgetSelected(SelectionEvent event) {
 
@@ -204,40 +157,11 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		layoutData.widthHint = WIDTH_HINT;
 		m_architectureCombo.setLayoutData(layoutData);
 
-		m_architectureCombo.setItems(ToolchainDefinition.getArchitectures());
-
-		String sSelectedArchitecture = Option.getOptionStringValue(m_config,
-				Option.OPTION_ARCHITECTURE);
-		int index;
-		try {
-			if (sSelectedArchitecture.endsWith("." + Option.ARCHITECTURE_ARM))
-				index = 0;
-			else if (sSelectedArchitecture.endsWith("."
-					+ Option.ARCHITECTURE_AARCH64))
-				index = 1;
-			else
-				index = 0; // default is ARM
-		} catch (NullPointerException e) {
-			index = 0; // default is ARM
-		}
-		m_architectureCombo.setText(ToolchainDefinition.getArchitecture(index));
-
-		// m_toolchainCombo.addSelectionListener(new SelectionAdapter() {
-		// public void widgetSelected(SelectionEvent event) {
-		// }
-		// });
-
 		// ----- Prefix -------------------------------------------------------
 		Label prefixLabel = new Label(usercomp, SWT.NONE);
 		prefixLabel.setText(Messages.ToolChainSettingsTab_prefix);
 
 		m_prefixText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-		String prefix = Option.getOptionStringValue(m_config,
-				Option.OPTION_COMMAND_PREFIX);
-		if (prefix != null) {
-			m_prefixText.setText(prefix);
-		}
-
 		layoutData = new GridData();
 		layoutData.horizontalSpan = 2;
 		layoutData.widthHint = WIDTH_HINT;
@@ -248,12 +172,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		suffixLabel.setText(Messages.ToolChainSettingsTab_suffix);
 
 		m_suffixText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-		String suffix = Option.getOptionStringValue(m_config,
-				Option.OPTION_COMMAND_SUFFIX);
-		if (suffix != null) {
-			m_suffixText.setText(suffix);
-		}
-
 		layoutData = new GridData();
 		layoutData.horizontalSpan = 2;
 		layoutData.widthHint = WIDTH_HINT;
@@ -264,12 +182,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		commandCLabel.setText(Messages.ToolChainSettingsTab_cCmd);
 
 		m_commandCText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-		String commandC = Option.getOptionStringValue(m_config,
-				Option.OPTION_COMMAND_C);
-		if (commandC != null) {
-			m_commandCText.setText(commandC);
-		}
-
 		layoutData = new GridData();
 		layoutData.horizontalSpan = 2;
 		layoutData.widthHint = WIDTH_HINT;
@@ -280,12 +192,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		commandCppLabel.setText(Messages.ToolChainSettingsTab_cppCmd);
 
 		m_commandCppText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-		String commandCpp = Option.getOptionStringValue(m_config,
-				Option.OPTION_COMMAND_CPP);
-		if (commandCpp != null) {
-			m_commandCppText.setText(commandCpp);
-		}
-
 		layoutData = new GridData();
 		layoutData.horizontalSpan = 2;
 		layoutData.widthHint = WIDTH_HINT;
@@ -296,12 +202,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		commandArLabel.setText(Messages.ToolChainSettingsTab_arCmd);
 
 		m_commandArText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-		String commandAr = Option.getOptionStringValue(m_config,
-				Option.OPTION_COMMAND_AR);
-		if (commandAr != null) {
-			m_commandArText.setText(commandAr);
-		}
-
 		layoutData = new GridData();
 		layoutData.horizontalSpan = 2;
 		layoutData.widthHint = WIDTH_HINT;
@@ -312,12 +212,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		commandObjcopyLabel.setText(Messages.ToolChainSettingsTab_objcopyCmd);
 
 		m_commandObjcopyText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-		String commandObjcopy = Option.getOptionStringValue(m_config,
-				Option.OPTION_COMMAND_OBJCOPY);
-		if (commandObjcopy != null) {
-			m_commandObjcopyText.setText(commandObjcopy);
-		}
-
 		layoutData = new GridData();
 		layoutData.horizontalSpan = 2;
 		layoutData.widthHint = WIDTH_HINT;
@@ -328,12 +222,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		commandObjdumpLabel.setText(Messages.ToolChainSettingsTab_objdumpCmd);
 
 		m_commandObjdumpText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-		String commandObjdump = Option.getOptionStringValue(m_config,
-				Option.OPTION_COMMAND_OBJDUMP);
-		if (commandObjdump != null) {
-			m_commandObjdumpText.setText(commandObjdump);
-		}
-
 		layoutData = new GridData();
 		layoutData.horizontalSpan = 2;
 		layoutData.widthHint = WIDTH_HINT;
@@ -344,12 +232,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		commandSizeLabel.setText(Messages.ToolChainSettingsTab_sizeCmd);
 
 		m_commandSizeText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-		String commandSize = Option.getOptionStringValue(m_config,
-				Option.OPTION_COMMAND_SIZE);
-		if (commandSize != null) {
-			m_commandSizeText.setText(commandSize);
-		}
-
 		layoutData = new GridData();
 		layoutData.horizontalSpan = 2;
 		layoutData.widthHint = WIDTH_HINT;
@@ -360,12 +242,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		commandMakeLabel.setText(Messages.ToolChainSettingsTab_makeCmd);
 
 		m_commandMakeText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-		String commandMake = Option.getOptionStringValue(m_config,
-				Option.OPTION_COMMAND_MAKE);
-		if (commandMake != null) {
-			m_commandMakeText.setText(commandMake);
-		}
-
 		layoutData = new GridData();
 		layoutData.horizontalSpan = 2;
 		layoutData.widthHint = WIDTH_HINT;
@@ -376,12 +252,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		commandRmLabel.setText(Messages.ToolChainSettingsTab_rmCmd);
 
 		m_commandRmText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-		String commandRm = Option.getOptionStringValue(m_config,
-				Option.OPTION_COMMAND_RM);
-		if (commandRm != null) {
-			m_commandRmText.setText(commandRm);
-		}
-
 		layoutData = new GridData();
 		layoutData.horizontalSpan = 2;
 		layoutData.widthHint = WIDTH_HINT;
@@ -404,12 +274,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			m_useGlobalCheckButton
 					.setToolTipText(Messages.ToolChainSettingsTab_useGlobal_toolTip);
 
-			// Initialise field from per project storage
-			boolean useGlobalPath = !ProjectStorage
-					.isToolchainPathPerProject(m_config);
-
-			m_useGlobalCheckButton.setSelection(useGlobalPath);
-
 			layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1);
 			m_useGlobalCheckButton.setLayoutData(layoutData);
 
@@ -429,11 +293,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 					.setToolTipText(Messages.ToolChainSettingsTab_globalPath_toolTip);
 
 			m_globalPathText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-			String toolchainPath = SharedStorage
-					.getToolchainPath(m_selectedToolchainName);
-			if (toolchainPath != null) {
-				m_globalPathText.setText(toolchainPath);
-			}
 			layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 			m_globalPathText.setLayoutData(layoutData);
 
@@ -464,11 +323,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 					.setToolTipText(Messages.ToolChainSettingsTab_projectPath_toolTip);
 
 			m_projectPathText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-			String toolchainPath = ProjectStorage.getToolchainPath(m_config);
-
-			if (toolchainPath != null) {
-				m_projectPathText.setText(toolchainPath);
-			}
 			layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
 			m_projectPathText.setLayoutData(layoutData);
 
@@ -495,40 +349,30 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		// ----- Flash --------------------------------------------------------
 		m_flashButton = new Button(usercomp, SWT.CHECK);
 		m_flashButton.setText(Messages.ToolChainSettingsTab_flash);
-
-		Boolean isCreateFlash = Option.getOptionBooleanValue(m_config,
-				Option.OPTION_ADDTOOLS_CREATEFLASH);
-		if (isCreateFlash != null) {
-			m_flashButton.setSelection(isCreateFlash);
-		}
 		layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1);
 		m_flashButton.setLayoutData(layoutData);
 
 		// ----- Listing ------------------------------------------------------
 		m_listingButton = new Button(usercomp, SWT.CHECK);
 		m_listingButton.setText(Messages.ToolChainSettingsTab_listing);
-
-		Boolean isCreateListing = Option.getOptionBooleanValue(m_config,
-				Option.OPTION_ADDTOOLS_CREATELISTING);
-		if (isCreateListing != null) {
-			m_listingButton.setSelection(isCreateListing);
-		}
 		layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1);
 		m_listingButton.setLayoutData(layoutData);
 
 		// ----- Size ---------------------------------------------------------
 		m_sizeButton = new Button(usercomp, SWT.CHECK);
 		m_sizeButton.setText(Messages.ToolChainSettingsTab_size);
-
-		Boolean isPrintSize = Option.getOptionBooleanValue(m_config,
-				Option.OPTION_ADDTOOLS_PRINTSIZE);
-		if (isPrintSize != null) {
-			m_sizeButton.setSelection(isPrintSize);
-		}
 		layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1);
 		m_sizeButton.setLayoutData(layoutData);
 
 		// m_isCreated = true;
+
+		updateControlsForConfig(m_config);
+
+		String toolchainPath = SharedStorage
+				.getToolchainPath(m_selectedToolchainName);
+		if (toolchainPath != null) {
+			m_globalPathText.setText(toolchainPath);
+		}
 
 		useGlobalChanged();
 
@@ -594,12 +438,14 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 	// This event comes when the tab is selected after the windows is
 	// displayed, to account for content change
+	// It also comes when the configuration is changed in the selection.
 	@Override
 	public void updateData(ICResourceDescription cfgd) {
 		if (cfgd == null)
 			return;
 
-		System.out.println("Toolchains.updateData()");
+		// m_config = getCfg();
+		System.out.println("Toolchains.updateData() " + getCfg().getName());
 
 		boolean isExecutable;
 		boolean isStaticLibrary;
@@ -623,6 +469,16 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			isStaticLibrary = false;
 		}
 
+		IConfiguration config = getCfg(cfgd.getConfiguration());
+		if (config instanceof MultiConfiguration) {
+			MultiConfiguration multi = (MultiConfiguration) config;
+
+			// Take the first config in the multi-config
+			config = (IConfiguration) multi.getItems()[0];
+		}
+
+		updateControlsForConfig(config);
+
 		m_commandArText.setEnabled(isStaticLibrary);
 
 		m_commandObjcopyText.setEnabled(isExecutable);
@@ -638,7 +494,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	protected void performApply(ICResourceDescription src,
 			ICResourceDescription dst) {
 
-		System.out.println("Toolchains.performApply()");
+		System.out.println("Toolchains.performApply() " + src.getName());
 		IConfiguration config = getCfg(src.getConfiguration());
 
 		updateOptions(config);
@@ -651,12 +507,215 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	@Override
 	protected void performOK() {
 
-		System.out.println("Toolchains.performOK()");
+		IConfiguration config = getCfg();
+		System.out.println("Toolchains.performOK() " + config);
 
-		updateOptions(m_config);
+		if (m_lastUpdatedConfig.equals(config)) {
+			updateOptions(config);
+		} else {
+			System.out.println("skipped " + m_config);
+		}
+	}
+
+	private void updateControlsForConfig(IConfiguration config) {
+
+		System.out.println("Toolchains.updateControlsForConfig() "
+				+ config.getName());
+
+		// int m_selectedToolchainIndex;
+		// String m_selectedToolchainName;
+
+		// create the selection array
+		String[] toolchains = new String[ToolchainDefinition.getSize()];
+		for (int i = 0; i < ToolchainDefinition.getSize(); ++i) {
+			toolchains[i] = ToolchainDefinition.getToolchain(i).getFullName();
+		}
+		m_toolchainCombo.setItems(toolchains);
+
+		m_selectedToolchainName = Option.getOptionStringValue(config,
+				Option.OPTION_TOOLCHAIN_NAME);
+
+		// System.out
+		// .println("Previous toolchain name " + m_selectedToolchainName);
+		if (m_selectedToolchainName != null
+				&& m_selectedToolchainName.length() > 0) {
+			m_selectedToolchainIndex = ToolchainDefinition
+					.findToolchainByName(m_selectedToolchainName);
+		} else {
+			System.out.println("No toolchain selected");
+			// This is not a project created with the wizard
+			// (most likely it is the result of a toolchain change)
+			m_selectedToolchainIndex = ToolchainDefinition.getDefault();
+			m_selectedToolchainName = ToolchainDefinition.getToolchain(
+					m_selectedToolchainIndex).getName();
+
+			// Initialise .cproject options that were not done at project
+			// creation by the toolchain wizard
+			try {
+				setOptionsForToolchain(config, m_selectedToolchainIndex);
+
+			} catch (BuildException e1) {
+				System.out.println("cannot setOptionsForToolchain");
+				// e1.printStackTrace();
+			}
+		}
+
+		String toolchainSel = toolchains[m_selectedToolchainIndex];
+		m_toolchainCombo.setText(toolchainSel);
+
+		ToolchainDefinition toolchainDefinition = ToolchainDefinition
+				.getToolchain(m_selectedToolchainIndex);
+
+		m_architectureCombo.setItems(ToolchainDefinition.getArchitectures());
+
+		String sSelectedArchitecture = Option.getOptionStringValue(config,
+				Option.OPTION_ARCHITECTURE);
+		int index;
+		try {
+			if (sSelectedArchitecture.endsWith("." + Option.ARCHITECTURE_ARM))
+				index = 0;
+			else if (sSelectedArchitecture.endsWith("."
+					+ Option.ARCHITECTURE_AARCH64))
+				index = 1;
+			else
+				index = 0; // default is ARM
+		} catch (NullPointerException e) {
+			index = 0; // default is ARM
+		}
+		m_architectureCombo.setText(ToolchainDefinition.getArchitecture(index));
+
+		String prefix = Option.getOptionStringValue(config,
+				Option.OPTION_COMMAND_PREFIX);
+		if (prefix != null) {
+			m_prefixText.setText(prefix);
+		} else {
+			m_prefixText.setText(toolchainDefinition.getPrefix());
+		}
+
+		String suffix = Option.getOptionStringValue(config,
+				Option.OPTION_COMMAND_SUFFIX);
+		if (suffix != null) {
+			m_suffixText.setText(suffix);
+		} else {
+			m_suffixText.setText(toolchainDefinition.getSuffix());
+		}
+
+		String commandC = Option.getOptionStringValue(config,
+				Option.OPTION_COMMAND_C);
+		if (commandC != null) {
+			m_commandCText.setText(commandC);
+		} else {
+			m_commandCText.setText(toolchainDefinition.getCmdC());
+		}
+
+		String commandCpp = Option.getOptionStringValue(config,
+				Option.OPTION_COMMAND_CPP);
+		if (commandCpp != null) {
+			m_commandCppText.setText(commandCpp);
+		} else {
+			m_commandCppText.setText(toolchainDefinition.getCmdCpp());
+		}
+
+		String commandAr = Option.getOptionStringValue(config,
+				Option.OPTION_COMMAND_AR);
+		if (commandAr != null) {
+			m_commandArText.setText(commandAr);
+		} else {
+			m_commandArText.setText(toolchainDefinition.getCmdAr());
+		}
+
+		String commandObjcopy = Option.getOptionStringValue(config,
+				Option.OPTION_COMMAND_OBJCOPY);
+		if (commandObjcopy != null) {
+			m_commandObjcopyText.setText(commandObjcopy);
+		} else {
+			m_commandObjcopyText.setText(toolchainDefinition.getCmdObjcopy());
+		}
+
+		String commandObjdump = Option.getOptionStringValue(config,
+				Option.OPTION_COMMAND_OBJDUMP);
+		if (commandObjdump != null) {
+			m_commandObjdumpText.setText(commandObjdump);
+		} else {
+			m_commandObjdumpText.setText(toolchainDefinition.getCmdObjdump());
+		}
+
+		String commandSize = Option.getOptionStringValue(config,
+				Option.OPTION_COMMAND_SIZE);
+		if (commandSize != null) {
+			m_commandSizeText.setText(commandSize);
+		} else {
+			m_commandSizeText.setText(toolchainDefinition.getCmdSize());
+		}
+
+		String commandMake = Option.getOptionStringValue(config,
+				Option.OPTION_COMMAND_MAKE);
+		if (commandMake != null) {
+			m_commandMakeText.setText(commandMake);
+		} else {
+			m_commandMakeText.setText(toolchainDefinition.getCmdMake());
+		}
+
+		String commandRm = Option.getOptionStringValue(config,
+				Option.OPTION_COMMAND_RM);
+		if (commandRm != null) {
+			m_commandRmText.setText(commandRm);
+		} else {
+			m_commandRmText.setText(toolchainDefinition.getCmdRm());
+		}
+
+		// Initialise field from per project storage
+		boolean useGlobalPath = !ProjectStorage
+				.isToolchainPathPerProject(config);
+
+		m_useGlobalCheckButton.setSelection(useGlobalPath);
+
+		String path = SharedStorage.getToolchainPath(m_selectedToolchainName);
+		m_globalPathText.setText(path);
+
+		String toolchainPath = ProjectStorage.getToolchainPath(config);
+
+		if (toolchainPath != null) {
+			m_projectPathText.setText(toolchainPath);
+		} else {
+			m_projectPathText.setText("");
+		}
+
+		Boolean isCreateFlash = Option.getOptionBooleanValue(config,
+				Option.OPTION_ADDTOOLS_CREATEFLASH);
+		if (isCreateFlash != null) {
+			m_flashButton.setSelection(isCreateFlash);
+		} else {
+			m_flashButton
+					.setSelection(Option.OPTION_ADDTOOLS_CREATEFLASH_DEFAULT);
+		}
+
+		Boolean isCreateListing = Option.getOptionBooleanValue(config,
+				Option.OPTION_ADDTOOLS_CREATELISTING);
+		if (isCreateListing != null) {
+			m_listingButton.setSelection(isCreateListing);
+		} else {
+			m_listingButton
+					.setSelection(Option.OPTION_ADDTOOLS_CREATELISTING_DEFAULT);
+		}
+
+		Boolean isPrintSize = Option.getOptionBooleanValue(config,
+				Option.OPTION_ADDTOOLS_PRINTSIZE);
+		if (isPrintSize != null) {
+			m_sizeButton.setSelection(isPrintSize);
+		} else {
+			m_sizeButton.setSelection(Option.OPTION_ADDTOOLS_PRINTSIZE_DEFAULT);
+		}
+
+		m_config = config;
+		System.out.println("updateControlsForConfig() m_config=" + m_config);
+
+		m_lastUpdatedConfig = config;
 	}
 
 	private void updateOptions(IConfiguration config) {
+
+		System.out.println("Toolchains.updateOptions() " + config.getName());
 
 		if (config instanceof MultiConfiguration) {
 			MultiConfiguration multi = (MultiConfiguration) config;
@@ -913,7 +972,8 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 					makefileGenerator.regenerateMakefiles();
 				} catch (CoreException e) {
 					// This had better be allowed during a build
-					System.out.println("propagateCommandRmUpdate " + e.getMessage());
+					System.out.println("propagateCommandRmUpdate "
+							+ e.getMessage());
 				}
 
 			}
@@ -968,6 +1028,8 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 	private boolean isThisPlugin() {
 		m_config = getCfg();
+		System.out.println("isThisPlugin() m_config=" + m_config);
+		
 		IToolChain toolchain = m_config.getToolChain();
 		String sToolchainId = toolchain.getBaseId();
 		if (sToolchainId.startsWith(Activator.TOOLCHAIN_ID + "."))
