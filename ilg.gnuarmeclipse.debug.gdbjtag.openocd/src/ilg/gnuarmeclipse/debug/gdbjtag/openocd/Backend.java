@@ -76,23 +76,6 @@ public class Backend extends Backend0 {
 		return fSemihostingProcess;
 	}
 
-	// protected IPath getGDBPath() {
-	// return Utils.getGDBPath(fLaunchConfiguration);
-	// }
-
-	// do not rename!
-	/*
-	 * protected Process launchGDBProcess(String commandLine) throws
-	 * CoreException { Process proc = null; try { proc =
-	 * ProcessFactory.getFactory().exec(commandLine,
-	 * Utils.getLaunchEnvironment(fLaunchConfiguration)); } catch (IOException
-	 * e) { String message = "Error while launching command " + commandLine;
-	 * //$NON-NLS-1$ throw new CoreException(new Status(IStatus.ERROR,
-	 * Activator.PLUGIN_ID, -1, message, e)); }
-	 * 
-	 * return proc; }
-	 */
-
 	protected Process launchSemihostingProcess(String host, int port)
 			throws CoreException {
 
@@ -276,13 +259,8 @@ public class Backend extends Backend0 {
 					try {
 						String projectName = fLaunchConfiguration.getAttribute(
 								"org.eclipse.cdt.launch.PROJECT_ATTR", "");
-						IPath path = null;
-						if (projectName.length() > 0) {
-							IWorkspace workspace = ResourcesPlugin.getWorkspace();
-							IProject project = workspace.getRoot().getProject(projectName);
-							path = project.getLocation();
-						}
-						File dir = new File(path.toOSString());
+						File dir = Utils.getProjectOsPath(projectName);
+
 						fServerProcess = launchGDBProcess(commandLineArray, dir);
 						// Need to do this on the executor for thread-safety
 						getExecutor().submit(new DsfRunnable() {

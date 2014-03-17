@@ -3,6 +3,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.TabDebugger;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -28,6 +29,7 @@ import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.gdb.launching.LaunchUtils;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
@@ -351,4 +353,14 @@ public class Utils {
 		return sb.toString().trim();
 	}
 
+	public static File getProjectOsPath(String projectName) {
+		IPath path = null;
+		if (projectName.length() > 0) {
+			IWorkspace workspace = ResourcesPlugin.getWorkspace();
+			IProject project = workspace.getRoot().getProject(projectName);
+			path = project.getLocation();
+		}
+		File dir = new File(path.toOSString());
+		return dir;
+	}
 }

@@ -409,24 +409,14 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 	/*
 	 * Launch GDB process. Allow subclass to override.
 	 */
-	/*
-	 * protected Process launchGDBProcess(String commandLine) throws
-	 * CoreException { Process proc = null; try { proc =
-	 * ProcessFactory.getFactory().exec(commandLine,
-	 * LaunchUtils.getLaunchEnvironment(fLaunchConfiguration)); } catch
-	 * (IOException e) { String message = "Error while launching command " +
-	 * commandLine; //$NON-NLS-1$ throw new CoreException(new
-	 * Status(IStatus.ERROR, GdbPlugin.PLUGIN_ID, -1, message, e)); }
-	 * 
-	 * return proc; }
-	 */
-	protected Process launchGDBProcess(String[] commandLineArray)
+	protected Process launchGDBProcess(String[] commandLineArray, File dir)
 			throws CoreException {
 		Process proc = null;
 		System.out.println("exec " + Utils.join(commandLineArray, " "));
+		System.out.println("dir " + dir);
 		try {
 			proc = ProcessFactory.getFactory().exec(commandLineArray,
-					Utils.getLaunchEnvironment(fLaunchConfiguration));
+					Utils.getLaunchEnvironment(fLaunchConfiguration), dir);
 		} catch (IOException e) {
 			String message = "Error while launching command " + Utils.join(commandLineArray, " "); //$NON-NLS-1$
 			throw new CoreException(new Status(IStatus.ERROR,
@@ -619,7 +609,11 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 							.getGdbClientCommandLineArray(fLaunchConfiguration);
 
 					try {
-						fProcess = launchGDBProcess(commandLineArray);
+						String projectName = fLaunchConfiguration.getAttribute(
+								"org.eclipse.cdt.launch.PROJECT_ATTR", "");
+						File dir = Utils.getProjectOsPath(projectName);
+
+						fProcess = launchGDBProcess(commandLineArray, dir);
 						// Need to do this on the executor for thread-safety
 						getExecutor().submit(new DsfRunnable() {
 							@Override
