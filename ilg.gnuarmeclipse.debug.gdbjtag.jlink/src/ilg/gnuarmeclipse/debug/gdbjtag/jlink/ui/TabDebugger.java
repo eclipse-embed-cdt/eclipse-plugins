@@ -814,6 +814,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		gdbServerSpeedFixedValue.addVerifyListener(numericVerifyListener);
 
+		gdbServerSpeedFixedValue
+				.addModifyListener(scheduleUpdateJobModifyListener);
+
 		gdbFlashDeviceName.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {

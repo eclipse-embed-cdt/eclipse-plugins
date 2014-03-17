@@ -465,6 +465,9 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		interfaceSpeedFixedValue.addVerifyListener(numericVerifyListener);
 
+		interfaceSpeedFixedValue
+				.addModifyListener(scheduleUpdateJobModifyListener);
+
 		enableSemihosting.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
