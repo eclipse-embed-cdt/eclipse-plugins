@@ -119,6 +119,12 @@ public class Option {
 			+ "conversion";
 	public static final String OPTION_WARNINGS_UNITIALIZED = OPTION_WARNINGS
 			+ "unitialized";
+	public static final String OPTION_WARNINGS_UNINITIALIZED = OPTION_WARNINGS
+			+ "uninitialized";
+	public static final String OPTION_WARNINGS_UNUSED = OPTION_WARNINGS
+			+ "unused";
+	public static final String OPTION_WARNINGS_PADDED = OPTION_WARNINGS
+			+ "padded";
 	public static final String OPTION_WARNINGS_FLOATEQUAL = OPTION_WARNINGS
 			+ "floatequal";
 	public static final String OPTION_WARNINGS_SHADOW = OPTION_WARNINGS
@@ -152,12 +158,14 @@ public class Option {
 	// other
 	public static final String OPTION_TOOLCHAIN_NAME = OPTION_PREFIX
 			+ ".toolchain.name";
-	
-	//public static final String OPTION_TOOLCHAIN_PATH = OPTION_PREFIX
-	//		+ ".toolchain.path";
-	//public static final String OPTION_TOOLCHAIN_USE_GLOBAL_PATH = OPTION_PREFIX
-	//		+ ".toolchain.useglobalpath";
-	//public static final boolean OPTION_TOOLCHAIN_USE_GLOBAL_PATH_DEFAULT = true;
+
+	// public static final String OPTION_TOOLCHAIN_PATH = OPTION_PREFIX
+	// + ".toolchain.path";
+	// public static final String OPTION_TOOLCHAIN_USE_GLOBAL_PATH =
+	// OPTION_PREFIX
+	// + ".toolchain.useglobalpath";
+	// public static final boolean OPTION_TOOLCHAIN_USE_GLOBAL_PATH_DEFAULT =
+	// true;
 
 	public static final String OPTION_COMMAND = OPTION_PREFIX + ".command.";
 	public static final String OPTION_COMMAND_PREFIX = OPTION_COMMAND
@@ -287,7 +295,7 @@ public class Option {
 
 		return bReturn;
 	}
-	
+
 	public static Boolean getOptionBooleanValue2(IConfiguration config,
 			String sOptionId) {
 
@@ -296,10 +304,11 @@ public class Option {
 		Boolean bReturn = null;
 		if (option != null) {
 			try {
-				IOption option2 = config.getToolChain().getOptionToSet(option, false);
+				IOption option2 = config.getToolChain().getOptionToSet(option,
+						false);
 				if (option2 == null)
 					return null;
-				
+
 				bReturn = new Boolean(option.getBooleanValue());
 			} catch (BuildException e) {
 				System.out.println(sOptionId + " not value");
@@ -506,6 +515,27 @@ public class Option {
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_NOWARN);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_TOERRORS);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_UNUSED);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		// Wrong name, kept for compatibility
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_UNITIALIZED);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_UNINITIALIZED);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_ALLWARN);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
@@ -514,23 +544,24 @@ public class Option {
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
+		sValue = getOptionBooleanCommand(config,
+				OPTION_WARNINGS_MISSINGDECLARATION);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_CONVERSION);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
-		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_UNITIALIZED);
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_POINTERARITH);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
-		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_FLOATEQUAL);
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_PADDED);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_SHADOW);
-		if (sValue != null && sValue.length() > 0)
-			sReturn += " " + sValue;
-
-		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_POINTERARITH);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
@@ -543,16 +574,7 @@ public class Option {
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
-		sValue = getOptionBooleanCommand(config,
-				OPTION_WARNINGS_MISSINGDECLARATION);
-		if (sValue != null && sValue.length() > 0)
-			sReturn += " " + sValue;
-
-		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_TOERRORS);
-		if (sValue != null && sValue.length() > 0)
-			sReturn += " " + sValue;
-
-		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_NOWARN);
+		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_FLOATEQUAL);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 

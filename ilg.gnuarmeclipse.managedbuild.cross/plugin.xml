@@ -101,8 +101,37 @@
                defaultValue="false"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.unitialized"
                isAbstract="true"
-               name="%option.warnings.unitialized"
+               name="%option.warnings.uninitialized"
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Wuninitialized"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.uninitialized"
+               isAbstract="true"
+               name="%option.warnings.uninitialized"
                tip="Warn if an automatic variable is used without first being initialized or if a variable may be clobbered by a setjmp call. In C++, warn if a non-static reference or non-static ‘const’ member appears in a class without constructors. If you want to warn about code that uses the uninitialized value of the variable in its own initializer, use the ‘-Winit-self’ option. These warnings occur for individual uninitialized or clobbered elements of structure, union or array variables as well as for variables that are uninitialized or clobbered as a whole. They do not occur for variables or elements declared volatile. Because these warnings depend on optimization, the exact variables or elements for which there are warnings depends on the precise optimization options and version of GCC used. Note that there may be no warning about a variable that is used only to compute a value that itself is never used, because such computations may be deleted by data flow analysis before the warnings are printed."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Wunused"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.unused"
+               isAbstract="true"
+               name="%option.warnings.unused"
+               tip="Warn if various constructs are unused (parameters, functions, labels, etc)."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
+               command="-Wpadded"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.padded"
+               isAbstract="true"
+               name="%option.warnings.padded"
+               tip="Warn if padding is included in a structure, either to align an element of the structure or to align the whole structure. Sometimes when this happens it is possible to rearrange the fields of the structure to reduce the padding and so make the structure smaller."
                useByScannerDiscovery="true"
                valueType="boolean">
          </option>
@@ -133,16 +162,6 @@
                isAbstract="true"
                name="%option.warnings.pointerarith"
                tip="Warn about anything that depends on the “size of” a function type or of void. GNU C assigns these types a size of 1, for convenience in calculations with void * pointers and pointers to functions. In C++, warn also when an arithmetic operation involves NULL. This warning is also enabled by ‘-Wpedantic’."
-               useByScannerDiscovery="true"
-               valueType="boolean">
-         </option>
-         <option
-               command="-Wbad-function-cast"
-               defaultValue="false"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.badfunctioncast"
-               isAbstract="true"
-               name="%option.warnings.badfunctioncast"
-               tip="Warn whenever a function call is cast to a non-matching type. For example, warn if int malloc() is cast to anything *. (C and Objective-C only)"
                useByScannerDiscovery="true"
                valueType="boolean">
          </option>
@@ -627,14 +646,6 @@
                valueType="boolean">
          </option>
          <option
-               command="-Wa,-adhlns=&quot;$@.lst&quot;"
-               defaultValue="false"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.asmlisting"
-               isAbstract="true"
-               name="%option.compiler.asmlisting"
-               valueType="boolean">
-         </option>
-         <option
                command="--save-temps"
                defaultValue="false"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.savetemps"
@@ -658,6 +669,14 @@
                isAbstract="true"
                name="%option.compiler.defs"
                valueType="definedSymbols">
+         </option>
+         <option
+               command="-Wa,-adhlns=&quot;$@.lst&quot;"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.asmlisting"
+               isAbstract="true"
+               name="%option.compiler.asmlisting"
+               valueType="boolean">
          </option>
          <option
                command="-U"
@@ -2542,6 +2561,20 @@
            </option>
            <option
                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.unused"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.unused">
+           </option>
+           <option
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.unitialized"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.unitialized">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.uninitialized"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.uninitialized">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
                  id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.allwarn"
                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.allwarn">
            </option>
@@ -2552,28 +2585,28 @@
            </option>
            <option
                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.missingdeclaration"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.missingdeclaration">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
                  id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.conversion"
                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.conversion">
            </option>
            <option
                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
-                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.unitialized"
-                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.unitialized">
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.pointerarith"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.pointerarith">
            </option>
            <option
                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
-                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.floatequal"
-                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.floatequal">
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.padded"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.padded">
            </option>
            <option
                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
                  id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.shadow"
                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.shadow">
-           </option>
-           <option
-                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
-                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.pointerarith"
-                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.pointerarith">
            </option>
            <option
                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
@@ -2587,8 +2620,8 @@
            </option>
            <option
                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
-                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.missingdeclaration"
-                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.missingdeclaration">
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.floatequal"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.floatequal">
            </option>
            <option
                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
@@ -2885,8 +2918,33 @@
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.badfunctioncast"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.badfunctioncast">
+                  command="-Wmissing-prototypes"
+                  defaultValue="false"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.warning.missingprototypes"
+                  name="%option.warnings.missingprototypes"
+                  tip="Warn if a global function is defined without a previous prototype declaration. This warning is issued even if the definition itself provides a prototype. Use this option to detect global functions that do not have a matching prototype declaration in a header file."
+                  useByScannerDiscovery="true"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
+                  command="-Wstrict-prototypes"
+                  defaultValue="false"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.warning.strictprototypes"
+                  name="%option.warnings.strictprototypes"
+                  tip="Warn if a function is declared or defined without specifying the argument types. (An old-style function definition is permitted without a warning if preceded by a declaration that specifies the argument types.)"
+                  useByScannerDiscovery="true"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
+                  command="-Wbad-function-cast"
+                  defaultValue="false"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.warning.badfunctioncast"
+                  name="%option.warnings.badfunctioncast"
+                  tip="Warn whenever a function call is cast to a non-matching type. For example, warn if int malloc() is cast to anything *."
+                  useByScannerDiscovery="true"
+                  valueType="boolean">
             </option>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
@@ -3051,10 +3109,57 @@
             </option>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.optimization"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.abiversion"
+                  name="%option.cpp.compiler.abiversion"
+                  useByScannerDiscovery="true"
+                  valueType="enumerated">
+               <enumeratedOptionValue
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.abiversion.default"
+                     name="%option.cpp.compiler.abiversion.default">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-fabi-version=0"
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.abiversion.0"
+                     isDefault="true"
+                     name="%option.cpp.compiler.abiversion.0">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-fabi-version=1"
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.abiversion.1"
+                     name="%option.cpp.compiler.abiversion.1">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-fabi-version=2"
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.abiversion.2"
+                     name="%option.cpp.compiler.abiversion.2">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-fabi-version=3"
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.abiversion.3"
+                     name="%option.cpp.compiler.abiversion.3">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-fabi-version=4"
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.abiversion.4"
+                     name="%option.cpp.compiler.abiversion.4">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-fabi-version=5"
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.abiversion.5"
+                     name="%option.cpp.compiler.abiversion.5">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-fabi-version=6"
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.abiversion.6"
+                     name="%option.cpp.compiler.abiversion.6">
+               </enumeratedOptionValue>
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.optimization"
                   command="-fno-exceptions"
                   defaultValue="false"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.noexceptions"
-                  name="%option.compiler.noexceptions"
+                  name="%option.cpp.compiler.noexceptions"
                   tip="Do not generates extra code needed to propagate exceptions."
                   useByScannerDiscovery="true"
                   valueType="boolean">
@@ -3064,15 +3169,30 @@
                   command="-fno-rtti"
                   defaultValue="false"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nortti"
-                  name="%option.compiler.nortti"
+                  name="%option.cpp.compiler.nortti"
                   tip="Disable generation of information about every class with virtual functions for use by the C++ run-time type identification features (‘dynamic_cast’ and ‘typeid’). If you don’t use those parts of the language, you can save some space by using this flag. Note that exception handling uses the same information, but G++ generates it as needed. The ‘dynamic_cast’ operator can still be used for casts that do not require run-time type information, i.e. casts to void * or to unambiguous base classes."
                   useByScannerDiscovery="true"
                   valueType="boolean">
             </option>
-            <option
+         	<option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.optimization"
+               	  command="-fno-use-cxa-atexit"
+                  defaultValue="false"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nousecxaatexit"
-                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.nousecxaatexit">
+                  name="%option.cpp.compiler.nousecxaatexit"
+                  tip="Do not register destructors for objects with static storage duration with the __cxa_ atexit() function."
+                  useByScannerDiscovery="true"
+                  valueType="boolean">
+            </option>
+         	<option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.optimization"
+               	  command="-fno-threadsafe-statics"
+                  defaultValue="false"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nothreadsafestatics"
+                  name="%option.cpp.compiler.nothreadsafestatics"
+                  tip="Do not emit the extra code to use the routines specified in the C++ ABI for thread-safe initialization of local statics. You can use this option to reduce code size slightly in code that doesn’t need to be thread-safe."
+                  useByScannerDiscovery="true"
+                  valueType="boolean">
             </option>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.optimization"
@@ -3090,6 +3210,56 @@
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warnabi"
                   name="%option.compiler.warnabi"
                   tip="Warn when G++ generates code that is probably not compatible with the vendor-neutral C++ ABI. Although an effort has been made to warn about all such cases, there are probably some cases that are not warned about, even though G++ is generating incompatible code. There may also be cases where warnings are emitted even though the code that is generated is compatible."
+                  useByScannerDiscovery="true"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
+                  command="-Wctor-dtor-privacy"
+                  defaultValue="false"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.ctordtorprivacy"
+                  name="%option.compiler.warning.ctordtorprivacy"
+                  tip="Warn when a class seems unusable because all the constructors or destructors in that class are private, and it has neither friends nor public static member functions. Also warn if there are no non-private methods, and there’s at least one private member function that isn’t a constructor or destructor."
+                  useByScannerDiscovery="true"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
+                  command="-Wnoexcept"
+                  defaultValue="false"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.noexcept"
+                  name="%option.compiler.warning.noexcept"
+                  tip="Warn when a noexcept-expression evaluates to false because of a call to a function that does not have a non-throwing exception specification (i.e. ‘throw()’ or ‘noexcept’) but is known by the compiler to never throw an exception."
+                  useByScannerDiscovery="true"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
+                  command="-Wnon-virtual-dtor"
+                  defaultValue="false"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.nonvirtualdtor"
+                  name="%option.compiler.warning.nonvirtualdtor"
+                  tip="Warn when a class has virtual functions and an accessible non-virtual destructor, in which case it is possible but unsafe to delete an instance of a derived class through a pointer to the base class. This warning is also enabled if ‘-Weffc++’ is specified."
+                  useByScannerDiscovery="true"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
+                  command="-Wstrict-null-sentinel"
+                  defaultValue="false"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.strictnullsentinel"
+                  name="%option.compiler.warning.strictnullsentinel"
+                  tip="Warn about the use of an uncasted NULL as sentinel. When compiling only with GCC this is a valid sentinel, as NULL is defined to __null. Although it is a null pointer constant rather than a null pointer, it is guaranteed to be of the same size as a pointer. But this use is not portable across different compilers."
+                  useByScannerDiscovery="true"
+                  valueType="boolean">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
+                  command="-Wsign-promo"
+                  defaultValue="false"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.signpromo"
+                  name="%option.compiler.warning.signpromo"
+                  tip="Warn when overload resolution chooses a promotion from unsigned or enumerated type to a signed type, over a conversion to an unsigned type of the same size. Previous versions of G++ tried to preserve unsignedness, but the standard mandates the current behavior."
                   useByScannerDiscovery="true"
                   valueType="boolean">
             </option>
