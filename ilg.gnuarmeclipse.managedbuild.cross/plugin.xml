@@ -99,15 +99,6 @@
          <option
                command="-Wuninitialized"
                defaultValue="false"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.unitialized"
-               isAbstract="true"
-               name="%option.warnings.uninitialized"
-               useByScannerDiscovery="true"
-               valueType="boolean">
-         </option>
-         <option
-               command="-Wuninitialized"
-               defaultValue="false"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.uninitialized"
                isAbstract="true"
                name="%option.warnings.uninitialized"
@@ -2563,10 +2554,6 @@
                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
                  id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.unused"
                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.unused">
-           </option>
-           <option
-                 id="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.unitialized"
-                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.warnings.unitialized">
            </option>
            <option
                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"

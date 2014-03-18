@@ -117,8 +117,6 @@ public class Option {
 			+ "extrawarn";
 	public static final String OPTION_WARNINGS_CONVERSION = OPTION_WARNINGS
 			+ "conversion";
-	public static final String OPTION_WARNINGS_UNITIALIZED = OPTION_WARNINGS
-			+ "unitialized";
 	public static final String OPTION_WARNINGS_UNINITIALIZED = OPTION_WARNINGS
 			+ "uninitialized";
 	public static final String OPTION_WARNINGS_UNUSED = OPTION_WARNINGS
@@ -524,11 +522,6 @@ public class Option {
 			sReturn += " " + sValue;
 
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_UNUSED);
-		if (sValue != null && sValue.length() > 0)
-			sReturn += " " + sValue;
-
-		// Wrong name, kept for compatibility
-		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_UNITIALIZED);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
