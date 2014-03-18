@@ -87,7 +87,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	private Button m_listingButton;
 	private Button m_sizeButton;
 
-	private boolean m_isExecutable;
+	//private boolean m_isExecutable;
 	// private boolean m_isStaticLibrary;
 
 	private static int WIDTH_HINT = 120;
@@ -488,6 +488,8 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		m_flashButton.setEnabled(isExecutable);
 		m_listingButton.setEnabled(isExecutable);
 		m_sizeButton.setEnabled(isExecutable);
+		
+		useGlobalChanged();
 	}
 
 	@Override

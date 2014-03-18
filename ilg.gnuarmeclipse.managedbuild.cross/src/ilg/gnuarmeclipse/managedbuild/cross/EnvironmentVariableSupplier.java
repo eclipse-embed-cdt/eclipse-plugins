@@ -101,11 +101,15 @@ public class EnvironmentVariableSupplier implements
 					File bin = new File(sysroot, "bin"); //$NON-NLS-1$
 					if (bin.isDirectory())
 						sysroot = bin;
-					// System.out.println("path=" + sysroot + " opt=" + path +
-					// " cfg="
-					// + configuration + " prj="
-					// +
-					// configuration.getManagedProject().getOwner().getName());
+					System.out.println("PATH="
+							+ sysroot
+							+ " opt="
+							+ path
+							+ " cfg="
+							+ configuration
+							+ " prj="
+							+ configuration.getManagedProject().getOwner()
+									.getName());
 					return new PathEnvironmentVariable(sysroot);
 				}
 			}
