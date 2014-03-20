@@ -18,5 +18,8 @@
    <feature url="features/org.eclipse.cdt.cross.arm.gnu_0.5.5.201310221100.jar" id="org.eclipse.cdt.cross.arm.gnu" version="0.5.5.201310221100" os="linux,macosx,win32">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
+   <feature url="features/ilg.gnuarmeclipse.templates.cortexm_1.1.1.qualifier.jar" id="ilg.gnuarmeclipse.templates.cortexm" version="1.1.1.qualifier">
+      <category name="ilg.gnuarmeclipse.category"/>
+   </feature>
    <category-def name="ilg.gnuarmeclipse.category" label="GNU ARM C/C++ Cross Development Tools"/>
 </site>
