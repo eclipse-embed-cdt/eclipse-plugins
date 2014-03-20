@@ -4,6 +4,7 @@
 //
 
 #include "Timer.h"
+#include "cortexm/ExceptionHandlers.h"
 
 // ----------------------------------------------------------------------------
 

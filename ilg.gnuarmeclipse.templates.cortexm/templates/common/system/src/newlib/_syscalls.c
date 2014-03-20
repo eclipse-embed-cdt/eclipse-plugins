@@ -1,6 +1,6 @@
 //
-// This file is part of the GNU ARM Eclipse Plug-ins project.
-// Parts of this file are from the newlib, issued under GPL.
+// This file is part of the µOS++ III distribution.
+// Parts of this file are from the newlib sources, issued under GPL.
 // Copyright (c) 2014 Liviu Ionescu
 //
 
@@ -14,94 +14,21 @@ char* __env[1] =
 char** environ = __env;
 #endif
 
-// ----------------------------------------------------------------------------
-
-#include <sys/types.h>
-#include <errno.h>
-
-// The definitions used here should be kept in sync with the
-// stack definitions in the linker script.
-
-caddr_t
-_sbrk(int incr)
-{
-  extern char _Heap_Begin; // Defined by the linker.
-  extern char _Heap_Limit; // Defined by the linker.
-
-  static char* current_heap_end;
-  char* current_block_address;
-
-  if (current_heap_end == 0)
-    current_heap_end = &_Heap_Begin;
-
-  current_block_address = current_heap_end;
-
-  // Need to align heap to word boundary, else will get
-  // hard faults on Cortex-M0. So we assume that heap starts on
-  // word boundary, hence make sure we always add a multiple of
-  // 4 to it.
-  incr = (incr + 3) & (~3); // align value to 4
-  if (current_heap_end + incr > &_Heap_Limit)
-    {
-      // Some of the libstdc++-v3 tests rely upon detecting
-      // out of memory errors, so do not abort here.
-#if 0
-      extern void abort (void);
-
-      _write (1, "_sbrk: Heap and stack collision\n", 32);
-
-      abort ();
-#else
-      // Heap has overflowed
-      errno = ENOMEM;
-      return (caddr_t) - 1;
-#endif
-    }
-
-  current_heap_end += incr;
-
-  return (caddr_t) current_block_address;
-}
-
-// ----------------------------------------------------------------------------
-
 #if !defined(USE_SEMIHOSTING)
-
-// If you don't like this indirection, replace it with
-// the actual vendor device name.
-#include "cmsis_device.h"
-
-// Usually main() doesn't return, but if it does, on Debug
-// we'll enter an infinite loop, to be noticed when halting the debugger
-// while on Release we restart using the NVIC.
-//
-// You can redefine it in the application, if more functionality
-// is required.
-
-void
-__attribute__((weak))
-_exit(int code __attribute__((unused)))
-{
-#if defined(DEBUG)
-  while (1)
-  ;
-#else
-  NVIC_SystemReset();
-  while (1)
-    ;
-#endif
-}
 
 // ----------------------------------------------------------------------------
 
 #include <_ansi.h>
 #include <_syslist.h>
-//#include <errno.h>
+#include <errno.h>
 //#include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <sys/times.h>
 #include <limits.h>
+
+void
+__initialize_args(int* p_argc, char*** p_argv);
 
 // This is the standard default implementation for the routine to
 // process args. It returns a single empty arg.
@@ -110,7 +37,7 @@ _exit(int code __attribute__((unused)))
 // some args in a non-volatile memory.
 
 void __attribute__((weak))
-__initialise_args(int* p_argc, char*** p_argv)
+__initialize_args(int* p_argc, char*** p_argv)
 {
   // By the time we reach this, the data and bss should have been initialised.
 
@@ -132,6 +59,71 @@ __initialise_args(int* p_argc, char*** p_argv)
 }
 
 // ----------------------------------------------------------------------------
+
+
+// Forward declarations
+
+int
+_chown(const char* path, uid_t owner, gid_t group);
+
+int
+_close(int fildes);
+
+int
+_execve(char* name, char** argv, char** env);
+
+int
+_fork(void);
+
+int
+_fstat(int fildes, struct stat* st);
+
+int
+_getpid(void);
+
+int
+_gettimeofday(struct timeval* ptimeval, void* ptimezone);
+
+int
+_isatty(int file);
+
+int
+_kill(int pid, int sig);
+
+int
+_link(char* existing, char* _new);
+
+int
+_lseek(int file, int ptr, int dir);
+
+int
+_open(char* file, int flags, int mode);
+
+int
+_read(int file, char* ptr, int len);
+
+int
+_readlink(const char* path, char* buf, size_t bufsize);
+
+int
+_stat(const char* file, struct stat* st);
+
+int
+_symlink(const char* path1, const char* path2);
+
+clock_t
+_times(struct tms* buf);
+
+int
+_unlink(char* name);
+
+int
+_wait(int* status);
+
+int
+_write(int file, char* ptr, int len);
+
+// Definitions
 
 int __attribute__((weak))
 _chown(const char* path __attribute__((unused)),
@@ -201,7 +193,8 @@ _kill(int pid __attribute__((unused)), int sig __attribute__((unused)))
 }
 
 int __attribute__((weak))
-_link(char* existing __attribute__((unused)), char* _new __attribute__((unused)))
+_link(char* existing __attribute__((unused)),
+    char* _new __attribute__((unused)))
 {
   errno = ENOSYS;
   return -1;
@@ -259,7 +252,7 @@ clock_t __attribute__((weak))
 _times(struct tms* buf __attribute__((unused)))
 {
   errno = ENOSYS;
-  return -1;
+  return ((clock_t) -1);
 }
 
 int __attribute__((weak))
@@ -303,14 +296,14 @@ _write(int file __attribute__((unused)), char* ptr __attribute__((unused)),
 #include <time.h>
 #include <sys/time.h>
 #include <sys/times.h>
-//#include <errno.h>
+#include <errno.h>
 #include <reent.h>
 #include <unistd.h>
 #include <sys/wait.h>
 #include <ctype.h>
 #include <signal.h>
 
-#include "semihosting.h"
+#include "arm/semihosting.h"
 
 int
 __attribute__((noreturn))
@@ -320,7 +313,7 @@ void
 __attribute__((noreturn))
 _exit (int status);
 
-#if 0
+#if 1
 /* Forward prototypes.  */
 int
 _system (const char*);
@@ -339,7 +332,7 @@ _link (void);
 #endif
 int
 _stat (const char*, struct stat*);
-#if 0
+#if 1
 int
 _fstat (int, struct stat*);
 int
@@ -372,6 +365,9 @@ _swiread (int, char*, int);
 void
 initialise_monitor_handles (void);
 
+void
+__initialize_args (int* p_argc, char*** p_argv);
+
 static int
 checkerror (int);
 static int
@@ -391,7 +387,7 @@ typedef struct
   }CommandLineBlock;
 
 void
-__initialise_args (int* p_argc, char*** p_argv)
+__initialize_args (int* p_argc, char*** p_argv)
   {
 
     // Array of chars to receive the command line from the host
@@ -419,7 +415,7 @@ __initialise_args (int* p_argc, char*** p_argv)
         // The command line is a null terminated string
         char* p = cmdBlock.pCommandLine;
 
-        char delim = '\0';
+        int delim = '\0';
         int ch;
 
         while ((ch = *p) != '\0')
@@ -809,7 +805,7 @@ int
 _swiopen (const char* path, int flags)
   {
     int aflags = 0, fh;
-    int block[3];
+    uint32_t block[3];
 
     int fd = newslot ();
 
@@ -853,9 +849,9 @@ _swiopen (const char* path, int flags)
         aflags |= 8;
       }
 
-    block[0] = (int) path;
+    block[0] = (uint32_t) path;
     block[2] = strlen (path);
-    block[1] = aflags;
+    block[1] = (uint32_t) aflags;
 
     fh = call_host (SEMIHOSTING_SYS_OPEN, block);
 
@@ -979,8 +975,8 @@ int
 _unlink (const char* path)
   {
     int res;
-    int block[2];
-    block[0] = (int) path;
+    uint32_t block[2];
+    block[0] = (uint32_t) path;
     block[1] = strlen (path);
     res = call_host (SEMIHOSTING_SYS_REMOVE, block);
 
@@ -1016,7 +1012,7 @@ _clock (void)
   {
     clock_t timeval;
 
-    timeval = call_host (SEMIHOSTING_SYS_CLOCK, NULL);
+    timeval = (clock_t)call_host (SEMIHOSTING_SYS_CLOCK, NULL);
     return timeval;
   }
 
@@ -1062,7 +1058,7 @@ _isatty (int fd)
 int
 _system (const char* s)
   {
-    int block[2];
+    uint32_t block[2];
     int e;
 
     /* Hmmm.  The ARM debug interface specification doesn't say whether
@@ -1070,7 +1066,7 @@ _system (const char* s)
      meaning to its return value.  Try to do something reasonable....  */
     if (!s)
     return 1; /* maybe there is a shell available? we can hope. :-P */
-    block[0] = (int) s;
+    block[0] = (uint32_t) s;
     block[1] = strlen (s);
     e = checkerror (call_host (SEMIHOSTING_SYS_SYSTEM, block));
     if ((e >= 0) && (e < 256))
@@ -1089,12 +1085,35 @@ _system (const char* s)
 int
 _rename (const char* oldpath, const char* newpath)
   {
-    int block[4];
-    block[0] = (int) oldpath;
+    uint32_t block[4];
+    block[0] = (uint32_t) oldpath;
     block[1] = strlen (oldpath);
-    block[2] = (int) newpath;
+    block[2] = (uint32_t) newpath;
     block[3] = strlen (newpath);
     return checkerror (call_host (SEMIHOSTING_SYS_RENAME, block)) ? -1 : 0;
+  }
+
+// ----------------------------------------------------------------------------
+// Required by Google Tests
+
+int
+mkdir(const char *path __attribute__((unused)), mode_t mode __attribute__((unused)))
+  {
+#if 0
+    // always return true
+    return 0;
+#else
+    errno = ENOSYS;
+    return -1;
+#endif
+  }
+
+char *
+getcwd(char *buf, size_t size)
+  {
+    // no cwd available via semihosting, so we use the temporary folder
+    strncpy(buf, "/tmp", size);
+    return buf;
   }
 
 #endif

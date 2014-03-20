@@ -32,6 +32,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<item value="semihosting" label="Semihosting (POSIX system calls via host)" />
 		</property>
 
+		<property id="CMmostWarnings" label="%CM.mostWarnings.label"
+			description="%CM.mostWarnings.description" type="boolean" default="true"
+			hidden="false" persist="true" />
+
 		<property id="CMuseNano" label="%CM.useNano.label"
 			description="%CM.useNano.description" type="boolean" default="true"
 			hidden="false" persist="true" />
@@ -47,8 +51,8 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		<property id="sourceDir" label="%CM.sourceDir.label"
 			description="%CM.sourceDir.description" type="input" default="%CM.sourceDir.default"
 			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
-		<property id="libsDir" label="%CM.libsDir.label" description="%CM.libsDir.description"
-			type="input" default="%CM.libsDir.default" pattern="[a-zA-Z0-9]+"
+		<property id="sysDir" label="%CM.sysDir.label" description="%CM.sysDir.description"
+			type="input" default="%CM.sysDir.default" pattern="[a-zA-Z0-9]+"
 			mandatory="true" persist="true" />
 		<property id="cmsisDir" label="%CM.cmsisDir.label"
 			description="%CM.cmsisDir.description" type="input" default="%CM.cmsisDir.default"
@@ -60,9 +64,6 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			description="%CM.ldscriptsDir.description" type="input"
 			default="%CM.ldscriptsDir.default" pattern="[a-zA-Z0-9]+" mandatory="true"
 			persist="true" />
-		<property id="vendorDir" label="%CM.vendorDir.label"
-			description="%CM.vendorDir.description" type="input" default="%CM.vendorDir.default"
-			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
 		<property id="deviceName" label="%CM.deviceName.label"
 			description="%CM.deviceName.description" type="input"
 			default="%CM.deviceName.default" pattern="[a-zA-Z0-9]+" mandatory="true"
@@ -191,18 +192,18 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 	</if>
 
 	<if condition="1==1">
-		<!-- libs as src -->
+		<!-- system as src -->
 		<process type="org.eclipse.cdt.core.CreateSourceFolder">
 			<simple name="projectName" value="$(projectName)" />
-			<simple name="path" value="$(libsDir)" />
+			<simple name="path" value="$(sysDir)" />
 		</process>
 	</if>
 
 	<if condition="1==1">
-		<!-- libs/CMSIS -->
+		<!-- system/include/cmsis -->
 		<process type="org.eclipse.cdt.core.CreateFolder">
 			<simple name="projectName" value="$(projectName)" />
-			<simple name="path" value="$(libsDir)/$(cmsisDir)/$(includeDir)" />
+			<simple name="path" value="$(sysDir)/$(includeDir)/$(cmsisDir)" />
 		</process>
 
 		<!-- add to include paths -->
@@ -214,19 +215,29 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
 					<simple-array name="values">
-						<element value="&quot;../$(libsDir)/$(cmsisDir)/$(includeDir)&quot;" />
+						<element value="&quot;../$(sysDir)/$(includeDir)&quot;" />
+					</simple-array>
+					<simple name="path" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;../$(sysDir)/$(includeDir)/$(cmsisDir)&quot;" />
 					</simple-array>
 					<simple name="path" value="" />
 				</element>
 			</complex-array>
 		</process>
+	</if>
 
+	<if condition="1==1">
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="$(commonDir)/libs/CMSIS/README.txt" />
-					<simple name="target" value="$(libsDir)/$(cmsisDir)/README.txt" />
+					<simple name="source" value="$(commonDir)/system/include/cmsis/README.txt" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)/README.txt" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -237,119 +248,192 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<complex-array name="files">
 				<element>
 					<simple name="source"
-						value="$(commonDir)/libs/CMSIS/Include/arm_common_tables.h" />
+						value="$(commonDir)/system/include/cmsis/arm_common_tables.h" />
 					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/arm_common_tables.h" />
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/arm_common_tables.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="$(commonDir)/libs/CMSIS/Include/arm_const_structs.h" />
+						value="$(commonDir)/system/include/cmsis/arm_const_structs.h" />
 					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/arm_const_structs.h" />
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/arm_const_structs.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="$(commonDir)/libs/CMSIS/Include/arm_math.h" />
+					<simple name="source" value="$(commonDir)/system/include/cmsis/arm_math.h" />
 					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/arm_math.h" />
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/arm_math.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="$(commonDir)/libs/CMSIS/Include/core_cm0.h" />
+					<simple name="source" value="$(commonDir)/system/include/cmsis/core_cm0.h" />
 					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cm0.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(commonDir)/libs/CMSIS/Include/core_cm0plus.h" />
-					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cm0plus.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/libs/CMSIS/Include/core_cm3.h" />
-					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cm3.h" />
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cm0.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="$(commonDir)/libs/CMSIS/Include/core_cm4_simd.h" />
+						value="$(commonDir)/system/include/cmsis/core_cm0plus.h" />
 					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cm4_simd.h" />
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cm0plus.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="$(commonDir)/libs/CMSIS/Include/core_cm4.h" />
+					<simple name="source" value="$(commonDir)/system/include/cmsis/core_cm3.h" />
 					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cm4.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/libs/CMSIS/Include/core_cmFunc.h" />
-					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cmFunc.h" />
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cm3.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="$(commonDir)/libs/CMSIS/Include/core_cmInstr.h" />
+						value="$(commonDir)/system/include/cmsis/core_cm4_simd.h" />
 					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cmInstr.h" />
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cm4_simd.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="$(commonDir)/libs/CMSIS/Include/core_sc000.h" />
+					<simple name="source" value="$(commonDir)/system/include/cmsis/core_cm4.h" />
 					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_sc000.h" />
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cm4.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="$(commonDir)/libs/CMSIS/Include/core_sc300.h" />
+					<simple name="source" value="$(commonDir)/system/include/cmsis/core_cmFunc.h" />
 					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_sc300.h" />
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cmFunc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(commonDir)/system/include/cmsis/core_cmInstr.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cmInstr.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/include/cmsis/core_sc000.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_sc000.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/include/cmsis/core_sc300.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_sc300.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
 		</process>
+	</if>
 
-		<!-- TODO: copy license agreement -->
+	<if condition="1==1">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="$(commonDir)/system/include/arm/semihosting.h" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/arm/semihosting.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="$(commonDir)/system/include/cortexm/ExceptionHandlers.h" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/cortexm/ExceptionHandlers.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/cortexm/_initialize_hardware.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/cortexm/_initialize_hardware.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/cortexm/_reset_hardware.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/cortexm/_reset_hardware.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/cortexm/exception_handlers.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/cortexm/exception_handlers.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/newlib/_exit.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_exit.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/newlib/_sbrk.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_sbrk.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/newlib/_startup.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_startup.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/newlib/_syscalls.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_syscalls.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/newlib/_write.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_write.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/newlib/trace.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/trace.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/newlib/README.txt" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/README.txt" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="$(fileExtension)==cpp">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/newlib/hacks.cpp" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/hacks.cpp" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
 	</if>
 
 	<if condition="1==1">
 		<!-- libs/Vendor/DEVICE/include -->
-		<process type="org.eclipse.cdt.core.CreateFolder">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="path"
-				value="$(libsDir)/$(vendorDir)/$(deviceName)/$(includeDir)" />
-		</process>
-
-		<!-- add to include paths -->
-		<process
-			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="resourcePaths">
-				<element>
-					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
-					<simple-array name="values">
-						<element
-							value="&quot;../$(libsDir)/$(vendorDir)/$(deviceName)/$(includeDir)&quot;" />
-					</simple-array>
-					<simple name="path" value="" />
-				</element>
-			</complex-array>
-		</process>
 
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="$(commonDir)/libs/Vendor/DEVICE/README.txt" />
+					<simple name="source" value="$(commonDir)/libs/Vendor/DEVICE/Include/README_DEVICE.txt" />
 					<simple name="target"
-						value="$(libsDir)/$(vendorDir)/$(deviceName)/README.txt" />
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/README_DEVICE.txt" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -362,21 +446,33 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="source"
 						value="$(commonDir)/libs/Vendor/DEVICE/Include/cmsis_device.h" />
 					<simple name="target"
-						value="$(libsDir)/$(vendorDir)/$(deviceName)/$(includeDir)/cmsis_device.h" />
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/cmsis_device.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
 						value="$(commonDir)/libs/Vendor/DEVICE/Include/DEVICE.h" />
 					<simple name="target"
-						value="$(libsDir)/$(vendorDir)/$(deviceName)/$(includeDir)/$(deviceName).h" />
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/$(deviceName).h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
 						value="$(commonDir)/libs/Vendor/DEVICE/Include/system_DEVICE.h" />
 					<simple name="target"
-						value="$(libsDir)/$(vendorDir)/$(deviceName)/$(includeDir)/system_$(deviceName).h" />
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/system_$(deviceName).h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="$(commonDir)/libs/Vendor/DEVICE/Source/README_DEVICE.txt" />
+					<simple name="target"
+						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/README_DEVICE.txt" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -389,92 +485,14 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="source"
 						value="$(commonDir)/libs/Vendor/DEVICE/Source/system_DEVICE.c" />
 					<simple name="target"
-						value="$(libsDir)/$(vendorDir)/$(deviceName)/$(sourceDir)/system_$(deviceName).c" />
+						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/system_$(deviceName).c" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
 						value="$(commonDir)/libs/Vendor/DEVICE/Source/vectors_DEVICE.c" />
 					<simple name="target"
-						value="$(libsDir)/$(vendorDir)/$(deviceName)/$(sourceDir)/vectors_$(deviceName).c" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-	</if>
-
-	<if condition="1==1">
-		<!-- libs/newlib/include -->
-		<process type="org.eclipse.cdt.core.CreateFolder">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="path" value="$(libsDir)/$(newlibDir)/$(includeDir)" />
-		</process>
-
-		<!-- add to include paths -->
-		<process
-			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="resourcePaths">
-				<element>
-					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
-					<simple-array name="values">
-						<element value="&quot;../$(libsDir)/$(newlibDir)/$(includeDir)&quot;" />
-					</simple-array>
-					<simple name="path" value="" />
-				</element>
-			</complex-array>
-		</process>
-
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="$(commonDir)/libs/newlib/README.txt" />
-					<simple name="target" value="$(libsDir)/$(newlibDir)/README.txt" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source"
-						value="$(commonDir)/libs/newlib/include/semihosting.h" />
-					<simple name="target"
-						value="$(libsDir)/$(newlibDir)/$(includeDir)/semihosting.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="$(commonDir)/libs/newlib/src/_write.c" />
-					<simple name="target" value="$(libsDir)/$(newlibDir)/$(sourceDir)/_write.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/libs/newlib/src/cmsis_startup.c" />
-					<simple name="target"
-						value="$(libsDir)/$(newlibDir)/$(sourceDir)/cmsis_startup.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(commonDir)/libs/newlib/src/cortexm_handlers.c" />
-					<simple name="target"
-						value="$(libsDir)/$(newlibDir)/$(sourceDir)/cortexm_handlers.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/libs/newlib/src/syscalls.c" />
-					<simple name="target"
-						value="$(libsDir)/$(newlibDir)/$(sourceDir)/syscalls.c" />
+						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_$(deviceName).c" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -524,6 +542,113 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.extrawarn" />
 					<simple name="value" value="true" />
 					<simple name="path" value="" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(CMmostWarnings) == true" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.unused" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.uninitialized" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.missingdeclaration" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.conversion" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.pointerarith" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.padded" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.shadow" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.logicalop" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.agreggatereturn" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.floatequal" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(CMmostWarnings) == true" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.warning.missingprototypes" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.warning.strictprototypes" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.warning.badfunctioncast" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
 				</element>
 			</complex-array>
 		</process>
@@ -632,6 +757,57 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 	</if>
 
 	<if condition="$(fileExtension)==cpp">
+	
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(CMmostWarnings) == true" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warnabi" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.ctordtorprivacy" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.noexcept" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.nonvirtualdtor" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.strictnullsentinel" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.signpromo" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
+	
 		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="resourcePaths">
@@ -661,14 +837,18 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="value" value="true" />
 					<simple name="path" value="" />
 				</element>
-				<!--  
 				<element>
 					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.nousecxaatexit" />
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nousecxaatexit" />
 					<simple name="value" value="true" />
 					<simple name="path" value="" />
 				</element>
-				-->
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nothreadsafestatics" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+				</element>
 			</complex-array>
 		</process>
 	</if>

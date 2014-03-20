@@ -1,10 +1,10 @@
 //
-// This file is part of the GNU ARM Eclipse Plug-ins project.
-// Copyright (c) 2014 Liviu Ionescu
+// This file is part of the µOS++ III distribution.
+// Copyright (c) 2014 Liviu Ionescu.
 //
 
-#ifndef SEMIHOSTING_H_
-#define SEMIHOSTING_H_
+#ifndef ARM_SEMIHOSTING_H_
+#define ARM_SEMIHOSTING_H_
 
 enum OperationNumber
 {
@@ -92,4 +92,4 @@ report_exception (int reason)
     ;
 }
 
-#endif /* SEMIHOSTING_H_ */
+#endif // ARM_SEMIHOSTING_H_
