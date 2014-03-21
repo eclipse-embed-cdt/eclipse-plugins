@@ -239,6 +239,27 @@
          <simple name="propertyName"/>
          <simple name="propertyValue"/>
       </processType>
+
+      <processType
+            name="SetPropertyToPluginResource"
+            processRunner="ilg.gnuarmeclipse.templates.core.processes.SetPropertyToPluginResource">
+         <simple name="pluginId"/>
+         <simple name="relativePath"/>
+         <simple name="propertyName"/>
+      </processType>
+
+      <processType
+            name="AddAbsolutePathFiles"
+            processRunner="ilg.gnuarmeclipse.templates.core.processes.AddAbsolutePathFiles">
+         <simple name="projectName"/>
+         <complexArray name="files">
+            <baseType>
+               <simple name="source"/>
+               <simple name="target"/>
+               <simple name="replaceable"/>
+            </baseType>
+         </complexArray>
+      </processType>
       
    </extension>
 
