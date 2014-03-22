@@ -181,7 +181,7 @@ _start(void)
 
   __initialize_hardware();
 
-  // Eventually get the args (useful in semihosting configurations).
+  // Get the args (useful in semihosting configurations).
   int argc;
   char** argv;
   __initialize_args(&argc, &argv);
