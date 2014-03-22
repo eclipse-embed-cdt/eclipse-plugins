@@ -1,5 +1,5 @@
 //============================================================================
-// Name        : $(baseName).cpp
+// Name        : main.cpp
 // Author      : $(author)
 // Version     :
 // Copyright   : $(copyright)
