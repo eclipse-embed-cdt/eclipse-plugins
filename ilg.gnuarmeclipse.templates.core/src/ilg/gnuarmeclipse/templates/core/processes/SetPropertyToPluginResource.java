@@ -8,8 +8,10 @@ import org.eclipse.cdt.core.templateengine.TemplateCore;
 import org.eclipse.cdt.core.templateengine.process.ProcessArgument;
 import org.eclipse.cdt.core.templateengine.process.ProcessFailureException;
 import org.eclipse.cdt.core.templateengine.process.ProcessRunner;
+import org.eclipse.cdt.core.templateengine.process.processes.Messages;
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
@@ -27,19 +29,25 @@ public class SetPropertyToPluginResource extends ProcessRunner {
 
 		Bundle bundle = Platform.getBundle(bundleId);
 		URL url = FileLocator.find(bundle, new Path(relativePath), null);
+		if (url == null) {
+			throw new ProcessFailureException(getProcessMessage(processId,
+					IStatus.ERROR,
+					"Bundle resource not found " + bundle + " " + relativePath)); //$NON-NLS-1$
+		}
 		String location;
 		try {
 			location = FileLocator.resolve(url).getPath();
-			
+
 			Map<String, String> values = template.getValueStore();
 			if (values.containsKey(propertyName)) {
 				values.put(propertyName, location);
 			} else {
-				System.out.println("Property " + propertyName + " not defined.");
+				System.out
+						.println("Property " + propertyName + " not defined.");
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new ProcessFailureException(getProcessMessage(processId,
+					IStatus.ERROR, "Cannot resolve url " + url)); //$NON-NLS-1$
 		}
 
 	}
