@@ -7,13 +7,19 @@
 	<property-group id="chip" label="%STM32F4xx.group.target.label"
 		description="%STM32F4xx.group.target.description" type="PAGES-ONLY"
 		help="help.html">
-		<property id="STM32F4chipFamily" label="%STM32F4xx.chipFamily.label"
+		<property id="STM32F4chipFamilyCube" label="%STM32F4xx.chipFamily.label"
 			description="%STM32F4xx.chipFamily.description" type="select"
-			default="STM32F40_41xxx" hidden="false" persist="true">
-			<item value="STM32F401xx" label="STM32F401xx" />
-			<item value="STM32F40_41xxx" label="STM32F40xxx/41xxx" />
-			<item value="STM32F427_437xx" label="STM32F427xx/437xx" />
-			<item value="STM32F429_439xx" label="STM32F429xx/439xx" />
+			default="STM32F407xx" hidden="false" persist="true">
+			<item value="STM32F401xC" label="STM32F401xC" />
+			<item value="STM32F401xE" label="STM32F401xE" />			
+			<item value="STM32F405xx" label="STM32F405xx" />
+			<item value="STM32F407xx" label="STM32F407xx" />
+			<item value="STM32F415xx" label="STM32F415xx" />
+			<item value="STM32F417xx" label="STM32F417xx" />
+			<item value="STM32F427xx" label="STM32F427xx" />
+			<item value="STM32F437xx" label="STM32F437xx" />
+			<item value="STM32F429xx" label="STM32F429xx" />
+			<item value="STM32F439xx" label="STM32F439xx" />
 		</property>
 		<property id="STM32F4flashSize" label="%STM32F4xx.flashSize.label"
 			description="%STM32F4xx.flashSize.description" type="input" pattern="[0-9]*"
@@ -30,55 +36,56 @@
 			<item value="blinky" label="Blinky (blink a led)" />
 		</property>
 
-		<property id="STM32F4syscalls" label="%STM32F4xx.syscalls.label"
-			description="%STM32F4xx.syscalls.description" type="select" default="retarget"
-			hidden="false" persist="true">
-			<item value="none" label="Standalone (no syscalls)" />
-			<item value="retarget" label="Retargetting (libnosys)" />
-			<item value="semihosting" label="Semihosting (librdimon)" />
+		<property id="syscalls" label="%syscalls.label" description="%syscalls.description"
+			type="select" default="retarget" hidden="false" persist="true">
+			<item value="none" label="Freestanding (no POSIX system calls)" />
+			<item value="retarget"
+				label="POSIX (system calls implemented by application code)" />
+			<item value="semihosting" label="Semihosting (POSIX system calls via host)" />
 		</property>
 
-		<property id="STM32F4useNano" label="%STM32F4xx.useNano.label"
-			description="%STM32F4xx.useNano.description" type="boolean" default="true"
+		<property id="trace" label="%trace.label" description="%trace.description"
+			type="select" default="itm" hidden="false" persist="true">
+			<item value="none" label="None (no trace output)" />
+			<item value="itm" label="ARM ITM (via SWO)" />
+			<item value="stdout" label="Semihosting STDOUT stream" />
+			<item value="debug" label="Semihosting DEBUG channel" />
+		</property>
+
+		<property id="useMostWarnings" label="%mostWarnings.label"
+			description="%mostWarnings.description" type="boolean" default="true"
 			hidden="false" persist="true" />
+
+		<property id="useOg" label="%useOg.label" description="%useOg.description"
+			type="boolean" default="true" hidden="false" persist="true" />
+
+		<property id="useNano" label="%useNano.label" description="%useNano.description"
+			type="boolean" default="true" hidden="false" persist="true" />
 
 	</property-group>
 
-	<property-group id="folders" label="%STM32F4xx.group.folders.label"
-		description="%STM32F4xx.group.folders.description" type="PAGES-ONLY"
-		help="help.html">
-		<property id="includeDir" label="%STM32F4xx.includeDir.label"
-			description="%STM32F4xx.includeDir.description" type="input"
-			default="%STM32F4xx.includeDir.default" pattern="[a-zA-Z0-9]+"
+	<property-group id="folders" label="%group.folders.label"
+		description="%group.folders.description" type="PAGES-ONLY" help="help.html">
+		<property id="includeDir" label="%includeDir.label"
+			description="%includeDir.description" type="input"
+			default="%includeDir.default" pattern="[a-zA-Z0-9]+" mandatory="true"
+			persist="true" />
+		<property id="sourceDir" label="%sourceDir.label"
+			description="%sourceDir.description" type="input" default="%sourceDir.default"
+			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
+		<property id="sysDir" label="%sysDir.label" description="%sysDir.description"
+			type="input" default="%sysDir.default" pattern="[a-zA-Z0-9]+"
 			mandatory="true" persist="true" />
-		<property id="sourceDir" label="%STM32F4xx.sourceDir.label"
-			description="%STM32F4xx.sourceDir.description" type="input"
-			default="%STM32F4xx.sourceDir.default" pattern="[a-zA-Z0-9]+"
-			mandatory="true" persist="true" />
-		<property id="libsDir" label="%STM32F4xx.libsDir.label"
-			description="%STM32F4xx.libsDir.description" type="input"
-			default="%STM32F4xx.libsDir.default" pattern="[a-zA-Z0-9]+"
-			mandatory="true" persist="true" />
-		<property id="cmsisDir" label="%STM32F4xx.cmsisDir.label"
-			description="%STM32F4xx.cmsisDir.description" type="input"
-			default="%STM32F4xx.cmsisDir.default" pattern="[a-zA-Z0-9]+"
-			mandatory="true" persist="true" />
-		<property id="periphDir" label="%STM32F4xx.periphDir.label"
-			description="%STM32F4xx.periphDir.description" type="input"
-			default="%STM32F4xx.periphDir.default" pattern="[a-zA-Z0-9]+"
-			mandatory="true" persist="true" />
-		<property id="miscDir" label="%STM32F4xx.miscDir.label"
-			description="%STM32F4xx.miscDir.description" type="input"
-			default="%STM32F4xx.miscDir.default" pattern="[a-zA-Z0-9]+"
-			mandatory="true" persist="true" />
-		<property id="ldscriptsDir" label="%STM32F4xx.ldscriptsDir.label"
-			description="%STM32F4xx.ldscriptsDir.description" type="input"
-			default="%STM32F4xx.ldscriptsDir.default" pattern="[a-zA-Z0-9]+"
-			mandatory="true" persist="true" />
-
-		<!-- <property id="semihostingOptions" label="%STM32F4xx.semihostingOptions.label" 
-			description="%STM32F4xx.semihostingOptions.description" type="input" default="%STM32F4xx.semihostingOptions.default" 
-			pattern=".*" mandatory="false" persist="true" /> -->
+		<property id="cmsisDir" label="%cmsisDir.label"
+			description="%cmsisDir.description" type="input" default="%cmsisDir.default"
+			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
+		<property id="newlibDir" label="%newlibDir.label"
+			description="%newlibDir.description" type="input" default="%newlibDir.default"
+			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
+		<property id="ldscriptsDir" label="%ldscriptsDir.label"
+			description="%ldscriptsDir.description" type="input"
+			default="%ldscriptsDir.default" pattern="[a-zA-Z0-9]+" mandatory="true"
+			persist="true" />
 
 		<property id="fileExtension" label="Source file extension"
 			description="Will be set to cpp for ccnature" mandatory="true"
@@ -89,7 +96,7 @@
 			mandatory="true" hidden="true" default="undefined" persist="false" />
 
 		<property id="chipFamily" label="Chip family"
-			description="Will be set to STM32F4chipFamily" mandatory="true"
+			description="Will be set to STM32F4chipFamilyCube" mandatory="true"
 			hidden="true" default="undefined" persist="false" />
 
 		<property id="shortChipFamily" label="Shortened chip family"
@@ -99,11 +106,19 @@
 		<property id="traceDestination" label="Trace destination"
 			description="Will be set to SWO" mandatory="true" hidden="true"
 			default="SWO" persist="false" />
-<!-- 
-		<property id="uOsDir" label="µOS++ folder" description="Will be set to micro-os-plus"
-			mandatory="true" hidden="true" default="micro-os-plus" persist="false" />
--->
+			
+		<property id="commonDir" label="common files"
+			description="Will be set to ...templates.core/templates/common/ folder"
+			mandatory="true" hidden="true" default="commonDir" persist="false" />
+
+		<property id="osDir" label="common files"
+			description="Will be set to ../micro-os-plus folder"
+			mandatory="true" hidden="true" default="../micro-os-plus" persist="false" />
+
 	</property-group>
+
+	<!-- Note: the redundant 'condition="1==1"' is a workaround to control the 
+		evaluation order. Without it, processes are evaluated after all ifs. -->
 
 	<if condition="1==1">
 		<process type="org.eclipse.cdt.managedbuilder.core.NewManagedProject">
@@ -111,19 +126,30 @@
 			<simple name="artifactExtension" value="elf" />
 			<simple name="isCProject" value="true" />
 		</process>
+	</if>
 
+	<!-- ================================================================== -->
+
+	<if condition="1==1">
 		<process type="ilg.gnuarmeclipse.templates.core.SetPropertyIfHasNature">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="natureString" value="org.eclipse.cdt.core.ccnature" />
 			<simple name="propertyName" value="fileExtension" />
 			<simple name="propertyValue" value="cpp" />
 		</process>
-
+		
+		<process
+			type="ilg.gnuarmeclipse.templates.core.SetPropertyToPluginResource">
+			<simple name="pluginId" value="ilg.gnuarmeclipse.templates.core" />
+			<simple name="relativePath" value="templates/common" />
+			<simple name="propertyName" value="commonDir" />
+		</process>
+		
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalSetProperty">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="condition" value="" />
 			<simple name="propertyName" value="chipFamily" />
-			<simple name="propertyValue" value="$(STM32F4chipFamily)" />
+			<simple name="propertyValue" value="$(STM32F4chipFamilyCube)" />
 		</process>
 
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalSetProperty">
@@ -132,13 +158,25 @@
 			<simple name="propertyName" value="CMSIS_name" />
 			<simple name="propertyValue" value="stm32f4xx" />
 		</process>
+	</if>
 
+	<!-- ================================================================== -->
+
+	<!-- Create include header folders -->
+	<!-- The order must be: -->
+	<!-- include -->
+	<!-- system/include -->
+	<!-- system/include/cmsis -->
+	<!-- system/include/stm32f4-hal -->
+
+	<if condition="1==1">
 		<!-- include -->
 		<process type="org.eclipse.cdt.core.CreateFolder">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="path" value="$(includeDir)" />
 		</process>
 
+		<!-- add to include paths -->
 		<process
 			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
 			<simple name="projectName" value="$(projectName)" />
@@ -153,25 +191,85 @@
 				</element>
 			</complex-array>
 		</process>
+	</if>
 
-		<process type="org.eclipse.cdt.core.AddFiles">
+	<if condition="1==1">
+		<!-- system/include -->
+		<!-- system/include/cmsis -->
+		<process type="org.eclipse.cdt.core.CreateFolder">
 			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
+			<simple name="path" value="$(sysDir)/$(includeDir)/$(cmsisDir)" />
+		</process>
+
+		<!-- add to include paths -->
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="resourcePaths">
 				<element>
-					<simple name="source" value="src/stm32f4xx_conf.h" />
-					<simple name="target" value="$(includeDir)/stm32f4xx_conf.h" />
-					<simple name="replaceable" value="true" />
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;../$(sysDir)/$(includeDir)&quot;" />
+					</simple-array>
+					<simple name="path" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;../$(sysDir)/$(includeDir)/$(cmsisDir)&quot;" />
+					</simple-array>
+					<simple name="path" value="" />
 				</element>
 			</complex-array>
 		</process>
+	</if>
 
+	<if condition="1==1">
+		<!-- system/include/$(CMSIS_name)-hal -->
+		<process type="org.eclipse.cdt.core.CreateFolder">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="path" value="$(sysDir)/$(includeDir)/stm32f4-hal" />
+		</process>
 
+		<!-- add to include paths -->
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;../$(sysDir)/$(includeDir)/stm32f4-hal&quot;" />
+					</simple-array>
+					<simple name="path" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
+
+	<!-- Create source folders -->
+	<if condition="1==1">
 		<!-- src -->
 		<process type="org.eclipse.cdt.core.CreateSourceFolder">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="path" value="$(sourceDir)" />
 		</process>
 	</if>
+
+	<if condition="1==1">
+		<!-- system -->
+		<process type="org.eclipse.cdt.core.CreateSourceFolder">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="path" value="$(sysDir)" />
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
 
 	<if condition="$(STM32F4content)==blinky">
 		<!-- main.c - retarget/semihosting/none - blinky -->
@@ -260,7 +358,7 @@
 				</element>
 				<element>
 					<simple name="source"
-						value="../common/src/main/main-end-blinky.$(fileExtension)" />
+						value="src/main-clock.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -295,7 +393,7 @@
 				</element>
 			</complex-array>
 		</process>
-		
+
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="condition" value="" />
@@ -328,7 +426,18 @@
 				</element>
 			</complex-array>
 		</process>
-		
+
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="src/stm32f4xx_hal_conf.h" />
+					<simple name="target" value="$(includeDir)/stm32f4xx_hal_conf.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
 	</if>
 
 	<if condition="$(STM32F4content)==empty">
@@ -392,19 +501,489 @@
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
+				<element>
+					<simple name="source"
+						value="src/main-clock.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
+
+	<!-- CMSIS files -->
+	<if condition="1==1">
+		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="$(commonDir)/system/include/cmsis/README_CMSIS.txt" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/README_CMSIS.txt" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="$(commonDir)/system/include/cmsis/arm_common_tables.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/arm_common_tables.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(commonDir)/system/include/cmsis/arm_const_structs.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/arm_const_structs.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/include/cmsis/arm_math.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/arm_math.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/include/cmsis/core_cm0.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cm0.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(commonDir)/system/include/cmsis/core_cm0plus.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cm0plus.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/include/cmsis/core_cm3.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cm3.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(commonDir)/system/include/cmsis/core_cm4_simd.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cm4_simd.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/include/cmsis/core_cm4.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cm4.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(commonDir)/system/include/cmsis/core_cmFunc.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cmFunc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(commonDir)/system/include/cmsis/core_cmInstr.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cmInstr.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(commonDir)/system/include/cmsis/core_sc000.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_sc000.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(commonDir)/system/include/cmsis/core_sc300.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_sc300.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
+
+	<!-- Vendor CMSIS files -->
+
+	<if condition="1==1">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="$(osDir)/stm32f4.pack/include/cmsis/$(CMSIS_name).h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/$(CMSIS_name).h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/stm32f4.pack/include/cmsis/system_$(CMSIS_name).h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/system_$(CMSIS_name).h" />
+					<simple name="replaceable" value="true" />
+				</element>
+
+				<element>
+					<simple name="source"
+						value="$(osDir)/stm32f4.pack/include/cmsis/stm32f401xc.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f401xc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/stm32f4.pack/include/cmsis/stm32f401xe.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f401xe.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/stm32f4.pack/include/cmsis/stm32f405xx.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f405xx.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/stm32f4.pack/include/cmsis/stm32f407xx.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f407xx.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/stm32f4.pack/include/cmsis/stm32f415xx.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f415xx.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/stm32f4.pack/include/cmsis/stm32f417xx.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f417xx.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/stm32f4.pack/include/cmsis/stm32f427xx.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f427xx.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/stm32f4.pack/include/cmsis/stm32f429xx.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f429xx.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/stm32f4.pack/include/cmsis/stm32f437xx.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f437xx.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/stm32f4.pack/include/cmsis/stm32f439xx.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f439xx.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/stm32f4.pack/include/cmsis/README_DEVICE.txt" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/README_DEVICE.txt" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="$(osDir)/stm32f4.pack/src/cmsis/system_$(CMSIS_name).c" />
+					<simple name="target"
+						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/system_$(CMSIS_name).c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4.pack/src/cmsis/vectors_$(CMSIS_name).c" />
+					<simple name="target"
+						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_$(CMSIS_name).c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4.pack/src/cmsis/README_DEVICE.txt" />
+					<simple name="target"
+						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/README_DEVICE.txt" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4.pack/include/cmsis/cmsis_device.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/cmsis_device.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
+
+	<!-- System files -->
+	<if condition="1==1">
+		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="$(commonDir)/system/include/arm/semihosting.h" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/arm/semihosting.h" />
+					<simple name="replaceable" value="true" />
+				</element>
 			</complex-array>
 		</process>
 	</if>
 
 	<if condition="1==1">
-		<!-- ldscripts -->
-		<process type="org.eclipse.cdt.core.CreateFolder">
+		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
 			<simple name="projectName" value="$(projectName)" />
-			<simple name="path" value="$(ldscriptsDir)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="$(commonDir)/system/include/cortexm/ExceptionHandlers.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/cortexm/ExceptionHandlers.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
 		</process>
 	</if>
 
-	<if condition="$(STM32F4chipFamily)==STM32F401xx">
+	<if condition="1==1">
+		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="$(commonDir)/system/src/cortexm/_initialize_hardware.c" />
+					<simple name="target"
+						value="$(sysDir)/$(sourceDir)/cortexm/_initialize_hardware.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(commonDir)/system/src/cortexm/_reset_hardware.c" />
+					<simple name="target"
+						value="$(sysDir)/$(sourceDir)/cortexm/_reset_hardware.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(commonDir)/system/src/cortexm/exception_handlers.c" />
+					<simple name="target"
+						value="$(sysDir)/$(sourceDir)/cortexm/exception_handlers.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/newlib/_exit.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_exit.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/newlib/_sbrk.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_sbrk.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/newlib/_startup.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_startup.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/newlib/_syscalls.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_syscalls.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/newlib/_write.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_write.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/newlib/trace.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/trace.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/newlib/README.txt" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/README.txt" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="$(fileExtension)==cpp">
+		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/newlib/hacks.cpp" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/hacks.cpp" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
+
+	<!-- Peripheral library -->
+	<if condition="1==1">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4-hal.pack/include/stm32f4-hal/stm32f4xx_hal.h" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/stm32f4-hal/stm32f4xx_hal.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4-hal.pack/include/stm32f4-hal/stm32f4xx_hal_cortex.h" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/stm32f4-hal/stm32f4xx_hal_cortex.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4-hal.pack/include/stm32f4-hal/stm32f4xx_hal_def.h" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/stm32f4-hal/stm32f4xx_hal_def.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4-hal.pack/include/stm32f4-hal/stm32f4xx_hal_gpio.h" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/stm32f4-hal/stm32f4xx_hal_gpio.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4-hal.pack/include/stm32f4-hal/stm32f4xx_hal_gpio_ex.h" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/stm32f4-hal/stm32f4xx_hal_gpio_ex.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4-hal.pack/include/stm32f4-hal/stm32f4xx_hal_rcc.h" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/stm32f4-hal/stm32f4xx_hal_rcc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4-hal.pack/include/stm32f4-hal/stm32f4xx_hal_rcc_ex.h" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/stm32f4-hal/stm32f4xx_hal_rcc_ex.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4-hal.pack/include/stm32f4-hal/stm32f4xx_hal_flash.h" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/stm32f4-hal/stm32f4xx_hal_flash.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4-hal.pack/include/stm32f4-hal/stm32f4xx_hal_flash_ex.h" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/stm32f4-hal/stm32f4xx_hal_flash_ex.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4-hal.pack/include/stm32f4-hal/stm32f4xx_hal_pwr.h" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/stm32f4-hal/stm32f4xx_hal_pwr.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4-hal.pack/include/stm32f4-hal/stm32f4xx_hal_pwr_ex.h" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/stm32f4-hal/stm32f4xx_hal_pwr_ex.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+		
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4-hal.pack/src/stm32f4-hal/stm32f4xx_hal.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/stm32f4-hal/stm32f4xx_hal.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4-hal.pack/src/stm32f4-hal/stm32f4xx_hal_cortex.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/stm32f4-hal/stm32f4xx_hal_cortex.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4-hal.pack/src/stm32f4-hal/stm32f4xx_hal_gpio.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/stm32f4-hal/stm32f4xx_hal_gpio.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4-hal.pack/src/stm32f4-hal/stm32f4xx_hal_flash.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/stm32f4-hal/stm32f4xx_hal_flash.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4-hal.pack/src/stm32f4-hal/stm32f4xx_hal_flash_ex.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/stm32f4-hal/stm32f4xx_hal_flash_ex.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4-hal.pack/src/stm32f4-hal/stm32f4xx_hal_pwr.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/stm32f4-hal/stm32f4xx_hal_pwr.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4-hal.pack/src/stm32f4-hal/stm32f4xx_hal_pwr_ex.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/stm32f4-hal/stm32f4xx_hal_pwr_ex.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4-hal.pack/src/stm32f4-hal/stm32f4xx_hal_rcc.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/stm32f4-hal/stm32f4xx_hal_rcc.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/stm32f4-hal.pack/src/stm32f4-hal/stm32f4xx_hal_rcc_ex.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/stm32f4-hal/stm32f4xx_hal_rcc_ex.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+		
+		<!-- TODO: add -->
+	</if>
+
+	<!-- ================================================================== -->
+
+	<!-- Linker files -->
+	<if condition="$(STM32F4chipFamilyCube)==STM32F401xC">
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
@@ -416,7 +995,19 @@
 			</complex-array>
 		</process>
 	</if>
-	<if condition="$(STM32F4chipFamily)==STM32F40_41xxx">
+	<if condition="$(STM32F4chipFamilyCube)==STM32F401xE">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="ldscripts/mem64.ld" />
+					<simple name="target" value="$(ldscriptsDir)/mem.ld" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F4chipFamilyCube)==STM32F405xx">
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
@@ -428,7 +1019,43 @@
 			</complex-array>
 		</process>
 	</if>
-	<if condition="$(STM32F4chipFamily)==STM32F427_437xx">
+	<if condition="$(STM32F4chipFamilyCube)==STM32F407xx">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="ldscripts/mem128.ld" />
+					<simple name="target" value="$(ldscriptsDir)/mem.ld" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F4chipFamilyCube)==STM32F415xx">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="ldscripts/mem128.ld" />
+					<simple name="target" value="$(ldscriptsDir)/mem.ld" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F4chipFamilyCube)==STM32F417xx">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="ldscripts/mem128.ld" />
+					<simple name="target" value="$(ldscriptsDir)/mem.ld" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F4chipFamilyCube)==STM32F427xx">
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
@@ -440,7 +1067,31 @@
 			</complex-array>
 		</process>
 	</if>
-	<if condition="$(STM32F4chipFamily)==STM32F429_439xx">
+	<if condition="$(STM32F4chipFamilyCube)==STM32F437xx">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="ldscripts/mem192.ld" />
+					<simple name="target" value="$(ldscriptsDir)/mem.ld" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F4chipFamilyCube)==STM32F429xx">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="ldscripts/mem192.ld" />
+					<simple name="target" value="$(ldscriptsDir)/mem.ld" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F4chipFamilyCube)==STM32F439xx">
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
@@ -471,947 +1122,10 @@
 		</process>
 	</if>
 
+	<!-- ================================================================== -->
+
+	<!-- Target options -->
 	<if condition="1==1">
-		<!-- $(cmsisDir) -->
-		<process type="org.eclipse.cdt.core.CreateFolder">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="path" value="$(libsDir)/$(cmsisDir)/$(includeDir)" />
-		</process>
-
-		<process
-			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="resourcePaths">
-				<element>
-					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
-					<simple-array name="values">
-						<element value="&quot;../$(libsDir)/$(cmsisDir)/$(includeDir)&quot;" />
-					</simple-array>
-					<simple name="path" value="" />
-				</element>
-			</complex-array>
-		</process>
-
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Device/ST/STM32F4xx/Include/stm32f4xx.h" />
-					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/stm32f4xx.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Device/ST/STM32F4xx/Include/system_stm32f4xx.h" />
-					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/system_stm32f4xx.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-
-			</complex-array>
-		</process>
-
-		<process type="org.eclipse.cdt.core.CreateSourceFolder">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="path" value="$(libsDir)" />
-		</process>
-
-		<process type="org.eclipse.cdt.core.CreateFolder">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="path" value="$(libsDir)/$(cmsisDir)/$(sourceDir)" />
-		</process>
-
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="src/system_stm32f4xx.c" />
-					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/system_stm32f4xx.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="../common/src/startup_cm.c" />
-					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/startup_cm.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="../common/src/core_handlers.c" />
-					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/core_handlers.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/vectors_stm32f4xx.c" />
-					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(sourceDir)/vectors_stm32f4xx.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Include/arm_common_tables.h" />
-					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/arm_common_tables.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Include/arm_const_structs.h" />
-					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/arm_const_structs.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Include/arm_math.h" />
-					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/arm_math.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Include/core_cm4.h" />
-					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cm4.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Include/core_cm4_simd.h" />
-					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cm4_simd.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Include/core_cmFunc.h" />
-					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cmFunc.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Include/core_cmInstr.h" />
-					<simple name="target"
-						value="$(libsDir)/$(cmsisDir)/$(includeDir)/core_cmInstr.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-
-		<!-- $(periphDir) -->
-		<process type="org.eclipse.cdt.core.CreateFolder">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="path" value="$(libsDir)/$(periphDir)/$(includeDir)" />
-		</process>
-
-		<process
-			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="resourcePaths">
-				<element>
-					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
-					<simple-array name="values">
-						<element value="&quot;../$(libsDir)/$(periphDir)/$(includeDir)&quot;" />
-					</simple-array>
-					<simple name="path" value="" />
-				</element>
-			</complex-array>
-		</process>
-
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/misc.h" />
-					<simple name="target" value="$(libsDir)/$(periphDir)/$(includeDir)/misc.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_adc.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_adc.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_can.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_can.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_crc.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_crc.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_cryp.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_cryp.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_dac.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_dac.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_dbgmcu.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_dbgmcu.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_dcmi.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_dcmi.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_dma.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_dma.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_dma2d.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_dma2d.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_exti.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_exti.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_flash.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_flash.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_fmc.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_fmc.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_fsmc.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_fsmc.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_gpio.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_gpio.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_hash.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_hash.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_i2c.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_i2c.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_iwdg.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_iwdg.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_ltdc.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_ltdc.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_pwr.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_pwr.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_rcc.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_rcc.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_rng.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_rng.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_rtc.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_rtc.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_sai.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_sai.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_sdio.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_sdio.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_spi.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_spi.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_syscfg.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_syscfg.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_tim.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_tim.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_usart.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_usart.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/inc/stm32f4xx_wwdg.h" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(includeDir)/stm32f4xx_wwdg.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-
-		<process type="org.eclipse.cdt.core.CreateFolder">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="path" value="$(libsDir)/$(periphDir)/$(sourceDir)" />
-		</process>
-
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/misc.c" />
-					<simple name="target" value="$(libsDir)/$(periphDir)/$(sourceDir)/misc.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_adc.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_adc.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_can.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_can.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_crc.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_crc.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_aes.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_cryp_aes.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_des.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_cryp_des.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp_tdes.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_cryp_tdes.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_cryp.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_cryp.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dac.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_dac.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dbgmcu.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_dbgmcu.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dcmi.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_dcmi.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dma.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_dma.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_dma2d.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_dma2d.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_exti.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_exti.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_flash.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_flash.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fmc.patched.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_fmc.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_fsmc.patched.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_fsmc.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_gpio.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_gpio.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_md5.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_hash_md5.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash_sha1.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_hash_sha1.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_hash.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_hash.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_i2c.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_i2c.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_iwdg.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_iwdg.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_ltdc.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_ltdc.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_pwr.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_pwr.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rcc.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_rcc.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rng.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_rng.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_rtc.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_rtc.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sai.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_sai.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_sdio.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_sdio.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_spi.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_spi.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_syscfg.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_syscfg.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_tim.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_tim.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_usart.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_usart.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/src/stm32f4xx_wwdg.c" />
-					<simple name="target"
-						value="$(libsDir)/$(periphDir)/$(sourceDir)/stm32f4xx_wwdg.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/README.txt" />
-					<simple name="target" value="$(libsDir)/README.txt" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/CMSIS/Device/ST/STM32F4xx/Release_Notes.html" />
-					<simple name="target" value="$(libsDir)/$(cmsisDir)/Release_Notes.html" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Libraries/STM32F4xx_StdPeriph_Driver/Release_Notes.html" />
-					<simple name="target" value="$(libsDir)/$(periphDir)/Release_Notes.html" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../originals/STM32F4xx_DSP_StdPeriph_Lib_V1.3.0/Release_Notes.html" />
-					<simple name="target" value="$(libsDir)/Release_Notes.html" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-
-		<process type="org.eclipse.cdt.core.CreateFolder">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="path" value="$(libsDir)/$(miscDir)/$(sourceDir)" />
-		</process>
-
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="../common/misc_readme.txt" />
-					<simple name="target" value="$(libsDir)/$(miscDir)/$(sourceDir)/README.txt" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="../misc/src/_sbrk.c" />
-					<simple name="target" value="$(libsDir)/$(miscDir)/$(sourceDir)/_sbrk.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="../misc/src/_exit.c" />
-					<simple name="target" value="$(libsDir)/$(miscDir)/$(sourceDir)/_exit.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-		
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(STM32F4syscalls) != semihosting" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="../misc/src/nosyscalls.c" />
-					<simple name="target"
-						value="$(libsDir)/$(miscDir)/$(sourceDir)/nosyscalls.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-
-		<process type="org.eclipse.cdt.core.CreateFolder">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="path" value="$(libsDir)/$(miscDir)/$(includeDir)" />
-		</process>
-
-		<process
-			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="resourcePaths">
-				<element>
-					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
-					<simple-array name="values">
-						<element value="&quot;../$(libsDir)/$(miscDir)/$(includeDir)&quot;" />
-					</simple-array>
-					<simple name="path" value="" />
-				</element>
-			</complex-array>
-		</process>
-
-	</if>
-
-	<if condition="$(STM32F4syscalls)==none">
-	</if>
-
-	<if condition="$(STM32F4syscalls)==retarget">
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="../misc/src/_write.c" />
-					<simple name="target" value="$(libsDir)/$(miscDir)/$(sourceDir)/_write.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="../misc/src/trace_impl.c" />
-					<simple name="target"
-						value="$(libsDir)/$(miscDir)/$(sourceDir)/trace_impl.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="../misc/include/trace_impl.h" />
-					<simple name="target"
-						value="$(libsDir)/$(miscDir)/$(includeDir)/trace_impl.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-	</if>
-
-	<if condition="$(STM32F4syscalls)==semihosting">
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="../misc/src/syscalls.c" />
-					<simple name="target" value="$(libsDir)/$(miscDir)/$(sourceDir)/syscalls.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="../misc/include/arm.h" />
-					<simple name="target" value="$(libsDir)/$(miscDir)/$(includeDir)/arm.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="../misc/include/swi.h" />
-					<simple name="target" value="$(libsDir)/$(miscDir)/$(includeDir)/swi.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="../misc/include/syscall.h" />
-					<simple name="target" value="$(libsDir)/$(miscDir)/$(includeDir)/syscall.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-	</if>
-
-	<if condition="$(fileExtension)==cpp">
-	<!--  
-		<process type="org.eclipse.cdt.managedbuilder.core.ExcludeResources">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="configIdPattern" value=".*" />
-			<simple-array name="filePatterns">
-				<element value="/$(projectName)/$(libsDir)/$(periphDir)/$(sourceDir)/.*" />
-			</simple-array>
-			<simple name="invertConfigMatching" value="false" />
-		</process>
-	-->
-	
-		<process
-			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="resourcePaths">
-				<element>
-					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
-					<simple-array name="values">
-						<element value="&quot;../$(libsDir)/$(uOsDir)/$(includeDir)&quot;" />
-					</simple-array>
-					<simple name="path" value="" />
-				</element>
-			</complex-array>
-		</process>
-
-<!-- 
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="../common/uOS_readme.txt" />
-					<simple name="target" value="$(libsDir)/$(uOsDir)/$(includeDir)/README.txt" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="../micro-os-plus/include/cortexm/BitBand.h" />
-					<simple name="target"
-						value="$(libsDir)/$(uOsDir)/$(includeDir)/cortexm/BitBand.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="../micro-os-plus/include/cortexm/MemoryMap.h" />
-					<simple name="target"
-						value="$(libsDir)/$(uOsDir)/$(includeDir)/cortexm/MemoryMap.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../micro-os-plus/include/cortexm/RegisterAccess.h" />
-					<simple name="target"
-						value="$(libsDir)/$(uOsDir)/$(includeDir)/cortexm/RegisterAccess.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="../micro-os-plus/include/cortexm/Typedefs.h" />
-					<simple name="target"
-						value="$(libsDir)/$(uOsDir)/$(includeDir)/cortexm/Typedefs.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../micro-os-plus/include/stm32f4/GpioPin_Internal.h" />
-					<simple name="target"
-						value="$(libsDir)/$(uOsDir)/$(includeDir)/stm32f4/GpioPin_Internal.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="../micro-os-plus/include/stm32f4/GpioPin.h" />
-					<simple name="target"
-						value="$(libsDir)/$(uOsDir)/$(includeDir)/stm32f4/GpioPin.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="../micro-os-plus/include/stm32f4/GpioPort.h" />
-					<simple name="target"
-						value="$(libsDir)/$(uOsDir)/$(includeDir)/stm32f4/GpioPort.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../micro-os-plus/include/stm32f4/LedActiveHigh_Internal.h" />
-					<simple name="target"
-						value="$(libsDir)/$(uOsDir)/$(includeDir)/stm32f4/LedActiveHigh_Internal.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../micro-os-plus/include/stm32f4/LedActiveHigh.h" />
-					<simple name="target"
-						value="$(libsDir)/$(uOsDir)/$(includeDir)/stm32f4/LedActiveHigh.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../micro-os-plus/include/stm32f4/LedActiveLow_Internal.h" />
-					<simple name="target"
-						value="$(libsDir)/$(uOsDir)/$(includeDir)/stm32f4/LedActiveLow_Internal.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../micro-os-plus/include/stm32f4/LedActiveLow.h" />
-					<simple name="target"
-						value="$(libsDir)/$(uOsDir)/$(includeDir)/stm32f4/LedActiveLow.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="../micro-os-plus/include/stm32f4/MemoryMap.h" />
-					<simple name="target"
-						value="$(libsDir)/$(uOsDir)/$(includeDir)/stm32f4/MemoryMap.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="../micro-os-plus/include/stm32f4/Rcc.h" />
-					<simple name="target"
-						value="$(libsDir)/$(uOsDir)/$(includeDir)/stm32f4/Rcc.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
- -->
- 
-		<process
-			type="org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="resourcePaths">
-				<element>
-					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.noexceptions" />
-					<simple name="value" value="true" />
-					<simple name="path" value="" />
-				</element>
-				<element>
-					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nortti" />
-					<simple name="value" value="true" />
-					<simple name="path" value="" />
-				</element>
-			</complex-array>
-		</process>
-	</if>
-
-	<if condition="1==1">
-		<!-- Options -->
 		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="resourcePaths">
@@ -1431,7 +1145,183 @@
 				</element>
 			</complex-array>
 		</process>
+	</if>
 
+	<!-- ================================================================== -->
+
+	<!-- Global options -->
+	<if condition="1==1">
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.allwarn" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.extrawarn" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(useMostWarnings) == true" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.unused" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.uninitialized" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.missingdeclaration" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.conversion" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.pointerarith" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.padded" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.shadow" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.logicalop" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.agreggatereturn" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.floatequal" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="$(syscalls)==none">
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.freestanding" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="$(useOg)==true">
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level" />
+					<simple name="value"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level.debug" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="debug" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="$(useOg)!=true">
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level" />
+					<simple name="value"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level.none" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="debug" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level" />
+					<simple name="value"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level.size" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="release" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
+
+	<!-- C options -->
+	<if condition="1==1">
 		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="resourcePaths">
@@ -1445,6 +1335,40 @@
 			</complex-array>
 		</process>
 
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(useMostWarnings) == true" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.warning.missingprototypes" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.warning.strictprototypes" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.warning.badfunctioncast" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
+
+	<!-- C++ options -->
+	<if condition="$(fileExtension)==cpp">
 		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="resourcePaths">
@@ -1459,22 +1383,91 @@
 		</process>
 
 		<process
-			type="org.eclipse.cdt.managedbuilder.core.SetMBSStringListOptionValues">
+			type="org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.scriptfile" />
-					<simple-array name="values">
-						<element value="libs.ld" />
-						<element value="mem.ld" />
-						<element value="sections.ld" />
-					</simple-array>
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.noexceptions" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nortti" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nousecxaatexit" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nothreadsafestatics" />
+					<simple name="value" value="true" />
 					<simple name="path" value="" />
 				</element>
 			</complex-array>
 		</process>
 
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(useMostWarnings) == true" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warnabi" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.ctordtorprivacy" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.noexcept" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.nonvirtualdtor" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.strictnullsentinel" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.signpromo" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
+
+	<!-- Linker options -->
+	<if condition="1==1">
 		<process
 			type="org.eclipse.cdt.managedbuilder.core.SetMBSStringListOptionValues">
 			<simple name="projectName" value="$(projectName)" />
@@ -1489,37 +1482,150 @@
 				</element>
 			</complex-array>
 		</process>
-	</if>
 
-	<if condition="$(STM32F4syscalls)==retarget">
 		<process
-			type="org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue">
+			type="org.eclipse.cdt.managedbuilder.core.SetMBSStringListOptionValues">
 			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.scriptfile" />
+					<simple-array name="values">
+						<element value="mem.ld" />
+						<element value="libs.ld" />
+						<element value="sections.ld" />
+					</simple-array>
+					<simple name="path" value="" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.nostart" />
 					<simple name="value" value="true" />
 					<simple name="path" value="" />
+					<simple name="buildType" value="" />
 				</element>
 			</complex-array>
 		</process>
 	</if>
-	<if condition="$(STM32F4syscalls)==none">
+
+	<if condition="$(useNano)==true">
 		<process
-			type="org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue">
+			type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.other" />
+					<simple name="value" value="--specs=nano.specs" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
+
+	<!-- Macro definitions -->
+	<if condition="1==1">
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
+					<simple-array name="values">
+						<element value="DEBUG" />
+					</simple-array>
+					<simple name="path" value="" />
+					<simple name="buildType" value="debug" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="$(syscalls)==semihosting">
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
+					<simple-array name="values">
+						<element value="OS_USE_SEMIHOSTING" />
+					</simple-array>
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="$(trace)==itm">
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.nostart" />
-					<simple name="value" value="true" />
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
+					<simple-array name="values">
+						<element value="OS_USE_TRACE_ITM" />
+					</simple-array>
+					<simple name="path" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(trace)==stdout">
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
+					<simple-array name="values">
+						<element value="OS_USE_TRACE_SEMIHOSTING_STDOUT" />
+					</simple-array>
+					<simple name="path" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(trace)==debug">
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
+					<simple-array name="values">
+						<element value="OS_USE_TRACE_SEMIHOSTING_DEBUG" />
+					</simple-array>
 					<simple name="path" value="" />
 				</element>
 			</complex-array>
 		</process>
 	</if>
 
+	<!-- ================================================================== -->
+
+	<!-- Vendor macro definitions -->
 	<if condition="1==1">
 		<process
 			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
@@ -1529,7 +1635,7 @@
 					<simple name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
 					<simple-array name="values">
-						<element value="$(STM32F4chipFamily)" />
+						<element value="$(STM32F4chipFamilyCube)" />
 					</simple-array>
 					<simple name="path" value="" />
 				</element>
@@ -1544,7 +1650,7 @@
 					<simple name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
 					<simple-array name="values">
-						<element value="USE_STDPERIPH_DRIVER" />
+						<element value="USE_HAL_DRIVER" />
 					</simple-array>
 					<simple name="path" value="" />
 				</element>
@@ -1558,71 +1664,11 @@
 				</element>
 			</complex-array>
 		</process>
-
-		<process
-			type="ilg.gnuarmeclipse.templates.core.AppendToMBSStringListOptionValues">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="resourcePaths">
-				<element>
-					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
-					<simple-array name="values">
-						<element value="DEBUG" />
-					</simple-array>
-					<simple name="path" value="" />
-					<simple name="buildType" value="debug" />
-				</element>
-			</complex-array>
-		</process>
-		<process
-			type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringOptionValue">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="$(STM32F4useNano) == true" />
-			<complex-array name="resourcePaths">
-				<element>
-					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.other" />
-					<simple name="value" value="--specs=nano.specs" />
-					<simple name="path" value="" />
-					<simple name="buildType" value="" />
-				</element>
-			</complex-array>
-		</process>
 	</if>
 
-	<if condition="$(STM32F4syscalls)==semihosting">
-		<process
-			type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringOptionValue">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="" />
-			<complex-array name="resourcePaths">
-				<element>
-					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.other" />
-					<simple name="value" value="--specs=rdimon.specs" />
-					<simple name="path" value="" />
-					<simple name="buildType" value="" />
-				</element>
-			</complex-array>
-		</process>
+	<!-- ================================================================== -->
 
-		<process
-			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="resourcePaths">
-				<element>
-					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
-					<simple-array name="values">
-						<element value="USE_STARTUP_FILES" />
-					</simple-array>
-					<simple name="path" value="" />
-				</element>
-			</complex-array>
-		</process>
-	</if>
-
-	<!-- Open -->
+	<!-- Open editor -->
 	<process type="org.eclipse.cdt.ui.OpenFiles">
 		<simple name="projectName" value="$(projectName)" />
 		<complex-array name="files">

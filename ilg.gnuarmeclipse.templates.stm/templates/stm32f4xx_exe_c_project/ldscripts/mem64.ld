@@ -21,12 +21,12 @@ MEMORY
   EXTMEMB1 (rx) : ORIGIN = 0x00000000, LENGTH = 0
   EXTMEMB2 (rx) : ORIGIN = 0x00000000, LENGTH = 0
   EXTMEMB3 (rx) : ORIGIN = 0x00000000, LENGTH = 0
-  MEMORY_ARRAY (xrw)  : ORIGIN = 0x20002000, LENGTH = 32
 }
 
 /*
  * For external ram use something like:
-
-   RAM (xrw) : ORIGIN = 0x64000000, LENGTH = 2048K
-
+ *
+ *  RAM (xrw) : ORIGIN = 0x64000000, LENGTH = 2048K
+ *
+ *  MEMORY_ARRAY (xrw)  : ORIGIN = 0x20002000, LENGTH = 32
  */

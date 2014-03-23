@@ -7,6 +7,7 @@
 #define BLINKLED_H_
 
 #include "$(CMSIS_name).h"
+#include "$(CMSIS_name)_hal.h"
 
 // ----- LED definitions ------------------------------------------------------
 

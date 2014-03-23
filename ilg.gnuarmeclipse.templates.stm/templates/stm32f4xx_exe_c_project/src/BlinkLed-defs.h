@@ -19,4 +19,4 @@
 
 #define BLINK_GPIOx(_N)                 ((GPIO_TypeDef *)(GPIOA_BASE + (GPIOB_BASE-GPIOA_BASE)*(_N)))
 #define BLINK_PIN_MASK(_N)              (1 << (_N))
-#define BLINK_RCC_MASKx(_N)             (RCC_AHB1Periph_GPIOA << (_N))
+#define BLINK_RCC_MASKx(_N)             (RCC_AHB1ENR_GPIOAEN << (_N))

@@ -8,13 +8,6 @@
  * provide all specific initialisation, and the rdimon.specs
  * must be added to the linker. Also, the Reset_Handlers must jump
  * to crt0 _start() (define USE_STARTUP_FILES to enable this).
- *
- * Another useful library is libnosys.a, which implements all system 
- * calls with empty functions. In this configuration, the debug 
- * output is forwarded to the semihosting debug channel, vis SYS_WRITEC.
- * The application and redefine all syscall implementation functions,
- * like _write(), _read(), etc.
- * When using libnosys.a, the startup files are not needed.
  */
 
 GROUP(

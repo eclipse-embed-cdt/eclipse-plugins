@@ -183,6 +183,7 @@ SECTIONS
    	
     . = ALIGN(4);
     _etext = .;
+    __etext = .;
 
 	/* 
      * This address is used by the startup code to 
@@ -191,11 +192,12 @@ SECTIONS
     _sidata = _etext;
     
     /* MEMORY_ARRAY */
+    /*
     .ROarraySection :
     {
      	*(.ROarraySection .ROarraySection.*)                          
     } >MEMORY_ARRAY
-     
+    */
 
     /*
      * The initialised data section.
