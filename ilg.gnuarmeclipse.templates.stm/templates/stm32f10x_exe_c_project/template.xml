@@ -407,7 +407,7 @@
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="../ldscripts/libs-$(STM32F4syscalls).ld" />
+					<simple name="source" value="../ldscripts/libs-$(STM32F1syscalls).ld" />
 					<simple name="target" value="$(ldscriptsDir)/libs.ld" />
 					<simple name="replaceable" value="true" />
 				</element>

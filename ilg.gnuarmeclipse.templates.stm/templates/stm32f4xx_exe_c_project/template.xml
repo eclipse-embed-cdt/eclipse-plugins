@@ -46,10 +46,10 @@
 
 		<property id="trace" label="%trace.label" description="%trace.description"
 			type="select" default="itm" hidden="false" persist="true">
-			<item value="none" label="None (no trace output)" />
-			<item value="itm" label="ARM ITM (via SWO)" />
-			<item value="stdout" label="Semihosting STDOUT stream" />
-			<item value="debug" label="Semihosting DEBUG channel" />
+			<item value="NONE" label="None (no trace output)" />
+			<item value="ITM" label="ARM ITM (via SWO)" />
+			<item value="STDOUT" label="Semihosting STDOUT stream" />
+			<item value="DEBUG" label="Semihosting DEBUG channel" />
 		</property>
 
 		<property id="useMostWarnings" label="%mostWarnings.label"
@@ -103,10 +103,6 @@
 			description="Will be set to STM32F4" mandatory="true" hidden="true"
 			default="STM32F4" persist="false" />
 
-		<property id="traceDestination" label="Trace destination"
-			description="Will be set to SWO" mandatory="true" hidden="true"
-			default="SWO" persist="false" />
-			
 		<property id="commonDir" label="common files"
 			description="Will be set to ...templates.core/templates/common/ folder"
 			mandatory="true" hidden="true" default="commonDir" persist="false" />
@@ -278,7 +274,7 @@
 			<simple name="condition" value="" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="../common/src/main/main-include.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-100-include.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -290,75 +286,58 @@
 			<complex-array name="files">
 				<element>
 					<simple name="source"
-						value="../common/src/main/main-include-blinky.$(fileExtension)" />
+						value="$(commonDir)/src/main/main-110-include-blinky.$(fileExtension)" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../common/src/main/main-$(STM32F4syscalls)-blinky-1.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-clock-comment.c" />
+						value="$(commonDir)/src/main/main-120-$(syscalls)-blinky.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../common/src/main/main-$(STM32F4syscalls)-2.c" />
+						value="$(commonDir)/src/main/main-140-defs-blinky.$(fileExtension)" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../common/src/main/main-defs-blinky.$(fileExtension)" />
+						value="$(commonDir)/src/main/main-150-begin.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../common/src/main/main-$(STM32F4syscalls)-begin.c" />
+						value="$(commonDir)/src/main/main-180-$(syscalls)-hello.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/src/main/main-190-clock.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../common/src/main/main-$(STM32F4syscalls)-hello.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="../common/src/main/main-clock.c" />
+						value="$(commonDir)/src/main/main-200-loop-blinky.$(fileExtension)" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="../common/src/main/main-loop-blinky.$(fileExtension)" />
+						value="$(commonDir)/src/main/main-210-$(syscalls)-print.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source"
-						value="../common/src/main/main-$(STM32F4syscalls)-print.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-220-loopend.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="../common/src/main/main-loopend.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="../common/src/main/main-end.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="src/main-clock.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-230-end.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -370,12 +349,12 @@
 			<simple name="condition" value="" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="../common/src/Timer.$(fileExtension)" />
+					<simple name="source" value="$(commonDir)/src/Timer.$(fileExtension)" />
 					<simple name="target" value="$(sourceDir)/Timer.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="../common/src/Timer-$(fileExtension).h" />
+					<simple name="source" value="$(commonDir)/include/Timer-$(fileExtension).h" />
 					<simple name="target" value="$(includeDir)/Timer.h" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -427,7 +406,64 @@
 			</complex-array>
 		</process>
 
+	</if>
+
+	<if condition="$(STM32F4content)==empty">
+		<!-- main.c - retarget/semihosting/none - empty -->
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="$(commonDir)/src/main/main-100-include.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="$(commonDir)/src/main/main-120-$(syscalls)-empty.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(commonDir)/src/main/main-150-begin.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(commonDir)/src/main/main-180-$(syscalls)-hello.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/src/main/main-190-clock.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/src/main/main-200-loop-empty.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/src/main/main-230-end.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="condition" value="" />
 			<complex-array name="files">
@@ -438,73 +474,13 @@
 				</element>
 			</complex-array>
 		</process>
-	</if>
-
-	<if condition="$(STM32F4content)==empty">
-		<!-- main.c - retarget/semihosting/none - empty -->
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="condition" value="" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="../common/src/main/main-include.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="" />
-			<complex-array name="files">
-				<element>
-					<simple name="source"
-						value="../common/src/main/main-$(STM32F4syscalls)-empty-1.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-clock-comment.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../common/src/main/main-$(STM32F4syscalls)-2.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../common/src/main/main-$(STM32F4syscalls)-begin.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="../common/src/main/main-$(STM32F4syscalls)-hello.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="../common/src/main/main-clock.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="../common/src/main/main-loop-empty.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="../common/src/main/main-end.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="src/main-clock.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="source" value="src/_initialize_hardware.c" />
+					<simple name="target" value="$(sourceDir)/_initialize_hardware.c" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -790,6 +766,21 @@
 			<complex-array name="files">
 				<element>
 					<simple name="source"
+						value="$(commonDir)/system/include/diag/Trace.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/diag/Trace.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
 						value="$(commonDir)/system/src/cortexm/_initialize_hardware.c" />
 					<simple name="target"
 						value="$(sysDir)/$(sourceDir)/cortexm/_initialize_hardware.c" />
@@ -835,13 +826,23 @@
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="$(commonDir)/system/src/newlib/trace.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/trace.c" />
+					<simple name="source" value="$(commonDir)/system/src/newlib/README.txt" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/README.txt" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/diag/trace_impl.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/diag/trace_impl.c" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="$(commonDir)/system/src/newlib/README.txt" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/README.txt" />
+					<simple name="source" value="$(commonDir)/system/src/diag/Trace.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/diag/Trace.c" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -1114,7 +1115,7 @@
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="../ldscripts/libs-$(STM32F4syscalls).ld" />
+					<simple name="source" value="../ldscripts/libs-$(syscalls).ld" />
 					<simple name="target" value="$(ldscriptsDir)/libs.ld" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -1574,7 +1575,26 @@
 		</process>
 	</if>
 
-	<if condition="$(trace)==itm">
+	<if condition="1==1">
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
+					<simple-array name="values">
+						<element value="TRACE" />
+					</simple-array>
+					<simple name="path" value="" />
+					<simple name="buildType" value="debug" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="$(trace)==ITM">
 		<process
 			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
 			<simple name="projectName" value="$(projectName)" />
@@ -1590,7 +1610,7 @@
 			</complex-array>
 		</process>
 	</if>
-	<if condition="$(trace)==stdout">
+	<if condition="$(trace)==STDOUT">
 		<process
 			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
 			<simple name="projectName" value="$(projectName)" />
@@ -1606,7 +1626,7 @@
 			</complex-array>
 		</process>
 	</if>
-	<if condition="$(trace)==debug">
+	<if condition="$(trace)==DEBUG">
 		<process
 			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
 			<simple name="projectName" value="$(projectName)" />

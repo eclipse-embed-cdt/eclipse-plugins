@@ -1,12 +1,23 @@
 
 // ----------------------------------------------------------------------------
+
 extern
 void
-blink_led_init();
+blink_led_init(void);
+
+// ----------------------------------------------------------------------------
+
+inline void
+blink_led_on(void);
+
+inline void
+blink_led_off(void);
+
+// ----------------------------------------------------------------------------
 
 inline void
 __attribute__((always_inline))
-blink_led_on()
+blink_led_on(void)
 {
 #if (BLINK_ACTIVE_LOW)
     HAL_GPIO_WritePin(BLINK_GPIOx(BLINK_PORT_NUMBER),
@@ -19,7 +30,7 @@ blink_led_on()
 
 inline void
 __attribute__((always_inline))
-blink_led_off()
+blink_led_off(void)
 {
 #if (BLINK_ACTIVE_LOW)
     HAL_GPIO_WritePin(BLINK_GPIOx(BLINK_PORT_NUMBER),
