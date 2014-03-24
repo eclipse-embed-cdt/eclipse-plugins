@@ -8,10 +8,13 @@ Extensions to the ARM CMSIS files:
 - the assembly startup file was reimplemented in C, and split into 
 multiple files, portable for the entire Cortex-M family:
 
-	newlib/src/cmsis_startup.c
-	newlib/src/cortexm_handlers.c
+	src/newlib/_startup.c
+	src/cortexm/exception_handlers.c
 	
-- the chip interrupt handlers must be added to the vectors_XXX.c file
+- the chip interrupt handlers must be added to the file
+
+	src/cmsis/vectors_$(CMSIS_name).c
+	
 
 Use of assembly files
 

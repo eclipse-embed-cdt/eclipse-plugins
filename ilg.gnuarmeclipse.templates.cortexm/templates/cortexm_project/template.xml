@@ -58,31 +58,32 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 
 	</property-group>
 
-	<property-group id="folders" label="%CM.group.folders.label"
-		description="%CM.group.folders.description" type="PAGES-ONLY" help="help.html">
-		<property id="includeDir" label="%CM.includeDir.label"
-			description="%CM.includeDir.description" type="input"
-			default="%CM.includeDir.default" pattern="[a-zA-Z0-9]+" mandatory="true"
+	<property-group id="folders" label="%group.folders.label"
+		description="%group.folders.description" type="PAGES-ONLY" help="help.html">
+		<property id="includeDir" label="%includeDir.label"
+			description="%includeDir.description" type="input"
+			default="%includeDir.default" pattern="[a-zA-Z0-9]+" mandatory="true"
 			persist="true" />
-		<property id="sourceDir" label="%CM.sourceDir.label"
-			description="%CM.sourceDir.description" type="input" default="%CM.sourceDir.default"
+		<property id="sourceDir" label="%sourceDir.label"
+			description="%sourceDir.description" type="input" default="%sourceDir.default"
 			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
-		<property id="sysDir" label="%CM.sysDir.label" description="%CM.sysDir.description"
-			type="input" default="%CM.sysDir.default" pattern="[a-zA-Z0-9]+"
+		<property id="sysDir" label="%sysDir.label" description="%sysDir.description"
+			type="input" default="%sysDir.default" pattern="[a-zA-Z0-9]+"
 			mandatory="true" persist="true" />
-		<property id="cmsisDir" label="%CM.cmsisDir.label"
-			description="%CM.cmsisDir.description" type="input" default="%CM.cmsisDir.default"
+		<property id="cmsisDir" label="%cmsisDir.label"
+			description="%cmsisDir.description" type="input" default="%cmsisDir.default"
 			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
-		<property id="newlibDir" label="%CM.newlibDir.label"
-			description="%CM.newlibDir.description" type="input" default="%CM.newlibDir.default"
+		<property id="newlibDir" label="%newlibDir.label"
+			description="%newlibDir.description" type="input" default="%newlibDir.default"
 			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
-		<property id="ldscriptsDir" label="%CM.ldscriptsDir.label"
-			description="%CM.ldscriptsDir.description" type="input"
-			default="%CM.ldscriptsDir.default" pattern="[a-zA-Z0-9]+" mandatory="true"
+		<property id="ldscriptsDir" label="%ldscriptsDir.label"
+			description="%ldscriptsDir.description" type="input"
+			default="%ldscriptsDir.default" pattern="[a-zA-Z0-9]+" mandatory="true"
 			persist="true" />
-		<property id="deviceName" label="%CM.deviceName.label"
-			description="%CM.deviceName.description" type="input"
-			default="%CM.deviceName.default" pattern="[a-zA-Z0-9]+" mandatory="true"
+			
+		<property id="deviceName" label="%deviceName.label"
+			description="%deviceName.description" type="input"
+			default="%deviceName.default" pattern="[a-zA-Z0-9]+" mandatory="true"
 			persist="true" />
 
 		<property id="fileExtension" label="Source file extension"
@@ -255,6 +256,18 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			</complex-array>
 		</process>
 
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="$(commonDir)/src/main/main-180-$(syscalls)-hello.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+
 		<process type="org.eclipse.cdt.core.AppendCreate">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
@@ -308,9 +321,9 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="$(commonDir)/system/include/cmsis/README.txt" />
+					<simple name="source" value="$(commonDir)/system/include/cmsis/README_CMSIS.txt" />
 					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/README-CMSIS.txt" />
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/README_CMSIS.txt" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -506,6 +519,21 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<complex-array name="files">
 				<element>
 					<simple name="source"
+						value="$(commonDir)/system/include/diag/Trace.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/diag/Trace.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
 						value="$(commonDir)/system/src/cortexm/_initialize_hardware.c" />
 					<simple name="target"
 						value="$(sysDir)/$(sourceDir)/cortexm/_initialize_hardware.c" />
@@ -525,6 +553,11 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						value="$(sysDir)/$(sourceDir)/cortexm/exception_handlers.c" />
 					<simple name="replaceable" value="true" />
 				</element>
+			</complex-array>
+		</process>
+		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
 				<element>
 					<simple name="source" value="$(commonDir)/system/src/newlib/_exit.c" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_exit.c" />
@@ -551,13 +584,23 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="$(commonDir)/system/src/newlib/trace.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/trace.c" />
+					<simple name="source" value="$(commonDir)/system/src/newlib/README.txt" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/README.txt" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/diag/trace_impl.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/diag/trace_impl.c" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="$(commonDir)/system/src/newlib/README.txt" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/README.txt" />
+					<simple name="source" value="$(commonDir)/system/src/diag/Trace.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/diag/Trace.c" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -1118,6 +1161,25 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					</simple-array>
 					<simple name="path" value="" />
 					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
+					<simple-array name="values">
+						<element value="TRACE" />
+					</simple-array>
+					<simple name="path" value="" />
+					<simple name="buildType" value="debug" />
 				</element>
 			</complex-array>
 		</process>
