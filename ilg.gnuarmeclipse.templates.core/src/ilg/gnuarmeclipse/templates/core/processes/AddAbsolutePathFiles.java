@@ -78,16 +78,16 @@ public class AddAbsolutePathFiles extends ProcessRunner {
 			String fileTargetPath = file[1].getSimpleValue();
 			boolean replaceable = file[2].getSimpleValue().equals("true"); //$NON-NLS-1$
 
-			URL path;
+			URL sourceURL;
 			try {
 				File f = new File(fileSourcePath);
 				if (f.isAbsolute()) {
-					path = f.toURL(); // using .toURI().toURL() fails, due to spaces substitution
+					sourceURL = f.toURL(); // using .toURI().toURL() fails, due to spaces substitution
 				} else {
-					path = TemplateEngineHelper
+					sourceURL = TemplateEngineHelper
 							.getTemplateResourceURLRelativeToTemplate(template,
 									fileSourcePath);
-					if (path == null) {
+					if (sourceURL == null) {
 						throw new ProcessFailureException(
 								getProcessMessage(
 										processId,
@@ -107,7 +107,7 @@ public class AddAbsolutePathFiles extends ProcessRunner {
 			if (replaceable) {
 				String fileContents;
 				try {
-					fileContents = ProcessHelper.readFromFile(path);
+					fileContents = ProcessHelper.readFromFile(sourceURL);
 				} catch (IOException e) {
 					throw new ProcessFailureException(
 							Messages.getString("AddFiles.3") + fileSourcePath); //$NON-NLS-1$
@@ -126,7 +126,7 @@ public class AddAbsolutePathFiles extends ProcessRunner {
 				contents = new ByteArrayInputStream(fileContents.getBytes());
 			} else {
 				try {
-					contents = path.openStream();
+					contents = sourceURL.openStream();
 				} catch (IOException e) {
 					throw new ProcessFailureException(getProcessMessage(
 							processId, IStatus.ERROR,
