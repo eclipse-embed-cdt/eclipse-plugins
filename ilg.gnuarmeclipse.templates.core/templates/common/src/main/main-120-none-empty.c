@@ -1,0 +1,4 @@
+
+//
+// Standalone $(shortChipFamily) empty sample.
+//
