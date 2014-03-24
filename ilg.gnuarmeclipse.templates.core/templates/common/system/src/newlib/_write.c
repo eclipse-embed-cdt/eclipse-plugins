@@ -8,11 +8,7 @@
 // ----------------------------------------------------------------------------
 
 #include <errno.h>
-
-// ----------------------------------------------------------------------------
-
-extern int
-trace_write(char* ptr, int len);
+#include "diag/Trace.h"
 
 // ----------------------------------------------------------------------------
 
@@ -26,21 +22,20 @@ trace_write(char* ptr, int len);
 // and the characters are forwarded to the trace channel, mainly
 // for debugging purposes.
 
-int
-_write(int fd, char* ptr, int len);
+ssize_t
+_write (int fd, const char* buf, size_t nbyte);
 
-int
-_write(int fd __attribute__((unused)), char* ptr __attribute__((unused)),
-    int len __attribute__((unused)))
+ssize_t
+_write (int fd __attribute__((unused)), const char* buf __attribute__((unused)),
+	size_t nbyte __attribute__((unused)))
 {
-#if defined(DEBUG)
+#if defined(TRACE)
+  // STDOUT and STDERR are routed to the trace device
   if (fd == 1 || fd == 2)
     {
-
-      return trace_write (ptr, len);
-
+      return trace_write (buf, nbyte);
     }
-#endif // DEBUG
+#endif // TRACE
 
   errno = ENOSYS;
   return -1;
