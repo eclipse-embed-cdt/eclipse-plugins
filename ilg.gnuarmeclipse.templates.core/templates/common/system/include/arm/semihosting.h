@@ -63,13 +63,13 @@ call_host (int reason, void* arg)
   int value;
   asm volatile (
 
-      " mov r0, %1  \n"
-      " mov r1, %2  \n"
-      " " AngelSWIInsn " %a3 \n"
-      " mov %0, r0"
+      " mov r0, %[rsn]  \n"
+      " mov r1, %[arg]  \n"
+      " " AngelSWIInsn " %[swi] \n"
+      " mov %[val], r0"
 
-      : "=r" (value) /* Outputs */
-      : "r" (reason), "r" (arg), "i" (AngelSWI) /* Inputs */
+      : [val] "=r" (value) /* Outputs */
+      : [rsn] "r" (reason), [arg] "r" (arg), [swi] "i" (AngelSWI) /* Inputs */
       : "r0", "r1", "r2", "r3", "ip", "lr", "memory", "cc"
       /* Clobbers r0 and r1, and lr if in supervisor mode */
   );
