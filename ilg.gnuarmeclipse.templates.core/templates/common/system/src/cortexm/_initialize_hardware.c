@@ -29,7 +29,7 @@ __initialize_hardware(void);
 
 void
 __attribute__((weak))
-__initialize_hardware()
+__initialize_hardware(void)
 {
   // Call the CSMSIS system initialisation routine.
   SystemInit();

@@ -4,5 +4,5 @@
   // trace_dump_args(argc, argv);
 
   // Send a greeting to the standard output (skipped on Release).
-  trace_printf("Hello ARM World!\n");
+  trace_puts("Hello ARM World!");
 

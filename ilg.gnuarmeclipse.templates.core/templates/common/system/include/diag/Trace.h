@@ -6,11 +6,6 @@
 #ifndef DIAG_TRACE_H_
 #define DIAG_TRACE_H_
 
-// By default trace messages will go to the STDERR
-#if !defined(OS_INTEGER_TRACE_FILE_DESCRIPTOR)
-#define OS_INTEGER_TRACE_FILE_DESCRIPTOR        (2)
-#endif
-
 #include <unistd.h>
 
 #if defined(TRACE)
@@ -26,6 +21,8 @@ extern "C"
   // Implementation dependent
   ssize_t
   trace_write(const char* buf, size_t nbyte);
+
+  // ----- Portable -----
 
   int
   trace_printf(const char* format, ...);

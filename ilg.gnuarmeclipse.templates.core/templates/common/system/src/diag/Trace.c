@@ -20,8 +20,8 @@ trace_printf(const char* format, ...)
 
   va_start (ap, format);
 
-  // TODO: optimise even further, to avoid the file descriptor
-  ret =  vdprintf(OS_INTEGER_TRACE_FILE_DESCRIPTOR, format, ap);
+  // TODO: rewrite it to no longer use newlib, it is way too heavy
+  ret =  vprintf(format, ap);
   va_end (ap);
   return ret;
 }

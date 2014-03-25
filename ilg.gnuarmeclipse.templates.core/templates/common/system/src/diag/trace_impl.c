@@ -146,45 +146,53 @@ _trace_write_itm (const char* buf, size_t nbyte)
 #if defined(OS_USE_TRACE_SEMIHOSTING_STDOUT)
 
 static ssize_t
-_trace_write_semihosting_stdout(const char* buf, size_t nbyte)
-  {
-    static int handle;
-    void* block[3];
-    int ret;
+_trace_write_semihosting_stdout (const char* buf, size_t nbyte)
+{
+  // Check if the debugger is enabled
+  // [Contributed by SourceForge user diabolo38]
+  if ((CoreDebug->DHCSR & CoreDebug_DHCSR_C_DEBUGEN_Msk) == 0)
+    {
+      // If not, pretend we wrote all bytes
+      return (ssize_t) (nbyte);
+    }
 
-    if (handle == 0)
-      {
-	// On the first call get the file handle from the host
-	block[0] = ":tt";// special filename to be used for stdin/out/err
-	block[1] = (void*) 4;// mode "w"
-	// length of ":tt", except null terminator
-	block[2] = (void*) (sizeof(":tt") - 1);
+  static int handle;
+  void* block[3];
+  int ret;
 
-	ret = call_host (SEMIHOSTING_SYS_OPEN, (void*) block);
-	if (ret == -1)
-	return -1;
+  if (handle == 0)
+    {
+      // On the first call get the file handle from the host
+      block[0] = ":tt"; // special filename to be used for stdin/out/err
+      block[1] = (void*) 4; // mode "w"
+      // length of ":tt", except null terminator
+      block[2] = (void*) (sizeof(":tt") - 1);
 
-	handle = ret;
-      }
+      ret = call_host (SEMIHOSTING_SYS_OPEN, (void*) block);
+      if (ret == -1)
+        return -1;
 
-    block[0] = (void*) handle;
-    block[1] = (void*) buf;
-    block[2] = (void*) nbyte;
-    // send character array to host file/device
-    ret = call_host (SEMIHOSTING_SYS_WRITE, (void*) block);
-    // this call returns the number of bytes NOT written (0 if all ok)
+      handle = ret;
+    }
 
-    // -1 is not a legal value, but SEGGER seems to return it
-    if (ret == -1)
+  block[0] = (void*) handle;
+  block[1] = (void*) buf;
+  block[2] = (void*) nbyte;
+  // send character array to host file/device
+  ret = call_host (SEMIHOSTING_SYS_WRITE, (void*) block);
+  // this call returns the number of bytes NOT written (0 if all ok)
+
+  // -1 is not a legal value, but SEGGER seems to return it
+  if (ret == -1)
     return -1;
 
-    // The compliant way of returning errors
-    if (ret == (int)nbyte)
+  // The compliant way of returning errors
+  if (ret == (int) nbyte)
     return -1;
 
-    // Return the number of bytes written
-    return (ssize_t)(nbyte) - (ssize_t)ret;
-  }
+  // Return the number of bytes written
+  return (ssize_t) (nbyte) - (ssize_t) ret;
+}
 
 #endif // OS_USE_TRACE_SEMIHOSTING_STDOUT
 
@@ -195,39 +203,47 @@ _trace_write_semihosting_stdout(const char* buf, size_t nbyte)
 #define OS_INTEGER_TRACE_TMP_ARRAY_SIZE  (16)
 
 static ssize_t
-_trace_write_semihosting_debug(const char* buf, size_t nbyte)
-  {
-    // Since the single character debug channel is quite slow, try to
-    // optimise and send a null terminated string, if possible.
-    if (buf[nbyte] == '\0')
-      {
-	// send string
-	call_host(SEMIHOSTING_SYS_WRITE0, (void*) buf);
-      }
-    else
-      {
-	// If not, use a local buffer to speed things up
-	char tmp[OS_INTEGER_TRACE_TMP_ARRAY_SIZE];
-	size_t togo = nbyte;
-	while (togo > 0)
-	  {
-	    unsigned int n = ((togo < sizeof(tmp)) ? togo : sizeof(tmp));
-	    unsigned int i = 0;
-	    for (; i < n; ++i, ++buf)
-	      {
-		tmp[i] = *buf;
-	      }
-	    tmp[i] = '\0';
+_trace_write_semihosting_debug (const char* buf, size_t nbyte)
+{
+  // Check if the debugger is enabled
+  // [Contributed by SourceForge user diabolo38]
+  if ((CoreDebug->DHCSR & CoreDebug_DHCSR_C_DEBUGEN_Msk) == 0)
+    {
+      // If not, pretend we wrote all bytes
+      return (ssize_t) (nbyte);
+    }
 
-	    call_host(SEMIHOSTING_SYS_WRITE0, (void*) tmp);
+  // Since the single character debug channel is quite slow, try to
+  // optimise and send a null terminated string, if possible.
+  if (buf[nbyte] == '\0')
+    {
+      // send string
+      call_host (SEMIHOSTING_SYS_WRITE0, (void*) buf);
+    }
+  else
+    {
+      // If not, use a local buffer to speed things up
+      char tmp[OS_INTEGER_TRACE_TMP_ARRAY_SIZE];
+      size_t togo = nbyte;
+      while (togo > 0)
+        {
+          unsigned int n = ((togo < sizeof(tmp)) ? togo : sizeof(tmp));
+          unsigned int i = 0;
+          for (; i < n; ++i, ++buf)
+            {
+              tmp[i] = *buf;
+            }
+          tmp[i] = '\0';
 
-	    togo -= n;
-	  }
-      }
+          call_host (SEMIHOSTING_SYS_WRITE0, (void*) tmp);
 
-    // All bytes written
-    return (ssize_t)nbyte;
-  }
+          togo -= n;
+        }
+    }
+
+  // All bytes written
+  return (ssize_t) nbyte;
+}
 
 #endif // OS_USE_TRACE_SEMIHOSTING_DEBUG
 
