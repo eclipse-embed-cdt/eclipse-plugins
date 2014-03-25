@@ -1619,16 +1619,31 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		// Remote target
 		{
-			String ip = targetIpAddress.getText().trim();
-			configuration.setAttribute(IGDBJtagConstants.ATTR_IP_ADDRESS, ip);
+			if (doStartGdbServer.getSelection()) {
+				configuration.setAttribute(IGDBJtagConstants.ATTR_IP_ADDRESS,
+						"localhost");
 
-			try {
-				int port = Integer.valueOf(targetPortNumber.getText().trim())
-						.intValue();
-				configuration.setAttribute(IGDBJtagConstants.ATTR_PORT_NUMBER,
-						port);
-			} catch (NumberFormatException e) {
-				Activator.log(e);
+				try {
+					int port;
+					port = Integer.parseInt(gdbServerGdbPort.getText().trim());
+					configuration.setAttribute(
+							IGDBJtagConstants.ATTR_PORT_NUMBER, port);
+				} catch (NumberFormatException e) {
+					Activator.log(e);
+				}
+			} else {
+				String ip = targetIpAddress.getText().trim();
+				configuration.setAttribute(IGDBJtagConstants.ATTR_IP_ADDRESS,
+						ip);
+
+				try {
+					int port = Integer.valueOf(
+							targetPortNumber.getText().trim()).intValue();
+					configuration.setAttribute(
+							IGDBJtagConstants.ATTR_PORT_NUMBER, port);
+				} catch (NumberFormatException e) {
+					Activator.log(e);
+				}
 			}
 		}
 
