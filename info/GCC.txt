@@ -1,0 +1,45 @@
+GCC Warnings:
+
+‘-Wall’ turns on the following warning flags:
+
+-Waddress
+-Warray-bounds (only with ‘-O2’)
+-Wc++11-compat
+-Wchar-subscripts
+-Wenum-compare (in C/ObjC; this is on by default in C++) -Wimplicit-int (C and Objective-C only) -Wimplicit-function-declaration (C and Objective-C only) -Wcomment
+-Wformat
+-Wmain (only for C/ObjC and unless ‘-ffreestanding’) -Wmaybe-uninitialized
+-Wmissing-braces (only for C/ObjC)
+-Wnonnull
+-Wparentheses
+-Wpointer-sign
+-Wreorder
+-Wreturn-type
+-Wsequence-point
+-Wsign-compare (only in C++)
+-Wstrict-aliasing
+-Wstrict-overflow=1
+-Wswitch
+-Wtrigraphs
+-Wuninitialized
+-Wunknown-pragmas
+-Wunused-function
+-Wunused-label
+-Wunused-value
+-Wunused-variable
+-Wvolatile-register-var
+
+‘-Wextra’ turns on the following warning flags:
+
+-Wclobbered
+-Wempty-body 
+-Wignored-qualifiers 
+-Wmissing-field-initializers 
+-Wmissing-parameter-type (C only) 
+-Wold-style-declaration (C only) 
+-Woverride-init
+-Wsign-compare
+-Wtype-limits
+-Wuninitialized
+-Wunused-parameter (only with ‘-Wunused’ or ‘-Wall’) 
+-Wunused-but-set-parameter (only with ‘-Wunused’ or ‘-Wall’)
