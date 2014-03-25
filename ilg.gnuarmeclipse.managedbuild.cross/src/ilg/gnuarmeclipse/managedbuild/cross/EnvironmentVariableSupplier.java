@@ -101,6 +101,7 @@ public class EnvironmentVariableSupplier implements
 					File bin = new File(sysroot, "bin"); //$NON-NLS-1$
 					if (bin.isDirectory())
 						sysroot = bin;
+					if (false){
 					System.out.println("PATH="
 							+ sysroot
 							+ " opt="
@@ -110,6 +111,7 @@ public class EnvironmentVariableSupplier implements
 							+ " prj="
 							+ configuration.getManagedProject().getOwner()
 									.getName());
+					}
 					return new PathEnvironmentVariable(sysroot);
 				}
 			}
