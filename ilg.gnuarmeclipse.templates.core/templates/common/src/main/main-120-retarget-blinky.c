@@ -1,13 +1,13 @@
 
 //
-// $(shortChipFamily) led blink sample (trace to $(trace)).
+// $(shortChipFamily) led blink sample (trace via $(trace)).
 //
 // In debug configurations, demonstrate how to print a greeting message
 // on the trace device. In release configurations the message is
-// simply discarded. By default the trace messages are forwarded to the
-// $(trace) output, but can be rerouted via any device or completely
-// suppressed by changing the definitions required in
-// system/src/diag/trace_impl.c.
+// simply discarded.
+//
+// To demonstrate POSIX retargetting, reroute the STDOUT and STDERR to the
+// trace device and display messages on both of them.
 //
 // Then demonstrates how to blink a led with 1Hz, using a
 // continuous loop and SysTick delays.

@@ -3,7 +3,8 @@
 // Copyright (c) 2014 Liviu Ionescu.
 //
 
-#if !defined(OS_USE_SEMIHOSTING)
+// Do not include on semihosting and when freestanding
+#if !defined(OS_USE_SEMIHOSTING) && !(__STDC_HOSTED__ == 0)
 
 // ----------------------------------------------------------------------------
 
@@ -12,15 +13,15 @@
 
 // ----------------------------------------------------------------------------
 
-// The standard write() system call, after a long way inside newlib,
-// finally calls this implementation function.
+// When using retargetted configurations, the standard write() system call,
+// after a long way inside newlib, finally calls this implementation function.
 
 // Based on the file descriptor, it can send arrays of characters to
 // different physical devices.
 
 // Currently only the output and error file descriptors are tested,
-// and the characters are forwarded to the trace channel, mainly
-// for debugging purposes.
+// and the characters are forwarded to the trace device, mainly
+// for demonstration purposes.
 
 ssize_t
 _write (int fd, const char* buf, size_t nbyte);
@@ -43,4 +44,4 @@ _write (int fd __attribute__((unused)), const char* buf __attribute__((unused)),
 
 // ----------------------------------------------------------------------------
 
-#endif // !defined(OS_USE_SEMIHOSTING)
+#endif // !defined(OS_USE_SEMIHOSTING) && !(__STDC_HOSTED__ == 0)

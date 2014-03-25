@@ -3,6 +3,12 @@
   // options to the test.
   // trace_dump_args(argc, argv);
 
-  // Send a greeting to the standard output (skipped on Release).
+  // Send a greeting to the trace device (skipped on Release).
   trace_puts("Hello ARM World!");
+
+  // The standard output should be forwarded to the trace device.
+  puts("Standard output message.");
+
+  // The standard error should be forwarded to the trace device.
+  fprintf(stderr, "Standard error message.\n");
 
