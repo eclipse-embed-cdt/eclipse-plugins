@@ -1,1 +1,1 @@
-To increase the Maven memory, add -Xms128M -Xmx512M to the JRE args.
+To increase the Maven memory, add -Xms256M -Xmx512M to the JRE args.
