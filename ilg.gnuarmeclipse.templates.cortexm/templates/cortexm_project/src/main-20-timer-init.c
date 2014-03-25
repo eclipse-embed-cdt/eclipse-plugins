@@ -1,1 +1,2 @@
+
   timer_start ();
