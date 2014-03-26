@@ -268,7 +268,12 @@ public class Backend extends Backend0 {
 
 					String[] commandLineArray = TabDebugger
 							.getGdbServerCommandLineArray(fLaunchConfiguration);
-
+					if (commandLineArray == null){
+						fTmpLaunchRequestMonitor.setStatus(new Status(
+								IStatus.ERROR, Activator.PLUGIN_ID, -1, "Cannot resolve macros in GDB server command line", null));
+						fTmpLaunchRequestMonitor.done();
+						return Status.OK_STATUS;
+					}
 					try {
 						String projectName = fLaunchConfiguration.getAttribute(
 								"org.eclipse.cdt.launch.PROJECT_ATTR", "");

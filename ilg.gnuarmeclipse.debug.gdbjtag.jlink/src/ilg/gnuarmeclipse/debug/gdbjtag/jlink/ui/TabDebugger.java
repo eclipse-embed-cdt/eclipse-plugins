@@ -1892,7 +1892,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.getAttribute(
 							ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
 							ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS_DEFAULT);
-			if (connectionAddress.trim().length() > 0) {
+			
+			connectionAddress = VariablesPlugin.getDefault().getStringVariableManager()
+					.performStringSubstitution(connectionAddress, false).trim();
+			if (connectionAddress.length() > 0) {
 				if (ConfigurationAttributes.GDB_SERVER_CONNECTION_USB
 						.equals(connection)) {
 
@@ -1918,11 +1921,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.getAttribute(
 							ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
 							defaultName).trim();
+			name = VariablesPlugin.getDefault().getStringVariableManager()
+					.performStringSubstitution(name, false).trim();
 			if (name.length() > 0) {
 				lst.add("-device");
-				// lst.add(name);
-				lst.add(VariablesPlugin.getDefault().getStringVariableManager()
-						.performStringSubstitution(name, false));
+				lst.add(name);
 			}
 
 			lst.add("-endian");
@@ -1993,17 +1996,20 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.GDB_SERVER_LOG,
 					ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT).trim();
 
+			logFile = VariablesPlugin.getDefault().getStringVariableManager()
+					.performStringSubstitution(logFile, false).trim();
 			if (logFile.length() > 0) {
 				lst.add("-log");
 
 				// lst.add(Utils.escapeWhitespaces(logFile));
-				lst.add(VariablesPlugin.getDefault().getStringVariableManager()
-						.performStringSubstitution(logFile, false));
+				lst.add(logFile);
 			}
 
 			String other = configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_OTHER,
 					ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT).trim();
+			other = VariablesPlugin.getDefault().getStringVariableManager()
+					.performStringSubstitution(other, false).trim();
 			if (other.length() > 0) {
 				lst.addAll(splitOptions(other));
 			}
@@ -2140,6 +2146,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
 					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT)
 					.trim();
+			other = VariablesPlugin.getDefault().getStringVariableManager()
+					.performStringSubstitution(other, false).trim();
 			if (other.length() > 0) {
 				lst.addAll(splitOptions(other));
 			}
