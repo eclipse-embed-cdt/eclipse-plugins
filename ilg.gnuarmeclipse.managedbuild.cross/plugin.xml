@@ -2653,7 +2653,8 @@
 
        <tool
              command="${cross_prefix}${cross_c}${cross_suffix}"
-             commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -MT&quot;$@&quot; -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
+             commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CompilerCommandLineGenerator"
+             commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
              errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser"
              id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler"
              isAbstract="false"
@@ -2785,7 +2786,8 @@
          
          <tool
                command="${cross_prefix}${cross_c}${cross_suffix}"
-               commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -MT&quot;$@&quot; -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
+               commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CompilerCommandLineGenerator"
+               commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
                errorParsers="org.eclipse.cdt.core.GCCErrorParser"
                id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler"
                isAbstract="false"
@@ -2965,7 +2967,8 @@
          </tool>
          <tool
                command="${cross_prefix}${cross_cpp}${cross_suffix}"
-               commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -MT&quot;$@&quot; -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
+               commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CompilerCommandLineGenerator"
+               commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
                errorParsers="org.eclipse.cdt.core.GCCErrorParser"
                id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler"
                isAbstract="false"

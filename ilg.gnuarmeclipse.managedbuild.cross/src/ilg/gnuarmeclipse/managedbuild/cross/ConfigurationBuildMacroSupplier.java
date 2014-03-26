@@ -68,8 +68,7 @@ public class ConfigurationBuildMacroSupplier implements
 			if (sValue != null && sValue.length() > 0) {
 				return new BuildMacro(macroName, BuildMacro.VALUE_TEXT, sValue);
 			}
-		}
-		// TODO Auto-generated method stub
+		} 
 		// System.out.println("Missing value of " + macroName + " in "
 		//		+ configuration.getName());
 		return null;
