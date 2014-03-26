@@ -39,11 +39,11 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		</property>
 
 		<property id="trace" label="%trace.label" description="%trace.description"
-			type="select" default="itm" hidden="false" persist="true">
-			<item value="none" label="None (no trace output)" />
-			<item value="itm" label="ARM ITM (via SWO)" />
-			<item value="stdout" label="Semihosting STDOUT stream" />
-			<item value="debug" label="Semihosting DEBUG channel" />
+			type="select" default="ITM" hidden="false" persist="true">
+			<item value="NONE" label="None (no trace output)" />
+			<item value="ITM" label="ARM ITM (via SWO)" />
+			<item value="STDOUT" label="Semihosting STDOUT stream" />
+			<item value="DEBUG" label="Semihosting DEBUG channel" />
 		</property>
 
 		<property id="useMostWarnings" label="%mostWarnings.label"
@@ -118,12 +118,19 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="propertyName" value="fileExtension" />
 			<simple name="propertyValue" value="cpp" />
 		</process>
+
+		<process type="org.eclipse.cdt.core.AddNature">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="natureId" value="org.eclipse.cdt.core.ccnature" />
+		</process>
+
 		<process
 			type="ilg.gnuarmeclipse.templates.core.SetPropertyToPluginResource">
 			<simple name="pluginId" value="ilg.gnuarmeclipse.templates.core" />
 			<simple name="relativePath" value="templates/common" />
 			<simple name="propertyName" value="commonDir" />
 		</process>
+
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalSetProperty">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="condition" value="" />
@@ -1213,7 +1220,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		</process>
 	</if>
 
-	<if condition="$(trace)==itm">
+	<if condition="$(trace)==ITM">
 		<process
 			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
 			<simple name="projectName" value="$(projectName)" />
@@ -1229,7 +1236,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			</complex-array>
 		</process>
 	</if>
-	<if condition="$(trace)==stdout">
+	<if condition="$(trace)==STDOUT">
 		<process
 			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
 			<simple name="projectName" value="$(projectName)" />
@@ -1245,7 +1252,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			</complex-array>
 		</process>
 	</if>
-	<if condition="$(trace)==debug">
+	<if condition="$(trace)==DEBUG">
 		<process
 			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
 			<simple name="projectName" value="$(projectName)" />

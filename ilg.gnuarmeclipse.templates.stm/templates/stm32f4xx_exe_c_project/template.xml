@@ -45,7 +45,7 @@
 		</property>
 
 		<property id="trace" label="%trace.label" description="%trace.description"
-			type="select" default="itm" hidden="false" persist="true">
+			type="select" default="ITM" hidden="false" persist="true">
 			<item value="NONE" label="None (no trace output)" />
 			<item value="ITM" label="ARM ITM (via SWO)" />
 			<item value="STDOUT" label="Semihosting STDOUT stream" />
@@ -133,7 +133,12 @@
 			<simple name="propertyName" value="fileExtension" />
 			<simple name="propertyValue" value="cpp" />
 		</process>
-		
+
+		<process type="org.eclipse.cdt.core.AddNature">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="natureId" value="org.eclipse.cdt.core.ccnature" />
+		</process>
+
 		<process
 			type="ilg.gnuarmeclipse.templates.core.SetPropertyToPluginResource">
 			<simple name="pluginId" value="ilg.gnuarmeclipse.templates.core" />
@@ -298,6 +303,12 @@
 				</element>
 				<element>
 					<simple name="source"
+						value="$(commonDir)/src/main/main-130-trace-via.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
 						value="$(commonDir)/src/main/main-140-defs-blinky.$(fileExtension)" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
@@ -315,7 +326,7 @@
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="$(commonDir)/src/main/main-190-clock.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-190-clock-blinky.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -433,18 +444,18 @@
 				</element>
 				<element>
 					<simple name="source"
-						value="$(commonDir)/src/main/main-150-begin.c" />
+						value="$(commonDir)/src/main/main-130-trace-via.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="$(commonDir)/src/main/main-180-$(syscalls)-hello.c" />
+						value="$(commonDir)/src/main/main-150-begin.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="$(commonDir)/src/main/main-190-clock.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-190-clock-empty.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
