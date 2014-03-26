@@ -27,7 +27,7 @@ public interface ConfigurationAttributes {
 	public static final String INTERFACE_SPEED_AUTO = "auto";
 	public static final String INTERFACE_SPEED_ADAPTIVE = "adaptive";
 	public static final String INTERFACE_SPEED_DEFAULT = INTERFACE_SPEED_AUTO;
-	public static final String GDB_SERVER_SPEED_DEFAULT = "30";
+	public static final String GDB_SERVER_SPEED_DEFAULT = "1000"; // kHz
 	public static final String INTERFACE_SPEED_AUTO_COMMAND = "monitor speed auto";
 	public static final String INTERFACE_SPEED_ADAPTIVE_COMMAND = "monitor speed adaptive";
 	public static final String INTERFACE_SPEED_FIXED_COMMAND = "monitor speed ";
