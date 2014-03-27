@@ -1,6 +1,7 @@
 //
 // This file is part of the µOS++ III distribution.
 // Copyright (c) 2014 Liviu Ionescu.
+//
 
 // ----------------------------------------------------------------------------
 
@@ -339,9 +340,8 @@ pHandler __isr_vectors[] =
       0,                //
       0,                //
       SPI4_IRQHandler
-#endif // defined(STM32F401xC) || defined(STM32F401xE)
 
-#if defined (STM32F405xx)
+#elif defined (STM32F405xx)
 
       CAN1_TX_IRQHandler,                            // CAN1 TX
       CAN1_RX0_IRQHandler,                            // CAN1 RX0
@@ -407,9 +407,7 @@ pHandler __isr_vectors[] =
       HASH_RNG_IRQHandler,                            // Hash and Rng
       FPU_IRQHandler                            // FPU
 
-#endif // defined (STM32F405xx)
-
-#if defined (STM32F407xx)
+#elif defined (STM32F407xx)
 
       CAN1_TX_IRQHandler,                            // CAN1 TX
       CAN1_RX0_IRQHandler,                            // CAN1 RX0
@@ -475,9 +473,7 @@ pHandler __isr_vectors[] =
       HASH_RNG_IRQHandler,                            // Hash and Rng
       FPU_IRQHandler                            // FPU
 
-#endif // defined (STM32F407xx)
-
-#if defined (STM32F415xx)
+#elif defined (STM32F415xx)
 
       CAN1_TX_IRQHandler,                            // CAN1 TX
       CAN1_RX0_IRQHandler,                            // CAN1 RX0
@@ -543,9 +539,7 @@ pHandler __isr_vectors[] =
       HASH_RNG_IRQHandler,                            // Hash and Rng
       FPU_IRQHandler                            // FPU
 
-#endif // defined (STM32F415xx)
-
-#if defined (STM32F417xx)
+#elif defined (STM32F417xx)
 
       CAN1_TX_IRQHandler,                            // CAN1 TX
       CAN1_RX0_IRQHandler,                            // CAN1 RX0
@@ -611,9 +605,7 @@ pHandler __isr_vectors[] =
       HASH_RNG_IRQHandler,                            // Hash and Rng
       FPU_IRQHandler                            // FPU
 
-#endif // defined (STM32F417xx)
-
-#if defined(STM32F427xx)
+#elif defined(STM32F427xx)
 
           CAN1_TX_IRQHandler,                       // CAN1 TX
           CAN1_RX0_IRQHandler,// CAN1 RX0
@@ -688,9 +680,7 @@ pHandler __isr_vectors[] =
           0,//
           DMA2D_IRQHandler  // DMA2D
 
-#endif // defined(STM32F427xx)
-
-#if defined(STM32F429xx)
+#elif defined(STM32F429xx)
 
     CAN1_TX_IRQHandler,                       // CAN1 TX
     CAN1_RX0_IRQHandler,// CAN1 RX0
@@ -765,9 +755,7 @@ pHandler __isr_vectors[] =
     LTDC_ER_IRQHandler,// LTDC error
     DMA2D_IRQHandler  // DMA2D
 
-#endif // defined(STM32F429xx)
-
-#if defined(STM32F437xx)
+#elif defined(STM32F437xx)
 
           CAN1_TX_IRQHandler,                       // CAN1 TX
           CAN1_RX0_IRQHandler,// CAN1 RX0
@@ -842,9 +830,7 @@ pHandler __isr_vectors[] =
           0,//
           DMA2D_IRQHandler  // DMA2D
 
-#endif // defined(STM32F437xx)
-
-#if defined(STM32F439xx)
+#elif defined(STM32F439xx)
 
     CAN1_TX_IRQHandler,                       // CAN1 TX
     CAN1_RX0_IRQHandler,// CAN1 RX0
@@ -919,7 +905,9 @@ pHandler __isr_vectors[] =
     LTDC_ER_IRQHandler,// LTDC error
     DMA2D_IRQHandler  // DMA2D
 
-#endif // defined(STM32F439xx)
+#else
+#error "missing vectors"
+#endif
 
   };
 
