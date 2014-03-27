@@ -81,7 +81,7 @@ public class ConditionalCopyFolders extends ProcessRunner {
 			ProcessArgument[] folder = folders[i];
 			String folderSourcePath = folder[0].getSimpleValue();
 			String folderTargetPath = folder[1].getSimpleValue();
-			String pattern = folder[2].getSimpleValue();
+			String pattern = folder[2].getSimpleValue().trim();
 			boolean replaceable = folder[3].getSimpleValue().equals("true"); //$NON-NLS-1$
 			
 			//System.out.println(folderSourcePath);
@@ -114,6 +114,14 @@ public class ConditionalCopyFolders extends ProcessRunner {
 					//System.out.println(child);
 					//System.out.println(child.getName());
 
+					String fileName = child.getName();
+					if (pattern.length() > 0){
+						if (!fileName.matches(pattern)){
+							System.out.println(fileName + " skipped");
+							continue;
+						}
+					}
+					
 					URL sourceURL;
 					try {
 						sourceURL = child.toURL(); // using .toURI().toURL()
@@ -175,8 +183,8 @@ public class ConditionalCopyFolders extends ProcessRunner {
 											.getProjectRelativePath()));
 						}
 
-						// Don't know if this is OK on Windows
-						File concat = new File(folderTargetPath, child.getName());
+						// Should be OK on Windows too
+						File concat = new File(folderTargetPath, fileName);
 						IFile iFile = projectHandle.getFile(concat.getPath());
 
 						if (iFile.exists()) {
