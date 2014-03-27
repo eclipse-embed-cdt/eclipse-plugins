@@ -94,6 +94,12 @@ void HAL_MspDeInit(void)
    */
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wmissing-prototypes"
+#endif
+
 /**
   * @brief  Initializes the PPP MSP.
   * @param  None
@@ -117,6 +123,11 @@ void HAL_PPP_MspDeInit(void)
             modified by the user
    */
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @}

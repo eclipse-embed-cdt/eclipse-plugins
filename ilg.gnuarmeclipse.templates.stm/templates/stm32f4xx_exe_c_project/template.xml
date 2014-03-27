@@ -11,7 +11,7 @@
 			description="%STM32F4xx.chipFamily.description" type="select"
 			default="STM32F407xx" hidden="false" persist="true">
 			<item value="STM32F401xC" label="STM32F401xC" />
-			<item value="STM32F401xE" label="STM32F401xE" />			
+			<item value="STM32F401xE" label="STM32F401xE" />
 			<item value="STM32F405xx" label="STM32F405xx" />
 			<item value="STM32F407xx" label="STM32F407xx" />
 			<item value="STM32F415xx" label="STM32F415xx" />
@@ -37,7 +37,7 @@
 		</property>
 
 		<!-- ============================================================== -->
-		
+
 		<property id="syscalls" label="%syscalls.label" description="%syscalls.description"
 			type="select" default="retarget" hidden="false" persist="true">
 			<item value="none" label="Freestanding (no POSIX system calls)" />
@@ -58,6 +58,9 @@
 			description="%mostWarnings.description" type="boolean" default="true"
 			hidden="false" persist="true" />
 
+		<property id="useWerror" label="%useWerror.label" description="%useWerror.description"
+			type="boolean" default="true" hidden="false" persist="true" />
+
 		<property id="useOg" label="%useOg.label" description="%useOg.description"
 			type="boolean" default="true" hidden="false" persist="true" />
 
@@ -69,34 +72,31 @@
 	<property-group id="folders" label="%group.folders.label"
 		description="%group.folders.description" type="PAGES-ONLY" help="help.html">
 		<property id="includeDir" label="%includeDir.label"
-			description="%includeDir.description" type="input"
-			default="%includeDir.default" pattern="[a-zA-Z0-9]+" mandatory="true"
-			persist="true" />
+			description="%includeDir.description" type="input" default="%includeDir.default"
+			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
 		<property id="sourceDir" label="%sourceDir.label"
 			description="%sourceDir.description" type="input" default="%sourceDir.default"
 			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
 		<property id="sysDir" label="%sysDir.label" description="%sysDir.description"
 			type="input" default="%sysDir.default" pattern="[a-zA-Z0-9]+"
 			mandatory="true" persist="true" />
-		<property id="cmsisDir" label="%cmsisDir.label"
-			description="%cmsisDir.description" type="input" default="%cmsisDir.default"
-			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
+		<property id="cmsisDir" label="%cmsisDir.label" description="%cmsisDir.description"
+			type="input" default="%cmsisDir.default" pattern="[a-zA-Z0-9]+"
+			mandatory="true" persist="true" />
 		<property id="newlibDir" label="%newlibDir.label"
 			description="%newlibDir.description" type="input" default="%newlibDir.default"
 			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
 		<property id="ldscriptsDir" label="%ldscriptsDir.label"
-			description="%ldscriptsDir.description" type="input"
-			default="%ldscriptsDir.default" pattern="[a-zA-Z0-9]+" mandatory="true"
-			persist="true" />
+			description="%ldscriptsDir.description" type="input" default="%ldscriptsDir.default"
+			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
 
 		<!-- ============================================================== -->
 		<property id="fileExtension" label="Source file extension"
 			description="Will be set to cpp for ccnature" mandatory="true"
 			hidden="true" default="c" persist="false" />
 
-		<property id="chipFamily" label="Chip family"
-			description="Will be set to family" mandatory="true"
-			hidden="true" default="undefined" persist="false" />
+		<property id="chipFamily" label="Chip family" description="Will be set to family"
+			mandatory="true" hidden="true" default="undefined" persist="false" />
 
 		<property id="commonDir" label="common files"
 			description="Will be set to ...templates.core/templates/common/ folder"
@@ -117,14 +117,14 @@
 		<property id="shortChipFamily" label="Shortened chip family"
 			mandatory="true" hidden="true" default="STM32F4" persist="false" />
 
-		<property id="device" label="Device folder name"
-			mandatory="true" hidden="true" default="stm32f4" persist="false" />
+		<property id="device" label="Device folder name" mandatory="true"
+			hidden="true" default="stm32f4" persist="false" />
 
 		<property id="devicePeriph" label="Device periperal folder name"
 			mandatory="true" hidden="true" default="stm32f4-hal" persist="false" />
 
-		<property id="osDir" label="common files"
-			mandatory="true" hidden="true" default="../micro-os-plus" persist="false" />
+		<property id="osDir" label="common files" mandatory="true"
+			hidden="true" default="../micro-os-plus" persist="false" />
 
 	</property-group>
 
@@ -160,7 +160,7 @@
 			<simple name="relativePath" value="templates/common" />
 			<simple name="propertyName" value="commonDir" />
 		</process>
-		
+
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalSetProperty">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="condition" value="" />
@@ -181,7 +181,7 @@
 			<simple name="propertyName" value="hseValue" />
 			<simple name="propertyValue" value="$(STM32F4hseValue)" />
 		</process>
-		
+
 	</if>
 
 	<!-- ================================================================== -->
@@ -325,8 +325,7 @@
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source"
-						value="$(commonDir)/src/main/main-130-trace-via.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-130-trace-via.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -337,8 +336,7 @@
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source"
-						value="$(commonDir)/src/main/main-150-begin.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-150-begin.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -476,14 +474,12 @@
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source"
-						value="$(commonDir)/src/main/main-130-trace-via.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-130-trace-via.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source"
-						value="$(commonDir)/src/main/main-150-begin.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-150-begin.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -539,7 +535,8 @@
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="$(commonDir)/system/include/cmsis/README_CMSIS.txt" />
+					<simple name="source"
+						value="$(commonDir)/system/include/cmsis/README_CMSIS.txt" />
 					<simple name="target"
 						value="$(sysDir)/$(includeDir)/$(cmsisDir)/README_CMSIS.txt" />
 					<simple name="replaceable" value="true" />
@@ -747,13 +744,15 @@
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="$(osDir)/$(device).pack/src/cmsis/vectors_$(CMSIS_name).c" />
+					<simple name="source"
+						value="$(osDir)/$(device).pack/src/cmsis/vectors_$(CMSIS_name).c" />
 					<simple name="target"
 						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_$(CMSIS_name).c" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="$(osDir)/$(device).pack/src/cmsis/README_DEVICE.txt" />
+					<simple name="source"
+						value="$(osDir)/$(device).pack/src/cmsis/README_DEVICE.txt" />
 					<simple name="target"
 						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/README_DEVICE.txt" />
 					<simple name="replaceable" value="true" />
@@ -764,7 +763,8 @@
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="$(osDir)/$(device).pack/include/cmsis/cmsis_device.h" />
+					<simple name="source"
+						value="$(osDir)/$(device).pack/include/cmsis/cmsis_device.h" />
 					<simple name="target"
 						value="$(sysDir)/$(includeDir)/$(cmsisDir)/cmsis_device.h" />
 					<simple name="replaceable" value="true" />
@@ -809,10 +809,8 @@
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source"
-						value="$(commonDir)/system/include/diag/Trace.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/diag/Trace.h" />
+					<simple name="source" value="$(commonDir)/system/include/diag/Trace.h" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/diag/Trace.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -909,120 +907,182 @@
 	<!-- ================================================================== -->
 
 	<!-- Peripheral library -->
+	<if condition="1==0">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal_cortex.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal_cortex.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal_def.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal_def.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal_gpio.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal_gpio.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal_gpio_ex.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal_gpio_ex.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal_rcc.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal_rcc.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal_rcc_ex.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal_rcc_ex.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal_flash.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal_flash.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal_flash_ex.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal_flash_ex.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal_pwr.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal_pwr.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal_pwr_ex.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal_pwr_ex.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)/stm32f4xx_hal.c" />
+					<simple name="target"
+						value="$(sysDir)/$(sourceDir)/$(devicePeriph)/stm32f4xx_hal.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)/stm32f4xx_hal_cortex.c" />
+					<simple name="target"
+						value="$(sysDir)/$(sourceDir)/$(devicePeriph)/stm32f4xx_hal_cortex.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)/stm32f4xx_hal_gpio.c" />
+					<simple name="target"
+						value="$(sysDir)/$(sourceDir)/$(devicePeriph)/stm32f4xx_hal_gpio.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)/stm32f4xx_hal_flash.c" />
+					<simple name="target"
+						value="$(sysDir)/$(sourceDir)/$(devicePeriph)/stm32f4xx_hal_flash.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)/stm32f4xx_hal_flash_ex.c" />
+					<simple name="target"
+						value="$(sysDir)/$(sourceDir)/$(devicePeriph)/stm32f4xx_hal_flash_ex.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)/stm32f4xx_hal_pwr.c" />
+					<simple name="target"
+						value="$(sysDir)/$(sourceDir)/$(devicePeriph)/stm32f4xx_hal_pwr.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)/stm32f4xx_hal_pwr_ex.c" />
+					<simple name="target"
+						value="$(sysDir)/$(sourceDir)/$(devicePeriph)/stm32f4xx_hal_pwr_ex.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)/stm32f4xx_hal_rcc.c" />
+					<simple name="target"
+						value="$(sysDir)/$(sourceDir)/$(devicePeriph)/stm32f4xx_hal_rcc.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)/stm32f4xx_hal_rcc_ex.c" />
+					<simple name="target"
+						value="$(sysDir)/$(sourceDir)/$(devicePeriph)/stm32f4xx_hal_rcc_ex.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
 	<if condition="1==1">
-		<process type="org.eclipse.cdt.core.AddFiles">
+		<!-- Copy all folders in peripheral library -->
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
 			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
+			<simple name="condition" value="" />
+			<complex-array name="folders">
 				<element>
-					<simple name="source" value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal.h" />
-					<simple name="target" value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal.h" />
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/$(devicePeriph)" />
+					<simple name="pattern" value="" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal_cortex.h" />
-					<simple name="target" value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal_cortex.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal_def.h" />
-					<simple name="target" value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal_def.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal_gpio.h" />
-					<simple name="target" value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal_gpio.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal_gpio_ex.h" />
-					<simple name="target" value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal_gpio_ex.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal_rcc.h" />
-					<simple name="target" value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal_rcc.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal_rcc_ex.h" />
-					<simple name="target" value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal_rcc_ex.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal_flash.h" />
-					<simple name="target" value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal_flash.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal_flash_ex.h" />
-					<simple name="target" value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal_flash_ex.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal_pwr.h" />
-					<simple name="target" value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal_pwr.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/stm32f4xx_hal_pwr_ex.h" />
-					<simple name="target" value="$(sysDir)/$(includeDir)/$(devicePeriph)/stm32f4xx_hal_pwr_ex.h" />
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/$(devicePeriph)" />
+					<simple name="pattern" value="" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
 		</process>
-		
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)/stm32f4xx_hal.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/$(devicePeriph)/stm32f4xx_hal.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)/stm32f4xx_hal_cortex.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/$(devicePeriph)/stm32f4xx_hal_cortex.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)/stm32f4xx_hal_gpio.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/$(devicePeriph)/stm32f4xx_hal_gpio.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)/stm32f4xx_hal_flash.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/$(devicePeriph)/stm32f4xx_hal_flash.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)/stm32f4xx_hal_flash_ex.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/$(devicePeriph)/stm32f4xx_hal_flash_ex.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)/stm32f4xx_hal_pwr.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/$(devicePeriph)/stm32f4xx_hal_pwr.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)/stm32f4xx_hal_pwr_ex.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/$(devicePeriph)/stm32f4xx_hal_pwr_ex.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)/stm32f4xx_hal_rcc.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/$(devicePeriph)/stm32f4xx_hal_rcc.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)/stm32f4xx_hal_rcc_ex.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/$(devicePeriph)/stm32f4xx_hal_rcc_ex.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-		
-		<!-- TODO: add -->
 	</if>
 
 	<!-- ================================================================== -->
@@ -1286,6 +1346,23 @@
 				<element>
 					<simple name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.floatequal" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(useWerror) == true" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.toerrors" />
 					<simple name="value" value="true" />
 					<simple name="path" value="" />
 					<simple name="buildType" value="" />

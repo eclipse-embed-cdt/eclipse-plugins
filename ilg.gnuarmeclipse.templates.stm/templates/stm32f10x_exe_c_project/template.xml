@@ -59,6 +59,9 @@
 			description="%mostWarnings.description" type="boolean" default="true"
 			hidden="false" persist="true" />
 
+		<property id="useWerror" label="%useWerror.label" description="%useWerror.description"
+			type="boolean" default="true" hidden="false" persist="true" />
+
 		<property id="useOg" label="%useOg.label" description="%useOg.description"
 			type="boolean" default="true" hidden="false" persist="true" />
 
@@ -832,7 +835,7 @@
 	<!-- ================================================================== -->
 
 	<!-- Peripheral library -->
-	<if condition="1==1">
+	<if condition="1==0">
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
@@ -1079,8 +1082,30 @@
 				</element>
 			</complex-array>
 		</process>
-		
-		<!-- TODO: add -->
+	</if>
+
+	<if condition="1==1">
+		<!-- Copy all folders in peripheral library -->
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="folders">
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/$(devicePeriph)" />
+					<simple name="pattern" value="" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/src/$(devicePeriph)" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/$(devicePeriph)" />
+					<simple name="pattern" value="" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
 	</if>
 
 	<!-- ================================================================== -->
@@ -1226,6 +1251,23 @@
 				<element>
 					<simple name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.floatequal" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(useWerror) == true" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.toerrors" />
 					<simple name="value" value="true" />
 					<simple name="path" value="" />
 					<simple name="buildType" value="" />
