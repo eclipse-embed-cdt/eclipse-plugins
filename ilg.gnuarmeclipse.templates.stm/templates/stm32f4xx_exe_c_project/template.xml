@@ -531,100 +531,15 @@
 
 	<!-- CMSIS files -->
 	<if condition="1==1">
-		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
 			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
+			<simple name="condition" value="" />
+			<complex-array name="folders">
 				<element>
 					<simple name="source"
-						value="$(commonDir)/system/include/cmsis/README_CMSIS.txt" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/README_CMSIS.txt" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-
-		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source"
-						value="$(commonDir)/system/include/cmsis/arm_common_tables.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/arm_common_tables.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(commonDir)/system/include/cmsis/arm_const_structs.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/arm_const_structs.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/system/include/cmsis/arm_math.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/arm_math.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/system/include/cmsis/core_cm0.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cm0.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(commonDir)/system/include/cmsis/core_cm0plus.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cm0plus.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/system/include/cmsis/core_cm3.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cm3.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(commonDir)/system/include/cmsis/core_cm4_simd.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cm4_simd.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/system/include/cmsis/core_cm4.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cm4.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(commonDir)/system/include/cmsis/core_cmFunc.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cmFunc.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(commonDir)/system/include/cmsis/core_cmInstr.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cmInstr.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(commonDir)/system/include/cmsis/core_sc000.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_sc000.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(commonDir)/system/include/cmsis/core_sc300.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_sc300.h" />
+						value="$(commonDir)/system/include/cmsis" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)" />
+					<simple name="pattern" value=".*[.](h|txt)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -634,139 +549,24 @@
 	<!-- ================================================================== -->
 
 	<!-- Vendor CMSIS files -->
-
 	<if condition="1==1">
-		<process type="org.eclipse.cdt.core.AddFiles">
+		<!-- Copy all vendor CMSIS files -->
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
 			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
+			<simple name="condition" value="" />
+			<complex-array name="folders">
 				<element>
 					<simple name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/$(CMSIS_name).h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/$(CMSIS_name).h" />
+						value="$(osDir)/$(device).pack/include/cmsis" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)" />
+					<simple name="pattern" value=".*[.](h|txt)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/system_$(CMSIS_name).h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/system_$(CMSIS_name).h" />
-					<simple name="replaceable" value="true" />
-				</element>
-
-				<element>
-					<simple name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/stm32f401xc.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f401xc.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/stm32f401xe.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f401xe.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/stm32f405xx.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f405xx.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/stm32f407xx.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f407xx.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/stm32f415xx.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f415xx.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/stm32f417xx.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f417xx.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/stm32f427xx.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f427xx.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/stm32f429xx.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f429xx.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/stm32f437xx.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f437xx.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/stm32f439xx.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f439xx.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/README_DEVICE.txt" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/README_DEVICE.txt" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-		<process type="org.eclipse.cdt.core.AddFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source"
-						value="$(osDir)/$(device).pack/src/cmsis/system_$(CMSIS_name).c" />
-					<simple name="target"
-						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/system_$(CMSIS_name).c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(osDir)/$(device).pack/src/cmsis/vectors_$(CMSIS_name).c" />
-					<simple name="target"
-						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_$(CMSIS_name).c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(osDir)/$(device).pack/src/cmsis/README_DEVICE.txt" />
-					<simple name="target"
-						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/README_DEVICE.txt" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source"
-						value="$(osDir)/$(device).pack/include/cmsis/cmsis_device.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/cmsis_device.h" />
+						value="$(osDir)/$(device).pack/src/cmsis" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/$(cmsisDir)" />
+					<simple name="pattern" value=".*[.](c|txt)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
