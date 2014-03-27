@@ -8,15 +8,9 @@
 
 int errno;
 
-#if __STDC_HOSTED__ == 1
-char* __env[1] =
-  { 0 };
-char** environ = __env;
-#endif
+// ----------------------------------------------------------------------------
 
 #if !defined(OS_USE_SEMIHOSTING)
-
-// ----------------------------------------------------------------------------
 
 #include <_ansi.h>
 #include <_syslist.h>
@@ -26,6 +20,7 @@ char** environ = __env;
 #include <sys/time.h>
 #include <sys/times.h>
 #include <limits.h>
+#include <signal.h>
 
 void
 __initialize_args(int* p_argc, char*** p_argv);
@@ -58,8 +53,43 @@ __initialize_args(int* p_argc, char*** p_argv)
   return;
 }
 
+// These functions are defined here to avoid linker errors in freestanding
+// applications. They might be called in some error cases from library
+// code.
+//
+// If you detect other functions to be needed, just let us know
+// and we'll add them.
+
+int
+raise(int sig __attribute__((unused)))
+{
+  errno = ENOSYS;
+  return -1;
+}
+
+int
+kill(pid_t pid, int sig);
+
+int
+kill(pid_t pid __attribute__((unused)), int sig __attribute__((unused)))
+{
+  errno = ENOSYS;
+  return -1;
+}
+
+#endif // !defined(OS_USE_SEMIHOSTING)
+
 // ----------------------------------------------------------------------------
 
+// If you need the empty definitions, remove the -ffreestanding option.
+
+#if __STDC_HOSTED__ == 1
+
+char* __env[1] =
+  { 0 };
+char** environ = __env;
+
+#if !defined(OS_USE_SEMIHOSTING)
 
 // Forward declarations
 
@@ -279,7 +309,7 @@ _write(int file __attribute__((unused)), char* ptr __attribute__((unused)),
 
 // ----------------------------------------------------------------------------
 
-#else
+#else // defined(OS_USE_SEMIHOSTING)
 
 // ----------------------------------------------------------------------------
 
@@ -306,15 +336,13 @@ _write(int file __attribute__((unused)), char* ptr __attribute__((unused)),
 #include "arm/semihosting.h"
 
 int
-__attribute__((noreturn))
 _kill (int pid, int sig);
 
 void
 __attribute__((noreturn))
 _exit (int status);
 
-#if 1
-/* Forward prototypes.  */
+// Forward declarations.
 int
 _system (const char*);
 int
@@ -329,10 +357,10 @@ int
 _unlink (const char*);
 int
 _link (void);
-#endif
+
 int
 _stat (const char*, struct stat*);
-#if 1
+
 int
 _fstat (int, struct stat*);
 int
@@ -361,7 +389,7 @@ int
 _read (int, char*, int);
 int
 _swiread (int, char*, int);
-#endif
+
 void
 initialise_monitor_handles (void);
 
@@ -1125,4 +1153,6 @@ getcwd(char *buf, size_t size)
     return buf;
   }
 
-#endif
+#endif // defined OS_USE_SEMIHOSTING
+
+#endif // __STDC_HOSTED__ == 1
