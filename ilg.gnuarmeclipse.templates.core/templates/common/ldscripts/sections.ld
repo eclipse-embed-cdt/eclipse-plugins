@@ -216,9 +216,6 @@ SECTIONS
 
         *(vtable)
 
-		/* Exclude rdimon command line, to avoid loosing command line */
-        /* *(EXCLUDE_FILE (*rdimon-crt0.o) .data .data.*) */
-
 	    . = ALIGN(4);
 
 	    /* This is used by the startup code to initialise the .data section */
@@ -233,11 +230,6 @@ SECTIONS
      */
     .bss :
     {
-	    . = ALIGN(4);
-	    
-		/* Moved outside the initialised area */
-		/* *rdimon-crt0.o(.data) */
-		
 	    . = ALIGN(4);
         __bss_start__ = .;     	/* standard newlib definition */
         _sbss = .;              /* STM specific definition */

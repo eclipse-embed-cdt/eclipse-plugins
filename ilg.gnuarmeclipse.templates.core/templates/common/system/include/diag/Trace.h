@@ -8,6 +8,28 @@
 
 #include <unistd.h>
 
+// The trace device is an independent output channel, intended for debug
+// purposes.
+//
+// The API is simple, and mimics the standard output calls:
+// - trace_printf()
+// - trace_puts()
+// - trace_putchar();
+//
+// The implementation is done in
+// - trace_write()
+//
+// Trace support is enabled by adding the TRACE definition.
+// By default the trace messages are forwarded to the ITM output,
+// but can be rerouted via any device or completely suppressed by
+// changing the definitions required in system/src/diag/trace_impl.c
+// (currently OS_USE_TRACE_ITM, OS_USE_TRACE_SEMIHOSTING_DEBUG/_STDOUT).
+//
+// When TRACE is not defined, all functions are inlined to empty bodies.
+// This has the advantage that the trace call do not need to be conditionally
+// compiled with #ifdef TRACE/#endif
+
+
 #if defined(TRACE)
 
 #if defined(__cplusplus)

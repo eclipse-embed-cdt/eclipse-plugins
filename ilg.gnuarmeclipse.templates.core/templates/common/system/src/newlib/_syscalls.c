@@ -490,6 +490,15 @@ _exit (int status)
 
 // ----------------------------------------------------------------------------
 
+int __attribute__((weak))
+_kill(int pid __attribute__((unused)), int sig __attribute__((unused)))
+{
+  errno = ENOSYS;
+  return -1;
+}
+
+// ----------------------------------------------------------------------------
+
 /* Struct used to keep track of the file position, just so we
  can implement fseek(fh,x,SEEK_CUR).  */
 struct fdent

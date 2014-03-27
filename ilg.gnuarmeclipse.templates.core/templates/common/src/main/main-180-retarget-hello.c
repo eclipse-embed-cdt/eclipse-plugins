@@ -6,9 +6,9 @@
   // Send a greeting to the trace device (skipped on Release).
   trace_puts("Hello ARM World!");
 
-  // The standard output should be forwarded to the trace device.
+  // The standard output and the standard error should be forwarded to
+  // the trace device. For this to work, a redirection in _write.c is
+  // required.
   puts("Standard output message.");
-
-  // The standard error should be forwarded to the trace device.
   fprintf(stderr, "Standard error message.\n");
 

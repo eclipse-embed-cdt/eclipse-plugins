@@ -1,4 +1,4 @@
-These files extend or replace the functionality provided by newlib.
+These files extend or replace some of the the newlib functions.
 
 They provide:
 - a customised startup sequence, written in C
