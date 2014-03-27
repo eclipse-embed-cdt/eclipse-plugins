@@ -260,6 +260,24 @@
             </baseType>
          </complexArray>
       </processType>
+ 
+       <processType
+            name="ConditionalCopyFolders"
+            processRunner="ilg.gnuarmeclipse.templates.core.processes.ConditionalCopyFolders">
+         <simple name="projectName"/>
+         <simple
+               name="condition"
+               nullable="true">
+         </simple>
+         <complexArray name="folders">
+            <baseType>
+               <simple name="source"/>
+               <simple name="target"/>
+               <simple name="pattern"/>
+               <simple name="replaceable"/>
+            </baseType>
+         </complexArray>
+      </processType>
       
    </extension>
 
