@@ -30,6 +30,12 @@
 #ifndef __STM32F0XX_ADC_H
 #define __STM32F0XX_ADC_H
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpadded"
+#endif
+
 #ifdef __cplusplus
  extern "C" {
 #endif
@@ -435,6 +441,11 @@ void ADC_ClearITPendingBit(ADC_TypeDef* ADCx, uint32_t ADC_IT);
 
 #ifdef __cplusplus
 }
+#endif
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
 #endif
 
 #endif /*__STM32F0XX_ADC_H */

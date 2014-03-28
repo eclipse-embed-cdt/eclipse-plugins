@@ -30,6 +30,12 @@
 #ifndef __STM32F0XX_RTC_H
 #define __STM32F0XX_RTC_H
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpadded"
+#endif
+
 #ifdef __cplusplus
  extern "C" {
 #endif
@@ -792,6 +798,11 @@ void RTC_ClearITPendingBit(uint32_t RTC_IT);
 
 #ifdef __cplusplus
 }
+#endif
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
 #endif
 
 #endif /*__STM32F0XX_RTC_H */

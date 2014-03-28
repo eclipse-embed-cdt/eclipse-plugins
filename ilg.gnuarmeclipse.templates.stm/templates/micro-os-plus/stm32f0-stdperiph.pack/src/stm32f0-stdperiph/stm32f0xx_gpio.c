@@ -156,6 +156,12 @@ void GPIO_DeInit(GPIO_TypeDef* GPIOx)
   }
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+
 /**
   * @brief  Initializes the GPIOx peripheral according to the specified 
   *         parameters in the GPIO_InitStruct.
@@ -214,6 +220,11 @@ void GPIO_Init(GPIO_TypeDef* GPIOx, GPIO_InitTypeDef* GPIO_InitStruct)
     }
   }
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @brief  Fills each GPIO_InitStruct member with its default value.

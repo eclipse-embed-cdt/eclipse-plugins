@@ -862,6 +862,12 @@ uint32_t RTC_GetSubSecond(void)
   return (tmpreg);
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+
 /**
   * @brief  Set the RTC current date.
   * @param  RTC_Format: specifies the format of the entered parameters.
@@ -958,6 +964,11 @@ ErrorStatus RTC_SetDate(uint32_t RTC_Format, RTC_DateTypeDef* RTC_DateStruct)
   return status;
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
+
 /**
   * @brief  Fills each RTC_DateStruct member with its default value
   *         (Monday, January 01 xx00).
@@ -1028,6 +1039,13 @@ void RTC_GetDate(uint32_t RTC_Format, RTC_DateTypeDef* RTC_DateStruct)
 @endverbatim
   * @{
   */
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
 
 /**
   * @brief  Set the specified RTC Alarm.
@@ -1356,6 +1374,11 @@ uint32_t RTC_GetAlarmSubSecond(uint32_t RTC_Alarm)
 
   return (tmpreg);
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @}
@@ -2473,6 +2496,12 @@ void RTC_ClearITPendingBit(uint32_t RTC_IT)
   * @}
   */
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+
 /**
   * @brief  Converts a 2 digit decimal to BCD format.
   * @param  Value: Byte to be converted.
@@ -2502,6 +2531,11 @@ static uint8_t RTC_Bcd2ToByte(uint8_t Value)
   tmp = ((uint8_t)(Value & (uint8_t)0xF0) >> (uint8_t)0x4) * 10;
   return (tmp + (Value & (uint8_t)0x0F));
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @}

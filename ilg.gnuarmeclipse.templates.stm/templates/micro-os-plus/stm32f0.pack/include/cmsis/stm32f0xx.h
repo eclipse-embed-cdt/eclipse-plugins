@@ -5084,7 +5084,20 @@ typedef struct
   */ 
 
 #ifdef USE_STDPERIPH_DRIVER
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpadded"
+#endif
+
   #include "stm32f0xx_conf.h"
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
+
 #endif
 
 /** @addtogroup Exported_macro

@@ -258,6 +258,12 @@ void SYSCFG_BreakConfig(uint32_t SYSCFG_Break)
   SYSCFG->CFGR2 |= (uint32_t) SYSCFG_Break;
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief  Checks whether the specified SYSCFG flag is set or not.
   * @param  SYSCFG_Flag: specifies the SYSCFG flag to check. 
@@ -286,6 +292,11 @@ FlagStatus SYSCFG_GetFlagStatus(uint32_t SYSCFG_Flag)
   /* Return the SYSCFG_Flag status */
   return  bitstatus;
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @brief  Clear the selected SYSCFG flag.

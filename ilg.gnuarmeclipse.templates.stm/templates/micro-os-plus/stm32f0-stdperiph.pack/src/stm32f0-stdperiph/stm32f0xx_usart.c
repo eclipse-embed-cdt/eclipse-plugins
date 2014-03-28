@@ -684,6 +684,12 @@ void USART_SetReceiverTimeOut(USART_TypeDef* USARTx, uint32_t USART_ReceiverTime
   USARTx->RTOR |= USART_ReceiverTimeOut;
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+
 /**
   * @brief  Sets the system clock prescaler.
   * @note   This function is not available for STM32F030 devices.    
@@ -703,6 +709,11 @@ void USART_SetPrescaler(USART_TypeDef* USARTx, uint8_t USART_Prescaler)
   /* Set the USART prescaler */
   USARTx->GTPR |= USART_Prescaler;
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @}
@@ -1817,6 +1828,12 @@ void USART_ITConfig(USART_TypeDef* USARTx, uint32_t USART_IT, FunctionalState Ne
   }
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+
 /**
   * @brief  Enables the specified USART's Request.
   * @param  USARTx: where x can be 1, 2, 3 or 4 to select the USART peripheral.
@@ -1853,6 +1870,11 @@ void USART_RequestCmd(USART_TypeDef* USARTx, uint32_t USART_Request, FunctionalS
     USARTx->RQR &= (uint32_t)~USART_Request;
   }
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @brief  Enables or disables the USART's Overrun detection.

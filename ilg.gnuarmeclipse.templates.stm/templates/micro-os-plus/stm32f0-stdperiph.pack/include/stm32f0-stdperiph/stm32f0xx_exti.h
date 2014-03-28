@@ -30,6 +30,12 @@
 #ifndef __STM32F0XX_EXTI_H
 #define __STM32F0XX_EXTI_H
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpadded"
+#endif
+
 #ifdef __cplusplus
  extern "C" {
 #endif
@@ -202,6 +208,11 @@ void EXTI_ClearITPendingBit(uint32_t EXTI_Line);
 
 #ifdef __cplusplus
 }
+#endif
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
 #endif
 
 #endif /* __STM32F0XX_EXTI_H */
