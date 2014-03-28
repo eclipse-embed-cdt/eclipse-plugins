@@ -154,6 +154,8 @@ SECTIONS
  
         *(.rodata .rodata.*) 		/* read-only data (constants) */
 
+        *(vtable)					/* C++ virtual tables */
+
 		KEEP(*(.eh_frame*))
 
 		/*
@@ -213,9 +215,11 @@ SECTIONS
         /* This is used by the startup code to initialise the .data section */
         _sdata = . ;        	/* STM specific definition */
         __data_start__ = . ;
+		*(.data_begin .data_begin.*)
 
-        *(vtable)
-
+		*(.data .data.*)
+		
+		*(.data_end .data_end.*)
 	    . = ALIGN(4);
 
 	    /* This is used by the startup code to initialise the .data section */
@@ -226,23 +230,26 @@ SECTIONS
       
 
     /*
-     * The uninitialised data section.
+     * The uninitialised data section. NOLOAD is used to avoid
+     * the "section `.bss' type changed to PROGBITS" warning
      */
-    .bss :
+    .bss (NOLOAD) :
     {
 	    . = ALIGN(4);
         __bss_start__ = .;     	/* standard newlib definition */
         _sbss = .;              /* STM specific definition */
+        *(.bss_begin .bss_begin.*)
 
         *(.bss .bss.*)
         *(COMMON)
         
+        *(.bss_end .bss_end.*)
 	    . = ALIGN(4);
         __bss_end__ = .;        /* standard newlib definition */
         _ebss = . ;             /* STM specific definition */
     } >RAM
     
-    .noinit (NOLOAD):
+    .noinit (NOLOAD) :
     {
 	    . = ALIGN(4);
         _noinit = .;

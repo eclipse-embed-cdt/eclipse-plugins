@@ -28,7 +28,12 @@
 
 // ----------------------------------------------------------------------------
 
+#include <stdint.h>
 #include <sys/types.h>
+
+// ----------------------------------------------------------------------------
+
+#define OS_INCLUDE_STARTUP_GUARD_CHECKS (1)
 
 // ----------------------------------------------------------------------------
 
@@ -163,6 +168,30 @@ __run_fini_array(void)
   //_fini(); // DO NOT ENABE THIS!
 }
 
+#if defined(DEBUG) && defined(OS_INCLUDE_STARTUP_GUARD_CHECKS)
+
+// These definitions are used to check if the routines used to
+// clear the BSS and to copy the initialised DATA perform correctly.
+
+#define BSS_GUARD_BAD_VALUE (0xCADEBABA)
+
+static uint32_t volatile __attribute__ ((section(".bss_begin")))
+__bss_begin_guard;
+static uint32_t volatile __attribute__ ((section(".bss_end")))
+__bss_end_guard;
+
+#define DATA_GUARD_BAD_VALUE (0xCADEBABA)
+#define DATA_BEGIN_GUARD_VALUE (0x12345678)
+#define DATA_END_GUARD_VALUE (0x98765432)
+
+static uint32_t volatile __attribute__ ((section(".data_begin")))
+__data_begin_guard = DATA_BEGIN_GUARD_VALUE;
+
+static uint32_t volatile __attribute__ ((section(".data_end")))
+__data_end_guard = DATA_END_GUARD_VALUE;
+
+#endif // defined(DEBUG) && defined(OS_INCLUDE_STARTUP_GUARD_CHECKS)
+
 // This is the place where Cortex-M core will go immediately after reset,
 // via a call or jump from the Reset_Handler
 void __attribute__ ((section(".after_vectors"),noreturn))
@@ -172,12 +201,38 @@ _start(void)
   // Use Old Style Data and BSS section initialisation,
   // that will initialise a single BSS sections.
 
+#if defined(DEBUG) && defined(OS_INCLUDE_STARTUP_GUARD_CHECKS)
+  __bss_begin_guard = BSS_GUARD_BAD_VALUE;
+  __bss_end_guard = BSS_GUARD_BAD_VALUE;
+#endif
+
   // Zero fill the bss segment
   __initialize_bss(&__bss_start__, &__bss_end__);
+
+#if defined(DEBUG) && defined(OS_INCLUDE_STARTUP_GUARD_CHECKS)
+  if ((__bss_begin_guard != 0) || (__bss_end_guard != 0))
+    {
+      for (;;)
+        ;
+    }
+#endif
+
+#if defined(DEBUG) && defined(OS_INCLUDE_STARTUP_GUARD_CHECKS)
+  __data_begin_guard = DATA_GUARD_BAD_VALUE;
+  __data_end_guard = DATA_GUARD_BAD_VALUE;
+#endif
 
   // Copy the data segment from Flash to RAM.
   // When using startup files, this code is executed via the preinit array.
   __initialize_data(&_sidata, &_sdata, &_edata);
+
+#if defined(DEBUG) && defined(OS_INCLUDE_STARTUP_GUARD_CHECKS)
+  if ((__data_begin_guard != DATA_BEGIN_GUARD_VALUE) || (__data_end_guard != __data_end_guard))
+    {
+      for (;;)
+        ;
+    }
+#endif
 
   __initialize_hardware();
 
