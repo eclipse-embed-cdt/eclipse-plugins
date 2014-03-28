@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    Project/STM32F0xx_StdPeriph_Templates/stm32f0xx_conf.h 
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    22-November-2013
+  * @version V1.3.1
+  * @date    17-January-2014
   * @brief   Library configuration file.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT 2013 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT 2014 STMicroelectronics</center></h2>
   *
   * Licensed under MCD-ST Liberty SW License Agreement V2, (the "License");
   * You may not use this file except in compliance with the License.
@@ -32,8 +32,10 @@
 /* Includes ------------------------------------------------------------------*/
 /* Comment the line below to disable peripheral header file inclusion */
 #include "stm32f0xx_adc.h"
+#include "stm32f0xx_can.h"
 #include "stm32f0xx_cec.h"
 #include "stm32f0xx_crc.h"
+#include "stm32f0xx_crs.h"
 #include "stm32f0xx_comp.h"
 #include "stm32f0xx_dac.h"
 #include "stm32f0xx_dbgmcu.h"

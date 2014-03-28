@@ -1,4 +1,4 @@
-// STM32F3DISCOVERY definitions (GREEN led, C9, active high)
+// STM32F0DISCOVERY definitions (GREEN led, C9, active high)
 
 // Port numbers: 0=A, 1=B, 2=C, 3=D, 4=E, 5=F, 6=G, ...
 #define BLINK_PORT_NUMBER               (2)
