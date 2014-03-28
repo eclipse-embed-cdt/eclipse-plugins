@@ -255,6 +255,13 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		firstResetType.addModifyListener(scheduleUpdateJobModifyListener);
 
 		initCommands.addModifyListener(scheduleUpdateJobModifyListener);
+		
+		enableSemihosting.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				scheduleUpdateJob();
+			}
+		});
 	}
 
 	private void doFirstResetChanged() {
