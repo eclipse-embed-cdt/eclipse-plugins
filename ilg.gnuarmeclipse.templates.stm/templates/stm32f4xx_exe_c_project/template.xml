@@ -59,7 +59,7 @@
 			hidden="false" persist="true" />
 
 		<property id="useWerror" label="%useWerror.label" description="%useWerror.description"
-			type="boolean" default="true" hidden="false" persist="true" />
+			type="boolean" default="false" hidden="false" persist="true" />
 
 		<property id="useOg" label="%useOg.label" description="%useOg.description"
 			type="boolean" default="true" hidden="false" persist="true" />
