@@ -207,17 +207,17 @@ DMA2D_IRQHandler(void);
 
 #endif
 
+// ----------------------------------------------------------------------------
+
 extern unsigned int _estack;
 
 typedef void
 (* const pHandler)(void);
 
-//*****************************************************************************
-//
+// ----------------------------------------------------------------------------
+
 // The vector table.
 // This relies on the linker script to place at correct location in memory.
-//
-//*****************************************************************************
 
 __attribute__ ((section(".isr_vector")))
 pHandler __isr_vectors[] =
@@ -911,12 +911,10 @@ pHandler __isr_vectors[] =
 
   };
 
-//*****************************************************************************
-//
+// ----------------------------------------------------------------------------
+
 // Processor ends up here if an unexpected interrupt occurs or a specific
 // handler is not present in the application code.
-//
-//*****************************************************************************
 
 void __attribute__ ((section(".after_vectors")))
 Default_Handler(void)
@@ -925,3 +923,5 @@ Default_Handler(void)
     {
     }
 }
+
+// ----------------------------------------------------------------------------

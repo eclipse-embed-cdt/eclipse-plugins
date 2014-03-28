@@ -198,17 +198,17 @@ TIM13_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 TIM14_IRQHandler(void);
 
+// ----------------------------------------------------------------------------
+
 extern unsigned int _estack;
 
 typedef void
 (* const pHandler)(void);
 
-//*****************************************************************************
-//
+// ----------------------------------------------------------------------------
+
 // The vector table.
 // This relies on the linker script to place at correct location in memory.
-//
-//*****************************************************************************
 
 __attribute__ ((section(".isr_vector")))
 pHandler __isr_vectors[] =
