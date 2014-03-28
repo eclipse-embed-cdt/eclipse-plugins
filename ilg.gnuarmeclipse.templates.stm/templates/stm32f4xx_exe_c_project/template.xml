@@ -359,7 +359,7 @@
 				</element>
 				<element>
 					<simple name="source"
-						value="$(commonDir)/src/main/main-210-$(syscalls)-print.c" />
+						value="$(commonDir)/src/main/main-210-print.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>

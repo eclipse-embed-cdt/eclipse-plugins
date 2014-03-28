@@ -7,7 +7,7 @@
   // Perform all necessary initialisations for the LED.
   blinkLed.powerUp();
 
-  int seconds = 0;
+  uint32_t seconds = 0;
 
   // Infinite loop
   while (1)
