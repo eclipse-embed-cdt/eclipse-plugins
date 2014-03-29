@@ -93,12 +93,14 @@ extern "C"
 #endif
 
 inline void
+__attribute__((always_inline))
 trace_initialize(void)
 {
 }
 
 // Empty definitions when trace is not defined
 inline ssize_t
+__attribute__((always_inline))
 trace_write(const char* buf __attribute__((unused)),
     size_t nbyte __attribute__((unused)))
 {
@@ -106,24 +108,28 @@ trace_write(const char* buf __attribute__((unused)),
 }
 
 inline int
+__attribute__((always_inline))
 trace_printf(const char* format __attribute__((unused)), ...)
   {
     return 0;
   }
 
 inline int
+__attribute__((always_inline))
 trace_puts(const char *s __attribute__((unused)))
 {
   return 0;
 }
 
 inline int
+__attribute__((always_inline))
 trace_putchar(int c)
 {
   return c;
 }
 
 inline void
+__attribute__((always_inline))
 trace_dump_args(int argc __attribute__((unused)),
     char* argv[] __attribute__((unused)))
 {
