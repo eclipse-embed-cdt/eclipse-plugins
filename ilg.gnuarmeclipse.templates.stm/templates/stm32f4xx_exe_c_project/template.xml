@@ -67,6 +67,9 @@
 		<property id="useNano" label="%useNano.label" description="%useNano.description"
 			type="boolean" default="true" hidden="false" persist="true" />
 
+		<property id="excludeUnused" label="%excludeUnused.label" description="%excludeUnused.description"
+			type="boolean" default="true" hidden="false" persist="true" />
+
 	</property-group>
 
 	<property-group id="folders" label="%group.folders.label"
@@ -734,6 +737,59 @@
 	<!-- ================================================================== -->
 
 	<!-- Linker files -->
+	<if condition="$(excludeUnused)==true">
+		<process type="org.eclipse.cdt.managedbuilder.core.ExcludeResources">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="configIdPattern" value=".*" />
+			<simple-array name="filePatterns">
+				<element value="/$(projectName)/$(sysDir)/$(sourceDir)/$(devicePeriph)/stm32f4xx_hal_adc.*[.]c"/>
+				<element value=".*/stm32f4xx_hal_can[.]c"/>
+				<element value=".*/stm32f4xx_hal_crc[.]c"/>
+				<element value=".*/stm32f4xx_hal_cryp.*[.]c"/>
+				<element value=".*/stm32f4xx_hal_dac.*[.]c"/>
+				<element value=".*/stm32f4xx_hal_dcmi.*[.]c"/>
+				<element value=".*/stm32f4xx_hal_dma.*[.]c"/>
+				<element value=".*/stm32f4xx_hal_eth[.]c"/>
+				<element value=".*/stm32f4xx_hal_hash.*[.]c"/>
+				<element value=".*/stm32f4xx_hal_hcd[.]c"/>
+				<element value=".*/stm32f4xx_hal_i2c.*[.]c"/>
+				<element value=".*/stm32f4xx_hal_i2s.*[.]c"/>
+				<element value=".*/stm32f4xx_hal_irda[.]c"/>
+				<element value=".*/stm32f4xx_hal_i2s.*[.]c"/>
+				<element value=".*/stm32f4xx_hal_irda[.]c"/>
+				<element value=".*/stm32f4xx_hal_ltdc[.]c"/>
+				<element value=".*/stm32f4xx_hal_msp_template[.]c"/>
+				<element value=".*/stm32f4xx_hal_nand[.]c"/>
+				<element value=".*/stm32f4xx_hal_nor[.]c"/>
+				<element value=".*/stm32f4xx_hal_pccard[.]c"/>
+				<element value=".*/stm32f4xx_hal_pcd[.]c"/>
+				<element value=".*/stm32f4xx_hal_rng[.]c"/>
+				<element value=".*/stm32f4xx_hal_rtc.*[.]c"/>
+				<element value=".*/stm32f4xx_hal_sai[.]c"/>
+				<element value=".*/stm32f4xx_hal_sd[.]c"/>
+				<element value=".*/stm32f4xx_hal_sdram[.]c"/>
+				<element value=".*/stm32f4xx_hal_smartcard[.]c"/>
+				<element value=".*/stm32f4xx_hal_spi[.]c"/>
+				<element value=".*/stm32f4xx_hal_sdram[.]c"/>
+				<element value=".*/stm32f4xx_hal_smartcard[.]c"/>
+				<element value=".*/stm32f4xx_hal_spi[.]c"/>
+				<element value=".*/stm32f4xx_hal_sram.*[.]c"/>
+				<element value=".*/stm32f4xx_hal_tim.*[.]c"/>
+				<element value=".*/stm32f4xx_hal_uart[.]c"/>
+				<element value=".*/stm32f4xx_hal_usart[.]c"/>
+				<element value=".*/stm32f4xx_hal_wwdg[.]c"/>
+				<element value=".*/stm32f4xx_ll_fmc[.]c"/>
+				<element value=".*/stm32f4xx_ll_fsmc[.]c"/>
+				<element value=".*/stm32f4xx_ll_sdmmc[.]c"/>
+				<element value=".*/stm32f4xx_ll_usb[.]c"/>
+			</simple-array>
+			<simple name="invertConfigMatching" value="false" />
+		</process>
+	</if>
+	
+	<!-- ================================================================== -->
+
+	<!-- Linker files -->
 	<if condition="$(STM32F4chipFamilyCube)==STM32F401xC">
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
@@ -1342,7 +1398,8 @@
 		</process>
 	</if>
 
-	<if condition="1==1">
+	<if condition="$(trace)!=NONE">
+		<!-- Define TRACE only if one of the devices is selected -->
 		<process
 			type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
 			<simple name="projectName" value="$(projectName)" />
