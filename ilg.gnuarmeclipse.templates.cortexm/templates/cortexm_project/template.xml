@@ -50,6 +50,9 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			description="%mostWarnings.description" type="boolean" default="true"
 			hidden="false" persist="true" />
 
+		<property id="useWerror" label="%useWerror.label" description="%useWerror.description"
+			type="boolean" default="false" hidden="false" persist="true" />
+
 		<property id="useOg" label="%useOg.label" description="%useOg.description"
 			type="boolean" default="true" hidden="false" persist="true" />
 
@@ -86,6 +89,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			default="%deviceName.default" pattern="[a-zA-Z0-9]+" mandatory="true"
 			persist="true" />
 
+		<!-- ============================================================== -->
 		<property id="fileExtension" label="Source file extension"
 			description="Will be set to cpp for ccnature" mandatory="true"
 			hidden="true" default="c" persist="false" />
@@ -95,6 +99,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			mandatory="true" hidden="true" default="commonDir" persist="false" />
 
 		<property id="CMSIS_name" label="CMSIS specific header name"
+			description="Will be set to the vendor specific part of header names"
+			mandatory="true" hidden="true" default="undefined" persist="false" />
+
+		<property id="devicePeriph" label="Device periperal folder name"
 			description="Will be set to the vendor specific part of header names"
 			mandatory="true" hidden="true" default="undefined" persist="false" />
 
@@ -137,6 +145,13 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="propertyName" value="CMSIS_name" />
 			<simple name="propertyValue" value="$(deviceName)" />
 		</process>
+		
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalSetProperty">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<simple name="propertyName" value="devicePeriph" />
+			<simple name="propertyValue" value="$(deviceName)" />
+		</process>
 	</if>
 
 	<!-- ================================================================== -->
@@ -146,7 +161,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 	<!-- include -->
 	<!-- system/include -->
 	<!-- system/include/cmsis -->
-	<!-- system/include/CMSIS_name -->
+	<!-- system/include/$(devicePeriph) -->
 
 	<if condition="1==1">
 		<!-- include -->
@@ -206,10 +221,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 	</if>
 
 	<if condition="1==1">
-		<!-- system/include/CMSIS_name -->
+		<!-- system/include/$(devicePeriph) -->
 		<process type="org.eclipse.cdt.core.CreateFolder">
 			<simple name="projectName" value="$(projectName)" />
-			<simple name="path" value="$(sysDir)/$(includeDir)/$(CMSIS_name)" />
+			<simple name="path" value="$(sysDir)/$(includeDir)/$(devicePeriph)" />
 		</process>
 
 		<!-- add to include paths -->
@@ -221,7 +236,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
 					<simple-array name="values">
-						<element value="&quot;../$(sysDir)/$(includeDir)/$(CMSIS_name)&quot;" />
+						<element value="&quot;../$(sysDir)/$(includeDir)/$(devicePeriph)&quot;" />
 					</simple-array>
 					<simple name="path" value="" />
 				</element>
@@ -352,99 +367,15 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 
 	<!-- CMSIS files -->
 	<if condition="1==1">
-		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
 			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
-				<element>
-					<simple name="source" value="$(commonDir)/system/include/cmsis/README_CMSIS.txt" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/README_CMSIS.txt" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-
-		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
+			<simple name="condition" value="" />
+			<complex-array name="folders">
 				<element>
 					<simple name="source"
-						value="$(commonDir)/system/include/cmsis/arm_common_tables.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/arm_common_tables.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(commonDir)/system/include/cmsis/arm_const_structs.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/arm_const_structs.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/system/include/cmsis/arm_math.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/arm_math.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/system/include/cmsis/core_cm0.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cm0.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(commonDir)/system/include/cmsis/core_cm0plus.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cm0plus.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/system/include/cmsis/core_cm3.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cm3.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(commonDir)/system/include/cmsis/core_cm4_simd.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cm4_simd.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/system/include/cmsis/core_cm4.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cm4.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(commonDir)/system/include/cmsis/core_cmFunc.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cmFunc.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(commonDir)/system/include/cmsis/core_cmInstr.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_cmInstr.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(commonDir)/system/include/cmsis/core_sc000.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_sc000.h" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(commonDir)/system/include/cmsis/core_sc300.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(cmsisDir)/core_sc300.h" />
+						value="$(commonDir)/system/include/cmsis" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)" />
+					<simple name="pattern" value=".*[.](h|txt)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -484,7 +415,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="$(commonDir)/include/cmsis_device.h" />
+					<simple name="source" value="include/cmsis_device.h" />
 					<simple name="target"
 						value="$(sysDir)/$(includeDir)/$(cmsisDir)/cmsis_device.h" />
 					<simple name="replaceable" value="true" />
@@ -868,6 +799,23 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.floatequal" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(useWerror) == true" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.toerrors" />
 					<simple name="value" value="true" />
 					<simple name="path" value="" />
 					<simple name="buildType" value="" />
