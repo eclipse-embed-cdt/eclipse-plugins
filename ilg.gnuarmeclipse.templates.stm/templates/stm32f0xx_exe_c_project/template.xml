@@ -1215,7 +1215,8 @@
 		</process>
 	</if>
 
-	<if condition="1==1">
+	<if condition="$(trace)!=NONE">
+		<!-- Define TRACE only if one of the devices is selected -->
 		<process
 			type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
 			<simple name="projectName" value="$(projectName)" />
