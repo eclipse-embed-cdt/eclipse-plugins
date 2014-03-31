@@ -19,6 +19,13 @@
 //#define OS_USE_TRACE_SEMIHOSTING_DEBUG
 //#define OS_USE_TRACE_SEMIHOSTING_STDOUT
 
+#if !(defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__))
+#if defined(OS_USE_TRACE_ITM)
+#undef OS_USE_TRACE_ITM
+#warning "ITM unavailable"
+#endif // defined(OS_USE_TRACE_ITM)
+#endif // !(defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__))
+
 // ----------------------------------------------------------------------------
 
 // Forward definitions.
