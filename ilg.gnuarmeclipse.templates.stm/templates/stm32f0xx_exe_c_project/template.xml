@@ -44,7 +44,7 @@
 			<item value="semihosting" label="Semihosting (POSIX system calls via host)" />
 		</property>
 
-		<property id="trace" label="%trace.label" description="%trace.description"
+		<property id="trace0" label="%trace.label" description="%trace.description"
 			type="select" default="DEBUG" hidden="false" persist="true">
 			<item value="NONE" label="None (no trace output)" />
 			<item value="STDOUT" label="Semihosting STDOUT stream" />
@@ -62,6 +62,9 @@
 			type="boolean" default="true" hidden="false" persist="true" />
 
 		<property id="useNano" label="%useNano.label" description="%useNano.description"
+			type="boolean" default="true" hidden="false" persist="true" />
+
+		<property id="excludeUnused" label="%excludeUnused.label" description="%excludeUnused.description"
 			type="boolean" default="true" hidden="false" persist="true" />
 
 	</property-group>
@@ -508,8 +511,8 @@
 			<simple name="condition" value="" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/stm32f0xx_conf.h" />
-					<simple name="target" value="$(includeDir)/stm32f0xx_conf.h" />
+					<simple name="source" value="src/$(CMSIS_name)_conf.h" />
+					<simple name="target" value="$(includeDir)/$(CMSIS_name)_conf.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -719,6 +722,41 @@
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
+
+	<!-- Excluded files -->
+	<if condition="$(excludeUnused)==true">
+		<process type="org.eclipse.cdt.managedbuilder.core.ExcludeResources">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="configIdPattern" value=".*" />
+			<simple-array name="filePatterns">
+				<element value=".*/$(CMSIS_name)_adc[.]c"/>
+				<element value=".*/$(CMSIS_name)_can[.]c"/>
+				<element value=".*/$(CMSIS_name)_cec[.]c"/>
+				<element value=".*/$(CMSIS_name)_comp[.]c"/>
+				<element value=".*/$(CMSIS_name)_crc[.]c"/>
+				<element value=".*/$(CMSIS_name)_crs[.]c"/>
+				<element value=".*/$(CMSIS_name)_dac[.]c"/>
+				<element value=".*/$(CMSIS_name)_dbgmcu[.]c"/>
+				<element value=".*/$(CMSIS_name)_dma[.]c"/>
+				<element value=".*/$(CMSIS_name)_exti[.]c"/>
+				<element value=".*/$(CMSIS_name)_flash[.]c"/>
+				<element value=".*/$(CMSIS_name)_i2c[.]c"/>
+				<element value=".*/$(CMSIS_name)_iwdg[.]c"/>
+				<element value=".*/$(CMSIS_name)_misc[.]c"/>
+				<element value=".*/$(CMSIS_name)_opamp[.]c"/>
+				<element value=".*/$(CMSIS_name)_pwr[.]c"/>
+				<element value=".*/$(CMSIS_name)_rtc[.]c"/>
+				<element value=".*/$(CMSIS_name)_spi[.]c"/>
+				<element value=".*/$(CMSIS_name)_syscfg[.]c"/>
+				<element value=".*/$(CMSIS_name)_tim[.]c"/>
+				<element value=".*/$(CMSIS_name)_usart[.]c"/>
+				<element value=".*/$(CMSIS_name)_wwdg[.]c"/>
+			</simple-array>
+			<simple name="invertConfigMatching" value="false" />
 		</process>
 	</if>
 
@@ -1215,7 +1253,7 @@
 		</process>
 	</if>
 
-	<if condition="$(trace)!=NONE">
+	<if condition="$(trace0)!=NONE">
 		<!-- Define TRACE only if one of the devices is selected -->
 		<process
 			type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
@@ -1235,7 +1273,7 @@
 		</process>
 	</if>
 
-	<if condition="$(trace)==ITM">
+	<if condition="$(trace0)==ITM">
 		<process
 			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
 			<simple name="projectName" value="$(projectName)" />
@@ -1251,7 +1289,7 @@
 			</complex-array>
 		</process>
 	</if>
-	<if condition="$(trace)==STDOUT">
+	<if condition="$(trace0)==STDOUT">
 		<process
 			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
 			<simple name="projectName" value="$(projectName)" />
@@ -1267,7 +1305,7 @@
 			</complex-array>
 		</process>
 	</if>
-	<if condition="$(trace)==DEBUG">
+	<if condition="$(trace0)==DEBUG">
 		<process
 			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
 			<simple name="projectName" value="$(projectName)" />
@@ -1296,7 +1334,7 @@
 					<simple name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
 					<simple-array name="values">
-						<element value="$(STM32F0chipFamily2)" />
+						<element value="$(chipFamily)" />
 					</simple-array>
 					<simple name="path" value="" />
 				</element>

@@ -68,6 +68,9 @@
 		<property id="useNano" label="%useNano.label" description="%useNano.description"
 			type="boolean" default="true" hidden="false" persist="true" />
 
+		<property id="excludeUnused" label="%excludeUnused.label" description="%excludeUnused.description"
+			type="boolean" default="true" hidden="false" persist="true" />
+
 	</property-group>
 
 	<property-group id="folders" label="%group.folders.label"
@@ -512,8 +515,8 @@
 			<simple name="condition" value="" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/stm32f10x_conf.h" />
-					<simple name="target" value="$(includeDir)/stm32f10x_conf.h" />
+					<simple name="source" value="src/$(CMSIS_name)_conf.h" />
+					<simple name="target" value="$(includeDir)/$(CMSIS_name)_conf.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -1111,6 +1114,40 @@
 
 	<!-- ================================================================== -->
 
+	<!-- Excluded files -->
+	<if condition="$(excludeUnused)==true">
+		<process type="org.eclipse.cdt.managedbuilder.core.ExcludeResources">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="configIdPattern" value=".*" />
+			<simple-array name="filePatterns">
+				<element value=".*/$(CMSIS_name)_adc[.]c"/>
+				<element value=".*/$(CMSIS_name)_bkp[.]c"/>
+				<element value=".*/$(CMSIS_name)_can[.]c"/>
+				<element value=".*/$(CMSIS_name)_cec[.]c"/>
+				<element value=".*/$(CMSIS_name)_crc[.]c"/>
+				<element value=".*/$(CMSIS_name)_dac[.]c"/>
+				<element value=".*/$(CMSIS_name)_dbgmcu[.]c"/>
+				<element value=".*/$(CMSIS_name)_dma[.]c"/>
+				<element value=".*/$(CMSIS_name)_exti[.]c"/>
+				<element value=".*/$(CMSIS_name)_flash[.]c"/>
+				<element value=".*/$(CMSIS_name)_fsmc[.]c"/>
+				<element value=".*/$(CMSIS_name)_i2c[.]c"/>
+				<element value=".*/$(CMSIS_name)_iwdg[.]c"/>
+				<element value=".*/$(CMSIS_name)_pwr[.]c"/>
+				<element value=".*/$(CMSIS_name)_rtc[.]c"/>
+				<element value=".*/$(CMSIS_name)_spi[.]c"/>
+				<element value=".*/$(CMSIS_name)_sdio[.]c"/>
+				<element value=".*/$(CMSIS_name)_spi[.]c"/>
+				<element value=".*/$(CMSIS_name)_tim[.]c"/>
+				<element value=".*/$(CMSIS_name)_usart[.]c"/>
+				<element value=".*/$(CMSIS_name)_wwdg[.]c"/>
+			</simple-array>
+			<simple name="invertConfigMatching" value="false" />
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
+
 	<!-- Linker options -->
 	<if condition="1==1">
 		<process
@@ -1300,7 +1337,7 @@
 					<simple name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
 					<simple-array name="values">
-						<element value="$(STM32F1chipFamily)" />
+						<element value="$(chipFamily)" />
 					</simple-array>
 					<simple name="path" value="" />
 				</element>

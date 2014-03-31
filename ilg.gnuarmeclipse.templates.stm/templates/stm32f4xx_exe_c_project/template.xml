@@ -736,7 +736,7 @@
 
 	<!-- ================================================================== -->
 
-	<!-- Linker files -->
+	<!-- Excluded files -->
 	<if condition="$(excludeUnused)==true">
 		<process type="org.eclipse.cdt.managedbuilder.core.ExcludeResources">
 			<simple name="projectName" value="$(projectName)" />
@@ -1479,7 +1479,7 @@
 					<simple name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
 					<simple-array name="values">
-						<element value="$(STM32F4chipFamilyCube)" />
+						<element value="$(chipFamily)" />
 					</simple-array>
 					<simple name="path" value="" />
 				</element>

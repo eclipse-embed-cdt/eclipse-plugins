@@ -703,7 +703,7 @@ pHandler __isr_vectors[] =
     0,
     0,
                    // @0x01CC. This is for boot in RAM mode for STM32F10x Low Density Value Line devices.
-    (pfn)0xF108F85F
+    (pHandler)0xF108F85F
 
 #elif defined(STM32F10X_MD_VL)
 
@@ -893,12 +893,10 @@ pHandler __isr_vectors[] =
 #endif
   };
 
-//*****************************************************************************
-//
+// ----------------------------------------------------------------------------
+
 // Processor ends up here if an unexpected interrupt occurs or a specific
 // handler is not present in the application code.
-//
-//*****************************************************************************
 
 void __attribute__ ((section(".after_vectors")))
 Default_Handler(void)
@@ -907,3 +905,5 @@ Default_Handler(void)
     {
     }
 }
+
+// ----------------------------------------------------------------------------
