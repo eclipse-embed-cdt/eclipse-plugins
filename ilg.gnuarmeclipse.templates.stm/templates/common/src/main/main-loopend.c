@@ -1,2 +1,0 @@
-    }
-  // Infinite loop, never return.
