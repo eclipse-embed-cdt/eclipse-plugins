@@ -1,52 +1,22 @@
 //
-// This file is part of the GNU ARM Eclipse Plug-in
-// Copyright (c) 2013 Liviu Ionescu
+// This file is part of the µOS++ III distribution.
+// Copyright (c) 2014 Liviu Ionescu.
 //
 
-#if defined (__cplusplus)
-extern "C"
-  {
-#endif
+// ----------------------------------------------------------------------------
 
-//*****************************************************************************
-//
-// Forward declaration of the default handlers. These are aliased.
-// When the application defines a handler (with the same name), this will
-// automatically take precedence over these weak definitions
-//
-//*****************************************************************************
-void __attribute__((weak))
-Reset_Handler(void);
-void __attribute__((weak))
-NMI_Handler(void);
-void __attribute__((weak))
-HardFault_Handler(void);
-void __attribute__((weak))
-MemManage_Handler(void);
-void __attribute__((weak))
-BusFault_Handler(void);
-void __attribute__((weak))
-UsageFault_Handler(void);
-void __attribute__((weak))
-SVC_Handler(void);
-void __attribute__((weak))
-DebugMon_Handler(void);
-void __attribute__((weak))
-PendSV_Handler(void);
-void __attribute__((weak))
-SysTick_Handler(void);
+#include "cortexm/ExceptionHandlers.h"
+
+// ----------------------------------------------------------------------------
 
 void __attribute__((weak))
 Default_Handler(void);
 
-//*****************************************************************************
-//
 // Forward declaration of the specific IRQ handlers. These are aliased
 // to the Default_Handler, which is a 'forever' loop. When the application
 // defines a handler (with the same name), this will automatically take
 // precedence over these weak definitions
-//
-//*****************************************************************************
+
 void __attribute__ ((weak, alias ("Default_Handler")))
 WWDG_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
@@ -180,46 +150,49 @@ USBWakeUp_RMP_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 FPU_IRQHandler(void);
 
+// ----------------------------------------------------------------------------
+
 extern unsigned int _estack;
 
 typedef void
-(* const pfn)(void);
-//extern pfn g_pfnVectors[];
+(* const pHandler)(void);
 
-//*****************************************************************************
-#if defined (__cplusplus)
-} // extern "C"
-#endif
+// ----------------------------------------------------------------------------
 
-//*****************************************************************************
-//
 // The vector table.
 // This relies on the linker script to place at correct location in memory.
-//
-//*****************************************************************************
 
 __attribute__ ((section(".isr_vector")))
-pfn g_pfnVectors[] =
+pHandler __isr_vectors[] =
   {
   // Core Level - CM4
-      (pfn) &_estack,                           // The initial stack pointer
-      Reset_Handler,                            // The reset handler
+      (pHandler) &_estack, // The initial stack pointer
+      Reset_Handler, // The reset handler
 
-      NMI_Handler,                              // The NMI handler
-      HardFault_Handler,                        // The hard fault handler
+      NMI_Handler, // The NMI handler
+      HardFault_Handler, // The hard fault handler
+#if defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
       MemManage_Handler,                        // The MPU fault handler
-      BusFault_Handler,                         // The bus fault handler
-      UsageFault_Handler,                       // The usage fault handler
+      BusFault_Handler,                        // The bus fault handler
+      UsageFault_Handler,                        // The usage fault handler
+#else
+      0, 0, 0,                                  // Reserved
+#endif
       0,                                        // Reserved
       0,                                        // Reserved
       0,                                        // Reserved
       0,                                        // Reserved
       SVC_Handler,                              // SVCall handler
+#if defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
       DebugMon_Handler,                         // Debug monitor handler
+#else
       0,                                        // Reserved
-      PendSV_Handler,                           // The PendSV handler
-      SysTick_Handler,                          // The SysTick handler
+#endif
+      0, // Reserved
+      PendSV_Handler, // The PendSV handler
+      SysTick_Handler, // The SysTick handler
 
+      // ----------------------------------------------------------------------
       // Chip Level - STM32F30x
       WWDG_IRQHandler,                           // Window WatchDog
       PVD_IRQHandler,                            // PVD
@@ -305,12 +278,10 @@ pfn g_pfnVectors[] =
       FPU_IRQHandler                             // FPU
     };
 
-//*****************************************************************************
-//
+// ----------------------------------------------------------------------------
+
 // Processor ends up here if an unexpected interrupt occurs or a specific
 // handler is not present in the application code.
-//
-//*****************************************************************************
 
 void __attribute__ ((section(".after_vectors")))
 Default_Handler(void)
@@ -319,3 +290,5 @@ Default_Handler(void)
     {
     }
 }
+
+// ----------------------------------------------------------------------------
