@@ -48,8 +48,12 @@
 			<item value="DEBUG" label="Semihosting DEBUG channel" />
 		</property>
 
+		<property id="useSomeWarnings" label="%someWarnings.label"
+			description="%someWarnings.description" type="boolean" default="true"
+			hidden="false" persist="true" />
+
 		<property id="useMostWarnings" label="%mostWarnings.label"
-			description="%mostWarnings.description" type="boolean" default="true"
+			description="%mostWarnings.description" type="boolean" default="false"
 			hidden="false" persist="true" />
 
 		<property id="useWerror" label="%useWerror.label" description="%useWerror.description"
@@ -776,20 +780,23 @@
 	<!-- Global options -->
 	<if condition="1==1">
 		<process
-			type="org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue">
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(useSomeWarnings) == true" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.allwarn" />
 					<simple name="value" value="true" />
 					<simple name="path" value="" />
+					<simple name="buildType" value="" />
 				</element>
 				<element>
 					<simple name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.extrawarn" />
 					<simple name="value" value="true" />
 					<simple name="path" value="" />
+					<simple name="buildType" value="" />
 				</element>
 			</complex-array>
 		</process>
@@ -1009,7 +1016,7 @@
 	<!-- ================================================================== -->
 
 	<!-- C++ options -->
-	<if condition="$(fileExtension)==cpp">
+	<if condition="1==1">
 		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="resourcePaths">
