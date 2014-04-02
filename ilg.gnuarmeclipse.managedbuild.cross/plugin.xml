@@ -70,11 +70,6 @@
                tip="Enable all the warnings about constructions that some users consider questionable, and that are easy to avoid (or modify to prevent the warning), even in conjunction with macros. This also enables some language-specific warnings."
                useByScannerDiscovery="true"
                valueType="boolean">
-            <enablement
-                  attribute="value"
-                  type="CONTAINER_ATTRIBUTE"
-                  value="true">
-            </enablement>
          </option>
          <option
                command="-Wextra"
