@@ -59,8 +59,9 @@
 			description="%mostWarnings.description" type="boolean" default="false"
 			hidden="false" persist="true" />
 
-		<property id="useWerror" label="%useWerror.label" description="%useWerror.description"
-			type="boolean" default="false" hidden="false" persist="true" />
+		<property id="useWerror" label="%useWerror.label"
+			description="%useWerror.description" type="boolean" default="false"
+			hidden="false" persist="true" />
 
 		<property id="useOg" label="%useOg.label" description="%useOg.description"
 			type="boolean" default="true" hidden="false" persist="true" />
@@ -68,42 +69,40 @@
 		<property id="useNano" label="%useNano.label" description="%useNano.description"
 			type="boolean" default="true" hidden="false" persist="true" />
 
-		<property id="excludeUnused" label="%excludeUnused.label" description="%excludeUnused.description"
-			type="boolean" default="true" hidden="false" persist="true" />
+		<property id="excludeUnused" label="%excludeUnused.label"
+			description="%excludeUnused.description" type="boolean" default="true"
+			hidden="false" persist="true" />
 
 	</property-group>
 
 	<property-group id="folders" label="%group.folders.label"
 		description="%group.folders.description" type="PAGES-ONLY" help="help.html">
 		<property id="includeDir" label="%includeDir.label"
-			description="%includeDir.description" type="input"
-			default="%includeDir.default" pattern="[a-zA-Z0-9]+" mandatory="true"
-			persist="true" />
+			description="%includeDir.description" type="input" default="%includeDir.default"
+			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
 		<property id="sourceDir" label="%sourceDir.label"
 			description="%sourceDir.description" type="input" default="%sourceDir.default"
 			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
 		<property id="sysDir" label="%sysDir.label" description="%sysDir.description"
 			type="input" default="%sysDir.default" pattern="[a-zA-Z0-9]+"
 			mandatory="true" persist="true" />
-		<property id="cmsisDir" label="%cmsisDir.label"
-			description="%cmsisDir.description" type="input" default="%cmsisDir.default"
-			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
+		<property id="cmsisDir" label="%cmsisDir.label" description="%cmsisDir.description"
+			type="input" default="%cmsisDir.default" pattern="[a-zA-Z0-9]+"
+			mandatory="true" persist="true" />
 		<property id="newlibDir" label="%newlibDir.label"
 			description="%newlibDir.description" type="input" default="%newlibDir.default"
 			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
 		<property id="ldscriptsDir" label="%ldscriptsDir.label"
-			description="%ldscriptsDir.description" type="input"
-			default="%ldscriptsDir.default" pattern="[a-zA-Z0-9]+" mandatory="true"
-			persist="true" />
+			description="%ldscriptsDir.description" type="input" default="%ldscriptsDir.default"
+			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
 
 		<!-- ============================================================== -->
 		<property id="fileExtension" label="Source file extension"
 			description="Will be set to cpp for ccnature" mandatory="true"
 			hidden="true" default="c" persist="false" />
 
-		<property id="chipFamily" label="Chip family"
-			description="Will be set to family" mandatory="true"
-			hidden="true" default="undefined" persist="false" />
+		<property id="chipFamily" label="Chip family" description="Will be set to family"
+			mandatory="true" hidden="true" default="undefined" persist="false" />
 
 		<property id="commonDir" label="common files"
 			description="Will be set to ...templates.core/templates/common/ folder"
@@ -130,8 +129,8 @@
 		<property id="devicePeriph" label="Device periperal folder name"
 			mandatory="true" hidden="true" default="stm32f0-stdperiph" persist="false" />
 
-		<property id="osDir" label="common files"
-			mandatory="true" hidden="true" default="../micro-os-plus" persist="false" />
+		<property id="osDir" label="common files" mandatory="true"
+			hidden="true" default="../micro-os-plus" persist="false" />
 
 	</property-group>
 
@@ -157,7 +156,7 @@
 			<simple name="relativePath" value="templates/common" />
 			<simple name="propertyName" value="commonDir" />
 		</process>
-		
+
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalSetProperty">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="condition" value="" />
@@ -322,8 +321,7 @@
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source"
-						value="$(commonDir)/src/main/main-130-trace-via.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-130-trace-via.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -340,8 +338,7 @@
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source"
-						value="$(commonDir)/src/main/main-150-begin.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-150-begin.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -363,8 +360,7 @@
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source"
-						value="$(commonDir)/src/main/main-210-print.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-210-print.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -479,14 +475,12 @@
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source"
-						value="$(commonDir)/src/main/main-130-trace-via.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-130-trace-via.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source"
-						value="$(commonDir)/src/main/main-150-begin.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-150-begin.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -532,8 +526,7 @@
 			<simple name="condition" value="" />
 			<complex-array name="folders">
 				<element>
-					<simple name="source"
-						value="$(commonDir)/system/include/cmsis" />
+					<simple name="source" value="$(commonDir)/system/include/cmsis" />
 					<simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)" />
 					<simple name="pattern" value=".*[.](h|txt)" />
 					<simple name="replaceable" value="true" />
@@ -552,15 +545,13 @@
 			<simple name="condition" value="" />
 			<complex-array name="folders">
 				<element>
-					<simple name="source"
-						value="$(osDir)/$(device).pack/include/cmsis" />
+					<simple name="source" value="$(osDir)/$(device).pack/include/cmsis" />
 					<simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)" />
 					<simple name="pattern" value=".*[.](h|txt)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source"
-						value="$(osDir)/$(device).pack/src/cmsis" />
+					<simple name="source" value="$(osDir)/$(device).pack/src/cmsis" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/$(cmsisDir)" />
 					<simple name="pattern" value=".*[.](c|txt)" />
 					<simple name="replaceable" value="true" />
@@ -605,10 +596,8 @@
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source"
-						value="$(commonDir)/system/include/diag/Trace.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/diag/Trace.h" />
+					<simple name="source" value="$(commonDir)/system/include/diag/Trace.h" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/diag/Trace.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -616,73 +605,38 @@
 	</if>
 
 	<if condition="1==1">
-		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
 			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
+			<simple name="condition" value="" />
+			<complex-array name="folders">
 				<element>
-					<simple name="source"
-						value="$(commonDir)/system/src/cortexm/_initialize_hardware.c" />
-					<simple name="target"
-						value="$(sysDir)/$(sourceDir)/cortexm/_initialize_hardware.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(commonDir)/system/src/cortexm/_reset_hardware.c" />
-					<simple name="target"
-						value="$(sysDir)/$(sourceDir)/cortexm/_reset_hardware.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(commonDir)/system/src/cortexm/exception_handlers.c" />
-					<simple name="target"
-						value="$(sysDir)/$(sourceDir)/cortexm/exception_handlers.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/system/src/newlib/_exit.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_exit.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/system/src/newlib/_sbrk.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_sbrk.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/system/src/newlib/_startup.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_startup.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/system/src/newlib/_syscalls.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_syscalls.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/system/src/newlib/_write.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_write.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/system/src/newlib/README.txt" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/README.txt" />
+					<simple name="source" value="$(commonDir)/system/src/cortexm" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/cortexm" />
+					<simple name="pattern" value=".*[.](c|txt)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
 		</process>
-		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
 			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
+			<simple name="condition" value="" />
+			<complex-array name="folders">
 				<element>
-					<simple name="source" value="$(commonDir)/system/src/diag/trace_impl.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/diag/trace_impl.c" />
+					<simple name="source" value="$(commonDir)/system/src/newlib" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib" />
+					<simple name="pattern" value=".*[.](c|txt)" />
 					<simple name="replaceable" value="true" />
 				</element>
+			</complex-array>
+		</process>
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="folders">
 				<element>
-					<simple name="source" value="$(commonDir)/system/src/diag/Trace.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/diag/Trace.c" />
+					<simple name="source" value="$(commonDir)/system/src/diag" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/diag" />
+					<simple name="pattern" value=".*[.](c|txt)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -690,12 +644,14 @@
 	</if>
 
 	<if condition="$(fileExtension)==cpp">
-		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
 			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
+			<simple name="condition" value="" />
+			<complex-array name="folders">
 				<element>
-					<simple name="source" value="$(commonDir)/system/src/newlib/hacks.cpp" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/hacks.cpp" />
+					<simple name="source" value="$(commonDir)/system/src/newlib" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib" />
+					<simple name="pattern" value=".*[.](cpp)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -737,28 +693,28 @@
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="configIdPattern" value=".*" />
 			<simple-array name="filePatterns">
-				<element value=".*/$(CMSIS_name)_adc[.]c"/>
-				<element value=".*/$(CMSIS_name)_can[.]c"/>
-				<element value=".*/$(CMSIS_name)_cec[.]c"/>
-				<element value=".*/$(CMSIS_name)_comp[.]c"/>
-				<element value=".*/$(CMSIS_name)_crc[.]c"/>
-				<element value=".*/$(CMSIS_name)_crs[.]c"/>
-				<element value=".*/$(CMSIS_name)_dac[.]c"/>
-				<element value=".*/$(CMSIS_name)_dbgmcu[.]c"/>
-				<element value=".*/$(CMSIS_name)_dma[.]c"/>
-				<element value=".*/$(CMSIS_name)_exti[.]c"/>
-				<element value=".*/$(CMSIS_name)_flash[.]c"/>
-				<element value=".*/$(CMSIS_name)_i2c[.]c"/>
-				<element value=".*/$(CMSIS_name)_iwdg[.]c"/>
-				<element value=".*/$(CMSIS_name)_misc[.]c"/>
-				<element value=".*/$(CMSIS_name)_opamp[.]c"/>
-				<element value=".*/$(CMSIS_name)_pwr[.]c"/>
-				<element value=".*/$(CMSIS_name)_rtc[.]c"/>
-				<element value=".*/$(CMSIS_name)_spi[.]c"/>
-				<element value=".*/$(CMSIS_name)_syscfg[.]c"/>
-				<element value=".*/$(CMSIS_name)_tim[.]c"/>
-				<element value=".*/$(CMSIS_name)_usart[.]c"/>
-				<element value=".*/$(CMSIS_name)_wwdg[.]c"/>
+				<element value=".*/$(CMSIS_name)_adc[.]c" />
+				<element value=".*/$(CMSIS_name)_can[.]c" />
+				<element value=".*/$(CMSIS_name)_cec[.]c" />
+				<element value=".*/$(CMSIS_name)_comp[.]c" />
+				<element value=".*/$(CMSIS_name)_crc[.]c" />
+				<element value=".*/$(CMSIS_name)_crs[.]c" />
+				<element value=".*/$(CMSIS_name)_dac[.]c" />
+				<element value=".*/$(CMSIS_name)_dbgmcu[.]c" />
+				<element value=".*/$(CMSIS_name)_dma[.]c" />
+				<element value=".*/$(CMSIS_name)_exti[.]c" />
+				<element value=".*/$(CMSIS_name)_flash[.]c" />
+				<element value=".*/$(CMSIS_name)_i2c[.]c" />
+				<element value=".*/$(CMSIS_name)_iwdg[.]c" />
+				<element value=".*/$(CMSIS_name)_misc[.]c" />
+				<element value=".*/$(CMSIS_name)_opamp[.]c" />
+				<element value=".*/$(CMSIS_name)_pwr[.]c" />
+				<element value=".*/$(CMSIS_name)_rtc[.]c" />
+				<element value=".*/$(CMSIS_name)_spi[.]c" />
+				<element value=".*/$(CMSIS_name)_syscfg[.]c" />
+				<element value=".*/$(CMSIS_name)_tim[.]c" />
+				<element value=".*/$(CMSIS_name)_usart[.]c" />
+				<element value=".*/$(CMSIS_name)_wwdg[.]c" />
 			</simple-array>
 			<simple name="invertConfigMatching" value="false" />
 		</process>
@@ -1233,6 +1189,15 @@
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
 					<simple-array name="values">
 						<element value="DEBUG" />
+					</simple-array>
+					<simple name="path" value="" />
+					<simple name="buildType" value="debug" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
+					<simple-array name="values">
+						<element value="USE_FULL_ASSERT" />
 					</simple-array>
 					<simple name="path" value="" />
 					<simple name="buildType" value="debug" />
