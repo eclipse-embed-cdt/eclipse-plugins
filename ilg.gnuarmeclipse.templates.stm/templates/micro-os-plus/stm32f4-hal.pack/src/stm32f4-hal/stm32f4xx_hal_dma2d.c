@@ -271,6 +271,12 @@ HAL_StatusTypeDef HAL_DMA2D_DeInit(DMA2D_HandleTypeDef *hdma2d)
   return HAL_OK;
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief  Initializes the DMA2D MSP.
   * @param  hdma2d: pointer to a DMA2D_HandleTypeDef structure that contains
@@ -296,6 +302,11 @@ __weak void HAL_DMA2D_MspDeInit(DMA2D_HandleTypeDef* hdma2d)
             the HAL_DMA2D_MspDeInit could be implemented in the user file
    */ 
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @}

@@ -253,6 +253,12 @@ HAL_StatusTypeDef HAL_LTDC_DeInit(LTDC_HandleTypeDef *hltdc)
   return HAL_OK;
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief  Initializes the LTDC MSP.
   * @param  hltdc : pointer to a LTDC_HandleTypeDef structure that contains
@@ -278,6 +284,11 @@ __weak void HAL_LTDC_MspDeInit(LTDC_HandleTypeDef* hltdc)
             the HAL_LTDC_MspDeInit could be implemented in the user file
    */
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @}
@@ -375,6 +386,12 @@ void HAL_LTDC_IRQHandler(LTDC_HandleTypeDef *hltdc)
   }
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief  Error LTDC callback.
   * @param  hltdc: pointer to a LTDC_HandleTypeDef structure that contains
@@ -400,6 +417,11 @@ __weak void HAL_LTDC_LineEvenCallback(LTDC_HandleTypeDef *hltdc)
             the HAL_LTDC_LineEvenCallback could be implemented in the user file
    */
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @}

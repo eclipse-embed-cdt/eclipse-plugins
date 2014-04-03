@@ -31,8 +31,8 @@
     (+) WWDG clock (Hz) = PCLK1 / (4096 * Prescaler)
     (+) WWDG timeout (mS) = 1000 * Counter / WWDG clock
     (+) WWDG Counter refresh is allowed between the following limits :
-        (++) min time (mS) = 1000 * (Counter – Window) / WWDG clock
-        (++) max time (mS) = 1000 * (Counter – 0x40) / WWDG clock
+        (++) min time (mS) = 1000 * (Counter ï¿½ Window) / WWDG clock
+        (++) max time (mS) = 1000 * (Counter ï¿½ 0x40) / WWDG clock
     
     (+) Min-max timeout value at 50 MHz(PCLK1): 81.9 us / 41.9 ms 
 
@@ -236,6 +236,12 @@ HAL_StatusTypeDef HAL_WWDG_DeInit(WWDG_HandleTypeDef *hwwdg)
   return HAL_OK;
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief  Initializes the WWDG MSP.
   * @param  hwwdg: WWDG handle
@@ -259,6 +265,11 @@ __weak void HAL_WWDG_MspDeInit(WWDG_HandleTypeDef *hwwdg)
            the HAL_WWDG_MspDeInit could be implemented in the user file
    */
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @}
@@ -390,6 +401,12 @@ void HAL_WWDG_IRQHandler(WWDG_HandleTypeDef *hwwdg)
   }
 } 
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief  Early Wakeup WWDG callback.
   * @param  hwwdg: WWDG handle
@@ -401,6 +418,11 @@ __weak void HAL_WWDG_WakeupCallback(WWDG_HandleTypeDef* hwwdg)
            the HAL_WWDG_WakeupCallback could be implemented in the user file
    */
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @}

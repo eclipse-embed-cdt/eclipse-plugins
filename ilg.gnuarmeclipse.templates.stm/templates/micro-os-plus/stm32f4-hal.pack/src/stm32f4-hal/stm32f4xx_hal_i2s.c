@@ -399,6 +399,12 @@ HAL_StatusTypeDef HAL_I2S_DeInit(I2S_HandleTypeDef *hi2s)
   return HAL_OK;
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief I2S MSP Init
   * @param hi2s: I2S handle
@@ -422,6 +428,11 @@ HAL_StatusTypeDef HAL_I2S_DeInit(I2S_HandleTypeDef *hi2s)
             the HAL_I2S_MspDeInit could be implenetd in the user file
    */ 
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @}
@@ -468,6 +479,12 @@ HAL_StatusTypeDef HAL_I2S_DeInit(I2S_HandleTypeDef *hi2s)
 @endverbatim
   * @{
   */
+
+ // [ILG]
+ #if defined ( __GNUC__ )
+ #pragma GCC diagnostic push
+ #pragma GCC diagnostic ignored "-Wconversion"
+ #endif
 
 /**
   * @brief Transmit an amount of data in blocking mode
@@ -940,6 +957,11 @@ HAL_StatusTypeDef HAL_I2S_Receive_DMA(I2S_HandleTypeDef *hi2s, uint16_t *pData, 
   }
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
+
 /**
   * @brief Pauses the audio stream playing from the Media.
   * @param hi2s: I2S handle
@@ -1254,6 +1276,12 @@ void HAL_I2S_IRQHandler(I2S_HandleTypeDef *hi2s)
   }
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief Tx Transfer Half completed callbacks
   * @param hi2s: I2S handle
@@ -1313,6 +1341,11 @@ __weak void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s)
             the HAL_I2S_ErrorCallback could be implenetd in the user file
    */ 
 }
+
+ // [ILG]
+ #if defined ( __GNUC__ )
+ #pragma GCC diagnostic pop
+ #endif
 
 /**
   * @}
@@ -1515,6 +1548,12 @@ static HAL_StatusTypeDef I2S_Transmit_IT(I2S_HandleTypeDef *hi2s)
   }
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+
 /**
   * @brief Receive an amount of data in non-blocking mode with Interrupt
   * @param hi2s: I2S handle
@@ -1565,6 +1604,11 @@ static HAL_StatusTypeDef I2S_Receive_IT(I2S_HandleTypeDef *hi2s)
     return HAL_BUSY; 
   } 
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @brief This function handles I2S Communication Timeout.

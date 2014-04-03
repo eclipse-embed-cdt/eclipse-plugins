@@ -42,7 +42,7 @@ DMA1_Channel2_3_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 DMA1_Channel4_5_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-ADC1_COMP_IRQHandler(void);
+ADC1_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 TIM1_BRK_UP_TRG_COM_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
@@ -77,6 +77,8 @@ void __attribute__ ((weak, alias ("Default_Handler")))
 CEC_IRQHandler(void);
 
 void __attribute__ ((weak, alias ("Default_Handler")))
+ADC1_COMP_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
 PVD_VDDIO2_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 RCC_CRS_IRQHandler(void);
@@ -90,6 +92,8 @@ void __attribute__ ((weak, alias ("Default_Handler")))
 CEC_CAN_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 USB_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+DMA1_Channel4_5_6_7_IRQHandler(void);
 
 // ----------------------------------------------------------------------------
 
@@ -138,182 +142,182 @@ pHandler g_pfnVectors[] =
 #if defined(STM32F030)
 
       // Chip Level - STM32F030
-      WWDG_IRQHandler,// Window WatchDog
-      0,//
-      RTC_IRQHandler,// RTC Wakeup through the EXTI line
-      FLASH_IRQHandler,// FLASH
-      RCC_IRQHandler,// RCC
-      EXTI0_1_IRQHandler,//
-      EXTI2_3_IRQHandler,//
-      EXTI4_15_IRQHandler,//
-      0,//
-      DMA1_Channel1_IRQHandler,//
-      DMA1_Channel2_3_IRQHandler,//
-      DMA1_Channel4_5_IRQHandler,//
-      ADC1_COMP_IRQHandler,//
-      TIM1_BRK_UP_TRG_COM_IRQHandler,//
-      TIM1_CC_IRQHandler,//
-      0,//
-      TIM3_IRQHandler,//
-      0,//
-      0,//
-      TIM14_IRQHandler,//
-      TIM15_IRQHandler,//
-      TIM16_IRQHandler,//
-      TIM17_IRQHandler,//
-      I2C1_IRQHandler,//
-      I2C2_IRQHandler,//
-      SPI1_IRQHandler,//
-      SPI2_IRQHandler,//
-      USART1_IRQHandler,//
-      USART2_IRQHandler,//
-      0,//
-      0,//
-      0,//
+      WWDG_IRQHandler, //
+      0, //
+      RTC_IRQHandler, //
+      FLASH_IRQHandler, //
+      RCC_IRQHandler, //
+      EXTI0_1_IRQHandler, //
+      EXTI2_3_IRQHandler, //
+      EXTI4_15_IRQHandler, //
+      0, //
+      DMA1_Channel1_IRQHandler, //
+      DMA1_Channel2_3_IRQHandler, //
+      DMA1_Channel4_5_IRQHandler, //
+      ADC1_IRQHandler, //
+      TIM1_BRK_UP_TRG_COM_IRQHandler, //
+      TIM1_CC_IRQHandler, //
+      0, //
+      TIM3_IRQHandler, //
+      0, //
+      0, //
+      TIM14_IRQHandler, //
+      TIM15_IRQHandler, //
+      TIM16_IRQHandler, //
+      TIM17_IRQHandler, //
+      I2C1_IRQHandler, //
+      I2C2_IRQHandler, //
+      SPI1_IRQHandler, //
+      SPI2_IRQHandler, //
+      USART1_IRQHandler, //
+      USART2_IRQHandler, //
+      0, //
+      0, //
+      0, //
 
 #elif defined(STM32F031)
 
       // Chip Level - STM32F031 (was STM32F0xx LD)
-      WWDG_IRQHandler,// Window WatchDog
-      PVD_IRQHandler,// PVD through EXTI Line detection
-      RTC_IRQHandler,// RTC Wakeup through the EXTI line
-      FLASH_IRQHandler,// FLASH
-      RCC_IRQHandler,// RCC
-      EXTI0_1_IRQHandler,//
-      EXTI2_3_IRQHandler,//
-      EXTI4_15_IRQHandler,//
-      0,//
-      DMA1_Channel1_IRQHandler,//
-      DMA1_Channel2_3_IRQHandler,//
-      DMA1_Channel4_5_IRQHandler,//
-      ADC1_COMP_IRQHandler,//
-      TIM1_BRK_UP_TRG_COM_IRQHandler,//
-      TIM1_CC_IRQHandler,//
-      TIM2_IRQHandler,//
-      TIM3_IRQHandler,//
-      0,//
-      0,//
-      TIM14_IRQHandler,//
-      0,//
-      TIM16_IRQHandler,//
-      TIM17_IRQHandler,//
-      I2C1_IRQHandler,//
-      0,//
-      SPI1_IRQHandler,//
-      0,//
-      USART1_IRQHandler,//
-      0,//
-      0,//
-      0,//
-      0,//
+      WWDG_IRQHandler, //
+      PVD_IRQHandler, //
+      RTC_IRQHandler, //
+      FLASH_IRQHandler, //
+      RCC_IRQHandler, //
+      EXTI0_1_IRQHandler, //
+      EXTI2_3_IRQHandler, //
+      EXTI4_15_IRQHandler, //
+      0, //
+      DMA1_Channel1_IRQHandler, //
+      DMA1_Channel2_3_IRQHandler, //
+      DMA1_Channel4_5_IRQHandler, //
+      ADC1_IRQHandler, //
+      TIM1_BRK_UP_TRG_COM_IRQHandler, //
+      TIM1_CC_IRQHandler, //
+      TIM2_IRQHandler, //
+      TIM3_IRQHandler, //
+      0, //
+      0, //
+      TIM14_IRQHandler, //
+      0, //
+      TIM16_IRQHandler, //
+      TIM17_IRQHandler, //
+      I2C1_IRQHandler, //
+      0, //
+      SPI1_IRQHandler, //
+      0, //
+      USART1_IRQHandler, //
+      0, //
+      0, //
+      0, //
+      0, //
 
 #elif defined(STM32F042)
 
       // Chip Level - STM32F042 (was STM32F0xx MD)
-      WWDG_IRQHandler,// Window WatchDog
-      PVD_IRQHandler,// PVD through EXTI Line detection
-      RTC_IRQHandler,// RTC Wakeup through the EXTI line
-      FLASH_IRQHandler,// FLASH
-      RCC_IRQHandler,// RCC
-      EXTI0_1_IRQHandler,//
-      EXTI2_3_IRQHandler,//
-      EXTI4_15_IRQHandler,//
-      TS_IRQHandler,//
-      DMA1_Channel1_IRQHandler,//
-      DMA1_Channel2_3_IRQHandler,//
-      DMA1_Channel4_5_IRQHandler,//
-      ADC1_COMP_IRQHandler,//
-      TIM1_BRK_UP_TRG_COM_IRQHandler,//
-      TIM1_CC_IRQHandler,//
-      TIM2_IRQHandler,//
-      TIM3_IRQHandler,//
-      0,//
-      0,//
-      TIM14_IRQHandler,//
-      0,//
-      TIM16_IRQHandler,//
-      TIM17_IRQHandler,//
-      I2C1_IRQHandler,//
-      0,//
-      SPI1_IRQHandler,//
-      SPI2_IRQHandler,//
-      USART1_IRQHandler,//
-      USART2_IRQHandler,//
-      0,//
-      CEC_IRQHandler,//
-      USB_IRQHandler,//
+      WWDG_IRQHandler, //
+      PVD_VDDIO2_IRQHandler, //
+      RTC_IRQHandler, //
+      FLASH_IRQHandler, //
+      RCC_CRS_IRQHandler, //
+      EXTI0_1_IRQHandler, //
+      EXTI2_3_IRQHandler, //
+      EXTI4_15_IRQHandler, //
+      TSC_IRQHandler, //
+      DMA1_Channel1_IRQHandler, //
+      DMA1_Channel2_3_IRQHandler, //
+      DMA1_Channel4_5_IRQHandler, //
+      ADC1_IRQHandler, //
+      TIM1_BRK_UP_TRG_COM_IRQHandler, //
+      TIM1_CC_IRQHandler, //
+      TIM2_IRQHandler, //
+      TIM3_IRQHandler, //
+      0, //
+      0, //
+      TIM14_IRQHandler, //
+      0, //
+      TIM16_IRQHandler, //
+      TIM17_IRQHandler, //
+      I2C1_IRQHandler, //
+      0, //
+      SPI1_IRQHandler, //
+      SPI2_IRQHandler, //
+      USART1_IRQHandler, //
+      USART2_IRQHandler, //
+      0, //
+      CEC_CAN_IRQHandler, //
+      USB_IRQHandler, //
 
 #elif defined(STM32F051)
 
       // Chip Level - STM32F051 (was STM32F0xx MD)
-      WWDG_IRQHandler,// Window WatchDog
-      PVD_IRQHandler,// PVD through EXTI Line detection
-      RTC_IRQHandler,// RTC Wakeup through the EXTI line
-      FLASH_IRQHandler,// FLASH
-      RCC_IRQHandler,// RCC
-      EXTI0_1_IRQHandler,//
-      EXTI2_3_IRQHandler,//
-      EXTI4_15_IRQHandler,//
-      TS_IRQHandler,//
-      DMA1_Channel1_IRQHandler,//
-      DMA1_Channel2_3_IRQHandler,//
-      DMA1_Channel4_5_IRQHandler,//
-      ADC1_COMP_IRQHandler,//
-      TIM1_BRK_UP_TRG_COM_IRQHandler,//
-      TIM1_CC_IRQHandler,//
-      TIM2_IRQHandler,//
-      TIM3_IRQHandler,//
-      TIM6_DAC_IRQHandler,//
-      0,//
-      TIM14_IRQHandler,//
-      TIM15_IRQHandler,//
-      TIM16_IRQHandler,//
-      TIM17_IRQHandler,//
-      I2C1_IRQHandler,//
-      I2C2_IRQHandler,//
-      SPI1_IRQHandler,//
-      SPI2_IRQHandler,//
-      USART1_IRQHandler,//
-      USART2_IRQHandler,//
-      0,//
-      CEC_IRQHandler,//
-      0,//
+      WWDG_IRQHandler, //
+      PVD_IRQHandler, //
+      RTC_IRQHandler, //
+      FLASH_IRQHandler, //
+      RCC_IRQHandler, //
+      EXTI0_1_IRQHandler, //
+      EXTI2_3_IRQHandler, //
+      EXTI4_15_IRQHandler, //
+      TS_IRQHandler, //
+      DMA1_Channel1_IRQHandler, //
+      DMA1_Channel2_3_IRQHandler, //
+      DMA1_Channel4_5_IRQHandler, //
+      ADC1_COMP_IRQHandler, //
+      TIM1_BRK_UP_TRG_COM_IRQHandler, //
+      TIM1_CC_IRQHandler, //
+      TIM2_IRQHandler, //
+      TIM3_IRQHandler, //
+      TIM6_DAC_IRQHandler, //
+      0, //
+      TIM14_IRQHandler, //
+      TIM15_IRQHandler, //
+      TIM16_IRQHandler, //
+      TIM17_IRQHandler, //
+      I2C1_IRQHandler, //
+      I2C2_IRQHandler, //
+      SPI1_IRQHandler, //
+      SPI2_IRQHandler, //
+      USART1_IRQHandler, //
+      USART2_IRQHandler, //
+      0, //
+      CEC_IRQHandler, //
+      0, //
 
 #elif defined(STM32F072)
 
       // Chip Level - STM32F051 (was STM32F0xx MD)
-      WWDG_IRQHandler,// Window WatchDog
-      PVD_VDDIO2_IRQHandler,// PVD through EXTI Line detection
-      RTC_IRQHandler,// RTC Wakeup through the EXTI line
-      FLASH_IRQHandler,// FLASH
-      RCC_CRS_IRQHandler,// RCC
-      EXTI0_1_IRQHandler,//
-      EXTI2_3_IRQHandler,//
-      EXTI4_15_IRQHandler,//
-      TSC_IRQHandler,//
-      DMA1_Channel1_IRQHandler,//
-      DMA1_Channel2_3_IRQHandler,//
-      DMA1_Channel4_5_IRQHandler,//
-      ADC1_COMP_IRQHandler,//
-      TIM1_BRK_UP_TRG_COM_IRQHandler,//
-      TIM1_CC_IRQHandler,//
-      TIM2_IRQHandler,//
-      TIM3_IRQHandler,//
-      TIM6_DAC_IRQHandler,//
-      TIM7_IRQHandler,//
-      TIM14_IRQHandler,//
-      TIM15_IRQHandler,//
-      TIM16_IRQHandler,//
-      TIM17_IRQHandler,//
-      I2C1_IRQHandler,//
-      I2C2_IRQHandler,//
-      SPI1_IRQHandler,//
-      SPI2_IRQHandler,//
-      USART1_IRQHandler,//
-      USART2_IRQHandler,//
-      USART3_4_IRQHandler,//
-      CEC_CAN_IRQHandler,//
-      USB_IRQHandler,//
+      WWDG_IRQHandler, //
+      PVD_VDDIO2_IRQHandler, //
+      RTC_IRQHandler, //
+      FLASH_IRQHandler, //
+      RCC_CRS_IRQHandler, //
+      EXTI0_1_IRQHandler, //
+      EXTI2_3_IRQHandler, //
+      EXTI4_15_IRQHandler, //
+      TSC_IRQHandler, //
+      DMA1_Channel1_IRQHandler, //
+      DMA1_Channel2_3_IRQHandler, //
+      DMA1_Channel4_5_6_7_IRQHandler, //
+      ADC1_COMP_IRQHandler, //
+      TIM1_BRK_UP_TRG_COM_IRQHandler, //
+      TIM1_CC_IRQHandler, //
+      TIM2_IRQHandler, //
+      TIM3_IRQHandler, //
+      TIM6_DAC_IRQHandler, //
+      TIM7_IRQHandler, //
+      TIM14_IRQHandler, //
+      TIM15_IRQHandler, //
+      TIM16_IRQHandler, //
+      TIM17_IRQHandler, //
+      I2C1_IRQHandler, //
+      I2C2_IRQHandler, //
+      SPI1_IRQHandler, //
+      SPI2_IRQHandler, //
+      USART1_IRQHandler, //
+      USART2_IRQHandler, //
+      USART3_4_IRQHandler, //
+      CEC_CAN_IRQHandler, //
+      USB_IRQHandler, //
 
 #else
 #error "missing vectors"

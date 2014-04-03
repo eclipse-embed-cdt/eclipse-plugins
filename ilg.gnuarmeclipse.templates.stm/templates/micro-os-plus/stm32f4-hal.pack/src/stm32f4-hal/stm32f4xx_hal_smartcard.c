@@ -315,6 +315,12 @@ HAL_StatusTypeDef HAL_SMARTCARD_DeInit(SMARTCARD_HandleTypeDef *hsc)
   return HAL_OK;
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief SMARTCARD MSP Init
   * @param hsc: usart handle
@@ -338,6 +344,11 @@ HAL_StatusTypeDef HAL_SMARTCARD_DeInit(SMARTCARD_HandleTypeDef *hsc)
             the HAL_SMARTCARD_MspDeInit could be implenetd in the user file
    */
 }
+
+ // [ILG]
+ #if defined ( __GNUC__ )
+ #pragma GCC diagnostic pop
+ #endif
 
 /**
   * @}
@@ -818,6 +829,12 @@ void HAL_SMARTCARD_IRQHandler(SMARTCARD_HandleTypeDef *hsc)
   }
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief Tx Transfer completed callbacks
   * @param hsc: usart handle
@@ -853,6 +870,11 @@ __weak void HAL_SMARTCARD_RxCpltCallback(SMARTCARD_HandleTypeDef *hsc)
             the HAL_SMARTCARD_ErrorCallback could be implemented in the user file
    */ 
 }
+
+ // [ILG]
+ #if defined ( __GNUC__ )
+ #pragma GCC diagnostic pop
+ #endif
 
 /**
   * @}

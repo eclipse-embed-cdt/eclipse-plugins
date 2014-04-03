@@ -343,7 +343,7 @@ void HAL_PWR_DisableWakeUpPin(uint32_t WakeUpPinx)
   assert_param(IS_PWR_WAKEUP_PIN(WakeUpPinx));  
   *(__IO uint32_t *) CSR_EWUP_BB = (uint32_t)DISABLE;
 }
-
+  
 /**
   * @brief Enters Sleep mode.
   *   

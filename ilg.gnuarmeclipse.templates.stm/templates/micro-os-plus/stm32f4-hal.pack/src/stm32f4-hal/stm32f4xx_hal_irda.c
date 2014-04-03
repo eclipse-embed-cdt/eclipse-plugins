@@ -290,6 +290,12 @@ HAL_StatusTypeDef HAL_IRDA_DeInit(IRDA_HandleTypeDef *hirda)
   return HAL_OK;
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief  IRDA MSP Init.
   * @param  hirda: IRDA handle
@@ -313,6 +319,11 @@ HAL_StatusTypeDef HAL_IRDA_DeInit(IRDA_HandleTypeDef *hirda)
             the HAL_IRDA_MspDeInit could be implenetd in the user file
    */ 
 }
+
+ // [ILG]
+ #if defined ( __GNUC__ )
+ #pragma GCC diagnostic pop
+ #endif
 
 /**
   * @}
@@ -856,6 +867,12 @@ void HAL_IRDA_IRQHandler(IRDA_HandleTypeDef *hirda)
   }
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief  Tx Transfer complete callbacks.
   * @param  hirda: IRDA handle
@@ -891,6 +908,11 @@ __weak void HAL_IRDA_RxCpltCallback(IRDA_HandleTypeDef *hirda)
             the HAL_IRDA_ErrorCallback could be implemented in the user file
    */ 
 }
+
+ // [ILG]
+ #if defined ( __GNUC__ )
+ #pragma GCC diagnostic pop
+ #endif
 
 /**
   * @}

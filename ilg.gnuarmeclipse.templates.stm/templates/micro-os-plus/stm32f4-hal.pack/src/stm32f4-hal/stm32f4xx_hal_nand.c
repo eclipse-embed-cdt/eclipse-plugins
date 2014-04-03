@@ -184,6 +184,12 @@ HAL_StatusTypeDef HAL_NAND_DeInit(NAND_HandleTypeDef *hnand)
   return HAL_OK;
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief  NAND MSP Init
   * @param  hnand: pointer to NAND handle
@@ -207,7 +213,6 @@ __weak void HAL_NAND_MspDeInit(NAND_HandleTypeDef *hnand)
             the HAL_NAND_MspDeInit could be implemented in the user file
    */ 
 }
-
 
 /**
   * @brief  This function handles NAND device interrupt request.
@@ -269,7 +274,12 @@ __weak void HAL_NAND_ITCallback(NAND_HandleTypeDef *hnand)
             the HAL_NAND_ITCallback could be implemented in the user file
    */
 }
- 
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
+
 /**
   * @}
   */

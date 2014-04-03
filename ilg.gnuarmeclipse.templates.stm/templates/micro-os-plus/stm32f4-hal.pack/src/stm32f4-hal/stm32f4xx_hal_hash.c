@@ -227,6 +227,12 @@ HAL_StatusTypeDef HAL_HASH_DeInit(HASH_HandleTypeDef *hhash)
   return HAL_OK;
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief  Initializes the HASH MSP.
   * @param  hhash: HASH handle
@@ -287,6 +293,11 @@ __weak void HAL_HASH_MspDeInit(HASH_HandleTypeDef *hhash)
            the HAL_HASH_DgstCpltCallback could be implemented in the user file
    */ 
 }
+
+ // [ILG]
+ #if defined ( __GNUC__ )
+ #pragma GCC diagnostic pop
+ #endif
 
 /**
   * @}

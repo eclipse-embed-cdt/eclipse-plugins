@@ -481,6 +481,12 @@ HAL_StatusTypeDef HAL_SAI_DeInit(SAI_HandleTypeDef *hsai)
   return HAL_OK;
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief SAI MSP Init.
   * @param hsai: SAI handle
@@ -504,6 +510,11 @@ __weak void HAL_SAI_MspDeInit(SAI_HandleTypeDef *hsai)
             the HAL_SAI_MspDeInit could be implemented in the user file
    */ 
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @}
@@ -628,6 +639,12 @@ HAL_StatusTypeDef HAL_SAI_Transmit(SAI_HandleTypeDef *hsai, uint16_t* pData, uin
   }
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+
 /**
   * @brief  Receives an amount of data in blocking mode. 
   * @param  hsai: SAI handle
@@ -704,6 +721,11 @@ HAL_StatusTypeDef HAL_SAI_Receive(SAI_HandleTypeDef *hsai, uint16_t *pData, uint
     return HAL_BUSY;
   }
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @brief  Transmits an amount of data in no-blocking mode with Interrupt.
@@ -782,6 +804,12 @@ HAL_StatusTypeDef HAL_SAI_Transmit_IT(SAI_HandleTypeDef *hsai, uint16_t *pData, 
   }
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+
 /**
   * @brief  Receives an amount of data in no-blocking mode with Interrupt.
   * @param  hsai: SAI handle
@@ -852,6 +880,11 @@ HAL_StatusTypeDef HAL_SAI_Receive_IT(SAI_HandleTypeDef *hsai, uint16_t *pData, u
     return HAL_BUSY; 
   } 
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @brief Pauses the audio stream playing from the Media.
@@ -1118,6 +1151,12 @@ void HAL_SAI_IRQHandler(SAI_HandleTypeDef *hsai)
   } 
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief Tx Transfer completed callbacks.
   * @param hsai: SAI handle
@@ -1177,6 +1216,11 @@ __weak void HAL_SAI_ErrorCallback(SAI_HandleTypeDef *hsai)
             the HAL_SAI_ErrorCallback could be implemented in the user file
    */ 
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @}

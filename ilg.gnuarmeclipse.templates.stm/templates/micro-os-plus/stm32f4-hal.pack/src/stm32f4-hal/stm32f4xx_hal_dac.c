@@ -286,6 +286,12 @@ HAL_StatusTypeDef HAL_DAC_DeInit(DAC_HandleTypeDef* hdac)
   return HAL_OK;
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief  Initializes the DAC MSP.
   * @param  hdac: pointer to a DAC_HandleTypeDef structure that contains
@@ -311,6 +317,11 @@ __weak void HAL_DAC_MspDeInit(DAC_HandleTypeDef* hdac)
             the HAL_DAC_MspDeInit could be implemented in the user file
    */ 
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @}
@@ -643,6 +654,12 @@ void HAL_DAC_IRQHandler(DAC_HandleTypeDef* hdac)
   }
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief  Conversion complete callback in non blocking mode for Channel1 
   * @param  hdac: pointer to a DAC_HandleTypeDef structure that contains
@@ -694,6 +711,11 @@ __weak void HAL_DAC_DMAUnderrunCallbackCh1(DAC_HandleTypeDef *hdac)
             the HAL_DAC_DMAUnderrunCallbackCh1 could be implemented in the user file
    */
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @}

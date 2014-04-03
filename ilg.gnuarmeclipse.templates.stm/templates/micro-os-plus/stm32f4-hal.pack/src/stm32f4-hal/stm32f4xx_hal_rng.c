@@ -166,6 +166,12 @@ HAL_StatusTypeDef HAL_RNG_DeInit(RNG_HandleTypeDef *hrng)
   return HAL_OK;
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief  Initializes the RNG MSP.
   * @param  hrng: RNG handle
@@ -189,6 +195,11 @@ __weak void HAL_RNG_MspDeInit(RNG_HandleTypeDef *hrng)
             the HAL_RNG_MspDeInit could be implemented in the user file
    */
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @}
@@ -339,6 +350,12 @@ void HAL_RNG_IRQHandler(RNG_HandleTypeDef *hrng)
   }
 } 
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief  Data Ready callback in non-blocking mode. 
   * @param  hrng: RNG handle
@@ -364,6 +381,11 @@ __weak void HAL_RNG_ErrorCallback(RNG_HandleTypeDef *hrng)
    */ 
 }
  
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
+
 /**
   * @}
   */

@@ -288,6 +288,12 @@ HAL_StatusTypeDef HAL_USART_DeInit(USART_HandleTypeDef *husart)
   return HAL_OK;
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief  USART MSP Init.
   * @param  husart: USART handle
@@ -311,6 +317,11 @@ HAL_StatusTypeDef HAL_USART_DeInit(USART_HandleTypeDef *husart)
            the HAL_USART_MspDeInit could be implenetd in the user file
    */ 
 }
+
+ // [ILG]
+ #if defined ( __GNUC__ )
+ #pragma GCC diagnostic pop
+ #endif
 
 /**
   * @}
@@ -1193,6 +1204,12 @@ void HAL_USART_IRQHandler(USART_HandleTypeDef *husart)
   }
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
 /**
   * @brief  Tx Transfer completed callbacks.
   * @param  husart: USART handle
@@ -1264,6 +1281,11 @@ __weak void HAL_USART_TxRxCpltCallback(USART_HandleTypeDef *husart)
            the HAL_USART_ErrorCallback could be implemented in the user file
    */ 
 }
+
+ // [ILG]
+ #if defined ( __GNUC__ )
+ #pragma GCC diagnostic pop
+ #endif
 
 /**
   * @}

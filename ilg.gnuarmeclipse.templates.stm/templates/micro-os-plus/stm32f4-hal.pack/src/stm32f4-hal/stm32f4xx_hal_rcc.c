@@ -291,6 +291,12 @@ void HAL_RCC_DeInit(void)
   CLEAR_REG(RCC->CIR); 
 }
 
+  // [ILG]
+  #if defined ( __GNUC__ )
+  #pragma GCC diagnostic push
+  #pragma GCC diagnostic ignored "-Wconversion"
+  #endif
+
 /**
   * @brief  Initializes the RCC Oscillators according to the specified parameters in the
   *         RCC_OscInitTypeDef.
@@ -337,7 +343,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
       }
       
       /* Set the new HSE configuration ---------------------------------------*/
-      __HAL_RCC_HSE_CONFIG((uint8_t)RCC_OscInitStruct->HSEState);
+      __HAL_RCC_HSE_CONFIG(RCC_OscInitStruct->HSEState);
       
       /* Check the HSE State */
       if((RCC_OscInitStruct->HSEState) == RCC_HSE_ON)
@@ -508,7 +514,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
     } 
     
     /* Set the new LSE configuration -----------------------------------------*/
-    __HAL_RCC_LSE_CONFIG((uint8_t)RCC_OscInitStruct->LSEState);
+    __HAL_RCC_LSE_CONFIG(RCC_OscInitStruct->LSEState);
     /* Check the LSE State */
     if((RCC_OscInitStruct->LSEState) == RCC_LSE_ON)
     {
@@ -616,7 +622,12 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
   }
   return HAL_OK;
 }
- 
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
+
 /**
   * @brief  Initializes the CPU, AHB and APB busses clocks according to the specified 
   *         parameters in the RCC_ClkInitStruct.

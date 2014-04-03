@@ -416,6 +416,13 @@ uint8_t USB_GetDevSpeed(USB_OTG_GlobalTypeDef *USBx)
   return speed;
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsign-conversion"
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+
 /**
   * @brief  Activate and configure an endpoint
   * @param  USBx : Selected device
@@ -1615,6 +1622,11 @@ HAL_StatusTypeDef USB_DoPing(USB_OTG_GlobalTypeDef *USBx , uint8_t ch_num)
   
   return HAL_OK;  
 }
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @brief  Stop Host Core
