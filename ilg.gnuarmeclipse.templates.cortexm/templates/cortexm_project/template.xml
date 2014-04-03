@@ -13,10 +13,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 
 		<property id="CMcore" label="%CM.core.label" description="%CM.core.description"
 			type="select" default="cortexm3" hidden="false" persist="true">
-			<item value="cortexm0" label="Cortex-M0" />
-			<item value="cortexm0plus" label="Cortex-M0+" />
-			<item value="cortexm3" label="Cortex-M3" />
-			<item value="cortexm4" label="Cortex-M4" />
+			<item value="cortex-m0" label="Cortex-M0" />
+			<item value="cortex-m0plus" label="Cortex-M0+" />
+			<item value="cortex-m3" label="Cortex-M3" />
+			<item value="cortex-m4" label="Cortex-M4" />
 		</property>
 
 		<property id="CMxtalValue" label="%CM.xtalValue.label"
@@ -46,12 +46,17 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<item value="DEBUG" label="Semihosting DEBUG channel" />
 		</property>
 
-		<property id="useMostWarnings" label="%mostWarnings.label"
-			description="%mostWarnings.description" type="boolean" default="true"
+		<property id="useSomeWarnings" label="%someWarnings.label"
+			description="%someWarnings.description" type="boolean" default="true"
 			hidden="false" persist="true" />
 
-		<property id="useWerror" label="%useWerror.label" description="%useWerror.description"
-			type="boolean" default="false" hidden="false" persist="true" />
+		<property id="useMostWarnings" label="%mostWarnings.label"
+			description="%mostWarnings.description" type="boolean" default="false"
+			hidden="false" persist="true" />
+
+		<property id="useWerror" label="%useWerror.label"
+			description="%useWerror.description" type="boolean" default="false"
+			hidden="false" persist="true" />
 
 		<property id="useOg" label="%useOg.label" description="%useOg.description"
 			type="boolean" default="true" hidden="false" persist="true" />
@@ -64,30 +69,27 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 	<property-group id="folders" label="%group.folders.label"
 		description="%group.folders.description" type="PAGES-ONLY" help="help.html">
 		<property id="includeDir" label="%includeDir.label"
-			description="%includeDir.description" type="input"
-			default="%includeDir.default" pattern="[a-zA-Z0-9]+" mandatory="true"
-			persist="true" />
+			description="%includeDir.description" type="input" default="%includeDir.default"
+			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
 		<property id="sourceDir" label="%sourceDir.label"
 			description="%sourceDir.description" type="input" default="%sourceDir.default"
 			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
 		<property id="sysDir" label="%sysDir.label" description="%sysDir.description"
 			type="input" default="%sysDir.default" pattern="[a-zA-Z0-9]+"
 			mandatory="true" persist="true" />
-		<property id="cmsisDir" label="%cmsisDir.label"
-			description="%cmsisDir.description" type="input" default="%cmsisDir.default"
-			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
+		<property id="cmsisDir" label="%cmsisDir.label" description="%cmsisDir.description"
+			type="input" default="%cmsisDir.default" pattern="[a-zA-Z0-9]+"
+			mandatory="true" persist="true" />
 		<property id="newlibDir" label="%newlibDir.label"
 			description="%newlibDir.description" type="input" default="%newlibDir.default"
 			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
 		<property id="ldscriptsDir" label="%ldscriptsDir.label"
-			description="%ldscriptsDir.description" type="input"
-			default="%ldscriptsDir.default" pattern="[a-zA-Z0-9]+" mandatory="true"
-			persist="true" />
-			
+			description="%ldscriptsDir.description" type="input" default="%ldscriptsDir.default"
+			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
+
 		<property id="deviceName" label="%deviceName.label"
-			description="%deviceName.description" type="input"
-			default="%deviceName.default" pattern="[a-zA-Z0-9]+" mandatory="true"
-			persist="true" />
+			description="%deviceName.description" type="input" default="%deviceName.default"
+			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
 
 		<!-- ============================================================== -->
 		<property id="fileExtension" label="Source file extension"
@@ -145,7 +147,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="propertyName" value="CMSIS_name" />
 			<simple name="propertyValue" value="$(deviceName)" />
 		</process>
-		
+
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalSetProperty">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="condition" value="" />
@@ -306,7 +308,8 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="condition" value="" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="$(commonDir)/src/main/main-180-$(syscalls)-hello.c" />
+					<simple name="source"
+						value="$(commonDir)/src/main/main-180-$(syscalls)-hello.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -372,8 +375,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="condition" value="" />
 			<complex-array name="folders">
 				<element>
-					<simple name="source"
-						value="$(commonDir)/system/include/cmsis" />
+					<simple name="source" value="$(commonDir)/system/include/cmsis" />
 					<simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)" />
 					<simple name="pattern" value=".*[.](h|txt)" />
 					<simple name="replaceable" value="true" />
@@ -484,10 +486,8 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source"
-						value="$(commonDir)/system/include/diag/Trace.h" />
-					<simple name="target"
-						value="$(sysDir)/$(includeDir)/diag/Trace.h" />
+					<simple name="source" value="$(commonDir)/system/include/diag/Trace.h" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/diag/Trace.h" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -495,78 +495,38 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 	</if>
 
 	<if condition="1==1">
-		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
 			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
+			<simple name="condition" value="" />
+			<complex-array name="folders">
 				<element>
-					<simple name="source"
-						value="$(commonDir)/system/src/cortexm/_initialize_hardware.c" />
-					<simple name="target"
-						value="$(sysDir)/$(sourceDir)/cortexm/_initialize_hardware.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(commonDir)/system/src/cortexm/_reset_hardware.c" />
-					<simple name="target"
-						value="$(sysDir)/$(sourceDir)/cortexm/_reset_hardware.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source"
-						value="$(commonDir)/system/src/cortexm/exception_handlers.c" />
-					<simple name="target"
-						value="$(sysDir)/$(sourceDir)/cortexm/exception_handlers.c" />
+					<simple name="source" value="$(commonDir)/system/src/cortexm" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/cortexm" />
+					<simple name="pattern" value=".*[.](c|txt)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
 		</process>
-		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
 			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
+			<simple name="condition" value="" />
+			<complex-array name="folders">
 				<element>
-					<simple name="source" value="$(commonDir)/system/src/newlib/_exit.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_exit.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/system/src/newlib/_sbrk.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_sbrk.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/system/src/newlib/_startup.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_startup.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/system/src/newlib/_syscalls.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_syscalls.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/system/src/newlib/_write.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_write.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/system/src/newlib/README.txt" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/README.txt" />
+					<simple name="source" value="$(commonDir)/system/src/newlib" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib" />
+					<simple name="pattern" value=".*[.](c|txt)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
 		</process>
-		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
 			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
+			<simple name="condition" value="" />
+			<complex-array name="folders">
 				<element>
-					<simple name="source" value="$(commonDir)/system/src/diag/trace_impl.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/diag/trace_impl.c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/system/src/diag/Trace.c" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/diag/Trace.c" />
+					<simple name="source" value="$(commonDir)/system/src/diag" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/diag" />
+					<simple name="pattern" value=".*[.](c|txt)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -574,12 +534,14 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 	</if>
 
 	<if condition="$(fileExtension)==cpp">
-		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
 			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
+			<simple name="condition" value="" />
+			<complex-array name="folders">
 				<element>
-					<simple name="source" value="$(commonDir)/system/src/newlib/hacks.cpp" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/hacks.cpp" />
+					<simple name="source" value="$(commonDir)/system/src/newlib" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib" />
+					<simple name="pattern" value=".*[.](cpp)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -645,7 +607,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 	<!-- ================================================================== -->
 
 	<!-- Target options -->
-	<if condition="$(CMcore)==cortexm0">
+	<if condition="1==1">
 		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="resourcePaths">
@@ -653,77 +615,36 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.family" />
 					<simple name="value"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m0" />
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.$(CMcore)" />
 					<simple name="path" value="" />
 				</element>
 			</complex-array>
 		</process>
 	</if>
 
-	<if condition="$(CMcore)==cortexm0plus">
-		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="resourcePaths">
-				<element>
-					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.family" />
-					<simple name="value"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m0plus" />
-					<simple name="path" value="" />
-				</element>
-			</complex-array>
-		</process>
-	</if>
-
-	<if condition="$(CMcore)==cortexm3">
-		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="resourcePaths">
-				<element>
-					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.family" />
-					<simple name="value"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m3" />
-					<simple name="path" value="" />
-				</element>
-			</complex-array>
-		</process>
-	</if>
-
-	<if condition="$(CMcore)==cortexm4">
-		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="resourcePaths">
-				<element>
-					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.family" />
-					<simple name="value"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m4" />
-					<simple name="path" value="" />
-				</element>
-			</complex-array>
-		</process>
-	</if>
 
 	<!-- ================================================================== -->
 
 	<!-- Global options -->
 	<if condition="1==1">
 		<process
-			type="org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue">
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(useSomeWarnings) == true" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.allwarn" />
 					<simple name="value" value="true" />
 					<simple name="path" value="" />
+					<simple name="buildType" value="" />
 				</element>
 				<element>
 					<simple name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.warnings.extrawarn" />
 					<simple name="value" value="true" />
 					<simple name="path" value="" />
+					<simple name="buildType" value="" />
 				</element>
 			</complex-array>
 		</process>
