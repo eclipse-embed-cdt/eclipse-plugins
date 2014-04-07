@@ -54,10 +54,11 @@ public class Backend extends Backend0 {
 					ConfigurationAttributes.DO_START_GDB_SERVER,
 					ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
 
-			doStartSemihostingConsole = doStartGdbServer && fLaunchConfiguration
-					.getAttribute(
-							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
-							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
+			doStartSemihostingConsole = doStartGdbServer
+					&& fLaunchConfiguration
+							.getAttribute(
+									ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
+									ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
 
 		} catch (CoreException e) {
 		}
@@ -268,9 +269,14 @@ public class Backend extends Backend0 {
 
 					String[] commandLineArray = TabDebugger
 							.getGdbServerCommandLineArray(fLaunchConfiguration);
-					if (commandLineArray == null){
-						fTmpLaunchRequestMonitor.setStatus(new Status(
-								IStatus.ERROR, Activator.PLUGIN_ID, -1, "Cannot resolve macros in GDB server command line", null));
+					if (commandLineArray == null) {
+						fTmpLaunchRequestMonitor
+								.setStatus(new Status(
+										IStatus.ERROR,
+										Activator.PLUGIN_ID,
+										-1,
+										"Cannot resolve macros in GDB server command line",
+										null));
 						fTmpLaunchRequestMonitor.done();
 						return Status.OK_STATUS;
 					}
@@ -811,10 +817,15 @@ public class Backend extends Backend0 {
 		void kill() {
 			synchronized (fProcess) {
 				if (!fMonitorExited) {
-					System.out
-							.println("SemihostingMonitorJob.kill() interrupt "
-									+ getThread().toString());
-					getThread().interrupt();
+					Thread thread = getThread();
+					if (thread != null) {
+						System.out
+								.println("SemihostingMonitorJob.kill() interrupt "
+										+ thread.toString());
+						thread.interrupt();
+					} else {
+						System.out.println("null thread");
+					}
 				}
 			}
 		}
