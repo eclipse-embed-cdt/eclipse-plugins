@@ -1,4 +1,5 @@
 // STM32F3DISCOVERY definitions (GREEN led, E15, active high)
+// (SEGGER J-Link device name: STM32F303VC).
 
 // Port numbers: 0=A, 1=B, 2=C, 3=D, 4=E, 5=F, 6=G, ...
 #define BLINK_PORT_NUMBER               (4)

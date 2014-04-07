@@ -325,7 +325,7 @@
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="$(commonDir)/src/main/main-130-trace-via.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-130-trace-via-m0.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>

@@ -1,4 +1,5 @@
 // Olimex STM32-H103 definitions (the GREEN led, C12, active low)
+// (SEGGER J-Link device name: STM32F103RB).
 
 // Port numbers: 0=A, 1=B, 2=C, 3=D, 4=E, 5=F, 6=G, ...
 #define BLINK_PORT_NUMBER               (2)
