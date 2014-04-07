@@ -662,7 +662,7 @@
 				<element>
 					<simple name="source" value="$(commonDir)/system/src/cortexm" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/cortexm" />
-					<simple name="pattern" value=".*[.](c|txt)" />
+					<simple name="pattern" value=".*[.](c.*|txt)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -674,7 +674,7 @@
 				<element>
 					<simple name="source" value="$(commonDir)/system/src/newlib" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib" />
-					<simple name="pattern" value=".*[.](c|txt)" />
+					<simple name="pattern" value=".*[.](c.*|txt)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -686,22 +686,7 @@
 				<element>
 					<simple name="source" value="$(commonDir)/system/src/diag" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/diag" />
-					<simple name="pattern" value=".*[.](c|txt)" />
-					<simple name="replaceable" value="true" />
-				</element>
-			</complex-array>
-		</process>
-	</if>
-
-	<if condition="$(fileExtension)==cpp">
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="" />
-			<complex-array name="folders">
-				<element>
-					<simple name="source" value="$(commonDir)/system/src/newlib" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib" />
-					<simple name="pattern" value=".*[.](cpp)" />
+					<simple name="pattern" value=".*[.](c.*|txt)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>

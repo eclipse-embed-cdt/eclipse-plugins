@@ -1,8 +1,7 @@
-Thes "$(deviceName).h" and "system_$(deviceName).h" files are provided 
+The "$(deviceName).h" and "system_$(deviceName).h" files are provided 
 only as a functional sample.
 
-For real applications they must be replaced with the files 
-provided by the vendor.
+For real applications they must be replaced by the vendor provided files.
 
 Extensions to the ARM CMSIS files:
 

@@ -1,4 +1,5 @@
 
+// ----------------------------------------------------------------------------
 //
 // Standalone $(shortChipFamily) led blink sample (trace via $(trace)).
 //

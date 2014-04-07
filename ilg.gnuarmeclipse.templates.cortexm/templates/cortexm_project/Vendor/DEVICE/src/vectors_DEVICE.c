@@ -5,48 +5,17 @@
 
 // ----------------------------------------------------------------------------
 
-// External references to cortexm_handlers.c
+#include "cortexm/ExceptionHandlers.h"
 
-extern void
-Reset_Handler(void);
-extern void
-NMI_Handler(void);
-extern void
-HardFault_Handler(void);
-
-#if defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
-extern void
-MemManage_Handler (void);
-extern void
-BusFault_Handler (void);
-extern void
-UsageFault_Handler (void);
-#endif
-
-extern void
-SVC_Handler(void);
-
-#if defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
-extern void
-DebugMon_Handler (void);
-#endif
-
-extern void
-PendSV_Handler(void);
-extern void
-SysTick_Handler(void);
-
-// Forward declaration for the default handler.
+// ----------------------------------------------------------------------------
 
 void __attribute__((weak))
 Default_Handler(void);
 
-// ----------------------------------------------------------------------------
-
 // Forward declaration of the specific IRQ handlers. These are aliased
 // to the Default_Handler, which is a 'forever' loop. When the application
 // defines a handler (with the same name), this will automatically take
-// precedence over these weak definitions.
+// precedence over these weak definitions
 //
 // TODO: Rename this and add the actual routines here.
 
