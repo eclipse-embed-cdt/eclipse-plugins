@@ -6,7 +6,11 @@
 #ifndef DIAG_TRACE_H_
 #define DIAG_TRACE_H_
 
+// ----------------------------------------------------------------------------
+
 #include <unistd.h>
+
+// ----------------------------------------------------------------------------
 
 // The trace device is an independent output channel, intended for debug
 // purposes.
@@ -136,5 +140,7 @@ trace_dump_args(int argc __attribute__((unused)),
 }
 
 #endif // defined(TRACE)
+
+// ----------------------------------------------------------------------------
 
 #endif // DIAG_TRACE_H_

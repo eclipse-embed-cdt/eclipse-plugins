@@ -3,6 +3,8 @@
 // Copyright (c) 2014 Liviu Ionescu.
 //
 
+// ----------------------------------------------------------------------------
+
 #if defined(TRACE)
 
 #include <stdio.h>

@@ -6,8 +6,12 @@
 #ifndef ARM_SEMIHOSTING_H_
 #define ARM_SEMIHOSTING_H_
 
+// ----------------------------------------------------------------------------
+
+// Semihosting operations.
 enum OperationNumber
 {
+  // Regular operations
   SEMIHOSTING_EnterSVC = 0x17,
   SEMIHOSTING_ReportException = 0x18,
   SEMIHOSTING_SYS_CLOSE = 0x02,
@@ -33,19 +37,22 @@ enum OperationNumber
   SEMIHOSTING_SYS_WRITEC = 0x03,
   SEMIHOSTING_SYS_WRITE0 = 0x04,
 
+  // Codes returned by SEMIHOSTING_ReportException
   ADP_Stopped_ApplicationExit = ((2 << 16) + 38),
   ADP_Stopped_RunTimeError = ((2 << 16) + 35),
 
 };
 
-/* Now the SWI numbers and reason codes for RDI (Angel) monitors.  */
+// ----------------------------------------------------------------------------
+
+// SWI numbers and reason codes for RDI (Angel) monitors.
 #define AngelSWI_ARM 			0x123456
 #ifdef __thumb__
 #define AngelSWI 			0xAB
 #else
 #define AngelSWI 			AngelSWI_ARM
 #endif
-/* For thumb only architectures use the BKPT instruction instead of SWI.  */
+// For thumb only architectures use the BKPT instruction instead of SWI.
 #if defined(__ARM_ARCH_7M__)     \
     || defined(__ARM_ARCH_7EM__) \
     || defined(__ARM_ARCH_6M__)
@@ -71,17 +78,20 @@ call_host (int reason, void* arg)
       : [val] "=r" (value) /* Outputs */
       : [rsn] "r" (reason), [arg] "r" (arg), [swi] "i" (AngelSWI) /* Inputs */
       : "r0", "r1", "r2", "r3", "ip", "lr", "memory", "cc"
-      /* Clobbers r0 and r1, and lr if in supervisor mode */
+      // Clobbers r0 and r1, and lr if in supervisor mode
   );
 
-  /* Accordingly to page 13-77 of ARM DUI 0040D other registers
-   can also be clobbered.  Some memory positions may also be
-   changed by a system call, so they should not be kept in
-   registers. Note: we are assuming the manual is right and
-   Angel is respecting the APCS.  */
+  // Accordingly to page 13-77 of ARM DUI 0040D other registers
+  // can also be clobbered. Some memory positions may also be
+  // changed by a system call, so they should not be kept in
+  // registers. Note: we are assuming the manual is right and
+  // Angel is respecting the APCS.
   return value;
 }
 
+// ----------------------------------------------------------------------------
+
+// Function used in _exit() to return the status code as Angel exception.
 static inline void
 __attribute__ ((always_inline,noreturn))
 report_exception (int reason)
@@ -91,5 +101,7 @@ report_exception (int reason)
   for (;;)
     ;
 }
+
+// ----------------------------------------------------------------------------
 
 #endif // ARM_SEMIHOSTING_H_
