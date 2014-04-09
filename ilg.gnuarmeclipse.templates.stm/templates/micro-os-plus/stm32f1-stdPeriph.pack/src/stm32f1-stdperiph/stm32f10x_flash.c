@@ -670,6 +670,12 @@ FLASH_Status FLASH_EraseOptionBytes(void)
   return status;
 }
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wconversion"
+#endif
+
 /**
   * @brief  Programs a word at a specified address.
   * @note   This function can be used for all STM32F10x devices.
@@ -857,6 +863,11 @@ FLASH_Status FLASH_ProgramWord(uint32_t Address, uint32_t Data)
   /* Return the Program Status */
   return status;
 }
+
+// [ILG]
+#if defined(__GNUC__)
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @brief  Programs a half word at a specified address.
