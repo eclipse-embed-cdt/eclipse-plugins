@@ -78,14 +78,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private Button doStartGdbServer;
 	private Text gdbClientExecutable;
-	private boolean didGdbClientExecutableChange;
 	private Text gdbClientOtherOptions;
 	private Text gdbClientOtherCommands;
 
 	private Text targetIpAddress;
 	private Text targetPortNumber;
 	private Text gdbFlashDeviceName;
-	private boolean didFlashDeviceNameChange;
 	private Button gdbEndiannessLittle;
 
 	private Button gdbEndiannessBig;
@@ -95,7 +93,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Button gdbServerConnectionUsb;
 	private Button gdbServerConnectionIp;
 	private Text gdbServerConnectionAddress;
-	private boolean didGdbServerConnectionChange;
 
 	private Button gdbServerSpeedAuto;
 	private Button gdbServerSpeedAdaptive;
@@ -109,7 +106,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Text gdbServerTelnetPort;
 
 	private Text gdbServerExecutable;
-	private boolean didGdbServerExecutableChange;
 	private Button gdbServerBrowseButton;
 	private Button gdbServerVariablesButton;
 
@@ -149,6 +145,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	@Override
 	public void createControl(Composite parent) {
 
+		System.out.println("TabDebugger: createControl() ");
+
 		// gdbPrevUsbAddress = "";
 		// gdbPrevIpAddress = "";
 
@@ -183,7 +181,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fUpdateThreadlistOnSuspend.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 	}
@@ -291,7 +289,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				gdbServerExecutable = new Text(local, SWT.SINGLE | SWT.BORDER);
 				gd = new GridData(GridData.FILL_HORIZONTAL);
 				gdbServerExecutable.setLayoutData(gd);
-				didGdbServerExecutableChange = false;
 
 				gdbServerBrowseButton = new Button(local, SWT.NONE);
 				gdbServerBrowseButton.setText(Messages
@@ -323,8 +320,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				gd = new GridData();
 				gd.widthHint = 180;
 				gdbFlashDeviceName.setLayoutData(gd);
-
-				didFlashDeviceNameChange = false;
 
 				Composite empty = new Composite(local, SWT.NONE);
 				layout = new GridLayout();
@@ -391,8 +386,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			local.setLayoutData(gd);
 			{
-				didGdbServerConnectionChange = false;
-
 				gdbServerConnectionUsb = new Button(local, SWT.RADIO);
 				gdbServerConnectionUsb.setText(Messages
 						.getString("DebuggerTab.connectionUsb_Text"));
@@ -694,20 +687,19 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		doConnectToRunning.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				updateLaunchConfigurationDialog();
+				// updateLaunchConfigurationDialog();
 
 				propagateConnectToRunningChanged();
 				tabStartup.doConnectToRunningChanged(doConnectToRunning
 						.getSelection());
+
+				scheduleUpdateJob();
 			}
 		});
 
 		gdbServerExecutable.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-
-				didGdbServerExecutableChange = true;
-
 				scheduleUpdateJob(); // provides much better performance for
 										// Text listeners
 			}
@@ -734,8 +726,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent e) {
 
 				gdbServerConnectionAddress.setText("");
-
-				didGdbServerConnectionChange = true;
 				scheduleUpdateJob();
 			}
 		};
@@ -746,8 +736,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		gdbServerConnectionAddress.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-
-				didGdbServerConnectionChange = true;
 				scheduleUpdateJob();
 			}
 		});
@@ -775,7 +763,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent e) {
 
 				tabStartup.doInterfaceSwdChanged(true);
-				updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 
@@ -784,7 +772,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent e) {
 
 				tabStartup.doInterfaceSwdChanged(false);
-				updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 
@@ -820,9 +808,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		gdbFlashDeviceName.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				updateLaunchConfigurationDialog();
-
-				didFlashDeviceNameChange = true;
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 
@@ -837,14 +823,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		gdbEndiannessLittle.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 
 		gdbEndiannessBig.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 
@@ -933,8 +919,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				gd = new GridData(GridData.FILL_HORIZONTAL);
 				gdbClientExecutable.setLayoutData(gd);
 
-				didGdbClientExecutableChange = false;
-
 				browseButton = new Button(local, SWT.NONE);
 				browseButton.setText(Messages
 						.getString("DebuggerTab.gdbCommandBrowse"));
@@ -980,8 +964,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		gdbClientExecutable.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-
-				didGdbClientExecutableChange = true;
 
 				scheduleUpdateJob(); // provides much better performance for
 										// Text listeners
@@ -1148,13 +1130,102 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
-		try {
 
-			// J-Link interface
+		System.out.println("TabDebugger: initializeFrom() "
+				+ configuration.getName());
+
+		try {
+			Boolean defaultBoolean;
+			String defaultString;
+
+			// J-Link GDB Server Setup
 			{
-				String defaultPhysicalInterface = configuration.getAttribute(
-						ConfigurationAttributes.INTERFACE_COMPAT,
-						ConfigurationAttributes.INTERFACE_DEFAULT);
+				// Start server locally
+				defaultBoolean = SharedStorage
+						.getGdbServerDoStart(ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
+				doStartGdbServer.setSelection(configuration.getAttribute(
+						ConfigurationAttributes.DO_START_GDB_SERVER,
+						defaultBoolean));
+
+				doConnectToRunning.setSelection(configuration.getAttribute(
+						ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+						ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT));
+
+				// Executable
+				defaultString = SharedStorage
+						.getGdbServerExecutable(getGdbServerExecutableDefault());
+				gdbServerExecutable.setText(configuration.getAttribute(
+						ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
+						defaultString));
+
+				// Device name
+				defaultString = SharedStorage
+						.getFlashDeviceName(ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
+
+				String defaultDeviceName = configuration.getAttribute(
+						ConfigurationAttributes.FLASH_DEVICE_NAME_COMPAT,
+						defaultString);
+				String deviceName = configuration.getAttribute(
+						ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
+						defaultDeviceName);
+				gdbFlashDeviceName.setText(deviceName);
+
+				// Endianness
+				defaultString = SharedStorage
+						.getGdbServerEndianness(ConfigurationAttributes.ENDIANNESS_DEFAULT);
+				String defaultEndianness = configuration.getAttribute(
+						ConfigurationAttributes.ENDIANNESS_COMPAT,
+						defaultString);
+				String endianness = configuration.getAttribute(
+						ConfigurationAttributes.GDB_SERVER_DEVICE_ENDIANNESS,
+						defaultEndianness);
+				if (ConfigurationAttributes.ENDIANNESS_LITTLE
+						.equals(endianness))
+					gdbEndiannessLittle.setSelection(true);
+				else if (ConfigurationAttributes.ENDIANNESS_BIG
+						.equals(endianness))
+					gdbEndiannessBig.setSelection(true);
+				else {
+					String message = "unknown endianness " + endianness
+							+ ", using little";
+					Activator.log(Status.ERROR, message);
+					gdbEndiannessLittle.setSelection(true);
+				}
+
+				// Connection
+				defaultString = SharedStorage
+						.getGdbServerConnection(ConfigurationAttributes.GDB_SERVER_CONNECTION_DEFAULT);
+
+				String connection = configuration.getAttribute(
+						ConfigurationAttributes.GDB_SERVER_CONNECTION,
+						defaultString);
+
+				if (ConfigurationAttributes.GDB_SERVER_CONNECTION_USB
+						.equals(connection)) {
+					gdbServerConnectionUsb.setSelection(true);
+					gdbServerConnectionIp.setSelection(false);
+				} else if (ConfigurationAttributes.GDB_SERVER_CONNECTION_IP
+						.equals(connection)) {
+					gdbServerConnectionUsb.setSelection(false);
+					gdbServerConnectionIp.setSelection(true);
+				}
+
+				// Connection address
+				defaultString = SharedStorage
+						.getGdbServerConnectionAddress(ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS_DEFAULT);
+
+				String connectionAddress = configuration.getAttribute(
+						ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
+						defaultString);
+				gdbServerConnectionAddress.setText(connectionAddress);
+
+				// Interface
+				defaultString = SharedStorage
+						.getGdbServerInterface(ConfigurationAttributes.INTERFACE_DEFAULT);
+
+				String defaultPhysicalInterface = configuration
+						.getAttribute(ConfigurationAttributes.INTERFACE_COMPAT,
+								defaultString);
 				String physicalInterface = configuration.getAttribute(
 						ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
 						defaultPhysicalInterface);
@@ -1174,85 +1245,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					gdbInterfaceSwd.setSelection(true);
 				}
 
-				doConnectToRunning.setSelection(configuration.getAttribute(
-						ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-						ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT));
-			}
-
-			// J-Link device
-			{
-				String sharedName = SharedStorage
-						.getFlashDeviceName(ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
-
-				String defaultDeviceName = configuration.getAttribute(
-						ConfigurationAttributes.FLASH_DEVICE_NAME_COMPAT,
-						sharedName);
-				String deviceName = configuration.getAttribute(
-						ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
-						defaultDeviceName);
-				gdbFlashDeviceName.setText(deviceName);
-				didFlashDeviceNameChange = false;
-
-				String defaultEndianness = configuration.getAttribute(
-						ConfigurationAttributes.ENDIANNESS_COMPAT,
-						ConfigurationAttributes.ENDIANNESS_DEFAULT);
-				String endianness = configuration.getAttribute(
-						ConfigurationAttributes.GDB_SERVER_DEVICE_ENDIANNESS,
-						defaultEndianness);
-				if (ConfigurationAttributes.ENDIANNESS_LITTLE
-						.equals(endianness))
-					gdbEndiannessLittle.setSelection(true);
-				else if (ConfigurationAttributes.ENDIANNESS_BIG
-						.equals(endianness))
-					gdbEndiannessBig.setSelection(true);
-				else {
-					String message = "unknown endianness " + endianness
-							+ ", using little";
-					Activator.log(Status.ERROR, message);
-					gdbEndiannessLittle.setSelection(true);
-				}
-			}
-
-			// J-Link GDB server
-			{
-				doStartGdbServer.setSelection(configuration.getAttribute(
-						ConfigurationAttributes.DO_START_GDB_SERVER,
-						ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT));
-
-				gdbServerExecutable.setText(configuration.getAttribute(
-						ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
-						getGdbServerExecutableDefault()));
-				didGdbServerExecutableChange = false;
-
-				String sharedConnection = SharedStorage
-						.getGdbServerConnection(ConfigurationAttributes.GDB_SERVER_CONNECTION_DEFAULT);
-
-				String connection = configuration.getAttribute(
-						ConfigurationAttributes.GDB_SERVER_CONNECTION,
-						sharedConnection);
-
-				if (ConfigurationAttributes.GDB_SERVER_CONNECTION_USB
-						.equals(connection)) {
-					gdbServerConnectionUsb.setSelection(true);
-					gdbServerConnectionIp.setSelection(false);
-				} else if (ConfigurationAttributes.GDB_SERVER_CONNECTION_IP
-						.equals(connection)) {
-					gdbServerConnectionUsb.setSelection(false);
-					gdbServerConnectionIp.setSelection(true);
-				}
-
-				String sharedConnectionAddress = SharedStorage
-						.getGdbServerConnectionAddress(ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS_DEFAULT);
-
-				String connectionAddress = configuration.getAttribute(
-						ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
-						sharedConnectionAddress);
-				gdbServerConnectionAddress.setText(connectionAddress);
+				// Initial speed
+				defaultString = SharedStorage
+						.getGdbServerInitialSpeed(ConfigurationAttributes.GDB_SERVER_SPEED_DEFAULT);
 
 				String defaultPhysicalInterfaceSpeed = configuration
 						.getAttribute(
 								ConfigurationAttributes.GDB_SERVER_SPEED_COMPAT,
-								ConfigurationAttributes.GDB_SERVER_SPEED_DEFAULT);
+								defaultString);
 
 				String physicalInterfaceSpeed = configuration.getAttribute(
 						ConfigurationAttributes.GDB_SERVER_DEVICE_SPEED,
@@ -1292,6 +1292,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					}
 				}
 
+				// Ports
 				gdbServerGdbPort
 						.setText(Integer.toString(configuration
 								.getAttribute(
@@ -1310,6 +1311,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 										ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 										ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
 
+				// Flags
 				doGdbServerVerifyDownload
 						.setSelection(configuration
 								.getAttribute(
@@ -1332,43 +1334,51 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						ConfigurationAttributes.DO_GDB_SERVER_SILENT,
 						ConfigurationAttributes.DO_GDB_SERVER_SILENT_DEFAULT));
 
+				// Log file
 				gdbServerLog.setText(configuration.getAttribute(
 						ConfigurationAttributes.GDB_SERVER_LOG,
 						ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT));
 
-				gdbServerOtherOptions.setText(configuration.getAttribute(
-						ConfigurationAttributes.GDB_SERVER_OTHER,
-						ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT));
+				// Other options
+				defaultString = SharedStorage
+						.getGdbServerOtherOptions(ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT);
 
+				gdbServerOtherOptions.setText(configuration
+						.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER,
+								defaultString));
+
+				// Allocate server console
 				doGdbServerAllocateConsole
 						.setSelection(configuration
 								.getAttribute(
 										ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
 										ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT));
 
+				// Allocate semihosting console
 				doGdbServerAllocateSemihostingConsole
 						.setSelection(configuration
 								.getAttribute(
 										ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
 										ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT));
-
 			}
 
-			// J-Link client
+			// GDB Client Setup
 			{
-				String gdbCommandAttr = configuration
-						.getAttribute(
-								IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
-								SharedStorage
-										.getGdbClientExecutable(ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT));
-				gdbClientExecutable.setText(gdbCommandAttr);
-				didGdbClientExecutableChange = false;
+				// Executable
+				defaultString = SharedStorage
+						.getGdbClientExecutable(ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT);
 
-				gdbClientOtherOptions
-						.setText(configuration
-								.getAttribute(
-										ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
-										ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT));
+				String gdbCommandAttr = configuration.getAttribute(
+						IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
+						defaultString);
+				gdbClientExecutable.setText(gdbCommandAttr);
+
+				// Other options
+				defaultString = SharedStorage
+						.getGdbClientOtherOptions(ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT);
+				gdbClientOtherOptions.setText(configuration.getAttribute(
+						ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
+						defaultString));
 
 				gdbClientOtherCommands
 						.setText(configuration
@@ -1377,7 +1387,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 										ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT));
 			}
 
-			// Remote target
+			// Remote Target
 			{
 				targetIpAddress.setText(configuration.getAttribute(
 						IGDBJtagConstants.ATTR_IP_ADDRESS,
@@ -1385,9 +1395,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 				int storedPort = 0;
 				storedPort = configuration.getAttribute(
-						IGDBJtagConstants.ATTR_PORT_NUMBER, 0);
+						IGDBJtagConstants.ATTR_PORT_NUMBER, 0); // Default 0
 
-				if ((storedPort < 0) || (65535 < storedPort)) {
+				// 0 means undefined, use default
+				if ((storedPort <= 0) || (65535 < storedPort)) {
 					storedPort = ConfigurationAttributes.REMOTE_PORT_NUMBER_DEFAULT;
 				}
 
@@ -1423,122 +1434,124 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	}
 
 	@Override
+	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
+		System.out.println("TabDebugger: activated() " + workingCopy.getName());
+	}
+
+	@Override
+	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
+		System.out.println("TabDebugger: deactivated() "
+				+ workingCopy.getName());
+	}
+
+	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 
-		boolean doSharedUpdate = false;
+		System.out.println("TabDebugger: performApply() "
+				+ configuration.getName() + ", dirty=" + isDirty());
+
 		{
+			// legacy definition; although the jtag device class is not used,
+			// it must be there, to avoid NPEs
 			configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE,
 					ConfigurationAttributes.JTAG_DEVICE);
 		}
 
-		// J-Link interface
+		boolean booleanValue;
+		String stringValue;
+
+		// J-Link GDB server
 		{
+			// Start server
+			booleanValue = doStartGdbServer.getSelection();
+			configuration.setAttribute(
+					ConfigurationAttributes.DO_START_GDB_SERVER, booleanValue);
+			SharedStorage.putGdbServerDoStart(booleanValue);
+
+			// Connect to running
+			configuration.setAttribute(
+					ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+					doConnectToRunning.getSelection());
+
+			// Executable
+			stringValue = gdbServerExecutable.getText().trim();
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_EXECUTABLE, stringValue);
+			SharedStorage.putGdbServerExecutable(stringValue);
+
+			// Device name
+			stringValue = gdbFlashDeviceName.getText().trim();
+			configuration
+					.setAttribute(
+							ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
+							stringValue);
+			SharedStorage.putFlashDeviceName(stringValue);
+
+			// Endianness
+			stringValue = ConfigurationAttributes.ENDIANNESS_DEFAULT;
+			if (gdbEndiannessLittle.getSelection()) {
+				stringValue = ConfigurationAttributes.ENDIANNESS_LITTLE;
+			} else if (gdbEndiannessBig.getSelection()) {
+				stringValue = ConfigurationAttributes.ENDIANNESS_BIG;
+			} else {
+				String message = "endianness not selected, setting little";
+				Activator.log(Status.ERROR, message);
+			}
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_DEVICE_ENDIANNESS,
+					stringValue);
+			SharedStorage.putGdbServerEndianness(stringValue);
+
+			// Connection
+			stringValue = ConfigurationAttributes.GDB_SERVER_CONNECTION_DEFAULT;
+			if (gdbServerConnectionUsb.getSelection()) {
+				stringValue = ConfigurationAttributes.GDB_SERVER_CONNECTION_USB;
+
+			} else if (gdbServerConnectionIp.getSelection()) {
+				stringValue = ConfigurationAttributes.GDB_SERVER_CONNECTION_IP;
+			}
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_CONNECTION, stringValue);
+			SharedStorage.putGdbServerConnection(stringValue);
+
+			// Connection address
+			stringValue = gdbServerConnectionAddress.getText().trim();
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
+					stringValue);
+			SharedStorage.putGdbServerConnectionAddress(stringValue);
+
+			// Interface
+			stringValue = ConfigurationAttributes.INTERFACE_DEFAULT;
 			if (gdbInterfaceSwd.getSelection()) {
-				configuration.setAttribute(
-						ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
-						ConfigurationAttributes.INTERFACE_SWD);
+				stringValue = ConfigurationAttributes.INTERFACE_SWD;
 			} else if (gdbInterfaceJtag.getSelection()) {
-				configuration.setAttribute(
-						ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
-						ConfigurationAttributes.INTERFACE_JTAG);
+				stringValue = ConfigurationAttributes.INTERFACE_JTAG;
 			} else {
 				String message = "interface not selected, setting swd";
 				Activator.log(Status.ERROR, message);
 				gdbInterfaceSwd.setSelection(true);
-
-				configuration.setAttribute(
-						ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
-						ConfigurationAttributes.INTERFACE_SWD);
-			}
-
-			configuration.setAttribute(
-					ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-					doConnectToRunning.getSelection());
-		}
-
-		// J-Link device
-		{
-			String name = gdbFlashDeviceName.getText().trim();
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_DEVICE_NAME, name);
-			if (didFlashDeviceNameChange) {
-				SharedStorage.putFlashDeviceName(name);
-				doSharedUpdate = true;
-				didFlashDeviceNameChange = false;
-			}
-
-			if (gdbEndiannessLittle.getSelection()) {
-				configuration.setAttribute(
-						ConfigurationAttributes.GDB_SERVER_DEVICE_ENDIANNESS,
-						ConfigurationAttributes.ENDIANNESS_LITTLE);
-			} else if (gdbEndiannessBig.getSelection()) {
-				configuration.setAttribute(
-						ConfigurationAttributes.GDB_SERVER_DEVICE_ENDIANNESS,
-						ConfigurationAttributes.ENDIANNESS_BIG);
-			} else {
-				String message = "endianness not selected, setting little";
-				Activator.log(Status.ERROR, message);
-
-				configuration.setAttribute(
-						ConfigurationAttributes.GDB_SERVER_DEVICE_ENDIANNESS,
-						ConfigurationAttributes.ENDIANNESS_LITTLE);
-			}
-		}
-
-		// J-Link GDB server
-		{
-			configuration.setAttribute(
-					ConfigurationAttributes.DO_START_GDB_SERVER,
-					doStartGdbServer.getSelection());
-
-			String serverExecutable = gdbServerExecutable.getText().trim();
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
-					serverExecutable);
-			if (didGdbServerExecutableChange) {
-				SharedStorage.putGdbServerExecutable(serverExecutable);
-				doSharedUpdate = true;
-				didGdbServerExecutableChange = false;
-			}
-
-			String connection = ConfigurationAttributes.GDB_SERVER_CONNECTION_DEFAULT;
-			if (gdbServerConnectionUsb.getSelection()) {
-				connection = ConfigurationAttributes.GDB_SERVER_CONNECTION_USB;
-
-			} else if (gdbServerConnectionIp.getSelection()) {
-				connection = ConfigurationAttributes.GDB_SERVER_CONNECTION_IP;
 			}
 			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_CONNECTION, connection);
+					ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
+					stringValue);
+			SharedStorage.putGdbServerInterface(stringValue);
 
-			String connectionAddress = gdbServerConnectionAddress.getText()
-					.trim();
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
-					connectionAddress);
-
-			if (didGdbServerConnectionChange) {
-				SharedStorage.putGdbServerConnection(connection);
-				SharedStorage.putGdbServerConnectionAddress(connectionAddress);
-
-				doSharedUpdate = true;
-				didGdbServerConnectionChange = false;
-			}
-
+			// Initial speed
+			stringValue = ConfigurationAttributes.INTERFACE_SPEED_DEFAULT;
 			if (gdbServerSpeedAuto.getSelection()) {
-				configuration.setAttribute(
-						ConfigurationAttributes.GDB_SERVER_DEVICE_SPEED,
-						ConfigurationAttributes.INTERFACE_SPEED_AUTO);
+				stringValue = ConfigurationAttributes.INTERFACE_SPEED_AUTO;
 			} else if (gdbServerSpeedAdaptive.getSelection()) {
-				configuration.setAttribute(
-						ConfigurationAttributes.GDB_SERVER_DEVICE_SPEED,
-						ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE);
+				stringValue = ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE;
 			} else if (gdbServerSpeedFixed.getSelection()) {
-				configuration.setAttribute(
-						ConfigurationAttributes.GDB_SERVER_DEVICE_SPEED,
-						gdbServerSpeedFixedValue.getText().trim());
+				stringValue = gdbServerSpeedFixedValue.getText().trim();
 			}
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_DEVICE_SPEED,
+					stringValue);
+			SharedStorage.putGdbServerInitialSpeed(stringValue);
 
+			// Ports
 			int port;
 			port = Integer.parseInt(gdbServerGdbPort.getText().trim());
 			configuration.setAttribute(
@@ -1554,6 +1567,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 							port);
 
+			// Flags
 			configuration.setAttribute(
 					ConfigurationAttributes.DO_GDB_SERVER_VERIFY_DOWNLOAD,
 					doGdbServerVerifyDownload.getSelection());
@@ -1570,17 +1584,22 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.DO_GDB_SERVER_SILENT,
 					doGdbServerSilent.getSelection());
 
+			// Log file
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_LOG,
 					gdbServerLog.getText().trim());
 
+			// Other options
+			stringValue = gdbServerOtherOptions.getText().trim();
 			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_OTHER,
-					gdbServerOtherOptions.getText().trim());
+					ConfigurationAttributes.GDB_SERVER_OTHER, stringValue);
+			SharedStorage.putGdbServerOtherOptions(stringValue);
 
+			// Allocate server console
 			configuration.setAttribute(
 					ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
 					doGdbServerAllocateConsole.getSelection());
 
+			// Allocate semihosting console
 			configuration
 					.setAttribute(
 							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
@@ -1588,29 +1607,27 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 									.getSelection());
 		}
 
-		// J-Link GDB client
+		// GDB client
 		{
 			// always use remote
 			configuration.setAttribute(
 					IGDBJtagConstants.ATTR_USE_REMOTE_TARGET,
 					ConfigurationAttributes.USE_REMOTE_TARGET_DEFAULT);
 
-			String clientExecutable = gdbClientExecutable.getText().trim();
+			stringValue = gdbClientExecutable.getText().trim();
 			// configuration.setAttribute(
 			// IMILaunchConfigurationConstants.ATTR_DEBUG_NAME,
 			// clientExecutable);
 			configuration.setAttribute(
 					IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
-					clientExecutable); // DSF
+					stringValue); // DSF
+			SharedStorage.putGdbClientExecutable(stringValue);
 
-			if (didGdbClientExecutableChange) {
-				SharedStorage.putGdbClientExecutable(clientExecutable);
-				didGdbClientExecutableChange = true;
-			}
-
+			stringValue = gdbClientOtherOptions.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
-					gdbClientOtherOptions.getText().trim());
+					stringValue);
+			SharedStorage.putGdbClientOtherOptions(stringValue);
 
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
@@ -1653,17 +1670,23 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
 						fUpdateThreadlistOnSuspend.getSelection());
 
-		if (doSharedUpdate) {
-			SharedStorage.update();
-		}
+		SharedStorage.update();
+
 	}
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 
+		System.out.println("TabDebugger: setDefaults() "
+				+ configuration.getName());
+
 		configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE,
 				ConfigurationAttributes.JTAG_DEVICE);
 
+		if (true)
+			return;
+
+		;
 		// These are inherited from the generic implementation.
 		// Some might need some trimming.
 		{
@@ -1688,20 +1711,22 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							IGDBLaunchConfigurationConstants.DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND_DEFAULT);
 		}
 
-		// J-Link interface
+		// J-Link GDB server setup
 		{
 			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
-					ConfigurationAttributes.INTERFACE_DEFAULT);
+					ConfigurationAttributes.DO_START_GDB_SERVER,
+					ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
 
 			configuration.setAttribute(
 					ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
 					ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
-		}
 
-		// J-Link device
-		{
 			String sharedName = SharedStorage
+					.getGdbServerExecutable(getGdbServerExecutableDefault());
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_EXECUTABLE, sharedName);
+
+			sharedName = SharedStorage
 					.getFlashDeviceName(ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_DEVICE_NAME, sharedName);
@@ -1709,22 +1734,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_DEVICE_ENDIANNESS,
 					ConfigurationAttributes.ENDIANNESS_DEFAULT);
-		}
-
-		// J-Link GDB server setup
-		{
-			configuration.setAttribute(
-					ConfigurationAttributes.DO_START_GDB_SERVER,
-					ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
-
-			String sharedName = SharedStorage
-					.getGdbServerExecutable(getGdbServerExecutableDefault());
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_EXECUTABLE, sharedName);
-
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_DEVICE_SPEED,
-					ConfigurationAttributes.GDB_SERVER_SPEED_DEFAULT);
 
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_CONNECTION,
@@ -1734,6 +1743,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.setAttribute(
 							ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
 							ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS_DEFAULT);
+
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
+					ConfigurationAttributes.INTERFACE_DEFAULT);
+
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_DEVICE_SPEED,
+					ConfigurationAttributes.GDB_SERVER_SPEED_DEFAULT);
 
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
@@ -1792,16 +1809,22 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 									.getGdbClientExecutable(ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT));
 
 			configuration.setAttribute(
-					IGDBJtagConstants.ATTR_USE_REMOTE_TARGET,
-					ConfigurationAttributes.USE_REMOTE_TARGET_DEFAULT);
-
-			configuration.setAttribute(
 					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
 					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT);
 
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
 					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
+		}
+
+		// Remote Target
+		{
+			configuration.setAttribute(
+					IGDBJtagConstants.ATTR_USE_REMOTE_TARGET,
+					ConfigurationAttributes.USE_REMOTE_TARGET_DEFAULT);
+
+			configuration.setAttribute(IGDBJtagConstants.ATTR_PORT_NUMBER,
+					ConfigurationAttributes.REMOTE_PORT_NUMBER_DEFAULT);
 		}
 
 		// Force thread update
@@ -1892,8 +1915,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.getAttribute(
 							ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
 							ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS_DEFAULT);
-			
-			connectionAddress = VariablesPlugin.getDefault().getStringVariableManager()
+
+			connectionAddress = VariablesPlugin.getDefault()
+					.getStringVariableManager()
 					.performStringSubstitution(connectionAddress, false).trim();
 			if (connectionAddress.length() > 0) {
 				if (ConfigurationAttributes.GDB_SERVER_CONNECTION_USB

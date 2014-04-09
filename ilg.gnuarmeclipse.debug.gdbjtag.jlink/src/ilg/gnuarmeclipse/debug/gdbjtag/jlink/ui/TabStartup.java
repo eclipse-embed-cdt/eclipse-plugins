@@ -33,6 +33,7 @@ import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
+import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -91,9 +92,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	private Text swoEnableTargetCpuFreq;
 	private Text swoEnableTargetSwoFreq;
 	private Text swoEnableTargetPortMask;
-
-	private boolean didSwoEnableTargetCpuFreqChange;
-	private boolean didSwoEnableTargetSwoFreqChange;
 
 	private Button loadExecutable;
 	private Text imageFileName;
@@ -355,8 +353,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			gd.widthHint = 80;
 			swoEnableTargetCpuFreq.setLayoutData(gd);
 
-			didSwoEnableTargetCpuFreqChange = false;
-
 			label = new Label(local, SWT.NONE);
 			label.setText(Messages
 					.getString("StartupTab.swoEnableTargetCpuFreqUnit_Text"));
@@ -371,8 +367,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			gd = new GridData();
 			gd.widthHint = 60;
 			swoEnableTargetSwoFreq.setLayoutData(gd);
-
-			didSwoEnableTargetSwoFreqChange = false;
 
 			label = new Label(local, SWT.NONE);
 			label.setText(Messages
@@ -404,8 +398,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent e) {
 				// doResetChanged();
 				doFirstResetChanged();
-				scheduleUpdateJob();
-				// updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 
@@ -472,23 +465,20 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				doEnableSemihostingChanged();
-				scheduleUpdateJob();
-				// updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 
 		semihostingTelnet.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				scheduleUpdateJob();
-				// updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 		semihostingGdbClient.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				scheduleUpdateJob();
-				// updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 
@@ -496,8 +486,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				doEnableSwoChanged();
-				scheduleUpdateJob();
-				// updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 
@@ -506,7 +495,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			@Override
 			public void modifyText(ModifyEvent e) {
 
-				didSwoEnableTargetCpuFreqChange = true;
 				scheduleUpdateJob();
 			}
 		});
@@ -516,7 +504,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			@Override
 			public void modifyText(ModifyEvent e) {
 
-				didSwoEnableTargetSwoFreqChange = true;
 				scheduleUpdateJob();
 			}
 		});
@@ -691,15 +678,16 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				loadExecutableChanged();
-				updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 
 		SelectionListener radioButtonListener = new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				updateLaunchConfigurationDialog();
+				// updateLaunchConfigurationDialog();
 				updateUseFileEnablement();
+				scheduleUpdateJob(); 
 			}
 
 			@Override
@@ -757,7 +745,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				loadSymbolsChanged();
-				updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 
@@ -862,7 +850,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				pcRegisterChanged();
-				updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 
@@ -885,7 +873,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				stopAtChanged();
-				updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 
@@ -993,7 +981,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent e) {
 				// doResetChanged();
 				doSecondResetChanged();
-				updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 
@@ -1142,173 +1130,247 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
+
+		System.out.println("TabStartup: initializeFrom() "
+				+ configuration.getName() + ", dirty=" + isDirty());
+
 		try {
+			String stringDefault;
+			boolean booleanDefault;
+			int intDefault;
+
 			// Initialisation Commands
-			doFirstReset.setSelection(configuration.getAttribute(
-					ConfigurationAttributes.DO_FIRST_RESET,
-					ConfigurationAttributes.DO_FIRST_RESET_DEFAULT));
-			firstResetType.setText(configuration.getAttribute(
-					ConfigurationAttributes.FIRST_RESET_TYPE,
-					ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT));
-			firstResetSpeed.setText(configuration.getAttribute(
-					ConfigurationAttributes.FIRST_RESET_SPEED,
-					ConfigurationAttributes.FIRST_RESET_SPEED_DEFAULT));
+			{
+				booleanDefault = SharedStorage
+						.getJLinkDoInitialReset(ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
+				doFirstReset
+						.setSelection(configuration.getAttribute(
+								ConfigurationAttributes.DO_FIRST_RESET,
+								booleanDefault));
 
-			String physicalInterfaceSpeed = configuration.getAttribute(
-					ConfigurationAttributes.INTERFACE_SPEED,
-					ConfigurationAttributes.INTERFACE_SPEED_DEFAULT);
+				stringDefault = SharedStorage
+						.getJLinkInitialResetType(ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
+				firstResetType.setText(configuration
+						.getAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
+								stringDefault));
 
-			if (ConfigurationAttributes.INTERFACE_SPEED_AUTO
-					.equals(physicalInterfaceSpeed)) {
-				interfaceSpeedAuto.setSelection(true);
-				interfaceSpeedFixedValue.setEnabled(false);
+				intDefault = SharedStorage
+						.getJLinkInitialResetSpeed(ConfigurationAttributes.FIRST_RESET_SPEED_DEFAULT);
 
-			} else if (ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE
-					.equals(physicalInterfaceSpeed)) {
-				interfaceSpeedAdaptive.setSelection(true);
-				interfaceSpeedFixedValue.setEnabled(false);
-			} else {
+				// Type change from string to int, compatibility preserved
 				try {
-					Integer.parseInt(physicalInterfaceSpeed);
-					interfaceSpeedFixed.setSelection(true);
-					interfaceSpeedFixedValue.setEnabled(true);
-					interfaceSpeedFixedValue.setText(physicalInterfaceSpeed);
-				} catch (NumberFormatException e) {
-					String message = "unknown interface speed "
-							+ physicalInterfaceSpeed + ", using auto";
-					Activator.log(Status.ERROR, message);
+					int i = configuration.getAttribute(
+							ConfigurationAttributes.FIRST_RESET_SPEED,
+							intDefault);
+					firstResetSpeed.setText(String.valueOf(i));
+				} catch (CoreException e) {
+					try {
+						stringDefault = configuration
+								.getAttribute(
+										ConfigurationAttributes.FIRST_RESET_SPEED,
+										String.valueOf(ConfigurationAttributes.FIRST_RESET_SPEED_DEFAULT));
+						firstResetSpeed.setText(stringDefault);
+					} catch (CoreException e2) {
+						firstResetSpeed
+								.setText(String
+										.valueOf(ConfigurationAttributes.FIRST_RESET_SPEED_DEFAULT));
+					}
+				}
+				// Speed
+				stringDefault = SharedStorage
+						.getJLinkSpeed(ConfigurationAttributes.INTERFACE_SPEED_DEFAULT);
+				String physicalInterfaceSpeed = configuration.getAttribute(
+						ConfigurationAttributes.INTERFACE_SPEED, stringDefault);
+
+				if (ConfigurationAttributes.INTERFACE_SPEED_AUTO
+						.equals(physicalInterfaceSpeed)) {
 					interfaceSpeedAuto.setSelection(true);
 					interfaceSpeedFixedValue.setEnabled(false);
+
+				} else if (ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE
+						.equals(physicalInterfaceSpeed)) {
+					interfaceSpeedAdaptive.setSelection(true);
+					interfaceSpeedFixedValue.setEnabled(false);
+				} else {
+					try {
+						Integer.parseInt(physicalInterfaceSpeed);
+						interfaceSpeedFixed.setSelection(true);
+						interfaceSpeedFixedValue.setEnabled(true);
+						interfaceSpeedFixedValue
+								.setText(physicalInterfaceSpeed);
+					} catch (NumberFormatException e) {
+						String message = "unknown interface speed "
+								+ physicalInterfaceSpeed + ", using auto";
+						Activator.log(Status.ERROR, message);
+						interfaceSpeedAuto.setSelection(true);
+						interfaceSpeedFixedValue.setEnabled(false);
+					}
+				}
+
+				// Enable flash breakpoints
+				booleanDefault = SharedStorage
+						.getJLinkEnableFlashBreakpoints(ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS_DEFAULT);
+				enableFlashBreakpoints.setSelection(configuration.getAttribute(
+						ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
+						booleanDefault));
+
+				// Enable semihosting
+				booleanDefault = SharedStorage
+						.getJLinkEnableSemihosting(ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
+				enableSemihosting.setSelection(configuration.getAttribute(
+						ConfigurationAttributes.ENABLE_SEMIHOSTING,
+						booleanDefault));
+
+				booleanDefault = SharedStorage
+						.getJLinkSemihostingTelnet(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_DEFAULT);
+				semihostingTelnet
+						.setSelection(configuration
+								.getAttribute(
+										ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
+										booleanDefault));
+
+				booleanDefault = SharedStorage
+						.getJLinkSemihostingClient(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_DEFAULT);
+				semihostingGdbClient
+						.setSelection(configuration
+								.getAttribute(
+										ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
+										booleanDefault));
+
+				booleanDefault = SharedStorage
+						.getJLinkEnableSwo(ConfigurationAttributes.ENABLE_SWO_DEFAULT);
+				System.out.println("getJLinkEnableSwo()="+booleanDefault+" "+configuration.getName());
+				enableSwo.setSelection(configuration.getAttribute(
+						ConfigurationAttributes.ENABLE_SWO, booleanDefault));
+
+				intDefault = SharedStorage
+						.getJLinkSwoEnableTargetCpuFreq(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
+				swoEnableTargetCpuFreq
+						.setText(String.valueOf(configuration
+								.getAttribute(
+										ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
+										intDefault)));
+				intDefault = SharedStorage
+						.getJLinkSwoEnableTargetSwoFreq(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
+				swoEnableTargetSwoFreq
+						.setText(String.valueOf(configuration
+								.getAttribute(
+										ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
+										intDefault)));
+
+				stringDefault = SharedStorage
+						.getJLinkSwoEnableTargetPortMask(ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT);
+				Object oValue = configuration.getAttribute(
+						ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
+						stringDefault);
+				String sValue;
+				sValue = String.valueOf(oValue);
+				if (sValue.length() == 0) {
+					sValue = ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT;
+				}
+
+				swoEnableTargetPortMask.setText(sValue);
+
+				stringDefault = SharedStorage
+						.getJLinkInitOther(ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
+				initCommands.setText(configuration.getAttribute(
+						ConfigurationAttributes.OTHER_INIT_COMMANDS,
+						stringDefault));
+			}
+
+			// Load Symbols & Image
+			{
+				loadSymbols.setSelection(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_LOAD_SYMBOLS,
+						IGDBJtagConstants.DEFAULT_LOAD_SYMBOLS));
+				useProjectBinaryForSymbols
+						.setSelection(configuration
+								.getAttribute(
+										IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
+										IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_SYMBOLS));
+				useFileForSymbols.setSelection(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_USE_FILE_FOR_SYMBOLS,
+						IGDBJtagConstants.DEFAULT_USE_FILE_FOR_SYMBOLS));
+				symbolsFileName.setText(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
+						IGDBJtagConstants.DEFAULT_SYMBOLS_FILE_NAME));
+				symbolsOffset.setText(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
+						IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET));
+
+				loadExecutable.setSelection(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_LOAD_IMAGE,
+						IGDBJtagConstants.DEFAULT_LOAD_IMAGE));
+				useProjectBinaryForImage
+						.setSelection(configuration
+								.getAttribute(
+										IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
+										IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_IMAGE));
+				useFileForImage.setSelection(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_USE_FILE_FOR_IMAGE,
+						IGDBJtagConstants.DEFAULT_USE_FILE_FOR_IMAGE));
+				imageFileName.setText(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
+						IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME));
+				imageOffset.setText(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_IMAGE_OFFSET,
+						IGDBJtagConstants.DEFAULT_IMAGE_OFFSET));
+
+				String programName = CDebugUtils.getProgramName(configuration);
+				if (programName != null) {
+					int lastSlash = programName.indexOf('\\');
+					if (lastSlash >= 0) {
+						programName = programName.substring(lastSlash + 1);
+					}
+					lastSlash = programName.indexOf('/');
+					if (lastSlash >= 0) {
+						programName = programName.substring(lastSlash + 1);
+					}
+					projBinaryLabel1.setText(programName);
+					projBinaryLabel2.setText(programName);
 				}
 			}
-
-			enableFlashBreakpoints.setSelection(configuration.getAttribute(
-					ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
-					ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS_DEFAULT));
-
-			enableSemihosting.setSelection(configuration.getAttribute(
-					ConfigurationAttributes.ENABLE_SEMIHOSTING,
-					ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT));
-			semihostingTelnet
-					.setSelection(configuration
-							.getAttribute(
-									ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
-									ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_DEFAULT));
-			semihostingGdbClient
-					.setSelection(configuration
-							.getAttribute(
-									ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
-									ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_DEFAULT));
-
-			enableSwo.setSelection(configuration.getAttribute(
-					ConfigurationAttributes.ENABLE_SWO,
-					ConfigurationAttributes.ENABLE_SWO_DEFAULT));
-
-			int sharedCpuFreq = SharedStorage
-					.getSwoEnableTargetCpuFreq(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
-			swoEnableTargetCpuFreq.setText(String.valueOf(configuration
-					.getAttribute(
-							ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
-							sharedCpuFreq)));
-			int sharedSwoFreq = SharedStorage
-					.getSwoEnableTargetSwoFreq(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
-			swoEnableTargetSwoFreq.setText(String.valueOf(configuration
-					.getAttribute(
-							ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
-							sharedSwoFreq)));
-
-			Object oValue = configuration.getAttribute(
-					ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
-					ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT);
-			String sValue;
-			sValue = String.valueOf(oValue);
-			if (sValue.length() == 0) {
-				sValue = ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT;
-			}
-
-			swoEnableTargetPortMask.setText(sValue);
-
-			initCommands.setText(configuration.getAttribute(
-					ConfigurationAttributes.OTHER_INIT_COMMANDS,
-					ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT));
-
-			// Load Image...
-			loadExecutable.setSelection(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_LOAD_IMAGE,
-					IGDBJtagConstants.DEFAULT_LOAD_IMAGE));
-			useProjectBinaryForImage.setSelection(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
-					IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_IMAGE));
-			useFileForImage.setSelection(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_USE_FILE_FOR_IMAGE,
-					IGDBJtagConstants.DEFAULT_USE_FILE_FOR_IMAGE));
-			imageFileName.setText(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
-					IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME));
-			imageOffset.setText(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_IMAGE_OFFSET,
-					IGDBJtagConstants.DEFAULT_IMAGE_OFFSET));
-
-			// .. and Symbols
-			loadSymbols.setSelection(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_LOAD_SYMBOLS,
-					IGDBJtagConstants.DEFAULT_LOAD_SYMBOLS));
-			useProjectBinaryForSymbols.setSelection(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
-					IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_SYMBOLS));
-			useFileForSymbols.setSelection(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_USE_FILE_FOR_SYMBOLS,
-					IGDBJtagConstants.DEFAULT_USE_FILE_FOR_SYMBOLS));
-			symbolsFileName.setText(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
-					IGDBJtagConstants.DEFAULT_SYMBOLS_FILE_NAME));
-			symbolsOffset.setText(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
-					IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET));
 
 			// Runtime Options
-			setPcRegister.setSelection(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_SET_PC_REGISTER,
-					IGDBJtagConstants.DEFAULT_SET_PC_REGISTER));
-			pcRegister.setText(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_PC_REGISTER,
-					IGDBJtagConstants.DEFAULT_PC_REGISTER));
+			{
+				setPcRegister.setSelection(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_SET_PC_REGISTER,
+						IGDBJtagConstants.DEFAULT_SET_PC_REGISTER));
+				pcRegister.setText(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_PC_REGISTER,
+						IGDBJtagConstants.DEFAULT_PC_REGISTER));
 
-			setStopAt.setSelection(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_SET_STOP_AT,
-					ConfigurationAttributes.DO_STOP_AT_DEFAULT));
-			stopAt.setText(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_STOP_AT,
-					ConfigurationAttributes.STOP_AT_NAME_DEFAULT));
+				setStopAt.setSelection(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_SET_STOP_AT,
+						ConfigurationAttributes.DO_STOP_AT_DEFAULT));
+				stopAt.setText(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_STOP_AT,
+						ConfigurationAttributes.STOP_AT_NAME_DEFAULT));
+			}
 
 			// Run Commands
-			doSecondReset.setSelection(configuration.getAttribute(
-					ConfigurationAttributes.DO_SECOND_RESET,
-					ConfigurationAttributes.DO_SECOND_RESET_DEFAULT));
-			secondResetType.setText(configuration.getAttribute(
-					ConfigurationAttributes.SECOND_RESET_TYPE,
-					ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT));
+			{
+				booleanDefault = SharedStorage
+						.getJLinkDoPreRunReset(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
+				doSecondReset.setSelection(configuration
+						.getAttribute(ConfigurationAttributes.DO_SECOND_RESET,
+								booleanDefault));
 
-			runCommands.setText(configuration.getAttribute(
-					ConfigurationAttributes.OTHER_RUN_COMMANDS,
-					ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT));
+				stringDefault = SharedStorage
+						.getJLinkPreRunResetType(ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+				secondResetType.setText(configuration.getAttribute(
+						ConfigurationAttributes.SECOND_RESET_TYPE,
+						stringDefault));
 
-			doContinue.setSelection(configuration.getAttribute(
-					ConfigurationAttributes.DO_CONTINUE,
-					ConfigurationAttributes.DO_CONTINUE_DEFAULT));
+				stringDefault = SharedStorage
+						.getJLinkPreRunOther(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
+				runCommands.setText(configuration.getAttribute(
+						ConfigurationAttributes.OTHER_RUN_COMMANDS,
+						stringDefault));
 
-			String programName = CDebugUtils.getProgramName(configuration);
-			if (programName != null) {
-				int lastSlash = programName.indexOf('\\');
-				if (lastSlash >= 0) {
-					programName = programName.substring(lastSlash + 1);
-				}
-				lastSlash = programName.indexOf('/');
-				if (lastSlash >= 0) {
-					programName = programName.substring(lastSlash + 1);
-				}
-				projBinaryLabel1.setText(programName);
-				projBinaryLabel2.setText(programName);
+				doContinue.setSelection(configuration.getAttribute(
+						ConfigurationAttributes.DO_CONTINUE,
+						ConfigurationAttributes.DO_CONTINUE_DEFAULT));
 			}
 
 			doFirstResetChanged();
@@ -1323,140 +1385,228 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			updateUseFileEnablement();
 
 		} catch (CoreException e) {
+			System.out.println(e.getStatus());
 			Activator.getDefault().getLog().log(e.getStatus());
 		}
+		
+		System.out.println("TabStartup: initializeFrom() completed "
+				+ configuration.getName() + ", dirty=" + isDirty());
+	}
+
+	@Override
+	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
+		System.out.println("TabStartup: activated() "
+				+ workingCopy.getName());
+	}
+
+	@Override
+	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
+		System.out.println("TabStartup: deactivated() "
+				+ workingCopy.getName());
 	}
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 
-		boolean doSharedUpdate = false;
-
+		System.out.println("TabStartup: performApply() "
+				+ configuration.getName() + ", dirty=" + isDirty());
+		
+		ILaunchConfigurationDialog dialog = getLaunchConfigurationDialog();
+		
+		boolean booleanValue;
+		String stringValue;
+		int intValue;
+		
 		// Initialisation Commands
-		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
-				doFirstReset.getSelection());
-		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
-				firstResetType.getText());
-		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_SPEED,
-				firstResetSpeed.getText());
+		{
+			// Do first reset
+			booleanValue = doFirstReset.getSelection();
+			configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
+					booleanValue);
+			SharedStorage.putJLinkDoInitialReset(booleanValue);
 
-		if (interfaceSpeedAuto.getSelection()) {
+			// First reset speed
+			stringValue = firstResetType.getText().trim();
+			configuration.setAttribute(
+					ConfigurationAttributes.FIRST_RESET_TYPE, stringValue);
+			SharedStorage.putJLinkInitialResetType(stringValue);
+
+			// First reset speed
+			try {
+				intValue = Integer.valueOf(firstResetSpeed.getText());
+			} catch (NumberFormatException e) {
+				intValue = ConfigurationAttributes.FIRST_RESET_SPEED_DEFAULT;
+			}
+			configuration.setAttribute(
+					ConfigurationAttributes.FIRST_RESET_SPEED, intValue);
+			SharedStorage.putJLinkInitialResetSpeed(intValue);
+
+			// Interface speed
+			stringValue = ConfigurationAttributes.INTERFACE_SPEED_DEFAULT;
+			if (interfaceSpeedAuto.getSelection()) {
+				stringValue = ConfigurationAttributes.INTERFACE_SPEED_AUTO;
+			} else if (interfaceSpeedAdaptive.getSelection()) {
+				stringValue = ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE;
+			} else if (interfaceSpeedFixed.getSelection()) {
+				stringValue = interfaceSpeedFixedValue.getText().trim();
+			}
 			configuration.setAttribute(ConfigurationAttributes.INTERFACE_SPEED,
-					ConfigurationAttributes.INTERFACE_SPEED_AUTO);
-		} else if (interfaceSpeedAdaptive.getSelection()) {
-			configuration.setAttribute(ConfigurationAttributes.INTERFACE_SPEED,
-					ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE);
-		} else if (interfaceSpeedFixed.getSelection()) {
-			configuration.setAttribute(ConfigurationAttributes.INTERFACE_SPEED,
-					interfaceSpeedFixedValue.getText().trim());
+					stringValue);
+			SharedStorage.putJLinkSpeed(stringValue);
+
+			// Enable flash breakpoints
+			booleanValue = enableFlashBreakpoints.getSelection();
+			configuration.setAttribute(
+					ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
+					booleanValue);
+			SharedStorage.putJLinkEnableFlashBreakpoints(booleanValue);
+
+			// Enable semihosting
+			booleanValue = enableSemihosting.getSelection();
+			configuration.setAttribute(
+					ConfigurationAttributes.ENABLE_SEMIHOSTING, booleanValue);
+			SharedStorage.putJLinkEnableSemihosting(booleanValue);
+
+			// Semihosting via telnet
+			booleanValue = semihostingTelnet.getSelection();
+			configuration.setAttribute(
+					ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
+					booleanValue);
+			SharedStorage.putJLinkSemihostingTelnet(booleanValue);
+
+			// Semihosting via client
+			booleanValue = semihostingGdbClient.getSelection();
+			configuration
+					.setAttribute(
+							ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
+							booleanValue);
+			SharedStorage.putJLinkSemihostingClient(booleanValue);
+
+			// Enable swo
+			booleanValue = enableSwo.getSelection();
+			configuration.setAttribute(ConfigurationAttributes.ENABLE_SWO,
+					booleanValue);
+			System.out.println("putJLinkEnableSwo "+booleanValue+" "+configuration.getName());
+			SharedStorage.putJLinkEnableSwo(booleanValue);
+
+			// target speed
+			try {
+				intValue = Integer.parseInt(swoEnableTargetCpuFreq.getText());
+			} catch (NumberFormatException e) {
+				intValue = ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT;
+			}
+			configuration.setAttribute(
+					ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ, intValue);
+			SharedStorage.putJLinkSwoEnableTargetCpuFreq(intValue);
+
+			// Swo speed
+			try {
+				intValue = Integer.parseInt(swoEnableTargetSwoFreq.getText());
+			} catch (NumberFormatException e) {
+				intValue = ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT;
+			}
+			configuration.setAttribute(
+					ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ, intValue);
+			SharedStorage.putJLinkSwoEnableTargetSwoFreq(intValue);
+
+			// Swo port mask
+			stringValue = swoEnableTargetPortMask.getText().trim();
+			configuration.setAttribute(
+					ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
+					stringValue);
+			SharedStorage.putJLinkSwoEnableTargetPortMask(stringValue);
+
+			// Other commands
+			stringValue = initCommands.getText().trim();
+			configuration.setAttribute(
+					ConfigurationAttributes.OTHER_INIT_COMMANDS, stringValue);
+			SharedStorage.putJLinkInitOther(stringValue);
 		}
 
-		configuration.setAttribute(
-				ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
-				enableFlashBreakpoints.getSelection());
+		// Load Symbols & Image...
+		{
+			configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_SYMBOLS,
+					loadSymbols.getSelection());
+			configuration.setAttribute(
+					IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
+					useProjectBinaryForSymbols.getSelection());
+			configuration.setAttribute(
+					IGDBJtagConstants.ATTR_USE_FILE_FOR_SYMBOLS,
+					useFileForSymbols.getSelection());
+			configuration.setAttribute(
+					IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME, symbolsFileName
+							.getText().trim());
 
-		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING,
-				enableSemihosting.getSelection());
-		configuration.setAttribute(
-				ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
-				semihostingTelnet.getSelection());
-		configuration.setAttribute(
-				ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
-				semihostingGdbClient.getSelection());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_IMAGE,
+					loadExecutable.getSelection());
+			configuration.setAttribute(
+					IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
+					useProjectBinaryForImage.getSelection());
+			configuration.setAttribute(
+					IGDBJtagConstants.ATTR_USE_FILE_FOR_IMAGE,
+					useFileForImage.getSelection());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
+					imageFileName.getText().trim());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_IMAGE_OFFSET,
+					imageOffset.getText());
 
-		configuration.setAttribute(ConfigurationAttributes.ENABLE_SWO,
-				enableSwo.getSelection());
-
-		int value;
-		try {
-			value = Integer.parseInt(swoEnableTargetCpuFreq.getText());
-		} catch (NumberFormatException e) {
-			value = ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT;
+			configuration.setAttribute(IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
+					symbolsOffset.getText());
 		}
-		configuration.setAttribute(
-				ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ, value);
-		if (didSwoEnableTargetCpuFreqChange) {
-			SharedStorage.putSwoEnableTargetCpuFreq(value);
-			didSwoEnableTargetCpuFreqChange = false;
-			doSharedUpdate = true;
-		}
-
-		try {
-			value = Integer.parseInt(swoEnableTargetSwoFreq.getText());
-		} catch (NumberFormatException e) {
-			value = ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT;
-		}
-		configuration.setAttribute(
-				ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ, value);
-		if (didSwoEnableTargetSwoFreqChange) {
-			SharedStorage.putSwoEnableTargetSwoFreq(value);
-			didSwoEnableTargetSwoFreqChange = false;
-			doSharedUpdate = true;
-		}
-
-		configuration.setAttribute(
-				ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
-				swoEnableTargetPortMask.getText());
-
-		configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS,
-				initCommands.getText());
-
-		// Load Image...
-		configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_IMAGE,
-				loadExecutable.getSelection());
-		configuration.setAttribute(
-				IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
-				useProjectBinaryForImage.getSelection());
-		configuration.setAttribute(IGDBJtagConstants.ATTR_USE_FILE_FOR_IMAGE,
-				useFileForImage.getSelection());
-		configuration.setAttribute(IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
-				imageFileName.getText().trim());
-		configuration.setAttribute(IGDBJtagConstants.ATTR_IMAGE_OFFSET,
-				imageOffset.getText());
-
-		// .. and Symbols
-		configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_SYMBOLS,
-				loadSymbols.getSelection());
-		configuration.setAttribute(
-				IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
-				useProjectBinaryForSymbols.getSelection());
-		configuration.setAttribute(IGDBJtagConstants.ATTR_USE_FILE_FOR_SYMBOLS,
-				useFileForSymbols.getSelection());
-		configuration.setAttribute(IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
-				symbolsFileName.getText().trim());
-		configuration.setAttribute(IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
-				symbolsOffset.getText());
 
 		// Runtime Options
-		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER,
-				setPcRegister.getSelection());
-		configuration.setAttribute(IGDBJtagConstants.ATTR_PC_REGISTER,
-				pcRegister.getText());
-		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_STOP_AT,
-				setStopAt.getSelection());
-		configuration.setAttribute(IGDBJtagConstants.ATTR_STOP_AT,
-				stopAt.getText());
+		{
+			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER,
+					setPcRegister.getSelection());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_PC_REGISTER,
+					pcRegister.getText());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_STOP_AT,
+					setStopAt.getSelection());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_STOP_AT,
+					stopAt.getText());
+		}
 
 		// Run Commands
-		configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
-				doSecondReset.getSelection());
-		configuration.setAttribute(ConfigurationAttributes.SECOND_RESET_TYPE,
-				secondResetType.getText());
+		{
+			// Pre-run reset
+			booleanValue = doSecondReset.getSelection();
+			configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
+					doSecondReset.getSelection());
+			SharedStorage.putJLinkDoPreRunReset(booleanValue);
 
-		configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS,
-				runCommands.getText());
+			// reset type
+			stringValue = secondResetType.getText().trim();
+			configuration.setAttribute(
+					ConfigurationAttributes.SECOND_RESET_TYPE, stringValue);
+			SharedStorage.putJLinkPreRunResetType(stringValue);
 
-		configuration.setAttribute(ConfigurationAttributes.DO_CONTINUE,
-				doContinue.getSelection());
+			// Other commands
+			stringValue = runCommands.getText().trim();
+			configuration.setAttribute(
+					ConfigurationAttributes.OTHER_RUN_COMMANDS, stringValue);
+			SharedStorage.putJLinkPreRunOther(stringValue);
 
-		if (doSharedUpdate) {
-			SharedStorage.update();
+			// Continue
+			configuration.setAttribute(ConfigurationAttributes.DO_CONTINUE,
+					doContinue.getSelection());
 		}
+
+		SharedStorage.update();
+		
+		System.out.println("TabStartup: performApply() completed "
+				+ configuration.getName() + ", dirty=" + isDirty());
 	}
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 
+		System.out.println("TabStartup: setDefaults() "
+				+ configuration.getName());
+
+		if (true)
+			return;
+		
+		;
 		// Initialisation Commands
 		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
 				ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
@@ -1487,13 +1637,13 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				ConfigurationAttributes.ENABLE_SWO_DEFAULT);
 
 		int sharedCpuFreq = SharedStorage
-				.getSwoEnableTargetCpuFreq(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
+				.getJLinkSwoEnableTargetCpuFreq(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
 		configuration
 				.setAttribute(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
 						sharedCpuFreq);
 
 		int sharedSwoFreq = SharedStorage
-				.getSwoEnableTargetSwoFreq(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
+				.getJLinkSwoEnableTargetSwoFreq(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
 		configuration
 				.setAttribute(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
 						sharedSwoFreq);

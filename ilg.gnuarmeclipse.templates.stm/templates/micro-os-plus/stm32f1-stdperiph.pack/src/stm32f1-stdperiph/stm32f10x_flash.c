@@ -865,7 +865,7 @@ FLASH_Status FLASH_ProgramWord(uint32_t Address, uint32_t Data)
 }
 
 // [ILG]
-#if defined ( __GNUC__ )
+#if defined(__GNUC__)
 #pragma GCC diagnostic pop
 #endif
 

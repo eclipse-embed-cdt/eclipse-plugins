@@ -188,9 +188,17 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		// commandsList.add(ConfigurationAttributes.INTERFACE_JTAG_COMMAND);
 		// }
 
-		attr = CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.FIRST_RESET_SPEED,
-				ConfigurationAttributes.FIRST_RESET_SPEED_DEFAULT);
+		try {
+			attr = String.valueOf(CDebugUtils.getAttribute(fAttributes,
+					ConfigurationAttributes.FIRST_RESET_SPEED,
+					ConfigurationAttributes.FIRST_RESET_SPEED_DEFAULT));
+		} catch (Exception e) {
+			attr = CDebugUtils
+					.getAttribute(
+							fAttributes,
+							ConfigurationAttributes.FIRST_RESET_SPEED,
+							String.valueOf(ConfigurationAttributes.FIRST_RESET_SPEED_DEFAULT));
+		}
 		if (attr.length() > 0) {
 			commandsList
 					.add(ConfigurationAttributes.INTERFACE_SPEED_FIXED_COMMAND
@@ -470,7 +478,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	private IGDBJtagDevice getGDBJtagDevice() {
 		IGDBJtagDevice gdbJtagDevice = null;
-		
+
 		String jtagDeviceName = CDebugUtils.getAttribute(getAttributes(),
 				IGDBJtagConstants.ATTR_JTAG_DEVICE,
 				IGDBJtagConstants.DEFAULT_JTAG_DEVICE);
@@ -667,7 +675,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	@Execute
 	public void stepStopScript(final RequestMonitor rm) {
-		
+
 		if (CDebugUtils.getAttribute(getAttributes(),
 				IGDBJtagConstants.ATTR_SET_STOP_AT,
 				IGDBJtagConstants.DEFAULT_SET_STOP_AT)) {
@@ -675,8 +683,8 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					IGDBJtagConstants.ATTR_STOP_AT,
 					IGDBJtagConstants.DEFAULT_STOP_AT);
 			List<String> commands = new ArrayList<String>();
-            
-            // The tbreak is not optional if we want execution to halt
+
+			// The tbreak is not optional if we want execution to halt
 			fGdbJtagDevice.doStopAt(stopAt, commands);
 			queueCommands(commands, rm);
 		} else {

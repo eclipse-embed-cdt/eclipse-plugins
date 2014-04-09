@@ -145,7 +145,7 @@ public interface ConfigurationAttributes {
 	public static final String FIRST_RESET_TYPE_DEFAULT = "";
 
 	public static final String FIRST_RESET_SPEED = PREFIX + ".firstResetSpeed"; //$NON-NLS-1$
-	public static final String FIRST_RESET_SPEED_DEFAULT = "30";
+	public static final int FIRST_RESET_SPEED_DEFAULT = 1000;
 
 	public static final String ENABLE_FLASH_BREAKPOINTS = PREFIX
 			+ ".enableFlashBreakpoints"; //$NON-NLS-1$
