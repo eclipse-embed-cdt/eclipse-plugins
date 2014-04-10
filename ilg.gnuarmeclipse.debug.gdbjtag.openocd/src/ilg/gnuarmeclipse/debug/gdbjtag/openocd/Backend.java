@@ -470,9 +470,14 @@ public class Backend extends Backend0 {
 		void kill() {
 			synchronized (fProcess) {
 				if (!fMonitorExited) {
-					System.out.println("ServerMonitorJob.kill() interrupt "
-							+ getThread().toString());
-					getThread().interrupt();
+					Thread thread = getThread();
+					if (thread != null) {
+						System.out.println("ServerMonitorJob.kill() interrupt "
+								+ thread.toString());
+						getThread().interrupt();
+					} else {
+						System.out.println("null thread");
+					}
 				}
 			}
 		}
@@ -793,10 +798,15 @@ public class Backend extends Backend0 {
 		void kill() {
 			synchronized (fProcess) {
 				if (!fMonitorExited) {
-					System.out
-							.println("SemihostingMonitorJob.kill() interrupt "
-									+ getThread().toString());
-					getThread().interrupt();
+					Thread thread = getThread();
+					if (thread != null) {
+						System.out
+								.println("SemihostingMonitorJob.kill() interrupt "
+										+ thread.toString());
+						thread.interrupt();
+					} else {
+						System.out.println("null thread");
+					}
 				}
 			}
 		}

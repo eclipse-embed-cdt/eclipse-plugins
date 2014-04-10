@@ -16,6 +16,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.openocd.SharedStorage;
 
 import java.io.File;
 
@@ -240,8 +241,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent e) {
 				// doResetChanged();
 				doFirstResetChanged();
-				scheduleUpdateJob();
-				// updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 
@@ -255,7 +255,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		firstResetType.addModifyListener(scheduleUpdateJobModifyListener);
 
 		initCommands.addModifyListener(scheduleUpdateJobModifyListener);
-		
+
 		enableSemihosting.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -270,7 +270,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		firstResetType.setEnabled(enabled);
 	}
-
 
 	private void createLoadGroup(Composite parent) {
 
@@ -343,14 +342,15 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				symbolsOffset = new Text(local, SWT.BORDER);
 				gd = new GridData();
 				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
-				gd.widthHint = 100; 
+				gd.widthHint = 100;
 				symbolsOffset.setLayoutData(gd);
 			}
 		}
 
 		{
 			loadExecutable = new Button(comp, SWT.CHECK);
-			loadExecutable.setText(Messages.getString("StartupTab.loadImage_Text"));
+			loadExecutable.setText(Messages
+					.getString("StartupTab.loadImage_Text"));
 		}
 
 		{
@@ -399,7 +399,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				imageOffset = new Text(local, SWT.BORDER);
 				gd = new GridData();
 				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
-				gd.widthHint = ((GridData) symbolsOffset.getLayoutData()).widthHint;;
+				gd.widthHint = ((GridData) symbolsOffset.getLayoutData()).widthHint;
+				;
 				imageOffset.setLayoutData(gd);
 			}
 		}
@@ -409,15 +410,16 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				loadExecutableChanged();
-				updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 
 		SelectionListener radioButtonListener = new SelectionListener() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				updateLaunchConfigurationDialog();
+				// updateLaunchConfigurationDialog();
 				updateUseFileEnablement();
+				scheduleUpdateJob(); //
 			}
 
 			@Override
@@ -475,7 +477,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				loadSymbolsChanged();
-				updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 
@@ -580,7 +582,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				pcRegisterChanged();
-				updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 
@@ -603,7 +605,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				stopAtChanged();
-				updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 
@@ -617,7 +619,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	}
 
 	private void doSecondResetChanged() {
-		boolean enabled=doSecondReset.getSelection();
+		boolean enabled = doSecondReset.getSelection();
 		secondResetType.setEnabled(enabled);
 		secondResetWarning.setEnabled(enabled);
 	}
@@ -679,10 +681,10 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			gd = new GridData();
 			gd.widthHint = 30;
 			secondResetType.setLayoutData(gd);
-			
+
 			secondResetWarning = new Label(comp, SWT.NONE);
 			secondResetWarning.setText(Messages
-					.getString("StartupTab.secondResetWarning_Text"));			
+					.getString("StartupTab.secondResetWarning_Text"));
 		}
 		{
 			runCommands = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER
@@ -711,7 +713,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent e) {
 				// doResetChanged();
 				doSecondResetChanged();
-				updateLaunchConfigurationDialog();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
 			}
 		});
 
@@ -745,7 +747,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		doSecondReset.setEnabled(!flag);
 		secondResetType.setEnabled(!flag);
 		secondResetWarning.setEnabled(!flag);
-		
+
 		loadExecutable.setEnabled(!flag);
 	}
 
@@ -845,99 +847,138 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 		try {
+			String stringDefault;
+			boolean booleanDefault;
+
 			// Initialisation Commands
-			doFirstReset.setSelection(configuration.getAttribute(
-					ConfigurationAttributes.DO_FIRST_RESET,
-					ConfigurationAttributes.DO_FIRST_RESET_DEFAULT));
-			firstResetType.setText(configuration.getAttribute(
-					ConfigurationAttributes.FIRST_RESET_TYPE,
-					ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT));
+			{
+				// Do initial reset
+				booleanDefault = SharedStorage
+						.getOpenOCDDoInitialReset(ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
+				doFirstReset
+						.setSelection(configuration.getAttribute(
+								ConfigurationAttributes.DO_FIRST_RESET,
+								booleanDefault));
 
-			enableSemihosting.setSelection(configuration.getAttribute(
-					ConfigurationAttributes.ENABLE_SEMIHOSTING,
-					ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT));
+				// Reset type
+				stringDefault = SharedStorage
+						.getOpenOCDInitialResetType(ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
+				firstResetType.setText(configuration
+						.getAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
+								stringDefault));
 
-			initCommands.setText(configuration.getAttribute(
-					ConfigurationAttributes.OTHER_INIT_COMMANDS,
-					ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT));
+				// Enable semihosting
+				booleanDefault = SharedStorage
+						.getOpenOCDEnableSemihosting(ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
+				enableSemihosting.setSelection(configuration.getAttribute(
+						ConfigurationAttributes.ENABLE_SEMIHOSTING,
+						booleanDefault));
 
-			// Load Image...
-			loadExecutable.setSelection(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_LOAD_IMAGE,
-					IGDBJtagConstants.DEFAULT_LOAD_IMAGE));
-			useProjectBinaryForImage.setSelection(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
-					IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_IMAGE));
-			useFileForImage.setSelection(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_USE_FILE_FOR_IMAGE,
-					IGDBJtagConstants.DEFAULT_USE_FILE_FOR_IMAGE));
-			imageFileName.setText(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
-					IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME));
-			imageOffset.setText(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_IMAGE_OFFSET,
-					IGDBJtagConstants.DEFAULT_IMAGE_OFFSET));
+				// Other commands
+				stringDefault = SharedStorage
+						.getOpenOCDInitOther(ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
+				initCommands.setText(configuration.getAttribute(
+						ConfigurationAttributes.OTHER_INIT_COMMANDS,
+						stringDefault));
+			}
 
-			// .. and Symbols
-			loadSymbols.setSelection(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_LOAD_SYMBOLS,
-					IGDBJtagConstants.DEFAULT_LOAD_SYMBOLS));
-			useProjectBinaryForSymbols.setSelection(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
-					IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_SYMBOLS));
-			useFileForSymbols.setSelection(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_USE_FILE_FOR_SYMBOLS,
-					IGDBJtagConstants.DEFAULT_USE_FILE_FOR_SYMBOLS));
-			symbolsFileName.setText(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
-					IGDBJtagConstants.DEFAULT_SYMBOLS_FILE_NAME));
-			symbolsOffset.setText(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
-					IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET));
+			// Load Symbols & Image
+			{
+				loadSymbols.setSelection(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_LOAD_SYMBOLS,
+						IGDBJtagConstants.DEFAULT_LOAD_SYMBOLS));
+				useProjectBinaryForSymbols
+						.setSelection(configuration
+								.getAttribute(
+										IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
+										IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_SYMBOLS));
+				useFileForSymbols.setSelection(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_USE_FILE_FOR_SYMBOLS,
+						IGDBJtagConstants.DEFAULT_USE_FILE_FOR_SYMBOLS));
+				symbolsFileName.setText(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
+						IGDBJtagConstants.DEFAULT_SYMBOLS_FILE_NAME));
+				symbolsOffset.setText(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
+						IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET));
+
+				loadExecutable.setSelection(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_LOAD_IMAGE,
+						IGDBJtagConstants.DEFAULT_LOAD_IMAGE));
+				useProjectBinaryForImage
+						.setSelection(configuration
+								.getAttribute(
+										IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
+										IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_IMAGE));
+				useFileForImage.setSelection(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_USE_FILE_FOR_IMAGE,
+						IGDBJtagConstants.DEFAULT_USE_FILE_FOR_IMAGE));
+				imageFileName.setText(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
+						IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME));
+				imageOffset.setText(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_IMAGE_OFFSET,
+						IGDBJtagConstants.DEFAULT_IMAGE_OFFSET));
+
+				String programName = CDebugUtils.getProgramName(configuration);
+				if (programName != null) {
+					int lastSlash = programName.indexOf('\\');
+					if (lastSlash >= 0) {
+						programName = programName.substring(lastSlash + 1);
+					}
+					lastSlash = programName.indexOf('/');
+					if (lastSlash >= 0) {
+						programName = programName.substring(lastSlash + 1);
+					}
+					projBinaryLabel1.setText(programName);
+					projBinaryLabel2.setText(programName);
+				}
+			}
 
 			// Runtime Options
-			setPcRegister.setSelection(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_SET_PC_REGISTER,
-					IGDBJtagConstants.DEFAULT_SET_PC_REGISTER));
-			pcRegister.setText(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_PC_REGISTER,
-					IGDBJtagConstants.DEFAULT_PC_REGISTER));
+			{
+				setPcRegister.setSelection(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_SET_PC_REGISTER,
+						IGDBJtagConstants.DEFAULT_SET_PC_REGISTER));
+				pcRegister.setText(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_PC_REGISTER,
+						IGDBJtagConstants.DEFAULT_PC_REGISTER));
 
-			setStopAt.setSelection(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_SET_STOP_AT,
-					ConfigurationAttributes.DO_STOP_AT_DEFAULT));
-			stopAt.setText(configuration.getAttribute(
-					IGDBJtagConstants.ATTR_STOP_AT,
-					ConfigurationAttributes.STOP_AT_NAME_DEFAULT));
+				setStopAt.setSelection(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_SET_STOP_AT,
+						ConfigurationAttributes.DO_STOP_AT_DEFAULT));
+				stopAt.setText(configuration.getAttribute(
+						IGDBJtagConstants.ATTR_STOP_AT,
+						ConfigurationAttributes.STOP_AT_NAME_DEFAULT));
+			}
 
 			// Run Commands
-			doSecondReset.setSelection(configuration.getAttribute(
-					ConfigurationAttributes.DO_SECOND_RESET,
-					ConfigurationAttributes.DO_SECOND_RESET_DEFAULT));
-			secondResetType.setText(configuration.getAttribute(
-					ConfigurationAttributes.SECOND_RESET_TYPE,
-					ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT));
+			{
+				// Do pre-run reset
+				booleanDefault = SharedStorage
+						.getOpenOCDDoPreRunReset(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
+				doSecondReset.setSelection(configuration
+						.getAttribute(ConfigurationAttributes.DO_SECOND_RESET,
+								booleanDefault));
 
-			runCommands.setText(configuration.getAttribute(
-					ConfigurationAttributes.OTHER_RUN_COMMANDS,
-					ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT));
+				// Pre-run reset type
+				stringDefault = SharedStorage
+						.getOpenOCDPreRunResetType(ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+				secondResetType.setText(configuration.getAttribute(
+						ConfigurationAttributes.SECOND_RESET_TYPE,
+						stringDefault));
 
-			doContinue.setSelection(configuration.getAttribute(
-					ConfigurationAttributes.DO_CONTINUE,
-					ConfigurationAttributes.DO_CONTINUE_DEFAULT));
+				// Other commands
+				stringDefault = SharedStorage
+						.getOpenOCDPreRunOther(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
+				runCommands.setText(configuration.getAttribute(
+						ConfigurationAttributes.OTHER_RUN_COMMANDS,
+						stringDefault));
 
-			String programName = CDebugUtils.getProgramName(configuration);
-			if (programName != null) {
-				int lastSlash = programName.indexOf('\\');
-				if (lastSlash >= 0) {
-					programName = programName.substring(lastSlash + 1);
-				}
-				lastSlash = programName.indexOf('/');
-				if (lastSlash >= 0) {
-					programName = programName.substring(lastSlash + 1);
-				}
-				projBinaryLabel1.setText(programName);
-				projBinaryLabel2.setText(programName);
+				// Do continue
+				doContinue.setSelection(configuration.getAttribute(
+						ConfigurationAttributes.DO_CONTINUE,
+						ConfigurationAttributes.DO_CONTINUE_DEFAULT));
 			}
 
 			doFirstResetChanged();
@@ -955,74 +996,133 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	}
 
 	@Override
+	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
+		// System.out.println("TabStartup: activated() "
+		// + workingCopy.getName());
+	}
+
+	@Override
+	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
+		// System.out.println("TabStartup: deactivated() "
+		// + workingCopy.getName());
+	}
+
+	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 
+		boolean booleanValue;
+		String stringValue;
+
 		// Initialisation Commands
+		{
+			// Do first reset
+			booleanValue = doFirstReset.getSelection();
 		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
-				doFirstReset.getSelection());
-		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
-				firstResetType.getText());
+				booleanValue);
+		SharedStorage.putOpenOCDDoInitialReset(booleanValue);
+		
+		// First reset type
+		stringValue = firstResetType.getText().trim();
+			configuration.setAttribute(
+					ConfigurationAttributes.FIRST_RESET_TYPE,
+					stringValue);
+			SharedStorage.putOpenOCDInitialResetType(stringValue);
 
-		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING,
-				enableSemihosting.getSelection());
+			// Other commands
+			stringValue = initCommands.getText().trim();
+			configuration.setAttribute(
+					ConfigurationAttributes.OTHER_INIT_COMMANDS,
+					stringValue);
+			SharedStorage.putOpenOCDInitOther(stringValue);
 
-		int value;
+			// Enable semihosting
+			booleanValue = enableSemihosting.getSelection();
+			configuration.setAttribute(
+					ConfigurationAttributes.ENABLE_SEMIHOSTING,
+					booleanValue);
+			SharedStorage.putOpenOCDEnableSemihosting(booleanValue);
+		}
 
-		configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS,
-				initCommands.getText());
+		// Load Symbols & Image...
+		{
+			configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_SYMBOLS,
+					loadSymbols.getSelection());
+			configuration.setAttribute(
+					IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
+					useProjectBinaryForSymbols.getSelection());
+			configuration.setAttribute(
+					IGDBJtagConstants.ATTR_USE_FILE_FOR_SYMBOLS,
+					useFileForSymbols.getSelection());
+			configuration.setAttribute(
+					IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME, symbolsFileName
+							.getText().trim());
 
-		// Load Image...
-		configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_IMAGE,
-				loadExecutable.getSelection());
-		configuration.setAttribute(
-				IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
-				useProjectBinaryForImage.getSelection());
-		configuration.setAttribute(IGDBJtagConstants.ATTR_USE_FILE_FOR_IMAGE,
-				useFileForImage.getSelection());
-		configuration.setAttribute(IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
-				imageFileName.getText().trim());
-		configuration.setAttribute(IGDBJtagConstants.ATTR_IMAGE_OFFSET,
-				imageOffset.getText());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
+					symbolsOffset.getText());
 
-		// .. and Symbols
-		configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_SYMBOLS,
-				loadSymbols.getSelection());
-		configuration.setAttribute(
-				IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
-				useProjectBinaryForSymbols.getSelection());
-		configuration.setAttribute(IGDBJtagConstants.ATTR_USE_FILE_FOR_SYMBOLS,
-				useFileForSymbols.getSelection());
-		configuration.setAttribute(IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
-				symbolsFileName.getText().trim());
-		configuration.setAttribute(IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
-				symbolsOffset.getText());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_IMAGE,
+					loadExecutable.getSelection());
+			configuration.setAttribute(
+					IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
+					useProjectBinaryForImage.getSelection());
+			configuration.setAttribute(
+					IGDBJtagConstants.ATTR_USE_FILE_FOR_IMAGE,
+					useFileForImage.getSelection());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
+					imageFileName.getText().trim());
+
+			configuration.setAttribute(IGDBJtagConstants.ATTR_IMAGE_OFFSET,
+					imageOffset.getText());
+
+		}
 
 		// Runtime Options
-		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER,
-				setPcRegister.getSelection());
-		configuration.setAttribute(IGDBJtagConstants.ATTR_PC_REGISTER,
-				pcRegister.getText());
-		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_STOP_AT,
-				setStopAt.getSelection());
-		configuration.setAttribute(IGDBJtagConstants.ATTR_STOP_AT,
-				stopAt.getText());
+		{
+			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER,
+					setPcRegister.getSelection());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_PC_REGISTER,
+					pcRegister.getText());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_STOP_AT,
+					setStopAt.getSelection());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_STOP_AT,
+					stopAt.getText());
+		}
 
 		// Run Commands
-		configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
-				doSecondReset.getSelection());
-		configuration.setAttribute(ConfigurationAttributes.SECOND_RESET_TYPE,
-				secondResetType.getText());
+		{
+			// Pre-run reset
+			booleanValue = doSecondReset.getSelection();
+			configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
+					booleanValue);
+			SharedStorage.putOpenOCDDoPreRunReset(booleanValue);
 
-		configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS,
-				runCommands.getText());
+			// reset type
+			stringValue = secondResetType.getText().trim();
+			configuration.setAttribute(
+					ConfigurationAttributes.SECOND_RESET_TYPE, stringValue);
+			SharedStorage.putOpenOCDPreRunResetType(stringValue);
 
-		configuration.setAttribute(ConfigurationAttributes.DO_CONTINUE,
-				doContinue.getSelection());
+			// Other commands
+			stringValue = runCommands.getText().trim();
+			configuration.setAttribute(
+					ConfigurationAttributes.OTHER_RUN_COMMANDS, stringValue);
+			SharedStorage.putOpenOCDPreRunOther(stringValue);
 
+			// Continue
+			configuration.setAttribute(ConfigurationAttributes.DO_CONTINUE,
+					doContinue.getSelection());
+		}
+
+		SharedStorage.update();
 	}
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
+
+		if (true)
+			return;
+
+		;
 
 		// Initialisation Commands
 		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,

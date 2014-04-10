@@ -15,17 +15,52 @@ import org.eclipse.cdt.core.templateengine.SharedDefaults;
 
 public class SharedStorage {
 
-	public static final String FLASH_DEVICE_NAME = Activator.PLUGIN_ID
-			+ ".flashDeviceName";
-	public static final String GDB_CLIENT_EXECUTABLE = Activator.PLUGIN_ID
-			+ ".gdbClientExecutable";
-	public static final String GDB_SERVER_EXECUTABLE = Activator.PLUGIN_ID
-			+ ".gdbServerExecutable";
+	// Tab Debugger
+	// GDB Server Setup
+	public static final String GDB_SERVER = Activator.PLUGIN_ID
+			+ ".gdb.server.";
 
-	public static final String GDB_SERVER_CONNECTION = Activator.PLUGIN_ID
-			+ ".gdbServerConnection";
-	public static final String GDB_SERVER_CONNECTION_ADDRESS = Activator.PLUGIN_ID
-			+ ".gdbServerConnectionAddress";
+	public static final String GDB_SERVER_DO_START = GDB_SERVER + "doStart";
+
+	public static final String GDB_SERVER_EXECUTABLE = GDB_SERVER
+			+ "executable";
+
+	public static final String GDB_SERVER_OTHER_OPTIONS = GDB_SERVER + "other";
+
+	// GDB Client Setup
+	public static final String GDB_CLIENT = Activator.PLUGIN_ID
+			+ ".gdb.client.";
+
+	public static final String GDB_CLIENT_EXECUTABLE = GDB_CLIENT
+			+ "executable";
+
+	public static final String GDB_CLIENT_OTHER_OPTIONS = GDB_CLIENT + "other";
+
+	public static final String GDB_CLIENT_COMMANDS = GDB_CLIENT + "commands";
+
+	// Tab Startup
+	// Initialisation Commands
+	public static final String GDB_OPENOCD = Activator.PLUGIN_ID
+			+ ".gdb.openocd.";
+
+	public static final String GDB_OPENOCD_DO_INITIAL_RESET = GDB_OPENOCD
+			+ "doInitialReset";
+	public static final String GDB_OPENOCD_INITIAL_RESET_TYPE = GDB_OPENOCD
+			+ "initialReset.type";
+	public static final String GDB_OPENOCD_INIT_OTHER = GDB_OPENOCD
+			+ "init.other";
+
+	public static final String GDB_OPENOCD_ENABLE_SEMIHOSTING = GDB_OPENOCD
+			+ "enableSemihosting";
+
+	// Run Commands
+	public static final String GDB_OPENOCD_DO_PRERUN_RESET = GDB_OPENOCD
+			+ "doPreRunReset";
+	public static final String GDB_OPENOCD_PRERUN_RESET_TYPE = GDB_OPENOCD
+			+ "preRunReset.type";
+
+	public static final String GDB_OPENOCD_PRERUN_OTHER = GDB_OPENOCD
+			+ "preRun.other";
 
 	// ----- getter & setter --------------------------------------------------
 	private static String getValueForId(String id, String defaultValue) {
@@ -42,32 +77,22 @@ public class SharedStorage {
 		return value;
 	}
 
-	private static void putValueForId(String id, String value){
+	private static void putValueForId(String id, String value) {
 
 		SharedDefaults.getInstance().getSharedDefaultsMap()
-		.put(id, value.trim());
-	}
-	
-	// ----- flash device id --------------------------------------------------
-	public static String getFlashDeviceName(String defaultValue) {
-
-		return getValueForId(FLASH_DEVICE_NAME, defaultValue);
+				.put(id, value.trim());
 	}
 
-	public static void putFlashDeviceName(String value) {
+	// ----- gdb server doStart -----------------------------------------------
+	public static boolean getGdbServerDoStart(boolean defaultValue) {
 
-		putValueForId(FLASH_DEVICE_NAME, value);
+		return Boolean.valueOf(getValueForId(GDB_SERVER_DO_START,
+				Boolean.toString(defaultValue)));
 	}
 
-	// ----- gdb client executable --------------------------------------------
-	public static String getGdbClientExecutable(String defaultValue) {
+	public static void putGdbServerDoStart(boolean value) {
 
-		return getValueForId(GDB_CLIENT_EXECUTABLE, defaultValue);
-	}
-	
-	public static void putGdbClientExecutable(String value){
-
-		putValueForId(GDB_CLIENT_EXECUTABLE, value);
+		putValueForId(GDB_SERVER_DO_START, Boolean.toString(value));
 	}
 
 	// ----- gdb server executable --------------------------------------------
@@ -75,32 +100,134 @@ public class SharedStorage {
 
 		return getValueForId(GDB_SERVER_EXECUTABLE, defaultValue);
 	}
-	
-	public static void putGdbServerExecutable(String value){
+
+	public static void putGdbServerExecutable(String value) {
 
 		putValueForId(GDB_SERVER_EXECUTABLE, value);
 	}
 
-	// ----- gdb server connection --------------------------------------------
-	public static String getGdbServerConnection(String defaultValue) {
+	// ----- gdb server other options -----------------------------------------
+	public static String getGdbServerOtherOptions(String defaultValue) {
 
-		return getValueForId(GDB_SERVER_CONNECTION, defaultValue);
-	}
-	
-	public static void putGdbServerConnection(String value){
-
-		putValueForId(GDB_SERVER_CONNECTION, value);
+		return getValueForId(GDB_SERVER_OTHER_OPTIONS, defaultValue);
 	}
 
-	// ----- gdb server connection address ------------------------------------
-	public static String getGdbServerConnectionAddress(String defaultValue) {
+	public static void putGdbServerOtherOptions(String value) {
 
-		return getValueForId(GDB_SERVER_CONNECTION_ADDRESS, defaultValue);
+		putValueForId(GDB_SERVER_OTHER_OPTIONS, value);
 	}
-	
-	public static void putGdbServerConnectionAddress(String value){
 
-		putValueForId(GDB_SERVER_CONNECTION_ADDRESS, value);
+	// ----- gdb client executable --------------------------------------------
+	public static String getGdbClientExecutable(String defaultValue) {
+
+		return getValueForId(GDB_CLIENT_EXECUTABLE, defaultValue);
+	}
+
+	public static void putGdbClientExecutable(String value) {
+
+		putValueForId(GDB_CLIENT_EXECUTABLE, value);
+	}
+
+	// ----- gdb client other options -----------------------------------------
+	public static String getGdbClientOtherOptions(String defaultValue) {
+
+		return getValueForId(GDB_CLIENT_OTHER_OPTIONS, defaultValue);
+	}
+
+	public static void putGdbClientOtherOptions(String value) {
+
+		putValueForId(GDB_CLIENT_OTHER_OPTIONS, value);
+	}
+
+	// ----- gdb client commands ----------------------------------------------
+	public static String getGdbClientCommands(String defaultValue) {
+
+		return getValueForId(GDB_CLIENT_COMMANDS, defaultValue);
+	}
+
+	public static void putGdbClientCommands(String value) {
+
+		putValueForId(GDB_CLIENT_COMMANDS, value);
+	}
+
+	// ----- OpenOCD do initial reset -----------------------------------------
+	public static boolean getOpenOCDDoInitialReset(boolean defaultValue) {
+
+		return Boolean.valueOf(getValueForId(GDB_OPENOCD_DO_INITIAL_RESET,
+				Boolean.toString(defaultValue)));
+	}
+
+	public static void putOpenOCDDoInitialReset(boolean value) {
+
+		putValueForId(GDB_OPENOCD_DO_INITIAL_RESET, Boolean.toString(value));
+	}
+
+	// ----- OpenOCD initial reset type ---------------------------------------
+	public static String getOpenOCDInitialResetType(String defaultValue) {
+
+		return getValueForId(GDB_OPENOCD_INITIAL_RESET_TYPE, defaultValue);
+	}
+
+	public static void putOpenOCDInitialResetType(String value) {
+
+		putValueForId(GDB_OPENOCD_INITIAL_RESET_TYPE, value);
+	}
+
+	// ----- OpenOCD enable semihosting ---------------------------------------
+	public static boolean getOpenOCDEnableSemihosting(boolean defaultValue) {
+
+		return Boolean.valueOf(getValueForId(GDB_OPENOCD_ENABLE_SEMIHOSTING,
+				Boolean.toString(defaultValue)));
+	}
+
+	public static void putOpenOCDEnableSemihosting(boolean value) {
+
+		putValueForId(GDB_OPENOCD_ENABLE_SEMIHOSTING, Boolean.toString(value));
+	}
+
+	// ----- OpenOCD init other -----------------------------------------------
+	public static String getOpenOCDInitOther(String defaultValue) {
+
+		return getValueForId(GDB_OPENOCD_INIT_OTHER, defaultValue);
+	}
+
+	public static void putOpenOCDInitOther(String value) {
+
+		putValueForId(GDB_OPENOCD_INIT_OTHER, value);
+	}
+
+	// ----- OpenOCD do prerun reset ------------------------------------------
+	public static boolean getOpenOCDDoPreRunReset(boolean defaultValue) {
+
+		return Boolean.valueOf(getValueForId(GDB_OPENOCD_DO_PRERUN_RESET,
+				Boolean.toString(defaultValue)));
+	}
+
+	public static void putOpenOCDDoPreRunReset(boolean value) {
+
+		putValueForId(GDB_OPENOCD_DO_PRERUN_RESET, Boolean.toString(value));
+	}
+
+	// ----- OpenOCD prerun reset type ----------------------------------------
+	public static String getOpenOCDPreRunResetType(String defaultValue) {
+
+		return getValueForId(GDB_OPENOCD_PRERUN_RESET_TYPE, defaultValue);
+	}
+
+	public static void putOpenOCDPreRunResetType(String value) {
+
+		putValueForId(GDB_OPENOCD_PRERUN_RESET_TYPE, value);
+	}
+
+	// ----- OpenOCD init other -----------------------------------------
+	public static String getOpenOCDPreRunOther(String defaultValue) {
+
+		return getValueForId(GDB_OPENOCD_PRERUN_OTHER, defaultValue);
+	}
+
+	public static void putOpenOCDPreRunOther(String value) {
+
+		putValueForId(GDB_OPENOCD_PRERUN_OTHER, value);
 	}
 
 	// ----- update -----------------------------------------------------------
