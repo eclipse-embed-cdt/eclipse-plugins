@@ -51,6 +51,8 @@ public class SharedStorage {
 
 	public static final String GDB_CLIENT_OTHER_OPTIONS = GDB_CLIENT + "other";
 
+	public static final String GDB_CLIENT_COMMANDS = GDB_CLIENT + "commands";
+
 	// Tab Startup
 	// Initialisation Commands
 	public static final String GDB_JLINK = Activator.PLUGIN_ID + ".gdb.jlink.";
@@ -73,8 +75,7 @@ public class SharedStorage {
 	public static final String GDB_JLINK_SEMIHOSTING_CLIENT = GDB_JLINK
 			+ "semihosting.client";
 
-	public static final String GDB_JLINK_ENABLE_SWO = GDB_JLINK
-			+ "enableSwo";
+	public static final String GDB_JLINK_ENABLE_SWO = GDB_JLINK + "enableSwo";
 
 	public static final String GDB_JLINK_SWO_ENABLE_TARGET_CPU_FREQ = GDB_JLINK
 			+ "swoEnableTarget.cpuFreq";
@@ -237,6 +238,17 @@ public class SharedStorage {
 		putValueForId(GDB_CLIENT_OTHER_OPTIONS, value);
 	}
 
+	// ----- gdb client commands ----------------------------------------------
+	public static String getGdbClientCommands(String defaultValue) {
+
+		return getValueForId(GDB_CLIENT_COMMANDS, defaultValue);
+	}
+
+	public static void putGdbClientCommands(String value) {
+
+		putValueForId(GDB_CLIENT_COMMANDS, value);
+	}
+
 	// ----- jlink do initial reset -----------------------------------
 	public static boolean getJLinkDoInitialReset(boolean defaultValue) {
 
@@ -341,7 +353,7 @@ public class SharedStorage {
 	}
 
 	public static void putJLinkEnableSwo(boolean value) {
-		
+
 		putValueForId(GDB_JLINK_ENABLE_SWO, Boolean.toString(value));
 	}
 
@@ -411,8 +423,7 @@ public class SharedStorage {
 	// ----- jlink prerun reset type -----------------------------------------
 	public static String getJLinkPreRunResetType(String defaultValue) {
 
-		return getValueForId(GDB_JLINK_PRERUN_RESET_TYPE,
-				defaultValue);
+		return getValueForId(GDB_JLINK_PRERUN_RESET_TYPE, defaultValue);
 	}
 
 	public static void putJLinkPreRunResetType(String value) {

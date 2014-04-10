@@ -137,6 +137,9 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void createControl(Composite parent) {
+
+		System.out.println("TabStartup: createControl() ");
+
 		ScrolledComposite sc = new ScrolledComposite(parent, SWT.V_SCROLL
 				| SWT.H_SCROLL);
 		sc.setExpandHorizontal(true);
@@ -687,7 +690,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent e) {
 				// updateLaunchConfigurationDialog();
 				updateUseFileEnablement();
-				scheduleUpdateJob(); 
+				scheduleUpdateJob();
 			}
 
 			@Override
@@ -1141,6 +1144,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			// Initialisation Commands
 			{
+				// Do initial reset
 				booleanDefault = SharedStorage
 						.getJLinkDoInitialReset(ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
 				doFirstReset
@@ -1148,6 +1152,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 								ConfigurationAttributes.DO_FIRST_RESET,
 								booleanDefault));
 
+				// Reset type
 				stringDefault = SharedStorage
 						.getJLinkInitialResetType(ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
 				firstResetType.setText(configuration
@@ -1239,7 +1244,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 				booleanDefault = SharedStorage
 						.getJLinkEnableSwo(ConfigurationAttributes.ENABLE_SWO_DEFAULT);
-				System.out.println("getJLinkEnableSwo()="+booleanDefault+" "+configuration.getName());
+				// System.out.println("getJLinkEnableSwo()="+booleanDefault+" "+configuration.getName());
 				enableSwo.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.ENABLE_SWO, booleanDefault));
 
@@ -1271,6 +1276,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 				swoEnableTargetPortMask.setText(sValue);
 
+				// Other commands
 				stringDefault = SharedStorage
 						.getJLinkInitOther(ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
 				initCommands.setText(configuration.getAttribute(
@@ -1350,24 +1356,28 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			// Run Commands
 			{
+				// Do pre-run reset
 				booleanDefault = SharedStorage
 						.getJLinkDoPreRunReset(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
 				doSecondReset.setSelection(configuration
 						.getAttribute(ConfigurationAttributes.DO_SECOND_RESET,
 								booleanDefault));
 
+				// Pre-run reset type
 				stringDefault = SharedStorage
 						.getJLinkPreRunResetType(ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
 				secondResetType.setText(configuration.getAttribute(
 						ConfigurationAttributes.SECOND_RESET_TYPE,
 						stringDefault));
 
+				// Other commands
 				stringDefault = SharedStorage
 						.getJLinkPreRunOther(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
 				runCommands.setText(configuration.getAttribute(
 						ConfigurationAttributes.OTHER_RUN_COMMANDS,
 						stringDefault));
 
+				// Do continue
 				doContinue.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.DO_CONTINUE,
 						ConfigurationAttributes.DO_CONTINUE_DEFAULT));
@@ -1388,21 +1398,20 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			System.out.println(e.getStatus());
 			Activator.getDefault().getLog().log(e.getStatus());
 		}
-		
+
 		System.out.println("TabStartup: initializeFrom() completed "
 				+ configuration.getName() + ", dirty=" + isDirty());
 	}
 
 	@Override
 	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
-		System.out.println("TabStartup: activated() "
-				+ workingCopy.getName());
+		System.out.println("TabStartup: activated() " + workingCopy.getName());
 	}
 
 	@Override
 	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
-		System.out.println("TabStartup: deactivated() "
-				+ workingCopy.getName());
+		System.out
+				.println("TabStartup: deactivated() " + workingCopy.getName());
 	}
 
 	@Override
@@ -1410,13 +1419,13 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		System.out.println("TabStartup: performApply() "
 				+ configuration.getName() + ", dirty=" + isDirty());
-		
+
 		ILaunchConfigurationDialog dialog = getLaunchConfigurationDialog();
-		
+
 		boolean booleanValue;
 		String stringValue;
 		int intValue;
-		
+
 		// Initialisation Commands
 		{
 			// Do first reset
@@ -1425,7 +1434,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					booleanValue);
 			SharedStorage.putJLinkDoInitialReset(booleanValue);
 
-			// First reset speed
+			// First reset type
 			stringValue = firstResetType.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.FIRST_RESET_TYPE, stringValue);
@@ -1486,7 +1495,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			booleanValue = enableSwo.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.ENABLE_SWO,
 					booleanValue);
-			System.out.println("putJLinkEnableSwo "+booleanValue+" "+configuration.getName());
+			// System.out.println("putJLinkEnableSwo "+booleanValue+" "+configuration.getName());
 			SharedStorage.putJLinkEnableSwo(booleanValue);
 
 			// target speed
@@ -1537,6 +1546,9 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME, symbolsFileName
 							.getText().trim());
 
+			configuration.setAttribute(IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
+					symbolsOffset.getText());
+
 			configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_IMAGE,
 					loadExecutable.getSelection());
 			configuration.setAttribute(
@@ -1547,11 +1559,10 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					useFileForImage.getSelection());
 			configuration.setAttribute(IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
 					imageFileName.getText().trim());
+
 			configuration.setAttribute(IGDBJtagConstants.ATTR_IMAGE_OFFSET,
 					imageOffset.getText());
 
-			configuration.setAttribute(IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
-					symbolsOffset.getText());
 		}
 
 		// Runtime Options
@@ -1592,7 +1603,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		}
 
 		SharedStorage.update();
-		
+
 		System.out.println("TabStartup: performApply() completed "
 				+ configuration.getName() + ", dirty=" + isDirty());
 	}
@@ -1605,7 +1616,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		if (true)
 			return;
-		
+
 		;
 		// Initialisation Commands
 		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,

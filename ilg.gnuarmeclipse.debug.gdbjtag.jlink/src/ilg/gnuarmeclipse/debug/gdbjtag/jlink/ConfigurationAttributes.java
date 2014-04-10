@@ -10,20 +10,25 @@ public interface ConfigurationAttributes {
 	public static final String JTAG_DEVICE = "GNU ARM J-Link";
 
 	public static final String INTERFACE_COMPAT = PREFIX + ".interface"; //$NON-NLS-1$
-	public static final String GDB_SERVER_DEBUG_INTERFACE = PREFIX + ".gdbServerDebugInterface"; //$NON-NLS-1$
+	public static final String GDB_SERVER_DEBUG_INTERFACE = PREFIX
+			+ ".gdbServerDebugInterface"; //$NON-NLS-1$
 	public static final String INTERFACE_SWD = "swd";
 	public static final String INTERFACE_JTAG = "jtag";
 	public static final String INTERFACE_DEFAULT = INTERFACE_SWD;
-	// public static final String INTERFACE_SWD_COMMAND = "monitor interface SWD";
-	// public static final String INTERFACE_JTAG_COMMAND = "monitor interface JTAG";
+	// public static final String INTERFACE_SWD_COMMAND =
+	// "monitor interface SWD";
+	// public static final String INTERFACE_JTAG_COMMAND =
+	// "monitor interface JTAG";
 
 	public static final String DO_CONNECT_TO_RUNNING = PREFIX
 			+ ".doConnectToRunning"; //$NON-NLS-1$
 	public static final boolean DO_CONNECT_TO_RUNNING_DEFAULT = false;
 
 	public static final String INTERFACE_SPEED = PREFIX + ".interfaceSpeed"; //$NON-NLS-1$
-	public static final String GDB_SERVER_SPEED_COMPAT = PREFIX + ".gdbServerSpeed"; //$NON-NLS-1$
-	public static final String GDB_SERVER_DEVICE_SPEED = PREFIX + ".gdbServerDeviceSpeed"; //$NON-NLS-1$
+	public static final String GDB_SERVER_SPEED_COMPAT = PREFIX
+			+ ".gdbServerSpeed"; //$NON-NLS-1$
+	public static final String GDB_SERVER_DEVICE_SPEED = PREFIX
+			+ ".gdbServerDeviceSpeed"; //$NON-NLS-1$
 	public static final String INTERFACE_SPEED_AUTO = "auto";
 	public static final String INTERFACE_SPEED_ADAPTIVE = "adaptive";
 	public static final String INTERFACE_SPEED_DEFAULT = INTERFACE_SPEED_AUTO;
@@ -32,17 +37,22 @@ public interface ConfigurationAttributes {
 	public static final String INTERFACE_SPEED_ADAPTIVE_COMMAND = "monitor speed adaptive";
 	public static final String INTERFACE_SPEED_FIXED_COMMAND = "monitor speed ";
 
-	public static final String FLASH_DEVICE_NAME_COMPAT = PREFIX + ".flashDeviceName"; //$NON-NLS-1$
-	public static final String GDB_SERVER_DEVICE_NAME = PREFIX + ".gdbServerDeviceName"; //$NON-NLS-1$
+	public static final String FLASH_DEVICE_NAME_COMPAT = PREFIX
+			+ ".flashDeviceName"; //$NON-NLS-1$
+	public static final String GDB_SERVER_DEVICE_NAME = PREFIX
+			+ ".gdbServerDeviceName"; //$NON-NLS-1$
 	public static final String FLASH_DEVICE_NAME_DEFAULT = "";
-	// public static final String FLASH_DEVICE_NAME_COMMAND = "monitor flash device = ";
+	// public static final String FLASH_DEVICE_NAME_COMMAND =
+	// "monitor flash device = ";
 
 	public static final String ENDIANNESS_COMPAT = PREFIX + ".endianness"; //$NON-NLS-1$
-	public static final String GDB_SERVER_DEVICE_ENDIANNESS = PREFIX + ".gdbServerDeviceEndianness"; //$NON-NLS-1$
+	public static final String GDB_SERVER_DEVICE_ENDIANNESS = PREFIX
+			+ ".gdbServerDeviceEndianness"; //$NON-NLS-1$
 	public static final String ENDIANNESS_LITTLE = "little";
 	public static final String ENDIANNESS_BIG = "big";
 	public static final String ENDIANNESS_DEFAULT = ENDIANNESS_LITTLE;
-	// public static final String ENDIANNESS_LITTLE_COMMAND = "monitor endian little";
+	// public static final String ENDIANNESS_LITTLE_COMMAND =
+	// "monitor endian little";
 	// public static final String ENDIANNESS_BIG_COMMAND = "monitor endian big";
 
 	public static final String DO_START_GDB_SERVER = PREFIX
@@ -139,7 +149,6 @@ public interface ConfigurationAttributes {
 	public static final String HALT_COMMAND = "monitor halt";
 	public static final String REGS_COMMAND = "monitor regs";
 	public static final String FLUSH_REGISTERS_COMMAND = "flushreg";
-	
 
 	public static final String FIRST_RESET_TYPE = PREFIX + ".firstResetType"; //$NON-NLS-1$
 	public static final String FIRST_RESET_TYPE_DEFAULT = "";
@@ -192,8 +201,10 @@ public interface ConfigurationAttributes {
 			+ ".otherInitCommands"; //$NON-NLS-1$
 	public static final String OTHER_INIT_COMMANDS_DEFAULT = "";
 
-	//public static final String ENABLE_FLASH_DOWNLOAD_COMMAND = "monitor flash download = 1";
-	//public static final String DISABLE_FLASH_DOWNLOAD_COMMAND = "monitor flash download = 0";
+	// public static final String ENABLE_FLASH_DOWNLOAD_COMMAND =
+	// "monitor flash download = 1";
+	// public static final String DISABLE_FLASH_DOWNLOAD_COMMAND =
+	// "monitor flash download = 0";
 
 	public static final String DO_SECOND_RESET = PREFIX + ".doSecondReset"; //$NON-NLS-1$
 	public static final boolean DO_SECOND_RESET_DEFAULT = true;

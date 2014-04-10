@@ -1135,47 +1135,47 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				+ configuration.getName());
 
 		try {
-			Boolean defaultBoolean;
-			String defaultString;
+			Boolean booleanDefault;
+			String stringDefault;
 
 			// J-Link GDB Server Setup
 			{
 				// Start server locally
-				defaultBoolean = SharedStorage
+				booleanDefault = SharedStorage
 						.getGdbServerDoStart(ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
 				doStartGdbServer.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.DO_START_GDB_SERVER,
-						defaultBoolean));
+						booleanDefault));
 
 				doConnectToRunning.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
 						ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT));
 
 				// Executable
-				defaultString = SharedStorage
+				stringDefault = SharedStorage
 						.getGdbServerExecutable(getGdbServerExecutableDefault());
 				gdbServerExecutable.setText(configuration.getAttribute(
 						ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
-						defaultString));
+						stringDefault));
 
 				// Device name
-				defaultString = SharedStorage
+				stringDefault = SharedStorage
 						.getFlashDeviceName(ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
 
 				String defaultDeviceName = configuration.getAttribute(
 						ConfigurationAttributes.FLASH_DEVICE_NAME_COMPAT,
-						defaultString);
+						stringDefault);
 				String deviceName = configuration.getAttribute(
 						ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
 						defaultDeviceName);
 				gdbFlashDeviceName.setText(deviceName);
 
 				// Endianness
-				defaultString = SharedStorage
+				stringDefault = SharedStorage
 						.getGdbServerEndianness(ConfigurationAttributes.ENDIANNESS_DEFAULT);
 				String defaultEndianness = configuration.getAttribute(
 						ConfigurationAttributes.ENDIANNESS_COMPAT,
-						defaultString);
+						stringDefault);
 				String endianness = configuration.getAttribute(
 						ConfigurationAttributes.GDB_SERVER_DEVICE_ENDIANNESS,
 						defaultEndianness);
@@ -1193,12 +1193,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				}
 
 				// Connection
-				defaultString = SharedStorage
+				stringDefault = SharedStorage
 						.getGdbServerConnection(ConfigurationAttributes.GDB_SERVER_CONNECTION_DEFAULT);
 
 				String connection = configuration.getAttribute(
 						ConfigurationAttributes.GDB_SERVER_CONNECTION,
-						defaultString);
+						stringDefault);
 
 				if (ConfigurationAttributes.GDB_SERVER_CONNECTION_USB
 						.equals(connection)) {
@@ -1211,21 +1211,21 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				}
 
 				// Connection address
-				defaultString = SharedStorage
+				stringDefault = SharedStorage
 						.getGdbServerConnectionAddress(ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS_DEFAULT);
 
 				String connectionAddress = configuration.getAttribute(
 						ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
-						defaultString);
+						stringDefault);
 				gdbServerConnectionAddress.setText(connectionAddress);
 
 				// Interface
-				defaultString = SharedStorage
+				stringDefault = SharedStorage
 						.getGdbServerInterface(ConfigurationAttributes.INTERFACE_DEFAULT);
 
 				String defaultPhysicalInterface = configuration
 						.getAttribute(ConfigurationAttributes.INTERFACE_COMPAT,
-								defaultString);
+								stringDefault);
 				String physicalInterface = configuration.getAttribute(
 						ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
 						defaultPhysicalInterface);
@@ -1246,13 +1246,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				}
 
 				// Initial speed
-				defaultString = SharedStorage
+				stringDefault = SharedStorage
 						.getGdbServerInitialSpeed(ConfigurationAttributes.GDB_SERVER_SPEED_DEFAULT);
 
 				String defaultPhysicalInterfaceSpeed = configuration
 						.getAttribute(
 								ConfigurationAttributes.GDB_SERVER_SPEED_COMPAT,
-								defaultString);
+								stringDefault);
 
 				String physicalInterfaceSpeed = configuration.getAttribute(
 						ConfigurationAttributes.GDB_SERVER_DEVICE_SPEED,
@@ -1340,12 +1340,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT));
 
 				// Other options
-				defaultString = SharedStorage
+				stringDefault = SharedStorage
 						.getGdbServerOtherOptions(ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT);
-
 				gdbServerOtherOptions.setText(configuration
 						.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER,
-								defaultString));
+								stringDefault));
 
 				// Allocate server console
 				doGdbServerAllocateConsole
@@ -1365,26 +1364,25 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			// GDB Client Setup
 			{
 				// Executable
-				defaultString = SharedStorage
+				stringDefault = SharedStorage
 						.getGdbClientExecutable(ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT);
-
 				String gdbCommandAttr = configuration.getAttribute(
 						IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
-						defaultString);
+						stringDefault);
 				gdbClientExecutable.setText(gdbCommandAttr);
 
 				// Other options
-				defaultString = SharedStorage
+				stringDefault = SharedStorage
 						.getGdbClientOtherOptions(ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT);
 				gdbClientOtherOptions.setText(configuration.getAttribute(
 						ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
-						defaultString));
+						stringDefault));
 
-				gdbClientOtherCommands
-						.setText(configuration
-								.getAttribute(
-										ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
-										ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT));
+				stringDefault = SharedStorage
+						.getGdbClientCommands(ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
+				gdbClientOtherCommands.setText(configuration.getAttribute(
+						ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
+						stringDefault));
 			}
 
 			// Remote Target
@@ -1421,6 +1419,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		} catch (CoreException e) {
 			Activator.getDefault().getLog().log(e.getStatus());
 		}
+
+		System.out.println("TabDebugger: initializeFrom() completed "
+				+ configuration.getName());
 	}
 
 	/*
@@ -1629,9 +1630,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					stringValue);
 			SharedStorage.putGdbClientOtherOptions(stringValue);
 
+			stringValue = gdbClientOtherCommands.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
-					gdbClientOtherCommands.getText().trim());
+					stringValue);
+			SharedStorage.putGdbClientCommands(stringValue);
 		}
 
 		// Remote target
@@ -1672,6 +1675,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		SharedStorage.update();
 
+		System.out.println("TabDebugger: performApply() completed "
+				+ configuration.getName() + ", dirty=" + isDirty());
 	}
 
 	@Override
