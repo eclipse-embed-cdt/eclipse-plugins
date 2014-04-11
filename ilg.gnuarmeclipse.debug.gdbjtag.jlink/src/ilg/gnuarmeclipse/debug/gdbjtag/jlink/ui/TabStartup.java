@@ -33,7 +33,6 @@ import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
-import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;
@@ -62,6 +61,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	private static final String TAB_NAME = "Startup";
 	private static final String TAB_ID = Activator.PLUGIN_ID + ".ui.startuptab";
+
+	private static final boolean DEBUG = false;
 
 	private Text initCommands;
 	// Text delay;
@@ -138,7 +139,9 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	@Override
 	public void createControl(Composite parent) {
 
-		System.out.println("TabStartup: createControl() ");
+		if (DEBUG) {
+			System.out.println("TabStartup: createControl() ");
+		}
 
 		ScrolledComposite sc = new ScrolledComposite(parent, SWT.V_SCROLL
 				| SWT.H_SCROLL);
@@ -1134,8 +1137,10 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 
-		System.out.println("TabStartup: initializeFrom() "
-				+ configuration.getName() + ", dirty=" + isDirty());
+		if (DEBUG) {
+			System.out.println("TabStartup: initializeFrom() "
+					+ configuration.getName() + ", dirty=" + isDirty());
+		}
 
 		try {
 			String stringDefault;
@@ -1399,28 +1404,37 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			Activator.getDefault().getLog().log(e.getStatus());
 		}
 
-		System.out.println("TabStartup: initializeFrom() completed "
-				+ configuration.getName() + ", dirty=" + isDirty());
+		if (DEBUG) {
+			System.out.println("TabStartup: initializeFrom() completed "
+					+ configuration.getName() + ", dirty=" + isDirty());
+		}
 	}
 
 	@Override
 	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
-		System.out.println("TabStartup: activated() " + workingCopy.getName());
+		if (DEBUG) {
+			System.out.println("TabStartup: activated() "
+					+ workingCopy.getName());
+		}
 	}
 
 	@Override
 	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
-		System.out
-				.println("TabStartup: deactivated() " + workingCopy.getName());
+		if (DEBUG) {
+			System.out.println("TabStartup: deactivated() "
+					+ workingCopy.getName());
+		}
 	}
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 
-		System.out.println("TabStartup: performApply() "
-				+ configuration.getName() + ", dirty=" + isDirty());
+		if (DEBUG) {
+			System.out.println("TabStartup: performApply() "
+					+ configuration.getName() + ", dirty=" + isDirty());
+		}
 
-		ILaunchConfigurationDialog dialog = getLaunchConfigurationDialog();
+		// ILaunchConfigurationDialog dialog = getLaunchConfigurationDialog();
 
 		boolean booleanValue;
 		String stringValue;
@@ -1604,20 +1618,24 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		SharedStorage.update();
 
-		System.out.println("TabStartup: performApply() completed "
-				+ configuration.getName() + ", dirty=" + isDirty());
+		if (DEBUG) {
+			System.out.println("TabStartup: performApply() completed "
+					+ configuration.getName() + ", dirty=" + isDirty());
+		}
 	}
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 
-		System.out.println("TabStartup: setDefaults() "
-				+ configuration.getName());
+		if (DEBUG) {
+			System.out.println("TabStartup: setDefaults() "
+					+ configuration.getName());
+		}
 
 		if (true)
 			return;
-
 		;
+
 		// Initialisation Commands
 		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
 				ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);

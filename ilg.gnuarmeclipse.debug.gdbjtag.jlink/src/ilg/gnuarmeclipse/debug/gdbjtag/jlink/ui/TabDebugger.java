@@ -76,6 +76,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private static final String TAB_ID = Activator.PLUGIN_ID
 			+ ".ui.debuggertab";
 
+	private static final boolean DEBUG = false;
+
 	private Button doStartGdbServer;
 	private Text gdbClientExecutable;
 	private Text gdbClientOtherOptions;
@@ -145,7 +147,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	@Override
 	public void createControl(Composite parent) {
 
-		System.out.println("TabDebugger: createControl() ");
+		if (DEBUG) {
+			System.out.println("TabDebugger: createControl() ");
+		}
 
 		// gdbPrevUsbAddress = "";
 		// gdbPrevIpAddress = "";
@@ -1131,8 +1135,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 
-		System.out.println("TabDebugger: initializeFrom() "
-				+ configuration.getName());
+		if (DEBUG) {
+			System.out.println("TabDebugger: initializeFrom() "
+					+ configuration.getName());
+		}
 
 		try {
 			Boolean booleanDefault;
@@ -1420,8 +1426,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			Activator.getDefault().getLog().log(e.getStatus());
 		}
 
-		System.out.println("TabDebugger: initializeFrom() completed "
-				+ configuration.getName());
+		if (DEBUG) {
+			System.out.println("TabDebugger: initializeFrom() completed "
+					+ configuration.getName());
+		}
 	}
 
 	/*
@@ -1436,20 +1444,27 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
-		System.out.println("TabDebugger: activated() " + workingCopy.getName());
+		if (DEBUG) {
+			System.out.println("TabDebugger: activated() "
+					+ workingCopy.getName());
+		}
 	}
 
 	@Override
 	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
-		System.out.println("TabDebugger: deactivated() "
-				+ workingCopy.getName());
+		if (DEBUG) {
+			System.out.println("TabDebugger: deactivated() "
+					+ workingCopy.getName());
+		}
 	}
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 
-		System.out.println("TabDebugger: performApply() "
-				+ configuration.getName() + ", dirty=" + isDirty());
+		if (DEBUG) {
+			System.out.println("TabDebugger: performApply() "
+					+ configuration.getName() + ", dirty=" + isDirty());
+		}
 
 		{
 			// legacy definition; although the jtag device class is not used,
@@ -1675,15 +1690,19 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		SharedStorage.update();
 
-		System.out.println("TabDebugger: performApply() completed "
-				+ configuration.getName() + ", dirty=" + isDirty());
+		if (DEBUG) {
+			System.out.println("TabDebugger: performApply() completed "
+					+ configuration.getName() + ", dirty=" + isDirty());
+		}
 	}
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 
-		System.out.println("TabDebugger: setDefaults() "
-				+ configuration.getName());
+		if (DEBUG) {
+			System.out.println("TabDebugger: setDefaults() "
+					+ configuration.getName());
+		}
 
 		configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE,
 				ConfigurationAttributes.JTAG_DEVICE);
