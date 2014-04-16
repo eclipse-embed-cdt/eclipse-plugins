@@ -676,7 +676,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		gdbServerGdbPort.setEnabled(enabled);
 		gdbServerTelnetPort.setEnabled(enabled);
 
-		doGdbServerAllocateConsole.setEnabled(enabled);
+		if (Utils.isWindows()) {
+			// Prevent disable it on Windows
+			doGdbServerAllocateConsole.setEnabled(false);
+		} else {
+			doGdbServerAllocateConsole.setEnabled(enabled);
+		}
 
 		// doGdbServerAllocateTelnetConsole.setEnabled(enabled);
 
@@ -742,11 +747,15 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 								stringDefault));
 
 				// Allocate server console
-				doGdbServerAllocateConsole
-						.setSelection(configuration
-								.getAttribute(
-										ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
-										ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT));
+				if (Utils.isWindows()) {
+					doGdbServerAllocateConsole.setSelection(true);
+				} else {
+					doGdbServerAllocateConsole
+							.setSelection(configuration
+									.getAttribute(
+											ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
+											ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT));
+				}
 
 				// Allocate telnet console
 				doGdbServerAllocateTelnetConsole
