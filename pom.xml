@@ -8,7 +8,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<tycho.version>0.18.1</tycho.version>
+		<tycho.version>0.20.0</tycho.version>
 	</properties>
 
 	<modules>
@@ -27,8 +27,10 @@
 		<module>ilg.gnuarmeclipse.debug.gdbjtag.openocd</module>
 		<module>ilg.gnuarmeclipse.debug.gdbjtag.openocd-feature</module>
 		<module>ilg.gnuarmeclipse.debug.gdbjtag.restart</module>
+		<!-- 
 		<module>../gnuarmeclipse-svn/Eclipse/current/org.eclipse.cdt.cross.arm.gnu</module>
 		<module>../gnuarmeclipse-svn/Eclipse/current/org.eclipse.cdt.cross.arm.gnu-feature</module>
+		-->
 		<module>ilg.gnuarmeclipse-repository</module>
 	</modules>
 
