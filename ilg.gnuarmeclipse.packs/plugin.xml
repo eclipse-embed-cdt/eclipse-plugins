@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.cdt.ui.preferences.CPluginPreferencePage"
+            id="ilg.gnuarmeclipse.packs.ui.preferencePage.packages"
+            class="ilg.gnuarmeclipse.packs.ui.preferences.FolderPage"
+            name="Packages">
+      </page>
+      <page
+            category="ilg.gnuarmeclipse.packs.ui.preferencePage.packages"
+            class="ilg.gnuarmeclipse.packs.ui.preferences.SitesPage"
+            id="ilg.gnuarmeclipse.packs.ui.preferences.SitesPage"
+            name="Sites">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="ilg.gnuarmeclipse.packs.ui.preferences.FolderInitializer">
+      </initializer>
+      <initializer
+            class="ilg.gnuarmeclipse.packs.ui.preferences.SitesInitializer">
+      </initializer>
+   </extension>
+    
+
+</plugin>
