@@ -3311,6 +3311,9 @@
                   <value
                         id="org.eclipse.cdt.build.core.buildArtefactType.exe">
                   </value>
+                  <value
+                        id="org.eclipse.cdt.build.core.buildArtefactType.sharedLib">
+                  </value>
                </property>
             </supportedProperties>
             <envVarBuildPath
@@ -3483,6 +3486,9 @@
                      id="org.eclipse.cdt.build.core.buildArtefactType">
                   <value
                         id="org.eclipse.cdt.build.core.buildArtefactType.exe">
+                  </value>
+                  <value
+                        id="org.eclipse.cdt.build.core.buildArtefactType.sharedLib">
                   </value>
                </property>
             </supportedProperties>
