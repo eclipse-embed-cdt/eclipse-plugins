@@ -3466,7 +3466,6 @@
          </tool>
          <tool
                command="${cross_prefix}${cross_cpp}${cross_suffix}"
-               commandLineGenerator="ilg.gnuarmeclipse.managedbuild.cross.CommandLineGenerator"
                commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
                id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.linker"
                name="%tool.cpp.linker"
