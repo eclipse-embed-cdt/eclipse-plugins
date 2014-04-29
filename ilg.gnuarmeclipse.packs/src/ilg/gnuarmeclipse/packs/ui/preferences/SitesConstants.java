@@ -15,5 +15,5 @@ package ilg.gnuarmeclipse.packs.ui.preferences;
  * Constant definitions for plug-in preferences
  */
 public class SitesConstants {
-	
+
 }

@@ -31,7 +31,7 @@ import ilg.gnuarmeclipse.packs.Activator;
 public class FolderPage extends FieldEditorPreferencePage implements
 		IWorkbenchPreferencePage {
 
-	public FolderPage() {	
+	public FolderPage() {
 		super(GRID);
 		setPreferenceStore(Activator.getDefault().getPreferenceStore());
 		setDescription("The location where packages are stored.");
@@ -42,7 +42,7 @@ public class FolderPage extends FieldEditorPreferencePage implements
 	 * GUI blocks needed to manipulate various types of preferences. Each field
 	 * editor knows how to save and restore itself.
 	 */
-	public void createFieldEditors() {		
+	public void createFieldEditors() {
 		addField(new DirectoryFieldEditor(FolderConstants.P_FOLDER_PATH,
 				"&Packages folder:", getFieldEditorParent()));
 		addField(new StringFieldEditor(FolderConstants.P_MACRO_NAME,

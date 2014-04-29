@@ -40,9 +40,9 @@ public class NewSiteDialog extends Dialog {
 	private String m_returnUrl;
 
 	protected NewSiteDialog(Shell parentShell, String[] data) {
-		
+
 		super(parentShell);
-		
+
 		m_isEdit = (data != null);
 		m_data = data;
 	}

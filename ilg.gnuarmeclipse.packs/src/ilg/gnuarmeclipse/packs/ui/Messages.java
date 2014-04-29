@@ -17,10 +17,10 @@ public class Messages extends NLS {
 
 	public static String NewSiteDialog_label_title_edit;
 	public static String NewSiteDialog_label_title_new;
-	
+
 	public static String NewSiteDialog_label_type;
 	public static String NewSiteDialog_label_url;
-	
+
 	static {
 		// Initialize resource bundle.
 		NLS.initializeMessages(Messages.class.getName(), Messages.class);

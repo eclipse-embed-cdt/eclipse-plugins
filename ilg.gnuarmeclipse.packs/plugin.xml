@@ -25,6 +25,83 @@
             class="ilg.gnuarmeclipse.packs.ui.preferences.SitesInitializer">
       </initializer>
    </extension>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="ilg.gnuarmeclipse.packs.ui.perspectives.PacksPerspective"
+            icon="icons/package_obj.png"
+            id="ilg.gnuarmeclipse.packs.ui.perspectives.PacksPerspective"
+            name="C/C++ Packs">
+      </perspective>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="ilg.gnuarmeclipse.packs.nav"
+            name="Navigation Category">
+      </category>
+      <view
+            category="ilg.gnuarmeclipse.packs.nav"
+            class="ilg.gnuarmeclipse.packs.ui.views.ProcessorsView"
+            icon="icons/hardware_chip.png"
+            id="ilg.gnuarmeclipse.packs.ui.views.ProcessorsView"
+            name="Processors">
+      </view>
+      <view
+            category="ilg.gnuarmeclipse.packs.nav"
+            class="ilg.gnuarmeclipse.packs.ui.views.BoardsView"
+            icon="icons/board.png"
+            id="ilg.gnuarmeclipse.packs.ui.views.BoardsView"
+            name="Boards">
+      </view>
+      <category
+            id="ilg.gnuarmeclipse.packs"
+            name="Sample Category">
+      </category>
+      <view
+            category="ilg.gnuarmeclipse.packs"
+            class="ilg.gnuarmeclipse.packs.ui.views.PackagesView"
+            icon="icons/logical_package_obj.png"
+            id="ilg.gnuarmeclipse.packs.ui.views.PackagesView"
+            name="Packages">
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               id="ilg.gnuarmeclipse.packs.ui.views.ProcessorsView"
+               ratio="0.5"
+               relationship="right"
+               relative="org.eclipse.ui.views.ProblemView">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               id="ilg.gnuarmeclipse.packs.ui.views.BoardsView"
+               ratio="0.5"
+               relationship="right"
+               relative="org.eclipse.ui.views.ProblemView">
+         </view>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               id="ilg.gnuarmeclipse.packs.ui.views.PackagesView"
+               ratio="0.5"
+               relationship="right"
+               relative="org.eclipse.ui.views.ProblemView">
+         </view>
+      </perspectiveExtension>
+   </extension>
+   <extension
+         point="org.eclipse.help.contexts">
+      <contexts
+            file="contexts.xml">
+      </contexts>
+   </extension>
     
 
 </plugin>
