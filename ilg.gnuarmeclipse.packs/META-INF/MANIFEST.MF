@@ -11,7 +11,8 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.105.0",
  org.eclipse.core.resources;bundle-version="3.8.0",
  org.eclipse.equinox.p2.repository,
  org.eclipse.ui.console,
- org.eclipse.jdt.ui
+ org.eclipse.jdt.ui,
+ org.eclipse.core.commands
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor

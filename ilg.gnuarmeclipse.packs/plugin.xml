@@ -45,7 +45,7 @@
             class="ilg.gnuarmeclipse.packs.ui.views.ProcessorsView"
             icon="icons/hardware_chip.png"
             id="ilg.gnuarmeclipse.packs.ui.views.ProcessorsView"
-            name="Processors">
+            name="Devices">
       </view>
       <view
             category="ilg.gnuarmeclipse.packs.nav"
@@ -64,6 +64,13 @@
             icon="icons/logical_package_obj.png"
             id="ilg.gnuarmeclipse.packs.ui.views.PackagesView"
             name="Packages">
+      </view>
+      <view
+            category="ilg.gnuarmeclipse.packs"
+            class="ilg.gnuarmeclipse.packs.ui.views.PackagesView2"
+            icon="icons/sample.gif"
+            id="ilg.gnuarmeclipse.packs.ui.views.PackagesView2"
+            name="Packages2">
       </view>
    </extension>
    <extension
@@ -95,13 +102,84 @@
                relative="org.eclipse.ui.views.ProblemView">
          </view>
       </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.jdt.ui.JavaPerspective">
+         <view
+               id="ilg.gnuarmeclipse.packs.ui.views.PackagesView2"
+               ratio="0.5"
+               relationship="right"
+               relative="org.eclipse.ui.views.ProblemView">
+         </view>
+      </perspectiveExtension>
    </extension>
    <extension
          point="org.eclipse.help.contexts">
       <contexts
             file="contexts.xml">
       </contexts>
+      <contexts
+            file="contexts.xml">
+      </contexts>
    </extension>
-    
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            id="ilg.gnuarmeclipse.packs.commands.category"
+            name="Packages Category">
+      </category>
+      <command
+            categoryId="ilg.gnuarmeclipse.packs.commands.category"
+            id="ilg.gnuarmeclipse.packs.commands.refreshCommand"
+            name="Refresh">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="ilg.gnuarmeclipse.packs.handlers.RefreshHandler"
+            commandId="ilg.gnuarmeclipse.packs.commands.refreshCommand">
+      </handler>
+   </extension>
+   
+   <!-- 
+   <extension
+         point="org.eclipse.ui.bindings">
+      <key
+            commandId="ilg.gnuarmeclipse.packs.commands.refreshCommand"
+            contextId="org.eclipse.ui.contexts.window"
+            schemeId="org.eclipse.ui.defaultAcceleratorConfiguration"
+            sequence="M1+6">
+      </key>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="menu:org.eclipse.ui.main.menu?after=additions">
+         <menu
+               id="ilg.gnuarmeclipse.packs.menus.sampleMenu"
+               label="C/C++ Packs"
+               mnemonic="M">
+            <command
+                  commandId="ilg.gnuarmeclipse.packs.commands.refreshCommand"
+                  id="ilg.gnuarmeclipse.packs.menus.sampleCommand"
+                  label="Refresh"
+                  mnemonic="S">
+            </command>
+         </menu>
+      </menuContribution>
+      <menuContribution
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="ilg.gnuarmeclipse.packs.toolbars.sampleToolbar">
+            <command
+                  commandId="ilg.gnuarmeclipse.packs.commands.refreshCommand"
+                  icon="icons/sample.gif"
+                  id="ilg.gnuarmeclipse.packs.toolbars.sampleCommand"
+                  tooltip="Say hello world">
+            </command>
+         </toolbar>
+      </menuContribution>
+   </extension>
+  -->  
 
 </plugin>
