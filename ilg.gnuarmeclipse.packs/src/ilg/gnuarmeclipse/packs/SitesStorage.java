@@ -39,15 +39,16 @@ import org.xml.sax.SAXException;
 public class SitesStorage {
 
 	public static final String SITES_FILE_NAME = "sites.xml";
+	public static final String CMSIS_PACK_TYPE = "CMSIS Pack";
 
 	public static List<String[]> getDefaultSites() {
 
 		List<String[]> sitesList;
 		sitesList = new ArrayList<String[]>();
 
-		sitesList.add(new String[] { "CMSIS Pack",
+		sitesList.add(new String[] { CMSIS_PACK_TYPE,
 				"http://www.keil.com/pack/index.idx" });
-		sitesList.add(new String[] { "CMSIS Pack",
+		sitesList.add(new String[] { CMSIS_PACK_TYPE,
 				"http://gnuarmeclipse.sourceforge.net/packages/index.xml" });
 
 		return sitesList;
@@ -91,10 +92,12 @@ public class SitesStorage {
 			return null;
 
 		try {
+			InputSource inputSource = new InputSource(new FileInputStream(file));
+
 			DocumentBuilder parser = DocumentBuilderFactory.newInstance()
 					.newDocumentBuilder();
-			InputSource inputSource = new InputSource(new FileInputStream(file));
 			Document document = parser.parse(inputSource);
+			
 			Element el = document.getDocumentElement();
 			if (!"sites".equals(el.getNodeName())) {
 				return null;
