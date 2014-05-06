@@ -1,19 +1,19 @@
 package ilg.gnuarmeclipse.packs.handlers;
 
 import ilg.gnuarmeclipse.packs.Activator;
-import ilg.gnuarmeclipse.packs.SitesStorage;
+import ilg.gnuarmeclipse.packs.PacksStorage;
+import ilg.gnuarmeclipse.packs.TreeNode;
 import ilg.gnuarmeclipse.packs.Utils;
 
 import java.io.BufferedReader;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.StringReader;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -26,14 +26,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.console.ConsolePlugin;
-import org.eclipse.ui.console.IConsole;
-import org.eclipse.ui.console.IConsoleManager;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
-import org.eclipse.ui.handlers.HandlerUtil;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -51,11 +45,14 @@ import org.xml.sax.SAXException;
 public class RefreshHandler extends AbstractHandler {
 
 	private MessageConsoleStream m_out;
+	private boolean m_running;
 
 	/**
 	 * The constructor.
 	 */
 	public RefreshHandler() {
+		System.out.println("RefreshHandler()");
+		m_running = false;
 	}
 
 	/**
@@ -64,18 +61,10 @@ public class RefreshHandler extends AbstractHandler {
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		if (false) {
-			IWorkbenchWindow window = HandlerUtil
-					.getActiveWorkbenchWindowChecked(event);
-			MessageDialog.openInformation(window.getShell(),
-					"GNU ARM C/C++ Packages Support",
-					"Prepare for the 10 sec job");
-		}
-
 		MessageConsole myConsole = Utils.findConsole();
 		m_out = myConsole.newMessageStream();
 
-		Job job = new Job("My Job") {
+		Job job = new Job("Refresh Packs") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				return myRun(monitor);
@@ -91,50 +80,84 @@ public class RefreshHandler extends AbstractHandler {
 
 	private IStatus myRun(IProgressMonitor monitor) {
 
+		if (m_running)
+			return Status.CANCEL_STATUS;
+
+		m_running = true;
 		m_out.println("Refresh packs");
 
+		int workUnits = 100;
+		int worked = 0;
 		// set total number of work units
-		monitor.beginTask("Refresh packs", 100);
+		monitor.beginTask("Refresh packs", workUnits);
 
-		List<String[]> sitesList = SitesStorage.getSites();
+		// String[] { type, indexUrl }
+		List<String[]> sitesList = PacksStorage.getSites();
+
+		// String[] { url, name, version }
+		List<String[]> pdscList = new ArrayList<String[]>();
 
 		for (String[] site : sitesList) {
+			
+			if (monitor.isCanceled()) {
+				break;
+			}
+
 			String type = site[0];
 			String indexUrl = site[1];
-			if (SitesStorage.CMSIS_PACK_TYPE.equals(type)) {
-				List<String[]> pdscList = new ArrayList<String[]>();
+			if (PacksStorage.CMSIS_PACK_TYPE.equals(type)) {
+				// collect all pdsc references
 				readCmsisIndex(indexUrl, pdscList);
 			} else {
 				m_out.println(type + " not recognised");
 			}
+			monitor.worked(1);
+			worked++;
 		}
 
-		if (false) {
-			for (int i = 0; i < 10; i++) {
-				try {
-					// sleep a second
-					TimeUnit.SECONDS.sleep(1);
-					if (monitor.isCanceled()) {
-						break;
-					}
+		TreeNode tree = new TreeNode("root");
 
-					monitor.subTask("I'm doing something here " + i);
-					m_out.println("I'm doing something here " + i);
+		int workedFrom = worked;
+		if (worked > workUnits) {
+			workedFrom = workUnits;
+		}
 
-					// report that 10 additional units are done
-					monitor.worked(10);
-				} catch (InterruptedException e1) {
-					e1.printStackTrace();
-					System.out.println("Job cancelled");
-					return Status.CANCEL_STATUS;
-				}
+		int i = 0;
+		for (String[] pdsc : pdscList) {
+			
+			if (monitor.isCanceled()) {
+				break;
+			}
+
+			String url = pdsc[0];
+			String name = pdsc[1];
+			String version = pdsc[2];
+
+			monitor.subTask(name);
+			parsePdsc(url, name, version, tree);
+
+			++i;
+			int newWorked = workedFrom + (workUnits - workedFrom) * i
+					/ (pdscList.size() - 1);
+			if (newWorked > worked) {
+				monitor.worked(newWorked - worked);
+				worked = newWorked;
 			}
 		}
+
+		
 		if (monitor.isCanceled()) {
-			m_out.println("Job cancelled");
+			m_out.println("Job cancelled.");
+			m_running = false;
 			return Status.CANCEL_STATUS;
 		}
-		m_out.println("Refresh packs completed");
+
+		// Write the tree to the cache.xml file in the packages folder
+		m_out.println("Tree written.");
+		PacksStorage.putCache(tree);
+
+		m_out.println("Refresh packs completed.");
+		m_running = false;
 		return Status.OK_STATUS;
 	}
 
@@ -208,4 +231,100 @@ public class RefreshHandler extends AbstractHandler {
 		return;
 
 	}
+
+	private void parsePdsc(String url, String name, String version,
+			TreeNode tree) {
+
+		String fullUrl;
+		if (url.endsWith("/")) {
+			fullUrl = url + name;
+		} else {
+			fullUrl = url + "/" + name;
+		}
+
+		m_out.println("Parsing \"" + fullUrl + "\" v" + version + "...");
+
+		try {
+
+			URL u = new URL(fullUrl);
+			InputSource inputSource = new InputSource(new InputStreamReader(
+					u.openStream()));
+
+			DocumentBuilder parser = DocumentBuilderFactory.newInstance()
+					.newDocumentBuilder();
+			Document document = parser.parse(inputSource);
+
+			Element el = document.getDocumentElement();
+			if (!"package".equals(el.getNodeName())) {
+				return;
+			}
+
+			NodeList elemList;
+
+			elemList = el.getElementsByTagName("vendor");
+			if (elemList.getLength() == 0) {
+				m_out.println("Missing <vendor>");
+				return;
+			}
+			String packVendor = elemList.item(0).getTextContent().trim();
+
+			elemList = el.getElementsByTagName("name");
+			if (elemList.getLength() == 0) {
+				m_out.println("Missing <name>");
+				return;
+			}
+			String packName = elemList.item(0).getTextContent().trim();
+
+			elemList = el.getElementsByTagName("description");
+			if (elemList.getLength() == 0) {
+				m_out.println("Missing <description>");
+				return;
+			}
+			String packDescription = elemList.item(0).getTextContent().trim();
+
+			TreeNode vendorNode = tree.getChild(packVendor);
+			if (vendorNode == null) {
+				vendorNode = new TreeNode("vendor");
+				vendorNode.setName(packVendor);
+
+				tree.addChild(vendorNode);
+				m_out.println("Vendor node \"" + packVendor + "\" added.");
+			}
+
+			TreeNode packNode = vendorNode.getChild(packName);
+			if (packNode != null) {
+				m_out.println("Duplicate package name \"" + packName
+						+ "\", ignored.");
+				return;
+			}
+
+			packNode = new TreeNode("package");
+			packNode.setName(packName);
+			packNode.setDescription(packDescription);
+
+			vendorNode.addChild(packNode);
+			m_out.println("Package node \"" + packName + "\" added.");
+
+			TreeNode versionNode = new TreeNode("version");
+			versionNode.setName(version);
+			packNode.addChild(versionNode);
+
+		} catch (MalformedURLException e) {
+			Activator.log(e);
+			m_out.println("Failed: " + e.toString());
+		} catch (FileNotFoundException e) {
+			m_out.println("Failed: " + e.toString());
+		} catch (IOException e) {
+			Activator.log(e);
+			m_out.println("Failed: " + e.toString());
+		} catch (ParserConfigurationException e) {
+			Activator.log(e);
+			m_out.println("Failed: " + e.toString());
+		} catch (SAXException e) {
+			Activator.log(e);
+			m_out.println("Failed: " + e.toString());
+		}
+
+	}
+
 }

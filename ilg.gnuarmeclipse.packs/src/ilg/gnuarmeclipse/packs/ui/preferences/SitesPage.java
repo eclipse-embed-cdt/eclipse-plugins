@@ -11,7 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.ui.preferences;
 
-import ilg.gnuarmeclipse.packs.SitesStorage;
+import ilg.gnuarmeclipse.packs.PacksStorage;
 
 import java.util.List;
 
@@ -97,7 +97,7 @@ public class SitesPage extends PreferencePage implements
 		{
 			initTable(groupComposite);
 
-			m_contentList = SitesStorage.getSites();
+			m_contentList = PacksStorage.getSites();
 
 			updateTableContent();
 		}
@@ -270,7 +270,7 @@ public class SitesPage extends PreferencePage implements
 		// System.out.println("SitesPage.performDefaults()");
 		super.performDefaults();
 
-		m_contentList = SitesStorage.getDefaultSites();
+		m_contentList = PacksStorage.getDefaultSites();
 		updateTableContent();
 	}
 
@@ -279,7 +279,7 @@ public class SitesPage extends PreferencePage implements
 
 		// System.out.println("SitesPage.performOk()");
 
-		SitesStorage.putSites(m_contentList);
+		PacksStorage.putSites(m_contentList);
 		return super.performOk();
 	}
 

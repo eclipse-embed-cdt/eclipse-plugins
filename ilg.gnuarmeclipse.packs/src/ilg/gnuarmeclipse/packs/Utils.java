@@ -1,9 +1,15 @@
 package ilg.gnuarmeclipse.packs;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
 import org.eclipse.ui.console.MessageConsole;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 public class Utils {
 
@@ -24,6 +30,51 @@ public class Utils {
 		MessageConsole myConsole = new MessageConsole(name, null);
 		conMan.addConsoles(new IConsole[] { myConsole });
 		return myConsole;
+	}
+
+	public static String xmlEscape(String value) {
+		value = value.replaceAll("\\&", "&amp;"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		value = value.replaceAll("\\\"", "&quot;"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		value = value.replaceAll("\\\'", "&apos;"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		value = value.replaceAll("\\<", "&lt;"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		value = value.replaceAll("\\>", "&gt;"); //$NON-NLS-1$ //$NON-NLS-2$ 
+		return value;
+	}
+
+	public static Element getChildElement(Element el, String name) {
+
+		NodeList nodeList = el.getChildNodes();
+		for (int i = 0; i < nodeList.getLength(); ++i) {
+			Node node = nodeList.item(i);
+
+			if (node.getNodeType() == Node.ELEMENT_NODE) {
+				if (node.getNodeName().equals(name)) {
+
+					// Return the first element with the given name
+					return (Element) node;
+				}
+			}
+		}
+		return null;
+	}
+
+	public static List<Element> getChildElementList(Element el, String name) {
+
+		NodeList nodeList = el.getChildNodes();
+
+		// Allocate exactly the number of children
+		List<Element> list = new ArrayList<Element>(nodeList.getLength());
+		
+		for (int i = 0; i < nodeList.getLength(); ++i) {
+			Node node = nodeList.item(i);
+
+			if (node.getNodeType() == Node.ELEMENT_NODE) {
+				if (node.getNodeName().equals(name)) {
+					list.add((Element) node);
+				}
+			}
+		}
+		return list;
 	}
 
 }

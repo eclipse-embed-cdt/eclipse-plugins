@@ -36,9 +36,11 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-public class SitesStorage {
+public class PacksStorage {
 
 	public static final String SITES_FILE_NAME = "sites.xml";
+	public static final String CACHE_FILE_NAME = "cache.xml";
+
 	public static final String CMSIS_PACK_TYPE = "CMSIS Pack";
 
 	public static List<String[]> getDefaultSites() {
@@ -72,20 +74,20 @@ public class SitesStorage {
 		return sitesFolderPath;
 	}
 
-	private static File getFile() {
+	private static File getFile(String name) {
 
 		String folderPath = getFolderPath();
 		if (folderPath.length() == 0)
 			return null;
 
-		IPath path = (new Path(folderPath)).append(SITES_FILE_NAME);
+		IPath path = (new Path(folderPath)).append(name);
 		File file = path.toFile();
 		return file;
 	}
 
 	private static List<String[]> parseSites() {
 
-		File file = getFile();
+		File file = getFile(SITES_FILE_NAME);
 		if (file == null)
 			return null;
 		if (!file.exists())
@@ -97,7 +99,7 @@ public class SitesStorage {
 			DocumentBuilder parser = DocumentBuilderFactory.newInstance()
 					.newDocumentBuilder();
 			Document document = parser.parse(inputSource);
-			
+
 			Element el = document.getDocumentElement();
 			if (!"sites".equals(el.getNodeName())) {
 				return null;
@@ -145,7 +147,7 @@ public class SitesStorage {
 
 	public static void putSites(List<String[]> sitesList) {
 
-		File file = getFile();
+		File file = getFile(SITES_FILE_NAME);
 		if (file == null)
 			return;
 
@@ -154,20 +156,48 @@ public class SitesStorage {
 			if (!file.exists())
 				file.createNewFile();
 			if (file.exists()) {
-				PrintWriter p = new PrintWriter(new BufferedWriter(
+				PrintWriter writer = new PrintWriter(new BufferedWriter(
 						new FileWriter(file)));
-				p.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"); //$NON-NLS-1$
-				p.println("<sites>"); // $NON-NLS-1$
+				writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"); //$NON-NLS-1$
+				writer.println("<sites>"); // $NON-NLS-1$
 
 				for (String[] site : sitesList) {
-					p.println("\t<site>"); // $NON-NLS-1$
+					writer.println("\t<site>"); // $NON-NLS-1$
 					// Warning: the strings should not contain xml special chars
-					p.println("\t\t<type>" + site[0] + "</type>"); // $NON-NLS-1$
-					p.println("\t\t<url>" + site[1] + "</url>"); // $NON-NLS-1$
-					p.println("\t</site>"); // $NON-NLS-1$
+					writer.println("\t\t<type>" + site[0] + "</type>"); // $NON-NLS-1$
+					writer.println("\t\t<url>" + site[1] + "</url>"); // $NON-NLS-1$
+					writer.println("\t</site>"); // $NON-NLS-1$
 				}
-				p.println("</sites>");
-				p.close();
+				writer.println("</sites>");
+				writer.close();
+
+				// System.out.println(SITES_FILE_NAME+" saved");
+			}
+		} catch (IOException e) {
+			Activator.log(e);
+		}
+	}
+
+	public static void putCache(TreeNode tree) {
+
+		File file = getFile(CACHE_FILE_NAME);
+		if (file == null)
+			return;
+
+		// The xml structure is simple, write it as strings
+		try {
+			if (!file.exists())
+				file.createNewFile();
+			if (file.exists()) {
+				PrintWriter writer = new PrintWriter(new BufferedWriter(
+						new FileWriter(file)));
+				writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+				writer.println("<root version=\"1.0\">");
+
+				putCacheNodeRecursive(tree, 0, writer);
+
+				writer.println("</root>");
+				writer.close();
 
 				// System.out.println(SITES_FILE_NAME+" saved");
 			}
@@ -175,5 +205,104 @@ public class SitesStorage {
 			Activator.log(e);
 			;
 		}
+	}
+
+	private static void putCacheNodeRecursive(TreeNode node, int depth,
+			PrintWriter writer) {
+
+		putIndentation(depth * 2, writer);
+		writer.println("<node type=\"" + node.getType() + "\" name=\""
+				+ node.getName() + "\">");
+
+		String description = node.getDescription();
+		if (description != null && description.length() > 0) {
+			putIndentation(depth * 2 + 1, writer);
+			writer.println("<description>"
+					+ Utils.xmlEscape(node.getDescription()) + "</description>");
+		}
+
+		List<TreeNode> children = node.getChildren();
+		if (children != null && !children.isEmpty()) {
+			putIndentation(depth * 2 + 1, writer);
+			writer.println("<nodes>");
+
+			for (TreeNode child : children) {
+				putCacheNodeRecursive(child, depth + 1, writer);
+			}
+
+			putIndentation(depth * 2 + 1, writer);
+			writer.println("</nodes>");
+		}
+		putIndentation(depth * 2, writer);
+		writer.println("</node>");
+	}
+
+	private static void putIndentation(int depth, PrintWriter writer) {
+		depth++;
+		for (int i = 0; i < depth; ++i) {
+			writer.print("  ");
+		}
+	}
+
+	public static TreeNode getCache() {
+
+		File file = getFile(CACHE_FILE_NAME);
+		if (file == null)
+			return null;
+		if (!file.exists())
+			return null;
+
+		try {
+			InputSource inputSource = new InputSource(new FileInputStream(file));
+
+			DocumentBuilder parser = DocumentBuilderFactory.newInstance()
+					.newDocumentBuilder();
+			Document document = parser.parse(inputSource);
+
+			Element el = document.getDocumentElement();
+			if (!"root".equals(el.getNodeName())) {
+				return null;
+			}
+
+			Element nodeElement = Utils.getChildElement(el, "node");
+			if (nodeElement != null) {
+				return getCacheRecursive(nodeElement);
+			}
+		} catch (ParserConfigurationException e) {
+			Activator.log(e);
+		} catch (SAXException e) {
+			Activator.log(e);
+		} catch (IOException e) {
+			Activator.log(e);
+		}
+
+		return null;
+	}
+
+	private static TreeNode getCacheRecursive(Element el) {
+
+		String type = el.getAttribute("type");
+		TreeNode treeNode = new TreeNode(type);
+
+		String name = el.getAttribute("name");
+		treeNode.setName(name);
+
+		Element descriptionElement = Utils.getChildElement(el, "description");
+		if (descriptionElement != null ) {
+			String description = descriptionElement.getTextContent();
+			treeNode.setDescription(description);
+		}
+
+		Element nodesElement = Utils.getChildElement(el, "nodes");
+		if (nodesElement != null) {
+			List<Element> nodeElements = Utils.getChildElementList(nodesElement, "node");
+			for (Element nodeElement: nodeElements) {
+
+				TreeNode childTreeNode = getCacheRecursive((Element) nodeElement);
+				treeNode.addChild(childTreeNode);
+			}
+		}
+
+		return treeNode;
 	}
 }

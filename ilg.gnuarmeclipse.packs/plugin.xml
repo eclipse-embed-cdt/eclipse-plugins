@@ -29,7 +29,7 @@
          point="org.eclipse.ui.perspectives">
       <perspective
             class="ilg.gnuarmeclipse.packs.ui.perspectives.PacksPerspective"
-            icon="icons/package_obj.png"
+            icon="icons/packages.png"
             id="ilg.gnuarmeclipse.packs.ui.perspectives.PacksPerspective"
             name="C/C++ Packs">
       </perspective>
@@ -37,34 +37,31 @@
    <extension
          point="org.eclipse.ui.views">
       <category
-            id="ilg.gnuarmeclipse.packs.nav"
-            name="Navigation Category">
+            id="ilg.gnuarmeclipse.packs"
+            name="C/C++ Packs">
       </category>
       <view
-            category="ilg.gnuarmeclipse.packs.nav"
+            category="ilg.gnuarmeclipse.packs"
             class="ilg.gnuarmeclipse.packs.ui.views.ProcessorsView"
             icon="icons/hardware_chip.png"
             id="ilg.gnuarmeclipse.packs.ui.views.ProcessorsView"
             name="Devices">
       </view>
       <view
-            category="ilg.gnuarmeclipse.packs.nav"
+            category="ilg.gnuarmeclipse.packs"
             class="ilg.gnuarmeclipse.packs.ui.views.BoardsView"
             icon="icons/board.png"
             id="ilg.gnuarmeclipse.packs.ui.views.BoardsView"
             name="Boards">
       </view>
-      <category
-            id="ilg.gnuarmeclipse.packs"
-            name="Sample Category">
-      </category>
       <view
             category="ilg.gnuarmeclipse.packs"
             class="ilg.gnuarmeclipse.packs.ui.views.PackagesView"
-            icon="icons/logical_package_obj.png"
+            icon="icons/packages.png"
             id="ilg.gnuarmeclipse.packs.ui.views.PackagesView"
             name="Packages">
       </view>
+      <!--
       <view
             category="ilg.gnuarmeclipse.packs"
             class="ilg.gnuarmeclipse.packs.ui.views.PackagesView2"
@@ -72,6 +69,7 @@
             id="ilg.gnuarmeclipse.packs.ui.views.PackagesView2"
             name="Packages2">
       </view>
+      -->
    </extension>
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
