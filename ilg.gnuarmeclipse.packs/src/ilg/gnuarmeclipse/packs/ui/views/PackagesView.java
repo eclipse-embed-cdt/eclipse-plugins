@@ -98,7 +98,7 @@ public class PackagesView extends ViewPart {
 		public Object[] getElements(Object parent) {
 			if (parent.equals(getViewSite())) {
 				if (m_tree == null) {
-					m_tree = PacksStorage.getCache();
+					m_tree = PacksStorage.getCachedSubTree("packages");
 				}
 				return getChildren(m_tree);
 			}
@@ -120,12 +120,12 @@ public class PackagesView extends ViewPart {
 
 	class TableLabelProvider implements ITableLabelProvider {
 
-		public Image getColumnImage(Object element, int columnIndex) {
+		public Image getColumnImage(Object obj, int columnIndex) {
 
 			switch (columnIndex) {
 			case 0:
 				String imageKey;
-				TreeNode node = ((TreeNode) element);
+				TreeNode node = ((TreeNode) obj);
 				String type = node.getType();
 
 				if ("vendor".equals(type)) {
@@ -140,31 +140,31 @@ public class PackagesView extends ViewPart {
 					} else {
 						return Activator
 								.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-										"icons/empty_pack_obj.png")
+										"icons/package_obj_grey.png")
 								.createImage();
 					}
 				} else if ("version".equals(type)) {
 					if (node.getParent().getName().hashCode() % 2 == 0) {
-						return Activator.imageDescriptorFromPlugin(
-								Activator.PLUGIN_ID, "icons/jtypeassist_co.png")
-								.createImage();
-					} else {
 						return Activator
 								.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-										"icons/jtypeassist_co_grey.png")
+										"icons/jtypeassist_co.png")
 								.createImage();
+					} else {
+						return Activator.imageDescriptorFromPlugin(
+								Activator.PLUGIN_ID,
+								"icons/jtypeassist_co_grey.png").createImage();
 					}
 				}
 			}
 			return null;
 		}
 
-		public String getColumnText(Object element, int columnIndex) {
+		public String getColumnText(Object obj, int columnIndex) {
 			switch (columnIndex) {
 			case 0:
-				return " " + ((TreeNode) element).getName();
+				return " " + ((TreeNode) obj).getName();
 			case 1:
-				return " " + ((TreeNode) element).getDescription();
+				return " " + ((TreeNode) obj).getDescription();
 			}
 			return null;
 		}
@@ -198,7 +198,8 @@ public class PackagesView extends ViewPart {
 	 */
 	public void createPartControl(Composite parent) {
 
-		Tree tree = new Tree(parent, SWT.BORDER | SWT.H_SCROLL | SWT.V_SCROLL);
+		Tree tree = new Tree(parent, SWT.BORDER | SWT.MULTI
+				| SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
 		tree.setHeaderVisible(true);
 		tree.setLinesVisible(true);
 
@@ -207,10 +208,10 @@ public class PackagesView extends ViewPart {
 		nameColumn.setText("  Name");
 		nameColumn.setWidth(190);
 
-//		TreeColumn statusColumn = new TreeColumn(tree, SWT.NONE);
-//		statusColumn.setAlignment(SWT.CENTER);
-//		statusColumn.setText("Status");
-//		statusColumn.setWidth(50);
+		// TreeColumn statusColumn = new TreeColumn(tree, SWT.NONE);
+		// statusColumn.setAlignment(SWT.CENTER);
+		// statusColumn.setText("Status");
+		// statusColumn.setWidth(50);
 
 		TreeColumn descriptionColumn = new TreeColumn(tree, SWT.NONE);
 		descriptionColumn.setAlignment(SWT.LEFT);
@@ -351,7 +352,7 @@ public class PackagesView extends ViewPart {
 
 	private void showMessage(String message) {
 		MessageDialog.openInformation(viewer.getControl().getShell(),
-				"Packages", message);
+				"Packs", message);
 	}
 
 	/**

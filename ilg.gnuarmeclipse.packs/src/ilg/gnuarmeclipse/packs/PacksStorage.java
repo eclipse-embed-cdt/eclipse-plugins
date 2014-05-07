@@ -244,7 +244,10 @@ public class PacksStorage {
 		}
 	}
 
-	public static TreeNode getCache() {
+	public static TreeNode getCachedSubTree(String type) {
+
+		if (type == null)
+			return null;
 
 		File file = getFile(CACHE_FILE_NAME);
 		if (file == null)
@@ -259,14 +262,25 @@ public class PacksStorage {
 					.newDocumentBuilder();
 			Document document = parser.parse(inputSource);
 
-			Element el = document.getDocumentElement();
-			if (!"root".equals(el.getNodeName())) {
+			Element rootElement = document.getDocumentElement();
+			if (!"root".equals(rootElement.getNodeName())) {
 				return null;
 			}
 
-			Element nodeElement = Utils.getChildElement(el, "node");
-			if (nodeElement != null) {
-				return getCacheRecursive(nodeElement);
+			Element nodeRootElement = Utils
+					.getChildElement(rootElement, "node");
+			if (nodeRootElement != null) {
+				Element nodesElement = Utils.getChildElement(nodeRootElement,
+						"nodes");
+				if (nodesElement != null) {
+					List<Element> nodeElements = Utils.getChildElementList(
+							nodesElement, "node");
+					for (Element node : nodeElements) {
+						if (type.equals(node.getAttribute("type"))) {
+							return getCacheRecursive(node);
+						}
+					}
+				}
 			}
 		} catch (ParserConfigurationException e) {
 			Activator.log(e);
@@ -288,15 +302,16 @@ public class PacksStorage {
 		treeNode.setName(name);
 
 		Element descriptionElement = Utils.getChildElement(el, "description");
-		if (descriptionElement != null ) {
+		if (descriptionElement != null) {
 			String description = descriptionElement.getTextContent();
 			treeNode.setDescription(description);
 		}
 
 		Element nodesElement = Utils.getChildElement(el, "nodes");
 		if (nodesElement != null) {
-			List<Element> nodeElements = Utils.getChildElementList(nodesElement, "node");
-			for (Element nodeElement: nodeElements) {
+			List<Element> nodeElements = Utils.getChildElementList(
+					nodesElement, "node");
+			for (Element nodeElement : nodeElements) {
 
 				TreeNode childTreeNode = getCacheRecursive((Element) nodeElement);
 				treeNode.addChild(childTreeNode);

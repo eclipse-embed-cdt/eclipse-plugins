@@ -1,6 +1,5 @@
 package ilg.gnuarmeclipse.packs;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +46,7 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 		this.m_description = description;
 	}
 
-	public boolean hasChildren(){
+	public boolean hasChildren() {
 		return (m_children != null && !m_children.isEmpty());
 	}
 
@@ -71,8 +70,44 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 		child.m_parent = this;
 	}
 
-	public TreeNode getChild(String name) {
-		if (name == null) {
+	public TreeNode addUniqueChild(String type, String name) {
+
+		if (type == null) {
+			return null;
+		}
+
+		if (m_children == null) {
+			// On first child create list
+			m_children = new ArrayList<TreeNode>();
+		}
+
+		for (TreeNode node : m_children) {
+			if (node.m_type.equals(type)) {
+				if (name == null) {
+					// Node of given type, any name, found
+					return node;
+				} else {
+					if (node.m_name.equals(name)) {
+						return node;
+					}
+				}
+			}
+		}
+
+		// Node not found, create a new one
+		TreeNode child = new TreeNode(type);
+		if (name != null) {
+			child.setName(name);
+		}
+
+		m_children.add(child);
+		child.m_parent = this;
+
+		return child;
+	}
+
+	public TreeNode getChild(String type, String name) {
+		if (type == null) {
 			return null;
 		}
 		if (m_children == null) {
@@ -80,8 +115,15 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 		}
 
 		for (TreeNode node : m_children) {
-			if (node.m_name.equals(name)) {
-				return node;
+			if (node.m_type.equals(type)) {
+				if (name == null) {
+					// Node of given type, any name, found
+					return node;
+				} else {
+					if (node.m_name.equals(name)) {
+						return node;
+					}
+				}
 			}
 		}
 

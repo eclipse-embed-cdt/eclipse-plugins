@@ -30,9 +30,6 @@ import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.NamedNodeMap;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -84,7 +81,7 @@ public class RefreshHandler extends AbstractHandler {
 			return Status.CANCEL_STATUS;
 
 		m_running = true;
-		m_out.println("Refresh packs");
+		m_out.println("Refresh packs started.");
 
 		int workUnits = 100;
 		int worked = 0;
@@ -98,7 +95,7 @@ public class RefreshHandler extends AbstractHandler {
 		List<String[]> pdscList = new ArrayList<String[]>();
 
 		for (String[] site : sitesList) {
-			
+
 			if (monitor.isCanceled()) {
 				break;
 			}
@@ -124,7 +121,7 @@ public class RefreshHandler extends AbstractHandler {
 
 		int i = 0;
 		for (String[] pdsc : pdscList) {
-			
+
 			if (monitor.isCanceled()) {
 				break;
 			}
@@ -145,7 +142,6 @@ public class RefreshHandler extends AbstractHandler {
 			}
 		}
 
-		
 		if (monitor.isCanceled()) {
 			m_out.println("Job cancelled.");
 			m_running = false;
@@ -199,14 +195,12 @@ public class RefreshHandler extends AbstractHandler {
 			}
 
 			int count = 0;
-			NodeList elemList = el.getElementsByTagName("pdsc");
-			for (int i = 0; i < elemList.getLength(); ++i) {
-				Node siteNode = elemList.item(i);
+			List<Element> pdscElements = Utils.getChildElementList(el, "pdsc");
+			for (Element pdscElement : pdscElements) {
 
-				NamedNodeMap attrs = siteNode.getAttributes();
-				String url = attrs.getNamedItem("url").getNodeValue();
-				String name = attrs.getNamedItem("name").getNodeValue();
-				String version = attrs.getNamedItem("version").getNodeValue();
+				String url = pdscElement.getAttribute("url").trim();
+				String name = pdscElement.getAttribute("name").trim();
+				String version = pdscElement.getAttribute("version").trim();
 
 				pdscList.add(new String[] { url, name, version });
 				++count;
@@ -254,60 +248,141 @@ public class RefreshHandler extends AbstractHandler {
 					.newDocumentBuilder();
 			Document document = parser.parse(inputSource);
 
-			Element el = document.getDocumentElement();
-			if (!"package".equals(el.getNodeName())) {
+			Element packageElement = document.getDocumentElement();
+			if (!"package".equals(packageElement.getNodeName())) {
 				return;
 			}
 
-			NodeList elemList;
+			// Packages
+			{
+				TreeNode packagesNode = tree.addUniqueChild("packages", null);
 
-			elemList = el.getElementsByTagName("vendor");
-			if (elemList.getLength() == 0) {
-				m_out.println("Missing <vendor>");
-				return;
+				Element vendorElement = Utils.getChildElement(packageElement,
+						"vendor");
+				if (vendorElement == null) {
+					m_out.println("Missing <vendor>");
+					return;
+				}
+				String packVendor = vendorElement.getTextContent().trim();
+
+				Element nameElement = Utils.getChildElement(packageElement,
+						"name");
+				if (nameElement == null) {
+					m_out.println("Missing <name>");
+					return;
+				}
+				String packName = nameElement.getTextContent().trim();
+
+				Element descriptionElement = Utils.getChildElement(
+						packageElement, "description");
+				if (descriptionElement == null) {
+					m_out.println("Missing <description>");
+					return;
+				}
+				String packDescription = descriptionElement.getTextContent()
+						.trim();
+
+				TreeNode vendorNode = packagesNode.addUniqueChild("vendor",
+						packVendor);
+
+				TreeNode packNode = vendorNode.getChild("package", packName);
+				if (packNode != null) {
+					m_out.println("Duplicate package name \"" + packName
+							+ "\", ignored.");
+					return;
+				}
+
+				packNode = new TreeNode("package");
+				packNode.setName(packName);
+				packNode.setDescription(packDescription);
+
+				vendorNode.addChild(packNode);
+				m_out.println("Package node \"" + packName + "\" added.");
+
+				packNode.addUniqueChild("version", version);
 			}
-			String packVendor = elemList.item(0).getTextContent().trim();
 
-			elemList = el.getElementsByTagName("name");
-			if (elemList.getLength() == 0) {
-				m_out.println("Missing <name>");
-				return;
+			// Devices
+			Element devicesElement = Utils.getChildElement(packageElement,
+					"devices");
+			if (devicesElement != null) {
+
+				TreeNode devicesNode = tree.addUniqueChild("devices", null);
+
+				List<Element> familyElements = Utils.getChildElementList(
+						devicesElement, "family");
+				for (Element familyElement : familyElements) {
+					String family = familyElement.getAttribute("Dfamily")
+							.trim();
+					String vendor = familyElement.getAttribute("Dvendor")
+							.trim();
+
+					String va[] = vendor.split("[:]");
+					TreeNode vendorNode = devicesNode.addUniqueChild("vendor",
+							va[0]);
+
+					TreeNode familyNode = vendorNode.addUniqueChild("family",
+							family);
+
+					Element processorElement = Utils.getChildElement(
+							familyElement, "processor");
+					String core = "";
+					if (processorElement != null) {
+						core = processorElement.getAttribute("Dcore").trim();
+					}
+
+					List<Element> subFamilyElements = Utils
+							.getChildElementList(familyElement, "subFamily");
+					for (Element subFamilyElement : subFamilyElements) {
+						String subFamily = subFamilyElement.getAttribute(
+								"DsubFamily").trim();
+
+						TreeNode subFamilyNode = familyNode.addUniqueChild(
+								"subfamily", subFamily);
+
+						// Process devices below subFamily
+						processDevice(subFamilyElement, subFamilyNode, core);
+					}
+
+					// Process devices below family
+					processDevice(familyElement, familyNode, core);
+				}
 			}
-			String packName = elemList.item(0).getTextContent().trim();
 
-			elemList = el.getElementsByTagName("description");
-			if (elemList.getLength() == 0) {
-				m_out.println("Missing <description>");
-				return;
+			// Boards
+			Element boardsElement = Utils.getChildElement(packageElement,
+					"boards");
+			if (boardsElement != null) {
+
+				TreeNode boardsNode = tree.addUniqueChild("boards", null);
+
+				List<Element> boardElements = Utils.getChildElementList(
+						boardsElement, "board");
+				for (Element boardElement : boardElements) {
+					String vendor = boardElement.getAttribute("vendor").trim();
+					String boardName = boardElement.getAttribute("name").trim();
+					String revision = boardElement.getAttribute("revision")
+							.trim();
+
+					Element descriptionElement = Utils.getChildElement(
+							boardElement, "description");
+					String description = "";
+					if (descriptionElement != null) {
+						description = descriptionElement.getTextContent()
+								.trim();
+					}
+					TreeNode vendorNode = boardsNode.addUniqueChild("vendor",
+							vendor);
+
+					TreeNode boardNode = vendorNode.addUniqueChild("board",
+							boardName);
+
+					if (revision.length() > 0) {
+						description += " (" + revision + ")";
+					}
+					boardNode.setDescription(description);
+				}
 			}
-			String packDescription = elemList.item(0).getTextContent().trim();
-
-			TreeNode vendorNode = tree.getChild(packVendor);
-			if (vendorNode == null) {
-				vendorNode = new TreeNode("vendor");
-				vendorNode.setName(packVendor);
-
-				tree.addChild(vendorNode);
-				m_out.println("Vendor node \"" + packVendor + "\" added.");
-			}
-
-			TreeNode packNode = vendorNode.getChild(packName);
-			if (packNode != null) {
-				m_out.println("Duplicate package name \"" + packName
-						+ "\", ignored.");
-				return;
-			}
-
-			packNode = new TreeNode("package");
-			packNode.setName(packName);
-			packNode.setDescription(packDescription);
-
-			vendorNode.addChild(packNode);
-			m_out.println("Package node \"" + packName + "\" added.");
-
-			TreeNode versionNode = new TreeNode("version");
-			versionNode.setName(version);
-			packNode.addChild(versionNode);
 
 		} catch (MalformedURLException e) {
 			Activator.log(e);
@@ -327,4 +402,75 @@ public class RefreshHandler extends AbstractHandler {
 
 	}
 
+	void processDevice(Element parentElement, TreeNode parentNode, String core) {
+
+		List<Element> deviceElements = Utils.getChildElementList(parentElement,
+				"device");
+		for (Element deviceElement : deviceElements) {
+			String device = deviceElement.getAttribute("Dname").trim();
+
+			String description = "";
+			if (core.length() > 0) {
+				description += core;
+			}
+
+			Element processorElement = Utils.getChildElement(deviceElement,
+					"processor");
+			if (processorElement != null) {
+				String clock = processorElement.getAttribute("Dclock").trim();
+				if (clock.length() > 0) {
+					int clockMHz = Integer.valueOf(clock) / 1000000;
+
+					if (description.length() > 0) {
+						description += ", ";
+					}
+
+					description += String.valueOf(clockMHz) + " MHz";
+				}
+			}
+
+			List<Element> memoryElements = Utils.getChildElementList(
+					deviceElement, "memory");
+
+			int ramKB = 0;
+			int romKB = 0;
+
+			for (Element memoryElement : memoryElements) {
+
+				String size = memoryElement.getAttribute("size").trim();
+				if (size.length() > 0) {
+					int sizeKB = Utils.convertHexInt(size) / 1024;
+
+					String id = memoryElement.getAttribute("id").trim();
+					if (id.startsWith("IRAM") || id.startsWith("RAM")) {
+						ramKB += sizeKB;
+					} else if (id.startsWith("IROM") || id.startsWith("ROM")) {
+						romKB += sizeKB;
+					}
+				}
+			}
+
+			if (ramKB > 0) {
+				if (description.length() > 0) {
+					description += ", ";
+				}
+
+				description += String.valueOf(ramKB) + " kB RAM";
+			}
+
+			if (romKB > 0) {
+				if (description.length() > 0) {
+					description += ", ";
+				}
+
+				description += String.valueOf(romKB) + " kB ROM";
+			}
+
+			TreeNode deviceNode = parentNode.addUniqueChild("device", device);
+			if (description.length() > 0) {
+				deviceNode.setDescription(description);
+			}
+		}
+
+	}
 }

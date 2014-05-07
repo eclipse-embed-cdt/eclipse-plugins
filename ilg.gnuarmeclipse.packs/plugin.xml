@@ -42,7 +42,7 @@
       </category>
       <view
             category="ilg.gnuarmeclipse.packs"
-            class="ilg.gnuarmeclipse.packs.ui.views.ProcessorsView"
+            class="ilg.gnuarmeclipse.packs.ui.views.DevicesView"
             icon="icons/hardware_chip.png"
             id="ilg.gnuarmeclipse.packs.ui.views.ProcessorsView"
             name="Devices">
@@ -59,7 +59,7 @@
             class="ilg.gnuarmeclipse.packs.ui.views.PackagesView"
             icon="icons/packages.png"
             id="ilg.gnuarmeclipse.packs.ui.views.PackagesView"
-            name="Packages">
+            name="Packs">
       </view>
       <!--
       <view

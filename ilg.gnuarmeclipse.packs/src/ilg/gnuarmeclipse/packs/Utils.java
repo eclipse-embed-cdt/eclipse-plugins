@@ -64,7 +64,7 @@ public class Utils {
 
 		// Allocate exactly the number of children
 		List<Element> list = new ArrayList<Element>(nodeList.getLength());
-		
+
 		for (int i = 0; i < nodeList.getLength(); ++i) {
 			Node node = nodeList.item(i);
 
@@ -77,4 +77,24 @@ public class Utils {
 		return list;
 	}
 
+	public static int convertHexInt(String hex) {
+
+		boolean isNegative = false;
+		if (hex.startsWith("+")) {
+			hex = hex.substring(1);
+		} else if (hex.startsWith("-")) {
+			hex = hex.substring(1);
+			isNegative = true;
+		}
+
+		if (hex.startsWith("0x") || hex.startsWith("0X")) {
+			hex = hex.substring(2);
+		}
+
+		int value = Integer.valueOf(hex, 16);
+		if (isNegative)
+			value = -value;
+
+		return value;
+	}
 }
