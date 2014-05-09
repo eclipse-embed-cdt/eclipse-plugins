@@ -4,6 +4,7 @@ import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.TreeNode;
 import ilg.gnuarmeclipse.packs.Utils;
+import ilg.gnuarmeclipse.packs.TreeNode.Condition;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -254,6 +255,7 @@ public class RefreshHandler extends AbstractHandler {
 			}
 
 			// Packages
+			TreeNode packNode;
 			{
 				TreeNode packagesNode = tree.addUniqueChild("packages", null);
 
@@ -285,7 +287,7 @@ public class RefreshHandler extends AbstractHandler {
 				TreeNode vendorNode = packagesNode.addUniqueChild("vendor",
 						packVendor);
 
-				TreeNode packNode = vendorNode.getChild("package", packName);
+				packNode = vendorNode.getChild("package", packName);
 				if (packNode != null) {
 					m_out.println("Duplicate package name \"" + packName
 							+ "\", ignored.");
@@ -300,6 +302,16 @@ public class RefreshHandler extends AbstractHandler {
 				m_out.println("Package node \"" + packName + "\" added.");
 
 				packNode.addUniqueChild("version", version);
+			}
+
+			// Devices
+			Element urlElement = Utils.getChildElement(packageElement, "url");
+			if (urlElement == null
+					|| urlElement.getTextContent().trim().length() == 0) {
+
+				TreeNode.Condition condition = packNode.new Condition(
+						Condition.DEPRECATED_TYPE);
+				packNode.addCondition(condition);
 			}
 
 			// Devices
@@ -320,9 +332,21 @@ public class RefreshHandler extends AbstractHandler {
 					String va[] = vendor.split("[:]");
 					TreeNode vendorNode = devicesNode.addUniqueChild("vendor",
 							va[0]);
+					if (va.length < 2) {
+						// Vendor not enumeration
+						continue;
+					}
+					vendorNode.putProperty("vendorid", va[1]);
 
 					TreeNode familyNode = vendorNode.addUniqueChild("family",
 							family);
+
+					// Add package conditions
+					TreeNode.Condition condition = packNode.new Condition(
+							Condition.DEVICEFAMILY_TYPE);
+					condition.setVendor(va[1]);
+					condition.setValue(family);
+					packNode.addCondition(condition);
 
 					Element processorElement = Utils.getChildElement(
 							familyElement, "processor");
@@ -341,11 +365,13 @@ public class RefreshHandler extends AbstractHandler {
 								"subfamily", subFamily);
 
 						// Process devices below subFamily
-						processDevice(subFamilyElement, subFamilyNode, core);
+						processDevice(subFamilyElement, subFamilyNode, core,
+								packNode, va[1]);
 					}
 
 					// Process devices below family
-					processDevice(familyElement, familyNode, core);
+					processDevice(familyElement, familyNode, core, packNode,
+							va[1]);
 				}
 			}
 
@@ -381,6 +407,13 @@ public class RefreshHandler extends AbstractHandler {
 						description += " (" + revision + ")";
 					}
 					boardNode.setDescription(description);
+
+					// Add package conditions
+					TreeNode.Condition condition = packNode.new Condition(
+							Condition.BOARD_TYPE);
+					condition.setVendor(vendor);
+					condition.setValue(boardName);
+					packNode.addCondition(condition);
 				}
 			}
 
@@ -402,7 +435,8 @@ public class RefreshHandler extends AbstractHandler {
 
 	}
 
-	void processDevice(Element parentElement, TreeNode parentNode, String core) {
+	void processDevice(Element parentElement, TreeNode parentNode, String core,
+			TreeNode packNode, String vendorid) {
 
 		List<Element> deviceElements = Utils.getChildElementList(parentElement,
 				"device");

@@ -56,7 +56,7 @@
       </view>
       <view
             category="ilg.gnuarmeclipse.packs"
-            class="ilg.gnuarmeclipse.packs.ui.views.PackagesView"
+            class="ilg.gnuarmeclipse.packs.ui.views.PacksView"
             icon="icons/packages.png"
             id="ilg.gnuarmeclipse.packs.ui.views.PackagesView"
             name="Packs">

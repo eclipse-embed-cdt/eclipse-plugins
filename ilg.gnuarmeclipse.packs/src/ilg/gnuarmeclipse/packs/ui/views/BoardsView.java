@@ -4,19 +4,39 @@ import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.TreeNode;
 
-import java.util.ArrayList;
-
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.ui.part.*;
-import org.eclipse.jface.viewers.*;
-import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.jface.action.*;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.ui.*;
-import org.eclipse.swt.widgets.Menu;
+import org.eclipse.jface.viewers.CellLabelProvider;
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
+import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.TreeSelection;
+import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerCell;
+import org.eclipse.jface.viewers.ViewerFilter;
+import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
-import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.ISharedImages;
+import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.part.DrillDownAdapter;
+import org.eclipse.ui.part.ViewPart;
 
 /**
  * This sample class demonstrates how to plug-in a new workbench view. The view
@@ -40,10 +60,15 @@ public class BoardsView extends ViewPart {
 	 */
 	public static final String ID = "ilg.gnuarmeclipse.packs.ui.views.BoardsView";
 
-	private TreeViewer viewer;
+	private TreeViewer m_viewer;
+	private Action m_removeFilters;
+
+	private PacksView m_packsView;
+
+	private PacksFilter m_packsFilter;
+	private ViewerFilter[] m_packsFilters;
+
 	private DrillDownAdapter drillDownAdapter;
-	// private Action action1;
-	// private Action action2;
 	private Action doubleClickAction;
 
 	/*
@@ -68,6 +93,10 @@ public class BoardsView extends ViewPart {
 			if (parent.equals(getViewSite())) {
 				if (m_tree == null) {
 					m_tree = PacksStorage.getCachedSubTree("boards");
+				}
+				if (m_tree == null) {
+					m_tree = new TreeNode("none");
+					return new Object[] { m_tree };
 				}
 				return getChildren(m_tree);
 			}
@@ -97,18 +126,22 @@ public class BoardsView extends ViewPart {
 			TreeNode node = ((TreeNode) obj);
 			String type = node.getType();
 
+			if ("none".equals(type)) {
+				return null;
+			}
+
 			if (!"board".equals(type)) {
 				String imageKey = ISharedImages.IMG_OBJ_FOLDER;
 				return PlatformUI.getWorkbench().getSharedImages()
 						.getImage(imageKey);
 			} else {
-				if (node.getName().hashCode() % 2 == 0) {
+				if (node.isInstalled()) {
 					return Activator.imageDescriptorFromPlugin(
-							Activator.PLUGIN_ID, "icons/board_grey.png")
+							Activator.PLUGIN_ID, "icons/board.png")
 							.createImage();
 				} else {
 					return Activator.imageDescriptorFromPlugin(
-							Activator.PLUGIN_ID, "icons/board.png")
+							Activator.PLUGIN_ID, "icons/board_grey.png")
 							.createImage();
 				}
 			}
@@ -116,7 +149,7 @@ public class BoardsView extends ViewPart {
 
 		@Override
 		public String getToolTipText(Object obj) {
-			
+
 			TreeNode node = ((TreeNode) obj);
 			String type = node.getType();
 
@@ -125,10 +158,11 @@ public class BoardsView extends ViewPart {
 				if (description != null && description.length() > 0) {
 					return description;
 				}
+			} else if ("vendor".equals(type)) {
+				return "Vendor";
 			}
 			return null;
 		}
-
 
 		@Override
 		public void update(ViewerCell cell) {
@@ -146,32 +180,85 @@ public class BoardsView extends ViewPart {
 	public BoardsView() {
 	}
 
+	private PacksView getPacksView() {
+		// Get the Packages View object and cache locally
+		if (m_packsView == null) {
+			m_packsView = (PacksView) getSite().getPage()
+					.findView(PacksView.ID);
+		}
+		return m_packsView;
+	}
+
 	/**
 	 * This is a callback that will allow us to create the viewer and initialize
 	 * it.
 	 */
 	public void createPartControl(Composite parent) {
 
-		viewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION
+		m_packsFilter = new PacksFilter();
+		m_packsFilters = new PacksFilter[] { m_packsFilter };
+
+		m_viewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION
 				| SWT.H_SCROLL | SWT.V_SCROLL);
 
-		drillDownAdapter = new DrillDownAdapter(viewer);
+		drillDownAdapter = new DrillDownAdapter(m_viewer);
 
-		ColumnViewerToolTipSupport.enableFor(viewer);
+		ColumnViewerToolTipSupport.enableFor(m_viewer);
 
-		viewer.setContentProvider(new ViewContentProvider());
-		viewer.setLabelProvider(new ViewLabelProvider());
-		viewer.setSorter(new NameSorter());
-		viewer.setInput(getViewSite());
+		m_viewer.setContentProvider(new ViewContentProvider());
+		m_viewer.setLabelProvider(new ViewLabelProvider());
+		m_viewer.setSorter(new NameSorter());
+		m_viewer.setInput(getViewSite());
+
+		addListners();
 
 		// Create the help context id for the viewer's control
-		PlatformUI.getWorkbench().getHelpSystem()
-				.setHelp(viewer.getControl(), "ilg.gnuarmeclipse.packs.viewer");
+		PlatformUI
+				.getWorkbench()
+				.getHelpSystem()
+				.setHelp(m_viewer.getControl(),
+						"ilg.gnuarmeclipse.packs.viewer");
 
 		makeActions();
 		hookContextMenu();
 		hookDoubleClickAction();
 		contributeToActionBars();
+
+	}
+
+	private void addListners() {
+
+		m_viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+
+				getPacksView();
+
+				IStructuredSelection selection = (IStructuredSelection) event
+						.getSelection();
+				if (selection == null || selection.isEmpty()) {
+					// System.out.println("Empty Selection");
+					m_packsView.getTreeViewer().resetFilters();
+					return;
+				}
+
+				if ("none".equals(((TreeNode) selection.getFirstElement())
+						.getType())) {
+					return;
+				}
+
+				// System.out.println("Selected: " + selection.toList());
+
+				// Get the Packages View object and cache locally
+
+				// Pass the current selection
+				m_packsFilter.setSelection(TreeNode.Condition.BOARD_TYPE,
+						selection);
+				// Set the filter and automatically update display
+				m_packsView.getTreeViewer().setFilters(m_packsFilters);
+			}
+		});
 	}
 
 	private void hookContextMenu() {
@@ -182,9 +269,9 @@ public class BoardsView extends ViewPart {
 				BoardsView.this.fillContextMenu(manager);
 			}
 		});
-		Menu menu = menuMgr.createContextMenu(viewer.getControl());
-		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuMgr, viewer);
+		Menu menu = menuMgr.createContextMenu(m_viewer.getControl());
+		m_viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuMgr, m_viewer);
 	}
 
 	private void contributeToActionBars() {
@@ -194,22 +281,25 @@ public class BoardsView extends ViewPart {
 	}
 
 	private void fillLocalPullDown(IMenuManager manager) {
+		manager.add(m_removeFilters);
 		// manager.add(action1);
 		// manager.add(new Separator());
 		// manager.add(action2);
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
+		manager.add(m_removeFilters);
 		// manager.add(action1);
 		// manager.add(action2);
 		// manager.add(new Separator());
-		// drillDownAdapter.addNavigationActions(manager);
+		drillDownAdapter.addNavigationActions(manager);
 
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 
 	private void fillLocalToolBar(IToolBarManager manager) {
+		manager.add(m_removeFilters);
 		// manager.add(action1);
 		// manager.add(action2);
 		// manager.add(new Separator());
@@ -217,56 +307,49 @@ public class BoardsView extends ViewPart {
 	}
 
 	private void makeActions() {
-		// action1 = new Action() {
-		// public void run() {
-		// showMessage("Action 1 executed");
-		// }
-		// };
-		// action1.setText("Action 1");
-		// action1.setToolTipText("Action 1 tooltip");
-		// action1.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
-		// getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
-		//
-		// action2 = new Action() {
-		// public void run() {
-		// showMessage("Action 2 executed");
-		// }
-		// };
-		// action2.setText("Action 2");
-		// action2.setToolTipText("Action 2 tooltip");
-		// action2.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
-		// getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
-		doubleClickAction = new Action() {
+
+		m_removeFilters = new Action() {
 			public void run() {
-				ISelection selection = viewer.getSelection();
-				Object obj = ((IStructuredSelection) selection)
-						.getFirstElement();
-				showMessage("Double-click detected on " + obj.toString());
+				// System.out.println("m_removeFilters.run()");
+				getPacksView().getTreeViewer().resetFilters();
+				// Empty selection
+				m_viewer.setSelection(new TreeSelection());
 			}
 		};
+
+		m_removeFilters.setText("Remove filters");
+		m_removeFilters
+				.setToolTipText("Remove all filters based on selections");
+		m_removeFilters.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+				Activator.PLUGIN_ID, "icons/removeall.png"));
+
+		// doubleClickAction = new Action() {
+		// public void run() {
+		// ISelection selection = m_viewer.getSelection();
+		// Object obj = ((IStructuredSelection) selection)
+		// .getFirstElement();
+		// showMessage("Double-click detected on " + obj.toString());
+		// }
+		// };
 	}
 
 	private void hookDoubleClickAction() {
-		viewer.addDoubleClickListener(new IDoubleClickListener() {
-			public void doubleClick(DoubleClickEvent event) {
-				doubleClickAction.run();
-			}
-		});
+		// m_viewer.addDoubleClickListener(new IDoubleClickListener() {
+		// public void doubleClick(DoubleClickEvent event) {
+		// doubleClickAction.run();
+		// }
+		// });
 	}
 
 	private void showMessage(String message) {
-		MessageDialog.openInformation(viewer.getControl().getShell(), "Boards",
-				message);
+		MessageDialog.openInformation(m_viewer.getControl().getShell(),
+				"Boards", message);
 	}
 
 	/**
 	 * Passing the focus request to the viewer's control.
 	 */
 	public void setFocus() {
-		viewer.getControl().setFocus();
+		m_viewer.getControl().setFocus();
 	}
-
-	// public Image getTitleImage(){
-	// return super.getTitleImage();
-	// }
 }

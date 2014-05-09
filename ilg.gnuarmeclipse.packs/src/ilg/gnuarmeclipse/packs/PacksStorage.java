@@ -21,6 +21,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.jar.Attributes;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -221,6 +223,45 @@ public class PacksStorage {
 					+ Utils.xmlEscape(node.getDescription()) + "</description>");
 		}
 
+		if (node.hasProperties()) {
+			putIndentation(depth * 2 + 1, writer);
+			writer.println("<properties>");
+
+			Map<String, String> properties = node.getProperties();
+			for (Object key : properties.keySet()) {
+				putIndentation(depth * 2 + 2, writer);
+				writer.println("<property name=\"" + key.toString() + "\">"
+						+ Utils.xmlEscape(properties.get(key).toString())
+						+ "</property>");
+			}
+
+			putIndentation(depth * 2 + 1, writer);
+			writer.println("</properties>");
+		}
+
+		if (node.hasConditions()) {
+			putIndentation(depth * 2 + 1, writer);
+			writer.println("<conditions>");
+
+			List<TreeNode.Condition> conditions = node.getConditions();
+			for (TreeNode.Condition condition : conditions) {
+				putIndentation(depth * 2 + 2, writer);
+				writer.print("<condition type=\"" + condition.getType() + "\"");
+				if (condition.hasVendor()) {
+					writer.print(" vendor=\"" + condition.getVendor() + "\"");
+				}
+				// if (condition.hasAttribute()) {
+				// writer.print(" attribute=\"" + condition.getAttribute()
+				// + "\"");
+				// }
+				writer.println(">" + Utils.xmlEscape(condition.getValue())
+						+ "</condition>");
+			}
+
+			putIndentation(depth * 2 + 1, writer);
+			writer.println("</conditions>");
+		}
+
 		List<TreeNode> children = node.getChildren();
 		if (children != null && !children.isEmpty()) {
 			putIndentation(depth * 2 + 1, writer);
@@ -270,6 +311,8 @@ public class PacksStorage {
 			Element nodeRootElement = Utils
 					.getChildElement(rootElement, "node");
 			if (nodeRootElement != null) {
+
+				// Children nodes
 				Element nodesElement = Utils.getChildElement(nodeRootElement,
 						"nodes");
 				if (nodesElement != null) {
@@ -293,27 +336,67 @@ public class PacksStorage {
 		return null;
 	}
 
-	private static TreeNode getCacheRecursive(Element el) {
+	private static TreeNode getCacheRecursive(Element nodeElement) {
 
-		String type = el.getAttribute("type");
+		String type = nodeElement.getAttribute("type");
 		TreeNode treeNode = new TreeNode(type);
 
-		String name = el.getAttribute("name");
+		String name = nodeElement.getAttribute("name");
 		treeNode.setName(name);
 
-		Element descriptionElement = Utils.getChildElement(el, "description");
+		Element descriptionElement = Utils.getChildElement(nodeElement,
+				"description");
 		if (descriptionElement != null) {
 			String description = descriptionElement.getTextContent();
 			treeNode.setDescription(description);
 		}
 
-		Element nodesElement = Utils.getChildElement(el, "nodes");
+		// Properties
+		Element propertiesElement = Utils.getChildElement(nodeElement,
+				"properties");
+		if (propertiesElement != null) {
+			List<Element> propertyElements = Utils.getChildElementList(
+					propertiesElement, "property");
+
+			for (Element propertyElement : propertyElements) {
+				String propertyName = propertyElement.getAttribute("name")
+						.trim();
+				String propertyValue = propertyElement.getTextContent().trim();
+
+				treeNode.putProperty(propertyName, propertyValue);
+			}
+		}
+
+		// Conditions
+		Element conditionsElement = Utils.getChildElement(nodeElement,
+				"conditions");
+		if (conditionsElement != null) {
+			List<Element> conditionElements = Utils.getChildElementList(
+					conditionsElement, "condition");
+
+			for (Element conditionElement : conditionElements) {
+				String conditionType = conditionElement.getAttribute("type")
+						.trim();
+				String conditionVendor = conditionElement
+						.getAttribute("vendor").trim();
+				String conditionValue = conditionElement.getTextContent().trim();
+
+				TreeNode.Condition condition = treeNode.new Condition(
+						conditionType);
+				condition.setVendor(conditionVendor);
+				condition.setValue(conditionValue);
+
+				treeNode.addCondition(condition);
+			}
+		}
+
+		Element nodesElement = Utils.getChildElement(nodeElement, "nodes");
 		if (nodesElement != null) {
 			List<Element> nodeElements = Utils.getChildElementList(
 					nodesElement, "node");
-			for (Element nodeElement : nodeElements) {
+			for (Element childElement : nodeElements) {
 
-				TreeNode childTreeNode = getCacheRecursive((Element) nodeElement);
+				TreeNode childTreeNode = getCacheRecursive((Element) childElement);
 				treeNode.addChild(childTreeNode);
 			}
 		}

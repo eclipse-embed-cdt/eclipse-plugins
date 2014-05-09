@@ -31,7 +31,6 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.IPropertyListener;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
@@ -55,26 +54,23 @@ import org.eclipse.ui.services.IServiceLocator;
  * <p>
  */
 
-public class PackagesView extends ViewPart {
+public class PacksView extends ViewPart {
 
 	/**
 	 * The ID of the view as specified by the extension.
 	 */
 	public static final String ID = "ilg.gnuarmeclipse.packs.ui.views.PackagesView";
 
-	private TreeViewer viewer;
+	private TreeViewer m_viewer;
 	private DrillDownAdapter drillDownAdapter;
-	private Action refreshAction;
+	private Action m_refreshAction;
 	// private Action action1;
 	// private Action action2;
 	private Action doubleClickAction;
 
-	private IPropertyListener propertyListener = new IPropertyListener() {
-		public void propertyChanged(Object source, int propId) {
-			System.out
-					.println("propertyChanged(" + source + "," + propId + ")");
-		}
-	};
+	public TreeViewer getTreeViewer() {
+		return m_viewer;
+	}
 
 	/*
 	 * The content provider class is responsible for providing objects to the
@@ -99,6 +95,11 @@ public class PackagesView extends ViewPart {
 			if (parent.equals(getViewSite())) {
 				if (m_tree == null) {
 					m_tree = PacksStorage.getCachedSubTree("packages");
+				}
+
+				if (m_tree == null) {
+					m_tree = new TreeNode("none");
+					return new Object[] { m_tree };
 				}
 				return getChildren(m_tree);
 			}
@@ -133,18 +134,17 @@ public class PackagesView extends ViewPart {
 					return PlatformUI.getWorkbench().getSharedImages()
 							.getImage(imageKey);
 				} else if ("package".equals(type)) {
-					if (node.getName().hashCode() % 2 == 0) {
+					if (node.isInstalled()) {
 						return Activator.imageDescriptorFromPlugin(
 								Activator.PLUGIN_ID, "icons/package_obj.png")
 								.createImage();
 					} else {
-						return Activator
-								.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-										"icons/package_obj_grey.png")
-								.createImage();
+						return Activator.imageDescriptorFromPlugin(
+								Activator.PLUGIN_ID,
+								"icons/package_obj_grey.png").createImage();
 					}
 				} else if ("version".equals(type)) {
-					if (node.getParent().getName().hashCode() % 2 == 0) {
+					if (node.isInstalled()) {
 						return Activator
 								.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 										"icons/jtypeassist_co.png")
@@ -189,7 +189,7 @@ public class PackagesView extends ViewPart {
 	/**
 	 * The constructor.
 	 */
-	public PackagesView() {
+	public PacksView() {
 	}
 
 	/**
@@ -220,20 +220,23 @@ public class PackagesView extends ViewPart {
 
 		// viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL |
 		// SWT.V_SCROLL);
-		viewer = new TreeViewer(tree);
+		m_viewer = new TreeViewer(tree);
 
-		drillDownAdapter = new DrillDownAdapter(viewer);
+		drillDownAdapter = new DrillDownAdapter(m_viewer);
 
-		viewer.setContentProvider(new ViewContentProvider());
+		m_viewer.setContentProvider(new ViewContentProvider());
 		// viewer.setLabelProvider(new ViewLabelProvider());
-		viewer.setLabelProvider(new TableLabelProvider());
-		viewer.setSorter(new NameSorter());
-		viewer.setAutoExpandLevel(2);
-		viewer.setInput(getViewSite());
+		m_viewer.setLabelProvider(new TableLabelProvider());
+		m_viewer.setSorter(new NameSorter());
+		m_viewer.setAutoExpandLevel(2);
+		m_viewer.setInput(getViewSite());
 
 		// Create the help context id for the viewer's control
-		PlatformUI.getWorkbench().getHelpSystem()
-				.setHelp(viewer.getControl(), "ilg.gnuarmeclipse.packs.viewer");
+		PlatformUI
+				.getWorkbench()
+				.getHelpSystem()
+				.setHelp(m_viewer.getControl(),
+						"ilg.gnuarmeclipse.packs.viewer");
 
 		makeActions();
 		hookContextMenu();
@@ -253,12 +256,12 @@ public class PackagesView extends ViewPart {
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
-				PackagesView.this.fillContextMenu(manager);
+				PacksView.this.fillContextMenu(manager);
 			}
 		});
-		Menu menu = menuMgr.createContextMenu(viewer.getControl());
-		viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuMgr, viewer);
+		Menu menu = menuMgr.createContextMenu(m_viewer.getControl());
+		m_viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuMgr, m_viewer);
 	}
 
 	private void contributeToActionBars() {
@@ -268,7 +271,7 @@ public class PackagesView extends ViewPart {
 	}
 
 	private void fillLocalPullDown(IMenuManager manager) {
-		manager.add(refreshAction);
+		manager.add(m_refreshAction);
 
 		// manager.add(action1);
 		// manager.add(new Separator());
@@ -276,7 +279,7 @@ public class PackagesView extends ViewPart {
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
-		manager.add(refreshAction);
+		manager.add(m_refreshAction);
 
 		// manager.add(action1);
 		// manager.add(action2);
@@ -287,7 +290,7 @@ public class PackagesView extends ViewPart {
 	}
 
 	private void fillLocalToolBar(IToolBarManager manager) {
-		manager.add(refreshAction);
+		manager.add(m_refreshAction);
 		// manager.add(action2);
 		// manager.add(new Separator());
 		// drillDownAdapter.addNavigationActions(manager);
@@ -295,7 +298,7 @@ public class PackagesView extends ViewPart {
 
 	private void makeActions() {
 
-		refreshAction = new Action() {
+		m_refreshAction = new Action() {
 			public void run() {
 				// Obtain IServiceLocator implementer, e.g. from
 				// PlatformUI.getWorkbench():
@@ -321,10 +324,10 @@ public class PackagesView extends ViewPart {
 				}
 			}
 		};
-		refreshAction.setText("Refresh");
-		refreshAction
+		m_refreshAction.setText("Refresh");
+		m_refreshAction
 				.setToolTipText("Read packages descriptions from all sites.");
-		refreshAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+		m_refreshAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/refresh_nav.gif"));
 
 		// refreshAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
@@ -334,7 +337,7 @@ public class PackagesView extends ViewPart {
 
 		doubleClickAction = new Action() {
 			public void run() {
-				ISelection selection = viewer.getSelection();
+				ISelection selection = m_viewer.getSelection();
 				Object obj = ((IStructuredSelection) selection)
 						.getFirstElement();
 				showMessage("Double-click detected on " + obj.toString());
@@ -343,7 +346,7 @@ public class PackagesView extends ViewPart {
 	}
 
 	private void hookDoubleClickAction() {
-		viewer.addDoubleClickListener(new IDoubleClickListener() {
+		m_viewer.addDoubleClickListener(new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
 				doubleClickAction.run();
 			}
@@ -351,7 +354,7 @@ public class PackagesView extends ViewPart {
 	}
 
 	private void showMessage(String message) {
-		MessageDialog.openInformation(viewer.getControl().getShell(),
+		MessageDialog.openInformation(m_viewer.getControl().getShell(),
 				"Packs", message);
 	}
 
@@ -359,6 +362,6 @@ public class PackagesView extends ViewPart {
 	 * Passing the focus request to the viewer's control.
 	 */
 	public void setFocus() {
-		viewer.getControl().setFocus();
+		m_viewer.getControl().setFocus();
 	}
 }

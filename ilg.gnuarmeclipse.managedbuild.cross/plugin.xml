@@ -4172,11 +4172,33 @@
             name="FLASH Hex file"
             priority="normal">
       </content-type>
+      <!--
+      <content-type 
+      		id="ilg.gnuarmeclipse.managedbuild.cross.content-type.s"
+			name=".s Assembly file"
+			base-type="org.eclipse.cdt.core.asmSource" 
+			file-extensions="s"
+			priority="high" />
       <file-association
             content-type="org.eclipse.cdt.core.asmSource"
             file-extensions="s,S,asm">
       </file-association>
+      			-->
+      
    </extension>
+   <!--
+   <extension 
+   		 point="org.eclipse.cdt.core.language">
+	  <language
+			class="org.eclipse.cdt.core.model.AssemblyLanguage"
+			id="ilg.gnuarmeclipse.managedbuild.cross.assembly" 
+			name="Assembly">
+			<contentType 
+				id="ilg.gnuarmeclipse.managedbuild.cross.content-type.s">
+			</contentType>
+	  </language>
+   </extension>
+   -->
    <extension
          point="org.eclipse.cdt.core.templates">
       <template
