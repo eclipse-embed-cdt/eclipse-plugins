@@ -13,6 +13,9 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 	public static final String FAMILY_TYPE = "family";
 	public static final String SUBFAMILY_TYPE = "subfamily";
 
+	public static final String URL_PROPERTY = "url";
+	public static final String VENDOR_PROPERTY = "vendor";
+	
 	public class Condition {
 
 		public static final String BOARD_TYPE = "board";
@@ -149,7 +152,7 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 		if (m_children != null) {
 			return m_children.toArray(new TreeNode[m_children.size()]);
 		} else {
-			return null;
+			return new TreeNode[0];
 		}
 	}
 

@@ -3,6 +3,7 @@ package ilg.gnuarmeclipse.packs.ui.views;
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.TreeNode;
+import ilg.gnuarmeclipse.packs.handlers.InstallJob;
 
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -12,17 +13,17 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ILabelProviderListener;
-import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -35,7 +36,6 @@ import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
-import org.eclipse.ui.part.DrillDownAdapter;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.services.IServiceLocator;
 
@@ -62,11 +62,11 @@ public class PacksView extends ViewPart {
 	public static final String ID = "ilg.gnuarmeclipse.packs.ui.views.PackagesView";
 
 	private TreeViewer m_viewer;
-	private DrillDownAdapter drillDownAdapter;
+
 	private Action m_refreshAction;
-	// private Action action1;
-	// private Action action2;
-	private Action doubleClickAction;
+	private Action m_installAction;
+	private Action m_removeAction;
+	private ViewContentProvider m_contentProvider;
 
 	public TreeViewer getTreeViewer() {
 		return m_viewer;
@@ -94,6 +94,7 @@ public class PacksView extends ViewPart {
 		public Object[] getElements(Object parent) {
 			if (parent.equals(getViewSite())) {
 				if (m_tree == null) {
+					System.out.println("getCachedSubTree(packages)");
 					m_tree = PacksStorage.getCachedSubTree("packages");
 				}
 
@@ -116,6 +117,11 @@ public class PacksView extends ViewPart {
 
 		public boolean hasChildren(Object parent) {
 			return ((TreeNode) parent).hasChildren();
+		}
+
+		public void forceRefresh() {
+			System.out.println("forceRefresh()");
+			m_tree = null;
 		}
 	}
 
@@ -160,11 +166,18 @@ public class PacksView extends ViewPart {
 		}
 
 		public String getColumnText(Object obj, int columnIndex) {
+
+			TreeNode node = ((TreeNode) obj);
+
 			switch (columnIndex) {
 			case 0:
-				return " " + ((TreeNode) obj).getName();
+				String name = node.getName();
+				if (node.isInstalled() && "version".equals(node.getType())) {
+					name += " (installed)";
+				}
+				return " " + name;
 			case 1:
-				return " " + ((TreeNode) obj).getDescription();
+				return " " + node.getDescription();
 			}
 			return null;
 		}
@@ -184,16 +197,32 @@ public class PacksView extends ViewPart {
 	}
 
 	class NameSorter extends ViewerSorter {
+
+		public int compare(Viewer viewer, Object e1, Object e2) {
+
+			TreeNode n1 = (TreeNode) e1;
+			String name1 = n1.getName();
+			String name2 = ((TreeNode) e2).getName();
+
+			if ("version".equals(n1.getType())) {
+				// Reverse the order for versions
+				return getComparator().compare(name2, name1);
+			} else {
+				return getComparator().compare(name1, name2);
+			}
+		}
+
 	}
 
 	/**
 	 * The constructor.
 	 */
 	public PacksView() {
+		Activator.setPacksView(this);
 	}
 
 	/**
-	 * This is a callback that will allow us to create the viewer and initialize
+	 * This is a callback that will allow us to create the viewer and initialise
 	 * it.
 	 */
 	public void createPartControl(Composite parent) {
@@ -204,32 +233,24 @@ public class PacksView extends ViewPart {
 		tree.setLinesVisible(true);
 
 		TreeColumn nameColumn = new TreeColumn(tree, SWT.NONE);
-		// column1.setAlignment(SWT.CENTER);
 		nameColumn.setText("  Name");
 		nameColumn.setWidth(190);
-
-		// TreeColumn statusColumn = new TreeColumn(tree, SWT.NONE);
-		// statusColumn.setAlignment(SWT.CENTER);
-		// statusColumn.setText("Status");
-		// statusColumn.setWidth(50);
 
 		TreeColumn descriptionColumn = new TreeColumn(tree, SWT.NONE);
 		descriptionColumn.setAlignment(SWT.LEFT);
 		descriptionColumn.setText(" Description");
 		descriptionColumn.setWidth(450);
 
-		// viewer = new TreeViewer(parent, SWT.MULTI | SWT.H_SCROLL |
-		// SWT.V_SCROLL);
 		m_viewer = new TreeViewer(tree);
 
-		drillDownAdapter = new DrillDownAdapter(m_viewer);
-
-		m_viewer.setContentProvider(new ViewContentProvider());
-		// viewer.setLabelProvider(new ViewLabelProvider());
+		m_contentProvider = new ViewContentProvider();
+		m_viewer.setContentProvider(m_contentProvider);
 		m_viewer.setLabelProvider(new TableLabelProvider());
 		m_viewer.setSorter(new NameSorter());
 		m_viewer.setAutoExpandLevel(2);
 		m_viewer.setInput(getViewSite());
+
+		addListners();
 
 		// Create the help context id for the viewer's control
 		PlatformUI
@@ -249,6 +270,52 @@ public class PacksView extends ViewPart {
 
 	public void dispose() {
 		super.dispose();
+		System.out.println("dispose()");
+	}
+
+	private void addListners() {
+
+		m_viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+
+				IStructuredSelection selection = (IStructuredSelection) event
+						.getSelection();
+				if (selection == null || selection.isEmpty()) {
+					System.out.println("Empty Selection");
+					// Activator.getPacksView().getTreeViewer().resetFilters();
+					return;
+				}
+
+				if ("none".equals(((TreeNode) selection.getFirstElement())
+						.getType())) {
+					return;
+				}
+
+				boolean doEnableInstall = false;
+				boolean doEnableRemove = false;
+				for (Object obj : selection.toArray()) {
+					TreeNode n = (TreeNode) obj;
+					String type = n.getType();
+
+					// Check if the selection contain any package or
+					// version not installed
+					if (("package".equals(type) || "version".equals(type))
+							&& !n.isInstalled()) {
+						doEnableInstall = true;
+					}
+					if (("package".equals(type) || "version".equals(type))
+							&& n.isInstalled()) {
+						doEnableRemove = true;
+					}
+				}
+				m_installAction.setEnabled(doEnableInstall);
+				m_removeAction.setEnabled(doEnableRemove);
+
+				System.out.println("Selected: " + selection.toList());
+			}
+		});
 	}
 
 	private void hookContextMenu() {
@@ -270,30 +337,35 @@ public class PacksView extends ViewPart {
 		fillLocalToolBar(bars.getToolBarManager());
 	}
 
+	// Top down arrow
 	private void fillLocalPullDown(IMenuManager manager) {
 		manager.add(m_refreshAction);
+		manager.add(new Separator());
+		manager.add(m_installAction);
+		manager.add(m_removeAction);
 
 		// manager.add(action1);
 		// manager.add(new Separator());
 		// manager.add(action2);
 	}
 
+	// Right click actions
 	private void fillContextMenu(IMenuManager manager) {
-		manager.add(m_refreshAction);
+		manager.add(m_installAction);
+		manager.add(m_removeAction);
 
-		// manager.add(action1);
-		// manager.add(action2);
 		// manager.add(new Separator());
-		// drillDownAdapter.addNavigationActions(manager);
+
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 
+	// Top tool bar buttons
 	private void fillLocalToolBar(IToolBarManager manager) {
+		manager.add(m_installAction);
+		manager.add(m_removeAction);
+		manager.add(new Separator());
 		manager.add(m_refreshAction);
-		// manager.add(action2);
-		// manager.add(new Separator());
-		// drillDownAdapter.addNavigationActions(manager);
 	}
 
 	private void makeActions() {
@@ -330,32 +402,46 @@ public class PacksView extends ViewPart {
 		m_refreshAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/refresh_nav.gif"));
 
-		// refreshAction.setImageDescriptor(PlatformUI.getWorkbench().getSharedImages().
-		// getImageDescriptor(ISharedImages.IMG_OBJS_INFO_TSK));
-
-		// ControlFlowGraphPlugin.getDefault().getImageDescriptor("icons/refresh_view.gif")
-
-		doubleClickAction = new Action() {
+		// -----
+		m_installAction = new Action() {
 			public void run() {
-				ISelection selection = m_viewer.getSelection();
-				Object obj = ((IStructuredSelection) selection)
-						.getFirstElement();
-				showMessage("Double-click detected on " + obj.toString());
+				System.out.println("m_installAction.run();");
+
+				TreeSelection selection = (TreeSelection) m_viewer
+						.getSelection();
+				System.out.println(selection);
+
+				InstallJob job = new InstallJob("Install Packs", selection);
+				job.schedule();
 			}
 		};
+		m_installAction.setText("Install");
+		m_installAction
+				.setToolTipText("Install a local copy of the selected packages.");
+		m_installAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+				Activator.PLUGIN_ID, "icons/package_mode.png"));
+		m_installAction.setEnabled(false);
+
+		// -----
+		m_removeAction = new Action() {
+			public void run() {
+				System.out.println("m_removeAction.run();");
+			}
+		};
+		m_removeAction.setText("Remove");
+		m_removeAction
+				.setToolTipText("Remove the local copy of the selected packages.");
+		m_removeAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+				Activator.PLUGIN_ID, "icons/removeall.png"));
+		m_removeAction.setEnabled(false);
 	}
 
 	private void hookDoubleClickAction() {
-		m_viewer.addDoubleClickListener(new IDoubleClickListener() {
-			public void doubleClick(DoubleClickEvent event) {
-				doubleClickAction.run();
-			}
-		});
-	}
-
-	private void showMessage(String message) {
-		MessageDialog.openInformation(m_viewer.getControl().getShell(),
-				"Packs", message);
+		// m_viewer.addDoubleClickListener(new IDoubleClickListener() {
+		// public void doubleClick(DoubleClickEvent event) {
+		// doubleClickAction.run();
+		// }
+		// });
 	}
 
 	/**
@@ -364,4 +450,29 @@ public class PacksView extends ViewPart {
 	public void setFocus() {
 		m_viewer.getControl().setFocus();
 	}
+
+	public void forceRefresh() {
+		m_contentProvider.forceRefresh();
+
+		Object[] expandedElements = m_viewer.getExpandedElements();
+		m_viewer.refresh();
+		for (Object element : expandedElements) {
+			m_viewer.setExpandedState(element, true);
+		}
+
+		System.out.println("Refreshed");
+	}
+
+	public void update_() {
+		ViewerFilter filters[] = m_viewer.getFilters();
+		m_viewer.resetFilters();
+		m_viewer.setFilters(filters);
+		System.out.println("Updated");
+	}
+
+	public void update(Object obj) {
+		m_viewer.update(obj, null);
+		System.out.println("Updated");
+	}
+
 }

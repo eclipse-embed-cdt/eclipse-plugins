@@ -22,7 +22,6 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.jar.Attributes;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -58,6 +57,7 @@ public class PacksStorage {
 		return sitesList;
 	}
 
+	// Return a list of urls where packages are stored
 	public static List<String[]> getSites() {
 
 		List<String[]> sites = parseSites();
@@ -67,11 +67,18 @@ public class PacksStorage {
 		return getDefaultSites();
 	}
 
-	private static String getFolderPath() {
+	// Return the absolute full path of the folder used to store packages
+	public static String getFolderPath() {
 
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 		String sitesFolderPath = store.getString(FolderConstants.P_FOLDER_PATH)
 				.trim();
+
+		// Remove the terminating separator
+		if (sitesFolderPath.endsWith(String.valueOf(IPath.SEPARATOR))) {
+			sitesFolderPath = sitesFolderPath.substring(0,
+					sitesFolderPath.length() - 1);
+		}
 
 		return sitesFolderPath;
 	}
@@ -379,7 +386,8 @@ public class PacksStorage {
 						.trim();
 				String conditionVendor = conditionElement
 						.getAttribute("vendor").trim();
-				String conditionValue = conditionElement.getTextContent().trim();
+				String conditionValue = conditionElement.getTextContent()
+						.trim();
 
 				TreeNode.Condition condition = treeNode.new Condition(
 						conditionType);

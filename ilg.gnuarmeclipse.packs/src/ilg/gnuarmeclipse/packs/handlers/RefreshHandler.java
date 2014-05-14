@@ -3,8 +3,8 @@ package ilg.gnuarmeclipse.packs.handlers;
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.TreeNode;
-import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.TreeNode.Condition;
+import ilg.gnuarmeclipse.packs.Utils;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -27,6 +27,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
@@ -152,6 +153,13 @@ public class RefreshHandler extends AbstractHandler {
 		// Write the tree to the cache.xml file in the packages folder
 		m_out.println("Tree written.");
 		PacksStorage.putCache(tree);
+
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				Activator.getPacksView().forceRefresh();
+			}
+		});
 
 		m_out.println("Refresh packs completed.");
 		m_running = false;
@@ -298,13 +306,22 @@ public class RefreshHandler extends AbstractHandler {
 				packNode.setName(packName);
 				packNode.setDescription(packDescription);
 
-				vendorNode.addChild(packNode);
-				m_out.println("Package node \"" + packName + "\" added.");
+				String shortUrl = url;
+				if (shortUrl.endsWith("/")) {
+					shortUrl = shortUrl.substring(0, shortUrl.length() - 1);
+				}
+				packNode.putProperty(TreeNode.URL_PROPERTY, shortUrl);
 
-				packNode.addUniqueChild("version", version);
+				packNode.putProperty(TreeNode.VENDOR_PROPERTY, packVendor);
+
+				// Attach package right below vendor node
+				vendorNode.addChild(packNode);
+
+				m_out.println("Package node \"" + packName + "\" added.");
 			}
 
-			// Devices
+			// Kludge: use URL to detect empty package
+			// TODO: use a better condition
 			Element urlElement = Utils.getChildElement(packageElement, "url");
 			if (urlElement == null
 					|| urlElement.getTextContent().trim().length() == 0) {
@@ -312,6 +329,36 @@ public class RefreshHandler extends AbstractHandler {
 				TreeNode.Condition condition = packNode.new Condition(
 						Condition.DEPRECATED_TYPE);
 				packNode.addCondition(condition);
+			}
+
+			// Releases
+			Element releasesElement = Utils.getChildElement(packageElement,
+					"releases");
+			if (releasesElement != null) {
+
+				List<Element> releaseElements = Utils.getChildElementList(
+						releasesElement, "release");
+				for (Element releaseElement : releaseElements) {
+					String releaseVersion = releaseElement.getAttribute(
+							"version").trim();
+					String description = releaseElement.getTextContent();
+
+					if (description != null) {
+						description = description.trim();
+					} else {
+						description = "";
+					}
+
+					TreeNode versionNode = packNode.addUniqueChild("version",
+							releaseVersion);
+					versionNode.setDescription(description);
+					m_out.println("Version node \"" + releaseVersion
+							+ "\" added.");
+				}
+			} else {
+				packNode.addUniqueChild("version", version);
+				m_out.println("Version node \"" + version
+						+ "\" added. (value from index)");
 			}
 
 			// Devices

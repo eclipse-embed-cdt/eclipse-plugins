@@ -11,8 +11,12 @@
 
 package ilg.gnuarmeclipse.packs;
 
+import ilg.gnuarmeclipse.packs.ui.views.PacksView;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.IViewPart;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -25,7 +29,9 @@ public class Activator extends AbstractUIPlugin {
 	public static final String PLUGIN_ID = "ilg.gnuarmeclipse.packs"; //$NON-NLS-1$
 
 	// The shared instance
-	private static Activator m_plugin;
+	private static Activator ms_plugin;
+
+	private static PacksView ms_packsView;
 
 	/**
 	 * The constructor
@@ -44,7 +50,7 @@ public class Activator extends AbstractUIPlugin {
 	public void start(BundleContext context) throws Exception {
 
 		super.start(context);
-		m_plugin = this;
+		ms_plugin = this;
 	}
 
 	/*
@@ -55,7 +61,7 @@ public class Activator extends AbstractUIPlugin {
 	 * )
 	 */
 	public void stop(BundleContext context) throws Exception {
-		m_plugin = null;
+		ms_plugin = null;
 		super.stop(context);
 	}
 
@@ -65,7 +71,7 @@ public class Activator extends AbstractUIPlugin {
 	 * @return the shared instance
 	 */
 	public static Activator getDefault() {
-		return m_plugin;
+		return ms_plugin;
 	}
 
 	public static void log(IStatus status) {
@@ -74,6 +80,29 @@ public class Activator extends AbstractUIPlugin {
 
 	public static void log(Throwable e) {
 		log(new Status(IStatus.ERROR, PLUGIN_ID, 1, "Internal Error", e)); //$NON-NLS-1$
+	}
+
+	// -----
+
+	public static IViewPart findView(String viewId) {
+		try {
+			return PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+					.getActivePage().findView(viewId);
+		} catch (NullPointerException e) {
+			log(e);
+			return null;
+		}
+	}
+
+	public static void setPacksView(PacksView packsView) {
+		ms_packsView = packsView;
+	}
+
+	public static PacksView getPacksView() {
+		if (ms_packsView == null) {
+			ms_packsView = (PacksView) findView(PacksView.ID);
+		}
+		return ms_packsView;
 	}
 
 }

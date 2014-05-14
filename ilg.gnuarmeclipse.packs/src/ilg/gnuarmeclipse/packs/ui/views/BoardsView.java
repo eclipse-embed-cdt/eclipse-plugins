@@ -10,12 +10,8 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
-import org.eclipse.jface.viewers.DoubleClickEvent;
-import org.eclipse.jface.viewers.IDoubleClickListener;
-import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -63,13 +59,12 @@ public class BoardsView extends ViewPart {
 	private TreeViewer m_viewer;
 	private Action m_removeFilters;
 
-	private PacksView m_packsView;
-
 	private PacksFilter m_packsFilter;
 	private ViewerFilter[] m_packsFilters;
 
 	private DrillDownAdapter drillDownAdapter;
-	private Action doubleClickAction;
+
+	// private Action doubleClickAction;
 
 	/*
 	 * The content provider class is responsible for providing objects to the
@@ -180,15 +175,6 @@ public class BoardsView extends ViewPart {
 	public BoardsView() {
 	}
 
-	private PacksView getPacksView() {
-		// Get the Packages View object and cache locally
-		if (m_packsView == null) {
-			m_packsView = (PacksView) getSite().getPage()
-					.findView(PacksView.ID);
-		}
-		return m_packsView;
-	}
-
 	/**
 	 * This is a callback that will allow us to create the viewer and initialize
 	 * it.
@@ -233,13 +219,11 @@ public class BoardsView extends ViewPart {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 
-				getPacksView();
-
 				IStructuredSelection selection = (IStructuredSelection) event
 						.getSelection();
 				if (selection == null || selection.isEmpty()) {
 					// System.out.println("Empty Selection");
-					m_packsView.getTreeViewer().resetFilters();
+					Activator.getPacksView().getTreeViewer().resetFilters();
 					return;
 				}
 
@@ -250,13 +234,12 @@ public class BoardsView extends ViewPart {
 
 				// System.out.println("Selected: " + selection.toList());
 
-				// Get the Packages View object and cache locally
-
 				// Pass the current selection
 				m_packsFilter.setSelection(TreeNode.Condition.BOARD_TYPE,
 						selection);
 				// Set the filter and automatically update display
-				m_packsView.getTreeViewer().setFilters(m_packsFilters);
+				Activator.getPacksView().getTreeViewer()
+						.setFilters(m_packsFilters);
 			}
 		});
 	}
@@ -311,7 +294,7 @@ public class BoardsView extends ViewPart {
 		m_removeFilters = new Action() {
 			public void run() {
 				// System.out.println("m_removeFilters.run()");
-				getPacksView().getTreeViewer().resetFilters();
+				Activator.getPacksView().getTreeViewer().resetFilters();
 				// Empty selection
 				m_viewer.setSelection(new TreeSelection());
 			}
@@ -339,11 +322,6 @@ public class BoardsView extends ViewPart {
 		// doubleClickAction.run();
 		// }
 		// });
-	}
-
-	private void showMessage(String message) {
-		MessageDialog.openInformation(m_viewer.getControl().getShell(),
-				"Boards", message);
 	}
 
 	/**
