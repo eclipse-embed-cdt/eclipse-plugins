@@ -1,4 +1,4 @@
-package ilg.gnuarmeclipse.packs.handlers;
+package ilg.gnuarmeclipse.packs.jobs;
 
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
@@ -31,8 +31,6 @@ import org.eclipse.ui.console.MessageConsoleStream;
 
 public class InstallJob extends Job {
 
-	private static String DOWNLOAD_FOLDER = ".Download";
-
 	private static boolean m_running = false;
 
 	private MessageConsoleStream m_out;
@@ -42,6 +40,7 @@ public class InstallJob extends Job {
 	private IProgressMonitor m_monitor;
 
 	public InstallJob(String name, TreeSelection selection) {
+
 		super(name);
 
 		MessageConsole myConsole = Utils.findConsole();
@@ -49,7 +48,11 @@ public class InstallJob extends Job {
 
 		m_selection = selection;
 
-		m_folderPath = PacksStorage.getFolderPath();
+		try {
+			m_folderPath = PacksStorage.getFolderPath();
+		} catch (IOException e) {
+			Activator.log(e);
+		}
 	}
 
 	@Override
@@ -76,13 +79,11 @@ public class InstallJob extends Job {
 			}
 		}
 
-		int workUnits = 1000;
+		int workUnits = 0;
 		for (int i = 0; i < packs.size(); ++i) {
 			try {
 				workUnits += computeWorkUnits(packs.get(i));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
 		}
 
@@ -114,14 +115,20 @@ public class InstallJob extends Job {
 				installPack(versionNode);
 				installedPacksCount++;
 
-				versionNode.setIsInstalled(true);
-				packNode.setIsInstalled(true);
+				final Object[] lists = PacksStorage.updateInstalledVersionNode(
+						versionNode, true);
 
 				Display.getDefault().asyncExec(new Runnable() {
 					@Override
 					public void run() {
 						Activator.getPacksView().update(versionNode);
 						Activator.getPacksView().update(packNode);
+
+						Activator.getPacksView().updateButtonsEnableStatus(
+								m_selection);
+
+						Activator.getDevicesView().update(lists[0]);
+						Activator.getBoardsView().update(lists[1]);
 					}
 				});
 
@@ -136,10 +143,6 @@ public class InstallJob extends Job {
 			return Status.CANCEL_STATUS;
 		}
 
-		// Write the tree to the cache.xml file in the packages folder
-		// m_out.println("Tree written.");
-		// PacksStorage.putCache(tree);
-
 		if (installedPacksCount == 1) {
 			m_out.println("1 pack installed.");
 		} else {
@@ -149,7 +152,6 @@ public class InstallJob extends Job {
 
 		m_running = false;
 		return Status.OK_STATUS;
-
 	}
 
 	private int computeWorkUnits(TreeNode versionNode) throws IOException {
@@ -195,14 +197,16 @@ public class InstallJob extends Job {
 		String pdscName = vendor + "." + packNode.getName() + ".pdsc";
 		URL pdscUrl;
 		pdscUrl = new URL(url + "/" + pdscName);
-		File pdscFile = getFile(new Path(DOWNLOAD_FOLDER), pdscName);
+		File pdscFile = getFile(new Path(PacksStorage.DOWNLOAD_FOLDER),
+				pdscName);
 
 		String packName = vendor + "." + packNode.getName() + "."
 				+ versionNode.getName() + ".pack";
 		URL packUrl;
 		packUrl = new URL(url + "/" + packName);
 
-		File packFile = getFile(new Path(DOWNLOAD_FOLDER), packName);
+		File packFile = getFile(new Path(PacksStorage.DOWNLOAD_FOLDER),
+				packName);
 
 		// Read in the .pack file
 		copyFile(packUrl, packFile);
@@ -216,6 +220,9 @@ public class InstallJob extends Job {
 		// extract files from archive
 		unzip(path, packFile);
 
+		makeFolderReadOnlyRecursive(path.toFile());
+
+		m_out.println("Files set to read only");
 	}
 
 	private void copyFile(URL sourceUrl, File destinationFile)
@@ -288,6 +295,8 @@ public class InstallJob extends Job {
 					countBytes += bytesRead;
 				}
 				output.close();
+
+				outFile.setReadOnly();
 				++countFiles;
 			}
 
@@ -296,11 +305,28 @@ public class InstallJob extends Job {
 
 		zipInput.closeEntry();
 		zipInput.close();
-		m_out.println(countFiles + " files written, " + convertSizeToString(countBytes));
+		m_out.println(countFiles + " files written, "
+				+ convertSizeToString(countBytes));
+	}
+
+	private static void makeFolderReadOnlyRecursive(File path) {
+		if (path == null)
+			return;
+		if (path.exists()) {
+			for (File f : path.listFiles()) {
+				if (f.isDirectory()) {
+					makeFolderReadOnlyRecursive(f);
+					f.setWritable(false, false);
+				} else {
+					f.setWritable(false, false);
+				}
+			}
+			path.setWritable(false, false);
+		}
 	}
 
 	private String convertSizeToString(int size) {
-		
+
 		String sizeString;
 		if (size < 1024) {
 			sizeString = String.valueOf(size) + "B";

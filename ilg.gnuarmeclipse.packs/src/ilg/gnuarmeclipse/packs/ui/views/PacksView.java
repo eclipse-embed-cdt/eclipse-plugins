@@ -3,7 +3,11 @@ package ilg.gnuarmeclipse.packs.ui.views;
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.TreeNode;
-import ilg.gnuarmeclipse.packs.handlers.InstallJob;
+import ilg.gnuarmeclipse.packs.UsingDefaultFileException;
+import ilg.gnuarmeclipse.packs.jobs.InstallJob;
+import ilg.gnuarmeclipse.packs.jobs.RemoveJob;
+
+import java.util.List;
 
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -23,7 +27,6 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
-import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -95,7 +98,13 @@ public class PacksView extends ViewPart {
 			if (parent.equals(getViewSite())) {
 				if (m_tree == null) {
 					System.out.println("getCachedSubTree(packages)");
-					m_tree = PacksStorage.getCachedSubTree("packages");
+					try {
+						m_tree = PacksStorage.getCachedSubTree("packages");
+					} catch (UsingDefaultFileException e) {
+						Activator.log(e.getMessage());
+					} catch (Exception e) {
+						Activator.log(e);
+					}
 				}
 
 				if (m_tree == null) {
@@ -120,7 +129,7 @@ public class PacksView extends ViewPart {
 		}
 
 		public void forceRefresh() {
-			System.out.println("forceRefresh()");
+			// System.out.println("forceRefresh()");
 			m_tree = null;
 		}
 	}
@@ -198,6 +207,7 @@ public class PacksView extends ViewPart {
 
 	class NameSorter extends ViewerSorter {
 
+		@SuppressWarnings("unchecked")
 		public int compare(Viewer viewer, Object e1, Object e2) {
 
 			TreeNode n1 = (TreeNode) e1;
@@ -219,6 +229,8 @@ public class PacksView extends ViewPart {
 	 */
 	public PacksView() {
 		Activator.setPacksView(this);
+
+		System.out.println("PacksView()");
 	}
 
 	/**
@@ -226,6 +238,8 @@ public class PacksView extends ViewPart {
 	 * it.
 	 */
 	public void createPartControl(Composite parent) {
+
+		System.out.println("PacksView.createPartControl()");
 
 		Tree tree = new Tree(parent, SWT.BORDER | SWT.MULTI
 				| SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -270,7 +284,7 @@ public class PacksView extends ViewPart {
 
 	public void dispose() {
 		super.dispose();
-		System.out.println("dispose()");
+		System.out.println("PacksView.dispose()");
 	}
 
 	private void addListners() {
@@ -282,40 +296,45 @@ public class PacksView extends ViewPart {
 
 				IStructuredSelection selection = (IStructuredSelection) event
 						.getSelection();
-				if (selection == null || selection.isEmpty()) {
-					System.out.println("Empty Selection");
-					// Activator.getPacksView().getTreeViewer().resetFilters();
-					return;
-				}
 
-				if ("none".equals(((TreeNode) selection.getFirstElement())
-						.getType())) {
-					return;
-				}
-
-				boolean doEnableInstall = false;
-				boolean doEnableRemove = false;
-				for (Object obj : selection.toArray()) {
-					TreeNode n = (TreeNode) obj;
-					String type = n.getType();
-
-					// Check if the selection contain any package or
-					// version not installed
-					if (("package".equals(type) || "version".equals(type))
-							&& !n.isInstalled()) {
-						doEnableInstall = true;
-					}
-					if (("package".equals(type) || "version".equals(type))
-							&& n.isInstalled()) {
-						doEnableRemove = true;
-					}
-				}
-				m_installAction.setEnabled(doEnableInstall);
-				m_removeAction.setEnabled(doEnableRemove);
+				updateButtonsEnableStatus(selection);
 
 				System.out.println("Selected: " + selection.toList());
 			}
 		});
+	}
+
+	public void updateButtonsEnableStatus(IStructuredSelection selection) {
+
+		if (selection == null || selection.isEmpty()) {
+			System.out.println("Empty Selection");
+			// Activator.getPacksView().getTreeViewer().resetFilters();
+			return;
+		}
+
+		if ("none".equals(((TreeNode) selection.getFirstElement()).getType())) {
+			return;
+		}
+
+		boolean doEnableInstall = false;
+		boolean doEnableRemove = false;
+		for (Object obj : selection.toArray()) {
+			TreeNode node = (TreeNode) obj;
+			String type = node.getType();
+
+			// Check if the selection contain any package or
+			// version not installed
+			if (("package".equals(type) || "version".equals(type))
+					&& !node.isInstalled()) {
+				doEnableInstall = true;
+			}
+			if (("version".equals(type)) && node.isInstalled()) {
+				doEnableRemove = true;
+			}
+		}
+		m_installAction.setEnabled(doEnableInstall);
+		m_removeAction.setEnabled(doEnableRemove);
+
 	}
 
 	private void hookContextMenu() {
@@ -417,7 +436,7 @@ public class PacksView extends ViewPart {
 		};
 		m_installAction.setText("Install");
 		m_installAction
-				.setToolTipText("Install a local copy of the selected packages.");
+				.setToolTipText("Install a local copy of the selected package(s).");
 		m_installAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/package_mode.png"));
 		m_installAction.setEnabled(false);
@@ -426,11 +445,18 @@ public class PacksView extends ViewPart {
 		m_removeAction = new Action() {
 			public void run() {
 				System.out.println("m_removeAction.run();");
+
+				TreeSelection selection = (TreeSelection) m_viewer
+						.getSelection();
+				System.out.println(selection);
+
+				RemoveJob job = new RemoveJob("Remove Packs", selection);
+				job.schedule();
 			}
 		};
 		m_removeAction.setText("Remove");
 		m_removeAction
-				.setToolTipText("Remove the local copy of the selected packages.");
+				.setToolTipText("Remove the local copy of the selected package version(s).");
 		m_removeAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/removeall.png"));
 		m_removeAction.setEnabled(false);
@@ -456,23 +482,22 @@ public class PacksView extends ViewPart {
 
 		Object[] expandedElements = m_viewer.getExpandedElements();
 		m_viewer.refresh();
-		for (Object element : expandedElements) {
-			m_viewer.setExpandedState(element, true);
-		}
-
-		System.out.println("Refreshed");
-	}
-
-	public void update_() {
-		ViewerFilter filters[] = m_viewer.getFilters();
-		m_viewer.resetFilters();
-		m_viewer.setFilters(filters);
-		System.out.println("Updated");
+		m_viewer.setExpandedElements(expandedElements);
+		System.out.println("PacksView.forceRefresh()");
 	}
 
 	public void update(Object obj) {
-		m_viewer.update(obj, null);
-		System.out.println("Updated");
+
+		if (obj instanceof List<?>) {
+			@SuppressWarnings("unchecked")
+			List<TreeNode> list = (List<TreeNode>) obj;
+			for (Object node : list) {
+				m_viewer.update(node, null);
+			}
+		} else {
+			m_viewer.update(obj, null);
+		}
+		System.out.println("PacksView.updated()");
 	}
 
 }

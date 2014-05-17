@@ -18,6 +18,8 @@ public class PacksPerspective implements IPerspectiveFactory {
 
 	public PacksPerspective() {
 		super();
+		
+		System.out.println("PacksPerspective()");
 	}
 
 	public void createInitialLayout(IPageLayout factory) {
@@ -27,6 +29,8 @@ public class PacksPerspective implements IPerspectiveFactory {
 		addNewWizardShortcuts();
 		addPerspectiveShortcuts();
 		addViewShortcuts();
+		
+		System.out.println("PacksPerspective.createInitialLayout()");
 	}
 
 	private void addViews() {
@@ -44,7 +48,7 @@ public class PacksPerspective implements IPerspectiveFactory {
 		IFolderLayout topLeft = factory.createFolder("packsNav", // NON-NLS-1
 				IPageLayout.LEFT, 0.20f, factory.getEditorArea());
 		// topLeft.addView(IPageLayout.ID_RES_NAV);
-		topLeft.addView("ilg.gnuarmeclipse.packs.ui.views.ProcessorsView");
+		topLeft.addView("ilg.gnuarmeclipse.packs.ui.views.DevicesView");
 		topLeft.addView("ilg.gnuarmeclipse.packs.ui.views.BoardsView");
 
 		IFolderLayout topRight = factory.createFolder("packsOutline", // NON-NLS-1

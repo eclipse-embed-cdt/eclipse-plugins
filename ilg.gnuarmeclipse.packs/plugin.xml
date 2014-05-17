@@ -44,7 +44,7 @@
             category="ilg.gnuarmeclipse.packs"
             class="ilg.gnuarmeclipse.packs.ui.views.DevicesView"
             icon="icons/hardware_chip.png"
-            id="ilg.gnuarmeclipse.packs.ui.views.ProcessorsView"
+            id="ilg.gnuarmeclipse.packs.ui.views.DevicesView"
             name="Devices">
       </view>
       <view
@@ -76,7 +76,7 @@
       <perspectiveExtension
             targetID="org.eclipse.jdt.ui.JavaPerspective">
          <view
-               id="ilg.gnuarmeclipse.packs.ui.views.ProcessorsView"
+               id="ilg.gnuarmeclipse.packs.ui.views.DevicesView"
                ratio="0.5"
                relationship="right"
                relative="org.eclipse.ui.views.ProblemView">

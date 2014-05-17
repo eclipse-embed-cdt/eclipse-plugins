@@ -152,16 +152,23 @@ public class RefreshHandler extends AbstractHandler {
 
 		// Write the tree to the cache.xml file in the packages folder
 		m_out.println("Tree written.");
-		PacksStorage.putCache(tree);
+		try {
+			PacksStorage.putCache(tree);
+		} catch (IOException e) {
+			Activator.log(e);
+		}
 
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 				Activator.getPacksView().forceRefresh();
+				Activator.getDevicesView().forceRefresh();
+				Activator.getBoardsView().forceRefresh();
 			}
 		});
 
 		m_out.println("Refresh packs completed.");
+		m_out.println();
 		m_running = false;
 		return Status.OK_STATUS;
 	}

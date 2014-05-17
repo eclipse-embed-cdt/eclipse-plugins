@@ -11,8 +11,10 @@
 
 package ilg.gnuarmeclipse.packs.ui.preferences;
 
+import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.eclipse.cdt.ui.newui.AbstractCPropertyTab;
@@ -279,7 +281,11 @@ public class SitesPage extends PreferencePage implements
 
 		// System.out.println("SitesPage.performOk()");
 
-		PacksStorage.putSites(m_contentList);
+		try {
+			PacksStorage.putSites(m_contentList);
+		} catch (IOException e) {
+			Activator.log(e);
+		}
 		return super.performOk();
 	}
 

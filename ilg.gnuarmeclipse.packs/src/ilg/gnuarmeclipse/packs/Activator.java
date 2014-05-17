@@ -11,6 +11,8 @@
 
 package ilg.gnuarmeclipse.packs;
 
+import ilg.gnuarmeclipse.packs.ui.views.BoardsView;
+import ilg.gnuarmeclipse.packs.ui.views.DevicesView;
 import ilg.gnuarmeclipse.packs.ui.views.PacksView;
 
 import org.eclipse.core.runtime.IStatus;
@@ -32,6 +34,8 @@ public class Activator extends AbstractUIPlugin {
 	private static Activator ms_plugin;
 
 	private static PacksView ms_packsView;
+	private static DevicesView ms_devicesView;
+	private static BoardsView ms_boardsView;
 
 	/**
 	 * The constructor
@@ -51,6 +55,7 @@ public class Activator extends AbstractUIPlugin {
 
 		super.start(context);
 		ms_plugin = this;
+
 	}
 
 	/*
@@ -82,6 +87,10 @@ public class Activator extends AbstractUIPlugin {
 		log(new Status(IStatus.ERROR, PLUGIN_ID, 1, "Internal Error", e)); //$NON-NLS-1$
 	}
 
+	public static void log(String message) {
+		log(new Status(IStatus.ERROR, PLUGIN_ID, 1, message, null)); //$NON-NLS-1$
+	}
+
 	// -----
 
 	public static IViewPart findView(String viewId) {
@@ -94,8 +103,8 @@ public class Activator extends AbstractUIPlugin {
 		}
 	}
 
-	public static void setPacksView(PacksView packsView) {
-		ms_packsView = packsView;
+	public static void setPacksView(PacksView view) {
+		ms_packsView = view;
 	}
 
 	public static PacksView getPacksView() {
@@ -104,5 +113,28 @@ public class Activator extends AbstractUIPlugin {
 		}
 		return ms_packsView;
 	}
+
+	public static void setDevicesView(DevicesView view) {
+		ms_devicesView = view;
+	}
+
+	public static DevicesView getDevicesView() {
+		if (ms_devicesView == null) {
+			ms_devicesView = (DevicesView) findView(DevicesView.ID);
+		}
+		return ms_devicesView;
+	}
+
+	public static void setBoardsView(BoardsView view) {
+		ms_boardsView = view;
+	}
+
+	public static BoardsView getBoardsView() {
+		if (ms_boardsView == null) {
+			ms_boardsView = (BoardsView) findView(BoardsView.ID);
+		}
+		return ms_boardsView;
+	}
+
 
 }

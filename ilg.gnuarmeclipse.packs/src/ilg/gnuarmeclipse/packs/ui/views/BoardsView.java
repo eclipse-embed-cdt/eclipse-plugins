@@ -4,6 +4,8 @@ import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.TreeNode;
 
+import java.util.List;
+
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -31,7 +33,6 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.part.DrillDownAdapter;
 import org.eclipse.ui.part.ViewPart;
 
 /**
@@ -62,7 +63,9 @@ public class BoardsView extends ViewPart {
 	private PacksFilter m_packsFilter;
 	private ViewerFilter[] m_packsFilters;
 
-	private DrillDownAdapter drillDownAdapter;
+	// private DrillDownAdapter drillDownAdapter;
+
+	private ViewContentProvider m_contentProvider;
 
 	// private Action doubleClickAction;
 
@@ -87,7 +90,12 @@ public class BoardsView extends ViewPart {
 		public Object[] getElements(Object parent) {
 			if (parent.equals(getViewSite())) {
 				if (m_tree == null) {
-					m_tree = PacksStorage.getCachedSubTree("boards");
+					try {
+						m_tree = PacksStorage.getCachedSubTree("boards");
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						Activator.log(e);
+					}
 				}
 				if (m_tree == null) {
 					m_tree = new TreeNode("none");
@@ -108,6 +116,11 @@ public class BoardsView extends ViewPart {
 
 		public boolean hasChildren(Object parent) {
 			return ((TreeNode) parent).hasChildren();
+		}
+
+		public void forceRefresh() {
+			// System.out.println("forceRefresh()");
+			m_tree = null;
 		}
 	}
 
@@ -173,13 +186,18 @@ public class BoardsView extends ViewPart {
 	 * The constructor.
 	 */
 	public BoardsView() {
+		Activator.setBoardsView(this);
+
+		System.out.println("BoardsView()");
 	}
 
 	/**
-	 * This is a callback that will allow us to create the viewer and initialize
+	 * This is a callback that will allow us to create the viewer and initialise
 	 * it.
 	 */
 	public void createPartControl(Composite parent) {
+
+		System.out.println("BoardsView.createPartControl()");
 
 		m_packsFilter = new PacksFilter();
 		m_packsFilters = new PacksFilter[] { m_packsFilter };
@@ -187,11 +205,12 @@ public class BoardsView extends ViewPart {
 		m_viewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION
 				| SWT.H_SCROLL | SWT.V_SCROLL);
 
-		drillDownAdapter = new DrillDownAdapter(m_viewer);
+		// drillDownAdapter = new DrillDownAdapter(m_viewer);
 
 		ColumnViewerToolTipSupport.enableFor(m_viewer);
 
-		m_viewer.setContentProvider(new ViewContentProvider());
+		m_contentProvider = new ViewContentProvider();
+		m_viewer.setContentProvider(m_contentProvider);
 		m_viewer.setLabelProvider(new ViewLabelProvider());
 		m_viewer.setSorter(new NameSorter());
 		m_viewer.setInput(getViewSite());
@@ -210,6 +229,11 @@ public class BoardsView extends ViewPart {
 		hookDoubleClickAction();
 		contributeToActionBars();
 
+	}
+
+	public void dispose() {
+		super.dispose();
+		System.out.println("BoardsView.dispose()");
 	}
 
 	private void addListners() {
@@ -275,7 +299,7 @@ public class BoardsView extends ViewPart {
 		// manager.add(action1);
 		// manager.add(action2);
 		// manager.add(new Separator());
-		drillDownAdapter.addNavigationActions(manager);
+		// drillDownAdapter.addNavigationActions(manager);
 
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -330,4 +354,28 @@ public class BoardsView extends ViewPart {
 	public void setFocus() {
 		m_viewer.getControl().setFocus();
 	}
+
+	public void forceRefresh() {
+		m_contentProvider.forceRefresh();
+
+		Object[] expandedElements = m_viewer.getExpandedElements();
+		m_viewer.refresh();
+		m_viewer.setExpandedElements(expandedElements);
+		System.out.println("BoardsView.forceRefresh()");
+	}
+
+	public void update(Object obj) {
+
+		if (obj instanceof List<?>) {
+			@SuppressWarnings("unchecked")
+			List<TreeNode> list = (List<TreeNode>) obj;
+			for (Object node : list) {
+				m_viewer.update(node, null);
+			}
+		} else {
+			m_viewer.update(obj, null);
+		}
+		System.out.println("BoardsView.updated()");
+	}
+
 }

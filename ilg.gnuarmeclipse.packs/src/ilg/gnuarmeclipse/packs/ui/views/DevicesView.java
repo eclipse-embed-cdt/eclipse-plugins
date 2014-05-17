@@ -3,6 +3,9 @@ package ilg.gnuarmeclipse.packs.ui.views;
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.TreeNode;
+import ilg.gnuarmeclipse.packs.UsingDefaultFileException;
+
+import java.util.List;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
@@ -31,7 +34,6 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.part.DrillDownAdapter;
 import org.eclipse.ui.part.ViewPart;
 
 /**
@@ -54,7 +56,7 @@ public class DevicesView extends ViewPart {
 	/**
 	 * The ID of the view as specified by the extension.
 	 */
-	public static final String ID = "ilg.gnuarmeclipse.packs.ui.views.ProcessorsView";
+	public static final String ID = "ilg.gnuarmeclipse.packs.ui.views.DevicesView";
 
 	private TreeViewer m_viewer;
 	private Action m_removeFilters;
@@ -62,7 +64,9 @@ public class DevicesView extends ViewPart {
 	private PacksFilter m_packsFilter;
 	private ViewerFilter[] m_packsFilters;
 
-	private DrillDownAdapter drillDownAdapter;
+	// private DrillDownAdapter drillDownAdapter;
+
+	private ViewContentProvider m_contentProvider;
 
 	// private Action action1;
 	// private Action action2;
@@ -90,7 +94,13 @@ public class DevicesView extends ViewPart {
 		public Object[] getElements(Object parent) {
 			if (parent.equals(getViewSite())) {
 				if (m_tree == null) {
-					m_tree = PacksStorage.getCachedSubTree("devices");
+					try {
+						m_tree = PacksStorage.getCachedSubTree("devices");
+					} catch (UsingDefaultFileException e) {
+						Activator.log(e.getMessage());
+					} catch (Exception e) {
+						Activator.log(e);
+					}
 				}
 				if (m_tree == null) {
 					m_tree = new TreeNode("none");
@@ -111,6 +121,11 @@ public class DevicesView extends ViewPart {
 
 		public boolean hasChildren(Object parent) {
 			return ((TreeNode) parent).hasChildren();
+		}
+
+		public void forceRefresh() {
+			// System.out.println("forceRefresh()");
+			m_tree = null;
 		}
 	}
 
@@ -182,6 +197,9 @@ public class DevicesView extends ViewPart {
 	 * The constructor.
 	 */
 	public DevicesView() {
+		Activator.setDevicesView(this);
+
+		System.out.println("DevicesView()");
 	}
 
 	/**
@@ -190,17 +208,20 @@ public class DevicesView extends ViewPart {
 	 */
 	public void createPartControl(Composite parent) {
 
+		System.out.println("DevicesView.createPartControl()");
+
 		m_packsFilter = new PacksFilter();
 		m_packsFilters = new PacksFilter[] { m_packsFilter };
 
 		m_viewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION
 				| SWT.H_SCROLL | SWT.V_SCROLL);
 
-		drillDownAdapter = new DrillDownAdapter(m_viewer);
+		// drillDownAdapter = new DrillDownAdapter(m_viewer);
 
 		ColumnViewerToolTipSupport.enableFor(m_viewer);
 
-		m_viewer.setContentProvider(new ViewContentProvider());
+		m_contentProvider = new ViewContentProvider();
+		m_viewer.setContentProvider(m_contentProvider);
 		m_viewer.setLabelProvider(new ViewLabelProvider());
 		m_viewer.setSorter(new NameSorter());
 		m_viewer.setInput(getViewSite());
@@ -218,6 +239,11 @@ public class DevicesView extends ViewPart {
 		hookContextMenu();
 		hookDoubleClickAction();
 		contributeToActionBars();
+	}
+
+	public void dispose() {
+		super.dispose();
+		System.out.println("DevicesView.dispose()");
 	}
 
 	private void addListners() {
@@ -284,7 +310,7 @@ public class DevicesView extends ViewPart {
 		// manager.add(action1);
 		// manager.add(action2);
 		// manager.add(new Separator());
-		drillDownAdapter.addNavigationActions(manager);
+		// drillDownAdapter.addNavigationActions(manager);
 
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -339,4 +365,28 @@ public class DevicesView extends ViewPart {
 	public void setFocus() {
 		m_viewer.getControl().setFocus();
 	}
+
+	public void forceRefresh() {
+		m_contentProvider.forceRefresh();
+
+		Object[] expandedElements = m_viewer.getExpandedElements();
+		m_viewer.refresh();
+		m_viewer.setExpandedElements(expandedElements);
+		System.out.println("DevicesView.forceRefresh()");
+	}
+
+	public void update(Object obj) {
+
+		if (obj instanceof List<?>) {
+			@SuppressWarnings("unchecked")
+			List<TreeNode> list = (List<TreeNode>) obj;
+			for (Object node : list) {
+				m_viewer.update(node, null);
+			}
+		} else {
+			m_viewer.update(obj, null);
+		}
+		System.out.println("DevicesView.updated()");
+	}
+
 }

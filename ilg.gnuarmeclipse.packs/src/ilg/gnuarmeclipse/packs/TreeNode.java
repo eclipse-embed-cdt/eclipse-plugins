@@ -2,6 +2,7 @@ package ilg.gnuarmeclipse.packs;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -9,13 +10,20 @@ import org.eclipse.core.runtime.IAdaptable;
 
 public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 
+	public static final String NONE_TYPE = "none";
 	public static final String VENDOR_TYPE = "vendor";
 	public static final String FAMILY_TYPE = "family";
 	public static final String SUBFAMILY_TYPE = "subfamily";
 
+	public static final String PACKAGE_TYPE = "package";
+	public static final String VERSION_TYPE = "version";
+
+	public static final String DEVICE_TYPE = "device";
+
 	public static final String URL_PROPERTY = "url";
 	public static final String VENDOR_PROPERTY = "vendor";
-	
+	public static final String VENDORID_PROPERTY = "vendorid";
+
 	public class Condition {
 
 		public static final String BOARD_TYPE = "board";
@@ -24,13 +32,13 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 
 		private String m_type;
 		private String m_vendor;
-		//private String m_attribute;
+		// private String m_attribute;
 		private String m_value;
 
 		public Condition(String type) {
 			m_type = type.trim();
 			m_vendor = null;
-			//m_attribute = null;
+			// m_attribute = null;
 			m_value = "";
 		}
 
@@ -47,28 +55,28 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 		}
 
 		public void setVendor(String vendor) {
-			if (vendor != null){
+			if (vendor != null) {
 				m_vendor = vendor.trim();
 			} else {
 				m_vendor = null;
 			}
 		}
 
-//		public boolean hasAttribute() {
-//			return m_attribute != null;
-//		}
-//
-//		public String getAttribute() {
-//			return m_attribute;
-//		}
-//
-//		public void setAttribute(String attribute) {
-//			if (attribute != null) {
-//				m_attribute = attribute.trim();
-//			} else {
-//				m_attribute = null;
-//			}
-//		}
+		// public boolean hasAttribute() {
+		// return m_attribute != null;
+		// }
+		//
+		// public String getAttribute() {
+		// return m_attribute;
+		// }
+		//
+		// public void setAttribute(String attribute) {
+		// if (attribute != null) {
+		// m_attribute = attribute.trim();
+		// } else {
+		// m_attribute = null;
+		// }
+		// }
 
 		public String getValue() {
 			return m_value;
@@ -132,14 +140,14 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 		this.m_description = description;
 	}
 
-	public boolean isInstalled(){
+	public boolean isInstalled() {
 		return m_isInstalled;
 	}
-	
-	public void setIsInstalled(boolean flag){
+
+	public void setIsInstalled(boolean flag) {
 		m_isInstalled = flag;
 	}
-	
+
 	public boolean hasChildren() {
 		return (m_children != null && !m_children.isEmpty());
 	}
@@ -264,6 +272,19 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 		return m_conditions;
 	}
 
+	public List<Condition> getConditionsByType(String type) {
+		List<Condition> list = new LinkedList<Condition>();
+		if (m_conditions != null) {
+			for (Condition condition : m_conditions) {
+				if (condition.getType().equals(type)) {
+					list.add(condition);
+				}
+			}
+		}
+
+		return list;
+	}
+
 	public void addCondition(Condition condition) {
 		if (m_conditions == null) {
 			m_conditions = new ArrayList<Condition>();
@@ -277,6 +298,7 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 		return m_name.compareTo(o.m_name);
 	}
 
+	@SuppressWarnings("rawtypes")
 	@Override
 	public Object getAdapter(Class adapter) {
 		// TODO Auto-generated method stub
