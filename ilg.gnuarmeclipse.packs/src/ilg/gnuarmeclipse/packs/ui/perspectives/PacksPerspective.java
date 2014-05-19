@@ -14,6 +14,8 @@ import org.eclipse.jdt.ui.JavaUI;
  */
 public class PacksPerspective implements IPerspectiveFactory {
 
+	public static final String ID = "ilg.gnuarmeclipse.packs.ui.perspectives.PacksPerspective";
+	
 	private IPageLayout factory;
 
 	public PacksPerspective() {
@@ -101,6 +103,7 @@ public class PacksPerspective implements IPerspectiveFactory {
 		// factory.addNewWizardShortcut("org.eclipse.ui.wizards.new.file");//NON-NLS-1
 	}
 
+	@SuppressWarnings("deprecation")
 	private void addViewShortcuts() {
 		// factory.addShowViewShortcut("org.eclipse.ant.ui.views.AntView");
 		// //NON-NLS-1

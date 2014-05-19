@@ -130,6 +130,11 @@
             id="ilg.gnuarmeclipse.packs.commands.refreshCommand"
             name="Refresh">
       </command>
+      <command
+            categoryId="ilg.gnuarmeclipse.packs.commands.category"
+            id="ilg.gnuarmeclipse.packs.commands.showPerspectiveCommand"
+            name="Switch to C/C++ Packs Perspective">
+      </command>
    </extension>
    <extension
          point="org.eclipse.ui.handlers">
@@ -137,6 +142,26 @@
             class="ilg.gnuarmeclipse.packs.handlers.RefreshHandler"
             commandId="ilg.gnuarmeclipse.packs.commands.refreshCommand">
       </handler>
+      <handler
+            class="ilg.gnuarmeclipse.packs.handlers.ShowPerspectiveHandler"
+            commandId="ilg.gnuarmeclipse.packs.commands.showPerspectiveCommand">
+      </handler>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+         <toolbar
+               id="ilg.gnuarmeclipse.packs.toolbar.main.showPerspective">
+            <command
+                  commandId="ilg.gnuarmeclipse.packs.commands.showPerspectiveCommand"
+                  icon="icons/packages.png"
+                  style="push"
+                  tooltip="Make the C/C++ Packs perspective visible">
+            </command>
+         </toolbar>
+      </menuContribution>
    </extension>
    
    <!-- 
