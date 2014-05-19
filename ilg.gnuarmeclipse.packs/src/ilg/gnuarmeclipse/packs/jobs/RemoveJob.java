@@ -3,6 +3,7 @@ package ilg.gnuarmeclipse.packs.jobs;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import ilg.gnuarmeclipse.packs.Activator;
@@ -92,7 +93,7 @@ public class RemoveJob extends Job {
 
 			// Name the subtask with the pack name
 			monitor.subTask("Remove \"" + packName + "\"");
-			m_out.println("Remove \"" + packName + "\"");
+			m_out.println("Remove \"" + packName + "\".");
 
 			IPath versionPath = (new Path(m_folderPath)).append(vendor)
 					.append(packNode.getName()).append(versionNode.getName());
@@ -110,8 +111,13 @@ public class RemoveJob extends Job {
 
 			removedPacksCount++;
 
-			final Object[] lists = PacksStorage.updateInstalledVersionNode(
-					versionNode, false);
+			List<TreeNode> deviceNodes = new LinkedList<TreeNode>();
+			List<TreeNode> boardNodes = new LinkedList<TreeNode>();
+
+			final List<TreeNode>[] lists = (List<TreeNode>[]) (new List<?>[] {
+					deviceNodes, boardNodes });
+
+			PacksStorage.updateInstalledVersionNode(versionNode, false, lists);
 
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
@@ -134,6 +140,27 @@ public class RemoveJob extends Job {
 			m_running = false;
 			return Status.CANCEL_STATUS;
 		}
+
+		//
+		List<TreeNode> installedVersions = PacksStorage.getInstalledVersions();
+
+		List<TreeNode> deviceNodes = new LinkedList<TreeNode>();
+		List<TreeNode> boardNodes = new LinkedList<TreeNode>();
+
+		final List<TreeNode>[] lists = (List<TreeNode>[]) (new List<?>[] {
+				deviceNodes, boardNodes });
+
+		for (TreeNode versionNode : installedVersions) {
+			PacksStorage.updateInstalledVersionNode(versionNode, true, lists);
+		}
+
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				Activator.getDevicesView().update(lists[0]);
+				Activator.getBoardsView().update(lists[1]);
+			}
+		});
 
 		if (removedPacksCount == 1) {
 			m_out.println("1 pack removed.");

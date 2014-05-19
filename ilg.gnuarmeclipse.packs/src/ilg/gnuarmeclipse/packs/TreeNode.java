@@ -19,6 +19,7 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 	public static final String VERSION_TYPE = "version";
 
 	public static final String DEVICE_TYPE = "device";
+	public static final String BOARD_TYPE = "board";
 
 	public static final String URL_PROPERTY = "url";
 	public static final String VENDOR_PROPERTY = "vendor";

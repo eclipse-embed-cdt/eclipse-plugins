@@ -47,6 +47,7 @@ public class PacksStorage {
 
 	public static final String DOWNLOAD_FOLDER = ".Download";
 
+	public static final String PACKAGES_SUBTREE = "packages";
 	public static final String DEVICES_SUBTREE = "devices";
 	public static final String BOARDS_SUBTREE = "boards";
 
@@ -341,9 +342,16 @@ public class PacksStorage {
 		}
 		ms_tree = getCacheRecursive(nodeRootElement);
 
+		List<TreeNode> deviceNodes = new LinkedList<TreeNode>();
+		List<TreeNode> boardNodes = new LinkedList<TreeNode>();
+
+		final List<TreeNode>[] lists = (List<TreeNode>[]) (new List<?>[] {
+				deviceNodes, boardNodes });
+
 		// Update installed nodes
 		IPath path = new Path(getFolderPath());
-		updateInstalledNodesRecursive(getCachedSubTree("packages"), path, true);
+		updateInstalledNodesRecursive(getCachedSubTree(PACKAGES_SUBTREE), path,
+				true);
 
 		return ms_tree;
 	}
@@ -433,27 +441,33 @@ public class PacksStorage {
 			File folder = path.toFile();
 			if (folder.exists() && folder.isDirectory()) {
 				// Update PacksView and related from Devices & Boards
-				updateInstalledVersionNode(node, isInstalled);
+				updateInstalledVersionNode(node, isInstalled, null);
 			}
 		}
 	}
 
-	public static Object[] updateInstalledVersionNode(TreeNode versionNode,
-			boolean isInstalled) {
+	public static void updateInstalledVersionNode(TreeNode versionNode,
+			boolean isInstalled, List<TreeNode>[] lists) {
 
-		List<TreeNode> deviceNodes = new LinkedList<TreeNode>();
-		List<TreeNode> boardNodes = new LinkedList<TreeNode>();
+		List<TreeNode> deviceNodes;
+		List<TreeNode> boardNodes;
 
-		Object[] lists = new Object[] { deviceNodes, boardNodes };
+		if (lists != null) {
+			deviceNodes = lists[0];
+			boardNodes = lists[1];
+		} else {
+			deviceNodes = new LinkedList<TreeNode>();
+			boardNodes = new LinkedList<TreeNode>();
+		}
 
 		String type = versionNode.getType();
 		if (!TreeNode.VERSION_TYPE.equals(type)) {
-			return lists;
+			return;
 		}
 
 		versionNode.setIsInstalled(isInstalled);
 		TreeNode packNode = versionNode.getParent();
-		
+
 		boolean doMarkPackage = true;
 		if (!isInstalled) {
 			for (TreeNode child : packNode.getChildrenArray()) {
@@ -483,7 +497,6 @@ public class PacksStorage {
 						condition.getValue(), isInstalled, boardNodes);
 			}
 		}
-		return lists;
 	}
 
 	private static void updateDeviceInstalled(String vendorId,
@@ -500,28 +513,8 @@ public class PacksStorage {
 						// Select family
 						if (familyName.equals(familyNode.getName())) {
 
-							for (TreeNode subFamily : familyNode
-									.getChildrenArray()) {
-								String subFamilyType = subFamily.getType();
-								if (TreeNode.SUBFAMILY_TYPE
-										.equals(subFamilyType)) {
-									for (TreeNode device : subFamily
-											.getChildrenArray()) {
-										String deviceType = device.getType();
-										if (TreeNode.DEVICE_TYPE
-												.equals(deviceType)) {
-											device.setIsInstalled(isInstalled);
-											deviceNodes.add(device);
-										}
-									}
-								} else if (TreeNode.DEVICE_TYPE
-										.equals(subFamilyType)) {
-									// Devices just below family
-									TreeNode device = subFamily;
-									device.setIsInstalled(isInstalled);
-									deviceNodes.add(device);
-								}
-							}
+							familyNode.setIsInstalled(isInstalled);
+							deviceNodes.add(familyNode);
 						}
 					}
 				}
@@ -550,6 +543,34 @@ public class PacksStorage {
 				}
 			}
 		} catch (Exception e) {
+		}
+	}
+
+	public static List<TreeNode> getInstalledVersions() {
+		
+		List<TreeNode> list = new LinkedList<TreeNode>();
+		try {
+			TreeNode node;
+			node = getCachedSubTree(PACKAGES_SUBTREE);
+			getInstalledVersionsRecursive(node, list);
+		} catch (Exception e) {
+		}
+		return list;
+	}
+
+	public static void getInstalledVersionsRecursive(TreeNode node,
+			List<TreeNode> list) {
+
+		if (node.hasChildren()) {
+			for (TreeNode child : node.getChildren()) {
+				getInstalledVersionsRecursive(child, list);
+			}
+		}
+
+		if (TreeNode.VERSION_TYPE.equals(node.getType())) {
+			if (node.isInstalled()) {
+				list.add(node);
+			}
 		}
 	}
 }

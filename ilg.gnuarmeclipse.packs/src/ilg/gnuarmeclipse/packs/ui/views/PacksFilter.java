@@ -33,7 +33,7 @@ public class PacksFilter extends ViewerFilter {
 		TreeNode node = (TreeNode) element;
 		// String nodeType = node.getType();
 
-		if ("vendor".equals(node.getType())) {
+		if (TreeNode.VENDOR_TYPE.equals(node.getType())) {
 			StructuredViewer sviewer = (StructuredViewer) viewer;
 			ITreeContentProvider provider = (ITreeContentProvider) sviewer
 					.getContentProvider();

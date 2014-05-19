@@ -103,7 +103,7 @@ public class DevicesView extends ViewPart {
 					}
 				}
 				if (m_tree == null) {
-					m_tree = new TreeNode("none");
+					m_tree = new TreeNode(TreeNode.NONE_TYPE);
 					return new Object[] { m_tree };
 				}
 				return getChildren(m_tree);
@@ -140,11 +140,11 @@ public class DevicesView extends ViewPart {
 			TreeNode node = ((TreeNode) obj);
 			String type = node.getType();
 
-			if ("none".equals(type)) {
+			if (TreeNode.NONE_TYPE.equals(type)) {
 				return null;
 			}
 
-			if (!"device".equals(type)) {
+			if (!TreeNode.FAMILY_TYPE.equals(type)) {
 				String imageKey = ISharedImages.IMG_OBJ_FOLDER;
 				return PlatformUI.getWorkbench().getSharedImages()
 						.getImage(imageKey);
@@ -168,17 +168,13 @@ public class DevicesView extends ViewPart {
 			TreeNode node = ((TreeNode) obj);
 			String type = node.getType();
 
-			if ("device".equals(type)) {
+			if (TreeNode.VENDOR_TYPE.equals(type)) {
+				return "Vendor";
+			} else if (TreeNode.FAMILY_TYPE.equals(type)) {
 				String description = node.getDescription();
 				if (description != null && description.length() > 0) {
 					return description;
 				}
-			} else if ("vendor".equals(type)) {
-				return "Vendor";
-			} else if ("family".equals(type)) {
-				return "Family";
-			} else if ("subfamily".equals(type)) {
-				return "Subfamily";
 			}
 			return null;
 		}
@@ -228,13 +224,6 @@ public class DevicesView extends ViewPart {
 
 		addListners();
 
-		// Create the help context id for the viewer's control
-		PlatformUI
-				.getWorkbench()
-				.getHelpSystem()
-				.setHelp(m_viewer.getControl(),
-						"ilg.gnuarmeclipse.packs.viewer");
-
 		makeActions();
 		hookContextMenu();
 		hookDoubleClickAction();
@@ -261,8 +250,8 @@ public class DevicesView extends ViewPart {
 					return;
 				}
 
-				if ("none".equals(((TreeNode) selection.getFirstElement())
-						.getType())) {
+				if (TreeNode.NONE_TYPE.equals(((TreeNode) selection
+						.getFirstElement()).getType())) {
 					return;
 				}
 
@@ -300,17 +289,10 @@ public class DevicesView extends ViewPart {
 
 	private void fillLocalPullDown(IMenuManager manager) {
 		manager.add(m_removeFilters);
-		// manager.add(action1);
-		// manager.add(new Separator());
-		// manager.add(action2);
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
 		manager.add(m_removeFilters);
-		// manager.add(action1);
-		// manager.add(action2);
-		// manager.add(new Separator());
-		// drillDownAdapter.addNavigationActions(manager);
 
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -318,10 +300,6 @@ public class DevicesView extends ViewPart {
 
 	private void fillLocalToolBar(IToolBarManager manager) {
 		manager.add(m_removeFilters);
-		// manager.add(action1);
-		// manager.add(action2);
-		// manager.add(new Separator());
-		// drillDownAdapter.addNavigationActions(manager);
 	}
 
 	private void makeActions() {
@@ -341,22 +319,9 @@ public class DevicesView extends ViewPart {
 		m_removeFilters.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/removeall.png"));
 
-		// doubleClickAction = new Action() {
-		// public void run() {
-		// ISelection selection = m_viewer.getSelection();
-		// Object obj = ((IStructuredSelection) selection)
-		// .getFirstElement();
-		// showMessage("Double-click detected on " + obj.toString());
-		// }
-		// };
 	}
 
 	private void hookDoubleClickAction() {
-		// m_viewer.addDoubleClickListener(new IDoubleClickListener() {
-		// public void doubleClick(DoubleClickEvent event) {
-		// doubleClickAction.run();
-		// }
-		// });
 	}
 
 	/**

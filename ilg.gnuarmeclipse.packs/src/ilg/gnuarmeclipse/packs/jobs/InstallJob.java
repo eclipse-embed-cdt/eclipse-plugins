@@ -14,6 +14,7 @@ import java.io.OutputStream;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -108,15 +109,21 @@ public class InstallJob extends Job {
 
 			// Name the subtask with the pack name
 			monitor.subTask(packName);
-			m_out.println("Install \"" + packName + "\"");
+			m_out.println("Install \"" + packName + "\".");
 
 			try {
 
 				installPack(versionNode);
 				installedPacksCount++;
 
-				final Object[] lists = PacksStorage.updateInstalledVersionNode(
-						versionNode, true);
+				List<TreeNode> deviceNodes = new LinkedList<TreeNode>();
+				List<TreeNode> boardNodes = new LinkedList<TreeNode>();
+
+				final List<TreeNode>[] lists = (List<TreeNode>[]) (new List<?>[] {
+						deviceNodes, boardNodes });
+
+				PacksStorage.updateInstalledVersionNode(versionNode, true,
+						lists);
 
 				Display.getDefault().asyncExec(new Runnable() {
 					@Override
@@ -158,7 +165,7 @@ public class InstallJob extends Job {
 
 		TreeNode packNode = versionNode.getParent();
 
-		String vendor = packNode.getProperty("vendor");
+		String vendor = packNode.getProperty(TreeNode.VENDOR_PROPERTY);
 
 		String url = packNode.getProperty(TreeNode.URL_PROPERTY);
 
@@ -190,7 +197,7 @@ public class InstallJob extends Job {
 
 		TreeNode packNode = versionNode.getParent();
 
-		String vendor = packNode.getProperty("vendor");
+		String vendor = packNode.getProperty(TreeNode.VENDOR_PROPERTY);
 
 		String url = packNode.getProperty(TreeNode.URL_PROPERTY);
 
@@ -222,7 +229,7 @@ public class InstallJob extends Job {
 
 		makeFolderReadOnlyRecursive(path.toFile());
 
-		m_out.println("Files set to read only");
+		m_out.println("Files set to read only.");
 	}
 
 	private void copyFile(URL sourceUrl, File destinationFile)
@@ -232,7 +239,7 @@ public class InstallJob extends Job {
 		int size = connection.getContentLength();
 		String sizeString = convertSizeToString(size);
 		m_out.println("Copy " + sizeString + " \"" + sourceUrl + "\" to \""
-				+ destinationFile + "\"");
+				+ destinationFile + "\".");
 
 		InputStream input = connection.getInputStream();
 		OutputStream output = new FileOutputStream(destinationFile);
@@ -261,7 +268,7 @@ public class InstallJob extends Job {
 
 	private void unzip(Path pathPart, File archiveFile) throws IOException {
 
-		m_out.println("Unzip \"" + archiveFile + "\"");
+		m_out.println("Unzip \"" + archiveFile + "\".");
 
 		// Get the zip file content
 		ZipInputStream zipInput;
@@ -284,7 +291,7 @@ public class InstallJob extends Job {
 				// }
 
 				File outFile = getFile(pathPart, fileName);
-				m_out.println("Write \"" + outFile + "\"");
+				m_out.println("Write \"" + outFile + "\".");
 
 				OutputStream output = new FileOutputStream(outFile);
 
@@ -306,7 +313,7 @@ public class InstallJob extends Job {
 		zipInput.closeEntry();
 		zipInput.close();
 		m_out.println(countFiles + " files written, "
-				+ convertSizeToString(countBytes));
+				+ convertSizeToString(countBytes) + ".");
 	}
 
 	private static void makeFolderReadOnlyRecursive(File path) {

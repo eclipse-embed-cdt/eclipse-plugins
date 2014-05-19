@@ -70,7 +70,6 @@ public class RefreshHandler extends AbstractHandler {
 			}
 		};
 
-		// TODO: prevent re-entry
 		job.schedule();
 		return null;
 	}
@@ -108,7 +107,7 @@ public class RefreshHandler extends AbstractHandler {
 				// collect all pdsc references
 				readCmsisIndex(indexUrl, pdscList);
 			} else {
-				m_out.println(type + " not recognised");
+				m_out.println(type + " not recognised.");
 			}
 			monitor.worked(1);
 			worked++;
@@ -277,7 +276,7 @@ public class RefreshHandler extends AbstractHandler {
 				Element vendorElement = Utils.getChildElement(packageElement,
 						"vendor");
 				if (vendorElement == null) {
-					m_out.println("Missing <vendor>");
+					m_out.println("Missing <vendor>.");
 					return;
 				}
 				String packVendor = vendorElement.getTextContent().trim();
@@ -285,7 +284,7 @@ public class RefreshHandler extends AbstractHandler {
 				Element nameElement = Utils.getChildElement(packageElement,
 						"name");
 				if (nameElement == null) {
-					m_out.println("Missing <name>");
+					m_out.println("Missing <name>.");
 					return;
 				}
 				String packName = nameElement.getTextContent().trim();
@@ -293,13 +292,13 @@ public class RefreshHandler extends AbstractHandler {
 				Element descriptionElement = Utils.getChildElement(
 						packageElement, "description");
 				if (descriptionElement == null) {
-					m_out.println("Missing <description>");
+					m_out.println("Missing <description>.");
 					return;
 				}
 				String packDescription = descriptionElement.getTextContent()
 						.trim();
 
-				TreeNode vendorNode = packagesNode.addUniqueChild("vendor",
+				TreeNode vendorNode = packagesNode.addUniqueChild(TreeNode.VENDOR_TYPE,
 						packVendor);
 
 				packNode = vendorNode.getChild("package", packName);
@@ -365,7 +364,7 @@ public class RefreshHandler extends AbstractHandler {
 			} else {
 				packNode.addUniqueChild("version", version);
 				m_out.println("Version node \"" + version
-						+ "\" added. (value from index)");
+						+ "\" added (value from index).");
 			}
 
 			// Devices
@@ -376,7 +375,7 @@ public class RefreshHandler extends AbstractHandler {
 				TreeNode devicesNode = tree.addUniqueChild("devices", null);
 
 				List<Element> familyElements = Utils.getChildElementList(
-						devicesElement, "family");
+						devicesElement, TreeNode.FAMILY_TYPE);
 				for (Element familyElement : familyElements) {
 					String family = familyElement.getAttribute("Dfamily")
 							.trim();
@@ -384,7 +383,7 @@ public class RefreshHandler extends AbstractHandler {
 							.trim();
 
 					String va[] = vendor.split("[:]");
-					TreeNode vendorNode = devicesNode.addUniqueChild("vendor",
+					TreeNode vendorNode = devicesNode.addUniqueChild(TreeNode.VENDOR_TYPE,
 							va[0]);
 					if (va.length < 2) {
 						// Vendor not enumeration
@@ -392,8 +391,7 @@ public class RefreshHandler extends AbstractHandler {
 					}
 					vendorNode.putProperty("vendorid", va[1]);
 
-					TreeNode familyNode = vendorNode.addUniqueChild("family",
-							family);
+					vendorNode.addUniqueChild("family", family);
 
 					// Add package conditions
 					TreeNode.Condition condition = packNode.new Condition(
@@ -409,23 +407,6 @@ public class RefreshHandler extends AbstractHandler {
 						core = processorElement.getAttribute("Dcore").trim();
 					}
 
-					List<Element> subFamilyElements = Utils
-							.getChildElementList(familyElement, "subFamily");
-					for (Element subFamilyElement : subFamilyElements) {
-						String subFamily = subFamilyElement.getAttribute(
-								"DsubFamily").trim();
-
-						TreeNode subFamilyNode = familyNode.addUniqueChild(
-								"subfamily", subFamily);
-
-						// Process devices below subFamily
-						processDevice(subFamilyElement, subFamilyNode, core,
-								packNode, va[1]);
-					}
-
-					// Process devices below family
-					processDevice(familyElement, familyNode, core, packNode,
-							va[1]);
 				}
 			}
 
@@ -451,7 +432,7 @@ public class RefreshHandler extends AbstractHandler {
 						description = descriptionElement.getTextContent()
 								.trim();
 					}
-					TreeNode vendorNode = boardsNode.addUniqueChild("vendor",
+					TreeNode vendorNode = boardsNode.addUniqueChild(TreeNode.VENDOR_TYPE,
 							vendor);
 
 					TreeNode boardNode = vendorNode.addUniqueChild("board",

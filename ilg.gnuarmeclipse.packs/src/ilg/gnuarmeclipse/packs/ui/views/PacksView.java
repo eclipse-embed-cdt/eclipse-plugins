@@ -108,7 +108,7 @@ public class PacksView extends ViewPart {
 				}
 
 				if (m_tree == null) {
-					m_tree = new TreeNode("none");
+					m_tree = new TreeNode(TreeNode.NONE_TYPE);
 					return new Object[] { m_tree };
 				}
 				return getChildren(m_tree);
@@ -144,7 +144,7 @@ public class PacksView extends ViewPart {
 				TreeNode node = ((TreeNode) obj);
 				String type = node.getType();
 
-				if ("vendor".equals(type)) {
+				if (TreeNode.VENDOR_TYPE.equals(type)) {
 					imageKey = ISharedImages.IMG_OBJ_FOLDER;
 					return PlatformUI.getWorkbench().getSharedImages()
 							.getImage(imageKey);
@@ -181,7 +181,7 @@ public class PacksView extends ViewPart {
 			switch (columnIndex) {
 			case 0:
 				String name = node.getName();
-				if (node.isInstalled() && "version".equals(node.getType())) {
+				if (node.isInstalled()) {
 					name += " (installed)";
 				}
 				return " " + name;
@@ -248,7 +248,7 @@ public class PacksView extends ViewPart {
 
 		TreeColumn nameColumn = new TreeColumn(tree, SWT.NONE);
 		nameColumn.setText("  Name");
-		nameColumn.setWidth(190);
+		nameColumn.setWidth(200);
 
 		TreeColumn descriptionColumn = new TreeColumn(tree, SWT.NONE);
 		descriptionColumn.setAlignment(SWT.LEFT);
@@ -312,7 +312,8 @@ public class PacksView extends ViewPart {
 			return;
 		}
 
-		if ("none".equals(((TreeNode) selection.getFirstElement()).getType())) {
+		if (TreeNode.NONE_TYPE.equals(((TreeNode) selection.getFirstElement())
+				.getType())) {
 			return;
 		}
 
@@ -417,7 +418,7 @@ public class PacksView extends ViewPart {
 		};
 		m_refreshAction.setText("Refresh");
 		m_refreshAction
-				.setToolTipText("Read packages descriptions from all sites.");
+				.setToolTipText("Read packages descriptions from all sites");
 		m_refreshAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/refresh_nav.gif"));
 
@@ -436,7 +437,7 @@ public class PacksView extends ViewPart {
 		};
 		m_installAction.setText("Install");
 		m_installAction
-				.setToolTipText("Install a local copy of the selected package(s).");
+				.setToolTipText("Install a local copy of the selected package(s)");
 		m_installAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/package_mode.png"));
 		m_installAction.setEnabled(false);
@@ -456,7 +457,7 @@ public class PacksView extends ViewPart {
 		};
 		m_removeAction.setText("Remove");
 		m_removeAction
-				.setToolTipText("Remove the local copy of the selected package version(s).");
+				.setToolTipText("Remove the local copy of the selected package version(s)");
 		m_removeAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/removeall.png"));
 		m_removeAction.setEnabled(false);
