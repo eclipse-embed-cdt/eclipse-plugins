@@ -215,6 +215,7 @@ public class BoardsView extends ViewPart {
 		m_viewer.setSorter(new NameSorter());
 		m_viewer.setInput(getViewSite());
 
+		addProviders();
 		addListners();
 
 		makeActions();
@@ -227,6 +228,11 @@ public class BoardsView extends ViewPart {
 	public void dispose() {
 		super.dispose();
 		System.out.println("BoardsView.dispose()");
+	}
+
+	private void addProviders() {
+		// Register this viewer as the selection provider
+		getSite().setSelectionProvider(m_viewer);
 	}
 
 	private void addListners() {
@@ -244,8 +250,8 @@ public class BoardsView extends ViewPart {
 					return;
 				}
 
-				if (TreeNode.NONE_TYPE.equals(((TreeNode) selection.getFirstElement())
-						.getType())) {
+				if (TreeNode.NONE_TYPE.equals(((TreeNode) selection
+						.getFirstElement()).getType())) {
 					return;
 				}
 
@@ -325,11 +331,12 @@ public class BoardsView extends ViewPart {
 	}
 
 	public void forceRefresh() {
+		
 		m_contentProvider.forceRefresh();
 
-		Object[] expandedElements = m_viewer.getExpandedElements();
-		m_viewer.refresh();
-		m_viewer.setExpandedElements(expandedElements);
+		//m_viewer.refresh();
+		m_viewer.setInput(getViewSite());
+		
 		System.out.println("BoardsView.forceRefresh()");
 	}
 

@@ -84,76 +84,81 @@ public class RefreshHandler extends AbstractHandler {
 		m_running = true;
 		m_out.println("Refresh packs started.");
 
-		int workUnits = 100;
-		int worked = 0;
-		// set total number of work units
-		monitor.beginTask("Refresh packs", workUnits);
-
-		// String[] { type, indexUrl }
-		List<String[]> sitesList = PacksStorage.getSites();
-
-		// String[] { url, name, version }
-		List<String[]> pdscList = new ArrayList<String[]>();
-
-		for (String[] site : sitesList) {
-
-			if (monitor.isCanceled()) {
-				break;
-			}
-
-			String type = site[0];
-			String indexUrl = site[1];
-			if (PacksStorage.CMSIS_PACK_TYPE.equals(type)) {
-				// collect all pdsc references
-				readCmsisIndex(indexUrl, pdscList);
-			} else {
-				m_out.println(type + " not recognised.");
-			}
-			monitor.worked(1);
-			worked++;
-		}
-
-		TreeNode tree = new TreeNode("root");
-
-		int workedFrom = worked;
-		if (worked > workUnits) {
-			workedFrom = workUnits;
-		}
-
-		int i = 0;
-		for (String[] pdsc : pdscList) {
-
-			if (monitor.isCanceled()) {
-				break;
-			}
-
-			String url = pdsc[0];
-			String name = pdsc[1];
-			String version = pdsc[2];
-
-			monitor.subTask(name);
-			parsePdsc(url, name, version, tree);
-
-			++i;
-			int newWorked = workedFrom + (workUnits - workedFrom) * i
-					/ (pdscList.size() - 1);
-			if (newWorked > worked) {
-				monitor.worked(newWorked - worked);
-				worked = newWorked;
-			}
-		}
-
-		if (monitor.isCanceled()) {
-			m_out.println("Job cancelled.");
-			m_running = false;
-			return Status.CANCEL_STATUS;
-		}
-
-		// Write the tree to the cache.xml file in the packages folder
-		m_out.println("Tree written.");
 		try {
+
+			int workUnits = 100;
+			int worked = 0;
+			// set total number of work units
+			monitor.beginTask("Refresh packs", workUnits);
+
+			// String[] { type, indexUrl }
+			List<String[]> sitesList = PacksStorage.getSites();
+
+			// String[] { url, name, version }
+			List<String[]> pdscList = new ArrayList<String[]>();
+
+			for (String[] site : sitesList) {
+
+				if (monitor.isCanceled()) {
+					break;
+				}
+
+				String type = site[0];
+				String indexUrl = site[1];
+				if (PacksStorage.CMSIS_PACK_TYPE.equals(type)) {
+					// collect all pdsc references
+					readCmsisIndex(indexUrl, pdscList);
+				} else {
+					m_out.println(type + " not recognised.");
+				}
+				monitor.worked(1);
+				worked++;
+			}
+
+			TreeNode tree = new TreeNode("root");
+
+			int workedFrom = worked;
+			if (worked > workUnits) {
+				workedFrom = workUnits;
+			}
+
+			int i = 0;
+			for (String[] pdsc : pdscList) {
+
+				if (monitor.isCanceled()) {
+					break;
+				}
+
+				String url = pdsc[0];
+				String name = pdsc[1];
+				String version = pdsc[2];
+
+				monitor.subTask(name);
+				parsePdsc(url, name, version, tree);
+
+				++i;
+				int newWorked = workedFrom + (workUnits - workedFrom) * i
+						/ (pdscList.size() - 1);
+				if (newWorked > worked) {
+					monitor.worked(newWorked - worked);
+					worked = newWorked;
+				}
+			}
+
+			if (monitor.isCanceled()) {
+				m_out.println("Job cancelled.");
+				m_running = false;
+				return Status.CANCEL_STATUS;
+			}
+
+			// Write the tree to the cache.xml file in the packages folder
 			PacksStorage.putCache(tree);
-		} catch (IOException e) {
+			m_out.println("Tree written.");
+
+			PacksStorage.updateInstalled();
+			m_out.println("Account installed packs.");
+
+		} catch (Exception e) {
 			Activator.log(e);
 		}
 
@@ -210,7 +215,7 @@ public class RefreshHandler extends AbstractHandler {
 			}
 
 			int count = 0;
-			List<Element> pdscElements = Utils.getChildElementList(el, "pdsc");
+			List<Element> pdscElements = Utils.getChildElementsList(el, "pdsc");
 			for (Element pdscElement : pdscElements) {
 
 				String url = pdscElement.getAttribute("url").trim();
@@ -298,8 +303,8 @@ public class RefreshHandler extends AbstractHandler {
 				String packDescription = descriptionElement.getTextContent()
 						.trim();
 
-				TreeNode vendorNode = packagesNode.addUniqueChild(TreeNode.VENDOR_TYPE,
-						packVendor);
+				TreeNode vendorNode = packagesNode.addUniqueChild(
+						TreeNode.VENDOR_TYPE, packVendor);
 
 				packNode = vendorNode.getChild("package", packName);
 				if (packNode != null) {
@@ -316,9 +321,9 @@ public class RefreshHandler extends AbstractHandler {
 				if (shortUrl.endsWith("/")) {
 					shortUrl = shortUrl.substring(0, shortUrl.length() - 1);
 				}
-				packNode.putProperty(TreeNode.URL_PROPERTY, shortUrl);
+				packNode.putNonEmptyProperty(TreeNode.URL_PROPERTY, shortUrl);
 
-				packNode.putProperty(TreeNode.VENDOR_PROPERTY, packVendor);
+				packNode.putNonEmptyProperty(TreeNode.VENDOR_PROPERTY, packVendor);
 
 				// Attach package right below vendor node
 				vendorNode.addChild(packNode);
@@ -338,21 +343,33 @@ public class RefreshHandler extends AbstractHandler {
 			}
 
 			// Releases
+			String currentReleaseDescription = null;
+			String currentReleaseDate = null;
 			Element releasesElement = Utils.getChildElement(packageElement,
 					"releases");
 			if (releasesElement != null) {
 
-				List<Element> releaseElements = Utils.getChildElementList(
+				List<Element> releaseElements = Utils.getChildElementsList(
 						releasesElement, "release");
 				for (Element releaseElement : releaseElements) {
 					String releaseVersion = releaseElement.getAttribute(
 							"version").trim();
+					String releaseDate = releaseElement.getAttribute("date")
+							.trim();
 					String description = releaseElement.getTextContent();
 
 					if (description != null) {
 						description = description.trim();
 					} else {
 						description = "";
+					}
+
+					if (currentReleaseDescription == null
+							&& description.length() > 0) {
+						currentReleaseDescription = description;
+					}
+					if (currentReleaseDate == null && releaseDate.length() > 0) {
+						currentReleaseDate = releaseDate;
 					}
 
 					TreeNode versionNode = packNode.addUniqueChild("version",
@@ -367,14 +384,28 @@ public class RefreshHandler extends AbstractHandler {
 						+ "\" added (value from index).");
 			}
 
+			TreeNode outlineNode = new TreeNode(TreeNode.OUTLINE_TYPE);
+			packNode.setOutline(outlineNode);
+			TreeNode outlineVersionNode = outlineNode.addUniqueChild(TreeNode.VERSION_TYPE, version);
+			if (currentReleaseDescription != null) {
+				outlineVersionNode.setDescription(currentReleaseDescription);
+			}
+			if (currentReleaseDate != null) {
+				outlineVersionNode.putNonEmptyProperty(TreeNode.DATE_PROPERTY,
+						currentReleaseDate);
+			}
+
 			// Devices
 			Element devicesElement = Utils.getChildElement(packageElement,
 					"devices");
 			if (devicesElement != null) {
 
-				TreeNode devicesNode = tree.addUniqueChild("devices", null);
+				TreeNode devicesNode = tree.addUniqueChild(
+						TreeNode.DEVICES_TYPE, null);
+				TreeNode outlineDevicesNode = outlineNode.addUniqueChild(
+						TreeNode.DEVICES_TYPE, null);
 
-				List<Element> familyElements = Utils.getChildElementList(
+				List<Element> familyElements = Utils.getChildElementsList(
 						devicesElement, TreeNode.FAMILY_TYPE);
 				for (Element familyElement : familyElements) {
 					String family = familyElement.getAttribute("Dfamily")
@@ -382,16 +413,28 @@ public class RefreshHandler extends AbstractHandler {
 					String vendor = familyElement.getAttribute("Dvendor")
 							.trim();
 
+					Element descriptionElement = Utils.getChildElement(
+							familyElement, "description");
+					String description = "";
+					if (descriptionElement != null) {
+						description = descriptionElement.getTextContent()
+								.trim();
+					}
+
 					String va[] = vendor.split("[:]");
-					TreeNode vendorNode = devicesNode.addUniqueChild(TreeNode.VENDOR_TYPE,
-							va[0]);
+					TreeNode vendorNode = devicesNode.addUniqueChild(
+							TreeNode.VENDOR_TYPE, va[0]);
 					if (va.length < 2) {
 						// Vendor not enumeration
 						continue;
 					}
-					vendorNode.putProperty("vendorid", va[1]);
+					vendorNode.putNonEmptyProperty("vendorid", va[1]);
 
-					vendorNode.addUniqueChild("family", family);
+					TreeNode familyNode = vendorNode.addUniqueChild("family",
+							family);
+					if (description.length() > 0) {
+						familyNode.setDescription(description);
+					}
 
 					// Add package conditions
 					TreeNode.Condition condition = packNode.new Condition(
@@ -407,6 +450,12 @@ public class RefreshHandler extends AbstractHandler {
 						core = processorElement.getAttribute("Dcore").trim();
 					}
 
+					// Add outline node
+					TreeNode outlineDeviceNode = outlineDevicesNode
+							.addUniqueChild(TreeNode.FAMILY_TYPE, family);
+					if (description.length() > 0) {
+						outlineDeviceNode.setDescription(description);
+					}
 				}
 			}
 
@@ -415,9 +464,12 @@ public class RefreshHandler extends AbstractHandler {
 					"boards");
 			if (boardsElement != null) {
 
-				TreeNode boardsNode = tree.addUniqueChild("boards", null);
+				TreeNode boardsNode = tree.addUniqueChild(TreeNode.BOARDS_TYPE,
+						null);
+				TreeNode outlineBoardsNode = outlineNode.addUniqueChild(
+						TreeNode.BOARDS_TYPE, null);
 
-				List<Element> boardElements = Utils.getChildElementList(
+				List<Element> boardElements = Utils.getChildElementsList(
 						boardsElement, "board");
 				for (Element boardElement : boardElements) {
 					String vendor = boardElement.getAttribute("vendor").trim();
@@ -432,11 +484,11 @@ public class RefreshHandler extends AbstractHandler {
 						description = descriptionElement.getTextContent()
 								.trim();
 					}
-					TreeNode vendorNode = boardsNode.addUniqueChild(TreeNode.VENDOR_TYPE,
-							vendor);
+					TreeNode vendorNode = boardsNode.addUniqueChild(
+							TreeNode.VENDOR_TYPE, vendor);
 
-					TreeNode boardNode = vendorNode.addUniqueChild("board",
-							boardName);
+					TreeNode boardNode = vendorNode.addUniqueChild(
+							TreeNode.BOARD_TYPE, boardName);
 
 					if (revision.length() > 0) {
 						description += " (" + revision + ")";
@@ -449,6 +501,73 @@ public class RefreshHandler extends AbstractHandler {
 					condition.setVendor(vendor);
 					condition.setValue(boardName);
 					packNode.addCondition(condition);
+
+					// Add outline node
+					TreeNode outlineBoardNode = outlineBoardsNode
+							.addUniqueChild(TreeNode.BOARD_TYPE, boardName);
+					outlineBoardNode.setDescription(description);
+				}
+			}
+
+			// Examples
+			Element examplesElement = Utils.getChildElement(packageElement,
+					"examples");
+			if (examplesElement != null) {
+
+				TreeNode examplesNode = tree.addUniqueChild(
+						TreeNode.EXAMPLES_TYPE, null);
+				TreeNode outlineExamplesNode = outlineNode.addUniqueChild(
+						TreeNode.EXAMPLES_TYPE, null);
+
+				List<Element> exampleElements = Utils.getChildElementsList(
+						examplesElement, "example");
+				for (Element exampleElement : exampleElements) {
+					String exampleName = exampleElement.getAttribute("name")
+							.trim();
+					String exampleVersion = exampleElement.getAttribute(
+							"version").trim();
+
+					Element descriptionElement = Utils.getChildElement(
+							exampleElement, "description");
+					String description = "";
+					if (descriptionElement != null) {
+						description = descriptionElement.getTextContent()
+								.trim();
+					}
+
+					TreeNode exampleNode = examplesNode.addUniqueChild(
+							TreeNode.EXAMPLE_TYPE, exampleName);
+					exampleNode.setDescription(description);
+					if (exampleVersion.length() > 0) {
+						exampleNode.putNonEmptyProperty(TreeNode.VERSION_PROPERTY,
+								exampleVersion);
+					}
+
+					// Add outline node
+					TreeNode outlineExampleNode = outlineExamplesNode
+							.addUniqueChild(TreeNode.EXAMPLE_TYPE, exampleName);
+					outlineExampleNode.setDescription(description);
+					if (exampleVersion.length() > 0) {
+						outlineExampleNode.putNonEmptyProperty(
+								TreeNode.VERSION_PROPERTY, exampleVersion);
+					}
+
+					List<Element> boardElements = Utils.getChildElementsList(
+							exampleElement, "board");
+					for (Element boardElement : boardElements) {
+						String boardName = boardElement.getAttribute("name")
+								.trim();
+						String boardVendor = boardElement
+								.getAttribute("vendor").trim();
+
+						TreeNode boardNode = new TreeNode(TreeNode.BOARD_TYPE);
+						boardNode.setName(boardName);
+
+						String boardDescription = boardVendor + " " + boardName;
+						boardNode.setDescription(boardDescription);
+
+						outlineExampleNode.addChild(boardNode);
+					}
 				}
 			}
 
@@ -473,7 +592,7 @@ public class RefreshHandler extends AbstractHandler {
 	void processDevice(Element parentElement, TreeNode parentNode, String core,
 			TreeNode packNode, String vendorid) {
 
-		List<Element> deviceElements = Utils.getChildElementList(parentElement,
+		List<Element> deviceElements = Utils.getChildElementsList(parentElement,
 				"device");
 		for (Element deviceElement : deviceElements) {
 			String device = deviceElement.getAttribute("Dname").trim();
@@ -498,7 +617,7 @@ public class RefreshHandler extends AbstractHandler {
 				}
 			}
 
-			List<Element> memoryElements = Utils.getChildElementList(
+			List<Element> memoryElements = Utils.getChildElementsList(
 					deviceElement, "memory");
 
 			int ramKB = 0;

@@ -31,6 +31,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
@@ -64,13 +65,7 @@ public class DevicesView extends ViewPart {
 	private PacksFilter m_packsFilter;
 	private ViewerFilter[] m_packsFilters;
 
-	// private DrillDownAdapter drillDownAdapter;
-
 	private ViewContentProvider m_contentProvider;
-
-	// private Action action1;
-	// private Action action2;
-	// private Action doubleClickAction;
 
 	/*
 	 * The content provider class is responsible for providing objects to the
@@ -222,6 +217,7 @@ public class DevicesView extends ViewPart {
 		m_viewer.setSorter(new NameSorter());
 		m_viewer.setInput(getViewSite());
 
+		addProviders();
 		addListners();
 
 		makeActions();
@@ -232,7 +228,13 @@ public class DevicesView extends ViewPart {
 
 	public void dispose() {
 		super.dispose();
+		
 		System.out.println("DevicesView.dispose()");
+	}
+
+	private void addProviders() {
+		// Register this viewer as the selection provider
+		getSite().setSelectionProvider(m_viewer);
 	}
 
 	private void addListners() {
@@ -332,11 +334,14 @@ public class DevicesView extends ViewPart {
 	}
 
 	public void forceRefresh() {
+		
 		m_contentProvider.forceRefresh();
 
-		Object[] expandedElements = m_viewer.getExpandedElements();
-		m_viewer.refresh();
-		m_viewer.setExpandedElements(expandedElements);
+		//Object[] expandedElements = m_viewer.getExpandedElements();
+		m_viewer.setInput(getViewSite());
+		//m_viewer.refresh();
+		//m_viewer.setExpandedElements(expandedElements);
+
 		System.out.println("DevicesView.forceRefresh()");
 	}
 

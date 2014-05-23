@@ -1,6 +1,7 @@
 package ilg.gnuarmeclipse.packs;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.ui.console.ConsolePlugin;
@@ -8,6 +9,7 @@ import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
 import org.eclipse.ui.console.MessageConsole;
 import org.w3c.dom.Element;
+import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
@@ -58,7 +60,12 @@ public class Utils {
 		return null;
 	}
 
-	public static List<Element> getChildElementList(Element el, String name) {
+	public static List<Element> getChildElementsList(Element el) {
+
+		return getChildElementsList(el, null);
+	}
+
+	public static List<Element> getChildElementsList(Element el, String name) {
 
 		NodeList nodeList = el.getChildNodes();
 
@@ -69,12 +76,59 @@ public class Utils {
 			Node node = nodeList.item(i);
 
 			if (node.getNodeType() == Node.ELEMENT_NODE) {
-				if (node.getNodeName().equals(name)) {
+				if ((name == null) || node.getNodeName().equals(name)) {
 					list.add((Element) node);
 				}
 			}
 		}
 		return list;
+	}
+
+	public static String getElementContent(Element el) {
+
+		String content = "";
+
+		if (el.getNodeType() == Node.ELEMENT_NODE) {
+			content = el.getTextContent();
+			if (content != null) {
+				content = content.trim();
+			}
+		}
+		return content;
+	}
+
+	public static List<String> getAttributesNames(Element el) {
+
+		List<String> list = new LinkedList<String>();
+
+		NamedNodeMap attribs = el.getAttributes();
+		for (int i = 0; i < attribs.getLength(); ++i) {
+			String name = attribs.item(i).getNodeName();
+			list.add(name);
+		}
+
+		return list;
+	}
+
+	public static List<String> getAttributesNames(Element el, String sa[]) {
+
+		List<String> list = new LinkedList<String>();
+
+		NamedNodeMap attribs = el.getAttributes();
+		for (int i = 0; i < attribs.getLength(); ++i) {
+			String name = attribs.item(i).getNodeName();
+			list.add(name);
+		}
+
+		List<String> listOut = new LinkedList<String>();
+		for (String s : sa) {
+			if (list.contains(s)) {
+				list.remove(s);
+				listOut.add(s);
+			}
+		}
+		listOut.addAll(list);
+		return listOut;
 	}
 
 	public static int convertHexInt(String hex) {

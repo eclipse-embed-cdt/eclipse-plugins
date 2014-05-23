@@ -16,6 +16,7 @@ import ilg.gnuarmeclipse.packs.ui.preferences.FolderConstants;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -211,6 +212,8 @@ public class PacksStorage {
 
 			// System.out.println(SITES_FILE_NAME+" saved");
 		}
+
+		ms_tree = tree;
 	}
 
 	private static void putCacheNodeRecursive(TreeNode node, int depth,
@@ -264,6 +267,18 @@ public class PacksStorage {
 
 			putIndentation(depth * 2 + 1, writer);
 			writer.println("</conditions>");
+		}
+		if (node.hasOutline()) {
+			putIndentation(depth * 2 + 1, writer);
+			writer.println("<outline>");
+
+			TreeNode outlineNode = node.getOutline();
+			for (TreeNode outlineChild : outlineNode.getChildrenArray()) {
+				putCacheNodeRecursive(outlineChild, depth + 1, writer);
+			}
+
+			putIndentation(depth * 2 + 1, writer);
+			writer.println("</outline>");
 		}
 
 		List<TreeNode> children = node.getChildren();
@@ -342,6 +357,13 @@ public class PacksStorage {
 		}
 		ms_tree = getCacheRecursive(nodeRootElement);
 
+		updateInstalled();
+
+		return ms_tree;
+	}
+
+	public static void updateInstalled() throws IOException,
+			ParserConfigurationException, SAXException {
 		List<TreeNode> deviceNodes = new LinkedList<TreeNode>();
 		List<TreeNode> boardNodes = new LinkedList<TreeNode>();
 
@@ -352,8 +374,6 @@ public class PacksStorage {
 		IPath path = new Path(getFolderPath());
 		updateInstalledNodesRecursive(getCachedSubTree(PACKAGES_SUBTREE), path,
 				true);
-
-		return ms_tree;
 	}
 
 	private static TreeNode getCacheRecursive(Element nodeElement) {
@@ -375,7 +395,7 @@ public class PacksStorage {
 		Element propertiesElement = Utils.getChildElement(nodeElement,
 				"properties");
 		if (propertiesElement != null) {
-			List<Element> propertyElements = Utils.getChildElementList(
+			List<Element> propertyElements = Utils.getChildElementsList(
 					propertiesElement, "property");
 
 			for (Element propertyElement : propertyElements) {
@@ -391,7 +411,7 @@ public class PacksStorage {
 		Element conditionsElement = Utils.getChildElement(nodeElement,
 				"conditions");
 		if (conditionsElement != null) {
-			List<Element> conditionElements = Utils.getChildElementList(
+			List<Element> conditionElements = Utils.getChildElementsList(
 					conditionsElement, "condition");
 
 			for (Element conditionElement : conditionElements) {
@@ -411,9 +431,24 @@ public class PacksStorage {
 			}
 		}
 
+		Element outlineElement = Utils.getChildElement(nodeElement, "outline");
+		if (outlineElement != null) {
+			List<Element> nodeElements = Utils.getChildElementsList(
+					outlineElement, "node");
+
+			TreeNode outlineNode = new TreeNode(TreeNode.OUTLINE_TYPE);
+			treeNode.setOutline(outlineNode);
+
+			for (Element childElement : nodeElements) {
+
+				TreeNode childTreeNode = getCacheRecursive((Element) childElement);
+				outlineNode.addChild(childTreeNode);
+			}
+		}
+
 		Element nodesElement = Utils.getChildElement(nodeElement, "nodes");
 		if (nodesElement != null) {
-			List<Element> nodeElements = Utils.getChildElementList(
+			List<Element> nodeElements = Utils.getChildElementsList(
 					nodesElement, "node");
 			for (Element childElement : nodeElements) {
 
@@ -547,7 +582,7 @@ public class PacksStorage {
 	}
 
 	public static List<TreeNode> getInstalledVersions() {
-		
+
 		List<TreeNode> list = new LinkedList<TreeNode>();
 		try {
 			TreeNode node;
@@ -573,4 +608,5 @@ public class PacksStorage {
 			}
 		}
 	}
+
 }

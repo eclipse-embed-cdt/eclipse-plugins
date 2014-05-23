@@ -71,6 +71,8 @@ public class PacksView extends ViewPart {
 	private Action m_removeAction;
 	private ViewContentProvider m_contentProvider;
 
+	private static final int AUTOEXPAND_LEVEL = 2;
+	
 	public TreeViewer getTreeViewer() {
 		return m_viewer;
 	}
@@ -261,17 +263,11 @@ public class PacksView extends ViewPart {
 		m_viewer.setContentProvider(m_contentProvider);
 		m_viewer.setLabelProvider(new TableLabelProvider());
 		m_viewer.setSorter(new NameSorter());
-		m_viewer.setAutoExpandLevel(2);
+		m_viewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);
 		m_viewer.setInput(getViewSite());
 
+		addProviders();
 		addListners();
-
-		// Create the help context id for the viewer's control
-		PlatformUI
-				.getWorkbench()
-				.getHelpSystem()
-				.setHelp(m_viewer.getControl(),
-						"ilg.gnuarmeclipse.packs.viewer");
 
 		makeActions();
 		hookContextMenu();
@@ -287,6 +283,11 @@ public class PacksView extends ViewPart {
 		System.out.println("PacksView.dispose()");
 	}
 
+	private void addProviders() {
+		// Register this viewer as the selection provider
+		getSite().setSelectionProvider(m_viewer);
+	}
+
 	private void addListners() {
 
 		m_viewer.addSelectionChangedListener(new ISelectionChangedListener() {
@@ -299,7 +300,7 @@ public class PacksView extends ViewPart {
 
 				updateButtonsEnableStatus(selection);
 
-				System.out.println("Selected: " + selection.toList());
+				System.out.println("Packs Selected: " + selection.toList());
 			}
 		});
 	}
@@ -481,9 +482,8 @@ public class PacksView extends ViewPart {
 	public void forceRefresh() {
 		m_contentProvider.forceRefresh();
 
-		Object[] expandedElements = m_viewer.getExpandedElements();
-		m_viewer.refresh();
-		m_viewer.setExpandedElements(expandedElements);
+		m_viewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);
+		m_viewer.setInput(getViewSite());
 		System.out.println("PacksView.forceRefresh()");
 	}
 
