@@ -4,9 +4,24 @@ import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.TreeNode;
 import ilg.gnuarmeclipse.packs.jobs.ParseOutlineJob;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
+import org.eclipse.core.filesystem.EFS;
+import org.eclipse.core.filesystem.IFileStore;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.action.IMenuListener;
+import org.eclipse.jface.action.IMenuManager;
+import org.eclipse.jface.action.IToolBarManager;
+import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -15,8 +30,15 @@ import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISelectionListener;
+import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
 
 public class OutlineView extends ViewPart {
@@ -26,6 +48,11 @@ public class OutlineView extends ViewPart {
 	private TreeViewer m_viewer;
 	private ISelectionListener m_pageSelectionListener;
 	private ViewContentProvider m_contentProvider;
+
+	private Action m_expandAll;
+	private Action m_collapseAll;
+	private Action m_doubleClickAction;
+	private Path m_packagePath;
 
 	public static final int AUTOEXPAND_LEVEL = 0;
 
@@ -37,12 +64,14 @@ public class OutlineView extends ViewPart {
 
 			if ((inputElement == null) || !(inputElement instanceof TreeNode)) {
 				m_tree = null; // new TreeNode(TreeNode.NONE_TYPE);
+				m_packagePath = null;
 				return new Object[] { new TreeNode(TreeNode.NONE_TYPE) };
 			}
 
 			TreeNode node = (TreeNode) inputElement;
 			String type = node.getType();
 			if (m_tree == null) {
+				m_packagePath = null;
 				if (TreeNode.PACKAGE_TYPE.equals(type)
 						|| TreeNode.VERSION_TYPE.equals(type)
 						|| TreeNode.NONE_TYPE.equals(type)) {
@@ -51,10 +80,18 @@ public class OutlineView extends ViewPart {
 			}
 
 			if (m_tree == null) {
+				m_packagePath = null;
 				return new Object[] { new TreeNode(TreeNode.NONE_TYPE) };
 			} else if (node == m_tree) {
-				if (m_tree.getOutline() != null) {
-					return m_tree.getOutline().getChildrenArray();
+				m_packagePath = null;
+				TreeNode outline = m_tree.getOutline();
+				if (outline != null) {
+					String folder = outline
+							.getProperty(TreeNode.FOLDER_PROPERTY);
+					if (folder != null) {
+						m_packagePath = new Path(folder);
+					}
+					return outline.getChildrenArray();
 				} else {
 					return new Object[] { m_tree };
 				}
@@ -287,6 +324,11 @@ public class OutlineView extends ViewPart {
 		addProviders();
 		addListners();
 		hookPageSelection();
+
+		makeActions();
+		hookContextMenu();
+		hookDoubleClickAction();
+		contributeToActionBars();
 	}
 
 	@Override
@@ -314,8 +356,8 @@ public class OutlineView extends ViewPart {
 				if (part instanceof PacksView) {
 					packsViewSelectionChanged(part, selection);
 				} else {
-					System.out.println("Outline: " + part + " selection="
-							+ selection);
+					// System.out.println("Outline: " + part + " selection="
+					// + selection);
 				}
 			}
 		};
@@ -361,6 +403,187 @@ public class OutlineView extends ViewPart {
 				// For all other nodes, show nothing
 				m_viewer.setInput(null);
 			}
+		}
+	}
+
+	private void makeActions() {
+
+		m_expandAll = new Action() {
+			public void run() {
+				m_viewer.expandAll();
+			}
+		};
+
+		m_expandAll.setText("Expand all");
+		m_expandAll.setToolTipText("Expand all children nodes");
+		m_expandAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+				Activator.PLUGIN_ID, "icons/expandall.png"));
+
+		m_collapseAll = new Action() {
+			public void run() {
+				m_viewer.collapseAll();
+			}
+		};
+
+		m_collapseAll.setText("Collapse all");
+		m_collapseAll.setToolTipText("Collapse all children nodes");
+		m_collapseAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+				Activator.PLUGIN_ID, "icons/collapseall.png"));
+
+		m_doubleClickAction = new Action() {
+			public void run() {
+				ISelection selection = m_viewer.getSelection();
+				Object obj = ((IStructuredSelection) selection)
+						.getFirstElement();
+				if (obj instanceof TreeNode) {
+					try {
+						doubleClick((TreeNode) obj);
+					} catch (PartInitException e) {
+					} catch (MalformedURLException e) {
+					}
+				}
+			}
+		};
+
+	}
+
+	private void hookContextMenu() {
+		MenuManager menuMgr = new MenuManager("#PopupMenu");
+		menuMgr.setRemoveAllWhenShown(true);
+		menuMgr.addMenuListener(new IMenuListener() {
+			public void menuAboutToShow(IMenuManager manager) {
+				OutlineView.this.fillContextMenu(manager);
+			}
+		});
+		Menu menu = menuMgr.createContextMenu(m_viewer.getControl());
+		m_viewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuMgr, m_viewer);
+	}
+
+	private void hookDoubleClickAction() {
+		m_viewer.addDoubleClickListener(new IDoubleClickListener() {
+			public void doubleClick(DoubleClickEvent event) {
+				m_doubleClickAction.run();
+			}
+		});
+	}
+
+	private void contributeToActionBars() {
+		IActionBars bars = getViewSite().getActionBars();
+		fillLocalPullDown(bars.getMenuManager());
+		fillLocalToolBar(bars.getToolBarManager());
+	}
+
+	private void fillLocalPullDown(IMenuManager manager) {
+		manager.add(m_expandAll);
+		manager.add(m_collapseAll);
+	}
+
+	private void fillContextMenu(IMenuManager manager) {
+		manager.add(m_expandAll);
+		manager.add(m_collapseAll);
+
+		// Other plug-ins can contribute there actions here
+		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
+	}
+
+	private void fillLocalToolBar(IToolBarManager manager) {
+		manager.add(m_expandAll);
+		manager.add(m_collapseAll);
+	}
+
+	private void doubleClick(TreeNode node) throws PartInitException,
+			MalformedURLException {
+		String type = node.getType();
+		if (m_packagePath == null) {
+			// System.out.println("null m_packagePath");
+			return;
+		}
+
+		IWorkbenchPage page = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage();
+
+		if (TreeNode.FILE_TYPE.equals(type)) {
+
+			String category = node.getProperty(TreeNode.CATEGORY_PROPERTY);
+			String relativeFile = node.getProperty(TreeNode.FILE_PROPERTY);
+			if ("header".equals(category) || "source".equals(category)) {
+
+				// System.out.println("Edit " + relativeFile);
+				IFileStore fileStore = EFS.getLocalFileSystem().getStore(
+						m_packagePath.append(relativeFile));
+
+				// Open external file in Eclipse editor (as read only, since the
+				// packages were marked as read only
+				IDE.openInternalEditorOnFileStore(page, fileStore);
+
+			} else if ("doc".equals(category)) {
+
+				// System.out.println("Document " + node);
+				IFileStore fileStore = EFS.getLocalFileSystem().getStore(
+						m_packagePath.append(relativeFile));
+				// System.out.println(fileStore);
+
+				// Open external file in Eclipse editor (as read only, since the
+				// packages were marked as read only
+				IDE.openEditorOnFileStore(page, fileStore);
+
+			} else if ("include".equals(category) || "library".equals(category)) {
+				; // ignore folders
+			} else {
+				System.out.println("File " + node + "  " + category);
+			}
+
+		} else if (TreeNode.BOOK_TYPE.equals(type)) {
+
+			String url = node.getProperty(TreeNode.URL_PROPERTY, "");
+			String relativeFile = node.getProperty(TreeNode.FILE_PROPERTY, "");
+			if (url.length() > 0) {
+
+				// System.out.println("Open " + url);
+				PlatformUI.getWorkbench().getBrowserSupport()
+						.getExternalBrowser().openURL(new URL(url));
+
+			} else if (relativeFile.length() > 0) {
+
+				// System.out.println("Path " + relativeFile);
+				IFileStore fileStore = EFS.getLocalFileSystem().getStore(
+						m_packagePath.append(relativeFile));
+
+				// Open external file in Eclipse editor (as read only, since the
+				// packages were marked as read only
+				IDE.openEditorOnFileStore(page, fileStore);
+
+			} else {
+				System.out.println("Book " + node);
+			}
+
+		} else if (TreeNode.HEADER_TYPE.equals(type)) {
+
+			// System.out.println("Header " + node );
+
+			String relativeFile = node.getProperty(TreeNode.FILE_PROPERTY);
+			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
+					m_packagePath.append(relativeFile));
+
+			// Open external file in Eclipse editor (as read only, since the
+			// packages were marked as read only
+			IDE.openInternalEditorOnFileStore(page, fileStore);
+
+		} else if (TreeNode.DEBUG_TYPE.equals(type)) {
+
+			// System.out.println("Debug " + node );
+
+			String relativeFile = node.getProperty(TreeNode.FILE_PROPERTY);
+			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
+					m_packagePath.append(relativeFile));
+
+			// Open external file in Eclipse editor (as read only, since the
+			// packages were marked as read only
+			IDE.openInternalEditorOnFileStore(page, fileStore);
+
+		} else {
+			// System.out.println("Double-click detected on " + node + " " + type);
 		}
 	}
 }

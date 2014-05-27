@@ -114,6 +114,7 @@ public class RemoveJob extends Job {
 			List<TreeNode> deviceNodes = new LinkedList<TreeNode>();
 			List<TreeNode> boardNodes = new LinkedList<TreeNode>();
 
+			@SuppressWarnings("unchecked")
 			final List<TreeNode>[] lists = (List<TreeNode>[]) (new List<?>[] {
 					deviceNodes, boardNodes });
 

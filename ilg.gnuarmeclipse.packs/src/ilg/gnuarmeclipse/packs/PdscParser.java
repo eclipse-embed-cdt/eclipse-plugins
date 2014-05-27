@@ -84,6 +84,8 @@ public class PdscParser {
 		}
 
 		TreeNode tree = new TreeNode(TreeNode.OUTLINE_TYPE);
+		tree.putProperty(TreeNode.FOLDER_PROPERTY, path.removeLastSegments(1)
+				.toString());
 
 		InputSource inputSource = new InputSource(new FileInputStream(file));
 
@@ -579,8 +581,8 @@ public class PdscParser {
 			bookNode.putNonEmptyProperty(TreeNode.URL_PROPERTY, bookName);
 			description = extendDescription(description, "url", bookName);
 		} else {
-			bookNode.putNonEmptyProperty(TreeNode.FILE_PROPERTY, bookName);
-			description = extendDescription(description, "path", posixName);
+			bookNode.putNonEmptyProperty(TreeNode.FILE_PROPERTY, posixName);
+			description = extendDescription(description, "file", posixName);
 		}
 
 		bookNode.putNonEmptyProperty(TreeNode.CATEGORY_PROPERTY, category);

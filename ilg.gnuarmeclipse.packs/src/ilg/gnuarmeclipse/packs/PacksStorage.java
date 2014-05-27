@@ -363,11 +363,11 @@ public class PacksStorage {
 
 	public static void updateInstalled() throws IOException,
 			ParserConfigurationException, SAXException {
-		List<TreeNode> deviceNodes = new LinkedList<TreeNode>();
-		List<TreeNode> boardNodes = new LinkedList<TreeNode>();
+		//List<TreeNode> deviceNodes = new LinkedList<TreeNode>();
+		//List<TreeNode> boardNodes = new LinkedList<TreeNode>();
 
-		final List<TreeNode>[] lists = (List<TreeNode>[]) (new List<?>[] {
-				deviceNodes, boardNodes });
+		//final List<TreeNode>[] lists = (List<TreeNode>[]) (new List<?>[] {
+		//		deviceNodes, boardNodes });
 
 		// Update installed nodes
 		IPath path = new Path(getFolderPath());
