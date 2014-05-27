@@ -20,10 +20,10 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 	public static final String EXAMPLES_TYPE = "examples";
 	// public static final String COMPONENTS_TYPE = "components";
 
-	public static final String CORE_TYPE = "core";
+	// public static final String CORE_TYPE = "core";
 	public static final String BOOK_TYPE = "book";
 	public static final String FEATURE_TYPE = "feature";
-	public static final String CLOCK_TYPE = "clock";
+	// public static final String CLOCK_TYPE = "clock";
 	public static final String HEADER_TYPE = "header";
 	public static final String DEFINE_TYPE = "define";
 	public static final String DEBUG_TYPE = "debug";
@@ -39,6 +39,9 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 	public static final String REQUIRE_TYPE = "require";
 	public static final String ACCEPT_TYPE = "accept";
 	public static final String DENY_TYPE = "deny";
+	public static final String API_TYPE = "api";
+	public static final String PROCESSOR_TYPE = "processor";
+	public static final String VARIANT_TYPE = "variant";
 
 	public static final String VENDOR_TYPE = "vendor";
 	public static final String FAMILY_TYPE = "family";
@@ -79,6 +82,7 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 	public static final String ID_PROPERTY = "id";
 	public static final String START_PROPERTY = "start";
 	public static final String SIZE_PROPERTY = "size";
+	public static final String EXCLUSIVE_PROPERTY = "exclusive";
 
 	public class Condition {
 
@@ -288,6 +292,10 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 		}
 
 		return null;
+	}
+
+	public void removeChildren() {
+		m_children = null;
 	}
 
 	public TreeNode getParent() {

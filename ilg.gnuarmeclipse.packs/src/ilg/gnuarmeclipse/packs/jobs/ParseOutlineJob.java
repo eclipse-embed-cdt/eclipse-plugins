@@ -1,5 +1,6 @@
 package ilg.gnuarmeclipse.packs.jobs;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -66,7 +67,7 @@ public class ParseOutlineJob extends Job {
 		m_running = true;
 		m_monitor = monitor;
 
-		m_out.println("Parse outline started.");
+		long beginTime = System.currentTimeMillis();
 
 		TreeNode packNode = m_versionNode.getParent();
 		String packName = packNode.getName();
@@ -75,27 +76,29 @@ public class ParseOutlineJob extends Job {
 		String versionName = m_versionNode.getName();
 
 		String pdscName = vendorName + "." + packName + ".pdsc";
+		m_out.println("Parse \"" + pdscName + "\" outline started.");
 
 		IPath path = new Path(m_folderPath).append(vendorName).append(packName)
 				.append(versionName).append(pdscName);
 
 		TreeNode outlineNode = null;
 		try {
-			PdscParser parser = new PdscParser(); 
-			outlineNode = parser.parsePdscOutline(path);
+			PdscParser parser = new PdscParser();
+			outlineNode = parser.parsePdscFull(path);
 			m_versionNode.setOutline(outlineNode);
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			m_out.println("Failed: " + e.toString());
+		} catch (Exception e) {
+			Activator.log(e);
+			m_out.println("Failed: " + e.toString());
 		}
 
-		m_out.println("Parse outline completed.");
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - beginTime;
+		if (duration == 0) {
+			duration = 1;
+		}
+		m_out.println("Parse completed in " + duration + "ms.");
 		m_out.println();
 
 		if (outlineNode != null) {

@@ -136,5 +136,4 @@ public class Activator extends AbstractUIPlugin {
 		return ms_boardsView;
 	}
 
-
 }

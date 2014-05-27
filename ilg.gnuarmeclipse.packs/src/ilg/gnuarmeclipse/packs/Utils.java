@@ -88,7 +88,7 @@ public class Utils {
 
 		String content = "";
 
-		if (el.getNodeType() == Node.ELEMENT_NODE) {
+		if (el != null && el.getNodeType() == Node.ELEMENT_NODE) {
 			content = el.getTextContent();
 			if (content != null) {
 				content = content.trim();

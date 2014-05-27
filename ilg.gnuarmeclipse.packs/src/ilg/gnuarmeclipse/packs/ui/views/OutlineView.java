@@ -44,7 +44,8 @@ public class OutlineView extends ViewPart {
 			String type = node.getType();
 			if (m_tree == null) {
 				if (TreeNode.PACKAGE_TYPE.equals(type)
-						|| TreeNode.VERSION_TYPE.equals(type)) {
+						|| TreeNode.VERSION_TYPE.equals(type)
+						|| TreeNode.NONE_TYPE.equals(type)) {
 					m_tree = node;
 				}
 			}
@@ -52,7 +53,11 @@ public class OutlineView extends ViewPart {
 			if (m_tree == null) {
 				return new Object[] { new TreeNode(TreeNode.NONE_TYPE) };
 			} else if (node == m_tree) {
-				return m_tree.getOutline().getChildrenArray();
+				if (m_tree.getOutline() != null) {
+					return m_tree.getOutline().getChildrenArray();
+				} else {
+					return new Object[] { m_tree };
+				}
 			} else {
 				return getChildren(inputElement);
 			}
@@ -65,26 +70,6 @@ public class OutlineView extends ViewPart {
 			TreeNode node = ((TreeNode) obj);
 			String name = node.getName();
 
-			if (false) {
-				String type = node.getType();
-				if (TreeNode.VERSION_TYPE.equals(type)) {
-					String date = node.getProperty(TreeNode.DATE_PROPERTY, "")
-							.trim();
-					if (date.length() > 0) {
-						name += " (" + date + ")";
-					}
-				}
-
-				if (name.length() == 0) {
-					if (TreeNode.BOARDS_TYPE.equals(type)) {
-						name = "Boards";
-					} else if (TreeNode.DEVICES_TYPE.equals(type)) {
-						name = "Devices";
-					} else if (TreeNode.EXAMPLES_TYPE.equals(type)) {
-						name = "Examples";
-					}
-				}
-			}
 			return " " + name;
 		}
 
@@ -162,7 +147,7 @@ public class OutlineView extends ViewPart {
 							Activator.PLUGIN_ID, "icons/library_obj.png")
 							.createImage();
 				}
-			} else if (TreeNode.CORE_TYPE.equals(type)) {
+			} else if (TreeNode.PROCESSOR_TYPE.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/methpro_obj.png").createImage();
 			} else if (TreeNode.FILE_TYPE.equals(type)) {
@@ -210,9 +195,6 @@ public class OutlineView extends ViewPart {
 							Activator.PLUGIN_ID, "icons/file_obj.png")
 							.createImage();
 				}
-			} else if (TreeNode.CLOCK_TYPE.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/time_obj.png").createImage();
 			} else if (TreeNode.HEADER_TYPE.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/include_obj.gif").createImage();
@@ -240,6 +222,9 @@ public class OutlineView extends ViewPart {
 			} else if (TreeNode.PACKAGE_TYPE.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/package_obj.png").createImage();
+			} else if (TreeNode.API_TYPE.equals(type)) {
+				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
+						"icons/int_obj.gif").createImage();
 			} else {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/unknown_obj.gif").createImage();
@@ -368,6 +353,10 @@ public class OutlineView extends ViewPart {
 				ParseOutlineJob job = new ParseOutlineJob("Parse Outline",
 						node, m_viewer);
 				job.schedule();
+			} else if (!node.isInstalled()) {
+				TreeNode none = new TreeNode(TreeNode.NONE_TYPE);
+				none.setName("(not installed)");
+				m_viewer.setInput(none);
 			} else {
 				// For all other nodes, show nothing
 				m_viewer.setInput(null);
