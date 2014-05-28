@@ -21,7 +21,9 @@ import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.DoubleClickEvent;
 import org.eclipse.jface.viewers.IDoubleClickListener;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
@@ -52,6 +54,8 @@ public class OutlineView extends ViewPart {
 	private Action m_expandAll;
 	private Action m_collapseAll;
 	private Action m_doubleClickAction;
+	private Action m_openWithText;
+	private Action m_openWithSystem;
 	private Path m_packagePath;
 
 	public static final int AUTOEXPAND_LEVEL = 0;
@@ -277,10 +281,6 @@ public class OutlineView extends ViewPart {
 			if (description != null && description.length() > 0) {
 				return description;
 			}
-			String type = node.getType();
-			if (TreeNode.VERSION_TYPE.equals(type)) {
-				return "Version";
-			}
 			return null;
 		}
 
@@ -343,6 +343,65 @@ public class OutlineView extends ViewPart {
 
 	private void addListners() {
 
+		m_viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+
+			@Override
+			public void selectionChanged(SelectionChangedEvent event) {
+
+				// Called when the local view selection changes
+				
+				m_openWithText.setEnabled(false);
+				m_openWithSystem.setEnabled(false);
+
+				IStructuredSelection selection = (IStructuredSelection) event
+						.getSelection();
+				if (selection == null || selection.isEmpty()) {
+					return;
+				}
+
+				TreeNode node = (TreeNode) selection.getFirstElement();
+				String type = node.getType();
+
+				// Enable 'Open With Text Editor'
+				if (TreeNode.FILE_TYPE.equals(type)) {
+					
+					String category = node
+							.getProperty(TreeNode.CATEGORY_PROPERTY);
+					if ("header".equals(category) || "source".equals(category)) {
+						m_openWithText.setEnabled(true);
+					}
+				} else if (TreeNode.HEADER_TYPE.equals(type)) {
+					m_openWithText.setEnabled(true);
+				} else if (TreeNode.DEBUG_TYPE.equals(type)) {
+					m_openWithText.setEnabled(true);
+				}
+
+				// Enable 'Open With System Editor'
+				if (TreeNode.FILE_TYPE.equals(type)) {
+					
+					String category = node
+							.getProperty(TreeNode.CATEGORY_PROPERTY);
+					if ("doc".equals(category)) {
+						m_openWithSystem.setEnabled(true);
+					}
+				} else if (TreeNode.DEBUG_TYPE.equals(type)) {
+					m_openWithSystem.setEnabled(true);
+				} else if (TreeNode.BOOK_TYPE.equals(type)) {
+
+					String relativeFile = node.getProperty(
+							TreeNode.FILE_PROPERTY, "");
+					if (relativeFile.length() > 0) {
+						m_openWithSystem.setEnabled(true);
+					}
+					
+					String url = node.getProperty(TreeNode.URL_PROPERTY, "");
+					if (url.length() > 0) {
+						m_openWithSystem.setEnabled(true);
+					}
+				}
+			}
+		});
+
 	}
 
 	private void hookPageSelection() {
@@ -375,6 +434,7 @@ public class OutlineView extends ViewPart {
 		System.out.println("OutlineView.dispose()");
 	}
 
+	// Called when selection in other views change
 	protected void packsViewSelectionChanged(IWorkbenchPart part,
 			ISelection selection) {
 
@@ -397,7 +457,7 @@ public class OutlineView extends ViewPart {
 				job.schedule();
 			} else if (!node.isInstalled()) {
 				TreeNode none = new TreeNode(TreeNode.NONE_TYPE);
-				none.setName("(not installed)");
+				none.setName("(Version not installed, outline not available)");
 				m_viewer.setInput(none);
 			} else {
 				// For all other nodes, show nothing
@@ -430,6 +490,45 @@ public class OutlineView extends ViewPart {
 		m_collapseAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/collapseall.png"));
 
+		m_openWithText = new Action() {
+			public void run() {
+				System.out.println("openWithText");
+
+				ISelection selection = m_viewer.getSelection();
+				Object obj = ((IStructuredSelection) selection)
+						.getFirstElement();
+				if (obj instanceof TreeNode) {
+					try {
+						openWithTextAction((TreeNode) obj);
+					} catch (PartInitException e) {
+					}
+				}
+			}
+		};
+
+		m_openWithText.setText("Open With Text Viewer");
+		m_openWithText.setEnabled(false);
+
+		m_openWithSystem = new Action() {
+			public void run() {
+				System.out.println("openWithSystem");
+
+				ISelection selection = m_viewer.getSelection();
+				Object obj = ((IStructuredSelection) selection)
+						.getFirstElement();
+				if (obj instanceof TreeNode) {
+					try {
+						openWithSystemAction((TreeNode) obj);
+					} catch (PartInitException e) {
+					} catch (MalformedURLException e) {
+					}
+				}
+			}
+		};
+
+		m_openWithSystem.setText("Open With System Viewer");
+		m_openWithSystem.setEnabled(false);
+
 		m_doubleClickAction = new Action() {
 			public void run() {
 				ISelection selection = m_viewer.getSelection();
@@ -437,7 +536,7 @@ public class OutlineView extends ViewPart {
 						.getFirstElement();
 				if (obj instanceof TreeNode) {
 					try {
-						doubleClick((TreeNode) obj);
+						doubleClickAction((TreeNode) obj);
 					} catch (PartInitException e) {
 					} catch (MalformedURLException e) {
 					}
@@ -480,8 +579,8 @@ public class OutlineView extends ViewPart {
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
-		manager.add(m_expandAll);
-		manager.add(m_collapseAll);
+		manager.add(m_openWithText);
+		manager.add(m_openWithSystem);
 
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -492,7 +591,7 @@ public class OutlineView extends ViewPart {
 		manager.add(m_collapseAll);
 	}
 
-	private void doubleClick(TreeNode node) throws PartInitException,
+	private void doubleClickAction(TreeNode node) throws PartInitException,
 			MalformedURLException {
 		String type = node.getType();
 		if (m_packagePath == null) {
@@ -583,7 +682,41 @@ public class OutlineView extends ViewPart {
 			IDE.openInternalEditorOnFileStore(page, fileStore);
 
 		} else {
-			// System.out.println("Double-click detected on " + node + " " + type);
+			// System.out.println("Double-click detected on " + node + " " +
+			// type);
 		}
 	}
+
+	private void openWithTextAction(TreeNode node) throws PartInitException {
+
+		IWorkbenchPage page = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage();
+		String relativeFile = node.getProperty(TreeNode.FILE_PROPERTY, "");
+		if (relativeFile.length() > 0) {
+			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
+					m_packagePath.append(relativeFile));
+			IDE.openInternalEditorOnFileStore(page, fileStore);
+		}
+	}
+
+	private void openWithSystemAction(TreeNode node) throws PartInitException, MalformedURLException {
+
+		IWorkbenchPage page = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage();
+		String relativeFile = node.getProperty(TreeNode.FILE_PROPERTY, "");
+		if (relativeFile.length() > 0) {
+			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
+					m_packagePath.append(relativeFile));
+			IDE.openEditorOnFileStore(page, fileStore);
+			return;
+		}
+
+		String url = node.getProperty(TreeNode.URL_PROPERTY, "");
+		if (url.length() > 0) {
+			PlatformUI.getWorkbench().getBrowserSupport()
+					.getExternalBrowser().openURL(new URL(url));
+			return;
+		}
+	}
+
 }

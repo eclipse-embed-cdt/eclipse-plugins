@@ -1929,7 +1929,12 @@ public class PdscParser {
 
 					String value = childElement.getAttribute(attrName).trim();
 
-					conditionName = extendName(conditionName, value);
+					if ("Dvendor".equals(attrName)) {
+						conditionName = extendName(conditionName,
+								value.split(":")[0]);
+					} else {
+						conditionName = extendName(conditionName, value);
+					}
 
 					description = extendDescription(description, attrName,
 							value);
