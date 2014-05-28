@@ -14,10 +14,7 @@ public class PacksFilter extends ViewerFilter {
 
 	private IStructuredSelection m_selection;
 
-	// private String m_type;
-
-	public void setSelection(String type, IStructuredSelection selection) {
-		// m_type = type;
+	public void setSelection(IStructuredSelection selection) {
 		m_selection = selection;
 	}
 
@@ -33,6 +30,8 @@ public class PacksFilter extends ViewerFilter {
 		TreeNode node = (TreeNode) element;
 		// String nodeType = node.getType();
 
+		// For folder nodes (vendor), if there is no child visible,
+		// make the entire parent invisible.
 		if (TreeNode.VENDOR_TYPE.equals(node.getType())) {
 			StructuredViewer sviewer = (StructuredViewer) viewer;
 			ITreeContentProvider provider = (ITreeContentProvider) sviewer
@@ -44,34 +43,39 @@ public class PacksFilter extends ViewerFilter {
 			return false;
 		}
 
+		// If the node has no restricting conditions, then it is always visible
 		if (!node.hasConditions()) {
-			//System.out.println("accepted, no conditions");
-			return true; // Node always visible
+			return true;
 		}
 
+		// If the node has conditions, enumerate them and check one by one.
+		// If at least one is true, the node is visible
 		List<TreeNode.Condition> conditions = node.getConditions();
 		for (TreeNode.Condition condition : conditions) {
 
+			// Enumerate all selections
 			for (Object obj : m_selection.toList()) {
 				if (obj instanceof TreeNode) {
 					TreeNode selectionNode = (TreeNode) obj;
 
 					if (isNodeVisible(condition, selectionNode)) {
-						//System.out.println("accepted, match " + condition);
+						// System.out.println("accepted, match " + condition);
 						return true;
 					}
 				}
 			}
 		}
 
-		// System.out.println("rejected");
+		// No condition fulfilled, reject
 		return false;
 	}
 
 	private boolean isNodeVisible(TreeNode.Condition condition,
 			TreeNode selectionNode) {
 
-		if (TreeNode.Condition.BOARD_TYPE.equals(condition.getType())) {
+		String conditionType = condition.getType();
+		// Condition is from the node
+		if (TreeNode.Condition.BOARD_TYPE.equals(conditionType)) {
 
 			// Check board conditions (generic vendor string and
 			// board name)
@@ -101,8 +105,7 @@ public class PacksFilter extends ViewerFilter {
 				}
 			}
 
-		} else if (TreeNode.Condition.DEVICEFAMILY_TYPE.equals(condition
-				.getType())) {
+		} else if (TreeNode.Condition.DEVICEFAMILY_TYPE.equals(conditionType)) {
 
 			String vendorId;
 			TreeNode selectionVendorNode = selectionNode;
@@ -140,6 +143,12 @@ public class PacksFilter extends ViewerFilter {
 				if (condition.getVendor().equals(vendorId)
 						&& condition.getValue().equals(
 								selectionFamilyNode.getName())) {
+					return true;
+				}
+			}
+		} else if (TreeNode.Condition.KEYWORD_TYPE.equals(conditionType)) {
+			if (TreeNode.KEYWORD_TYPE.equals(selectionNode.getType())) {
+				if (condition.getValue().equals(selectionNode.getName())) {
 					return true;
 				}
 			}

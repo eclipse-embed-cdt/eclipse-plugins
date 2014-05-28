@@ -15,10 +15,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
@@ -26,9 +23,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
 /**
@@ -46,12 +41,12 @@ import org.eclipse.ui.part.ViewPart;
  * <p>
  */
 
-public class DevicesView extends ViewPart {
+public class KeywordsView extends ViewPart {
 
 	/**
 	 * The ID of the view as specified by the extension.
 	 */
-	public static final String ID = "ilg.gnuarmeclipse.packs.ui.views.DevicesView";
+	public static final String ID = "ilg.gnuarmeclipse.packs.ui.views.KeywordsView";
 
 	private TreeViewer m_viewer;
 	private Action m_removeFilters;
@@ -69,22 +64,13 @@ public class DevicesView extends ViewPart {
 	 * example).
 	 */
 
-	class ViewContentProvider implements IStructuredContentProvider,
-			ITreeContentProvider {
-
-		private TreeNode m_tree;
-
-		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-		}
-
-		public void dispose() {
-		}
+	class ViewContentProvider extends AbstractViewContentProvider {
 
 		public Object[] getElements(Object parent) {
 			if (parent.equals(getViewSite())) {
 				if (m_tree == null) {
 					try {
-						m_tree = PacksStorage.getCachedSubTree("devices");
+						m_tree = PacksStorage.getCachedSubTree("keywords");
 					} catch (UsingDefaultFileException e) {
 						Activator.log(e.getMessage());
 					} catch (Exception e) {
@@ -100,22 +86,6 @@ public class DevicesView extends ViewPart {
 			return getChildren(parent);
 		}
 
-		public Object getParent(Object child) {
-			return ((TreeNode) child).getParent();
-		}
-
-		public Object[] getChildren(Object parent) {
-			return ((TreeNode) parent).getChildrenArray();
-		}
-
-		public boolean hasChildren(Object parent) {
-			return ((TreeNode) parent).hasChildren();
-		}
-
-		public void forceRefresh() {
-			// System.out.println("forceRefresh()");
-			m_tree = null;
-		}
 	}
 
 	class ViewLabelProvider extends CellLabelProvider {
@@ -126,45 +96,35 @@ public class DevicesView extends ViewPart {
 
 		public Image getImage(Object obj) {
 
-			TreeNode node = ((TreeNode) obj);
-			String type = node.getType();
+			// TreeNode node = ((TreeNode) obj);
+			// String type = node.getType();
 
-			if (TreeNode.NONE_TYPE.equals(type)) {
-				return null;
-			}
+			// if (TreeNode.NONE_TYPE.equals(type)) {
+			// return null;
+			// }
+			//
+			// if (TreeNode.KEYWORD_TYPE.equals(type)) {
+			// return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
+			// "icons/info_obj.png").createImage();
+			// }
 
-			if (!TreeNode.FAMILY_TYPE.equals(type)) {
-				String imageKey = ISharedImages.IMG_OBJ_FOLDER;
-				return PlatformUI.getWorkbench().getSharedImages()
-						.getImage(imageKey);
-			} else {
-				if (node.isInstalled()) {
-					return Activator.imageDescriptorFromPlugin(
-							Activator.PLUGIN_ID, "icons/hardware_chip.png")
-							.createImage();
-				} else {
-					return Activator
-							.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-									"icons/hardware_chip_grey.png")
-							.createImage();
-				}
-			}
+			return null;
 		}
 
 		@Override
 		public String getToolTipText(Object obj) {
 
-			TreeNode node = ((TreeNode) obj);
-			String type = node.getType();
-
-			if (TreeNode.VENDOR_TYPE.equals(type)) {
-				return "Vendor";
-			} else if (TreeNode.FAMILY_TYPE.equals(type)) {
-				String description = node.getDescription();
-				if (description != null && description.length() > 0) {
-					return description;
-				}
-			}
+			// TreeNode node = ((TreeNode) obj);
+			// String type = node.getType();
+			//
+			// if (TreeNode.VENDOR_TYPE.equals(type)) {
+			// return "Vendor";
+			// } else if (TreeNode.FAMILY_TYPE.equals(type)) {
+			// String description = node.getDescription();
+			// if (description != null && description.length() > 0) {
+			// return description;
+			// }
+			// }
 			return null;
 		}
 
@@ -176,15 +136,18 @@ public class DevicesView extends ViewPart {
 	}
 
 	class NameSorter extends ViewerSorter {
+		// Default ascending sorter
 	}
 
 	/**
 	 * The constructor.
 	 */
-	public DevicesView() {
-		Activator.setDevicesView(this);
+	public KeywordsView() {
 
-		System.out.println("DevicesView()");
+		// Store reference to this view
+		Activator.setKeywordsView(this);
+
+		System.out.println("KeywordsView()");
 	}
 
 	/**
@@ -193,7 +156,7 @@ public class DevicesView extends ViewPart {
 	 */
 	public void createPartControl(Composite parent) {
 
-		System.out.println("DevicesView.createPartControl()");
+		System.out.println("KeywordsView.createPartControl()");
 
 		// m_packsFilter = new PacksFilter();
 		// m_packsFilters = new PacksFilter[] { m_packsFilter };
@@ -222,17 +185,16 @@ public class DevicesView extends ViewPart {
 
 	public void dispose() {
 		super.dispose();
-		
-		System.out.println("DevicesView.dispose()");
+
+		System.out.println("KeywordsView.dispose()");
 	}
 
 	private void addProviders() {
-		// Register this viewer as the selection provider
+		// Register this viewer as a selection provider
 		getSite().setSelectionProvider(m_viewer);
 	}
 
 	private void addListners() {
-
 	}
 
 	private void hookContextMenu() {
@@ -240,7 +202,7 @@ public class DevicesView extends ViewPart {
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
-				DevicesView.this.fillContextMenu(manager);
+				KeywordsView.this.fillContextMenu(manager);
 			}
 		});
 		Menu menu = menuMgr.createContextMenu(m_viewer.getControl());
@@ -272,9 +234,9 @@ public class DevicesView extends ViewPart {
 	private void makeActions() {
 
 		m_removeFilters = new Action() {
-			public void run() {				
+			public void run() {
 				// Empty selection
-				m_viewer.setSelection(null);
+				m_viewer.setSelection(null);// new TreeSelection());
 			}
 		};
 
@@ -297,15 +259,16 @@ public class DevicesView extends ViewPart {
 	}
 
 	public void forceRefresh() {
-		
+
 		m_contentProvider.forceRefresh();
 
-		//Object[] expandedElements = m_viewer.getExpandedElements();
+		// Object[] expandedElements = m_viewer.getExpandedElements();
 		m_viewer.setInput(getViewSite());
-		//m_viewer.refresh();
-		//m_viewer.setExpandedElements(expandedElements);
 
-		System.out.println("DevicesView.forceRefresh()");
+		// m_viewer.refresh();
+		// m_viewer.setExpandedElements(expandedElements);
+
+		System.out.println("KeywordsView.forceRefresh()");
 	}
 
 	public void update(Object obj) {
@@ -319,11 +282,10 @@ public class DevicesView extends ViewPart {
 		} else {
 			m_viewer.update(obj, null);
 		}
-		System.out.println("DevicesView.updated()");
+		System.out.println("KeywordsView.updated()");
 	}
 
 	public String toString(){
-		return "DevicesView";
+		return "KeywordsView";
 	}
-
 }

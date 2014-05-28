@@ -14,11 +14,13 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 	public static final String ROOT_TYPE = "root";
 	public static final String OUTLINE_TYPE = "outline";
 
-	public static final String FOLDER_TYPE = "folder";
-	public static final String BOARDS_TYPE = "boards";
-	public static final String DEVICES_TYPE = "devices";
+	public static final String BOARDS_SELECT_TYPE = "boards";
+	public static final String DEVICES_SELECT_TYPE = "devices";
+	public static final String KEYWORDS_SELECT_TYPE = "keywords";
+
 	public static final String EXAMPLES_TYPE = "examples";
 	// public static final String COMPONENTS_TYPE = "components";
+	// public static final String FOLDER_TYPE = "folder";
 
 	// public static final String CORE_TYPE = "core";
 	public static final String BOOK_TYPE = "book";
@@ -86,8 +88,10 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 
 	public class Condition {
 
-		public static final String BOARD_TYPE = "board";
 		public static final String DEVICEFAMILY_TYPE = "devicefamily";
+		public static final String BOARD_TYPE = "board";
+		public static final String KEYWORD_TYPE = "keyword";
+		
 		public static final String DEPRECATED_TYPE = "deprecated";
 
 		private String m_type;

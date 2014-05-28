@@ -14,16 +14,11 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
-import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITreeContentProvider;
-import org.eclipse.jface.viewers.SelectionChangedEvent;
-import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
-import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -60,8 +55,8 @@ public class BoardsView extends ViewPart {
 	private TreeViewer m_viewer;
 	private Action m_removeFilters;
 
-	private PacksFilter m_packsFilter;
-	private ViewerFilter[] m_packsFilters;
+	// private PacksFilter m_packsFilter;
+	// private ViewerFilter[] m_packsFilters;
 
 	// private DrillDownAdapter drillDownAdapter;
 
@@ -199,8 +194,8 @@ public class BoardsView extends ViewPart {
 
 		System.out.println("BoardsView.createPartControl()");
 
-		m_packsFilter = new PacksFilter();
-		m_packsFilters = new PacksFilter[] { m_packsFilter };
+		// m_packsFilter = new PacksFilter();
+		// m_packsFilters = new PacksFilter[] { m_packsFilter };
 
 		m_viewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION
 				| SWT.H_SCROLL | SWT.V_SCROLL);
@@ -237,34 +232,6 @@ public class BoardsView extends ViewPart {
 
 	private void addListners() {
 
-		m_viewer.addSelectionChangedListener(new ISelectionChangedListener() {
-
-			@Override
-			public void selectionChanged(SelectionChangedEvent event) {
-
-				IStructuredSelection selection = (IStructuredSelection) event
-						.getSelection();
-				if (selection == null || selection.isEmpty()) {
-					// System.out.println("Empty Selection");
-					Activator.getPacksView().getTreeViewer().resetFilters();
-					return;
-				}
-
-				if (TreeNode.NONE_TYPE.equals(((TreeNode) selection
-						.getFirstElement()).getType())) {
-					return;
-				}
-
-				// System.out.println("Selected: " + selection.toList());
-
-				// Pass the current selection
-				m_packsFilter.setSelection(TreeNode.Condition.BOARD_TYPE,
-						selection);
-				// Set the filter and automatically update display
-				Activator.getPacksView().getTreeViewer()
-						.setFilters(m_packsFilters);
-			}
-		});
 	}
 
 	private void hookContextMenu() {
@@ -305,10 +272,8 @@ public class BoardsView extends ViewPart {
 
 		m_removeFilters = new Action() {
 			public void run() {
-				// System.out.println("m_removeFilters.run()");
-				Activator.getPacksView().getTreeViewer().resetFilters();
 				// Empty selection
-				m_viewer.setSelection(new TreeSelection());
+				m_viewer.setSelection(null);
 			}
 		};
 
@@ -331,12 +296,12 @@ public class BoardsView extends ViewPart {
 	}
 
 	public void forceRefresh() {
-		
+
 		m_contentProvider.forceRefresh();
 
-		//m_viewer.refresh();
+		// m_viewer.refresh();
 		m_viewer.setInput(getViewSite());
-		
+
 		System.out.println("BoardsView.forceRefresh()");
 	}
 
@@ -354,4 +319,7 @@ public class BoardsView extends ViewPart {
 		System.out.println("BoardsView.updated()");
 	}
 
+	public String toString() {
+		return "BoardsView";
+	}
 }

@@ -13,6 +13,7 @@ package ilg.gnuarmeclipse.packs;
 
 import ilg.gnuarmeclipse.packs.ui.views.BoardsView;
 import ilg.gnuarmeclipse.packs.ui.views.DevicesView;
+import ilg.gnuarmeclipse.packs.ui.views.KeywordsView;
 import ilg.gnuarmeclipse.packs.ui.views.PacksView;
 
 import org.eclipse.core.runtime.IStatus;
@@ -36,6 +37,7 @@ public class Activator extends AbstractUIPlugin {
 	private static PacksView ms_packsView;
 	private static DevicesView ms_devicesView;
 	private static BoardsView ms_boardsView;
+	private static KeywordsView ms_keywordsView;
 
 	/**
 	 * The constructor
@@ -134,6 +136,17 @@ public class Activator extends AbstractUIPlugin {
 			ms_boardsView = (BoardsView) findView(BoardsView.ID);
 		}
 		return ms_boardsView;
+	}
+
+	public static void setKeywordsView(KeywordsView view) {
+		ms_keywordsView = view;
+	}
+
+	public static KeywordsView getKeywordsView() {
+		if (ms_keywordsView == null) {
+			ms_keywordsView = (KeywordsView) findView(KeywordsView.ID);
+		}
+		return ms_keywordsView;
 	}
 
 }

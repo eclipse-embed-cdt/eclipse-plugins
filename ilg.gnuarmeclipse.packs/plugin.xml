@@ -59,6 +59,14 @@
       <view
             allowMultiple="false"
             category="ilg.gnuarmeclipse.packs"
+            class="ilg.gnuarmeclipse.packs.ui.views.KeywordsView"
+            icon="icons/info_obj.png"
+            id="ilg.gnuarmeclipse.packs.ui.views.KeywordsView"
+            name="Keywords">
+      </view>
+      <view
+            allowMultiple="false"
+            category="ilg.gnuarmeclipse.packs"
             class="ilg.gnuarmeclipse.packs.ui.views.PacksView"
             icon="icons/packages.png"
             id="ilg.gnuarmeclipse.packs.ui.views.PackagesView"

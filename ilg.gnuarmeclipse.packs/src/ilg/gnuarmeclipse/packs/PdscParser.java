@@ -1,6 +1,6 @@
 package ilg.gnuarmeclipse.packs;
 
-import ilg.gnuarmeclipse.packs.TreeNode.Condition;
+import ilg.gnuarmeclipse.packs.TreeNode;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -348,6 +348,8 @@ public class PdscParser {
 			}
 		}
 
+		packDescription = extendDescription(packDescription, "schema",
+				schemaVersion);
 		packNode.setDescription(packDescription);
 
 		return tree;
@@ -391,11 +393,12 @@ public class PdscParser {
 		TreeNode familyNode = new TreeNode(TreeNode.FAMILY_TYPE);
 		parent.addChild(familyNode);
 
-		familyNode.setName(familyName);
+		familyNode.setName(familyName + " (family)");
+
 		familyNode.putNonEmptyProperty(TreeNode.VENDOR_PROPERTY, va[0]);
 		familyNode.putNonEmptyProperty(TreeNode.VENDORID_PROPERTY, va[1]);
 
-		String familyDescription = "Family: " + familyName;
+		String familyDescription = "Device family: " + familyName;
 
 		List<Element> childElements = Utils.getChildElementsList(el);
 
@@ -612,9 +615,9 @@ public class PdscParser {
 		TreeNode subFamilyNode = new TreeNode(TreeNode.SUBFAMILY_TYPE);
 		parent.addChild(subFamilyNode);
 
-		subFamilyNode.setName(subFamilyName);
+		subFamilyNode.setName(subFamilyName + " (subfamily)");
 
-		String description = "Subfamily: " + subFamilyName;
+		String description = "Device subfamily: " + subFamilyName;
 
 		List<Element> childElements = Utils.getChildElementsList(el);
 
@@ -666,7 +669,7 @@ public class PdscParser {
 		TreeNode deviceNode = new TreeNode(TreeNode.DEVICE_TYPE);
 		parent.addChild(deviceNode);
 
-		deviceNode.setName(deviceName);
+		deviceNode.setName(deviceName + " (device)");
 
 		String descriptionContent = "";
 
@@ -687,9 +690,10 @@ public class PdscParser {
 				TreeNode variantNode = new TreeNode(TreeNode.VARIANT_TYPE);
 				deviceNode.addChild(variantNode);
 
-				variantNode.setName(variantName);
+				variantNode.setName(variantName + " (variant)");
 
-				String variantDescriptionContent = "Variant: " + variantName;
+				String variantDescriptionContent = "Device variant: "
+						+ variantName;
 
 				List<Element> childElements2 = Utils
 						.getChildElementsList(childElement);
@@ -2151,7 +2155,7 @@ public class PdscParser {
 		if (urlRef.length() == 0) {
 
 			TreeNode.Condition condition = packNode.new Condition(
-					Condition.DEPRECATED_TYPE);
+					TreeNode.Condition.DEPRECATED_TYPE);
 			packNode.addCondition(condition);
 		} else {
 			packDescription = extendDescription(packDescription, "url", urlRef);
@@ -2227,6 +2231,9 @@ public class PdscParser {
 				"keywords");
 		if (keywordsElement != null) {
 
+			TreeNode examplesNode = tree.addUniqueChild(
+					TreeNode.KEYWORDS_SELECT_TYPE, null);
+
 			List<Element> childElements2 = Utils
 					.getChildElementsList(keywordsElement);
 			for (Element childElement2 : childElements2) {
@@ -2234,8 +2241,18 @@ public class PdscParser {
 				String elementName2 = childElement2.getNodeName();
 				if ("keyword".equals(elementName2)) {
 
-					processKeyword(childElement2, outlineNode);
+					// Add a unique node to selection
+					String keyword = Utils.getElementContent(childElement2);
+					examplesNode.addUniqueChild(TreeNode.KEYWORD_TYPE, keyword);
 
+					// Add package conditions
+					TreeNode.Condition condition = packNode.new Condition(
+							TreeNode.Condition.KEYWORD_TYPE);
+					condition.setValue(keyword);
+					packNode.addCondition(condition);
+
+					// Add to outline
+					processKeyword(childElement2, outlineNode);
 				}
 			}
 		}
@@ -2245,8 +2262,8 @@ public class PdscParser {
 				"devices");
 		if (devicesElement != null) {
 
-			TreeNode devicesNode = tree.addUniqueChild(TreeNode.DEVICES_TYPE,
-					null);
+			TreeNode devicesNode = tree.addUniqueChild(
+					TreeNode.DEVICES_SELECT_TYPE, null);
 
 			List<Element> familyElements = Utils.getChildElementsList(
 					devicesElement, TreeNode.FAMILY_TYPE);
@@ -2277,7 +2294,7 @@ public class PdscParser {
 
 				// Add package conditions
 				TreeNode.Condition condition = packNode.new Condition(
-						Condition.DEVICEFAMILY_TYPE);
+						TreeNode.Condition.DEVICEFAMILY_TYPE);
 				condition.setVendor(va[1]);
 				condition.setValue(family);
 				packNode.addCondition(condition);
@@ -2291,8 +2308,8 @@ public class PdscParser {
 		Element boardsElement = Utils.getChildElement(packageElement, "boards");
 		if (boardsElement != null) {
 
-			TreeNode boardsNode = tree.addUniqueChild(TreeNode.BOARDS_TYPE,
-					null);
+			TreeNode boardsNode = tree.addUniqueChild(
+					TreeNode.BOARDS_SELECT_TYPE, null);
 
 			List<Element> boardElements = Utils.getChildElementsList(
 					boardsElement, "board");
@@ -2319,7 +2336,7 @@ public class PdscParser {
 
 				// Add package conditions
 				TreeNode.Condition condition = packNode.new Condition(
-						Condition.BOARD_TYPE);
+						TreeNode.Condition.BOARD_TYPE);
 				condition.setVendor(vendor);
 				condition.setValue(boardName);
 				packNode.addCondition(condition);

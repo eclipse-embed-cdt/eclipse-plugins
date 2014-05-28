@@ -18,15 +18,15 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.ILabelProviderListener;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -35,8 +35,10 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.part.ViewPart;
@@ -65,14 +67,18 @@ public class PacksView extends ViewPart {
 	public static final String ID = "ilg.gnuarmeclipse.packs.ui.views.PackagesView";
 
 	private TreeViewer m_viewer;
+	private ISelectionListener m_pageSelectionListener;
+	private ViewContentProvider m_contentProvider;
 
 	private Action m_refreshAction;
 	private Action m_installAction;
 	private Action m_removeAction;
-	private ViewContentProvider m_contentProvider;
+
+	private PacksFilter m_packsFilter;
+	private ViewerFilter[] m_packsFilters;
 
 	private static final int AUTOEXPAND_LEVEL = 2;
-	
+
 	public TreeViewer getTreeViewer() {
 		return m_viewer;
 	}
@@ -85,16 +91,7 @@ public class PacksView extends ViewPart {
 	 * example).
 	 */
 
-	class ViewContentProvider implements IStructuredContentProvider,
-			ITreeContentProvider {
-
-		private TreeNode m_tree;
-
-		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-		}
-
-		public void dispose() {
-		}
+	class ViewContentProvider extends AbstractViewContentProvider {
 
 		public Object[] getElements(Object parent) {
 			if (parent.equals(getViewSite())) {
@@ -116,23 +113,6 @@ public class PacksView extends ViewPart {
 				return getChildren(m_tree);
 			}
 			return getChildren(parent);
-		}
-
-		public Object getParent(Object child) {
-			return ((TreeNode) child).getParent();
-		}
-
-		public Object[] getChildren(Object parent) {
-			return ((TreeNode) parent).getChildrenArray();
-		}
-
-		public boolean hasChildren(Object parent) {
-			return ((TreeNode) parent).hasChildren();
-		}
-
-		public void forceRefresh() {
-			// System.out.println("forceRefresh()");
-			m_tree = null;
 		}
 	}
 
@@ -230,6 +210,7 @@ public class PacksView extends ViewPart {
 	 * The constructor.
 	 */
 	public PacksView() {
+
 		Activator.setPacksView(this);
 
 		System.out.println("PacksView()");
@@ -242,6 +223,9 @@ public class PacksView extends ViewPart {
 	public void createPartControl(Composite parent) {
 
 		System.out.println("PacksView.createPartControl()");
+
+		m_packsFilter = new PacksFilter();
+		m_packsFilters = new PacksFilter[] { m_packsFilter };
 
 		Tree tree = new Tree(parent, SWT.BORDER | SWT.MULTI
 				| SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -268,23 +252,28 @@ public class PacksView extends ViewPart {
 
 		addProviders();
 		addListners();
+		hookPageSelection();
 
 		makeActions();
 		hookContextMenu();
 		hookDoubleClickAction();
 		contributeToActionBars();
-
-		// Cleared by the parent dispose()
-		// addPropertyListener(propertyListener);
 	}
 
 	public void dispose() {
+
 		super.dispose();
+
+		if (m_pageSelectionListener != null) {
+			getSite().getPage().removePostSelectionListener(
+					m_pageSelectionListener);
+		}
+
 		System.out.println("PacksView.dispose()");
 	}
 
 	private void addProviders() {
-		// Register this viewer as the selection provider
+		// Register this viewer as a selection provider
 		getSite().setSelectionProvider(m_viewer);
 	}
 
@@ -300,16 +289,55 @@ public class PacksView extends ViewPart {
 
 				updateButtonsEnableStatus(selection);
 
-				System.out.println("Packs Selected: " + selection.toList());
+				// System.out.println("Packs Selected: " + selection.toList());
 			}
 		});
+	}
+
+	private void hookPageSelection() {
+
+		m_pageSelectionListener = new ISelectionListener() {
+
+			@Override
+			public void selectionChanged(IWorkbenchPart part,
+					ISelection selection) {
+
+				if ((part instanceof DevicesView)
+						|| (part instanceof BoardsView)
+						|| (part instanceof KeywordsView)) {
+					friendViewSelectionChanged(part, selection);
+				}
+			}
+		};
+		getSite().getPage().addPostSelectionListener(m_pageSelectionListener);
+	}
+
+	// Called when selection in the _part_View change
+	protected void friendViewSelectionChanged(IWorkbenchPart part,
+			ISelection selection) {
+
+		if (selection.isEmpty()) {
+
+			// System.out.println("Packs: resetFilters()");
+			m_viewer.resetFilters();
+
+			return;
+		}
+
+		// System.out.println("Packs: " + part + " selection=" + selection);
+
+		IStructuredSelection structuredSelection = (IStructuredSelection) selection;
+
+		m_packsFilter.setSelection(structuredSelection);
+		m_viewer.setFilters(m_packsFilters);
+
+		m_viewer.setSelection(null);
 	}
 
 	public void updateButtonsEnableStatus(IStructuredSelection selection) {
 
 		if (selection == null || selection.isEmpty()) {
-			System.out.println("Empty Selection");
-			// Activator.getPacksView().getTreeViewer().resetFilters();
+			// System.out.println("Empty Selection");
 			return;
 		}
 
@@ -336,7 +364,6 @@ public class PacksView extends ViewPart {
 		}
 		m_installAction.setEnabled(doEnableInstall);
 		m_removeAction.setEnabled(doEnableRemove);
-
 	}
 
 	private void hookContextMenu() {
@@ -392,6 +419,7 @@ public class PacksView extends ViewPart {
 	private void makeActions() {
 
 		m_refreshAction = new Action() {
+
 			public void run() {
 				// Obtain IServiceLocator implementer, e.g. from
 				// PlatformUI.getWorkbench():
@@ -480,6 +508,7 @@ public class PacksView extends ViewPart {
 	}
 
 	public void forceRefresh() {
+
 		m_contentProvider.forceRefresh();
 
 		m_viewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);

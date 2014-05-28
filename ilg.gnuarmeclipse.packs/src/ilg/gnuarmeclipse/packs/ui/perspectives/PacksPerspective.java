@@ -52,6 +52,7 @@ public class PacksPerspective implements IPerspectiveFactory {
 		// topLeft.addView(IPageLayout.ID_RES_NAV);
 		topLeft.addView("ilg.gnuarmeclipse.packs.ui.views.DevicesView");
 		topLeft.addView("ilg.gnuarmeclipse.packs.ui.views.BoardsView");
+		topLeft.addView("ilg.gnuarmeclipse.packs.ui.views.KeywordsView");
 
 		IFolderLayout topRight = factory.createFolder("packsOutline", // NON-NLS-1
 				IPageLayout.RIGHT, 0.66f, factory.getEditorArea());

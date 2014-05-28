@@ -438,7 +438,7 @@ public class OutlineView extends ViewPart {
 	protected void packsViewSelectionChanged(IWorkbenchPart part,
 			ISelection selection) {
 
-		System.out.println("Outline: packs selection=" + selection);
+		// System.out.println("Outline: packs selection=" + selection);
 		if (selection.isEmpty()) {
 			m_viewer.setInput(null);
 		} else if (selection instanceof TreeSelection) {

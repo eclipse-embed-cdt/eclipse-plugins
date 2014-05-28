@@ -170,6 +170,7 @@ public class RefreshHandler extends AbstractHandler {
 				Activator.getPacksView().forceRefresh();
 				Activator.getDevicesView().forceRefresh();
 				Activator.getBoardsView().forceRefresh();
+				Activator.getKeywordsView().forceRefresh();
 			}
 		});
 
