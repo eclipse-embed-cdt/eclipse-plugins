@@ -44,6 +44,7 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 	public static final String API_TYPE = "api";
 	public static final String PROCESSOR_TYPE = "processor";
 	public static final String VARIANT_TYPE = "variant";
+	public static final String ENVIRONMENT_TYPE = "environment";
 
 	public static final String VENDOR_TYPE = "vendor";
 	public static final String FAMILY_TYPE = "family";
@@ -91,7 +92,7 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 		public static final String DEVICEFAMILY_TYPE = "devicefamily";
 		public static final String BOARD_TYPE = "board";
 		public static final String KEYWORD_TYPE = "keyword";
-		
+
 		public static final String DEPRECATED_TYPE = "deprecated";
 
 		private String m_type;
@@ -412,4 +413,7 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 		return getName();
 	}
 
+	public void copyChildren(TreeNode node) {
+		m_children = node.m_children;
+	}
 }

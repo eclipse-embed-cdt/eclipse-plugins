@@ -8,7 +8,9 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -26,6 +28,9 @@ public class PdscParser {
 
 	private MessageConsoleStream m_out;
 	private boolean m_isBrief;
+
+	private IPath m_path;
+	private Document m_document;
 
 	public PdscParser() {
 
@@ -75,25 +80,32 @@ public class PdscParser {
 		return spath.replace('\\', '/');
 	}
 
-	public TreeNode parsePdscFull(IPath path)
-			throws ParserConfigurationException, SAXException, IOException {
+	public Document parseXml(IPath path) throws ParserConfigurationException,
+			SAXException, IOException {
 
 		File file = path.toFile();
 		if (file == null) {
 			throw new FileNotFoundException(path.toFile().toString());
 		}
 
-		TreeNode tree = new TreeNode(TreeNode.OUTLINE_TYPE);
-		tree.putProperty(TreeNode.FOLDER_PROPERTY, path.removeLastSegments(1)
-				.toString());
-
+		m_path = path;
 		InputSource inputSource = new InputSource(new FileInputStream(file));
 
-		DocumentBuilder parser = DocumentBuilderFactory.newInstance()
+		DocumentBuilder xml = DocumentBuilderFactory.newInstance()
 				.newDocumentBuilder();
-		Document document = parser.parse(inputSource);
+		m_document = xml.parse(inputSource);
 
-		Element packageElement = document.getDocumentElement();
+		return m_document;
+	}
+
+	public TreeNode parsePdscFull() throws ParserConfigurationException,
+			SAXException, IOException {
+
+		TreeNode tree = new TreeNode(TreeNode.OUTLINE_TYPE);
+		tree.putProperty(TreeNode.FOLDER_PROPERTY, m_path.removeLastSegments(1)
+				.toString());
+
+		Element packageElement = m_document.getDocumentElement();
 		String firstElementName = packageElement.getNodeName();
 		if (!"package".equals(firstElementName)) {
 			System.out.println("Missing <packages>, <" + firstElementName
@@ -1122,10 +1134,57 @@ public class PdscParser {
 
 				} else if ("compatibleDevice".equals(elementName)) {
 
-					// <xs:element name="compatibleDevice"
-					// type="CompatibleDeviceType" maxOccurs="unbounded"/>
+					// <xs:complexType name="CompatibleDeviceType">
+					// <xs:attribute name="deviceIndex" type="xs:string"
+					// use="optional" />
+					// <xs:attribute name="Dvendor" type="DeviceVendorEnum"
+					// use="optional"/>
+					// <xs:attribute name="Dfamily" type="xs:string"
+					// use="optional"/>
+					// <xs:attribute name="DsubFamily" type="xs:string"
+					// use="optional"/>
+					// <xs:attribute name="Dname" type="xs:string"
+					// use="optional"/>
+					// </xs:complexType>
 
-					// TODO
+					// Optional
+					String deviceIndex = childElement.getAttribute(
+							"deviceIndex").trim();
+					String Dvendor = childElement.getAttribute("Dvendor")
+							.trim();
+					String Dfamily = childElement.getAttribute("Dfamily")
+							.trim();
+					String DsubFamily = childElement.getAttribute("DsubFamily")
+							.trim();
+					String Dname = childElement.getAttribute("Dname").trim();
+
+					TreeNode deviceNode = new TreeNode(TreeNode.DEVICE_TYPE);
+					boardNode.addChild(deviceNode);
+
+					String name = "";
+					name = extendName(name, Dfamily);
+					name = extendName(name, DsubFamily);
+					name = extendName(name, Dname);
+
+					deviceNode.setName(name);
+
+					String deviceDescription = "Compatible device: " + name;
+					deviceDescription = extendDescription(deviceDescription,
+							"deviceIndex", deviceIndex);
+					deviceDescription = extendDescription(deviceDescription,
+							"Dvendor", Dvendor);
+					deviceDescription = extendDescription(deviceDescription,
+							"Dfamily", Dfamily);
+					deviceDescription = extendDescription(deviceDescription,
+							"DsubFamily", DsubFamily);
+					deviceDescription = extendDescription(deviceDescription,
+							"Dname", Dname);
+
+					String va[] = Dvendor.split(":");
+					deviceNode.putProperty(TreeNode.VENDOR_PROPERTY, va[0]);
+					deviceNode.putProperty(TreeNode.VENDORID_PROPERTY, va[1]);
+
+					deviceNode.setDescription(deviceDescription);
 
 				} else if ("feature".equals(elementName)) {
 
@@ -1210,14 +1269,20 @@ public class PdscParser {
 
 		exampleNode.putProperty(TreeNode.VENDOR_PROPERTY, exampleVendor);
 
+		TreeNode linkNode;
+		if (TreeNode.OUTLINE_TYPE.equals(parent.getType())) {
+			// Linearise, add all children to the outline node
+			linkNode = parent;
+		} else {
+			linkNode = exampleNode;
+		}
+
 		String posixDoc = updatePosixSeparators(exampleDoc);
 		String posixFolder = updatePosixSeparators(exampleFolder);
-		exampleNode.putProperty(TreeNode.FOLDER_PROPERTY, posixFolder);
+		linkNode.putProperty(TreeNode.FOLDER_PROPERTY, posixFolder);
 
-		exampleNode.putNonEmptyProperty(TreeNode.VERSION_PROPERTY,
-				exampleVersion);
-		exampleNode.putNonEmptyProperty(TreeNode.ARCHIVE_PROPERTY,
-				exampleArchive);
+		linkNode.putNonEmptyProperty(TreeNode.VERSION_PROPERTY, exampleVersion);
+		linkNode.putNonEmptyProperty(TreeNode.ARCHIVE_PROPERTY, exampleArchive);
 
 		String exampleDescription = "Example: " + exampleName;
 
@@ -1231,7 +1296,6 @@ public class PdscParser {
 				exampleArchive);
 
 		List<Element> childElements = Utils.getChildElementsList(el);
-
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
@@ -1245,7 +1309,7 @@ public class PdscParser {
 
 				} else if ("board".equals(elementName)) {
 
-					processBoardRef(childElement, exampleNode);
+					processBoardRef(childElement, linkNode);
 
 				}
 
@@ -1258,11 +1322,54 @@ public class PdscParser {
 
 				} else if ("board".equals(elementName)) {
 
-					processBoardRef(childElement, exampleNode);
+					processBoardRef(childElement, linkNode);
 
 				} else if ("project".equals(elementName)) {
 
-					// TODO: add
+					// <xs:complexType name="ExampleProjectType">
+					// <xs:sequence>
+					// <xs:element name="environment" maxOccurs="unbounded">
+					// <xs:complexType>
+					// <xs:attribute name="name" type="xs:string"
+					// use="required"/>
+					// <xs:attribute name="load" type="xs:string"
+					// use="required"/>
+					// </xs:complexType>
+					// </xs:element>
+					// </xs:sequence>
+					// </xs:complexType>
+
+					List<Element> childElements2 = Utils
+							.getChildElementsList(childElement);
+					for (Element childElement2 : childElements2) {
+
+						String elementName2 = childElement2.getNodeName();
+						if ("environment".equals(elementName2)) {
+
+							// Required
+							String name = childElement2.getAttribute("name")
+									.trim();
+							String load = childElement2.getAttribute("load")
+									.trim();
+
+							TreeNode environmentNode = new TreeNode(
+									TreeNode.ENVIRONMENT_TYPE);
+							linkNode.addChild(environmentNode);
+
+							environmentNode.setName(load + " (" + name + ")");
+
+							String description = "Environment";
+							description = extendDescription(description,
+									"name", name);
+							description = extendDescription(description,
+									"load", load);
+							environmentNode.setDescription(description);
+
+						} else {
+							System.out.println("Not processed <" + elementName2
+									+ ">");
+						}
+					}
 
 				} else if ("attributes".equals(elementName)) {
 
@@ -1287,7 +1394,7 @@ public class PdscParser {
 
 							TreeNode categoryNode = new TreeNode(
 									TreeNode.CATEGORY_TYPE);
-							exampleNode.addChild(categoryNode);
+							linkNode.addChild(categoryNode);
 
 							String category = Utils
 									.getElementContent(childElement2);
@@ -1326,7 +1433,7 @@ public class PdscParser {
 
 							TreeNode componentNode = new TreeNode(
 									TreeNode.COMPONENT_TYPE);
-							exampleNode.addChild(componentNode);
+							linkNode.addChild(componentNode);
 
 							String name = "";
 							name = extendName(name, Cclass);
@@ -1351,7 +1458,7 @@ public class PdscParser {
 
 						} else if ("keyword".equals(elementName2)) {
 
-							processKeyword(childElement2, exampleNode);
+							processKeyword(childElement2, linkNode);
 
 						} else {
 							System.out.println("Not processed <" + elementName2
@@ -1365,7 +1472,7 @@ public class PdscParser {
 		}
 
 		String boardName = "";
-		for (TreeNode childNode : exampleNode.getChildrenArray()) {
+		for (TreeNode childNode : linkNode.getChildrenArray()) {
 
 			if (TreeNode.BOARD_TYPE.equals(childNode.getType())) {
 				boardName = childNode.getName();
@@ -1748,8 +1855,8 @@ public class PdscParser {
 		parent.addChild(bundleNode);
 
 		String name = "";
-		name = extendName(name, Cbundle);
 		name = extendName(name, Cclass);
+		name = extendName(name, Cbundle);
 		bundleNode.setName(name);
 
 		String bundleDescription = "Bundle: " + name;
@@ -2090,6 +2197,8 @@ public class PdscParser {
 		String packName = "";
 		String packDescription = "";
 
+		Set<String> conditionKeywords = new HashSet<String>();
+
 		// Packages
 		TreeNode packNode;
 		{
@@ -2231,7 +2340,7 @@ public class PdscParser {
 				"keywords");
 		if (keywordsElement != null) {
 
-			TreeNode examplesNode = tree.addUniqueChild(
+			TreeNode keywordsNode = tree.addUniqueChild(
 					TreeNode.KEYWORDS_SELECT_TYPE, null);
 
 			List<Element> childElements2 = Utils
@@ -2243,13 +2352,10 @@ public class PdscParser {
 
 					// Add a unique node to selection
 					String keyword = Utils.getElementContent(childElement2);
-					examplesNode.addUniqueChild(TreeNode.KEYWORD_TYPE, keyword);
+					keywordsNode.addUniqueChild(TreeNode.KEYWORD_TYPE, keyword);
 
-					// Add package conditions
-					TreeNode.Condition condition = packNode.new Condition(
-							TreeNode.Condition.KEYWORD_TYPE);
-					condition.setValue(keyword);
-					packNode.addCondition(condition);
+					// Remember condition keyword
+					conditionKeywords.add(keyword);
 
 					// Add to outline
 					processKeyword(childElement2, outlineNode);
@@ -2351,32 +2457,86 @@ public class PdscParser {
 				"examples");
 		if (examplesElement != null) {
 
-			TreeNode examplesNode = tree.addUniqueChild(TreeNode.EXAMPLES_TYPE,
-					null);
-
 			List<Element> exampleElements = Utils.getChildElementsList(
 					examplesElement, "example");
 			for (Element exampleElement : exampleElements) {
-				String exampleName = exampleElement.getAttribute("name").trim();
-				String exampleVersion = exampleElement.getAttribute("version")
-						.trim();
 
-				Element descriptionElement = Utils.getChildElement(
-						exampleElement, "description");
-				String description;
-				description = Utils.getElementContent(descriptionElement);
+				Element attributesElement = Utils.getChildElement(
+						exampleElement, "attributes");
+				if (attributesElement != null) {
 
-				TreeNode exampleNode = examplesNode.addUniqueChild(
-						TreeNode.EXAMPLE_TYPE, exampleName);
-				exampleNode.setDescription(description);
-				if (exampleVersion.length() > 0) {
-					exampleNode.putNonEmptyProperty(TreeNode.VERSION_PROPERTY,
-							exampleVersion);
+					List<Element> keywordElements = Utils.getChildElementsList(
+							attributesElement, "keyword");
+
+					TreeNode keywordsNode = tree.addUniqueChild(
+							TreeNode.KEYWORDS_SELECT_TYPE, null);
+
+					for (Element keywordElement : keywordElements) {
+
+						// Add a unique node to selection
+						String keyword = Utils
+								.getElementContent(keywordElement);
+						keywordsNode.addUniqueChild(TreeNode.KEYWORD_TYPE,
+								keyword);
+
+						// Remember condition keyword
+						conditionKeywords.add(keyword);
+					}
 				}
 
 				// Add outline node
 				processExample(exampleElement, outlineNode);
 			}
 		}
+
+		// Add all condition keywords, without duplicates
+		for (String keyword : conditionKeywords) {
+			TreeNode.Condition condition = packNode.new Condition(
+					TreeNode.Condition.KEYWORD_TYPE);
+			condition.setValue(keyword);
+			packNode.addCondition(condition);
+		}
+	}
+
+	public void parseExamples(TreeNode parent) {
+
+		Element packageElement = m_document.getDocumentElement();
+
+		Element examplesElement = Utils.getChildElement(packageElement,
+				"examples");
+		if (examplesElement != null) {
+
+			List<Element> exampleElements = Utils.getChildElementsList(
+					examplesElement, "example");
+			for (Element exampleElement : exampleElements) {
+				String exampleName = exampleElement.getAttribute("name").trim();
+
+				Element boardElement = Utils.getChildElement(exampleElement,
+						"board");
+
+				TreeNode exampleNode = new TreeNode(TreeNode.EXAMPLE_TYPE);
+				parent.addChild(exampleNode);
+
+				String boardName;
+				boardName = boardElement.getAttribute("name");
+				if (boardName.length() > 0) {
+					exampleName = exampleName + " (" + boardName + ")";
+				}
+				exampleNode.setName(exampleName);
+
+				Element descriptionElement = Utils.getChildElement(
+						exampleElement, "description");
+				String description;
+				description = Utils.getElementContent(descriptionElement);
+				exampleNode.setDescription(description);
+
+				TreeNode outlineNode = new TreeNode(TreeNode.OUTLINE_TYPE);
+				exampleNode.setOutline(outlineNode);
+
+				processExample(exampleElement, outlineNode);
+
+			}
+		}
+
 	}
 }

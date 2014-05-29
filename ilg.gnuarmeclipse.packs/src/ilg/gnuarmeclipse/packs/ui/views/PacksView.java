@@ -36,10 +36,8 @@ import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISelectionListener;
-import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPart;
-import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.commands.ICommandService;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.services.IServiceLocator;
@@ -122,15 +120,18 @@ public class PacksView extends ViewPart {
 
 			switch (columnIndex) {
 			case 0:
-				String imageKey;
+				// String imageKey;
 				TreeNode node = ((TreeNode) obj);
 				String type = node.getType();
 
 				if (TreeNode.VENDOR_TYPE.equals(type)) {
-					imageKey = ISharedImages.IMG_OBJ_FOLDER;
-					return PlatformUI.getWorkbench().getSharedImages()
-							.getImage(imageKey);
-				} else if ("package".equals(type)) {
+					// imageKey = ISharedImages.IMG_OBJ_FOLDER;
+					// return PlatformUI.getWorkbench().getSharedImages()
+					// .getImage(imageKey);
+					return Activator.imageDescriptorFromPlugin(
+							Activator.PLUGIN_ID, "icons/pack_folder.png")
+							.createImage();
+				} else if (TreeNode.PACKAGE_TYPE.equals(type)) {
 					if (node.isInstalled()) {
 						return Activator.imageDescriptorFromPlugin(
 								Activator.PLUGIN_ID, "icons/package_obj.png")
@@ -140,7 +141,7 @@ public class PacksView extends ViewPart {
 								Activator.PLUGIN_ID,
 								"icons/package_obj_grey.png").createImage();
 					}
-				} else if ("version".equals(type)) {
+				} else if (TreeNode.VERSION_TYPE.equals(type)) {
 					if (node.isInstalled()) {
 						return Activator
 								.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
@@ -151,6 +152,10 @@ public class PacksView extends ViewPart {
 								Activator.PLUGIN_ID,
 								"icons/jtypeassist_co_grey.png").createImage();
 					}
+				} else if (TreeNode.EXAMPLE_TYPE.equals(type)) {
+					return Activator.imageDescriptorFromPlugin(
+							Activator.PLUGIN_ID, "icons/binaries_obj.gif")
+							.createImage();
 				}
 			}
 			return null;
