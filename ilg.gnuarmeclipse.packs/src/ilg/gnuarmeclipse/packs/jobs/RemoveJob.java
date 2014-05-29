@@ -148,11 +148,14 @@ public class RemoveJob extends Job {
 		List<TreeNode> deviceNodes = new LinkedList<TreeNode>();
 		List<TreeNode> boardNodes = new LinkedList<TreeNode>();
 
+		@SuppressWarnings("unchecked")
 		final List<TreeNode>[] lists = (List<TreeNode>[]) (new List<?>[] {
 				deviceNodes, boardNodes });
 
 		for (TreeNode versionNode : installedVersions) {
 			PacksStorage.updateInstalledVersionNode(versionNode, true, lists);
+			
+			// Clear children
 		}
 
 		Display.getDefault().asyncExec(new Runnable() {
@@ -160,6 +163,7 @@ public class RemoveJob extends Job {
 			public void run() {
 				Activator.getDevicesView().update(lists[0]);
 				Activator.getBoardsView().update(lists[1]);
+				Activator.getPacksView().refresh();
 			}
 		});
 

@@ -533,6 +533,9 @@ public class PacksStorage {
 						condition.getValue(), isInstalled, boardNodes);
 			}
 		}
+		
+		versionNode.removeChildren();
+		versionNode.setOutline(null);
 	}
 
 	private static void updateDeviceInstalled(String vendorId,

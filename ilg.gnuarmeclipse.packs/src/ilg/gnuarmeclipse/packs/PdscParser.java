@@ -278,7 +278,7 @@ public class PdscParser {
 					String elementName2 = childElement2.getNodeName();
 					if ("example".equals(elementName2)) {
 
-						processExample(childElement2, tree);
+						processExample(childElement2, tree, false);
 
 					} else {
 						System.out.println("Not processed <" + elementName2
@@ -1252,7 +1252,7 @@ public class PdscParser {
 	// <xs:attribute name="version" type="xs:string" use="optional"/>
 	// </xs:complexType>
 
-	private void processExample(Element el, TreeNode parent) {
+	private void processExample(Element el, TreeNode parent, boolean isFlat) {
 
 		// Required
 		String exampleName = el.getAttribute("name").trim();
@@ -1270,7 +1270,7 @@ public class PdscParser {
 		exampleNode.putProperty(TreeNode.VENDOR_PROPERTY, exampleVendor);
 
 		TreeNode linkNode;
-		if (TreeNode.OUTLINE_TYPE.equals(parent.getType())) {
+		if (isFlat) {
 			// Linearise, add all children to the outline node
 			linkNode = parent;
 		} else {
@@ -2485,7 +2485,7 @@ public class PdscParser {
 				}
 
 				// Add outline node
-				processExample(exampleElement, outlineNode);
+				processExample(exampleElement, outlineNode, false);
 			}
 		}
 
@@ -2533,7 +2533,7 @@ public class PdscParser {
 				TreeNode outlineNode = new TreeNode(TreeNode.OUTLINE_TYPE);
 				exampleNode.setOutline(outlineNode);
 
-				processExample(exampleElement, outlineNode);
+				processExample(exampleElement, outlineNode, true);
 
 			}
 		}

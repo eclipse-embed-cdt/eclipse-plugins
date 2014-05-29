@@ -4,6 +4,7 @@ import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.TreeNode;
 import ilg.gnuarmeclipse.packs.UsingDefaultFileException;
+import ilg.gnuarmeclipse.packs.jobs.CopyExampleJob;
 import ilg.gnuarmeclipse.packs.jobs.InstallJob;
 import ilg.gnuarmeclipse.packs.jobs.RemoveJob;
 
@@ -71,9 +72,13 @@ public class PacksView extends ViewPart {
 	private Action m_refreshAction;
 	private Action m_installAction;
 	private Action m_removeAction;
+	private Action m_copyExampleAction;
 
 	private PacksFilter m_packsFilter;
 	private ViewerFilter[] m_packsFilters;
+	private boolean m_isInstallEnabled;
+	private boolean m_isRemoveEnabled;
+	private boolean m_isCopyExampleEnabled;
 
 	private static final int AUTOEXPAND_LEVEL = 2;
 
@@ -351,24 +356,29 @@ public class PacksView extends ViewPart {
 			return;
 		}
 
-		boolean doEnableInstall = false;
-		boolean doEnableRemove = false;
+		m_isInstallEnabled = false;
+		m_isRemoveEnabled = false;
+		m_isCopyExampleEnabled = false;
+
 		for (Object obj : selection.toArray()) {
 			TreeNode node = (TreeNode) obj;
 			String type = node.getType();
 
 			// Check if the selection contain any package or
 			// version not installed
-			if (("package".equals(type) || "version".equals(type))
-					&& !node.isInstalled()) {
-				doEnableInstall = true;
+			if ((TreeNode.PACKAGE_TYPE.equals(type) || TreeNode.VERSION_TYPE
+					.equals(type)) && !node.isInstalled()) {
+				m_isInstallEnabled = true;
 			}
-			if (("version".equals(type)) && node.isInstalled()) {
-				doEnableRemove = true;
+			if ((TreeNode.VERSION_TYPE.equals(type)) && node.isInstalled()) {
+				m_isRemoveEnabled = true;
+			}
+			if ((TreeNode.EXAMPLE_TYPE.equals(type))) {
+				m_isCopyExampleEnabled = true;
 			}
 		}
-		m_installAction.setEnabled(doEnableInstall);
-		m_removeAction.setEnabled(doEnableRemove);
+		m_installAction.setEnabled(m_isInstallEnabled);
+		m_removeAction.setEnabled(m_isRemoveEnabled);
 	}
 
 	private void hookContextMenu() {
@@ -404,8 +414,18 @@ public class PacksView extends ViewPart {
 
 	// Right click actions
 	private void fillContextMenu(IMenuManager manager) {
-		manager.add(m_installAction);
-		manager.add(m_removeAction);
+
+		if (m_isInstallEnabled) {
+			manager.add(m_installAction);
+		}
+
+		if (m_isRemoveEnabled) {
+			manager.add(m_removeAction);
+		}
+
+		if (m_isCopyExampleEnabled) {
+			manager.add(m_copyExampleAction);
+		}
 
 		// manager.add(new Separator());
 
@@ -495,6 +515,22 @@ public class PacksView extends ViewPart {
 		m_removeAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/removeall.png"));
 		m_removeAction.setEnabled(false);
+
+		// -----
+		m_copyExampleAction = new Action() {
+			public void run() {
+				System.out.println("m_copyAction.run();");
+
+				TreeSelection selection = (TreeSelection) m_viewer
+						.getSelection();
+				System.out.println(selection);
+
+				CopyExampleJob job = new CopyExampleJob("Copy example",
+						selection);
+				job.schedule();
+			}
+		};
+		m_copyExampleAction.setText("Copy to folder");
 	}
 
 	private void hookDoubleClickAction() {
@@ -519,6 +555,10 @@ public class PacksView extends ViewPart {
 		m_viewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);
 		m_viewer.setInput(getViewSite());
 		System.out.println("PacksView.forceRefresh()");
+	}
+
+	public void refresh() {
+		m_viewer.refresh();
 	}
 
 	public void update(Object obj) {
