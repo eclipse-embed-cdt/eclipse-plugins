@@ -10,84 +10,107 @@ import org.eclipse.core.runtime.IAdaptable;
 
 public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 
-	public static final String NONE_TYPE = "none";
-	public static final String ROOT_TYPE = "root";
-	public static final String OUTLINE_TYPE = "outline";
-
-	public static final String BOARDS_SELECT_TYPE = "boards";
-	public static final String DEVICES_SELECT_TYPE = "devices";
-	public static final String KEYWORDS_SELECT_TYPE = "keywords";
-
-	public static final String EXAMPLES_TYPE = "examples";
-	// public static final String COMPONENTS_TYPE = "components";
-	// public static final String FOLDER_TYPE = "folder";
-
-	// public static final String CORE_TYPE = "core";
-	public static final String BOOK_TYPE = "book";
-	public static final String FEATURE_TYPE = "feature";
-	// public static final String CLOCK_TYPE = "clock";
-	public static final String HEADER_TYPE = "header";
-	public static final String DEFINE_TYPE = "define";
-	public static final String DEBUG_TYPE = "debug";
-	public static final String MEMORY_TYPE = "memory";
-	public static final String FILE_TYPE = "file";
-	public static final String COMPONENT_TYPE = "component";
-	public static final String BUNDLE_TYPE = "bundle";
-	public static final String DEBUGINTERFACE_TYPE = "debuginterface";
-	public static final String CATEGORY_TYPE = "category";
-	public static final String KEYWORD_TYPE = "keyword";
-	public static final String TAXONOMY_TYPE = "taxonomy";
-	public static final String CONDITION_TYPE = "condition";
-	public static final String REQUIRE_TYPE = "require";
+	// Node types (sorted)
 	public static final String ACCEPT_TYPE = "accept";
-	public static final String DENY_TYPE = "deny";
 	public static final String API_TYPE = "api";
-	public static final String PROCESSOR_TYPE = "processor";
-	public static final String VARIANT_TYPE = "variant";
+	public static final String BOARD_TYPE = "board";
+	public static final String BOARDS_SUBTREE_TYPE = "boards";
+	public static final String BOOK_TYPE = "book";
+	public static final String BUNDLE_TYPE = "bundle";
+	public static final String CATEGORY_TYPE = "category";
+	public static final String COMPONENT_TYPE = "component";
+	public static final String CONDITION_TYPE = "condition";
+	public static final String DEBUGINTERFACE_TYPE = "debuginterface";
+	public static final String DEBUG_TYPE = "debug";
+	public static final String DEFINE_TYPE = "define";
+	public static final String DENY_TYPE = "deny";
+	public static final String DEVICE_TYPE = "device";
+	public static final String DEVICES_SUBTREE_TYPE = "devices";
 	public static final String ENVIRONMENT_TYPE = "environment";
-
-	public static final String VENDOR_TYPE = "vendor";
+	public static final String EXAMPLE_TYPE = "example";
 	public static final String FAMILY_TYPE = "family";
-	public static final String SUBFAMILY_TYPE = "subfamily";
-
+	public static final String FEATURE_TYPE = "feature";
+	public static final String FILE_TYPE = "file";
+	public static final String HEADER_TYPE = "header";
+	public static final String KEYWORD_TYPE = "keyword";
+	public static final String KEYWORDS_SELECT_TYPE = "keywords";
+	public static final String MEMORY_TYPE = "memory";
+	public static final String NONE_TYPE = "none";
+	public static final String OUTLINE_TYPE = "outline";
 	public static final String PACKAGE_TYPE = "package";
+	public static final String PACKAGES_SUBTREE_TYPE = "packages";
+	public static final String PROCESSOR_TYPE = "processor";
+	public static final String REQUIRE_TYPE = "require";
+	public static final String ROOT_TYPE = "root";
+	public static final String SUBFAMILY_TYPE = "subfamily";
+	public static final String TAXONOMY_TYPE = "taxonomy";
+	public static final String VARIANT_TYPE = "variant";
+	public static final String VENDOR_TYPE = "vendor";
 	public static final String VERSION_TYPE = "version";
 
-	public static final String DEVICE_TYPE = "device";
-	public static final String BOARD_TYPE = "board";
-	public static final String EXAMPLE_TYPE = "example";
-
-	// Properties
-	public static final String URL_PROPERTY = "url";
-	public static final String VENDOR_PROPERTY = "vendor";
-	public static final String VENDORID_PROPERTY = "vendorid";
-	public static final String VERSION_PROPERTY = "version";
-	public static final String DATE_PROPERTY = "date";
-	public static final String FPU_PROPERTY = "fpu";
-	public static final String MPU_PROPERTY = "mpu";
-	public static final String ENDIAN_PROPERTY = "endian";
-	public static final String FILE_PROPERTY = "file";
-	public static final String N_PROPERTY = "n";
-	public static final String M_PROPERTY = "m";
-	public static final String REVISION_PROPERTY = "revision";
-	public static final String CATEGORY_PROPERTY = "category";
-	public static final String ATTR_PROPERTY = "attr";
-	public static final String CONDITION_PROPERTY = "condition";
+	// Properties (sorted)
+	public static final String AP_PROPERTY = "ap";
 	public static final String APIVERSION_PROPERTY = "apiversion";
-	public static final String MAXINSTANCES_PROPERTY = "maxinstances";
-	public static final String SRC_PROPERTY = "src";
-	public static final String DEPRECATED_PROPERTY = "deprecated";
-	public static final String RTE_PROPERTY = "rte";
-	public static final String FOLDER_PROPERTY = "folder";
-	public static final String ARCHIVE_PROPERTY = "folder";
+	public static final String ARCHIVE_PROPERTY = "archive";
+	public static final String ARCHIVENAME_PROPERTY = "archivename";
+	public static final String ARCHIVEURL_PROPERTY = "archiveurl";
+	public static final String ATTR_PROPERTY = "attr";
+	public static final String BUNDLE_PROPERTY = "bundle";
+	public static final String CATEGORY_PROPERTY = "category";
+	public static final String CLASS_PROPERTY = "class";
+	public static final String CLOCK_PROPERTY = "clock";
+	public static final String CONDITION_PROPERTY = "condition";
 	public static final String CONNECTOR_PROPERTY = "connector";
-	public static final String SELECT_PROPERTY = "select";
-	public static final String ID_PROPERTY = "id";
-	public static final String START_PROPERTY = "start";
-	public static final String SIZE_PROPERTY = "size";
+	public static final String CORE_PROPERTY = "core";
+	public static final String DATE_PROPERTY = "date";
+	public static final String DEFAULT_PROPERTY = "default";
+	public static final String DEFINE_PROPERTY = "define";
+	public static final String DEPRECATED_PROPERTY = "deprecated";
+	public static final String DEVICEINDEX_PROPERTY = "deviceindex";
+	public static final String DOC_PROPERTY = "doc";
+	public static final String DP_PROPERTY = "dp";
+	public static final String ENDIAN_PROPERTY = "endian";
 	public static final String EXCLUSIVE_PROPERTY = "exclusive";
+	public static final String FAMILY_PROPERTY = "family";
+	public static final String FILE_PROPERTY = "file";
+	public static final String FOLDER_PROPERTY = "folder";
+	public static final String FPU_PROPERTY = "fpu";
+	public static final String GENERATOR_PROPERTY = "generator";
+	public static final String GROUP_PROPERTY = "group";
+	public static final String ID_PROPERTY = "id";
+	public static final String INIT_PROPERTY = "init";
+	public static final String LOAD_PROPERTY = "load";
+	public static final String MAXINSTANCES_PROPERTY = "maxinstances";
+	public static final String MPU_PROPERTY = "mpu";
+	public static final String M_PROPERTY = "m";
+	public static final String N_PROPERTY = "n";
+	public static final String NAME_PROPERTY = "name";
+	public static final String PDSCNAME_PROPERTY = "pdscname";
+	public static final String PDSCURL_PROPERTY = "pdscurl";
+	public static final String PNAME_PROPERTY = "pname";
+	public static final String REVISION_PROPERTY = "revision";
+	public static final String RTE_PROPERTY = "rte";
+	public static final String SCHEMA_PROPERTY = "schema";
+	public static final String SELECT_PROPERTY = "select";
+	public static final String SIZE_PROPERTY = "size";
+	public static final String SRC_PROPERTY = "src";
+	public static final String START_PROPERTY = "start";
+	public static final String STARTUP_PROPERTY = "startup";
+	public static final String SUBGROUP_PROPERTY = "subgroup";
+	public static final String SUBFAMILY_PROPERTY = "subfamily";
+	public static final String TITLE_PROPERTY = "title";
+	public static final String URL_PROPERTY = "url";
+	public static final String VARIANT_PROPERTY = "variant";
+	public static final String VENDORID_PROPERTY = "vendorid";
+	public static final String VENDOR_PROPERTY = "vendor";
+	public static final String VERSION_PROPERTY = "version";
 
-	public class Condition {
+	public static final String CONDITION_ATTRIBUTES[] = { "Dfamily", "DsubFamily", "Dvariant",
+			"Dvendor", "Dname", "Dcore", "Dfpu", "Dmpu", "Dendian", "Cvendor",
+			"Cbundle", "Cclass", "Cgroup", "Csub", "Cvariant", "Cversion",
+			"Capiversion", "Tcompiler", "condition" };
+
+	public class Selector {
 
 		public static final String DEVICEFAMILY_TYPE = "devicefamily";
 		public static final String BOARD_TYPE = "board";
@@ -100,7 +123,7 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 		// private String m_attribute;
 		private String m_value;
 
-		public Condition(String type) {
+		public Selector(String type) {
 			m_type = type.trim();
 			m_vendor = null;
 			// m_attribute = null;
@@ -166,7 +189,7 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 	private boolean m_isInstalled;
 	private TreeNode m_parent;
 	private Map<String, String> m_properties;
-	private List<Condition> m_conditions;
+	private List<Selector> m_conditions;
 	private TreeNode m_outline;
 
 	private List<TreeNode> m_children;
@@ -359,14 +382,14 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 		return (m_conditions != null && !m_conditions.isEmpty());
 	}
 
-	public List<Condition> getConditions() {
+	public List<Selector> getConditions() {
 		return m_conditions;
 	}
 
-	public List<Condition> getConditionsByType(String type) {
-		List<Condition> list = new LinkedList<Condition>();
+	public List<Selector> getConditionsByType(String type) {
+		List<Selector> list = new LinkedList<Selector>();
 		if (m_conditions != null) {
-			for (Condition condition : m_conditions) {
+			for (Selector condition : m_conditions) {
 				if (condition.getType().equals(type)) {
 					list.add(condition);
 				}
@@ -376,9 +399,9 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 		return list;
 	}
 
-	public void addCondition(Condition condition) {
+	public void addCondition(Selector condition) {
 		if (m_conditions == null) {
-			m_conditions = new ArrayList<Condition>();
+			m_conditions = new ArrayList<Selector>();
 		}
 		m_conditions.add(condition);
 	}

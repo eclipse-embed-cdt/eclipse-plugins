@@ -13,12 +13,16 @@ package ilg.gnuarmeclipse.packs;
 
 import ilg.gnuarmeclipse.packs.ui.preferences.FolderConstants;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.io.StringReader;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -42,16 +46,14 @@ public class PacksStorage {
 
 	public static final String SITES_FILE_NAME = "sites.xml";
 	public static final String CACHE_FILE_NAME = ".cache.xml";
+	public static final String CACHE_XML_VERSION = "1.0";
 
 	public static final String CMSIS_PACK_TYPE = "CMSIS Pack";
 
 	public static final String DOWNLOAD_FOLDER = ".Download";
 
-	public static final String PACKAGES_SUBTREE = "packages";
-	public static final String DEVICES_SUBTREE = "devices";
-	public static final String BOARDS_SUBTREE = "boards";
-
 	public static TreeNode ms_tree = null;
+	public static IPath ms_folderPath = null;
 
 	public static List<String[]> getDefaultSites() {
 
@@ -70,19 +72,50 @@ public class PacksStorage {
 	public static List<String[]> getSites() {
 
 		List<String[]> sites;
+		boolean useDefaults = false;
 		try {
 			sites = parseSites();
 			return sites;
 		} catch (UsingDefaultFileException e) {
 			Activator.log(e.getMessage());
+			useDefaults = true;
 		} catch (Exception e) {
 			Activator.log(e);
 		}
-		return getDefaultSites();
+		List<String[]> list = getDefaultSites();
+		if (useDefaults) {
+			try {
+				putSites(list);
+			} catch (IOException e) {
+				;
+			}
+		}
+		return list;
+	}
+
+	public static IPath getFolderPath() throws IOException {
+
+		if (ms_folderPath == null) {
+
+			ms_folderPath = new Path(getFolderPathString());
+		}
+
+		return ms_folderPath;
+	}
+
+	public static void updateFolderPath() {
+
+		ms_folderPath = null;
+
+		try {
+			getFolderPath();
+		} catch (IOException e) {
+			;
+		}
 	}
 
 	// Return the absolute full path of the folder used to store packages
-	public static String getFolderPath() throws IOException {
+	private static String getFolderPathString() throws IOException {
 
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
 		String sitesFolderPath = store.getString(FolderConstants.P_FOLDER_PATH)
@@ -95,20 +128,84 @@ public class PacksStorage {
 		}
 
 		if ((sitesFolderPath == null) || (sitesFolderPath.length() == 0)) {
-			throw new IOException("Missing folder path");
+			throw new IOException("Missing folder path.");
 		}
 		return sitesFolderPath;
+	}
+
+	// Parse the Keil index. It is available from
+	// curl "http://www.keil.com/pack/index.idx"
+
+	// The syntax is erroneous, the root element is missing, so we need
+	// to dynamically add it.
+
+	// <?xml version="1.0" encoding="UTF-8" ?>
+	// <pdsc url="http://www.keil.com/pack/" name="ARM.CMSIS.pdsc"
+	// version="3.20.4"/>
+	// <pdsc url="http://media.infineon.com/mdk/"
+	// name="Infineon.XMC1000_DFP.pdsc" version="1.5.0"/>
+
+	// Append string arrays to the given list
+	// new String[] { url, name, version }
+
+	public static int readCmsisIndex(String indexUrl, List<String[]> pdscList)
+			throws ParserConfigurationException, SAXException, IOException {
+
+		URL u = new URL(indexUrl);
+
+		// Read from url to local buffer
+		BufferedReader in = new BufferedReader(new InputStreamReader(
+				u.openStream()));
+		String line = null;
+
+		// Insert missing root element
+		StringBuilder buffer = new StringBuilder();
+		buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
+		buffer.append("<root>\n");
+
+		while ((line = in.readLine()) != null) {
+			if (line.startsWith("<pdsc")) {
+				buffer.append(line);
+			}
+		}
+		buffer.append("</root>\n");
+
+		// Parse from local buffer
+		InputSource inputSource = new InputSource(new StringReader(
+				buffer.toString()));
+
+		DocumentBuilder parser = DocumentBuilderFactory.newInstance()
+				.newDocumentBuilder();
+		Document document = parser.parse(inputSource);
+
+		Element el = document.getDocumentElement();
+		if (!"root".equals(el.getNodeName())) {
+			return 0;
+		}
+
+		int count = 0;
+		List<Element> pdscElements = Utils.getChildElementsList(el, "pdsc");
+		for (Element pdscElement : pdscElements) {
+
+			String url = pdscElement.getAttribute("url").trim();
+			String name = pdscElement.getAttribute("name").trim();
+			String version = pdscElement.getAttribute("version").trim();
+
+			pdscList.add(new String[] { url, name, version });
+			++count;
+		}
+
+		return count;
+
 	}
 
 	// Cannot return null
 	private static File getFileObject(String name) throws IOException {
 
-		String folderPath = getFolderPath();
-
-		IPath path = (new Path(folderPath)).append(name);
+		IPath path = getFolderPath().append(name);
 		File file = path.toFile();
 		if (file == null) {
-			throw new IOException(name + " File object null");
+			throw new IOException(name + " File object null.");
 		}
 		return file;
 	}
@@ -119,7 +216,7 @@ public class PacksStorage {
 		File file = getFileObject(SITES_FILE_NAME);
 		if (!file.exists()) {
 			throw new UsingDefaultFileException("File " + SITES_FILE_NAME
-					+ " does not exist, using defaults");
+					+ " does not exist, using defaults.");
 		}
 
 		InputSource inputSource = new InputSource(new FileInputStream(file));
@@ -130,7 +227,7 @@ public class PacksStorage {
 
 		Element el = document.getDocumentElement();
 		if (!"sites".equals(el.getNodeName())) {
-			throw new IOException("Missing <sites>");
+			throw new IOException("Missing <sites>.");
 		}
 
 		List<String[]> sitesList;
@@ -202,7 +299,7 @@ public class PacksStorage {
 			PrintWriter writer = new PrintWriter(new BufferedWriter(
 					new FileWriter(file)));
 			writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-			writer.println("<root version=\"1.0\">");
+			writer.println("<root version=\"" + CACHE_XML_VERSION + "\">");
 
 			putCacheNodeRecursive(tree, 0, writer);
 
@@ -249,8 +346,8 @@ public class PacksStorage {
 			putIndentation(depth * 2 + 1, writer);
 			writer.println("<conditions>");
 
-			List<TreeNode.Condition> conditions = node.getConditions();
-			for (TreeNode.Condition condition : conditions) {
+			List<TreeNode.Selector> conditions = node.getConditions();
+			for (TreeNode.Selector condition : conditions) {
 				putIndentation(depth * 2 + 2, writer);
 				writer.print("<condition type=\"" + condition.getType() + "\"");
 				if (condition.hasVendor()) {
@@ -313,7 +410,7 @@ public class PacksStorage {
 			}
 		}
 
-		throw new IOException("No such node type " + type);
+		throw new IOException("No such node type " + type + ".");
 	}
 
 	public static TreeNode getCachedTree() throws IOException,
@@ -337,7 +434,7 @@ public class PacksStorage {
 		File file = getFileObject(CACHE_FILE_NAME);
 		if (!file.exists())
 			throw new UsingDefaultFileException("File " + CACHE_FILE_NAME
-					+ " does not exist, using defaults");
+					+ " does not exist, using defaults.");
 
 		InputSource inputSource = new InputSource(new FileInputStream(file));
 
@@ -347,12 +444,17 @@ public class PacksStorage {
 
 		Element rootElement = document.getDocumentElement();
 		if (!"root".equals(rootElement.getNodeName())) {
-			throw new IOException("Missing <root>");
+			throw new IOException("Missing <root>.");
+		}
+
+		String version = rootElement.getAttribute("version").trim();
+		if (!CACHE_XML_VERSION.equals(version)) {
+			throw new IOException("Expected <root> version not found.");
 		}
 
 		Element nodeRootElement = Utils.getChildElement(rootElement, "node");
 		if (nodeRootElement == null) {
-			throw new IOException("Missing <node>");
+			throw new IOException("Missing <node>.");
 		}
 		ms_tree = getCacheRecursive(nodeRootElement);
 
@@ -370,9 +472,9 @@ public class PacksStorage {
 		// deviceNodes, boardNodes });
 
 		// Update installed nodes
-		IPath path = new Path(getFolderPath());
-		updateInstalledNodesRecursive(getCachedSubTree(PACKAGES_SUBTREE), path,
-				true);
+		IPath path = new Path(getFolderPathString());
+		updateInstalledNodesRecursive(
+				getCachedSubTree(TreeNode.PACKAGES_SUBTREE_TYPE), path, true);
 	}
 
 	private static TreeNode getCacheRecursive(Element nodeElement) {
@@ -421,7 +523,7 @@ public class PacksStorage {
 				String conditionValue = conditionElement.getTextContent()
 						.trim();
 
-				TreeNode.Condition condition = treeNode.new Condition(
+				TreeNode.Selector condition = treeNode.new Selector(
 						conditionType);
 				if (conditionVendor.length() > 0) {
 					condition.setVendor(conditionVendor);
@@ -466,7 +568,8 @@ public class PacksStorage {
 
 		if (node.hasChildren()) {
 			for (TreeNode childNode : node.getChildren()) {
-				// Extend path with name and recurse down
+				// Extend path with node name and recurse down
+				// TODO: use NAME_PROPERTY
 				IPath childPath = path.append(childNode.getName());
 				updateInstalledNodesRecursive(childNode, childPath, isInstalled);
 			}
@@ -476,6 +579,9 @@ public class PacksStorage {
 		if (TreeNode.VERSION_TYPE.equals(nodeType)) {
 			File folder = path.toFile();
 			if (folder.exists() && folder.isDirectory()) {
+				// If the name exists and it is indeed a directory,
+				// then the package is probably installed.
+
 				// Update PacksView and related from Devices & Boards
 				updateInstalledVersionNode(node, isInstalled, null);
 			}
@@ -516,24 +622,24 @@ public class PacksStorage {
 			packNode.setIsInstalled(isInstalled);
 		}
 
-		List<TreeNode.Condition> conditionsList = versionNode.getParent()
-				.getConditionsByType(TreeNode.Condition.DEVICEFAMILY_TYPE);
+		List<TreeNode.Selector> conditionsList = versionNode.getParent()
+				.getConditionsByType(TreeNode.Selector.DEVICEFAMILY_TYPE);
 		if (conditionsList.size() > 0) {
-			for (TreeNode.Condition condition : conditionsList) {
+			for (TreeNode.Selector condition : conditionsList) {
 				updateDeviceInstalled(condition.getVendor(),
 						condition.getValue(), isInstalled, deviceNodes);
 			}
 		}
 
 		conditionsList = versionNode.getParent().getConditionsByType(
-				TreeNode.Condition.BOARD_TYPE);
+				TreeNode.Selector.BOARD_TYPE);
 		if (conditionsList.size() > 0) {
-			for (TreeNode.Condition condition : conditionsList) {
+			for (TreeNode.Selector condition : conditionsList) {
 				updateBoardInstalled(condition.getVendor(),
 						condition.getValue(), isInstalled, boardNodes);
 			}
 		}
-		
+
 		versionNode.removeChildren();
 		versionNode.setOutline(null);
 	}
@@ -542,7 +648,7 @@ public class PacksStorage {
 			String familyName, boolean isInstalled, List<TreeNode> deviceNodes) {
 
 		try {
-			TreeNode devicesTree = getCachedSubTree(DEVICES_SUBTREE);
+			TreeNode devicesTree = getCachedSubTree(TreeNode.DEVICES_SUBTREE_TYPE);
 			for (TreeNode vendorNode : devicesTree.getChildrenArray()) {
 				// Select vendors that match the given vendor id
 				if (vendorId.equals(vendorNode
@@ -566,7 +672,7 @@ public class PacksStorage {
 			boolean isInstalled, List<TreeNode> boardNodes) {
 
 		try {
-			TreeNode boardsTree = getCachedSubTree(BOARDS_SUBTREE);
+			TreeNode boardsTree = getCachedSubTree(TreeNode.BOARDS_SUBTREE_TYPE);
 			for (TreeNode vendorNode : boardsTree.getChildrenArray()) {
 				// Select vendors that match the given vendor name
 				if (vendor.equals(vendorNode.getName())) {
@@ -590,7 +696,7 @@ public class PacksStorage {
 		List<TreeNode> list = new LinkedList<TreeNode>();
 		try {
 			TreeNode node;
-			node = getCachedSubTree(PACKAGES_SUBTREE);
+			node = getCachedSubTree(TreeNode.PACKAGES_SUBTREE_TYPE);
 			getInstalledVersionsRecursive(node, list);
 		} catch (Exception e) {
 		}
@@ -613,4 +719,19 @@ public class PacksStorage {
 		}
 	}
 
+//	public static IPath getPathForVersionPdsc(TreeNode versionNode)
+//			throws IOException {
+//
+//		TreeNode packNode = versionNode.getParent();
+//
+//		String pdscName = packNode.getProperty(TreeNode.PDSCNAME_PROPERTY, "");
+//		// m_out.println("Parse \"" + pdscName + "\" started.");
+//
+//		String destFolder = versionNode.getProperty(TreeNode.FOLDER_PROPERTY, "");
+//		
+//		IPath path = PacksStorage.getFolderPath().append(destFolder)
+//				.append(pdscName);
+//
+//		return path;
+//	}
 }

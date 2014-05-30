@@ -1,38 +1,18 @@
 package ilg.gnuarmeclipse.packs;
 
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import org.eclipse.ui.console.ConsolePlugin;
-import org.eclipse.ui.console.IConsole;
-import org.eclipse.ui.console.IConsoleManager;
-import org.eclipse.ui.console.MessageConsole;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 public class Utils {
-
-	public static String CONSOLE_NAME = "Packs console";
-
-	public static MessageConsole findConsole() {
-		return findConsole(CONSOLE_NAME);
-	}
-
-	public static MessageConsole findConsole(String name) {
-		ConsolePlugin plugin = ConsolePlugin.getDefault();
-		IConsoleManager conMan = plugin.getConsoleManager();
-		IConsole[] existing = conMan.getConsoles();
-		for (int i = 0; i < existing.length; i++)
-			if (name.equals(existing[i].getName()))
-				return (MessageConsole) existing[i];
-		// no console found, so create a new one
-		MessageConsole myConsole = new MessageConsole(name, null);
-		conMan.addConsoles(new IConsole[] { myConsole });
-		return myConsole;
-	}
 
 	public static String xmlEscape(String value) {
 		value = value.replaceAll("\\&", "&amp;"); //$NON-NLS-1$ //$NON-NLS-2$ 
@@ -151,4 +131,36 @@ public class Utils {
 
 		return value;
 	}
+
+	public static String cosmetiseUrl(String url) {
+		if (url.endsWith("/")) {
+			return url;
+		} else {
+			return url + "/";
+		}
+	}
+
+	public static int getRemoteFileSize(URL url) throws IOException {
+
+		URLConnection connection = url.openConnection();
+		connection.getInputStream();
+
+		return connection.getContentLength();
+	}
+
+	public static String convertSizeToString(int size) {
+
+		String sizeString;
+		if (size < 1024) {
+			sizeString = String.valueOf(size) + "B";
+		} else if (size < 1024 * 1024) {
+			sizeString = String.valueOf((size + (1024 / 2)) / 1024) + "kB";
+		} else {
+			sizeString = String.valueOf((size + ((1024 * 1024) / 2))
+					/ (1024 * 1024))
+					+ "MB";
+		}
+		return sizeString;
+	}
+
 }

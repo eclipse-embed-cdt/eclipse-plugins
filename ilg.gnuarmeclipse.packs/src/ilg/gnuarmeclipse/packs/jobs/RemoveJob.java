@@ -1,25 +1,22 @@
 package ilg.gnuarmeclipse.packs.jobs;
 
+import ilg.gnuarmeclipse.packs.Activator;
+import ilg.gnuarmeclipse.packs.PacksStorage;
+import ilg.gnuarmeclipse.packs.TreeNode;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-import ilg.gnuarmeclipse.packs.Activator;
-import ilg.gnuarmeclipse.packs.PacksStorage;
-import ilg.gnuarmeclipse.packs.TreeNode;
-import ilg.gnuarmeclipse.packs.Utils;
-
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 
 public class RemoveJob extends Job {
@@ -29,23 +26,17 @@ public class RemoveJob extends Job {
 	private MessageConsoleStream m_out;
 	private TreeSelection m_selection;
 
-	private String m_folderPath;
+	// private String m_folderPath;
 	private IProgressMonitor m_monitor;
 
 	public RemoveJob(String name, TreeSelection selection) {
 
 		super(name);
 
-		MessageConsole myConsole = Utils.findConsole();
-		m_out = myConsole.newMessageStream();
+		m_out = Activator.getConsole().newMessageStream();
 
 		m_selection = selection;
 
-		try {
-			m_folderPath = PacksStorage.getFolderPath();
-		} catch (IOException e) {
-			Activator.log(e);
-		}
 	}
 
 	@Override
@@ -65,7 +56,7 @@ public class RemoveJob extends Job {
 			TreeNode n = (TreeNode) obj;
 			String type = n.getType();
 
-			if ("version".equals(type) & n.isInstalled()) {
+			if (TreeNode.VERSION_TYPE.equals(type) & n.isInstalled()) {
 				packs.add(n);
 			}
 		}
@@ -86,24 +77,33 @@ public class RemoveJob extends Job {
 			final TreeNode versionNode = packs.get(i);
 			final TreeNode packNode = versionNode.getParent();
 
-			String vendor = packNode.getProperty(TreeNode.VENDOR_PROPERTY);
-
-			String packName = vendor + "." + packNode.getName() + "."
-					+ versionNode.getName() + ".pack";
+			String packName = versionNode.getProperty(
+					TreeNode.ARCHIVENAME_PROPERTY, "");
 
 			// Name the subtask with the pack name
 			monitor.subTask("Remove \"" + packName + "\"");
 			m_out.println("Remove \"" + packName + "\".");
 
-			IPath versionPath = (new Path(m_folderPath)).append(vendor)
-					.append(packNode.getName()).append(versionNode.getName());
+			IPath versionFolderPath;
+			IPath packFilePath;
+			try {
 
-			removeFolderRecursive(versionPath.toFile());
+				String dest = versionNode.getProperty(TreeNode.FOLDER_PROPERTY,
+						"");
+				versionFolderPath = PacksStorage.getFolderPath().append(dest);
 
-			// Remove the pack archived file
-			IPath packPath = (new Path(m_folderPath)).append(
-					PacksStorage.DOWNLOAD_FOLDER).append(packName);
-			File packFile = packPath.toFile();
+				// Remove the pack archived file
+				packFilePath = PacksStorage.getFolderPath()
+						.append(PacksStorage.DOWNLOAD_FOLDER).append(packName);
+
+			} catch (IOException e) {
+				m_running = false;
+				return Status.CANCEL_STATUS;
+			}
+
+			removeFolderRecursive(versionFolderPath.toFile());
+
+			File packFile = packFilePath.toFile();
 			packFile.setWritable(true, false);
 			packFile.delete();
 
@@ -154,7 +154,7 @@ public class RemoveJob extends Job {
 
 		for (TreeNode versionNode : installedVersions) {
 			PacksStorage.updateInstalledVersionNode(versionNode, true, lists);
-			
+
 			// Clear children
 		}
 

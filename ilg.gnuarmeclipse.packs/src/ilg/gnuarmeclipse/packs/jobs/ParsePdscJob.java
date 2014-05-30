@@ -4,7 +4,6 @@ import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.PdscParser;
 import ilg.gnuarmeclipse.packs.TreeNode;
-import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.ui.views.OutlineView;
 
 import java.io.FileNotFoundException;
@@ -13,15 +12,13 @@ import java.io.IOException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 
-public class ParseOutlineJob extends Job {
+public class ParsePdscJob extends Job {
 
 	private static boolean m_running = false;
 
@@ -30,36 +27,31 @@ public class ParseOutlineJob extends Job {
 	private TreeViewer m_outlineViewer;
 	private TreeViewer m_packsViewer;
 
-	private String m_folderPath;
+	// private IPath m_folderPath;
 
 	// private IProgressMonitor m_monitor;
 
-	public ParseOutlineJob(String name, TreeNode node, TreeViewer viewer) {
+	public ParsePdscJob(String name, TreeNode node, TreeViewer viewer) {
 
 		super(name);
 
-		MessageConsole myConsole = Utils.findConsole();
-		m_out = myConsole.newMessageStream();
+		m_out = Activator.getConsole().newMessageStream();
 
 		m_versionNode = node;
 		m_outlineViewer = viewer;
 		m_packsViewer = Activator.getPacksView().getTreeViewer();
-
-		try {
-			m_folderPath = PacksStorage.getFolderPath();
-		} catch (IOException e) {
-			Activator.log(e);
-		}
 
 	}
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 
-		if (m_folderPath == null) {
-			return Status.CANCEL_STATUS;
-		}
-
+		IPath folderPath;
+		try {
+			folderPath = PacksStorage.getFolderPath();
+		} catch (IOException e1) {
+			return Status.CANCEL_STATUS;		}
+		
 		if (m_running) {
 			return Status.CANCEL_STATUS;
 		}
@@ -75,9 +67,9 @@ public class ParseOutlineJob extends Job {
 		String versionName = m_versionNode.getName();
 
 		String pdscName = vendorName + "." + packName + ".pdsc";
-		m_out.println("Parse \"" + pdscName + "\" outline started.");
+		m_out.println("Parse \"" + pdscName + "\" started.");
 
-		IPath path = new Path(m_folderPath).append(vendorName).append(packName)
+		IPath path = folderPath.append(vendorName).append(packName)
 				.append(versionName).append(pdscName);
 
 		TreeNode outlineNode = null;

@@ -2,7 +2,7 @@ package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.TreeNode;
-import ilg.gnuarmeclipse.packs.jobs.ParseOutlineJob;
+import ilg.gnuarmeclipse.packs.jobs.ParsePdscJob;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -459,7 +459,7 @@ public class OutlineView extends ViewPart {
 			} else if (TreeNode.VERSION_TYPE.equals(node.getType())
 					&& node.isInstalled()) {
 				// If the version node is installed, get outline
-				ParseOutlineJob job = new ParseOutlineJob("Parse Outline",
+				ParsePdscJob job = new ParsePdscJob("Parse Outline",
 						node, m_viewer);
 				job.schedule();
 			} else if (!node.isInstalled()) {

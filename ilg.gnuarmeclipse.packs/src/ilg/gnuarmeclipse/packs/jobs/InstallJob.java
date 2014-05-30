@@ -11,6 +11,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
@@ -27,65 +28,63 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 
 public class InstallJob extends Job {
 
-	private static boolean m_running = false;
+	private static boolean ms_running = false;
 
 	private MessageConsoleStream m_out;
 	private TreeSelection m_selection;
 
-	private String m_folderPath;
+	// private String m_folderPath;
 	private IProgressMonitor m_monitor;
 
 	public InstallJob(String name, TreeSelection selection) {
 
 		super(name);
 
-		MessageConsole myConsole = Utils.findConsole();
-		m_out = myConsole.newMessageStream();
+		m_out = Activator.getConsole().newMessageStream();
 
 		m_selection = selection;
 
-		try {
-			m_folderPath = PacksStorage.getFolderPath();
-		} catch (IOException e) {
-			Activator.log(e);
-		}
 	}
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 
-		if (m_running)
+		if (ms_running)
 			return Status.CANCEL_STATUS;
 
-		m_running = true;
+		ms_running = true;
 		m_monitor = monitor;
 
 		m_out.println("Install packs started.");
 
 		List<TreeNode> packs = new ArrayList<TreeNode>();
 
+		// Iterate selection and build list of nodes
 		for (Object obj : m_selection.toArray()) {
 			TreeNode n = (TreeNode) obj;
-			String type = n.getType();
+			if (!n.isInstalled()) {
 
-			if ("package".equals(type) & !n.isInstalled()) {
-				packs.add(n.getChildren().get(0));
-			} else if ("version".equals(type) & !n.isInstalled()) {
-				packs.add(n);
+				String type = n.getType();
+				if (TreeNode.PACKAGE_TYPE.equals(type)) {
+
+					// For package nodes, install the top most version
+					packs.add(n.getChildren().get(0));
+
+				} else if (TreeNode.VERSION_TYPE.equals(type)) {
+
+					// For version nodes, install the given version
+					packs.add(n);
+				}
 			}
 		}
 
 		int workUnits = 0;
 		for (int i = 0; i < packs.size(); ++i) {
-			try {
-				workUnits += computeWorkUnits(packs.get(i));
-			} catch (IOException e) {
-			}
+			workUnits += computeWorkUnits(packs.get(i));
 		}
 
 		// set total number of work units
@@ -102,10 +101,8 @@ public class InstallJob extends Job {
 			final TreeNode versionNode = packs.get(i);
 			final TreeNode packNode = versionNode.getParent();
 
-			String vendor = packNode.getProperty(TreeNode.VENDOR_PROPERTY);
-
-			String packName = vendor + "." + packNode.getName() + "."
-					+ versionNode.getName() + ".pack";
+			String packName = versionNode.getProperty(
+					TreeNode.ARCHIVENAME_PROPERTY, "");
 
 			// Name the subtask with the pack name
 			monitor.subTask(packName);
@@ -147,7 +144,7 @@ public class InstallJob extends Job {
 
 		if (monitor.isCanceled()) {
 			m_out.println("Job cancelled.");
-			m_running = false;
+			ms_running = false;
 			return Status.CANCEL_STATUS;
 		}
 
@@ -158,77 +155,71 @@ public class InstallJob extends Job {
 		}
 		m_out.println();
 
-		m_running = false;
+		ms_running = false;
 		return Status.OK_STATUS;
 	}
 
-	private int computeWorkUnits(TreeNode versionNode) throws IOException {
-
-		TreeNode packNode = versionNode.getParent();
-
-		String vendor = packNode.getProperty(TreeNode.VENDOR_PROPERTY);
-
-		String url = packNode.getProperty(TreeNode.URL_PROPERTY);
-
-		String pdscName = vendor + "." + packNode.getName() + ".pdsc";
-		URL pdscUrl;
-		pdscUrl = new URL(url + "/" + pdscName);
-
-		String packName = vendor + "." + packNode.getName() + "."
-				+ versionNode.getName() + ".pack";
-		URL packUrl;
-		packUrl = new URL(url + "/" + packName);
+	private int computeWorkUnits(TreeNode versionNode) {
 
 		int workUnits = 0;
-		// Start with .pack
-		workUnits += computeFileWorkUnits(packUrl);
 
-		// If .pack is not there, this is not reached
-		workUnits += computeFileWorkUnits(pdscUrl);
+		String size = versionNode.getProperty(TreeNode.SIZE_PROPERTY, "0");
+		try {
+			workUnits += Integer.valueOf(size);
+		} catch (NumberFormatException e) {
+			;
+		}
+
+		TreeNode packNode = versionNode.getParent();
+		String pdscUrl = packNode.getProperty(TreeNode.PDSCURL_PROPERTY, "");
+		if (pdscUrl.length() > 0) {
+			try {
+				workUnits += Utils.getRemoteFileSize(new URL(pdscUrl));
+			} catch (MalformedURLException e) {
+				;
+			} catch (IOException e) {
+				;
+			}
+		}
 
 		return workUnits;
 	}
 
-	private int computeFileWorkUnits(URL url) throws IOException {
-		URLConnection connection = url.openConnection();
-		return connection.getContentLength();
-	}
-
 	private void installPack(TreeNode versionNode) throws IOException {
 
-		TreeNode packNode = versionNode.getParent();
+		// Package node
+		URL packUrl = new URL(versionNode.getProperty(
+				TreeNode.ARCHIVEURL_PROPERTY, ""));
 
-		String vendor = packNode.getProperty(TreeNode.VENDOR_PROPERTY);
-
-		String url = packNode.getProperty(TreeNode.URL_PROPERTY);
-
-		String pdscName = vendor + "." + packNode.getName() + ".pdsc";
-		URL pdscUrl;
-		pdscUrl = new URL(url + "/" + pdscName);
-		File pdscFile = getFile(new Path(PacksStorage.DOWNLOAD_FOLDER),
-				pdscName);
-
-		String packName = vendor + "." + packNode.getName() + "."
-				+ versionNode.getName() + ".pack";
-		URL packUrl;
-		packUrl = new URL(url + "/" + packName);
+		String packName = versionNode.getProperty(
+				TreeNode.ARCHIVENAME_PROPERTY, "");
 
 		File packFile = getFile(new Path(PacksStorage.DOWNLOAD_FOLDER),
 				packName);
 
-		// Read in the .pack file
+		// Read in the .pack file to a local file
 		copyFile(packUrl, packFile);
+
+		// Version node
+		TreeNode packNode = versionNode.getParent();
+
+		URL pdscUrl = new URL(packNode.getProperty(TreeNode.PDSCURL_PROPERTY,
+				""));
+		String pdscName = packNode.getProperty(TreeNode.PDSCNAME_PROPERTY, "");
+
+		File pdscFile = getFile(new Path(PacksStorage.DOWNLOAD_FOLDER),
+				pdscName);
 
 		// Read in the .pdsc file
 		// If .pack is not there, this is not reached
 		copyFile(pdscUrl, pdscFile);
 
-		Path path = new Path(vendor + "/" + packNode.getName() + "/"
-				+ versionNode.getName());
-		// extract files from archive
-		unzip(path, packFile);
+		String dest = versionNode.getProperty(TreeNode.FOLDER_PROPERTY, "");
+		Path destRelPath = new Path(dest);
+		// extract files from archive to local folder
+		unzip(packFile, destRelPath);
 
-		makeFolderReadOnlyRecursive(path.toFile());
+		makeFolderReadOnlyRecursive(destRelPath.toFile());
 
 		m_out.println("Files set to read only.");
 	}
@@ -238,7 +229,7 @@ public class InstallJob extends Job {
 
 		URLConnection connection = sourceUrl.openConnection();
 		int size = connection.getContentLength();
-		String sizeString = convertSizeToString(size);
+		String sizeString = Utils.convertSizeToString(size);
 		m_out.println("Copy " + sizeString + " \"" + sourceUrl + "\" to \""
 				+ destinationFile + "\".");
 
@@ -257,17 +248,20 @@ public class InstallJob extends Job {
 
 	private File getFile(Path pathPart, String name) {
 
-		if (m_folderPath.length() == 0)
+		IPath path;
+		try {
+			path = PacksStorage.getFolderPath().append(pathPart).append(name);
+		} catch (IOException e) {
 			return null;
-
-		IPath path = (new Path(m_folderPath)).append(pathPart).append(name);
+		}
 		File file = path.toFile();
 		new File(file.getParent()).mkdirs();
 
 		return file; // may be null
 	}
 
-	private void unzip(Path pathPart, File archiveFile) throws IOException {
+	private void unzip(File archiveFile, Path destRelativePath)
+			throws IOException {
 
 		m_out.println("Unzip \"" + archiveFile + "\".");
 
@@ -291,7 +285,7 @@ public class InstallJob extends Job {
 				// + "S";
 				// }
 
-				File outFile = getFile(pathPart, fileName);
+				File outFile = getFile(destRelativePath, fileName);
 				m_out.println("Write \"" + outFile + "\".");
 
 				OutputStream output = new FileOutputStream(outFile);
@@ -314,10 +308,11 @@ public class InstallJob extends Job {
 		zipInput.closeEntry();
 		zipInput.close();
 		m_out.println(countFiles + " files written, "
-				+ convertSizeToString(countBytes) + ".");
+				+ Utils.convertSizeToString(countBytes) + ".");
 	}
 
 	private static void makeFolderReadOnlyRecursive(File path) {
+
 		if (path == null)
 			return;
 		if (path.exists()) {
@@ -333,18 +328,4 @@ public class InstallJob extends Job {
 		}
 	}
 
-	private String convertSizeToString(int size) {
-
-		String sizeString;
-		if (size < 1024) {
-			sizeString = String.valueOf(size) + "B";
-		} else if (size < 1024 * 1024) {
-			sizeString = String.valueOf((size + (1024 / 2)) / 1024) + "kB";
-		} else {
-			sizeString = String.valueOf((size + ((1024 * 1024) / 2))
-					/ (1024 * 1024))
-					+ "MB";
-		}
-		return sizeString;
-	}
 }

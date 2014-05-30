@@ -2,7 +2,6 @@ package ilg.gnuarmeclipse.packs.jobs;
 
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
-import ilg.gnuarmeclipse.packs.Utils;
 
 import java.io.IOException;
 
@@ -12,7 +11,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.console.MessageConsole;
 import org.eclipse.ui.console.MessageConsoleStream;
 
 public class CopyExampleJob extends Job {
@@ -22,23 +20,16 @@ public class CopyExampleJob extends Job {
 	private MessageConsoleStream m_out;
 	private TreeSelection m_selection;
 
-	private String m_folderPath;
+	//private String m_folderPath;
 	private IProgressMonitor m_monitor;
 
 	public CopyExampleJob(String name, TreeSelection selection) {
 
 		super(name);
 
-		MessageConsole myConsole = Utils.findConsole();
-		m_out = myConsole.newMessageStream();
+		m_out = Activator.getConsole().newMessageStream();
 
 		m_selection = selection;
-
-		try {
-			m_folderPath = PacksStorage.getFolderPath();
-		} catch (IOException e) {
-			Activator.log(e);
-		}
 	}
 
 	@Override

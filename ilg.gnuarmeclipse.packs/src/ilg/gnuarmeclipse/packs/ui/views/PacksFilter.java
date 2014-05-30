@@ -50,8 +50,8 @@ public class PacksFilter extends ViewerFilter {
 
 		// If the node has conditions, enumerate them and check one by one.
 		// If at least one is true, the node is visible
-		List<TreeNode.Condition> conditions = node.getConditions();
-		for (TreeNode.Condition condition : conditions) {
+		List<TreeNode.Selector> conditions = node.getConditions();
+		for (TreeNode.Selector condition : conditions) {
 
 			// Enumerate all selections
 			for (Object obj : m_selection.toList()) {
@@ -70,12 +70,12 @@ public class PacksFilter extends ViewerFilter {
 		return false;
 	}
 
-	private boolean isNodeVisible(TreeNode.Condition condition,
+	private boolean isNodeVisible(TreeNode.Selector condition,
 			TreeNode selectionNode) {
 
 		String conditionType = condition.getType();
 		// Condition is from the node
-		if (TreeNode.Condition.BOARD_TYPE.equals(conditionType)) {
+		if (TreeNode.Selector.BOARD_TYPE.equals(conditionType)) {
 
 			// Check board conditions (generic vendor string and
 			// board name)
@@ -85,7 +85,7 @@ public class PacksFilter extends ViewerFilter {
 				if (condition.getVendor().equals(selectionNode.getName())) {
 					return true;
 				}
-			} else if (TreeNode.Condition.BOARD_TYPE.equals(selectionNode
+			} else if (TreeNode.Selector.BOARD_TYPE.equals(selectionNode
 					.getType())) {
 				// compare both the parent name with the vendor and
 				// the board
@@ -105,7 +105,7 @@ public class PacksFilter extends ViewerFilter {
 				}
 			}
 
-		} else if (TreeNode.Condition.DEVICEFAMILY_TYPE.equals(conditionType)) {
+		} else if (TreeNode.Selector.DEVICEFAMILY_TYPE.equals(conditionType)) {
 
 			String vendorId;
 			TreeNode selectionVendorNode = selectionNode;
@@ -146,7 +146,7 @@ public class PacksFilter extends ViewerFilter {
 					return true;
 				}
 			}
-		} else if (TreeNode.Condition.KEYWORD_TYPE.equals(conditionType)) {
+		} else if (TreeNode.Selector.KEYWORD_TYPE.equals(conditionType)) {
 			if (TreeNode.KEYWORD_TYPE.equals(selectionNode.getType())) {
 				if (condition.getValue().equals(selectionNode.getName())) {
 					return true;

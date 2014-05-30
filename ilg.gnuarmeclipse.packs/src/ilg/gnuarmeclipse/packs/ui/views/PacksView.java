@@ -4,6 +4,7 @@ import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.TreeNode;
 import ilg.gnuarmeclipse.packs.UsingDefaultFileException;
+import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.jobs.CopyExampleJob;
 import ilg.gnuarmeclipse.packs.jobs.InstallJob;
 import ilg.gnuarmeclipse.packs.jobs.RemoveJob;
@@ -73,6 +74,8 @@ public class PacksView extends ViewPart {
 	private Action m_installAction;
 	private Action m_removeAction;
 	private Action m_copyExampleAction;
+	private Action m_expandAll;
+	private Action m_collapseAll;
 
 	private PacksFilter m_packsFilter;
 	private ViewerFilter[] m_packsFilters;
@@ -175,6 +178,23 @@ public class PacksView extends ViewPart {
 				String name = node.getName();
 				if (node.isInstalled()) {
 					name += " (installed)";
+				} else {
+					if (TreeNode.VERSION_TYPE.equals(node.getType())) {
+						String size = node.getProperty(TreeNode.SIZE_PROPERTY);
+						if (size != null) {
+							try {
+								int n = Integer.parseInt(size);
+								if (n <= 0) {
+									name += " (missing)";
+								} else {
+									name += " (" + Utils.convertSizeToString(n)
+											+ ")";
+								}
+							} catch (NumberFormatException e) {
+								;
+							}
+						}
+					}
 				}
 				return " " + name;
 			case 1:
@@ -402,10 +422,13 @@ public class PacksView extends ViewPart {
 
 	// Top down arrow
 	private void fillLocalPullDown(IMenuManager manager) {
-		manager.add(m_refreshAction);
+		manager.add(m_expandAll);
+		manager.add(m_collapseAll);
 		manager.add(new Separator());
 		manager.add(m_installAction);
 		manager.add(m_removeAction);
+		manager.add(new Separator());
+		manager.add(m_refreshAction);
 
 		// manager.add(action1);
 		// manager.add(new Separator());
@@ -435,6 +458,9 @@ public class PacksView extends ViewPart {
 
 	// Top tool bar buttons
 	private void fillLocalToolBar(IToolBarManager manager) {
+		manager.add(m_expandAll);
+		manager.add(m_collapseAll);
+		manager.add(new Separator());
 		manager.add(m_installAction);
 		manager.add(m_removeAction);
 		manager.add(new Separator());
@@ -531,6 +557,29 @@ public class PacksView extends ViewPart {
 			}
 		};
 		m_copyExampleAction.setText("Copy to folder");
+
+		m_expandAll = new Action() {
+			public void run() {
+				m_viewer.expandAll();
+			}
+		};
+
+		m_expandAll.setText("Expand all");
+		m_expandAll.setToolTipText("Expand all children nodes");
+		m_expandAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+				Activator.PLUGIN_ID, "icons/expandall.png"));
+
+		m_collapseAll = new Action() {
+			public void run() {
+				m_viewer.collapseAll();
+			}
+		};
+
+		m_collapseAll.setText("Collapse all");
+		m_collapseAll.setToolTipText("Collapse all children nodes");
+		m_collapseAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+				Activator.PLUGIN_ID, "icons/collapseall.png"));
+
 	}
 
 	private void hookDoubleClickAction() {
