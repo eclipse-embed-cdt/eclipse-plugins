@@ -46,7 +46,7 @@ public class PacksStorage {
 
 	public static final String SITES_FILE_NAME = "sites.xml";
 	public static final String CACHE_FILE_NAME = ".cache.xml";
-	public static final String CACHE_XML_VERSION = "1.0";
+	public static final String CACHE_XML_VERSION = "1.1";
 
 	public static final String CMSIS_PACK_TYPE = "CMSIS Pack";
 
@@ -333,9 +333,9 @@ public class PacksStorage {
 			Map<String, String> properties = node.getProperties();
 			for (Object key : properties.keySet()) {
 				putIndentation(depth * 2 + 2, writer);
-				writer.println("<property name=\"" + key.toString() + "\">"
-						+ Utils.xmlEscape(properties.get(key).toString())
-						+ "</property>");
+				writer.println("<property name=\"" + key.toString()
+						+ "\" value=\"" + properties.get(key).toString()
+						+ "\" />");
 			}
 
 			putIndentation(depth * 2 + 1, writer);
@@ -350,15 +350,15 @@ public class PacksStorage {
 			for (TreeNode.Selector condition : conditions) {
 				putIndentation(depth * 2 + 2, writer);
 				writer.print("<condition type=\"" + condition.getType() + "\"");
+				writer.print(" value=\"" + condition.getValue() + "\"");
 				if (condition.hasVendor()) {
 					writer.print(" vendor=\"" + condition.getVendor() + "\"");
 				}
-				// if (condition.hasAttribute()) {
-				// writer.print(" attribute=\"" + condition.getAttribute()
-				// + "\"");
-				// }
-				writer.println(">" + Utils.xmlEscape(condition.getValue())
-						+ "</condition>");
+				if (condition.hasVendorId()) {
+					writer.print(" vendorid=\"" + condition.getVendorId()
+							+ "\"");
+				}
+				writer.println(" />");
 			}
 
 			putIndentation(depth * 2 + 1, writer);
@@ -502,7 +502,8 @@ public class PacksStorage {
 			for (Element propertyElement : propertyElements) {
 				String propertyName = propertyElement.getAttribute("name")
 						.trim();
-				String propertyValue = propertyElement.getTextContent().trim();
+				String propertyValue = propertyElement.getAttribute("value")
+						.trim();
 
 				treeNode.putProperty(propertyName, propertyValue);
 			}
@@ -520,13 +521,18 @@ public class PacksStorage {
 						.trim();
 				String conditionVendor = conditionElement
 						.getAttribute("vendor").trim();
-				String conditionValue = conditionElement.getTextContent()
+				String conditionVendorId = conditionElement.getAttribute(
+						"vendorid").trim();
+				String conditionValue = conditionElement.getAttribute("value")
 						.trim();
 
 				TreeNode.Selector condition = treeNode.new Selector(
 						conditionType);
 				if (conditionVendor.length() > 0) {
 					condition.setVendor(conditionVendor);
+				}
+				if (conditionVendorId.length() > 0) {
+					condition.setVendorId(conditionVendorId);
 				}
 				condition.setValue(conditionValue);
 
@@ -719,19 +725,20 @@ public class PacksStorage {
 		}
 	}
 
-//	public static IPath getPathForVersionPdsc(TreeNode versionNode)
-//			throws IOException {
-//
-//		TreeNode packNode = versionNode.getParent();
-//
-//		String pdscName = packNode.getProperty(TreeNode.PDSCNAME_PROPERTY, "");
-//		// m_out.println("Parse \"" + pdscName + "\" started.");
-//
-//		String destFolder = versionNode.getProperty(TreeNode.FOLDER_PROPERTY, "");
-//		
-//		IPath path = PacksStorage.getFolderPath().append(destFolder)
-//				.append(pdscName);
-//
-//		return path;
-//	}
+	// public static IPath getPathForVersionPdsc(TreeNode versionNode)
+	// throws IOException {
+	//
+	// TreeNode packNode = versionNode.getParent();
+	//
+	// String pdscName = packNode.getProperty(TreeNode.PDSCNAME_PROPERTY, "");
+	// // m_out.println("Parse \"" + pdscName + "\" started.");
+	//
+	// String destFolder = versionNode.getProperty(TreeNode.FOLDER_PROPERTY,
+	// "");
+	//
+	// IPath path = PacksStorage.getFolderPath().append(destFolder)
+	// .append(pdscName);
+	//
+	// return path;
+	// }
 }

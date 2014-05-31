@@ -15,6 +15,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.MessageConsoleStream;
@@ -126,6 +128,8 @@ public class RemoveJob extends Job {
 					Activator.getPacksView().update(versionNode);
 					Activator.getPacksView().update(packNode);
 
+					Activator.getPacksView().getTreeViewer()
+							.setSelection(m_selection);
 					Activator.getPacksView().updateButtonsEnableStatus(
 							m_selection);
 

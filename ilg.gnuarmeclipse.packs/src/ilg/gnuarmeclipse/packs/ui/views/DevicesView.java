@@ -55,6 +55,8 @@ public class DevicesView extends ViewPart {
 
 	private TreeViewer m_viewer;
 	private Action m_removeFilters;
+	private Action m_expandAll;
+	private Action m_collapseAll;
 
 	// private PacksFilter m_packsFilter;
 	// private ViewerFilter[] m_packsFilters;
@@ -222,7 +224,7 @@ public class DevicesView extends ViewPart {
 
 	public void dispose() {
 		super.dispose();
-		
+
 		System.out.println("DevicesView.dispose()");
 	}
 
@@ -255,6 +257,9 @@ public class DevicesView extends ViewPart {
 	}
 
 	private void fillLocalPullDown(IMenuManager manager) {
+		manager.add(m_expandAll);
+		manager.add(m_collapseAll);
+		manager.add(new Separator());
 		manager.add(m_removeFilters);
 	}
 
@@ -266,13 +271,16 @@ public class DevicesView extends ViewPart {
 	}
 
 	private void fillLocalToolBar(IToolBarManager manager) {
+		manager.add(m_expandAll);
+		manager.add(m_collapseAll);
+		manager.add(new Separator());
 		manager.add(m_removeFilters);
 	}
 
 	private void makeActions() {
 
 		m_removeFilters = new Action() {
-			public void run() {				
+			public void run() {
 				// Empty selection
 				m_viewer.setSelection(null);
 			}
@@ -283,6 +291,29 @@ public class DevicesView extends ViewPart {
 				.setToolTipText("Remove all filters based on selections");
 		m_removeFilters.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/removeall.png"));
+
+		// -----
+		m_expandAll = new Action() {
+			public void run() {
+				m_viewer.expandAll();
+			}
+		};
+
+		m_expandAll.setText("Expand all");
+		m_expandAll.setToolTipText("Expand all children nodes");
+		m_expandAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+				Activator.PLUGIN_ID, "icons/expandall.png"));
+
+		m_collapseAll = new Action() {
+			public void run() {
+				m_viewer.collapseAll();
+			}
+		};
+
+		m_collapseAll.setText("Collapse all");
+		m_collapseAll.setToolTipText("Collapse all children nodes");
+		m_collapseAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+				Activator.PLUGIN_ID, "icons/collapseall.png"));
 
 	}
 
@@ -297,13 +328,13 @@ public class DevicesView extends ViewPart {
 	}
 
 	public void forceRefresh() {
-		
+
 		m_contentProvider.forceRefresh();
 
-		//Object[] expandedElements = m_viewer.getExpandedElements();
+		// Object[] expandedElements = m_viewer.getExpandedElements();
 		m_viewer.setInput(getViewSite());
-		//m_viewer.refresh();
-		//m_viewer.setExpandedElements(expandedElements);
+		// m_viewer.refresh();
+		// m_viewer.setExpandedElements(expandedElements);
 
 		System.out.println("DevicesView.forceRefresh()");
 	}
@@ -322,7 +353,7 @@ public class DevicesView extends ViewPart {
 		System.out.println("DevicesView.updated()");
 	}
 
-	public String toString(){
+	public String toString() {
 		return "DevicesView";
 	}
 

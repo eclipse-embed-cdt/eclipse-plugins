@@ -19,6 +19,8 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.layout.TreeColumnLayout;
+import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ILabelProviderListener;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
@@ -185,7 +187,7 @@ public class PacksView extends ViewPart {
 							try {
 								int n = Integer.parseInt(size);
 								if (n <= 0) {
-									name += " (missing)";
+									name += " (n/a)";
 								} else {
 									name += " (" + Utils.convertSizeToString(n)
 											+ ")";
@@ -262,14 +264,23 @@ public class PacksView extends ViewPart {
 		tree.setHeaderVisible(true);
 		tree.setLinesVisible(true);
 
+		// You can only add the Layout to a container whose only child is the
+		// Tree control you want the Layout applied to. Don't assign the layout
+		// directly the Tree
+
+		TreeColumnLayout layout = new TreeColumnLayout();
+		parent.setLayout(layout);
+
 		TreeColumn nameColumn = new TreeColumn(tree, SWT.NONE);
 		nameColumn.setText("  Name");
-		nameColumn.setWidth(200);
+		// nameColumn.setWidth(200);
+		layout.setColumnData(nameColumn, new ColumnPixelData(200));
 
 		TreeColumn descriptionColumn = new TreeColumn(tree, SWT.NONE);
 		descriptionColumn.setAlignment(SWT.LEFT);
 		descriptionColumn.setText(" Description");
-		descriptionColumn.setWidth(450);
+		// descriptionColumn.setWidth(450);
+		layout.setColumnData(descriptionColumn, new ColumnPixelData(450));
 
 		m_viewer = new TreeViewer(tree);
 
@@ -358,7 +369,17 @@ public class PacksView extends ViewPart {
 
 		IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 
-		m_packsFilter.setSelection(structuredSelection);
+		String conditionType = "";
+		if (part instanceof DevicesView) {
+			conditionType = TreeNode.Selector.DEVICEFAMILY_TYPE;
+		} else if (part instanceof BoardsView) {
+			conditionType = TreeNode.Selector.BOARD_TYPE;
+		} else if (part instanceof KeywordsView) {
+			conditionType = TreeNode.Selector.KEYWORD_TYPE;
+		}
+
+		m_packsFilter.setSelection(conditionType, structuredSelection);
+
 		m_viewer.setFilters(m_packsFilters);
 
 		m_viewer.setSelection(null);
@@ -386,12 +407,25 @@ public class PacksView extends ViewPart {
 
 			// Check if the selection contain any package or
 			// version not installed
-			if ((TreeNode.PACKAGE_TYPE.equals(type) || TreeNode.VERSION_TYPE
-					.equals(type)) && !node.isInstalled()) {
-				m_isInstallEnabled = true;
+			if (TreeNode.PACKAGE_TYPE.equals(type)) {
+				if (!node.isInstalled()) {
+					m_isInstallEnabled = true;
+				}
 			}
-			if ((TreeNode.VERSION_TYPE.equals(type)) && node.isInstalled()) {
-				m_isRemoveEnabled = true;
+			if (TreeNode.VERSION_TYPE.equals(type)) {
+				int size = 0;
+				try {
+					size = Integer.valueOf(node.getProperty(
+							TreeNode.SIZE_PROPERTY, "0"));
+				} catch (NumberFormatException e) {
+					;
+				}
+				if (!node.isInstalled() && size > 0) {
+					m_isInstallEnabled = true;
+				}
+				if (node.isInstalled()) {
+					m_isRemoveEnabled = true;
+				}
 			}
 			if ((TreeNode.EXAMPLE_TYPE.equals(type))) {
 				m_isCopyExampleEnabled = true;
@@ -558,6 +592,7 @@ public class PacksView extends ViewPart {
 		};
 		m_copyExampleAction.setText("Copy to folder");
 
+		// -----
 		m_expandAll = new Action() {
 			public void run() {
 				m_viewer.expandAll();
@@ -621,7 +656,7 @@ public class PacksView extends ViewPart {
 		} else {
 			m_viewer.update(obj, null);
 		}
-		System.out.println("PacksView.updated()");
+		System.out.println("PacksView.updated() " + obj);
 	}
 
 }

@@ -2,6 +2,7 @@ package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.packs.TreeNode;
 
+import java.util.LinkedList;
 import java.util.List;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -13,9 +14,12 @@ import org.eclipse.jface.viewers.ViewerFilter;
 public class PacksFilter extends ViewerFilter {
 
 	private IStructuredSelection m_selection;
+	private String m_conditionType;
 
-	public void setSelection(IStructuredSelection selection) {
+	public void setSelection(String conditionType,
+			IStructuredSelection selection) {
 		m_selection = selection;
+		m_conditionType = conditionType;
 	}
 
 	@Override
@@ -43,15 +47,33 @@ public class PacksFilter extends ViewerFilter {
 			return false;
 		}
 
-		// If the node has no restricting conditions, then it is always visible
-		if (!node.hasConditions()) {
+		if (!TreeNode.PACKAGE_TYPE.equals(node.getType())) {
 			return true;
+		}
+
+		// If the node has no restricting conditions at all,
+		// then it is always visible
+		if (!node.hasConditions()) {
+			return false; // true;
+		}
+
+		List<TreeNode.Selector> conditions = node.getConditions();
+		List<TreeNode.Selector> filteredConditions = new LinkedList<TreeNode.Selector>();
+		for (TreeNode.Selector condition : conditions) {
+			if (m_conditionType.equals(condition.getType())) {
+				filteredConditions.add(condition);
+			}
+		}
+
+		// If the node has no restricting conditions of the given type,
+		// then it is always visible
+		if (filteredConditions.size() == 0) {
+			return false; // true;
 		}
 
 		// If the node has conditions, enumerate them and check one by one.
 		// If at least one is true, the node is visible
-		List<TreeNode.Selector> conditions = node.getConditions();
-		for (TreeNode.Selector condition : conditions) {
+		for (TreeNode.Selector condition : filteredConditions) {
 
 			// Enumerate all selections
 			for (Object obj : m_selection.toList()) {
@@ -73,33 +95,26 @@ public class PacksFilter extends ViewerFilter {
 	private boolean isNodeVisible(TreeNode.Selector condition,
 			TreeNode selectionNode) {
 
+		// Condition is from the evaluated node
 		String conditionType = condition.getType();
-		// Condition is from the node
+
+		String selectionNodeType = selectionNode.getType();
 		if (TreeNode.Selector.BOARD_TYPE.equals(conditionType)) {
 
 			// Check board conditions (generic vendor string and
 			// board name)
-			if (TreeNode.VENDOR_TYPE.equals(selectionNode.getType())) {
+			if (TreeNode.VENDOR_TYPE.equals(selectionNodeType)) {
+
 				// compare the selected node name with the condition
 				// vendor
 				if (condition.getVendor().equals(selectionNode.getName())) {
 					return true;
 				}
-			} else if (TreeNode.Selector.BOARD_TYPE.equals(selectionNode
-					.getType())) {
-				// compare both the parent name with the vendor and
-				// the board
-				TreeNode selectionVendorNode = selectionNode.getParent();
-				while (selectionVendorNode != null
-						&& !TreeNode.VENDOR_TYPE.equals(selectionVendorNode
-								.getType())) {
-					selectionVendorNode = selectionVendorNode.getParent();
-				}
+			} else if (TreeNode.BOARD_TYPE.equals(selectionNodeType)) {
 
-				if (selectionVendorNode == null) {
-					return false;
-				}
-				if (condition.getVendor().equals(selectionVendorNode.getName())
+				if (condition.getVendor()
+						.equals(selectionNode.getProperty(
+								TreeNode.VENDOR_PROPERTY, ""))
 						&& condition.getValue().equals(selectionNode.getName())) {
 					return true;
 				}
@@ -107,46 +122,30 @@ public class PacksFilter extends ViewerFilter {
 
 		} else if (TreeNode.Selector.DEVICEFAMILY_TYPE.equals(conditionType)) {
 
-			String vendorId;
-			TreeNode selectionVendorNode = selectionNode;
-			while (selectionVendorNode != null
-					&& !TreeNode.VENDOR_TYPE.equals(selectionVendorNode
-							.getType())) {
-				selectionVendorNode = selectionVendorNode.getParent();
-			}
-
-			if (selectionVendorNode == null) {
-				return false;
-			}
-
-			vendorId = selectionVendorNode.getProperty("vendorid");
-			if (vendorId == null) {
-				return false;
-			}
-
-			// Check board conditions (generic vendor string and
-			// board name)
-			if (TreeNode.VENDOR_TYPE.equals(selectionNode.getType())) {
+			// Check device conditions (numeric vendor id and
+			// family name)
+			if (TreeNode.VENDOR_TYPE.equals(selectionNodeType)) {
 
 				// compare the condition vendor with the selection vendorid
-				if (condition.getVendor().equals(vendorId)) {
+				if (condition.getVendorId().equals(
+						selectionNode.getProperty(TreeNode.VENDORID_PROPERTY,
+								""))) {
 					return true;
 				}
-			} else {
-				TreeNode selectionFamilyNode = selectionNode;
-				while (!TreeNode.FAMILY_TYPE.equals(selectionFamilyNode
-						.getType())) {
-					selectionFamilyNode = selectionFamilyNode.getParent();
-				}
-				// compare the condition vendor with the selection vendorid and
-				// the condition name with selection family name
-				if (condition.getVendor().equals(vendorId)
-						&& condition.getValue().equals(
-								selectionFamilyNode.getName())) {
+			} else if (TreeNode.FAMILY_TYPE.equals(selectionNodeType)) {
+
+				// compare the condition vendor id with the selection vendor id
+				// and the condition name with selection family name
+				if (condition.getVendorId().equals(
+						selectionNode.getProperty(TreeNode.VENDORID_PROPERTY,
+								""))
+						&& condition.getValue().equals(selectionNode.getName())) {
 					return true;
 				}
 			}
 		} else if (TreeNode.Selector.KEYWORD_TYPE.equals(conditionType)) {
+
+			// Check keyword name
 			if (TreeNode.KEYWORD_TYPE.equals(selectionNode.getType())) {
 				if (condition.getValue().equals(selectionNode.getName())) {
 					return true;

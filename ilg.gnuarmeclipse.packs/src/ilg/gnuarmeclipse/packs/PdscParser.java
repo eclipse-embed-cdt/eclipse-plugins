@@ -701,7 +701,7 @@ public class PdscParser {
 
 		for (Element childElement : childElements) {
 
-			String elementName = el.getNodeName();
+			String elementName = childElement.getNodeName();
 			if ("description".equals(elementName)) {
 
 				descriptionContent = Utils.getElementContent(childElement);
@@ -709,7 +709,8 @@ public class PdscParser {
 			} else if ("variant".equals(elementName)) {
 
 				// Required
-				String variantName = el.getAttribute("Dvariant").trim();
+				String variantName = childElement.getAttribute("Dvariant")
+						.trim();
 
 				TreeNode variantNode = new TreeNode(TreeNode.VARIANT_TYPE);
 				deviceNode.addChild(variantNode);
@@ -2299,14 +2300,24 @@ public class PdscParser {
 		String urlRef = "";
 		String shortUrl = "";
 
+		// Create the top subtrees
+		TreeNode packagesNode = parent.addUniqueChild(
+				TreeNode.PACKAGES_SUBTREE_TYPE, null);
+
+		TreeNode devicesSubtree = parent.addUniqueChild(
+				TreeNode.DEVICES_SUBTREE_TYPE, null);
+
+		TreeNode boardsNode = parent.addUniqueChild(
+				TreeNode.BOARDS_SUBTREE_TYPE, null);
+
+		TreeNode keywordsNode = parent.addUniqueChild(
+				TreeNode.KEYWORDS_SELECT_TYPE, null);
+
 		Set<String> conditionKeywords = new HashSet<String>();
 
 		// Packages
 		TreeNode packNode;
 		{
-			TreeNode packagesNode = parent.addUniqueChild(
-					TreeNode.PACKAGES_SUBTREE_TYPE, null);
-
 			Element vendorElement = Utils.getChildElement(packageElement,
 					"vendor");
 			if (vendorElement == null) {
@@ -2493,9 +2504,6 @@ public class PdscParser {
 				"keywords");
 		if (keywordsElement != null) {
 
-			TreeNode keywordsNode = parent.addUniqueChild(
-					TreeNode.KEYWORDS_SELECT_TYPE, null);
-
 			List<Element> childElements2 = Utils
 					.getChildElementsList(keywordsElement);
 			for (Element childElement2 : childElements2) {
@@ -2521,9 +2529,6 @@ public class PdscParser {
 				"devices");
 		if (devicesElement != null) {
 
-			TreeNode devicesNode = parent.addUniqueChild(
-					TreeNode.DEVICES_SUBTREE_TYPE, null);
-
 			List<Element> familyElements = Utils.getChildElementsList(
 					devicesElement, TreeNode.FAMILY_TYPE);
 			for (Element familyElement : familyElements) {
@@ -2539,22 +2544,27 @@ public class PdscParser {
 						Utils.getElementContent(descriptionElement));
 
 				String va[] = vendor.split("[:]");
-				TreeNode vendorNode = devicesNode.addUniqueChild(
-						TreeNode.VENDOR_TYPE, va[0]);
 				if (va.length < 2) {
 					// Vendor not enumeration
 					continue;
 				}
-				vendorNode.putNonEmptyProperty("vendorid", va[1]);
+				TreeNode vendorNode = devicesSubtree.addUniqueChild(
+						TreeNode.VENDOR_TYPE, va[0]);
+				vendorNode.putNonEmptyProperty(TreeNode.VENDORID_PROPERTY,
+						va[1]);
 
-				TreeNode familyNode = vendorNode.addUniqueChild("family",
-						family);
+				TreeNode familyNode = vendorNode.addUniqueChild(
+						TreeNode.FAMILY_TYPE, family);
 				familyNode.setDescription(description);
+
+				familyNode.putNonEmptyProperty(TreeNode.VENDOR_PROPERTY, va[0]);
+				familyNode.putNonEmptyProperty(TreeNode.VENDORID_PROPERTY,
+						va[1]);
 
 				// Add package conditions
 				TreeNode.Selector condition = packNode.new Selector(
 						TreeNode.Selector.DEVICEFAMILY_TYPE);
-				condition.setVendor(va[1]);
+				condition.setVendorId(va[1]);
 				condition.setValue(family);
 				packNode.addCondition(condition);
 
@@ -2566,9 +2576,6 @@ public class PdscParser {
 		// Boards
 		Element boardsElement = Utils.getChildElement(packageElement, "boards");
 		if (boardsElement != null) {
-
-			TreeNode boardsNode = parent.addUniqueChild(
-					TreeNode.BOARDS_SUBTREE_TYPE, null);
 
 			List<Element> boardElements = Utils.getChildElementsList(
 					boardsElement, "board");
@@ -2587,6 +2594,7 @@ public class PdscParser {
 
 				TreeNode boardNode = vendorNode.addUniqueChild(
 						TreeNode.BOARD_TYPE, boardName);
+				boardNode.putProperty(TreeNode.VENDOR_PROPERTY, vendor);
 
 				if (revision.length() > 0) {
 					description += " (" + revision + ")";
@@ -2599,6 +2607,47 @@ public class PdscParser {
 				condition.setVendor(vendor);
 				condition.setValue(boardName);
 				packNode.addCondition(condition);
+
+				// For boards with compatible family devices, add them to the
+				// package selected conditions
+				List<Element> compatibleDevicesElements = Utils
+						.getChildElementsList(boardElement, "compatibleDevice");
+				for (Element compatibleDevicesElement : compatibleDevicesElements) {
+
+					String family = compatibleDevicesElement.getAttribute(
+							"Dfamily").trim();
+					if (family.length() > 0) {
+
+						String vendor2 = compatibleDevicesElement.getAttribute(
+								"Dvendor").trim();
+						String va[] = vendor2.split("[:]");
+						if (va.length < 2) {
+							// Vendor not enumeration
+							continue;
+						}
+
+						TreeNode vendorNode2 = devicesSubtree.addUniqueChild(
+								TreeNode.VENDOR_TYPE, va[0]);
+						vendorNode2.putNonEmptyProperty(
+								TreeNode.VENDORID_PROPERTY, va[1]);
+
+						TreeNode familyNode2 = vendorNode2.addUniqueChild(
+								TreeNode.FAMILY_TYPE, family);
+						familyNode2.setDescription(description);
+
+						familyNode2.putNonEmptyProperty(
+								TreeNode.VENDOR_PROPERTY, va[0]);
+						familyNode2.putNonEmptyProperty(
+								TreeNode.VENDORID_PROPERTY, va[1]);
+
+						// Add package conditions
+						TreeNode.Selector condition2 = packNode.new Selector(
+								TreeNode.Selector.DEVICEFAMILY_TYPE);
+						condition2.setVendorId(va[1]);
+						condition2.setValue(family);
+						packNode.addCondition(condition2);
+					}
+				}
 
 				// Add outline node
 				processBoard(boardElement, outlineNode);
@@ -2614,15 +2663,34 @@ public class PdscParser {
 					examplesElement, "example");
 			for (Element exampleElement : exampleElements) {
 
+				Element boardElement = Utils.getChildElement(exampleElement,
+						"board");
+				if (boardElement != null) {
+
+					String vendor = boardElement.getAttribute("vendor").trim();
+					String boardName = boardElement.getAttribute("name").trim();
+
+					TreeNode vendorNode = boardsNode.addUniqueChild(
+							TreeNode.VENDOR_TYPE, vendor);
+
+					TreeNode boardNode = vendorNode.addUniqueChild(
+							TreeNode.BOARD_TYPE, boardName);
+					boardNode.putProperty(TreeNode.VENDOR_PROPERTY, vendor);
+
+					// Add package conditions
+					TreeNode.Selector condition = packNode.new Selector(
+							TreeNode.Selector.BOARD_TYPE);
+					condition.setVendor(vendor);
+					condition.setValue(boardName);
+					packNode.addCondition(condition);
+				}
+
 				Element attributesElement = Utils.getChildElement(
 						exampleElement, "attributes");
 				if (attributesElement != null) {
 
 					List<Element> keywordElements = Utils.getChildElementsList(
 							attributesElement, "keyword");
-
-					TreeNode keywordsNode = parent.addUniqueChild(
-							TreeNode.KEYWORDS_SELECT_TYPE, null);
 
 					for (Element keywordElement : keywordElements) {
 

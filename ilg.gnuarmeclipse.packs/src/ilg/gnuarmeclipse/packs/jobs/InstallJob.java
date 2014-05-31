@@ -26,6 +26,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.MessageConsoleStream;
@@ -59,6 +61,8 @@ public class InstallJob extends Job {
 		ms_running = true;
 		m_monitor = monitor;
 
+		long beginTime = System.currentTimeMillis();
+
 		m_out.println("Install packs started.");
 
 		List<TreeNode> packs = new ArrayList<TreeNode>();
@@ -86,6 +90,8 @@ public class InstallJob extends Job {
 		for (int i = 0; i < packs.size(); ++i) {
 			workUnits += computeWorkUnits(packs.get(i));
 		}
+
+		workUnits++;
 
 		// set total number of work units
 		monitor.beginTask("Install packs", workUnits);
@@ -129,6 +135,10 @@ public class InstallJob extends Job {
 						Activator.getPacksView().update(versionNode);
 						Activator.getPacksView().update(packNode);
 
+						ISelection selection = new StructuredSelection(
+								versionNode);
+						Activator.getPacksView().getTreeViewer()
+								.setSelection(selection);
 						Activator.getPacksView().updateButtonsEnableStatus(
 								m_selection);
 
@@ -148,10 +158,22 @@ public class InstallJob extends Job {
 			return Status.CANCEL_STATUS;
 		}
 
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - beginTime;
+		if (duration == 0) {
+			duration = 1;
+		}
+
 		if (installedPacksCount == 1) {
-			m_out.println("1 pack installed.");
+			m_out.print("1 pack");
 		} else {
-			m_out.println(installedPacksCount + " packs installed.");
+			m_out.print(installedPacksCount + " packs");
+		}
+		m_out.println(" installed.");
+		if (duration < 1000) {
+			m_out.println("Completed in " + duration + "ms.");
+		} else {
+			m_out.println("Completed in " + (duration + 500) / 1000 + "s.");
 		}
 		m_out.println();
 
@@ -221,7 +243,7 @@ public class InstallJob extends Job {
 
 		makeFolderReadOnlyRecursive(destRelPath.toFile());
 
-		m_out.println("Files set to read only.");
+		m_out.println("All files set to read only.");
 	}
 
 	private void copyFile(URL sourceUrl, File destinationFile)
@@ -304,6 +326,8 @@ public class InstallJob extends Job {
 
 			zipEntry = zipInput.getNextEntry();
 		}
+
+		m_monitor.worked(1);
 
 		zipInput.closeEntry();
 		zipInput.close();

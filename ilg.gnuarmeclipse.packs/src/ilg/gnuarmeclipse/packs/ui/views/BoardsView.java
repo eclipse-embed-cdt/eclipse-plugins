@@ -54,6 +54,8 @@ public class BoardsView extends ViewPart {
 
 	private TreeViewer m_viewer;
 	private Action m_removeFilters;
+	private Action m_expandAll;
+	private Action m_collapseAll;
 
 	// private PacksFilter m_packsFilter;
 	// private ViewerFilter[] m_packsFilters;
@@ -254,6 +256,9 @@ public class BoardsView extends ViewPart {
 	}
 
 	private void fillLocalPullDown(IMenuManager manager) {
+		manager.add(m_expandAll);
+		manager.add(m_collapseAll);
+		manager.add(new Separator());
 		manager.add(m_removeFilters);
 	}
 
@@ -265,6 +270,9 @@ public class BoardsView extends ViewPart {
 	}
 
 	private void fillLocalToolBar(IToolBarManager manager) {
+		manager.add(m_expandAll);
+		manager.add(m_collapseAll);
+		manager.add(new Separator());
 		manager.add(m_removeFilters);
 	}
 
@@ -282,6 +290,29 @@ public class BoardsView extends ViewPart {
 				.setToolTipText("Remove all filters based on selections");
 		m_removeFilters.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/removeall.png"));
+
+		// -----
+		m_expandAll = new Action() {
+			public void run() {
+				m_viewer.expandAll();
+			}
+		};
+
+		m_expandAll.setText("Expand all");
+		m_expandAll.setToolTipText("Expand all children nodes");
+		m_expandAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+				Activator.PLUGIN_ID, "icons/expandall.png"));
+
+		m_collapseAll = new Action() {
+			public void run() {
+				m_viewer.collapseAll();
+			}
+		};
+
+		m_collapseAll.setText("Collapse all");
+		m_collapseAll.setToolTipText("Collapse all children nodes");
+		m_collapseAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+				Activator.PLUGIN_ID, "icons/collapseall.png"));
 
 	}
 
