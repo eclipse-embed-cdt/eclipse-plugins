@@ -456,15 +456,20 @@ public class OutlineView extends ViewPart {
 				// If the node already has outline, show it
 				m_viewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);
 				m_viewer.setInput(node);
-			} else if (TreeNode.VERSION_TYPE.equals(node.getType())
-					&& node.isInstalled()) {
-				// If the version node is installed, get outline
-				ParsePdscJob job = new ParsePdscJob("Parse Outline",
-						node, m_viewer);
-				job.schedule();
-			} else if (!node.isInstalled()) {
+			} else if (TreeNode.VERSION_TYPE.equals(node.getType())) {
+				if (node.isInstalled()) {
+					// If the version node is installed, get outline
+					ParsePdscJob job = new ParsePdscJob("Parse Outline", node,
+							m_viewer);
+					job.schedule();
+				} else {
+					TreeNode none = new TreeNode(TreeNode.NONE_TYPE);
+					none.setName("(Version not installed, outline not available)");
+					m_viewer.setInput(none);
+				}
+			} else if (TreeNode.VENDOR_TYPE.equals(node.getType())) {
 				TreeNode none = new TreeNode(TreeNode.NONE_TYPE);
-				none.setName("(Version not installed, outline not available)");
+				none.setName("(Outline not available)");
 				m_viewer.setInput(none);
 			} else {
 				// For all other nodes, show nothing

@@ -163,6 +163,14 @@ public class PdscParser {
 
 				packDescription = extendDescription(packDescription, "url", url);
 
+			} else if ("license".equals(elementName)) {
+
+				String license = Utils.getElementContent(childElement);
+				license = updatePosixSeparators(license);
+				packNode.putNonEmptyProperty(TreeNode.LICENSE_PROPERTY, license);
+
+				packDescription = extendDescription(packDescription, "license", license);
+
 			} else if ("releases".equals(elementName)) {
 
 				List<Element> releaseElements = Utils.getChildElementsList(
@@ -1316,15 +1324,17 @@ public class PdscParser {
 
 		String posixDoc = updatePosixSeparators(exampleDoc);
 		String posixFolder = updatePosixSeparators(exampleFolder);
-		exampleNode.putProperty(TreeNode.FOLDER_PROPERTY, posixFolder);
-		exampleNode.putProperty(TreeNode.DOC_PROPERTY, exampleDoc);
+		if (!isBrief()) {
+			exampleNode.putProperty(TreeNode.FOLDER_PROPERTY, posixFolder);
+			exampleNode.putProperty(TreeNode.DOC_PROPERTY, exampleDoc);
 
-		exampleNode
-				.putNonEmptyProperty(TreeNode.VENDOR_PROPERTY, exampleVendor);
-		exampleNode.putNonEmptyProperty(TreeNode.VERSION_PROPERTY,
-				exampleVersion);
-		exampleNode.putNonEmptyProperty(TreeNode.ARCHIVE_PROPERTY,
-				exampleArchive);
+			exampleNode.putNonEmptyProperty(TreeNode.VENDOR_PROPERTY,
+					exampleVendor);
+			exampleNode.putNonEmptyProperty(TreeNode.VERSION_PROPERTY,
+					exampleVersion);
+			exampleNode.putNonEmptyProperty(TreeNode.ARCHIVE_PROPERTY,
+					exampleArchive);
+		}
 
 		String exampleDescription = "Example: " + exampleName;
 
@@ -1694,20 +1704,24 @@ public class PdscParser {
 		TreeNode componentNode = new TreeNode(TreeNode.COMPONENT_TYPE);
 		parent.addChild(componentNode);
 
-		componentNode.putProperty(TreeNode.CLASS_PROPERTY, Cclass);
-		componentNode.putProperty(TreeNode.GROUP_PROPERTY, Cgroup);
-		componentNode.putProperty(TreeNode.VERSION_PROPERTY, Cversion);
+		if (!isBrief()) {
+			componentNode.putProperty(TreeNode.CLASS_PROPERTY, Cclass);
+			componentNode.putProperty(TreeNode.GROUP_PROPERTY, Cgroup);
+			componentNode.putProperty(TreeNode.VERSION_PROPERTY, Cversion);
 
-		componentNode.putNonEmptyProperty(TreeNode.SUBGROUP_PROPERTY, Csub);
-		componentNode.putNonEmptyProperty(TreeNode.VARIANT_PROPERTY, Cvariant);
-		componentNode.putNonEmptyProperty(TreeNode.VENDOR_PROPERTY, Cvendor);
+			componentNode.putNonEmptyProperty(TreeNode.SUBGROUP_PROPERTY, Csub);
+			componentNode.putNonEmptyProperty(TreeNode.VARIANT_PROPERTY,
+					Cvariant);
+			componentNode
+					.putNonEmptyProperty(TreeNode.VENDOR_PROPERTY, Cvendor);
 
-		componentNode.putNonEmptyProperty(TreeNode.CONDITION_PROPERTY,
-				condition);
-		componentNode.putNonEmptyProperty(TreeNode.APIVERSION_PROPERTY,
-				apiVersion);
-		componentNode.putNonEmptyProperty(TreeNode.MAXINSTANCES_PROPERTY,
-				maxInstances);
+			componentNode.putNonEmptyProperty(TreeNode.CONDITION_PROPERTY,
+					condition);
+			componentNode.putNonEmptyProperty(TreeNode.APIVERSION_PROPERTY,
+					apiVersion);
+			componentNode.putNonEmptyProperty(TreeNode.MAXINSTANCES_PROPERTY,
+					maxInstances);
+		}
 
 		String name = "";
 		name = extendName(name, Cvendor);
@@ -1741,65 +1755,79 @@ public class PdscParser {
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
-			if ("description".equals(elementName)) {
 
-				componentDescription = extendDescription(componentDescription,
-						Utils.getElementContent(childElement));
+			if (isBrief()) {
+				if ("description".equals(elementName)) {
 
-			} else if ("RTE_Components_h".equals(elementName)) {
+					componentDescription = extendDescription(
+							componentDescription,
+							Utils.getElementContent(childElement));
 
-				// <!-- content to be added to generated RTE_Component.h file
-				// -->
-				// <xs:element name="RTE_Components_h" type="xs:string"
-				// minOccurs="0"/>
-
-				String rte = Utils.getElementContent(childElement);
-				componentNode.putNonEmptyProperty(TreeNode.RTE_PROPERTY, rte);
-
-			} else if ("deprecated".equals(elementName)) {
-
-				// <!-- a component can be deprecated if it is no longer
-				// maintained-->
-				// <xs:element name="deprecated" type="xs:boolean" minOccurs="0"
-				// default="false"/>
-
-				String deprecated = Utils.getElementContent(childElement);
-				componentNode.putNonEmptyProperty(TreeNode.DEPRECATED_PROPERTY,
-						deprecated);
-
-			} else if ("files".equals(elementName)) {
-
-				// <xs:element name="files">
-				// <xs:complexType>
-				// <xs:sequence>
-				// <xs:element name="file" type="FileType"
-				// maxOccurs="unbounded"/>
-				// </xs:sequence>
-				// </xs:complexType>
-				// </xs:element>
-
-				List<Element> childElements2 = Utils
-						.getChildElementsList(childElement);
-				for (Element childElement2 : childElements2) {
-					String elementName2 = childElement2.getNodeName();
-					if ("file".equals(elementName2)) {
-
-						processFile(childElement2, componentNode);
-
-					} else {
-						System.out.println("Not processed <" + elementName2
-								+ ">");
-					}
 				}
 			} else {
-				System.out.println("Not processed <" + elementName + ">");
+				if ("description".equals(elementName)) {
+
+					componentDescription = extendDescription(
+							componentDescription,
+							Utils.getElementContent(childElement));
+
+				} else if ("RTE_Components_h".equals(elementName)) {
+
+					// <!-- content to be added to generated RTE_Component.h
+					// file
+					// -->
+					// <xs:element name="RTE_Components_h" type="xs:string"
+					// minOccurs="0"/>
+
+					String rte = Utils.getElementContent(childElement);
+					componentNode.putNonEmptyProperty(TreeNode.RTE_PROPERTY,
+							rte);
+
+				} else if ("deprecated".equals(elementName)) {
+
+					// <!-- a component can be deprecated if it is no longer
+					// maintained-->
+					// <xs:element name="deprecated" type="xs:boolean"
+					// minOccurs="0"
+					// default="false"/>
+
+					String deprecated = Utils.getElementContent(childElement);
+					componentNode.putNonEmptyProperty(
+							TreeNode.DEPRECATED_PROPERTY, deprecated);
+
+				} else if ("files".equals(elementName)) {
+
+					// <xs:element name="files">
+					// <xs:complexType>
+					// <xs:sequence>
+					// <xs:element name="file" type="FileType"
+					// maxOccurs="unbounded"/>
+					// </xs:sequence>
+					// </xs:complexType>
+					// </xs:element>
+
+					List<Element> childElements2 = Utils
+							.getChildElementsList(childElement);
+					for (Element childElement2 : childElements2) {
+						String elementName2 = childElement2.getNodeName();
+						if ("file".equals(elementName2)) {
+
+							processFile(childElement2, componentNode);
+
+						} else {
+							System.out.println("Not processed <" + elementName2
+									+ ">");
+						}
+					}
+				} else {
+					System.out.println("Not processed <" + elementName + ">");
+				}
 			}
 		}
 
 		componentDescription = extendDescription(componentDescription,
 				descriptionTail);
 		componentNode.setDescription(componentDescription);
-
 	}
 
 	// <!-- Component file type definition -->
@@ -1936,11 +1964,13 @@ public class PdscParser {
 		TreeNode bundleNode = new TreeNode(TreeNode.BUNDLE_TYPE);
 		parent.addChild(bundleNode);
 
-		bundleNode.putProperty(TreeNode.BUNDLE_PROPERTY, Cbundle);
-		bundleNode.putProperty(TreeNode.CLASS_PROPERTY, Cclass);
-		bundleNode.putProperty(TreeNode.VERSION_PROPERTY, Cversion);
+		if (!isBrief()) {
+			bundleNode.putProperty(TreeNode.BUNDLE_PROPERTY, Cbundle);
+			bundleNode.putProperty(TreeNode.CLASS_PROPERTY, Cclass);
+			bundleNode.putProperty(TreeNode.VERSION_PROPERTY, Cversion);
 
-		bundleNode.putNonEmptyProperty(TreeNode.VENDOR_PROPERTY, Cvendor);
+			bundleNode.putNonEmptyProperty(TreeNode.VENDOR_PROPERTY, Cvendor);
+		}
 
 		String name = "";
 		name = extendName(name, Cclass);
@@ -1961,25 +1991,35 @@ public class PdscParser {
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
-			if ("description".equals(elementName)) {
 
-				bundleDescription = extendDescription(bundleDescription,
-						Utils.getElementContent(childElement));
+			if (isBrief()) {
+				if ("description".equals(elementName)) {
 
-			} else if ("doc".equals(elementName)) {
+					bundleDescription = extendDescription(bundleDescription,
+							Utils.getElementContent(childElement));
 
-				String doc = Utils.getElementContent(childElement);
-				String posixDoc = updatePosixSeparators(doc);
-				descriptionTail = extendDescription(descriptionTail, "doc",
-						posixDoc);
-				bundleNode.putNonEmptyProperty(TreeNode.URL_PROPERTY, doc);
-
-			} else if ("component".equals(elementName)) {
-
-				processComponent(childElement, bundleNode, Cclass);
-
+				}
 			} else {
-				System.out.println("Not processed <" + elementName + ">");
+				if ("description".equals(elementName)) {
+
+					bundleDescription = extendDescription(bundleDescription,
+							Utils.getElementContent(childElement));
+
+				} else if ("doc".equals(elementName)) {
+
+					String doc = Utils.getElementContent(childElement);
+					String posixDoc = updatePosixSeparators(doc);
+					descriptionTail = extendDescription(descriptionTail, "doc",
+							posixDoc);
+					bundleNode.putNonEmptyProperty(TreeNode.URL_PROPERTY, doc);
+
+				} else if ("component".equals(elementName)) {
+
+					processComponent(childElement, bundleNode, Cclass);
+
+				} else {
+					System.out.println("Not processed <" + elementName + ">");
+				}
 			}
 		}
 
@@ -2564,6 +2604,7 @@ public class PdscParser {
 				// Add package conditions
 				TreeNode.Selector condition = packNode.new Selector(
 						TreeNode.Selector.DEVICEFAMILY_TYPE);
+				condition.setVendor(va[0]);
 				condition.setVendorId(va[1]);
 				condition.setValue(family);
 				packNode.addCondition(condition);
@@ -2643,6 +2684,7 @@ public class PdscParser {
 						// Add package conditions
 						TreeNode.Selector condition2 = packNode.new Selector(
 								TreeNode.Selector.DEVICEFAMILY_TYPE);
+						condition2.setVendor(va[0]);
 						condition2.setVendorId(va[1]);
 						condition2.setValue(family);
 						packNode.addCondition(condition2);
@@ -2708,6 +2750,30 @@ public class PdscParser {
 				// Add outline node
 				processExample(exampleElement, outlineNode, false);
 			}
+		}
+
+		// Components
+		Element componentsElement = Utils.getChildElement(packageElement,
+				"components");
+		if (componentsElement != null) {
+
+			List<Element> componentElements = Utils.getChildElementsList(
+					componentsElement, "component");
+			for (Element componentElement : componentElements) {
+
+				// Add outline node
+				processComponent(componentElement, outlineNode, "");
+			}
+
+			List<Element> bundleElements = Utils.getChildElementsList(
+					componentsElement, "bundle");
+			for (Element bundleElement : bundleElements) {
+
+				// Add outline node
+				processBundle(bundleElement, outlineNode);
+
+			}
+
 		}
 
 		// Add all condition keywords, without duplicates

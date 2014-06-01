@@ -632,7 +632,7 @@ public class PacksStorage {
 				.getConditionsByType(TreeNode.Selector.DEVICEFAMILY_TYPE);
 		if (conditionsList.size() > 0) {
 			for (TreeNode.Selector condition : conditionsList) {
-				updateDeviceInstalled(condition.getVendor(),
+				updateDeviceInstalled(condition.getVendorId(),
 						condition.getValue(), isInstalled, deviceNodes);
 			}
 		}
@@ -655,7 +655,10 @@ public class PacksStorage {
 
 		try {
 			TreeNode devicesTree = getCachedSubTree(TreeNode.DEVICES_SUBTREE_TYPE);
+			
+			// Assume the two level hierarchy, vendor/devicefamily
 			for (TreeNode vendorNode : devicesTree.getChildrenArray()) {
+				
 				// Select vendors that match the given vendor id
 				if (vendorId.equals(vendorNode
 						.getProperty(TreeNode.VENDORID_PROPERTY))) {
@@ -679,7 +682,10 @@ public class PacksStorage {
 
 		try {
 			TreeNode boardsTree = getCachedSubTree(TreeNode.BOARDS_SUBTREE_TYPE);
+			
+			// Assume the two level hierarchy, vendor/board
 			for (TreeNode vendorNode : boardsTree.getChildrenArray()) {
+				
 				// Select vendors that match the given vendor name
 				if (vendor.equals(vendorNode.getName())) {
 

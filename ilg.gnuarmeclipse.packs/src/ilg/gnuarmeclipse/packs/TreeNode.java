@@ -79,6 +79,7 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 	public static final String GROUP_PROPERTY = "group";
 	public static final String ID_PROPERTY = "id";
 	public static final String INIT_PROPERTY = "init";
+	public static final String LICENSE_PROPERTY = "license";
 	public static final String LOAD_PROPERTY = "load";
 	public static final String MAXINSTANCES_PROPERTY = "maxinstances";
 	public static final String MPU_PROPERTY = "mpu";
