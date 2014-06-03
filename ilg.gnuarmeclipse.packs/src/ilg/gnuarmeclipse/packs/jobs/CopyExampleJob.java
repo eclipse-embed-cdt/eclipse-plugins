@@ -1,9 +1,6 @@
 package ilg.gnuarmeclipse.packs.jobs;
 
 import ilg.gnuarmeclipse.packs.Activator;
-import ilg.gnuarmeclipse.packs.PacksStorage;
-
-import java.io.IOException;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;

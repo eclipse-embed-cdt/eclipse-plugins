@@ -70,7 +70,8 @@ public class KeywordsView extends ViewPart {
 			if (parent.equals(getViewSite())) {
 				if (m_tree == null) {
 					try {
-						m_tree = PacksStorage.getCachedSubTree("keywords");
+						m_tree = PacksStorage.getInstance().getCachedSubTree(
+								"keywords");
 					} catch (UsingDefaultFileException e) {
 						Activator.log(e.getMessage());
 					} catch (Exception e) {
@@ -285,7 +286,7 @@ public class KeywordsView extends ViewPart {
 		System.out.println("KeywordsView.updated()");
 	}
 
-	public String toString(){
+	public String toString() {
 		return "KeywordsView";
 	}
 }

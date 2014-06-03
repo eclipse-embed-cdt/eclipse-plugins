@@ -86,7 +86,8 @@ public class DevicesView extends ViewPart {
 			if (parent.equals(getViewSite())) {
 				if (m_tree == null) {
 					try {
-						m_tree = PacksStorage.getCachedSubTree("devices");
+						m_tree = PacksStorage.getInstance().getCachedSubTree(
+								"devices");
 					} catch (UsingDefaultFileException e) {
 						Activator.log(e.getMessage());
 					} catch (Exception e) {

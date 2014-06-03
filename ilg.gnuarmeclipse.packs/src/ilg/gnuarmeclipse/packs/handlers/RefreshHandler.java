@@ -2,13 +2,21 @@ package ilg.gnuarmeclipse.packs.handlers;
 
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
-import ilg.gnuarmeclipse.packs.PdscParser;
+import ilg.gnuarmeclipse.packs.Repos;
 import ilg.gnuarmeclipse.packs.TreeNode;
 import ilg.gnuarmeclipse.packs.Utils;
+import ilg.gnuarmeclipse.packs.cmsis.Index;
+import ilg.gnuarmeclipse.packs.cmsis.PdscParser;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
+import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.TimeZone;
 
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
@@ -31,12 +39,18 @@ public class RefreshHandler extends AbstractHandler {
 	private MessageConsoleStream m_out;
 	private boolean m_running;
 
+	private Repos m_repos;
+	private PacksStorage m_storage;
+
 	/**
 	 * The constructor.
 	 */
 	public RefreshHandler() {
 		System.out.println("RefreshHandler()");
 		m_running = false;
+
+		m_repos = Repos.getInstance();
+		m_storage = PacksStorage.getInstance();
 	}
 
 	/**
@@ -68,69 +82,102 @@ public class RefreshHandler extends AbstractHandler {
 		m_running = true;
 		m_out.println("Refresh packs started.");
 
+		int workUnits = 0;
+
 		try {
 
-			int workUnits = 100;
-			int worked = 0;
-			// set total number of work units
-			monitor.beginTask("Refresh packs", workUnits);
+			// keys: { "type", "url" }
+			List<Map<String, Object>> reposList = m_repos.getList();
 
-			// String[] { type, indexUrl }
-			List<String[]> sitesList = PacksStorage.getSites();
-
-			// String[] { url, name, version }
-			List<String[]> pdscList = new ArrayList<String[]>();
-
-			for (String[] site : sitesList) {
+			for (Map<String, Object> repo : reposList) {
 
 				if (monitor.isCanceled()) {
 					break;
 				}
 
-				String type = site[0];
-				String indexUrl = site[1];
-				if (PacksStorage.CMSIS_PACK_TYPE.equals(type)) {
-					// collect all pdsc references
-					readCmsisIndex(indexUrl, pdscList);
+				String type = (String) repo.get("type");
+				String indexUrl = (String) repo.get("url");
+				if (Repos.CMSIS_PACK_TYPE.equals(type)) {
+
+					// String[] { url, name, version }
+					List<String[]> list = new LinkedList<String[]>();
+
+					// collect all pdsc references in this site
+					readCmsisIndex(indexUrl, list);
+					repo.put("list", list);
+					workUnits += list.size();
+
 				} else {
 					m_out.println(type + " not recognised.");
 				}
-				monitor.worked(1);
-				worked++;
 			}
+
+			// Set total number of work units to the number of pdsc files
+			monitor.beginTask("Refresh packs", workUnits);
 
 			TreeNode tree = new TreeNode("root");
-
-			int workedFrom = worked;
-			if (worked > workUnits) {
-				workedFrom = workUnits;
-			}
 
 			PdscParser parser = new PdscParser();
 			parser.setIsBrief(true);
 
-			int i = 0;
-			for (String[] pdsc : pdscList) {
+			for (Map<String, Object> repo : reposList) {
+				if (!repo.containsKey("list"))
+					continue;
 
-				if (monitor.isCanceled()) {
+				// String[] { url, name, version }
+				@SuppressWarnings("unchecked")
+				List<String[]> list = (List<String[]>) repo.get("list");
+				if (list.isEmpty())
 					break;
+
+				String repoUrl = (String) repo.get("url");
+				TreeNode contentRoot = new TreeNode(TreeNode.REPOSITORY_TYPE);
+
+				String domainName = m_repos.getDomaninNameFromUrl(repoUrl);
+				domainName = Utils.capitalize(domainName);
+
+				contentRoot.setName(domainName);
+				contentRoot.setDescription(domainName
+						+ " CMSIS packs repository");
+
+				contentRoot.putProperty(TreeNode.PROPERTY.TYPE, "cmsis.repo");
+				contentRoot.putProperty(TreeNode.PROPERTY.REPO_URL, repoUrl);
+				contentRoot.putProperty(TreeNode.PROPERTY.GENERATOR,
+						"GNU ARM Eclipse Plug-ins");
+
+				DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+				dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
+				Calendar cal = Calendar.getInstance();
+				contentRoot.putProperty(TreeNode.PROPERTY.DATE,
+						dateFormat.format(cal.getTime()));
+
+				for (String[] pdsc : list) {
+
+					if (monitor.isCanceled()) {
+						break;
+					}
+
+					// Make url always end in '/'
+					String pdscUrl = Utils.cosmetiseUrl(pdsc[0]);
+					String pdscName = pdsc[1];
+					String pdscVersion = pdsc[2];
+
+					monitor.subTask(pdscName);
+
+					parser.parseXml(new URL(pdscUrl + pdscName));
+					parser.parsePdscBrief(pdscName, pdscVersion, tree);
+
+					parser.parsePdscContent(pdscName, pdscVersion, contentRoot);
+
+					// One more unit completed
+					monitor.worked(1);
 				}
 
-				// Make url always end in '/'
-				String url = Utils.cosmetiseUrl(pdsc[0]);
-				String name = pdsc[1];
-				String version = pdsc[2];
+				String fileName = PacksStorage.CACHE_FOLDER + "/"
+						+ m_repos.getFileNameFromUrl(repoUrl) + "content.xml";
 
-				monitor.subTask(name);
-				parser.parsePdscBrief(url, name, version, tree);
-
-				++i;
-				int newWorked = workedFrom + (workUnits - workedFrom) * i
-						/ (pdscList.size() - 1);
-				if (newWorked > worked) {
-					monitor.worked(newWorked - worked);
-					worked = newWorked;
-				}
+				m_storage.putContent(contentRoot, fileName);
+				m_out.println("content.xml written.");
 			}
 
 			if (monitor.isCanceled()) {
@@ -140,10 +187,10 @@ public class RefreshHandler extends AbstractHandler {
 			}
 
 			// Write the tree to the cache.xml file in the packages folder
-			PacksStorage.putCache(tree);
+			m_storage.putCache(tree);
 			m_out.println("Tree written.");
 
-			PacksStorage.updateInstalled();
+			m_storage.updateInstalled();
 			m_out.println("Mark installed packs.");
 
 		} catch (FileNotFoundException e) {
@@ -175,12 +222,12 @@ public class RefreshHandler extends AbstractHandler {
 
 		try {
 
-			int count = PacksStorage.readCmsisIndex(indexUrl, pdscList);
-			
+			int count = Index.readIndex(indexUrl, pdscList);
+
 			m_out.println("Contributed " + count + " pack(s).");
 
 			return;
-			
+
 		} catch (FileNotFoundException e) {
 			m_out.println("Failed: " + e.toString());
 		} catch (Exception e) {

@@ -11,19 +11,12 @@
 
 package ilg.gnuarmeclipse.packs;
 
-import ilg.gnuarmeclipse.packs.ui.preferences.FolderConstants;
-
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.io.StringReader;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -34,11 +27,8 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -48,90 +38,30 @@ public class PacksStorage {
 	public static final String CACHE_FILE_NAME = ".cache.xml";
 	public static final String CACHE_XML_VERSION = "1.1";
 
-	public static final String CMSIS_PACK_TYPE = "CMSIS Pack";
+	public static final String DOWNLOAD_FOLDER = ".download";
+	public static final String CACHE_FOLDER = ".cache";
 
-	public static final String DOWNLOAD_FOLDER = ".Download";
+	// ------------------------------------------------------------------------
+
+	private static PacksStorage ms_packsStorage;
+
+	public static PacksStorage getInstance() {
+		if (ms_packsStorage == null) {
+			ms_packsStorage = new PacksStorage();
+		}
+
+		return ms_packsStorage;
+	}
+
+	// ------------------------------------------------------------------------
+
+	private Repos m_repos;
+
+	public PacksStorage() {
+		m_repos = Repos.getInstance();
+	}
 
 	public static TreeNode ms_tree = null;
-	public static IPath ms_folderPath = null;
-
-	public static List<String[]> getDefaultSites() {
-
-		List<String[]> sitesList;
-		sitesList = new ArrayList<String[]>();
-
-		sitesList.add(new String[] { CMSIS_PACK_TYPE,
-				"http://www.keil.com/pack/index.idx" });
-		sitesList.add(new String[] { CMSIS_PACK_TYPE,
-				"http://gnuarmeclipse.sourceforge.net/packages/index.xml" });
-
-		return sitesList;
-	}
-
-	// Return a list of urls where packages are stored
-	public static List<String[]> getSites() {
-
-		List<String[]> sites;
-		boolean useDefaults = false;
-		try {
-			sites = parseSites();
-			return sites;
-		} catch (UsingDefaultFileException e) {
-			Activator.log(e.getMessage());
-			useDefaults = true;
-		} catch (Exception e) {
-			Activator.log(e);
-		}
-		List<String[]> list = getDefaultSites();
-		if (useDefaults) {
-			try {
-				putSites(list);
-			} catch (IOException e) {
-				;
-			}
-		}
-		return list;
-	}
-
-	public static IPath getFolderPath() throws IOException {
-
-		if (ms_folderPath == null) {
-
-			ms_folderPath = new Path(getFolderPathString());
-		}
-
-		return ms_folderPath;
-	}
-
-	public static void updateFolderPath() {
-
-		ms_folderPath = null;
-
-		try {
-			getFolderPath();
-		} catch (IOException e) {
-			;
-		}
-	}
-
-	// Return the absolute full path of the folder used to store packages
-	private static String getFolderPathString() throws IOException {
-
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		String sitesFolderPath = store.getString(FolderConstants.P_FOLDER_PATH)
-				.trim();
-
-		// Remove the terminating separator
-		if (sitesFolderPath.endsWith(String.valueOf(IPath.SEPARATOR))) {
-			sitesFolderPath = sitesFolderPath.substring(0,
-					sitesFolderPath.length() - 1);
-		}
-
-		if ((sitesFolderPath == null) || (sitesFolderPath.length() == 0)) {
-			throw new IOException("Missing folder path.");
-		}
-		return sitesFolderPath;
-	}
 
 	// Parse the Keil index. It is available from
 	// curl "http://www.keil.com/pack/index.idx"
@@ -148,149 +78,9 @@ public class PacksStorage {
 	// Append string arrays to the given list
 	// new String[] { url, name, version }
 
-	public static int readCmsisIndex(String indexUrl, List<String[]> pdscList)
-			throws ParserConfigurationException, SAXException, IOException {
+	public void putCache(TreeNode tree) throws IOException {
 
-		URL u = new URL(indexUrl);
-
-		// Read from url to local buffer
-		BufferedReader in = new BufferedReader(new InputStreamReader(
-				u.openStream()));
-		String line = null;
-
-		// Insert missing root element
-		StringBuilder buffer = new StringBuilder();
-		buffer.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n");
-		buffer.append("<root>\n");
-
-		while ((line = in.readLine()) != null) {
-			if (line.startsWith("<pdsc")) {
-				buffer.append(line);
-			}
-		}
-		buffer.append("</root>\n");
-
-		// Parse from local buffer
-		InputSource inputSource = new InputSource(new StringReader(
-				buffer.toString()));
-
-		DocumentBuilder parser = DocumentBuilderFactory.newInstance()
-				.newDocumentBuilder();
-		Document document = parser.parse(inputSource);
-
-		Element el = document.getDocumentElement();
-		if (!"root".equals(el.getNodeName())) {
-			return 0;
-		}
-
-		int count = 0;
-		List<Element> pdscElements = Utils.getChildElementsList(el, "pdsc");
-		for (Element pdscElement : pdscElements) {
-
-			String url = pdscElement.getAttribute("url").trim();
-			String name = pdscElement.getAttribute("name").trim();
-			String version = pdscElement.getAttribute("version").trim();
-
-			pdscList.add(new String[] { url, name, version });
-			++count;
-		}
-
-		return count;
-
-	}
-
-	// Cannot return null
-	private static File getFileObject(String name) throws IOException {
-
-		IPath path = getFolderPath().append(name);
-		File file = path.toFile();
-		if (file == null) {
-			throw new IOException(name + " File object null.");
-		}
-		return file;
-	}
-
-	private static List<String[]> parseSites() throws IOException,
-			ParserConfigurationException, SAXException {
-
-		File file = getFileObject(SITES_FILE_NAME);
-		if (!file.exists()) {
-			throw new UsingDefaultFileException("File " + SITES_FILE_NAME
-					+ " does not exist, using defaults.");
-		}
-
-		InputSource inputSource = new InputSource(new FileInputStream(file));
-
-		DocumentBuilder parser = DocumentBuilderFactory.newInstance()
-				.newDocumentBuilder();
-		Document document = parser.parse(inputSource);
-
-		Element el = document.getDocumentElement();
-		if (!"sites".equals(el.getNodeName())) {
-			throw new IOException("Missing <sites>.");
-		}
-
-		List<String[]> sitesList;
-		sitesList = new ArrayList<String[]>();
-
-		NodeList siteList = el.getElementsByTagName("site");
-		for (int i = 0; i < siteList.getLength(); ++i) {
-			Node siteNode = siteList.item(i);
-
-			String type = "(unknown)";
-			String url = "(unknown)";
-
-			NodeList siteNodeChildren = siteNode.getChildNodes();
-			for (int j = 0; j < siteNodeChildren.getLength(); ++j) {
-				Node child = siteNodeChildren.item(j);
-				short nodeType = child.getNodeType();
-				if (nodeType != Node.ELEMENT_NODE) {
-					continue;
-				}
-				String childName = child.getNodeName();
-				if ("type".equals(childName)) {
-					type = child.getTextContent().trim();
-				} else if ("url".equals(childName)) {
-					url = child.getTextContent().trim();
-				}
-			}
-
-			sitesList.add(new String[] { type, url });
-		}
-		// System.out.println(SITES_FILE_NAME+" parsed");
-		return sitesList;
-	}
-
-	public static void putSites(List<String[]> sitesList) throws IOException {
-
-		File file = getFileObject(SITES_FILE_NAME);
-
-		// The xml structure is simple, write it as strings
-		if (!file.exists())
-			file.createNewFile();
-		if (file.exists()) {
-			PrintWriter writer = new PrintWriter(new BufferedWriter(
-					new FileWriter(file)));
-			writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>"); //$NON-NLS-1$
-			writer.println("<sites>"); // $NON-NLS-1$
-
-			for (String[] site : sitesList) {
-				writer.println("\t<site>"); // $NON-NLS-1$
-				// Warning: the strings should not contain xml special chars
-				writer.println("\t\t<type>" + site[0] + "</type>"); // $NON-NLS-1$
-				writer.println("\t\t<url>" + site[1] + "</url>"); // $NON-NLS-1$
-				writer.println("\t</site>"); // $NON-NLS-1$
-			}
-			writer.println("</sites>");
-			writer.close();
-
-			// System.out.println(SITES_FILE_NAME+" saved");
-		}
-	}
-
-	public static void putCache(TreeNode tree) throws IOException {
-
-		File file = getFileObject(CACHE_FILE_NAME);
+		File file = m_repos.getFileObject(CACHE_FILE_NAME);
 
 		// The xml structure is simple, write it as strings
 		if (!file.exists())
@@ -312,43 +102,215 @@ public class PacksStorage {
 		ms_tree = tree;
 	}
 
-	private static void putCacheNodeRecursive(TreeNode node, int depth,
+	public void putContent(TreeNode tree, String fileName) throws IOException {
+
+		File file = m_repos.getFileObject(fileName);
+
+		file.getParentFile().mkdir();
+
+		// The xml structure is simple, write it as strings
+		if (!file.exists())
+			file.createNewFile();
+		if (file.exists()) {
+			PrintWriter writer = new PrintWriter(new BufferedWriter(
+					new FileWriter(file)));
+			writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
+			writer.println();
+			writer.println("<root version=\"" + CACHE_XML_VERSION + "\">");
+
+			putContentNodeRecursive(tree, 0, writer);
+
+			writer.println("</root>");
+			writer.close();
+
+			// System.out.println(SITES_FILE_NAME+" saved");
+		}
+	}
+
+	private void putContentNodeRecursive(TreeNode node, int depth,
 			PrintWriter writer) {
 
-		putIndentation(depth * 2, writer);
+		putIndentation(depth, writer);
+
+		String nodeType = node.getType();
+
+		String nodeElementName = "";
+		String nodesElementName = "";
+		boolean doOutputNodes = true;
+		boolean doOutputName = true;
+		boolean doOutputProperties = true;
+		boolean hasNoChildrenElements = false;
+		if (TreeNode.REPOSITORY_TYPE.equals(nodeType)) {
+			nodeElementName = "repository";
+			nodesElementName = "packages";
+		} else if (TreeNode.PACKAGE_TYPE.equals(nodeType)) {
+			nodeElementName = "packages";
+			nodesElementName = "versions";
+		} else if (TreeNode.VERSION_TYPE.equals(nodeType)) {
+			nodeElementName = "version";
+			doOutputNodes = false;
+		} else if (TreeNode.OUTLINE_TYPE.equals(nodeType)) {
+			nodeElementName = "outline";
+			doOutputNodes = false;
+			doOutputName = false;
+		} else if (TreeNode.EXTERNAL_TYPE.equals(nodeType)) {
+			nodeElementName = "external";
+			doOutputNodes = false;
+			doOutputName = false;
+		} else if (TreeNode.FAMILY_TYPE.equals(nodeType)) {
+			nodeElementName = "devicefamily";
+			doOutputNodes = false;
+			doOutputProperties = false;
+		} else if (TreeNode.BOARD_TYPE.equals(nodeType)) {
+			nodeElementName = "board";
+			doOutputNodes = false;
+			doOutputProperties = false;
+		} else if (TreeNode.KEYWORD_TYPE.equals(nodeType)) {
+			nodeElementName = "keyword";
+			doOutputNodes = false;
+			doOutputProperties = false;
+			hasNoChildrenElements = true;
+		} else if (TreeNode.COMPONENT_TYPE.equals(nodeType)) {
+			nodeElementName = "component";
+			doOutputNodes = false;
+			doOutputProperties = false;
+		} else if (TreeNode.BUNDLE_TYPE.equals(nodeType)) {
+			nodeElementName = "bundle";
+			doOutputNodes = false;
+			doOutputProperties = false;
+		} else if (TreeNode.EXAMPLE_TYPE.equals(nodeType)) {
+			nodeElementName = "example";
+			doOutputNodes = false;
+			doOutputProperties = false;
+		}
+
+		if (nodeElementName.length() > 0) {
+			writer.print("<" + nodeElementName);
+		} else {
+			writer.print("<node type=\"" + nodeType);
+		}
+		if (doOutputName) {
+			writer.print(" name=\"" + node.getName() + "\"");
+		}
+		if (hasNoChildrenElements) {
+			writer.println(" />");
+		} else {
+			writer.println(">");
+
+			String description = node.getDescription();
+			if (description != null && description.length() > 0) {
+				putIndentation(depth + 1, writer);
+				writer.println("<description>"
+						+ Utils.xmlEscape(node.getDescription())
+						+ "</description>");
+			}
+
+			if (node.hasProperties()) {
+
+				if (doOutputProperties) {
+					putIndentation(depth + 1, writer);
+					writer.println("<properties>");
+				}
+
+				int newDepth;
+				if (doOutputProperties) {
+					newDepth = depth + 2;
+				} else {
+					newDepth = depth + 1;
+				}
+
+				Map<String, String> properties = node.getProperties();
+				for (Object key : properties.keySet()) {
+					putIndentation(newDepth, writer);
+					writer.println("<property name=\"" + key.toString()
+							+ "\" value=\"" + properties.get(key).toString()
+							+ "\" />");
+				}
+
+				if (doOutputProperties) {
+					putIndentation(depth + 1, writer);
+					writer.println("</properties>");
+				}
+			}
+
+			List<TreeNode> children = node.getChildren();
+			if (children != null && !children.isEmpty()) {
+				if (doOutputNodes) {
+					putIndentation(depth + 1, writer);
+					if (nodesElementName.length() > 0) {
+						writer.println("<" + nodesElementName + ">");
+					} else {
+						writer.println("<nodes>");
+					}
+				}
+
+				int newDepth;
+				if (doOutputNodes) {
+					newDepth = depth + 2;
+				} else {
+					newDepth = depth + 1;
+				}
+
+				for (TreeNode child : children) {
+					putContentNodeRecursive(child, newDepth, writer);
+				}
+
+				if (doOutputNodes) {
+					putIndentation(depth + 1, writer);
+					if (nodesElementName.length() > 0) {
+						writer.println("</" + nodesElementName + ">");
+					} else {
+						writer.println("</nodes>");
+					}
+				}
+			}
+
+			putIndentation(depth, writer);
+			if (nodeElementName.length() > 0) {
+				writer.println("</" + nodeElementName + ">");
+			} else {
+				writer.println("</node>");
+			}
+		}
+	}
+
+	private void putCacheNodeRecursive(TreeNode node, int depth,
+			PrintWriter writer) {
+
+		putIndentation(depth, writer);
 		writer.println("<node type=\"" + node.getType() + "\" name=\""
 				+ node.getName() + "\">");
 
 		String description = node.getDescription();
 		if (description != null && description.length() > 0) {
-			putIndentation(depth * 2 + 1, writer);
+			putIndentation(depth + 1, writer);
 			writer.println("<description>"
 					+ Utils.xmlEscape(node.getDescription()) + "</description>");
 		}
 
 		if (node.hasProperties()) {
-			putIndentation(depth * 2 + 1, writer);
+			putIndentation(depth + 1, writer);
 			writer.println("<properties>");
 
 			Map<String, String> properties = node.getProperties();
 			for (Object key : properties.keySet()) {
-				putIndentation(depth * 2 + 2, writer);
+				putIndentation(depth + 2, writer);
 				writer.println("<property name=\"" + key.toString()
 						+ "\" value=\"" + properties.get(key).toString()
 						+ "\" />");
 			}
 
-			putIndentation(depth * 2 + 1, writer);
+			putIndentation(depth + 1, writer);
 			writer.println("</properties>");
 		}
 
 		if (node.hasConditions()) {
-			putIndentation(depth * 2 + 1, writer);
+			putIndentation(depth + 1, writer);
 			writer.println("<conditions>");
 
 			List<TreeNode.Selector> conditions = node.getConditions();
 			for (TreeNode.Selector condition : conditions) {
-				putIndentation(depth * 2 + 2, writer);
+				putIndentation(depth + 2, writer);
 				writer.print("<condition type=\"" + condition.getType() + "\"");
 				writer.print(" value=\"" + condition.getValue() + "\"");
 				if (condition.hasVendor()) {
@@ -361,46 +323,46 @@ public class PacksStorage {
 				writer.println(" />");
 			}
 
-			putIndentation(depth * 2 + 1, writer);
+			putIndentation(depth + 1, writer);
 			writer.println("</conditions>");
 		}
 		if (node.hasOutline()) {
-			putIndentation(depth * 2 + 1, writer);
+			putIndentation(depth + 1, writer);
 			writer.println("<outline>");
 
 			TreeNode outlineNode = node.getOutline();
 			for (TreeNode outlineChild : outlineNode.getChildrenArray()) {
-				putCacheNodeRecursive(outlineChild, depth + 1, writer);
+				putCacheNodeRecursive(outlineChild, depth + 2, writer);
 			}
 
-			putIndentation(depth * 2 + 1, writer);
+			putIndentation(depth + 1, writer);
 			writer.println("</outline>");
 		}
 
 		List<TreeNode> children = node.getChildren();
 		if (children != null && !children.isEmpty()) {
-			putIndentation(depth * 2 + 1, writer);
+			putIndentation(depth + 1, writer);
 			writer.println("<nodes>");
 
 			for (TreeNode child : children) {
-				putCacheNodeRecursive(child, depth + 1, writer);
+				putCacheNodeRecursive(child, depth + 2, writer);
 			}
 
-			putIndentation(depth * 2 + 1, writer);
+			putIndentation(depth + 1, writer);
 			writer.println("</nodes>");
 		}
-		putIndentation(depth * 2, writer);
+		putIndentation(depth, writer);
 		writer.println("</node>");
 	}
 
-	private static void putIndentation(int depth, PrintWriter writer) {
+	private void putIndentation(int depth, PrintWriter writer) {
 		depth++;
 		for (int i = 0; i < depth; ++i) {
 			writer.print("  ");
 		}
 	}
 
-	public static TreeNode getCachedSubTree(String type) throws IOException,
+	public TreeNode getCachedSubTree(String type) throws IOException,
 			ParserConfigurationException, SAXException {
 
 		TreeNode rootNode = getCachedTree();
@@ -413,12 +375,12 @@ public class PacksStorage {
 		throw new IOException("No such node type " + type + ".");
 	}
 
-	public static TreeNode getCachedTree() throws IOException,
+	public TreeNode getCachedTree() throws IOException,
 			ParserConfigurationException, SAXException {
 		return getCachedTree(false);
 	}
 
-	public static TreeNode getCachedTree(boolean doReload) throws IOException,
+	public TreeNode getCachedTree(boolean doReload) throws IOException,
 			ParserConfigurationException, SAXException {
 
 		if (doReload) {
@@ -431,7 +393,7 @@ public class PacksStorage {
 
 		System.out.println("Parse cache file");
 
-		File file = getFileObject(CACHE_FILE_NAME);
+		File file = m_repos.getFileObject(CACHE_FILE_NAME);
 		if (!file.exists())
 			throw new UsingDefaultFileException("File " + CACHE_FILE_NAME
 					+ " does not exist, using defaults.");
@@ -463,7 +425,7 @@ public class PacksStorage {
 		return ms_tree;
 	}
 
-	public static void updateInstalled() throws IOException,
+	public void updateInstalled() throws IOException,
 			ParserConfigurationException, SAXException {
 		// List<TreeNode> deviceNodes = new LinkedList<TreeNode>();
 		// List<TreeNode> boardNodes = new LinkedList<TreeNode>();
@@ -472,12 +434,12 @@ public class PacksStorage {
 		// deviceNodes, boardNodes });
 
 		// Update installed nodes
-		IPath path = new Path(getFolderPathString());
+		IPath path = new Path(m_repos.getFolderPathString());
 		updateInstalledNodesRecursive(
 				getCachedSubTree(TreeNode.PACKAGES_SUBTREE_TYPE), path, true);
 	}
 
-	private static TreeNode getCacheRecursive(Element nodeElement) {
+	private TreeNode getCacheRecursive(Element nodeElement) {
 
 		String type = nodeElement.getAttribute("type");
 		TreeNode treeNode = new TreeNode(type);
@@ -569,7 +531,7 @@ public class PacksStorage {
 		return treeNode;
 	}
 
-	public static void updateInstalledNodesRecursive(TreeNode node, IPath path,
+	public void updateInstalledNodesRecursive(TreeNode node, IPath path,
 			boolean isInstalled) {
 
 		if (node.hasChildren()) {
@@ -594,7 +556,7 @@ public class PacksStorage {
 		}
 	}
 
-	public static void updateInstalledVersionNode(TreeNode versionNode,
+	public void updateInstalledVersionNode(TreeNode versionNode,
 			boolean isInstalled, List<TreeNode>[] lists) {
 
 		List<TreeNode> deviceNodes;
@@ -650,15 +612,15 @@ public class PacksStorage {
 		versionNode.setOutline(null);
 	}
 
-	private static void updateDeviceInstalled(String vendorId,
-			String familyName, boolean isInstalled, List<TreeNode> deviceNodes) {
+	private void updateDeviceInstalled(String vendorId, String familyName,
+			boolean isInstalled, List<TreeNode> deviceNodes) {
 
 		try {
 			TreeNode devicesTree = getCachedSubTree(TreeNode.DEVICES_SUBTREE_TYPE);
-			
+
 			// Assume the two level hierarchy, vendor/devicefamily
 			for (TreeNode vendorNode : devicesTree.getChildrenArray()) {
-				
+
 				// Select vendors that match the given vendor id
 				if (vendorId.equals(vendorNode
 						.getProperty(TreeNode.VENDORID_PROPERTY))) {
@@ -677,15 +639,15 @@ public class PacksStorage {
 		}
 	}
 
-	private static void updateBoardInstalled(String vendor, String boardName,
+	private void updateBoardInstalled(String vendor, String boardName,
 			boolean isInstalled, List<TreeNode> boardNodes) {
 
 		try {
 			TreeNode boardsTree = getCachedSubTree(TreeNode.BOARDS_SUBTREE_TYPE);
-			
+
 			// Assume the two level hierarchy, vendor/board
 			for (TreeNode vendorNode : boardsTree.getChildrenArray()) {
-				
+
 				// Select vendors that match the given vendor name
 				if (vendor.equals(vendorNode.getName())) {
 
@@ -703,7 +665,7 @@ public class PacksStorage {
 		}
 	}
 
-	public static List<TreeNode> getInstalledVersions() {
+	public List<TreeNode> getInstalledVersions() {
 
 		List<TreeNode> list = new LinkedList<TreeNode>();
 		try {
@@ -715,8 +677,7 @@ public class PacksStorage {
 		return list;
 	}
 
-	public static void getInstalledVersionsRecursive(TreeNode node,
-			List<TreeNode> list) {
+	public void getInstalledVersionsRecursive(TreeNode node, List<TreeNode> list) {
 
 		if (node.hasChildren()) {
 			for (TreeNode child : node.getChildren()) {
@@ -731,20 +692,4 @@ public class PacksStorage {
 		}
 	}
 
-	// public static IPath getPathForVersionPdsc(TreeNode versionNode)
-	// throws IOException {
-	//
-	// TreeNode packNode = versionNode.getParent();
-	//
-	// String pdscName = packNode.getProperty(TreeNode.PDSCNAME_PROPERTY, "");
-	// // m_out.println("Parse \"" + pdscName + "\" started.");
-	//
-	// String destFolder = versionNode.getProperty(TreeNode.FOLDER_PROPERTY,
-	// "");
-	//
-	// IPath path = PacksStorage.getFolderPath().append(destFolder)
-	// .append(pdscName);
-	//
-	// return path;
-	// }
 }

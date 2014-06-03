@@ -1,6 +1,10 @@
-package ilg.gnuarmeclipse.packs;
+package ilg.gnuarmeclipse.packs.cmsis;
 
+import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.TreeNode;
+import ilg.gnuarmeclipse.packs.Utils;
+import ilg.gnuarmeclipse.packs.TreeNode.PROPERTY;
+import ilg.gnuarmeclipse.packs.TreeNode.Selector;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -29,6 +33,7 @@ public class PdscParser {
 	private boolean m_isBrief;
 
 	private IPath m_path;
+	private URL m_url;
 	private Document m_document;
 
 	public PdscParser() {
@@ -169,7 +174,8 @@ public class PdscParser {
 				license = updatePosixSeparators(license);
 				packNode.putNonEmptyProperty(TreeNode.LICENSE_PROPERTY, license);
 
-				packDescription = extendDescription(packDescription, "license", license);
+				packDescription = extendDescription(packDescription, "license",
+						license);
 
 			} else if ("releases".equals(elementName)) {
 
@@ -2292,27 +2298,44 @@ public class PdscParser {
 
 	// ------------------------------------------------------------------------
 
-	public void parsePdscBrief(String url, String pdscNname, String version,
-			TreeNode parent) throws IOException, ParserConfigurationException,
-			SAXException {
+	public Document parseXml(URL url) throws IOException,
+			ParserConfigurationException, SAXException {
 
-		// URL always end in '/'
-		String fullUrl = url + pdscNname;
+		long beginTime = System.currentTimeMillis();
 
-		m_out.println("Parsing \"" + fullUrl + "\" v" + version + "...");
+		m_out.println("Fetching & parsing \"" + m_url + " ...");
 
-		URL u = new URL(fullUrl);
+		m_url = url;
 		InputSource inputSource = new InputSource(new InputStreamReader(
-				u.openStream()));
+				url.openStream()));
 
-		DocumentBuilder parser = DocumentBuilderFactory.newInstance()
+		DocumentBuilder xml = DocumentBuilderFactory.newInstance()
 				.newDocumentBuilder();
-		Document document = parser.parse(inputSource);
+		m_document = xml.parse(inputSource);
 
-		Element packageElement = document.getDocumentElement();
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - beginTime;
+		if (duration == 0) {
+			duration = 1;
+		}
+
+		m_out.println("Completed in " + duration + "ms.");
+
+		return m_document;
+	}
+
+	public void parsePdscBrief(String pdscNname, String version, TreeNode parent)
+			throws IOException, ParserConfigurationException, SAXException {
+
+		long beginTime = System.currentTimeMillis();
+
+		m_out.println("Processing \"" + m_url + "\" v" + version
+				+ " for outline brief ...");
+
+		Element packageElement = m_document.getDocumentElement();
 		String firstElementName = packageElement.getNodeName();
 		if (!"package".equals(firstElementName)) {
-			System.out.println("Missing <packages>, <" + firstElementName
+			System.out.println("Missing <package>, <" + firstElementName
 					+ "> encountered");
 			return;
 		}
@@ -2355,7 +2378,7 @@ public class PdscParser {
 
 		Set<String> conditionKeywords = new HashSet<String>();
 
-		// Packages
+		// Package
 		TreeNode packNode;
 		{
 			Element vendorElement = Utils.getChildElement(packageElement,
@@ -2413,7 +2436,9 @@ public class PdscParser {
 
 			packNode.setName(packName);
 
-			shortUrl = urlRef.length() == 0 ? url : urlRef;
+			String fullUrl = m_url.toString();
+
+			shortUrl = urlRef;
 			if (shortUrl.endsWith("/")) {
 				shortUrl = shortUrl.substring(0, shortUrl.length() - 1);
 			}
@@ -2783,6 +2808,14 @@ public class PdscParser {
 			condition.setValue(keyword);
 			packNode.addCondition(condition);
 		}
+
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - beginTime;
+		if (duration == 0) {
+			duration = 1;
+		}
+
+		m_out.println("Completed in " + duration + "ms.");
 	}
 
 	public void parseExamples(TreeNode parent) {
@@ -2824,6 +2857,446 @@ public class PdscParser {
 
 			}
 		}
+	}
 
+	public void parsePdscContent(String pdscNname, String version,
+			TreeNode parent) {
+
+		long beginTime = System.currentTimeMillis();
+
+		m_out.println("Processing \"" + m_url + "\" v" + version
+				+ " for content.xml ...");
+
+		Element packageElement = m_document.getDocumentElement();
+		String firstElementName = packageElement.getNodeName();
+		if (!"package".equals(firstElementName)) {
+			System.out.println("Missing <package>, <" + firstElementName
+					+ "> encountered");
+			return;
+		}
+
+		String schemaVersion = packageElement.getAttribute("schemaVersion")
+				.trim();
+
+		m_out.print("Schema version \"" + schemaVersion + "\"");
+		if ("1.0".equals(schemaVersion)) {
+			;
+		} else if ("1.1".equals(schemaVersion)) {
+			;
+		} else if ("1.2".equals(schemaVersion)) {
+			;
+		} else {
+			m_out.println(" not recognised.");
+			return;
+		}
+		m_out.println(".");
+
+		String urlRef = "";
+		// Kludge: use URL to detect empty package
+		// TODO: use a better condition
+		Element urlElement = Utils.getChildElement(packageElement, "url");
+		urlRef = Utils.getElementContent(urlElement);
+		if (urlRef.length() == 0) {
+
+			// Deprecate
+			return;
+		}
+
+		TreeNode packNode;
+		Element nameElement = Utils.getChildElement(packageElement, "name");
+		if (nameElement == null) {
+			m_out.println("Missing <name>.");
+			return;
+		}
+		String packName = Utils.getElementContent(nameElement);
+
+		packNode = parent.addUniqueChild(TreeNode.PACKAGE_TYPE, packName);
+
+		Element packDescriptionElement = Utils.getChildElement(packageElement,
+				"description");
+		if (packDescriptionElement == null) {
+			m_out.println("Missing <description>.");
+			return;
+		}
+		String packDescription = Utils
+				.getElementMultiLineContent(packDescriptionElement);
+
+		// TODO: do it only when the version is right
+		packNode.setDescription(packDescription);
+
+		Element vendorElement = Utils.getChildElement(packageElement, "vendor");
+		if (vendorElement == null) {
+			m_out.println("Missing <vendor>.");
+			return;
+		}
+		String packVendorName = Utils.getElementContent(vendorElement);
+
+		Element releasesElement = Utils.getChildElement(packageElement,
+				"releases");
+		if (releasesElement == null) {
+			m_out.println("Missing <releases>.");
+			return;
+		}
+
+		String shortUrl = urlRef;
+		if (shortUrl.endsWith("/")) {
+			shortUrl = shortUrl.substring(0, shortUrl.length() - 1);
+		}
+
+		TreeNode versionNode = null;
+
+		List<Element> releaseElements = Utils.getChildElementsList(
+				releasesElement, "release");
+		for (Element releaseElement : releaseElements) {
+
+			String releaseName = releaseElement.getAttribute("version").trim();
+
+			String releaseDate = releaseElement.getAttribute("date").trim();
+			String description = Utils
+					.getElementMultiLineContent(releaseElement);
+
+			TreeNode verNode = packNode.addUniqueChild(TreeNode.VERSION_TYPE,
+					releaseName);
+
+			if (!version.equals(releaseName)) {
+
+				verNode.setDescription(description);
+				break;
+			}
+
+			versionNode = verNode;
+
+			verNode.putProperty(TreeNode.PROPERTY.TYPE, "cmsis.pack");
+
+			verNode.putProperty(TreeNode.PROPERTY.VENDOR_NAME, packVendorName);
+
+			String archiveName = packVendorName + "." + packName + "."
+					+ releaseName + ".pack";
+			String archiveUrl = shortUrl + "/" + archiveName;
+			verNode.putProperty(TreeNode.PROPERTY.ARCHIVE_URL, archiveUrl);
+			verNode.putProperty(TreeNode.PROPERTY.ARCHIVE_NAME, archiveName);
+
+			// Default as for unavailable packages
+			String size = "0";
+			try {
+				int sz = Utils.getRemoteFileSize(new URL(archiveUrl));
+				if (sz > 0) {
+					size = String.valueOf(sz);
+				}
+			} catch (IOException e) {
+				;
+			}
+			verNode.putProperty(TreeNode.PROPERTY.ARCHIVE_SIZE, size);
+
+			String unpackFolder = packVendorName + "/" + packName + "/"
+					+ releaseName;
+			verNode.putProperty(TreeNode.PROPERTY.DEST_FOLDER, unpackFolder);
+
+			if (releaseDate.length() > 0) {
+
+				// TODO: normalise date
+				verNode.putProperty(TreeNode.PROPERTY.DATE, releaseDate);
+			}
+
+			verNode.setDescription(description);
+
+		}
+
+		if (versionNode == null) {
+			m_out.println("Missing <release version=\"" + version + "\">.");
+			return;
+		}
+
+		TreeNode outlineNode = new TreeNode(TreeNode.OUTLINE_TYPE);
+		versionNode.addChild(outlineNode);
+
+		TreeNode externNode = new TreeNode(TreeNode.EXTERNAL_TYPE);
+
+		// Keywords
+		Element keywordsElement = Utils.getChildElement(packageElement,
+				"keywords");
+		if (keywordsElement != null) {
+
+			List<Element> childElements = Utils
+					.getChildElementsList(keywordsElement);
+			for (Element childElement : childElements) {
+
+				String elementName2 = childElement.getNodeName();
+				if ("keyword".equals(elementName2)) {
+
+					// Add a unique node to selection
+					String keyword = Utils.getElementContent(childElement);
+					outlineNode.addUniqueChild(TreeNode.KEYWORD_TYPE, keyword);
+				}
+			}
+		}
+
+		// Devices
+		Element devicesElement = Utils.getChildElement(packageElement,
+				"devices");
+		if (devicesElement != null) {
+
+			List<Element> familyElements = Utils.getChildElementsList(
+					devicesElement, TreeNode.FAMILY_TYPE);
+			for (Element familyElement : familyElements) {
+
+				String family = familyElement.getAttribute("Dfamily").trim();
+				String vendor = familyElement.getAttribute("Dvendor").trim();
+
+				Element deviceDescriptionElement = Utils.getChildElement(
+						familyElement, "description");
+				String description = "";
+
+				description = extendDescription(
+						description,
+						Utils.getElementMultiLineContent(deviceDescriptionElement));
+
+				String va[] = vendor.split("[:]");
+				if (va.length < 2) {
+					m_out.println("Dvendor=\"" + vendor
+							+ "\" not enumeration, ignored.");
+					continue;
+				}
+
+				TreeNode deviceFamilyNode = outlineNode.addUniqueChild(
+						TreeNode.FAMILY_TYPE, family);
+				deviceFamilyNode.setDescription(description);
+
+				deviceFamilyNode.putNonEmptyProperty(
+						TreeNode.PROPERTY.VENDOR_NAME, va[0]);
+				deviceFamilyNode.putNonEmptyProperty(
+						TreeNode.PROPERTY.VENDOR_ID, va[1]);
+			}
+		}
+
+		// Boards
+		Element boardsElement = Utils.getChildElement(packageElement, "boards");
+		if (boardsElement != null) {
+
+			List<Element> boardElements = Utils.getChildElementsList(
+					boardsElement, "board");
+			for (Element boardElement : boardElements) {
+				String vendor = boardElement.getAttribute("vendor").trim();
+				String boardName = boardElement.getAttribute("name").trim();
+				// String revision =
+				// boardElement.getAttribute("revision").trim();
+
+				Element descriptionElement = Utils.getChildElement(
+						boardElement, "description");
+				String description = "";
+				description = Utils
+						.getElementMultiLineContent(descriptionElement);
+
+				TreeNode boardNode = outlineNode.addUniqueChild(
+						TreeNode.BOARD_TYPE, boardName);
+				boardNode.putProperty(TreeNode.PROPERTY.VENDOR_NAME, vendor);
+
+				boardNode.setDescription(description);
+
+				// For boards with compatible family devices, add them to the
+				// package selected conditions
+				List<Element> compatibleDevicesElements = Utils
+						.getChildElementsList(boardElement, "compatibleDevice");
+
+				for (Element compatibleDevicesElement : compatibleDevicesElements) {
+
+					String family = compatibleDevicesElement.getAttribute(
+							"Dfamily").trim();
+					if (family.length() > 0) {
+
+						String vendor2 = compatibleDevicesElement.getAttribute(
+								"Dvendor").trim();
+						String va[] = vendor2.split("[:]");
+						if (va.length < 2) {
+							m_out.println("Dvendor=\"" + vendor2
+									+ "\" not enumeration, ignored.");
+							continue;
+						}
+
+						// Contribute external device family
+						TreeNode deviceFamilyNode = externNode.addUniqueChild(
+								TreeNode.FAMILY_TYPE, family);
+
+						deviceFamilyNode.putProperty(
+								TreeNode.PROPERTY.VENDOR_NAME, va[0]);
+						deviceFamilyNode.putProperty(
+								TreeNode.PROPERTY.VENDOR_ID, va[1]);
+					}
+				}
+			}
+		}
+
+		// Components
+		Element componentsElement = Utils.getChildElement(packageElement,
+				"components");
+		if (componentsElement != null) {
+
+			List<Element> componentElements = Utils.getChildElementsList(
+					componentsElement, "component");
+			for (Element componentElement : componentElements) {
+
+				// Required
+				String Cclass = componentElement.getAttribute("Cclass").trim();
+				String Cgroup = componentElement.getAttribute("Cgroup").trim();
+				// String Cversion = componentElement.getAttribute("Cversion")
+				// .trim();
+
+				// Optional
+				String Csub = componentElement.getAttribute("Csub").trim();
+				String Cvariant = componentElement.getAttribute("Cvariant")
+						.trim();
+				String Cvendor = componentElement.getAttribute("Cvendor")
+						.trim();
+
+				TreeNode componentNode = new TreeNode(TreeNode.COMPONENT_TYPE);
+				outlineNode.addChild(componentNode);
+
+				String name = "";
+				name = extendName(name, Cvendor);
+				name = extendName(name, Cclass);
+				name = extendName(name, Cgroup);
+				name = extendName(name, Csub);
+				name = extendName(name, Cvariant);
+
+				componentNode.setName(name);
+
+				Element componentsDescriptionElement = Utils.getChildElement(
+						componentElement, "description");
+				if (componentsDescriptionElement != null) {
+
+					String componentDescription = Utils
+							.getElementMultiLineContent(componentsDescriptionElement);
+
+					componentNode.setDescription(componentDescription);
+				}
+			}
+
+			List<Element> bundleElements = Utils.getChildElementsList(
+					componentsElement, "bundle");
+			for (Element el : bundleElements) {
+
+				// Required
+				String Cbundle = el.getAttribute("Cbundle").trim();
+				String Cclass = el.getAttribute("Cclass").trim();
+				// String Cversion = el.getAttribute("Cversion").trim();
+
+				// Optional
+				// String Cvendor = el.getAttribute("Cvendor").trim();
+
+				TreeNode bundleNode = new TreeNode(TreeNode.BUNDLE_TYPE);
+				outlineNode.addChild(bundleNode);
+
+				String name = "";
+				name = extendName(name, Cclass);
+				name = extendName(name, Cbundle);
+				bundleNode.setName(name);
+
+				Element bundleDescriptionElement = Utils.getChildElement(el,
+						"description");
+				if (bundleDescriptionElement != null) {
+
+					String bundleDescription = Utils
+							.getElementMultiLineContent(bundleDescriptionElement);
+
+					bundleNode.setDescription(bundleDescription);
+				}
+			}
+		}
+
+		// Examples
+		Element examplesElement = Utils.getChildElement(packageElement,
+				"examples");
+		if (examplesElement != null) {
+
+			List<Element> exampleElements = Utils.getChildElementsList(
+					examplesElement, "example");
+			for (Element exampleElement : exampleElements) {
+
+				String firstBoardName = "";
+
+				Element boardElement = Utils.getChildElement(exampleElement,
+						"board");
+				if (boardElement != null) {
+
+					String vendor = boardElement.getAttribute("vendor").trim();
+					String boardName = boardElement.getAttribute("name").trim();
+
+					// Contribute external board
+					TreeNode boardNode = externNode.addUniqueChild(
+							TreeNode.BOARD_TYPE, boardName);
+					boardNode
+							.putProperty(TreeNode.PROPERTY.VENDOR_NAME, vendor);
+
+					if (firstBoardName.length() == 0) {
+						firstBoardName = boardName;
+					}
+				}
+
+				// Required
+				String exampleName = exampleElement.getAttribute("name").trim();
+				// String exampleFolder = exampleElement.getAttribute("folder")
+				// .trim();
+				// String exampleDoc =
+				// exampleElement.getAttribute("doc").trim();
+				//
+				// // Optional
+				// String exampleVendor = exampleElement.getAttribute("vendor")
+				// .trim();
+				// String exampleVersion =
+				// exampleElement.getAttribute("version")
+				// .trim();
+				// String exampleArchive =
+				// exampleElement.getAttribute("archive")
+				// .trim();
+
+				TreeNode exampleNode = new TreeNode(TreeNode.EXAMPLE_TYPE);
+				outlineNode.addChild(exampleNode);
+
+				if (firstBoardName.length() > 0) {
+					exampleName = exampleName + " (" + firstBoardName + ")";
+				}
+				exampleNode.setName(exampleName);
+
+				Element exampleDescriptionElement = Utils.getChildElement(
+						exampleElement, "description");
+				if (exampleDescriptionElement != null) {
+
+					String exampleDescription = Utils
+							.getElementMultiLineContent(exampleDescriptionElement);
+
+					exampleNode.setDescription(exampleDescription);
+				}
+
+				// contribute possible keywords
+				Element attributesElement = Utils.getChildElement(
+						exampleElement, "attributes");
+				if (attributesElement != null) {
+
+					List<Element> keywordElements = Utils.getChildElementsList(
+							attributesElement, "keyword");
+
+					for (Element keywordElement : keywordElements) {
+
+						// Add a unique node to selection
+						String keyword = Utils
+								.getElementContent(keywordElement);
+						outlineNode.addUniqueChild(TreeNode.KEYWORD_TYPE,
+								keyword);
+					}
+				}
+			}
+		}
+
+		if (externNode.hasChildren()) {
+			versionNode.addChild(externNode);
+		}
+
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - beginTime;
+		if (duration == 0) {
+			duration = 1;
+		}
+
+		m_out.println("Completed in " + duration + "ms.");
 	}
 }

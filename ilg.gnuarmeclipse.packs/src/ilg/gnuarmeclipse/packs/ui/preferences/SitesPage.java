@@ -13,9 +13,12 @@ package ilg.gnuarmeclipse.packs.ui.preferences;
 
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
+import ilg.gnuarmeclipse.packs.Repos;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.cdt.ui.newui.AbstractCPropertyTab;
 import org.eclipse.jface.dialogs.Dialog;
@@ -46,6 +49,7 @@ public class SitesPage extends PreferencePage implements
 
 	private Table m_table;
 	private TableColumn m_columnType;
+	private TableColumn m_columnName;
 	private TableColumn m_columnUrl;
 
 	private Composite m_buttonsComposite;
@@ -55,7 +59,9 @@ public class SitesPage extends PreferencePage implements
 
 	private Button[] m_buttons; // right side buttons
 
-	private List<String[]> m_contentList;
+	private List<Map<String, Object>> m_contentList;
+
+	private Repos m_repos;
 
 	public SitesPage() {
 
@@ -64,6 +70,8 @@ public class SitesPage extends PreferencePage implements
 
 		m_contentList = null;
 		m_buttons = null;
+
+		m_repos = Repos.getInstance();
 	}
 
 	@Override
@@ -99,7 +107,7 @@ public class SitesPage extends PreferencePage implements
 		{
 			initTable(groupComposite);
 
-			m_contentList = PacksStorage.getSites();
+			m_contentList = m_repos.getList();
 
 			updateTableContent();
 		}
@@ -130,6 +138,11 @@ public class SitesPage extends PreferencePage implements
 		m_columnType.setWidth(80);
 		m_columnType.setResizable(true);
 
+		m_columnName = new TableColumn(m_table, SWT.NULL);
+		m_columnName.setText("Name");
+		m_columnName.setWidth(60);
+		m_columnName.setResizable(true);
+
 		m_columnUrl = new TableColumn(m_table, SWT.NULL);
 		m_columnUrl.setText("URL");
 		m_columnUrl.setWidth(240);
@@ -142,9 +155,9 @@ public class SitesPage extends PreferencePage implements
 
 		if (m_contentList != null) {
 			TableItem item;
-			for (String[] a : m_contentList) {
+			for (Map<String, Object> map : m_contentList) {
 				item = new TableItem(m_table, SWT.NULL);
-				item.setText(a);
+				item.setText(convertToArray(map));
 			}
 		}
 
@@ -232,9 +245,29 @@ public class SitesPage extends PreferencePage implements
 
 		NewSiteDialog dlg = new NewSiteDialog(m_composite.getShell(), null);
 		if (dlg.open() == Dialog.OK) {
-			m_contentList.add(dlg.getData());
+			m_contentList.add(convertToMap(dlg.getData()));
 			// System.out.println("added");
 		}
+	}
+
+	private Map<String, Object> convertToMap(String[] sa) {
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("type", sa[0]);
+		map.put("name", sa[1]);
+		map.put("url", sa[2]);
+
+		return map;
+	}
+
+	private String[] convertToArray(Map<String, Object> map) {
+
+		String sa[] = new String[map.size()];
+		sa[0] = (String) map.get("type");
+		sa[1] = (String) map.get("name");
+		sa[2] = (String) map.get("url");
+
+		return sa;
 	}
 
 	private void handleEditButton() {
@@ -245,9 +278,9 @@ public class SitesPage extends PreferencePage implements
 		}
 
 		NewSiteDialog dlg = new NewSiteDialog(m_composite.getShell(),
-				m_contentList.get(index));
+				convertToArray(m_contentList.get(index)));
 		if (dlg.open() == Dialog.OK) {
-			m_contentList.set(index, dlg.getData());
+			m_contentList.set(index, convertToMap(dlg.getData()));
 			// System.out.println("edited");
 		}
 	}
@@ -272,7 +305,7 @@ public class SitesPage extends PreferencePage implements
 		// System.out.println("SitesPage.performDefaults()");
 		super.performDefaults();
 
-		m_contentList = PacksStorage.getDefaultSites();
+		m_contentList = m_repos.getDefaultList();
 		updateTableContent();
 	}
 
@@ -282,7 +315,7 @@ public class SitesPage extends PreferencePage implements
 		// System.out.println("SitesPage.performOk()");
 
 		try {
-			PacksStorage.putSites(m_contentList);
+			m_repos.putList(m_contentList);
 		} catch (IOException e) {
 			Activator.log(e);
 		}

@@ -77,6 +77,24 @@ public class Utils {
 		return content;
 	}
 
+	public static String getElementMultiLineContent(Element el) {
+
+		String s = getElementContent(el);
+
+		String sa[] = s.split("\\r?\\n");
+		if (sa.length > 1) {
+			s = "";
+			for (int i = 0; i < sa.length; ++i) {
+				if (i > 0) {
+					s += '\n';
+				}
+				s += sa[i].trim();
+			}
+		}
+
+		return s;
+	}
+
 	public static List<String> getAttributesNames(Element el) {
 
 		List<String> list = new LinkedList<String>();
@@ -161,6 +179,12 @@ public class Utils {
 					+ "MB";
 		}
 		return sizeString;
+	}
+
+	public static String capitalize(String s) {
+		if (s.length() == 0)
+			return s;
+		return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
 	}
 
 }

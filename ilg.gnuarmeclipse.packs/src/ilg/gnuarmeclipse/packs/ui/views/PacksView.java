@@ -106,7 +106,8 @@ public class PacksView extends ViewPart {
 				if (m_tree == null) {
 					System.out.println("getCachedSubTree(packages)");
 					try {
-						m_tree = PacksStorage.getCachedSubTree("packages");
+						m_tree = PacksStorage.getInstance().getCachedSubTree(
+								"packages");
 					} catch (UsingDefaultFileException e) {
 						Activator.log(e.getMessage());
 					} catch (Exception e) {

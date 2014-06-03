@@ -88,7 +88,8 @@ public class BoardsView extends ViewPart {
 			if (parent.equals(getViewSite())) {
 				if (m_tree == null) {
 					try {
-						m_tree = PacksStorage.getCachedSubTree("boards");
+						m_tree = PacksStorage.getInstance().getCachedSubTree(
+								"boards");
 					} catch (Exception e) {
 						// TODO Auto-generated catch block
 						Activator.log(e);

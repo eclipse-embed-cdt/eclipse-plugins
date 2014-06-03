@@ -2,6 +2,7 @@ package ilg.gnuarmeclipse.packs.jobs;
 
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
+import ilg.gnuarmeclipse.packs.Repos;
 import ilg.gnuarmeclipse.packs.TreeNode;
 import ilg.gnuarmeclipse.packs.Utils;
 
@@ -42,6 +43,9 @@ public class InstallJob extends Job {
 	// private String m_folderPath;
 	private IProgressMonitor m_monitor;
 
+	private Repos m_repos;
+	private PacksStorage m_storage;
+
 	public InstallJob(String name, TreeSelection selection) {
 
 		super(name);
@@ -50,6 +54,8 @@ public class InstallJob extends Job {
 
 		m_selection = selection;
 
+		m_repos = Repos.getInstance();
+		m_storage = PacksStorage.getInstance();
 	}
 
 	@Override
@@ -126,8 +132,7 @@ public class InstallJob extends Job {
 				final List<TreeNode>[] lists = (List<TreeNode>[]) (new List<?>[] {
 						deviceNodes, boardNodes });
 
-				PacksStorage.updateInstalledVersionNode(versionNode, true,
-						lists);
+				m_storage.updateInstalledVersionNode(versionNode, true, lists);
 
 				Display.getDefault().asyncExec(new Runnable() {
 					@Override
@@ -272,7 +277,7 @@ public class InstallJob extends Job {
 
 		IPath path;
 		try {
-			path = PacksStorage.getFolderPath().append(pathPart).append(name);
+			path = m_repos.getFolderPath().append(pathPart).append(name);
 		} catch (IOException e) {
 			return null;
 		}

@@ -1,9 +1,9 @@
 package ilg.gnuarmeclipse.packs.jobs;
 
 import ilg.gnuarmeclipse.packs.Activator;
-import ilg.gnuarmeclipse.packs.PacksStorage;
-import ilg.gnuarmeclipse.packs.PdscParser;
+import ilg.gnuarmeclipse.packs.Repos;
 import ilg.gnuarmeclipse.packs.TreeNode;
+import ilg.gnuarmeclipse.packs.cmsis.PdscParser;
 import ilg.gnuarmeclipse.packs.ui.views.OutlineView;
 
 import java.io.FileNotFoundException;
@@ -48,10 +48,11 @@ public class ParsePdscJob extends Job {
 
 		IPath folderPath;
 		try {
-			folderPath = PacksStorage.getFolderPath();
+			folderPath = Repos.getInstance().getFolderPath();
 		} catch (IOException e1) {
-			return Status.CANCEL_STATUS;		}
-		
+			return Status.CANCEL_STATUS;
+		}
+
 		if (m_running) {
 			return Status.CANCEL_STATUS;
 		}

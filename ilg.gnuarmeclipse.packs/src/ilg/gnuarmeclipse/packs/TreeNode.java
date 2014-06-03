@@ -1,7 +1,7 @@
 package ilg.gnuarmeclipse.packs;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -28,6 +28,7 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 	public static final String DEVICES_SUBTREE_TYPE = "devices";
 	public static final String ENVIRONMENT_TYPE = "environment";
 	public static final String EXAMPLE_TYPE = "example";
+	public static final String EXTERNAL_TYPE = "external";
 	public static final String FAMILY_TYPE = "family";
 	public static final String FEATURE_TYPE = "feature";
 	public static final String FILE_TYPE = "file";
@@ -40,6 +41,7 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 	public static final String PACKAGE_TYPE = "package";
 	public static final String PACKAGES_SUBTREE_TYPE = "packages";
 	public static final String PROCESSOR_TYPE = "processor";
+	public static final String REPOSITORY_TYPE = "repository";
 	public static final String REQUIRE_TYPE = "require";
 	public static final String ROOT_TYPE = "root";
 	public static final String SUBFAMILY_TYPE = "subfamily";
@@ -105,6 +107,21 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 	public static final String VENDORID_PROPERTY = "vendorid";
 	public static final String VENDOR_PROPERTY = "vendor";
 	public static final String VERSION_PROPERTY = "version";
+
+	public class PROPERTY {
+		public static final String ARCHIVE_NAME = "archive.name";
+		public static final String ARCHIVE_SIZE = "archive.size";
+		public static final String ARCHIVE_URL = "archive.url";
+		public static final String DATE = "date";
+		public static final String DEST_FOLDER = "dest.folder";
+		public static final String GENERATOR = "generator";
+		public static final String REPO_URL = "repo.url";
+		// public static final String SITE_URL = "site.url";
+		public static final String TYPE = "type";
+		// public static final String UTC_DATE = "utc.date";
+		public static final String VENDOR_NAME = "vendor.name";
+		public static final String VENDOR_ID = "vendor.id";
+	};
 
 	public static final String CONDITION_ATTRIBUTES[] = { "Dfamily",
 			"DsubFamily", "Dvariant", "Dvendor", "Dname", "Dcore", "Dfpu",
@@ -369,7 +386,8 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 	public Object putProperty(String name, String value) {
 
 		if (m_properties == null) {
-			m_properties = new HashMap<String, String>();
+			// Linked to preserve order
+			m_properties = new LinkedHashMap<String, String>();
 		}
 
 		return m_properties.put(name, value);

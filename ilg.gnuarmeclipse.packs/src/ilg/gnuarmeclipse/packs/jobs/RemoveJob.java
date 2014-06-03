@@ -2,6 +2,7 @@ package ilg.gnuarmeclipse.packs.jobs;
 
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
+import ilg.gnuarmeclipse.packs.Repos;
 import ilg.gnuarmeclipse.packs.TreeNode;
 
 import java.io.File;
@@ -15,8 +16,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.MessageConsoleStream;
@@ -31,6 +30,9 @@ public class RemoveJob extends Job {
 	// private String m_folderPath;
 	private IProgressMonitor m_monitor;
 
+	private Repos m_repos;
+	private PacksStorage m_storage;
+
 	public RemoveJob(String name, TreeSelection selection) {
 
 		super(name);
@@ -39,6 +41,8 @@ public class RemoveJob extends Job {
 
 		m_selection = selection;
 
+		m_repos = Repos.getInstance();
+		m_storage = PacksStorage.getInstance();
 	}
 
 	@Override
@@ -92,10 +96,10 @@ public class RemoveJob extends Job {
 
 				String dest = versionNode.getProperty(TreeNode.FOLDER_PROPERTY,
 						"");
-				versionFolderPath = PacksStorage.getFolderPath().append(dest);
+				versionFolderPath = m_repos.getFolderPath().append(dest);
 
 				// Remove the pack archived file
-				packFilePath = PacksStorage.getFolderPath()
+				packFilePath = m_repos.getFolderPath()
 						.append(PacksStorage.DOWNLOAD_FOLDER).append(packName);
 
 			} catch (IOException e) {
@@ -120,7 +124,7 @@ public class RemoveJob extends Job {
 			final List<TreeNode>[] lists = (List<TreeNode>[]) (new List<?>[] {
 					deviceNodes, boardNodes });
 
-			PacksStorage.updateInstalledVersionNode(versionNode, false, lists);
+			m_storage.updateInstalledVersionNode(versionNode, false, lists);
 
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
@@ -147,7 +151,7 @@ public class RemoveJob extends Job {
 		}
 
 		//
-		List<TreeNode> installedVersions = PacksStorage.getInstalledVersions();
+		List<TreeNode> installedVersions = m_storage.getInstalledVersions();
 
 		List<TreeNode> deviceNodes = new LinkedList<TreeNode>();
 		List<TreeNode> boardNodes = new LinkedList<TreeNode>();
@@ -157,7 +161,7 @@ public class RemoveJob extends Job {
 				deviceNodes, boardNodes });
 
 		for (TreeNode versionNode : installedVersions) {
-			PacksStorage.updateInstalledVersionNode(versionNode, true, lists);
+			m_storage.updateInstalledVersionNode(versionNode, true, lists);
 
 			// Clear children
 		}
