@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2014 Liviu Ionescu.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Liviu Ionescu - initial implementation.
+ *******************************************************************************/
+
 package ilg.gnuarmeclipse.packs.handlers;
 
 import ilg.gnuarmeclipse.packs.Activator;
@@ -7,6 +18,7 @@ import ilg.gnuarmeclipse.packs.TreeNode;
 import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.cmsis.Index;
 import ilg.gnuarmeclipse.packs.cmsis.PdscParser;
+import ilg.gnuarmeclipse.packs.xcdl.ContentSerialiser;
 
 import java.io.FileNotFoundException;
 import java.net.URL;
@@ -49,6 +61,8 @@ public class RefreshHandler extends AbstractHandler {
 		System.out.println("RefreshHandler()");
 		m_running = false;
 
+		m_out = Activator.getConsoleOut();
+
 		m_repos = Repos.getInstance();
 		m_storage = PacksStorage.getInstance();
 	}
@@ -58,8 +72,6 @@ public class RefreshHandler extends AbstractHandler {
 	 * from the application context.
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-
-		m_out = Activator.getConsole().newMessageStream();
 
 		Job job = new Job("Refresh Packs") {
 			@Override
@@ -173,10 +185,11 @@ public class RefreshHandler extends AbstractHandler {
 					monitor.worked(1);
 				}
 
-				String fileName = PacksStorage.CACHE_FOLDER + "/"
-						+ m_repos.getFileNameFromUrl(repoUrl) + "content.xml";
+				String fileName = m_repos.getRepoContentXmlFromUrl(repoUrl);
 
-				m_storage.putContent(contentRoot, fileName);
+				ContentSerialiser serialiser = new ContentSerialiser();
+				serialiser.serialise(contentRoot, fileName);
+
 				m_out.println("content.xml written.");
 			}
 

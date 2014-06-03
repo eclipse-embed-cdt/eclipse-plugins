@@ -1,5 +1,18 @@
+/*******************************************************************************
+ * Copyright (c) 2014 Liviu Ionescu.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Liviu Ionescu - initial implementation.
+ *******************************************************************************/
+
 package ilg.gnuarmeclipse.packs;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
@@ -7,10 +20,17 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
 
 public class Utils {
 
@@ -185,6 +205,16 @@ public class Utils {
 		if (s.length() == 0)
 			return s;
 		return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
+	}
+
+	public static Document parseXml(File file) throws ParserConfigurationException,
+			SAXException, IOException {
+
+		InputSource inputSource = new InputSource(new FileInputStream(file));
+
+		DocumentBuilder xml = DocumentBuilderFactory.newInstance()
+				.newDocumentBuilder();
+		return xml.parse(inputSource);
 	}
 
 }

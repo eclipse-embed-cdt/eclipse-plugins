@@ -9,16 +9,26 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs.ui.preferences;
+package ilg.gnuarmeclipse.packs.xcdl;
 
-/**
- * Constant definitions for plug-in preferences
- */
-public class FolderConstants {
+import ilg.gnuarmeclipse.packs.Activator;
+import ilg.gnuarmeclipse.packs.TreeNode;
 
-	public static final String P_FOLDER_PATH = "packs.folder.path";
-	public static final String P_MACRO_NAME = "packs.macro.name";
+import org.eclipse.ui.console.MessageConsoleStream;
+import org.w3c.dom.Document;
 
-	public static final String DEFAULT_MACRO_NAME = "packs_path";
+public class ContentParser {
 
+	private MessageConsoleStream m_out;
+	private Document m_document;
+
+	public ContentParser(Document document){
+	
+		m_out = Activator.getConsoleOut();
+		m_document = document;
+	}
+	
+	public void parseDocument(TreeNode parent){
+		
+	}
 }

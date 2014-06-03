@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu ionescu.
+ * Copyright (c) 2014 Liviu Ionescu.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -16,14 +16,17 @@ import ilg.gnuarmeclipse.packs.ui.views.DevicesView;
 import ilg.gnuarmeclipse.packs.ui.views.KeywordsView;
 import ilg.gnuarmeclipse.packs.ui.views.PacksView;
 
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.ConsolePlugin;
 import org.eclipse.ui.console.IConsole;
 import org.eclipse.ui.console.IConsoleManager;
 import org.eclipse.ui.console.MessageConsole;
+import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -43,7 +46,8 @@ public class Activator extends AbstractUIPlugin {
 	private static BoardsView ms_boardsView;
 	private static KeywordsView ms_keywordsView;
 
-	private static MessageConsole m_console;
+	private static MessageConsole ms_console;
+	private static MessageConsoleStream ms_consoleOut;
 
 	/**
 	 * The constructor
@@ -64,6 +68,16 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		ms_plugin = this;
 
+		// Initial load of repositories summaries
+		new Job("Load Repositories") {
+
+			@Override
+			protected IStatus run(IProgressMonitor monitor) {
+
+				return PacksStorage.getInstance().loadRepositories(monitor);
+
+			}
+		}.schedule();
 	}
 
 	/*
@@ -103,11 +117,19 @@ public class Activator extends AbstractUIPlugin {
 
 	public static String CONSOLE_NAME = "Packs console";
 
-	public static MessageConsole getConsole() {
-		if (m_console == null) {
-			m_console = findConsole(CONSOLE_NAME);
+	public static MessageConsoleStream getConsoleOut() {
+		if (ms_consoleOut == null) {
+			ms_consoleOut = getConsole().newMessageStream();
 		}
-		return m_console;
+
+		return ms_consoleOut;
+	}
+
+	private static MessageConsole getConsole() {
+		if (ms_console == null) {
+			ms_console = findConsole(CONSOLE_NAME);
+		}
+		return ms_console;
 	}
 
 	public static MessageConsole findConsole(String name) {

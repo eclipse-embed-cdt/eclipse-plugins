@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu ionescu.
+ * Copyright (c) 2014 Liviu Ionescu.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -10,6 +10,8 @@
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.packs;
+
+import ilg.gnuarmeclipse.packs.xcdl.ContentParser;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -26,7 +28,11 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
@@ -40,6 +46,9 @@ public class PacksStorage {
 
 	public static final String DOWNLOAD_FOLDER = ".download";
 	public static final String CACHE_FOLDER = ".cache";
+
+	public static final String CONTENT_FILE_NAME = "content.xml";
+	public static final String CONTENT_XML_VERSION = "1.1";
 
 	// ------------------------------------------------------------------------
 
@@ -56,27 +65,102 @@ public class PacksStorage {
 	// ------------------------------------------------------------------------
 
 	private Repos m_repos;
+	private MessageConsoleStream m_out;
 
 	public PacksStorage() {
 		m_repos = Repos.getInstance();
+
+		m_out = Activator.getConsoleOut();
 	}
 
 	public static TreeNode ms_tree = null;
 
-	// Parse the Keil index. It is available from
-	// curl "http://www.keil.com/pack/index.idx"
+	public static TreeNode ms_tree2 = null;
 
-	// The syntax is erroneous, the root element is missing, so we need
-	// to dynamically add it.
+	// Executed as a separate job from plug-in activator
+	public IStatus loadRepositories(IProgressMonitor monitor) {
 
-	// <?xml version="1.0" encoding="UTF-8" ?>
-	// <pdsc url="http://www.keil.com/pack/" name="ARM.CMSIS.pdsc"
-	// version="3.20.4"/>
-	// <pdsc url="http://media.infineon.com/mdk/"
-	// name="Infineon.XMC1000_DFP.pdsc" version="1.5.0"/>
+		long beginTime = System.currentTimeMillis();
 
-	// Append string arrays to the given list
-	// new String[] { url, name, version }
+		m_out.println("Loading content of packs repositories...");
+
+		List<Map<String, Object>> list;
+		list = m_repos.getList();
+
+		int workUnits = list.size();
+		monitor.beginTask("Load packs repositories", workUnits);
+
+		TreeNode root = new TreeNode(TreeNode.ROOT_TYPE);
+
+		for (Map<String, Object> map : list) {
+			String type = (String) map.get("type");
+			String name = (String) map.get("name");
+			String url = (String) map.get("url");
+
+			monitor.subTask(name);
+			if (Repos.CMSIS_PACK_TYPE.equals(type)
+					|| Repos.XCDL_CMSIS_PACK_TYPE.equals(type)) {
+
+				String fileName = m_repos.getRepoContentXmlFromUrl(url);
+
+				parseContent(fileName, root);
+			}
+			monitor.worked(1);
+		}
+
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - beginTime;
+		if (duration == 0) {
+			duration = 1;
+		}
+		m_out.print("Load completed in ");
+		if (duration < 1000) {
+			m_out.println(duration + "ms.");
+		} else {
+			m_out.println((duration + 500) / 1000 + "s.");
+		}
+
+		return Status.OK_STATUS;
+	}
+
+	private void parseContent(String fileName, TreeNode parent) {
+
+		long beginTime = System.currentTimeMillis();
+
+		File file;
+		try {
+			file = m_repos.getFileObject(fileName);
+		} catch (IOException e) {
+			m_out.println(e.getMessage());
+			return;
+		}
+
+		m_out.println("Parsing \"" + file.getPath() + "\"...");
+
+		if (!file.exists()) {
+			m_out.println("File does not exist, ignored.");
+			return;
+		}
+
+		Document document;
+		try {
+			document = Utils.parseXml(file);
+		} catch (Exception e) {
+			m_out.println("XML parse error: " + e.getMessage());
+			return;
+		}
+
+		ContentParser parser = new ContentParser(document);
+		parser.parseDocument(parent);
+
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - beginTime;
+		if (duration == 0) {
+			duration = 1;
+		}
+
+		m_out.println("File parsed in " + duration + "ms.");
+	}
 
 	public void putCache(TreeNode tree) throws IOException {
 
@@ -100,178 +184,6 @@ public class PacksStorage {
 		}
 
 		ms_tree = tree;
-	}
-
-	public void putContent(TreeNode tree, String fileName) throws IOException {
-
-		File file = m_repos.getFileObject(fileName);
-
-		file.getParentFile().mkdir();
-
-		// The xml structure is simple, write it as strings
-		if (!file.exists())
-			file.createNewFile();
-		if (file.exists()) {
-			PrintWriter writer = new PrintWriter(new BufferedWriter(
-					new FileWriter(file)));
-			writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-			writer.println();
-			writer.println("<root version=\"" + CACHE_XML_VERSION + "\">");
-
-			putContentNodeRecursive(tree, 0, writer);
-
-			writer.println("</root>");
-			writer.close();
-
-			// System.out.println(SITES_FILE_NAME+" saved");
-		}
-	}
-
-	private void putContentNodeRecursive(TreeNode node, int depth,
-			PrintWriter writer) {
-
-		putIndentation(depth, writer);
-
-		String nodeType = node.getType();
-
-		String nodeElementName = "";
-		String nodesElementName = "";
-		boolean doOutputNodes = true;
-		boolean doOutputName = true;
-		boolean doOutputProperties = true;
-		boolean hasNoChildrenElements = false;
-		if (TreeNode.REPOSITORY_TYPE.equals(nodeType)) {
-			nodeElementName = "repository";
-			nodesElementName = "packages";
-		} else if (TreeNode.PACKAGE_TYPE.equals(nodeType)) {
-			nodeElementName = "packages";
-			nodesElementName = "versions";
-		} else if (TreeNode.VERSION_TYPE.equals(nodeType)) {
-			nodeElementName = "version";
-			doOutputNodes = false;
-		} else if (TreeNode.OUTLINE_TYPE.equals(nodeType)) {
-			nodeElementName = "outline";
-			doOutputNodes = false;
-			doOutputName = false;
-		} else if (TreeNode.EXTERNAL_TYPE.equals(nodeType)) {
-			nodeElementName = "external";
-			doOutputNodes = false;
-			doOutputName = false;
-		} else if (TreeNode.FAMILY_TYPE.equals(nodeType)) {
-			nodeElementName = "devicefamily";
-			doOutputNodes = false;
-			doOutputProperties = false;
-		} else if (TreeNode.BOARD_TYPE.equals(nodeType)) {
-			nodeElementName = "board";
-			doOutputNodes = false;
-			doOutputProperties = false;
-		} else if (TreeNode.KEYWORD_TYPE.equals(nodeType)) {
-			nodeElementName = "keyword";
-			doOutputNodes = false;
-			doOutputProperties = false;
-			hasNoChildrenElements = true;
-		} else if (TreeNode.COMPONENT_TYPE.equals(nodeType)) {
-			nodeElementName = "component";
-			doOutputNodes = false;
-			doOutputProperties = false;
-		} else if (TreeNode.BUNDLE_TYPE.equals(nodeType)) {
-			nodeElementName = "bundle";
-			doOutputNodes = false;
-			doOutputProperties = false;
-		} else if (TreeNode.EXAMPLE_TYPE.equals(nodeType)) {
-			nodeElementName = "example";
-			doOutputNodes = false;
-			doOutputProperties = false;
-		}
-
-		if (nodeElementName.length() > 0) {
-			writer.print("<" + nodeElementName);
-		} else {
-			writer.print("<node type=\"" + nodeType);
-		}
-		if (doOutputName) {
-			writer.print(" name=\"" + node.getName() + "\"");
-		}
-		if (hasNoChildrenElements) {
-			writer.println(" />");
-		} else {
-			writer.println(">");
-
-			String description = node.getDescription();
-			if (description != null && description.length() > 0) {
-				putIndentation(depth + 1, writer);
-				writer.println("<description>"
-						+ Utils.xmlEscape(node.getDescription())
-						+ "</description>");
-			}
-
-			if (node.hasProperties()) {
-
-				if (doOutputProperties) {
-					putIndentation(depth + 1, writer);
-					writer.println("<properties>");
-				}
-
-				int newDepth;
-				if (doOutputProperties) {
-					newDepth = depth + 2;
-				} else {
-					newDepth = depth + 1;
-				}
-
-				Map<String, String> properties = node.getProperties();
-				for (Object key : properties.keySet()) {
-					putIndentation(newDepth, writer);
-					writer.println("<property name=\"" + key.toString()
-							+ "\" value=\"" + properties.get(key).toString()
-							+ "\" />");
-				}
-
-				if (doOutputProperties) {
-					putIndentation(depth + 1, writer);
-					writer.println("</properties>");
-				}
-			}
-
-			List<TreeNode> children = node.getChildren();
-			if (children != null && !children.isEmpty()) {
-				if (doOutputNodes) {
-					putIndentation(depth + 1, writer);
-					if (nodesElementName.length() > 0) {
-						writer.println("<" + nodesElementName + ">");
-					} else {
-						writer.println("<nodes>");
-					}
-				}
-
-				int newDepth;
-				if (doOutputNodes) {
-					newDepth = depth + 2;
-				} else {
-					newDepth = depth + 1;
-				}
-
-				for (TreeNode child : children) {
-					putContentNodeRecursive(child, newDepth, writer);
-				}
-
-				if (doOutputNodes) {
-					putIndentation(depth + 1, writer);
-					if (nodesElementName.length() > 0) {
-						writer.println("</" + nodesElementName + ">");
-					} else {
-						writer.println("</nodes>");
-					}
-				}
-			}
-
-			putIndentation(depth, writer);
-			if (nodeElementName.length() > 0) {
-				writer.println("</" + nodeElementName + ">");
-			} else {
-				writer.println("</node>");
-			}
-		}
 	}
 
 	private void putCacheNodeRecursive(TreeNode node, int depth,

@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2014 Liviu Ionescu.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Liviu Ionescu - initial implementation.
+ *******************************************************************************/
+
 package ilg.gnuarmeclipse.packs;
 
 import ilg.gnuarmeclipse.packs.ui.preferences.FolderConstants;
@@ -130,6 +141,26 @@ public class Repos {
 		m_list = list;
 
 		return list;
+	}
+
+	public String[] convertToArray(Map<String, Object> map) {
+
+		String sa[] = new String[map.size()];
+		sa[0] = (String) map.get("type");
+		sa[1] = (String) map.get("name");
+		sa[2] = (String) map.get("url");
+
+		return sa;
+	}
+
+	public Map<String, Object> convertToMap(String[] sa) {
+
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("type", sa[0]);
+		map.put("name", sa[1]);
+		map.put("url", sa[2]);
+
+		return map;
 	}
 
 	public void updateList() {
@@ -289,7 +320,7 @@ public class Repos {
 
 	// Try to get a unique name for the site specific content.xml
 	// based on site url
-	public String getFileNameFromUrl(String url) {
+	public String getFileNamePrefixFromUrl(String url) {
 
 		String s = url;
 		if (s.startsWith("http://")) {
@@ -314,4 +345,12 @@ public class Repos {
 		return s;
 	}
 
+	public String getRepoContentXmlFromUrl(String url) {
+
+		String fileName = PacksStorage.CACHE_FOLDER + "/"
+				+ getFileNamePrefixFromUrl(url)
+				+ PacksStorage.CONTENT_FILE_NAME;
+
+		return fileName;
+	}
 }

@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2014 Liviu Ionescu.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Liviu Ionescu - initial implementation.
+ *******************************************************************************/
+
 package ilg.gnuarmeclipse.packs.cmsis;
 
 import ilg.gnuarmeclipse.packs.Utils;
@@ -19,6 +30,21 @@ import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
 public class Index {
+
+	// Parse the Keil index. It is available with
+	// curl "http://www.keil.com/pack/index.idx"
+
+	// The syntax is erroneous, the root element is missing, so we need
+	// to dynamically add it.
+
+	// <?xml version="1.0" encoding="UTF-8" ?>
+	// <pdsc url="http://www.keil.com/pack/" name="ARM.CMSIS.pdsc"
+	// version="3.20.4"/>
+	// <pdsc url="http://media.infineon.com/mdk/"
+	// name="Infineon.XMC1000_DFP.pdsc" version="1.5.0"/>
+
+	// Append string arrays to the given list
+	// new String[] { url, name, version }
 
 	public static int readIndex(String indexUrl, List<String[]> pdscList)
 			throws ParserConfigurationException, SAXException, IOException {

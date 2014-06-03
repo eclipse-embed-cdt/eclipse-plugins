@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu ionescu.
+ * Copyright (c) 2014 Liviu Ionescu.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -12,11 +12,9 @@
 package ilg.gnuarmeclipse.packs.ui.preferences;
 
 import ilg.gnuarmeclipse.packs.Activator;
-import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.Repos;
 
 import java.io.IOException;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -157,7 +155,7 @@ public class SitesPage extends PreferencePage implements
 			TableItem item;
 			for (Map<String, Object> map : m_contentList) {
 				item = new TableItem(m_table, SWT.NULL);
-				item.setText(convertToArray(map));
+				item.setText(m_repos.convertToArray(map));
 			}
 		}
 
@@ -245,29 +243,9 @@ public class SitesPage extends PreferencePage implements
 
 		NewSiteDialog dlg = new NewSiteDialog(m_composite.getShell(), null);
 		if (dlg.open() == Dialog.OK) {
-			m_contentList.add(convertToMap(dlg.getData()));
+			m_contentList.add(m_repos.convertToMap(dlg.getData()));
 			// System.out.println("added");
 		}
-	}
-
-	private Map<String, Object> convertToMap(String[] sa) {
-
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("type", sa[0]);
-		map.put("name", sa[1]);
-		map.put("url", sa[2]);
-
-		return map;
-	}
-
-	private String[] convertToArray(Map<String, Object> map) {
-
-		String sa[] = new String[map.size()];
-		sa[0] = (String) map.get("type");
-		sa[1] = (String) map.get("name");
-		sa[2] = (String) map.get("url");
-
-		return sa;
 	}
 
 	private void handleEditButton() {
@@ -278,9 +256,9 @@ public class SitesPage extends PreferencePage implements
 		}
 
 		NewSiteDialog dlg = new NewSiteDialog(m_composite.getShell(),
-				convertToArray(m_contentList.get(index)));
+				m_repos.convertToArray(m_contentList.get(index)));
 		if (dlg.open() == Dialog.OK) {
-			m_contentList.set(index, convertToMap(dlg.getData()));
+			m_contentList.set(index, m_repos.convertToMap(dlg.getData()));
 			// System.out.println("edited");
 		}
 	}
