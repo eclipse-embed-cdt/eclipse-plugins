@@ -12,16 +12,15 @@
 package ilg.gnuarmeclipse.packs.tree;
 
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 
-import org.eclipse.core.runtime.IAdaptable;
-
-public class Node implements Comparable<Node>, IAdaptable {
+public class Node extends Leaf {
 
 	// Node types (sorted)
+	public class Type {
+
+	}
 
 	// Properties (sorted)
 	public static final String AP_PROPERTY = "ap";
@@ -87,51 +86,19 @@ public class Node implements Comparable<Node>, IAdaptable {
 			"Csub", "Cvariant", "Cversion", "Capiversion", "Tcompiler",
 			"condition" };
 
-	private String m_type;
-	private String m_name;
-	private String m_description;
-	private boolean m_isInstalled;
-	private Node m_parent;
-	private Map<String, String> m_properties;
-	private List<Selector> m_conditions;
-	private Node m_outline;
+	protected List<Node> m_children;
 
-	private List<Node> m_children;
+	protected boolean m_isInstalled;
+	protected List<Selector> m_conditions;
+	protected Node m_outline;
 
 	public Node(String type) {
-		m_type = type;
-		m_name = "";
-		m_description = "";
+
+		super(type);
 		m_isInstalled = false;
 		m_children = null;
-		m_parent = null;
-		m_properties = null;
 		m_conditions = null;
 		m_outline = null;
-	}
-
-	public String getType() {
-		return m_type;
-	}
-
-	public void setType(String type) {
-		this.m_type = type;
-	}
-
-	public String getName() {
-		return m_name;
-	}
-
-	public void setName(String name) {
-		this.m_name = name;
-	}
-
-	public String getDescription() {
-		return m_description;
-	}
-
-	public void setDescription(String description) {
-		this.m_description = description;
 	}
 
 	public boolean isInstalled() {
@@ -238,59 +205,6 @@ public class Node implements Comparable<Node>, IAdaptable {
 		m_children = null;
 	}
 
-	public Node getParent() {
-		return m_parent;
-	}
-
-	public boolean hasProperties() {
-		return (m_properties != null && !m_properties.isEmpty());
-	}
-
-	public Map<String, String> getProperties() {
-		return m_properties;
-	}
-
-	public Object putProperty(String name, String value) {
-
-		if (m_properties == null) {
-			// Linked to preserve order
-			m_properties = new LinkedHashMap<String, String>();
-		}
-
-		return m_properties.put(name, value);
-	}
-
-	public Object putNonEmptyProperty(String name, String value) {
-
-		if (value != null && value.length() > 0) {
-			return putProperty(name, value);
-		}
-
-		return null;
-	}
-
-	public String getProperty(String name) {
-
-		if (m_properties == null) {
-			return null;
-		}
-
-		if (!m_properties.containsKey(name)) {
-			return null;
-		}
-
-		return m_properties.get(name);
-	}
-
-	public String getProperty(String name, String defaultValue) {
-		String property = getProperty(name);
-		if (property == null) {
-			return defaultValue;
-		} else {
-			return property;
-		}
-	}
-
 	public boolean hasConditions() {
 		return (m_conditions != null && !m_conditions.isEmpty());
 	}
@@ -340,22 +254,6 @@ public class Node implements Comparable<Node>, IAdaptable {
 	}
 
 	// ------
-	@Override
-	public int compareTo(Node o) {
-		return m_name.compareTo(o.m_name);
-	}
-
-	@SuppressWarnings("rawtypes")
-	@Override
-	public Object getAdapter(Class adapter) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	// Required by the sorter
-	public String toString() {
-		return getName();
-	}
 
 	public void copyChildren(Node node) {
 		m_children = node.m_children;
