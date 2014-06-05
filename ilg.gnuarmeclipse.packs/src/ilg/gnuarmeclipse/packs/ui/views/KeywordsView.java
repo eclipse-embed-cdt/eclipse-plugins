@@ -12,14 +12,16 @@
 package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.packs.Activator;
+import ilg.gnuarmeclipse.packs.IPacksStorageListener;
 import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.PacksStorageEvent;
-import ilg.gnuarmeclipse.packs.IPacksStorageListener;
-import ilg.gnuarmeclipse.packs.UsingDefaultFileException;
+import ilg.gnuarmeclipse.packs.tree.Leaf;
 import ilg.gnuarmeclipse.packs.tree.Node;
 import ilg.gnuarmeclipse.packs.tree.Type;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
@@ -28,7 +30,6 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.CellLabelProvider;
-import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.viewers.ViewerSorter;
@@ -65,9 +66,6 @@ public class KeywordsView extends ViewPart {
 	private TreeViewer m_viewer;
 	private Action m_removeFilters;
 
-	// private PacksFilter m_packsFilter;
-	// private ViewerFilter[] m_packsFilters;
-
 	private ViewContentProvider m_contentProvider;
 
 	private PacksStorage m_storage;
@@ -85,20 +83,7 @@ public class KeywordsView extends ViewPart {
 
 		public Object[] getElements(Object parent) {
 			if (parent.equals(getViewSite())) {
-				if (m_tree == null) {
-					try {
-						m_tree = PacksStorage.getInstance().getCachedSubTree(
-								"keywords");
-					} catch (UsingDefaultFileException e) {
-						Activator.log(e.getMessage());
-					} catch (Exception e) {
-						Activator.log(e);
-					}
-				}
-				if (m_tree == null) {
-					m_tree = new Node(Type.NONE);
-					return new Object[] { m_tree };
-				}
+				m_tree = getKeywords();
 				return getChildren(m_tree);
 			}
 			return getChildren(parent);
@@ -107,8 +92,8 @@ public class KeywordsView extends ViewPart {
 		@Override
 		public void packsChanged(PacksStorageEvent event) {
 
-			System.out
-					.println("KeywordsView.ViewContentProvider.packsChanged()");
+			System.out.println("KeywordsView.packsChanged()");
+			m_viewer.refresh();
 		}
 
 	}
@@ -116,22 +101,10 @@ public class KeywordsView extends ViewPart {
 	class ViewLabelProvider extends CellLabelProvider {
 
 		public String getText(Object obj) {
-			return " " + ((Node) obj).getName();
+			return " " + ((Leaf) obj).getName();
 		}
 
 		public Image getImage(Object obj) {
-
-			// TreeNode node = ((TreeNode) obj);
-			// String type = node.getType();
-
-			// if (Type.NONE.equals(type)) {
-			// return null;
-			// }
-			//
-			// if (Type.KEYWORD.equals(type)) {
-			// return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-			// "icons/info_obj.png").createImage();
-			// }
 
 			return null;
 		}
@@ -139,17 +112,6 @@ public class KeywordsView extends ViewPart {
 		@Override
 		public String getToolTipText(Object obj) {
 
-			// TreeNode node = ((TreeNode) obj);
-			// String type = node.getType();
-			//
-			// if (Type.VENDOR.equals(type)) {
-			// return "Vendor";
-			// } else if (Type.FAMILY.equals(type)) {
-			// String description = node.getDescription();
-			// if (description != null && description.length() > 0) {
-			// return description;
-			// }
-			// }
 			return null;
 		}
 
@@ -184,15 +146,8 @@ public class KeywordsView extends ViewPart {
 
 		System.out.println("KeywordsView.createPartControl()");
 
-		// m_packsFilter = new PacksFilter();
-		// m_packsFilters = new PacksFilter[] { m_packsFilter };
-
 		m_viewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION
 				| SWT.H_SCROLL | SWT.V_SCROLL);
-
-		// drillDownAdapter = new DrillDownAdapter(m_viewer);
-
-		ColumnViewerToolTipSupport.enableFor(m_viewer);
 
 		m_contentProvider = new ViewContentProvider();
 
@@ -202,6 +157,7 @@ public class KeywordsView extends ViewPart {
 		m_viewer.setContentProvider(m_contentProvider);
 		m_viewer.setLabelProvider(new ViewLabelProvider());
 		m_viewer.setSorter(new NameSorter());
+
 		m_viewer.setInput(getViewSite());
 
 		addProviders();
@@ -227,6 +183,7 @@ public class KeywordsView extends ViewPart {
 	}
 
 	private void addListners() {
+		// None
 	}
 
 	private void hookContextMenu() {
@@ -281,6 +238,7 @@ public class KeywordsView extends ViewPart {
 	}
 
 	private void hookDoubleClickAction() {
+		// None
 	}
 
 	/**
@@ -290,15 +248,12 @@ public class KeywordsView extends ViewPart {
 		m_viewer.getControl().setFocus();
 	}
 
+	// TODO: remove it after migration to storage listeners
 	public void forceRefresh() {
 
 		m_contentProvider.forceRefresh();
 
-		// Object[] expandedElements = m_viewer.getExpandedElements();
 		m_viewer.setInput(getViewSite());
-
-		// m_viewer.refresh();
-		// m_viewer.setExpandedElements(expandedElements);
 
 		System.out.println("KeywordsView.forceRefresh()");
 	}
@@ -319,5 +274,47 @@ public class KeywordsView extends ViewPart {
 
 	public String toString() {
 		return "KeywordsView";
+	}
+
+	// Get view data from storage.
+	// Return a one level hierarchy of keyword nodes.
+	private Node getKeywords() {
+
+		Node packsTree = m_storage.getPacksTree();
+		Node keywordsRoot = new Node(Type.ROOT);
+		Set<String> set = new HashSet<String>();
+		// Collect keywords
+		getKeywordsRecursive(packsTree, set);
+
+		// Add keyword nodes to the hierarchy
+		for (String keywordName : set) {
+			Leaf keywordNode = new Leaf(Leaf.Type.KEYWORD);
+			keywordNode.setName(keywordName);
+			keywordsRoot.addChild(keywordNode);
+		}
+		return keywordsRoot;
+	}
+
+	private void getKeywordsRecursive(Leaf node, Set<String> set) {
+
+		String type = node.getType();
+		if (Type.OUTLINE.equals(type)) {
+			for (Leaf child : node.getChildrenArray()) {
+				String childType = child.getType();
+				if (Type.KEYWORD.equals(childType)) {
+
+					// Collect unique keywords
+					set.add(child.getName());
+				}
+			}
+		} else if (Type.EXTERNAL.equals(type)) {
+			; // no keywords inside externals, avoid recursion
+		} else {
+			for (Leaf child : node.getChildrenArray()) {
+
+				// Recurse down
+				getKeywordsRecursive(child, set);
+			}
+		}
 	}
 }

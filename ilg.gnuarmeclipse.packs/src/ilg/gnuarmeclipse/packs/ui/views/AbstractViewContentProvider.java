@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.ui.views;
 
+import ilg.gnuarmeclipse.packs.tree.Leaf;
 import ilg.gnuarmeclipse.packs.tree.Node;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -21,7 +22,8 @@ public abstract class AbstractViewContentProvider implements
 		IStructuredContentProvider, ITreeContentProvider {
 
 	protected Node m_tree;
-
+	protected Viewer m_viewer;
+	
 	@Override
 	public void dispose() {
 	}
@@ -29,21 +31,35 @@ public abstract class AbstractViewContentProvider implements
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 		m_tree = null;
+		m_viewer = viewer;
 	}
 
 	@Override
 	public Object[] getChildren(Object parentElement) {
-		return ((Node) parentElement).getChildrenArray();
+		if (parentElement instanceof Node) {
+			return ((Node) parentElement).getChildrenArray();
+		} else if (parentElement instanceof Leaf) {
+			return new Leaf[0];
+		} else {
+			return null;
+		}
+		
 	}
 
 	@Override
 	public Object getParent(Object element) {
-		return ((Node) element).getParent();
+		return ((Leaf) element).getParent();
 	}
 
 	@Override
 	public boolean hasChildren(Object element) {
-		return ((Node) element).hasChildren();
+		if (element instanceof Node) {
+			return ((Node) element).hasChildren();
+		} else if (element instanceof Leaf) {
+			return false;
+		} else {
+			return false;
+		}
 	}
 
 	@Override

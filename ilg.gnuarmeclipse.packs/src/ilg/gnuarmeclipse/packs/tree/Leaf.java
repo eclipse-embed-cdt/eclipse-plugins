@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IAdaptable;
 public class Leaf implements Comparable<Leaf>, IAdaptable {
 
 	public class Type {
-
+		public static final String KEYWORD = "keyword";
 	};
 
 	protected String m_type;
@@ -65,7 +65,7 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		return false;
 	}
 
-	public List<Node> getChildren() {
+	public List<Leaf> getChildren() {
 		return null;
 	}
 
@@ -126,6 +126,10 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		}
 	}
 
+	public boolean isInstalled(){
+		return false;
+	}
+	
 	// Required by the sorter
 	public String toString() {
 		return getName();

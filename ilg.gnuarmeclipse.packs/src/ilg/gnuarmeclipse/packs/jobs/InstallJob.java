@@ -98,7 +98,7 @@ public class InstallJob extends Job {
 				if (Type.PACKAGE.equals(type)) {
 
 					// For package nodes, install the top most version
-					packs.add(n.getChildren().get(0));
+					packs.add((Node) n.getChildren().get(0));
 
 				} else if (Type.VERSION.equals(type)) {
 
@@ -147,8 +147,8 @@ public class InstallJob extends Job {
 				installPack(versionNode);
 				installedPacksCount++;
 
-				Node node = m_storage.getPackVersion(vendorName, packName,
-						versionName);
+				Node node = (Node) m_storage.getPackVersion(vendorName,
+						packName, versionName);
 				if (node != null) {
 					node.setIsInstalled(true);
 					node.putProperty(Property.INSTALLED, "true");

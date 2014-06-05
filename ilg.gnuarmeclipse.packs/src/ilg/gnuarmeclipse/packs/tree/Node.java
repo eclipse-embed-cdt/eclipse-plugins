@@ -86,7 +86,7 @@ public class Node extends Leaf {
 			"Csub", "Cvariant", "Cversion", "Capiversion", "Tcompiler",
 			"condition" };
 
-	protected List<Node> m_children;
+	protected List<Leaf> m_children;
 
 	protected boolean m_isInstalled;
 	protected List<Selector> m_conditions;
@@ -95,6 +95,7 @@ public class Node extends Leaf {
 	public Node(String type) {
 
 		super(type);
+		
 		m_isInstalled = false;
 		m_children = null;
 		m_conditions = null;
@@ -113,15 +114,15 @@ public class Node extends Leaf {
 		return (m_children != null && !m_children.isEmpty());
 	}
 
-	public List<Node> getChildren() {
+	public List<Leaf> getChildren() {
 		return m_children;
 	}
 
-	public Node[] getChildrenArray() {
+	public Leaf[] getChildrenArray() {
 		if (m_children != null) {
-			return m_children.toArray(new Node[m_children.size()]);
+			return m_children.toArray(new Leaf[m_children.size()]);
 		} else {
-			return new Node[0];
+			return new Leaf[0];
 		}
 	}
 
@@ -133,15 +134,15 @@ public class Node extends Leaf {
 		return node;
 	}
 
-	public void addChild(Node child) {
+	public void addChild(Leaf node) {
 		if (m_children == null) {
-			m_children = new ArrayList<Node>();
+			m_children = new ArrayList<Leaf>();
 		}
-		m_children.add(child);
-		child.m_parent = this;
+		m_children.add(node);
+		node.m_parent = this;
 	}
 
-	public Node addUniqueChild(String type, String name) {
+	public Leaf addUniqueChild(String type, String name) {
 
 		if (type == null) {
 			return null;
@@ -149,10 +150,10 @@ public class Node extends Leaf {
 
 		if (m_children == null) {
 			// On first child create list
-			m_children = new ArrayList<Node>();
+			m_children = new ArrayList<Leaf>();
 		}
 
-		for (Node node : m_children) {
+		for (Leaf node : m_children) {
 			if (node.m_type.equals(type)) {
 				if (name == null) {
 					// Node of given type, any name, found
@@ -177,7 +178,7 @@ public class Node extends Leaf {
 		return child;
 	}
 
-	public Node getChild(String type, String name) {
+	public Leaf getChild(String type, String name) {
 		if (type == null) {
 			return null;
 		}
@@ -185,7 +186,7 @@ public class Node extends Leaf {
 			return null;
 		}
 
-		for (Node node : m_children) {
+		for (Leaf node : m_children) {
 			if (node.m_type.equals(type)) {
 				if (name == null) {
 					// Node of given type, any name, found

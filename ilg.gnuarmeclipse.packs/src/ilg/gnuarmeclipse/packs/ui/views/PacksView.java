@@ -119,8 +119,8 @@ public class PacksView extends ViewPart {
 				if (m_tree == null) {
 					System.out.println("getCachedSubTree(packages)");
 					try {
-						m_tree = PacksStorage.getInstance().getCachedSubTree(
-								"packages");
+						m_tree = (Node) PacksStorage.getInstance()
+								.getCachedSubTree("packages");
 					} catch (UsingDefaultFileException e) {
 						Activator.log(e.getMessage());
 					} catch (Exception e) {
@@ -379,7 +379,7 @@ public class PacksView extends ViewPart {
 			return;
 		}
 
-		// System.out.println("Packs: " + part + " selection=" + selection);
+		System.out.println("Packs: " + part + " selection=" + selection);
 
 		IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 

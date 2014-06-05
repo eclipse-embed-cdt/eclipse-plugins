@@ -14,6 +14,7 @@ package ilg.gnuarmeclipse.packs.cmsis;
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.Repos;
 import ilg.gnuarmeclipse.packs.Utils;
+import ilg.gnuarmeclipse.packs.tree.Leaf;
 import ilg.gnuarmeclipse.packs.tree.Property;
 import ilg.gnuarmeclipse.packs.tree.Selector;
 import ilg.gnuarmeclipse.packs.tree.Node;
@@ -778,7 +779,7 @@ public class PdscParser {
 		int ramKB = 0;
 		int romKB = 0;
 
-		for (Node childNode : deviceNode.getChildrenArray()) {
+		for (Leaf childNode : deviceNode.getChildrenArray()) {
 
 			if (Type.MEMORY.equals(childNode.getType())) {
 				String size = childNode.getProperty(Node.SIZE_PROPERTY, "");
@@ -1567,7 +1568,7 @@ public class PdscParser {
 		}
 
 		String boardName = "";
-		for (Node childNode : linkNode.getChildrenArray()) {
+		for (Leaf childNode : linkNode.getChildrenArray()) {
 
 			if (Type.BOARD.equals(childNode.getType())) {
 				boardName = childNode.getName();
@@ -2368,13 +2369,17 @@ public class PdscParser {
 		String shortUrl = "";
 
 		// Create the top subtrees
-		Node packagesNode = parent.addUniqueChild(Type.PACKAGES_SUBTREE, null);
+		Node packagesNode = (Node) parent.addUniqueChild(Type.PACKAGES_SUBTREE,
+				null);
 
-		Node devicesSubtree = parent.addUniqueChild(Type.DEVICES_SUBTREE, null);
+		Node devicesSubtree = (Node) parent.addUniqueChild(
+				Type.DEVICES_SUBTREE, null);
 
-		Node boardsNode = parent.addUniqueChild(Type.BOARDS_SUBTREE, null);
+		Node boardsNode = (Node) parent.addUniqueChild(Type.BOARDS_SUBTREE,
+				null);
 
-		Node keywordsNode = parent.addUniqueChild(Type.KEYWORDS_SELECT, null);
+		Node keywordsNode = (Node) parent.addUniqueChild(Type.KEYWORDS_SELECT,
+				null);
 
 		Set<String> conditionKeywords = new HashSet<String>();
 
@@ -2406,11 +2411,11 @@ public class PdscParser {
 			packDescription = extendDescription(packDescription,
 					Utils.getElementContent(descriptionElement));
 
-			Node vendorNode = packagesNode.addUniqueChild(Type.VENDOR,
+			Node vendorNode = (Node) packagesNode.addUniqueChild(Type.VENDOR,
 					packVendor);
 			vendorNode.putProperty(Node.VENDOR_PROPERTY, packVendor);
 
-			packNode = vendorNode.getChild("package", packName);
+			packNode = (Node) vendorNode.getChild("package", packName);
 			if (packNode != null) {
 				m_out.println("Duplicate package name \"" + packName
 						+ "\", ignored.");
@@ -2484,7 +2489,7 @@ public class PdscParser {
 					currentReleaseDate = releaseDate;
 				}
 
-				Node versionNode = packNode.addUniqueChild("version",
+				Node versionNode = (Node) packNode.addUniqueChild("version",
 						releaseName);
 
 				String archiveName = packVendor + "." + packName + "."
@@ -2535,7 +2540,7 @@ public class PdscParser {
 		Node outlineNode = new Node(Type.OUTLINE);
 		packNode.setOutline(outlineNode);
 
-		Node outlinePackNode = outlineNode.addUniqueChild(Type.PACKAGE,
+		Node outlinePackNode = (Node) outlineNode.addUniqueChild(Type.PACKAGE,
 				packName + " (brief)");
 		String outlinePackDescription = "Package: " + packName;
 		outlinePackDescription = extendDescription(outlinePackDescription,
@@ -2544,8 +2549,8 @@ public class PdscParser {
 
 		if (currentReleaseName != null) {
 
-			Node outlineVersionNode = outlineNode.addUniqueChild(Type.VERSION,
-					currentReleaseName);
+			Node outlineVersionNode = (Node) outlineNode.addUniqueChild(
+					Type.VERSION, currentReleaseName);
 
 			String versionDescription = "Version: " + currentReleaseName;
 			if (currentReleaseDate.length() > 0) {
@@ -2610,12 +2615,12 @@ public class PdscParser {
 					// Vendor not enumeration
 					continue;
 				}
-				Node vendorNode = devicesSubtree.addUniqueChild(Type.VENDOR,
-						va[0]);
+				Node vendorNode = (Node) devicesSubtree.addUniqueChild(
+						Type.VENDOR, va[0]);
 				vendorNode.putNonEmptyProperty(Node.VENDORID_PROPERTY, va[1]);
 
-				Node familyNode = vendorNode
-						.addUniqueChild(Type.FAMILY, family);
+				Node familyNode = (Node) vendorNode.addUniqueChild(Type.FAMILY,
+						family);
 				familyNode.setDescription(description);
 
 				familyNode.putNonEmptyProperty(Node.VENDOR_PROPERTY, va[0]);
@@ -2649,10 +2654,10 @@ public class PdscParser {
 				String description = "";
 				description = Utils.getElementContent(descriptionElement);
 
-				Node vendorNode = boardsNode
-						.addUniqueChild(Type.VENDOR, vendor);
+				Node vendorNode = (Node) boardsNode.addUniqueChild(Type.VENDOR,
+						vendor);
 
-				Node boardNode = vendorNode.addUniqueChild(Type.BOARD,
+				Node boardNode = (Node) vendorNode.addUniqueChild(Type.BOARD,
 						boardName);
 				boardNode.putProperty(Node.VENDOR_PROPERTY, vendor);
 
@@ -2685,12 +2690,12 @@ public class PdscParser {
 							continue;
 						}
 
-						Node vendorNode2 = devicesSubtree.addUniqueChild(
-								Type.VENDOR, va[0]);
+						Node vendorNode2 = (Node) devicesSubtree
+								.addUniqueChild(Type.VENDOR, va[0]);
 						vendorNode2.putNonEmptyProperty(Node.VENDORID_PROPERTY,
 								va[1]);
 
-						Node familyNode2 = vendorNode2.addUniqueChild(
+						Node familyNode2 = (Node) vendorNode2.addUniqueChild(
 								Type.FAMILY, family);
 						familyNode2.setDescription(description);
 
@@ -2730,11 +2735,11 @@ public class PdscParser {
 					String vendor = boardElement.getAttribute("vendor").trim();
 					String boardName = boardElement.getAttribute("name").trim();
 
-					Node vendorNode = boardsNode.addUniqueChild(Type.VENDOR,
-							vendor);
+					Node vendorNode = (Node) boardsNode.addUniqueChild(
+							Type.VENDOR, vendor);
 
-					Node boardNode = vendorNode.addUniqueChild(Type.BOARD,
-							boardName);
+					Node boardNode = (Node) vendorNode.addUniqueChild(
+							Type.BOARD, boardName);
 					boardNode.putProperty(Node.VENDOR_PROPERTY, vendor);
 
 					// Add package conditions
@@ -2899,7 +2904,7 @@ public class PdscParser {
 		}
 		String packName = Utils.getElementContent(nameElement);
 
-		packNode = parent.addUniqueChild(Type.PACKAGE, packName);
+		packNode = (Node) parent.addUniqueChild(Type.PACKAGE, packName);
 
 		Element packDescriptionElement = Utils.getChildElement(packageElement,
 				"description");
@@ -2945,7 +2950,8 @@ public class PdscParser {
 			String description = Utils
 					.getElementMultiLineContent(releaseElement);
 
-			Node verNode = packNode.addUniqueChild(Type.VERSION, releaseName);
+			Node verNode = (Node) packNode.addUniqueChild(Type.VERSION,
+					releaseName);
 
 			verNode.putProperty(Property.TYPE, "cmsis.pack");
 
@@ -3068,8 +3074,8 @@ public class PdscParser {
 					continue;
 				}
 
-				Node deviceFamilyNode = outlineNode.addUniqueChild(Type.FAMILY,
-						family);
+				Node deviceFamilyNode = (Node) outlineNode.addUniqueChild(
+						Type.FAMILY, family);
 				deviceFamilyNode.setDescription(description);
 
 				deviceFamilyNode.putNonEmptyProperty(Property.VENDOR_NAME,
@@ -3096,7 +3102,7 @@ public class PdscParser {
 				description = Utils
 						.getElementMultiLineContent(descriptionElement);
 
-				Node boardNode = outlineNode.addUniqueChild(Type.BOARD,
+				Node boardNode = (Node) outlineNode.addUniqueChild(Type.BOARD,
 						boardName);
 				boardNode.putProperty(Property.VENDOR_NAME, vendor);
 
@@ -3123,8 +3129,8 @@ public class PdscParser {
 						}
 
 						// Contribute external device family
-						Node deviceFamilyNode = externNode.addUniqueChild(
-								Type.FAMILY, family);
+						Node deviceFamilyNode = (Node) externNode
+								.addUniqueChild(Type.FAMILY, family);
 
 						deviceFamilyNode.putProperty(Property.VENDOR_NAME,
 								va[0]);
@@ -3230,8 +3236,8 @@ public class PdscParser {
 					String boardName = boardElement.getAttribute("name").trim();
 
 					// Contribute external board
-					Node boardNode = externNode.addUniqueChild(Type.BOARD,
-							boardName);
+					Node boardNode = (Node) externNode.addUniqueChild(
+							Type.BOARD, boardName);
 					boardNode.putProperty(Property.VENDOR_NAME, vendor);
 
 					if (firstBoardName.length() == 0) {

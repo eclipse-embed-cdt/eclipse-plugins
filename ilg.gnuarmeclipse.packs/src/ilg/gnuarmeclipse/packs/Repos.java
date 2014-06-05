@@ -47,7 +47,7 @@ public class Repos {
 
 	private static Repos ms_repos;
 
-	public static Repos getInstance() {
+	public static synchronized Repos getInstance() {
 		if (ms_repos == null) {
 			ms_repos = new Repos();
 		}

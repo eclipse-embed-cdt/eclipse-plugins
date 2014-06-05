@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.ui.views;
 
+import ilg.gnuarmeclipse.packs.tree.Leaf;
 import ilg.gnuarmeclipse.packs.tree.Selector;
 import ilg.gnuarmeclipse.packs.tree.Node;
 import ilg.gnuarmeclipse.packs.tree.Type;
@@ -44,7 +45,7 @@ public class PacksFilter extends ViewerFilter {
 			return true; // Nothing selected, all nodes visible
 
 		// System.out.println(parentElement + " " + element);
-		Node node = (Node) element;
+		Leaf node = (Leaf) element;
 		// String nodeType = node.getType();
 
 		// For folder nodes (vendor), if there is no child visible,
@@ -64,13 +65,17 @@ public class PacksFilter extends ViewerFilter {
 			return true;
 		}
 
+		if (!(node instanceof Node)) {
+			return false;
+		}
+		
 		// If the node has no restricting conditions at all,
 		// then it is always visible
-		if (!node.hasConditions()) {
+		if (!((Node) node).hasConditions()) {
 			return false; // true;
 		}
 
-		List<Selector> conditions = node.getConditions();
+		List<Selector> conditions = ((Node) node).getConditions();
 		List<Selector> filteredConditions = new LinkedList<Selector>();
 		for (Selector condition : conditions) {
 			if (m_conditionType.equals(condition.getType())) {
@@ -90,11 +95,12 @@ public class PacksFilter extends ViewerFilter {
 
 			// Enumerate all selections
 			for (Object obj : m_selection.toList()) {
-				if (obj instanceof Node) {
-					Node selectionNode = (Node) obj;
+				if (obj instanceof Leaf) {
+					Leaf selectionNode = (Leaf) obj;
 
 					if (isNodeVisible(condition, selectionNode)) {
-						// System.out.println("accepted, match " + condition);
+						// System.out.println("accepted, match " +
+						// condition);
 						return true;
 					}
 				}
@@ -105,7 +111,7 @@ public class PacksFilter extends ViewerFilter {
 		return false;
 	}
 
-	private boolean isNodeVisible(Selector condition, Node selectionNode) {
+	private boolean isNodeVisible(Selector condition, Leaf selectionNode) {
 
 		// Condition is from the evaluated node
 		String conditionType = condition.getType();
