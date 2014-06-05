@@ -176,18 +176,19 @@ public class Repos {
 			return m_list;
 		}
 
-		List<Map<String, Object>> sites;
+		List<Map<String, Object>> list;
 		boolean useDefaults = false;
 		try {
-			sites = parseFile();
-			return sites;
+			list = parseFile();
+			m_list = list;
+			return list;
 		} catch (UsingDefaultFileException e) {
 			Activator.log(e.getMessage());
 			useDefaults = true;
 		} catch (Exception e) {
 			Activator.log(e);
 		}
-		List<Map<String, Object>> list = getDefaultList();
+		list = getDefaultList();
 		if (useDefaults) {
 			try {
 				putList(list);
@@ -195,6 +196,8 @@ public class Repos {
 				;
 			}
 		}
+
+		m_list = list;
 		return list;
 	}
 

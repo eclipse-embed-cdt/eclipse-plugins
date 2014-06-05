@@ -12,13 +12,18 @@
 package ilg.gnuarmeclipse.packs.cmsis;
 
 import ilg.gnuarmeclipse.packs.Activator;
-import ilg.gnuarmeclipse.packs.TreeNode;
+import ilg.gnuarmeclipse.packs.Repos;
 import ilg.gnuarmeclipse.packs.Utils;
+import ilg.gnuarmeclipse.packs.tree.Property;
+import ilg.gnuarmeclipse.packs.tree.Selector;
+import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.Type;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.HashSet;
@@ -45,9 +50,12 @@ public class PdscParser {
 	private URL m_url;
 	private Document m_document;
 
+	private Repos m_repos;
+
 	public PdscParser() {
 
 		m_out = Activator.getConsoleOut();
+		m_repos = Repos.getInstance();
 
 		m_isBrief = false;
 	}
@@ -110,11 +118,11 @@ public class PdscParser {
 		return m_document;
 	}
 
-	public TreeNode parsePdscFull() throws ParserConfigurationException,
+	public Node parsePdscFull() throws ParserConfigurationException,
 			SAXException, IOException {
 
-		TreeNode tree = new TreeNode(TreeNode.OUTLINE_TYPE);
-		tree.putProperty(TreeNode.FOLDER_PROPERTY, m_path.removeLastSegments(1)
+		Node tree = new Node(Type.OUTLINE);
+		tree.putProperty(Node.FOLDER_PROPERTY, m_path.removeLastSegments(1)
 				.toString());
 
 		Element packageElement = m_document.getDocumentElement();
@@ -139,10 +147,10 @@ public class PdscParser {
 			return tree;
 		}
 
-		TreeNode packNode = new TreeNode(TreeNode.PACKAGE_TYPE);
+		Node packNode = new Node(Type.PACKAGE);
 		tree.addChild(packNode);
 
-		packNode.putProperty(TreeNode.SCHEMA_PROPERTY, schemaVersion);
+		packNode.putProperty(Node.SCHEMA_PROPERTY, schemaVersion);
 
 		String packDescription = "";
 
@@ -154,13 +162,13 @@ public class PdscParser {
 			if ("vendor".equals(elementName)) {
 
 				String vendorName = Utils.getElementContent(childElement);
-				packNode.putProperty(TreeNode.VENDOR_PROPERTY, vendorName);
+				packNode.putProperty(Node.VENDOR_PROPERTY, vendorName);
 
 			} else if ("name".equals(elementName)) {
 
 				String packName = Utils.getElementContent(childElement);
 				packNode.setName(packName);
-				packNode.putProperty(TreeNode.NAME_PROPERTY, packName);
+				packNode.putProperty(Node.NAME_PROPERTY, packName);
 
 				packDescription = "Package: " + packName;
 
@@ -173,7 +181,7 @@ public class PdscParser {
 			} else if ("url".equals(elementName)) {
 
 				String url = Utils.getElementContent(childElement);
-				packNode.putNonEmptyProperty(TreeNode.URL_PROPERTY, url);
+				packNode.putNonEmptyProperty(Node.URL_PROPERTY, url);
 
 				packDescription = extendDescription(packDescription, "url", url);
 
@@ -181,7 +189,7 @@ public class PdscParser {
 
 				String license = Utils.getElementContent(childElement);
 				license = updatePosixSeparators(license);
-				packNode.putNonEmptyProperty(TreeNode.LICENSE_PROPERTY, license);
+				packNode.putNonEmptyProperty(Node.LICENSE_PROPERTY, license);
 
 				packDescription = extendDescription(packDescription, "license",
 						license);
@@ -206,11 +214,10 @@ public class PdscParser {
 					description = extendDescription(description,
 							Utils.getElementContent(releaseElement));
 
-					TreeNode versionNode = new TreeNode(TreeNode.VERSION_TYPE);
+					Node versionNode = new Node(Type.VERSION);
 					versionNode.setName(releaseVersion);
-					versionNode.putProperty(TreeNode.NAME_PROPERTY,
-							releaseVersion);
-					versionNode.putNonEmptyProperty(TreeNode.DATE_PROPERTY,
+					versionNode.putProperty(Node.NAME_PROPERTY, releaseVersion);
+					versionNode.putNonEmptyProperty(Node.DATE_PROPERTY,
 							releaseDate);
 
 					versionNode.setDescription(description);
@@ -237,7 +244,7 @@ public class PdscParser {
 
 			} else if ("devices".equals(elementName)) {
 
-				// TreeNode devicesNode = new TreeNode(TreeNode.DEVICES_TYPE);
+				// TreeNode devicesNode = new TreeNode(Type.DEVICES);
 				// tree.addChild(devicesNode);
 
 				List<Element> childElements2 = Utils
@@ -257,7 +264,7 @@ public class PdscParser {
 
 			} else if ("boards".equals(elementName)) {
 
-				// TreeNode boardsNode = new TreeNode(TreeNode.BOARDS_TYPE);
+				// TreeNode boardsNode = new TreeNode(Type.BOARDS);
 				// tree.addChild(boardsNode);
 
 				List<Element> childElements2 = Utils
@@ -294,7 +301,7 @@ public class PdscParser {
 
 			} else if ("examples".equals(elementName)) {
 
-				// TreeNode examplesNode = new TreeNode(TreeNode.EXAMPLES_TYPE);
+				// TreeNode examplesNode = new TreeNode(Type.EXAMPLES);
 				// tree.addChild(examplesNode);
 
 				List<Element> childElements2 = Utils
@@ -315,7 +322,7 @@ public class PdscParser {
 			} else if ("components".equals(elementName)) {
 
 				// TreeNode componentsNode = new
-				// TreeNode(TreeNode.COMPONENTS_TYPE);
+				// TreeNode(Type.COMPONENTS);
 				// tree.addChild(componentsNode);
 
 				List<Element> childElements2 = Utils
@@ -420,7 +427,7 @@ public class PdscParser {
 	// </xs:element>
 	// <!-- Family Level end -->
 
-	private void processFamily(Element el, TreeNode parent) {
+	private void processFamily(Element el, Node parent) {
 
 		// Required
 		String familyName = el.getAttribute("Dfamily").trim();
@@ -428,14 +435,14 @@ public class PdscParser {
 
 		String va[] = familyVendor.split("[:]");
 
-		TreeNode familyNode = new TreeNode(TreeNode.FAMILY_TYPE);
+		Node familyNode = new Node(Type.FAMILY);
 		parent.addChild(familyNode);
 
 		familyNode.setName(familyName + " (family)");
 
-		familyNode.putProperty(TreeNode.NAME_PROPERTY, familyName);
-		familyNode.putProperty(TreeNode.VENDOR_PROPERTY, va[0]);
-		familyNode.putProperty(TreeNode.VENDORID_PROPERTY, va[1]);
+		familyNode.putProperty(Node.NAME_PROPERTY, familyName);
+		familyNode.putProperty(Node.VENDOR_PROPERTY, va[0]);
+		familyNode.putProperty(Node.VENDORID_PROPERTY, va[1]);
 
 		String familyDescription = "Device family: " + familyName;
 
@@ -507,7 +514,7 @@ public class PdscParser {
 	// <xs:attribute name="DcoreVersion" type="xs:string"/>
 	// </xs:complexType>
 
-	private void processProcessor(Element el, TreeNode parent) {
+	private void processProcessor(Element el, Node parent) {
 
 		String Dcore = el.getAttribute("Dcore").trim();
 		String DcoreVersion = el.getAttribute("DcoreVersion").trim();
@@ -516,7 +523,7 @@ public class PdscParser {
 		String Dendian = el.getAttribute("Dendian").trim();
 		String Dclock = el.getAttribute("Dclock").trim();
 
-		TreeNode processorNode = new TreeNode(TreeNode.PROCESSOR_TYPE);
+		Node processorNode = new Node(Type.PROCESSOR);
 		parent.addChild(processorNode);
 
 		String name;
@@ -529,13 +536,12 @@ public class PdscParser {
 		}
 		processorNode.setName(name);
 
-		processorNode.putNonEmptyProperty(TreeNode.CORE_PROPERTY, Dcore);
-		processorNode.putNonEmptyProperty(TreeNode.VERSION_PROPERTY,
-				DcoreVersion);
-		processorNode.putNonEmptyProperty(TreeNode.FPU_PROPERTY, Dfpu);
-		processorNode.putNonEmptyProperty(TreeNode.MPU_PROPERTY, Dmpu);
-		processorNode.putNonEmptyProperty(TreeNode.ENDIAN_PROPERTY, Dendian);
-		processorNode.putNonEmptyProperty(TreeNode.CLOCK_PROPERTY, Dclock);
+		processorNode.putNonEmptyProperty(Node.CORE_PROPERTY, Dcore);
+		processorNode.putNonEmptyProperty(Node.VERSION_PROPERTY, DcoreVersion);
+		processorNode.putNonEmptyProperty(Node.FPU_PROPERTY, Dfpu);
+		processorNode.putNonEmptyProperty(Node.MPU_PROPERTY, Dmpu);
+		processorNode.putNonEmptyProperty(Node.ENDIAN_PROPERTY, Dendian);
+		processorNode.putNonEmptyProperty(Node.CLOCK_PROPERTY, Dclock);
 
 		String description = "Processor";
 		description = extendDescription(description, "Dcore", Dcore);
@@ -568,7 +574,7 @@ public class PdscParser {
 	// <xs:attribute name="count" type="xs:int" use="optional"/>
 	// </xs:complexType>
 
-	private void processFeature(Element el, TreeNode parent) {
+	private void processFeature(Element el, Node parent) {
 
 		// Required
 		String featureType = el.getAttribute("type").trim();
@@ -579,14 +585,14 @@ public class PdscParser {
 		String name = el.getAttribute("name").trim();
 		String Pname = el.getAttribute("Pname").trim();
 
-		TreeNode featureNode = new TreeNode(TreeNode.FEATURE_TYPE);
+		Node featureNode = new Node(Type.FEATURE);
 		parent.addChild(featureNode);
 
 		featureNode.setName(featureType);
-		featureNode.putNonEmptyProperty(TreeNode.NAME_PROPERTY, name);
-		featureNode.putNonEmptyProperty(TreeNode.N_PROPERTY, featureN);
-		featureNode.putNonEmptyProperty(TreeNode.M_PROPERTY, featureM);
-		featureNode.putNonEmptyProperty(TreeNode.PNAME_PROPERTY, Pname);
+		featureNode.putNonEmptyProperty(Node.NAME_PROPERTY, name);
+		featureNode.putNonEmptyProperty(Node.N_PROPERTY, featureN);
+		featureNode.putNonEmptyProperty(Node.M_PROPERTY, featureM);
+		featureNode.putNonEmptyProperty(Node.PNAME_PROPERTY, Pname);
 
 		String description = "Feature";
 		if (name.length() > 0) {
@@ -606,14 +612,14 @@ public class PdscParser {
 	// <xs:attribute name="title" type="xs:string"/>
 	// </xs:complexType>
 
-	private void processBook(Element el, TreeNode parent) {
+	private void processBook(Element el, Node parent) {
 
 		String bookName = el.getAttribute("name").trim();
 
 		String bookTitle = el.getAttribute("title").trim();
 		String category = el.getAttribute("category").trim();
 
-		TreeNode bookNode = new TreeNode(TreeNode.BOOK_TYPE);
+		Node bookNode = new Node(Type.BOOK);
 		parent.addChild(bookNode);
 
 		bookNode.setName(bookTitle);
@@ -625,15 +631,15 @@ public class PdscParser {
 		// Instead of NAME_PROPERTY we store URL or FILE
 		if (bookName.startsWith("http://") || bookName.startsWith("https://")
 				|| bookName.startsWith("ftp://")) {
-			bookNode.putNonEmptyProperty(TreeNode.URL_PROPERTY, bookName);
+			bookNode.putNonEmptyProperty(Node.URL_PROPERTY, bookName);
 			description = extendDescription(description, "url", bookName);
 		} else {
-			bookNode.putNonEmptyProperty(TreeNode.FILE_PROPERTY, posixName);
+			bookNode.putNonEmptyProperty(Node.FILE_PROPERTY, posixName);
 			description = extendDescription(description, "file", posixName);
 		}
 
-		bookNode.putNonEmptyProperty(TreeNode.TITLE_PROPERTY, bookTitle);
-		bookNode.putNonEmptyProperty(TreeNode.CATEGORY_PROPERTY, category);
+		bookNode.putNonEmptyProperty(Node.TITLE_PROPERTY, bookTitle);
+		bookNode.putNonEmptyProperty(Node.CATEGORY_PROPERTY, category);
 
 		description = extendDescription(description, "category", category);
 
@@ -653,15 +659,15 @@ public class PdscParser {
 	// </xs:complexType>
 	// </xs:element>
 
-	private void processSubFamily(Element el, TreeNode parent) {
+	private void processSubFamily(Element el, Node parent) {
 
 		String subFamilyName = el.getAttribute("DsubFamily").trim();
 
-		TreeNode subFamilyNode = new TreeNode(TreeNode.SUBFAMILY_TYPE);
+		Node subFamilyNode = new Node(Type.SUBFAMILY);
 		parent.addChild(subFamilyNode);
 
 		subFamilyNode.setName(subFamilyName + " (subfamily)");
-		subFamilyNode.putProperty(TreeNode.NAME_PROPERTY, subFamilyName);
+		subFamilyNode.putProperty(Node.NAME_PROPERTY, subFamilyName);
 
 		String description = "Device subfamily: " + subFamilyName;
 
@@ -707,16 +713,16 @@ public class PdscParser {
 	// <!-- <xs:attributeGroup ref="DefaultDeviceAttributesGroup"/> -->
 	// </xs:complexType>
 
-	private void processDevice(Element el, TreeNode parent) {
+	private void processDevice(Element el, Node parent) {
 
 		// Required
 		String deviceName = el.getAttribute("Dname").trim();
 
-		TreeNode deviceNode = new TreeNode(TreeNode.DEVICE_TYPE);
+		Node deviceNode = new Node(Type.DEVICE);
 		parent.addChild(deviceNode);
 
 		deviceNode.setName(deviceName + " (device)");
-		deviceNode.putProperty(TreeNode.NAME_PROPERTY, deviceName);
+		deviceNode.putProperty(Node.NAME_PROPERTY, deviceName);
 
 		String descriptionContent = "";
 
@@ -735,11 +741,11 @@ public class PdscParser {
 				String variantName = childElement.getAttribute("Dvariant")
 						.trim();
 
-				TreeNode variantNode = new TreeNode(TreeNode.VARIANT_TYPE);
+				Node variantNode = new Node(Type.VARIANT);
 				deviceNode.addChild(variantNode);
 
 				variantNode.setName(variantName + " (variant)");
-				variantNode.putProperty(TreeNode.NAME_PROPERTY, variantName);
+				variantNode.putProperty(Node.NAME_PROPERTY, variantName);
 
 				String variantDescriptionContent = "Device variant: "
 						+ variantName;
@@ -772,13 +778,13 @@ public class PdscParser {
 		int ramKB = 0;
 		int romKB = 0;
 
-		for (TreeNode childNode : deviceNode.getChildrenArray()) {
+		for (Node childNode : deviceNode.getChildrenArray()) {
 
-			if (TreeNode.MEMORY_TYPE.equals(childNode.getType())) {
-				String size = childNode.getProperty(TreeNode.SIZE_PROPERTY, "");
+			if (Type.MEMORY.equals(childNode.getType())) {
+				String size = childNode.getProperty(Node.SIZE_PROPERTY, "");
 				int sizeKB = Utils.convertHexInt(size) / 1024;
 
-				String id = childNode.getProperty(TreeNode.ID_PROPERTY, "");
+				String id = childNode.getProperty(Node.ID_PROPERTY, "");
 				if (id.contains("ROM")) {
 					romKB += sizeKB;
 				} else if (id.contains("RAM")) {
@@ -844,7 +850,7 @@ public class PdscParser {
 	// </xs:choice>
 	// </xs:group>
 
-	private void processDevicePropertiesGroup(Element el, TreeNode parent) {
+	private void processDevicePropertiesGroup(Element el, Node parent) {
 
 		String elementName = el.getNodeName();
 		if ("processor".equals(elementName)) {
@@ -875,7 +881,7 @@ public class PdscParser {
 				System.out.println("Pname not processed " + Pname + "");
 			}
 
-			TreeNode headerNode = new TreeNode(TreeNode.HEADER_TYPE);
+			Node headerNode = new Node(Type.HEADER);
 			parent.addChild(headerNode);
 
 			String posixHeader = updatePosixSeparators(header);
@@ -883,10 +889,10 @@ public class PdscParser {
 
 			headerNode.setName(va[va.length - 1]);
 			headerNode.setDescription("Header file: " + posixHeader);
-			headerNode.putProperty(TreeNode.FILE_PROPERTY, posixHeader);
-			headerNode.putProperty(TreeNode.DEFINE_PROPERTY, define);
+			headerNode.putProperty(Node.FILE_PROPERTY, posixHeader);
+			headerNode.putProperty(Node.DEFINE_PROPERTY, define);
 
-			TreeNode defineNode = new TreeNode(TreeNode.DEFINE_TYPE);
+			Node defineNode = new Node(Type.DEFINE);
 			parent.addChild(defineNode);
 
 			defineNode.setName(define);
@@ -932,19 +938,19 @@ public class PdscParser {
 			String init = el.getAttribute("init").trim();
 			String defa = el.getAttribute("default").trim();
 
-			TreeNode memoryNode = new TreeNode(TreeNode.MEMORY_TYPE);
+			Node memoryNode = new Node(Type.MEMORY);
 			parent.addChild(memoryNode);
 
 			memoryNode.setName(id);
 
-			memoryNode.putProperty(TreeNode.ID_PROPERTY, id);
-			memoryNode.putProperty(TreeNode.START_PROPERTY, start);
-			memoryNode.putProperty(TreeNode.SIZE_PROPERTY, size);
+			memoryNode.putProperty(Node.ID_PROPERTY, id);
+			memoryNode.putProperty(Node.START_PROPERTY, start);
+			memoryNode.putProperty(Node.SIZE_PROPERTY, size);
 
-			memoryNode.putNonEmptyProperty(TreeNode.PNAME_PROPERTY, Pname);
-			memoryNode.putNonEmptyProperty(TreeNode.STARTUP_PROPERTY, startup);
-			memoryNode.putNonEmptyProperty(TreeNode.INIT_PROPERTY, init);
-			memoryNode.putNonEmptyProperty(TreeNode.DEFAULT_PROPERTY, defa);
+			memoryNode.putNonEmptyProperty(Node.PNAME_PROPERTY, Pname);
+			memoryNode.putNonEmptyProperty(Node.STARTUP_PROPERTY, startup);
+			memoryNode.putNonEmptyProperty(Node.INIT_PROPERTY, init);
+			memoryNode.putNonEmptyProperty(Node.DEFAULT_PROPERTY, defa);
 
 			String description;
 			if (id.contains("ROM")) {
@@ -1003,15 +1009,15 @@ public class PdscParser {
 			String posixSvd = updatePosixSeparators(svd);
 			String va[] = posixSvd.split("/");
 
-			TreeNode debugNode = new TreeNode(TreeNode.DEBUG_TYPE);
+			Node debugNode = new Node(Type.DEBUG);
 			parent.addChild(debugNode);
 
 			debugNode.setName(va[va.length - 1]);
 
-			debugNode.putProperty(TreeNode.FILE_PROPERTY, posixSvd);
-			debugNode.putNonEmptyProperty(TreeNode.PNAME_PROPERTY, Pname);
-			debugNode.putNonEmptyProperty(TreeNode.DP_PROPERTY, dp);
-			debugNode.putNonEmptyProperty(TreeNode.AP_PROPERTY, ap);
+			debugNode.putProperty(Node.FILE_PROPERTY, posixSvd);
+			debugNode.putNonEmptyProperty(Node.PNAME_PROPERTY, Pname);
+			debugNode.putNonEmptyProperty(Node.DP_PROPERTY, dp);
+			debugNode.putNonEmptyProperty(Node.AP_PROPERTY, ap);
 
 			String description = "Debug";
 			description = extendDescription(description, "Pname", Pname);
@@ -1062,7 +1068,7 @@ public class PdscParser {
 	// </xs:choice>
 	// </xs:group>
 
-	private void processBoard(Element el, TreeNode parent) {
+	private void processBoard(Element el, Node parent) {
 
 		// Required
 		String boardVendor = el.getAttribute("vendor").trim();
@@ -1073,14 +1079,13 @@ public class PdscParser {
 		String salesContact = el.getAttribute("salesContact").trim();
 		String orderForm = el.getAttribute("orderForm").trim();
 
-		TreeNode boardNode = new TreeNode(TreeNode.BOARD_TYPE);
+		Node boardNode = new Node(Type.BOARD);
 		parent.addChild(boardNode);
 
 		boardNode.setName(boardName);
-		boardNode.putProperty(TreeNode.VENDOR_PROPERTY, boardVendor);
-		boardNode.putProperty(TreeNode.NAME_PROPERTY, boardName);
-		boardNode
-				.putNonEmptyProperty(TreeNode.REVISION_PROPERTY, boardRevision);
+		boardNode.putProperty(Node.VENDOR_PROPERTY, boardVendor);
+		boardNode.putProperty(Node.NAME_PROPERTY, boardName);
+		boardNode.putNonEmptyProperty(Node.REVISION_PROPERTY, boardRevision);
 
 		String boardDescription = "Board: " + boardName;
 
@@ -1152,21 +1157,20 @@ public class PdscParser {
 							.trim();
 					String Dname = childElement.getAttribute("Dname").trim();
 
-					TreeNode deviceNode = new TreeNode(TreeNode.DEVICE_TYPE);
+					Node deviceNode = new Node(Type.DEVICE);
 					boardNode.addChild(deviceNode);
 
 					String va[] = Dvendor.split(":");
-					deviceNode.putProperty(TreeNode.VENDOR_PROPERTY, va[0]);
-					deviceNode.putProperty(TreeNode.VENDORID_PROPERTY, va[1]);
+					deviceNode.putProperty(Node.VENDOR_PROPERTY, va[0]);
+					deviceNode.putProperty(Node.VENDORID_PROPERTY, va[1]);
 
-					deviceNode.putNonEmptyProperty(
-							TreeNode.DEVICEINDEX_PROPERTY, deviceIndex);
-					deviceNode.putNonEmptyProperty(TreeNode.FAMILY_PROPERTY,
+					deviceNode.putNonEmptyProperty(Node.DEVICEINDEX_PROPERTY,
+							deviceIndex);
+					deviceNode.putNonEmptyProperty(Node.FAMILY_PROPERTY,
 							Dfamily);
-					deviceNode.putNonEmptyProperty(TreeNode.SUBFAMILY_PROPERTY,
+					deviceNode.putNonEmptyProperty(Node.SUBFAMILY_PROPERTY,
 							DsubFamily);
-					deviceNode.putNonEmptyProperty(TreeNode.NAME_PROPERTY,
-							Dname);
+					deviceNode.putNonEmptyProperty(Node.NAME_PROPERTY, Dname);
 
 					String name = "";
 					name = extendName(name, Dfamily);
@@ -1215,21 +1219,20 @@ public class PdscParser {
 							.trim();
 					String Dname = childElement.getAttribute("Dname").trim();
 
-					TreeNode deviceNode = new TreeNode(TreeNode.DEVICE_TYPE);
+					Node deviceNode = new Node(Type.DEVICE);
 					boardNode.addChild(deviceNode);
 
 					String va[] = Dvendor.split(":");
-					deviceNode.putProperty(TreeNode.VENDOR_PROPERTY, va[0]);
-					deviceNode.putProperty(TreeNode.VENDORID_PROPERTY, va[1]);
+					deviceNode.putProperty(Node.VENDOR_PROPERTY, va[0]);
+					deviceNode.putProperty(Node.VENDORID_PROPERTY, va[1]);
 
-					deviceNode.putNonEmptyProperty(
-							TreeNode.DEVICEINDEX_PROPERTY, deviceIndex);
-					deviceNode.putNonEmptyProperty(TreeNode.FAMILY_PROPERTY,
+					deviceNode.putNonEmptyProperty(Node.DEVICEINDEX_PROPERTY,
+							deviceIndex);
+					deviceNode.putNonEmptyProperty(Node.FAMILY_PROPERTY,
 							Dfamily);
-					deviceNode.putNonEmptyProperty(TreeNode.SUBFAMILY_PROPERTY,
+					deviceNode.putNonEmptyProperty(Node.SUBFAMILY_PROPERTY,
 							DsubFamily);
-					deviceNode.putNonEmptyProperty(TreeNode.NAME_PROPERTY,
-							Dname);
+					deviceNode.putNonEmptyProperty(Node.NAME_PROPERTY, Dname);
 
 					String name = "";
 					name = extendName(name, Dfamily);
@@ -1271,13 +1274,11 @@ public class PdscParser {
 					String connector = childElement.getAttribute("connector")
 							.trim();
 
-					TreeNode debugNode = new TreeNode(
-							TreeNode.DEBUGINTERFACE_TYPE);
+					Node debugNode = new Node(Type.DEBUGINTERFACE);
 					boardNode.addChild(debugNode);
 
-					debugNode.putProperty(TreeNode.NAME_PROPERTY, adapter);
-					debugNode.putProperty(TreeNode.CONNECTOR_PROPERTY,
-							connector);
+					debugNode.putProperty(Node.NAME_PROPERTY, adapter);
+					debugNode.putProperty(Node.CONNECTOR_PROPERTY, connector);
 
 					debugNode.setName(adapter);
 
@@ -1320,7 +1321,7 @@ public class PdscParser {
 	// <xs:attribute name="version" type="xs:string" use="optional"/>
 	// </xs:complexType>
 
-	private void processExample(Element el, TreeNode parent, boolean isFlat) {
+	private void processExample(Element el, Node parent, boolean isFlat) {
 
 		// Required
 		String exampleName = el.getAttribute("name").trim();
@@ -1332,22 +1333,22 @@ public class PdscParser {
 		String exampleVersion = el.getAttribute("version").trim();
 		String exampleArchive = el.getAttribute("archive").trim();
 
-		TreeNode exampleNode = new TreeNode(TreeNode.EXAMPLE_TYPE);
+		Node exampleNode = new Node(Type.EXAMPLE);
 		parent.addChild(exampleNode);
 
-		exampleNode.putProperty(TreeNode.NAME_PROPERTY, exampleName);
+		exampleNode.putProperty(Node.NAME_PROPERTY, exampleName);
 
 		String posixDoc = updatePosixSeparators(exampleDoc);
 		String posixFolder = updatePosixSeparators(exampleFolder);
 		if (!isBrief()) {
-			exampleNode.putProperty(TreeNode.FOLDER_PROPERTY, posixFolder);
-			exampleNode.putProperty(TreeNode.DOC_PROPERTY, exampleDoc);
+			exampleNode.putProperty(Node.FOLDER_PROPERTY, posixFolder);
+			exampleNode.putProperty(Node.DOC_PROPERTY, exampleDoc);
 
-			exampleNode.putNonEmptyProperty(TreeNode.VENDOR_PROPERTY,
-					exampleVendor);
-			exampleNode.putNonEmptyProperty(TreeNode.VERSION_PROPERTY,
+			exampleNode
+					.putNonEmptyProperty(Node.VENDOR_PROPERTY, exampleVendor);
+			exampleNode.putNonEmptyProperty(Node.VERSION_PROPERTY,
 					exampleVersion);
-			exampleNode.putNonEmptyProperty(TreeNode.ARCHIVE_PROPERTY,
+			exampleNode.putNonEmptyProperty(Node.ARCHIVE_PROPERTY,
 					exampleArchive);
 		}
 
@@ -1362,7 +1363,7 @@ public class PdscParser {
 		descriptionTail = extendDescription(descriptionTail, "archive",
 				exampleArchive);
 
-		TreeNode linkNode;
+		Node linkNode;
 		if (isFlat) {
 			// Linearise, add all children to the outline node
 			linkNode = parent;
@@ -1427,13 +1428,12 @@ public class PdscParser {
 							String load = childElement2.getAttribute("load")
 									.trim();
 
-							TreeNode environmentNode = new TreeNode(
-									TreeNode.ENVIRONMENT_TYPE);
+							Node environmentNode = new Node(Type.ENVIRONMENT);
 							linkNode.addChild(environmentNode);
 
-							environmentNode.putProperty(TreeNode.NAME_PROPERTY,
+							environmentNode.putProperty(Node.NAME_PROPERTY,
 									name);
-							environmentNode.putProperty(TreeNode.LOAD_PROPERTY,
+							environmentNode.putProperty(Node.LOAD_PROPERTY,
 									load);
 
 							environmentNode.setName(load + " (" + name + ")");
@@ -1472,14 +1472,13 @@ public class PdscParser {
 						String elementName2 = childElement2.getNodeName();
 						if ("category".equals(elementName2)) {
 
-							TreeNode categoryNode = new TreeNode(
-									TreeNode.CATEGORY_TYPE);
+							Node categoryNode = new Node(Type.CATEGORY);
 							linkNode.addChild(categoryNode);
 
 							String category = Utils
 									.getElementContent(childElement2);
 
-							categoryNode.putProperty(TreeNode.NAME_PROPERTY,
+							categoryNode.putProperty(Node.NAME_PROPERTY,
 									category);
 
 							categoryNode.setName(category);
@@ -1515,22 +1514,21 @@ public class PdscParser {
 							String Cvendor = childElement2.getAttribute(
 									"Cvendor").trim();
 
-							TreeNode componentNode = new TreeNode(
-									TreeNode.COMPONENT_TYPE);
+							Node componentNode = new Node(Type.COMPONENT);
 							linkNode.addChild(componentNode);
 
-							componentNode.putProperty(TreeNode.CLASS_PROPERTY,
+							componentNode.putProperty(Node.CLASS_PROPERTY,
 									Cclass);
 							componentNode.putNonEmptyProperty(
-									TreeNode.CLASS_PROPERTY, Cclass);
+									Node.CLASS_PROPERTY, Cclass);
 							componentNode.putNonEmptyProperty(
-									TreeNode.GROUP_PROPERTY, Cgroup);
+									Node.GROUP_PROPERTY, Cgroup);
 							componentNode.putNonEmptyProperty(
-									TreeNode.SUBGROUP_PROPERTY, Csub);
+									Node.SUBGROUP_PROPERTY, Csub);
 							componentNode.putNonEmptyProperty(
-									TreeNode.VERSION_PROPERTY, Cversion);
+									Node.VERSION_PROPERTY, Cversion);
 							componentNode.putNonEmptyProperty(
-									TreeNode.VENDOR_PROPERTY, Cvendor);
+									Node.VENDOR_PROPERTY, Cvendor);
 
 							String name = "";
 							name = extendName(name, Cclass);
@@ -1569,9 +1567,9 @@ public class PdscParser {
 		}
 
 		String boardName = "";
-		for (TreeNode childNode : linkNode.getChildrenArray()) {
+		for (Node childNode : linkNode.getChildrenArray()) {
 
-			if (TreeNode.BOARD_TYPE.equals(childNode.getType())) {
+			if (Type.BOARD.equals(childNode.getType())) {
 				boardName = childNode.getName();
 				break;
 			}
@@ -1591,7 +1589,7 @@ public class PdscParser {
 		exampleNode.setDescription(exampleDescription);
 	}
 
-	private void processBoardRef(Element el, TreeNode parent) {
+	private void processBoardRef(Element el, Node parent) {
 
 		// <xs:complexType name="BoardReferenceType">
 		// <xs:attribute name="name" type="xs:string" use="required"/>
@@ -1611,11 +1609,11 @@ public class PdscParser {
 		String boardName = el.getAttribute("name").trim();
 		String boardVendor = el.getAttribute("vendor").trim();
 
-		TreeNode boardNode = new TreeNode(TreeNode.BOARD_TYPE);
+		Node boardNode = new Node(Type.BOARD);
 		parent.addChild(boardNode);
 
-		boardNode.putProperty(TreeNode.NAME_PROPERTY, boardName);
-		boardNode.putProperty(TreeNode.VENDOR_PROPERTY, boardVendor);
+		boardNode.putProperty(Node.NAME_PROPERTY, boardName);
+		boardNode.putProperty(Node.VENDOR_PROPERTY, boardVendor);
 
 		boardNode.setName(boardName);
 
@@ -1699,8 +1697,7 @@ public class PdscParser {
 	// </xs:complexType>
 	// </xs:element>
 
-	private void processComponent(Element el, TreeNode parent,
-			String parentClass) {
+	private void processComponent(Element el, Node parent, String parentClass) {
 
 		// Required
 		String Cclass = el.getAttribute("Cclass").trim(); // may be inherited
@@ -1716,25 +1713,23 @@ public class PdscParser {
 		String condition = el.getAttribute("condition").trim();
 		String maxInstances = el.getAttribute("maxInstances").trim();
 
-		TreeNode componentNode = new TreeNode(TreeNode.COMPONENT_TYPE);
+		Node componentNode = new Node(Type.COMPONENT);
 		parent.addChild(componentNode);
 
 		if (!isBrief()) {
-			componentNode.putProperty(TreeNode.CLASS_PROPERTY, Cclass);
-			componentNode.putProperty(TreeNode.GROUP_PROPERTY, Cgroup);
-			componentNode.putProperty(TreeNode.VERSION_PROPERTY, Cversion);
+			componentNode.putProperty(Node.CLASS_PROPERTY, Cclass);
+			componentNode.putProperty(Node.GROUP_PROPERTY, Cgroup);
+			componentNode.putProperty(Node.VERSION_PROPERTY, Cversion);
 
-			componentNode.putNonEmptyProperty(TreeNode.SUBGROUP_PROPERTY, Csub);
-			componentNode.putNonEmptyProperty(TreeNode.VARIANT_PROPERTY,
-					Cvariant);
-			componentNode
-					.putNonEmptyProperty(TreeNode.VENDOR_PROPERTY, Cvendor);
+			componentNode.putNonEmptyProperty(Node.SUBGROUP_PROPERTY, Csub);
+			componentNode.putNonEmptyProperty(Node.VARIANT_PROPERTY, Cvariant);
+			componentNode.putNonEmptyProperty(Node.VENDOR_PROPERTY, Cvendor);
 
-			componentNode.putNonEmptyProperty(TreeNode.CONDITION_PROPERTY,
+			componentNode.putNonEmptyProperty(Node.CONDITION_PROPERTY,
 					condition);
-			componentNode.putNonEmptyProperty(TreeNode.APIVERSION_PROPERTY,
+			componentNode.putNonEmptyProperty(Node.APIVERSION_PROPERTY,
 					apiVersion);
-			componentNode.putNonEmptyProperty(TreeNode.MAXINSTANCES_PROPERTY,
+			componentNode.putNonEmptyProperty(Node.MAXINSTANCES_PROPERTY,
 					maxInstances);
 		}
 
@@ -1795,8 +1790,7 @@ public class PdscParser {
 					// minOccurs="0"/>
 
 					String rte = Utils.getElementContent(childElement);
-					componentNode.putNonEmptyProperty(TreeNode.RTE_PROPERTY,
-							rte);
+					componentNode.putNonEmptyProperty(Node.RTE_PROPERTY, rte);
 
 				} else if ("deprecated".equals(elementName)) {
 
@@ -1807,8 +1801,8 @@ public class PdscParser {
 					// default="false"/>
 
 					String deprecated = Utils.getElementContent(childElement);
-					componentNode.putNonEmptyProperty(
-							TreeNode.DEPRECATED_PROPERTY, deprecated);
+					componentNode.putNonEmptyProperty(Node.DEPRECATED_PROPERTY,
+							deprecated);
 
 				} else if ("files".equals(elementName)) {
 
@@ -1869,7 +1863,7 @@ public class PdscParser {
 	// <xs:attribute name="src" type="xs:string" use ="optional"/>
 	// </xs:complexType>
 
-	private void processFile(Element el, TreeNode parent) {
+	private void processFile(Element el, Node parent) {
 
 		// Required
 		String name = el.getAttribute("name").trim();
@@ -1882,20 +1876,20 @@ public class PdscParser {
 		String select = el.getAttribute("select").trim();
 		String condition = el.getAttribute("condition").trim();
 
-		TreeNode fileNode = new TreeNode(TreeNode.FILE_TYPE);
+		Node fileNode = new Node(Type.FILE);
 		parent.addChild(fileNode);
 
 		String posixPath = updatePosixSeparators(name);
 		String pathArray[] = posixPath.split("/");
 		String baseName = pathArray[pathArray.length - 1];
 
-		fileNode.putProperty(TreeNode.FILE_PROPERTY, posixPath);
-		fileNode.putProperty(TreeNode.CATEGORY_PROPERTY, category);
-		fileNode.putNonEmptyProperty(TreeNode.ATTR_PROPERTY, attr);
-		fileNode.putNonEmptyProperty(TreeNode.VERSION_PROPERTY, version);
-		fileNode.putNonEmptyProperty(TreeNode.SRC_PROPERTY, src);
-		fileNode.putNonEmptyProperty(TreeNode.SELECT_PROPERTY, select);
-		fileNode.putNonEmptyProperty(TreeNode.CONDITION_PROPERTY, condition);
+		fileNode.putProperty(Node.FILE_PROPERTY, posixPath);
+		fileNode.putProperty(Node.CATEGORY_PROPERTY, category);
+		fileNode.putNonEmptyProperty(Node.ATTR_PROPERTY, attr);
+		fileNode.putNonEmptyProperty(Node.VERSION_PROPERTY, version);
+		fileNode.putNonEmptyProperty(Node.SRC_PROPERTY, src);
+		fileNode.putNonEmptyProperty(Node.SELECT_PROPERTY, select);
+		fileNode.putNonEmptyProperty(Node.CONDITION_PROPERTY, condition);
 
 		String description;
 		if ("include".equals(category)) {
@@ -1966,7 +1960,7 @@ public class PdscParser {
 	// </xs:complexType>
 	// </xs:element>
 
-	private void processBundle(Element el, TreeNode parent) {
+	private void processBundle(Element el, Node parent) {
 
 		// Required
 		String Cbundle = el.getAttribute("Cbundle").trim();
@@ -1976,15 +1970,15 @@ public class PdscParser {
 		// Optional
 		String Cvendor = el.getAttribute("Cvendor").trim();
 
-		TreeNode bundleNode = new TreeNode(TreeNode.BUNDLE_TYPE);
+		Node bundleNode = new Node(Type.BUNDLE);
 		parent.addChild(bundleNode);
 
 		if (!isBrief()) {
-			bundleNode.putProperty(TreeNode.BUNDLE_PROPERTY, Cbundle);
-			bundleNode.putProperty(TreeNode.CLASS_PROPERTY, Cclass);
-			bundleNode.putProperty(TreeNode.VERSION_PROPERTY, Cversion);
+			bundleNode.putProperty(Node.BUNDLE_PROPERTY, Cbundle);
+			bundleNode.putProperty(Node.CLASS_PROPERTY, Cclass);
+			bundleNode.putProperty(Node.VERSION_PROPERTY, Cversion);
 
-			bundleNode.putNonEmptyProperty(TreeNode.VENDOR_PROPERTY, Cvendor);
+			bundleNode.putNonEmptyProperty(Node.VENDOR_PROPERTY, Cvendor);
 		}
 
 		String name = "";
@@ -2026,7 +2020,7 @@ public class PdscParser {
 					String posixDoc = updatePosixSeparators(doc);
 					descriptionTail = extendDescription(descriptionTail, "doc",
 							posixDoc);
-					bundleNode.putNonEmptyProperty(TreeNode.URL_PROPERTY, doc);
+					bundleNode.putNonEmptyProperty(Node.URL_PROPERTY, doc);
 
 				} else if ("component".equals(elementName)) {
 
@@ -2055,7 +2049,7 @@ public class PdscParser {
 	// </xs:simpleContent>
 	// </xs:complexType>
 
-	private void processTaxonomyDescription(Element el, TreeNode parent) {
+	private void processTaxonomyDescription(Element el, Node parent) {
 
 		// Required
 		String Cclass = el.getAttribute("Cclass").trim();
@@ -2065,15 +2059,14 @@ public class PdscParser {
 		String doc = el.getAttribute("doc").trim();
 		String generator = el.getAttribute("generator").trim();
 
-		TreeNode taxonomyNode = new TreeNode(TreeNode.TAXONOMY_TYPE);
+		Node taxonomyNode = new Node(Type.TAXONOMY);
 		parent.addChild(taxonomyNode);
 
-		taxonomyNode.putProperty(TreeNode.CLASS_PROPERTY, Cclass);
+		taxonomyNode.putProperty(Node.CLASS_PROPERTY, Cclass);
 
-		taxonomyNode.putNonEmptyProperty(TreeNode.GROUP_PROPERTY, Cgroup);
-		taxonomyNode.putNonEmptyProperty(TreeNode.DOC_PROPERTY, doc);
-		taxonomyNode
-				.putNonEmptyProperty(TreeNode.GENERATOR_PROPERTY, generator);
+		taxonomyNode.putNonEmptyProperty(Node.GROUP_PROPERTY, Cgroup);
+		taxonomyNode.putNonEmptyProperty(Node.DOC_PROPERTY, doc);
+		taxonomyNode.putNonEmptyProperty(Node.GENERATOR_PROPERTY, generator);
 
 		String name = Cclass;
 		name = extendName(name, Cgroup);
@@ -2095,12 +2088,12 @@ public class PdscParser {
 
 	// <xs:element name="keyword" type="xs:string" maxOccurs="unbounded"/>
 
-	private void processKeyword(Element el, TreeNode parent) {
+	private void processKeyword(Element el, Node parent) {
 
-		TreeNode keywordNode = new TreeNode(TreeNode.KEYWORD_TYPE);
+		Node keywordNode = new Node(Type.KEYWORD);
 		String keyword = Utils.getElementContent(el);
 
-		keywordNode.putProperty(TreeNode.NAME_PROPERTY, keyword);
+		keywordNode.putProperty(Node.NAME_PROPERTY, keyword);
 
 		keywordNode.setName(keyword);
 		keywordNode.setDescription("Keyword: " + keyword);
@@ -2120,15 +2113,15 @@ public class PdscParser {
 	// <xs:attribute name="id" type="xs:string" use="required"/>
 	// </xs:complexType>
 
-	private void processCondition(Element el, TreeNode parent) {
+	private void processCondition(Element el, Node parent) {
 
 		// Required
 		String id = el.getAttribute("id").trim();
 
-		TreeNode conditionNode = new TreeNode(TreeNode.CONDITION_TYPE);
+		Node conditionNode = new Node(Type.CONDITION);
 		parent.addChild(conditionNode);
 
-		conditionNode.putProperty(TreeNode.ID_PROPERTY, id);
+		conditionNode.putProperty(Node.ID_PROPERTY, id);
 
 		conditionNode.setName(id);
 
@@ -2173,21 +2166,21 @@ public class PdscParser {
 				String conditionName = "";
 				String description = "";
 
-				TreeNode node = null;
+				Node node = null;
 				if ("accept".equals(elementName)) {
-					node = new TreeNode(TreeNode.ACCEPT_TYPE);
+					node = new Node(Type.ACCEPT);
 					description = "Accept";
 				} else if ("require".equals(elementName)) {
-					node = new TreeNode(TreeNode.REQUIRE_TYPE);
+					node = new Node(Type.REQUIRE);
 					description = "Require";
 				} else if ("deny".equals(elementName)) {
-					node = new TreeNode(TreeNode.DENY_TYPE);
+					node = new Node(Type.DENY);
 					description = "Deny";
 				}
 				conditionNode.addChild(node);
 
 				List<String> attrNames = Utils.getAttributesNames(childElement,
-						TreeNode.CONDITION_ATTRIBUTES);
+						Node.CONDITION_ATTRIBUTES);
 				for (String attrName : attrNames) {
 
 					String value = childElement.getAttribute(attrName).trim();
@@ -2237,7 +2230,7 @@ public class PdscParser {
 	// <xs:attribute name="Capiversion" type="VersionType" use="optional"/>
 	// </xs:complexType>
 
-	private void processApi(Element el, TreeNode parent) {
+	private void processApi(Element el, Node parent) {
 
 		// Required
 		String Cclass = el.getAttribute("Cclass").trim();
@@ -2247,14 +2240,14 @@ public class PdscParser {
 		String exclusive = el.getAttribute("exclusive").trim();
 		String apiVersion = el.getAttribute("Capiversion").trim();
 
-		TreeNode apiNode = new TreeNode(TreeNode.API_TYPE);
+		Node apiNode = new Node(Type.API);
 		parent.addChild(apiNode);
 
-		apiNode.putProperty(TreeNode.CLASS_PROPERTY, Cclass);
-		apiNode.putProperty(TreeNode.GROUP_PROPERTY, Cgroup);
+		apiNode.putProperty(Node.CLASS_PROPERTY, Cclass);
+		apiNode.putProperty(Node.GROUP_PROPERTY, Cgroup);
 
-		apiNode.putNonEmptyProperty(TreeNode.EXCLUSIVE_PROPERTY, exclusive);
-		apiNode.putNonEmptyProperty(TreeNode.APIVERSION_PROPERTY, apiVersion);
+		apiNode.putNonEmptyProperty(Node.EXCLUSIVE_PROPERTY, exclusive);
+		apiNode.putNonEmptyProperty(Node.APIVERSION_PROPERTY, apiVersion);
 
 		String name = "";
 		name = extendName(name, Cclass);
@@ -2312,11 +2305,13 @@ public class PdscParser {
 
 		long beginTime = System.currentTimeMillis();
 
-		m_out.println("Fetching & parsing \"" + m_url + " ...");
+		m_out.println("Fetching & parsing \"" + url + " ...");
 
 		m_url = url;
-		InputSource inputSource = new InputSource(new InputStreamReader(
-				url.openStream()));
+
+		InputStream is = Utils.checkForUtf8BOM(url.openStream());
+
+		InputSource inputSource = new InputSource(new InputStreamReader(is));
 
 		DocumentBuilder xml = DocumentBuilderFactory.newInstance()
 				.newDocumentBuilder();
@@ -2333,7 +2328,7 @@ public class PdscParser {
 		return m_document;
 	}
 
-	public void parsePdscBrief(String pdscNname, String version, TreeNode parent)
+	public void parsePdscBrief(String pdscNname, String version, Node parent)
 			throws IOException, ParserConfigurationException, SAXException {
 
 		long beginTime = System.currentTimeMillis();
@@ -2373,22 +2368,18 @@ public class PdscParser {
 		String shortUrl = "";
 
 		// Create the top subtrees
-		TreeNode packagesNode = parent.addUniqueChild(
-				TreeNode.PACKAGES_SUBTREE_TYPE, null);
+		Node packagesNode = parent.addUniqueChild(Type.PACKAGES_SUBTREE, null);
 
-		TreeNode devicesSubtree = parent.addUniqueChild(
-				TreeNode.DEVICES_SUBTREE_TYPE, null);
+		Node devicesSubtree = parent.addUniqueChild(Type.DEVICES_SUBTREE, null);
 
-		TreeNode boardsNode = parent.addUniqueChild(
-				TreeNode.BOARDS_SUBTREE_TYPE, null);
+		Node boardsNode = parent.addUniqueChild(Type.BOARDS_SUBTREE, null);
 
-		TreeNode keywordsNode = parent.addUniqueChild(
-				TreeNode.KEYWORDS_SELECT_TYPE, null);
+		Node keywordsNode = parent.addUniqueChild(Type.KEYWORDS_SELECT, null);
 
 		Set<String> conditionKeywords = new HashSet<String>();
 
 		// Package
-		TreeNode packNode;
+		Node packNode;
 		{
 			Element vendorElement = Utils.getChildElement(packageElement,
 					"vendor");
@@ -2415,9 +2406,9 @@ public class PdscParser {
 			packDescription = extendDescription(packDescription,
 					Utils.getElementContent(descriptionElement));
 
-			TreeNode vendorNode = packagesNode.addUniqueChild(
-					TreeNode.VENDOR_TYPE, packVendor);
-			vendorNode.putProperty(TreeNode.VENDOR_PROPERTY, packVendor);
+			Node vendorNode = packagesNode.addUniqueChild(Type.VENDOR,
+					packVendor);
+			vendorNode.putProperty(Node.VENDOR_PROPERTY, packVendor);
 
 			packNode = vendorNode.getChild("package", packName);
 			if (packNode != null) {
@@ -2439,7 +2430,7 @@ public class PdscParser {
 				return;
 			}
 
-			packNode = new TreeNode("package");
+			packNode = new Node("package");
 			// Attach package right below vendor node
 			vendorNode.addChild(packNode);
 
@@ -2451,10 +2442,10 @@ public class PdscParser {
 			if (shortUrl.endsWith("/")) {
 				shortUrl = shortUrl.substring(0, shortUrl.length() - 1);
 			}
-			packNode.putProperty(TreeNode.URL_PROPERTY, shortUrl);
-			packNode.putProperty(TreeNode.VENDOR_PROPERTY, packVendor);
-			packNode.putProperty(TreeNode.PDSCURL_PROPERTY, fullUrl);
-			packNode.putProperty(TreeNode.PDSCNAME_PROPERTY, pdscNname);
+			packNode.putProperty(Node.URL_PROPERTY, shortUrl);
+			packNode.putProperty(Node.VENDOR_PROPERTY, packVendor);
+			packNode.putProperty(Node.PDSCURL_PROPERTY, fullUrl);
+			packNode.putProperty(Node.PDSCNAME_PROPERTY, pdscNname);
 
 			packDescription = extendDescription(packDescription, "vendor",
 					packVendor);
@@ -2493,7 +2484,7 @@ public class PdscParser {
 					currentReleaseDate = releaseDate;
 				}
 
-				TreeNode versionNode = packNode.addUniqueChild("version",
+				Node versionNode = packNode.addUniqueChild("version",
 						releaseName);
 
 				String archiveName = packVendor + "." + packName + "."
@@ -2503,12 +2494,10 @@ public class PdscParser {
 				String unpackFolder = packVendor + "/" + packName + "/"
 						+ releaseName;
 
-				versionNode.putProperty(TreeNode.VENDOR_PROPERTY, packVendor);
-				versionNode.putProperty(TreeNode.ARCHIVENAME_PROPERTY,
-						archiveName);
-				versionNode.putProperty(TreeNode.ARCHIVEURL_PROPERTY,
-						archiveUrl);
-				versionNode.putProperty(TreeNode.FOLDER_PROPERTY, unpackFolder);
+				versionNode.putProperty(Node.VENDOR_PROPERTY, packVendor);
+				versionNode.putProperty(Node.ARCHIVENAME_PROPERTY, archiveName);
+				versionNode.putProperty(Node.ARCHIVEURL_PROPERTY, archiveUrl);
+				versionNode.putProperty(Node.FOLDER_PROPERTY, unpackFolder);
 
 				String size = "0";
 				try {
@@ -2520,11 +2509,10 @@ public class PdscParser {
 					;
 				}
 
-				versionNode.putProperty(TreeNode.SIZE_PROPERTY, size);
+				versionNode.putProperty(Node.SIZE_PROPERTY, size);
+				versionNode.putProperty(Node.SCHEMA_PROPERTY, schemaVersion);
 				versionNode
-						.putProperty(TreeNode.SCHEMA_PROPERTY, schemaVersion);
-				versionNode.putNonEmptyProperty(TreeNode.DATE_PROPERTY,
-						releaseDate);
+						.putNonEmptyProperty(Node.DATE_PROPERTY, releaseDate);
 
 				description = extendDescription(description, "date",
 						releaseDate);
@@ -2544,11 +2532,11 @@ public class PdscParser {
 			}
 		}
 
-		TreeNode outlineNode = new TreeNode(TreeNode.OUTLINE_TYPE);
+		Node outlineNode = new Node(Type.OUTLINE);
 		packNode.setOutline(outlineNode);
 
-		TreeNode outlinePackNode = outlineNode.addUniqueChild(
-				TreeNode.PACKAGE_TYPE, packName + " (brief)");
+		Node outlinePackNode = outlineNode.addUniqueChild(Type.PACKAGE,
+				packName + " (brief)");
 		String outlinePackDescription = "Package: " + packName;
 		outlinePackDescription = extendDescription(outlinePackDescription,
 				packDescription);
@@ -2556,8 +2544,8 @@ public class PdscParser {
 
 		if (currentReleaseName != null) {
 
-			TreeNode outlineVersionNode = outlineNode.addUniqueChild(
-					TreeNode.VERSION_TYPE, currentReleaseName);
+			Node outlineVersionNode = outlineNode.addUniqueChild(Type.VERSION,
+					currentReleaseName);
 
 			String versionDescription = "Version: " + currentReleaseName;
 			if (currentReleaseDate.length() > 0) {
@@ -2568,7 +2556,7 @@ public class PdscParser {
 			outlineVersionNode.setDescription(versionDescription);
 
 			if (currentReleaseDate != null) {
-				outlineVersionNode.putNonEmptyProperty(TreeNode.DATE_PROPERTY,
+				outlineVersionNode.putNonEmptyProperty(Node.DATE_PROPERTY,
 						currentReleaseDate);
 			}
 		}
@@ -2587,7 +2575,7 @@ public class PdscParser {
 
 					// Add a unique node to selection
 					String keyword = Utils.getElementContent(childElement2);
-					keywordsNode.addUniqueChild(TreeNode.KEYWORD_TYPE, keyword);
+					keywordsNode.addUniqueChild(Type.KEYWORD, keyword);
 
 					// Remember condition keyword
 					conditionKeywords.add(keyword);
@@ -2604,7 +2592,7 @@ public class PdscParser {
 		if (devicesElement != null) {
 
 			List<Element> familyElements = Utils.getChildElementsList(
-					devicesElement, TreeNode.FAMILY_TYPE);
+					devicesElement, Type.FAMILY);
 			for (Element familyElement : familyElements) {
 
 				String family = familyElement.getAttribute("Dfamily").trim();
@@ -2622,22 +2610,19 @@ public class PdscParser {
 					// Vendor not enumeration
 					continue;
 				}
-				TreeNode vendorNode = devicesSubtree.addUniqueChild(
-						TreeNode.VENDOR_TYPE, va[0]);
-				vendorNode.putNonEmptyProperty(TreeNode.VENDORID_PROPERTY,
-						va[1]);
+				Node vendorNode = devicesSubtree.addUniqueChild(Type.VENDOR,
+						va[0]);
+				vendorNode.putNonEmptyProperty(Node.VENDORID_PROPERTY, va[1]);
 
-				TreeNode familyNode = vendorNode.addUniqueChild(
-						TreeNode.FAMILY_TYPE, family);
+				Node familyNode = vendorNode
+						.addUniqueChild(Type.FAMILY, family);
 				familyNode.setDescription(description);
 
-				familyNode.putNonEmptyProperty(TreeNode.VENDOR_PROPERTY, va[0]);
-				familyNode.putNonEmptyProperty(TreeNode.VENDORID_PROPERTY,
-						va[1]);
+				familyNode.putNonEmptyProperty(Node.VENDOR_PROPERTY, va[0]);
+				familyNode.putNonEmptyProperty(Node.VENDORID_PROPERTY, va[1]);
 
 				// Add package conditions
-				TreeNode.Selector condition = packNode.new Selector(
-						TreeNode.Selector.DEVICEFAMILY_TYPE);
+				Selector condition = new Selector(Selector.DEVICEFAMILY_TYPE);
 				condition.setVendor(va[0]);
 				condition.setVendorId(va[1]);
 				condition.setValue(family);
@@ -2664,12 +2649,12 @@ public class PdscParser {
 				String description = "";
 				description = Utils.getElementContent(descriptionElement);
 
-				TreeNode vendorNode = boardsNode.addUniqueChild(
-						TreeNode.VENDOR_TYPE, vendor);
+				Node vendorNode = boardsNode
+						.addUniqueChild(Type.VENDOR, vendor);
 
-				TreeNode boardNode = vendorNode.addUniqueChild(
-						TreeNode.BOARD_TYPE, boardName);
-				boardNode.putProperty(TreeNode.VENDOR_PROPERTY, vendor);
+				Node boardNode = vendorNode.addUniqueChild(Type.BOARD,
+						boardName);
+				boardNode.putProperty(Node.VENDOR_PROPERTY, vendor);
 
 				if (revision.length() > 0) {
 					description += " (" + revision + ")";
@@ -2677,8 +2662,7 @@ public class PdscParser {
 				boardNode.setDescription(description);
 
 				// Add package conditions
-				TreeNode.Selector condition = packNode.new Selector(
-						TreeNode.Selector.BOARD_TYPE);
+				Selector condition = new Selector(Selector.BOARD_TYPE);
 				condition.setVendor(vendor);
 				condition.setValue(boardName);
 				packNode.addCondition(condition);
@@ -2701,23 +2685,23 @@ public class PdscParser {
 							continue;
 						}
 
-						TreeNode vendorNode2 = devicesSubtree.addUniqueChild(
-								TreeNode.VENDOR_TYPE, va[0]);
-						vendorNode2.putNonEmptyProperty(
-								TreeNode.VENDORID_PROPERTY, va[1]);
+						Node vendorNode2 = devicesSubtree.addUniqueChild(
+								Type.VENDOR, va[0]);
+						vendorNode2.putNonEmptyProperty(Node.VENDORID_PROPERTY,
+								va[1]);
 
-						TreeNode familyNode2 = vendorNode2.addUniqueChild(
-								TreeNode.FAMILY_TYPE, family);
+						Node familyNode2 = vendorNode2.addUniqueChild(
+								Type.FAMILY, family);
 						familyNode2.setDescription(description);
 
-						familyNode2.putNonEmptyProperty(
-								TreeNode.VENDOR_PROPERTY, va[0]);
-						familyNode2.putNonEmptyProperty(
-								TreeNode.VENDORID_PROPERTY, va[1]);
+						familyNode2.putNonEmptyProperty(Node.VENDOR_PROPERTY,
+								va[0]);
+						familyNode2.putNonEmptyProperty(Node.VENDORID_PROPERTY,
+								va[1]);
 
 						// Add package conditions
-						TreeNode.Selector condition2 = packNode.new Selector(
-								TreeNode.Selector.DEVICEFAMILY_TYPE);
+						Selector condition2 = new Selector(
+								Selector.DEVICEFAMILY_TYPE);
 						condition2.setVendor(va[0]);
 						condition2.setVendorId(va[1]);
 						condition2.setValue(family);
@@ -2746,16 +2730,15 @@ public class PdscParser {
 					String vendor = boardElement.getAttribute("vendor").trim();
 					String boardName = boardElement.getAttribute("name").trim();
 
-					TreeNode vendorNode = boardsNode.addUniqueChild(
-							TreeNode.VENDOR_TYPE, vendor);
+					Node vendorNode = boardsNode.addUniqueChild(Type.VENDOR,
+							vendor);
 
-					TreeNode boardNode = vendorNode.addUniqueChild(
-							TreeNode.BOARD_TYPE, boardName);
-					boardNode.putProperty(TreeNode.VENDOR_PROPERTY, vendor);
+					Node boardNode = vendorNode.addUniqueChild(Type.BOARD,
+							boardName);
+					boardNode.putProperty(Node.VENDOR_PROPERTY, vendor);
 
 					// Add package conditions
-					TreeNode.Selector condition = packNode.new Selector(
-							TreeNode.Selector.BOARD_TYPE);
+					Selector condition = new Selector(Selector.BOARD_TYPE);
 					condition.setVendor(vendor);
 					condition.setValue(boardName);
 					packNode.addCondition(condition);
@@ -2773,8 +2756,7 @@ public class PdscParser {
 						// Add a unique node to selection
 						String keyword = Utils
 								.getElementContent(keywordElement);
-						keywordsNode.addUniqueChild(TreeNode.KEYWORD_TYPE,
-								keyword);
+						keywordsNode.addUniqueChild(Type.KEYWORD, keyword);
 
 						// Remember condition keyword
 						conditionKeywords.add(keyword);
@@ -2812,8 +2794,7 @@ public class PdscParser {
 
 		// Add all condition keywords, without duplicates
 		for (String keyword : conditionKeywords) {
-			TreeNode.Selector condition = packNode.new Selector(
-					TreeNode.Selector.KEYWORD_TYPE);
+			Selector condition = new Selector(Selector.KEYWORD_TYPE);
 			condition.setValue(keyword);
 			packNode.addCondition(condition);
 		}
@@ -2827,7 +2808,7 @@ public class PdscParser {
 		m_out.println("Completed in " + duration + "ms.");
 	}
 
-	public void parseExamples(TreeNode parent) {
+	public void parseExamples(Node parent) {
 
 		Element packageElement = m_document.getDocumentElement();
 
@@ -2843,7 +2824,7 @@ public class PdscParser {
 				Element boardElement = Utils.getChildElement(exampleElement,
 						"board");
 
-				TreeNode exampleNode = new TreeNode(TreeNode.EXAMPLE_TYPE);
+				Node exampleNode = new Node(Type.EXAMPLE);
 				parent.addChild(exampleNode);
 
 				String boardName;
@@ -2859,7 +2840,7 @@ public class PdscParser {
 				description = Utils.getElementContent(descriptionElement);
 				exampleNode.setDescription(description);
 
-				TreeNode outlineNode = new TreeNode(TreeNode.OUTLINE_TYPE);
+				Node outlineNode = new Node(Type.OUTLINE);
 				exampleNode.setOutline(outlineNode);
 
 				processExample(exampleElement, outlineNode, true);
@@ -2868,8 +2849,7 @@ public class PdscParser {
 		}
 	}
 
-	public void parsePdscContent(String pdscNname, String version,
-			TreeNode parent) {
+	public void parsePdscContent(String pdscNname, String version, Node parent) {
 
 		long beginTime = System.currentTimeMillis();
 
@@ -2911,7 +2891,7 @@ public class PdscParser {
 			return;
 		}
 
-		TreeNode packNode;
+		Node packNode;
 		Element nameElement = Utils.getChildElement(packageElement, "name");
 		if (nameElement == null) {
 			m_out.println("Missing <name>.");
@@ -2919,7 +2899,7 @@ public class PdscParser {
 		}
 		String packName = Utils.getElementContent(nameElement);
 
-		packNode = parent.addUniqueChild(TreeNode.PACKAGE_TYPE, packName);
+		packNode = parent.addUniqueChild(Type.PACKAGE, packName);
 
 		Element packDescriptionElement = Utils.getChildElement(packageElement,
 				"description");
@@ -2952,8 +2932,9 @@ public class PdscParser {
 			shortUrl = shortUrl.substring(0, shortUrl.length() - 1);
 		}
 
-		TreeNode versionNode = null;
+		Node versionNode = null;
 
+		boolean isFirst = true;
 		List<Element> releaseElements = Utils.getChildElementsList(
 				releasesElement, "release");
 		for (Element releaseElement : releaseElements) {
@@ -2964,26 +2945,19 @@ public class PdscParser {
 			String description = Utils
 					.getElementMultiLineContent(releaseElement);
 
-			TreeNode verNode = packNode.addUniqueChild(TreeNode.VERSION_TYPE,
-					releaseName);
+			Node verNode = packNode.addUniqueChild(Type.VERSION, releaseName);
 
-			if (!version.equals(releaseName)) {
+			verNode.putProperty(Property.TYPE, "cmsis.pack");
 
-				verNode.setDescription(description);
-				break;
-			}
-
-			versionNode = verNode;
-
-			verNode.putProperty(TreeNode.PROPERTY.TYPE, "cmsis.pack");
-
-			verNode.putProperty(TreeNode.PROPERTY.VENDOR_NAME, packVendorName);
+			verNode.putProperty(Property.VENDOR_NAME, packVendorName);
+			verNode.putProperty(Property.PACK_NAME, packName);
+			verNode.putProperty(Property.VERSION_NAME, releaseName);
 
 			String archiveName = packVendorName + "." + packName + "."
 					+ releaseName + ".pack";
 			String archiveUrl = shortUrl + "/" + archiveName;
-			verNode.putProperty(TreeNode.PROPERTY.ARCHIVE_URL, archiveUrl);
-			verNode.putProperty(TreeNode.PROPERTY.ARCHIVE_NAME, archiveName);
+			verNode.putProperty(Property.ARCHIVE_URL, archiveUrl);
+			verNode.putProperty(Property.ARCHIVE_NAME, archiveName);
 
 			// Default as for unavailable packages
 			String size = "0";
@@ -2995,31 +2969,58 @@ public class PdscParser {
 			} catch (IOException e) {
 				;
 			}
-			verNode.putProperty(TreeNode.PROPERTY.ARCHIVE_SIZE, size);
+			verNode.putProperty(Property.ARCHIVE_SIZE, size);
 
 			String unpackFolder = packVendorName + "/" + packName + "/"
 					+ releaseName;
-			verNode.putProperty(TreeNode.PROPERTY.DEST_FOLDER, unpackFolder);
+			verNode.putProperty(Property.DEST_FOLDER, unpackFolder);
+
+			String pdscName = packVendorName + "." + packName + ".pdsc";
+			verNode.putProperty(Property.PDSC_NAME, pdscName);
+
+			String pdscRelativePath = unpackFolder + '/' + pdscName;
+
+			try {
+				// Test if the pdsc file exists in the package folder
+				File file = m_repos.getFileObject(pdscRelativePath);
+				if (file.exists()) {
+
+					// Mark the package version as installed
+					verNode.isInstalled();
+
+					// Add an explicit property for more visibility
+					verNode.putProperty(Property.INSTALLED, "true");
+				}
+			} catch (Exception e) {
+				;
+			}
 
 			if (releaseDate.length() > 0) {
 
 				// TODO: normalise date
-				verNode.putProperty(TreeNode.PROPERTY.DATE, releaseDate);
+				verNode.putProperty(Property.DATE, releaseDate);
 			}
 
 			verNode.setDescription(description);
 
+			if (isFirst) {
+				if (!version.equals(releaseName)) {
+					m_out.println("Index version=\"" + version
+							+ "\" not the most recent (" + releaseName + ").");
+
+				}
+
+				// Remember top most version
+				versionNode = verNode;
+			}
+
+			isFirst = false;
 		}
 
-		if (versionNode == null) {
-			m_out.println("Missing <release version=\"" + version + "\">.");
-			return;
-		}
-
-		TreeNode outlineNode = new TreeNode(TreeNode.OUTLINE_TYPE);
+		Node outlineNode = new Node(Type.OUTLINE);
 		versionNode.addChild(outlineNode);
 
-		TreeNode externNode = new TreeNode(TreeNode.EXTERNAL_TYPE);
+		Node externNode = new Node(Type.EXTERNAL);
 
 		// Keywords
 		Element keywordsElement = Utils.getChildElement(packageElement,
@@ -3035,7 +3036,7 @@ public class PdscParser {
 
 					// Add a unique node to selection
 					String keyword = Utils.getElementContent(childElement);
-					outlineNode.addUniqueChild(TreeNode.KEYWORD_TYPE, keyword);
+					outlineNode.addUniqueChild(Type.KEYWORD, keyword);
 				}
 			}
 		}
@@ -3046,7 +3047,7 @@ public class PdscParser {
 		if (devicesElement != null) {
 
 			List<Element> familyElements = Utils.getChildElementsList(
-					devicesElement, TreeNode.FAMILY_TYPE);
+					devicesElement, Type.FAMILY);
 			for (Element familyElement : familyElements) {
 
 				String family = familyElement.getAttribute("Dfamily").trim();
@@ -3067,14 +3068,13 @@ public class PdscParser {
 					continue;
 				}
 
-				TreeNode deviceFamilyNode = outlineNode.addUniqueChild(
-						TreeNode.FAMILY_TYPE, family);
+				Node deviceFamilyNode = outlineNode.addUniqueChild(Type.FAMILY,
+						family);
 				deviceFamilyNode.setDescription(description);
 
-				deviceFamilyNode.putNonEmptyProperty(
-						TreeNode.PROPERTY.VENDOR_NAME, va[0]);
-				deviceFamilyNode.putNonEmptyProperty(
-						TreeNode.PROPERTY.VENDOR_ID, va[1]);
+				deviceFamilyNode.putNonEmptyProperty(Property.VENDOR_NAME,
+						va[0]);
+				deviceFamilyNode.putNonEmptyProperty(Property.VENDOR_ID, va[1]);
 			}
 		}
 
@@ -3096,9 +3096,9 @@ public class PdscParser {
 				description = Utils
 						.getElementMultiLineContent(descriptionElement);
 
-				TreeNode boardNode = outlineNode.addUniqueChild(
-						TreeNode.BOARD_TYPE, boardName);
-				boardNode.putProperty(TreeNode.PROPERTY.VENDOR_NAME, vendor);
+				Node boardNode = outlineNode.addUniqueChild(Type.BOARD,
+						boardName);
+				boardNode.putProperty(Property.VENDOR_NAME, vendor);
 
 				boardNode.setDescription(description);
 
@@ -3123,13 +3123,12 @@ public class PdscParser {
 						}
 
 						// Contribute external device family
-						TreeNode deviceFamilyNode = externNode.addUniqueChild(
-								TreeNode.FAMILY_TYPE, family);
+						Node deviceFamilyNode = externNode.addUniqueChild(
+								Type.FAMILY, family);
 
-						deviceFamilyNode.putProperty(
-								TreeNode.PROPERTY.VENDOR_NAME, va[0]);
-						deviceFamilyNode.putProperty(
-								TreeNode.PROPERTY.VENDOR_ID, va[1]);
+						deviceFamilyNode.putProperty(Property.VENDOR_NAME,
+								va[0]);
+						deviceFamilyNode.putProperty(Property.VENDOR_ID, va[1]);
 					}
 				}
 			}
@@ -3157,7 +3156,7 @@ public class PdscParser {
 				String Cvendor = componentElement.getAttribute("Cvendor")
 						.trim();
 
-				TreeNode componentNode = new TreeNode(TreeNode.COMPONENT_TYPE);
+				Node componentNode = new Node(Type.COMPONENT);
 				outlineNode.addChild(componentNode);
 
 				String name = "";
@@ -3192,7 +3191,7 @@ public class PdscParser {
 				// Optional
 				// String Cvendor = el.getAttribute("Cvendor").trim();
 
-				TreeNode bundleNode = new TreeNode(TreeNode.BUNDLE_TYPE);
+				Node bundleNode = new Node(Type.BUNDLE);
 				outlineNode.addChild(bundleNode);
 
 				String name = "";
@@ -3231,10 +3230,9 @@ public class PdscParser {
 					String boardName = boardElement.getAttribute("name").trim();
 
 					// Contribute external board
-					TreeNode boardNode = externNode.addUniqueChild(
-							TreeNode.BOARD_TYPE, boardName);
-					boardNode
-							.putProperty(TreeNode.PROPERTY.VENDOR_NAME, vendor);
+					Node boardNode = externNode.addUniqueChild(Type.BOARD,
+							boardName);
+					boardNode.putProperty(Property.VENDOR_NAME, vendor);
 
 					if (firstBoardName.length() == 0) {
 						firstBoardName = boardName;
@@ -3258,7 +3256,7 @@ public class PdscParser {
 				// exampleElement.getAttribute("archive")
 				// .trim();
 
-				TreeNode exampleNode = new TreeNode(TreeNode.EXAMPLE_TYPE);
+				Node exampleNode = new Node(Type.EXAMPLE);
 				outlineNode.addChild(exampleNode);
 
 				if (firstBoardName.length() > 0) {
@@ -3289,13 +3287,13 @@ public class PdscParser {
 						// Add a unique node to selection
 						String keyword = Utils
 								.getElementContent(keywordElement);
-						outlineNode.addUniqueChild(TreeNode.KEYWORD_TYPE,
-								keyword);
+						outlineNode.addUniqueChild(Type.KEYWORD, keyword);
 					}
 				}
 			}
 		}
 
+		// TODO: check externals are really externals
 		if (externNode.hasChildren()) {
 			versionNode.addChild(externNode);
 		}

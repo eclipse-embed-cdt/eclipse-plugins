@@ -11,6 +11,10 @@
 
 package ilg.gnuarmeclipse.packs;
 
+import ilg.gnuarmeclipse.packs.tree.Property;
+import ilg.gnuarmeclipse.packs.tree.Selector;
+import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.Type;
 import ilg.gnuarmeclipse.packs.xcdl.ContentParser;
 
 import java.io.BufferedWriter;
@@ -19,9 +23,11 @@ import java.io.FileInputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -32,6 +38,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -66,47 +73,117 @@ public class PacksStorage {
 
 	private Repos m_repos;
 	private MessageConsoleStream m_out;
+	private List<IPacksStorageListener> m_listeners = new ArrayList<IPacksStorageListener>();
+
+	private List<Node> m_packsVersionsList;
+
+	private Map<String, Map<String, Node>> m_packsMap;
 
 	public PacksStorage() {
 		m_repos = Repos.getInstance();
 
 		m_out = Activator.getConsoleOut();
+
+		m_packsVersionsList = new LinkedList<Node>();
+		m_packsMap = new TreeMap<String, Map<String, Node>>();
 	}
 
-	public static TreeNode ms_tree = null;
+	public static Node ms_tree = null;
 
-	public static TreeNode ms_tree2 = null;
+	public List<Node> getPacksVersions() {
+		return m_packsVersionsList;
+	}
+
+	public Map<String, Map<String, Node>> getPacksMap() {
+		return m_packsMap;
+	}
+
+	public String makeMapKey(String vendorName, String packName) {
+
+		String key = vendorName + "::" + packName;
+		return key;
+	}
+
+	public Node getPackVersion(String vendorName, String packName,
+			String versionName) {
+
+		String key = makeMapKey(vendorName, packName);
+		Map<String, Node> versionsMap = m_packsMap.get(key);
+
+		if (versionsMap == null) {
+			return null;
+		}
+
+		// May return null
+		return versionsMap.get(versionName);
+	}
+
+	public Node getPackLatest(String vendorName, String packName) {
+
+		String key = makeMapKey(vendorName, packName);
+		Map<String, Node> versionsMap = m_packsMap.get(key);
+
+		if (versionsMap == null) {
+			return null;
+		}
+
+		Node node = null;
+		for (String versionName : versionsMap.keySet()) {
+			node = versionsMap.get(versionName);
+		}
+
+		// If the map is sorted (as it should be), this is the package
+		// with the highest version (or null).
+		return node;
+	}
+
+	// ------------------------------------------------------------------------
+
+	public void addListener(IPacksStorageListener listener) {
+		if (!m_listeners.contains(listener)) {
+			m_listeners.add(listener);
+		}
+	}
+
+	public void removeListener(IPacksStorageListener listener) {
+		m_listeners.remove(listener);
+	}
+
+	public void fireChanged() {
+
+		PacksStorageEvent event = new PacksStorageEvent(this);
+
+		for (IPacksStorageListener listener : m_listeners) {
+			listener.packsChanged(event);
+		}
+	}
 
 	// Executed as a separate job from plug-in activator
 	public IStatus loadRepositories(IProgressMonitor monitor) {
 
 		long beginTime = System.currentTimeMillis();
 
-		m_out.println("Loading content of packs repositories...");
+		m_out.println();
+		m_out.println(Utils.getCurrentDateTime());
 
-		List<Map<String, Object>> list;
-		list = m_repos.getList();
+		List<Map<String, Object>> reposList;
+		reposList = m_repos.getList();
 
-		int workUnits = list.size();
+		int workUnits = reposList.size();
+		workUnits++; // For post processing
 		monitor.beginTask("Load packs repositories", workUnits);
 
-		TreeNode root = new TreeNode(TreeNode.ROOT_TYPE);
+		parseRepos(monitor);
 
-		for (Map<String, Object> map : list) {
-			String type = (String) map.get("type");
-			String name = (String) map.get("name");
-			String url = (String) map.get("url");
-
-			monitor.subTask(name);
-			if (Repos.CMSIS_PACK_TYPE.equals(type)
-					|| Repos.XCDL_CMSIS_PACK_TYPE.equals(type)) {
-
-				String fileName = m_repos.getRepoContentXmlFromUrl(url);
-
-				parseContent(fileName, root);
+		// Notify listeners (currently the views) that the packs changed
+		// (for just in case this takes very long, normally the views are
+		// not created at this moment)
+		Display.getDefault().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				fireChanged();
 			}
-			monitor.worked(1);
-		}
+		});
 
 		long endTime = System.currentTimeMillis();
 		long duration = endTime - beginTime;
@@ -120,38 +197,77 @@ public class PacksStorage {
 			m_out.println((duration + 500) / 1000 + "s.");
 		}
 
+		System.out.println("loadRepositories() completed");
+
 		return Status.OK_STATUS;
 	}
 
-	private void parseContent(String fileName, TreeNode parent) {
+	public int getParseReposWorkUnits() {
+
+		List<Map<String, Object>> reposList;
+		reposList = m_repos.getList();
+
+		return reposList.size() + 1;
+	}
+
+	public void parseRepos(IProgressMonitor monitor) {
+
+		m_out.println("Loading repos summaries...");
+
+		List<Map<String, Object>> reposList;
+		reposList = m_repos.getList();
+
+		for (Map<String, Object> map : reposList) {
+			String type = (String) map.get("type");
+			String name = (String) map.get("name");
+			String url = (String) map.get("url");
+
+			monitor.subTask(name);
+			if (Repos.CMSIS_PACK_TYPE.equals(type)
+					|| Repos.XCDL_CMSIS_PACK_TYPE.equals(type)) {
+
+				String fileName = m_repos.getRepoContentXmlFromUrl(url);
+
+				try {
+					Node node = parseContentFile(fileName);
+					map.put("content", node);
+				} catch (IOException e) {
+					m_out.println(e.getMessage());
+				} catch (ParserConfigurationException e) {
+					m_out.println(e.toString());
+				} catch (SAXException e) {
+					m_out.println(e.toString());
+				}
+			}
+			monitor.worked(1);
+		}
+
+		monitor.subTask("Post processing");
+
+		postProcessRepos();
+
+		monitor.worked(1);
+	}
+
+	private Node parseContentFile(String fileName) throws IOException,
+			ParserConfigurationException, SAXException {
 
 		long beginTime = System.currentTimeMillis();
 
 		File file;
-		try {
-			file = m_repos.getFileObject(fileName);
-		} catch (IOException e) {
-			m_out.println(e.getMessage());
-			return;
-		}
+		file = m_repos.getFileObject(fileName);
 
 		m_out.println("Parsing \"" + file.getPath() + "\"...");
 
 		if (!file.exists()) {
-			m_out.println("File does not exist, ignored.");
-			return;
+			throw new IOException("File does not exist, ignored.");
 		}
 
 		Document document;
-		try {
-			document = Utils.parseXml(file);
-		} catch (Exception e) {
-			m_out.println("XML parse error: " + e.getMessage());
-			return;
-		}
+		document = Utils.parseXml(file);
 
 		ContentParser parser = new ContentParser(document);
-		parser.parseDocument(parent);
+		Node node = parser.parseDocument();
 
 		long endTime = System.currentTimeMillis();
 		long duration = endTime - beginTime;
@@ -160,9 +276,66 @@ public class PacksStorage {
 		}
 
 		m_out.println("File parsed in " + duration + "ms.");
+
+		return node;
 	}
 
-	public void putCache(TreeNode tree) throws IOException {
+	private void postProcessRepos() {
+
+		List<Map<String, Object>> reposList;
+		reposList = m_repos.getList();
+
+		// Collect all version nodes in a list
+		List<Node> packsVersionsList = new LinkedList<Node>();
+		for (Map<String, Object> map : reposList) {
+
+			Node node = (Node) map.get("content");
+			if (node != null) {
+				getVersionsRecursive(node, packsVersionsList);
+			}
+		}
+
+		// Group versions by [vendor::package]
+		Map<String, Map<String, Node>> packsMap = new TreeMap<String, Map<String, Node>>();
+		for (Node versionNode : packsVersionsList) {
+			String vendorName = versionNode.getProperty(Property.VENDOR_NAME);
+			String packName = versionNode.getProperty(Property.PACK_NAME);
+			String key = vendorName + "::" + packName;
+
+			Map<String, Node> versionMap;
+			versionMap = packsMap.get(key);
+			if (versionMap == null) {
+				versionMap = new TreeMap<String, Node>();
+				packsMap.put(key, versionMap);
+			}
+
+			versionMap.put(versionNode.getName(), versionNode);
+		}
+
+		m_out.println("Processed " + packsMap.size() + " packages, "
+				+ packsVersionsList.size() + " versions.");
+
+		// Make them publicly available
+		m_packsVersionsList = packsVersionsList;
+		m_packsMap = packsMap;
+	}
+
+	private void getVersionsRecursive(Node node, List<Node> list) {
+
+		if (Type.VERSION.equals(node.getType())) {
+			list.add(node);
+			// Stop recursion here
+		} else if (node.hasChildren()) {
+			for (Node child : node.getChildren()) {
+				getVersionsRecursive(child, list);
+			}
+		}
+
+	}
+
+	// ----------
+
+	public void putCache(Node tree) throws IOException {
 
 		File file = m_repos.getFileObject(CACHE_FILE_NAME);
 
@@ -186,8 +359,7 @@ public class PacksStorage {
 		ms_tree = tree;
 	}
 
-	private void putCacheNodeRecursive(TreeNode node, int depth,
-			PrintWriter writer) {
+	private void putCacheNodeRecursive(Node node, int depth, PrintWriter writer) {
 
 		putIndentation(depth, writer);
 		writer.println("<node type=\"" + node.getType() + "\" name=\""
@@ -220,8 +392,8 @@ public class PacksStorage {
 			putIndentation(depth + 1, writer);
 			writer.println("<conditions>");
 
-			List<TreeNode.Selector> conditions = node.getConditions();
-			for (TreeNode.Selector condition : conditions) {
+			List<Selector> conditions = node.getConditions();
+			for (Selector condition : conditions) {
 				putIndentation(depth + 2, writer);
 				writer.print("<condition type=\"" + condition.getType() + "\"");
 				writer.print(" value=\"" + condition.getValue() + "\"");
@@ -242,8 +414,8 @@ public class PacksStorage {
 			putIndentation(depth + 1, writer);
 			writer.println("<outline>");
 
-			TreeNode outlineNode = node.getOutline();
-			for (TreeNode outlineChild : outlineNode.getChildrenArray()) {
+			Node outlineNode = node.getOutline();
+			for (Node outlineChild : outlineNode.getChildrenArray()) {
 				putCacheNodeRecursive(outlineChild, depth + 2, writer);
 			}
 
@@ -251,12 +423,12 @@ public class PacksStorage {
 			writer.println("</outline>");
 		}
 
-		List<TreeNode> children = node.getChildren();
+		List<Node> children = node.getChildren();
 		if (children != null && !children.isEmpty()) {
 			putIndentation(depth + 1, writer);
 			writer.println("<nodes>");
 
-			for (TreeNode child : children) {
+			for (Node child : children) {
 				putCacheNodeRecursive(child, depth + 2, writer);
 			}
 
@@ -274,11 +446,11 @@ public class PacksStorage {
 		}
 	}
 
-	public TreeNode getCachedSubTree(String type) throws IOException,
+	public Node getCachedSubTree(String type) throws IOException,
 			ParserConfigurationException, SAXException {
 
-		TreeNode rootNode = getCachedTree();
-		for (TreeNode childNode : rootNode.getChildren()) {
+		Node rootNode = getCachedTree();
+		for (Node childNode : rootNode.getChildren()) {
 			if (childNode.getType().equals(type)) {
 				return childNode;
 			}
@@ -287,12 +459,12 @@ public class PacksStorage {
 		throw new IOException("No such node type " + type + ".");
 	}
 
-	public TreeNode getCachedTree() throws IOException,
+	public Node getCachedTree() throws IOException,
 			ParserConfigurationException, SAXException {
 		return getCachedTree(false);
 	}
 
-	public TreeNode getCachedTree(boolean doReload) throws IOException,
+	public Node getCachedTree(boolean doReload) throws IOException,
 			ParserConfigurationException, SAXException {
 
 		if (doReload) {
@@ -347,14 +519,14 @@ public class PacksStorage {
 
 		// Update installed nodes
 		IPath path = new Path(m_repos.getFolderPathString());
-		updateInstalledNodesRecursive(
-				getCachedSubTree(TreeNode.PACKAGES_SUBTREE_TYPE), path, true);
+		updateInstalledNodesRecursive(getCachedSubTree(Type.PACKAGES_SUBTREE),
+				path, true);
 	}
 
-	private TreeNode getCacheRecursive(Element nodeElement) {
+	private Node getCacheRecursive(Element nodeElement) {
 
 		String type = nodeElement.getAttribute("type");
-		TreeNode treeNode = new TreeNode(type);
+		Node treeNode = new Node(type);
 
 		String name = nodeElement.getAttribute("name");
 		treeNode.setName(name);
@@ -400,8 +572,7 @@ public class PacksStorage {
 				String conditionValue = conditionElement.getAttribute("value")
 						.trim();
 
-				TreeNode.Selector condition = treeNode.new Selector(
-						conditionType);
+				Selector condition = new Selector(conditionType);
 				if (conditionVendor.length() > 0) {
 					condition.setVendor(conditionVendor);
 				}
@@ -419,12 +590,12 @@ public class PacksStorage {
 			List<Element> nodeElements = Utils.getChildElementsList(
 					outlineElement, "node");
 
-			TreeNode outlineNode = new TreeNode(TreeNode.OUTLINE_TYPE);
+			Node outlineNode = new Node(Type.OUTLINE);
 			treeNode.setOutline(outlineNode);
 
 			for (Element childElement : nodeElements) {
 
-				TreeNode childTreeNode = getCacheRecursive((Element) childElement);
+				Node childTreeNode = getCacheRecursive((Element) childElement);
 				outlineNode.addChild(childTreeNode);
 			}
 		}
@@ -435,7 +606,7 @@ public class PacksStorage {
 					nodesElement, "node");
 			for (Element childElement : nodeElements) {
 
-				TreeNode childTreeNode = getCacheRecursive((Element) childElement);
+				Node childTreeNode = getCacheRecursive((Element) childElement);
 				treeNode.addChild(childTreeNode);
 			}
 		}
@@ -443,11 +614,11 @@ public class PacksStorage {
 		return treeNode;
 	}
 
-	public void updateInstalledNodesRecursive(TreeNode node, IPath path,
+	public void updateInstalledNodesRecursive(Node node, IPath path,
 			boolean isInstalled) {
 
 		if (node.hasChildren()) {
-			for (TreeNode childNode : node.getChildren()) {
+			for (Node childNode : node.getChildren()) {
 				// Extend path with node name and recurse down
 				// TODO: use NAME_PROPERTY
 				IPath childPath = path.append(childNode.getName());
@@ -456,7 +627,7 @@ public class PacksStorage {
 		}
 
 		String nodeType = node.getType();
-		if (TreeNode.VERSION_TYPE.equals(nodeType)) {
+		if (Type.VERSION.equals(nodeType)) {
 			File folder = path.toFile();
 			if (folder.exists() && folder.isDirectory()) {
 				// If the name exists and it is indeed a directory,
@@ -468,31 +639,31 @@ public class PacksStorage {
 		}
 	}
 
-	public void updateInstalledVersionNode(TreeNode versionNode,
-			boolean isInstalled, List<TreeNode>[] lists) {
+	public void updateInstalledVersionNode(Node versionNode,
+			boolean isInstalled, List<Node>[] lists) {
 
-		List<TreeNode> deviceNodes;
-		List<TreeNode> boardNodes;
+		List<Node> deviceNodes;
+		List<Node> boardNodes;
 
 		if (lists != null) {
 			deviceNodes = lists[0];
 			boardNodes = lists[1];
 		} else {
-			deviceNodes = new LinkedList<TreeNode>();
-			boardNodes = new LinkedList<TreeNode>();
+			deviceNodes = new LinkedList<Node>();
+			boardNodes = new LinkedList<Node>();
 		}
 
 		String type = versionNode.getType();
-		if (!TreeNode.VERSION_TYPE.equals(type)) {
+		if (!Type.VERSION.equals(type)) {
 			return;
 		}
 
 		versionNode.setIsInstalled(isInstalled);
-		TreeNode packNode = versionNode.getParent();
+		Node packNode = versionNode.getParent();
 
 		boolean doMarkPackage = true;
 		if (!isInstalled) {
-			for (TreeNode child : packNode.getChildrenArray()) {
+			for (Node child : packNode.getChildrenArray()) {
 				if (child.isInstalled()) {
 					doMarkPackage = false;
 				}
@@ -502,19 +673,19 @@ public class PacksStorage {
 			packNode.setIsInstalled(isInstalled);
 		}
 
-		List<TreeNode.Selector> conditionsList = versionNode.getParent()
-				.getConditionsByType(TreeNode.Selector.DEVICEFAMILY_TYPE);
+		List<Selector> conditionsList = versionNode.getParent()
+				.getConditionsByType(Selector.DEVICEFAMILY_TYPE);
 		if (conditionsList.size() > 0) {
-			for (TreeNode.Selector condition : conditionsList) {
+			for (Selector condition : conditionsList) {
 				updateDeviceInstalled(condition.getVendorId(),
 						condition.getValue(), isInstalled, deviceNodes);
 			}
 		}
 
 		conditionsList = versionNode.getParent().getConditionsByType(
-				TreeNode.Selector.BOARD_TYPE);
+				Selector.BOARD_TYPE);
 		if (conditionsList.size() > 0) {
-			for (TreeNode.Selector condition : conditionsList) {
+			for (Selector condition : conditionsList) {
 				updateBoardInstalled(condition.getVendor(),
 						condition.getValue(), isInstalled, boardNodes);
 			}
@@ -525,19 +696,19 @@ public class PacksStorage {
 	}
 
 	private void updateDeviceInstalled(String vendorId, String familyName,
-			boolean isInstalled, List<TreeNode> deviceNodes) {
+			boolean isInstalled, List<Node> deviceNodes) {
 
 		try {
-			TreeNode devicesTree = getCachedSubTree(TreeNode.DEVICES_SUBTREE_TYPE);
+			Node devicesTree = getCachedSubTree(Type.DEVICES_SUBTREE);
 
 			// Assume the two level hierarchy, vendor/devicefamily
-			for (TreeNode vendorNode : devicesTree.getChildrenArray()) {
+			for (Node vendorNode : devicesTree.getChildrenArray()) {
 
 				// Select vendors that match the given vendor id
 				if (vendorId.equals(vendorNode
-						.getProperty(TreeNode.VENDORID_PROPERTY))) {
+						.getProperty(Node.VENDORID_PROPERTY))) {
 
-					for (TreeNode familyNode : vendorNode.getChildrenArray()) {
+					for (Node familyNode : vendorNode.getChildrenArray()) {
 						// Select family
 						if (familyName.equals(familyNode.getName())) {
 
@@ -552,18 +723,18 @@ public class PacksStorage {
 	}
 
 	private void updateBoardInstalled(String vendor, String boardName,
-			boolean isInstalled, List<TreeNode> boardNodes) {
+			boolean isInstalled, List<Node> boardNodes) {
 
 		try {
-			TreeNode boardsTree = getCachedSubTree(TreeNode.BOARDS_SUBTREE_TYPE);
+			Node boardsTree = getCachedSubTree(Type.BOARDS_SUBTREE);
 
 			// Assume the two level hierarchy, vendor/board
-			for (TreeNode vendorNode : boardsTree.getChildrenArray()) {
+			for (Node vendorNode : boardsTree.getChildrenArray()) {
 
 				// Select vendors that match the given vendor name
 				if (vendor.equals(vendorNode.getName())) {
 
-					for (TreeNode boardNode : vendorNode.getChildrenArray()) {
+					for (Node boardNode : vendorNode.getChildrenArray()) {
 						// Select board
 						if (boardName.equals(boardNode.getName())) {
 
@@ -577,27 +748,27 @@ public class PacksStorage {
 		}
 	}
 
-	public List<TreeNode> getInstalledVersions() {
+	public List<Node> getInstalledVersions() {
 
-		List<TreeNode> list = new LinkedList<TreeNode>();
+		List<Node> list = new LinkedList<Node>();
 		try {
-			TreeNode node;
-			node = getCachedSubTree(TreeNode.PACKAGES_SUBTREE_TYPE);
+			Node node;
+			node = getCachedSubTree(Type.PACKAGES_SUBTREE);
 			getInstalledVersionsRecursive(node, list);
 		} catch (Exception e) {
 		}
 		return list;
 	}
 
-	public void getInstalledVersionsRecursive(TreeNode node, List<TreeNode> list) {
+	public void getInstalledVersionsRecursive(Node node, List<Node> list) {
 
 		if (node.hasChildren()) {
-			for (TreeNode child : node.getChildren()) {
+			for (Node child : node.getChildren()) {
 				getInstalledVersionsRecursive(child, list);
 			}
 		}
 
-		if (TreeNode.VERSION_TYPE.equals(node.getType())) {
+		if (Type.VERSION.equals(node.getType())) {
 			if (node.isInstalled()) {
 				list.add(node);
 			}

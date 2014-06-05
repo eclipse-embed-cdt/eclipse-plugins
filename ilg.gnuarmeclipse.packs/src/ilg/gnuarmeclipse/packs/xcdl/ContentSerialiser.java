@@ -13,8 +13,9 @@ package ilg.gnuarmeclipse.packs.xcdl;
 
 import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.Repos;
-import ilg.gnuarmeclipse.packs.TreeNode;
 import ilg.gnuarmeclipse.packs.Utils;
+import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.Type;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -34,7 +35,7 @@ public class ContentSerialiser {
 		m_repos = Repos.getInstance();
 	}
 
-	public void serialise(TreeNode tree, String fileName) throws IOException {
+	public void serialiseToXml(Node tree, String fileName) throws IOException {
 
 		File file = m_repos.getFileObject(fileName);
 
@@ -59,7 +60,7 @@ public class ContentSerialiser {
 		}
 	}
 
-	private void serialiseRecursive(TreeNode node, int depth) {
+	private void serialiseRecursive(Node node, int depth) {
 
 		putIndentation(depth);
 
@@ -71,45 +72,45 @@ public class ContentSerialiser {
 		boolean doOutputName = true;
 		boolean doOutputProperties = true;
 		boolean hasNoChildrenElements = false;
-		if (TreeNode.REPOSITORY_TYPE.equals(nodeType)) {
+		if (Type.REPOSITORY.equals(nodeType)) {
 			nodeElementName = "repository";
 			nodesElementName = "packages";
-		} else if (TreeNode.PACKAGE_TYPE.equals(nodeType)) {
-			nodeElementName = "packages";
+		} else if (Type.PACKAGE.equals(nodeType)) {
+			nodeElementName = "package";
 			nodesElementName = "versions";
-		} else if (TreeNode.VERSION_TYPE.equals(nodeType)) {
+		} else if (Type.VERSION.equals(nodeType)) {
 			nodeElementName = "version";
 			doOutputNodes = false;
-		} else if (TreeNode.OUTLINE_TYPE.equals(nodeType)) {
+		} else if (Type.OUTLINE.equals(nodeType)) {
 			nodeElementName = "outline";
 			doOutputNodes = false;
 			doOutputName = false;
-		} else if (TreeNode.EXTERNAL_TYPE.equals(nodeType)) {
+		} else if (Type.EXTERNAL.equals(nodeType)) {
 			nodeElementName = "external";
 			doOutputNodes = false;
 			doOutputName = false;
-		} else if (TreeNode.FAMILY_TYPE.equals(nodeType)) {
+		} else if (Type.FAMILY.equals(nodeType)) {
 			nodeElementName = "devicefamily";
 			doOutputNodes = false;
 			doOutputProperties = false;
-		} else if (TreeNode.BOARD_TYPE.equals(nodeType)) {
+		} else if (Type.BOARD.equals(nodeType)) {
 			nodeElementName = "board";
 			doOutputNodes = false;
 			doOutputProperties = false;
-		} else if (TreeNode.KEYWORD_TYPE.equals(nodeType)) {
+		} else if (Type.KEYWORD.equals(nodeType)) {
 			nodeElementName = "keyword";
 			doOutputNodes = false;
 			doOutputProperties = false;
 			hasNoChildrenElements = true;
-		} else if (TreeNode.COMPONENT_TYPE.equals(nodeType)) {
+		} else if (Type.COMPONENT.equals(nodeType)) {
 			nodeElementName = "component";
 			doOutputNodes = false;
 			doOutputProperties = false;
-		} else if (TreeNode.BUNDLE_TYPE.equals(nodeType)) {
+		} else if (Type.BUNDLE.equals(nodeType)) {
 			nodeElementName = "bundle";
 			doOutputNodes = false;
 			doOutputProperties = false;
-		} else if (TreeNode.EXAMPLE_TYPE.equals(nodeType)) {
+		} else if (Type.EXAMPLE.equals(nodeType)) {
 			nodeElementName = "example";
 			doOutputNodes = false;
 			doOutputProperties = false;
@@ -153,9 +154,9 @@ public class ContentSerialiser {
 				Map<String, String> properties = node.getProperties();
 				for (Object key : properties.keySet()) {
 					putIndentation(newDepth);
-					writer.println("<property name=\"" + key.toString()
-							+ "\" value=\"" + properties.get(key).toString()
-							+ "\" />");
+					writer.println("<property name=\"" + key.toString() + "\">"
+							+ Utils.xmlEscape(properties.get(key).toString())
+							+ "</property>");
 				}
 
 				if (doOutputProperties) {
@@ -164,7 +165,7 @@ public class ContentSerialiser {
 				}
 			}
 
-			List<TreeNode> children = node.getChildren();
+			List<Node> children = node.getChildren();
 			if (children != null && !children.isEmpty()) {
 				if (doOutputNodes) {
 					putIndentation(depth + 1);
@@ -182,7 +183,7 @@ public class ContentSerialiser {
 					newDepth = depth + 1;
 				}
 
-				for (TreeNode child : children) {
+				for (Node child : children) {
 					serialiseRecursive(child, newDepth);
 				}
 

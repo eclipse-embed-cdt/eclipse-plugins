@@ -11,12 +11,18 @@
 
 package ilg.gnuarmeclipse.packs;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PushbackInputStream;
 import java.net.URL;
 import java.net.URLConnection;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -115,6 +121,15 @@ public class Utils {
 		return s;
 	}
 
+	public static Element getParentElement(Element el) {
+
+		do {
+			el = (Element) el.getParentNode();
+		} while (el != null && el.getNodeType() != Node.ELEMENT_NODE);
+
+		return el;
+	}
+
 	public static List<String> getAttributesNames(Element el) {
 
 		List<String> list = new LinkedList<String>();
@@ -207,8 +222,8 @@ public class Utils {
 		return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
 	}
 
-	public static Document parseXml(File file) throws ParserConfigurationException,
-			SAXException, IOException {
+	public static Document parseXml(File file)
+			throws ParserConfigurationException, SAXException, IOException {
 
 		InputSource inputSource = new InputSource(new FileInputStream(file));
 
@@ -217,4 +232,24 @@ public class Utils {
 		return xml.parse(inputSource);
 	}
 
+	public static String getCurrentDateTime() {
+
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Calendar cal = Calendar.getInstance();
+		return dateFormat.format(cal.getTime());
+	}
+
+	public static InputStream checkForUtf8BOM(InputStream inputStream)
+			throws IOException {
+
+		PushbackInputStream pushbackInputStream = new PushbackInputStream(
+				new BufferedInputStream(inputStream), 3);
+		byte[] bom = new byte[3];
+		if (pushbackInputStream.read(bom) != -1) {
+			if (!(bom[0] == (byte) 0xEF && bom[1] == (byte) 0xBB && bom[2] == (byte) 0xBF)) {
+				pushbackInputStream.unread(bom);
+			}
+		}
+		return pushbackInputStream;
+	}
 }

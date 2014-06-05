@@ -14,7 +14,9 @@ package ilg.gnuarmeclipse.packs.jobs;
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.Repos;
-import ilg.gnuarmeclipse.packs.TreeNode;
+import ilg.gnuarmeclipse.packs.Utils;
+import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.Type;
 
 import java.io.File;
 import java.io.IOException;
@@ -65,15 +67,20 @@ public class RemoveJob extends Job {
 		m_running = true;
 		m_monitor = monitor;
 
-		m_out.println("Remove packs started.");
+		long beginTime = System.currentTimeMillis();
 
-		List<TreeNode> packs = new ArrayList<TreeNode>();
+		m_out.println();
+		m_out.println(Utils.getCurrentDateTime());
+
+		m_out.println("Remove packs job started.");
+
+		List<Node> packs = new ArrayList<Node>();
 
 		for (Object obj : m_selection.toArray()) {
-			TreeNode n = (TreeNode) obj;
+			Node n = (Node) obj;
 			String type = n.getType();
 
-			if (TreeNode.VERSION_TYPE.equals(type) & n.isInstalled()) {
+			if (Type.VERSION.equals(type) & n.isInstalled()) {
 				packs.add(n);
 			}
 		}
@@ -91,11 +98,11 @@ public class RemoveJob extends Job {
 				break;
 			}
 
-			final TreeNode versionNode = packs.get(i);
-			final TreeNode packNode = versionNode.getParent();
+			final Node versionNode = packs.get(i);
+			final Node packNode = versionNode.getParent();
 
 			String packName = versionNode.getProperty(
-					TreeNode.ARCHIVENAME_PROPERTY, "");
+					Node.ARCHIVENAME_PROPERTY, "");
 
 			// Name the subtask with the pack name
 			monitor.subTask("Remove \"" + packName + "\"");
@@ -105,8 +112,7 @@ public class RemoveJob extends Job {
 			IPath packFilePath;
 			try {
 
-				String dest = versionNode.getProperty(TreeNode.FOLDER_PROPERTY,
-						"");
+				String dest = versionNode.getProperty(Node.FOLDER_PROPERTY, "");
 				versionFolderPath = m_repos.getFolderPath().append(dest);
 
 				// Remove the pack archived file
@@ -128,11 +134,11 @@ public class RemoveJob extends Job {
 
 			removedPacksCount++;
 
-			List<TreeNode> deviceNodes = new LinkedList<TreeNode>();
-			List<TreeNode> boardNodes = new LinkedList<TreeNode>();
+			List<Node> deviceNodes = new LinkedList<Node>();
+			List<Node> boardNodes = new LinkedList<Node>();
 
 			@SuppressWarnings("unchecked")
-			final List<TreeNode>[] lists = (List<TreeNode>[]) (new List<?>[] {
+			final List<Node>[] lists = (List<Node>[]) (new List<?>[] {
 					deviceNodes, boardNodes });
 
 			m_storage.updateInstalledVersionNode(versionNode, false, lists);
@@ -162,16 +168,16 @@ public class RemoveJob extends Job {
 		}
 
 		//
-		List<TreeNode> installedVersions = m_storage.getInstalledVersions();
+		List<Node> installedVersions = m_storage.getInstalledVersions();
 
-		List<TreeNode> deviceNodes = new LinkedList<TreeNode>();
-		List<TreeNode> boardNodes = new LinkedList<TreeNode>();
+		List<Node> deviceNodes = new LinkedList<Node>();
+		List<Node> boardNodes = new LinkedList<Node>();
 
 		@SuppressWarnings("unchecked")
-		final List<TreeNode>[] lists = (List<TreeNode>[]) (new List<?>[] {
-				deviceNodes, boardNodes });
+		final List<Node>[] lists = (List<Node>[]) (new List<?>[] { deviceNodes,
+				boardNodes });
 
-		for (TreeNode versionNode : installedVersions) {
+		for (Node versionNode : installedVersions) {
 			m_storage.updateInstalledVersionNode(versionNode, true, lists);
 
 			// Clear children
@@ -186,12 +192,19 @@ public class RemoveJob extends Job {
 			}
 		});
 
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - beginTime;
+		if (duration == 0) {
+			duration = 1;
+		}
+
 		if (removedPacksCount == 1) {
 			m_out.println("1 pack removed.");
 		} else {
 			m_out.println(removedPacksCount + " packs removed.");
 		}
-		m_out.println();
+		m_out.print("Job completed in ");
+		m_out.println(duration + "ms.");
 
 		m_running = false;
 		return Status.OK_STATUS;

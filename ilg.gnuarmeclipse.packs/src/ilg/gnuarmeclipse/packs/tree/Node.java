@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs;
+package ilg.gnuarmeclipse.packs.tree;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -19,47 +19,9 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IAdaptable;
 
-public class TreeNode implements Comparable<TreeNode>, IAdaptable {
+public class Node implements Comparable<Node>, IAdaptable {
 
 	// Node types (sorted)
-	public static final String ACCEPT_TYPE = "accept";
-	public static final String API_TYPE = "api";
-	public static final String BOARD_TYPE = "board";
-	public static final String BOARDS_SUBTREE_TYPE = "boards";
-	public static final String BOOK_TYPE = "book";
-	public static final String BUNDLE_TYPE = "bundle";
-	public static final String CATEGORY_TYPE = "category";
-	public static final String COMPONENT_TYPE = "component";
-	public static final String CONDITION_TYPE = "condition";
-	public static final String DEBUGINTERFACE_TYPE = "debuginterface";
-	public static final String DEBUG_TYPE = "debug";
-	public static final String DEFINE_TYPE = "define";
-	public static final String DENY_TYPE = "deny";
-	public static final String DEVICE_TYPE = "device";
-	public static final String DEVICES_SUBTREE_TYPE = "devices";
-	public static final String ENVIRONMENT_TYPE = "environment";
-	public static final String EXAMPLE_TYPE = "example";
-	public static final String EXTERNAL_TYPE = "external";
-	public static final String FAMILY_TYPE = "family";
-	public static final String FEATURE_TYPE = "feature";
-	public static final String FILE_TYPE = "file";
-	public static final String HEADER_TYPE = "header";
-	public static final String KEYWORD_TYPE = "keyword";
-	public static final String KEYWORDS_SELECT_TYPE = "keywords";
-	public static final String MEMORY_TYPE = "memory";
-	public static final String NONE_TYPE = "none";
-	public static final String OUTLINE_TYPE = "outline";
-	public static final String PACKAGE_TYPE = "package";
-	public static final String PACKAGES_SUBTREE_TYPE = "packages";
-	public static final String PROCESSOR_TYPE = "processor";
-	public static final String REPOSITORY_TYPE = "repository";
-	public static final String REQUIRE_TYPE = "require";
-	public static final String ROOT_TYPE = "root";
-	public static final String SUBFAMILY_TYPE = "subfamily";
-	public static final String TAXONOMY_TYPE = "taxonomy";
-	public static final String VARIANT_TYPE = "variant";
-	public static final String VENDOR_TYPE = "vendor";
-	public static final String VERSION_TYPE = "version";
 
 	// Properties (sorted)
 	public static final String AP_PROPERTY = "ap";
@@ -119,138 +81,24 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 	public static final String VENDOR_PROPERTY = "vendor";
 	public static final String VERSION_PROPERTY = "version";
 
-	public class PROPERTY {
-		public static final String ARCHIVE_NAME = "archive.name";
-		public static final String ARCHIVE_SIZE = "archive.size";
-		public static final String ARCHIVE_URL = "archive.url";
-		public static final String DATE = "date";
-		public static final String DEST_FOLDER = "dest.folder";
-		public static final String GENERATOR = "generator";
-		public static final String REPO_URL = "repo.url";
-		// public static final String SITE_URL = "site.url";
-		public static final String TYPE = "type";
-		// public static final String UTC_DATE = "utc.date";
-		public static final String VENDOR_NAME = "vendor.name";
-		public static final String VENDOR_ID = "vendor.id";
-	};
-
 	public static final String CONDITION_ATTRIBUTES[] = { "Dfamily",
 			"DsubFamily", "Dvariant", "Dvendor", "Dname", "Dcore", "Dfpu",
 			"Dmpu", "Dendian", "Cvendor", "Cbundle", "Cclass", "Cgroup",
 			"Csub", "Cvariant", "Cversion", "Capiversion", "Tcompiler",
 			"condition" };
 
-	public class Selector {
-
-		public static final String DEVICEFAMILY_TYPE = "devicefamily";
-		public static final String BOARD_TYPE = "board";
-		public static final String KEYWORD_TYPE = "keyword";
-
-		public static final String DEPRECATED_TYPE = "deprecated";
-
-		private String m_type;
-		private String m_value;
-
-		// If more are needed, better use a map
-		private String m_vendor;
-		private String m_vendorId;
-
-		public Selector(String type) {
-			m_type = type.trim();
-			m_value = "";
-
-			m_vendor = null;
-			m_vendorId = null;
-		}
-
-		public String getType() {
-			return m_type;
-		}
-
-		public String getValue() {
-			return m_value;
-		}
-
-		public void setValue(String value) {
-			if (value != null) {
-				m_value = value.trim();
-			} else {
-				m_value = "";
-			}
-		}
-
-		public boolean hasVendor() {
-			return m_vendor != null;
-		}
-
-		public String getVendor() {
-			return m_vendor;
-		}
-
-		public void setVendor(String vendor) {
-			if (vendor != null) {
-				m_vendor = vendor.trim();
-			} else {
-				m_vendor = null;
-			}
-		}
-
-		public boolean hasVendorId() {
-			return m_vendorId != null;
-		}
-
-		public String getVendorId() {
-			return m_vendorId;
-		}
-
-		public void setVendorId(String vendorId) {
-			if (vendorId != null) {
-				m_vendorId = vendorId.trim();
-			} else {
-				m_vendorId = null;
-			}
-		}
-
-		public String toString() {
-			return m_type + ":" + m_value;
-		}
-
-		public boolean equals(Object obj) {
-
-			if (!(obj instanceof Selector))
-				return false;
-
-			Selector s = (Selector) obj;
-
-			if (!m_type.equals(s.m_type))
-				return false;
-
-			if (!m_value.equals(s.m_value))
-				return false;
-
-			if (m_vendor != null && !m_vendor.equals(m_vendor))
-				return false;
-
-			if (m_vendorId != null && !m_vendorId.equals(m_vendorId))
-				return false;
-
-			return true;
-		}
-
-	}
-
 	private String m_type;
 	private String m_name;
 	private String m_description;
 	private boolean m_isInstalled;
-	private TreeNode m_parent;
+	private Node m_parent;
 	private Map<String, String> m_properties;
 	private List<Selector> m_conditions;
-	private TreeNode m_outline;
+	private Node m_outline;
 
-	private List<TreeNode> m_children;
+	private List<Node> m_children;
 
-	public TreeNode(String type) {
+	public Node(String type) {
 		m_type = type;
 		m_name = "";
 		m_description = "";
@@ -298,27 +146,35 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 		return (m_children != null && !m_children.isEmpty());
 	}
 
-	public List<TreeNode> getChildren() {
+	public List<Node> getChildren() {
 		return m_children;
 	}
 
-	public TreeNode[] getChildrenArray() {
+	public Node[] getChildrenArray() {
 		if (m_children != null) {
-			return m_children.toArray(new TreeNode[m_children.size()]);
+			return m_children.toArray(new Node[m_children.size()]);
 		} else {
-			return new TreeNode[0];
+			return new Node[0];
 		}
 	}
 
-	public void addChild(TreeNode child) {
+	public Node addNewChild(String type) {
+
+		Node node = new Node(type);
+		addChild(node);
+
+		return node;
+	}
+
+	public void addChild(Node child) {
 		if (m_children == null) {
-			m_children = new ArrayList<TreeNode>();
+			m_children = new ArrayList<Node>();
 		}
 		m_children.add(child);
 		child.m_parent = this;
 	}
 
-	public TreeNode addUniqueChild(String type, String name) {
+	public Node addUniqueChild(String type, String name) {
 
 		if (type == null) {
 			return null;
@@ -326,10 +182,10 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 
 		if (m_children == null) {
 			// On first child create list
-			m_children = new ArrayList<TreeNode>();
+			m_children = new ArrayList<Node>();
 		}
 
-		for (TreeNode node : m_children) {
+		for (Node node : m_children) {
 			if (node.m_type.equals(type)) {
 				if (name == null) {
 					// Node of given type, any name, found
@@ -343,7 +199,7 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 		}
 
 		// Node not found, create a new one
-		TreeNode child = new TreeNode(type);
+		Node child = new Node(type);
 		if (name != null) {
 			child.setName(name);
 		}
@@ -354,7 +210,7 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 		return child;
 	}
 
-	public TreeNode getChild(String type, String name) {
+	public Node getChild(String type, String name) {
 		if (type == null) {
 			return null;
 		}
@@ -362,7 +218,7 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 			return null;
 		}
 
-		for (TreeNode node : m_children) {
+		for (Node node : m_children) {
 			if (node.m_type.equals(type)) {
 				if (name == null) {
 					// Node of given type, any name, found
@@ -382,7 +238,7 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 		m_children = null;
 	}
 
-	public TreeNode getParent() {
+	public Node getParent() {
 		return m_parent;
 	}
 
@@ -475,17 +331,17 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 		return (m_outline != null);
 	}
 
-	public TreeNode getOutline() {
+	public Node getOutline() {
 		return m_outline;
 	}
 
-	public void setOutline(TreeNode node) {
+	public void setOutline(Node node) {
 		m_outline = node;
 	}
 
 	// ------
 	@Override
-	public int compareTo(TreeNode o) {
+	public int compareTo(Node o) {
 		return m_name.compareTo(o.m_name);
 	}
 
@@ -501,7 +357,7 @@ public class TreeNode implements Comparable<TreeNode>, IAdaptable {
 		return getName();
 	}
 
-	public void copyChildren(TreeNode node) {
+	public void copyChildren(Node node) {
 		m_children = node.m_children;
 	}
 }

@@ -13,8 +13,9 @@ package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
-import ilg.gnuarmeclipse.packs.TreeNode;
 import ilg.gnuarmeclipse.packs.UsingDefaultFileException;
+import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.Type;
 
 import java.util.List;
 
@@ -85,7 +86,7 @@ public class DevicesView extends ViewPart {
 	class ViewContentProvider implements IStructuredContentProvider,
 			ITreeContentProvider {
 
-		private TreeNode m_tree;
+		private Node m_tree;
 
 		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
 		}
@@ -106,7 +107,7 @@ public class DevicesView extends ViewPart {
 					}
 				}
 				if (m_tree == null) {
-					m_tree = new TreeNode(TreeNode.NONE_TYPE);
+					m_tree = new Node(Type.NONE);
 					return new Object[] { m_tree };
 				}
 				return getChildren(m_tree);
@@ -115,15 +116,15 @@ public class DevicesView extends ViewPart {
 		}
 
 		public Object getParent(Object child) {
-			return ((TreeNode) child).getParent();
+			return ((Node) child).getParent();
 		}
 
 		public Object[] getChildren(Object parent) {
-			return ((TreeNode) parent).getChildrenArray();
+			return ((Node) parent).getChildrenArray();
 		}
 
 		public boolean hasChildren(Object parent) {
-			return ((TreeNode) parent).hasChildren();
+			return ((Node) parent).hasChildren();
 		}
 
 		public void forceRefresh() {
@@ -135,19 +136,19 @@ public class DevicesView extends ViewPart {
 	class ViewLabelProvider extends CellLabelProvider {
 
 		public String getText(Object obj) {
-			return " " + ((TreeNode) obj).getName();
+			return " " + ((Node) obj).getName();
 		}
 
 		public Image getImage(Object obj) {
 
-			TreeNode node = ((TreeNode) obj);
+			Node node = ((Node) obj);
 			String type = node.getType();
 
-			if (TreeNode.NONE_TYPE.equals(type)) {
+			if (Type.NONE.equals(type)) {
 				return null;
 			}
 
-			if (!TreeNode.FAMILY_TYPE.equals(type)) {
+			if (!Type.FAMILY.equals(type)) {
 				String imageKey = ISharedImages.IMG_OBJ_FOLDER;
 				return PlatformUI.getWorkbench().getSharedImages()
 						.getImage(imageKey);
@@ -168,12 +169,12 @@ public class DevicesView extends ViewPart {
 		@Override
 		public String getToolTipText(Object obj) {
 
-			TreeNode node = ((TreeNode) obj);
+			Node node = ((Node) obj);
 			String type = node.getType();
 
-			if (TreeNode.VENDOR_TYPE.equals(type)) {
+			if (Type.VENDOR.equals(type)) {
 				return "Vendor";
-			} else if (TreeNode.FAMILY_TYPE.equals(type)) {
+			} else if (Type.FAMILY.equals(type)) {
 				String description = node.getDescription();
 				if (description != null && description.length() > 0) {
 					return description;
@@ -355,7 +356,7 @@ public class DevicesView extends ViewPart {
 
 		if (obj instanceof List<?>) {
 			@SuppressWarnings("unchecked")
-			List<TreeNode> list = (List<TreeNode>) obj;
+			List<Node> list = (List<Node>) obj;
 			for (Object node : list) {
 				m_viewer.update(node, null);
 			}

@@ -14,8 +14,10 @@ package ilg.gnuarmeclipse.packs.jobs;
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.Repos;
-import ilg.gnuarmeclipse.packs.TreeNode;
 import ilg.gnuarmeclipse.packs.Utils;
+import ilg.gnuarmeclipse.packs.tree.Property;
+import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.Type;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -80,22 +82,25 @@ public class InstallJob extends Job {
 
 		long beginTime = System.currentTimeMillis();
 
-		m_out.println("Install packs started.");
+		m_out.println();
+		m_out.println(Utils.getCurrentDateTime());
 
-		List<TreeNode> packs = new ArrayList<TreeNode>();
+		m_out.println("Install packs job started.");
+
+		List<Node> packs = new ArrayList<Node>();
 
 		// Iterate selection and build list of nodes
 		for (Object obj : m_selection.toArray()) {
-			TreeNode n = (TreeNode) obj;
+			Node n = (Node) obj;
 			if (!n.isInstalled()) {
 
 				String type = n.getType();
-				if (TreeNode.PACKAGE_TYPE.equals(type)) {
+				if (Type.PACKAGE.equals(type)) {
 
 					// For package nodes, install the top most version
 					packs.add(n.getChildren().get(0));
 
-				} else if (TreeNode.VERSION_TYPE.equals(type)) {
+				} else if (Type.VERSION.equals(type)) {
 
 					// For version nodes, install the given version
 					packs.add(n);
@@ -121,26 +126,39 @@ public class InstallJob extends Job {
 				break;
 			}
 
-			final TreeNode versionNode = packs.get(i);
-			final TreeNode packNode = versionNode.getParent();
+			// TODO: use properties
+			final Node versionNode = packs.get(i);
+			final Node packNode = versionNode.getParent();
 
-			String packName = versionNode.getProperty(
-					TreeNode.ARCHIVENAME_PROPERTY, "");
+			String versionName = versionNode.getName();
+			String packName = packNode.getName();
+			String vendorName = packNode.getProperty(Node.VENDOR_PROPERTY);
+
+			String packFullName = versionNode.getProperty(
+					Node.ARCHIVENAME_PROPERTY, "");
 
 			// Name the subtask with the pack name
-			monitor.subTask(packName);
-			m_out.println("Install \"" + packName + "\".");
+			monitor.subTask(packFullName);
+			m_out.println("Install \"" + vendorName + "/" + packFullName
+					+ "\".");
 
 			try {
 
 				installPack(versionNode);
 				installedPacksCount++;
 
-				List<TreeNode> deviceNodes = new LinkedList<TreeNode>();
-				List<TreeNode> boardNodes = new LinkedList<TreeNode>();
+				Node node = m_storage.getPackVersion(vendorName, packName,
+						versionName);
+				if (node != null) {
+					node.setIsInstalled(true);
+					node.putProperty(Property.INSTALLED, "true");
+				}
+
+				List<Node> deviceNodes = new LinkedList<Node>();
+				List<Node> boardNodes = new LinkedList<Node>();
 
 				@SuppressWarnings("unchecked")
-				final List<TreeNode>[] lists = (List<TreeNode>[]) (new List<?>[] {
+				final List<Node>[] lists = (List<Node>[]) (new List<?>[] {
 						deviceNodes, boardNodes });
 
 				m_storage.updateInstalledVersionNode(versionNode, true, lists);
@@ -186,30 +204,31 @@ public class InstallJob extends Job {
 			m_out.print(installedPacksCount + " packs");
 		}
 		m_out.println(" installed.");
+
+		m_out.print("Job completed in ");
 		if (duration < 1000) {
-			m_out.println("Completed in " + duration + "ms.");
+			m_out.println(duration + "ms.");
 		} else {
-			m_out.println("Completed in " + (duration + 500) / 1000 + "s.");
+			m_out.println((duration + 500) / 1000 + "s.");
 		}
-		m_out.println();
 
 		ms_running = false;
 		return Status.OK_STATUS;
 	}
 
-	private int computeWorkUnits(TreeNode versionNode) {
+	private int computeWorkUnits(Node versionNode) {
 
 		int workUnits = 0;
 
-		String size = versionNode.getProperty(TreeNode.SIZE_PROPERTY, "0");
+		String size = versionNode.getProperty(Node.SIZE_PROPERTY, "0");
 		try {
 			workUnits += Integer.valueOf(size);
 		} catch (NumberFormatException e) {
 			;
 		}
 
-		TreeNode packNode = versionNode.getParent();
-		String pdscUrl = packNode.getProperty(TreeNode.PDSCURL_PROPERTY, "");
+		Node packNode = versionNode.getParent();
+		String pdscUrl = packNode.getProperty(Node.PDSCURL_PROPERTY, "");
 		if (pdscUrl.length() > 0) {
 			try {
 				workUnits += Utils.getRemoteFileSize(new URL(pdscUrl));
@@ -223,14 +242,14 @@ public class InstallJob extends Job {
 		return workUnits;
 	}
 
-	private void installPack(TreeNode versionNode) throws IOException {
+	private void installPack(Node versionNode) throws IOException {
 
 		// Package node
-		URL packUrl = new URL(versionNode.getProperty(
-				TreeNode.ARCHIVEURL_PROPERTY, ""));
+		URL packUrl = new URL(versionNode.getProperty(Node.ARCHIVEURL_PROPERTY,
+				""));
 
-		String packName = versionNode.getProperty(
-				TreeNode.ARCHIVENAME_PROPERTY, "");
+		String packName = versionNode
+				.getProperty(Node.ARCHIVENAME_PROPERTY, "");
 
 		File packFile = getFile(new Path(PacksStorage.DOWNLOAD_FOLDER),
 				packName);
@@ -239,11 +258,10 @@ public class InstallJob extends Job {
 		copyFile(packUrl, packFile);
 
 		// Version node
-		TreeNode packNode = versionNode.getParent();
+		Node packNode = versionNode.getParent();
 
-		URL pdscUrl = new URL(packNode.getProperty(TreeNode.PDSCURL_PROPERTY,
-				""));
-		String pdscName = packNode.getProperty(TreeNode.PDSCNAME_PROPERTY, "");
+		URL pdscUrl = new URL(packNode.getProperty(Node.PDSCURL_PROPERTY, ""));
+		String pdscName = packNode.getProperty(Node.PDSCNAME_PROPERTY, "");
 
 		File pdscFile = getFile(new Path(PacksStorage.DOWNLOAD_FOLDER),
 				pdscName);
@@ -252,7 +270,7 @@ public class InstallJob extends Job {
 		// If .pack is not there, this is not reached
 		copyFile(pdscUrl, pdscFile);
 
-		String dest = versionNode.getProperty(TreeNode.FOLDER_PROPERTY, "");
+		String dest = versionNode.getProperty(Node.FOLDER_PROPERTY, "");
 		Path destRelPath = new Path(dest);
 		// extract files from archive to local folder
 		unzip(packFile, destRelPath);

@@ -13,8 +13,11 @@ package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
-import ilg.gnuarmeclipse.packs.TreeNode;
+import ilg.gnuarmeclipse.packs.PacksStorageEvent;
+import ilg.gnuarmeclipse.packs.IPacksStorageListener;
 import ilg.gnuarmeclipse.packs.UsingDefaultFileException;
+import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.Type;
 
 import java.util.List;
 
@@ -67,6 +70,8 @@ public class KeywordsView extends ViewPart {
 
 	private ViewContentProvider m_contentProvider;
 
+	private PacksStorage m_storage;
+
 	/*
 	 * The content provider class is responsible for providing objects to the
 	 * view. It can wrap existing objects in adapters or simply return objects
@@ -75,7 +80,8 @@ public class KeywordsView extends ViewPart {
 	 * example).
 	 */
 
-	class ViewContentProvider extends AbstractViewContentProvider {
+	class ViewContentProvider extends AbstractViewContentProvider implements
+			IPacksStorageListener {
 
 		public Object[] getElements(Object parent) {
 			if (parent.equals(getViewSite())) {
@@ -90,7 +96,7 @@ public class KeywordsView extends ViewPart {
 					}
 				}
 				if (m_tree == null) {
-					m_tree = new TreeNode(TreeNode.NONE_TYPE);
+					m_tree = new Node(Type.NONE);
 					return new Object[] { m_tree };
 				}
 				return getChildren(m_tree);
@@ -98,12 +104,19 @@ public class KeywordsView extends ViewPart {
 			return getChildren(parent);
 		}
 
+		@Override
+		public void packsChanged(PacksStorageEvent event) {
+
+			System.out
+					.println("KeywordsView.ViewContentProvider.packsChanged()");
+		}
+
 	}
 
 	class ViewLabelProvider extends CellLabelProvider {
 
 		public String getText(Object obj) {
-			return " " + ((TreeNode) obj).getName();
+			return " " + ((Node) obj).getName();
 		}
 
 		public Image getImage(Object obj) {
@@ -111,11 +124,11 @@ public class KeywordsView extends ViewPart {
 			// TreeNode node = ((TreeNode) obj);
 			// String type = node.getType();
 
-			// if (TreeNode.NONE_TYPE.equals(type)) {
+			// if (Type.NONE.equals(type)) {
 			// return null;
 			// }
 			//
-			// if (TreeNode.KEYWORD_TYPE.equals(type)) {
+			// if (Type.KEYWORD.equals(type)) {
 			// return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 			// "icons/info_obj.png").createImage();
 			// }
@@ -129,9 +142,9 @@ public class KeywordsView extends ViewPart {
 			// TreeNode node = ((TreeNode) obj);
 			// String type = node.getType();
 			//
-			// if (TreeNode.VENDOR_TYPE.equals(type)) {
+			// if (Type.VENDOR.equals(type)) {
 			// return "Vendor";
-			// } else if (TreeNode.FAMILY_TYPE.equals(type)) {
+			// } else if (Type.FAMILY.equals(type)) {
 			// String description = node.getDescription();
 			// if (description != null && description.length() > 0) {
 			// return description;
@@ -159,6 +172,7 @@ public class KeywordsView extends ViewPart {
 		// Store reference to this view
 		Activator.setKeywordsView(this);
 
+		m_storage = PacksStorage.getInstance();
 		System.out.println("KeywordsView()");
 	}
 
@@ -181,6 +195,10 @@ public class KeywordsView extends ViewPart {
 		ColumnViewerToolTipSupport.enableFor(m_viewer);
 
 		m_contentProvider = new ViewContentProvider();
+
+		// Register this content provider to the packs storage notifications
+		m_storage.addListener(m_contentProvider);
+
 		m_viewer.setContentProvider(m_contentProvider);
 		m_viewer.setLabelProvider(new ViewLabelProvider());
 		m_viewer.setSorter(new NameSorter());
@@ -197,6 +215,8 @@ public class KeywordsView extends ViewPart {
 
 	public void dispose() {
 		super.dispose();
+
+		m_storage.removeListener(m_contentProvider);
 
 		System.out.println("KeywordsView.dispose()");
 	}
@@ -287,7 +307,7 @@ public class KeywordsView extends ViewPart {
 
 		if (obj instanceof List<?>) {
 			@SuppressWarnings("unchecked")
-			List<TreeNode> list = (List<TreeNode>) obj;
+			List<Node> list = (List<Node>) obj;
 			for (Object node : list) {
 				m_viewer.update(node, null);
 			}

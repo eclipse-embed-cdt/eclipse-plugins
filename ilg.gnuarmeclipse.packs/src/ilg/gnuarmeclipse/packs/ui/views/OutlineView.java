@@ -12,8 +12,9 @@
 package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.packs.Activator;
-import ilg.gnuarmeclipse.packs.TreeNode;
 import ilg.gnuarmeclipse.packs.jobs.ParsePdscJob;
+import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.Type;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -77,33 +78,30 @@ public class OutlineView extends ViewPart {
 		@Override
 		public Object[] getElements(Object inputElement) {
 
-			if ((inputElement == null) || !(inputElement instanceof TreeNode)) {
-				m_tree = null; // new TreeNode(TreeNode.NONE_TYPE);
+			if ((inputElement == null) || !(inputElement instanceof Node)) {
+				m_tree = null; // new TreeNode(Type.NONE);
 				m_packagePath = null;
-				return new Object[] { new TreeNode(TreeNode.NONE_TYPE) };
+				return new Object[] { new Node(Type.NONE) };
 			}
 
-			TreeNode node = (TreeNode) inputElement;
+			Node node = (Node) inputElement;
 			String type = node.getType();
 			if (m_tree == null) {
 				m_packagePath = null;
-				if (TreeNode.PACKAGE_TYPE.equals(type)
-						|| TreeNode.VERSION_TYPE.equals(type)
-						|| TreeNode.EXAMPLE_TYPE.equals(type)
-						|| TreeNode.NONE_TYPE.equals(type)) {
+				if (Type.PACKAGE.equals(type) || Type.VERSION.equals(type)
+						|| Type.EXAMPLE.equals(type) || Type.NONE.equals(type)) {
 					m_tree = node;
 				}
 			}
 
 			if (m_tree == null) {
 				m_packagePath = null;
-				return new Object[] { new TreeNode(TreeNode.NONE_TYPE) };
+				return new Object[] { new Node(Type.NONE) };
 			} else if (node == m_tree) {
 				m_packagePath = null;
-				TreeNode outline = m_tree.getOutline();
+				Node outline = m_tree.getOutline();
 				if (outline != null) {
-					String folder = outline
-							.getProperty(TreeNode.FOLDER_PROPERTY);
+					String folder = outline.getProperty(Node.FOLDER_PROPERTY);
 					if (folder != null) {
 						m_packagePath = new Path(folder);
 					}
@@ -120,7 +118,7 @@ public class OutlineView extends ViewPart {
 	class ViewLabelProvider extends CellLabelProvider {
 
 		public String getText(Object obj) {
-			TreeNode node = ((TreeNode) obj);
+			Node node = ((Node) obj);
 			String name = node.getName();
 
 			return " " + name;
@@ -128,10 +126,10 @@ public class OutlineView extends ViewPart {
 
 		public Image getImage(Object obj) {
 
-			TreeNode node = ((TreeNode) obj);
+			Node node = ((Node) obj);
 			String type = node.getType();
 
-			if (TreeNode.NONE_TYPE.equals(type)) {
+			if (Type.NONE.equals(type)) {
 				return null;
 			}
 
@@ -141,50 +139,49 @@ public class OutlineView extends ViewPart {
 			} catch (Exception e) {
 			}
 
-			if (TreeNode.FAMILY_TYPE.equals(type)
-					|| TreeNode.SUBFAMILY_TYPE.equals(type)
-					|| TreeNode.DEVICE_TYPE.equals(type)) {
+			if (Type.FAMILY.equals(type) || Type.SUBFAMILY.equals(type)
+					|| Type.DEVICE.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/hardware_chip.png").createImage();
-			} else if (TreeNode.BOARD_TYPE.equals(type)) {
+			} else if (Type.BOARD.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/board.png").createImage();
-			} else if (TreeNode.VERSION_TYPE.equals(type)) {
+			} else if (Type.VERSION.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/jtypeassist_co.png").createImage();
-			} else if (TreeNode.EXAMPLE_TYPE.equals(type)) {
+			} else if (Type.EXAMPLE.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/binaries_obj.gif" /* "icons/exec_obj.gif" */)
 						.createImage();
-			} else if (TreeNode.COMPONENT_TYPE.equals(type)) {
+			} else if (Type.COMPONENT.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/component.png" /* "icons/codeassist_co.gif" */)
 						.createImage();
-			} else if (TreeNode.BUNDLE_TYPE.equals(type)) {
+			} else if (Type.BUNDLE.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/bundle.png" /* "icons/javaassist_co.png" */)
 						.createImage();
-			} else if (TreeNode.CATEGORY_TYPE.equals(type)) {
+			} else if (Type.CATEGORY.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/label_obj.gif").createImage();
-			} else if (TreeNode.KEYWORD_TYPE.equals(type)) {
+			} else if (Type.KEYWORD.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/info_obj.png").createImage();
-			} else if (TreeNode.DEBUGINTERFACE_TYPE.equals(type)
-					|| TreeNode.DEBUG_TYPE.equals(type)) {
+			} else if (Type.DEBUGINTERFACE.equals(type)
+					|| Type.DEBUG.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/exec_dbg_obj.gif").createImage();
-			} else if (TreeNode.FEATURE_TYPE.equals(type)) {
+			} else if (Type.FEATURE.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/genericvariable_obj.png").createImage();
-			} else if (TreeNode.BOOK_TYPE.equals(type)) {
-				String url = node.getProperty(TreeNode.URL_PROPERTY, "");
+			} else if (Type.BOOK.equals(type)) {
+				String url = node.getProperty(Node.URL_PROPERTY, "");
 				if (url.length() > 0) {
 					return Activator.imageDescriptorFromPlugin(
 							Activator.PLUGIN_ID, "icons/external_browser.png")
 							.createImage();
 				}
-				String path = node.getProperty(TreeNode.FILE_PROPERTY, "")
+				String path = node.getProperty(Node.FILE_PROPERTY, "")
 						.toLowerCase();
 
 				if (path.endsWith(".pdf")) {
@@ -203,12 +200,11 @@ public class OutlineView extends ViewPart {
 							Activator.PLUGIN_ID, "icons/library_obj.png")
 							.createImage();
 				}
-			} else if (TreeNode.PROCESSOR_TYPE.equals(type)) {
+			} else if (Type.PROCESSOR.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/methpro_obj.png").createImage();
-			} else if (TreeNode.FILE_TYPE.equals(type)) {
-				String category = node.getProperty(TreeNode.CATEGORY_PROPERTY,
-						"");
+			} else if (Type.FILE.equals(type)) {
+				String category = node.getProperty(Node.CATEGORY_PROPERTY, "");
 				if ("source".equals(category)) {
 					if (name.endsWith(".s")) {
 						return Activator.imageDescriptorFromPlugin(
@@ -251,37 +247,37 @@ public class OutlineView extends ViewPart {
 							Activator.PLUGIN_ID, "icons/file_obj.png")
 							.createImage();
 				}
-			} else if (TreeNode.HEADER_TYPE.equals(type)) {
+			} else if (Type.HEADER.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/include_obj.gif").createImage();
-			} else if (TreeNode.DEFINE_TYPE.equals(type)) {
+			} else if (Type.DEFINE.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/define_obj.gif").createImage();
-			} else if (TreeNode.MEMORY_TYPE.equals(type)) {
+			} else if (Type.MEMORY.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/memory_view.png").createImage();
-			} else if (TreeNode.TAXONOMY_TYPE.equals(type)) {
+			} else if (Type.TAXONOMY.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/jdoc_tag_obj.png").createImage();
-			} else if (TreeNode.CONDITION_TYPE.equals(type)) {
+			} else if (Type.CONDITION.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/smartmode_co.png").createImage();
-			} else if (TreeNode.REQUIRE_TYPE.equals(type)) {
+			} else if (Type.REQUIRE.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/default_co.png").createImage();
-			} else if (TreeNode.ACCEPT_TYPE.equals(type)) {
+			} else if (Type.ACCEPT.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/method_public_obj.gif").createImage();
-			} else if (TreeNode.DENY_TYPE.equals(type)) {
+			} else if (Type.DENY.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/method_private_obj.gif").createImage();
-			} else if (TreeNode.PACKAGE_TYPE.equals(type)) {
+			} else if (Type.PACKAGE.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/package_obj.png").createImage();
-			} else if (TreeNode.API_TYPE.equals(type)) {
+			} else if (Type.API.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/int_obj.gif").createImage();
-			} else if (TreeNode.ENVIRONMENT_TYPE.equals(type)) {
+			} else if (Type.ENVIRONMENT.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/config-profile.gif").createImage();
 			} else {
@@ -293,7 +289,7 @@ public class OutlineView extends ViewPart {
 		@Override
 		public String getToolTipText(Object obj) {
 
-			TreeNode node = ((TreeNode) obj);
+			Node node = ((Node) obj);
 
 			String description = node.getDescription();
 			if (description != null && description.length() > 0) {
@@ -377,42 +373,40 @@ public class OutlineView extends ViewPart {
 					return;
 				}
 
-				TreeNode node = (TreeNode) selection.getFirstElement();
+				Node node = (Node) selection.getFirstElement();
 				String type = node.getType();
 
 				// Enable 'Open With Text Editor'
-				if (TreeNode.FILE_TYPE.equals(type)) {
+				if (Type.FILE.equals(type)) {
 
-					String category = node
-							.getProperty(TreeNode.CATEGORY_PROPERTY);
+					String category = node.getProperty(Node.CATEGORY_PROPERTY);
 					if ("header".equals(category) || "source".equals(category)) {
 						m_openWithText.setEnabled(true);
 					}
-				} else if (TreeNode.HEADER_TYPE.equals(type)) {
+				} else if (Type.HEADER.equals(type)) {
 					m_openWithText.setEnabled(true);
-				} else if (TreeNode.DEBUG_TYPE.equals(type)) {
+				} else if (Type.DEBUG.equals(type)) {
 					m_openWithText.setEnabled(true);
 				}
 
 				// Enable 'Open With System Editor'
-				if (TreeNode.FILE_TYPE.equals(type)) {
+				if (Type.FILE.equals(type)) {
 
-					String category = node
-							.getProperty(TreeNode.CATEGORY_PROPERTY);
+					String category = node.getProperty(Node.CATEGORY_PROPERTY);
 					if ("doc".equals(category)) {
 						m_openWithSystem.setEnabled(true);
 					}
-				} else if (TreeNode.DEBUG_TYPE.equals(type)) {
+				} else if (Type.DEBUG.equals(type)) {
 					m_openWithSystem.setEnabled(true);
-				} else if (TreeNode.BOOK_TYPE.equals(type)) {
+				} else if (Type.BOOK.equals(type)) {
 
-					String relativeFile = node.getProperty(
-							TreeNode.FILE_PROPERTY, "");
+					String relativeFile = node.getProperty(Node.FILE_PROPERTY,
+							"");
 					if (relativeFile.length() > 0) {
 						m_openWithSystem.setEnabled(true);
 					}
 
-					String url = node.getProperty(TreeNode.URL_PROPERTY, "");
+					String url = node.getProperty(Node.URL_PROPERTY, "");
 					if (url.length() > 0) {
 						m_openWithSystem.setEnabled(true);
 					}
@@ -460,26 +454,25 @@ public class OutlineView extends ViewPart {
 		if (selection.isEmpty()) {
 			m_viewer.setInput(null);
 		} else if (selection instanceof TreeSelection) {
-			TreeNode node = (TreeNode) ((TreeSelection) selection)
-					.getFirstElement();
+			Node node = (Node) ((TreeSelection) selection).getFirstElement();
 
 			if (node.hasOutline()) {
 				// If the node already has outline, show it
 				m_viewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);
 				m_viewer.setInput(node);
-			} else if (TreeNode.VERSION_TYPE.equals(node.getType())) {
+			} else if (Type.VERSION.equals(node.getType())) {
 				if (node.isInstalled()) {
 					// If the version node is installed, get outline
 					ParsePdscJob job = new ParsePdscJob("Parse Outline", node,
 							m_viewer);
 					job.schedule();
 				} else {
-					TreeNode none = new TreeNode(TreeNode.NONE_TYPE);
+					Node none = new Node(Type.NONE);
 					none.setName("(Version not installed, outline not available)");
 					m_viewer.setInput(none);
 				}
-			} else if (TreeNode.VENDOR_TYPE.equals(node.getType())) {
-				TreeNode none = new TreeNode(TreeNode.NONE_TYPE);
+			} else if (Type.VENDOR.equals(node.getType())) {
+				Node none = new Node(Type.NONE);
 				none.setName("(Outline not available)");
 				m_viewer.setInput(none);
 			} else {
@@ -520,9 +513,9 @@ public class OutlineView extends ViewPart {
 				ISelection selection = m_viewer.getSelection();
 				Object obj = ((IStructuredSelection) selection)
 						.getFirstElement();
-				if (obj instanceof TreeNode) {
+				if (obj instanceof Node) {
 					try {
-						openWithTextAction((TreeNode) obj);
+						openWithTextAction((Node) obj);
 					} catch (PartInitException e) {
 					}
 				}
@@ -539,9 +532,9 @@ public class OutlineView extends ViewPart {
 				ISelection selection = m_viewer.getSelection();
 				Object obj = ((IStructuredSelection) selection)
 						.getFirstElement();
-				if (obj instanceof TreeNode) {
+				if (obj instanceof Node) {
 					try {
-						openWithSystemAction((TreeNode) obj);
+						openWithSystemAction((Node) obj);
 					} catch (PartInitException e) {
 					} catch (MalformedURLException e) {
 					}
@@ -557,9 +550,9 @@ public class OutlineView extends ViewPart {
 				ISelection selection = m_viewer.getSelection();
 				Object obj = ((IStructuredSelection) selection)
 						.getFirstElement();
-				if (obj instanceof TreeNode) {
+				if (obj instanceof Node) {
 					try {
-						doubleClickAction((TreeNode) obj);
+						doubleClickAction((Node) obj);
 					} catch (PartInitException e) {
 					} catch (MalformedURLException e) {
 					}
@@ -614,7 +607,7 @@ public class OutlineView extends ViewPart {
 		manager.add(m_collapseAll);
 	}
 
-	private void doubleClickAction(TreeNode node) throws PartInitException,
+	private void doubleClickAction(Node node) throws PartInitException,
 			MalformedURLException {
 		String type = node.getType();
 		if (m_packagePath == null) {
@@ -625,10 +618,10 @@ public class OutlineView extends ViewPart {
 		IWorkbenchPage page = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage();
 
-		if (TreeNode.FILE_TYPE.equals(type)) {
+		if (Type.FILE.equals(type)) {
 
-			String category = node.getProperty(TreeNode.CATEGORY_PROPERTY);
-			String relativeFile = node.getProperty(TreeNode.FILE_PROPERTY);
+			String category = node.getProperty(Node.CATEGORY_PROPERTY);
+			String relativeFile = node.getProperty(Node.FILE_PROPERTY);
 			if ("header".equals(category) || "source".equals(category)) {
 
 				// System.out.println("Edit " + relativeFile);
@@ -656,10 +649,10 @@ public class OutlineView extends ViewPart {
 				System.out.println("File " + node + "  " + category);
 			}
 
-		} else if (TreeNode.BOOK_TYPE.equals(type)) {
+		} else if (Type.BOOK.equals(type)) {
 
-			String url = node.getProperty(TreeNode.URL_PROPERTY, "");
-			String relativeFile = node.getProperty(TreeNode.FILE_PROPERTY, "");
+			String url = node.getProperty(Node.URL_PROPERTY, "");
+			String relativeFile = node.getProperty(Node.FILE_PROPERTY, "");
 			if (url.length() > 0) {
 
 				// System.out.println("Open " + url);
@@ -680,11 +673,11 @@ public class OutlineView extends ViewPart {
 				System.out.println("Book " + node);
 			}
 
-		} else if (TreeNode.HEADER_TYPE.equals(type)) {
+		} else if (Type.HEADER.equals(type)) {
 
 			// System.out.println("Header " + node );
 
-			String relativeFile = node.getProperty(TreeNode.FILE_PROPERTY);
+			String relativeFile = node.getProperty(Node.FILE_PROPERTY);
 			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
 					m_packagePath.append(relativeFile));
 
@@ -692,11 +685,11 @@ public class OutlineView extends ViewPart {
 			// packages were marked as read only
 			IDE.openInternalEditorOnFileStore(page, fileStore);
 
-		} else if (TreeNode.DEBUG_TYPE.equals(type)) {
+		} else if (Type.DEBUG.equals(type)) {
 
 			// System.out.println("Debug " + node );
 
-			String relativeFile = node.getProperty(TreeNode.FILE_PROPERTY);
+			String relativeFile = node.getProperty(Node.FILE_PROPERTY);
 			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
 					m_packagePath.append(relativeFile));
 
@@ -710,11 +703,11 @@ public class OutlineView extends ViewPart {
 		}
 	}
 
-	private void openWithTextAction(TreeNode node) throws PartInitException {
+	private void openWithTextAction(Node node) throws PartInitException {
 
 		IWorkbenchPage page = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage();
-		String relativeFile = node.getProperty(TreeNode.FILE_PROPERTY, "");
+		String relativeFile = node.getProperty(Node.FILE_PROPERTY, "");
 		if (relativeFile.length() > 0) {
 			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
 					m_packagePath.append(relativeFile));
@@ -722,12 +715,12 @@ public class OutlineView extends ViewPart {
 		}
 	}
 
-	private void openWithSystemAction(TreeNode node) throws PartInitException,
+	private void openWithSystemAction(Node node) throws PartInitException,
 			MalformedURLException {
 
 		IWorkbenchPage page = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage();
-		String relativeFile = node.getProperty(TreeNode.FILE_PROPERTY, "");
+		String relativeFile = node.getProperty(Node.FILE_PROPERTY, "");
 		if (relativeFile.length() > 0) {
 			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
 					m_packagePath.append(relativeFile));
@@ -735,7 +728,7 @@ public class OutlineView extends ViewPart {
 			return;
 		}
 
-		String url = node.getProperty(TreeNode.URL_PROPERTY, "");
+		String url = node.getProperty(Node.URL_PROPERTY, "");
 		if (url.length() > 0) {
 			PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser()
 					.openURL(new URL(url));

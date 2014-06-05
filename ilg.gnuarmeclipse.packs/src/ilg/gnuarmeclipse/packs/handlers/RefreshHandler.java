@@ -14,12 +14,15 @@ package ilg.gnuarmeclipse.packs.handlers;
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.Repos;
-import ilg.gnuarmeclipse.packs.TreeNode;
 import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.cmsis.Index;
 import ilg.gnuarmeclipse.packs.cmsis.PdscParser;
+import ilg.gnuarmeclipse.packs.tree.Property;
+import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.Type;
 import ilg.gnuarmeclipse.packs.xcdl.ContentSerialiser;
 
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -92,7 +95,12 @@ public class RefreshHandler extends AbstractHandler {
 			return Status.CANCEL_STATUS;
 
 		m_running = true;
-		m_out.println("Refresh packs started.");
+
+		long beginTime = System.currentTimeMillis();
+
+		m_out.println();
+		m_out.println(Utils.getCurrentDateTime());
+		m_out.println("Refresh packs job started.");
 
 		int workUnits = 0;
 
@@ -124,10 +132,12 @@ public class RefreshHandler extends AbstractHandler {
 				}
 			}
 
+			workUnits += m_storage.getParseReposWorkUnits();
+
 			// Set total number of work units to the number of pdsc files
 			monitor.beginTask("Refresh packs", workUnits);
 
-			TreeNode tree = new TreeNode("root");
+			Node tree = new Node("root");
 
 			PdscParser parser = new PdscParser();
 			parser.setIsBrief(true);
@@ -143,7 +153,7 @@ public class RefreshHandler extends AbstractHandler {
 					break;
 
 				String repoUrl = (String) repo.get("url");
-				TreeNode contentRoot = new TreeNode(TreeNode.REPOSITORY_TYPE);
+				Node contentRoot = new Node(Type.REPOSITORY);
 
 				String domainName = m_repos.getDomaninNameFromUrl(repoUrl);
 				domainName = Utils.capitalize(domainName);
@@ -152,15 +162,15 @@ public class RefreshHandler extends AbstractHandler {
 				contentRoot.setDescription(domainName
 						+ " CMSIS packs repository");
 
-				contentRoot.putProperty(TreeNode.PROPERTY.TYPE, "cmsis.repo");
-				contentRoot.putProperty(TreeNode.PROPERTY.REPO_URL, repoUrl);
-				contentRoot.putProperty(TreeNode.PROPERTY.GENERATOR,
+				contentRoot.putProperty(Property.TYPE, "cmsis.repo");
+				contentRoot.putProperty(Property.REPO_URL, repoUrl);
+				contentRoot.putProperty(Property.GENERATOR,
 						"GNU ARM Eclipse Plug-ins");
 
 				DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 				dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 				Calendar cal = Calendar.getInstance();
-				contentRoot.putProperty(TreeNode.PROPERTY.DATE,
+				contentRoot.putProperty(Property.DATE,
 						dateFormat.format(cal.getTime()));
 
 				for (String[] pdsc : list) {
@@ -176,11 +186,16 @@ public class RefreshHandler extends AbstractHandler {
 
 					monitor.subTask(pdscName);
 
-					parser.parseXml(new URL(pdscUrl + pdscName));
-					parser.parsePdscBrief(pdscName, pdscVersion, tree);
+					try {
+						parser.parseXml(new URL(pdscUrl + pdscName));
+						parser.parsePdscBrief(pdscName, pdscVersion, tree);
 
-					parser.parsePdscContent(pdscName, pdscVersion, contentRoot);
-
+						parser.parsePdscContent(pdscName, pdscVersion,
+								contentRoot);
+					} catch (Exception e) {
+						m_out.println("Failed with \"" + e.getMessage()
+								+ "\", ignored");
+					}
 					// One more unit completed
 					monitor.worked(1);
 				}
@@ -188,9 +203,12 @@ public class RefreshHandler extends AbstractHandler {
 				String fileName = m_repos.getRepoContentXmlFromUrl(repoUrl);
 
 				ContentSerialiser serialiser = new ContentSerialiser();
-				serialiser.serialise(contentRoot, fileName);
+				serialiser.serialiseToXml(contentRoot, fileName);
 
-				m_out.println("content.xml written.");
+				File file;
+				file = m_repos.getFileObject(fileName);
+
+				m_out.println("File \"" + file.getPath() + "\" written.");
 			}
 
 			if (monitor.isCanceled()) {
@@ -201,7 +219,11 @@ public class RefreshHandler extends AbstractHandler {
 
 			// Write the tree to the cache.xml file in the packages folder
 			m_storage.putCache(tree);
-			m_out.println("Tree written.");
+			m_out.println("Tree cache written.");
+
+			// The content.xml files were just created, parse them
+			m_out.println();
+			m_storage.parseRepos(monitor);
 
 			m_storage.updateInstalled();
 			m_out.println("Mark installed packs.");
@@ -223,7 +245,14 @@ public class RefreshHandler extends AbstractHandler {
 			}
 		});
 
-		m_out.println("Refresh packs completed.");
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - beginTime;
+		if (duration == 0) {
+			duration = 1;
+		}
+
+		m_out.println("Refresh packs job completed in " + (duration + 500)
+				/ 1000 + "s.");
 		m_out.println();
 		m_running = false;
 		return Status.OK_STATUS;

@@ -13,8 +13,9 @@ package ilg.gnuarmeclipse.packs.jobs;
 
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.Repos;
-import ilg.gnuarmeclipse.packs.TreeNode;
+import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.cmsis.PdscParser;
+import ilg.gnuarmeclipse.packs.tree.Node;
 import ilg.gnuarmeclipse.packs.ui.views.OutlineView;
 
 import java.io.FileNotFoundException;
@@ -34,7 +35,7 @@ public class ParsePdscJob extends Job {
 	private static boolean m_running = false;
 
 	private MessageConsoleStream m_out;
-	private TreeNode m_versionNode;
+	private Node m_versionNode;
 	private TreeViewer m_outlineViewer;
 	private TreeViewer m_packsViewer;
 
@@ -42,7 +43,7 @@ public class ParsePdscJob extends Job {
 
 	// private IProgressMonitor m_monitor;
 
-	public ParsePdscJob(String name, TreeNode node, TreeViewer viewer) {
+	public ParsePdscJob(String name, Node node, TreeViewer viewer) {
 
 		super(name);
 
@@ -72,19 +73,22 @@ public class ParsePdscJob extends Job {
 
 		long beginTime = System.currentTimeMillis();
 
-		TreeNode packNode = m_versionNode.getParent();
+		m_out.println();
+		m_out.println(Utils.getCurrentDateTime());
+
+		Node packNode = m_versionNode.getParent();
 		String packName = packNode.getName();
 
-		String vendorName = packNode.getProperty(TreeNode.VENDOR_PROPERTY);
+		String vendorName = packNode.getProperty(Node.VENDOR_PROPERTY);
 		String versionName = m_versionNode.getName();
 
 		String pdscName = vendorName + "." + packName + ".pdsc";
-		m_out.println("Parse \"" + pdscName + "\" started.");
+		m_out.println("Parse \"" + pdscName + "\" job started.");
 
 		IPath path = folderPath.append(vendorName).append(packName)
 				.append(versionName).append(pdscName);
 
-		TreeNode outlineNode = null;
+		Node outlineNode = null;
 		try {
 			PdscParser pdsc = new PdscParser();
 			pdsc.parseXml(path);
@@ -105,8 +109,7 @@ public class ParsePdscJob extends Job {
 		if (duration == 0) {
 			duration = 1;
 		}
-		m_out.println("Parse completed in " + duration + "ms.");
-		m_out.println();
+		m_out.println("Parse job completed in " + duration + "ms.");
 
 		if (outlineNode != null) {
 			Display.getDefault().asyncExec(new Runnable() {

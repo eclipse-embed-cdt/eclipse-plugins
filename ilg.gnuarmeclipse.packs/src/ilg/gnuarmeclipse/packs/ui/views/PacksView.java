@@ -13,12 +13,14 @@ package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
-import ilg.gnuarmeclipse.packs.TreeNode;
 import ilg.gnuarmeclipse.packs.UsingDefaultFileException;
 import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.jobs.CopyExampleJob;
 import ilg.gnuarmeclipse.packs.jobs.InstallJob;
 import ilg.gnuarmeclipse.packs.jobs.RemoveJob;
+import ilg.gnuarmeclipse.packs.tree.Selector;
+import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.Type;
 
 import java.util.List;
 
@@ -127,7 +129,7 @@ public class PacksView extends ViewPart {
 				}
 
 				if (m_tree == null) {
-					m_tree = new TreeNode(TreeNode.NONE_TYPE);
+					m_tree = new Node(Type.NONE);
 					return new Object[] { m_tree };
 				}
 				return getChildren(m_tree);
@@ -143,17 +145,17 @@ public class PacksView extends ViewPart {
 			switch (columnIndex) {
 			case 0:
 				// String imageKey;
-				TreeNode node = ((TreeNode) obj);
+				Node node = ((Node) obj);
 				String type = node.getType();
 
-				if (TreeNode.VENDOR_TYPE.equals(type)) {
+				if (Type.VENDOR.equals(type)) {
 					// imageKey = ISharedImages.IMG_OBJ_FOLDER;
 					// return PlatformUI.getWorkbench().getSharedImages()
 					// .getImage(imageKey);
 					return Activator.imageDescriptorFromPlugin(
 							Activator.PLUGIN_ID, "icons/pack_folder.png")
 							.createImage();
-				} else if (TreeNode.PACKAGE_TYPE.equals(type)) {
+				} else if (Type.PACKAGE.equals(type)) {
 					if (node.isInstalled()) {
 						return Activator.imageDescriptorFromPlugin(
 								Activator.PLUGIN_ID, "icons/package_obj.png")
@@ -163,7 +165,7 @@ public class PacksView extends ViewPart {
 								Activator.PLUGIN_ID,
 								"icons/package_obj_grey.png").createImage();
 					}
-				} else if (TreeNode.VERSION_TYPE.equals(type)) {
+				} else if (Type.VERSION.equals(type)) {
 					if (node.isInstalled()) {
 						return Activator
 								.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
@@ -174,7 +176,7 @@ public class PacksView extends ViewPart {
 								Activator.PLUGIN_ID,
 								"icons/jtypeassist_co_grey.png").createImage();
 					}
-				} else if (TreeNode.EXAMPLE_TYPE.equals(type)) {
+				} else if (Type.EXAMPLE.equals(type)) {
 					return Activator.imageDescriptorFromPlugin(
 							Activator.PLUGIN_ID, "icons/binaries_obj.gif")
 							.createImage();
@@ -185,7 +187,7 @@ public class PacksView extends ViewPart {
 
 		public String getColumnText(Object obj, int columnIndex) {
 
-			TreeNode node = ((TreeNode) obj);
+			Node node = ((Node) obj);
 
 			switch (columnIndex) {
 			case 0:
@@ -193,8 +195,8 @@ public class PacksView extends ViewPart {
 				if (node.isInstalled()) {
 					name += " (installed)";
 				} else {
-					if (TreeNode.VERSION_TYPE.equals(node.getType())) {
-						String size = node.getProperty(TreeNode.SIZE_PROPERTY);
+					if (Type.VERSION.equals(node.getType())) {
+						String size = node.getProperty(Node.SIZE_PROPERTY);
 						if (size != null) {
 							try {
 								int n = Integer.parseInt(size);
@@ -236,9 +238,9 @@ public class PacksView extends ViewPart {
 		@SuppressWarnings("unchecked")
 		public int compare(Viewer viewer, Object e1, Object e2) {
 
-			TreeNode n1 = (TreeNode) e1;
+			Node n1 = (Node) e1;
 			String name1 = n1.getName();
-			String name2 = ((TreeNode) e2).getName();
+			String name2 = ((Node) e2).getName();
 
 			if ("version".equals(n1.getType())) {
 				// Reverse the order for versions
@@ -383,11 +385,11 @@ public class PacksView extends ViewPart {
 
 		String conditionType = "";
 		if (part instanceof DevicesView) {
-			conditionType = TreeNode.Selector.DEVICEFAMILY_TYPE;
+			conditionType = Selector.DEVICEFAMILY_TYPE;
 		} else if (part instanceof BoardsView) {
-			conditionType = TreeNode.Selector.BOARD_TYPE;
+			conditionType = Selector.BOARD_TYPE;
 		} else if (part instanceof KeywordsView) {
-			conditionType = TreeNode.Selector.KEYWORD_TYPE;
+			conditionType = Selector.KEYWORD_TYPE;
 		}
 
 		m_packsFilter.setSelection(conditionType, structuredSelection);
@@ -404,8 +406,7 @@ public class PacksView extends ViewPart {
 			return;
 		}
 
-		if (TreeNode.NONE_TYPE.equals(((TreeNode) selection.getFirstElement())
-				.getType())) {
+		if (Type.NONE.equals(((Node) selection.getFirstElement()).getType())) {
 			return;
 		}
 
@@ -414,21 +415,21 @@ public class PacksView extends ViewPart {
 		m_isCopyExampleEnabled = false;
 
 		for (Object obj : selection.toArray()) {
-			TreeNode node = (TreeNode) obj;
+			Node node = (Node) obj;
 			String type = node.getType();
 
 			// Check if the selection contain any package or
 			// version not installed
-			if (TreeNode.PACKAGE_TYPE.equals(type)) {
+			if (Type.PACKAGE.equals(type)) {
 				if (!node.isInstalled()) {
 					m_isInstallEnabled = true;
 				}
 			}
-			if (TreeNode.VERSION_TYPE.equals(type)) {
+			if (Type.VERSION.equals(type)) {
 				int size = 0;
 				try {
-					size = Integer.valueOf(node.getProperty(
-							TreeNode.SIZE_PROPERTY, "0"));
+					size = Integer.valueOf(node.getProperty(Node.SIZE_PROPERTY,
+							"0"));
 				} catch (NumberFormatException e) {
 					;
 				}
@@ -439,7 +440,7 @@ public class PacksView extends ViewPart {
 					m_isRemoveEnabled = true;
 				}
 			}
-			if ((TreeNode.EXAMPLE_TYPE.equals(type))) {
+			if ((Type.EXAMPLE.equals(type))) {
 				m_isCopyExampleEnabled = true;
 			}
 		}
@@ -661,7 +662,7 @@ public class PacksView extends ViewPart {
 
 		if (obj instanceof List<?>) {
 			@SuppressWarnings("unchecked")
-			List<TreeNode> list = (List<TreeNode>) obj;
+			List<Node> list = (List<Node>) obj;
 			for (Object node : list) {
 				m_viewer.update(node, null);
 			}
