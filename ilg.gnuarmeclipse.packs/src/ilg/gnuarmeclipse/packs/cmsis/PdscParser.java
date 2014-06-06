@@ -891,13 +891,15 @@ public class PdscParser {
 			headerNode.setName(va[va.length - 1]);
 			headerNode.setDescription("Header file: " + posixHeader);
 			headerNode.putProperty(Node.FILE_PROPERTY, posixHeader);
-			headerNode.putProperty(Node.DEFINE_PROPERTY, define);
+			headerNode.putNonEmptyProperty(Node.DEFINE_PROPERTY, define);
 
-			Node defineNode = new Node(Type.DEFINE);
-			parent.addChild(defineNode);
+			if (define.length() > 0) {
+				Node defineNode = new Node(Type.DEFINE);
+				parent.addChild(defineNode);
 
-			defineNode.setName(define);
-			defineNode.setDescription("Macro definition");
+				defineNode.setName(define);
+				defineNode.setDescription("Macro definition");
+			}
 
 		} else if ("memory".equals(elementName)) {
 
@@ -2983,23 +2985,6 @@ public class PdscParser {
 
 			String pdscName = packVendorName + "." + packName + ".pdsc";
 			verNode.putProperty(Property.PDSC_NAME, pdscName);
-
-			String pdscRelativePath = unpackFolder + '/' + pdscName;
-
-			try {
-				// Test if the pdsc file exists in the package folder
-				File file = m_repos.getFileObject(pdscRelativePath);
-				if (file.exists()) {
-
-					// Mark the package version as installed
-					verNode.isInstalled();
-
-					// Add an explicit property for more visibility
-					verNode.putProperty(Property.INSTALLED, "true");
-				}
-			} catch (Exception e) {
-				;
-			}
 
 			if (releaseDate.length() > 0) {
 

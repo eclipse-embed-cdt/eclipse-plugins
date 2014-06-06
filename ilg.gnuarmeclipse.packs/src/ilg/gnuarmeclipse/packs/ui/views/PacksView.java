@@ -120,7 +120,7 @@ public class PacksView extends ViewPart {
 					System.out.println("getCachedSubTree(packages)");
 					try {
 						m_tree = (Node) PacksStorage.getInstance()
-								.getCachedSubTree("packages");
+								.getCachedSubTree_x("packages");
 					} catch (UsingDefaultFileException e) {
 						Activator.log(e.getMessage());
 					} catch (Exception e) {

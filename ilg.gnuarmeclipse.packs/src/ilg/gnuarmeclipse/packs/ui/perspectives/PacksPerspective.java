@@ -26,12 +26,12 @@ import org.eclipse.jdt.ui.JavaUI;
 public class PacksPerspective implements IPerspectiveFactory {
 
 	public static final String ID = "ilg.gnuarmeclipse.packs.ui.perspectives.PacksPerspective";
-	
+
 	private IPageLayout factory;
 
 	public PacksPerspective() {
 		super();
-		
+
 		System.out.println("PacksPerspective()");
 	}
 
@@ -42,11 +42,12 @@ public class PacksPerspective implements IPerspectiveFactory {
 		addNewWizardShortcuts();
 		addPerspectiveShortcuts();
 		addViewShortcuts();
-		
+
 		System.out.println("PacksPerspective.createInitialLayout()");
 	}
 
 	private void addViews() {
+
 		// Creates the overall folder layout.
 		// Note that each new Folder uses a percentage of the remaining
 		// EditorArea.
@@ -68,8 +69,8 @@ public class PacksPerspective implements IPerspectiveFactory {
 		IFolderLayout topRight = factory.createFolder("packsOutline", // NON-NLS-1
 				IPageLayout.RIGHT, 0.66f, factory.getEditorArea());
 		topRight.addView("ilg.gnuarmeclipse.packs.ui.views.OutlineView");
-		//topRight.addView("ilg.gnuarmeclipse.packs.ui.views.PackagesView");
-		
+		// topRight.addView("ilg.gnuarmeclipse.packs.ui.views.PackagesView");
+
 		// Leave 20% for the editor
 		factory.addView("ilg.gnuarmeclipse.packs.ui.views.PackagesView",
 				IPageLayout.TOP, 0.8f, factory.getEditorArea());
@@ -118,16 +119,7 @@ public class PacksPerspective implements IPerspectiveFactory {
 
 	@SuppressWarnings("deprecation")
 	private void addViewShortcuts() {
-		// factory.addShowViewShortcut("org.eclipse.ant.ui.views.AntView");
-		// //NON-NLS-1
-		// factory.addShowViewShortcut("org.eclipse.team.ccvs.ui.AnnotateView");
-		// //NON-NLS-1
-		// factory.addShowViewShortcut("org.eclipse.pde.ui.DependenciesView");
-		// //NON-NLS-1
-		// factory.addShowViewShortcut("org.eclipse.jdt.junit.ResultView");
-		// //NON-NLS-1
-		// factory.addShowViewShortcut("org.eclipse.team.ui.GenericHistoryView");
-		// //NON-NLS-1
+
 		factory.addShowViewShortcut(IConsoleConstants.ID_CONSOLE_VIEW);
 		factory.addShowViewShortcut(JavaUI.ID_PACKAGES);
 		factory.addShowViewShortcut(IPageLayout.ID_RES_NAV);

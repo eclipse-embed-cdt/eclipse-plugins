@@ -126,10 +126,22 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		}
 	}
 
-	public boolean isInstalled(){
+	public boolean isBooleanProperty(String name) {
+
+		// Return true if the given propery is true.
+		return (String.valueOf(true).equals(getProperty(name, "")));
+	}
+
+	public void setBooleanProperty(String name, boolean value) {
+		
+		// Set the property to true/false.
+		putProperty(name, String.valueOf(value));
+	}
+
+	public boolean isInstalled() {
 		return false;
 	}
-	
+
 	// Required by the sorter
 	public String toString() {
 		return getName();

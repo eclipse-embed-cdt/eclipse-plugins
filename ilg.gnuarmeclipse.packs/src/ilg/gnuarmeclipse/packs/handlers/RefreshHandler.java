@@ -218,14 +218,14 @@ public class RefreshHandler extends AbstractHandler {
 			}
 
 			// Write the tree to the cache.xml file in the packages folder
-			m_storage.putCache(tree);
+			m_storage.putCache_x(tree);
 			m_out.println("Tree cache written.");
 
 			// The content.xml files were just created, parse them
 			m_out.println();
 			m_storage.parseRepos(monitor);
 
-			m_storage.updateInstalled();
+			m_storage.updateInstalled_x();
 			m_out.println("Mark installed packs.");
 
 		} catch (FileNotFoundException e) {

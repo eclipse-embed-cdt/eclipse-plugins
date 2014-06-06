@@ -12,6 +12,7 @@
 package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.packs.tree.Leaf;
+import ilg.gnuarmeclipse.packs.tree.Property;
 import ilg.gnuarmeclipse.packs.tree.Selector;
 import ilg.gnuarmeclipse.packs.tree.Node;
 import ilg.gnuarmeclipse.packs.tree.Type;
@@ -68,11 +69,11 @@ public class PacksFilter extends ViewerFilter {
 		if (!(node instanceof Node)) {
 			return false;
 		}
-		
+
 		// If the node has no restricting conditions at all,
-		// then it is always visible
+		// then it is not visible
 		if (!((Node) node).hasConditions()) {
-			return false; // true;
+			return false;
 		}
 
 		List<Selector> conditions = ((Node) node).getConditions();
@@ -131,7 +132,7 @@ public class PacksFilter extends ViewerFilter {
 			} else if (Type.BOARD.equals(selectionNodeType)) {
 
 				if (condition.getVendor().equals(
-						selectionNode.getProperty(Node.VENDOR_PROPERTY, ""))
+						selectionNode.getProperty(Property.VENDOR_NAME, ""))
 						&& condition.getValue().equals(selectionNode.getName())) {
 					return true;
 				}
@@ -143,9 +144,9 @@ public class PacksFilter extends ViewerFilter {
 			// family name)
 			if (Type.VENDOR.equals(selectionNodeType)) {
 
-				// compare the condition vendor with the selection vendorid
+				// compare the condition vendor id with the selection vendor id
 				if (condition.getVendorId().equals(
-						selectionNode.getProperty(Node.VENDORID_PROPERTY, ""))) {
+						selectionNode.getProperty(Property.VENDOR_ID, ""))) {
 					return true;
 				}
 			} else if (Type.FAMILY.equals(selectionNodeType)) {
@@ -153,7 +154,7 @@ public class PacksFilter extends ViewerFilter {
 				// compare the condition vendor id with the selection vendor id
 				// and the condition name with selection family name
 				if (condition.getVendorId().equals(
-						selectionNode.getProperty(Node.VENDORID_PROPERTY, ""))
+						selectionNode.getProperty(Property.VENDOR_ID, ""))
 						&& condition.getValue().equals(selectionNode.getName())) {
 					return true;
 				}

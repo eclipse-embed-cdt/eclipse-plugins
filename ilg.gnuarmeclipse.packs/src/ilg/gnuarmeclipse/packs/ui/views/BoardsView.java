@@ -12,8 +12,13 @@
 package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.packs.Activator;
+import ilg.gnuarmeclipse.packs.IPacksStorageListener;
 import ilg.gnuarmeclipse.packs.PacksStorage;
+import ilg.gnuarmeclipse.packs.PacksStorageEvent;
+import ilg.gnuarmeclipse.packs.Utils;
+import ilg.gnuarmeclipse.packs.tree.Leaf;
 import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.Property;
 import ilg.gnuarmeclipse.packs.tree.Type;
 
 import java.util.List;
@@ -26,10 +31,7 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
-import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
@@ -40,22 +42,8 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.part.ViewPart;
-
-/**
- * This sample class demonstrates how to plug-in a new workbench view. The view
- * shows data obtained from the model. The sample creates a dummy model on the
- * fly, but a real implementation would connect to the model available either in
- * this or another plug-in (e.g. the workspace). The view is connected to the
- * model using a content provider.
- * <p>
- * The view uses a label provider to define how model objects should be
- * presented in the view. Each view can present the same model objects using
- * different labels and icons, if needed. Alternatively, a single label provider
- * can be shared between views in order to ensure that objects of the same type
- * are presented in the same way everywhere.
- * <p>
- */
 
 public class BoardsView extends ViewPart {
 
@@ -64,96 +52,52 @@ public class BoardsView extends ViewPart {
 	 */
 	public static final String ID = "ilg.gnuarmeclipse.packs.ui.views.BoardsView";
 
-	private TreeViewer m_viewer;
-	private Action m_removeFilters;
-	private Action m_expandAll;
-	private Action m_collapseAll;
+	// ------------------------------------------------------------------------
 
-	// private PacksFilter m_packsFilter;
-	// private ViewerFilter[] m_packsFilters;
-
-	// private DrillDownAdapter drillDownAdapter;
-
-	private ViewContentProvider m_contentProvider;
-
-	// private Action doubleClickAction;
-
-	/*
-	 * The content provider class is responsible for providing objects to the
-	 * view. It can wrap existing objects in adapters or simply return objects
-	 * as-is. These objects may be sensitive to the current input of the view,
-	 * or ignore it and always show the same content (like Task List, for
-	 * example).
-	 */
-
-	class ViewContentProvider implements IStructuredContentProvider,
-			ITreeContentProvider {
-		private Node m_tree;
-
-		public void inputChanged(Viewer v, Object oldInput, Object newInput) {
-		}
-
-		public void dispose() {
-		}
+	class ViewContentProvider extends AbstractViewContentProvider implements
+			IPacksStorageListener {
 
 		public Object[] getElements(Object parent) {
+
 			if (parent.equals(getViewSite())) {
-				if (m_tree == null) {
-					try {
-						m_tree = (Node) PacksStorage.getInstance()
-								.getCachedSubTree("boards");
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						Activator.log(e);
-					}
-				}
-				if (m_tree == null) {
-					m_tree = new Node(Type.NONE);
-					return new Object[] { m_tree };
-				}
+				m_tree = getBoardsTree();
 				return getChildren(m_tree);
 			}
 			return getChildren(parent);
 		}
 
-		public Object getParent(Object child) {
-			return ((Node) child).getParent();
-		}
+		@Override
+		public void packsChanged(PacksStorageEvent event) {
 
-		public Object[] getChildren(Object parent) {
-			return ((Node) parent).getChildrenArray();
-		}
+			String type = event.getType();
+			System.out.println("BoardsView.packsChanged(), type=\"" + type
+					+ "\".");
 
-		public boolean hasChildren(Object parent) {
-			return ((Node) parent).hasChildren();
-		}
-
-		public void forceRefresh() {
-			// System.out.println("forceRefresh()");
-			m_tree = null;
+			if (PacksStorageEvent.Type.REFRESH.equals(type)) {
+				m_viewer.refresh();
+			}
 		}
 	}
+
+	// ------------------------------------------------------------------------
 
 	class ViewLabelProvider extends CellLabelProvider {
 
 		public String getText(Object obj) {
-			return " " + ((Node) obj).getName();
+			return " " + ((Leaf) obj).getName();
 		}
 
 		public Image getImage(Object obj) {
-			Node node = ((Node) obj);
+
+			Leaf node = ((Leaf) obj);
 			String type = node.getType();
 
-			if (Type.NONE.equals(type)) {
-				return null;
-			}
-
-			if (!Type.BOARD.equals(type)) {
+			if (Type.VENDOR.equals(type)) {
 				String imageKey = ISharedImages.IMG_OBJ_FOLDER;
 				return PlatformUI.getWorkbench().getSharedImages()
 						.getImage(imageKey);
-			} else {
-				if (node.isInstalled()) {
+			} else if (Type.BOARD.equals(type)) {
+				if (node.isBooleanProperty(Property.ENABLED)) {
 					return Activator.imageDescriptorFromPlugin(
 							Activator.PLUGIN_ID, "icons/board.png")
 							.createImage();
@@ -162,22 +106,24 @@ public class BoardsView extends ViewPart {
 							Activator.PLUGIN_ID, "icons/board_grey.png")
 							.createImage();
 				}
+			} else {
+				return null;
 			}
 		}
 
 		@Override
 		public String getToolTipText(Object obj) {
 
-			Node node = ((Node) obj);
+			Leaf node = ((Leaf) obj);
 			String type = node.getType();
 
-			if (Type.BOARD.equals(type)) {
+			if (Type.VENDOR.equals(type)) {
+				return "Vendor";
+			} else if (Type.BOARD.equals(type)) {
 				String description = node.getDescription();
 				if (description != null && description.length() > 0) {
 					return description;
 				}
-			} else if (Type.VENDOR.equals(type)) {
-				return "Vendor";
 			}
 			return null;
 		}
@@ -189,15 +135,30 @@ public class BoardsView extends ViewPart {
 		}
 	}
 
+	// ------------------------------------------------------------------------
+
 	class NameSorter extends ViewerSorter {
 	}
 
-	/**
-	 * The constructor.
-	 */
+	// ------------------------------------------------------------------------
+
+	private TreeViewer m_viewer;
+	private Action m_removeFilters;
+	private Action m_expandAll;
+	private Action m_collapseAll;
+
+	private ViewContentProvider m_contentProvider;
+
+	private PacksStorage m_storage;
+	private MessageConsoleStream m_out;
+
 	public BoardsView() {
+
 		Activator.setBoardsView(this);
 
+		m_out = Activator.getConsoleOut();
+
+		m_storage = PacksStorage.getInstance();
 		System.out.println("BoardsView()");
 	}
 
@@ -209,20 +170,20 @@ public class BoardsView extends ViewPart {
 
 		System.out.println("BoardsView.createPartControl()");
 
-		// m_packsFilter = new PacksFilter();
-		// m_packsFilters = new PacksFilter[] { m_packsFilter };
-
 		m_viewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION
 				| SWT.H_SCROLL | SWT.V_SCROLL);
-
-		// drillDownAdapter = new DrillDownAdapter(m_viewer);
 
 		ColumnViewerToolTipSupport.enableFor(m_viewer);
 
 		m_contentProvider = new ViewContentProvider();
+
+		// Register this content provider to the packs storage notifications
+		m_storage.addListener(m_contentProvider);
+
 		m_viewer.setContentProvider(m_contentProvider);
 		m_viewer.setLabelProvider(new ViewLabelProvider());
 		m_viewer.setSorter(new NameSorter());
+
 		m_viewer.setInput(getViewSite());
 
 		addProviders();
@@ -232,24 +193,26 @@ public class BoardsView extends ViewPart {
 		hookContextMenu();
 		hookDoubleClickAction();
 		contributeToActionBars();
-
 	}
 
 	public void dispose() {
+
 		super.dispose();
 		System.out.println("BoardsView.dispose()");
 	}
 
 	private void addProviders() {
+
 		// Register this viewer as the selection provider
 		getSite().setSelectionProvider(m_viewer);
 	}
 
 	private void addListners() {
-
+		// None
 	}
 
 	private void hookContextMenu() {
+
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
@@ -326,10 +289,10 @@ public class BoardsView extends ViewPart {
 		m_collapseAll.setToolTipText("Collapse all children nodes");
 		m_collapseAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/collapseall.png"));
-
 	}
 
 	private void hookDoubleClickAction() {
+		// None
 	}
 
 	/**
@@ -366,4 +329,91 @@ public class BoardsView extends ViewPart {
 	public String toString() {
 		return "BoardsView";
 	}
+
+	// ------------------------------------------------------------------------
+
+	// Get view data from storage.
+	// Return a two level hierarchy of vendor and device nodes.
+	private Node getBoardsTree() {
+
+		Node packsTree = m_storage.getPacksTree();
+		Node boardsRoot = new Node(Type.ROOT);
+
+		if (packsTree.hasChildren()) {
+
+			m_out.println();
+			m_out.println(Utils.getCurrentDateTime());
+			m_out.println("Collecting boards...");
+
+			int count = getBoardsRecursive(packsTree, boardsRoot, false);
+
+			m_out.println("Found " + count + " board(s), from "
+					+ boardsRoot.getChildren().size() + " vendor(s).");
+		}
+
+		return boardsRoot;
+	}
+
+	// Identify outline & external nodes and collect boards from inside
+	private int getBoardsRecursive(Leaf node, Node root, boolean isInstalled) {
+
+		int count = 0;
+		String type = node.getType();
+		if (Type.OUTLINE.equals(type) || Type.EXTERNAL.equals(type)) {
+			for (Leaf child : node.getChildrenArray()) {
+				String childType = child.getType();
+				if (Type.BOARD.equals(childType)) {
+
+					// Collect unique keywords
+					count += addBoard(child, root, isInstalled);
+				}
+			}
+		} else if (node instanceof Node && node.hasChildren()) {
+
+			boolean isVersionInstalled = isInstalled;
+			if (Type.VERSION.equals(type)
+					&& node.isBooleanProperty(Property.INSTALLED)) {
+				isVersionInstalled = true;
+			}
+			for (Leaf child : node.getChildren()) {
+
+				// Recurse down
+				count += getBoardsRecursive(child, root, isVersionInstalled);
+			}
+		}
+
+		return count;
+	}
+
+	private int addBoard(Leaf node, Node tree, boolean isInstalled) {
+
+		int count = 0;
+		String vendorName = node.getProperty(Property.VENDOR_NAME);
+
+		Node vendorNode = (Node) tree.addUniqueChild(Type.VENDOR, vendorName);
+
+		String boardName = node.getName();
+		String description = node.getDescription();
+
+		Leaf boardNode = vendorNode.getChild(Type.BOARD, boardName);
+		if (boardNode == null) {
+
+			boardNode = new Leaf(Type.BOARD);
+			vendorNode.addChild(boardNode);
+
+			boardNode.setName(boardName);
+			boardNode.setDescription(description);
+			boardNode.putProperty(Property.VENDOR_NAME, vendorName);
+
+			if (isInstalled) {
+				boardNode.setBooleanProperty(Property.ENABLED, true);
+			}
+
+			count++;
+		}
+
+		return count;
+	}
+
+	// ------------------------------------------------------------------------
 }

@@ -12,10 +12,9 @@
 package ilg.gnuarmeclipse.packs;
 
 import ilg.gnuarmeclipse.packs.tree.Leaf;
-import ilg.gnuarmeclipse.packs.tree.PackNode;
+import ilg.gnuarmeclipse.packs.tree.Node;
 import ilg.gnuarmeclipse.packs.tree.Property;
 import ilg.gnuarmeclipse.packs.tree.Selector;
-import ilg.gnuarmeclipse.packs.tree.Node;
 import ilg.gnuarmeclipse.packs.tree.Type;
 import ilg.gnuarmeclipse.packs.xcdl.ContentParser;
 
@@ -64,6 +63,7 @@ public class PacksStorage {
 	private static PacksStorage ms_packsStorage;
 
 	public static synchronized PacksStorage getInstance() {
+
 		if (ms_packsStorage == null) {
 			ms_packsStorage = new PacksStorage();
 		}
@@ -90,8 +90,6 @@ public class PacksStorage {
 		m_packsMap = new TreeMap<String, Map<String, Leaf>>();
 		m_listeners = new ArrayList<IPacksStorageListener>();
 	}
-
-	public static Node ms_tree = null;
 
 	// For convenient recursive search, a simple tree with all
 	// versions below a root node.
@@ -156,12 +154,13 @@ public class PacksStorage {
 
 	public void fireChanged() {
 
-		System.out.println("fireChanged()");
-		System.out.println(this);
-		PacksStorageEvent event = new PacksStorageEvent(this);
+		System.out.println("PacksStorage fireChanged()");
+		// System.out.println(this);
+		PacksStorageEvent event = new PacksStorageEvent(this,
+				PacksStorageEvent.Type.REFRESH);
 
 		for (IPacksStorageListener listener : m_listeners) {
-			System.out.println(listener);
+			// System.out.println(listener);
 			listener.packsChanged(event);
 		}
 	}
@@ -186,11 +185,13 @@ public class PacksStorage {
 		// Notify listeners (currently the views) that the packs changed
 		// (for just in case this takes very long, normally the views are
 		// not created at this moment)
-		System.out.println(this);
+
+		// System.out.println(this);
 		Display.getDefault().asyncExec(new Runnable() {
+
 			@Override
 			public void run() {
-				System.out.println("run()");
+				// System.out.println("run()");
 				fireChanged();
 			}
 		});
@@ -255,6 +256,8 @@ public class PacksStorage {
 		monitor.subTask("Post processing");
 
 		postProcessRepos();
+
+		updateInstalledVersions();
 
 		monitor.worked(1);
 	}
@@ -322,17 +325,18 @@ public class PacksStorage {
 			versionMap.put(versionNode.getName(), versionNode);
 		}
 
+		// Create a one level hierarchy with all packages, to ease recursion
 		Node packsTree = new Node(Type.ROOT);
 		for (Leaf versionNode : packsVersionsList) {
 			packsTree.addChild(versionNode);
 		}
 
-		m_out.println("Processed " + packsMap.size() + " packages, "
-				+ packsVersionsList.size() + " versions.");
-
 		// Make them publicly available
 		m_packsTree = packsTree;
 		m_packsMap = packsMap;
+
+		m_out.println("Processed " + packsMap.size() + " package(s), with "
+				+ packsVersionsList.size() + " version(s).");
 	}
 
 	private void getVersionsRecursive(Leaf node, List<Leaf> list) {
@@ -348,9 +352,49 @@ public class PacksStorage {
 
 	}
 
-	// ----------
+	public void updateInstalledVersions() {
 
-	public void putCache(Node tree) throws IOException {
+		List<Leaf> versionNodes = m_packsTree.getChildren();
+		if (versionNodes == null) {
+			return;
+		}
+
+		m_out.println("Updating installed packages...");
+
+		int count = 0;
+
+		// Check if the packages are installed
+		for (Leaf versionNode : versionNodes) {
+
+			String unpackFolder = versionNode.getProperty(Property.DEST_FOLDER);
+			String pdscName = versionNode.getProperty(Property.PDSC_NAME);
+
+			String pdscRelativePath = unpackFolder + '/' + pdscName;
+
+			try {
+				// Test if the pdsc file exists in the package folder
+				File file = m_repos.getFileObject(pdscRelativePath);
+				if (file.exists()) {
+
+					// Add an explicit property for more visibility
+					versionNode.setBooleanProperty(Property.INSTALLED, true);
+
+					count++;
+				}
+			} catch (Exception e) {
+				;
+			}
+
+		}
+		m_out.println("Updated " + count + " installed packages.");
+	}
+
+	// -----------------------------------------------------------------------
+	// Deprecated
+
+	public static Node ms_tree = null;
+
+	public void putCache_x(Node tree) throws IOException {
 
 		File file = m_repos.getFileObject(CACHE_FILE_NAME);
 
@@ -363,7 +407,7 @@ public class PacksStorage {
 			writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 			writer.println("<root version=\"" + CACHE_XML_VERSION + "\">");
 
-			putCacheNodeRecursive(tree, 0, writer);
+			putCacheNodeRecursive_x(tree, 0, writer);
 
 			writer.println("</root>");
 			writer.close();
@@ -374,43 +418,45 @@ public class PacksStorage {
 		ms_tree = tree;
 	}
 
-	private void putCacheNodeRecursive(Leaf node, int depth, PrintWriter writer) {
+	private void putCacheNodeRecursive_x(Leaf node, int depth,
+			PrintWriter writer) {
 
-		putIndentation(depth, writer);
+		putIndentation_x(depth, writer);
 		writer.println("<node type=\"" + node.getType() + "\" name=\""
 				+ node.getName() + "\">");
 
 		String description = node.getDescription();
 		if (description != null && description.length() > 0) {
-			putIndentation(depth + 1, writer);
+			putIndentation_x(depth + 1, writer);
 			writer.println("<description>"
 					+ Utils.xmlEscape(node.getDescription()) + "</description>");
 		}
 
 		if (node.hasProperties()) {
-			putIndentation(depth + 1, writer);
+			putIndentation_x(depth + 1, writer);
 			writer.println("<properties>");
 
 			Map<String, String> properties = node.getProperties();
 			for (Object key : properties.keySet()) {
-				putIndentation(depth + 2, writer);
+				putIndentation_x(depth + 2, writer);
 				writer.println("<property name=\"" + key.toString()
 						+ "\" value=\"" + properties.get(key).toString()
 						+ "\" />");
 			}
 
-			putIndentation(depth + 1, writer);
+			putIndentation_x(depth + 1, writer);
 			writer.println("</properties>");
 		}
 
-		if (node instanceof PackNode) {
-			if (((PackNode) node).hasConditions()) {
-				putIndentation(depth + 1, writer);
+		// TODO: make it PackNode
+		if (node instanceof Node) {
+			if (((Node) node).hasConditions()) {
+				putIndentation_x(depth + 1, writer);
 				writer.println("<conditions>");
 
-				List<Selector> conditions = ((PackNode) node).getConditions();
+				List<Selector> conditions = ((Node) node).getConditions();
 				for (Selector condition : conditions) {
-					putIndentation(depth + 2, writer);
+					putIndentation_x(depth + 2, writer);
 					writer.print("<condition type=\"" + condition.getType()
 							+ "\"");
 					writer.print(" value=\"" + condition.getValue() + "\"");
@@ -425,50 +471,50 @@ public class PacksStorage {
 					writer.println(" />");
 				}
 
-				putIndentation(depth + 1, writer);
+				putIndentation_x(depth + 1, writer);
 				writer.println("</conditions>");
 			}
-			if (((PackNode) node).hasOutline()) {
-				putIndentation(depth + 1, writer);
+			if (((Node) node).hasOutline()) {
+				putIndentation_x(depth + 1, writer);
 				writer.println("<outline>");
 
-				Node outlineNode = ((PackNode) node).getOutline();
+				Node outlineNode = ((Node) node).getOutline();
 				for (Leaf outlineChild : outlineNode.getChildrenArray()) {
-					putCacheNodeRecursive(outlineChild, depth + 2, writer);
+					putCacheNodeRecursive_x(outlineChild, depth + 2, writer);
 				}
 
-				putIndentation(depth + 1, writer);
+				putIndentation_x(depth + 1, writer);
 				writer.println("</outline>");
 			}
 		}
 
 		List<Leaf> children = node.getChildren();
 		if (children != null && !children.isEmpty()) {
-			putIndentation(depth + 1, writer);
+			putIndentation_x(depth + 1, writer);
 			writer.println("<nodes>");
 
 			for (Leaf child : children) {
-				putCacheNodeRecursive(child, depth + 2, writer);
+				putCacheNodeRecursive_x(child, depth + 2, writer);
 			}
 
-			putIndentation(depth + 1, writer);
+			putIndentation_x(depth + 1, writer);
 			writer.println("</nodes>");
 		}
-		putIndentation(depth, writer);
+		putIndentation_x(depth, writer);
 		writer.println("</node>");
 	}
 
-	private void putIndentation(int depth, PrintWriter writer) {
+	private void putIndentation_x(int depth, PrintWriter writer) {
 		depth++;
 		for (int i = 0; i < depth; ++i) {
 			writer.print("  ");
 		}
 	}
 
-	public Leaf getCachedSubTree(String type) throws IOException,
+	public Leaf getCachedSubTree_x(String type) throws IOException,
 			ParserConfigurationException, SAXException {
 
-		Node rootNode = getCachedTree();
+		Node rootNode = getCachedTree_x();
 		for (Leaf childNode : rootNode.getChildren()) {
 			if (childNode.getType().equals(type)) {
 				return childNode;
@@ -478,12 +524,12 @@ public class PacksStorage {
 		throw new IOException("No such node type " + type + ".");
 	}
 
-	public Node getCachedTree() throws IOException,
+	public Node getCachedTree_x() throws IOException,
 			ParserConfigurationException, SAXException {
-		return getCachedTree(false);
+		return getCachedTree_x(false);
 	}
 
-	public Node getCachedTree(boolean doReload) throws IOException,
+	public Node getCachedTree_x(boolean doReload) throws IOException,
 			ParserConfigurationException, SAXException {
 
 		if (doReload) {
@@ -521,14 +567,14 @@ public class PacksStorage {
 		if (nodeRootElement == null) {
 			throw new IOException("Missing <node>.");
 		}
-		ms_tree = getCacheRecursive(nodeRootElement);
+		ms_tree = getCacheRecursive_x(nodeRootElement);
 
-		updateInstalled();
+		updateInstalled_x();
 
 		return ms_tree;
 	}
 
-	public void updateInstalled() throws IOException,
+	public void updateInstalled_x() throws IOException,
 			ParserConfigurationException, SAXException {
 		// List<TreeNode> deviceNodes = new LinkedList<TreeNode>();
 		// List<TreeNode> boardNodes = new LinkedList<TreeNode>();
@@ -538,11 +584,11 @@ public class PacksStorage {
 
 		// Update installed nodes
 		IPath path = new Path(m_repos.getFolderPathString());
-		updateInstalledNodesRecursive(getCachedSubTree(Type.PACKAGES_SUBTREE),
-				path, true);
+		updateInstalledNodesRecursive_x(
+				getCachedSubTree_x(Type.PACKAGES_SUBTREE), path, true);
 	}
 
-	private Node getCacheRecursive(Element nodeElement) {
+	private Node getCacheRecursive_x(Element nodeElement) {
 
 		String type = nodeElement.getAttribute("type");
 		Node treeNode = new Node(type);
@@ -614,7 +660,7 @@ public class PacksStorage {
 
 			for (Element childElement : nodeElements) {
 
-				Node childTreeNode = getCacheRecursive((Element) childElement);
+				Node childTreeNode = getCacheRecursive_x((Element) childElement);
 				outlineNode.addChild(childTreeNode);
 			}
 		}
@@ -625,7 +671,7 @@ public class PacksStorage {
 					nodesElement, "node");
 			for (Element childElement : nodeElements) {
 
-				Node childTreeNode = getCacheRecursive((Element) childElement);
+				Node childTreeNode = getCacheRecursive_x((Element) childElement);
 				treeNode.addChild(childTreeNode);
 			}
 		}
@@ -633,7 +679,7 @@ public class PacksStorage {
 		return treeNode;
 	}
 
-	public void updateInstalledNodesRecursive(Leaf node, IPath path,
+	public void updateInstalledNodesRecursive_x(Leaf node, IPath path,
 			boolean isInstalled) {
 
 		if (node.hasChildren()) {
@@ -641,7 +687,8 @@ public class PacksStorage {
 				// Extend path with node name and recurse down
 				// TODO: use NAME_PROPERTY
 				IPath childPath = path.append(childNode.getName());
-				updateInstalledNodesRecursive(childNode, childPath, isInstalled);
+				updateInstalledNodesRecursive_x(childNode, childPath,
+						isInstalled);
 			}
 		}
 
@@ -653,12 +700,12 @@ public class PacksStorage {
 				// then the package is probably installed.
 
 				// Update PacksView and related from Devices & Boards
-				updateInstalledVersionNode((Node) node, isInstalled, null);
+				updateInstalledVersionNode_x((Node) node, isInstalled, null);
 			}
 		}
 	}
 
-	public void updateInstalledVersionNode(Node versionNode,
+	public void updateInstalledVersionNode_x(Node versionNode,
 			boolean isInstalled, List<Node>[] lists) {
 
 		List<Node> deviceNodes;
@@ -696,7 +743,7 @@ public class PacksStorage {
 				.getConditionsByType(Selector.DEVICEFAMILY_TYPE);
 		if (conditionsList.size() > 0) {
 			for (Selector condition : conditionsList) {
-				updateDeviceInstalled(condition.getVendorId(),
+				updateDeviceInstalled_x(condition.getVendorId(),
 						condition.getValue(), isInstalled, deviceNodes);
 			}
 		}
@@ -705,7 +752,7 @@ public class PacksStorage {
 				Selector.BOARD_TYPE);
 		if (conditionsList.size() > 0) {
 			for (Selector condition : conditionsList) {
-				updateBoardInstalled(condition.getVendor(),
+				updateBoardInstalled_x(condition.getVendor(),
 						condition.getValue(), isInstalled, boardNodes);
 			}
 		}
@@ -714,11 +761,11 @@ public class PacksStorage {
 		versionNode.setOutline(null);
 	}
 
-	private void updateDeviceInstalled(String vendorId, String familyName,
+	private void updateDeviceInstalled_x(String vendorId, String familyName,
 			boolean isInstalled, List<Node> deviceNodes) {
 
 		try {
-			Node devicesTree = (Node) getCachedSubTree(Type.DEVICES_SUBTREE);
+			Node devicesTree = (Node) getCachedSubTree_x(Type.DEVICES_SUBTREE);
 
 			// Assume the two level hierarchy, vendor/devicefamily
 			for (Leaf vendorNode : devicesTree.getChildrenArray()) {
@@ -741,11 +788,11 @@ public class PacksStorage {
 		}
 	}
 
-	private void updateBoardInstalled(String vendor, String boardName,
+	private void updateBoardInstalled_x(String vendor, String boardName,
 			boolean isInstalled, List<Node> boardNodes) {
 
 		try {
-			Node boardsTree = (Node) getCachedSubTree(Type.BOARDS_SUBTREE);
+			Node boardsTree = (Node) getCachedSubTree_x(Type.BOARDS_SUBTREE);
 
 			// Assume the two level hierarchy, vendor/board
 			for (Leaf vendorNode : boardsTree.getChildrenArray()) {
@@ -767,23 +814,23 @@ public class PacksStorage {
 		}
 	}
 
-	public List<Node> getInstalledVersions() {
+	public List<Node> getInstalledVersions_x() {
 
 		List<Node> list = new LinkedList<Node>();
 		try {
 			Node node;
-			node = (Node) getCachedSubTree(Type.PACKAGES_SUBTREE);
-			getInstalledVersionsRecursive(node, list);
+			node = (Node) getCachedSubTree_x(Type.PACKAGES_SUBTREE);
+			getInstalledVersionsRecursive_x(node, list);
 		} catch (Exception e) {
 		}
 		return list;
 	}
 
-	public void getInstalledVersionsRecursive(Leaf node, List<Node> list) {
+	public void getInstalledVersionsRecursive_x(Leaf node, List<Node> list) {
 
 		if (node.hasChildren()) {
 			for (Leaf child : node.getChildren()) {
-				getInstalledVersionsRecursive(child, list);
+				getInstalledVersionsRecursive_x(child, list);
 			}
 		}
 

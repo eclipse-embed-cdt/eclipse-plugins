@@ -72,7 +72,7 @@ public class RemoveJob extends Job {
 		m_out.println();
 		m_out.println(Utils.getCurrentDateTime());
 
-		m_out.println("Remove packs job started.");
+		m_out.println("Removing packs...");
 
 		List<Node> packs = new ArrayList<Node>();
 
@@ -141,7 +141,7 @@ public class RemoveJob extends Job {
 			final List<Node>[] lists = (List<Node>[]) (new List<?>[] {
 					deviceNodes, boardNodes });
 
-			m_storage.updateInstalledVersionNode(versionNode, false, lists);
+			m_storage.updateInstalledVersionNode_x(versionNode, false, lists);
 
 			Display.getDefault().asyncExec(new Runnable() {
 				@Override
@@ -168,7 +168,7 @@ public class RemoveJob extends Job {
 		}
 
 		//
-		List<Node> installedVersions = m_storage.getInstalledVersions();
+		List<Node> installedVersions = m_storage.getInstalledVersions_x();
 
 		List<Node> deviceNodes = new LinkedList<Node>();
 		List<Node> boardNodes = new LinkedList<Node>();
@@ -178,7 +178,7 @@ public class RemoveJob extends Job {
 				boardNodes });
 
 		for (Node versionNode : installedVersions) {
-			m_storage.updateInstalledVersionNode(versionNode, true, lists);
+			m_storage.updateInstalledVersionNode_x(versionNode, true, lists);
 
 			// Clear children
 		}
@@ -203,7 +203,7 @@ public class RemoveJob extends Job {
 		} else {
 			m_out.println(removedPacksCount + " packs removed.");
 		}
-		m_out.print("Job completed in ");
+		m_out.print("Remove completed in ");
 		m_out.println(duration + "ms.");
 
 		m_running = false;

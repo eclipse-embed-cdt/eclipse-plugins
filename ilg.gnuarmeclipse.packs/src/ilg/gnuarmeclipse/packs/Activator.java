@@ -68,6 +68,12 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		ms_plugin = this;
 
+		// Prepare & cache various variables
+		Repos repos = Repos.getInstance();
+		repos.getFolderPath();
+
+		PacksStorage.getInstance();
+
 		// Initial load of repositories summaries
 		new Job("Load Repositories") {
 

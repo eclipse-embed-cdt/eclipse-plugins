@@ -15,6 +15,7 @@ import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.IPacksStorageListener;
 import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.PacksStorageEvent;
+import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.tree.Leaf;
 import ilg.gnuarmeclipse.packs.tree.Node;
 import ilg.gnuarmeclipse.packs.tree.Type;
@@ -39,22 +40,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.part.ViewPart;
-
-/**
- * This sample class demonstrates how to plug-in a new workbench view. The view
- * shows data obtained from the model. The sample creates a dummy model on the
- * fly, but a real implementation would connect to the model available either in
- * this or another plug-in (e.g. the workspace). The view is connected to the
- * model using a content provider.
- * <p>
- * The view uses a label provider to define how model objects should be
- * presented in the view. Each view can present the same model objects using
- * different labels and icons, if needed. Alternatively, a single label provider
- * can be shared between views in order to ensure that objects of the same type
- * are presented in the same way everywhere.
- * <p>
- */
 
 public class KeywordsView extends ViewPart {
 
@@ -63,27 +50,15 @@ public class KeywordsView extends ViewPart {
 	 */
 	public static final String ID = "ilg.gnuarmeclipse.packs.ui.views.KeywordsView";
 
-	private TreeViewer m_viewer;
-	private Action m_removeFilters;
-
-	private ViewContentProvider m_contentProvider;
-
-	private PacksStorage m_storage;
-
-	/*
-	 * The content provider class is responsible for providing objects to the
-	 * view. It can wrap existing objects in adapters or simply return objects
-	 * as-is. These objects may be sensitive to the current input of the view,
-	 * or ignore it and always show the same content (like Task List, for
-	 * example).
-	 */
+	// ------------------------------------------------------------------------
 
 	class ViewContentProvider extends AbstractViewContentProvider implements
 			IPacksStorageListener {
 
 		public Object[] getElements(Object parent) {
+
 			if (parent.equals(getViewSite())) {
-				m_tree = getKeywords();
+				m_tree = getKeywordsTree();
 				return getChildren(m_tree);
 			}
 			return getChildren(parent);
@@ -92,11 +67,17 @@ public class KeywordsView extends ViewPart {
 		@Override
 		public void packsChanged(PacksStorageEvent event) {
 
-			System.out.println("KeywordsView.packsChanged()");
-			m_viewer.refresh();
-		}
+			String type = event.getType();
+			System.out.println("KeywordsView.packsChanged(), type=\"" + type
+					+ "\".");
 
+			if (PacksStorageEvent.Type.REFRESH.equals(type)) {
+				m_viewer.refresh();
+			}
+		}
 	}
+
+	// ------------------------------------------------------------------------
 
 	class ViewLabelProvider extends CellLabelProvider {
 
@@ -118,21 +99,31 @@ public class KeywordsView extends ViewPart {
 		@Override
 		public void update(ViewerCell cell) {
 			cell.setText(getText(cell.getElement()));
-			cell.setImage(getImage(cell.getElement()));
 		}
 	}
+
+	// ------------------------------------------------------------------------
 
 	class NameSorter extends ViewerSorter {
 		// Default ascending sorter
 	}
 
-	/**
-	 * The constructor.
-	 */
+	// ------------------------------------------------------------------------
+
+	private TreeViewer m_viewer;
+	private Action m_removeFilters;
+
+	private ViewContentProvider m_contentProvider;
+
+	private PacksStorage m_storage;
+	private MessageConsoleStream m_out;
+
 	public KeywordsView() {
 
 		// Store reference to this view
 		Activator.setKeywordsView(this);
+
+		m_out = Activator.getConsoleOut();
 
 		m_storage = PacksStorage.getInstance();
 		System.out.println("KeywordsView()");
@@ -170,14 +161,15 @@ public class KeywordsView extends ViewPart {
 	}
 
 	public void dispose() {
-		super.dispose();
 
+		super.dispose();
 		m_storage.removeListener(m_contentProvider);
 
 		System.out.println("KeywordsView.dispose()");
 	}
 
 	private void addProviders() {
+
 		// Register this viewer as a selection provider
 		getSite().setSelectionProvider(m_viewer);
 	}
@@ -187,6 +179,7 @@ public class KeywordsView extends ViewPart {
 	}
 
 	private void hookContextMenu() {
+
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
@@ -276,25 +269,39 @@ public class KeywordsView extends ViewPart {
 		return "KeywordsView";
 	}
 
+	// ------------------------------------------------------------------------
+
 	// Get view data from storage.
 	// Return a one level hierarchy of keyword nodes.
-	private Node getKeywords() {
+	private Node getKeywordsTree() {
 
 		Node packsTree = m_storage.getPacksTree();
 		Node keywordsRoot = new Node(Type.ROOT);
-		Set<String> set = new HashSet<String>();
-		// Collect keywords
-		getKeywordsRecursive(packsTree, set);
 
-		// Add keyword nodes to the hierarchy
-		for (String keywordName : set) {
-			Leaf keywordNode = new Leaf(Leaf.Type.KEYWORD);
-			keywordNode.setName(keywordName);
-			keywordsRoot.addChild(keywordNode);
+		if (packsTree.hasChildren()) {
+
+			m_out.println();
+			m_out.println(Utils.getCurrentDateTime());
+			m_out.println("Collecting keywords...");
+
+			Set<String> set = new HashSet<String>();
+			// Collect keywords
+			getKeywordsRecursive(packsTree, set);
+
+			// Add keyword nodes to the hierarchy
+			for (String keywordName : set) {
+				Leaf keywordNode = new Leaf(Leaf.Type.KEYWORD);
+				keywordNode.setName(keywordName);
+				keywordsRoot.addChild(keywordNode);
+			}
+
+			m_out.println("Found " + set.size() + " keyword(s).");
 		}
+
 		return keywordsRoot;
 	}
 
+	// Identify outline nodes and collect keywords from inside
 	private void getKeywordsRecursive(Leaf node, Set<String> set) {
 
 		String type = node.getType();
@@ -309,12 +316,15 @@ public class KeywordsView extends ViewPart {
 			}
 		} else if (Type.EXTERNAL.equals(type)) {
 			; // no keywords inside externals, avoid recursion
-		} else {
-			for (Leaf child : node.getChildrenArray()) {
+		} else if (node instanceof Node && node.hasChildren()) {
+			for (Leaf child : node.getChildren()) {
 
 				// Recurse down
 				getKeywordsRecursive(child, set);
 			}
 		}
 	}
+
+	// ------------------------------------------------------------------------
+
 }

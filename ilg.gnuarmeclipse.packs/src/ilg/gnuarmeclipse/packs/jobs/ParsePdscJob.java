@@ -83,7 +83,7 @@ public class ParsePdscJob extends Job {
 		String versionName = m_versionNode.getName();
 
 		String pdscName = vendorName + "." + packName + ".pdsc";
-		m_out.println("Parse \"" + pdscName + "\" job started.");
+		m_out.println("Parsing \"" + pdscName + "\"...");
 
 		IPath path = folderPath.append(vendorName).append(packName)
 				.append(versionName).append(pdscName);
@@ -109,7 +109,7 @@ public class ParsePdscJob extends Job {
 		if (duration == 0) {
 			duration = 1;
 		}
-		m_out.println("Parse job completed in " + duration + "ms.");
+		m_out.println("Parse ompleted in " + duration + "ms.");
 
 		if (outlineNode != null) {
 			Display.getDefault().asyncExec(new Runnable() {

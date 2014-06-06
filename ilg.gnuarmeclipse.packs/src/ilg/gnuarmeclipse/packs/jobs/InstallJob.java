@@ -85,7 +85,7 @@ public class InstallJob extends Job {
 		m_out.println();
 		m_out.println(Utils.getCurrentDateTime());
 
-		m_out.println("Install packs job started.");
+		m_out.println("Installing packs...");
 
 		List<Node> packs = new ArrayList<Node>();
 
@@ -161,7 +161,8 @@ public class InstallJob extends Job {
 				final List<Node>[] lists = (List<Node>[]) (new List<?>[] {
 						deviceNodes, boardNodes });
 
-				m_storage.updateInstalledVersionNode(versionNode, true, lists);
+				m_storage
+						.updateInstalledVersionNode_x(versionNode, true, lists);
 
 				Display.getDefault().asyncExec(new Runnable() {
 					@Override
@@ -205,7 +206,7 @@ public class InstallJob extends Job {
 		}
 		m_out.println(" installed.");
 
-		m_out.print("Job completed in ");
+		m_out.print("Install completed in ");
 		if (duration < 1000) {
 			m_out.println(duration + "ms.");
 		} else {
