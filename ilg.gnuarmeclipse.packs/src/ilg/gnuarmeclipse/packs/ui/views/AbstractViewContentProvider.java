@@ -21,15 +21,16 @@ import org.eclipse.jface.viewers.Viewer;
 public abstract class AbstractViewContentProvider implements
 		IStructuredContentProvider, ITreeContentProvider {
 
-	protected Node m_tree;
+	protected Leaf m_tree;
 	protected Viewer m_viewer;
-	
+
 	@Override
 	public void dispose() {
 	}
 
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+
 		m_tree = null;
 		m_viewer = viewer;
 	}
@@ -43,7 +44,7 @@ public abstract class AbstractViewContentProvider implements
 		} else {
 			return null;
 		}
-		
+
 	}
 
 	@Override

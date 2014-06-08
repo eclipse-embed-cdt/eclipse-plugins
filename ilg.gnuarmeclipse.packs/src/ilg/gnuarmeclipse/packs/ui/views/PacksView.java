@@ -12,14 +12,18 @@
 package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.packs.Activator;
+import ilg.gnuarmeclipse.packs.IPacksStorageListener;
 import ilg.gnuarmeclipse.packs.PacksStorage;
-import ilg.gnuarmeclipse.packs.UsingDefaultFileException;
+import ilg.gnuarmeclipse.packs.PacksStorageEvent;
 import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.jobs.CopyExampleJob;
 import ilg.gnuarmeclipse.packs.jobs.InstallJob;
 import ilg.gnuarmeclipse.packs.jobs.RemoveJob;
-import ilg.gnuarmeclipse.packs.tree.Selector;
+import ilg.gnuarmeclipse.packs.tree.Leaf;
 import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.PackNode;
+import ilg.gnuarmeclipse.packs.tree.Property;
+import ilg.gnuarmeclipse.packs.tree.Selector;
 import ilg.gnuarmeclipse.packs.tree.Type;
 
 import java.util.List;
@@ -56,23 +60,9 @@ import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.commands.ICommandService;
+import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.services.IServiceLocator;
-
-/**
- * This sample class demonstrates how to plug-in a new workbench view. The view
- * shows data obtained from the model. The sample creates a dummy model on the
- * fly, but a real implementation would connect to the model available either in
- * this or another plug-in (e.g. the workspace). The view is connected to the
- * model using a content provider.
- * <p>
- * The view uses a label provider to define how model objects should be
- * presented in the view. Each view can present the same model objects using
- * different labels and icons, if needed. Alternatively, a single label provider
- * can be shared between views in order to ensure that objects of the same type
- * are presented in the same way everywhere.
- * <p>
- */
 
 public class PacksView extends ViewPart {
 
@@ -81,62 +71,32 @@ public class PacksView extends ViewPart {
 	 */
 	public static final String ID = "ilg.gnuarmeclipse.packs.ui.views.PackagesView";
 
-	private TreeViewer m_viewer;
-	private ISelectionListener m_pageSelectionListener;
-	private ViewContentProvider m_contentProvider;
-
-	private Action m_refreshAction;
-	private Action m_installAction;
-	private Action m_removeAction;
-	private Action m_copyExampleAction;
-	private Action m_expandAll;
-	private Action m_collapseAll;
-
-	private PacksFilter m_packsFilter;
-	private ViewerFilter[] m_packsFilters;
-	private boolean m_isInstallEnabled;
-	private boolean m_isRemoveEnabled;
-	private boolean m_isCopyExampleEnabled;
-
 	private static final int AUTOEXPAND_LEVEL = 2;
 
-	public TreeViewer getTreeViewer() {
-		return m_viewer;
-	}
+	// ------------------------------------------------------------------------
 
-	/*
-	 * The content provider class is responsible for providing objects to the
-	 * view. It can wrap existing objects in adapters or simply return objects
-	 * as-is. These objects may be sensitive to the current input of the view,
-	 * or ignore it and always show the same content (like Task List, for
-	 * example).
-	 */
+	class ViewContentProvider extends AbstractViewContentProvider implements
+			IPacksStorageListener {
 
-	class ViewContentProvider extends AbstractViewContentProvider {
+		public Object[] getElements(Object inputElement) {
+			return getChildren(inputElement);
+		}
 
-		public Object[] getElements(Object parent) {
-			if (parent.equals(getViewSite())) {
-				if (m_tree == null) {
-					System.out.println("getCachedSubTree(packages)");
-					try {
-						m_tree = (Node) PacksStorage.getInstance()
-								.getCachedSubTree_x("packages");
-					} catch (UsingDefaultFileException e) {
-						Activator.log(e.getMessage());
-					} catch (Exception e) {
-						Activator.log(e);
-					}
-				}
+		@Override
+		public void packsChanged(PacksStorageEvent event) {
 
-				if (m_tree == null) {
-					m_tree = new Node(Type.NONE);
-					return new Object[] { m_tree };
-				}
-				return getChildren(m_tree);
+			String type = event.getType();
+			System.out.println("PacksView.packsChanged(), type=\"" + type
+					+ "\".");
+
+			if (PacksStorageEvent.Type.REFRESH.equals(type)) {
+				((TreeViewer) m_viewer).setAutoExpandLevel(AUTOEXPAND_LEVEL);
+				m_viewer.setInput(getPacksTree());
 			}
-			return getChildren(parent);
 		}
 	}
+
+	// ------------------------------------------------------------------------
 
 	class TableLabelProvider implements ITableLabelProvider {
 
@@ -145,7 +105,7 @@ public class PacksView extends ViewPart {
 			switch (columnIndex) {
 			case 0:
 				// String imageKey;
-				Node node = ((Node) obj);
+				Leaf node = ((Leaf) obj);
 				String type = node.getType();
 
 				if (Type.VENDOR.equals(type)) {
@@ -156,7 +116,8 @@ public class PacksView extends ViewPart {
 							Activator.PLUGIN_ID, "icons/pack_folder.png")
 							.createImage();
 				} else if (Type.PACKAGE.equals(type)) {
-					if (node.isInstalled()) {
+					if (node.isInstalled()
+							|| node.isBooleanProperty(Property.INSTALLED)) {
 						return Activator.imageDescriptorFromPlugin(
 								Activator.PLUGIN_ID, "icons/package_obj.png")
 								.createImage();
@@ -166,7 +127,8 @@ public class PacksView extends ViewPart {
 								"icons/package_obj_grey.png").createImage();
 					}
 				} else if (Type.VERSION.equals(type)) {
-					if (node.isInstalled()) {
+					if (node.isInstalled()
+							|| node.isBooleanProperty(Property.INSTALLED)) {
 						return Activator
 								.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 										"icons/jtypeassist_co.png")
@@ -187,16 +149,17 @@ public class PacksView extends ViewPart {
 
 		public String getColumnText(Object obj, int columnIndex) {
 
-			Node node = ((Node) obj);
+			Leaf node = ((Leaf) obj);
 
 			switch (columnIndex) {
 			case 0:
 				String name = node.getName();
-				if (node.isInstalled()) {
+				if (node.isInstalled()
+						|| node.isBooleanProperty(Property.INSTALLED)) {
 					name += " (installed)";
 				} else {
-					if (Type.VERSION.equals(node.getType())) {
-						String size = node.getProperty(Node.SIZE_PROPERTY);
+					if (node.isType(Type.VERSION)) {
+						String size = node.getProperty(Property.ARCHIVE_SIZE);
 						if (size != null) {
 							try {
 								int n = Integer.parseInt(size);
@@ -219,53 +182,80 @@ public class PacksView extends ViewPart {
 			return null;
 		}
 
+		@Override
 		public void addListener(ILabelProviderListener listener) {
 		}
 
+		@Override
 		public void dispose() {
 		}
 
+		@Override
 		public boolean isLabelProperty(Object element, String property) {
 			return false;
 		}
 
+		@Override
 		public void removeListener(ILabelProviderListener listener) {
 		}
 	}
+
+	// ------------------------------------------------------------------------
 
 	class NameSorter extends ViewerSorter {
 
 		@SuppressWarnings("unchecked")
 		public int compare(Viewer viewer, Object e1, Object e2) {
 
-			Node n1 = (Node) e1;
+			Leaf n1 = (Leaf) e1;
 			String name1 = n1.getName();
-			String name2 = ((Node) e2).getName();
+			String name2 = ((Leaf) e2).getName();
 
-			if ("version".equals(n1.getType())) {
+			if (n1.isType(Type.VERSION)) {
 				// Reverse the order for versions
 				return getComparator().compare(name2, name1);
 			} else {
 				return getComparator().compare(name1, name2);
 			}
 		}
-
 	}
 
-	/**
-	 * The constructor.
-	 */
+	// ------------------------------------------------------------------------
+
+	private TreeViewer m_viewer;
+	private ISelectionListener m_pageSelectionListener;
+	private ViewContentProvider m_contentProvider;
+
+	private Action m_refreshAction;
+	private Action m_installAction;
+	private Action m_removeAction;
+	private Action m_copyExampleAction;
+	private Action m_expandAll;
+	private Action m_collapseAll;
+
+	private PacksFilter m_packsFilter;
+	private ViewerFilter[] m_packsFilters;
+	private boolean m_isInstallEnabled;
+	private boolean m_isRemoveEnabled;
+	private boolean m_isCopyExampleEnabled;
+
+	private PacksStorage m_storage;
+	private MessageConsoleStream m_out;
+
 	public PacksView() {
 
 		Activator.setPacksView(this);
 
+		m_out = Activator.getConsoleOut();
+
+		m_storage = PacksStorage.getInstance();
 		System.out.println("PacksView()");
 	}
 
-	/**
-	 * This is a callback that will allow us to create the viewer and initialise
-	 * it.
-	 */
+	public TreeViewer getTreeViewer() {
+		return m_viewer;
+	}
+
 	public void createPartControl(Composite parent) {
 
 		System.out.println("PacksView.createPartControl()");
@@ -299,11 +289,17 @@ public class PacksView extends ViewPart {
 		m_viewer = new TreeViewer(tree);
 
 		m_contentProvider = new ViewContentProvider();
+
+		// Register this content provider to the packs storage notifications
+		m_storage.addListener(m_contentProvider);
+
 		m_viewer.setContentProvider(m_contentProvider);
 		m_viewer.setLabelProvider(new TableLabelProvider());
 		m_viewer.setSorter(new NameSorter());
 		m_viewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);
-		m_viewer.setInput(getViewSite());
+
+		// m_viewer.setInput(getViewSite());
+		m_viewer.setInput(getPacksTree());
 
 		addProviders();
 		addListners();
@@ -328,6 +324,7 @@ public class PacksView extends ViewPart {
 	}
 
 	private void addProviders() {
+
 		// Register this viewer as a selection provider
 		getSite().setSelectionProvider(m_viewer);
 	}
@@ -406,7 +403,7 @@ public class PacksView extends ViewPart {
 			return;
 		}
 
-		if (Type.NONE.equals(((Node) selection.getFirstElement()).getType())) {
+		if (((Leaf) selection.getFirstElement()).isType(Type.NONE)) {
 			return;
 		}
 
@@ -415,28 +412,38 @@ public class PacksView extends ViewPart {
 		m_isCopyExampleEnabled = false;
 
 		for (Object obj : selection.toArray()) {
-			Node node = (Node) obj;
+			Leaf node = (Leaf) obj;
 			String type = node.getType();
+
+			boolean isInstalled = false;
+			if (node instanceof Node) {
+				if (((Node) node).isInstalled()) {
+					isInstalled = true;
+				}
+			}
+			if (node.isBooleanProperty(Property.INSTALLED)) {
+				isInstalled = true;
+			}
 
 			// Check if the selection contain any package or
 			// version not installed
 			if (Type.PACKAGE.equals(type)) {
-				if (!node.isInstalled()) {
+				if (!isInstalled) {
 					m_isInstallEnabled = true;
 				}
 			}
 			if (Type.VERSION.equals(type)) {
 				int size = 0;
 				try {
-					size = Integer.valueOf(node.getProperty(Node.SIZE_PROPERTY,
-							"0"));
+					size = Integer.valueOf(node.getProperty(
+							Property.ARCHIVE_SIZE, "0"));
 				} catch (NumberFormatException e) {
 					;
 				}
-				if (!node.isInstalled() && size > 0) {
+				if (!isInstalled && size > 0) {
 					m_isInstallEnabled = true;
 				}
-				if (node.isInstalled()) {
+				if (isInstalled) {
 					m_isRemoveEnabled = true;
 				}
 			}
@@ -449,6 +456,7 @@ public class PacksView extends ViewPart {
 	}
 
 	private void hookContextMenu() {
+
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
@@ -671,5 +679,105 @@ public class PacksView extends ViewPart {
 		}
 		System.out.println("PacksView.updated() " + obj);
 	}
+
+	// ------------------------------------------------------------------------
+
+	// Get view data from storage.
+	// Return a hierarchy of vendor/packages/versions/examples nodes.
+	private Node getPacksTree() {
+
+		Node packsTree = m_storage.getPacksTree();
+		Node packsRoot = new Node(Type.ROOT);
+		packsRoot.setName("Packs");
+
+		if (packsTree.hasChildren()) {
+
+			m_out.println();
+			m_out.println(Utils.getCurrentDateTime());
+			m_out.println("Collecting packs...");
+
+			int count = getPacksRecursive(packsTree, null, packsRoot);
+
+			m_out.println("Found " + count + " package version(s), from "
+					+ packsRoot.getChildren().size() + " vendor(s).");
+		}
+
+		return packsRoot;
+	}
+
+	// Identify outline & external nodes and collect devices from inside
+	private int getPacksRecursive(Leaf node, Node parentPackNode, Node root) {
+
+		int count = 0;
+
+		if (node.isType(Type.PACKAGE)) {
+			parentPackNode = (Node) node;
+		}
+
+		if (node.isType(Type.VERSION)) {
+			count += addVersion((Node) node, parentPackNode, root);
+		} else if (node instanceof Node && node.hasChildren()) {
+
+			for (Leaf child : node.getChildren()) {
+
+				// Recurse down
+				count += getPacksRecursive(child, parentPackNode, root);
+			}
+		}
+
+		return count;
+	}
+
+	private int addVersion(Node node, Node parentPackNode, Node tree) {
+
+		int count = 0;
+		String vendorName = node.getProperty(Property.VENDOR_NAME);
+		String packName = node.getProperty(Property.PACK_NAME);
+		String versionName = node.getProperty(Property.VERSION_NAME);
+		String description = node.getDescription();
+
+		Node vendorNode = Node.addUniqueChild(tree, Type.VENDOR, vendorName);
+
+		PackNode packNode = PackNode.addUniqueChild(vendorNode, Type.PACKAGE,
+				packName);
+		// Copy properties like INSTALLED
+		packNode.copyProperties(parentPackNode);
+		packNode.putProperty(Property.VENDOR_NAME, vendorName);
+
+		if (parentPackNode != null) {
+			packNode.setDescription(parentPackNode.getDescription());
+		}
+
+		PackNode versionNode = PackNode.addUniqueChild(packNode, Type.VERSION,
+				versionName);
+
+		versionNode.setDescription(description);
+		versionNode.copyProperties(node);
+
+		if (versionNode.isBooleanProperty(Property.INSTALLED)) {
+
+			Node outlineNode = (Node) node.getChild(Type.OUTLINE);
+			if (outlineNode != null && outlineNode.hasChildren()) {
+
+				for (Leaf child : outlineNode.getChildren()) {
+
+					if (child.isType(Type.EXAMPLE)) {
+
+						// New node with child personality
+						Leaf.addNewChild(versionNode, child);
+					}
+
+				}
+			}
+		}
+
+		// To save space, the brief or full outlines are not prepared
+		// for all nodes, but only for nodes needed by selections
+
+		count++;
+
+		return count;
+	}
+	// ------------------------------------------------------------------------
 
 }

@@ -123,6 +123,7 @@ public class PdscParser {
 			SAXException, IOException {
 
 		Node tree = new Node(Type.OUTLINE);
+		tree.setName("Full Outline");
 		tree.putProperty(Node.FOLDER_PROPERTY, m_path.removeLastSegments(1)
 				.toString());
 
@@ -2371,16 +2372,16 @@ public class PdscParser {
 		String shortUrl = "";
 
 		// Create the top subtrees
-		Node packagesNode = (Node) parent.addUniqueChild(Type.PACKAGES_SUBTREE,
+		Node packagesNode = Node.addUniqueChild(parent, Type.PACKAGES_SUBTREE,
 				null);
 
-		Node devicesSubtree = (Node) parent.addUniqueChild(
-				Type.DEVICES_SUBTREE, null);
-
-		Node boardsNode = (Node) parent.addUniqueChild(Type.BOARDS_SUBTREE,
+		Node devicesSubtree = Node.addUniqueChild(parent, Type.DEVICES_SUBTREE,
 				null);
 
-		Node keywordsNode = (Node) parent.addUniqueChild(Type.KEYWORDS_SELECT,
+		Node boardsNode = Node
+				.addUniqueChild(parent, Type.BOARDS_SUBTREE, null);
+
+		Node keywordsNode = Node.addUniqueChild(parent, Type.KEYWORDS_SELECT,
 				null);
 
 		Set<String> conditionKeywords = new HashSet<String>();
@@ -2413,7 +2414,7 @@ public class PdscParser {
 			packDescription = extendDescription(packDescription,
 					Utils.getElementContent(descriptionElement));
 
-			Node vendorNode = (Node) packagesNode.addUniqueChild(Type.VENDOR,
+			Node vendorNode = Node.addUniqueChild(packagesNode, Type.VENDOR,
 					packVendor);
 			vendorNode.putProperty(Node.VENDOR_PROPERTY, packVendor);
 
@@ -2491,7 +2492,7 @@ public class PdscParser {
 					currentReleaseDate = releaseDate;
 				}
 
-				Node versionNode = (Node) packNode.addUniqueChild("version",
+				Node versionNode = Node.addUniqueChild(packNode, "version",
 						releaseName);
 
 				String archiveName = packVendor + "." + packName + "."
@@ -2542,7 +2543,7 @@ public class PdscParser {
 		Node outlineNode = new Node(Type.OUTLINE);
 		packNode.setOutline(outlineNode);
 
-		Node outlinePackNode = (Node) outlineNode.addUniqueChild(Type.PACKAGE,
+		Node outlinePackNode = Node.addUniqueChild(outlineNode, Type.PACKAGE,
 				packName + " (brief)");
 		String outlinePackDescription = "Package: " + packName;
 		outlinePackDescription = extendDescription(outlinePackDescription,
@@ -2551,7 +2552,7 @@ public class PdscParser {
 
 		if (currentReleaseName != null) {
 
-			Node outlineVersionNode = (Node) outlineNode.addUniqueChild(
+			Node outlineVersionNode = Node.addUniqueChild(outlineNode,
 					Type.VERSION, currentReleaseName);
 
 			String versionDescription = "Version: " + currentReleaseName;
@@ -2582,7 +2583,7 @@ public class PdscParser {
 
 					// Add a unique node to selection
 					String keyword = Utils.getElementContent(childElement2);
-					keywordsNode.addUniqueChild(Type.KEYWORD, keyword);
+					Node.addUniqueChild(keywordsNode, Type.KEYWORD, keyword);
 
 					// Remember condition keyword
 					conditionKeywords.add(keyword);
@@ -2617,11 +2618,11 @@ public class PdscParser {
 					// Vendor not enumeration
 					continue;
 				}
-				Node vendorNode = (Node) devicesSubtree.addUniqueChild(
+				Node vendorNode = Node.addUniqueChild(devicesSubtree,
 						Type.VENDOR, va[0]);
 				vendorNode.putNonEmptyProperty(Node.VENDORID_PROPERTY, va[1]);
 
-				Node familyNode = (Node) vendorNode.addUniqueChild(Type.FAMILY,
+				Node familyNode = Node.addUniqueChild(vendorNode, Type.FAMILY,
 						family);
 				familyNode.setDescription(description);
 
@@ -2656,10 +2657,10 @@ public class PdscParser {
 				String description = "";
 				description = Utils.getElementContent(descriptionElement);
 
-				Node vendorNode = (Node) boardsNode.addUniqueChild(Type.VENDOR,
+				Node vendorNode = Node.addUniqueChild(boardsNode, Type.VENDOR,
 						vendor);
 
-				Node boardNode = (Node) vendorNode.addUniqueChild(Type.BOARD,
+				Node boardNode = Node.addUniqueChild(vendorNode, Type.BOARD,
 						boardName);
 				boardNode.putProperty(Node.VENDOR_PROPERTY, vendor);
 
@@ -2692,12 +2693,12 @@ public class PdscParser {
 							continue;
 						}
 
-						Node vendorNode2 = (Node) devicesSubtree
-								.addUniqueChild(Type.VENDOR, va[0]);
+						Node vendorNode2 = Node.addUniqueChild(devicesSubtree,
+								Type.VENDOR, va[0]);
 						vendorNode2.putNonEmptyProperty(Node.VENDORID_PROPERTY,
 								va[1]);
 
-						Node familyNode2 = (Node) vendorNode2.addUniqueChild(
+						Node familyNode2 = Node.addUniqueChild(vendorNode2,
 								Type.FAMILY, family);
 						familyNode2.setDescription(description);
 
@@ -2737,10 +2738,10 @@ public class PdscParser {
 					String vendor = boardElement.getAttribute("vendor").trim();
 					String boardName = boardElement.getAttribute("name").trim();
 
-					Node vendorNode = (Node) boardsNode.addUniqueChild(
+					Node vendorNode = Node.addUniqueChild(boardsNode,
 							Type.VENDOR, vendor);
 
-					Node boardNode = (Node) vendorNode.addUniqueChild(
+					Node boardNode = Node.addUniqueChild(vendorNode,
 							Type.BOARD, boardName);
 					boardNode.putProperty(Node.VENDOR_PROPERTY, vendor);
 
@@ -2763,7 +2764,7 @@ public class PdscParser {
 						// Add a unique node to selection
 						String keyword = Utils
 								.getElementContent(keywordElement);
-						keywordsNode.addUniqueChild(Type.KEYWORD, keyword);
+						Node.addUniqueChild(keywordsNode, Type.KEYWORD, keyword);
 
 						// Remember condition keyword
 						conditionKeywords.add(keyword);
@@ -2906,7 +2907,7 @@ public class PdscParser {
 		}
 		String packName = Utils.getElementContent(nameElement);
 
-		packNode = (Node) parent.addUniqueChild(Type.PACKAGE, packName);
+		packNode = Node.addUniqueChild(parent, Type.PACKAGE, packName);
 
 		Element packDescriptionElement = Utils.getChildElement(packageElement,
 				"description");
@@ -2952,7 +2953,7 @@ public class PdscParser {
 			String description = Utils
 					.getElementMultiLineContent(releaseElement);
 
-			Node verNode = (Node) packNode.addUniqueChild(Type.VERSION,
+			Node verNode = Node.addUniqueChild(packNode, Type.VERSION,
 					releaseName);
 
 			verNode.putProperty(Property.TYPE, "cmsis.pack");
@@ -3027,7 +3028,7 @@ public class PdscParser {
 
 					// Add a unique node to selection
 					String keyword = Utils.getElementContent(childElement);
-					outlineNode.addUniqueChild(Type.KEYWORD, keyword);
+					Node.addUniqueChild(outlineNode, Type.KEYWORD, keyword);
 				}
 			}
 		}
@@ -3059,7 +3060,7 @@ public class PdscParser {
 					continue;
 				}
 
-				Node deviceFamilyNode = (Node) outlineNode.addUniqueChild(
+				Node deviceFamilyNode = Node.addUniqueChild(outlineNode,
 						Type.FAMILY, family);
 				deviceFamilyNode.setDescription(description);
 
@@ -3087,7 +3088,7 @@ public class PdscParser {
 				description = Utils
 						.getElementMultiLineContent(descriptionElement);
 
-				Node boardNode = (Node) outlineNode.addUniqueChild(Type.BOARD,
+				Node boardNode = Node.addUniqueChild(outlineNode, Type.BOARD,
 						boardName);
 				boardNode.putProperty(Property.VENDOR_NAME, vendor);
 
@@ -3114,8 +3115,8 @@ public class PdscParser {
 						}
 
 						// Contribute external device family
-						Node deviceFamilyNode = (Node) externNode
-								.addUniqueChild(Type.FAMILY, family);
+						Node deviceFamilyNode = Node.addUniqueChild(externNode,
+								Type.FAMILY, family);
 
 						deviceFamilyNode.putProperty(Property.VENDOR_NAME,
 								va[0]);
@@ -3221,7 +3222,7 @@ public class PdscParser {
 					String boardName = boardElement.getAttribute("name").trim();
 
 					// Contribute external board
-					Node boardNode = (Node) externNode.addUniqueChild(
+					Node boardNode = Node.addUniqueChild(externNode,
 							Type.BOARD, boardName);
 					boardNode.putProperty(Property.VENDOR_NAME, vendor);
 
@@ -3278,7 +3279,7 @@ public class PdscParser {
 						// Add a unique node to selection
 						String keyword = Utils
 								.getElementContent(keywordElement);
-						outlineNode.addUniqueChild(Type.KEYWORD, keyword);
+						Node.addUniqueChild(outlineNode, Type.KEYWORD, keyword);
 					}
 				}
 			}

@@ -338,6 +338,7 @@ public class BoardsView extends ViewPart {
 
 		Node packsTree = m_storage.getPacksTree();
 		Node boardsRoot = new Node(Type.ROOT);
+		boardsRoot.setName("Boards");
 
 		if (packsTree.hasChildren()) {
 
@@ -368,7 +369,7 @@ public class BoardsView extends ViewPart {
 					count += addBoard(child, root, isInstalled);
 				}
 			}
-		} else if (node instanceof Node && node.hasChildren()) {
+		} else if ((node instanceof Node) && node.hasChildren()) {
 
 			boolean isVersionInstalled = isInstalled;
 			if (Type.VERSION.equals(type)
@@ -390,7 +391,7 @@ public class BoardsView extends ViewPart {
 		int count = 0;
 		String vendorName = node.getProperty(Property.VENDOR_NAME);
 
-		Node vendorNode = (Node) tree.addUniqueChild(Type.VENDOR, vendorName);
+		Node vendorNode = Node.addUniqueChild(tree, Type.VENDOR, vendorName);
 
 		String boardName = node.getName();
 		String description = node.getDescription();
@@ -398,8 +399,7 @@ public class BoardsView extends ViewPart {
 		Leaf boardNode = vendorNode.getChild(Type.BOARD, boardName);
 		if (boardNode == null) {
 
-			boardNode = new Leaf(Type.BOARD);
-			vendorNode.addChild(boardNode);
+			boardNode = Leaf.addNewChild(vendorNode, Type.BOARD);
 
 			boardNode.setName(boardName);
 			boardNode.setDescription(description);

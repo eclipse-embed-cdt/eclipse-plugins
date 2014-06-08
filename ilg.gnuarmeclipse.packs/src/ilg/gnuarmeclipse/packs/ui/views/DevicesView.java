@@ -72,13 +72,13 @@ public class DevicesView extends ViewPart {
 	class ViewContentProvider extends AbstractViewContentProvider implements
 			IPacksStorageListener {
 
-		public Object[] getElements(Object parent) {
+		public Object[] getElements(Object inputElement) {
 
-			if (parent.equals(getViewSite())) {
+			if (inputElement.equals(getViewSite())) {
 				m_tree = getDevicesTree();
 				return getChildren(m_tree);
 			}
-			return getChildren(parent);
+			return getChildren(inputElement);
 		}
 
 		@Override
@@ -356,6 +356,7 @@ public class DevicesView extends ViewPart {
 
 		Node packsTree = m_storage.getPacksTree();
 		Node devicesRoot = new Node(Type.ROOT);
+		devicesRoot.setName("Devices");
 
 		if (packsTree.hasChildren()) {
 
@@ -386,7 +387,7 @@ public class DevicesView extends ViewPart {
 					count += addDevice(child, root, isInstalled);
 				}
 			}
-		} else if (node instanceof Node && node.hasChildren()) {
+		} else if ((node instanceof Node) && node.hasChildren()) {
 
 			boolean isVersionInstalled = isInstalled;
 			if (Type.VERSION.equals(type)
@@ -409,7 +410,7 @@ public class DevicesView extends ViewPart {
 		String vendorName = node.getProperty(Property.VENDOR_NAME);
 		String vendorId = node.getProperty(Property.VENDOR_ID);
 
-		Node vendorNode = (Node) tree.addUniqueChild(Type.VENDOR, vendorName);
+		Node vendorNode = Node.addUniqueChild(tree, Type.VENDOR, vendorName);
 		vendorNode.putProperty(Property.VENDOR_ID, vendorId);
 
 		String deviceName = node.getName();
@@ -418,8 +419,7 @@ public class DevicesView extends ViewPart {
 		Leaf deviceNode = vendorNode.getChild(Type.FAMILY, deviceName);
 		if (deviceNode == null) {
 
-			deviceNode = new Leaf(Type.FAMILY);
-			vendorNode.addChild(deviceNode);
+			deviceNode = Leaf.addNewChild(vendorNode, Type.FAMILY);
 
 			deviceNode.setName(deviceName);
 			deviceNode.setDescription(description);

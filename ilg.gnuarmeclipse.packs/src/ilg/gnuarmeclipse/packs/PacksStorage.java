@@ -77,6 +77,7 @@ public class PacksStorage {
 	private MessageConsoleStream m_out;
 	private List<IPacksStorageListener> m_listeners;
 
+	private List<Leaf> m_packsList;
 	private Node m_packsTree;
 	private Map<String, Map<String, Leaf>> m_packsMap;
 
@@ -86,27 +87,38 @@ public class PacksStorage {
 		m_out = Activator.getConsoleOut();
 
 		m_packsTree = new Node(Type.ROOT);
-
+		m_packsList = new LinkedList<Leaf>();
 		m_packsMap = new TreeMap<String, Map<String, Leaf>>();
+
 		m_listeners = new ArrayList<IPacksStorageListener>();
 	}
 
-	// For convenient recursive search, a simple tree with all
-	// versions below a root node.
+	// For convenient recursive search, a full tree with all
+	// repos/packs/versions is available.
 	public Node getPacksTree() {
 		return m_packsTree;
 	}
 
+	// The list of all version nodes, linearised, to be used when
+	// enumerating versions is ok.
+	public List<Leaf> getPacksList() {
+		return m_packsList;
+	}
+
+	// A map of maps, with versions identified by Vendor::Pack and Version
 	public Map<String, Map<String, Leaf>> getPacksMap() {
 		return m_packsMap;
 	}
 
+	// Construct an internal representation of the map key, inspired
+	// form CMSIS Pack examples.
 	public String makeMapKey(String vendorName, String packName) {
 
 		String key = vendorName + "::" + packName;
 		return key;
 	}
 
+	// Find a given package version.
 	public Leaf getPackVersion(String vendorName, String packName,
 			String versionName) {
 
@@ -121,6 +133,7 @@ public class PacksStorage {
 		return versionsMap.get(versionName);
 	}
 
+	// Find the latest version of a pack
 	public Leaf getPackLatest(String vendorName, String packName) {
 
 		String key = makeMapKey(vendorName, packName);
@@ -298,6 +311,17 @@ public class PacksStorage {
 		List<Map<String, Object>> reposList;
 		reposList = m_repos.getList();
 
+		// Create a full hierarchy with all repos
+		Node packsTree = new Node(Type.ROOT);
+		for (Map<String, Object> map : reposList) {
+
+			Leaf node = (Node) map.get("content");
+			if (node != null) {
+				packsTree.addChild(node);
+			}
+		}
+		m_packsTree = packsTree;
+
 		// Collect all version nodes in a list
 		List<Leaf> packsVersionsList = new LinkedList<Leaf>();
 		for (Map<String, Object> map : reposList) {
@@ -307,8 +331,9 @@ public class PacksStorage {
 				getVersionsRecursive(node, packsVersionsList);
 			}
 		}
+		m_packsList = packsVersionsList;
 
-		// Group versions by [vendor::package]
+		// Group versions by [vendor::package] in a Map
 		Map<String, Map<String, Leaf>> packsMap = new TreeMap<String, Map<String, Leaf>>();
 		for (Leaf versionNode : packsVersionsList) {
 			String vendorName = versionNode.getProperty(Property.VENDOR_NAME);
@@ -324,15 +349,6 @@ public class PacksStorage {
 
 			versionMap.put(versionNode.getName(), versionNode);
 		}
-
-		// Create a one level hierarchy with all packages, to ease recursion
-		Node packsTree = new Node(Type.ROOT);
-		for (Leaf versionNode : packsVersionsList) {
-			packsTree.addChild(versionNode);
-		}
-
-		// Make them publicly available
-		m_packsTree = packsTree;
 		m_packsMap = packsMap;
 
 		m_out.println("Processed " + packsMap.size() + " package(s), with "
@@ -354,8 +370,7 @@ public class PacksStorage {
 
 	public void updateInstalledVersions() {
 
-		List<Leaf> versionNodes = m_packsTree.getChildren();
-		if (versionNodes == null) {
+		if (m_packsList == null) {
 			return;
 		}
 
@@ -364,7 +379,7 @@ public class PacksStorage {
 		int count = 0;
 
 		// Check if the packages are installed
-		for (Leaf versionNode : versionNodes) {
+		for (Leaf versionNode : m_packsList) {
 
 			String unpackFolder = versionNode.getProperty(Property.DEST_FOLDER);
 			String pdscName = versionNode.getProperty(Property.PDSC_NAME);
@@ -378,6 +393,10 @@ public class PacksStorage {
 
 					// Add an explicit property for more visibility
 					versionNode.setBooleanProperty(Property.INSTALLED, true);
+					if (versionNode.getParent().isType(Type.PACKAGE)) {
+						versionNode.getParent().setBooleanProperty(
+								Property.INSTALLED, true);
+					}
 
 					count++;
 				}

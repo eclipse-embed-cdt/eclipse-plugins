@@ -16,6 +16,7 @@ import ilg.gnuarmeclipse.packs.Repos;
 import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.cmsis.PdscParser;
 import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.Property;
 import ilg.gnuarmeclipse.packs.ui.views.OutlineView;
 
 import java.io.FileNotFoundException;
@@ -37,7 +38,8 @@ public class ParsePdscJob extends Job {
 	private MessageConsoleStream m_out;
 	private Node m_versionNode;
 	private TreeViewer m_outlineViewer;
-	private TreeViewer m_packsViewer;
+
+	// private TreeViewer m_packsViewer;
 
 	// private IPath m_folderPath;
 
@@ -51,8 +53,7 @@ public class ParsePdscJob extends Job {
 
 		m_versionNode = node;
 		m_outlineViewer = viewer;
-		m_packsViewer = Activator.getPacksView().getTreeViewer();
-
+		// m_packsViewer = Activator.getPacksView().getTreeViewer();
 	}
 
 	@Override
@@ -76,17 +77,12 @@ public class ParsePdscJob extends Job {
 		m_out.println();
 		m_out.println(Utils.getCurrentDateTime());
 
-		Node packNode = m_versionNode.getParent();
-		String packName = packNode.getName();
+		String destFolder = m_versionNode.getProperty(Property.DEST_FOLDER);
+		String pdscName = m_versionNode.getProperty(Property.PDSC_NAME);
 
-		String vendorName = packNode.getProperty(Node.VENDOR_PROPERTY);
-		String versionName = m_versionNode.getName();
+		IPath path = folderPath.append(destFolder).append(pdscName);
 
-		String pdscName = vendorName + "." + packName + ".pdsc";
-		m_out.println("Parsing \"" + pdscName + "\"...");
-
-		IPath path = folderPath.append(vendorName).append(packName)
-				.append(versionName).append(pdscName);
+		m_out.println("Parsing \"" + path.toString() + "\"...");
 
 		Node outlineNode = null;
 		try {
@@ -109,7 +105,7 @@ public class ParsePdscJob extends Job {
 		if (duration == 0) {
 			duration = 1;
 		}
-		m_out.println("Parse ompleted in " + duration + "ms.");
+		m_out.println("Parse completed in " + duration + "ms.");
 
 		if (outlineNode != null) {
 			Display.getDefault().asyncExec(new Runnable() {
@@ -117,9 +113,9 @@ public class ParsePdscJob extends Job {
 				public void run() {
 					m_outlineViewer
 							.setAutoExpandLevel(OutlineView.AUTOEXPAND_LEVEL);
-					m_outlineViewer.setInput(m_versionNode);
+					m_outlineViewer.setInput(m_versionNode.getOutline());
 
-					m_packsViewer.refresh();
+					// m_packsViewer.refresh();
 
 				}
 			});

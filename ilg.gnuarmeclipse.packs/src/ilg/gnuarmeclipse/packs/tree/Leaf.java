@@ -19,10 +19,6 @@ import org.eclipse.core.runtime.IAdaptable;
 
 public class Leaf implements Comparable<Leaf>, IAdaptable {
 
-	public class Type {
-		public static final String KEYWORD = "keyword";
-	};
-
 	protected String m_type;
 	protected String m_name;
 	protected String m_description;
@@ -37,8 +33,21 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		m_properties = null;
 	}
 
+	// Does not copy properties!
+	public Leaf(Leaf node) {
+		m_type = node.m_type;
+		m_name = node.m_name;
+		m_description = node.m_description;
+		m_parent = null;
+		m_properties = null;
+	}
+
 	public String getType() {
 		return m_type;
+	}
+
+	public boolean isType(String type) {
+		return m_type.equals(type);
 	}
 
 	public void setType(String type) {
@@ -126,6 +135,11 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		}
 	}
 
+	public Map<String, String> copyProperties(Leaf node) {
+		m_properties = node.m_properties;
+		return m_properties;
+	}
+
 	public boolean isBooleanProperty(String name) {
 
 		// Return true if the given propery is true.
@@ -133,7 +147,7 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 	}
 
 	public void setBooleanProperty(String name, boolean value) {
-		
+
 		// Set the property to true/false.
 		putProperty(name, String.valueOf(value));
 	}
@@ -159,4 +173,25 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		return m_name.compareTo(o.m_name);
 	}
 
+	// ------------------------------------------------------------------------
+
+	public static Leaf addNewChild(Node parent, String type) {
+
+		assert (parent != null);
+
+		Leaf node = new Leaf(type);
+		parent.addChild(node);
+		return node;
+	}
+
+	public static Leaf addNewChild(Node parent, Leaf from) {
+
+		assert (parent != null);
+
+		Leaf node = new Leaf(from);
+		parent.addChild(node);
+		return node;
+	}
+
+	// ------------------------------------------------------------------------
 }

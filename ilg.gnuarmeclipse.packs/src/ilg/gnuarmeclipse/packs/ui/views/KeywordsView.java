@@ -290,9 +290,8 @@ public class KeywordsView extends ViewPart {
 
 			// Add keyword nodes to the hierarchy
 			for (String keywordName : set) {
-				Leaf keywordNode = new Leaf(Leaf.Type.KEYWORD);
+				Leaf keywordNode = Leaf.addNewChild(keywordsRoot, Type.KEYWORD);
 				keywordNode.setName(keywordName);
-				keywordsRoot.addChild(keywordNode);
 			}
 
 			m_out.println("Found " + set.size() + " keyword(s).");

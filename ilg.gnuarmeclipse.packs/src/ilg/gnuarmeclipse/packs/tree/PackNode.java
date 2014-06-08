@@ -13,13 +13,31 @@ package ilg.gnuarmeclipse.packs.tree;
 
 public class PackNode extends Node {
 
-	public class Type {
-
-	};
-
 	public PackNode(String type) {
 
 		super(type);
+	}
+
+	public static PackNode addUniqueChild(Node parent, String type, String name) {
+
+		PackNode packNode = (PackNode) parent.getChild(type, name);
+		if (packNode == null) {
+
+			packNode = new PackNode(type);
+			parent.addChild(packNode);
+
+			packNode.setName(name);
+		}
+
+		return packNode;
+	}
+
+	public static PackNode addNewChild(Node parent, String type) {
+
+		PackNode node = new PackNode(type);
+		parent.addChild(node);
+
+		return node;
 	}
 
 }

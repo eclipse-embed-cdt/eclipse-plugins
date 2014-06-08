@@ -90,7 +90,7 @@ public class ContentParser {
 
 	private void processRepository(Element el, Node parent) {
 
-		Node node = parent.addNewChild(Type.REPOSITORY);
+		Node node = Node.addNewChild(parent, Type.REPOSITORY);
 
 		String name = getNameAttribute(el);
 		node.setName(name);
@@ -149,7 +149,7 @@ public class ContentParser {
 
 	private void processPackage(Element el, Node parent) {
 
-		Node node = parent.addNewChild(Type.PACKAGE);
+		Node node = Node.addNewChild(parent, Type.PACKAGE);
 
 		String name = getNameAttribute(el);
 		node.setName(name);
@@ -184,7 +184,7 @@ public class ContentParser {
 
 	private void processVersion(Element el, Node parent) {
 
-		Node node = parent.addNewChild(Type.VERSION);
+		Node node = Node.addNewChild(parent, Type.VERSION);
 
 		String name = getNameAttribute(el);
 		node.setName(name);
@@ -209,7 +209,7 @@ public class ContentParser {
 
 	private void processOutline(Element el, Node parent) {
 
-		Node node = parent.addNewChild(Type.OUTLINE);
+		Node node = Node.addNewChild(parent, Type.OUTLINE);
 
 		String name = getNameAttribute(el);
 		node.setName(name);
@@ -238,7 +238,7 @@ public class ContentParser {
 
 	private void processExternal(Element el, Node parent) {
 
-		Node node = parent.addNewChild(Type.EXTERNAL);
+		Node node = Node.addNewChild(parent, Type.EXTERNAL);
 
 		String name = getNameAttribute(el);
 		node.setName(name);
@@ -259,7 +259,7 @@ public class ContentParser {
 
 	private void processKeyword(Element el, Node parent) {
 
-		Node node = parent.addNewChild(Type.KEYWORD);
+		Node node = Node.addNewChild(parent, Type.KEYWORD);
 
 		String name = getNameAttribute(el);
 
@@ -274,7 +274,7 @@ public class ContentParser {
 
 	private void processLeaf(Element el, Node parent, String type) {
 
-		Node node = parent.addNewChild(type);
+		Node node = Node.addNewChild(parent, type);
 
 		String name = getNameAttribute(el);
 		node.setName(name);

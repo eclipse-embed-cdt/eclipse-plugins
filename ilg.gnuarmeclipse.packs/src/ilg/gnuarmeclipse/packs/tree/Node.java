@@ -95,7 +95,7 @@ public class Node extends Leaf {
 	public Node(String type) {
 
 		super(type);
-		
+
 		m_isInstalled = false;
 		m_children = null;
 		m_conditions = null;
@@ -126,59 +126,24 @@ public class Node extends Leaf {
 		}
 	}
 
-	public Node addNewChild(String type) {
-
-		Node node = new Node(type);
-		addChild(node);
-
-		return node;
-	}
-
 	public void addChild(Leaf node) {
 		if (m_children == null) {
-			m_children = new ArrayList<Leaf>();
+			m_children = new LinkedList<Leaf>();
 		}
 		m_children.add(node);
+
+		// Protect against attempts to link the node to multiple parents
+		assert (m_parent == null);
+
 		node.m_parent = this;
 	}
 
-	public Leaf addUniqueChild(String type, String name) {
-
-		if (type == null) {
-			return null;
-		}
-
-		if (m_children == null) {
-			// On first child create list
-			m_children = new ArrayList<Leaf>();
-		}
-
-		for (Leaf node : m_children) {
-			if (node.m_type.equals(type)) {
-				if (name == null) {
-					// Node of given type, any name, found
-					return node;
-				} else {
-					if (node.m_name.equals(name)) {
-						return node;
-					}
-				}
-			}
-		}
-
-		// Node not found, create a new one
-		Node child = new Node(type);
-		if (name != null) {
-			child.setName(name);
-		}
-
-		m_children.add(child);
-		child.m_parent = this;
-
-		return child;
+	public Leaf getChild(String type) {
+		return getChild(type, null);
 	}
 
 	public Leaf getChild(String type, String name) {
+
 		if (type == null) {
 			return null;
 		}
@@ -259,4 +224,35 @@ public class Node extends Leaf {
 	public void copyChildren(Node node) {
 		m_children = node.m_children;
 	}
+
+	// ------------------------------------------------------------------------
+
+	public static Node addUniqueChild(Node parent, String type, String name) {
+
+		assert (parent != null);
+
+		Node node = (Node) parent.getChild(type, name);
+		if (node == null) {
+
+			node = new Node(type);
+			parent.addChild(node);
+
+			node.setName(name);
+		}
+
+		return node;
+	}
+
+	public static Node addNewChild(Node parent, String type) {
+
+		assert (parent != null);
+
+		Node node = new Node(type);
+		parent.addChild(node);
+
+		return node;
+	}
+
+	// ------------------------------------------------------------------------
+
 }

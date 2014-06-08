@@ -12,8 +12,11 @@
 package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.packs.Activator;
+import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.jobs.ParsePdscJob;
+import ilg.gnuarmeclipse.packs.tree.Leaf;
 import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.Property;
 import ilg.gnuarmeclipse.packs.tree.Type;
 
 import java.net.MalformedURLException;
@@ -59,18 +62,9 @@ public class OutlineView extends ViewPart {
 
 	public static final String ID = "ilg.gnuarmeclipse.packs.ui.views.OutlineView";
 
-	private TreeViewer m_viewer;
-	private ISelectionListener m_pageSelectionListener;
-	private ViewContentProvider m_contentProvider;
-
-	private Action m_expandAll;
-	private Action m_collapseAll;
-	private Action m_doubleClickAction;
-	private Action m_openWithText;
-	private Action m_openWithSystem;
-	private Path m_packagePath;
-
 	public static final int AUTOEXPAND_LEVEL = 0;
+
+	// ------------------------------------------------------------------------
 
 	// Embedded classes
 	class ViewContentProvider extends AbstractViewContentProvider {
@@ -78,47 +72,40 @@ public class OutlineView extends ViewPart {
 		@Override
 		public Object[] getElements(Object inputElement) {
 
-			if ((inputElement == null) || !(inputElement instanceof Node)) {
-				m_tree = null; // new TreeNode(Type.NONE);
+			return getChildren(inputElement);
+		}
+
+		@Override
+		public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+
+			// System.out.println(viewer + " " + oldInput + " " + newInput);
+
+			super.inputChanged(viewer, oldInput, newInput);
+
+			if (newInput == null) {
 				m_packagePath = null;
-				return new Object[] { new Node(Type.NONE) };
 			}
 
-			Node node = (Node) inputElement;
-			String type = node.getType();
-			if (m_tree == null) {
-				m_packagePath = null;
-				if (Type.PACKAGE.equals(type) || Type.VERSION.equals(type)
-						|| Type.EXAMPLE.equals(type) || Type.NONE.equals(type)) {
-					m_tree = node;
-				}
-			}
-
-			if (m_tree == null) {
-				m_packagePath = null;
-				return new Object[] { new Node(Type.NONE) };
-			} else if (node == m_tree) {
-				m_packagePath = null;
-				Node outline = m_tree.getOutline();
-				if (outline != null) {
-					String folder = outline.getProperty(Node.FOLDER_PROPERTY);
-					if (folder != null) {
-						m_packagePath = new Path(folder);
-					}
-					return outline.getChildrenArray();
-				} else {
-					return new Object[] { m_tree };
+			if (m_tree instanceof Node) {
+				String folder = m_tree.getProperty(Node.FOLDER_PROPERTY);
+				if (folder != null) {
+					m_packagePath = new Path(folder);
 				}
 			} else {
-				return getChildren(inputElement);
+				m_tree = null;
+				m_packagePath = null;
 			}
 		}
+
 	};
+
+	// ------------------------------------------------------------------------
 
 	class ViewLabelProvider extends CellLabelProvider {
 
 		public String getText(Object obj) {
-			Node node = ((Node) obj);
+
+			Leaf node = ((Leaf) obj);
 			String name = node.getName();
 
 			return " " + name;
@@ -126,7 +113,7 @@ public class OutlineView extends ViewPart {
 
 		public Image getImage(Object obj) {
 
-			Node node = ((Node) obj);
+			Leaf node = ((Leaf) obj);
 			String type = node.getType();
 
 			if (Type.NONE.equals(type)) {
@@ -137,6 +124,7 @@ public class OutlineView extends ViewPart {
 			try {
 				name = node.getName().toLowerCase();
 			} catch (Exception e) {
+				;
 			}
 
 			if (Type.FAMILY.equals(type) || Type.SUBFAMILY.equals(type)
@@ -289,7 +277,7 @@ public class OutlineView extends ViewPart {
 		@Override
 		public String getToolTipText(Object obj) {
 
-			Node node = ((Node) obj);
+			Leaf node = ((Leaf) obj);
 
 			String description = node.getDescription();
 			if (description != null && description.length() > 0) {
@@ -305,6 +293,8 @@ public class OutlineView extends ViewPart {
 		}
 	}
 
+	// ------------------------------------------------------------------------
+
 	class NameSorter extends ViewerSorter {
 
 		public int compare(Viewer viewer, Object e1, Object e2) {
@@ -313,9 +303,38 @@ public class OutlineView extends ViewPart {
 		}
 	}
 
+	// ------------------------------------------------------------------------
+
+	private TreeViewer m_viewer;
+	private ISelectionListener m_pageSelectionListener;
+	private ViewContentProvider m_contentProvider;
+
+	private Action m_expandAll;
+	private Action m_collapseAll;
+	private Action m_doubleClickAction;
+	private Action m_openWithText;
+	private Action m_openWithSystem;
+
+	// Needed to construct absolute path for double click actions
+	private Path m_packagePath;
+
+	private Node m_noOutlineNode;
+
+	private PacksStorage m_storage;
+
+	// private MessageConsoleStream m_out;
+
 	public OutlineView() {
 		// Activator.setDevicesView(this);
 
+		m_noOutlineNode = new Node(Type.OUTLINE);
+		m_noOutlineNode.setName("No outline");
+		Node.addNewChild(m_noOutlineNode, Type.NONE).setName(
+				"(Outline not available)");
+
+		// m_out = Activator.getConsoleOut();
+
+		m_storage = PacksStorage.getInstance();
 		System.out.println("OutlineView()");
 	}
 
@@ -333,7 +352,8 @@ public class OutlineView extends ViewPart {
 		m_viewer.setContentProvider(m_contentProvider);
 		m_viewer.setLabelProvider(new ViewLabelProvider());
 		m_viewer.setSorter(new NameSorter());
-		m_viewer.setInput(null);
+
+		m_viewer.setInput(m_noOutlineNode);
 
 		addProviders();
 		addListners();
@@ -373,7 +393,7 @@ public class OutlineView extends ViewPart {
 					return;
 				}
 
-				Node node = (Node) selection.getFirstElement();
+				Leaf node = (Leaf) selection.getFirstElement();
 				String type = node.getType();
 
 				// Enable 'Open With Text Editor'
@@ -436,6 +456,7 @@ public class OutlineView extends ViewPart {
 	}
 
 	public void dispose() {
+
 		super.dispose();
 
 		if (m_pageSelectionListener != null) {
@@ -451,35 +472,46 @@ public class OutlineView extends ViewPart {
 			ISelection selection) {
 
 		// System.out.println("Outline: packs selection=" + selection);
-		if (selection.isEmpty()) {
-			m_viewer.setInput(null);
-		} else if (selection instanceof TreeSelection) {
-			Node node = (Node) ((TreeSelection) selection).getFirstElement();
 
-			if (node.hasOutline()) {
-				// If the node already has outline, show it
-				m_viewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);
-				m_viewer.setInput(node);
-			} else if (Type.VERSION.equals(node.getType())) {
-				if (node.isInstalled()) {
-					// If the version node is installed, get outline
-					ParsePdscJob job = new ParsePdscJob("Parse Outline", node,
-							m_viewer);
-					job.schedule();
-				} else {
-					Node none = new Node(Type.NONE);
-					none.setName("(Version not installed, outline not available)");
-					m_viewer.setInput(none);
+		Node outline = m_noOutlineNode;
+
+		if ((!selection.isEmpty()) && selection instanceof TreeSelection) {
+
+			// Single selection
+			Leaf node = (Leaf) ((TreeSelection) selection).getFirstElement();
+			if (node instanceof Node) {
+
+				if (((Node) node).hasOutline()) {
+
+					// If the node already has outline, show it
+					m_viewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);
+					outline = ((Node) node).getOutline();
+
+				} else if (node.isType(Type.VERSION)) {
+
+					if ((node.isInstalled() || node
+							.isBooleanProperty(Property.INSTALLED))) {
+						// If the version node is installed, get outline
+						ParsePdscJob job = new ParsePdscJob("Parse Outline",
+								(Node) node, m_viewer);
+						job.schedule();
+					} else {
+
+						// Get brief outline
+						outline = getBriefOutline((Node) node);
+						((Node) node).setOutline(outline);
+					}
+				} else if (node.isType(Type.PACKAGE)) {
+
+					// Get brief outline
+					outline = getBriefOutline((Node) node);
+					((Node) node).setOutline(outline);
 				}
-			} else if (Type.VENDOR.equals(node.getType())) {
-				Node none = new Node(Type.NONE);
-				none.setName("(Outline not available)");
-				m_viewer.setInput(none);
-			} else {
-				// For all other nodes, show nothing
-				m_viewer.setInput(null);
 			}
 		}
+
+		m_viewer.setInput(outline);
+
 	}
 
 	private void makeActions() {
@@ -563,6 +595,7 @@ public class OutlineView extends ViewPart {
 	}
 
 	private void hookContextMenu() {
+
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
@@ -609,6 +642,7 @@ public class OutlineView extends ViewPart {
 
 	private void doubleClickAction(Node node) throws PartInitException,
 			MalformedURLException {
+
 		String type = node.getType();
 		if (m_packagePath == null) {
 			// System.out.println("null m_packagePath");
@@ -736,4 +770,56 @@ public class OutlineView extends ViewPart {
 		}
 	}
 
+	// ------------------------------------------------------------------------
+
+	private Node getBriefOutline(Node node) {
+
+		Node outlineNode = m_noOutlineNode;
+
+		Node input = null;
+		// Identify original node
+		if (node.isType(Type.PACKAGE)) {
+
+			String vendorName = node.getProperty(Property.VENDOR_NAME);
+			String packName = node.getName();
+
+			input = (Node) m_storage.getPackLatest(vendorName, packName);
+
+		} else if (node.isType(Type.VERSION)) {
+
+			String vendorName = node.getProperty(Property.VENDOR_NAME);
+			String packName = node.getProperty(Property.PACK_NAME);
+			String versionName = node.getName();
+
+			input = (Node) m_storage.getPackVersion(vendorName, packName,
+					versionName);
+		}
+
+		assert (input != null);
+
+		if (input.isType(Type.VERSION)) {
+
+			Node oNode = (Node) input.getChild(Type.OUTLINE);
+			if (oNode != null && oNode.hasChildren()) {
+				outlineNode = new Node(Type.OUTLINE);
+				outlineNode.setName("Brief Outline");
+
+				Leaf leaf = Leaf.addNewChild(outlineNode, Type.PACKAGE);
+				leaf.setName(input.getProperty(Property.PACK_NAME));
+
+				leaf = Leaf.addNewChild(outlineNode, Type.VERSION);
+				leaf.setName(input.getName());
+
+				for (Leaf child : oNode.getChildren()) {
+
+					// Create copies of outline nodes
+					leaf = Leaf.addNewChild(outlineNode, child);
+				}
+			}
+		}
+
+		return outlineNode;
+	}
+
+	// ------------------------------------------------------------------------
 }
