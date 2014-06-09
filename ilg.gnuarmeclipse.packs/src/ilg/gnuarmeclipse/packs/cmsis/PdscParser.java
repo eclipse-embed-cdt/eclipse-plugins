@@ -12,7 +12,6 @@
 package ilg.gnuarmeclipse.packs.cmsis;
 
 import ilg.gnuarmeclipse.packs.Activator;
-import ilg.gnuarmeclipse.packs.Repos;
 import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.tree.Leaf;
 import ilg.gnuarmeclipse.packs.tree.Property;
@@ -51,12 +50,12 @@ public class PdscParser {
 	private URL m_url;
 	private Document m_document;
 
-	private Repos m_repos;
+	// private Repos m_repos;
 
 	public PdscParser() {
 
 		m_out = Activator.getConsoleOut();
-		m_repos = Repos.getInstance();
+		// m_repos = Repos.getInstance();
 
 		m_isBrief = false;
 	}
@@ -1223,7 +1222,7 @@ public class PdscParser {
 							.trim();
 					String Dname = childElement.getAttribute("Dname").trim();
 
-					Node deviceNode = new Node(Type.DEVICE);
+					Node deviceNode = new Node(Type.COMPATIBLEDEVICE);
 					boardNode.addChild(deviceNode);
 
 					String va[] = Dvendor.split(":");

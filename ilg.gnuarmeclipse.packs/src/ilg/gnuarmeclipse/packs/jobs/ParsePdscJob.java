@@ -89,6 +89,9 @@ public class ParsePdscJob extends Job {
 			PdscParser pdsc = new PdscParser();
 			pdsc.parseXml(path);
 			outlineNode = pdsc.parsePdscFull();
+			
+			// Required to resolve path for actions
+			outlineNode.putProperty(Property.DEST_FOLDER, destFolder);
 			m_versionNode.setOutline(outlineNode);
 
 			pdsc.parseExamples(m_versionNode);

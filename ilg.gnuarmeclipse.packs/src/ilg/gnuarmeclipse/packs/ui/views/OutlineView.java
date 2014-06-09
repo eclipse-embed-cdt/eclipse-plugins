@@ -13,18 +13,20 @@ package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.PacksStorage;
+import ilg.gnuarmeclipse.packs.Repos;
 import ilg.gnuarmeclipse.packs.jobs.ParsePdscJob;
 import ilg.gnuarmeclipse.packs.tree.Leaf;
 import ilg.gnuarmeclipse.packs.tree.Node;
 import ilg.gnuarmeclipse.packs.tree.Property;
 import ilg.gnuarmeclipse.packs.tree.Type;
 
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
-import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -82,18 +84,21 @@ public class OutlineView extends ViewPart {
 
 			super.inputChanged(viewer, oldInput, newInput);
 
-			if (newInput == null) {
-				m_packagePath = null;
-			}
+			// Always clear previous path
+			m_packageAbsolutePath = null;
 
-			if (m_tree instanceof Node) {
-				String folder = m_tree.getProperty(Node.FOLDER_PROPERTY);
+			if (newInput instanceof Node) {
+				// newInput is an outline node
+				String folder = ((Node) newInput)
+						.getProperty(Property.DEST_FOLDER);
 				if (folder != null) {
-					m_packagePath = new Path(folder);
+					try {
+						m_packageAbsolutePath = Repos.getInstance()
+								.getFolderPath().append(folder);
+					} catch (IOException e) {
+						;
+					}
 				}
-			} else {
-				m_tree = null;
-				m_packagePath = null;
 			}
 		}
 
@@ -131,6 +136,9 @@ public class OutlineView extends ViewPart {
 					|| Type.DEVICE.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/hardware_chip.png").createImage();
+			} else if (Type.COMPATIBLEDEVICE.equals(type)) {
+				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
+						"icons/hardware_chip_grey.png").createImage();
 			} else if (Type.BOARD.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/board.png").createImage();
@@ -316,7 +324,7 @@ public class OutlineView extends ViewPart {
 	private Action m_openWithSystem;
 
 	// Needed to construct absolute path for double click actions
-	private Path m_packagePath;
+	private IPath m_packageAbsolutePath;
 
 	private Node m_noOutlineNode;
 
@@ -545,7 +553,7 @@ public class OutlineView extends ViewPart {
 				ISelection selection = m_viewer.getSelection();
 				Object obj = ((IStructuredSelection) selection)
 						.getFirstElement();
-				if (obj instanceof Node) {
+				if (obj instanceof Leaf) {
 					try {
 						openWithTextAction((Node) obj);
 					} catch (PartInitException e) {
@@ -644,8 +652,8 @@ public class OutlineView extends ViewPart {
 			MalformedURLException {
 
 		String type = node.getType();
-		if (m_packagePath == null) {
-			// System.out.println("null m_packagePath");
+		if (m_packageAbsolutePath == null) {
+			System.out.println("null m_packagePath");
 			return;
 		}
 
@@ -660,7 +668,7 @@ public class OutlineView extends ViewPart {
 
 				// System.out.println("Edit " + relativeFile);
 				IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-						m_packagePath.append(relativeFile));
+						m_packageAbsolutePath.append(relativeFile));
 
 				// Open external file in Eclipse editor (as read only, since the
 				// packages were marked as read only
@@ -670,7 +678,7 @@ public class OutlineView extends ViewPart {
 
 				// System.out.println("Document " + node);
 				IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-						m_packagePath.append(relativeFile));
+						m_packageAbsolutePath.append(relativeFile));
 				// System.out.println(fileStore);
 
 				// Open external file in Eclipse editor (as read only, since the
@@ -697,7 +705,7 @@ public class OutlineView extends ViewPart {
 
 				// System.out.println("Path " + relativeFile);
 				IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-						m_packagePath.append(relativeFile));
+						m_packageAbsolutePath.append(relativeFile));
 
 				// Open external file in Eclipse editor (as read only, since the
 				// packages were marked as read only
@@ -713,7 +721,7 @@ public class OutlineView extends ViewPart {
 
 			String relativeFile = node.getProperty(Node.FILE_PROPERTY);
 			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-					m_packagePath.append(relativeFile));
+					m_packageAbsolutePath.append(relativeFile));
 
 			// Open external file in Eclipse editor (as read only, since the
 			// packages were marked as read only
@@ -725,7 +733,7 @@ public class OutlineView extends ViewPart {
 
 			String relativeFile = node.getProperty(Node.FILE_PROPERTY);
 			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-					m_packagePath.append(relativeFile));
+					m_packageAbsolutePath.append(relativeFile));
 
 			// Open external file in Eclipse editor (as read only, since the
 			// packages were marked as read only
@@ -737,19 +745,22 @@ public class OutlineView extends ViewPart {
 		}
 	}
 
-	private void openWithTextAction(Node node) throws PartInitException {
+	private void openWithTextAction(Leaf node) throws PartInitException {
 
 		IWorkbenchPage page = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage();
 		String relativeFile = node.getProperty(Node.FILE_PROPERTY, "");
+
+		assert (m_packageAbsolutePath != null);
+
 		if (relativeFile.length() > 0) {
 			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-					m_packagePath.append(relativeFile));
+					m_packageAbsolutePath.append(relativeFile));
 			IDE.openInternalEditorOnFileStore(page, fileStore);
 		}
 	}
 
-	private void openWithSystemAction(Node node) throws PartInitException,
+	private void openWithSystemAction(Leaf node) throws PartInitException,
 			MalformedURLException {
 
 		IWorkbenchPage page = PlatformUI.getWorkbench()
@@ -757,7 +768,7 @@ public class OutlineView extends ViewPart {
 		String relativeFile = node.getProperty(Node.FILE_PROPERTY, "");
 		if (relativeFile.length() > 0) {
 			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-					m_packagePath.append(relativeFile));
+					m_packageAbsolutePath.append(relativeFile));
 			IDE.openEditorOnFileStore(page, fileStore);
 			return;
 		}
@@ -811,6 +822,11 @@ public class OutlineView extends ViewPart {
 				leaf.setName(input.getName());
 
 				for (Leaf child : oNode.getChildren()) {
+
+					if (child.isType(Type.KEYWORD)) {
+						// Ignore keywords inside outline
+						continue;
+					}
 
 					// Create copies of outline nodes
 					leaf = Leaf.addNewChild(outlineNode, child);

@@ -21,6 +21,7 @@ public class Type {
 	public static final String BOOK = "book";
 	public static final String BUNDLE = "bundle";
 	public static final String CATEGORY = "category";
+	public static final String COMPATIBLEDEVICE = "compatibledevice";
 	public static final String COMPONENT = "component";
 	public static final String CONDITION = "condition";
 	public static final String DEBUGINTERFACE = "debuginterface";
