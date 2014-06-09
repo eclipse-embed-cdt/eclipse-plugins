@@ -102,6 +102,16 @@ public class Node extends Leaf {
 		m_outline = null;
 	}
 
+	public Node(Leaf node) {
+
+		super(node);
+
+		m_isInstalled = false;
+		m_children = null;
+		m_conditions = null;
+		m_outline = null;
+	}
+
 	public boolean isInstalled() {
 		return m_isInstalled;
 	}
@@ -250,6 +260,15 @@ public class Node extends Leaf {
 		Node node = new Node(type);
 		parent.addChild(node);
 
+		return node;
+	}
+
+	public static Node addNewChild(Node parent, Leaf from) {
+
+		assert (parent != null);
+
+		Node node = new Node(from);
+		parent.addChild(node);
 		return node;
 	}
 

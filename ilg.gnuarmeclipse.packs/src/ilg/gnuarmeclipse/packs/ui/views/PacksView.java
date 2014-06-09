@@ -764,9 +764,9 @@ public class PacksView extends ViewPart {
 					if (child.isType(Type.EXAMPLE)) {
 
 						// New node with child personality
-						Leaf.addNewChild(versionNode, child);
+						// (not Leaf because it has outline)
+						Node.addNewChild(versionNode, child);
 					}
-
 				}
 			}
 		}

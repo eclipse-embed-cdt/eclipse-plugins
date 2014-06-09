@@ -2831,15 +2831,19 @@ public class PdscParser {
 				Element boardElement = Utils.getChildElement(exampleElement,
 						"board");
 
-				Node exampleNode = new Node(Type.EXAMPLE);
-				parent.addChild(exampleNode);
-
 				String boardName;
 				boardName = boardElement.getAttribute("name");
 				if (boardName.length() > 0) {
 					exampleName = exampleName + " (" + boardName + ")";
 				}
-				exampleNode.setName(exampleName);
+
+				Node exampleNode;
+				exampleNode = (Node) parent.getChild(Type.EXAMPLE, exampleName);
+				if (exampleNode == null) {
+					exampleNode = new Node(Type.EXAMPLE);
+					parent.addChild(exampleNode);
+					exampleNode.setName(exampleName);
+				}
 
 				Element descriptionElement = Utils.getChildElement(
 						exampleElement, "description");
@@ -2850,8 +2854,8 @@ public class PdscParser {
 				Node outlineNode = new Node(Type.OUTLINE);
 				exampleNode.setOutline(outlineNode);
 
+				// Parse a flat outline
 				processExample(exampleElement, outlineNode, true);
-
 			}
 		}
 	}

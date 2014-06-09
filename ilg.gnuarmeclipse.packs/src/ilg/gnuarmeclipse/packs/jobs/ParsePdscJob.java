@@ -94,6 +94,8 @@ public class ParsePdscJob extends Job {
 			outlineNode.putProperty(Property.DEST_FOLDER, destFolder);
 			m_versionNode.setOutline(outlineNode);
 
+			// Parse examples again, with full outlines
+			// (will reuse existing example nodes)
 			pdsc.parseExamples(m_versionNode);
 
 		} catch (FileNotFoundException e) {
@@ -117,9 +119,6 @@ public class ParsePdscJob extends Job {
 					m_outlineViewer
 							.setAutoExpandLevel(OutlineView.AUTOEXPAND_LEVEL);
 					m_outlineViewer.setInput(m_versionNode.getOutline());
-
-					// m_packsViewer.refresh();
-
 				}
 			});
 		}
