@@ -135,7 +135,7 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		}
 	}
 
-	public Map<String, String> copyProperties(Leaf node) {
+	public Map<String, String> copyPropertiesRef(Leaf node) {
 		m_properties = node.m_properties;
 		return m_properties;
 	}

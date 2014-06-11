@@ -38,9 +38,9 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.MessageConsoleStream;
 
 /**
@@ -91,8 +91,9 @@ public class RefreshHandler extends AbstractHandler {
 
 	private IStatus myRun(IProgressMonitor monitor) {
 
-		if (m_running)
-			return Status.CANCEL_STATUS;
+		if (m_running) {
+			// return Status.CANCEL_STATUS;
+		}
 
 		m_running = true;
 
@@ -132,12 +133,12 @@ public class RefreshHandler extends AbstractHandler {
 				}
 			}
 
-			workUnits += m_storage.getParseReposWorkUnits();
+			workUnits += m_storage.computeParseReposWorkUnits();
 
 			// Set total number of work units to the number of pdsc files
 			monitor.beginTask("Refresh packs", workUnits);
 
-			Node tree = new Node("root");
+			// Node tree = new Node("root");
 
 			PdscParser parser = new PdscParser();
 			parser.setIsBrief(true);
@@ -187,11 +188,33 @@ public class RefreshHandler extends AbstractHandler {
 					monitor.subTask(pdscName);
 
 					try {
-						parser.parseXml(new URL(pdscUrl + pdscName));
-						parser.parsePdscBrief(pdscName, pdscVersion, tree);
 
-						parser.parsePdscContent(pdscName, pdscVersion,
-								contentRoot);
+						URL sourceUrl = new URL(pdscUrl + pdscName);
+
+						String cachedFileName = m_storage.makeCachePdscName(
+								pdscName, pdscVersion);
+						File cachedFile = m_storage.getFile(new Path(
+								PacksStorage.CACHE_FOLDER), cachedFileName);
+						if (!cachedFile.exists()) {
+
+							// If local file does not exist, create it
+							Utils.copyFile(sourceUrl, cachedFile, m_out, null);
+						}
+
+						if (cachedFile.exists()) {
+							// parser.parseXml(new URL(pdscUrl + pdscName));
+							parser.parseXml(cachedFile);
+
+							// parser.parsePdscBrief(pdscName, pdscVersion,
+							// tree);
+
+							parser.parsePdscContent(pdscName, pdscVersion,
+									contentRoot);
+						} else {
+							m_out.println("Missing \"" + cachedFile
+									+ "\", ignored");
+						}
+
 					} catch (Exception e) {
 						m_out.println("Failed with \"" + e.getMessage()
 								+ "\", ignored");
@@ -217,16 +240,9 @@ public class RefreshHandler extends AbstractHandler {
 				return Status.CANCEL_STATUS;
 			}
 
-			// Write the tree to the cache.xml file in the packages folder
-			m_storage.putCache_x(tree);
-			m_out.println("Tree cache written.");
-
 			// The content.xml files were just created, parse them
 			m_out.println();
 			m_storage.parseRepos(monitor);
-
-			m_storage.updateInstalled_x();
-			m_out.println("Mark installed packs.");
 
 		} catch (FileNotFoundException e) {
 			m_out.println("Error: " + e.toString());
@@ -235,15 +251,7 @@ public class RefreshHandler extends AbstractHandler {
 			m_out.println("Failed: " + e.toString());
 		}
 
-		Display.getDefault().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				Activator.getPacksView().forceRefresh();
-				Activator.getDevicesView().forceRefresh();
-				Activator.getBoardsView().forceRefresh();
-				Activator.getKeywordsView().forceRefresh();
-			}
-		});
+		m_storage.notifyRefresh();
 
 		long endTime = System.currentTimeMillis();
 		long duration = endTime - beginTime;
@@ -253,7 +261,7 @@ public class RefreshHandler extends AbstractHandler {
 
 		m_out.println("Refresh packs job completed in " + (duration + 500)
 				/ 1000 + "s.");
-		m_out.println();
+
 		m_running = false;
 		return Status.OK_STATUS;
 	}

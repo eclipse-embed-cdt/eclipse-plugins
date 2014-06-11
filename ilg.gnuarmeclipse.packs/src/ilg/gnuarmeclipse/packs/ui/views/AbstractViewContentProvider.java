@@ -21,7 +21,7 @@ import org.eclipse.jface.viewers.Viewer;
 public abstract class AbstractViewContentProvider implements
 		IStructuredContentProvider, ITreeContentProvider {
 
-	protected Leaf m_tree;
+	protected Node m_tree;
 	protected Viewer m_viewer;
 
 	@Override
