@@ -26,8 +26,6 @@ public class Node extends Leaf {
 	public static final String AP_PROPERTY = "ap";
 	public static final String APIVERSION_PROPERTY = "apiversion";
 	public static final String ARCHIVE_PROPERTY = "archive";
-	public static final String ARCHIVENAME_PROPERTY = "archivename";
-	public static final String ARCHIVEURL_PROPERTY = "archiveurl";
 	public static final String ATTR_PROPERTY = "attr";
 	public static final String BUNDLE_PROPERTY = "bundle";
 	public static final String CATEGORY_PROPERTY = "category";
@@ -60,8 +58,6 @@ public class Node extends Leaf {
 	public static final String M_PROPERTY = "m";
 	public static final String N_PROPERTY = "n";
 	public static final String NAME_PROPERTY = "name";
-	public static final String PDSCNAME_PROPERTY = "pdscname";
-	public static final String PDSCURL_PROPERTY = "pdscurl";
 	public static final String PNAME_PROPERTY = "pname";
 	public static final String REVISION_PROPERTY = "revision";
 	public static final String RTE_PROPERTY = "rte";

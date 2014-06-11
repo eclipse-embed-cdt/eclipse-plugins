@@ -41,11 +41,6 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator ms_plugin;
 
-	private static PacksView ms_packsView;
-	private static DevicesView ms_devicesView;
-	private static BoardsView ms_boardsView;
-	private static KeywordsView ms_keywordsView;
-
 	private static MessageConsole ms_console;
 	private static MessageConsoleStream ms_consoleOut;
 
@@ -161,50 +156,6 @@ public class Activator extends AbstractUIPlugin {
 			log(e);
 			return null;
 		}
-	}
-
-	public static void setPacksView(PacksView view) {
-		ms_packsView = view;
-	}
-
-	public static PacksView getPacksView() {
-		if (ms_packsView == null) {
-			ms_packsView = (PacksView) findView(PacksView.ID);
-		}
-		return ms_packsView;
-	}
-
-	public static void setDevicesView(DevicesView view) {
-		ms_devicesView = view;
-	}
-
-	public static DevicesView getDevicesView() {
-		if (ms_devicesView == null) {
-			ms_devicesView = (DevicesView) findView(DevicesView.ID);
-		}
-		return ms_devicesView;
-	}
-
-	public static void setBoardsView(BoardsView view) {
-		ms_boardsView = view;
-	}
-
-	public static BoardsView getBoardsView() {
-		if (ms_boardsView == null) {
-			ms_boardsView = (BoardsView) findView(BoardsView.ID);
-		}
-		return ms_boardsView;
-	}
-
-	public static void setKeywordsView(KeywordsView view) {
-		ms_keywordsView = view;
-	}
-
-	public static KeywordsView getKeywordsView() {
-		if (ms_keywordsView == null) {
-			ms_keywordsView = (KeywordsView) findView(KeywordsView.ID);
-		}
-		return ms_keywordsView;
 	}
 
 }

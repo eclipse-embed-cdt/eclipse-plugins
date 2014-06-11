@@ -21,7 +21,10 @@ import ilg.gnuarmeclipse.packs.tree.Node;
 import ilg.gnuarmeclipse.packs.tree.Property;
 import ilg.gnuarmeclipse.packs.tree.Type;
 
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
@@ -37,6 +40,7 @@ import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISharedImages;
@@ -45,22 +49,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.part.ViewPart;
 
-/**
- * This sample class demonstrates how to plug-in a new workbench view. The view
- * shows data obtained from the model. The sample creates a dummy model on the
- * fly, but a real implementation would connect to the model available either in
- * this or another plug-in (e.g. the workspace). The view is connected to the
- * model using a content provider.
- * <p>
- * The view uses a label provider to define how model objects should be
- * presented in the view. Each view can present the same model objects using
- * different labels and icons, if needed. Alternatively, a single label provider
- * can be shared between views in order to ensure that objects of the same type
- * are presented in the same way everywhere.
- * <p>
- */
-
-public class DevicesView extends ViewPart {
+public class DevicesView extends ViewPart implements IPacksStorageListener {
 
 	/**
 	 * The ID of the view as specified by the extension.
@@ -69,8 +58,7 @@ public class DevicesView extends ViewPart {
 
 	// ------------------------------------------------------------------------
 
-	class ViewContentProvider extends AbstractViewContentProvider implements
-			IPacksStorageListener {
+	class ViewContentProvider extends AbstractViewContentProvider {
 
 		public Object[] getElements(Object inputElement) {
 
@@ -79,18 +67,6 @@ public class DevicesView extends ViewPart {
 				return getChildren(m_tree);
 			}
 			return getChildren(inputElement);
-		}
-
-		@Override
-		public void packsChanged(PacksStorageEvent event) {
-
-			String type = event.getType();
-			System.out.println("DevicesView.packsChanged(), type=\"" + type
-					+ "\".");
-
-			if (PacksStorageEvent.Type.REFRESH.equals(type)) {
-				m_viewer.refresh();
-			}
 		}
 	}
 
@@ -170,8 +146,6 @@ public class DevicesView extends ViewPart {
 
 	public DevicesView() {
 
-		Activator.setDevicesView(this);
-
 		m_out = Activator.getConsoleOut();
 
 		m_storage = PacksStorage.getInstance();
@@ -194,7 +168,10 @@ public class DevicesView extends ViewPart {
 		m_contentProvider = new ViewContentProvider();
 
 		// Register this content provider to the packs storage notifications
-		m_storage.addListener(m_contentProvider);
+		// m_storage.addListener(m_contentProvider);
+
+		// Register this view to the packs storage notifications
+		m_storage.addListener(this);
 
 		m_viewer.setContentProvider(m_contentProvider);
 		m_viewer.setLabelProvider(new ViewLabelProvider());
@@ -330,6 +307,22 @@ public class DevicesView extends ViewPart {
 		System.out.println("DevicesView.forceRefresh()");
 	}
 
+	public void refresh(Object obj) {
+
+		if (obj instanceof Collection<?>) {
+			for (Object node : (Collection<?>) obj) {
+				m_viewer.refresh(node);
+			}
+		} else {
+			m_viewer.refresh(obj);
+		}
+
+		// Setting the selection will force the outline update
+		m_viewer.setSelection(m_viewer.getSelection());
+
+		System.out.println("DevicesView.refresh() " + obj);
+	}
+
 	public void update(Object obj) {
 
 		if (obj instanceof List<?>) {
@@ -344,8 +337,49 @@ public class DevicesView extends ViewPart {
 		System.out.println("DevicesView.updated()");
 	}
 
+	public Node getViewTree() {
+		return m_contentProvider.m_tree;
+	}
+
 	public String toString() {
 		return "DevicesView";
+	}
+
+	// ------------------------------------------------------------------------
+
+	@Override
+	public void packsChanged(PacksStorageEvent event) {
+
+		String type = event.getType();
+		System.out
+				.println("DevicesView.packsChanged(), type=\"" + type + "\".");
+
+		if (PacksStorageEvent.Type.REFRESH.equals(type)) {
+
+			Display.getDefault().asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+
+					m_viewer.refresh();
+				}
+			});
+
+		} else if (PacksStorageEvent.Type.UPDATE_VERSIONS.equals(type)) {
+
+			final Map<String, Leaf> updatedMap = new HashMap<String, Leaf>();
+			updateDevicesTree(updatedMap);
+
+			Display.getDefault().asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+
+					// m_viewer.setInput(getDevicesTree());
+					refresh(updatedMap.values());
+				}
+			});
+		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -436,6 +470,97 @@ public class DevicesView extends ViewPart {
 		return count;
 	}
 
+	// ------------------------------------------------------------------------
+
+	private void updateDevicesTree(Map<String, Leaf> updatedList) {
+
+		Node modelTree = m_storage.getPacksTree();
+		Node viewTree = getViewTree();
+
+		if (modelTree.hasChildren()) {
+
+			// Disable all devices
+			if (viewTree.hasChildren()) {
+				for (Leaf vendor : viewTree.getChildren()) {
+					if (vendor.hasChildren()) {
+						for (Leaf device : vendor.getChildren()) {
+							device.setBooleanProperty(Property.ENABLED, false);
+						}
+					}
+				}
+			}
+			updateDevicesRecursive(modelTree, viewTree, false, updatedList);
+		}
+	}
+
+	// Identify outline & external nodes and update devices from inside
+	private void updateDevicesRecursive(Leaf modelNode, Node viewTree,
+			boolean isInstalled, Map<String, Leaf> updatedMap) {
+
+		String type = modelNode.getType();
+		if (Type.OUTLINE.equals(type) || Type.EXTERNAL.equals(type)) {
+			for (Leaf child : modelNode.getChildrenArray()) {
+				String childType = child.getType();
+				if (Type.FAMILY.equals(childType)) {
+
+					// Collect unique keywords
+					updateDevice(child, viewTree, isInstalled, updatedMap);
+				}
+			}
+		} else if ((modelNode instanceof Node) && modelNode.hasChildren()) {
+
+			boolean isVersionInstalled = isInstalled;
+			if (Type.VERSION.equals(type)
+					&& modelNode.isBooleanProperty(Property.INSTALLED)) {
+				isVersionInstalled = true;
+			}
+			for (Leaf child : modelNode.getChildren()) {
+
+				// Recurse down
+				updateDevicesRecursive(child, viewTree, isVersionInstalled,
+						updatedMap);
+			}
+		}
+	}
+
+	private void updateDevice(Leaf modelFamilyNode, Node viewTree,
+			boolean isInstalled, Map<String, Leaf> updatedList) {
+
+		String deviceName = modelFamilyNode.getName();
+		String vendorName = modelFamilyNode.getProperty(Property.VENDOR_NAME);
+		String vendorId = modelFamilyNode.getProperty(Property.VENDOR_ID);
+
+		Node vendorNode = (Node) viewTree.getChild(Type.VENDOR, vendorName);
+		if (vendorNode == null
+				|| !vendorId.equals(vendorNode.getProperty(Property.VENDOR_ID))) {
+
+			// Make new vendor node
+			vendorNode = Node.addNewChild(viewTree, Type.VENDOR);
+			vendorNode.setName(vendorName);
+			vendorNode.putProperty(Property.VENDOR_ID, vendorId);
+		}
+
+		Leaf deviceNode = vendorNode.getChild(Type.FAMILY, deviceName);
+		if (deviceNode == null) {
+
+			// Make new device node
+			deviceNode = Leaf.addNewChild(vendorNode, Type.FAMILY);
+			deviceNode.setName(deviceName);
+
+			String description = modelFamilyNode.getDescription();
+			deviceNode.setDescription(description);
+
+			deviceNode.putProperty(Property.VENDOR_NAME, vendorName);
+			deviceNode.putProperty(Property.VENDOR_ID, vendorId);
+		}
+
+		if (isInstalled) {
+			deviceNode.setBooleanProperty(Property.ENABLED, true);
+
+			updatedList.put(vendorId, vendorNode);
+		}
+
+	}
 	// ------------------------------------------------------------------------
 
 }

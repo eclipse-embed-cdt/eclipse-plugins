@@ -120,9 +120,6 @@ public class KeywordsView extends ViewPart {
 
 	public KeywordsView() {
 
-		// Store reference to this view
-		Activator.setKeywordsView(this);
-
 		m_out = Activator.getConsoleOut();
 
 		m_storage = PacksStorage.getInstance();

@@ -20,6 +20,7 @@ public class Property {
 	public static final String DATE = "date";
 	public static final String DEST_FOLDER = "dest.folder";
 	public static final String ENABLED = "enabled";
+	public static final String EXAMPLE_NAME = "example.name";
 	public static final String GENERATOR = "generator";
 	public static final String INSTALLED = "installed";
 	public static final String PACK_NAME = "pack.name";

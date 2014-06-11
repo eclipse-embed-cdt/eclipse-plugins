@@ -14,8 +14,10 @@ package ilg.gnuarmeclipse.packs;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.io.PushbackInputStream;
 import java.net.URL;
 import java.net.URLConnection;
@@ -30,6 +32,8 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -252,4 +256,75 @@ public class Utils {
 		}
 		return pushbackInputStream;
 	}
+
+	public static void copyFile(URL sourceUrl, File destinationFile,
+			MessageConsoleStream out, IProgressMonitor monitor)
+			throws IOException {
+
+		URLConnection connection = sourceUrl.openConnection();
+		int size = connection.getContentLength();
+		String sizeString = Utils.convertSizeToString(size);
+		if (out != null) {
+			String s = destinationFile.getPath();
+			if (s.endsWith(".download")) {
+				s = s.substring(0, s.length() - ".download".length());
+			}
+			out.println("Copy " + sizeString + " \"" + sourceUrl + "\" to \""
+					+ s + "\".");
+		}
+
+		InputStream input = connection.getInputStream();
+		OutputStream output = new FileOutputStream(destinationFile);
+
+		byte[] buf = new byte[1024];
+		int bytesRead;
+		while ((bytesRead = input.read(buf)) > 0) {
+			output.write(buf, 0, bytesRead);
+			if (monitor != null) {
+				monitor.worked(bytesRead);
+			}
+		}
+		output.close();
+		input.close();
+	}
+
+	public static void deleteFolderRecursive(File folder) {
+
+		if (folder == null)
+			return;
+
+		if (folder.exists()) {
+			for (File f : folder.listFiles()) {
+				if (f.isDirectory()) {
+					deleteFolderRecursive(f);
+					f.setWritable(true, false);
+					f.delete();
+				} else {
+					f.setWritable(true, false);
+					f.delete();
+				}
+			}
+			folder.setWritable(true, false);
+			folder.delete();
+		}
+	}
+
+	public static void makeFolderReadOnlyRecursive(File folder) {
+
+		if (folder == null)
+			return;
+
+		if (folder.exists()) {
+			for (File f : folder.listFiles()) {
+				if (f.isDirectory()) {
+					makeFolderReadOnlyRecursive(f);
+					f.setWritable(false, false);
+				} else {
+					f.setWritable(false, false);
+				}
+			}
+			folder.setWritable(false, false);
+		}
+	}
+
 }

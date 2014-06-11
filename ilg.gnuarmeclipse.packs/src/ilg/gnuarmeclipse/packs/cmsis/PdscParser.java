@@ -14,9 +14,8 @@ package ilg.gnuarmeclipse.packs.cmsis;
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.tree.Leaf;
-import ilg.gnuarmeclipse.packs.tree.Property;
-import ilg.gnuarmeclipse.packs.tree.Selector;
 import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.Property;
 import ilg.gnuarmeclipse.packs.tree.Type;
 
 import java.io.File;
@@ -26,15 +25,14 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -109,6 +107,19 @@ public class PdscParser {
 		}
 
 		m_path = path;
+		InputSource inputSource = new InputSource(new FileInputStream(file));
+
+		DocumentBuilder xml = DocumentBuilderFactory.newInstance()
+				.newDocumentBuilder();
+		m_document = xml.parse(inputSource);
+
+		return m_document;
+	}
+
+	public Document parseXml(File file) throws ParserConfigurationException,
+			SAXException, IOException {
+
+		m_path = new Path(file.getPath());
 		InputSource inputSource = new InputSource(new FileInputStream(file));
 
 		DocumentBuilder xml = DocumentBuilderFactory.newInstance()
@@ -2331,490 +2342,6 @@ public class PdscParser {
 		return m_document;
 	}
 
-	public void parsePdscBrief(String pdscNname, String version, Node parent)
-			throws IOException, ParserConfigurationException, SAXException {
-
-		long beginTime = System.currentTimeMillis();
-
-		m_out.println("Processing \"" + m_url + "\" v" + version
-				+ " for outline brief ...");
-
-		Element packageElement = m_document.getDocumentElement();
-		String firstElementName = packageElement.getNodeName();
-		if (!"package".equals(firstElementName)) {
-			System.out.println("Missing <package>, <" + firstElementName
-					+ "> encountered");
-			return;
-		}
-
-		String schemaVersion = packageElement.getAttribute("schemaVersion")
-				.trim();
-
-		m_out.print("Schema version \"" + schemaVersion + "\"");
-
-		if ("1.0".equals(schemaVersion)) {
-			;
-		} else if ("1.1".equals(schemaVersion)) {
-			;
-		} else if ("1.2".equals(schemaVersion)) {
-			;
-		} else {
-			m_out.println(" not recognised.");
-			return;
-		}
-		m_out.println(".");
-
-		String packName = "";
-		String packDescription = "";
-		String packVendor = "";
-		String urlRef = "";
-		String shortUrl = "";
-
-		// Create the top subtrees
-		Node packagesNode = Node.addUniqueChild(parent, Type.PACKAGES_SUBTREE,
-				null);
-
-		Node devicesSubtree = Node.addUniqueChild(parent, Type.DEVICES_SUBTREE,
-				null);
-
-		Node boardsNode = Node
-				.addUniqueChild(parent, Type.BOARDS_SUBTREE, null);
-
-		Node keywordsNode = Node.addUniqueChild(parent, Type.KEYWORDS_SELECT,
-				null);
-
-		Set<String> conditionKeywords = new HashSet<String>();
-
-		// Package
-		Node packNode;
-		{
-			Element vendorElement = Utils.getChildElement(packageElement,
-					"vendor");
-			if (vendorElement == null) {
-				m_out.println("Missing <vendor>.");
-				return;
-			}
-			packVendor = Utils.getElementContent(vendorElement);
-
-			Element nameElement = Utils.getChildElement(packageElement, "name");
-			if (nameElement == null) {
-				m_out.println("Missing <name>.");
-				return;
-			}
-			packName = Utils.getElementContent(nameElement);
-			packDescription = "";
-
-			Element descriptionElement = Utils.getChildElement(packageElement,
-					"description");
-			if (descriptionElement == null) {
-				m_out.println("Missing <description>.");
-				return;
-			}
-			packDescription = extendDescription(packDescription,
-					Utils.getElementContent(descriptionElement));
-
-			Node vendorNode = Node.addUniqueChild(packagesNode, Type.VENDOR,
-					packVendor);
-			vendorNode.putProperty(Node.VENDOR_PROPERTY, packVendor);
-
-			packNode = (Node) vendorNode.getChild("package", packName);
-			if (packNode != null) {
-				m_out.println("Duplicate package name \"" + packName
-						+ "\", ignored.");
-				return;
-			}
-
-			// Kludge: use URL to detect empty package
-			// TODO: use a better condition
-			Element urlElement = Utils.getChildElement(packageElement, "url");
-			urlRef = Utils.getElementContent(urlElement);
-			if (urlRef.length() == 0) {
-
-				// This will make it invisible
-				// TreeNode.Selector condition = packNode.new Selector(
-				// TreeNode.Selector.DEPRECATED_TYPE);
-				// packNode.addCondition(condition);
-				return;
-			}
-
-			packNode = new Node("package");
-			// Attach package right below vendor node
-			vendorNode.addChild(packNode);
-
-			packNode.setName(packName);
-
-			String fullUrl = m_url.toString();
-
-			shortUrl = urlRef;
-			if (shortUrl.endsWith("/")) {
-				shortUrl = shortUrl.substring(0, shortUrl.length() - 1);
-			}
-			packNode.putProperty(Node.URL_PROPERTY, shortUrl);
-			packNode.putProperty(Node.VENDOR_PROPERTY, packVendor);
-			packNode.putProperty(Node.PDSCURL_PROPERTY, fullUrl);
-			packNode.putProperty(Node.PDSCNAME_PROPERTY, pdscNname);
-
-			packDescription = extendDescription(packDescription, "vendor",
-					packVendor);
-			packDescription = extendDescription(packDescription, "url",
-					shortUrl);
-			packDescription = extendDescription(packDescription, "pdscurl",
-					fullUrl);
-			packDescription = extendDescription(packDescription, "pdsc",
-					pdscNname);
-			packNode.setDescription(packDescription);
-
-			// m_out.println("Package node \"" + packName + "\" added.");
-		}
-
-		// Releases
-		String currentReleaseName = null;
-		String currentReleaseDescription = null;
-		String currentReleaseDate = null;
-		Element releasesElement = Utils.getChildElement(packageElement,
-				"releases");
-		if (releasesElement != null) {
-
-			List<Element> releaseElements = Utils.getChildElementsList(
-					releasesElement, "release");
-			for (Element releaseElement : releaseElements) {
-				String releaseName = releaseElement.getAttribute("version")
-						.trim();
-				String releaseDate = releaseElement.getAttribute("date").trim();
-				String description = Utils.getElementContent(releaseElement);
-
-				// Remember the top most release description
-				if (currentReleaseName == null) {
-
-					currentReleaseName = releaseName;
-					currentReleaseDescription = description;
-					currentReleaseDate = releaseDate;
-				}
-
-				Node versionNode = Node.addUniqueChild(packNode, "version",
-						releaseName);
-
-				String archiveName = packVendor + "." + packName + "."
-						+ releaseName + ".pack";
-
-				String archiveUrl = shortUrl + "/" + archiveName;
-				String unpackFolder = packVendor + "/" + packName + "/"
-						+ releaseName;
-
-				versionNode.putProperty(Node.VENDOR_PROPERTY, packVendor);
-				versionNode.putProperty(Node.ARCHIVENAME_PROPERTY, archiveName);
-				versionNode.putProperty(Node.ARCHIVEURL_PROPERTY, archiveUrl);
-				versionNode.putProperty(Node.FOLDER_PROPERTY, unpackFolder);
-
-				String size = "0";
-				try {
-					int sz = Utils.getRemoteFileSize(new URL(archiveUrl));
-					if (sz > 0) {
-						size = String.valueOf(sz);
-					}
-				} catch (IOException e) {
-					;
-				}
-
-				versionNode.putProperty(Node.SIZE_PROPERTY, size);
-				versionNode.putProperty(Node.SCHEMA_PROPERTY, schemaVersion);
-				versionNode
-						.putNonEmptyProperty(Node.DATE_PROPERTY, releaseDate);
-
-				description = extendDescription(description, "date",
-						releaseDate);
-				description = extendDescription(description, "url", archiveUrl);
-				description = extendDescription(description, "archive",
-						archiveName);
-				description = extendDescription(description, "dest",
-						unpackFolder);
-				description = extendDescription(description, "size", size);
-				description = extendDescription(description, "schema",
-						schemaVersion);
-
-				versionNode.setDescription(description);
-
-				// m_out.println("Version node \"" + releaseVersion +
-				// "\" added.");
-			}
-		}
-
-		Node outlineNode = new Node(Type.OUTLINE);
-		packNode.setOutline(outlineNode);
-
-		Node outlinePackNode = Node.addUniqueChild(outlineNode, Type.PACKAGE,
-				packName + " (brief)");
-		String outlinePackDescription = "Package: " + packName;
-		outlinePackDescription = extendDescription(outlinePackDescription,
-				packDescription);
-		outlinePackNode.setDescription(outlinePackDescription);
-
-		if (currentReleaseName != null) {
-
-			Node outlineVersionNode = Node.addUniqueChild(outlineNode,
-					Type.VERSION, currentReleaseName);
-
-			String versionDescription = "Version: " + currentReleaseName;
-			if (currentReleaseDate.length() > 0) {
-				versionDescription += ", from " + currentReleaseDate;
-			}
-			versionDescription = extendDescription(versionDescription,
-					currentReleaseDescription);
-			outlineVersionNode.setDescription(versionDescription);
-
-			if (currentReleaseDate != null) {
-				outlineVersionNode.putNonEmptyProperty(Node.DATE_PROPERTY,
-						currentReleaseDate);
-			}
-		}
-
-		// Keywords
-		Element keywordsElement = Utils.getChildElement(packageElement,
-				"keywords");
-		if (keywordsElement != null) {
-
-			List<Element> childElements2 = Utils
-					.getChildElementsList(keywordsElement);
-			for (Element childElement2 : childElements2) {
-
-				String elementName2 = childElement2.getNodeName();
-				if ("keyword".equals(elementName2)) {
-
-					// Add a unique node to selection
-					String keyword = Utils.getElementContent(childElement2);
-					Node.addUniqueChild(keywordsNode, Type.KEYWORD, keyword);
-
-					// Remember condition keyword
-					conditionKeywords.add(keyword);
-
-					// Add to outline
-					processKeyword(childElement2, outlineNode);
-				}
-			}
-		}
-
-		// Devices
-		Element devicesElement = Utils.getChildElement(packageElement,
-				"devices");
-		if (devicesElement != null) {
-
-			List<Element> familyElements = Utils.getChildElementsList(
-					devicesElement, Type.FAMILY);
-			for (Element familyElement : familyElements) {
-
-				String family = familyElement.getAttribute("Dfamily").trim();
-				String vendor = familyElement.getAttribute("Dvendor").trim();
-
-				Element descriptionElement = Utils.getChildElement(
-						familyElement, "description");
-				String description = "Family: " + family;
-
-				description = extendDescription(description,
-						Utils.getElementContent(descriptionElement));
-
-				String va[] = vendor.split("[:]");
-				if (va.length < 2) {
-					// Vendor not enumeration
-					continue;
-				}
-				Node vendorNode = Node.addUniqueChild(devicesSubtree,
-						Type.VENDOR, va[0]);
-				vendorNode.putNonEmptyProperty(Node.VENDORID_PROPERTY, va[1]);
-
-				Node familyNode = Node.addUniqueChild(vendorNode, Type.FAMILY,
-						family);
-				familyNode.setDescription(description);
-
-				familyNode.putNonEmptyProperty(Node.VENDOR_PROPERTY, va[0]);
-				familyNode.putNonEmptyProperty(Node.VENDORID_PROPERTY, va[1]);
-
-				// Add package conditions
-				Selector condition = new Selector(Selector.DEVICEFAMILY_TYPE);
-				condition.setVendor(va[0]);
-				condition.setVendorId(va[1]);
-				condition.setValue(family);
-				packNode.addCondition(condition);
-
-				// Add outline node
-				processFamily(familyElement, outlineNode);
-			}
-		}
-
-		// Boards
-		Element boardsElement = Utils.getChildElement(packageElement, "boards");
-		if (boardsElement != null) {
-
-			List<Element> boardElements = Utils.getChildElementsList(
-					boardsElement, "board");
-			for (Element boardElement : boardElements) {
-				String vendor = boardElement.getAttribute("vendor").trim();
-				String boardName = boardElement.getAttribute("name").trim();
-				String revision = boardElement.getAttribute("revision").trim();
-
-				Element descriptionElement = Utils.getChildElement(
-						boardElement, "description");
-				String description = "";
-				description = Utils.getElementContent(descriptionElement);
-
-				Node vendorNode = Node.addUniqueChild(boardsNode, Type.VENDOR,
-						vendor);
-
-				Node boardNode = Node.addUniqueChild(vendorNode, Type.BOARD,
-						boardName);
-				boardNode.putProperty(Node.VENDOR_PROPERTY, vendor);
-
-				if (revision.length() > 0) {
-					description += " (" + revision + ")";
-				}
-				boardNode.setDescription(description);
-
-				// Add package conditions
-				Selector condition = new Selector(Selector.BOARD_TYPE);
-				condition.setVendor(vendor);
-				condition.setValue(boardName);
-				packNode.addCondition(condition);
-
-				// For boards with compatible family devices, add them to the
-				// package selected conditions
-				List<Element> compatibleDevicesElements = Utils
-						.getChildElementsList(boardElement, "compatibleDevice");
-				for (Element compatibleDevicesElement : compatibleDevicesElements) {
-
-					String family = compatibleDevicesElement.getAttribute(
-							"Dfamily").trim();
-					if (family.length() > 0) {
-
-						String vendor2 = compatibleDevicesElement.getAttribute(
-								"Dvendor").trim();
-						String va[] = vendor2.split("[:]");
-						if (va.length < 2) {
-							// Vendor not enumeration
-							continue;
-						}
-
-						Node vendorNode2 = Node.addUniqueChild(devicesSubtree,
-								Type.VENDOR, va[0]);
-						vendorNode2.putNonEmptyProperty(Node.VENDORID_PROPERTY,
-								va[1]);
-
-						Node familyNode2 = Node.addUniqueChild(vendorNode2,
-								Type.FAMILY, family);
-						familyNode2.setDescription(description);
-
-						familyNode2.putNonEmptyProperty(Node.VENDOR_PROPERTY,
-								va[0]);
-						familyNode2.putNonEmptyProperty(Node.VENDORID_PROPERTY,
-								va[1]);
-
-						// Add package conditions
-						Selector condition2 = new Selector(
-								Selector.DEVICEFAMILY_TYPE);
-						condition2.setVendor(va[0]);
-						condition2.setVendorId(va[1]);
-						condition2.setValue(family);
-						packNode.addCondition(condition2);
-					}
-				}
-
-				// Add outline node
-				processBoard(boardElement, outlineNode);
-			}
-		}
-
-		// Examples
-		Element examplesElement = Utils.getChildElement(packageElement,
-				"examples");
-		if (examplesElement != null) {
-
-			List<Element> exampleElements = Utils.getChildElementsList(
-					examplesElement, "example");
-			for (Element exampleElement : exampleElements) {
-
-				Element boardElement = Utils.getChildElement(exampleElement,
-						"board");
-				if (boardElement != null) {
-
-					String vendor = boardElement.getAttribute("vendor").trim();
-					String boardName = boardElement.getAttribute("name").trim();
-
-					Node vendorNode = Node.addUniqueChild(boardsNode,
-							Type.VENDOR, vendor);
-
-					Node boardNode = Node.addUniqueChild(vendorNode,
-							Type.BOARD, boardName);
-					boardNode.putProperty(Node.VENDOR_PROPERTY, vendor);
-
-					// Add package conditions
-					Selector condition = new Selector(Selector.BOARD_TYPE);
-					condition.setVendor(vendor);
-					condition.setValue(boardName);
-					packNode.addCondition(condition);
-				}
-
-				Element attributesElement = Utils.getChildElement(
-						exampleElement, "attributes");
-				if (attributesElement != null) {
-
-					List<Element> keywordElements = Utils.getChildElementsList(
-							attributesElement, "keyword");
-
-					for (Element keywordElement : keywordElements) {
-
-						// Add a unique node to selection
-						String keyword = Utils
-								.getElementContent(keywordElement);
-						Node.addUniqueChild(keywordsNode, Type.KEYWORD, keyword);
-
-						// Remember condition keyword
-						conditionKeywords.add(keyword);
-					}
-				}
-
-				// Add outline node
-				processExample(exampleElement, outlineNode, false);
-			}
-		}
-
-		// Components
-		Element componentsElement = Utils.getChildElement(packageElement,
-				"components");
-		if (componentsElement != null) {
-
-			List<Element> componentElements = Utils.getChildElementsList(
-					componentsElement, "component");
-			for (Element componentElement : componentElements) {
-
-				// Add outline node
-				processComponent(componentElement, outlineNode, "");
-			}
-
-			List<Element> bundleElements = Utils.getChildElementsList(
-					componentsElement, "bundle");
-			for (Element bundleElement : bundleElements) {
-
-				// Add outline node
-				processBundle(bundleElement, outlineNode);
-
-			}
-
-		}
-
-		// Add all condition keywords, without duplicates
-		for (String keyword : conditionKeywords) {
-			Selector condition = new Selector(Selector.KEYWORD_TYPE);
-			condition.setValue(keyword);
-			packNode.addCondition(condition);
-		}
-
-		long endTime = System.currentTimeMillis();
-		long duration = endTime - beginTime;
-		if (duration == 0) {
-			duration = 1;
-		}
-
-		m_out.println("Completed in " + duration + "ms.");
-	}
-
 	public void parseExamples(Node parent) {
 
 		Element packageElement = m_document.getDocumentElement();
@@ -2864,8 +2391,7 @@ public class PdscParser {
 
 		long beginTime = System.currentTimeMillis();
 
-		m_out.println("Processing \"" + m_url + "\" v" + version
-				+ " for content.xml ...");
+		m_out.println("Processing \"" + m_path + " for content.xml ...");
 
 		Element packageElement = m_document.getDocumentElement();
 		String firstElementName = packageElement.getNodeName();
@@ -3255,7 +2781,15 @@ public class PdscParser {
 				outlineNode.addChild(exampleNode);
 
 				if (firstBoardName.length() > 0) {
-					exampleName = exampleName + " (" + firstBoardName + ")";
+					// Remember the original example name
+					exampleNode.putProperty(Property.EXAMPLE_NAME, exampleName);
+
+					// Suffix example name with first board name (if not
+					// already)
+					String suffix = " (" + firstBoardName + ")";
+					if (!exampleName.endsWith(suffix)) {
+						exampleName += suffix;
+					}
 				}
 				exampleNode.setName(exampleName);
 
