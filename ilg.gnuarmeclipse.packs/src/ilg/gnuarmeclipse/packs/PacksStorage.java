@@ -14,6 +14,7 @@ package ilg.gnuarmeclipse.packs;
 import ilg.gnuarmeclipse.packs.tree.Leaf;
 import ilg.gnuarmeclipse.packs.tree.Node;
 import ilg.gnuarmeclipse.packs.tree.Property;
+import ilg.gnuarmeclipse.packs.tree.Selector;
 import ilg.gnuarmeclipse.packs.tree.Type;
 import ilg.gnuarmeclipse.packs.xcdl.ContentParser;
 
@@ -67,18 +68,20 @@ public class PacksStorage {
 	private MessageConsoleStream m_out;
 	private List<IPacksStorageListener> m_listeners;
 
-	private List<Leaf> m_packsList;
-	private Node m_packsTree;
-	private Map<String, Map<String, Leaf>> m_packsMap;
+	private List<Leaf> m_packsVersionsList;
+	private Node m_packsVersionsTree;
+	private Map<String, Map<String, Leaf>> m_packsVersionsMap;
+	private Map<String, Node> m_packsMap;
 
 	public PacksStorage() {
 		m_repos = Repos.getInstance();
 
 		m_out = Activator.getConsoleOut();
 
-		m_packsTree = new Node(Type.ROOT);
-		m_packsList = new LinkedList<Leaf>();
-		m_packsMap = new TreeMap<String, Map<String, Leaf>>();
+		m_packsVersionsTree = new Node(Type.ROOT);
+		m_packsVersionsList = new LinkedList<Leaf>();
+		m_packsVersionsMap = new TreeMap<String, Map<String, Leaf>>();
+		m_packsMap = new TreeMap<String, Node>();
 
 		m_listeners = new ArrayList<IPacksStorageListener>();
 	}
@@ -86,17 +89,22 @@ public class PacksStorage {
 	// For convenient recursive search, a full tree with all
 	// repos/packs/versions is available.
 	public Node getPacksTree() {
-		return m_packsTree;
+		return m_packsVersionsTree;
 	}
 
 	// The list of all version nodes, linearised, to be used when
 	// enumerating versions is ok.
-	public List<Leaf> getPacksList() {
-		return m_packsList;
+	public List<Leaf> getPacksVersionsList() {
+		return m_packsVersionsList;
 	}
 
 	// A map of maps, with versions identified by Vendor::Pack and Version
-	public Map<String, Map<String, Leaf>> getPacksMap() {
+	public Map<String, Map<String, Leaf>> getPacksVersionsMap() {
+		return m_packsVersionsMap;
+	}
+
+	// A map of packages, identified by Vendor::Pack
+	public Map<String, Node> getPacksMap() {
 		return m_packsMap;
 	}
 
@@ -113,7 +121,7 @@ public class PacksStorage {
 			String versionName) {
 
 		String key = makeMapKey(vendorName, packName);
-		Map<String, Leaf> versionsMap = m_packsMap.get(key);
+		Map<String, Leaf> versionsMap = m_packsVersionsMap.get(key);
 
 		if (versionsMap == null) {
 			return null;
@@ -127,7 +135,7 @@ public class PacksStorage {
 	public Node getPackLatest(String vendorName, String packName) {
 
 		String key = makeMapKey(vendorName, packName);
-		Map<String, Leaf> versionsMap = m_packsMap.get(key);
+		Map<String, Leaf> versionsMap = m_packsVersionsMap.get(key);
 
 		if (versionsMap == null) {
 			return null;
@@ -270,7 +278,9 @@ public class PacksStorage {
 
 		monitor.subTask("Post processing");
 
-		postProcessRepos();
+		preparePublicData();
+
+		addSelectors();
 
 		updateInstalledVersions();
 
@@ -308,7 +318,7 @@ public class PacksStorage {
 		return node;
 	}
 
-	private void postProcessRepos() {
+	private void preparePublicData() {
 
 		List<Map<String, Object>> reposList;
 		reposList = m_repos.getList();
@@ -324,7 +334,7 @@ public class PacksStorage {
 				packsTree.addChild(node);
 			}
 		}
-		m_packsTree = packsTree;
+		m_packsVersionsTree = packsTree;
 
 		// Collect all version nodes in a list
 		List<Leaf> packsVersionsList = new LinkedList<Leaf>();
@@ -335,28 +345,43 @@ public class PacksStorage {
 				getVersionsRecursive(node, packsVersionsList);
 			}
 		}
-		m_packsList = packsVersionsList;
+		m_packsVersionsList = packsVersionsList;
 
 		// Group versions by [vendor::package] in a Map
-		Map<String, Map<String, Leaf>> packsMap = new TreeMap<String, Map<String, Leaf>>();
+		Map<String, Map<String, Leaf>> packsVersionsMap = new TreeMap<String, Map<String, Leaf>>();
 		for (Leaf versionNode : packsVersionsList) {
 			String vendorName = versionNode.getProperty(Property.VENDOR_NAME);
 			String packName = versionNode.getProperty(Property.PACK_NAME);
-			String key = vendorName + "::" + packName;
+			String key = makeMapKey(vendorName, packName);
 
 			Map<String, Leaf> versionMap;
-			versionMap = packsMap.get(key);
+			versionMap = packsVersionsMap.get(key);
 			if (versionMap == null) {
 				versionMap = new TreeMap<String, Leaf>();
-				packsMap.put(key, versionMap);
+				packsVersionsMap.put(key, versionMap);
 			}
 
 			versionMap.put(versionNode.getName(), versionNode);
 		}
+		m_packsVersionsMap = packsVersionsMap;
+
+		// Group packages by [vendor::package] in a Map
+		Map<String, Node> packsMap = new TreeMap<String, Node>();
+		for (Leaf versionNode : packsVersionsList) {
+			String vendorName = versionNode.getProperty(Property.VENDOR_NAME);
+			String packName = versionNode.getProperty(Property.PACK_NAME);
+			String key = makeMapKey(vendorName, packName);
+
+			if (!packsMap.containsKey(key)) {
+				Node parent = versionNode.getParent();
+				packsMap.put(key, parent);
+			}
+		}
 		m_packsMap = packsMap;
 
-		m_out.println("Processed " + packsMap.size() + " package(s), with "
-				+ packsVersionsList.size() + " version(s).");
+		m_out.println("Processed " + packsVersionsMap.size()
+				+ " package(s), with " + packsVersionsList.size()
+				+ " version(s).");
 	}
 
 	private void getVersionsRecursive(Leaf node, List<Leaf> list) {
@@ -372,9 +397,61 @@ public class PacksStorage {
 
 	}
 
+	private void addSelectors() {
+
+		// Add unique selectors to each package, by inspecting the outline and
+		// external definitions in the latest version.
+
+		for (Node packNode : m_packsMap.values()) {
+
+			Node versionNode = (Node) packNode.getChildren().get(0);
+			if (versionNode.hasChildren()) {
+				for (Leaf child : versionNode.getChildren()) {
+
+					if (child.isType(Type.OUTLINE)
+							|| child.isType(Type.EXTERNAL)) {
+						if (child.hasChildren()) {
+							for (Leaf node : child.getChildren()) {
+
+								Selector selector = null;
+
+								String type = node.getType();
+								if (Type.FAMILY.equals(type)) {
+
+									selector = new Selector(
+											Selector.Type.DEVICEFAMILY);
+									selector.setValue(node.getName());
+									selector.setVendorId(node
+											.getProperty(Property.VENDOR_ID));
+
+								} else if (Type.BOARD.equals(type)) {
+
+									selector = new Selector(Selector.Type.BOARD);
+									selector.setValue(node.getName());
+									selector.setVendor(node
+											.getProperty(Property.VENDOR_NAME));
+
+								} else if (Type.KEYWORD.equals(type)) {
+
+									selector = new Selector(
+											Selector.Type.KEYWORD);
+									selector.setValue(node.getName());
+								}
+
+								if (selector != null) {
+									packNode.addSelector(selector);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
 	public void updateInstalledVersions() {
 
-		if (m_packsList == null) {
+		if (m_packsVersionsList == null) {
 			return;
 		}
 
@@ -383,7 +460,7 @@ public class PacksStorage {
 		int count = 0;
 
 		// Check if the packages are installed
-		for (Leaf versionNode : m_packsList) {
+		for (Leaf versionNode : m_packsVersionsList) {
 
 			String unpackFolder = versionNode.getProperty(Property.DEST_FOLDER);
 			String pdscName = versionNode.getProperty(Property.PDSC_NAME);

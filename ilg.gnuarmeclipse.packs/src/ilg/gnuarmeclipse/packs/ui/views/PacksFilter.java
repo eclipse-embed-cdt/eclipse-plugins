@@ -40,7 +40,7 @@ public class PacksFilter extends ViewerFilter {
 	@Override
 	public boolean select(Viewer viewer, Object parentElement, Object element) {
 
-		// 'element' is the node to be tested by the filter
+		// 'element' is the node to be tested by the filter.
 
 		if (m_selection == null || m_selection.isEmpty())
 			return true; // Nothing selected, all nodes visible
@@ -71,12 +71,12 @@ public class PacksFilter extends ViewerFilter {
 		}
 
 		// If the node has no restricting conditions at all,
-		// then it is not visible
-		if (!((Node) node).hasConditions()) {
+		// then it is not visible.
+		if (!((Node) node).hasSelectors()) {
 			return false;
 		}
 
-		List<Selector> conditions = ((Node) node).getConditions();
+		List<Selector> conditions = ((Node) node).getSelectors();
 		List<Selector> filteredConditions = new LinkedList<Selector>();
 		for (Selector condition : conditions) {
 			if (m_conditionType.equals(condition.getType())) {
@@ -85,16 +85,16 @@ public class PacksFilter extends ViewerFilter {
 		}
 
 		// If the node has no restricting conditions of the given type,
-		// then it is always visible
+		// then it is not visible.
 		if (filteredConditions.size() == 0) {
 			return false; // true;
 		}
 
 		// If the node has conditions, enumerate them and check one by one.
-		// If at least one is true, the node is visible
+		// If at least one is true, the node is visible.
 		for (Selector condition : filteredConditions) {
 
-			// Enumerate all selections
+			// Enumerate all selections.
 			for (Object obj : m_selection.toList()) {
 				if (obj instanceof Leaf) {
 					Leaf selectionNode = (Leaf) obj;
@@ -108,62 +108,62 @@ public class PacksFilter extends ViewerFilter {
 			}
 		}
 
-		// No condition fulfilled, reject
+		// No condition fulfilled, reject.
 		return false;
 	}
 
-	private boolean isNodeVisible(Selector condition, Leaf selectionNode) {
+	private boolean isNodeVisible(Selector selector, Leaf selectionNode) {
 
-		// Condition is from the evaluated node
-		String conditionType = condition.getType();
+		// The selector is fetched from the evaluated node.
+		String selectorType = selector.getType();
 
 		String selectionNodeType = selectionNode.getType();
-		if (Selector.BOARD_TYPE.equals(conditionType)) {
+		if (Selector.BOARD_TYPE.equals(selectorType)) {
 
-			// Check board conditions (generic vendor string and
-			// board name)
+			// Check board selectors (generic vendor string and
+			// board name).
 			if (Type.VENDOR.equals(selectionNodeType)) {
 
-				// compare the selected node name with the condition
-				// vendor
-				if (condition.getVendor().equals(selectionNode.getName())) {
+				// Compare the selected node name with the condition
+				// vendor.
+				if (selector.getVendor().equals(selectionNode.getName())) {
 					return true;
 				}
 			} else if (Type.BOARD.equals(selectionNodeType)) {
 
-				if (condition.getVendor().equals(
+				if (selector.getVendor().equals(
 						selectionNode.getProperty(Property.VENDOR_NAME, ""))
-						&& condition.getValue().equals(selectionNode.getName())) {
+						&& selector.getValue().equals(selectionNode.getName())) {
 					return true;
 				}
 			}
 
-		} else if (Selector.DEVICEFAMILY_TYPE.equals(conditionType)) {
+		} else if (Selector.DEVICEFAMILY_TYPE.equals(selectorType)) {
 
-			// Check device conditions (numeric vendor id and
-			// family name)
+			// Check device selectors (numeric vendor id and
+			// family name).
 			if (Type.VENDOR.equals(selectionNodeType)) {
 
-				// compare the condition vendor id with the selection vendor id
-				if (condition.getVendorId().equals(
+				// compare the selectors vendor id with the selection vendor id
+				if (selector.getVendorId().equals(
 						selectionNode.getProperty(Property.VENDOR_ID, ""))) {
 					return true;
 				}
 			} else if (Type.FAMILY.equals(selectionNodeType)) {
 
-				// compare the condition vendor id with the selection vendor id
-				// and the condition name with selection family name
-				if (condition.getVendorId().equals(
+				// Compare the condition vendor id with the selection vendor id
+				// and the condition name with selection family name.
+				if (selector.getVendorId().equals(
 						selectionNode.getProperty(Property.VENDOR_ID, ""))
-						&& condition.getValue().equals(selectionNode.getName())) {
+						&& selector.getValue().equals(selectionNode.getName())) {
 					return true;
 				}
 			}
-		} else if (Selector.KEYWORD_TYPE.equals(conditionType)) {
+		} else if (Selector.KEYWORD_TYPE.equals(selectorType)) {
 
-			// Check keyword name
+			// Check keyword name.
 			if (Type.KEYWORD.equals(selectionNode.getType())) {
-				if (condition.getValue().equals(selectionNode.getName())) {
+				if (selector.getValue().equals(selectionNode.getName())) {
 					return true;
 				}
 			}

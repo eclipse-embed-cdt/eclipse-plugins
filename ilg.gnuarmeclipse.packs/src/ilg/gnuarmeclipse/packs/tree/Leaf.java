@@ -156,7 +156,7 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		return false;
 	}
 
-	// Required by the sorter
+	// Required by the sorter, don't mess with it.
 	public String toString() {
 		return getName();
 	}

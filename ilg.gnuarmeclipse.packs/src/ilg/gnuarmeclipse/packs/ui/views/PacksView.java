@@ -833,6 +833,9 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 		packNode.copyPropertiesRef(parentPackNode);
 		packNode.putProperty(Property.VENDOR_NAME, vendorName);
 
+		// Copy selectors.
+		packNode.copySelectorsRef(parentPackNode);
+
 		if (parentPackNode != null) {
 			packNode.setDescription(parentPackNode.getDescription());
 		}

@@ -11,7 +11,6 @@
 
 package ilg.gnuarmeclipse.packs.tree;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -84,17 +83,17 @@ public class Node extends Leaf {
 
 	protected List<Leaf> m_children;
 
-	protected boolean m_isInstalled;
-	protected List<Selector> m_conditions;
+	// protected boolean m_isInstalled;
+	protected List<Selector> m_selectors;
 	protected Node m_outline;
 
 	public Node(String type) {
 
 		super(type);
 
-		m_isInstalled = false;
+		// m_isInstalled = false;
 		m_children = null;
-		m_conditions = null;
+		m_selectors = null;
 		m_outline = null;
 	}
 
@@ -102,19 +101,19 @@ public class Node extends Leaf {
 
 		super(node);
 
-		m_isInstalled = false;
+		// m_isInstalled = false;
 		m_children = null;
-		m_conditions = null;
+		m_selectors = null;
 		m_outline = null;
 	}
 
-	public boolean isInstalled() {
-		return m_isInstalled;
-	}
-
-	public void setIsInstalled(boolean flag) {
-		m_isInstalled = flag;
-	}
+	// public boolean isInstalled() {
+	// return m_isInstalled;
+	// }
+	//
+	// public void setIsInstalled(boolean flag) {
+	// m_isInstalled = flag;
+	// }
 
 	public boolean hasChildren() {
 		return (m_children != null && !m_children.isEmpty());
@@ -177,18 +176,18 @@ public class Node extends Leaf {
 		m_children = null;
 	}
 
-	public boolean hasConditions() {
-		return (m_conditions != null && !m_conditions.isEmpty());
+	public boolean hasSelectors() {
+		return (m_selectors != null && !m_selectors.isEmpty());
 	}
 
-	public List<Selector> getConditions() {
-		return m_conditions;
+	public List<Selector> getSelectors() {
+		return m_selectors;
 	}
 
-	public List<Selector> getConditionsByType(String type) {
+	public List<Selector> getSelectorsByType(String type) {
 		List<Selector> list = new LinkedList<Selector>();
-		if (m_conditions != null) {
-			for (Selector condition : m_conditions) {
+		if (m_selectors != null) {
+			for (Selector condition : m_selectors) {
 				if (condition.getType().equals(type)) {
 					list.add(condition);
 				}
@@ -198,19 +197,28 @@ public class Node extends Leaf {
 		return list;
 	}
 
-	public void addCondition(Selector condition) {
-		if (m_conditions == null) {
-			m_conditions = new ArrayList<Selector>();
+	public void addSelector(Selector selector) {
+
+		assert (selector != null);
+
+		if (m_selectors == null) {
+			m_selectors = new LinkedList<Selector>();
 		} else {
 
 			// Check if not already in
-			for (Selector c : m_conditions) {
-				if (c.equals(condition)) {
+			for (Selector sel : m_selectors) {
+				if (sel.equals(selector)) {
 					return;
 				}
 			}
 		}
-		m_conditions.add(condition);
+		m_selectors.add(selector);
+	}
+
+	public List<Selector> copySelectorsRef(Node node) {
+
+		m_selectors = node.m_selectors;
+		return m_selectors;
 	}
 
 	public boolean hasOutline() {

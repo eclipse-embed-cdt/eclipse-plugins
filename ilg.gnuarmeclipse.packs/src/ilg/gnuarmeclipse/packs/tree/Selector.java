@@ -13,6 +13,12 @@ package ilg.gnuarmeclipse.packs.tree;
 
 public class Selector {
 
+	public class Type {
+		public static final String DEVICEFAMILY = "devicefamily";
+		public static final String BOARD = "board";
+		public static final String KEYWORD = "keyword";
+	};
+
 	public static final String DEVICEFAMILY_TYPE = "devicefamily";
 	public static final String BOARD_TYPE = "board";
 	public static final String KEYWORD_TYPE = "keyword";
