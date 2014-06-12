@@ -43,7 +43,7 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.part.ViewPart;
 
-public class KeywordsView extends ViewPart {
+public class KeywordsView extends ViewPart implements IPacksStorageListener {
 
 	/**
 	 * The ID of the view as specified by the extension.
@@ -52,8 +52,7 @@ public class KeywordsView extends ViewPart {
 
 	// ------------------------------------------------------------------------
 
-	class ViewContentProvider extends AbstractViewContentProvider implements
-			IPacksStorageListener {
+	class ViewContentProvider extends AbstractViewContentProvider {
 
 		public Object[] getElements(Object parent) {
 
@@ -64,17 +63,6 @@ public class KeywordsView extends ViewPart {
 			return getChildren(parent);
 		}
 
-		@Override
-		public void packsChanged(PacksStorageEvent event) {
-
-			String type = event.getType();
-			System.out.println("KeywordsView.packsChanged(), type=\"" + type
-					+ "\".");
-
-			if (PacksStorageEvent.Type.REFRESH.equals(type)) {
-				m_viewer.refresh();
-			}
-		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -123,7 +111,7 @@ public class KeywordsView extends ViewPart {
 		m_out = Activator.getConsoleOut();
 
 		m_storage = PacksStorage.getInstance();
-		System.out.println("KeywordsView()");
+		// System.out.println("KeywordsView()");
 	}
 
 	/**
@@ -140,7 +128,7 @@ public class KeywordsView extends ViewPart {
 		m_contentProvider = new ViewContentProvider();
 
 		// Register this content provider to the packs storage notifications
-		m_storage.addListener(m_contentProvider);
+		m_storage.addListener(this);
 
 		m_viewer.setContentProvider(m_contentProvider);
 		m_viewer.setLabelProvider(new ViewLabelProvider());
@@ -160,7 +148,7 @@ public class KeywordsView extends ViewPart {
 	public void dispose() {
 
 		super.dispose();
-		m_storage.removeListener(m_contentProvider);
+		m_storage.removeListener(this);
 
 		System.out.println("KeywordsView.dispose()");
 	}
@@ -238,16 +226,6 @@ public class KeywordsView extends ViewPart {
 		m_viewer.getControl().setFocus();
 	}
 
-	// TODO: remove it after migration to storage listeners
-	public void forceRefresh() {
-
-		m_contentProvider.forceRefresh();
-
-		m_viewer.setInput(getViewSite());
-
-		System.out.println("KeywordsView.forceRefresh()");
-	}
-
 	public void update(Object obj) {
 
 		if (obj instanceof List<?>) {
@@ -264,6 +242,20 @@ public class KeywordsView extends ViewPart {
 
 	public String toString() {
 		return "KeywordsView";
+	}
+
+	// ------------------------------------------------------------------------
+
+	@Override
+	public void packsChanged(PacksStorageEvent event) {
+
+		String type = event.getType();
+		// System.out.println("KeywordsView.packsChanged(), type=\"" + type
+		// + "\".");
+
+		if (PacksStorageEvent.Type.REFRESH.equals(type)) {
+			m_viewer.refresh();
+		}
 	}
 
 	// ------------------------------------------------------------------------

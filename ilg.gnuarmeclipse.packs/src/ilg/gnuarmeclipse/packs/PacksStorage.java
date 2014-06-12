@@ -166,7 +166,7 @@ public class PacksStorage {
 
 	public void notifyRefresh() {
 
-		System.out.println("PacksStorage notifyRefresh()");
+		// System.out.println("PacksStorage notifyRefresh()");
 		PacksStorageEvent event = new PacksStorageEvent(this,
 				PacksStorageEvent.Type.REFRESH);
 
@@ -175,7 +175,7 @@ public class PacksStorage {
 
 	public void notifyUpdateView(String type, List<Leaf> list) {
 
-		System.out.println("PacksStorage notifyUpdateView()");
+		// System.out.println("PacksStorage notifyUpdateView()");
 		PacksStorageEvent event = new PacksStorageEvent(this, type, list);
 
 		notifyListener(event);

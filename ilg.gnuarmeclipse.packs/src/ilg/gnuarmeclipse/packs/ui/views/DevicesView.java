@@ -149,7 +149,7 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 		m_out = Activator.getConsoleOut();
 
 		m_storage = PacksStorage.getInstance();
-		System.out.println("DevicesView()");
+		// System.out.println("DevicesView()");
 	}
 
 	/**
@@ -191,6 +191,8 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 	public void dispose() {
 
 		super.dispose();
+		m_storage.removeListener(this);
+
 		System.out.println("DevicesView.dispose()");
 	}
 
@@ -295,18 +297,6 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 		m_viewer.getControl().setFocus();
 	}
 
-	public void forceRefresh() {
-
-		m_contentProvider.forceRefresh();
-
-		// Object[] expandedElements = m_viewer.getExpandedElements();
-		m_viewer.setInput(getViewSite());
-		// m_viewer.refresh();
-		// m_viewer.setExpandedElements(expandedElements);
-
-		System.out.println("DevicesView.forceRefresh()");
-	}
-
 	public void refresh(Object obj) {
 
 		if (obj instanceof Collection<?>) {
@@ -351,8 +341,8 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 	public void packsChanged(PacksStorageEvent event) {
 
 		String type = event.getType();
-		System.out
-				.println("DevicesView.packsChanged(), type=\"" + type + "\".");
+		// System.out.println("DevicesView.packsChanged(), type=\"" + type +
+		// "\".");
 
 		if (PacksStorageEvent.Type.REFRESH.equals(type)) {
 
@@ -377,6 +367,7 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 
 					// m_viewer.setInput(getDevicesTree());
 					refresh(updatedMap.values());
+					// m_viewer.refresh();
 				}
 			});
 		}

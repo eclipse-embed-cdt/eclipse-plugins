@@ -148,7 +148,7 @@ public class BoardsView extends ViewPart implements IPacksStorageListener {
 		m_out = Activator.getConsoleOut();
 
 		m_storage = PacksStorage.getInstance();
-		System.out.println("BoardsView()");
+		// System.out.println("BoardsView()");
 	}
 
 	/**
@@ -190,6 +190,8 @@ public class BoardsView extends ViewPart implements IPacksStorageListener {
 	public void dispose() {
 
 		super.dispose();
+		m_storage.removeListener(this);
+
 		System.out.println("BoardsView.dispose()");
 	}
 
@@ -294,16 +296,6 @@ public class BoardsView extends ViewPart implements IPacksStorageListener {
 		m_viewer.getControl().setFocus();
 	}
 
-	public void forceRefresh() {
-
-		m_contentProvider.forceRefresh();
-
-		// m_viewer.refresh();
-		m_viewer.setInput(getViewSite());
-
-		System.out.println("BoardsView.forceRefresh()");
-	}
-
 	public void refresh(Object obj) {
 
 		if (obj instanceof Collection<?>) {
@@ -348,9 +340,9 @@ public class BoardsView extends ViewPart implements IPacksStorageListener {
 	public void packsChanged(PacksStorageEvent event) {
 
 		String type = event.getType();
-		System.out
-				.println("BoardsView.ViewContentProvider.packsChanged(), type=\""
-						+ type + "\".");
+		// System.out
+		// .println("BoardsView.ViewContentProvider.packsChanged(), type=\""
+		// + type + "\".");
 
 		if (PacksStorageEvent.Type.REFRESH.equals(type)) {
 

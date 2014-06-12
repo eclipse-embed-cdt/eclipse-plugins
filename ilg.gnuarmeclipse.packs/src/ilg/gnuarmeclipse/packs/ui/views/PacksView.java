@@ -235,7 +235,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 		m_out = Activator.getConsoleOut();
 
 		m_storage = PacksStorage.getInstance();
-		System.out.println("PacksView()");
+		// System.out.println("PacksView()");
 	}
 
 	public TreeViewer getTreeViewer() {
@@ -356,28 +356,31 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 		if (selection.isEmpty()) {
 
 			// System.out.println("Packs: resetFilters()");
+			m_viewer.expandToLevel(AUTOEXPAND_LEVEL);
 			m_viewer.resetFilters();
 
 			return;
 		}
 
-		System.out.println("Packs: " + part + " selection=" + selection);
+		// System.out.println("Packs: " + part + " selection=" + selection);
 
 		IStructuredSelection structuredSelection = (IStructuredSelection) selection;
 
-		String conditionType = "";
+		String selectorType = "";
 		if (part instanceof DevicesView) {
-			conditionType = Selector.DEVICEFAMILY_TYPE;
+			selectorType = Selector.DEVICEFAMILY_TYPE;
 		} else if (part instanceof BoardsView) {
-			conditionType = Selector.BOARD_TYPE;
+			selectorType = Selector.BOARD_TYPE;
 		} else if (part instanceof KeywordsView) {
-			conditionType = Selector.KEYWORD_TYPE;
+			selectorType = Selector.KEYWORD_TYPE;
 		}
 
-		m_packsFilter.setSelection(conditionType, structuredSelection);
+		m_packsFilter.setSelection(selectorType, structuredSelection);
 
+		m_viewer.expandToLevel(AUTOEXPAND_LEVEL);
 		m_viewer.setFilters(m_packsFilters);
 
+		m_viewer.expandToLevel(AUTOEXPAND_LEVEL);
 		m_viewer.setSelection(null);
 	}
 
@@ -633,15 +636,6 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 		m_viewer.getControl().setFocus();
 	}
 
-	public void forceRefresh() {
-
-		m_contentProvider.forceRefresh();
-
-		m_viewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);
-		m_viewer.setInput(getViewSite());
-		System.out.println("PacksView.forceRefresh()");
-	}
-
 	public void refresh() {
 		m_viewer.refresh();
 	}
@@ -690,7 +684,8 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 	public void packsChanged(PacksStorageEvent event) {
 
 		String type = event.getType();
-		System.out.println("PacksView.packsChanged(), type=\"" + type + "\".");
+		// System.out.println("PacksView.packsChanged(), type=\"" + type +
+		// "\".");
 
 		if (PacksStorageEvent.Type.REFRESH.equals(type)) {
 
@@ -756,7 +751,8 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 					// Refresh pack node, this will update all version
 					// and examples below them
-					refresh(parentsMap.values());
+					// refresh(parentsMap.values());
+					m_viewer.refresh();
 				}
 			});
 		}

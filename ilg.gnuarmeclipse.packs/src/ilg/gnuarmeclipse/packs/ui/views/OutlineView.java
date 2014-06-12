@@ -344,7 +344,7 @@ public class OutlineView extends ViewPart {
 		// m_out = Activator.getConsoleOut();
 
 		m_storage = PacksStorage.getInstance();
-		System.out.println("OutlineView()");
+		// System.out.println("OutlineView()");
 	}
 
 	@Override
