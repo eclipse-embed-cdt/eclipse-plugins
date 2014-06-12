@@ -23,7 +23,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.List;
 import java.util.Map;
 
 public class ContentSerialiser {
@@ -166,8 +165,8 @@ public class ContentSerialiser {
 				}
 			}
 
-			List<Leaf> children = node.getChildren();
-			if (children != null && !children.isEmpty()) {
+			if (node.hasChildren()) {
+
 				if (doOutputNodes) {
 					putIndentation(depth + 1);
 					if (nodesElementName.length() > 0) {
@@ -184,7 +183,7 @@ public class ContentSerialiser {
 					newDepth = depth + 1;
 				}
 
-				for (Leaf child : children) {
+				for (Leaf child : ((Node) node).getChildren()) {
 					serialiseRecursive(child, newDepth);
 				}
 
@@ -204,6 +203,7 @@ public class ContentSerialiser {
 			} else {
 				writer.println("</node>");
 			}
+
 		}
 	}
 

@@ -16,6 +16,7 @@ import ilg.gnuarmeclipse.packs.Repos;
 import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.cmsis.PdscParser;
 import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.PackNode;
 import ilg.gnuarmeclipse.packs.tree.Property;
 import ilg.gnuarmeclipse.packs.ui.views.OutlineView;
 
@@ -36,7 +37,8 @@ public class ParsePdscJob extends Job {
 	private static boolean m_running = false;
 
 	private MessageConsoleStream m_out;
-	private Node m_versionNode;
+	private PackNode m_versionNode;
+	private PackNode m_selectionNode;
 	private TreeViewer m_outlineViewer;
 
 	// private TreeViewer m_packsViewer;
@@ -45,13 +47,16 @@ public class ParsePdscJob extends Job {
 
 	// private IProgressMonitor m_monitor;
 
-	public ParsePdscJob(String name, Node node, TreeViewer viewer) {
+	public ParsePdscJob(String name, PackNode versionNode,
+			PackNode selectionNode, TreeViewer viewer) {
 
 		super(name);
 
 		m_out = Activator.getConsoleOut();
 
-		m_versionNode = node;
+		m_versionNode = versionNode;
+		m_selectionNode = selectionNode;
+
 		m_outlineViewer = viewer;
 		// m_packsViewer = Activator.getPacksView().getTreeViewer();
 	}
@@ -118,7 +123,7 @@ public class ParsePdscJob extends Job {
 				public void run() {
 					m_outlineViewer
 							.setAutoExpandLevel(OutlineView.AUTOEXPAND_LEVEL);
-					m_outlineViewer.setInput(m_versionNode.getOutline());
+					m_outlineViewer.setInput(m_selectionNode.getOutline());
 				}
 			});
 		}

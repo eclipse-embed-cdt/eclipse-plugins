@@ -12,9 +12,9 @@
 package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.packs.tree.Leaf;
+import ilg.gnuarmeclipse.packs.tree.PackNode;
 import ilg.gnuarmeclipse.packs.tree.Property;
 import ilg.gnuarmeclipse.packs.tree.Selector;
-import ilg.gnuarmeclipse.packs.tree.Node;
 import ilg.gnuarmeclipse.packs.tree.Type;
 
 import java.util.LinkedList;
@@ -29,12 +29,11 @@ import org.eclipse.jface.viewers.ViewerFilter;
 public class PacksFilter extends ViewerFilter {
 
 	private IStructuredSelection m_selection;
-	private String m_conditionType;
+	private String m_selectorType;
 
-	public void setSelection(String conditionType,
-			IStructuredSelection selection) {
+	public void setSelection(String selectorType, IStructuredSelection selection) {
 		m_selection = selection;
-		m_conditionType = conditionType;
+		m_selectorType = selectorType;
 	}
 
 	@Override
@@ -66,40 +65,41 @@ public class PacksFilter extends ViewerFilter {
 			return true;
 		}
 
-		if (!(node instanceof Node)) {
+		if (!(node instanceof PackNode)) {
 			return false;
 		}
 
 		// If the node has no restricting conditions at all,
 		// then it is not visible.
-		if (!((Node) node).hasSelectors()) {
+		if (!((PackNode) node).hasSelectors()) {
 			return false;
 		}
 
-		List<Selector> conditions = ((Node) node).getSelectors();
-		List<Selector> filteredConditions = new LinkedList<Selector>();
-		for (Selector condition : conditions) {
-			if (m_conditionType.equals(condition.getType())) {
-				filteredConditions.add(condition);
+		List<Selector> selectors = ((PackNode) node).getSelectors();
+		List<Selector> filteredSelectors = new LinkedList<Selector>();
+		for (Selector selector : selectors) {
+			if (m_selectorType.equals(selector.getType())) {
+				filteredSelectors.add(selector);
 			}
 		}
 
 		// If the node has no restricting conditions of the given type,
 		// then it is not visible.
-		if (filteredConditions.size() == 0) {
+		if (filteredSelectors.size() == 0) {
 			return false; // true;
 		}
 
-		// If the node has conditions, enumerate them and check one by one.
+		// If the node has selectors, enumerate them and check one by one.
 		// If at least one is true, the node is visible.
-		for (Selector condition : filteredConditions) {
+		for (Selector condition : filteredSelectors) {
 
 			// Enumerate all selections.
-			for (Object obj : m_selection.toList()) {
-				if (obj instanceof Leaf) {
-					Leaf selectionNode = (Leaf) obj;
+			for (Object selectionNode : m_selection.toList()) {
 
-					if (isNodeVisible(condition, selectionNode)) {
+				// Must be leaf, since keywords are leaf.
+				if (selectionNode instanceof Leaf) {
+
+					if (isNodeVisible(condition, (Leaf) selectionNode)) {
 						// System.out.println("accepted, match " +
 						// condition);
 						return true;

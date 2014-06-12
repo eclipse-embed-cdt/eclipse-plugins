@@ -17,6 +17,7 @@ import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.DocumentParseException;
 import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.PackNode;
 import ilg.gnuarmeclipse.packs.tree.Type;
 
 import org.eclipse.ui.console.MessageConsoleStream;
@@ -149,7 +150,7 @@ public class ContentParser {
 
 	private void processPackage(Element el, Node parent) {
 
-		Node node = Node.addNewChild(parent, Type.PACKAGE);
+		PackNode node = PackNode.addNewChild(parent, Type.PACKAGE);
 
 		String name = getNameAttribute(el);
 		node.setName(name);
@@ -184,7 +185,7 @@ public class ContentParser {
 
 	private void processVersion(Element el, Node parent) {
 
-		Node node = Node.addNewChild(parent, Type.VERSION);
+		PackNode node = PackNode.addNewChild(parent, Type.VERSION);
 
 		String name = getNameAttribute(el);
 		node.setName(name);
@@ -274,7 +275,8 @@ public class ContentParser {
 
 	private void processLeaf(Element el, Node parent, String type) {
 
-		Node node = Node.addNewChild(parent, type);
+		Node node;
+		node = Node.addNewChild(parent, type);
 
 		String name = getNameAttribute(el);
 		node.setName(name);

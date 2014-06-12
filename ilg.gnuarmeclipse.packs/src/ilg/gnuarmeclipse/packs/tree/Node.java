@@ -16,11 +16,6 @@ import java.util.List;
 
 public class Node extends Leaf {
 
-	// Node types (sorted)
-	public class Type {
-
-	}
-
 	// Properties (sorted)
 	public static final String AP_PROPERTY = "ap";
 	public static final String APIVERSION_PROPERTY = "apiversion";
@@ -83,37 +78,19 @@ public class Node extends Leaf {
 
 	protected List<Leaf> m_children;
 
-	// protected boolean m_isInstalled;
-	protected List<Selector> m_selectors;
-	protected Node m_outline;
-
 	public Node(String type) {
 
 		super(type);
 
-		// m_isInstalled = false;
 		m_children = null;
-		m_selectors = null;
-		m_outline = null;
 	}
 
 	public Node(Leaf node) {
 
 		super(node);
 
-		// m_isInstalled = false;
 		m_children = null;
-		m_selectors = null;
-		m_outline = null;
 	}
-
-	// public boolean isInstalled() {
-	// return m_isInstalled;
-	// }
-	//
-	// public void setIsInstalled(boolean flag) {
-	// m_isInstalled = flag;
-	// }
 
 	public boolean hasChildren() {
 		return (m_children != null && !m_children.isEmpty());
@@ -174,63 +151,6 @@ public class Node extends Leaf {
 
 	public void removeChildren() {
 		m_children = null;
-	}
-
-	public boolean hasSelectors() {
-		return (m_selectors != null && !m_selectors.isEmpty());
-	}
-
-	public List<Selector> getSelectors() {
-		return m_selectors;
-	}
-
-	public List<Selector> getSelectorsByType(String type) {
-		List<Selector> list = new LinkedList<Selector>();
-		if (m_selectors != null) {
-			for (Selector condition : m_selectors) {
-				if (condition.getType().equals(type)) {
-					list.add(condition);
-				}
-			}
-		}
-
-		return list;
-	}
-
-	public void addSelector(Selector selector) {
-
-		assert (selector != null);
-
-		if (m_selectors == null) {
-			m_selectors = new LinkedList<Selector>();
-		} else {
-
-			// Check if not already in
-			for (Selector sel : m_selectors) {
-				if (sel.equals(selector)) {
-					return;
-				}
-			}
-		}
-		m_selectors.add(selector);
-	}
-
-	public List<Selector> copySelectorsRef(Node node) {
-
-		m_selectors = node.m_selectors;
-		return m_selectors;
-	}
-
-	public boolean hasOutline() {
-		return (m_outline != null);
-	}
-
-	public Node getOutline() {
-		return m_outline;
-	}
-
-	public void setOutline(Node node) {
-		m_outline = node;
 	}
 
 	// ------

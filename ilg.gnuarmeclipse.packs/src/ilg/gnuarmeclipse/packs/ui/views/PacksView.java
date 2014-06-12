@@ -107,8 +107,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 							Activator.PLUGIN_ID, "icons/pack_folder.png")
 							.createImage();
 				} else if (Type.PACKAGE.equals(type)) {
-					if (node.isInstalled()
-							|| node.isBooleanProperty(Property.INSTALLED)) {
+					if (node.isBooleanProperty(Property.INSTALLED)) {
 						return Activator.imageDescriptorFromPlugin(
 								Activator.PLUGIN_ID, "icons/package_obj.png")
 								.createImage();
@@ -118,8 +117,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 								"icons/package_obj_grey.png").createImage();
 					}
 				} else if (Type.VERSION.equals(type)) {
-					if (node.isInstalled()
-							|| node.isBooleanProperty(Property.INSTALLED)) {
+					if (node.isBooleanProperty(Property.INSTALLED)) {
 						return Activator
 								.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 										"icons/jtypeassist_co.png")
@@ -145,8 +143,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 			switch (columnIndex) {
 			case 0:
 				String name = node.getName();
-				if (node.isInstalled()
-						|| node.isBooleanProperty(Property.INSTALLED)) {
+				if (node.isBooleanProperty(Property.INSTALLED)) {
 					name += " (installed)";
 				} else {
 					if (node.isType(Type.VERSION)) {
@@ -404,11 +401,6 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 			String type = node.getType();
 
 			boolean isInstalled = false;
-			if (node instanceof Node) {
-				if (((Node) node).isInstalled()) {
-					isInstalled = true;
-				}
-			}
 			if (node.isBooleanProperty(Property.INSTALLED)) {
 				isInstalled = true;
 			}
@@ -718,10 +710,11 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 		} else if (PacksStorageEvent.Type.UPDATE_VERSIONS.equals(type)) {
 
 			@SuppressWarnings("unchecked")
-			final List<Node> updatedList = (List<Node>) event.getPayload();
+			final List<PackNode> updatedList = (List<PackNode>) event
+					.getPayload();
 
 			final Map<String, Node> parentsMap = new HashMap<String, Node>();
-			for (Node versionNode : updatedList) {
+			for (PackNode versionNode : updatedList) {
 				String vendorName = versionNode
 						.getProperty(Property.VENDOR_NAME);
 				String packName = versionNode.getProperty(Property.PACK_NAME);
@@ -795,19 +788,22 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 	}
 
 	// Identify outline & external nodes and collect devices from inside.
-	private int getPacksRecursive(Leaf modelNode, Node parentPackNode, Node root) {
+	private int getPacksRecursive(Leaf modelNode, PackNode parentPackNode,
+			Node root) {
 
 		int count = 0;
 
 		if (modelNode.isType(Type.PACKAGE)) {
-			parentPackNode = (Node) modelNode;
+			parentPackNode = (PackNode) modelNode;
 		}
 
 		if (modelNode.isType(Type.VERSION)) {
-			count += addVersion((Node) modelNode, parentPackNode, root);
+
+			count += addVersion((PackNode) modelNode, parentPackNode, root);
+
 		} else if (modelNode instanceof Node && modelNode.hasChildren()) {
 
-			for (Leaf child : modelNode.getChildren()) {
+			for (Leaf child : ((Node) modelNode).getChildren()) {
 
 				// Recurse down.
 				count += getPacksRecursive(child, parentPackNode, root);
@@ -817,7 +813,8 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 		return count;
 	}
 
-	private int addVersion(Node modelNode, Node parentPackNode, Node tree) {
+	private int addVersion(PackNode modelNode, PackNode parentPackNode,
+			Node tree) {
 
 		int count = 0;
 		String vendorName = modelNode.getProperty(Property.VENDOR_NAME);
@@ -860,7 +857,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 		return count;
 	}
 
-	private void updateVersioNode(Node versionNode, Node modelNode) {
+	private void updateVersioNode(PackNode versionNode, Node modelNode) {
 
 		if (versionNode.isBooleanProperty(Property.INSTALLED)) {
 
@@ -875,8 +872,8 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 					if (child.isType(Type.EXAMPLE)) {
 
 						// New node with child personality
-						// (not Leaf because it has outline)
-						Node.addNewChild(versionNode, child);
+						// (must be PackNode to accommodate outline).
+						PackNode.addNewChild(versionNode, child);
 					}
 				}
 			}

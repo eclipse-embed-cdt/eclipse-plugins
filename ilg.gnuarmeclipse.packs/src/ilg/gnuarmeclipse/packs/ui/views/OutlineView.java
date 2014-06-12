@@ -17,6 +17,7 @@ import ilg.gnuarmeclipse.packs.Repos;
 import ilg.gnuarmeclipse.packs.jobs.ParsePdscJob;
 import ilg.gnuarmeclipse.packs.tree.Leaf;
 import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.PackNode;
 import ilg.gnuarmeclipse.packs.tree.Property;
 import ilg.gnuarmeclipse.packs.tree.Type;
 
@@ -485,35 +486,48 @@ public class OutlineView extends ViewPart {
 
 		if ((!selection.isEmpty()) && selection instanceof TreeSelection) {
 
-			// Single selection
+			// Limit to a single selection.
 			Leaf node = (Leaf) ((TreeSelection) selection).getFirstElement();
-			if (node instanceof Node) {
 
-				if (((Node) node).hasOutline()) {
+			// Only PackNode can have an outline.
+			if (node instanceof PackNode) {
+
+				if (((PackNode) node).hasOutline()) {
 
 					// If the node already has outline, show it
 					m_viewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);
-					outline = ((Node) node).getOutline();
+					outline = ((PackNode) node).getOutline();
 
 				} else if (node.isType(Type.VERSION)) {
 
-					if ((node.isInstalled() || node
-							.isBooleanProperty(Property.INSTALLED))) {
+					if (node.isBooleanProperty(Property.INSTALLED)) {
 						// If the version node is installed, get outline
 						ParsePdscJob job = new ParsePdscJob("Parse Outline",
-								(Node) node, m_viewer);
+								(PackNode) node, (PackNode) node, m_viewer);
 						job.schedule();
 					} else {
 
 						// Get brief outline
 						outline = getBriefOutline((Node) node);
-						((Node) node).setOutline(outline);
+						((PackNode) node).setOutline(outline);
 					}
 				} else if (node.isType(Type.PACKAGE)) {
 
 					// Get brief outline
 					outline = getBriefOutline((Node) node);
-					((Node) node).setOutline(outline);
+					((PackNode) node).setOutline(outline);
+
+				} else if (node.isType(Type.EXAMPLE)) {
+
+					Node versionNode = (Node) node.getParent();
+
+					if (versionNode.isBooleanProperty(Property.INSTALLED)) {
+						// If the version node is installed, get outline
+						ParsePdscJob job = new ParsePdscJob("Parse Outline",
+								(PackNode) versionNode, (PackNode) node,
+								m_viewer);
+						job.schedule();
+					}
 				}
 			}
 		}

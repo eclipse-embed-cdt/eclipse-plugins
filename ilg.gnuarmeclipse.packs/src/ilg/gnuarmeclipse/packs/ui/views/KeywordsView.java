@@ -302,18 +302,25 @@ public class KeywordsView extends ViewPart {
 
 		String type = node.getType();
 		if (Type.OUTLINE.equals(type)) {
-			for (Leaf child : node.getChildrenArray()) {
-				String childType = child.getType();
-				if (Type.KEYWORD.equals(childType)) {
 
-					// Collect unique keywords
-					set.add(child.getName());
+			if (node.hasChildren()) {
+				for (Leaf child : ((Node) node).getChildren()) {
+					String childType = child.getType();
+					if (Type.KEYWORD.equals(childType)) {
+
+						// Collect unique keywords
+						set.add(child.getName());
+					}
 				}
 			}
+
 		} else if (Type.EXTERNAL.equals(type)) {
+
 			; // no keywords inside externals, avoid recursion
+
 		} else if (node instanceof Node && node.hasChildren()) {
-			for (Leaf child : node.getChildren()) {
+
+			for (Leaf child : ((Node) node).getChildren()) {
 
 				// Recurse down
 				getKeywordsRecursive(child, set);

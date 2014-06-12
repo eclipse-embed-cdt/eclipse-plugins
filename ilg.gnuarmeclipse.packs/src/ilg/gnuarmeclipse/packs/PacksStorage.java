@@ -13,6 +13,7 @@ package ilg.gnuarmeclipse.packs;
 
 import ilg.gnuarmeclipse.packs.tree.Leaf;
 import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.PackNode;
 import ilg.gnuarmeclipse.packs.tree.Property;
 import ilg.gnuarmeclipse.packs.tree.Selector;
 import ilg.gnuarmeclipse.packs.tree.Type;
@@ -68,10 +69,10 @@ public class PacksStorage {
 	private MessageConsoleStream m_out;
 	private List<IPacksStorageListener> m_listeners;
 
-	private List<Leaf> m_packsVersionsList;
+	private List<PackNode> m_packsVersionsList;
 	private Node m_packsVersionsTree;
-	private Map<String, Map<String, Leaf>> m_packsVersionsMap;
-	private Map<String, Node> m_packsMap;
+	private Map<String, Map<String, PackNode>> m_packsVersionsMap;
+	private Map<String, PackNode> m_packsMap;
 
 	public PacksStorage() {
 		m_repos = Repos.getInstance();
@@ -79,9 +80,9 @@ public class PacksStorage {
 		m_out = Activator.getConsoleOut();
 
 		m_packsVersionsTree = new Node(Type.ROOT);
-		m_packsVersionsList = new LinkedList<Leaf>();
-		m_packsVersionsMap = new TreeMap<String, Map<String, Leaf>>();
-		m_packsMap = new TreeMap<String, Node>();
+		m_packsVersionsList = new LinkedList<PackNode>();
+		m_packsVersionsMap = new TreeMap<String, Map<String, PackNode>>();
+		m_packsMap = new TreeMap<String, PackNode>();
 
 		m_listeners = new ArrayList<IPacksStorageListener>();
 	}
@@ -94,17 +95,17 @@ public class PacksStorage {
 
 	// The list of all version nodes, linearised, to be used when
 	// enumerating versions is ok.
-	public List<Leaf> getPacksVersionsList() {
+	public List<PackNode> getPacksVersionsList() {
 		return m_packsVersionsList;
 	}
 
 	// A map of maps, with versions identified by Vendor::Pack and Version
-	public Map<String, Map<String, Leaf>> getPacksVersionsMap() {
+	public Map<String, Map<String, PackNode>> getPacksVersionsMap() {
 		return m_packsVersionsMap;
 	}
 
 	// A map of packages, identified by Vendor::Pack
-	public Map<String, Node> getPacksMap() {
+	public Map<String, PackNode> getPacksMap() {
 		return m_packsMap;
 	}
 
@@ -117,38 +118,38 @@ public class PacksStorage {
 	}
 
 	// Find a given package version.
-	public Node getPackVersion(String vendorName, String packName,
+	public PackNode getPackVersion(String vendorName, String packName,
 			String versionName) {
 
 		String key = makeMapKey(vendorName, packName);
-		Map<String, Leaf> versionsMap = m_packsVersionsMap.get(key);
+		Map<String, PackNode> versionsMap = m_packsVersionsMap.get(key);
 
 		if (versionsMap == null) {
 			return null;
 		}
 
 		// May return null
-		return (Node) versionsMap.get(versionName);
+		return (PackNode) versionsMap.get(versionName);
 	}
 
 	// Find the latest version of a pack
-	public Node getPackLatest(String vendorName, String packName) {
+	public PackNode getPackLatest(String vendorName, String packName) {
 
 		String key = makeMapKey(vendorName, packName);
-		Map<String, Leaf> versionsMap = m_packsVersionsMap.get(key);
+		Map<String, PackNode> versionsMap = m_packsVersionsMap.get(key);
 
 		if (versionsMap == null) {
 			return null;
 		}
 
-		Leaf node = null;
+		PackNode node = null;
 		for (String versionName : versionsMap.keySet()) {
 			node = versionsMap.get(versionName);
 		}
 
 		// If the map is sorted (as it should be), this is the package
 		// with the highest version (or null).
-		return (Node) node;
+		return node;
 	}
 
 	// ------------------------------------------------------------------------
@@ -337,7 +338,7 @@ public class PacksStorage {
 		m_packsVersionsTree = packsTree;
 
 		// Collect all version nodes in a list
-		List<Leaf> packsVersionsList = new LinkedList<Leaf>();
+		List<PackNode> packsVersionsList = new LinkedList<PackNode>();
 		for (Map<String, Object> map : reposList) {
 
 			Leaf node = (Node) map.get("content");
@@ -348,16 +349,16 @@ public class PacksStorage {
 		m_packsVersionsList = packsVersionsList;
 
 		// Group versions by [vendor::package] in a Map
-		Map<String, Map<String, Leaf>> packsVersionsMap = new TreeMap<String, Map<String, Leaf>>();
-		for (Leaf versionNode : packsVersionsList) {
+		Map<String, Map<String, PackNode>> packsVersionsMap = new TreeMap<String, Map<String, PackNode>>();
+		for (PackNode versionNode : packsVersionsList) {
 			String vendorName = versionNode.getProperty(Property.VENDOR_NAME);
 			String packName = versionNode.getProperty(Property.PACK_NAME);
 			String key = makeMapKey(vendorName, packName);
 
-			Map<String, Leaf> versionMap;
+			Map<String, PackNode> versionMap;
 			versionMap = packsVersionsMap.get(key);
 			if (versionMap == null) {
-				versionMap = new TreeMap<String, Leaf>();
+				versionMap = new TreeMap<String, PackNode>();
 				packsVersionsMap.put(key, versionMap);
 			}
 
@@ -366,14 +367,14 @@ public class PacksStorage {
 		m_packsVersionsMap = packsVersionsMap;
 
 		// Group packages by [vendor::package] in a Map
-		Map<String, Node> packsMap = new TreeMap<String, Node>();
-		for (Leaf versionNode : packsVersionsList) {
+		Map<String, PackNode> packsMap = new TreeMap<String, PackNode>();
+		for (PackNode versionNode : packsVersionsList) {
 			String vendorName = versionNode.getProperty(Property.VENDOR_NAME);
 			String packName = versionNode.getProperty(Property.PACK_NAME);
 			String key = makeMapKey(vendorName, packName);
 
 			if (!packsMap.containsKey(key)) {
-				Node parent = versionNode.getParent();
+				PackNode parent = (PackNode) versionNode.getParent();
 				packsMap.put(key, parent);
 			}
 		}
@@ -384,13 +385,13 @@ public class PacksStorage {
 				+ " version(s).");
 	}
 
-	private void getVersionsRecursive(Leaf node, List<Leaf> list) {
+	private void getVersionsRecursive(Leaf node, List<PackNode> list) {
 
 		if (Type.VERSION.equals(node.getType())) {
-			list.add(node);
+			list.add((PackNode) node);
 			// Stop recursion here
 		} else if (node.hasChildren()) {
-			for (Leaf child : node.getChildren()) {
+			for (Leaf child : ((Node) node).getChildren()) {
 				getVersionsRecursive(child, list);
 			}
 		}
@@ -402,7 +403,7 @@ public class PacksStorage {
 		// Add unique selectors to each package, by inspecting the outline and
 		// external definitions in the latest version.
 
-		for (Node packNode : m_packsMap.values()) {
+		for (PackNode packNode : m_packsMap.values()) {
 
 			Node versionNode = (Node) packNode.getChildren().get(0);
 			if (versionNode.hasChildren()) {
@@ -411,7 +412,7 @@ public class PacksStorage {
 					if (child.isType(Type.OUTLINE)
 							|| child.isType(Type.EXTERNAL)) {
 						if (child.hasChildren()) {
-							for (Leaf node : child.getChildren()) {
+							for (Leaf node : ((Node) child).getChildren()) {
 
 								Selector selector = null;
 

@@ -412,26 +412,31 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 
 		int count = 0;
 		String type = node.getType();
-		if (Type.OUTLINE.equals(type) || Type.EXTERNAL.equals(type)) {
-			for (Leaf child : node.getChildrenArray()) {
-				String childType = child.getType();
-				if (Type.FAMILY.equals(childType)) {
+		if (node.hasChildren()) {
 
-					// Collect unique keywords
-					count += addDevice(child, root, isInstalled);
+			if (Type.OUTLINE.equals(type) || Type.EXTERNAL.equals(type)) {
+
+				for (Leaf child : ((Node) node).getChildren()) {
+					String childType = child.getType();
+					if (Type.FAMILY.equals(childType)) {
+
+						// Collect unique keywords
+						count += addDevice(child, root, isInstalled);
+					}
 				}
-			}
-		} else if ((node instanceof Node) && node.hasChildren()) {
 
-			boolean isVersionInstalled = isInstalled;
-			if (Type.VERSION.equals(type)
-					&& node.isBooleanProperty(Property.INSTALLED)) {
-				isVersionInstalled = true;
-			}
-			for (Leaf child : node.getChildren()) {
+			} else {
+				boolean isVersionInstalled = isInstalled;
+				if (Type.VERSION.equals(type)
+						&& node.isBooleanProperty(Property.INSTALLED)) {
+					isVersionInstalled = true;
+				}
+				for (Leaf child : ((Node) node).getChildren()) {
 
-				// Recurse down
-				count += getDevicesRecursive(child, root, isVersionInstalled);
+					// Recurse down
+					count += getDevicesRecursive(child, root,
+							isVersionInstalled);
+				}
 			}
 		}
 
@@ -483,7 +488,7 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 			if (viewTree.hasChildren()) {
 				for (Leaf vendor : viewTree.getChildren()) {
 					if (vendor.hasChildren()) {
-						for (Leaf device : vendor.getChildren()) {
+						for (Leaf device : ((Node) vendor).getChildren()) {
 							device.setBooleanProperty(Property.ENABLED, false);
 						}
 					}
@@ -498,27 +503,29 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 			boolean isInstalled, Map<String, Leaf> updatedMap) {
 
 		String type = modelNode.getType();
-		if (Type.OUTLINE.equals(type) || Type.EXTERNAL.equals(type)) {
-			for (Leaf child : modelNode.getChildrenArray()) {
-				String childType = child.getType();
-				if (Type.FAMILY.equals(childType)) {
+		if (modelNode.hasChildren()) {
 
-					// Collect unique keywords
-					updateDevice(child, viewTree, isInstalled, updatedMap);
+			if (Type.OUTLINE.equals(type) || Type.EXTERNAL.equals(type)) {
+				for (Leaf child : ((Node) modelNode).getChildren()) {
+					String childType = child.getType();
+					if (Type.FAMILY.equals(childType)) {
+
+						// Collect unique keywords
+						updateDevice(child, viewTree, isInstalled, updatedMap);
+					}
 				}
-			}
-		} else if ((modelNode instanceof Node) && modelNode.hasChildren()) {
+			} else {
+				boolean isVersionInstalled = isInstalled;
+				if (Type.VERSION.equals(type)
+						&& modelNode.isBooleanProperty(Property.INSTALLED)) {
+					isVersionInstalled = true;
+				}
+				for (Leaf child : ((Node) modelNode).getChildren()) {
 
-			boolean isVersionInstalled = isInstalled;
-			if (Type.VERSION.equals(type)
-					&& modelNode.isBooleanProperty(Property.INSTALLED)) {
-				isVersionInstalled = true;
-			}
-			for (Leaf child : modelNode.getChildren()) {
-
-				// Recurse down
-				updateDevicesRecursive(child, viewTree, isVersionInstalled,
-						updatedMap);
+					// Recurse down
+					updateDevicesRecursive(child, viewTree, isVersionInstalled,
+							updatedMap);
+				}
 			}
 		}
 	}

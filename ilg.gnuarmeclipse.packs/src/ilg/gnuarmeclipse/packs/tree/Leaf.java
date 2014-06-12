@@ -12,7 +12,6 @@
 package ilg.gnuarmeclipse.packs.tree;
 
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IAdaptable;
@@ -72,14 +71,6 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 
 	public boolean hasChildren() {
 		return false;
-	}
-
-	public List<Leaf> getChildren() {
-		return null;
-	}
-
-	public Leaf[] getChildrenArray() {
-		return new Leaf[0];
 	}
 
 	public Node getParent() {
@@ -150,10 +141,6 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 
 		// Set the property to true/false.
 		putProperty(name, String.valueOf(value));
-	}
-
-	public boolean isInstalled() {
-		return false;
 	}
 
 	// Required by the sorter, don't mess with it.

@@ -15,6 +15,7 @@ import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.tree.Leaf;
 import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.PackNode;
 import ilg.gnuarmeclipse.packs.tree.Property;
 import ilg.gnuarmeclipse.packs.tree.Type;
 
@@ -276,9 +277,6 @@ public class PdscParser {
 
 			} else if ("boards".equals(elementName)) {
 
-				// TreeNode boardsNode = new TreeNode(Type.BOARDS);
-				// tree.addChild(boardsNode);
-
 				List<Element> childElements2 = Utils
 						.getChildElementsList(childElement);
 				for (Element childElement2 : childElements2) {
@@ -313,9 +311,6 @@ public class PdscParser {
 
 			} else if ("examples".equals(elementName)) {
 
-				// TreeNode examplesNode = new TreeNode(Type.EXAMPLES);
-				// tree.addChild(examplesNode);
-
 				List<Element> childElements2 = Utils
 						.getChildElementsList(childElement);
 				for (Element childElement2 : childElements2) {
@@ -332,10 +327,6 @@ public class PdscParser {
 				}
 
 			} else if ("components".equals(elementName)) {
-
-				// TreeNode componentsNode = new
-				// TreeNode(Type.COMPONENTS);
-				// tree.addChild(componentsNode);
 
 				List<Element> childElements2 = Utils
 						.getChildElementsList(childElement);
@@ -1589,6 +1580,7 @@ public class PdscParser {
 			}
 		}
 
+		// Example names are not unique, add board to help identify them.
 		if (boardName.length() > 0) {
 			exampleName = exampleName + " (" + boardName + ")";
 		}
@@ -2342,6 +2334,7 @@ public class PdscParser {
 		return m_document;
 	}
 
+	// Called from ParsePdscJob, to add example nodes below version
 	public void parseExamples(Node parent) {
 
 		Element packageElement = m_document.getDocumentElement();
@@ -2350,6 +2343,7 @@ public class PdscParser {
 				"examples");
 		if (examplesElement != null) {
 
+			// Enumerate <example> in *.pdsc.
 			List<Element> exampleElements = Utils.getChildElementsList(
 					examplesElement, "example");
 			for (Element exampleElement : exampleElements) {
@@ -2358,16 +2352,20 @@ public class PdscParser {
 				Element boardElement = Utils.getChildElement(exampleElement,
 						"board");
 
+				// Example names are not unique, add the first board to
+				// help identify them.
 				String boardName;
 				boardName = boardElement.getAttribute("name");
 				if (boardName.length() > 0) {
 					exampleName = exampleName + " (" + boardName + ")";
 				}
 
-				Node exampleNode;
-				exampleNode = (Node) parent.getChild(Type.EXAMPLE, exampleName);
+				// Examples must be PackNode, to accomodate outlines.
+				PackNode exampleNode;
+				exampleNode = (PackNode) parent.getChild(Type.EXAMPLE,
+						exampleName);
 				if (exampleNode == null) {
-					exampleNode = new Node(Type.EXAMPLE);
+					exampleNode = new PackNode(Type.EXAMPLE);
 					parent.addChild(exampleNode);
 					exampleNode.setName(exampleName);
 				}
