@@ -19,6 +19,7 @@ public class Messages extends NLS {
 	public static String NewSiteDialog_label_title_new;
 
 	public static String NewSiteDialog_label_type;
+	public static String NewSiteDialog_label_name;
 	public static String NewSiteDialog_label_url;
 
 	static {

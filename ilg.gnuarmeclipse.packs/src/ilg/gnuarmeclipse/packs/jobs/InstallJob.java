@@ -70,7 +70,7 @@ public class InstallJob extends Job {
 	protected IStatus run(IProgressMonitor monitor) {
 
 		if (ms_running) {
-			// return Status.CANCEL_STATUS;
+			return Status.CANCEL_STATUS;
 		}
 
 		ms_running = true;

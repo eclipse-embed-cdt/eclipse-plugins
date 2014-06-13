@@ -33,6 +33,7 @@ import java.util.Map;
 
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
@@ -79,11 +80,17 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 	// ------------------------------------------------------------------------
 
-	class ViewContentProvider extends AbstractViewContentProvider {
+	class ViewContentProvider extends NodeViewContentProvider {
 
-		public Object[] getElements(Object inputElement) {
-			return getChildren(inputElement);
-		}
+		// public Object[] getElements(Object inputElement) {
+		// Object[] children = getChildren(inputElement);
+		// m_out.print("getElements() =");
+		// for (Object child : children) {
+		// m_out.print(" " + child.toString());
+		// }
+		// m_out.println();
+		// return children;
+		// }
 
 	}
 
@@ -453,6 +460,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 	}
 
 	private void contributeToActionBars() {
+
 		IActionBars bars = getViewSite().getActionBars();
 		fillLocalPullDown(bars.getMenuManager());
 		fillLocalToolBar(bars.getToolBarManager());
@@ -460,6 +468,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 	// Top down arrow
 	private void fillLocalPullDown(IMenuManager manager) {
+
 		manager.add(m_expandAll);
 		manager.add(m_collapseAll);
 		manager.add(new Separator());
@@ -496,6 +505,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 	// Top tool bar buttons
 	private void fillLocalToolBar(IToolBarManager manager) {
+
 		manager.add(m_expandAll);
 		manager.add(m_collapseAll);
 		manager.add(new Separator());
@@ -510,6 +520,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 		m_refreshAction = new Action() {
 
 			public void run() {
+
 				// Obtain IServiceLocator implementer, e.g. from
 				// PlatformUI.getWorkbench():
 				// IServiceLocator serviceLocator = PlatformUI.getWorkbench();
@@ -542,14 +553,16 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 		// -----
 		m_installAction = new Action() {
+
 			public void run() {
-				System.out.println("m_installAction.run();");
+
+				// System.out.println("m_installAction.run();");
 
 				TreeSelection selection = (TreeSelection) m_viewer
 						.getSelection();
 				System.out.println(selection);
 
-				InstallJob job = new InstallJob("Install Packs", selection);
+				Job job = new InstallJob("Install Packs", selection);
 				job.schedule();
 			}
 		};
@@ -562,14 +575,16 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 		// -----
 		m_removeAction = new Action() {
+
 			public void run() {
-				System.out.println("m_removeAction.run();");
+
+				// System.out.println("m_removeAction.run();");
 
 				TreeSelection selection = (TreeSelection) m_viewer
 						.getSelection();
-				System.out.println(selection);
+				// System.out.println(selection);
 
-				RemoveJob job = new RemoveJob("Remove Packs", selection);
+				Job job = new RemoveJob("Remove Packs", selection);
 				job.schedule();
 			}
 		};
@@ -582,15 +597,16 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 		// -----
 		m_copyExampleAction = new Action() {
+
 			public void run() {
+
 				System.out.println("m_copyAction.run();");
 
 				TreeSelection selection = (TreeSelection) m_viewer
 						.getSelection();
 				System.out.println(selection);
 
-				CopyExampleJob job = new CopyExampleJob("Copy example",
-						selection);
+				Job job = new CopyExampleJob("Copy example", selection);
 				job.schedule();
 			}
 		};
@@ -598,6 +614,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 		// -----
 		m_expandAll = new Action() {
+
 			public void run() {
 				m_viewer.expandAll();
 			}
@@ -609,6 +626,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 				Activator.PLUGIN_ID, "icons/expandall.png"));
 
 		m_collapseAll = new Action() {
+
 			public void run() {
 				m_viewer.collapseAll();
 			}
@@ -618,15 +636,10 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 		m_collapseAll.setToolTipText("Collapse all children nodes");
 		m_collapseAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/collapseall.png"));
-
 	}
 
 	private void hookDoubleClickAction() {
-		// m_viewer.addDoubleClickListener(new IDoubleClickListener() {
-		// public void doubleClick(DoubleClickEvent event) {
-		// doubleClickAction.run();
-		// }
-		// });
+		// None
 	}
 
 	/**
@@ -687,7 +700,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 		// System.out.println("PacksView.packsChanged(), type=\"" + type +
 		// "\".");
 
-		if (PacksStorageEvent.Type.REFRESH.equals(type)) {
+		if (PacksStorageEvent.Type.NEW_INPUT.equals(type)) {
 
 			// Run the refresh on the GUI thread
 			Display.getDefault().asyncExec(new Runnable() {
@@ -695,9 +708,24 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 				@Override
 				public void run() {
 
-					// ((TreeViewer) m_viewer)
-					// .setAutoExpandLevel(AUTOEXPAND_LEVEL);
-					// m_viewer.setInput(getPacksTree());
+					// m_out.println("PacksView NEW_INPUT");
+
+					((TreeViewer) m_viewer)
+							.setAutoExpandLevel(AUTOEXPAND_LEVEL);
+					m_viewer.setInput(getPacksTree());
+				}
+			});
+
+		} else if (PacksStorageEvent.Type.REFRESH_ALL.equals(type)) {
+
+			// Run the refresh on the GUI thread
+			Display.getDefault().asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+
+					// m_out.println("PacksView REFRESH_ALL");
+
 					m_viewer.refresh();
 				}
 			});
@@ -753,6 +781,9 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 					// and examples below them
 					// refresh(parentsMap.values());
 					m_viewer.refresh();
+
+					updateButtonsEnableStatus((IStructuredSelection) m_viewer
+							.getSelection());
 				}
 			});
 		}

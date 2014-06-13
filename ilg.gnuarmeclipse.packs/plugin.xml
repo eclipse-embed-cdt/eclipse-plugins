@@ -7,13 +7,13 @@
             category="org.eclipse.cdt.ui.preferences.CPluginPreferencePage"
             id="ilg.gnuarmeclipse.packs.ui.preferencePage.packages"
             class="ilg.gnuarmeclipse.packs.ui.preferences.FolderPage"
-            name="Packages">
+            name="%preferences.packages">
       </page>
       <page
             category="ilg.gnuarmeclipse.packs.ui.preferencePage.packages"
             class="ilg.gnuarmeclipse.packs.ui.preferences.SitesPage"
             id="ilg.gnuarmeclipse.packs.ui.preferences.SitesPage"
-            name="Sites">
+            name="%preferences.sites">
       </page>
    </extension>
    <extension
@@ -31,14 +31,14 @@
             class="ilg.gnuarmeclipse.packs.ui.perspectives.PacksPerspective"
             icon="icons/packages.png"
             id="ilg.gnuarmeclipse.packs.ui.perspectives.PacksPerspective"
-            name="C/C++ Packs">
+            name="%perspectives.packs">
       </perspective>
    </extension>
    <extension
          point="org.eclipse.ui.views">
       <category
             id="ilg.gnuarmeclipse.packs"
-            name="C/C++ Packs">
+            name="%views.packs.category">
       </category>
       <view
             allowMultiple="false"
@@ -46,7 +46,7 @@
             class="ilg.gnuarmeclipse.packs.ui.views.DevicesView"
             icon="icons/hardware_chip.png"
             id="ilg.gnuarmeclipse.packs.ui.views.DevicesView"
-            name="Devices">
+            name="%views.packs.devices">
       </view>
       <view
             allowMultiple="false"
@@ -54,7 +54,7 @@
             class="ilg.gnuarmeclipse.packs.ui.views.BoardsView"
             icon="icons/board.png"
             id="ilg.gnuarmeclipse.packs.ui.views.BoardsView"
-            name="Boards">
+            name="%viwes.packs.boards">
       </view>
       <view
             allowMultiple="false"
@@ -62,7 +62,7 @@
             class="ilg.gnuarmeclipse.packs.ui.views.KeywordsView"
             icon="icons/info_obj.png"
             id="ilg.gnuarmeclipse.packs.ui.views.KeywordsView"
-            name="Keywords">
+            name="%viwes.packs.keywords">
       </view>
       <view
             allowMultiple="false"
@@ -70,7 +70,7 @@
             class="ilg.gnuarmeclipse.packs.ui.views.PacksView"
             icon="icons/packages.png"
             id="ilg.gnuarmeclipse.packs.ui.views.PackagesView"
-            name="Packs">
+            name="%viwes.packs.packages">
       </view>
       <view
             allowMultiple="false"
@@ -78,7 +78,7 @@
             class="ilg.gnuarmeclipse.packs.ui.views.OutlineView"
             icon="icons/outline_co.png"
             id="ilg.gnuarmeclipse.packs.ui.views.OutlineView"
-            name="Outline"
+            name="%viwes.packs.outline"
             restorable="true">
       </view>
    </extension>
@@ -89,17 +89,17 @@
          point="org.eclipse.ui.commands">
       <category
             id="ilg.gnuarmeclipse.packs.commands.category"
-            name="Packages Category">
+            name="%commands.packs.category">
       </category>
       <command
             categoryId="ilg.gnuarmeclipse.packs.commands.category"
             id="ilg.gnuarmeclipse.packs.commands.refreshCommand"
-            name="Refresh">
+            name="%commands.packs.refresh">
       </command>
       <command
             categoryId="ilg.gnuarmeclipse.packs.commands.category"
             id="ilg.gnuarmeclipse.packs.commands.showPerspectiveCommand"
-            name="Switch to C/C++ Packs Perspective">
+            name="%commands.packs.showPerspective">
       </command>
    </extension>
    <extension
@@ -124,7 +124,7 @@
                   commandId="ilg.gnuarmeclipse.packs.commands.showPerspectiveCommand"
                   icon="icons/packages.png"
                   style="push"
-                  tooltip="Make the C/C++ Packs perspective visible">
+                  tooltip="%menus.toolbar.showPerspective.tooltip">
             </command>
          </toolbar>
       </menuContribution>

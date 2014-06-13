@@ -1889,11 +1889,13 @@ public class PdscParser {
 		String pathArray[] = posixPath.split("/");
 		String baseName = pathArray[pathArray.length - 1];
 
+		String posixSrc = updatePosixSeparators(src);
+
 		fileNode.putProperty(Node.FILE_PROPERTY, posixPath);
 		fileNode.putProperty(Node.CATEGORY_PROPERTY, category);
 		fileNode.putNonEmptyProperty(Node.ATTR_PROPERTY, attr);
 		fileNode.putNonEmptyProperty(Node.VERSION_PROPERTY, version);
-		fileNode.putNonEmptyProperty(Node.SRC_PROPERTY, src);
+		fileNode.putNonEmptyProperty(Node.SRC_PROPERTY, posixSrc);
 		fileNode.putNonEmptyProperty(Node.SELECT_PROPERTY, select);
 		fileNode.putNonEmptyProperty(Node.CONDITION_PROPERTY, condition);
 
@@ -1910,7 +1912,7 @@ public class PdscParser {
 		description = extendDescription(description, "category", category);
 		description = extendDescription(description, "attr", attr);
 		description = extendDescription(description, "version", version);
-		description = extendDescription(description, "src", src);
+		description = extendDescription(description, "src", posixSrc);
 		description = extendDescription(description, "select", select);
 		description = extendDescription(description, "condition", condition);
 
@@ -2389,7 +2391,7 @@ public class PdscParser {
 
 		long beginTime = System.currentTimeMillis();
 
-		m_out.println("Processing \"" + m_path + " for content.xml ...");
+		m_out.println("Processing \"" + m_path + "\" for content.xml ...");
 
 		Element packageElement = m_document.getDocumentElement();
 		String firstElementName = packageElement.getNodeName();

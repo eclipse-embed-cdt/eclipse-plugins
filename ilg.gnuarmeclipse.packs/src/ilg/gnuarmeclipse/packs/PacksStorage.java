@@ -31,9 +31,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -164,11 +161,20 @@ public class PacksStorage {
 		m_listeners.remove(listener);
 	}
 
-	public void notifyRefresh() {
+	public void notifyNewInput() {
 
 		// System.out.println("PacksStorage notifyRefresh()");
 		PacksStorageEvent event = new PacksStorageEvent(this,
-				PacksStorageEvent.Type.REFRESH);
+				PacksStorageEvent.Type.NEW_INPUT);
+
+		notifyListener(event);
+	}
+
+	public void notifyRefreshAll() {
+
+		// System.out.println("PacksStorage notifyRefresh()");
+		PacksStorageEvent event = new PacksStorageEvent(this,
+				PacksStorageEvent.Type.REFRESH_ALL);
 
 		notifyListener(event);
 	}
@@ -187,54 +193,6 @@ public class PacksStorage {
 			// System.out.println(listener);
 			listener.packsChanged(event);
 		}
-	}
-
-	// Executed as a separate job from plug-in activator
-	public IStatus loadRepositories(IProgressMonitor monitor) {
-
-		long beginTime = System.currentTimeMillis();
-
-		m_out.println();
-		m_out.println(Utils.getCurrentDateTime());
-
-		List<Map<String, Object>> reposList;
-		reposList = m_repos.getList();
-
-		int workUnits = reposList.size();
-		workUnits++; // For post processing
-		monitor.beginTask("Load packs repositories", workUnits);
-
-		parseRepos(monitor);
-
-		// Notify listeners (currently the views) that the packs changed
-		// (for just in case this takes very long, normally the views are
-		// not created at this moment)
-
-		// System.out.println(this);
-		Display.getDefault().asyncExec(new Runnable() {
-
-			@Override
-			public void run() {
-				// System.out.println("run()");
-				notifyRefresh();
-			}
-		});
-
-		long endTime = System.currentTimeMillis();
-		long duration = endTime - beginTime;
-		if (duration == 0) {
-			duration = 1;
-		}
-		m_out.print("Load completed in ");
-		if (duration < 1000) {
-			m_out.println(duration + "ms.");
-		} else {
-			m_out.println((duration + 500) / 1000 + "s.");
-		}
-
-		System.out.println("loadRepositories() completed");
-
-		return Status.OK_STATUS;
 	}
 
 	public int computeParseReposWorkUnits() {
@@ -456,7 +414,7 @@ public class PacksStorage {
 			return;
 		}
 
-		m_out.println("Updating installed packages...");
+		m_out.println("Identifying installed packages...");
 
 		int count = 0;
 
@@ -487,7 +445,7 @@ public class PacksStorage {
 			}
 
 		}
-		m_out.println("Updated " + count + " installed packages.");
+		m_out.println("Found " + count + " installed packages.");
 	}
 
 	public void computeUpdatedNodes(Node versionNode, boolean isInstall,

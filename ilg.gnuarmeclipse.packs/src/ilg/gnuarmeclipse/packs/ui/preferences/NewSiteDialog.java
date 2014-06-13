@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.ui.preferences;
 
+import ilg.gnuarmeclipse.packs.Repos;
 import ilg.gnuarmeclipse.packs.ui.Messages;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -33,12 +34,15 @@ public class NewSiteDialog extends Dialog {
 	private boolean m_isEdit;
 	private String[] m_data;
 
-	private String[] m_typeSelections = { "CMSIS Pack" };
+	// Directly refer the types defined in Repos.
+	private String[] m_typeSelections = Repos.TYPES;
 
 	private Combo m_typeCombo;
+	private Text m_nameText;
 	private Text m_urlText;
 
 	private String m_returnType;
+	private String m_returnName;
 	private String m_returnUrl;
 
 	protected NewSiteDialog(Shell parentShell, String[] data) {
@@ -71,7 +75,7 @@ public class NewSiteDialog extends Dialog {
 	}
 
 	protected String[] getData() {
-		return new String[] { m_returnType, m_returnUrl };
+		return new String[] { m_returnType, m_returnName, m_returnUrl };
 	}
 
 	@Override
@@ -123,6 +127,28 @@ public class NewSiteDialog extends Dialog {
 		}
 
 		{
+			Label nameLabel = new Label(comp, SWT.LEFT);
+			// typeLabel.setFont(comp.getFont());
+			nameLabel.setText(Messages.NewSiteDialog_label_name);
+			layoutData = new GridData();
+			nameLabel.setLayoutData(layoutData);
+
+			m_nameText = new Text(comp, SWT.SINGLE | SWT.BORDER);
+			if (m_isEdit) {
+				m_nameText.setText(m_data[1]);
+			} else {
+				m_nameText.setText("");
+			}
+
+			m_returnName = m_nameText.getText();
+
+			layoutData = new GridData();
+			layoutData.horizontalAlignment = SWT.FILL;
+			layoutData.grabExcessHorizontalSpace = true;
+			m_nameText.setLayoutData(layoutData);
+		}
+
+		{
 			Label urlLabel = new Label(comp, SWT.LEFT);
 			// typeLabel.setFont(comp.getFont());
 			urlLabel.setText(Messages.NewSiteDialog_label_url);
@@ -131,7 +157,7 @@ public class NewSiteDialog extends Dialog {
 
 			m_urlText = new Text(comp, SWT.SINGLE | SWT.BORDER);
 			if (m_isEdit) {
-				m_urlText.setText(m_data[1]);
+				m_urlText.setText(m_data[2]);
 			} else {
 				m_urlText.setText("");
 			}
@@ -148,6 +174,13 @@ public class NewSiteDialog extends Dialog {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				m_returnType = m_typeCombo.getText();
+			}
+		});
+
+		m_nameText.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				m_returnName = m_nameText.getText();
 			}
 		});
 

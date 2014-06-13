@@ -58,16 +58,8 @@ public class BoardsView extends ViewPart implements IPacksStorageListener {
 
 	// ------------------------------------------------------------------------
 
-	class ViewContentProvider extends AbstractViewContentProvider {
+	class ViewContentProvider extends NodeViewContentProvider {
 
-		public Object[] getElements(Object parent) {
-
-			if (parent.equals(getViewSite())) {
-				m_tree = getBoardsTree();
-				return getChildren(m_tree);
-			}
-			return getChildren(parent);
-		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -176,7 +168,7 @@ public class BoardsView extends ViewPart implements IPacksStorageListener {
 		m_viewer.setLabelProvider(new ViewLabelProvider());
 		m_viewer.setSorter(new NameSorter());
 
-		m_viewer.setInput(getViewSite());
+		m_viewer.setInput(getBoardsTree());
 
 		addProviders();
 		addListners();
@@ -249,6 +241,7 @@ public class BoardsView extends ViewPart implements IPacksStorageListener {
 	private void makeActions() {
 
 		m_removeFilters = new Action() {
+
 			public void run() {
 				// Empty selection
 				m_viewer.setSelection(null);
@@ -263,6 +256,7 @@ public class BoardsView extends ViewPart implements IPacksStorageListener {
 
 		// -----
 		m_expandAll = new Action() {
+
 			public void run() {
 				m_viewer.expandAll();
 			}
@@ -274,6 +268,7 @@ public class BoardsView extends ViewPart implements IPacksStorageListener {
 				Activator.PLUGIN_ID, "icons/expandall.png"));
 
 		m_collapseAll = new Action() {
+
 			public void run() {
 				m_viewer.collapseAll();
 			}
@@ -326,10 +321,6 @@ public class BoardsView extends ViewPart implements IPacksStorageListener {
 		System.out.println("BoardsView.updated()");
 	}
 
-	public Node getViewTree() {
-		return m_contentProvider.m_tree;
-	}
-
 	public String toString() {
 		return "BoardsView";
 	}
@@ -344,12 +335,27 @@ public class BoardsView extends ViewPart implements IPacksStorageListener {
 		// .println("BoardsView.ViewContentProvider.packsChanged(), type=\""
 		// + type + "\".");
 
-		if (PacksStorageEvent.Type.REFRESH.equals(type)) {
+		if (PacksStorageEvent.Type.NEW_INPUT.equals(type)) {
 
 			Display.getDefault().asyncExec(new Runnable() {
 
 				@Override
 				public void run() {
+
+					// m_out.println("BoardsView NEW_INPUT");
+
+					m_viewer.setInput(getBoardsTree());
+				}
+			});
+
+		} else if (PacksStorageEvent.Type.REFRESH_ALL.equals(type)) {
+
+			Display.getDefault().asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+
+					// m_out.println("BoardsView REFRESH_ALL");
 
 					m_viewer.refresh();
 				}
@@ -365,7 +371,6 @@ public class BoardsView extends ViewPart implements IPacksStorageListener {
 				@Override
 				public void run() {
 
-					// m_viewer.setInput(getDevicesTree());
 					refresh(updatedMap.values());
 				}
 			});
@@ -464,9 +469,9 @@ public class BoardsView extends ViewPart implements IPacksStorageListener {
 	private void updateBoardsTree(Map<String, Leaf> updatedList) {
 
 		Node modelTree = m_storage.getPacksTree();
-		Node viewTree = getViewTree();
+		Node viewTree = (Node) m_viewer.getInput();
 
-		if (modelTree.hasChildren()) {
+		if (modelTree.hasChildren() && viewTree != null) {
 
 			// Disable all devices
 			if (viewTree.hasChildren()) {

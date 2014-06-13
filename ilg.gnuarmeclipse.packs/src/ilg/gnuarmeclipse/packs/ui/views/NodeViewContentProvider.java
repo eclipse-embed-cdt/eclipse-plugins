@@ -18,10 +18,9 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-public abstract class AbstractViewContentProvider implements
+public abstract class NodeViewContentProvider implements
 		IStructuredContentProvider, ITreeContentProvider {
 
-	protected Node m_tree;
 	protected Viewer m_viewer;
 
 	@Override
@@ -31,8 +30,15 @@ public abstract class AbstractViewContentProvider implements
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 
-		m_tree = null;
 		m_viewer = viewer;
+	}
+
+	// @Override
+	// public abstract Object[] getElements(Object inputElement);
+
+	@Override
+	public Object[] getElements(Object inputElement) {
+		return getChildren(inputElement);
 	}
 
 	@Override
@@ -44,7 +50,6 @@ public abstract class AbstractViewContentProvider implements
 		} else {
 			return null;
 		}
-
 	}
 
 	@Override
@@ -61,13 +66,6 @@ public abstract class AbstractViewContentProvider implements
 		} else {
 			return false;
 		}
-	}
-
-	@Override
-	public abstract Object[] getElements(Object inputElement);
-
-	public void forceRefresh() {
-		m_tree = null;
 	}
 
 }

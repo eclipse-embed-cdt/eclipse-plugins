@@ -58,16 +58,8 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 
 	// ------------------------------------------------------------------------
 
-	class ViewContentProvider extends AbstractViewContentProvider {
+	class ViewContentProvider extends NodeViewContentProvider {
 
-		public Object[] getElements(Object inputElement) {
-
-			if (inputElement.equals(getViewSite())) {
-				m_tree = getDevicesTree();
-				return getChildren(m_tree);
-			}
-			return getChildren(inputElement);
-		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -177,7 +169,7 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 		m_viewer.setLabelProvider(new ViewLabelProvider());
 		m_viewer.setSorter(new NameSorter());
 
-		m_viewer.setInput(getViewSite());
+		m_viewer.setInput(getDevicesTree());
 
 		addProviders();
 		addListners();
@@ -250,6 +242,7 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 	private void makeActions() {
 
 		m_removeFilters = new Action() {
+
 			public void run() {
 				// Empty selection
 				m_viewer.setSelection(null);
@@ -264,6 +257,7 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 
 		// -----
 		m_expandAll = new Action() {
+
 			public void run() {
 				m_viewer.expandAll();
 			}
@@ -275,6 +269,7 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 				Activator.PLUGIN_ID, "icons/expandall.png"));
 
 		m_collapseAll = new Action() {
+
 			public void run() {
 				m_viewer.collapseAll();
 			}
@@ -310,7 +305,7 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 		// Setting the selection will force the outline update
 		m_viewer.setSelection(m_viewer.getSelection());
 
-		System.out.println("DevicesView.refresh() " + obj);
+		// System.out.println("DevicesView.refresh() " + obj);
 	}
 
 	public void update(Object obj) {
@@ -324,11 +319,8 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 		} else {
 			m_viewer.update(obj, null);
 		}
-		System.out.println("DevicesView.updated()");
-	}
 
-	public Node getViewTree() {
-		return m_contentProvider.m_tree;
+		// System.out.println("DevicesView.updated()");
 	}
 
 	public String toString() {
@@ -344,12 +336,27 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 		// System.out.println("DevicesView.packsChanged(), type=\"" + type +
 		// "\".");
 
-		if (PacksStorageEvent.Type.REFRESH.equals(type)) {
+		if (PacksStorageEvent.Type.NEW_INPUT.equals(type)) {
 
 			Display.getDefault().asyncExec(new Runnable() {
 
 				@Override
 				public void run() {
+
+					// m_out.println("DevicesView NEW_INPUT");
+
+					m_viewer.setInput(getDevicesTree());
+				}
+			});
+
+		} else if (PacksStorageEvent.Type.REFRESH_ALL.equals(type)) {
+
+			Display.getDefault().asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+
+					// m_out.println("DevicesView REFRESH_ALL");
 
 					m_viewer.refresh();
 				}
@@ -365,9 +372,7 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 				@Override
 				public void run() {
 
-					// m_viewer.setInput(getDevicesTree());
 					refresh(updatedMap.values());
-					// m_viewer.refresh();
 				}
 			});
 		}
@@ -471,9 +476,9 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 	private void updateDevicesTree(Map<String, Leaf> updatedList) {
 
 		Node modelTree = m_storage.getPacksTree();
-		Node viewTree = getViewTree();
+		Node viewTree = (Node) m_viewer.getInput();
 
-		if (modelTree.hasChildren()) {
+		if (modelTree.hasChildren() && viewTree != null) {
 
 			// Disable all devices
 			if (viewTree.hasChildren()) {

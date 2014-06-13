@@ -198,7 +198,7 @@ public class RefreshHandler extends AbstractHandler {
 
 		} else {
 
-			m_storage.notifyRefresh();
+			m_storage.notifyRefreshAll();
 
 			long endTime = System.currentTimeMillis();
 			long duration = endTime - beginTime;

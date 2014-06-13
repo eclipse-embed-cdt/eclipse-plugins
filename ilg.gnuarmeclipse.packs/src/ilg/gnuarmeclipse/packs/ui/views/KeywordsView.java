@@ -37,6 +37,7 @@ import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IWorkbenchActionConstants;
@@ -52,16 +53,7 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 
 	// ------------------------------------------------------------------------
 
-	class ViewContentProvider extends AbstractViewContentProvider {
-
-		public Object[] getElements(Object parent) {
-
-			if (parent.equals(getViewSite())) {
-				m_tree = getKeywordsTree();
-				return getChildren(m_tree);
-			}
-			return getChildren(parent);
-		}
+	class ViewContentProvider extends NodeViewContentProvider {
 
 	}
 
@@ -134,7 +126,7 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 		m_viewer.setLabelProvider(new ViewLabelProvider());
 		m_viewer.setSorter(new NameSorter());
 
-		m_viewer.setInput(getViewSite());
+		m_viewer.setInput(getKeywordsTree());
 
 		addProviders();
 		addListners();
@@ -201,6 +193,7 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 	private void makeActions() {
 
 		m_removeFilters = new Action() {
+
 			public void run() {
 				// Empty selection
 				m_viewer.setSelection(null);// new TreeSelection());
@@ -253,8 +246,36 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 		// System.out.println("KeywordsView.packsChanged(), type=\"" + type
 		// + "\".");
 
-		if (PacksStorageEvent.Type.REFRESH.equals(type)) {
-			m_viewer.refresh();
+		if (PacksStorageEvent.Type.NEW_INPUT.equals(type)) {
+
+			Display.getDefault().asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+
+					// m_out.println("KeywordsView NEW_INPUT");
+
+					m_viewer.setInput(getKeywordsTree());
+				}
+			});
+
+		} else if (PacksStorageEvent.Type.REFRESH_ALL.equals(type)) {
+
+			Display.getDefault().asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+
+					// m_out.println("KeywordsView REFRESH_ALL");
+
+					m_viewer.refresh();
+				}
+			});
+
+		} else if (PacksStorageEvent.Type.UPDATE_VERSIONS.equals(type)) {
+
+			// Nothing to do
+
 		}
 	}
 

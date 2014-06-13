@@ -18,9 +18,7 @@ import ilg.gnuarmeclipse.packs.tree.Leaf;
 import ilg.gnuarmeclipse.packs.tree.Node;
 import ilg.gnuarmeclipse.packs.tree.Type;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
@@ -45,7 +43,10 @@ public class ContentSerialiser {
 		if (!file.exists())
 			file.createNewFile();
 		if (file.exists()) {
-			writer = new PrintWriter(new BufferedWriter(new FileWriter(file)));
+			// writer = new PrintWriter(new BufferedWriter(new
+			// FileWriter(file)));
+			writer = new PrintWriter(file, "UTF-8");
+
 			writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 			writer.println();
 			writer.println("<root version=\""

@@ -70,7 +70,7 @@ public class OutlineView extends ViewPart {
 	// ------------------------------------------------------------------------
 
 	// Embedded classes
-	class ViewContentProvider extends AbstractViewContentProvider {
+	class ViewContentProvider extends NodeViewContentProvider {
 
 		@Override
 		public Object[] getElements(Object inputElement) {

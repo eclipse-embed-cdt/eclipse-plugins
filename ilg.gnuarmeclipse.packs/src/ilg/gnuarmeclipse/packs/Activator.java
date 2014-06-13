@@ -11,7 +11,8 @@
 
 package ilg.gnuarmeclipse.packs;
 
-import org.eclipse.core.runtime.IProgressMonitor;
+import ilg.gnuarmeclipse.packs.jobs.LoadReposJob;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
@@ -65,15 +66,8 @@ public class Activator extends AbstractUIPlugin {
 		PacksStorage.getInstance();
 
 		// Initial load of repositories summaries
-		new Job("Load Repositories") {
-
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-
-				return PacksStorage.getInstance().loadRepositories(monitor);
-
-			}
-		}.schedule();
+		Job job = new LoadReposJob("Load Repositories");
+		job.schedule();
 	}
 
 	/*

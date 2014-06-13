@@ -13,10 +13,8 @@ package ilg.gnuarmeclipse.packs;
 
 import ilg.gnuarmeclipse.packs.ui.preferences.FolderConstants;
 
-import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -40,14 +38,19 @@ import org.xml.sax.SAXException;
 
 public class Repos {
 
-	public static final String SITES_FILE_NAME = "sites.xml";
+	public static final String REPOS_FILE_NAME = ".repos.xml";
 
 	public static final String CMSIS_PACK_TYPE = "CMSIS Pack";
 	public static final String XCDL_CMSIS_PACK_TYPE = "XCDL/CMSIS Pack";
 
+	// Used in NewSiteDialog.java.
+	public static final String[] TYPES = { CMSIS_PACK_TYPE,
+			XCDL_CMSIS_PACK_TYPE };
+
 	private static Repos ms_repos;
 
 	public static synchronized Repos getInstance() {
+
 		if (ms_repos == null) {
 			ms_repos = new Repos();
 		}
@@ -204,9 +207,9 @@ public class Repos {
 	private List<Map<String, Object>> parseFile() throws IOException,
 			ParserConfigurationException, SAXException {
 
-		File file = getFileObject(SITES_FILE_NAME);
+		File file = getFileObject(REPOS_FILE_NAME);
 		if (!file.exists()) {
-			throw new UsingDefaultFileException("File " + SITES_FILE_NAME
+			throw new UsingDefaultFileException("File " + REPOS_FILE_NAME
 					+ " does not exist, using defaults.");
 		}
 
@@ -217,14 +220,14 @@ public class Repos {
 		Document document = parser.parse(inputSource);
 
 		Element el = document.getDocumentElement();
-		if (!"sites".equals(el.getNodeName())) {
-			throw new IOException("Missing <sites>.");
+		if (!"repositories".equals(el.getNodeName())) {
+			throw new IOException("Missing <repositories>.");
 		}
 
 		List<Map<String, Object>> sitesList;
 		sitesList = new ArrayList<Map<String, Object>>();
 
-		NodeList siteList = el.getElementsByTagName("site");
+		NodeList siteList = el.getElementsByTagName("repository");
 		for (int i = 0; i < siteList.getLength(); ++i) {
 			Node siteNode = siteList.item(i);
 
@@ -264,31 +267,33 @@ public class Repos {
 
 	public void putList(List<Map<String, Object>> sitesList) throws IOException {
 
-		File file = getFileObject(SITES_FILE_NAME);
+		File file = getFileObject(REPOS_FILE_NAME);
 
 		// The xml structure is simple, write it as strings
 		if (!file.exists())
 			file.createNewFile();
 		if (file.exists()) {
-			PrintWriter writer = new PrintWriter(new BufferedWriter(
-					new FileWriter(file)));
+			// PrintWriter writer = new PrintWriter(new BufferedWriter(new
+			// FileWriter(file)));
+			PrintWriter writer = new PrintWriter(file, "UTF-8");
+
 			writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-			writer.println("<sites>");
+			writer.println("<repositories>");
 
 			for (Map<String, Object> site : sitesList) {
-				writer.println("\t<site>");
+				writer.println("  <repository>");
 
-				writer.println("\t\t<type>"
+				writer.println("    <type>"
 						+ Utils.xmlEscape((String) site.get("type"))
 						+ "</type>");
-				writer.println("\t\t<name>"
+				writer.println("    <name>"
 						+ Utils.xmlEscape((String) site.get("name"))
 						+ "</name>");
-				writer.println("\t\t<url>"
+				writer.println("    <url>"
 						+ Utils.xmlEscape((String) site.get("url")) + "</url>");
-				writer.println("\t</site>");
+				writer.println("  </repository>");
 			}
-			writer.println("</sites>");
+			writer.println("</repositories>");
 			writer.close();
 		}
 	}
