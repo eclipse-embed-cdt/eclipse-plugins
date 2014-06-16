@@ -97,7 +97,15 @@ public class ParsePdscJob extends Job {
 
 			// Required to resolve path for actions
 			outlineNode.putProperty(Property.DEST_FOLDER, destFolder);
+
 			m_versionNode.setOutline(outlineNode);
+			PackNode packNode = (PackNode) m_versionNode.getParent();
+			if (packNode.getChildren().get(0).getName()
+					.equals(m_versionNode.getName())) {
+				// If most recent child, make the outline available for the
+				// package node too.
+				packNode.setOutline(outlineNode);
+			}
 
 			// Parse examples again, with full outlines
 			// (will reuse existing example nodes)

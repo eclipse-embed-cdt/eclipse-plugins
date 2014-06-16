@@ -738,8 +738,8 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 			MessageBox dlg = new MessageBox(m_composite.getShell(), SWT.OK
 					| SWT.CANCEL);
 
-			String msg = "Destination folder(s) not empty.";
-			msg += "\nDelete previous content?";
+			String msg = "One of the destination folders is not empty.";
+			msg += "\nDo you agree to delete the previous content?";
 			dlg.setMessage(msg);
 			if (dlg.open() == SWT.OK) {
 				return true;
