@@ -150,7 +150,7 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 	 */
 	public void createPartControl(Composite parent) {
 
-		System.out.println("DevicesView.createPartControl()");
+		// System.out.println("DevicesView.createPartControl()");
 
 		m_viewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION
 				| SWT.H_SCROLL | SWT.V_SCROLL);
@@ -398,6 +398,11 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 
 			m_out.println("Found " + count + " device(s), from "
 					+ devicesRoot.getChildren().size() + " vendor(s).");
+
+		} else {
+
+			Node empty = Node.addNewChild(devicesRoot, Type.NONE);
+			empty.setName("(none)");
 		}
 
 		return devicesRoot;

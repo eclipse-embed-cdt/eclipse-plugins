@@ -112,7 +112,7 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 	 */
 	public void createPartControl(Composite parent) {
 
-		System.out.println("KeywordsView.createPartControl()");
+		// System.out.println("KeywordsView.createPartControl()");
 
 		m_viewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION
 				| SWT.H_SCROLL | SWT.V_SCROLL);
@@ -305,6 +305,11 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 			}
 
 			m_out.println("Found " + set.size() + " keyword(s).");
+
+		} else {
+
+			Node empty = Node.addNewChild(keywordsRoot, Type.NONE);
+			empty.setName("(none)");
 		}
 
 		return keywordsRoot;

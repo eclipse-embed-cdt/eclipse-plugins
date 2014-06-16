@@ -30,20 +30,23 @@ public class PacksPerspective implements IPerspectiveFactory {
 	private IPageLayout factory;
 
 	public PacksPerspective() {
+
 		super();
 
-		System.out.println("PacksPerspective()");
+		// System.out.println("PacksPerspective()");
 	}
 
 	public void createInitialLayout(IPageLayout factory) {
+
+		// System.out.println("PacksPerspective.createInitialLayout()");
+
 		this.factory = factory;
+
 		addViews();
 		addActionSets();
 		addNewWizardShortcuts();
 		addPerspectiveShortcuts();
 		addViewShortcuts();
-
-		System.out.println("PacksPerspective.createInitialLayout()");
 	}
 
 	private void addViews() {

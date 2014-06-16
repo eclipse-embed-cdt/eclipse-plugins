@@ -25,7 +25,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.console.MessageConsoleStream;
 
-public class LoadReposJob extends Job {
+// Used when the plug-in is activated.
+public class LoadReposSummariesJob extends Job {
 
 	private static boolean ms_running = false;
 
@@ -34,7 +35,7 @@ public class LoadReposJob extends Job {
 	private Repos m_repos;
 	private PacksStorage m_storage;
 
-	public LoadReposJob(String name) {
+	public LoadReposSummariesJob(String name) {
 
 		super(name);
 
@@ -63,7 +64,7 @@ public class LoadReposJob extends Job {
 
 		int workUnits = reposList.size();
 		workUnits++; // For post processing
-		monitor.beginTask("Load packs repositories", workUnits);
+		monitor.beginTask("Load repos summaries", workUnits);
 
 		m_storage.parseRepos(monitor);
 

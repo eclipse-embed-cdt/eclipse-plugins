@@ -40,7 +40,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * Preferences dialog.
  */
 
-public class SitesPage extends PreferencePage implements
+public class ReposPage extends PreferencePage implements
 		IWorkbenchPreferencePage {
 
 	private Composite m_composite;
@@ -61,7 +61,7 @@ public class SitesPage extends PreferencePage implements
 
 	private Repos m_repos;
 
-	public SitesPage() {
+	public ReposPage() {
 
 		super();
 		setDescription("Add links to the sites where packages are published.");
@@ -133,17 +133,17 @@ public class SitesPage extends PreferencePage implements
 
 		m_columnType = new TableColumn(m_table, SWT.NULL);
 		m_columnType.setText("Type");
-		m_columnType.setWidth(80);
+		m_columnType.setWidth(100);
 		m_columnType.setResizable(true);
 
 		m_columnName = new TableColumn(m_table, SWT.NULL);
 		m_columnName.setText("Name");
-		m_columnName.setWidth(60);
+		m_columnName.setWidth(100);
 		m_columnName.setResizable(true);
 
 		m_columnUrl = new TableColumn(m_table, SWT.NULL);
 		m_columnUrl.setText("URL");
-		m_columnUrl.setWidth(240);
+		m_columnUrl.setWidth(350);
 		m_columnUrl.setResizable(true);
 	}
 
@@ -241,7 +241,7 @@ public class SitesPage extends PreferencePage implements
 
 	private void handleAddButton() {
 
-		NewSiteDialog dlg = new NewSiteDialog(m_composite.getShell(), null);
+		NewRepoDialog dlg = new NewRepoDialog(m_composite.getShell(), null);
 		if (dlg.open() == Dialog.OK) {
 			m_contentList.add(m_repos.convertToMap(dlg.getData()));
 			// System.out.println("added");
@@ -255,7 +255,7 @@ public class SitesPage extends PreferencePage implements
 			return; // nothing selected
 		}
 
-		NewSiteDialog dlg = new NewSiteDialog(m_composite.getShell(),
+		NewRepoDialog dlg = new NewRepoDialog(m_composite.getShell(),
 				m_repos.convertToArray(m_contentList.get(index)));
 		if (dlg.open() == Dialog.OK) {
 			m_contentList.set(index, m_repos.convertToMap(dlg.getData()));

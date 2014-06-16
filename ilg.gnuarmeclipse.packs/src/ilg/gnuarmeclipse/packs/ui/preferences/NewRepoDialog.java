@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-public class NewSiteDialog extends Dialog {
+public class NewRepoDialog extends Dialog {
 
 	private boolean m_isEdit;
 	private String[] m_data;
@@ -45,7 +45,7 @@ public class NewSiteDialog extends Dialog {
 	private String m_returnName;
 	private String m_returnUrl;
 
-	protected NewSiteDialog(Shell parentShell, String[] data) {
+	protected NewRepoDialog(Shell parentShell, String[] data) {
 
 		super(parentShell);
 

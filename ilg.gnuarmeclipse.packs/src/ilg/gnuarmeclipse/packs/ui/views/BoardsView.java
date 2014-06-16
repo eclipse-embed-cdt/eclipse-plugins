@@ -149,7 +149,7 @@ public class BoardsView extends ViewPart implements IPacksStorageListener {
 	 */
 	public void createPartControl(Composite parent) {
 
-		System.out.println("BoardsView.createPartControl()");
+		// System.out.println("BoardsView.createPartControl()");
 
 		m_viewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION
 				| SWT.H_SCROLL | SWT.V_SCROLL);
@@ -397,6 +397,11 @@ public class BoardsView extends ViewPart implements IPacksStorageListener {
 
 			m_out.println("Found " + count + " board(s), from "
 					+ boardsRoot.getChildren().size() + " vendor(s).");
+
+		} else {
+
+			Node empty = Node.addNewChild(boardsRoot, Type.NONE);
+			empty.setName("(none)");
 		}
 
 		return boardsRoot;

@@ -11,7 +11,7 @@
 
 package ilg.gnuarmeclipse.packs;
 
-import ilg.gnuarmeclipse.packs.jobs.LoadReposJob;
+import ilg.gnuarmeclipse.packs.jobs.LoadReposSummariesJob;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -44,7 +44,7 @@ public class Activator extends AbstractUIPlugin {
 	 * The constructor
 	 */
 	public Activator() {
-		System.out.println("ilg.gnuarmeclipse.packs.Activator()");
+		// System.out.println("ilg.gnuarmeclipse.packs.Activator()");
 	}
 
 	/*
@@ -56,6 +56,8 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public void start(BundleContext context) throws Exception {
 
+		// System.out.println("ilg.gnuarmeclipse.packs.start()");
+
 		super.start(context);
 		ms_plugin = this;
 
@@ -66,7 +68,7 @@ public class Activator extends AbstractUIPlugin {
 		PacksStorage.getInstance();
 
 		// Initial load of repositories summaries
-		Job job = new LoadReposJob("Load Repositories");
+		Job job = new LoadReposSummariesJob("Load repos summaries");
 		job.schedule();
 	}
 
@@ -80,6 +82,7 @@ public class Activator extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 		ms_plugin = null;
 		super.stop(context);
+		// System.out.println("ilg.gnuarmeclipse.packs.stop()");
 	}
 
 	/**
@@ -105,7 +108,7 @@ public class Activator extends AbstractUIPlugin {
 
 	// -----
 
-	public static String CONSOLE_NAME = "Packs console";
+	public static String CONSOLE_NAME = "GNU ARM Eclipse Packs console";
 
 	public static MessageConsoleStream getConsoleOut() {
 		if (ms_consoleOut == null) {

@@ -338,9 +338,13 @@ public class PacksStorage {
 		}
 		m_packsMap = packsMap;
 
-		m_out.println("Processed " + packsVersionsMap.size()
-				+ " package(s), with " + packsVersionsList.size()
-				+ " version(s).");
+		if (packsVersionsMap.size() == 0) {
+			m_out.println("Processed no packages.");
+		} else {
+			m_out.println("Processed " + packsVersionsMap.size()
+					+ " package(s), with " + packsVersionsList.size()
+					+ " version(s).");
+		}
 	}
 
 	private void getVersionsRecursive(Leaf node, List<PackNode> list) {
@@ -414,6 +418,10 @@ public class PacksStorage {
 			return;
 		}
 
+		if (m_packsVersionsList.size() == 0) {
+			return;
+		}
+
 		m_out.println("Identifying installed packages...");
 
 		int count = 0;
@@ -445,7 +453,11 @@ public class PacksStorage {
 			}
 
 		}
-		m_out.println("Found " + count + " installed packages.");
+		if (count == 0) {
+			m_out.println("Found no installed packages.");
+		} else {
+			m_out.println("Found " + count + " installed packages.");
+		}
 	}
 
 	public void computeUpdatedNodes(Node versionNode, boolean isInstall,

@@ -11,7 +11,7 @@
       </page>
       <page
             category="ilg.gnuarmeclipse.packs.ui.preferencePage.packages"
-            class="ilg.gnuarmeclipse.packs.ui.preferences.SitesPage"
+            class="ilg.gnuarmeclipse.packs.ui.preferences.ReposPage"
             id="ilg.gnuarmeclipse.packs.ui.preferences.SitesPage"
             name="%preferences.sites">
       </page>

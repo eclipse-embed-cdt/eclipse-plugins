@@ -2742,21 +2742,24 @@ public class PdscParser {
 			for (Element exampleElement : exampleElements) {
 
 				String firstBoardName = "";
+				// String firstBoardVendorName = "";
 
 				Element boardElement = Utils.getChildElement(exampleElement,
 						"board");
 				if (boardElement != null) {
 
-					String vendor = boardElement.getAttribute("vendor").trim();
+					String boardVendor = boardElement.getAttribute("vendor")
+							.trim();
 					String boardName = boardElement.getAttribute("name").trim();
 
 					// Contribute external board
 					Node boardNode = Node.addUniqueChild(externNode,
 							Type.BOARD, boardName);
-					boardNode.putProperty(Property.VENDOR_NAME, vendor);
+					boardNode.putProperty(Property.VENDOR_NAME, boardVendor);
 
 					if (firstBoardName.length() == 0) {
 						firstBoardName = boardName;
+						// firstBoardVendorName = boardVendor;
 					}
 				}
 

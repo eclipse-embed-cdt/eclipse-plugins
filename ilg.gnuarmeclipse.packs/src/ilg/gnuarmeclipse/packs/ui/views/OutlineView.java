@@ -339,7 +339,7 @@ public class OutlineView extends ViewPart {
 		m_noOutlineNode = new Node(Type.OUTLINE);
 		m_noOutlineNode.setName("No outline");
 		Node.addNewChild(m_noOutlineNode, Type.NONE).setName(
-				"(Outline not available)");
+				"An outline is not available.");
 
 		// m_out = Activator.getConsoleOut();
 
@@ -350,7 +350,7 @@ public class OutlineView extends ViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 
-		System.out.println("OutlineView.createPartControl()");
+		// System.out.println("OutlineView.createPartControl()");
 
 		m_viewer = new TreeViewer(parent, SWT.FULL_SELECTION | SWT.H_SCROLL
 				| SWT.V_SCROLL);

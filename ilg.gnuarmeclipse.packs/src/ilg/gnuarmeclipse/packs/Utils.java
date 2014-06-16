@@ -269,9 +269,12 @@ public class Utils {
 			if (s.endsWith(".download")) {
 				s = s.substring(0, s.length() - ".download".length());
 			}
-			out.println("Copy " + sizeString + " \"" + sourceUrl + "\" to \""
-					+ s + "\".");
+			out.println("Copy " + sizeString);
+			out.println(" from \"" + sourceUrl + "\"");
+			out.println(" to   \"" + s + "\"");
 		}
+
+		destinationFile.getParentFile().mkdirs();
 
 		InputStream input = connection.getInputStream();
 		OutputStream output = new FileOutputStream(destinationFile);
@@ -288,25 +291,60 @@ public class Utils {
 		input.close();
 	}
 
-	public static void deleteFolderRecursive(File folder) {
+	public static void copyFile(File sourceFile, File destinationFile,
+			MessageConsoleStream out, IProgressMonitor monitor)
+			throws IOException {
+
+		if (out != null) {
+			int size = (int) sourceFile.length();
+			String sizeString = Utils.convertSizeToString(size);
+
+			out.println("Copy " + sizeString);
+			out.println(" from \"" + sourceFile + "\"");
+			out.println(" to   \"" + destinationFile + "\"");
+		}
+
+		destinationFile.getParentFile().mkdirs();
+
+		InputStream input = new FileInputStream(sourceFile);
+		OutputStream output = new FileOutputStream(destinationFile);
+
+		byte[] buf = new byte[1024];
+		int bytesRead;
+		while ((bytesRead = input.read(buf)) > 0) {
+			output.write(buf, 0, bytesRead);
+			if (monitor != null) {
+				monitor.worked(bytesRead);
+			}
+		}
+		output.close();
+		input.close();
+	}
+
+	public static int deleteFolderRecursive(File folder) {
+
+		int count = 0;
 
 		if (folder == null)
-			return;
+			return count;
 
 		if (folder.exists()) {
 			for (File f : folder.listFiles()) {
 				if (f.isDirectory()) {
-					deleteFolderRecursive(f);
+					count += deleteFolderRecursive(f);
 					f.setWritable(true, false);
 					f.delete();
 				} else {
 					f.setWritable(true, false);
 					f.delete();
+					count++;
 				}
 			}
 			folder.setWritable(true, false);
 			folder.delete();
 		}
+
+		return count;
 	}
 
 	public static void makeFolderReadOnlyRecursive(File folder) {

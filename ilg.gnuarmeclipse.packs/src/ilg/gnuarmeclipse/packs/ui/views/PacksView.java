@@ -16,6 +16,7 @@ import ilg.gnuarmeclipse.packs.IPacksStorageListener;
 import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.PacksStorageEvent;
 import ilg.gnuarmeclipse.packs.Utils;
+import ilg.gnuarmeclipse.packs.jobs.CopyExampleDialog;
 import ilg.gnuarmeclipse.packs.jobs.CopyExampleJob;
 import ilg.gnuarmeclipse.packs.jobs.InstallJob;
 import ilg.gnuarmeclipse.packs.jobs.RemoveJob;
@@ -26,6 +27,7 @@ import ilg.gnuarmeclipse.packs.tree.Property;
 import ilg.gnuarmeclipse.packs.tree.Selector;
 import ilg.gnuarmeclipse.packs.tree.Type;
 
+import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -33,6 +35,8 @@ import java.util.Map;
 
 import org.eclipse.core.commands.Command;
 import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
@@ -40,6 +44,7 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.layout.TreeColumnLayout;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -58,6 +63,7 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.IActionBars;
@@ -217,6 +223,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 	// ------------------------------------------------------------------------
 
+	private Composite m_composite;
 	private TreeViewer m_viewer;
 	private ISelectionListener m_pageSelectionListener;
 	private ViewContentProvider m_contentProvider;
@@ -251,7 +258,9 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 	public void createPartControl(Composite parent) {
 
-		System.out.println("PacksView.createPartControl()");
+		// System.out.println("PacksView.createPartControl()");
+
+		m_composite = parent;
 
 		m_packsFilter = new PacksFilter();
 		m_packsFilters = new PacksFilter[] { m_packsFilter };
@@ -547,7 +556,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 		};
 		m_refreshAction.setText("Refresh");
 		m_refreshAction
-				.setToolTipText("Read packages descriptions from all sites");
+				.setToolTipText("Read packages descriptions from all repositories");
 		m_refreshAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/refresh_nav.gif"));
 
@@ -600,14 +609,22 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 			public void run() {
 
-				System.out.println("m_copyAction.run();");
-
 				TreeSelection selection = (TreeSelection) m_viewer
 						.getSelection();
-				System.out.println(selection);
+				if (!selection.isEmpty()) {
 
-				Job job = new CopyExampleJob("Copy example", selection);
-				job.schedule();
+					CopyExampleDialog dlg = new CopyExampleDialog(
+							m_composite.getShell(), selection);
+					if (dlg.open() == Dialog.OK) {
+						String out[] = dlg.getData();
+
+						if (checkCopyDestinationFolders(selection, out)) {
+							Job job = new CopyExampleJob("Copy example",
+									selection, out);
+							job.schedule();
+						}
+					}
+				}
 			}
 		};
 		m_copyExampleAction.setText("Copy to folder");
@@ -686,6 +703,51 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 	public String toString() {
 		return "PacksView";
+	}
+
+	// ------------------------------------------------------------------------
+
+	private boolean checkCopyDestinationFolders(TreeSelection selection,
+			String[] param) {
+
+		IPath m_destFolderPath = new Path(param[0]);
+
+		boolean isNonEmpty = false;
+		for (Object sel : selection.toList()) {
+
+			PackNode exampleNode = (PackNode) sel;
+
+			Leaf outlineExampleNode = exampleNode.getOutline().getChild(
+					Type.EXAMPLE);
+
+			String exampleRelativeFolder = outlineExampleNode
+					.getProperty(Node.FOLDER_PROPERTY);
+
+			File destFolder = m_destFolderPath.append(exampleRelativeFolder)
+					.toFile();
+
+			if (destFolder.isDirectory() && (destFolder.listFiles().length > 0)) {
+				isNonEmpty = true;
+				break;
+			}
+
+		}
+
+		if (isNonEmpty) {
+
+			MessageBox dlg = new MessageBox(m_composite.getShell(), SWT.OK
+					| SWT.CANCEL);
+
+			String msg = "Destination folder(s) not empty.";
+			msg += "\nDelete previous content?";
+			dlg.setMessage(msg);
+			if (dlg.open() == SWT.OK) {
+				return true;
+			}
+
+			return false;
+		}
+		return true;
 	}
 
 	// ------------------------------------------------------------------------
@@ -809,6 +871,11 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 			m_out.println("Found " + count + " package version(s), from "
 					+ packsRoot.getChildren().size() + " vendor(s).");
+		} else {
+
+			Node empty = Node.addNewChild(packsRoot, Type.NONE);
+			empty.setName("(no packages)");
+			empty.setDescription("Press the Refresh button to register all available packages.");
 		}
 
 		return packsRoot;
@@ -900,7 +967,10 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 						// New node with child personality
 						// (must be PackNode to accommodate outline).
-						PackNode.addNewChild(versionNode, child);
+						Node node = PackNode.addNewChild(versionNode, child);
+
+						// Pass "example.name" to view
+						node.copyPropertiesRef(child);
 					}
 				}
 			}

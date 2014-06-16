@@ -65,7 +65,8 @@ public class RefreshHandler extends AbstractHandler {
 	 * The constructor.
 	 */
 	public RefreshHandler() {
-		System.out.println("RefreshHandler()");
+
+		// System.out.println("RefreshHandler()");
 		m_running = false;
 
 		m_out = Activator.getConsoleOut();
@@ -96,7 +97,7 @@ public class RefreshHandler extends AbstractHandler {
 	private IStatus myRun(IProgressMonitor monitor) {
 
 		if (m_running) {
-			// return Status.CANCEL_STATUS;
+			return Status.CANCEL_STATUS;
 		}
 
 		m_running = true;
@@ -198,7 +199,7 @@ public class RefreshHandler extends AbstractHandler {
 
 		} else {
 
-			m_storage.notifyRefreshAll();
+			m_storage.notifyNewInput();
 
 			long endTime = System.currentTimeMillis();
 			long duration = endTime - beginTime;
