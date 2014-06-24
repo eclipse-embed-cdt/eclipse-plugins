@@ -31,7 +31,7 @@ public class SharedStorage {
 				.getSharedDefaultsMap().get(SHARED_CROSS_TOOLCHAIN_NAME);
 
 		if (toolchainName == null)
-			toolchainName = "";
+			toolchainName = Preferences.getToolchainName();
 
 		return toolchainName.trim();
 	}
@@ -50,7 +50,7 @@ public class SharedStorage {
 				.get(pathKey);
 
 		if (sPath == null) {
-			sPath = "";
+			sPath = Preferences.getToolchainPath();
 		}
 
 		return sPath.trim();
