@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: ilg.gnuarmeclipse.managedbuild.cross;singleton:=true
-Bundle-Version: 1.9.3.qualifier
+Bundle-Version: 1.10.1.qualifier
 Bundle-Activator: ilg.gnuarmeclipse.managedbuild.cross.Activator
 Require-Bundle: org.eclipse.core.runtime;bundle-version="3.9.0",
  org.eclipse.cdt.core;bundle-version="5.5.0",
