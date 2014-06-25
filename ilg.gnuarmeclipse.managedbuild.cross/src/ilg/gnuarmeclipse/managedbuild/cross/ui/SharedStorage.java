@@ -44,13 +44,14 @@ public class SharedStorage {
 
 	public static String getToolchainPath(String toolchainName) {
 
+		String name = toolchainName.trim();
 		String pathKey = SHARED_CROSS_TOOLCHAIN_PATH + "."
-				+ toolchainName.trim().hashCode();
+				+ Math.abs(name.hashCode());
 		String sPath = SharedDefaults.getInstance().getSharedDefaultsMap()
 				.get(pathKey);
 
 		if (sPath == null) {
-			sPath = Preferences.getToolchainPath();
+			sPath = Preferences.getToolchainPath(name);
 		}
 
 		return sPath.trim();
@@ -59,7 +60,7 @@ public class SharedStorage {
 	public static void putToolchainPath(String toolchainName, String path) {
 
 		String pathKey = SHARED_CROSS_TOOLCHAIN_PATH + "."
-				+ toolchainName.trim().hashCode();
+				+ Math.abs(toolchainName.trim().hashCode());
 		SharedDefaults.getInstance().getSharedDefaultsMap()
 				.put(pathKey, path.trim());
 	}

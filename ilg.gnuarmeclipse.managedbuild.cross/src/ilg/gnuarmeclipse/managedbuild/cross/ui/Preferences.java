@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.Platform;
 
 public class Preferences {
 
-	public static final String TOOLCHAIN = "toolchain.properties";
+	public static final String TOOLCHAIN = "toolchains.properties";
 	public static final String DEFAULT_NAME = "default.name";
 	public static final String DEFAULT_PATH = "default.path";
 
@@ -25,17 +25,19 @@ public class Preferences {
 
 		try {
 			Properties prop = getToolchainProperties();
-			return prop.getProperty(DEFAULT_NAME, "");
+			return prop.getProperty(DEFAULT_NAME, "").trim();
 		} catch (IOException e) {
 			return "";
 		}
 	}
 
-	public static String getToolchainPath() {
+	public static String getToolchainPath(String toolchainName) {
 
+		int hash = Math.abs(toolchainName.trim().hashCode());
+		String property = DEFAULT_PATH + "." + String.valueOf(hash);
 		try {
 			Properties prop = getToolchainProperties();
-			return prop.getProperty(DEFAULT_PATH, "");
+			return prop.getProperty(property, "").trim();
 		} catch (IOException e) {
 			return "";
 		}
