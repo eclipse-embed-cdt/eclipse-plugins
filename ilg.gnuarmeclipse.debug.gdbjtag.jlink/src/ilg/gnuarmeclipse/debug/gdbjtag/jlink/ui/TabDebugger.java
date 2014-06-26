@@ -1707,10 +1707,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE,
 				ConfigurationAttributes.JTAG_DEVICE);
 
-		if (true)
-			return;
-
-		;
 		// These are inherited from the generic implementation.
 		// Some might need some trimming.
 		{

@@ -1632,10 +1632,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					+ configuration.getName());
 		}
 
-		if (true)
-			return;
-		;
-
 		// Initialisation Commands
 		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
 				ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);

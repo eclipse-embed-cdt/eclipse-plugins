@@ -1017,29 +1017,26 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		{
 			// Do first reset
 			booleanValue = doFirstReset.getSelection();
-		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
-				booleanValue);
-		SharedStorage.putOpenOCDDoInitialReset(booleanValue);
-		
-		// First reset type
-		stringValue = firstResetType.getText().trim();
+			configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
+					booleanValue);
+			SharedStorage.putOpenOCDDoInitialReset(booleanValue);
+
+			// First reset type
+			stringValue = firstResetType.getText().trim();
 			configuration.setAttribute(
-					ConfigurationAttributes.FIRST_RESET_TYPE,
-					stringValue);
+					ConfigurationAttributes.FIRST_RESET_TYPE, stringValue);
 			SharedStorage.putOpenOCDInitialResetType(stringValue);
 
 			// Other commands
 			stringValue = initCommands.getText().trim();
 			configuration.setAttribute(
-					ConfigurationAttributes.OTHER_INIT_COMMANDS,
-					stringValue);
+					ConfigurationAttributes.OTHER_INIT_COMMANDS, stringValue);
 			SharedStorage.putOpenOCDInitOther(stringValue);
 
 			// Enable semihosting
 			booleanValue = enableSemihosting.getSelection();
 			configuration.setAttribute(
-					ConfigurationAttributes.ENABLE_SEMIHOSTING,
-					booleanValue);
+					ConfigurationAttributes.ENABLE_SEMIHOSTING, booleanValue);
 			SharedStorage.putOpenOCDEnableSemihosting(booleanValue);
 		}
 
@@ -1118,11 +1115,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
-
-		if (true)
-			return;
-
-		;
 
 		// Initialisation Commands
 		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
