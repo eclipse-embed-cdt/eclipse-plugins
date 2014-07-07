@@ -2,7 +2,7 @@
 <feature
       id="ilg.gnuarmeclipse.debug.gdbjtag.openocd"
       label="%featureName"
-      version="1.2.2.qualifier"
+      version="1.3.1.qualifier"
       provider-name="%providerName"
       plugin="ilg.gnuarmeclipse.debug.gdbjtag.openocd">
 
