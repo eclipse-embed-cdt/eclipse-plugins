@@ -19,9 +19,9 @@ public interface ConfigurationAttributes {
 
 	public static final String GDB_SERVER_EXECUTABLE = PREFIX
 			+ ".gdbServerExecutable"; //$NON-NLS-1$
-	public static final String OPENOCD_PATH = "${openocd_path}";
-	public static final String GDB_SERVER_EXECUTABLE_DEFAULT = OPENOCD_PATH
-			+ "/openocd";
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT = "${openocd_path}/${openocd_executable}";
+	
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_NAME =  "openocd";
 
 	public static final String GDB_SERVER_CONNECTION_ADDRESS = PREFIX
 			+ ".gdbServerConnectionAddress"; //$NON-NLS-1$

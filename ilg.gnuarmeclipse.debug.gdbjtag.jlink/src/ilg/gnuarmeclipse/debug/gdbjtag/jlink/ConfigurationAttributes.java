@@ -61,14 +61,13 @@ public interface ConfigurationAttributes {
 
 	public static final String GDB_SERVER_EXECUTABLE = PREFIX
 			+ ".gdbServerExecutable"; //$NON-NLS-1$
-	public static final String JLINK_PATH = "${jlink_path}";
-	public static final String GDB_SERVER_EXECUTABLE_DEFAULT = JLINK_PATH
-			+ "/JLinkGDBServer";
-	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_WINDOWS = JLINK_PATH
-			+ "/JLinkGDBServerCL";
-	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_MAC = JLINK_PATH
-			+ "/JLinkGDBServer";
-	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_LINUX = GDB_SERVER_EXECUTABLE_DEFAULT;
+	
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT = "${jlink_path}/${jlink_gdbserver}";
+
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_NAME = "JLinkGDBServer";
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_NAME_WINDOWS = "JLinkGDBServerCL";
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_NAME_MAC = GDB_SERVER_EXECUTABLE_DEFAULT_NAME;
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_NAME_LINUX = GDB_SERVER_EXECUTABLE_DEFAULT_NAME;
 
 	public static final String GDB_SERVER_CONNECTION = PREFIX
 			+ ".gdbServerConnection"; //$NON-NLS-1$

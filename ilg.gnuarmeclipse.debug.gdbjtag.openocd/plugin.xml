@@ -50,4 +50,20 @@
       </device>
    </extension>
 
+   <extension
+         point="org.eclipse.core.variables.valueVariables">
+      <variable
+            description="Path to OpenOCD installation folder"
+            name="openocd_path" 
+            initialValue="" />
+   </extension>
+   
+   <extension
+         point="org.eclipse.core.variables.valueVariables">
+      <variable
+            description="Name of the OpenOCD executable"
+            initializerClass="ilg.gnuarmeclipse.debug.gdbjtag.jlink.OpenOcdVariableInitializer"
+            name="openocd_executable"/>
+   </extension>
+
 </plugin>

@@ -716,7 +716,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 				// Executable
 				stringDefault = SharedStorage
-						.getGdbServerExecutable(getGdbServerExecutableDefault());
+						.getGdbServerExecutable(ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT);
 				gdbServerExecutable.setText(configuration.getAttribute(
 						ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
 						stringDefault));
@@ -1037,7 +1037,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
 
 			String sharedName = SharedStorage
-					.getGdbServerExecutable(getGdbServerExecutableDefault());
+					.getGdbServerExecutable(ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT);
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_EXECUTABLE, sharedName);
 
@@ -1101,11 +1101,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						ConfigurationAttributes.UPDATE_THREAD_LIST_DEFAULT);
 	}
 
-	private static String getGdbServerExecutableDefault() {
-
-		return ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT;
-	}
-
 	public static String getGdbServerCommand(ILaunchConfiguration configuration) {
 
 		String executable = null;
@@ -1118,7 +1113,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			executable = configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
-					getGdbServerExecutableDefault());
+					ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT);
 			// executable = Utils.escapeWhitespaces(executable).trim();
 			executable = executable.trim();
 			if (executable.length() == 0)
