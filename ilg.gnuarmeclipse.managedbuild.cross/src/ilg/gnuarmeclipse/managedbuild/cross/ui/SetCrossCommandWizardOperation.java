@@ -37,53 +37,33 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
  */
 public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 
-	String fProjectName;
-	String fToolchainName;
-	String fPath;
-
-	public SetCrossCommandWizardOperation() {
-	}
-
-	public SetCrossCommandWizardOperation(String projectName,
-			String toolchainName, String path) {
-		fProjectName = projectName;
-		fToolchainName = toolchainName;
-		fPath = path;
-	}
-
 	public void run(IProgressMonitor monitor) throws InvocationTargetException,
 			InterruptedException {
 
 		// System.out.println("SetCrossCommandOperation.run() begin");
 
 		// get local properties
-		fProjectName = (String) MBSCustomPageManager.getPageProperty(
+		String projectName = (String) MBSCustomPageManager.getPageProperty(
 				SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_PROJECT_NAME);
 
-		fToolchainName = (String) MBSCustomPageManager.getPageProperty(
+		String toolchainName = (String) MBSCustomPageManager.getPageProperty(
 				SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_NAME);
-		fPath = (String) MBSCustomPageManager.getPageProperty(
+		String path = (String) MBSCustomPageManager.getPageProperty(
 				SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_PATH);
 
 		// store them on the permanent storage in
 		// workspace/.plugins/org.eclipse.cdt.core/shareddefaults.xml
-		runWithoutWizard();
 
-		// System.out.println("SetCrossCommandOperation.run() end");
-	}
-
-	public void runWithoutWizard() {
-		
-		SharedStorage.putToolchainPath(fToolchainName, fPath);
-		SharedStorage.putToolchainName(fToolchainName);
+		SharedStorage.putToolchainPath(toolchainName, path);
+		SharedStorage.putToolchainName(toolchainName);
 
 		SharedStorage.update();
 
 		IProject project = ResourcesPlugin.getWorkspace().getRoot()
-				.getProject(fProjectName);
+				.getProject(projectName);
 		if (!project.exists())
 			return;
 
@@ -100,8 +80,7 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 			} catch (BuildException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				System.out.println("SetCrossCommandWizardOperation "
-						+ e.getMessage());
+				System.out.println("SetCrossCommandWizardOperation " + e.getMessage());
 			}
 		}
 
