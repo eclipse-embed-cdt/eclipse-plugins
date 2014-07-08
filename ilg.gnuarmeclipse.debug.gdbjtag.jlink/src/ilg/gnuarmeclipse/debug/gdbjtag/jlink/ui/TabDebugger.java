@@ -22,7 +22,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
-import ilg.gnuarmeclipse.debug.gdbjtag.jlink.SharedStorage;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.WorkspacePreferences;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Utils;
 
 import java.io.File;
@@ -1147,7 +1147,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			// J-Link GDB Server Setup
 			{
 				// Start server locally
-				booleanDefault = SharedStorage
+				booleanDefault = WorkspacePreferences
 						.getGdbServerDoStart(ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
 				doStartGdbServer.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.DO_START_GDB_SERVER,
@@ -1158,14 +1158,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT));
 
 				// Executable
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getGdbServerExecutable(ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT);
 				gdbServerExecutable.setText(configuration.getAttribute(
 						ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
 						stringDefault));
 
 				// Device name
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getFlashDeviceName(ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
 
 				String defaultDeviceName = configuration.getAttribute(
@@ -1177,7 +1177,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				gdbFlashDeviceName.setText(deviceName);
 
 				// Endianness
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getGdbServerEndianness(ConfigurationAttributes.ENDIANNESS_DEFAULT);
 				String defaultEndianness = configuration.getAttribute(
 						ConfigurationAttributes.ENDIANNESS_COMPAT,
@@ -1199,7 +1199,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				}
 
 				// Connection
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getGdbServerConnection(ConfigurationAttributes.GDB_SERVER_CONNECTION_DEFAULT);
 
 				String connection = configuration.getAttribute(
@@ -1217,7 +1217,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				}
 
 				// Connection address
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getGdbServerConnectionAddress(ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS_DEFAULT);
 
 				String connectionAddress = configuration.getAttribute(
@@ -1226,7 +1226,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				gdbServerConnectionAddress.setText(connectionAddress);
 
 				// Interface
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getGdbServerInterface(ConfigurationAttributes.INTERFACE_DEFAULT);
 
 				String defaultPhysicalInterface = configuration
@@ -1252,7 +1252,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				}
 
 				// Initial speed
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getGdbServerInitialSpeed(ConfigurationAttributes.GDB_SERVER_SPEED_DEFAULT);
 
 				String defaultPhysicalInterfaceSpeed = configuration
@@ -1346,7 +1346,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT));
 
 				// Other options
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getGdbServerOtherOptions(ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT);
 				gdbServerOtherOptions.setText(configuration
 						.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER,
@@ -1370,7 +1370,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			// GDB Client Setup
 			{
 				// Executable
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getGdbClientExecutable(ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT);
 				String gdbCommandAttr = configuration.getAttribute(
 						IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
@@ -1378,13 +1378,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				gdbClientExecutable.setText(gdbCommandAttr);
 
 				// Other options
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getGdbClientOtherOptions(ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT);
 				gdbClientOtherOptions.setText(configuration.getAttribute(
 						ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
 						stringDefault));
 
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getGdbClientCommands(ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
 				gdbClientOtherCommands.setText(configuration.getAttribute(
 						ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
@@ -1482,7 +1482,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			booleanValue = doStartGdbServer.getSelection();
 			configuration.setAttribute(
 					ConfigurationAttributes.DO_START_GDB_SERVER, booleanValue);
-			SharedStorage.putGdbServerDoStart(booleanValue);
+			WorkspacePreferences.putGdbServerDoStart(booleanValue);
 
 			// Connect to running
 			configuration.setAttribute(
@@ -1493,7 +1493,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			stringValue = gdbServerExecutable.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_EXECUTABLE, stringValue);
-			SharedStorage.putGdbServerExecutable(stringValue);
+			WorkspacePreferences.putGdbServerExecutable(stringValue);
 
 			// Device name
 			stringValue = gdbFlashDeviceName.getText().trim();
@@ -1501,7 +1501,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.setAttribute(
 							ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
 							stringValue);
-			SharedStorage.putFlashDeviceName(stringValue);
+			WorkspacePreferences.putFlashDeviceName(stringValue);
 
 			// Endianness
 			stringValue = ConfigurationAttributes.ENDIANNESS_DEFAULT;
@@ -1516,7 +1516,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_DEVICE_ENDIANNESS,
 					stringValue);
-			SharedStorage.putGdbServerEndianness(stringValue);
+			WorkspacePreferences.putGdbServerEndianness(stringValue);
 
 			// Connection
 			stringValue = ConfigurationAttributes.GDB_SERVER_CONNECTION_DEFAULT;
@@ -1528,14 +1528,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_CONNECTION, stringValue);
-			SharedStorage.putGdbServerConnection(stringValue);
+			WorkspacePreferences.putGdbServerConnection(stringValue);
 
 			// Connection address
 			stringValue = gdbServerConnectionAddress.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
 					stringValue);
-			SharedStorage.putGdbServerConnectionAddress(stringValue);
+			WorkspacePreferences.putGdbServerConnectionAddress(stringValue);
 
 			// Interface
 			stringValue = ConfigurationAttributes.INTERFACE_DEFAULT;
@@ -1551,7 +1551,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
 					stringValue);
-			SharedStorage.putGdbServerInterface(stringValue);
+			WorkspacePreferences.putGdbServerInterface(stringValue);
 
 			// Initial speed
 			stringValue = ConfigurationAttributes.INTERFACE_SPEED_DEFAULT;
@@ -1565,7 +1565,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_DEVICE_SPEED,
 					stringValue);
-			SharedStorage.putGdbServerInitialSpeed(stringValue);
+			WorkspacePreferences.putGdbServerInitialSpeed(stringValue);
 
 			// Ports
 			int port;
@@ -1608,7 +1608,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			stringValue = gdbServerOtherOptions.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_OTHER, stringValue);
-			SharedStorage.putGdbServerOtherOptions(stringValue);
+			WorkspacePreferences.putGdbServerOtherOptions(stringValue);
 
 			// Allocate server console
 			configuration.setAttribute(
@@ -1637,19 +1637,19 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(
 					IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
 					stringValue); // DSF
-			SharedStorage.putGdbClientExecutable(stringValue);
+			WorkspacePreferences.putGdbClientExecutable(stringValue);
 
 			stringValue = gdbClientOtherOptions.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
 					stringValue);
-			SharedStorage.putGdbClientOtherOptions(stringValue);
+			WorkspacePreferences.putGdbClientOtherOptions(stringValue);
 
 			stringValue = gdbClientOtherCommands.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
 					stringValue);
-			SharedStorage.putGdbClientCommands(stringValue);
+			WorkspacePreferences.putGdbClientCommands(stringValue);
 		}
 
 		// Remote target
@@ -1688,7 +1688,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
 						fUpdateThreadlistOnSuspend.getSelection());
 
-		SharedStorage.update();
+		WorkspacePreferences.flush();
 
 		if (DEBUG) {
 			System.out.println("TabDebugger: performApply() completed "
@@ -1741,12 +1741,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
 					ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
 
-			String sharedName = SharedStorage
+			String sharedName = WorkspacePreferences
 					.getGdbServerExecutable(ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT);
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_EXECUTABLE, sharedName);
 
-			sharedName = SharedStorage
+			sharedName = WorkspacePreferences
 					.getFlashDeviceName(ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_DEVICE_NAME, sharedName);
@@ -1825,7 +1825,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration
 					.setAttribute(
 							IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
-							SharedStorage
+							WorkspacePreferences
 									.getGdbClientExecutable(ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT));
 
 			configuration.setAttribute(

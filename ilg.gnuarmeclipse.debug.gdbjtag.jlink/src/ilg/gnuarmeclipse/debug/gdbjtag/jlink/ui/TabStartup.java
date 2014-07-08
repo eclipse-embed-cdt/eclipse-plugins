@@ -16,7 +16,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
-import ilg.gnuarmeclipse.debug.gdbjtag.jlink.SharedStorage;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.WorkspacePreferences;
 
 import java.io.File;
 
@@ -1150,7 +1150,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Initialisation Commands
 			{
 				// Do initial reset
-				booleanDefault = SharedStorage
+				booleanDefault = WorkspacePreferences
 						.getJLinkDoInitialReset(ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
 				doFirstReset
 						.setSelection(configuration.getAttribute(
@@ -1158,13 +1158,13 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 								booleanDefault));
 
 				// Reset type
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getJLinkInitialResetType(ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
 				firstResetType.setText(configuration
 						.getAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
 								stringDefault));
 
-				intDefault = SharedStorage
+				intDefault = WorkspacePreferences
 						.getJLinkInitialResetSpeed(ConfigurationAttributes.FIRST_RESET_SPEED_DEFAULT);
 
 				// Type change from string to int, compatibility preserved
@@ -1187,7 +1187,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					}
 				}
 				// Speed
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getJLinkSpeed(ConfigurationAttributes.INTERFACE_SPEED_DEFAULT);
 				String physicalInterfaceSpeed = configuration.getAttribute(
 						ConfigurationAttributes.INTERFACE_SPEED, stringDefault);
@@ -1218,20 +1218,20 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				}
 
 				// Enable flash breakpoints
-				booleanDefault = SharedStorage
+				booleanDefault = WorkspacePreferences
 						.getJLinkEnableFlashBreakpoints(ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS_DEFAULT);
 				enableFlashBreakpoints.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
 						booleanDefault));
 
 				// Enable semihosting
-				booleanDefault = SharedStorage
+				booleanDefault = WorkspacePreferences
 						.getJLinkEnableSemihosting(ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
 				enableSemihosting.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.ENABLE_SEMIHOSTING,
 						booleanDefault));
 
-				booleanDefault = SharedStorage
+				booleanDefault = WorkspacePreferences
 						.getJLinkSemihostingTelnet(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_DEFAULT);
 				semihostingTelnet
 						.setSelection(configuration
@@ -1239,7 +1239,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 										ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
 										booleanDefault));
 
-				booleanDefault = SharedStorage
+				booleanDefault = WorkspacePreferences
 						.getJLinkSemihostingClient(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_DEFAULT);
 				semihostingGdbClient
 						.setSelection(configuration
@@ -1247,20 +1247,20 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 										ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
 										booleanDefault));
 
-				booleanDefault = SharedStorage
+				booleanDefault = WorkspacePreferences
 						.getJLinkEnableSwo(ConfigurationAttributes.ENABLE_SWO_DEFAULT);
 				// System.out.println("getJLinkEnableSwo()="+booleanDefault+" "+configuration.getName());
 				enableSwo.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.ENABLE_SWO, booleanDefault));
 
-				intDefault = SharedStorage
+				intDefault = WorkspacePreferences
 						.getJLinkSwoEnableTargetCpuFreq(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
 				swoEnableTargetCpuFreq
 						.setText(String.valueOf(configuration
 								.getAttribute(
 										ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
 										intDefault)));
-				intDefault = SharedStorage
+				intDefault = WorkspacePreferences
 						.getJLinkSwoEnableTargetSwoFreq(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
 				swoEnableTargetSwoFreq
 						.setText(String.valueOf(configuration
@@ -1268,7 +1268,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 										ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
 										intDefault)));
 
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getJLinkSwoEnableTargetPortMask(ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT);
 				Object oValue = configuration.getAttribute(
 						ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
@@ -1282,7 +1282,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				swoEnableTargetPortMask.setText(sValue);
 
 				// Other commands
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getJLinkInitOther(ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
 				initCommands.setText(configuration.getAttribute(
 						ConfigurationAttributes.OTHER_INIT_COMMANDS,
@@ -1362,21 +1362,21 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Run Commands
 			{
 				// Do pre-run reset
-				booleanDefault = SharedStorage
+				booleanDefault = WorkspacePreferences
 						.getJLinkDoPreRunReset(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
 				doSecondReset.setSelection(configuration
 						.getAttribute(ConfigurationAttributes.DO_SECOND_RESET,
 								booleanDefault));
 
 				// Pre-run reset type
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getJLinkPreRunResetType(ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
 				secondResetType.setText(configuration.getAttribute(
 						ConfigurationAttributes.SECOND_RESET_TYPE,
 						stringDefault));
 
 				// Other commands
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getJLinkPreRunOther(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
 				runCommands.setText(configuration.getAttribute(
 						ConfigurationAttributes.OTHER_RUN_COMMANDS,
@@ -1446,13 +1446,13 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			booleanValue = doFirstReset.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
 					booleanValue);
-			SharedStorage.putJLinkDoInitialReset(booleanValue);
+			WorkspacePreferences.putJLinkDoInitialReset(booleanValue);
 
 			// First reset type
 			stringValue = firstResetType.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.FIRST_RESET_TYPE, stringValue);
-			SharedStorage.putJLinkInitialResetType(stringValue);
+			WorkspacePreferences.putJLinkInitialResetType(stringValue);
 
 			// First reset speed
 			try {
@@ -1462,7 +1462,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			}
 			configuration.setAttribute(
 					ConfigurationAttributes.FIRST_RESET_SPEED, intValue);
-			SharedStorage.putJLinkInitialResetSpeed(intValue);
+			WorkspacePreferences.putJLinkInitialResetSpeed(intValue);
 
 			// Interface speed
 			stringValue = ConfigurationAttributes.INTERFACE_SPEED_DEFAULT;
@@ -1475,27 +1475,27 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			}
 			configuration.setAttribute(ConfigurationAttributes.INTERFACE_SPEED,
 					stringValue);
-			SharedStorage.putJLinkSpeed(stringValue);
+			WorkspacePreferences.putJLinkSpeed(stringValue);
 
 			// Enable flash breakpoints
 			booleanValue = enableFlashBreakpoints.getSelection();
 			configuration.setAttribute(
 					ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
 					booleanValue);
-			SharedStorage.putJLinkEnableFlashBreakpoints(booleanValue);
+			WorkspacePreferences.putJLinkEnableFlashBreakpoints(booleanValue);
 
 			// Enable semihosting
 			booleanValue = enableSemihosting.getSelection();
 			configuration.setAttribute(
 					ConfigurationAttributes.ENABLE_SEMIHOSTING, booleanValue);
-			SharedStorage.putJLinkEnableSemihosting(booleanValue);
+			WorkspacePreferences.putJLinkEnableSemihosting(booleanValue);
 
 			// Semihosting via telnet
 			booleanValue = semihostingTelnet.getSelection();
 			configuration.setAttribute(
 					ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
 					booleanValue);
-			SharedStorage.putJLinkSemihostingTelnet(booleanValue);
+			WorkspacePreferences.putJLinkSemihostingTelnet(booleanValue);
 
 			// Semihosting via client
 			booleanValue = semihostingGdbClient.getSelection();
@@ -1503,14 +1503,14 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					.setAttribute(
 							ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
 							booleanValue);
-			SharedStorage.putJLinkSemihostingClient(booleanValue);
+			WorkspacePreferences.putJLinkSemihostingClient(booleanValue);
 
 			// Enable swo
 			booleanValue = enableSwo.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.ENABLE_SWO,
 					booleanValue);
 			// System.out.println("putJLinkEnableSwo "+booleanValue+" "+configuration.getName());
-			SharedStorage.putJLinkEnableSwo(booleanValue);
+			WorkspacePreferences.putJLinkEnableSwo(booleanValue);
 
 			// target speed
 			try {
@@ -1520,7 +1520,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			}
 			configuration.setAttribute(
 					ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ, intValue);
-			SharedStorage.putJLinkSwoEnableTargetCpuFreq(intValue);
+			WorkspacePreferences.putJLinkSwoEnableTargetCpuFreq(intValue);
 
 			// Swo speed
 			try {
@@ -1530,20 +1530,20 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			}
 			configuration.setAttribute(
 					ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ, intValue);
-			SharedStorage.putJLinkSwoEnableTargetSwoFreq(intValue);
+			WorkspacePreferences.putJLinkSwoEnableTargetSwoFreq(intValue);
 
 			// Swo port mask
 			stringValue = swoEnableTargetPortMask.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
 					stringValue);
-			SharedStorage.putJLinkSwoEnableTargetPortMask(stringValue);
+			WorkspacePreferences.putJLinkSwoEnableTargetPortMask(stringValue);
 
 			// Other commands
 			stringValue = initCommands.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.OTHER_INIT_COMMANDS, stringValue);
-			SharedStorage.putJLinkInitOther(stringValue);
+			WorkspacePreferences.putJLinkInitOther(stringValue);
 		}
 
 		// Load Symbols & Image...
@@ -1597,26 +1597,26 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			booleanValue = doSecondReset.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
 					doSecondReset.getSelection());
-			SharedStorage.putJLinkDoPreRunReset(booleanValue);
+			WorkspacePreferences.putJLinkDoPreRunReset(booleanValue);
 
 			// reset type
 			stringValue = secondResetType.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.SECOND_RESET_TYPE, stringValue);
-			SharedStorage.putJLinkPreRunResetType(stringValue);
+			WorkspacePreferences.putJLinkPreRunResetType(stringValue);
 
 			// Other commands
 			stringValue = runCommands.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.OTHER_RUN_COMMANDS, stringValue);
-			SharedStorage.putJLinkPreRunOther(stringValue);
+			WorkspacePreferences.putJLinkPreRunOther(stringValue);
 
 			// Continue
 			configuration.setAttribute(ConfigurationAttributes.DO_CONTINUE,
 					doContinue.getSelection());
 		}
 
-		SharedStorage.update();
+		WorkspacePreferences.flush();
 
 		if (DEBUG) {
 			System.out.println("TabStartup: performApply() completed "
@@ -1661,13 +1661,13 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SWO,
 				ConfigurationAttributes.ENABLE_SWO_DEFAULT);
 
-		int sharedCpuFreq = SharedStorage
+		int sharedCpuFreq = WorkspacePreferences
 				.getJLinkSwoEnableTargetCpuFreq(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
 		configuration
 				.setAttribute(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
 						sharedCpuFreq);
 
-		int sharedSwoFreq = SharedStorage
+		int sharedSwoFreq = WorkspacePreferences
 				.getJLinkSwoEnableTargetSwoFreq(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
 		configuration
 				.setAttribute(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,

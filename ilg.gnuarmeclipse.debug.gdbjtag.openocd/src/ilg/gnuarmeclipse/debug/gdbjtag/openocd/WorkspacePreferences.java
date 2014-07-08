@@ -12,13 +12,15 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
 
 import org.eclipse.cdt.core.templateengine.SharedDefaults;
+import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.osgi.service.prefs.BackingStoreException;
+import org.osgi.service.prefs.Preferences;
 
-public class SharedStorage {
+public class WorkspacePreferences {
 
 	// Tab Debugger
 	// GDB Server Setup
-	public static final String GDB_SERVER = Activator.PLUGIN_ID
-			+ ".gdb.server.";
+	public static final String GDB_SERVER = "gdb.server.";
 
 	public static final String GDB_SERVER_DO_START = GDB_SERVER + "doStart";
 
@@ -28,8 +30,7 @@ public class SharedStorage {
 	public static final String GDB_SERVER_OTHER_OPTIONS = GDB_SERVER + "other";
 
 	// GDB Client Setup
-	public static final String GDB_CLIENT = Activator.PLUGIN_ID
-			+ ".gdb.client.";
+	public static final String GDB_CLIENT = "gdb.client.";
 
 	public static final String GDB_CLIENT_EXECUTABLE = GDB_CLIENT
 			+ "executable";
@@ -40,8 +41,7 @@ public class SharedStorage {
 
 	// Tab Startup
 	// Initialisation Commands
-	public static final String GDB_OPENOCD = Activator.PLUGIN_ID
-			+ ".gdb.openocd.";
+	public static final String GDB_OPENOCD = "gdb.openocd.";
 
 	public static final String GDB_OPENOCD_DO_INITIAL_RESET = GDB_OPENOCD
 			+ "doInitialReset";
@@ -64,8 +64,24 @@ public class SharedStorage {
 
 	// ----- getter & setter --------------------------------------------------
 	private static String getValueForId(String id, String defaultValue) {
-		String value = SharedDefaults.getInstance().getSharedDefaultsMap()
-				.get(id);
+
+		// Access the instanceScope
+		Preferences preferences = InstanceScope.INSTANCE
+				.getNode(Activator.PLUGIN_ID);
+
+		String value;
+		// preferences.get(id, defaultValue);
+		value = preferences.get(id, null);
+		// System.out.println("Value of " + id + " is " + value);
+
+		if (value != null) {
+			return value;
+		}
+
+		// Keep this for compatibility
+		id = Activator.PLUGIN_ID + "." + id;
+
+		value = SharedDefaults.getInstance().getSharedDefaultsMap().get(id);
 
 		if (value == null)
 			value = "";
@@ -79,8 +95,20 @@ public class SharedStorage {
 
 	private static void putValueForId(String id, String value) {
 
-		SharedDefaults.getInstance().getSharedDefaultsMap()
-				.put(id, value.trim());
+		value = value.trim();
+
+		// Access the instanceScope
+		Preferences preferences = InstanceScope.INSTANCE
+				.getNode(Activator.PLUGIN_ID);
+		preferences.put(id, value);
+
+		if (false) {
+			// Access the shared preferences
+			String sharedId = Activator.PLUGIN_ID + "." + id;
+
+			SharedDefaults.getInstance().getSharedDefaultsMap()
+					.put(sharedId, value);
+		}
 	}
 
 	// ----- gdb server doStart -----------------------------------------------
@@ -230,10 +258,20 @@ public class SharedStorage {
 		putValueForId(GDB_OPENOCD_PRERUN_OTHER, value);
 	}
 
-	// ----- update -----------------------------------------------------------
-	public static void update() {
+	// ----- flush -----------------------------------------------------------
+	public static void flush() {
 
-		SharedDefaults.getInstance().updateShareDefaultsMap(
-				SharedDefaults.getInstance().getSharedDefaultsMap());
+		try {
+			InstanceScope.INSTANCE
+			.getNode(Activator.PLUGIN_ID).flush();
+		} catch (BackingStoreException e) {
+			// TODO Auto-generated catch block
+			// e.printStackTrace();
+		}
+		
+		if (false) {
+			SharedDefaults.getInstance().updateShareDefaultsMap(
+					SharedDefaults.getInstance().getSharedDefaultsMap());
+		}
 	}
 }

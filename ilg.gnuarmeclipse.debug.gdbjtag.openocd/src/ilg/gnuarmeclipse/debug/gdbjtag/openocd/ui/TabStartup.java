@@ -16,7 +16,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.SharedStorage;
+import ilg.gnuarmeclipse.debug.gdbjtag.openocd.WorkspacePreferences;
 
 import java.io.File;
 
@@ -853,7 +853,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Initialisation Commands
 			{
 				// Do initial reset
-				booleanDefault = SharedStorage
+				booleanDefault = WorkspacePreferences
 						.getOpenOCDDoInitialReset(ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
 				doFirstReset
 						.setSelection(configuration.getAttribute(
@@ -861,21 +861,21 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 								booleanDefault));
 
 				// Reset type
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getOpenOCDInitialResetType(ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
 				firstResetType.setText(configuration
 						.getAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
 								stringDefault));
 
 				// Enable semihosting
-				booleanDefault = SharedStorage
+				booleanDefault = WorkspacePreferences
 						.getOpenOCDEnableSemihosting(ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
 				enableSemihosting.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.ENABLE_SEMIHOSTING,
 						booleanDefault));
 
 				// Other commands
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getOpenOCDInitOther(ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
 				initCommands.setText(configuration.getAttribute(
 						ConfigurationAttributes.OTHER_INIT_COMMANDS,
@@ -955,21 +955,21 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Run Commands
 			{
 				// Do pre-run reset
-				booleanDefault = SharedStorage
+				booleanDefault = WorkspacePreferences
 						.getOpenOCDDoPreRunReset(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
 				doSecondReset.setSelection(configuration
 						.getAttribute(ConfigurationAttributes.DO_SECOND_RESET,
 								booleanDefault));
 
 				// Pre-run reset type
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getOpenOCDPreRunResetType(ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
 				secondResetType.setText(configuration.getAttribute(
 						ConfigurationAttributes.SECOND_RESET_TYPE,
 						stringDefault));
 
 				// Other commands
-				stringDefault = SharedStorage
+				stringDefault = WorkspacePreferences
 						.getOpenOCDPreRunOther(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
 				runCommands.setText(configuration.getAttribute(
 						ConfigurationAttributes.OTHER_RUN_COMMANDS,
@@ -1019,25 +1019,25 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			booleanValue = doFirstReset.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
 					booleanValue);
-			SharedStorage.putOpenOCDDoInitialReset(booleanValue);
+			WorkspacePreferences.putOpenOCDDoInitialReset(booleanValue);
 
 			// First reset type
 			stringValue = firstResetType.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.FIRST_RESET_TYPE, stringValue);
-			SharedStorage.putOpenOCDInitialResetType(stringValue);
+			WorkspacePreferences.putOpenOCDInitialResetType(stringValue);
 
 			// Other commands
 			stringValue = initCommands.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.OTHER_INIT_COMMANDS, stringValue);
-			SharedStorage.putOpenOCDInitOther(stringValue);
+			WorkspacePreferences.putOpenOCDInitOther(stringValue);
 
 			// Enable semihosting
 			booleanValue = enableSemihosting.getSelection();
 			configuration.setAttribute(
 					ConfigurationAttributes.ENABLE_SEMIHOSTING, booleanValue);
-			SharedStorage.putOpenOCDEnableSemihosting(booleanValue);
+			WorkspacePreferences.putOpenOCDEnableSemihosting(booleanValue);
 		}
 
 		// Load Symbols & Image...
@@ -1091,26 +1091,26 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			booleanValue = doSecondReset.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
 					booleanValue);
-			SharedStorage.putOpenOCDDoPreRunReset(booleanValue);
+			WorkspacePreferences.putOpenOCDDoPreRunReset(booleanValue);
 
 			// reset type
 			stringValue = secondResetType.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.SECOND_RESET_TYPE, stringValue);
-			SharedStorage.putOpenOCDPreRunResetType(stringValue);
+			WorkspacePreferences.putOpenOCDPreRunResetType(stringValue);
 
 			// Other commands
 			stringValue = runCommands.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.OTHER_RUN_COMMANDS, stringValue);
-			SharedStorage.putOpenOCDPreRunOther(stringValue);
+			WorkspacePreferences.putOpenOCDPreRunOther(stringValue);
 
 			// Continue
 			configuration.setAttribute(ConfigurationAttributes.DO_CONTINUE,
 					doContinue.getSelection());
 		}
 
-		SharedStorage.update();
+		WorkspacePreferences.flush();
 	}
 
 	@Override
