@@ -13,7 +13,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 
-public class Preferences {
+public class DefaultPreferences {
 
 	public static final String TOOLCHAIN = "toolchains.properties";
 	public static final String DEFAULT_NAME = "default.name";

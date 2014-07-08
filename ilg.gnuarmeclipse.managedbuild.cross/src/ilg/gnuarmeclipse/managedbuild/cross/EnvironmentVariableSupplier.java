@@ -13,7 +13,7 @@
 package ilg.gnuarmeclipse.managedbuild.cross;
 
 import ilg.gnuarmeclipse.managedbuild.cross.ui.ProjectStorage;
-import ilg.gnuarmeclipse.managedbuild.cross.ui.SharedStorage;
+import ilg.gnuarmeclipse.managedbuild.cross.ui.EclipsePreferences;
 
 import java.io.File;
 
@@ -84,7 +84,7 @@ public class EnvironmentVariableSupplier implements
 						.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); //$NON-NLS-1$
 				String toolchainName = (String) option.getValue();
 
-				path = SharedStorage.getToolchainPath(toolchainName);
+				path = EclipsePreferences.getToolchainPath(toolchainName);
 			}
 
 			if (path != null) {

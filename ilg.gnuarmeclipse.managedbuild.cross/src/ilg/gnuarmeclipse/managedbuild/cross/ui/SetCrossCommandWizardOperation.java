@@ -57,10 +57,10 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 		// store them on the permanent storage in
 		// workspace/.plugins/org.eclipse.cdt.core/shareddefaults.xml
 
-		SharedStorage.putToolchainPath(toolchainName, path);
-		SharedStorage.putToolchainName(toolchainName);
+		EclipsePreferences.putToolchainPath(toolchainName, path);
+		EclipsePreferences.putToolchainName(toolchainName);
 
-		SharedStorage.update();
+		EclipsePreferences.update();
 
 		IProject project = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(projectName);

@@ -368,7 +368,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 		updateControlsForConfig(m_config);
 
-		String toolchainPath = SharedStorage
+		String toolchainPath = EclipsePreferences
 				.getToolchainPath(m_selectedToolchainName);
 		if (toolchainPath != null) {
 			m_globalPathText.setText(toolchainPath);
@@ -429,7 +429,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			m_commandRmText.setText(newCommandRm);
 		}
 
-		String path = SharedStorage.getToolchainPath(td.getName());
+		String path = EclipsePreferences.getToolchainPath(td.getName());
 		m_globalPathText.setText(path);
 
 		// leave the bottom three buttons as the user set them
@@ -672,7 +672,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 		m_useGlobalCheckButton.setSelection(useGlobalPath);
 
-		String path = SharedStorage.getToolchainPath(m_selectedToolchainName);
+		String path = EclipsePreferences.getToolchainPath(m_selectedToolchainName);
 		m_globalPathText.setText(path);
 
 		String toolchainPath = ProjectStorage.getToolchainPath(config);
@@ -831,14 +831,14 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			ProjectStorage.putToolchainPath(config, m_projectPathText.getText()
 					.trim());
 
-			String sGlobalToolchainPath = SharedStorage.getToolchainPath(td
+			String sGlobalToolchainPath = EclipsePreferences.getToolchainPath(td
 					.getName());
 			String sNewToolchainPath = m_globalPathText.getText().trim();
 
 			if (sGlobalToolchainPath.length() == 0
 					|| !sGlobalToolchainPath.equals(sNewToolchainPath)) {
-				SharedStorage.putToolchainPath(td.getName(), sNewToolchainPath);
-				SharedStorage.update();
+				EclipsePreferences.putToolchainPath(td.getName(), sNewToolchainPath);
+				EclipsePreferences.update();
 			}
 
 		} catch (NullPointerException e) {
