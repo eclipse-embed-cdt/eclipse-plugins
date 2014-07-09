@@ -45,6 +45,7 @@ import org.eclipse.cdt.dsf.gdb.service.SessionType;
 import org.eclipse.cdt.dsf.gdb.service.command.GDBControl.InitializationShutdownStep;
 import org.eclipse.cdt.dsf.mi.service.IMIBackend;
 import org.eclipse.cdt.dsf.mi.service.IMIBackend2;
+import org.eclipse.cdt.dsf.mi.service.IMIBackend.State;
 import org.eclipse.cdt.dsf.mi.service.command.events.MIStoppedEvent;
 import org.eclipse.cdt.dsf.service.AbstractDsfService;
 import org.eclipse.cdt.dsf.service.DsfServiceEventHandler;
@@ -132,6 +133,10 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 		} catch (CoreException e) {
 			fProgramPath = new Path(""); //$NON-NLS-1$
 		}
+	}
+
+	public State getServerState() {
+		return State.NOT_INITIALIZED;
 	}
 
 	@Override
@@ -594,6 +599,19 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
+
+					if (getServerState() == State.TERMINATED) {
+						System.out.println("GDBProcessStep cannot start");
+
+						gdbLaunchRequestMonitor
+								.setStatus(new Status(
+										IStatus.CANCEL,
+										GdbPlugin.PLUGIN_ID,
+										-1,
+										"OpenOCD did not start, check configuration options.", null)); //$NON-NLS-1$
+						gdbLaunchRequestMonitor.done();
+						return Status.OK_STATUS;
+					}
 
 					if (gdbLaunchRequestMonitor.isCanceled()) {
 						System.out.println("GDBProcessStep run cancel");

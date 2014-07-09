@@ -62,7 +62,7 @@
          point="org.eclipse.core.variables.valueVariables">
       <variable
             description="Name of the OpenOCD executable"
-            initializerClass="ilg.gnuarmeclipse.debug.gdbjtag.jlink.OpenOcdVariableInitializer"
+            initializerClass="ilg.gnuarmeclipse.debug.gdbjtag.openocd.OpenOcdVariableInitializer"
             name="openocd_executable"/>
    </extension>
 

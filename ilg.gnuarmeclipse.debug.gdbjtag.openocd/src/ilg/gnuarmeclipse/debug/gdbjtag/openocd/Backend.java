@@ -13,11 +13,7 @@ import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.Sequence;
 import org.eclipse.cdt.dsf.gdb.service.command.GDBControl.InitializationShutdownStep;
 import org.eclipse.cdt.dsf.service.DsfSession;
-import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.IWorkspace;
-import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -74,6 +70,10 @@ public class Backend extends Backend0 {
 
 	public Process getSemihostingProcess() {
 		return fSemihostingProcess;
+	}
+
+	public State getServerState() {
+		return fServerBackendState;
 	}
 
 	protected Process launchSemihostingProcess(String host, int port)
@@ -249,6 +249,27 @@ public class Backend extends Backend0 {
 						fTmpLaunchRequestMonitor.setStatus(new Status(
 								IStatus.CANCEL, Activator.PLUGIN_ID, -1,
 								"Canceled starting GDB", null)); //$NON-NLS-1$
+						fTmpLaunchRequestMonitor.done();
+						return Status.OK_STATUS;
+					}
+
+					String serverOther = "";
+					try {
+						serverOther = fLaunchConfiguration
+								.getAttribute(
+										ConfigurationAttributes.GDB_SERVER_OTHER,
+										ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT)
+								.trim();
+					} catch (CoreException e1) {
+					}
+
+					if (serverOther.length() == 0) {
+						fTmpLaunchRequestMonitor
+								.setStatus(new Status(
+										IStatus.ERROR,
+										Activator.PLUGIN_ID,
+										-1,
+										"OpenOCD requires some -c or -f configuration options to start.", null)); //$NON-NLS-1$
 						fTmpLaunchRequestMonitor.done();
 						return Status.OK_STATUS;
 					}

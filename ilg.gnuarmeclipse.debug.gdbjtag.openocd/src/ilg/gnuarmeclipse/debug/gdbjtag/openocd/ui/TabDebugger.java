@@ -341,6 +341,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			label = new Label(comp, SWT.NONE);
 			label.setText(Messages
 					.getString("DebuggerTab.gdbServerOther_Label")); //$NON-NLS-1$
+			label.setToolTipText(Messages
+					.getString("DebuggerTab.gdbServerOther_ToolTipText"));
 			gd = new GridData();
 			gd.verticalAlignment = SWT.TOP;
 			label.setLayoutData(gd);
