@@ -62,9 +62,9 @@
    <extension
          point="org.eclipse.core.variables.valueVariables">
       <variable
-            description="Path to J-Link installation folder"
-            name="jlink_path" 
-            initialValue="" />
+            description="Path to J-Link installation folder" 
+            initializerClass="ilg.gnuarmeclipse.debug.gdbjtag.jlink.GdbServerVariableInitializer" 
+            name="jlink_path" />
    </extension>
    
    <extension

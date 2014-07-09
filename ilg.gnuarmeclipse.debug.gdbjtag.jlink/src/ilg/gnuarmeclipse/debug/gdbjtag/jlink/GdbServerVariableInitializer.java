@@ -5,14 +5,17 @@ import org.eclipse.core.variables.IValueVariableInitializer;
 
 public class GdbServerVariableInitializer implements IValueVariableInitializer {
 
-	static final String GDB_SERVER_VARIABLE_NAME = "jlink_gdbserver";
+	static final String JLINK_GDBSERVER = "jlink_gdbserver";
+	static final String JLINK_PATH = "jlink_path";
+
+	static final String UNDEFINED_PATH = "undefined_path";
 
 	@Override
 	public void initialize(IValueVariable variable) {
 
-		if (GDB_SERVER_VARIABLE_NAME.equals(variable.getName())) {
+		String value;
 
-			String value;
+		if (JLINK_GDBSERVER.equals(variable.getName())) {
 
 			if (Utils.isWindows()) {
 				value = ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_NAME_WINDOWS;
@@ -22,6 +25,20 @@ public class GdbServerVariableInitializer implements IValueVariableInitializer {
 				value = ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_NAME_MAC;
 			} else {
 				value = ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_NAME;
+			}
+
+			variable.setValue(value);
+
+		} else if (JLINK_PATH.equals(variable.getName())) {
+
+			if (Utils.isWindows()) {
+				value = "C:\\Program Files\\SEGGER\\JLinkARM_Vxxx";
+			} else if (Utils.isLinux()) {
+				value = "/usr/bin";
+			} else if (Utils.isMacOSX()) {
+				value = "/Applications/SEGGER/JLink";
+			} else {
+				value = UNDEFINED_PATH;
 			}
 
 			variable.setValue(value);
