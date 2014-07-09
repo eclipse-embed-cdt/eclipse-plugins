@@ -48,7 +48,7 @@ public class Utils {
 	private static final String PROPERTY_OS_NAME = "os.name"; //$NON-NLS-1$
 	public static final String PROPERTY_OS_VALUE_WINDOWS = "windows";//$NON-NLS-1$
 	public static final String PROPERTY_OS_VALUE_LINUX = "linux";//$NON-NLS-1$
-	public static final String PROPERTY_OS_VALUE_MACOSX = "macosx";//$NON-NLS-1$
+	public static final String PROPERTY_OS_VALUE_MACOSX = "mac";//$NON-NLS-1$
 
 	public static void addMultiLine(String multiLine, List<String> commandsList)
 			throws CoreException {
