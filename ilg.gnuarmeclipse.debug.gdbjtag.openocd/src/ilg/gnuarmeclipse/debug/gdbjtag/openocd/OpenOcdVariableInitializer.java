@@ -25,7 +25,7 @@ public class OpenOcdVariableInitializer implements IValueVariableInitializer {
 			if (Utils.isWindows()) {
 				value = UNDEFINED_PATH;
 			} else if (Utils.isLinux()) {
-				value = "/usr/local/bin";
+				value = "/usr/bin";
 			} else if (Utils.isMacOSX()) {
 				value = "/opt/local/bin";
 			} else {
