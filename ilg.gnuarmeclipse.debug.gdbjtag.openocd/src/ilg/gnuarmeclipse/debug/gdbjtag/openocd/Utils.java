@@ -27,6 +27,10 @@ import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
 import org.eclipse.cdt.dsf.gdb.IGdbDebugPreferenceConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.gdb.launching.LaunchUtils;
+import org.eclipse.cdt.internal.core.envvar.EnvVarCollector;
+import org.eclipse.cdt.internal.core.envvar.EnvVarDescriptor;
+import org.eclipse.cdt.internal.core.envvar.EnvironmentVariableManager;
+import org.eclipse.cdt.internal.core.envvar.IEnvironmentContextInfo;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IWorkspace;
@@ -247,7 +251,7 @@ public class Utils {
 
 		ICConfigurationDescription cfg = getBuildConfig(config);
 		if (cfg == null)
-			return null;
+			return getLaunchEnvironmentWithoutProject();
 
 		// Environment variables and inherited vars
 		HashMap<String, String> envMap = new HashMap<String, String>();
@@ -362,5 +366,89 @@ public class Utils {
 		}
 		File dir = new File(path.toOSString());
 		return dir;
+	}
+
+	/**
+	 * Gets working directory from either the location of the project, or if
+	 * project-less launching, from the location of the executable.
+	 * 
+	 * @param configuration
+	 * @return Working directory
+	 * @throws CoreException
+	 */
+	public static File getProjectOsPath(ILaunchConfiguration configuration)
+			throws CoreException {
+		IPath path = null;
+		File dir = null;
+		if (null != configuration) {
+			String projectName = configuration.getAttribute(
+					"org.eclipse.cdt.launch.PROJECT_ATTR", "");
+			if (projectName.length() > 0) {
+				IWorkspace workspace = ResourcesPlugin.getWorkspace();
+				IProject project = workspace.getRoot().getProject(projectName);
+				path = project.getLocation();
+			} else {
+				/*
+				 * If projectless launch then PROGRAM_NAME will be an absolute
+				 * path
+				 */
+				String executableName = configuration.getAttribute(
+						"org.eclipse.cdt.launch.PROGRAM_NAME", "");
+				path = new Path(executableName).removeLastSegments(1);
+			}
+		}
+		if (null != path) {
+			dir = new File(path.toOSString());
+		}
+		return dir;
+	}
+
+	/**
+	 * Get environment from workspace. Useful when project-less launching when
+	 * there is no environment available from the configuration.
+	 * 
+	 * @return String [] of environment variables in variable=value format.
+	 * @throws CoreException
+	 */
+	public static String[] getLaunchEnvironmentWithoutProject()
+			throws CoreException {
+		String[] retVal = null;
+		IEnvironmentContextInfo contextInfo = EnvironmentVariableManager
+				.getDefault().getContextInfo(null);
+		EnvVarCollector envVarMergedColletion = EnvironmentVariableManager
+				.getVariables(contextInfo, true);
+		if (null != envVarMergedColletion) {
+			EnvVarDescriptor envVars[] = envVarMergedColletion.toArray(false);
+			if (envVars != null) {
+				List<String> strings = new ArrayList<String>();
+				for (int i = 0; i < envVars.length; i++) {
+					IEnvironmentVariable resolved = EnvironmentVariableManager
+							.getDefault().calculateResolvedVariable(envVars[i],
+									contextInfo);
+					if (null != resolved) {
+						// The project_classpath variable contributed by JDT is
+						// useless
+						// for running C/C++
+						// binaries, but it can be lethal if it has a very large
+						// value
+						// that exceeds shell
+						// limit. See
+						// http://bugs.eclipse.org/bugs/show_bug.cgi?id=408522
+						if (!"project_classpath".equals(resolved.getName())) {//$NON-NLS-1$
+							StringBuffer buffer = new StringBuffer(
+									resolved.getName());
+							buffer.append('=').append(resolved.getValue());
+							strings.add(buffer.toString());
+						}
+					}
+				}
+				retVal = strings.toArray(new String[strings.size()]);
+			}
+		} else {
+			throw new CoreException(new Status(IStatus.ERROR,
+					Activator.PLUGIN_ID,
+					"Error retrieving workspace environment."));
+		}
+		return retVal;
 	}
 }

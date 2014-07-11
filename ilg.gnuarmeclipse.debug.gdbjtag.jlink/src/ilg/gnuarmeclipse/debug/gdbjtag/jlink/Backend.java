@@ -281,9 +281,7 @@ public class Backend extends Backend0 {
 						return Status.OK_STATUS;
 					}
 					try {
-						String projectName = fLaunchConfiguration.getAttribute(
-								"org.eclipse.cdt.launch.PROJECT_ATTR", "");
-						File dir = Utils.getProjectOsPath(projectName);
+						File dir = Utils.getProjectOsPath(fLaunchConfiguration);
 
 						fServerProcess = launchGDBProcess(commandLineArray, dir);
 						// Need to do this on the executor for thread-safety

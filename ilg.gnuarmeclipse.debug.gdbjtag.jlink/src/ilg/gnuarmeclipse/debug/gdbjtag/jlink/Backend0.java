@@ -609,9 +609,7 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 							.getGdbClientCommandLineArray(fLaunchConfiguration);
 
 					try {
-						String projectName = fLaunchConfiguration.getAttribute(
-								"org.eclipse.cdt.launch.PROJECT_ATTR", "");
-						File dir = Utils.getProjectOsPath(projectName);
+						File dir = Utils.getProjectOsPath(fLaunchConfiguration);
 
 						fProcess = launchGDBProcess(commandLineArray, dir);
 						// Need to do this on the executor for thread-safety
