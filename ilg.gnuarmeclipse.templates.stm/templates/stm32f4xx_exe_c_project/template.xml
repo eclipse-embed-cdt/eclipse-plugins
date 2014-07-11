@@ -14,6 +14,7 @@
 			<item value="STM32F401xE" label="STM32F401xE" />
 			<item value="STM32F405xx" label="STM32F405xx" />
 			<item value="STM32F407xx" label="STM32F407xx" />
+			<item value="STM32F411xE" label="STM32F411xE" />
 			<item value="STM32F415xx" label="STM32F415xx" />
 			<item value="STM32F417xx" label="STM32F417xx" />
 			<item value="STM32F427xx" label="STM32F427xx" />
@@ -782,6 +783,18 @@
 		</process>
 	</if>
 	<if condition="$(STM32F4chipFamilyCube)==STM32F407xx">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="ldscripts/mem128.ld" />
+					<simple name="target" value="$(ldscriptsDir)/mem.ld" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F4chipFamilyCube)==STM32F411xE">
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
