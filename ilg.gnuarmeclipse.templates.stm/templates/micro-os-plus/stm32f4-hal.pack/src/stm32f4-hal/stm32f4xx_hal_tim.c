@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_tim.c
   * @author  MCD Application Team
-  * @version V1.0.0
-  * @date    18-February-2014
+  * @version V1.1.0
+  * @date    19-June-2014
   * @brief   TIM HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Timer (TIM) peripheral:
@@ -193,7 +193,8 @@ static void TIM_DMATriggerCplt(DMA_HandleTypeDef *hdma);
 /**
   * @brief  Initializes the TIM Time base Unit according to the specified
   *         parameters in the TIM_HandleTypeDef and create the associated handle.
-  * @param  htim: TIM Base handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_TIM_Base_Init(TIM_HandleTypeDef *htim)
@@ -229,7 +230,8 @@ HAL_StatusTypeDef HAL_TIM_Base_Init(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  DeInitializes the TIM Base peripheral 
-  * @param  htim: TIM Base handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_TIM_Base_DeInit(TIM_HandleTypeDef *htim)
@@ -262,7 +264,8 @@ HAL_StatusTypeDef HAL_TIM_Base_DeInit(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Initializes the TIM Base MSP.
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval None
   */
 __weak void HAL_TIM_Base_MspInit(TIM_HandleTypeDef *htim)
@@ -274,7 +277,8 @@ __weak void HAL_TIM_Base_MspInit(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  DeInitializes TIM Base MSP.
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval None
   */
 __weak void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef *htim)
@@ -291,7 +295,8 @@ __weak void HAL_TIM_Base_MspDeInit(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Starts the TIM Base generation.
-  * @param  htim : TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_TIM_Base_Start(TIM_HandleTypeDef *htim)
@@ -314,7 +319,8 @@ HAL_StatusTypeDef HAL_TIM_Base_Start(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Stops the TIM Base generation.
-  * @param  htim : TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_TIM_Base_Stop(TIM_HandleTypeDef *htim)
@@ -337,7 +343,8 @@ HAL_StatusTypeDef HAL_TIM_Base_Stop(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Starts the TIM Base generation in interrupt mode.
-  * @param  htim : TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_TIM_Base_Start_IT(TIM_HandleTypeDef *htim)
@@ -357,7 +364,8 @@ HAL_StatusTypeDef HAL_TIM_Base_Start_IT(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Stops the TIM Base generation in interrupt mode.
-  * @param  htim : TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_TIM_Base_Stop_IT(TIM_HandleTypeDef *htim)
@@ -376,7 +384,8 @@ HAL_StatusTypeDef HAL_TIM_Base_Stop_IT(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Starts the TIM Base generation in DMA mode.
-  * @param  htim : TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @param  pData: The source Buffer address.
   * @param  Length: The length of data to be transferred from memory to peripheral.
   * @retval HAL status
@@ -422,7 +431,8 @@ HAL_StatusTypeDef HAL_TIM_Base_Start_DMA(TIM_HandleTypeDef *htim, uint32_t *pDat
 
 /**
   * @brief  Stops the TIM Base generation in DMA mode.
-  * @param  htim : TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_TIM_Base_Stop_DMA(TIM_HandleTypeDef *htim)
@@ -471,7 +481,8 @@ HAL_StatusTypeDef HAL_TIM_Base_Stop_DMA(TIM_HandleTypeDef *htim)
 /**
   * @brief  Initializes the TIM Output Compare according to the specified
   *         parameters in the TIM_HandleTypeDef and create the associated handle.
-  * @param  htim: TIM Output Compare handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_TIM_OC_Init(TIM_HandleTypeDef* htim)
@@ -507,7 +518,8 @@ HAL_StatusTypeDef HAL_TIM_OC_Init(TIM_HandleTypeDef* htim)
 
 /**
   * @brief  DeInitializes the TIM peripheral 
-  * @param  htim: TIM Output Compare handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_TIM_OC_DeInit(TIM_HandleTypeDef *htim)
@@ -540,7 +552,8 @@ HAL_StatusTypeDef HAL_TIM_OC_DeInit(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Initializes the TIM Output Compare MSP.
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval None
   */
 __weak void HAL_TIM_OC_MspInit(TIM_HandleTypeDef *htim)
@@ -552,7 +565,8 @@ __weak void HAL_TIM_OC_MspInit(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  DeInitializes TIM Output Compare MSP.
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval None
   */
 __weak void HAL_TIM_OC_MspDeInit(TIM_HandleTypeDef *htim)
@@ -569,8 +583,9 @@ __weak void HAL_TIM_OC_MspDeInit(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Starts the TIM Output Compare signal generation.
-  * @param  htim : TIM Output Compare handle  
-  * @param  Channel : TIM Channel to be enabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.  
+  * @param  Channel: TIM Channel to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -601,8 +616,9 @@ HAL_StatusTypeDef HAL_TIM_OC_Start(TIM_HandleTypeDef *htim, uint32_t Channel)
 
 /**
   * @brief  Stops the TIM Output Compare signal generation.
-  * @param  htim : TIM handle
-  * @param  Channel : TIM Channel to be disabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channel to be disabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -633,8 +649,9 @@ HAL_StatusTypeDef HAL_TIM_OC_Stop(TIM_HandleTypeDef *htim, uint32_t Channel)
 
 /**
   * @brief  Starts the TIM Output Compare signal generation in interrupt mode.
-  * @param  htim : TIM OC handle
-  * @param  Channel : TIM Channel to be enabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channel to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -699,8 +716,9 @@ HAL_StatusTypeDef HAL_TIM_OC_Start_IT(TIM_HandleTypeDef *htim, uint32_t Channel)
 
 /**
   * @brief  Stops the TIM Output Compare signal generation in interrupt mode.
-  * @param  htim : TIM Output Compare handle
-  * @param  Channel : TIM Channel to be disabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channel to be disabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -765,8 +783,9 @@ HAL_StatusTypeDef HAL_TIM_OC_Stop_IT(TIM_HandleTypeDef *htim, uint32_t Channel)
 
 /**
   * @brief  Starts the TIM Output Compare signal generation in DMA mode.
-  * @param  htim : TIM Output Compare handle
-  * @param  Channel : TIM Channel to be enabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channel to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -884,8 +903,9 @@ HAL_StatusTypeDef HAL_TIM_OC_Start_DMA(TIM_HandleTypeDef *htim, uint32_t Channel
 
 /**
   * @brief  Stops the TIM Output Compare signal generation in DMA mode.
-  * @param  htim : TIM Output Compare handle
-  * @param  Channel : TIM Channel to be disabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channel to be disabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -979,7 +999,8 @@ HAL_StatusTypeDef HAL_TIM_OC_Stop_DMA(TIM_HandleTypeDef *htim, uint32_t Channel)
 /**
   * @brief  Initializes the TIM PWM Time Base according to the specified
   *         parameters in the TIM_HandleTypeDef and create the associated handle.
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_TIM_PWM_Init(TIM_HandleTypeDef *htim)
@@ -1015,7 +1036,8 @@ HAL_StatusTypeDef HAL_TIM_PWM_Init(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  DeInitializes the TIM peripheral 
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_TIM_PWM_DeInit(TIM_HandleTypeDef *htim)
@@ -1048,7 +1070,8 @@ HAL_StatusTypeDef HAL_TIM_PWM_DeInit(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Initializes the TIM PWM MSP.
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval None
   */
 __weak void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim)
@@ -1060,7 +1083,8 @@ __weak void HAL_TIM_PWM_MspInit(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  DeInitializes TIM PWM MSP.
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval None
   */
 __weak void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef *htim)
@@ -1077,8 +1101,9 @@ __weak void HAL_TIM_PWM_MspDeInit(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Starts the PWM signal generation.
-  * @param  htim : TIM handle
-  * @param  Channel : TIM Channels to be enabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channels to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -1109,8 +1134,9 @@ HAL_StatusTypeDef HAL_TIM_PWM_Start(TIM_HandleTypeDef *htim, uint32_t Channel)
 
 /**
   * @brief  Stops the PWM signal generation.
-  * @param  htim : TIM handle
-  * @param  Channel : TIM Channels to be disabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channels to be disabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -1144,8 +1170,9 @@ HAL_StatusTypeDef HAL_TIM_PWM_Stop(TIM_HandleTypeDef *htim, uint32_t Channel)
 
 /**
   * @brief  Starts the PWM signal generation in interrupt mode.
-  * @param  htim : TIM handle
-  * @param  Channel : TIM Channel to be disabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channel to be disabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -1210,8 +1237,9 @@ HAL_StatusTypeDef HAL_TIM_PWM_Start_IT(TIM_HandleTypeDef *htim, uint32_t Channel
 
 /**
   * @brief  Stops the PWM signal generation in interrupt mode.
-  * @param  htim : TIM handle
-  * @param  Channel : TIM Channels to be disabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channels to be disabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -1276,8 +1304,9 @@ HAL_StatusTypeDef HAL_TIM_PWM_Stop_IT (TIM_HandleTypeDef *htim, uint32_t Channel
 
 /**
   * @brief  Starts the TIM PWM signal generation in DMA mode.
-  * @param  htim : TIM handle
-  * @param  Channel : TIM Channels to be enabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channels to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -1395,8 +1424,9 @@ HAL_StatusTypeDef HAL_TIM_PWM_Start_DMA(TIM_HandleTypeDef *htim, uint32_t Channe
 
 /**
   * @brief  Stops the TIM PWM signal generation in DMA mode.
-  * @param  htim : TIM handle
-  * @param  Channel : TIM Channels to be disabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channels to be disabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -1490,7 +1520,8 @@ HAL_StatusTypeDef HAL_TIM_PWM_Stop_DMA(TIM_HandleTypeDef *htim, uint32_t Channel
 /**
   * @brief  Initializes the TIM Input Capture Time base according to the specified
   *         parameters in the TIM_HandleTypeDef and create the associated handle.
-  * @param  htim: TIM Input Capture handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_TIM_IC_Init(TIM_HandleTypeDef *htim)
@@ -1526,7 +1557,8 @@ HAL_StatusTypeDef HAL_TIM_IC_Init(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  DeInitializes the TIM peripheral 
-  * @param  htim: TIM Input Capture handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_TIM_IC_DeInit(TIM_HandleTypeDef *htim)
@@ -1559,7 +1591,8 @@ HAL_StatusTypeDef HAL_TIM_IC_DeInit(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Initializes the TIM INput Capture MSP.
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval None
   */
 __weak void HAL_TIM_IC_MspInit(TIM_HandleTypeDef *htim)
@@ -1571,7 +1604,8 @@ __weak void HAL_TIM_IC_MspInit(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  DeInitializes TIM Input Capture MSP.
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval None
   */
 __weak void HAL_TIM_IC_MspDeInit(TIM_HandleTypeDef *htim)
@@ -1588,8 +1622,9 @@ __weak void HAL_TIM_IC_MspDeInit(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Starts the TIM Input Capture measurement.
-  * @param  hdma : TIM Input Capture handle
-  * @param  Channel : TIM Channels to be enabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channels to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -1614,8 +1649,9 @@ HAL_StatusTypeDef HAL_TIM_IC_Start (TIM_HandleTypeDef *htim, uint32_t Channel)
 
 /**
   * @brief  Stops the TIM Input Capture measurement.
-  * @param  htim : TIM handle
-  * @param  Channel : TIM Channels to be disabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channels to be disabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -1640,8 +1676,9 @@ HAL_StatusTypeDef HAL_TIM_IC_Stop(TIM_HandleTypeDef *htim, uint32_t Channel)
 
 /**
   * @brief  Starts the TIM Input Capture measurement in interrupt mode.
-  * @param  hdma : TIM Input Capture handle
-  * @param  Channel : TIM Channels to be enabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channels to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -1699,8 +1736,9 @@ HAL_StatusTypeDef HAL_TIM_IC_Start_IT (TIM_HandleTypeDef *htim, uint32_t Channel
 
 /**
   * @brief  Stops the TIM Input Capture measurement in interrupt mode.
-  * @param  htim : TIM handle
-  * @param  Channel : TIM Channels to be disabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channels to be disabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -1759,8 +1797,9 @@ HAL_StatusTypeDef HAL_TIM_IC_Stop_IT(TIM_HandleTypeDef *htim, uint32_t Channel)
 
 /**
   * @brief  Starts the TIM Input Capture measurement on in DMA mode.
-  * @param  htim : TIM Input Capture handle
-  * @param  Channel : TIM Channels to be enabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channels to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -1874,8 +1913,9 @@ HAL_StatusTypeDef HAL_TIM_IC_Start_DMA(TIM_HandleTypeDef *htim, uint32_t Channel
 
 /**
   * @brief  Stops the TIM Input Capture measurement on in DMA mode.
-  * @param  htim : TIM Input Capture handle
-  * @param  Channel : TIM Channels to be disabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channels to be disabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -1963,7 +2003,8 @@ HAL_StatusTypeDef HAL_TIM_IC_Stop_DMA(TIM_HandleTypeDef *htim, uint32_t Channel)
 /**
   * @brief  Initializes the TIM One Pulse Time Base according to the specified
   *         parameters in the TIM_HandleTypeDef and create the associated handle.
-  * @param  htim: TIM OnePulse handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @param  OnePulseMode: Select the One pulse mode.
   *         This parameter can be one of the following values:
   *            @arg TIM_OPMODE_SINGLE: Only one pulse will be generated.
@@ -2010,7 +2051,8 @@ HAL_StatusTypeDef HAL_TIM_OnePulse_Init(TIM_HandleTypeDef *htim, uint32_t OnePul
 
 /**
   * @brief  DeInitializes the TIM One Pulse  
-  * @param  htim: TIM One Pulse handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_TIM_OnePulse_DeInit(TIM_HandleTypeDef *htim)
@@ -2043,7 +2085,8 @@ HAL_StatusTypeDef HAL_TIM_OnePulse_DeInit(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Initializes the TIM One Pulse MSP.
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval None
   */
 __weak void HAL_TIM_OnePulse_MspInit(TIM_HandleTypeDef *htim)
@@ -2055,7 +2098,8 @@ __weak void HAL_TIM_OnePulse_MspInit(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  DeInitializes TIM One Pulse MSP.
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval None
   */
 __weak void HAL_TIM_OnePulse_MspDeInit(TIM_HandleTypeDef *htim)
@@ -2067,8 +2111,9 @@ __weak void HAL_TIM_OnePulse_MspDeInit(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Starts the TIM One Pulse signal generation.
-  * @param  htim : TIM One Pulse handle
-  * @param  OutputChannel : TIM Channels to be enabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  OutputChannel : TIM Channels to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -2100,8 +2145,9 @@ HAL_StatusTypeDef HAL_TIM_OnePulse_Start(TIM_HandleTypeDef *htim, uint32_t Outpu
 
 /**
   * @brief  Stops the TIM One Pulse signal generation.
-  * @param  htim : TIM One Pulse handle
-  * @param  OutputChannel : TIM Channels to be disable
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  OutputChannel : TIM Channels to be disable.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -2133,8 +2179,9 @@ HAL_StatusTypeDef HAL_TIM_OnePulse_Stop(TIM_HandleTypeDef *htim, uint32_t Output
 
 /**
   * @brief  Starts the TIM One Pulse signal generation in interrupt mode.
-  * @param  htim : TIM One Pulse handle
-  * @param  OutputChannel : TIM Channels to be enabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  OutputChannel : TIM Channels to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -2172,8 +2219,9 @@ HAL_StatusTypeDef HAL_TIM_OnePulse_Start_IT(TIM_HandleTypeDef *htim, uint32_t Ou
 
 /**
   * @brief  Stops the TIM One Pulse signal generation in interrupt mode.
-  * @param  htim : TIM One Pulse handle
-  * @param  OutputChannel : TIM Channels to be enabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  OutputChannel : TIM Channels to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -2240,7 +2288,8 @@ HAL_StatusTypeDef HAL_TIM_OnePulse_Stop_IT(TIM_HandleTypeDef *htim, uint32_t Out
   */
 /**
   * @brief  Initializes the TIM Encoder Interface and create the associated handle.
-  * @param  htim: TIM Encoder Interface handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @param  sConfig: TIM Encoder Interface configuration structure
   * @retval HAL status
   */
@@ -2327,7 +2376,8 @@ HAL_StatusTypeDef HAL_TIM_Encoder_Init(TIM_HandleTypeDef *htim,  TIM_Encoder_Ini
 
 /**
   * @brief  DeInitializes the TIM Encoder interface  
-  * @param  htim: TIM Encoder handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_TIM_Encoder_DeInit(TIM_HandleTypeDef *htim)
@@ -2360,7 +2410,8 @@ HAL_StatusTypeDef HAL_TIM_Encoder_DeInit(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Initializes the TIM Encoder Interface MSP.
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval None
   */
 __weak void HAL_TIM_Encoder_MspInit(TIM_HandleTypeDef *htim)
@@ -2372,7 +2423,8 @@ __weak void HAL_TIM_Encoder_MspInit(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  DeInitializes TIM Encoder Interface MSP.
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval None
   */
 __weak void HAL_TIM_Encoder_MspDeInit(TIM_HandleTypeDef *htim)
@@ -2389,8 +2441,9 @@ __weak void HAL_TIM_Encoder_MspDeInit(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Starts the TIM Encoder Interface.
-  * @param  htim : TIM Encoder Interface handle
-  * @param  Channel : TIM Channels to be enabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channels to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -2430,8 +2483,9 @@ HAL_StatusTypeDef HAL_TIM_Encoder_Start(TIM_HandleTypeDef *htim, uint32_t Channe
 
 /**
   * @brief  Stops the TIM Encoder Interface.
-  * @param  htim : TIM Encoder Interface handle
-  * @param  Channel : TIM Channels to be disabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channels to be disabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -2472,8 +2526,9 @@ HAL_StatusTypeDef HAL_TIM_Encoder_Stop(TIM_HandleTypeDef *htim, uint32_t Channel
 
 /**
   * @brief  Starts the TIM Encoder Interface in interrupt mode.
-  * @param  htim : TIM Encoder Interface handle
-  * @param  Channel : TIM Channels to be enabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channels to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -2519,8 +2574,9 @@ HAL_StatusTypeDef HAL_TIM_Encoder_Start_IT(TIM_HandleTypeDef *htim, uint32_t Cha
 
 /**
   * @brief  Stops the TIM Encoder Interface in interrupt mode.
-  * @param  htim : TIM Encoder Interface handle
-  * @param  Channel : TIM Channels to be disabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channels to be disabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -2569,8 +2625,9 @@ HAL_StatusTypeDef HAL_TIM_Encoder_Stop_IT(TIM_HandleTypeDef *htim, uint32_t Chan
 
 /**
   * @brief  Starts the TIM Encoder Interface in DMA mode.
-  * @param  htim : TIM Encoder Interface handle
-  * @param  Channel : TIM Channels to be enabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channels to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -2688,8 +2745,9 @@ HAL_StatusTypeDef HAL_TIM_Encoder_Start_DMA(TIM_HandleTypeDef *htim, uint32_t Ch
 
 /**
   * @brief  Stops the TIM Encoder Interface in DMA mode.
-  * @param  htim : TIM Encoder Interface handle
-  * @param  Channel : TIM Channels to be enabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  Channel: TIM Channels to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -2754,7 +2812,8 @@ HAL_StatusTypeDef HAL_TIM_Encoder_Stop_DMA(TIM_HandleTypeDef *htim, uint32_t Cha
   */
 /**
   * @brief  This function handles TIM interrupts requests.
-  * @param  htim: TIM  handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval None
   */
 void HAL_TIM_IRQHandler(TIM_HandleTypeDef *htim)
@@ -2812,7 +2871,7 @@ void HAL_TIM_IRQHandler(TIM_HandleTypeDef *htim)
       __HAL_TIM_CLEAR_IT(htim, TIM_IT_CC3);
       htim->Channel = HAL_TIM_ACTIVE_CHANNEL_3;
       /* Input capture event */
-      if((htim->Instance->CCMR1 & TIM_CCMR2_CC3S) != 0x00)
+      if((htim->Instance->CCMR2 & TIM_CCMR2_CC3S) != 0x00)
       {          
         HAL_TIM_IC_CaptureCallback(htim);
       }
@@ -2833,7 +2892,7 @@ void HAL_TIM_IRQHandler(TIM_HandleTypeDef *htim)
       __HAL_TIM_CLEAR_IT(htim, TIM_IT_CC4);
       htim->Channel = HAL_TIM_ACTIVE_CHANNEL_4;
       /* Input capture event */
-      if((htim->Instance->CCMR1 & TIM_CCMR2_CC4S) != 0x00)
+      if((htim->Instance->CCMR2 & TIM_CCMR2_CC4S) != 0x00)
       {          
         HAL_TIM_IC_CaptureCallback(htim);
       }
@@ -2910,9 +2969,10 @@ void HAL_TIM_IRQHandler(TIM_HandleTypeDef *htim)
 /**
   * @brief  Initializes the TIM Output Compare Channels according to the specified
   *         parameters in the TIM_OC_InitTypeDef.
-  * @param  htim: TIM Output Compare handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @param  sConfig: TIM Output Compare configuration structure
-  * @param  Channel : TIM Channels to be enabled
+  * @param  Channel: TIM Channels to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -2983,9 +3043,10 @@ HAL_StatusTypeDef HAL_TIM_OC_ConfigChannel(TIM_HandleTypeDef *htim, TIM_OC_InitT
 /**
   * @brief  Initializes the TIM Input Capture Channels according to the specified
   *         parameters in the TIM_IC_InitTypeDef.
-  * @param  htim: TIM IC handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @param  sConfig: TIM Input Capture configuration structure
-  * @param  Channel : TIM Channels to be enabled
+  * @param  Channel: TIM Channels to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -3079,9 +3140,10 @@ HAL_StatusTypeDef HAL_TIM_IC_ConfigChannel(TIM_HandleTypeDef *htim, TIM_IC_InitT
 /**
   * @brief  Initializes the TIM PWM  channels according to the specified
   *         parameters in the TIM_OC_InitTypeDef.
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @param  sConfig: TIM PWM configuration structure
-  * @param  Channel : TIM Channels to be enabled
+  * @param  Channel: TIM Channels to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -3179,13 +3241,14 @@ HAL_StatusTypeDef HAL_TIM_PWM_ConfigChannel(TIM_HandleTypeDef *htim, TIM_OC_Init
 /**
   * @brief  Initializes the TIM One Pulse Channels according to the specified
   *         parameters in the TIM_OnePulse_InitTypeDef.
-  * @param  htim: TIM One Pulse handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @param  sConfig: TIM One Pulse configuration structure
-  * @param  OutputChannel : TIM Channels to be enabled
+  * @param  OutputChannel: TIM Channels to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
-  * @param  InputChannel : TIM Channels to be enabled
+  * @param  InputChannel: TIM Channels to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -3291,8 +3354,9 @@ HAL_StatusTypeDef HAL_TIM_OnePulse_ConfigChannel(TIM_HandleTypeDef *htim,  TIM_O
 
 /**
   * @brief  Configure the DMA Burst to transfer Data from the memory to the TIM peripheral  
-  * @param  htim: TIM handle
-  * @param  BurstBaseAddress: TIM Base address from when the DMA will starts the Data write
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  BurstBaseAddress: TIM Base address from when the DMA will starts the Data write.
   *         This parameters can be on of the following values:
   *            @arg TIM_DMABase_CR1  
   *            @arg TIM_DMABase_CR2
@@ -3313,7 +3377,7 @@ HAL_StatusTypeDef HAL_TIM_OnePulse_ConfigChannel(TIM_HandleTypeDef *htim,  TIM_O
   *            @arg TIM_DMABase_CCR4
   *            @arg TIM_DMABase_BDTR
   *            @arg TIM_DMABase_DCR
-  * @param  BurstRequestSrc: TIM DMA Request sources
+  * @param  BurstRequestSrc: TIM DMA Request sources.
   *         This parameters can be on of the following values:
   *            @arg TIM_DMA_UPDATE: TIM update Interrupt source
   *            @arg TIM_DMA_CC1: TIM Capture Compare 1 DMA source
@@ -3324,7 +3388,7 @@ HAL_StatusTypeDef HAL_TIM_OnePulse_ConfigChannel(TIM_HandleTypeDef *htim,  TIM_O
   *            @arg TIM_DMA_TRIGGER: TIM Trigger DMA source
   * @param  BurstBuffer: The Buffer address.
   * @param  BurstLength: DMA Burst length. This parameter can be one value
-  *         between: TIM_DMABurstLength_1Transfer and TIM_DMABurstLength_18Transfers.
+  *         between TIM_DMABurstLength_1Transfer and TIM_DMABurstLength_18Transfers.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_TIM_DMABurst_WriteStart(TIM_HandleTypeDef *htim, uint32_t BurstBaseAddress, uint32_t BurstRequestSrc,
@@ -3454,7 +3518,8 @@ HAL_StatusTypeDef HAL_TIM_DMABurst_WriteStart(TIM_HandleTypeDef *htim, uint32_t 
 
 /**
   * @brief  Stops the TIM DMA Burst mode 
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @param  BurstRequestSrc: TIM DMA Request sources to disable
   * @retval HAL status
   */
@@ -3472,8 +3537,9 @@ HAL_StatusTypeDef HAL_TIM_DMABurst_WriteStop(TIM_HandleTypeDef *htim, uint32_t B
 
 /**
   * @brief  Configure the DMA Burst to transfer Data from the TIM peripheral to the memory 
-  * @param  htim: TIM handle
-  * @param  BurstBaseAddress: TIM Base address from when the DMA will starts the Data read
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
+  * @param  BurstBaseAddress: TIM Base address from when the DMA will starts the Data read.
   *         This parameters can be on of the following values:
   *            @arg TIM_DMABase_CR1  
   *            @arg TIM_DMABase_CR2
@@ -3494,7 +3560,7 @@ HAL_StatusTypeDef HAL_TIM_DMABurst_WriteStop(TIM_HandleTypeDef *htim, uint32_t B
   *            @arg TIM_DMABase_CCR4
   *            @arg TIM_DMABase_BDTR
   *            @arg TIM_DMABase_DCR
-  * @param  BurstRequestSrc: TIM DMA Request sources
+  * @param  BurstRequestSrc: TIM DMA Request sources.
   *         This parameters can be on of the following values:
   *            @arg TIM_DMA_UPDATE: TIM update Interrupt source
   *            @arg TIM_DMA_CC1: TIM Capture Compare 1 DMA source
@@ -3505,7 +3571,7 @@ HAL_StatusTypeDef HAL_TIM_DMABurst_WriteStop(TIM_HandleTypeDef *htim, uint32_t B
   *            @arg TIM_DMA_TRIGGER: TIM Trigger DMA source
   * @param  BurstBuffer: The Buffer address.
   * @param  BurstLength: DMA Burst length. This parameter can be one value
-  *         between: TIM_DMABurstLength_1Transfer and TIM_DMABurstLength_18Transfers.
+  *         between TIM_DMABurstLength_1Transfer and TIM_DMABurstLength_18Transfers.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_TIM_DMABurst_ReadStart(TIM_HandleTypeDef *htim, uint32_t BurstBaseAddress, uint32_t BurstRequestSrc,
@@ -3636,7 +3702,8 @@ HAL_StatusTypeDef HAL_TIM_DMABurst_ReadStart(TIM_HandleTypeDef *htim, uint32_t B
 
 /**
   * @brief  Stop the DMA burst reading 
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @param  BurstRequestSrc: TIM DMA Request sources to disable.
   * @retval HAL status
   */
@@ -3654,7 +3721,8 @@ HAL_StatusTypeDef HAL_TIM_DMABurst_ReadStop(TIM_HandleTypeDef *htim, uint32_t Bu
 
 /**
   * @brief  Generate a software event
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @param  EventSource: specifies the event source.
   *          This parameter can be one of the following values:
   *            @arg TIM_EventSource_Update: Timer update Event source
@@ -3696,15 +3764,16 @@ HAL_StatusTypeDef HAL_TIM_GenerateEvent(TIM_HandleTypeDef *htim, uint32_t EventS
 
 /**
   * @brief  Configures the OCRef clear feature
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @param  sClearInputConfig: pointer to a TIM_ClearInputConfigTypeDef structure that
   *         contains the OCREF clear feature and parameters for the TIM peripheral. 
-  * @param  Channel: specifies the TIM Channel
+  * @param  Channel: specifies the TIM Channel.
   *          This parameter can be one of the following values:
-  *            @arg TIM_Channel_1: TIM Channel 1
-  *            @arg TIM_Channel_2: TIM Channel 2
-  *            @arg TIM_Channel_3: TIM Channel 3
-  *            @arg TIM_Channel_4: TIM Channel 4
+  *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
+  *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
+  *            @arg TIM_CHANNEL_3: TIM Channel 3 selected
+  *            @arg TIM_CHANNEL_4: TIM Channel 4 selected
   * @retval HAL status
   */ 
 HAL_StatusTypeDef HAL_TIM_ConfigOCrefClear(TIM_HandleTypeDef *htim, TIM_ClearInputConfigTypeDef * sClearInputConfig, uint32_t Channel)
@@ -3804,7 +3873,8 @@ HAL_StatusTypeDef HAL_TIM_ConfigOCrefClear(TIM_HandleTypeDef *htim, TIM_ClearInp
 
 /**
   * @brief   Configures the clock source to be used
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @param  sClockSourceConfig: pointer to a TIM_ClockConfigTypeDef structure that
   *         contains the clock source information for the TIM peripheral. 
   * @retval HAL status
@@ -3937,7 +4007,8 @@ HAL_StatusTypeDef HAL_TIM_ConfigClockSource(TIM_HandleTypeDef *htim, TIM_ClockCo
 /**
   * @brief  Selects the signal connected to the TI1 input: direct from CH1_input
   *         or a XOR combination between CH1_input, CH2_input & CH3_input
-  * @param  htim: TIM handle.
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module..
   * @param  TI1_Selection: Indicate whether or not channel 1 is connected to the
   *         output of a XOR gate.
   *         This parameter can be one of the following values:
@@ -3971,7 +4042,8 @@ HAL_StatusTypeDef HAL_TIM_ConfigTI1Input(TIM_HandleTypeDef *htim, uint32_t TI1_S
 
 /**
   * @brief  Configures the TIM in Slave mode
-  * @param  htim: TIM handle.
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module..
   * @param  sSlaveConfig: pointer to a TIM_SlaveConfigTypeDef structure that
   *         contains the selected trigger (internal trigger input, filtered
   *         timer input or external trigger input) and the ) and the Slave 
@@ -4118,8 +4190,9 @@ HAL_StatusTypeDef HAL_TIM_SlaveConfigSynchronization(TIM_HandleTypeDef *htim, TI
 
 /**
   * @brief  Read the captured value from Capture Compare unit
-  * @param  htim: TIM handle.
-  * @param  Channel : TIM Channels to be enabled
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module..
+  * @param  Channel: TIM Channels to be enabled.
   *          This parameter can be one of the following values:
   *            @arg TIM_CHANNEL_1: TIM Channel 1 selected
   *            @arg TIM_CHANNEL_2: TIM Channel 2 selected
@@ -4217,7 +4290,8 @@ uint32_t HAL_TIM_ReadCapturedValue(TIM_HandleTypeDef *htim, uint32_t Channel)
 
 /**
   * @brief  Period elapsed callback in non blocking mode 
-  * @param  htim : TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval None
   */
 __weak void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
@@ -4229,7 +4303,8 @@ __weak void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 }
 /**
   * @brief  Output Compare callback in non blocking mode 
-  * @param  htim : TIM OC handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval None
   */
 __weak void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
@@ -4240,7 +4315,8 @@ __weak void HAL_TIM_OC_DelayElapsedCallback(TIM_HandleTypeDef *htim)
 }
 /**
   * @brief  Input Capture callback in non blocking mode 
-  * @param  htim : TIM IC handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval None
   */
 __weak void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
@@ -4252,7 +4328,8 @@ __weak void HAL_TIM_IC_CaptureCallback(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  PWM Pulse finished callback in non blocking mode 
-  * @param  htim : TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval None
   */
 __weak void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
@@ -4264,7 +4341,8 @@ __weak void HAL_TIM_PWM_PulseFinishedCallback(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Hall Trigger detection callback in non blocking mode 
-  * @param  htim : TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval None
   */
 __weak void HAL_TIM_TriggerCallback(TIM_HandleTypeDef *htim)
@@ -4276,7 +4354,8 @@ __weak void HAL_TIM_TriggerCallback(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Timer error callback in non blocking mode 
-  * @param  htim : TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval None
   */
 __weak void HAL_TIM_ErrorCallback(TIM_HandleTypeDef *htim)
@@ -4303,7 +4382,7 @@ __weak void HAL_TIM_ErrorCallback(TIM_HandleTypeDef *htim)
                         ##### Peripheral State functions #####
   ==============================================================================  
   [..]
-    This subsection permit to get in run-time the status of the peripheral 
+    This subsection permits to get in run-time the status of the peripheral 
     and the data flow.
 
 @endverbatim
@@ -4312,7 +4391,8 @@ __weak void HAL_TIM_ErrorCallback(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Return the TIM Base state
-  * @param  htim: TIM Base handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL state
   */
 HAL_TIM_StateTypeDef HAL_TIM_Base_GetState(TIM_HandleTypeDef *htim)
@@ -4322,7 +4402,8 @@ HAL_TIM_StateTypeDef HAL_TIM_Base_GetState(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Return the TIM OC state
-  * @param  htim: TIM Ouput Compare handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL state
   */
 HAL_TIM_StateTypeDef HAL_TIM_OC_GetState(TIM_HandleTypeDef *htim)
@@ -4332,7 +4413,8 @@ HAL_TIM_StateTypeDef HAL_TIM_OC_GetState(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Return the TIM PWM state
-  * @param  htim: TIM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL state
   */
 HAL_TIM_StateTypeDef HAL_TIM_PWM_GetState(TIM_HandleTypeDef *htim)
@@ -4342,7 +4424,8 @@ HAL_TIM_StateTypeDef HAL_TIM_PWM_GetState(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Return the TIM Input Capture state
-  * @param  htim: TIM IC handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL state
   */
 HAL_TIM_StateTypeDef HAL_TIM_IC_GetState(TIM_HandleTypeDef *htim)
@@ -4352,7 +4435,8 @@ HAL_TIM_StateTypeDef HAL_TIM_IC_GetState(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Return the TIM One Pulse Mode state
-  * @param  htim: TIM OPM handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL state
   */
 HAL_TIM_StateTypeDef HAL_TIM_OnePulse_GetState(TIM_HandleTypeDef *htim)
@@ -4362,7 +4446,8 @@ HAL_TIM_StateTypeDef HAL_TIM_OnePulse_GetState(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  Return the TIM Encoder Mode state
-  * @param  htim: TIM Encoder handle
+  * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
+  *                the configuration information for TIM module.
   * @retval HAL state
   */
 HAL_TIM_StateTypeDef HAL_TIM_Encoder_GetState(TIM_HandleTypeDef *htim)
@@ -4376,7 +4461,8 @@ HAL_TIM_StateTypeDef HAL_TIM_Encoder_GetState(TIM_HandleTypeDef *htim)
 
 /**
   * @brief  TIM DMA error callback 
-  * @param  hdma : pointer to DMA handle.
+  * @param  hdma: pointer to a DMA_HandleTypeDef structure that contains
+  *                the configuration information for the specified DMA module.
   * @retval None
   */
 void HAL_TIM_DMAError(DMA_HandleTypeDef *hdma)
@@ -4390,7 +4476,8 @@ void HAL_TIM_DMAError(DMA_HandleTypeDef *hdma)
 
 /**
   * @brief  TIM DMA Delay Pulse complete callback. 
-  * @param  hdma : pointer to DMA handle.
+  * @param  hdma: pointer to a DMA_HandleTypeDef structure that contains
+  *                the configuration information for the specified DMA module.
   * @retval None
   */
 void HAL_TIM_DMADelayPulseCplt(DMA_HandleTypeDef *hdma)
@@ -4403,7 +4490,8 @@ void HAL_TIM_DMADelayPulseCplt(DMA_HandleTypeDef *hdma)
 }
 /**
   * @brief  TIM DMA Capture complete callback. 
-  * @param  hdma : pointer to DMA handle.
+  * @param  hdma: pointer to a DMA_HandleTypeDef structure that contains
+  *                the configuration information for the specified DMA module.
   * @retval None
   */
 void HAL_TIM_DMACaptureCplt(DMA_HandleTypeDef *hdma)
@@ -4418,7 +4506,8 @@ void HAL_TIM_DMACaptureCplt(DMA_HandleTypeDef *hdma)
 
 /**
   * @brief  TIM DMA Period Elapse complete callback. 
-  * @param  hdma : pointer to DMA handle.
+  * @param  hdma: pointer to a DMA_HandleTypeDef structure that contains
+  *                the configuration information for the specified DMA module.
   * @retval None
   */
 static void TIM_DMAPeriodElapsedCplt(DMA_HandleTypeDef *hdma)
@@ -4432,7 +4521,8 @@ static void TIM_DMAPeriodElapsedCplt(DMA_HandleTypeDef *hdma)
 
 /**
   * @brief  TIM DMA Trigger callback. 
-  * @param  hdma : pointer to DMA handle.
+  * @param  hdma: pointer to a DMA_HandleTypeDef structure that contains
+  *                the configuration information for the specified DMA module.
   * @retval None
   */
 static void TIM_DMATriggerCplt(DMA_HandleTypeDef *hdma)

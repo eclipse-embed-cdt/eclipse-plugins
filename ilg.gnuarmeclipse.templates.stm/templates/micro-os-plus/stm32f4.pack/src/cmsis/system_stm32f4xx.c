@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    system_stm32f4xx.c
   * @author  MCD Application Team
-  * @version V2.0.0
-  * @date    18-February-2014
+  * @version V2.1.0
+  * @date    19-June-2014
   * @brief   CMSIS Cortex-M4 Device Peripheral Access Layer System Source File.
   *
   *   This file provides two functions and one global variable to be called from 
@@ -63,7 +63,16 @@
   * @{
   */
 
-#include "stm32f4xx_hal.h"
+
+#include "stm32f4xx.h"
+
+#if !defined  (HSE_VALUE) 
+  #define HSE_VALUE    ((uint32_t)8000000) /*!< Default value of the External oscillator in Hz */
+#endif /* HSE_VALUE */
+
+#if !defined  (HSI_VALUE)
+  #define HSI_VALUE    ((uint32_t)16000000) /*!< Value of the Internal oscillator in Hz*/
+#endif /* HSI_VALUE */
 
 /**
   * @}
@@ -127,7 +136,7 @@
                variable is updated automatically.
   */
   uint32_t SystemCoreClock = 16000000;
-  __I uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
+  __IO const uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
 
 /**
   * @}
