@@ -1,6 +1,8 @@
 #! /bin/bash
 
 # This script must be executed in the scripts folder, paths are relative to it.
+# $ cd .../gnuarmeclipse-se-git/scripts
+# $ bash copy-from-micro-os.sh
 
 src=../../../uOS/micro-os-plus-iii.git/packages
 
