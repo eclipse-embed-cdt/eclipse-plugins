@@ -77,9 +77,9 @@ public class EclipsePreferences {
 
 	public static String getToolchainName() {
 
-		String toolchainName = getValueForId(SHARED_CROSS_TOOLCHAIN_NAME, null);
+		String toolchainName = getValueForId(SHARED_CROSS_TOOLCHAIN_NAME, "");
 
-		if (toolchainName == null)
+		if (toolchainName.length() == 0)
 			toolchainName = DefaultPreferences.getToolchainName();
 
 		return toolchainName.trim();
@@ -95,9 +95,9 @@ public class EclipsePreferences {
 		String name = toolchainName.trim();
 		String pathKey = SHARED_CROSS_TOOLCHAIN_PATH + "."
 				+ Math.abs(name.hashCode());
-		String sPath = getValueForId(pathKey, null);
+		String sPath = getValueForId(pathKey, "");
 
-		if (sPath == null) {
+		if (sPath.length() == 0) {
 			sPath = DefaultPreferences.getToolchainPath(name);
 		}
 
