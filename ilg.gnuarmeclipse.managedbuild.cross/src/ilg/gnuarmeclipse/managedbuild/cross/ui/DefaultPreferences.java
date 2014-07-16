@@ -15,7 +15,7 @@ import org.eclipse.core.runtime.Platform;
 
 public class DefaultPreferences {
 
-	public static final String TOOLCHAIN = "toolchains.properties";
+	public static final String TOOLCHAIN = "toolchains.prefs";
 	public static final String DEFAULT_NAME = "default.name";
 	public static final String DEFAULT_PATH = "default.path";
 
