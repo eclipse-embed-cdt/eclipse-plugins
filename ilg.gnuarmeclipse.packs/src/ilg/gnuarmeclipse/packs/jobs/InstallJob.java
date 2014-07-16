@@ -140,7 +140,7 @@ public class InstallJob extends Job {
 				versionNode.setBooleanProperty(Property.INSTALLED, true);
 
 			} catch (IOException e) {
-				m_out.println("Error " + e);
+				m_out.println(Utils.reportError(e.toString()));
 			}
 		}
 
@@ -232,6 +232,8 @@ public class InstallJob extends Job {
 			copyFile(packUrl, archiveFileDownload);
 
 			archiveFileDownload.renameTo(archiveFile);
+
+			Utils.reportInfo("Pack " + archiveName + " downloaded.");
 		} else {
 			m_monitor.worked((int) archiveFile.length());
 		}
@@ -251,6 +253,8 @@ public class InstallJob extends Job {
 		unzip(archiveFile, destRelPath);
 
 		Utils.makeFolderReadOnlyRecursive(destRelPath.toFile());
+
+		Utils.reportInfo("Pack " + archiveName + " installed.");
 
 		m_out.println("All files write protected.");
 	}

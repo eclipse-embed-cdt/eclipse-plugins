@@ -32,6 +32,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
@@ -363,6 +366,51 @@ public class Utils {
 			}
 			folder.setWritable(false, false);
 		}
+	}
+
+	public static String reportError(String message) {
+		
+		try {
+			IMarker marker = ResourcesPlugin.getWorkspace().getRoot()
+					.createMarker(IMarker.PROBLEM);
+			marker.setAttribute(IMarker.MESSAGE, message);
+			marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
+			marker.setAttribute(IMarker.LOCATION, "-");
+		} catch (CoreException e) {
+			System.out.println(message);
+		}
+
+		return message;
+	}
+
+	public static String reportWarning(String message) {
+		
+		try {
+			IMarker marker = ResourcesPlugin.getWorkspace().getRoot()
+					.createMarker(IMarker.PROBLEM);
+			marker.setAttribute(IMarker.MESSAGE, message);
+			marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_WARNING);
+			marker.setAttribute(IMarker.LOCATION, "-");
+		} catch (CoreException e) {
+			System.out.println(message);
+		}
+
+		return message;
+	}
+
+	public static String reportInfo(String message) {
+		
+		try {
+			IMarker marker = ResourcesPlugin.getWorkspace().getRoot()
+					.createMarker(IMarker.PROBLEM);
+			marker.setAttribute(IMarker.MESSAGE, message);
+			marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_INFO);
+			marker.setAttribute(IMarker.LOCATION, "-");
+		} catch (CoreException e) {
+			System.out.println(message);
+		}
+
+		return message;
 	}
 
 }

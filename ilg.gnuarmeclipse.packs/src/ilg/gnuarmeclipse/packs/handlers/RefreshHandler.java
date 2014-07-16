@@ -142,7 +142,8 @@ public class RefreshHandler extends AbstractHandler {
 					workUnits++;
 
 				} else {
-					m_out.println("Repo type \"" + type + "\" not supported.");
+					m_out.println(Utils.reportWarning("Repo type \"" + type
+							+ "\" not supported."));
 				}
 			}
 
@@ -188,7 +189,7 @@ public class RefreshHandler extends AbstractHandler {
 			// m_out.println("Error: " + e.toString());
 		} catch (Exception e) {
 			Activator.log(e);
-			m_out.println("Failed: " + e.toString());
+			m_out.println(Utils.reportError(e.toString()));
 		}
 
 		IStatus status;
@@ -207,8 +208,8 @@ public class RefreshHandler extends AbstractHandler {
 				duration = 1;
 			}
 
-			m_out.println("Refresh packs job completed in " + (duration + 500)
-					/ 1000 + "s.");
+			m_out.println(Utils.reportInfo("Refresh packs completed in "
+					+ (duration + 500) / 1000 + "s."));
 
 			status = Status.OK_STATUS;
 		}
@@ -230,10 +231,9 @@ public class RefreshHandler extends AbstractHandler {
 			return;
 
 		} catch (FileNotFoundException e) {
-			m_out.println("Failed: " + e.toString());
+			m_out.println(Utils.reportError("File not found: " + e.getMessage()));
 		} catch (Exception e) {
-			Activator.log(e);
-			m_out.println("Failed: " + e.toString());
+			m_out.println(Utils.reportError(e.toString()));
 		}
 
 		return;
@@ -294,6 +294,9 @@ public class RefreshHandler extends AbstractHandler {
 
 					// If local file does not exist, create it
 					Utils.copyFile(sourceUrl, cachedFile, m_out, null);
+
+					Utils.reportInfo("Pack " + pdscName + " v" + pdscVersion
+							+ " cached.");
 				}
 
 				if (cachedFile.exists()) {
@@ -302,12 +305,14 @@ public class RefreshHandler extends AbstractHandler {
 					parser.parsePdscContent(pdscName, pdscVersion, contentRoot);
 
 				} else {
-					m_out.println("Missing \"" + cachedFile + "\", ignored");
+					m_out.println(Utils.reportWarning("Missing \"" + cachedFile
+							+ "\", ignored"));
 					return;
 				}
 
 			} catch (Exception e) {
-				m_out.println("Failed with \"" + e.getMessage() + "\", ignored");
+				m_out.println(Utils.reportWarning("Failed with \""
+						+ e.getMessage() + "\", ignored"));
 				return;
 			}
 
@@ -330,7 +335,7 @@ public class RefreshHandler extends AbstractHandler {
 				m_out.println("File \"" + file.getPath() + "\" written.");
 
 			} catch (IOException e) {
-				m_out.println("Failed: " + e.toString());
+				m_out.println(Utils.reportError(e.toString()));
 			}
 		}
 	}
@@ -348,9 +353,11 @@ public class RefreshHandler extends AbstractHandler {
 			m_monitor.worked(1);
 
 		} catch (MalformedURLException e) {
-			m_out.println("Failed: " + e.toString());
+			m_out.println(Utils.reportError(e.toString()));
+		} catch (FileNotFoundException e) {
+			m_out.println(Utils.reportError("File not found: " + e.getMessage()));
 		} catch (IOException e) {
-			m_out.println("Failed: " + e.toString());
+			m_out.println(Utils.reportError(e.toString()));
 		}
 	}
 }

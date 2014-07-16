@@ -129,8 +129,10 @@ public class RemoveJob extends Job {
 				// Add it to the list for final notifications
 				removedPacksList.add(versionNode);
 
+				Utils.reportInfo("Pack " + packFullName + " removed.");
+
 			} catch (IOException e) {
-				m_out.println(e.getMessage());
+				m_out.println(Utils.reportError(e.getMessage()));
 				break;
 			}
 		}
