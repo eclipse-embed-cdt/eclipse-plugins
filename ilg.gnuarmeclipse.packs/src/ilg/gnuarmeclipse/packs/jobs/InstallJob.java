@@ -12,9 +12,9 @@
 package ilg.gnuarmeclipse.packs.jobs;
 
 import ilg.gnuarmeclipse.packs.Activator;
-import ilg.gnuarmeclipse.packs.PacksStorage;
-import ilg.gnuarmeclipse.packs.PacksStorageEvent;
 import ilg.gnuarmeclipse.packs.Utils;
+import ilg.gnuarmeclipse.packs.storage.PacksStorage;
+import ilg.gnuarmeclipse.packs.storage.PacksStorageEvent;
 import ilg.gnuarmeclipse.packs.tree.Leaf;
 import ilg.gnuarmeclipse.packs.tree.Node;
 import ilg.gnuarmeclipse.packs.tree.Property;
@@ -221,7 +221,7 @@ public class InstallJob extends Job {
 		File archiveFile = m_storage.getFile(
 				new Path(PacksStorage.CACHE_FOLDER), archiveName);
 
-		if (!archiveFile.exists()) {
+		if (archiveFile == null || !archiveFile.exists()) {
 
 			// Read in the .pack file from url to a local file.
 			File archiveFileDownload = m_storage.getFile(new Path(

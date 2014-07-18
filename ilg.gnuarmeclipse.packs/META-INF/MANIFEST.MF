@@ -23,3 +23,5 @@ Import-Package: org.eclipse.cdt.ui.newui,
  org.eclipse.core.filesystem,
  org.eclipse.core.filesystem.provider,
  org.eclipse.ui.ide
+Export-Package: ilg.gnuarmeclipse.packs.storage,
+ ilg.gnuarmeclipse.packs.tree

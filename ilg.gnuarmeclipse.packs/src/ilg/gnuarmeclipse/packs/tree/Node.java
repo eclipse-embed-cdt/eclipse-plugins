@@ -100,14 +100,6 @@ public class Node extends Leaf {
 		return m_children;
 	}
 
-	public Leaf[] getChildrenArray() {
-		if (m_children != null) {
-			return m_children.toArray(new Leaf[m_children.size()]);
-		} else {
-			return new Leaf[0];
-		}
-	}
-
 	public void addChild(Leaf node) {
 		if (m_children == null) {
 			m_children = new LinkedList<Leaf>();

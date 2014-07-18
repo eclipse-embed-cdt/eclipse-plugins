@@ -9,8 +9,14 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs;
+package ilg.gnuarmeclipse.packs.storage;
 
+import ilg.gnuarmeclipse.packs.Activator;
+import ilg.gnuarmeclipse.packs.IPacksStorageListener;
+import ilg.gnuarmeclipse.packs.Repos;
+import ilg.gnuarmeclipse.packs.Utils;
+import ilg.gnuarmeclipse.packs.cmsis.PdscParser;
+import ilg.gnuarmeclipse.packs.cmsis.PdscParserForBuild;
 import ilg.gnuarmeclipse.packs.tree.Leaf;
 import ilg.gnuarmeclipse.packs.tree.Node;
 import ilg.gnuarmeclipse.packs.tree.PackNode;
@@ -31,21 +37,26 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.Path;
+import org.eclipse.swt.custom.BusyIndicator;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 public class PacksStorage {
 
-	public static final String SITES_FILE_NAME = "sites.xml";
-	public static final String CACHE_FILE_NAME = ".cache.xml";
-	public static final String CACHE_XML_VERSION = "1.1";
+	// public static final String SITES_FILE_NAME = "sites.xml";
+	// public static final String CACHE_FILE_NAME = ".cache.xml";
+	// public static final String CACHE_XML_VERSION = "1.1";
 
 	// public static final String DOWNLOAD_FOLDER = ".download";
 	public static final String CACHE_FOLDER = ".cache";
 
-	public static final String CONTENT_FILE_NAME = "content.xml";
+	public static final String CONTENT_FILE_NAME_SUFFIX = "content.xml";
 	public static final String CONTENT_XML_VERSION = "1.1";
+
+	public static final String DEVICES_FILE_NAME = ".devicesForBuild.xml";
 
 	// ------------------------------------------------------------------------
 
@@ -71,6 +82,8 @@ public class PacksStorage {
 	private Map<String, Map<String, PackNode>> m_packsVersionsMap;
 	private Map<String, PackNode> m_packsMap;
 
+	private Node fInstalledDevicesForBuild;
+
 	public PacksStorage() {
 		m_repos = Repos.getInstance();
 
@@ -82,6 +95,8 @@ public class PacksStorage {
 		m_packsMap = new TreeMap<String, PackNode>();
 
 		m_listeners = new ArrayList<IPacksStorageListener>();
+
+		fInstalledDevicesForBuild = null;
 	}
 
 	// For convenient recursive search, a full tree with all
@@ -149,6 +164,32 @@ public class PacksStorage {
 		return node;
 	}
 
+	// Filter the versions to the installed latest ones
+	public List<PackNode> getInstalledPacksLatestVersionsList() {
+
+		// Filter installed packages
+		List<PackNode> installedPackages = new LinkedList<PackNode>();
+		for (PackNode versionNode : m_packsVersionsList) {
+			if (versionNode.isBooleanProperty(Property.INSTALLED)) {
+				installedPackages.add((PackNode) versionNode.getParent());
+			}
+		}
+
+		// Filter only the latest versions (first installed in children list)
+		List<PackNode> installedLatestVersions = new LinkedList<PackNode>();
+		for (PackNode packNode : installedPackages) {
+			List<Leaf> children = packNode.getChildren();
+			for (Leaf node : children) {
+				if (node.isBooleanProperty(Property.INSTALLED)) {
+					installedLatestVersions.add((PackNode) node);
+					break;
+				}
+			}
+		}
+
+		return installedLatestVersions;
+	}
+
 	// ------------------------------------------------------------------------
 
 	public void addListener(IPacksStorageListener listener) {
@@ -161,6 +202,7 @@ public class PacksStorage {
 		m_listeners.remove(listener);
 	}
 
+	// Used by 'Refresh', 'LoadReposSummaries'
 	public void notifyNewInput() {
 
 		// System.out.println("PacksStorage notifyRefresh()");
@@ -179,12 +221,16 @@ public class PacksStorage {
 		notifyListener(event);
 	}
 
+	// 'Install/Remove Pack' notifies Type.UPDATE_VERSIONS
 	public void notifyUpdateView(String type, List<Leaf> list) {
 
 		// System.out.println("PacksStorage notifyUpdateView()");
 		PacksStorageEvent event = new PacksStorageEvent(this, type, list);
 
 		notifyListener(event);
+
+		// Force to re-cache
+		fInstalledDevicesForBuild = null;
 	}
 
 	public void notifyListener(PacksStorageEvent event) {
@@ -540,4 +586,148 @@ public class PacksStorage {
 		return file; // may be null
 	}
 
+	// Return the cached file for the name (used to read .pdsc, for example)
+	public File getCachedFile(String name) {
+
+		return getFile(new Path(CACHE_FOLDER), name);
+	}
+
+	// Called from TabDevice in managedbuild.cross
+	public Node getInstalledDevicesForBuild() {
+
+		if (fInstalledDevicesForBuild != null) {
+
+			// Return the in-memory cached tree
+			return fInstalledDevicesForBuild;
+		}
+
+		BusyIndicator.showWhile(Display.getDefault(), new Runnable() {
+
+			public void run() {
+				fInstalledDevicesForBuild = updateInstalledDevicesForBuild();
+			}
+		});
+
+		return fInstalledDevicesForBuild;
+	}
+
+	private Node updateInstalledDevicesForBuild() {
+
+		File devicesFile = getFile(new Path(PacksStorage.CACHE_FOLDER),
+				DEVICES_FILE_NAME);
+
+		Node rootNode;
+		rootNode = new Node(Type.ROOT);
+		Node emptyNode = Node.addNewChild(rootNode, Type.NONE);
+		emptyNode.setName("No devices available, install packs first.");
+
+		if (devicesFile != null && devicesFile.exists()) {
+			// Parse the cached file
+		} else {
+			// Parse all installed packages
+			Node node = parseInstalledDevicesForBuild();
+			if (node != null) {
+				rootNode = node;
+			}
+
+			// Save cached file for future use
+		}
+
+		// rootNode = new Node(Type.ROOT);
+		// rootNode.setName("Devices");
+		//
+		// Node family = Node.addUniqueChild(rootNode, Type.FAMILY, "myFamily");
+		// Node subFamily = Node.addUniqueChild(family, Type.SUBFAMILY,
+		// "mySubFamily");
+		// Node device = Node.addUniqueChild(subFamily, Type.DEVICE,
+		// "myDevice");
+		return rootNode;
+	}
+
+	private Node parseInstalledDevicesForBuild() {
+
+		List<PackNode> versionsList = getInstalledPacksLatestVersionsList();
+
+		PdscParserForBuild pdsc = new PdscParserForBuild();
+
+		Node boardsNode = new Node(Type.NONE);
+		boardsNode.setName("Boards");
+		Node devicesNode = new Node(Type.NONE);
+		devicesNode.setName("Devices");
+
+		long beginTime = System.currentTimeMillis();
+
+		m_out.println();
+		m_out.println(Utils.getCurrentDateTime());
+
+		m_out.println("Extracting devices&boards... ");
+
+		int count = 0;
+		for (PackNode node : versionsList) {
+
+			String pdscName = node.getProperty(Property.PDSC_NAME);
+			String version = node.getName();
+
+			File file = getCachedFile(makeCachePdscName(pdscName, version));
+
+			m_out.println("Parsing \"" + file + "\"");
+			try {
+				pdsc.parseXml(file);
+
+				pdsc.parseDevices(devicesNode);
+
+				// Using boards requires existing devices to be present,
+				// to get the memory map
+				pdsc.parseBoards(boardsNode);
+
+				updateBoardsDevices(boardsNode, devicesNode);
+
+				count++;
+			} catch (ParserConfigurationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SAXException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - beginTime;
+		if (duration == 0) {
+			duration = 1;
+		}
+		m_out.print("Completed in ");
+		m_out.print(duration + "ms, ");
+		if (count == 0) {
+			m_out.println("No packages.");
+		} else if (count == 1) {
+			m_out.println("1 package.");
+		} else {
+			m_out.println(count + " packages.");
+		}
+
+		if (boardsNode.hasChildren() && devicesNode.hasChildren()) {
+			Node rootNode = new Node(Type.ROOT);
+			rootNode.addChild(boardsNode);
+			rootNode.addChild(devicesNode);
+
+			return rootNode;
+		} else if (boardsNode.hasChildren()) {
+			return boardsNode;
+		} else if (devicesNode.hasChildren()) {
+			return devicesNode;
+		}
+
+		return null;
+	}
+
+	private void updateBoardsDevices(Node boardsNode, Node devicesNode) {
+
+		// TODO: check if boards mounted devices are present in devices.
+		// If so, copy memory map, otherwise remove
+	}
 }

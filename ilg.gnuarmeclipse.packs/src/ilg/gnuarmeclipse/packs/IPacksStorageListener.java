@@ -11,6 +11,8 @@
 
 package ilg.gnuarmeclipse.packs;
 
+import ilg.gnuarmeclipse.packs.storage.PacksStorageEvent;
+
 public interface IPacksStorageListener {
 
 	public void packsChanged(PacksStorageEvent event);

@@ -15,6 +15,7 @@ import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.Repos;
 import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.cmsis.PdscParser;
+import ilg.gnuarmeclipse.packs.cmsis.PdscParserFull;
 import ilg.gnuarmeclipse.packs.tree.Node;
 import ilg.gnuarmeclipse.packs.tree.PackNode;
 import ilg.gnuarmeclipse.packs.tree.Property;
@@ -91,7 +92,7 @@ public class ParsePdscJob extends Job {
 
 		Node outlineNode = null;
 		try {
-			PdscParser pdsc = new PdscParser();
+			PdscParserFull pdsc = new PdscParserFull();
 			pdsc.parseXml(path);
 			outlineNode = pdsc.parsePdscFull();
 

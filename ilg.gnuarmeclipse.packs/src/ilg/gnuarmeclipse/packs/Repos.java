@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.packs;
 
+import ilg.gnuarmeclipse.packs.storage.PacksStorage;
 import ilg.gnuarmeclipse.packs.ui.preferences.FolderConstants;
 
 import java.io.File;
@@ -70,6 +71,7 @@ public class Repos {
 
 	// ------------------------------------------------------------------------
 
+	// Return a file object in Packages
 	public File getFileObject(String name) throws IOException {
 
 		IPath path = getFolderPath().append(name);
@@ -80,6 +82,7 @@ public class Repos {
 		return file; // Cannot return null
 	}
 
+	// Return the absolute 'Packages' path.
 	public IPath getFolderPath() throws IOException {
 
 		if (m_folderPath == null) {
@@ -90,7 +93,8 @@ public class Repos {
 		return m_folderPath;
 	}
 
-	// Return the absolute full path of the folder used to store packages
+	// Return a string with the absolute full path of the folder used
+	// to store packages
 	public String getFolderPathString() throws IOException {
 
 		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
@@ -122,6 +126,7 @@ public class Repos {
 
 	// ------------------------------------------------------------------------
 
+	// Return the default list of repositories
 	public List<Map<String, Object>> getDefaultList() {
 
 		List<Map<String, Object>> list;
@@ -204,6 +209,7 @@ public class Repos {
 		return list;
 	}
 
+	// Parse the file containing the list of repositories
 	private List<Map<String, Object>> parseFile() throws IOException,
 			ParserConfigurationException, SAXException {
 
@@ -265,6 +271,7 @@ public class Repos {
 		return sitesList;
 	}
 
+	// Write the list of repositories to a local file
 	public void putList(List<Map<String, Object>> sitesList) throws IOException {
 
 		File file = getFileObject(REPOS_FILE_NAME);
@@ -298,6 +305,7 @@ public class Repos {
 		}
 	}
 
+	// Do some magic to obtain a domain name from the url
 	public String getDomaninNameFromUrl(String url) {
 
 		String s = url;
@@ -357,7 +365,7 @@ public class Repos {
 
 		String fileName = PacksStorage.CACHE_FOLDER + "/"
 				+ getFileNamePrefixFromUrl(url)
-				+ PacksStorage.CONTENT_FILE_NAME;
+				+ PacksStorage.CONTENT_FILE_NAME_SUFFIX;
 
 		return fileName;
 	}

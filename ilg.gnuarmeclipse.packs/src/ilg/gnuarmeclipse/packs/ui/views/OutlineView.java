@@ -12,11 +12,12 @@
 package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.packs.Activator;
-import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.Repos;
 import ilg.gnuarmeclipse.packs.jobs.ParsePdscJob;
+import ilg.gnuarmeclipse.packs.storage.PacksStorage;
 import ilg.gnuarmeclipse.packs.tree.Leaf;
 import ilg.gnuarmeclipse.packs.tree.Node;
+import ilg.gnuarmeclipse.packs.tree.NodeViewContentProvider;
 import ilg.gnuarmeclipse.packs.tree.PackNode;
 import ilg.gnuarmeclipse.packs.tree.Property;
 import ilg.gnuarmeclipse.packs.tree.Type;

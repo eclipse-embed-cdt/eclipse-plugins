@@ -12,6 +12,7 @@
 package ilg.gnuarmeclipse.packs;
 
 import ilg.gnuarmeclipse.packs.jobs.LoadReposSummariesJob;
+import ilg.gnuarmeclipse.packs.storage.PacksStorage;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;

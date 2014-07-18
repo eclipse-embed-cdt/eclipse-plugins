@@ -12,11 +12,12 @@
 package ilg.gnuarmeclipse.packs.handlers;
 
 import ilg.gnuarmeclipse.packs.Activator;
-import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.Repos;
 import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.cmsis.Index;
 import ilg.gnuarmeclipse.packs.cmsis.PdscParser;
+import ilg.gnuarmeclipse.packs.cmsis.PdscParserBrief;
+import ilg.gnuarmeclipse.packs.storage.PacksStorage;
 import ilg.gnuarmeclipse.packs.tree.Property;
 import ilg.gnuarmeclipse.packs.tree.Node;
 import ilg.gnuarmeclipse.packs.tree.Type;
@@ -265,8 +266,8 @@ public class RefreshHandler extends AbstractHandler {
 		contentRoot
 				.putProperty(Property.DATE, dateFormat.format(cal.getTime()));
 
-		PdscParser parser = new PdscParser();
-		parser.setIsBrief(true);
+		PdscParserBrief parser = new PdscParserBrief();
+		//parser.setIsBrief(true);
 
 		// String[] { url, name, version }
 		for (String[] pdsc : list) {

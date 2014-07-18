@@ -104,6 +104,7 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		return null;
 	}
 
+	// May return null!
 	public String getProperty(String name) {
 
 		if (m_properties == null) {
@@ -177,6 +178,22 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 
 		Leaf node = new Leaf(from);
 		parent.addChild(node);
+		return node;
+	}
+
+	public static Leaf addUniqueChild(Node parent, String type, String name) {
+
+		assert (parent != null);
+
+		Leaf node = parent.getChild(type, name);
+		if (node == null) {
+
+			node = new Leaf(type);
+			parent.addChild(node);
+
+			node.setName(name);
+		}
+
 		return node;
 	}
 

@@ -9,10 +9,9 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs.ui.views;
+package ilg.gnuarmeclipse.packs.tree;
 
-import ilg.gnuarmeclipse.packs.tree.Leaf;
-import ilg.gnuarmeclipse.packs.tree.Node;
+import java.util.List;
 
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
@@ -44,7 +43,13 @@ public abstract class NodeViewContentProvider implements
 	@Override
 	public Object[] getChildren(Object parentElement) {
 		if (parentElement instanceof Node) {
-			return ((Node) parentElement).getChildrenArray();
+			Node node = (Node) parentElement;
+			if (node.hasChildren()) {
+				List<Leaf> children = node.getChildren();
+				return children.toArray(new Leaf[children.size()]);
+			} else {
+				return new Leaf[0];
+			}
 		} else if (parentElement instanceof Leaf) {
 			return new Leaf[0];
 		} else {
@@ -59,10 +64,9 @@ public abstract class NodeViewContentProvider implements
 
 	@Override
 	public boolean hasChildren(Object element) {
-		if (element instanceof Node) {
-			return ((Node) element).hasChildren();
-		} else if (element instanceof Leaf) {
-			return false;
+		Object[] children = getChildren(element);
+		if (children != null && children.length > 0) {
+			return true;
 		} else {
 			return false;
 		}

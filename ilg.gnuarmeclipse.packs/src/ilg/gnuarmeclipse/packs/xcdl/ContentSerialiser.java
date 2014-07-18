@@ -11,9 +11,9 @@
 
 package ilg.gnuarmeclipse.packs.xcdl;
 
-import ilg.gnuarmeclipse.packs.PacksStorage;
 import ilg.gnuarmeclipse.packs.Repos;
 import ilg.gnuarmeclipse.packs.Utils;
+import ilg.gnuarmeclipse.packs.storage.PacksStorage;
 import ilg.gnuarmeclipse.packs.tree.Leaf;
 import ilg.gnuarmeclipse.packs.tree.Node;
 import ilg.gnuarmeclipse.packs.tree.Type;

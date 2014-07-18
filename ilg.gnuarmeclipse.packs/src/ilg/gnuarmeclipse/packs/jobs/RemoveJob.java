@@ -12,10 +12,10 @@
 package ilg.gnuarmeclipse.packs.jobs;
 
 import ilg.gnuarmeclipse.packs.Activator;
-import ilg.gnuarmeclipse.packs.PacksStorage;
-import ilg.gnuarmeclipse.packs.PacksStorageEvent;
 import ilg.gnuarmeclipse.packs.Repos;
 import ilg.gnuarmeclipse.packs.Utils;
+import ilg.gnuarmeclipse.packs.storage.PacksStorage;
+import ilg.gnuarmeclipse.packs.storage.PacksStorageEvent;
 import ilg.gnuarmeclipse.packs.tree.Leaf;
 import ilg.gnuarmeclipse.packs.tree.Node;
 import ilg.gnuarmeclipse.packs.tree.Property;
