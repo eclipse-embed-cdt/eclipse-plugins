@@ -1026,6 +1026,15 @@ public class PdscParser {
 		int romKB = 0;
 
 		String summary = "";
+		if (deviceNode.isType(Type.FAMILY)) {
+			summary = "Family";
+		} else if (deviceNode.isType(Type.SUBFAMILY)) {
+			summary = "Subfamily";
+		} else if (deviceNode.isType(Type.DEVICE)) {
+			summary = "Device";
+		} else if (deviceNode.isType(Type.VARIANT)) {
+			summary = "Variant";
+		}
 
 		String core = deviceNode.getProperty(Node.CORE_PROPERTY, "");
 		if (core.length() > 0) {
@@ -1044,7 +1053,7 @@ public class PdscParser {
 		}
 
 		String fpu = deviceNode.getProperty(Node.FPU_PROPERTY, "");
-		if (fpu.length() > 0) {
+		if (fpu.length() > 0 && "1".equals(fpu)) {
 			if (summary.length() > 0) {
 				summary += ", ";
 			}
@@ -1052,7 +1061,7 @@ public class PdscParser {
 		}
 
 		String mpu = deviceNode.getProperty(Node.MPU_PROPERTY, "");
-		if (mpu.length() > 0) {
+		if (mpu.length() > 0 && "1".equals(mpu)) {
 			if (summary.length() > 0) {
 				summary += ", ";
 			}
@@ -1072,6 +1081,7 @@ public class PdscParser {
 			}
 		}
 
+		// TODO: iterate on parents too
 		if (deviceNode.hasChildren()) {
 			for (Leaf childNode : deviceNode.getChildren()) {
 
@@ -1079,7 +1089,7 @@ public class PdscParser {
 					String size = childNode.getProperty(Node.SIZE_PROPERTY, "");
 					int sizeKB = Utils.convertHexInt(size) / 1024;
 
-					String id = childNode.getProperty(Node.ID_PROPERTY, "");
+					String id = childNode.getName();
 					if (id.contains("ROM")) {
 						romKB += sizeKB;
 					} else if (id.contains("RAM")) {
@@ -1089,6 +1099,7 @@ public class PdscParser {
 				}
 			}
 		}
+		
 		if (ramKB > 0) {
 			if (summary.length() > 0) {
 				summary += ", ";

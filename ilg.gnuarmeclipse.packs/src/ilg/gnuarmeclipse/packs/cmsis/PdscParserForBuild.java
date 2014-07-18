@@ -94,11 +94,7 @@ public class PdscParserForBuild extends PdscParser {
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
-			if ("processor".equals(elementName)) {
-
-				processProcessorElement(childElement, familyNode);
-
-			} else if ("subFamily".equals(elementName)) {
+			if ("subFamily".equals(elementName)) {
 
 				processSubFamilyElement(childElement, familyNode);
 
@@ -106,8 +102,13 @@ public class PdscParserForBuild extends PdscParser {
 
 				processDeviceElement(childElement, familyNode);
 
+			} else {
+
+				processDevicePropertiesGroup(childElement, familyNode);
 			}
 		}
+
+		familyNode.setDescription(processDeviceSummary(familyNode));
 	}
 
 	//
@@ -168,21 +169,7 @@ public class PdscParserForBuild extends PdscParser {
 			String elementName = childElement.getNodeName();
 			if ("variant".equals(elementName)) {
 
-				// Required
-				String variantName = childElement.getAttribute("Dvariant")
-						.trim();
-
-				Node variantNode = Node.addUniqueChild(deviceNode,
-						Type.VARIANT, variantName);
-
-				List<Element> childElements2 = Utils
-						.getChildElementsList(childElement);
-				for (Element childElement2 : childElements2) {
-
-					processDevicePropertiesGroup(childElement2, variantNode);
-				}
-
-				variantNode.setDescription(processDeviceSummary(variantNode));
+				processVariantElement(childElement, deviceNode);
 
 			} else {
 
@@ -190,6 +177,23 @@ public class PdscParserForBuild extends PdscParser {
 			}
 		}
 		deviceNode.setDescription(processDeviceSummary(deviceNode));
+	}
+
+	private void processVariantElement(Element el, Node parent) {
+
+		// Required
+		String variantName = el.getAttribute("Dvariant").trim();
+
+		Node variantNode = Node.addUniqueChild(parent, Type.VARIANT,
+				variantName);
+
+		List<Element> childElements2 = Utils.getChildElementsList(el);
+		for (Element childElement2 : childElements2) {
+
+			processDevicePropertiesGroup(childElement2, variantNode);
+		}
+
+		variantNode.setDescription(processDeviceSummary(variantNode));
 	}
 
 	private void processDevicePropertiesGroup(Element el, Node parent) {
@@ -201,30 +205,36 @@ public class PdscParserForBuild extends PdscParser {
 
 		} else if ("memory".equals(elementName)) {
 
-			// Required
-			String id = el.getAttribute("id").trim();
-			String start = el.getAttribute("start").trim();
-			String size = el.getAttribute("size").trim();
+			processMemoryElement(el, parent);
 
-			// -
-			String Pname = el.getAttribute("Pname").trim();
-
-			// Optional
-			String startup = el.getAttribute("startup").trim();
-			String init = el.getAttribute("init").trim();
-			String defa = el.getAttribute("default").trim();
-
-			Leaf memoryNode = Leaf.addUniqueChild(parent, Type.MEMORY, id);
-
-			memoryNode.putProperty(Node.ID_PROPERTY, id);
-			memoryNode.putProperty(Node.START_PROPERTY, start);
-			memoryNode.putProperty(Node.SIZE_PROPERTY, size);
-
-			memoryNode.putNonEmptyProperty(Node.PNAME_PROPERTY, Pname);
-			memoryNode.putNonEmptyProperty(Node.STARTUP_PROPERTY, startup);
-			memoryNode.putNonEmptyProperty(Node.INIT_PROPERTY, init);
-			memoryNode.putNonEmptyProperty(Node.DEFAULT_PROPERTY, defa);
 		}
+	}
+
+	private void processMemoryElement(Element el, Node parent) {
+
+		// Required
+		String id = el.getAttribute("id").trim();
+		String start = el.getAttribute("start").trim();
+		String size = el.getAttribute("size").trim();
+
+		// -
+		String Pname = el.getAttribute("Pname").trim();
+
+		// Optional
+		String startup = el.getAttribute("startup").trim();
+		String init = el.getAttribute("init").trim();
+		String defa = el.getAttribute("default").trim();
+
+		Leaf memoryNode = Leaf.addUniqueChild(parent, Type.MEMORY, id);
+
+		// memoryNode.putProperty(Node.ID_PROPERTY, id);
+		memoryNode.putProperty(Node.START_PROPERTY, start);
+		memoryNode.putProperty(Node.SIZE_PROPERTY, size);
+
+		memoryNode.putNonEmptyProperty(Node.PNAME_PROPERTY, Pname);
+		memoryNode.putNonEmptyProperty(Node.STARTUP_PROPERTY, startup);
+		memoryNode.putNonEmptyProperty(Node.INIT_PROPERTY, init);
+		memoryNode.putNonEmptyProperty(Node.DEFAULT_PROPERTY, defa);
 	}
 
 	// ------------------------------------------------------------------------
@@ -307,29 +317,31 @@ public class PdscParserForBuild extends PdscParser {
 					deviceNode.putProperty(Node.VENDOR_PROPERTY, va[0]);
 					deviceNode.putProperty(Node.VENDORID_PROPERTY, va[1]);
 				}
+
 			} else if ("feature".equals(elementName)) {
 
 				// <xs:element name="feature" type="BoardFeatureType"
 				// maxOccurs="unbounded"></xs:element>
 
 				processFeatureElement(childElement, boardNode);
+
 			}
 		}
 
+		String summary = "Board";
 		String clock = boardNode.getProperty(Node.CLOCK_PROPERTY, "");
 		if (clock.length() > 0) {
-			String summary = "";
 			try {
 				int clockMHz = Integer.parseInt(clock) / 1000000;
 				if (summary.length() > 0) {
 					summary += ", ";
 				}
-				summary += String.valueOf(clockMHz) + " MHz";
+				summary += "XTAL " + String.valueOf(clockMHz) + " MHz";
 			} catch (NumberFormatException e) {
 				// Ignore not number
 			}
-			boardNode.setDescription(summary);
 		}
+		boardNode.setDescription(summary);
 	}
 
 	private void processFeatureElement(Element el, Node parent) {

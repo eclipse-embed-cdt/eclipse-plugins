@@ -345,22 +345,10 @@ public class PdscParserFull extends PdscParser {
 
 				}
 			} else {
-				if ("processor".equals(elementName)) {
-
-					processProcessorElement(childElement, familyNode);
-
-				} else if ("book".equals(elementName)) {
-
-					processBookElement(childElement, familyNode);
-
-				} else if ("description".equals(elementName)) {
+				if ("description".equals(elementName)) {
 
 					familyDescription = extendDescription(familyDescription,
 							Utils.getElementContent(childElement));
-
-				} else if ("feature".equals(elementName)) {
-
-					processFeatureElement(childElement, familyNode);
 
 				} else if ("subFamily".equals(elementName)) {
 
@@ -371,7 +359,9 @@ public class PdscParserFull extends PdscParser {
 					processDeviceElement(childElement, familyNode);
 
 				} else {
-					System.out.println("Not processed <" + elementName + ">");
+
+					processDevicePropertiesGroup(childElement, familyNode);
+
 				}
 			}
 		}
