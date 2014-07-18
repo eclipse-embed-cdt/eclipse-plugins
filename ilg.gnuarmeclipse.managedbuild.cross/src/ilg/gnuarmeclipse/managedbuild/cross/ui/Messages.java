@@ -12,6 +12,9 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross.ui;
 
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
 import ilg.gnuarmeclipse.managedbuild.cross.Activator;
 
 import org.eclipse.osgi.util.NLS;
@@ -57,6 +60,23 @@ public class Messages extends NLS {
 		NLS.initializeMessages(MESSAGES, Messages.class);
 	}
 
+	private static ResourceBundle RESOURCE_BUNDLE;
+	static {
+		try {
+			RESOURCE_BUNDLE = ResourceBundle.getBundle(MESSAGES);
+		} catch (MissingResourceException e) {
+			System.out.println(e.getMessage());
+		}
+	}
+
 	private Messages() {
+	}
+
+	public static String getString(String key) {
+		try {
+			return RESOURCE_BUNDLE.getString(key);
+		} catch (MissingResourceException e) {
+			return '!' + key + '!';
+		}
 	}
 }

@@ -18,3 +18,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Export-Package: ilg.gnuarmeclipse.managedbuild.cross.ui
+Import-Package: ilg.gnuarmeclipse.packs.storage,
+ ilg.gnuarmeclipse.packs.tree

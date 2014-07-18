@@ -8,6 +8,7 @@
  * Contributors:
  *    Intel Corporation - Initial API and implementation
  *    James Blackburn (Broadcom Corp.)
+ *    Liviu Ionescu - ARM version
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.managedbuild.cross.ui;
