@@ -1,29 +1,28 @@
 /*******************************************************************************
- * Copyright (c) 2007, 2010 Intel Corporation and others.
+ * Copyright (c) 2014 Liviu Ionescu.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Intel Corporation - Initial API and implementation
- *    James Blackburn (Broadcom Corp.)
- *    Liviu Ionescu - ARM version
+ *    Liviu Ionescu - GNU ARM Eclipse version
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.managedbuild.cross.ui;
+
+import ilg.gnuarmeclipse.managedbuild.cross.Activator;
+import ilg.gnuarmeclipse.packs.core.data.DataManagerFactory;
+import ilg.gnuarmeclipse.packs.core.data.IDataManager;
+import ilg.gnuarmeclipse.packs.core.tree.Leaf;
+import ilg.gnuarmeclipse.packs.core.tree.Node;
+import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
+import ilg.gnuarmeclipse.packs.core.tree.Type;
 
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-
-import ilg.gnuarmeclipse.managedbuild.cross.Activator;
-import ilg.gnuarmeclipse.packs.core.tree.Leaf;
-import ilg.gnuarmeclipse.packs.core.tree.Node;
-import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
-import ilg.gnuarmeclipse.packs.core.tree.Type;
-import ilg.gnuarmeclipse.packs.data.DataManager;
 
 import org.eclipse.cdt.core.settings.model.ICResourceDescription;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
@@ -38,7 +37,6 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
@@ -145,11 +143,13 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 
 	// ------------------------------------------------------------------------
 
-	TreeViewer fDevicesTree;
-	Label fArchitectureLabel;
-	Label fDeviceLabel;
-	Table fMemoryTable;
-	Button fMemoryEditButton;
+	private TreeViewer fDevicesTree;
+	private Label fArchitectureLabel;
+	private Label fDeviceLabel;
+	private Table fMemoryTable;
+	private Button fMemoryEditButton;
+
+	private IDataManager fDataManager;
 
 	// ------------------------------------------------------------------------
 
@@ -157,10 +157,10 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 
 	private IConfiguration m_config;
 	private IConfiguration m_lastUpdatedConfig = null;
-	private DataManager fDataManager;
 
 	public TabDevice() {
-		fDataManager = DataManager.getInstance();
+
+		fDataManager = DataManagerFactory.getInstance().createDataManager();
 	}
 
 	// ---
@@ -646,8 +646,13 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 
 		// TODO: consider a static file with custom devices (custom_devices.xml)
 		// to be merged with installed devices.
-
-		Node devicesRoot = fDataManager.getInstalledDevicesForBuild();
+		Node devicesRoot;
+		if (fDataManager != null) {
+			devicesRoot = fDataManager.getInstalledDevicesForBuild();
+		} else {
+			devicesRoot = new Node(Type.ROOT);
+			Node.addNewChild(devicesRoot, Type.NONE).setName("nu-i");
+		}
 		return devicesRoot;
 	}
 }

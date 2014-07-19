@@ -66,13 +66,6 @@ public class EclipsePreferences {
 				.getNode(Activator.PLUGIN_ID);
 		preferences.put(id, value);
 
-		if (false) {
-			// Access the shared preferences
-			String sharedId = Activator.PLUGIN_ID + "." + id;
-
-			SharedDefaults.getInstance().getSharedDefaultsMap()
-					.put(sharedId, value);
-		}
 	}
 
 	public static String getToolchainName() {
@@ -118,11 +111,6 @@ public class EclipsePreferences {
 		} catch (BackingStoreException e) {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
-		}
-
-		if (false) {
-			SharedDefaults.getInstance().updateShareDefaultsMap(
-					SharedDefaults.getInstance().getSharedDefaultsMap());
 		}
 	}
 }
