@@ -11,14 +11,14 @@
 
 package ilg.gnuarmeclipse.packs.jobs;
 
-import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.Utils;
+import ilg.gnuarmeclipse.packs.core.ConsoleStream;
+import ilg.gnuarmeclipse.packs.core.tree.Leaf;
+import ilg.gnuarmeclipse.packs.core.tree.Node;
+import ilg.gnuarmeclipse.packs.core.tree.Property;
+import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.storage.PacksStorage;
 import ilg.gnuarmeclipse.packs.storage.PacksStorageEvent;
-import ilg.gnuarmeclipse.packs.tree.Leaf;
-import ilg.gnuarmeclipse.packs.tree.Node;
-import ilg.gnuarmeclipse.packs.tree.Property;
-import ilg.gnuarmeclipse.packs.tree.Type;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -58,7 +58,7 @@ public class InstallJob extends Job {
 
 		super(name);
 
-		m_out = Activator.getConsoleOut();
+		m_out = ConsoleStream.getConsoleOut();
 
 		m_selection = selection;
 

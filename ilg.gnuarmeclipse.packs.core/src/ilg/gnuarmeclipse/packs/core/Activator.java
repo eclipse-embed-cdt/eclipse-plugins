@@ -9,14 +9,10 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs;
-
-import ilg.gnuarmeclipse.packs.jobs.LoadReposSummariesJob;
-import ilg.gnuarmeclipse.packs.storage.PacksStorage;
+package ilg.gnuarmeclipse.packs.core;
 
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -26,7 +22,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "ilg.gnuarmeclipse.packs"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "ilg.gnuarmeclipse.packs.core"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator sfInstance;
@@ -35,7 +31,6 @@ public class Activator extends AbstractUIPlugin {
 	 * The constructor
 	 */
 	public Activator() {
-
 	}
 
 	/*
@@ -50,15 +45,6 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		sfInstance = this;
 
-		// Prepare & cache various variables
-		Repos repos = Repos.getInstance();
-		repos.getFolderPath();
-
-		PacksStorage.getInstance();
-
-		// Initial load of repositories summaries
-		Job job = new LoadReposSummariesJob("Load repos summaries");
-		job.schedule();
 	}
 
 	/*
@@ -69,7 +55,7 @@ public class Activator extends AbstractUIPlugin {
 	 * )
 	 */
 	public void stop(BundleContext context) throws Exception {
-		
+
 		sfInstance = null;
 		super.stop(context);
 
@@ -85,7 +71,7 @@ public class Activator extends AbstractUIPlugin {
 	}
 
 	// ------------------------------------------------------------------------
-	
+
 	public static void log(IStatus status) {
 		getDefault().getLog().log(status);
 	}

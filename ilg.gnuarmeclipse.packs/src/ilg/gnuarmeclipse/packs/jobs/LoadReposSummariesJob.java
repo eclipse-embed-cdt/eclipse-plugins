@@ -11,9 +11,9 @@
 
 package ilg.gnuarmeclipse.packs.jobs;
 
-import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.Repos;
 import ilg.gnuarmeclipse.packs.Utils;
+import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.storage.PacksStorage;
 
 import java.util.List;
@@ -39,7 +39,7 @@ public class LoadReposSummariesJob extends Job {
 
 		super(name);
 
-		m_out = Activator.getConsoleOut();
+		m_out = ConsoleStream.getConsoleOut();
 
 		m_repos = Repos.getInstance();
 		m_storage = PacksStorage.getInstance();

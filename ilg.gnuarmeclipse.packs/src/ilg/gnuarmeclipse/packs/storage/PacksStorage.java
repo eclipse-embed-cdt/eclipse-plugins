@@ -11,18 +11,17 @@
 
 package ilg.gnuarmeclipse.packs.storage;
 
-import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.IPacksStorageListener;
 import ilg.gnuarmeclipse.packs.Repos;
 import ilg.gnuarmeclipse.packs.Utils;
-import ilg.gnuarmeclipse.packs.cmsis.PdscParser;
 import ilg.gnuarmeclipse.packs.cmsis.PdscParserForBuild;
-import ilg.gnuarmeclipse.packs.tree.Leaf;
-import ilg.gnuarmeclipse.packs.tree.Node;
-import ilg.gnuarmeclipse.packs.tree.PackNode;
-import ilg.gnuarmeclipse.packs.tree.Property;
-import ilg.gnuarmeclipse.packs.tree.Selector;
-import ilg.gnuarmeclipse.packs.tree.Type;
+import ilg.gnuarmeclipse.packs.core.ConsoleStream;
+import ilg.gnuarmeclipse.packs.core.tree.Leaf;
+import ilg.gnuarmeclipse.packs.core.tree.Node;
+import ilg.gnuarmeclipse.packs.core.tree.PackNode;
+import ilg.gnuarmeclipse.packs.core.tree.Property;
+import ilg.gnuarmeclipse.packs.core.tree.Selector;
+import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.xcdl.ContentParser;
 
 import java.io.File;
@@ -87,7 +86,7 @@ public class PacksStorage {
 	public PacksStorage() {
 		m_repos = Repos.getInstance();
 
-		m_out = Activator.getConsoleOut();
+		m_out = ConsoleStream.getConsoleOut();
 
 		m_packsVersionsTree = new Node(Type.ROOT);
 		m_packsVersionsList = new LinkedList<PackNode>();

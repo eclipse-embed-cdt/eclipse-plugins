@@ -11,13 +11,13 @@
 
 package ilg.gnuarmeclipse.packs.cmsis;
 
-import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.Utils;
-import ilg.gnuarmeclipse.packs.tree.Leaf;
-import ilg.gnuarmeclipse.packs.tree.Node;
-import ilg.gnuarmeclipse.packs.tree.PackNode;
-import ilg.gnuarmeclipse.packs.tree.Property;
-import ilg.gnuarmeclipse.packs.tree.Type;
+import ilg.gnuarmeclipse.packs.core.ConsoleStream;
+import ilg.gnuarmeclipse.packs.core.tree.Leaf;
+import ilg.gnuarmeclipse.packs.core.tree.Node;
+import ilg.gnuarmeclipse.packs.core.tree.PackNode;
+import ilg.gnuarmeclipse.packs.core.tree.Property;
+import ilg.gnuarmeclipse.packs.core.tree.Type;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -53,7 +53,7 @@ public class PdscParser {
 
 	public PdscParser() {
 
-		m_out = Activator.getConsoleOut();
+		m_out = ConsoleStream.getConsoleOut();
 		// m_repos = Repos.getInstance();
 
 		m_isBrief = false;
@@ -1020,102 +1020,4 @@ public class PdscParser {
 		parent.addChild(keywordNode);
 	}
 
-	protected String processDeviceSummary(Node deviceNode) {
-
-		int ramKB = 0;
-		int romKB = 0;
-
-		String summary = "";
-		if (deviceNode.isType(Type.FAMILY)) {
-			summary = "Family";
-		} else if (deviceNode.isType(Type.SUBFAMILY)) {
-			summary = "Subfamily";
-		} else if (deviceNode.isType(Type.DEVICE)) {
-			summary = "Device";
-		} else if (deviceNode.isType(Type.VARIANT)) {
-			summary = "Variant";
-		}
-
-		String core = deviceNode.getProperty(Node.CORE_PROPERTY, "");
-		if (core.length() > 0) {
-			if (summary.length() > 0) {
-				summary += ", ";
-			}
-			summary += core;
-
-			String version = deviceNode.getProperty(Node.VERSION_PROPERTY, "");
-			if (version.length() > 0) {
-				if (summary.length() > 0) {
-					summary += ", ";
-				}
-				summary += version;
-			}
-		}
-
-		String fpu = deviceNode.getProperty(Node.FPU_PROPERTY, "");
-		if (fpu.length() > 0 && "1".equals(fpu)) {
-			if (summary.length() > 0) {
-				summary += ", ";
-			}
-			summary += "FPU";
-		}
-
-		String mpu = deviceNode.getProperty(Node.MPU_PROPERTY, "");
-		if (mpu.length() > 0 && "1".equals(mpu)) {
-			if (summary.length() > 0) {
-				summary += ", ";
-			}
-			summary += "MPU";
-		}
-
-		String clock = deviceNode.getProperty(Node.CLOCK_PROPERTY, "");
-		if (clock.length() > 0) {
-			try {
-				int clockMHz = Integer.parseInt(clock) / 1000000;
-				if (summary.length() > 0) {
-					summary += ", ";
-				}
-				summary += String.valueOf(clockMHz) + " MHz";
-			} catch (NumberFormatException e) {
-				// Ignore not number
-			}
-		}
-
-		// TODO: iterate on parents too
-		if (deviceNode.hasChildren()) {
-			for (Leaf childNode : deviceNode.getChildren()) {
-
-				if (Type.MEMORY.equals(childNode.getType())) {
-					String size = childNode.getProperty(Node.SIZE_PROPERTY, "");
-					int sizeKB = Utils.convertHexInt(size) / 1024;
-
-					String id = childNode.getName();
-					if (id.contains("ROM")) {
-						romKB += sizeKB;
-					} else if (id.contains("RAM")) {
-						ramKB += sizeKB;
-					} else {
-					}
-				}
-			}
-		}
-		
-		if (ramKB > 0) {
-			if (summary.length() > 0) {
-				summary += ", ";
-			}
-
-			summary += String.valueOf(ramKB) + " kB RAM";
-		}
-
-		if (romKB > 0) {
-			if (summary.length() > 0) {
-				summary += ", ";
-			}
-
-			summary += String.valueOf(romKB) + " kB ROM";
-		}
-
-		return summary;
-	}
 }

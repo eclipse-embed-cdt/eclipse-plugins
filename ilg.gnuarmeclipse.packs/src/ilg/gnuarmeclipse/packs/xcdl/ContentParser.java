@@ -11,14 +11,14 @@
 
 package ilg.gnuarmeclipse.packs.xcdl;
 
-import java.util.List;
-
-import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.DocumentParseException;
 import ilg.gnuarmeclipse.packs.Utils;
-import ilg.gnuarmeclipse.packs.tree.Node;
-import ilg.gnuarmeclipse.packs.tree.PackNode;
-import ilg.gnuarmeclipse.packs.tree.Type;
+import ilg.gnuarmeclipse.packs.core.ConsoleStream;
+import ilg.gnuarmeclipse.packs.core.tree.Node;
+import ilg.gnuarmeclipse.packs.core.tree.PackNode;
+import ilg.gnuarmeclipse.packs.core.tree.Type;
+
+import java.util.List;
 
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
@@ -31,7 +31,7 @@ public class ContentParser {
 
 	public ContentParser(Document document) {
 
-		m_out = Activator.getConsoleOut();
+		m_out = ConsoleStream.getConsoleOut();
 		m_document = document;
 	}
 

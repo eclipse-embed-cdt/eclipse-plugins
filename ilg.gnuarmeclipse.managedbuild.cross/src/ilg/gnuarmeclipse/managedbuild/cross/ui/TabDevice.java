@@ -19,11 +19,11 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import ilg.gnuarmeclipse.managedbuild.cross.Activator;
-import ilg.gnuarmeclipse.packs.storage.PacksStorage;
-import ilg.gnuarmeclipse.packs.tree.Leaf;
-import ilg.gnuarmeclipse.packs.tree.Node;
-import ilg.gnuarmeclipse.packs.tree.NodeViewContentProvider;
-import ilg.gnuarmeclipse.packs.tree.Type;
+import ilg.gnuarmeclipse.packs.core.tree.Leaf;
+import ilg.gnuarmeclipse.packs.core.tree.Node;
+import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
+import ilg.gnuarmeclipse.packs.core.tree.Type;
+import ilg.gnuarmeclipse.packs.data.DataManager;
 
 import org.eclipse.cdt.core.settings.model.ICResourceDescription;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
@@ -157,10 +157,10 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 
 	private IConfiguration m_config;
 	private IConfiguration m_lastUpdatedConfig = null;
-	private PacksStorage fStorage;
+	private DataManager fDataManager;
 
 	public TabDevice() {
-		fStorage = PacksStorage.getInstance();
+		fDataManager = DataManager.getInstance();
 	}
 
 	// ---
@@ -403,7 +403,9 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 		String arch = collectNodePropery(memNode, Node.CORE_PROPERTY, "");
 		fArchitectureLabel.setText(arch);
 
-		fDeviceLabel.setText(memNode.getName());
+		if (memNode != null) {
+			fDeviceLabel.setText(memNode.getName());
+		}
 	}
 
 	private Map<String, String[]> collectMemoryMap(Node node) {
@@ -645,7 +647,7 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 		// TODO: consider a static file with custom devices (custom_devices.xml)
 		// to be merged with installed devices.
 
-		Node devicesRoot = fStorage.getInstalledDevicesForBuild();
+		Node devicesRoot = fDataManager.getInstalledDevicesForBuild();
 		return devicesRoot;
 	}
 }

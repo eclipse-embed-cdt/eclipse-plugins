@@ -11,11 +11,11 @@
 
 package ilg.gnuarmeclipse.packs.ui.views;
 
-import ilg.gnuarmeclipse.packs.tree.Leaf;
-import ilg.gnuarmeclipse.packs.tree.PackNode;
-import ilg.gnuarmeclipse.packs.tree.Property;
-import ilg.gnuarmeclipse.packs.tree.Selector;
-import ilg.gnuarmeclipse.packs.tree.Type;
+import ilg.gnuarmeclipse.packs.core.tree.Leaf;
+import ilg.gnuarmeclipse.packs.core.tree.PackNode;
+import ilg.gnuarmeclipse.packs.core.tree.Property;
+import ilg.gnuarmeclipse.packs.core.tree.Selector;
+import ilg.gnuarmeclipse.packs.core.tree.Type;
 
 import java.util.LinkedList;
 import java.util.List;

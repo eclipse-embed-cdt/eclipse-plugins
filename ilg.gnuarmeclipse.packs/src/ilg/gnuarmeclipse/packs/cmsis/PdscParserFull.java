@@ -1,9 +1,9 @@
 package ilg.gnuarmeclipse.packs.cmsis;
 
 import ilg.gnuarmeclipse.packs.Utils;
-import ilg.gnuarmeclipse.packs.tree.Leaf;
-import ilg.gnuarmeclipse.packs.tree.Node;
-import ilg.gnuarmeclipse.packs.tree.Type;
+import ilg.gnuarmeclipse.packs.core.tree.Leaf;
+import ilg.gnuarmeclipse.packs.core.tree.Node;
+import ilg.gnuarmeclipse.packs.core.tree.Type;
 
 import java.io.IOException;
 import java.util.List;

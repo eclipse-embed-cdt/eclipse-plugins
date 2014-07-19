@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs.tree;
+package ilg.gnuarmeclipse.packs.core.tree;
 
 public class Type {
 

@@ -14,12 +14,13 @@ package ilg.gnuarmeclipse.packs.ui.views;
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.IPacksStorageListener;
 import ilg.gnuarmeclipse.packs.Utils;
+import ilg.gnuarmeclipse.packs.core.ConsoleStream;
+import ilg.gnuarmeclipse.packs.core.tree.Leaf;
+import ilg.gnuarmeclipse.packs.core.tree.Node;
+import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
+import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.storage.PacksStorage;
 import ilg.gnuarmeclipse.packs.storage.PacksStorageEvent;
-import ilg.gnuarmeclipse.packs.tree.Leaf;
-import ilg.gnuarmeclipse.packs.tree.Node;
-import ilg.gnuarmeclipse.packs.tree.NodeViewContentProvider;
-import ilg.gnuarmeclipse.packs.tree.Type;
 
 import java.util.HashSet;
 import java.util.List;
@@ -101,7 +102,7 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 
 	public KeywordsView() {
 
-		m_out = Activator.getConsoleOut();
+		m_out = ConsoleStream.getConsoleOut();
 
 		m_storage = PacksStorage.getInstance();
 		// System.out.println("KeywordsView()");
