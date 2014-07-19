@@ -368,11 +368,13 @@ public class Utils {
 		}
 	}
 
+	static final private String MARKER_ID = "ilg.gnuarmeclipse.packs.marker";
+
 	public static String reportError(String message) {
-		
+
 		try {
 			IMarker marker = ResourcesPlugin.getWorkspace().getRoot()
-					.createMarker(IMarker.PROBLEM);
+					.createMarker(MARKER_ID);
 			marker.setAttribute(IMarker.MESSAGE, message);
 			marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
 			marker.setAttribute(IMarker.LOCATION, "-");
@@ -384,10 +386,10 @@ public class Utils {
 	}
 
 	public static String reportWarning(String message) {
-		
+
 		try {
 			IMarker marker = ResourcesPlugin.getWorkspace().getRoot()
-					.createMarker(IMarker.PROBLEM);
+					.createMarker(MARKER_ID);
 			marker.setAttribute(IMarker.MESSAGE, message);
 			marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_WARNING);
 			marker.setAttribute(IMarker.LOCATION, "-");
@@ -399,10 +401,10 @@ public class Utils {
 	}
 
 	public static String reportInfo(String message) {
-		
+
 		try {
 			IMarker marker = ResourcesPlugin.getWorkspace().getRoot()
-					.createMarker(IMarker.PROBLEM);
+					.createMarker(MARKER_ID);
 			marker.setAttribute(IMarker.MESSAGE, message);
 			marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_INFO);
 			marker.setAttribute(IMarker.LOCATION, "-");
