@@ -31,10 +31,9 @@ public class ConsoleStream {
 				return (MessageConsole) existing[i];
 
 		// no console found, so create a new one
-		MessageConsole myConsole = new MessageConsole(name, null);
-		conMan.addConsoles(new IConsole[] { myConsole });
+		MessageConsole console = new MessageConsole(name, null);
+		conMan.addConsoles(new IConsole[] { console });
 
-		return myConsole;
+		return console;
 	}
-
 }

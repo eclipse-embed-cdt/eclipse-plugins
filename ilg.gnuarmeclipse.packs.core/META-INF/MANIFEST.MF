@@ -9,6 +9,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Export-Package: ilg.gnuarmeclipse.packs.core,
+ ilg.gnuarmeclipse.packs.core.data,
  ilg.gnuarmeclipse.packs.core.tree
 Require-Bundle: org.eclipse.jface,
  org.eclipse.ui.console,
