@@ -73,13 +73,19 @@ public class DataManagerFactoryProxy implements IDataManagerFactory,
 
 		IDataManagerFactory factory;
 		try {
-			factory = (IDataManagerFactory) configElement
+			Object obj = configElement
 					.createExecutableExtension(CLASS_ATTRIBUTE);
-			fDataManager = factory.createDataManager();
 
-			System.out
-					.println("DataManagerFactoryProxy.createDataManager() completed");
-			return fDataManager;
+			if (obj instanceof IDataManagerFactory) {
+				factory = (IDataManagerFactory) obj;
+				fDataManager = factory.createDataManager();
+
+				System.out
+						.println("DataManagerFactoryProxy.createDataManager() completed");
+				return fDataManager;
+			} else {
+				return null;
+			}
 		} catch (CoreException e) {
 			System.out.println("cannot get factory");
 			return null;
