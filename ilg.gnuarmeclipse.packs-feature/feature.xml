@@ -29,4 +29,18 @@
          version="0.0.0"
          unpack="false"/>
 
+   <plugin
+         id="ilg.gnuarmeclipse.packs.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="ilg.gnuarmeclipse.packs.data"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
