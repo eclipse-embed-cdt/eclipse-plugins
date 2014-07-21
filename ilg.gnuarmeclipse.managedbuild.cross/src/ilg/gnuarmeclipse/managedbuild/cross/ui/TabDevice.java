@@ -158,10 +158,9 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 	private IConfiguration m_config;
 	private IConfiguration m_lastUpdatedConfig = null;
 
-	public TabDevice() {
-
-		fDataManager = DataManagerFactoryProxy.getInstance().createDataManager();
-	}
+	// public TabDevice() {
+	//
+	// }
 
 	// ---
 
@@ -186,6 +185,9 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 		m_config = getCfg();
 		System.out.println("Device.createControls() m_config=" + m_config);
 
+		fDataManager = DataManagerFactoryProxy.getInstance()
+				.createDataManager();
+
 		// usercomp is defined in parent class
 
 		GridLayout gridLayout = new GridLayout();
@@ -201,6 +203,7 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 
 		createMemoryGroup(usercomp);
 
+		System.out.println("Device.createControls() completed");
 	}
 
 	private void createDeviceGroup(Composite parent) {
@@ -631,6 +634,7 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 	} // Do nothing. No buttons to update.
 
 	private boolean isThisPlugin() {
+
 		m_config = getCfg();
 		System.out.println("Device.isThisPlugin() m_config=" + m_config);
 
