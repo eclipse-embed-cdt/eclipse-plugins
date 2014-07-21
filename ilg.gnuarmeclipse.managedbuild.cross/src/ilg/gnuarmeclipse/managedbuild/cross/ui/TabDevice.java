@@ -12,7 +12,7 @@
 package ilg.gnuarmeclipse.managedbuild.cross.ui;
 
 import ilg.gnuarmeclipse.managedbuild.cross.Activator;
-import ilg.gnuarmeclipse.packs.core.data.DataManagerFactory;
+import ilg.gnuarmeclipse.packs.core.data.DataManagerFactoryProxy;
 import ilg.gnuarmeclipse.packs.core.data.IDataManager;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
@@ -160,7 +160,7 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 
 	public TabDevice() {
 
-		fDataManager = DataManagerFactory.getInstance().createDataManager();
+		fDataManager = DataManagerFactoryProxy.getInstance().createDataManager();
 	}
 
 	// ---

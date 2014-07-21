@@ -9,14 +9,19 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs.core.data;
+package ilg.gnuarmeclipse.packs.core;
 
-import ilg.gnuarmeclipse.packs.core.tree.Node;
+import org.eclipse.jface.preference.IPreferenceStore;
 
-public interface IDataManager {
+public class Preferences {
 
-	// Return a tree of devices from the installed packs, to be used in the
-	// device selection.
-	public Node getInstalledDevicesForBuild();
+	public static IPreferenceStore getPreferenceStore() {
+		return Activator.getDefault().getPreferenceStore();
+	}
+
+	public static final String PACKS_FOLDER_PATH = "packs.folder.path";
+	public static final String PACKS_MACRO_NAME = "packs.macro.name";
+
+	public static final String DEFAULT_MACRO_NAME = "packs_path";
 
 }

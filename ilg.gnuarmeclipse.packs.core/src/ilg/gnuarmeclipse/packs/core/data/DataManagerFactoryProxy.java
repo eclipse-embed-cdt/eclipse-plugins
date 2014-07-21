@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2014 Liviu Ionescu.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Liviu Ionescu - initial implementation.
+ *******************************************************************************/
+
 package ilg.gnuarmeclipse.packs.core.data;
 
 import ilg.gnuarmeclipse.packs.core.Activator;
@@ -7,19 +18,20 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.Platform;
 
-public class DataManagerFactory implements IDataManagerFactory {
+public class DataManagerFactoryProxy implements IDataManagerFactory,
+		IFactoryProxySupport {
 
 	private static final String FACTORY_ELEMENT = "factory";
 	private static final String CLASS_ATTRIBUTE = "class";
 
 	// ------------------------------------------------------------------------
 
-	private static DataManagerFactory sfInstance;
+	private static DataManagerFactoryProxy sfInstance;
 
-	public static DataManagerFactory getInstance() {
+	public static DataManagerFactoryProxy getInstance() {
 
 		if (sfInstance == null) {
-			sfInstance = new DataManagerFactory();
+			sfInstance = new DataManagerFactoryProxy();
 		}
 		return sfInstance;
 	}
@@ -28,7 +40,7 @@ public class DataManagerFactory implements IDataManagerFactory {
 
 	private IDataManager fDataManager;
 
-	public DataManagerFactory() {
+	public DataManagerFactoryProxy() {
 		fDataManager = null;
 	}
 
@@ -39,7 +51,7 @@ public class DataManagerFactory implements IDataManagerFactory {
 			return fDataManager;
 		}
 
-		System.out.println("data.DataManagerFactory.createDataManager()");
+		System.out.println("DataManagerFactoryProxy.createDataManager()");
 
 		IExtension[] extensions = Platform.getExtensionRegistry()
 				.getExtensionPoint(Activator.PLUGIN_ID, "data").getExtensions();
@@ -64,10 +76,23 @@ public class DataManagerFactory implements IDataManagerFactory {
 			factory = (IDataManagerFactory) configElement
 					.createExecutableExtension(CLASS_ATTRIBUTE);
 			fDataManager = factory.createDataManager();
+
+			System.out
+					.println("DataManagerFactoryProxy.createDataManager() completed");
 			return fDataManager;
 		} catch (CoreException e) {
 			System.out.println("cannot get factory");
 			return null;
 		}
+	}
+
+	@Override
+	public boolean isAvailable() {
+		// Return true if the Packs plug-in is available
+		return false;
+	}
+
+	@Override
+	public void dispose() {
 	}
 }

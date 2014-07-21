@@ -9,16 +9,13 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs.ui.preferences;
+package ilg.gnuarmeclipse.packs.cmsis;
 
-/**
- * Constant definitions for plug-in preferences
- */
-public class FolderConstants {
+public class PdscParserBrief extends PdscParserFull {
 
-	public static final String P_FOLDER_PATH = "packs.folder.path";
-	public static final String P_MACRO_NAME = "packs.macro.name";
+	public PdscParserBrief() {
+		super();
 
-	public static final String DEFAULT_MACRO_NAME = "packs_path";
-
+		setIsBrief(true);
+	}
 }

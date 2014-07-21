@@ -12,8 +12,6 @@
 package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.packs.Activator;
-import ilg.gnuarmeclipse.packs.IPacksStorageListener;
-import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
@@ -22,12 +20,14 @@ import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Selector;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
+import ilg.gnuarmeclipse.packs.data.IPacksStorageListener;
+import ilg.gnuarmeclipse.packs.data.PacksStorage;
+import ilg.gnuarmeclipse.packs.data.PacksStorageEvent;
+import ilg.gnuarmeclipse.packs.data.Utils;
 import ilg.gnuarmeclipse.packs.jobs.CopyExampleDialog;
 import ilg.gnuarmeclipse.packs.jobs.CopyExampleJob;
 import ilg.gnuarmeclipse.packs.jobs.InstallJob;
 import ilg.gnuarmeclipse.packs.jobs.RemoveJob;
-import ilg.gnuarmeclipse.packs.storage.PacksStorage;
-import ilg.gnuarmeclipse.packs.storage.PacksStorageEvent;
 
 import java.io.File;
 import java.util.Collection;

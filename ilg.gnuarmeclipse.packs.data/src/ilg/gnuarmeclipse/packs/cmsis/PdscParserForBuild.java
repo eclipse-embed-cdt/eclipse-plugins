@@ -1,9 +1,21 @@
+/*******************************************************************************
+ * Copyright (c) 2014 Liviu Ionescu.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Liviu Ionescu - initial implementation.
+ *******************************************************************************/
+
 package ilg.gnuarmeclipse.packs.cmsis;
 
-import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
+import ilg.gnuarmeclipse.packs.data.Utils;
+import ilg.gnuarmeclipse.packs.data.Xml;
 
 import java.util.List;
 
@@ -19,7 +31,7 @@ public class PdscParserForBuild extends PdscParser {
 
 	public void parseDevices(Node tree) {
 
-		Element packageElement = m_document.getDocumentElement();
+		Element packageElement = fDocument.getDocumentElement();
 		String firstElementName = packageElement.getNodeName();
 		if (!"package".equals(firstElementName)) {
 			System.out.println("Missing <packages>, <" + firstElementName
@@ -34,13 +46,12 @@ public class PdscParserForBuild extends PdscParser {
 			return;
 		}
 
-		List<Element> childElements = Utils
-				.getChildElementsList(packageElement);
+		List<Element> childElements = Xml.getChildElementsList(packageElement);
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
 			if ("devices".equals(elementName)) {
-				List<Element> childElements2 = Utils
+				List<Element> childElements2 = Xml
 						.getChildElementsList(childElement);
 				for (Element childElement2 : childElements2) {
 
@@ -89,7 +100,7 @@ public class PdscParserForBuild extends PdscParser {
 			familyNode.putProperty(Node.VENDORID_PROPERTY, va[1]);
 		}
 
-		List<Element> childElements = Utils.getChildElementsList(el);
+		List<Element> childElements = Xml.getChildElementsList(el);
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
@@ -135,7 +146,7 @@ public class PdscParserForBuild extends PdscParser {
 		Node subFamilyNode = Node.addUniqueChild(parent, Type.SUBFAMILY,
 				subFamilyName);
 
-		List<Element> childElements = Utils.getChildElementsList(el);
+		List<Element> childElements = Xml.getChildElementsList(el);
 
 		for (Element childElement : childElements) {
 
@@ -161,7 +172,7 @@ public class PdscParserForBuild extends PdscParser {
 
 		Node deviceNode = Node.addUniqueChild(parent, Type.DEVICE, deviceName);
 
-		List<Element> childElements = Utils.getChildElementsList(el);
+		List<Element> childElements = Xml.getChildElementsList(el);
 
 		for (Element childElement : childElements) {
 
@@ -186,7 +197,7 @@ public class PdscParserForBuild extends PdscParser {
 		Node variantNode = Node.addUniqueChild(parent, Type.VARIANT,
 				variantName);
 
-		List<Element> childElements2 = Utils.getChildElementsList(el);
+		List<Element> childElements2 = Xml.getChildElementsList(el);
 		for (Element childElement2 : childElements2) {
 
 			processDevicePropertiesGroup(childElement2, variantNode);
@@ -240,7 +251,7 @@ public class PdscParserForBuild extends PdscParser {
 
 	public void parseBoards(Node tree) {
 
-		Element packageElement = m_document.getDocumentElement();
+		Element packageElement = fDocument.getDocumentElement();
 		String firstElementName = packageElement.getNodeName();
 		if (!"package".equals(firstElementName)) {
 			System.out.println("Missing <packages>, <" + firstElementName
@@ -255,13 +266,12 @@ public class PdscParserForBuild extends PdscParser {
 			return;
 		}
 
-		List<Element> childElements = Utils
-				.getChildElementsList(packageElement);
+		List<Element> childElements = Xml.getChildElementsList(packageElement);
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
 			if ("boards".equals(elementName)) {
-				List<Element> childElements2 = Utils
+				List<Element> childElements2 = Xml
 						.getChildElementsList(childElement);
 				for (Element childElement2 : childElements2) {
 
@@ -294,7 +304,7 @@ public class PdscParserForBuild extends PdscParser {
 
 		Node boardNode = Node.addUniqueChild(vendorNode, Type.BOARD, name);
 
-		List<Element> childElements = Utils.getChildElementsList(el);
+		List<Element> childElements = Xml.getChildElementsList(el);
 
 		for (Element childElement : childElements) {
 

@@ -11,7 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.ui.preferences;
 
-import ilg.gnuarmeclipse.packs.Repos;
+import ilg.gnuarmeclipse.packs.data.Repos;
 import ilg.gnuarmeclipse.packs.ui.Messages;
 
 import org.eclipse.jface.dialogs.Dialog;

@@ -25,7 +25,7 @@ public class SitesInitializer extends AbstractPreferenceInitializer {
 	 * initializeDefaultPreferences()
 	 */
 	public void initializeDefaultPreferences() {
-		// IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+		// IPreferenceStore store = Preferences.getPreferenceStore();
 	}
 
 }

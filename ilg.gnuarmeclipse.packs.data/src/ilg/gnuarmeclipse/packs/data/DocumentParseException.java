@@ -9,15 +9,15 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs;
+package ilg.gnuarmeclipse.packs.data;
 
 import java.io.IOException;
 
-public class UsingDefaultFileException extends IOException {
+public class DocumentParseException extends IOException {
 
-	private static final long serialVersionUID = -830859096015963603L;
+	private static final long serialVersionUID = 7310914074706645015L;
 
-	public UsingDefaultFileException(String message){
+	public DocumentParseException(String message) {
 		super(message);
 	}
 }

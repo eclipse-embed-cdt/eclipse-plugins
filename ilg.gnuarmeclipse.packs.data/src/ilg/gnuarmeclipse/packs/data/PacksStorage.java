@@ -9,11 +9,8 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs.storage;
+package ilg.gnuarmeclipse.packs.data;
 
-import ilg.gnuarmeclipse.packs.IPacksStorageListener;
-import ilg.gnuarmeclipse.packs.Repos;
-import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.cmsis.PdscParserForBuild;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
@@ -84,6 +81,7 @@ public class PacksStorage {
 	private Node fInstalledDevicesForBuild;
 
 	public PacksStorage() {
+
 		m_repos = Repos.getInstance();
 
 		m_out = ConsoleStream.getConsoleOut();
@@ -599,6 +597,10 @@ public class PacksStorage {
 			// Return the in-memory cached tree
 			return fInstalledDevicesForBuild;
 		}
+
+		Activator.getDefault().waitLoadReposJob();
+
+		System.out.println("LoadRepos must be ready");
 
 		BusyIndicator.showWhile(Display.getDefault(), new Runnable() {
 

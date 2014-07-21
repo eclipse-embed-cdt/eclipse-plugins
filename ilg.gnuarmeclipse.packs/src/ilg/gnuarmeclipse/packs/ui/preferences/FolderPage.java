@@ -11,11 +11,13 @@
 
 package ilg.gnuarmeclipse.packs.ui.preferences;
 
-import org.eclipse.jface.preference.*;
-import org.eclipse.ui.IWorkbenchPreferencePage;
-import org.eclipse.ui.IWorkbench;
+import ilg.gnuarmeclipse.packs.core.Preferences;
 
-import ilg.gnuarmeclipse.packs.Activator;
+import org.eclipse.jface.preference.DirectoryFieldEditor;
+import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.StringFieldEditor;
+import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.IWorkbenchPreferencePage;
 
 /**
  * This class represents a preference page that is contributed to the
@@ -33,7 +35,7 @@ public class FolderPage extends FieldEditorPreferencePage implements
 
 	public FolderPage() {
 		super(GRID);
-		setPreferenceStore(Activator.getDefault().getPreferenceStore());
+		setPreferenceStore(Preferences.getPreferenceStore());
 		setDescription("The location where packages are stored.");
 	}
 
@@ -43,9 +45,9 @@ public class FolderPage extends FieldEditorPreferencePage implements
 	 * editor knows how to save and restore itself.
 	 */
 	public void createFieldEditors() {
-		addField(new DirectoryFieldEditor(FolderConstants.P_FOLDER_PATH,
+		addField(new DirectoryFieldEditor(Preferences.PACKS_FOLDER_PATH,
 				"&Packages folder:", getFieldEditorParent()));
-		addField(new StringFieldEditor(FolderConstants.P_MACRO_NAME,
+		addField(new StringFieldEditor(Preferences.PACKS_MACRO_NAME,
 				"&Macro name:", getFieldEditorParent()));
 	}
 

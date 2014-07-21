@@ -9,14 +9,15 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs.core.data;
+package ilg.gnuarmeclipse.packs.data;
 
-import ilg.gnuarmeclipse.packs.core.tree.Node;
+import java.io.IOException;
 
-public interface IDataManager {
+public class UsingDefaultFileException extends IOException {
 
-	// Return a tree of devices from the installed packs, to be used in the
-	// device selection.
-	public Node getInstalledDevicesForBuild();
+	private static final long serialVersionUID = -830859096015963603L;
 
+	public UsingDefaultFileException(String message) {
+		super(message);
+	}
 }

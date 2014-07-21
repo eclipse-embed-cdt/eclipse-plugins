@@ -12,15 +12,15 @@
 package ilg.gnuarmeclipse.packs.handlers;
 
 import ilg.gnuarmeclipse.packs.Activator;
-import ilg.gnuarmeclipse.packs.Repos;
-import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.cmsis.Index;
 import ilg.gnuarmeclipse.packs.cmsis.PdscParserBrief;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
-import ilg.gnuarmeclipse.packs.storage.PacksStorage;
+import ilg.gnuarmeclipse.packs.data.PacksStorage;
+import ilg.gnuarmeclipse.packs.data.Repos;
+import ilg.gnuarmeclipse.packs.data.Utils;
 import ilg.gnuarmeclipse.packs.xcdl.ContentSerialiser;
 
 import java.io.File;

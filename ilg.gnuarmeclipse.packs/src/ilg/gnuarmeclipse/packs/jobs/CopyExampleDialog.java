@@ -1,7 +1,6 @@
 package ilg.gnuarmeclipse.packs.jobs;
 
-import ilg.gnuarmeclipse.packs.Activator;
-import ilg.gnuarmeclipse.packs.ui.preferences.FolderConstants;
+import ilg.gnuarmeclipse.packs.core.Preferences;
 
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.dialogs.Dialog;
@@ -41,8 +40,8 @@ public class CopyExampleDialog extends Dialog {
 		// m_exampleName = exampleNode.getProperty(Property.EXAMPLE_NAME,
 		// exampleNode.getName());
 
-		String folderPath = Activator.getDefault().getPreferenceStore()
-				.getString(FolderConstants.P_FOLDER_PATH);
+		String folderPath = Preferences.getPreferenceStore().getString(
+				Preferences.PACKS_FOLDER_PATH);
 		// m_inputFolder = folderPath + "/../Examples/" + m_exampleName;
 		m_inputFolder = new Path(folderPath).append("../Examples/")
 				.toOSString();

@@ -55,6 +55,11 @@ public class Messages extends NLS {
 	public static String ToolChainSettingsTab_listing;
 	public static String ToolChainSettingsTab_size;
 
+	public static String DeviceTab_DeviceGroup_name;
+	public static String DeviceTab_DeviceGroup_architecture_label;
+	public static String DeviceTab_MemoryGroup_name;
+	public static String DeviceTab_MemoryGroup_edit_button;
+	
 	static {
 		// initialise resource bundle
 		NLS.initializeMessages(MESSAGES, Messages.class);

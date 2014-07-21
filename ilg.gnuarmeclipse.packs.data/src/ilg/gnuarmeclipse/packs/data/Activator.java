@@ -11,8 +11,11 @@
 
 package ilg.gnuarmeclipse.packs.data;
 
+import ilg.gnuarmeclipse.packs.data.jobs.LoadReposSummariesJob;
+
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -27,6 +30,8 @@ public class Activator extends AbstractUIPlugin {
 	// The shared instance
 	private static Activator sfInstance;
 
+	private Job fLoadReposJob;
+
 	/**
 	 * The constructor
 	 */
@@ -36,8 +41,24 @@ public class Activator extends AbstractUIPlugin {
 
 	public void start(BundleContext context) throws Exception {
 
+		System.out.println("ilg.gnuarmeclipse.packs.data.Activator()");
+
 		super.start(context);
 		sfInstance = this;
+
+		// Prepare & cache various variables
+		Repos repos = Repos.getInstance();
+		repos.getFolderPath();
+
+		PacksStorage.getInstance();
+
+		// Initial load of repositories summaries
+		fLoadReposJob = new LoadReposSummariesJob("Load repos summaries");
+		fLoadReposJob.schedule();
+		// fLoadReposJob.join(); // does not work in this context
+
+		System.out
+				.println("ilg.gnuarmeclipse.packs.data.Activator() completed");
 
 	}
 
@@ -55,6 +76,19 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static Activator getDefault() {
 		return sfInstance;
+	}
+
+	public Job getLoadReposJob() {
+		return fLoadReposJob;
+	}
+
+	public void waitLoadReposJob() {
+		try {
+			fLoadReposJob.join();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 	// ------------------------------------------------------------------------

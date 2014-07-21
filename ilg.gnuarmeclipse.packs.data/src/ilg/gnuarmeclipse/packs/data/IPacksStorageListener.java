@@ -9,9 +9,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs;
-
-import ilg.gnuarmeclipse.packs.storage.PacksStorageEvent;
+package ilg.gnuarmeclipse.packs.data;
 
 public interface IPacksStorageListener {
 

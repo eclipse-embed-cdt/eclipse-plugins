@@ -11,7 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.cmsis;
 
-import ilg.gnuarmeclipse.packs.Utils;
+import ilg.gnuarmeclipse.packs.data.Xml;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -82,7 +82,7 @@ public class Index {
 		}
 
 		int count = 0;
-		List<Element> pdscElements = Utils.getChildElementsList(el, "pdsc");
+		List<Element> pdscElements = Xml.getChildElementsList(el, "pdsc");
 		for (Element pdscElement : pdscElements) {
 
 			String url = pdscElement.getAttribute("url").trim();

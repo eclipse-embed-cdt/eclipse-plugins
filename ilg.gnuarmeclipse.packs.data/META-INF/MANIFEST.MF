@@ -8,11 +8,14 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
-Export-Package: ilg.gnuarmeclipse.packs.data
+Export-Package: ilg.gnuarmeclipse.packs.cmsis,
+ ilg.gnuarmeclipse.packs.data,
+ ilg.gnuarmeclipse.packs.xcdl
 Require-Bundle: org.eclipse.jface,
  org.eclipse.ui.console,
  org.eclipse.ui.workbench,
  org.eclipse.osgi,
  ilg.gnuarmeclipse.packs.core,
- ilg.gnuarmeclipse.packs;bundle-version="1.1.1"
+ org.eclipse.core.jobs,
+ org.eclipse.core.resources
 Import-Package: org.eclipse.core.runtime;version="3.4.0"

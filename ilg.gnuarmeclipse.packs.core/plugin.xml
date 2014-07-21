@@ -2,5 +2,12 @@
 <?eclipse version="3.4"?>
 <plugin>
    <extension-point id="data" name="Data Manager" schema="schema/data.exsd"/>
+ 
+    <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="ilg.gnuarmeclipse.packs.core.PreferencesInitializer">
+      </initializer>
+   </extension>
    
 </plugin>

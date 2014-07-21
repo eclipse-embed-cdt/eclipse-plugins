@@ -9,9 +9,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs.ui.preferences;
-
-import ilg.gnuarmeclipse.packs.Activator;
+package ilg.gnuarmeclipse.packs.core;
 
 import java.io.File;
 
@@ -24,20 +22,14 @@ import org.eclipse.jface.preference.IPreferenceStore;
 /**
  * Class used to initialise default preference values.
  */
-public class FolderInitializer extends AbstractPreferenceInitializer {
+public class PreferencesInitializer extends AbstractPreferenceInitializer {
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer#
-	 * initializeDefaultPreferences()
-	 */
 	public void initializeDefaultPreferences() {
 
 		// System.out
 		// .println("PreferenceInitializer.initializeDefaultPreferences()");
 
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
+		IPreferenceStore store = Preferences.getPreferenceStore();
 
 		// Get workspace
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -55,11 +47,11 @@ public class FolderInitializer extends AbstractPreferenceInitializer {
 			// System.out.println(packagesFolder + " created");
 		}
 
-		store.setDefault(FolderConstants.P_FOLDER_PATH,
+		store.setDefault(Preferences.PACKS_FOLDER_PATH,
 				packagesPath.toOSString());
 
-		store.setDefault(FolderConstants.P_MACRO_NAME,
-				FolderConstants.DEFAULT_MACRO_NAME);
+		store.setDefault(Preferences.PACKS_MACRO_NAME,
+				Preferences.DEFAULT_MACRO_NAME);
 	}
 
 }

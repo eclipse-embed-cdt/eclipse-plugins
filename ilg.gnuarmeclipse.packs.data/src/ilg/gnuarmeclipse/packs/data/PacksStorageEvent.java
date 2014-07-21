@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs.storage;
+package ilg.gnuarmeclipse.packs.data;
 
 import java.util.EventObject;
 

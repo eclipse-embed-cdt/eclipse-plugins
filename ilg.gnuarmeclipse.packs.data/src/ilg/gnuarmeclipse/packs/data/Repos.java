@@ -9,10 +9,9 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs;
+package ilg.gnuarmeclipse.packs.data;
 
-import ilg.gnuarmeclipse.packs.storage.PacksStorage;
-import ilg.gnuarmeclipse.packs.ui.preferences.FolderConstants;
+import ilg.gnuarmeclipse.packs.core.Preferences;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -48,25 +47,25 @@ public class Repos {
 	public static final String[] TYPES = { CMSIS_PACK_TYPE,
 			XCDL_CMSIS_PACK_TYPE };
 
-	private static Repos ms_repos;
+	private static Repos sfRepos;
 
 	public static synchronized Repos getInstance() {
 
-		if (ms_repos == null) {
-			ms_repos = new Repos();
+		if (sfRepos == null) {
+			sfRepos = new Repos();
 		}
 
-		return ms_repos;
+		return sfRepos;
 	}
 
 	// ------------------------------------------------------------------------
 
-	private List<Map<String, Object>> m_list;
-	private IPath m_folderPath;
+	private List<Map<String, Object>> fList;
+	private IPath fFolderPath;
 
 	public Repos() {
-		m_list = null;
-		m_folderPath = null;
+		fList = null;
+		fFolderPath = null;
 	}
 
 	// ------------------------------------------------------------------------
@@ -85,21 +84,25 @@ public class Repos {
 	// Return the absolute 'Packages' path.
 	public IPath getFolderPath() throws IOException {
 
-		if (m_folderPath == null) {
+		if (fFolderPath == null) {
 
-			m_folderPath = new Path(getFolderPathString());
+			fFolderPath = new Path(getFolderPathString());
 		}
 
-		return m_folderPath;
+		return fFolderPath;
 	}
 
 	// Return a string with the absolute full path of the folder used
 	// to store packages
 	public String getFolderPathString() throws IOException {
 
-		IPreferenceStore store = Activator.getDefault().getPreferenceStore();
-		String sitesFolderPath = store.getString(FolderConstants.P_FOLDER_PATH)
+		IPreferenceStore store = Preferences.getPreferenceStore();
+		String sitesFolderPath = store.getString(Preferences.PACKS_FOLDER_PATH)
 				.trim();
+
+		if (sitesFolderPath == null) {
+			throw new IOException("Missing folder path.");
+		}
 
 		// Remove the terminating separator
 		if (sitesFolderPath.endsWith(String.valueOf(IPath.SEPARATOR))) {
@@ -107,7 +110,7 @@ public class Repos {
 					sitesFolderPath.length() - 1);
 		}
 
-		if ((sitesFolderPath == null) || (sitesFolderPath.length() == 0)) {
+		if (sitesFolderPath.length() == 0) {
 			throw new IOException("Missing folder path.");
 		}
 		return sitesFolderPath;
@@ -115,7 +118,7 @@ public class Repos {
 
 	public void updateFolderPath() {
 
-		m_folderPath = null;
+		fFolderPath = null;
 
 		try {
 			getFolderPath();
@@ -146,7 +149,7 @@ public class Repos {
 				"http://gnuarmeclipse.sourceforge.net/packages/content.xml");
 		list.add(map);
 
-		m_list = list;
+		fList = list;
 
 		return list;
 	}
@@ -172,7 +175,7 @@ public class Repos {
 	}
 
 	public void updateList() {
-		m_list = null;
+		fList = null;
 
 		getList();
 	}
@@ -180,15 +183,15 @@ public class Repos {
 	// Return a list of urls where repositories are stored
 	public List<Map<String, Object>> getList() {
 
-		if (m_list != null) {
-			return m_list;
+		if (fList != null) {
+			return fList;
 		}
 
 		List<Map<String, Object>> list;
 		boolean useDefaults = false;
 		try {
 			list = parseFile();
-			m_list = list;
+			fList = list;
 			return list;
 		} catch (UsingDefaultFileException e) {
 			Activator.log(e.getMessage());
@@ -205,7 +208,7 @@ public class Repos {
 			}
 		}
 
-		m_list = list;
+		fList = list;
 		return list;
 	}
 

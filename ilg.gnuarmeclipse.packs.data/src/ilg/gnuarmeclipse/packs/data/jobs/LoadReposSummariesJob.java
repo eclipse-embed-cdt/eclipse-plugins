@@ -9,12 +9,12 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs.jobs;
+package ilg.gnuarmeclipse.packs.data.jobs;
 
-import ilg.gnuarmeclipse.packs.Repos;
-import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
-import ilg.gnuarmeclipse.packs.storage.PacksStorage;
+import ilg.gnuarmeclipse.packs.data.PacksStorage;
+import ilg.gnuarmeclipse.packs.data.Repos;
+import ilg.gnuarmeclipse.packs.data.Utils;
 
 import java.util.List;
 import java.util.Map;
@@ -96,7 +96,7 @@ public class LoadReposSummariesJob extends Job {
 				m_out.println((duration + 500) / 1000 + "s.");
 			}
 
-			// System.out.println("loadRepositories() completed");
+			System.out.println("LoadReposSummariesJob.run() completed");
 
 			status = Status.OK_STATUS;
 		}

@@ -11,12 +11,12 @@
 
 package ilg.gnuarmeclipse.packs.xcdl;
 
-import ilg.gnuarmeclipse.packs.DocumentParseException;
-import ilg.gnuarmeclipse.packs.Utils;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
+import ilg.gnuarmeclipse.packs.data.DocumentParseException;
+import ilg.gnuarmeclipse.packs.data.Xml;
 
 import java.util.List;
 
@@ -54,7 +54,7 @@ public class ContentParser {
 					+ schemaVersion);
 		}
 
-		List<Element> childElements = Utils.getChildElementsList(firstElement);
+		List<Element> childElements = Xml.getChildElementsList(firstElement);
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
@@ -74,7 +74,7 @@ public class ContentParser {
 
 	private void notProcessed(Element el) {
 
-		Element parentElement = Utils.getParentElement(el);
+		Element parentElement = Xml.getParentElement(el);
 
 		m_out.print("Element <" + el.getNodeName() + "> ");
 		if (parentElement != null) {
@@ -85,7 +85,7 @@ public class ContentParser {
 
 	private void processDescription(Element el, Node node) {
 
-		String description = Utils.getElementContent(el);
+		String description = Xml.getElementContent(el);
 		node.setDescription(description);
 	}
 
@@ -96,7 +96,7 @@ public class ContentParser {
 		String name = getNameAttribute(el);
 		node.setName(name);
 
-		List<Element> childElements = Utils.getChildElementsList(el);
+		List<Element> childElements = Xml.getChildElementsList(el);
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
@@ -114,7 +114,7 @@ public class ContentParser {
 
 	private void processProperties(Element el, Node node) {
 
-		List<Element> childElements = Utils.getChildElementsList(el);
+		List<Element> childElements = Xml.getChildElementsList(el);
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
@@ -129,14 +129,14 @@ public class ContentParser {
 	private void processProperty(Element el, Node node) {
 
 		String name = getNameAttribute(el);
-		String value = Utils.getElementContent(el);
+		String value = Xml.getElementContent(el);
 
 		node.putProperty(name, value);
 	}
 
 	private void processPackages(Element el, Node node) {
 
-		List<Element> childElements = Utils.getChildElementsList(el);
+		List<Element> childElements = Xml.getChildElementsList(el);
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
@@ -155,7 +155,7 @@ public class ContentParser {
 		String name = getNameAttribute(el);
 		node.setName(name);
 
-		List<Element> childElements = Utils.getChildElementsList(el);
+		List<Element> childElements = Xml.getChildElementsList(el);
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
@@ -171,7 +171,7 @@ public class ContentParser {
 
 	private void processVersions(Element el, Node node) {
 
-		List<Element> childElements = Utils.getChildElementsList(el);
+		List<Element> childElements = Xml.getChildElementsList(el);
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
@@ -190,7 +190,7 @@ public class ContentParser {
 		String name = getNameAttribute(el);
 		node.setName(name);
 
-		List<Element> childElements = Utils.getChildElementsList(el);
+		List<Element> childElements = Xml.getChildElementsList(el);
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
@@ -215,7 +215,7 @@ public class ContentParser {
 		String name = getNameAttribute(el);
 		node.setName(name);
 
-		List<Element> childElements = Utils.getChildElementsList(el);
+		List<Element> childElements = Xml.getChildElementsList(el);
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
@@ -244,7 +244,7 @@ public class ContentParser {
 		String name = getNameAttribute(el);
 		node.setName(name);
 
-		List<Element> childElements = Utils.getChildElementsList(el);
+		List<Element> childElements = Xml.getChildElementsList(el);
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
@@ -266,7 +266,7 @@ public class ContentParser {
 
 		node.setName(name);
 
-		List<Element> childElements = Utils.getChildElementsList(el);
+		List<Element> childElements = Xml.getChildElementsList(el);
 		for (Element childElement : childElements) {
 
 			notProcessed(childElement);
@@ -281,7 +281,7 @@ public class ContentParser {
 		String name = getNameAttribute(el);
 		node.setName(name);
 
-		List<Element> childElements = Utils.getChildElementsList(el);
+		List<Element> childElements = Xml.getChildElementsList(el);
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();

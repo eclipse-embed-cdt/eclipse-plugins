@@ -4258,9 +4258,10 @@
             icon="icons/elcl16/config-tool.gif"
             name="%tab.toolchainSettings"
             parent="org.eclipse.cdt.managedbuilder.ui.properties.Page_BuildSettings"
-            tooltip="Setect and configure the toolchain  "
+            tooltip="Select and configure the toolchain  "
             weight="012">
       </tab>
+
       <tab
             class="ilg.gnuarmeclipse.managedbuild.cross.ui.TabDevice"
             helpId="cdt_u_prop_build_setting_tool"
@@ -4270,6 +4271,7 @@
             tooltip="Select the device from the available device in Packs."
             weight="013">
       </tab>
+
    </extension>
     
    <!--       
