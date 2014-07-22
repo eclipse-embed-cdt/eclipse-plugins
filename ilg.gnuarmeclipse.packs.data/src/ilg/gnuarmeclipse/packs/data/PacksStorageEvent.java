@@ -15,7 +15,7 @@ import java.util.EventObject;
 
 public class PacksStorageEvent extends EventObject {
 
-	private static final long serialVersionUID = 7474246541971515868L;
+	private static final long serialVersionUID = 7130648407827013912L;
 
 	public class Type {
 		public static final String NEW_INPUT = "new.input";
