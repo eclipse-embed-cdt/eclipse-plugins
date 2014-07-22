@@ -19,61 +19,41 @@ import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.data.Repos;
 import ilg.gnuarmeclipse.packs.data.Utils;
-import ilg.gnuarmeclipse.packs.ui.views.OutlineView;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.jface.viewers.TreeViewer;
-import org.eclipse.swt.widgets.Display;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.ui.console.MessageConsoleStream;
 
-public class ParsePdscJob extends Job {
+public class ParsePdscRunnable implements IRunnableWithProgress {
 
 	private static boolean m_running = false;
 
 	private MessageConsoleStream m_out;
 	private PackNode m_versionNode;
-	private PackNode m_selectionNode;
-	private TreeViewer m_outlineViewer;
 
-	// private TreeViewer m_packsViewer;
-
-	// private IPath m_folderPath;
-
-	// private IProgressMonitor m_monitor;
-
-	public ParsePdscJob(String name, PackNode versionNode,
-			PackNode selectionNode, TreeViewer viewer) {
-
-		super(name);
+	public ParsePdscRunnable(String name, PackNode versionNode) {
 
 		m_out = ConsoleStream.getConsoleOut();
 
 		m_versionNode = versionNode;
-		m_selectionNode = selectionNode;
-
-		m_outlineViewer = viewer;
-		// m_packsViewer = Activator.getPacksView().getTreeViewer();
 	}
 
 	@Override
-	protected IStatus run(IProgressMonitor monitor) {
+	public void run(IProgressMonitor monitor) {
 
 		IPath folderPath;
 		try {
 			folderPath = Repos.getInstance().getFolderPath();
 		} catch (IOException e1) {
-			return Status.CANCEL_STATUS;
+			return;
 		}
 
 		if (m_running) {
-			return Status.CANCEL_STATUS;
+			return;
 		}
 		m_running = true;
 		// m_monitor = monitor;
@@ -126,19 +106,8 @@ public class ParsePdscJob extends Job {
 		}
 		m_out.println("Parse completed in " + duration + "ms.");
 
-		if (outlineNode != null) {
-			Display.getDefault().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					m_outlineViewer
-							.setAutoExpandLevel(OutlineView.AUTOEXPAND_LEVEL);
-					m_outlineViewer.setInput(m_selectionNode.getOutline());
-				}
-			});
-		}
-
 		m_running = false;
-		return Status.OK_STATUS;
+		return;
 	}
 
 }

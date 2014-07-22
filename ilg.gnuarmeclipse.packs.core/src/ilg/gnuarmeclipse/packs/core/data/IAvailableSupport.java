@@ -11,9 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.core.data;
 
-public interface IFactoryProxySupport {
+public interface IAvailableSupport {
 
 	public boolean isAvailable();
-
-	public void dispose();
 }

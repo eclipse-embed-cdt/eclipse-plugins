@@ -11,7 +11,6 @@
 
 package ilg.gnuarmeclipse.packs.ui.views;
 
-import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
@@ -21,6 +20,7 @@ import ilg.gnuarmeclipse.packs.data.IPacksStorageListener;
 import ilg.gnuarmeclipse.packs.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.data.PacksStorageEvent;
 import ilg.gnuarmeclipse.packs.data.Utils;
+import ilg.gnuarmeclipse.packs.ui.Activator;
 
 import java.util.HashSet;
 import java.util.List;

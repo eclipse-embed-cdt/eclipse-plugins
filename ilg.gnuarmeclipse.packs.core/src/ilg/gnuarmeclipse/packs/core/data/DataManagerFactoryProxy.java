@@ -19,7 +19,7 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.Platform;
 
 public class DataManagerFactoryProxy implements IDataManagerFactory,
-		IFactoryProxySupport {
+		IAvailableSupport {
 
 	private static final String FACTORY_ELEMENT = "factory";
 	private static final String CLASS_ATTRIBUTE = "class";

@@ -9,7 +9,8 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs.handlers;
+package ilg.gnuarmeclipse.packs.ui.handlers;
+
 
 import ilg.gnuarmeclipse.packs.ui.perspectives.PacksPerspective;
 

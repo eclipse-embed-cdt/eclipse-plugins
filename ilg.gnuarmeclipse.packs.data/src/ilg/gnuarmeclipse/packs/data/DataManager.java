@@ -34,9 +34,32 @@ public class DataManager implements IDataManager {
 	}
 
 	// Called from TabDevice in managedbuild.cross
+	@Override
 	public Node getInstalledDevicesForBuild() {
 
 		// Forward call to initial old packs storage
 		return PacksStorage.getInstance().getInstalledDevicesForBuild();
 	}
+
+	// Will be called from template code
+	@Override
+	public Node getCmsisCoreFiles(String deviceName, String compiler) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	// Will be called from debugger
+	@Override
+	public Node getRegisterDetailsForDebug(String deviceName) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+	// Will be called from 
+	@Override
+	public Node getBooks(String deviceName, String boardName) {
+
+		return null;
+	}
+
 }

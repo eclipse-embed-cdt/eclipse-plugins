@@ -11,8 +11,8 @@
 
 package ilg.gnuarmeclipse.packs.ui.preferences;
 
-import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.data.Repos;
+import ilg.gnuarmeclipse.packs.ui.Activator;
 
 import java.io.IOException;
 import java.util.List;

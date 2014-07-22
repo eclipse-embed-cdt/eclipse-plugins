@@ -15,5 +15,7 @@ public interface IDataManagerFactory {
 
 	// Create a DataManager object
 	public IDataManager createDataManager();
+	
+	public void dispose();
 
 }

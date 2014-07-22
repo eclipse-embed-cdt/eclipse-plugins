@@ -31,7 +31,7 @@ public class Activator extends AbstractUIPlugin {
 	 * The constructor
 	 */
 	public Activator() {
-
+		;
 	}
 
 	/*
@@ -42,6 +42,8 @@ public class Activator extends AbstractUIPlugin {
 	 * )
 	 */
 	public void start(BundleContext context) throws Exception {
+
+		System.out.println("ilg.gnuarmeclipse.packs.Activator.start()");
 
 		super.start(context);
 		sfInstance = this;

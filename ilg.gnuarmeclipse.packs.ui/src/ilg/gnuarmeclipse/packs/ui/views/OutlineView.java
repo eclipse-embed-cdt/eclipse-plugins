@@ -11,7 +11,6 @@
 
 package ilg.gnuarmeclipse.packs.ui.views;
 
-import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
@@ -20,21 +19,25 @@ import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.data.Repos;
-import ilg.gnuarmeclipse.packs.jobs.ParsePdscJob;
+import ilg.gnuarmeclipse.packs.jobs.ParsePdscRunnable;
+import ilg.gnuarmeclipse.packs.ui.Activator;
 
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -61,6 +64,7 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 import org.eclipse.ui.part.ViewPart;
+import org.eclipse.ui.progress.IProgressService;
 
 public class OutlineView extends ViewPart {
 
@@ -502,10 +506,10 @@ public class OutlineView extends ViewPart {
 				} else if (node.isType(Type.VERSION)) {
 
 					if (node.isBooleanProperty(Property.INSTALLED)) {
+						
 						// If the version node is installed, get outline
-						ParsePdscJob job = new ParsePdscJob("Parse Outline",
-								(PackNode) node, (PackNode) node, m_viewer);
-						job.schedule();
+						parseOutline((PackNode)node, (PackNode)node);
+
 					} else {
 
 						// Get brief outline
@@ -523,11 +527,10 @@ public class OutlineView extends ViewPart {
 					Node versionNode = (Node) node.getParent();
 
 					if (versionNode.isBooleanProperty(Property.INSTALLED)) {
+
 						// If the version node is installed, get outline
-						ParsePdscJob job = new ParsePdscJob("Parse Outline",
-								(PackNode) versionNode, (PackNode) node,
-								m_viewer);
-						job.schedule();
+						parseOutline((PackNode)versionNode, (PackNode)node);
+						
 					}
 				}
 			}
@@ -535,6 +538,30 @@ public class OutlineView extends ViewPart {
 
 		m_viewer.setInput(outline);
 
+	}
+	
+	private void parseOutline(PackNode versionNode, PackNode selectedNode){
+		
+		// If the version node is installed, get outline
+		IProgressService progressService = PlatformUI
+				.getWorkbench().getProgressService();
+		try {
+			progressService
+					.busyCursorWhile(new ParsePdscRunnable(
+							"Parse Outline",
+							(PackNode) versionNode));
+
+			m_viewer.setAutoExpandLevel(OutlineView.AUTOEXPAND_LEVEL);
+			m_viewer.setInput(((PackNode) selectedNode).getOutline());
+
+		} catch (InvocationTargetException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		} catch (InterruptedException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
+		}
+		
 	}
 
 	private void makeActions() {

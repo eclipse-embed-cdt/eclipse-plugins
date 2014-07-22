@@ -30,6 +30,7 @@
 		<module>ilg.gnuarmeclipse.packs</module>
 		<module>ilg.gnuarmeclipse.packs.core</module>
 		<module>ilg.gnuarmeclipse.packs.data</module>
+		<module>ilg.gnuarmeclipse.packs.ui</module>
 		<module>ilg.gnuarmeclipse.packs-feature</module>
 		<!-- 
 		<module>../gnuarmeclipse-svn/Eclipse/current/org.eclipse.cdt.cross.arm.gnu</module>

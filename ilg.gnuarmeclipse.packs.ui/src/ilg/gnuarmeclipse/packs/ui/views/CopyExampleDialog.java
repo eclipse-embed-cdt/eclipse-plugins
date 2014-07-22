@@ -1,4 +1,4 @@
-package ilg.gnuarmeclipse.packs.jobs;
+package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.packs.core.Preferences;
 

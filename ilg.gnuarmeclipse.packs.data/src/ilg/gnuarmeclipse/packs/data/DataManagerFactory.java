@@ -27,4 +27,9 @@ public class DataManagerFactory implements IDataManagerFactory {
 		return DataManager.getInstance();
 	}
 
+	@Override
+	public void dispose() {
+		;
+	}
+
 }

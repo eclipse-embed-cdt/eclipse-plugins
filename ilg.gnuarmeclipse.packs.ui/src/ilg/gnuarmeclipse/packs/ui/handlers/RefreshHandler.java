@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs.handlers;
+package ilg.gnuarmeclipse.packs.ui.handlers;
 
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.cmsis.Index;
