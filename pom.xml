@@ -30,6 +30,8 @@
 		
 		<module>ilg.gnuarmeclipse.debug.gdbjtag.openocd</module>
 		<module>ilg.gnuarmeclipse.debug.gdbjtag.openocd-feature</module>
+
+		<module>ilg.gnuarmeclipse.debug.packs</module>
 		
 		<module>ilg.gnuarmeclipse.debug.gdbjtag.restart</module>
 		
