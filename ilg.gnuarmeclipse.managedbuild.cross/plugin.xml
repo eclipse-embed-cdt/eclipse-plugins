@@ -4262,15 +4262,6 @@
             weight="012">
       </tab>
 
-      <tab
-            class="ilg.gnuarmeclipse.managedbuild.cross.ui.TabDevice"
-            helpId="cdt_u_prop_build_setting_tool"
-            icon="icons/hardware_chip.png"
-            name="%tab.deviceSettings"
-            parent="org.eclipse.cdt.managedbuilder.ui.properties.Page_BuildSettings"
-            tooltip="Select the device from the available device in Packs."
-            weight="013">
-      </tab>
 
    </extension>
     

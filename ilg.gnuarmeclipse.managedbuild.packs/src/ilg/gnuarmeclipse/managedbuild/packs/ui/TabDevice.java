@@ -6,10 +6,10 @@
  * http://www.eclipse.org/legal/epl-v10.html
  *
  * Contributors:
- *    Liviu Ionescu - GNU ARM Eclipse version
+ *    Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.managedbuild.cross.ui;
+package ilg.gnuarmeclipse.managedbuild.packs.ui;
 
 import ilg.gnuarmeclipse.managedbuild.cross.Activator;
 import ilg.gnuarmeclipse.packs.core.data.DataManagerFactoryProxy;

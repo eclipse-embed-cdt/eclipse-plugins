@@ -18,4 +18,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
-Export-Package: ilg.gnuarmeclipse.managedbuild.cross.ui
+Export-Package: ilg.gnuarmeclipse.managedbuild.cross,
+ ilg.gnuarmeclipse.managedbuild.cross.ui
