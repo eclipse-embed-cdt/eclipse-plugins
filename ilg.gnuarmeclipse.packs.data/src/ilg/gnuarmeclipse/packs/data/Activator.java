@@ -11,40 +11,53 @@
 
 package ilg.gnuarmeclipse.packs.data;
 
+import ilg.gnuarmeclipse.core.AbstractActivator;
 import ilg.gnuarmeclipse.packs.data.jobs.LoadReposSummariesJob;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIPlugin {
+public class Activator extends AbstractActivator {
+
+	// ------------------------------------------------------------------------
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "ilg.gnuarmeclipse.packs.data"; //$NON-NLS-1$
 
+	@Override
+	public String getBundleId() {
+		return PLUGIN_ID;
+	}
+
+	// ------------------------------------------------------------------------
+
 	// The shared instance
 	private static Activator sfInstance;
 
+	public static Activator getInstance() {
+		return sfInstance;
+	}
+
+	public Activator() {
+
+		super();
+		sfInstance = this;
+	}
+
+	// ------------------------------------------------------------------------
+
 	private Job fLoadReposJob;
 
-	/**
-	 * The constructor
-	 */
-	public Activator() {
-		;
+	public Job getLoadReposJob() {
+		return fLoadReposJob;
 	}
 
 	public void start(BundleContext context) throws Exception {
 
-		System.out.println("ilg.gnuarmeclipse.packs.data.Activator.start()");
-
 		super.start(context);
-		sfInstance = this;
 
 		// Prepare & cache various variables
 		Repos repos = Repos.getInstance();
@@ -57,32 +70,11 @@ public class Activator extends AbstractUIPlugin {
 		fLoadReposJob.schedule();
 		// fLoadReposJob.join(); // does not work in this context
 
-		System.out
-				.println("ilg.gnuarmeclipse.packs.data.Activator.start() completed");
-
-	}
-
-	public void stop(BundleContext context) throws Exception {
-
-		sfInstance = null;
-		super.stop(context);
-
-	}
-
-	/**
-	 * Returns the shared instance
-	 * 
-	 * @return the shared instance
-	 */
-	public static Activator getDefault() {
-		return sfInstance;
-	}
-
-	public Job getLoadReposJob() {
-		return fLoadReposJob;
+		System.out.println(getBundleId() + ".start() completed");
 	}
 
 	public void waitLoadReposJob() {
+
 		try {
 			fLoadReposJob.join();
 		} catch (InterruptedException e) {
@@ -91,20 +83,9 @@ public class Activator extends AbstractUIPlugin {
 		}
 	}
 
-	// ------------------------------------------------------------------------
-
-	public static void log(IStatus status) {
-		getDefault().getLog().log(status);
-	}
-
-	public static void log(Throwable e) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID, 1, "Internal Error", e)); //$NON-NLS-1$
-	}
-
-	public static void log(String message) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID, 1, message, null)); //$NON-NLS-1$
+	public void stop(BundleContext context) throws Exception {
+		super.stop(context);
 	}
 
 	// ------------------------------------------------------------------------
-
 }

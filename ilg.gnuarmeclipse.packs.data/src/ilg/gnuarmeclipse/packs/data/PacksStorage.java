@@ -598,7 +598,7 @@ public class PacksStorage {
 			return fInstalledDevicesForBuild;
 		}
 
-		Activator.getDefault().waitLoadReposJob();
+		Activator.getInstance().waitLoadReposJob();
 
 		System.out.println("LoadRepos must be ready");
 

@@ -28,7 +28,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -1211,7 +1210,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					} catch (NumberFormatException e) {
 						String message = "unknown interface speed "
 								+ physicalInterfaceSpeed + ", using auto";
-						Activator.log(Status.ERROR, message);
+						Activator.log(message);
 						interfaceSpeedAuto.setSelection(true);
 						interfaceSpeedFixedValue.setEnabled(false);
 					}
@@ -1401,7 +1400,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		} catch (CoreException e) {
 			System.out.println(e.getStatus());
-			Activator.getDefault().getLog().log(e.getStatus());
+			Activator.log(e.getStatus());
 		}
 
 		if (DEBUG) {

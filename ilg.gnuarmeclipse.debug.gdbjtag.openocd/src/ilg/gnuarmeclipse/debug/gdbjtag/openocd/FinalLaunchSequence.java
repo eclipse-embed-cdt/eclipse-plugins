@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
-import org.eclipse.cdt.debug.gdbjtag.core.Activator;
 import org.eclipse.cdt.debug.gdbjtag.core.GDBJtagDSFFinalLaunchSequence;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
 import org.eclipse.cdt.debug.gdbjtag.core.Messages;
@@ -218,7 +217,6 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	public void stepUserInitCommands(final RequestMonitor rm) {
 		try {
 			List<String> commandsList = new ArrayList<String>();
-
 
 			String otherInits = CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.OTHER_INIT_COMMANDS,

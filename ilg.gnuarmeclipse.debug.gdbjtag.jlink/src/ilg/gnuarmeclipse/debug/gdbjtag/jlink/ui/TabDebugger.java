@@ -22,8 +22,8 @@ package ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
-import ilg.gnuarmeclipse.debug.gdbjtag.jlink.WorkspacePreferences;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Utils;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.WorkspacePreferences;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -41,7 +41,6 @@ import org.eclipse.cdt.dsf.gdb.IGdbDebugPreferenceConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -1194,7 +1193,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				else {
 					String message = "unknown endianness " + endianness
 							+ ", using little";
-					Activator.log(Status.ERROR, message);
+					Activator.log(message);
 					gdbEndiannessLittle.setSelection(true);
 				}
 
@@ -1247,7 +1246,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				} else {
 					String message = "unknown interface " + physicalInterface
 							+ ", using swd";
-					Activator.log(Status.ERROR, message);
+					Activator.log(message);
 					gdbInterfaceSwd.setSelection(true);
 				}
 
@@ -1292,7 +1291,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					} catch (NumberFormatException e) {
 						String message = "unknown interface speed "
 								+ physicalInterfaceSpeed + ", using auto";
-						Activator.log(Status.ERROR, message);
+						Activator.log(message);
 						gdbServerSpeedAuto.setSelection(true);
 						gdbServerSpeedFixedValue.setEnabled(false);
 					}
@@ -1423,7 +1422,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fUpdateThreadlistOnSuspend.setSelection(updateThreadsOnSuspend);
 
 		} catch (CoreException e) {
-			Activator.getDefault().getLog().log(e.getStatus());
+			Activator.log(e.getStatus());
 		}
 
 		if (DEBUG) {
@@ -1511,7 +1510,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				stringValue = ConfigurationAttributes.ENDIANNESS_BIG;
 			} else {
 				String message = "endianness not selected, setting little";
-				Activator.log(Status.ERROR, message);
+				Activator.log(message);
 			}
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_DEVICE_ENDIANNESS,
@@ -1545,7 +1544,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				stringValue = ConfigurationAttributes.INTERFACE_JTAG;
 			} else {
 				String message = "interface not selected, setting swd";
-				Activator.log(Status.ERROR, message);
+				Activator.log(message);
 				gdbInterfaceSwd.setSelection(true);
 			}
 			configuration.setAttribute(

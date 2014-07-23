@@ -11,66 +11,50 @@
 
 package ilg.gnuarmeclipse.packs.core;
 
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import ilg.gnuarmeclipse.core.AbstractUIActivator;
+
 import org.osgi.framework.BundleContext;
 
 /**
- * The activator class controls the plug-in life cycle
+ * The activator class controls the plug-in life cycle. The UI version is used
+ * for the preference store.
  */
-public class Activator extends AbstractUIPlugin {
+public class Activator extends AbstractUIActivator {
+
+	// ------------------------------------------------------------------------
 
 	// The plug-in ID
 	public static final String PLUGIN_ID = "ilg.gnuarmeclipse.packs.core"; //$NON-NLS-1$
 
+	@Override
+	public String getBundleId() {
+		return PLUGIN_ID;
+	}
+
+	// ------------------------------------------------------------------------
+
 	// The shared instance
 	private static Activator sfInstance;
 
-	/**
-	 * The constructor
-	 */
-	public Activator() {
-		;
-	}
-
-	public void start(BundleContext context) throws Exception {
-
-		super.start(context);
-		sfInstance = this;
-
-	}
-
-	public void stop(BundleContext context) throws Exception {
-
-		sfInstance = null;
-		super.stop(context);
-
-	}
-
-	/**
-	 * Returns the shared instance
-	 * 
-	 * @return the shared instance
-	 */
-	public static Activator getDefault() {
+	public static Activator getInstance() {
 		return sfInstance;
 	}
 
-	// ------------------------------------------------------------------------
+	public Activator() {
 
-	public static void log(IStatus status) {
-		getDefault().getLog().log(status);
-	}
-
-	public static void log(Throwable e) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID, 1, "Internal Error", e)); //$NON-NLS-1$
-	}
-
-	public static void log(String message) {
-		log(new Status(IStatus.ERROR, PLUGIN_ID, 1, message, null)); //$NON-NLS-1$
+		super();
+		sfInstance = this;
 	}
 
 	// ------------------------------------------------------------------------
 
+	public void start(BundleContext context) throws Exception {
+		super.start(context);
+	}
+
+	public void stop(BundleContext context) throws Exception {
+		super.stop(context);
+	}
+
+	// ------------------------------------------------------------------------
 }

@@ -991,7 +991,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			updateUseFileEnablement();
 
 		} catch (CoreException e) {
-			Activator.getDefault().getLog().log(e.getStatus());
+			Activator.log(e.getStatus());
 		}
 	}
 

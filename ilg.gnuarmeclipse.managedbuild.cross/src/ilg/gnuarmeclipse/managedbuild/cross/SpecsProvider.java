@@ -16,7 +16,7 @@ import org.eclipse.cdt.core.language.settings.providers.LanguageSettingsManager;
 
 public class SpecsProvider {
 
-	private static String PROVIDER_ID = Activator.getIdPrefix()
+	private static String PROVIDER_ID = IDs.getIdPrefix()
 			+ ".GCCBuiltinSpecsDetector";
 
 	// private static String PROVIDER_ID =
@@ -28,9 +28,9 @@ public class SpecsProvider {
 		return LanguageSettingsManager.getRawProvider(p);// ;
 	}
 
-//	private static void clear() {
-//		ILanguageSettingsProvider provider = getProvider();
-//		((AbstractBuiltinSpecsDetector) provider).clear();
-//		// System.out.println("clear " + provider.getName());
-//	}
+	// private static void clear() {
+	// ILanguageSettingsProvider provider = getProvider();
+	// ((AbstractBuiltinSpecsDetector) provider).clear();
+	// // System.out.println("clear " + provider.getName());
+	// }
 }

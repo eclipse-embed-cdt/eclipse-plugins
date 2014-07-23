@@ -11,7 +11,7 @@
 
 package ilg.gnuarmeclipse.managedbuild.packs.ui;
 
-import ilg.gnuarmeclipse.managedbuild.cross.Activator;
+import ilg.gnuarmeclipse.managedbuild.cross.IDs;
 import ilg.gnuarmeclipse.packs.core.data.DataManagerFactoryProxy;
 import ilg.gnuarmeclipse.packs.core.data.IDataManager;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
@@ -640,7 +640,7 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 
 		IToolChain toolchain = m_config.getToolChain();
 		String sToolchainId = toolchain.getBaseId();
-		if (sToolchainId.startsWith(Activator.TOOLCHAIN_ID + "."))
+		if (sToolchainId.startsWith(IDs.TOOLCHAIN_ID + "."))
 			return true;
 
 		return false;

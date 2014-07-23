@@ -831,7 +831,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fUpdateThreadlistOnSuspend.setSelection(updateThreadsOnSuspend);
 
 		} catch (CoreException e) {
-			Activator.getDefault().getLog().log(e.getStatus());
+			Activator.log(e.getStatus());
 		}
 	}
 

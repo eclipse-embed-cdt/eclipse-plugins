@@ -12,7 +12,7 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross.ui;
 
-import ilg.gnuarmeclipse.managedbuild.cross.Activator;
+import ilg.gnuarmeclipse.managedbuild.cross.IDs;
 import ilg.gnuarmeclipse.managedbuild.cross.ToolchainDefinition;
 
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPage;
@@ -39,8 +39,8 @@ import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
 /**
  * A wizard page that allows the user to specify the prefix and the path of a
- * Cross GCC command. The values are passed to {@link SetCrossCommandWizardOperation}
- * using the {@link MBSCustomPageManager}
+ * Cross GCC command. The values are passed to
+ * {@link SetCrossCommandWizardOperation} using the {@link MBSCustomPageManager}
  */
 public class SetCrossCommandWizardPage extends MBSCustomPage {
 
@@ -52,7 +52,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	private String m_selectedToolchainName;
 
 	// must match the plugin.xml <wizardPage ID="">
-	public static final String PAGE_ID = Activator.getIdPrefix()
+	public static final String PAGE_ID = IDs.getIdPrefix()
 			+ ".setCrossCommandWizardPage"; //$NON-NLS-1$
 
 	public static final String CROSS_PROJECT_NAME = "projectName"; //$NON-NLS-1$

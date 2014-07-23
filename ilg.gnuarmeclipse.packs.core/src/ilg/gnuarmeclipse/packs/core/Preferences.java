@@ -16,7 +16,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 public class Preferences {
 
 	public static IPreferenceStore getPreferenceStore() {
-		return Activator.getDefault().getPreferenceStore();
+		return Activator.getInstance().getPreferenceStore();
 	}
 
 	public static final String PACKS_FOLDER_PATH = "packs.folder.path";

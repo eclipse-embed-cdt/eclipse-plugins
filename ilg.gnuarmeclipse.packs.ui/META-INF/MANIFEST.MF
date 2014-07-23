@@ -12,7 +12,8 @@ Require-Bundle: org.eclipse.ui;bundle-version="3.105.0",
  ilg.gnuarmeclipse.packs.data,
  ilg.gnuarmeclipse.packs,
  org.eclipse.ui.workbench,
- org.eclipse.jface
+ org.eclipse.jface,
+ ilg.gnuarmeclipse.core
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
