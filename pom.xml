@@ -12,6 +12,7 @@
 	</properties>
 
 	<modules>
+		<module>ilg.gnuarmeclipse.core</module>
 		<module>ilg.gnuarmeclipse.managedbuild.cross</module>
 		<module>ilg.gnuarmeclipse.managedbuild.cross-feature</module>
 		
