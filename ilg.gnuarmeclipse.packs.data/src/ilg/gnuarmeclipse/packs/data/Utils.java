@@ -25,18 +25,11 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.ui.console.MessageConsoleStream;
-import org.w3c.dom.Document;
-import org.xml.sax.InputSource;
-import org.xml.sax.SAXException;
 
 public class Utils {
 
@@ -47,16 +40,6 @@ public class Utils {
 		value = value.replaceAll("\\<", "&lt;"); //$NON-NLS-1$ //$NON-NLS-2$ 
 		value = value.replaceAll("\\>", "&gt;"); //$NON-NLS-1$ //$NON-NLS-2$ 
 		return value;
-	}
-
-	public static Document parseXml(File file)
-			throws ParserConfigurationException, SAXException, IOException {
-
-		InputSource inputSource = new InputSource(new FileInputStream(file));
-
-		DocumentBuilder xml = DocumentBuilderFactory.newInstance()
-				.newDocumentBuilder();
-		return xml.parse(inputSource);
 	}
 
 	public static String getCurrentDateTime() {

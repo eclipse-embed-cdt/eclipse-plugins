@@ -13,16 +13,16 @@ package ilg.gnuarmeclipse.packs.data;
 
 import java.util.EventObject;
 
-public class PacksStorageEvent extends EventObject {
+public class DataManagerEvent extends EventObject {
 
 	private static final long serialVersionUID = 7130648407827013912L;
 
 	public class Type {
 		public static final String NEW_INPUT = "new.input";
-		public static final String REFRESH_ALL = "refresh.all";
+		// public static final String REFRESH_ALL = "refresh.all";
 		public static final String UPDATE_PACKS = "update.packs";
-		public static final String UPDATE_DEVICES = "update.devices";
-		public static final String UPDATE_BOARDS = "update.boards";
+		// public static final String UPDATE_DEVICES = "update.devices";
+		// public static final String UPDATE_BOARDS = "update.boards";
 		public static final String UPDATE_VERSIONS = "update.versions";
 
 	}
@@ -30,7 +30,7 @@ public class PacksStorageEvent extends EventObject {
 	private String fType;
 	private Object fPayload;
 
-	public PacksStorageEvent(PacksStorage source, String type) {
+	public DataManagerEvent(Object source, String type) {
 
 		super(source);
 
@@ -38,7 +38,7 @@ public class PacksStorageEvent extends EventObject {
 		fPayload = null;
 	}
 
-	public PacksStorageEvent(PacksStorage source, String type, Object payload) {
+	public DataManagerEvent(Object source, String type, Object payload) {
 
 		super(source);
 

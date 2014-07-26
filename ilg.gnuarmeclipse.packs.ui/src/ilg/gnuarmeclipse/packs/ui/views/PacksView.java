@@ -19,9 +19,10 @@ import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Selector;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
-import ilg.gnuarmeclipse.packs.data.IPacksStorageListener;
+import ilg.gnuarmeclipse.packs.data.DataManager;
+import ilg.gnuarmeclipse.packs.data.IDataManagerListener;
 import ilg.gnuarmeclipse.packs.data.PacksStorage;
-import ilg.gnuarmeclipse.packs.data.PacksStorageEvent;
+import ilg.gnuarmeclipse.packs.data.DataManagerEvent;
 import ilg.gnuarmeclipse.packs.data.Utils;
 import ilg.gnuarmeclipse.packs.jobs.CopyExampleJob;
 import ilg.gnuarmeclipse.packs.jobs.InstallJob;
@@ -76,7 +77,7 @@ import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.services.IServiceLocator;
 
-public class PacksView extends ViewPart implements IPacksStorageListener {
+public class PacksView extends ViewPart implements IDataManagerListener {
 
 	/**
 	 * The ID of the view as specified by the extension.
@@ -243,6 +244,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 	private boolean fIsCopyExampleEnabled;
 
 	private PacksStorage fStorage;
+	private DataManager fDataManager;
 	private MessageConsoleStream fOut;
 
 	public PacksView() {
@@ -250,6 +252,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 		fOut = ConsoleStream.getConsoleOut();
 
 		fStorage = PacksStorage.getInstance();
+		fDataManager = DataManager.getInstance();
 		// System.out.println("PacksView()");
 	}
 
@@ -294,7 +297,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 		fContentProvider = new ViewContentProvider();
 
 		// Register this view to the packs storage notifications
-		fStorage.addListener(this);
+		fDataManager.addListener(this);
 
 		fViewer.setContentProvider(fContentProvider);
 		fViewer.setLabelProvider(new TableLabelProvider());
@@ -321,6 +324,8 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 			getSite().getPage().removePostSelectionListener(
 					fPageSelectionListener);
 		}
+
+		fDataManager.removeListener(this);
 
 		System.out.println("PacksView.dispose()");
 	}
@@ -757,13 +762,13 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 	// interfere with GUI actions.
 
 	@Override
-	public void packsChanged(PacksStorageEvent event) {
+	public void packsChanged(DataManagerEvent event) {
 
 		String type = event.getType();
 		// System.out.println("PacksView.packsChanged(), type=\"" + type +
 		// "\".");
 
-		if (PacksStorageEvent.Type.NEW_INPUT.equals(type)) {
+		if (DataManagerEvent.Type.NEW_INPUT.equals(type)) {
 
 			// Run the refresh on the GUI thread
 			Display.getDefault().asyncExec(new Runnable() {
@@ -778,21 +783,21 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 				}
 			});
 
-		} else if (PacksStorageEvent.Type.REFRESH_ALL.equals(type)) {
-
-			// Run the refresh on the GUI thread
-			Display.getDefault().asyncExec(new Runnable() {
-
-				@Override
-				public void run() {
-
-					// m_out.println("PacksView REFRESH_ALL");
-
-					fViewer.refresh();
-				}
-			});
-
-		} else if (PacksStorageEvent.Type.UPDATE_VERSIONS.equals(type)) {
+			// } else if (DataManagerEvent.Type.REFRESH_ALL.equals(type)) {
+			//
+			// // Run the refresh on the GUI thread
+			// Display.getDefault().asyncExec(new Runnable() {
+			//
+			// @Override
+			// public void run() {
+			//
+			// // m_out.println("PacksView REFRESH_ALL");
+			//
+			// fViewer.refresh();
+			// }
+			// });
+			//
+		} else if (DataManagerEvent.Type.UPDATE_VERSIONS.equals(type)) {
 
 			@SuppressWarnings("unchecked")
 			final List<PackNode> updatedList = (List<PackNode>) event

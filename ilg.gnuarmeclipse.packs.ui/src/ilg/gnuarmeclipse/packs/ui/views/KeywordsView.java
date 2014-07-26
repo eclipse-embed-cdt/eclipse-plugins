@@ -16,9 +16,10 @@ import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
-import ilg.gnuarmeclipse.packs.data.IPacksStorageListener;
+import ilg.gnuarmeclipse.packs.data.DataManager;
+import ilg.gnuarmeclipse.packs.data.IDataManagerListener;
 import ilg.gnuarmeclipse.packs.data.PacksStorage;
-import ilg.gnuarmeclipse.packs.data.PacksStorageEvent;
+import ilg.gnuarmeclipse.packs.data.DataManagerEvent;
 import ilg.gnuarmeclipse.packs.data.Utils;
 import ilg.gnuarmeclipse.packs.ui.Activator;
 
@@ -46,7 +47,7 @@ import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.part.ViewPart;
 
-public class KeywordsView extends ViewPart implements IPacksStorageListener {
+public class KeywordsView extends ViewPart implements IDataManagerListener {
 
 	/**
 	 * The ID of the view as specified by the extension.
@@ -98,6 +99,7 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 	private ViewContentProvider fContentProvider;
 
 	private PacksStorage fStorage;
+	private DataManager fDataManager;
 	private MessageConsoleStream fOut;
 
 	public KeywordsView() {
@@ -105,6 +107,7 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 		fOut = ConsoleStream.getConsoleOut();
 
 		fStorage = PacksStorage.getInstance();
+		fDataManager = DataManager.getInstance();
 		// System.out.println("KeywordsView()");
 	}
 
@@ -122,7 +125,7 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 		fContentProvider = new ViewContentProvider();
 
 		// Register this content provider to the packs storage notifications
-		fStorage.addListener(this);
+		fDataManager.addListener(this);
 
 		fViewer.setContentProvider(fContentProvider);
 		fViewer.setLabelProvider(new ViewLabelProvider());
@@ -142,7 +145,7 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 	public void dispose() {
 
 		super.dispose();
-		fStorage.removeListener(this);
+		fDataManager.removeListener(this);
 
 		System.out.println("KeywordsView.dispose()");
 	}
@@ -241,13 +244,13 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 	// ------------------------------------------------------------------------
 
 	@Override
-	public void packsChanged(PacksStorageEvent event) {
+	public void packsChanged(DataManagerEvent event) {
 
 		String type = event.getType();
 		// System.out.println("KeywordsView.packsChanged(), type=\"" + type
 		// + "\".");
 
-		if (PacksStorageEvent.Type.NEW_INPUT.equals(type)) {
+		if (DataManagerEvent.Type.NEW_INPUT.equals(type)) {
 
 			Display.getDefault().asyncExec(new Runnable() {
 
@@ -260,20 +263,20 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 				}
 			});
 
-		} else if (PacksStorageEvent.Type.REFRESH_ALL.equals(type)) {
-
-			Display.getDefault().asyncExec(new Runnable() {
-
-				@Override
-				public void run() {
-
-					// m_out.println("KeywordsView REFRESH_ALL");
-
-					fViewer.refresh();
-				}
-			});
-
-		} else if (PacksStorageEvent.Type.UPDATE_VERSIONS.equals(type)) {
+			// } else if (DataManagerEvent.Type.REFRESH_ALL.equals(type)) {
+			//
+			// Display.getDefault().asyncExec(new Runnable() {
+			//
+			// @Override
+			// public void run() {
+			//
+			// // m_out.println("KeywordsView REFRESH_ALL");
+			//
+			// fViewer.refresh();
+			// }
+			// });
+			//
+		} else if (DataManagerEvent.Type.UPDATE_VERSIONS.equals(type)) {
 
 			// Nothing to do
 

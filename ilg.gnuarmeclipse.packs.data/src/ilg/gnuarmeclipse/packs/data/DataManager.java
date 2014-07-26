@@ -11,9 +11,20 @@
 
 package ilg.gnuarmeclipse.packs.data;
 
+import ilg.gnuarmeclipse.packs.cmsis.PdscParserForBuild;
+import ilg.gnuarmeclipse.packs.core.ConsoleStream;
+import ilg.gnuarmeclipse.packs.core.data.IDataManager;
+import ilg.gnuarmeclipse.packs.core.tree.Leaf;
+import ilg.gnuarmeclipse.packs.core.tree.Node;
+import ilg.gnuarmeclipse.packs.core.tree.PackNode;
+import ilg.gnuarmeclipse.packs.core.tree.Property;
+import ilg.gnuarmeclipse.packs.core.tree.Type;
+import ilg.gnuarmeclipse.packs.xcdl.GenericParser;
+import ilg.gnuarmeclipse.packs.xcdl.GenericSerialiser;
+
 import java.io.File;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -22,19 +33,10 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.MessageConsoleStream;
+import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import ilg.gnuarmeclipse.packs.cmsis.PdscGenericParser;
-import ilg.gnuarmeclipse.packs.cmsis.PdscParserForBuild;
-import ilg.gnuarmeclipse.packs.core.ConsoleStream;
-import ilg.gnuarmeclipse.packs.core.data.IDataManager;
-import ilg.gnuarmeclipse.packs.core.tree.Node;
-import ilg.gnuarmeclipse.packs.core.tree.PackNode;
-import ilg.gnuarmeclipse.packs.core.tree.Property;
-import ilg.gnuarmeclipse.packs.core.tree.Type;
-import ilg.gnuarmeclipse.packs.xcdl.GenericSerialiser;
-
-public class DataManager implements IDataManager, IPacksStorageListener {
+public class DataManager implements IDataManager {
 
 	private static DataManager sfInstance;
 
@@ -52,6 +54,7 @@ public class DataManager implements IDataManager, IPacksStorageListener {
 	private PacksStorage fStorage;
 	private Node fInstalledDevicesForBuild;
 	private MessageConsoleStream fOut;
+	private List<IDataManagerListener> fListeners;
 
 	public DataManager() {
 
@@ -60,21 +63,68 @@ public class DataManager implements IDataManager, IPacksStorageListener {
 		fStorage = PacksStorage.getInstance();
 		fInstalledDevicesForBuild = null;
 
-		// Subscribe to Storage notifications
-		fStorage.addListener(this);
+		fListeners = new ArrayList<IDataManagerListener>();
 	}
 
-	@Override
-	public void packsChanged(PacksStorageEvent event) {
+	// ------------------------------------------------------------------------
 
-		String eventType = event.getType();
-		if (PacksStorageEvent.Type.UPDATE_VERSIONS.equals(eventType)
-				|| PacksStorageEvent.Type.NEW_INPUT.equals(eventType)) {
-
-			// Force to re-cache
-			fInstalledDevicesForBuild = null;
+	public void addListener(IDataManagerListener listener) {
+		if (!fListeners.contains(listener)) {
+			fListeners.add(listener);
 		}
 	}
+
+	public void removeListener(IDataManagerListener listener) {
+		fListeners.remove(listener);
+	}
+
+	// Note: since the DataManager is the only source of events, the
+	// source is 'this'.
+
+	// Used by 'Refresh', 'LoadReposSummaries'
+	public void notifyNewInput() {
+
+		// System.out.println("PacksStorage notifyRefresh()");
+		DataManagerEvent event = new DataManagerEvent(this,
+				DataManagerEvent.Type.NEW_INPUT);
+
+		notifyListener(event);
+	}
+
+	// Used when a package is installed/removed
+	public void notifyInstallRemove() {
+
+		// System.out.println("PacksStorage notifyRefresh()");
+		DataManagerEvent event = new DataManagerEvent(this,
+				DataManagerEvent.Type.UPDATE_PACKS);
+
+		notifyListener(event);
+
+		// Force to re-cache
+		clearCachedInstalledDevicesForBuild();
+	}
+
+	// 'Install/Remove Pack' notifies Type.UPDATE_VERSIONS
+	public void notifyUpdateView(String type, List<Leaf> list) {
+
+		// System.out.println("PacksStorage notifyUpdateView()");
+		DataManagerEvent event = new DataManagerEvent(this, type, list);
+
+		notifyListener(event);
+
+		// TODO: check this one!
+		// fDevicesMap.clear();
+	}
+
+	public void notifyListener(DataManagerEvent event) {
+
+		for (IDataManagerListener listener : fListeners) {
+			// System.out.println(listener);
+			listener.packsChanged(event);
+		}
+	}
+
+	// ------------------------------------------------------------------------
 
 	// Called from TabDevice in managedbuild.cross
 	@Override
@@ -87,8 +137,6 @@ public class DataManager implements IDataManager, IPacksStorageListener {
 		}
 
 		Activator.getInstance().waitLoadReposJob();
-
-		System.out.println("LoadRepos must be ready");
 
 		BusyIndicator.showWhile(Display.getDefault(), new Runnable() {
 
@@ -153,30 +201,104 @@ public class DataManager implements IDataManager, IPacksStorageListener {
 
 	// ------------------------------------------------------------------------
 
+	private void clearCachedInstalledDevicesForBuild() {
+
+		System.out.println("clearCachedInstalledDevicesForBuild()");
+
+		fInstalledDevicesForBuild = null;
+
+		File devicesFile = fStorage.getFile(
+				new Path(PacksStorage.CACHE_FOLDER),
+				PacksStorage.DEVICES_FILE_NAME);
+
+		if (devicesFile != null) {
+			devicesFile.delete();
+		}
+	}
+
 	private Node updateInstalledDevicesForBuild() {
 
 		File devicesFile = fStorage.getFile(
 				new Path(PacksStorage.CACHE_FOLDER),
 				PacksStorage.DEVICES_FILE_NAME);
 
-		Node rootNode;
-		rootNode = new Node(Type.ROOT);
-		Node emptyNode = Node.addNewChild(rootNode, Type.NONE);
-		emptyNode.setName("No devices available, install packs first.");
+		Node rootNode = null;
 
 		if (devicesFile != null && devicesFile.exists()) {
-			// Parse the cached file
-		} else {
-			// Parse all installed packages
-			Node node = parseInstalledDevicesForBuild();
-			if (node != null) {
-				rootNode = node;
-			}
 
+			rootNode = parseCachedInstalledDevicesForBuild(devicesFile);
+
+		}
+
+		if (rootNode == null) {
+
+			// Parse all installed packages
+			rootNode = parseInstalledDevicesForBuild();
+
+		}
+
+		if (rootNode != null) {
 			// Save cached file for future use
+			GenericSerialiser serialiser = new GenericSerialiser();
+			try {
+				serialiser.serialise(rootNode, devicesFile);
+			} catch (IOException e) {
+
+				e.printStackTrace();
+
+				fOut.println(e.getMessage());
+				Utils.reportError(e.getMessage());
+			}
+		}
+
+		if (rootNode == null) {
+
+			rootNode = new Node(Type.ROOT);
+			Node emptyNode = Node.addNewChild(rootNode, Type.NONE);
+			emptyNode.setName("No devices available, install packs first.");
 		}
 
 		return rootNode;
+	}
+
+	private Node parseCachedInstalledDevicesForBuild(File file) {
+
+		long beginTime = System.currentTimeMillis();
+
+		fOut.println();
+		fOut.println(Utils.getCurrentDateTime());
+
+		fOut.println("Parsing \"" + file + "\"");
+
+		Node node = null;
+		try {
+			// Parse the cached file
+			Document document = Xml.parseFile(file);
+			GenericParser parser = new GenericParser();
+			node = parser.parse(document);
+		} catch (DocumentParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ParserConfigurationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SAXException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - beginTime;
+		if (duration == 0) {
+			duration = 1;
+		}
+		fOut.print("Completed in ");
+		fOut.print(duration + "ms, ");
+
+		return node;
 	}
 
 	private Node parseInstalledDevicesForBuild() {
@@ -186,11 +308,11 @@ public class DataManager implements IDataManager, IPacksStorageListener {
 
 		PdscParserForBuild pdsc = new PdscParserForBuild();
 
-		PdscGenericParser p2 = new PdscGenericParser();
+		// PdscGenericParser p2 = new PdscGenericParser();
 
-		Node boardsNode = new Node(Type.NONE);
+		Node boardsNode = new Node(Type.FOLDER);
 		boardsNode.setName("Boards");
-		Node devicesNode = new Node(Type.NONE);
+		Node devicesNode = new Node(Type.FOLDER);
 		devicesNode.setName("Devices");
 
 		long beginTime = System.currentTimeMillis();
@@ -214,16 +336,16 @@ public class DataManager implements IDataManager, IPacksStorageListener {
 
 				pdsc.parseDevices(devicesNode);
 
-				p2.setDocument(pdsc.getDocument());
-				Node n2 = p2.parse();
+				// p2.setDocument(pdsc.getDocument());
+				// Node n2 = p2.parse();
 
-				GenericSerialiser s2 = new GenericSerialiser();
-				try {
-					s2.serialise(n2, new PrintWriter(System.out));
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+				// GenericSerialiser s2 = new GenericSerialiser();
+				// try {
+				// s2.serialise(n2, new PrintWriter(System.out));
+				// } catch (IOException e1) {
+				// // TODO Auto-generated catch block
+				// e1.printStackTrace();
+				// }
 
 				// Using boards requires existing devices to be present,
 				// to get the memory map

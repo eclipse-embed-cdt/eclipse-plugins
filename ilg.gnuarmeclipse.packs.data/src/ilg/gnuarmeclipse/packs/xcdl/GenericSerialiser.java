@@ -14,6 +14,7 @@ package ilg.gnuarmeclipse.packs.xcdl;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
+import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.Utils;
 
 import java.io.File;
@@ -39,9 +40,9 @@ public class GenericSerialiser {
 
 			fNodeElementName = "";
 			fNodesElementName = "";
-			fDoOutputNodes = true;
+			fDoOutputNodes = false;
 			fDoOutputName = true;
-			fDoOutputProperties = true;
+			fDoOutputProperties = false;
 			fIsNameOptional = true;
 			fHasNoChildrenElements = false;
 			doIgnoreChildren = false;
@@ -98,7 +99,14 @@ public class GenericSerialiser {
 			fWriter.println();
 			fWriter.println("<root version=\"" + getSchemaVersion() + "\">");
 
-			serialiseRecursive(tree, 0);
+			if (tree.isType(Type.ROOT) && tree.hasChildren()) {
+				// Skip the initial root node
+				for (Leaf child : tree.getChildren()) {
+					serialiseRecursive(child, 0);
+				}
+			} else {
+				serialiseRecursive(tree, 0);
+			}
 
 			fWriter.println("</root>");
 			fWriter.close();

@@ -16,8 +16,9 @@ import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
+import ilg.gnuarmeclipse.packs.data.DataManager;
 import ilg.gnuarmeclipse.packs.data.PacksStorage;
-import ilg.gnuarmeclipse.packs.data.PacksStorageEvent;
+import ilg.gnuarmeclipse.packs.data.DataManagerEvent;
 import ilg.gnuarmeclipse.packs.data.Utils;
 
 import java.io.File;
@@ -53,6 +54,7 @@ public class InstallJob extends Job {
 
 	// private Repos m_repos;
 	private PacksStorage fStorage;
+	private DataManager fDataManager;
 
 	public InstallJob(String name, TreeSelection selection) {
 
@@ -64,6 +66,7 @@ public class InstallJob extends Job {
 
 		// m_repos = Repos.getInstance();
 		fStorage = PacksStorage.getInstance();
+		fDataManager = DataManager.getInstance();
 	}
 
 	@Override
@@ -145,8 +148,9 @@ public class InstallJob extends Job {
 		}
 
 		if (installedPacksList.size() > 0) {
-			fStorage.notifyUpdateView(PacksStorageEvent.Type.UPDATE_VERSIONS,
-					installedPacksList);
+			fDataManager.notifyUpdateView(
+					DataManagerEvent.Type.UPDATE_VERSIONS, installedPacksList);
+			fDataManager.notifyInstallRemove();
 		}
 
 		IStatus status;

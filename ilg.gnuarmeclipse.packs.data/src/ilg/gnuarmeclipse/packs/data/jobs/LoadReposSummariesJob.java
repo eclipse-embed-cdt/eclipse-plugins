@@ -12,6 +12,7 @@
 package ilg.gnuarmeclipse.packs.data.jobs;
 
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
+import ilg.gnuarmeclipse.packs.data.DataManager;
 import ilg.gnuarmeclipse.packs.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.data.Repos;
 import ilg.gnuarmeclipse.packs.data.Utils;
@@ -34,6 +35,7 @@ public class LoadReposSummariesJob extends Job {
 
 	private Repos fRepos;
 	private PacksStorage fStorage;
+	private DataManager fDataManager;
 
 	public LoadReposSummariesJob(String name) {
 
@@ -43,6 +45,7 @@ public class LoadReposSummariesJob extends Job {
 
 		fRepos = Repos.getInstance();
 		fStorage = PacksStorage.getInstance();
+		fDataManager = DataManager.getInstance();
 	}
 
 	@Override
@@ -72,7 +75,7 @@ public class LoadReposSummariesJob extends Job {
 		// (for just in case this takes very long, normally the views are
 		// not created at this moment)
 
-		fStorage.notifyNewInput();
+		fDataManager.notifyNewInput();
 
 		IStatus status;
 

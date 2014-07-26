@@ -1,9 +1,15 @@
-package ilg.gnuarmeclipse.packs.xcdl;
+/*******************************************************************************
+ * Copyright (c) 2014 Liviu Ionescu.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Liviu Ionescu - initial implementation.
+ *******************************************************************************/
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+package ilg.gnuarmeclipse.packs.xcdl;
 
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
@@ -12,7 +18,10 @@ import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DocumentParseException;
 import ilg.gnuarmeclipse.packs.data.PacksStorage;
 
-import org.w3c.dom.Document;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 public class ContentParser extends GenericParser {
 
@@ -21,9 +30,9 @@ public class ContentParser extends GenericParser {
 	String[] fGroupsToIgnore;
 	Map<String, String> fReplaceMap;
 
-	public ContentParser(Document document) {
+	public ContentParser() {
 
-		super(document);
+		super();
 
 		fPackNodes = new HashSet<String>();
 		fPackNodes.add("package");

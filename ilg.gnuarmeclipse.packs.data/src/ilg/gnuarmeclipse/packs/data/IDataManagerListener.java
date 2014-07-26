@@ -11,7 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.data;
 
-public interface IPacksStorageListener {
+public interface IDataManagerListener {
 
-	public void packsChanged(PacksStorageEvent event);
+	public void packsChanged(DataManagerEvent event);
 }

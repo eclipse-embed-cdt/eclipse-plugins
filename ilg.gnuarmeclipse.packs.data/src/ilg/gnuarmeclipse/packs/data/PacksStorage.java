@@ -22,7 +22,6 @@ import ilg.gnuarmeclipse.packs.xcdl.ContentParser;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -53,22 +52,22 @@ public class PacksStorage {
 
 	// ------------------------------------------------------------------------
 
-	private static PacksStorage sfPacksStorage;
+	private static PacksStorage sfInstance;
 
 	public static synchronized PacksStorage getInstance() {
 
-		if (sfPacksStorage == null) {
-			sfPacksStorage = new PacksStorage();
+		if (sfInstance == null) {
+			sfInstance = new PacksStorage();
 		}
 
-		return sfPacksStorage;
+		return sfInstance;
 	}
 
 	// ------------------------------------------------------------------------
 
 	private Repos fRepos;
 	private MessageConsoleStream fOut;
-	private List<IPacksStorageListener> fListeners;
+	//private List<IDataManagerListener> fListeners;
 
 	private List<PackNode> fPacksVersionsList;
 	private Node fPacksVersionsTree;
@@ -88,7 +87,7 @@ public class PacksStorage {
 		fPacksVersionsMap = new TreeMap<String, Map<String, PackNode>>();
 		fPacksMap = new TreeMap<String, PackNode>();
 
-		fListeners = new ArrayList<IPacksStorageListener>();
+		// fListeners = new ArrayList<IDataManagerListener>();
 
 		fDevicesMap = new TreeMap<String, PackNode>();
 
@@ -187,54 +186,54 @@ public class PacksStorage {
 
 	// ------------------------------------------------------------------------
 
-	public void addListener(IPacksStorageListener listener) {
-		if (!fListeners.contains(listener)) {
-			fListeners.add(listener);
-		}
-	}
+//	public void addListener(IDataManagerListener listener) {
+//		if (!fListeners.contains(listener)) {
+//			fListeners.add(listener);
+//		}
+//	}
+//
+//	public void removeListener(IDataManagerListener listener) {
+//		fListeners.remove(listener);
+//	}
 
-	public void removeListener(IPacksStorageListener listener) {
-		fListeners.remove(listener);
-	}
-
-	// Used by 'Refresh', 'LoadReposSummaries'
-	public void notifyNewInput() {
-
-		// System.out.println("PacksStorage notifyRefresh()");
-		PacksStorageEvent event = new PacksStorageEvent(this,
-				PacksStorageEvent.Type.NEW_INPUT);
-
-		notifyListener(event);
-	}
-
-	// Currently not used
-	public void notifyRefreshAll() {
-
-		// System.out.println("PacksStorage notifyRefresh()");
-		PacksStorageEvent event = new PacksStorageEvent(this,
-				PacksStorageEvent.Type.REFRESH_ALL);
-
-		notifyListener(event);
-	}
-
-	// 'Install/Remove Pack' notifies Type.UPDATE_VERSIONS
-	public void notifyUpdateView(String type, List<Leaf> list) {
-
-		// System.out.println("PacksStorage notifyUpdateView()");
-		PacksStorageEvent event = new PacksStorageEvent(this, type, list);
-
-		notifyListener(event);
-
-		fDevicesMap.clear();
-	}
-
-	public void notifyListener(PacksStorageEvent event) {
-
-		for (IPacksStorageListener listener : fListeners) {
-			// System.out.println(listener);
-			listener.packsChanged(event);
-		}
-	}
+//	// Used by 'Refresh', 'LoadReposSummaries'
+//	public void notifyNewInput() {
+//
+//		// System.out.println("PacksStorage notifyRefresh()");
+//		DataManagerEvent event = new DataManagerEvent(this,
+//				DataManagerEvent.Type.NEW_INPUT);
+//
+//		notifyListener(event);
+//	}
+//
+//	// Currently not used
+//	public void notifyRefreshAll() {
+//
+//		// System.out.println("PacksStorage notifyRefresh()");
+//		DataManagerEvent event = new DataManagerEvent(this,
+//				DataManagerEvent.Type.REFRESH_ALL);
+//
+//		notifyListener(event);
+//	}
+//
+//	// 'Install/Remove Pack' notifies Type.UPDATE_VERSIONS
+//	public void notifyUpdateView(String type, List<Leaf> list) {
+//
+//		// System.out.println("PacksStorage notifyUpdateView()");
+//		DataManagerEvent event = new DataManagerEvent(this, type, list);
+//
+//		notifyListener(event);
+//
+//		fDevicesMap.clear();
+//	}
+//
+//	public void notifyListener(DataManagerEvent event) {
+//
+//		for (IDataManagerListener listener : fListeners) {
+//			// System.out.println(listener);
+//			listener.packsChanged(event);
+//		}
+//	}
 
 	public int computeParseReposWorkUnits() {
 
@@ -301,12 +300,9 @@ public class PacksStorage {
 			throw new IOException("File does not exist, ignored.");
 		}
 
-		Document document;
-		document = Utils.parseXml(file);
-
-		ContentParser parser = new ContentParser(document);
-		// ContentParser parser = new ContentParser(document);
-		Node node = parser.parse();
+		Document document = Xml.parseFile(file);
+		ContentParser parser = new ContentParser();
+		Node node = parser.parse(document);
 
 		long endTime = System.currentTimeMillis();
 		long duration = endTime - beginTime;

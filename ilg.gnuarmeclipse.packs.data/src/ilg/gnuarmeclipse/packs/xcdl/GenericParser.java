@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2014 Liviu Ionescu.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Liviu Ionescu - initial implementation.
+ *******************************************************************************/
+
 package ilg.gnuarmeclipse.packs.xcdl;
 
 import java.util.List;
@@ -31,12 +42,10 @@ import org.w3c.dom.Element;
 public class GenericParser {
 
 	protected MessageConsoleStream fOut;
-	protected Document fDocument;
 
-	public GenericParser(Document document) {
+	public GenericParser() {
 
 		fOut = ConsoleStream.getConsoleOut();
-		fDocument = document;
 	}
 
 	// Override this in derived class
@@ -73,11 +82,11 @@ public class GenericParser {
 		}
 	}
 
-	public Node parse() throws DocumentParseException {
+	public Node parse(Document document) throws DocumentParseException {
 
 		Node node = new Node(Type.ROOT);
 
-		Element firstElement = fDocument.getDocumentElement();
+		Element firstElement = document.getDocumentElement();
 		String firstElementName = firstElement.getNodeName();
 		if (!"root".equals(firstElementName)) {
 			throw new DocumentParseException("Missing <root>, <"

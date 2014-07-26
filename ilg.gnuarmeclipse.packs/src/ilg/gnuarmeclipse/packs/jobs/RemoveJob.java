@@ -16,8 +16,8 @@ import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
-import ilg.gnuarmeclipse.packs.data.PacksStorage;
-import ilg.gnuarmeclipse.packs.data.PacksStorageEvent;
+import ilg.gnuarmeclipse.packs.data.DataManager;
+import ilg.gnuarmeclipse.packs.data.DataManagerEvent;
 import ilg.gnuarmeclipse.packs.data.Repos;
 import ilg.gnuarmeclipse.packs.data.Utils;
 
@@ -45,7 +45,8 @@ public class RemoveJob extends Job {
 
 	private Repos fRepos;
 
-	private PacksStorage fStorage;
+	// private PacksStorage fStorage;
+	private DataManager fDataManager;
 
 	public RemoveJob(String name, TreeSelection selection) {
 
@@ -56,7 +57,8 @@ public class RemoveJob extends Job {
 		fSelection = selection;
 
 		fRepos = Repos.getInstance();
-		fStorage = PacksStorage.getInstance();
+		// fStorage = PacksStorage.getInstance();
+		fDataManager = DataManager.getInstance();
 	}
 
 	@Override
@@ -142,8 +144,9 @@ public class RemoveJob extends Job {
 		int count = removedPacksList.size();
 
 		if (count > 0) {
-			fStorage.notifyUpdateView(PacksStorageEvent.Type.UPDATE_VERSIONS,
-					removedPacksList);
+			fDataManager.notifyUpdateView(
+					DataManagerEvent.Type.UPDATE_VERSIONS, removedPacksList);
+			fDataManager.notifyInstallRemove();
 		}
 
 		IStatus status;

@@ -77,6 +77,9 @@ public class Activator extends AbstractActivator {
 
 		try {
 			fLoadReposJob.join();
+
+			System.out.println("LoadRepos joined");
+
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

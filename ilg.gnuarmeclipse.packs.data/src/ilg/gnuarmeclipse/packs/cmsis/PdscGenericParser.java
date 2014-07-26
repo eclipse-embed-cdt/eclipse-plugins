@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2014 Liviu Ionescu.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Liviu Ionescu - initial implementation.
+ *******************************************************************************/
+
 package ilg.gnuarmeclipse.packs.cmsis;
 
 import java.util.List;
@@ -50,9 +61,6 @@ public class PdscGenericParser extends PdscParser {
 
 		String type = el.getNodeName();
 
-		if ("conditions".equals(type)) {
-			System.out.println(" ");
-		}
 		Leaf node = null;
 		List<Element> children = Xml.getChildrenElementsList(el);
 		if (!children.isEmpty()) {
@@ -86,7 +94,7 @@ public class PdscGenericParser extends PdscParser {
 
 			String content = Xml.getElementContent(el);
 			node.putNonEmptyProperty(Property.XML_CONTENT, content);
-			System.out.println();
+			// System.out.println();
 		}
 
 		NamedNodeMap attributes = el.getAttributes();

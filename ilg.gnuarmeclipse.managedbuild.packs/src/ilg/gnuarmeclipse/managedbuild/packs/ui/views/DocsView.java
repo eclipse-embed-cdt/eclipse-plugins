@@ -11,15 +11,13 @@
 
 package ilg.gnuarmeclipse.managedbuild.packs.ui.views;
 
-import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DataManager;
-import ilg.gnuarmeclipse.packs.data.IPacksStorageListener;
-import ilg.gnuarmeclipse.packs.data.PacksStorage;
-import ilg.gnuarmeclipse.packs.data.PacksStorageEvent;
+import ilg.gnuarmeclipse.packs.data.DataManagerEvent;
+import ilg.gnuarmeclipse.packs.data.IDataManagerListener;
 import ilg.gnuarmeclipse.packs.ui.IconUtils;
 
 import java.util.Collection;
@@ -46,10 +44,9 @@ import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.part.ViewPart;
 
-public class DocsView extends ViewPart implements IPacksStorageListener {
+public class DocsView extends ViewPart implements IDataManagerListener {
 
 	/**
 	 * The ID of the view as specified by the extension.
@@ -91,8 +88,8 @@ public class DocsView extends ViewPart implements IPacksStorageListener {
 		@Override
 		public String getToolTipText(Object obj) {
 
-			Leaf node = ((Leaf) obj);
-			String type = node.getType();
+			// Leaf node = ((Leaf) obj);
+			// String type = node.getType();
 
 			return null;
 		}
@@ -115,14 +112,17 @@ public class DocsView extends ViewPart implements IPacksStorageListener {
 
 	private ViewContentProvider fContentProvider;
 
-	private PacksStorage fStorage;
-	private MessageConsoleStream fOut;
+	// private PacksStorage fStorage;
+	private DataManager fDataManager;
+
+	// private MessageConsoleStream fOut;
 
 	public DocsView() {
 
-		fOut = ConsoleStream.getConsoleOut();
+		// fOut = ConsoleStream.getConsoleOut();
 
-		fStorage = PacksStorage.getInstance();
+		// fStorage = PacksStorage.getInstance();
+		fDataManager = DataManager.getInstance();
 		// System.out.println("DevicesView()");
 	}
 
@@ -144,8 +144,8 @@ public class DocsView extends ViewPart implements IPacksStorageListener {
 		// Register this content provider to the packs storage notifications
 		// m_storage.addListener(m_contentProvider);
 
-		// Register this view to the packs storage notifications
-		fStorage.addListener(this);
+		// Register this view to the data manager notifications
+		fDataManager.addListener(this);
 
 		fViewer.setContentProvider(fContentProvider);
 		fViewer.setLabelProvider(new ViewLabelProvider());
@@ -166,7 +166,7 @@ public class DocsView extends ViewPart implements IPacksStorageListener {
 	public void dispose() {
 
 		super.dispose();
-		fStorage.removeListener(this);
+		fDataManager.removeListener(this);
 
 		System.out.println("DevicesView.dispose()");
 	}
@@ -266,13 +266,13 @@ public class DocsView extends ViewPart implements IPacksStorageListener {
 	// ------------------------------------------------------------------------
 
 	@Override
-	public void packsChanged(PacksStorageEvent event) {
+	public void packsChanged(DataManagerEvent event) {
 
 		String type = event.getType();
 		// System.out.println("DevicesView.packsChanged(), type=\"" + type +
 		// "\".");
 
-		if (PacksStorageEvent.Type.NEW_INPUT.equals(type)) {
+		if (DataManagerEvent.Type.NEW_INPUT.equals(type)) {
 
 			Display.getDefault().asyncExec(new Runnable() {
 
@@ -285,20 +285,20 @@ public class DocsView extends ViewPart implements IPacksStorageListener {
 				}
 			});
 
-		} else if (PacksStorageEvent.Type.REFRESH_ALL.equals(type)) {
-
-			Display.getDefault().asyncExec(new Runnable() {
-
-				@Override
-				public void run() {
-
-					// m_out.println("DevicesView REFRESH_ALL");
-
-					fViewer.refresh();
-				}
-			});
-
-		} else if (PacksStorageEvent.Type.UPDATE_VERSIONS.equals(type)) {
+			// } else if (DataManagerEvent.Type.REFRESH_ALL.equals(type)) {
+			//
+			// Display.getDefault().asyncExec(new Runnable() {
+			//
+			// @Override
+			// public void run() {
+			//
+			// // m_out.println("DevicesView REFRESH_ALL");
+			//
+			// fViewer.refresh();
+			// }
+			// });
+			//
+		} else if (DataManagerEvent.Type.UPDATE_VERSIONS.equals(type)) {
 
 			final Map<String, Leaf> updatedMap = new HashMap<String, Leaf>();
 			// updateDevicesTree(updatedMap);

@@ -461,8 +461,8 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 				}
 				// Iterate up
 				node = node.getParent();
-				// Stop when we reached the node above family node
-			} while (!node.isType(Type.NONE));
+				// Stop when we reached the top node
+			} while (node != null);
 		}
 
 		for (String[] line : map.values()) {
@@ -505,8 +505,8 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 
 				// Iterate up
 				node = node.getParent();
-				// Stop when we reached the node above family node
-			} while (!node.isType(Type.NONE));
+				// Stop when we reached the top node
+			} while (node != null);
 		}
 
 		if (value.length() == 0) {

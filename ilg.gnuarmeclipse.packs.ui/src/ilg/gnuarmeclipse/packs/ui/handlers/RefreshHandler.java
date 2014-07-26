@@ -17,6 +17,7 @@ import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
+import ilg.gnuarmeclipse.packs.data.DataManager;
 import ilg.gnuarmeclipse.packs.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.data.Repos;
 import ilg.gnuarmeclipse.packs.data.Utils;
@@ -59,6 +60,7 @@ public class RefreshHandler extends AbstractHandler {
 
 	private Repos fRepos;
 	private PacksStorage fStorage;
+	private DataManager fDataManager;
 
 	private IProgressMonitor fMonitor;
 
@@ -74,6 +76,7 @@ public class RefreshHandler extends AbstractHandler {
 
 		fRepos = Repos.getInstance();
 		fStorage = PacksStorage.getInstance();
+		fDataManager = DataManager.getInstance();
 	}
 
 	/**
@@ -201,7 +204,7 @@ public class RefreshHandler extends AbstractHandler {
 
 		} else {
 
-			fStorage.notifyNewInput();
+			fDataManager.notifyNewInput();
 
 			long endTime = System.currentTimeMillis();
 			long duration = endTime - beginTime;
