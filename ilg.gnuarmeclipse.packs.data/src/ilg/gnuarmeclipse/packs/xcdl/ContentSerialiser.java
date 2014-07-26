@@ -1,6 +1,7 @@
 package ilg.gnuarmeclipse.packs.xcdl;
 
 import ilg.gnuarmeclipse.packs.core.tree.Type;
+import ilg.gnuarmeclipse.packs.data.PacksStorage;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -14,7 +15,11 @@ public class ContentSerialiser extends GenericSerialiser {
 		super();
 
 		fMap = new TreeMap<String, ElementOptions>();
+	}
 
+	@Override
+	public String getSchemaVersion() {
+		return PacksStorage.CONTENT_XML_VERSION;
 	}
 
 	@Override
@@ -33,7 +38,7 @@ public class ContentSerialiser extends GenericSerialiser {
 		boolean doOutputProperties = true;
 		boolean doIgnoreChildren = false;
 		boolean hasNoChildrenElements = false;
-		
+
 		if (Type.REPOSITORY.equals(nodeType)) {
 			nodeElementName = "repository";
 			nodesElementName = "packages";
@@ -85,7 +90,7 @@ public class ContentSerialiser extends GenericSerialiser {
 		} else {
 			return null; // use default
 		}
-		
+
 		ElementOptions el = new ElementOptions();
 		el.fNodeElementName = nodeElementName;
 		el.fNodesElementName = nodesElementName;
@@ -94,9 +99,9 @@ public class ContentSerialiser extends GenericSerialiser {
 		el.fDoOutputProperties = doOutputProperties;
 		el.fHasNoChildrenElements = hasNoChildrenElements;
 		el.doIgnoreChildren = doIgnoreChildren;
-		
+
 		fMap.put(nodeType, el);
-		
+
 		return el;
 	}
 

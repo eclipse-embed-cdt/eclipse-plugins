@@ -14,13 +14,13 @@ package ilg.gnuarmeclipse.packs.xcdl;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
-import ilg.gnuarmeclipse.packs.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.data.Utils;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Map;
+import java.util.Set;
 
 public class GenericSerialiser {
 
@@ -58,15 +58,18 @@ public class GenericSerialiser {
 	}
 
 	// To be overwritten by derived classes
+	public String getSchemaVersion() {
+		return "1.1";
+	}
+
+	// To be overwritten by derived classes
 	public ElementOptions getElementOptions(String type) {
-
-		// ElementOptions res;
-		// res = fMap.get(type);
-		// if (res != null) {
-		// return res;
-		// }
-
 		return null; // use default
+	}
+
+	// To be overwritten by derived classes
+	public Set<String> getPropertyNames() {
+		return null;
 	}
 
 	public void serialise(Node tree, File file) throws IOException {
@@ -93,8 +96,7 @@ public class GenericSerialiser {
 
 			fWriter.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
 			fWriter.println();
-			fWriter.println("<root version=\""
-					+ PacksStorage.CONTENT_XML_VERSION + "\">");
+			fWriter.println("<root version=\"" + getSchemaVersion() + "\">");
 
 			serialiseRecursive(tree, 0);
 
@@ -163,10 +165,24 @@ public class GenericSerialiser {
 						continue;
 					}
 					putIndentation(newDepth);
-					fWriter.println("<property name=\"" + key.toString()
-							+ "\">"
-							+ Utils.xmlEscape(properties.get(key).toString())
-							+ "</property>");
+
+					String propertyName = key.toString();
+					Set<String> propertyNames = getPropertyNames();
+					if (propertyNames != null
+							&& propertyNames.contains(propertyName)) {
+						fWriter.println("<"
+								+ propertyName
+								+ ">"
+								+ Utils.xmlEscape(properties.get(key)
+										.toString()) + "</" + propertyName
+								+ ">");
+					} else {
+						fWriter.println("<property name=\""
+								+ propertyName
+								+ "\">"
+								+ Utils.xmlEscape(properties.get(key)
+										.toString()) + "</property>");
+					}
 				}
 
 				if (eo.fDoOutputProperties) {
