@@ -155,8 +155,8 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 
 	// private Composite m_composite;
 
-	private IConfiguration m_config;
-	private IConfiguration m_lastUpdatedConfig = null;
+	private IConfiguration fConfig;
+	private IConfiguration fLastUpdatedConfig = null;
 
 	// public TabDevice() {
 	//
@@ -182,8 +182,8 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 		//
 		super.createControls(parent);
 
-		m_config = getCfg();
-		System.out.println("Device.createControls() m_config=" + m_config);
+		fConfig = getCfg();
+		System.out.println("Device.createControls() m_config=" + fConfig);
 
 		fDataManager = DataManagerFactoryProxy.getInstance()
 				.createDataManager();
@@ -561,10 +561,10 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 		IConfiguration config = getCfg();
 		System.out.println("Device.performOK() " + config);
 
-		if (m_lastUpdatedConfig.equals(config)) {
+		if (fLastUpdatedConfig.equals(config)) {
 			updateOptions(config);
 		} else {
-			System.out.println("skipped " + m_config);
+			System.out.println("skipped " + fConfig);
 		}
 	}
 
@@ -573,11 +573,11 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 		System.out.println("Device.updateControlsForConfig() "
 				+ config.getName());
 
-		m_config = config;
+		fConfig = config;
 		System.out.println("Device.updateControlsForConfig() m_config="
-				+ m_config);
+				+ fConfig);
 
-		m_lastUpdatedConfig = config;
+		fLastUpdatedConfig = config;
 	}
 
 	private void updateOptions(IConfiguration config) {
@@ -635,10 +635,10 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 
 	private boolean isThisPlugin() {
 
-		m_config = getCfg();
-		System.out.println("Device.isThisPlugin() m_config=" + m_config);
+		fConfig = getCfg();
+		System.out.println("Device.isThisPlugin() m_config=" + fConfig);
 
-		IToolChain toolchain = m_config.getToolChain();
+		IToolChain toolchain = fConfig.getToolChain();
 		String sToolchainId = toolchain.getBaseId();
 		if (sToolchainId.startsWith(IDs.TOOLCHAIN_ID + "."))
 			return true;

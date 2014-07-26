@@ -25,71 +25,71 @@ public class Selector {
 
 	public static final String DEPRECATED_TYPE = "deprecated";
 
-	private String m_type;
-	private String m_value;
+	private String fType;
+	private String fValue;
 
 	// If more are needed, better use a map
-	private String m_vendor;
-	private String m_vendorId;
+	private String fVendor;
+	private String fVendorId;
 
 	public Selector(String type) {
-		m_type = type.trim();
-		m_value = "";
+		fType = type.trim();
+		fValue = "";
 
-		m_vendor = null;
-		m_vendorId = null;
+		fVendor = null;
+		fVendorId = null;
 	}
 
 	public String getType() {
-		return m_type;
+		return fType;
 	}
 
 	public String getValue() {
-		return m_value;
+		return fValue;
 	}
 
 	public void setValue(String value) {
 		if (value != null) {
-			m_value = value.trim();
+			fValue = value.trim();
 		} else {
-			m_value = "";
+			fValue = "";
 		}
 	}
 
 	public boolean hasVendor() {
-		return m_vendor != null;
+		return fVendor != null;
 	}
 
 	public String getVendor() {
-		return m_vendor;
+		return fVendor;
 	}
 
 	public void setVendor(String vendor) {
 		if (vendor != null) {
-			m_vendor = vendor.trim();
+			fVendor = vendor.trim();
 		} else {
-			m_vendor = null;
+			fVendor = null;
 		}
 	}
 
 	public boolean hasVendorId() {
-		return m_vendorId != null;
+		return fVendorId != null;
 	}
 
 	public String getVendorId() {
-		return m_vendorId;
+		return fVendorId;
 	}
 
 	public void setVendorId(String vendorId) {
 		if (vendorId != null) {
-			m_vendorId = vendorId.trim();
+			fVendorId = vendorId.trim();
 		} else {
-			m_vendorId = null;
+			fVendorId = null;
 		}
 	}
 
 	public String toString() {
-		return m_type + ":" + m_value;
+		return fType + ":" + fValue;
 	}
 
 	public boolean equals(Object obj) {
@@ -99,16 +99,16 @@ public class Selector {
 
 		Selector s = (Selector) obj;
 
-		if (!m_type.equals(s.m_type))
+		if (!fType.equals(s.fType))
 			return false;
 
-		if (!m_value.equals(s.m_value))
+		if (!fValue.equals(s.fValue))
 			return false;
 
-		if (m_vendor != null && !m_vendor.equals(m_vendor))
+		if (fVendor != null && !fVendor.equals(fVendor))
 			return false;
 
-		if (m_vendorId != null && !m_vendorId.equals(m_vendorId))
+		if (fVendorId != null && !fVendorId.equals(fVendorId))
 			return false;
 
 		return true;

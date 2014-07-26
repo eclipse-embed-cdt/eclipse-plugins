@@ -17,7 +17,11 @@ Require-Bundle: ilg.gnuarmeclipse.packs.core,
  org.eclipse.core.resources,
  org.eclipse.cdt.ui,
  org.eclipse.core.runtime,
- ilg.gnuarmeclipse.core
+ ilg.gnuarmeclipse.core,
+ org.eclipse.ui,
+ ilg.gnuarmeclipse.packs.data,
+ org.eclipse.ui.console,
+ ilg.gnuarmeclipse.packs.ui
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %bundle.vendor

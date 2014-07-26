@@ -1,78 +1,39 @@
-/*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors:
- *     Liviu Ionescu - initial implementation.
- *******************************************************************************/
-
 package ilg.gnuarmeclipse.packs.xcdl;
 
-import ilg.gnuarmeclipse.packs.core.tree.Leaf;
-import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
-import ilg.gnuarmeclipse.packs.data.PacksStorage;
-import ilg.gnuarmeclipse.packs.data.Repos;
-import ilg.gnuarmeclipse.packs.data.Utils;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.Map;
+import java.util.TreeMap;
 
-public class ContentSerialiser {
+public class ContentSerialiser extends GenericSerialiser {
 
-	private Repos m_repos;
-	PrintWriter writer;
+	Map<String, ElementOptions> fMap;
 
 	public ContentSerialiser() {
 
-		m_repos = Repos.getInstance();
+		super();
+
+		fMap = new TreeMap<String, ElementOptions>();
+
 	}
 
-	public void serialiseToXml(Node tree, String fileName) throws IOException {
+	@Override
+	public ElementOptions getElementOptions(String nodeType) {
 
-		File file = m_repos.getFileObject(fileName);
-
-		file.getParentFile().mkdir();
-
-		// The xml structure is simple, write it as strings
-		if (!file.exists())
-			file.createNewFile();
-		if (file.exists()) {
-			// writer = new PrintWriter(new BufferedWriter(new
-			// FileWriter(file)));
-			writer = new PrintWriter(file, "UTF-8");
-
-			writer.println("<?xml version=\"1.0\" encoding=\"UTF-8\"?>");
-			writer.println();
-			writer.println("<root version=\""
-					+ PacksStorage.CONTENT_XML_VERSION + "\">");
-
-			serialiseRecursive(tree, 0);
-
-			writer.println("</root>");
-			writer.close();
-
-			// System.out.println(SITES_FILE_NAME+" saved");
+		ElementOptions res;
+		res = fMap.get(nodeType);
+		if (res != null) {
+			return res;
 		}
-	}
-
-	private void serialiseRecursive(Leaf node, int depth) {
-
-		putIndentation(depth);
-
-		String nodeType = node.getType();
 
 		String nodeElementName = "";
 		String nodesElementName = "";
 		boolean doOutputNodes = true;
 		boolean doOutputName = true;
 		boolean doOutputProperties = true;
+		boolean doIgnoreChildren = false;
 		boolean hasNoChildrenElements = false;
+		
 		if (Type.REPOSITORY.equals(nodeType)) {
 			nodeElementName = "repository";
 			nodesElementName = "packages";
@@ -94,124 +55,49 @@ public class ContentSerialiser {
 			nodeElementName = "devicefamily";
 			doOutputNodes = false;
 			doOutputProperties = false;
+			doIgnoreChildren = true;
 		} else if (Type.BOARD.equals(nodeType)) {
 			nodeElementName = "board";
 			doOutputNodes = false;
 			doOutputProperties = false;
+			doIgnoreChildren = true;
 		} else if (Type.KEYWORD.equals(nodeType)) {
 			nodeElementName = "keyword";
 			doOutputNodes = false;
 			doOutputProperties = false;
+			doIgnoreChildren = true;
 			hasNoChildrenElements = true;
 		} else if (Type.COMPONENT.equals(nodeType)) {
 			nodeElementName = "component";
 			doOutputNodes = false;
 			doOutputProperties = false;
+			doIgnoreChildren = true;
 		} else if (Type.BUNDLE.equals(nodeType)) {
 			nodeElementName = "bundle";
 			doOutputNodes = false;
 			doOutputProperties = false;
+			doIgnoreChildren = true;
 		} else if (Type.EXAMPLE.equals(nodeType)) {
 			nodeElementName = "example";
 			doOutputNodes = false;
 			doOutputProperties = false;
-		}
-
-		if (nodeElementName.length() > 0) {
-			writer.print("<" + nodeElementName);
+			doIgnoreChildren = true;
 		} else {
-			writer.print("<node type=\"" + nodeType);
+			return null; // use default
 		}
-		if (doOutputName) {
-			writer.print(" name=\"" + node.getName() + "\"");
-		}
-		if (hasNoChildrenElements) {
-			writer.println(" />");
-		} else {
-			writer.println(">");
-
-			String description = node.getDescription();
-			if (description != null && description.length() > 0) {
-				putIndentation(depth + 1);
-				writer.println("<description>"
-						+ Utils.xmlEscape(node.getDescription())
-						+ "</description>");
-			}
-
-			if (node.hasProperties()) {
-
-				if (doOutputProperties) {
-					putIndentation(depth + 1);
-					writer.println("<properties>");
-				}
-
-				int newDepth;
-				if (doOutputProperties) {
-					newDepth = depth + 2;
-				} else {
-					newDepth = depth + 1;
-				}
-
-				Map<String, String> properties = node.getProperties();
-				for (Object key : properties.keySet()) {
-					putIndentation(newDepth);
-					writer.println("<property name=\"" + key.toString() + "\">"
-							+ Utils.xmlEscape(properties.get(key).toString())
-							+ "</property>");
-				}
-
-				if (doOutputProperties) {
-					putIndentation(depth + 1);
-					writer.println("</properties>");
-				}
-			}
-
-			if (node.hasChildren()) {
-
-				if (doOutputNodes) {
-					putIndentation(depth + 1);
-					if (nodesElementName.length() > 0) {
-						writer.println("<" + nodesElementName + ">");
-					} else {
-						writer.println("<nodes>");
-					}
-				}
-
-				int newDepth;
-				if (doOutputNodes) {
-					newDepth = depth + 2;
-				} else {
-					newDepth = depth + 1;
-				}
-
-				for (Leaf child : ((Node) node).getChildren()) {
-					serialiseRecursive(child, newDepth);
-				}
-
-				if (doOutputNodes) {
-					putIndentation(depth + 1);
-					if (nodesElementName.length() > 0) {
-						writer.println("</" + nodesElementName + ">");
-					} else {
-						writer.println("</nodes>");
-					}
-				}
-			}
-
-			putIndentation(depth);
-			if (nodeElementName.length() > 0) {
-				writer.println("</" + nodeElementName + ">");
-			} else {
-				writer.println("</node>");
-			}
-
-		}
+		
+		ElementOptions el = new ElementOptions();
+		el.fNodeElementName = nodeElementName;
+		el.fNodesElementName = nodesElementName;
+		el.fDoOutputNodes = doOutputNodes;
+		el.fDoOutputName = doOutputName;
+		el.fDoOutputProperties = doOutputProperties;
+		el.fHasNoChildrenElements = hasNoChildrenElements;
+		el.doIgnoreChildren = doIgnoreChildren;
+		
+		fMap.put(nodeType, el);
+		
+		return el;
 	}
 
-	private void putIndentation(int depth) {
-		depth++;
-		for (int i = 0; i < depth; ++i) {
-			writer.print("  ");
-		}
-	}
 }

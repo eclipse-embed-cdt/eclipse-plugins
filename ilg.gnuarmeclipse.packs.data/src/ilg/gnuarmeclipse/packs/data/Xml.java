@@ -39,12 +39,12 @@ public class Xml {
 		return null;
 	}
 
-	public static List<Element> getChildElementsList(Element el) {
+	public static List<Element> getChildrenElementsList(Element el) {
 
-		return getChildElementsList(el, null);
+		return getChildrenElementsList(el, null);
 	}
 
-	public static List<Element> getChildElementsList(Element el, String name) {
+	public static List<Element> getChildrenElementsList(Element el, String name) {
 
 		NodeList nodeList = el.getChildNodes();
 

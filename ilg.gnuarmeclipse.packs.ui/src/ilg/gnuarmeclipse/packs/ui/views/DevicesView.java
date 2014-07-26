@@ -128,21 +128,21 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 
 	// ------------------------------------------------------------------------
 
-	private TreeViewer m_viewer;
-	private Action m_removeFilters;
-	private Action m_expandAll;
-	private Action m_collapseAll;
+	private TreeViewer fViewer;
+	private Action fRemoveFilters;
+	private Action fExpandAll;
+	private Action fCollapseAll;
 
-	private ViewContentProvider m_contentProvider;
+	private ViewContentProvider fContentProvider;
 
-	private PacksStorage m_storage;
-	private MessageConsoleStream m_out;
+	private PacksStorage fStorage;
+	private MessageConsoleStream fOut;
 
 	public DevicesView() {
 
-		m_out = ConsoleStream.getConsoleOut();
+		fOut = ConsoleStream.getConsoleOut();
 
-		m_storage = PacksStorage.getInstance();
+		fStorage = PacksStorage.getInstance();
 		// System.out.println("DevicesView()");
 	}
 
@@ -154,24 +154,24 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 
 		// System.out.println("DevicesView.createPartControl()");
 
-		m_viewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION
+		fViewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION
 				| SWT.H_SCROLL | SWT.V_SCROLL);
 
-		ColumnViewerToolTipSupport.enableFor(m_viewer);
+		ColumnViewerToolTipSupport.enableFor(fViewer);
 
-		m_contentProvider = new ViewContentProvider();
+		fContentProvider = new ViewContentProvider();
 
 		// Register this content provider to the packs storage notifications
 		// m_storage.addListener(m_contentProvider);
 
 		// Register this view to the packs storage notifications
-		m_storage.addListener(this);
+		fStorage.addListener(this);
 
-		m_viewer.setContentProvider(m_contentProvider);
-		m_viewer.setLabelProvider(new ViewLabelProvider());
-		m_viewer.setSorter(new NameSorter());
+		fViewer.setContentProvider(fContentProvider);
+		fViewer.setLabelProvider(new ViewLabelProvider());
+		fViewer.setSorter(new NameSorter());
 
-		m_viewer.setInput(getDevicesTree());
+		fViewer.setInput(getDevicesTree());
 
 		addProviders();
 		addListners();
@@ -185,7 +185,7 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 	public void dispose() {
 
 		super.dispose();
-		m_storage.removeListener(this);
+		fStorage.removeListener(this);
 
 		System.out.println("DevicesView.dispose()");
 	}
@@ -193,7 +193,7 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 	private void addProviders() {
 
 		// Register this viewer as the selection provider
-		getSite().setSelectionProvider(m_viewer);
+		getSite().setSelectionProvider(fViewer);
 	}
 
 	private void addListners() {
@@ -209,9 +209,9 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 				DevicesView.this.fillContextMenu(manager);
 			}
 		});
-		Menu menu = menuMgr.createContextMenu(m_viewer.getControl());
-		m_viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuMgr, m_viewer);
+		Menu menu = menuMgr.createContextMenu(fViewer.getControl());
+		fViewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuMgr, fViewer);
 	}
 
 	private void contributeToActionBars() {
@@ -221,65 +221,64 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 	}
 
 	private void fillLocalPullDown(IMenuManager manager) {
-		manager.add(m_expandAll);
-		manager.add(m_collapseAll);
+		manager.add(fExpandAll);
+		manager.add(fCollapseAll);
 		manager.add(new Separator());
-		manager.add(m_removeFilters);
+		manager.add(fRemoveFilters);
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
-		manager.add(m_removeFilters);
+		manager.add(fRemoveFilters);
 
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 
 	private void fillLocalToolBar(IToolBarManager manager) {
-		manager.add(m_expandAll);
-		manager.add(m_collapseAll);
+		manager.add(fExpandAll);
+		manager.add(fCollapseAll);
 		manager.add(new Separator());
-		manager.add(m_removeFilters);
+		manager.add(fRemoveFilters);
 	}
 
 	private void makeActions() {
 
-		m_removeFilters = new Action() {
+		fRemoveFilters = new Action() {
 
 			public void run() {
 				// Empty selection
-				m_viewer.setSelection(null);
+				fViewer.setSelection(null);
 			}
 		};
 
-		m_removeFilters.setText("Remove filters");
-		m_removeFilters
-				.setToolTipText("Remove all filters based on selections");
-		m_removeFilters.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+		fRemoveFilters.setText("Remove filters");
+		fRemoveFilters.setToolTipText("Remove all filters based on selections");
+		fRemoveFilters.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/removeall.png"));
 
 		// -----
-		m_expandAll = new Action() {
+		fExpandAll = new Action() {
 
 			public void run() {
-				m_viewer.expandAll();
+				fViewer.expandAll();
 			}
 		};
 
-		m_expandAll.setText("Expand all");
-		m_expandAll.setToolTipText("Expand all children nodes");
-		m_expandAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+		fExpandAll.setText("Expand all");
+		fExpandAll.setToolTipText("Expand all children nodes");
+		fExpandAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/expandall.png"));
 
-		m_collapseAll = new Action() {
+		fCollapseAll = new Action() {
 
 			public void run() {
-				m_viewer.collapseAll();
+				fViewer.collapseAll();
 			}
 		};
 
-		m_collapseAll.setText("Collapse all");
-		m_collapseAll.setToolTipText("Collapse all children nodes");
-		m_collapseAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+		fCollapseAll.setText("Collapse all");
+		fCollapseAll.setToolTipText("Collapse all children nodes");
+		fCollapseAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/collapseall.png"));
 	}
 
@@ -291,21 +290,21 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 	 * Passing the focus request to the viewer's control.
 	 */
 	public void setFocus() {
-		m_viewer.getControl().setFocus();
+		fViewer.getControl().setFocus();
 	}
 
 	public void refresh(Object obj) {
 
 		if (obj instanceof Collection<?>) {
 			for (Object node : (Collection<?>) obj) {
-				m_viewer.refresh(node);
+				fViewer.refresh(node);
 			}
 		} else {
-			m_viewer.refresh(obj);
+			fViewer.refresh(obj);
 		}
 
 		// Setting the selection will force the outline update
-		m_viewer.setSelection(m_viewer.getSelection());
+		fViewer.setSelection(fViewer.getSelection());
 
 		// System.out.println("DevicesView.refresh() " + obj);
 	}
@@ -316,10 +315,10 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 			@SuppressWarnings("unchecked")
 			List<Node> list = (List<Node>) obj;
 			for (Object node : list) {
-				m_viewer.update(node, null);
+				fViewer.update(node, null);
 			}
 		} else {
-			m_viewer.update(obj, null);
+			fViewer.update(obj, null);
 		}
 
 		// System.out.println("DevicesView.updated()");
@@ -335,8 +334,8 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 	public void packsChanged(PacksStorageEvent event) {
 
 		String type = event.getType();
-		// System.out.println("DevicesView.packsChanged(), type=\"" + type +
-		// "\".");
+		// System.out
+		// .println("DevicesView.packsChanged(), type=\"" + type + "\".");
 
 		if (PacksStorageEvent.Type.NEW_INPUT.equals(type)) {
 
@@ -347,7 +346,7 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 
 					// m_out.println("DevicesView NEW_INPUT");
 
-					m_viewer.setInput(getDevicesTree());
+					fViewer.setInput(getDevicesTree());
 				}
 			});
 
@@ -360,7 +359,7 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 
 					// m_out.println("DevicesView REFRESH_ALL");
 
-					m_viewer.refresh();
+					fViewer.refresh();
 				}
 			});
 
@@ -386,22 +385,32 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 	// Return a two level hierarchy of vendor and device nodes.
 	private Node getDevicesTree() {
 
-		Node packsTree = m_storage.getPacksTree();
+		Node packsTree = fStorage.getPacksTree();
+
 		Node devicesRoot = new Node(Type.ROOT);
 		devicesRoot.setName("Devices");
 
 		if (packsTree.hasChildren()) {
 
-			m_out.println();
-			m_out.println(Utils.getCurrentDateTime());
-			m_out.println("Collecting devices...");
+			fOut.println();
+			fOut.println(Utils.getCurrentDateTime());
+			fOut.println("Collecting devices...");
 
-			int count = getDevicesRecursive(packsTree, devicesRoot, false);
+			int count = 0;
+			try {
+				count = getDevicesRecursive(packsTree, devicesRoot, false);
+			} catch (Exception e) {
+				Activator.log(e);
+			}
+			if (devicesRoot.hasChildren()) {
+				fOut.println("Found " + count + " device(s), from "
+						+ devicesRoot.getChildren().size() + " vendor(s).");
+			} else {
+				fOut.println("Found none.");
+			}
+		}
 
-			m_out.println("Found " + count + " device(s), from "
-					+ devicesRoot.getChildren().size() + " vendor(s).");
-
-		} else {
+		if (!devicesRoot.hasChildren()) {
 
 			Node empty = Node.addNewChild(devicesRoot, Type.NONE);
 			empty.setName("(none)");
@@ -482,8 +491,8 @@ public class DevicesView extends ViewPart implements IPacksStorageListener {
 
 	private void updateDevicesTree(Map<String, Leaf> updatedList) {
 
-		Node modelTree = m_storage.getPacksTree();
-		Node viewTree = (Node) m_viewer.getInput();
+		Node modelTree = fStorage.getPacksTree();
+		Node viewTree = (Node) fViewer.getInput();
 
 		if (modelTree.hasChildren() && viewTree != null) {
 

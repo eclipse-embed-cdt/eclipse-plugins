@@ -31,26 +31,26 @@ import org.eclipse.swt.widgets.Text;
 
 public class NewRepoDialog extends Dialog {
 
-	private boolean m_isEdit;
-	private String[] m_data;
+	private boolean fIsEdit;
+	private String[] fData;
 
 	// Directly refer the types defined in Repos.
-	private String[] m_typeSelections = Repos.TYPES;
+	private String[] fTypeSelections = Repos.TYPES;
 
-	private Combo m_typeCombo;
-	private Text m_nameText;
-	private Text m_urlText;
+	private Combo fTypeCombo;
+	private Text fNameText;
+	private Text fUrlText;
 
-	private String m_returnType;
-	private String m_returnName;
-	private String m_returnUrl;
+	private String fReturnType;
+	private String fReturnName;
+	private String fReturnUrl;
 
 	protected NewRepoDialog(Shell parentShell, String[] data) {
 
 		super(parentShell);
 
-		m_isEdit = (data != null);
-		m_data = data;
+		fIsEdit = (data != null);
+		fData = data;
 	}
 
 	@Override
@@ -64,7 +64,7 @@ public class NewRepoDialog extends Dialog {
 		super.configureShell(shell);
 
 		String title;
-		if (m_isEdit) {
+		if (fIsEdit) {
 			title = Messages.NewSiteDialog_label_title_edit;
 		} else {
 			title = Messages.NewSiteDialog_label_title_new;
@@ -75,7 +75,7 @@ public class NewRepoDialog extends Dialog {
 	}
 
 	protected String[] getData() {
-		return new String[] { m_returnType, m_returnName, m_returnUrl };
+		return new String[] { fReturnType, fReturnName, fReturnUrl };
 	}
 
 	@Override
@@ -106,24 +106,24 @@ public class NewRepoDialog extends Dialog {
 			layoutData = new GridData();
 			typeLabel.setLayoutData(layoutData);
 
-			m_typeCombo = new Combo(comp, SWT.READ_ONLY);
-			m_typeCombo.setItems(m_typeSelections);
+			fTypeCombo = new Combo(comp, SWT.READ_ONLY);
+			fTypeCombo.setItems(fTypeSelections);
 
 			int ix = 0;
-			if (m_isEdit) {
-				for (int i = 0; i < m_typeSelections.length; ++i) {
-					if (m_data[0].equals(m_typeSelections[i])) {
+			if (fIsEdit) {
+				for (int i = 0; i < fTypeSelections.length; ++i) {
+					if (fData[0].equals(fTypeSelections[i])) {
 						ix = i;
 						break;
 					}
 				}
 			}
-			m_typeCombo.select(ix);
+			fTypeCombo.select(ix);
 
-			m_returnType = m_typeSelections[ix];
+			fReturnType = fTypeSelections[ix];
 
 			layoutData = new GridData();
-			m_typeCombo.setLayoutData(layoutData);
+			fTypeCombo.setLayoutData(layoutData);
 		}
 
 		{
@@ -133,19 +133,19 @@ public class NewRepoDialog extends Dialog {
 			layoutData = new GridData();
 			nameLabel.setLayoutData(layoutData);
 
-			m_nameText = new Text(comp, SWT.SINGLE | SWT.BORDER);
-			if (m_isEdit) {
-				m_nameText.setText(m_data[1]);
+			fNameText = new Text(comp, SWT.SINGLE | SWT.BORDER);
+			if (fIsEdit) {
+				fNameText.setText(fData[1]);
 			} else {
-				m_nameText.setText("");
+				fNameText.setText("");
 			}
 
-			m_returnName = m_nameText.getText();
+			fReturnName = fNameText.getText();
 
 			layoutData = new GridData();
 			layoutData.horizontalAlignment = SWT.FILL;
 			layoutData.grabExcessHorizontalSpace = true;
-			m_nameText.setLayoutData(layoutData);
+			fNameText.setLayoutData(layoutData);
 		}
 
 		{
@@ -155,39 +155,39 @@ public class NewRepoDialog extends Dialog {
 			layoutData = new GridData();
 			urlLabel.setLayoutData(layoutData);
 
-			m_urlText = new Text(comp, SWT.SINGLE | SWT.BORDER);
-			if (m_isEdit) {
-				m_urlText.setText(m_data[2]);
+			fUrlText = new Text(comp, SWT.SINGLE | SWT.BORDER);
+			if (fIsEdit) {
+				fUrlText.setText(fData[2]);
 			} else {
-				m_urlText.setText("");
+				fUrlText.setText("");
 			}
 
-			m_returnUrl = m_urlText.getText();
+			fReturnUrl = fUrlText.getText();
 
 			layoutData = new GridData();
 			layoutData.horizontalAlignment = SWT.FILL;
 			layoutData.grabExcessHorizontalSpace = true;
-			m_urlText.setLayoutData(layoutData);
+			fUrlText.setLayoutData(layoutData);
 		}
 
-		m_typeCombo.addSelectionListener(new SelectionAdapter() {
+		fTypeCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				m_returnType = m_typeCombo.getText();
+				fReturnType = fTypeCombo.getText();
 			}
 		});
 
-		m_nameText.addModifyListener(new ModifyListener() {
+		fNameText.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				m_returnName = m_nameText.getText();
+				fReturnName = fNameText.getText();
 			}
 		});
 
-		m_urlText.addModifyListener(new ModifyListener() {
+		fUrlText.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				m_returnUrl = m_urlText.getText();
+				fReturnUrl = fUrlText.getText();
 			}
 		});
 

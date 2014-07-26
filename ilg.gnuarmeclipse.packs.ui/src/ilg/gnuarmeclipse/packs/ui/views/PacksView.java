@@ -224,47 +224,47 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 	// ------------------------------------------------------------------------
 
-	private Composite m_composite;
-	private TreeViewer m_viewer;
-	private ISelectionListener m_pageSelectionListener;
-	private ViewContentProvider m_contentProvider;
+	private Composite fComposite;
+	private TreeViewer fViewer;
+	private ISelectionListener fPageSelectionListener;
+	private ViewContentProvider fContentProvider;
 
-	private Action m_refreshAction;
-	private Action m_installAction;
-	private Action m_removeAction;
-	private Action m_copyExampleAction;
-	private Action m_expandAll;
-	private Action m_collapseAll;
+	private Action fRefreshAction;
+	private Action fInstallAction;
+	private Action fRemoveAction;
+	private Action fCopyExampleAction;
+	private Action fExpandAll;
+	private Action fCollapseAll;
 
-	private PacksFilter m_packsFilter;
-	private ViewerFilter[] m_packsFilters;
-	private boolean m_isInstallEnabled;
-	private boolean m_isRemoveEnabled;
-	private boolean m_isCopyExampleEnabled;
+	private PacksFilter fPacksFilter;
+	private ViewerFilter[] fPacksFilters;
+	private boolean fIsInstallEnabled;
+	private boolean fIsRemoveEnabled;
+	private boolean fIsCopyExampleEnabled;
 
-	private PacksStorage m_storage;
-	private MessageConsoleStream m_out;
+	private PacksStorage fStorage;
+	private MessageConsoleStream fOut;
 
 	public PacksView() {
 
-		m_out = ConsoleStream.getConsoleOut();
+		fOut = ConsoleStream.getConsoleOut();
 
-		m_storage = PacksStorage.getInstance();
+		fStorage = PacksStorage.getInstance();
 		// System.out.println("PacksView()");
 	}
 
 	public TreeViewer getTreeViewer() {
-		return m_viewer;
+		return fViewer;
 	}
 
 	public void createPartControl(Composite parent) {
 
 		// System.out.println("PacksView.createPartControl()");
 
-		m_composite = parent;
+		fComposite = parent;
 
-		m_packsFilter = new PacksFilter();
-		m_packsFilters = new PacksFilter[] { m_packsFilter };
+		fPacksFilter = new PacksFilter();
+		fPacksFilters = new PacksFilter[] { fPacksFilter };
 
 		Tree tree = new Tree(parent, SWT.BORDER | SWT.MULTI
 				| SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
@@ -289,19 +289,19 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 		// descriptionColumn.setWidth(450);
 		layout.setColumnData(descriptionColumn, new ColumnPixelData(450));
 
-		m_viewer = new TreeViewer(tree);
+		fViewer = new TreeViewer(tree);
 
-		m_contentProvider = new ViewContentProvider();
+		fContentProvider = new ViewContentProvider();
 
 		// Register this view to the packs storage notifications
-		m_storage.addListener(this);
+		fStorage.addListener(this);
 
-		m_viewer.setContentProvider(m_contentProvider);
-		m_viewer.setLabelProvider(new TableLabelProvider());
-		m_viewer.setSorter(new NameSorter());
+		fViewer.setContentProvider(fContentProvider);
+		fViewer.setLabelProvider(new TableLabelProvider());
+		fViewer.setSorter(new NameSorter());
 
-		m_viewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);
-		m_viewer.setInput(getPacksTree());
+		fViewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);
+		fViewer.setInput(getPacksTree());
 
 		addProviders();
 		addListners();
@@ -317,9 +317,9 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 		super.dispose();
 
-		if (m_pageSelectionListener != null) {
+		if (fPageSelectionListener != null) {
 			getSite().getPage().removePostSelectionListener(
-					m_pageSelectionListener);
+					fPageSelectionListener);
 		}
 
 		System.out.println("PacksView.dispose()");
@@ -328,12 +328,12 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 	private void addProviders() {
 
 		// Register this viewer as a selection provider
-		getSite().setSelectionProvider(m_viewer);
+		getSite().setSelectionProvider(fViewer);
 	}
 
 	private void addListners() {
 
-		m_viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+		fViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
@@ -350,7 +350,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 	private void hookPageSelection() {
 
-		m_pageSelectionListener = new ISelectionListener() {
+		fPageSelectionListener = new ISelectionListener() {
 
 			@Override
 			public void selectionChanged(IWorkbenchPart part,
@@ -363,7 +363,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 				}
 			}
 		};
-		getSite().getPage().addPostSelectionListener(m_pageSelectionListener);
+		getSite().getPage().addPostSelectionListener(fPageSelectionListener);
 	}
 
 	// Called when selection in the _part_View change
@@ -373,8 +373,8 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 		if (selection.isEmpty()) {
 
 			// System.out.println("Packs: resetFilters()");
-			m_viewer.expandToLevel(AUTOEXPAND_LEVEL);
-			m_viewer.resetFilters();
+			fViewer.expandToLevel(AUTOEXPAND_LEVEL);
+			fViewer.resetFilters();
 
 			return;
 		}
@@ -392,13 +392,13 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 			selectorType = Selector.KEYWORD_TYPE;
 		}
 
-		m_packsFilter.setSelection(selectorType, structuredSelection);
+		fPacksFilter.setSelection(selectorType, structuredSelection);
 
-		m_viewer.expandToLevel(AUTOEXPAND_LEVEL);
-		m_viewer.setFilters(m_packsFilters);
+		fViewer.expandToLevel(AUTOEXPAND_LEVEL);
+		fViewer.setFilters(fPacksFilters);
 
-		m_viewer.expandToLevel(AUTOEXPAND_LEVEL);
-		m_viewer.setSelection(null);
+		fViewer.expandToLevel(AUTOEXPAND_LEVEL);
+		fViewer.setSelection(null);
 	}
 
 	public void updateButtonsEnableStatus(IStructuredSelection selection) {
@@ -412,9 +412,9 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 			return;
 		}
 
-		m_isInstallEnabled = false;
-		m_isRemoveEnabled = false;
-		m_isCopyExampleEnabled = false;
+		fIsInstallEnabled = false;
+		fIsRemoveEnabled = false;
+		fIsCopyExampleEnabled = false;
 
 		for (Object obj : selection.toArray()) {
 			Leaf node = (Leaf) obj;
@@ -429,7 +429,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 			// version not installed
 			if (Type.PACKAGE.equals(type)) {
 				if (!isInstalled) {
-					m_isInstallEnabled = true;
+					fIsInstallEnabled = true;
 				}
 			}
 			if (Type.VERSION.equals(type)) {
@@ -441,18 +441,18 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 					;
 				}
 				if (!isInstalled && size > 0) {
-					m_isInstallEnabled = true;
+					fIsInstallEnabled = true;
 				}
 				if (isInstalled) {
-					m_isRemoveEnabled = true;
+					fIsRemoveEnabled = true;
 				}
 			}
 			if ((Type.EXAMPLE.equals(type))) {
-				m_isCopyExampleEnabled = true;
+				fIsCopyExampleEnabled = true;
 			}
 		}
-		m_installAction.setEnabled(m_isInstallEnabled);
-		m_removeAction.setEnabled(m_isRemoveEnabled);
+		fInstallAction.setEnabled(fIsInstallEnabled);
+		fRemoveAction.setEnabled(fIsRemoveEnabled);
 	}
 
 	private void hookContextMenu() {
@@ -464,9 +464,9 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 				PacksView.this.fillContextMenu(manager);
 			}
 		});
-		Menu menu = menuMgr.createContextMenu(m_viewer.getControl());
-		m_viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuMgr, m_viewer);
+		Menu menu = menuMgr.createContextMenu(fViewer.getControl());
+		fViewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuMgr, fViewer);
 	}
 
 	private void contributeToActionBars() {
@@ -479,13 +479,13 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 	// Top down arrow
 	private void fillLocalPullDown(IMenuManager manager) {
 
-		manager.add(m_expandAll);
-		manager.add(m_collapseAll);
+		manager.add(fExpandAll);
+		manager.add(fCollapseAll);
 		manager.add(new Separator());
-		manager.add(m_installAction);
-		manager.add(m_removeAction);
+		manager.add(fInstallAction);
+		manager.add(fRemoveAction);
 		manager.add(new Separator());
-		manager.add(m_refreshAction);
+		manager.add(fRefreshAction);
 
 		// manager.add(action1);
 		// manager.add(new Separator());
@@ -495,16 +495,16 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 	// Right click actions
 	private void fillContextMenu(IMenuManager manager) {
 
-		if (m_isInstallEnabled) {
-			manager.add(m_installAction);
+		if (fIsInstallEnabled) {
+			manager.add(fInstallAction);
 		}
 
-		if (m_isRemoveEnabled) {
-			manager.add(m_removeAction);
+		if (fIsRemoveEnabled) {
+			manager.add(fRemoveAction);
 		}
 
-		if (m_isCopyExampleEnabled) {
-			manager.add(m_copyExampleAction);
+		if (fIsCopyExampleEnabled) {
+			manager.add(fCopyExampleAction);
 		}
 
 		// manager.add(new Separator());
@@ -516,18 +516,18 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 	// Top tool bar buttons
 	private void fillLocalToolBar(IToolBarManager manager) {
 
-		manager.add(m_expandAll);
-		manager.add(m_collapseAll);
+		manager.add(fExpandAll);
+		manager.add(fCollapseAll);
 		manager.add(new Separator());
-		manager.add(m_installAction);
-		manager.add(m_removeAction);
+		manager.add(fInstallAction);
+		manager.add(fRemoveAction);
 		manager.add(new Separator());
-		manager.add(m_refreshAction);
+		manager.add(fRefreshAction);
 	}
 
 	private void makeActions() {
 
-		m_refreshAction = new Action() {
+		fRefreshAction = new Action() {
 
 			public void run() {
 
@@ -555,20 +555,20 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 				}
 			}
 		};
-		m_refreshAction.setText("Refresh");
-		m_refreshAction
+		fRefreshAction.setText("Refresh");
+		fRefreshAction
 				.setToolTipText("Read packages descriptions from all repositories");
-		m_refreshAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+		fRefreshAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/refresh_nav.gif"));
 
 		// -----
-		m_installAction = new Action() {
+		fInstallAction = new Action() {
 
 			public void run() {
 
 				// System.out.println("m_installAction.run();");
 
-				TreeSelection selection = (TreeSelection) m_viewer
+				TreeSelection selection = (TreeSelection) fViewer
 						.getSelection();
 				System.out.println(selection);
 
@@ -576,21 +576,21 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 				job.schedule();
 			}
 		};
-		m_installAction.setText("Install");
-		m_installAction
+		fInstallAction.setText("Install");
+		fInstallAction
 				.setToolTipText("Install a local copy of the selected package(s)");
-		m_installAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+		fInstallAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/package_mode.png"));
-		m_installAction.setEnabled(false);
+		fInstallAction.setEnabled(false);
 
 		// -----
-		m_removeAction = new Action() {
+		fRemoveAction = new Action() {
 
 			public void run() {
 
 				// System.out.println("m_removeAction.run();");
 
-				TreeSelection selection = (TreeSelection) m_viewer
+				TreeSelection selection = (TreeSelection) fViewer
 						.getSelection();
 				// System.out.println(selection);
 
@@ -598,24 +598,24 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 				job.schedule();
 			}
 		};
-		m_removeAction.setText("Remove");
-		m_removeAction
+		fRemoveAction.setText("Remove");
+		fRemoveAction
 				.setToolTipText("Remove the local copy of the selected package version(s)");
-		m_removeAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+		fRemoveAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/removeall.png"));
-		m_removeAction.setEnabled(false);
+		fRemoveAction.setEnabled(false);
 
 		// -----
-		m_copyExampleAction = new Action() {
+		fCopyExampleAction = new Action() {
 
 			public void run() {
 
-				TreeSelection selection = (TreeSelection) m_viewer
+				TreeSelection selection = (TreeSelection) fViewer
 						.getSelection();
 				if (!selection.isEmpty()) {
 
 					CopyExampleDialog dlg = new CopyExampleDialog(
-							m_composite.getShell(), selection);
+							fComposite.getShell(), selection);
 					if (dlg.open() == Dialog.OK) {
 						String out[] = dlg.getData();
 
@@ -628,31 +628,31 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 				}
 			}
 		};
-		m_copyExampleAction.setText("Copy to folder");
+		fCopyExampleAction.setText("Copy to folder");
 
 		// -----
-		m_expandAll = new Action() {
+		fExpandAll = new Action() {
 
 			public void run() {
-				m_viewer.expandAll();
+				fViewer.expandAll();
 			}
 		};
 
-		m_expandAll.setText("Expand all");
-		m_expandAll.setToolTipText("Expand all children nodes");
-		m_expandAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+		fExpandAll.setText("Expand all");
+		fExpandAll.setToolTipText("Expand all children nodes");
+		fExpandAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/expandall.png"));
 
-		m_collapseAll = new Action() {
+		fCollapseAll = new Action() {
 
 			public void run() {
-				m_viewer.collapseAll();
+				fViewer.collapseAll();
 			}
 		};
 
-		m_collapseAll.setText("Collapse all");
-		m_collapseAll.setToolTipText("Collapse all children nodes");
-		m_collapseAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+		fCollapseAll.setText("Collapse all");
+		fCollapseAll.setToolTipText("Collapse all children nodes");
+		fCollapseAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/collapseall.png"));
 	}
 
@@ -664,25 +664,25 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 	 * Passing the focus request to the viewer's control.
 	 */
 	public void setFocus() {
-		m_viewer.getControl().setFocus();
+		fViewer.getControl().setFocus();
 	}
 
 	public void refresh() {
-		m_viewer.refresh();
+		fViewer.refresh();
 	}
 
 	public void refresh(Object obj) {
 
 		if (obj instanceof Collection<?>) {
 			for (Object node : (Collection<?>) obj) {
-				m_viewer.refresh(node);
+				fViewer.refresh(node);
 			}
 		} else {
-			m_viewer.refresh(obj);
+			fViewer.refresh(obj);
 		}
 
 		// Setting the selection will force the outline update
-		m_viewer.setSelection(m_viewer.getSelection());
+		fViewer.setSelection(fViewer.getSelection());
 
 		// Return focus to this view
 		setFocus();
@@ -694,10 +694,10 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 		if (obj instanceof Collection<?>) {
 			for (Object node : (Collection<?>) obj) {
-				m_viewer.update(node, null);
+				fViewer.update(node, null);
 			}
 		} else {
-			m_viewer.update(obj, null);
+			fViewer.update(obj, null);
 		}
 		System.out.println("PacksView.updated() " + obj);
 	}
@@ -736,7 +736,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 		if (isNonEmpty) {
 
-			MessageBox dlg = new MessageBox(m_composite.getShell(), SWT.OK
+			MessageBox dlg = new MessageBox(fComposite.getShell(), SWT.OK
 					| SWT.CANCEL);
 
 			String msg = "One of the destination folders is not empty.";
@@ -773,9 +773,8 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 					// m_out.println("PacksView NEW_INPUT");
 
-					((TreeViewer) m_viewer)
-							.setAutoExpandLevel(AUTOEXPAND_LEVEL);
-					m_viewer.setInput(getPacksTree());
+					((TreeViewer) fViewer).setAutoExpandLevel(AUTOEXPAND_LEVEL);
+					fViewer.setInput(getPacksTree());
 				}
 			});
 
@@ -789,7 +788,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 					// m_out.println("PacksView REFRESH_ALL");
 
-					m_viewer.refresh();
+					fViewer.refresh();
 				}
 			});
 
@@ -807,11 +806,11 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 				String versionName = versionNode
 						.getProperty(Property.VERSION_NAME);
 
-				Node modelNode = m_storage.getPackVersion(vendorName, packName,
+				Node modelNode = fStorage.getPackVersion(vendorName, packName,
 						versionName);
 				updateVersioNode(versionNode, modelNode);
 
-				String key = m_storage.makeMapKey(vendorName, packName);
+				String key = fStorage.makeMapKey(vendorName, packName);
 
 				Node parent = versionNode.getParent();
 				if (!parentsMap.containsKey(key)) {
@@ -843,9 +842,9 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 					// Refresh pack node, this will update all version
 					// and examples below them
 					// refresh(parentsMap.values());
-					m_viewer.refresh();
+					fViewer.refresh();
 
-					updateButtonsEnableStatus((IStructuredSelection) m_viewer
+					updateButtonsEnableStatus((IStructuredSelection) fViewer
 							.getSelection());
 				}
 			});
@@ -858,21 +857,31 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 	// Return a hierarchy of vendor/packages/versions/examples nodes.
 	private Node getPacksTree() {
 
-		Node packsTree = m_storage.getPacksTree();
+		Node packsTree = fStorage.getPacksTree();
 		Node packsRoot = new Node(Type.ROOT);
 		packsRoot.setName("Packs");
 
 		if (packsTree.hasChildren()) {
 
-			m_out.println();
-			m_out.println(Utils.getCurrentDateTime());
-			m_out.println("Collecting packs...");
+			fOut.println();
+			fOut.println(Utils.getCurrentDateTime());
+			fOut.println("Collecting packs...");
 
-			int count = getPacksRecursive(packsTree, null, packsRoot);
+			int count = 0;
+			try {
+				count = getPacksRecursive(packsTree, null, packsRoot);
+			} catch (Exception e) {
+				Activator.log(e);
+			}
+			if (packsRoot.hasChildren()) {
+				fOut.println("Found " + count + " package version(s), from "
+						+ packsRoot.getChildren().size() + " vendor(s).");
+			} else {
+				fOut.println("Found none.");
+			}
+		}
 
-			m_out.println("Found " + count + " package version(s), from "
-					+ packsRoot.getChildren().size() + " vendor(s).");
-		} else {
+		if (!packsRoot.hasChildren()) {
 
 			Node empty = Node.addNewChild(packsRoot, Type.NONE);
 			empty.setName("(no packages)");
@@ -921,24 +930,25 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 
 		PackNode packNode = PackNode.addUniqueChild(vendorNode, Type.PACKAGE,
 				packName);
-		// Copy properties like INSTALLED.
-		packNode.copyPropertiesRef(parentPackNode);
-		packNode.putProperty(Property.VENDOR_NAME, vendorName);
-
-		// Copy selectors.
-		packNode.copySelectorsRef(parentPackNode);
 
 		if (parentPackNode != null) {
 			packNode.setDescription(parentPackNode.getDescription());
 		}
+
+		// Copy properties like INSTALLED.
+		packNode.copyProperties(parentPackNode);
+		packNode.putProperty(Property.VENDOR_NAME, vendorName);
+
+		// Copy selectors.
+		packNode.copySelectorsRef(parentPackNode);
 
 		PackNode versionNode = PackNode.addUniqueChild(packNode, Type.VERSION,
 				versionName);
 
 		versionNode.setDescription(description);
 
-		// Pass a reference to original model properties to the view node.
-		versionNode.copyPropertiesRef(modelNode);
+		// Copy properties to the view node.
+		versionNode.copyProperties(modelNode);
 
 		updateVersioNode(versionNode, modelNode);
 
@@ -971,7 +981,7 @@ public class PacksView extends ViewPart implements IPacksStorageListener {
 						Node node = PackNode.addNewChild(versionNode, child);
 
 						// Pass "example.name" to view
-						node.copyPropertiesRef(child);
+						node.copyProperties(child);
 					}
 				}
 			}

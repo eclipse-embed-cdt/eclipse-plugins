@@ -28,12 +28,12 @@ import org.eclipse.jface.viewers.ViewerFilter;
 
 public class PacksFilter extends ViewerFilter {
 
-	private IStructuredSelection m_selection;
-	private String m_selectorType;
+	private IStructuredSelection fSelection;
+	private String fSelectorType;
 
 	public void setSelection(String selectorType, IStructuredSelection selection) {
-		m_selection = selection;
-		m_selectorType = selectorType;
+		fSelection = selection;
+		fSelectorType = selectorType;
 	}
 
 	@Override
@@ -41,7 +41,7 @@ public class PacksFilter extends ViewerFilter {
 
 		// 'element' is the node to be tested by the filter.
 
-		if (m_selection == null || m_selection.isEmpty())
+		if (fSelection == null || fSelection.isEmpty())
 			return true; // Nothing selected, all nodes visible
 
 		// System.out.println(parentElement + " " + element);
@@ -78,7 +78,7 @@ public class PacksFilter extends ViewerFilter {
 		List<Selector> selectors = ((PackNode) node).getSelectors();
 		List<Selector> filteredSelectors = new LinkedList<Selector>();
 		for (Selector selector : selectors) {
-			if (m_selectorType.equals(selector.getType())) {
+			if (fSelectorType.equals(selector.getType())) {
 				filteredSelectors.add(selector);
 			}
 		}
@@ -94,7 +94,7 @@ public class PacksFilter extends ViewerFilter {
 		for (Selector condition : filteredSelectors) {
 
 			// Enumerate all selections.
-			for (Object selectionNode : m_selection.toList()) {
+			for (Object selectionNode : fSelection.toList()) {
 
 				// Must be leaf, since keywords are leaf.
 				if (selectionNode instanceof Leaf) {

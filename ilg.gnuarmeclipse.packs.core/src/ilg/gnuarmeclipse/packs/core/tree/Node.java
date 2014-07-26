@@ -76,40 +76,42 @@ public class Node extends Leaf {
 			"Csub", "Cvariant", "Cversion", "Capiversion", "Tcompiler",
 			"condition" };
 
-	protected List<Leaf> m_children;
+	protected List<Leaf> fChildren;
 
 	public Node(String type) {
 
 		super(type);
 
-		m_children = null;
+		fChildren = null;
 	}
 
 	public Node(Leaf node) {
 
 		super(node);
 
-		m_children = null;
+		fChildren = null;
 	}
 
+	@Override
 	public boolean hasChildren() {
-		return (m_children != null && !m_children.isEmpty());
+		return (fChildren != null && !fChildren.isEmpty());
 	}
 
 	public List<Leaf> getChildren() {
-		return m_children;
+		return fChildren;
 	}
 
 	public void addChild(Leaf node) {
-		if (m_children == null) {
-			m_children = new LinkedList<Leaf>();
+
+		if (fChildren == null) {
+			fChildren = new LinkedList<Leaf>();
 		}
-		m_children.add(node);
+		fChildren.add(node);
 
 		// Protect against attempts to link the node to multiple parents
-		assert (m_parent == null);
+		assert (fParent == null);
 
-		node.m_parent = this;
+		node.fParent = this;
 	}
 
 	public Leaf getChild(String type) {
@@ -121,17 +123,17 @@ public class Node extends Leaf {
 		if (type == null) {
 			return null;
 		}
-		if (m_children == null) {
+		if (fChildren == null) {
 			return null;
 		}
 
-		for (Leaf node : m_children) {
-			if (node.m_type.equals(type)) {
+		for (Leaf node : fChildren) {
+			if (node.fType.equals(type)) {
 				if (name == null) {
 					// Node of given type, any name, found
 					return node;
 				} else {
-					if (node.m_name.equals(name)) {
+					if (node.getName().equals(name)) {
 						return node;
 					}
 				}
@@ -141,14 +143,20 @@ public class Node extends Leaf {
 		return null;
 	}
 
+	public void removeChild(Leaf node) {
+		if (fChildren != null) {
+			fChildren.remove(node);
+		}
+	}
+
 	public void removeChildren() {
-		m_children = null;
+		fChildren = null;
 	}
 
 	// ------
 
 	public void copyChildren(Node node) {
-		m_children = node.m_children;
+		fChildren = node.fChildren;
 	}
 
 	// ------------------------------------------------------------------------

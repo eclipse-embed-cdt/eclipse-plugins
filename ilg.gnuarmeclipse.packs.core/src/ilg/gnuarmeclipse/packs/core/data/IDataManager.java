@@ -25,6 +25,16 @@ public interface IDataManager {
 	public Node getInstalledDevicesForBuild();
 
 	/**
+	 * Get the documentation associated with the device and/or board in use.
+	 * 
+	 * @param deviceName
+	 * @param boardName
+	 * @return
+	 */
+	public Node getDocsTree(String deviceVendorId, String deviceName,
+			String boardVendorName, String boardName);
+
+	/**
 	 * Get the list of files referring to CMSIS Core (ARM headers and vendor
 	 * headers and source files), for the given device and compiler.
 	 * 
@@ -42,14 +52,5 @@ public interface IDataManager {
 	 * @return (to be defined)
 	 */
 	public Node getRegisterDetailsForDebug(String deviceName);
-
-	/**
-	 * Get the documentation associated with the device and/or board in use.
-	 * 
-	 * @param deviceName
-	 * @param boardName
-	 * @return
-	 */
-	public Node getBooks(String deviceName, String boardName);
 
 }

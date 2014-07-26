@@ -27,30 +27,30 @@ public class PacksStorageEvent extends EventObject {
 
 	}
 
-	private String m_type;
-	private Object m_payload;
+	private String fType;
+	private Object fPayload;
 
 	public PacksStorageEvent(PacksStorage source, String type) {
 
 		super(source);
 
-		m_type = type;
-		m_payload = null;
+		fType = type;
+		fPayload = null;
 	}
 
 	public PacksStorageEvent(PacksStorage source, String type, Object payload) {
 
 		super(source);
 
-		m_type = type;
-		m_payload = payload;
+		fType = type;
+		fPayload = payload;
 	}
 
 	public String getType() {
-		return m_type;
+		return fType;
 	}
 
 	public Object getPayload() {
-		return m_payload;
+		return fPayload;
 	}
 }

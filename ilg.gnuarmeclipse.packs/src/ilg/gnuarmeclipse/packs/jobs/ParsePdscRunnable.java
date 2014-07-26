@@ -30,16 +30,16 @@ import org.eclipse.ui.console.MessageConsoleStream;
 
 public class ParsePdscRunnable implements IRunnableWithProgress {
 
-	private static boolean m_running = false;
+	private static boolean sfRunning = false;
 
-	private MessageConsoleStream m_out;
-	private PackNode m_versionNode;
+	private MessageConsoleStream sfOut;
+	private PackNode sfVersionNode;
 
 	public ParsePdscRunnable(String name, PackNode versionNode) {
 
-		m_out = ConsoleStream.getConsoleOut();
+		sfOut = ConsoleStream.getConsoleOut();
 
-		m_versionNode = versionNode;
+		sfVersionNode = versionNode;
 	}
 
 	@Override
@@ -52,23 +52,23 @@ public class ParsePdscRunnable implements IRunnableWithProgress {
 			return;
 		}
 
-		if (m_running) {
+		if (sfRunning) {
 			return;
 		}
-		m_running = true;
+		sfRunning = true;
 		// m_monitor = monitor;
 
 		long beginTime = System.currentTimeMillis();
 
-		m_out.println();
-		m_out.println(Utils.getCurrentDateTime());
+		sfOut.println();
+		sfOut.println(Utils.getCurrentDateTime());
 
-		String destFolder = m_versionNode.getProperty(Property.DEST_FOLDER);
-		String pdscName = m_versionNode.getProperty(Property.PDSC_NAME);
+		String destFolder = sfVersionNode.getProperty(Property.DEST_FOLDER);
+		String pdscName = sfVersionNode.getProperty(Property.PDSC_NAME);
 
 		IPath path = folderPath.append(destFolder).append(pdscName);
 
-		m_out.println("Parsing \"" + path.toString() + "\"...");
+		sfOut.println("Parsing \"" + path.toString() + "\"...");
 
 		Node outlineNode = null;
 		try {
@@ -79,10 +79,10 @@ public class ParsePdscRunnable implements IRunnableWithProgress {
 			// Required to resolve path for actions
 			outlineNode.putProperty(Property.DEST_FOLDER, destFolder);
 
-			m_versionNode.setOutline(outlineNode);
-			PackNode packNode = (PackNode) m_versionNode.getParent();
+			sfVersionNode.setOutline(outlineNode);
+			PackNode packNode = (PackNode) sfVersionNode.getParent();
 			if (packNode.getChildren().get(0).getName()
-					.equals(m_versionNode.getName())) {
+					.equals(sfVersionNode.getName())) {
 				// If most recent child, make the outline available for the
 				// package node too.
 				packNode.setOutline(outlineNode);
@@ -90,13 +90,13 @@ public class ParsePdscRunnable implements IRunnableWithProgress {
 
 			// Parse examples again, with full outlines
 			// (will reuse existing example nodes)
-			pdsc.parseExamples(m_versionNode);
+			pdsc.parseExamples(sfVersionNode);
 
 		} catch (FileNotFoundException e) {
-			m_out.println("Failed: " + e.toString());
+			sfOut.println("Failed: " + e.toString());
 		} catch (Exception e) {
 			Activator.log(e);
-			m_out.println("Failed: " + e.toString());
+			sfOut.println("Failed: " + e.toString());
 		}
 
 		long endTime = System.currentTimeMillis();
@@ -104,9 +104,9 @@ public class ParsePdscRunnable implements IRunnableWithProgress {
 		if (duration == 0) {
 			duration = 1;
 		}
-		m_out.println("Parse completed in " + duration + "ms.");
+		sfOut.println("Parse completed in " + duration + "ms.");
 
-		m_running = false;
+		sfRunning = false;
 		return;
 	}
 

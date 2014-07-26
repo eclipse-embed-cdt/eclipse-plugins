@@ -18,55 +18,70 @@ import org.eclipse.core.runtime.IAdaptable;
 
 public class Leaf implements Comparable<Leaf>, IAdaptable {
 
-	protected String m_type;
-	protected String m_name;
-	protected String m_description;
-	protected Node m_parent;
-	protected Map<String, String> m_properties;
+	protected String fType;
+	protected Node fParent;
+	protected Map<String, String> fProperties;
 
 	public Leaf(String type) {
-		m_type = type;
-		m_name = "";
-		m_description = "";
-		m_parent = null;
-		m_properties = null;
+		fType = type;
+		fParent = null;
+		fProperties = null;
 	}
 
 	// Does not copy properties!
 	public Leaf(Leaf node) {
-		m_type = node.m_type;
-		m_name = node.m_name;
-		m_description = node.m_description;
-		m_parent = null;
-		m_properties = null;
+
+		fType = node.fType;
+		fProperties = null;
+		fParent = null;
+
+		String name = node.getProperty(Property.NAME);
+		if (name != null) {
+			setName(name.trim());
+		}
+
+		String description = node.getProperty(Property.DESCRIPTION);
+		if (description != null) {
+			setDescription(description.trim());
+		}
 	}
 
 	public String getType() {
-		return m_type;
+		return fType;
 	}
 
 	public boolean isType(String type) {
-		return m_type.equals(type);
+		return fType.equals(type);
 	}
 
 	public void setType(String type) {
-		this.m_type = type;
+		this.fType = type;
 	}
 
 	public String getName() {
-		return m_name;
+
+		String name = getProperty(Property.NAME);
+		if (name != null) {
+			return name.trim();
+		}
+		return "";
 	}
 
 	public void setName(String name) {
-		this.m_name = name;
+		putProperty(Property.NAME, name);
 	}
 
 	public String getDescription() {
-		return m_description;
+
+		String description = getProperty(Property.DESCRIPTION);
+		if (description != null) {
+			return description.trim();
+		}
+		return "";
 	}
 
 	public void setDescription(String description) {
-		this.m_description = description;
+		putProperty(Property.DESCRIPTION, description);
 	}
 
 	public boolean hasChildren() {
@@ -74,25 +89,43 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 	}
 
 	public Node getParent() {
-		return m_parent;
+		return fParent;
 	}
 
 	public boolean hasProperties() {
-		return (m_properties != null && !m_properties.isEmpty());
+		return (fProperties != null && !fProperties.isEmpty());
+	}
+
+	public boolean hasRelevantProperties() {
+
+		if (!hasProperties()) {
+			return false;
+		}
+		for (String key : fProperties.keySet()) {
+			if (Property.NAME.equals(key)) {
+				continue; // skip name
+			}
+			if (Property.DESCRIPTION.equals(key)) {
+				continue; // skip description
+			}
+			return true;
+		}
+
+		return false;
 	}
 
 	public Map<String, String> getProperties() {
-		return m_properties;
+		return fProperties;
 	}
 
 	public Object putProperty(String name, String value) {
 
-		if (m_properties == null) {
+		if (fProperties == null) {
 			// Linked to preserve order
-			m_properties = new LinkedHashMap<String, String>();
+			fProperties = new LinkedHashMap<String, String>();
 		}
 
-		return m_properties.put(name, value);
+		return fProperties.put(name, value);
 	}
 
 	public Object putNonEmptyProperty(String name, String value) {
@@ -107,15 +140,15 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 	// May return null!
 	public String getProperty(String name) {
 
-		if (m_properties == null) {
+		if (fProperties == null) {
 			return null;
 		}
 
-		if (!m_properties.containsKey(name)) {
+		if (!fProperties.containsKey(name)) {
 			return null;
 		}
 
-		return m_properties.get(name);
+		return fProperties.get(name);
 	}
 
 	public String getProperty(String name, String defaultValue) {
@@ -128,13 +161,31 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 	}
 
 	public Map<String, String> copyPropertiesRef(Leaf node) {
-		m_properties = node.m_properties;
-		return m_properties;
+		fProperties = node.fProperties;
+		return fProperties;
+	}
+
+	public void copyProperties(Leaf node) {
+
+		if (node.hasProperties()) {
+			for (String key : node.fProperties.keySet()) {
+				if (Property.NAME.equals(key)) {
+					if (node.getProperty(Property.NAME) != null) {
+						continue; // leave name unchanged
+					}
+				} else if (Property.DESCRIPTION.equals(key)) {
+					if (node.getProperty(Property.DESCRIPTION) != null) {
+						continue; // leave description unchanged
+					}
+				}
+				putProperty(key, node.getProperty(key));
+			}
+		}
 	}
 
 	public boolean isBooleanProperty(String name) {
 
-		// Return true if the given propery is true.
+		// Return true if the given property is true.
 		return (String.valueOf(true).equals(getProperty(name, "")));
 	}
 
@@ -158,7 +209,7 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 
 	@Override
 	public int compareTo(Leaf o) {
-		return m_name.compareTo(o.m_name);
+		return getName().compareTo(o.getName());
 	}
 
 	// ------------------------------------------------------------------------

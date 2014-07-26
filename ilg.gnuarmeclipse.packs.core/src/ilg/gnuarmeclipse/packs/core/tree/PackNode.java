@@ -16,23 +16,23 @@ import java.util.List;
 
 public class PackNode extends Node {
 
-	protected List<Selector> m_selectors;
-	protected Node m_outline;
+	protected List<Selector> fSelectors;
+	protected Node fOutline;
 
 	public PackNode(String type) {
 
 		super(type);
 
-		m_selectors = null;
-		m_outline = null;
+		fSelectors = null;
+		fOutline = null;
 	}
 
 	public PackNode(Leaf node) {
 
 		super(node);
 
-		m_selectors = null;
-		m_outline = null;
+		fSelectors = null;
+		fOutline = null;
 	}
 
 	public static PackNode addUniqueChild(Node parent, String type, String name) {
@@ -67,17 +67,17 @@ public class PackNode extends Node {
 	}
 
 	public boolean hasSelectors() {
-		return (m_selectors != null && !m_selectors.isEmpty());
+		return (fSelectors != null && !fSelectors.isEmpty());
 	}
 
 	public List<Selector> getSelectors() {
-		return m_selectors;
+		return fSelectors;
 	}
 
 	public List<Selector> getSelectorsByType(String type) {
 		List<Selector> list = new LinkedList<Selector>();
-		if (m_selectors != null) {
-			for (Selector condition : m_selectors) {
+		if (fSelectors != null) {
+			for (Selector condition : fSelectors) {
 				if (condition.getType().equals(type)) {
 					list.add(condition);
 				}
@@ -91,36 +91,36 @@ public class PackNode extends Node {
 
 		assert (selector != null);
 
-		if (m_selectors == null) {
-			m_selectors = new LinkedList<Selector>();
+		if (fSelectors == null) {
+			fSelectors = new LinkedList<Selector>();
 		} else {
 
 			// Check if not already in
-			for (Selector sel : m_selectors) {
+			for (Selector sel : fSelectors) {
 				if (sel.equals(selector)) {
 					return;
 				}
 			}
 		}
-		m_selectors.add(selector);
+		fSelectors.add(selector);
 	}
 
 	public List<Selector> copySelectorsRef(PackNode node) {
 
-		m_selectors = node.m_selectors;
-		return m_selectors;
+		fSelectors = node.fSelectors;
+		return fSelectors;
 	}
 
 	public boolean hasOutline() {
-		return (m_outline != null);
+		return (fOutline != null);
 	}
 
 	public Node getOutline() {
-		return m_outline;
+		return fOutline;
 	}
 
 	public void setOutline(Node node) {
-		m_outline = node;
+		fOutline = node;
 	}
 
 }

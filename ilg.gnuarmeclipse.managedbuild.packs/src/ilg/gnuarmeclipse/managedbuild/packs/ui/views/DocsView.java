@@ -9,30 +9,31 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs.ui.views;
+package ilg.gnuarmeclipse.managedbuild.packs.ui.views;
 
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
+import ilg.gnuarmeclipse.packs.data.DataManager;
 import ilg.gnuarmeclipse.packs.data.IPacksStorageListener;
 import ilg.gnuarmeclipse.packs.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.data.PacksStorageEvent;
-import ilg.gnuarmeclipse.packs.data.Utils;
-import ilg.gnuarmeclipse.packs.ui.Activator;
+import ilg.gnuarmeclipse.packs.ui.IconUtils;
 
-import java.util.HashSet;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
 
-import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.CellLabelProvider;
+import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.viewers.ViewerSorter;
@@ -42,16 +43,20 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.part.ViewPart;
 
-public class KeywordsView extends ViewPart implements IPacksStorageListener {
+public class DocsView extends ViewPart implements IPacksStorageListener {
 
 	/**
 	 * The ID of the view as specified by the extension.
 	 */
-	public static final String ID = "ilg.gnuarmeclipse.packs.ui.views.KeywordsView";
+	public static final String ID = "ilg.gnuarmeclipse.managedbuild.packs.ui.views.DocsView";
+
+	public static final int AUTOEXPAND_LEVEL = 2;
 
 	// ------------------------------------------------------------------------
 
@@ -69,11 +74,25 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 
 		public Image getImage(Object obj) {
 
-			return null;
+			Leaf node = ((Leaf) obj);
+			String type = node.getType();
+
+			if (Type.FOLDER.equals(type)) {
+				String imageKey = ISharedImages.IMG_OBJ_FOLDER;
+				return PlatformUI.getWorkbench().getSharedImages()
+						.getImage(imageKey);
+			} else if (Type.BOOK.equals(type)) {
+				return IconUtils.getBookIcon(node);
+			} else {
+				return null;
+			}
 		}
 
 		@Override
 		public String getToolTipText(Object obj) {
+
+			Leaf node = ((Leaf) obj);
+			String type = node.getType();
 
 			return null;
 		}
@@ -81,31 +100,30 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 		@Override
 		public void update(ViewerCell cell) {
 			cell.setText(getText(cell.getElement()));
+			cell.setImage(getImage(cell.getElement()));
 		}
 	}
 
 	// ------------------------------------------------------------------------
 
 	class NameSorter extends ViewerSorter {
-		// Default ascending sorter
 	}
 
 	// ------------------------------------------------------------------------
 
 	private TreeViewer fViewer;
-	private Action fRemoveFilters;
 
 	private ViewContentProvider fContentProvider;
 
 	private PacksStorage fStorage;
 	private MessageConsoleStream fOut;
 
-	public KeywordsView() {
+	public DocsView() {
 
 		fOut = ConsoleStream.getConsoleOut();
 
 		fStorage = PacksStorage.getInstance();
-		// System.out.println("KeywordsView()");
+		// System.out.println("DevicesView()");
 	}
 
 	/**
@@ -114,21 +132,27 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 	 */
 	public void createPartControl(Composite parent) {
 
-		// System.out.println("KeywordsView.createPartControl()");
+		// System.out.println("DevicesView.createPartControl()");
 
 		fViewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION
 				| SWT.H_SCROLL | SWT.V_SCROLL);
 
+		ColumnViewerToolTipSupport.enableFor(fViewer);
+
 		fContentProvider = new ViewContentProvider();
 
 		// Register this content provider to the packs storage notifications
+		// m_storage.addListener(m_contentProvider);
+
+		// Register this view to the packs storage notifications
 		fStorage.addListener(this);
 
 		fViewer.setContentProvider(fContentProvider);
 		fViewer.setLabelProvider(new ViewLabelProvider());
 		fViewer.setSorter(new NameSorter());
 
-		fViewer.setInput(getKeywordsTree());
+		fViewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);
+		fViewer.setInput(getDocsTree());
 
 		addProviders();
 		addListners();
@@ -144,12 +168,12 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 		super.dispose();
 		fStorage.removeListener(this);
 
-		System.out.println("KeywordsView.dispose()");
+		System.out.println("DevicesView.dispose()");
 	}
 
 	private void addProviders() {
 
-		// Register this viewer as a selection provider
+		// Register this viewer as the selection provider
 		getSite().setSelectionProvider(fViewer);
 	}
 
@@ -163,7 +187,7 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 		menuMgr.setRemoveAllWhenShown(true);
 		menuMgr.addMenuListener(new IMenuListener() {
 			public void menuAboutToShow(IMenuManager manager) {
-				KeywordsView.this.fillContextMenu(manager);
+				DocsView.this.fillContextMenu(manager);
 			}
 		});
 		Menu menu = menuMgr.createContextMenu(fViewer.getControl());
@@ -178,34 +202,18 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 	}
 
 	private void fillLocalPullDown(IMenuManager manager) {
-		manager.add(fRemoveFilters);
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
-		manager.add(fRemoveFilters);
 
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 
 	private void fillLocalToolBar(IToolBarManager manager) {
-		manager.add(fRemoveFilters);
 	}
 
 	private void makeActions() {
-
-		fRemoveFilters = new Action() {
-
-			public void run() {
-				// Empty selection
-				fViewer.setSelection(null);// new TreeSelection());
-			}
-		};
-
-		fRemoveFilters.setText("Remove filters");
-		fRemoveFilters.setToolTipText("Remove all filters based on selections");
-		fRemoveFilters.setImageDescriptor(Activator.imageDescriptorFromPlugin(
-				Activator.PLUGIN_ID, "icons/removeall.png"));
 
 	}
 
@@ -220,6 +228,22 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 		fViewer.getControl().setFocus();
 	}
 
+	public void refresh(Object obj) {
+
+		if (obj instanceof Collection<?>) {
+			for (Object node : (Collection<?>) obj) {
+				fViewer.refresh(node);
+			}
+		} else {
+			fViewer.refresh(obj);
+		}
+
+		// Setting the selection will force the outline update
+		fViewer.setSelection(fViewer.getSelection());
+
+		// System.out.println("DevicesView.refresh() " + obj);
+	}
+
 	public void update(Object obj) {
 
 		if (obj instanceof List<?>) {
@@ -231,11 +255,12 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 		} else {
 			fViewer.update(obj, null);
 		}
-		System.out.println("KeywordsView.updated()");
+
+		// System.out.println("DevicesView.updated()");
 	}
 
 	public String toString() {
-		return "KeywordsView";
+		return "DocsView";
 	}
 
 	// ------------------------------------------------------------------------
@@ -244,8 +269,8 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 	public void packsChanged(PacksStorageEvent event) {
 
 		String type = event.getType();
-		// System.out.println("KeywordsView.packsChanged(), type=\"" + type
-		// + "\".");
+		// System.out.println("DevicesView.packsChanged(), type=\"" + type +
+		// "\".");
 
 		if (PacksStorageEvent.Type.NEW_INPUT.equals(type)) {
 
@@ -254,9 +279,9 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 				@Override
 				public void run() {
 
-					// m_out.println("KeywordsView NEW_INPUT");
+					// m_out.println("DevicesView NEW_INPUT");
 
-					fViewer.setInput(getKeywordsTree());
+					fViewer.setInput(getDocsTree());
 				}
 			});
 
@@ -267,7 +292,7 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 				@Override
 				public void run() {
 
-					// m_out.println("KeywordsView REFRESH_ALL");
+					// m_out.println("DevicesView REFRESH_ALL");
 
 					fViewer.refresh();
 				}
@@ -275,92 +300,36 @@ public class KeywordsView extends ViewPart implements IPacksStorageListener {
 
 		} else if (PacksStorageEvent.Type.UPDATE_VERSIONS.equals(type)) {
 
-			// Nothing to do
+			final Map<String, Leaf> updatedMap = new HashMap<String, Leaf>();
+			// updateDevicesTree(updatedMap);
 
+			Display.getDefault().asyncExec(new Runnable() {
+
+				@Override
+				public void run() {
+
+					refresh(updatedMap.values());
+				}
+			});
 		}
 	}
 
 	// ------------------------------------------------------------------------
 
 	// Get view data from storage.
-	// Return a one level hierarchy of keyword nodes.
-	private Node getKeywordsTree() {
+	// Return a two level hierarchy of vendor and device nodes.
+	private Node getDocsTree() {
 
-		Node packsTree = fStorage.getPacksTree();
-		Node keywordsRoot = new Node(Type.ROOT);
+		// TODO: get these from current project
+		String deviceVendorId = "13";
+		String deviceName = "STM32F407VG";
+		String boardVendorName = "STMicroelectronics";
+		String boardName = "STM32F4-Discovery";
 
-		if (packsTree.hasChildren()) {
-
-			fOut.println();
-			fOut.println(Utils.getCurrentDateTime());
-			fOut.println("Collecting keywords...");
-
-			Set<String> set = new HashSet<String>();
-
-			try {
-
-				// Collect keywords
-				getKeywordsRecursive(packsTree, set);
-
-				// Add keyword nodes to the hierarchy
-				for (String keywordName : set) {
-					Leaf keywordNode = Leaf.addNewChild(keywordsRoot,
-							Type.KEYWORD);
-					keywordNode.setName(keywordName);
-				}
-
-			} catch (Exception e) {
-				Activator.log(e);
-			}
-
-			if (set.size() > 0) {
-				fOut.println("Found " + set.size() + " keyword(s).");
-			} else {
-				fOut.println("Found none.");
-			}
-
-		}
-
-		if (!keywordsRoot.hasChildren()) {
-
-			Node empty = Node.addNewChild(keywordsRoot, Type.NONE);
-			empty.setName("(none)");
-		}
-
-		return keywordsRoot;
-	}
-
-	// Identify outline nodes and collect keywords from inside
-	private void getKeywordsRecursive(Leaf node, Set<String> set) {
-
-		String type = node.getType();
-		if (Type.OUTLINE.equals(type)) {
-
-			if (node.hasChildren()) {
-				for (Leaf child : ((Node) node).getChildren()) {
-					String childType = child.getType();
-					if (Type.KEYWORD.equals(childType)) {
-
-						// Collect unique keywords
-						set.add(child.getName());
-					}
-				}
-			}
-
-		} else if (Type.EXTERNAL.equals(type)) {
-
-			; // no keywords inside externals, avoid recursion
-
-		} else if (node instanceof Node && node.hasChildren()) {
-
-			for (Leaf child : ((Node) node).getChildren()) {
-
-				// Recurse down
-				getKeywordsRecursive(child, set);
-			}
-		}
+		Node devicesRoot = DataManager.getInstance().getDocsTree(
+				deviceVendorId, deviceName, boardVendorName, boardName);
+		return devicesRoot;
 	}
 
 	// ------------------------------------------------------------------------
-
 }

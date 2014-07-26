@@ -20,7 +20,7 @@ import org.eclipse.jface.viewers.Viewer;
 public abstract class NodeViewContentProvider implements
 		IStructuredContentProvider, ITreeContentProvider {
 
-	protected Viewer m_viewer;
+	protected Viewer fViewer;
 
 	@Override
 	public void dispose() {
@@ -29,7 +29,7 @@ public abstract class NodeViewContentProvider implements
 	@Override
 	public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
 
-		m_viewer = viewer;
+		fViewer = viewer;
 	}
 
 	// @Override

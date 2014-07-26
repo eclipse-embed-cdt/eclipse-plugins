@@ -34,51 +34,51 @@ import org.eclipse.ui.console.MessageConsoleStream;
 
 public class CopyExampleJob extends Job {
 
-	private static boolean ms_running = false;
+	private static boolean sfRunning = false;
 
-	private String m_param[];
-	private MessageConsoleStream m_out;
-	private TreeSelection m_selection;
-	private IPath m_destFolderPath;
+	private String fParam[];
+	private MessageConsoleStream fOut;
+	private TreeSelection fSelection;
+	private IPath fDestFolderPath;
 
-	private Repos m_repos;
-	private IProgressMonitor m_monitor;
+	private Repos fRepos;
+	private IProgressMonitor fMonitor;
 
-	private int m_sizeOfPrefixToStrip;
+	private int fSizeOfPrefixToStrip;
 
 	public CopyExampleJob(String name, TreeSelection selection, String[] param) {
 
 		super(name);
 
-		m_out = ConsoleStream.getConsoleOut();
+		fOut = ConsoleStream.getConsoleOut();
 
-		m_selection = selection;
-		m_param = param;
+		fSelection = selection;
+		fParam = param;
 
-		m_sizeOfPrefixToStrip = 0;
+		fSizeOfPrefixToStrip = 0;
 
-		m_repos = Repos.getInstance();
-		m_destFolderPath = new Path(m_param[0]);
+		fRepos = Repos.getInstance();
+		fDestFolderPath = new Path(fParam[0]);
 	}
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 
-		if (ms_running) {
+		if (sfRunning) {
 			return Status.CANCEL_STATUS;
 		}
 
-		ms_running = true;
-		m_monitor = monitor;
+		sfRunning = true;
+		fMonitor = monitor;
 
 		long beginTime = System.currentTimeMillis();
 
-		m_out.println();
-		m_out.println(Utils.getCurrentDateTime());
+		fOut.println();
+		fOut.println(Utils.getCurrentDateTime());
 
 		int exampleCount = 0;
 
-		for (Object o : m_selection.toList()) {
+		for (Object o : fSelection.toList()) {
 
 			if (monitor.isCanceled()) {
 				break;
@@ -95,32 +95,32 @@ public class CopyExampleJob extends Job {
 			String exampleRelativeFolder = outlineExampleNode
 					.getProperty(Node.FOLDER_PROPERTY);
 
-			m_out.println("Copying example folder \""
+			fOut.println("Copying example folder \""
 					+ new Path(packRelativeFolder)
 							.append(exampleRelativeFolder) + "\"...");
 
-			File destFolder = m_destFolderPath.append(exampleRelativeFolder)
+			File destFolder = fDestFolderPath.append(exampleRelativeFolder)
 					.toFile();
 
 			if (!destFolder.exists()) {
 				if (!destFolder.mkdirs()) {
-					m_out.println("Cannot create destination folder \""
+					fOut.println("Cannot create destination folder \""
 							+ destFolder.toString() + "\".");
 					return Status.CANCEL_STATUS;
 				}
 			}
 			if (!destFolder.isDirectory()) {
-				m_out.println("Destination \"" + destFolder.toString()
+				fOut.println("Destination \"" + destFolder.toString()
 						+ "\" is not a folder.");
 				return Status.CANCEL_STATUS;
 			}
 
 			if (destFolder.listFiles().length > 0) {
-				m_out.println("Destination \"" + destFolder.toString()
+				fOut.println("Destination \"" + destFolder.toString()
 						+ "\" is not an empty folder.");
-				m_out.println("Deleting previous content...");
+				fOut.println("Deleting previous content...");
 				int count = Utils.deleteFolderRecursive(destFolder);
-				m_out.println(count + " files deleted.");
+				fOut.println(count + " files deleted.");
 			}
 
 			// Compute source folder
@@ -128,11 +128,11 @@ public class CopyExampleJob extends Job {
 			IPath srcFolderPath;
 			try {
 
-				srcFolderPath = m_repos.getFolderPath();
+				srcFolderPath = fRepos.getFolderPath();
 				srcFolderPath = srcFolderPath.append(packRelativeFolder);
-				m_sizeOfPrefixToStrip = srcFolderPath.toString().length();
+				fSizeOfPrefixToStrip = srcFolderPath.toString().length();
 				if (!srcFolderPath.hasTrailingSeparator()) {
-					m_sizeOfPrefixToStrip++;
+					fSizeOfPrefixToStrip++;
 				}
 				srcFolderPath = srcFolderPath.append(exampleRelativeFolder);
 
@@ -143,19 +143,19 @@ public class CopyExampleJob extends Job {
 				int count = 0;
 				count = copyFolderRecursive(srcFolderPath.toFile());
 
-				m_out.print("Example \"" + exampleNode.getName() + "\", ");
-				m_out.print(Utils.convertSizeToString(totalWork) + " in ");
+				fOut.print("Example \"" + exampleNode.getName() + "\", ");
+				fOut.print(Utils.convertSizeToString(totalWork) + " in ");
 				if (count <= 1) {
-					m_out.print("1 file");
+					fOut.print("1 file");
 				} else {
-					m_out.print(count + " files");
+					fOut.print(count + " files");
 				}
-				m_out.println(" copied.");
+				fOut.println(" copied.");
 
 				exampleCount++;
 
 			} catch (IOException e) {
-				m_out.print("Error: " + e.toString());
+				fOut.print("Error: " + e.toString());
 			}
 		}
 
@@ -163,7 +163,7 @@ public class CopyExampleJob extends Job {
 
 		if (monitor.isCanceled()) {
 
-			m_out.println("Job cancelled.");
+			fOut.println("Job cancelled.");
 			status = Status.CANCEL_STATUS;
 
 		} else {
@@ -174,23 +174,23 @@ public class CopyExampleJob extends Job {
 				duration = 1;
 			}
 
-			m_out.print("Copy completed in ");
+			fOut.print("Copy completed in ");
 			if (duration < 1000) {
-				m_out.print(duration + "ms");
+				fOut.print(duration + "ms");
 			} else {
-				m_out.print((duration + 500) / 1000 + "s");
+				fOut.print((duration + 500) / 1000 + "s");
 			}
 			if (exampleCount <= 1) {
-				m_out.print(" (1 example).");
+				fOut.print(" (1 example).");
 			} else {
-				m_out.print(" (" + exampleCount + " examples).");
+				fOut.print(" (" + exampleCount + " examples).");
 			}
-			m_out.println();
+			fOut.println();
 
 			status = Status.OK_STATUS;
 		}
 
-		ms_running = false;
+		sfRunning = false;
 		return status;
 	}
 
@@ -217,7 +217,7 @@ public class CopyExampleJob extends Job {
 		int countFiles = 0;
 		for (File file : files) {
 
-			if (m_monitor.isCanceled()) {
+			if (fMonitor.isCanceled()) {
 				break;
 			}
 
@@ -228,7 +228,7 @@ public class CopyExampleJob extends Job {
 				try {
 					copyFile(file);
 				} catch (IOException e) {
-					m_out.print("Error: " + e.toString());
+					fOut.print("Error: " + e.toString());
 				}
 				countFiles += 1;
 			}
@@ -240,11 +240,11 @@ public class CopyExampleJob extends Job {
 	private void copyFile(File file) throws IOException {
 
 		String path = file.getPath();
-		String suffix = path.substring(m_sizeOfPrefixToStrip);
-		IPath destPath = m_destFolderPath.append(suffix);
+		String suffix = path.substring(fSizeOfPrefixToStrip);
+		IPath destPath = fDestFolderPath.append(suffix);
 
 		File destFile = destPath.toFile();
 
-		Utils.copyFile(file, destFile, m_out, m_monitor);
+		Utils.copyFile(file, destFile, fOut, fMonitor);
 	}
 }

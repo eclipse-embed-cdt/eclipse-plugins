@@ -21,6 +21,7 @@ import ilg.gnuarmeclipse.packs.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.data.Repos;
 import ilg.gnuarmeclipse.packs.jobs.ParsePdscRunnable;
 import ilg.gnuarmeclipse.packs.ui.Activator;
+import ilg.gnuarmeclipse.packs.ui.IconUtils;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -30,14 +31,12 @@ import java.net.URL;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
-import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -91,7 +90,7 @@ public class OutlineView extends ViewPart {
 			super.inputChanged(viewer, oldInput, newInput);
 
 			// Always clear previous path
-			m_packageAbsolutePath = null;
+			fPackageAbsolutePath = null;
 
 			if (newInput instanceof Node) {
 				// newInput is an outline node
@@ -99,7 +98,7 @@ public class OutlineView extends ViewPart {
 						.getProperty(Property.DEST_FOLDER);
 				if (folder != null) {
 					try {
-						m_packageAbsolutePath = Repos.getInstance()
+						fPackageAbsolutePath = Repos.getInstance()
 								.getFolderPath().append(folder);
 					} catch (IOException e) {
 						;
@@ -177,31 +176,7 @@ public class OutlineView extends ViewPart {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/genericvariable_obj.png").createImage();
 			} else if (Type.BOOK.equals(type)) {
-				String url = node.getProperty(Node.URL_PROPERTY, "");
-				if (url.length() > 0) {
-					return Activator.imageDescriptorFromPlugin(
-							Activator.PLUGIN_ID, "icons/external_browser.png")
-							.createImage();
-				}
-				String path = node.getProperty(Node.FILE_PROPERTY, "")
-						.toLowerCase();
-
-				if (path.endsWith(".pdf")) {
-					return Activator.imageDescriptorFromPlugin(
-							Activator.PLUGIN_ID, "icons/pdficon_small.png")
-							.createImage();
-				} else if (path.endsWith(".chm")) {
-					return Activator.imageDescriptorFromPlugin(
-							Activator.PLUGIN_ID, "icons/chm.png").createImage();
-				} else if (path.endsWith(".zip")) {
-					return Activator.imageDescriptorFromPlugin(
-							Activator.PLUGIN_ID, "icons/jar_obj.png")
-							.createImage();
-				} else {
-					return Activator.imageDescriptorFromPlugin(
-							Activator.PLUGIN_ID, "icons/library_obj.png")
-							.createImage();
-				}
+				return IconUtils.getBookIcon(node);
 			} else if (Type.PROCESSOR.equals(type)) {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/methpro_obj.png").createImage();
@@ -319,36 +294,36 @@ public class OutlineView extends ViewPart {
 
 	// ------------------------------------------------------------------------
 
-	private TreeViewer m_viewer;
-	private ISelectionListener m_pageSelectionListener;
-	private ViewContentProvider m_contentProvider;
+	private TreeViewer fViewer;
+	private ISelectionListener fPageSelectionListener;
+	private ViewContentProvider fContentProvider;
 
-	private Action m_expandAll;
-	private Action m_collapseAll;
-	private Action m_doubleClickAction;
-	private Action m_openWithText;
-	private Action m_openWithSystem;
+	private Action fExpandAll;
+	private Action fCollapseAll;
+	private Action fDoubleClickAction;
+	private Action fOpenWithText;
+	private Action fOpenWithSystem;
 
 	// Needed to construct absolute path for double click actions
-	private IPath m_packageAbsolutePath;
+	private IPath fPackageAbsolutePath;
 
-	private Node m_noOutlineNode;
+	private Node fNoOutlineNode;
 
-	private PacksStorage m_storage;
+	private PacksStorage fStorage;
 
 	// private MessageConsoleStream m_out;
 
 	public OutlineView() {
 		// Activator.setDevicesView(this);
 
-		m_noOutlineNode = new Node(Type.OUTLINE);
-		m_noOutlineNode.setName("No outline");
-		Node.addNewChild(m_noOutlineNode, Type.NONE).setName(
+		fNoOutlineNode = new Node(Type.OUTLINE);
+		fNoOutlineNode.setName("No outline");
+		Node.addNewChild(fNoOutlineNode, Type.NONE).setName(
 				"An outline is not available.");
 
 		// m_out = Activator.getConsoleOut();
 
-		m_storage = PacksStorage.getInstance();
+		fStorage = PacksStorage.getInstance();
 		// System.out.println("OutlineView()");
 	}
 
@@ -357,17 +332,17 @@ public class OutlineView extends ViewPart {
 
 		// System.out.println("OutlineView.createPartControl()");
 
-		m_viewer = new TreeViewer(parent, SWT.FULL_SELECTION | SWT.H_SCROLL
+		fViewer = new TreeViewer(parent, SWT.FULL_SELECTION | SWT.H_SCROLL
 				| SWT.V_SCROLL);
 
-		ColumnViewerToolTipSupport.enableFor(m_viewer);
+		ColumnViewerToolTipSupport.enableFor(fViewer);
 
-		m_contentProvider = new ViewContentProvider();
-		m_viewer.setContentProvider(m_contentProvider);
-		m_viewer.setLabelProvider(new ViewLabelProvider());
-		m_viewer.setSorter(new NameSorter());
+		fContentProvider = new ViewContentProvider();
+		fViewer.setContentProvider(fContentProvider);
+		fViewer.setLabelProvider(new ViewLabelProvider());
+		fViewer.setSorter(new NameSorter());
 
-		m_viewer.setInput(m_noOutlineNode);
+		fViewer.setInput(fNoOutlineNode);
 
 		addProviders();
 		addListners();
@@ -381,25 +356,25 @@ public class OutlineView extends ViewPart {
 
 	@Override
 	public void setFocus() {
-		m_viewer.getControl().setFocus();
+		fViewer.getControl().setFocus();
 	}
 
 	private void addProviders() {
 		// Register this viewer as the selection provider
-		getSite().setSelectionProvider(m_viewer);
+		getSite().setSelectionProvider(fViewer);
 	}
 
 	private void addListners() {
 
-		m_viewer.addSelectionChangedListener(new ISelectionChangedListener() {
+		fViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 
 				// Called when the local view selection changes
 
-				m_openWithText.setEnabled(false);
-				m_openWithSystem.setEnabled(false);
+				fOpenWithText.setEnabled(false);
+				fOpenWithSystem.setEnabled(false);
 
 				IStructuredSelection selection = (IStructuredSelection) event
 						.getSelection();
@@ -415,12 +390,12 @@ public class OutlineView extends ViewPart {
 
 					String category = node.getProperty(Node.CATEGORY_PROPERTY);
 					if ("header".equals(category) || "source".equals(category)) {
-						m_openWithText.setEnabled(true);
+						fOpenWithText.setEnabled(true);
 					}
 				} else if (Type.HEADER.equals(type)) {
-					m_openWithText.setEnabled(true);
+					fOpenWithText.setEnabled(true);
 				} else if (Type.DEBUG.equals(type)) {
-					m_openWithText.setEnabled(true);
+					fOpenWithText.setEnabled(true);
 				}
 
 				// Enable 'Open With System Editor'
@@ -428,21 +403,21 @@ public class OutlineView extends ViewPart {
 
 					String category = node.getProperty(Node.CATEGORY_PROPERTY);
 					if ("doc".equals(category)) {
-						m_openWithSystem.setEnabled(true);
+						fOpenWithSystem.setEnabled(true);
 					}
 				} else if (Type.DEBUG.equals(type)) {
-					m_openWithSystem.setEnabled(true);
+					fOpenWithSystem.setEnabled(true);
 				} else if (Type.BOOK.equals(type)) {
 
 					String relativeFile = node.getProperty(Node.FILE_PROPERTY,
 							"");
 					if (relativeFile.length() > 0) {
-						m_openWithSystem.setEnabled(true);
+						fOpenWithSystem.setEnabled(true);
 					}
 
 					String url = node.getProperty(Node.URL_PROPERTY, "");
 					if (url.length() > 0) {
-						m_openWithSystem.setEnabled(true);
+						fOpenWithSystem.setEnabled(true);
 					}
 				}
 			}
@@ -452,7 +427,7 @@ public class OutlineView extends ViewPart {
 
 	private void hookPageSelection() {
 
-		m_pageSelectionListener = new ISelectionListener() {
+		fPageSelectionListener = new ISelectionListener() {
 
 			@Override
 			public void selectionChanged(IWorkbenchPart part,
@@ -466,16 +441,16 @@ public class OutlineView extends ViewPart {
 				}
 			}
 		};
-		getSite().getPage().addPostSelectionListener(m_pageSelectionListener);
+		getSite().getPage().addPostSelectionListener(fPageSelectionListener);
 	}
 
 	public void dispose() {
 
 		super.dispose();
 
-		if (m_pageSelectionListener != null) {
+		if (fPageSelectionListener != null) {
 			getSite().getPage().removePostSelectionListener(
-					m_pageSelectionListener);
+					fPageSelectionListener);
 		}
 
 		System.out.println("OutlineView.dispose()");
@@ -487,7 +462,7 @@ public class OutlineView extends ViewPart {
 
 		// System.out.println("Outline: packs selection=" + selection);
 
-		Node outline = m_noOutlineNode;
+		Node outline = fNoOutlineNode;
 
 		if ((!selection.isEmpty()) && selection instanceof TreeSelection) {
 
@@ -500,15 +475,15 @@ public class OutlineView extends ViewPart {
 				if (((PackNode) node).hasOutline()) {
 
 					// If the node already has outline, show it
-					m_viewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);
+					fViewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);
 					outline = ((PackNode) node).getOutline();
 
 				} else if (node.isType(Type.VERSION)) {
 
 					if (node.isBooleanProperty(Property.INSTALLED)) {
-						
+
 						// If the version node is installed, get outline
-						parseOutline((PackNode)node, (PackNode)node);
+						parseOutline((PackNode) node, (PackNode) node);
 
 					} else {
 
@@ -529,30 +504,28 @@ public class OutlineView extends ViewPart {
 					if (versionNode.isBooleanProperty(Property.INSTALLED)) {
 
 						// If the version node is installed, get outline
-						parseOutline((PackNode)versionNode, (PackNode)node);
-						
+						parseOutline((PackNode) versionNode, (PackNode) node);
+
 					}
 				}
 			}
 		}
 
-		m_viewer.setInput(outline);
+		fViewer.setInput(outline);
 
 	}
-	
-	private void parseOutline(PackNode versionNode, PackNode selectedNode){
-		
-		// If the version node is installed, get outline
-		IProgressService progressService = PlatformUI
-				.getWorkbench().getProgressService();
-		try {
-			progressService
-					.busyCursorWhile(new ParsePdscRunnable(
-							"Parse Outline",
-							(PackNode) versionNode));
 
-			m_viewer.setAutoExpandLevel(OutlineView.AUTOEXPAND_LEVEL);
-			m_viewer.setInput(((PackNode) selectedNode).getOutline());
+	private void parseOutline(PackNode versionNode, PackNode selectedNode) {
+
+		// If the version node is installed, get outline
+		IProgressService progressService = PlatformUI.getWorkbench()
+				.getProgressService();
+		try {
+			progressService.busyCursorWhile(new ParsePdscRunnable(
+					"Parse Outline", (PackNode) versionNode));
+
+			fViewer.setAutoExpandLevel(OutlineView.AUTOEXPAND_LEVEL);
+			fViewer.setInput(((PackNode) selectedNode).getOutline());
 
 		} catch (InvocationTargetException e1) {
 			// TODO Auto-generated catch block
@@ -561,38 +534,38 @@ public class OutlineView extends ViewPart {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-		
+
 	}
 
 	private void makeActions() {
 
-		m_expandAll = new Action() {
+		fExpandAll = new Action() {
 			public void run() {
-				m_viewer.expandAll();
+				fViewer.expandAll();
 			}
 		};
 
-		m_expandAll.setText("Expand all");
-		m_expandAll.setToolTipText("Expand all children nodes");
-		m_expandAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+		fExpandAll.setText("Expand all");
+		fExpandAll.setToolTipText("Expand all children nodes");
+		fExpandAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/expandall.png"));
 
-		m_collapseAll = new Action() {
+		fCollapseAll = new Action() {
 			public void run() {
-				m_viewer.collapseAll();
+				fViewer.collapseAll();
 			}
 		};
 
-		m_collapseAll.setText("Collapse all");
-		m_collapseAll.setToolTipText("Collapse all children nodes");
-		m_collapseAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+		fCollapseAll.setText("Collapse all");
+		fCollapseAll.setToolTipText("Collapse all children nodes");
+		fCollapseAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/collapseall.png"));
 
-		m_openWithText = new Action() {
+		fOpenWithText = new Action() {
 			public void run() {
 				System.out.println("openWithText");
 
-				ISelection selection = m_viewer.getSelection();
+				ISelection selection = fViewer.getSelection();
 				Object obj = ((IStructuredSelection) selection)
 						.getFirstElement();
 				if (obj instanceof Leaf) {
@@ -604,14 +577,14 @@ public class OutlineView extends ViewPart {
 			}
 		};
 
-		m_openWithText.setText("Open With Text Viewer");
-		m_openWithText.setEnabled(false);
+		fOpenWithText.setText("Open With Text Viewer");
+		fOpenWithText.setEnabled(false);
 
-		m_openWithSystem = new Action() {
+		fOpenWithSystem = new Action() {
 			public void run() {
 				System.out.println("openWithSystem");
 
-				ISelection selection = m_viewer.getSelection();
+				ISelection selection = fViewer.getSelection();
 				Object obj = ((IStructuredSelection) selection)
 						.getFirstElement();
 				if (obj instanceof Node) {
@@ -624,12 +597,12 @@ public class OutlineView extends ViewPart {
 			}
 		};
 
-		m_openWithSystem.setText("Open With System Viewer");
-		m_openWithSystem.setEnabled(false);
+		fOpenWithSystem.setText("Open With System Viewer");
+		fOpenWithSystem.setEnabled(false);
 
-		m_doubleClickAction = new Action() {
+		fDoubleClickAction = new Action() {
 			public void run() {
-				ISelection selection = m_viewer.getSelection();
+				ISelection selection = fViewer.getSelection();
 				Object obj = ((IStructuredSelection) selection)
 						.getFirstElement();
 				if (obj instanceof Node) {
@@ -653,15 +626,15 @@ public class OutlineView extends ViewPart {
 				OutlineView.this.fillContextMenu(manager);
 			}
 		});
-		Menu menu = menuMgr.createContextMenu(m_viewer.getControl());
-		m_viewer.getControl().setMenu(menu);
-		getSite().registerContextMenu(menuMgr, m_viewer);
+		Menu menu = menuMgr.createContextMenu(fViewer.getControl());
+		fViewer.getControl().setMenu(menu);
+		getSite().registerContextMenu(menuMgr, fViewer);
 	}
 
 	private void hookDoubleClickAction() {
-		m_viewer.addDoubleClickListener(new IDoubleClickListener() {
+		fViewer.addDoubleClickListener(new IDoubleClickListener() {
 			public void doubleClick(DoubleClickEvent event) {
-				m_doubleClickAction.run();
+				fDoubleClickAction.run();
 			}
 		});
 	}
@@ -673,28 +646,28 @@ public class OutlineView extends ViewPart {
 	}
 
 	private void fillLocalPullDown(IMenuManager manager) {
-		manager.add(m_expandAll);
-		manager.add(m_collapseAll);
+		manager.add(fExpandAll);
+		manager.add(fCollapseAll);
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
-		manager.add(m_openWithText);
-		manager.add(m_openWithSystem);
+		manager.add(fOpenWithText);
+		manager.add(fOpenWithSystem);
 
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
 	}
 
 	private void fillLocalToolBar(IToolBarManager manager) {
-		manager.add(m_expandAll);
-		manager.add(m_collapseAll);
+		manager.add(fExpandAll);
+		manager.add(fCollapseAll);
 	}
 
 	private void doubleClickAction(Node node) throws PartInitException,
 			MalformedURLException {
 
 		String type = node.getType();
-		if (m_packageAbsolutePath == null) {
+		if (fPackageAbsolutePath == null) {
 			System.out.println("null m_packagePath");
 			return;
 		}
@@ -710,7 +683,7 @@ public class OutlineView extends ViewPart {
 
 				// System.out.println("Edit " + relativeFile);
 				IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-						m_packageAbsolutePath.append(relativeFile));
+						fPackageAbsolutePath.append(relativeFile));
 
 				// Open external file in Eclipse editor (as read only, since the
 				// packages were marked as read only
@@ -720,7 +693,7 @@ public class OutlineView extends ViewPart {
 
 				// System.out.println("Document " + node);
 				IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-						m_packageAbsolutePath.append(relativeFile));
+						fPackageAbsolutePath.append(relativeFile));
 				// System.out.println(fileStore);
 
 				// Open external file in Eclipse editor (as read only, since the
@@ -747,7 +720,7 @@ public class OutlineView extends ViewPart {
 
 				// System.out.println("Path " + relativeFile);
 				IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-						m_packageAbsolutePath.append(relativeFile));
+						fPackageAbsolutePath.append(relativeFile));
 
 				// Open external file in Eclipse editor (as read only, since the
 				// packages were marked as read only
@@ -763,7 +736,7 @@ public class OutlineView extends ViewPart {
 
 			String relativeFile = node.getProperty(Node.FILE_PROPERTY);
 			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-					m_packageAbsolutePath.append(relativeFile));
+					fPackageAbsolutePath.append(relativeFile));
 
 			// Open external file in Eclipse editor (as read only, since the
 			// packages were marked as read only
@@ -775,7 +748,7 @@ public class OutlineView extends ViewPart {
 
 			String relativeFile = node.getProperty(Node.FILE_PROPERTY);
 			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-					m_packageAbsolutePath.append(relativeFile));
+					fPackageAbsolutePath.append(relativeFile));
 
 			// Open external file in Eclipse editor (as read only, since the
 			// packages were marked as read only
@@ -793,11 +766,11 @@ public class OutlineView extends ViewPart {
 				.getActiveWorkbenchWindow().getActivePage();
 		String relativeFile = node.getProperty(Node.FILE_PROPERTY, "");
 
-		assert (m_packageAbsolutePath != null);
+		assert (fPackageAbsolutePath != null);
 
 		if (relativeFile.length() > 0) {
 			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-					m_packageAbsolutePath.append(relativeFile));
+					fPackageAbsolutePath.append(relativeFile));
 			IDE.openInternalEditorOnFileStore(page, fileStore);
 		}
 	}
@@ -810,7 +783,7 @@ public class OutlineView extends ViewPart {
 		String relativeFile = node.getProperty(Node.FILE_PROPERTY, "");
 		if (relativeFile.length() > 0) {
 			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-					m_packageAbsolutePath.append(relativeFile));
+					fPackageAbsolutePath.append(relativeFile));
 			IDE.openEditorOnFileStore(page, fileStore);
 			return;
 		}
@@ -827,7 +800,7 @@ public class OutlineView extends ViewPart {
 
 	private Node getBriefOutline(Node node) {
 
-		Node outlineNode = m_noOutlineNode;
+		Node outlineNode = fNoOutlineNode;
 
 		Node input = null;
 		// Identify original node
@@ -836,7 +809,7 @@ public class OutlineView extends ViewPart {
 			String vendorName = node.getProperty(Property.VENDOR_NAME);
 			String packName = node.getName();
 
-			input = (Node) m_storage.getPackLatest(vendorName, packName);
+			input = (Node) fStorage.getPackLatest(vendorName, packName);
 
 		} else if (node.isType(Type.VERSION)) {
 
@@ -844,7 +817,7 @@ public class OutlineView extends ViewPart {
 			String packName = node.getProperty(Property.PACK_NAME);
 			String versionName = node.getName();
 
-			input = (Node) m_storage.getPackVersion(vendorName, packName,
+			input = (Node) fStorage.getPackVersion(vendorName, packName,
 					versionName);
 		}
 

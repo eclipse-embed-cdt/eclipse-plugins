@@ -35,50 +35,50 @@ import org.eclipse.ui.console.MessageConsoleStream;
 
 public class RemoveJob extends Job {
 
-	private static boolean ms_running = false;
+	private static boolean sfRunning = false;
 
-	private MessageConsoleStream m_out;
-	private TreeSelection m_selection;
+	private MessageConsoleStream fOut;
+	private TreeSelection fSelection;
 
 	// private String m_folderPath;
-	private IProgressMonitor m_monitor;
+	private IProgressMonitor fMonitor;
 
-	private Repos m_repos;
+	private Repos fRepos;
 
-	private PacksStorage m_storage;
+	private PacksStorage fStorage;
 
 	public RemoveJob(String name, TreeSelection selection) {
 
 		super(name);
 
-		m_out = ConsoleStream.getConsoleOut();
+		fOut = ConsoleStream.getConsoleOut();
 
-		m_selection = selection;
+		fSelection = selection;
 
-		m_repos = Repos.getInstance();
-		m_storage = PacksStorage.getInstance();
+		fRepos = Repos.getInstance();
+		fStorage = PacksStorage.getInstance();
 	}
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 
-		if (ms_running) {
+		if (sfRunning) {
 			return Status.CANCEL_STATUS;
 		}
 
-		ms_running = true;
-		m_monitor = monitor;
+		sfRunning = true;
+		fMonitor = monitor;
 
 		long beginTime = System.currentTimeMillis();
 
-		m_out.println();
-		m_out.println(Utils.getCurrentDateTime());
+		fOut.println();
+		fOut.println(Utils.getCurrentDateTime());
 
-		m_out.println("Removing packs...");
+		fOut.println("Removing packs...");
 
 		List<Node> packsToRemove = new LinkedList<Node>();
 
-		for (Object obj : m_selection.toArray()) {
+		for (Object obj : fSelection.toArray()) {
 
 			Node node = (Node) obj;
 
@@ -108,20 +108,20 @@ public class RemoveJob extends Job {
 
 			// Name the subtask with the pack name
 			monitor.subTask(packFullName);
-			m_out.println("Remove \"" + packFullName + "\".");
+			fOut.println("Remove \"" + packFullName + "\".");
 
 			IPath versionFolderPath;
 			try {
 
 				String dest = versionNode.getProperty(Property.DEST_FOLDER, "");
-				versionFolderPath = m_repos.getFolderPath().append(dest);
+				versionFolderPath = fRepos.getFolderPath().append(dest);
 
 				// Remove the pack archived file
-				m_out.println("Recursive erase \"" + versionFolderPath + "\".");
+				fOut.println("Recursive erase \"" + versionFolderPath + "\".");
 
 				Utils.deleteFolderRecursive(versionFolderPath.toFile());
 
-				m_monitor.worked(1);
+				fMonitor.worked(1);
 
 				// Mark node as 'not installed'
 				versionNode.setBooleanProperty(Property.INSTALLED, false);
@@ -132,7 +132,7 @@ public class RemoveJob extends Job {
 				Utils.reportInfo("Pack " + packFullName + " removed.");
 
 			} catch (IOException e) {
-				m_out.println(Utils.reportError(e.getMessage()));
+				fOut.println(Utils.reportError(e.getMessage()));
 				break;
 			}
 		}
@@ -142,7 +142,7 @@ public class RemoveJob extends Job {
 		int count = removedPacksList.size();
 
 		if (count > 0) {
-			m_storage.notifyUpdateView(PacksStorageEvent.Type.UPDATE_VERSIONS,
+			fStorage.notifyUpdateView(PacksStorageEvent.Type.UPDATE_VERSIONS,
 					removedPacksList);
 		}
 
@@ -150,7 +150,7 @@ public class RemoveJob extends Job {
 
 		if (monitor.isCanceled()) {
 
-			m_out.println("Job cancelled.");
+			fOut.println("Job cancelled.");
 			status = Status.CANCEL_STATUS;
 
 		} else {
@@ -162,17 +162,17 @@ public class RemoveJob extends Job {
 			}
 
 			if (count == 1) {
-				m_out.println("1 pack removed.");
+				fOut.println("1 pack removed.");
 			} else {
-				m_out.println(count + " packs removed.");
+				fOut.println(count + " packs removed.");
 			}
-			m_out.print("Remove completed in ");
-			m_out.println(duration + "ms.");
+			fOut.print("Remove completed in ");
+			fOut.println(duration + "ms.");
 
 			status = Status.OK_STATUS;
 		}
 
-		ms_running = false;
+		sfRunning = false;
 		return status;
 	}
 

@@ -12,7 +12,7 @@
 package ilg.gnuarmeclipse.packs.ui.handlers;
 
 import ilg.gnuarmeclipse.packs.cmsis.Index;
-import ilg.gnuarmeclipse.packs.cmsis.PdscParserBrief;
+import ilg.gnuarmeclipse.packs.cmsis.PdscParserForContent;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
@@ -54,13 +54,13 @@ import org.eclipse.ui.console.MessageConsoleStream;
  */
 public class RefreshHandler extends AbstractHandler {
 
-	private MessageConsoleStream m_out;
-	private boolean m_running;
+	private MessageConsoleStream fOut;
+	private boolean fRunning;
 
-	private Repos m_repos;
-	private PacksStorage m_storage;
+	private Repos fRepos;
+	private PacksStorage fStorage;
 
-	private IProgressMonitor m_monitor;
+	private IProgressMonitor fMonitor;
 
 	/**
 	 * The constructor.
@@ -68,12 +68,12 @@ public class RefreshHandler extends AbstractHandler {
 	public RefreshHandler() {
 
 		// System.out.println("RefreshHandler()");
-		m_running = false;
+		fRunning = false;
 
-		m_out = ConsoleStream.getConsoleOut();
+		fOut = ConsoleStream.getConsoleOut();
 
-		m_repos = Repos.getInstance();
-		m_storage = PacksStorage.getInstance();
+		fRepos = Repos.getInstance();
+		fStorage = PacksStorage.getInstance();
 	}
 
 	/**
@@ -97,25 +97,25 @@ public class RefreshHandler extends AbstractHandler {
 
 	private IStatus myRun(IProgressMonitor monitor) {
 
-		if (m_running) {
+		if (fRunning) {
 			return Status.CANCEL_STATUS;
 		}
 
-		m_running = true;
-		m_monitor = monitor;
+		fRunning = true;
+		fMonitor = monitor;
 
 		long beginTime = System.currentTimeMillis();
 
-		m_out.println();
-		m_out.println(Utils.getCurrentDateTime());
-		m_out.println("Refresh packs job started.");
+		fOut.println();
+		fOut.println(Utils.getCurrentDateTime());
+		fOut.println("Refresh packs job started.");
 
 		int workUnits = 0;
 
 		try {
 
 			// keys: { "type", "url" }
-			List<Map<String, Object>> reposList = m_repos.getList();
+			List<Map<String, Object>> reposList = fRepos.getList();
 
 			for (Map<String, Object> repo : reposList) {
 
@@ -143,12 +143,12 @@ public class RefreshHandler extends AbstractHandler {
 					workUnits++;
 
 				} else {
-					m_out.println(Utils.reportWarning("Repo type \"" + type
+					fOut.println(Utils.reportWarning("Repo type \"" + type
 							+ "\" not supported."));
 				}
 			}
 
-			workUnits += m_storage.computeParseReposWorkUnits();
+			workUnits += fStorage.computeParseReposWorkUnits();
 
 			// Set total number of work units to the number of pdsc files
 			monitor.beginTask("Refresh packs", workUnits);
@@ -180,28 +180,28 @@ public class RefreshHandler extends AbstractHandler {
 
 			if (!monitor.isCanceled()) {
 
-				m_out.println();
+				fOut.println();
 
 				// The content.xml files were just created, parse them
-				m_storage.parseRepos(monitor);
+				fStorage.parseRepos(monitor);
 			}
 
 			// } catch (FileNotFoundException e) {
 			// m_out.println("Error: " + e.toString());
 		} catch (Exception e) {
 			Activator.log(e);
-			m_out.println(Utils.reportError(e.toString()));
+			fOut.println(Utils.reportError(e.toString()));
 		}
 
 		IStatus status;
 		if (monitor.isCanceled()) {
 
-			m_out.println("Job cancelled.");
+			fOut.println("Job cancelled.");
 			status = Status.CANCEL_STATUS;
 
 		} else {
 
-			m_storage.notifyNewInput();
+			fStorage.notifyNewInput();
 
 			long endTime = System.currentTimeMillis();
 			long duration = endTime - beginTime;
@@ -209,32 +209,32 @@ public class RefreshHandler extends AbstractHandler {
 				duration = 1;
 			}
 
-			m_out.println(Utils.reportInfo("Refresh packs completed in "
+			fOut.println(Utils.reportInfo("Refresh packs completed in "
 					+ (duration + 500) / 1000 + "s."));
 
 			status = Status.OK_STATUS;
 		}
 
-		m_running = false;
+		fRunning = false;
 		return status;
 	}
 
 	private void readCmsisIndex(String indexUrl, List<String[]> pdscList) {
 
-		m_out.println("Parsing \"" + indexUrl + "\"...");
+		fOut.println("Parsing \"" + indexUrl + "\"...");
 
 		try {
 
 			int count = Index.readIndex(indexUrl, pdscList);
 
-			m_out.println("Contributed " + count + " pack(s).");
+			fOut.println("Contributed " + count + " pack(s).");
 
 			return;
 
 		} catch (FileNotFoundException e) {
-			m_out.println(Utils.reportError("File not found: " + e.getMessage()));
+			fOut.println(Utils.reportError("File not found: " + e.getMessage()));
 		} catch (Exception e) {
-			m_out.println(Utils.reportError(e.toString()));
+			fOut.println(Utils.reportError(e.toString()));
 		}
 
 		return;
@@ -250,7 +250,7 @@ public class RefreshHandler extends AbstractHandler {
 		String repoUrl = (String) repo.get("url");
 		Node contentRoot = new Node(Type.REPOSITORY);
 
-		String domainName = m_repos.getDomaninNameFromUrl(repoUrl);
+		String domainName = fRepos.getDomaninNameFromUrl(repoUrl);
 		domainName = Utils.capitalize(domainName);
 
 		contentRoot.setName(domainName);
@@ -266,13 +266,13 @@ public class RefreshHandler extends AbstractHandler {
 		contentRoot
 				.putProperty(Property.DATE, dateFormat.format(cal.getTime()));
 
-		PdscParserBrief parser = new PdscParserBrief();
+		PdscParserForContent parser = new PdscParserForContent();
 		// parser.setIsBrief(true);
 
 		// String[] { url, name, version }
 		for (String[] pdsc : list) {
 
-			if (m_monitor.isCanceled()) {
+			if (fMonitor.isCanceled()) {
 				break;
 			}
 
@@ -281,20 +281,20 @@ public class RefreshHandler extends AbstractHandler {
 			String pdscName = pdsc[1];
 			String pdscVersion = pdsc[2];
 
-			m_monitor.subTask(pdscName);
+			fMonitor.subTask(pdscName);
 
 			try {
 
 				URL sourceUrl = new URL(pdscUrl + pdscName);
 
-				String cachedFileName = m_storage.makeCachePdscName(pdscName,
+				String cachedFileName = fStorage.makeCachePdscName(pdscName,
 						pdscVersion);
-				File cachedFile = m_storage.getFile(new Path(
+				File cachedFile = fStorage.getFile(new Path(
 						PacksStorage.CACHE_FOLDER), cachedFileName);
 				if (!cachedFile.exists()) {
 
 					// If local file does not exist, create it
-					Utils.copyFile(sourceUrl, cachedFile, m_out, null);
+					Utils.copyFile(sourceUrl, cachedFile, fOut, null);
 
 					Utils.reportInfo("Pack " + pdscName + " v" + pdscVersion
 							+ " cached.");
@@ -303,40 +303,41 @@ public class RefreshHandler extends AbstractHandler {
 				if (cachedFile.exists()) {
 
 					parser.parseXml(cachedFile);
-					parser.parsePdscContent(pdscName, pdscVersion, contentRoot);
+					parser.parse(pdscName, pdscVersion, contentRoot);
 
 				} else {
-					m_out.println(Utils.reportWarning("Missing \"" + cachedFile
+					fOut.println(Utils.reportWarning("Missing \"" + cachedFile
 							+ "\", ignored"));
 					return;
 				}
 
 			} catch (Exception e) {
-				m_out.println(Utils.reportWarning("Failed with \""
+				fOut.println(Utils.reportWarning("Failed with \""
 						+ e.getMessage() + "\", ignored"));
 				return;
 			}
 
 			// One more unit completed
-			m_monitor.worked(1);
+			fMonitor.worked(1);
 		}
 
-		if (!m_monitor.isCanceled()) {
+		if (!fMonitor.isCanceled()) {
 
 			// If all's well, serialise collected content to local cache.
 			try {
 
-				String fileName = m_repos.getRepoContentXmlFromUrl(repoUrl);
+				String fileName = fRepos.getRepoContentXmlFromUrl(repoUrl);
 
 				ContentSerialiser serialiser = new ContentSerialiser();
-				serialiser.serialiseToXml(contentRoot, fileName);
+				serialiser.serialise(contentRoot,
+						fRepos.getFileObject(fileName));
 
 				File file;
-				file = m_repos.getFileObject(fileName);
-				m_out.println("File \"" + file.getPath() + "\" written.");
+				file = fRepos.getFileObject(fileName);
+				fOut.println("File \"" + file.getPath() + "\" written.");
 
 			} catch (IOException e) {
-				m_out.println(Utils.reportError(e.toString()));
+				fOut.println(Utils.reportError(e.toString()));
 			}
 		}
 	}
@@ -346,19 +347,19 @@ public class RefreshHandler extends AbstractHandler {
 		try {
 
 			String contentUrl = (String) repo.get("url");
-			String fileName = m_repos.getRepoContentXmlFromUrl(contentUrl);
-			File cachedFile = m_repos.getFileObject(fileName);
+			String fileName = fRepos.getRepoContentXmlFromUrl(contentUrl);
+			File cachedFile = fRepos.getFileObject(fileName);
 
-			Utils.copyFile(new URL(contentUrl), cachedFile, m_out, null);
+			Utils.copyFile(new URL(contentUrl), cachedFile, fOut, null);
 
-			m_monitor.worked(1);
+			fMonitor.worked(1);
 
 		} catch (MalformedURLException e) {
-			m_out.println(Utils.reportError(e.toString()));
+			fOut.println(Utils.reportError(e.toString()));
 		} catch (FileNotFoundException e) {
-			m_out.println(Utils.reportError("File not found: " + e.getMessage()));
+			fOut.println(Utils.reportError("File not found: " + e.getMessage()));
 		} catch (IOException e) {
-			m_out.println(Utils.reportError(e.toString()));
+			fOut.println(Utils.reportError(e.toString()));
 		}
 	}
 }

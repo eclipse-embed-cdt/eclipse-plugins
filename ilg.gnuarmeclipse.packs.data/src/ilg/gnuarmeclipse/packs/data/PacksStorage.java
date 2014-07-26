@@ -11,7 +11,6 @@
 
 package ilg.gnuarmeclipse.packs.data;
 
-import ilg.gnuarmeclipse.packs.cmsis.PdscParserForBuild;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
@@ -34,8 +33,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.swt.custom.BusyIndicator;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -56,66 +53,67 @@ public class PacksStorage {
 
 	// ------------------------------------------------------------------------
 
-	private static PacksStorage ms_packsStorage;
+	private static PacksStorage sfPacksStorage;
 
 	public static synchronized PacksStorage getInstance() {
 
-		if (ms_packsStorage == null) {
-			ms_packsStorage = new PacksStorage();
+		if (sfPacksStorage == null) {
+			sfPacksStorage = new PacksStorage();
 		}
 
-		return ms_packsStorage;
+		return sfPacksStorage;
 	}
 
 	// ------------------------------------------------------------------------
 
-	private Repos m_repos;
-	private MessageConsoleStream m_out;
-	private List<IPacksStorageListener> m_listeners;
+	private Repos fRepos;
+	private MessageConsoleStream fOut;
+	private List<IPacksStorageListener> fListeners;
 
-	private List<PackNode> m_packsVersionsList;
-	private Node m_packsVersionsTree;
-	private Map<String, Map<String, PackNode>> m_packsVersionsMap;
-	private Map<String, PackNode> m_packsMap;
+	private List<PackNode> fPacksVersionsList;
+	private Node fPacksVersionsTree;
+	private Map<String, Map<String, PackNode>> fPacksVersionsMap;
+	private Map<String, PackNode> fPacksMap;
 
-	private Node fInstalledDevicesForBuild;
+	private Map<String, PackNode> fDevicesMap;
 
 	public PacksStorage() {
 
-		m_repos = Repos.getInstance();
+		fRepos = Repos.getInstance();
 
-		m_out = ConsoleStream.getConsoleOut();
+		fOut = ConsoleStream.getConsoleOut();
 
-		m_packsVersionsTree = new Node(Type.ROOT);
-		m_packsVersionsList = new LinkedList<PackNode>();
-		m_packsVersionsMap = new TreeMap<String, Map<String, PackNode>>();
-		m_packsMap = new TreeMap<String, PackNode>();
+		fPacksVersionsTree = new Node(Type.ROOT);
+		fPacksVersionsList = new LinkedList<PackNode>();
+		fPacksVersionsMap = new TreeMap<String, Map<String, PackNode>>();
+		fPacksMap = new TreeMap<String, PackNode>();
 
-		m_listeners = new ArrayList<IPacksStorageListener>();
+		fListeners = new ArrayList<IPacksStorageListener>();
 
-		fInstalledDevicesForBuild = null;
+		fDevicesMap = new TreeMap<String, PackNode>();
+
 	}
 
 	// For convenient recursive search, a full tree with all
 	// repos/packs/versions is available.
 	public Node getPacksTree() {
-		return m_packsVersionsTree;
+		return fPacksVersionsTree;
 	}
 
 	// The list of all version nodes, linearised, to be used when
 	// enumerating versions is ok.
 	public List<PackNode> getPacksVersionsList() {
-		return m_packsVersionsList;
+		return fPacksVersionsList;
 	}
 
 	// A map of maps, with versions identified by Vendor::Pack and Version
 	public Map<String, Map<String, PackNode>> getPacksVersionsMap() {
-		return m_packsVersionsMap;
+		return fPacksVersionsMap;
 	}
 
 	// A map of packages, identified by Vendor::Pack
 	public Map<String, PackNode> getPacksMap() {
-		return m_packsMap;
+		return fPacksMap;
 	}
 
 	// Construct an internal representation of the map key, inspired
@@ -131,7 +129,7 @@ public class PacksStorage {
 			String versionName) {
 
 		String key = makeMapKey(vendorName, packName);
-		Map<String, PackNode> versionsMap = m_packsVersionsMap.get(key);
+		Map<String, PackNode> versionsMap = fPacksVersionsMap.get(key);
 
 		if (versionsMap == null) {
 			return null;
@@ -145,7 +143,7 @@ public class PacksStorage {
 	public PackNode getPackLatest(String vendorName, String packName) {
 
 		String key = makeMapKey(vendorName, packName);
-		Map<String, PackNode> versionsMap = m_packsVersionsMap.get(key);
+		Map<String, PackNode> versionsMap = fPacksVersionsMap.get(key);
 
 		if (versionsMap == null) {
 			return null;
@@ -166,7 +164,7 @@ public class PacksStorage {
 
 		// Filter installed packages
 		List<PackNode> installedPackages = new LinkedList<PackNode>();
-		for (PackNode versionNode : m_packsVersionsList) {
+		for (PackNode versionNode : fPacksVersionsList) {
 			if (versionNode.isBooleanProperty(Property.INSTALLED)) {
 				installedPackages.add((PackNode) versionNode.getParent());
 			}
@@ -190,13 +188,13 @@ public class PacksStorage {
 	// ------------------------------------------------------------------------
 
 	public void addListener(IPacksStorageListener listener) {
-		if (!m_listeners.contains(listener)) {
-			m_listeners.add(listener);
+		if (!fListeners.contains(listener)) {
+			fListeners.add(listener);
 		}
 	}
 
 	public void removeListener(IPacksStorageListener listener) {
-		m_listeners.remove(listener);
+		fListeners.remove(listener);
 	}
 
 	// Used by 'Refresh', 'LoadReposSummaries'
@@ -209,6 +207,7 @@ public class PacksStorage {
 		notifyListener(event);
 	}
 
+	// Currently not used
 	public void notifyRefreshAll() {
 
 		// System.out.println("PacksStorage notifyRefresh()");
@@ -226,13 +225,12 @@ public class PacksStorage {
 
 		notifyListener(event);
 
-		// Force to re-cache
-		fInstalledDevicesForBuild = null;
+		fDevicesMap.clear();
 	}
 
 	public void notifyListener(PacksStorageEvent event) {
 
-		for (IPacksStorageListener listener : m_listeners) {
+		for (IPacksStorageListener listener : fListeners) {
 			// System.out.println(listener);
 			listener.packsChanged(event);
 		}
@@ -241,17 +239,17 @@ public class PacksStorage {
 	public int computeParseReposWorkUnits() {
 
 		List<Map<String, Object>> reposList;
-		reposList = m_repos.getList();
+		reposList = fRepos.getList();
 
 		return reposList.size() + 1;
 	}
 
 	public void parseRepos(IProgressMonitor monitor) {
 
-		m_out.println("Loading repos summaries...");
+		fOut.println("Loading repos summaries...");
 
 		List<Map<String, Object>> reposList;
-		reposList = m_repos.getList();
+		reposList = fRepos.getList();
 
 		for (Map<String, Object> map : reposList) {
 			String type = (String) map.get("type");
@@ -262,17 +260,17 @@ public class PacksStorage {
 			if (Repos.CMSIS_PACK_TYPE.equals(type)
 					|| Repos.XCDL_CMSIS_PACK_TYPE.equals(type)) {
 
-				String fileName = m_repos.getRepoContentXmlFromUrl(url);
+				String fileName = fRepos.getRepoContentXmlFromUrl(url);
 
 				try {
 					Node node = parseContentFile(fileName);
 					map.put("content", node);
 				} catch (IOException e) {
-					m_out.println(e.getMessage());
+					fOut.println(e.getMessage());
 				} catch (ParserConfigurationException e) {
-					m_out.println(e.toString());
+					fOut.println(e.toString());
 				} catch (SAXException e) {
-					m_out.println(e.toString());
+					fOut.println(e.toString());
 				}
 			}
 			monitor.worked(1);
@@ -295,9 +293,9 @@ public class PacksStorage {
 		long beginTime = System.currentTimeMillis();
 
 		File file;
-		file = m_repos.getFileObject(fileName);
+		file = fRepos.getFileObject(fileName);
 
-		m_out.println("Parsing \"" + file.getPath() + "\"...");
+		fOut.println("Parsing \"" + file.getPath() + "\"...");
 
 		if (!file.exists()) {
 			throw new IOException("File does not exist, ignored.");
@@ -307,7 +305,8 @@ public class PacksStorage {
 		document = Utils.parseXml(file);
 
 		ContentParser parser = new ContentParser(document);
-		Node node = parser.parseDocument();
+		// ContentParser parser = new ContentParser(document);
+		Node node = parser.parse();
 
 		long endTime = System.currentTimeMillis();
 		long duration = endTime - beginTime;
@@ -315,7 +314,7 @@ public class PacksStorage {
 			duration = 1;
 		}
 
-		m_out.println("File parsed in " + duration + "ms.");
+		fOut.println("File parsed in " + duration + "ms.");
 
 		return node;
 	}
@@ -323,7 +322,7 @@ public class PacksStorage {
 	private void preparePublicData() {
 
 		List<Map<String, Object>> reposList;
-		reposList = m_repos.getList();
+		reposList = fRepos.getList();
 
 		// Create a full hierarchy with all repos
 		Node packsTree = new Node(Type.ROOT);
@@ -336,7 +335,7 @@ public class PacksStorage {
 				packsTree.addChild(node);
 			}
 		}
-		m_packsVersionsTree = packsTree;
+		fPacksVersionsTree = packsTree;
 
 		// Collect all version nodes in a list
 		List<PackNode> packsVersionsList = new LinkedList<PackNode>();
@@ -347,7 +346,7 @@ public class PacksStorage {
 				getVersionsRecursive(node, packsVersionsList);
 			}
 		}
-		m_packsVersionsList = packsVersionsList;
+		fPacksVersionsList = packsVersionsList;
 
 		// Group versions by [vendor::package] in a Map
 		Map<String, Map<String, PackNode>> packsVersionsMap = new TreeMap<String, Map<String, PackNode>>();
@@ -365,7 +364,7 @@ public class PacksStorage {
 
 			versionMap.put(versionNode.getName(), versionNode);
 		}
-		m_packsVersionsMap = packsVersionsMap;
+		fPacksVersionsMap = packsVersionsMap;
 
 		// Group packages by [vendor::package] in a Map
 		Map<String, PackNode> packsMap = new TreeMap<String, PackNode>();
@@ -379,12 +378,12 @@ public class PacksStorage {
 				packsMap.put(key, parent);
 			}
 		}
-		m_packsMap = packsMap;
+		fPacksMap = packsMap;
 
 		if (packsVersionsMap.size() == 0) {
-			m_out.println("Processed no packages.");
+			fOut.println("Processed no packages.");
 		} else {
-			m_out.println("Processed " + packsVersionsMap.size()
+			fOut.println("Processed " + packsVersionsMap.size()
 					+ " package(s), with " + packsVersionsList.size()
 					+ " version(s).");
 		}
@@ -408,7 +407,7 @@ public class PacksStorage {
 		// Add unique selectors to each package, by inspecting the outline and
 		// external definitions in the latest version.
 
-		for (PackNode packNode : m_packsMap.values()) {
+		for (PackNode packNode : fPacksMap.values()) {
 
 			Node versionNode = (Node) packNode.getChildren().get(0);
 			if (versionNode.hasChildren()) {
@@ -455,22 +454,23 @@ public class PacksStorage {
 		}
 	}
 
+	// Add (Property.INSTALLED, true) to version node ant to parent pack node
 	public void updateInstalledVersions() {
 
-		if (m_packsVersionsList == null) {
+		if (fPacksVersionsList == null) {
 			return;
 		}
 
-		if (m_packsVersionsList.size() == 0) {
+		if (fPacksVersionsList.size() == 0) {
 			return;
 		}
 
-		m_out.println("Identifying installed packages...");
+		fOut.println("Identifying installed packages...");
 
 		int count = 0;
 
 		// Check if the packages are installed
-		for (Leaf versionNode : m_packsVersionsList) {
+		for (Leaf versionNode : fPacksVersionsList) {
 
 			String unpackFolder = versionNode.getProperty(Property.DEST_FOLDER);
 			String pdscName = versionNode.getProperty(Property.PDSC_NAME);
@@ -479,7 +479,7 @@ public class PacksStorage {
 
 			try {
 				// Test if the pdsc file exists in the package folder
-				File file = m_repos.getFileObject(pdscRelativePath);
+				File file = fRepos.getFileObject(pdscRelativePath);
 				if (file.exists()) {
 
 					// Add an explicit property for more visibility
@@ -497,9 +497,9 @@ public class PacksStorage {
 
 		}
 		if (count == 0) {
-			m_out.println("Found no installed packages.");
+			fOut.println("Found no installed packages.");
 		} else {
-			m_out.println("Found " + count + " installed packages.");
+			fOut.println("Found " + count + " installed packages.");
 		}
 	}
 
@@ -573,7 +573,7 @@ public class PacksStorage {
 
 		IPath path;
 		try {
-			path = m_repos.getFolderPath().append(pathPart).append(name);
+			path = fRepos.getFolderPath().append(pathPart).append(name);
 		} catch (IOException e) {
 			return null;
 		}
@@ -583,152 +583,66 @@ public class PacksStorage {
 		return file; // may be null
 	}
 
-	// Return the cached file for the name (used to read .pdsc, for example)
-	public File getCachedFile(String name) {
+	// Return the cached file for the name (relative to CACHE folder)
+	public File getCachedFile(String fileName) {
 
-		return getFile(new Path(CACHE_FOLDER), name);
+		return getFile(new Path(CACHE_FOLDER), fileName);
 	}
 
-	// Called from TabDevice in managedbuild.cross
-	public Node getInstalledDevicesForBuild() {
+	public File getCachedPdsc(String pdscName, String version) {
 
-		if (fInstalledDevicesForBuild != null) {
-
-			// Return the in-memory cached tree
-			return fInstalledDevicesForBuild;
-		}
-
-		Activator.getInstance().waitLoadReposJob();
-
-		System.out.println("LoadRepos must be ready");
-
-		BusyIndicator.showWhile(Display.getDefault(), new Runnable() {
-
-			public void run() {
-				fInstalledDevicesForBuild = updateInstalledDevicesForBuild();
-			}
-		});
-
-		return fInstalledDevicesForBuild;
+		return getFile(new Path(CACHE_FOLDER),
+				makeCachePdscName(pdscName, version));
 	}
 
-	private Node updateInstalledDevicesForBuild() {
+	public PackNode getLatestInstalledPackForDevice(String deviceVendorId,
+			String deviceName) {
 
-		File devicesFile = getFile(new Path(PacksStorage.CACHE_FOLDER),
-				DEVICES_FILE_NAME);
-
-		Node rootNode;
-		rootNode = new Node(Type.ROOT);
-		Node emptyNode = Node.addNewChild(rootNode, Type.NONE);
-		emptyNode.setName("No devices available, install packs first.");
-
-		if (devicesFile != null && devicesFile.exists()) {
-			// Parse the cached file
-		} else {
-			// Parse all installed packages
-			Node node = parseInstalledDevicesForBuild();
-			if (node != null) {
-				rootNode = node;
-			}
-
-			// Save cached file for future use
+		String key = makeMapKey(deviceVendorId, deviceName);
+		if (fDevicesMap.containsKey(key)) {
+			return fDevicesMap.get(key);
 		}
 
-		// rootNode = new Node(Type.ROOT);
-		// rootNode.setName("Devices");
-		//
-		// Node family = Node.addUniqueChild(rootNode, Type.FAMILY, "myFamily");
-		// Node subFamily = Node.addUniqueChild(family, Type.SUBFAMILY,
-		// "mySubFamily");
-		// Node device = Node.addUniqueChild(subFamily, Type.DEVICE,
-		// "myDevice");
-		return rootNode;
+		Node tree = getPacksTree();
+		PackNode pack = getLatestInstalledPackForDeviceRecursive(tree,
+				deviceVendorId, deviceName);
+
+		if (pack != null) {
+			fDevicesMap.put(key, pack);
+		}
+
+		return pack;
 	}
 
-	private Node parseInstalledDevicesForBuild() {
+	private PackNode getLatestInstalledPackForDeviceRecursive(Node parent,
+			String deviceVendorId, String deviceName) {
 
-		List<PackNode> versionsList = getInstalledPacksLatestVersionsList();
+		if (parent.isType(Type.PACKAGE)) {
 
-		PdscParserForBuild pdsc = new PdscParserForBuild();
-
-		Node boardsNode = new Node(Type.NONE);
-		boardsNode.setName("Boards");
-		Node devicesNode = new Node(Type.NONE);
-		devicesNode.setName("Devices");
-
-		long beginTime = System.currentTimeMillis();
-
-		m_out.println();
-		m_out.println(Utils.getCurrentDateTime());
-
-		m_out.println("Extracting devices&boards... ");
-
-		int count = 0;
-		for (PackNode node : versionsList) {
-
-			String pdscName = node.getProperty(Property.PDSC_NAME);
-			String version = node.getName();
-
-			File file = getCachedFile(makeCachePdscName(pdscName, version));
-
-			m_out.println("Parsing \"" + file + "\"");
-			try {
-				pdsc.parseXml(file);
-
-				pdsc.parseDevices(devicesNode);
-
-				// Using boards requires existing devices to be present,
-				// to get the memory map
-				pdsc.parseBoards(boardsNode);
-
-				updateBoardsDevices(boardsNode, devicesNode);
-
-				count++;
-			} catch (ParserConfigurationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SAXException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			if (!parent.isBooleanProperty(Property.INSTALLED)) {
+				return null; // skip packages not installed
 			}
-		}
+			if (!parent.hasChildren()) {
+				return null;
+			}
+			for (Leaf node : parent.getChildren()) {
+				if (node.isBooleanProperty(Property.INSTALLED)) {
+					return getLatestInstalledPackForDeviceRecursive(
+							(Node) node, deviceVendorId, deviceName);
+				}
+			}
+			return null; // No installed versions
 
-		long endTime = System.currentTimeMillis();
-		long duration = endTime - beginTime;
-		if (duration == 0) {
-			duration = 1;
-		}
-		m_out.print("Completed in ");
-		m_out.print(duration + "ms, ");
-		if (count == 0) {
-			m_out.println("No packages.");
-		} else if (count == 1) {
-			m_out.println("1 package.");
-		} else {
-			m_out.println(count + " packages.");
-		}
+		} else if (parent.isType(Type.DEVICE)) {
 
-		if (boardsNode.hasChildren() && devicesNode.hasChildren()) {
-			Node rootNode = new Node(Type.ROOT);
-			rootNode.addChild(boardsNode);
-			rootNode.addChild(devicesNode);
-
-			return rootNode;
-		} else if (boardsNode.hasChildren()) {
-			return boardsNode;
-		} else if (devicesNode.hasChildren()) {
-			return devicesNode;
 		}
 
 		return null;
 	}
 
-	private void updateBoardsDevices(Node boardsNode, Node devicesNode) {
+	public Node getLatestInstalledPackForBoard(String boardVendorName,
+			String boardName) {
 
-		// TODO: check if boards mounted devices are present in devices.
-		// If so, copy memory map, otherwise remove
+		return null;
 	}
 }

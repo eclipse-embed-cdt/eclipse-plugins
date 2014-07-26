@@ -21,4 +21,5 @@ Bundle-Localization: plugin
 Import-Package: org.eclipse.cdt.ui.newui,
  org.eclipse.core.filesystem,
  org.eclipse.ui.ide
-Export-Package: ilg.gnuarmeclipse.packs.ui.preferences
+Export-Package: ilg.gnuarmeclipse.packs.ui,
+ ilg.gnuarmeclipse.packs.ui.preferences

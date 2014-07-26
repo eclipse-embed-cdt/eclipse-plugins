@@ -43,50 +43,50 @@ import org.eclipse.ui.console.MessageConsoleStream;
 
 public class InstallJob extends Job {
 
-	private static boolean ms_running = false;
+	private static boolean sfRunning = false;
 
-	private MessageConsoleStream m_out;
-	private TreeSelection m_selection;
+	private MessageConsoleStream fOut;
+	private TreeSelection fSelection;
 
 	// private String m_folderPath;
-	private IProgressMonitor m_monitor;
+	private IProgressMonitor fMonitor;
 
 	// private Repos m_repos;
-	private PacksStorage m_storage;
+	private PacksStorage fStorage;
 
 	public InstallJob(String name, TreeSelection selection) {
 
 		super(name);
 
-		m_out = ConsoleStream.getConsoleOut();
+		fOut = ConsoleStream.getConsoleOut();
 
-		m_selection = selection;
+		fSelection = selection;
 
 		// m_repos = Repos.getInstance();
-		m_storage = PacksStorage.getInstance();
+		fStorage = PacksStorage.getInstance();
 	}
 
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 
-		if (ms_running) {
+		if (sfRunning) {
 			return Status.CANCEL_STATUS;
 		}
 
-		ms_running = true;
-		m_monitor = monitor;
+		sfRunning = true;
+		fMonitor = monitor;
 
 		long beginTime = System.currentTimeMillis();
 
-		m_out.println();
-		m_out.println(Utils.getCurrentDateTime());
+		fOut.println();
+		fOut.println(Utils.getCurrentDateTime());
 
-		m_out.println("Installing packs...");
+		fOut.println("Installing packs...");
 
 		List<Node> packsToInstall = new ArrayList<Node>();
 
 		// Iterate selection and build the list of versions to be installed
-		for (Object obj : m_selection.toArray()) {
+		for (Object obj : fSelection.toArray()) {
 
 			Node node = (Node) obj;
 			// Model properties are passed to view, so we can test them here
@@ -129,7 +129,7 @@ public class InstallJob extends Job {
 
 			// Name the subtask with the pack name
 			monitor.subTask(packFullName);
-			m_out.println("Install \"" + packFullName + "\".");
+			fOut.println("Install \"" + packFullName + "\".");
 
 			try {
 
@@ -140,12 +140,12 @@ public class InstallJob extends Job {
 				versionNode.setBooleanProperty(Property.INSTALLED, true);
 
 			} catch (IOException e) {
-				m_out.println(Utils.reportError(e.toString()));
+				fOut.println(Utils.reportError(e.toString()));
 			}
 		}
 
 		if (installedPacksList.size() > 0) {
-			m_storage.notifyUpdateView(PacksStorageEvent.Type.UPDATE_VERSIONS,
+			fStorage.notifyUpdateView(PacksStorageEvent.Type.UPDATE_VERSIONS,
 					installedPacksList);
 		}
 
@@ -153,7 +153,7 @@ public class InstallJob extends Job {
 
 		if (monitor.isCanceled()) {
 
-			m_out.println("Job cancelled.");
+			fOut.println("Job cancelled.");
 			status = Status.CANCEL_STATUS;
 
 		} else {
@@ -165,23 +165,23 @@ public class InstallJob extends Job {
 			}
 
 			if (installedPacksList.size() == 1) {
-				m_out.print("1 pack");
+				fOut.print("1 pack");
 			} else {
-				m_out.print(installedPacksList.size() + " packs");
+				fOut.print(installedPacksList.size() + " packs");
 			}
-			m_out.println(" installed.");
+			fOut.println(" installed.");
 
-			m_out.print("Install completed in ");
+			fOut.print("Install completed in ");
 			if (duration < 1000) {
-				m_out.println(duration + "ms.");
+				fOut.println(duration + "ms.");
 			} else {
-				m_out.println((duration + 500) / 1000 + "s.");
+				fOut.println((duration + 500) / 1000 + "s.");
 			}
 
 			status = Status.OK_STATUS;
 		}
 
-		ms_running = false;
+		sfRunning = false;
 		return status;
 	}
 
@@ -218,13 +218,13 @@ public class InstallJob extends Job {
 
 		String archiveName = versionNode.getProperty(Property.ARCHIVE_NAME, "");
 
-		File archiveFile = m_storage.getFile(
+		File archiveFile = fStorage.getFile(
 				new Path(PacksStorage.CACHE_FOLDER), archiveName);
 
 		if (archiveFile == null || !archiveFile.exists()) {
 
 			// Read in the .pack file from url to a local file.
-			File archiveFileDownload = m_storage.getFile(new Path(
+			File archiveFileDownload = fStorage.getFile(new Path(
 					PacksStorage.CACHE_FOLDER), archiveName + ".download");
 
 			// To minimise incomplete file risks, first use a temporary
@@ -235,7 +235,7 @@ public class InstallJob extends Job {
 
 			Utils.reportInfo("Pack " + archiveName + " downloaded.");
 		} else {
-			m_monitor.worked((int) archiveFile.length());
+			fMonitor.worked((int) archiveFile.length());
 		}
 
 		String dest = versionNode.getProperty(Property.DEST_FOLDER, "");
@@ -245,7 +245,7 @@ public class InstallJob extends Job {
 		if (destFolder.exists()) {
 
 			// Be sure the place is clean (remove possible folder).
-			m_out.println("Remove existing \"" + destRelPath + "\".");
+			fOut.println("Remove existing \"" + destRelPath + "\".");
 			Utils.deleteFolderRecursive(destFolder);
 		}
 
@@ -256,19 +256,19 @@ public class InstallJob extends Job {
 
 		Utils.reportInfo("Pack " + archiveName + " installed.");
 
-		m_out.println("All files write protected.");
+		fOut.println("All files write protected.");
 	}
 
 	private void copyFile(URL sourceUrl, File destinationFile)
 			throws IOException {
 
-		Utils.copyFile(sourceUrl, destinationFile, m_out, m_monitor);
+		Utils.copyFile(sourceUrl, destinationFile, fOut, fMonitor);
 	}
 
 	private void unzip(File archiveFile, Path destRelativePath)
 			throws IOException {
 
-		m_out.println("Unzip \"" + archiveFile + "\".");
+		fOut.println("Unzip \"" + archiveFile + "\".");
 
 		// Get the zip file content.
 		ZipInputStream zipInput;
@@ -290,8 +290,8 @@ public class InstallJob extends Job {
 				// + "S";
 				// }
 
-				File outFile = m_storage.getFile(destRelativePath, fileName);
-				m_out.println("Write \"" + outFile + "\".");
+				File outFile = fStorage.getFile(destRelativePath, fileName);
+				fOut.println("Write \"" + outFile + "\".");
 
 				OutputStream output = new FileOutputStream(outFile);
 
@@ -310,11 +310,11 @@ public class InstallJob extends Job {
 			zipEntry = zipInput.getNextEntry();
 		}
 
-		m_monitor.worked(1);
+		fMonitor.worked(1);
 
 		zipInput.closeEntry();
 		zipInput.close();
-		m_out.println(countFiles + " files written, "
+		fOut.println(countFiles + " files written, "
 				+ Utils.convertSizeToString(countBytes) + ".");
 	}
 

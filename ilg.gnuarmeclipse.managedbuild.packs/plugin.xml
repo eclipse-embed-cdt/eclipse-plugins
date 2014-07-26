@@ -26,5 +26,35 @@
       </tab>
 
    </extension>
+   
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.cdt.ui.CPerspective">
+         <view
+               id="ilg.gnuarmeclipse.managedbuild.packs.ui.views.DocsView"
+               minimized="false"
+               relationship="stack"
+               relative="org.eclipse.ui.views.ContentOutline"
+               visible="true">
+         </view>
+      </perspectiveExtension>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            id="ilg.gnuarmeclipse.packs"
+            name="%views.packs.category">
+      </category>
+      <view
+            allowMultiple="false"
+            category="ilg.gnuarmeclipse.packs"
+            class="ilg.gnuarmeclipse.managedbuild.packs.ui.views.DocsView"
+            icon="icons/pdficon_small.png"
+            id="ilg.gnuarmeclipse.managedbuild.packs.ui.views.DocsView"
+            name="%views.packs.docs">
+      </view>
+   </extension>
     
 </plugin>

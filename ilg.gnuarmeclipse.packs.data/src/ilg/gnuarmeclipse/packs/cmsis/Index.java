@@ -82,7 +82,7 @@ public class Index {
 		}
 
 		int count = 0;
-		List<Element> pdscElements = Xml.getChildElementsList(el, "pdsc");
+		List<Element> pdscElements = Xml.getChildrenElementsList(el, "pdsc");
 		for (Element pdscElement : pdscElements) {
 
 			String url = pdscElement.getAttribute("url").trim();

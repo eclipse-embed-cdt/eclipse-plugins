@@ -27,7 +27,7 @@ public class PacksPerspective implements IPerspectiveFactory {
 
 	public static final String ID = "ilg.gnuarmeclipse.packs.ui.perspectives.PacksPerspective";
 
-	private IPageLayout factory;
+	private IPageLayout fFactory;
 
 	public PacksPerspective() {
 
@@ -40,7 +40,7 @@ public class PacksPerspective implements IPerspectiveFactory {
 
 		// System.out.println("PacksPerspective.createInitialLayout()");
 
-		this.factory = factory;
+		fFactory = factory;
 
 		addViews();
 		addActionSets();
@@ -55,28 +55,28 @@ public class PacksPerspective implements IPerspectiveFactory {
 		// Note that each new Folder uses a percentage of the remaining
 		// EditorArea.
 
-		IFolderLayout bottom = factory.createFolder("packsBottom", // NON-NLS-1
-				IPageLayout.BOTTOM, 0.75f, factory.getEditorArea());
+		IFolderLayout bottom = fFactory.createFolder("packsBottom", // NON-NLS-1
+				IPageLayout.BOTTOM, 0.75f, fFactory.getEditorArea());
 		bottom.addView(IPageLayout.ID_PROBLEM_VIEW);
 		// bottom.addView("org.eclipse.team.ui.GenericHistoryView"); //NON-NLS-1
 		// bottom.addPlaceholder(IConsoleConstants.ID_CONSOLE_VIEW);
 		bottom.addView(IConsoleConstants.ID_CONSOLE_VIEW);
 
-		IFolderLayout topLeft = factory.createFolder("packsNav", // NON-NLS-1
-				IPageLayout.LEFT, 0.20f, factory.getEditorArea());
+		IFolderLayout topLeft = fFactory.createFolder("packsNav", // NON-NLS-1
+				IPageLayout.LEFT, 0.20f, fFactory.getEditorArea());
 		// topLeft.addView(IPageLayout.ID_RES_NAV);
 		topLeft.addView("ilg.gnuarmeclipse.packs.ui.views.DevicesView");
 		topLeft.addView("ilg.gnuarmeclipse.packs.ui.views.BoardsView");
 		topLeft.addView("ilg.gnuarmeclipse.packs.ui.views.KeywordsView");
 
-		IFolderLayout topRight = factory.createFolder("packsOutline", // NON-NLS-1
-				IPageLayout.RIGHT, 0.66f, factory.getEditorArea());
+		IFolderLayout topRight = fFactory.createFolder("packsOutline", // NON-NLS-1
+				IPageLayout.RIGHT, 0.66f, fFactory.getEditorArea());
 		topRight.addView("ilg.gnuarmeclipse.packs.ui.views.OutlineView");
 		// topRight.addView("ilg.gnuarmeclipse.packs.ui.views.PackagesView");
 
 		// Leave 20% for the editor
-		factory.addView("ilg.gnuarmeclipse.packs.ui.views.PackagesView",
-				IPageLayout.TOP, 0.8f, factory.getEditorArea());
+		fFactory.addView("ilg.gnuarmeclipse.packs.ui.views.PackagesView",
+				IPageLayout.TOP, 0.8f, fFactory.getEditorArea());
 
 		// factory.addFastView("org.eclipse.team.ccvs.ui.RepositoriesView",0.50f);
 		// //NON-NLS-1
@@ -123,11 +123,11 @@ public class PacksPerspective implements IPerspectiveFactory {
 	@SuppressWarnings("deprecation")
 	private void addViewShortcuts() {
 
-		factory.addShowViewShortcut(IConsoleConstants.ID_CONSOLE_VIEW);
-		factory.addShowViewShortcut(JavaUI.ID_PACKAGES);
-		factory.addShowViewShortcut(IPageLayout.ID_RES_NAV);
-		factory.addShowViewShortcut(IPageLayout.ID_PROBLEM_VIEW);
-		factory.addShowViewShortcut(IPageLayout.ID_OUTLINE);
+		fFactory.addShowViewShortcut(IConsoleConstants.ID_CONSOLE_VIEW);
+		fFactory.addShowViewShortcut(JavaUI.ID_PACKAGES);
+		fFactory.addShowViewShortcut(IPageLayout.ID_RES_NAV);
+		fFactory.addShowViewShortcut(IPageLayout.ID_PROBLEM_VIEW);
+		fFactory.addShowViewShortcut(IPageLayout.ID_OUTLINE);
 	}
 
 }

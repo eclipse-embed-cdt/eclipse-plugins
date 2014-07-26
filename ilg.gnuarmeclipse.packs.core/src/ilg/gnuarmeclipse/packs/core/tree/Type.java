@@ -36,6 +36,7 @@ public class Type {
 	public static final String FAMILY = "family";
 	public static final String FEATURE = "feature";
 	public static final String FILE = "file";
+	public static final String FOLDER = "folder";
 	public static final String HEADER = "header";
 	public static final String KEYWORD = "keyword";
 	public static final String KEYWORDS_SELECT = "keywords";

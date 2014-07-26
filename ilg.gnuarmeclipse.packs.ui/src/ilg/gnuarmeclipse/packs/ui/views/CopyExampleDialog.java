@@ -22,19 +22,19 @@ import org.eclipse.swt.widgets.Text;
 
 public class CopyExampleDialog extends Dialog {
 
-	private TreeSelection m_selection;
+	private TreeSelection fSelection;
 
-	private Text m_folderText;
-	private String m_outputFolder;
-	private String m_inputFolder;
+	private Text fFolderText;
+	private String fOutputFolder;
+	private String fInputFolder;
 	// private String m_exampleName;
 
-	private Button m_browseButton;
+	private Button fBrowseButton;
 
 	public CopyExampleDialog(Shell parentShell, TreeSelection selection) {
 
 		super(parentShell);
-		m_selection = selection;
+		fSelection = selection;
 
 		// Node exampleNode = (Node) selection.getFirstElement();
 		// m_exampleName = exampleNode.getProperty(Property.EXAMPLE_NAME,
@@ -43,14 +43,13 @@ public class CopyExampleDialog extends Dialog {
 		String folderPath = Preferences.getPreferenceStore().getString(
 				Preferences.PACKS_FOLDER_PATH);
 		// m_inputFolder = folderPath + "/../Examples/" + m_exampleName;
-		m_inputFolder = new Path(folderPath).append("../Examples/")
-				.toOSString();
+		fInputFolder = new Path(folderPath).append("../Examples/").toOSString();
 
-		m_outputFolder = m_inputFolder;
+		fOutputFolder = fInputFolder;
 	}
 
 	public String[] getData() {
-		return new String[] { m_outputFolder };
+		return new String[] { fOutputFolder };
 	}
 
 	@Override
@@ -64,10 +63,10 @@ public class CopyExampleDialog extends Dialog {
 		super.configureShell(shell);
 
 		String s = "Copy ";
-		if (m_selection.size() == 1) {
+		if (fSelection.size() == 1) {
 			s += "example";
 		} else {
-			s += m_selection.size() + " examples";
+			s += fSelection.size() + " examples";
 		}
 
 		s += " to folder";
@@ -102,33 +101,33 @@ public class CopyExampleDialog extends Dialog {
 			layoutData = new GridData();
 			folderLabel.setLayoutData(layoutData);
 
-			m_folderText = new Text(comp, SWT.SINGLE | SWT.BORDER);
-			m_folderText.setText(m_inputFolder);
+			fFolderText = new Text(comp, SWT.SINGLE | SWT.BORDER);
+			fFolderText.setText(fInputFolder);
 			layoutData = new GridData();
 			layoutData.horizontalAlignment = SWT.FILL;
 			layoutData.grabExcessHorizontalSpace = true;
-			m_folderText.setLayoutData(layoutData);
+			fFolderText.setLayoutData(layoutData);
 
-			m_browseButton = new Button(comp, SWT.PUSH);
-			m_browseButton.setText("Browse...");
+			fBrowseButton = new Button(comp, SWT.PUSH);
+			fBrowseButton.setText("Browse...");
 			layoutData = new GridData();
 			layoutData.verticalAlignment = SWT.CENTER;
 			layoutData.grabExcessHorizontalSpace = false;
 			layoutData.horizontalAlignment = SWT.FILL;
 			// layoutData.minimumWidth = 80;
-			m_browseButton.setLayoutData(layoutData);
+			fBrowseButton.setLayoutData(layoutData);
 		}
 
 		// -----
 
-		m_folderText.addModifyListener(new ModifyListener() {
+		fFolderText.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				m_outputFolder = m_folderText.getText().trim();
+				fOutputFolder = fFolderText.getText().trim();
 			}
 		});
 
-		m_browseButton.addSelectionListener(new SelectionAdapter() {
+		fBrowseButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 
@@ -138,7 +137,7 @@ public class CopyExampleDialog extends Dialog {
 				String str = dialog.open();
 				if (str != null) {
 					// System.out.println(str);
-					m_folderText.setText(str.trim());
+					fFolderText.setText(str.trim());
 				}
 			}
 		});

@@ -46,13 +46,14 @@ public class PdscParserForBuild extends PdscParser {
 			return;
 		}
 
-		List<Element> childElements = Xml.getChildElementsList(packageElement);
+		List<Element> childElements = Xml
+				.getChildrenElementsList(packageElement);
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
 			if ("devices".equals(elementName)) {
 				List<Element> childElements2 = Xml
-						.getChildElementsList(childElement);
+						.getChildrenElementsList(childElement);
 				for (Element childElement2 : childElements2) {
 
 					String elementName2 = childElement2.getNodeName();
@@ -95,12 +96,13 @@ public class PdscParserForBuild extends PdscParser {
 
 		Node familyNode = Node.addUniqueChild(vendorNode, Type.FAMILY,
 				familyName);
-		if (!familyNode.hasProperties()) {
-			familyNode.putProperty(Node.VENDOR_PROPERTY, va[0]);
-			familyNode.putProperty(Node.VENDORID_PROPERTY, va[1]);
-		}
 
-		List<Element> childElements = Xml.getChildElementsList(el);
+		// The last encountered value one will be preserved
+		// TODO: update vendor name from vendor id based on a conversion table
+		familyNode.putProperty(Node.VENDOR_PROPERTY, va[0]);
+		familyNode.putProperty(Node.VENDORID_PROPERTY, va[1]);
+
+		List<Element> childElements = Xml.getChildrenElementsList(el);
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
@@ -146,7 +148,7 @@ public class PdscParserForBuild extends PdscParser {
 		Node subFamilyNode = Node.addUniqueChild(parent, Type.SUBFAMILY,
 				subFamilyName);
 
-		List<Element> childElements = Xml.getChildElementsList(el);
+		List<Element> childElements = Xml.getChildrenElementsList(el);
 
 		for (Element childElement : childElements) {
 
@@ -172,7 +174,7 @@ public class PdscParserForBuild extends PdscParser {
 
 		Node deviceNode = Node.addUniqueChild(parent, Type.DEVICE, deviceName);
 
-		List<Element> childElements = Xml.getChildElementsList(el);
+		List<Element> childElements = Xml.getChildrenElementsList(el);
 
 		for (Element childElement : childElements) {
 
@@ -197,7 +199,7 @@ public class PdscParserForBuild extends PdscParser {
 		Node variantNode = Node.addUniqueChild(parent, Type.VARIANT,
 				variantName);
 
-		List<Element> childElements2 = Xml.getChildElementsList(el);
+		List<Element> childElements2 = Xml.getChildrenElementsList(el);
 		for (Element childElement2 : childElements2) {
 
 			processDevicePropertiesGroup(childElement2, variantNode);
@@ -266,13 +268,14 @@ public class PdscParserForBuild extends PdscParser {
 			return;
 		}
 
-		List<Element> childElements = Xml.getChildElementsList(packageElement);
+		List<Element> childElements = Xml
+				.getChildrenElementsList(packageElement);
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
 			if ("boards".equals(elementName)) {
 				List<Element> childElements2 = Xml
-						.getChildElementsList(childElement);
+						.getChildrenElementsList(childElement);
 				for (Element childElement2 : childElements2) {
 
 					String elementName2 = childElement2.getNodeName();
@@ -304,7 +307,7 @@ public class PdscParserForBuild extends PdscParser {
 
 		Node boardNode = Node.addUniqueChild(vendorNode, Type.BOARD, name);
 
-		List<Element> childElements = Xml.getChildElementsList(el);
+		List<Element> childElements = Xml.getChildrenElementsList(el);
 
 		for (Element childElement : childElements) {
 

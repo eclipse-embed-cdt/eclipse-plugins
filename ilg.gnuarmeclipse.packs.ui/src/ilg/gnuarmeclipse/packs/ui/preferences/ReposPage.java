@@ -43,48 +43,48 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 public class ReposPage extends PreferencePage implements
 		IWorkbenchPreferencePage {
 
-	private Composite m_composite;
+	private Composite fComposite;
 
-	private Table m_table;
-	private TableColumn m_columnType;
-	private TableColumn m_columnName;
-	private TableColumn m_columnUrl;
+	private Table fTable;
+	private TableColumn fColumnType;
+	private TableColumn fColumnName;
+	private TableColumn fColumnUrl;
 
-	private Composite m_buttonsComposite;
+	private Composite fButtonsComposite;
 
-	private String[] m_buttonsNames = { AbstractCPropertyTab.ADD_STR,
+	private String[] fButtonsNames = { AbstractCPropertyTab.ADD_STR,
 			AbstractCPropertyTab.EDIT_STR, AbstractCPropertyTab.DEL_STR };
 
-	private Button[] m_buttons; // right side buttons
+	private Button[] fButtons; // right side buttons
 
-	private List<Map<String, Object>> m_contentList;
+	private List<Map<String, Object>> fContentList;
 
-	private Repos m_repos;
+	private Repos fRepos;
 
 	public ReposPage() {
 
 		super();
 		setDescription("Add links to the sites where packages are published.");
 
-		m_contentList = null;
-		m_buttons = null;
+		fContentList = null;
+		fButtons = null;
 
-		m_repos = Repos.getInstance();
+		fRepos = Repos.getInstance();
 	}
 
 	@Override
 	protected Control createContents(Composite parent) {
 
-		m_composite = new Composite(parent, SWT.NULL);
-		m_composite.setFont(parent.getFont());
+		fComposite = new Composite(parent, SWT.NULL);
+		fComposite.setFont(parent.getFont());
 
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 1;
 		layout.marginHeight = 0;
 		layout.marginWidth = 0;
-		m_composite.setLayout(layout);
+		fComposite.setLayout(layout);
 
-		Composite groupComposite = new Composite(m_composite, SWT.NULL);
+		Composite groupComposite = new Composite(fComposite, SWT.NULL);
 		layout = new GridLayout();
 		layout.numColumns = 2;
 		layout.marginLeft = 0;
@@ -105,57 +105,57 @@ public class ReposPage extends PreferencePage implements
 		{
 			initTable(groupComposite);
 
-			m_contentList = m_repos.getList();
+			fContentList = fRepos.getList();
 
 			updateTableContent();
 		}
 
 		// Column 2: buttons
 		{
-			initButtons(groupComposite, m_buttonsNames, 80);
+			initButtons(groupComposite, fButtonsNames, 80);
 		}
 
-		return m_composite;
+		return fComposite;
 	}
 
 	protected void initTable(Composite comp) {
 
-		m_table = new Table(comp, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
-		m_table.setHeaderVisible(true);
-		m_table.setLinesVisible(true);
+		fTable = new Table(comp, SWT.SINGLE | SWT.BORDER | SWT.FULL_SELECTION);
+		fTable.setHeaderVisible(true);
+		fTable.setLinesVisible(true);
 
 		GridData layoutData = new GridData();
 		layoutData.verticalAlignment = SWT.FILL;
 		layoutData.grabExcessVerticalSpace = true;
 		layoutData.horizontalAlignment = SWT.FILL;
 		layoutData.grabExcessHorizontalSpace = true;
-		m_table.setLayoutData(layoutData);
+		fTable.setLayoutData(layoutData);
 
-		m_columnType = new TableColumn(m_table, SWT.NULL);
-		m_columnType.setText("Type");
-		m_columnType.setWidth(100);
-		m_columnType.setResizable(true);
+		fColumnType = new TableColumn(fTable, SWT.NULL);
+		fColumnType.setText("Type");
+		fColumnType.setWidth(100);
+		fColumnType.setResizable(true);
 
-		m_columnName = new TableColumn(m_table, SWT.NULL);
-		m_columnName.setText("Name");
-		m_columnName.setWidth(100);
-		m_columnName.setResizable(true);
+		fColumnName = new TableColumn(fTable, SWT.NULL);
+		fColumnName.setText("Name");
+		fColumnName.setWidth(100);
+		fColumnName.setResizable(true);
 
-		m_columnUrl = new TableColumn(m_table, SWT.NULL);
-		m_columnUrl.setText("URL");
-		m_columnUrl.setWidth(350);
-		m_columnUrl.setResizable(true);
+		fColumnUrl = new TableColumn(fTable, SWT.NULL);
+		fColumnUrl.setText("URL");
+		fColumnUrl.setWidth(350);
+		fColumnUrl.setResizable(true);
 	}
 
 	protected void updateTableContent() {
 
-		m_table.removeAll();
+		fTable.removeAll();
 
-		if (m_contentList != null) {
+		if (fContentList != null) {
 			TableItem item;
-			for (Map<String, Object> map : m_contentList) {
-				item = new TableItem(m_table, SWT.NULL);
-				item.setText(m_repos.convertToArray(map));
+			for (Map<String, Object> map : fContentList) {
+				item = new TableItem(fTable, SWT.NULL);
+				item.setText(fRepos.convertToArray(map));
 			}
 		}
 
@@ -165,7 +165,7 @@ public class ReposPage extends PreferencePage implements
 
 	protected void initButtons(Composite comp, String[] names, int width) {
 
-		m_buttonsComposite = new Composite(comp, SWT.NULL);
+		fButtonsComposite = new Composite(comp, SWT.NULL);
 
 		if (names == null || names.length == 0)
 			return;
@@ -173,7 +173,7 @@ public class ReposPage extends PreferencePage implements
 		GridData layoutData = new GridData();
 		layoutData.verticalAlignment = SWT.FILL;
 		layoutData.horizontalAlignment = SWT.RIGHT;
-		m_buttonsComposite.setLayoutData(layoutData);
+		fButtonsComposite.setLayoutData(layoutData);
 
 		GridLayout layout = new GridLayout();
 		layout.numColumns = 1;
@@ -181,12 +181,12 @@ public class ReposPage extends PreferencePage implements
 		layout.marginRight = 5;
 		layout.marginTop = 0;
 
-		m_buttonsComposite.setLayout(layout);
+		fButtonsComposite.setLayout(layout);
 
-		m_buttons = new Button[names.length];
+		fButtons = new Button[names.length];
 		for (int i = 0; i < names.length; i++) {
 
-			m_buttons[i] = new Button(m_buttonsComposite, SWT.PUSH);
+			fButtons[i] = new Button(fButtonsComposite, SWT.PUSH);
 
 			layoutData = new GridData();
 			layoutData.verticalAlignment = SWT.CENTER;
@@ -195,16 +195,16 @@ public class ReposPage extends PreferencePage implements
 			layoutData.minimumWidth = width;
 
 			if (names[i] != null)
-				m_buttons[i].setText(names[i]);
+				fButtons[i].setText(names[i]);
 			else { // no button, but placeholder !
-				m_buttons[i].setVisible(false);
-				m_buttons[i].setEnabled(false);
+				fButtons[i].setVisible(false);
+				fButtons[i].setEnabled(false);
 				layoutData.heightHint = 10;
 			}
 
-			m_buttons[i].setLayoutData(layoutData);
+			fButtons[i].setLayoutData(layoutData);
 
-			m_buttons[i].addSelectionListener(new SelectionAdapter() {
+			fButtons[i].addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent event) {
 					buttonPressed(event);
@@ -215,8 +215,8 @@ public class ReposPage extends PreferencePage implements
 
 	private void buttonPressed(SelectionEvent e) {
 
-		for (int i = 0; i < m_buttons.length; i++) {
-			if (m_buttons[i].equals(e.widget)) {
+		for (int i = 0; i < fButtons.length; i++) {
+			if (fButtons[i].equals(e.widget)) {
 				buttonPressed(i);
 				return;
 			}
@@ -241,36 +241,36 @@ public class ReposPage extends PreferencePage implements
 
 	private void handleAddButton() {
 
-		NewRepoDialog dlg = new NewRepoDialog(m_composite.getShell(), null);
+		NewRepoDialog dlg = new NewRepoDialog(fComposite.getShell(), null);
 		if (dlg.open() == Dialog.OK) {
-			m_contentList.add(m_repos.convertToMap(dlg.getData()));
+			fContentList.add(fRepos.convertToMap(dlg.getData()));
 			// System.out.println("added");
 		}
 	}
 
 	private void handleEditButton() {
 
-		int index = m_table.getSelectionIndex();
+		int index = fTable.getSelectionIndex();
 		if (index == -1) {
 			return; // nothing selected
 		}
 
-		NewRepoDialog dlg = new NewRepoDialog(m_composite.getShell(),
-				m_repos.convertToArray(m_contentList.get(index)));
+		NewRepoDialog dlg = new NewRepoDialog(fComposite.getShell(),
+				fRepos.convertToArray(fContentList.get(index)));
 		if (dlg.open() == Dialog.OK) {
-			m_contentList.set(index, m_repos.convertToMap(dlg.getData()));
+			fContentList.set(index, fRepos.convertToMap(dlg.getData()));
 			// System.out.println("edited");
 		}
 	}
 
 	private void handleDelButton() {
 
-		int index = m_table.getSelectionIndex();
+		int index = fTable.getSelectionIndex();
 		if (index == -1) {
 			return; // nothing selected
 		}
 
-		m_contentList.remove(index);
+		fContentList.remove(index);
 	}
 
 	@Override
@@ -283,7 +283,7 @@ public class ReposPage extends PreferencePage implements
 		// System.out.println("SitesPage.performDefaults()");
 		super.performDefaults();
 
-		m_contentList = m_repos.getDefaultList();
+		fContentList = fRepos.getDefaultList();
 		updateTableContent();
 	}
 
@@ -293,7 +293,7 @@ public class ReposPage extends PreferencePage implements
 		// System.out.println("SitesPage.performOk()");
 
 		try {
-			m_repos.putList(m_contentList);
+			fRepos.putList(fContentList);
 		} catch (IOException e) {
 			Activator.log(e);
 		}
