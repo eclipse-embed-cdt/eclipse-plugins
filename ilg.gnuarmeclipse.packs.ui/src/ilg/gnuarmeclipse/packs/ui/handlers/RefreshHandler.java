@@ -290,7 +290,7 @@ public class RefreshHandler extends AbstractHandler {
 
 				URL sourceUrl = new URL(pdscUrl + pdscName);
 
-				String cachedFileName = fStorage.makeCachePdscName(pdscName,
+				String cachedFileName = fStorage.makeCachedPdscName(pdscName,
 						pdscVersion);
 				File cachedFile = fStorage.getFile(new Path(
 						PacksStorage.CACHE_FOLDER), cachedFileName);
@@ -333,10 +333,10 @@ public class RefreshHandler extends AbstractHandler {
 
 				ContentSerialiser serialiser = new ContentSerialiser();
 				serialiser.serialise(contentRoot,
-						fRepos.getFileObject(fileName));
+						PacksStorage.getFileObject(fileName));
 
 				File file;
-				file = fRepos.getFileObject(fileName);
+				file = PacksStorage.getFileObject(fileName);
 				fOut.println("File \"" + file.getPath() + "\" written.");
 
 			} catch (IOException e) {
@@ -351,7 +351,7 @@ public class RefreshHandler extends AbstractHandler {
 
 			String contentUrl = (String) repo.get("url");
 			String fileName = fRepos.getRepoContentXmlFromUrl(contentUrl);
-			File cachedFile = fRepos.getFileObject(fileName);
+			File cachedFile = PacksStorage.getFileObject(fileName);
 
 			Utils.copyFile(new URL(contentUrl), cachedFile, fOut, null);
 

@@ -11,8 +11,6 @@
 
 package ilg.gnuarmeclipse.packs.data;
 
-import ilg.gnuarmeclipse.packs.core.Preferences;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -26,9 +24,6 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.jface.preference.IPreferenceStore;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -61,70 +56,9 @@ public class Repos {
 	// ------------------------------------------------------------------------
 
 	private List<Map<String, Object>> fList;
-	private IPath fFolderPath;
 
 	public Repos() {
 		fList = null;
-		fFolderPath = null;
-	}
-
-	// ------------------------------------------------------------------------
-
-	// Return a file object in Packages
-	public File getFileObject(String name) throws IOException {
-
-		IPath path = getFolderPath().append(name);
-		File file = path.toFile();
-		if (file == null) {
-			throw new IOException(name + " File object null.");
-		}
-		return file; // Cannot return null
-	}
-
-	// Return the absolute 'Packages' path.
-	public IPath getFolderPath() throws IOException {
-
-		if (fFolderPath == null) {
-
-			fFolderPath = new Path(getFolderPathString());
-		}
-
-		return fFolderPath;
-	}
-
-	// Return a string with the absolute full path of the folder used
-	// to store packages
-	public String getFolderPathString() throws IOException {
-
-		IPreferenceStore store = Preferences.getPreferenceStore();
-		String sitesFolderPath = store.getString(Preferences.PACKS_FOLDER_PATH)
-				.trim();
-
-		if (sitesFolderPath == null) {
-			throw new IOException("Missing folder path.");
-		}
-
-		// Remove the terminating separator
-		if (sitesFolderPath.endsWith(String.valueOf(IPath.SEPARATOR))) {
-			sitesFolderPath = sitesFolderPath.substring(0,
-					sitesFolderPath.length() - 1);
-		}
-
-		if (sitesFolderPath.length() == 0) {
-			throw new IOException("Missing folder path.");
-		}
-		return sitesFolderPath;
-	}
-
-	public void updateFolderPath() {
-
-		fFolderPath = null;
-
-		try {
-			getFolderPath();
-		} catch (IOException e) {
-			;
-		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -175,8 +109,8 @@ public class Repos {
 	}
 
 	public void updateList() {
+		
 		fList = null;
-
 		getList();
 	}
 
@@ -216,7 +150,7 @@ public class Repos {
 	private List<Map<String, Object>> parseFile() throws IOException,
 			ParserConfigurationException, SAXException {
 
-		File file = getFileObject(REPOS_FILE_NAME);
+		File file = PacksStorage.getFileObject(REPOS_FILE_NAME);
 		if (!file.exists()) {
 			throw new UsingDefaultFileException("File " + REPOS_FILE_NAME
 					+ " does not exist, using defaults.");
@@ -277,7 +211,7 @@ public class Repos {
 	// Write the list of repositories to a local file
 	public void putList(List<Map<String, Object>> sitesList) throws IOException {
 
-		File file = getFileObject(REPOS_FILE_NAME);
+		File file = PacksStorage.getFileObject(REPOS_FILE_NAME);
 
 		// The xml structure is simple, write it as strings
 		if (!file.exists())

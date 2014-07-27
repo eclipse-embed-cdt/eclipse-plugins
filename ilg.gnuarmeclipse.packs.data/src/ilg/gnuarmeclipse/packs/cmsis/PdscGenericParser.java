@@ -15,6 +15,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
 
@@ -24,13 +25,27 @@ import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.Xml;
 
-public class PdscGenericParser extends PdscParser {
+/* 
+ * Very simple parser, to convert the messy PDSC schema into a more regular
+ * and compact representation. The output is a tree, with properties and 
+ * children.
+ * 
+ * Original attributes are turned into properties, keeping the original name;
+ * the string content is turned into a special property (Property.XML_CONTENT).
+ * 
+ * Simple (meaning no children) children elements (like <description> for 
+ * selected nodes) are also turned into properties.
+ * 
+ * Properties are trimmed, so no need to do it again when consuming them.
+ * 
+ * All other children elements are turned into children nodes, recursively.
+ * 
+ */
+public class PdscGenericParser {
 
 	private Map<String, String[]> fOptimizationsMap;
 
 	public PdscGenericParser() {
-
-		super();
 
 		fOptimizationsMap = new TreeMap<String, String[]>();
 		fOptimizationsMap.put("package", new String[] { "description", "name",
@@ -47,9 +62,9 @@ public class PdscGenericParser extends PdscParser {
 		fOptimizationsMap.put("api", new String[] { "description" });
 	}
 
-	public Node parse() {
+	public Node parse(Document document) {
 
-		Element packageElement = fDocument.getDocumentElement();
+		Element packageElement = document.getDocumentElement();
 
 		Node tree = new Node(Type.ROOT);
 		parseRecusive(packageElement, tree);
@@ -101,7 +116,7 @@ public class PdscGenericParser extends PdscParser {
 		if (attributes != null) {
 			for (int i = 0; i < attributes.getLength(); ++i) {
 				String name = attributes.item(i).getNodeName();
-				node.putProperty(name, el.getAttribute(name));
+				node.putProperty(name, el.getAttribute(name).trim());
 			}
 		}
 	}

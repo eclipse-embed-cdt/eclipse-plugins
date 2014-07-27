@@ -75,7 +75,7 @@ public class GenericSerialiser {
 
 	public void serialise(Node tree, File file) throws IOException {
 
-		System.out.println("Serialise to " + file);
+		// System.out.println("Serialise to " + file);
 
 		file.getParentFile().mkdir();
 

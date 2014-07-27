@@ -648,15 +648,10 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 
 	private Node getDevicesTree() {
 
-		// TODO: consider a static file with custom devices (custom_devices.xml)
-		// to be merged with installed devices.
-		Node devicesRoot;
-		if (fDataManager != null) {
-			devicesRoot = fDataManager.getInstalledDevicesForBuild();
-		} else {
-			devicesRoot = new Node(Type.ROOT);
-			Node.addNewChild(devicesRoot, Type.NONE).setName("nu-i");
-		}
+		// Call the data manager. If the tree is not cached, will busy wait.
+		Node devicesRoot = fDataManager.getInstalledDevicesForBuild();
+
+		assert devicesRoot != null;
 		return devicesRoot;
 	}
 }

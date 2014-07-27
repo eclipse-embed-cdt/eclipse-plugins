@@ -17,6 +17,7 @@ import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
+import ilg.gnuarmeclipse.packs.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.data.Repos;
 import ilg.gnuarmeclipse.packs.data.Utils;
 
@@ -47,7 +48,7 @@ public class ParsePdscRunnable implements IRunnableWithProgress {
 
 		IPath folderPath;
 		try {
-			folderPath = Repos.getInstance().getFolderPath();
+			folderPath = PacksStorage.getFolderPath();
 		} catch (IOException e1) {
 			return;
 		}

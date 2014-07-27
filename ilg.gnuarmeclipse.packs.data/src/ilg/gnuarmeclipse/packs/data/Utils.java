@@ -231,6 +231,17 @@ public class Utils {
 
 	static final private String MARKER_ID = "ilg.gnuarmeclipse.packs.marker";
 
+	// Sample:
+	//
+	// try {
+	//
+	// } catch (Exception e) {
+	// String msg = e.getMessage() + ", file: "+ file.getName();
+	// fOut.println("Error: " + msg);
+	// Utils.reportError(msg);
+	// Activator.log(e);
+	// }
+
 	public static String reportError(String message) {
 
 		try {

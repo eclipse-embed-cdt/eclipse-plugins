@@ -34,7 +34,7 @@ public class PdscParserForBuild extends PdscParser {
 		Element packageElement = fDocument.getDocumentElement();
 		String firstElementName = packageElement.getNodeName();
 		if (!"package".equals(firstElementName)) {
-			System.out.println("Missing <packages>, <" + firstElementName
+			System.out.println("Missing <package>, <" + firstElementName
 					+ "> encountered");
 			return;
 		}

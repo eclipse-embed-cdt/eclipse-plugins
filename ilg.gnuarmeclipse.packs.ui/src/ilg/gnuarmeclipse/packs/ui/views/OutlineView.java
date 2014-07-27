@@ -98,7 +98,7 @@ public class OutlineView extends ViewPart {
 						.getProperty(Property.DEST_FOLDER);
 				if (folder != null) {
 					try {
-						fPackageAbsolutePath = Repos.getInstance()
+						fPackageAbsolutePath = PacksStorage
 								.getFolderPath().append(folder);
 					} catch (IOException e) {
 						;

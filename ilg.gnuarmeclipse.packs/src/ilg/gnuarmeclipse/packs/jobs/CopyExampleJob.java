@@ -17,6 +17,7 @@ import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
+import ilg.gnuarmeclipse.packs.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.data.Repos;
 import ilg.gnuarmeclipse.packs.data.Utils;
 
@@ -41,7 +42,6 @@ public class CopyExampleJob extends Job {
 	private TreeSelection fSelection;
 	private IPath fDestFolderPath;
 
-	private Repos fRepos;
 	private IProgressMonitor fMonitor;
 
 	private int fSizeOfPrefixToStrip;
@@ -57,7 +57,6 @@ public class CopyExampleJob extends Job {
 
 		fSizeOfPrefixToStrip = 0;
 
-		fRepos = Repos.getInstance();
 		fDestFolderPath = new Path(fParam[0]);
 	}
 
@@ -128,7 +127,7 @@ public class CopyExampleJob extends Job {
 			IPath srcFolderPath;
 			try {
 
-				srcFolderPath = fRepos.getFolderPath();
+				srcFolderPath = PacksStorage.getFolderPath();
 				srcFolderPath = srcFolderPath.append(packRelativeFolder);
 				fSizeOfPrefixToStrip = srcFolderPath.toString().length();
 				if (!srcFolderPath.hasTrailingSeparator()) {

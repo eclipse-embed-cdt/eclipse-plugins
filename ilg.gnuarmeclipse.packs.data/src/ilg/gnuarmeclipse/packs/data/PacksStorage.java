@@ -12,6 +12,7 @@
 package ilg.gnuarmeclipse.packs.data;
 
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
+import ilg.gnuarmeclipse.packs.core.Preferences;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.PackNode;
@@ -32,6 +33,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -50,7 +52,81 @@ public class PacksStorage {
 
 	public static final String DEVICES_FILE_NAME = ".devicesForBuild.xml";
 
+	private static IPath sfFolderPath = null;
+
 	// ------------------------------------------------------------------------
+
+	// Return a file object in Packages
+	public static File getFileObject(String name) throws IOException {
+
+		IPath path = getFolderPath().append(name);
+		File file = path.toFile();
+		if (file == null) {
+			throw new IOException(name + " File object null.");
+		}
+		return file; // Cannot return null
+	}
+
+	// Return a file object in Packages/.cache
+	public static File getCachedFileObject(String name) throws IOException {
+
+		IPath path = getFolderPath().append(CACHE_FOLDER).append(name);
+		File file = path.toFile();
+		if (file == null) {
+			throw new IOException(name + " File object null.");
+		}
+		return file; // Cannot return null
+	}
+
+	// Return the absolute 'Packages' path.
+	public static IPath getFolderPath() throws IOException {
+
+		if (sfFolderPath == null) {
+
+			sfFolderPath = new Path(getFolderPathString());
+		}
+
+		return sfFolderPath;
+	}
+
+	// Return a string with the absolute full path of the folder used
+	// to store packages
+	public static String getFolderPathString() throws IOException {
+
+		IPreferenceStore store = Preferences.getPreferenceStore();
+		String folderPath = store.getString(Preferences.PACKS_FOLDER_PATH)
+				.trim();
+
+		if (folderPath == null) {
+			throw new IOException("Missing folder path.");
+		}
+
+		// Remove the terminating separator
+		if (folderPath.endsWith(String.valueOf(IPath.SEPARATOR))) {
+			folderPath = folderPath.substring(0, folderPath.length() - 1);
+		}
+
+		if (folderPath.length() == 0) {
+			throw new IOException("Missing folder path.");
+		}
+		return folderPath;
+	}
+
+	public static String makeCachedPdscName(String name, String version) {
+
+		String s;
+
+		s = name;
+		int ix = s.lastIndexOf('.');
+		if (ix > 0) {
+			// Insert .version before extension
+			s = s.substring(0, ix) + "." + version + s.substring(ix);
+		}
+		return s;
+	}
+
+	// ========================================================================
+	// To be reorganised (moved to DataManager or removed)
 
 	private static PacksStorage sfInstance;
 
@@ -67,7 +143,7 @@ public class PacksStorage {
 
 	private Repos fRepos;
 	private MessageConsoleStream fOut;
-	//private List<IDataManagerListener> fListeners;
+	// private List<IDataManagerListener> fListeners;
 
 	private List<PackNode> fPacksVersionsList;
 	private Node fPacksVersionsTree;
@@ -186,55 +262,6 @@ public class PacksStorage {
 
 	// ------------------------------------------------------------------------
 
-//	public void addListener(IDataManagerListener listener) {
-//		if (!fListeners.contains(listener)) {
-//			fListeners.add(listener);
-//		}
-//	}
-//
-//	public void removeListener(IDataManagerListener listener) {
-//		fListeners.remove(listener);
-//	}
-
-//	// Used by 'Refresh', 'LoadReposSummaries'
-//	public void notifyNewInput() {
-//
-//		// System.out.println("PacksStorage notifyRefresh()");
-//		DataManagerEvent event = new DataManagerEvent(this,
-//				DataManagerEvent.Type.NEW_INPUT);
-//
-//		notifyListener(event);
-//	}
-//
-//	// Currently not used
-//	public void notifyRefreshAll() {
-//
-//		// System.out.println("PacksStorage notifyRefresh()");
-//		DataManagerEvent event = new DataManagerEvent(this,
-//				DataManagerEvent.Type.REFRESH_ALL);
-//
-//		notifyListener(event);
-//	}
-//
-//	// 'Install/Remove Pack' notifies Type.UPDATE_VERSIONS
-//	public void notifyUpdateView(String type, List<Leaf> list) {
-//
-//		// System.out.println("PacksStorage notifyUpdateView()");
-//		DataManagerEvent event = new DataManagerEvent(this, type, list);
-//
-//		notifyListener(event);
-//
-//		fDevicesMap.clear();
-//	}
-//
-//	public void notifyListener(DataManagerEvent event) {
-//
-//		for (IDataManagerListener listener : fListeners) {
-//			// System.out.println(listener);
-//			listener.packsChanged(event);
-//		}
-//	}
-
 	public int computeParseReposWorkUnits() {
 
 		List<Map<String, Object>> reposList;
@@ -292,7 +319,7 @@ public class PacksStorage {
 		long beginTime = System.currentTimeMillis();
 
 		File file;
-		file = fRepos.getFileObject(fileName);
+		file = getFileObject(fileName);
 
 		fOut.println("Parsing \"" + file.getPath() + "\"...");
 
@@ -475,7 +502,7 @@ public class PacksStorage {
 
 			try {
 				// Test if the pdsc file exists in the package folder
-				File file = fRepos.getFileObject(pdscRelativePath);
+				File file = getFileObject(pdscRelativePath);
 				if (file.exists()) {
 
 					// Add an explicit property for more visibility
@@ -552,24 +579,11 @@ public class PacksStorage {
 
 	}
 
-	public String makeCachePdscName(String name, String version) {
-
-		String s;
-
-		s = name;
-		int ix = s.lastIndexOf('.');
-		if (ix > 0) {
-			// Insert .version before extension
-			s = s.substring(0, ix) + "." + version + s.substring(ix);
-		}
-		return s;
-	}
-
 	public File getFile(IPath pathPart, String name) {
 
 		IPath path;
 		try {
-			path = fRepos.getFolderPath().append(pathPart).append(name);
+			path = getFolderPath().append(pathPart).append(name);
 		} catch (IOException e) {
 			return null;
 		}
@@ -588,7 +602,7 @@ public class PacksStorage {
 	public File getCachedPdsc(String pdscName, String version) {
 
 		return getFile(new Path(CACHE_FOLDER),
-				makeCachePdscName(pdscName, version));
+				makeCachedPdscName(pdscName, version));
 	}
 
 	public PackNode getLatestInstalledPackForDevice(String deviceVendorId,

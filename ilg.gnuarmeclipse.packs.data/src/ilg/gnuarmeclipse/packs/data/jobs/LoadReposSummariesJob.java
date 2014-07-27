@@ -33,7 +33,6 @@ public class LoadReposSummariesJob extends Job {
 
 	private MessageConsoleStream fOut;
 
-	private Repos fRepos;
 	private PacksStorage fStorage;
 	private DataManager fDataManager;
 
@@ -43,7 +42,6 @@ public class LoadReposSummariesJob extends Job {
 
 		fOut = ConsoleStream.getConsoleOut();
 
-		fRepos = Repos.getInstance();
 		fStorage = PacksStorage.getInstance();
 		fDataManager = DataManager.getInstance();
 	}
@@ -63,7 +61,7 @@ public class LoadReposSummariesJob extends Job {
 		fOut.println(Utils.getCurrentDateTime());
 
 		List<Map<String, Object>> reposList;
-		reposList = fRepos.getList();
+		reposList = Repos.getInstance().getList();
 
 		int workUnits = reposList.size();
 		workUnits++; // For post processing

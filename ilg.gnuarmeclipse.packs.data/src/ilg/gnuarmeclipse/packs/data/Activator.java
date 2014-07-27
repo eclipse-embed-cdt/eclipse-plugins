@@ -59,12 +59,6 @@ public class Activator extends AbstractActivator {
 
 		super.start(context);
 
-		// Prepare & cache various variables
-		Repos repos = Repos.getInstance();
-		repos.getFolderPath();
-
-		PacksStorage.getInstance();
-
 		// Initial load of repositories summaries
 		fLoadReposJob = new LoadReposSummariesJob("Load repos summaries");
 		fLoadReposJob.schedule();

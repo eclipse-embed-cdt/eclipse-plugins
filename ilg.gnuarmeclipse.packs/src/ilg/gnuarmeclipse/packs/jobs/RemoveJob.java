@@ -18,6 +18,7 @@ import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DataManager;
 import ilg.gnuarmeclipse.packs.data.DataManagerEvent;
+import ilg.gnuarmeclipse.packs.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.data.Repos;
 import ilg.gnuarmeclipse.packs.data.Utils;
 
@@ -43,8 +44,6 @@ public class RemoveJob extends Job {
 	// private String m_folderPath;
 	private IProgressMonitor fMonitor;
 
-	private Repos fRepos;
-
 	// private PacksStorage fStorage;
 	private DataManager fDataManager;
 
@@ -56,7 +55,6 @@ public class RemoveJob extends Job {
 
 		fSelection = selection;
 
-		fRepos = Repos.getInstance();
 		// fStorage = PacksStorage.getInstance();
 		fDataManager = DataManager.getInstance();
 	}
@@ -116,7 +114,7 @@ public class RemoveJob extends Job {
 			try {
 
 				String dest = versionNode.getProperty(Property.DEST_FOLDER, "");
-				versionFolderPath = fRepos.getFolderPath().append(dest);
+				versionFolderPath = PacksStorage.getFolderPath().append(dest);
 
 				// Remove the pack archived file
 				fOut.println("Recursive erase \"" + versionFolderPath + "\".");

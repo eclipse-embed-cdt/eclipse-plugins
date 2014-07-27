@@ -11,7 +11,9 @@
 
 package ilg.gnuarmeclipse.packs.data;
 
+import ilg.gnuarmeclipse.packs.cmsis.PdscGenericParser;
 import ilg.gnuarmeclipse.packs.cmsis.PdscParserForBuild;
+import ilg.gnuarmeclipse.packs.cmsis.PdscTreeParserForBuild;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.data.IDataManager;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
@@ -19,22 +21,20 @@ import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
+import ilg.gnuarmeclipse.packs.data.jobs.BusyIndicatorWithDuration;
 import ilg.gnuarmeclipse.packs.xcdl.GenericParser;
 import ilg.gnuarmeclipse.packs.xcdl.GenericSerialiser;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
+import java.util.Map;
 
 import org.eclipse.core.runtime.Path;
-import org.eclipse.swt.custom.BusyIndicator;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
-import org.xml.sax.SAXException;
 
 public class DataManager implements IDataManager {
 
@@ -55,6 +55,7 @@ public class DataManager implements IDataManager {
 	private Node fInstalledDevicesForBuild;
 	private MessageConsoleStream fOut;
 	private List<IDataManagerListener> fListeners;
+	private Map<String, Node> fParsedPdsc;
 
 	public DataManager() {
 
@@ -64,6 +65,7 @@ public class DataManager implements IDataManager {
 		fInstalledDevicesForBuild = null;
 
 		fListeners = new ArrayList<IDataManagerListener>();
+		fParsedPdsc = new HashMap<String, Node>();
 	}
 
 	// ------------------------------------------------------------------------
@@ -138,12 +140,13 @@ public class DataManager implements IDataManager {
 
 		Activator.getInstance().waitLoadReposJob();
 
-		BusyIndicator.showWhile(Display.getDefault(), new Runnable() {
+		BusyIndicatorWithDuration.showWhile("Extracting devices&boards... ",
+				new Runnable() {
 
-			public void run() {
-				fInstalledDevicesForBuild = updateInstalledDevicesForBuild();
-			}
-		});
+					public void run() {
+						fInstalledDevicesForBuild = updateInstalledDevicesForBuild();
+					}
+				});
 
 		return fInstalledDevicesForBuild;
 	}
@@ -201,6 +204,40 @@ public class DataManager implements IDataManager {
 
 	// ------------------------------------------------------------------------
 
+	public Node getParsedPdscTree(String name, String version) {
+
+		String fileName = PacksStorage.makeCachedPdscName(name, version);
+		Node node = fParsedPdsc.get(fileName);
+		if (node != null) {
+			return node;
+		}
+
+		try {
+
+			File file = PacksStorage.getCachedFileObject(fileName);
+			fOut.println("Parsing package \"" + file + "\"");
+			Document document = Xml.parseFile(file);
+
+			PdscGenericParser parser = new PdscGenericParser();
+			node = parser.parse(document);
+
+			if (node != null) {
+				// Remember for future use
+				fParsedPdsc.put(fileName, node);
+			}
+
+		} catch (Exception e) {
+			String msg = e.getMessage() + ", file: " + fileName;
+			fOut.println("Error: " + msg);
+			Utils.reportError(msg);
+			Activator.log(e);
+		}
+
+		return node;
+	}
+
+	// ------------------------------------------------------------------------
+
 	private void clearCachedInstalledDevicesForBuild() {
 
 		System.out.println("clearCachedInstalledDevicesForBuild()");
@@ -216,18 +253,23 @@ public class DataManager implements IDataManager {
 		}
 	}
 
+	// Update the tree, from cache or from original pdsc files
 	private Node updateInstalledDevicesForBuild() {
 
-		File devicesFile = fStorage.getFile(
-				new Path(PacksStorage.CACHE_FOLDER),
-				PacksStorage.DEVICES_FILE_NAME);
-
 		Node rootNode = null;
+		File devicesFile = null;
+		try {
+			devicesFile = PacksStorage
+					.getCachedFileObject(PacksStorage.DEVICES_FILE_NAME);
 
-		if (devicesFile != null && devicesFile.exists()) {
+			if (devicesFile.exists()) {
 
-			rootNode = parseCachedInstalledDevicesForBuild(devicesFile);
+				// If the cached file exists, try to use it
+				rootNode = parseCachedInstalledDevicesForBuild(devicesFile);
+				// However, it may fail
+			}
 
+		} catch (IOException e1) {
 		}
 
 		if (rootNode == null) {
@@ -235,19 +277,21 @@ public class DataManager implements IDataManager {
 			// Parse all installed packages
 			rootNode = parseInstalledDevicesForBuild();
 
-		}
+			if (rootNode != null) {
 
-		if (rootNode != null) {
-			// Save cached file for future use
-			GenericSerialiser serialiser = new GenericSerialiser();
-			try {
-				serialiser.serialise(rootNode, devicesFile);
-			} catch (IOException e) {
+				fOut.println("Writing \"" + devicesFile + "\"");
+				// Save cached file for future use
+				GenericSerialiser serialiser = new GenericSerialiser();
+				try {
+					serialiser.serialise(rootNode, devicesFile);
+				} catch (IOException e) {
 
-				e.printStackTrace();
-
-				fOut.println(e.getMessage());
-				Utils.reportError(e.getMessage());
+					String msg = e.getMessage() + ", file: "
+							+ devicesFile.getName();
+					fOut.println("Error: " + msg);
+					Utils.reportError(msg);
+					Activator.log(e);
+				}
 			}
 		}
 
@@ -258,15 +302,11 @@ public class DataManager implements IDataManager {
 			emptyNode.setName("No devices available, install packs first.");
 		}
 
+		// Always return a tree, even a very simple one
 		return rootNode;
 	}
 
 	private Node parseCachedInstalledDevicesForBuild(File file) {
-
-		long beginTime = System.currentTimeMillis();
-
-		fOut.println();
-		fOut.println(Utils.getCurrentDateTime());
 
 		fOut.println("Parsing \"" + file + "\"");
 
@@ -276,37 +316,24 @@ public class DataManager implements IDataManager {
 			Document document = Xml.parseFile(file);
 			GenericParser parser = new GenericParser();
 			node = parser.parse(document);
-		} catch (DocumentParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (ParserConfigurationException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (SAXException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		} catch (Exception e) {
+			String msg = e.getMessage() + ", file: " + file.getName();
+			fOut.println("Error: " + msg);
+			Utils.reportError(msg);
+			Activator.log(e);
 		}
-
-		long endTime = System.currentTimeMillis();
-		long duration = endTime - beginTime;
-		if (duration == 0) {
-			duration = 1;
-		}
-		fOut.print("Completed in ");
-		fOut.print(duration + "ms, ");
 
 		return node;
 	}
 
+	// Return null if something went wrong
 	private Node parseInstalledDevicesForBuild() {
 
 		List<PackNode> versionsList = fStorage
 				.getInstalledPacksLatestVersionsList();
 
 		PdscParserForBuild pdsc = new PdscParserForBuild();
+		PdscTreeParserForBuild pdsc2 = new PdscTreeParserForBuild();
 
 		// PdscGenericParser p2 = new PdscGenericParser();
 
@@ -315,70 +342,63 @@ public class DataManager implements IDataManager {
 		Node devicesNode = new Node(Type.FOLDER);
 		devicesNode.setName("Devices");
 
-		long beginTime = System.currentTimeMillis();
-
-		fOut.println();
-		fOut.println(Utils.getCurrentDateTime());
-
-		fOut.println("Extracting devices&boards... ");
-
 		int count = 0;
 		for (PackNode node : versionsList) {
 
 			String pdscName = node.getProperty(Property.PDSC_NAME);
 			String version = node.getName();
 
-			File file = fStorage.getCachedPdsc(pdscName, version);
+			if (true) {
 
-			fOut.println("Parsing \"" + file + "\"");
-			try {
-				pdsc.parseXml(file);
+				Node tree = getParsedPdscTree(pdscName, version);
 
-				pdsc.parseDevices(devicesNode);
-
-				// p2.setDocument(pdsc.getDocument());
-				// Node n2 = p2.parse();
-
-				// GenericSerialiser s2 = new GenericSerialiser();
-				// try {
-				// s2.serialise(n2, new PrintWriter(System.out));
-				// } catch (IOException e1) {
-				// // TODO Auto-generated catch block
-				// e1.printStackTrace();
-				// }
+				fOut.println("Parsing devices from package \""
+						+ PacksStorage.makeCachedPdscName(pdscName, version)
+						+ "\"");
+				pdsc2.parseDevices(tree, devicesNode);
 
 				// Using boards requires existing devices to be present,
 				// to get the memory map
-				pdsc.parseBoards(boardsNode);
+				fOut.println("Parsing boards from package \""
+						+ PacksStorage.makeCachedPdscName(pdscName, version)
+						+ "\"");
+				pdsc2.parseBoards(tree, boardsNode);
 
 				updateBoardsDevices(boardsNode, devicesNode);
 
 				count++;
-			} catch (ParserConfigurationException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (SAXException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+
+			} else {
+				File file = fStorage.getCachedPdsc(pdscName, version);
+
+				fOut.println("Parsing package \"" + file + "\"");
+				try {
+					pdsc.parseXml(file);
+
+					pdsc.parseDevices(devicesNode);
+
+					// Using boards requires existing devices to be present,
+					// to get the memory map
+					pdsc.parseBoards(boardsNode);
+
+					updateBoardsDevices(boardsNode, devicesNode);
+
+					count++;
+				} catch (Exception e) {
+					String msg = e.getMessage() + ", file: " + file.getName();
+					fOut.println("Error: " + msg);
+					Utils.reportError(msg);
+					Activator.log(e);
+				}
 			}
 		}
 
-		long endTime = System.currentTimeMillis();
-		long duration = endTime - beginTime;
-		if (duration == 0) {
-			duration = 1;
-		}
-		fOut.print("Completed in ");
-		fOut.print(duration + "ms, ");
 		if (count == 0) {
 			fOut.println("No packages.");
 		} else if (count == 1) {
-			fOut.println("1 package.");
+			fOut.println("1 package parsed.");
 		} else {
-			fOut.println(count + " packages.");
+			fOut.println(count + " packages parsed.");
 		}
 
 		if (boardsNode.hasChildren() && devicesNode.hasChildren()) {
