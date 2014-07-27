@@ -60,7 +60,7 @@ public class PdscParserForContent extends PdscParser {
 		String urlRef = "";
 		// Kludge: use URL to detect empty package
 		// TODO: use a better condition
-		Element urlElement = Xml.getChildElement(packageElement, "url");
+		Element urlElement = Xml.getFirstChildElement(packageElement, "url");
 		urlRef = Xml.getElementContent(urlElement);
 		if (urlRef.length() == 0) {
 
@@ -69,7 +69,7 @@ public class PdscParserForContent extends PdscParser {
 		}
 
 		Node packNode;
-		Element nameElement = Xml.getChildElement(packageElement, "name");
+		Element nameElement = Xml.getFirstChildElement(packageElement, "name");
 		if (nameElement == null) {
 			fOut.println("Missing <name>.");
 			return;
@@ -78,8 +78,8 @@ public class PdscParserForContent extends PdscParser {
 
 		packNode = Node.addUniqueChild(parent, Type.PACKAGE, packName);
 
-		Element packDescriptionElement = Xml.getChildElement(packageElement,
-				"description");
+		Element packDescriptionElement = Xml.getFirstChildElement(
+				packageElement, "description");
 		if (packDescriptionElement == null) {
 			fOut.println("Missing <description>.");
 			return;
@@ -90,14 +90,15 @@ public class PdscParserForContent extends PdscParser {
 		// TODO: do it only when the version is right
 		packNode.setDescription(packDescription);
 
-		Element vendorElement = Xml.getChildElement(packageElement, "vendor");
+		Element vendorElement = Xml.getFirstChildElement(packageElement,
+				"vendor");
 		if (vendorElement == null) {
 			fOut.println("Missing <vendor>.");
 			return;
 		}
 		String packVendorName = Xml.getElementContent(vendorElement);
 
-		Element releasesElement = Xml.getChildElement(packageElement,
+		Element releasesElement = Xml.getFirstChildElement(packageElement,
 				"releases");
 		if (releasesElement == null) {
 			fOut.println("Missing <releases>.");
@@ -183,7 +184,7 @@ public class PdscParserForContent extends PdscParser {
 		Node externNode = new Node(Type.EXTERNAL);
 
 		// Keywords
-		Element keywordsElement = Xml.getChildElement(packageElement,
+		Element keywordsElement = Xml.getFirstChildElement(packageElement,
 				"keywords");
 		if (keywordsElement != null) {
 
@@ -202,7 +203,8 @@ public class PdscParserForContent extends PdscParser {
 		}
 
 		// Devices
-		Element devicesElement = Xml.getChildElement(packageElement, "devices");
+		Element devicesElement = Xml.getFirstChildElement(packageElement,
+				"devices");
 		if (devicesElement != null) {
 
 			List<Element> familyElements = Xml.getChildrenElementsList(
@@ -212,7 +214,7 @@ public class PdscParserForContent extends PdscParser {
 				String family = familyElement.getAttribute("Dfamily").trim();
 				String vendor = familyElement.getAttribute("Dvendor").trim();
 
-				Element deviceDescriptionElement = Xml.getChildElement(
+				Element deviceDescriptionElement = Xml.getFirstChildElement(
 						familyElement, "description");
 				String description = "";
 
@@ -238,7 +240,8 @@ public class PdscParserForContent extends PdscParser {
 		}
 
 		// Boards
-		Element boardsElement = Xml.getChildElement(packageElement, "boards");
+		Element boardsElement = Xml.getFirstChildElement(packageElement,
+				"boards");
 		if (boardsElement != null) {
 
 			List<Element> boardElements = Xml.getChildrenElementsList(
@@ -249,8 +252,8 @@ public class PdscParserForContent extends PdscParser {
 				// String revision =
 				// boardElement.getAttribute("revision").trim();
 
-				Element descriptionElement = Xml.getChildElement(boardElement,
-						"description");
+				Element descriptionElement = Xml.getFirstChildElement(
+						boardElement, "description");
 				String description = "";
 				description = Xml
 						.getElementMultiLineContent(descriptionElement);
@@ -295,7 +298,7 @@ public class PdscParserForContent extends PdscParser {
 		}
 
 		// Components
-		Element componentsElement = Xml.getChildElement(packageElement,
+		Element componentsElement = Xml.getFirstChildElement(packageElement,
 				"components");
 		if (componentsElement != null) {
 
@@ -328,8 +331,8 @@ public class PdscParserForContent extends PdscParser {
 
 				componentNode.setName(name);
 
-				Element componentsDescriptionElement = Xml.getChildElement(
-						componentElement, "description");
+				Element componentsDescriptionElement = Xml
+						.getFirstChildElement(componentElement, "description");
 				if (componentsDescriptionElement != null) {
 
 					String componentDescription = Xml
@@ -359,7 +362,7 @@ public class PdscParserForContent extends PdscParser {
 				name = extendName(name, Cbundle);
 				bundleNode.setName(name);
 
-				Element bundleDescriptionElement = Xml.getChildElement(el,
+				Element bundleDescriptionElement = Xml.getFirstChildElement(el,
 						"description");
 				if (bundleDescriptionElement != null) {
 
@@ -372,7 +375,7 @@ public class PdscParserForContent extends PdscParser {
 		}
 
 		// Examples
-		Element examplesElement = Xml.getChildElement(packageElement,
+		Element examplesElement = Xml.getFirstChildElement(packageElement,
 				"examples");
 		if (examplesElement != null) {
 
@@ -383,7 +386,7 @@ public class PdscParserForContent extends PdscParser {
 				String firstBoardName = "";
 				// String firstBoardVendorName = "";
 
-				Element boardElement = Xml.getChildElement(exampleElement,
+				Element boardElement = Xml.getFirstChildElement(exampleElement,
 						"board");
 				if (boardElement != null) {
 
@@ -435,7 +438,7 @@ public class PdscParserForContent extends PdscParser {
 				}
 				exampleNode.setName(exampleName);
 
-				Element exampleDescriptionElement = Xml.getChildElement(
+				Element exampleDescriptionElement = Xml.getFirstChildElement(
 						exampleElement, "description");
 				if (exampleDescriptionElement != null) {
 
@@ -446,8 +449,8 @@ public class PdscParserForContent extends PdscParser {
 				}
 
 				// contribute possible keywords
-				Element attributesElement = Xml.getChildElement(exampleElement,
-						"attributes");
+				Element attributesElement = Xml.getFirstChildElement(
+						exampleElement, "attributes");
 				if (attributesElement != null) {
 
 					List<Element> keywordElements = Xml

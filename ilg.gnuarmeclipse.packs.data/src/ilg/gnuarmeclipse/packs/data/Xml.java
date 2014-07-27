@@ -30,6 +30,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+// Add some ease to the usual complicated xml parser interface.
 public class Xml {
 
 	public static Document parseFile(File file)
@@ -44,7 +45,14 @@ public class Xml {
 		return document;
 	}
 
-	public static Element getChildElement(Element el, String name) {
+	// Return the first child element.
+	public static Element getFirstChildElement(Element el) {
+
+		return getFirstChildElement(el, null);
+	}
+
+	// Return the first child element with the given name.
+	public static Element getFirstChildElement(Element el, String name) {
 
 		NodeList nodeList = el.getChildNodes();
 		for (int i = 0; i < nodeList.getLength(); ++i) {
@@ -61,11 +69,13 @@ public class Xml {
 		return null;
 	}
 
+	// Return the list of all direct children elements
 	public static List<Element> getChildrenElementsList(Element el) {
 
 		return getChildrenElementsList(el, null);
 	}
 
+	// Return the list of direct children elements with the given name
 	public static List<Element> getChildrenElementsList(Element el, String name) {
 
 		NodeList nodeList = el.getChildNodes();
@@ -85,6 +95,7 @@ public class Xml {
 		return list;
 	}
 
+	// Return a string, even an empty one.
 	public static String getElementContent(Element el) {
 
 		String content = "";

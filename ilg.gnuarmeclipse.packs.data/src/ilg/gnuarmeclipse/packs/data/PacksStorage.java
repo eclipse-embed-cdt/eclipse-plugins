@@ -235,7 +235,7 @@ public class PacksStorage {
 	}
 
 	// Filter the versions to the installed latest ones
-	public List<PackNode> getInstalledPacksLatestVersionsList() {
+	public List<PackNode> getInstalledPacksLatestVersionsList_() {
 
 		// Filter installed packages
 		List<PackNode> installedPackages = new LinkedList<PackNode>();
@@ -477,7 +477,7 @@ public class PacksStorage {
 		}
 	}
 
-	// Add (Property.INSTALLED, true) to version node ant to parent pack node
+	// Add (Property.INSTALLED, true) to version node and to parent pack node
 	public void updateInstalledVersions() {
 
 		if (fPacksVersionsList == null) {

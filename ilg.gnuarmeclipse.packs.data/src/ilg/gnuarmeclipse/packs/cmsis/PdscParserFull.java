@@ -316,7 +316,7 @@ public class PdscParserFull extends PdscParser {
 
 		Element packageElement = fDocument.getDocumentElement();
 
-		Element examplesElement = Xml.getChildElement(packageElement,
+		Element examplesElement = Xml.getFirstChildElement(packageElement,
 				"examples");
 		if (examplesElement != null) {
 
@@ -326,7 +326,7 @@ public class PdscParserFull extends PdscParser {
 			for (Element exampleElement : exampleElements) {
 				String exampleName = exampleElement.getAttribute("name").trim();
 
-				Element boardElement = Xml.getChildElement(exampleElement,
+				Element boardElement = Xml.getFirstChildElement(exampleElement,
 						"board");
 
 				// Example names are not unique, add the first board to
@@ -347,7 +347,7 @@ public class PdscParserFull extends PdscParser {
 					exampleNode.setName(exampleName);
 				}
 
-				Element descriptionElement = Xml.getChildElement(
+				Element descriptionElement = Xml.getFirstChildElement(
 						exampleElement, "description");
 				String description;
 				description = Xml.getElementContent(descriptionElement);

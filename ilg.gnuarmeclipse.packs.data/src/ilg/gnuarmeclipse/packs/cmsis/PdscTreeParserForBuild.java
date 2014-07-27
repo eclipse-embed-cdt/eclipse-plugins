@@ -18,14 +18,18 @@ import ilg.gnuarmeclipse.packs.data.Utils;
 
 public class PdscTreeParserForBuild extends PdscTreeParser {
 
+	private int fCount;
+
 	// ------------------------------------------------------------------------
 
 	// Parse for devices, add them to parent node
-	public void parseDevices(Node node, Node parent) {
+	public int parseDevices(Node node, Node parent) {
 
 		if (!checkValid(node)) {
-			return;
+			return 0;
 		}
+
+		fCount = 0;
 
 		Leaf packageNode = node.getChildren().get(0);
 
@@ -41,14 +45,18 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 				}
 			}
 		}
+
+		return fCount;
 	}
 
 	// Parse for boards, add them to parent node
-	public void parseBoards(Node node, Node parent) {
+	public int parseBoards(Node node, Node parent) {
 
 		if (!checkValid(node)) {
-			return;
+			return 0;
 		}
+
+		fCount = 0;
 
 		Leaf packageNode = node.getChildren().get(0);
 
@@ -64,6 +72,8 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 				}
 			}
 		}
+
+		return fCount;
 	}
 
 	// ------------------------------------------------------------------------
@@ -127,6 +137,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 		String deviceName = node.getProperty("Dname", "");
 
 		Node deviceNode = Node.addUniqueChild(parent, Type.DEVICE, deviceName);
+		int saveCount = fCount;
 
 		if (node.hasChildren()) {
 			for (Leaf child : ((Node) node).getChildren()) {
@@ -138,6 +149,9 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 			}
 		}
 
+		if (fCount == saveCount) {
+			fCount++; // If there were no variants, count this device
+		}
 		deviceNode.setDescription(processDeviceSummary(deviceNode));
 	}
 
@@ -148,6 +162,9 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 		Node variantNode = Node.addUniqueChild(parent, Type.VARIANT,
 				variantName);
+
+		// Count this variant as a new device
+		fCount++;
 
 		if (node.hasChildren()) {
 			for (Leaf child : ((Node) node).getChildren()) {
@@ -229,6 +246,9 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 		}
 
 		Node boardNode = Node.addUniqueChild(vendorNode, Type.BOARD, name);
+
+		// Count the encountered boards
+		fCount++;
 
 		if (node.hasChildren()) {
 			for (Leaf child : ((Node) node).getChildren()) {

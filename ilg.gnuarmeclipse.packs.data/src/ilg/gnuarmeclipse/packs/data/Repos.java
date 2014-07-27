@@ -11,12 +11,20 @@
 
 package ilg.gnuarmeclipse.packs.data;
 
+import ilg.gnuarmeclipse.packs.core.ConsoleStream;
+import ilg.gnuarmeclipse.packs.core.tree.Leaf;
+import ilg.gnuarmeclipse.packs.core.tree.Node;
+import ilg.gnuarmeclipse.packs.core.tree.PackNode;
+import ilg.gnuarmeclipse.packs.core.tree.Type;
+import ilg.gnuarmeclipse.packs.xcdl.ContentParser;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -24,10 +32,9 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
@@ -42,23 +49,26 @@ public class Repos {
 	public static final String[] TYPES = { CMSIS_PACK_TYPE,
 			XCDL_CMSIS_PACK_TYPE };
 
-	private static Repos sfRepos;
+	private static Repos sfInstance;
 
 	public static synchronized Repos getInstance() {
 
-		if (sfRepos == null) {
-			sfRepos = new Repos();
+		if (sfInstance == null) {
+			sfInstance = new Repos();
 		}
 
-		return sfRepos;
+		return sfInstance;
 	}
 
 	// ------------------------------------------------------------------------
 
 	private List<Map<String, Object>> fList;
+	private MessageConsoleStream fOut;
 
 	public Repos() {
+
 		fList = null;
+		fOut = ConsoleStream.getConsoleOut();
 	}
 
 	// ------------------------------------------------------------------------
@@ -109,7 +119,7 @@ public class Repos {
 	}
 
 	public void updateList() {
-		
+
 		fList = null;
 		getList();
 	}
@@ -162,39 +172,38 @@ public class Repos {
 				.newDocumentBuilder();
 		Document document = parser.parse(inputSource);
 
-		Element el = document.getDocumentElement();
-		if (!"repositories".equals(el.getNodeName())) {
+		Element repositoriesElement = document.getDocumentElement();
+		if (!"repositories".equals(repositoriesElement.getNodeName())) {
 			throw new IOException("Missing <repositories>.");
 		}
 
 		List<Map<String, Object>> sitesList;
 		sitesList = new ArrayList<Map<String, Object>>();
 
-		NodeList siteList = el.getElementsByTagName("repository");
-		for (int i = 0; i < siteList.getLength(); ++i) {
-			Node siteNode = siteList.item(i);
+		List<Element> repositoryElements = Xml.getChildrenElementsList(
+				repositoriesElement, "repository");
+		for (Element repositoryElement : repositoryElements) {
 
 			String type = "(unknown)";
 			String url = "(unknown)";
 			String name = "";
 
-			NodeList siteNodeChildren = siteNode.getChildNodes();
-			for (int j = 0; j < siteNodeChildren.getLength(); ++j) {
-				Node child = siteNodeChildren.item(j);
-				short nodeType = child.getNodeType();
-				if (nodeType != Node.ELEMENT_NODE) {
-					continue;
-				}
-				String childName = child.getNodeName();
-				if ("type".equals(childName)) {
-					type = child.getTextContent().trim();
-				} else if ("name".equals(childName)) {
-					name = child.getTextContent().trim();
-				} else if ("url".equals(childName)) {
-					url = child.getTextContent().trim();
+			List<Element> childElements = Xml
+					.getChildrenElementsList(repositoryElement);
+			for (Element childElement : childElements) {
+
+				String elementName = childElement.getNodeName();
+				String elementContent = Xml.getElementContent(childElement);
+				if ("type".equals(elementName)) {
+					type = elementContent;
+				} else if ("name".equals(elementName)) {
+					name = elementContent;
+				} else if ("url".equals(elementName)) {
+					url = elementContent;
 				}
 			}
 
+			// Pack all attributes as a map.
 			Map<String, Object> map = new HashMap<String, Object>();
 			map.put("type", type);
 			if (name.length() == 0) {
@@ -202,9 +211,11 @@ public class Repos {
 			}
 			map.put("name", name);
 			map.put("url", url);
+
+			// Add this map to the repos list.
 			sitesList.add(map);
 		}
-		// System.out.println(SITES_FILE_NAME+" parsed");
+
 		return sitesList;
 	}
 
@@ -306,4 +317,85 @@ public class Repos {
 
 		return fileName;
 	}
+
+	public List<PackNode> loadCachedReposContent() {
+
+		fOut.println("Loading repos summaries...");
+
+		List<Map<String, Object>> reposList;
+		reposList = getList();
+
+		List<PackNode> packsVersionsList = new LinkedList<PackNode>();
+
+		for (Map<String, Object> map : reposList) {
+			String type = (String) map.get("type");
+			// String name = (String) map.get("name");
+			String url = (String) map.get("url");
+
+			if (Repos.CMSIS_PACK_TYPE.equals(type)
+					|| Repos.XCDL_CMSIS_PACK_TYPE.equals(type)) {
+
+				String fileName = getRepoContentXmlFromUrl(url);
+
+				try {
+					File file = PacksStorage.getFileObject(fileName);
+					Node node = parseContentFile(file);
+
+					// Link the content tree to the repository
+					map.put("content", node);
+
+					// and to the list of packs versions
+					getVersionsRecursive(node, packsVersionsList);
+
+				} catch (IOException e) {
+					fOut.println(e.getMessage());
+				} catch (ParserConfigurationException e) {
+					fOut.println(e.toString());
+				} catch (SAXException e) {
+					fOut.println(e.toString());
+				}
+			}
+		}
+		return packsVersionsList;
+	}
+
+	private void getVersionsRecursive(Leaf node, List<PackNode> list) {
+
+		if (node.isType(Type.VERSION)) {
+			list.add((PackNode) node);
+			// Stop recursion here
+		} else if (node.hasChildren()) {
+			for (Leaf child : ((Node) node).getChildren()) {
+				getVersionsRecursive(child, list);
+			}
+		}
+	}
+
+	private Node parseContentFile(File file) throws IOException,
+			ParserConfigurationException, SAXException {
+
+		long beginTime = System.currentTimeMillis();
+
+		fOut.println("Parsing cached content file \"" + file.getPath()
+				+ "\"...");
+
+		if (!file.exists()) {
+			throw new IOException("File does not exist, ignored.");
+		}
+
+		Document document = Xml.parseFile(file);
+		ContentParser parser = new ContentParser();
+		Node node = parser.parse(document);
+
+		long endTime = System.currentTimeMillis();
+		long duration = endTime - beginTime;
+		if (duration == 0) {
+			duration = 1;
+		}
+
+		fOut.println("File parsed in " + duration + "ms.");
+
+		return node;
+	}
+
 }
