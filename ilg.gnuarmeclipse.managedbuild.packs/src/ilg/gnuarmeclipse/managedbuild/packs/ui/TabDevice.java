@@ -373,18 +373,9 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 		}
 
 		Node node = (Node) element;
-		if (node.isType(Type.DEVICE) && node.hasChildren()) {
-			for (Leaf child : node.getChildren()) {
-				if (child.isType(Type.VARIANT)) {
-					// Do not allow selections for devices that have variants
-					fDevicesTree.setSelection(StructuredSelection.EMPTY);
-					return;
-				}
-			}
-		}
 
-		if (!(node.isType(Type.DEVICE) || node.isType(Type.VARIANT))) {
-			// Do not allow selections for other than devices or variants
+		if (!node.isType(Type.DEVICE)) {
+			// Do not allow selections for other nodes than devices
 			fDevicesTree.setSelection(StructuredSelection.EMPTY);
 			return;
 		}

@@ -141,11 +141,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 		if (node.hasChildren()) {
 			for (Leaf child : ((Node) node).getChildren()) {
-				if (child.isType("variant")) {
-					processVariantNode(child, deviceNode);
-				} else {
-					processDevicePropertiesGroup(child, deviceNode);
-				}
+				processDevicePropertiesGroup(child, deviceNode);
 			}
 		}
 
@@ -153,26 +149,6 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 			fCount++; // If there were no variants, count this device
 		}
 		deviceNode.setDescription(processDeviceSummary(deviceNode));
-	}
-
-	private void processVariantNode(Leaf node, Node parent) {
-
-		// Required
-		String variantName = node.getProperty("Dvariant", "");
-
-		Node variantNode = Node.addUniqueChild(parent, Type.VARIANT,
-				variantName);
-
-		// Count this variant as a new device
-		fCount++;
-
-		if (node.hasChildren()) {
-			for (Leaf child : ((Node) node).getChildren()) {
-				processDevicePropertiesGroup(child, variantNode);
-			}
-		}
-
-		variantNode.setDescription(processDeviceSummary(variantNode));
 	}
 
 	private void processDevicePropertiesGroup(Leaf node, Node parent) {
