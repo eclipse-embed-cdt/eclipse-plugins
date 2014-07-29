@@ -318,7 +318,7 @@ public class Repos {
 		return fileName;
 	}
 
-	public List<PackNode> loadCachedReposContent() {
+	public List<PackNode> loadCachedReposContent(Node parent) {
 
 		fOut.println("Loading repos summaries...");
 
@@ -341,12 +341,24 @@ public class Repos {
 					File file = PacksStorage.getFileObject(fileName);
 					Node node = parseContentFile(file);
 
-					// Link the content tree to the repository
-					map.put("content", node);
+					if (node.hasChildren()) {
 
-					// and to the list of packs versions
-					getVersionsRecursive(node, packsVersionsList);
+						// It must be only one child, the repository node
+						assert node.getChildren().size() == 1;
 
+						Leaf repositoryNode = node.getChildren().get(0);
+						// Link the content tree to the repository
+						map.put("content", repositoryNode);
+
+						// and to the list of packs versions
+						getVersionsRecursive(repositoryNode, packsVersionsList);
+
+						// and move from the ROOT node to the tree of
+						// repositories
+						if (parent != null) {
+							repositoryNode.moveTo(parent);
+						}
+					}
 				} catch (IOException e) {
 					fOut.println(e.getMessage());
 				} catch (ParserConfigurationException e) {
@@ -397,5 +409,4 @@ public class Repos {
 
 		return node;
 	}
-
 }

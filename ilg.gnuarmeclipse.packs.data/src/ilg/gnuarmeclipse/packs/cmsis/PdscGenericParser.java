@@ -43,23 +43,26 @@ import ilg.gnuarmeclipse.packs.data.Xml;
  */
 public class PdscGenericParser {
 
-	private Map<String, String[]> fOptimizationsMap;
+	private Map<String, String[]> fPropertiesMap;
 
 	public PdscGenericParser() {
 
-		fOptimizationsMap = new TreeMap<String, String[]>();
-		fOptimizationsMap.put("package", new String[] { "description", "name",
+		String description[] = new String[] { "description" };
+
+		fPropertiesMap = new TreeMap<String, String[]>();
+		fPropertiesMap.put("package", new String[] { "description", "name",
 				"vendor", "url" });
-		fOptimizationsMap.put("condition", new String[] { "description" });
-		fOptimizationsMap.put("example", new String[] { "description" });
-		fOptimizationsMap.put("component", new String[] { "description" });
-		fOptimizationsMap.put("bundle", new String[] { "description" });
-		fOptimizationsMap.put("family", new String[] { "description" });
-		fOptimizationsMap.put("subFamily", new String[] { "description" });
-		fOptimizationsMap.put("device", new String[] { "description" });
-		fOptimizationsMap.put("variant", new String[] { "description" });
-		fOptimizationsMap.put("board", new String[] { "description" });
-		fOptimizationsMap.put("api", new String[] { "description" });
+
+		fPropertiesMap.put("condition", description);
+		fPropertiesMap.put("example", description);
+		fPropertiesMap.put("component", description);
+		fPropertiesMap.put("bundle", description);
+		fPropertiesMap.put("family", description);
+		fPropertiesMap.put("subFamily", description);
+		fPropertiesMap.put("device", description);
+		fPropertiesMap.put("variant", description);
+		fPropertiesMap.put("board", description);
+		fPropertiesMap.put("api", description);
 	}
 
 	public Node parse(Document document) {
@@ -82,16 +85,16 @@ public class PdscGenericParser {
 
 			node = Node.addNewChild(parent, type);
 
-			// The element has children, some can be optimised as attributes,
-			// some generate children nodes.
-			String elemNames[] = fOptimizationsMap.get(type);
+			// The element has children, some can be optimised as properties,
+			// the rest will generate children nodes.
+			String propertyNames[] = fPropertiesMap.get(type);
 			for (Element child : children) {
 
 				String childName = child.getNodeName();
 				boolean isChild = true;
-				if (elemNames != null) {
-					for (int i = 0; i < elemNames.length; ++i) {
-						if (childName.equals(elemNames[i])) {
+				if (propertyNames != null) {
+					for (int i = 0; i < propertyNames.length; ++i) {
+						if (childName.equals(propertyNames[i])) {
 							// Turn simple elements into properties
 							String content = Xml.getElementContent(child);
 							node.putNonEmptyProperty(childName, content);

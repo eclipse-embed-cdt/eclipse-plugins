@@ -13,6 +13,7 @@ package ilg.gnuarmeclipse.packs.cmsis;
 
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
+import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.Utils;
 
@@ -93,8 +94,8 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 		// The last encountered value one will be preserved
 		// TODO: update vendor name from vendor id based on a conversion table
-		familyNode.putProperty(Node.VENDOR_PROPERTY, va[0]);
-		familyNode.putProperty(Node.VENDORID_PROPERTY, va[1]);
+		familyNode.putProperty(Property.VENDOR_NAME, va[0]);
+		familyNode.putProperty(Property.VENDOR_ID, va[1]);
 
 		if (node.hasChildren()) {
 			for (Leaf child : ((Node) node).getChildren()) {
@@ -170,12 +171,12 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 		String Dendian = node.getProperty("Dendian", "");
 		String Dclock = node.getProperty("Dclock", "");
 
-		parent.putNonEmptyProperty(Node.CORE_PROPERTY, Dcore);
-		parent.putNonEmptyProperty(Node.VERSION_PROPERTY, DcoreVersion);
-		parent.putNonEmptyProperty(Node.FPU_PROPERTY, Dfpu);
-		parent.putNonEmptyProperty(Node.MPU_PROPERTY, Dmpu);
-		parent.putNonEmptyProperty(Node.ENDIAN_PROPERTY, Dendian);
-		parent.putNonEmptyProperty(Node.CLOCK_PROPERTY, Dclock);
+		parent.putNonEmptyProperty(Property.CORE, Dcore);
+		parent.putNonEmptyProperty(Property.CORE_VERSION, DcoreVersion);
+		parent.putNonEmptyProperty(Property.FPU, Dfpu);
+		parent.putNonEmptyProperty(Property.MPU, Dmpu);
+		parent.putNonEmptyProperty(Property.ENDIAN, Dendian);
+		parent.putNonEmptyProperty(Property.CLOCK, Dclock);
 	}
 
 	private void processMemoryNode(Leaf node, Node parent) {
@@ -195,14 +196,14 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 		Leaf memoryNode = Leaf.addUniqueChild(parent, Type.MEMORY, id);
 
-		// memoryNode.putProperty(Node.ID_PROPERTY, id);
-		memoryNode.putProperty(Node.START_PROPERTY, start);
-		memoryNode.putProperty(Node.SIZE_PROPERTY, size);
+		// memoryNode.putProperty(Property.ID, id);
+		memoryNode.putProperty(Property.START, start);
+		memoryNode.putProperty(Property.SIZE, size);
 
-		memoryNode.putNonEmptyProperty(Node.PNAME_PROPERTY, Pname);
-		memoryNode.putNonEmptyProperty(Node.STARTUP_PROPERTY, startup);
-		memoryNode.putNonEmptyProperty(Node.INIT_PROPERTY, init);
-		memoryNode.putNonEmptyProperty(Node.DEFAULT_PROPERTY, defa);
+		memoryNode.putNonEmptyProperty(Property.PNAME, Pname);
+		memoryNode.putNonEmptyProperty(Property.STARTUP, startup);
+		memoryNode.putNonEmptyProperty(Property.INIT, init);
+		memoryNode.putNonEmptyProperty(Property.DEFAULT, defa);
 	}
 
 	private void processBoardNode(Leaf node, Node parent) {
@@ -241,8 +242,8 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 						deviceNode.setName(Dname);
 
 						String va[] = Dvendor.split(":");
-						deviceNode.putProperty(Node.VENDOR_PROPERTY, va[0]);
-						deviceNode.putProperty(Node.VENDORID_PROPERTY, va[1]);
+						deviceNode.putProperty(Property.VENDOR_NAME, va[0]);
+						deviceNode.putProperty(Property.VENDOR_ID, va[1]);
 					}
 				} else if (child.isType("mountedDevice")) {
 					processFeatureNode(child, boardNode);
@@ -252,7 +253,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 		String prefix = "Board";
 		String summary = "";
-		String clock = boardNode.getProperty(Node.CLOCK_PROPERTY, "");
+		String clock = boardNode.getProperty(Property.CLOCK, "");
 		if (clock.length() > 0) {
 			try {
 				int clockMHz = Integer.parseInt(clock) / 1000000;
@@ -285,7 +286,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 		// String Pname = el.getAttribute("Pname").trim();
 
 		if ("XTAL".equals(featureType)) {
-			parent.putNonEmptyProperty(Node.CLOCK_PROPERTY, featureN);
+			parent.putNonEmptyProperty(Property.CLOCK, featureN);
 		}
 	}
 
@@ -304,14 +305,14 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 		}
 
 		String summary = "";
-		String core = deviceNode.getProperty(Node.CORE_PROPERTY, "");
+		String core = deviceNode.getProperty(Property.CORE, "");
 		if (core.length() > 0) {
 			if (summary.length() > 0) {
 				summary += ", ";
 			}
 			summary += core;
 
-			String version = deviceNode.getProperty(Node.VERSION_PROPERTY, "");
+			String version = deviceNode.getProperty(Property.CORE_VERSION, "");
 			if (version.length() > 0) {
 				if (summary.length() > 0) {
 					summary += ", ";
@@ -320,7 +321,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 			}
 		}
 
-		String fpu = deviceNode.getProperty(Node.FPU_PROPERTY, "");
+		String fpu = deviceNode.getProperty(Property.FPU, "");
 		if (fpu.length() > 0 && "1".equals(fpu)) {
 			if (summary.length() > 0) {
 				summary += ", ";
@@ -328,7 +329,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 			summary += "FPU";
 		}
 
-		String mpu = deviceNode.getProperty(Node.MPU_PROPERTY, "");
+		String mpu = deviceNode.getProperty(Property.MPU, "");
 		if (mpu.length() > 0 && "1".equals(mpu)) {
 			if (summary.length() > 0) {
 				summary += ", ";
@@ -336,7 +337,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 			summary += "MPU";
 		}
 
-		String clock = deviceNode.getProperty(Node.CLOCK_PROPERTY, "");
+		String clock = deviceNode.getProperty(Property.CLOCK, "");
 		if (clock.length() > 0) {
 			try {
 				int clockMHz = Integer.parseInt(clock) / 1000000;
@@ -357,7 +358,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 			for (Leaf childNode : deviceNode.getChildren()) {
 
 				if (Type.MEMORY.equals(childNode.getType())) {
-					String size = childNode.getProperty(Node.SIZE_PROPERTY, "");
+					String size = childNode.getProperty(Property.SIZE, "");
 					int sizeKB;
 					try {
 						sizeKB = Utils.convertHexInt(size) / 1024;

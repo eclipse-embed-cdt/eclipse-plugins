@@ -109,7 +109,7 @@ public class Node extends Leaf {
 		fChildren.add(node);
 
 		// Protect against attempts to link the node to multiple parents
-		assert (fParent == null);
+		assert node.fParent == null : "Parent field not null";
 
 		node.fParent = this;
 	}
@@ -141,6 +141,14 @@ public class Node extends Leaf {
 		}
 
 		return null;
+	}
+
+	public Leaf getFirstChild() {
+
+		if (!hasChildren()) {
+			return null;
+		}
+		return getChildren().get(0);
 	}
 
 	public void removeChild(Leaf node) {

@@ -12,6 +12,7 @@
 package ilg.gnuarmeclipse.packs.core.tree;
 
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.runtime.IAdaptable;
@@ -88,8 +89,41 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		return false;
 	}
 
+	// Return null if no more siblings
+	public Leaf getNextSibling() {
+
+		if (getParent() == null) {
+			return null; // Root node has no siblings
+		}
+		List<Leaf> list = getParent().getChildren();
+
+		// Find the current node in the list of children
+		int ix = list.indexOf(this);
+
+		assert ix >= 0;
+
+		ix++;
+		if (ix >= list.size()) {
+			return null; // No more siblings
+		}
+
+		// Return next sibling
+		return list.get(ix);
+	}
+
 	public Node getParent() {
 		return fParent;
+	}
+
+	public void moveTo(Node parent) {
+
+		assert parent != null;
+
+		if (fParent != null) {
+			fParent.removeChild(this);
+			fParent = null;
+		}
+		parent.addChild(this);
 	}
 
 	public boolean hasProperties() {
@@ -121,7 +155,8 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 	public Object putProperty(String name, String value) {
 
 		if (fProperties == null) {
-			// Linked to preserve order
+			// Linked (slightly more inefficient) to preserve order.
+			// TODO: document why the order is required.
 			fProperties = new LinkedHashMap<String, String>();
 		}
 
@@ -195,9 +230,17 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		putProperty(name, String.valueOf(value));
 	}
 
-	// Required by the sorter, don't mess with it.
+	// Required by the sorter, don't mess with it. (???)
 	public String toString() {
-		return getName();
+		String str = "[" + getType();
+		if (hasProperties()) {
+			str += ": " + getProperties().toString();
+		}
+		if (hasChildren()) {
+			str += ", " + ((Node) this).getChildren().size() + " kids";
+		}
+		str += "]";
+		return str;
 	}
 
 	@SuppressWarnings("rawtypes")

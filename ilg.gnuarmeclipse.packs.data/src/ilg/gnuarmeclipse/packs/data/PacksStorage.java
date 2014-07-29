@@ -79,7 +79,7 @@ public class PacksStorage {
 	}
 
 	// Return the absolute 'Packages' path.
-	public static IPath getFolderPath() throws IOException {
+	public static synchronized IPath getFolderPath() throws IOException {
 
 		if (sfFolderPath == null) {
 
@@ -150,7 +150,7 @@ public class PacksStorage {
 	private Map<String, Map<String, PackNode>> fPacksVersionsMap;
 	private Map<String, PackNode> fPacksMap;
 
-	private Map<String, PackNode> fDevicesMap;
+	// private Map<String, PackNode> fDevicesMap;
 
 	public PacksStorage() {
 
@@ -165,7 +165,7 @@ public class PacksStorage {
 
 		// fListeners = new ArrayList<IDataManagerListener>();
 
-		fDevicesMap = new TreeMap<String, PackNode>();
+		// fDevicesMap = new TreeMap<String, PackNode>();
 
 	}
 
@@ -355,7 +355,8 @@ public class PacksStorage {
 
 			Leaf node = (Node) map.get("content");
 			if (node != null) {
-				packsTree.addChild(node);
+				//packsTree.addChild(node);
+				node.moveTo(packsTree);
 			}
 		}
 		fPacksVersionsTree = packsTree;
@@ -605,54 +606,4 @@ public class PacksStorage {
 				makeCachedPdscName(pdscName, version));
 	}
 
-	public PackNode getLatestInstalledPackForDevice(String deviceVendorId,
-			String deviceName) {
-
-		String key = makeMapKey(deviceVendorId, deviceName);
-		if (fDevicesMap.containsKey(key)) {
-			return fDevicesMap.get(key);
-		}
-
-		Node tree = getPacksTree();
-		PackNode pack = getLatestInstalledPackForDeviceRecursive(tree,
-				deviceVendorId, deviceName);
-
-		if (pack != null) {
-			fDevicesMap.put(key, pack);
-		}
-
-		return pack;
-	}
-
-	private PackNode getLatestInstalledPackForDeviceRecursive(Node parent,
-			String deviceVendorId, String deviceName) {
-
-		if (parent.isType(Type.PACKAGE)) {
-
-			if (!parent.isBooleanProperty(Property.INSTALLED)) {
-				return null; // skip packages not installed
-			}
-			if (!parent.hasChildren()) {
-				return null;
-			}
-			for (Leaf node : parent.getChildren()) {
-				if (node.isBooleanProperty(Property.INSTALLED)) {
-					return getLatestInstalledPackForDeviceRecursive(
-							(Node) node, deviceVendorId, deviceName);
-				}
-			}
-			return null; // No installed versions
-
-		} else if (parent.isType(Type.DEVICE)) {
-
-		}
-
-		return null;
-	}
-
-	public Node getLatestInstalledPackForBoard(String boardVendorName,
-			String boardName) {
-
-		return null;
-	}
 }

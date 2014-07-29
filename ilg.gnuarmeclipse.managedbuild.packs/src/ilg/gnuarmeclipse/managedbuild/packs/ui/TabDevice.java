@@ -17,8 +17,10 @@ import ilg.gnuarmeclipse.packs.core.data.IDataManager;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
+import ilg.gnuarmeclipse.packs.core.tree.TreePreOrderIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -622,7 +624,8 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 
 	@Override
 	protected void updateButtons() {
-	} // Do nothing. No buttons to update.
+		// Do nothing. No buttons to update.
+	}
 
 	private boolean isThisPlugin() {
 

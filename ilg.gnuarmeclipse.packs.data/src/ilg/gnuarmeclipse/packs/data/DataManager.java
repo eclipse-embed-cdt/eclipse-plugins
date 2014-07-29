@@ -15,10 +15,12 @@ import ilg.gnuarmeclipse.packs.cmsis.PdscGenericParser;
 import ilg.gnuarmeclipse.packs.cmsis.PdscTreeParserForBuild;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.data.IDataManager;
+import ilg.gnuarmeclipse.packs.core.tree.AbstractTreePreOrderIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
+import ilg.gnuarmeclipse.packs.core.tree.TreePreOrderIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.jobs.BusyIndicatorWithDuration;
 import ilg.gnuarmeclipse.packs.xcdl.GenericParser;
@@ -31,6 +33,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
 import org.eclipse.core.runtime.Path;
 import org.eclipse.ui.console.MessageConsoleStream;
@@ -58,7 +61,9 @@ public class DataManager implements IDataManager {
 	private List<IDataManagerListener> fListeners;
 	private Map<String, Node> fParsedPdsc;
 	private List<PackNode> fInstalledPacksLatestVersionsList;
+	private Node fRepositoriesTree;
 	private List<PackNode> fPacksVersionsList;
+	private Map<String, PackNode> fDevicesMap;
 
 	public DataManager() {
 
@@ -71,8 +76,12 @@ public class DataManager implements IDataManager {
 		fListeners = new ArrayList<IDataManagerListener>();
 		fParsedPdsc = new HashMap<String, Node>();
 
+		fRepositoriesTree = null;
 		fInstalledPacksLatestVersionsList = null;
 		fPacksVersionsList = null;
+
+		fDevicesMap = new TreeMap<String, PackNode>();
+
 	}
 
 	// ------------------------------------------------------------------------
@@ -152,7 +161,7 @@ public class DataManager implements IDataManager {
 				new Runnable() {
 
 					public void run() {
-						fInstalledDevicesForBuild = updateInstalledDevicesForBuild();
+						fInstalledDevicesForBuild = loadInstalledDevicesForBuild();
 					}
 				});
 
@@ -170,27 +179,25 @@ public class DataManager implements IDataManager {
 		Node deviceDocsNode = Node.addNewChild(devicesRoot, Type.FOLDER);
 		deviceDocsNode.setName("Device docs");
 
+		Node n = getLatestInstalledPackForDevice(deviceVendorId, deviceName);
+
 		if (true) {
 			Node book = Node.addNewChild(deviceDocsNode, Type.BOOK);
 			book.setName("Cortex-M4");
 			book.putProperty(Node.FILE_PROPERTY, "xx.pdf");
 			book.putProperty(Node.CATEGORY_PROPERTY, "xx.pdf");
-		} else {
-			Node n = fStorage.getLatestInstalledPackForDevice(deviceVendorId,
-					deviceName);
 		}
+
 		Node boardDocsNode = Node.addNewChild(devicesRoot, Type.FOLDER);
 		boardDocsNode.setName("Board docs");
+
+		n = getLatestInstalledPackForBoard(boardVendorName, boardName);
 
 		if (true) {
 			Node book = Node.addNewChild(boardDocsNode, Type.BOOK);
 			book.setName("Getting Started");
 			book.putProperty(Node.FILE_PROPERTY, "yy.pdf");
 			book.putProperty(Node.CATEGORY_PROPERTY, "manual");
-		} else {
-			Node n = fStorage.getLatestInstalledPackForBoard(boardVendorName,
-					boardName);
-
 		}
 
 		return devicesRoot;
@@ -220,6 +227,7 @@ public class DataManager implements IDataManager {
 			return node;
 		}
 
+		// Not found in cache, load from file.
 		long beginTime = System.currentTimeMillis();
 
 		try {
@@ -272,7 +280,7 @@ public class DataManager implements IDataManager {
 	}
 
 	// Update the tree, from cache or from original pdsc files
-	private Node updateInstalledDevicesForBuild() {
+	private Node loadInstalledDevicesForBuild() {
 
 		Node rootNode = null;
 		File devicesFile = null;
@@ -292,8 +300,11 @@ public class DataManager implements IDataManager {
 
 		if (rootNode == null) {
 
-			// Parse all installed packages
+			// Extract devices from all installed packages
 			rootNode = parseInstalledDevicesForBuild();
+
+			// 
+			addPdscNames(rootNode);
 
 			if (rootNode != null) {
 
@@ -322,6 +333,76 @@ public class DataManager implements IDataManager {
 
 		// Always return a tree, even a very simple one
 		return rootNode;
+	}
+
+	private void addPdscNames(Node tree) {
+
+		class FamiliesIterator extends TreePreOrderIterator {
+
+			@Override
+			protected boolean isIterable(Leaf node) {
+				if (node.isType(Type.FAMILY)) {
+					return true;
+				}
+				return false;
+			}
+		}
+
+		FamiliesIterator familyNodes = new FamiliesIterator();
+		familyNodes.setTreeNode(tree);
+
+		Node repositoriesTree = getRepositoriesTree();
+
+		AbstractTreePreOrderIterator repoFamilyNodes = new FamiliesIterator();
+		repoFamilyNodes.setTreeNode(repositoriesTree);
+
+		for (Leaf familyNode : familyNodes) {
+
+			String familyName = familyNode.getName();
+			String vendorName = familyNode
+					.getProperty(Property.VENDOR_NAME, "");
+			String vendorId = familyNode.getProperty(Property.VENDOR_ID, "");
+
+			repoFamilyNodes.setTreeNode(repositoriesTree);
+			for (Leaf repoFamilyNode : repoFamilyNodes) {
+
+				String familyName2 = repoFamilyNode.getName();
+				String vendorName2 = repoFamilyNode.getProperty(
+						Property.VENDOR_NAME, "");
+				String vendorId2 = repoFamilyNode.getProperty(
+						Property.VENDOR_ID, "");
+
+				if (familyName.equals(familyName2)
+						&& vendorName.equals(vendorName2)
+						&& vendorId.equals(vendorId2)) {
+
+					Node versionNode = repoFamilyNode.getParent();
+					while (versionNode != null
+							&& !versionNode.isType(Type.VERSION)) {
+						versionNode = versionNode.getParent();
+					}
+
+					if (versionNode != null) {
+						String pdscName = versionNode.getProperty(
+								Property.PDSC_NAME, "");
+						String versionName = versionNode.getProperty(
+								Property.VERSION_NAME, "");
+
+						// Add properties to identify the PDSC
+						familyNode.putNonEmptyProperty(Property.PDSC_NAME,
+								pdscName);
+						familyNode.putNonEmptyProperty(Property.VERSION_NAME,
+								versionName);
+						
+						// Keep the most recent version installed.
+						// Hopefully the same family will not be defined in 
+						// multiple packages...
+						// TODO: process deprecation.
+						break;
+					}
+				}
+			}
+		}
 	}
 
 	private Node parseCachedInstalledDevicesForBuild(File file) {
@@ -469,16 +550,35 @@ public class DataManager implements IDataManager {
 		return fInstalledPacksLatestVersionsList;
 	}
 
+	private void loadCachedReposContent() {
+
+		Node node = new Node(Type.ROOT);
+		fPacksVersionsList = fRepos.loadCachedReposContent(node);
+		fRepositoriesTree = node;
+
+		updateInstalledVersions(fPacksVersionsList);
+	}
+
 	private List<PackNode> getPacksVersionsList() {
 
 		if (fPacksVersionsList != null) {
 			return fPacksVersionsList;
 		}
 
-		fPacksVersionsList = fRepos.loadCachedReposContent();
-		updateInstalledVersions(fPacksVersionsList);
+		loadCachedReposContent();
 
 		return fPacksVersionsList;
+	}
+
+	private Node getRepositoriesTree() {
+
+		if (fRepositoriesTree != null) {
+			return fRepositoriesTree;
+		}
+
+		loadCachedReposContent();
+
+		return fRepositoriesTree;
 	}
 
 	// Add (Property.INSTALLED, true) to installed version nodes and
@@ -525,6 +625,83 @@ public class DataManager implements IDataManager {
 		} else {
 			fOut.println("Found " + count + " installed packages.");
 		}
+	}
+
+	// Construct an internal representation of the map key, inspired
+	// form CMSIS Pack examples.
+	public String makeMapKey(String vendorName, String packName) {
+
+		String key = vendorName + "::" + packName;
+		return key;
+	}
+
+	public PackNode getLatestInstalledPackForDevice(String deviceVendorId,
+			String deviceName) {
+
+		String key = makeMapKey(deviceVendorId, deviceName);
+		if (fDevicesMap.containsKey(key)) {
+			return fDevicesMap.get(key);
+		}
+
+		Node tree = getRepositoriesTree();
+		PackNode pack = getLatestInstalledPackForDeviceRecursive(tree,
+				deviceVendorId, deviceName);
+
+		if (pack != null) {
+			fDevicesMap.put(key, pack);
+		}
+
+		return pack;
+	}
+
+	private PackNode getLatestInstalledPackForDeviceRecursive(Leaf node,
+			String deviceVendorId, String deviceName) {
+
+		if (node.isType(Type.PACKAGE)) {
+
+			if (!node.isBooleanProperty(Property.INSTALLED)) {
+				return null; // skip packages not installed
+			}
+			if (!node.hasChildren()) {
+				return null;
+			}
+			for (Leaf child : ((Node) node).getChildren()) {
+				if (child.isBooleanProperty(Property.INSTALLED)) {
+					PackNode res = getLatestInstalledPackForDeviceRecursive(
+							(Node) child, deviceVendorId, deviceName);
+
+					// Return first encountered
+					if (res != null) {
+						return res;
+					}
+				}
+			}
+			return null; // No installed versions
+
+		} else if (node.isType(Type.DEVICE)) {
+
+			if (deviceName.equals(node.getName())) {
+				System.out.println();
+			}
+		}
+
+		if (node.hasChildren()) {
+			for (Leaf child : ((Node) node).getChildren()) {
+				PackNode res = getLatestInstalledPackForDeviceRecursive(child,
+						deviceVendorId, deviceName);
+				if (res != null) {
+					return res;
+				}
+			}
+		}
+
+		return null; // Not found
+	}
+
+	public Node getLatestInstalledPackForBoard(String boardVendorName,
+			String boardName) {
+
+		return null;
 	}
 
 }
