@@ -12,7 +12,6 @@
 package ilg.gnuarmeclipse.packs.data;
 
 import ilg.gnuarmeclipse.core.AbstractActivator;
-import ilg.gnuarmeclipse.packs.data.jobs.LoadReposSummariesJob;
 
 import org.eclipse.core.runtime.jobs.Job;
 import org.osgi.framework.BundleContext;
@@ -56,28 +55,7 @@ public class Activator extends AbstractActivator {
 	}
 
 	public void start(BundleContext context) throws Exception {
-
 		super.start(context);
-
-		// Initial load of repositories summaries
-		fLoadReposJob = new LoadReposSummariesJob("Load repos summaries");
-		fLoadReposJob.schedule();
-		// fLoadReposJob.join(); // does not work in this context
-
-		System.out.println(getBundleId() + ".start() completed");
-	}
-
-	public void waitLoadReposJob() {
-
-		try {
-			fLoadReposJob.join();
-
-			System.out.println("LoadRepos joined");
-
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
 	}
 
 	public void stop(BundleContext context) throws Exception {

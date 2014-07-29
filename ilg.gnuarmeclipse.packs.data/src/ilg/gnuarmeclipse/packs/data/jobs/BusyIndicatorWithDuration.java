@@ -17,7 +17,9 @@ public class BusyIndicatorWithDuration {
 
 		sfOut.println();
 		sfOut.println(Utils.getCurrentDateTime());
-		sfOut.println(message);
+		if (message != null) {
+			sfOut.println(message);
+		}
 
 		BusyIndicator.showWhile(Display.getDefault(), runnable);
 

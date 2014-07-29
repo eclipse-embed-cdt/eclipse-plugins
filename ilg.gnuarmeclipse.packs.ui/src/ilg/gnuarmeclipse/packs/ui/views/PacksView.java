@@ -20,9 +20,8 @@ import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Selector;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DataManager;
-import ilg.gnuarmeclipse.packs.data.IDataManagerListener;
-import ilg.gnuarmeclipse.packs.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.data.DataManagerEvent;
+import ilg.gnuarmeclipse.packs.data.IDataManagerListener;
 import ilg.gnuarmeclipse.packs.data.Utils;
 import ilg.gnuarmeclipse.packs.jobs.CopyExampleJob;
 import ilg.gnuarmeclipse.packs.jobs.InstallJob;
@@ -243,7 +242,6 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 	private boolean fIsRemoveEnabled;
 	private boolean fIsCopyExampleEnabled;
 
-	private PacksStorage fStorage;
 	private DataManager fDataManager;
 	private MessageConsoleStream fOut;
 
@@ -251,9 +249,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 		fOut = ConsoleStream.getConsoleOut();
 
-		fStorage = PacksStorage.getInstance();
 		fDataManager = DataManager.getInstance();
-		// System.out.println("PacksView()");
 	}
 
 	public TreeViewer getTreeViewer() {
@@ -811,11 +807,11 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 				String versionName = versionNode
 						.getProperty(Property.VERSION_NAME);
 
-				Node modelNode = fStorage.getPackVersion(vendorName, packName,
-						versionName);
+				Node modelNode = fDataManager.getPackVersion(vendorName,
+						packName, versionName);
 				updateVersioNode(versionNode, modelNode);
 
-				String key = fStorage.makeMapKey(vendorName, packName);
+				String key = fDataManager.makeMapKey(vendorName, packName);
 
 				Node parent = versionNode.getParent();
 				if (!parentsMap.containsKey(key)) {
@@ -862,7 +858,8 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 	// Return a hierarchy of vendor/packages/versions/examples nodes.
 	private Node getPacksTree() {
 
-		Node packsTree = fStorage.getPacksTree();
+		// Node packsTree = fStorage.getPacksTree();
+		Node packsTree = DataManager.getInstance().getRepositoriesTree();
 		Node packsRoot = new Node(Type.ROOT);
 		packsRoot.setName("Packs");
 

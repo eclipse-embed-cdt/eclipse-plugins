@@ -17,6 +17,7 @@ import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
 import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
+import ilg.gnuarmeclipse.packs.data.DataManager;
 import ilg.gnuarmeclipse.packs.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.jobs.ParsePdscRunnable;
 import ilg.gnuarmeclipse.packs.ui.Activator;
@@ -308,7 +309,7 @@ public class OutlineView extends ViewPart {
 
 	private Node fNoOutlineNode;
 
-	private PacksStorage fStorage;
+	private DataManager fDataManager;
 
 	// private MessageConsoleStream m_out;
 
@@ -320,10 +321,7 @@ public class OutlineView extends ViewPart {
 		Node.addNewChild(fNoOutlineNode, Type.NONE).setName(
 				"An outline is not available.");
 
-		// m_out = Activator.getConsoleOut();
-
-		fStorage = PacksStorage.getInstance();
-		// System.out.println("OutlineView()");
+		fDataManager = DataManager.getInstance();
 	}
 
 	@Override
@@ -807,7 +805,7 @@ public class OutlineView extends ViewPart {
 			String vendorName = node.getProperty(Property.VENDOR_NAME);
 			String packName = node.getName();
 
-			input = (Node) fStorage.getPackLatest(vendorName, packName);
+			input = (Node) fDataManager.getPackLatest(vendorName, packName);
 
 		} else if (node.isType(Type.VERSION)) {
 
@@ -815,7 +813,7 @@ public class OutlineView extends ViewPart {
 			String packName = node.getProperty(Property.PACK_NAME);
 			String versionName = node.getName();
 
-			input = (Node) fStorage.getPackVersion(vendorName, packName,
+			input = (Node) fDataManager.getPackVersion(vendorName, packName,
 					versionName);
 		}
 

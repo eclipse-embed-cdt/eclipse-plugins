@@ -126,7 +126,7 @@
    <extension
          point="org.eclipse.ui.handlers">
       <handler
-            class="ilg.gnuarmeclipse.packs.ui.handlers.RefreshHandler"
+            class="ilg.gnuarmeclipse.packs.ui.handlers.UpdatePacksHandler"
             commandId="ilg.gnuarmeclipse.packs.commands.refreshCommand">
       </handler>
       <handler

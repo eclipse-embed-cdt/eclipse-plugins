@@ -20,6 +20,7 @@ import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
+import ilg.gnuarmeclipse.packs.core.tree.Selector;
 import ilg.gnuarmeclipse.packs.core.tree.TreePreOrderIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.jobs.BusyIndicatorWithDuration;
@@ -33,8 +34,8 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 
-import org.eclipse.core.runtime.Path;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
 
@@ -53,8 +54,6 @@ public class DataManager implements IDataManager {
 
 	// ------------------------------------------------------------------------
 
-	private PacksStorage fStorage;
-	private Repos fRepos;
 	private Node fInstalledObjectsForBuild;
 	private MessageConsoleStream fOut;
 	private List<IDataManagerListener> fListeners;
@@ -63,14 +62,17 @@ public class DataManager implements IDataManager {
 	private Node fRepositoriesTree;
 	private List<PackNode> fPacksVersionsList;
 
+	// A map of maps to find versions faster
+	private Map<String, Map<String, PackNode>> fPacksVersionsMap;
+	// A map of package nodes
+	private Map<String, PackNode> fPacksMap;
+
 	// private Map<String, PackNode> fDevicesMap;
 
 	public DataManager() {
 
 		fOut = ConsoleStream.getConsoleOut();
 
-		fRepos = Repos.getInstance();
-		fStorage = PacksStorage.getInstance();
 		fInstalledObjectsForBuild = null;
 
 		fListeners = new ArrayList<IDataManagerListener>();
@@ -79,6 +81,8 @@ public class DataManager implements IDataManager {
 		fRepositoriesTree = null;
 		fInstalledPacksLatestVersionsList = null;
 		fPacksVersionsList = null;
+		fPacksVersionsMap = new TreeMap<String, Map<String, PackNode>>();
+		fPacksMap = new TreeMap<String, PackNode>();
 
 		// fDevicesMap = new TreeMap<String, PackNode>();
 
@@ -155,8 +159,6 @@ public class DataManager implements IDataManager {
 			return fInstalledObjectsForBuild;
 		}
 
-		Activator.getInstance().waitLoadReposJob();
-
 		BusyIndicatorWithDuration.showWhile("Extracting devices & boards... ",
 				new Runnable() {
 
@@ -227,6 +229,41 @@ public class DataManager implements IDataManager {
 		return node;
 	}
 
+	// Find a given package version.
+	public PackNode getPackVersion(String vendorName, String packName,
+			String versionName) {
+
+		String key = makeMapKey(vendorName, packName);
+		Map<String, PackNode> versionsMap = fPacksVersionsMap.get(key);
+
+		if (versionsMap == null) {
+			return null;
+		}
+
+		// May return null
+		return (PackNode) versionsMap.get(versionName);
+	}
+
+	// Find the latest version of a pack
+	public PackNode getPackLatest(String vendorName, String packName) {
+
+		String key = makeMapKey(vendorName, packName);
+		Map<String, PackNode> versionsMap = fPacksVersionsMap.get(key);
+
+		if (versionsMap == null) {
+			return null;
+		}
+
+		PackNode node = null;
+		for (String versionName : versionsMap.keySet()) {
+			node = versionsMap.get(versionName);
+		}
+
+		// If the map is sorted (as it should be), this is the package
+		// with the highest version (or null).
+		return node;
+	}
+
 	// ------------------------------------------------------------------------
 
 	private void clearCachedInstalledDevicesForBuild() {
@@ -235,9 +272,13 @@ public class DataManager implements IDataManager {
 
 		fInstalledObjectsForBuild = null;
 
-		File devicesFile = fStorage.getFile(
-				new Path(PacksStorage.CACHE_FOLDER),
-				PacksStorage.INSTALLED_DEVICES_FILE_NAME);
+		File devicesFile = null;
+		try {
+			devicesFile = PacksStorage
+					.getCachedFileObject(PacksStorage.INSTALLED_DEVICES_FILE_NAME);
+		} catch (IOException e) {
+			;
+		}
 
 		if (devicesFile != null) {
 			devicesFile.delete();
@@ -509,14 +550,110 @@ public class DataManager implements IDataManager {
 		return fInstalledPacksLatestVersionsList;
 	}
 
-	private void loadCachedReposContent() {
+	// ------------------------------------------------------------------------
+
+	public void loadCachedReposContent() {
 
 		Node node = new Node(Type.ROOT);
-		fPacksVersionsList = fRepos.loadCachedReposContent(node);
+		fPacksVersionsList = Repos.getInstance().loadCachedReposContent(node);
 		fRepositoriesTree = node;
 
+		preparePublicData();
+
 		updateInstalledVersions(fPacksVersionsList);
+
+		addSelectors();
 	}
+
+	private void preparePublicData() {
+
+		// Group versions by [vendor::package] in a Map
+		Map<String, Map<String, PackNode>> packsVersionsMap = new TreeMap<String, Map<String, PackNode>>();
+		for (PackNode versionNode : fPacksVersionsList) {
+			String vendorName = versionNode.getProperty(Property.VENDOR_NAME);
+			String packName = versionNode.getProperty(Property.PACK_NAME);
+			String key = makeMapKey(vendorName, packName);
+
+			Map<String, PackNode> versionMap;
+			versionMap = packsVersionsMap.get(key);
+			if (versionMap == null) {
+				versionMap = new TreeMap<String, PackNode>();
+				packsVersionsMap.put(key, versionMap);
+			}
+
+			versionMap.put(versionNode.getName(), versionNode);
+		}
+		fPacksVersionsMap = packsVersionsMap;
+
+		// Group packages by [vendor::package] in a Map
+		Map<String, PackNode> packsMap = new TreeMap<String, PackNode>();
+		for (PackNode versionNode : fPacksVersionsList) {
+			String vendorName = versionNode.getProperty(Property.VENDOR_NAME);
+			String packName = versionNode.getProperty(Property.PACK_NAME);
+			String key = makeMapKey(vendorName, packName);
+
+			if (!packsMap.containsKey(key)) {
+				PackNode parent = (PackNode) versionNode.getParent();
+				packsMap.put(key, parent);
+			}
+		}
+		fPacksMap = packsMap;
+
+	}
+
+	private void addSelectors() {
+
+		// Add unique selectors to each package, by inspecting the outline and
+		// external definitions in the latest version.
+
+		for (PackNode packNode : fPacksMap.values()) {
+
+			Node versionNode = (Node) packNode.getFirstChild();
+			if (versionNode.hasChildren()) {
+				for (Leaf child : versionNode.getChildren()) {
+
+					if (child.isType(Type.OUTLINE)
+							|| child.isType(Type.EXTERNAL)) {
+						if (child.hasChildren()) {
+							for (Leaf node : ((Node) child).getChildren()) {
+
+								Selector selector = null;
+
+								String type = node.getType();
+								if (Type.FAMILY.equals(type)) {
+
+									selector = new Selector(
+											Selector.Type.DEVICEFAMILY);
+									selector.setValue(node.getName());
+									selector.setVendorId(node
+											.getProperty(Property.VENDOR_ID));
+
+								} else if (Type.BOARD.equals(type)) {
+
+									selector = new Selector(Selector.Type.BOARD);
+									selector.setValue(node.getName());
+									selector.setVendor(node
+											.getProperty(Property.VENDOR_NAME));
+
+								} else if (Type.KEYWORD.equals(type)) {
+
+									selector = new Selector(
+											Selector.Type.KEYWORD);
+									selector.setValue(node.getName());
+								}
+
+								if (selector != null) {
+									packNode.addSelector(selector);
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	// ------------------------------------------------------------------------
 
 	private List<PackNode> getPacksVersionsList() {
 
@@ -529,13 +666,18 @@ public class DataManager implements IDataManager {
 		return fPacksVersionsList;
 	}
 
-	private Node getRepositoriesTree() {
+	public Node getRepositoriesTree() {
 
 		if (fRepositoriesTree != null) {
 			return fRepositoriesTree;
 		}
 
-		loadCachedReposContent();
+		BusyIndicatorWithDuration.showWhile(null, new Runnable() {
+
+			public void run() {
+				loadCachedReposContent();
+			}
+		});
 
 		return fRepositoriesTree;
 	}

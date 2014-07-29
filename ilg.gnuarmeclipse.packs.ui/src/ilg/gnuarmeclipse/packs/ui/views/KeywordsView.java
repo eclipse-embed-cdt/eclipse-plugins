@@ -18,7 +18,6 @@ import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DataManager;
 import ilg.gnuarmeclipse.packs.data.IDataManagerListener;
-import ilg.gnuarmeclipse.packs.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.data.DataManagerEvent;
 import ilg.gnuarmeclipse.packs.data.Utils;
 import ilg.gnuarmeclipse.packs.ui.Activator;
@@ -98,7 +97,6 @@ public class KeywordsView extends ViewPart implements IDataManagerListener {
 
 	private ViewContentProvider fContentProvider;
 
-	private PacksStorage fStorage;
 	private DataManager fDataManager;
 	private MessageConsoleStream fOut;
 
@@ -106,9 +104,7 @@ public class KeywordsView extends ViewPart implements IDataManagerListener {
 
 		fOut = ConsoleStream.getConsoleOut();
 
-		fStorage = PacksStorage.getInstance();
 		fDataManager = DataManager.getInstance();
-		// System.out.println("KeywordsView()");
 	}
 
 	/**
@@ -289,7 +285,7 @@ public class KeywordsView extends ViewPart implements IDataManagerListener {
 	// Return a one level hierarchy of keyword nodes.
 	private Node getKeywordsTree() {
 
-		Node packsTree = fStorage.getPacksTree();
+		Node packsTree = fDataManager.getRepositoriesTree();
 		Node keywordsRoot = new Node(Type.ROOT);
 
 		if (packsTree.hasChildren()) {

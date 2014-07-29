@@ -34,6 +34,7 @@ import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -53,7 +54,7 @@ public class InstallJob extends Job {
 	private IProgressMonitor fMonitor;
 
 	// private Repos m_repos;
-	private PacksStorage fStorage;
+	// private PacksStorage fStorage;
 	private DataManager fDataManager;
 
 	public InstallJob(String name, TreeSelection selection) {
@@ -65,7 +66,7 @@ public class InstallJob extends Job {
 		fSelection = selection;
 
 		// m_repos = Repos.getInstance();
-		fStorage = PacksStorage.getInstance();
+		// fStorage = PacksStorage.getInstance();
 		fDataManager = DataManager.getInstance();
 	}
 
@@ -222,14 +223,13 @@ public class InstallJob extends Job {
 
 		String archiveName = versionNode.getProperty(Property.ARCHIVE_NAME);
 
-		File archiveFile = fStorage.getFile(
-				new Path(PacksStorage.CACHE_FOLDER), archiveName);
+		File archiveFile = PacksStorage.getCachedFileObject(archiveName);
 
 		if (archiveFile == null || !archiveFile.exists()) {
 
 			// Read in the .pack file from url to a local file.
-			File archiveFileDownload = fStorage.getFile(new Path(
-					PacksStorage.CACHE_FOLDER), archiveName + ".download");
+			File archiveFileDownload = PacksStorage
+					.getCachedFileObject(archiveName + ".download");
 
 			// To minimise incomplete file risks, first use a temporary
 			// file, then rename to final name.
@@ -269,7 +269,7 @@ public class InstallJob extends Job {
 		Utils.copyFile(sourceUrl, destinationFile, fOut, fMonitor);
 	}
 
-	private void unzip(File archiveFile, Path destRelativePath)
+	private void unzip(File archiveFile, IPath destRelativePath)
 			throws IOException {
 
 		fOut.println("Unzip \"" + archiveFile + "\".");
@@ -289,26 +289,31 @@ public class InstallJob extends Job {
 
 				String fileName = zipEntry.getName();
 
-				// if (fileName.endsWith(".s")) {
-				// fileName = fileName.substring(0, fileName.length() - 1)
-				// + "S";
-				// }
+				IPath path = destRelativePath.append(fileName);
+				File outFile = PacksStorage.getFileObject(path.toString());
+				try {
 
-				File outFile = fStorage.getFile(destRelativePath, fileName);
-				fOut.println("Write \"" + outFile + "\".");
+					fOut.println("Write \"" + outFile + "\".");
 
-				OutputStream output = new FileOutputStream(outFile);
+					OutputStream output = new FileOutputStream(outFile);
 
-				byte[] buf = new byte[1024];
-				int bytesRead;
-				while ((bytesRead = zipInput.read(buf)) > 0) {
-					output.write(buf, 0, bytesRead);
-					countBytes += bytesRead;
+					byte[] buf = new byte[1024];
+					int bytesRead;
+					while ((bytesRead = zipInput.read(buf)) > 0) {
+						output.write(buf, 0, bytesRead);
+						countBytes += bytesRead;
+					}
+					output.close();
+
+					outFile.setReadOnly();
+					++countFiles;
+
+				} catch (IOException e) {
+					String msg = e.getMessage() + ", file: "
+							+ outFile.getName();
+					fOut.println("Error: " + msg);
+					Utils.reportError(msg);
 				}
-				output.close();
-
-				outFile.setReadOnly();
-				++countFiles;
 			}
 
 			zipEntry = zipInput.getNextEntry();

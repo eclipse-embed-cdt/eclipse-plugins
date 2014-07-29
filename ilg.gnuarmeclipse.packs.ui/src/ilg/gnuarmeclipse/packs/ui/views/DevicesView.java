@@ -19,7 +19,6 @@ import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DataManager;
 import ilg.gnuarmeclipse.packs.data.IDataManagerListener;
-import ilg.gnuarmeclipse.packs.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.data.DataManagerEvent;
 import ilg.gnuarmeclipse.packs.data.Utils;
 import ilg.gnuarmeclipse.packs.ui.Activator;
@@ -136,7 +135,6 @@ public class DevicesView extends ViewPart implements IDataManagerListener {
 
 	private ViewContentProvider fContentProvider;
 
-	private PacksStorage fStorage;
 	private DataManager fDataManager;
 	private MessageConsoleStream fOut;
 
@@ -144,9 +142,7 @@ public class DevicesView extends ViewPart implements IDataManagerListener {
 
 		fOut = ConsoleStream.getConsoleOut();
 
-		fStorage = PacksStorage.getInstance();
 		fDataManager = DataManager.getInstance();
-		// System.out.println("DevicesView()");
 	}
 
 	/**
@@ -388,7 +384,7 @@ public class DevicesView extends ViewPart implements IDataManagerListener {
 	// Return a two level hierarchy of vendor and device nodes.
 	private Node getDevicesTree() {
 
-		Node packsTree = fStorage.getPacksTree();
+		Node packsTree = fDataManager.getRepositoriesTree();
 
 		Node devicesRoot = new Node(Type.ROOT);
 		devicesRoot.setName("Devices");
@@ -494,7 +490,7 @@ public class DevicesView extends ViewPart implements IDataManagerListener {
 
 	private void updateDevicesTree(Map<String, Leaf> updatedList) {
 
-		Node modelTree = fStorage.getPacksTree();
+		Node modelTree = fDataManager.getRepositoriesTree();
 		Node viewTree = (Node) fViewer.getInput();
 
 		if (modelTree.hasChildren() && viewTree != null) {

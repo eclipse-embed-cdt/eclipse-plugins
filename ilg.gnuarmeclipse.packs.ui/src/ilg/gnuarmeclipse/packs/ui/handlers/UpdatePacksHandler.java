@@ -42,24 +42,16 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.console.MessageConsoleStream;
 
-/**
- * Our sample handler extends AbstractHandler, an IHandler base class.
- * 
- * @see org.eclipse.core.commands.IHandler
- * @see org.eclipse.core.commands.AbstractHandler
- */
-public class RefreshHandler extends AbstractHandler {
+public class UpdatePacksHandler extends AbstractHandler {
 
 	private MessageConsoleStream fOut;
 	private boolean fRunning;
 
 	private Repos fRepos;
-	private PacksStorage fStorage;
 	private DataManager fDataManager;
 
 	private IProgressMonitor fMonitor;
@@ -67,7 +59,7 @@ public class RefreshHandler extends AbstractHandler {
 	/**
 	 * The constructor.
 	 */
-	public RefreshHandler() {
+	public UpdatePacksHandler() {
 
 		// System.out.println("RefreshHandler()");
 		fRunning = false;
@@ -75,17 +67,16 @@ public class RefreshHandler extends AbstractHandler {
 		fOut = ConsoleStream.getConsoleOut();
 
 		fRepos = Repos.getInstance();
-		fStorage = PacksStorage.getInstance();
 		fDataManager = DataManager.getInstance();
 	}
 
 	/**
-	 * the command has been executed, so extract extract the needed information
-	 * from the application context.
+	 * the command has been executed, so extract the needed information from the
+	 * application context.
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		Job job = new Job("Refresh Packs") {
+		Job job = new Job("Update Packs") {
 			@Override
 			protected IStatus run(IProgressMonitor monitor) {
 				return myRun(monitor);
@@ -111,7 +102,7 @@ public class RefreshHandler extends AbstractHandler {
 
 		fOut.println();
 		fOut.println(Utils.getCurrentDateTime());
-		fOut.println("Refresh packs job started.");
+		fOut.println("Update packs job started.");
 
 		int workUnits = 0;
 
@@ -151,7 +142,7 @@ public class RefreshHandler extends AbstractHandler {
 				}
 			}
 
-			workUnits += fStorage.computeParseReposWorkUnits();
+			workUnits += 1; // One more for the step to load cache
 
 			// Set total number of work units to the number of pdsc files
 			monitor.beginTask("Refresh packs", workUnits);
@@ -186,7 +177,8 @@ public class RefreshHandler extends AbstractHandler {
 				fOut.println();
 
 				// The content.xml files were just created, parse them
-				fStorage.parseRepos(monitor);
+				fDataManager.loadCachedReposContent();
+				monitor.worked(1);
 			}
 
 			// } catch (FileNotFoundException e) {
@@ -212,7 +204,7 @@ public class RefreshHandler extends AbstractHandler {
 				duration = 1;
 			}
 
-			fOut.println(Utils.reportInfo("Refresh packs completed in "
+			fOut.println(Utils.reportInfo("Update packs completed in "
 					+ (duration + 500) / 1000 + "s."));
 
 			status = Status.OK_STATUS;
@@ -292,8 +284,8 @@ public class RefreshHandler extends AbstractHandler {
 
 				String cachedFileName = PacksStorage.makeCachedPdscName(
 						pdscName, pdscVersion);
-				File cachedFile = fStorage.getFile(new Path(
-						PacksStorage.CACHE_FOLDER), cachedFileName);
+				File cachedFile = PacksStorage
+						.getCachedFileObject(cachedFileName);
 				if (!cachedFile.exists()) {
 
 					// If local file does not exist, create it

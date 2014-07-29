@@ -306,12 +306,17 @@ public class Repos {
 		}
 
 		s = s.replace('.', '_');
-		return s;
+		if (s.endsWith("_")) {
+			return s.substring(0, s.length() - 1); // Cut trailing '_'
+		} else {
+			return s;
+		}
 	}
 
 	public String getRepoContentXmlFromUrl(String url) {
 
 		String fileName = PacksStorage.CACHE_FOLDER + "/"
+				+ PacksStorage.CONTENT_FILE_NAME_PREFIX
 				+ getFileNamePrefixFromUrl(url)
 				+ PacksStorage.CONTENT_FILE_NAME_SUFFIX;
 
