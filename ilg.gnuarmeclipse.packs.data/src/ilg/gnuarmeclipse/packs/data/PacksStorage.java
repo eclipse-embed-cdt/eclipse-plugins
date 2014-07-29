@@ -433,7 +433,7 @@ public class PacksStorage {
 
 		for (PackNode packNode : fPacksMap.values()) {
 
-			Node versionNode = (Node) packNode.getChildren().get(0);
+			Node versionNode = (Node) packNode.getFirstChild();
 			if (versionNode.hasChildren()) {
 				for (Leaf child : versionNode.getChildren()) {
 

@@ -132,7 +132,7 @@ public class PacksFilter extends ViewerFilter {
 			} else if (Type.BOARD.equals(selectionNodeType)) {
 
 				if (selector.getVendor().equals(
-						selectionNode.getProperty(Property.VENDOR_NAME, ""))
+						selectionNode.getProperty(Property.VENDOR_NAME))
 						&& selector.getValue().equals(selectionNode.getName())) {
 					return true;
 				}

@@ -36,12 +36,12 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		fProperties = null;
 		fParent = null;
 
-		String name = node.getProperty(Property.NAME);
+		String name = node.getPropertyOrNull(Property.NAME);
 		if (name != null) {
 			setName(name.trim());
 		}
 
-		String description = node.getProperty(Property.DESCRIPTION);
+		String description = node.getPropertyOrNull(Property.DESCRIPTION);
 		if (description != null) {
 			setDescription(description.trim());
 		}
@@ -62,10 +62,7 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 	public String getName() {
 
 		String name = getProperty(Property.NAME);
-		if (name != null) {
-			return name.trim();
-		}
-		return "";
+		return name;
 	}
 
 	public void setName(String name) {
@@ -75,10 +72,7 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 	public String getDescription() {
 
 		String description = getProperty(Property.DESCRIPTION);
-		if (description != null) {
-			return description.trim();
-		}
-		return "";
+		return description;
 	}
 
 	public void setDescription(String description) {
@@ -160,12 +154,12 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 			fProperties = new LinkedHashMap<String, String>();
 		}
 
-		return fProperties.put(name, value);
+		return fProperties.put(name, value.trim());
 	}
 
 	public Object putNonEmptyProperty(String name, String value) {
 
-		if (value != null && value.length() > 0) {
+		if (value != null && value.trim().length() > 0) {
 			return putProperty(name, value);
 		}
 
@@ -173,7 +167,7 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 	}
 
 	// May return null!
-	public String getProperty(String name) {
+	private String getPropertyOrNull(String name) {
 
 		if (fProperties == null) {
 			return null;
@@ -186,8 +180,12 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		return fProperties.get(name);
 	}
 
+	public String getProperty(String name) {
+		return getProperty(name, "");
+	}
+
 	public String getProperty(String name, String defaultValue) {
-		String property = getProperty(name);
+		String property = getPropertyOrNull(name);
 		if (property == null) {
 			return defaultValue;
 		} else {
@@ -205,15 +203,15 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		if (node.hasProperties()) {
 			for (String key : node.fProperties.keySet()) {
 				if (Property.NAME.equals(key)) {
-					if (getProperty(Property.NAME) != null) {
+					if (getPropertyOrNull(Property.NAME) != null) {
 						continue; // leave name unchanged
 					}
 				} else if (Property.DESCRIPTION.equals(key)) {
-					if (getProperty(Property.DESCRIPTION) != null) {
+					if (getPropertyOrNull(Property.DESCRIPTION) != null) {
 						continue; // leave description unchanged
 					}
 				}
-				putProperty(key, node.getProperty(key));
+				putProperty(key, node.getPropertyOrNull(key));
 			}
 		}
 	}
@@ -221,7 +219,7 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 	public boolean isBooleanProperty(String name) {
 
 		// Return true if the given property is true.
-		return (String.valueOf(true).equals(getProperty(name, "")));
+		return (String.valueOf(true).equals(getProperty(name)));
 	}
 
 	public void setBooleanProperty(String name, boolean value) {

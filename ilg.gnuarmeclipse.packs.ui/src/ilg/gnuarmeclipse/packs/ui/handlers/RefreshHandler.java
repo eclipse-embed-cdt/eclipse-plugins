@@ -290,8 +290,8 @@ public class RefreshHandler extends AbstractHandler {
 
 				URL sourceUrl = new URL(pdscUrl + pdscName);
 
-				String cachedFileName = fStorage.makeCachedPdscName(pdscName,
-						pdscVersion);
+				String cachedFileName = PacksStorage.makeCachedPdscName(
+						pdscName, pdscVersion);
 				File cachedFile = fStorage.getFile(new Path(
 						PacksStorage.CACHE_FOLDER), cachedFileName);
 				if (!cachedFile.exists()) {

@@ -18,7 +18,6 @@ import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.data.PacksStorage;
-import ilg.gnuarmeclipse.packs.data.Repos;
 import ilg.gnuarmeclipse.packs.data.Utils;
 
 import java.io.FileNotFoundException;
@@ -82,7 +81,7 @@ public class ParsePdscRunnable implements IRunnableWithProgress {
 
 			sfVersionNode.setOutline(outlineNode);
 			PackNode packNode = (PackNode) sfVersionNode.getParent();
-			if (packNode.getChildren().get(0).getName()
+			if (packNode.getFirstChild().getName()
 					.equals(sfVersionNode.getName())) {
 				// If most recent child, make the outline available for the
 				// package node too.

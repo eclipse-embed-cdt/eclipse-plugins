@@ -18,7 +18,6 @@ import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.PacksStorage;
-import ilg.gnuarmeclipse.packs.data.Repos;
 import ilg.gnuarmeclipse.packs.jobs.ParsePdscRunnable;
 import ilg.gnuarmeclipse.packs.ui.Activator;
 import ilg.gnuarmeclipse.packs.ui.IconUtils;
@@ -96,10 +95,10 @@ public class OutlineView extends ViewPart {
 				// newInput is an outline node
 				String folder = ((Node) newInput)
 						.getProperty(Property.DEST_FOLDER);
-				if (folder != null) {
+				if (folder.length() > 0) {
 					try {
-						fPackageAbsolutePath = PacksStorage
-								.getFolderPath().append(folder);
+						fPackageAbsolutePath = PacksStorage.getFolderPath()
+								.append(folder);
 					} catch (IOException e) {
 						;
 					}
@@ -181,7 +180,7 @@ public class OutlineView extends ViewPart {
 				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
 						"icons/methpro_obj.png").createImage();
 			} else if (Type.FILE.equals(type)) {
-				String category = node.getProperty(Node.CATEGORY_PROPERTY, "");
+				String category = node.getProperty(Property.CATEGORY);
 				if ("source".equals(category)) {
 					if (name.endsWith(".s")) {
 						return Activator.imageDescriptorFromPlugin(
@@ -409,13 +408,12 @@ public class OutlineView extends ViewPart {
 					fOpenWithSystem.setEnabled(true);
 				} else if (Type.BOOK.equals(type)) {
 
-					String relativeFile = node.getProperty(Node.FILE_PROPERTY,
-							"");
+					String relativeFile = node.getProperty(Node.FILE_PROPERTY);
 					if (relativeFile.length() > 0) {
 						fOpenWithSystem.setEnabled(true);
 					}
 
-					String url = node.getProperty(Node.URL_PROPERTY, "");
+					String url = node.getProperty(Node.URL_PROPERTY);
 					if (url.length() > 0) {
 						fOpenWithSystem.setEnabled(true);
 					}
@@ -708,8 +706,8 @@ public class OutlineView extends ViewPart {
 
 		} else if (Type.BOOK.equals(type)) {
 
-			String url = node.getProperty(Node.URL_PROPERTY, "");
-			String relativeFile = node.getProperty(Node.FILE_PROPERTY, "");
+			String url = node.getProperty(Node.URL_PROPERTY);
+			String relativeFile = node.getProperty(Node.FILE_PROPERTY);
 			if (url.length() > 0) {
 
 				// System.out.println("Open " + url);
@@ -764,7 +762,7 @@ public class OutlineView extends ViewPart {
 
 		IWorkbenchPage page = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage();
-		String relativeFile = node.getProperty(Node.FILE_PROPERTY, "");
+		String relativeFile = node.getProperty(Node.FILE_PROPERTY);
 
 		assert (fPackageAbsolutePath != null);
 
@@ -780,7 +778,7 @@ public class OutlineView extends ViewPart {
 
 		IWorkbenchPage page = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getActivePage();
-		String relativeFile = node.getProperty(Node.FILE_PROPERTY, "");
+		String relativeFile = node.getProperty(Node.FILE_PROPERTY);
 		if (relativeFile.length() > 0) {
 			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
 					fPackageAbsolutePath.append(relativeFile));
@@ -788,7 +786,7 @@ public class OutlineView extends ViewPart {
 			return;
 		}
 
-		String url = node.getProperty(Node.URL_PROPERTY, "");
+		String url = node.getProperty(Node.URL_PROPERTY);
 		if (url.length() > 0) {
 			PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser()
 					.openURL(new URL(url));

@@ -35,7 +35,7 @@ public class PdscTreeParser {
 			return false;
 		}
 
-		Leaf firstChild = node.getChildren().get(0);
+		Leaf firstChild = node.getFirstChild();
 		if (!firstChild.isType("package")) {
 			String msg = "Missing <package>; instead, <" + firstChild.getType()
 					+ "> encountered";
@@ -45,7 +45,7 @@ public class PdscTreeParser {
 			return false;
 		}
 
-		String schemaVersion = firstChild.getProperty("schemaVersion", "");
+		String schemaVersion = firstChild.getProperty("schemaVersion");
 
 		if (!isSchemaValid(schemaVersion)) {
 			return false;

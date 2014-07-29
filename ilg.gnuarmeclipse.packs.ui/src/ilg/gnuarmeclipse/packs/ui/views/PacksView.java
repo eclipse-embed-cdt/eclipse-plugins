@@ -163,7 +163,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 				} else {
 					if (node.isType(Type.VERSION)) {
 						String size = node.getProperty(Property.ARCHIVE_SIZE);
-						if (size != null) {
+						if (size.length() > 0) {
 							try {
 								int n = Integer.parseInt(size);
 								if (n <= 0) {

@@ -342,7 +342,7 @@ public class PdscParserForBuild extends PdscParser {
 
 		String prefix = "Board";
 		String summary = "";
-		String clock = boardNode.getProperty(Node.CLOCK_PROPERTY, "");
+		String clock = boardNode.getProperty(Node.CLOCK_PROPERTY);
 		if (clock.length() > 0) {
 			try {
 				int clockMHz = Integer.parseInt(clock) / 1000000;
@@ -396,14 +396,14 @@ public class PdscParserForBuild extends PdscParser {
 		}
 
 		String summary = "";
-		String core = deviceNode.getProperty(Node.CORE_PROPERTY, "");
+		String core = deviceNode.getProperty(Node.CORE_PROPERTY);
 		if (core.length() > 0) {
 			if (summary.length() > 0) {
 				summary += ", ";
 			}
 			summary += core;
 
-			String version = deviceNode.getProperty(Node.VERSION_PROPERTY, "");
+			String version = deviceNode.getProperty(Node.VERSION_PROPERTY);
 			if (version.length() > 0) {
 				if (summary.length() > 0) {
 					summary += ", ";
@@ -412,7 +412,7 @@ public class PdscParserForBuild extends PdscParser {
 			}
 		}
 
-		String fpu = deviceNode.getProperty(Node.FPU_PROPERTY, "");
+		String fpu = deviceNode.getProperty(Node.FPU_PROPERTY);
 		if (fpu.length() > 0 && "1".equals(fpu)) {
 			if (summary.length() > 0) {
 				summary += ", ";
@@ -420,7 +420,7 @@ public class PdscParserForBuild extends PdscParser {
 			summary += "FPU";
 		}
 
-		String mpu = deviceNode.getProperty(Node.MPU_PROPERTY, "");
+		String mpu = deviceNode.getProperty(Node.MPU_PROPERTY);
 		if (mpu.length() > 0 && "1".equals(mpu)) {
 			if (summary.length() > 0) {
 				summary += ", ";
@@ -428,7 +428,7 @@ public class PdscParserForBuild extends PdscParser {
 			summary += "MPU";
 		}
 
-		String clock = deviceNode.getProperty(Node.CLOCK_PROPERTY, "");
+		String clock = deviceNode.getProperty(Node.CLOCK_PROPERTY);
 		if (clock.length() > 0) {
 			try {
 				int clockMHz = Integer.parseInt(clock) / 1000000;
@@ -449,7 +449,7 @@ public class PdscParserForBuild extends PdscParser {
 			for (Leaf childNode : deviceNode.getChildren()) {
 
 				if (Type.MEMORY.equals(childNode.getType())) {
-					String size = childNode.getProperty(Node.SIZE_PROPERTY, "");
+					String size = childNode.getProperty(Node.SIZE_PROPERTY);
 					int sizeKB = Utils.convertHexInt(size) / 1024;
 
 					String id = childNode.getName();

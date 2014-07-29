@@ -427,24 +427,22 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 							// The order is
 							// section,start,size,init,startup,default
 							if (line[1].length() == 0) {
-								line[1] = child.getProperty(
-										Node.START_PROPERTY, "").trim();
+								line[1] = child
+										.getProperty(Node.START_PROPERTY);
 							}
 							if (line[2].length() == 0) {
-								line[2] = child.getProperty(Node.SIZE_PROPERTY,
-										"").trim();
+								line[2] = child.getProperty(Node.SIZE_PROPERTY);
 							}
 							if (line[3].length() == 0) {
-								line[3] = child.getProperty(Node.INIT_PROPERTY,
-										"").trim();
+								line[3] = child.getProperty(Node.INIT_PROPERTY);
 							}
 							if (line[4].length() == 0) {
-								line[4] = child.getProperty(
-										Node.STARTUP_PROPERTY, "").trim();
+								line[4] = child
+										.getProperty(Node.STARTUP_PROPERTY);
 							}
 							if (line[5].length() == 0) {
-								line[5] = child.getProperty(
-										Node.DEFAULT_PROPERTY, "").trim();
+								line[5] = child
+										.getProperty(Node.DEFAULT_PROPERTY);
 							}
 
 						}
@@ -489,7 +487,7 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 		if (node != null) {
 			do {
 
-				value = node.getProperty(propertyName, "");
+				value = node.getProperty(propertyName);
 
 				if (value.length() > 0)
 					break;

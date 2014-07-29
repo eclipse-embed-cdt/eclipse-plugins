@@ -19,7 +19,6 @@ import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DataManager;
 import ilg.gnuarmeclipse.packs.data.DataManagerEvent;
 import ilg.gnuarmeclipse.packs.data.PacksStorage;
-import ilg.gnuarmeclipse.packs.data.Repos;
 import ilg.gnuarmeclipse.packs.data.Utils;
 
 import java.io.IOException;
@@ -103,8 +102,8 @@ public class RemoveJob extends Job {
 				break;
 			}
 
-			String packFullName = versionNode.getProperty(
-					Property.ARCHIVE_NAME, "");
+			String packFullName = versionNode
+					.getProperty(Property.ARCHIVE_NAME);
 
 			// Name the subtask with the pack name
 			monitor.subTask(packFullName);
@@ -113,7 +112,7 @@ public class RemoveJob extends Job {
 			IPath versionFolderPath;
 			try {
 
-				String dest = versionNode.getProperty(Property.DEST_FOLDER, "");
+				String dest = versionNode.getProperty(Property.DEST_FOLDER);
 				versionFolderPath = PacksStorage.getFolderPath().append(dest);
 
 				// Remove the pack archived file

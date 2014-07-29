@@ -99,7 +99,7 @@ public class InstallJob extends Job {
 				if (Type.PACKAGE.equals(type)) {
 
 					// For package nodes, install the top most version
-					packsToInstall.add((Node) node.getChildren().get(0));
+					packsToInstall.add((Node) node.getFirstChild());
 
 				} else if (Type.VERSION.equals(type)) {
 
@@ -127,8 +127,8 @@ public class InstallJob extends Job {
 				break;
 			}
 
-			String packFullName = versionNode.getProperty(
-					Property.ARCHIVE_NAME, "");
+			String packFullName = versionNode
+					.getProperty(Property.ARCHIVE_NAME);
 
 			// Name the subtask with the pack name
 			monitor.subTask(packFullName);
@@ -201,7 +201,7 @@ public class InstallJob extends Job {
 		}
 
 		Node packNode = versionNode.getParent();
-		String pdscUrl = packNode.getProperty(Property.ARCHIVE_URL, "");
+		String pdscUrl = packNode.getProperty(Property.ARCHIVE_URL);
 		if (pdscUrl.length() > 0) {
 			try {
 				workUnits += Utils.getRemoteFileSize(new URL(pdscUrl));
@@ -218,9 +218,9 @@ public class InstallJob extends Job {
 	private void installPack(Node versionNode) throws IOException {
 
 		// Package node
-		URL packUrl = new URL(versionNode.getProperty(Property.ARCHIVE_URL, ""));
+		URL packUrl = new URL(versionNode.getProperty(Property.ARCHIVE_URL));
 
-		String archiveName = versionNode.getProperty(Property.ARCHIVE_NAME, "");
+		String archiveName = versionNode.getProperty(Property.ARCHIVE_NAME);
 
 		File archiveFile = fStorage.getFile(
 				new Path(PacksStorage.CACHE_FOLDER), archiveName);
@@ -242,7 +242,7 @@ public class InstallJob extends Job {
 			fMonitor.worked((int) archiveFile.length());
 		}
 
-		String dest = versionNode.getProperty(Property.DEST_FOLDER, "");
+		String dest = versionNode.getProperty(Property.DEST_FOLDER);
 		Path destRelPath = new Path(dest);
 
 		File destFolder = destRelPath.toFile();

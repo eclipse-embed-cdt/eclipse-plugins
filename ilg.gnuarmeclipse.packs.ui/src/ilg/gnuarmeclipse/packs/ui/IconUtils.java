@@ -22,12 +22,12 @@ public class IconUtils {
 
 	public static Image getBookIcon(Leaf node) {
 
-		String url = node.getProperty(Node.URL_PROPERTY, "");
+		String url = node.getProperty(Node.URL_PROPERTY);
 		if (url.length() > 0) {
 			return Activator.imageDescriptorFromPlugin(ICONS_PLUGIN_ID,
 					"icons/external_browser.png").createImage();
 		}
-		String path = node.getProperty(Node.FILE_PROPERTY, "").toLowerCase();
+		String path = node.getProperty(Node.FILE_PROPERTY).toLowerCase();
 
 		if (path.endsWith(".pdf")) {
 			return Activator.imageDescriptorFromPlugin(ICONS_PLUGIN_ID,

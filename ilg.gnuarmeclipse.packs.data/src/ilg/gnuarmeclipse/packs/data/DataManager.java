@@ -168,7 +168,6 @@ public class DataManager implements IDataManager {
 		return fInstalledObjectsForBuild;
 	}
 
-
 	// Will be called from template code
 	@Override
 	public Node getCmsisCoreFiles(String deviceName, String compiler) {
@@ -325,18 +324,17 @@ public class DataManager implements IDataManager {
 		for (Leaf familyNode : familyNodes) {
 
 			String familyName = familyNode.getName();
-			String vendorName = familyNode
-					.getProperty(Property.VENDOR_NAME, "");
-			String vendorId = familyNode.getProperty(Property.VENDOR_ID, "");
+			String vendorName = familyNode.getProperty(Property.VENDOR_NAME);
+			String vendorId = familyNode.getProperty(Property.VENDOR_ID);
 
 			repoFamilyNodes.setTreeNode(repositoriesTree);
 			for (Leaf repoFamilyNode : repoFamilyNodes) {
 
 				String familyName2 = repoFamilyNode.getName();
-				String vendorName2 = repoFamilyNode.getProperty(
-						Property.VENDOR_NAME, "");
-				String vendorId2 = repoFamilyNode.getProperty(
-						Property.VENDOR_ID, "");
+				String vendorName2 = repoFamilyNode
+						.getProperty(Property.VENDOR_NAME);
+				String vendorId2 = repoFamilyNode
+						.getProperty(Property.VENDOR_ID);
 
 				if (familyName.equals(familyName2)
 						&& vendorName.equals(vendorName2)
@@ -349,10 +347,10 @@ public class DataManager implements IDataManager {
 					}
 
 					if (versionNode != null) {
-						String pdscName = versionNode.getProperty(
-								Property.PDSC_NAME, "");
-						String versionName = versionNode.getProperty(
-								Property.VERSION_NAME, "");
+						String pdscName = versionNode
+								.getProperty(Property.PDSC_NAME);
+						String versionName = versionNode
+								.getProperty(Property.VERSION_NAME);
 
 						// Add properties to identify the PDSC
 						familyNode.putNonEmptyProperty(Property.PDSC_NAME,

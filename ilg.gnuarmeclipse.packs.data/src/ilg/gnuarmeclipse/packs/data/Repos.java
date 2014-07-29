@@ -346,7 +346,7 @@ public class Repos {
 						// It must be only one child, the repository node
 						assert node.getChildren().size() == 1;
 
-						Leaf repositoryNode = node.getChildren().get(0);
+						Leaf repositoryNode = node.getFirstChild();
 						// Link the content tree to the repository
 						map.put("content", repositoryNode);
 

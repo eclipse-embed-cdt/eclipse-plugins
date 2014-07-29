@@ -736,10 +736,10 @@ public class PdscParserFull extends PdscParser {
 			for (Leaf childNode : deviceNode.getChildren()) {
 
 				if (Type.MEMORY.equals(childNode.getType())) {
-					String size = childNode.getProperty(Node.SIZE_PROPERTY, "");
+					String size = childNode.getProperty(Node.SIZE_PROPERTY);
 					int sizeKB = Utils.convertHexInt(size) / 1024;
 
-					String id = childNode.getProperty(Node.ID_PROPERTY, "");
+					String id = childNode.getProperty(Node.ID_PROPERTY);
 					if (id.contains("ROM")) {
 						romKB += sizeKB;
 					} else if (id.contains("RAM")) {

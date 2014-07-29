@@ -97,15 +97,15 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 			if (node.isType(Type.BOOK)) {
 				description = "Document: " + node.getName();
 
-				String category = node.getProperty(Property.CATEGORY, "");
+				String category = node.getProperty(Property.CATEGORY);
 				if (category.length() > 0) {
 					description += "\n" + "category: " + category;
 				}
-				String file = node.getProperty(Property.FILE, "");
+				String file = node.getProperty(Property.FILE);
 				if (file.length() > 0) {
 					description += "\n" + "file: " + file;
 				}
-				String url = node.getProperty(Property.URL, "");
+				String url = node.getProperty(Property.URL);
 				if (url.length() > 0) {
 					description += "\n" + "url: " + url;
 				}
@@ -388,8 +388,8 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 
 				// Identify board
 				if (board.isType(Type.BOARD)
-						&& boardName.equals(board.getProperty(
-								Property.BOARD_NAME, ""))) {
+						&& boardName.equals(board
+								.getProperty(Property.BOARD_NAME))) {
 					if (board != null && board.hasChildren()) {
 						for (Leaf bookNode : ((Node) board).getChildren()) {
 
@@ -413,8 +413,8 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 
 			// Identify vendor by vendor ID, not name
 			if (vendor.isType(Type.VENDOR)
-					&& deviceVendorId.equals(vendor.getProperty(
-							Property.VENDOR_ID, ""))) {
+					&& deviceVendorId.equals(vendor
+							.getProperty(Property.VENDOR_ID))) {
 
 				ITreeIterator deviceNodes = new AbstractTreePreOrderIterator() {
 

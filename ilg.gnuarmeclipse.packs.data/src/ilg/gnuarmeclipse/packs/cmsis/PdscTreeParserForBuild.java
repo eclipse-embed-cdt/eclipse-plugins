@@ -32,7 +32,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 		fCount = 0;
 
-		Leaf packageNode = node.getChildren().get(0);
+		Leaf packageNode = node.getFirstChild();
 
 		if (packageNode.hasChildren()) {
 			for (Leaf child : ((Node) packageNode).getChildren()) {
@@ -59,7 +59,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 		fCount = 0;
 
-		Leaf packageNode = node.getChildren().get(0);
+		Leaf packageNode = node.getFirstChild();
 
 		if (packageNode.hasChildren()) {
 			for (Leaf child : ((Node) packageNode).getChildren()) {
@@ -82,8 +82,8 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 	private void processFamilyNode(Leaf node, Node parent) {
 
 		// Required
-		String familyName = node.getProperty("Dfamily", "");
-		String familyVendor = node.getProperty("Dvendor", "");
+		String familyName = node.getProperty("Dfamily");
+		String familyVendor = node.getProperty("Dvendor");
 
 		String va[] = familyVendor.split("[:]");
 
@@ -114,7 +114,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 	private void processSubFamilyNode(Leaf node, Node parent) {
 
-		String subFamilyName = node.getProperty("DsubFamily", "");
+		String subFamilyName = node.getProperty("DsubFamily");
 
 		Node subFamilyNode = Node.addUniqueChild(parent, Type.SUBFAMILY,
 				subFamilyName);
@@ -135,7 +135,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 	private void processDeviceNode(Leaf node, Node parent) {
 
 		// Required
-		String deviceName = node.getProperty("Dname", "");
+		String deviceName = node.getProperty("Dname");
 
 		Node deviceNode = Node.addUniqueChild(parent, Type.DEVICE, deviceName);
 		int saveCount = fCount;
@@ -166,12 +166,12 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 	private void processProcessorNode(Leaf node, Node parent) {
 
 		// Required
-		String Dcore = node.getProperty("Dcore", "");
-		String DcoreVersion = node.getProperty("DcoreVersion", "");
-		String Dfpu = node.getProperty("Dfpu", "");
-		String Dmpu = node.getProperty("Dmpu", "");
-		String Dendian = node.getProperty("Dendian", "");
-		String Dclock = node.getProperty("Dclock", "");
+		String Dcore = node.getProperty("Dcore");
+		String DcoreVersion = node.getProperty("DcoreVersion");
+		String Dfpu = node.getProperty("Dfpu");
+		String Dmpu = node.getProperty("Dmpu");
+		String Dendian = node.getProperty("Dendian");
+		String Dclock = node.getProperty("Dclock");
 
 		parent.putNonEmptyProperty(Property.CORE, Dcore);
 		parent.putNonEmptyProperty(Property.CORE_VERSION, DcoreVersion);
@@ -184,17 +184,17 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 	private void processMemoryNode(Leaf node, Node parent) {
 
 		// Required
-		String id = node.getProperty("id", "");
-		String start = node.getProperty("start", "");
-		String size = node.getProperty("size", "");
+		String id = node.getProperty("id");
+		String start = node.getProperty("start");
+		String size = node.getProperty("size");
 
 		// -
-		String Pname = node.getProperty("Pname", "");
+		String Pname = node.getProperty("Pname");
 
 		// Optional
-		String startup = node.getProperty("startup", "");
-		String init = node.getProperty("init", "");
-		String defa = node.getProperty("default", "");
+		String startup = node.getProperty("startup");
+		String init = node.getProperty("init");
+		String defa = node.getProperty("default");
 
 		Leaf memoryNode = Leaf.addUniqueChild(parent, Type.MEMORY, id);
 
@@ -211,11 +211,11 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 	private void processBookNode(Leaf node, Node parent) {
 
 		// Required
-		String bookName = node.getProperty("name", "");
-		String title = node.getProperty("title", "");
-		
+		String bookName = node.getProperty("name");
+		String title = node.getProperty("title");
+
 		// Optional
-		String category = node.getProperty("category", "");
+		String category = node.getProperty("category");
 
 		Leaf bookNode = Leaf.addNewChild(parent, Type.BOOK);
 		bookNode.setName(title);
@@ -234,11 +234,11 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 	private void processBoardNode(Leaf node, Node parent) {
 
 		// Required
-		String boardVendor = node.getProperty("vendor", "");
-		String boardName = node.getProperty("name", "");
+		String boardVendor = node.getProperty("vendor");
+		String boardName = node.getProperty("name");
 
 		// Optional
-		String boardRevision = node.getProperty("revision", "");
+		String boardRevision = node.getProperty("revision");
 
 		Node vendorNode = Node.addUniqueChild(parent, Type.VENDOR, boardVendor);
 
@@ -250,10 +250,10 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 		Node boardNode = Node.addNewChild(vendorNode, Type.BOARD);
 
 		boardNode.setName(name);
-		
+
 		boardNode.putNonEmptyProperty(Property.BOARD_NAME, boardName);
 		boardNode.putNonEmptyProperty(Property.BOARD_REVISION, boardRevision);
-		
+
 		// Count the encountered boards
 		fCount++;
 
@@ -261,10 +261,10 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 			for (Leaf child : ((Node) node).getChildren()) {
 				if (child.isType("mountedDevice")) {
 					// Required
-					String Dvendor = child.getProperty("Dvendor", "");
+					String Dvendor = child.getProperty("Dvendor");
 
 					// Optional
-					String Dname = child.getProperty("Dname", "");
+					String Dname = child.getProperty("Dname");
 
 					if (Dname.length() > 0) {
 						Node deviceNode = Node.addNewChild(boardNode,
@@ -285,9 +285,9 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 		String prefix = "Board";
 		String summary = "";
-		
+
 		// Clock can be set by processFeatureNode()
-		String clock = boardNode.getProperty(Property.CLOCK, "");
+		String clock = boardNode.getProperty(Property.CLOCK);
 		if (clock.length() > 0) {
 			try {
 				int clockMHz = Integer.parseInt(clock) / 1000000;
@@ -310,10 +310,10 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 	private void processFeatureNode(Leaf node, Node parent) {
 
 		// Required
-		String featureType = node.getProperty("type", "");
+		String featureType = node.getProperty("type");
 
 		// Optional
-		String featureN = node.getProperty("n", "");
+		String featureN = node.getProperty("n");
 
 		// String featureM = el.getAttribute("m").trim();
 		// String name = el.getAttribute("name").trim();
@@ -339,14 +339,14 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 		}
 
 		String summary = "";
-		String core = deviceNode.getProperty(Property.CORE, "");
+		String core = deviceNode.getProperty(Property.CORE);
 		if (core.length() > 0) {
 			if (summary.length() > 0) {
 				summary += ", ";
 			}
 			summary += core;
 
-			String version = deviceNode.getProperty(Property.CORE_VERSION, "");
+			String version = deviceNode.getProperty(Property.CORE_VERSION);
 			if (version.length() > 0) {
 				if (summary.length() > 0) {
 					summary += ", ";
@@ -355,7 +355,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 			}
 		}
 
-		String fpu = deviceNode.getProperty(Property.FPU, "");
+		String fpu = deviceNode.getProperty(Property.FPU);
 		if (fpu.length() > 0 && "1".equals(fpu)) {
 			if (summary.length() > 0) {
 				summary += ", ";
@@ -363,7 +363,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 			summary += "FPU";
 		}
 
-		String mpu = deviceNode.getProperty(Property.MPU, "");
+		String mpu = deviceNode.getProperty(Property.MPU);
 		if (mpu.length() > 0 && "1".equals(mpu)) {
 			if (summary.length() > 0) {
 				summary += ", ";
@@ -371,7 +371,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 			summary += "MPU";
 		}
 
-		String clock = deviceNode.getProperty(Property.CLOCK, "");
+		String clock = deviceNode.getProperty(Property.CLOCK);
 		if (clock.length() > 0) {
 			try {
 				int clockMHz = Integer.parseInt(clock) / 1000000;
@@ -392,7 +392,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 			for (Leaf childNode : deviceNode.getChildren()) {
 
 				if (Type.MEMORY.equals(childNode.getType())) {
-					String size = childNode.getProperty(Property.SIZE, "");
+					String size = childNode.getProperty(Property.SIZE);
 					int sizeKB;
 					try {
 						sizeKB = Utils.convertHexInt(size) / 1024;
