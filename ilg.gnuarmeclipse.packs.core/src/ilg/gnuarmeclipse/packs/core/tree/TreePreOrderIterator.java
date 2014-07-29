@@ -21,4 +21,9 @@ public class TreePreOrderIterator extends AbstractTreePreOrderIterator {
 	public boolean isIterable(Leaf node) {
 		return true;
 	}
+
+	@Override
+	public boolean isLeaf(Leaf node) {
+		return false;
+	}
 }

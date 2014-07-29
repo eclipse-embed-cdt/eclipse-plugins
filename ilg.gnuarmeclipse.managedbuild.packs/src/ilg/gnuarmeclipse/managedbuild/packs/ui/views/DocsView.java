@@ -304,19 +304,6 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 				}
 			});
 
-			// } else if (DataManagerEvent.Type.REFRESH_ALL.equals(type)) {
-			//
-			// Display.getDefault().asyncExec(new Runnable() {
-			//
-			// @Override
-			// public void run() {
-			//
-			// // m_out.println("DevicesView REFRESH_ALL");
-			//
-			// fViewer.refresh();
-			// }
-			// });
-			//
 		} else if (DataManagerEvent.Type.UPDATE_VERSIONS.equals(type)) {
 
 			final Map<String, Leaf> updatedMap = new HashMap<String, Leaf>();
@@ -426,6 +413,16 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 						}
 						return false;
 					}
+
+					@Override
+					public boolean isLeaf(Leaf node) {
+
+						if (node.isType(Type.DEVICE)) {
+							return true;
+						}
+						return false;
+					}
+
 				};
 				// Iterate only the current vendor devices
 				deviceNodes.setTreeNode(vendor);

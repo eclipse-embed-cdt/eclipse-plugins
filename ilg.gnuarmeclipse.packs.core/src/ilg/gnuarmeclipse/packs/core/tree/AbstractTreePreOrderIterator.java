@@ -50,6 +50,8 @@ public abstract class AbstractTreePreOrderIterator implements ITreeIterator {
 
 	public abstract boolean isIterable(Leaf node);
 
+	public abstract boolean isLeaf(Leaf node);
+
 	@Override
 	public boolean hasNext() {
 
@@ -92,7 +94,7 @@ public abstract class AbstractTreePreOrderIterator implements ITreeIterator {
 			if (node == null) {
 				node = fTopNode;
 			} else {
-				if (node.hasChildren()) {
+				if (!isLeaf(node) && node.hasChildren()) {
 					// First children
 					node = ((Node) node).getFirstChild();
 				} else {

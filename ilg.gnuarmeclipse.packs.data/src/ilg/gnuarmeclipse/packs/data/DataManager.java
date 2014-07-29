@@ -16,6 +16,7 @@ import ilg.gnuarmeclipse.packs.cmsis.PdscTreeParserForBuild;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.data.IDataManager;
 import ilg.gnuarmeclipse.packs.core.tree.AbstractTreePreOrderIterator;
+import ilg.gnuarmeclipse.packs.core.tree.ITreeIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.PackNode;
@@ -309,7 +310,7 @@ public class DataManager implements IDataManager {
 			// Extract devices from all installed packages
 			rootNode = parseInstalledDevicesForBuild();
 
-			//
+			// TODO: check if still needed
 			addPdscNames(rootNode);
 
 			if (rootNode != null) {
@@ -343,7 +344,7 @@ public class DataManager implements IDataManager {
 
 	private void addPdscNames(Node tree) {
 
-		class FamiliesIterator extends TreePreOrderIterator {
+		ITreeIterator familyNodes = new AbstractTreePreOrderIterator() {
 
 			@Override
 			public boolean isIterable(Leaf node) {
@@ -352,14 +353,42 @@ public class DataManager implements IDataManager {
 				}
 				return false;
 			}
-		}
 
-		FamiliesIterator familyNodes = new FamiliesIterator();
+			@Override
+			public boolean isLeaf(Leaf node) {
+				if (node.isType(Type.FAMILY)
+						|| node.isType(Type.BOARDS_SUBTREE)) {
+					return true;
+				}
+				return false;
+			}
+
+		};
+		// tree contains the installed objects
 		familyNodes.setTreeNode(tree);
 
 		Node repositoriesTree = getRepositoriesTree();
 
-		AbstractTreePreOrderIterator repoFamilyNodes = new FamiliesIterator();
+		ITreeIterator repoFamilyNodes = new AbstractTreePreOrderIterator() {
+
+			@Override
+			public boolean isLeaf(Leaf node) {
+
+				// Skip nodes inside <external>
+				if (node.isType(Type.EXTERNAL)) {
+					return true;
+				}
+				return false;
+			}
+
+			@Override
+			public boolean isIterable(Leaf node) {
+				if (node.isType(Type.FAMILY)) {
+					return true;
+				}
+				return false;
+			}
+		};
 		repoFamilyNodes.setTreeNode(repositoriesTree);
 
 		for (Leaf familyNode : familyNodes) {
