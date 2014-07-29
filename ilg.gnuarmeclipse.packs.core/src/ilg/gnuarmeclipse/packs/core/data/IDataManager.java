@@ -22,17 +22,7 @@ public interface IDataManager {
 	 * @return A tree of nodes, with Devices/Boards, Vendors, Family, Subfamily,
 	 *         Device, Variant.
 	 */
-	public Node getInstalledDevicesForBuild();
-
-	/**
-	 * Get the documentation associated with the device and/or board in use.
-	 * 
-	 * @param deviceName
-	 * @param boardName
-	 * @return
-	 */
-	public Node getDocsTree(String deviceVendorId, String deviceName,
-			String boardVendorName, String boardName);
+	public Node getInstalledObjectsForBuild();
 
 	/**
 	 * Get the list of files referring to CMSIS Core (ARM headers and vendor

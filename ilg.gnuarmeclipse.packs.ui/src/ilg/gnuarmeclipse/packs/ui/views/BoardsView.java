@@ -464,7 +464,7 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 		String boardName = node.getName();
 		String description = node.getDescription();
 
-		Leaf boardNode = vendorNode.getChild(Type.BOARD, boardName);
+		Leaf boardNode = vendorNode.findChild(Type.BOARD, boardName);
 		if (boardNode == null) {
 
 			boardNode = Leaf.addNewChild(vendorNode, Type.BOARD);
@@ -544,7 +544,7 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 		String boardName = modelFamilyNode.getName();
 		String vendorName = modelFamilyNode.getProperty(Property.VENDOR_NAME);
 
-		Node vendorNode = (Node) viewTree.getChild(Type.VENDOR, vendorName);
+		Node vendorNode = (Node) viewTree.findChild(Type.VENDOR, vendorName);
 		if (vendorNode == null || !vendorName.equals(vendorNode.getName())) {
 
 			// Make new vendor node
@@ -552,7 +552,7 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 			vendorNode.setName(vendorName);
 		}
 
-		Leaf boardNode = vendorNode.getChild(Type.BOARD, boardName);
+		Leaf boardNode = vendorNode.findChild(Type.BOARD, boardName);
 		if (boardNode == null) {
 
 			// Make new board node

@@ -86,7 +86,7 @@ public class CopyExampleJob extends Job {
 			PackNode exampleNode = (PackNode) o;
 			PackNode versionNode = (PackNode) exampleNode.getParent();
 
-			Leaf outlineExampleNode = exampleNode.getOutline().getChild(
+			Leaf outlineExampleNode = exampleNode.getOutline().findChild(
 					Type.EXAMPLE);
 
 			String packRelativeFolder = versionNode

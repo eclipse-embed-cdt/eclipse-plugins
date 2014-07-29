@@ -14,6 +14,7 @@ package ilg.gnuarmeclipse.packs.cmsis;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
+import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.Utils;
 
@@ -74,7 +75,7 @@ public class PdscTreeParser {
 
 		if (parent.hasChildren()) {
 			for (Leaf child : parent.getChildren()) {
-				if (vendorId.equals(child.getProperty(Node.VENDORID_PROPERTY))) {
+				if (vendorId.equals(child.getProperty(Property.VENDOR_ID))) {
 					return (Node) child;
 				}
 			}
@@ -82,9 +83,13 @@ public class PdscTreeParser {
 
 		Node vendor = Node.addNewChild(parent, Type.VENDOR);
 		vendor.setName(vendorName);
-		vendor.putProperty(Node.VENDORID_PROPERTY, vendorId);
+		vendor.putProperty(Property.VENDOR_ID, vendorId);
 
 		return vendor;
+	}
+
+	protected String updatePosixSeparators(String spath) {
+		return spath.replace('\\', '/');
 	}
 
 }

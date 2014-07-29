@@ -11,14 +11,10 @@
 
 package ilg.gnuarmeclipse.packs.core.tree;
 
-public class TreePreOrderIterator extends AbstractTreePreOrderIterator {
+import java.util.Iterator;
 
-	public TreePreOrderIterator() {
-		super();
-	}
+public interface ITreeIterator extends Iterator<Leaf>, Iterable<Leaf> {
 
-	@Override
-	public boolean isIterable(Leaf node) {
-		return true;
-	}
+	public void setTreeNode(Leaf node);
+
 }

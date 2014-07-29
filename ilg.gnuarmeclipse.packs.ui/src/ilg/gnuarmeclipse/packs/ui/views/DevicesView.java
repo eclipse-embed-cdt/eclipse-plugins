@@ -470,7 +470,7 @@ public class DevicesView extends ViewPart implements IDataManagerListener {
 		String deviceName = node.getName();
 		String description = node.getDescription();
 
-		Leaf deviceNode = vendorNode.getChild(Type.FAMILY, deviceName);
+		Leaf deviceNode = vendorNode.findChild(Type.FAMILY, deviceName);
 		if (deviceNode == null) {
 
 			deviceNode = Leaf.addNewChild(vendorNode, Type.FAMILY);
@@ -552,7 +552,7 @@ public class DevicesView extends ViewPart implements IDataManagerListener {
 		String vendorName = modelFamilyNode.getProperty(Property.VENDOR_NAME);
 		String vendorId = modelFamilyNode.getProperty(Property.VENDOR_ID);
 
-		Node vendorNode = (Node) viewTree.getChild(Type.VENDOR, vendorName);
+		Node vendorNode = (Node) viewTree.findChild(Type.VENDOR, vendorName);
 		if (vendorNode == null
 				|| !vendorId.equals(vendorNode.getProperty(Property.VENDOR_ID))) {
 
@@ -562,7 +562,7 @@ public class DevicesView extends ViewPart implements IDataManagerListener {
 			vendorNode.putProperty(Property.VENDOR_ID, vendorId);
 		}
 
-		Leaf deviceNode = vendorNode.getChild(Type.FAMILY, deviceName);
+		Leaf deviceNode = vendorNode.findChild(Type.FAMILY, deviceName);
 		if (deviceNode == null) {
 
 			// Make new device node

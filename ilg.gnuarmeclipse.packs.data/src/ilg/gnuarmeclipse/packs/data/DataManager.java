@@ -33,7 +33,6 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 
 import org.eclipse.core.runtime.Path;
 import org.eclipse.ui.console.MessageConsoleStream;
@@ -56,14 +55,15 @@ public class DataManager implements IDataManager {
 
 	private PacksStorage fStorage;
 	private Repos fRepos;
-	private Node fInstalledDevicesForBuild;
+	private Node fInstalledObjectsForBuild;
 	private MessageConsoleStream fOut;
 	private List<IDataManagerListener> fListeners;
 	private Map<String, Node> fParsedPdsc;
 	private List<PackNode> fInstalledPacksLatestVersionsList;
 	private Node fRepositoriesTree;
 	private List<PackNode> fPacksVersionsList;
-	private Map<String, PackNode> fDevicesMap;
+
+	// private Map<String, PackNode> fDevicesMap;
 
 	public DataManager() {
 
@@ -71,7 +71,7 @@ public class DataManager implements IDataManager {
 
 		fRepos = Repos.getInstance();
 		fStorage = PacksStorage.getInstance();
-		fInstalledDevicesForBuild = null;
+		fInstalledObjectsForBuild = null;
 
 		fListeners = new ArrayList<IDataManagerListener>();
 		fParsedPdsc = new HashMap<String, Node>();
@@ -80,7 +80,7 @@ public class DataManager implements IDataManager {
 		fInstalledPacksLatestVersionsList = null;
 		fPacksVersionsList = null;
 
-		fDevicesMap = new TreeMap<String, PackNode>();
+		// fDevicesMap = new TreeMap<String, PackNode>();
 
 	}
 
@@ -147,12 +147,12 @@ public class DataManager implements IDataManager {
 
 	// Called from TabDevice in managedbuild.cross
 	@Override
-	public Node getInstalledDevicesForBuild() {
+	public Node getInstalledObjectsForBuild() {
 
-		if (fInstalledDevicesForBuild != null) {
+		if (fInstalledObjectsForBuild != null) {
 
 			// Return the in-memory cached tree
-			return fInstalledDevicesForBuild;
+			return fInstalledObjectsForBuild;
 		}
 
 		Activator.getInstance().waitLoadReposJob();
@@ -161,47 +161,13 @@ public class DataManager implements IDataManager {
 				new Runnable() {
 
 					public void run() {
-						fInstalledDevicesForBuild = loadInstalledDevicesForBuild();
+						fInstalledObjectsForBuild = loadInstalledObjectsForBuild();
 					}
 				});
 
-		return fInstalledDevicesForBuild;
+		return fInstalledObjectsForBuild;
 	}
 
-	// Will be called from managed build DocsView
-	@Override
-	public Node getDocsTree(String deviceVendorId, String deviceName,
-			String boardVendorName, String boardName) {
-
-		Node devicesRoot = new Node(Type.ROOT);
-		devicesRoot.setName("Docs");
-
-		Node deviceDocsNode = Node.addNewChild(devicesRoot, Type.FOLDER);
-		deviceDocsNode.setName("Device docs");
-
-		Node n = getLatestInstalledPackForDevice(deviceVendorId, deviceName);
-
-		if (true) {
-			Node book = Node.addNewChild(deviceDocsNode, Type.BOOK);
-			book.setName("Cortex-M4");
-			book.putProperty(Node.FILE_PROPERTY, "xx.pdf");
-			book.putProperty(Node.CATEGORY_PROPERTY, "xx.pdf");
-		}
-
-		Node boardDocsNode = Node.addNewChild(devicesRoot, Type.FOLDER);
-		boardDocsNode.setName("Board docs");
-
-		n = getLatestInstalledPackForBoard(boardVendorName, boardName);
-
-		if (true) {
-			Node book = Node.addNewChild(boardDocsNode, Type.BOOK);
-			book.setName("Getting Started");
-			book.putProperty(Node.FILE_PROPERTY, "yy.pdf");
-			book.putProperty(Node.CATEGORY_PROPERTY, "manual");
-		}
-
-		return devicesRoot;
-	}
 
 	// Will be called from template code
 	@Override
@@ -268,11 +234,11 @@ public class DataManager implements IDataManager {
 
 		System.out.println("clearCachedInstalledDevicesForBuild()");
 
-		fInstalledDevicesForBuild = null;
+		fInstalledObjectsForBuild = null;
 
 		File devicesFile = fStorage.getFile(
 				new Path(PacksStorage.CACHE_FOLDER),
-				PacksStorage.DEVICES_FILE_NAME);
+				PacksStorage.INSTALLED_DEVICES_FILE_NAME);
 
 		if (devicesFile != null) {
 			devicesFile.delete();
@@ -280,13 +246,13 @@ public class DataManager implements IDataManager {
 	}
 
 	// Update the tree, from cache or from original pdsc files
-	private Node loadInstalledDevicesForBuild() {
+	private Node loadInstalledObjectsForBuild() {
 
 		Node rootNode = null;
 		File devicesFile = null;
 		try {
 			devicesFile = PacksStorage
-					.getCachedFileObject(PacksStorage.DEVICES_FILE_NAME);
+					.getCachedFileObject(PacksStorage.INSTALLED_DEVICES_FILE_NAME);
 
 			if (devicesFile.exists()) {
 
@@ -303,7 +269,7 @@ public class DataManager implements IDataManager {
 			// Extract devices from all installed packages
 			rootNode = parseInstalledDevicesForBuild();
 
-			// 
+			//
 			addPdscNames(rootNode);
 
 			if (rootNode != null) {
@@ -340,7 +306,7 @@ public class DataManager implements IDataManager {
 		class FamiliesIterator extends TreePreOrderIterator {
 
 			@Override
-			protected boolean isIterable(Leaf node) {
+			public boolean isIterable(Leaf node) {
 				if (node.isType(Type.FAMILY)) {
 					return true;
 				}
@@ -393,9 +359,9 @@ public class DataManager implements IDataManager {
 								pdscName);
 						familyNode.putNonEmptyProperty(Property.VERSION_NAME,
 								versionName);
-						
+
 						// Keep the most recent version installed.
-						// Hopefully the same family will not be defined in 
+						// Hopefully the same family will not be defined in
 						// multiple packages...
 						// TODO: process deprecation.
 						break;
@@ -432,9 +398,9 @@ public class DataManager implements IDataManager {
 
 		PdscTreeParserForBuild pdsc = new PdscTreeParserForBuild();
 
-		Node boardsNode = new Node(Type.FOLDER);
+		Node boardsNode = new Node(Type.BOARDS_SUBTREE);
 		boardsNode.setName("Boards");
-		Node devicesNode = new Node(Type.FOLDER);
+		Node devicesNode = new Node(Type.DEVICES_SUBTREE);
 		devicesNode.setName("Devices");
 
 		int countPackages = 0;
@@ -487,17 +453,12 @@ public class DataManager implements IDataManager {
 			fOut.println();
 		}
 
-		if (boardsNode.hasChildren() && devicesNode.hasChildren()) {
+		if (boardsNode.hasChildren() || devicesNode.hasChildren()) {
 
 			Node rootNode = new Node(Type.ROOT);
 			rootNode.addChild(boardsNode);
 			rootNode.addChild(devicesNode);
 			return rootNode;
-
-		} else if (boardsNode.hasChildren()) {
-			return boardsNode;
-		} else if (devicesNode.hasChildren()) {
-			return devicesNode;
 		}
 
 		return null;
@@ -635,73 +596,5 @@ public class DataManager implements IDataManager {
 		return key;
 	}
 
-	public PackNode getLatestInstalledPackForDevice(String deviceVendorId,
-			String deviceName) {
-
-		String key = makeMapKey(deviceVendorId, deviceName);
-		if (fDevicesMap.containsKey(key)) {
-			return fDevicesMap.get(key);
-		}
-
-		Node tree = getRepositoriesTree();
-		PackNode pack = getLatestInstalledPackForDeviceRecursive(tree,
-				deviceVendorId, deviceName);
-
-		if (pack != null) {
-			fDevicesMap.put(key, pack);
-		}
-
-		return pack;
-	}
-
-	private PackNode getLatestInstalledPackForDeviceRecursive(Leaf node,
-			String deviceVendorId, String deviceName) {
-
-		if (node.isType(Type.PACKAGE)) {
-
-			if (!node.isBooleanProperty(Property.INSTALLED)) {
-				return null; // skip packages not installed
-			}
-			if (!node.hasChildren()) {
-				return null;
-			}
-			for (Leaf child : ((Node) node).getChildren()) {
-				if (child.isBooleanProperty(Property.INSTALLED)) {
-					PackNode res = getLatestInstalledPackForDeviceRecursive(
-							(Node) child, deviceVendorId, deviceName);
-
-					// Return first encountered
-					if (res != null) {
-						return res;
-					}
-				}
-			}
-			return null; // No installed versions
-
-		} else if (node.isType(Type.DEVICE)) {
-
-			if (deviceName.equals(node.getName())) {
-				System.out.println();
-			}
-		}
-
-		if (node.hasChildren()) {
-			for (Leaf child : ((Node) node).getChildren()) {
-				PackNode res = getLatestInstalledPackForDeviceRecursive(child,
-						deviceVendorId, deviceName);
-				if (res != null) {
-					return res;
-				}
-			}
-		}
-
-		return null; // Not found
-	}
-
-	public Node getLatestInstalledPackForBoard(String boardVendorName,
-			String boardName) {
-
-		return null;
-	}
-
+	// ------------------------------------------------------------------------
 }

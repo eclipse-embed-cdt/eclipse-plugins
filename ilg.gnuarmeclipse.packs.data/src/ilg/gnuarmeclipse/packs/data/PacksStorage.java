@@ -50,7 +50,7 @@ public class PacksStorage {
 	public static final String CONTENT_FILE_NAME_SUFFIX = "content.xml";
 	public static final String CONTENT_XML_VERSION = "1.1";
 
-	public static final String DEVICES_FILE_NAME = ".devicesForBuild.xml";
+	public static final String INSTALLED_DEVICES_FILE_NAME = ".installed_devices_boards_books.xml";
 
 	private static IPath sfFolderPath = null;
 
@@ -355,7 +355,7 @@ public class PacksStorage {
 
 			Leaf node = (Node) map.get("content");
 			if (node != null) {
-				//packsTree.addChild(node);
+				// packsTree.addChild(node);
 				node.moveTo(packsTree);
 			}
 		}
@@ -557,7 +557,7 @@ public class PacksStorage {
 		String versionName = versionNode.getName();
 
 		Node origNode = (Node) getPackVersion(vendorName, packName, versionName);
-		Node outlinesNode = (Node) origNode.getChild(Type.OUTLINE);
+		Node outlinesNode = (Node) origNode.findChild(Type.OUTLINE);
 
 		if (outlinesNode != null && outlinesNode.hasChildren()) {
 

@@ -114,11 +114,11 @@ public class Node extends Leaf {
 		node.fParent = this;
 	}
 
-	public Leaf getChild(String type) {
-		return getChild(type, null);
+	public Leaf findChild(String type) {
+		return findChild(type, null);
 	}
 
-	public Leaf getChild(String type, String name) {
+	public Leaf findChild(String type, String name) {
 
 		if (type == null) {
 			return null;
@@ -173,7 +173,7 @@ public class Node extends Leaf {
 
 		assert (parent != null);
 
-		Node node = (Node) parent.getChild(type, name);
+		Node node = (Node) parent.findChild(type, name);
 		if (node == null) {
 
 			node = new Node(type);

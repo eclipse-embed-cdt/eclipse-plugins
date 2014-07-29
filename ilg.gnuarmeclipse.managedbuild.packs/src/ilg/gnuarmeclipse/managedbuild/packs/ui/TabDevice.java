@@ -17,10 +17,8 @@ import ilg.gnuarmeclipse.packs.core.data.IDataManager;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
-import ilg.gnuarmeclipse.packs.core.tree.TreePreOrderIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -75,7 +73,7 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 			List<Leaf> list = new LinkedList<Leaf>();
 			for (Leaf child : children) {
 				// Filter out memory nodes
-				if (!child.isType(Type.MEMORY)) {
+				if (!child.isType(Type.MEMORY) && !child.isType(Type.BOOK)) {
 					list.add(child);
 				}
 			}
@@ -643,7 +641,7 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 	private Node getDevicesTree() {
 
 		// Call the data manager. If the tree is not cached, will busy wait.
-		Node devicesRoot = fDataManager.getInstalledDevicesForBuild();
+		Node devicesRoot = fDataManager.getInstalledObjectsForBuild();
 
 		assert devicesRoot != null;
 		return devicesRoot;

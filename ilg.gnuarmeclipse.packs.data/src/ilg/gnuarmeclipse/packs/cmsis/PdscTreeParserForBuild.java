@@ -158,6 +158,8 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 			processProcessorNode(node, parent);
 		} else if (node.isType("memory")) {
 			processMemoryNode(node, parent);
+		} else if (node.isType("book")) {
+			processBookNode(node, parent);
 		}
 	}
 
@@ -206,6 +208,29 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 		memoryNode.putNonEmptyProperty(Property.DEFAULT, defa);
 	}
 
+	private void processBookNode(Leaf node, Node parent) {
+
+		// Required
+		String bookName = node.getProperty("name", "");
+		String title = node.getProperty("title", "");
+		
+		// Optional
+		String category = node.getProperty("category", "");
+
+		Leaf bookNode = Leaf.addNewChild(parent, Type.BOOK);
+		bookNode.setName(title);
+
+		String posixName = updatePosixSeparators(bookName);
+		if (bookName.startsWith("http://") || bookName.startsWith("https://")
+				|| bookName.startsWith("ftp://")) {
+			bookNode.putNonEmptyProperty(Property.URL, bookName);
+		} else {
+			bookNode.putNonEmptyProperty(Property.FILE, posixName);
+		}
+
+		bookNode.putNonEmptyProperty(Property.CATEGORY, category);
+	}
+
 	private void processBoardNode(Leaf node, Node parent) {
 
 		// Required
@@ -222,8 +247,13 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 			name += " (" + boardRevision + ")";
 		}
 
-		Node boardNode = Node.addUniqueChild(vendorNode, Type.BOARD, name);
+		Node boardNode = Node.addNewChild(vendorNode, Type.BOARD);
 
+		boardNode.setName(name);
+		
+		boardNode.putNonEmptyProperty(Property.BOARD_NAME, boardName);
+		boardNode.putNonEmptyProperty(Property.BOARD_REVISION, boardRevision);
+		
 		// Count the encountered boards
 		fCount++;
 
@@ -245,14 +275,18 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 						deviceNode.putProperty(Property.VENDOR_NAME, va[0]);
 						deviceNode.putProperty(Property.VENDOR_ID, va[1]);
 					}
-				} else if (child.isType("mountedDevice")) {
+				} else if (child.isType("feature")) {
 					processFeatureNode(child, boardNode);
+				} else if (child.isType("book")) {
+					processBookNode(child, boardNode);
 				}
 			}
 		}
 
 		String prefix = "Board";
 		String summary = "";
+		
+		// Clock can be set by processFeatureNode()
 		String clock = boardNode.getProperty(Property.CLOCK, "");
 		if (clock.length() > 0) {
 			try {

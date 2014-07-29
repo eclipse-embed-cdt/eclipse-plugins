@@ -825,7 +825,7 @@ public class OutlineView extends ViewPart {
 
 		if (input.isType(Type.VERSION)) {
 
-			Node oNode = (Node) input.getChild(Type.OUTLINE);
+			Node oNode = (Node) input.findChild(Type.OUTLINE);
 			if (oNode != null && oNode.hasChildren()) {
 				outlineNode = new Node(Type.OUTLINE);
 				outlineNode.setName("Brief Outline");

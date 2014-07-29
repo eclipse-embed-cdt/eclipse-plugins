@@ -205,11 +205,11 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		if (node.hasProperties()) {
 			for (String key : node.fProperties.keySet()) {
 				if (Property.NAME.equals(key)) {
-					if (node.getProperty(Property.NAME) != null) {
+					if (getProperty(Property.NAME) != null) {
 						continue; // leave name unchanged
 					}
 				} else if (Property.DESCRIPTION.equals(key)) {
-					if (node.getProperty(Property.DESCRIPTION) != null) {
+					if (getProperty(Property.DESCRIPTION) != null) {
 						continue; // leave description unchanged
 					}
 				}
@@ -279,7 +279,7 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 
 		assert (parent != null);
 
-		Leaf node = parent.getChild(type, name);
+		Leaf node = parent.findChild(type, name);
 		if (node == null) {
 
 			node = new Leaf(type);

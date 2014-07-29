@@ -11,9 +11,12 @@
 
 package ilg.gnuarmeclipse.managedbuild.packs.ui.views;
 
+import ilg.gnuarmeclipse.packs.core.tree.AbstractTreePreOrderIterator;
+import ilg.gnuarmeclipse.packs.core.tree.ITreeIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
+import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DataManager;
 import ilg.gnuarmeclipse.packs.data.DataManagerEvent;
@@ -88,10 +91,26 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 		@Override
 		public String getToolTipText(Object obj) {
 
-			// Leaf node = ((Leaf) obj);
-			// String type = node.getType();
+			Leaf node = ((Leaf) obj);
 
-			return null;
+			String description = null;
+			if (node.isType(Type.BOOK)) {
+				description = "Document: " + node.getName();
+
+				String category = node.getProperty(Property.CATEGORY, "");
+				if (category.length() > 0) {
+					description += "\n" + "category: " + category;
+				}
+				String file = node.getProperty(Property.FILE, "");
+				if (file.length() > 0) {
+					description += "\n" + "file: " + file;
+				}
+				String url = node.getProperty(Property.URL, "");
+				if (url.length() > 0) {
+					description += "\n" + "url: " + url;
+				}
+			}
+			return description;
 		}
 
 		@Override
@@ -326,9 +345,117 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 		String boardVendorName = "STMicroelectronics";
 		String boardName = "STM32F4-Discovery";
 
-		Node devicesRoot = DataManager.getInstance().getDocsTree(
-				deviceVendorId, deviceName, boardVendorName, boardName);
+		Node tree = DataManager.getInstance().getInstalledObjectsForBuild();
+
+		Node devicesRoot = new Node(Type.ROOT);
+		devicesRoot.setName("Docs");
+
+		if (deviceName != null) {
+			Node deviceDocsNode = Node.addNewChild(devicesRoot, Type.FOLDER);
+			deviceDocsNode.setName(deviceName + " device docs");
+
+			Node devicesSubtree = (Node) tree.findChild(Type.DEVICES_SUBTREE);
+			if (devicesSubtree != null) {
+
+				copyDeviceDocs(devicesSubtree, deviceVendorId, deviceName,
+						deviceDocsNode);
+			}
+		}
+
+		if (boardName != null) {
+			Node boardDocsNode = Node.addNewChild(devicesRoot, Type.FOLDER);
+			boardDocsNode.setName(boardName + " board docs");
+
+			Node boardsSubtree = (Node) tree.findChild(Type.BOARDS_SUBTREE);
+			if (boardsSubtree != null) {
+
+				copyBoardDocs(boardsSubtree, boardVendorName, boardName,
+						boardDocsNode);
+			}
+		}
+
 		return devicesRoot;
+	}
+
+	private void copyBoardDocs(Node boards, String boardVendorName,
+			String boardName, Node parent) {
+
+		// Identify vendor
+		Node vendor = (Node) boards.findChild(Type.VENDOR, boardVendorName);
+		if (vendor != null && vendor.hasChildren()) {
+
+			for (Leaf board : vendor.getChildren()) {
+
+				// Identify board
+				if (board.isType(Type.BOARD)
+						&& boardName.equals(board.getProperty(
+								Property.BOARD_NAME, ""))) {
+					if (board != null && board.hasChildren()) {
+						for (Leaf bookNode : ((Node) board).getChildren()) {
+
+							if (bookNode.isType(Type.BOOK)) {
+								// Copy book nodes
+								Leaf newBook = Leaf.addNewChild(parent,
+										Type.BOOK);
+								newBook.copyProperties(bookNode);
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	private void copyDeviceDocs(Node devicesSubtree, String deviceVendorId,
+			String deviceName, Node parent) {
+
+		for (Leaf vendor : devicesSubtree.getChildren()) {
+
+			// Identify vendor by vendor ID, not name
+			if (vendor.isType(Type.VENDOR)
+					&& deviceVendorId.equals(vendor.getProperty(
+							Property.VENDOR_ID, ""))) {
+
+				ITreeIterator deviceNodes = new AbstractTreePreOrderIterator() {
+
+					@Override
+					public boolean isIterable(Leaf node) {
+
+						if (node.isType(Type.DEVICE)) {
+							return true;
+						}
+						return false;
+					}
+				};
+				// Iterate only the current vendor devices
+				deviceNodes.setTreeNode(vendor);
+
+				for (Leaf deviceNode : deviceNodes) {
+
+					// Identify device
+					if (deviceName.equals(deviceNode.getName())) {
+
+						Leaf node = deviceNode;
+						do {
+							if (node.hasChildren()) {
+								for (Leaf bookNode : ((Node) node)
+										.getChildren()) {
+									if (bookNode.isType(Type.BOOK)) {
+										// Copy book nodes
+										Leaf newBook = Leaf.addNewChild(parent,
+												Type.BOOK);
+										newBook.copyProperties(bookNode);
+									}
+								}
+							}
+							node = node.getParent();
+							// collect subfamily and family books too
+						} while (node != null
+								&& !node.isType(Type.DEVICES_SUBTREE));
+					}
+				}
+			}
+		}
 	}
 
 	// ------------------------------------------------------------------------

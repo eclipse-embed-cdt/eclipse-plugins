@@ -339,7 +339,7 @@ public class PdscParserFull extends PdscParser {
 
 				// Examples must be PackNode, to accomodate outlines.
 				PackNode exampleNode;
-				exampleNode = (PackNode) parent.getChild(Type.EXAMPLE,
+				exampleNode = (PackNode) parent.findChild(Type.EXAMPLE,
 						exampleName);
 				if (exampleNode == null) {
 					exampleNode = new PackNode(Type.EXAMPLE);

@@ -1,10 +1,32 @@
+/*******************************************************************************
+ * Copyright (c) 2014 Liviu Ionescu.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Liviu Ionescu - initial implementation.
+ *******************************************************************************/
+
 package ilg.gnuarmeclipse.packs.core.tree;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-public abstract class AbstractTreePreOrderIterator implements Iterator<Leaf>,
-		Iterable<Leaf> {
+// This is a generic tree iterator, allowing a convenient
+// tree traversal in pre-order (root first, then children).
+//
+// Internally it iterates all nodes, but externally it presents
+// only nodes that pass the user isIterable() test.
+//
+// It is more efficient then building a list and iterating it, and less
+// efficient than manually recursing the tree.
+//
+// One possible optimisation may be a method to define leaf nodes, 
+// that are not entered for children inspection.
+
+public abstract class AbstractTreePreOrderIterator implements ITreeIterator {
 
 	private Leaf fTopNode;
 	private Leaf fCurrentNode;
@@ -26,7 +48,7 @@ public abstract class AbstractTreePreOrderIterator implements Iterator<Leaf>,
 		return this;
 	}
 
-	protected abstract boolean isIterable(Leaf node);
+	public abstract boolean isIterable(Leaf node);
 
 	@Override
 	public boolean hasNext() {

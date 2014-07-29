@@ -723,7 +723,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 			PackNode exampleNode = (PackNode) sel;
 
-			Leaf outlineExampleNode = exampleNode.getOutline().getChild(
+			Leaf outlineExampleNode = exampleNode.getOutline().findChild(
 					Type.EXAMPLE);
 
 			String exampleRelativeFolder = outlineExampleNode
@@ -974,7 +974,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 			assert (modelNode != null);
 
 			// For the installed nodes, add examples as children.
-			Node outlineNode = (Node) modelNode.getChild(Type.OUTLINE);
+			Node outlineNode = (Node) modelNode.findChild(Type.OUTLINE);
 			if (outlineNode != null && outlineNode.hasChildren()) {
 
 				for (Leaf child : outlineNode.getChildren()) {

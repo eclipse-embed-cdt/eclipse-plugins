@@ -37,7 +37,7 @@ public class PackNode extends Node {
 
 	public static PackNode addUniqueChild(Node parent, String type, String name) {
 
-		PackNode packNode = (PackNode) parent.getChild(type, name);
+		PackNode packNode = (PackNode) parent.findChild(type, name);
 		if (packNode == null) {
 
 			packNode = new PackNode(type);
