@@ -13,6 +13,7 @@ import org.eclipse.ui.console.MessageConsoleStream;
  */
 public class BusyIndicatorWithDuration {
 
+	private static int sfDepth = 0;
 	private static MessageConsoleStream sfOut = ConsoleStream.getConsoleOut();
 
 	/**
@@ -25,10 +26,13 @@ public class BusyIndicatorWithDuration {
 	 */
 	public static void showWhile(Runnable runnable) {
 
+		sfDepth++;
 		long beginTime = System.currentTimeMillis();
 
-		sfOut.println();
-		sfOut.println(Utils.getCurrentDateTime());
+		if (sfDepth == 1) {
+			sfOut.println();
+			sfOut.println(Utils.getCurrentDateTime());
+		}
 
 		BusyIndicator.showWhile(Display.getDefault(), runnable);
 
@@ -40,5 +44,6 @@ public class BusyIndicatorWithDuration {
 		sfOut.print("Completed in ");
 		sfOut.println(duration + "ms.");
 
+		sfDepth--;
 	}
 }
