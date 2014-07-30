@@ -37,7 +37,7 @@ public class IconUtils {
 					"icons/chm.png").createImage();
 		} else if (path.endsWith(".zip")) {
 			return Activator.imageDescriptorFromPlugin(ICONS_PLUGIN_ID,
-					"icons/jar_obj.png").createImage();
+					"icons/zip.png").createImage();
 		} else {
 			return Activator.imageDescriptorFromPlugin(ICONS_PLUGIN_ID,
 					"icons/library_obj.png").createImage();
