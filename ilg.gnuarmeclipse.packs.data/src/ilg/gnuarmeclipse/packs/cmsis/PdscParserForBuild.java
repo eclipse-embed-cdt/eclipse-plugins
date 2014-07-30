@@ -42,7 +42,8 @@ public class PdscParserForBuild extends PdscParser {
 		String schemaVersion = packageElement.getAttribute("schemaVersion")
 				.trim();
 
-		if (!isSchemaValid(schemaVersion)) {
+		if (!PdscUtils.isSchemaValid(schemaVersion)) {
+			System.out.println("Unrecognised schema version " + schemaVersion);
 			return;
 		}
 
@@ -264,7 +265,8 @@ public class PdscParserForBuild extends PdscParser {
 		String schemaVersion = packageElement.getAttribute("schemaVersion")
 				.trim();
 
-		if (!isSchemaValid(schemaVersion)) {
+		if (!PdscUtils.isSchemaValid(schemaVersion)) {
+			System.out.println("Unrecognised schema version " + schemaVersion);
 			return;
 		}
 

@@ -22,7 +22,6 @@ import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Selector;
-import ilg.gnuarmeclipse.packs.core.tree.TreePreOrderIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.jobs.BusyIndicatorWithDuration;
 import ilg.gnuarmeclipse.packs.xcdl.GenericParser;
@@ -40,7 +39,44 @@ import java.util.TreeMap;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
 
+/**
+ * This singleton class manages all data structures related to packs.
+ * 
+ * It uses two kind of data:
+ * <ul>
+ * <li>a summary of ALL existing pack versions
+ * <li>full information only on INSTALLED pack versions.
+ * </ul>
+ * 
+ * The main function to access the summary data is:
+ * <ul>
+ * <li>getRepositoriesTree()
+ * </ul>
+ * which returns a tree of all repositories/packages/versions/...
+ * <p>
+ * This tree is prepared when the user updates the packages.
+ * <p>
+ * The existing package versions can be also accesses with specific functions:
+ * <ul>
+ * <li>getPacksVersionsList()
+ * <li>findPackVersion()
+ * <li>findPackLatest()
+ * <li>getInstalledPacksLatestVersionsList()
+ * </ul>
+ * 
+ * To access detailed data from installed packages, specific functions are
+ * available:
+ * <ul>
+ * <li>getParsedPdscTree()
+ * <li>getInstalledObjectsForBuild()
+ * </ul>
+ */
+
+// TODO: add synchronisation
+
 public class DataManager implements IDataManager {
+
+	// ------------------------------------------------------------------------
 
 	private static DataManager sfInstance;
 
@@ -55,11 +91,7 @@ public class DataManager implements IDataManager {
 
 	// ------------------------------------------------------------------------
 
-	private Node fInstalledObjectsForBuild;
-	private MessageConsoleStream fOut;
-	private List<IDataManagerListener> fListeners;
-	private Map<String, Node> fParsedPdsc;
-	private List<PackNode> fInstalledPacksLatestVersionsList;
+	// ----- Summary data -----
 	private Node fRepositoriesTree;
 	private List<PackNode> fPacksVersionsList;
 
@@ -67,6 +99,15 @@ public class DataManager implements IDataManager {
 	private Map<String, Map<String, PackNode>> fPacksVersionsMap;
 	// A map of package nodes
 	private Map<String, PackNode> fPacksMap;
+
+	// ----- Installed packs data -----
+	private Map<String, Node> fParsedPdsc;
+	private List<PackNode> fInstalledPacksLatestVersionsList;
+	private Node fInstalledObjectsForBuild;
+
+	// ----- Other data -----
+	private MessageConsoleStream fOut;
+	private List<IDataManagerListener> fListeners;
 
 	// private Map<String, PackNode> fDevicesMap;
 
@@ -77,7 +118,7 @@ public class DataManager implements IDataManager {
 		fInstalledObjectsForBuild = null;
 
 		fListeners = new ArrayList<IDataManagerListener>();
-		fParsedPdsc = new HashMap<String, Node>();
+		fParsedPdsc = null;
 
 		fRepositoriesTree = null;
 		fInstalledPacksLatestVersionsList = null;
@@ -89,7 +130,7 @@ public class DataManager implements IDataManager {
 
 	}
 
-	// ------------------------------------------------------------------------
+	// ----- Listeners & notifiers --------------------------------------------
 
 	public void addListener(IDataManagerListener listener) {
 		if (!fListeners.contains(listener)) {
@@ -104,8 +145,10 @@ public class DataManager implements IDataManager {
 	// Note: since the DataManager is the only source of events, the
 	// source is 'this'.
 
-	// Used by 'Refresh', 'LoadReposSummaries'
+	// Used by 'Update'
 	public void notifyNewInput() {
+
+		clearSummaryData();
 
 		// System.out.println("PacksStorage notifyRefresh()");
 		DataManagerEvent event = new DataManagerEvent(this,
@@ -118,8 +161,8 @@ public class DataManager implements IDataManager {
 	public void notifyInstallRemove() {
 
 		// Force to re-cache
-		clearCachedPacksVersions();
-		clearCachedInstalledDevicesForBuild();
+		clearInstalledPacksLatestVersionsList();
+		clearCachedInstalledObjectsForBuild();
 
 		// System.out.println("PacksStorage notifyRefresh()");
 		DataManagerEvent event = new DataManagerEvent(this,
@@ -148,91 +191,73 @@ public class DataManager implements IDataManager {
 		}
 	}
 
-	// ------------------------------------------------------------------------
+	// ----- Summary data access ----------------------------------------------
 
-	// Called from TabDevice in managedbuild.cross
-	@Override
-	public Node getInstalledObjectsForBuild() {
+	public void clearSummaryData() {
 
-		if (fInstalledObjectsForBuild != null) {
+		fRepositoriesTree = null;
+		fPacksVersionsList = null;
 
-			// Return the in-memory cached tree
-			return fInstalledObjectsForBuild;
+		fInstalledPacksLatestVersionsList = null;
+	}
+
+	/**
+	 * Provide access to the summary data.
+	 * <p>
+	 * If the data is not in memory, load it from the disk cache (the
+	 * .content_*.xml files, one per repository)
+	 *
+	 * @return a tree of repositories/packages/versions/...
+	 */
+	public Node getRepositoriesTree() {
+
+		if (fRepositoriesTree != null) {
+			return fRepositoriesTree;
 		}
 
-		BusyIndicatorWithDuration.showWhile("Extracting devices & boards... ",
-				new Runnable() {
+		BusyIndicatorWithDuration.showWhile(new Runnable() {
 
-					public void run() {
-						fInstalledObjectsForBuild = loadInstalledObjectsForBuild();
-					}
-				});
-
-		return fInstalledObjectsForBuild;
-	}
-
-	// Will be called from template code
-	@Override
-	public Node getCmsisCoreFiles(String deviceName, String compiler) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	// Will be called from debugger
-	@Override
-	public Node getRegisterDetailsForDebug(String deviceName) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	// ------------------------------------------------------------------------
-
-	public Node getParsedPdscTree(String name, String version) {
-
-		String fileName = PacksStorage.makeCachedPdscName(name, version);
-		Node node = fParsedPdsc.get(fileName);
-		if (node != null) {
-			return node;
-		}
-
-		// Not found in cache, load from file.
-		long beginTime = System.currentTimeMillis();
-
-		try {
-
-			File file = PacksStorage.getCachedFileObject(fileName);
-			fOut.println("Parsing cached PDSC file \"" + file + "\"...");
-			Document document = Xml.parseFile(file);
-
-			PdscGenericParser parser = new PdscGenericParser();
-			node = parser.parse(document);
-
-			if (node != null) {
-				// Remember for future use
-				fParsedPdsc.put(fileName, node);
+			public void run() {
+				loadCachedReposContent();
 			}
+		});
 
-			long endTime = System.currentTimeMillis();
-			long duration = endTime - beginTime;
-			if (duration == 0) {
-				duration = 1;
-			}
-
-			fOut.println("File parsed in " + duration + "ms.");
-
-		} catch (Exception e) {
-			String msg = e.getMessage() + ", file: " + fileName;
-			fOut.println("Error: " + msg);
-			Utils.reportError(msg);
-			Activator.log(e);
-		}
-
-		return node;
+		return fRepositoriesTree;
 	}
 
-	// Find a given package version.
-	public PackNode getPackVersion(String vendorName, String packName,
-			String versionName) {
+	/**
+	 * Get a list of all existing package versions.
+	 * 
+	 * @return a list of version nodes.
+	 */
+	private List<PackNode> getPacksVersionsList() {
+
+		if (fPacksVersionsList != null) {
+			return fPacksVersionsList;
+		}
+
+		// Populate the list.
+		getRepositoriesTree();
+
+		return fPacksVersionsList;
+	}
+
+	/**
+	 * Find a given package version.
+	 * 
+	 * @param vendorName
+	 *            a string with the package vendor name (for example ARM).
+	 * @param packName
+	 *            a string with the package name (for example CMSIS).
+	 * @param version
+	 *            a string with the package version (for example 4.1.1).
+	 * @return a version node or null if not found.
+	 */
+	public PackNode findPackVersion(String vendorName, String packName,
+			String version) {
+
+		// Be sure the map is populated.
+		getRepositoriesTree();
 
 		String key = makeMapKey(vendorName, packName);
 		Map<String, PackNode> versionsMap = fPacksVersionsMap.get(key);
@@ -242,11 +267,22 @@ public class DataManager implements IDataManager {
 		}
 
 		// May return null
-		return (PackNode) versionsMap.get(versionName);
+		return (PackNode) versionsMap.get(version);
 	}
 
-	// Find the latest version of a pack
-	public PackNode getPackLatest(String vendorName, String packName) {
+	/**
+	 * Find the latest version of a package.
+	 * 
+	 * @param vendorName
+	 *            a string with the package vendor name (for example ARM).
+	 * @param packName
+	 *            a string with the package name (for example CMSIS).
+	 * @return a version node or null if not found.
+	 */
+	public PackNode findPackLatest(String vendorName, String packName) {
+
+		// Be sure the map is populated.
+		getRepositoriesTree();
 
 		String key = makeMapKey(vendorName, packName);
 		Map<String, PackNode> versionsMap = fPacksVersionsMap.get(key);
@@ -257,6 +293,7 @@ public class DataManager implements IDataManager {
 
 		PackNode node = null;
 		for (String versionName : versionsMap.keySet()) {
+			// Iterate to the last version in the set
 			node = versionsMap.get(versionName);
 		}
 
@@ -265,29 +302,368 @@ public class DataManager implements IDataManager {
 		return node;
 	}
 
-	// ------------------------------------------------------------------------
+	/**
+	 * Construct an internal representation of the map key, inspired from CMSIS
+	 * Pack examples.
+	 * 
+	 * @param vendorName
+	 *            a string with the package vendor name (for example ARM)
+	 * @param packName
+	 *            a string with the package name (for example CMSIS)
+	 * @return a string combining the vendor and the pack names.
+	 */
+	public String makeMapKey(String vendorName, String packName) {
 
-	private void clearCachedInstalledDevicesForBuild() {
+		String key = vendorName + "::" + packName;
+		return key;
+	}
 
-		System.out.println("clearCachedInstalledDevicesForBuild()");
+	/**
+	 * Load cached content with updated values, for example after a full packs
+	 * update.
+	 * 
+	 * Set the following field members:
+	 * <ul>
+	 * <li>fRepositoriesTree
+	 * <li>fPacksVersionsList
+	 * </ul>
+	 * and update the content of the following maps:
+	 * <ul>
+	 * <li>fPacksVersionsMap
+	 * <li>fPacksMap.
+	 * </ul>
+	 */
+	public void loadCachedReposContent() {
 
-		fInstalledObjectsForBuild = null;
+		Node node = new Node(Type.ROOT);
+		fPacksVersionsList = Repos.getInstance().loadCachedReposContent(node);
+		fRepositoriesTree = node;
 
-		File devicesFile = null;
-		try {
-			devicesFile = PacksStorage
-					.getCachedFileObject(PacksStorage.INSTALLED_DEVICES_FILE_NAME);
-		} catch (IOException e) {
-			;
+		preparePacksMaps();
+
+		addSelectors();
+
+		updateInstalledVersions();
+	}
+
+	/**
+	 * Recreate the package maps with content from the list.
+	 * <p>
+	 * Iterate fPacksVersionsList and recreate the following maps
+	 * <ul>
+	 * <li>fPacksVersionsMap
+	 * <li>fPacksMap
+	 * <ul>
+	 */
+	private void preparePacksMaps() {
+
+		// Group versions by [vendor::package] in a Map
+		Map<String, Map<String, PackNode>> packsVersionsMap = new TreeMap<String, Map<String, PackNode>>();
+		for (PackNode versionNode : fPacksVersionsList) {
+			String vendorName = versionNode.getProperty(Property.VENDOR_NAME);
+			String packName = versionNode.getProperty(Property.PACK_NAME);
+			String key = makeMapKey(vendorName, packName);
+
+			Map<String, PackNode> versionMap;
+			versionMap = packsVersionsMap.get(key);
+			if (versionMap == null) {
+				versionMap = new TreeMap<String, PackNode>();
+				packsVersionsMap.put(key, versionMap);
+			}
+
+			versionMap.put(versionNode.getName(), versionNode);
 		}
+		fPacksVersionsMap = packsVersionsMap;
 
-		if (devicesFile != null) {
-			devicesFile.delete();
+		// Group packages by [vendor::package] in a Map
+		Map<String, PackNode> packsMap = new TreeMap<String, PackNode>();
+		for (PackNode versionNode : fPacksVersionsList) {
+			String vendorName = versionNode.getProperty(Property.VENDOR_NAME);
+			String packName = versionNode.getProperty(Property.PACK_NAME);
+			String key = makeMapKey(vendorName, packName);
+
+			if (!packsMap.containsKey(key)) {
+				PackNode parent = (PackNode) versionNode.getParent();
+				packsMap.put(key, parent);
+			}
+		}
+		// Used for adding selectors.
+		fPacksMap = packsMap;
+	}
+
+	/**
+	 * Add unique selectors to each package, by inspecting the outline and
+	 * external definitions in the latest version.
+	 * <p>
+	 * Used to support filtering in the PacksView tree.
+	 */
+	private void addSelectors() {
+
+		for (PackNode packNode : fPacksMap.values()) {
+
+			Node versionNode = (Node) packNode.getFirstChild();
+			if (versionNode.hasChildren()) {
+				for (Leaf child : versionNode.getChildren()) {
+
+					if (child.isType(Type.OUTLINE)
+							|| child.isType(Type.EXTERNAL)) {
+						if (child.hasChildren()) {
+							for (Leaf node : ((Node) child).getChildren()) {
+
+								Selector selector = null;
+
+								String type = node.getType();
+								if (Type.FAMILY.equals(type)) {
+
+									selector = new Selector(
+											Selector.Type.DEVICEFAMILY);
+									selector.setValue(node.getName());
+									selector.setVendorId(node
+											.getProperty(Property.VENDOR_ID));
+
+								} else if (Type.BOARD.equals(type)) {
+
+									selector = new Selector(Selector.Type.BOARD);
+									selector.setValue(node.getName());
+									selector.setVendor(node
+											.getProperty(Property.VENDOR_NAME));
+
+								} else if (Type.KEYWORD.equals(type)) {
+
+									selector = new Selector(
+											Selector.Type.KEYWORD);
+									selector.setValue(node.getName());
+								}
+
+								if (selector != null) {
+									packNode.addSelector(selector);
+								}
+							}
+						}
+					}
+				}
+			}
 		}
 	}
 
+	/**
+	 * Add "Property.INSTALLED=true" to all installed version nodes and to their
+	 * parent pack nodes.
+	 */
+	private void updateInstalledVersions() {
+
+		fOut.println("Identifying installed packages...");
+
+		int count = 0;
+
+		// Check if the packages are installed
+		for (Leaf versionNode : fPacksVersionsList) {
+
+			String unpackFolder = versionNode.getProperty(Property.DEST_FOLDER);
+			String pdscName = versionNode.getProperty(Property.PDSC_NAME);
+
+			String pdscRelativePath = unpackFolder + '/' + pdscName;
+
+			try {
+				// Test if the pdsc file exists in the package folder
+				File file = PacksStorage.getFileObject(pdscRelativePath);
+				if (file.exists()) {
+
+					// Add an explicit property for more visibility
+					versionNode.setBooleanProperty(Property.INSTALLED, true);
+					if (versionNode.getParent().isType(Type.PACKAGE)) {
+						versionNode.getParent().setBooleanProperty(
+								Property.INSTALLED, true);
+					}
+
+					count++;
+				}
+			} catch (Exception e) {
+				;
+			}
+
+		}
+		if (count == 0) {
+			fOut.println("Found no installed packages.");
+		} else {
+			fOut.println("Found " + count + " installed packages.");
+		}
+	}
+
+	/**
+	 * Force to recreate the list of installed versions.
+	 * <p>
+	 * Used after installing/removing packages.
+	 */
+	private void clearInstalledPacksLatestVersionsList() {
+		fInstalledPacksLatestVersionsList = null;
+	}
+
+	/**
+	 * Filter all available versions and return only the latest installed ones.
+	 * 
+	 * @return a list of version nodes.
+	 */
+	public List<PackNode> getInstalledPacksLatestVersionsList() {
+
+		if (fInstalledPacksLatestVersionsList != null) {
+			return fInstalledPacksLatestVersionsList;
+		}
+
+		// Filter installed packages
+		List<PackNode> installedPackages = new LinkedList<PackNode>();
+		List<PackNode> packsVersionsList = getPacksVersionsList();
+		if (packsVersionsList != null) {
+			for (PackNode versionNode : getPacksVersionsList()) {
+				if (versionNode.isBooleanProperty(Property.INSTALLED)) {
+					installedPackages.add((PackNode) versionNode.getParent());
+				}
+			}
+
+			// Filter only the latest versions (first installed in children
+			// list)
+			List<PackNode> installedLatestVersions = new LinkedList<PackNode>();
+			for (PackNode packNode : installedPackages) {
+				List<Leaf> children = packNode.getChildren();
+				for (Leaf node : children) {
+					if (node.isBooleanProperty(Property.INSTALLED)) {
+						installedLatestVersions.add((PackNode) node);
+						break;
+					}
+				}
+			}
+
+			fInstalledPacksLatestVersionsList = installedLatestVersions;
+		}
+
+		return fInstalledPacksLatestVersionsList;
+	}
+
+	// ----- Detailed data ----------------------------------------------------
+
+	/**
+	 * Get the tree version equivalent with the full PDSC file.
+	 * <p>
+	 * If the file is not already in, load it and contribute to the map.
+	 * 
+	 * @return a tree starting with node "package", or null if error.
+	 */
+	public Node getParsedPdscTree(String pdscName, String version) {
+
+		final String fileName = PacksStorage.makeCachedPdscName(pdscName,
+				version);
+		if (fParsedPdsc != null) {
+			Node node = fParsedPdsc.get(fileName);
+			if (node != null) {
+				return node;
+			}
+		} else {
+			fParsedPdsc = new HashMap<String, Node>();
+		}
+
+		BusyIndicatorWithDuration.showWhile(new Runnable() {
+
+			public void run() {
+				loadPdscTree(fileName);
+			}
+		});
+
+		return fParsedPdsc.get(fileName); // may be null
+	}
+
+	/**
+	 * Load the cached PDSC file and parse it with the generic parser.
+	 * <p>
+	 * The tree reflects 100% the content in the original file, just that it is
+	 * easier to store and further parse.
+	 * 
+	 * @return a tree starting with node "package".
+	 */
+	private void loadPdscTree(String fileName) {
+
+		try {
+
+			File file = PacksStorage.getCachedFileObject(fileName);
+			fOut.println("Parsing cached PDSC file \"" + file + "\"...");
+			Document document = Xml.parseFile(file);
+
+			PdscGenericParser parser = new PdscGenericParser();
+			Node node = parser.parse(document);
+			if (node != null) {
+
+				// Put the tree in the map, for further use
+				fParsedPdsc.put(fileName, node);
+			}
+
+		} catch (Exception e) {
+			String msg = e.getMessage() + ", file: " + fileName;
+			fOut.println("Error: " + msg);
+			Utils.reportError(msg);
+			Activator.log(e);
+		}
+	}
+
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Force to recreate the cached installed objects.
+	 * <p>
+	 * To achieve this, also removes the cached file.
+	 */
+	private void clearCachedInstalledObjectsForBuild() {
+
+		System.out.println("clearCachedInstalledObjectsForBuild()");
+
+		fInstalledObjectsForBuild = null;
+
+		try {
+			File devicesFile = PacksStorage
+					.getCachedFileObject(PacksStorage.INSTALLED_DEVICES_FILE_NAME);
+
+			if (devicesFile != null) {
+				devicesFile.delete();
+			}
+		} catch (IOException e) {
+			;
+		}
+	}
+
+	/**
+	 * Get the devices from all installed packs, to be used by the device
+	 * selection properties page in project settings page.
+	 * 
+	 * @return a tree of nodes, with Devices/Boards, Vendors, Family, Subfamily,
+	 *         Device.
+	 */
+	@Override
+	public Node getInstalledObjectsForBuild() {
+
+		if (fInstalledObjectsForBuild != null) {
+
+			// Return the in-memory cached tree
+			return fInstalledObjectsForBuild;
+		}
+
+		BusyIndicatorWithDuration.showWhile(new Runnable() {
+
+			public void run() {
+				fInstalledObjectsForBuild = loadInstalledObjectsForBuild();
+			}
+		});
+
+		return fInstalledObjectsForBuild;
+	}
+
 	// Update the tree, from cache or from original pdsc files
+	/**
+	 * Load from the cached file or recreate the tree with the installed objects
+	 * (devices/boards/books).
+	 * 
+	 * @return a tree with device/boards.
+	 */
 	private Node loadInstalledObjectsForBuild() {
+
+		fOut.println("Extracting devices & boards... ");
 
 		Node rootNode = null;
 		File devicesFile = null;
@@ -298,7 +674,7 @@ public class DataManager implements IDataManager {
 			if (devicesFile.exists()) {
 
 				// If the cached file exists, try to use it
-				rootNode = parseCachedInstalledDevicesForBuild(devicesFile);
+				rootNode = loadCachedInstalledObjectsForBuild(devicesFile);
 				// However, it may fail
 			}
 
@@ -307,8 +683,8 @@ public class DataManager implements IDataManager {
 
 		if (rootNode == null) {
 
-			// Extract devices from all installed packages
-			rootNode = parseInstalledDevicesForBuild();
+			// Extract devices/boards/books from all installed packages
+			rootNode = parseInstalledPackagesForBuild();
 
 			// TODO: check if still needed
 			addPdscNames(rootNode);
@@ -342,6 +718,123 @@ public class DataManager implements IDataManager {
 		return rootNode;
 	}
 
+	/**
+	 * Load the cached file with the installed objects.
+	 * 
+	 * @param file
+	 *            the cached xml file
+	 * @return a tree with the parsed content of the file, or null if error.
+	 */
+	private Node loadCachedInstalledObjectsForBuild(File file) {
+
+		fOut.println("Parsing cached file \"" + file + "\".");
+
+		Node node = null;
+		try {
+			// Parse the cached file
+			Document document = Xml.parseFile(file);
+			GenericParser parser = new GenericParser();
+			node = parser.parse(document);
+		} catch (Exception e) {
+			String msg = e.getMessage() + ", file: " + file.getName();
+			fOut.println("Error: " + msg);
+			Utils.reportError(msg);
+			Activator.log(e);
+		}
+
+		return node;
+	}
+
+	/**
+	 * Process all installed packs and collect the objects required for build
+	 * (devices/boards/books).
+	 * <p>
+	 * It uses the cached PDSC trees; if not there, parse the PDSC files.
+	 * 
+	 * @return a tree or null if error.
+	 */
+	private Node parseInstalledPackagesForBuild() {
+
+		List<PackNode> versionsList = getInstalledPacksLatestVersionsList();
+
+		PdscTreeParserForBuild pdsc = new PdscTreeParserForBuild();
+
+		Node boardsNode = new Node(Type.BOARDS_SUBTREE);
+		boardsNode.setName("Boards");
+		Node devicesNode = new Node(Type.DEVICES_SUBTREE);
+		devicesNode.setName("Devices");
+
+		int countPackages = 0;
+		int totalCountDevices = 0;
+		int totalCountBoards = 0;
+
+		for (PackNode node : versionsList) {
+
+			String pdscName = node.getProperty(Property.PDSC_NAME);
+			String version = node.getName();
+
+			// Get the parsed PDSC, either from memory or from disc cache.
+			Node tree = getParsedPdscTree(pdscName, version);
+
+			// Extract the devices.
+			int countDevices = pdsc.parseDevices(tree, devicesNode);
+			totalCountDevices += countDevices;
+
+			// Extract the boards.
+			// Later use of boards requires existing the devices to be present,
+			// to get the memory map.
+			int countBoards = pdsc.parseBoards(tree, boardsNode);
+			totalCountBoards += countBoards;
+
+			// Necessary?
+			updateBoardsDevices(boardsNode, devicesNode);
+
+			countPackages++;
+		}
+
+		if (countPackages == 0) {
+			fOut.println("No installed packages.");
+		} else {
+			if (countPackages == 1) {
+				fOut.print("Processed 1 package, found ");
+			} else {
+				fOut.print("Processed " + countPackages + " packages, found ");
+			}
+			if (totalCountDevices == 0) {
+				fOut.print("no devices, ");
+			} else if (totalCountDevices == 1) {
+				fOut.print("1 device, ");
+			} else {
+				fOut.print(totalCountDevices + " devices, ");
+			}
+			if (totalCountBoards == 0) {
+				fOut.print("no boards.");
+			} else if (totalCountBoards == 1) {
+				fOut.print("1 board.");
+			} else {
+				fOut.print(totalCountBoards + " boards.");
+			}
+			fOut.println();
+		}
+
+		if (boardsNode.hasChildren() || devicesNode.hasChildren()) {
+
+			Node rootNode = new Node(Type.ROOT);
+			rootNode.addChild(boardsNode);
+			rootNode.addChild(devicesNode);
+			return rootNode;
+		}
+
+		return null;
+	}
+
+	/**
+	 * Add information to identify the PDSC to each device node (required, for
+	 * example, to compute the absolute path for files).
+	 * 
+	 * @param tree
+	 *            the tree with the installed objects for build
+	 */
 	private void addPdscNames(Node tree) {
 
 		ITreeIterator familyNodes = new AbstractTreePreOrderIterator() {
@@ -391,6 +884,7 @@ public class DataManager implements IDataManager {
 		};
 		repoFamilyNodes.setTreeNode(repositoriesTree);
 
+		// Iterate family nodes in the input tree
 		for (Leaf familyNode : familyNodes) {
 
 			String familyName = familyNode.getName();
@@ -398,6 +892,8 @@ public class DataManager implements IDataManager {
 			String vendorId = familyNode.getProperty(Property.VENDOR_ID);
 
 			repoFamilyNodes.setTreeNode(repositoriesTree);
+
+			// Iterate family nodes in the repositories tree
 			for (Leaf repoFamilyNode : repoFamilyNodes) {
 
 				String familyName2 = repoFamilyNode.getName();
@@ -439,330 +935,41 @@ public class DataManager implements IDataManager {
 		}
 	}
 
-	private Node parseCachedInstalledDevicesForBuild(File file) {
-
-		fOut.println("Parsing cached file \"" + file + "\".");
-
-		Node node = null;
-		try {
-			// Parse the cached file
-			Document document = Xml.parseFile(file);
-			GenericParser parser = new GenericParser();
-			node = parser.parse(document);
-		} catch (Exception e) {
-			String msg = e.getMessage() + ", file: " + file.getName();
-			fOut.println("Error: " + msg);
-			Utils.reportError(msg);
-			Activator.log(e);
-		}
-
-		return node;
-	}
-
-	// Return null if something went wrong
-	private Node parseInstalledDevicesForBuild() {
-
-		List<PackNode> versionsList = getInstalledPacksLatestVersionsList();
-
-		PdscTreeParserForBuild pdsc = new PdscTreeParserForBuild();
-
-		Node boardsNode = new Node(Type.BOARDS_SUBTREE);
-		boardsNode.setName("Boards");
-		Node devicesNode = new Node(Type.DEVICES_SUBTREE);
-		devicesNode.setName("Devices");
-
-		int countPackages = 0;
-		int totalCountDevices = 0;
-		int totalCountBoards = 0;
-
-		for (PackNode node : versionsList) {
-
-			String pdscName = node.getProperty(Property.PDSC_NAME);
-			String version = node.getName();
-
-			Node tree = getParsedPdscTree(pdscName, version);
-
-			int countDevices = pdsc.parseDevices(tree, devicesNode);
-			totalCountDevices += countDevices;
-
-			// Using boards requires existing devices to be present,
-			// to get the memory map
-			int countBoards = pdsc.parseBoards(tree, boardsNode);
-			totalCountBoards += countBoards;
-
-			// Necessary?
-			updateBoardsDevices(boardsNode, devicesNode);
-
-			countPackages++;
-		}
-
-		if (countPackages == 0) {
-			fOut.println("No installed packages.");
-		} else {
-			if (countPackages == 1) {
-				fOut.print("Processed 1 package, found ");
-			} else {
-				fOut.print("Processed " + countPackages + " packages, found ");
-			}
-			if (totalCountDevices == 0) {
-				fOut.print("no devices, ");
-			} else if (totalCountDevices == 1) {
-				fOut.print("1 device, ");
-			} else {
-				fOut.print(totalCountDevices + " devices, ");
-			}
-			if (totalCountBoards == 0) {
-				fOut.print("no boards.");
-			} else if (totalCountBoards == 1) {
-				fOut.print("1 board.");
-			} else {
-				fOut.print(totalCountBoards + " boards.");
-			}
-			fOut.println();
-		}
-
-		if (boardsNode.hasChildren() || devicesNode.hasChildren()) {
-
-			Node rootNode = new Node(Type.ROOT);
-			rootNode.addChild(boardsNode);
-			rootNode.addChild(devicesNode);
-			return rootNode;
-		}
-
-		return null;
-	}
-
 	private void updateBoardsDevices(Node boardsNode, Node devicesNode) {
 
 		// TODO: check if boards mounted devices are present in devices.
 		// If so, copy memory map, otherwise remove
 	}
 
-	private void clearCachedPacksVersions() {
-
-		fInstalledPacksLatestVersionsList = null;
-	}
-
-	// Filter the versions to the installed latest ones
-	private List<PackNode> getInstalledPacksLatestVersionsList() {
-
-		if (fInstalledPacksLatestVersionsList != null) {
-			return fInstalledPacksLatestVersionsList;
-		}
-
-		// Filter installed packages
-		List<PackNode> installedPackages = new LinkedList<PackNode>();
-		List<PackNode> packsVersionsList = getPacksVersionsList();
-		if (packsVersionsList != null) {
-			for (PackNode versionNode : getPacksVersionsList()) {
-				if (versionNode.isBooleanProperty(Property.INSTALLED)) {
-					installedPackages.add((PackNode) versionNode.getParent());
-				}
-			}
-
-			// Filter only the latest versions (first installed in children
-			// list)
-			List<PackNode> installedLatestVersions = new LinkedList<PackNode>();
-			for (PackNode packNode : installedPackages) {
-				List<Leaf> children = packNode.getChildren();
-				for (Leaf node : children) {
-					if (node.isBooleanProperty(Property.INSTALLED)) {
-						installedLatestVersions.add((PackNode) node);
-						break;
-					}
-				}
-			}
-
-			fInstalledPacksLatestVersionsList = installedLatestVersions;
-		}
-
-		return fInstalledPacksLatestVersionsList;
-	}
-
 	// ------------------------------------------------------------------------
 
-	public void loadCachedReposContent() {
-
-		Node node = new Node(Type.ROOT);
-		fPacksVersionsList = Repos.getInstance().loadCachedReposContent(node);
-		fRepositoriesTree = node;
-
-		preparePublicData();
-
-		updateInstalledVersions(fPacksVersionsList);
-
-		addSelectors();
+	// Will be called from template code
+	/**
+	 * Get the list of files referring to CMSIS Core (ARM headers and vendor
+	 * headers and source files), for the given device and compiler.
+	 * 
+	 * @param deviceName
+	 * @param compiler
+	 * @return a tree of nodes, CMSIS/Vendor, files.
+	 */
+	@Override
+	public Node getCmsisCoreFiles(String deviceName, String compiler) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
-	private void preparePublicData() {
-
-		// Group versions by [vendor::package] in a Map
-		Map<String, Map<String, PackNode>> packsVersionsMap = new TreeMap<String, Map<String, PackNode>>();
-		for (PackNode versionNode : fPacksVersionsList) {
-			String vendorName = versionNode.getProperty(Property.VENDOR_NAME);
-			String packName = versionNode.getProperty(Property.PACK_NAME);
-			String key = makeMapKey(vendorName, packName);
-
-			Map<String, PackNode> versionMap;
-			versionMap = packsVersionsMap.get(key);
-			if (versionMap == null) {
-				versionMap = new TreeMap<String, PackNode>();
-				packsVersionsMap.put(key, versionMap);
-			}
-
-			versionMap.put(versionNode.getName(), versionNode);
-		}
-		fPacksVersionsMap = packsVersionsMap;
-
-		// Group packages by [vendor::package] in a Map
-		Map<String, PackNode> packsMap = new TreeMap<String, PackNode>();
-		for (PackNode versionNode : fPacksVersionsList) {
-			String vendorName = versionNode.getProperty(Property.VENDOR_NAME);
-			String packName = versionNode.getProperty(Property.PACK_NAME);
-			String key = makeMapKey(vendorName, packName);
-
-			if (!packsMap.containsKey(key)) {
-				PackNode parent = (PackNode) versionNode.getParent();
-				packsMap.put(key, parent);
-			}
-		}
-		fPacksMap = packsMap;
-
-	}
-
-	private void addSelectors() {
-
-		// Add unique selectors to each package, by inspecting the outline and
-		// external definitions in the latest version.
-
-		for (PackNode packNode : fPacksMap.values()) {
-
-			Node versionNode = (Node) packNode.getFirstChild();
-			if (versionNode.hasChildren()) {
-				for (Leaf child : versionNode.getChildren()) {
-
-					if (child.isType(Type.OUTLINE)
-							|| child.isType(Type.EXTERNAL)) {
-						if (child.hasChildren()) {
-							for (Leaf node : ((Node) child).getChildren()) {
-
-								Selector selector = null;
-
-								String type = node.getType();
-								if (Type.FAMILY.equals(type)) {
-
-									selector = new Selector(
-											Selector.Type.DEVICEFAMILY);
-									selector.setValue(node.getName());
-									selector.setVendorId(node
-											.getProperty(Property.VENDOR_ID));
-
-								} else if (Type.BOARD.equals(type)) {
-
-									selector = new Selector(Selector.Type.BOARD);
-									selector.setValue(node.getName());
-									selector.setVendor(node
-											.getProperty(Property.VENDOR_NAME));
-
-								} else if (Type.KEYWORD.equals(type)) {
-
-									selector = new Selector(
-											Selector.Type.KEYWORD);
-									selector.setValue(node.getName());
-								}
-
-								if (selector != null) {
-									packNode.addSelector(selector);
-								}
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-
-	// ------------------------------------------------------------------------
-
-	private List<PackNode> getPacksVersionsList() {
-
-		if (fPacksVersionsList != null) {
-			return fPacksVersionsList;
-		}
-
-		loadCachedReposContent();
-
-		return fPacksVersionsList;
-	}
-
-	public Node getRepositoriesTree() {
-
-		if (fRepositoriesTree != null) {
-			return fRepositoriesTree;
-		}
-
-		BusyIndicatorWithDuration.showWhile(null, new Runnable() {
-
-			public void run() {
-				loadCachedReposContent();
-			}
-		});
-
-		return fRepositoriesTree;
-	}
-
-	// Add (Property.INSTALLED, true) to installed version nodes and
-	// to parent pack nodes.
-	private void updateInstalledVersions(List<PackNode> list) {
-
-		if (list == null || list.size() == 0) {
-			return;
-		}
-
-		fOut.println("Identifying installed packages...");
-
-		int count = 0;
-
-		// Check if the packages are installed
-		for (Leaf versionNode : list) {
-
-			String unpackFolder = versionNode.getProperty(Property.DEST_FOLDER);
-			String pdscName = versionNode.getProperty(Property.PDSC_NAME);
-
-			String pdscRelativePath = unpackFolder + '/' + pdscName;
-
-			try {
-				// Test if the pdsc file exists in the package folder
-				File file = PacksStorage.getFileObject(pdscRelativePath);
-				if (file.exists()) {
-
-					// Add an explicit property for more visibility
-					versionNode.setBooleanProperty(Property.INSTALLED, true);
-					if (versionNode.getParent().isType(Type.PACKAGE)) {
-						versionNode.getParent().setBooleanProperty(
-								Property.INSTALLED, true);
-					}
-
-					count++;
-				}
-			} catch (Exception e) {
-				;
-			}
-
-		}
-		if (count == 0) {
-			fOut.println("Found no installed packages.");
-		} else {
-			fOut.println("Found " + count + " installed packages.");
-		}
-	}
-
-	// Construct an internal representation of the map key, inspired
-	// form CMSIS Pack examples.
-	public String makeMapKey(String vendorName, String packName) {
-
-		String key = vendorName + "::" + packName;
-		return key;
+	// Will be called from debugger
+	/**
+	 * Get the register details (address and bit fields) for display/modify in
+	 * the debug perspective.
+	 * 
+	 * @param deviceName
+	 * @return (to be defined)
+	 */
+	@Override
+	public Node getRegisterDetailsForDebug(String deviceName) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	// ------------------------------------------------------------------------

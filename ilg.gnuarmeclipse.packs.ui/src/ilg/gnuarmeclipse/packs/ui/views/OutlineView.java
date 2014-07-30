@@ -805,7 +805,7 @@ public class OutlineView extends ViewPart {
 			String vendorName = node.getProperty(Property.VENDOR_NAME);
 			String packName = node.getName();
 
-			input = (Node) fDataManager.getPackLatest(vendorName, packName);
+			input = (Node) fDataManager.findPackLatest(vendorName, packName);
 
 		} else if (node.isType(Type.VERSION)) {
 
@@ -813,7 +813,7 @@ public class OutlineView extends ViewPart {
 			String packName = node.getProperty(Property.PACK_NAME);
 			String versionName = node.getName();
 
-			input = (Node) fDataManager.getPackVersion(vendorName, packName,
+			input = (Node) fDataManager.findPackVersion(vendorName, packName,
 					versionName);
 		}
 

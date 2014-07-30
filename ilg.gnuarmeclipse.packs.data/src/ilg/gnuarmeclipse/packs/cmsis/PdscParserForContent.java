@@ -43,22 +43,17 @@ public class PdscParserForContent extends PdscParser {
 				.trim();
 
 		String msg = "Schema version \"" + schemaVersion + "\"";
-		if ("1.0".equals(schemaVersion)) {
-			;
-		} else if ("1.1".equals(schemaVersion)) {
-			;
-		} else if ("1.2".equals(schemaVersion)) {
-			;
-		} else {
-			msg += " not recognised.";
+
+		if (!PdscUtils.isSchemaValid(schemaVersion)) {
+			msg += " not recognised, package " + pdscNname + " ignored.";
 			fOut.println(msg);
-			Utils.reportError(msg);
+			Utils.reportWarning(msg);
 			return;
 		}
 		fOut.println(msg + ".");
 
 		String urlRef = "";
-		// Kludge: use URL to detect empty package
+		// Kludge: use URL to detect empty packages
 		// TODO: use a better condition
 		Element urlElement = Xml.getFirstChildElement(packageElement, "url");
 		urlRef = Xml.getElementContent(urlElement);
@@ -407,20 +402,6 @@ public class PdscParserForContent extends PdscParser {
 
 				// Required
 				String exampleName = exampleElement.getAttribute("name").trim();
-				// String exampleFolder = exampleElement.getAttribute("folder")
-				// .trim();
-				// String exampleDoc =
-				// exampleElement.getAttribute("doc").trim();
-				//
-				// // Optional
-				// String exampleVendor = exampleElement.getAttribute("vendor")
-				// .trim();
-				// String exampleVersion =
-				// exampleElement.getAttribute("version")
-				// .trim();
-				// String exampleArchive =
-				// exampleElement.getAttribute("archive")
-				// .trim();
 
 				Node exampleNode = new Node(Type.EXAMPLE);
 				outlineNode.addChild(exampleNode);

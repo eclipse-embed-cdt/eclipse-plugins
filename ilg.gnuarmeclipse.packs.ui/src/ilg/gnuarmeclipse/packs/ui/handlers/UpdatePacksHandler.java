@@ -46,6 +46,15 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.ui.console.MessageConsoleStream;
 
+/**
+ * Update content.xml files from all repositories. This is the equivalent of
+ * discovering new packages.
+ * <p>
+ * It executes as a separate job, scheduled and executed asynchronously, the
+ * caller does not wait for it to complete.
+ * <p>
+ * On completion, the job notifies the DataManager, to clear caches.
+ */
 public class UpdatePacksHandler extends AbstractHandler {
 
 	private MessageConsoleStream fOut;
@@ -142,7 +151,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 				}
 			}
 
-			workUnits += 1; // One more for the step to load cache
+			workUnits += 1; // One more to avoid reaching 100% too early
 
 			// Set total number of work units to the number of pdsc files
 			monitor.beginTask("Refresh packs", workUnits);
@@ -172,17 +181,8 @@ public class UpdatePacksHandler extends AbstractHandler {
 
 			}
 
-			if (!monitor.isCanceled()) {
+			monitor.worked(1); // Should reach 100% now
 
-				fOut.println();
-
-				// The content.xml files were just created, parse them
-				fDataManager.loadCachedReposContent();
-				monitor.worked(1);
-			}
-
-			// } catch (FileNotFoundException e) {
-			// m_out.println("Error: " + e.toString());
 		} catch (Exception e) {
 			Activator.log(e);
 			fOut.println(Utils.reportError(e.toString()));
@@ -291,8 +291,8 @@ public class UpdatePacksHandler extends AbstractHandler {
 					// If local file does not exist, create it
 					Utils.copyFile(sourceUrl, cachedFile, fOut, null);
 
-					Utils.reportInfo("Pack " + pdscName + " v" + pdscVersion
-							+ " cached.");
+					Utils.reportInfo("File " + pdscName + " version " + pdscVersion
+							+ " cached locally.");
 				}
 
 				if (cachedFile.exists()) {

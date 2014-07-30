@@ -87,7 +87,7 @@
       </category>
       <command
             categoryId="ilg.gnuarmeclipse.packs.commands.category"
-            id="ilg.gnuarmeclipse.packs.commands.refreshCommand"
+            id="ilg.gnuarmeclipse.packs.commands.updateCommand"
             name="%commands.packs.refresh">
       </command>
       <command
@@ -127,7 +127,7 @@
          point="org.eclipse.ui.handlers">
       <handler
             class="ilg.gnuarmeclipse.packs.ui.handlers.UpdatePacksHandler"
-            commandId="ilg.gnuarmeclipse.packs.commands.refreshCommand">
+            commandId="ilg.gnuarmeclipse.packs.commands.updateCommand">
       </handler>
       <handler
             class="ilg.gnuarmeclipse.packs.ui.handlers.ShowPerspectiveHandler"

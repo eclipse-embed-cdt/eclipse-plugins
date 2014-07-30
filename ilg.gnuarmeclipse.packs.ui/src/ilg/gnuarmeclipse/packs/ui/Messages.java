@@ -22,8 +22,23 @@ public class Messages extends NLS {
 	public static String NewSiteDialog_label_name;
 	public static String NewSiteDialog_label_url;
 
+	public static String PacksView_UpdateAction_text;
+	public static String PacksView_UpdateAction_toolTipText;
+
+	public static String PacksView_InstallAction_text;
+	public static String PacksView_InstallAction_toolTipText;
+
+	public static String PacksView_RemoveAction_text;
+	public static String PacksView_RemoveAction_toolTipText;
+
+	public static String PacksView_ExpandAll_text;
+	public static String PacksView_ExpandAll_toolTipText;
+
+	public static String PacksView_CollapseAll_text;
+	public static String PacksView_CollapseAll_toolTipText;
+
 	static {
-		// Initialize resource bundle.
+		// Initialise resource bundle.
 		NLS.initializeMessages(Messages.class.getName(), Messages.class);
 	}
 

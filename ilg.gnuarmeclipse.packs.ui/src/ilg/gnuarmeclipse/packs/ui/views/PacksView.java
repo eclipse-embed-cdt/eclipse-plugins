@@ -27,6 +27,7 @@ import ilg.gnuarmeclipse.packs.jobs.CopyExampleJob;
 import ilg.gnuarmeclipse.packs.jobs.InstallJob;
 import ilg.gnuarmeclipse.packs.jobs.RemoveJob;
 import ilg.gnuarmeclipse.packs.ui.Activator;
+import ilg.gnuarmeclipse.packs.ui.Messages;
 
 import java.io.File;
 import java.util.Collection;
@@ -229,7 +230,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 	private ISelectionListener fPageSelectionListener;
 	private ViewContentProvider fContentProvider;
 
-	private Action fRefreshAction;
+	private Action fUpdateAction;
 	private Action fInstallAction;
 	private Action fRemoveAction;
 	private Action fCopyExampleAction;
@@ -486,7 +487,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 		manager.add(fInstallAction);
 		manager.add(fRemoveAction);
 		manager.add(new Separator());
-		manager.add(fRefreshAction);
+		manager.add(fUpdateAction);
 
 		// manager.add(action1);
 		// manager.add(new Separator());
@@ -523,12 +524,12 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 		manager.add(fInstallAction);
 		manager.add(fRemoveAction);
 		manager.add(new Separator());
-		manager.add(fRefreshAction);
+		manager.add(fUpdateAction);
 	}
 
 	private void makeActions() {
 
-		fRefreshAction = new Action() {
+		fUpdateAction = new Action() {
 
 			public void run() {
 
@@ -544,7 +545,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 				try {
 					// Lookup commmand with its ID
 					Command command = commandService
-							.getCommand("ilg.gnuarmeclipse.packs.commands.refreshCommand");
+							.getCommand("ilg.gnuarmeclipse.packs.commands.updateCommand");
 
 					// Optionally pass a ExecutionEvent instance, default
 					// no-param arg creates blank event
@@ -556,10 +557,10 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 				}
 			}
 		};
-		fRefreshAction.setText("Refresh");
-		fRefreshAction
-				.setToolTipText("Read packages descriptions from all repositories");
-		fRefreshAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
+		fUpdateAction.setText(Messages.PacksView_UpdateAction_text);
+		fUpdateAction
+				.setToolTipText(Messages.PacksView_UpdateAction_toolTipText);
+		fUpdateAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/refresh_nav.gif"));
 
 		// -----
@@ -577,9 +578,9 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 				job.schedule();
 			}
 		};
-		fInstallAction.setText("Install");
+		fInstallAction.setText(Messages.PacksView_InstallAction_text);
 		fInstallAction
-				.setToolTipText("Install a local copy of the selected package(s)");
+				.setToolTipText(Messages.PacksView_InstallAction_toolTipText);
 		fInstallAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/package_mode.png"));
 		fInstallAction.setEnabled(false);
@@ -599,9 +600,9 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 				job.schedule();
 			}
 		};
-		fRemoveAction.setText("Remove");
+		fRemoveAction.setText(Messages.PacksView_RemoveAction_text);
 		fRemoveAction
-				.setToolTipText("Remove the local copy of the selected package version(s)");
+				.setToolTipText(Messages.PacksView_RemoveAction_toolTipText);
 		fRemoveAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/removeall.png"));
 		fRemoveAction.setEnabled(false);
@@ -639,8 +640,8 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 			}
 		};
 
-		fExpandAll.setText("Expand all");
-		fExpandAll.setToolTipText("Expand all children nodes");
+		fExpandAll.setText(Messages.PacksView_ExpandAll_text);
+		fExpandAll.setToolTipText(Messages.PacksView_ExpandAll_toolTipText);
 		fExpandAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/expandall.png"));
 
@@ -651,14 +652,14 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 			}
 		};
 
-		fCollapseAll.setText("Collapse all");
-		fCollapseAll.setToolTipText("Collapse all children nodes");
+		fCollapseAll.setText(Messages.PacksView_CollapseAll_text);
+		fCollapseAll.setToolTipText(Messages.PacksView_CollapseAll_toolTipText);
 		fCollapseAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
 				Activator.PLUGIN_ID, "icons/collapseall.png"));
 	}
 
 	private void hookDoubleClickAction() {
-		// None
+		; // None
 	}
 
 	/**
@@ -807,7 +808,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 				String versionName = versionNode
 						.getProperty(Property.VERSION_NAME);
 
-				Node modelNode = fDataManager.getPackVersion(vendorName,
+				Node modelNode = fDataManager.findPackVersion(vendorName,
 						packName, versionName);
 				updateVersioNode(versionNode, modelNode);
 

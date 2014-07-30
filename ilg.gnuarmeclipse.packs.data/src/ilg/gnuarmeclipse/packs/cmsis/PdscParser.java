@@ -147,22 +147,4 @@ public class PdscParser {
 	}
 
 	// ------------------------------------------------------------------------
-
-	public boolean isSchemaValid(String schemaVersion) {
-		if ("1.0".equals(schemaVersion)) {
-			;
-		} else if ("1.1".equals(schemaVersion)) {
-			;
-		} else if ("1.2".equals(schemaVersion)) {
-			;
-		} else if ("1.3".equals(schemaVersion)) {
-			;
-		} else {
-			System.out.println("Unrecognised schema version " + schemaVersion);
-			return false;
-		}
-		return true;
-	}
-
-	// ------------------------------------------------------------------------
 }

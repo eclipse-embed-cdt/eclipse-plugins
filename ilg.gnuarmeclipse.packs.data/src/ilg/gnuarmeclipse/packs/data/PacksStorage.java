@@ -90,11 +90,11 @@ public class PacksStorage {
 		return folderPath;
 	}
 
-	public static String makeCachedPdscName(String name, String version) {
+	public static String makeCachedPdscName(String pdscName, String version) {
 
 		String s;
 
-		s = name;
+		s = pdscName;
 		int ix = s.lastIndexOf('.');
 		if (ix > 0) {
 			// Insert .version before extension

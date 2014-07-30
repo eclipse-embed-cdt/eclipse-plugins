@@ -27,17 +27,16 @@ import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-/*
- * The hierarchy is simple, nodes have properties and children nodes.
- * Properties can have custom names: <something>value</something>. 
- * Nodes can be grouped, with no other implications, group children are
- * in fact added to the parent group node. (<nodes> is the default group,
- * but, as all groups, it is optional).
- * 
- * The only processed attributes are type="..." and name="...". 
- * The type is mandatory for <node> otherwise it is ignored for other
- * custom nodes or properties.
- * The name is mandatory for <property> and optional for nodes.
+/**
+ * The hierarchy is simple, nodes have properties and children nodes. Properties
+ * can have custom names: <something>value</something>. Nodes can be grouped,
+ * with no other implications, group children are in fact added to the parent
+ * group node. (<nodes> is the default group, but, as all groups, it is
+ * optional).
+ * <p>
+ * The only processed attributes are type="..." and name="...". The type is
+ * mandatory for <node> otherwise it is ignored for other custom nodes or
+ * properties. The name is mandatory for <property> and optional for nodes.
  */
 public class GenericParser {
 

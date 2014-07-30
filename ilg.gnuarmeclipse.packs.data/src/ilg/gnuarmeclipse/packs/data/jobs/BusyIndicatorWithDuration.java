@@ -7,19 +7,28 @@ import org.eclipse.swt.custom.BusyIndicator;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.console.MessageConsoleStream;
 
+/**
+ * Support for showing a Busy Cursor during a long running process.
+ * <p>
+ */
 public class BusyIndicatorWithDuration {
 
 	private static MessageConsoleStream sfOut = ConsoleStream.getConsoleOut();
 
-	public static void showWhile(String message, Runnable runnable) {
+	/**
+	 * Display a time stamp, run the code and display the duration, in ms.
+	 * 
+	 * @param message
+	 *            a string, or null.
+	 * @param runnable
+	 *            a class that implements run().
+	 */
+	public static void showWhile(Runnable runnable) {
 
 		long beginTime = System.currentTimeMillis();
 
 		sfOut.println();
 		sfOut.println(Utils.getCurrentDateTime());
-		if (message != null) {
-			sfOut.println(message);
-		}
 
 		BusyIndicator.showWhile(Display.getDefault(), runnable);
 
