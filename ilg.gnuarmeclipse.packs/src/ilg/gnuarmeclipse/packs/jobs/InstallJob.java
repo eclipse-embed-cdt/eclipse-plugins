@@ -137,11 +137,12 @@ public class InstallJob extends Job {
 
 			try {
 
-				installPack(versionNode);
-				installedPacksList.add(versionNode);
+				if (installPack(versionNode)) {
+					installedPacksList.add(versionNode);
 
-				// Mark node as 'installed'.
-				versionNode.setBooleanProperty(Property.INSTALLED, true);
+					// Mark node as 'installed'.
+					versionNode.setBooleanProperty(Property.INSTALLED, true);
+				}
 
 			} catch (IOException e) {
 				fOut.println(Utils.reportError(e.toString()));
@@ -169,7 +170,10 @@ public class InstallJob extends Job {
 				duration = 1;
 			}
 
-			if (installedPacksList.size() == 1) {
+			int n = installedPacksList.size();
+			if (n == 0) {
+				fOut.print("No packs");
+			} else if (n == 1) {
 				fOut.print("1 pack");
 			} else {
 				fOut.print(installedPacksList.size() + " packs");
@@ -177,7 +181,7 @@ public class InstallJob extends Job {
 			fOut.println(" installed.");
 
 			fOut.print("Install completed in ");
-			if (duration < 1000) {
+			if (duration < 1500) {
 				fOut.println(duration + "ms.");
 			} else {
 				fOut.println((duration + 500) / 1000 + "s.");
@@ -216,7 +220,7 @@ public class InstallJob extends Job {
 		return workUnits;
 	}
 
-	private void installPack(Node versionNode) throws IOException {
+	private boolean installPack(Node versionNode) throws IOException {
 
 		// Package node
 		URL packUrl = new URL(versionNode.getProperty(Property.ARCHIVE_URL));
@@ -245,7 +249,7 @@ public class InstallJob extends Job {
 		String dest = versionNode.getProperty(Property.DEST_FOLDER);
 		Path destRelPath = new Path(dest);
 
-		File destFolder = destRelPath.toFile();
+		File destFolder = PacksStorage.getFileObject(dest);
 		if (destFolder.exists()) {
 
 			// Be sure the place is clean (remove possible folder).
@@ -254,13 +258,20 @@ public class InstallJob extends Job {
 		}
 
 		// Extract all files from the archive to the local folder.
-		unzip(archiveFile, destRelPath);
+		if (!unzip(archiveFile, destRelPath)) {
+
+			fOut.println("Install cancelled due to errors.");
+
+			return false;
+		}
 
 		Utils.makeFolderReadOnlyRecursive(destRelPath.toFile());
 
 		Utils.reportInfo("Pack " + archiveName + " installed.");
 
 		fOut.println("All files write protected.");
+
+		return true;
 	}
 
 	private void copyFile(URL sourceUrl, File destinationFile)
@@ -269,10 +280,12 @@ public class InstallJob extends Job {
 		Utils.copyFile(sourceUrl, destinationFile, fOut, fMonitor);
 	}
 
-	private void unzip(File archiveFile, IPath destRelativePath)
+	private boolean unzip(File archiveFile, IPath destRelativePath)
 			throws IOException {
 
 		fOut.println("Unzip \"" + archiveFile + "\".");
+
+		boolean result = true;
 
 		// Get the zip file content.
 		ZipInputStream zipInput;
@@ -291,6 +304,9 @@ public class InstallJob extends Job {
 
 				IPath path = destRelativePath.append(fileName);
 				File outFile = PacksStorage.getFileObject(path.toString());
+				if (!outFile.getParentFile().exists()) {
+					outFile.getParentFile().mkdirs();
+				}
 				try {
 
 					fOut.println("Write \"" + outFile + "\".");
@@ -313,6 +329,8 @@ public class InstallJob extends Job {
 							+ outFile.getName();
 					fOut.println("Error: " + msg);
 					Utils.reportError(msg);
+
+					result = false;
 				}
 			}
 
@@ -325,6 +343,8 @@ public class InstallJob extends Job {
 		zipInput.close();
 		fOut.println(countFiles + " files written, "
 				+ Utils.convertSizeToString(countBytes) + ".");
+
+		return result;
 	}
 
 }
