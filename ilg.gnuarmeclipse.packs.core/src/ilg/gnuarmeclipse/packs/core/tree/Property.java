@@ -31,6 +31,7 @@ public class Property {
 	public static final String ENDIAN = "endian";
 	public static final String EXAMPLE_NAME = "example.name";
 	public static final String FILE = "file";
+	public static final String FILE_ABSOLUTE = "file.absolute";
 	public static final String FPU = "fpu";
 	public static final String GENERATOR = "generator";
 	public static final String ID = "id";
@@ -39,6 +40,8 @@ public class Property {
 	public static final String MPU = "mpu";
 	public static final String NAME = "NAME";
 	public static final String PACK_NAME = "pack.name";
+	public static final String PACK_VENDOR = "pack.vendor";
+	public static final String PACK_VERSION = "pack.version";
 	public static final String PDSC_NAME = "pdsc.name";
 	public static final String PNAME = "pname";
 	public static final String REPO_URL = "repo.url";
@@ -47,6 +50,7 @@ public class Property {
 	public static final String SIZE = "size";
 	public static final String START = "start";
 	public static final String STARTUP = "startup";
+	public static final String SVD_FILE = "svd.file";
 	public static final String TYPE = "type";
 	public static final String URL = "url";
 	// public static final String UTC_DATE = "utc.date";

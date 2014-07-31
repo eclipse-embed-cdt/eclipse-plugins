@@ -166,6 +166,19 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		return null;
 	}
 
+	public boolean hasProperty(String name) {
+
+		if (fProperties == null) {
+			return false;
+		}
+
+		if (!fProperties.containsKey(name)) {
+			return false;
+		}
+
+		return true;
+	}
+
 	// May return null!
 	private String getPropertyOrNull(String name) {
 

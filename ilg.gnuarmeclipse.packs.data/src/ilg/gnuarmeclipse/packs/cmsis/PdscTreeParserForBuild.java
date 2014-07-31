@@ -20,6 +20,9 @@ import ilg.gnuarmeclipse.packs.data.Utils;
 public class PdscTreeParserForBuild extends PdscTreeParser {
 
 	private int fCount;
+	private String fVendorName;
+	private String fPackName;
+	private String fVersion;
 
 	// ------------------------------------------------------------------------
 
@@ -32,7 +35,18 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 		fCount = 0;
 
+		fVendorName = "";
+		fPackName = "";
+		fVersion = "";
+
 		Leaf packageNode = node.getFirstChild();
+
+		if (!packageNode.isType("package")) {
+			return 0;
+		}
+
+		fVendorName = packageNode.getProperty("vendor");
+		fPackName = packageNode.getProperty("name");
 
 		if (packageNode.hasChildren()) {
 			for (Leaf child : ((Node) packageNode).getChildren()) {
@@ -43,6 +57,10 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 							processFamilyNode(grandchild, parent);
 						}
 					}
+				} else if (child.isType("releases") && child.hasChildren()) {
+
+					Leaf versionNode = ((Node) child).getFirstChild();
+					fVersion = versionNode.getProperty("version");
 				}
 			}
 		}
@@ -59,7 +77,18 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 		fCount = 0;
 
+		fVendorName = "";
+		fPackName = "";
+		fVersion = "";
+
 		Leaf packageNode = node.getFirstChild();
+
+		if (!packageNode.isType("package")) {
+			return 0;
+		}
+
+		fVendorName = packageNode.getProperty("vendor");
+		fPackName = packageNode.getProperty("name");
 
 		if (packageNode.hasChildren()) {
 			for (Leaf child : ((Node) packageNode).getChildren()) {
@@ -70,6 +99,10 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 							processBoardNode(grandchild, parent);
 						}
 					}
+				} else if (child.isType("releases") && child.hasChildren()) {
+
+					Leaf versionNode = ((Node) child).getFirstChild();
+					fVersion = versionNode.getProperty("version");
 				}
 			}
 		}
@@ -96,6 +129,12 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 		// TODO: update vendor name from vendor id based on a conversion table
 		familyNode.putProperty(Property.VENDOR_NAME, va[0]);
 		familyNode.putProperty(Property.VENDOR_ID, va[1]);
+
+		// Store all details to identify the pack where the device family
+		// was defined.
+		familyNode.putProperty(Property.PACK_VENDOR, fVendorName);
+		familyNode.putProperty(Property.PACK_NAME, fPackName);
+		familyNode.putProperty(Property.PACK_VERSION, fVersion);
 
 		if (node.hasChildren()) {
 			for (Leaf child : ((Node) node).getChildren()) {
@@ -160,6 +199,8 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 			processMemoryNode(node, parent);
 		} else if (node.isType("book")) {
 			processBookNode(node, parent);
+		} else if (node.isType("debug")) {
+			processDebugNode(node, parent);
 		}
 	}
 
@@ -208,6 +249,16 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 		memoryNode.putNonEmptyProperty(Property.DEFAULT, defa);
 	}
 
+	private void processDebugNode(Leaf node, Node parent) {
+
+		// Required
+		String svd = node.getProperty("svd");
+
+		String posixSvd = PdscUtils.updatePosixSeparators(svd);
+
+		parent.putProperty(Property.SVD_FILE, posixSvd);
+	}
+
 	private void processBookNode(Leaf node, Node parent) {
 
 		// Required
@@ -253,6 +304,12 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 		boardNode.putNonEmptyProperty(Property.BOARD_NAME, boardName);
 		boardNode.putNonEmptyProperty(Property.BOARD_REVISION, boardRevision);
+
+		// Store all details to identify the pack where the board
+		// was defined.
+		boardNode.putProperty(Property.PACK_VENDOR, fVendorName);
+		boardNode.putProperty(Property.PACK_NAME, fPackName);
+		boardNode.putProperty(Property.PACK_VERSION, fVersion);
 
 		// Count the encountered boards
 		fCount++;

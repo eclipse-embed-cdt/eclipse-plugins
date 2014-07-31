@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -101,7 +103,7 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 				if (category.length() > 0) {
 					description += "\n" + "category: " + category;
 				}
-				String file = node.getProperty(Property.FILE);
+				String file = node.getProperty(Property.FILE_ABSOLUTE);
 				if (file.length() > 0) {
 					description += "\n" + "file: " + file;
 				}
@@ -377,6 +379,9 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 				if (board.isType(Type.BOARD)
 						&& boardName.equals(board
 								.getProperty(Property.BOARD_NAME))) {
+
+					String destFolder = getDestinationFolder(board);
+
 					if (board != null && board.hasChildren()) {
 						for (Leaf bookNode : ((Node) board).getChildren()) {
 
@@ -385,6 +390,14 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 								Leaf newBook = Leaf.addNewChild(parent,
 										Type.BOOK);
 								newBook.copyProperties(bookNode);
+
+								if (newBook.hasProperty(Property.FILE)) {
+									IPath path = new Path(destFolder)
+											.append(newBook
+													.getProperty(Property.FILE));
+									newBook.putProperty(Property.FILE_ABSOLUTE,
+											path.toString());
+								}
 							}
 						}
 					}
@@ -433,6 +446,8 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 					if (deviceName.equals(deviceNode.getName())) {
 
 						Leaf node = deviceNode;
+
+						String destFolder = getDestinationFolder(node);
 						do {
 							if (node.hasChildren()) {
 								for (Leaf bookNode : ((Node) node)
@@ -442,6 +457,15 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 										Leaf newBook = Leaf.addNewChild(parent,
 												Type.BOOK);
 										newBook.copyProperties(bookNode);
+
+										if (newBook.hasProperty(Property.FILE)) {
+											IPath path = new Path(destFolder)
+													.append(newBook
+															.getProperty(Property.FILE));
+											newBook.putProperty(
+													Property.FILE_ABSOLUTE,
+													path.toString());
+										}
 									}
 								}
 							}
@@ -453,6 +477,36 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 				}
 			}
 		}
+	}
+
+	private String getPropertyWithParents(Leaf node, String name) {
+
+		while (node != null && !node.isType(Type.DEVICES_SUBTREE)) {
+
+			if (node.hasProperty(name)) {
+				return node.getProperty(name);
+			}
+
+			node = node.getParent();
+		}
+
+		return "";
+	}
+
+	private String getDestinationFolder(Leaf node) {
+
+		String vendorName = getPropertyWithParents(node, Property.PACK_VENDOR);
+		String packName = getPropertyWithParents(node, Property.PACK_NAME);
+		String version = getPropertyWithParents(node, Property.PACK_VERSION);
+
+		Leaf summaryVersionNode = fDataManager.findPackVersion(vendorName,
+				packName, version);
+
+		String destFolder = "";
+		if (summaryVersionNode != null) {
+			destFolder = summaryVersionNode.getProperty(Property.DEST_FOLDER);
+		}
+		return destFolder;
 	}
 
 	// ------------------------------------------------------------------------

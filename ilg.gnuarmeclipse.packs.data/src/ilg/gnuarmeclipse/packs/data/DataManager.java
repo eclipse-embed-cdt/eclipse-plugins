@@ -687,7 +687,7 @@ public class DataManager implements IDataManager {
 			rootNode = parseInstalledPackagesForBuild();
 
 			// TODO: check if still needed
-			addPdscNames(rootNode);
+			// addPdscNames(rootNode);
 
 			if (rootNode != null) {
 
