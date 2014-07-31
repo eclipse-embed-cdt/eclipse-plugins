@@ -112,9 +112,15 @@ public class GenericParser {
 				}
 			}
 		} else {
+			String content = Xml.getElementContent(el);
+
+			NamedNodeMap attributes = el.getAttributes();
+			if (attributes == null || attributes.getLength() == 0) {
+				parent.putNonEmptyProperty(type, content);
+				return;
+			}
 			node = Leaf.addNewChild(parent, type);
 
-			String content = Xml.getElementContent(el);
 			node.putNonEmptyProperty(Property.XML_CONTENT, content);
 			// System.out.println();
 		}

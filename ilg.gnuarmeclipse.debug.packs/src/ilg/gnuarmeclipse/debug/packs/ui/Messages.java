@@ -9,12 +9,12 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.managedbuild.packs.ui;
+package ilg.gnuarmeclipse.debug.packs.ui;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
-import ilg.gnuarmeclipse.managedbuild.packs.Activator;
+import ilg.gnuarmeclipse.debug.packs.Activator;
 
 import org.eclipse.osgi.util.NLS;
 

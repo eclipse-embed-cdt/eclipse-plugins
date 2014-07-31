@@ -450,9 +450,9 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 				if (Type.MEMORY.equals(childNode.getType())) {
 					String size = childNode.getProperty(Property.SIZE);
-					int sizeKB;
+					long sizeKB;
 					try {
-						sizeKB = Utils.convertHexInt(size) / 1024;
+						sizeKB = Utils.convertHexLong(size) / 1024;
 					} catch (NumberFormatException e) {
 						sizeKB = 0;
 					}

@@ -380,7 +380,8 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 						&& boardName.equals(board
 								.getProperty(Property.BOARD_NAME))) {
 
-					String destFolder = getDestinationFolder(board);
+					String destFolder = fDataManager
+							.getDestinationFolder(board);
 
 					if (board != null && board.hasChildren()) {
 						for (Leaf bookNode : ((Node) board).getChildren()) {
@@ -447,7 +448,8 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 
 						Leaf node = deviceNode;
 
-						String destFolder = getDestinationFolder(node);
+						String destFolder = fDataManager
+								.getDestinationFolder(node);
 						do {
 							if (node.hasChildren()) {
 								for (Leaf bookNode : ((Node) node)
@@ -477,36 +479,6 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 				}
 			}
 		}
-	}
-
-	private String getPropertyWithParents(Leaf node, String name) {
-
-		while (node != null && !node.isType(Type.DEVICES_SUBTREE)) {
-
-			if (node.hasProperty(name)) {
-				return node.getProperty(name);
-			}
-
-			node = node.getParent();
-		}
-
-		return "";
-	}
-
-	private String getDestinationFolder(Leaf node) {
-
-		String vendorName = getPropertyWithParents(node, Property.PACK_VENDOR);
-		String packName = getPropertyWithParents(node, Property.PACK_NAME);
-		String version = getPropertyWithParents(node, Property.PACK_VERSION);
-
-		Leaf summaryVersionNode = fDataManager.findPackVersion(vendorName,
-				packName, version);
-
-		String destFolder = "";
-		if (summaryVersionNode != null) {
-			destFolder = summaryVersionNode.getProperty(Property.DEST_FOLDER);
-		}
-		return destFolder;
 	}
 
 	// ------------------------------------------------------------------------

@@ -452,7 +452,7 @@ public class PdscParserForBuild extends PdscParser {
 
 				if (Type.MEMORY.equals(childNode.getType())) {
 					String size = childNode.getProperty(Node.SIZE_PROPERTY);
-					int sizeKB = Utils.convertHexInt(size) / 1024;
+					long sizeKB = Utils.convertHexLong(size) / 1024;
 
 					String id = childNode.getName();
 					if (id.contains("ROM")) {

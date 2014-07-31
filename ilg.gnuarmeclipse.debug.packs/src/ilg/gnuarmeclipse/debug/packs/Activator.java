@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.managedbuild.packs;
+package ilg.gnuarmeclipse.debug.packs;
 
 import ilg.gnuarmeclipse.core.AbstractUIActivator;
 

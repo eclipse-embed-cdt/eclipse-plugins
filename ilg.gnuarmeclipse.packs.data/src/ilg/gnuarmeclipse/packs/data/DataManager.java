@@ -109,7 +109,7 @@ public class DataManager implements IDataManager {
 	private MessageConsoleStream fOut;
 	private List<IDataManagerListener> fListeners;
 
-	// private Map<String, PackNode> fDevicesMap;
+	private Map<String, Leaf> fInstalledDevicesMap;
 
 	public DataManager() {
 
@@ -126,6 +126,7 @@ public class DataManager implements IDataManager {
 		fPacksVersionsMap = new TreeMap<String, Map<String, PackNode>>();
 		fPacksMap = new TreeMap<String, PackNode>();
 
+		fInstalledDevicesMap = new TreeMap<String, Leaf>();
 		// fDevicesMap = new TreeMap<String, PackNode>();
 
 	}
@@ -626,6 +627,8 @@ public class DataManager implements IDataManager {
 		} catch (IOException e) {
 			;
 		}
+
+		fInstalledDevicesMap.clear();
 	}
 
 	/**
@@ -939,6 +942,105 @@ public class DataManager implements IDataManager {
 
 		// TODO: check if boards mounted devices are present in devices.
 		// If so, copy memory map, otherwise remove
+	}
+
+	/**
+	 * Find a device in the tree of installed devices.
+	 * 
+	 * @param deviceVendorId
+	 *            a string with the numeric id of the device vendor.
+	 * @param deviceName
+	 *            a string with the device name.
+	 * @return a node or null if not found.
+	 */
+	public Leaf findInstalledDevice(String deviceVendorId, String deviceName) {
+
+		String key = makeMapKey(deviceVendorId, deviceName);
+		if (fInstalledDevicesMap.containsKey(key)) {
+			return fInstalledDevicesMap.get(key);
+		}
+
+		Node tree = getInstalledObjectsForBuild();
+
+		ITreeIterator installedDevices = new AbstractTreePreOrderIterator() {
+
+			@Override
+			public boolean isIterable(Leaf node) {
+				if (node.isType(Type.DEVICE)) {
+					return true;
+				}
+				return false;
+			}
+
+			@Override
+			public boolean isLeaf(Leaf node) {
+				if (node.isType(Type.DEVICE)
+						|| node.isType(Type.BOARDS_SUBTREE)) {
+					return true;
+				}
+				return false;
+			}
+
+		};
+		// tree contains the installed objects
+		installedDevices.setTreeNode(tree);
+
+		// Iterate devices and find the requested one, if any.
+		for (Leaf installedDevice : installedDevices) {
+
+			String installedDeviceName = installedDevice.getName();
+			if (!deviceName.equals(installedDeviceName)) {
+				continue;
+			}
+			String installedDeviceVendorId = "";
+			Leaf node = installedDevice;
+			while (node != null && !node.isType(Type.VENDOR)) {
+
+				if (node.hasProperty(Property.VENDOR_ID)) {
+					installedDeviceVendorId = node
+							.getProperty(Property.VENDOR_ID);
+					break;
+				}
+				node = node.getParent();
+			}
+			if (deviceVendorId.equals(installedDeviceVendorId)) {
+				fInstalledDevicesMap.put(key, installedDevice);
+				return installedDevice;
+			}
+		}
+
+		// Store the null value, as a negative ack for next searches.
+		fInstalledDevicesMap.put(key, null);
+		return null; // Not found
+	}
+
+	private static String getPropertyWithParents(Leaf node, String name) {
+
+		while (node != null && !node.isType(Type.DEVICES_SUBTREE)) {
+
+			if (node.hasProperty(name)) {
+				return node.getProperty(name);
+			}
+
+			node = node.getParent();
+		}
+
+		return "";
+	}
+
+	public String getDestinationFolder(Leaf node) {
+
+		String vendorName = getPropertyWithParents(node, Property.PACK_VENDOR);
+		String packName = getPropertyWithParents(node, Property.PACK_NAME);
+		String version = getPropertyWithParents(node, Property.PACK_VERSION);
+
+		Leaf summaryVersionNode = findPackVersion(vendorName, packName, version);
+
+		String destFolder = "";
+		if (summaryVersionNode != null) {
+			destFolder = summaryVersionNode.getProperty(Property.DEST_FOLDER);
+		}
+		return destFolder;
 	}
 
 	// ------------------------------------------------------------------------

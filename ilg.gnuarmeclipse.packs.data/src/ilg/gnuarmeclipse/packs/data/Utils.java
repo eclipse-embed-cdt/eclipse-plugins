@@ -71,7 +71,7 @@ public class Utils {
 		return connection.getContentLength();
 	}
 
-	public static int convertHexInt(String hex) {
+	public static long convertHexLong(String hex) {
 
 		boolean isNegative = false;
 		if (hex.startsWith("+")) {
@@ -85,7 +85,11 @@ public class Utils {
 			hex = hex.substring(2);
 		}
 
-		int value = Integer.valueOf(hex, 16);
+		if (hex.startsWith("A") || hex.startsWith("E")) {
+			System.out.println();
+		}
+
+		long value = Long.valueOf("0" + hex, 16);
 		if (isNegative)
 			value = -value;
 

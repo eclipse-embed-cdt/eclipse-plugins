@@ -11,5 +11,28 @@
 # Liviu Ionescu - initial version  
 -->
 <plugin>
+	<extension point="org.eclipse.ui.views">
+    	<view
+            allowMultiple="false"
+            category="org.eclipse.debug.ui"
+            class="ilg.gnuarmeclipse.debug.packs.ui.PeripheralsView"
+            icon="icons/peripheral.png"
+            id="ilg.gnuarmeclipse.debug.packs.ui.views.PeripheralView"
+            name="%views.peripheral.name">
+		</view>
+	</extension>
+    
+	<extension point="org.eclipse.ui.perspectiveExtensions">
+		<perspectiveExtension
+			targetID="org.eclipse.debug.ui.DebugPerspective">
+			<view
+         id="ilg.gnuarmeclipse.debug.packs.ui.views.PeripheralView"
+         minimized="false"
+         relationship="stack"
+         relative="org.eclipse.debug.ui.VariableView"
+         visible="true">
+			</view>
+		</perspectiveExtension>
+    </extension>
     
 </plugin>
