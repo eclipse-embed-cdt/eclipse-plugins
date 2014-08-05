@@ -28,9 +28,19 @@ public class Openers {
 		// System.out.println("Path " + relativeFile);
 		IFileStore fileStore = EFS.getLocalFileSystem().getStore(path);
 
-		// Open external file in Eclipse editor (as read only, since the
-		// packages were marked as read only
+		// Open external file. If the file is text, it will be opened
+		// in the Eclipse editor, otherwise a system viewer is selected. 
 		IDE.openEditorOnFileStore(page, fileStore);
+	}
+	
+	public static void openFileWithInternalEditor(IPath path) throws PartInitException{
 
+		IWorkbenchPage page = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow().getActivePage();
+
+		IFileStore fileStore = EFS.getLocalFileSystem().getStore(path);
+		
+		// Open a non-resource regular file with the Eclipse internal text editor
+		IDE.openInternalEditorOnFileStore(page, fileStore);
 	}
 }

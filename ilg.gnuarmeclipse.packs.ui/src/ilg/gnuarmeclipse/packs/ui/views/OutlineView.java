@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.ui.views;
 
+import ilg.gnuarmeclipse.core.Openers;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
@@ -678,23 +679,17 @@ public class OutlineView extends ViewPart {
 			if ("header".equals(category) || "source".equals(category)) {
 
 				// System.out.println("Edit " + relativeFile);
-				IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-						fPackageAbsolutePath.append(relativeFile));
 
 				// Open external file in Eclipse editor (as read only, since the
-				// packages were marked as read only
-				IDE.openInternalEditorOnFileStore(page, fileStore);
+				// packages were marked as read only.
+				Openers.openFileWithInternalEditor(fPackageAbsolutePath
+						.append(relativeFile));
 
 			} else if ("doc".equals(category)) {
 
 				// System.out.println("Document " + node);
-				IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-						fPackageAbsolutePath.append(relativeFile));
-				// System.out.println(fileStore);
-
-				// Open external file in Eclipse editor (as read only, since the
-				// packages were marked as read only
-				IDE.openEditorOnFileStore(page, fileStore);
+				Openers.openExternalFile(fPackageAbsolutePath
+						.append(relativeFile));
 
 			} else if ("include".equals(category) || "library".equals(category)) {
 				; // ignore folders
@@ -709,18 +704,13 @@ public class OutlineView extends ViewPart {
 			if (url.length() > 0) {
 
 				// System.out.println("Open " + url);
-				PlatformUI.getWorkbench().getBrowserSupport()
-						.getExternalBrowser().openURL(new URL(url));
+				Openers.openExternalBrowser(new URL(url));
 
 			} else if (relativeFile.length() > 0) {
 
 				// System.out.println("Path " + relativeFile);
-				IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-						fPackageAbsolutePath.append(relativeFile));
-
-				// Open external file in Eclipse editor (as read only, since the
-				// packages were marked as read only
-				IDE.openEditorOnFileStore(page, fileStore);
+				Openers.openExternalFile(fPackageAbsolutePath
+						.append(relativeFile));
 
 			} else {
 				System.out.println("Book " + node);
@@ -731,25 +721,22 @@ public class OutlineView extends ViewPart {
 			// System.out.println("Header " + node );
 
 			String relativeFile = node.getProperty(Node.FILE_PROPERTY);
-			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-					fPackageAbsolutePath.append(relativeFile));
 
 			// Open external file in Eclipse editor (as read only, since the
 			// packages were marked as read only
-			IDE.openInternalEditorOnFileStore(page, fileStore);
+			Openers.openFileWithInternalEditor(fPackageAbsolutePath
+					.append(relativeFile));
 
 		} else if (Type.DEBUG.equals(type)) {
 
 			// System.out.println("Debug " + node );
 
 			String relativeFile = node.getProperty(Node.FILE_PROPERTY);
-			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-					fPackageAbsolutePath.append(relativeFile));
 
 			// Open external file in Eclipse editor (as read only, since the
 			// packages were marked as read only
-			IDE.openInternalEditorOnFileStore(page, fileStore);
-
+			Openers.openFileWithInternalEditor(fPackageAbsolutePath
+					.append(relativeFile));
 		} else {
 			// System.out.println("Double-click detected on " + node + " " +
 			// type);
@@ -758,36 +745,31 @@ public class OutlineView extends ViewPart {
 
 	private void openWithTextAction(Leaf node) throws PartInitException {
 
-		IWorkbenchPage page = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage();
 		String relativeFile = node.getProperty(Node.FILE_PROPERTY);
 
-		assert (fPackageAbsolutePath != null);
-
 		if (relativeFile.length() > 0) {
-			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-					fPackageAbsolutePath.append(relativeFile));
-			IDE.openInternalEditorOnFileStore(page, fileStore);
+
+			assert (fPackageAbsolutePath != null);
+			Openers.openFileWithInternalEditor(fPackageAbsolutePath
+					.append(relativeFile));
 		}
 	}
 
 	private void openWithSystemAction(Leaf node) throws PartInitException,
 			MalformedURLException {
 
-		IWorkbenchPage page = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage();
 		String relativeFile = node.getProperty(Node.FILE_PROPERTY);
 		if (relativeFile.length() > 0) {
-			IFileStore fileStore = EFS.getLocalFileSystem().getStore(
-					fPackageAbsolutePath.append(relativeFile));
-			IDE.openEditorOnFileStore(page, fileStore);
+
+			assert (fPackageAbsolutePath != null);
+			Openers.openExternalFile(fPackageAbsolutePath.append(relativeFile));
 			return;
 		}
 
 		String url = node.getProperty(Node.URL_PROPERTY);
 		if (url.length() > 0) {
-			PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser()
-					.openURL(new URL(url));
+
+			Openers.openExternalBrowser(new URL(url));
 			return;
 		}
 	}
