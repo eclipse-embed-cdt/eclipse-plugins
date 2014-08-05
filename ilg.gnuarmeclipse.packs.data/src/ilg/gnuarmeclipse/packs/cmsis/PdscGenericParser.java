@@ -24,28 +24,12 @@ public class PdscGenericParser extends GenericParser {
 	}
 
 	/**
-	 * Configure the elements that generate properties, mainly <description> for
-	 * a list of nodes, and a few ones for <package> nodes.
+	 * Configure all elements that generate properties, mainly <description> for
+	 * a list of nodes, and a few ones for <package> nodes, are automatically
+	 * identified by the generic parser, no need to define them explicitly.
 	 */
 	@Override
 	public boolean isProperty(String name, Leaf node) {
-
-		String type = node.getType();
-		if ("description".equals(name)) {
-			if ("package".equals(type) || "condition".equals(type)
-					|| "example".equals(type) || "component".equals(type)
-					|| "bundle".equals(type) || "family".equals(type)
-					|| "subFamily".equals(type) || "device".equals(type)
-					|| "variant".equals(type) || "board".equals(type)
-					|| "api".equals(type)) {
-				return true;
-			}
-		} else if ("name".equals(name) || "vendor".equals(name)
-				|| "url".equals(name)) {
-			if ("package".equals(type)) {
-				return true;
-			}
-		}
 		return false;
 	}
 }

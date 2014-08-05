@@ -2,6 +2,7 @@ package ilg.gnuarmeclipse.debug.packs.ui;
 
 import ilg.gnuarmeclipse.debug.packs.Activator;
 import ilg.gnuarmeclipse.packs.cmsis.SvdGenericParser;
+import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.tree.AbstractTreePreOrderIterator;
 import ilg.gnuarmeclipse.packs.core.tree.ITreeIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
@@ -37,6 +38,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
+import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.part.ViewPart;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
@@ -125,10 +127,13 @@ public class PeripheralsView extends ViewPart {
 	private Composite fComposite;
 
 	private TableViewer fViewer;
-
+	private MessageConsoleStream fOut;
 	private DataManager fDataManager;
 
 	public PeripheralsView() {
+
+		fOut = ConsoleStream.getConsoleOut();
+
 		fDataManager = DataManager.getInstance();
 	}
 
@@ -227,6 +232,8 @@ public class PeripheralsView extends ViewPart {
 			IPath path = new Path(destFolder).append(svdFile);
 
 			try {
+
+				fOut.println("Parsing SVD file \"" + path.toString() + "\"...");
 				File file = PacksStorage.getFileObject(path.toString());
 				Document document = Xml.parseFile(file);
 
@@ -265,6 +272,25 @@ public class PeripheralsView extends ViewPart {
 		return root;
 	}
 
+	private class SvdPeriphIterator extends AbstractTreePreOrderIterator {
+
+		@Override
+		public boolean isIterable(Leaf node) {
+			if (node.isType("peripheral")) {
+				return true;
+			}
+			return false;
+		}
+
+		@Override
+		public boolean isLeaf(Leaf node) {
+			if (node.isType("peripheral")) {
+				return true;
+			}
+			return false;
+		}
+	};
+
 	private class SvdPeriph {
 
 		private Map<String, Leaf> fMap;
@@ -276,25 +302,7 @@ public class PeripheralsView extends ViewPart {
 			fTree = tree;
 			fMap = new HashMap<String, Leaf>();
 
-			fPeripheralNodes = new AbstractTreePreOrderIterator() {
-
-				@Override
-				public boolean isIterable(Leaf node) {
-					if (node.isType("peripheral")) {
-						return true;
-					}
-					return false;
-				}
-
-				@Override
-				public boolean isLeaf(Leaf node) {
-					if (node.isType("peripheral")) {
-						return true;
-					}
-					return false;
-				}
-			};
-
+			fPeripheralNodes = new SvdPeriphIterator();
 		}
 
 		public Leaf getPeriphNode(String name) {
@@ -322,25 +330,7 @@ public class PeripheralsView extends ViewPart {
 
 		Node root = new Node(Type.ROOT);
 
-		ITreeIterator peripheralNodes = new AbstractTreePreOrderIterator() {
-
-			@Override
-			public boolean isIterable(Leaf node) {
-				if (node.isType("peripheral")) {
-					return true;
-				}
-				return false;
-			}
-
-			@Override
-			public boolean isLeaf(Leaf node) {
-				if (node.isType("peripheral")) {
-					return true;
-				}
-				return false;
-			}
-
-		};
+		ITreeIterator peripheralNodes = new SvdPeriphIterator();
 
 		SvdPeriph svdPeriph = new SvdPeriph(svdTree);
 
@@ -380,6 +370,10 @@ public class PeripheralsView extends ViewPart {
 			p.setDescription(periphDescription);
 			p.putProperty("address", periphAddress);
 			p.putProperty("groupName", periphGroup);
+
+			// System.out.println(periphName + ", " + periphGroup + ", "
+			// + periphAddress + ", " + periphDescription);
+
 		}
 
 		return root;

@@ -21,7 +21,8 @@ Require-Bundle: ilg.gnuarmeclipse.packs.core,
  org.eclipse.debug.ui,
  org.eclipse.ui,
  org.eclipse.ui.editors,
- ilg.gnuarmeclipse.packs.data
+ ilg.gnuarmeclipse.packs.data,
+ org.eclipse.ui.console
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %bundle.vendor
