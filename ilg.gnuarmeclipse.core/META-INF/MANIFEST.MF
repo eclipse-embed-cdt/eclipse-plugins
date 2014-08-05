@@ -10,5 +10,7 @@ Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Export-Package: ilg.gnuarmeclipse.core
 Require-Bundle: org.eclipse.ui.workbench,
- org.eclipse.osgi
+ org.eclipse.osgi,
+ org.eclipse.core.filesystem,
+ org.eclipse.ui.ide
 Import-Package: org.eclipse.core.runtime

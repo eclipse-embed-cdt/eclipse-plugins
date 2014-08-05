@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.managedbuild.packs.ui.views;
 
+import ilg.gnuarmeclipse.core.Openers;
 import ilg.gnuarmeclipse.packs.core.tree.AbstractTreePreOrderIterator;
 import ilg.gnuarmeclipse.packs.core.tree.ITreeIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
@@ -21,8 +22,12 @@ import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DataManager;
 import ilg.gnuarmeclipse.packs.data.DataManagerEvent;
 import ilg.gnuarmeclipse.packs.data.IDataManagerListener;
+import ilg.gnuarmeclipse.packs.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.ui.IconUtils;
 
+import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
@@ -30,6 +35,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuListener;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
@@ -37,6 +43,10 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
+import org.eclipse.jface.viewers.DoubleClickEvent;
+import org.eclipse.jface.viewers.IDoubleClickListener;
+import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerCell;
 import org.eclipse.jface.viewers.ViewerSorter;
@@ -48,6 +58,7 @@ import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 
@@ -135,6 +146,8 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 
 	// private PacksStorage fStorage;
 	private DataManager fDataManager;
+	private Action fDoubleClickAction;
+	private Action fRightClickOpen;
 
 	// private MessageConsoleStream fOut;
 
@@ -179,6 +192,7 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 		addListners();
 
 		makeActions();
+
 		hookContextMenu();
 		hookDoubleClickAction();
 		contributeToActionBars();
@@ -202,6 +216,44 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 		// None
 	}
 
+	private void makeActions() {
+
+		fDoubleClickAction = new Action() {
+			public void run() {
+
+				ISelection selection = fViewer.getSelection();
+				Object obj = ((IStructuredSelection) selection)
+						.getFirstElement();
+				if (obj instanceof Leaf) {
+					try {
+						doubleClickAction((Leaf) obj);
+					} catch (PartInitException e) {
+					} catch (IOException e) {
+					}
+				}
+			}
+		};
+
+		fRightClickOpen = new Action() {
+			public void run() {
+
+				ISelection selection = fViewer.getSelection();
+				Object obj = ((IStructuredSelection) selection)
+						.getFirstElement();
+				if (obj instanceof Leaf) {
+					try {
+						rightClickAction((Leaf) obj);
+					} catch (PartInitException e) {
+					} catch (IOException e) {
+					}
+				}
+			}
+		};
+		fRightClickOpen.setText("Open");
+		fRightClickOpen.setEnabled(true);
+
+	}
+
 	private void hookContextMenu() {
 
 		MenuManager menuMgr = new MenuManager("#PopupMenu");
@@ -223,9 +275,12 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 	}
 
 	private void fillLocalPullDown(IMenuManager manager) {
+		; // none
 	}
 
 	private void fillContextMenu(IMenuManager manager) {
+
+		manager.add(fRightClickOpen);
 
 		// Other plug-ins can contribute there actions here
 		manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
@@ -234,12 +289,13 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 	private void fillLocalToolBar(IToolBarManager manager) {
 	}
 
-	private void makeActions() {
-
-	}
-
 	private void hookDoubleClickAction() {
-		// None
+
+		fViewer.addDoubleClickListener(new IDoubleClickListener() {
+			public void doubleClick(DoubleClickEvent event) {
+				fDoubleClickAction.run();
+			}
+		});
 	}
 
 	/**
@@ -276,12 +332,39 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 		} else {
 			fViewer.update(obj, null);
 		}
-
-		// System.out.println("DevicesView.updated()");
 	}
 
 	public String toString() {
 		return "DocsView";
+	}
+
+	// ------------------------------------------------------------------------
+
+	private void doubleClickAction(Leaf node) throws PartInitException,
+			IOException {
+
+		openBook(node);
+	}
+
+	private void rightClickAction(Leaf node) throws PartInitException,
+			IOException {
+
+		openBook(node);
+	}
+
+	private void openBook(Leaf node) throws PartInitException, IOException {
+
+		if (node.isType(Type.BOOK)) {
+
+			String url = node.getProperty(Property.URL);
+			String absoluteFile = node.getProperty(Property.FILE_ABSOLUTE);
+			if (url.length() > 0) {
+				Openers.openExternalBrowser(new URL(url));
+			} else if (absoluteFile.length() > 0) {
+				IPath path = PacksStorage.getFolderPath().append(absoluteFile);
+				Openers.openExternalFile(path);
+			}
+		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -328,7 +411,8 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 	// Return a two level hierarchy of vendor and device nodes.
 	private Node getDocsTree() {
 
-		// TODO: get these from current project
+		// TODO: get these from current project; use selection listener to
+		// detect project selection change
 		String deviceVendorId = "13";
 		String deviceName = "STM32F407VG";
 		String boardVendorName = "STMicroelectronics";
