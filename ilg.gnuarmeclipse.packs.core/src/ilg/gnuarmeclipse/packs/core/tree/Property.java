@@ -25,6 +25,7 @@ public class Property {
 	public static final String CORE_VERSION = "core.version";
 	public static final String DATE = "date";
 	public static final String DEFAULT = "default";
+	public static final String DEFINE = "define";
 	public static final String DESCRIPTION = "DESC";
 	public static final String DEST_FOLDER = "dest.folder";
 	public static final String ENABLED = "enabled";

@@ -114,10 +114,31 @@ public class Node extends Leaf {
 		node.fParent = this;
 	}
 
+	/**
+	 * Iterate over the list of children and return the first child with the
+	 * given type.
+	 * 
+	 * @param type
+	 *            a string with the desired node type; if null, return null
+	 * @return the first node that matches the requirements, or null if not
+	 *         found
+	 */
 	public Leaf findChild(String type) {
 		return findChild(type, null);
 	}
 
+	/**
+	 * Iterate the list of children, if any, and return the fist child with the
+	 * given type and name. If the name is null, return the first child with the
+	 * given type.
+	 * 
+	 * @param type
+	 *            a string with the desired node type; if null, return null
+	 * @param name
+	 *            a string with the desired node name, or null
+	 * @return the first node that matches the requirements, or null if not
+	 *         found
+	 */
 	public Leaf findChild(String type, String name) {
 
 		if (type == null) {

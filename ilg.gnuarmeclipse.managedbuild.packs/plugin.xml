@@ -16,7 +16,7 @@
            point="org.eclipse.cdt.ui.cPropertyTab">
 
       <tab
-            class="ilg.gnuarmeclipse.managedbuild.packs.ui.TabDevice"
+            class="ilg.gnuarmeclipse.managedbuild.packs.ui.TabDevices"
             helpId="cdt_u_prop_build_setting_tool"
             icon="icons/hardware_chip.png"
             name="%tab.deviceSettings"

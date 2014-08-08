@@ -197,6 +197,8 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 			processProcessorNode(node, parent);
 		} else if (node.isType("memory")) {
 			processMemoryNode(node, parent);
+		} else if (node.isType("compile")) {
+			processCompileNode(node, parent);
 		} else if (node.isType("book")) {
 			processBookNode(node, parent);
 		} else if (node.isType("debug")) {
@@ -247,6 +249,14 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 		memoryNode.putNonEmptyProperty(Property.STARTUP, startup);
 		memoryNode.putNonEmptyProperty(Property.INIT, init);
 		memoryNode.putNonEmptyProperty(Property.DEFAULT, defa);
+	}
+
+	private void processCompileNode(Leaf node, Node parent) {
+
+		// Required
+		String define = node.getProperty("define");
+
+		parent.putNonEmptyProperty(Property.DEFINE, define);
 	}
 
 	private void processDebugNode(Leaf node, Node parent) {
@@ -304,6 +314,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 		boardNode.putNonEmptyProperty(Property.BOARD_NAME, boardName);
 		boardNode.putNonEmptyProperty(Property.BOARD_REVISION, boardRevision);
+		boardNode.putNonEmptyProperty(Property.VENDOR_NAME, boardVendor);
 
 		// Store all details to identify the pack where the board
 		// was defined.
@@ -352,6 +363,10 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 					summary += ", ";
 				}
 				summary += String.valueOf(clockMHz) + " MHz XTAL";
+
+				// Also add a property with the clcock value
+				boardNode.putProperty(Property.CLOCK, clock);
+
 			} catch (NumberFormatException e) {
 				// Ignore not number
 			}

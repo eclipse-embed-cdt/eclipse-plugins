@@ -110,6 +110,7 @@ public class DataManager implements IDataManager {
 	private List<IDataManagerListener> fListeners;
 
 	private Map<String, Leaf> fInstalledDevicesMap;
+	private Map<String, Leaf> fInstalledBoardsMap;
 
 	public DataManager() {
 
@@ -127,6 +128,7 @@ public class DataManager implements IDataManager {
 		fPacksMap = new TreeMap<String, PackNode>();
 
 		fInstalledDevicesMap = new TreeMap<String, Leaf>();
+		fInstalledBoardsMap = new TreeMap<String, Leaf>();
 		// fDevicesMap = new TreeMap<String, PackNode>();
 
 	}
@@ -202,14 +204,6 @@ public class DataManager implements IDataManager {
 		fInstalledPacksLatestVersionsList = null;
 	}
 
-	/**
-	 * Provide access to the summary data.
-	 * <p>
-	 * If the data is not in memory, load it from the disk cache (the
-	 * .content_*.xml files, one per repository)
-	 *
-	 * @return a tree of repositories/packages/versions/...
-	 */
 	public Node getRepositoriesTree() {
 
 		if (fRepositoriesTree != null) {
@@ -789,9 +783,6 @@ public class DataManager implements IDataManager {
 			int countBoards = pdsc.parseBoards(tree, boardsNode);
 			totalCountBoards += countBoards;
 
-			// Necessary?
-			updateBoardsDevices(boardsNode, devicesNode);
-
 			countPackages++;
 		}
 
@@ -831,21 +822,6 @@ public class DataManager implements IDataManager {
 		return null;
 	}
 
-	private void updateBoardsDevices(Node boardsNode, Node devicesNode) {
-
-		// TODO: check if boards mounted devices are present in devices.
-		// If so, copy memory map, otherwise remove
-	}
-
-	/**
-	 * Find a device in the tree of installed devices.
-	 * 
-	 * @param deviceVendorId
-	 *            a string with the numeric id of the device vendor.
-	 * @param deviceName
-	 *            a string with the device name.
-	 * @return a node or null if not found.
-	 */
 	public Leaf findInstalledDevice(String deviceVendorId, String deviceName) {
 
 		String key = makeMapKey(deviceVendorId, deviceName);
@@ -883,8 +859,9 @@ public class DataManager implements IDataManager {
 
 			String installedDeviceName = installedDevice.getName();
 			if (!deviceName.equals(installedDeviceName)) {
-				continue;
+				continue; // Different device name, try next
 			}
+
 			String installedDeviceVendorId = "";
 			Leaf node = installedDevice;
 			while (node != null && !node.isType(Type.VENDOR)) {
@@ -897,6 +874,8 @@ public class DataManager implements IDataManager {
 				node = node.getParent();
 			}
 			if (deviceVendorId.equals(installedDeviceVendorId)) {
+
+				// Both device name & vendor id match
 				fInstalledDevicesMap.put(key, installedDevice);
 				return installedDevice;
 			}
@@ -907,9 +886,79 @@ public class DataManager implements IDataManager {
 		return null; // Not found
 	}
 
-	private static String getPropertyWithParents(Leaf node, String name) {
+	public Leaf findInstalledBoard(String boardVendorName, String boardName) {
 
-		while (node != null && !node.isType(Type.DEVICES_SUBTREE)) {
+		String key = makeMapKey(boardVendorName, boardName);
+		if (fInstalledBoardsMap.containsKey(key)) {
+			return fInstalledBoardsMap.get(key);
+		}
+
+		Node tree = getInstalledObjectsForBuild();
+
+		ITreeIterator installedBoards = new AbstractTreePreOrderIterator() {
+
+			@Override
+			public boolean isIterable(Leaf node) {
+				if (node.isType(Type.BOARD)) {
+					return true;
+				}
+				return false;
+			}
+
+			@Override
+			public boolean isLeaf(Leaf node) {
+				if (node.isType(Type.BOARD)
+						|| node.isType(Type.DEVICES_SUBTREE)) {
+					return true;
+				}
+				return false;
+			}
+
+		};
+		// 'tree' contains the installed objects
+		installedBoards.setTreeNode(tree);
+
+		// Iterate boards and find the requested one, if any.
+		for (Leaf installedBoard : installedBoards) {
+
+			String installedBoardName = installedBoard
+					.getProperty(Property.BOARD_NAME);
+			// String installedBoardName = installedBoard.getName();
+
+			if (!boardName.equals(installedBoardName)) {
+				continue; // Different board name, try next
+			}
+			String installedBoardVendorName = installedBoard
+					.getProperty(Property.VENDOR_NAME);
+			if (boardVendorName.equals(installedBoardVendorName)) {
+				// Both board name & vendor name match
+				fInstalledBoardsMap.put(key, installedBoard);
+				return installedBoard;
+			}
+		}
+
+		// Store the null value, as a negative ack for next searches.
+		fInstalledBoardsMap.put(key, null);
+		return null; // Not found
+	}
+
+	/**
+	 * Try to get a property from the current node or from parent nodes, up to a
+	 * node of given type (exclusively).
+	 * 
+	 * @param node
+	 *            a leaf node where to start the search
+	 * @param name
+	 *            a string with the property name
+	 * @param type
+	 *            a string with the node type where the search stops; the node
+	 *            of this type is not inspected; if null, the search will stop
+	 *            at the tree root
+	 * @return the property value or an empty string if not found
+	 */
+	public static String collectProperty(Leaf node, String name, String type) {
+
+		while (node != null && !node.isType(type)) {
 
 			if (node.hasProperty(name)) {
 				return node.getProperty(name);
@@ -923,9 +972,12 @@ public class DataManager implements IDataManager {
 
 	public String getDestinationFolder(Leaf node) {
 
-		String vendorName = getPropertyWithParents(node, Property.PACK_VENDOR);
-		String packName = getPropertyWithParents(node, Property.PACK_NAME);
-		String version = getPropertyWithParents(node, Property.PACK_VERSION);
+		String vendorName = collectProperty(node, Property.PACK_VENDOR,
+				Type.DEVICES_SUBTREE);
+		String packName = collectProperty(node, Property.PACK_NAME,
+				Type.DEVICES_SUBTREE);
+		String version = collectProperty(node, Property.PACK_VERSION,
+				Type.DEVICES_SUBTREE);
 
 		Leaf summaryVersionNode = findPackVersion(vendorName, packName, version);
 

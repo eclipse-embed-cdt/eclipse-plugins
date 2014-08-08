@@ -20,14 +20,18 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 
-	private static final String MESSAGES = Activator.PLUGIN_ID
-			+ ".ui.messages"; //$NON-NLS-1$
+	private static final String MESSAGES = Activator.PLUGIN_ID + ".ui.messages"; //$NON-NLS-1$
 
-	public static String DeviceTab_DeviceGroup_name;
-	public static String DeviceTab_DeviceGroup_architecture_label;
-	public static String DeviceTab_MemoryGroup_name;
-	public static String DeviceTab_MemoryGroup_edit_button;
-	
+	public static String DevicesTab_DeviceGroup_name;
+	public static String DevicesTab_DeviceGroup_architecture_label;
+	public static String DevicesTab_MemoryGroup_name;
+	public static String DevicesTab_MemoryGroup_editButton_text;
+
+	public static String DevicesTab_MemoryGroup_nameColumn_toolTipText;
+	public static String DevicesTab_MemoryGroup_startColumn_toolTipText;
+	public static String DevicesTab_MemoryGroup_sizeColumn_toolTipText;
+	public static String DevicesTab_MemoryGroup_startupColumn_toolTipText;
+
 	static {
 		// initialise resource bundle
 		NLS.initializeMessages(MESSAGES, Messages.class);

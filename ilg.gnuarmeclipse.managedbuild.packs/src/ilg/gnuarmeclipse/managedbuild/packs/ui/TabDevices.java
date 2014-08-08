@@ -12,12 +12,16 @@
 package ilg.gnuarmeclipse.managedbuild.packs.ui;
 
 import ilg.gnuarmeclipse.managedbuild.cross.IDs;
+import ilg.gnuarmeclipse.managedbuild.packs.ConfigStorage;
+import ilg.gnuarmeclipse.packs.core.Activator;
 import ilg.gnuarmeclipse.packs.core.data.DataManagerFactoryProxy;
 import ilg.gnuarmeclipse.packs.core.data.IDataManager;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
+import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
+import ilg.gnuarmeclipse.packs.data.DataManager;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -27,8 +31,10 @@ import java.util.TreeMap;
 import org.eclipse.cdt.core.settings.model.ICResourceDescription;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IToolChain;
+import org.eclipse.cdt.managedbuilder.internal.core.Configuration;
 import org.eclipse.cdt.managedbuilder.internal.core.MultiConfiguration;
 import org.eclipse.cdt.managedbuilder.ui.properties.AbstractCBuildPropertyTab;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.layout.TreeColumnLayout;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -57,7 +63,7 @@ import org.eclipse.swt.widgets.TreeColumn;
  * @noinstantiate This class is not intended to be instantiated by clients.
  */
 @SuppressWarnings("restriction")
-public class TabDevice extends AbstractCBuildPropertyTab {
+public class TabDevices extends AbstractCBuildPropertyTab {
 
 	private static final int AUTOEXPAND_LEVEL = 2;
 
@@ -150,17 +156,20 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 	private Button fMemoryEditButton;
 
 	private IDataManager fDataManager;
+	private Leaf fSelectedDeviceNode;
+	private Leaf fSelectedBoardDeviceNode;
 
 	// ------------------------------------------------------------------------
 
 	// private Composite m_composite;
 
 	private IConfiguration fConfig;
-	private IConfiguration fLastUpdatedConfig = null;
 
-	// public TabDevice() {
-	//
-	// }
+	// private IConfiguration fLastUpdatedConfig = null;
+
+	public TabDevices() {
+		;
+	}
 
 	// ---
 
@@ -169,21 +178,21 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 
 		// m_composite = parent;
 		// Disabled, otherwise toolchain changes fail
-		System.out.println("Device.createControls()");
+		System.out.println("Devices.createControls()");
 		if (!isThisPlugin()) {
-			System.out.println("Device.not this plugin");
+			System.out.println("Devices.not this plugin");
 			return;
 		}
 		//
 		if (!page.isForProject()) {
-			System.out.println("Device.not this project");
+			System.out.println("Devices.not this project");
 			return;
 		}
 		//
 		super.createControls(parent);
 
 		fConfig = getCfg();
-		System.out.println("Device.createControls() m_config=" + fConfig);
+		System.out.println("Devices.createControls() fConfig=" + fConfig);
 
 		fDataManager = DataManagerFactoryProxy.getInstance()
 				.createDataManager();
@@ -203,7 +212,7 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 
 		createMemoryGroup(usercomp);
 
-		System.out.println("Device.createControls() completed");
+		System.out.println("Devices.createControls() completed");
 	}
 
 	private void createDeviceGroup(Composite parent) {
@@ -216,7 +225,7 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = SWT.FILL;
 		group.setLayoutData(gridData);
-		group.setText(Messages.getString("DeviceTab_DeviceGroup_name"));
+		group.setText(Messages.DevicesTab_DeviceGroup_name);
 
 		Composite treeComposite = new Composite(group, SWT.NONE);
 		fDevicesTree = new TreeViewer(treeComposite, SWT.SINGLE | SWT.BORDER);
@@ -251,12 +260,11 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 		fDevicesTree.setLabelProvider(new DevicesLabelProvider());
 
 		fDevicesTree.setAutoExpandLevel(AUTOEXPAND_LEVEL);
-
+		fDevicesTree.setInput(getDevicesTree());
 		// ---
 
 		Label label = new Label(group, SWT.NONE);
-		label.setText(Messages
-				.getString("DeviceTab_DeviceGroup_architecture_label"));
+		label.setText(Messages.DevicesTab_DeviceGroup_architecture_label);
 
 		fArchitectureLabel = new Label(group, SWT.NONE);
 		fArchitectureLabel.setText("-");
@@ -290,7 +298,7 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 		gridData.grabExcessHorizontalSpace = true;
 		gridData.horizontalAlignment = SWT.FILL;
 		group.setLayoutData(gridData);
-		group.setText(Messages.getString("DeviceTab_MemoryGroup_name"));
+		group.setText(Messages.DevicesTab_MemoryGroup_name);
 
 		{
 			fDeviceLabel = new Label(group, SWT.NONE);
@@ -316,44 +324,40 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 			gridData.heightHint = 62;
 			fMemoryTable.setLayoutData(gridData);
 
-			TableColumn m_columnSection = new TableColumn(fMemoryTable,
-					SWT.NULL);
-			m_columnSection.setText("Section");
-			m_columnSection.setWidth(80);
-			m_columnSection.setResizable(true);
+			TableColumn columnSection = new TableColumn(fMemoryTable, SWT.NULL);
+			columnSection.setText("Section");
+			columnSection.setWidth(80);
+			columnSection.setResizable(true);
+			columnSection
+					.setToolTipText(Messages.DevicesTab_MemoryGroup_nameColumn_toolTipText);
 
-			TableColumn m_columnStart = new TableColumn(fMemoryTable, SWT.NULL);
-			m_columnStart.setText("Start");
-			m_columnStart.setWidth(100);
-			m_columnStart.setResizable(true);
+			TableColumn columnStart = new TableColumn(fMemoryTable, SWT.NULL);
+			columnStart.setText("Start");
+			columnStart.setWidth(100);
+			columnStart.setResizable(true);
+			columnStart
+					.setToolTipText(Messages.DevicesTab_MemoryGroup_startColumn_toolTipText);
 
-			TableColumn m_columnSize = new TableColumn(fMemoryTable, SWT.NULL);
-			m_columnSize.setText("Size");
-			m_columnSize.setWidth(100);
-			m_columnSize.setResizable(true);
+			TableColumn columnSize = new TableColumn(fMemoryTable, SWT.NULL);
+			columnSize.setText("Size");
+			columnSize.setWidth(100);
+			columnSize.setResizable(true);
+			columnSize
+					.setToolTipText(Messages.DevicesTab_MemoryGroup_sizeColumn_toolTipText);
 
-			TableColumn m_columnInit = new TableColumn(fMemoryTable, SWT.NULL);
-			m_columnInit.setText("Init");
-			m_columnInit.setWidth(55);
-			m_columnInit.setResizable(true);
+			TableColumn columnStartup = new TableColumn(fMemoryTable, SWT.NULL);
+			columnStartup.setText("Startup");
+			columnStartup.setWidth(55);
+			columnStartup.setResizable(true);
+			columnStartup
+					.setToolTipText(Messages.DevicesTab_MemoryGroup_startupColumn_toolTipText);
 
-			TableColumn m_columnStartup = new TableColumn(fMemoryTable,
-					SWT.NULL);
-			m_columnStartup.setText("Startup");
-			m_columnStartup.setWidth(55);
-			m_columnStartup.setResizable(true);
-
-			TableColumn m_columnDefault = new TableColumn(fMemoryTable,
-					SWT.NULL);
-			m_columnDefault.setText("Default");
-			m_columnDefault.setWidth(55);
-			m_columnDefault.setResizable(true);
 		}
 
 		{
 			fMemoryEditButton = new Button(group, SWT.NONE);
-			fMemoryEditButton.setText(Messages
-					.getString("DeviceTab_MemoryGroup_edit_button"));
+			fMemoryEditButton
+					.setText(Messages.DevicesTab_MemoryGroup_editButton_text);
 		}
 	}
 
@@ -380,36 +384,52 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 			return;
 		}
 
-		Node memNode = null;
+		fSelectedDeviceNode = null;
+		fSelectedBoardDeviceNode = null;
 		if (node.getParent().isType(Type.BOARD)) {
-			System.out
-					.println("Board device " + element + " not yet processed");
-			// TODO: search for true device node
+
+			// Search for true device node
+			fSelectedDeviceNode = findBoardDevice(node);
+			if (fSelectedDeviceNode == null) {
+				// Do not allow selections for undefined board devices
+				fDevicesTree.setSelection(StructuredSelection.EMPTY);
+				return;
+			}
+			fSelectedBoardDeviceNode = node;
 		} else {
 			// System.out.println("Device " + element);
-			memNode = node;
+			fSelectedDeviceNode = node;
 		}
 
-		Map<String, String[]> map = collectMemoryMap(memNode);
+		Map<String, String[]> map = collectMemoryMap(fSelectedDeviceNode);
 
 		updateMemoryTableContent(map);
 
-		String arch = collectNodePropery(memNode, Node.CORE_PROPERTY, "");
+		String arch = DataManager.collectProperty(fSelectedDeviceNode,
+				Node.CORE_PROPERTY, Type.DEVICES_SUBTREE);
 		fArchitectureLabel.setText(arch);
 
-		if (memNode != null) {
-			fDeviceLabel.setText(memNode.getName());
+		if (fSelectedDeviceNode != null) {
+			fDeviceLabel.setText(fSelectedDeviceNode.getName());
 		}
 	}
 
-	private Map<String, String[]> collectMemoryMap(Node node) {
+	private Leaf findBoardDevice(Node boardDevice) {
+
+		String deviceName = boardDevice.getName();
+		String deviceVendorId = boardDevice.getProperty(Property.VENDOR_ID);
+
+		return fDataManager.findInstalledDevice(deviceVendorId, deviceName);
+	}
+
+	private Map<String, String[]> collectMemoryMap(Leaf node) {
 
 		// Collect the memory map from node and parents
 		Map<String, String[]> map = new TreeMap<String, String[]>();
 		if (node != null) {
 			do {
 				if (node.hasChildren()) {
-					for (Leaf child : node.getChildren()) {
+					for (Leaf child : ((Node) node).getChildren()) {
 						if (child.isType(Type.MEMORY)) {
 							String key = child.getName();
 
@@ -417,7 +437,7 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 							if (map.containsKey(key)) {
 								line = map.get(key);
 							} else {
-								line = new String[] { "", "", "", "", "", "" };
+								line = new String[] { "", "", "", "", "" };
 								line[0] = key;
 
 								map.put(key, line);
@@ -425,7 +445,7 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 
 							// 'line' is either new or partly filled in
 							// The order is
-							// section,start,size,init,startup,default
+							// section,start,size,startup
 							if (line[1].length() == 0) {
 								line[1] = child
 										.getProperty(Node.START_PROPERTY);
@@ -434,15 +454,8 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 								line[2] = child.getProperty(Node.SIZE_PROPERTY);
 							}
 							if (line[3].length() == 0) {
-								line[3] = child.getProperty(Node.INIT_PROPERTY);
-							}
-							if (line[4].length() == 0) {
-								line[4] = child
+								line[3] = child
 										.getProperty(Node.STARTUP_PROPERTY);
-							}
-							if (line[5].length() == 0) {
-								line[5] = child
-										.getProperty(Node.DEFAULT_PROPERTY);
 							}
 
 						}
@@ -456,8 +469,8 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 
 		for (String[] line : map.values()) {
 
-			// Default [init,startup,default] values to 0
-			for (int i = 3; i <= 5; ++i) {
+			// Default [startup] values to 0
+			for (int i = 3; i < line.length; ++i) {
 				if (line[i].length() == 0) {
 					line[i] = "0";
 				}
@@ -466,6 +479,12 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 		return map;
 	}
 
+	/**
+	 * Fill in the memory map table using the values in the map.
+	 * 
+	 * @param map
+	 *            a map of string arrays, indexed by section name
+	 */
 	private void updateMemoryTableContent(Map<String, String[]> map) {
 
 		fMemoryTable.removeAll();
@@ -480,30 +499,6 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 		}
 	}
 
-	private String collectNodePropery(Node node, String propertyName,
-			String defaultValue) {
-
-		String value = "";
-		if (node != null) {
-			do {
-
-				value = node.getProperty(propertyName);
-
-				if (value.length() > 0)
-					break;
-
-				// Iterate up
-				node = node.getParent();
-				// Stop when we reached the top node
-			} while (node != null);
-		}
-
-		if (value.length() == 0) {
-			return defaultValue;
-		}
-		return value;
-	}
-
 	// -------------------------------------------------------------------------
 
 	// This event comes when the tab is selected after the windows is
@@ -511,11 +506,12 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 	// It also comes when the configuration is changed in the selection.
 	@Override
 	public void updateData(ICResourceDescription cfgd) {
+
 		if (cfgd == null)
 			return;
 
-		// m_config = getCfg();
-		System.out.println("Device.updateData() " + getCfg().getName());
+		// fConfig = getCfg();
+		System.out.println("Devices.updateData() " + getCfg().getName());
 
 		IConfiguration config = getCfg(cfgd.getConfiguration());
 		if (config instanceof MultiConfiguration) {
@@ -534,59 +530,212 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 	protected void performApply(ICResourceDescription src,
 			ICResourceDescription dst) {
 
-		System.out.println("Device.performApply() " + src.getName());
-		IConfiguration config = getCfg(src.getConfiguration());
+		System.out.println("Devices.performApply() " + src.getName() + " -> "
+				+ dst.getName());
 
-		updateOptions(config);
-		// does not work like this
-		// SpecsProvider.clear();
-
-		// System.out.println("performApply()");
+		// TODO: check if something to do.
 	}
 
 	@Override
 	protected void performOK() {
 
 		IConfiguration config = getCfg();
-		System.out.println("Device.performOK() " + config);
+		System.out.println("Devices.performOK() " + config.getName());
 
-		if (fLastUpdatedConfig.equals(config)) {
-			updateOptions(config);
-		} else {
-			System.out.println("skipped " + fConfig);
-		}
+		updateStorage(config);
 	}
 
 	private void updateControlsForConfig(IConfiguration config) {
 
-		System.out.println("Device.updateControlsForConfig() "
+		System.out.println("Devices.updateControlsForConfig() "
 				+ config.getName());
 
 		fConfig = config;
-		System.out.println("Device.updateControlsForConfig() m_config="
-				+ fConfig);
 
-		fLastUpdatedConfig = config;
+		if (config instanceof Configuration) {
+
+			try {
+				ConfigStorage st = new ConfigStorage(config);
+
+				String deviceName = st.getOption(ConfigStorage.DEVICE_NAME);
+				if (deviceName != null) {
+					fDeviceLabel.setText(deviceName);
+				}
+
+				String coreName = st.getOption(ConfigStorage.CORE_NAME);
+				if (coreName != null) {
+					fArchitectureLabel.setText(coreName);
+				}
+
+				boolean wasSelected = false;
+				// TODO: select the device in the selection tree
+				String boardName = st.getOption(ConfigStorage.BOARD_NAME);
+				String boardVendorName = st
+						.getOption(ConfigStorage.BOARD_VENDOR_NAME);
+
+				String deviceVendorId = st
+						.getOption(ConfigStorage.DEVICE_VENDOR_ID);
+
+				if (boardName != null && boardName.length() > 0
+						&& boardVendorName != null
+						&& boardVendorName.length() > 0 && deviceName != null
+						&& deviceName.length() > 0 && deviceVendorId != null
+						&& deviceVendorId.length() > 0) {
+
+					Leaf board = fDataManager.findInstalledBoard(
+							boardVendorName, boardName);
+					if (board != null && board.hasChildren()) {
+
+						for (Leaf child : ((Node) board).getChildren()) {
+
+							if (child.isType(Type.DEVICE)
+									&& deviceName.equals(child.getName())
+									&& deviceVendorId.equals(child
+											.getProperty(Property.VENDOR_ID))) {
+
+								fDevicesTree.reveal(child);
+								fDevicesTree.setSelection(
+										new StructuredSelection(child), true);
+								wasSelected = true;
+								break;
+							}
+						}
+					}
+
+				}
+
+				if (!wasSelected) {
+					// Was not selected by the board, try device
+					if (deviceName.length() > 0 && deviceVendorId != null
+							&& deviceVendorId.length() > 0) {
+
+						Leaf device = fDataManager.findInstalledDevice(
+								deviceVendorId, deviceName);
+						if (device != null) {
+							fDevicesTree.setSelection(new StructuredSelection(
+									device), true);
+							wasSelected = true;
+						}
+					}
+				}
+
+				// Clear any possible selection
+				fSelectedDeviceNode = null;
+				fSelectedBoardDeviceNode = null;
+
+				updateMemoryTableContent(st.getMemoryMap());
+
+			} catch (CoreException e) {
+			}
+
+		}
+		// fLastUpdatedConfig = config;
 	}
 
-	private void updateOptions(IConfiguration config) {
+	private void updateStorage(IConfiguration config) {
 
-		System.out.println("Device.updateOptions() " + config.getName());
+		System.out.println("Devices.updateStorage() " + config.getName());
 
+		if (fSelectedDeviceNode == null) {
+			return;
+		}
+
+		// If multi config, iterate over individual configs
 		if (config instanceof MultiConfiguration) {
 			MultiConfiguration multi = (MultiConfiguration) config;
 			for (Object obj : multi.getItems()) {
 				IConfiguration cfg = (IConfiguration) obj;
-				updateOptions(cfg);
+				updateStorage(cfg);
 			}
 			return;
+		} else
+
+		if (config instanceof Configuration) {
+
+			try {
+				ConfigStorage st = new ConfigStorage(config);
+				st.clear();
+
+				Leaf node = fSelectedDeviceNode;
+				while (node != null) {
+					if (node.isType(Type.DEVICE)) {
+						st.setOption(ConfigStorage.DEVICE_NAME, node.getName());
+						System.out
+								.println("Devices.updateStorage() device.name="
+										+ node.getName());
+					} else if (node.isType(Type.SUBFAMILY)) {
+						st.setOption(ConfigStorage.SUBFAMILY_NAME,
+								node.getName());
+					} else if (node.isType(Type.FAMILY)) {
+						st.setOption(ConfigStorage.FAMILY_NAME, node.getName());
+
+						st.setOption(ConfigStorage.DEVICE_VENDOR_NAME,
+								node.getProperty(Property.VENDOR_NAME));
+						st.setOption(ConfigStorage.DEVICE_VENDOR_ID,
+								node.getProperty(Property.VENDOR_ID));
+
+						// Package details
+						st.setOption(ConfigStorage.DEVICE_PACK_VENDOR,
+								node.getProperty(Property.PACK_VENDOR));
+						st.setOption(ConfigStorage.DEVICE_PACK_NAME,
+								node.getProperty(Property.PACK_NAME));
+						st.setOption(ConfigStorage.DEVICE_PACK_VERSION,
+								node.getProperty(Property.PACK_VERSION));
+
+					}
+					node = node.getParent();
+				}
+
+				if (fSelectedBoardDeviceNode != null) {
+					node = fSelectedBoardDeviceNode.getParent();
+
+					if (node.isType(Type.BOARD)) {
+						st.setOption(ConfigStorage.BOARD_NAME,
+								node.getProperty(Property.BOARD_NAME));
+						st.setOption(ConfigStorage.BOARD_REVISION,
+								node.getProperty(Property.BOARD_REVISION));
+						st.setOption(ConfigStorage.BOARD_VENDOR_NAME,
+								node.getProperty(Property.VENDOR_NAME));
+						st.setNonEmptyOption(ConfigStorage.BOARD_CLOCK,
+								node.getProperty(Property.CLOCK));
+
+						// Package details
+						st.setOption(ConfigStorage.BOARD_PACK_VENDOR,
+								node.getProperty(Property.PACK_VENDOR));
+						st.setOption(ConfigStorage.BOARD_PACK_NAME,
+								node.getProperty(Property.PACK_NAME));
+						st.setOption(ConfigStorage.BOARD_PACK_VERSION,
+								node.getProperty(Property.PACK_VERSION));
+					}
+				}
+
+				String core = DataManager.collectProperty(fSelectedDeviceNode,
+						Property.CORE, Type.DEVICES_SUBTREE);
+				st.setOption(ConfigStorage.CORE_NAME, core);
+
+				String define = DataManager.collectProperty(
+						fSelectedDeviceNode, Property.DEFINE,
+						Type.DEVICES_SUBTREE);
+				st.setOption(ConfigStorage.COMPILER_DEFINE, define);
+
+				for (int i = 0; i < fMemoryTable.getItemCount(); ++i) {
+					TableItem item = fMemoryTable.getItem(i);
+					st.setMemory(item.getText(0), item.getText(1),
+							item.getText(2), item.getText(3));
+				}
+				st.update();
+			} catch (CoreException e) {
+				Activator.log(e);
+			}
 		}
 	}
 
 	@Override
 	protected void performDefaults() {
 
-		System.out.println("Device.performDefaults()");
+		System.out.println("Devices.performDefaults()");
+
+		// No defaults to apply
 	}
 
 	@Override
@@ -613,7 +762,9 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 			return false;
 	}
 
-	// Must be true, otherwise the page is not shown
+	/**
+	 * Inform upper class that this page accepts multiple configurations.
+	 */
 	public boolean canSupportMultiCfg() {
 		return true;
 	}
@@ -623,10 +774,14 @@ public class TabDevice extends AbstractCBuildPropertyTab {
 		// Do nothing. No buttons to update.
 	}
 
+	/**
+	 * Check if the configuration refers to a GNU ARM Eclipse project by
+	 * checking the toolchain prefix.
+	 */
 	private boolean isThisPlugin() {
 
 		fConfig = getCfg();
-		System.out.println("Device.isThisPlugin() m_config=" + fConfig);
+		System.out.println("Devices.isThisPlugin() fConfig=" + fConfig);
 
 		IToolChain toolchain = fConfig.getToolChain();
 		String sToolchainId = toolchain.getBaseId();
