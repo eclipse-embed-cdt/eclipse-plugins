@@ -11,7 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.ui.views;
 
-import ilg.gnuarmeclipse.core.Openers;
+import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
@@ -675,13 +675,13 @@ public class OutlineView extends ViewPart {
 
 				// Open external file in Eclipse editor (as read only, since the
 				// packages were marked as read only.
-				Openers.openFileWithInternalEditor(fPackageAbsolutePath
+				EclipseUtils.openFileWithInternalEditor(fPackageAbsolutePath
 						.append(relativeFile));
 
 			} else if ("doc".equals(category)) {
 
 				// System.out.println("Document " + node);
-				Openers.openExternalFile(fPackageAbsolutePath
+				EclipseUtils.openExternalFile(fPackageAbsolutePath
 						.append(relativeFile));
 
 			} else if ("include".equals(category) || "library".equals(category)) {
@@ -697,12 +697,12 @@ public class OutlineView extends ViewPart {
 			if (url.length() > 0) {
 
 				// System.out.println("Open " + url);
-				Openers.openExternalBrowser(new URL(url));
+				EclipseUtils.openExternalBrowser(new URL(url));
 
 			} else if (relativeFile.length() > 0) {
 
 				// System.out.println("Path " + relativeFile);
-				Openers.openExternalFile(fPackageAbsolutePath
+				EclipseUtils.openExternalFile(fPackageAbsolutePath
 						.append(relativeFile));
 
 			} else {
@@ -717,7 +717,7 @@ public class OutlineView extends ViewPart {
 
 			// Open external file in Eclipse editor (as read only, since the
 			// packages were marked as read only
-			Openers.openFileWithInternalEditor(fPackageAbsolutePath
+			EclipseUtils.openFileWithInternalEditor(fPackageAbsolutePath
 					.append(relativeFile));
 
 		} else if (Type.DEBUG.equals(type)) {
@@ -728,7 +728,7 @@ public class OutlineView extends ViewPart {
 
 			// Open external file in Eclipse editor (as read only, since the
 			// packages were marked as read only
-			Openers.openFileWithInternalEditor(fPackageAbsolutePath
+			EclipseUtils.openFileWithInternalEditor(fPackageAbsolutePath
 					.append(relativeFile));
 		} else {
 			// System.out.println("Double-click detected on " + node + " " +
@@ -743,7 +743,7 @@ public class OutlineView extends ViewPart {
 		if (relativeFile.length() > 0) {
 
 			assert (fPackageAbsolutePath != null);
-			Openers.openFileWithInternalEditor(fPackageAbsolutePath
+			EclipseUtils.openFileWithInternalEditor(fPackageAbsolutePath
 					.append(relativeFile));
 		}
 	}
@@ -755,14 +755,15 @@ public class OutlineView extends ViewPart {
 		if (relativeFile.length() > 0) {
 
 			assert (fPackageAbsolutePath != null);
-			Openers.openExternalFile(fPackageAbsolutePath.append(relativeFile));
+			EclipseUtils.openExternalFile(fPackageAbsolutePath
+					.append(relativeFile));
 			return;
 		}
 
 		String url = node.getProperty(Node.URL_PROPERTY);
 		if (url.length() > 0) {
 
-			Openers.openExternalBrowser(new URL(url));
+			EclipseUtils.openExternalBrowser(new URL(url));
 			return;
 		}
 	}

@@ -12,5 +12,7 @@ Export-Package: ilg.gnuarmeclipse.core
 Require-Bundle: org.eclipse.ui.workbench,
  org.eclipse.osgi,
  org.eclipse.core.filesystem,
- org.eclipse.ui.ide
+ org.eclipse.ui.ide,
+ org.eclipse.core.resources,
+ org.eclipse.jface
 Import-Package: org.eclipse.core.runtime

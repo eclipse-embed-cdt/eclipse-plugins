@@ -11,7 +11,9 @@
 
 package ilg.gnuarmeclipse.managedbuild.packs.ui.views;
 
-import ilg.gnuarmeclipse.core.Openers;
+import ilg.gnuarmeclipse.core.EclipseUtils;
+import ilg.gnuarmeclipse.managedbuild.cross.IDs;
+import ilg.gnuarmeclipse.managedbuild.packs.ConfigStorage;
 import ilg.gnuarmeclipse.packs.core.tree.AbstractTreePreOrderIterator;
 import ilg.gnuarmeclipse.packs.core.tree.ITreeIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
@@ -32,6 +34,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.cdt.internal.core.model.CElement;
+import org.eclipse.cdt.internal.ui.cview.IncludeRefContainer;
+import org.eclipse.cdt.managedbuilder.core.IConfiguration;
+import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
+import org.eclipse.cdt.managedbuilder.core.IToolChain;
+import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
+import org.eclipse.core.internal.resources.File;
+import org.eclipse.core.internal.resources.Folder;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.action.Action;
@@ -55,12 +67,17 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.ui.part.ViewPart;
 
+@SuppressWarnings("restriction")
 public class DocsView extends ViewPart implements IDataManagerListener {
 
 	/**
@@ -140,6 +157,7 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 	// ------------------------------------------------------------------------
 
 	private TreeViewer fViewer;
+	private ISelectionListener fPageSelectionListener;
 
 	private ViewContentProvider fContentProvider;
 
@@ -147,6 +165,8 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 	private DataManager fDataManager;
 	private Action fDoubleClickAction;
 	private Action fRightClickOpen;
+
+	private IConfiguration fConfig;
 
 	// private MessageConsoleStream fOut;
 
@@ -157,6 +177,7 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 		// fStorage = PacksStorage.getInstance();
 		fDataManager = DataManager.getInstance();
 		// System.out.println("DevicesView()");
+		fConfig = null;
 	}
 
 	/**
@@ -189,6 +210,7 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 
 		addProviders();
 		addListners();
+		hookPageSelection();
 
 		makeActions();
 
@@ -202,6 +224,11 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 		super.dispose();
 		fDataManager.removeListener(this);
 
+		if (fPageSelectionListener != null) {
+			getSite().getPage().removePostSelectionListener(
+					fPageSelectionListener);
+		}
+
 		System.out.println("DevicesView.dispose()");
 	}
 
@@ -213,6 +240,86 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 
 	private void addListners() {
 		// None
+	}
+
+	private void hookPageSelection() {
+
+		fPageSelectionListener = new ISelectionListener() {
+
+			@Override
+			public void selectionChanged(IWorkbenchPart part,
+					ISelection selection) {
+
+				if ((!selection.isEmpty())
+						&& selection instanceof IStructuredSelection) {
+
+					if (part instanceof ProjectExplorer) {
+
+						// Accept selection only from the Project Eplorer
+						// view
+						IStructuredSelection structSel = (IStructuredSelection) selection;
+						if (structSel.size() == 1) {
+							Object firstSel = structSel.getFirstElement();
+
+							IProject project = null;
+							if (firstSel instanceof IProject) {
+								project = (IProject) firstSel;
+							} else if (firstSel instanceof IncludeRefContainer) {
+								project = ((IncludeRefContainer) firstSel)
+										.getCProject().getProject();
+							} else if (firstSel instanceof CElement) {
+								project = ((CElement) firstSel).getCProject()
+										.getProject();
+							} else if (firstSel instanceof File) {
+								project = ((File) firstSel).getProject();
+							} else if (firstSel instanceof Folder) {
+								project = ((Folder) firstSel).getProject();
+							} else {
+								System.out.println("ignored");
+							}
+
+							setInputForProject(project);
+						}
+					}
+				}
+			}
+		};
+		getSite().getPage().addPostSelectionListener(fPageSelectionListener);
+
+	}
+
+	private void setInputForProject(IProject project) {
+
+		IWorkbenchPage page = EclipseUtils.getActivePage();
+		if (page.isPartVisible(this)) {
+
+			// Perform this complicated thing only if the view is visible
+			IConfiguration newConfig = null;
+			try {
+
+				if (project != null
+						&& project.hasNature("org.eclipse.cdt.core.cnature")) {
+					IManagedBuildInfo info = ManagedBuildManager
+							.getBuildInfo(project);
+					IConfiguration config = info.getDefaultConfiguration();
+
+					IToolChain toolchain = config.getToolChain();
+					String sToolchainId = toolchain.getBaseId();
+					if (sToolchainId.startsWith(IDs.TOOLCHAIN_ID + ".")) {
+
+						// Only our projects are candidates
+						newConfig = config;
+					}
+				}
+			} catch (CoreException e) {
+				;
+			}
+			if ((newConfig != null && !newConfig.equals(fConfig))
+					|| (fConfig != null && !fConfig.equals(newConfig))) {
+				fConfig = newConfig;
+				fViewer.setInput(getDocsTree());
+			}
+		}
 	}
 
 	private void makeActions() {
@@ -358,10 +465,10 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 			String url = node.getProperty(Property.URL);
 			String absoluteFile = node.getProperty(Property.FILE_ABSOLUTE);
 			if (url.length() > 0) {
-				Openers.openExternalBrowser(new URL(url));
+				EclipseUtils.openExternalBrowser(new URL(url));
 			} else if (absoluteFile.length() > 0) {
 				IPath path = PacksStorage.getFolderPath().append(absoluteFile);
-				Openers.openExternalFile(path);
+				EclipseUtils.openExternalFile(path);
 			}
 		}
 	}
@@ -410,40 +517,55 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 	// Return a two level hierarchy of vendor and device nodes.
 	private Node getDocsTree() {
 
-		// TODO: get these from current project; use selection listener to
-		// detect project selection change
-		String deviceVendorId = "13";
-		String deviceName = "STM32F407VG";
-		String boardVendorName = "STMicroelectronics";
-		String boardName = "STM32F4-Discovery";
-
 		Node tree = DataManager.getInstance().getInstalledObjectsForBuild();
 
 		Node devicesRoot = new Node(Type.ROOT);
 		devicesRoot.setName("Docs");
 
-		if (deviceName != null) {
-			Node deviceDocsNode = Node.addNewChild(devicesRoot, Type.FOLDER);
-			deviceDocsNode.setName(deviceName + " device docs");
+		ConfigStorage st;
+		try {
+			st = new ConfigStorage(fConfig);
 
-			Node devicesSubtree = (Node) tree.findChild(Type.DEVICES_SUBTREE);
-			if (devicesSubtree != null) {
+			String deviceVendorId = st
+					.getOption(ConfigStorage.DEVICE_VENDOR_ID);
+			String deviceName = st.getOption(ConfigStorage.DEVICE_NAME);
 
-				copyDeviceDocs(devicesSubtree, deviceVendorId, deviceName,
-						deviceDocsNode);
+			String boardVendorName = st
+					.getOption(ConfigStorage.BOARD_VENDOR_NAME);
+			String boardName = st.getOption(ConfigStorage.BOARD_NAME);
+
+			if (deviceName != null) {
+				Node deviceDocsNode = Node
+						.addNewChild(devicesRoot, Type.FOLDER);
+				deviceDocsNode.setName(deviceName + " device docs");
+
+				Node devicesSubtree = (Node) tree
+						.findChild(Type.DEVICES_SUBTREE);
+				if (devicesSubtree != null) {
+
+					copyDeviceDocs(devicesSubtree, deviceVendorId, deviceName,
+							deviceDocsNode);
+				}
 			}
+
+			if (boardName != null) {
+				Node boardDocsNode = Node.addNewChild(devicesRoot, Type.FOLDER);
+				boardDocsNode.setName(boardName + " board docs");
+
+				Node boardsSubtree = (Node) tree.findChild(Type.BOARDS_SUBTREE);
+				if (boardsSubtree != null) {
+
+					copyBoardDocs(boardsSubtree, boardVendorName, boardName,
+							boardDocsNode);
+				}
+			}
+		} catch (CoreException e) {
+			;
 		}
 
-		if (boardName != null) {
-			Node boardDocsNode = Node.addNewChild(devicesRoot, Type.FOLDER);
-			boardDocsNode.setName(boardName + " board docs");
-
-			Node boardsSubtree = (Node) tree.findChild(Type.BOARDS_SUBTREE);
-			if (boardsSubtree != null) {
-
-				copyBoardDocs(boardsSubtree, boardVendorName, boardName,
-						boardDocsNode);
-			}
+		if (!devicesRoot.hasChildren()) {
+			Node emptyNode = Node.addNewChild(devicesRoot, Type.NONE);
+			emptyNode.setName("No documents are available.");
 		}
 
 		return devicesRoot;

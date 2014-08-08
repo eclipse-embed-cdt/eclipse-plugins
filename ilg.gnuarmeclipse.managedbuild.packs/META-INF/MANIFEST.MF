@@ -21,7 +21,9 @@ Require-Bundle: ilg.gnuarmeclipse.packs.core,
  org.eclipse.ui,
  ilg.gnuarmeclipse.packs.data,
  org.eclipse.ui.console,
- ilg.gnuarmeclipse.packs.ui
+ ilg.gnuarmeclipse.packs.ui,
+ org.eclipse.ui.navigator,
+ org.eclipse.ui.navigator.resources
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %bundle.vendor

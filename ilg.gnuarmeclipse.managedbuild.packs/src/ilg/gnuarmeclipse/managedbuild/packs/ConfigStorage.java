@@ -130,6 +130,16 @@ public class ConfigStorage {
 		return null;
 	}
 
+	public String getOption(String id, String defaultValue) {
+		
+		String result = getOption(id);
+		if (result != null && result.length() > 0){
+			return result;
+		}
+		
+		return defaultValue;
+	}
+	
 	/**
 	 * Store the value of an option.
 	 * 

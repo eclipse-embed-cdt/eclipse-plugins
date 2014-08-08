@@ -318,7 +318,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 	// private IConfiguration fLastUpdatedConfig = null;
 
 	public TabDevices() {
-		;
+		fConfig = null;
 	}
 
 	@Override
@@ -754,7 +754,8 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 				if (!wasSelected) {
 					// Was not selected by the board, try device
-					if (deviceName.length() > 0 && deviceVendorId != null
+					if (deviceName != null && deviceName.length() > 0
+							&& deviceVendorId != null
 							&& deviceVendorId.length() > 0) {
 
 						Leaf device = fDataManager.findInstalledDevice(
@@ -838,8 +839,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 					node = fSelectedBoardDeviceNode.getParent();
 
 					if (node.isType(Type.BOARD)) {
-						st.setOption(ConfigStorage.BOARD_NAME,
-								node.getProperty(node.getName()));
+						st.setOption(ConfigStorage.BOARD_NAME, node.getName());
 						st.setOption(ConfigStorage.BOARD_REVISION,
 								node.getProperty(Property.BOARD_REVISION));
 						st.setOption(ConfigStorage.BOARD_VENDOR_NAME,
