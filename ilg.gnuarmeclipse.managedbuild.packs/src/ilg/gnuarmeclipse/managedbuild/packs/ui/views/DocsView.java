@@ -460,8 +460,7 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 
 				// Identify board
 				if (board.isType(Type.BOARD)
-						&& boardName.equals(board
-								.getProperty(Property.BOARD_NAME))) {
+						&& boardName.equals(board.getName())) {
 
 					String destFolder = fDataManager
 							.getDestinationFolder(board);

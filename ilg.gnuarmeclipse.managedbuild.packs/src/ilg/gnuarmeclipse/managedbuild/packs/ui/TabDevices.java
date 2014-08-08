@@ -22,6 +22,7 @@ import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DataManager;
+import ilg.gnuarmeclipse.packs.data.Utils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -78,7 +79,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 			List<Leaf> list = new LinkedList<Leaf>();
 			for (Leaf child : children) {
-				// Filter out memory nodes
+				// Filter out memory and book nodes
 				if (!child.isType(Type.MEMORY) && !child.isType(Type.BOOK)) {
 					list.add(child);
 				}
@@ -101,22 +102,26 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 			switch (columnIndex) {
 
 			case 0:
+				// In the first column is displayed the node name
 				name = " " + node.getName();
 				break;
+
 			case 1:
-				String description = node.getDescription();
-				if (description.length() == 0) {
-					if (node.isType(Type.VENDOR)) {
-						description = "Vendor";
-					} else if (node.isType(Type.FAMILY)) {
-						description = "Family";
-					} else if (node.isType(Type.SUBFAMILY)) {
-						description = "Subfamily";
-					} else if (node.isType(Type.DEVICE)) {
-						description = "Device";
-					} else if (node.isType(Type.VARIANT)) {
-						description = "Variant";
-					}
+				// The second column displays the node details
+				String description = "";
+
+				if (node.isType(Type.VENDOR)) {
+					description = "Vendor";
+				} else if (node.isType(Type.FAMILY)) {
+					description = computeDescription(node);
+				} else if (node.isType(Type.SUBFAMILY)) {
+					description = computeDescription(node);
+				} else if (node.isType(Type.DEVICE)) {
+					description = computeDescription(node);
+				} else if (node.isType(Type.VARIANT)) {
+					description = computeDescription(node);
+				} else if (node.isType(Type.BOARD)) {
+					description = computeBoardDescription(node);
 				}
 				name = " " + description;
 				break;
@@ -145,6 +150,153 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 		public Image getColumnImage(Object element, int columnIndex) {
 			return null;
 		}
+
+		private String computeBoardDescription(Leaf node) {
+
+			String description = "";
+
+			String revision = node.getProperty(Property.BOARD_REVISION);
+			if (revision.length() > 0) {
+				if (description.length() > 0) {
+					description += ", ";
+				}
+				description += revision;
+			}
+
+			String clock = node.getProperty(Property.CLOCK);
+			if (clock.length() > 0) {
+				try {
+					int clockMHz = Integer.parseInt(clock) / 1000000;
+					if (description.length() > 0) {
+						description += ", ";
+					}
+					description += String.valueOf(clockMHz) + " MHz XTAL";
+
+				} catch (NumberFormatException e) {
+					// Ignore not number
+				}
+			}
+
+			String prefix = "Board";
+
+			if (description.length() > 0) {
+				return prefix + " (" + description + ")";
+			} else {
+				return prefix;
+			}
+		}
+
+		// Compose the details string for device nodes
+		protected String computeDescription(Leaf node) {
+
+			String prefix = "";
+			if (node.isType(Type.FAMILY)) {
+				prefix = "Family";
+			} else if (node.isType(Type.SUBFAMILY)) {
+				prefix = "Subfamily";
+			} else if (node.isType(Type.DEVICE)) {
+				prefix = "Device";
+			} else if (node.isType(Type.VARIANT)) {
+				prefix = "Variant";
+			}
+
+			String summary = "";
+			String core = node.getProperty(Property.CORE);
+			if (core.length() > 0) {
+				if (summary.length() > 0) {
+					summary += ", ";
+				}
+				summary += core;
+
+				String version = node.getProperty(Property.CORE_VERSION);
+				if (version.length() > 0) {
+					if (summary.length() > 0) {
+						summary += ", ";
+					}
+					summary += version;
+				}
+			}
+
+			String fpu = node.getProperty(Property.FPU);
+			if (fpu.length() > 0 && "1".equals(fpu)) {
+				if (summary.length() > 0) {
+					summary += ", ";
+				}
+				summary += "FPU";
+			}
+
+			String mpu = node.getProperty(Property.MPU);
+			if (mpu.length() > 0 && "1".equals(mpu)) {
+				if (summary.length() > 0) {
+					summary += ", ";
+				}
+				summary += "MPU";
+			}
+
+			String clock = node.getProperty(Property.CLOCK);
+			if (clock.length() > 0) {
+				try {
+					int clockMHz = Integer.parseInt(clock) / 1000000;
+					if (summary.length() > 0) {
+						summary += ", ";
+					}
+					summary += String.valueOf(clockMHz) + " MHz";
+				} catch (NumberFormatException e) {
+					// Ignore not number
+				}
+			}
+
+			int ramKB = 0;
+			int romKB = 0;
+
+			// TODO: iterate on parents too
+			if (node.hasChildren()) {
+				for (Leaf childNode : ((Node) node).getChildren()) {
+
+					if (Type.MEMORY.equals(childNode.getType())) {
+						String size = childNode.getProperty(Property.SIZE);
+						long sizeKB;
+						try {
+							sizeKB = Utils.convertHexLong(size) / 1024;
+						} catch (NumberFormatException e) {
+							sizeKB = 0;
+						}
+						String id = childNode.getName();
+						if (id.contains("ROM")) {
+							romKB += sizeKB;
+						} else if (id.contains("RAM")) {
+							ramKB += sizeKB;
+						} else {
+						}
+					}
+				}
+			}
+
+			if (ramKB > 0) {
+				if (summary.length() > 0) {
+					summary += ", ";
+				}
+
+				summary += String.valueOf(ramKB) + " kB RAM";
+			}
+
+			if (romKB > 0) {
+				if (summary.length() > 0) {
+					summary += ", ";
+				}
+
+				summary += String.valueOf(romKB) + " kB ROM";
+			}
+
+			if (summary.length() > 0) {
+				summary = prefix + " (" + summary + ")";
+			} else {
+				summary = prefix;
+			}
+
+			return summary;
+		}
+
 	}
 
 	// ------------------------------------------------------------------------
@@ -161,8 +313,6 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 	// ------------------------------------------------------------------------
 
-	// private Composite m_composite;
-
 	private IConfiguration fConfig;
 
 	// private IConfiguration fLastUpdatedConfig = null;
@@ -170,8 +320,6 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 	public TabDevices() {
 		;
 	}
-
-	// ---
 
 	@Override
 	public void createControls(Composite parent) {
@@ -691,7 +839,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 					if (node.isType(Type.BOARD)) {
 						st.setOption(ConfigStorage.BOARD_NAME,
-								node.getProperty(Property.BOARD_NAME));
+								node.getProperty(node.getName()));
 						st.setOption(ConfigStorage.BOARD_REVISION,
 								node.getProperty(Property.BOARD_REVISION));
 						st.setOption(ConfigStorage.BOARD_VENDOR_NAME,

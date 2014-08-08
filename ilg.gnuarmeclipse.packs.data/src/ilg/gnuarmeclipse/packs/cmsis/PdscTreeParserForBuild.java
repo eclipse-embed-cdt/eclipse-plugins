@@ -15,7 +15,6 @@ import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
-import ilg.gnuarmeclipse.packs.data.Utils;
 
 public class PdscTreeParserForBuild extends PdscTreeParser {
 
@@ -147,8 +146,6 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 				}
 			}
 		}
-
-		familyNode.setDescription(processDeviceSummary(familyNode));
 	}
 
 	private void processSubFamilyNode(Leaf node, Node parent) {
@@ -167,8 +164,6 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 				}
 			}
 		}
-
-		subFamilyNode.setDescription(processDeviceSummary(subFamilyNode));
 	}
 
 	private void processDeviceNode(Leaf node, Node parent) {
@@ -188,7 +183,6 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 		if (fCount == saveCount) {
 			fCount++; // If there were no variants, count this device
 		}
-		deviceNode.setDescription(processDeviceSummary(deviceNode));
 	}
 
 	private void processDevicePropertiesGroup(Leaf node, Node parent) {
@@ -236,8 +230,6 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 		// Optional
 		String startup = node.getProperty("startup");
-		String init = node.getProperty("init");
-		String defa = node.getProperty("default");
 
 		Leaf memoryNode = Leaf.addUniqueChild(parent, Type.MEMORY, id);
 
@@ -247,8 +239,6 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 		memoryNode.putNonEmptyProperty(Property.PNAME, Pname);
 		memoryNode.putNonEmptyProperty(Property.STARTUP, startup);
-		memoryNode.putNonEmptyProperty(Property.INIT, init);
-		memoryNode.putNonEmptyProperty(Property.DEFAULT, defa);
 	}
 
 	private void processCompileNode(Leaf node, Node parent) {
@@ -303,16 +293,10 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 		Node vendorNode = Node.addUniqueChild(parent, Type.VENDOR, boardVendor);
 
-		String name = boardName;
-		if (boardRevision.length() > 0) {
-			name += " (" + boardRevision + ")";
-		}
-
 		Node boardNode = Node.addNewChild(vendorNode, Type.BOARD);
 
-		boardNode.setName(name);
+		boardNode.setName(boardName);
 
-		boardNode.putNonEmptyProperty(Property.BOARD_NAME, boardName);
 		boardNode.putNonEmptyProperty(Property.BOARD_REVISION, boardRevision);
 		boardNode.putNonEmptyProperty(Property.VENDOR_NAME, boardVendor);
 
@@ -351,32 +335,12 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 			}
 		}
 
-		String prefix = "Board";
-		String summary = "";
-
 		// Clock can be set by processFeatureNode()
 		String clock = boardNode.getProperty(Property.CLOCK);
 		if (clock.length() > 0) {
-			try {
-				int clockMHz = Integer.parseInt(clock) / 1000000;
-				if (summary.length() > 0) {
-					summary += ", ";
-				}
-				summary += String.valueOf(clockMHz) + " MHz XTAL";
-
-				// Also add a property with the clcock value
-				boardNode.putProperty(Property.CLOCK, clock);
-
-			} catch (NumberFormatException e) {
-				// Ignore not number
-			}
+			// Also add a property with the clcock value
+			boardNode.putProperty(Property.CLOCK, clock);
 		}
-		if (summary.length() > 0) {
-			summary = prefix + " (" + summary + ")";
-		} else {
-			summary = prefix;
-		}
-		boardNode.setDescription(summary);
 	}
 
 	private void processFeatureNode(Leaf node, Node parent) {
@@ -394,117 +358,6 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 		if ("XTAL".equals(featureType)) {
 			parent.putNonEmptyProperty(Property.CLOCK, featureN);
 		}
-	}
-
-	// Compose the details string for device nodes
-	protected String processDeviceSummary(Node deviceNode) {
-
-		String prefix = "";
-		if (deviceNode.isType(Type.FAMILY)) {
-			prefix = "Family";
-		} else if (deviceNode.isType(Type.SUBFAMILY)) {
-			prefix = "Subfamily";
-		} else if (deviceNode.isType(Type.DEVICE)) {
-			prefix = "Device";
-		} else if (deviceNode.isType(Type.VARIANT)) {
-			prefix = "Variant";
-		}
-
-		String summary = "";
-		String core = deviceNode.getProperty(Property.CORE);
-		if (core.length() > 0) {
-			if (summary.length() > 0) {
-				summary += ", ";
-			}
-			summary += core;
-
-			String version = deviceNode.getProperty(Property.CORE_VERSION);
-			if (version.length() > 0) {
-				if (summary.length() > 0) {
-					summary += ", ";
-				}
-				summary += version;
-			}
-		}
-
-		String fpu = deviceNode.getProperty(Property.FPU);
-		if (fpu.length() > 0 && "1".equals(fpu)) {
-			if (summary.length() > 0) {
-				summary += ", ";
-			}
-			summary += "FPU";
-		}
-
-		String mpu = deviceNode.getProperty(Property.MPU);
-		if (mpu.length() > 0 && "1".equals(mpu)) {
-			if (summary.length() > 0) {
-				summary += ", ";
-			}
-			summary += "MPU";
-		}
-
-		String clock = deviceNode.getProperty(Property.CLOCK);
-		if (clock.length() > 0) {
-			try {
-				int clockMHz = Integer.parseInt(clock) / 1000000;
-				if (summary.length() > 0) {
-					summary += ", ";
-				}
-				summary += String.valueOf(clockMHz) + " MHz";
-			} catch (NumberFormatException e) {
-				// Ignore not number
-			}
-		}
-
-		int ramKB = 0;
-		int romKB = 0;
-
-		// TODO: iterate on parents too
-		if (deviceNode.hasChildren()) {
-			for (Leaf childNode : deviceNode.getChildren()) {
-
-				if (Type.MEMORY.equals(childNode.getType())) {
-					String size = childNode.getProperty(Property.SIZE);
-					long sizeKB;
-					try {
-						sizeKB = Utils.convertHexLong(size) / 1024;
-					} catch (NumberFormatException e) {
-						sizeKB = 0;
-					}
-					String id = childNode.getName();
-					if (id.contains("ROM")) {
-						romKB += sizeKB;
-					} else if (id.contains("RAM")) {
-						ramKB += sizeKB;
-					} else {
-					}
-				}
-			}
-		}
-
-		if (ramKB > 0) {
-			if (summary.length() > 0) {
-				summary += ", ";
-			}
-
-			summary += String.valueOf(ramKB) + " kB RAM";
-		}
-
-		if (romKB > 0) {
-			if (summary.length() > 0) {
-				summary += ", ";
-			}
-
-			summary += String.valueOf(romKB) + " kB ROM";
-		}
-
-		if (summary.length() > 0) {
-			summary = prefix + " (" + summary + ")";
-		} else {
-			summary = prefix;
-		}
-
-		return summary;
 	}
 
 	// ------------------------------------------------------------------------

@@ -921,9 +921,7 @@ public class DataManager implements IDataManager {
 		// Iterate boards and find the requested one, if any.
 		for (Leaf installedBoard : installedBoards) {
 
-			String installedBoardName = installedBoard
-					.getProperty(Property.BOARD_NAME);
-			// String installedBoardName = installedBoard.getName();
+			String installedBoardName = installedBoard.getName();
 
 			if (!boardName.equals(installedBoardName)) {
 				continue; // Different board name, try next

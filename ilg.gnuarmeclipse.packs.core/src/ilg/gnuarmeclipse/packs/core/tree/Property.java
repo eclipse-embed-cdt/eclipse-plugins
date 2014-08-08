@@ -17,14 +17,14 @@ public class Property {
 	public static final String ARCHIVE_NAME = "archive.name";
 	public static final String ARCHIVE_SIZE = "archive.size";
 	public static final String ARCHIVE_URL = "archive.url";
-	public static final String BOARD_NAME = "board.name";
+	// public static final String BOARD_NAME = "board.name";
 	public static final String BOARD_REVISION = "board.revision";
 	public static final String CATEGORY = "category";
 	public static final String CLOCK = "clock";
 	public static final String CORE = "core";
 	public static final String CORE_VERSION = "core.version";
 	public static final String DATE = "date";
-	public static final String DEFAULT = "default";
+	// public static final String DEFAULT = "default";
 	public static final String DEFINE = "define";
 	public static final String DESCRIPTION = "DESC";
 	public static final String DEST_FOLDER = "dest.folder";
@@ -36,7 +36,7 @@ public class Property {
 	public static final String FPU = "fpu";
 	public static final String GENERATOR = "generator";
 	public static final String ID = "id";
-	public static final String INIT = "init";
+	// public static final String INIT = "init";
 	public static final String INSTALLED = "installed";
 	public static final String MPU = "mpu";
 	public static final String NAME = "NAME";
