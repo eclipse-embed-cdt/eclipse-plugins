@@ -6,9 +6,12 @@ import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.IWorkbenchPart;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
@@ -75,15 +78,62 @@ public class EclipseUtils {
 
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Find the project with the given project name.
+	 * 
+	 * @param name
+	 *            a string with the project name
+	 * @return the project or null, if not found
+	 */
 	public static IProject getProjectByName(String name) {
 
 		return ResourcesPlugin.getWorkspace().getRoot().getProject(name);
 	}
 
+	/**
+	 * Find the project selected in the Project viewer. This works only if the
+	 * project is really selected (i.e. the Project Explorer has the focus, and
+	 * the project name is coloured in blue); if the focus is lost, the function
+	 * returns null.
+	 *
+	 * @return the project or null, if not found
+	 */
+	public static IProject getSelectedProject() {
+
+		IWorkbenchWindow window = PlatformUI.getWorkbench()
+				.getActiveWorkbenchWindow();
+		if (window != null) {
+			IStructuredSelection selection = (IStructuredSelection) window
+					.getSelectionService().getSelection();
+			if ((selection != null) && (selection.size() == 1)) {
+				Object firstElement = selection.getFirstElement();
+				if (firstElement instanceof IAdaptable) {
+					IProject project = (IProject) ((IAdaptable) firstElement)
+							.getAdapter(IProject.class);
+					return project;
+				}
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Find the active page. Used, for example, to check if a part (like a view)
+	 * is visible (page.ispartVisible(part)).
+	 * <p>
+	 * Preferably use getSite().getPage().
+	 * 
+	 * @return the active page.
+	 */
 	public static IWorkbenchPage getActivePage() {
 
 		return PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.getActivePage();
+	}
+
+	public static IWorkbenchPage getActivePage(IWorkbenchPart part) {
+		return part.getSite().getWorkbenchWindow().getActivePage();
 	}
 
 	// ------------------------------------------------------------------------

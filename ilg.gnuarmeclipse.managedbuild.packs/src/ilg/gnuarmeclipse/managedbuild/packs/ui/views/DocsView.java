@@ -67,10 +67,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.ui.IActionBars;
+import org.eclipse.ui.IPartListener;
 import org.eclipse.ui.ISelectionListener;
 import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
-import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -157,7 +157,8 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 	// ------------------------------------------------------------------------
 
 	private TreeViewer fViewer;
-	private ISelectionListener fPageSelectionListener;
+	private ISelectionListener fPostSelectionListener;
+	private IPartListener fPartListener;
 
 	private ViewContentProvider fContentProvider;
 
@@ -167,6 +168,7 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 	private Action fRightClickOpen;
 
 	private IConfiguration fConfig;
+	private IConfiguration fLatestSelectedConfig;
 
 	// private MessageConsoleStream fOut;
 
@@ -176,8 +178,8 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 
 		// fStorage = PacksStorage.getInstance();
 		fDataManager = DataManager.getInstance();
-		// System.out.println("DevicesView()");
 		fConfig = null;
+		fLatestSelectedConfig = null;
 	}
 
 	/**
@@ -186,7 +188,7 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 	 */
 	public void createPartControl(Composite parent) {
 
-		// System.out.println("DevicesView.createPartControl()");
+		// System.out.println("DocsView.createPartControl()");
 
 		fViewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION
 				| SWT.H_SCROLL | SWT.V_SCROLL);
@@ -206,11 +208,16 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 		fViewer.setSorter(new NameSorter());
 
 		fViewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);
-		fViewer.setInput(getDocsTree());
+
+		fLatestSelectedConfig = getConfigurationForProject(EclipseUtils
+				.getSelectedProject());
+		setInputForConfig(fLatestSelectedConfig, true);
 
 		addProviders();
 		addListners();
-		hookPageSelection();
+
+		hookPostSelectionListener();
+		hookPartListener();
 
 		makeActions();
 
@@ -224,12 +231,16 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 		super.dispose();
 		fDataManager.removeListener(this);
 
-		if (fPageSelectionListener != null) {
+		if (fPostSelectionListener != null) {
 			getSite().getPage().removePostSelectionListener(
-					fPageSelectionListener);
+					fPostSelectionListener);
 		}
 
-		System.out.println("DevicesView.dispose()");
+		if (fPartListener != null) {
+			getSite().getPage().removePartListener(fPartListener);
+		}
+
+		System.out.println("DocsView.dispose()");
 	}
 
 	private void addProviders() {
@@ -242,9 +253,12 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 		// None
 	}
 
-	private void hookPageSelection() {
+	/**
+	 * Update input based on selected project or project resource.
+	 */
+	private void hookPostSelectionListener() {
 
-		fPageSelectionListener = new ISelectionListener() {
+		fPostSelectionListener = new ISelectionListener() {
 
 			@Override
 			public void selectionChanged(IWorkbenchPart part,
@@ -255,7 +269,7 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 
 					if (part instanceof ProjectExplorer) {
 
-						// Accept selection only from the Project Eplorer
+						// Accept selection only from the Project Explorer
 						// view
 						IStructuredSelection structSel = (IStructuredSelection) selection;
 						if (structSel.size() == 1) {
@@ -278,44 +292,94 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 								System.out.println("ignored");
 							}
 
-							setInputForProject(project);
+							fLatestSelectedConfig = getConfigurationForProject(project);
+							setInputForConfig(fLatestSelectedConfig, false);
 						}
 					}
 				}
 			}
 		};
-		getSite().getPage().addPostSelectionListener(fPageSelectionListener);
-
+		getSite().getPage().addPostSelectionListener(fPostSelectionListener);
+		// Don't forget to remove it at dispose()
 	}
 
-	private void setInputForProject(IProject project) {
+	/**
+	 * Detect when DocsView needs to update its input, by listening to parts
+	 * changes.
+	 */
+	private void hookPartListener() {
 
-		IWorkbenchPage page = EclipseUtils.getActivePage();
-		if (page.isPartVisible(this)) {
+		fPartListener = new IPartListener() {
 
-			// Perform this complicated thing only if the view is visible
-			IConfiguration newConfig = null;
-			try {
+			@Override
+			public void partActivated(IWorkbenchPart part) {
 
-				if (project != null
-						&& project.hasNature("org.eclipse.cdt.core.cnature")) {
-					IManagedBuildInfo info = ManagedBuildManager
-							.getBuildInfo(project);
-					IConfiguration config = info.getDefaultConfiguration();
+				if (part instanceof DocsView) {
+					System.out.println("partActivated() " + part);
 
-					IToolChain toolchain = config.getToolChain();
-					String sToolchainId = toolchain.getBaseId();
-					if (sToolchainId.startsWith(IDs.TOOLCHAIN_ID + ".")) {
-
-						// Only our projects are candidates
-						newConfig = config;
-					}
+					setInputForConfig(fLatestSelectedConfig, false);
 				}
-			} catch (CoreException e) {
+			}
+
+			@Override
+			public void partBroughtToTop(IWorkbenchPart part) {
 				;
 			}
-			if ((newConfig != null && !newConfig.equals(fConfig))
-					|| (fConfig != null && !fConfig.equals(newConfig))) {
+
+			@Override
+			public void partClosed(IWorkbenchPart part) {
+				;
+			}
+
+			@Override
+			public void partDeactivated(IWorkbenchPart part) {
+				;
+			}
+
+			@Override
+			public void partOpened(IWorkbenchPart part) {
+				;
+			}
+		};
+
+		getSite().getPage().addPartListener(fPartListener);
+		// Don't forget to remove it at dispose()
+	}
+
+	private IConfiguration getConfigurationForProject(IProject project) {
+
+		IConfiguration newConfig = null;
+		try {
+
+			if (project != null
+					&& project.hasNature("org.eclipse.cdt.core.cnature")) {
+				IManagedBuildInfo info = ManagedBuildManager
+						.getBuildInfo(project);
+				IConfiguration config = info.getDefaultConfiguration();
+
+				IToolChain toolchain = config.getToolChain();
+				String sToolchainId = toolchain.getBaseId();
+				if (sToolchainId.startsWith(IDs.TOOLCHAIN_ID + ".")) {
+
+					// Only our projects are candidates
+					newConfig = config;
+				}
+			}
+		} catch (CoreException e) {
+			;
+		}
+
+		return newConfig;
+	}
+
+	private void setInputForConfig(IConfiguration newConfig, boolean force) {
+
+		// Perform this complicated thing only if the view is visible
+		if (getSite().getPage().isPartVisible(this)) {
+
+			if (force
+					|| ((newConfig != null && !newConfig.equals(fConfig)) || (fConfig != null && !fConfig
+							.equals(newConfig)))) {
 				fConfig = newConfig;
 				fViewer.setInput(getDocsTree());
 			}
@@ -424,7 +488,7 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 		// Setting the selection will force the outline update
 		fViewer.setSelection(fViewer.getSelection());
 
-		// System.out.println("DevicesView.refresh() " + obj);
+		// System.out.println("DocsView.sView.refresh() " + obj);
 	}
 
 	public void update(Object obj) {
@@ -479,7 +543,7 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 	public void packsChanged(DataManagerEvent event) {
 
 		String type = event.getType();
-		// System.out.println("DevicesView.packsChanged(), type=\"" + type +
+		// System.out.println("DocsView.packsChanged(), type=\"" + type +
 		// "\".");
 
 		if (DataManagerEvent.Type.NEW_INPUT.equals(type)) {
