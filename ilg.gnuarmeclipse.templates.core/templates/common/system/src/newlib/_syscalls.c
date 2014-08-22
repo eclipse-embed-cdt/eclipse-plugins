@@ -318,6 +318,7 @@ _write(int file __attribute__((unused)), char* ptr __attribute__((unused)),
  underscore) go in .c.  */
 
 #include <_ansi.h>
+#include <stdint.h>
 //#include <sys/types.h>
 #include <sys/stat.h>
 #include <sys/fcntl.h>

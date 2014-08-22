@@ -33,7 +33,9 @@
 
 // ----------------------------------------------------------------------------
 
+#if !defined(OS_INCLUDE_STARTUP_GUARD_CHECKS)
 #define OS_INCLUDE_STARTUP_GUARD_CHECKS (1)
+#endif
 
 // ----------------------------------------------------------------------------
 
@@ -85,6 +87,9 @@ __run_init_array(void);
 
 void
 __run_fini_array(void);
+
+void
+__initialize_hardware_early(void);
 
 void
 __initialize_hardware(void);
@@ -168,7 +173,7 @@ __run_fini_array(void)
   //_fini(); // DO NOT ENABE THIS!
 }
 
-#if defined(DEBUG) && defined(OS_INCLUDE_STARTUP_GUARD_CHECKS)
+#if defined(DEBUG) && (OS_INCLUDE_STARTUP_GUARD_CHECKS)
 
 // These definitions are used to check if the routines used to
 // clear the BSS and to copy the initialised DATA perform correctly.
@@ -190,53 +195,69 @@ __data_begin_guard = DATA_BEGIN_GUARD_VALUE;
 static uint32_t volatile __attribute__ ((section(".data_end")))
 __data_end_guard = DATA_END_GUARD_VALUE;
 
-#endif // defined(DEBUG) && defined(OS_INCLUDE_STARTUP_GUARD_CHECKS)
+#endif // defined(DEBUG) && (OS_INCLUDE_STARTUP_GUARD_CHECKS)
 
 // This is the place where Cortex-M core will go immediately after reset,
-// via a call or jump from the Reset_Handler
+// via a call or jump from the Reset_Handler.
+//
+// For the call to work, and for the call to __initialize_hardware_early()
+// to work, the reset stack must point to a valid internal RAM area.
+
 void __attribute__ ((section(".after_vectors"),noreturn))
 _start(void)
 {
 
-  // Use Old Style Data and BSS section initialisation,
-  // that will initialise a single BSS sections.
+  // Initialise hardware right after reset, to switch clock to higher
+  // frequency and have the rest of the initialisations run faster.
+  //
+  // Mandatory on platforms like Kinetis, which start with the watch dog
+  // enabled and require an early sequence to disable it.
+  //
+  // Also useful on platform with external RAM, that need to be
+  // initialised before filling the BSS section.
 
-#if defined(DEBUG) && defined(OS_INCLUDE_STARTUP_GUARD_CHECKS)
+  __initialize_hardware_early();
+
+  // Use Old Style DATA and BSS section initialisation,
+  // that will manage a single BSS sections.
+
+#if defined(DEBUG) && (OS_INCLUDE_STARTUP_GUARD_CHECKS)
   __bss_begin_guard = BSS_GUARD_BAD_VALUE;
   __bss_end_guard = BSS_GUARD_BAD_VALUE;
 #endif
 
-  // Zero fill the bss segment
+  // Zero fill the BSS section (inlined).
   __initialize_bss(&__bss_start__, &__bss_end__);
 
-#if defined(DEBUG) && defined(OS_INCLUDE_STARTUP_GUARD_CHECKS)
+#if defined(DEBUG) && (OS_INCLUDE_STARTUP_GUARD_CHECKS)
   if ((__bss_begin_guard != 0) || (__bss_end_guard != 0))
     {
       for (;;)
-        ;
+      ;
     }
 #endif
 
-#if defined(DEBUG) && defined(OS_INCLUDE_STARTUP_GUARD_CHECKS)
+#if defined(DEBUG) && (OS_INCLUDE_STARTUP_GUARD_CHECKS)
   __data_begin_guard = DATA_GUARD_BAD_VALUE;
   __data_end_guard = DATA_GUARD_BAD_VALUE;
 #endif
 
-  // Copy the data segment from Flash to RAM.
-  // When using startup files, this code is executed via the preinit array.
+  // Copy the DATA segment from Flash to RAM (inlined).
   __initialize_data(&_sidata, &_sdata, &_edata);
 
-#if defined(DEBUG) && defined(OS_INCLUDE_STARTUP_GUARD_CHECKS)
+#if defined(DEBUG) && (OS_INCLUDE_STARTUP_GUARD_CHECKS)
   if ((__data_begin_guard != DATA_BEGIN_GUARD_VALUE) || (__data_end_guard != __data_end_guard))
     {
       for (;;)
-        ;
+      ;
     }
 #endif
 
+  // Hook to continue the initialisations. Usually compute and store the
+  // clock frequency in the global CMSIS variable, cleared above.
   __initialize_hardware();
 
-  // Get the args (useful in semihosting configurations).
+  // Get the argc/argv (useful in semihosting configurations).
   int argc;
   char** argv;
   __initialize_args(&argc, &argv);

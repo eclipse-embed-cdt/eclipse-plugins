@@ -193,8 +193,6 @@ UART7_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 UART8_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
-SPI5_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
 SPI6_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 SAI1_IRQHandler(void);
