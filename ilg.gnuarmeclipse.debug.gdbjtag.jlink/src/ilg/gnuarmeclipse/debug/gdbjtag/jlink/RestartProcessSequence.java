@@ -1,5 +1,7 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
+import ilg.gnuarmeclipse.debug.core.DebugUtils;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -85,8 +87,8 @@ public class RestartProcessSequence extends ReflectionSequence {
 	private void queueCommands(List<String> commands, RequestMonitor rm) {
 		if (!commands.isEmpty()) {
 			fCommandControl.queueCommand(
-					new CLICommand<MIInfo>(fCommandControl.getContext(), Utils
-							.composeCommandWithLf(commands)),
+					new CLICommand<MIInfo>(fCommandControl.getContext(),
+							DebugUtils.composeCommandWithLf(commands)),
 					new DataRequestMonitor<MIInfo>(getExecutor(), rm));
 		} else {
 			rm.done();
@@ -174,7 +176,7 @@ public class RestartProcessSequence extends ReflectionSequence {
 					ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
 		}
 		commandsList.add(commandStr + resetType);
-		
+
 		commandsList.add(ConfigurationAttributes.HALT_COMMAND);
 		commandsList.add(ConfigurationAttributes.REGS_COMMAND);
 		commandsList.add(ConfigurationAttributes.FLUSH_REGISTERS_COMMAND);
@@ -184,7 +186,7 @@ public class RestartProcessSequence extends ReflectionSequence {
 				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT).trim();
 
 		try {
-			Utils.addMultiLine(otherCmds, commandsList);
+			DebugUtils.addMultiLine(otherCmds, commandsList);
 		} catch (CoreException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

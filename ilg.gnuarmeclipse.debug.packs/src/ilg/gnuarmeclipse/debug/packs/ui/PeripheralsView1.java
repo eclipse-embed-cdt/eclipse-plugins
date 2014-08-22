@@ -43,7 +43,7 @@ import org.eclipse.ui.part.ViewPart;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-public class PeripheralsView extends ViewPart {
+public class PeripheralsView1 extends ViewPart {
 
 	class MyContentProvider implements IStructuredContentProvider {
 
@@ -130,7 +130,7 @@ public class PeripheralsView extends ViewPart {
 	private MessageConsoleStream fOut;
 	private DataManager fDataManager;
 
-	public PeripheralsView() {
+	public PeripheralsView1() {
 
 		fOut = ConsoleStream.getConsoleOut();
 

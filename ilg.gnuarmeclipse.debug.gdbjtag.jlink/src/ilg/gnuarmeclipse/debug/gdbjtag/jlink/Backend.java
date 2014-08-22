@@ -1,5 +1,6 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
+import ilg.gnuarmeclipse.debug.core.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.TabDebugger;
 
 import java.io.File;
@@ -281,7 +282,8 @@ public class Backend extends Backend0 {
 						return Status.OK_STATUS;
 					}
 					try {
-						File dir = Utils.getProjectOsPath(fLaunchConfiguration);
+						File dir = DebugUtils
+								.getProjectOsPath(fLaunchConfiguration);
 
 						fServerProcess = launchGDBProcess(commandLineArray, dir);
 						// Need to do this on the executor for thread-safety

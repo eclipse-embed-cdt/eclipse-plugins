@@ -1,5 +1,7 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
 
+import ilg.gnuarmeclipse.debug.core.DebugUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -57,8 +59,8 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	private void queueCommands(List<String> commands, RequestMonitor rm) {
 		if (!commands.isEmpty()) {
 			fCommandControl.queueCommand(
-					new CLICommand<MIInfo>(fCommandControl.getContext(), Utils
-							.composeCommandWithLf(commands)),
+					new CLICommand<MIInfo>(fCommandControl.getContext(),
+							DebugUtils.composeCommandWithLf(commands)),
 					new DataRequestMonitor<MIInfo>(getExecutor(), rm));
 		} else {
 			rm.done();
@@ -222,7 +224,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					ConfigurationAttributes.OTHER_INIT_COMMANDS,
 					ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
 
-			Utils.addMultiLine(otherInits, commandsList);
+			DebugUtils.addMultiLine(otherInits, commandsList);
 
 			if (CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.ENABLE_SEMIHOSTING,
@@ -276,7 +278,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					ConfigurationAttributes.OTHER_RUN_COMMANDS,
 					ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
 
-			Utils.addMultiLine(userCmd, commandsList);
+			DebugUtils.addMultiLine(userCmd, commandsList);
 
 			if (CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.DO_CONTINUE,

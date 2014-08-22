@@ -1,5 +1,6 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
 
+import ilg.gnuarmeclipse.debug.core.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.TabDebugger;
 
 import java.io.File;
@@ -278,7 +279,8 @@ public class Backend extends Backend0 {
 							.getGdbServerCommandLineArray(fLaunchConfiguration);
 
 					try {
-						File dir = Utils.getProjectOsPath(fLaunchConfiguration);
+						File dir = DebugUtils
+								.getProjectOsPath(fLaunchConfiguration);
 
 						fServerProcess = launchGDBProcess(commandLineArray, dir);
 						// Need to do this on the executor for thread-safety

@@ -1,5 +1,6 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
 
+import ilg.gnuarmeclipse.debug.core.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.TabDebugger;
 
 import java.util.concurrent.CancellationException;
@@ -58,7 +59,9 @@ public class LaunchConfigurationDelegate extends
 
 	protected String getGDBVersion(ILaunchConfiguration config)
 			throws CoreException {
-		return Utils.getGDBVersion(config);
+
+		String gdbClientCommand = TabDebugger.getGdbClientCommand(config);
+		return DebugUtils.getGDBVersion(config, gdbClientCommand);
 	}
 
 	@Override

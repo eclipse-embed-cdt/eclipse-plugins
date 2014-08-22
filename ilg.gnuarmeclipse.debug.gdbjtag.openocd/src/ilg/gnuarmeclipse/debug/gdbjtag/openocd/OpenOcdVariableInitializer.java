@@ -1,5 +1,7 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
 
+import ilg.gnuarmeclipse.core.EclipseUtils;
+
 import org.eclipse.core.variables.IValueVariable;
 import org.eclipse.core.variables.IValueVariableInitializer;
 
@@ -22,11 +24,11 @@ public class OpenOcdVariableInitializer implements IValueVariableInitializer {
 
 		} else if (OPENOCD_PATH.equals(variable.getName())) {
 
-			if (Utils.isWindows()) {
+			if (EclipseUtils.isWindows()) {
 				value = UNDEFINED_PATH;
-			} else if (Utils.isLinux()) {
+			} else if (EclipseUtils.isLinux()) {
 				value = "/usr/bin";
-			} else if (Utils.isMacOSX()) {
+			} else if (EclipseUtils.isMacOSX()) {
 				value = "/opt/local/bin";
 			} else {
 				value = UNDEFINED_PATH;

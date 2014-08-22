@@ -1,5 +1,6 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
+import ilg.gnuarmeclipse.debug.core.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.TabDebugger;
 
 import java.util.concurrent.CancellationException;
@@ -33,6 +34,7 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
 
+@SuppressWarnings("restriction")
 public class LaunchConfigurationDelegate extends
 		GDBJtagDSFLaunchConfigurationDelegate {
 
@@ -58,7 +60,9 @@ public class LaunchConfigurationDelegate extends
 
 	protected String getGDBVersion(ILaunchConfiguration config)
 			throws CoreException {
-		return Utils.getGDBVersion(config);
+
+		String gdbClientCommand = TabDebugger.getGdbClientCommand(config);
+		return DebugUtils.getGDBVersion(config, gdbClientCommand);
 	}
 
 	@Override

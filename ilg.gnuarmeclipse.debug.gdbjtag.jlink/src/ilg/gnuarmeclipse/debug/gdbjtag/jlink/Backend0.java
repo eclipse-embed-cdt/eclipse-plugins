@@ -14,6 +14,8 @@
  *******************************************************************************/
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
+import ilg.gnuarmeclipse.core.StringUtils;
+import ilg.gnuarmeclipse.debug.core.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.TabDebugger;
 
 import java.io.BufferedReader;
@@ -412,13 +414,13 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 	protected Process launchGDBProcess(String[] commandLineArray, File dir)
 			throws CoreException {
 		Process proc = null;
-		System.out.println("exec " + Utils.join(commandLineArray, " "));
+		System.out.println("exec " + StringUtils.join(commandLineArray, " "));
 		System.out.println("dir " + dir);
 		try {
 			proc = ProcessFactory.getFactory().exec(commandLineArray,
-					Utils.getLaunchEnvironment(fLaunchConfiguration), dir);
+					DebugUtils.getLaunchEnvironment(fLaunchConfiguration), dir);
 		} catch (IOException e) {
-			String message = "Error while launching command " + Utils.join(commandLineArray, " "); //$NON-NLS-1$
+			String message = "Error while launching command " + StringUtils.join(commandLineArray, " "); //$NON-NLS-1$
 			throw new CoreException(new Status(IStatus.ERROR,
 					Activator.PLUGIN_ID, -1, message, e));
 		}
@@ -609,7 +611,8 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 							.getGdbClientCommandLineArray(fLaunchConfiguration);
 
 					try {
-						File dir = Utils.getProjectOsPath(fLaunchConfiguration);
+						File dir = DebugUtils
+								.getProjectOsPath(fLaunchConfiguration);
 
 						fProcess = launchGDBProcess(commandLineArray, dir);
 						// Need to do this on the executor for thread-safety

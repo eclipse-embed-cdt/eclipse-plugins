@@ -20,9 +20,11 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui;
 
+import ilg.gnuarmeclipse.core.EclipseUtils;
+import ilg.gnuarmeclipse.core.StringUtils;
+import ilg.gnuarmeclipse.debug.core.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
-import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Utils;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.WorkspacePreferences;
 
 import java.io.File;
@@ -153,7 +155,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		// gdbPrevUsbAddress = "";
 		// gdbPrevIpAddress = "";
 
-		if (Utils.isLinux()) {
+		if (EclipseUtils.isLinux()) {
 			COLUMN_WIDTH = 85;
 		}
 
@@ -1875,10 +1877,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.getStringVariableManager()
 					.performStringSubstitution(executable, false).trim();
 
-			ICConfigurationDescription buildConfig = Utils
+			ICConfigurationDescription buildConfig = DebugUtils
 					.getBuildConfig(configuration);
 			if (buildConfig != null) {
-				executable = Utils.resolveAll(executable, buildConfig);
+				executable = DebugUtils.resolveAll(executable, buildConfig);
 			}
 
 		} catch (CoreException e) {
@@ -1894,7 +1896,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		String cmdLineArray[] = getGdbServerCommandLineArray(configuration);
 
-		return Utils.join(cmdLineArray, " ");
+		return StringUtils.join(cmdLineArray, " ");
 	}
 
 	public static String[] getGdbServerCommandLineArray(
@@ -2137,10 +2139,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.getStringVariableManager()
 					.performStringSubstitution(executable, false).trim();
 
-			ICConfigurationDescription buildConfig = Utils
+			ICConfigurationDescription buildConfig = DebugUtils
 					.getBuildConfig(configuration);
 			if (buildConfig != null) {
-				executable = Utils.resolveAll(executable, buildConfig);
+				executable = DebugUtils.resolveAll(executable, buildConfig);
 			}
 
 		} catch (CoreException e) {
@@ -2193,7 +2195,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		String cmdLineArray[] = getGdbClientCommandLineArray(configuration);
 
-		return Utils.join(cmdLineArray, " ");
+		return StringUtils.join(cmdLineArray, " ");
 	}
 
 }

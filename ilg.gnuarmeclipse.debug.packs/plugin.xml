@@ -15,9 +15,9 @@
     	<view
             allowMultiple="false"
             category="org.eclipse.debug.ui"
-            class="ilg.gnuarmeclipse.debug.packs.ui.PeripheralsView"
+            class="ilg.gnuarmeclipse.debug.packs.ui.PeripheralsView1"
             icon="icons/peripheral.png"
-            id="ilg.gnuarmeclipse.debug.packs.ui.views.PeripheralView"
+            id="ilg.gnuarmeclipse.debug.packs.ui.views.PeripheralView1"
             name="%views.peripheral.name">
 		</view>
 	</extension>
@@ -26,13 +26,12 @@
 		<perspectiveExtension
 			targetID="org.eclipse.debug.ui.DebugPerspective">
 			<view
-         id="ilg.gnuarmeclipse.debug.packs.ui.views.PeripheralView"
-         minimized="false"
-         relationship="stack"
-         relative="org.eclipse.debug.ui.VariableView"
-         visible="true">
+		         id="ilg.gnuarmeclipse.debug.packs.ui.views.PeripheralView1"
+		         minimized="false"
+		         relationship="stack"
+		         relative="org.eclipse.debug.ui.VariableView"
+		         visible="true">
 			</view>
 		</perspectiveExtension>
     </extension>
-    
 </plugin>

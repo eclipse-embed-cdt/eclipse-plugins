@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+	<extension point="org.eclipse.ui.views">
+    	<view
+            allowMultiple="false"
+            category="org.eclipse.debug.ui"
+            class="ilg.gnuarmeclipse.debug.core.gdbjtag.ui.PeripheralsView"
+            icon="icons/peripheral.png"
+            id="ilg.gnuarmeclipse.debug.core.gdbjtag.ui.views.PeripheralsView"
+            name="%views.peripheral.name">
+		</view>
+	</extension>
+
+	<extension point="org.eclipse.ui.perspectiveExtensions">
+		<perspectiveExtension
+			targetID="org.eclipse.debug.ui.DebugPerspective">
+			<view
+			     id="ilg.gnuarmeclipse.debug.core.gdbjtag.ui.views.PeripheralsView"
+			     minimized="false"
+			     relationship="stack"
+			     relative="org.eclipse.debug.ui.VariableView"
+			     visible="true">
+			</view>
+			<viewShortcut
+			     id="ilg.gnuarmeclipse.debug.core.gdbjtag.ui.views.PeripheralsView">
+			</viewShortcut>
+		</perspectiveExtension>
+    </extension>
+
+	<extension
+	       point="org.eclipse.core.runtime.adapters">
+	    <factory
+	          adaptableType="ilg.gnuarmeclipse.debug.core.gdbjtag.dsf.GnuArmLaunch"
+	          class="ilg.gnuarmeclipse.debug.core.gdbjtag.dsf.GnuArmAdapterFactory">
+	         <adapter type="org.eclipse.debug.internal.ui.viewers.model.provisional.IElementContentProvider"/>
+	         <adapter type="org.eclipse.debug.internal.ui.viewers.model.provisional.IModelProxyFactory"/>
+	         <adapter type="org.eclipse.debug.internal.ui.viewers.model.provisional.IColumnPresentationFactory"/>
+	    </factory>
+	</extension>
+   
+</plugin>

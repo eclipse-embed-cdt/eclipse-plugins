@@ -1,5 +1,7 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
+import ilg.gnuarmeclipse.debug.core.gdbjtag.dsf.GnuArmLaunch;
+
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -27,7 +29,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
 
-public class Launch extends GdbLaunch {
+public class Launch extends GnuArmLaunch {
 
 	ILaunchConfiguration fConfig = null;
 	private DsfSession fSession;
@@ -123,7 +125,7 @@ public class Launch extends GdbLaunch {
 		return newProcess;
 	}
 
-	public IProcess addClientProcess(String label) throws CoreException {
+	public IProcess ___addClientProcess(String label) throws CoreException {
 		IProcess newProcess = null;
 		try {
 			// Add the CLI process object to the launch.

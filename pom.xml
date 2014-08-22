@@ -24,6 +24,8 @@
 		<module>ilg.gnuarmeclipse.templates.freescale</module>
 		<module>ilg.gnuarmeclipse.templates.freescale.pe</module>
 		<module>ilg.gnuarmeclipse.templates.freescale-feature</module>
+
+		<module>ilg.gnuarmeclipse.debug.core</module>
 		
 		<module>ilg.gnuarmeclipse.debug.gdbjtag.jlink</module>
 		<module>ilg.gnuarmeclipse.debug.gdbjtag.jlink-feature</module>

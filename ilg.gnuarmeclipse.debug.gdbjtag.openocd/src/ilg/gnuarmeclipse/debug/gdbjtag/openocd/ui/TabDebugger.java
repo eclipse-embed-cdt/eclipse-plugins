@@ -20,10 +20,12 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui;
 
+import ilg.gnuarmeclipse.core.EclipseUtils;
+import ilg.gnuarmeclipse.core.StringUtils;
+import ilg.gnuarmeclipse.debug.core.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.WorkspacePreferences;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Utils;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -678,7 +680,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		gdbServerGdbPort.setEnabled(enabled);
 		gdbServerTelnetPort.setEnabled(enabled);
 
-		if (Utils.isWindows()) {
+		if (EclipseUtils.isWindows()) {
 			// Prevent disable it on Windows
 			doGdbServerAllocateConsole.setEnabled(false);
 		} else {
@@ -749,7 +751,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 								stringDefault));
 
 				// Allocate server console
-				if (Utils.isWindows()) {
+				if (EclipseUtils.isWindows()) {
 					doGdbServerAllocateConsole.setSelection(true);
 				} else {
 					doGdbServerAllocateConsole
@@ -1125,10 +1127,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.getStringVariableManager()
 					.performStringSubstitution(executable, false).trim();
 
-			ICConfigurationDescription buildConfig = Utils
+			ICConfigurationDescription buildConfig = DebugUtils
 					.getBuildConfig(configuration);
 			if (buildConfig != null) {
-				executable = Utils.resolveAll(executable, buildConfig);
+				executable = DebugUtils.resolveAll(executable, buildConfig);
 			}
 
 		} catch (CoreException e) {
@@ -1144,7 +1146,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		String cmdLineArray[] = getGdbServerCommandLineArray(configuration);
 
-		return Utils.join(cmdLineArray, " ");
+		return StringUtils.join(cmdLineArray, " ");
 	}
 
 	public static String[] getGdbServerCommandLineArray(
@@ -1292,10 +1294,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.getStringVariableManager()
 					.performStringSubstitution(executable, false).trim();
 
-			ICConfigurationDescription buildConfig = Utils
+			ICConfigurationDescription buildConfig = DebugUtils
 					.getBuildConfig(configuration);
 			if (buildConfig != null) {
-				executable = Utils.resolveAll(executable, buildConfig);
+				executable = DebugUtils.resolveAll(executable, buildConfig);
 			}
 
 		} catch (CoreException e) {
@@ -1346,7 +1348,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		String cmdLineArray[] = getGdbClientCommandLineArray(configuration);
 
-		return Utils.join(cmdLineArray, " ");
+		return StringUtils.join(cmdLineArray, " ");
 	}
 
 }

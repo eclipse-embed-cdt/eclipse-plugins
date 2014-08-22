@@ -1,5 +1,7 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
+import ilg.gnuarmeclipse.core.EclipseUtils;
+
 import org.eclipse.core.variables.IValueVariable;
 import org.eclipse.core.variables.IValueVariableInitializer;
 
@@ -17,11 +19,11 @@ public class GdbServerVariableInitializer implements IValueVariableInitializer {
 
 		if (JLINK_GDBSERVER.equals(variable.getName())) {
 
-			if (Utils.isWindows()) {
+			if (EclipseUtils.isWindows()) {
 				value = ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_NAME_WINDOWS;
-			} else if (Utils.isLinux()) {
+			} else if (EclipseUtils.isLinux()) {
 				value = ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_NAME_LINUX;
-			} else if (Utils.isMacOSX()) {
+			} else if (EclipseUtils.isMacOSX()) {
 				value = ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_NAME_MAC;
 			} else {
 				value = ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_NAME;
@@ -31,11 +33,11 @@ public class GdbServerVariableInitializer implements IValueVariableInitializer {
 
 		} else if (JLINK_PATH.equals(variable.getName())) {
 
-			if (Utils.isWindows()) {
+			if (EclipseUtils.isWindows()) {
 				value = "C:\\Program Files\\SEGGER\\JLinkARM_Vxxx";
-			} else if (Utils.isLinux()) {
+			} else if (EclipseUtils.isLinux()) {
 				value = "/usr/bin";
-			} else if (Utils.isMacOSX()) {
+			} else if (EclipseUtils.isMacOSX()) {
 				value = "/Applications/SEGGER/JLink";
 			} else {
 				value = UNDEFINED_PATH;

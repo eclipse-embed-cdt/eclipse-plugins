@@ -22,8 +22,16 @@ Require-Bundle: ilg.gnuarmeclipse.packs.core,
  org.eclipse.ui,
  org.eclipse.ui.editors,
  ilg.gnuarmeclipse.packs.data,
- org.eclipse.ui.console
+ org.eclipse.ui.console,
+ org.eclipse.debug.core,
+ org.eclipse.cdt.dsf.ui,
+ org.eclipse.cdt.dsf.gdb.ui,
+ org.eclipse.cdt.dsf,
+ org.eclipse.core.jobs
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
+Import-Package: org.eclipse.cdt.dsf.concurrent,
+ org.eclipse.cdt.dsf.gdb.launching,
+ org.eclipse.cdt.dsf.service

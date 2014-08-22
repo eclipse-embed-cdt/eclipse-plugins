@@ -9,16 +9,20 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.packs.ui;
+package ilg.gnuarmeclipse.debug.core.gdbjtag.ui;
 
-import ilg.gnuarmeclipse.debug.packs.Activator;
+import ilg.gnuarmeclipse.debug.core.Activator;
 
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 
-	private static final String MESSAGES = Activator.PLUGIN_ID + ".ui.messages"; //$NON-NLS-1$
+	private static final String MESSAGES = Activator.PLUGIN_ID
+			+ ".gdbjtag.ui.messages"; //$NON-NLS-1$
 
+	public static String PeripheralsView_NameColumn_text;
+	public static String PeripheralsView_AddressColumn_text;
+	public static String PeripheralsView_DescriptionColumn_text;
 
 	static {
 		// initialise above static strings
