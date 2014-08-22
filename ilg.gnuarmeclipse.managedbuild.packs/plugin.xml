@@ -38,6 +38,9 @@
                relative="org.eclipse.ui.views.ContentOutline"
                visible="true">
          </view>
+         <viewShortcut
+               id="ilg.gnuarmeclipse.managedbuild.packs.ui.views.DocsView">
+         </viewShortcut>
       </perspectiveExtension>
    </extension>
 
