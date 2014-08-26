@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.data;
 
+import ilg.gnuarmeclipse.core.Xml;
 import ilg.gnuarmeclipse.packs.cmsis.PdscGenericParser;
 import ilg.gnuarmeclipse.packs.cmsis.PdscTreeParserForBuild;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
@@ -216,7 +217,6 @@ public class DataManager implements IDataManager {
 				loadCachedReposContent();
 			}
 		});
-
 		return fRepositoriesTree;
 	}
 
@@ -647,7 +647,6 @@ public class DataManager implements IDataManager {
 				fInstalledObjectsForBuild = loadInstalledObjectsForBuild();
 			}
 		});
-
 		return fInstalledObjectsForBuild;
 	}
 

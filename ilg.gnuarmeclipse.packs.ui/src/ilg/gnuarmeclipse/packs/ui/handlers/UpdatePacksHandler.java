@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.ui.handlers;
 
+import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.packs.cmsis.Index;
 import ilg.gnuarmeclipse.packs.cmsis.PdscParserForContent;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
@@ -246,7 +247,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 		Node contentRoot = new Node(Type.REPOSITORY);
 
 		String domainName = fRepos.getDomaninNameFromUrl(repoUrl);
-		domainName = Utils.capitalize(domainName);
+		domainName = StringUtils.capitalize(domainName);
 
 		contentRoot.setName(domainName);
 		contentRoot.setDescription(domainName + " CMSIS packs repository");
@@ -272,7 +273,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 			}
 
 			// Make url always end in '/'
-			String pdscUrl = Utils.cosmetiseUrl(pdsc[0]);
+			String pdscUrl = StringUtils.cosmetiseUrl(pdsc[0]);
 			String pdscName = pdsc[1];
 			String pdscVersion = pdsc[2];
 

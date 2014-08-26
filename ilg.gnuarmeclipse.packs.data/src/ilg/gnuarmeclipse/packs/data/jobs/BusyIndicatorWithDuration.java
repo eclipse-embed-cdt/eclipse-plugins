@@ -34,8 +34,9 @@ public class BusyIndicatorWithDuration {
 			sfOut.println(Utils.getCurrentDateTime());
 		}
 
-		BusyIndicator.showWhile(Display.getDefault(), runnable);
-
+		//BusyIndicator.showWhile(Display.getDefault(), runnable);
+		runnable.run();
+		
 		long endTime = System.currentTimeMillis();
 		long duration = endTime - beginTime;
 		if (duration == 0) {

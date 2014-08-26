@@ -11,6 +11,8 @@
 
 package ilg.gnuarmeclipse.packs.data;
 
+import ilg.gnuarmeclipse.core.StringUtils;
+
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
@@ -32,15 +34,6 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.ui.console.MessageConsoleStream;
 
 public class Utils {
-
-	public static String xmlEscape(String value) {
-		value = value.replaceAll("\\&", "&amp;"); //$NON-NLS-1$ //$NON-NLS-2$ 
-		value = value.replaceAll("\\\"", "&quot;"); //$NON-NLS-1$ //$NON-NLS-2$ 
-		value = value.replaceAll("\\\'", "&apos;"); //$NON-NLS-1$ //$NON-NLS-2$ 
-		value = value.replaceAll("\\<", "&lt;"); //$NON-NLS-1$ //$NON-NLS-2$ 
-		value = value.replaceAll("\\>", "&gt;"); //$NON-NLS-1$ //$NON-NLS-2$ 
-		return value;
-	}
 
 	public static String getCurrentDateTime() {
 
@@ -71,59 +64,6 @@ public class Utils {
 		return connection.getContentLength();
 	}
 
-	public static long convertHexLong(String hex) {
-
-		boolean isNegative = false;
-		if (hex.startsWith("+")) {
-			hex = hex.substring(1);
-		} else if (hex.startsWith("-")) {
-			hex = hex.substring(1);
-			isNegative = true;
-		}
-
-		if (hex.startsWith("0x") || hex.startsWith("0X")) {
-			hex = hex.substring(2);
-		}
-
-		if (hex.startsWith("A") || hex.startsWith("E")) {
-			System.out.println();
-		}
-
-		long value = Long.valueOf("0" + hex, 16);
-		if (isNegative)
-			value = -value;
-
-		return value;
-	}
-
-	public static String cosmetiseUrl(String url) {
-		if (url.endsWith("/")) {
-			return url;
-		} else {
-			return url + "/";
-		}
-	}
-
-	public static String convertSizeToString(int size) {
-
-		String sizeString;
-		if (size < 1024) {
-			sizeString = String.valueOf(size) + "B";
-		} else if (size < 1024 * 1024) {
-			sizeString = String.valueOf((size + (1024 / 2)) / 1024) + "kB";
-		} else {
-			sizeString = String.valueOf((size + ((1024 * 1024) / 2))
-					/ (1024 * 1024))
-					+ "MB";
-		}
-		return sizeString;
-	}
-
-	public static String capitalize(String s) {
-		if (s.length() == 0)
-			return s;
-		return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
-	}
 
 	public static void copyFile(URL sourceUrl, File destinationFile,
 			MessageConsoleStream out, IProgressMonitor monitor)
@@ -131,7 +71,7 @@ public class Utils {
 
 		URLConnection connection = sourceUrl.openConnection();
 		int size = connection.getContentLength();
-		String sizeString = Utils.convertSizeToString(size);
+		String sizeString = StringUtils.convertSizeToString(size);
 		if (out != null) {
 			String s = destinationFile.getPath();
 			if (s.endsWith(".download")) {
@@ -165,7 +105,7 @@ public class Utils {
 
 		if (out != null) {
 			int size = (int) sourceFile.length();
-			String sizeString = Utils.convertSizeToString(size);
+			String sizeString = StringUtils.convertSizeToString(size);
 
 			out.println("Copy " + sizeString);
 			out.println(" from \"" + sourceFile + "\"");

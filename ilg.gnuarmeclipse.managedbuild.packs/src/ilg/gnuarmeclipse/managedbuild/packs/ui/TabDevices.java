@@ -11,8 +11,9 @@
 
 package ilg.gnuarmeclipse.managedbuild.packs.ui;
 
+import ilg.gnuarmeclipse.core.CProjectPacksStorage;
+import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.managedbuild.cross.IDs;
-import ilg.gnuarmeclipse.managedbuild.packs.ConfigStorage;
 import ilg.gnuarmeclipse.packs.core.Activator;
 import ilg.gnuarmeclipse.packs.core.data.DataManagerFactoryProxy;
 import ilg.gnuarmeclipse.packs.core.data.IDataManager;
@@ -257,7 +258,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 						String size = childNode.getProperty(Property.SIZE);
 						long sizeKB;
 						try {
-							sizeKB = Utils.convertHexLong(size) / 1024;
+							sizeKB = StringUtils.convertHexLong(size) / 1024;
 						} catch (NumberFormatException e) {
 							sizeKB = 0;
 						}
@@ -703,26 +704,26 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 		if (config instanceof Configuration) {
 
 			try {
-				ConfigStorage st = new ConfigStorage(config);
+				CProjectPacksStorage st = new CProjectPacksStorage(config);
 
-				String deviceName = st.getOption(ConfigStorage.DEVICE_NAME);
+				String deviceName = st.getOption(CProjectPacksStorage.DEVICE_NAME);
 				if (deviceName != null) {
 					fDeviceLabel.setText(deviceName);
 				}
 
-				String coreName = st.getOption(ConfigStorage.CORE_NAME);
+				String coreName = st.getOption(CProjectPacksStorage.CORE_NAME);
 				if (coreName != null) {
 					fArchitectureLabel.setText(coreName);
 				}
 
 				boolean wasSelected = false;
 				// TODO: select the device in the selection tree
-				String boardName = st.getOption(ConfigStorage.BOARD_NAME);
+				String boardName = st.getOption(CProjectPacksStorage.BOARD_NAME);
 				String boardVendorName = st
-						.getOption(ConfigStorage.BOARD_VENDOR_NAME);
+						.getOption(CProjectPacksStorage.BOARD_VENDOR_NAME);
 
 				String deviceVendorId = st
-						.getOption(ConfigStorage.DEVICE_VENDOR_ID);
+						.getOption(CProjectPacksStorage.DEVICE_VENDOR_ID);
 
 				if (boardName != null && boardName.length() > 0
 						&& boardVendorName != null
@@ -802,33 +803,33 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 		if (config instanceof Configuration) {
 
 			try {
-				ConfigStorage st = new ConfigStorage(config);
+				CProjectPacksStorage st = new CProjectPacksStorage(config);
 				st.clear();
 
 				Leaf node = fSelectedDeviceNode;
 				while (node != null) {
 					if (node.isType(Type.DEVICE)) {
-						st.setOption(ConfigStorage.DEVICE_NAME, node.getName());
+						st.setOption(CProjectPacksStorage.DEVICE_NAME, node.getName());
 						System.out
 								.println("Devices.updateStorage() device.name="
 										+ node.getName());
 					} else if (node.isType(Type.SUBFAMILY)) {
-						st.setOption(ConfigStorage.SUBFAMILY_NAME,
+						st.setOption(CProjectPacksStorage.SUBFAMILY_NAME,
 								node.getName());
 					} else if (node.isType(Type.FAMILY)) {
-						st.setOption(ConfigStorage.FAMILY_NAME, node.getName());
+						st.setOption(CProjectPacksStorage.FAMILY_NAME, node.getName());
 
-						st.setOption(ConfigStorage.DEVICE_VENDOR_NAME,
+						st.setOption(CProjectPacksStorage.DEVICE_VENDOR_NAME,
 								node.getProperty(Property.VENDOR_NAME));
-						st.setOption(ConfigStorage.DEVICE_VENDOR_ID,
+						st.setOption(CProjectPacksStorage.DEVICE_VENDOR_ID,
 								node.getProperty(Property.VENDOR_ID));
 
 						// Package details
-						st.setOption(ConfigStorage.DEVICE_PACK_VENDOR,
+						st.setOption(CProjectPacksStorage.DEVICE_PACK_VENDOR,
 								node.getProperty(Property.PACK_VENDOR));
-						st.setOption(ConfigStorage.DEVICE_PACK_NAME,
+						st.setOption(CProjectPacksStorage.DEVICE_PACK_NAME,
 								node.getProperty(Property.PACK_NAME));
-						st.setOption(ConfigStorage.DEVICE_PACK_VERSION,
+						st.setOption(CProjectPacksStorage.DEVICE_PACK_VERSION,
 								node.getProperty(Property.PACK_VERSION));
 
 					}
@@ -839,32 +840,32 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 					node = fSelectedBoardDeviceNode.getParent();
 
 					if (node.isType(Type.BOARD)) {
-						st.setOption(ConfigStorage.BOARD_NAME, node.getName());
-						st.setOption(ConfigStorage.BOARD_REVISION,
+						st.setOption(CProjectPacksStorage.BOARD_NAME, node.getName());
+						st.setOption(CProjectPacksStorage.BOARD_REVISION,
 								node.getProperty(Property.BOARD_REVISION));
-						st.setOption(ConfigStorage.BOARD_VENDOR_NAME,
+						st.setOption(CProjectPacksStorage.BOARD_VENDOR_NAME,
 								node.getProperty(Property.VENDOR_NAME));
-						st.setNonEmptyOption(ConfigStorage.BOARD_CLOCK,
+						st.setNonEmptyOption(CProjectPacksStorage.BOARD_CLOCK,
 								node.getProperty(Property.CLOCK));
 
 						// Package details
-						st.setOption(ConfigStorage.BOARD_PACK_VENDOR,
+						st.setOption(CProjectPacksStorage.BOARD_PACK_VENDOR,
 								node.getProperty(Property.PACK_VENDOR));
-						st.setOption(ConfigStorage.BOARD_PACK_NAME,
+						st.setOption(CProjectPacksStorage.BOARD_PACK_NAME,
 								node.getProperty(Property.PACK_NAME));
-						st.setOption(ConfigStorage.BOARD_PACK_VERSION,
+						st.setOption(CProjectPacksStorage.BOARD_PACK_VERSION,
 								node.getProperty(Property.PACK_VERSION));
 					}
 				}
 
 				String core = DataManager.collectProperty(fSelectedDeviceNode,
 						Property.CORE, Type.DEVICES_SUBTREE);
-				st.setOption(ConfigStorage.CORE_NAME, core);
+				st.setOption(CProjectPacksStorage.CORE_NAME, core);
 
 				String define = DataManager.collectProperty(
 						fSelectedDeviceNode, Property.DEFINE,
 						Type.DEVICES_SUBTREE);
-				st.setOption(ConfigStorage.COMPILER_DEFINE, define);
+				st.setOption(CProjectPacksStorage.COMPILER_DEFINE, define);
 
 				for (int i = 0; i < fMemoryTable.getItemCount(); ++i) {
 					TableItem item = fMemoryTable.getItem(i);

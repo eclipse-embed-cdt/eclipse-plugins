@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.jobs;
 
+import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
@@ -342,7 +343,7 @@ public class InstallJob extends Job {
 		zipInput.closeEntry();
 		zipInput.close();
 		fOut.println(countFiles + " files written, "
-				+ Utils.convertSizeToString(countBytes) + ".");
+				+ StringUtils.convertSizeToString(countBytes) + ".");
 
 		return result;
 	}

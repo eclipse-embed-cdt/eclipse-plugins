@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.data;
 
+import ilg.gnuarmeclipse.core.Xml;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
@@ -239,13 +240,13 @@ public class Repos {
 				writer.println("  <repository>");
 
 				writer.println("    <type>"
-						+ Utils.xmlEscape((String) site.get("type"))
+						+ Xml.xmlEscape((String) site.get("type"))
 						+ "</type>");
 				writer.println("    <name>"
-						+ Utils.xmlEscape((String) site.get("name"))
+						+ Xml.xmlEscape((String) site.get("name"))
 						+ "</name>");
 				writer.println("    <url>"
-						+ Utils.xmlEscape((String) site.get("url")) + "</url>");
+						+ Xml.xmlEscape((String) site.get("url")) + "</url>");
 				writer.println("  </repository>");
 			}
 			writer.println("</repositories>");

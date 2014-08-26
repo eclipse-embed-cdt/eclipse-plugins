@@ -15,13 +15,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import ilg.gnuarmeclipse.core.Xml;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DocumentParseException;
-import ilg.gnuarmeclipse.packs.data.Xml;
 
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;

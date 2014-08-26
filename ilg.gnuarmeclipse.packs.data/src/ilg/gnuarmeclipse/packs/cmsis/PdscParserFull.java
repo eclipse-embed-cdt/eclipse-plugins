@@ -11,12 +11,13 @@
 
 package ilg.gnuarmeclipse.packs.cmsis;
 
+import ilg.gnuarmeclipse.core.StringUtils;
+import ilg.gnuarmeclipse.core.Xml;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.Utils;
-import ilg.gnuarmeclipse.packs.data.Xml;
 
 import java.io.IOException;
 import java.util.List;
@@ -738,7 +739,7 @@ public class PdscParserFull extends PdscParser {
 
 				if (Type.MEMORY.equals(childNode.getType())) {
 					String size = childNode.getProperty(Node.SIZE_PROPERTY);
-					long sizeKB = Utils.convertHexLong(size) / 1024;
+					long sizeKB = StringUtils.convertHexLong(size) / 1024;
 
 					String id = childNode.getProperty(Node.ID_PROPERTY);
 					if (id.contains("ROM")) {

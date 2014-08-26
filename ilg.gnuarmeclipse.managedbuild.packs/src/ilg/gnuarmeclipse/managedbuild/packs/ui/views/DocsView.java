@@ -11,9 +11,9 @@
 
 package ilg.gnuarmeclipse.managedbuild.packs.ui.views;
 
+import ilg.gnuarmeclipse.core.CProjectPacksStorage;
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.managedbuild.cross.IDs;
-import ilg.gnuarmeclipse.managedbuild.packs.ConfigStorage;
 import ilg.gnuarmeclipse.packs.core.tree.AbstractTreePreOrderIterator;
 import ilg.gnuarmeclipse.packs.core.tree.ITreeIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
@@ -586,17 +586,17 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 		Node devicesRoot = new Node(Type.ROOT);
 		devicesRoot.setName("Docs");
 
-		ConfigStorage st;
+		CProjectPacksStorage st;
 		try {
-			st = new ConfigStorage(fConfig);
+			st = new CProjectPacksStorage(fConfig);
 
 			String deviceVendorId = st
-					.getOption(ConfigStorage.DEVICE_VENDOR_ID);
-			String deviceName = st.getOption(ConfigStorage.DEVICE_NAME);
+					.getOption(CProjectPacksStorage.DEVICE_VENDOR_ID);
+			String deviceName = st.getOption(CProjectPacksStorage.DEVICE_NAME);
 
 			String boardVendorName = st
-					.getOption(ConfigStorage.BOARD_VENDOR_NAME);
-			String boardName = st.getOption(ConfigStorage.BOARD_NAME);
+					.getOption(CProjectPacksStorage.BOARD_VENDOR_NAME);
+			String boardName = st.getOption(CProjectPacksStorage.BOARD_NAME);
 
 			if (deviceName != null) {
 				Node deviceDocsNode = Node

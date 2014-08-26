@@ -1128,7 +1128,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.performStringSubstitution(executable, false).trim();
 
 			ICConfigurationDescription buildConfig = DebugUtils
-					.getBuildConfig(configuration);
+					.getBuildConfigDescription(configuration);
 			if (buildConfig != null) {
 				executable = DebugUtils.resolveAll(executable, buildConfig);
 			}
@@ -1295,7 +1295,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.performStringSubstitution(executable, false).trim();
 
 			ICConfigurationDescription buildConfig = DebugUtils
-					.getBuildConfig(configuration);
+					.getBuildConfigDescription(configuration);
 			if (buildConfig != null) {
 				executable = DebugUtils.resolveAll(executable, buildConfig);
 			}

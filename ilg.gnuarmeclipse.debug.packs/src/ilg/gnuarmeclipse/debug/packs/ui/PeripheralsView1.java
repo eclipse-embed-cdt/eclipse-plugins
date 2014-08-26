@@ -1,5 +1,7 @@
 package ilg.gnuarmeclipse.debug.packs.ui;
 
+import ilg.gnuarmeclipse.core.StringUtils;
+import ilg.gnuarmeclipse.core.Xml;
 import ilg.gnuarmeclipse.debug.packs.Activator;
 import ilg.gnuarmeclipse.packs.cmsis.SvdGenericParser;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
@@ -13,7 +15,6 @@ import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DataManager;
 import ilg.gnuarmeclipse.packs.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.data.Utils;
-import ilg.gnuarmeclipse.packs.data.Xml;
 
 import java.io.File;
 import java.io.IOException;
@@ -358,7 +359,7 @@ public class PeripheralsView1 extends ViewPart {
 				periphGroup = peripheral.getProperty("groupName");
 			}
 
-			long l = Utils.convertHexLong(periphAddress);
+			long l = StringUtils.convertHexLong(periphAddress);
 			String type = "periph";
 			long lmax = 0x000000E0000000L;
 			if (l >= lmax) {

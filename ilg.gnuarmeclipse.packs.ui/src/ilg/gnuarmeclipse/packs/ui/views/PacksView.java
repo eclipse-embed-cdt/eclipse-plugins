@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.ui.views;
 
+import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
@@ -169,7 +170,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 								if (n <= 0) {
 									name += " (n/a)";
 								} else {
-									name += " (" + Utils.convertSizeToString(n)
+									name += " (" + StringUtils.convertSizeToString(n)
 											+ ")";
 								}
 							} catch (NumberFormatException e) {

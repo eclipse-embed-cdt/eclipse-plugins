@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.xcdl;
 
+import ilg.gnuarmeclipse.core.Xml;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
@@ -144,7 +145,7 @@ public class GenericSerialiser {
 			if (description != null && description.length() > 0) {
 				putIndentation(depth + 1);
 				fWriter.println("<description>"
-						+ Utils.xmlEscape(node.getDescription())
+						+ Xml.xmlEscape(node.getDescription())
 						+ "</description>");
 			}
 
@@ -181,14 +182,14 @@ public class GenericSerialiser {
 						fWriter.println("<"
 								+ propertyName
 								+ ">"
-								+ Utils.xmlEscape(properties.get(key)
+								+ Xml.xmlEscape(properties.get(key)
 										.toString()) + "</" + propertyName
 								+ ">");
 					} else {
 						fWriter.println("<property name=\""
 								+ propertyName
 								+ "\">"
-								+ Utils.xmlEscape(properties.get(key)
+								+ Xml.xmlEscape(properties.get(key)
 										.toString()) + "</property>");
 					}
 				}

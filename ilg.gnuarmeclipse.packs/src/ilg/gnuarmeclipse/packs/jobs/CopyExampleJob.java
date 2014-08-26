@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.jobs;
 
+import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
@@ -142,7 +143,7 @@ public class CopyExampleJob extends Job {
 				count = copyFolderRecursive(srcFolderPath.toFile());
 
 				fOut.print("Example \"" + exampleNode.getName() + "\", ");
-				fOut.print(Utils.convertSizeToString(totalWork) + " in ");
+				fOut.print(StringUtils.convertSizeToString(totalWork) + " in ");
 				if (count <= 1) {
 					fOut.print("1 file");
 				} else {

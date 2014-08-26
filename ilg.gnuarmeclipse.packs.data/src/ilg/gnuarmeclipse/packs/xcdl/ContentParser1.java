@@ -11,12 +11,12 @@
 
 package ilg.gnuarmeclipse.packs.xcdl;
 
+import ilg.gnuarmeclipse.core.Xml;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DocumentParseException;
-import ilg.gnuarmeclipse.packs.data.Xml;
 
 import java.util.List;
 

@@ -11,11 +11,11 @@
 
 package ilg.gnuarmeclipse.packs.cmsis;
 
+import ilg.gnuarmeclipse.core.Xml;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.Utils;
-import ilg.gnuarmeclipse.packs.data.Xml;
 
 import java.io.IOException;
 import java.net.URL;

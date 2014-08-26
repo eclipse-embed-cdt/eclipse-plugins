@@ -11,7 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.cmsis;
 
-import ilg.gnuarmeclipse.packs.data.Xml;
+import ilg.gnuarmeclipse.core.Xml;
 
 import java.io.BufferedReader;
 import java.io.IOException;
