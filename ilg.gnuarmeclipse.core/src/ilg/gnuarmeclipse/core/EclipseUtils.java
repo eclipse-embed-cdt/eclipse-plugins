@@ -2,6 +2,9 @@ package ilg.gnuarmeclipse.core;
 
 import java.net.URL;
 
+import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
+import org.eclipse.cdt.managedbuilder.core.IConfiguration;
+import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IProject;
@@ -137,5 +140,11 @@ public class EclipseUtils {
 	}
 
 	// ------------------------------------------------------------------------
+
+	public static IConfiguration getConfigurationFromDescription(
+			ICConfigurationDescription configDescription) {
+		return ManagedBuildManager
+				.getConfigurationForDescription(configDescription);
+	}
 
 }

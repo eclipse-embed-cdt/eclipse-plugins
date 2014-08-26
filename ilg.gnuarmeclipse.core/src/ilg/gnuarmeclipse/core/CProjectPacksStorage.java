@@ -9,7 +9,7 @@
  *    Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.managedbuild.packs;
+package ilg.gnuarmeclipse.core;
 
 import java.util.Map;
 import java.util.TreeMap;
@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Status;
 
 @SuppressWarnings("restriction")
-public class ConfigStorage {
+public class CProjectPacksStorage {
 
 	// ------------------------------------------------------------------------
 
@@ -65,7 +65,7 @@ public class ConfigStorage {
 	 *            a Configuration object (like Debug/Release).
 	 * @throws CoreException
 	 */
-	public ConfigStorage(IConfiguration config) throws CoreException {
+	public CProjectPacksStorage(IConfiguration config) throws CoreException {
 
 		if (config instanceof Configuration) {
 			fConfig = (Configuration) config;
@@ -131,15 +131,15 @@ public class ConfigStorage {
 	}
 
 	public String getOption(String id, String defaultValue) {
-		
+
 		String result = getOption(id);
-		if (result != null && result.length() > 0){
+		if (result != null && result.length() > 0) {
 			return result;
 		}
-		
+
 		return defaultValue;
 	}
-	
+
 	/**
 	 * Store the value of an option.
 	 * 
