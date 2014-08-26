@@ -1,5 +1,7 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
+import ilg.gnuarmeclipse.debug.core.gdbjtag.dsf.GnuArmServicesFactory;
+
 import org.eclipse.cdt.dsf.debug.service.IProcesses;
 import org.eclipse.cdt.dsf.debug.service.command.ICommandControl;
 import org.eclipse.cdt.dsf.gdb.service.GDBBackend;
@@ -15,12 +17,14 @@ import org.eclipse.cdt.dsf.mi.service.command.CommandFactory;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.debug.core.ILaunchConfiguration;
 
-public class ServicesFactory extends GdbDebugServicesFactory {
+public class ServicesFactory extends GnuArmServicesFactory {
 
 	private final String fVersion;
 
 	public ServicesFactory(String version) {
 		super(version);
+
+		System.out.println("ServicesFactory() " + this);
 		fVersion = version;
 	}
 
@@ -37,7 +41,7 @@ public class ServicesFactory extends GdbDebugServicesFactory {
 
 	protected IMIBackend createBackendGDBService(DsfSession session,
 			ILaunchConfiguration lc) {
-		
+
 		// return new GDBBackend(session, lc);
 		return new Backend(session, lc);
 	}

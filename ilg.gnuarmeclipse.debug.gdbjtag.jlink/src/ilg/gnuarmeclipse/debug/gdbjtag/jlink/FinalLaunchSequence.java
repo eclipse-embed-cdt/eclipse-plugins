@@ -160,18 +160,29 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 						getExecutor(), requestMonitor);
 				crm.setDoneCount(commandsList.size());
 
-				queueCommands(commandsList, requestMonitor);
-			} else {
-				requestMonitor.done();
+				// queueCommands(commandsList, requestMonitor);
+
+				if (!commandsList.isEmpty()) {
+					fCommandControl
+							.queueCommand(
+									new CLICommand<MIInfo>(fCommandControl
+											.getContext(), DebugUtils
+											.composeCommandWithLf(commandsList)),
+									new DataRequestMonitor<MIInfo>(
+											getExecutor(), requestMonitor));
+				}
 			}
+
+			// For unknow reasons, on Luna this fails, the requestMonitor
+			// is marked as done before handleComplete() executes.
+			super.stepSourceGDBInitFile(requestMonitor);
+
 		} catch (CoreException e) {
 			requestMonitor.setStatus(new Status(IStatus.ERROR,
 					Activator.PLUGIN_ID, -1,
 					"Cannot run other gdb client commands", e)); //$NON-NLS-1$
 			requestMonitor.done();
 		}
-
-		super.stepSourceGDBInitFile(requestMonitor);
 	}
 
 	@Execute

@@ -55,6 +55,9 @@ public class LaunchConfigurationDelegate extends
 	protected GdbLaunch createGdbLaunch(ILaunchConfiguration configuration,
 			String mode, ISourceLocator locator) throws CoreException {
 		// return new GdbLaunch(configuration, mode, locator);
+
+		System.out.println("createGdbLaunch() " + this);
+
 		return new Launch(configuration, mode, locator);
 	}
 
@@ -62,12 +65,17 @@ public class LaunchConfigurationDelegate extends
 			throws CoreException {
 
 		String gdbClientCommand = TabDebugger.getGdbClientCommand(config);
-		return DebugUtils.getGDBVersion(config, gdbClientCommand);
+		String version = DebugUtils.getGDBVersion(config, gdbClientCommand);
+		System.out.println("GDB version=" + version);
+		return version;
 	}
 
 	@Override
 	public void launch(ILaunchConfiguration config, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
+
+		System.out.println("launch() " + this);
+
 		org.eclipse.cdt.launch.LaunchUtils.enableActivity(
 				"org.eclipse.cdt.debug.dsfgdbActivity", true); //$NON-NLS-1$
 		if (monitor == null) {
@@ -80,6 +88,8 @@ public class LaunchConfigurationDelegate extends
 
 	private void launchDebugger(ILaunchConfiguration config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
+
+		int totalWork = 10;
 		monitor.beginTask(LaunchMessages.getString("GdbLaunchDelegate.0"), 10); //$NON-NLS-1$
 		if (monitor.isCanceled()) {
 			cleanupLaunch();
@@ -96,6 +106,7 @@ public class LaunchConfigurationDelegate extends
 	/** @since 4.1 */
 	protected void launchDebugSession(final ILaunchConfiguration config,
 			ILaunch l, IProgressMonitor monitor) throws CoreException {
+
 		if (monitor.isCanceled()) {
 			cleanupLaunch();
 			return;
