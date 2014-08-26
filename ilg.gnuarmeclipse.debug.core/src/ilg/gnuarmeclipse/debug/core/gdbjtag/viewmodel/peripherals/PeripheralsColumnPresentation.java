@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripherals;
@@ -33,15 +34,15 @@ public class PeripheralsColumnPresentation implements IColumnPresentation2 {
 	public static final String ID = Activator.PLUGIN_ID
 			+ ".PERIPHERALS_COLUMN_PRESENTATION_ID";
 
-	public static final String COLUMN_NAME_ID = "name";
-	public static final String COLUMN_ADDRESS_ID = "address";
-	public static final String COLUMN_DESCRIPTION_ID = "description";
+	public static final String COLUMN_PERIPHERAL_ID = "column.peripheral";
+	public static final String COLUMN_ADDRESS_ID = "column.address";
+	public static final String COLUMN_DESCRIPTION_ID = "column.description";
 
-	private static final int COLUMN_NAME_SIZE = 130;
+	private static final int COLUMN_PERIPHERAL_SIZE = 130;
 	private static final int COLUMN_ADDRESS_SIZE = 90;
 	private static final int COLUMN_DESCRIPTION_SIZE = 300;
 
-	private static final String[] sfAvailableColumns = { COLUMN_NAME_ID,
+	private static final String[] sfAvailableColumns = { COLUMN_PERIPHERAL_ID,
 			COLUMN_ADDRESS_ID, COLUMN_DESCRIPTION_ID };
 
 	// ------------------------------------------------------------------------
@@ -69,7 +70,7 @@ public class PeripheralsColumnPresentation implements IColumnPresentation2 {
 	@Override
 	public String getHeader(String id) {
 
-		if (COLUMN_NAME_ID.equals(id)) {
+		if (COLUMN_PERIPHERAL_ID.equals(id)) {
 			return Messages.PeripheralsView_NameColumn_text;
 		}
 		if (COLUMN_ADDRESS_ID.equals(id)) {
@@ -101,8 +102,8 @@ public class PeripheralsColumnPresentation implements IColumnPresentation2 {
 	public int getInitialColumnWidth(String id, int treeWidgetWidth,
 			String[] visibleColumnIds) {
 
-		if (COLUMN_NAME_ID.equals(id)) {
-			return COLUMN_NAME_SIZE;
+		if (COLUMN_PERIPHERAL_ID.equals(id)) {
+			return COLUMN_PERIPHERAL_SIZE;
 		}
 		if (COLUMN_ADDRESS_ID.equals(id)) {
 			return COLUMN_ADDRESS_SIZE;
@@ -111,9 +112,9 @@ public class PeripheralsColumnPresentation implements IColumnPresentation2 {
 
 			// If the table is larger than needed,
 			// make the Description column fill the space.
-			if (treeWidgetWidth > (COLUMN_NAME_SIZE + COLUMN_ADDRESS_SIZE + COLUMN_DESCRIPTION_SIZE)) {
+			if (treeWidgetWidth > (COLUMN_PERIPHERAL_SIZE + COLUMN_ADDRESS_SIZE + COLUMN_DESCRIPTION_SIZE)) {
 				return treeWidgetWidth
-						- (COLUMN_NAME_SIZE + COLUMN_ADDRESS_SIZE);
+						- (COLUMN_PERIPHERAL_SIZE + COLUMN_ADDRESS_SIZE);
 			} else {
 				return COLUMN_DESCRIPTION_SIZE;
 			}

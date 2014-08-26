@@ -6,12 +6,11 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - initial version 
+ *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.core.gdbjtag.dsf;
-
-import java.math.BigInteger;
+package ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel;
 
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.datamodel.IDMContext;
@@ -20,12 +19,12 @@ import org.eclipse.cdt.dsf.debug.service.IModules;
 import org.eclipse.cdt.dsf.debug.service.IRunControl;
 import org.eclipse.cdt.dsf.service.IDsfService;
 
-public interface IPeripheral extends IDsfService {
+public interface IPeripherals extends IDsfService {
 
 	// ----- Embedded interfaces ----------------------------------------------
 
 	/**
-	 * Data model interface for using peripheral blocks.
+	 * Data model interface for peripheral blocks.
 	 */
 	public static abstract interface IPeripheralDMContext extends IDMContext {
 
@@ -51,13 +50,6 @@ public interface IPeripheral extends IDsfService {
 		public abstract long getLength();
 
 		/**
-		 * Get the peripheral start address.
-		 * 
-		 * @return the numeric version of start address.
-		 */
-		public abstract BigInteger getBigAddress();
-
-		/**
 		 * Get the peripheral description.
 		 * 
 		 * @return a short string describing the peripheral.
@@ -75,19 +67,20 @@ public interface IPeripheral extends IDsfService {
 		 * Enable/disable the peripheral.
 		 * 
 		 * @param flag
-		 *            a boolean.
+		 *            a boolean flag.
 		 */
 		public abstract void setEnabled(boolean flag);
+
 	}
 
 	public static abstract interface PeripheralLoadedDMEvent extends
-			IPeripheral.PeripheralsChangedDMEvent {
-		public abstract IPeripheral.IPeripheralDMContext getLoadedPeripheralContext();
+			IPeripherals.PeripheralsChangedDMEvent {
+		public abstract IPeripherals.IPeripheralDMContext getLoadedPeripheralContext();
 	}
 
 	public static abstract interface PeripheralUnloadedDMEvent extends
-			IPeripheral.PeripheralsChangedDMEvent {
-		public abstract IPeripheral.IPeripheralDMContext getUnloadedPeripheralContext();
+			IPeripherals.PeripheralsChangedDMEvent {
+		public abstract IPeripherals.IPeripheralDMContext getUnloadedPeripheralContext();
 	}
 
 	public static abstract interface PeripheralsChangedDMEvent extends
@@ -95,10 +88,6 @@ public interface IPeripheral extends IDsfService {
 	}
 
 	// ------------------------------------------------------------------------
-
-	public abstract void getPeripheralData(
-			IPeripheralDMContext peripheralDMContext,
-			DataRequestMonitor<IPeripheralDMContext> dataRequestMonitor);
 
 	public abstract void getPeripherals(
 			IRunControl.IContainerDMContext containerDMContext,

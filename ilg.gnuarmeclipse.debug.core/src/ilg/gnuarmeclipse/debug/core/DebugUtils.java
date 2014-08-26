@@ -65,7 +65,7 @@ public class DebugUtils {
 	public static String[] getLaunchEnvironment(ILaunchConfiguration config)
 			throws CoreException {
 
-		ICConfigurationDescription cfg = getBuildConfig(config);
+		ICConfigurationDescription cfg = getBuildConfigDescription(config);
 		if (cfg == null)
 			return getLaunchEnvironmentWithoutProject();
 
@@ -155,7 +155,15 @@ public class DebugUtils {
 		return retVal;
 	}
 
-	public static ICConfigurationDescription getBuildConfig(
+	/**
+	 * Get the build configuration associated with the debug launch
+	 * configuration, if defined in the first tab (the XXX field).
+	 * 
+	 * @param config
+	 *            a debug launch configuration.
+	 * @return the build configuration, or null if not found or not defined.
+	 */
+	public static ICConfigurationDescription getBuildConfigDescription(
 			ILaunchConfiguration config) {
 
 		ICConfigurationDescription cfg = null;
@@ -263,7 +271,7 @@ public class DebugUtils {
 			gdb = VariablesPlugin.getDefault().getStringVariableManager()
 					.performStringSubstitution(gdb, false);
 
-			ICConfigurationDescription buildConfig = getBuildConfig(configuration);
+			ICConfigurationDescription buildConfig = getBuildConfigDescription(configuration);
 			if (buildConfig != null) {
 				gdb = resolveAll(gdb, buildConfig);
 			}

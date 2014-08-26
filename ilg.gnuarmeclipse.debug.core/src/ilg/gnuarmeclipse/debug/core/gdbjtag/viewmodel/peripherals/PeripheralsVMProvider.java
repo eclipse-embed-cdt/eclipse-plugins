@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripherals;
@@ -37,6 +38,9 @@ public class PeripheralsVMProvider extends AbstractDMVMProvider implements
 
 		super(adapter, presentationContext, session);
 
+		System.out.println("PeripheralsVMProvider() " + presentationContext
+				+ " " + session);
+
 		RootDMVMNode rootDMVMNode = new RootDMVMNode(this);
 		PeripheralVMNode peripheralVMNode = new PeripheralVMNode(this,
 				getSession());
@@ -44,19 +48,7 @@ public class PeripheralsVMProvider extends AbstractDMVMProvider implements
 		setRootNode(rootDMVMNode);
 	}
 
-	@Override
-	public IColumnPresentation createColumnPresentation(
-			IPresentationContext context, Object element) {
-
-		return new PeripheralsColumnPresentation();
-	}
-
-	@Override
-	protected IVMModelProxy createModelProxyStrategy(Object object) {
-
-		return new PeripheralsVMModelProxyStrategy(this, object);
-	}
-
+	// Contributed by IColumnPresentationFactory.
 	@Override
 	public String getColumnPresentationId(IPresentationContext context,
 			Object element) {
@@ -64,20 +56,40 @@ public class PeripheralsVMProvider extends AbstractDMVMProvider implements
 		return PeripheralsColumnPresentation.ID;
 	}
 
+	// Factory for the column presentation.
+	// Contributed by IColumnPresentationFactory.
+	@Override
+	public IColumnPresentation createColumnPresentation(
+			IPresentationContext context, Object element) {
+
+		return new PeripheralsColumnPresentation();
+	}
+
+	// Factory for the model proxy strategy.
+	@Override
+	protected IVMModelProxy createModelProxyStrategy(Object object) {
+
+		return new PeripheralsVMModelProxyStrategy(this, object);
+	}
+
 	@Override
 	public void refresh() {
 
+		System.out.println("PeripheralsVMProvider.refresh() ");
+
 		super.refresh();
 
-		// TODO: process local refresh
+		// TODO: process local refresh, if any
 	}
 
 	@Override
 	public void update(IPropertiesUpdate[] propertiesUpdates) {
 
+		System.out.println("PeripheralsVMProvider.update() ");
+
 		super.update(propertiesUpdates);
 
-		// TODO: process local update
+		// TODO: process local update, if any
 	}
 
 	// ------------------------------------------------------------------------

@@ -39,8 +39,9 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
 
 /**
- * Custom launcher, required to assign the GnuArmAdapterFactory, which will
- * provide the custom GnuArmViewModelAdapter.
+ * Common launcher.
+ * <p>
+ * To be used as parent by implementation launchers.
  */
 @SuppressWarnings("restriction")
 public class GnuArmLaunch extends GdbLaunch {

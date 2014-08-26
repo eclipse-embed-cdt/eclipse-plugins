@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripherals;
@@ -21,17 +22,27 @@ import org.eclipse.jface.viewers.TreePath;
 public class PeripheralsVMModelProxyStrategy extends
 		DefaultVMModelProxyStrategy implements ICheckboxModelProxy {
 
+	@SuppressWarnings("unused")
+	private Object fRootElement;
+
 	// ------------------------------------------------------------------------
 
 	public PeripheralsVMModelProxyStrategy(AbstractVMProvider provider,
 			Object rootElement) {
 		super(provider, rootElement);
+
+		System.out.println("PeripheralsVMModelProxyStrategy() " + this + " "
+				+ provider + " " + rootElement);
+
+		fRootElement = rootElement;
 	}
 
+	// Contributed by ICheckboxModelProxy
 	@Override
 	public boolean setChecked(IPresentationContext context, Object viewerInput,
 			TreePath path, boolean checked) {
 		// TODO Auto-generated method stub
+		System.out.println("setChecked()");
 		return false;
 	}
 

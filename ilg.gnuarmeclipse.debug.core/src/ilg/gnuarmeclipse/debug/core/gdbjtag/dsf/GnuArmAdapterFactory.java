@@ -29,7 +29,7 @@ import org.eclipse.debug.internal.ui.viewers.model.provisional.IModelProxyFactor
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IViewerInputProvider;
 
 /**
- * Custom adapter factory, used by adaptable type
+ * Common adapter factory, used by adaptable type
  * "ilg.gnuarmeclipse.debug.core.gdbjtag.dsf.GnuArmLaunch" to provide
  * GnuArmViewModelAdapter() in addition to those provided by parent.
  */

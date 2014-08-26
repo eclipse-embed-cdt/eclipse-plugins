@@ -7,10 +7,14 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.ui;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugEvent;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.IDebugEventSetListener;
@@ -21,6 +25,7 @@ import org.eclipse.debug.internal.ui.views.variables.VariablesView;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.progress.UIJob;
 
 @SuppressWarnings("restriction")
 public class PeripheralsView extends VariablesView implements
@@ -30,10 +35,19 @@ public class PeripheralsView extends VariablesView implements
 
 	public final static String PRESENTATION_CONTEXT_ID = "PeripheralsView";
 
+	private UIJob fRefreshUIjob = new UIJob(
+			PeripheralsView.class.getSimpleName() + "#refreshUIjob") {
+
+		public IStatus runInUIThread(IProgressMonitor pm) {
+			getViewer().refresh();
+			return Status.OK_STATUS;
+		}
+	};
+
 	// ------------------------------------------------------------------------
 
 	public PeripheralsView() {
-		;
+		fRefreshUIjob.setSystem(true);
 	}
 
 	protected String getPresentationContextId() {
@@ -104,6 +118,10 @@ public class PeripheralsView extends VariablesView implements
 		removeDebugEventListener();
 		removeMemoryBlockListener();
 		super.dispose();
+	}
+
+	private void refresh() {
+		fRefreshUIjob.schedule();
 	}
 
 	// ------------------------------------------------------------------------
