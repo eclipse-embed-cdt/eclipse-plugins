@@ -111,7 +111,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 		long beginTime = System.currentTimeMillis();
 
 		fOut.println();
-		fOut.println(Utils.getCurrentDateTime());
+		fOut.println(ilg.gnuarmeclipse.packs.core.Utils.getCurrentDateTime());
 		fOut.println("Update packs job started.");
 
 		int workUnits = 0;
@@ -292,8 +292,8 @@ public class UpdatePacksHandler extends AbstractHandler {
 					// If local file does not exist, create it
 					Utils.copyFile(sourceUrl, cachedFile, fOut, null);
 
-					Utils.reportInfo("File " + pdscName + " version " + pdscVersion
-							+ " cached locally.");
+					Utils.reportInfo("File " + pdscName + " version "
+							+ pdscVersion + " cached locally.");
 				}
 
 				if (cachedFile.exists()) {

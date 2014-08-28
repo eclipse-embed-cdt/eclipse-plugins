@@ -18,7 +18,6 @@ import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.data.PacksStorage;
-import ilg.gnuarmeclipse.packs.data.Utils;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -61,7 +60,7 @@ public class ParsePdscRunnable implements IRunnableWithProgress {
 		long beginTime = System.currentTimeMillis();
 
 		sfOut.println();
-		sfOut.println(Utils.getCurrentDateTime());
+		sfOut.println(ilg.gnuarmeclipse.packs.core.Utils.getCurrentDateTime());
 
 		String destFolder = sfVersionNode.getProperty(Property.DEST_FOLDER);
 		String pdscName = sfVersionNode.getProperty(Property.PDSC_NAME);

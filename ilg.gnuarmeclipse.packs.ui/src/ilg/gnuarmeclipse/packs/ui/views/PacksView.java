@@ -13,6 +13,7 @@ package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
+import ilg.gnuarmeclipse.packs.core.data.DurationMonitor;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
@@ -23,7 +24,6 @@ import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DataManager;
 import ilg.gnuarmeclipse.packs.data.DataManagerEvent;
 import ilg.gnuarmeclipse.packs.data.IDataManagerListener;
-import ilg.gnuarmeclipse.packs.data.Utils;
 import ilg.gnuarmeclipse.packs.jobs.CopyExampleJob;
 import ilg.gnuarmeclipse.packs.jobs.InstallJob;
 import ilg.gnuarmeclipse.packs.jobs.RemoveJob;
@@ -170,7 +170,9 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 								if (n <= 0) {
 									name += " (n/a)";
 								} else {
-									name += " (" + StringUtils.convertSizeToString(n)
+									name += " ("
+											+ StringUtils
+													.convertSizeToString(n)
 											+ ")";
 								}
 							} catch (NumberFormatException e) {
@@ -861,28 +863,35 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 	private Node getPacksTree() {
 
 		// Node packsTree = fStorage.getPacksTree();
-		Node packsTree = DataManager.getInstance().getRepositoriesTree();
-		Node packsRoot = new Node(Type.ROOT);
+		final Node packsTree = DataManager.getInstance().getRepositoriesTree();
+		
+		final Node packsRoot = new Node(Type.ROOT);
 		packsRoot.setName("Packs");
 
 		if (packsTree.hasChildren()) {
 
-			fOut.println();
-			fOut.println(Utils.getCurrentDateTime());
-			fOut.println("Collecting packs...");
+			(new DurationMonitor()).displayTimeAndRun(new Runnable() {
 
-			int count = 0;
-			try {
-				count = getPacksRecursive(packsTree, null, packsRoot);
-			} catch (Exception e) {
-				Activator.log(e);
-			}
-			if (packsRoot.hasChildren()) {
-				fOut.println("Found " + count + " package version(s), from "
-						+ packsRoot.getChildren().size() + " vendor(s).");
-			} else {
-				fOut.println("Found none.");
-			}
+				public void run() {
+
+					fOut.println("Collecting packs...");
+
+					int count = 0;
+					try {
+						count = getPacksRecursive(packsTree, null, packsRoot);
+					} catch (Exception e) {
+						Activator.log(e);
+					}
+					if (packsRoot.hasChildren()) {
+						fOut.println("Found " + count
+								+ " package version(s), from "
+								+ packsRoot.getChildren().size()
+								+ " vendor(s).");
+					} else {
+						fOut.println("Found none.");
+					}
+				}
+			});
 		}
 
 		if (!packsRoot.hasChildren()) {

@@ -12,6 +12,7 @@
 package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
+import ilg.gnuarmeclipse.packs.core.data.DurationMonitor;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
@@ -19,7 +20,6 @@ import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DataManager;
 import ilg.gnuarmeclipse.packs.data.IDataManagerListener;
 import ilg.gnuarmeclipse.packs.data.DataManagerEvent;
-import ilg.gnuarmeclipse.packs.data.Utils;
 import ilg.gnuarmeclipse.packs.ui.Activator;
 
 import java.util.HashSet;
@@ -285,38 +285,43 @@ public class KeywordsView extends ViewPart implements IDataManagerListener {
 	// Return a one level hierarchy of keyword nodes.
 	private Node getKeywordsTree() {
 
-		Node packsTree = fDataManager.getRepositoriesTree();
-		Node keywordsRoot = new Node(Type.ROOT);
+		final Node packsTree = fDataManager.getRepositoriesTree();
+		
+		final Node keywordsRoot = new Node(Type.ROOT);
 
 		if (packsTree.hasChildren()) {
 
-			fOut.println();
-			fOut.println(Utils.getCurrentDateTime());
-			fOut.println("Collecting keywords...");
+			(new DurationMonitor()).displayTimeAndRun(new Runnable() {
 
-			Set<String> set = new HashSet<String>();
+				public void run() {
 
-			try {
+					fOut.println("Collecting keywords...");
 
-				// Collect keywords
-				getKeywordsRecursive(packsTree, set);
+					Set<String> set = new HashSet<String>();
 
-				// Add keyword nodes to the hierarchy
-				for (String keywordName : set) {
-					Leaf keywordNode = Leaf.addNewChild(keywordsRoot,
-							Type.KEYWORD);
-					keywordNode.setName(keywordName);
+					try {
+
+						// Collect keywords
+						getKeywordsRecursive(packsTree, set);
+
+						// Add keyword nodes to the hierarchy
+						for (String keywordName : set) {
+							Leaf keywordNode = Leaf.addNewChild(keywordsRoot,
+									Type.KEYWORD);
+							keywordNode.setName(keywordName);
+						}
+
+					} catch (Exception e) {
+						Activator.log(e);
+					}
+
+					if (set.size() > 0) {
+						fOut.println("Found " + set.size() + " keyword(s).");
+					} else {
+						fOut.println("Found none.");
+					}
 				}
-
-			} catch (Exception e) {
-				Activator.log(e);
-			}
-
-			if (set.size() > 0) {
-				fOut.println("Found " + set.size() + " keyword(s).");
-			} else {
-				fOut.println("Found none.");
-			}
+			});
 
 		}
 

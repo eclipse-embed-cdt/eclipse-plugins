@@ -12,15 +12,15 @@
 package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
+import ilg.gnuarmeclipse.packs.core.data.DurationMonitor;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DataManager;
-import ilg.gnuarmeclipse.packs.data.IDataManagerListener;
 import ilg.gnuarmeclipse.packs.data.DataManagerEvent;
-import ilg.gnuarmeclipse.packs.data.Utils;
+import ilg.gnuarmeclipse.packs.data.IDataManagerListener;
 import ilg.gnuarmeclipse.packs.ui.Activator;
 
 import java.util.Collection;
@@ -383,28 +383,33 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 	// Return a two level hierarchy of vendor and device nodes.
 	private Node getBoardsTree() {
 
-		Node packsTree = fDataManager.getRepositoriesTree();
-		Node boardsRoot = new Node(Type.ROOT);
+		final Node packsTree = fDataManager.getRepositoriesTree();
+		
+		final Node boardsRoot = new Node(Type.ROOT);
 		boardsRoot.setName("Boards");
 
 		if (packsTree.hasChildren()) {
 
-			fOut.println();
-			fOut.println(Utils.getCurrentDateTime());
-			fOut.println("Collecting boards...");
+			(new DurationMonitor()).displayTimeAndRun(new Runnable() {
 
-			int count = 0;
-			try {
-				count = getBoardsRecursive(packsTree, boardsRoot, false);
-			} catch (Exception e) {
-				Activator.log(e);
-			}
-			if (boardsRoot.hasChildren()) {
-				fOut.println("Found " + count + " board(s), from "
-						+ boardsRoot.getChildren().size() + " vendor(s).");
-			} else {
-				fOut.println("Found none.");
-			}
+				public void run() {
+					fOut.println("Collecting boards...");
+
+					int count = 0;
+					try {
+						count = getBoardsRecursive(packsTree, boardsRoot, false);
+					} catch (Exception e) {
+						Activator.log(e);
+					}
+					if (boardsRoot.hasChildren()) {
+						fOut.println("Found " + count + " board(s), from "
+								+ boardsRoot.getChildren().size()
+								+ " vendor(s).");
+					} else {
+						fOut.println("Found none.");
+					}
+				}
+			});
 		}
 
 		if (!boardsRoot.hasChildren()) {

@@ -15,6 +15,7 @@ import ilg.gnuarmeclipse.core.Xml;
 import ilg.gnuarmeclipse.packs.cmsis.PdscGenericParser;
 import ilg.gnuarmeclipse.packs.cmsis.PdscTreeParserForBuild;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
+import ilg.gnuarmeclipse.packs.core.data.DurationMonitor;
 import ilg.gnuarmeclipse.packs.core.data.IDataManager;
 import ilg.gnuarmeclipse.packs.core.tree.AbstractTreePreOrderIterator;
 import ilg.gnuarmeclipse.packs.core.tree.ITreeIterator;
@@ -24,7 +25,6 @@ import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Selector;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
-import ilg.gnuarmeclipse.packs.data.jobs.BusyIndicatorWithDuration;
 import ilg.gnuarmeclipse.packs.xcdl.GenericParser;
 import ilg.gnuarmeclipse.packs.xcdl.GenericSerialiser;
 
@@ -59,7 +59,7 @@ import org.w3c.dom.Document;
  * <p>
  * The existing package versions can be also accesses with specific functions:
  * <ul>
- * <li>getPacksVersionsList()
+ * <li>getPacksVersionsList() - ? private
  * <li>findPackVersion()
  * <li>findPackLatest()
  * <li>getInstalledPacksLatestVersionsList()
@@ -70,6 +70,9 @@ import org.w3c.dom.Document;
  * <ul>
  * <li>getParsedPdscTree()
  * <li>getInstalledObjectsForBuild()
+ * <li>findInstalledDevice()
+ * <li>findInstalledBoard()
+ * <li>getDestinationFolder()
  * </ul>
  */
 
@@ -207,14 +210,20 @@ public class DataManager implements IDataManager {
 
 	public Node getRepositoriesTree() {
 
+		return getRepositoriesTree(new DurationMonitor());
+	}
+
+	private Node getRepositoriesTree(final DurationMonitor dm) {
+
 		if (fRepositoriesTree != null) {
 			return fRepositoriesTree;
 		}
 
-		BusyIndicatorWithDuration.showWhile(new Runnable() {
+		assert dm != null;
+		dm.displayTimeAndRun(new Runnable() {
 
 			public void run() {
-				loadCachedReposContent();
+				loadCachedReposContent(dm);
 			}
 		});
 		return fRepositoriesTree;
@@ -225,14 +234,14 @@ public class DataManager implements IDataManager {
 	 * 
 	 * @return a list of version nodes.
 	 */
-	private List<PackNode> getPacksVersionsList() {
+	private List<PackNode> getPacksVersionsList(DurationMonitor dm) {
 
 		if (fPacksVersionsList != null) {
 			return fPacksVersionsList;
 		}
 
 		// Populate the list.
-		getRepositoriesTree();
+		getRepositoriesTree(dm);
 
 		return fPacksVersionsList;
 	}
@@ -251,8 +260,15 @@ public class DataManager implements IDataManager {
 	public PackNode findPackVersion(String vendorName, String packName,
 			String version) {
 
+		return findPackVersion(vendorName, packName, version,
+				new DurationMonitor());
+	}
+
+	private PackNode findPackVersion(String vendorName, String packName,
+			String version, DurationMonitor dm) {
+
 		// Be sure the map is populated.
-		getRepositoriesTree();
+		getRepositoriesTree(dm);
 
 		String key = makeMapKey(vendorName, packName);
 		Map<String, PackNode> versionsMap = fPacksVersionsMap.get(key);
@@ -276,8 +292,14 @@ public class DataManager implements IDataManager {
 	 */
 	public PackNode findPackLatest(String vendorName, String packName) {
 
+		return findPackLatest(vendorName, packName, new DurationMonitor());
+	}
+
+	private PackNode findPackLatest(String vendorName, String packName,
+			DurationMonitor dm) {
+
 		// Be sure the map is populated.
-		getRepositoriesTree();
+		getRepositoriesTree(dm);
 
 		String key = makeMapKey(vendorName, packName);
 		Map<String, PackNode> versionsMap = fPacksVersionsMap.get(key);
@@ -329,6 +351,11 @@ public class DataManager implements IDataManager {
 	 * </ul>
 	 */
 	public void loadCachedReposContent() {
+
+		loadCachedReposContent(null);
+	}
+
+	private void loadCachedReposContent(DurationMonitor dm) {
 
 		Node node = new Node(Type.ROOT);
 		fPacksVersionsList = Repos.getInstance().loadCachedReposContent(node);
@@ -501,15 +528,21 @@ public class DataManager implements IDataManager {
 	 */
 	public List<PackNode> getInstalledPacksLatestVersionsList() {
 
+		return getInstalledPacksLatestVersionsList(new DurationMonitor());
+	}
+
+	private List<PackNode> getInstalledPacksLatestVersionsList(
+			DurationMonitor dm) {
+
 		if (fInstalledPacksLatestVersionsList != null) {
 			return fInstalledPacksLatestVersionsList;
 		}
 
 		// Filter installed packages
 		List<PackNode> installedPackages = new LinkedList<PackNode>();
-		List<PackNode> packsVersionsList = getPacksVersionsList();
+		List<PackNode> packsVersionsList = getPacksVersionsList(dm);
 		if (packsVersionsList != null) {
-			for (PackNode versionNode : getPacksVersionsList()) {
+			for (PackNode versionNode : getPacksVersionsList(dm)) {
 				if (versionNode.isBooleanProperty(Property.INSTALLED)) {
 					installedPackages.add((PackNode) versionNode.getParent());
 				}
@@ -545,6 +578,12 @@ public class DataManager implements IDataManager {
 	 */
 	public Node getParsedPdscTree(String pdscName, String version) {
 
+		return getParsedPdscTree(pdscName, version, new DurationMonitor());
+	}
+
+	private Node getParsedPdscTree(String pdscName, String version,
+			final DurationMonitor dm) {
+
 		final String fileName = PacksStorage.makeCachedPdscName(pdscName,
 				version);
 		if (fParsedPdsc != null) {
@@ -556,10 +595,11 @@ public class DataManager implements IDataManager {
 			fParsedPdsc = new HashMap<String, Node>();
 		}
 
-		BusyIndicatorWithDuration.showWhile(new Runnable() {
+		assert dm != null;
+		dm.displayTimeAndRun(new Runnable() {
 
 			public void run() {
-				loadPdscTree(fileName);
+				loadPdscTree(fileName, dm);
 			}
 		});
 
@@ -574,7 +614,7 @@ public class DataManager implements IDataManager {
 	 * 
 	 * @return a tree starting with node "package".
 	 */
-	private void loadPdscTree(String fileName) {
+	private void loadPdscTree(String fileName, DurationMonitor dm) {
 
 		try {
 
@@ -632,8 +672,13 @@ public class DataManager implements IDataManager {
 	 * @return a tree of nodes, with Devices/Boards, Vendors, Family, Subfamily,
 	 *         Device.
 	 */
-	@Override
+	// @Override
 	public Node getInstalledObjectsForBuild() {
+
+		return getInstalledObjectsForBuild(new DurationMonitor());
+	}
+
+	private Node getInstalledObjectsForBuild(final DurationMonitor dm) {
 
 		if (fInstalledObjectsForBuild != null) {
 
@@ -641,10 +686,11 @@ public class DataManager implements IDataManager {
 			return fInstalledObjectsForBuild;
 		}
 
-		BusyIndicatorWithDuration.showWhile(new Runnable() {
+		assert dm != null;
+		dm.displayTimeAndRun(new Runnable() {
 
 			public void run() {
-				fInstalledObjectsForBuild = loadInstalledObjectsForBuild();
+				fInstalledObjectsForBuild = loadInstalledObjectsForBuild(dm);
 			}
 		});
 		return fInstalledObjectsForBuild;
@@ -657,7 +703,7 @@ public class DataManager implements IDataManager {
 	 * 
 	 * @return a tree with device/boards.
 	 */
-	private Node loadInstalledObjectsForBuild() {
+	private Node loadInstalledObjectsForBuild(DurationMonitor dm) {
 
 		fOut.println("Extracting devices & boards... ");
 
@@ -680,7 +726,7 @@ public class DataManager implements IDataManager {
 		if (rootNode == null) {
 
 			// Extract devices/boards/books from all installed packages
-			rootNode = parseInstalledPackagesForBuild();
+			rootNode = parseInstalledPackagesForBuild(dm);
 
 			// TODO: check if still needed
 			// addPdscNames(rootNode);
@@ -749,9 +795,9 @@ public class DataManager implements IDataManager {
 	 * 
 	 * @return a tree or null if error.
 	 */
-	private Node parseInstalledPackagesForBuild() {
+	private Node parseInstalledPackagesForBuild(DurationMonitor dm) {
 
-		List<PackNode> versionsList = getInstalledPacksLatestVersionsList();
+		List<PackNode> versionsList = getInstalledPacksLatestVersionsList(dm);
 
 		PdscTreeParserForBuild pdsc = new PdscTreeParserForBuild();
 
@@ -770,7 +816,7 @@ public class DataManager implements IDataManager {
 			String version = node.getName();
 
 			// Get the parsed PDSC, either from memory or from disc cache.
-			Node tree = getParsedPdscTree(pdscName, version);
+			Node tree = getParsedPdscTree(pdscName, version, dm);
 
 			// Extract the devices.
 			int countDevices = pdsc.parseDevices(tree, devicesNode);
@@ -823,12 +869,19 @@ public class DataManager implements IDataManager {
 
 	public Leaf findInstalledDevice(String deviceVendorId, String deviceName) {
 
+		return findInstalledDevice(deviceVendorId, deviceName,
+				new DurationMonitor());
+	}
+
+	private Leaf findInstalledDevice(String deviceVendorId, String deviceName,
+			DurationMonitor dm) {
+
 		String key = makeMapKey(deviceVendorId, deviceName);
 		if (fInstalledDevicesMap.containsKey(key)) {
 			return fInstalledDevicesMap.get(key);
 		}
 
-		Node tree = getInstalledObjectsForBuild();
+		Node tree = getInstalledObjectsForBuild(dm);
 
 		ITreeIterator installedDevices = new AbstractTreePreOrderIterator() {
 
@@ -887,12 +940,19 @@ public class DataManager implements IDataManager {
 
 	public Leaf findInstalledBoard(String boardVendorName, String boardName) {
 
+		return findInstalledBoard(boardVendorName, boardName,
+				new DurationMonitor());
+	}
+
+	private Leaf findInstalledBoard(String boardVendorName, String boardName,
+			DurationMonitor dm) {
+
 		String key = makeMapKey(boardVendorName, boardName);
 		if (fInstalledBoardsMap.containsKey(key)) {
 			return fInstalledBoardsMap.get(key);
 		}
 
-		Node tree = getInstalledObjectsForBuild();
+		Node tree = getInstalledObjectsForBuild(dm);
 
 		ITreeIterator installedBoards = new AbstractTreePreOrderIterator() {
 
@@ -969,6 +1029,11 @@ public class DataManager implements IDataManager {
 
 	public String getDestinationFolder(Leaf node) {
 
+		return getDestinationFolder(node, new DurationMonitor());
+	}
+
+	public String getDestinationFolder(Leaf node, DurationMonitor dm) {
+
 		String vendorName = collectProperty(node, Property.PACK_VENDOR,
 				Type.DEVICES_SUBTREE);
 		String packName = collectProperty(node, Property.PACK_NAME,
@@ -976,7 +1041,8 @@ public class DataManager implements IDataManager {
 		String version = collectProperty(node, Property.PACK_VERSION,
 				Type.DEVICES_SUBTREE);
 
-		Leaf summaryVersionNode = findPackVersion(vendorName, packName, version);
+		Leaf summaryVersionNode = findPackVersion(vendorName, packName,
+				version, dm);
 
 		String destFolder = "";
 		if (summaryVersionNode != null) {
@@ -996,7 +1062,7 @@ public class DataManager implements IDataManager {
 	 * @param compiler
 	 * @return a tree of nodes, CMSIS/Vendor, files.
 	 */
-	@Override
+	// @Override
 	public Node getCmsisCoreFiles(String deviceName, String compiler) {
 		// TODO Auto-generated method stub
 		return null;
@@ -1010,7 +1076,7 @@ public class DataManager implements IDataManager {
 	 * @param deviceName
 	 * @return (to be defined)
 	 */
-	@Override
+	// @Override
 	public Node getRegisterDetailsForDebug(String deviceName) {
 		// TODO Auto-generated method stub
 		return null;

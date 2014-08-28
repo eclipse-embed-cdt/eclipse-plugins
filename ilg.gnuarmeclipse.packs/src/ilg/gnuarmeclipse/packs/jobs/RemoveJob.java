@@ -71,7 +71,7 @@ public class RemoveJob extends Job {
 		long beginTime = System.currentTimeMillis();
 
 		fOut.println();
-		fOut.println(Utils.getCurrentDateTime());
+		fOut.println(ilg.gnuarmeclipse.packs.core.Utils.getCurrentDateTime());
 
 		fOut.println("Removing packs...");
 

@@ -12,6 +12,7 @@
 package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
+import ilg.gnuarmeclipse.packs.core.data.DurationMonitor;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
@@ -20,7 +21,6 @@ import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DataManager;
 import ilg.gnuarmeclipse.packs.data.IDataManagerListener;
 import ilg.gnuarmeclipse.packs.data.DataManagerEvent;
-import ilg.gnuarmeclipse.packs.data.Utils;
 import ilg.gnuarmeclipse.packs.ui.Activator;
 
 import java.util.Collection;
@@ -384,29 +384,35 @@ public class DevicesView extends ViewPart implements IDataManagerListener {
 	// Return a two level hierarchy of vendor and device nodes.
 	private Node getDevicesTree() {
 
-		Node packsTree = fDataManager.getRepositoriesTree();
+		final Node packsTree = fDataManager.getRepositoriesTree();
 
-		Node devicesRoot = new Node(Type.ROOT);
+		final Node devicesRoot = new Node(Type.ROOT);
 		devicesRoot.setName("Devices");
 
 		if (packsTree.hasChildren()) {
 
-			fOut.println();
-			fOut.println(Utils.getCurrentDateTime());
-			fOut.println("Collecting devices...");
+			(new DurationMonitor()).displayTimeAndRun(new Runnable() {
 
-			int count = 0;
-			try {
-				count = getDevicesRecursive(packsTree, devicesRoot, false);
-			} catch (Exception e) {
-				Activator.log(e);
-			}
-			if (devicesRoot.hasChildren()) {
-				fOut.println("Found " + count + " device(s), from "
-						+ devicesRoot.getChildren().size() + " vendor(s).");
-			} else {
-				fOut.println("Found none.");
-			}
+				public void run() {
+
+					fOut.println("Collecting devices...");
+
+					int count = 0;
+					try {
+						count = getDevicesRecursive(packsTree, devicesRoot,
+								false);
+					} catch (Exception e) {
+						Activator.log(e);
+					}
+					if (devicesRoot.hasChildren()) {
+						fOut.println("Found " + count + " device(s), from "
+								+ devicesRoot.getChildren().size()
+								+ " vendor(s).");
+					} else {
+						fOut.println("Found none.");
+					}
+				}
+			});
 		}
 
 		if (!devicesRoot.hasChildren()) {
