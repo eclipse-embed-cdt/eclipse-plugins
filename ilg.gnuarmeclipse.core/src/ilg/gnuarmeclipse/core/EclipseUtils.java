@@ -11,6 +11,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
@@ -19,28 +20,62 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
 
+/**
+ * Various utilities that use Eclipse global classes, grouped together more like
+ * a reference.
+ * <ul>
+ * <li>Platform</li>
+ * <li>PlatformUI</li>
+ * <li>ManagedBuildManager</li>
+ * <li>ImmediateExecutor</li>
+ * </ul>
+ * 
+ * Other interesting places to search for utility functions are:
+ * <ul>
+ * <li>Plugin</li>
+ * </ul>
+ *
+ * For debugging, use 
+ * <pre>private static final boolean DEBUG_TWO =
+ *     ExamplesPlugin.getDefault().isDebugging() &&
+ *        "true".equalsIgnoreCase(Platform.getDebugOption(
+ *        "org.eclipse.faq.examples/debug/option2"));
+ *  ...
+ *  if (DEBUG_TWO)
+ *     System.out.println("Debug statement two.");</pre>
+ * 
+ * This will test two properties like
+ * <ul>
+ * <li>org.eclipse.faq.examples/debug=true</li>
+ * <li>org.eclipse.faq.examples/debug/option2=true</li>
+ * </ul>
+ * These properties should be stored in a .option file in the plug-in root, or
+ * in a custom file whose name is passed to the Eclipse -debug option.
+ * <p>
+ * See also the <a href=
+ * "https://wiki.eclipse.org/FAQ_How_do_I_use_the_platform_debug_tracing_facility"
+ * >Eclipse Wiki</a>.
+ * 
+ */
 public class EclipseUtils {
 
 	// ------------------------------------------------------------------------
 
 	private static final String PROPERTY_OS_NAME = "os.name"; //$NON-NLS-1$
-	public static final String PROPERTY_OS_VALUE_WINDOWS = "windows";//$NON-NLS-1$
-	public static final String PROPERTY_OS_VALUE_LINUX = "linux";//$NON-NLS-1$
-	public static final String PROPERTY_OS_VALUE_MACOSX = "mac";//$NON-NLS-1$
 
 	static public boolean isWindows() {
 		return System.getProperty(PROPERTY_OS_NAME).toLowerCase()
-				.startsWith(PROPERTY_OS_VALUE_WINDOWS);
+				.startsWith(Platform.OS_WIN32);
 	}
 
 	static public boolean isLinux() {
 		return System.getProperty(PROPERTY_OS_NAME).toLowerCase()
-				.startsWith(PROPERTY_OS_VALUE_LINUX);
+				.startsWith(Platform.OS_LINUX);
 	}
 
 	static public boolean isMacOSX() {
 		return System.getProperty(PROPERTY_OS_NAME).toLowerCase()
-				.startsWith(PROPERTY_OS_VALUE_MACOSX);
+				.startsWith(Platform.OS_MACOSX);
 	}
 
 	// ------------------------------------------------------------------------
