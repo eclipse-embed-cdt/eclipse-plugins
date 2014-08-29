@@ -12,84 +12,77 @@
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel;
 
+import org.eclipse.core.runtime.IAdaptable;
+import org.eclipse.debug.core.model.IMemoryBlockExtension;
+
+import ilg.gnuarmeclipse.packs.core.tree.Leaf;
+
 /**
- * Peripheral data model class.
+ * Peripheral data model definition. It is based on the PeripheralDetails class
+ * that maps over the SVD tree node.
  */
+public class PeripheralDMNode extends PeripheralDetails implements IAdaptable {
 
-public class PeripheralDMNode {
+	// ------------------------------------------------------------------------
 
-	private String fName;
-	private String fAddress;
-	private long fLength;
-	private String fDescription;
+	private IMemoryBlockExtension fMemoryBlock;
+	private boolean fIsChecked;
 
-	public PeripheralDMNode() {
-		fName = "";
-		fAddress = "";
-		fLength = 0;
-		fDescription = "";
+	// ------------------------------------------------------------------------
+
+	public PeripheralDMNode(Leaf node) {
+
+		super(node);
+
+		fMemoryBlock = null;
+		fIsChecked = true;
 	}
 
-	public PeripheralDMNode(String name, String address, long length,
-			String description) {
-		fName = name;
-		fAddress = address;
-		fLength = length;
-		fDescription = description;
+	public void dispose() {
+
+		if (fMemoryBlock != null)
+			fMemoryBlock = null;
+
+		super.dispose();
 	}
 
-	public String getName() {
-		return fName;
+	@SuppressWarnings("rawtypes")
+	public Object getAdapter(Class clazz) {
+		return null;
 	}
 
-	public void setName(String name) {
-		fName = name;
-	}
-
-	public String getAddress() {
-		return fAddress;
-	}
-
-	public void setAddress(String address) {
-		fAddress = address;
-	}
-
-	public long getLength() {
-		return fLength;
-	}
-
-	public void setLength(long length) {
-		fLength = length;
-	}
-
-	public String getDescription() {
-		return fDescription;
-	}
-
-	public void setDescription(String description) {
-		fDescription = description;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
+	public int compareTo(Object obj) {
 
 		if (obj instanceof PeripheralDMNode) {
 
 			PeripheralDMNode comp = (PeripheralDMNode) obj;
-
-			// Nodes are equal when all members are equal. Might be debated,
-			// since names must be unique.
-			return fName.equals(comp.fName) && fAddress.equals(comp.fAddress)
-					&& (fLength == comp.fLength)
-					&& fDescription.equals(comp.fDescription);
+			return getName().compareTo(comp.getName());
 		}
-		return false;
+
+		return 0;
 	}
 
-	@Override
-	public String toString() {
-		return fName + ", " + fAddress + ", " + fLength + ", \"" + fDescription
-				+ "\"";
+	// ------------------------------------------------------------------------
 
+	public void setMemoryBlock(IMemoryBlockExtension memoryBlockExtension) {
+		fMemoryBlock = memoryBlockExtension;
 	}
+
+	public IMemoryBlockExtension getMemoryBlock() {
+		return fMemoryBlock;
+	}
+
+	public boolean isShown() {
+		return fMemoryBlock != null;
+	}
+
+	public boolean isChecked() {
+		return fIsChecked;
+	}
+
+	public void setChecked(boolean flag) {
+		fIsChecked = flag;
+	}
+
+	// ------------------------------------------------------------------------
 }

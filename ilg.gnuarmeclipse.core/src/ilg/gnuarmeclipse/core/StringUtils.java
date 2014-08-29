@@ -4,12 +4,35 @@ public class StringUtils {
 
 	public static String join(String[] strArray, String joiner) {
 
+		assert strArray != null;
 		StringBuffer sb = new StringBuffer();
+		int i = 0;
 		for (String item : strArray) {
-			sb.append(item);
-			sb.append(joiner);
+			if (i > 0) {
+				sb.append(joiner);
+			}
+			sb.append(item.trim());
+			++i;
 		}
-		return sb.toString().trim();
+		return sb.toString();
+	}
+
+	/**
+	 * If the string contains line separators, split the string in lines, trim
+	 * each line and then join everything back to a single string.
+	 * 
+	 * @param str a string that might span multiple lines.
+	 * @return a string with lines joined, or the original string.
+	 */
+	public static String joinMultiLine(String str) {
+
+		assert str != null;
+		String sa[] = str.split("\\r?\\n");
+		if (sa.length == 1) {
+			return str; // If no multi line, return original string
+		}
+
+		return join(sa, " ");
 	}
 
 	public static long convertHexLong(String hex) {
@@ -38,12 +61,14 @@ public class StringUtils {
 	}
 
 	public static String capitalize(String s) {
+		
 		if (s.length() == 0)
 			return s;
 		return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
 	}
 
 	public static String cosmetiseUrl(String url) {
+		
 		if (url.endsWith("/")) {
 			return url;
 		} else {
@@ -65,7 +90,5 @@ public class StringUtils {
 		}
 		return sizeString;
 	}
-
-
 
 }

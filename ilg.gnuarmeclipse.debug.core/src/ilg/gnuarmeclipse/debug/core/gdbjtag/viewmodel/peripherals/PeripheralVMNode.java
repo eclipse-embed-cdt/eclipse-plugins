@@ -12,11 +12,13 @@
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripherals;
 
-import java.util.concurrent.RejectedExecutionException;
+import ilg.gnuarmeclipse.debug.core.Activator;
+import ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel.IPeripheralDMContext;
+import ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel.IPeripheralsService;
+import ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel.PeripheralDMContext;
 
-import ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel.IPeripherals;
-import ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel.IPeripherals.IPeripheralDMContext;
-import ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel.PeripheralsService;
+import java.util.Map;
+import java.util.concurrent.RejectedExecutionException;
 
 import org.eclipse.cdt.dsf.concurrent.ConfinedToDsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.DsfRunnable;
@@ -34,15 +36,19 @@ import org.eclipse.cdt.dsf.ui.viewmodel.properties.IElementPropertiesProvider;
 import org.eclipse.cdt.dsf.ui.viewmodel.properties.IPropertiesUpdate;
 import org.eclipse.cdt.dsf.ui.viewmodel.properties.LabelAttribute;
 import org.eclipse.cdt.dsf.ui.viewmodel.properties.LabelColumnInfo;
+import org.eclipse.cdt.dsf.ui.viewmodel.properties.LabelImage;
 import org.eclipse.cdt.dsf.ui.viewmodel.properties.LabelText;
 import org.eclipse.cdt.dsf.ui.viewmodel.properties.PropertiesBasedLabelProvider;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.debug.internal.ui.viewers.model.provisional.ICheckUpdate;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IChildrenUpdate;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IElementEditor;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IElementLabelProvider;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.ILabelUpdate;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IModelDelta;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IPresentationContext;
+import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.TreePath;
@@ -57,6 +63,8 @@ public class PeripheralVMNode extends AbstractDMVMNode implements
 	public static final String PROPERTY_NAME = "prop.name";
 	public static final String PROPERTY_ADDRESS = "prop.address";
 	public static final String PROPERTY_DESCRIPTION = "prop.description";
+
+	public static final String PROPERTY_ISSYSTEM = "prop.isSystem";
 
 	private IElementLabelProvider fLabelProvider = createLabelProvider();
 
@@ -85,11 +93,12 @@ public class PeripheralVMNode extends AbstractDMVMNode implements
 	}
 
 	public PeripheralVMNode(AbstractDMVMProvider provider, DsfSession session) {
-		super(provider, session, IPeripherals.IPeripheralDMContext.class);
+		super(provider, session, IPeripheralDMContext.class);
 	}
 
 	@Override
 	public int getDeltaFlags(Object event) {
+
 		if ((event instanceof IRunControl.ISuspendedDMEvent)) {
 			return IModelDelta.CONTENT;
 		}
@@ -100,7 +109,11 @@ public class PeripheralVMNode extends AbstractDMVMNode implements
 	@Override
 	public void buildDelta(Object event, VMDelta parent, int nodeOffset,
 			RequestMonitor requestMonitor) {
-		// TODO Auto-generated method stub
+
+		if ((event instanceof IRunControl.ISuspendedDMEvent)) {
+			parent.setFlags(parent.getFlags() | IModelDelta.CONTENT);
+		}
+		requestMonitor.done();
 	}
 
 	@Override
@@ -142,6 +155,24 @@ public class PeripheralVMNode extends AbstractDMVMNode implements
 		System.out.println("update() labels " + this + ", " + updates.length
 				+ " objs");
 
+		{
+			for (int i = 0; i < updates.length; i++) {
+
+				ILabelUpdate update = updates[i];
+				IPresentationContext presentationContext = update
+						.getPresentationContext();
+				TreePath path = update.getElementPath();
+				if (((update instanceof ICheckUpdate))
+						&& (Boolean.TRUE.equals(presentationContext
+								.getProperty("org.eclipse.debug.ui.check"))))
+					try {
+						((ICheckUpdate) update).setChecked(
+								getChecked(path, presentationContext),
+								getGrayed(path, presentationContext));
+					} catch (CoreException e) {
+					}
+			}
+		}
 		// Update the tree content, using the updates
 		fLabelProvider.update(updates);
 	}
@@ -153,8 +184,8 @@ public class PeripheralVMNode extends AbstractDMVMNode implements
 				+ update);
 
 		DsfServicesTracker tracker = getServicesTracker();
-		IPeripherals peripheralsService = (IPeripherals) tracker
-				.getService(IPeripherals.class);
+		IPeripheralsService peripheralsService = (IPeripheralsService) tracker
+				.getService(IPeripheralsService.class);
 		System.out.println("got service " + peripheralsService);
 
 		IRunControl.IContainerDMContext containerDMContext = (IRunControl.IContainerDMContext) findDmcInPath(
@@ -189,10 +220,10 @@ public class PeripheralVMNode extends AbstractDMVMNode implements
 
 		for (final IPropertiesUpdate propertiesUpdate : propertiesUpdates) {
 
-			IPeripherals.IPeripheralDMContext peripheralDMContext = (IPeripherals.IPeripheralDMContext) findDmcInPath(
+			IPeripheralDMContext peripheralDMContext = (IPeripheralDMContext) findDmcInPath(
 					propertiesUpdate.getViewerInput(),
 					propertiesUpdate.getElementPath(),
-					IPeripherals.IPeripheralDMContext.class);
+					IPeripheralDMContext.class);
 
 			if (peripheralDMContext == null) {
 				handleFailedUpdate(propertiesUpdate);
@@ -221,8 +252,34 @@ public class PeripheralVMNode extends AbstractDMVMNode implements
 		LabelAttribute labelAttributes[];
 		LabelColumnInfo labelColumnInfo;
 
-		labelAttributes = new LabelAttribute[] { new LabelText("{0}",
-				new String[] { PROPERTY_NAME }) };
+		LabelImage labelImage = new LabelImage() {
+
+			@Override
+			public void updateAttribute(ILabelUpdate update, int columnIndex,
+					IStatus status, Map<String, Object> properties) {
+
+				ImageDescriptor descriptor = null;
+				Boolean isSystem = (Boolean) properties.get(PROPERTY_ISSYSTEM);
+				if (isSystem != null && isSystem.booleanValue()) {
+					descriptor = Activator.imageDescriptorFromPlugin(
+							Activator.PLUGIN_ID, "icons/system_peripheral.png");
+				} else {
+					descriptor = Activator.imageDescriptorFromPlugin(
+							Activator.PLUGIN_ID, "icons/peripheral.png");
+				}
+
+				if (descriptor != null) {
+					update.setImageDescriptor(descriptor, columnIndex);
+				}
+			}
+		};
+
+		// The PROPERTY_ISSYSTEM was added, although not used here, because
+		// it needs to be referred somewhere to be available for tests in the
+		// above updateAttribute().
+		labelAttributes = new LabelAttribute[] {
+				new LabelText("{0}", new String[] { PROPERTY_NAME,
+						PROPERTY_ISSYSTEM }), labelImage };
 		labelColumnInfo = new LabelColumnInfo(labelAttributes);
 
 		// Define content for "Peripheral" column
@@ -262,7 +319,7 @@ public class PeripheralVMNode extends AbstractDMVMNode implements
 	 *            the data model context.
 	 */
 	protected void setProperties(IPropertiesUpdate propertiesUpdate,
-			IPeripherals.IPeripheralDMContext peripheralDMContext) {
+			IPeripheralDMContext peripheralDMContext) {
 
 		assert peripheralDMContext != null;
 
@@ -273,6 +330,9 @@ public class PeripheralVMNode extends AbstractDMVMNode implements
 		propertiesUpdate.setProperty(PROPERTY_DESCRIPTION,
 				peripheralDMContext.getDescription());
 
+		propertiesUpdate.setProperty(PROPERTY_ISSYSTEM, new Boolean(
+				peripheralDMContext.isSystem()));
+
 	}
 
 	protected boolean getChecked(TreePath treePath,
@@ -281,10 +341,15 @@ public class PeripheralVMNode extends AbstractDMVMNode implements
 		Object pathSegment = treePath.getLastSegment();
 		if ((pathSegment instanceof PeripheralVMContext)) {
 			PeripheralVMContext peripheralVMContext = (PeripheralVMContext) pathSegment;
-			PeripheralsService.PeripheralDMContext peripheralDMContext = (PeripheralsService.PeripheralDMContext) peripheralVMContext
+			PeripheralDMContext peripheralDMContext = (PeripheralDMContext) peripheralVMContext
 					.getDMContext();
 			return peripheralDMContext.isShown();
 		}
+		return false;
+	}
+
+	protected boolean getGrayed(TreePath treePath,
+			IPresentationContext presentationContext) throws CoreException {
 		return false;
 	}
 

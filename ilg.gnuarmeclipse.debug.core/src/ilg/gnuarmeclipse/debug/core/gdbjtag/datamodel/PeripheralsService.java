@@ -42,7 +42,6 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
-import org.eclipse.cdt.dsf.datamodel.AbstractDMContext;
 import org.eclipse.cdt.dsf.datamodel.IDMContext;
 import org.eclipse.cdt.dsf.debug.service.IRunControl.IContainerDMContext;
 import org.eclipse.cdt.dsf.debug.service.command.ICommandControlService;
@@ -65,7 +64,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 public class PeripheralsService extends AbstractDsfService implements
-		IPeripherals, IMemoryBlockListener {
+		IPeripheralsService, IMemoryBlockListener {
 
 	private ICommandControlService fCommandControl;
 	private PeripheralDMContext[] fPeripheralsDMContexts = null;
@@ -114,7 +113,7 @@ public class PeripheralsService extends AbstractDsfService implements
 		// Used in PeripheralVMNode by interface name.
 		register(
 				new String[] { IMemoryBlockListener.class.getName(),
-						IPeripherals.class.getName(),
+						IPeripheralsService.class.getName(),
 						PeripheralsService.class.getName() }, new Hashtable());
 
 		System.out.println("PeripheralsService registered " + this);
@@ -206,38 +205,18 @@ public class PeripheralsService extends AbstractDsfService implements
 		dataRequestMonitor.done();
 	}
 
-	private IPeripherals.IPeripheralDMContext[] makePeripheralsContexts(
-			IDMContext parentIDMContext, PeripheralDMNode[] rawData) {
-
-		if (rawData != null) {
-
-			DsfSession session = fCommandControl.getSession();
-
-			fPeripheralsDMContexts = new PeripheralDMContext[rawData.length];
-			for (int i = 0; i < fPeripheralsDMContexts.length; i++) {
-				fPeripheralsDMContexts[i] = new PeripheralDMContext(session,
-						new IDMContext[] { parentIDMContext }, rawData[i]);
-			}
-			Arrays.sort(fPeripheralsDMContexts);
-		} else {
-			fPeripheralsDMContexts = new PeripheralDMContext[0];
-		}
-		return fPeripheralsDMContexts;
-	}
-
-	private IPeripherals.IPeripheralDMContext[] makePeripheralsContexts(
+	private IPeripheralDMContext[] makePeripheralsContexts(
 			IDMContext parentIDMContext, Node tree) {
 
 		if (tree != null && tree.hasChildren()) {
-
-			DsfSession session = fCommandControl.getSession();
 
 			fPeripheralsDMContexts = new PeripheralDMContext[tree.getChildren()
 					.size()];
 			int i = 0;
 			for (Leaf child : tree.getChildren()) {
-				fPeripheralsDMContexts[i] = new PeripheralDMContext(session,
-						new IDMContext[] { parentIDMContext }, child);
+				PeripheralDMNode node = new PeripheralDMNode(child);
+				fPeripheralsDMContexts[i] = new PeripheralDMContext(this,
+						new IDMContext[] { parentIDMContext }, node);
 				++i;
 			}
 			Arrays.sort(fPeripheralsDMContexts);
@@ -266,97 +245,13 @@ public class PeripheralsService extends AbstractDsfService implements
 
 	// ------------------------------------------------------------------------
 
-	/**
-	 * Peripheral data context, represents a handle to a chunk of data in the
-	 * Data Model.
-	 * 
-	 */
-	public class PeripheralDMContext extends AbstractDMContext implements
-			IPeripherals.IPeripheralDMContext, Comparable<PeripheralDMContext> {
+	public void displayPeripheral(final IWorkbenchWindow workbenchWindow,
+			final PeripheralDMContext peripheralDMContext,
+			final boolean isChecked) {
 
-		private PeripheralDMNode fInstance;
+		System.out.println("displayPeripheral()");
 
-		public PeripheralDMContext(DsfSession session, IDMContext[] parents,
-				PeripheralDMNode instance) {
-
-			super(session, parents);
-			fInstance = instance;
-		}
-
-		public PeripheralDMContext(DsfSession session, IDMContext[] parents,
-				Leaf instance) {
-
-			super(session, parents);
-
-			fInstance = new PeripheralDMNode(instance.getName(),
-					instance.getProperty("address", ""), 0x123,
-					instance.getDescription());
-		}
-
-		@Override
-		public int compareTo(PeripheralDMContext context) {
-
-			// The names are unique, use them for sorting
-			return getName().compareTo(context.getName());
-		}
-
-		@Override
-		public String getName() {
-			return fInstance.getName();
-		}
-
-		@Override
-		public String getAddress() {
-			return fInstance.getAddress();
-		}
-
-		@Override
-		public long getLength() {
-			return fInstance.getLength();
-		}
-
-		@Override
-		public String getDescription() {
-			return fInstance.getDescription();
-		}
-
-		@Override
-		public boolean isEnabled() {
-			return true;
-		}
-
-		@Override
-		public void setEnabled(boolean flag) {
-			;
-		}
-
-		@Override
-		public boolean equals(Object obj) {
-			if (obj instanceof PeripheralDMContext) {
-
-				PeripheralDMContext comp = (PeripheralDMContext) obj;
-
-				return baseEquals(obj) && fInstance.equals(comp.fInstance);
-			}
-			return false;
-		}
-
-		@Override
-		public int hashCode() {
-			return baseHashCode() + fInstance.hashCode();
-		}
-
-		@Override
-		public String toString() {
-			return fInstance + ", " + getSessionId();
-
-		}
-
-		public boolean isShown() {
-			// TODO Auto-generated method stub
-			return true;
-		}
-
+		// TODO: add content
 	}
 
 	// ------------------------------------------------------------------------

@@ -38,7 +38,7 @@ public class PeripheralsColumnPresentation implements IColumnPresentation2 {
 	public static final String COLUMN_ADDRESS_ID = "column.address";
 	public static final String COLUMN_DESCRIPTION_ID = "column.description";
 
-	private static final int COLUMN_PERIPHERAL_SIZE = 130;
+	private static final int COLUMN_PERIPHERAL_SIZE = 150;
 	private static final int COLUMN_ADDRESS_SIZE = 90;
 	private static final int COLUMN_DESCRIPTION_SIZE = 300;
 

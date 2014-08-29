@@ -1,6 +1,6 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
-import ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel.IPeripherals;
+import ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel.IPeripheralsService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -85,8 +85,8 @@ public class FinalLaunchSequence_7_2 extends FinalLaunchSequence {
 
 		GdbLaunch launch = ((GdbLaunch) this.fSession
 				.getModelAdapter(ILaunch.class));
-		IPeripherals service = (IPeripherals) launch.getServiceFactory()
-				.createService(IPeripherals.class, launch.getSession(),
+		IPeripheralsService service = (IPeripheralsService) launch.getServiceFactory()
+				.createService(IPeripheralsService.class, launch.getSession(),
 						new Object[0]);
 		System.out.println("stepCreatePeripheralService() " + service);
 		service.initialize(rm);

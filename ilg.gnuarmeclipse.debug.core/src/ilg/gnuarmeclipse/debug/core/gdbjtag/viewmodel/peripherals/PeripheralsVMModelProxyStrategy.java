@@ -12,6 +12,8 @@
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripherals;
 
+import ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel.PeripheralDMContext;
+
 import org.eclipse.cdt.dsf.ui.viewmodel.AbstractVMProvider;
 import org.eclipse.cdt.dsf.ui.viewmodel.DefaultVMModelProxyStrategy;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.ICheckboxModelProxy;
@@ -42,7 +44,19 @@ public class PeripheralsVMModelProxyStrategy extends
 	public boolean setChecked(IPresentationContext context, Object viewerInput,
 			TreePath path, boolean checked) {
 		// TODO Auto-generated method stub
-		System.out.println("setChecked()");
+		System.out.println("setChecked(" + checked + ")");
+
+		Object segment = path.getLastSegment();
+		if ((segment instanceof PeripheralVMNode.PeripheralVMContext)) {
+			PeripheralVMNode.PeripheralVMContext peripheralVMContext = (PeripheralVMNode.PeripheralVMContext) segment;
+			PeripheralDMContext peripheralDMContext = (PeripheralDMContext) peripheralVMContext
+					.getDMContext();
+			peripheralDMContext.setChecked(checked);
+			peripheralDMContext.getPeripheralsService().displayPeripheral(
+					context.getWindow(), peripheralDMContext,
+					peripheralDMContext.isChecked());
+			return checked;
+		}
 		return false;
 	}
 
