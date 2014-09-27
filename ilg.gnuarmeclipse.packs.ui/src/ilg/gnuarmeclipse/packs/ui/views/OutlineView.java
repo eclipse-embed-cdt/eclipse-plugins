@@ -12,6 +12,7 @@
 package ilg.gnuarmeclipse.packs.ui.views;
 
 import ilg.gnuarmeclipse.core.EclipseUtils;
+import ilg.gnuarmeclipse.packs.core.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
@@ -19,7 +20,6 @@ import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DataManager;
-import ilg.gnuarmeclipse.packs.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.jobs.ParsePdscRunnable;
 import ilg.gnuarmeclipse.packs.ui.Activator;
 import ilg.gnuarmeclipse.packs.ui.IconUtils;

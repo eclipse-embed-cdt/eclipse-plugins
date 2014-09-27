@@ -12,9 +12,6 @@ import java.io.OutputStream;
 import java.io.PushbackInputStream;
 import java.net.URL;
 import java.net.URLConnection;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
 
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.ResourcesPlugin;

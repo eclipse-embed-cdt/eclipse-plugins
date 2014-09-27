@@ -14,10 +14,10 @@ package ilg.gnuarmeclipse.packs.jobs;
 import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.cmsis.PdscParserFull;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
+import ilg.gnuarmeclipse.packs.core.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
-import ilg.gnuarmeclipse.packs.data.PacksStorage;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -29,16 +29,16 @@ import org.eclipse.ui.console.MessageConsoleStream;
 
 public class ParsePdscRunnable implements IRunnableWithProgress {
 
-	private static boolean sfRunning = false;
+	private static boolean fgRunning = false;
 
-	private MessageConsoleStream sfOut;
-	private PackNode sfVersionNode;
+	private MessageConsoleStream fgOut;
+	private PackNode fgVersionNode;
 
 	public ParsePdscRunnable(String name, PackNode versionNode) {
 
-		sfOut = ConsoleStream.getConsoleOut();
+		fgOut = ConsoleStream.getConsoleOut();
 
-		sfVersionNode = versionNode;
+		fgVersionNode = versionNode;
 	}
 
 	@Override
@@ -51,23 +51,23 @@ public class ParsePdscRunnable implements IRunnableWithProgress {
 			return;
 		}
 
-		if (sfRunning) {
+		if (fgRunning) {
 			return;
 		}
-		sfRunning = true;
+		fgRunning = true;
 		// m_monitor = monitor;
 
 		long beginTime = System.currentTimeMillis();
 
-		sfOut.println();
-		sfOut.println(ilg.gnuarmeclipse.packs.core.Utils.getCurrentDateTime());
+		fgOut.println();
+		fgOut.println(ilg.gnuarmeclipse.packs.core.Utils.getCurrentDateTime());
 
-		String destFolder = sfVersionNode.getProperty(Property.DEST_FOLDER);
-		String pdscName = sfVersionNode.getProperty(Property.PDSC_NAME);
+		String destFolder = fgVersionNode.getProperty(Property.DEST_FOLDER);
+		String pdscName = fgVersionNode.getProperty(Property.PDSC_NAME);
 
 		IPath path = folderPath.append(destFolder).append(pdscName);
 
-		sfOut.println("Parsing \"" + path.toString() + "\"...");
+		fgOut.println("Parsing \"" + path.toString() + "\"...");
 
 		Node outlineNode = null;
 		try {
@@ -78,10 +78,10 @@ public class ParsePdscRunnable implements IRunnableWithProgress {
 			// Required to resolve path for actions
 			outlineNode.putProperty(Property.DEST_FOLDER, destFolder);
 
-			sfVersionNode.setOutline(outlineNode);
-			PackNode packNode = (PackNode) sfVersionNode.getParent();
+			fgVersionNode.setOutline(outlineNode);
+			PackNode packNode = (PackNode) fgVersionNode.getParent();
 			if (packNode.getFirstChild().getName()
-					.equals(sfVersionNode.getName())) {
+					.equals(fgVersionNode.getName())) {
 				// If most recent child, make the outline available for the
 				// package node too.
 				packNode.setOutline(outlineNode);
@@ -89,13 +89,13 @@ public class ParsePdscRunnable implements IRunnableWithProgress {
 
 			// Parse examples again, with full outlines
 			// (will reuse existing example nodes)
-			pdsc.parseExamples(sfVersionNode);
+			pdsc.parseExamples(fgVersionNode);
 
 		} catch (FileNotFoundException e) {
-			sfOut.println("Failed: " + e.toString());
+			fgOut.println("Failed: " + e.toString());
 		} catch (Exception e) {
 			Activator.log(e);
-			sfOut.println("Failed: " + e.toString());
+			fgOut.println("Failed: " + e.toString());
 		}
 
 		long endTime = System.currentTimeMillis();
@@ -103,9 +103,9 @@ public class ParsePdscRunnable implements IRunnableWithProgress {
 		if (duration == 0) {
 			duration = 1;
 		}
-		sfOut.println("Parse completed in " + duration + "ms.");
+		fgOut.println("Parse completed in " + duration + "ms.");
 
-		sfRunning = false;
+		fgRunning = false;
 		return;
 	}
 

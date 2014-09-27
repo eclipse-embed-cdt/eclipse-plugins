@@ -21,15 +21,15 @@ public class ConsoleStream {
 
 	public static String CONSOLE_NAME = "GNU ARM Eclipse Packs console";
 
-	private static MessageConsoleStream sfConsoleOutput;
+	private static MessageConsoleStream fgConsoleOutput;
 
 	public static MessageConsoleStream getConsoleOut() {
 
-		if (sfConsoleOutput == null) {
-			sfConsoleOutput = findConsole(CONSOLE_NAME).newMessageStream();
+		if (fgConsoleOutput == null) {
+			fgConsoleOutput = findConsole(CONSOLE_NAME).newMessageStream();
 		}
 
-		return sfConsoleOutput;
+		return fgConsoleOutput;
 	}
 
 	public static MessageConsole findConsole(String name) {

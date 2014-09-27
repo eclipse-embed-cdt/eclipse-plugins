@@ -16,7 +16,6 @@ import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
-import ilg.gnuarmeclipse.packs.data.Utils;
 
 import java.io.File;
 import java.io.IOException;

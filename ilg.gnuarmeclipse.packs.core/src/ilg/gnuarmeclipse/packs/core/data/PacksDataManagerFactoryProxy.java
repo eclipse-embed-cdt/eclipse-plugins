@@ -18,7 +18,19 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.Platform;
 
-public class DataManagerFactoryProxy implements IDataManagerFactory,
+/**
+ * This factory proxy allows plug-ins that do not depend on the packs plug-in to
+ * get a packs data manager reference without having to use a hard dependency on
+ * it.
+ * <p>
+ * Usage:
+ * 
+ * <pre>
+ * IPacksDataManager dataManager = PacksDataManagerFactoryProxy.getInstance()
+ * 		.createDataManager();
+ * </pre>
+ */
+public class PacksDataManagerFactoryProxy implements IPacksDataManagerFactory,
 		IAvailableSupport {
 
 	private static final String FACTORY_ELEMENT = "factory";
@@ -26,26 +38,31 @@ public class DataManagerFactoryProxy implements IDataManagerFactory,
 
 	// ------------------------------------------------------------------------
 
-	private static DataManagerFactoryProxy sfInstance;
+	private static PacksDataManagerFactoryProxy fgInstance;
 
-	public static DataManagerFactoryProxy getInstance() {
+	public static PacksDataManagerFactoryProxy getInstance() {
 
-		if (sfInstance == null) {
-			sfInstance = new DataManagerFactoryProxy();
+		if (fgInstance == null) {
+			fgInstance = new PacksDataManagerFactoryProxy();
 		}
-		return sfInstance;
+		return fgInstance;
 	}
 
 	// ------------------------------------------------------------------------
 
-	private IDataManager fDataManager;
+	private IPacksDataManager fDataManager;
 
-	public DataManagerFactoryProxy() {
+	public PacksDataManagerFactoryProxy() {
 		fDataManager = null;
 	}
 
+	/**
+	 * Create a packs data manager using the extension point.
+	 * 
+	 * @return a reference to the data manager or null.
+	 */
 	@Override
-	public IDataManager createDataManager() {
+	public IPacksDataManager createDataManager() {
 
 		if (fDataManager != null) {
 			return fDataManager;
@@ -71,13 +88,13 @@ public class DataManagerFactoryProxy implements IDataManagerFactory,
 			return null;
 		}
 
-		IDataManagerFactory factory;
+		IPacksDataManagerFactory factory;
 		try {
 			Object obj = configElement
 					.createExecutableExtension(CLASS_ATTRIBUTE);
 
-			if (obj instanceof IDataManagerFactory) {
-				factory = (IDataManagerFactory) obj;
+			if (obj instanceof IPacksDataManagerFactory) {
+				factory = (IPacksDataManagerFactory) obj;
 				fDataManager = factory.createDataManager();
 
 				System.out

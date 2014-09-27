@@ -11,10 +11,10 @@
 
 package ilg.gnuarmeclipse.packs.core.data;
 
-public interface IDataManagerFactory {
+public interface IPacksDataManagerFactory {
 
 	// Create a DataManager object
-	public IDataManager createDataManager();
+	public IPacksDataManager createDataManager();
 	
 	public void dispose();
 

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension-point id="data" name="Data Manager" schema="schema/data.exsd"/>
+   <extension-point id="data" name="Packs Data Manager" schema="schema/packs_data.exsd"/>
  
     <extension
          point="org.eclipse.core.runtime.preferences">

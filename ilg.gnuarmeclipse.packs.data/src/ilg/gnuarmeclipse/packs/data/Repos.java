@@ -13,6 +13,7 @@ package ilg.gnuarmeclipse.packs.data;
 
 import ilg.gnuarmeclipse.core.Xml;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
+import ilg.gnuarmeclipse.packs.core.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.PackNode;
@@ -50,15 +51,14 @@ public class Repos {
 	public static final String[] TYPES = { CMSIS_PACK_TYPE,
 			XCDL_CMSIS_PACK_TYPE };
 
-	private static Repos sfInstance;
+	private static final Repos fgInstance;
 
-	public static synchronized Repos getInstance() {
+	static {
+		fgInstance = new Repos();
+	}
 
-		if (sfInstance == null) {
-			sfInstance = new Repos();
-		}
-
-		return sfInstance;
+	public static Repos getInstance() {
+		return fgInstance;
 	}
 
 	// ------------------------------------------------------------------------
@@ -240,11 +240,9 @@ public class Repos {
 				writer.println("  <repository>");
 
 				writer.println("    <type>"
-						+ Xml.xmlEscape((String) site.get("type"))
-						+ "</type>");
+						+ Xml.xmlEscape((String) site.get("type")) + "</type>");
 				writer.println("    <name>"
-						+ Xml.xmlEscape((String) site.get("name"))
-						+ "</name>");
+						+ Xml.xmlEscape((String) site.get("name")) + "</name>");
 				writer.println("    <url>"
 						+ Xml.xmlEscape((String) site.get("url")) + "</url>");
 				writer.println("  </repository>");

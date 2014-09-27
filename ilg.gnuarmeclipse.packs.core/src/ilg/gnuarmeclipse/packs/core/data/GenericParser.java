@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs.cmsis;
+package ilg.gnuarmeclipse.packs.core.data;
 
 import ilg.gnuarmeclipse.core.Xml;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
@@ -116,7 +116,11 @@ public class GenericParser {
 
 			NamedNodeMap attributes = el.getAttributes();
 			if (attributes == null || attributes.getLength() == 0) {
-				parent.putNonEmptyProperty(type, content);
+				if ("description".equals(type)) {
+					parent.setDescription(content);
+				} else {
+					parent.putNonEmptyProperty(type, content);
+				}
 				return;
 			}
 			node = Leaf.addNewChild(parent, type);

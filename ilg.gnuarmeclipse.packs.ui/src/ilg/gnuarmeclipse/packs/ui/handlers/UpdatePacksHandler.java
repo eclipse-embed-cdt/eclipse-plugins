@@ -15,11 +15,11 @@ import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.packs.cmsis.Index;
 import ilg.gnuarmeclipse.packs.cmsis.PdscParserForContent;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
+import ilg.gnuarmeclipse.packs.core.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DataManager;
-import ilg.gnuarmeclipse.packs.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.data.Repos;
 import ilg.gnuarmeclipse.packs.data.Utils;
 import ilg.gnuarmeclipse.packs.ui.Activator;
@@ -247,7 +247,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 		Node contentRoot = new Node(Type.REPOSITORY);
 
 		String domainName = fRepos.getDomaninNameFromUrl(repoUrl);
-		domainName = StringUtils.capitalize(domainName);
+		domainName = StringUtils.capitalizeFirst(domainName);
 
 		contentRoot.setName(domainName);
 		contentRoot.setDescription(domainName + " CMSIS packs repository");

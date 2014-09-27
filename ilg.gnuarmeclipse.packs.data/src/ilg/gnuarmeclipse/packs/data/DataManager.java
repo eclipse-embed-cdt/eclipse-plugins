@@ -16,7 +16,8 @@ import ilg.gnuarmeclipse.packs.cmsis.PdscGenericParser;
 import ilg.gnuarmeclipse.packs.cmsis.PdscTreeParserForBuild;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.data.DurationMonitor;
-import ilg.gnuarmeclipse.packs.core.data.IDataManager;
+import ilg.gnuarmeclipse.packs.core.data.IPacksDataManager;
+import ilg.gnuarmeclipse.packs.core.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.core.tree.AbstractTreePreOrderIterator;
 import ilg.gnuarmeclipse.packs.core.tree.ITreeIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
@@ -78,19 +79,18 @@ import org.w3c.dom.Document;
 
 // TODO: add synchronisation
 
-public class DataManager implements IDataManager {
+public class DataManager implements IPacksDataManager {
 
 	// ------------------------------------------------------------------------
 
-	private static DataManager sfInstance;
+	private static final DataManager fgInstance;
 
-	public static synchronized DataManager getInstance() {
+	static {
+		fgInstance = new DataManager();
+	}
 
-		if (sfInstance == null) {
-			sfInstance = new DataManager();
-		}
-
-		return sfInstance;
+	public static DataManager getInstance() {
+		return fgInstance;
 	}
 
 	// ------------------------------------------------------------------------

@@ -15,8 +15,8 @@ import ilg.gnuarmeclipse.core.CProjectPacksStorage;
 import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.managedbuild.cross.IDs;
 import ilg.gnuarmeclipse.packs.core.Activator;
-import ilg.gnuarmeclipse.packs.core.data.DataManagerFactoryProxy;
-import ilg.gnuarmeclipse.packs.core.data.IDataManager;
+import ilg.gnuarmeclipse.packs.core.data.PacksDataManagerFactoryProxy;
+import ilg.gnuarmeclipse.packs.core.data.IPacksDataManager;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
@@ -308,7 +308,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 	private Table fMemoryTable;
 	private Button fMemoryEditButton;
 
-	private IDataManager fDataManager;
+	private IPacksDataManager fDataManager;
 	private Leaf fSelectedDeviceNode;
 	private Leaf fSelectedBoardDeviceNode;
 
@@ -343,7 +343,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 		fConfig = getCfg();
 		System.out.println("Devices.createControls() fConfig=" + fConfig);
 
-		fDataManager = DataManagerFactoryProxy.getInstance()
+		fDataManager = PacksDataManagerFactoryProxy.getInstance()
 				.createDataManager();
 
 		// usercomp is defined in parent class

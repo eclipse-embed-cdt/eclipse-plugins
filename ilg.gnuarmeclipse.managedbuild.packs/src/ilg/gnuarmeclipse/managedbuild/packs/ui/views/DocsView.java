@@ -14,6 +14,7 @@ package ilg.gnuarmeclipse.managedbuild.packs.ui.views;
 import ilg.gnuarmeclipse.core.CProjectPacksStorage;
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.managedbuild.cross.IDs;
+import ilg.gnuarmeclipse.packs.core.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.core.tree.AbstractTreePreOrderIterator;
 import ilg.gnuarmeclipse.packs.core.tree.ITreeIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
@@ -24,7 +25,6 @@ import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DataManager;
 import ilg.gnuarmeclipse.packs.data.DataManagerEvent;
 import ilg.gnuarmeclipse.packs.data.IDataManagerListener;
-import ilg.gnuarmeclipse.packs.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.ui.IconUtils;
 
 import java.io.IOException;

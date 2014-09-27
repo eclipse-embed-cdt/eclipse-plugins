@@ -11,12 +11,12 @@
 
 package ilg.gnuarmeclipse.packs.xcdl;
 
+import ilg.gnuarmeclipse.packs.core.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DocumentParseException;
-import ilg.gnuarmeclipse.packs.data.PacksStorage;
 
 import java.util.HashMap;
 import java.util.HashSet;

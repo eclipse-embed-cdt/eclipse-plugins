@@ -11,8 +11,8 @@
 
 package ilg.gnuarmeclipse.packs.xcdl;
 
+import ilg.gnuarmeclipse.packs.core.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
-import ilg.gnuarmeclipse.packs.data.PacksStorage;
 
 import java.util.Map;
 import java.util.TreeMap;

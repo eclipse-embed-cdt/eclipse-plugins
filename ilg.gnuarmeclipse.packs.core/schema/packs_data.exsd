@@ -3,7 +3,7 @@
 <schema targetNamespace="ilg.gnuarmeclipse.packs.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="ilg.gnuarmeclipse.packs.core" id="data" name="Data Manager"/>
+         <meta.schema plugin="ilg.gnuarmeclipse.packs.core" id="data" name="Packs Data Manager"/>
       </appinfo>
       <documentation>
          This extension point provides decoupled access to the Packs data manager from the managed build and the debug plug-ins.
@@ -55,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":ilg.gnuarmeclipse.packs.core.data.IDataManagerFactory"/>
+                  <meta.attribute kind="java" basedOn=":ilg.gnuarmeclipse.packs.core.data.IPacksDataManagerFactory"/>
                </appinfo>
             </annotation>
          </attribute>

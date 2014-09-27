@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.cmsis;
 
+import ilg.gnuarmeclipse.packs.core.data.GenericParser;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 
 /**

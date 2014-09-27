@@ -180,7 +180,7 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 	}
 
 	// May return null!
-	private String getPropertyOrNull(String name) {
+	public String getPropertyOrNull(String name) {
 
 		if (fProperties == null) {
 			return null;
@@ -193,6 +193,14 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		return fProperties.get(name);
 	}
 
+	/**
+	 * Get property.
+	 * 
+	 * @param name
+	 *            a string with the property name.
+	 * @return a string with the value of the property, or an empty string if
+	 *         not found.
+	 */
 	public String getProperty(String name) {
 		return getProperty(name, "");
 	}
@@ -262,8 +270,8 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 	}
 
 	@Override
-	public int compareTo(Leaf o) {
-		return getName().compareTo(o.getName());
+	public int compareTo(Leaf comp) {
+		return getName().compareTo(comp.getName());
 	}
 
 	// ------------------------------------------------------------------------

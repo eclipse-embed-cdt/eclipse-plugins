@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs.data;
+package ilg.gnuarmeclipse.packs.core.data;
 
 import ilg.gnuarmeclipse.packs.core.Preferences;
 
@@ -30,7 +30,7 @@ public class PacksStorage {
 
 	public static final String INSTALLED_DEVICES_FILE_NAME = ".installed_devices_boards_books.xml";
 
-	private static IPath sfFolderPath = null;
+	private static IPath fgFolderPath = null;
 
 	// ------------------------------------------------------------------------
 
@@ -59,12 +59,12 @@ public class PacksStorage {
 	// Return the absolute 'Packages' path.
 	public static synchronized IPath getFolderPath() throws IOException {
 
-		if (sfFolderPath == null) {
+		if (fgFolderPath == null) {
 
-			sfFolderPath = new Path(getFolderPathString());
+			fgFolderPath = new Path(getFolderPathString());
 		}
 
-		return sfFolderPath;
+		return fgFolderPath;
 	}
 
 	// Return a string with the absolute full path of the folder used

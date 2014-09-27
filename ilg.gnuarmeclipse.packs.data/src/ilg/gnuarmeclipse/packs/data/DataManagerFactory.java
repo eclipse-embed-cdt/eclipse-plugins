@@ -11,17 +11,17 @@
 
 package ilg.gnuarmeclipse.packs.data;
 
-import ilg.gnuarmeclipse.packs.core.data.IDataManager;
-import ilg.gnuarmeclipse.packs.core.data.IDataManagerFactory;
+import ilg.gnuarmeclipse.packs.core.data.IPacksDataManager;
+import ilg.gnuarmeclipse.packs.core.data.IPacksDataManagerFactory;
 
-public class DataManagerFactory implements IDataManagerFactory {
+public class DataManagerFactory implements IPacksDataManagerFactory {
 
 	public DataManagerFactory() {
 		;
 	}
 
 	@Override
-	public IDataManager createDataManager() {
+	public IPacksDataManager createDataManager() {
 
 		// Return the static manager object
 		return DataManager.getInstance();

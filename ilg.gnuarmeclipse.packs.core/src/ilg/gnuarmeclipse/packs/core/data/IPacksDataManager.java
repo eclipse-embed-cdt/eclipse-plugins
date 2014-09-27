@@ -14,7 +14,7 @@ package ilg.gnuarmeclipse.packs.core.data;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 
-public interface IDataManager {
+public interface IPacksDataManager {
 
 	// TODO: add all functions when the interface is final.
 
@@ -56,4 +56,5 @@ public interface IDataManager {
 	 */
 	public Leaf findInstalledBoard(String boardVendorName, String boardName);
 
+	public String getDestinationFolder(Leaf node);
 }

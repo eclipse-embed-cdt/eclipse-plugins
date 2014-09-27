@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.packs.cmsis;
+package ilg.gnuarmeclipse.packs.core.data;
 
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 

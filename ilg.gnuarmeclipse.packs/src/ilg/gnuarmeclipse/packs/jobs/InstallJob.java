@@ -13,12 +13,12 @@ package ilg.gnuarmeclipse.packs.jobs;
 
 import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
+import ilg.gnuarmeclipse.packs.core.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DataManager;
-import ilg.gnuarmeclipse.packs.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.data.DataManagerEvent;
 import ilg.gnuarmeclipse.packs.data.Utils;
 
@@ -46,7 +46,7 @@ import org.eclipse.ui.console.MessageConsoleStream;
 
 public class InstallJob extends Job {
 
-	private static boolean sfRunning = false;
+	private static boolean fgRunning = false;
 
 	private MessageConsoleStream fOut;
 	private TreeSelection fSelection;
@@ -74,11 +74,11 @@ public class InstallJob extends Job {
 	@Override
 	protected IStatus run(IProgressMonitor monitor) {
 
-		if (sfRunning) {
+		if (fgRunning) {
 			return Status.CANCEL_STATUS;
 		}
 
-		sfRunning = true;
+		fgRunning = true;
 		fMonitor = monitor;
 
 		long beginTime = System.currentTimeMillis();
@@ -191,7 +191,7 @@ public class InstallJob extends Job {
 			status = Status.OK_STATUS;
 		}
 
-		sfRunning = false;
+		fgRunning = false;
 		return status;
 	}
 
