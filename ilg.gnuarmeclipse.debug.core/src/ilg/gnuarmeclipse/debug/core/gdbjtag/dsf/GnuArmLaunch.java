@@ -12,6 +12,8 @@
 package ilg.gnuarmeclipse.debug.core.gdbjtag.dsf;
 
 import ilg.gnuarmeclipse.debug.core.Activator;
+import ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel.PeripheralDMNode;
+import ilg.gnuarmeclipse.debug.core.gdbjtag.memory.PeripheralMemoryBlockRetrieval;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,10 +25,15 @@ import org.eclipse.cdt.dsf.concurrent.DefaultDsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.DsfRunnable;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
+import org.eclipse.cdt.dsf.debug.model.DsfMemoryBlockRetrieval;
+import org.eclipse.cdt.dsf.debug.service.IMemory;
+import org.eclipse.cdt.dsf.debug.service.IProcesses;
+import org.eclipse.cdt.dsf.debug.service.command.ICommandControlService;
 import org.eclipse.cdt.dsf.gdb.IGdbDebugConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.gdb.launching.GdbLaunch;
 import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
+import org.eclipse.cdt.dsf.mi.service.IMIProcesses;
 import org.eclipse.cdt.dsf.mi.service.command.AbstractCLIProcess;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;
@@ -35,6 +42,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.model.IMemoryBlockRetrieval;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
 
@@ -52,6 +60,7 @@ public class GnuArmLaunch extends GdbLaunch {
 	private DsfSession fSession;
 	private DsfServicesTracker fTracker;
 	private DefaultDsfExecutor fExecutor;
+	private DsfMemoryBlockRetrieval fMemRetrieval;
 
 	// ------------------------------------------------------------------------
 
@@ -63,6 +72,15 @@ public class GnuArmLaunch extends GdbLaunch {
 		fConfig = launchConfiguration;
 		fExecutor = (DefaultDsfExecutor) getDsfExecutor();
 		fSession = getSession();
+	}
+
+	private DsfServicesTracker getTracker() {
+
+		if (fTracker == null)
+			fTracker = new DsfServicesTracker(GdbPlugin.getBundleContext(),
+					fSession.getId());
+
+		return fTracker;
 	}
 
 	public void initialize() {
@@ -98,6 +116,44 @@ public class GnuArmLaunch extends GdbLaunch {
 	public void shutdownSession(final RequestMonitor rm) {
 
 		super.shutdownSession(rm);
+
+	}
+
+	public void initializeControl() throws CoreException {
+		super.initializeControl();
+
+		try {
+			fExecutor.submit(new Callable<Object>() {
+
+				public Object call() throws CoreException {
+					ICommandControlService commandControlService = (ICommandControlService) getTracker()
+							.getService(ICommandControlService.class);
+					IMIProcesses processes = (IMIProcesses) getTracker()
+							.getService(IMIProcesses.class);
+					if ((commandControlService != null) && (processes != null)) {
+
+						fMemRetrieval = new PeripheralMemoryBlockRetrieval(
+								"org.eclipse.cdt.dsf.gdb",
+								getLaunchConfiguration(), fSession);
+						fSession.registerModelAdapter(PeripheralDMNode.class,
+								fMemRetrieval);
+						fSession.registerModelAdapter(
+								IMemoryBlockRetrieval.class, fMemRetrieval);
+						IProcesses.IProcessDMContext processDMContext = processes
+								.createProcessContext(
+										commandControlService.getContext(), "");
+						IMemory.IMemoryDMContext memoryDMContext = (IMemory.IMemoryDMContext) processes
+								.createContainerContext(processDMContext, "");
+						fMemRetrieval.initialize(memoryDMContext);
+					}
+					return null;
+				}
+			}).get();
+		} catch (InterruptedException e) {
+			Activator.log(e);
+		} catch (ExecutionException e) {
+			Activator.log(e);
+		}
 
 	}
 
@@ -145,5 +201,4 @@ public class GnuArmLaunch extends GdbLaunch {
 	}
 
 	// ------------------------------------------------------------------------
-
 }

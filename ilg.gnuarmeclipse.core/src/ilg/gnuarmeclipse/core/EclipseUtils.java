@@ -11,14 +11,23 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.ide.IDE;
+import org.eclipse.ui.internal.WorkbenchWindow;
+import org.eclipse.ui.progress.UIJob;
 
 /**
  * Various utilities that use Eclipse global classes, grouped together more like
@@ -35,14 +44,17 @@ import org.eclipse.ui.ide.IDE;
  * <li>Plugin</li>
  * </ul>
  *
- * For debugging, use 
- * <pre>private static final boolean DEBUG_TWO =
+ * For debugging, use
+ * 
+ * <pre>
+ * private static final boolean DEBUG_TWO =
  *     ExamplesPlugin.getDefault().isDebugging() &&
  *        "true".equalsIgnoreCase(Platform.getDebugOption(
  *        "org.eclipse.faq.examples/debug/option2"));
  *  ...
  *  if (DEBUG_TWO)
- *     System.out.println("Debug statement two.");</pre>
+ *     System.out.println("Debug statement two.");
+ * </pre>
  * 
  * This will test two properties like
  * <ul>
@@ -66,6 +78,11 @@ public class EclipseUtils {
 	static public boolean isWindows() {
 		return System.getProperty(PROPERTY_OS_NAME).toLowerCase()
 				.startsWith(Platform.OS_WIN32);
+	}
+
+	static public boolean isWindowsXP() {
+		return System.getProperty(PROPERTY_OS_NAME).toLowerCase()
+				.equalsIgnoreCase("Windows XP");
 	}
 
 	static public boolean isLinux() {
@@ -174,6 +191,10 @@ public class EclipseUtils {
 		return part.getSite().getWorkbenchWindow().getActivePage();
 	}
 
+	public static Shell getShell() {
+		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
+	}
+
 	// ------------------------------------------------------------------------
 
 	public static IConfiguration getConfigurationFromDescription(
@@ -181,5 +202,93 @@ public class EclipseUtils {
 		return ManagedBuildManager
 				.getConfigurationForDescription(configDescription);
 	}
+
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Helper function to open an error dialog.
+	 * 
+	 * @param title
+	 * @param message
+	 * @param e
+	 */
+	static public void openError(final String title, final String message,
+			final Exception e) {
+		UIJob uiJob = new SystemUIJob("open error") { //$NON-NLS-1$
+
+			@Override
+			public IStatus runInUIThread(IProgressMonitor monitor) {
+				// open error for the exception
+				String msg = message;
+				if (e != null) {
+					msg = "\n" + e.getMessage();
+				}
+
+				MessageDialog.openError(getShell(), title, msg); //$NON-NLS-1$
+				return Status.OK_STATUS;
+			}
+		};
+		uiJob.schedule();
+	}
+
+	public static void ClearStatusMessage() {
+
+		Display.getDefault().syncExec(new Runnable() {
+
+			@SuppressWarnings("restriction")
+			public void run() {
+				IWorkbenchWindow window = PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow();
+				if (window instanceof WorkbenchWindow) {
+					WorkbenchWindow w = (WorkbenchWindow) window;
+					w.getStatusLineManager().setErrorMessage("");
+				}
+			}
+		});
+	}
+
+	/**
+	 * Shows status message in RCP
+	 * 
+	 * @param message
+	 *            message to be displayed
+	 * @param isError
+	 *            if its an error message or normal message
+	 */
+	public static void showStatusMessage(final String message) {
+
+		System.out.println(message);
+		Display.getDefault().syncExec(new Runnable() {
+
+			@SuppressWarnings("restriction")
+			public void run() {
+				IWorkbenchWindow window = PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow();
+				if (window instanceof WorkbenchWindow) {
+					WorkbenchWindow w = (WorkbenchWindow) window;
+					w.getStatusLineManager().setMessage(message);
+				}
+			}
+		});
+	}
+
+	public static void showStatusErrorMessage(final String message) {
+
+		System.out.println(message);
+		Display.getDefault().syncExec(new Runnable() {
+
+			@SuppressWarnings("restriction")
+			public void run() {
+				IWorkbenchWindow window = PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow();
+				if (window instanceof WorkbenchWindow) {
+					WorkbenchWindow w = (WorkbenchWindow) window;
+					w.getStatusLineManager().setErrorMessage("  " + message);
+				}
+			}
+		});
+	}
+
+	// ------------------------------------------------------------------------
 
 }

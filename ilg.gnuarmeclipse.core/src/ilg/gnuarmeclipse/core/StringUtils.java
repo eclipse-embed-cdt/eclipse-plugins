@@ -17,24 +17,6 @@ public class StringUtils {
 		return sb.toString();
 	}
 
-	/**
-	 * If the string contains line separators, split the string in lines, trim
-	 * each line and then join everything back to a single string.
-	 * 
-	 * @param str a string that might span multiple lines.
-	 * @return a string with lines joined, or the original string.
-	 */
-	public static String joinMultiLine(String str) {
-
-		assert str != null;
-		String sa[] = str.split("\\r?\\n");
-		if (sa.length == 1) {
-			return str; // If no multi line, return original string
-		}
-
-		return join(sa, " ");
-	}
-
 	public static long convertHexLong(String hex) {
 
 		boolean isNegative = false;
@@ -49,10 +31,6 @@ public class StringUtils {
 			hex = hex.substring(2);
 		}
 
-		if (hex.startsWith("A") || hex.startsWith("E")) {
-			System.out.println();
-		}
-
 		long value = Long.valueOf("0" + hex, 16);
 		if (isNegative)
 			value = -value;
@@ -60,15 +38,16 @@ public class StringUtils {
 		return value;
 	}
 
-	public static String capitalize(String s) {
-		
-		if (s.length() == 0)
+	public static String capitalizeFirst(String s) {
+
+		if (s.isEmpty()) {
 			return s;
+		}
 		return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
 	}
 
 	public static String cosmetiseUrl(String url) {
-		
+
 		if (url.endsWith("/")) {
 			return url;
 		} else {

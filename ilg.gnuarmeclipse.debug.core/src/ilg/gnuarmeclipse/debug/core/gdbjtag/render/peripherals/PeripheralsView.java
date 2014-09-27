@@ -10,7 +10,11 @@
  *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.core.gdbjtag.ui;
+package ilg.gnuarmeclipse.debug.core.gdbjtag.render.peripherals;
+
+import ilg.gnuarmeclipse.core.EclipseUtils;
+import ilg.gnuarmeclipse.core.SystemUIJob;
+import ilg.gnuarmeclipse.debug.core.gdbjtag.memory.PeripheralMemoryBlockExtension;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -25,6 +29,7 @@ import org.eclipse.debug.internal.ui.views.variables.VariablesView;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.IMemento;
 import org.eclipse.ui.progress.UIJob;
 
 @SuppressWarnings("restriction")
@@ -35,7 +40,7 @@ public class PeripheralsView extends VariablesView implements
 
 	public final static String PRESENTATION_CONTEXT_ID = "PeripheralsView";
 
-	private UIJob fRefreshUIjob = new UIJob(
+	private UIJob fRefreshUIjob = new SystemUIJob(
 			PeripheralsView.class.getSimpleName() + "#refreshUIjob") {
 
 		public IStatus runInUIThread(IProgressMonitor pm) {
@@ -47,7 +52,7 @@ public class PeripheralsView extends VariablesView implements
 	// ------------------------------------------------------------------------
 
 	public PeripheralsView() {
-		fRefreshUIjob.setSystem(true);
+		;
 	}
 
 	protected String getPresentationContextId() {
@@ -69,13 +74,35 @@ public class PeripheralsView extends VariablesView implements
 		DebugPlugin.getDefault().removeDebugEventListener(this);
 	}
 
+	// Contributed by IDebugEventSetListener
+
 	@Override
 	public void handleDebugEvents(DebugEvent[] events) {
-		System.out.print("handleDebugEvents() " + events.length);
+
+		// System.out
+		// .print("PeripheralsView.handleDebugEvents() " + events.length);
+		// for (int i = 0; i < events.length; ++i) {
+		// System.out.print(" " + events[i]);
+		// }
+		// System.out.println();
+
 		for (int i = 0; i < events.length; ++i) {
-			System.out.print(" " + events[i]);
+
+			// Currently there are no special events to be processed here, only
+			// cleanup actions are handled, the MODEL_SPECIFIC is no yet used.
+			if (events[i].getKind() == DebugEvent.TERMINATE) {
+
+				// Clear possible messages.
+				EclipseUtils.ClearStatusMessage();
+
+			} else if (events[i].getKind() == DebugEvent.MODEL_SPECIFIC) {
+				// Currently no longer fired
+				Object object = events[i].getSource();
+				if ((object instanceof PeripheralMemoryBlockExtension)) {
+					refresh();
+				}
+			}
 		}
-		System.out.println();
 	}
 
 	// ------------------------------------------------------------------------
@@ -88,14 +115,41 @@ public class PeripheralsView extends VariablesView implements
 		DebugPlugin.getDefault().getMemoryBlockManager().removeListener(this);
 	}
 
-	@Override
-	public void memoryBlocksAdded(IMemoryBlock[] memory) {
-		System.out.println("memoryBlocksAdded() " + memory);
-	}
+	// Contributed by IMemoryBlockListener
 
 	@Override
-	public void memoryBlocksRemoved(IMemoryBlock[] memory) {
-		System.out.println("memoryBlocksRemoved() " + memory);
+	public void memoryBlocksAdded(IMemoryBlock[] memoryBlocks) {
+
+		// These are notifications that the memory blocks were already added
+		for (int i = 0; i < memoryBlocks.length; i++) {
+			if ((memoryBlocks[i] instanceof PeripheralMemoryBlockExtension)) {
+
+				PeripheralMemoryBlockExtension memoryBlockExtension = (PeripheralMemoryBlockExtension) memoryBlocks[i];
+				System.out.println("PeripheralsView.memoryBlocksAdded() [] "
+						+ memoryBlockExtension);
+			}
+		}
+	}
+
+	// Contributed by IMemoryBlockListener
+
+	@Override
+	public void memoryBlocksRemoved(IMemoryBlock[] memoryBlocks) {
+
+		// These are notifications that the memory blocks were already removed
+		for (int i = 0; i < memoryBlocks.length; i++) {
+			if ((memoryBlocks[i] instanceof PeripheralMemoryBlockExtension)) {
+
+				PeripheralMemoryBlockExtension memoryBlockExtension = (PeripheralMemoryBlockExtension) memoryBlocks[i];
+				System.out.println("PeripheralsView.memoryBlocksRemoved() [] "
+						+ memoryBlockExtension);
+
+			}
+		}
+
+		// Update the check box status when the memory block is removed from the
+		// monitor view.
+		refresh();
 	}
 
 	// ------------------------------------------------------------------------
@@ -103,13 +157,15 @@ public class PeripheralsView extends VariablesView implements
 	@Override
 	public Viewer createViewer(Composite composite) {
 
-		TreeModelViewer treeModelViewer = (TreeModelViewer) super
+		TreeModelViewer viewer = (TreeModelViewer) super
 				.createViewer(composite);
 
 		addMemoryBlockListener();
 		addDebugEventListener();
-		// initStates(getMemento());
-		return treeModelViewer;
+
+		initStates(getMemento());
+
+		return viewer;
 	}
 
 	@Override
@@ -117,6 +173,7 @@ public class PeripheralsView extends VariablesView implements
 
 		removeDebugEventListener();
 		removeMemoryBlockListener();
+
 		super.dispose();
 	}
 
@@ -130,6 +187,20 @@ public class PeripheralsView extends VariablesView implements
 	@Override
 	public Object getAdapter(Class required) {
 		return super.getAdapter(required);
+	}
+
+	// ------------------------------------------------------------------------
+
+	private void initStates(IMemento memento) {
+		;
+	}
+
+	public void saveState(IMemento memento) {
+		super.saveState(memento);
+	}
+
+	public void saveViewerState(IMemento memento) {
+		super.saveViewerState(memento);
 	}
 
 	// ------------------------------------------------------------------------

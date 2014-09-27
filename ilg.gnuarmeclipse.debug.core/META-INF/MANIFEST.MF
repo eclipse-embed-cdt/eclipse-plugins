@@ -5,6 +5,7 @@ Bundle-SymbolicName: ilg.gnuarmeclipse.debug.core;singleton:=true
 Bundle-Version: 1.1.1.qualifier
 Bundle-Activator: ilg.gnuarmeclipse.debug.core.Activator
 Require-Bundle: ilg.gnuarmeclipse.core,
+ ilg.gnuarmeclipse.packs.core,
  org.eclipse.osgi,
  org.eclipse.core.runtime,
  org.eclipse.ui,
@@ -19,16 +20,17 @@ Require-Bundle: ilg.gnuarmeclipse.core,
  org.eclipse.cdt.debug.core,
  org.eclipse.core.variables,
  org.eclipse.cdt.managedbuilder.core,
- ilg.gnuarmeclipse.packs.core,
- ilg.gnuarmeclipse.packs.data,
  org.eclipse.ui.console,
  org.eclipse.cdt.debug.mi.core,
  org.eclipse.ui.workbench,
- org.eclipse.equinox.registry
+ org.eclipse.equinox.registry,
+ org.eclipse.swt,
+ org.eclipse.jface
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %bundle.vendor
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Export-Package: ilg.gnuarmeclipse.debug.core,
  ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel,
- ilg.gnuarmeclipse.debug.core.gdbjtag.dsf
+ ilg.gnuarmeclipse.debug.core.gdbjtag.dsf,
+ ilg.gnuarmeclipse.debug.core.gdbjtag.services

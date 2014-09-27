@@ -80,22 +80,22 @@ public class GnuArmAdapterFactory extends GdbAdapterFactory {
 	/**
 	 * Map of session adapters, by launcher.
 	 */
-	private static Map<GdbLaunch, SessionAdapters> sfLaunchAdaptersMap = Collections
+	private static Map<GdbLaunch, SessionAdapters> fgLaunchAdaptersMap = Collections
 			.synchronizedMap(new HashMap<GdbLaunch, SessionAdapters>());
 
 	/**
 	 * Map of disposed session adapters, by launcher.
 	 */
-	private static Map<ILaunch, SessionAdapters> sfDisposedLaunchAdaptersMap = new WeakHashMap<ILaunch, SessionAdapters>();
+	private static Map<ILaunch, SessionAdapters> fgDisposedLaunchAdaptersMap = new WeakHashMap<ILaunch, SessionAdapters>();
 
 	// ------------------------------------------------------------------------
 
 	static void disposeAdapterSet(ILaunch launch) {
 
-		synchronized (sfLaunchAdaptersMap) {
-			if (sfLaunchAdaptersMap.containsKey(launch)) {
-				sfLaunchAdaptersMap.remove(launch).dispose();
-				sfDisposedLaunchAdaptersMap.put(launch, null);
+		synchronized (fgLaunchAdaptersMap) {
+			if (fgLaunchAdaptersMap.containsKey(launch)) {
+				fgLaunchAdaptersMap.remove(launch).dispose();
+				fgDisposedLaunchAdaptersMap.put(launch, null);
 			}
 		}
 	}
@@ -121,19 +121,19 @@ public class GnuArmAdapterFactory extends GdbAdapterFactory {
 		}
 
 		SessionAdapters sessionAdapters;
-		synchronized (sfLaunchAdaptersMap) {
+		synchronized (fgLaunchAdaptersMap) {
 
-			if (sfDisposedLaunchAdaptersMap.containsKey(launch)) {
+			if (fgDisposedLaunchAdaptersMap.containsKey(launch)) {
 				return null;
 			}
 
-			sessionAdapters = sfLaunchAdaptersMap.get(launch);
+			sessionAdapters = fgLaunchAdaptersMap.get(launch);
 			if (sessionAdapters == null) {
 				if (!session.isActive()) {
 					return null;
 				}
 				sessionAdapters = new SessionAdapters(launch);
-				sfLaunchAdaptersMap.put(launch, sessionAdapters);
+				fgLaunchAdaptersMap.put(launch, sessionAdapters);
 			}
 		}
 
@@ -178,5 +178,4 @@ public class GnuArmAdapterFactory extends GdbAdapterFactory {
 	}
 
 	// ------------------------------------------------------------------------
-
 }

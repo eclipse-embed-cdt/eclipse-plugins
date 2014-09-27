@@ -62,6 +62,8 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 @SuppressWarnings("restriction")
 public class DebugUtils {
 
+	// ------------------------------------------------------------------------
+
 	public static String[] getLaunchEnvironment(ILaunchConfiguration config)
 			throws CoreException {
 
@@ -157,7 +159,7 @@ public class DebugUtils {
 
 	/**
 	 * Get the build configuration associated with the debug launch
-	 * configuration, if defined in the first tab (the XXX field).
+	 * configuration, if defined in the first tab.
 	 * 
 	 * @param config
 	 *            a debug launch configuration.
@@ -178,7 +180,7 @@ public class DebugUtils {
 				return null;
 			}
 			projectName = projectName.trim();
-			if (projectName.length() == 0) {
+			if (projectName.isEmpty()) {
 				return null;
 			}
 			IProject project = ResourcesPlugin.getWorkspace().getRoot()
@@ -316,7 +318,7 @@ public class DebugUtils {
 		Iterator<String> it = commands.iterator();
 		while (it.hasNext()) {
 			String s = it.next().trim();
-			if (s.length() == 0 || s.startsWith("#"))
+			if (s.isEmpty() || s.startsWith("#"))
 				continue; // ignore empty lines and comment
 
 			sb.append(s);
@@ -440,4 +442,5 @@ public class DebugUtils {
 		return gdbVersion;
 	}
 
+	// ------------------------------------------------------------------------
 }

@@ -11,7 +11,7 @@
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.dsf;
 
-import ilg.gnuarmeclipse.debug.core.gdbjtag.ui.PeripheralsView;
+import ilg.gnuarmeclipse.debug.core.gdbjtag.render.peripherals.PeripheralsView;
 import ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripherals.PeripheralsVMProvider;
 
 import org.eclipse.cdt.dsf.debug.ui.viewmodel.SteppingController;
@@ -44,5 +44,4 @@ public class GnuArmViewModelAdapter extends GdbViewModelAdapter {
 	}
 
 	// ------------------------------------------------------------------------
-
 }

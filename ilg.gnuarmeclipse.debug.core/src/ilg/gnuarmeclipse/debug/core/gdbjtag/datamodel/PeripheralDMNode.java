@@ -21,7 +21,7 @@ import ilg.gnuarmeclipse.packs.core.tree.Leaf;
  * Peripheral data model definition. It is based on the PeripheralDetails class
  * that maps over the SVD tree node.
  */
-public class PeripheralDMNode extends PeripheralDetails implements IAdaptable {
+public class PeripheralDMNode extends SvdPeripheralDMNode implements IAdaptable {
 
 	// ------------------------------------------------------------------------
 
@@ -40,8 +40,10 @@ public class PeripheralDMNode extends PeripheralDetails implements IAdaptable {
 
 	public void dispose() {
 
-		if (fMemoryBlock != null)
+		System.out.println("PeripheralDMNode.dispose() " + this);
+		if (fMemoryBlock != null) {
 			fMemoryBlock = null;
+		}
 
 		super.dispose();
 	}
@@ -49,17 +51,6 @@ public class PeripheralDMNode extends PeripheralDetails implements IAdaptable {
 	@SuppressWarnings("rawtypes")
 	public Object getAdapter(Class clazz) {
 		return null;
-	}
-
-	public int compareTo(Object obj) {
-
-		if (obj instanceof PeripheralDMNode) {
-
-			PeripheralDMNode comp = (PeripheralDMNode) obj;
-			return getName().compareTo(comp.getName());
-		}
-
-		return 0;
 	}
 
 	// ------------------------------------------------------------------------

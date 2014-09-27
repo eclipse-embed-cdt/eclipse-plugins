@@ -188,4 +188,22 @@ public class Xml {
 		return value;
 	}
 
+	/**
+	 * If the string contains line separators, split the string in lines, trim
+	 * each line and then join everything back to a single string.
+	 * 
+	 * @param str a string that might span multiple lines.
+	 * @return a string with lines joined, or the original string.
+	 */
+	public static String joinMultiLine(String str) {
+	
+		assert str != null;
+		String sa[] = str.split("\\r?\\n");
+		if (sa.length == 1) {
+			return str; // If no multi line, return original string
+		}
+	
+		return StringUtils.join(sa, " ");
+	}
+
 }

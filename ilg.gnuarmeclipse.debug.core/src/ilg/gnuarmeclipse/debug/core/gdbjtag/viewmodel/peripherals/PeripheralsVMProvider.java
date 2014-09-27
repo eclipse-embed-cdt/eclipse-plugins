@@ -12,6 +12,8 @@
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripherals;
 
+import ilg.gnuarmeclipse.debug.core.gdbjtag.render.peripherals.PeripheralsColumnPresentation;
+
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.cdt.dsf.ui.viewmodel.AbstractVMAdapter;
 import org.eclipse.cdt.dsf.ui.viewmodel.IVMModelProxy;
@@ -49,6 +51,7 @@ public class PeripheralsVMProvider extends AbstractDMVMProvider implements
 	}
 
 	// Contributed by IColumnPresentationFactory.
+
 	@Override
 	public String getColumnPresentationId(IPresentationContext context,
 			Object element) {
@@ -56,8 +59,9 @@ public class PeripheralsVMProvider extends AbstractDMVMProvider implements
 		return PeripheralsColumnPresentation.ID;
 	}
 
-	// Factory for the column presentation.
 	// Contributed by IColumnPresentationFactory.
+
+	// Factory for the column presentation.
 	@Override
 	public IColumnPresentation createColumnPresentation(
 			IPresentationContext context, Object element) {
@@ -75,23 +79,20 @@ public class PeripheralsVMProvider extends AbstractDMVMProvider implements
 	@Override
 	public void refresh() {
 
-		System.out.println("PeripheralsVMProvider.refresh() ");
+		// System.out.println("PeripheralsVMProvider.refresh() ");
 
 		super.refresh();
 
-		// TODO: process local refresh, if any
+		// TODO: perhaps clear caches, if any
 	}
 
 	@Override
 	public void update(IPropertiesUpdate[] propertiesUpdates) {
 
-		System.out.println("PeripheralsVMProvider.update() ");
+		// System.out.println("PeripheralsVMProvider.update() ");
 
 		super.update(propertiesUpdates);
-
-		// TODO: process local update, if any
 	}
 
 	// ------------------------------------------------------------------------
-
 }

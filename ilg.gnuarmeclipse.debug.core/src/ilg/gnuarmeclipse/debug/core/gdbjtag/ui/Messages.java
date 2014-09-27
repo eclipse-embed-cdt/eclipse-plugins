@@ -24,6 +24,14 @@ public class Messages extends NLS {
 	public static String PeripheralsView_AddressColumn_text;
 	public static String PeripheralsView_DescriptionColumn_text;
 
+	public static String PeripheralRegister_Msg_Unknown_expression;
+	public static String PeripheralRegister_Msg_Not_a_number;
+	
+	public static String AddMemoryBlockAction_title;
+	public static String AddMemoryBlockAction_noMemoryBlock;
+	public static String AddMemoryBlockAction_failed;
+	public static String AddMemoryBlockAction_input_invalid;
+
 	static {
 		// initialise above static strings
 		NLS.initializeMessages(MESSAGES, Messages.class);

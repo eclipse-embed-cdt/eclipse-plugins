@@ -10,31 +10,15 @@
  *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel;
+package ilg.gnuarmeclipse.debug.core.gdbjtag.services;
+
+import ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel.IPeripheralDMContext;
 
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
-import org.eclipse.cdt.dsf.datamodel.IDMEvent;
-import org.eclipse.cdt.dsf.debug.service.IModules;
 import org.eclipse.cdt.dsf.debug.service.IRunControl;
 import org.eclipse.cdt.dsf.service.IDsfService;
 
 public interface IPeripheralsService extends IDsfService {
-
-	// ----- Embedded interfaces ----------------------------------------------
-
-	public static abstract interface PeripheralLoadedDMEvent extends
-			IPeripheralsService.PeripheralsChangedDMEvent {
-		public abstract IPeripheralDMContext getLoadedPeripheralContext();
-	}
-
-	public static abstract interface PeripheralUnloadedDMEvent extends
-			IPeripheralsService.PeripheralsChangedDMEvent {
-		public abstract IPeripheralDMContext getUnloadedPeripheralContext();
-	}
-
-	public static abstract interface PeripheralsChangedDMEvent extends
-			IDMEvent<IModules.ISymbolDMContext> {
-	}
 
 	// ------------------------------------------------------------------------
 
@@ -43,5 +27,4 @@ public interface IPeripheralsService extends IDsfService {
 			DataRequestMonitor<IPeripheralDMContext[]> dataRequestMonitor);
 
 	// ------------------------------------------------------------------------
-
 }

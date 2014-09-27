@@ -1,0 +1,24 @@
+
+Bugs
+====
+
+[20140927] - implement derivedFrom fully
+
+[20140927] - implement dimElementGroup
+
+[20140927] - add force_read.png
+
+[20140927] - fully implement cluster (add offsets)
+
+[20140927] - implement scale for scaledNonNegativeInteger
+
+New features
+============
+
+[20140927] - add sorting code for rendering
+
+[20140927] - implement enumerations
+
+[20140927] - add reset value (and possibly other info)
+
+[20140927] - save/restore the memory monitors

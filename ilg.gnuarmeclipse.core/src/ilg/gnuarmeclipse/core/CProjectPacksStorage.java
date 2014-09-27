@@ -82,21 +82,6 @@ public class CProjectPacksStorage {
 
 	public void update() {
 		// No need for it, apparently OK performs it automatically.
-
-		// if (fConfig.isDirty()) {
-		// System.out.println("Should update");
-		// IProject project = (IProject) fConfig.getManagedProject()
-		// .getOwner();
-		// ICProjectDescription description = fConfig
-		// .getConfigurationDescription().getProjectDescription();
-		// try {
-		// CProjectDescriptionStorageManager.getInstance()
-		// .setProjectDescription(project, description, 0, null);
-		// } catch (CoreException e) {
-		// // TODO Auto-generated catch block
-		// e.printStackTrace();
-		// }
-		// }
 	}
 
 	/**

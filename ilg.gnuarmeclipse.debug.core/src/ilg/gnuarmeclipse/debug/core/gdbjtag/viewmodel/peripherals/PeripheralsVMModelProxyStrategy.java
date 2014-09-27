@@ -40,26 +40,26 @@ public class PeripheralsVMModelProxyStrategy extends
 	}
 
 	// Contributed by ICheckboxModelProxy
+
 	@Override
 	public boolean setChecked(IPresentationContext context, Object viewerInput,
 			TreePath path, boolean checked) {
-		// TODO Auto-generated method stub
-		System.out.println("setChecked(" + checked + ")");
+
+		System.out.println("PeripheralsVMModelProxyStrategy.setChecked("
+				+ checked + ")");
 
 		Object segment = path.getLastSegment();
 		if ((segment instanceof PeripheralVMNode.PeripheralVMContext)) {
+
 			PeripheralVMNode.PeripheralVMContext peripheralVMContext = (PeripheralVMNode.PeripheralVMContext) segment;
 			PeripheralDMContext peripheralDMContext = (PeripheralDMContext) peripheralVMContext
 					.getDMContext();
 			peripheralDMContext.setChecked(checked);
-			peripheralDMContext.getPeripheralsService().displayPeripheral(
-					context.getWindow(), peripheralDMContext,
-					peripheralDMContext.isChecked());
+			peripheralDMContext.displayPeripheralMonitor(context.getWindow());
 			return checked;
 		}
 		return false;
 	}
 
 	// ------------------------------------------------------------------------
-
 }

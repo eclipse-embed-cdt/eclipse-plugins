@@ -10,7 +10,7 @@
  *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripherals;
+package ilg.gnuarmeclipse.debug.core.gdbjtag.render.peripherals;
 
 import ilg.gnuarmeclipse.debug.core.Activator;
 import ilg.gnuarmeclipse.debug.core.gdbjtag.ui.Messages;
@@ -42,7 +42,7 @@ public class PeripheralsColumnPresentation implements IColumnPresentation2 {
 	private static final int COLUMN_ADDRESS_SIZE = 90;
 	private static final int COLUMN_DESCRIPTION_SIZE = 300;
 
-	private static final String[] sfAvailableColumns = { COLUMN_PERIPHERAL_ID,
+	private static final String[] fgAvailableColumns = { COLUMN_PERIPHERAL_ID,
 			COLUMN_ADDRESS_ID, COLUMN_DESCRIPTION_ID };
 
 	// ------------------------------------------------------------------------
@@ -59,12 +59,12 @@ public class PeripheralsColumnPresentation implements IColumnPresentation2 {
 
 	@Override
 	public String[] getAvailableColumns() {
-		return sfAvailableColumns;
+		return fgAvailableColumns;
 	}
 
 	@Override
 	public String[] getInitialColumns() {
-		return sfAvailableColumns; // All available columns are visible.
+		return fgAvailableColumns; // All available columns are visible.
 	}
 
 	@Override
@@ -123,5 +123,4 @@ public class PeripheralsColumnPresentation implements IColumnPresentation2 {
 	}
 
 	// ------------------------------------------------------------------------
-
 }
