@@ -22,16 +22,16 @@ public class Activator extends AbstractUIActivator {
 	// ------------------------------------------------------------------------
 
 	// The shared instance
-	private static Activator sfInstance;
+	private static Activator fgInstance;
 
 	public static Activator getInstance() {
-		return sfInstance;
+		return fgInstance;
 	}
 
 	public Activator() {
 
 		super();
-		sfInstance = this;
+		fgInstance = this;
 	}
 
 	// ------------------------------------------------------------------------

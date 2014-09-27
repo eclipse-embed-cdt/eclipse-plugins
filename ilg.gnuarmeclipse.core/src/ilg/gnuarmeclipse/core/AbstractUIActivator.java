@@ -23,10 +23,10 @@ public abstract class AbstractUIActivator extends AbstractUIPlugin {
 
 	// ------------------------------------------------------------------------
 
-	private static AbstractUIActivator sfInstance;
+	private static AbstractUIActivator fgInstance;
 
 	public static AbstractUIActivator getInstance() {
-		return sfInstance;
+		return fgInstance;
 	}
 
 	// ------------------------------------------------------------------------
@@ -38,7 +38,7 @@ public abstract class AbstractUIActivator extends AbstractUIPlugin {
 	public AbstractUIActivator() {
 
 		super();
-		sfInstance = this;
+		fgInstance = this;
 	}
 
 	// ------------------------------------------------------------------------

@@ -23,10 +23,10 @@ public abstract class AbstractActivator extends Plugin {
 
 	// ------------------------------------------------------------------------
 
-	private static AbstractActivator sfInstance;
+	private static AbstractActivator fgInstance;
 
 	public static AbstractActivator getInstance() {
-		return sfInstance;
+		return fgInstance;
 	}
 
 	// ------------------------------------------------------------------------
@@ -38,7 +38,7 @@ public abstract class AbstractActivator extends Plugin {
 	public AbstractActivator() {
 
 		super();
-		sfInstance = this;
+		fgInstance = this;
 	}
 
 	// ------------------------------------------------------------------------
