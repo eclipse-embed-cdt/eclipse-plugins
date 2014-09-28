@@ -118,7 +118,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 
 			try {
 				String offset = fNode.getProperty("addressOffset");
-				if (offset != null) {
+				if (!offset.isEmpty()) {
 
 					fAddressOffset = SvdUtils
 							.parseNonNegativeBigInteger(offset);

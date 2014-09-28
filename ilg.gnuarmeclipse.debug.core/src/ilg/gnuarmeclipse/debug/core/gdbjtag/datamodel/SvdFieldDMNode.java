@@ -56,15 +56,15 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 		if (fOffset == null) {
 			try {
 				String offset = fNode.getProperty("bitOffset");
-				if (offset != null) {
+				if (!offset.isEmpty()) {
 					fOffset = SvdUtils.parseNonNegativeInteger(offset);
 				} else {
 					String lsb = fNode.getProperty("lsb");
-					if (lsb != null) {
+					if (!lsb.isEmpty()) {
 						fOffset = SvdUtils.parseNonNegativeInteger(lsb);
 					} else {
 						String bitRange = fNode.getProperty("bitRange");
-						if (bitRange != null) {
+						if (!bitRange.isEmpty()) {
 							bitRange = bitRange.replace('[', ' ');
 							bitRange = bitRange.replace(']', ' ');
 							bitRange = bitRange.trim();
@@ -96,16 +96,16 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 		if (fWidth == null) {
 			try {
 				String width = fNode.getProperty("bitWidth");
-				if (width != null) {
+				if (!width.isEmpty()) {
 					fWidth = SvdUtils.parseNonNegativeInteger(width);
 				} else {
 					String msb = fNode.getProperty("msb");
-					if (msb != null) {
+					if (!msb.isEmpty()) {
 						fWidth = new Integer(SvdUtils.parseNonNegativeInt(msb)
 								- getOffset() + 1);
 					} else {
 						String bitRange = fNode.getProperty("bitRange");
-						if (bitRange != null) {
+						if (!bitRange.isEmpty()) {
 							bitRange = bitRange.replace('[', ' ');
 							bitRange = bitRange.replace(']', ' ');
 							bitRange = bitRange.trim();

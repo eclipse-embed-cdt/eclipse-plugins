@@ -12,6 +12,8 @@ Bugs
 
 [20140927] - implement scale for scaledNonNegativeInteger
 
+[20140929] - implement prependToName (used by Atmel)
+
 New features
 ============
 

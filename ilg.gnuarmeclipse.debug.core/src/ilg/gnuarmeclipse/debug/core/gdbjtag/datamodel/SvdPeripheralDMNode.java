@@ -123,6 +123,12 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 		return null;
 	}
 
+	/**
+	 * Get the size element inside addressBlock.
+	 * 
+	 * @param node a tree node with addressBlock.
+	 * @return the size node or null if not found.
+	 */
 	private String getSizeElement(Leaf node) {
 
 		if (node.hasChildren()) {

@@ -131,7 +131,7 @@ public class SvdDMNode implements Comparable<SvdDMNode> {
 	 * @return a short (usually upper case) string.
 	 */
 	public String getName() {
-		return fNode.getProperty("name", "");
+		return fNode.getProperty("name");
 	}
 
 	/**

@@ -183,7 +183,9 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 			case REGISTER:
 				try {
 					// Add a space to separate from the image
-					return " " + treeNode.getName();
+					String str = " " + treeNode.getName();
+					return str;
+					
 				} catch (DebugException e) {
 				}
 
