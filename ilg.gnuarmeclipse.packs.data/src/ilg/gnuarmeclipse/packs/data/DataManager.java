@@ -152,10 +152,14 @@ public class DataManager implements IPacksDataManager {
 	// Note: since the DataManager is the only source of events, the
 	// source is 'this'.
 
-	// Used by 'Update'
+	// Used by 'Update', when everything might change and need to be refreshed
 	public void notifyNewInput() {
 
 		clearSummaryData();
+
+		// Force to re-cache
+		clearInstalledPacksLatestVersionsList();
+		clearCachedInstalledObjectsForBuild();
 
 		// System.out.println("PacksStorage notifyRefresh()");
 		DataManagerEvent event = new DataManagerEvent(this,
@@ -166,6 +170,8 @@ public class DataManager implements IPacksDataManager {
 
 	// Used when a package is installed/removed
 	public void notifyInstallRemove() {
+
+		clearSummaryData();
 
 		// Force to re-cache
 		clearInstalledPacksLatestVersionsList();

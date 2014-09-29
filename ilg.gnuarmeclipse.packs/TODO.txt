@@ -1,0 +1,9 @@
+
+[20140929] - update devices icons after install/remove packs
+
+[20140929] - investigate what is wrong with docs that breaks the view 
+		(requires view removal)
+
+[20140929] - in DevicesTab, for Infineon boards, the speed is 0 MHz, 
+		need to use the highest frequency.
+		

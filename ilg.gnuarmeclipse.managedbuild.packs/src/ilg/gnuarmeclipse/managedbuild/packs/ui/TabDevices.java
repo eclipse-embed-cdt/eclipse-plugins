@@ -15,15 +15,14 @@ import ilg.gnuarmeclipse.core.CProjectPacksStorage;
 import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.managedbuild.cross.IDs;
 import ilg.gnuarmeclipse.packs.core.Activator;
-import ilg.gnuarmeclipse.packs.core.data.PacksDataManagerFactoryProxy;
 import ilg.gnuarmeclipse.packs.core.data.IPacksDataManager;
+import ilg.gnuarmeclipse.packs.core.data.PacksDataManagerFactoryProxy;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.NodeViewContentProvider;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
 import ilg.gnuarmeclipse.packs.data.DataManager;
-import ilg.gnuarmeclipse.packs.data.Utils;
 
 import java.util.LinkedList;
 import java.util.List;
@@ -706,7 +705,8 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 			try {
 				CProjectPacksStorage st = new CProjectPacksStorage(config);
 
-				String deviceName = st.getOption(CProjectPacksStorage.DEVICE_NAME);
+				String deviceName = st
+						.getOption(CProjectPacksStorage.DEVICE_NAME);
 				if (deviceName != null) {
 					fDeviceLabel.setText(deviceName);
 				}
@@ -718,7 +718,8 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 				boolean wasSelected = false;
 				// TODO: select the device in the selection tree
-				String boardName = st.getOption(CProjectPacksStorage.BOARD_NAME);
+				String boardName = st
+						.getOption(CProjectPacksStorage.BOARD_NAME);
 				String boardVendorName = st
 						.getOption(CProjectPacksStorage.BOARD_VENDOR_NAME);
 
@@ -809,7 +810,8 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 				Leaf node = fSelectedDeviceNode;
 				while (node != null) {
 					if (node.isType(Type.DEVICE)) {
-						st.setOption(CProjectPacksStorage.DEVICE_NAME, node.getName());
+						st.setOption(CProjectPacksStorage.DEVICE_NAME,
+								node.getName());
 						System.out
 								.println("Devices.updateStorage() device.name="
 										+ node.getName());
@@ -817,7 +819,8 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 						st.setOption(CProjectPacksStorage.SUBFAMILY_NAME,
 								node.getName());
 					} else if (node.isType(Type.FAMILY)) {
-						st.setOption(CProjectPacksStorage.FAMILY_NAME, node.getName());
+						st.setOption(CProjectPacksStorage.FAMILY_NAME,
+								node.getName());
 
 						st.setOption(CProjectPacksStorage.DEVICE_VENDOR_NAME,
 								node.getProperty(Property.VENDOR_NAME));
@@ -840,7 +843,8 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 					node = fSelectedBoardDeviceNode.getParent();
 
 					if (node.isType(Type.BOARD)) {
-						st.setOption(CProjectPacksStorage.BOARD_NAME, node.getName());
+						st.setOption(CProjectPacksStorage.BOARD_NAME,
+								node.getName());
 						st.setOption(CProjectPacksStorage.BOARD_REVISION,
 								node.getProperty(Property.BOARD_REVISION));
 						st.setOption(CProjectPacksStorage.BOARD_VENDOR_NAME,
