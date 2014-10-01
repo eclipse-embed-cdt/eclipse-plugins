@@ -20,6 +20,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui;
 
+import ilg.gnuarmeclipse.core.CProjectPacksStorage;
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.debug.core.DebugUtils;
@@ -41,6 +42,7 @@ import org.eclipse.cdt.debug.mi.core.command.factories.CommandFactoryManager;
 import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
 import org.eclipse.cdt.dsf.gdb.IGdbDebugPreferenceConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
+import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.variables.VariablesPlugin;
@@ -71,6 +73,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * @since 7.0
  */
+@SuppressWarnings("restriction")
 public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private static final String TAB_NAME = "Debugger";
@@ -1133,6 +1136,37 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 	}
 
+	private String getCmsisDeviceName(ILaunchConfiguration configuration) {
+
+		// Get the build configuration description from the launch configuration
+		ICConfigurationDescription cConfigDescription = DebugUtils
+				.getBuildConfigDescription(configuration);
+
+		String cmsisDeviceName = null;
+		if (cConfigDescription != null) {
+			// System.out.println(cConfigDescription);
+
+			// The next step is to get the CDT configuration.
+			IConfiguration config = EclipseUtils
+					.getConfigurationFromDescription(cConfigDescription);
+			// System.out.println(config);
+
+			try {
+				// The custom storage is specific to the CDT configuration.
+				CProjectPacksStorage storage = new CProjectPacksStorage(config);
+
+				cmsisDeviceName = storage
+						.getOption(CProjectPacksStorage.DEVICE_NAME);
+				// System.out.println("CMSIS device name: " + cmsisDeviceName
+				// + ", config: " + config + "/"
+				// + config.getArtifactName() + ", launch: "
+				// + configuration);
+			} catch (CoreException e) {
+			}
+		}
+		return cmsisDeviceName;
+	}
+
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 
@@ -1165,9 +1199,15 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
 						stringDefault));
 
+				// If the project has assigned a device name, use it
+				stringDefault = getCmsisDeviceName(configuration);
+
 				// Device name
-				stringDefault = WorkspacePreferences
-						.getFlashDeviceName(ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
+				if (stringDefault == null || stringDefault.isEmpty()) {
+					// Otherwise try the name used previously
+					stringDefault = WorkspacePreferences
+							.getFlashDeviceName(ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
+				}
 
 				String defaultDeviceName = configuration.getAttribute(
 						ConfigurationAttributes.FLASH_DEVICE_NAME_COMPAT,
@@ -1175,6 +1215,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				String deviceName = configuration.getAttribute(
 						ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
 						defaultDeviceName);
+				// System.out.println("got " + deviceName + " from: "
+				// + configuration);
 				gdbFlashDeviceName.setText(deviceName);
 
 				// Endianness
@@ -1502,6 +1544,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.setAttribute(
 							ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
 							stringValue);
+			// System.out.println("stored " + stringValue + " to: "
+			// + configuration);
 			WorkspacePreferences.putFlashDeviceName(stringValue);
 
 			// Endianness
@@ -1747,8 +1791,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_EXECUTABLE, sharedName);
 
-			sharedName = WorkspacePreferences
-					.getFlashDeviceName(ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
+			sharedName = getCmsisDeviceName(configuration);
+			if (sharedName == null || sharedName.isEmpty()) {
+				sharedName = WorkspacePreferences
+						.getFlashDeviceName(ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
+			}
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_DEVICE_NAME, sharedName);
 
