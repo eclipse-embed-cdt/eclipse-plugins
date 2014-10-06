@@ -18,10 +18,6 @@
       %license
    </license>
 
-   <url>
-      <update label="%updateSiteName" url="http://gnuarmeclipse.sourceforge.net/updates"/>
-   </url>
-
    <plugin
          id="ilg.gnuarmeclipse.managedbuild.cross"
          download-size="0"

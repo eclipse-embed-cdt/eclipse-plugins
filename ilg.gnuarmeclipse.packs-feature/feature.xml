@@ -18,11 +18,6 @@
       %license
    </license>
 
-   <url>
-      <update label="%updateSiteName" url="http://gnuarmeclipse.sourceforge.net/updates"/>
-      <discovery label="%discoverySiteName" url="http://gnuarmeclipse.sourceforge.net/updates"/>
-   </url>
-
    <plugin
          id="ilg.gnuarmeclipse.packs"
          download-size="0"
