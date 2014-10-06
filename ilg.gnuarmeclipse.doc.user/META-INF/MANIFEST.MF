@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: %bundle.name
+Bundle-Name: GNU ARM C/C++ Documentation
 Bundle-SymbolicName: ilg.gnuarmeclipse.doc.user;singleton:=true
 Bundle-Version: 1.1.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.eclipse.help
-Bundle-Vendor: %bundle.vendor
+Bundle-Vendor: GNU ARM Eclipse Plug-ins
 Bundle-ActivationPolicy: lazy

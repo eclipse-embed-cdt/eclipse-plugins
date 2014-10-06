@@ -20,6 +20,7 @@
 
    <url>
       <update label="%updateSiteName" url="http://gnuarmeclipse.sourceforge.net/updates"/>
+      <discovery label="%discoverySiteName" url="http://gnuarmeclipse.sourceforge.net/updates"/>
    </url>
 
    <plugin
