@@ -15,7 +15,9 @@ package ilg.gnuarmeclipse.debug.core.gdbjtag.render.peripheral;
 import ilg.gnuarmeclipse.core.SystemUIJob;
 import ilg.gnuarmeclipse.debug.core.Activator;
 import ilg.gnuarmeclipse.debug.core.gdbjtag.memory.PeripheralMemoryBlockExtension;
+import ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripheral.PeripheralClusterArrayVMNode;
 import ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripheral.PeripheralGroupVMNode;
+import ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripheral.PeripheralRegisterArrayVMNode;
 import ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripheral.PeripheralRegisterVMNode;
 
 import java.math.BigInteger;
@@ -477,7 +479,11 @@ public class PeripheralRendering extends AbstractTableRendering implements
 		for (TreeItem treeItem : items) {
 			boolean isExpanded = true;
 			Object node = treeItem.getData();
-			if (node instanceof PeripheralGroupVMNode) {
+			if (node instanceof PeripheralRegisterArrayVMNode) {
+				isExpanded = false;
+			} else if (node instanceof PeripheralClusterArrayVMNode) {
+				isExpanded = false;
+			} else if (node instanceof PeripheralGroupVMNode) {
 				isExpanded = true;
 			} else if (node instanceof PeripheralRegisterVMNode) {
 

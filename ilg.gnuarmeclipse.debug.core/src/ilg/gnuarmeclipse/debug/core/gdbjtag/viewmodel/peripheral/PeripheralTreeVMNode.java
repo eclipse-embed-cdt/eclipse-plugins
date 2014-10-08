@@ -43,6 +43,8 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 	protected String fName;
 	protected boolean fHasChanged;
 
+	protected BigInteger fBigArrayAddressOffset;
+
 	// ------------------------------------------------------------------------
 
 	public PeripheralTreeVMNode(PeripheralTreeVMNode parent, SvdDMNode dmNode) {
@@ -76,6 +78,8 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 		// Return the root node of the hierarchy
 		fPeripheral = (PeripheralGroupVMNode) node;
 		assert fPeripheral != null;
+
+		fBigArrayAddressOffset = BigInteger.ZERO;
 	}
 
 	public void dispose() {
@@ -270,7 +274,8 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 	}
 
 	public long getLongAddressOffset() {
-		return fDMNode.getBigAddressOffset().longValue();
+		return fDMNode.getBigAddressOffset().longValue()
+				+ fBigArrayAddressOffset.longValue();
 	}
 
 	public BigInteger getBigAbsoluteAddress() {
@@ -381,6 +386,15 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 		return null;
 	}
 
+	
+	public boolean isArray(){
+		return fDMNode.isArray();
+	}
+
+//	public int getArrayDim() {
+//		return fDMNode.getArrayDim();
+//	}
+	
 	// ------------------------------------------------------------------------
 
 	/**
@@ -409,23 +423,74 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 			 * will automatically register as children of the current node.
 			 */
 			if (this instanceof PeripheralGroupVMNode) {
-				if (child instanceof SvdClusterDMNode) {
-					new PeripheralClusterVMNode(this, child);
-				} else if (child instanceof SvdRegisterDMNode) {
-					new PeripheralRegisterVMNode(this, child);
-				}
+				processDimGroup(child);
 			} else if (this instanceof PeripheralClusterVMNode) {
-				if (child instanceof SvdClusterDMNode) {
-					new PeripheralClusterVMNode(this, child);
-				} else if (child instanceof SvdRegisterDMNode) {
-					new PeripheralRegisterVMNode(this, child);
-				}
+				processDimGroup(child);
 			} else if (this instanceof PeripheralRegisterVMNode) {
 				if (child instanceof SvdFieldDMNode) {
 					new PeripheralRegisterFieldVMNode(this, child);
 				}
 			}
 		}
+	}
+
+	private void processDimGroup(SvdDMNode child) {
+
+		boolean isArray = child.isArray();
+		if (!isArray) {
+			// Simple case, not an array.
+			if (child instanceof SvdClusterDMNode) {
+				new PeripheralClusterVMNode(this, child);
+			} else if (child instanceof SvdRegisterDMNode) {
+				new PeripheralRegisterVMNode(this, child);
+			}
+			
+			return;
+		}
+
+		BigInteger increment = child.getBigIntegerArrayAddressIncrement();
+		String[] indices = child.getArrayIndices();
+
+		// For arrays, create an intermediate group and below it add the
+		// array elements.
+		if (child instanceof SvdClusterDMNode) {
+
+			new PeripheralClusterVMNode(this, child);
+			PeripheralClusterArrayVMNode arrayNode = new PeripheralClusterArrayVMNode(
+					this, child);
+			arrayNode.substituteIndex("");
+			BigInteger offset = BigInteger.ZERO;
+			for (int i = 0; i < indices.length; ++i) {
+				PeripheralClusterVMNode arrayElement = new PeripheralClusterVMNode(
+						arrayNode, child);
+				arrayElement.substituteIndex(indices[i]);
+				arrayElement.setBigArrayAddressOffset(offset);
+
+				offset = offset.add(increment);
+			}
+		} else if (child instanceof SvdRegisterDMNode) {
+
+			PeripheralTreeVMNode arrayNode = new PeripheralRegisterArrayVMNode(
+					this, child);
+			arrayNode.substituteIndex("");
+			BigInteger offset = BigInteger.ZERO;
+			for (int i = 0; i < indices.length; ++i) {
+				PeripheralRegisterVMNode arrayElement = new PeripheralRegisterVMNode(
+						arrayNode, child);
+				arrayElement.substituteIndex(indices[i]);
+				arrayElement.setBigArrayAddressOffset(offset);
+
+				offset = offset.add(increment);
+			}
+		}
+	}
+
+	protected void substituteIndex(String index) {
+		fName = String.format(fName, index);
+	}
+
+	protected void setBigArrayAddressOffset(BigInteger offset) {
+		fBigArrayAddressOffset = offset;
 	}
 
 	// ------------------------------------------------------------------------

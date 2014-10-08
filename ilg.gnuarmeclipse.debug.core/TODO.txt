@@ -5,6 +5,7 @@ Bugs
 [20140927] - implement derivedFrom fully
 
 [20140927] - implement dimElementGroup
+	[20141008] - peripheral arrays functional
 
 [20140927] - add force_read.png
 
@@ -13,6 +14,8 @@ Bugs
 [20140927] - implement scale for scaledNonNegativeInteger
 
 [20140929] - implement prependToName (used by Atmel)
+
+[20140929] - implement unions, registers with the same address
 
 New features
 ============
@@ -24,3 +27,7 @@ New features
 [20140927] - add reset value (and possibly other info)
 
 [20140927] - save/restore the memory monitors
+
+[20140929] - support 8 bit registers (used by Freescale?)
+
+[20140929] - better integration with other renderings and/or monitors

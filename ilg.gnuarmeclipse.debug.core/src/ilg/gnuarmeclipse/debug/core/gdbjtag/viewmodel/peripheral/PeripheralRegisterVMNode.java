@@ -234,7 +234,7 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 		}
 		offset = peripheralRegister.fDMNode.getBigAddressOffset();
 
-		return base.add(offset);
+		return base.add(offset).add(fBigArrayAddressOffset);
 	}
 
 	@Override
@@ -281,6 +281,11 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 		}
 
 		return null;
+	}
+
+	@Override
+	public boolean isArray() {
+		return false;
 	}
 
 	// ------------------------------------------------------------------------

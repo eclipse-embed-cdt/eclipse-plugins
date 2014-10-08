@@ -136,12 +136,12 @@ public class PeripheralsService extends AbstractDsfService implements
 
 					String vendorId = storage
 							.getOption(CProjectPacksStorage.DEVICE_VENDOR_ID);
-					String vendorName = storage
+					String deviceName = storage
 							.getOption(CProjectPacksStorage.DEVICE_NAME);
 
-					if (vendorId != null && vendorName != null) {
+					if (vendorId != null && deviceName != null) {
 
-						Leaf tree = SvdUtils.getTree(vendorId, vendorName);
+						Leaf tree = SvdUtils.getTree(vendorId, deviceName);
 						List<Leaf> list = SvdUtils.getPeripherals(tree);
 
 						fPeripheralsDMContexts = createPeripheralsContexts(

@@ -16,6 +16,7 @@ import java.math.BigInteger;
 
 import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.core.Xml;
+import ilg.gnuarmeclipse.packs.core.Activator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 
 public class SvdDMNode implements Comparable<SvdDMNode> {
@@ -198,6 +199,10 @@ public class SvdDMNode implements Comparable<SvdDMNode> {
 		return null;
 	}
 
+	public BigInteger getBigAbsoluteAddress() {
+		return null;
+	}
+
 	/**
 	 * Get the default display name.
 	 * 
@@ -304,6 +309,93 @@ public class SvdDMNode implements Comparable<SvdDMNode> {
 		return fReadAction;
 	}
 
+	public boolean isArray() {
+		return !(fNode.getProperty("dim").isEmpty());
+	}
+
+	public int getArrayDim() {
+
+		String str = fNode.getProperty("dim");
+		int dim;
+		try {
+			dim = Integer.parseInt(str);
+		} catch (NumberFormatException e) {
+			Activator.log("Node " + fNode.getName() + ", non integer <dim> "
+					+ str);
+			dim = 0;
+		}
+
+		return dim;
+	}
+
+	public BigInteger getBigIntegerArrayAddressIncrement() {
+
+		String increment = fNode.getProperty("dimIncrement");
+
+		try {
+			return new BigInteger(increment);
+		} catch (NumberFormatException e) {
+			Activator.log("Node " + fNode.getName()
+					+ ", non integer <dimIncrement> " + increment);
+			return BigInteger.ZERO;
+		}
+	}
+
+	public String[] getArrayIndices() {
+
+		int dim = getArrayDim();
+		if (dim == 0) {
+			return new String[] { "0" };
+		}
+
+		// Create the array of string indices
+		String[] arr = new String[dim];
+
+		// Init with increasing numbers
+		for (int i = 0; i < dim; ++i) {
+			arr[i] = String.valueOf(i);
+		}
+
+		String index = fNode.getProperty("dimIndex");
+		if (!index.isEmpty()) {
+			// "[0-9]+\-[0-9]+|[A-Z]-[A-Z]|[_0-9a-zA-Z]+(,\s*[_0-9a-zA-Z]+)+"
+			if (index.contains("-")) {
+				// First two cases, range of numbers or of letters.
+				String[] range = index.split("-");
+				try {
+					int from = Integer.parseInt(range[0]);
+					int to = Integer.parseInt(range[1]);
+
+					int i = 0;
+					// Expand inclusive range of numbers.
+					for (int j = from; (j <= to) && (i < arr.length); j++, i++) {
+						arr[i] = String.valueOf(j);
+					}
+				} catch (NumberFormatException e) {
+					// Range of characters.
+					char from = range[0].charAt(0);
+					char to = range[1].charAt(0);
+
+					int i = 0;
+					// Expand inclusive range of upper case letters.
+					for (char j = from; (j <= to) && (i < arr.length); j++, i++) {
+						arr[i] = String.valueOf(j);
+					}
+				}
+			} else if (index.contains(",")) {
+				// Third case, comma separated list of strings.
+				String[] indices = index.split(",");
+				// Trim and copy.
+				for (int i = 0; (i < indices.length) && (i < arr.length); ++i) {
+					arr[i] = indices[i].trim();
+				}
+			}
+
+		}
+
+		return arr;
+	}
+
 	// ------------------------------------------------------------------------
 
 	@Override
@@ -315,9 +407,9 @@ public class SvdDMNode implements Comparable<SvdDMNode> {
 
 	@Override
 	public int compareTo(SvdDMNode comp) {
-
 		return getDisplayName().compareTo(comp.getDisplayName());
 	}
+
 
 	// ------------------------------------------------------------------------
 }

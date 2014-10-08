@@ -185,7 +185,7 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 					// Add a space to separate from the image
 					String str = " " + treeNode.getName();
 					return str;
-					
+
 				} catch (DebugException e) {
 				}
 

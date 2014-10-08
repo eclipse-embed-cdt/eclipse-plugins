@@ -185,27 +185,29 @@ public class DebugUtils {
 			}
 			IProject project = ResourcesPlugin.getWorkspace().getRoot()
 					.getProject(projectName);
-			if (project == null || !project.isAccessible())
+			if (project == null || !project.isAccessible()) {
 				return null;
+			}
 
 			ICProjectDescription projDesc = CoreModel.getDefault()
 					.getProjectDescription(project, false);
 
 			// Not a CDT project?
-			if (projDesc == null)
+			if (projDesc == null) {
 				return null;
+			}
 
 			String buildConfigID = config
 					.getAttribute(
 							ICDTLaunchConfigurationConstants.ATTR_PROJECT_BUILD_CONFIG_ID,
 							""); //$NON-NLS-1$
-			if (buildConfigID.length() != 0)
+			if (buildConfigID.length() != 0) {
 				cfg = projDesc.getConfigurationById(buildConfigID);
-
+			}
 			// if configuration is null fall-back to active
-			if (cfg == null)
+			if (cfg == null) {
 				cfg = projDesc.getActiveConfiguration();
-
+			}
 		} catch (CoreException e) {
 		}
 		return cfg;

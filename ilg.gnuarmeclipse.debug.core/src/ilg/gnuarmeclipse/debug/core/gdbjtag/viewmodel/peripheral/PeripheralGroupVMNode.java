@@ -99,8 +99,7 @@ public class PeripheralGroupVMNode extends PeripheralTreeVMNode implements
 	 */
 	@Override
 	public BigInteger getBigAbsoluteAddress() {
-
-		return ((SvdPeripheralDMNode) fDMNode).getBigAbsoluteAddress();
+		return fDMNode.getBigAbsoluteAddress();
 	}
 
 	@Override
