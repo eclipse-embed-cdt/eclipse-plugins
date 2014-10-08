@@ -11,11 +11,12 @@ Bundle-Localization: plugin
 Export-Package: ilg.gnuarmeclipse.packs.core,
  ilg.gnuarmeclipse.packs.core.data,
  ilg.gnuarmeclipse.packs.core.tree
-Require-Bundle: org.eclipse.jface,
- org.eclipse.ui.console,
- org.eclipse.ui.workbench,
- org.eclipse.osgi,
- org.eclipse.core.resources,
- org.eclipse.equinox.preferences,
- ilg.gnuarmeclipse.core
+Require-Bundle: ilg.gnuarmeclipse.core,
+ org.eclipse.jface;bundle-version="3.9.0",
+ org.eclipse.ui.console;bundle-version="3.5.200",
+ org.eclipse.ui.workbench;bundle-version="3.105.0",
+ org.eclipse.osgi;bundle-version="3.9.0",
+ org.eclipse.core.resources;bundle-version="3.8.100",
+ org.eclipse.equinox.preferences;bundle-version="3.5.100",
+ org.eclipse.core.runtime;bundle-version="3.9.0"
 Import-Package: org.eclipse.core.runtime

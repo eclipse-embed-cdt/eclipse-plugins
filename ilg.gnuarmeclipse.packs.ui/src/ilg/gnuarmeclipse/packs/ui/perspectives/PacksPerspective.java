@@ -15,7 +15,8 @@ import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
 import org.eclipse.ui.IPerspectiveFactory;
 import org.eclipse.ui.console.IConsoleConstants;
-import org.eclipse.jdt.ui.JavaUI;
+
+//import org.eclipse.jdt.ui.JavaUI;
 
 /**
  * This class is meant to serve as an example for how various contributions are
@@ -124,7 +125,7 @@ public class PacksPerspective implements IPerspectiveFactory {
 	private void addViewShortcuts() {
 
 		fFactory.addShowViewShortcut(IConsoleConstants.ID_CONSOLE_VIEW);
-		fFactory.addShowViewShortcut(JavaUI.ID_PACKAGES);
+		// fFactory.addShowViewShortcut(JavaUI.ID_PACKAGES);
 		fFactory.addShowViewShortcut(IPageLayout.ID_RES_NAV);
 		fFactory.addShowViewShortcut(IPageLayout.ID_PROBLEM_VIEW);
 		fFactory.addShowViewShortcut(IPageLayout.ID_OUTLINE);

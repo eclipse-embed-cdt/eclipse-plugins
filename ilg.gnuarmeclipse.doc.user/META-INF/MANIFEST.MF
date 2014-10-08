@@ -4,6 +4,6 @@ Bundle-Name: GNU ARM C/C++ Documentation
 Bundle-SymbolicName: ilg.gnuarmeclipse.doc.user;singleton:=true
 Bundle-Version: 1.1.1.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Require-Bundle: org.eclipse.help
+Require-Bundle: org.eclipse.help;bundle-version="3.6.0"
 Bundle-Vendor: GNU ARM Eclipse Plug-ins
 Bundle-ActivationPolicy: lazy
