@@ -7,7 +7,6 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version 
- *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripheral;
@@ -54,8 +53,9 @@ public class PeripheralPath {
 	public String toPath(boolean addSlash) {
 
 		StringBuilder sb = toStringBuilder();
-		if (addSlash)
+		if (addSlash) {
 			sb.append('/');
+		}
 		return sb.toString();
 	}
 

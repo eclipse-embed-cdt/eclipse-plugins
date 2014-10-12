@@ -7,7 +7,6 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version 
- *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel;
@@ -50,21 +49,32 @@ public class SvdUtils {
 
 	// ------------------------------------------------------------------------
 
-	public static int parseNonNegativeInt(String str)
-			throws NumberFormatException {
+	private static long computeScale(String str) {
 
-		int radix = 10;
-		if ((str.startsWith("0x")) || (str.startsWith("0X"))) {
-			radix = 16;
-			str = str.substring(2);
-		} else if (str.startsWith("0")) {
-			radix = 8;
+		long scale = 1;
+		String lastChar = str.substring(str.length() - 1);
+		if (lastChar.matches("[kmgtKMGT]")) {
+			lastChar = lastChar.toLowerCase();
+			if ("k".equals(lastChar)) {
+				scale = 1024;
+			} else if ("m".equals(lastChar)) {
+				scale = 1024 * 1024;
+			} else if ("g".equals(lastChar)) {
+				scale = 1024 * 1024 * 1024;
+			} else if ("7".equals(lastChar)) {
+				scale = 1024 * 1024 * 1024 * 1024;
+			}
 		}
-		return Integer.parseInt(str, radix);
+		return scale;
 	}
 
-	public static long parseNonNegativeLong(String str)
+	public static int parseScaledNonNegativeInt(String str)
 			throws NumberFormatException {
+
+		long scale = computeScale(str);
+		if (scale != 1) {
+			str = str.substring(0, str.length() - 2);
+		}
 
 		int radix = 10;
 		if ((str.startsWith("0x")) || (str.startsWith("0X"))) {
@@ -73,11 +83,16 @@ public class SvdUtils {
 		} else if (str.startsWith("0")) {
 			radix = 8;
 		}
-		return Long.parseLong(str, radix);
+		return (int) (Integer.parseInt(str, radix) * scale);
 	}
 
-	public static Integer parseNonNegativeInteger(String str)
+	public static long parseScaledNonNegativeLong(String str)
 			throws NumberFormatException {
+
+		long scale = computeScale(str);
+		if (scale != 1) {
+			str = str.substring(0, str.length() - 2);
+		}
 
 		int radix = 10;
 		if ((str.startsWith("0x")) || (str.startsWith("0X"))) {
@@ -86,11 +101,16 @@ public class SvdUtils {
 		} else if (str.startsWith("0")) {
 			radix = 8;
 		}
-		return new Integer(Integer.parseInt(str, radix));
+		return Long.parseLong(str, radix) * scale;
 	}
 
-	public static BigInteger parseNonNegativeBigInteger(String str)
+	public static Integer parseScaledNonNegativeInteger(String str)
 			throws NumberFormatException {
+
+		long scale = computeScale(str);
+		if (scale != 1) {
+			str = str.substring(0, str.length() - 2);
+		}
 
 		int radix = 10;
 		if ((str.startsWith("0x")) || (str.startsWith("0X"))) {
@@ -99,7 +119,29 @@ public class SvdUtils {
 		} else if (str.startsWith("0")) {
 			radix = 8;
 		}
-		return new BigInteger(str, radix);
+		return new Integer((int) (Integer.parseInt(str, radix) * scale));
+	}
+
+	public static BigInteger parseScaledNonNegativeBigInteger(String str)
+			throws NumberFormatException {
+
+		long scale = computeScale(str);
+		if (scale != 1) {
+			str = str.substring(0, str.length() - 2);
+		}
+
+		int radix = 10;
+		if ((str.startsWith("0x")) || (str.startsWith("0X"))) {
+			radix = 16;
+			str = str.substring(2);
+		} else if (str.startsWith("0")) {
+			radix = 8;
+		}
+		BigInteger value = new BigInteger(str, radix);
+		if (scale != 1) {
+			value = value.multiply(new BigInteger(String.valueOf(scale)));
+		}
+		return value;
 	}
 
 	/**

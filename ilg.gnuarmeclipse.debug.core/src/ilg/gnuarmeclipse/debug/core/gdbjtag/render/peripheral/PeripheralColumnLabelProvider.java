@@ -14,6 +14,8 @@ package ilg.gnuarmeclipse.debug.core.gdbjtag.render.peripheral;
 
 import ilg.gnuarmeclipse.debug.core.Activator;
 import ilg.gnuarmeclipse.debug.core.gdbjtag.render.peripheral.PeripheralColumnInfo.ColumnType;
+import ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripheral.PeripheralRegisterVMNode;
+import ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripheral.PeripheralTopVMNode;
 import ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripheral.PeripheralTreeVMNode;
 
 import org.eclipse.debug.core.DebugException;
@@ -220,6 +222,14 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 				} catch (DebugException e) {
 				}
 				appendText(sb, "", treeNode.getDescription());
+				if (treeNode instanceof PeripheralTopVMNode) {
+					appendText(sb, "Version=",
+							((PeripheralTopVMNode) treeNode)
+									.getDisplayVersion());
+					appendText(sb, "Group=",
+							((PeripheralTopVMNode) treeNode)
+									.getDisplayGroupName());
+				}
 				break;
 
 			case ADDRESS:
@@ -234,6 +244,11 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 			case VALUE:
 				if (treeNode.isPeripheral() || treeNode.isCluster()) {
 					return null; // No value tooltip for groups
+				}
+				if (treeNode instanceof PeripheralRegisterVMNode) {
+					appendText(sb, "Reset=",
+							((PeripheralRegisterVMNode) treeNode)
+									.getDisplayResetValue());
 				}
 				break;
 

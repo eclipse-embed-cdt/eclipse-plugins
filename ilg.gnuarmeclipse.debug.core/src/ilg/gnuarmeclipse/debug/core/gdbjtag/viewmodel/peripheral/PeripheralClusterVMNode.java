@@ -7,12 +7,9 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version 
- *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripheral;
-
-import java.math.BigInteger;
 
 import ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel.SvdDMNode;
 
@@ -40,13 +37,6 @@ public class PeripheralClusterVMNode extends PeripheralGroupVMNode {
 
 	@Override
 	public String getDisplaySize() {
-		return null;
-	}
-
-	@Override
-	public BigInteger getBigAbsoluteAddress() {
-
-		// TODO: process cluster getBigAbsoluteAddress()
 		return null;
 	}
 

@@ -7,7 +7,6 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version 
- *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripheral;
@@ -134,7 +133,7 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 			}
 
 			BigInteger bigValue;
-			bigValue = SvdUtils.parseNonNegativeBigInteger(value);
+			bigValue = SvdUtils.parseScaledNonNegativeBigInteger(value);
 			// Strip unused bits.
 			bigValue = bigValue.and(getBitMask());
 
@@ -166,13 +165,15 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 
 		if (!sameValue) {
 
+			long offset = getPeripheralBigAddressOffset().longValue();
 			// Write register.
-			getPeripheral().writeRegisterValue(getLongAddressOffset(),
+			getPeripheral().getMemoryBlock().writePeripheralRegister(offset,
 					getWidthBytes(), newValue);
 
+			// TODO: avoid readback for non-readable
 			// Read back.
-			BigInteger actualValue = getPeripheral().readRegisterValue(
-					getLongAddressOffset(), getWidthBytes());
+			BigInteger actualValue = getPeripheral().getMemoryBlock()
+					.readPeripheralRegister(offset, getWidthBytes());
 
 			// Update with actual value.
 			setValue(actualValue);
@@ -209,32 +210,6 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 			fBitMask = fBitMask.subtract(BigInteger.ONE);
 		}
 		return fBitMask;
-	}
-
-	/**
-	 * Compute the absolute address of the register, by adding the register
-	 * offset to the peripheral base.
-	 * 
-	 * @return a big integer with the absolute address.
-	 */
-	@Override
-	public BigInteger getBigAbsoluteAddress() {
-
-		BigInteger base;
-		try {
-			base = ((PeripheralGroupVMNode) getRegisterGroup())
-					.getBigAbsoluteAddress();
-		} catch (DebugException e) {
-			base = BigInteger.ZERO;
-		}
-		BigInteger offset;
-		PeripheralRegisterVMNode peripheralRegister = this;
-		if (isField()) {
-			peripheralRegister = (PeripheralRegisterVMNode) getParent();
-		}
-		offset = peripheralRegister.fDMNode.getBigAddressOffset();
-
-		return base.add(offset).add(fBigArrayAddressOffset);
 	}
 
 	@Override
@@ -286,6 +261,26 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 	@Override
 	public boolean isArray() {
 		return false;
+	}
+
+	/**
+	 * Get the value to be displayed for the reset value, possibly with mask.
+	 * 
+	 * @return a string or null if no value is available.
+	 */
+	public String getDisplayResetValue() {
+
+		String resetValue = ((SvdRegisterDMNode) fDMNode).getResetValue();
+		if (resetValue.isEmpty()) {
+			return null;
+		}
+
+		String resetMask = ((SvdRegisterDMNode) fDMNode).getResetMask();
+		if (resetValue.isEmpty()) {
+			return resetValue;
+		}
+
+		return resetValue + "/" + resetMask;
 	}
 
 	// ------------------------------------------------------------------------

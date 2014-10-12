@@ -7,7 +7,6 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version 
- *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.memory;
@@ -58,19 +57,37 @@ public class PeripheralMemoryRegion implements
 		return fVMNodes;
 	}
 
+	/**
+	 * Check if the parameter region is contiguous or contained in the current
+	 * region.
+	 * 
+	 * @param region
+	 *            the region to be compared with the current region.
+	 * @return true if contiguous or contained.
+	 */
 	public boolean isContiguous(PeripheralMemoryRegion region) {
-		return ((fAddressOffset + fSizeBytes) == region.fAddressOffset);
+		return (region.fAddressOffset <= (fAddressOffset + fSizeBytes));
 	}
 
+	/**
+	 * Concatenate to contiguous regions by adjusting the current region size to
+	 * fully include the given region and take of region nodes.
+	 * 
+	 * @param region
+	 *            the region to be concatenated with the current region.
+	 */
 	public void concatenate(PeripheralMemoryRegion region) {
 
-		// Assume the regions are contiguous
-		assert ((fAddressOffset + fSizeBytes) == region.fAddressOffset);
+		// Assume the regions are contiguous or contained.
+		assert (region.fAddressOffset <= (fAddressOffset + fSizeBytes));
 
-		// Increase the size
-		fSizeBytes += region.getSizeBytes();
+		if ((region.fAddressOffset + region.fSizeBytes) > (fAddressOffset + fSizeBytes)) {
+			// Increase the size
+			fSizeBytes = (region.fAddressOffset + region.fSizeBytes)
+					- fAddressOffset;
+		}
 
-		// Transfer nodes
+		// Take over nodes from given region.
 		fVMNodes.addAll(region.getNodes());
 	}
 

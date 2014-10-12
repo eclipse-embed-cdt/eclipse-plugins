@@ -7,7 +7,6 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version 
- *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel;
@@ -29,6 +28,8 @@ public class SvdRegisterDMNode extends SvdDMNode {
 	private BigInteger fBigSizeBytes;
 
 	private String fReadAction;
+	private String fResetValue;
+	private String fResetMask;
 
 	// ------------------------------------------------------------------------
 
@@ -43,6 +44,9 @@ public class SvdRegisterDMNode extends SvdDMNode {
 		fSize = null;
 		fBigSizeBytes = null;
 		fReadAction = null;
+
+		fResetValue = null;
+		fResetMask = null;
 	}
 
 	public SvdRegisterDMNode(Leaf node, String displayName,
@@ -68,6 +72,9 @@ public class SvdRegisterDMNode extends SvdDMNode {
 		fSize = null;
 		fBigSizeBytes = null;
 		fReadAction = null;
+
+		fResetValue = null;
+		fResetMask = null;
 	}
 
 	// ------------------------------------------------------------------------
@@ -121,7 +128,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 				if (!offset.isEmpty()) {
 
 					fAddressOffset = SvdUtils
-							.parseNonNegativeBigInteger(offset);
+							.parseScaledNonNegativeBigInteger(offset);
 				} else {
 					System.out.println("Missing addressOffset, node " + fNode);
 					fAddressOffset = BigInteger.ZERO;
@@ -132,7 +139,6 @@ public class SvdRegisterDMNode extends SvdDMNode {
 			}
 		}
 
-		// TODO: add offsets
 		return fAddressOffset;
 	}
 
@@ -169,8 +175,8 @@ public class SvdRegisterDMNode extends SvdDMNode {
 			String size = SvdUtils.getProperty(fNode, "size", "32");
 
 			try {
-				fSize = new Integer(SvdUtils.parseNonNegativeBigInteger(size)
-						.intValue());
+				fSize = new Integer(SvdUtils.parseScaledNonNegativeBigInteger(
+						size).intValue());
 			} catch (NumberFormatException e) {
 				System.out.println("Bad size, node " + fNode);
 				fSize = new Integer(32);
@@ -201,6 +207,28 @@ public class SvdRegisterDMNode extends SvdDMNode {
 		}
 
 		return fReadAction;
+	}
+
+	public String getResetValue() {
+
+		if (fResetValue == null) {
+
+			// TODO: check derivedFrom
+			fResetValue = SvdUtils.getProperty(fNode, "resetValue", "");
+		}
+
+		return fResetValue;
+	}
+
+	public String getResetMask() {
+
+		if (fResetMask == null) {
+
+			// TODO: check derivedFrom
+			fResetMask = SvdUtils.getProperty(fNode, "resetMask", "");
+		}
+
+		return fResetMask;
 	}
 
 	// ------------------------------------------------------------------------

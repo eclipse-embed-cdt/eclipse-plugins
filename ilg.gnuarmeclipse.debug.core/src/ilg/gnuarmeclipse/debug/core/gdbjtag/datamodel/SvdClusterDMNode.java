@@ -7,7 +7,6 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version 
- *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel;
@@ -52,22 +51,13 @@ public class SvdClusterDMNode extends SvdDMNode {
 		// System.out.println("prepareChildren(" + node.getProperty("name") +
 		// ")");
 
-		Leaf group = ((Node) node).findChild("registers");
-		if (!group.hasChildren()) {
-			return null;
-		}
-
 		List<SvdDMNode> list = new LinkedList<SvdDMNode>();
-		for (Leaf child : ((Node) group).getChildren()) {
+		for (Leaf child : ((Node) node).getChildren()) {
 
 			// Keep only <register> and <cluster> nodes
 			if (child.isType("register")) {
-				// TODO: process dimElementGroup, for one node generate multiple
-				// objects
 				list.add(new SvdRegisterDMNode(child));
 			} else if (child.isType("cluster")) {
-				// TODO: process dimElementGroup, for one node generate multiple
-				// objects
 				list.add(new SvdClusterDMNode(child));
 			}
 		}

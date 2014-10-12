@@ -13,38 +13,33 @@ package ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripheral;
 
 import ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel.SvdDMNode;
 
-public class PeripheralClusterArrayVMNode extends PeripheralClusterVMNode {
+import java.math.BigInteger;
+
+public class PeripheralClusterArrayElementVMNode extends
+		PeripheralClusterVMNode {
 
 	// ------------------------------------------------------------------------
 
-	public PeripheralClusterArrayVMNode(PeripheralTreeVMNode parent,
-			SvdDMNode dmNode) {
+	protected BigInteger fBigArrayAddressOffset;
+
+	// ------------------------------------------------------------------------
+
+	public PeripheralClusterArrayElementVMNode(PeripheralTreeVMNode parent,
+			SvdDMNode dmNode, String index, BigInteger offset) {
 
 		super(parent, dmNode);
 
+		// The node name must have a %s, substitute it with the actual index
+		substituteIndex(index);
+		fBigArrayAddressOffset = offset;
 	}
 
-	// ------------------------------------------------------------------------
-
+	/**
+	 * Get the local offset to the array base.
+	 */
 	@Override
-	public String getDisplayNodeType() {
-		return "Cluster array";
+	public BigInteger getThisBigAddressOffset() {
+		return fBigArrayAddressOffset;
 	}
 
-	@Override
-	public String getImageName() {
-		return "registergroup_obj";
-	}
-
-	@Override
-	public String getDisplaySize() {
-		int dim = fDMNode.getArrayDim();
-		if (dim != 0) {
-			return dim + " elements";
-		}
-
-		return null;
-	}
-
-	// ------------------------------------------------------------------------
 }

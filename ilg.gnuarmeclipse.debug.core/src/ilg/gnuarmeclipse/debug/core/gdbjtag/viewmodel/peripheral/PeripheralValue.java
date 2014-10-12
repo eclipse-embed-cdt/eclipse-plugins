@@ -7,7 +7,6 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version 
- *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripheral;
@@ -31,9 +30,10 @@ public class PeripheralValue implements IValue {
 
 	public static final int FORMAT_NONE = 0;
 	public static final int FORMAT_HEX = 1;
-	public static final int FORMAT_HEX16 = 2;
-	public static final int FORMAT_HEX32 = 3;
-	public static final int FORMAT_HEX64 = 4;
+	public static final int FORMAT_HEX8 = 2;
+	public static final int FORMAT_HEX16 = 3;
+	public static final int FORMAT_HEX32 = 4;
+	public static final int FORMAT_HEX64 = 5;
 
 	public static boolean isNumeric(String str) {
 		String regExp = "(0[xX]|\\+|\\-)?[0-9A-Fa-f]+";
@@ -66,7 +66,9 @@ public class PeripheralValue implements IValue {
 
 	public void setDisplayFormatForBitWidth(int bitWidth) {
 
-		if (bitWidth <= 16) {
+		if (bitWidth <= 8) {
+			setDisplayFormat(PeripheralValue.FORMAT_HEX8);
+		} else if (bitWidth <= 16) {
 			setDisplayFormat(PeripheralValue.FORMAT_HEX16);
 		} else if (bitWidth <= 32) {
 			setDisplayFormat(PeripheralValue.FORMAT_HEX32);
@@ -157,7 +159,9 @@ public class PeripheralValue implements IValue {
 			// various length.
 			BigInteger value = getBigValue();
 
-			if (fDisplayFormat == FORMAT_HEX16) {
+			if (fDisplayFormat == FORMAT_HEX8) {
+				return String.format("0x%02X", value);
+			} else if (fDisplayFormat == FORMAT_HEX16) {
 				return String.format("0x%04X", value);
 			} else if (fDisplayFormat == FORMAT_HEX32) {
 				return String.format("0x%08X", value);

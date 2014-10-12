@@ -7,7 +7,6 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version 
- *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripheral;
@@ -157,6 +156,11 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 	public boolean isEnumeration() {
 		// TODO: implement enumeration
 		return false;
+	}
+
+	@Override
+	public BigInteger getThisBigAddressOffset() {
+		return BigInteger.ZERO;
 	}
 
 	// ------------------------------------------------------------------------

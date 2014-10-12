@@ -7,7 +7,6 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version 
- *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel;
@@ -57,11 +56,11 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 			try {
 				String offset = fNode.getProperty("bitOffset");
 				if (!offset.isEmpty()) {
-					fOffset = SvdUtils.parseNonNegativeInteger(offset);
+					fOffset = SvdUtils.parseScaledNonNegativeInteger(offset);
 				} else {
 					String lsb = fNode.getProperty("lsb");
 					if (!lsb.isEmpty()) {
-						fOffset = SvdUtils.parseNonNegativeInteger(lsb);
+						fOffset = SvdUtils.parseScaledNonNegativeInteger(lsb);
 					} else {
 						String bitRange = fNode.getProperty("bitRange");
 						if (!bitRange.isEmpty()) {
@@ -69,8 +68,9 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 							bitRange = bitRange.replace(']', ' ');
 							bitRange = bitRange.trim();
 							// Convert the second value
-							fOffset = SvdUtils.parseNonNegativeInteger(bitRange
-									.split(":")[1]);
+							fOffset = SvdUtils
+									.parseScaledNonNegativeInteger(bitRange
+											.split(":")[1]);
 						} else {
 							System.out.println("Missing offset, node " + fNode);
 							fOffset = new Integer(0);
@@ -97,12 +97,13 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 			try {
 				String width = fNode.getProperty("bitWidth");
 				if (!width.isEmpty()) {
-					fWidth = SvdUtils.parseNonNegativeInteger(width);
+					fWidth = SvdUtils.parseScaledNonNegativeInteger(width);
 				} else {
 					String msb = fNode.getProperty("msb");
 					if (!msb.isEmpty()) {
-						fWidth = new Integer(SvdUtils.parseNonNegativeInt(msb)
-								- getOffset() + 1);
+						fWidth = new Integer(
+								SvdUtils.parseScaledNonNegativeInt(msb)
+										- getOffset() + 1);
 					} else {
 						String bitRange = fNode.getProperty("bitRange");
 						if (!bitRange.isEmpty()) {
@@ -111,7 +112,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 							bitRange = bitRange.trim();
 							// Convert the first value and subtract the offset
 							fWidth = new Integer(
-									SvdUtils.parseNonNegativeInt(bitRange
+									SvdUtils.parseScaledNonNegativeInt(bitRange
 											.split(":")[0]) - getOffset() + 1);
 						} else {
 							System.out.println("Missing width, node " + fNode);

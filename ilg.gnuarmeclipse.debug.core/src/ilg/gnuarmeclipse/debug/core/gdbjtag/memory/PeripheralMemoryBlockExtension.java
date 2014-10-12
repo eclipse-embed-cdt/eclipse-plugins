@@ -22,6 +22,7 @@ import ilg.gnuarmeclipse.debug.core.gdbjtag.services.IPeripheralMemoryService;
 import ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripheral.PeripheralGroupVMNode;
 import ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripheral.PeripheralRegisterFieldVMNode;
 import ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripheral.PeripheralRegisterVMNode;
+import ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripheral.PeripheralTopVMNode;
 import ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripheral.PeripheralTreeVMNode;
 
 import java.math.BigInteger;
@@ -83,7 +84,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	private IMemory.IMemoryDMContext fMemoryDMContext;
 	private String fBlockDIsplayName;
 	private String fModelId;
-	private PeripheralGroupVMNode fPeripheralGroup;
+	private PeripheralTopVMNode fPeripheralTop;
 	private ArrayList<Object> fConnections;
 	private SystemJob fUpdatePeripheralRenderingJob;
 	private PeripheralDMContext fPeripheralDMContext;
@@ -108,7 +109,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 				"Update peripheral rendering") {
 
 			protected IStatus run(IProgressMonitor pm) {
-				if (fPeripheralGroup == null)
+				if (fPeripheralTop == null)
 					return Status.OK_STATUS;
 
 				if (fReadbleMemoryRegions == null) {
@@ -195,8 +196,8 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 			fAddressFactory = new Addr64Factory();
 		}
 
-		fPeripheralGroup = createPeripheralGroupNode();
-		if (fPeripheralGroup == null) {
+		fPeripheralTop = createPeripheralGroupNode();
+		if (fPeripheralTop == null) {
 			Activator.log("Cannot create peripheral group "
 					+ fPeripheralDMNode.getName());
 		}
@@ -220,9 +221,9 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 		fCommandFactory = null;
 		fMemoryDMContext = null;
 		fBlockDIsplayName = null;
-		if (fPeripheralGroup != null) {
-			fPeripheralGroup.dispose();
-			fPeripheralGroup = null;
+		if (fPeripheralTop != null) {
+			fPeripheralTop.dispose();
+			fPeripheralTop = null;
 		}
 
 		fPeripheralDMContext.getPeripheralInstance().setMemoryBlock(null);
@@ -347,20 +348,20 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	 * Create a peripheral group node for the current peripheral. Children nodes
 	 * will be added later when getChildren() is called.
 	 */
-	private PeripheralGroupVMNode createPeripheralGroupNode() {
+	private PeripheralTopVMNode createPeripheralGroupNode() {
 
 		SvdPeripheralDMNode svdNode = fPeripheralDMContext
 				.getPeripheralInstance();
 
-		PeripheralGroupVMNode node;
-		node = new PeripheralGroupVMNode(null, svdNode); // Root node
-		node.setMemoryBlock(this);
+		PeripheralTopVMNode node;
+		node = new PeripheralTopVMNode(null, svdNode, this); // Root node
 
 		return node;
 	}
 
 	/**
 	 * Parse all registers and create a sorted list of readable memory regions.
+	 * For unions, the registers may overlap.
 	 * <p>
 	 * Each region has a list of registers stored in the region.
 	 * 
@@ -371,11 +372,11 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 		List<PeripheralMemoryRegion> list = new LinkedList<PeripheralMemoryRegion>();
 
 		// Get all registers of the peripheral, in svd definition order.
-		collectRegistersRecursive(fPeripheralGroup, list);
+		collectRegistersRecursive(fPeripheralTop, list);
 
 		PeripheralMemoryRegion[] array = list
 				.toArray(new PeripheralMemoryRegion[list.size()]);
-		// Sort by offset.
+		// Sort by offset. Beware of duplicates (in case of unions).
 		Arrays.sort(array);
 
 		// Create an empty list of regions.
@@ -389,8 +390,8 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 			int j;
 			// Iterate next registers until a gap is found.
 			for (j = i + 1; j < array.length; ++j) {
-				// If possible, concatenate contiguous register regions to a
-				// larger region.
+				// If possible, concatenate contiguous or contained register
+				// regions to a larger region.
 				if (array[i].isContiguous(array[j])) {
 					array[i].concatenate(array[j]);
 				} else {
@@ -421,11 +422,13 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	private void collectRegistersRecursive(PeripheralTreeVMNode node,
 			List<PeripheralMemoryRegion> list) {
 
+		// This should match both simple registers and register array elements.
 		if ((node instanceof PeripheralRegisterVMNode) && node.isReadAllowed()) {
 
 			// Register found, create a small region to cover only the register.
-			PeripheralMemoryRegion region = new PeripheralMemoryRegion(
-					node.getLongAddressOffset(), node.getBigSize().longValue());
+			PeripheralMemoryRegion region = new PeripheralMemoryRegion(node
+					.getPeripheralBigAddressOffset().longValue(), node
+					.getBigSize().longValue());
 			region.addNode((PeripheralRegisterVMNode) node);
 
 			// Contribute to the output list; SVD order, to be ordered later.
@@ -452,12 +455,12 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	}
 
 	/**
-	 * Read the register values and update the register nodes.
+	 * Read the memory content and store the byte arrays in the regions nodes.
 	 */
 	private void readPeripheralMemoryRegions(RequestMonitor rm) {
 
 		IAddress address = getAddressFactory().createAddress(
-				fPeripheralGroup.getBigAbsoluteAddress());
+				fPeripheralTop.getBigAbsoluteAddress());
 
 		DsfExecutor executor = ((PeripheralMemoryBlockRetrieval) getMemoryBlockRetrieval())
 				.getExecutor();
@@ -512,16 +515,17 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 		} catch (ExecutionException e) {
 		}
 
-		// Iterate all regions
+		// Iterate all regions.
 		for (PeripheralMemoryRegion region : fReadbleMemoryRegions) {
 
 			MemoryByte[] regionBytes = region.getBytes();
 			long regionOffset = region.getAddressOffset();
 
-			// Iterate all registers in a region
+			// Iterate all registers in a region.
 			for (PeripheralRegisterVMNode node : region.getNodes()) {
 
-				long nodeOffset = node.getLongAddressOffset();
+				long nodeOffset = node.getPeripheralBigAddressOffset()
+						.longValue();
 				int byteOffset = (int) (nodeOffset - regionOffset);
 
 				int widthBytes = node.getWidthBytes();
@@ -531,6 +535,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 				}
 
 				BigInteger value = prepareBigIntegerFromByteArray(bytes);
+				// Works without problems for unions
 				node.setValue(value);
 			}
 		}
@@ -624,7 +629,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 			protected void execute(DataRequestMonitor rm) {
 
 				IAddress address = getAddressFactory().createAddress(
-						fPeripheralGroup.getBigAbsoluteAddress());
+						fPeripheralTop.getBigAbsoluteAddress());
 
 				byte buf[] = prepareByteArrayFromBigInteger(value, sizeBytes);
 
@@ -663,7 +668,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 			protected void execute(DataRequestMonitor<MemoryByte[]> drm) {
 
 				IAddress address = getAddressFactory().createAddress(
-						fPeripheralGroup.getBigAbsoluteAddress());
+						fPeripheralTop.getBigAbsoluteAddress());
 
 				fMemoryService.getMemory(fMemoryDMContext, address, offset,
 						sizeBytes, 1, drm);
@@ -697,7 +702,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	}
 
 	public PeripheralGroupVMNode getPeripheralRegisterGroup() {
-		return fPeripheralGroup;
+		return fPeripheralTop;
 	}
 
 	public PeripheralDMNode getPeripheralInstance() {

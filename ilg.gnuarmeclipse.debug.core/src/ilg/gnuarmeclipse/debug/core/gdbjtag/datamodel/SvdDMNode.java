@@ -7,7 +7,6 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version 
- *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel;
@@ -318,7 +317,7 @@ public class SvdDMNode implements Comparable<SvdDMNode> {
 		String str = fNode.getProperty("dim");
 		int dim;
 		try {
-			dim = Integer.parseInt(str);
+			dim = SvdUtils.parseScaledNonNegativeInt(str);
 		} catch (NumberFormatException e) {
 			Activator.log("Node " + fNode.getName() + ", non integer <dim> "
 					+ str);
@@ -333,10 +332,10 @@ public class SvdDMNode implements Comparable<SvdDMNode> {
 		String increment = fNode.getProperty("dimIncrement");
 
 		try {
-			return new BigInteger(increment);
+			return SvdUtils.parseScaledNonNegativeBigInteger(increment);
 		} catch (NumberFormatException e) {
 			Activator.log("Node " + fNode.getName()
-					+ ", non integer <dimIncrement> " + increment);
+					+ ", non number <dimIncrement> " + increment);
 			return BigInteger.ZERO;
 		}
 	}
@@ -409,7 +408,6 @@ public class SvdDMNode implements Comparable<SvdDMNode> {
 	public int compareTo(SvdDMNode comp) {
 		return getDisplayName().compareTo(comp.getDisplayName());
 	}
-
 
 	// ------------------------------------------------------------------------
 }

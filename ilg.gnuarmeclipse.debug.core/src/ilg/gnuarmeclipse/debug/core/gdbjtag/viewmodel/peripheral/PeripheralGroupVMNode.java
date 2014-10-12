@@ -7,14 +7,11 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version 
- *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripheral;
 
 import ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel.SvdDMNode;
-import ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel.SvdPeripheralDMNode;
-import ilg.gnuarmeclipse.debug.core.gdbjtag.memory.PeripheralMemoryBlockExtension;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
@@ -35,8 +32,6 @@ public class PeripheralGroupVMNode extends PeripheralTreeVMNode implements
 
 	// ------------------------------------------------------------------------
 
-	private PeripheralMemoryBlockExtension fMemoryBlock;
-
 	/**
 	 * Local list of register children (the parent list includes groups too).
 	 */
@@ -47,22 +42,9 @@ public class PeripheralGroupVMNode extends PeripheralTreeVMNode implements
 	public PeripheralGroupVMNode(PeripheralTreeVMNode parent, SvdDMNode dmNode) {
 
 		super(parent, dmNode);
-		fMemoryBlock = null;
-	}
-
-	@Override
-	public void dispose() {
-
-		fMemoryBlock = null;
-		super.dispose();
 	}
 
 	// ------------------------------------------------------------------------
-
-	public void setMemoryBlock(
-			PeripheralMemoryBlockExtension memoryBlockExtension) {
-		fMemoryBlock = memoryBlockExtension;
-	}
 
 	@Override
 	protected void addChild(PeripheralTreeVMNode child) {
@@ -91,25 +73,14 @@ public class PeripheralGroupVMNode extends PeripheralTreeVMNode implements
 
 	// ------------------------------------------------------------------------
 
-	/**
-	 * Register groups are peripherals or clusters, return the address of the
-	 * peripheral.
-	 * 
-	 * @return a big integer with the start address.
-	 */
-	@Override
-	public BigInteger getBigAbsoluteAddress() {
-		return fDMNode.getBigAbsoluteAddress();
-	}
-
 	@Override
 	public String getDisplayNodeType() {
-		return "Peripheral";
+		return "Group";
 	}
 
 	@Override
 	public String getImageName() {
-		return "peripheral";
+		return "registergroup_obj";
 	}
 
 	@Override
@@ -143,16 +114,6 @@ public class PeripheralGroupVMNode extends PeripheralTreeVMNode implements
 	@Override
 	public boolean hasRegisters() throws DebugException {
 		return (fRegisters != null) && !fRegisters.isEmpty();
-	}
-
-	// ------------------------------------------------------------------------
-
-	public void writeRegisterValue(long offset, int sizeBytes, BigInteger value) {
-		fMemoryBlock.writePeripheralRegister(offset, sizeBytes, value);
-	}
-
-	public BigInteger readRegisterValue(long offset, int sizeBytes) {
-		return fMemoryBlock.readPeripheralRegister(offset, sizeBytes);
 	}
 
 	// ------------------------------------------------------------------------

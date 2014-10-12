@@ -7,11 +7,11 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version 
- *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.viewmodel.peripheral;
 
+import ilg.gnuarmeclipse.debug.core.Activator;
 import ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel.SvdClusterDMNode;
 import ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel.SvdFieldDMNode;
 import ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel.SvdDMNode;
@@ -43,7 +43,7 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 	protected String fName;
 	protected boolean fHasChanged;
 
-	protected BigInteger fBigArrayAddressOffset;
+	// protected BigInteger fBigArrayAddressOffset;
 
 	// ------------------------------------------------------------------------
 
@@ -79,7 +79,7 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 		fPeripheral = (PeripheralGroupVMNode) node;
 		assert fPeripheral != null;
 
-		fBigArrayAddressOffset = BigInteger.ZERO;
+		// fBigArrayAddressOffset = BigInteger.ZERO;
 	}
 
 	public void dispose() {
@@ -273,13 +273,50 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 		return fDMNode.getDescription();
 	}
 
-	public long getLongAddressOffset() {
-		return fDMNode.getBigAddressOffset().longValue()
-				+ fBigArrayAddressOffset.longValue();
+	// public long getLongAddressOffset() {
+	// return fDMNode.getBigAddressOffset().longValue()
+	// + fBigArrayAddressOffset.longValue();
+	// }
+
+	public BigInteger getThisBigAddressOffset() {
+		return fDMNode.getBigAddressOffset();
 	}
 
+	/**
+	 * Compute the cumulated offset, up to the peripheral node.
+	 * 
+	 * @return a big integer.
+	 */
+	public BigInteger getPeripheralBigAddressOffset() {
+
+		BigInteger offset = getThisBigAddressOffset();
+		PeripheralTreeVMNode parent = (PeripheralTreeVMNode) getParent();
+		if (parent != null) {
+			offset = offset.add(parent.getThisBigAddressOffset());
+		}
+
+		return offset;
+	}
+
+	/**
+	 * Compute the absolute address of the node, by adding the total offset to
+	 * the peripheral base.
+	 * 
+	 * @return a big integer with the absolute address.
+	 */
 	public BigInteger getBigAbsoluteAddress() {
-		return null;
+
+		BigInteger peripheralBaseAddress;
+		try {
+			peripheralBaseAddress = ((PeripheralTopVMNode) getRegisterGroup())
+					.getBigAbsoluteAddress();
+		} catch (DebugException e) {
+			peripheralBaseAddress = BigInteger.ZERO;
+		}
+		BigInteger offset;
+		offset = getPeripheralBigAddressOffset();
+
+		return peripheralBaseAddress.add(offset);
 	}
 
 	public BigInteger getBigSize() {
@@ -363,7 +400,7 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 
 	public String getDisplayOffset() {
 
-		long value = getLongAddressOffset();
+		long value = getPeripheralBigAddressOffset().longValue();
 		if (value < 0x10000) {
 			return String.format("0x%04X", value);
 		} else {
@@ -377,24 +414,23 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 		return null;
 	}
 
-	protected PeripheralGroupVMNode getPeripheral() {
+	protected PeripheralTopVMNode getPeripheral() {
 
 		try {
-			return (PeripheralGroupVMNode) getRegisterGroup();
+			return (PeripheralTopVMNode) getRegisterGroup();
 		} catch (DebugException e) {
 		}
 		return null;
 	}
 
-	
-	public boolean isArray(){
+	public boolean isArray() {
 		return fDMNode.isArray();
 	}
 
-//	public int getArrayDim() {
-//		return fDMNode.getArrayDim();
-//	}
-	
+	// public int getArrayDim() {
+	// return fDMNode.getArrayDim();
+	// }
+
 	// ------------------------------------------------------------------------
 
 	/**
@@ -424,12 +460,16 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 			 */
 			if (this instanceof PeripheralGroupVMNode) {
 				processDimGroup(child);
-			} else if (this instanceof PeripheralClusterVMNode) {
-				processDimGroup(child);
 			} else if (this instanceof PeripheralRegisterVMNode) {
 				if (child instanceof SvdFieldDMNode) {
 					new PeripheralRegisterFieldVMNode(this, child);
+				} else {
+					Activator.log(child.getClass().getSimpleName()
+							+ " not processed");
 				}
+			} else {
+				Activator.log(this.getClass().getSimpleName()
+						+ " not processed");
 			}
 		}
 	}
@@ -443,8 +483,11 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 				new PeripheralClusterVMNode(this, child);
 			} else if (child instanceof SvdRegisterDMNode) {
 				new PeripheralRegisterVMNode(this, child);
+			} else {
+				Activator.log(child.getClass().getSimpleName()
+						+ " not processed");
 			}
-			
+
 			return;
 		}
 
@@ -455,16 +498,13 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 		// array elements.
 		if (child instanceof SvdClusterDMNode) {
 
-			new PeripheralClusterVMNode(this, child);
-			PeripheralClusterArrayVMNode arrayNode = new PeripheralClusterArrayVMNode(
+			PeripheralTreeVMNode arrayNode = new PeripheralClusterArrayVMNode(
 					this, child);
 			arrayNode.substituteIndex("");
 			BigInteger offset = BigInteger.ZERO;
 			for (int i = 0; i < indices.length; ++i) {
-				PeripheralClusterVMNode arrayElement = new PeripheralClusterVMNode(
-						arrayNode, child);
-				arrayElement.substituteIndex(indices[i]);
-				arrayElement.setBigArrayAddressOffset(offset);
+				new PeripheralClusterArrayElementVMNode(arrayNode, child,
+						indices[i], offset);
 
 				offset = offset.add(increment);
 			}
@@ -475,22 +515,29 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 			arrayNode.substituteIndex("");
 			BigInteger offset = BigInteger.ZERO;
 			for (int i = 0; i < indices.length; ++i) {
-				PeripheralRegisterVMNode arrayElement = new PeripheralRegisterVMNode(
-						arrayNode, child);
-				arrayElement.substituteIndex(indices[i]);
-				arrayElement.setBigArrayAddressOffset(offset);
+				new PeripheralRegisterArrayElementVMNode(arrayNode, child,
+						indices[i], offset);
 
 				offset = offset.add(increment);
 			}
+		} else {
+			Activator.log(child.getClass().getSimpleName() + " not processed");
 		}
 	}
 
+	/**
+	 * For array elements, substitute the %s with the actual index.
+	 * 
+	 * @param index
+	 *            a string, must be a valid C variable name.
+	 */
 	protected void substituteIndex(String index) {
-		fName = String.format(fName, index);
-	}
-
-	protected void setBigArrayAddressOffset(BigInteger offset) {
-		fBigArrayAddressOffset = offset;
+		if (fName.indexOf("%s") >= 0) {
+			if (index.isEmpty() && fName.indexOf("[%s]") < 0) {
+				index = "[]";
+			}
+			fName = String.format(fName, index);
+		}
 	}
 
 	// ------------------------------------------------------------------------

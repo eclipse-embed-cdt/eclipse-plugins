@@ -7,7 +7,6 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version 
- *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.datamodel;
@@ -117,7 +116,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 		}
 
 		if (size != null) {
-			return SvdUtils.parseNonNegativeBigInteger(size);
+			return SvdUtils.parseScaledNonNegativeBigInteger(size);
 		}
 
 		return null;
@@ -126,7 +125,8 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	/**
 	 * Get the size element inside addressBlock.
 	 * 
-	 * @param node a tree node with addressBlock.
+	 * @param node
+	 *            a tree node with addressBlock.
 	 * @return the size node or null if not found.
 	 */
 	private String getSizeElement(Leaf node) {
@@ -156,7 +156,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 
 		if (fBigAbsoluteAddress == null) {
 			fBigAbsoluteAddress = SvdUtils
-					.parseNonNegativeBigInteger(getBaseAddress());
+					.parseScaledNonNegativeBigInteger(getBaseAddress());
 		}
 		return fBigAbsoluteAddress;
 	}
@@ -207,6 +207,16 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 		return fIsSystem.booleanValue();
 	}
 
+	public String getGroupName() {
+
+		return fNode.getProperty("groupName");
+	}
+
+	public String getVersion() {
+
+		return fNode.getProperty("version");
+	}
+
 	// ------------------------------------------------------------------------
 
 	@Override
@@ -229,12 +239,8 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 
 			// Keep only <register> and <cluster> nodes
 			if (child.isType("register")) {
-				// TODO: process dimElementGroup, for one node generate multiple
-				// objects
 				list.add(new SvdRegisterDMNode(child));
 			} else if (child.isType("cluster")) {
-				// TODO: process dimElementGroup, for one node generate multiple
-				// objects
 				list.add(new SvdClusterDMNode(child));
 			}
 		}
