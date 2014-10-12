@@ -33,7 +33,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-
 /**
  * This class Appends contents to Managed Build System String Option Value.
  *
@@ -43,12 +42,16 @@ import org.eclipse.core.runtime.IProgressMonitor;
 public class ConditionalAppendToMBSStringOptionValue extends ProcessRunner {
 
 	/**
-	 * This method Appends contents to Managed Build System StringList Option Values.
+	 * This method Appends contents to Managed Build System StringList Option
+	 * Values.
 	 */
 	@Override
-	public void process(TemplateCore template, ProcessArgument[] args, String processId, IProgressMonitor monitor) throws ProcessFailureException {
+	public void process(TemplateCore template, ProcessArgument[] args,
+			String processId, IProgressMonitor monitor)
+			throws ProcessFailureException {
 		String projectName = args[0].getSimpleValue();
-		IProject projectHandle = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
+		IProject projectHandle = ResourcesPlugin.getWorkspace().getRoot()
+				.getProject(projectName);
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceDescription workspaceDesc = workspace.getDescription();
 		boolean autoBuilding = workspaceDesc.isAutoBuilding();
@@ -56,14 +59,15 @@ public class ConditionalAppendToMBSStringOptionValue extends ProcessRunner {
 		try {
 			workspace.setDescription(workspaceDesc);
 		} catch (CoreException e) {
-			//ignore
+			// ignore
 		}
 
 		String condition = args[1].getSimpleValue();
 		if (!Utils.isConditionSatisfied(condition))
 			return;
-		
-		ProcessArgument[][] resourcePathObjects = args[2].getComplexArrayValue();
+
+		ProcessArgument[][] resourcePathObjects = args[2]
+				.getComplexArrayValue();
 		boolean modified = false;
 		for (ProcessArgument[] resourcePathObject : resourcePathObjects) {
 			String id = resourcePathObject[0].getSimpleValue();
@@ -71,9 +75,11 @@ public class ConditionalAppendToMBSStringOptionValue extends ProcessRunner {
 			String path = resourcePathObject[2].getSimpleValue();
 			String buildType = resourcePathObject[3].getSimpleValue();
 			try {
-				modified |= setOptionValue(projectHandle, id, value, path, buildType);
+				modified |= setOptionValue(projectHandle, id, value, path,
+						buildType);
 			} catch (BuildException e) {
-				throw new ProcessFailureException(Messages.getString("AppendToMBSStringOptionValue.0") + e.getMessage(), e); //$NON-NLS-1$
+				throw new ProcessFailureException(
+						Messages.getString("AppendToMBSStringOptionValue.0") + e.getMessage(), e); //$NON-NLS-1$
 			}
 		}
 		if (modified) {
@@ -83,18 +89,22 @@ public class ConditionalAppendToMBSStringOptionValue extends ProcessRunner {
 		workspaceDesc.setAutoBuilding(autoBuilding);
 		try {
 			workspace.setDescription(workspaceDesc);
-		} catch (CoreException e) {//ignore
+		} catch (CoreException e) {// ignore
 		}
 	}
 
-	private boolean setOptionValue(IProject projectHandle, String id, String value, String path, String buildType) throws BuildException, ProcessFailureException {
-		IConfiguration[] projectConfigs = ManagedBuildManager.getBuildInfo(projectHandle).getManagedProject().getConfigurations();
+	private boolean setOptionValue(IProject projectHandle, String id,
+			String value, String path, String buildType) throws BuildException,
+			ProcessFailureException {
+		IConfiguration[] projectConfigs = ManagedBuildManager
+				.getBuildInfo(projectHandle).getManagedProject()
+				.getConfigurations();
 
 		boolean resource = !(path == null || path.equals("") || path.equals("/")); //$NON-NLS-1$ //$NON-NLS-2$
 		boolean modified = false;
 
 		for (IConfiguration config : projectConfigs) {
-			if (!Utils.isBuildType(config, buildType)){
+			if (!Utils.isBuildType(config, buildType)) {
 				continue;
 			}
 			IResourceConfiguration resourceConfig = null;
@@ -103,21 +113,25 @@ public class ConditionalAppendToMBSStringOptionValue extends ProcessRunner {
 				if (resourceConfig == null) {
 					IFile file = projectHandle.getFile(path);
 					if (file == null) {
-						throw new ProcessFailureException(Messages.getString("AppendToMBSStringOptionValue.3") + path); //$NON-NLS-1$
+						throw new ProcessFailureException(
+								Messages.getString("AppendToMBSStringOptionValue.3") + path); //$NON-NLS-1$
 					}
 					resourceConfig = config.createResourceConfiguration(file);
 				}
 				ITool[] tools = resourceConfig.getTools();
 				for (ITool tool : tools) {
-					modified |= setOptionForResourceConfig(id, value, resourceConfig, tool.getOptions(), tool);
+					modified |= setOptionForResourceConfig(id, value,
+							resourceConfig, tool.getOptions(), tool);
 				}
 			} else {
 				IToolChain toolChain = config.getToolChain();
-				modified |= setOptionForConfig(id, value, config, toolChain.getOptions(), toolChain);
+				modified |= setOptionForConfig(id, value, config,
+						toolChain.getOptions(), toolChain);
 
 				ITool[] tools = config.getTools();
 				for (ITool tool : tools) {
-					modified |= setOptionForConfig(id, value, config, tool.getOptions(), tool);
+					modified |= setOptionForConfig(id, value, config,
+							tool.getOptions(), tool);
 				}
 			}
 		}
@@ -125,23 +139,32 @@ public class ConditionalAppendToMBSStringOptionValue extends ProcessRunner {
 		return modified;
 	}
 
-	private boolean setOptionForResourceConfig(String id, String value, IResourceConfiguration resourceConfig, IOption[] options, IHoldsOptions optionHolder) throws BuildException {
+	private boolean setOptionForResourceConfig(String id, String value,
+			IResourceConfiguration resourceConfig, IOption[] options,
+			IHoldsOptions optionHolder) throws BuildException {
 		boolean modified = false;
 		String lowerId = id.toLowerCase();
 		for (IOption option : options) {
 			if (option.getBaseId().toLowerCase().matches(lowerId)) {
 				if (option.getValueType() == IOption.STRING) {
 					String oldValue = option.getStringValue();
-					String newValue = oldValue + " " + value;
-					ManagedBuildManager.setOption(resourceConfig, optionHolder, option, newValue);
-					modified = true;
+
+					// Check if value is not already in.
+					if (oldValue.indexOf(value) < 0) {
+						String newValue = oldValue + " " + value;
+						ManagedBuildManager.setOption(resourceConfig,
+								optionHolder, option, newValue);
+						modified = true;
+					}
 				}
 			}
 		}
 		return modified;
 	}
 
-	private boolean setOptionForConfig(String id, String value, IConfiguration config, IOption[] options, IHoldsOptions optionHolder) throws BuildException {
+	private boolean setOptionForConfig(String id, String value,
+			IConfiguration config, IOption[] options, IHoldsOptions optionHolder)
+			throws BuildException {
 		boolean modified = false;
 		String lowerId = id.toLowerCase();
 		for (IOption option : options) {
@@ -149,7 +172,8 @@ public class ConditionalAppendToMBSStringOptionValue extends ProcessRunner {
 				if (option.getValueType() == IOption.STRING) {
 					String oldValue = option.getStringValue();
 					String newValue = oldValue + " " + value;
-					ManagedBuildManager.setOption(config, optionHolder, option, newValue);
+					ManagedBuildManager.setOption(config, optionHolder, option,
+							newValue);
 					modified = true;
 				}
 			}
