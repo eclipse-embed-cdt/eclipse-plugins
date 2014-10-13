@@ -182,8 +182,15 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 					}
 				}
 				return " " + name;
+
 			case 1:
-				return " " + node.getDescription();
+				// On Linux, the cell is multi-line, so we keep only the first
+				// line of a multi-line description.
+				// TODO: check if it can be set to single line.
+				String description = node.getDescription();
+				String[] lines = description.split("\\r?\\n"); //$NON-NLS-1$
+				description = lines[0];
+				return " " + description;
 			}
 			return null;
 		}
@@ -293,7 +300,8 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 		layout.setColumnData(descriptionColumn, new ColumnPixelData(450));
 
 		fViewer = new TreeViewer(tree);
-
+		// TODO: change to a more elaborate widget, that allows tooltips
+		
 		fContentProvider = new ViewContentProvider();
 
 		// Register this view to the packs storage notifications
@@ -864,7 +872,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 		// Node packsTree = fStorage.getPacksTree();
 		final Node packsTree = DataManager.getInstance().getRepositoriesTree();
-		
+
 		final Node packsRoot = new Node(Type.ROOT);
 		packsRoot.setName("Packs");
 
