@@ -541,6 +541,16 @@
                valueType="boolean">
          </option>
          <option
+               command="-flto"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.lto"
+               isAbstract="true"
+               name="%option.optimization.lto"
+               tip="Run the standard link-time optimizer. When invoked with source code, it generates GIMPLE (one of GCC’s internal representations) and writes it to special ELF sections in the object file. When the object files are linked together, all the function bodies are read from these ELF sections and instan- tiated as if they had been part of the same translation unit."
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.other"
                isAbstract="true"
                name="%option.optimization.other"
@@ -2502,6 +2512,11 @@
                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
                  id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.PIC"
                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.PIC">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.lto"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.lto">
            </option>
            <option
                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"

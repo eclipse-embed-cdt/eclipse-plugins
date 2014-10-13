@@ -106,7 +106,7 @@ typedef void
 #define CONFIG_3                (pHandler)0xffffffff
 #define CONFIG_4                (pHandler)0xfffffffe
 
-__attribute__ ((section(".isr_vector")))
+__attribute__ ((section(".isr_vector"),used))
 pHandler gHandlers[] =
   {
   // Core Level - CM0

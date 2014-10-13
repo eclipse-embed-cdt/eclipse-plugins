@@ -35,7 +35,8 @@ Reset_Handler(void)
 {
   asm volatile
   (
-      " b _start \n"
+      " ldr     r0,=_start \n"
+      " bx      r0"
       :
       :
       :

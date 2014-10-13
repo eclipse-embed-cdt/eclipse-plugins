@@ -113,7 +113,7 @@ typedef void
 //#define CONFIG_4      (pHandler)0xfffffefe //b5=1,b4=1,b0=0;div2 fast
 //#define CONFIG_4      (pHandler)0xffffdefe //b5=0,b4=1,b0=0;div2 slow
 
-__attribute__ ((section(".isr_vector")))
+__attribute__ ((section(".isr_vector"),used))
 pHandler gHandlers[] =
   {
   // Core Level - CM0

@@ -97,6 +97,8 @@ public class Option {
 			+ "spconstant";
 	public static final String OPTION_OPTIMIZATION_PIC = OPTION_OPTIMIZATION
 			+ "PIC";
+	public static final String OPTION_OPTIMIZATION_LTO = OPTION_OPTIMIZATION
+			+ "lto";
 	public static final String OPTION_OPTIMIZATION_OTHER = OPTION_OPTIMIZATION
 			+ "other";
 
@@ -482,6 +484,10 @@ public class Option {
 			sReturn += " " + sValue;
 
 		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_PIC);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_LTO);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 
