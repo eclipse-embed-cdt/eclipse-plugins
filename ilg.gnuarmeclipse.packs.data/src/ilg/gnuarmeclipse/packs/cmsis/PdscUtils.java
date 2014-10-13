@@ -26,7 +26,7 @@ public class PdscUtils {
 	public static boolean isSchemaValid(String schemaVersion) {
 
 		if ("1.0".equals(schemaVersion) || "1.1".equals(schemaVersion)
-				|| "1.2".equals(schemaVersion)) {
+				|| "1.2".equals(schemaVersion) || "1.3".equals(schemaVersion)) {
 			return true;
 		} else {
 			return false;
