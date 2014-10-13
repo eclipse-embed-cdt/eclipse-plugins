@@ -79,22 +79,22 @@
 		description="%group.folders.description" type="PAGES-ONLY" help="help.html">
 		<property id="includeDir" label="%includeDir.label"
 			description="%includeDir.description" type="input" default="%includeDir.default"
-			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
+			pattern="[a-zA-Z0-9/]+" mandatory="true" persist="true" />
 		<property id="sourceDir" label="%sourceDir.label"
 			description="%sourceDir.description" type="input" default="%sourceDir.default"
-			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
+			pattern="[a-zA-Z0-9/]+" mandatory="true" persist="true" />
 		<property id="sysDir" label="%sysDir.label" description="%sysDir.description"
-			type="input" default="%sysDir.default" pattern="[a-zA-Z0-9]+"
+			type="input" default="%sysDir.default" pattern="[a-zA-Z0-9/]+"
 			mandatory="true" persist="true" />
 		<property id="cmsisDir" label="%cmsisDir.label" description="%cmsisDir.description"
-			type="input" default="%cmsisDir.default" pattern="[a-zA-Z0-9]+"
+			type="input" default="%cmsisDir.default" pattern="[a-zA-Z0-9/]+"
 			mandatory="true" persist="true" />
 		<property id="newlibDir" label="%newlibDir.label"
 			description="%newlibDir.description" type="input" default="%newlibDir.default"
-			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
+			pattern="[a-zA-Z0-9/]+" mandatory="true" persist="true" />
 		<property id="ldscriptsDir" label="%ldscriptsDir.label"
 			description="%ldscriptsDir.description" type="input" default="%ldscriptsDir.default"
-			pattern="[a-zA-Z0-9]+" mandatory="true" persist="true" />
+			pattern="[a-zA-Z0-9/]+" mandatory="true" persist="true" />
 
 		<!-- ============================================================== -->
 		<property id="fileExtension" label="Source file extension"
