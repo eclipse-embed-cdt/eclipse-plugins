@@ -383,7 +383,9 @@ public class OutlineView extends ViewPart {
 				if (Type.FILE.equals(type)) {
 
 					String category = node.getProperty(Node.CATEGORY_PROPERTY);
-					if ("header".equals(category) || "source".equals(category)) {
+					if ("header".equals(category)
+							|| category.startsWith("source")
+							|| "linkerScript".equals(category)) {
 						fOpenWithText.setEnabled(true);
 					}
 				} else if (Type.HEADER.equals(type)) {
@@ -669,7 +671,8 @@ public class OutlineView extends ViewPart {
 
 			String category = node.getProperty(Node.CATEGORY_PROPERTY);
 			String relativeFile = node.getProperty(Node.FILE_PROPERTY);
-			if ("header".equals(category) || "source".equals(category)) {
+			if ("header".equals(category) || category.startsWith("source")
+					|| "linkerScript".equals(category)) {
 
 				// System.out.println("Edit " + relativeFile);
 
