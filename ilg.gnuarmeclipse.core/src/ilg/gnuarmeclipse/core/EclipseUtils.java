@@ -68,6 +68,7 @@ import org.eclipse.ui.progress.UIJob;
  * >Eclipse Wiki</a>.
  * 
  */
+@SuppressWarnings("restriction")
 public class EclipseUtils {
 
 	// ------------------------------------------------------------------------
@@ -157,10 +158,13 @@ public class EclipseUtils {
 		IWorkbenchWindow window = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow();
 		if (window != null) {
-			IStructuredSelection selection = (IStructuredSelection) window
-					.getSelectionService().getSelection();
-			if ((selection != null) && (selection.size() == 1)) {
-				Object firstElement = selection.getFirstElement();
+
+			Object selection = window.getSelectionService().getSelection();
+			if ((selection != null)
+					&& (selection instanceof IStructuredSelection)
+					&& (((IStructuredSelection) selection).size() == 1)) {
+				Object firstElement = ((IStructuredSelection) selection)
+						.getFirstElement();
 				if (firstElement instanceof IAdaptable) {
 					IProject project = (IProject) ((IAdaptable) firstElement)
 							.getAdapter(IProject.class);
@@ -234,7 +238,6 @@ public class EclipseUtils {
 
 		Display.getDefault().syncExec(new Runnable() {
 
-			@SuppressWarnings("restriction")
 			public void run() {
 				IWorkbenchWindow window = PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow();
@@ -259,7 +262,6 @@ public class EclipseUtils {
 		System.out.println(message);
 		Display.getDefault().syncExec(new Runnable() {
 
-			@SuppressWarnings("restriction")
 			public void run() {
 				IWorkbenchWindow window = PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow();
@@ -276,7 +278,6 @@ public class EclipseUtils {
 		System.out.println(message);
 		Display.getDefault().syncExec(new Runnable() {
 
-			@SuppressWarnings("restriction")
 			public void run() {
 				IWorkbenchWindow window = PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow();
