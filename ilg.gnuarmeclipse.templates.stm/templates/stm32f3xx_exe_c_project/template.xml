@@ -73,6 +73,9 @@
 			description="%excludeUnused.description" type="boolean" default="true"
 			hidden="false" persist="true" />
 
+		<property id="useLto" label="%useLto.label" description="%useLto.description"
+			type="boolean" default="false" hidden="false" persist="true" />
+
 	</property-group>
 
 	<property-group id="folders" label="%group.folders.label"
@@ -1226,6 +1229,23 @@
 					<simple name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.other" />
 					<simple name="value" value="--specs=nano.specs" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="$(useLto)==true">
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.lto" />
+					<simple name="value" value="true" />
 					<simple name="path" value="" />
 					<simple name="buildType" value="" />
 				</element>

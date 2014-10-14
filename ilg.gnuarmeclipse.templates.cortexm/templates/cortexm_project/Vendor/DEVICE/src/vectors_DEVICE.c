@@ -34,7 +34,7 @@ typedef void
 // The vector table.
 // This relies on the linker script to place at correct location in memory.
 
-__attribute__ ((section(".isr_vector")))
+__attribute__ ((section(".isr_vector"),used))
 pHandler __isr_vectors[] =
   { //
     (pHandler) &_estack,                          // The initial stack pointer
