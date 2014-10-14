@@ -340,7 +340,7 @@ public class OutlineView extends ViewPart {
 
 		addProviders();
 		addListners();
-		hookPageSelection();
+		hookPostSelectionListener();
 
 		makeActions();
 		hookContextMenu();
@@ -353,19 +353,27 @@ public class OutlineView extends ViewPart {
 		fViewer.getControl().setFocus();
 	}
 
+	/**
+	 * Register this viewer as source of events.
+	 */
 	private void addProviders() {
 		// Register this viewer as the selection provider
 		getSite().setSelectionProvider(fViewer);
 	}
 
+	/**
+	 * Register listeners for local events.
+	 */
 	private void addListners() {
 
+		// Register listener for local selection changes
 		fViewer.addSelectionChangedListener(new ISelectionChangedListener() {
 
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 
-				// Called when the local view selection changes
+				// Called when the local view selection changes, to update the
+				// two right click actions.
 
 				fOpenWithText.setEnabled(false);
 				fOpenWithSystem.setEnabled(false);
@@ -420,7 +428,10 @@ public class OutlineView extends ViewPart {
 
 	}
 
-	private void hookPageSelection() {
+	/**
+	 * Hook to the global selection bus.
+	 */
+	private void hookPostSelectionListener() {
 
 		fPageSelectionListener = new ISelectionListener() {
 
@@ -429,6 +440,7 @@ public class OutlineView extends ViewPart {
 					ISelection selection) {
 
 				if (part instanceof PacksView) {
+					// The selection comes from the packs view
 					packsViewSelectionChanged(part, selection);
 				} else {
 					// System.out.println("Outline: " + part + " selection="
@@ -451,7 +463,14 @@ public class OutlineView extends ViewPart {
 		System.out.println("OutlineView.dispose()");
 	}
 
-	// Called when selection in other views change
+	/**
+	 * Called when selection in the Packs view changes.
+	 * 
+	 * @param part
+	 *            the Packs view.
+	 * @param selection
+	 *            a TreeSelection with a PackNode as first element.
+	 */
 	protected void packsViewSelectionChanged(IWorkbenchPart part,
 			ISelection selection) {
 
@@ -461,7 +480,7 @@ public class OutlineView extends ViewPart {
 
 		if ((!selection.isEmpty()) && selection instanceof TreeSelection) {
 
-			// Limit to a single selection.
+			// Limit to a single selection, the first one.
 			Leaf node = (Leaf) ((TreeSelection) selection).getFirstElement();
 
 			// Only PackNode can have an outline.
@@ -470,25 +489,24 @@ public class OutlineView extends ViewPart {
 				if (((PackNode) node).hasOutline()) {
 
 					// If the node already has outline, show it
-					fViewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);
 					outline = ((PackNode) node).getOutline();
 
 				} else if (node.isType(Type.VERSION)) {
 
 					if (node.isBooleanProperty(Property.INSTALLED)) {
 
-						// If the version node is installed, get outline
-						parseOutline((PackNode) node, (PackNode) node);
-
+						// If the version node is installed, get outline.
+						parseOutline((PackNode) node);
+						outline = ((PackNode) node).getOutline();
 					} else {
 
-						// Get brief outline
+						// For not installed nodes, get brief outline.
 						outline = getBriefOutline((Node) node);
 						((PackNode) node).setOutline(outline);
 					}
 				} else if (node.isType(Type.PACKAGE)) {
 
-					// Get brief outline
+					// Get package brief outline.
 					outline = getBriefOutline((Node) node);
 					((PackNode) node).setOutline(outline);
 
@@ -498,19 +516,25 @@ public class OutlineView extends ViewPart {
 
 					if (versionNode.isBooleanProperty(Property.INSTALLED)) {
 
-						// If the version node is installed, get outline
-						parseOutline((PackNode) versionNode, (PackNode) node);
-
+						// If the example version node is installed, get outline
+						parseOutline((PackNode) versionNode);
+						outline = ((PackNode) node).getOutline();
 					}
 				}
 			}
 		}
 
+		fViewer.setAutoExpandLevel(OutlineView.AUTOEXPAND_LEVEL);
 		fViewer.setInput(outline);
-
 	}
 
-	private void parseOutline(PackNode versionNode, PackNode selectedNode) {
+	/**
+	 * Parse the node outline.
+	 * 
+	 * @param versionNode
+	 * @return
+	 */
+	private void parseOutline(PackNode versionNode) {
 
 		// If the version node is installed, get outline
 		IProgressService progressService = PlatformUI.getWorkbench()
@@ -518,9 +542,6 @@ public class OutlineView extends ViewPart {
 		try {
 			progressService.busyCursorWhile(new ParsePdscRunnable(
 					"Parse Outline", (PackNode) versionNode));
-
-			fViewer.setAutoExpandLevel(OutlineView.AUTOEXPAND_LEVEL);
-			fViewer.setInput(((PackNode) selectedNode).getOutline());
 
 		} catch (InvocationTargetException e1) {
 			// TODO Auto-generated catch block
