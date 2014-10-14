@@ -650,7 +650,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 	// -------------------------------------------------------------------------
 
 	// This event comes when the tab is selected after the windows is
-	// displayed, to account for content change
+	// displayed, to account for content change.
 	// It also comes when the configuration is changed in the selection.
 	@Override
 	public void updateData(ICResourceDescription cfgd) {
@@ -691,6 +691,8 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 		System.out.println("Devices.performOK() " + config.getName());
 
 		updateStorage(config);
+
+		// The DocsView is notified of the change via IPropertyChangeListener
 	}
 
 	private void updateControlsForConfig(IConfiguration config) {
@@ -717,7 +719,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 				}
 
 				boolean wasSelected = false;
-				// TODO: select the device in the selection tree
+				// Select the device in the selection tree.
 				String boardName = st
 						.getOption(CProjectPacksStorage.BOARD_NAME);
 				String boardVendorName = st
@@ -732,6 +734,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 						&& deviceName.length() > 0 && deviceVendorId != null
 						&& deviceVendorId.length() > 0) {
 
+					// First try to select the device below board.
 					Leaf board = fDataManager.findInstalledBoard(
 							boardVendorName, boardName);
 					if (board != null && board.hasChildren()) {
@@ -751,11 +754,10 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 							}
 						}
 					}
-
 				}
 
 				if (!wasSelected) {
-					// Was not selected by the board, try device
+					// Was not selected by the board, try device.
 					if (deviceName != null && deviceName.length() > 0
 							&& deviceVendorId != null
 							&& deviceVendorId.length() > 0) {
@@ -783,6 +785,14 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 		// fLastUpdatedConfig = config;
 	}
 
+	/**
+	 * Update the C project storage with the packs related definitions.
+	 * <p>
+	 * Multiple configurations might be updated at the same time.
+	 * 
+	 * @param config
+	 *            the configuration to update.
+	 */
 	private void updateStorage(IConfiguration config) {
 
 		System.out.println("Devices.updateStorage() " + config.getName());

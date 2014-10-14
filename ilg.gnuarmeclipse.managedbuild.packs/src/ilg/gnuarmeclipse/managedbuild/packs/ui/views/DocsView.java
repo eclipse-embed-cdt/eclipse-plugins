@@ -52,6 +52,8 @@ import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.util.IPropertyChangeListener;
+import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.ColumnViewerToolTipSupport;
 import org.eclipse.jface.viewers.DoubleClickEvent;
@@ -78,7 +80,8 @@ import org.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.ui.part.ViewPart;
 
 @SuppressWarnings("restriction")
-public class DocsView extends ViewPart implements IDataManagerListener {
+public class DocsView extends ViewPart implements IDataManagerListener,
+		IPropertyChangeListener {
 
 	/**
 	 * The ID of the view as specified by the extension.
@@ -251,6 +254,25 @@ public class DocsView extends ViewPart implements IDataManagerListener {
 
 	private void addListners() {
 		// None
+	}
+
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Notification when the TabDevices changes.
+	 */
+	@Override
+	public void propertyChange(PropertyChangeEvent event) {
+		// System.out.println(event + " " + event.getSource());
+		Object source = event.getSource();
+		if (source instanceof IProject) {
+			// fViewer.setInput(getDocsTree());
+			if (EclipseUtils.getSelectedProject() == (IProject) source) {
+				fLatestSelectedConfig = getConfigurationForProject(EclipseUtils
+						.getSelectedProject());
+				setInputForConfig(fLatestSelectedConfig, false);
+			}
+		}
 	}
 
 	/**
