@@ -12,8 +12,12 @@
 
 package ilg.gnuarmeclipse.debug.core.gdbjtag.render.peripherals;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.core.SystemUIJob;
+import ilg.gnuarmeclipse.debug.core.gdbjtag.memory.MemoryBlockMonitor;
 import ilg.gnuarmeclipse.debug.core.gdbjtag.memory.PeripheralMemoryBlockExtension;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -44,15 +48,23 @@ public class PeripheralsView extends VariablesView implements
 			PeripheralsView.class.getSimpleName() + "#refreshUIjob") {
 
 		public IStatus runInUIThread(IProgressMonitor pm) {
-			getViewer().refresh();
+
+			Viewer viewer = getViewer();
+			if (viewer != null) {
+				viewer.refresh();
+			}
 			return Status.OK_STATUS;
 		}
 	};
 
 	// ------------------------------------------------------------------------
 
+	Set<PeripheralMemoryBlockExtension> fMemoryBlocks;
+
+	// ------------------------------------------------------------------------
+
 	public PeripheralsView() {
-		;
+		fMemoryBlocks = new HashSet<PeripheralMemoryBlockExtension>();
 	}
 
 	protected String getPresentationContextId() {
@@ -127,6 +139,8 @@ public class PeripheralsView extends VariablesView implements
 				PeripheralMemoryBlockExtension memoryBlockExtension = (PeripheralMemoryBlockExtension) memoryBlocks[i];
 				System.out.println("PeripheralsView.memoryBlocksAdded() [] "
 						+ memoryBlockExtension);
+
+				fMemoryBlocks.add(memoryBlockExtension);
 			}
 		}
 	}
@@ -144,6 +158,7 @@ public class PeripheralsView extends VariablesView implements
 				System.out.println("PeripheralsView.memoryBlocksRemoved() [] "
 						+ memoryBlockExtension);
 
+				fMemoryBlocks.remove(memoryBlockExtension);
 			}
 		}
 
@@ -170,6 +185,17 @@ public class PeripheralsView extends VariablesView implements
 
 	@Override
 	public void dispose() {
+
+		// Remove all peripheral monitors
+		MemoryBlockMonitor
+				.getInstance()
+				.removeMemoryBlocks(
+						fMemoryBlocks
+								.toArray(new PeripheralMemoryBlockExtension[fMemoryBlocks
+										.size()]));
+
+		// Confirm that all peripheral monitors were removed
+		assert (fMemoryBlocks.isEmpty());
 
 		removeDebugEventListener();
 		removeMemoryBlockListener();

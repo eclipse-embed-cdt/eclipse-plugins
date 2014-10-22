@@ -193,6 +193,12 @@ public class MemoryBlockMonitor {
 		}
 	}
 
+	public void removeMemoryBlocks(IMemoryBlock[] memoryBlocks) {
+
+		DebugPlugin.getDefault().getMemoryBlockManager()
+				.removeMemoryBlocks(memoryBlocks);
+	}
+
 	private void addDefaultRenderings(IWorkbenchWindow workbenchWindow,
 			IMemoryBlock memoryBlock, String id) {
 
