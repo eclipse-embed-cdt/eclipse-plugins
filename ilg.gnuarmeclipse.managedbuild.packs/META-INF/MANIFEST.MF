@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: ilg.gnuarmeclipse.managedbuild.packs;singleton:=true
-Bundle-Version: 1.1.1.qualifier
+Bundle-Version: 1.2.1.qualifier
 Bundle-Activator: ilg.gnuarmeclipse.managedbuild.packs.Activator
 Require-Bundle: ilg.gnuarmeclipse.core,
  ilg.gnuarmeclipse.managedbuild.cross,
