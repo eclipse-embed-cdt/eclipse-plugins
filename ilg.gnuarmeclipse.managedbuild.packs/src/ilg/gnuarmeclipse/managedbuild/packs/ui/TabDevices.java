@@ -506,6 +506,9 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 			fMemoryEditButton = new Button(group, SWT.NONE);
 			fMemoryEditButton
 					.setText(Messages.DevicesTab_MemoryGroup_editButton_text);
+			
+			// For the moment Edit is not implemented
+			fMemoryEditButton.setEnabled(false);
 		}
 	}
 
