@@ -16,6 +16,15 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
+/**
+ * Manage a workspace preference file stored in:
+ * 
+ * <pre>
+ * workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/<plug-in-id>.prefs
+ * </pre>
+ *
+ * Some of the values may be retrieved from the EclipseDefaults.
+ */
 public class WorkspacePreferences {
 
 	// Tab Debugger
@@ -134,14 +143,6 @@ public class WorkspacePreferences {
 		Preferences preferences = InstanceScope.INSTANCE
 				.getNode(Activator.PLUGIN_ID);
 		preferences.put(id, value);
-
-		if (false) {
-			// Access the shared preferences
-			String sharedId = Activator.PLUGIN_ID + "." + id;
-
-			SharedDefaults.getInstance().getSharedDefaultsMap()
-					.put(sharedId, value);
-		}
 	}
 
 	// ----- gdb server doStart -----------------------------------
@@ -159,7 +160,8 @@ public class WorkspacePreferences {
 	// ----- gdb server executable --------------------------------------------
 	public static String getGdbServerExecutable(String defaultValue) {
 
-		return getValueForId(GDB_SERVER_EXECUTABLE, defaultValue);
+		return getValueForId(GDB_SERVER_EXECUTABLE,
+				EclipseDefaults.getGdbServerExecutable(defaultValue));
 	}
 
 	public static void putGdbServerExecutable(String value) {
@@ -247,7 +249,8 @@ public class WorkspacePreferences {
 	// ----- gdb client executable --------------------------------------------
 	public static String getGdbClientExecutable(String defaultValue) {
 
-		return getValueForId(GDB_CLIENT_EXECUTABLE, defaultValue);
+		return getValueForId(GDB_CLIENT_EXECUTABLE,
+				EclipseDefaults.getGdbClientExecutable(defaultValue));
 	}
 
 	public static void putGdbClientExecutable(String value) {
@@ -474,16 +477,10 @@ public class WorkspacePreferences {
 	public static void flush() {
 
 		try {
-			InstanceScope.INSTANCE
-			.getNode(Activator.PLUGIN_ID).flush();
+			InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).flush();
 		} catch (BackingStoreException e) {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
-		}
-
-		if (false) {
-			SharedDefaults.getInstance().updateShareDefaultsMap(
-					SharedDefaults.getInstance().getSharedDefaultsMap());
 		}
 	}
 }
