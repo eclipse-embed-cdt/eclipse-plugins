@@ -120,7 +120,7 @@ public class WorkspacePreferences {
 			return value;
 		}
 
-		// Keep this for compatibility
+		// For compatibility reasons, keep this for a while.
 		id = Activator.PLUGIN_ID + "." + id;
 
 		value = SharedDefaults.getInstance().getSharedDefaultsMap().get(id);
@@ -129,10 +129,11 @@ public class WorkspacePreferences {
 			value = "";
 
 		value = value.trim();
-		if (value.length() == 0 && defaultValue != null)
-			return defaultValue.trim();
+		if (!value.isEmpty()) {
+			return value;
+		}
 
-		return value;
+		return defaultValue;
 	}
 
 	private static void putValueForId(String id, String value) {
@@ -160,8 +161,11 @@ public class WorkspacePreferences {
 	// ----- gdb server executable --------------------------------------------
 	public static String getGdbServerExecutable(String defaultValue) {
 
-		return getValueForId(GDB_SERVER_EXECUTABLE,
-				EclipseDefaults.getGdbServerExecutable(defaultValue));
+		String value = getValueForId(GDB_SERVER_EXECUTABLE, null);
+		if (value != null) {
+			return value;
+		}
+		return EclipseDefaults.getGdbServerExecutable(defaultValue);
 	}
 
 	public static void putGdbServerExecutable(String value) {
@@ -249,8 +253,11 @@ public class WorkspacePreferences {
 	// ----- gdb client executable --------------------------------------------
 	public static String getGdbClientExecutable(String defaultValue) {
 
-		return getValueForId(GDB_CLIENT_EXECUTABLE,
-				EclipseDefaults.getGdbClientExecutable(defaultValue));
+		String value = getValueForId(GDB_CLIENT_EXECUTABLE, null);
+		if (value != null) {
+			return value;
+		}
+		return EclipseDefaults.getGdbClientExecutable(defaultValue);
 	}
 
 	public static void putGdbClientExecutable(String value) {
