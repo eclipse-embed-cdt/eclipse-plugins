@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2013 Liviu Ionescu.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Liviu Ionescu - initial version
+ *******************************************************************************/
+
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
 import ilg.gnuarmeclipse.debug.core.DebugUtils;
@@ -89,7 +100,7 @@ public class LaunchConfigurationDelegate extends
 	private void launchDebugger(ILaunchConfiguration config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
 
-		int totalWork = 10;
+		// int totalWork = 10;
 		monitor.beginTask(LaunchMessages.getString("GdbLaunchDelegate.0"), 10); //$NON-NLS-1$
 		if (monitor.isCanceled()) {
 			cleanupLaunch();

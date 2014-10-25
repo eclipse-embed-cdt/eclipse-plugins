@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2013 Liviu Ionescu.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Liviu Ionescu - initial version
+ *******************************************************************************/
+
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
 import java.io.IOException;
@@ -7,11 +18,6 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
-import java.util.concurrent.Future;
-
-import javax.sql.rowset.Joinable;
-
-import org.eclipse.cdt.dsf.concurrent.DsfExecutor;
 
 class SemihostingProcess extends Process implements Runnable {
 

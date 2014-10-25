@@ -82,6 +82,7 @@ import org.osgi.framework.BundleContext;
  * 
  * @since 1.1
  */
+@SuppressWarnings("restriction")
 public class Backend0 extends AbstractDsfService implements IGDBBackend,
 		IMIBackend2 {
 
@@ -326,7 +327,6 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 		return fProgramPath;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> getSharedLibraryPaths() throws CoreException {
 		if (fSharedLibPaths == null) {

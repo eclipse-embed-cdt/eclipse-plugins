@@ -1,8 +1,18 @@
+/*******************************************************************************
+ * Copyright (c) 2013 Liviu Ionescu.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Liviu Ionescu - initial version
+ *******************************************************************************/
+
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
 import ilg.gnuarmeclipse.debug.core.gdbjtag.services.IPeripheralMemoryService;
 import ilg.gnuarmeclipse.debug.core.gdbjtag.services.IPeripheralsService;
-import ilg.gnuarmeclipse.debug.core.gdbjtag.services.PeripheralMemoryService;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,11 +21,7 @@ import java.util.Map;
 
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitorWithProgress;
-import org.eclipse.cdt.dsf.concurrent.ReflectionSequence.Execute;
-import org.eclipse.cdt.dsf.datamodel.DMContexts;
-import org.eclipse.cdt.dsf.debug.service.IMemory.IMemoryDMContext;
 import org.eclipse.cdt.dsf.gdb.launching.GdbLaunch;
-import org.eclipse.cdt.dsf.gdb.service.IGDBMemory;
 import org.eclipse.cdt.dsf.gdb.service.IGDBProcesses;
 import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
@@ -27,8 +33,7 @@ import org.eclipse.debug.core.ILaunch;
 public class FinalLaunchSequence_7_2 extends FinalLaunchSequence {
 
 	private String[] newPreInitSteps = { "stepCreatePeripheralService",
-			"stepCreatePeripheralMemoryService",
-			 };
+			"stepCreatePeripheralMemoryService", };
 
 	private String[] newInitSteps = { "stepInitializeJTAGSequence_7_2" };
 
@@ -127,21 +132,21 @@ public class FinalLaunchSequence_7_2 extends FinalLaunchSequence {
 		}
 	}
 
-//	@Execute
-//	public void stepInitializePeripheralMemory(final RequestMonitor rm) {
-//
-//		DsfServicesTracker tracker = new DsfServicesTracker(Activator
-//				.getInstance().getBundle().getBundleContext(), fSession.getId());
-//
-//		IPeripheralMemoryService memory = tracker
-//				.getService(IPeripheralMemoryService.class);
-//		IMemoryDMContext memContext = DMContexts.getAncestorOfType(
-//				getContainerContext(), IMemoryDMContext.class);
-//		if (memory == null || memContext == null) {
-//			rm.done();
-//			return;
-//		}
-//		memory.initializeMemoryData(memContext, rm);
-//	}
+	// @Execute
+	// public void stepInitializePeripheralMemory(final RequestMonitor rm) {
+	//
+	// DsfServicesTracker tracker = new DsfServicesTracker(Activator
+	// .getInstance().getBundle().getBundleContext(), fSession.getId());
+	//
+	// IPeripheralMemoryService memory = tracker
+	// .getService(IPeripheralMemoryService.class);
+	// IMemoryDMContext memContext = DMContexts.getAncestorOfType(
+	// getContainerContext(), IMemoryDMContext.class);
+	// if (memory == null || memContext == null) {
+	// rm.done();
+	// return;
+	// }
+	// memory.initializeMemoryData(memContext, rm);
+	// }
 
 }

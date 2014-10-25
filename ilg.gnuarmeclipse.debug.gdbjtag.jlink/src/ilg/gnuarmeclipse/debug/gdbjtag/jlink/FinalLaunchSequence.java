@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2013 Liviu Ionescu.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Liviu Ionescu - initial version
+ *******************************************************************************/
+
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
 import ilg.gnuarmeclipse.debug.core.DebugUtils;
@@ -17,7 +28,6 @@ import org.eclipse.cdt.dsf.concurrent.CountingRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitorWithProgress;
-import org.eclipse.cdt.dsf.concurrent.ReflectionSequence.Execute;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.gdb.service.IGDBBackend;
 import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
@@ -32,6 +42,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.variables.VariablesPlugin;
 
+@SuppressWarnings("restriction")
 public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	private Map<String, Object> fAttributes;
@@ -387,6 +398,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					ConfigurationAttributes.OTHER_INIT_COMMANDS,
 					ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
 
+			@SuppressWarnings("unused")
 			boolean doConnectToRunning = CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
 					ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
