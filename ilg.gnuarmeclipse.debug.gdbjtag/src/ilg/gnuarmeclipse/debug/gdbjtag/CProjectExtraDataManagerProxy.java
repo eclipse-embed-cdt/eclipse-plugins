@@ -26,6 +26,7 @@ public class CProjectExtraDataManagerProxy implements ICProjectExtraDataManager 
 
 	// ------------------------------------------------------------------------
 
+	private static final String EXTENSION_POINT_NAME = "cproject.extra";
 	private static final String FACTORY_ELEMENT = "factory";
 	private static final String CLASS_ATTRIBUTE = "class";
 
@@ -51,7 +52,7 @@ public class CProjectExtraDataManagerProxy implements ICProjectExtraDataManager 
 				.getExtensionRegistry()
 				.getExtensionPoint(
 						ilg.gnuarmeclipse.debug.core.Activator.PLUGIN_ID,
-						"data").getExtensions();
+						EXTENSION_POINT_NAME).getExtensions();
 
 		if (extensions.length == 0) {
 			System.out.println("no cproject xp");
