@@ -47,7 +47,6 @@ public abstract class AbstractActivator extends Plugin {
 
 		System.out.println(getBundleId() + ".start()");
 		super.start(context);
-
 	}
 
 	public void stop(BundleContext context) throws Exception {

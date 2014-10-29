@@ -4279,6 +4279,13 @@
 
 
    </extension>
+
+   <extension
+         point="ilg.gnuarmeclipse.debug.core.data">
+      <factory
+            class="ilg.gnuarmeclipse.managedbuild.cross.xpi.CProjectExtraDataManagerFactory">
+      </factory>
+   </extension>
     
    <!--       
    <extension

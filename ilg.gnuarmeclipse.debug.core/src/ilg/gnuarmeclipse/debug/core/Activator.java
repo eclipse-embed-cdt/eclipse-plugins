@@ -13,12 +13,12 @@ package ilg.gnuarmeclipse.debug.core;
 
 import org.osgi.framework.BundleContext;
 
-import ilg.gnuarmeclipse.core.AbstractUIActivator;
+import ilg.gnuarmeclipse.core.AbstractActivator;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class Activator extends AbstractUIActivator {
+public class Activator extends AbstractActivator {
 
 	// ------------------------------------------------------------------------
 

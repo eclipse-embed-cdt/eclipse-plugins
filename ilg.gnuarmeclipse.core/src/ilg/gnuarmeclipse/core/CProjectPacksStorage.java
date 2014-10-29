@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.core;
 
+import java.util.HashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -92,6 +93,27 @@ public class CProjectPacksStorage {
 	}
 
 	// ------------------------------------------------------------------------
+
+	/**
+	 * Retrieve a map with all properties.
+	 * 
+	 * @return a map of strings.
+	 */
+	public Map<String, String> getOptions() {
+
+		assert (fStorage != null);
+
+		Map<String, String> map = new HashMap<String, String>();
+
+		for (ICStorageElement child : fStorage.getChildrenByName("option")) {
+
+			if (child.hasAttribute("id")) {
+				map.put(child.getAttribute("id"), child.getAttribute("value"));
+			}
+		}
+
+		return map;
+	}
 
 	/**
 	 * Retrieve the value of an option.

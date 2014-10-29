@@ -15,6 +15,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.services;
 import ilg.gnuarmeclipse.core.CProjectPacksStorage;
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.CProjectExtraDataManagerProxy;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.ILaunchConfigurationProvider;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.IPeripheralDMContext;
@@ -26,6 +27,7 @@ import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
@@ -130,14 +132,19 @@ public class PeripheralsService extends AbstractDsfService implements
 				System.out.println(config);
 
 				try {
-					// The custom storage is specific to the CDT configuration.
-					CProjectPacksStorage storage = new CProjectPacksStorage(
-							config);
+					String vendorId = null;
+					String deviceName = null;
 
-					String vendorId = storage
-							.getOption(CProjectPacksStorage.DEVICE_VENDOR_ID);
-					String deviceName = storage
-							.getOption(CProjectPacksStorage.DEVICE_NAME);
+					CProjectExtraDataManagerProxy dataManager = CProjectExtraDataManagerProxy
+							.getInstance();
+					Map<String, String> propertiesMap = dataManager
+							.getExtraProperties(config);
+					if (propertiesMap != null) {
+						vendorId = propertiesMap
+								.get(CProjectPacksStorage.DEVICE_VENDOR_ID);
+						deviceName = propertiesMap
+								.get(CProjectPacksStorage.DEVICE_NAME);
+					}
 
 					if (vendorId != null && deviceName != null) {
 

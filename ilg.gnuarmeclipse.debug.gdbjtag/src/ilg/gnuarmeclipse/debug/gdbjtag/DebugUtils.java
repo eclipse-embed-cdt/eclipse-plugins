@@ -120,10 +120,10 @@ public class DebugUtils {
 		String[] retVal = null;
 		IEnvironmentContextInfo contextInfo = EnvironmentVariableManager
 				.getDefault().getContextInfo(null);
-		EnvVarCollector envVarMergedColletion = EnvironmentVariableManager
+		EnvVarCollector envVarMergedCollection = EnvironmentVariableManager
 				.getVariables(contextInfo, true);
-		if (null != envVarMergedColletion) {
-			EnvVarDescriptor envVars[] = envVarMergedColletion.toArray(false);
+		if (null != envVarMergedCollection) {
+			EnvVarDescriptor envVars[] = envVarMergedCollection.toArray(false);
 			if (envVars != null) {
 				List<String> strings = new ArrayList<String>();
 				for (int i = 0; i < envVars.length; i++) {

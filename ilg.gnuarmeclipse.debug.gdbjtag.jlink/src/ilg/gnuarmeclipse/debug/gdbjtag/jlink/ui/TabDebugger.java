@@ -23,6 +23,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui;
 import ilg.gnuarmeclipse.core.CProjectPacksStorage;
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.core.StringUtils;
+import ilg.gnuarmeclipse.debug.gdbjtag.CProjectExtraDataManagerProxy;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
@@ -31,6 +32,7 @@ import ilg.gnuarmeclipse.debug.gdbjtag.jlink.WorkspacePreferences;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
@@ -1151,18 +1153,20 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.getConfigurationFromDescription(cConfigDescription);
 			// System.out.println(config);
 
-			try {
-				// The custom storage is specific to the CDT configuration.
-				CProjectPacksStorage storage = new CProjectPacksStorage(config);
-
-				cmsisDeviceName = storage
-						.getOption(CProjectPacksStorage.DEVICE_NAME);
-				// System.out.println("CMSIS device name: " + cmsisDeviceName
-				// + ", config: " + config + "/"
-				// + config.getArtifactName() + ", launch: "
-				// + configuration);
-			} catch (CoreException e) {
+			// The custom storage is specific to the CDT configuration.
+			CProjectExtraDataManagerProxy dataManager = CProjectExtraDataManagerProxy
+					.getInstance();
+			Map<String, String> propertiesMap = dataManager
+					.getExtraProperties(config);
+			if (propertiesMap != null) {
+				cmsisDeviceName = propertiesMap
+						.get(CProjectPacksStorage.DEVICE_NAME);
 			}
+
+			// System.out.println("CMSIS device name: " + cmsisDeviceName
+			// + ", config: " + config + "/"
+			// + config.getArtifactName() + ", launch: "
+			// + configuration);
 		}
 		return cmsisDeviceName;
 	}
