@@ -1,6 +1,6 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
 
-import ilg.gnuarmeclipse.debug.core.DebugUtils;
+import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 
 import java.util.ArrayList;
 import java.util.List;

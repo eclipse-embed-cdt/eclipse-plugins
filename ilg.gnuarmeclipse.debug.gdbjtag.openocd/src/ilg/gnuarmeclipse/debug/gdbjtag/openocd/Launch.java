@@ -1,6 +1,6 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
 
-import ilg.gnuarmeclipse.debug.core.gdbjtag.dsf.GnuArmLaunch;
+import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch;
 
 import java.util.HashMap;
 import java.util.Map;

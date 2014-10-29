@@ -11,8 +11,8 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
-import ilg.gnuarmeclipse.debug.core.gdbjtag.dsf.GnuArmCommandFactory;
-import ilg.gnuarmeclipse.debug.core.gdbjtag.dsf.GnuArmServicesFactory;
+import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmCommandFactory;
+import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmServicesFactory;
 
 import org.eclipse.cdt.dsf.debug.service.IProcesses;
 import org.eclipse.cdt.dsf.debug.service.command.ICommandControl;

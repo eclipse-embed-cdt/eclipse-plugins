@@ -11,10 +11,6 @@
 
 package ilg.gnuarmeclipse.debug.core;
 
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 import ilg.gnuarmeclipse.core.AbstractUIActivator;
@@ -57,38 +53,6 @@ public class Activator extends AbstractUIActivator {
 
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
-	}
-
-	// ------------------------------------------------------------------------
-
-	public ImageDescriptor getImageDescriptor(String name) {
-
-		String str = name.toLowerCase();
-		ImageDescriptor imageDescriptor = getImageRegistry().getDescriptor(str);
-		if (imageDescriptor == null)
-			imageDescriptor = declareImage(str);
-		return imageDescriptor;
-	}
-
-	protected ImageDescriptor declareImage(String name) {
-
-		Object path = new Path("icons/", name);
-		String extension = ((IPath) path).getFileExtension();
-		if ((extension == null) || (extension.isEmpty()))
-			path = ((IPath) path).addFileExtension("png");
-		ImageDescriptor imageDescriptor = AbstractUIPlugin
-				.imageDescriptorFromPlugin(PLUGIN_ID, ((IPath) path).toString());
-		try {
-			String key = getKey(name);
-			if (getImageRegistry().getDescriptor(key) == null)
-				getImageRegistry().put(key, imageDescriptor);
-		} catch (Exception e) {
-		}
-		return imageDescriptor;
-	}
-
-	private String getKey(String name) {
-		return name.toLowerCase();
 	}
 
 	// ------------------------------------------------------------------------

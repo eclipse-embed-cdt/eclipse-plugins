@@ -15,7 +15,7 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
 import ilg.gnuarmeclipse.core.StringUtils;
-import ilg.gnuarmeclipse.debug.core.DebugUtils;
+import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.TabDebugger;
 
 import java.io.BufferedReader;

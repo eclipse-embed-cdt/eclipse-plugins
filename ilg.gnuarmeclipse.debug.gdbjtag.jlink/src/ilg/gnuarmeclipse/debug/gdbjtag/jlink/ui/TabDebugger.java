@@ -23,7 +23,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui;
 import ilg.gnuarmeclipse.core.CProjectPacksStorage;
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.core.StringUtils;
-import ilg.gnuarmeclipse.debug.core.DebugUtils;
+import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.WorkspacePreferences;

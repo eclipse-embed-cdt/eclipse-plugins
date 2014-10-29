@@ -11,7 +11,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
-import ilg.gnuarmeclipse.debug.core.DebugUtils;
+import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 
 import java.util.ArrayList;
 import java.util.List;

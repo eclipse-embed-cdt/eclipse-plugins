@@ -11,8 +11,8 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
-import ilg.gnuarmeclipse.debug.core.gdbjtag.services.IPeripheralMemoryService;
-import ilg.gnuarmeclipse.debug.core.gdbjtag.services.IPeripheralsService;
+import ilg.gnuarmeclipse.debug.gdbjtag.services.IPeripheralMemoryService;
+import ilg.gnuarmeclipse.debug.gdbjtag.services.IPeripheralsService;
 
 import java.util.ArrayList;
 import java.util.Arrays;

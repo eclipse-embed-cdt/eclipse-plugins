@@ -11,7 +11,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
-import ilg.gnuarmeclipse.debug.core.ILaunchConfigurationProvider;
+import ilg.gnuarmeclipse.debug.gdbjtag.ILaunchConfigurationProvider;
 
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;

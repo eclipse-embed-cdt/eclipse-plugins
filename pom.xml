@@ -27,6 +27,8 @@
 
 		<module>ilg.gnuarmeclipse.debug.core</module>
 		
+		<module>ilg.gnuarmeclipse.debug.gdbjtag</module>
+		
 		<module>ilg.gnuarmeclipse.debug.gdbjtag.jlink</module>
 		<module>ilg.gnuarmeclipse.debug.gdbjtag.jlink-feature</module>
 		
