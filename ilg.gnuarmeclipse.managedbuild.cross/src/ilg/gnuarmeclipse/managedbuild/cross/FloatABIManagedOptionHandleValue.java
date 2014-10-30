@@ -9,6 +9,7 @@ import org.eclipse.cdt.managedbuilder.core.IToolChain;
 import org.eclipse.cdt.managedbuilder.core.ManagedOptionValueHandler;
 import org.eclipse.cdt.managedbuilder.internal.core.FolderInfo;
 
+@SuppressWarnings("restriction")
 public class FloatABIManagedOptionHandleValue extends ManagedOptionValueHandler {
 
 	/*
@@ -56,8 +57,9 @@ public class FloatABIManagedOptionHandleValue extends ManagedOptionValueHandler 
 					}
 					opt = toolchain
 							.getOptionBySuperClassId(Option.OPTION_ARM_TARGET_FLOAT_UNIT);
-					//opt.setValue(Option.OPTION_ARM_FPU_UNIT_FPV4SPD16);
-					config.setOption(toolchain, opt, Option.OPTION_ARM_FPU_UNIT_FPV4SPD16);
+					// opt.setValue(Option.OPTION_ARM_FPU_UNIT_FPV4SPD16);
+					config.setOption(toolchain, opt,
+							Option.OPTION_ARM_FPU_UNIT_FPV4SPD16);
 
 					return true;
 				} catch (BuildException e) {

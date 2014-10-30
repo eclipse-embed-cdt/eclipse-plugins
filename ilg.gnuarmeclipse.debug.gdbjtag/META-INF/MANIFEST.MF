@@ -32,6 +32,7 @@ Bundle-Vendor: %bundle.vendor
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Export-Package: ilg.gnuarmeclipse.debug.gdbjtag,
+ ilg.gnuarmeclipse.debug.gdbjtag.data,
  ilg.gnuarmeclipse.debug.gdbjtag.datamodel,
  ilg.gnuarmeclipse.debug.gdbjtag.dsf,
  ilg.gnuarmeclipse.debug.gdbjtag.services

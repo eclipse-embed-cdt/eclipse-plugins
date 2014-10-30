@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.data;
 
+import ilg.gnuarmeclipse.core.Activator;
 import ilg.gnuarmeclipse.core.Xml;
 import ilg.gnuarmeclipse.packs.cmsis.PdscGenericParser;
 import ilg.gnuarmeclipse.packs.cmsis.PdscTreeParserForBuild;
@@ -38,6 +39,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
 
@@ -1055,6 +1058,25 @@ public class DataManager implements IPacksDataManager {
 			destFolder = summaryVersionNode.getProperty(Property.DEST_FOLDER);
 		}
 		return destFolder;
+	}
+
+	// Called from debugger.
+	@Override
+	public IPath getSVDAbsolutePath(String deviceVendorId, String deviceName) {
+
+		Leaf installedDeviceNode = findInstalledDevice(deviceVendorId,
+				deviceName);
+
+		if (installedDeviceNode == null) {
+			return null;
+		}
+
+		String svdFile = installedDeviceNode.getProperty(Property.SVD_FILE);
+
+		String destFolder = getDestinationFolder(installedDeviceNode);
+		IPath path = new Path(destFolder).append(svdFile);
+
+		return path;
 	}
 
 	// ------------------------------------------------------------------------

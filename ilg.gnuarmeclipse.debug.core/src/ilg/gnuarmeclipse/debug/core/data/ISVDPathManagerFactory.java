@@ -12,19 +12,18 @@
 package ilg.gnuarmeclipse.debug.core.data;
 
 /**
- * Factory to create a manager to handle C project extra data, like properties
- * (CMSIS device name & others.
+ * Factory to create a manager to handle the SVD path.
  */
-public interface ICProjectExtraDataManagerFactory {
+public interface ISVDPathManagerFactory {
 
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Create a data manager object.
+	 * Create the path manager object.
 	 * 
 	 * @return the data manager object.
 	 */
-	public ICProjectExtraDataManager create();
+	public ISVDPathManager create();
 
 	/**
 	 * Free any resources used by the data manager. (currently not used).

@@ -19,6 +19,7 @@ import org.eclipse.cdt.managedbuilder.internal.core.FolderInfo;
 import org.eclipse.cdt.managedbuilder.internal.core.MultiFolderInfo;
 import org.eclipse.cdt.managedbuilder.internal.core.ResourceConfiguration;
 
+@SuppressWarnings("restriction")
 public class AdditionalToolsManagedOptionValueHandler extends
 		ManagedOptionValueHandler {
 
@@ -51,14 +52,14 @@ public class AdditionalToolsManagedOptionValueHandler extends
 			} else if (configuration instanceof ResourceConfiguration) {
 				// TODO: find the proper sequence to update the interface
 				// System.out
-				//		.println("should update ResourceConfiguration");
+				// .println("should update ResourceConfiguration");
 
 				return false; // should we return true?
 
 			} else if (configuration instanceof MultiFolderInfo) {
 				// TODO: find the proper sequence to update the interface
 				// System.out
-				//		.println("should update MultiFolderInfo");
+				// .println("should update MultiFolderInfo");
 
 				return false; // should we return true?
 

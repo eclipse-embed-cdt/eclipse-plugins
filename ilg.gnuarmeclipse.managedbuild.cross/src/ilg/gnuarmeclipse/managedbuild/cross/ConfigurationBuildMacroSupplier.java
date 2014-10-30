@@ -21,6 +21,7 @@ import org.eclipse.cdt.managedbuilder.macros.IBuildMacro;
 import org.eclipse.cdt.managedbuilder.macros.IBuildMacroProvider;
 import org.eclipse.cdt.managedbuilder.macros.IConfigurationBuildMacroSupplier;
 
+@SuppressWarnings("restriction")
 public class ConfigurationBuildMacroSupplier implements
 		IConfigurationBuildMacroSupplier {
 
@@ -68,9 +69,9 @@ public class ConfigurationBuildMacroSupplier implements
 			if (sValue != null && sValue.length() > 0) {
 				return new BuildMacro(macroName, BuildMacro.VALUE_TEXT, sValue);
 			}
-		} 
+		}
 		// System.out.println("Missing value of " + macroName + " in "
-		//		+ configuration.getName());
+		// + configuration.getName());
 		return null;
 	}
 

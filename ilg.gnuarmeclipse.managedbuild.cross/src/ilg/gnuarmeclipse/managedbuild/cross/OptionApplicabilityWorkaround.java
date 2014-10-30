@@ -41,6 +41,7 @@ import org.eclipse.cdt.managedbuilder.internal.core.Option;
  * @author mariopi
  * 
  */
+@SuppressWarnings("restriction")
 public class OptionApplicabilityWorkaround implements IOptionApplicability {
 
 	@Override

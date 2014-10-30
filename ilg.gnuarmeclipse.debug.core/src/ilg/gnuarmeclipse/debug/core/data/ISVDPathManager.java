@@ -11,36 +11,33 @@
 
 package ilg.gnuarmeclipse.debug.core.data;
 
-import java.util.Map;
-
-import org.eclipse.cdt.managedbuilder.core.IConfiguration;
+import org.eclipse.core.runtime.IPath;
 
 /**
- * The interface of the manager used to handle C project extra data.
+ * The interface of the manager used to handle SVD paths.
  */
-public interface ICProjectExtraDataManager {
+public interface ISVDPathManager {
 
 	// ------------------------------------------------------------------------
 
-	public static final String EXTENSION_POINT_NAME = "cprojectExtra";
+	public static final String EXTENSION_POINT_NAME = "svdPath";
 	public static final String EXTENSION_POINT_ID = ilg.gnuarmeclipse.debug.core.Activator.PLUGIN_ID
 			+ "." + EXTENSION_POINT_NAME;
 
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Get a map of additional properties associated to a configuration.
+	 * Get the absolute path of a SVD file associated with the given device.
 	 * <p>
-	 * For the GNU ARM Eclipse MBS plug-in, these properties are assigned by the
-	 * Devices tab, contributed by the packs feature.
-	 * <p>
-	 * For projects managed by other plug-ins, this should return null.
+	 * For unsupported devices, this should return null.
 	 * 
-	 * @param config
-	 *            a C/C++ configuration.
-	 * @return the map of property/value pairs, or null.
+	 * @param deviceVendorId
+	 *            a string with the CMSIS device vendor id.
+	 * @param deviceName
+	 *            a string with the CMSIS device name.
+	 * @return the absolute path to the SVD file, or null.
 	 */
-	public Map<String, String> getExtraProperties(IConfiguration config);
+	public IPath getSVDAbsolutePath(String deviceVendorId, String deviceName);
 
 	// ------------------------------------------------------------------------
 }

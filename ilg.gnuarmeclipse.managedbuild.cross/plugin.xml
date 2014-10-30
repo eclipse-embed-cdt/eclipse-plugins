@@ -4281,7 +4281,7 @@
    </extension>
 
    <extension
-         point="ilg.gnuarmeclipse.debug.core.cproject.extra">
+         point="ilg.gnuarmeclipse.debug.core.cprojectExtra">
       <factory
             class="ilg.gnuarmeclipse.managedbuild.cross.xpi.CProjectExtraDataManagerFactory">
       </factory>

@@ -37,7 +37,7 @@ public class EnvironmentVariableSupplier implements
 			return PathEnvironmentVariable.create(configuration);
 		} else {
 			// System.out.println("getVariable(" + variableName + ","
-			//		+ configuration.getName() + ") returns null");
+			// + configuration.getName() + ") returns null");
 			return null;
 		}
 	}
@@ -50,7 +50,7 @@ public class EnvironmentVariableSupplier implements
 			return new IBuildEnvironmentVariable[] { path };
 		} else {
 			// System.out.println("getVariables(" + configuration.getName()
-			//		+ ") returns empty array");
+			// + ") returns empty array");
 			return new IBuildEnvironmentVariable[0];
 		}
 	}
@@ -67,6 +67,7 @@ public class EnvironmentVariableSupplier implements
 			this.path = path;
 		}
 
+		@SuppressWarnings("unused")
 		public static PathEnvironmentVariable create(
 				IConfiguration configuration) {
 			IToolChain toolchain = configuration.getToolChain();
@@ -101,22 +102,22 @@ public class EnvironmentVariableSupplier implements
 					File bin = new File(sysroot, "bin"); //$NON-NLS-1$
 					if (bin.isDirectory())
 						sysroot = bin;
-					if (false){
-					System.out.println("PATH="
-							+ sysroot
-							+ " opt="
-							+ path
-							+ " cfg="
-							+ configuration
-							+ " prj="
-							+ configuration.getManagedProject().getOwner()
-									.getName());
+					if (false) {
+						System.out.println("PATH="
+								+ sysroot
+								+ " opt="
+								+ path
+								+ " cfg="
+								+ configuration
+								+ " prj="
+								+ configuration.getManagedProject().getOwner()
+										.getName());
 					}
 					return new PathEnvironmentVariable(sysroot);
 				}
 			}
-			//System.out.println("create(" + configuration.getName()
-			//		+ ") returns null");
+			// System.out.println("create(" + configuration.getName()
+			// + ") returns null");
 			return null;
 		}
 

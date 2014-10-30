@@ -9,61 +9,55 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag;
+package ilg.gnuarmeclipse.debug.gdbjtag.data;
 
-import java.util.Map;
+import ilg.gnuarmeclipse.debug.core.data.ISVDPathManager;
+import ilg.gnuarmeclipse.debug.core.data.ISVDPathManagerFactory;
 
-import ilg.gnuarmeclipse.debug.core.data.ICProjectExtraDataManager;
-import ilg.gnuarmeclipse.debug.core.data.ICProjectExtraDataManagerFactory;
-
-import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Platform;
 
-public class CProjectExtraDataManagerProxy implements ICProjectExtraDataManager {
+public class SVDPathManagerProxy implements ISVDPathManager {
 
 	// ------------------------------------------------------------------------
 
-	private static final String EXTENSION_POINT_NAME = "cproject.extra";
 	private static final String FACTORY_ELEMENT = "factory";
 	private static final String CLASS_ATTRIBUTE = "class";
 
 	// ------------------------------------------------------------------------
 
-	private static CProjectExtraDataManagerProxy fgInstance;
+	private static SVDPathManagerProxy fgInstance;
 
-	public static CProjectExtraDataManagerProxy getInstance() {
+	public static SVDPathManagerProxy getInstance() {
 
 		if (fgInstance == null) {
-			fgInstance = new CProjectExtraDataManagerProxy();
+			fgInstance = new SVDPathManagerProxy();
 		}
 		return fgInstance;
 	}
 
 	// ------------------------------------------------------------------------
 
-	private ICProjectExtraDataManager fDataManagers[];
+	private ISVDPathManager fPathManagers[];
 
-	public CProjectExtraDataManagerProxy() {
+	public SVDPathManagerProxy() {
 
-		IExtension[] extensions = Platform
-				.getExtensionRegistry()
-				.getExtensionPoint(
-						ilg.gnuarmeclipse.debug.core.Activator.PLUGIN_ID,
-						EXTENSION_POINT_NAME).getExtensions();
+		IExtension[] extensions = Platform.getExtensionRegistry()
+				.getExtensionPoint(EXTENSION_POINT_ID).getExtensions();
 
 		if (extensions.length == 0) {
-			System.out.println("no cproject xp");
+			System.out.println("no svdPath xp");
 			return;
 		}
 
-		fDataManagers = new ICProjectExtraDataManager[extensions.length];
+		fPathManagers = new ISVDPathManager[extensions.length];
 
 		for (int i = 0; i < extensions.length; ++i) {
 
-			fDataManagers[i] = null;
+			fPathManagers[i] = null;
 
 			IExtension extension = extensions[i];
 			IConfigurationElement[] configElements = extension
@@ -72,19 +66,18 @@ public class CProjectExtraDataManagerProxy implements ICProjectExtraDataManager 
 
 			if (FACTORY_ELEMENT.equals(configElement.getName())) {
 
-				ICProjectExtraDataManagerFactory factory;
+				ISVDPathManagerFactory factory;
 				try {
 					Object obj = configElement
 							.createExecutableExtension(CLASS_ATTRIBUTE);
 
-					if (obj instanceof ICProjectExtraDataManagerFactory) {
-						factory = (ICProjectExtraDataManagerFactory) obj;
+					if (obj instanceof ISVDPathManagerFactory) {
+						factory = (ISVDPathManagerFactory) obj;
 
 						// Create the extension point data manager.
-						fDataManagers[i] = factory.createDataManager();
+						fPathManagers[i] = factory.create();
 					} else {
-						System.out
-								.println("no ICProjectExtraDataManagerFactory");
+						System.out.println("no ISVDPathManagerFactory");
 					}
 				} catch (CoreException e) {
 					System.out.println("cannot get factory");
@@ -99,15 +92,20 @@ public class CProjectExtraDataManagerProxy implements ICProjectExtraDataManager 
 	// ------------------------------------------------------------------------
 
 	@Override
-	public Map<String, String> getExtraProperties(IConfiguration config) {
+	public IPath getSVDAbsolutePath(String deviceVendorId, String deviceName) {
 
-		// Iterate all managers and return the first one that has values
-		for (int i = 0; i < fDataManagers.length; ++i) {
-			Map<String, String> map = null;
-			if (fDataManagers[i] != null) {
-				map = fDataManagers[i].getExtraProperties(config);
-				if (map != null) {
-					return map;
+		if (fPathManagers == null) {
+			return null;
+		}
+
+		// Iterate all managers and return the first value available.
+		for (int i = 0; i < fPathManagers.length; ++i) {
+			IPath path = null;
+			if (fPathManagers[i] != null) {
+				path = fPathManagers[i].getSVDAbsolutePath(deviceVendorId,
+						deviceName);
+				if (path != null) {
+					return path;
 				}
 			}
 		}

@@ -11,10 +11,14 @@
 
 package ilg.gnuarmeclipse.packs.core.data;
 
+import org.eclipse.core.runtime.IPath;
+
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 
 public interface IPacksDataManager {
+
+	// ------------------------------------------------------------------------
 
 	// TODO: add all functions when the interface is final.
 
@@ -57,4 +61,19 @@ public interface IPacksDataManager {
 	public Leaf findInstalledBoard(String boardVendorName, String boardName);
 
 	public String getDestinationFolder(Leaf node);
+
+	/**
+	 * Get the absolute path of a SVD file associated with the given device.
+	 * <p>
+	 * For unsupported devices, this should return null.
+	 * 
+	 * @param deviceVendorId
+	 *            a string with the CMSIS device vendor id.
+	 * @param deviceName
+	 *            a string with the CMSIS device name.
+	 * @return the absolute path to the SVD file, or null.
+	 */
+	public IPath getSVDAbsolutePath(String deviceVendorId, String deviceName);
+
+	// ------------------------------------------------------------------------
 }

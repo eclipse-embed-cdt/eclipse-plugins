@@ -13,6 +13,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.datamodel;
 
 import ilg.gnuarmeclipse.core.Activator;
 import ilg.gnuarmeclipse.core.Xml;
+import ilg.gnuarmeclipse.debug.gdbjtag.data.SVDPathManagerProxy;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.data.IPacksDataManager;
 import ilg.gnuarmeclipse.packs.core.data.PacksDataManagerFactoryProxy;
@@ -21,7 +22,6 @@ import ilg.gnuarmeclipse.packs.core.data.SvdGenericParser;
 import ilg.gnuarmeclipse.packs.core.tree.AbstractTreePreOrderIterator;
 import ilg.gnuarmeclipse.packs.core.tree.ITreeIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
-import ilg.gnuarmeclipse.packs.core.tree.Property;
 
 import java.io.File;
 import java.io.IOException;
@@ -33,7 +33,6 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
@@ -212,29 +211,32 @@ public class SvdUtils {
 
 		MessageConsoleStream out = ConsoleStream.getConsoleOut();
 
-		IPacksDataManager dataManager = PacksDataManagerFactoryProxy
-				.getInstance().createDataManager();
+		IPath path = null;
 
-		if (dataManager == null) {
-			throw new CoreException(
-					new Status(Status.ERROR, Activator.PLUGIN_ID,
-							"Peripheral descriptions are available only via the Packs plug-in."));
+		// Try to get the SVD from a custom provider, like in DAVE.
+		SVDPathManagerProxy pathManager = SVDPathManagerProxy.getInstance();
+		path = pathManager.getSVDAbsolutePath(deviceVendorId, deviceName);
+
+		if (path == null) {
+
+			// Try to get the SVD from the CMSIS Packs.
+			IPacksDataManager dataManager = PacksDataManagerFactoryProxy
+					.getInstance().createDataManager();
+
+			if (dataManager == null) {
+				throw new CoreException(
+						new Status(Status.ERROR, Activator.PLUGIN_ID,
+								"Peripheral descriptions are available only via the Packs plug-in."));
+			}
+
+			path = dataManager.getSVDAbsolutePath(deviceVendorId, deviceName);
+
+			if (path == null) {
+				throw new CoreException(
+						new Status(Status.ERROR, Activator.PLUGIN_ID,
+								"There are no peripheral descriptions available, install the required packs."));
+			}
 		}
-
-		Leaf installedDeviceNode = dataManager.findInstalledDevice(
-				deviceVendorId, deviceName);
-
-		if (installedDeviceNode == null) {
-			throw new CoreException(
-					new Status(Status.ERROR, Activator.PLUGIN_ID,
-							"There are no peripheral descriptions available, install the required packs."));
-		}
-
-		String svdFile = installedDeviceNode.getProperty(Property.SVD_FILE);
-
-		String destFolder = dataManager
-				.getDestinationFolder(installedDeviceNode);
-		IPath path = new Path(destFolder).append(svdFile);
 
 		try {
 

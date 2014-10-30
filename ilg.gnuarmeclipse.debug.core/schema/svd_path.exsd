@@ -3,10 +3,10 @@
 <schema targetNamespace="ilg.gnuarmeclipse.debug.core" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="ilg.gnuarmeclipse.debug.core" id="cprojectExtra" name="C Project Extra Data Manager"/>
+         <meta.schema plugin="ilg.gnuarmeclipse.debug.core" id="svdPath" name="SVD Path Manager"/>
       </appinfo>
       <documentation>
-         This extension point provides decoupled access to the C project extra data from the debug plug-ins.
+         This extension point provides decoupled access to a SVD file from the debug plug-ins.
       </documentation>
    </annotation>
 
@@ -55,7 +55,7 @@
                   
                </documentation>
                <appinfo>
-                  <meta.attribute kind="java" basedOn=":ilg.gnuarmeclipse.debug.core.data.ICProjectExtraDataManagerFactory"/>
+                  <meta.attribute kind="java" basedOn=":ilg.gnuarmeclipse.debug.core.data.ISVDPathManagerFactory"/>
                </appinfo>
             </annotation>
          </attribute>
@@ -87,7 +87,7 @@
       <documentation>
          There may be multiple MBS plug-ins implementing this, one of them being the managedbuild.cross plug-in.
 
-It must return a ICProjectExtraDataManagerFactory object to be used to create a ICProjectExtraDataManager object.
+It must return a ISVDPathManagerFactory object to be used to create a ISVDPathManager object.
       </documentation>
    </annotation>
 
