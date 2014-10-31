@@ -67,7 +67,8 @@ public class GdbServerVariableInitializer implements IValueVariableInitializer {
 						value = UNDEFINED_PATH;
 					}
 				} else if (EclipseUtils.isLinux()) {
-					value = "/usr/bin";
+					value = findMostRecentFolder("/opt/SEGGER/", "JLink",
+							UNDEFINED_PATH);
 				} else if (EclipseUtils.isMacOSX()) {
 					value = findMostRecentFolder("/Applications/SEGGER/",
 							"JLink", UNDEFINED_PATH);
