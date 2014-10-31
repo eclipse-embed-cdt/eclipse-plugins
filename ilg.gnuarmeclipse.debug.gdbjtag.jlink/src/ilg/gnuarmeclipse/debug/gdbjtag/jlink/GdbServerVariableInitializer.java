@@ -11,6 +11,8 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
+import java.io.File;
+
 import ilg.gnuarmeclipse.core.EclipseUtils;
 
 import org.eclipse.core.runtime.Platform;
@@ -55,11 +57,13 @@ public class GdbServerVariableInitializer implements IValueVariableInitializer {
 					Activator.PLUGIN_ID, "jlink_path.default", null, null);
 			if (value == null) {
 				if (EclipseUtils.isWindows()) {
-					value = "C:\\Program Files\\SEGGER\\JLinkARM_Vxxx";
+					value = findMostRecentFolder("C:\\Program Files\\SEGGER\\",
+							"JLinkARM", UNDEFINED_PATH);
 				} else if (EclipseUtils.isLinux()) {
 					value = "/usr/bin";
 				} else if (EclipseUtils.isMacOSX()) {
-					value = "/Applications/SEGGER/JLink";
+					value = findMostRecentFolder("/Applications/SEGGER/",
+							"JLink", UNDEFINED_PATH);
 				} else {
 					value = UNDEFINED_PATH;
 				}
@@ -68,4 +72,40 @@ public class GdbServerVariableInitializer implements IValueVariableInitializer {
 		}
 	}
 
+	private String findMostRecentFolder(String pathBase, String name,
+			String defPath) {
+
+		String path = pathBase + name;
+		File folder = new File(path);
+		if (folder.isDirectory()) {
+			return path;
+		}
+
+		folder = new File(pathBase);
+		if (folder.isDirectory()) {
+
+			long lastModified = 0;
+			String lastName = null;
+			File files[] = folder.listFiles();
+			for (int i = 0; i < files.length; ++i) {
+				File file = files[i];
+				if (file.isDirectory()) {
+					String crtName = file.getName();
+					if (file.getName().startsWith(name)) {
+						if (file.lastModified() > lastModified) {
+							lastName = crtName;
+							lastModified = file.lastModified();
+						}
+					}
+				}
+			}
+
+			if (lastName != null) {
+				return pathBase + lastName;
+			}
+		}
+
+		return defPath;
+
+	}
 }
