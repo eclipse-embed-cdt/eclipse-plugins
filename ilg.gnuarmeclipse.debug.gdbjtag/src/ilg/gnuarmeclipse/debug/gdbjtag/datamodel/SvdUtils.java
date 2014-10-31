@@ -17,7 +17,6 @@ import ilg.gnuarmeclipse.debug.gdbjtag.data.SVDPathManagerProxy;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.data.IPacksDataManager;
 import ilg.gnuarmeclipse.packs.core.data.PacksDataManagerFactoryProxy;
-import ilg.gnuarmeclipse.packs.core.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.core.data.SvdGenericParser;
 import ilg.gnuarmeclipse.packs.core.tree.AbstractTreePreOrderIterator;
 import ilg.gnuarmeclipse.packs.core.tree.ITreeIterator;
@@ -241,7 +240,12 @@ public class SvdUtils {
 		try {
 
 			out.println("Parsing SVD file \"" + path.toString() + "\"...");
-			File file = PacksStorage.getFileObject(path.toString());
+
+			File file = path.toFile();
+			if (file == null) {
+				throw new IOException(path + " File object null.");
+			}
+
 			Document document = Xml.parseFile(file);
 
 			SvdGenericParser parser = new SvdGenericParser();

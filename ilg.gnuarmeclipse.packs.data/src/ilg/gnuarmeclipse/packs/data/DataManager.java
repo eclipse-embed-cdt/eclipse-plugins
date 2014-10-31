@@ -1074,7 +1074,13 @@ public class DataManager implements IPacksDataManager {
 		String svdFile = installedDeviceNode.getProperty(Property.SVD_FILE);
 
 		String destFolder = getDestinationFolder(installedDeviceNode);
-		IPath path = new Path(destFolder).append(svdFile);
+		IPath path;
+		try {
+			path = PacksStorage.getFolderPath().append(destFolder)
+					.append(svdFile);
+		} catch (IOException e) {
+			return null;
+		}
 
 		return path;
 	}
