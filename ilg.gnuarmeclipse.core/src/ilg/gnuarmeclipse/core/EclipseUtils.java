@@ -91,8 +91,10 @@ public class EclipseUtils {
 	}
 
 	static public boolean isMacOSX() {
+		// Platform.OS_MACOSX is not appropriate, since the returned value
+		// contains spaces "Mac OS X".
 		return System.getProperty(PROPERTY_OS_NAME).toLowerCase()
-				.startsWith(Platform.OS_MACOSX);
+				.startsWith("mac");
 	}
 
 	// ------------------------------------------------------------------------
