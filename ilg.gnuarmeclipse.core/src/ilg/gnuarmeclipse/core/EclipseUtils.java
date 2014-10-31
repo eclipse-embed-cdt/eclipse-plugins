@@ -76,8 +76,10 @@ public class EclipseUtils {
 	private static final String PROPERTY_OS_NAME = "os.name"; //$NON-NLS-1$
 
 	static public boolean isWindows() {
+
+		// Platform.OS_WIN32 might be not appropriate, use shorter prefix
 		return System.getProperty(PROPERTY_OS_NAME).toLowerCase()
-				.startsWith(Platform.OS_WIN32);
+				.startsWith("win");
 	}
 
 	static public boolean isWindowsXP() {
