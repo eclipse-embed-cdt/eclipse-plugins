@@ -57,8 +57,15 @@ public class GdbServerVariableInitializer implements IValueVariableInitializer {
 					Activator.PLUGIN_ID, "jlink_path.default", null, null);
 			if (value == null) {
 				if (EclipseUtils.isWindows()) {
-					value = findMostRecentFolder("C:\\Program Files\\SEGGER\\",
-							"JLinkARM", UNDEFINED_PATH);
+					value = findMostRecentFolder(
+							"C:\\Program Files (x86)\\SEGGER\\", "JLink", null);
+					if (value == null) {
+						value = findMostRecentFolder(
+								"C:\\Program Files\\SEGGER\\", "JLink", null);
+					}
+					if (value == null) {
+						value = UNDEFINED_PATH;
+					}
 				} else if (EclipseUtils.isLinux()) {
 					value = "/usr/bin";
 				} else if (EclipseUtils.isMacOSX()) {
