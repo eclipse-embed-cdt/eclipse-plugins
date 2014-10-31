@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Ningareddy Modase - windows J-Link path
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
@@ -21,6 +22,8 @@ import org.eclipse.core.variables.IValueVariableInitializer;
 
 public class GdbServerVariableInitializer implements IValueVariableInitializer {
 
+	// ------------------------------------------------------------------------
+
 	static final String VARIABLE_JLINK_GDBSERVER = "jlink_gdbserver";
 	static final String VARIABLE_JLINK_PATH = "jlink_path";
 
@@ -28,6 +31,8 @@ public class GdbServerVariableInitializer implements IValueVariableInitializer {
 	static final String KEY_JLINK_PATH = "jlink_path.default";
 
 	static final String UNDEFINED_PATH = "undefined_path";
+
+	// ------------------------------------------------------------------------
 
 	@Override
 	public void initialize(IValueVariable variable) {
@@ -57,12 +62,7 @@ public class GdbServerVariableInitializer implements IValueVariableInitializer {
 					Activator.PLUGIN_ID, "jlink_path.default", null, null);
 			if (value == null) {
 				if (EclipseUtils.isWindows()) {
-					value = findMostRecentFolder(
-							"C:\\Program Files (x86)\\SEGGER\\", "JLink", null);
-					if (value == null) {
-						value = findMostRecentFolder(
-								"C:\\Program Files\\SEGGER\\", "JLink", null);
-					}
+					value = getJLinkPathFromWindowsRepository();
 					if (value == null) {
 						value = UNDEFINED_PATH;
 					}
@@ -113,6 +113,36 @@ public class GdbServerVariableInitializer implements IValueVariableInitializer {
 		}
 
 		return defPath;
-
 	}
+
+	// ------------------------------------------------------------------------
+
+	private static final String LOCATION = "HKEY_CURRENT_USER\\Software\\SEGGER\\J-Link";
+	private static final String KEY = "InstallPath";
+	private static final String QUERY = "reg query " + '"' + LOCATION
+			+ "\" /v " + KEY;
+
+	private String getJLinkPathFromWindowsRepository() {
+
+		String path = null;
+		try {
+			Process process = Runtime.getRuntime().exec(QUERY);
+			StreamReader reader = new StreamReader(process.getInputStream(),
+					KEY);
+			reader.start();
+			process.waitFor();
+			reader.join();
+
+			String[] str = reader.getResult().trim().split("REG_[^\\s]+");
+			if (str.length > 1) {
+				// path = Path.fromOSString(str[str.length -
+				// 1].trim()).toString();
+				path = str[str.length - 1].trim();
+			}
+		} catch (Exception e) {
+		}
+		return path;
+	}
+
+	// ------------------------------------------------------------------------
 }
