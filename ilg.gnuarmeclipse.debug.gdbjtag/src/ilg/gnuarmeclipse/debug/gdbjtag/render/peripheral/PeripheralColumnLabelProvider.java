@@ -37,7 +37,7 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 
 	// ------------------------------------------------------------------------
 
-	private final String COLOR_PREFIX = "ilg.gnuarmeclipse.debug.core.peripheral.color.";
+	private final String COLOR_PREFIX = "ilg.gnuarmeclipse.debug.gdbjtag.peripheral.color.";
 
 	private final String COLOR_READONLY = COLOR_PREFIX + "readonly";
 	private final String COLOR_WRITEONLY = COLOR_PREFIX + "writeonly";
