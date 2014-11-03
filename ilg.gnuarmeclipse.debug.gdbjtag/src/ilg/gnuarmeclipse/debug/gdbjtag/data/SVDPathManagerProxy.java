@@ -49,7 +49,7 @@ public class SVDPathManagerProxy implements ISVDPathManager {
 				.getExtensionPoint(EXTENSION_POINT_ID).getExtensions();
 
 		if (extensions.length == 0) {
-			System.out.println("no svdPath xp");
+			// System.out.println("no svdPath xp");
 			return;
 		}
 

@@ -201,12 +201,6 @@ public class PeripheralVMNode extends AbstractDMVMNode implements
 		System.out.println("updateElementsInSessionThread() " + this + " "
 				+ update);
 
-		if (fPeripherals != null) {
-			fillUpdateWithVMCs(update, fPeripherals);
-			update.done();
-			return;
-		}
-
 		DsfServicesTracker tracker = getServicesTracker();
 		IPeripheralsService peripheralsService = (IPeripheralsService) tracker
 				.getService(IPeripheralsService.class);
@@ -217,11 +211,20 @@ public class PeripheralVMNode extends AbstractDMVMNode implements
 				IRunControl.IContainerDMContext.class);
 
 		if ((peripheralsService == null) || (containerDMContext == null)) {
-			// Leave the view empty.
+			// Leave the view empty. This also happens after closing the
+			// session.
 			handleFailedUpdate(update);
 			return;
 		}
 
+		if (fPeripherals != null) {
+			// On subsequent calls, use cached values.
+			fillUpdateWithVMCs(update, fPeripherals);
+			update.done();
+			return;
+		}
+
+		// Get peripherals only on first call.
 		peripheralsService.getPeripherals(containerDMContext,
 				new ViewerDataRequestMonitor<IPeripheralDMContext[]>(
 						getSession().getExecutor(), update) {

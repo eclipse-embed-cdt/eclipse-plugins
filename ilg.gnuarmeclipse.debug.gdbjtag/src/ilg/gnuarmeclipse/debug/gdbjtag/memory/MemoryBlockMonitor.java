@@ -185,7 +185,7 @@ public class MemoryBlockMonitor {
 							.getMemoryBlockManager()
 							.removeMemoryBlocks(
 									new IMemoryBlock[] { memoryBlock });
-					break;
+					// Continue, to allow it clean all possible duplicates
 				}
 			} else {
 				Activator.log("Cannot process memory block " + memoryBlock);
