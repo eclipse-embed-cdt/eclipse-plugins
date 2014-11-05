@@ -28,7 +28,9 @@ _sbrk(int incr)
   char* current_block_address;
 
   if (current_heap_end == 0)
-    current_heap_end = &_Heap_Begin;
+    {
+      current_heap_end = &_Heap_Begin;
+    }
 
   current_block_address = current_heap_end;
 
@@ -50,7 +52,7 @@ _sbrk(int incr)
 #else
       // Heap has overflowed
       errno = ENOMEM;
-      return (caddr_t) -1;
+      return (caddr_t) - 1;
 #endif
     }
 
