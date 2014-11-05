@@ -155,7 +155,7 @@ _trace_write_itm (const char* buf, size_t nbyte)
 static ssize_t
 _trace_write_semihosting_stdout (const char* buf, size_t nbyte)
 {
-#if defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
+#if (defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)) && !defined(OS_HAS_NO_CORE_DEBUG)
   // Check if the debugger is enabled. CoreDebug is available only on CM3/CM4.
   // [Contributed by SourceForge user diabolo38]
   if ((CoreDebug->DHCSR & CoreDebug_DHCSR_C_DEBUGEN_Msk) == 0)
@@ -214,7 +214,7 @@ _trace_write_semihosting_stdout (const char* buf, size_t nbyte)
 static ssize_t
 _trace_write_semihosting_debug (const char* buf, size_t nbyte)
 {
-#if defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
+#if (defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)) && !defined(OS_HAS_NO_CORE_DEBUG)
   // Check if the debugger is enabled. CoreDebug is available only on CM3/CM4.
   // [Contributed by SourceForge user diabolo38]
   if ((CoreDebug->DHCSR & CoreDebug_DHCSR_C_DEBUGEN_Msk) == 0)
