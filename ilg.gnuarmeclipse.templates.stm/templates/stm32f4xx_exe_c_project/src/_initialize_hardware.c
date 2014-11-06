@@ -69,9 +69,28 @@ __initialize_hardware(void)
   // instruction to be executed in the main program.
   HAL_Init();
 
+  // Warning: The HAL always initialises the system timer.
+  // For this to work, the default SysTick_Handler must not hang
+  // (see system/src/cortexm/exception_handlers.c)
+
+  // Unless explicitly enabled by the application, we prefer
+  // to keep the timer interrupts off.
+  HAL_SuspendTick();
+
   // Enable HSE Oscillator and activate PLL with HSE as source
   configure_system_clock();
 }
+
+#if 0
+
+// This is a sample SysTick handler, use it if you need HAL timings.
+void __attribute__ ((section(".after_vectors")))
+SysTick_Handler(void)
+{
+	HAL_IncTick();
+}
+
+#endif
 
 // ----------------------------------------------------------------------------
 
