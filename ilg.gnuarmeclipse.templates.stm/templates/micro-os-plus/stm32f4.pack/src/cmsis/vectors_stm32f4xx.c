@@ -113,8 +113,15 @@ void __attribute__ ((weak, alias ("Default_Handler")))
 TIM8_CC_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 DMA1_Stream7_IRQHandler(void);
+
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)
+void __attribute__ ((weak, alias ("Default_Handler")))
+FMC_IRQHandler(void);
+#else
 void __attribute__ ((weak, alias ("Default_Handler")))
 FSMC_IRQHandler(void);
+#endif
+
 void __attribute__ ((weak, alias ("Default_Handler")))
 SDIO_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
@@ -139,10 +146,16 @@ void __attribute__ ((weak, alias ("Default_Handler")))
 DMA2_Stream3_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 DMA2_Stream4_IRQHandler(void);
+
+#if defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)
 void __attribute__ ((weak, alias ("Default_Handler")))
 ETH_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 ETH_WKUP_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+DCMI_IRQHandler(void);
+#endif
+
 void __attribute__ ((weak, alias ("Default_Handler")))
 CAN2_TX_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
@@ -173,21 +186,22 @@ void __attribute__ ((weak, alias ("Default_Handler")))
 OTG_HS_WKUP_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 OTG_HS_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-DCMI_IRQHandler(void);
+
+#if defined(STM32F415xx) || defined(STM32F417xx) || defined(STM32F437xx) || defined(STM32F439xx)
 void __attribute__ ((weak, alias ("Default_Handler")))
 CRYP_IRQHandler(void);
+#endif
+
 void __attribute__ ((weak, alias ("Default_Handler")))
 HASH_RNG_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 FPU_IRQHandler(void);
+
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)
 void __attribute__ ((weak, alias ("Default_Handler")))
 SPI4_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 SPI5_IRQHandler(void);
-
-#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)
-
 void __attribute__ ((weak, alias ("Default_Handler")))
 UART7_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
@@ -196,14 +210,16 @@ void __attribute__ ((weak, alias ("Default_Handler")))
 SPI6_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 SAI1_IRQHandler(void);
+
+#if defined(STM32F429xx) || defined(STM32F439xx)
 void __attribute__ ((weak, alias ("Default_Handler")))
 LTDC_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 LTDC_ER_IRQHandler(void);
+#endif
+
 void __attribute__ ((weak, alias ("Default_Handler")))
 DMA2D_IRQHandler(void);
-void __attribute__ ((weak, alias ("Default_Handler")))
-FMC_IRQHandler(void);
 
 #endif
 
