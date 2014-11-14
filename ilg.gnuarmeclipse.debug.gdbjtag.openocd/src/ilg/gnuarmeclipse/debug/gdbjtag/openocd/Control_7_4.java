@@ -1,5 +1,7 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.ILaunchConfigurationProvider;
+
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.mi.service.command.CommandFactory;
@@ -7,21 +9,45 @@ import org.eclipse.cdt.dsf.mi.service.command.output.MIInfo;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.debug.core.ILaunchConfiguration;
 
-public class Control_7_4 extends Control_7_2 {
+public class Control_7_4 extends Control_7_2 implements
+		ILaunchConfigurationProvider {
 
-	public Control_7_4(DsfSession session, ILaunchConfiguration config, CommandFactory factory) {
+	// ------------------------------------------------------------------------
+
+	private ILaunchConfiguration fConfig;
+
+	// ------------------------------------------------------------------------
+
+	public Control_7_4(DsfSession session, ILaunchConfiguration config,
+			CommandFactory factory) {
 		super(session, config, factory);
+
+		fConfig = config;
 	}
-	
+
+	// ------------------------------------------------------------------------
+
+	// Required by ILaunchConfigurationProvider
+
+	@Override
+	public ILaunchConfiguration getLaunchConfiguration() {
+		return fConfig;
+	}
+
+	// ------------------------------------------------------------------------
+
 	@Override
 	public void setPrintPythonErrors(boolean enabled, RequestMonitor rm) {
-		// With GDB 7.4, the command 'maintenance set python print-stack' has been replaced by
-		// the new command "set python print-stack none|full|message".
+		// With GDB 7.4, the command 'maintenance set python print-stack' has
+		// been replaced by the new command
+		// "set python print-stack none|full|message".
 		// Bug 367788
 		String errorOption = enabled ? "full" : "none"; //$NON-NLS-1$ //$NON-NLS-2$
 		queueCommand(
-			getCommandFactory().createMIGDBSetPythonPrintStack(getContext(), errorOption),
-			new DataRequestMonitor<MIInfo>(getExecutor(), rm));	
+				getCommandFactory().createMIGDBSetPythonPrintStack(
+						getContext(), errorOption),
+				new DataRequestMonitor<MIInfo>(getExecutor(), rm));
 	}
 
+	// ------------------------------------------------------------------------
 }
