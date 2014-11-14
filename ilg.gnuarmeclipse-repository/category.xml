@@ -12,7 +12,7 @@
    <feature url="features/ilg.gnuarmeclipse.debug.gdbjtag.jlink-feature_2.2.1.qualifier.jar" id="ilg.gnuarmeclipse.debug.gdbjtag.jlink" version="2.2.1.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
-   <feature url="features/ilg.gnuarmeclipse.debug.gdbjtag.openocd-feature_1.3.1.qualifier.jar" id="ilg.gnuarmeclipse.debug.gdbjtag.openocd" version="1.3.1.qualifier">
+   <feature url="features/ilg.gnuarmeclipse.debug.gdbjtag.openocd-feature_2.1.1.qualifier.jar" id="ilg.gnuarmeclipse.debug.gdbjtag.openocd" version="2.1.1.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
    <feature url="features/ilg.gnuarmeclipse.templates.cortexm-feature_1.2.2.qualifier.jar" id="ilg.gnuarmeclipse.templates.cortexm" version="1.2.2.qualifier">
