@@ -887,7 +887,7 @@
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="$(commonDir)/ldscripts/sections.ld" />
+					<simple name="source" value="../common/ldscripts/sections-ccmram.ld" />
 					<simple name="target" value="$(ldscriptsDir)/sections.ld" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -1505,6 +1505,14 @@
 						<element value="HSE_VALUE=$(hseValue)" />
 					</simple-array>
 					<simple name="path" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
+					<simple-array name="values">
+						<element value="OS_INCLUDE_STARTUP_INIT_MULTIPLE_RAM_SECTIONS" />
+					</simple-array>
+					<simple name="path" value="system/src/newlib/_startup.c" />
 				</element>
 			</complex-array>
 		</process>
