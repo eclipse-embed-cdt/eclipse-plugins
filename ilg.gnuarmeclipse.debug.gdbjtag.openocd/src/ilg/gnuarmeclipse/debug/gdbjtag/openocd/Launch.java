@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2013 Liviu Ionescu.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Liviu Ionescu - initial version
+ *******************************************************************************/
+
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch;
@@ -27,6 +38,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
 
+@SuppressWarnings("restriction")
 public class Launch extends GnuArmLaunch {
 
 	ILaunchConfiguration fConfig = null;

@@ -69,6 +69,7 @@ import org.eclipse.swt.widgets.Text;
 /**
  * @since 7.0
  */
+@SuppressWarnings("restriction")
 public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private static final String TAB_NAME = "Debugger";

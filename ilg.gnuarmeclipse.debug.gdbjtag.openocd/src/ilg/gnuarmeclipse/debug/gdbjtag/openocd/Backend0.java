@@ -12,6 +12,7 @@
  *     Marc Khouzam (Ericsson) - Use the new IMIBackend2 interface (Bug 350837)
  *     Mark Bozeman (Mentor Graphics) - Report GDB start failures (Bug 376203)
  *******************************************************************************/
+
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
 
 import ilg.gnuarmeclipse.core.StringUtils;
@@ -47,7 +48,6 @@ import org.eclipse.cdt.dsf.gdb.service.SessionType;
 import org.eclipse.cdt.dsf.gdb.service.command.GDBControl.InitializationShutdownStep;
 import org.eclipse.cdt.dsf.mi.service.IMIBackend;
 import org.eclipse.cdt.dsf.mi.service.IMIBackend2;
-import org.eclipse.cdt.dsf.mi.service.IMIBackend.State;
 import org.eclipse.cdt.dsf.mi.service.command.events.MIStoppedEvent;
 import org.eclipse.cdt.dsf.service.AbstractDsfService;
 import org.eclipse.cdt.dsf.service.DsfServiceEventHandler;
@@ -83,6 +83,7 @@ import org.osgi.framework.BundleContext;
  * 
  * @since 1.1
  */
+@SuppressWarnings("restriction")
 public class Backend0 extends AbstractDsfService implements IGDBBackend,
 		IMIBackend2 {
 
@@ -331,7 +332,6 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 		return fProgramPath;
 	}
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<String> getSharedLibraryPaths() throws CoreException {
 		if (fSharedLibPaths == null) {

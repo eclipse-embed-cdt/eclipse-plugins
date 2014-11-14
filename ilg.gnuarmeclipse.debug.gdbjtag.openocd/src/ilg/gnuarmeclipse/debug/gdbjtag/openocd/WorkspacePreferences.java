@@ -102,13 +102,6 @@ public class WorkspacePreferences {
 				.getNode(Activator.PLUGIN_ID);
 		preferences.put(id, value);
 
-		if (false) {
-			// Access the shared preferences
-			String sharedId = Activator.PLUGIN_ID + "." + id;
-
-			SharedDefaults.getInstance().getSharedDefaultsMap()
-					.put(sharedId, value);
-		}
 	}
 
 	// ----- gdb server doStart -----------------------------------------------
@@ -262,16 +255,11 @@ public class WorkspacePreferences {
 	public static void flush() {
 
 		try {
-			InstanceScope.INSTANCE
-			.getNode(Activator.PLUGIN_ID).flush();
+			InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).flush();
 		} catch (BackingStoreException e) {
 			// TODO Auto-generated catch block
 			// e.printStackTrace();
 		}
-		
-		if (false) {
-			SharedDefaults.getInstance().updateShareDefaultsMap(
-					SharedDefaults.getInstance().getSharedDefaultsMap());
-		}
+
 	}
 }
