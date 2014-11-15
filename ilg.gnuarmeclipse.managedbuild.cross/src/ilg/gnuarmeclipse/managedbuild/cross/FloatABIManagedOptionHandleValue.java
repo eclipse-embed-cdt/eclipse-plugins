@@ -52,6 +52,11 @@ public class FloatABIManagedOptionHandleValue extends ManagedOptionValueHandler 
 						val = opt.getStringValue();
 						if (!val.endsWith(Option.OPTION_ARM_FPU_ABI_SOFTFP)) {
 
+							opt = toolchain
+									.getOptionBySuperClassId(Option.OPTION_ARM_TARGET_FLOAT_UNIT);
+							config.setOption(toolchain, opt,
+									Option.OPTION_ARM_FPU_UNIT_DEFAULT);
+
 							return false; // neither hard nor softfp;
 						}
 					}

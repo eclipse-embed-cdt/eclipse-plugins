@@ -218,6 +218,9 @@ public class Option {
 	public static final String OPTION_ARM_FPU_ABI_SOFTFP = OPTION_PREFIX
 			+ ".arm.target.fpu.abi.softfp";
 
+	public static final String OPTION_ARM_FPU_UNIT_DEFAULT = OPTION_PREFIX
+			+ ".arm.target.fpu.unit.default";
+
 	public static final String OPTION_ARM_FPU_UNIT_FPV4SPD16 = OPTION_PREFIX
 			+ ".arm.target.fpu.unit.fpv4spd16";
 
