@@ -628,7 +628,8 @@ public class DataManager implements IPacksDataManager {
 		try {
 
 			File file = PacksStorage.getCachedFileObject(fileName);
-			fOut.println("Parsing cached PDSC file \"" + file.getPath() + "\"...");
+			fOut.println("Parsing cached PDSC file \"" + file.getPath()
+					+ "\"...");
 			Document document = Xml.parseFile(file);
 
 			PdscGenericParser parser = new PdscGenericParser();

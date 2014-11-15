@@ -234,11 +234,12 @@ public class PeripheralVMNode extends AbstractDMVMNode implements
 						if (isSuccess()) {
 							fPeripherals = (IDMContext[]) getData();
 							fillUpdateWithVMCs(update, fPeripherals);
+							update.done();
 						} else {
 							EclipseUtils.showStatusErrorMessage(getStatus()
 									.getMessage());
+							handleFailedUpdate(update);
 						}
-						update.done();
 					}
 				});
 	}

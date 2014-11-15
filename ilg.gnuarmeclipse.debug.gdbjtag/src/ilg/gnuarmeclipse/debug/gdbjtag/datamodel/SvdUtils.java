@@ -225,7 +225,7 @@ public class SvdUtils {
 			if (dataManager == null) {
 				throw new CoreException(
 						new Status(Status.ERROR, Activator.PLUGIN_ID,
-								"Peripheral descriptions are available only via the Packs plug-in."));
+								"Peripherals descriptions are available only via the Packs plug-in."));
 			}
 
 			path = dataManager.getSVDAbsolutePath(deviceVendorId, deviceName);
@@ -233,7 +233,7 @@ public class SvdUtils {
 			if (path == null) {
 				throw new CoreException(
 						new Status(Status.ERROR, Activator.PLUGIN_ID,
-								"There are no peripheral descriptions available, install the required packs."));
+								"There are no peripherals descriptions available, install the required packs."));
 			}
 		}
 
@@ -255,17 +255,17 @@ public class SvdUtils {
 			Activator.log(e);
 			throw new CoreException(new Status(Status.ERROR,
 					Activator.PLUGIN_ID,
-					"Failed to get the peripheral descriptions.", e));
+					"Failed to get the peripherals descriptions.", e));
 		} catch (SAXException e) {
 			Activator.log(e);
 			throw new CoreException(new Status(Status.ERROR,
 					Activator.PLUGIN_ID,
-					"Failed to get the peripheral descriptions.", e));
+					"Failed to get the peripherals descriptions.", e));
 		} catch (IOException e) {
 			Activator.log(e);
 			throw new CoreException(new Status(Status.ERROR,
 					Activator.PLUGIN_ID,
-					"Failed to get the peripheral descriptions.", e));
+					"Failed to get the peripherals descriptions.", e));
 		}
 	}
 

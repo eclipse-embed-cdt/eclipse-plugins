@@ -280,6 +280,7 @@ public class EclipseUtils {
 	public static void showStatusErrorMessage(final String message) {
 
 		System.out.println(message);
+		Activator.log(message);
 		Display.getDefault().syncExec(new Runnable() {
 
 			public void run() {
