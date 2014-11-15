@@ -628,7 +628,7 @@ public class DataManager implements IPacksDataManager {
 		try {
 
 			File file = PacksStorage.getCachedFileObject(fileName);
-			fOut.println("Parsing cached PDSC file \"" + file + "\"...");
+			fOut.println("Parsing cached PDSC file \"" + file.getPath() + "\"...");
 			Document document = Xml.parseFile(file);
 
 			PdscGenericParser parser = new PdscGenericParser();
@@ -778,7 +778,7 @@ public class DataManager implements IPacksDataManager {
 	 */
 	private Node loadCachedInstalledObjectsForBuild(File file) {
 
-		fOut.println("Parsing cached file \"" + file + "\".");
+		fOut.println("Parsing cached file \"" + file.getPath() + "\".");
 
 		Node node = null;
 		try {
@@ -1071,7 +1071,11 @@ public class DataManager implements IPacksDataManager {
 			return null;
 		}
 
-		String svdFile = installedDeviceNode.getProperty(Property.SVD_FILE);
+		String svdFile = installedDeviceNode.getPropertyWithParent(
+				Property.SVD_FILE, null);
+		if (svdFile == null) {
+			return null;
+		}
 
 		String destFolder = getDestinationFolder(installedDeviceNode);
 		IPath path;

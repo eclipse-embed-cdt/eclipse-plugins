@@ -207,11 +207,22 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 
 	public String getProperty(String name, String defaultValue) {
 		String property = getPropertyOrNull(name);
-		if (property == null) {
-			return defaultValue;
-		} else {
+		if (property != null) {
 			return property;
 		}
+		return defaultValue;
+	}
+
+	public String getPropertyWithParent(String name, String defaultValue) {
+		String property = getPropertyOrNull(name);
+		if (property != null) {
+			return property;
+		}
+		Node parent = getParent();
+		if (parent != null) {
+			return parent.getPropertyWithParent(name, defaultValue);
+		}
+		return defaultValue;
 	}
 
 	public Map<String, String> copyPropertiesRef(Leaf node) {

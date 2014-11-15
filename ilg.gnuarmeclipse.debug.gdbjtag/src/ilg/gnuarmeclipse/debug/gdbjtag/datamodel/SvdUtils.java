@@ -239,7 +239,7 @@ public class SvdUtils {
 
 		try {
 
-			out.println("Parsing SVD file \"" + path.toString() + "\"...");
+			out.println("Parsing SVD file \"" + path.toOSString() + "\"...");
 
 			File file = path.toFile();
 			if (file == null) {

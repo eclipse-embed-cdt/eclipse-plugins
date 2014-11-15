@@ -67,7 +67,7 @@ public class ParsePdscRunnable implements IRunnableWithProgress {
 
 		IPath path = folderPath.append(destFolder).append(pdscName);
 
-		fgOut.println("Parsing \"" + path.toString() + "\"...");
+		fgOut.println("Parsing \"" + path.toOSString() + "\"...");
 
 		Node outlineNode = null;
 		try {
