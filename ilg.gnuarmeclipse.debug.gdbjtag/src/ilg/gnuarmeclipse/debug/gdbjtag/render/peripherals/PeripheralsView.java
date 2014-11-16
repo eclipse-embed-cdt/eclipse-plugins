@@ -91,12 +91,12 @@ public class PeripheralsView extends VariablesView implements
 	@Override
 	public void handleDebugEvents(DebugEvent[] events) {
 
-		// System.out
-		// .print("PeripheralsView.handleDebugEvents() " + events.length);
-		// for (int i = 0; i < events.length; ++i) {
-		// System.out.print(" " + events[i]);
-		// }
-		// System.out.println();
+		System.out
+				.print("PeripheralsView.handleDebugEvents() " + events.length);
+		for (int i = 0; i < events.length; ++i) {
+			System.out.print(" " + events[i]);
+		}
+		System.out.println();
 
 		for (int i = 0; i < events.length; ++i) {
 
@@ -105,7 +105,7 @@ public class PeripheralsView extends VariablesView implements
 			if (events[i].getKind() == DebugEvent.TERMINATE) {
 
 				// Clear possible messages.
-				EclipseUtils.ClearStatusMessage();
+				EclipseUtils.clearStatusMessage();
 
 			} else if (events[i].getKind() == DebugEvent.MODEL_SPECIFIC) {
 				// Currently no longer fired

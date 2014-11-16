@@ -20,10 +20,12 @@ import ilg.gnuarmeclipse.debug.gdbjtag.render.peripherals.PeripheralsColumnPrese
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IPeripheralsService;
 
 import java.util.Map;
+import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionException;
 
 import org.eclipse.cdt.dsf.concurrent.ConfinedToDsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.DsfRunnable;
+import org.eclipse.cdt.dsf.concurrent.ImmediateExecutor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.datamodel.IDMContext;
 import org.eclipse.cdt.dsf.debug.service.IRunControl;
@@ -224,10 +226,14 @@ public class PeripheralVMNode extends AbstractDMVMNode implements
 			return;
 		}
 
+		Executor executor;
+		executor = ImmediateExecutor.getInstance();
+		// executor = getSession().getExecutor();
+
 		// Get peripherals only on first call.
 		peripheralsService.getPeripherals(containerDMContext,
-				new ViewerDataRequestMonitor<IPeripheralDMContext[]>(
-						getSession().getExecutor(), update) {
+				new ViewerDataRequestMonitor<IPeripheralDMContext[]>(executor,
+						update) {
 
 					public void handleCompleted() {
 

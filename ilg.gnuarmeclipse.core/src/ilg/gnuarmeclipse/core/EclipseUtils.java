@@ -238,8 +238,9 @@ public class EclipseUtils {
 		uiJob.schedule();
 	}
 
-	public static void ClearStatusMessage() {
+	public static void clearStatusMessage() {
 
+		// Display.getDefault().syncExec(new Runnable() {
 		Display.getDefault().syncExec(new Runnable() {
 
 			public void run() {
@@ -264,7 +265,8 @@ public class EclipseUtils {
 	public static void showStatusMessage(final String message) {
 
 		System.out.println(message);
-		Display.getDefault().syncExec(new Runnable() {
+		// Display.getDefault().syncExec(new Runnable() {
+		Display.getDefault().asyncExec(new Runnable() {
 
 			public void run() {
 				IWorkbenchWindow window = PlatformUI.getWorkbench()
@@ -281,7 +283,8 @@ public class EclipseUtils {
 
 		System.out.println(message);
 		Activator.log(message);
-		Display.getDefault().syncExec(new Runnable() {
+		// Display.getDefault().syncExec(new Runnable() {
+		Display.getDefault().asyncExec(new Runnable() {
 
 			public void run() {
 				IWorkbenchWindow window = PlatformUI.getWorkbench()
