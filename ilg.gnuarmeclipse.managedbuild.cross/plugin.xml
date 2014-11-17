@@ -471,16 +471,6 @@
             </enablement>
          </option>
          <option
-               command="-fno-use-cxa-atexit"
-               defaultValue="false"
-               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.nousecxaatexit"
-               isAbstract="true"
-               name="%option.optimization.nousecxaatexit"
-               tip="Do not register destructors for objects with static storage duration with the __cxa_ atexit() function."
-               useByScannerDiscovery="true"
-               valueType="boolean">
-         </option>
-         <option
                command="-fno-common"
                defaultValue="false"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.nocommon"
@@ -879,6 +869,30 @@
                isAbstract="true"
                name="%option.linker.defname"
                valueType="string">
+         </option>
+         <option
+               command="--specs=nano.specs"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.usenewlibnano"
+               isAbstract="true"
+               name="%option.linker.usenewlibnano"
+               valueType="boolean">
+         </option>
+         <option
+               command="-u _printf_float"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.useprintffloat"
+               isAbstract="true"
+               name="%option.linker.useprintffloat"
+               valueType="boolean">
+         </option>
+         <option
+               command="-u _scanf_float"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.usescanffloat"
+               isAbstract="true"
+               name="%option.linker.usescanffloat"
+               valueType="boolean">
          </option>
       </tool>
       <tool
@@ -3439,6 +3453,21 @@
             </option>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.linker.misc"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.usenewlibnano"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.usenewlibnano">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.linker.misc"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.useprintffloat"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.useprintffloat">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.linker.misc"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.usescanffloat"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.usescanffloat">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.linker.misc"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.verbose"
                   superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.verbose">
             </option>
@@ -3606,6 +3635,21 @@
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.misc"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.printmap"
                   superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.printmap">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.misc"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.usenewlibnano"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.usenewlibnano">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.misc"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.useprintffloat"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.useprintffloat">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.misc"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.usescanffloat"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.usescanffloat">
             </option>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.misc"
