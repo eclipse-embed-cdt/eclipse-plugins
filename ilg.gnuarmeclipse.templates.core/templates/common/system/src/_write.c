@@ -21,7 +21,10 @@
 
 // Currently only the output and error file descriptors are tested,
 // and the characters are forwarded to the trace device, mainly
-// for demonstration purposes.
+// for demonstration purposes. Adjust it for your specific needs.
+
+// For freestanding applications this file is not used and can be safely
+// ignored.
 
 ssize_t
 _write (int fd, const char* buf, size_t nbyte);

@@ -38,6 +38,7 @@ import org.eclipse.core.runtime.IStatus;
  * Appends a file to an existing file if present. If not, create the file
  */
 public class ConditionalAppendCreate extends ProcessRunner {
+	@SuppressWarnings("deprecation")
 	@Override
 	public void process(TemplateCore template, ProcessArgument[] args,
 			String processId, IProgressMonitor monitor)

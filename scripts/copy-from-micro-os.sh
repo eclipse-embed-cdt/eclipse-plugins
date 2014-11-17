@@ -36,9 +36,11 @@ cp -n $src/architectures/arm/cortexm.pack/src/cortexm/*.c* $system/src/cortexm
 cp -n $src/portable/diag.pack/src/diag/*.c* $system/src/diag
 cp -n $src/architectures/arm/cortexm.pack/src/diag/*.c* $system/src/diag
 
-cp -n $src/architectures/arm/cortexm.pack/src/newlib/*.c* $system/src/newlib
 cp -n $src/portable/newlib.pack/src/newlib/*.c* $system/src/newlib
 cp -n $src/portable/newlib.pack/src/newlib/README.txt $system/src/newlib
+
+# _write.c moved from system to application
+cp -n $src/architectures/arm/cortexm.pack/src/newlib/_write.c $system/src
 
 # -----------------------------------------------------------------------------
 

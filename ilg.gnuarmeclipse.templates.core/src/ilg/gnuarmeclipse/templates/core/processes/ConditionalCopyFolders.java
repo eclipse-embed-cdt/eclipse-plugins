@@ -44,6 +44,7 @@ public class ConditionalCopyFolders extends ProcessRunner {
 	/**
 	 * This method Adds the list of Files to the corresponding Project.
 	 */
+	@SuppressWarnings("deprecation")
 	@Override
 	public void process(TemplateCore template, ProcessArgument[] args,
 			String processId, IProgressMonitor monitor)
