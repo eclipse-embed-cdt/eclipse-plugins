@@ -19,7 +19,7 @@ Supported arch & cpu:
 	armv6-m 
 	armv6j 
 	armv6k 
-	armv6s-m 	+[2014-02-20]
+	armv6s-m 	+[2014-02-20, accepted, but not in 4.8]
 	armv6t2 
 	armv6z 
 	armv6zk 
@@ -97,6 +97,7 @@ Supported arch & cpu:
 	cortex-m1 
 	cortex-m3 
 	cortex-m4 
+	cortex-m7		+[2014-11-20] 
 	cortex-r4 
 	cortex-r4f 
 	cortex-r5 		+[2014-02-20]

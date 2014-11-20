@@ -1231,6 +1231,11 @@
                   name="cortex-m4">
             </enumeratedOptionValue>
             <enumeratedOptionValue
+                  command="-mcpu=cortex-m7"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m7"
+                  name="cortex-m7">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
                   command="-mcpu=cortex-r4"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-r4"
                   name="cortex-r4">
