@@ -1116,6 +1116,24 @@
 			<complex-array name="resourcePaths">
 				<element>
 					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.format" />
+					<simple name="value"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.format.default" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="debug" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level" />
 					<simple name="value"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level.size" />
