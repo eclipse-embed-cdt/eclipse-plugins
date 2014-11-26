@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.jobs;
 
+import ilg.gnuarmeclipse.core.Activator;
 import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.data.PacksStorage;
@@ -258,11 +259,19 @@ public class InstallJob extends Job {
 			Utils.deleteFolderRecursive(destFolder);
 		}
 
-		// Extract all files from the archive to the local folder.
-		if (!unzip(archiveFile, destRelPath)) {
+		boolean flag = false;
+		try {
+			flag = unzip(archiveFile, destRelPath);
+		} catch (IOException e) {
+			Activator.log(e);
+		}
 
+		// Extract all files from the archive to the local folder.
+		if (!flag) {
 			fOut.println("Install cancelled due to errors.");
 
+			// Remove partial install
+			Utils.deleteFolderRecursive(destFolder);
 			return false;
 		}
 
@@ -342,9 +351,13 @@ public class InstallJob extends Job {
 
 		zipInput.closeEntry();
 		zipInput.close();
-		fOut.println(countFiles + " files written, "
-				+ StringUtils.convertSizeToString(countBytes) + ".");
-
+		if (countBytes > 0) {
+			fOut.println(countFiles + " files written, "
+					+ StringUtils.convertSizeToString(countBytes) + ".");
+		} else {
+			fOut.println("No files written.");
+			result = false;
+		}
 		return result;
 	}
 
