@@ -240,10 +240,6 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 	@Override
 	public String getDisplayValue() {
 
-		if (isWriteOnly()) {
-			return "(write only)";
-		}
-
 		String readAction = getReadAction();
 		if (!readAction.isEmpty()) {
 			return "(read " + readAction + ")";

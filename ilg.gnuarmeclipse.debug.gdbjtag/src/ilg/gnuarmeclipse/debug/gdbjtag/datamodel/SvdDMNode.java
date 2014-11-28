@@ -283,7 +283,7 @@ public class SvdDMNode implements Comparable<SvdDMNode> {
 	}
 
 	public boolean isReadAllowed() {
-		return (!isWriteOnly()) && !hasReadAction();
+		return !hasReadAction();
 	}
 
 	public int getWidthBits() {
