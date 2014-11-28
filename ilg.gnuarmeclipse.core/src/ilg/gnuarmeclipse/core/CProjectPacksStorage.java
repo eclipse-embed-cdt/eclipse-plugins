@@ -70,10 +70,9 @@ public class CProjectPacksStorage {
 
 		if (config instanceof Configuration) {
 			fConfig = (Configuration) config;
-			ICConfigurationDescription condifDesc = fConfig
+			ICConfigurationDescription configDesc = fConfig
 					.getConfigurationDescription();
-			fStorage = condifDesc.getStorage(STORAGE_NAME, true);
-
+			fStorage = configDesc.getStorage(STORAGE_NAME, true);
 		} else {
 			throw new CoreException(new Status(Status.ERROR,
 					Activator.PLUGIN_ID,
@@ -82,7 +81,7 @@ public class CProjectPacksStorage {
 	}
 
 	public void update() {
-		// No need for it, apparently OK performs it automatically.
+		// No need for it, apparently Apply & OK perform it automatically.
 	}
 
 	/**

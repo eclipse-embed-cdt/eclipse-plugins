@@ -506,7 +506,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 			fMemoryEditButton = new Button(group, SWT.NONE);
 			fMemoryEditButton
 					.setText(Messages.DevicesTab_MemoryGroup_editButton_text);
-			
+
 			// For the moment Edit is not implemented
 			fMemoryEditButton.setEnabled(false);
 		}
@@ -684,7 +684,13 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 		System.out.println("Devices.performApply() " + src.getName() + " -> "
 				+ dst.getName());
 
-		// TODO: check if something to do.
+		if (page.isForProject()) {
+			IConfiguration cfg1 = getCfg(src.getConfiguration());
+			IConfiguration cfg2 = getCfg(dst.getConfiguration());
+
+			updateStorage(cfg1);
+			updateStorage(cfg2);
+		}
 	}
 
 	@Override
@@ -798,7 +804,8 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 	 */
 	private void updateStorage(IConfiguration config) {
 
-		System.out.println("Devices.updateStorage() " + config.getName());
+		// System.out.println("Devices.updateStorage() " + config.getName() + " "
+		//		+ config.getClass());
 
 		if (fSelectedDeviceNode == null) {
 			return;
