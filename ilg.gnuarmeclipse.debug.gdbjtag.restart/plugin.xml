@@ -2,19 +2,36 @@
 <?eclipse version="3.4"?>
 <plugin>
 
-     <extension
-        point="org.eclipse.ui.menus">
-     <menuContribution
-           locationURI="toolbar:org.eclipse.debug.ui.main.toolbar?after=additions">
-        <command
-           commandId="org.eclipse.debug.ui.commands.Restart"
-           icon="icons/elcl16/restart_co.gif"
-           disabledIcon="icons/dlcl16/restart_co.gif"
-           label="%restartButton.label"
-           style="push"
-           tooltip="%restartButton.tooltip">
-        </command>
-     </menuContribution>
-  </extension>
+   <extension
+         point="org.eclipse.ui.commands">
+      <category
+            name="%runCategory.name"
+            description="%runCategory.description"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.restart.category">
+      </category>
+      
+      <command
+            name="%ActionDefinition.restart.name"
+            categoryId="ilg.gnuarmeclipse.debug.gdbjtag.restart.category"
+            description="%ActionDefinition.restart.description"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.restart.commands.Restart"
+            defaultHandler="ilg.gnuarmeclipse.debug.gdbjtag.restart.RestartCommandHandler">
+      </command>    
+   </extension>
    
+   <extension
+        point="org.eclipse.ui.menus">
+      <menuContribution
+            locationURI="toolbar:org.eclipse.debug.ui.main.toolbar?after=additions">
+         <command
+            commandId="ilg.gnuarmeclipse.debug.gdbjtag.restart.commands.Restart"
+            icon="icons/elcl16/restart_co.gif"
+            disabledIcon="icons/dlcl16/restart_co.gif"
+            label="%restartButton.label"
+            style="push"
+            tooltip="%restartButton.tooltip">
+         </command>
+      </menuContribution>
+   </extension>
+
 </plugin>
