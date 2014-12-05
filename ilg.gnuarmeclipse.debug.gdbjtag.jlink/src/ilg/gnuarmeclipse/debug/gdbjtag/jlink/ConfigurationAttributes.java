@@ -186,12 +186,15 @@ public interface ConfigurationAttributes {
 	public static final boolean ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_DEFAULT = false;
 	public static final int ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_MASK = 2;
 
-	public static final String ENABLE_SEMIHOSTING_IOCLIENT_COMMAND = "monitor semihosting IOClient "; //$NON-NLS-1$
+	public static final String ENABLE_SEMIHOSTING_IOCLIENT_COMMAND = 
+			"monitor semihosting IOClient "; //$NON-NLS-1$
 
 	public static final String ENABLE_SWO = PREFIX + ".enableSwo"; //$NON-NLS-1$
 	public static final boolean ENABLE_SWO_DEFAULT = true;
-	public static final String ENABLE_SWO_COMMAND = "monitor SWO DisableTarget 0xFFFFFFFF\n"
-			+ "monitor SWO EnableTarget ";
+	public static final String DISABLE_SWO_COMMAND = 
+			"monitor SWO DisableTarget 0xFFFFFFFF";
+	public static final String ENABLE_SWO_COMMAND = 
+			"monitor SWO EnableTarget ";
 	// public static final String ENABLE_SWO_GETSPEEDINFO_COMMAND =
 	// "monitor SWO GetSpeedInfo";
 

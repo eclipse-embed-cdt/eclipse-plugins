@@ -14,6 +14,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -69,11 +70,26 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	/** utility method; cuts down on clutter */
 	private void queueCommands(List<String> commands, RequestMonitor rm) {
-		if (!commands.isEmpty()) {
-			fCommandControl.queueCommand(
-					new CLICommand<MIInfo>(fCommandControl.getContext(),
-							DebugUtils.composeCommandWithLf(commands)),
-					new DataRequestMonitor<MIInfo>(getExecutor(), rm));
+
+		if (commands != null && !commands.isEmpty()) {
+
+			CountingRequestMonitor crm = new CountingRequestMonitor(
+					getExecutor(), rm);
+			crm.setDoneCount(commands.size());
+
+			Iterator<String> it = commands.iterator();
+			while (it.hasNext()) {
+				String s = it.next().trim();
+				if (s.isEmpty() || s.startsWith("#")) {
+					crm.done();
+					continue; // ignore empty lines and comments
+				}
+				// System.out.println("queueCommand('" + s + "')");
+				fCommandControl.queueCommand(new CLICommand<MIInfo>(
+						fCommandControl.getContext(), s),
+						new DataRequestMonitor<MIInfo>(getExecutor(), crm));
+			}
+
 		} else {
 			rm.done();
 		}
@@ -166,28 +182,19 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 				}
 			}
 
-			if (commandsList.size() > 0) {
+			if (!commandsList.isEmpty()) {
 				CountingRequestMonitor crm = new CountingRequestMonitor(
 						getExecutor(), requestMonitor);
-				crm.setDoneCount(commandsList.size());
 
-				// queueCommands(commandsList, requestMonitor);
+				// One more for the parent step
+				crm.setDoneCount(1 + 1);
 
-				if (!commandsList.isEmpty()) {
-					fCommandControl
-							.queueCommand(
-									new CLICommand<MIInfo>(fCommandControl
-											.getContext(), DebugUtils
-											.composeCommandWithLf(commandsList)),
-									new DataRequestMonitor<MIInfo>(
-											getExecutor(), requestMonitor));
-				}
+				queueCommands(commandsList, crm);
+
+				super.stepSourceGDBInitFile(crm);
+			} else {
+				super.stepSourceGDBInitFile(requestMonitor);
 			}
-
-			// For unknow reasons, on Luna this fails, the requestMonitor
-			// is marked as done before handleComplete() executes.
-			super.stepSourceGDBInitFile(requestMonitor);
-
 		} catch (CoreException e) {
 			requestMonitor.setStatus(new Status(IStatus.ERROR,
 					Activator.PLUGIN_ID, -1,
@@ -298,15 +305,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 							+ attr);
 		}
 
-		if (commandsList.size() > 0) {
-			CountingRequestMonitor crm = new CountingRequestMonitor(
-					getExecutor(), rm);
-			crm.setDoneCount(commandsList.size());
-
-			queueCommands(commandsList, rm);
-		} else {
-			rm.done();
-		}
+		queueCommands(commandsList, rm);
 	}
 
 	@Execute
@@ -366,6 +365,10 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 				if (CDebugUtils.getAttribute(fAttributes,
 						ConfigurationAttributes.ENABLE_SWO,
 						ConfigurationAttributes.ENABLE_SWO_DEFAULT)) {
+
+					commandsList
+							.add(ConfigurationAttributes.DISABLE_SWO_COMMAND);
+
 					commandStr = ConfigurationAttributes.ENABLE_SWO_COMMAND;
 					commandStr += CDebugUtils
 							.getAttribute(
@@ -411,15 +414,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 			DebugUtils.addMultiLine(otherInits, commandsList);
 
-			if (commandsList.size() > 0) {
-				CountingRequestMonitor crm = new CountingRequestMonitor(
-						getExecutor(), rm);
-				crm.setDoneCount(commandsList.size());
-
-				queueCommands(commandsList, rm);
-			} else {
-				rm.done();
-			}
+			queueCommands(commandsList, rm);
 		} catch (CoreException e) {
 			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
 					"Cannot run user defined init commands", e)); //$NON-NLS-1$
@@ -481,14 +476,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 				commandsList.add(ConfigurationAttributes.DO_CONTINUE_COMMAND);
 			}
 
-			if (commandsList.size() > 0) {
-				CountingRequestMonitor crm = new CountingRequestMonitor(
-						getExecutor(), rm);
-				crm.setDoneCount(commandsList.size());
-				queueCommands(commandsList, rm);
-			} else {
-				rm.done();
-			}
+			queueCommands(commandsList, rm);
 		} catch (CoreException e) {
 			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
 					"Cannot run user defined run commands", e)); //$NON-NLS-1$
@@ -554,7 +542,11 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	 */
 	/** @since 8.2 */
 	@Execute
-	public void stepLoadImage(final RequestMonitor rm) {
+	public void stepLoadImage(final RequestMonitor rm0) {
+
+		CountingRequestMonitor rm = new CountingRequestMonitor(getExecutor(),
+				rm0);
+		rm.setDoneCount(2);
 
 		try {
 			if (CDebugUtils.getAttribute(getAttributes(),
@@ -594,7 +586,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 							Activator.PLUGIN_ID,
 							-1,
 							Messages.getString("GDBJtagDebugger.err_no_img_file"), null)); //$NON-NLS-1$
-					rm.done();
+					rm0.done();
 					return;
 				}
 
@@ -694,6 +686,8 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 						"Cannot load image", e)); //$NON-NLS-1$
 				rm.done();
 			}
+		} else {
+			rm.done();
 		}
 	}
 
