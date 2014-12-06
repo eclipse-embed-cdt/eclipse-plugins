@@ -541,6 +541,16 @@
                valueType="boolean">
          </option>
          <option
+               command="-fno-move-loop-invariants"
+               defaultValue="false"
+               id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.nomoveloopinvariants"
+               isAbstract="true"
+               name="%option.optimization.nomoveloopinvariants"
+               tip="Disable the loop invariant motion pass in the RTL loop optimizer. Enabled at level ‘-O1’"
+               useByScannerDiscovery="true"
+               valueType="boolean">
+         </option>
+         <option
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.other"
                isAbstract="true"
                name="%option.optimization.other"
@@ -2536,6 +2546,11 @@
                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
                  id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.lto"
                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.lto">
+           </option>
+           <option
+                 category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
+                 id="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.nomoveloopinvariants"
+                 superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.nomoveloopinvariants">
            </option>
            <option
                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
