@@ -796,6 +796,23 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 
 	<if condition="1==1">
 		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.nomoveloopinvariants" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="debug" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process
 			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSStringOptionValue">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="condition" value="" />
