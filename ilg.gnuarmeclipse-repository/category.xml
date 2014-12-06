@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/ilg.gnuarmeclipse.managedbuild.cross-feature_1.11.1.qualifier.jar" id="ilg.gnuarmeclipse.managedbuild.cross" version="1.11.1.qualifier">
+   <feature url="features/ilg.gnuarmeclipse.managedbuild.cross-feature_1.12.1.qualifier.jar" id="ilg.gnuarmeclipse.managedbuild.cross" version="1.12.1.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
-   <feature url="features/ilg.gnuarmeclipse.templates.stm-feature_2.2.2.qualifier.jar" id="ilg.gnuarmeclipse.templates.stm" version="2.2.2.qualifier">
+   <feature url="features/ilg.gnuarmeclipse.templates.stm-feature_2.2.3.qualifier.jar" id="ilg.gnuarmeclipse.templates.stm" version="2.2.3.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
-   <feature url="features/ilg.gnuarmeclipse.templates.freescale-feature_2.2.2.qualifier.jar" id="ilg.gnuarmeclipse.templates.freescale" version="2.2.2.qualifier">
+   <feature url="features/ilg.gnuarmeclipse.templates.freescale-feature_2.2.3.qualifier.jar" id="ilg.gnuarmeclipse.templates.freescale" version="2.2.3.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
    <feature url="features/ilg.gnuarmeclipse.debug.gdbjtag.jlink-feature_2.2.1.qualifier.jar" id="ilg.gnuarmeclipse.debug.gdbjtag.jlink" version="2.2.1.qualifier">
@@ -15,7 +15,7 @@
    <feature url="features/ilg.gnuarmeclipse.debug.gdbjtag.openocd-feature_2.1.1.qualifier.jar" id="ilg.gnuarmeclipse.debug.gdbjtag.openocd" version="2.1.1.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
-   <feature url="features/ilg.gnuarmeclipse.templates.cortexm-feature_1.2.2.qualifier.jar" id="ilg.gnuarmeclipse.templates.cortexm" version="1.2.2.qualifier">
+   <feature url="features/ilg.gnuarmeclipse.templates.cortexm-feature_1.2.3.qualifier.jar" id="ilg.gnuarmeclipse.templates.cortexm" version="1.2.3.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
    <feature url="features/ilg.gnuarmeclipse.packs-feature_2.2.1.qualifier.jar" id="ilg.gnuarmeclipse.packs" version="2.2.1.qualifier">

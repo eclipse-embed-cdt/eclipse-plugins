@@ -2,7 +2,7 @@
 <feature
       id="ilg.gnuarmeclipse.templates.stm"
       label="%featureName"
-      version="2.2.2.qualifier"
+      version="2.2.3.qualifier"
       provider-name="%providerName"
       plugin="ilg.gnuarmeclipse.templates.stm">
 
