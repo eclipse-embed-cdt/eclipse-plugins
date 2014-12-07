@@ -1195,14 +1195,14 @@
 
 	<if condition="$(useNano)==true">
 		<process
-			type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringOptionValue">
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="condition" value="" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.other" />
-					<simple name="value" value="--specs=nano.specs" />
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.usenewlibnano" />
+					<simple name="value" value="true" />
 					<simple name="path" value="" />
 					<simple name="buildType" value="" />
 				</element>
