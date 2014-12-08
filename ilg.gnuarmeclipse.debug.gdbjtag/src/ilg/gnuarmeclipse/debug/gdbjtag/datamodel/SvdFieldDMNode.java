@@ -11,7 +11,14 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.datamodel;
 
+import java.math.BigInteger;
+
+import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.model.IValue;
+
+import ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralValue;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
+import ilg.gnuarmeclipse.packs.core.tree.Node;
 
 /**
  * Wrapper over the tree node parsed from the SVD file. All details of a field
@@ -24,6 +31,9 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 	private Integer fOffset;
 	private Integer fWidth;
 
+	private SvdEnumerationDMNode fReadEnumeration;
+	private SvdEnumerationDMNode fWriteEnumeration;
+
 	// ------------------------------------------------------------------------
 
 	public SvdFieldDMNode(Leaf node) {
@@ -32,6 +42,11 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 
 		fOffset = null;
 		fWidth = null;
+
+		fReadEnumeration = null;
+		fWriteEnumeration = null;
+
+		prepareEnumerations(node);
 	}
 
 	@Override
@@ -41,9 +56,67 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 
 		fOffset = null;
 		fWidth = null;
+
+		if (fReadEnumeration != null) {
+			fReadEnumeration.dispose();
+		}
+
+		if (fWriteEnumeration != null) {
+			fWriteEnumeration.dispose();
+		}
 	}
 
 	// ------------------------------------------------------------------------
+
+	private void prepareEnumerations(Leaf node) {
+
+		if (node == null || !node.hasChildren()) {
+			return;
+		}
+
+		for (Leaf child : ((Node) node).getChildren()) {
+
+			// Consider only <enumeratedValues> nodes
+			if (child.isType("enumeratedValues")) {
+				SvdEnumerationDMNode enumeration = new SvdEnumerationDMNode(
+						child);
+
+				if (enumeration.isUsageRead()) {
+					fReadEnumeration = enumeration;
+				}
+				if (enumeration.isUsageWrite()) {
+					fWriteEnumeration = enumeration;
+				}
+			}
+		}
+	}
+
+	/**
+	 * The field is an enumeration if a read <enumerationValues> is present.
+	 * 
+	 * @return true if the field is an enumeration.
+	 */
+	public boolean isEnumeration() {
+		return (fReadEnumeration != null);
+	}
+
+	public SvdEnumeratedValueDMNode findEnumeratedValue(PeripheralValue value) {
+
+		if (fReadEnumeration == null) {
+			return null;
+		}
+
+		SvdObjectDMNode children[] = fReadEnumeration.getChildren();
+		for (int i = 0; i < children.length; ++i) {
+
+			// TODO: find the good one
+			if (((SvdEnumeratedValueDMNode) children[i]).isMatchForValue(value)) {
+				return (SvdEnumeratedValueDMNode) children[i];
+			}
+		}
+
+		return fReadEnumeration.getDefaultEnumerationNode();
+	}
 
 	/**
 	 * Get the field least significative bit position in the register.

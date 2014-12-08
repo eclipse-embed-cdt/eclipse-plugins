@@ -13,34 +13,12 @@ package ilg.gnuarmeclipse.debug.gdbjtag.datamodel;
 
 import java.math.BigInteger;
 
-import ilg.gnuarmeclipse.core.StringUtils;
-import ilg.gnuarmeclipse.core.Xml;
 import ilg.gnuarmeclipse.packs.core.Activator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 
-public class SvdDMNode implements Comparable<SvdDMNode> {
+public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> {
 
 	// ------------------------------------------------------------------------
-
-	/**
-	 * Reference to the original node in the generic tree parsed from SVD.
-	 */
-	protected Leaf fNode;
-
-	/**
-	 * Reference to the node referenced, or null.
-	 */
-	private Leaf fDerivedFromNode;
-
-	/**
-	 * The children nodes, with types depending on individual node.
-	 */
-	private SvdDMNode[] fChildren;
-
-	/**
-	 * The description string. If multiple lines, they were already joined.
-	 */
-	private String fDescription;
 
 	/**
 	 * The content of the SVD <tt>&lt;access&gt;</tt> element. Defines the
@@ -91,11 +69,8 @@ public class SvdDMNode implements Comparable<SvdDMNode> {
 
 	public SvdDMNode(Leaf node) {
 
-		fNode = node;
-		fDerivedFromNode = null;
+		super(node);
 
-		fChildren = null;
-		fDescription = null;
 		fAccess = null;
 		fReadAction = null;
 	}
@@ -105,139 +80,16 @@ public class SvdDMNode implements Comparable<SvdDMNode> {
 	 */
 	public void dispose() {
 
-		fNode = null;
-		fDerivedFromNode = null;
-
-		fChildren = null;
-		fDescription = null;
 		fAccess = null;
 		fReadAction = null;
+
+		super.dispose();
 	}
 
 	// ------------------------------------------------------------------------
 
-	/**
-	 * Get the original SVD node, in the generic tree.
-	 * 
-	 * @return a generic tree node.
-	 */
-	public Leaf getNode() {
-		return fNode;
-	}
-
-	/**
-	 * Get name. Mandatory, cannot be derived.
-	 * 
-	 * @return a short (usually upper case) string.
-	 */
-	public String getName() {
-		return fNode.getProperty("name");
-	}
-
-	/**
-	 * Check if the node is derived from another node.
-	 * 
-	 * @return true if derived.
-	 */
-	public boolean isDerived() {
-		return fNode.hasProperty("derivedFrom");
-	}
-
-	/**
-	 * Get the node that this node is derived from.
-	 * 
-	 * @return the derived from node, or null if not derived or not found.
-	 */
-	public Leaf getDerivedFromNode() {
-
-		if (fDerivedFromNode == null) {
-
-			fDerivedFromNode = findDerivedFromNode();
-		}
-
-		// If not derived, return null
-		return fDerivedFromNode;
-	}
-
-	protected Leaf findDerivedFromNode() {
-		return null;
-	}
-
-	/**
-	 * Get the cluster, register, field children nodes.
-	 * 
-	 * @return an array of nodes.
-	 */
-	public SvdDMNode[] getChildren() {
-
-		if (fChildren == null) {
-
-			// If any, try to use the derivedFrom node children.
-			fChildren = prepareChildren(getDerivedFromNode());
-
-			if (fChildren == null) {
-				// Try to get the children from the current node.
-				fChildren = prepareChildren(fNode);
-			}
-
-			if (fChildren == null) {
-				// If none worked, return an empty array.
-				fChildren = new SvdDMNode[0];
-			}
-		}
-
-		return fChildren;
-	}
-
-	/**
-	 * To be redefined by nodes that have children.
-	 * 
-	 * @return an array of nodes or null if no children.
-	 */
-	protected SvdDMNode[] prepareChildren(Leaf node) {
-		return null;
-	}
-
 	public BigInteger getBigAbsoluteAddress() {
 		return null;
-	}
-
-	/**
-	 * Get the default display name.
-	 * 
-	 * @return a string.
-	 */
-	public String getDisplayName() {
-		return getName();
-	}
-
-	/**
-	 * Get field description. In case the description spans multiple lines,
-	 * these lines are joined together in a single line, with each of the
-	 * individual lines trimmed.
-	 * <p>
-	 * If not present, the derived from node description is returned.
-	 * 
-	 * @return a string with the field description, possibly empty.
-	 */
-	public String getDescription() {
-
-		if (fDescription == null) {
-
-			fDescription = fNode.getDescription();
-			if ((fDescription.isEmpty()) && (getDerivedFromNode() != null)) {
-				fDescription = getDerivedFromNode().getDescription();
-			}
-			if (fDescription != null) {
-				// Process multiple lines descriptions
-				fDescription = Xml.joinMultiLine(fDescription);
-			} else {
-				fDescription = "";
-			}
-
-			fDescription = StringUtils.capitalizeFirst(fDescription);
-		}
-		return fDescription;
 	}
 
 	/**

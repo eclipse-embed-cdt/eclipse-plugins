@@ -78,6 +78,8 @@ public class SvdUtils {
 		int radix = 10;
 		if ((str.startsWith("0x")) || (str.startsWith("0X"))) {
 			radix = 16;
+		} else if ((str.startsWith("0b")) || (str.startsWith("0B"))) {
+			radix = 2;
 		} else if (str.startsWith("#")) {
 			radix = 2;
 		}
@@ -85,11 +87,13 @@ public class SvdUtils {
 		return radix;
 	}
 
-	private static String adjustForRadix(String str, int radix) {
+	private static String adjustForRadix(String str) {
 
-		if (radix == 16) {
+		if ((str.startsWith("0x")) || (str.startsWith("0X"))) {
 			return str.substring(2); // Skip 0x, 0X
-		} else if (radix == 2) {
+		} else if ((str.startsWith("0b")) || (str.startsWith("0B"))) {
+			return str.substring(2); // Skip 0b, 0B
+		} else if (str.startsWith("#")) {
 			return str.substring(1); // Skip #
 		}
 
@@ -111,7 +115,7 @@ public class SvdUtils {
 
 		str = adjustForSign(str);
 		int radix = computeRadix(str);
-		str = adjustForRadix(str, radix);
+		str = adjustForRadix(str);
 		long scale = computeScale(str);
 		str = adjustForScale(str, scale);
 
@@ -127,7 +131,7 @@ public class SvdUtils {
 
 		str = adjustForSign(str);
 		int radix = computeRadix(str);
-		str = adjustForRadix(str, radix);
+		str = adjustForRadix(str);
 		long scale = computeScale(str);
 		str = adjustForScale(str, scale);
 

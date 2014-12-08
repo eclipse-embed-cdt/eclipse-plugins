@@ -80,7 +80,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 	// ------------------------------------------------------------------------
 
 	@Override
-	protected SvdDMNode[] prepareChildren(Leaf node) {
+	protected SvdObjectDMNode[] prepareChildren(Leaf node) {
 
 		if (node == null || !node.hasChildren()) {
 			return null;
@@ -94,7 +94,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 			return null;
 		}
 
-		List<SvdDMNode> list = new LinkedList<SvdDMNode>();
+		List<SvdObjectDMNode> list = new LinkedList<SvdObjectDMNode>();
 		for (Leaf child : ((Node) group).getChildren()) {
 
 			// Keep only <field> nodes
@@ -103,7 +103,8 @@ public class SvdRegisterDMNode extends SvdDMNode {
 			}
 		}
 
-		SvdDMNode[] array = list.toArray(new SvdDMNode[list.size()]);
+		SvdObjectDMNode[] array = list
+				.toArray(new SvdObjectDMNode[list.size()]);
 
 		// Preserve apparition order.
 		return array;

@@ -53,7 +53,7 @@ public class PeripheralEditingSupport extends EditingSupport {
 			// Fields might get an editor.
 			PeripheralRegisterFieldVMNode peripheralRegisterField = (PeripheralRegisterFieldVMNode) element;
 			if (peripheralRegisterField.supportsValueModification()) {
-				if (peripheralRegisterField.isEnumeration()) {
+				if (false && peripheralRegisterField.isEnumeration()) {
 					return new PeripheralEnumerationCellEditor(fEditorParent,
 							peripheralRegisterField);
 				}
@@ -117,7 +117,7 @@ public class PeripheralEditingSupport extends EditingSupport {
 
 		String value = peripheralRegister.getValueString();
 		if (peripheralRegister instanceof PeripheralRegisterFieldVMNode) {
-			if (((PeripheralRegisterFieldVMNode) peripheralRegister)
+			if (false && ((PeripheralRegisterFieldVMNode) peripheralRegister)
 					.isEnumeration()) {
 
 				// TODO: implement enumeration initialisation

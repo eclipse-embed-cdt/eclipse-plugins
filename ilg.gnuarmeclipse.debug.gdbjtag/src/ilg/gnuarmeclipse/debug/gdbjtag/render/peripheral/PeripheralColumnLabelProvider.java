@@ -13,7 +13,9 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.render.peripheral;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdEnumeratedValueDMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.render.peripheral.PeripheralColumnInfo.ColumnType;
+import ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralRegisterFieldVMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralRegisterVMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralTopVMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralTreeVMNode;
@@ -137,7 +139,7 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 			color = fColorReadOnlyBackground;
 		}
 
-		// Initially was  && (fColumnType == ColumnType.VALUE),
+		// Initially was && (fColumnType == ColumnType.VALUE),
 		// but was aligned with the Registers view behaviour.
 		if (hasChanged) {
 			color = fColorChangedBackground;
@@ -222,7 +224,8 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 					appendText(sb, "", treeNode.getName());
 				} catch (DebugException e) {
 				}
-				appendText(sb, "", treeNode.getDescription());
+				String description = "\"" + treeNode.getDescription() + "\"";
+				appendText(sb, "", description);
 				if (treeNode instanceof PeripheralTopVMNode) {
 					appendText(sb, "Version=",
 							((PeripheralTopVMNode) treeNode)
@@ -258,6 +261,28 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 			}
 			appendText(sb, "", getDisplayAccess(treeNode));
 			appendText(sb, "", getDisplayReadAction(treeNode));
+
+			switch (fColumnType) {
+
+			case VALUE:
+				if (treeNode instanceof PeripheralRegisterFieldVMNode
+						&& (((PeripheralRegisterFieldVMNode) treeNode)
+								.isEnumeration())) {
+
+					// For enumerations, add the enumeration description.
+					SvdEnumeratedValueDMNode node = ((PeripheralRegisterFieldVMNode) treeNode)
+							.getEnumeratedValueDMNode();
+					if (node == null) {
+						break;
+					}
+
+					appendText(sb, "Enumeration=", "\"" + node.getDescription() + "\"");
+				}
+				break;
+
+			default:
+				break;
+			}
 		}
 		if (sb.length() != 0) {
 			return sb.toString();

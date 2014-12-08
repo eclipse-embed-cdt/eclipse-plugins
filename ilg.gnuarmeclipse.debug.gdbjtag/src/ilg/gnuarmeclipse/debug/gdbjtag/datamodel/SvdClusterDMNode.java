@@ -42,7 +42,7 @@ public class SvdClusterDMNode extends SvdDMNode {
 	// ------------------------------------------------------------------------
 
 	@Override
-	protected SvdDMNode[] prepareChildren(Leaf node) {
+	protected SvdObjectDMNode[] prepareChildren(Leaf node) {
 
 		if (node == null || !node.hasChildren()) {
 			return null;
@@ -51,7 +51,7 @@ public class SvdClusterDMNode extends SvdDMNode {
 		// System.out.println("prepareChildren(" + node.getProperty("name") +
 		// ")");
 
-		List<SvdDMNode> list = new LinkedList<SvdDMNode>();
+		List<SvdObjectDMNode> list = new LinkedList<SvdObjectDMNode>();
 		for (Leaf child : ((Node) node).getChildren()) {
 
 			// Keep only <register> and <cluster> nodes
@@ -62,7 +62,8 @@ public class SvdClusterDMNode extends SvdDMNode {
 			}
 		}
 
-		SvdDMNode[] array = list.toArray(new SvdDMNode[list.size()]);
+		SvdObjectDMNode[] array = list
+				.toArray(new SvdObjectDMNode[list.size()]);
 
 		// Preserve apparition order.
 		return array;

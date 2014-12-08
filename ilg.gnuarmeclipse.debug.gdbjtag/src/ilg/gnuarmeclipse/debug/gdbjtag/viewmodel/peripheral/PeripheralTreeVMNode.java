@@ -15,6 +15,7 @@ import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdClusterDMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdDMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdFieldDMNode;
+import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdObjectDMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdPeripheralDMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdRegisterDMNode;
 
@@ -448,21 +449,22 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 		fChildren = new ArrayList<PeripheralTreeVMNode>();
 
 		// Get the array of actual children from each node implementation.
-		SvdDMNode[] svdChildren = fDMNode.getChildren();
+		SvdObjectDMNode[] svdChildren = fDMNode.getChildren();
 		assert svdChildren != null;
 
 		for (int i = 0; i < svdChildren.length; ++i) {
-			SvdDMNode child = svdChildren[i];
+			SvdObjectDMNode child = svdChildren[i];
 
 			/**
 			 * Based on context and node type, create the proper nodes which
 			 * will automatically register as children of the current node.
 			 */
 			if (this instanceof PeripheralGroupVMNode) {
-				processDimGroup(child);
+				processDimGroup((SvdDMNode) child);
 			} else if (this instanceof PeripheralRegisterVMNode) {
 				if (child instanceof SvdFieldDMNode) {
-					new PeripheralRegisterFieldVMNode(this, child);
+					new PeripheralRegisterFieldVMNode(this,
+							(SvdFieldDMNode) child);
 				} else {
 					Activator.log(child.getClass().getSimpleName()
 							+ " not processed");

@@ -12,6 +12,7 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdDMNode;
+import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdEnumeratedValueDMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdFieldDMNode;
 
 import java.math.BigInteger;
@@ -22,15 +23,68 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 
 	// ------------------------------------------------------------------------
 
+	private SvdEnumeratedValueDMNode fEnumeratedValueDMNode;
+
+	// ------------------------------------------------------------------------
+
 	public PeripheralRegisterFieldVMNode(PeripheralTreeVMNode parent,
 			SvdDMNode dmNode) {
 
 		super(parent, dmNode);
 
 		fValue.setDisplayFormat(PeripheralValue.FORMAT_HEX);
+
+		fEnumeratedValueDMNode = null;
 	}
 
 	// ------------------------------------------------------------------------
+
+	public SvdEnumeratedValueDMNode getEnumeratedValueDMNode() {
+		if (fEnumeratedValueDMNode == null) {
+			try {
+				fEnumeratedValueDMNode = ((SvdFieldDMNode) fDMNode)
+						.findEnumeratedValue((PeripheralValue) getValue());
+			} catch (DebugException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		return fEnumeratedValueDMNode;
+	}
+
+	public void clearEnumeratedValueDMNode() {
+		fEnumeratedValueDMNode = null;
+	}
+
+	@Override
+	public String getDisplayValue() {
+
+		String readAction = getReadAction();
+		if (!readAction.isEmpty()) {
+			return "(read " + readAction + ")";
+		}
+
+		String value = getValueString();
+
+		if (value.isEmpty()) {
+			return null;
+		}
+
+		if (!isEnumeration()) {
+			return value;
+		}
+
+		SvdEnumeratedValueDMNode node = getEnumeratedValueDMNode();
+		if (node == null) {
+			return value;
+		}
+
+		String enumerationName = node.getName();
+		if (!enumerationName.isEmpty()) {
+			value += ": " + enumerationName;
+		}
+		return value;
+	}
 
 	@Override
 	public boolean supportsValueModification() {
@@ -45,7 +99,7 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 		// System.out.println("verifyValue(" + expression + ")");
 
 		boolean isValid = false;
-		if (isEnumeration()) {
+		if (false && isEnumeration()) {
 			// TODO: implement enumeration
 		} else {
 			isValid = PeripheralValue.isNumeric(expression);
@@ -61,6 +115,8 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 		boolean sameValue = getPeripheralValue().getBigValue().equals(newValue);
 
 		if (!sameValue) {
+
+			clearEnumeratedValueDMNode();
 
 			// Propagate change to parent.
 			PeripheralRegisterVMNode parent = (PeripheralRegisterVMNode) getParent();
@@ -154,8 +210,7 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 	}
 
 	public boolean isEnumeration() {
-		// TODO: implement enumeration
-		return false;
+		return ((SvdFieldDMNode) fDMNode).isEnumeration();
 	}
 
 	@Override
