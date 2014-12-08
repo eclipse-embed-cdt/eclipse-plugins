@@ -66,13 +66,13 @@ public class SvdUtils {
 		return scale;
 	}
 
-	private static String adjustForScale(String str, long scale){
+	private static String adjustForScale(String str, long scale) {
 		if (scale != 1) {
 			return str.substring(0, str.length() - 2);
 		}
 		return str;
 	}
-	
+
 	private static int computeRadix(String str) {
 
 		int radix = 10;
@@ -97,26 +97,39 @@ public class SvdUtils {
 		return str;
 	}
 
+	private static String adjustForSign(String str) {
+
+		if (str.startsWith("+")) {
+			return str.substring(1);
+		}
+
+		return str;
+	}
+
 	public static long parseScaledNonNegativeLong(String str)
 			throws NumberFormatException {
 
+		str = adjustForSign(str);
+		int radix = computeRadix(str);
+		str = adjustForRadix(str, radix);
 		long scale = computeScale(str);
 		str = adjustForScale(str, scale);
 
-		int radix = computeRadix(str);
-		str = adjustForRadix(str, radix);
-
-		return Long.parseLong(str, radix) * scale;
+		long value = Long.parseLong(str, radix);
+		if (scale != 1) {
+			value *= scale;
+		}
+		return value;
 	}
 
 	public static BigInteger parseScaledNonNegativeBigInteger(String str)
 			throws NumberFormatException {
 
-		long scale = computeScale(str);
-		str = adjustForScale(str, scale);
-
+		str = adjustForSign(str);
 		int radix = computeRadix(str);
 		str = adjustForRadix(str, radix);
+		long scale = computeScale(str);
+		str = adjustForScale(str, scale);
 
 		BigInteger value = new BigInteger(str, radix);
 		if (scale != 1) {
