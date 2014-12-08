@@ -137,8 +137,9 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 			color = fColorReadOnlyBackground;
 		}
 
-		if (hasChanged && (fColumnType == ColumnType.VALUE)) {
-			// Only the value column is changed.
+		// Initially was  && (fColumnType == ColumnType.VALUE),
+		// but was aligned with the Registers view behaviour.
+		if (hasChanged) {
 			color = fColorChangedBackground;
 		}
 
