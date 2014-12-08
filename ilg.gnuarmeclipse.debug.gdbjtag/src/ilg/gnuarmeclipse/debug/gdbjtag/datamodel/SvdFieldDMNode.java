@@ -56,11 +56,12 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 			try {
 				String offset = fNode.getProperty("bitOffset");
 				if (!offset.isEmpty()) {
-					fOffset = SvdUtils.parseScaledNonNegativeInteger(offset);
+					fOffset = (int) SvdUtils.parseScaledNonNegativeLong(offset);
 				} else {
 					String lsb = fNode.getProperty("lsb");
 					if (!lsb.isEmpty()) {
-						fOffset = SvdUtils.parseScaledNonNegativeInteger(lsb);
+						fOffset = (int) SvdUtils
+								.parseScaledNonNegativeLong(lsb);
 					} else {
 						String bitRange = fNode.getProperty("bitRange");
 						if (!bitRange.isEmpty()) {
@@ -68,8 +69,8 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 							bitRange = bitRange.replace(']', ' ');
 							bitRange = bitRange.trim();
 							// Convert the second value
-							fOffset = SvdUtils
-									.parseScaledNonNegativeInteger(bitRange
+							fOffset = (int) SvdUtils
+									.parseScaledNonNegativeLong(bitRange
 											.split(":")[1]);
 						} else {
 							System.out.println("Missing offset, node " + fNode);
@@ -97,13 +98,13 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 			try {
 				String width = fNode.getProperty("bitWidth");
 				if (!width.isEmpty()) {
-					fWidth = SvdUtils.parseScaledNonNegativeInteger(width);
+					fWidth = (int) SvdUtils.parseScaledNonNegativeLong(width);
 				} else {
 					String msb = fNode.getProperty("msb");
 					if (!msb.isEmpty()) {
 						fWidth = new Integer(
-								SvdUtils.parseScaledNonNegativeInt(msb)
-										- getOffset() + 1);
+								(int) (SvdUtils.parseScaledNonNegativeLong(msb)
+										- getOffset() + 1));
 					} else {
 						String bitRange = fNode.getProperty("bitRange");
 						if (!bitRange.isEmpty()) {
@@ -112,8 +113,10 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 							bitRange = bitRange.trim();
 							// Convert the first value and subtract the offset
 							fWidth = new Integer(
-									SvdUtils.parseScaledNonNegativeInt(bitRange
-											.split(":")[0]) - getOffset() + 1);
+									(int) (SvdUtils
+											.parseScaledNonNegativeLong(bitRange
+													.split(":")[0])
+											- getOffset() + 1));
 						} else {
 							System.out.println("Missing width, node " + fNode);
 							fWidth = new Integer(1);

@@ -317,7 +317,7 @@ public class SvdDMNode implements Comparable<SvdDMNode> {
 		String str = fNode.getProperty("dim");
 		int dim;
 		try {
-			dim = SvdUtils.parseScaledNonNegativeInt(str);
+			dim = (int) SvdUtils.parseScaledNonNegativeLong(str);
 		} catch (NumberFormatException e) {
 			Activator.log("Node " + fNode.getName() + ", non integer <dim> "
 					+ str);

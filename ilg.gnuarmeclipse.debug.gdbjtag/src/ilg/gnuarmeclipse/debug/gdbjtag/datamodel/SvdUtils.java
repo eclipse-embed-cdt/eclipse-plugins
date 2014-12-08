@@ -66,75 +66,58 @@ public class SvdUtils {
 		return scale;
 	}
 
-	public static int parseScaledNonNegativeInt(String str)
-			throws NumberFormatException {
-
-		long scale = computeScale(str);
+	private static String adjustForScale(String str, long scale){
 		if (scale != 1) {
-			str = str.substring(0, str.length() - 2);
+			return str.substring(0, str.length() - 2);
 		}
+		return str;
+	}
+	
+	private static int computeRadix(String str) {
 
 		int radix = 10;
 		if ((str.startsWith("0x")) || (str.startsWith("0X"))) {
 			radix = 16;
-			str = str.substring(2);
-		} else if (str.startsWith("0")) {
-			radix = 8;
+		} else if (str.startsWith("#")) {
+			radix = 2;
 		}
-		return (int) (Integer.parseInt(str, radix) * scale);
+
+		return radix;
+	}
+
+	private static String adjustForRadix(String str, int radix) {
+
+		if (radix == 16) {
+			return str.substring(2); // Skip 0x, 0X
+		} else if (radix == 2) {
+			return str.substring(1); // Skip #
+		}
+
+		// Decimal numbers have no radix prefix to skip.
+		return str;
 	}
 
 	public static long parseScaledNonNegativeLong(String str)
 			throws NumberFormatException {
 
 		long scale = computeScale(str);
-		if (scale != 1) {
-			str = str.substring(0, str.length() - 2);
-		}
+		str = adjustForScale(str, scale);
 
-		int radix = 10;
-		if ((str.startsWith("0x")) || (str.startsWith("0X"))) {
-			radix = 16;
-			str = str.substring(2);
-		} else if (str.startsWith("0")) {
-			radix = 8;
-		}
+		int radix = computeRadix(str);
+		str = adjustForRadix(str, radix);
+
 		return Long.parseLong(str, radix) * scale;
-	}
-
-	public static Integer parseScaledNonNegativeInteger(String str)
-			throws NumberFormatException {
-
-		long scale = computeScale(str);
-		if (scale != 1) {
-			str = str.substring(0, str.length() - 2);
-		}
-
-		int radix = 10;
-		if ((str.startsWith("0x")) || (str.startsWith("0X"))) {
-			radix = 16;
-			str = str.substring(2);
-		} else if (str.startsWith("0")) {
-			radix = 8;
-		}
-		return new Integer((int) (Integer.parseInt(str, radix) * scale));
 	}
 
 	public static BigInteger parseScaledNonNegativeBigInteger(String str)
 			throws NumberFormatException {
 
 		long scale = computeScale(str);
-		if (scale != 1) {
-			str = str.substring(0, str.length() - 2);
-		}
+		str = adjustForScale(str, scale);
 
-		int radix = 10;
-		if ((str.startsWith("0x")) || (str.startsWith("0X"))) {
-			radix = 16;
-			str = str.substring(2);
-		} else if (str.startsWith("0")) {
-			radix = 8;
-		}
+		int radix = computeRadix(str);
+		str = adjustForRadix(str, radix);
+
 		BigInteger value = new BigInteger(str, radix);
 		if (scale != 1) {
 			value = value.multiply(new BigInteger(String.valueOf(scale)));
