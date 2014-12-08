@@ -266,17 +266,23 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 	 */
 	public String getDisplayResetValue() {
 
-		String resetValue = ((SvdRegisterDMNode) fDMNode).getResetValue();
-		if (resetValue.isEmpty()) {
-			return null;
+		if (fDMNode instanceof SvdRegisterDMNode) {
+
+			// Only registers have reset definitions
+			String resetValue = ((SvdRegisterDMNode) fDMNode).getResetValue();
+			if (resetValue.isEmpty()) {
+				return null;
+			}
+
+			String resetMask = ((SvdRegisterDMNode) fDMNode).getResetMask();
+			if (resetValue.isEmpty()) {
+				return resetValue;
+			}
+
+			return resetValue + "/" + resetMask;
 		}
 
-		String resetMask = ((SvdRegisterDMNode) fDMNode).getResetMask();
-		if (resetValue.isEmpty()) {
-			return resetValue;
-		}
-
-		return resetValue + "/" + resetMask;
+		return null;
 	}
 
 	// ------------------------------------------------------------------------
