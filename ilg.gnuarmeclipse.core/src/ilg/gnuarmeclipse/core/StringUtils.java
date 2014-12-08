@@ -43,7 +43,7 @@ public class StringUtils {
 		if (s.isEmpty()) {
 			return s;
 		}
-		return s.substring(0, 1).toUpperCase() + s.substring(1).toLowerCase();
+		return s.substring(0, 1).toUpperCase() + s.substring(1);
 	}
 
 	public static String cosmetiseUrl(String url) {
