@@ -12,18 +12,41 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.render.peripheral;
 
-import ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralRegisterVMNode;
+import ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralRegisterFieldVMNode;
 
 import org.eclipse.jface.viewers.ComboBoxCellEditor;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 
 public class PeripheralEnumerationCellEditor extends ComboBoxCellEditor {
 
 	// ------------------------------------------------------------------------
 
 	public PeripheralEnumerationCellEditor(Composite editorParent,
-			PeripheralRegisterVMNode peripheralRegister) {
-		// TODO: implement enumeration editor
+			PeripheralRegisterFieldVMNode peripheralRegisterField) {
+
+		super(editorParent, peripheralRegisterField.getEnumerationComboItems(),
+				SWT.BORDER);
+	}
+
+	protected Control createControl(Composite composite) {
+
+		CCombo combo = (CCombo) super.createControl(composite);
+
+		combo.addSelectionListener(new SelectionAdapter() {
+			public void widgetDefaultSelected(SelectionEvent event) {
+				PeripheralEnumerationCellEditor.this.focusLost();
+			}
+
+			public void widgetSelected(SelectionEvent event) {
+				PeripheralEnumerationCellEditor.this.focusLost();
+			}
+		});
+		return combo;
 	}
 
 	// ------------------------------------------------------------------------

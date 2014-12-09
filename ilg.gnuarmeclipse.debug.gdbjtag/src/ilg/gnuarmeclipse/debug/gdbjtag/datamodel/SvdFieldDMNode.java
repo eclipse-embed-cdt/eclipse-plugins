@@ -11,11 +11,6 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.datamodel;
 
-import java.math.BigInteger;
-
-import org.eclipse.debug.core.DebugException;
-import org.eclipse.debug.core.model.IValue;
-
 import ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralValue;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
@@ -100,6 +95,12 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 		return (fReadEnumeration != null);
 	}
 
+	/**
+	 * Iterate the read enumeration and try to match the given value.
+	 *  
+	 * @param value a PeripheralValue object
+	 * @return a SvdEnumeratedValueDMNode object, or null if not found.
+	 */
 	public SvdEnumeratedValueDMNode findEnumeratedValue(PeripheralValue value) {
 
 		if (fReadEnumeration == null) {
@@ -109,7 +110,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 		SvdObjectDMNode children[] = fReadEnumeration.getChildren();
 		for (int i = 0; i < children.length; ++i) {
 
-			// TODO: find the good one
+			// Return first match.
 			if (((SvdEnumeratedValueDMNode) children[i]).isMatchForValue(value)) {
 				return (SvdEnumeratedValueDMNode) children[i];
 			}
@@ -118,6 +119,34 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 		return fReadEnumeration.getDefaultEnumerationNode();
 	}
 
+	/**
+	 * Iterate the write enumeration and try to match the given value.
+	 * 
+	 * @param value a PeripheralValue object
+	 * @return an Integer or null if not found.
+	 */
+	public Integer findEnumeratedComboIndex(PeripheralValue value) {
+
+		if (fWriteEnumeration == null) {
+			return null;
+		}
+
+		SvdObjectDMNode children[] = fWriteEnumeration.getChildren();
+		for (int i = 0; i < children.length; ++i) {
+
+			// Return first match.
+			if (((SvdEnumeratedValueDMNode) children[i]).isMatchForValue(value)) {
+				return new Integer(i);
+			}
+		}
+
+		return null;
+	}
+	
+	public SvdEnumerationDMNode getWriteEnumerationDMNode(){
+		return fWriteEnumeration;
+	}
+	
 	/**
 	 * Get the field least significative bit position in the register.
 	 * 

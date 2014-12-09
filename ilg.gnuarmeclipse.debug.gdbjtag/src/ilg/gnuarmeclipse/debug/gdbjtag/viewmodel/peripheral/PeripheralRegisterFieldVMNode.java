@@ -13,9 +13,14 @@ package ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdDMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdEnumeratedValueDMNode;
+import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdEnumerationDMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdFieldDMNode;
+import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdObjectDMNode;
+import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdUtils;
 
 import java.math.BigInteger;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.debug.core.DebugException;
 
@@ -56,6 +61,46 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 		fEnumeratedValueDMNode = null;
 	}
 
+	public String[] getEnumerationComboItems() {
+		SvdEnumerationDMNode enumeration = ((SvdFieldDMNode) fDMNode)
+				.getWriteEnumerationDMNode();
+
+		List<String> list = new LinkedList<String>();
+		if (enumeration != null) {
+			SvdObjectDMNode children[] = enumeration.getChildren();
+			for (int i = 0; i < children.length; ++i) {
+				SvdEnumeratedValueDMNode child = (SvdEnumeratedValueDMNode) children[i];
+				String name = child.getName();
+				BigInteger bigValue = SvdUtils
+						.parseScaledNonNegativeBigInteger(child.getValue());
+				// Use the same format as for displaying, "value: name"
+				list.add(String.format("0x%X: %s", bigValue, name));
+			}
+		}
+		System.out.println("Combo has " + list.size());
+		return list.toArray(new String[list.size()]);
+	}
+
+	/**
+	 * Try to find the current field value in the list of possible enumeration
+	 * combo selections.
+	 * 
+	 * @return an Integer with the index, or null if not found.
+	 */
+	public Integer getEnumerationComboIndex() {
+
+		try {
+			return ((SvdFieldDMNode) fDMNode)
+					.findEnumeratedComboIndex((PeripheralValue) getValue());
+
+		} catch (DebugException e) {
+			;
+		}
+
+		// Match not found.
+		return null;
+	}
+
 	@Override
 	public String getDisplayValue() {
 
@@ -74,11 +119,13 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 			return value;
 		}
 
+		// Process enumerations, if any
 		SvdEnumeratedValueDMNode node = getEnumeratedValueDMNode();
 		if (node == null) {
 			return value;
 		}
 
+		// Append the enumeration name to the existing value.
 		String enumerationName = node.getName();
 		if (!enumerationName.isEmpty()) {
 			value += ": " + enumerationName;
@@ -99,8 +146,9 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 		// System.out.println("verifyValue(" + expression + ")");
 
 		boolean isValid = false;
-		if (false && isEnumeration()) {
-			// TODO: implement enumeration
+		if (isEnumeration()) {
+			// Enumerations come as normal values.
+			isValid = PeripheralValue.isNumeric(expression);
 		} else {
 			isValid = PeripheralValue.isNumeric(expression);
 		}

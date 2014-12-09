@@ -20,6 +20,8 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.EditingSupport;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.swt.custom.CCombo;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Tree;
 
 public class PeripheralEditingSupport extends EditingSupport {
@@ -28,6 +30,7 @@ public class PeripheralEditingSupport extends EditingSupport {
 
 	private Tree fEditorParent;
 	private CellEditor fTextCellEditor;
+	private PeripheralEnumerationCellEditor fEnumerationCellEditor;
 
 	// ------------------------------------------------------------------------
 
@@ -36,6 +39,8 @@ public class PeripheralEditingSupport extends EditingSupport {
 
 		fEditorParent = viewer.getTree();
 		fTextCellEditor = new TextCellEditor(fEditorParent);
+
+		fEnumerationCellEditor = null;
 	}
 
 	// ------------------------------------------------------------------------
@@ -53,9 +58,10 @@ public class PeripheralEditingSupport extends EditingSupport {
 			// Fields might get an editor.
 			PeripheralRegisterFieldVMNode peripheralRegisterField = (PeripheralRegisterFieldVMNode) element;
 			if (peripheralRegisterField.supportsValueModification()) {
-				if (false && peripheralRegisterField.isEnumeration()) {
-					return new PeripheralEnumerationCellEditor(fEditorParent,
-							peripheralRegisterField);
+				if (peripheralRegisterField.isEnumeration()) {
+					fEnumerationCellEditor = new PeripheralEnumerationCellEditor(
+							fEditorParent, peripheralRegisterField);
+					return fEnumerationCellEditor;
 				}
 				return fTextCellEditor;
 			}
@@ -110,18 +116,21 @@ public class PeripheralEditingSupport extends EditingSupport {
 	 * 
 	 * @param peripheralRegister
 	 *            the view node where to get the value from.
-	 * @return a string with the value, or null if none.
+	 * @return a string with the value, an Integer, or null if none.
 	 */
 	private Object getValueForCellEditor(
 			PeripheralRegisterVMNode peripheralRegister) {
 
 		String value = peripheralRegister.getValueString();
 		if (peripheralRegister instanceof PeripheralRegisterFieldVMNode) {
-			if (false && ((PeripheralRegisterFieldVMNode) peripheralRegister)
-					.isEnumeration()) {
+			PeripheralRegisterFieldVMNode field = (PeripheralRegisterFieldVMNode) peripheralRegister;
+			if (field.isEnumeration()) {
 
-				// TODO: implement enumeration initialisation
-				return null;
+				Integer index = field.getEnumerationComboIndex();
+				if (index != null) {
+					return index;
+				}
+				return new Integer(0);
 			}
 		}
 		return value;
@@ -131,7 +140,28 @@ public class PeripheralEditingSupport extends EditingSupport {
 	protected void setValue(Object element, Object value) {
 
 		boolean doNeedRefresh = false;
-		if ((element instanceof PeripheralRegisterVMNode)) {
+		if ((element instanceof PeripheralRegisterFieldVMNode)) {
+			PeripheralRegisterFieldVMNode peripheralRegisterField = (PeripheralRegisterFieldVMNode) element;
+			// This editor sends either a numeric value as string, or an
+			// Integer object, with enumeration index.
+			if (value instanceof String) {
+				doNeedRefresh = peripheralRegisterField
+						.setNumericValue((String) value);
+			} else if (value instanceof Integer) {
+				// Value is either the selection or -1 if the string
+				// was entered manually. Since the selection text includes
+				// the value, there is no need to search the enumeration list.
+				Control control = fEnumerationCellEditor.getControl();
+				// Get actual combo value.
+				String str = ((CCombo) control).getText();
+				if (((Integer) value).intValue() != -1 || str.indexOf(":") >= 0) {
+					// If selection, retrieve value
+					String as[] = str.split(":");
+					str = as[0];
+				}
+				doNeedRefresh = peripheralRegisterField.setNumericValue(str);
+			}
+		} else if ((element instanceof PeripheralRegisterVMNode)) {
 			PeripheralRegisterVMNode peripheralRegister = (PeripheralRegisterVMNode) element;
 			// This editor always send numeric values
 			doNeedRefresh = peripheralRegister.setNumericValue((String) value);
