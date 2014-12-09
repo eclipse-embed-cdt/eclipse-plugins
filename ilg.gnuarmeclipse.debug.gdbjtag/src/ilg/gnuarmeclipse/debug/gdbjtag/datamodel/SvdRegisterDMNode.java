@@ -15,6 +15,9 @@ import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
 
+import ilg.gnuarmeclipse.packs.core.Activator;
+import ilg.gnuarmeclipse.packs.core.tree.AbstractTreePreOrderIterator;
+import ilg.gnuarmeclipse.packs.core.tree.ITreeIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 
@@ -65,8 +68,6 @@ public class SvdRegisterDMNode extends SvdDMNode {
 	@Override
 	public void dispose() {
 
-		super.dispose();
-
 		fDisplayName = null;
 		fAddressOffset = null;
 		fSize = null;
@@ -75,6 +76,8 @@ public class SvdRegisterDMNode extends SvdDMNode {
 
 		fResetValue = null;
 		fResetMask = null;
+		
+		super.dispose();
 	}
 
 	// ------------------------------------------------------------------------
@@ -108,6 +111,91 @@ public class SvdRegisterDMNode extends SvdDMNode {
 
 		// Preserve apparition order.
 		return array;
+	}
+
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Enumerate all registers and find the derived from node. The name is taken
+	 * from the derivedFrom attribute.
+	 * 
+	 * @return a register node, or null if not found.
+	 */
+	@Override
+	protected Leaf findDerivedFromNode() {
+
+		String derivedFromName = fNode.getPropertyOrNull("derivedFrom");
+		final SvdDerivedFromPath path = SvdDerivedFromPath
+				.createRegisterPath(derivedFromName);
+
+		if (path == null) {
+			return null;
+		}
+
+		Node root = fNode.getParent();
+		while (!root.isType("device")) {
+			root = root.getParent();
+		}
+
+		ITreeIterator peripheralNodes = new AbstractTreePreOrderIterator() {
+
+			@Override
+			public boolean isIterable(Leaf node) {
+
+				if (node.isType("peripherals")) {
+					return true;
+				} else if (node.isType("peripheral")) {
+					if (path.peripheralName == null) {
+						return true;
+					}
+					if (path.peripheralName.equals(node.getProperty("name"))) {
+						return true;
+					}
+					return false;
+				} else if (node.isType("registers")) {
+					return true;
+				} else if (node.isType("cluster")) {
+					return true;
+				} else if (node.isType("register")) {
+					if (path.registerName == null) {
+						return true;
+					}
+					if (path.registerName.equals(node.getProperty("name"))) {
+						return true;
+					}
+					return false;
+				}
+				return false;
+			}
+
+			@Override
+			public boolean isLeaf(Leaf node) {
+
+				if (node.isType("register")) {
+					return true;
+				}
+				return false;
+			}
+		};
+
+		// Iterate only the current device children nodes
+		peripheralNodes.setTreeNode(root);
+
+		Leaf ret = null;
+		for (Leaf node : peripheralNodes) {
+
+			// System.out.println(node);
+			if (node.isType("register")) {
+				// There should be only one, filtered by the iterator.
+				if (ret == null) {
+					ret = node;
+				} else {
+					Activator.log("Non unique SVD path " + path);
+				}
+			}
+		}
+
+		return ret;
 	}
 
 	// ------------------------------------------------------------------------

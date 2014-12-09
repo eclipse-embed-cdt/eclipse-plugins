@@ -11,6 +11,9 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.datamodel;
 
+import ilg.gnuarmeclipse.packs.core.Activator;
+import ilg.gnuarmeclipse.packs.core.tree.AbstractTreePreOrderIterator;
+import ilg.gnuarmeclipse.packs.core.tree.ITreeIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 
@@ -59,14 +62,43 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 
 		// System.out.println("SvdPeripheralDMNode.dispose(" + this + ")");
 
-		super.dispose();
-
 		fBigAbsoluteAddress = null;
 		fHexAddress = null;
 		fIsSystem = null;
+		
+		super.dispose();
 	}
 
 	// ------------------------------------------------------------------------
+
+	/**
+	 * Enumerate all peripherals of the same device and find the derived from
+	 * node. The name is taken from the derivedFrom attribute.
+	 * 
+	 * @return a peripheral node, or null if not found.
+	 */
+	// @Override
+	protected Leaf findDerivedFromNode1() {
+
+		String derivedFromName = fNode.getPropertyOrNull("derivedFrom");
+		if (derivedFromName == null) {
+			return null;
+		}
+
+		System.out.println("1: derivedFrom " + derivedFromName);
+
+		Node parent = fNode.getParent();
+		for (Leaf child : parent.getChildren()) {
+			System.out.println("1: " + child);
+			if (child.isType("peripheral")
+					&& derivedFromName.equals(child.getProperty("name"))) {
+
+				// Found the peripheral with the given name.
+				return child;
+			}
+		}
+		return null;
+	}
 
 	/**
 	 * Enumerate all peripherals of the same device and find the derived from
@@ -78,20 +110,62 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	protected Leaf findDerivedFromNode() {
 
 		String derivedFromName = fNode.getPropertyOrNull("derivedFrom");
-		if (derivedFromName == null) {
+		final SvdDerivedFromPath path = SvdDerivedFromPath
+				.createPeripheralPath(derivedFromName);
+
+		if (path == null) {
 			return null;
 		}
 
-		Node parent = fNode.getParent();
-		for (Leaf child : parent.getChildren()) {
-			if (child.isType("peripheral")
-					&& derivedFromName.equals(child.getProperty("name"))) {
+		Node root = fNode.getParent();
+		while (!root.isType("device")) {
+			root = root.getParent();
+		}
 
-				// Found the peripheral with the given name.
-				return child;
+		ITreeIterator peripheralNodes = new AbstractTreePreOrderIterator() {
+
+			@Override
+			public boolean isIterable(Leaf node) {
+
+				if (node.isType("peripherals")) {
+					return true;
+				} else if (node.isType("peripheral")) {
+					if (path.peripheralName.equals(node.getProperty("name"))) {
+						return true;
+					}
+					return false;
+				}
+				return false;
+			}
+
+			@Override
+			public boolean isLeaf(Leaf node) {
+
+				if (node.isType("peripheral")) {
+					return true;
+				}
+				return false;
+			}
+		};
+
+		// Iterate only the current device children nodes
+		peripheralNodes.setTreeNode(root);
+
+		Leaf ret = null;
+		for (Leaf node : peripheralNodes) {
+
+			// System.out.println(node);
+			if (node.isType("peripheral")) {
+				// There should be only one, filtered by the iterator.
+				if (ret == null) {
+					ret = node;
+				} else {
+					Activator.log("Non unique SVD path " + path);
+				}
 			}
 		}
-		return null;
+
+		return ret;
 	}
 
 	// ------------------------------------------------------------------------

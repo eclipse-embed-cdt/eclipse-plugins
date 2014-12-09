@@ -77,7 +77,7 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 				list.add(String.format("0x%X: %s", bigValue, name));
 			}
 		}
-		System.out.println("Combo has " + list.size());
+		// System.out.println("Combo has " + list.size());
 		return list.toArray(new String[list.size()]);
 	}
 
