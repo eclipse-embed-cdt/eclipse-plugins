@@ -15,6 +15,7 @@ import java.util.Map;
 
 import ilg.gnuarmeclipse.debug.core.data.ICProjectExtraDataManager;
 import ilg.gnuarmeclipse.debug.core.data.ICProjectExtraDataManagerFactory;
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.core.runtime.CoreException;
@@ -51,7 +52,7 @@ public class CProjectExtraDataManagerProxy implements ICProjectExtraDataManager 
 				.getExtensionPoint(EXTENSION_POINT_ID).getExtensions();
 
 		if (extensions.length == 0) {
-			System.out.println("no cprojectExtra xp");
+			Activator.log("no cprojectExtra extension point");
 			return;
 		}
 
@@ -83,10 +84,11 @@ public class CProjectExtraDataManagerProxy implements ICProjectExtraDataManager 
 								.println("no ICProjectExtraDataManagerFactory");
 					}
 				} catch (CoreException e) {
-					System.out.println("cannot get factory");
+					Activator.log("cannot get factory for "
+							+ EXTENSION_POINT_ID);
 				}
 			} else {
-				System.out.println("no <factory> element");
+				Activator.log("no <factory> element");
 			}
 
 		}

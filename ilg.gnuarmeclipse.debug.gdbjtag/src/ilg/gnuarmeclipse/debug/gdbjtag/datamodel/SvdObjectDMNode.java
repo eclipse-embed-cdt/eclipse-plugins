@@ -22,7 +22,7 @@ public class SvdObjectDMNode {
 	/**
 	 * Reference to the original node in the generic tree parsed from SVD.
 	 */
-	protected Leaf fNode;
+	private Leaf fNode;
 
 	/**
 	 * Reference to the node referenced, or null.
@@ -57,7 +57,7 @@ public class SvdObjectDMNode {
 			return; // Already disposed
 		}
 
-		// System.out.println("Dispose " + this);
+		System.out.println("dispose() " + this);
 		fNode = null;
 		fDerivedFromNode = null;
 
@@ -194,6 +194,107 @@ public class SvdObjectDMNode {
 	 */
 	protected SvdObjectDMNode[] prepareChildren(Leaf node) {
 		return null;
+	}
+
+	/**
+	 * Get a property from the local node or from derivedFrom node.
+	 * 
+	 * @param name
+	 *            a string with the property name.
+	 * @param defaultValue
+	 *            a string with the default value.
+	 * @return a string with the property value or the defaultValue if not
+	 *         found.
+	 */
+	public String getPropertyWithDerived(String name, String defaultValue) {
+
+		String property = fNode.getProperty(name);
+		if (!property.isEmpty()) {
+			return property;
+		}
+
+		if (isDerived()) {
+			property = getDerivedFromNode().getProperty(name);
+			if (!property.isEmpty()) {
+				return property;
+			}
+		}
+
+		return defaultValue;
+	}
+
+	/**
+	 * Get a property from the local node or from derivedFrom node.
+	 * 
+	 * @param name
+	 *            a string with the property name.
+	 * @return a string with the property value, possibly empty.
+	 */
+	public String getPropertyWithDerived(String name) {
+		return getPropertyWithDerived(name, "");
+	}
+
+	/**
+	 * Get a property from the local node or from derivedFrom node, or from the
+	 * parent node.
+	 * 
+	 * @param name
+	 *            a string with the property name.
+	 * @param defaultValue
+	 *            a string with the default value.
+	 * @return a string with the property value or the defaultValue if not
+	 *         found.
+	 */
+	public String getPropertyWithDerivedWithParent(String name,
+			String defaultValue) {
+
+		String property = fNode.getProperty(name);
+		if (!property.isEmpty()) {
+			return property;
+		}
+
+		if (isDerived()) {
+			property = getDerivedFromNode().getProperty(name);
+			if (!property.isEmpty()) {
+				return property;
+			}
+		}
+
+		property = "";
+
+		Leaf n = fNode.getParent();
+		while (n != null) {
+
+			property = n.getProperty(name);
+			if (!property.isEmpty()) {
+				return property;
+			}
+
+			n = n.getParent();
+		}
+
+		// If nothing happened, return the default value.
+		return defaultValue;
+	}
+
+	/**
+	 * Get a property from the local node or from derivedFrom node, or from the
+	 * parent node.
+	 * 
+	 * @param name
+	 *            a string with the property name.
+	 * @return a string with the property value or empty if not found.
+	 */
+	public String getPropertyWithDerivedWithParent(String name) {
+		return getPropertyWithDerivedWithParent(name, "");
+	}
+
+	// ------------------------------------------------------------------------
+
+	@Override
+	public String toString() {
+		return "[" + getClass().getSimpleName() + ": " + getName() + ", \""
+				+ getDescription() + "\"]";
 	}
 
 	// ------------------------------------------------------------------------

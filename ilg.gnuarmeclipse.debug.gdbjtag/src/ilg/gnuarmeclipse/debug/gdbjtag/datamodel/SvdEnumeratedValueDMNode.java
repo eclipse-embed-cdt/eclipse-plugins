@@ -25,13 +25,13 @@ public class SvdEnumeratedValueDMNode extends SvdObjectDMNode {
 	}
 
 	public String getValue() {
-		return fNode.getProperty("value");
+		return getNode().getProperty("value");
 
 	}
 
 	public boolean isDefault() {
 
-		String isDefault = fNode.getProperty("isDefault");
+		String isDefault = getNode().getProperty("isDefault");
 		if (isDefault.isEmpty()) {
 			return false;
 		}
@@ -69,9 +69,8 @@ public class SvdEnumeratedValueDMNode extends SvdObjectDMNode {
 			value = "default";
 		}
 
-		String str = "[" + getName() + ", %s, \"" + getDescription() + "\"]";
-
-		return String.format(str, value);
+		return "[" + getClass().getSimpleName() + ": " + getName() + ", "
+				+ value + ", \"" + getDescription() + "\"]";
 	}
 
 	// ------------------------------------------------------------------------

@@ -11,8 +11,8 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.datamodel;
 
-import ilg.gnuarmeclipse.core.Activator;
 import ilg.gnuarmeclipse.core.Xml;
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.data.SVDPathManagerProxy;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.data.IPacksDataManager;
@@ -140,54 +140,6 @@ public class SvdUtils {
 			value = value.multiply(new BigInteger(String.valueOf(scale)));
 		}
 		return value;
-	}
-
-	/**
-	 * Return the node property value. If missing, iterate to parent.
-	 * 
-	 * @param node
-	 *            the tree node.
-	 * @param name
-	 *            a string with the property name.
-	 * @param defaultValue
-	 *            a string with the default value, if not found.
-	 * @return a string with the property value or the default value.
-	 */
-	public static String getProperty(Leaf node, String name, String defaultValue) {
-
-		return getProperty(node, null, name, defaultValue);
-	}
-
-	public static String getProperty(Leaf node, Leaf derivedFromNode,
-			String name, String defaultValue) {
-
-		String property = node.getProperty(name);
-		if (!property.isEmpty()) {
-			return property;
-		}
-
-		if (derivedFromNode != null) {
-			property = derivedFromNode.getProperty(name);
-			if (!property.isEmpty()) {
-				return property;
-			}
-		}
-
-		property = "";
-
-		Leaf n = node.getParent();
-		while (n != null) {
-
-			property = n.getProperty(name);
-			if (!property.isEmpty()) {
-				return property;
-			}
-
-			n = n.getParent();
-		}
-
-		// If nothing happened, return the default value.
-		return defaultValue;
 	}
 
 	// ------------------------------------------------------------------------

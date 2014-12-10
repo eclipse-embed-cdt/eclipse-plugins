@@ -13,7 +13,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.datamodel;
 
 import java.math.BigInteger;
 
-import ilg.gnuarmeclipse.packs.core.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 
 public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> {
@@ -109,8 +109,7 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 	public String getAccess() {
 
 		if (fAccess == null) {
-			fAccess = SvdUtils.getProperty(fNode, getDerivedFromNode(),
-					"access", "");
+			fAccess = getPropertyWithDerivedWithParent("access");
 		}
 		return fAccess;
 	}
@@ -153,26 +152,25 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 	public String getReadAction() {
 
 		if (fReadAction == null) {
-			fReadAction = SvdUtils.getProperty(fNode, getDerivedFromNode(),
-					"readAction", "");
+			fReadAction = getPropertyWithDerivedWithParent("readAction");
 		}
 
 		return fReadAction;
 	}
 
 	public boolean isArray() {
-		return !(fNode.getProperty("dim").isEmpty());
+		return !(getNode().getProperty("dim").isEmpty());
 	}
 
 	public int getArrayDim() {
 
-		String str = fNode.getProperty("dim");
+		String str = getNode().getProperty("dim");
 		int dim;
 		try {
 			dim = (int) SvdUtils.parseScaledNonNegativeLong(str);
 		} catch (NumberFormatException e) {
-			Activator.log("Node " + fNode.getName() + ", non integer <dim> "
-					+ str);
+			Activator.log("Node " + getNode().getName()
+					+ ", non integer <dim> " + str);
 			dim = 0;
 		}
 
@@ -181,12 +179,12 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 
 	public BigInteger getBigIntegerArrayAddressIncrement() {
 
-		String increment = fNode.getProperty("dimIncrement");
+		String increment = getNode().getProperty("dimIncrement");
 
 		try {
 			return SvdUtils.parseScaledNonNegativeBigInteger(increment);
 		} catch (NumberFormatException e) {
-			Activator.log("Node " + fNode.getName()
+			Activator.log("Node " + getNode().getName()
 					+ ", non number <dimIncrement> " + increment);
 			return BigInteger.ZERO;
 		}
@@ -207,7 +205,7 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 			arr[i] = String.valueOf(i);
 		}
 
-		String index = fNode.getProperty("dimIndex");
+		String index = getNode().getProperty("dimIndex");
 		if (!index.isEmpty()) {
 			// "[0-9]+\-[0-9]+|[A-Z]-[A-Z]|[_0-9a-zA-Z]+(,\s*[_0-9a-zA-Z]+)+"
 			if (index.contains("-")) {
@@ -251,8 +249,8 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 
 	@Override
 	public String toString() {
-		return "[" + getClass().getSimpleName() + " " + getDisplayName() + ", "
-				+ getAccess() + "]";
+		return "[" + getClass().getSimpleName() + ": " + getDisplayName()
+				+ ", " + getAccess() + "]";
 
 	}
 

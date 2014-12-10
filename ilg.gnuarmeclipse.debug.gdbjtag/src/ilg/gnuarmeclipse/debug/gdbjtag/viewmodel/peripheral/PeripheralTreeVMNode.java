@@ -552,7 +552,7 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 
 	@Override
 	public String toString() {
-		return "[" + getClass().getSimpleName() + " " + getDisplayNodeType()
+		return "[" + getClass().getSimpleName() + ": " + getDisplayNodeType()
 				+ ":" + getQualifiedName() + "]";
 	}
 

@@ -11,8 +11,8 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.datamodel;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralValue;
-import ilg.gnuarmeclipse.packs.core.Activator;
 import ilg.gnuarmeclipse.packs.core.tree.AbstractTreePreOrderIterator;
 import ilg.gnuarmeclipse.packs.core.tree.ITreeIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
@@ -44,7 +44,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 		fReadEnumeration = null;
 		fWriteEnumeration = null;
 
-		prepareEnumerations(node);
+		prepareEnumerations();
 	}
 
 	@Override
@@ -62,30 +62,52 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 			fWriteEnumeration.dispose();
 			fWriteEnumeration = null;
 		}
-		
+
 		super.dispose();
 	}
 
 	// ------------------------------------------------------------------------
 
-	private void prepareEnumerations(Leaf node) {
+	private void prepareEnumerations() {
 
-		if (node == null || !node.hasChildren()) {
-			return;
+		if (((Node) getNode()).hasChildren()) {
+			for (Leaf child : ((Node) getNode()).getChildren()) {
+
+				// Consider only <enumeratedValues> nodes
+				if (child.isType("enumeratedValues")) {
+					SvdEnumerationDMNode enumeration = new SvdEnumerationDMNode(
+							child);
+
+					if (enumeration.isUsageRead()) {
+						fReadEnumeration = enumeration;
+					}
+					if (enumeration.isUsageWrite()) {
+						fWriteEnumeration = enumeration;
+					}
+				}
+			}
 		}
 
-		for (Leaf child : ((Node) node).getChildren()) {
+		if ((fReadEnumeration != null) && (fWriteEnumeration != null)) {
+			return; // Mission accomplished
+		}
 
-			// Consider only <enumeratedValues> nodes
-			if (child.isType("enumeratedValues")) {
-				SvdEnumerationDMNode enumeration = new SvdEnumerationDMNode(
-						child);
+		if ((getDerivedFromNode() != null)
+				&& getDerivedFromNode().hasChildren()) {
+			for (Leaf child : ((Node) getDerivedFromNode()).getChildren()) {
 
-				if (enumeration.isUsageRead()) {
-					fReadEnumeration = enumeration;
-				}
-				if (enumeration.isUsageWrite()) {
-					fWriteEnumeration = enumeration;
+				// Consider only <enumeratedValues> nodes
+				if (child.isType("enumeratedValues")) {
+					SvdEnumerationDMNode enumeration = new SvdEnumerationDMNode(
+							child);
+
+					if ((fReadEnumeration == null) && enumeration.isUsageRead()) {
+						fReadEnumeration = enumeration;
+					}
+					if ((fWriteEnumeration == null)
+							&& enumeration.isUsageWrite()) {
+						fWriteEnumeration = enumeration;
+					}
 				}
 			}
 		}
@@ -94,22 +116,23 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Enumerate all fields and find the derived from
-	 * node. The name is taken from the derivedFrom attribute.
+	 * Enumerate all fields and find the derived from node. The name is taken
+	 * from the derivedFrom attribute.
 	 * 
 	 * @return a register node, or null if not found.
 	 */
 	@Override
 	protected Leaf findDerivedFromNode() {
 
-		String derivedFromName = fNode.getPropertyOrNull("derivedFrom");
-		final SvdDerivedFromPath path = SvdDerivedFromPath.createFieldPath(derivedFromName);
-		
+		String derivedFromName = getNode().getPropertyOrNull("derivedFrom");
+		final SvdDerivedFromPath path = SvdDerivedFromPath
+				.createFieldPath(derivedFromName);
+
 		if (path == null) {
 			return null;
 		}
 
-		Node root = fNode.getParent();
+		Node root = getNode().getParent();
 		while (!root.isType("device")) {
 			root = root.getParent();
 		}
@@ -122,7 +145,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 				if (node.isType("peripherals")) {
 					return true;
 				} else if (node.isType("peripheral")) {
-					if (path.peripheralName == null){
+					if (path.peripheralName == null) {
 						return true;
 					}
 					if (path.peripheralName.equals(node.getProperty("name"))) {
@@ -134,7 +157,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 				} else if (node.isType("cluster")) {
 					return true;
 				} else if (node.isType("register")) {
-					if (path.registerName == null){
+					if (path.registerName == null) {
 						return true;
 					}
 					if (path.registerName.equals(node.getProperty("name"))) {
@@ -144,7 +167,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 				} else if (node.isType("fields")) {
 					return true;
 				} else if (node.isType("field")) {
-					if (path.fieldName == null){
+					if (path.fieldName == null) {
 						return true;
 					}
 					if (path.fieldName.equals(node.getProperty("name"))) {
@@ -164,7 +187,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 				return false;
 			}
 		};
-		
+
 		// Iterate only the current device children nodes
 		peripheralNodes.setTreeNode(root);
 
@@ -198,8 +221,9 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 
 	/**
 	 * Iterate the read enumeration and try to match the given value.
-	 *  
-	 * @param value a PeripheralValue object
+	 * 
+	 * @param value
+	 *            a PeripheralValue object
 	 * @return a SvdEnumeratedValueDMNode object, or null if not found.
 	 */
 	public SvdEnumeratedValueDMNode findEnumeratedValue(PeripheralValue value) {
@@ -223,7 +247,8 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 	/**
 	 * Iterate the write enumeration and try to match the given value.
 	 * 
-	 * @param value a PeripheralValue object
+	 * @param value
+	 *            a PeripheralValue object
 	 * @return an Integer or null if not found.
 	 */
 	public Integer findEnumeratedComboIndex(PeripheralValue value) {
@@ -243,11 +268,11 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 
 		return null;
 	}
-	
-	public SvdEnumerationDMNode getWriteEnumerationDMNode(){
+
+	public SvdEnumerationDMNode getWriteEnumerationDMNode() {
 		return fWriteEnumeration;
 	}
-	
+
 	/**
 	 * Get the field least significative bit position in the register.
 	 * 
@@ -257,16 +282,16 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 
 		if (fOffset == null) {
 			try {
-				String offset = fNode.getProperty("bitOffset");
+				String offset = getPropertyWithDerived("bitOffset");
 				if (!offset.isEmpty()) {
 					fOffset = (int) SvdUtils.parseScaledNonNegativeLong(offset);
 				} else {
-					String lsb = fNode.getProperty("lsb");
+					String lsb = getPropertyWithDerived("lsb");
 					if (!lsb.isEmpty()) {
 						fOffset = (int) SvdUtils
 								.parseScaledNonNegativeLong(lsb);
 					} else {
-						String bitRange = fNode.getProperty("bitRange");
+						String bitRange = getPropertyWithDerived("bitRange");
 						if (!bitRange.isEmpty()) {
 							bitRange = bitRange.replace('[', ' ');
 							bitRange = bitRange.replace(']', ' ');
@@ -276,13 +301,13 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 									.parseScaledNonNegativeLong(bitRange
 											.split(":")[1]);
 						} else {
-							System.out.println("Missing offset, node " + fNode);
+							Activator.log("Missing offset, node " + getNode());
 							fOffset = new Integer(0);
 						}
 					}
 				}
 			} catch (NumberFormatException e) {
-				System.out.println("Bad offset, node " + fNode);
+				Activator.log("Bad offset, node " + getNode());
 				fOffset = new Integer(0);
 			}
 		}
@@ -299,17 +324,17 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 
 		if (fWidth == null) {
 			try {
-				String width = fNode.getProperty("bitWidth");
+				String width = getPropertyWithDerived("bitWidth");
 				if (!width.isEmpty()) {
 					fWidth = (int) SvdUtils.parseScaledNonNegativeLong(width);
 				} else {
-					String msb = fNode.getProperty("msb");
+					String msb = getPropertyWithDerived("msb");
 					if (!msb.isEmpty()) {
 						fWidth = new Integer(
 								(int) (SvdUtils.parseScaledNonNegativeLong(msb)
 										- getOffset() + 1));
 					} else {
-						String bitRange = fNode.getProperty("bitRange");
+						String bitRange = getPropertyWithDerived("bitRange");
 						if (!bitRange.isEmpty()) {
 							bitRange = bitRange.replace('[', ' ');
 							bitRange = bitRange.replace(']', ' ');
@@ -321,13 +346,13 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 													.split(":")[0])
 											- getOffset() + 1));
 						} else {
-							System.out.println("Missing width, node " + fNode);
+							Activator.log("Missing width, node " + getNode());
 							fWidth = new Integer(1);
 						}
 					}
 				}
 			} catch (NumberFormatException e) {
-				System.out.println("Bad width, node " + fNode);
+				Activator.log("Bad width, node " + getNode());
 				fWidth = new Integer(1);
 			}
 		}
@@ -357,9 +382,9 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 	@Override
 	public String toString() {
 
-		return "[" + getName() + ", " + (getOffset() + getWidthBits() - 1)
-				+ "-" + getOffset() + ", " + getAccess() + ", \""
-				+ getDescription() + "\"]";
+		return "[" + getClass().getSimpleName() + ": " + getName() + ", "
+				+ (getOffset() + getWidthBits() - 1) + "-" + getOffset() + ", "
+				+ getAccess() + ", \"" + getDescription() + "\"]";
 	}
 
 	// ------------------------------------------------------------------------

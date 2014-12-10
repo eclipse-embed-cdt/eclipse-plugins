@@ -11,7 +11,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.datamodel;
 
-import ilg.gnuarmeclipse.packs.core.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.packs.core.tree.AbstractTreePreOrderIterator;
 import ilg.gnuarmeclipse.packs.core.tree.ITreeIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
@@ -33,6 +33,9 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	private String fHexAddress;
 	private BigInteger fBigAbsoluteAddress;
 
+	private String fGroupName;
+	private String fVersion;
+
 	private Boolean fIsSystem;
 
 	/**
@@ -52,6 +55,8 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 		fBigAbsoluteAddress = null;
 		fHexAddress = null;
 		fIsSystem = null;
+		fGroupName = null;
+		fVersion = null;
 	}
 
 	/**
@@ -65,8 +70,45 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 		fBigAbsoluteAddress = null;
 		fHexAddress = null;
 		fIsSystem = null;
-		
+		fGroupName = null;
+		fVersion = null;
+
 		super.dispose();
+	}
+
+	// ------------------------------------------------------------------------
+
+	@Override
+	protected SvdObjectDMNode[] prepareChildren(Leaf node) {
+
+		if (node == null || !node.hasChildren()) {
+			return null;
+		}
+
+		// System.out.println("prepareChildren(" + node.getProperty("name") +
+		// ")");
+
+		Leaf group = ((Node) node).findChild("registers");
+		if (!group.hasChildren()) {
+			return null;
+		}
+
+		List<SvdObjectDMNode> list = new LinkedList<SvdObjectDMNode>();
+		for (Leaf child : ((Node) group).getChildren()) {
+
+			// Keep only <register> and <cluster> nodes
+			if (child.isType("register")) {
+				list.add(new SvdRegisterDMNode(child));
+			} else if (child.isType("cluster")) {
+				list.add(new SvdClusterDMNode(child));
+			}
+		}
+
+		SvdObjectDMNode[] array = list
+				.toArray(new SvdObjectDMNode[list.size()]);
+
+		// Preserve apparition order.
+		return array;
 	}
 
 	// ------------------------------------------------------------------------
@@ -77,39 +119,10 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	 * 
 	 * @return a peripheral node, or null if not found.
 	 */
-	// @Override
-	protected Leaf findDerivedFromNode1() {
-
-		String derivedFromName = fNode.getPropertyOrNull("derivedFrom");
-		if (derivedFromName == null) {
-			return null;
-		}
-
-		System.out.println("1: derivedFrom " + derivedFromName);
-
-		Node parent = fNode.getParent();
-		for (Leaf child : parent.getChildren()) {
-			System.out.println("1: " + child);
-			if (child.isType("peripheral")
-					&& derivedFromName.equals(child.getProperty("name"))) {
-
-				// Found the peripheral with the given name.
-				return child;
-			}
-		}
-		return null;
-	}
-
-	/**
-	 * Enumerate all peripherals of the same device and find the derived from
-	 * node. The name is taken from the derivedFrom attribute.
-	 * 
-	 * @return a peripheral node, or null if not found.
-	 */
 	@Override
 	protected Leaf findDerivedFromNode() {
 
-		String derivedFromName = fNode.getPropertyOrNull("derivedFrom");
+		String derivedFromName = getNode().getPropertyOrNull("derivedFrom");
 		final SvdDerivedFromPath path = SvdDerivedFromPath
 				.createPeripheralPath(derivedFromName);
 
@@ -117,7 +130,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 			return null;
 		}
 
-		Node root = fNode.getParent();
+		Node root = getNode().getParent();
 		while (!root.isType("device")) {
 			root = root.getParent();
 		}
@@ -177,16 +190,17 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	/**
 	 * Get peripheral block length.
 	 * 
-	 * @return a big integer value with the length in bytes.
+	 * @return a big integer value with the length in bytes, or null if not
+	 *         found.
 	 */
 	@Override
 	public BigInteger getBigSizeBytes() {
 
 		String size;
 
-		size = getSizeElement(fNode);
+		size = getAddressBlockSizeElement(getNode());
 		if ((size == null) && (getDerivedFromNode() != null)) {
-			size = getSizeElement(getDerivedFromNode());
+			size = getAddressBlockSizeElement(getDerivedFromNode());
 		}
 
 		if (size != null) {
@@ -197,13 +211,13 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	}
 
 	/**
-	 * Get the size element inside addressBlock.
+	 * Get the size element from inside the first addressBlock.
 	 * 
 	 * @param node
 	 *            a tree node with addressBlock.
 	 * @return the size node or null if not found.
 	 */
-	private String getSizeElement(Leaf node) {
+	private String getAddressBlockSizeElement(Leaf node) {
 
 		if (node.hasChildren()) {
 			for (Leaf child : ((Node) node).getChildren()) {
@@ -219,7 +233,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	}
 
 	/**
-	 * Get the numeric value of the address. Decimal, hex and octal values are
+	 * Get the numeric value of the address. Decimal, hex and binary values are
 	 * accepted.
 	 * <p>
 	 * To support 64-bit addresses, use BigInteger objects.
@@ -258,7 +272,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	 * @return a string with the address, usually a hex number.
 	 */
 	public String getBaseAddress() {
-		return fNode.getProperty("baseAddress", "0");
+		return getNode().getProperty("baseAddress", "0");
 	}
 
 	/**
@@ -281,49 +295,30 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 		return fIsSystem.booleanValue();
 	}
 
+	/**
+	 * Get group name.
+	 * 
+	 * @return a string, possibly empty.
+	 */
 	public String getGroupName() {
 
-		return fNode.getProperty("groupName");
+		if (fGroupName == null) {
+			fGroupName = getPropertyWithDerived("groupName");
+		}
+		return fGroupName;
 	}
 
+	/**
+	 * Get version string.
+	 * 
+	 * @return a string, possibly empty.
+	 */
 	public String getVersion() {
 
-		return fNode.getProperty("version");
-	}
-
-	// ------------------------------------------------------------------------
-
-	@Override
-	protected SvdObjectDMNode[] prepareChildren(Leaf node) {
-
-		if (node == null || !node.hasChildren()) {
-			return null;
+		if (fVersion == null) {
+			fVersion = getPropertyWithDerived("version");
 		}
-
-		// System.out.println("prepareChildren(" + node.getProperty("name") +
-		// ")");
-
-		Leaf group = ((Node) node).findChild("registers");
-		if (!group.hasChildren()) {
-			return null;
-		}
-
-		List<SvdObjectDMNode> list = new LinkedList<SvdObjectDMNode>();
-		for (Leaf child : ((Node) group).getChildren()) {
-
-			// Keep only <register> and <cluster> nodes
-			if (child.isType("register")) {
-				list.add(new SvdRegisterDMNode(child));
-			} else if (child.isType("cluster")) {
-				list.add(new SvdClusterDMNode(child));
-			}
-		}
-
-		SvdObjectDMNode[] array = list
-				.toArray(new SvdObjectDMNode[list.size()]);
-
-		// Preserve apparition order.
-		return array;
+		return fVersion;
 	}
 
 	// ------------------------------------------------------------------------
@@ -331,8 +326,9 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	@Override
 	public String toString() {
 
-		return "[" + getName() + ", " + getBaseAddress() + ", "
-				+ getBigSizeBytes() + ", \"" + getDescription() + "\"]";
+		return "[" + getClass().getSimpleName() + ": " + getDisplayName()
+				+ ", " + getBaseAddress() + ", " + getBigSizeBytes() + ", "
+				+ getAccess() + ", \"" + getDescription() + "\"]";
 	}
 
 	// ------------------------------------------------------------------------

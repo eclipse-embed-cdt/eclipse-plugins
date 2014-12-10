@@ -14,7 +14,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.datamodel;
 import java.util.LinkedList;
 import java.util.List;
 
-import ilg.gnuarmeclipse.packs.core.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.packs.core.tree.AbstractTreePreOrderIterator;
 import ilg.gnuarmeclipse.packs.core.tree.ITreeIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
@@ -113,7 +113,7 @@ public class SvdEnumerationDMNode extends SvdObjectDMNode {
 	@Override
 	protected Leaf findDerivedFromNode() {
 
-		String derivedFromName = fNode.getPropertyOrNull("derivedFrom");
+		String derivedFromName = getNode().getPropertyOrNull("derivedFrom");
 		final SvdDerivedFromPath path = SvdDerivedFromPath
 				.createEnumerationPath(derivedFromName);
 
@@ -121,7 +121,7 @@ public class SvdEnumerationDMNode extends SvdObjectDMNode {
 			return null;
 		}
 
-		Node root = fNode.getParent();
+		Node root = getNode().getParent();
 		while (!root.isType("device")) {
 			root = root.getParent();
 		}
@@ -239,9 +239,13 @@ public class SvdEnumerationDMNode extends SvdObjectDMNode {
 	@Override
 	public String toString() {
 
-		String str = "[" + getName() + ", \"" + getDescription() + "\"]";
-
-		return str; // String.format(str);
+		if (getName().isEmpty()) {
+			return "[" + getClass().getSimpleName() + ": \"" + getDescription()
+					+ "\"]";
+		} else {
+			return "[" + getClass().getSimpleName() + ": " + getName() + ", \""
+					+ getDescription() + "\"]";
+		}
 	}
 
 	// ------------------------------------------------------------------------

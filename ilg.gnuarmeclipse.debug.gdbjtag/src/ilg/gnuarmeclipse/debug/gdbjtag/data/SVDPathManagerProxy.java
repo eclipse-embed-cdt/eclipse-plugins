@@ -13,6 +13,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.data;
 
 import ilg.gnuarmeclipse.debug.core.data.ISVDPathManager;
 import ilg.gnuarmeclipse.debug.core.data.ISVDPathManagerFactory;
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -77,13 +78,14 @@ public class SVDPathManagerProxy implements ISVDPathManager {
 						// Create the extension point data manager.
 						fPathManagers[i] = factory.create();
 					} else {
-						System.out.println("no ISVDPathManagerFactory");
+						Activator.log("no ISVDPathManagerFactory");
 					}
 				} catch (CoreException e) {
-					System.out.println("cannot get factory");
+					Activator.log("cannot get factory for "
+							+ EXTENSION_POINT_ID);
 				}
 			} else {
-				System.out.println("no <factory> element");
+				Activator.log("no <factory> element");
 			}
 
 		}

@@ -15,7 +15,7 @@ import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
 
-import ilg.gnuarmeclipse.packs.core.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.packs.core.tree.AbstractTreePreOrderIterator;
 import ilg.gnuarmeclipse.packs.core.tree.ITreeIterator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
@@ -39,8 +39,6 @@ public class SvdRegisterDMNode extends SvdDMNode {
 	public SvdRegisterDMNode(Leaf node) {
 
 		super(node);
-
-		fNode = node;
 
 		fDisplayName = null;
 		fAddressOffset = null;
@@ -76,7 +74,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 
 		fResetValue = null;
 		fResetMask = null;
-		
+
 		super.dispose();
 	}
 
@@ -124,7 +122,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 	@Override
 	protected Leaf findDerivedFromNode() {
 
-		String derivedFromName = fNode.getPropertyOrNull("derivedFrom");
+		String derivedFromName = getNode().getPropertyOrNull("derivedFrom");
 		final SvdDerivedFromPath path = SvdDerivedFromPath
 				.createRegisterPath(derivedFromName);
 
@@ -132,7 +130,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 			return null;
 		}
 
-		Node root = fNode.getParent();
+		Node root = getNode().getParent();
 		while (!root.isType("device")) {
 			root = root.getParent();
 		}
@@ -213,17 +211,17 @@ public class SvdRegisterDMNode extends SvdDMNode {
 		if (fAddressOffset == null) {
 
 			try {
-				String offset = fNode.getProperty("addressOffset");
+				String offset = getNode().getProperty("addressOffset");
 				if (!offset.isEmpty()) {
 
 					fAddressOffset = SvdUtils
 							.parseScaledNonNegativeBigInteger(offset);
 				} else {
-					System.out.println("Missing addressOffset, node " + fNode);
+					Activator.log("Missing addressOffset, node " + getNode());
 					fAddressOffset = BigInteger.ZERO;
 				}
 			} catch (NumberFormatException e) {
-				System.out.println("Bad offset, node " + fNode);
+				Activator.log("Bad offset, node " + getNode());
 				fAddressOffset = BigInteger.ZERO;
 			}
 		}
@@ -243,9 +241,8 @@ public class SvdRegisterDMNode extends SvdDMNode {
 	public String getDisplayName() {
 
 		if (fDisplayName == null) {
-
-			// TODO: check derivedFrom
-			fDisplayName = fNode.getProperty("displayName", getName());
+			fDisplayName = getPropertyWithDerivedWithParent("displayName",
+					getName());
 		}
 		return fDisplayName;
 	}
@@ -260,14 +257,13 @@ public class SvdRegisterDMNode extends SvdDMNode {
 
 		if (fSize == null) {
 
-			// TODO: check derivedFrom
-			String size = SvdUtils.getProperty(fNode, "size", "32");
+			String size = getPropertyWithDerivedWithParent("size", "32");
 
 			try {
 				fSize = new Integer(SvdUtils.parseScaledNonNegativeBigInteger(
 						size).intValue());
 			} catch (NumberFormatException e) {
-				System.out.println("Bad size, node " + fNode);
+				Activator.log("Bad size, node " + getNode());
 				fSize = new Integer(32);
 			}
 
@@ -278,7 +274,9 @@ public class SvdRegisterDMNode extends SvdDMNode {
 
 	@Override
 	public BigInteger getBigSizeBytes() {
+
 		if (fBigSizeBytes == null) {
+			// Round to next byte.
 			String sizeBytes = String.valueOf((getWidthBits() + 7) / 8);
 			fBigSizeBytes = new BigInteger(sizeBytes);
 		}
@@ -290,9 +288,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 	public String getReadAction() {
 
 		if (fReadAction == null) {
-
-			// TODO: check derivedFrom
-			fReadAction = SvdUtils.getProperty(fNode, "readAction", "");
+			fReadAction = getPropertyWithDerivedWithParent("readAction");
 		}
 
 		return fReadAction;
@@ -301,9 +297,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 	public String getResetValue() {
 
 		if (fResetValue == null) {
-
-			// TODO: check derivedFrom
-			fResetValue = SvdUtils.getProperty(fNode, "resetValue", "");
+			fResetValue = getPropertyWithDerivedWithParent("resetValue");
 		}
 
 		return fResetValue;
@@ -312,9 +306,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 	public String getResetMask() {
 
 		if (fResetMask == null) {
-
-			// TODO: check derivedFrom
-			fResetMask = SvdUtils.getProperty(fNode, "resetMask", "");
+			fResetMask = getPropertyWithDerivedWithParent("resetMask");
 		}
 
 		return fResetMask;
@@ -325,7 +317,8 @@ public class SvdRegisterDMNode extends SvdDMNode {
 	@Override
 	public String toString() {
 
-		String str = "[" + getDisplayName() + ", 0x%08X, \"" + getDescription()
+		String str = "[" + getClass().getSimpleName() + ": " + getDisplayName()
+				+ ", 0x%08X" + ", " + getAccess() + ", \"" + getDescription()
 				+ "\"]";
 
 		return String.format(str, getBigAddressOffset().longValue());

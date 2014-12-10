@@ -40,7 +40,7 @@ public class PeripheralDMNode extends SvdPeripheralDMNode implements IAdaptable 
 
 	public void dispose() {
 
-		System.out.println("PeripheralDMNode.dispose() " + this);
+		System.out.println("dispose() " + this);
 		if (fMemoryBlock != null) {
 			fMemoryBlock = null;
 		}
@@ -73,6 +73,15 @@ public class PeripheralDMNode extends SvdPeripheralDMNode implements IAdaptable 
 
 	public void setChecked(boolean flag) {
 		fIsChecked = flag;
+	}
+
+	// ------------------------------------------------------------------------
+
+	@Override
+	public String toString() {
+
+		return "[" + getClass().getSimpleName() + ": " + fMemoryBlock + ", "
+				+ super.toString() + "]";
 	}
 
 	// ------------------------------------------------------------------------
