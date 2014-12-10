@@ -170,13 +170,9 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 			getPeripheral().getMemoryBlock().writePeripheralRegister(offset,
 					getWidthBytes(), newValue);
 
-			// TODO: avoid readback for non-readable
-			// Read back.
-			BigInteger actualValue = getPeripheral().getMemoryBlock()
-					.readPeripheralRegister(offset, getWidthBytes());
-
-			// Update with actual value.
-			setValue(actualValue);
+			// Re-read and update the entire peripheral, since many registers
+			// may be affected by one write.
+			getPeripheral().getMemoryBlock().updatePeripheralRenderingValues();
 		}
 	}
 
