@@ -85,13 +85,12 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 
 	public void dispose() {
 
-		// System.out.println("Dispose " + this);
+		// System.out.println("dispose() " + this);
 
 		fParent = null;
 		fChildren = null;
 		if (fDMNode != null) {
-			// TODO: fix references
-			// fDMNode.dispose();
+			fDMNode.dispose();
 			fDMNode = null;
 		}
 		fPath = null;

@@ -45,7 +45,9 @@ public class PeripheralDMNode extends SvdPeripheralDMNode implements IAdaptable 
 			fMemoryBlock = null;
 		}
 
-		super.dispose();
+		// Peripheral nodes are special, and cannot be disposed, so DO NOT call
+		// super.dispose() here, dispose only their children.
+		disposeChildren();
 	}
 
 	@SuppressWarnings("rawtypes")

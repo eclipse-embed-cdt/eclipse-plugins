@@ -54,14 +54,21 @@ public class SvdObjectDMNode {
 	public void dispose() {
 
 		if (fNode == null) {
-			return; // Already disposed
+			// System.out.println("dispose() " + getClass().getSimpleName()
+			//		+ " already disposed");
+			return;
 		}
 
-		System.out.println("dispose() " + this);
+		// System.out.println("dispose() " + this);
 		fNode = null;
 		fDerivedFromNode = null;
 
 		fDescription = null;
+
+		disposeChildren();
+	}
+
+	protected void disposeChildren() {
 
 		if (fChildren != null) {
 

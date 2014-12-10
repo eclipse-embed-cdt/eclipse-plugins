@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral;
 
+import ilg.gnuarmeclipse.core.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdDMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdEnumeratedValueDMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdEnumerationDMNode;
@@ -50,8 +51,7 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 				fEnumeratedValueDMNode = ((SvdFieldDMNode) fDMNode)
 						.findEnumeratedValue((PeripheralValue) getValue());
 			} catch (DebugException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Activator.log(e);
 			}
 		}
 		return fEnumeratedValueDMNode;

@@ -222,7 +222,10 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 		fMemoryDMContext = null;
 		fBlockDIsplayName = null;
 		if (fPeripheralTop != null) {
+			// Warning: since it is the same as the node in the Peripherals
+			// view, the peripheral itself is not disposed, only its children.
 			fPeripheralTop.dispose();
+
 			fPeripheralTop = null;
 		}
 

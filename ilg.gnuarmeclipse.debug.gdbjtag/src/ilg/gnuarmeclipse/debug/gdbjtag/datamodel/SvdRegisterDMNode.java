@@ -317,12 +317,11 @@ public class SvdRegisterDMNode extends SvdDMNode {
 	@Override
 	public String toString() {
 
-		String str = "[" + getClass().getSimpleName() + ": " + getDisplayName()
-				+ ", 0x%08X" + ", " + getAccess() + ", \"" + getDescription()
-				+ "\"]";
-
-		return String.format(str, getBigAddressOffset().longValue());
+		String hexAddr = String.format("0x%08X", getBigAddressOffset()
+				.longValue());
+		return "[" + getClass().getSimpleName() + ": " + getDisplayName()
+				+ ", " + hexAddr + ", " + getAccess() + ", \""
+				+ getDescription() + "\"]";
 	}
-
 	// ------------------------------------------------------------------------
 }
