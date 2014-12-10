@@ -63,6 +63,8 @@ import org.eclipse.jface.viewers.TreeViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -108,6 +110,7 @@ public class PeripheralRendering extends AbstractTableRendering implements
 	private Action fForceReadAction;
 	private PeripheralMemoryBlockExtension fMemoryBlock;
 	private IMemoryRenderingContainer fContainer;
+	private PeripheralViewerComparator fComparator;
 
 	// ------------------------------------------------------------------------
 
@@ -174,6 +177,9 @@ public class PeripheralRendering extends AbstractTableRendering implements
 				.setContentProvider((IContentProvider) new PeripheralContentProvider(
 						fMemoryBlock.getPeripheralRegisterGroup()));
 
+		fComparator = new PeripheralViewerComparator();
+		fPeripheralViewer.setComparator(fComparator);
+
 		LinkToolTip.enableFor((ColumnViewer) fPeripheralViewer,
 				SWT.ICON_INFORMATION, (ILinkToolTipListener) this);
 
@@ -210,7 +216,9 @@ public class PeripheralRendering extends AbstractTableRendering implements
 								fPeripheralViewer));
 			}
 			if (PeripheralRendering.fgColumnInfo[i].sortable) {
-				makeSortable(fPeripheralViewer, treeViewerColumn, i);
+				// Add a selection listener to make sortable
+				treeColumn.addSelectionListener(getSelectionAdapter(treeColumn,
+						i));
 			}
 		}
 
@@ -237,8 +245,20 @@ public class PeripheralRendering extends AbstractTableRendering implements
 		return composite;
 	}
 
-	private void makeSortable(TreeViewer viewer, TreeViewerColumn column, int i) {
-		// TODO: add code to sort columns
+	private SelectionAdapter getSelectionAdapter(final TreeColumn column,
+			final int index) {
+
+		SelectionAdapter selectionAdapter = new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				fComparator.setColumn(index);
+				int dir = fComparator.getDirection();
+				fPeripheralViewer.getTree().setSortDirection(dir);
+				fPeripheralViewer.getTree().setSortColumn(column);
+				fPeripheralViewer.refresh();
+			}
+		};
+		return selectionAdapter;
 	}
 
 	private void addPopupMenu(IMenuListener menuListener) {
