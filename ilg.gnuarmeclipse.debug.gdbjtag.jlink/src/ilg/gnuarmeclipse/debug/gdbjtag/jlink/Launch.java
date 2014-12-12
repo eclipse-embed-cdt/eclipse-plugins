@@ -12,6 +12,7 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.TabDebugger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,7 +30,9 @@ import org.eclipse.cdt.dsf.gdb.service.IGDBBackend;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -49,7 +52,8 @@ public class Launch extends GnuArmLaunch {
 
 		super(launchConfiguration, mode, locator);
 
-		System.out.println("Launch() " + this);
+		System.out.println("Launch(" + launchConfiguration.getName() + ","
+				+ mode + ") " + this);
 
 		fConfig = launchConfiguration;
 		fExecutor = (DefaultDsfExecutor) getDsfExecutor();
@@ -59,6 +63,8 @@ public class Launch extends GnuArmLaunch {
 	public void initialize() {
 
 		System.out.println("Launch.initialize() " + this);
+
+		super.initialize();
 
 		Runnable initRunnable = new DsfRunnable() {
 			@Override
@@ -84,14 +90,70 @@ public class Launch extends GnuArmLaunch {
 					IDsfStatusConstants.INTERNAL_ERROR,
 					"Error initializing launch", e); //$NON-NLS-1$
 		}
+	}
 
-		super.initialize();
+	@Override
+	public void initializeControl() throws CoreException {
+
+		System.out.println("Launch.initializeControl()");
+
+		super.initializeControl();
 	}
 
 	public void shutdownSession(final RequestMonitor rm) {
 
-		System.out.println("Launch.shutdown() " + this);
+		System.out.println("Launch.shutdownSession() " + this);
 		super.shutdownSession(rm);
+	}
+
+	public void initialiseConsoles(IProgressMonitor monitor) throws CoreException {
+		
+		System.out.println("Launch.initialiseConsoles()");
+
+		IProcess newProcess;
+		boolean doAddServerConsole = fConfig.getAttribute(
+				ConfigurationAttributes.DO_START_GDB_SERVER,
+				ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT)
+				&& fConfig
+						.getAttribute(
+								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
+								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
+
+		if (doAddServerConsole) {
+
+			// Add the GDB server process to the launch tree
+			newProcess = addServerProcess(getServerCommandName(fConfig));
+			newProcess.setAttribute(IProcess.ATTR_CMDLINE,
+					TabDebugger.getGdbServerCommandLine(fConfig));
+
+			monitor.worked(1);
+		}
+
+		{
+			// Add the GDB client process to the launch tree.
+			newProcess = addClientProcess(getClientCommandName(fConfig)); //$NON-NLS-1$
+
+			newProcess.setAttribute(IProcess.ATTR_CMDLINE,
+					TabDebugger.getGdbClientCommandLine(fConfig));
+
+			monitor.worked(1);
+		}
+
+		boolean doAddSemihostingConsole = fConfig.getAttribute(
+				ConfigurationAttributes.DO_START_GDB_SERVER,
+				ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT)
+				&& fConfig
+						.getAttribute(
+								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
+								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
+
+		if (doAddSemihostingConsole) {
+
+			// Add the special semihosting and SWV process to the launch tree
+			newProcess = addSemihostingProcess("Semihosting and SWV");
+
+			monitor.worked(1);
+		}
 	}
 
 	public IProcess addServerProcess(String label) throws CoreException {
@@ -180,4 +242,23 @@ public class Launch extends GnuArmLaunch {
 
 		return newProcess;
 	}
+
+	private String getServerCommandName(ILaunchConfiguration config) {
+		String fullCommand = TabDebugger.getGdbServerCommand(config);
+		if (fullCommand == null)
+			return null;
+
+		String parts[] = fullCommand.trim().split("" + Path.SEPARATOR);
+		return parts[parts.length - 1];
+	}
+
+	private String getClientCommandName(ILaunchConfiguration config) {
+		String fullCommand = TabDebugger.getGdbClientCommand(config);
+		if (fullCommand == null)
+			return null;
+
+		String parts[] = fullCommand.trim().split("" + Path.SEPARATOR);
+		return parts[parts.length - 1];
+	}
+
 }

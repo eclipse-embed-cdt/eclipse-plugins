@@ -68,6 +68,8 @@ public class PeripheralMemoryBlockRetrieval extends GdbMemoryBlockRetrieval {
 		}
 
 		if (memoryBlockExtension == null) {
+			System.out.println("getExtendedMemoryBlock(" + addr + "," + context
+					+ ") super.getExtendedMemoryBlock()");
 			// Needed for regular memory blocks
 			memoryBlockExtension = super.getExtendedMemoryBlock(addr, context);
 		}

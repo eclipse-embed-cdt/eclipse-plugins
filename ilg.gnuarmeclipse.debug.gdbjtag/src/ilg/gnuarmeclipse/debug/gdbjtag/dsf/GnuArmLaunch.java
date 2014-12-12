@@ -21,10 +21,12 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.RejectedExecutionException;
 
+import org.eclipse.cdt.dsf.concurrent.CountingRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DefaultDsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.DsfRunnable;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
+import org.eclipse.cdt.dsf.concurrent.ThreadSafeAndProhibitedFromDsfExecutor;
 import org.eclipse.cdt.dsf.debug.model.DsfMemoryBlockRetrieval;
 import org.eclipse.cdt.dsf.debug.service.IMemory;
 import org.eclipse.cdt.dsf.debug.service.IProcesses;
@@ -47,9 +49,10 @@ import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
 
 /**
- * Common launcher.
+ * Common launcher, used to initialise the memory bloc retrieval used by the
+ * Peripherals view.
  * <p>
- * To be used as parent by implementation launchers.
+ * To be used as parent by implementation (JLink, OpenOCD) launchers.
  */
 @SuppressWarnings("restriction")
 public class GnuArmLaunch extends GdbLaunch {
@@ -60,7 +63,8 @@ public class GnuArmLaunch extends GdbLaunch {
 	private DsfSession fSession;
 	private DsfServicesTracker fTracker;
 	private DefaultDsfExecutor fExecutor;
-	private DsfMemoryBlockRetrieval fMemRetrieval;
+
+	// private DsfMemoryBlockRetrieval fMemRetrieval;
 
 	// ------------------------------------------------------------------------
 
@@ -83,17 +87,19 @@ public class GnuArmLaunch extends GdbLaunch {
 		return fTracker;
 	}
 
+	@Override
 	public void initialize() {
 
+		System.out.println("GnuArmLaunch.initialize() " + this);
+
+		super.initialize();
+
+		// Used to get the tracker
 		Runnable initRunnable = new DsfRunnable() {
 			@Override
 			public void run() {
 				fTracker = new DsfServicesTracker(GdbPlugin.getBundleContext(),
 						fSession.getId());
-				// fSession.addServiceEventListener(GdbLaunch.this, null);
-
-				// fInitialized = true;
-				// fireChanged();
 			}
 		};
 
@@ -109,17 +115,51 @@ public class GnuArmLaunch extends GdbLaunch {
 					IDsfStatusConstants.INTERNAL_ERROR,
 					"Error initializing launch", e); //$NON-NLS-1$
 		}
-
-		super.initialize();
 	}
 
+	@Override
 	public void shutdownSession(final RequestMonitor rm) {
 
-		super.shutdownSession(rm);
+		final CountingRequestMonitor crm = new CountingRequestMonitor(
+				fExecutor, rm);
+		crm.setDoneCount(2);
+
+		super.shutdownSession(crm);
+
+//		if (true) {
+			crm.done();
+//		} else {
+//			fExecutor.execute(new Sequence(fExecutor) {
+//
+//				@Override
+//				public Step[] getSteps() {
+//					return new Step[] { new Step() {
+//						@Override
+//						public void execute(RequestMonitor rm) {
+//							GnuArmGdbServerBackend service = (GnuArmGdbServerBackend) fTracker
+//									.getService(IGdbServerBackendService.class);
+//							if (service == null) {
+//								crm.done();
+//								return;
+//							}
+//							service.shutdown(crm);
+//							;
+//						}
+//					} };
+//				}
+//			});
+//		}
 
 	}
 
+	/**
+	 * Initialise the memory block retrieval required by the Peripherals view.
+	 */
+	@Override
 	public void initializeControl() throws CoreException {
+
+		System.out.println("GnuArmLaunch.initializeControl()");
+
 		super.initializeControl();
 
 		try {
@@ -132,19 +172,31 @@ public class GnuArmLaunch extends GdbLaunch {
 							.getService(IMIProcesses.class);
 					if ((commandControlService != null) && (processes != null)) {
 
-						fMemRetrieval = new PeripheralMemoryBlockRetrieval(
+						System.out
+								.println("GnuArmLaunch.initializeControl() initialise memory retrieval");
+
+						// Create the memory block retrieval.
+						DsfMemoryBlockRetrieval memRetrieval = new PeripheralMemoryBlockRetrieval(
 								"org.eclipse.cdt.dsf.gdb",
 								getLaunchConfiguration(), fSession);
+
+						// Register DMNode for memory retrieval.
 						fSession.registerModelAdapter(PeripheralDMNode.class,
-								fMemRetrieval);
+								memRetrieval);
+						// Register its own interface.
 						fSession.registerModelAdapter(
-								IMemoryBlockRetrieval.class, fMemRetrieval);
+								IMemoryBlockRetrieval.class, memRetrieval);
+
+						// Create memory context from process context.
 						IProcesses.IProcessDMContext processDMContext = processes
 								.createProcessContext(
 										commandControlService.getContext(), "");
 						IMemory.IMemoryDMContext memoryDMContext = (IMemory.IMemoryDMContext) processes
 								.createContainerContext(processDMContext, "");
-						fMemRetrieval.initialize(memoryDMContext);
+
+						// Finally initialise memory retrieval with memory
+						// context.
+						memRetrieval.initialize(memoryDMContext);
 					}
 					return null;
 				}
@@ -154,9 +206,17 @@ public class GnuArmLaunch extends GdbLaunch {
 		} catch (ExecutionException e) {
 			Activator.log(e);
 		}
-
 	}
 
+	/**
+	 * Identical to addCLIProcess(), just that it returns the process, so we can
+	 * add properties to it later.
+	 * 
+	 * @param label
+	 * @return the IProcess created.
+	 * @throws CoreException
+	 */
+	@ThreadSafeAndProhibitedFromDsfExecutor("getDsfExecutor()")
 	public IProcess addClientProcess(String label) throws CoreException {
 		IProcess newProcess = null;
 		try {
@@ -179,21 +239,19 @@ public class GnuArmLaunch extends GdbLaunch {
 			// First set attribute to specify we want to create the gdb process.
 			// Bug 210366
 			Map<String, String> attributes = new HashMap<String, String>();
-			if (true) {
-				attributes.put(IGdbDebugConstants.PROCESS_TYPE_CREATION_ATTR,
-						IGdbDebugConstants.GDB_PROCESS_CREATION_VALUE);
-			}
+			attributes.put(IGdbDebugConstants.PROCESS_TYPE_CREATION_ATTR,
+					IGdbDebugConstants.GDB_PROCESS_CREATION_VALUE);
 			newProcess = DebugPlugin.newProcess(this, cliProc, label,
 					attributes);
 		} catch (InterruptedException e) {
 			throw new CoreException(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, 0,
+					GdbPlugin.PLUGIN_ID, 0,
 					"Interrupted while waiting for get process callable.", e)); //$NON-NLS-1$
 		} catch (ExecutionException e) {
 			throw (CoreException) e.getCause();
 		} catch (RejectedExecutionException e) {
 			throw new CoreException(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, 0,
+					GdbPlugin.PLUGIN_ID, 0,
 					"Debugger shut down before launch was completed.", e)); //$NON-NLS-1$
 		}
 
