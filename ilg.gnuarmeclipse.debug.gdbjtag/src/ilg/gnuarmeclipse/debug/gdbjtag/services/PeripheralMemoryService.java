@@ -20,6 +20,7 @@ import java.util.Map;
 
 import org.eclipse.cdt.core.IAddress;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
+import org.eclipse.cdt.dsf.concurrent.DsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
 import org.eclipse.cdt.dsf.concurrent.ImmediateDataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.ImmediateExecutor;
@@ -121,265 +122,193 @@ public class PeripheralMemoryService extends MIMemory implements
 		return Activator.getInstance().getBundle().getBundleContext();
 	}
 
+	private class PeripheralSequence extends Sequence {
+
+		private String fOriginalLanguage = MIGDBShowLanguageInfo.AUTO;
+		private boolean fAbortLanguageSteps = false;
+		IMemoryDMContext fMemContext;
+
+		// Need a global here as getSteps() can be called more than
+		// once.
+		private Step[] fSteps = null;
+
+		public PeripheralSequence(IMemoryDMContext memContext1,
+				DsfExecutor executor, RequestMonitor rm) {
+			super(executor, rm);
+
+			fMemContext = memContext1;
+		}
+
+		@Override
+		public Step[] getSteps() {
+			if (fSteps == null) {
+				fSteps = prepareSteps();
+			}
+
+			return fSteps;
+		}
+
+		private void stepShowLanguage(final RequestMonitor requestMonitor) {
+
+			fCommandControl.queueCommand(fCommandControl.getCommandFactory()
+					.createMIGDBShowLanguage(fMemContext),
+					new ImmediateDataRequestMonitor<MIGDBShowLanguageInfo>(
+							requestMonitor) {
+						@Override
+						protected void handleCompleted() {
+							if (isSuccess()) {
+								fOriginalLanguage = getData().getLanguage();
+							} else {
+								fAbortLanguageSteps = true;
+							}
+							requestMonitor.done();
+						}
+					});
+		}
+
+		private void stepReadAddressSize(final RequestMonitor requestMonitor) {
+
+			// Run this step even if the language
+			// commands where aborted, but accept
+			// failures.
+			readAddressSize(fMemContext,
+					new ImmediateDataRequestMonitor<Integer>(requestMonitor) {
+						@Override
+						protected void handleCompleted() {
+							if (isSuccess()) {
+								fAddressSizes.put(fMemContext, getData());
+							}
+							// Accept failure
+							requestMonitor.done();
+						}
+					});
+		}
+
+		private void stepSetLanguage(final RequestMonitor requestMonitor) {
+
+			if (fAbortLanguageSteps) {
+				requestMonitor.done();
+				return;
+			}
+
+			fCommandControl.queueCommand(fCommandControl.getCommandFactory()
+					.createMIGDBSetLanguage(fMemContext, fOriginalLanguage),
+					new ImmediateDataRequestMonitor<MIInfo>(requestMonitor) {
+						@Override
+						protected void handleCompleted() {
+							if (!isSuccess()) {
+								// If we are unable to set
+								// the original language back
+								// things could be bad.
+								// Let's try setting it to
+								// "auto" as a fall back.
+								// Log the situation as
+								// info.
+								Activator.log(getStatus());
+
+								// The following error could be bad because
+								// we've changed the language to C but are
+								// unable to switch it back.
+								// Log the error. If the language happens
+								// to be C anyway, everything will continue to
+								// work, which is why we don't abort the
+								// sequence (which would cause the entire
+								// session to fail).
+								fCommandControl
+										.queueCommand(
+												fCommandControl
+														.getCommandFactory()
+														.createMIGDBSetLanguage(
+																fMemContext,
+																MIGDBShowLanguageInfo.AUTO),
+												new ImmediateDataRequestMonitor<MIInfo>(
+														requestMonitor) {
+													@Override
+													protected void handleCompleted() {
+														if (!isSuccess()) {
+															// See above
+															Activator
+																	.log(getStatus());
+														}
+														// Accept
+														// failure
+														requestMonitor.done();
+													}
+												});
+							} else {
+								requestMonitor.done();
+							}
+						}
+					});
+		}
+
+		private void stepReadEndianess(final RequestMonitor requestMonitor) {
+
+			readEndianness(fMemContext,
+					new ImmediateDataRequestMonitor<Boolean>(requestMonitor) {
+						@Override
+						protected void handleCompleted() {
+							if (isSuccess()) {
+								fIsBigEndian = getData();
+								System.out.println("isBigEndian="
+										+ fIsBigEndian);
+							}
+							// Accept failure
+							requestMonitor.done();
+						}
+					});
+		}
+
+		private Step[] prepareSteps() {
+			ArrayList<Step> stepsList = new ArrayList<Step>();
+
+			if (fAddressSizes.get(fMemContext) == null) {
+				stepsList.add(new Step() {
+					// store original language
+					@Override
+					public void execute(final RequestMonitor requestMonitor) {
+						stepShowLanguage(requestMonitor);
+					}
+				});
+
+				stepsList.add(new Step() {
+					// read address size
+					@Override
+					public void execute(final RequestMonitor requestMonitor) {
+						stepReadAddressSize(requestMonitor);
+					}
+				});
+
+				stepsList.add(new Step() {
+					// restore original language
+					@Override
+					public void execute(final RequestMonitor requestMonitor) {
+						stepSetLanguage(requestMonitor);
+					}
+				});
+			}
+
+			if (fIsBigEndian == null) {
+				stepsList.add(new Step() {
+					// read endianness
+					@Override
+					public void execute(final RequestMonitor requestMonitor) {
+						stepReadEndianess(requestMonitor);
+					}
+
+				});
+			}
+
+			return stepsList.toArray(new Step[stepsList.size()]);
+		}
+	}
+
 	@Override
 	public void initializeMemoryData(final IMemoryDMContext memContext,
 			RequestMonitor rm) {
 
 		ImmediateExecutor.getInstance().execute(
-				new Sequence(getExecutor(), rm) {
-
-					private String originalLanguage = MIGDBShowLanguageInfo.AUTO;
-					private boolean abortLanguageSteps = false;
-
-					// Need a global here as getSteps() can be called more than
-					// once.
-					private Step[] steps = null;
-
-					private void determineSteps() {
-						ArrayList<Step> stepsList = new ArrayList<Step>();
-
-						if (fAddressSizes.get(memContext) == null) {
-							stepsList.add(new Step() {
-								// store original language
-								@Override
-								public void execute(
-										final RequestMonitor requestMonitor) {
-									fCommandControl
-											.queueCommand(
-													fCommandControl
-															.getCommandFactory()
-															.createMIGDBShowLanguage(
-																	memContext),
-													new ImmediateDataRequestMonitor<MIGDBShowLanguageInfo>(
-															requestMonitor) {
-														@Override
-														protected void handleCompleted() {
-															if (isSuccess()) {
-																originalLanguage = getData()
-																		.getLanguage();
-															} else {
-																abortLanguageSteps = true;
-															}
-															requestMonitor
-																	.done();
-														}
-													});
-								}
-							});
-							stepsList.add(new Step() {
-								// switch to c language
-								@Override
-								public void execute(
-										final RequestMonitor requestMonitor) {
-									if (abortLanguageSteps) {
-										requestMonitor.done();
-										return;
-									}
-
-									fCommandControl
-											.queueCommand(
-													fCommandControl
-															.getCommandFactory()
-															.createMIGDBSetLanguage(
-																	memContext,
-																	MIGDBShowLanguageInfo.C),
-													new ImmediateDataRequestMonitor<MIInfo>(
-															requestMonitor) {
-														@Override
-														protected void handleCompleted() {
-															if (!isSuccess()) {
-																abortLanguageSteps = true;
-															}
-															// Accept failure
-															requestMonitor
-																	.done();
-														}
-													});
-								}
-							});
-
-							stepsList.add(new Step() {
-								// read address size
-								@Override
-								public void execute(
-										final RequestMonitor requestMonitor) {
-									// Run this step even if the language
-									// commands where aborted, but accept
-									// failures.
-									readAddressSize(
-											memContext,
-											new ImmediateDataRequestMonitor<Integer>(
-													requestMonitor) {
-												@Override
-												protected void handleCompleted() {
-													if (isSuccess()) {
-														fAddressSizes.put(
-																memContext,
-																getData());
-													}
-													// Accept failure
-													requestMonitor.done();
-												}
-											});
-								}
-							});
-
-							stepsList.add(new Step() {
-								// restore original language
-								@Override
-								public void execute(
-										final RequestMonitor requestMonitor) {
-									if (abortLanguageSteps) {
-										requestMonitor.done();
-										return;
-									}
-
-									fCommandControl
-											.queueCommand(
-													fCommandControl
-															.getCommandFactory()
-															.createMIGDBSetLanguage(
-																	memContext,
-																	originalLanguage),
-													new ImmediateDataRequestMonitor<MIInfo>(
-															requestMonitor) {
-														@Override
-														protected void handleCompleted() {
-															if (!isSuccess()) {
-																// If we are
-																// unable to set
-																// the original
-																// language back
-																// things could
-																// be bad.
-																// Let's try
-																// setting it to
-																// "auto" as a
-																// fall back.
-																// Log the
-																// situation as
-																// info.
-																Activator
-																		.log(getStatus());
-
-																fCommandControl
-																		.queueCommand(
-																				fCommandControl
-																						.getCommandFactory()
-																						.createMIGDBSetLanguage(
-																								memContext,
-																								MIGDBShowLanguageInfo.AUTO),
-																				new ImmediateDataRequestMonitor<MIInfo>(
-																						requestMonitor) {
-																					@Override
-																					protected void handleCompleted() {
-																						if (!isSuccess()) {
-																							// This
-																							// error
-																							// could
-																							// be
-																							// bad
-																							// because
-																							// we've
-																							// changed
-																							// the
-																							// language
-																							// to
-																							// C
-																							// but
-																							// are
-																							// unable
-																							// to
-																							// switch
-																							// it
-																							// back.
-																							// Log
-																							// the
-																							// error.
-																							// If
-																							// the
-																							// language
-																							// happens
-																							// to
-																							// be
-																							// C
-																							// anyway,
-																							// everything
-																							// will
-																							// continue
-																							// to
-																							// work,
-																							// which
-																							// is
-																							// why
-																							// we
-																							// don't
-																							// abort
-																							// the
-																							// sequence
-																							// (which
-																							// would
-																							// cause
-																							// the
-																							// entire
-																							// session
-																							// to
-																							// fail).
-																							Activator
-																									.log(getStatus());
-																						}
-																						// Accept
-																						// failure
-																						requestMonitor
-																								.done();
-																					}
-																				});
-															} else {
-																requestMonitor
-																		.done();
-															}
-														}
-													});
-								}
-							});
-
-						}
-
-						if (fIsBigEndian == null) {
-							stepsList.add(new Step() {
-								// read endianness
-								@Override
-								public void execute(
-										final RequestMonitor requestMonitor) {
-									readEndianness(
-											memContext,
-											new ImmediateDataRequestMonitor<Boolean>(
-													requestMonitor) {
-												@Override
-												protected void handleCompleted() {
-													if (isSuccess()) {
-														fIsBigEndian = getData();
-													}
-													// Accept failure
-													requestMonitor.done();
-												}
-											});
-								}
-							});
-						}
-
-						steps = stepsList.toArray(new Step[stepsList.size()]);
-					}
-
-					@Override
-					public Step[] getSteps() {
-						if (steps == null) {
-							determineSteps();
-						}
-
-						return steps;
-					}
-				});
+				new PeripheralSequence(memContext, getExecutor(), rm));
 	}
 
 	@DsfServiceEventHandler
