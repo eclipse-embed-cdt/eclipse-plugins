@@ -82,13 +82,13 @@ public class Launch extends GnuArmLaunch {
 		try {
 			fExecutor.submit(initRunnable).get();
 		} catch (InterruptedException e) {
-			new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					IDsfStatusConstants.INTERNAL_ERROR,
-					"Error initializing launch", e); //$NON-NLS-1$
+					"Error initializing launch", e)); //$NON-NLS-1$
 		} catch (ExecutionException e) {
-			new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					IDsfStatusConstants.INTERNAL_ERROR,
-					"Error initializing launch", e); //$NON-NLS-1$
+					"Error initializing launch", e)); //$NON-NLS-1$
 		}
 	}
 
@@ -106,8 +106,9 @@ public class Launch extends GnuArmLaunch {
 		super.shutdownSession(rm);
 	}
 
-	public void initialiseConsoles(IProgressMonitor monitor) throws CoreException {
-		
+	public void initialiseConsoles(IProgressMonitor monitor)
+			throws CoreException {
+
 		System.out.println("Launch.initialiseConsoles()");
 
 		IProcess newProcess;

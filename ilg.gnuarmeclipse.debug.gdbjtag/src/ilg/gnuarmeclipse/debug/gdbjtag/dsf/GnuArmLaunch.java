@@ -107,13 +107,13 @@ public class GnuArmLaunch extends GdbLaunch {
 		try {
 			fExecutor.submit(initRunnable).get();
 		} catch (InterruptedException e) {
-			new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					IDsfStatusConstants.INTERNAL_ERROR,
-					"Error initializing launch", e); //$NON-NLS-1$
+					"Error initializing launch", e)); //$NON-NLS-1$
 		} catch (ExecutionException e) {
-			new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					IDsfStatusConstants.INTERNAL_ERROR,
-					"Error initializing launch", e); //$NON-NLS-1$
+					"Error initializing launch", e)); //$NON-NLS-1$
 		}
 	}
 
@@ -126,29 +126,29 @@ public class GnuArmLaunch extends GdbLaunch {
 
 		super.shutdownSession(crm);
 
-//		if (true) {
-			crm.done();
-//		} else {
-//			fExecutor.execute(new Sequence(fExecutor) {
-//
-//				@Override
-//				public Step[] getSteps() {
-//					return new Step[] { new Step() {
-//						@Override
-//						public void execute(RequestMonitor rm) {
-//							GnuArmGdbServerBackend service = (GnuArmGdbServerBackend) fTracker
-//									.getService(IGdbServerBackendService.class);
-//							if (service == null) {
-//								crm.done();
-//								return;
-//							}
-//							service.shutdown(crm);
-//							;
-//						}
-//					} };
-//				}
-//			});
-//		}
+		// if (true) {
+		crm.done();
+		// } else {
+		// fExecutor.execute(new Sequence(fExecutor) {
+		//
+		// @Override
+		// public Step[] getSteps() {
+		// return new Step[] { new Step() {
+		// @Override
+		// public void execute(RequestMonitor rm) {
+		// GnuArmGdbServerBackend service = (GnuArmGdbServerBackend) fTracker
+		// .getService(IGdbServerBackendService.class);
+		// if (service == null) {
+		// crm.done();
+		// return;
+		// }
+		// service.shutdown(crm);
+		// ;
+		// }
+		// } };
+		// }
+		// });
+		// }
 
 	}
 
@@ -203,8 +203,15 @@ public class GnuArmLaunch extends GdbLaunch {
 			}).get();
 		} catch (InterruptedException e) {
 			Activator.log(e);
+			throw new CoreException(new Status(IStatus.ERROR,
+					Activator.PLUGIN_ID, 0,
+					"Interrupted while creating memory retrieval", e));
 		} catch (ExecutionException e) {
 			Activator.log(e);
+			throw new CoreException(
+					new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,
+							"Cannot create memory retrieval", e));
+
 		}
 	}
 

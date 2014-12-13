@@ -76,6 +76,7 @@ public class LaunchConfigurationDelegate extends
 		System.out.println("LaunchConfigurationDelegate.newServiceFactory("
 				+ config.getName() + "," + version + ") " + this);
 
+		fConfig = config;
 		return new ServicesFactory(version);
 		// return new GdbJtagDebugServicesFactory(version);
 	}
@@ -85,11 +86,13 @@ public class LaunchConfigurationDelegate extends
 	 */
 	protected GdbLaunch createGdbLaunch(ILaunchConfiguration configuration,
 			String mode, ISourceLocator locator) throws CoreException {
-		// return new GdbLaunch(configuration, mode, locator);
 
 		System.out.println("LaunchConfigurationDelegate.createGdbLaunch("
 				+ configuration.getName() + "," + mode + ") " + this);
 
+		DebugUtils.checkLaunchConfigurationStarted(configuration);
+
+		// return new GdbLaunch(configuration, mode, locator);
 		return new Launch(configuration, mode, locator);
 	}
 

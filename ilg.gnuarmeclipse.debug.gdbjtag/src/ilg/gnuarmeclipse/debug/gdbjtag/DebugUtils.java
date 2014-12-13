@@ -57,7 +57,10 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.DebugPlugin;
+import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchManager;
 
 @SuppressWarnings("restriction")
 public class DebugUtils {
@@ -442,6 +445,55 @@ public class DebugUtils {
 							+ cmdOutput, null));//$NON-NLS-1$
 		}
 		return gdbVersion;
+	}
+
+	/**
+	 * Test if the launch configuration is already started. Enumerate all
+	 * launches and check by name and non terminated status.
+	 * 
+	 * @param configuration
+	 * @return true if already present.
+	 */
+	public static boolean isLaunchConfigurationStarted(
+			ILaunchConfiguration configuration) {
+
+		ILaunchManager launchManager = DebugPlugin.getDefault()
+				.getLaunchManager();
+		ILaunch[] launches = launchManager.getLaunches();
+		for (int i = 0; i < launches.length; ++i) {
+			ILaunch launch = launches[i];
+			// System.out.println(ls[i].getLaunchConfiguration().getName());
+			if (!launch.isTerminated()
+					&& configuration.getName().equals(
+							launch.getLaunchConfiguration().getName())) {
+
+				return true;
+			}
+		}
+		return false;
+	}
+
+	/**
+	 * Check if the launch configuration is already started and throw a
+	 * CoreException.
+	 * 
+	 * @param configuration
+	 * @throws CoreException
+	 */
+	public static void checkLaunchConfigurationStarted(
+			ILaunchConfiguration configuration) throws CoreException {
+
+		if (isLaunchConfigurationStarted(configuration)) {
+
+			throw new CoreException(
+					new Status(
+							IStatus.ERROR,
+							Activator.PLUGIN_ID,
+							"Debug session '"
+									+ configuration.getName()
+									+ "' already started. Terminate the first one before restarting."));
+
+		}
 	}
 
 	// ------------------------------------------------------------------------
