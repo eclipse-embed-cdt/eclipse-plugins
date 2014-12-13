@@ -21,7 +21,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.RejectedExecutionException;
 
-import org.eclipse.cdt.dsf.concurrent.CountingRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DefaultDsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.DsfRunnable;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
@@ -63,6 +62,8 @@ public class GnuArmLaunch extends GdbLaunch {
 	private DsfSession fSession;
 	private DsfServicesTracker fTracker;
 	private DefaultDsfExecutor fExecutor;
+
+	// private boolean fWasShutdown = false;
 
 	// private DsfMemoryBlockRetrieval fMemRetrieval;
 
@@ -120,36 +121,43 @@ public class GnuArmLaunch extends GdbLaunch {
 	@Override
 	public void shutdownSession(final RequestMonitor rm) {
 
-		final CountingRequestMonitor crm = new CountingRequestMonitor(
-				fExecutor, rm);
-		crm.setDoneCount(2);
+		// if (fWasShutdown) {
+		// System.out.println("Multiple shutdownSession() !!!");
+		// rm.done();
+		// return;
+		// }
 
-		super.shutdownSession(crm);
+		super.shutdownSession(rm);
 
-		// if (true) {
-		crm.done();
-		// } else {
-		// fExecutor.execute(new Sequence(fExecutor) {
+		// Sequence shutdownSequence = new Sequence(fExecutor, new
+		// RequestMonitor(
+		// fExecutor, rm) {
+		// @Override
+		// protected void handleCompleted() {
+		// GnuArmLaunch.super.shutdownSession(rm);
+		// }
+		// }) {
 		//
 		// @Override
 		// public Step[] getSteps() {
 		// return new Step[] { new Step() {
 		// @Override
-		// public void execute(RequestMonitor rm) {
+		// public void execute(RequestMonitor stepRm) {
 		// GnuArmGdbServerBackend service = (GnuArmGdbServerBackend) fTracker
 		// .getService(IGdbServerBackendService.class);
 		// if (service == null) {
-		// crm.done();
+		// stepRm.done();
 		// return;
 		// }
-		// service.shutdown(crm);
+		// service.shutdown(stepRm);
 		// ;
 		// }
 		// } };
 		// }
-		// });
-		// }
+		// };
+		// fExecutor.execute(shutdownSequence);
 
+		// fWasShutdown = true;
 	}
 
 	/**

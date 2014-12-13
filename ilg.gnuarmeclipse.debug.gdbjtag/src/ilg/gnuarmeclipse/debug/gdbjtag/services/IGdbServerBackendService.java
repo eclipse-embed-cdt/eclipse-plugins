@@ -11,13 +11,15 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.services;
 
-import org.eclipse.cdt.dsf.mi.service.IMIBackend2;
+import org.eclipse.cdt.dsf.service.IDsfService;
 
-public interface IGdbServerBackendService extends IMIBackend2 {
+public interface IGdbServerBackendService extends IDsfService {
 
 	// ------------------------------------------------------------------------
 
-	// No content, only a marker to refer the service.
-	
+	public Process getServerProcess();
+
+	public void destroy();
+
 	// ------------------------------------------------------------------------
 }

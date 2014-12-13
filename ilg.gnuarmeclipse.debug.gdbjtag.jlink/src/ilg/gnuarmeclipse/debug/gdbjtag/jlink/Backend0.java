@@ -139,7 +139,7 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 
 	@Override
 	public void initialize(final RequestMonitor requestMonitor) {
-		System.out.println("GDBBackend.initialize() " + Thread.currentThread());
+		System.out.println("Backend0.initialize() " + Thread.currentThread());
 		super.initialize(new ImmediateRequestMonitor(requestMonitor) {
 			@Override
 			protected void handleSuccess() {
@@ -169,7 +169,7 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 
 	@Override
 	public void shutdown(final RequestMonitor requestMonitor) {
-		System.out.println("GDBBackend.shutdown() " + Thread.currentThread());
+		System.out.println("Backend0.shutdown() " + Thread.currentThread());
 		final Sequence.Step[] shutdownSteps = new Sequence.Step[] {
 				new RegisterStep(
 						InitializationShutdownStep.Direction.SHUTTING_DOWN),
@@ -182,7 +182,7 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 					@Override
 					protected void handleCompleted() {
 						System.out
-								.println("GDBBackend.shutdown() handleCompleted()"); //$NON-NLS-1$
+								.println("Backend0.shutdown() handleCompleted()"); //$NON-NLS-1$
 						Backend0.super.shutdown(requestMonitor);
 					}
 				}) {
@@ -192,7 +192,7 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 			}
 		};
 		getExecutor().execute(shutdownSequence);
-		System.out.println("GDBBackend.shutdown() return"); //$NON-NLS-1$
+		System.out.println("Backend0.shutdown() return"); //$NON-NLS-1$
 	}
 
 	/** @since 4.0 */
@@ -523,7 +523,7 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 		// Bug 339379
 
 		// destroy() should be supported even if it's not spawner.
-		System.out.println("GDBBackend.destroy()");
+		System.out.println("Backend0.destroy()");
 		if (getState() == State.STARTED) {
 			fProcess.destroy();
 		}

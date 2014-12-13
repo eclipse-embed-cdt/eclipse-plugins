@@ -12,7 +12,9 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmCommandFactory;
+import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmGdbServerBackend;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmServicesFactory;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.dsf.GdbServerBackend;
 
 import org.eclipse.cdt.dsf.debug.service.IProcesses;
 import org.eclipse.cdt.dsf.debug.service.command.ICommandControl;
@@ -65,6 +67,12 @@ public class ServicesFactory extends GnuArmServicesFactory {
 		}
 
 		return super.createProcessesService(session);
+	}
+
+	@Override
+	protected GnuArmGdbServerBackend createGdbServerBackendService(
+			DsfSession session, ILaunchConfiguration lc) {
+		return new GdbServerBackend(session, lc);
 	}
 
 }

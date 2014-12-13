@@ -32,7 +32,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
  * To be used as parent class by actual implementations (J-Link and OpenOCD
  * factories).
  */
-public class GnuArmServicesFactory extends GdbDebugServicesFactory {
+public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 
 	// ------------------------------------------------------------------------
 
@@ -76,9 +76,10 @@ public class GnuArmServicesFactory extends GdbDebugServicesFactory {
 		return new PeripheralMemoryService(session);
 	}
 
+	// TODO: make it abstract and update openocd
 	protected GnuArmGdbServerBackend createGdbServerBackendService(
 			DsfSession session, ILaunchConfiguration lc) {
-		return new GnuArmGdbServerBackend(session, lc);
+		return null;
 	}
 
 	// Not yet functional

@@ -19,7 +19,7 @@ import java.io.PipedOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 
-class SemihostingProcess extends Process implements Runnable {
+public class SemihostingProcess extends Process implements Runnable {
 
 	boolean fRunning;
 	Thread fThread = null;

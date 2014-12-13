@@ -12,6 +12,7 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.dsf.GdbServerBackend;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.TabDebugger;
 
 import java.util.HashMap;
@@ -20,13 +21,13 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.RejectedExecutionException;
 
+import org.eclipse.cdt.dsf.concurrent.ConfinedToDsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.DefaultDsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.DsfRunnable;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.gdb.IGdbDebugConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
-import org.eclipse.cdt.dsf.gdb.service.IGDBBackend;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.CoreException;
@@ -42,10 +43,14 @@ import org.eclipse.debug.core.model.ISourceLocator;
 @SuppressWarnings("restriction")
 public class Launch extends GnuArmLaunch {
 
+	// ------------------------------------------------------------------------
+
 	ILaunchConfiguration fConfig = null;
 	private DsfSession fSession;
 	private DsfServicesTracker fTracker;
 	private DefaultDsfExecutor fExecutor;
+
+	// ------------------------------------------------------------------------
 
 	public Launch(ILaunchConfiguration launchConfiguration, String mode,
 			ISourceLocator locator) {
@@ -59,6 +64,8 @@ public class Launch extends GnuArmLaunch {
 		fExecutor = (DefaultDsfExecutor) getDsfExecutor();
 		fSession = getSession();
 	}
+
+	// ------------------------------------------------------------------------
 
 	public void initialize() {
 
@@ -100,11 +107,14 @@ public class Launch extends GnuArmLaunch {
 		super.initializeControl();
 	}
 
+	@ConfinedToDsfExecutor("getSession().getExecutor()")
 	public void shutdownSession(final RequestMonitor rm) {
 
 		System.out.println("Launch.shutdownSession() " + this);
 		super.shutdownSession(rm);
 	}
+
+	// ------------------------------------------------------------------------
 
 	public void initialiseConsoles(IProgressMonitor monitor)
 			throws CoreException {
@@ -165,8 +175,8 @@ public class Launch extends GnuArmLaunch {
 					new Callable<Process>() {
 						@Override
 						public Process call() throws CoreException {
-							Backend backend = (Backend) fTracker
-									.getService(IGDBBackend.class);
+							GdbServerBackend backend = (GdbServerBackend) fTracker
+									.getService(GdbServerBackend.class);
 							if (backend != null) {
 								return backend.getServerProcess();
 							}
@@ -208,8 +218,8 @@ public class Launch extends GnuArmLaunch {
 					new Callable<Process>() {
 						@Override
 						public Process call() throws CoreException {
-							Backend backend = (Backend) fTracker
-									.getService(IGDBBackend.class);
+							GdbServerBackend backend = (GdbServerBackend) fTracker
+									.getService(GdbServerBackend.class);
 							if (backend != null) {
 								return backend.getSemihostingProcess();
 							}
@@ -262,4 +272,5 @@ public class Launch extends GnuArmLaunch {
 		return parts[parts.length - 1];
 	}
 
+	// ------------------------------------------------------------------------
 }

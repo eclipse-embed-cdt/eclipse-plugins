@@ -19,14 +19,17 @@ import org.eclipse.cdt.dsf.gdb.launching.ServicesLaunchSequence;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.IProgressMonitor;
 
+/**
+ * Insert the step of creating the GdbServerBackend before all other steps.
+ */
 public class GnuArmServicesLaunchSequence extends ServicesLaunchSequence {
 
 	// ------------------------------------------------------------------------
 
-    DsfSession fSession;
-    GdbLaunch fLaunch;
+	private DsfSession fSession;
+	private GdbLaunch fLaunch;
 
-	Step[] fSteps = new Step[] { new Step() {
+	Step[] fOurSteps = new Step[] { new Step() {
 		@Override
 		public void execute(RequestMonitor requestMonitor) {
 			fLaunch.getServiceFactory()
@@ -36,28 +39,35 @@ public class GnuArmServicesLaunchSequence extends ServicesLaunchSequence {
 		}
 	} };
 
+	private Step[] fSteps = null;
+
 	// ------------------------------------------------------------------------
 
 	public GnuArmServicesLaunchSequence(DsfSession session, GdbLaunch launch,
 			IProgressMonitor pm) {
 		super(session, launch, pm);
 
-        fSession = session;
-        fLaunch = launch;
+		System.out.println("GnuArmServicesLaunchSequence()");
+
+		fSession = session;
+		fLaunch = launch;
 	}
 
 	// ------------------------------------------------------------------------
 
-    @Override
-    public Step[] getSteps() {
-		Step[] superSteps = super.getSteps();
-    	
-    	Step[] steps = new Step[fSteps.length+superSteps.length];
-    	System.arraycopy(fSteps, 0, steps, 0, fSteps.length);
-    	System.arraycopy(superSteps, 0, steps, fSteps.length,   superSteps.length  );
-    	
-        return steps;
-    }
+	@Override
+	public Step[] getSteps() {
+		// System.out.println("GnuArmServicesLaunchSequence.getSteps()");
+		if (fSteps == null) {
+			Step[] superSteps = super.getSteps();
+
+			fSteps = new Step[fOurSteps.length + superSteps.length];
+			System.arraycopy(fOurSteps, 0, fSteps, 0, fOurSteps.length);
+			System.arraycopy(superSteps, 0, fSteps, fOurSteps.length,
+					superSteps.length);
+		}
+		return fSteps;
+	}
 
 	// ------------------------------------------------------------------------
 }

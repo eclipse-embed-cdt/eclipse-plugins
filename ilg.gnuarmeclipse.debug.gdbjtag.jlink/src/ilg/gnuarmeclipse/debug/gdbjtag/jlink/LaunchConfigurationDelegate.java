@@ -34,6 +34,7 @@ import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
@@ -340,9 +341,40 @@ public class LaunchConfigurationDelegate extends
 
 	}
 
+	/**
+	 * Perform some local validations before starting the debug session.
+	 */
+	@Override
+	protected IPath checkBinaryDetails(final ILaunchConfiguration config)
+			throws CoreException {
+
+		String deviceName = "";
+		try {
+			deviceName = config.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
+					ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT).trim();
+		} catch (CoreException e) {
+		}
+
+		if (deviceName.isEmpty()) {
+			throw new CoreException(
+					new Status(
+							IStatus.ERROR,
+							Activator.PLUGIN_ID,
+							"Missing mandatory device name. "
+									+ "Fill-in the 'Device name:' field in the Debugger tab.")); //$NON-NLS-1$
+		}
+
+		IPath path = super.checkBinaryDetails(config);
+		return path;
+	}
+
 	// Get a custom launch sequence, that inserts a GDB server starter.
 	protected Sequence getServicesSequence(DsfSession session, ILaunch launch,
 			IProgressMonitor rm) {
+
+		System.out.println("LaunchConfigurationDelegate.getServicesSequence()");
+
 		return new GnuArmServicesLaunchSequence(session, (GdbLaunch) launch, rm);
 	}
 
