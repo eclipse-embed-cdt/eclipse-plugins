@@ -22,5 +22,6 @@ popd  > /dev/null
 #echo "pwd   =[`pwd`]"
 
 (cd "${SCRIPT_PATH}"; sh publish-updates.sh test)
+#(cd "${SCRIPT_PATH}"; sh publish-updates.sh test force)
 
 echo "Install new software from http://gnuarmeclipse.sourceforge.net/updates-test"

@@ -23,6 +23,12 @@ then
   echo "Dry run"
 fi
 
+if [ $# -gt 0 ] && [ "$1" = "force" ]
+then
+  FORCE="force"
+  shift
+  echo "Force write"
+fi
 
 SF_USER=ilg-ul
 SF_DESTINATION="$SF_USER,gnuarmeclipse@frs.sourceforge.net:/home/frs/project/g/gn/gnuarmeclipse/$SF_FOLDER$TEST"
@@ -30,12 +36,19 @@ SOURCE_LIST="."
 
 # -c skip based on checksum, not mod-time & size
 
-RSYNC_OPTS="-vrCct --exclude=scripts --exclude=.*"
+RSYNC_OPTS="-vrCt --exclude=scripts --exclude=.*"
 RSYNC_OPTS+=" --delete"
 
 if [ "$DRY" = "dry" ]
 then
   RSYNC_OPTS+=" -n"
+fi
+
+if [ "$FORCE" = "force" ]
+then
+  RSYNC_OPTS+=" --ignore-times"
+else
+  RSYNC_OPTS+=" --checksum"
 fi
 
 if [ ! -d ../ilg.gnuarmeclipse-repository/target/repository ]
@@ -46,7 +59,7 @@ fi
 
 cd ../ilg.gnuarmeclipse-repository/target
 
-echo "Rsync-ing SourceForge $SF_FOLDER$TEST site"
+echo "Rsync-ing SourceForge $SF_FOLDER$TEST site ($RSYNC_OPTS)"
 (cd repository; rsync -e ssh $RSYNC_OPTS $SOURCE_LIST $SF_DESTINATION)
 
 if [ "$TEST" = "-test" ]
