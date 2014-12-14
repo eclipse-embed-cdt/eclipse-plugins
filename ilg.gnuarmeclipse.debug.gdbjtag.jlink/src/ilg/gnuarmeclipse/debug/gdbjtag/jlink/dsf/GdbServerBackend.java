@@ -42,17 +42,16 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	// ------------------------------------------------------------------------
 
 	private final ILaunchConfiguration fLaunchConfiguration;
-	private boolean doStartGdbServer = false;
-	private boolean doStartSemihostingConsole = false;
-	private Process fSemihostingProcess;
-	private SemihostingMonitorJob fSemihostingMonitorJob;
 
-	private State fSemihostingBackendState = State.NOT_INITIALIZED;
+	protected boolean fDoStartSemihostingConsole = false;
+	protected Process fSemihostingProcess;
+	protected SemihostingMonitorJob fSemihostingMonitorJob;
 
-	@SuppressWarnings("unused")
-	private int fSemihostingExitValue = 0;
+	protected State fSemihostingBackendState = State.NOT_INITIALIZED;
 
-	private int fGdbServerLaunchTimeout = 30;
+	protected int fSemihostingExitValue = 0;
+
+	protected int fGdbServerLaunchTimeout = 30;
 
 	// ------------------------------------------------------------------------
 
@@ -72,25 +71,13 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 		System.out.println("GdbServerBackend.initialize()");
 
-		super.initialize(new RequestMonitor(getExecutor(), rm) {
-
-			protected void handleSuccess() {
-				doInitialize(rm);
-			}
-		});
-	}
-
-	// @SuppressWarnings("rawtypes")
-	private void doInitialize(RequestMonitor rm) {
-		// register(new String[] { IGdbServerBackendService.class.getName() },
-		// new Hashtable());
-
 		try {
-			doStartGdbServer = fLaunchConfiguration.getAttribute(
+			// Update parent data member before calling initialise.
+			fDoStartGdbServer = fLaunchConfiguration.getAttribute(
 					ConfigurationAttributes.DO_START_GDB_SERVER,
 					ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
 
-			doStartSemihostingConsole = doStartGdbServer
+			fDoStartSemihostingConsole = fDoStartGdbServer
 					&& fLaunchConfiguration
 							.getAttribute(
 									ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
@@ -99,21 +86,27 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		} catch (CoreException e) {
 		}
 
-		if (doStartGdbServer) {
+		// Initialise the super class, and, when ready, perform the local
+		// initialisations.
+		super.initialize(new RequestMonitor(getExecutor(), rm) {
+
+			protected void handleSuccess() {
+				doInitialize(rm);
+			}
+		});
+	}
+
+	private void doInitialize(RequestMonitor rm) {
+
+		if (fDoStartGdbServer) {
 
 			final Sequence.Step[] initializeSteps = new Sequence.Step[] {
-
-					new GdbServerStep(
-							InitializationShutdownStep.Direction.INITIALIZING),
-					new GdbServerMonitorStep(
-							InitializationShutdownStep.Direction.INITIALIZING),
 
 					new SemihostingStep(
 							InitializationShutdownStep.Direction.INITIALIZING),
 					new SemihostingMonitorStep(
 							InitializationShutdownStep.Direction.INITIALIZING), };
 
-			// the sequence completion code will handle the client startup
 			Sequence startupSequence = new Sequence(getExecutor(), rm) {
 				@Override
 				public Step[] getSteps() {
@@ -212,7 +205,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		@Override
 		public void initialize(final RequestMonitor requestMonitor) {
 
-			if (!doStartSemihostingConsole) {
+			if (!fDoStartSemihostingConsole) {
 				requestMonitor.done();
 				return;
 			}
@@ -334,7 +327,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		@Override
 		protected void shutdown(final RequestMonitor requestMonitor) {
 
-			if (!doStartSemihostingConsole) {
+			if (!fDoStartSemihostingConsole) {
 				requestMonitor.done();
 				return;
 			}
@@ -522,7 +515,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		@Override
 		public void initialize(final RequestMonitor requestMonitor) {
 
-			if (!doStartSemihostingConsole) {
+			if (!fDoStartSemihostingConsole) {
 				requestMonitor.done();
 				return;
 			}
@@ -540,7 +533,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		@Override
 		protected void shutdown(RequestMonitor requestMonitor) {
 
-			if (!doStartSemihostingConsole) {
+			if (!fDoStartSemihostingConsole) {
 				requestMonitor.done();
 				return;
 			}

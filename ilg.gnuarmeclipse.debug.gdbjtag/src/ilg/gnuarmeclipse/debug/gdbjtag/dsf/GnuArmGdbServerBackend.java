@@ -27,6 +27,8 @@ import java.util.concurrent.TimeUnit;
 import org.eclipse.cdt.dsf.concurrent.DsfRunnable;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
+import org.eclipse.cdt.dsf.concurrent.Sequence;
+import org.eclipse.cdt.dsf.concurrent.Sequence.Step;
 import org.eclipse.cdt.dsf.gdb.service.command.GDBControl.InitializationShutdownStep;
 import org.eclipse.cdt.dsf.mi.service.IMIBackend2;
 import org.eclipse.cdt.dsf.service.AbstractDsfService;
@@ -47,9 +49,11 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 	// ------------------------------------------------------------------------
 
 	private final ILaunchConfiguration fLaunchConfiguration;
+
 	protected Process fServerProcess;
-	private GdbServerMonitorJob fServerMonitorJob;
+	protected GdbServerMonitorJob fServerMonitorJob;
 	protected State fServerBackendState = State.NOT_INITIALIZED;
+	protected boolean fDoStartGdbServer = true;
 
 	private int fGdbServerExitValue = 0;
 
@@ -98,7 +102,26 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 		// getSession().addServiceEventListener(GnuArmGdbServerBackend.this,
 		// null);
 
-		rm.done();
+		if (fDoStartGdbServer) {
+
+			final Sequence.Step[] initializeSteps = new Sequence.Step[] {
+
+					new GdbServerStep(
+							InitializationShutdownStep.Direction.INITIALIZING),
+					new GdbServerMonitorStep(
+							InitializationShutdownStep.Direction.INITIALIZING), };
+
+			Sequence startupSequence = new Sequence(getExecutor(), rm) {
+				@Override
+				public Step[] getSteps() {
+					return initializeSteps;
+				}
+			};
+			getExecutor().execute(startupSequence);
+
+		} else {
+			rm.done();
+		}
 	}
 
 	@Override
@@ -272,7 +295,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 					}
 					try {
 						File dir = DebugUtils
-								.getProjectOsPath(fLaunchConfiguration);
+								.getProjectOsDir(fLaunchConfiguration);
 
 						fServerProcess = launchGDBProcess(commandLineArray, dir);
 						// Need to do this on the executor for thread-safety

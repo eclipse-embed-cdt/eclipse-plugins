@@ -235,11 +235,21 @@ public class DebugUtils {
 	 * @return Working directory
 	 * @throws CoreException
 	 */
-	public static File getProjectOsPath(ILaunchConfiguration configuration)
+	public static File getProjectOsDir(ILaunchConfiguration configuration)
+			throws CoreException {
+
+		IPath path = getProjectOsPath(configuration);
+		File dir = null;
+		if (null != path) {
+			dir = new File(path.toOSString());
+		}
+		return dir;
+	}
+
+	public static IPath getProjectOsPath(ILaunchConfiguration configuration)
 			throws CoreException {
 
 		IPath path = null;
-		File dir = null;
 		if (null != configuration) {
 			String projectName = configuration.getAttribute(
 					"org.eclipse.cdt.launch.PROJECT_ATTR", "");
@@ -257,10 +267,7 @@ public class DebugUtils {
 				path = new Path(executableName).removeLastSegments(1);
 			}
 		}
-		if (null != path) {
-			dir = new File(path.toOSString());
-		}
-		return dir;
+		return path;
 	}
 
 	public static IPath getGDBPath(ILaunchConfiguration configuration) {

@@ -11,13 +11,25 @@
  *     Ericsson
  *     Marc Khouzam (Ericsson) - Use the new IMIBackend2 interface (Bug 350837)
  *     Mark Bozeman (Mentor Graphics) - Report GDB start failures (Bug 376203)
+ *     Iulia Vasii (Freescale Semiconductor) - Separate GDB command from its arguments (Bug 445360)
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
+/* ----------------------------------------------------------------------------
+ *
+ * Copied here because we need the new version, but still remain compatible 
+ * with Kepler. When dependency to Kepler will be removed, this file will 
+ * no longer be necessary.
+ * 
+ * It is identical to the newer GDBBackend, with the following changes:
+ * - package ilg.gnuarmeclipse.debug.gdbjtag.jlink.dsf;
+ * - some imports
+ * - @SuppressWarnings("restriction")
+ *
+ * DO NOT reindent!
+ * 
+ * ------------------------------------------------------------------------- */
 
-import ilg.gnuarmeclipse.core.StringUtils;
-import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.TabDebugger;
+package ilg.gnuarmeclipse.debug.gdbjtag.dsf;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -33,6 +45,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 
 import org.eclipse.cdt.core.model.ICProject;
+import org.eclipse.cdt.core.parser.util.StringUtil;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.dsf.concurrent.DsfRunnable;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
@@ -84,7 +97,7 @@ import org.osgi.framework.BundleContext;
  * @since 1.1
  */
 @SuppressWarnings("restriction")
-public class Backend0 extends AbstractDsfService implements IGDBBackend,
+public class GDBBackend extends AbstractDsfService implements IGDBBackend,
 		IMIBackend2 {
 
 	private final ILaunchConfiguration fLaunchConfiguration;
@@ -123,7 +136,7 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 	 */
 	private MonitorInterruptJob fInterruptFailedJob;
 
-	public Backend0(DsfSession session, ILaunchConfiguration lc) {
+	public GDBBackend(DsfSession session, ILaunchConfiguration lc) {
 		super(session);
 		fBackendId = "gdb[" + Integer.toString(fgInstanceCounter++) + "]"; //$NON-NLS-1$//$NON-NLS-2$
 		fLaunchConfiguration = lc;
@@ -138,13 +151,8 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 		}
 	}
 
-	public State getServerState() {
-		return State.NOT_INITIALIZED;
-	}
-
 	@Override
 	public void initialize(final RequestMonitor requestMonitor) {
-		System.out.println("GDBBackend.initialize() " + Thread.currentThread());
 		super.initialize(new ImmediateRequestMonitor(requestMonitor) {
 			@Override
 			protected void handleSuccess() {
@@ -174,7 +182,6 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 
 	@Override
 	public void shutdown(final RequestMonitor requestMonitor) {
-		System.out.println("GDBBackend.shutdown() " + Thread.currentThread());
 		final Sequence.Step[] shutdownSteps = new Sequence.Step[] {
 				new RegisterStep(
 						InitializationShutdownStep.Direction.SHUTTING_DOWN),
@@ -186,9 +193,7 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 				new RequestMonitor(getExecutor(), requestMonitor) {
 					@Override
 					protected void handleCompleted() {
-						System.out
-								.println("GDBBackend.shutdown() handleCompleted()"); //$NON-NLS-1$
-						Backend0.super.shutdown(requestMonitor);
+						GDBBackend.super.shutdown(requestMonitor);
 					}
 				}) {
 			@Override
@@ -197,7 +202,6 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 			}
 		};
 		getExecutor().execute(shutdownSequence);
-		System.out.println("GDBBackend.shutdown() return"); //$NON-NLS-1$
 	}
 
 	/** @since 4.0 */
@@ -205,25 +209,38 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 		return LaunchUtils.getGDBPath(fLaunchConfiguration);
 	}
 
-	/*
+	/**
 	 * Options for GDB process. Allow subclass to override.
+	 * 
+	 * @deprecated Use {@link #getGDBCommandLineArray()} instead
 	 */
+	@Deprecated
 	protected String getGDBCommandLine() {
-		StringBuffer gdbCommandLine = new StringBuffer(getGDBPath()
-				.toOSString());
+		String cmdArray[] = getGDBCommandLineArray();
+		return StringUtil.join(cmdArray, " "); //$NON-NLS-1$
+	}
 
+	/**
+	 * Options for GDB process. Returns the GDB command and its arguments as an
+	 * array. Allow subclass to override.
+	 * 
+	 * @since 4.6
+	 */
+	protected String[] getGDBCommandLineArray() {
 		// The goal here is to keep options to an absolute minimum.
-		// All configuration should be done in the launch sequence
+		// All configuration should be done in the final launch sequence
 		// to allow for more flexibility.
-		gdbCommandLine.append(" --interpreter"); //$NON-NLS-1$
-		// We currently work with MI version 2. Don't use just 'mi' because it
-		// points to the latest MI version, while we want mi2 specifically.
-		gdbCommandLine.append(" mi2"); //$NON-NLS-1$
-		// Don't read the gdbinit file here. It is read explicitly in
-		// the LaunchSequence to make it easier to customize.
-		gdbCommandLine.append(" --nx"); //$NON-NLS-1$
-
-		return gdbCommandLine.toString();
+		return new String[] { getGDBPath().toOSString(), // This could contain
+															// spaces
+				"--interpreter", //$NON-NLS-1$
+				// We currently work with MI version 2. Don't use just 'mi'
+				// because it
+				// points to the latest MI version, while we want mi2
+				// specifically.
+				"mi2", //$NON-NLS-1$
+				// Don't read the gdbinit file here. It is read explicitly in
+				// the LaunchSequence to make it easier to customize.
+				"--nx" }; //$NON-NLS-1$
 	}
 
 	@Override
@@ -413,21 +430,64 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 						IGDBLaunchConfigurationConstants.DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND_DEFAULT);
 	}
 
-	/*
+	protected Process launchGDBProcess() throws CoreException {
+		// Keep calling deprecated getGDBCommandLine() in case it was overridden
+		String command = getGDBCommandLine();
+		// Keep calling deprecated launchGDBProcess(String) in case it was
+		// overridden
+		return launchGDBProcess(command);
+	}
+
+	/**
 	 * Launch GDB process. Allow subclass to override.
+	 * 
+	 * @deprecated Use {@link #launchGDBProcess(String[])} instead
 	 */
-	protected Process launchGDBProcess(String[] commandLineArray, File dir)
+	@Deprecated
+	protected Process launchGDBProcess(String commandLine) throws CoreException {
+		// Backwards-compatibility check
+		// If the commandLine parameter is not the same as the command line
+		// array we provide
+		// it implies that the commandLine was modified by an extender and
+		// should be used as
+		// is. If it is the same, we can use the command line array instead
+		// using the more robust
+		// non-deprecated call to launchGDBProcess.
+		String unmodifiedCmdLine = StringUtil.join(getGDBCommandLineArray(),
+				" ").trim(); //$NON-NLS-1$
+		if (unmodifiedCmdLine.equals(commandLine.trim()) == false) {
+			Process proc = null;
+			try {
+				proc = ProcessFactory.getFactory().exec(commandLine,
+						LaunchUtils.getLaunchEnvironment(fLaunchConfiguration));
+			} catch (IOException e) {
+				String message = "Error while launching command " + commandLine; //$NON-NLS-1$
+				throw new CoreException(new Status(IStatus.ERROR,
+						GdbPlugin.PLUGIN_ID, -1, message, e));
+			}
+			return proc;
+		}
+		// End of Backwards-compatibility check
+
+		return launchGDBProcess(getGDBCommandLineArray());
+	}
+
+	/**
+	 * Launch GDB process with command and arguments. Allow subclass to
+	 * override.
+	 * 
+	 * @since 4.6
+	 */
+	protected Process launchGDBProcess(String[] commandLine)
 			throws CoreException {
 		Process proc = null;
-		System.out.println("exec " + StringUtils.join(commandLineArray, " "));
-		System.out.println("dir " + dir);
 		try {
-			proc = ProcessFactory.getFactory().exec(commandLineArray,
-					DebugUtils.getLaunchEnvironment(fLaunchConfiguration), dir);
+			proc = ProcessFactory.getFactory().exec(commandLine,
+					LaunchUtils.getLaunchEnvironment(fLaunchConfiguration));
 		} catch (IOException e) {
-			String message = "Error while launching command " + StringUtils.join(commandLineArray, " "); //$NON-NLS-1$
+			String message = "Error while launching command: " + StringUtil.join(commandLine, " "); //$NON-NLS-1$ //$NON-NLS-2$
 			throw new CoreException(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, -1, message, e));
+					GdbPlugin.PLUGIN_ID, -1, message, e));
 		}
 
 		return proc;
@@ -528,7 +588,6 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 		// Bug 339379
 
 		// destroy() should be supported even if it's not spawner.
-		System.out.println("GDBBackend.destroy()");
 		if (getState() == State.STARTED) {
 			fProcess.destroy();
 		}
@@ -582,8 +641,6 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 					getExecutor(), requestMonitor) {
 				@Override
 				protected void handleCompleted() {
-					System.out
-							.println("GDBProcessStep initalise() handleCompleted()");
 					if (!fGDBLaunchMonitor.fTimedOut) {
 						fGDBLaunchMonitor.fLaunched = true;
 						if (!isSuccess()) {
@@ -601,23 +658,7 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
-
-					if (getServerState() == State.TERMINATED) {
-						System.out.println("GDBProcessStep cannot start");
-
-						gdbLaunchRequestMonitor
-								.setStatus(new Status(
-										IStatus.CANCEL,
-										GdbPlugin.PLUGIN_ID,
-										-1,
-										"OpenOCD did not start, check configuration options.", null)); //$NON-NLS-1$
-						gdbLaunchRequestMonitor.done();
-						return Status.OK_STATUS;
-					}
-
 					if (gdbLaunchRequestMonitor.isCanceled()) {
-						System.out.println("GDBProcessStep run cancel");
-
 						gdbLaunchRequestMonitor.setStatus(new Status(
 								IStatus.CANCEL, GdbPlugin.PLUGIN_ID, -1,
 								"Canceled starting GDB", null)); //$NON-NLS-1$
@@ -625,20 +666,12 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 						return Status.OK_STATUS;
 					}
 
-					String[] commandLineArray = TabDebugger
-							.getGdbClientCommandLineArray(fLaunchConfiguration);
-
 					try {
-						File dir = DebugUtils
-								.getProjectOsDir(fLaunchConfiguration);
-
-						fProcess = launchGDBProcess(commandLineArray, dir);
+						fProcess = launchGDBProcess();
 						// Need to do this on the executor for thread-safety
 						getExecutor().submit(new DsfRunnable() {
 							@Override
 							public void run() {
-								System.out
-										.println("GDBProcessStep.initialize() run State.STARTED"); //$NON-NLS-1$
 								fBackendState = State.STARTED;
 							}
 						});
@@ -720,8 +753,6 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 						fGDBLaunchMonitor.fTimedOut = true;
 						Thread jobThread = startGdbJob.getThread();
 						if (jobThread != null) {
-							System.out.println("interrupt thread " + jobThread);
-
 							jobThread.interrupt();
 						}
 						requestMonitor.setStatus(new Status(IStatus.ERROR,
@@ -754,12 +785,9 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 						// Need to do this on the executor for thread-safety
 						// And we should wait for it to complete since we then
 						// check if the killing of GDB worked.
-						System.out.println("GDBProcessStep shutdown() run()"); //$NON-NLS-1$
 						getExecutor().submit(new DsfRunnable() {
 							@Override
 							public void run() {
-								System.out
-										.println("GDBProcessStep shutdown() run() run()"); //$NON-NLS-1$
 								destroy();
 
 								if (fMonitorJob.fMonitorExited) {
@@ -768,8 +796,6 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 									// killed,
 									// we need to set our state and send the
 									// event
-									System.out
-											.println("GDBProcessStep shutdown() run() run() State.TERMINATED"); //$NON-NLS-1$
 									fBackendState = State.TERMINATED;
 									getSession().dispatchEvent(
 											new BackendStateChangedEvent(
@@ -783,8 +809,6 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 					} catch (ExecutionException e1) {
 					}
 
-					System.out
-							.println("GDBProcessStep shutdown() run() before getting exitValue");
 					int attempts = 0;
 					while (attempts < 10) {
 						try {
@@ -797,8 +821,6 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 																	// not
 																	// exited
 
-							System.out
-									.println("GDBProcessStep shutdown() run() return");
 							requestMonitor.done();
 							return Status.OK_STATUS;
 						} catch (IllegalThreadStateException ie) {
@@ -809,8 +831,6 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 						}
 						attempts++;
 					}
-					System.out
-							.println("GDBProcessStep shutdown() run() REQUEST_FAILED");
 					requestMonitor.setStatus(new Status(IStatus.ERROR,
 							GdbPlugin.PLUGIN_ID,
 							IDsfStatusConstants.REQUEST_FAILED,
@@ -819,7 +839,6 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 					return Status.OK_STATUS;
 				}
 			}.schedule();
-			System.out.println("GDBProcessStep shutdown() return");
 		}
 	}
 
@@ -841,14 +860,10 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 
 		@Override
 		protected void shutdown(RequestMonitor requestMonitor) {
-
-			System.out.println("MonitorJobStep.shutdown()");
-
 			if (fMonitorJob != null) {
 				fMonitorJob.kill();
 			}
 			requestMonitor.done();
-			System.out.println("MonitorJobStep.shutdown() return");
 		}
 	}
 
@@ -863,7 +878,7 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 					IMIBackend2.class.getName(), IGDBBackend.class.getName() },
 					new Hashtable<String, String>());
 
-			getSession().addServiceEventListener(Backend0.this, null);
+			getSession().addServiceEventListener(GDBBackend.this, null);
 
 			/*
 			 * This event is not consumed by any one at present, instead it's
@@ -884,7 +899,7 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 		@Override
 		protected void shutdown(RequestMonitor requestMonitor) {
 			unregister();
-			getSession().removeServiceEventListener(Backend0.this);
+			getSession().removeServiceEventListener(GDBBackend.this);
 			requestMonitor.done();
 		}
 	}
@@ -901,8 +916,6 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
 			synchronized (fMonProcess) {
-				System.out.println("MonitorJob.run() submit " + fMonitorStarted
-						+ " thread " + getThread());
 				getExecutor().submit(fMonitorStarted);
 				try {
 					fMonProcess.waitFor();
@@ -912,11 +925,7 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 					getExecutor().submit(new DsfRunnable() {
 						@Override
 						public void run() {
-							System.out.println("MonitorJob.run() run() thread "
-									+ getThread());
 							destroy();
-							System.out
-									.println("MonitorJob.run() run() State.TERMINATED");
 							fBackendState = State.TERMINATED;
 							getSession()
 									.dispatchEvent(
@@ -931,9 +940,6 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 					Thread.interrupted();
 				}
 
-				System.out
-						.println("MonitorJob.run() fMonitorExited = true thread "
-								+ getThread());
 				fMonitorExited = true;
 			}
 			return Status.OK_STATUS;
@@ -949,8 +955,6 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 		void kill() {
 			synchronized (fMonProcess) {
 				if (!fMonitorExited) {
-					System.out.println("MonitorJob.kill() interrupt "
-							+ getThread().toString());
 					getThread().interrupt();
 				}
 			}

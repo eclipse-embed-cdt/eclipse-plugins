@@ -110,7 +110,7 @@ public class LaunchConfigurationDelegate extends
 	/**
 	 * After Launch.initialise(), call here to effectively launch.
 	 * 
-	 * The main reason for this to be here is the custom launchDebugSession().
+	 * The main reason for this is the custom launchDebugSession().
 	 */
 	@Override
 	public void launch(ILaunchConfiguration config, String mode,
@@ -369,7 +369,9 @@ public class LaunchConfigurationDelegate extends
 		return path;
 	}
 
-	// Get a custom launch sequence, that inserts a GDB server starter.
+	/**
+	 * Get a custom launch sequence, that inserts a GDB server starter.
+	 */
 	protected Sequence getServicesSequence(DsfSession session, ILaunch launch,
 			IProgressMonitor rm) {
 
