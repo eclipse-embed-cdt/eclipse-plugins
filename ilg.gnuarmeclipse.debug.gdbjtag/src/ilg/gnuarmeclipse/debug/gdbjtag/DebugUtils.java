@@ -32,6 +32,7 @@ import org.eclipse.cdt.core.cdtvariables.CdtVariableException;
 import org.eclipse.cdt.core.cdtvariables.ICdtVariable;
 import org.eclipse.cdt.core.envvar.IEnvironmentVariable;
 import org.eclipse.cdt.core.model.CoreModel;
+import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.core.settings.model.ICProjectDescription;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
@@ -44,7 +45,9 @@ import org.eclipse.cdt.internal.core.envvar.EnvVarDescriptor;
 import org.eclipse.cdt.internal.core.envvar.EnvironmentVariableManager;
 import org.eclipse.cdt.internal.core.envvar.IEnvironmentContextInfo;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
+import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspace;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
@@ -503,5 +506,113 @@ public class DebugUtils {
 		}
 	}
 
+	/**
+	 * Execute an exteral process.
+	 * 
+	 * @param commandLineArray
+	 *            a String array with the comman line.
+	 * @param environ
+	 *            a String array with environment variables.
+	 * @param dir
+	 *            the current working directory for the process.
+	 * @return a Process object.
+	 * @throws CoreException
+	 */
+	public static Process exec(String[] commandLineArray, String[] environ,
+			File dir) throws CoreException {
+
+		System.out.println("exec " + StringUtils.join(commandLineArray, " "));
+		System.out.println("dir " + dir);
+
+		Process proc = null;
+		try {
+			proc = ProcessFactory.getFactory().exec(commandLineArray, environ,
+					dir);
+		} catch (IOException e) {
+			String message = "Launching command ["
+					+ StringUtils.join(commandLineArray, " ") + "] failed."; //$NON-NLS-1$
+			throw new CoreException(new Status(IStatus.ERROR,
+					Activator.PLUGIN_ID, -1, message, e));
+		}
+
+		return proc;
+	}
+
+	/**
+	 * Best effort to get a current working directory.
+	 * 
+	 * The first part is an exact copy of GDBBackend.getGDBWorkingDirectory().
+	 * 
+	 * @param launchConfiguration
+	 * @return
+	 * @throws CoreException
+	 */
+	public static IPath getGdbWorkingDirectory(
+			ILaunchConfiguration launchConfiguration) throws CoreException {
+		
+		// First try to use the user-specified working directory for the
+		// debugged program.
+		// This is fine only with local debug.
+		// For remote debug, the working dir of the debugged program will be
+		// on remote device
+		// and hence not applicable. In such case we may just use debugged
+		// program path on host
+		// as the working dir for GDB.
+		// However, we cannot find a standard/common way to distinguish
+		// remote debug from local
+		// debug. For instance, a local debug may also use gdbserver+gdb. So
+		// it's up to each
+		// debugger implementation to make the distinction.
+		//
+		IPath path = null;
+		String location = launchConfiguration.getAttribute(
+				ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY,
+				(String) null);
+
+		if (location != null) {
+			String expandedLocation = VariablesPlugin.getDefault()
+					.getStringVariableManager()
+					.performStringSubstitution(location);
+			if (expandedLocation.length() > 0) {
+				path = new Path(expandedLocation);
+			}
+		}
+
+		if (path != null) {
+			// Some validity check. Should have been done by UI code.
+			if (path.isAbsolute()) {
+				File dir = new File(path.toPortableString());
+				if (!dir.isDirectory())
+					path = null;
+			} else {
+				IResource res = ResourcesPlugin.getWorkspace().getRoot()
+						.findMember(path);
+				if (res instanceof IContainer && res.exists()) {
+					path = res.getLocation();
+				} else
+					// Relative but not found in workspace.
+					path = null;
+			}
+		}
+
+		if (path == null) {
+			// default working dir is the project if this config has a
+			// project
+			ICProject cp = LaunchUtils.getCProject(launchConfiguration);
+			if (cp != null) {
+				IProject p = cp.getProject();
+				path = p.getLocation();
+			} else {
+				// no meaningful value found. Just return null.
+			}
+		}
+
+		// --------------------------------------------------------------------
+		
+		if (path == null) {
+			path = DebugUtils.getProjectOsPath(launchConfiguration);
+		}
+		return path;
+	}
 	// ------------------------------------------------------------------------
 }

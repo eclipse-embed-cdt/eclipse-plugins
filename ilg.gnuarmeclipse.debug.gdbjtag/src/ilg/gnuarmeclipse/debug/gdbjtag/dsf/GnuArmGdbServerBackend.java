@@ -11,13 +11,11 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.dsf;
 
-import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IGdbServerBackendService;
 
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Hashtable;
@@ -26,15 +24,19 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.cdt.dsf.concurrent.DsfRunnable;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
+import org.eclipse.cdt.dsf.concurrent.ImmediateRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.Sequence;
-import org.eclipse.cdt.dsf.concurrent.Sequence.Step;
 import org.eclipse.cdt.dsf.gdb.service.command.GDBControl.InitializationShutdownStep;
+import org.eclipse.cdt.dsf.mi.service.IMIBackend;
 import org.eclipse.cdt.dsf.mi.service.IMIBackend2;
+import org.eclipse.cdt.dsf.mi.service.command.events.MIStoppedEvent;
 import org.eclipse.cdt.dsf.service.AbstractDsfService;
+import org.eclipse.cdt.dsf.service.DsfServiceEventHandler;
+import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;
-import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -43,22 +45,33 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.osgi.framework.BundleContext;
 
+/**
+ * This abstract class handles the start/stop of the GDB server. Based on the
+ * configuration, it may or it may not actually start the server.
+ * 
+ * It should be used as base class for an implementation specific GDB server
+ * backend.
+ */
 public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 		implements IGdbServerBackendService, IMIBackend2 {
 
 	// ------------------------------------------------------------------------
 
-	private final ILaunchConfiguration fLaunchConfiguration;
+	// Allow derived classes to use these variables.
 
+	protected final ILaunchConfiguration fLaunchConfiguration;
+
+	protected boolean fDoStartGdbServer = true;
 	protected Process fServerProcess;
 	protected GdbServerMonitorJob fServerMonitorJob;
+
+	// For synchronisation reasons, set/check this only on the DSF thread.
 	protected State fServerBackendState = State.NOT_INITIALIZED;
-	protected boolean fDoStartGdbServer = true;
 
 	private int fGdbServerExitValue = 0;
 
 	/**
-	 * Unique ID of this service instance.
+	 * Monotone increasing Unique ID of this service instance.
 	 */
 	private final String fBackendId;
 	private static int fgInstanceCounter = 0;
@@ -81,7 +94,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 
 		System.out.println("GnuArmGdbServerBackend.initialize()");
 
-		// Initialise parent, and, when ready, initialise this class.
+		// Initialise parent, and, when ready, initialise this class too.
 		super.initialize(new RequestMonitor(getExecutor(), rm) {
 
 			protected void handleSuccess() {
@@ -90,83 +103,117 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 		});
 	}
 
-	@SuppressWarnings("rawtypes")
 	private void doInitialize(RequestMonitor rm) {
 
-		// Register the service, by interface and by actual name;
-		// it is searched later, to shut it down or to get processes.
-		register(new String[] { IGdbServerBackendService.class.getName(),
-				getClass().getName() }, new Hashtable());
-
-		// Currently not used.
-		// getSession().addServiceEventListener(GnuArmGdbServerBackend.this,
-		// null);
-
+		final Sequence.Step[] initializeSteps;
 		if (fDoStartGdbServer) {
-
-			final Sequence.Step[] initializeSteps = new Sequence.Step[] {
-
+			initializeSteps = new Sequence.Step[] {
+					new RegisterStep(
+							InitializationShutdownStep.Direction.INITIALIZING),
 					new GdbServerStep(
 							InitializationShutdownStep.Direction.INITIALIZING),
 					new GdbServerMonitorStep(
 							InitializationShutdownStep.Direction.INITIALIZING), };
-
-			Sequence startupSequence = new Sequence(getExecutor(), rm) {
-				@Override
-				public Step[] getSteps() {
-					return initializeSteps;
-				}
-			};
-			getExecutor().execute(startupSequence);
-
 		} else {
-			rm.done();
+			// The RegisterStep is needed anyway.
+			initializeSteps = new Sequence.Step[] { new RegisterStep(
+					InitializationShutdownStep.Direction.INITIALIZING), };
 		}
+		Sequence startupSequence = new Sequence(getExecutor(), rm) {
+			@Override
+			public Step[] getSteps() {
+				return initializeSteps;
+			}
+		};
+		getExecutor().execute(startupSequence);
 	}
 
 	@Override
-	public void shutdown(RequestMonitor rm) {
+	public void shutdown(final RequestMonitor rm) {
 
 		System.out.println("GnuArmGdbServerBackend.shutdown()");
 
-		// Remove this service from DSF.
-		unregister();
-		// Currently not used.
-		// getSession().removeServiceEventListener(GnuArmGdbServerBackend.this);
-
-		// We're done here, shutdown parent.
-		super.shutdown(rm);
+		final Sequence.Step[] shutdownSteps;
+		if (fDoStartGdbServer) {
+			shutdownSteps = new Sequence.Step[] {
+					new GdbServerMonitorStep(
+							InitializationShutdownStep.Direction.SHUTTING_DOWN),
+					new GdbServerStep(
+							InitializationShutdownStep.Direction.SHUTTING_DOWN),
+					new RegisterStep(
+							InitializationShutdownStep.Direction.SHUTTING_DOWN), };
+		} else {
+			// The RegisterStep is needed anyway.
+			shutdownSteps = new Sequence.Step[] { new RegisterStep(
+					InitializationShutdownStep.Direction.SHUTTING_DOWN), };
+		}
+		Sequence startupSequence = new Sequence(getExecutor(),
+				new ImmediateRequestMonitor(rm) {
+					@Override
+					protected void handleSuccess() {
+						// We're done here, shutdown parent.
+						GnuArmGdbServerBackend.super.shutdown(rm);
+					}
+				}) {
+			@Override
+			public Step[] getSteps() {
+				return shutdownSteps;
+			}
+		};
+		getExecutor().execute(startupSequence);
 	}
 
-	// ------------------------------------------------------------------------
-
-	public abstract String[] getCommandLineArray();
-
-	public abstract int getServerLaunchTimeoutSeconds();
-
-	public abstract String getStartingJobName();
-
-	public abstract String getTerminatingJobName();
-
-	// ------------------------------------------------------------------------
-
-	@Override
-	protected BundleContext getBundleContext() {
-		return Activator.getInstance().getBundle().getBundleContext();
-	}
-
-	public Process getServerProcess() {
-		return fServerProcess;
-	}
-
+	/**
+	 * Override this in the derived class and call super.destroy().
+	 */
 	@Override
 	public void destroy() {
 		System.out.println("GnuArmGdbServerBackend.destroy() "
 				+ Thread.currentThread());
 
+		// Destroy the GDB client
+		DsfServicesTracker tracker = getServicesTracker();
+		if (tracker != null) {
+			IMIBackend backend = (IMIBackend) tracker
+					.getService(IMIBackend.class);
+			if (backend != null) {
+				backend.destroy();
+			}
+		}
+
 		if (fServerProcess != null && fServerBackendState == State.STARTED) {
 			fServerProcess.destroy();
 		}
+	}
+
+	// ------------------------------------------------------------------------
+
+	@DsfServiceEventHandler
+	public void eventDispatched(final MIStoppedEvent e) {
+
+		// All debug events come here. Currently not used.
+		// System.out.println("GnuArmGdbServerBackend.eventDispatched() " + e);
+	}
+
+	// ------------------------------------------------------------------------
+
+	@Override
+	protected abstract BundleContext getBundleContext();
+
+	public abstract String[] getCommandLineArray();
+
+	public abstract int getServerLaunchTimeoutSeconds();
+
+	public abstract String getStartingServerJobName();
+
+	public abstract String getTerminatingServerJobName();
+
+	public abstract String getMonitorServerJobName();
+
+	// ------------------------------------------------------------------------
+
+	public Process getServerProcess() {
+		return fServerProcess;
 	}
 
 	// ------------------------------------------------------------------------
@@ -206,28 +253,67 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 
 	// ------------------------------------------------------------------------
 
-	protected Process launchGDBProcess(String[] commandLineArray, File dir)
+	protected Process launchGdbServerProcess(String[] commandLineArray)
 			throws CoreException {
 
 		Process proc = null;
 
-		System.out.println("exec " + StringUtils.join(commandLineArray, " "));
-		System.out.println("dir " + dir);
-
-		try {
-			proc = ProcessFactory.getFactory().exec(commandLineArray,
-					DebugUtils.getLaunchEnvironment(fLaunchConfiguration), dir);
-		} catch (IOException e) {
-			String message = "Error while launching command "
-					+ StringUtils.join(commandLineArray, " "); //$NON-NLS-1$
-			throw new CoreException(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, -1, message, e));
+		File dir = null;
+		IPath path = DebugUtils.getGdbWorkingDirectory(fLaunchConfiguration);
+		if (path != null) {
+			dir = new File(path.toOSString());
 		}
 
+		proc = DebugUtils.exec(commandLineArray,
+				DebugUtils.getLaunchEnvironment(fLaunchConfiguration), dir);
 		return proc;
 	}
 
-	// ------------------------------------------------------------------------
+	// ========================================================================
+
+	protected class RegisterStep extends InitializationShutdownStep {
+
+		RegisterStep(Direction direction) {
+			super(direction);
+		}
+
+		@Override
+		public void initialize(final RequestMonitor requestMonitor) {
+
+			// Register the service, by interface and by actual name;
+			// it is searched later, to shut it down or to get processes.
+			System.out.println("register "
+					+ GnuArmGdbServerBackend.this.getClass().getName());
+			register(new String[] { IGdbServerBackendService.class.getName(),
+					GnuArmGdbServerBackend.this.getClass().getName() },
+					new Hashtable<String, String>());
+
+			// Register listener.
+			getSession().addServiceEventListener(GnuArmGdbServerBackend.this,
+					null);
+
+			// If necessary, send an event like
+			// BackendStateChangedEvent(getSession().getId(), getId(),
+			// State.STARTED), getProperties()
+
+			requestMonitor.done();
+		}
+
+		@Override
+		protected void shutdown(RequestMonitor requestMonitor) {
+
+			// Remove this service from DSF.
+			unregister();
+
+			// Unregister listener.
+			getSession()
+					.removeServiceEventListener(GnuArmGdbServerBackend.this);
+
+			requestMonitor.done();
+		}
+	}
+
+	// ========================================================================
 
 	// Start/stop the GDB server.
 	protected class GdbServerStep extends InitializationShutdownStep {
@@ -237,7 +323,9 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 		}
 
 		@Override
-		public void initialize(final RequestMonitor requestMonitor) {
+		public void initialize(final RequestMonitor rm) {
+
+			System.out.println("GdbServerStep.initalise()");
 
 			class ServerLaunchMonitor {
 				boolean fLaunched = false;
@@ -246,24 +334,24 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 
 			final ServerLaunchMonitor fServerLaunchMonitor = new ServerLaunchMonitor();
 
-			final RequestMonitor fTmpLaunchRequestMonitor = new RequestMonitor(
-					getExecutor(), requestMonitor) {
+			final RequestMonitor serverLaunchRequestMonitor = new RequestMonitor(
+					getExecutor(), rm) {
 
 				@Override
 				protected void handleCompleted() {
 					System.out
-							.println("GdbServerStep initalise() handleCompleted()");
+							.println("GdbServerStep.initalise() handleCompleted()");
 					if (!fServerLaunchMonitor.fTimedOut) {
 						fServerLaunchMonitor.fLaunched = true;
 						if (!isSuccess()) {
-							requestMonitor.setStatus(getStatus());
+							rm.setStatus(getStatus());
 						}
-						requestMonitor.done();
+						rm.done();
 					}
 				}
 			};
 
-			final Job startGdbServerJob = new Job(getStartingJobName()) { //$NON-NLS-1$
+			final Job startGdbServerJob = new Job(getStartingServerJobName()) { //$NON-NLS-1$
 				{
 					setSystem(true);
 				}
@@ -271,33 +359,30 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 
-					if (fTmpLaunchRequestMonitor.isCanceled()) {
+					if (serverLaunchRequestMonitor.isCanceled()) {
 
 						System.out.println("startGdbServerJob run cancel");
-						fTmpLaunchRequestMonitor.setStatus(new Status(
+						serverLaunchRequestMonitor.setStatus(new Status(
 								IStatus.CANCEL, Activator.PLUGIN_ID, -1,
-								"Canceled starting GDB", null)); //$NON-NLS-1$
-						fTmpLaunchRequestMonitor.done();
+								getStartingServerJobName() + " cancelled.", null)); //$NON-NLS-1$
+						serverLaunchRequestMonitor.done();
 						return Status.OK_STATUS;
 					}
 
 					String[] commandLineArray = getCommandLineArray();
 					if (commandLineArray == null) {
-						fTmpLaunchRequestMonitor
-								.setStatus(new Status(
-										IStatus.ERROR,
-										Activator.PLUGIN_ID,
-										-1,
-										"Cannot resolve macros in GDB server command line",
-										null));
-						fTmpLaunchRequestMonitor.done();
+						serverLaunchRequestMonitor.setStatus(new Status(
+								IStatus.ERROR, Activator.PLUGIN_ID, -1,
+
+								getStartingServerJobName()
+										+ " failed, cannot get commnd line.",
+								null));
+						serverLaunchRequestMonitor.done();
 						return Status.OK_STATUS;
 					}
 					try {
-						File dir = DebugUtils
-								.getProjectOsDir(fLaunchConfiguration);
-
-						fServerProcess = launchGDBProcess(commandLineArray, dir);
+						fServerProcess = launchGdbServerProcess(commandLineArray);
+						
 						// Need to do this on the executor for thread-safety
 						getExecutor().submit(new DsfRunnable() {
 							@Override
@@ -307,27 +392,24 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 								fServerBackendState = State.STARTED;
 							}
 						});
-						// Don't send the backendStarted event yet. We wait
-						// until we have registered this service
-						// so that other services can have access to it.
 					} catch (CoreException e) {
-						fTmpLaunchRequestMonitor.setStatus(new Status(
+						serverLaunchRequestMonitor.setStatus(new Status(
 								IStatus.ERROR, Activator.PLUGIN_ID, -1, e
 										.getMessage(), e));
-						fTmpLaunchRequestMonitor.done();
+						serverLaunchRequestMonitor.done();
 						return Status.OK_STATUS;
 					}
 
 					// TODO: check if the server started properly
 
-					fTmpLaunchRequestMonitor.done();
+					serverLaunchRequestMonitor.done();
 					System.out.println("startGdbServerJob run completed");
 					return Status.OK_STATUS;
 				}
 			};
 			startGdbServerJob.schedule();
 
-			System.out.println("GdbServerStep initalise() after job schedule");
+			System.out.println("GdbServerStep.initalise() after job schedule");
 
 			getExecutor().schedule(new Runnable() {
 
@@ -344,31 +426,31 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 
 							jobThread.interrupt();
 						}
-						requestMonitor
-								.setStatus(new Status(
-										IStatus.ERROR,
-										Activator.PLUGIN_ID,
-										DebugException.TARGET_REQUEST_FAILED,
-										"Timed out trying to launch GDB Server.", null)); //$NON-NLS-1$
-						requestMonitor.done();
+						rm.setStatus(new Status(IStatus.ERROR,
+								Activator.PLUGIN_ID,
+								DebugException.TARGET_REQUEST_FAILED,
+								getStartingServerJobName() + " timed out.", null)); //$NON-NLS-1$
+						rm.done();
 					}
 				}
 			}, getServerLaunchTimeoutSeconds(), TimeUnit.SECONDS);
 
-			System.out.println("GdbServerStep initalise() return");
+			System.out.println("GdbServerStep.initalise() return");
 		}
 
 		@Override
 		protected void shutdown(final RequestMonitor requestMonitor) {
 
+			System.out.println("GdbServerStep.shutdown()");
+
 			if (fServerBackendState != State.STARTED) {
-				// gdb not started yet or already killed, don't bother starting
+				// Not started yet or already killed, don't bother starting
 				// a job to kill it
 				requestMonitor.done();
 				return;
 			}
 
-			new Job(getTerminatingJobName()) { //$NON-NLS-1$
+			new Job(getTerminatingServerJobName()) { //$NON-NLS-1$
 				{
 					setSystem(true);
 				}
@@ -379,12 +461,12 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 						// Need to do this on the executor for thread-safety
 						// And we should wait for it to complete since we then
 						// check if the killing of GDB worked.
-						System.out.println("GdbServerStep shutdown() run()");
+						System.out.println("GdbServerStep.shutdown() run()");
 						getExecutor().submit(new DsfRunnable() {
 							@Override
 							public void run() {
 								System.out
-										.println("GdbServerStep shutdown() run() run()");
+										.println("GdbServerStep.shutdown() run() run()");
 								destroy();
 
 								if (fServerMonitorJob.fMonitorExited) {
@@ -396,11 +478,11 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 									System.out
 											.println("GdbServerStep shutdown() run() run() State.TERMINATED");
 									fServerBackendState = State.TERMINATED;
-									// getSession().dispatchEvent(
-									// new BackendStateChangedEvent(
-									// getSession().getId(),
+
+									// If necessary, send an event like
+									// BackendStateChangedEvent(getSession().getId(),
 									// getId(), State.TERMINATED),
-									// getProperties());
+									// getProperties()
 								}
 							}
 						}).get();
@@ -409,7 +491,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 					}
 
 					System.out
-							.println("GdbServerStep shutdown() run() before getting exitValue");
+							.println("GdbServerStep.shutdown() run() before getting exitValue");
 					int attempts = 0;
 					while (attempts < 10) {
 						try {
@@ -425,28 +507,31 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 						} catch (IllegalThreadStateException ie) {
 						}
 						try {
-							Thread.sleep(500);
+							Thread.sleep(500); // 0.5s
 						} catch (InterruptedException e) {
 						}
 						attempts++;
 					}
 					System.out
-							.println("GdbServerStep shutdown() run() REQUEST_FAILED");
+							.println("GdbServerStep.shutdown() run() REQUEST_FAILED");
 					requestMonitor.setStatus(new Status(IStatus.ERROR,
 							Activator.PLUGIN_ID,
 							IDsfStatusConstants.REQUEST_FAILED,
-							"GDB Server terminate failed", null)); //$NON-NLS-1$
+							getTerminatingServerJobName() + " failed.", null)); //$NON-NLS-1$
 					requestMonitor.done();
 					return Status.OK_STATUS;
 				}
 			}.schedule();
-			System.out.println("GdbServerStep shutdown() return");
+			System.out.println("GdbServerStep.shutdown() return");
 		}
 	}
 
+	// ========================================================================
+
 	/**
-	 * Monitors a system process, waiting for it to terminate, and then notifies
-	 * the associated runtime process.
+	 * A dedicated job to monitor a system process, waiting for it to terminate,
+	 * and then destroy the entire ServerBackend (destroy is from derived
+	 * class).
 	 */
 	protected class GdbServerMonitorJob extends Job {
 
@@ -455,7 +540,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 		Process fProcess;
 
 		public GdbServerMonitorJob(Process process, DsfRunnable monitorStarted) {
-			super("GDB Server process monitor job."); //$NON-NLS-1$
+			super(getMonitorServerJobName()); //$NON-NLS-1$
 			fProcess = process;
 			fMonitorStarted = monitorStarted;
 			setSystem(true);
@@ -478,16 +563,17 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 							System.out
 									.println("GdbServerMonitorJob.run() run() thread "
 											+ getThread());
+
+							// Destroy the derived ServerBackend
 							destroy();
 							System.out
 									.println("GdbServerMonitorJob.run() run() State.TERMINATED");
 							fServerBackendState = State.TERMINATED;
-							// getSession()
-							// .dispatchEvent(
-							// new BackendStateChangedEvent(
-							// getSession().getId(),
+
+							// If necessary, send an event like
+							// BackendStateChangedEvent(getSession().getId(),
 							// getId(), State.TERMINATED),
-							// getProperties());
+							// getProperties()
 						}
 					});
 				} catch (InterruptedException ie) {
@@ -520,6 +606,11 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 		}
 	}
 
+	// ========================================================================
+
+	/**
+	 * Start/stop the GdbServerMonitorJob.
+	 */
 	protected class GdbServerMonitorStep extends InitializationShutdownStep {
 
 		public GdbServerMonitorStep(Direction direction) {
@@ -527,26 +618,27 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 		}
 
 		@Override
-		public void initialize(final RequestMonitor requestMonitor) {
+		public void initialize(final RequestMonitor rm) {
 
+			System.out.println("GdbServerMonitorStep.initialize()");
 			fServerMonitorJob = new GdbServerMonitorJob(fServerProcess,
 					new DsfRunnable() {
 						@Override
 						public void run() {
-							requestMonitor.done();
+							rm.done();
 						}
 					});
 			fServerMonitorJob.schedule();
 		}
 
 		@Override
-		protected void shutdown(RequestMonitor requestMonitor) {
+		protected void shutdown(RequestMonitor rm) {
 
 			System.out.println("GdbServerMonitorStep.shutdown()");
 			if (fServerMonitorJob != null) {
 				fServerMonitorJob.kill();
 			}
-			requestMonitor.done();
+			rm.done();
 			System.out.println("GdbServerMonitorStep.shutdown() return");
 		}
 	}

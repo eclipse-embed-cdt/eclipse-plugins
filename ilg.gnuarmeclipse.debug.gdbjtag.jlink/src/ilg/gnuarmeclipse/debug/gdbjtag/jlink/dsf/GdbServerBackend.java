@@ -22,11 +22,10 @@ import java.util.concurrent.TimeUnit;
 
 import org.eclipse.cdt.dsf.concurrent.DsfRunnable;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
+import org.eclipse.cdt.dsf.concurrent.ImmediateRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.Sequence;
 import org.eclipse.cdt.dsf.gdb.service.command.GDBControl.InitializationShutdownStep;
-import org.eclipse.cdt.dsf.mi.service.IMIBackend;
-import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -41,12 +40,13 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 	// ------------------------------------------------------------------------
 
-	private final ILaunchConfiguration fLaunchConfiguration;
+	// Allow derived classes to use these variables.
 
 	protected boolean fDoStartSemihostingConsole = false;
 	protected Process fSemihostingProcess;
 	protected SemihostingMonitorJob fSemihostingMonitorJob;
 
+	// For synchronisation reasons, set/check this only on the DSF thread.
 	protected State fSemihostingBackendState = State.NOT_INITIALIZED;
 
 	protected int fSemihostingExitValue = 0;
@@ -57,7 +57,6 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 	public GdbServerBackend(DsfSession session, ILaunchConfiguration lc) {
 		super(session, lc);
-		fLaunchConfiguration = lc;
 
 		System.out.println("GdbServerBackend(" + session + "," + lc.getName()
 				+ ")");
@@ -98,7 +97,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 	private void doInitialize(RequestMonitor rm) {
 
-		if (fDoStartGdbServer) {
+		if (fDoStartSemihostingConsole) {
 
 			final Sequence.Step[] initializeSteps = new Sequence.Step[] {
 
@@ -121,14 +120,50 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	}
 
 	@Override
-	public void shutdown(RequestMonitor rm) {
+	public void shutdown(final RequestMonitor rm) {
 
 		System.out.println("GdbServerBackend.shutdown()");
 
-		// Remove this service from DSF.
-		// unregister();
+		if (fDoStartSemihostingConsole) {
+			final Sequence.Step[] shutdownSteps = new Sequence.Step[] {
+					new SemihostingMonitorStep(
+							InitializationShutdownStep.Direction.SHUTTING_DOWN),
+					new SemihostingStep(
+							InitializationShutdownStep.Direction.SHUTTING_DOWN), };
+			Sequence startupSequence = new Sequence(getExecutor(),
+					new ImmediateRequestMonitor(rm) {
+						@Override
+						protected void handleSuccess() {
+							// We're done here, shutdown parent.
+							GdbServerBackend.super.shutdown(rm);
+						}
+					}) {
+				@Override
+				public Step[] getSteps() {
+					return shutdownSteps;
+				}
+			};
+			getExecutor().execute(startupSequence);
 
-		super.shutdown(rm);
+		} else {
+			super.shutdown(rm);
+		}
+	}
+
+	@Override
+	public void destroy() {
+
+		System.out.println("GdbServerBackend.destroy() "
+				+ Thread.currentThread());
+
+		// Destroy the semihosting process
+		if (fSemihostingBackendState == State.STARTED) {
+			fSemihostingProcess.destroy();
+		}
+
+		// Destroy the parent (the GDB server; the client is also destroyed
+		// there).
+		super.destroy();
 	}
 
 	// ------------------------------------------------------------------------
@@ -152,13 +187,26 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	}
 
 	@Override
-	public String getStartingJobName() {
+	public String getStartingServerJobName() {
 		return "Starting J-Link GDB Server";
 	}
 
 	@Override
-	public String getTerminatingJobName() {
+	public String getTerminatingServerJobName() {
 		return "Terminating J-Link GDB Server";
+	}
+
+	@Override
+	public String getMonitorServerJobName() {
+		return "J-Link GDB Server Monitor";
+	}
+
+	public String getStartingSemihostingJobName() {
+		return "Starting J-Link Semihosting Process";
+	}
+
+	public String getTerminatingSemihostingJobName() {
+		return "Terminating J-Link Semihosting Process";
 	}
 
 	// ------------------------------------------------------------------------
@@ -167,35 +215,9 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		return fSemihostingProcess;
 	}
 
-	@Override
-	public void destroy() {
-		System.out.println("GdbServerBackend.destroy() "
-				+ Thread.currentThread());
+	// ========================================================================
 
-		// Destroy semihosting process
-		if (fSemihostingBackendState == State.STARTED) {
-			System.out
-					.println("GdbServerBackend.destroy() before fSemihostingProcess.destroy()");
-			fSemihostingProcess.destroy();
-		}
-
-		// Destroy GDB client
-		DsfServicesTracker tracker = getServicesTracker();
-		if (tracker != null) {
-			IMIBackend backend = (IMIBackend) tracker
-					.getService(IMIBackend.class);
-			if (backend != null) {
-				backend.destroy();
-			}
-		}
-
-		// Destroy GDB server
-		super.destroy();
-
-	}
-
-	// ------------------------------------------------------------------------
-	// start the Gdb semihosting console
+	// Start/Stop the J-Link semihosting console
 	protected class SemihostingStep extends InitializationShutdownStep {
 
 		SemihostingStep(Direction direction) {
@@ -203,12 +225,9 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		}
 
 		@Override
-		public void initialize(final RequestMonitor requestMonitor) {
+		public void initialize(final RequestMonitor rm) {
 
-			if (!fDoStartSemihostingConsole) {
-				requestMonitor.done();
-				return;
-			}
+			System.out.println("SemihostingStep.initalise()");
 
 			class SemihostingLaunchMonitor {
 				boolean fLaunched = false;
@@ -218,24 +237,24 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 			final SemihostingLaunchMonitor fSemihostingLaunchMonitor = new SemihostingLaunchMonitor();
 
 			final RequestMonitor fTmpLaunchRequestMonitor = new RequestMonitor(
-					getExecutor(), requestMonitor) {
+					getExecutor(), rm) {
 
 				@Override
 				protected void handleCompleted() {
 					System.out
-							.println("SemihostingStep initalise() handleCompleted()");
+							.println("SemihostingStep.initalise() handleCompleted()");
 					if (!fSemihostingLaunchMonitor.fTimedOut) {
 						fSemihostingLaunchMonitor.fLaunched = true;
 						if (!isSuccess()) {
-							requestMonitor.setStatus(getStatus());
+							rm.setStatus(getStatus());
 						}
-						requestMonitor.done();
+						rm.done();
 					}
 				}
 			};
 
 			final Job startSemihostingJob = new Job(
-					"Starting GDB Semihosting Process") { //$NON-NLS-1$
+					getStartingSemihostingJobName()) { //$NON-NLS-1$
 				{
 					setSystem(true);
 				}
@@ -246,9 +265,11 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 					if (fTmpLaunchRequestMonitor.isCanceled()) {
 
 						System.out.println("startSemihostingJob run cancel");
-						fTmpLaunchRequestMonitor.setStatus(new Status(
-								IStatus.CANCEL, Activator.PLUGIN_ID, -1,
-								"Canceled starting GDB semihosting", null)); //$NON-NLS-1$
+						fTmpLaunchRequestMonitor
+								.setStatus(new Status(IStatus.CANCEL,
+										Activator.PLUGIN_ID, -1,
+										getStartingSemihostingJobName()
+												+ " cancelled.", null)); //$NON-NLS-1$
 						fTmpLaunchRequestMonitor.done();
 						return Status.OK_STATUS;
 					}
@@ -263,6 +284,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 						fSemihostingProcess = launchSemihostingProcess(host,
 								port);
+
 						// Need to do this on the executor for thread-safety
 						getExecutor().submit(new DsfRunnable() {
 							@Override
@@ -272,9 +294,6 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 								fSemihostingBackendState = State.STARTED;
 							}
 						});
-						// Don't send the backendStarted event yet. We wait
-						// until we have registered this service
-						// so that other services can have access to it.
 					} catch (CoreException e) {
 						fTmpLaunchRequestMonitor.setStatus(new Status(
 								IStatus.ERROR, Activator.PLUGIN_ID, -1, e
@@ -283,7 +302,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 						return Status.OK_STATUS;
 					}
 
-					// TODO: check if the server started properly
+					// TODO: check if the process started properly
 
 					fTmpLaunchRequestMonitor.done();
 					System.out.println("startSemihostingJob run completed");
@@ -293,7 +312,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 			startSemihostingJob.schedule();
 
 			System.out
-					.println("SemihostingStep initalise() after job schedule");
+					.println("SemihostingStep.initalise() after job schedule");
 
 			getExecutor().schedule(new Runnable() {
 
@@ -310,36 +329,32 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 							jobThread.interrupt();
 						}
-						requestMonitor
-								.setStatus(new Status(
-										IStatus.ERROR,
-										Activator.PLUGIN_ID,
-										DebugException.TARGET_REQUEST_FAILED,
-										"Timed out trying to launch GDB Server.", null)); //$NON-NLS-1$
-						requestMonitor.done();
+						rm.setStatus(new Status(IStatus.ERROR,
+								Activator.PLUGIN_ID,
+								DebugException.TARGET_REQUEST_FAILED,
+								getStartingSemihostingJobName()
+								+ " timed out.", null)); //$NON-NLS-1$
+						rm.done();
 					}
 				}
-			}, fGdbServerLaunchTimeout, TimeUnit.SECONDS);
+			}, getServerLaunchTimeoutSeconds(), TimeUnit.SECONDS);
 
-			System.out.println("SemihostingStep initalise() return");
+			System.out.println("SemihostingStep.initalise() return");
 		}
 
 		@Override
 		protected void shutdown(final RequestMonitor requestMonitor) {
 
-			if (!fDoStartSemihostingConsole) {
-				requestMonitor.done();
-				return;
-			}
+			System.out.println("SemihostingStep.shutdown()");
 
 			if (fSemihostingBackendState != State.STARTED) {
-				// gdb not started yet or already killed, don't bother starting
+				// Not started yet or already killed, don't bother starting
 				// a job to kill it
 				requestMonitor.done();
 				return;
 			}
 
-			new Job("Terminating GDB semihosting Process.") { //$NON-NLS-1$
+			new Job(getTerminatingSemihostingJobName()) { //$NON-NLS-1$
 				{
 					setSystem(true);
 				}
@@ -350,12 +365,12 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 						// Need to do this on the executor for thread-safety
 						// And we should wait for it to complete since we then
 						// check if the killing of GDB worked.
-						System.out.println("SemihostingStep shutdown() run()");
+						System.out.println("SemihostingStep.shutdown() run()");
 						getExecutor().submit(new DsfRunnable() {
 							@Override
 							public void run() {
 								System.out
-										.println("SemihostingStep shutdown() run() run()");
+										.println("SemihostingStep.shutdown() run() run()");
 								destroy();
 
 								if (fSemihostingMonitorJob.fMonitorExited) {
@@ -365,13 +380,13 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 									// we need to set our state and send the
 									// event
 									System.out
-											.println("SemihostingStep shutdown() run() run() State.TERMINATED");
+											.println("SemihostingStep.shutdown() run() run() State.TERMINATED");
 									fSemihostingBackendState = State.TERMINATED;
-									// getSession().dispatchEvent(
-									// new BackendStateChangedEvent(
-									// getSession().getId(),
+
+									// If necessary, send an event like
+									// BackendStateChangedEvent(getSession().getId(),
 									// getId(), State.TERMINATED),
-									// getProperties());
+									// getProperties()
 								}
 							}
 						}).get();
@@ -429,9 +444,11 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 	}
 
+	// ========================================================================
+
 	/**
-	 * Monitors a system process, waiting for it to terminate, and then notifies
-	 * the associated runtime process.
+	 * Monitors the semihosting process, waiting for it to terminate, and then
+	 * notifies the associated runtime process.
 	 */
 	private class SemihostingMonitorJob extends Job {
 
@@ -463,16 +480,17 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 							System.out
 									.println("SemihostingMonitorJob.run() run() thread "
 											+ getThread());
+
+							// Destroy the entire backend
 							destroy();
 							System.out
 									.println("SemihostingMonitorJob.run() run() State.TERMINATED");
 							fSemihostingBackendState = State.TERMINATED;
-							// getSession()
-							// .dispatchEvent(
-							// new BackendStateChangedEvent(
-							// getSession().getId(),
+
+							// If necessary, send an event like
+							// BackendStateChangedEvent(getSession().getId(),
 							// getId(), State.TERMINATED),
-							// getProperties());
+							// getProperties()
 						}
 					});
 				} catch (InterruptedException ie) {
@@ -505,7 +523,11 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		}
 	}
 
-	// ----- SemihostingMonitorStep -----
+	// ========================================================================
+
+	/**
+	 * Start/stop the SemihostingMonitorJob.
+	 */
 	protected class SemihostingMonitorStep extends InitializationShutdownStep {
 
 		SemihostingMonitorStep(Direction direction) {
@@ -515,11 +537,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		@Override
 		public void initialize(final RequestMonitor requestMonitor) {
 
-			if (!fDoStartSemihostingConsole) {
-				requestMonitor.done();
-				return;
-			}
-
+			System.out.println("SemihostingMonitorStep.initialize()");
 			fSemihostingMonitorJob = new SemihostingMonitorJob(
 					fSemihostingProcess, new DsfRunnable() {
 						@Override
@@ -532,11 +550,6 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 		@Override
 		protected void shutdown(RequestMonitor requestMonitor) {
-
-			if (!fDoStartSemihostingConsole) {
-				requestMonitor.done();
-				return;
-			}
 
 			System.out.println("SemihostingMonitorStep.shutdown()");
 			if (fSemihostingMonitorJob != null) {
