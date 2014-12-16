@@ -116,10 +116,10 @@ public class Launch extends GnuArmLaunch {
 
 	// ------------------------------------------------------------------------
 
-	public void initialiseConsoles(IProgressMonitor monitor)
+	public void initializeServerConsole(IProgressMonitor monitor)
 			throws CoreException {
 
-		System.out.println("Launch.initialiseConsoles()");
+		System.out.println("Launch.initializeServerConsole()");
 
 		IProcess newProcess;
 		boolean doAddServerConsole = fConfig.getAttribute(
@@ -139,7 +139,14 @@ public class Launch extends GnuArmLaunch {
 
 			monitor.worked(1);
 		}
+	}
 
+	public void initializeConsoles(IProgressMonitor monitor)
+			throws CoreException {
+
+		System.out.println("Launch.initializeConsoles()");
+
+		IProcess newProcess;
 		{
 			// Add the GDB client process to the launch tree.
 			newProcess = addClientProcess(getClientCommandName(fConfig)); //$NON-NLS-1$
@@ -237,8 +244,10 @@ public class Launch extends GnuArmLaunch {
 			// attributes.put(IGdbDebugConstants.PROCESS_TYPE_CREATION_ATTR,
 			// IGdbDebugConstants.GDB_PROCESS_CREATION_VALUE);
 
-			newProcess = DebugPlugin.newProcess(this, serverProc, label,
-					attributes);
+			if (serverProc != null) {
+				newProcess = DebugPlugin.newProcess(this, serverProc, label,
+						attributes);
+			}
 		} catch (InterruptedException e) {
 			throw new CoreException(new Status(IStatus.ERROR,
 					Activator.PLUGIN_ID, 0,

@@ -11,13 +11,21 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.services;
 
+import org.eclipse.cdt.dsf.mi.service.IMIBackend.State;
 import org.eclipse.cdt.dsf.service.IDsfService;
+import org.eclipse.core.runtime.IStatus;
 
 public interface IGdbServerBackendService extends IDsfService {
 
 	// ------------------------------------------------------------------------
 
 	public Process getServerProcess();
+
+	public State getServerState();
+
+	public int getServerExitCode();
+
+	public IStatus getServerExitStatus();
 
 	public void destroy();
 

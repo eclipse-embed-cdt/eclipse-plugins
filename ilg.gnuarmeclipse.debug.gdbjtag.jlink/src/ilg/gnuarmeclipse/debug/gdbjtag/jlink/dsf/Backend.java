@@ -52,10 +52,11 @@ public class Backend extends GDBBackend {
 	// ------------------------------------------------------------------------
 
 	@Override
-	public void initialize(final RequestMonitor requestMonitor) {
+	public void initialize(final RequestMonitor rm) {
 
 		System.out.println("Backend.initialize() " + Thread.currentThread());
-		super.initialize(requestMonitor);
+
+		super.initialize(rm);
 	}
 
 	@Override
@@ -66,10 +67,10 @@ public class Backend extends GDBBackend {
 	}
 
 	@Override
-	public void shutdown(final RequestMonitor requestMonitor) {
+	public void shutdown(final RequestMonitor rm) {
 
 		System.out.println("Backend.shutdown() " + Thread.currentThread());
-		super.shutdown(requestMonitor);
+		super.shutdown(rm);
 	}
 
 	// ------------------------------------------------------------------------

@@ -97,7 +97,9 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 	private void doInitialize(RequestMonitor rm) {
 
-		if (fDoStartSemihostingConsole) {
+		System.out.println("GdbServerBackend.doInitialize()");
+
+		if (fServerBackendState == State.STARTED && fDoStartSemihostingConsole) {
 
 			final Sequence.Step[] initializeSteps = new Sequence.Step[] {
 
@@ -124,7 +126,8 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 		System.out.println("GdbServerBackend.shutdown()");
 
-		if (fDoStartSemihostingConsole) {
+		if (fSemihostingBackendState == State.STARTED
+				&& fDoStartSemihostingConsole) {
 			final Sequence.Step[] shutdownSteps = new Sequence.Step[] {
 					new SemihostingMonitorStep(
 							InitializationShutdownStep.Direction.SHUTTING_DOWN),
@@ -186,27 +189,28 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		return fGdbServerLaunchTimeout;
 	}
 
-	@Override
-	public String getStartingServerJobName() {
-		return "Starting J-Link GDB Server";
+	public String getServerName() {
+		return "J-Link GDB Server";
 	}
 
-	@Override
-	public String getTerminatingServerJobName() {
-		return "Terminating J-Link GDB Server";
-	}
-
-	@Override
-	public String getMonitorServerJobName() {
-		return "J-Link GDB Server Monitor";
+	public String getSemihostingName() {
+		return "J-Link GDB";
 	}
 
 	public String getStartingSemihostingJobName() {
-		return "Starting J-Link Semihosting Process";
+		return "Starting " + getSemihostingName() + " Semihosting Process";
 	}
 
 	public String getTerminatingSemihostingJobName() {
-		return "Terminating J-Link Semihosting Process";
+		return "Terminating " + getSemihostingName() + " Semihosting Process";
+	}
+
+	public boolean matchExpectedPattern(String line) {
+		if (line.indexOf("Waiting for GDB connection") >= 0) {
+			return true;
+		}
+
+		return false;
 	}
 
 	// ------------------------------------------------------------------------
@@ -227,7 +231,14 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		@Override
 		public void initialize(final RequestMonitor rm) {
 
-			System.out.println("SemihostingStep.initalise()");
+			System.out.println("SemihostingStep.initialise()");
+
+			if (fServerBackendState != State.STARTED) {
+				System.out.println("SemihostingStep.initialise() skipped");
+				// rm.cancel();
+				rm.done();
+				return;
+			}
 
 			class SemihostingLaunchMonitor {
 				boolean fLaunched = false;
@@ -242,7 +253,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 				@Override
 				protected void handleCompleted() {
 					System.out
-							.println("SemihostingStep.initalise() handleCompleted()");
+							.println("SemihostingStep.initialise() handleCompleted()");
 					if (!fSemihostingLaunchMonitor.fTimedOut) {
 						fSemihostingLaunchMonitor.fLaunched = true;
 						if (!isSuccess()) {
@@ -312,7 +323,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 			startSemihostingJob.schedule();
 
 			System.out
-					.println("SemihostingStep.initalise() after job schedule");
+					.println("SemihostingStep.initialise() after job schedule");
 
 			getExecutor().schedule(new Runnable() {
 
@@ -329,17 +340,17 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 							jobThread.interrupt();
 						}
-						rm.setStatus(new Status(IStatus.ERROR,
+						rm.setStatus(new Status(
+								IStatus.ERROR,
 								Activator.PLUGIN_ID,
 								DebugException.TARGET_REQUEST_FAILED,
-								getStartingSemihostingJobName()
-								+ " timed out.", null)); //$NON-NLS-1$
+								getStartingSemihostingJobName() + " timed out.", null)); //$NON-NLS-1$
 						rm.done();
 					}
 				}
 			}, getServerLaunchTimeoutSeconds(), TimeUnit.SECONDS);
 
-			System.out.println("SemihostingStep.initalise() return");
+			System.out.println("SemihostingStep.initialise() return");
 		}
 
 		@Override
@@ -535,14 +546,23 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		}
 
 		@Override
-		public void initialize(final RequestMonitor requestMonitor) {
+		public void initialize(final RequestMonitor rm) {
 
 			System.out.println("SemihostingMonitorStep.initialize()");
+
+			if (fServerBackendState != State.STARTED) {
+				System.out
+						.println("SemihostingMonitorStep.initialise() skipped");
+				// rm.cancel();
+				rm.done();
+				return;
+			}
+
 			fSemihostingMonitorJob = new SemihostingMonitorJob(
 					fSemihostingProcess, new DsfRunnable() {
 						@Override
 						public void run() {
-							requestMonitor.done();
+							rm.done();
 						}
 					});
 			fSemihostingMonitorJob.schedule();

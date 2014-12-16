@@ -15,9 +15,15 @@ import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IGdbServerBackendService;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.io.PipedInputStream;
+import java.io.PipedOutputStream;
+import java.io.PushbackInputStream;
 import java.util.Hashtable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -57,18 +63,25 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 
 	// ------------------------------------------------------------------------
 
+	// public static final int ERROR_CHARBUFFER_SIZE = 1024;
+
 	// Allow derived classes to use these variables.
 
 	protected final ILaunchConfiguration fLaunchConfiguration;
 
 	protected boolean fDoStartGdbServer = true;
 	protected Process fServerProcess;
+	protected PipedProcess fServerPipedProcess;
 	protected GdbServerMonitorJob fServerMonitorJob;
 
 	// For synchronisation reasons, set/check this only on the DSF thread.
 	protected State fServerBackendState = State.NOT_INITIALIZED;
 
 	private int fGdbServerExitValue = 0;
+	protected IStatus fGdbServerExitStatus = Status.OK_STATUS;
+
+	private StringBuffer fErrorStreamBuffer;
+	private CaptureErrorStreamHandler fCaptureHandler;
 
 	/**
 	 * Monotone increasing Unique ID of this service instance.
@@ -204,16 +217,38 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 
 	public abstract int getServerLaunchTimeoutSeconds();
 
-	public abstract String getStartingServerJobName();
+	public abstract String getServerName();
 
-	public abstract String getTerminatingServerJobName();
+	public String getStartingServerJobName() {
+		return "Starting " + getServerName();
+	}
 
-	public abstract String getMonitorServerJobName();
+	public String getTerminatingServerJobName() {
+		return "Terminating " + getServerName();
+	}
+
+	public String getMonitorServerJobName() {
+		return getServerName() + " Monitor";
+	}
+
+	public abstract boolean matchExpectedPattern(String line);
 
 	// ------------------------------------------------------------------------
 
 	public Process getServerProcess() {
-		return fServerProcess;
+		return fServerPipedProcess;
+	}
+
+	public State getServerState() {
+		return fServerBackendState;
+	}
+
+	public int getServerExitCode() {
+		return fGdbServerExitValue;
+	}
+
+	public IStatus getServerExitStatus() {
+		return fGdbServerExitStatus;
 	}
 
 	// ------------------------------------------------------------------------
@@ -315,6 +350,110 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 
 	// ========================================================================
 
+	protected class CaptureErrorStreamHandler extends Thread {
+		private InputStreamReader fInputStreamReader;
+		private StringBuffer fCaptureBuffer;
+
+		CaptureErrorStreamHandler(StringBuffer captureBuffer,
+				InputStreamReader stream) {
+			fCaptureBuffer = captureBuffer;
+			fInputStreamReader = stream;
+
+			start();
+		}
+
+		public void run() {
+			System.out.println("CaptureErrorStreamHandler.run()");
+			try {
+				char ac[] = new char[100];
+				while (fInputStreamReader.read(ac, 0, 100) != -1) {
+					fCaptureBuffer.append(ac);
+					System.out.println(ac);
+				}
+
+			} catch (IOException ioe) {
+				System.out.println("CaptureErrorStreamHandler.run() exception "
+						+ ioe);
+			}
+			System.out.println("CaptureErrorStreamHandler.run() return "
+					+ fCaptureBuffer);
+		}
+	}
+
+	// ========================================================================
+
+	protected class PipedProcess extends Process {
+
+		private Process fProcess;
+//		private StringBuffer fBuffer;
+
+		private PushbackInputStream fInput;
+		protected PipedInputStream fError;
+		protected PipedOutputStream fPipeOut;
+
+		public PipedProcess(Process process, StringBuffer buffer) {
+			fProcess = process;
+//			fBuffer = new StringBuffer();
+			fInput = new PushbackInputStream(fProcess.getInputStream(),
+					buffer.length() + 1);
+			byte[] b = buffer.toString().getBytes();
+			try {
+				fInput.unread(b);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			fPipeOut = new PipedOutputStream();
+			try {
+				fError = new PipedInputStream(fPipeOut);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
+		@Override
+		public void destroy() {
+			fProcess.destroy();
+		}
+
+		@Override
+		public int exitValue() {
+			return fProcess.exitValue();
+		}
+
+		@Override
+		public InputStream getErrorStream() {
+			return fError;
+		}
+
+		@Override
+		public InputStream getInputStream() {
+			return fInput;
+		}
+
+		@Override
+		public OutputStream getOutputStream() {
+			return fProcess.getOutputStream();
+		}
+
+		@Override
+		public int waitFor() throws InterruptedException {
+			return fProcess.waitFor();
+		}
+
+//		public StringBuffer getBuffer() {
+//			return fBuffer;
+//		}
+
+		public OutputStream getErrorOutputPipe(){
+			return fPipeOut;
+		}
+	}
+
+	// ========================================================================
+
 	// Start/stop the GDB server.
 	protected class GdbServerStep extends InitializationShutdownStep {
 
@@ -325,7 +464,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 		@Override
 		public void initialize(final RequestMonitor rm) {
 
-			System.out.println("GdbServerStep.initalise()");
+			System.out.println("GdbServerStep.initialise()");
 
 			class ServerLaunchMonitor {
 				boolean fLaunched = false;
@@ -340,7 +479,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 				@Override
 				protected void handleCompleted() {
 					System.out
-							.println("GdbServerStep.initalise() handleCompleted()");
+							.println("GdbServerStep.initialise() handleCompleted()");
 					if (!fServerLaunchMonitor.fTimedOut) {
 						fServerLaunchMonitor.fLaunched = true;
 						if (!isSuccess()) {
@@ -359,12 +498,15 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 
+					System.out.println("GdbServerStep.initialise() Job run()");
 					if (serverLaunchRequestMonitor.isCanceled()) {
 
 						System.out.println("startGdbServerJob run cancel");
-						serverLaunchRequestMonitor.setStatus(new Status(
-								IStatus.CANCEL, Activator.PLUGIN_ID, -1,
-								getStartingServerJobName() + " cancelled.", null)); //$NON-NLS-1$
+						serverLaunchRequestMonitor
+								.setStatus(new Status(IStatus.CANCEL,
+										Activator.PLUGIN_ID, -1,
+										getStartingServerJobName()
+												+ " cancelled.", null)); //$NON-NLS-1$
 						serverLaunchRequestMonitor.done();
 						return Status.OK_STATUS;
 					}
@@ -382,7 +524,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 					}
 					try {
 						fServerProcess = launchGdbServerProcess(commandLineArray);
-						
+
 						// Need to do this on the executor for thread-safety
 						getExecutor().submit(new DsfRunnable() {
 							@Override
@@ -400,7 +542,59 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 						return Status.OK_STATUS;
 					}
 
-					// TODO: check if the server started properly
+					fErrorStreamBuffer = new StringBuffer();
+					fCaptureHandler = new CaptureErrorStreamHandler(
+							fErrorStreamBuffer, new InputStreamReader(
+									fServerProcess.getErrorStream()));
+
+					// Check if the server started properly
+					// The strategy is to parse the output stream and stop
+					// when a certain pattern is matched.
+					boolean success = false;
+					StringBuffer buffer = new StringBuffer();
+					InputStream inputStream = null;
+					try {
+
+						inputStream = fServerProcess.getInputStream();
+						byte b[] = new byte[1024];
+
+						// Awfully inefficient
+						int count;
+						while ((count = inputStream.read(b, 0, b.length)) != -1) {
+
+							buffer.append(new String(b, 0, count, "ascii"));
+							if (matchExpectedPattern(buffer.toString())) {
+								success = true;
+								break;
+							}
+						}
+
+						if (!success) {
+							System.out
+									.println("startGdbServerJob run() EOF stdout");
+						}
+
+					} catch (IOException e) {
+						success = false;
+						serverLaunchRequestMonitor
+								.setStatus(new Status(
+										IStatus.ERROR,
+										Activator.PLUGIN_ID,
+										-1,
+										"Error reading " + getServerName() + " output", e)); //$NON-NLS-1$
+					}
+
+					if (!success) {
+						if (inputStream != null) {
+							try {
+								inputStream.close();
+							} catch (IOException e) {
+							}
+						}
+					}
+
+					fServerPipedProcess = new PipedProcess(fServerProcess,
+							buffer);
 
 					serverLaunchRequestMonitor.done();
 					System.out.println("startGdbServerJob run completed");
@@ -409,24 +603,28 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 			};
 			startGdbServerJob.schedule();
 
-			System.out.println("GdbServerStep.initalise() after job schedule");
+			System.out.println("GdbServerStep.initialise() after job schedule");
 
 			getExecutor().schedule(new Runnable() {
 
 				@Override
 				public void run() {
 
-					// Only process the event if we have not finished yet (hit
-					// the breakpoint).
+					System.out.println("GdbServerStep.initialise() timeout run()");
+
 					if (!fServerLaunchMonitor.fLaunched) {
 						fServerLaunchMonitor.fTimedOut = true;
 						Thread jobThread = startGdbServerJob.getThread();
 						if (jobThread != null) {
-							System.out.println("interrupt thread " + jobThread);
+							System.out
+									.println("GdbServerStep.initialise() timeout interrupt thread "
+											+ jobThread);
 
 							jobThread.interrupt();
 						}
-						rm.setStatus(new Status(IStatus.ERROR,
+						fServerProcess.destroy();
+						rm.setStatus(new Status(
+								IStatus.ERROR,
 								Activator.PLUGIN_ID,
 								DebugException.TARGET_REQUEST_FAILED,
 								getStartingServerJobName() + " timed out.", null)); //$NON-NLS-1$
@@ -435,7 +633,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 				}
 			}, getServerLaunchTimeoutSeconds(), TimeUnit.SECONDS);
 
-			System.out.println("GdbServerStep.initalise() return");
+			System.out.println("GdbServerStep.initialise() return");
 		}
 
 		@Override
@@ -548,6 +746,9 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 
 		@Override
 		protected IStatus run(IProgressMonitor monitor) {
+
+			IStatus status = Status.OK_STATUS;
+
 			synchronized (fProcess) {
 				System.out.println("GdbServerMonitorJob.run() submit "
 						+ fMonitorStarted + " thread " + getThread());
@@ -555,7 +756,22 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 				try {
 					fProcess.waitFor();
 					fGdbServerExitValue = fProcess.exitValue();
+					System.out.println("GdbServerMonitorJob.run() exitValue() "
+							+ fGdbServerExitValue);
 
+					if (fGdbServerExitValue != 0) {
+
+						if (fErrorStreamBuffer != null) {
+							System.out.println(fErrorStreamBuffer.toString());
+
+							fGdbServerExitStatus = new Status(IStatus.ERROR,
+									Activator.PLUGIN_ID,
+									getStartingServerJobName() + " failed: \n"
+											+ fErrorStreamBuffer.toString()); //$NON-NLS-1$
+
+							fCaptureHandler.interrupt();
+						}
+					}
 					// Need to do this on the executor for thread-safety
 					getExecutor().submit(new DsfRunnable() {
 						@Override
@@ -586,7 +802,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 								+ getThread());
 				fMonitorExited = true;
 			}
-			return Status.OK_STATUS;
+			return status;
 		}
 
 		void kill() {

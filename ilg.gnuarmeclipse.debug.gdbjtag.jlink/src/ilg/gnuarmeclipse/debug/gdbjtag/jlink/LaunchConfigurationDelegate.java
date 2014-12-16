@@ -12,9 +12,11 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
-import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmServicesLaunchSequence;
+import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmServerServicesLaunchSequence;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.dsf.GdbServerBackend;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.TabDebugger;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
@@ -29,6 +31,7 @@ import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.gdb.launching.GdbLaunch;
 import org.eclipse.cdt.dsf.gdb.launching.LaunchMessages;
 import org.eclipse.cdt.dsf.gdb.launching.LaunchUtils;
+import org.eclipse.cdt.dsf.gdb.launching.ServicesLaunchSequence;
 import org.eclipse.cdt.dsf.gdb.service.SessionType;
 import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
@@ -233,6 +236,76 @@ public class LaunchConfigurationDelegate extends
 
 		launch.setServiceFactory(newServiceFactory(config, gdbVersion));
 
+		// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
+		IProgressMonitor subMonServer = new SubProgressMonitor(monitor, 4,
+				SubProgressMonitor.PREPEND_MAIN_LABEL_TO_SUBTASK);
+
+		Sequence serverServicesLaunchSequence = getServerServicesSequence(
+				launch.getSession(), launch, subMonServer);
+
+		launch.getSession().getExecutor().execute(serverServicesLaunchSequence);
+		boolean succeed = false;
+		try {
+			serverServicesLaunchSequence.get();
+			succeed = true;
+		} catch (InterruptedException e1) {
+			throw new DebugException(new Status(IStatus.ERROR,
+					GdbPlugin.PLUGIN_ID, DebugException.INTERNAL_ERROR,
+					"Interrupted Exception in dispatch thread", e1)); //$NON-NLS-1$
+		} catch (ExecutionException e1) {
+			throw new DebugException(new Status(IStatus.ERROR,
+					GdbPlugin.PLUGIN_ID, DebugException.REQUEST_FAILED,
+					"Error in services launch sequence", e1.getCause())); //$NON-NLS-1$
+		} catch (CancellationException e1) {
+			// Launch aborted, so exit cleanly
+			System.out.println("Launch aborted, so exit cleanly");
+			return;
+		} finally {
+			if (!succeed) {
+				cleanupLaunch();
+			}
+		}
+
+		// This contributes 1 work units to the monitor
+		((Launch) launch).initializeServerConsole(monitor);
+
+		IStatus serverStatus;
+		try {
+			serverStatus = launch.getSession().getExecutor()
+					.submit(new Callable<IStatus>() {
+						@Override
+						public IStatus call() throws CoreException {
+							DsfServicesTracker tracker = new DsfServicesTracker(
+									GdbPlugin.getBundleContext(), launch
+											.getSession().getId());
+							GdbServerBackend backend = (GdbServerBackend) tracker
+									.getService(GdbServerBackend.class);
+							if (backend != null) {
+								return backend.getServerExitStatus();
+							}
+							return null;
+						}
+					}
+
+					).get();
+
+			if (serverStatus != null) {
+				System.out.println(serverStatus);
+				if (serverStatus != Status.OK_STATUS) {
+					throw new CoreException(serverStatus);
+				}
+			}
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ExecutionException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 		// Create and invoke the launch sequence to create the debug control and
 		// services
 		IProgressMonitor subMon1 = new SubProgressMonitor(monitor, 4,
@@ -241,7 +314,7 @@ public class LaunchConfigurationDelegate extends
 				launch.getSession(), launch, subMon1);
 
 		launch.getSession().getExecutor().execute(servicesLaunchSequence);
-		boolean succeed = false;
+		// boolean succeed = false;
 		try {
 			servicesLaunchSequence.get();
 			succeed = true;
@@ -255,6 +328,7 @@ public class LaunchConfigurationDelegate extends
 					"Error in services launch sequence", e1.getCause())); //$NON-NLS-1$
 		} catch (CancellationException e1) {
 			// Launch aborted, so exit cleanly
+			System.out.println("Launch aborted, so exit cleanly");
 			return;
 		} finally {
 			if (!succeed) {
@@ -278,13 +352,13 @@ public class LaunchConfigurationDelegate extends
 
 		// Add the GDB process object to the launch.
 
-		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 		// launch.addCLIProcess("gdb"); //$NON-NLS-1$
 		// monitor.worked(1);
 
-		// This contributes 3 work units to the monitor
-		((Launch) launch).initialiseConsoles(monitor);
-		// ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+		// This contributes 2 work units to the monitor
+		((Launch) launch).initializeConsoles(monitor);
+		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 		// Create and invoke the final launch sequence to setup GDB
 		final IProgressMonitor subMon2 = new SubProgressMonitor(monitor, 4,
@@ -377,7 +451,17 @@ public class LaunchConfigurationDelegate extends
 
 		System.out.println("LaunchConfigurationDelegate.getServicesSequence()");
 
-		return new GnuArmServicesLaunchSequence(session, (GdbLaunch) launch, rm);
+		return new ServicesLaunchSequence(session, (GdbLaunch) launch, rm);
+	}
+
+	protected Sequence getServerServicesSequence(DsfSession session,
+			ILaunch launch, IProgressMonitor rm) {
+
+		System.out
+				.println("LaunchConfigurationDelegate.getServerServicesSequence()");
+
+		return new GnuArmServerServicesLaunchSequence(session,
+				(GdbLaunch) launch, rm);
 	}
 
 	// ------------------------------------------------------------------------
