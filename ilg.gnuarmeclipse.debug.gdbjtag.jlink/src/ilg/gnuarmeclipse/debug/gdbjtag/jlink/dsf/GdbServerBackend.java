@@ -26,6 +26,7 @@ import org.eclipse.cdt.dsf.concurrent.ImmediateRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.Sequence;
 import org.eclipse.cdt.dsf.gdb.service.command.GDBControl.InitializationShutdownStep;
+import org.eclipse.cdt.dsf.mi.service.IMIBackend.State;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -99,7 +100,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 		System.out.println("GdbServerBackend.doInitialize()");
 
-		if (fServerBackendState == State.STARTED && fDoStartSemihostingConsole) {
+		if (fDoStartSemihostingConsole) {
 
 			final Sequence.Step[] initializeSteps = new Sequence.Step[] {
 
@@ -126,8 +127,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 		System.out.println("GdbServerBackend.shutdown()");
 
-		if (fSemihostingBackendState == State.STARTED
-				&& fDoStartSemihostingConsole) {
+		if (fDoStartSemihostingConsole) {
 			final Sequence.Step[] shutdownSteps = new Sequence.Step[] {
 					new SemihostingMonitorStep(
 							InitializationShutdownStep.Direction.SHUTTING_DOWN),

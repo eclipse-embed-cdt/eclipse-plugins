@@ -15,7 +15,6 @@ import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IGdbServerBackendService;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -35,7 +34,8 @@ import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.Sequence;
 import org.eclipse.cdt.dsf.gdb.service.command.GDBControl.InitializationShutdownStep;
 import org.eclipse.cdt.dsf.mi.service.IMIBackend;
-import org.eclipse.cdt.dsf.mi.service.IMIBackend2;
+import org.eclipse.cdt.dsf.mi.service.IMIBackend.BackendStateChangedEvent;
+import org.eclipse.cdt.dsf.mi.service.IMIBackend.State;
 import org.eclipse.cdt.dsf.mi.service.command.events.MIStoppedEvent;
 import org.eclipse.cdt.dsf.service.AbstractDsfService;
 import org.eclipse.cdt.dsf.service.DsfServiceEventHandler;
@@ -59,7 +59,7 @@ import org.osgi.framework.BundleContext;
  * backend.
  */
 public abstract class GnuArmGdbServerBackend extends AbstractDsfService
-		implements IGdbServerBackendService, IMIBackend2 {
+		implements IGdbServerBackendService {
 
 	// ------------------------------------------------------------------------
 
@@ -184,18 +184,23 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 		System.out.println("GnuArmGdbServerBackend.destroy() "
 				+ Thread.currentThread());
 
-		// Destroy the GDB client
+		// Destroy the GDB client. The tracker is associated with the session,
+		// so we don't kill other instances.
 		DsfServicesTracker tracker = getServicesTracker();
 		if (tracker != null) {
 			IMIBackend backend = (IMIBackend) tracker
 					.getService(IMIBackend.class);
+			System.out.println("getService() found Backend() " + backend);
 			if (backend != null) {
 				backend.destroy();
 			}
 		}
 
-		if (fServerProcess != null && fServerBackendState == State.STARTED) {
-			fServerProcess.destroy();
+		if (getServerProcess() != null && getServerState() == State.STARTED) {
+			System.out
+					.println("GnuArmGdbServerBackend.destroy() fServerProcess "
+							+ fServerProcess);
+			getServerProcess().destroy();
 		}
 	}
 
@@ -204,8 +209,23 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 	@DsfServiceEventHandler
 	public void eventDispatched(final MIStoppedEvent e) {
 
-		// All debug events come here. Currently not used.
+		// A lot of MIStoppedEvent debug events come here. (like breakpoint
+		// hit). Currently not used.
 		// System.out.println("GnuArmGdbServerBackend.eventDispatched() " + e);
+	}
+
+	@DsfServiceEventHandler
+	public void eventDispatched(final BackendStateChangedEvent e) {
+		// Only BackendStateChangedEvent debug events come here.
+		System.out.println("GnuArmGdbServerBackend.eventDispatched() " + e);
+
+		// When the backend is terminated, also terminate the server backend.
+		if (e.getState() == State.TERMINATED
+				&& e.getSessionId().equals(getSession().getId())
+				&& getServerState() == State.STARTED) {
+
+			destroy();
+		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -251,39 +271,9 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 		return fGdbServerExitStatus;
 	}
 
-	// ------------------------------------------------------------------------
-
 	@Override
 	public String getId() {
 		return fBackendId;
-	}
-
-	@Override
-	public State getState() {
-		return fServerBackendState;
-	}
-
-	@Override
-	public int getExitCode() {
-		return fGdbServerExitValue;
-	}
-
-	@Override
-	public InputStream getMIInputStream() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public OutputStream getMIOutputStream() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public InputStream getMIErrorStream() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	// ------------------------------------------------------------------------
@@ -327,9 +317,10 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 			getSession().addServiceEventListener(GnuArmGdbServerBackend.this,
 					null);
 
-			// If necessary, send an event like
-			// BackendStateChangedEvent(getSession().getId(), getId(),
-			// State.STARTED), getProperties()
+			// Notify world that server backend started.
+			getSession().dispatchEvent(
+					new ServerBackendStateChangedEvent(getSession().getId(),
+							getId(), State.STARTED), getProperties());
 
 			requestMonitor.done();
 		}
@@ -365,8 +356,8 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 		public void run() {
 			System.out.println("CaptureErrorStreamHandler.run()");
 			try {
-				char ac[] = new char[100];
-				while (fInputStreamReader.read(ac, 0, 100) != -1) {
+				char ac[] = new char[256];
+				while (fInputStreamReader.read(ac, 0, ac.length) != -1) {
 					fCaptureBuffer.append(ac);
 					System.out.println(ac);
 				}
@@ -385,36 +376,49 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 	protected class PipedProcess extends Process {
 
 		private Process fProcess;
-//		private StringBuffer fBuffer;
 
 		private PushbackInputStream fInput;
 		protected PipedInputStream fError;
 		protected PipedOutputStream fPipeOut;
 
 		public PipedProcess(Process process, StringBuffer buffer) {
+			System.out.println("PipedProcess(" + process + ")");
 			fProcess = process;
-//			fBuffer = new StringBuffer();
 			fInput = new PushbackInputStream(fProcess.getInputStream(),
 					buffer.length() + 1);
 			byte[] b = buffer.toString().getBytes();
 			try {
 				fInput.unread(b);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Activator.log(e);
 			}
-			
+
 			fPipeOut = new PipedOutputStream();
 			try {
 				fError = new PipedInputStream(fPipeOut);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Activator.log(e);
 			}
 		}
 
 		@Override
 		public void destroy() {
+			System.out.println("PipedProcess.destroy()");
+			try {
+				if (fPipeOut != null) {
+					fPipeOut.close();
+					fPipeOut = null;
+				}
+				if (fError != null) {
+					fError.close();
+					fError = null;
+				}
+
+				// fInput is closed by it's parent, do not close it here,
+				// since this will crash PushbackInputStream.
+			} catch (IOException e) {
+				Activator.log(e);
+			}
 			fProcess.destroy();
 		}
 
@@ -425,12 +429,20 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 
 		@Override
 		public InputStream getErrorStream() {
-			return fError;
+			if (fError != null) {
+				return fError;
+			} else {
+				return fProcess.getErrorStream();
+			}
 		}
 
 		@Override
 		public InputStream getInputStream() {
-			return fInput;
+			if (fInput != null) {
+				return fInput;
+			} else {
+				return fProcess.getInputStream();
+			}
 		}
 
 		@Override
@@ -443,11 +455,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 			return fProcess.waitFor();
 		}
 
-//		public StringBuffer getBuffer() {
-//			return fBuffer;
-//		}
-
-		public OutputStream getErrorOutputPipe(){
+		public OutputStream getErrorOutputPipe() {
 			return fPipeOut;
 		}
 	}
@@ -677,10 +685,13 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 											.println("GdbServerStep shutdown() run() run() State.TERMINATED");
 									fServerBackendState = State.TERMINATED;
 
-									// If necessary, send an event like
-									// BackendStateChangedEvent(getSession().getId(),
-									// getId(), State.TERMINATED),
-									// getProperties()
+									// Notify world that server backend
+									// terminated.
+									getSession().dispatchEvent(
+											new ServerBackendStateChangedEvent(
+													getSession().getId(),
+													getId(), State.TERMINATED),
+											getProperties());
 								}
 							}
 						}).get();
@@ -786,10 +797,12 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 									.println("GdbServerMonitorJob.run() run() State.TERMINATED");
 							fServerBackendState = State.TERMINATED;
 
-							// If necessary, send an event like
-							// BackendStateChangedEvent(getSession().getId(),
-							// getId(), State.TERMINATED),
-							// getProperties()
+							// Notify world that server backend terminated.
+							getSession().dispatchEvent(
+									new ServerBackendStateChangedEvent(
+											getSession().getId(), getId(),
+											State.TERMINATED), getProperties());
+
 						}
 					});
 				} catch (InterruptedException ie) {

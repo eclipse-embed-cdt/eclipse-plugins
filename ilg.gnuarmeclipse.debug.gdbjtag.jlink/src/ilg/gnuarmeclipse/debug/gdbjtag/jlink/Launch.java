@@ -200,8 +200,10 @@ public class Launch extends GnuArmLaunch {
 				attributes.put(IGdbDebugConstants.PROCESS_TYPE_CREATION_ATTR,
 						IGdbDebugConstants.GDB_PROCESS_CREATION_VALUE);
 			}
-			newProcess = DebugPlugin.newProcess(this, serverProc, label,
-					attributes);
+			if (serverProc != null) {
+				newProcess = DebugPlugin.newProcess(this, serverProc, label,
+						attributes);
+			}
 		} catch (InterruptedException e) {
 			throw new CoreException(new Status(IStatus.ERROR,
 					Activator.PLUGIN_ID, 0,

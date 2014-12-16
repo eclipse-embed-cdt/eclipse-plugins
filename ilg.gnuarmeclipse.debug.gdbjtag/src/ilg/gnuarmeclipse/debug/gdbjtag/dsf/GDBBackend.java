@@ -182,6 +182,9 @@ public class GDBBackend extends AbstractDsfService implements IGDBBackend,
 
 	@Override
 	public void shutdown(final RequestMonitor requestMonitor) {
+
+		System.out.println("GDBBackend.shutdown()");
+
 		final Sequence.Step[] shutdownSteps = new Sequence.Step[] {
 				new RegisterStep(
 						InitializationShutdownStep.Direction.SHUTTING_DOWN),
@@ -587,6 +590,8 @@ public class GDBBackend extends AbstractDsfService implements IGDBBackend,
 		// Wait for the actual user of the streams to close it.
 		// Bug 339379
 
+		System.out.println("GDBBackend.destroy()");
+
 		// destroy() should be supported even if it's not spawner.
 		if (getState() == State.STARTED) {
 			fProcess.destroy();
@@ -921,10 +926,18 @@ public class GDBBackend extends AbstractDsfService implements IGDBBackend,
 					fMonProcess.waitFor();
 					fGDBExitValue = fMonProcess.exitValue();
 
+					// vvvvvvvv
+					System.out.println("MonitorJob.run() exitValue() "
+							+ fGDBExitValue);
+					// ^^^^^^^^
+
 					// Need to do this on the executor for thread-safety
 					getExecutor().submit(new DsfRunnable() {
 						@Override
 						public void run() {
+
+							System.out.println("MonitorJob.run() run() ");
+
 							destroy();
 							fBackendState = State.TERMINATED;
 							getSession()

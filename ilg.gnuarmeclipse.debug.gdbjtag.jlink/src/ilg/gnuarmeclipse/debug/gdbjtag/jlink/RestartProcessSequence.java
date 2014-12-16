@@ -199,8 +199,7 @@ public class RestartProcessSequence extends ReflectionSequence {
 		try {
 			DebugUtils.addMultiLine(otherCmds, commandsList);
 		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Activator.log(e);
 		}
 
 		commandsList.add("continue");

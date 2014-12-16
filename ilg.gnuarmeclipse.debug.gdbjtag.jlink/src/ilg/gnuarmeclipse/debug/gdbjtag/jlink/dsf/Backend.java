@@ -45,6 +45,8 @@ public class Backend extends GDBBackend {
 	public Backend(DsfSession session, ILaunchConfiguration lc) {
 
 		super(session, lc);
+
+		System.out.println("Backend() " + this);
 		fLaunchConfiguration = lc;
 
 	}
