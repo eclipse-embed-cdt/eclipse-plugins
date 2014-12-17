@@ -31,6 +31,7 @@ import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugException;
@@ -177,11 +178,26 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	}
 
 	@Override
-	public String[] getCommandLineArray() {
+	public String[] getServerCommandLineArray() {
 		String[] commandLineArray = TabDebugger
 				.getGdbServerCommandLineArray(fLaunchConfiguration);
 
 		return commandLineArray;
+	}
+
+	public String getServerCommandName() {
+
+		String[] commandLineArray = getServerCommandLineArray();
+		if (commandLineArray == null) {
+			return null;
+		}
+
+		String fullCommand = commandLineArray[0];
+		if (fullCommand == null)
+			return null;
+
+		String parts[] = fullCommand.trim().split("" + Path.SEPARATOR);
+		return parts[parts.length - 1];
 	}
 
 	@Override

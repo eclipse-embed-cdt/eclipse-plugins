@@ -265,7 +265,7 @@ public class Launch extends GnuArmLaunch {
 		return newProcess;
 	}
 
-	private String getServerCommandName(ILaunchConfiguration config) {
+	public String getServerCommandName(ILaunchConfiguration config) {
 		String fullCommand = TabDebugger.getGdbServerCommand(config);
 		if (fullCommand == null)
 			return null;
@@ -274,7 +274,7 @@ public class Launch extends GnuArmLaunch {
 		return parts[parts.length - 1];
 	}
 
-	private String getClientCommandName(ILaunchConfiguration config) {
+	public String getClientCommandName(ILaunchConfiguration config) {
 		String fullCommand = TabDebugger.getGdbClientCommand(config);
 		if (fullCommand == null)
 			return null;

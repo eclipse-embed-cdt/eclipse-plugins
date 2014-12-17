@@ -238,15 +238,18 @@ public class LaunchConfigurationDelegate extends
 
 		// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
+		// Assign 4 work ticks.
 		IProgressMonitor subMonServer = new SubProgressMonitor(monitor, 4,
 				SubProgressMonitor.PREPEND_MAIN_LABEL_TO_SUBTASK);
 
 		Sequence serverServicesLaunchSequence = getServerServicesSequence(
 				launch.getSession(), launch, subMonServer);
 
-		launch.getSession().getExecutor().execute(serverServicesLaunchSequence);
 		boolean succeed = false;
 		try {
+			// Execute on DSF thread and wait for it.
+			launch.getSession().getExecutor()
+					.execute(serverServicesLaunchSequence);
 			serverServicesLaunchSequence.get();
 			succeed = true;
 		} catch (InterruptedException e1) {
@@ -270,42 +273,56 @@ public class LaunchConfigurationDelegate extends
 		// This contributes 1 work units to the monitor
 		((Launch) launch).initializeServerConsole(monitor);
 
+		// Wait for the server to be available, or to know it failed.
 		IStatus serverStatus;
 		try {
-			serverStatus = launch.getSession().getExecutor()
-					.submit(new Callable<IStatus>() {
-						@Override
-						public IStatus call() throws CoreException {
-							DsfServicesTracker tracker = new DsfServicesTracker(
-									GdbPlugin.getBundleContext(), launch
-											.getSession().getId());
-							GdbServerBackend backend = (GdbServerBackend) tracker
-									.getService(GdbServerBackend.class);
-							if (backend != null) {
-								return backend.getServerExitStatus();
-							}
-							return null;
-						}
+			Callable<IStatus> callable = new Callable<IStatus>() {
+				@Override
+				public IStatus call() throws CoreException {
+					DsfServicesTracker tracker = new DsfServicesTracker(
+							GdbPlugin.getBundleContext(), launch.getSession()
+									.getId());
+					GdbServerBackend backend = (GdbServerBackend) tracker
+							.getService(GdbServerBackend.class);
+					if (backend != null) {
+						return backend.getServerExitStatus();
+					} else {
+						throw new CoreException(new Status(IStatus.ERROR,
+								Activator.PLUGIN_ID,
+								"Could not start GDB server."));
 					}
-
-					).get();
-
-			if (serverStatus != null) {
-				System.out.println(serverStatus);
-				if (serverStatus != Status.OK_STATUS) {
-					throw new CoreException(serverStatus);
 				}
+			};
+
+			// Wait to get the server status. Being endless should not be a
+			// problem, the timeout will kill it if too long.
+			serverStatus = null;
+			while (serverStatus == null) {
+				Thread.sleep(10);
+				serverStatus = launch.getSession().getExecutor()
+						.submit(callable).get();
+				System.out.print('!');
 			}
+
+			if (serverStatus != Status.OK_STATUS) {
+				System.out.println(serverStatus);
+				throw new CoreException(serverStatus);
+			}
+
 		} catch (InterruptedException e) {
 			Activator.log(e);
 		} catch (ExecutionException e) {
 			Activator.log(e);
 		}
 
+		System.out.println("* Server confirmed started. *");
+
 		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 		// Create and invoke the launch sequence to create the debug control and
 		// services
+
+		// 4 work ticks.
 		IProgressMonitor subMon1 = new SubProgressMonitor(monitor, 4,
 				SubProgressMonitor.PREPEND_MAIN_LABEL_TO_SUBTASK);
 		Sequence servicesLaunchSequence = getServicesSequence(
@@ -445,21 +462,22 @@ public class LaunchConfigurationDelegate extends
 	 * Get a custom launch sequence, that inserts a GDB server starter.
 	 */
 	protected Sequence getServicesSequence(DsfSession session, ILaunch launch,
-			IProgressMonitor rm) {
+			IProgressMonitor progressMonitor) {
 
 		System.out.println("LaunchConfigurationDelegate.getServicesSequence()");
 
-		return new ServicesLaunchSequence(session, (GdbLaunch) launch, rm);
+		return new ServicesLaunchSequence(session, (GdbLaunch) launch,
+				progressMonitor);
 	}
 
 	protected Sequence getServerServicesSequence(DsfSession session,
-			ILaunch launch, IProgressMonitor rm) {
+			ILaunch launch, IProgressMonitor progressMonitor) {
 
 		System.out
 				.println("LaunchConfigurationDelegate.getServerServicesSequence()");
 
 		return new GnuArmServerServicesLaunchSequence(session,
-				(GdbLaunch) launch, rm);
+				(GdbLaunch) launch, progressMonitor);
 	}
 
 	// ------------------------------------------------------------------------

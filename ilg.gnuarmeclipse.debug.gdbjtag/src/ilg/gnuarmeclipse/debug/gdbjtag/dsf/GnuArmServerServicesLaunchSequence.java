@@ -41,9 +41,10 @@ public class GnuArmServerServicesLaunchSequence extends Sequence {
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmServerServicesLaunchSequence(DsfSession session, GdbLaunch launch,
-			IProgressMonitor pm) {
-		super(session.getExecutor(), pm, "Start Server", "Start Server Rollback");
+	public GnuArmServerServicesLaunchSequence(DsfSession session,
+			GdbLaunch launch, IProgressMonitor progressMonitor) {
+		super(session.getExecutor(), progressMonitor, "Start Server",
+				"Start Server Rollback");
 
 		System.out.println("GnuArmServerServicesLaunchSequence()");
 

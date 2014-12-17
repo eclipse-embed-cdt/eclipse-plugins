@@ -61,12 +61,12 @@ public interface IGdbServerBackendService extends IDsfService {
 
 	// ------------------------------------------------------------------------
 
-    /**
-     * Returns the identifier of this backend service.  It can be used 
-     * to distinguish between multiple instances of this service in a 
-     * single session.   
-     */
-    public String getId();
+	/**
+	 * Returns the identifier of this backend service. It can be used to
+	 * distinguish between multiple instances of this service in a single
+	 * session.
+	 */
+	public String getId();
 
 	public Process getServerProcess();
 
@@ -77,6 +77,8 @@ public interface IGdbServerBackendService extends IDsfService {
 	public IStatus getServerExitStatus();
 
 	public void destroy();
+
+	public String getServerCommandName();
 
 	// ------------------------------------------------------------------------
 }
