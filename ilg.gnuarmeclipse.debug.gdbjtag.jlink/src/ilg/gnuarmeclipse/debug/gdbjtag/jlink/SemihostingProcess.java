@@ -18,8 +18,9 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.net.InetSocketAddress;
 import java.net.Socket;
+import java.net.SocketException;
 
-class SemihostingProcess extends Process implements Runnable {
+public class SemihostingProcess extends Process implements Runnable {
 
 	boolean fRunning;
 	Thread fThread = null;
@@ -120,8 +121,7 @@ class SemihostingProcess extends Process implements Runnable {
 		try {
 			fPipeIn = new PipedInputStream(fPipeOut);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Activator.log(e);
 		}
 	}
 
@@ -141,17 +141,23 @@ class SemihostingProcess extends Process implements Runnable {
 
 			try {
 				if (!socket.isClosed()) {
+
+					// Do not close(), it is too brutal.
 					// socket.close();
 
-					System.out
-							.println("SemihostingProcess.destroy() before shutdownInput");
-					socket.shutdownInput();
-					System.out
-							.println("SemihostingProcess.destroy() before shutdownOutput");
-					socket.shutdownOutput();
+					if (!socket.isInputShutdown()) {
+						System.out
+								.println("SemihostingProcess.destroy() before shutdownInput");
+						socket.shutdownInput();
+					}
+					if (!socket.isOutputShutdown()) {
+						System.out
+								.println("SemihostingProcess.destroy() before shutdownOutput");
+						socket.shutdownOutput();
+					}
 				}
 			} catch (IOException e) {
-				System.out.println("SemihostingProcess.destroy() exception");
+				// Activator.log(e);
 			}
 		}
 
@@ -186,7 +192,7 @@ class SemihostingProcess extends Process implements Runnable {
 	@Override
 	public int waitFor() throws InterruptedException {
 		System.out.println("SemihostingProcess.waitFor() "
-				+ Thread.currentThread() + " " + fThread);
+				+ Thread.currentThread() + " will wait for " + fThread);
 		fThread.join();
 		System.out.println("SemihostingProcess.waitFor() return "
 				+ Thread.currentThread());
@@ -236,7 +242,13 @@ class SemihostingProcess extends Process implements Runnable {
 
 			while (socket.isConnected() & fRunning) {
 
-				int nRawBytes = fInputStream.read(rawBytes);
+				int nRawBytes;
+				try {
+					nRawBytes = fInputStream.read(rawBytes);
+				} catch (SocketException e) {
+					nRawBytes = -1; // EOS
+					// System.out.println(e);
+				}
 
 				if (nRawBytes == -1) {
 					// End of input on inputStream.
@@ -257,8 +269,7 @@ class SemihostingProcess extends Process implements Runnable {
 				}
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Activator.log(e);
 		} finally {
 			try {
 				fPipeOut.close();

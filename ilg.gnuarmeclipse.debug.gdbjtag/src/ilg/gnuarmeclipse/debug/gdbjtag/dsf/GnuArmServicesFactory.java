@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.dsf;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.services.IGdbServerBackendService;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IPeripheralMemoryService;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IPeripheralsService;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.PeripheralMemoryService;
@@ -31,7 +32,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
  * To be used as parent class by actual implementations (J-Link and OpenOCD
  * factories).
  */
-public class GnuArmServicesFactory extends GdbDebugServicesFactory {
+public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 
 	// ------------------------------------------------------------------------
 
@@ -53,9 +54,15 @@ public class GnuArmServicesFactory extends GdbDebugServicesFactory {
 
 		if (IPeripheralsService.class.isAssignableFrom(clazz)) {
 			return (V) createPeripheralsService(session);
-		}
-		if (IPeripheralMemoryService.class.isAssignableFrom(clazz)) {
+		} else if (IPeripheralMemoryService.class.isAssignableFrom(clazz)) {
 			return (V) createPeripheralMemoryService(session);
+		} else if (IGdbServerBackendService.class.isAssignableFrom(clazz)) {
+			for (Object arg : optionalArguments) {
+				if (arg instanceof ILaunchConfiguration) {
+					return (V) createGdbServerBackendService(session,
+							(ILaunchConfiguration) arg);
+				}
+			}
 		}
 		return super.createService(clazz, session, optionalArguments);
 	}
@@ -67,6 +74,12 @@ public class GnuArmServicesFactory extends GdbDebugServicesFactory {
 	private PeripheralMemoryService createPeripheralMemoryService(
 			DsfSession session) {
 		return new PeripheralMemoryService(session);
+	}
+
+	// TODO: make it abstract and update openocd
+	protected GnuArmGdbServerBackend createGdbServerBackendService(
+			DsfSession session, ILaunchConfiguration lc) {
+		return null;
 	}
 
 	// Not yet functional

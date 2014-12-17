@@ -630,7 +630,7 @@ public class Backend0 extends AbstractDsfService implements IGDBBackend,
 
 					try {
 						File dir = DebugUtils
-								.getProjectOsPath(fLaunchConfiguration);
+								.getProjectOsDir(fLaunchConfiguration);
 
 						fProcess = launchGDBProcess(commandLineArray, dir);
 						// Need to do this on the executor for thread-safety

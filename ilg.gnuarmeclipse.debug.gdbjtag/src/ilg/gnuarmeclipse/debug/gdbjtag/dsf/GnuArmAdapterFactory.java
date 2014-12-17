@@ -147,34 +147,24 @@ public class GnuArmAdapterFactory extends GdbAdapterFactory {
 		return super.getAdapter(adaptableObject, adapterType);
 	}
 
-	@SuppressWarnings("rawtypes")
-	@Override
-	public Class[] getAdapterList() {
+	// This is tricky, we redefine most, but not all of the parent classes.
+	// Normally we should merge the two arrays.
 
-		return new Class[] { IElementContentProvider.class,
-				IModelProxyFactory.class, IColumnPresentationFactory.class };
-	}
-
-	@Override
-	public void launchesAdded(ILaunch[] launches) {
-		;
-	}
-
-	@Override
-	public void launchesChanged(ILaunch[] launches) {
-		;
-	}
+	// @SuppressWarnings("rawtypes")
+	// @Override
+	// public Class[] getAdapterList() {
+	//
+	// return new Class[] { IElementContentProvider.class,
+	// IModelProxyFactory.class, IColumnPresentationFactory.class };
+	// }
 
 	@Override
 	public void launchesRemoved(ILaunch[] launches) {
 		for (ILaunch launch : launches)
 			if ((launch instanceof GdbLaunch))
 				disposeAdapterSet(launch);
-	}
 
-	@Override
-	public void launchesTerminated(ILaunch[] launches) {
-		;
+		super.launchesRemoved(launches);
 	}
 
 	// ------------------------------------------------------------------------

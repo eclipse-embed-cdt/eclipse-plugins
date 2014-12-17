@@ -64,6 +64,9 @@ public class PeripheralsView extends VariablesView implements
 	// ------------------------------------------------------------------------
 
 	public PeripheralsView() {
+
+		System.out.println("PeripheralsView()");
+
 		fMemoryBlocks = new HashSet<PeripheralMemoryBlockExtension>();
 	}
 
@@ -172,6 +175,8 @@ public class PeripheralsView extends VariablesView implements
 	@Override
 	public Viewer createViewer(Composite composite) {
 
+		System.out.println("PeripheralsView.createViewer()");
+
 		TreeModelViewer viewer = (TreeModelViewer) super
 				.createViewer(composite);
 
@@ -185,6 +190,8 @@ public class PeripheralsView extends VariablesView implements
 
 	@Override
 	public void dispose() {
+
+		System.out.println("PeripheralsView.dispose()");
 
 		// Remove all peripheral monitors
 		MemoryBlockMonitor

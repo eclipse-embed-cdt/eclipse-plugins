@@ -12,8 +12,11 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
+import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmServerServicesLaunchSequence;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.dsf.GdbServerBackend;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.TabDebugger;
 
+import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
@@ -22,6 +25,7 @@ import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.ImmediateExecutor;
 import org.eclipse.cdt.dsf.concurrent.Query;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitorWithProgress;
+import org.eclipse.cdt.dsf.concurrent.Sequence;
 import org.eclipse.cdt.dsf.debug.service.IDsfDebugServicesFactory;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.gdb.launching.GdbLaunch;
@@ -31,44 +35,68 @@ import org.eclipse.cdt.dsf.gdb.launching.ServicesLaunchSequence;
 import org.eclipse.cdt.dsf.gdb.service.SessionType;
 import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
+import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.NullProgressMonitor;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.SubProgressMonitor;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
 
+/**
+ * This class is referred in the plugin.xml as an
+ * "org.eclipse.debug.core.launchDelegates" extension point.
+ * 
+ * It inherits directly from the GDB Hardware Debug plug-in.
+ * 
+ *
+ */
 @SuppressWarnings("restriction")
 public class LaunchConfigurationDelegate extends
 		GDBJtagDSFLaunchConfigurationDelegate {
 
+	// ------------------------------------------------------------------------
+
 	private final static String NON_STOP_FIRST_VERSION = "6.8.50"; //$NON-NLS-1$
 
 	ILaunchConfiguration fConfig = null;
+	@SuppressWarnings("unused")
+	private boolean fIsNonStopSession = false;
 
 	// private GdbLaunch fGdbLaunch;
+
+	// ------------------------------------------------------------------------
 
 	@Override
 	protected IDsfDebugServicesFactory newServiceFactory(
 			ILaunchConfiguration config, String version) {
 
+		System.out.println("LaunchConfigurationDelegate.newServiceFactory("
+				+ config.getName() + "," + version + ") " + this);
+
+		fConfig = config;
 		return new ServicesFactory(version);
 		// return new GdbJtagDebugServicesFactory(version);
 	}
 
+	/**
+	 * This method is called first when starting a debug session.
+	 */
 	protected GdbLaunch createGdbLaunch(ILaunchConfiguration configuration,
 			String mode, ISourceLocator locator) throws CoreException {
+
+		System.out.println("LaunchConfigurationDelegate.createGdbLaunch("
+				+ configuration.getName() + "," + mode + ") " + this);
+
+		DebugUtils.checkLaunchConfigurationStarted(configuration);
+
 		// return new GdbLaunch(configuration, mode, locator);
-
-		System.out.println("createGdbLaunch() " + this);
-
 		return new Launch(configuration, mode, locator);
 	}
 
@@ -77,15 +105,22 @@ public class LaunchConfigurationDelegate extends
 
 		String gdbClientCommand = TabDebugger.getGdbClientCommand(config);
 		String version = DebugUtils.getGDBVersion(config, gdbClientCommand);
-		System.out.println("GDB version=" + version);
+		System.out.println("LaunchConfigurationDelegate.getGDBVersion "
+				+ version);
 		return version;
 	}
 
+	/**
+	 * After Launch.initialise(), call here to effectively launch.
+	 * 
+	 * The main reason for this is the custom launchDebugSession().
+	 */
 	@Override
 	public void launch(ILaunchConfiguration config, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 
-		System.out.println("launch() " + this);
+		System.out.println("LaunchConfigurationDelegate.launch("
+				+ config.getName() + "," + mode + ") " + this);
 
 		org.eclipse.cdt.launch.LaunchUtils.enableActivity(
 				"org.eclipse.cdt.debug.dsfgdbActivity", true); //$NON-NLS-1$
@@ -95,13 +130,19 @@ public class LaunchConfigurationDelegate extends
 		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
 			launchDebugger(config, launch, monitor);
 		}
+		// TODO: check what is needed to launch non-debug sessions.
 	}
 
 	private void launchDebugger(ILaunchConfiguration config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
 
-		// int totalWork = 10;
-		monitor.beginTask(LaunchMessages.getString("GdbLaunchDelegate.0"), 10); //$NON-NLS-1$
+		System.out.println("LaunchConfigurationDelegate.launchDebugger("
+				+ config.getName() + ") " + this);
+
+		int totalWork = 10 + 2; // Extra units due to server and semihosting
+								// console
+		monitor.beginTask(
+				LaunchMessages.getString("GdbLaunchDelegate.0"), totalWork); //$NON-NLS-1$
 		if (monitor.isCanceled()) {
 			cleanupLaunch();
 			return;
@@ -114,10 +155,21 @@ public class LaunchConfigurationDelegate extends
 		}
 	}
 
-	/** @since 4.1 */
+	/**
+	 * This customisation was required to replace the creation of the initial
+	 * "gdb" console with three consoles (server, client, semihosting).
+	 * 
+	 */
 	protected void launchDebugSession(final ILaunchConfiguration config,
 			ILaunch l, IProgressMonitor monitor) throws CoreException {
 
+		System.out.println("LaunchConfigurationDelegate.launchDebugSession("
+				+ config.getName() + ") " + this);
+
+		// From here it is almost identical with the system one, except
+		// the console creation, explicitly marked with '+++++'.
+
+		// --------------------------------------------------------------------
 		if (monitor.isCanceled()) {
 			cleanupLaunch();
 			return;
@@ -152,6 +204,10 @@ public class LaunchConfigurationDelegate extends
 
 		monitor.worked(1);
 
+		// Must set this here for users that call directly the deprecated
+		// newServiceFactory(String)
+		fIsNonStopSession = LaunchUtils.getIsNonStopMode(config);
+
 		String gdbVersion = getGDBVersion(config);
 
 		// First make sure non-stop is supported, if the user want to use this
@@ -162,7 +218,7 @@ public class LaunchConfigurationDelegate extends
 			throw new DebugException(
 					new Status(
 							IStatus.ERROR,
-							Activator.PLUGIN_ID,
+							GdbPlugin.PLUGIN_ID,
 							DebugException.REQUEST_FAILED,
 							"Non-stop mode is not supported for GDB " + gdbVersion + ", GDB " + NON_STOP_FIRST_VERSION + " or higher is required.", null)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$        	
 		}
@@ -173,35 +229,121 @@ public class LaunchConfigurationDelegate extends
 			throw new DebugException(
 					new Status(
 							IStatus.ERROR,
-							Activator.PLUGIN_ID,
+							GdbPlugin.PLUGIN_ID,
 							DebugException.REQUEST_FAILED,
 							"Post-mortem tracing is not supported for GDB " + gdbVersion + ", GDB " + NON_STOP_FIRST_VERSION + " or higher is required.", null)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$        	
 		}
 
 		launch.setServiceFactory(newServiceFactory(config, gdbVersion));
 
+		// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+
+		// Assign 4 work ticks.
+		IProgressMonitor subMonServer = new SubProgressMonitor(monitor, 4,
+				SubProgressMonitor.PREPEND_MAIN_LABEL_TO_SUBTASK);
+
+		Sequence serverServicesLaunchSequence = getServerServicesSequence(
+				launch.getSession(), launch, subMonServer);
+
+		boolean succeed = false;
+		try {
+			// Execute on DSF thread and wait for it.
+			launch.getSession().getExecutor()
+					.execute(serverServicesLaunchSequence);
+			serverServicesLaunchSequence.get();
+			succeed = true;
+		} catch (InterruptedException e1) {
+			throw new DebugException(new Status(IStatus.ERROR,
+					GdbPlugin.PLUGIN_ID, DebugException.INTERNAL_ERROR,
+					"Interrupted Exception in dispatch thread", e1)); //$NON-NLS-1$
+		} catch (ExecutionException e1) {
+			throw new DebugException(new Status(IStatus.ERROR,
+					GdbPlugin.PLUGIN_ID, DebugException.REQUEST_FAILED,
+					"Error in services launch sequence", e1.getCause())); //$NON-NLS-1$
+		} catch (CancellationException e1) {
+			// Launch aborted, so exit cleanly
+			System.out.println("Launch aborted, so exit cleanly");
+			return;
+		} finally {
+			if (!succeed) {
+				cleanupLaunch();
+			}
+		}
+
+		// This contributes 1 work units to the monitor
+		((Launch) launch).initializeServerConsole(monitor);
+
+		// Wait for the server to be available, or to know it failed.
+		IStatus serverStatus;
+		try {
+			Callable<IStatus> callable = new Callable<IStatus>() {
+				@Override
+				public IStatus call() throws CoreException {
+					DsfServicesTracker tracker = new DsfServicesTracker(
+							GdbPlugin.getBundleContext(), launch.getSession()
+									.getId());
+					GdbServerBackend backend = (GdbServerBackend) tracker
+							.getService(GdbServerBackend.class);
+					if (backend != null) {
+						return backend.getServerExitStatus();
+					} else {
+						throw new CoreException(new Status(IStatus.ERROR,
+								Activator.PLUGIN_ID,
+								"Could not start GDB server."));
+					}
+				}
+			};
+
+			// Wait to get the server status. Being endless should not be a
+			// problem, the timeout will kill it if too long.
+			serverStatus = null;
+			while (serverStatus == null) {
+				Thread.sleep(10);
+				serverStatus = launch.getSession().getExecutor()
+						.submit(callable).get();
+				System.out.print('!');
+			}
+
+			if (serverStatus != Status.OK_STATUS) {
+				System.out.println(serverStatus);
+				throw new CoreException(serverStatus);
+			}
+
+		} catch (InterruptedException e) {
+			Activator.log(e);
+		} catch (ExecutionException e) {
+			Activator.log(e);
+		}
+
+		System.out.println("* Server confirmed started. *");
+
+		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
 		// Create and invoke the launch sequence to create the debug control and
 		// services
+
+		// 4 work ticks.
 		IProgressMonitor subMon1 = new SubProgressMonitor(monitor, 4,
 				SubProgressMonitor.PREPEND_MAIN_LABEL_TO_SUBTASK);
-		final ServicesLaunchSequence servicesLaunchSequence = new ServicesLaunchSequence(
+		Sequence servicesLaunchSequence = getServicesSequence(
 				launch.getSession(), launch, subMon1);
 
 		launch.getSession().getExecutor().execute(servicesLaunchSequence);
-		boolean succeed = false;
+		// boolean succeed = false;
 		try {
 			servicesLaunchSequence.get();
 			succeed = true;
 		} catch (InterruptedException e1) {
 			throw new DebugException(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, DebugException.INTERNAL_ERROR,
+					GdbPlugin.PLUGIN_ID, DebugException.INTERNAL_ERROR,
 					"Interrupted Exception in dispatch thread", e1)); //$NON-NLS-1$
 		} catch (ExecutionException e1) {
 			throw new DebugException(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, DebugException.REQUEST_FAILED,
+					GdbPlugin.PLUGIN_ID, DebugException.REQUEST_FAILED,
 					"Error in services launch sequence", e1.getCause())); //$NON-NLS-1$
 		} catch (CancellationException e1) {
 			// Launch aborted, so exit cleanly
+			System.out.println("Launch aborted, so exit cleanly");
 			return;
 		} finally {
 			if (!succeed) {
@@ -223,53 +365,15 @@ public class LaunchConfigurationDelegate extends
 		// through an ICommandControlShutdownDMEvent
 		launch.initializeControl();
 
-		IProcess newProcess;
-		boolean doAddServerConsole = config.getAttribute(
-				ConfigurationAttributes.DO_START_GDB_SERVER,
-				ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT)
-				&& config
-						.getAttribute(
-								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
-								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
+		// Add the GDB process object to the launch.
 
-		if (doAddServerConsole) {
+		// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+		// launch.addCLIProcess("gdb"); //$NON-NLS-1$
+		// monitor.worked(1);
 
-			// Add the GDB server process to the launch tree
-			newProcess = ((Launch) launch)
-					.addServerProcess(getServerCommandName(config));
-			newProcess.setAttribute(IProcess.ATTR_CMDLINE,
-					TabDebugger.getGdbServerCommandLine(config));
-
-			monitor.worked(1);
-		}
-
-		{
-			// Add the GDB client process to the launch tree.
-			newProcess = ((Launch) launch)
-					.addClientProcess(getClientCommandName(config)); //$NON-NLS-1$
-
-			newProcess.setAttribute(IProcess.ATTR_CMDLINE,
-					TabDebugger.getGdbClientCommandLine(config));
-
-			monitor.worked(1);
-		}
-
-		boolean doAddSemihostingConsole = config.getAttribute(
-				ConfigurationAttributes.DO_START_GDB_SERVER,
-				ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT)
-				&& config
-						.getAttribute(
-								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
-								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
-
-		if (doAddSemihostingConsole) {
-
-			// Add the special semihosting and SWV process to the launch tree
-			newProcess = ((Launch) launch)
-					.addSemihostingProcess("Semihosting and SWV");
-
-			monitor.worked(1);
-		}
+		// This contributes 2 work units to the monitor
+		((Launch) launch).initializeConsoles(monitor);
+		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 		// Create and invoke the final launch sequence to setup GDB
 		final IProgressMonitor subMon2 = new SubProgressMonitor(monitor, 4,
@@ -305,11 +409,11 @@ public class LaunchConfigurationDelegate extends
 			succeed = true;
 		} catch (InterruptedException e1) {
 			throw new DebugException(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, DebugException.INTERNAL_ERROR,
+					GdbPlugin.PLUGIN_ID, DebugException.INTERNAL_ERROR,
 					"Interrupted Exception in dispatch thread", e1)); //$NON-NLS-1$
 		} catch (ExecutionException e1) {
 			throw new DebugException(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, DebugException.REQUEST_FAILED,
+					GdbPlugin.PLUGIN_ID, DebugException.REQUEST_FAILED,
 					"Error in final launch sequence", e1.getCause())); //$NON-NLS-1$
 		} catch (CancellationException e1) {
 			// Launch aborted, so exit cleanly
@@ -322,23 +426,59 @@ public class LaunchConfigurationDelegate extends
 				cleanupLaunch();
 			}
 		}
+		// --------------------------------------------------------------------
+
 	}
 
-	private String getServerCommandName(ILaunchConfiguration config) {
-		String fullCommand = TabDebugger.getGdbServerCommand(config);
-		if (fullCommand == null)
-			return null;
+	/**
+	 * Perform some local validations before starting the debug session.
+	 */
+	@Override
+	protected IPath checkBinaryDetails(final ILaunchConfiguration config)
+			throws CoreException {
 
-		String parts[] = fullCommand.trim().split("" + Path.SEPARATOR);
-		return parts[parts.length - 1];
+		String deviceName = "";
+		try {
+			deviceName = config.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
+					ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT).trim();
+		} catch (CoreException e) {
+		}
+
+		if (deviceName.isEmpty()) {
+			throw new CoreException(
+					new Status(
+							IStatus.ERROR,
+							Activator.PLUGIN_ID,
+							"Missing mandatory device name. "
+									+ "Fill-in the 'Device name:' field in the Debugger tab.")); //$NON-NLS-1$
+		}
+
+		IPath path = super.checkBinaryDetails(config);
+		return path;
 	}
 
-	private String getClientCommandName(ILaunchConfiguration config) {
-		String fullCommand = TabDebugger.getGdbClientCommand(config);
-		if (fullCommand == null)
-			return null;
+	/**
+	 * Get a custom launch sequence, that inserts a GDB server starter.
+	 */
+	protected Sequence getServicesSequence(DsfSession session, ILaunch launch,
+			IProgressMonitor progressMonitor) {
 
-		String parts[] = fullCommand.trim().split("" + Path.SEPARATOR);
-		return parts[parts.length - 1];
+		System.out.println("LaunchConfigurationDelegate.getServicesSequence()");
+
+		return new ServicesLaunchSequence(session, (GdbLaunch) launch,
+				progressMonitor);
 	}
+
+	protected Sequence getServerServicesSequence(DsfSession session,
+			ILaunch launch, IProgressMonitor progressMonitor) {
+
+		System.out
+				.println("LaunchConfigurationDelegate.getServerServicesSequence()");
+
+		return new GnuArmServerServicesLaunchSequence(session,
+				(GdbLaunch) launch, progressMonitor);
+	}
+
+	// ------------------------------------------------------------------------
 }

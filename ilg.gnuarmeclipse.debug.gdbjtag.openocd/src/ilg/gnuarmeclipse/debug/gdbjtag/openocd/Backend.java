@@ -293,7 +293,7 @@ public class Backend extends Backend0 {
 
 					try {
 						File dir = DebugUtils
-								.getProjectOsPath(fLaunchConfiguration);
+								.getProjectOsDir(fLaunchConfiguration);
 
 						fServerProcess = launchGDBProcess(commandLineArray, dir);
 						// Need to do this on the executor for thread-safety
