@@ -1098,8 +1098,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		gdbServerBrowseButton.setEnabled(enabled);
 		gdbServerVariablesButton.setEnabled(enabled);
 
-		// doConnectToRunning.setEnabled(enabled);
-		doConnectToRunning.setEnabled(false);
+		doConnectToRunning.setEnabled(enabled);
+		// doConnectToRunning.setEnabled(false);
 
 		gdbFlashDeviceName.setEnabled(enabled);
 
