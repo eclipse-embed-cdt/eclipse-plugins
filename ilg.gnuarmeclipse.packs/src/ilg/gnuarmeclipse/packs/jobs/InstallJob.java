@@ -263,7 +263,9 @@ public class InstallJob extends Job {
 		try {
 			flag = unzip(archiveFile, destRelPath);
 		} catch (IOException e) {
-			Activator.log(e);
+			String msg = e.getMessage() + ", file: " + archiveFile.getName();
+			fOut.println("Error: " + msg);
+			Utils.reportError(msg);
 		}
 
 		// Extract all files from the archive to the local folder.
@@ -272,6 +274,10 @@ public class InstallJob extends Job {
 
 			// Remove partial install
 			Utils.deleteFolderRecursive(destFolder);
+			
+			// Remove the broken archive file from the cache
+			archiveFile.delete();
+			
 			return false;
 		}
 
@@ -305,7 +311,7 @@ public class InstallJob extends Job {
 
 		int countFiles = 0;
 		int countBytes = 0;
-		while (zipEntry != null) {
+		while (zipEntry != null && (result == true)) {
 
 			// Skip the folder definitions, we automatically create them.
 			if (!zipEntry.isDirectory()) {
@@ -317,23 +323,28 @@ public class InstallJob extends Job {
 				if (!outFile.getParentFile().exists()) {
 					outFile.getParentFile().mkdirs();
 				}
-				try {
+				fOut.println("Write \"" + outFile + "\".");
 
-					fOut.println("Write \"" + outFile + "\".");
+				OutputStream output = new FileOutputStream(outFile);
 
-					OutputStream output = new FileOutputStream(outFile);
-
-					byte[] buf = new byte[1024];
-					int bytesRead;
-					while ((bytesRead = zipInput.read(buf)) > 0) {
+				byte[] buf = new byte[1024];
+				int bytesRead;
+				while ((bytesRead = zipInput.read(buf)) > 0) {
+					try {
 						output.write(buf, 0, bytesRead);
-						countBytes += bytesRead;
+					} catch (IOException e) {
+						String msg = e.getMessage() + ", file: "
+								+ outFile.getName();
+						fOut.println("Error: " + msg);
+						Utils.reportError(msg);
+
+						result = false;
+						break;
 					}
+					countBytes += bytesRead;
+				}
+				try {
 					output.close();
-
-					outFile.setReadOnly();
-					++countFiles;
-
 				} catch (IOException e) {
 					String msg = e.getMessage() + ", file: "
 							+ outFile.getName();
@@ -342,6 +353,10 @@ public class InstallJob extends Job {
 
 					result = false;
 				}
+
+				outFile.setReadOnly();
+				++countFiles;
+
 			}
 
 			zipEntry = zipInput.getNextEntry();
