@@ -12,7 +12,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		description="%CM.group.target.description" type="PAGES-ONLY" help="help.html">
 
 		<property id="CMcore" label="%CM.core.label" description="%CM.core.description"
-			type="select" default="cortexm3" hidden="false" persist="true">
+			type="select" default="cortex-m4" hidden="false" persist="true">
 			<item value="cortex-m0" label="Cortex-M0" />
 			<item value="cortex-m0plus" label="Cortex-M0+" />
 			<item value="cortex-m3" label="Cortex-M3" />
@@ -39,7 +39,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		</property>
 
 		<property id="trace" label="%trace.label" description="%trace.description"
-			type="select" default="ITM" hidden="false" persist="true">
+			type="select" default="DEBUG" hidden="false" persist="true">
 			<item value="NONE" label="None (no trace output)" />
 			<item value="ITM" label="ARM ITM (via SWO)" />
 			<item value="STDOUT" label="Semihosting STDOUT stream" />
