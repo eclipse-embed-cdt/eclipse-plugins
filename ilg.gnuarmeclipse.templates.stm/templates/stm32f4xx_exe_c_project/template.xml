@@ -18,8 +18,8 @@
 			<item value="STM32F415xx" label="STM32F415xx" />
 			<item value="STM32F417xx" label="STM32F417xx" />
 			<item value="STM32F427xx" label="STM32F427xx" />
-			<item value="STM32F437xx" label="STM32F437xx" />
 			<item value="STM32F429xx" label="STM32F429xx" />
+			<item value="STM32F437xx" label="STM32F437xx" />
 			<item value="STM32F439xx" label="STM32F439xx" />
 		</property>
 		<property id="STM32F4flashSize" label="%STM32F4xx.flashSize.label"
