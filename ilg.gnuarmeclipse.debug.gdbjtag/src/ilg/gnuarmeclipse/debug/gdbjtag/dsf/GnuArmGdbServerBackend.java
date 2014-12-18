@@ -249,6 +249,9 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 
 	public abstract String getServerName();
 
+	public abstract String prepareMessageBoxText(int exitCode,
+			String stderrMessage);
+
 	public String getStartingServerJobName() {
 		return "Starting " + getServerName();
 	}
@@ -874,8 +877,9 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 						if (fErrorStreamBuffer != null) {
 							System.out.println(fErrorStreamBuffer.toString());
 
-							final String message = cosmetise(fErrorStreamBuffer
-									.toString());
+							final String message = prepareMessageBoxText(
+									fGdbServerExitValue,
+									fErrorStreamBuffer.toString());
 							try {
 								getExecutor().submit(new DsfRunnable() {
 									@Override
@@ -888,10 +892,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 										// The launcher will wait for this.
 										fGdbServerExitStatus = new Status(
 												IStatus.ERROR,
-												Activator.PLUGIN_ID,
-												getStartingServerJobName()
-														+ " failed: \n"
-														+ message); //$NON-NLS-1$
+												Activator.PLUGIN_ID, message); //$NON-NLS-1$
 									}
 								}).get(); // Wait for it to complete.
 							} catch (ExecutionException e) {
@@ -962,20 +963,6 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 					}
 				}
 			}
-		}
-
-		String cosmetise(String message) {
-
-			String str = message.replaceAll("\r", "");
-			str = message.replaceAll(
-					"See GDB Server log for more information.", "");
-			str = str.trim();
-			String name = getServerCommandName();
-			if (name == null) {
-				name = "JLinkGDBServer";
-			}
-			str += "\n\nCheck the " + name + " console for more details.";
-			return str;
 		}
 
 	}

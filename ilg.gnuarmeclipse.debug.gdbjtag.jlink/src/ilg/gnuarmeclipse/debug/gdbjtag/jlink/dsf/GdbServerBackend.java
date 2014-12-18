@@ -229,6 +229,39 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		return false;
 	}
 
+	/**
+	 * Since the J-Link stderr messages are not final, this function makes the
+	 * best use of the available informatio (the exit code and the captured
+	 * string) to compose the text displayed in case of error.
+	 * 
+	 * @param exitCode
+	 *            an integer with the process exit code.
+	 * @param message
+	 *            a string with the captured stderr text.
+	 * @return a string with the text to be displayed.
+	 */
+	@Override
+	public String prepareMessageBoxText(int exitCode, String message) {
+
+		String body = message.replaceAll("\r", "");
+		body = message.replaceAll("See GDB Server log for more information.",
+				"");
+		body = body.trim();
+
+		String name = getServerCommandName();
+		if (name == null) {
+			name = "GDB Server";
+		}
+		String tail = "\n\nCheck the " + name + " console for more details.";
+
+		if (body.isEmpty()) {
+			return getStartingServerJobName() + " failed with code ("
+					+ exitCode + ")." + tail;
+		} else {
+			return getStartingServerJobName() + " failed: \n" + body + tail;
+		}
+	}
+
 	// ------------------------------------------------------------------------
 
 	public Process getSemihostingProcess() {
