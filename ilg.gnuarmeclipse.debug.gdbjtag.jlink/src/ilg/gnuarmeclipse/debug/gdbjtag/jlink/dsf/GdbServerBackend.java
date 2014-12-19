@@ -255,10 +255,10 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		String tail = "\n\nCheck the " + name + " console for more details.";
 
 		if (body.isEmpty()) {
-			return getStartingServerJobName() + " failed with code ("
+			return getServerName() + " failed with code ("
 					+ exitCode + ")." + tail;
 		} else {
-			return getStartingServerJobName() + " failed: \n" + body + tail;
+			return getServerName() + " failed: \n" + body + tail;
 		}
 	}
 
