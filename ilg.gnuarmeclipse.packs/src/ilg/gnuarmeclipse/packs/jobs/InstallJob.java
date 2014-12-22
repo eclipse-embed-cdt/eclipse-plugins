@@ -11,7 +11,6 @@
 
 package ilg.gnuarmeclipse.packs.jobs;
 
-import ilg.gnuarmeclipse.core.Activator;
 import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.data.PacksStorage;

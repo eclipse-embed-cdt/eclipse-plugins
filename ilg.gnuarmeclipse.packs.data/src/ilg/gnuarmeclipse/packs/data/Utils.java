@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PushbackInputStream;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 
@@ -43,13 +44,24 @@ public class Utils {
 		return connection.getContentLength();
 	}
 
-
 	public static void copyFile(URL sourceUrl, File destinationFile,
 			MessageConsoleStream out, IProgressMonitor monitor)
 			throws IOException {
 
 		URLConnection connection = sourceUrl.openConnection();
+		if (connection instanceof HttpURLConnection) {
+			int responseCode = ((HttpURLConnection) connection)
+					.getResponseCode();
+			if (responseCode != HttpURLConnection.HTTP_OK) {
+				throw new IOException(
+						"Failed to open connection, response code "
+								+ responseCode);
+			}
+		}
 		int size = connection.getContentLength();
+		if (size < 0) {
+			throw new IOException("Illegal http file size " + size);
+		}
 		String sizeString = StringUtils.convertSizeToString(size);
 		if (out != null) {
 			String s = destinationFile.getPath();
