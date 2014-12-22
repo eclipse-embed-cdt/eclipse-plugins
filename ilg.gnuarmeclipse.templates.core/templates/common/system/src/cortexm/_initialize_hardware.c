@@ -53,6 +53,10 @@ __initialize_hardware_early(void)
   SCB->CPACR |= (0xF << 20);
 
 #endif // (__VFP_FP__) && !(__SOFTFP__)
+
+#if defined(OS_DEBUG_SEMIHOSTING_FAULTS)
+  SCB->SHCSR |= SCB_SHCSR_USGFAULTENA_Msk;
+#endif
 }
 
 // This is the second hardware initialisation routine, it can be

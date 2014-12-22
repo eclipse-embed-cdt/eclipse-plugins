@@ -26,6 +26,12 @@
 #endif // defined(OS_USE_TRACE_ITM)
 #endif // !(defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__))
 
+#if defined(OS_DEBUG_SEMIHOSTING_FAULTS)
+#if defined(OS_USE_TRACE_SEMIHOSTING_STDOUT) || defined(OS_USE_TRACE_SEMIHOSTING_DEBUG)
+#error "Cannot debug semihosting using semihosting trace; use OS_USE_TRACE_ITM"
+#endif
+#endif
+
 // ----------------------------------------------------------------------------
 
 // Forward definitions.
@@ -50,7 +56,7 @@ _trace_write_semihosting_debug(const char* buf, size_t nbyte);
 void
 trace_initialize(void)
 {
-  // No initialisations required for ITM / semihosting
+  // For regular ITM / semihosting, no inits required.
 }
 
 // ----------------------------------------------------------------------------
