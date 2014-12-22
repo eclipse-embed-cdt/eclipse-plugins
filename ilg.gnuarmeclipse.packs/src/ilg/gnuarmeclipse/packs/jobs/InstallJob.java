@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.packs.jobs;
 
+import ilg.gnuarmeclipse.core.Activator;
 import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.data.PacksStorage;
@@ -27,7 +28,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -203,18 +203,19 @@ public class InstallJob extends Job {
 		try {
 			workUnits += Integer.valueOf(size);
 		} catch (NumberFormatException e) {
-			;
+			Activator.log(e);
 		}
 
 		Node packNode = versionNode.getParent();
 		String pdscUrl = packNode.getProperty(Property.ARCHIVE_URL);
 		if (pdscUrl.length() > 0) {
 			try {
-				workUnits += Utils.getRemoteFileSize(new URL(pdscUrl));
-			} catch (MalformedURLException e) {
-				;
+				int sz = Utils.getRemoteFileSize(new URL(pdscUrl));
+				if (sz > 0) {
+					workUnits += sz;
+				}
 			} catch (IOException e) {
-				;
+				Activator.log(e);
 			}
 		}
 
@@ -273,10 +274,10 @@ public class InstallJob extends Job {
 
 			// Remove partial install
 			Utils.deleteFolderRecursive(destFolder);
-			
+
 			// Remove the broken archive file from the cache
 			archiveFile.delete();
-			
+
 			return false;
 		}
 

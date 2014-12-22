@@ -40,7 +40,6 @@ import java.util.Map;
 import java.util.TreeMap;
 
 import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
 

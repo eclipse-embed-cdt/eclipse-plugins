@@ -40,8 +40,23 @@ public class Utils {
 
 		URLConnection connection = url.openConnection();
 		connection.getInputStream();
+		if (connection instanceof HttpURLConnection) {
+			int responseCode = ((HttpURLConnection) connection)
+					.getResponseCode();
+			if (responseCode != HttpURLConnection.HTTP_OK) {
+				throw new IOException(
+						"Failed to open connection, response code "
+								+ responseCode);
+			}
+		}
 
-		return connection.getContentLength();
+		int length = connection.getContentLength();
+
+		if (connection instanceof HttpURLConnection) {
+			((HttpURLConnection) connection).disconnect();
+		}
+
+		return length;
 	}
 
 	public static void copyFile(URL sourceUrl, File destinationFile,
@@ -88,6 +103,11 @@ public class Utils {
 		}
 		output.close();
 		input.close();
+
+		if (connection instanceof HttpURLConnection) {
+			((HttpURLConnection) connection).disconnect();
+			// System.out.println("Disconnect "+connection);
+		}
 	}
 
 	public static void copyFile(File sourceFile, File destinationFile,
