@@ -5,7 +5,7 @@
   
   <groupId>ilg.gnuarmeclipse</groupId>
   <artifactId>ilg.gnuarmeclipse.debug.gdbjtag.jlink</artifactId>
-  <version>3.1.1-SNAPSHOT</version>
+  <version>3.1.2-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
   
   <parent>
