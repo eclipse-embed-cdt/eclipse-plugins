@@ -9,9 +9,11 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
+package ilg.gnuarmeclipse.debug.gdbjtag.jlink.dsf;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
 
 import java.util.ArrayList;
 import java.util.Iterator;

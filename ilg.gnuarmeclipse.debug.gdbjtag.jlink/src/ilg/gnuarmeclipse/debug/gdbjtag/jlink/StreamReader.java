@@ -46,6 +46,7 @@ public class StreamReader extends Thread {
 			}
 			fReader.close();
 		} catch (IOException e) {
+			Activator.log(e);
 		}
 	}
 

@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
+package ilg.gnuarmeclipse.debug.gdbjtag.jlink.dsf;
 
 import java.util.Map;
 

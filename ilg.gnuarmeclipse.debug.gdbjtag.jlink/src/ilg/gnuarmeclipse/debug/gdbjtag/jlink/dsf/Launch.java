@@ -9,10 +9,11 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
+package ilg.gnuarmeclipse.debug.gdbjtag.jlink.dsf;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch;
-import ilg.gnuarmeclipse.debug.gdbjtag.jlink.dsf.GdbServerBackend;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.TabDebugger;
 
 import java.util.HashMap;
@@ -103,7 +104,6 @@ public class Launch extends GnuArmLaunch {
 	public void initializeControl() throws CoreException {
 
 		System.out.println("Launch.initializeControl()");
-
 		super.initializeControl();
 	}
 

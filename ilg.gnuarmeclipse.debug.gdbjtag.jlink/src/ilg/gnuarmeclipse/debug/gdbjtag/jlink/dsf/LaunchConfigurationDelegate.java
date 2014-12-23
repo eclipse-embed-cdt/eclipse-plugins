@@ -9,11 +9,12 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
+package ilg.gnuarmeclipse.debug.gdbjtag.jlink.dsf;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmServerServicesLaunchSequence;
-import ilg.gnuarmeclipse.debug.gdbjtag.jlink.dsf.GdbServerBackend;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.TabDebugger;
 
 import java.util.concurrent.Callable;
