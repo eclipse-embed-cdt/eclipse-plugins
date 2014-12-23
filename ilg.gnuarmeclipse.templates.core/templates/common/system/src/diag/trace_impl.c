@@ -147,10 +147,12 @@ _trace_write_itm (const char* buf, size_t nbyte)
 // In OpenOCD, support for semihosting can be enabled using
 // "monitor arm semihosting enable".
 //
-// Note: Applications built with semihosting output active cannot be
-// executed without the debugger connected and active, since they use
-// BKPT to communicate with the host. Attempts to run them standalone or
-// without semihosting enabled will usually be terminated with hardware faults.
+// Note: Applications built with semihosting output active normally cannot
+// be executed without the debugger connected and active, since they use
+// BKPT to communicate with the host. However, with a carefully written
+// HardFault_Handler, the semihosting BKPT calls can be processed, making
+// possible to run semihosting applications as standalone, without being
+// terminated with hardware faults.
 
 #endif // OS_USE_TRACE_SEMIHOSTING_DEBUG_*
 
