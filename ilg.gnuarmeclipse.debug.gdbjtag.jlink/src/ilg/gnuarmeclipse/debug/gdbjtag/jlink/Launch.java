@@ -122,13 +122,7 @@ public class Launch extends GnuArmLaunch {
 		System.out.println("Launch.initializeServerConsole()");
 
 		IProcess newProcess;
-		boolean doAddServerConsole = fConfig.getAttribute(
-				ConfigurationAttributes.DO_START_GDB_SERVER,
-				ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT)
-				&& fConfig
-						.getAttribute(
-								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
-								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
+		boolean doAddServerConsole = getAddServerConsole(fConfig);
 
 		if (doAddServerConsole) {
 
@@ -157,14 +151,7 @@ public class Launch extends GnuArmLaunch {
 			monitor.worked(1);
 		}
 
-		boolean doAddSemihostingConsole = fConfig.getAttribute(
-				ConfigurationAttributes.DO_START_GDB_SERVER,
-				ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT)
-				&& fConfig
-						.getAttribute(
-								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
-								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
-
+		boolean doAddSemihostingConsole = getAddSemihostingConsole(fConfig);
 		if (doAddSemihostingConsole) {
 
 			// Add the special semihosting and SWV process to the launch tree
@@ -281,6 +268,36 @@ public class Launch extends GnuArmLaunch {
 
 		String parts[] = fullCommand.trim().split("" + Path.SEPARATOR);
 		return parts[parts.length - 1];
+	}
+
+	// ------------------------------------------------------------------------
+
+	public static boolean getStartGdbServer(ILaunchConfiguration config)
+			throws CoreException {
+
+		return config.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
+				ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
+	}
+
+	public static boolean getAddServerConsole(ILaunchConfiguration config)
+			throws CoreException {
+
+		return config.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
+				ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT)
+				&& config
+						.getAttribute(
+								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
+								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
+	}
+
+	public static boolean getAddSemihostingConsole(ILaunchConfiguration config)
+			throws CoreException {
+
+		return getStartGdbServer(config)
+				&& config
+						.getAttribute(
+								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
+								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------

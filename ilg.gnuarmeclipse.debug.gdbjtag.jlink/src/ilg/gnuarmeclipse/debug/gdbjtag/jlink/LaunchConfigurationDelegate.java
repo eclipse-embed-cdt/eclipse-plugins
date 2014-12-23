@@ -68,6 +68,8 @@ public class LaunchConfigurationDelegate extends
 	ILaunchConfiguration fConfig = null;
 	@SuppressWarnings("unused")
 	private boolean fIsNonStopSession = false;
+	private boolean fDoStartGdbServer = false;
+	private boolean fDoAddSemihostingConsole = false;
 
 	// private GdbLaunch fGdbLaunch;
 
@@ -93,6 +95,11 @@ public class LaunchConfigurationDelegate extends
 
 		System.out.println("LaunchConfigurationDelegate.createGdbLaunch("
 				+ configuration.getName() + "," + mode + ") " + this);
+
+		fDoStartGdbServer = Launch.getStartGdbServer(configuration);
+
+		fDoAddSemihostingConsole = Launch
+				.getAddSemihostingConsole(configuration);
 
 		DebugUtils.checkLaunchConfigurationStarted(configuration);
 
@@ -139,8 +146,15 @@ public class LaunchConfigurationDelegate extends
 		System.out.println("LaunchConfigurationDelegate.launchDebugger("
 				+ config.getName() + ") " + this);
 
-		int totalWork = 10 + 2; // Extra units due to server and semihosting
-								// console
+		int totalWork = 10;
+		if (fDoStartGdbServer) {
+			// Extra units due to server and semihosting console
+			totalWork += 1;
+			if (fDoAddSemihostingConsole) {
+				totalWork += 1;
+			}
+		}
+
 		monitor.beginTask(
 				LaunchMessages.getString("GdbLaunchDelegate.0"), totalWork); //$NON-NLS-1$
 		if (monitor.isCanceled()) {
@@ -238,91 +252,95 @@ public class LaunchConfigurationDelegate extends
 
 		// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
-		// Assign 4 work ticks.
-		IProgressMonitor subMonServer = new SubProgressMonitor(monitor, 4,
-				SubProgressMonitor.PREPEND_MAIN_LABEL_TO_SUBTASK);
-
-		Sequence serverServicesLaunchSequence = getServerServicesSequence(
-				launch.getSession(), launch, subMonServer);
-
 		boolean succeed = false;
-		try {
-			// Execute on DSF thread and wait for it.
-			launch.getSession().getExecutor()
-					.execute(serverServicesLaunchSequence);
-			serverServicesLaunchSequence.get();
-			succeed = true;
-		} catch (InterruptedException e1) {
-			throw new DebugException(new Status(IStatus.ERROR,
-					GdbPlugin.PLUGIN_ID, DebugException.INTERNAL_ERROR,
-					"Interrupted Exception in dispatch thread", e1)); //$NON-NLS-1$
-		} catch (ExecutionException e1) {
-			throw new DebugException(new Status(IStatus.ERROR,
-					GdbPlugin.PLUGIN_ID, DebugException.REQUEST_FAILED,
-					"Error in services launch sequence", e1.getCause())); //$NON-NLS-1$
-		} catch (CancellationException e1) {
-			// Launch aborted, so exit cleanly
-			System.out.println("Launch aborted, so exit cleanly");
-			return;
-		} finally {
-			if (!succeed) {
-				cleanupLaunch();
-			}
-		}
 
-		// This contributes 1 work units to the monitor
-		((Launch) launch).initializeServerConsole(monitor);
+		if (fDoStartGdbServer) {
 
-		// Wait for the server to be available, or to know it failed.
-		IStatus serverStatus;
-		try {
-			Callable<IStatus> callable = new Callable<IStatus>() {
-				@Override
-				public IStatus call() throws CoreException {
-					DsfServicesTracker tracker = new DsfServicesTracker(
-							GdbPlugin.getBundleContext(), launch.getSession()
-									.getId());
-					GdbServerBackend backend = (GdbServerBackend) tracker
-							.getService(GdbServerBackend.class);
-					if (backend != null) {
-						return backend.getServerExitStatus();
-					} else {
-						throw new CoreException(new Status(IStatus.ERROR,
-								Activator.PLUGIN_ID,
-								"Could not start GDB server."));
-					}
-				}
-			};
+			// Assign 4 work ticks.
+			IProgressMonitor subMonServer = new SubProgressMonitor(monitor, 4,
+					SubProgressMonitor.PREPEND_MAIN_LABEL_TO_SUBTASK);
 
-			// Wait to get the server status. Being endless should not be a
-			// problem, the timeout will kill it if too long.
-			serverStatus = null;
-			while (serverStatus == null) {
-				if (monitor.isCanceled()) {
-					System.out
-							.println("LaunchConfigurationDelegate.launchDebugSession() sleep cancelled"
-									+ this);
+			Sequence serverServicesLaunchSequence = getServerServicesSequence(
+					launch.getSession(), launch, subMonServer);
+
+			try {
+				// Execute on DSF thread and wait for it.
+				launch.getSession().getExecutor()
+						.execute(serverServicesLaunchSequence);
+				serverServicesLaunchSequence.get();
+				succeed = true;
+			} catch (InterruptedException e1) {
+				throw new DebugException(new Status(IStatus.ERROR,
+						GdbPlugin.PLUGIN_ID, DebugException.INTERNAL_ERROR,
+						"Interrupted Exception in dispatch thread", e1)); //$NON-NLS-1$
+			} catch (ExecutionException e1) {
+				throw new DebugException(new Status(IStatus.ERROR,
+						GdbPlugin.PLUGIN_ID, DebugException.REQUEST_FAILED,
+						"Error in services launch sequence", e1.getCause())); //$NON-NLS-1$
+			} catch (CancellationException e1) {
+				// Launch aborted, so exit cleanly
+				System.out.println("Launch aborted, so exit cleanly");
+				return;
+			} finally {
+				if (!succeed) {
 					cleanupLaunch();
-					return;
 				}
-				Thread.sleep(10);
-				serverStatus = launch.getSession().getExecutor()
-						.submit(callable).get();
-				System.out.print('!');
 			}
 
-			if (serverStatus != Status.OK_STATUS) {
-				System.out.println(serverStatus);
-				throw new CoreException(serverStatus);
+			// This contributes 1 work units to the monitor
+			((Launch) launch).initializeServerConsole(monitor);
+
+			// Wait for the server to be available, or to know it failed.
+			IStatus serverStatus;
+			try {
+				Callable<IStatus> callable = new Callable<IStatus>() {
+					@Override
+					public IStatus call() throws CoreException {
+						DsfServicesTracker tracker = new DsfServicesTracker(
+								GdbPlugin.getBundleContext(), launch
+										.getSession().getId());
+						GdbServerBackend backend = (GdbServerBackend) tracker
+								.getService(GdbServerBackend.class);
+						if (backend != null) {
+							return backend.getServerExitStatus();
+						} else {
+							throw new CoreException(new Status(IStatus.ERROR,
+									Activator.PLUGIN_ID,
+									"Could not start GDB server."));
+						}
+					}
+				};
+
+				// Wait to get the server status. Being endless should not be a
+				// problem, the timeout will kill it if too long.
+				serverStatus = null;
+				while (serverStatus == null) {
+					if (monitor.isCanceled()) {
+						System.out
+								.println("LaunchConfigurationDelegate.launchDebugSession() sleep cancelled"
+										+ this);
+						cleanupLaunch();
+						return;
+					}
+					Thread.sleep(10);
+					serverStatus = launch.getSession().getExecutor()
+							.submit(callable).get();
+					System.out.print('!');
+				}
+
+				if (serverStatus != Status.OK_STATUS) {
+					System.out.println(serverStatus);
+					throw new CoreException(serverStatus);
+				}
+
+			} catch (InterruptedException e) {
+				Activator.log(e);
+			} catch (ExecutionException e) {
+				Activator.log(e);
 			}
 
-		} catch (InterruptedException e) {
-			Activator.log(e);
-		} catch (ExecutionException e) {
-			Activator.log(e);
+			System.out.println("* Server confirmed started. *");
 		}
-
-		System.out.println("* Server confirmed started. *");
 
 		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -378,7 +396,8 @@ public class LaunchConfigurationDelegate extends
 		// launch.addCLIProcess("gdb"); //$NON-NLS-1$
 		// monitor.worked(1);
 
-		// This contributes 2 work units to the monitor
+		// This contributes one work units for the GDB client console
+		// and optionally one for the semihosting console.
 		((Launch) launch).initializeConsoles(monitor);
 		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
@@ -434,7 +453,6 @@ public class LaunchConfigurationDelegate extends
 			}
 		}
 		// --------------------------------------------------------------------
-
 	}
 
 	/**

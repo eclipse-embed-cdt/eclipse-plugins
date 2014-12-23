@@ -231,7 +231,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 	/**
 	 * Since the J-Link stderr messages are not final, this function makes the
-	 * best use of the available informatio (the exit code and the captured
+	 * best use of the available information (the exit code and the captured
 	 * string) to compose the text displayed in case of error.
 	 * 
 	 * @param exitCode
