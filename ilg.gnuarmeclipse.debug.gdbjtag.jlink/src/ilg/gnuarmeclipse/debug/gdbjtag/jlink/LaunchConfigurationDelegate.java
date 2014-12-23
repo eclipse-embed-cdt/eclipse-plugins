@@ -298,6 +298,13 @@ public class LaunchConfigurationDelegate extends
 			// problem, the timeout will kill it if too long.
 			serverStatus = null;
 			while (serverStatus == null) {
+				if (monitor.isCanceled()) {
+					System.out
+							.println("LaunchConfigurationDelegate.launchDebugSession() sleep cancelled"
+									+ this);
+					cleanupLaunch();
+					return;
+				}
 				Thread.sleep(10);
 				serverStatus = launch.getSession().getExecutor()
 						.submit(callable).get();

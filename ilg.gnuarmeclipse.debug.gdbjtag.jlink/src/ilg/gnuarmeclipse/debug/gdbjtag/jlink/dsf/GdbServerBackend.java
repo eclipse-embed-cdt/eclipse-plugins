@@ -53,7 +53,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 	protected int fSemihostingExitValue = 0;
 
-	protected int fGdbServerLaunchTimeout = 30;
+	protected int fGdbServerLaunchTimeout = 15;
 
 	// ------------------------------------------------------------------------
 
@@ -222,7 +222,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	}
 
 	public boolean matchExpectedPattern(String line) {
-		if (line.indexOf("Waiting for GDB connection") >= 0) {
+		if (line.indexOf("Waiting for GDB connectionx") >= 0) {
 			return true;
 		}
 
@@ -255,8 +255,8 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		String tail = "\n\nCheck the " + name + " console for more details.";
 
 		if (body.isEmpty()) {
-			return getServerName() + " failed with code ("
-					+ exitCode + ")." + tail;
+			return getServerName() + " failed with code (" + exitCode + ")."
+					+ tail;
 		} else {
 			return getServerName() + " failed: \n" + body + tail;
 		}

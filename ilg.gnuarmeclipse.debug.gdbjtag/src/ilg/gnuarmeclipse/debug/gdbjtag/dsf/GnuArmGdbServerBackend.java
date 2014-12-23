@@ -87,6 +87,8 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 
 	private ScheduledFuture<?> fTimeoutFuture = null;
 
+	private Job fStartGdbServerJob;
+
 	/**
 	 * Monotone increasing Unique ID of this service instance.
 	 */
@@ -200,11 +202,19 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 			}
 		}
 
+		if (fStartGdbServerJob != null
+				&& fStartGdbServerJob.getThread() != null) {
+			// Try to terminate read loop.
+			fStartGdbServerJob.getThread().interrupt();
+		}
+
 		if (getServerProcess() != null && getServerState() == State.STARTED) {
 			System.out
 					.println("GnuArmGdbServerBackend.destroy() fServerProcess "
 							+ fServerProcess);
 			getServerProcess().destroy();
+		} else {
+			fServerProcess.destroy();
 		}
 
 		if (fTimeoutFuture != null) {
@@ -540,8 +550,8 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 				protected IStatus run(IProgressMonitor monitor) {
 
 					System.out.println("GdbServerStep.initialise() Job run()");
-					if (serverLaunchRequestMonitor.isCanceled()) {
-
+					if (serverLaunchRequestMonitor.isCanceled()
+							|| monitor.isCanceled()) {
 						System.out.println("startGdbServerJob run canceled");
 						serverLaunchRequestMonitor
 								.setStatus(new Status(IStatus.CANCEL,
@@ -606,6 +616,20 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 								success = true;
 								break;
 							}
+
+							if (serverLaunchRequestMonitor.isCanceled()
+									|| monitor.isCanceled()) {
+
+								System.out
+										.println("startGdbServerJob run canceled read");
+								serverLaunchRequestMonitor
+										.setStatus(new Status(IStatus.CANCEL,
+												Activator.PLUGIN_ID, -1,
+												getStartingServerJobName()
+														+ " cancelled.", null)); //$NON-NLS-1$
+								serverLaunchRequestMonitor.done();
+								return Status.OK_STATUS;
+							}
 						}
 
 						if (success) {
@@ -627,7 +651,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 									}
 								}).get(); // Wait for it to complete.
 							} catch (InterruptedException e) {
-								Activator.log(e);
+								;
 							} catch (ExecutionException e) {
 								Activator.log(e);
 							}
@@ -648,13 +672,14 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 								buffer.append(fErrorStreamBuffer);
 
 							} catch (InterruptedException e) {
-								Activator.log(e);
+								;
 							}
 
 							if (inputStream != null) {
 								try {
 									inputStream.close();
 								} catch (IOException e) {
+									Activator.log(e);
 								}
 							}
 						}
@@ -675,11 +700,15 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 							buffer);
 
 					// This monitor will further complete the initialise().
-					serverLaunchRequestMonitor.done();
+					if (!serverLaunchRequestMonitor.isCanceled()) {
+						serverLaunchRequestMonitor.done();
+					}
 					System.out.println("startGdbServerJob run completed");
 					return Status.OK_STATUS;
 				}
 			};
+
+			fStartGdbServerJob = startGdbServerJob;
 
 			// The job will run on a separate thread, usually immediately as
 			// initialise() returns.
@@ -718,7 +747,11 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 						}
 
 						// Destroy the GDB server process.
-						getServerProcess().destroy();
+						if (getServerProcess() != null) {
+							getServerProcess().destroy();
+						} else if (fServerProcess != null) {
+							fServerProcess.destroy();
+						}
 
 						// Notify initialise(rm) directly.
 						rm.setStatus(new Status(
@@ -739,9 +772,9 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 
 			System.out.println("GdbServerStep.shutdown()");
 
-			if (fServerBackendState != State.STARTED) {
-				// Not started yet or already killed, don't bother starting
-				// a job to kill it
+			if (fServerBackendState == State.TERMINATED) {
+				// Already killed, don't bother starting
+				// another job to kill it.
 				requestMonitor.done();
 				return;
 			}
@@ -765,7 +798,8 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 										.println("GdbServerStep.shutdown() run() run()");
 								destroy();
 
-								if (fServerMonitorJob.fMonitorExited) {
+								if (fServerMonitorJob != null
+										&& fServerMonitorJob.fMonitorExited) {
 									// Now that we have destroyed the process,
 									// and that the monitoring thread was
 									// killed,
