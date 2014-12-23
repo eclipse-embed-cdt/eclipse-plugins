@@ -222,7 +222,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	}
 
 	public boolean matchExpectedPattern(String line) {
-		if (line.indexOf("Waiting for GDB connectionx") >= 0) {
+		if (line.indexOf("Waiting for GDB connection") >= 0) {
 			return true;
 		}
 
