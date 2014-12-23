@@ -9,9 +9,10 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
+package ilg.gnuarmeclipse.debug.gdbjtag.openocd.dsf;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch;
+import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
 
 import java.util.HashMap;
 import java.util.Map;

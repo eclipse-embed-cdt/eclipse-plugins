@@ -9,9 +9,12 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
+package ilg.gnuarmeclipse.debug.gdbjtag.openocd.dsf;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
+import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.openocd.SemihostingProcess;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.TabDebugger;
 
 import java.io.File;

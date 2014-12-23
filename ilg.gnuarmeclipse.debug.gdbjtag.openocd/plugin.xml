@@ -14,7 +14,7 @@
    <extension
          point="org.eclipse.debug.core.launchDelegates">
       <launchDelegate
-            delegate="ilg.gnuarmeclipse.debug.gdbjtag.openocd.LaunchConfigurationDelegate"
+            delegate="ilg.gnuarmeclipse.debug.gdbjtag.openocd.dsf.LaunchConfigurationDelegate"
             delegateDescription="%launchDelegate.jtagDsf.description"
             id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.core.dsfLaunchDelegate"
             modes="debug"

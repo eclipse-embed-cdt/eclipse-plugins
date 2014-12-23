@@ -13,10 +13,11 @@
  *     Mark Bozeman (Mentor Graphics) - Report GDB start failures (Bug 376203)
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
+package ilg.gnuarmeclipse.debug.gdbjtag.openocd.dsf;
 
 import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
+import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.TabDebugger;
 
 import java.io.BufferedReader;

@@ -8,7 +8,7 @@
  * Contributors:
  *     Marc Khouzam (Ericsson) - initial API and implementation
  *******************************************************************************/
-package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
+package ilg.gnuarmeclipse.debug.gdbjtag.openocd.dsf;
 
 import java.util.Map;
 
@@ -32,8 +32,8 @@ public class Processes_7_2_1 extends GDBProcesses_7_2_1 {
 			boolean restart, DataRequestMonitor<IContainerDMContext> rm) {
 
 		if (restart) {
-			return new RestartProcessSequence(executor,
-					containerDmc, attributes, restart, rm);
+			return new RestartProcessSequence(executor, containerDmc,
+					attributes, restart, rm);
 		} else {
 			return new StartOrRestartProcessSequence_7_0(executor,
 					containerDmc, attributes, restart, rm);

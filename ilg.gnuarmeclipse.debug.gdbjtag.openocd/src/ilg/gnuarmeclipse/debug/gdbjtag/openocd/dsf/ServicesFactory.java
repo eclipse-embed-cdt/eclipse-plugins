@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
+package ilg.gnuarmeclipse.debug.gdbjtag.openocd.dsf;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmCommandFactory;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmServicesFactory;
