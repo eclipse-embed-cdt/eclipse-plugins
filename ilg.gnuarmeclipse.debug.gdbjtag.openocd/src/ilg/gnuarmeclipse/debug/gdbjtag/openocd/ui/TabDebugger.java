@@ -1207,6 +1207,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			return null;
 		}
 
+		// Added as a marker, it is displayed if the configuration was processed
+		// properly.
+		lst.add("-c");
+		lst.add("echo \"Started by GNU ARM Eclipse\"");
+
 		return lst.toArray(new String[0]);
 	}
 

@@ -12,6 +12,7 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd.dsf;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmCommandFactory;
+import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmGdbServerBackend;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmServicesFactory;
 
 import org.eclipse.cdt.dsf.debug.service.IProcesses;
@@ -22,16 +23,27 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 
 public class ServicesFactory extends GnuArmServicesFactory {
 
+	// ------------------------------------------------------------------------
+
 	private final String fVersion;
+
+	// ------------------------------------------------------------------------
 
 	public ServicesFactory(String version) {
 		super(version);
+
+		System.out.println("ServicesFactory(" + version + ") " + this);
 		fVersion = version;
 	}
+
+	// ------------------------------------------------------------------------
 
 	@Override
 	protected ICommandControl createCommandControl(DsfSession session,
 			ILaunchConfiguration config) {
+
+		System.out.println("ServicesFactory.createCommandControl(" + session
+				+ "," + config.getName() + ") " + this);
 
 		if (GDB_7_4_VERSION.compareTo(getVersion()) <= 0) {
 			return new Control_7_4(session, config, new GnuArmCommandFactory());
@@ -43,12 +55,18 @@ public class ServicesFactory extends GnuArmServicesFactory {
 	protected IMIBackend createBackendGDBService(DsfSession session,
 			ILaunchConfiguration lc) {
 
+		System.out.println("ServicesFactory.createBackendGDBService(" + session
+				+ "," + lc.getName() + ") " + this);
+
 		// return new GDBBackend(session, lc);
 		return new Backend(session, lc);
 	}
 
 	@Override
 	protected IProcesses createProcessesService(DsfSession session) {
+
+		System.out.println("ServicesFactory.createBackendGDBService(" + session
+				+ ") " + this);
 
 		if (GDB_7_2_1_VERSION.compareTo(fVersion) <= 0) {
 			return new Processes_7_2_1(session);
@@ -57,4 +75,11 @@ public class ServicesFactory extends GnuArmServicesFactory {
 		return super.createProcessesService(session);
 	}
 
+	@Override
+	protected GnuArmGdbServerBackend createGdbServerBackendService(
+			DsfSession session, ILaunchConfiguration lc) {
+		return new GdbServerBackend(session, lc);
+	}
+
+	// ------------------------------------------------------------------------
 }

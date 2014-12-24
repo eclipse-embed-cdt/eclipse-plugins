@@ -22,7 +22,6 @@ import java.util.Map;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
-import org.eclipse.cdt.dsf.concurrent.CountingRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
@@ -43,6 +42,8 @@ import org.eclipse.core.runtime.Status;
 
 @SuppressWarnings("restriction")
 public class RestartProcessSequence extends ReflectionSequence {
+
+	// ------------------------------------------------------------------------
 
 	private IGDBControl fCommandControl;
 	private CommandFactory fCommandFactory;
@@ -75,9 +76,7 @@ public class RestartProcessSequence extends ReflectionSequence {
 	// private final DataRequestMonitor<IContainerDMContext>
 	// fDataRequestMonitor;
 
-	protected IContainerDMContext getContainerContext() {
-		return fContainerDmc;
-	}
+	// ------------------------------------------------------------------------
 
 	public RestartProcessSequence(DsfExecutor executor,
 			IContainerDMContext containerDmc, Map<String, Object> attributes,
@@ -95,6 +94,12 @@ public class RestartProcessSequence extends ReflectionSequence {
 		fAttributes = attributes;
 		// fRestart = restart;
 		// fDataRequestMonitor = rm;
+	}
+
+	// ------------------------------------------------------------------------
+
+	protected IContainerDMContext getContainerContext() {
+		return fContainerDmc;
 	}
 
 	/** utility method; cuts down on clutter */
@@ -195,16 +200,13 @@ public class RestartProcessSequence extends ReflectionSequence {
 		try {
 			DebugUtils.addMultiLine(otherCmds, commandsList);
 		} catch (CoreException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			Activator.log(e);
 		}
 
 		commandsList.add("continue");
 
-		CountingRequestMonitor crm = new CountingRequestMonitor(getExecutor(),
-				rm);
-		crm.setDoneCount(commandsList.size());
 		queueCommands(commandsList, rm);
 	}
 
+	// ------------------------------------------------------------------------
 }
