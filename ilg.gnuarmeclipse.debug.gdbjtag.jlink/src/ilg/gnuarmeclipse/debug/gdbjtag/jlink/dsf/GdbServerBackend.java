@@ -62,7 +62,6 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 		System.out.println("GdbServerBackend(" + session + "," + lc.getName()
 				+ ")");
-
 	}
 
 	// ------------------------------------------------------------------------
@@ -74,17 +73,15 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 		try {
 			// Update parent data member before calling initialise.
-			fDoStartGdbServer = fLaunchConfiguration.getAttribute(
-					ConfigurationAttributes.DO_START_GDB_SERVER,
-					ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
+			fDoStartGdbServer = Launch.getStartGdbServer(fLaunchConfiguration);
 
-			fDoStartSemihostingConsole = fDoStartGdbServer
-					&& fLaunchConfiguration
-							.getAttribute(
-									ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
-									ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
-
+			fDoStartSemihostingConsole = Launch
+					.getAddSemihostingConsole(fLaunchConfiguration);
 		} catch (CoreException e) {
+			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
+					"Cannot get configuration", e)); //$NON-NLS-1$
+			rm.done();
+			return;
 		}
 
 		// Initialise the super class, and, when ready, perform the local
@@ -221,7 +218,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		return "Terminating " + getSemihostingName() + " Semihosting Process";
 	}
 
-	public boolean matchExpectedPattern(String line) {
+	public boolean matchStdOutExpectedPattern(String line) {
 		if (line.indexOf("Waiting for GDB connection") >= 0) {
 			return true;
 		}
@@ -241,18 +238,27 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	 * @return a string with the text to be displayed.
 	 */
 	@Override
-	public String prepareMessageBoxText(int exitCode, String message) {
+	public String prepareMessageBoxText(int exitCode) {
 
-		String body = message.replaceAll("\r", "");
-		body = message.replaceAll("See GDB Server log for more information.",
-				"");
-		body = body.trim();
+		String body = "";
 
+		if (exitCode == -3) {
+			body = "Could not connect to target. Please check if powered and ribbon cable plugged properly.";
+		} else if (exitCode == -6) {
+			try {
+				String name = Launch.getServerDeviceName(fLaunchConfiguration);
+				body = "Device name '"
+						+ name
+						+ "' not recognised. Please check http://www.segger.com/supported-devices.html for the supported device names.";
+			} catch (CoreException e) {
+				Activator.log(e);
+			}
+		}
 		String name = getServerCommandName();
 		if (name == null) {
 			name = "GDB Server";
 		}
-		String tail = "\n\nCheck the " + name + " console for more details.";
+		String tail = "\n\nFor more details, see the " + name + " console.";
 
 		if (body.isEmpty()) {
 			return getServerName() + " failed with code (" + exitCode + ")."

@@ -48,6 +48,8 @@ import org.eclipse.core.variables.VariablesPlugin;
 @SuppressWarnings("restriction")
 public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
+	// ------------------------------------------------------------------------
+	
 	private Map<String, Object> fAttributes;
 	private DsfSession fSession;
 
@@ -56,6 +58,8 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	private IGDBControl fCommandControl;
 	private IMIProcesses fProcService;
 	private IGDBJtagDevice fGdbJtagDevice;
+
+	// ------------------------------------------------------------------------
 
 	// public FinalLaunchSequence(DsfExecutor executor, GdbLaunch launch,
 	// SessionType sessionType, boolean attach,
@@ -70,32 +74,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		fSession = session;
 	}
 
-	/** utility method; cuts down on clutter */
-	private void queueCommands(List<String> commands, RequestMonitor rm) {
-
-		if (commands != null && !commands.isEmpty()) {
-
-			CountingRequestMonitor crm = new CountingRequestMonitor(
-					getExecutor(), rm);
-			crm.setDoneCount(commands.size());
-
-			Iterator<String> it = commands.iterator();
-			while (it.hasNext()) {
-				String s = it.next().trim();
-				if (s.isEmpty() || s.startsWith("#")) {
-					crm.done();
-					continue; // ignore empty lines and comments
-				}
-				// System.out.println("queueCommand('" + s + "')");
-				fCommandControl.queueCommand(new CLICommand<MIInfo>(
-						fCommandControl.getContext(), s),
-						new DataRequestMonitor<MIInfo>(getExecutor(), crm));
-			}
-
-		} else {
-			rm.done();
-		}
-	}
+	// ------------------------------------------------------------------------
 
 	// This function is used to capture the private objects
 	@Execute
@@ -161,6 +140,37 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 		super.stepInitializeJTAGFinalLaunchSequence(rm);
 	}
+
+	// ------------------------------------------------------------------------
+
+	/** utility method; cuts down on clutter */
+	private void queueCommands(List<String> commands, RequestMonitor rm) {
+
+		if (commands != null && !commands.isEmpty()) {
+
+			CountingRequestMonitor crm = new CountingRequestMonitor(
+					getExecutor(), rm);
+			crm.setDoneCount(commands.size());
+
+			Iterator<String> it = commands.iterator();
+			while (it.hasNext()) {
+				String s = it.next().trim();
+				if (s.isEmpty() || s.startsWith("#")) {
+					crm.done();
+					continue; // ignore empty lines and comments
+				}
+				// System.out.println("queueCommand('" + s + "')");
+				fCommandControl.queueCommand(new CLICommand<MIInfo>(
+						fCommandControl.getContext(), s),
+						new DataRequestMonitor<MIInfo>(getExecutor(), crm));
+			}
+
+		} else {
+			rm.done();
+		}
+	}
+
+	// ------------------------------------------------------------------------
 
 	@Execute
 	public void stepSourceGDBInitFile(final RequestMonitor requestMonitor) {
@@ -712,4 +722,5 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		}
 	}
 
+	// ------------------------------------------------------------------------
 }

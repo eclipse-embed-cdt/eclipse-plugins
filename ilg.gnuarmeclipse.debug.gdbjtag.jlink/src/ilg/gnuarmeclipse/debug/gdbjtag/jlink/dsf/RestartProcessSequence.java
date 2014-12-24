@@ -43,6 +43,8 @@ import org.eclipse.core.runtime.Status;
 @SuppressWarnings("restriction")
 public class RestartProcessSequence extends ReflectionSequence {
 
+	// ------------------------------------------------------------------------
+
 	private IGDBControl fCommandControl;
 	private CommandFactory fCommandFactory;
 	private IGDBProcesses fProcService;
@@ -74,9 +76,7 @@ public class RestartProcessSequence extends ReflectionSequence {
 	// private final DataRequestMonitor<IContainerDMContext>
 	// fDataRequestMonitor;
 
-	protected IContainerDMContext getContainerContext() {
-		return fContainerDmc;
-	}
+	// ------------------------------------------------------------------------
 
 	public RestartProcessSequence(DsfExecutor executor,
 			IContainerDMContext containerDmc, Map<String, Object> attributes,
@@ -94,6 +94,12 @@ public class RestartProcessSequence extends ReflectionSequence {
 		fAttributes = attributes;
 		// fRestart = restart;
 		// fDataRequestMonitor = rm;
+	}
+
+	// ------------------------------------------------------------------------
+
+	protected IContainerDMContext getContainerContext() {
+		return fContainerDmc;
 	}
 
 	/** utility method; cuts down on clutter */
@@ -209,4 +215,5 @@ public class RestartProcessSequence extends ReflectionSequence {
 		queueCommands(commandsList, rm);
 	}
 
+	// ------------------------------------------------------------------------
 }

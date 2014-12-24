@@ -23,7 +23,11 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 
 public class ServicesFactory extends GnuArmServicesFactory {
 
+	// ------------------------------------------------------------------------
+	
 	private final String fVersion;
+
+	// ------------------------------------------------------------------------
 
 	public ServicesFactory(String version) {
 		super(version);
@@ -31,6 +35,8 @@ public class ServicesFactory extends GnuArmServicesFactory {
 		System.out.println("ServicesFactory(" + version + ") " + this);
 		fVersion = version;
 	}
+
+	// ------------------------------------------------------------------------
 
 	protected ICommandControl createCommandControl(DsfSession session,
 			ILaunchConfiguration config) {
@@ -74,4 +80,5 @@ public class ServicesFactory extends GnuArmServicesFactory {
 		return new GdbServerBackend(session, lc);
 	}
 
+	// ------------------------------------------------------------------------
 }

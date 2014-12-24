@@ -33,18 +33,26 @@ import org.eclipse.debug.core.ILaunch;
 
 public class FinalLaunchSequence_7_2 extends FinalLaunchSequence {
 
+	// ------------------------------------------------------------------------
+
 	private String[] newPreInitSteps = { "stepCreatePeripheralService",
 			"stepCreatePeripheralMemoryService", };
 
 	private String[] newInitSteps = { "stepInitializeJTAGSequence_7_2" };
 
+	// ------------------------------------------------------------------------
+
 	private DsfSession fSession;
+
+	// ------------------------------------------------------------------------
 
 	public FinalLaunchSequence_7_2(DsfSession session,
 			Map<String, Object> attributes, RequestMonitorWithProgress rm) {
 		super(session, attributes, rm);
 		fSession = session;
 	}
+
+	// ------------------------------------------------------------------------
 
 	@Override
 	protected String[] getExecutionOrder(String group) {
@@ -150,4 +158,5 @@ public class FinalLaunchSequence_7_2 extends FinalLaunchSequence {
 	// memory.initializeMemoryData(memContext, rm);
 	// }
 
+	// ------------------------------------------------------------------------
 }

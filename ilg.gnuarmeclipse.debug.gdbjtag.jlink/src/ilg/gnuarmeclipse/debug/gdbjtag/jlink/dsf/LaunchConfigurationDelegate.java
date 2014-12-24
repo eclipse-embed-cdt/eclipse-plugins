@@ -14,7 +14,6 @@ package ilg.gnuarmeclipse.debug.gdbjtag.jlink.dsf;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmServerServicesLaunchSequence;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
-import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.TabDebugger;
 
 import java.util.concurrent.Callable;
@@ -465,10 +464,9 @@ public class LaunchConfigurationDelegate extends
 
 		String deviceName = "";
 		try {
-			deviceName = config.getAttribute(
-					ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
-					ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT).trim();
+			deviceName = Launch.getServerDeviceName(config);
 		} catch (CoreException e) {
+			;
 		}
 
 		if (deviceName.isEmpty()) {

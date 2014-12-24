@@ -48,7 +48,6 @@ public class Backend extends GDBBackend {
 
 		System.out.println("Backend() " + this);
 		fLaunchConfiguration = lc;
-
 	}
 
 	// ------------------------------------------------------------------------

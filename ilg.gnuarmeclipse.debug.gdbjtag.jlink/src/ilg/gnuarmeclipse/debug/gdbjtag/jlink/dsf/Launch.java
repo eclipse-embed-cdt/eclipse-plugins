@@ -68,6 +68,7 @@ public class Launch extends GnuArmLaunch {
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	public void initialize() {
 
 		System.out.println("Launch.initialize() " + this);
@@ -252,6 +253,8 @@ public class Launch extends GnuArmLaunch {
 		return newProcess;
 	}
 
+	// ------------------------------------------------------------------------
+
 	public String getServerCommandName(ILaunchConfiguration config) {
 		String fullCommand = TabDebugger.getGdbServerCommand(config);
 		if (fullCommand == null)
@@ -282,8 +285,7 @@ public class Launch extends GnuArmLaunch {
 	public static boolean getAddServerConsole(ILaunchConfiguration config)
 			throws CoreException {
 
-		return config.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
-				ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT)
+		return getStartGdbServer(config)
 				&& config
 						.getAttribute(
 								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
@@ -300,5 +302,12 @@ public class Launch extends GnuArmLaunch {
 								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
 	}
 
+	public static String getServerDeviceName(ILaunchConfiguration config)
+			throws CoreException {
+		
+		return config.getAttribute(
+				ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
+				ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT).trim();
+	}
 	// ------------------------------------------------------------------------
 }
