@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
+package ilg.gnuarmeclipse.debug.gdbjtag.qemu;
 
 public interface ConfigurationAttributes {
 
@@ -18,7 +18,7 @@ public interface ConfigurationAttributes {
 	// TabDebugger
 
 	// Must be in sync with plugin.xml definition
-	public static final String JTAG_DEVICE = "GNU ARM OpenOCD";
+	public static final String JTAG_DEVICE = "GNU ARM QEMU";
 
 	public static final String DO_CONNECT_TO_RUNNING = PREFIX
 			+ ".doConnectToRunning"; //$NON-NLS-1$
@@ -30,9 +30,9 @@ public interface ConfigurationAttributes {
 
 	public static final String GDB_SERVER_EXECUTABLE = PREFIX
 			+ ".gdbServerExecutable"; //$NON-NLS-1$
-	public static final String GDB_SERVER_EXECUTABLE_DEFAULT = "${openocd_path}/${openocd_executable}";
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT = "${qemu_path}/${qemu_executable}";
 
-	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_NAME = "openocd";
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_NAME = "gnuarmqemu";
 
 	public static final String GDB_SERVER_CONNECTION_ADDRESS = PREFIX
 			+ ".gdbServerConnectionAddress"; //$NON-NLS-1$

@@ -10,9 +10,9 @@
  *      Liviu Ionescu - ARM version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui;
+package ilg.gnuarmeclipse.debug.gdbjtag.qemu.ui;
 
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
 
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;

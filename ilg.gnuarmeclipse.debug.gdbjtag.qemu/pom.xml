@@ -4,8 +4,8 @@
   <modelVersion>4.0.0</modelVersion>
   
   <groupId>ilg.gnuarmeclipse</groupId>
-  <artifactId>ilg.gnuarmeclipse.debug.gdbjtag.openocd</artifactId>
-  <version>3.1.1-SNAPSHOT</version>
+  <artifactId>ilg.gnuarmeclipse.debug.gdbjtag.qemu</artifactId>
+  <version>1.1.1-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
   
   <parent>
@@ -15,6 +15,6 @@
   	<relativePath>../pom.xml</relativePath>
   </parent>
   
-  <name>GNU ARM Eclipse OpenOCD debug</name>
+  <name>GNU ARM Eclipse QEMU debug</name>
   <url>http://gnuarmeclipse.livius.net</url>
 </project>

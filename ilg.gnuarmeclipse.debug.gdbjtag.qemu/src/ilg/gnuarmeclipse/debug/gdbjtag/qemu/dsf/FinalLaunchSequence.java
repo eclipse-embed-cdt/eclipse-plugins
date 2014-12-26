@@ -9,11 +9,11 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag.openocd.dsf;
+package ilg.gnuarmeclipse.debug.gdbjtag.qemu.dsf;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.ConfigurationAttributes;
 
 import java.util.ArrayList;
 import java.util.Iterator;

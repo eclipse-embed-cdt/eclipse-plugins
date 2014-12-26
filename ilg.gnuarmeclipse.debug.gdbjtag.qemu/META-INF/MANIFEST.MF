@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
-Bundle-SymbolicName: ilg.gnuarmeclipse.debug.gdbjtag.openocd;singleton:=true
-Bundle-Version: 3.1.1.qualifier
-Bundle-Activator: ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator
+Bundle-SymbolicName: ilg.gnuarmeclipse.debug.gdbjtag.qemu;singleton:=true
+Bundle-Version: 1.1.1.qualifier
+Bundle-Activator: ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator
 Require-Bundle: ilg.gnuarmeclipse.core,
  ilg.gnuarmeclipse.debug.core,
  ilg.gnuarmeclipse.debug.gdbjtag,
@@ -27,5 +27,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %bundle.vendor
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
-Export-Package: ilg.gnuarmeclipse.debug.gdbjtag.openocd,
- ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui
+Export-Package: ilg.gnuarmeclipse.debug.gdbjtag.qemu,
+ ilg.gnuarmeclipse.debug.gdbjtag.qemu.ui

@@ -9,9 +9,9 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag.openocd.dsf;
+package ilg.gnuarmeclipse.debug.gdbjtag.qemu.dsf;
 
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IPeripheralMemoryService;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IPeripheralsService;
 

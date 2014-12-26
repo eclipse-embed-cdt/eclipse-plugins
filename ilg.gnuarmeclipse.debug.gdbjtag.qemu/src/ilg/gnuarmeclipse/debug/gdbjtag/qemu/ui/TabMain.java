@@ -10,7 +10,7 @@
  *     Liviu Ionescu - ARM version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui;
+package ilg.gnuarmeclipse.debug.gdbjtag.qemu.ui;
 
 import org.eclipse.cdt.dsf.gdb.internal.ui.launching.CMainTab;
 

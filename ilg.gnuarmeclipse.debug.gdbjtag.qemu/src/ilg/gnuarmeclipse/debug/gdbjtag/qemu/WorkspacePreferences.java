@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
+package ilg.gnuarmeclipse.debug.gdbjtag.qemu;
 
 import org.eclipse.cdt.core.templateengine.SharedDefaults;
 import org.eclipse.core.runtime.preferences.InstanceScope;
@@ -41,25 +41,25 @@ public class WorkspacePreferences {
 
 	// Tab Startup
 	// Initialisation Commands
-	public static final String GDB_OPENOCD = "gdb.openocd.";
+	public static final String GDB_QEMU = "gdb.qemu.";
 
-	public static final String GDB_OPENOCD_DO_INITIAL_RESET = GDB_OPENOCD
+	public static final String GDB_QEMU_DO_INITIAL_RESET = GDB_QEMU
 			+ "doInitialReset";
-	public static final String GDB_OPENOCD_INITIAL_RESET_TYPE = GDB_OPENOCD
+	public static final String GDB_QEMU_INITIAL_RESET_TYPE = GDB_QEMU
 			+ "initialReset.type";
-	public static final String GDB_OPENOCD_INIT_OTHER = GDB_OPENOCD
+	public static final String GDB_QEMU_INIT_OTHER = GDB_QEMU
 			+ "init.other";
 
-	public static final String GDB_OPENOCD_ENABLE_SEMIHOSTING = GDB_OPENOCD
+	public static final String GDB_QEMU_ENABLE_SEMIHOSTING = GDB_QEMU
 			+ "enableSemihosting";
 
 	// Run Commands
-	public static final String GDB_OPENOCD_DO_PRERUN_RESET = GDB_OPENOCD
+	public static final String GDB_QEMU_DO_PRERUN_RESET = GDB_QEMU
 			+ "doPreRunReset";
-	public static final String GDB_OPENOCD_PRERUN_RESET_TYPE = GDB_OPENOCD
+	public static final String GDB_QEMU_PRERUN_RESET_TYPE = GDB_QEMU
 			+ "preRunReset.type";
 
-	public static final String GDB_OPENOCD_PRERUN_OTHER = GDB_OPENOCD
+	public static final String GDB_QEMU_PRERUN_OTHER = GDB_QEMU
 			+ "preRun.other";
 
 	// ----- getter & setter --------------------------------------------------
@@ -171,84 +171,84 @@ public class WorkspacePreferences {
 		putValueForId(GDB_CLIENT_COMMANDS, value);
 	}
 
-	// ----- OpenOCD do initial reset -----------------------------------------
-	public static boolean getOpenOCDDoInitialReset(boolean defaultValue) {
+	// ----- QEMU do initial reset -----------------------------------------
+	public static boolean getQemuDoInitialReset(boolean defaultValue) {
 
-		return Boolean.valueOf(getValueForId(GDB_OPENOCD_DO_INITIAL_RESET,
+		return Boolean.valueOf(getValueForId(GDB_QEMU_DO_INITIAL_RESET,
 				Boolean.toString(defaultValue)));
 	}
 
-	public static void putOpenOCDDoInitialReset(boolean value) {
+	public static void putQemuDoInitialReset(boolean value) {
 
-		putValueForId(GDB_OPENOCD_DO_INITIAL_RESET, Boolean.toString(value));
+		putValueForId(GDB_QEMU_DO_INITIAL_RESET, Boolean.toString(value));
 	}
 
-	// ----- OpenOCD initial reset type ---------------------------------------
-	public static String getOpenOCDInitialResetType(String defaultValue) {
+	// ----- QEMU initial reset type ---------------------------------------
+	public static String getQemuInitialResetType(String defaultValue) {
 
-		return getValueForId(GDB_OPENOCD_INITIAL_RESET_TYPE, defaultValue);
+		return getValueForId(GDB_QEMU_INITIAL_RESET_TYPE, defaultValue);
 	}
 
-	public static void putOpenOCDInitialResetType(String value) {
+	public static void putQemuInitialResetType(String value) {
 
-		putValueForId(GDB_OPENOCD_INITIAL_RESET_TYPE, value);
+		putValueForId(GDB_QEMU_INITIAL_RESET_TYPE, value);
 	}
 
-	// ----- OpenOCD enable semihosting ---------------------------------------
-	public static boolean getOpenOCDEnableSemihosting(boolean defaultValue) {
+	// ----- QEMU enable semihosting ---------------------------------------
+	public static boolean getQemuEnableSemihosting(boolean defaultValue) {
 
-		return Boolean.valueOf(getValueForId(GDB_OPENOCD_ENABLE_SEMIHOSTING,
+		return Boolean.valueOf(getValueForId(GDB_QEMU_ENABLE_SEMIHOSTING,
 				Boolean.toString(defaultValue)));
 	}
 
-	public static void putOpenOCDEnableSemihosting(boolean value) {
+	public static void putQemuEnableSemihosting(boolean value) {
 
-		putValueForId(GDB_OPENOCD_ENABLE_SEMIHOSTING, Boolean.toString(value));
+		putValueForId(GDB_QEMU_ENABLE_SEMIHOSTING, Boolean.toString(value));
 	}
 
-	// ----- OpenOCD init other -----------------------------------------------
-	public static String getOpenOCDInitOther(String defaultValue) {
+	// ----- QEMU init other -----------------------------------------------
+	public static String getQemuInitOther(String defaultValue) {
 
-		return getValueForId(GDB_OPENOCD_INIT_OTHER, defaultValue);
+		return getValueForId(GDB_QEMU_INIT_OTHER, defaultValue);
 	}
 
-	public static void putOpenOCDInitOther(String value) {
+	public static void putQemuInitOther(String value) {
 
-		putValueForId(GDB_OPENOCD_INIT_OTHER, value);
+		putValueForId(GDB_QEMU_INIT_OTHER, value);
 	}
 
-	// ----- OpenOCD do prerun reset ------------------------------------------
-	public static boolean getOpenOCDDoPreRunReset(boolean defaultValue) {
+	// ----- QEMU do prerun reset ------------------------------------------
+	public static boolean getQemuDoPreRunReset(boolean defaultValue) {
 
-		return Boolean.valueOf(getValueForId(GDB_OPENOCD_DO_PRERUN_RESET,
+		return Boolean.valueOf(getValueForId(GDB_QEMU_DO_PRERUN_RESET,
 				Boolean.toString(defaultValue)));
 	}
 
-	public static void putOpenOCDDoPreRunReset(boolean value) {
+	public static void putQemuDoPreRunReset(boolean value) {
 
-		putValueForId(GDB_OPENOCD_DO_PRERUN_RESET, Boolean.toString(value));
+		putValueForId(GDB_QEMU_DO_PRERUN_RESET, Boolean.toString(value));
 	}
 
-	// ----- OpenOCD prerun reset type ----------------------------------------
-	public static String getOpenOCDPreRunResetType(String defaultValue) {
+	// ----- QEMU prerun reset type ----------------------------------------
+	public static String getQemuPreRunResetType(String defaultValue) {
 
-		return getValueForId(GDB_OPENOCD_PRERUN_RESET_TYPE, defaultValue);
+		return getValueForId(GDB_QEMU_PRERUN_RESET_TYPE, defaultValue);
 	}
 
-	public static void putOpenOCDPreRunResetType(String value) {
+	public static void putQemuPreRunResetType(String value) {
 
-		putValueForId(GDB_OPENOCD_PRERUN_RESET_TYPE, value);
+		putValueForId(GDB_QEMU_PRERUN_RESET_TYPE, value);
 	}
 
-	// ----- OpenOCD init other -----------------------------------------
-	public static String getOpenOCDPreRunOther(String defaultValue) {
+	// ----- QEMU init other -----------------------------------------
+	public static String getQemuPreRunOther(String defaultValue) {
 
-		return getValueForId(GDB_OPENOCD_PRERUN_OTHER, defaultValue);
+		return getValueForId(GDB_QEMU_PRERUN_OTHER, defaultValue);
 	}
 
-	public static void putOpenOCDPreRunOther(String value) {
+	public static void putQemuPreRunOther(String value) {
 
-		putValueForId(GDB_OPENOCD_PRERUN_OTHER, value);
+		putValueForId(GDB_QEMU_PRERUN_OTHER, value);
 	}
 
 	// ----- flush -----------------------------------------------------------

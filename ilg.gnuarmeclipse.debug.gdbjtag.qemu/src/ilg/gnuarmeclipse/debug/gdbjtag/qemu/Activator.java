@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
+package ilg.gnuarmeclipse.debug.gdbjtag.qemu;
 
 import ilg.gnuarmeclipse.core.AbstractUIActivator;
 
@@ -23,7 +23,7 @@ public class Activator extends AbstractUIActivator {
 	// ------------------------------------------------------------------------
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "ilg.gnuarmeclipse.debug.gdbjtag.openocd"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "ilg.gnuarmeclipse.debug.gdbjtag.qemu"; //$NON-NLS-1$
 
 	@Override
 	public String getBundleId() {

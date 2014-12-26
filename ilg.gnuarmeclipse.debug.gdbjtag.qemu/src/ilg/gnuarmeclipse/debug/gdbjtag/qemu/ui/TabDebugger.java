@@ -18,14 +18,14 @@
  *     Liviu Ionescu - ARM version
  ******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui;
+package ilg.gnuarmeclipse.debug.gdbjtag.qemu.ui;
 
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.WorkspacePreferences;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.WorkspacePreferences;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -710,7 +710,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			Boolean booleanDefault;
 			String stringDefault;
 
-			// OpenOCD GDB server
+			// QEMU GDB server
 			{
 				// Start server locally
 				booleanDefault = WorkspacePreferences
@@ -877,7 +877,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		boolean booleanValue;
 		String stringValue;
 
-		// OpenOCD server
+		// QEMU server
 		{
 			// Start server
 			booleanValue = doStartGdbServer.getSelection();
@@ -1035,7 +1035,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
 		}
 
-		// OpenOCD GDB server setup
+		// QEMU GDB server setup
 		{
 			configuration.setAttribute(
 					ConfigurationAttributes.DO_START_GDB_SERVER,

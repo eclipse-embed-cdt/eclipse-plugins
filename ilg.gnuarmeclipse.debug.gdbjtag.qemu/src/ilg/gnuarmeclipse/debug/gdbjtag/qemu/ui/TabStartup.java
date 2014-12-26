@@ -12,11 +12,11 @@
  *     Liviu Ionescu - ARM version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui;
+package ilg.gnuarmeclipse.debug.gdbjtag.qemu.ui;
 
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.WorkspacePreferences;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.WorkspacePreferences;
 
 import java.io.File;
 
@@ -854,7 +854,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			{
 				// Do initial reset
 				booleanDefault = WorkspacePreferences
-						.getOpenOCDDoInitialReset(ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
+						.getQemuDoInitialReset(ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
 				doFirstReset
 						.setSelection(configuration.getAttribute(
 								ConfigurationAttributes.DO_FIRST_RESET,
@@ -862,21 +862,21 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 				// Reset type
 				stringDefault = WorkspacePreferences
-						.getOpenOCDInitialResetType(ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
+						.getQemuInitialResetType(ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
 				firstResetType.setText(configuration
 						.getAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
 								stringDefault));
 
 				// Enable semihosting
 				booleanDefault = WorkspacePreferences
-						.getOpenOCDEnableSemihosting(ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
+						.getQemuEnableSemihosting(ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
 				enableSemihosting.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.ENABLE_SEMIHOSTING,
 						booleanDefault));
 
 				// Other commands
 				stringDefault = WorkspacePreferences
-						.getOpenOCDInitOther(ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
+						.getQemuInitOther(ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
 				initCommands.setText(configuration.getAttribute(
 						ConfigurationAttributes.OTHER_INIT_COMMANDS,
 						stringDefault));
@@ -956,21 +956,21 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			{
 				// Do pre-run reset
 				booleanDefault = WorkspacePreferences
-						.getOpenOCDDoPreRunReset(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
+						.getQemuDoPreRunReset(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
 				doSecondReset.setSelection(configuration
 						.getAttribute(ConfigurationAttributes.DO_SECOND_RESET,
 								booleanDefault));
 
 				// Pre-run reset type
 				stringDefault = WorkspacePreferences
-						.getOpenOCDPreRunResetType(ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+						.getQemuPreRunResetType(ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
 				secondResetType.setText(configuration.getAttribute(
 						ConfigurationAttributes.SECOND_RESET_TYPE,
 						stringDefault));
 
 				// Other commands
 				stringDefault = WorkspacePreferences
-						.getOpenOCDPreRunOther(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
+						.getQemuPreRunOther(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
 				runCommands.setText(configuration.getAttribute(
 						ConfigurationAttributes.OTHER_RUN_COMMANDS,
 						stringDefault));
@@ -1019,25 +1019,25 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			booleanValue = doFirstReset.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
 					booleanValue);
-			WorkspacePreferences.putOpenOCDDoInitialReset(booleanValue);
+			WorkspacePreferences.putQemuDoInitialReset(booleanValue);
 
 			// First reset type
 			stringValue = firstResetType.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.FIRST_RESET_TYPE, stringValue);
-			WorkspacePreferences.putOpenOCDInitialResetType(stringValue);
+			WorkspacePreferences.putQemuInitialResetType(stringValue);
 
 			// Other commands
 			stringValue = initCommands.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.OTHER_INIT_COMMANDS, stringValue);
-			WorkspacePreferences.putOpenOCDInitOther(stringValue);
+			WorkspacePreferences.putQemuInitOther(stringValue);
 
 			// Enable semihosting
 			booleanValue = enableSemihosting.getSelection();
 			configuration.setAttribute(
 					ConfigurationAttributes.ENABLE_SEMIHOSTING, booleanValue);
-			WorkspacePreferences.putOpenOCDEnableSemihosting(booleanValue);
+			WorkspacePreferences.putQemuEnableSemihosting(booleanValue);
 		}
 
 		// Load Symbols & Image...
@@ -1091,19 +1091,19 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			booleanValue = doSecondReset.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
 					booleanValue);
-			WorkspacePreferences.putOpenOCDDoPreRunReset(booleanValue);
+			WorkspacePreferences.putQemuDoPreRunReset(booleanValue);
 
 			// reset type
 			stringValue = secondResetType.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.SECOND_RESET_TYPE, stringValue);
-			WorkspacePreferences.putOpenOCDPreRunResetType(stringValue);
+			WorkspacePreferences.putQemuPreRunResetType(stringValue);
 
 			// Other commands
 			stringValue = runCommands.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.OTHER_RUN_COMMANDS, stringValue);
-			WorkspacePreferences.putOpenOCDPreRunOther(stringValue);
+			WorkspacePreferences.putQemuPreRunOther(stringValue);
 
 			// Continue
 			configuration.setAttribute(ConfigurationAttributes.DO_CONTINUE,
