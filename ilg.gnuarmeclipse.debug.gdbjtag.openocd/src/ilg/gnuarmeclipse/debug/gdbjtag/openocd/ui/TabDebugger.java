@@ -1185,11 +1185,15 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.GDB_SERVER_LOG,
 					ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT).trim();
 
-			if (logFile.length() > 0) {
-				lst.add("--log_output");
+			logFile = VariablesPlugin.getDefault().getStringVariableManager()
+					.performStringSubstitution(logFile, false);
 
-				lst.add(VariablesPlugin.getDefault().getStringVariableManager()
-						.performStringSubstitution(logFile, false));
+			if (EclipseUtils.isWindows()) {
+				logFile = doubleBackslashes(logFile);
+			}
+			if (!logFile.isEmpty()) {
+				lst.add("--log_output");
+				lst.add(logFile);
 			}
 
 			String other = configuration.getAttribute(
@@ -1198,7 +1202,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			other = VariablesPlugin.getDefault().getStringVariableManager()
 					.performStringSubstitution(other);
-			if (other.length() > 0) {
+
+			if (EclipseUtils.isWindows()) {
+				other = doubleBackslashes(other);
+			}
+			if (!other.isEmpty()) {
 				lst.addAll(splitOptions(other));
 			}
 
@@ -1218,6 +1226,24 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private enum State {
 		None, InOption, InString
 	};
+
+	private static String doubleBackslashes(String str) {
+
+		if (str.indexOf('\\') < 0) {
+			return str;
+		}
+
+		String sa[] = str.split("\\\\\\\\");
+		for (int i = 0; i < sa.length; ++i) {
+			// System.out.println(sa[i]);
+			sa[i] = sa[i].replaceAll("\\\\", "\\\\\\\\");
+			// System.out.println(sa[i]);
+		}
+
+		str = StringUtils.join(sa, "\\\\");
+		// System.out.println(str);
+		return str;
+	}
 
 	private static List<String> splitOptions(String str) {
 
