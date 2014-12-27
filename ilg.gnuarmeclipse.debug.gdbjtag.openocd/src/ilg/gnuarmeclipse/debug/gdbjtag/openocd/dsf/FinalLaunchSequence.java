@@ -11,6 +11,8 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd.dsf;
 
+import ilg.gnuarmeclipse.core.EclipseUtils;
+import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
@@ -252,6 +254,9 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					ConfigurationAttributes.OTHER_INIT_COMMANDS,
 					ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
 
+			if (EclipseUtils.isWindows()) {
+				otherInits = StringUtils.duplicateBackslashes(otherInits);
+			}
 			DebugUtils.addMultiLine(otherInits, commandsList);
 
 			if (CDebugUtils.getAttribute(fAttributes,
@@ -297,6 +302,10 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 			String userCmd = CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.OTHER_RUN_COMMANDS,
 					ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
+
+			if (EclipseUtils.isWindows()) {
+				userCmd = StringUtils.duplicateBackslashes(userCmd);
+			}
 
 			DebugUtils.addMultiLine(userCmd, commandsList);
 
@@ -419,9 +428,12 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					return;
 				}
 
-				// Escape windows path separator characters TWICE, once for Java
-				// and once for GDB.
-				symbolsFileName = symbolsFileName.replace("\\", "\\\\"); //$NON-NLS-1$ //$NON-NLS-2$
+				if (EclipseUtils.isWindows()) {
+					// Escape windows path separator characters TWICE, once for
+					// Java and once for GDB.
+					symbolsFileName = StringUtils
+							.duplicateBackslashes(symbolsFileName); //$NON-NLS-1$ //$NON-NLS-2$
+				}
 
 				String symbolsOffset = CDebugUtils.getAttribute(
 						getAttributes(), IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
@@ -491,17 +503,21 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 						return;
 					}
 
-					// Escape windows path separator characters TWICE, once for
-					// Java
-					// and once for GDB.
-					imageFileName = imageFileName.replace("\\", "\\\\"); //$NON-NLS-1$ //$NON-NLS-2$
+					if (EclipseUtils.isWindows()) {
+						// Escape windows path separator characters TWICE, once
+						// for
+						// Java and once for GDB.
+						imageFileName = StringUtils
+								.duplicateBackslashes(imageFileName); //$NON-NLS-1$ //$NON-NLS-2$
+					}
 
 					String imageOffset = CDebugUtils.getAttribute(
 							getAttributes(),
 							IGDBJtagConstants.ATTR_IMAGE_OFFSET,
 							IGDBJtagConstants.DEFAULT_IMAGE_OFFSET);
 					if (imageOffset.length() > 0) {
-						imageOffset = (imageFileName.endsWith(".elf")) ? "" : "0x" + CDebugUtils.getAttribute(getAttributes(), IGDBJtagConstants.ATTR_IMAGE_OFFSET, IGDBJtagConstants.DEFAULT_IMAGE_OFFSET); //$NON-NLS-2$ 
+						imageOffset = (imageFileName.endsWith(".elf")) ? ""
+								: "0x"	+ CDebugUtils.getAttribute(getAttributes(), IGDBJtagConstants.ATTR_IMAGE_OFFSET, IGDBJtagConstants.DEFAULT_IMAGE_OFFSET); //$NON-NLS-2$ 
 					}
 					List<String> commands = new ArrayList<String>();
 					fGdbJtagDevice.doLoadImage(imageFileName, imageOffset,
