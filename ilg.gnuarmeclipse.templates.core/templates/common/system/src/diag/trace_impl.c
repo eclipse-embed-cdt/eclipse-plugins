@@ -163,16 +163,6 @@ _trace_write_itm (const char* buf, size_t nbyte)
 static ssize_t
 _trace_write_semihosting_stdout (const char* buf, size_t nbyte)
 {
-#if (defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)) && !defined(OS_HAS_NO_CORE_DEBUG)
-  // Check if the debugger is enabled. CoreDebug is available only on CM3/CM4.
-  // [Contributed by SourceForge user diabolo38]
-  if ((CoreDebug->DHCSR & CoreDebug_DHCSR_C_DEBUGEN_Msk) == 0)
-    {
-      // If not, pretend we wrote all bytes
-      return (ssize_t) (nbyte);
-    }
-#endif // defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
-
   static int handle;
   void* block[3];
   int ret;
@@ -222,16 +212,6 @@ _trace_write_semihosting_stdout (const char* buf, size_t nbyte)
 static ssize_t
 _trace_write_semihosting_debug (const char* buf, size_t nbyte)
 {
-#if (defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)) && !defined(OS_HAS_NO_CORE_DEBUG)
-  // Check if the debugger is enabled. CoreDebug is available only on CM3/CM4.
-  // [Contributed by SourceForge user diabolo38]
-  if ((CoreDebug->DHCSR & CoreDebug_DHCSR_C_DEBUGEN_Msk) == 0)
-    {
-      // If not, pretend we wrote all bytes
-      return (ssize_t) (nbyte);
-    }
-#endif // defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
-
   // Since the single character debug channel is quite slow, try to
   // optimise and send a null terminated string, if possible.
   if (buf[nbyte] == '\0')
