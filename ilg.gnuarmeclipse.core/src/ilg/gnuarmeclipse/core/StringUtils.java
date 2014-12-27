@@ -1,7 +1,19 @@
 package ilg.gnuarmeclipse.core;
 
+/**
+ * A collection of utilities used for string processing.
+ */
 public class StringUtils {
 
+	/**
+	 * Join an array of string.
+	 * 
+	 * @param strArray
+	 *            array of strings.
+	 * @param joiner
+	 *            a string inserted between elements.
+	 * @return a string.
+	 */
 	public static String join(String[] strArray, String joiner) {
 
 		assert strArray != null;
@@ -17,6 +29,13 @@ public class StringUtils {
 		return sb.toString();
 	}
 
+	/**
+	 * Convert hex to long. Considers +/-, ignores 0x and 0X.
+	 * 
+	 * @param hex
+	 *            a string.
+	 * @return a long.
+	 */
 	public static long convertHexLong(String hex) {
 
 		boolean isNegative = false;
@@ -38,14 +57,29 @@ public class StringUtils {
 		return value;
 	}
 
-	public static String capitalizeFirst(String s) {
+	/**
+	 * Capitalise first letter of a string.
+	 * 
+	 * @param str
+	 *            a string.
+	 * @return a string.
+	 */
+	public static String capitalizeFirst(String str) {
 
-		if (s.isEmpty()) {
-			return s;
+		if (str.isEmpty()) {
+			return str;
 		}
-		return s.substring(0, 1).toUpperCase() + s.substring(1);
+		return str.substring(0, 1).toUpperCase() + str.substring(1);
 	}
 
+	/**
+	 * Cosmetise the URL tail to always have a slash, to simplify appending more
+	 * path elements.
+	 * 
+	 * @param url
+	 *            a string.
+	 * @return a string.
+	 */
 	public static String cosmetiseUrl(String url) {
 
 		if (url.endsWith("/")) {
@@ -55,6 +89,13 @@ public class StringUtils {
 		}
 	}
 
+	/**
+	 * Convert an integer to B/kB/MB.
+	 * 
+	 * @param size
+	 *            an integer size.
+	 * @return a string.
+	 */
 	public static String convertSizeToString(int size) {
 
 		String sizeString;
@@ -68,6 +109,31 @@ public class StringUtils {
 					+ "MB";
 		}
 		return sizeString;
+	}
+
+	/**
+	 * Duplicate single backslashes, i.e. not part of a double backslash group.
+	 * 
+	 * @param str
+	 *            a string.
+	 * @return a string.
+	 */
+	public static String duplicateBackslashes(String str) {
+
+		if (str.indexOf('\\') < 0) {
+			return str;
+		}
+
+		String sa[] = str.split("\\\\\\\\");
+		for (int i = 0; i < sa.length; ++i) {
+			// System.out.println(sa[i]);
+			sa[i] = sa[i].replaceAll("\\\\", "\\\\\\\\");
+			// System.out.println(sa[i]);
+		}
+
+		str = StringUtils.join(sa, "\\\\");
+		// System.out.println(str);
+		return str;
 	}
 
 }

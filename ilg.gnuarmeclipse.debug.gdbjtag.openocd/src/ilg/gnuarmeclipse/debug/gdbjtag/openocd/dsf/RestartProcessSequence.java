@@ -11,6 +11,8 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd.dsf;
 
+import ilg.gnuarmeclipse.core.EclipseUtils;
+import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
@@ -197,6 +199,9 @@ public class RestartProcessSequence extends ReflectionSequence {
 				ConfigurationAttributes.OTHER_RUN_COMMANDS,
 				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT).trim();
 
+		if (EclipseUtils.isWindows()) {
+			otherCmds = StringUtils.duplicateBackslashes(otherCmds);
+		}
 		try {
 			DebugUtils.addMultiLine(otherCmds, commandsList);
 		} catch (CoreException e) {

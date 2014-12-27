@@ -1189,7 +1189,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.performStringSubstitution(logFile, false);
 
 			if (EclipseUtils.isWindows()) {
-				logFile = doubleBackslashes(logFile);
+				logFile = StringUtils.duplicateBackslashes(logFile);
 			}
 			if (!logFile.isEmpty()) {
 				lst.add("--log_output");
@@ -1204,7 +1204,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.performStringSubstitution(other);
 
 			if (EclipseUtils.isWindows()) {
-				other = doubleBackslashes(other);
+				other = StringUtils.duplicateBackslashes(other);
 			}
 			if (!other.isEmpty()) {
 				lst.addAll(splitOptions(other));
@@ -1226,24 +1226,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private enum State {
 		None, InOption, InString
 	};
-
-	private static String doubleBackslashes(String str) {
-
-		if (str.indexOf('\\') < 0) {
-			return str;
-		}
-
-		String sa[] = str.split("\\\\\\\\");
-		for (int i = 0; i < sa.length; ++i) {
-			// System.out.println(sa[i]);
-			sa[i] = sa[i].replaceAll("\\\\", "\\\\\\\\");
-			// System.out.println(sa[i]);
-		}
-
-		str = StringUtils.join(sa, "\\\\");
-		// System.out.println(str);
-		return str;
-	}
 
 	private static List<String> splitOptions(String str) {
 

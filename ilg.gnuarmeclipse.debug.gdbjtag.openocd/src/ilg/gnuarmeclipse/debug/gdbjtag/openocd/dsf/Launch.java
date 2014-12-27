@@ -34,6 +34,7 @@ import org.eclipse.cdt.dsf.mi.service.command.AbstractCLIProcess;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
@@ -250,8 +251,8 @@ public class Launch extends GnuArmLaunch {
 		if (fullCommand == null)
 			return null;
 
-		String parts[] = fullCommand.trim().split("" + Path.SEPARATOR);
-		return parts[parts.length - 1];
+		IPath path = new Path(fullCommand);
+		return path.lastSegment();
 	}
 
 	public String getClientCommandName(ILaunchConfiguration config) {
@@ -259,8 +260,8 @@ public class Launch extends GnuArmLaunch {
 		if (fullCommand == null)
 			return null;
 
-		String parts[] = fullCommand.trim().split("" + Path.SEPARATOR);
-		return parts[parts.length - 1];
+		IPath path = new Path(fullCommand);
+		return path.lastSegment();
 	}
 
 	// ------------------------------------------------------------------------
