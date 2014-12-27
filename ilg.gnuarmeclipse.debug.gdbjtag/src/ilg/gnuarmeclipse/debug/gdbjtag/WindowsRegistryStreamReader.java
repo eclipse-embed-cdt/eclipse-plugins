@@ -10,7 +10,7 @@
  *     		(based on Ningareddy Modase contribution)
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
+package ilg.gnuarmeclipse.debug.gdbjtag;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +18,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 
-public class StreamReader extends Thread {
+/**
+ * A thread collecting lines containing a key from a reader into a string.
+ */
+public class WindowsRegistryStreamReader extends Thread {
 
 	// ------------------------------------------------------------------------
 
@@ -28,7 +31,7 @@ public class StreamReader extends Thread {
 
 	// ------------------------------------------------------------------------
 
-	public StreamReader(InputStream is, String key) {
+	public WindowsRegistryStreamReader(InputStream is, String key) {
 		fReader = new BufferedReader(new InputStreamReader(is));
 		fKey = key;
 	}
