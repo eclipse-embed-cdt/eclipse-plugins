@@ -214,25 +214,25 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 		List<String> commandsList = new ArrayList<String>();
 
-		boolean noReset = CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-				ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
-		if (!noReset) {
-			if (CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.DO_FIRST_RESET,
-					ConfigurationAttributes.DO_FIRST_RESET_DEFAULT)) {
-				String commandStr = ConfigurationAttributes.DO_FIRST_RESET_COMMAND;
-				String resetType = CDebugUtils.getAttribute(fAttributes,
-						ConfigurationAttributes.FIRST_RESET_TYPE,
-						ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
-				commandsList.add(commandStr + resetType);
+		// boolean noReset = CDebugUtils.getAttribute(fAttributes,
+		// ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+		// ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
+		// if (!noReset) {
+		if (CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.DO_FIRST_RESET,
+				ConfigurationAttributes.DO_FIRST_RESET_DEFAULT)) {
+			String commandStr = ConfigurationAttributes.DO_FIRST_RESET_COMMAND;
+			// String resetType = CDebugUtils.getAttribute(fAttributes,
+			// ConfigurationAttributes.FIRST_RESET_TYPE,
+			// ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
+			commandsList.add(commandStr /* + resetType */);
 
-				// Although the manual claims that reset always does a
-				// halt, better issue it explicitly
-				commandStr = ConfigurationAttributes.HALT_COMMAND;
-				commandsList.add(commandStr);
-			}
+			// Although the manual claims that reset always does a
+			// halt, better issue it explicitly
+			commandStr = ConfigurationAttributes.HALT_COMMAND;
+			commandsList.add(commandStr);
 		}
+		// }
 
 		queueCommands(commandsList, rm);
 	}
@@ -254,12 +254,13 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 			DebugUtils.addMultiLine(otherInits, commandsList);
 
-			if (CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.ENABLE_SEMIHOSTING,
-					ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT)) {
-				String commandStr = ConfigurationAttributes.ENABLE_SEMIHOSTING_COMMAND;
-				commandsList.add(commandStr);
-			}
+			// if (CDebugUtils.getAttribute(fAttributes,
+			// ConfigurationAttributes.ENABLE_SEMIHOSTING,
+			// ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT)) {
+			// String commandStr =
+			// ConfigurationAttributes.ENABLE_SEMIHOSTING_COMMAND;
+			// commandsList.add(commandStr);
+			// }
 
 			queueCommands(commandsList, rm);
 		} catch (CoreException e) {
@@ -274,25 +275,25 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		try {
 			List<String> commandsList = new ArrayList<String>();
 
-			boolean noReset = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-					ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
-			if (!noReset) {
-				if (CDebugUtils.getAttribute(fAttributes,
-						ConfigurationAttributes.DO_SECOND_RESET,
-						ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
-					String commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
-					String resetType = CDebugUtils.getAttribute(fAttributes,
-							ConfigurationAttributes.SECOND_RESET_TYPE,
-							ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
-					commandsList.add(commandStr + resetType);
+			// boolean noReset = CDebugUtils.getAttribute(fAttributes,
+			// ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+			// ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
+			// if (!noReset) {
+			if (CDebugUtils.getAttribute(fAttributes,
+					ConfigurationAttributes.DO_SECOND_RESET,
+					ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
+				String commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
+				// String resetType = CDebugUtils.getAttribute(fAttributes,
+				// ConfigurationAttributes.SECOND_RESET_TYPE,
+				// ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+				commandsList.add(commandStr /* + resetType */);
 
-					// Although the manual claims that reset always does a
-					// halt, better issue it explicitly
-					commandStr = ConfigurationAttributes.HALT_COMMAND;
-					commandsList.add(commandStr);
-				}
+				// Although the manual claims that reset always does a
+				// halt, better issue it explicitly
+				commandStr = ConfigurationAttributes.HALT_COMMAND;
+				commandsList.add(commandStr);
 			}
+			// }
 
 			String userCmd = CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.OTHER_RUN_COMMANDS,
@@ -443,79 +444,77 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 			rm.done();
 		}
 
-		boolean doConnectToRunning = CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-				ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
-
-		if (!doConnectToRunning) {
-			try {
-				String imageFileName = null;
-				if (CDebugUtils.getAttribute(getAttributes(),
-						IGDBJtagConstants.ATTR_LOAD_IMAGE,
-						IGDBJtagConstants.DEFAULT_LOAD_IMAGE)) {
-					// New setting in Helios. Default is true. Check for
-					// existence
-					// in order to support older launch configs
-					if (getAttributes().containsKey(
-							IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE)
-							&& CDebugUtils
-									.getAttribute(
-											getAttributes(),
-											IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
-											IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_IMAGE)) {
-						IPath programFile = fGDBBackend.getProgramPath();
-						if (programFile != null) {
-							imageFileName = programFile.toOSString();
-						}
-					} else {
-						imageFileName = CDebugUtils.getAttribute(
-								getAttributes(),
-								IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
-								IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME);
-						if (imageFileName.length() > 0) {
-							imageFileName = VariablesPlugin.getDefault()
-									.getStringVariableManager()
-									.performStringSubstitution(imageFileName);
-						} else {
-							imageFileName = null;
-						}
+		// boolean doConnectToRunning = CDebugUtils.getAttribute(fAttributes,
+		// ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+		// ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
+		//
+		// if (!doConnectToRunning) {
+		try {
+			String imageFileName = null;
+			if (CDebugUtils.getAttribute(getAttributes(),
+					IGDBJtagConstants.ATTR_LOAD_IMAGE,
+					IGDBJtagConstants.DEFAULT_LOAD_IMAGE)) {
+				// New setting in Helios. Default is true. Check for
+				// existence
+				// in order to support older launch configs
+				if (getAttributes().containsKey(
+						IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE)
+						&& CDebugUtils
+								.getAttribute(
+										getAttributes(),
+										IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
+										IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_IMAGE)) {
+					IPath programFile = fGDBBackend.getProgramPath();
+					if (programFile != null) {
+						imageFileName = programFile.toOSString();
 					}
-
-					if (imageFileName == null) {
-						rm.setStatus(new Status(
-								IStatus.ERROR,
-								Activator.PLUGIN_ID,
-								-1,
-								Messages.getString("GDBJtagDebugger.err_no_img_file"), null)); //$NON-NLS-1$
-						rm.done();
-						return;
-					}
-
-					// Escape windows path separator characters TWICE, once for
-					// Java
-					// and once for GDB.
-					imageFileName = imageFileName.replace("\\", "\\\\"); //$NON-NLS-1$ //$NON-NLS-2$
-
-					String imageOffset = CDebugUtils.getAttribute(
-							getAttributes(),
-							IGDBJtagConstants.ATTR_IMAGE_OFFSET,
-							IGDBJtagConstants.DEFAULT_IMAGE_OFFSET);
-					if (imageOffset.length() > 0) {
-						imageOffset = (imageFileName.endsWith(".elf")) ? "" : "0x" + CDebugUtils.getAttribute(getAttributes(), IGDBJtagConstants.ATTR_IMAGE_OFFSET, IGDBJtagConstants.DEFAULT_IMAGE_OFFSET); //$NON-NLS-2$ 
-					}
-					List<String> commands = new ArrayList<String>();
-					fGdbJtagDevice.doLoadImage(imageFileName, imageOffset,
-							commands);
-					queueCommands(commands, rm);
 				} else {
-					rm.done();
+					imageFileName = CDebugUtils.getAttribute(getAttributes(),
+							IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
+							IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME);
+					if (imageFileName.length() > 0) {
+						imageFileName = VariablesPlugin.getDefault()
+								.getStringVariableManager()
+								.performStringSubstitution(imageFileName);
+					} else {
+						imageFileName = null;
+					}
 				}
-			} catch (CoreException e) {
-				rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
-						"Cannot load image", e)); //$NON-NLS-1$
+
+				if (imageFileName == null) {
+					rm.setStatus(new Status(
+							IStatus.ERROR,
+							Activator.PLUGIN_ID,
+							-1,
+							Messages.getString("GDBJtagDebugger.err_no_img_file"), null)); //$NON-NLS-1$
+					rm.done();
+					return;
+				}
+
+				// Escape windows path separator characters TWICE, once for
+				// Java
+				// and once for GDB.
+				imageFileName = imageFileName.replace("\\", "\\\\"); //$NON-NLS-1$ //$NON-NLS-2$
+
+				String imageOffset = CDebugUtils.getAttribute(getAttributes(),
+						IGDBJtagConstants.ATTR_IMAGE_OFFSET,
+						IGDBJtagConstants.DEFAULT_IMAGE_OFFSET);
+				if (imageOffset.length() > 0) {
+					imageOffset = (imageFileName.endsWith(".elf")) ? "" : "0x" + CDebugUtils.getAttribute(getAttributes(), IGDBJtagConstants.ATTR_IMAGE_OFFSET, IGDBJtagConstants.DEFAULT_IMAGE_OFFSET); //$NON-NLS-2$ 
+				}
+				List<String> commands = new ArrayList<String>();
+				fGdbJtagDevice
+						.doLoadImage(imageFileName, imageOffset, commands);
+				queueCommands(commands, rm);
+			} else {
 				rm.done();
 			}
+		} catch (CoreException e) {
+			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
+					"Cannot load image", e)); //$NON-NLS-1$
+			rm.done();
 		}
+		// }
 	}
 
 	@Execute

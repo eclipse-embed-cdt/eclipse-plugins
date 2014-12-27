@@ -11,12 +11,11 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.qemu;
 
-import org.eclipse.cdt.core.templateengine.SharedDefaults;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
-public class WorkspacePreferences {
+public class WorkspacePersistentValues {
 
 	// Tab Debugger
 	// GDB Server Setup
@@ -45,10 +44,9 @@ public class WorkspacePreferences {
 
 	public static final String GDB_QEMU_DO_INITIAL_RESET = GDB_QEMU
 			+ "doInitialReset";
-	public static final String GDB_QEMU_INITIAL_RESET_TYPE = GDB_QEMU
-			+ "initialReset.type";
-	public static final String GDB_QEMU_INIT_OTHER = GDB_QEMU
-			+ "init.other";
+	// public static final String GDB_QEMU_INITIAL_RESET_TYPE = GDB_QEMU
+	// + "initialReset.type";
+	public static final String GDB_QEMU_INIT_OTHER = GDB_QEMU + "init.other";
 
 	public static final String GDB_QEMU_ENABLE_SEMIHOSTING = GDB_QEMU
 			+ "enableSemihosting";
@@ -56,13 +54,13 @@ public class WorkspacePreferences {
 	// Run Commands
 	public static final String GDB_QEMU_DO_PRERUN_RESET = GDB_QEMU
 			+ "doPreRunReset";
-	public static final String GDB_QEMU_PRERUN_RESET_TYPE = GDB_QEMU
-			+ "preRunReset.type";
+	// public static final String GDB_QEMU_PRERUN_RESET_TYPE = GDB_QEMU
+	// + "preRunReset.type";
 
 	public static final String GDB_QEMU_PRERUN_OTHER = GDB_QEMU
 			+ "preRun.other";
 
-	// ----- getter & setter --------------------------------------------------
+	// ----- getter -----------------------------------------------------------
 	private static String getValueForId(String id, String defaultValue) {
 
 		// Access the instanceScope
@@ -70,29 +68,22 @@ public class WorkspacePreferences {
 				.getNode(Activator.PLUGIN_ID);
 
 		String value;
-		// preferences.get(id, defaultValue);
 		value = preferences.get(id, null);
 		// System.out.println("Value of " + id + " is " + value);
 
-		if (value != null) {
-			return value;
+		if (value == null) {
+			value = "";
+		} else {
+			value = value.trim();
 		}
 
-		// Keep this for compatibility
-		id = Activator.PLUGIN_ID + "." + id;
-
-		value = SharedDefaults.getInstance().getSharedDefaultsMap().get(id);
-
-		if (value == null)
-			value = "";
-
-		value = value.trim();
-		if (value.length() == 0 && defaultValue != null)
+		if (value.isEmpty() && defaultValue != null)
 			return defaultValue.trim();
 
 		return value;
 	}
 
+	// ----- setter -----------------------------------------------------------
 	private static void putValueForId(String id, String value) {
 
 		value = value.trim();
@@ -101,7 +92,6 @@ public class WorkspacePreferences {
 		Preferences preferences = InstanceScope.INSTANCE
 				.getNode(Activator.PLUGIN_ID);
 		preferences.put(id, value);
-
 	}
 
 	// ----- gdb server doStart -----------------------------------------------
@@ -184,15 +174,15 @@ public class WorkspacePreferences {
 	}
 
 	// ----- QEMU initial reset type ---------------------------------------
-	public static String getQemuInitialResetType(String defaultValue) {
-
-		return getValueForId(GDB_QEMU_INITIAL_RESET_TYPE, defaultValue);
-	}
-
-	public static void putQemuInitialResetType(String value) {
-
-		putValueForId(GDB_QEMU_INITIAL_RESET_TYPE, value);
-	}
+	// public static String getQemuInitialResetType(String defaultValue) {
+	//
+	// return getValueForId(GDB_QEMU_INITIAL_RESET_TYPE, defaultValue);
+	// }
+	//
+	// public static void putQemuInitialResetType(String value) {
+	//
+	// putValueForId(GDB_QEMU_INITIAL_RESET_TYPE, value);
+	// }
 
 	// ----- QEMU enable semihosting ---------------------------------------
 	public static boolean getQemuEnableSemihosting(boolean defaultValue) {
@@ -230,15 +220,15 @@ public class WorkspacePreferences {
 	}
 
 	// ----- QEMU prerun reset type ----------------------------------------
-	public static String getQemuPreRunResetType(String defaultValue) {
-
-		return getValueForId(GDB_QEMU_PRERUN_RESET_TYPE, defaultValue);
-	}
-
-	public static void putQemuPreRunResetType(String value) {
-
-		putValueForId(GDB_QEMU_PRERUN_RESET_TYPE, value);
-	}
+	// public static String getQemuPreRunResetType(String defaultValue) {
+	//
+	// return getValueForId(GDB_QEMU_PRERUN_RESET_TYPE, defaultValue);
+	// }
+	//
+	// public static void putQemuPreRunResetType(String value) {
+	//
+	// putValueForId(GDB_QEMU_PRERUN_RESET_TYPE, value);
+	// }
 
 	// ----- QEMU init other -----------------------------------------
 	public static String getQemuPreRunOther(String defaultValue) {

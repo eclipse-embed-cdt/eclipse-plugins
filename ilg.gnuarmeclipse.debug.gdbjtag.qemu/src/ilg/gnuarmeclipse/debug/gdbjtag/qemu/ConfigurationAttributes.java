@@ -20,9 +20,9 @@ public interface ConfigurationAttributes {
 	// Must be in sync with plugin.xml definition
 	public static final String JTAG_DEVICE = "GNU ARM QEMU";
 
-	public static final String DO_CONNECT_TO_RUNNING = PREFIX
-			+ ".doConnectToRunning"; //$NON-NLS-1$
-	public static final boolean DO_CONNECT_TO_RUNNING_DEFAULT = false;
+	// public static final String DO_CONNECT_TO_RUNNING = PREFIX
+	//			+ ".doConnectToRunning"; //$NON-NLS-1$
+	// public static final boolean DO_CONNECT_TO_RUNNING_DEFAULT = false;
 
 	public static final String DO_START_GDB_SERVER = PREFIX
 			+ ".doStartGdbServer"; //$NON-NLS-1$
@@ -32,7 +32,7 @@ public interface ConfigurationAttributes {
 			+ ".gdbServerExecutable"; //$NON-NLS-1$
 	public static final String GDB_SERVER_EXECUTABLE_DEFAULT = "${qemu_path}/${qemu_executable}";
 
-	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_NAME = "gnuarmqemu";
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_NAME = "qemu-system-gnuarmeclipse";
 
 	public static final String GDB_SERVER_CONNECTION_ADDRESS = PREFIX
 			+ ".gdbServerConnectionAddress"; //$NON-NLS-1$
@@ -40,11 +40,11 @@ public interface ConfigurationAttributes {
 
 	public static final String GDB_SERVER_GDB_PORT_NUMBER = PREFIX
 			+ ".gdbServerGdbPortNumber"; //$NON-NLS-1$
-	public static final int GDB_SERVER_GDB_PORT_NUMBER_DEFAULT = 3333;
+	public static final int GDB_SERVER_GDB_PORT_NUMBER_DEFAULT = 1234;
 
-	public static final String GDB_SERVER_TELNET_PORT_NUMBER = PREFIX
-			+ ".gdbServerTelnetPortNumber"; //$NON-NLS-1$
-	public static final int GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT = 4444;
+	// public static final String GDB_SERVER_TELNET_PORT_NUMBER = PREFIX
+	//			+ ".gdbServerTelnetPortNumber"; //$NON-NLS-1$
+	// public static final int GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT = 4444;
 
 	public static final String GDB_SERVER_LOG = PREFIX + ".gdbServerLog"; //$NON-NLS-1$
 	public static final String GDB_SERVER_LOG_DEFAULT = ""; //$NON-NLS-1$
@@ -56,9 +56,10 @@ public interface ConfigurationAttributes {
 			+ ".doGdbServerAllocateConsole"; //$NON-NLS-1$
 	public static final boolean DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT = true;
 
-	public static final String DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE = PREFIX
-			+ ".doGdbServerAllocateTelnetConsole"; //$NON-NLS-1$
-	public static final boolean DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE_DEFAULT = false;
+	// public static final String DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE = PREFIX
+	//			+ ".doGdbServerAllocateTelnetConsole"; //$NON-NLS-1$
+	// public static final boolean DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE_DEFAULT
+	// = false;
 
 	public static final String GDB_CLIENT_EXECUTABLE_DEFAULT = "${cross_prefix}gdb${cross_suffix}";
 
@@ -79,18 +80,20 @@ public interface ConfigurationAttributes {
 
 	// TabStartup
 	public static final String DO_FIRST_RESET = PREFIX + ".doFirstReset"; //$NON-NLS-1$
-	public static final boolean DO_FIRST_RESET_DEFAULT = true;
-	public static final String DO_FIRST_RESET_COMMAND = "monitor reset ";
+	public static final boolean DO_FIRST_RESET_DEFAULT = false;
+	public static final String DO_FIRST_RESET_COMMAND = "monitor system_reset ";
 
-	public static final String HALT_COMMAND = "monitor halt";
+	public static final String HALT_COMMAND = ""; // "monitor stop";
 
-	public static final String FIRST_RESET_TYPE = PREFIX + ".firstResetType"; //$NON-NLS-1$
-	public static final String FIRST_RESET_TYPE_DEFAULT = "init";
+	// public static final String FIRST_RESET_TYPE = PREFIX + ".firstResetType"; //$NON-NLS-1$
+	// public static final String FIRST_RESET_TYPE_DEFAULT = "init";
 
 	public static final String ENABLE_SEMIHOSTING = PREFIX
 			+ ".enableSemihosting"; //$NON-NLS-1$
 	public static final boolean ENABLE_SEMIHOSTING_DEFAULT = true;
-	public static final String ENABLE_SEMIHOSTING_COMMAND = "monitor arm semihosting enable";
+	// public static final String ENABLE_SEMIHOSTING_COMMAND =
+	// "monitor arm semihosting enable";
+	public static final String ENABLE_SEMIHOSTING_OPTION = "-semihosting-config enable=on,target=native";
 
 	public static final String OTHER_INIT_COMMANDS = PREFIX
 			+ ".otherInitCommands"; //$NON-NLS-1$
@@ -98,10 +101,10 @@ public interface ConfigurationAttributes {
 
 	public static final String DO_SECOND_RESET = PREFIX + ".doSecondReset"; //$NON-NLS-1$
 	public static final boolean DO_SECOND_RESET_DEFAULT = true;
-	public static final String DO_SECOND_RESET_COMMAND = "monitor reset ";
+	public static final String DO_SECOND_RESET_COMMAND = DO_FIRST_RESET_COMMAND;
 
-	public static final String SECOND_RESET_TYPE = PREFIX + ".secondResetType"; //$NON-NLS-1$
-	public static final String SECOND_RESET_TYPE_DEFAULT = "halt";
+	// public static final String SECOND_RESET_TYPE = PREFIX + ".secondResetType"; //$NON-NLS-1$
+	// public static final String SECOND_RESET_TYPE_DEFAULT = "halt";
 
 	public static final boolean DO_STOP_AT_DEFAULT = true;
 	public static final String STOP_AT_NAME_DEFAULT = "main";

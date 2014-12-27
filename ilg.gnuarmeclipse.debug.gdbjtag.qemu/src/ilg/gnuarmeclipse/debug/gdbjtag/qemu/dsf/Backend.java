@@ -15,7 +15,7 @@ import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GDBBackend;
 import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
-import ilg.gnuarmeclipse.debug.gdbjtag.qemu.ui.TabDebugger;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Configuration;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,7 +82,7 @@ public class Backend extends GDBBackend {
 	 * JLink configuration.
 	 */
 	protected String[] getGDBCommandLineArray() {
-		String[] commandLineArray = TabDebugger
+		String[] commandLineArray = Configuration
 				.getGdbClientCommandLineArray(fLaunchConfiguration);
 
 		return commandLineArray;

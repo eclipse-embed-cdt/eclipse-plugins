@@ -166,7 +166,7 @@ public class RestartProcessSequence extends ReflectionSequence {
 
 		List<String> commandsList = new ArrayList<String>();
 
-		commandsList.add("monitor halt");
+		commandsList.add(ConfigurationAttributes.HALT_COMMAND);
 
 		if (CDebugUtils.getAttribute(fAttributes,
 				IGDBJtagConstants.ATTR_SET_STOP_AT,
@@ -176,22 +176,22 @@ public class RestartProcessSequence extends ReflectionSequence {
 					IGDBJtagConstants.ATTR_STOP_AT,
 					ConfigurationAttributes.STOP_AT_NAME_DEFAULT).trim();
 
-			if (stopAtName.length() > 0) {
+			if (!stopAtName.isEmpty()) {
 				commandsList.add("tbreak " + stopAtName);
 			}
 		}
 
 		String commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
-		String resetType = "";
+		// String resetType = "";
 
 		if (CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.DO_SECOND_RESET,
 				ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
-			resetType = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.SECOND_RESET_TYPE,
-					ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+			// resetType = CDebugUtils.getAttribute(fAttributes,
+			// ConfigurationAttributes.SECOND_RESET_TYPE,
+			// ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
 		}
-		commandsList.add(commandStr + resetType);
+		commandsList.add(commandStr /* + resetType */);
 
 		String otherCmds = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.OTHER_RUN_COMMANDS,

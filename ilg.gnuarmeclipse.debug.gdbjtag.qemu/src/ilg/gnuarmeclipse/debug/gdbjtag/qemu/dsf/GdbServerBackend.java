@@ -13,7 +13,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.qemu.dsf;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmGdbServerBackend;
 import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
-import ilg.gnuarmeclipse.debug.gdbjtag.qemu.ui.TabDebugger;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Configuration;
 
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.service.DsfSession;
@@ -100,7 +100,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 	@Override
 	public String[] getServerCommandLineArray() {
-		String[] commandLineArray = TabDebugger
+		String[] commandLineArray = Configuration
 				.getGdbServerCommandLineArray(fLaunchConfiguration);
 
 		return commandLineArray;
@@ -131,15 +131,15 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	}
 
 	public boolean canMatchStdOut() {
-		return false;
-	}
-
-	public boolean canMatchStdErr() {
 		return true;
 	}
 
-	public boolean matchStdErrExpectedPattern(String line) {
-		if (line.indexOf("Started by GNU ARM Eclipse") >= 0) {
+	public boolean canMatchStdErr() {
+		return false;
+	}
+
+	public boolean matchStdOutExpectedPattern(String line) {
+		if (line.indexOf("GDB Server listening on:") >= 0) {
 			return true;
 		}
 
