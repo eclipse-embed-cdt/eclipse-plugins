@@ -1,9 +1,14 @@
 package ilg.gnuarmeclipse.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * A collection of utilities used for string processing.
  */
 public class StringUtils {
+
+	// ------------------------------------------------------------------------
 
 	/**
 	 * Join an array of string.
@@ -136,4 +141,79 @@ public class StringUtils {
 		return str;
 	}
 
+	// ------------------------------------------------------------------------
+
+	private static enum SplitState {
+		None, InOption, InString
+	};
+
+	/**
+	 * Split a string containing command line option separated by white spaces
+	 * into substrings. Content of quoted options is not parsed, but preserved
+	 * as a single substring.
+	 * 
+	 * @param str
+	 * @return array of strings.
+	 */
+	public static List<String> splitCommandLineOptions(String str) {
+
+		List<String> lst = new ArrayList<String>();
+		SplitState state = SplitState.None;
+
+		StringBuffer sb = new StringBuffer();
+		for (int i = 0; i < str.length(); ++i) {
+			char ch = str.charAt(i);
+
+			// a small state machine to split a string in substrings,
+			// preserving quoted parts
+			switch (state) {
+			case None:
+
+				if (ch == '"') {
+					sb.setLength(0);
+
+					state = SplitState.InString;
+				} else if (ch != ' ' && ch != '\n' && ch != '\r') {
+					sb.setLength(0);
+					sb.append(ch);
+
+					state = SplitState.InOption;
+				}
+				break;
+
+			case InOption:
+
+				if (ch != ' ' && ch != '\n' && ch != '\r') {
+					sb.append(ch);
+				} else {
+					lst.add(sb.toString());
+
+					state = SplitState.None;
+				}
+
+				break;
+
+			case InString:
+
+				if (ch != '"') {
+					sb.append(ch);
+				} else {
+					lst.add(sb.toString());
+
+					state = SplitState.None;
+				}
+
+				break;
+			}
+
+		}
+
+		if (state == SplitState.InOption || state == SplitState.InString) {
+			lst.add(sb.toString());
+		}
+		return lst;
+
+	}
+
+	// ------------------------------------------------------------------------
 }
