@@ -1074,6 +1074,9 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 							destroy();
 							System.out
 									.println("GdbServerMonitorJob.run() run() State.TERMINATED");
+
+							fGdbServerExitStatus = new Status(IStatus.OK,
+									Activator.PLUGIN_ID, "TERMINATED"); //$NON-NLS-1$
 							fServerBackendState = State.TERMINATED;
 
 							// Notify world that server backend terminated.
