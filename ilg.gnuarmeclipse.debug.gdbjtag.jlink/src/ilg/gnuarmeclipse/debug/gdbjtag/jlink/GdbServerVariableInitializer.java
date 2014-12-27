@@ -15,6 +15,8 @@ package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 import java.io.File;
 
 import ilg.gnuarmeclipse.core.EclipseUtils;
+import ilg.gnuarmeclipse.debug.gdbjtag.WindowsRegistry;
+import ilg.gnuarmeclipse.debug.gdbjtag.WindowsRegistryStreamReader;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.variables.IValueVariable;
@@ -31,6 +33,9 @@ public class GdbServerVariableInitializer implements IValueVariableInitializer {
 	static final String KEY_JLINK_PATH = "jlink_path.default";
 
 	static final String UNDEFINED_PATH = "undefined_path";
+
+	private static final String LOCATION = "HKEY_CURRENT_USER\\Software\\SEGGER\\J-Link";
+	private static final String KEY = "InstallPath";
 
 	// ------------------------------------------------------------------------
 
@@ -62,7 +67,7 @@ public class GdbServerVariableInitializer implements IValueVariableInitializer {
 					Activator.PLUGIN_ID, "jlink_path.default", null, null);
 			if (value == null) {
 				if (EclipseUtils.isWindows()) {
-					value = getJLinkPathFromWindowsRepository();
+					value = WindowsRegistry.query(LOCATION, KEY);
 					if (value == null) {
 						value = UNDEFINED_PATH;
 					}
@@ -114,35 +119,6 @@ public class GdbServerVariableInitializer implements IValueVariableInitializer {
 		}
 
 		return defPath;
-	}
-
-	// ------------------------------------------------------------------------
-
-	private static final String LOCATION = "HKEY_CURRENT_USER\\Software\\SEGGER\\J-Link";
-	private static final String KEY = "InstallPath";
-	private static final String QUERY = "reg query " + '"' + LOCATION
-			+ "\" /v " + KEY;
-
-	private String getJLinkPathFromWindowsRepository() {
-
-		String path = null;
-		try {
-			Process process = Runtime.getRuntime().exec(QUERY);
-			StreamReader reader = new StreamReader(process.getInputStream(),
-					KEY);
-			reader.start();
-			process.waitFor();
-			reader.join();
-
-			String[] str = reader.getResult().trim().split("REG_[^\\s]+");
-			if (str.length > 1) {
-				// path = Path.fromOSString(str[str.length -
-				// 1].trim()).toString();
-				path = str[str.length - 1].trim();
-			}
-		} catch (Exception e) {
-		}
-		return path;
 	}
 
 	// ------------------------------------------------------------------------
