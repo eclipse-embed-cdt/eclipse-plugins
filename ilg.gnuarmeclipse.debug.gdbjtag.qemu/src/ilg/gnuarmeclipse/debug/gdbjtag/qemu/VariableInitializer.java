@@ -12,16 +12,24 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.qemu;
 
 import ilg.gnuarmeclipse.core.EclipseUtils;
+import ilg.gnuarmeclipse.debug.gdbjtag.WindowsRegistry;
 
 import org.eclipse.core.variables.IValueVariable;
 import org.eclipse.core.variables.IValueVariableInitializer;
 
-public class QemuVariableInitializer implements IValueVariableInitializer {
+public class VariableInitializer implements IValueVariableInitializer {
+
+	// ------------------------------------------------------------------------
 
 	static final String QEMU_VARIABLE_NAME = "qemu_executable";
 	static final String QEMU_PATH = "qemu_path";
 
 	static final String UNDEFINED_PATH = "undefined_path";
+
+	private static final String LOCATION = "HKEY_LOCAL_MACHINE\\SOFTWARE\\GNU ARM Eclipse\\QEMU";
+	private static final String KEY = "InstallFolder";
+
+	// ------------------------------------------------------------------------
 
 	@Override
 	public void initialize(IValueVariable variable) {
@@ -36,7 +44,10 @@ public class QemuVariableInitializer implements IValueVariableInitializer {
 		} else if (QEMU_PATH.equals(variable.getName())) {
 
 			if (EclipseUtils.isWindows()) {
-				value = UNDEFINED_PATH;
+				value = WindowsRegistry.query(LOCATION, KEY);
+				if (value == null) {
+					value = UNDEFINED_PATH;
+				}
 			} else if (EclipseUtils.isLinux()) {
 				value = "/usr/bin";
 			} else if (EclipseUtils.isMacOSX()) {
@@ -49,4 +60,5 @@ public class QemuVariableInitializer implements IValueVariableInitializer {
 		}
 	}
 
+	// ------------------------------------------------------------------------
 }

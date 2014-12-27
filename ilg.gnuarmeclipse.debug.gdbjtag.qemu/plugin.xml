@@ -54,7 +54,7 @@
          point="org.eclipse.core.variables.valueVariables">
       <variable
             description="Path to QEMU installation folder"
-            initializerClass="ilg.gnuarmeclipse.debug.gdbjtag.qemu.QemuVariableInitializer"
+            initializerClass="ilg.gnuarmeclipse.debug.gdbjtag.qemu.VariableInitializer"
             name="qemu_path" />
    </extension>
    
@@ -62,7 +62,7 @@
          point="org.eclipse.core.variables.valueVariables">
       <variable
             description="Name of the QEMU executable"
-            initializerClass="ilg.gnuarmeclipse.debug.gdbjtag.qemu.QemuVariableInitializer"
+            initializerClass="ilg.gnuarmeclipse.debug.gdbjtag.qemu.VariableInitializer"
             name="qemu_executable" />
    </extension>
 
