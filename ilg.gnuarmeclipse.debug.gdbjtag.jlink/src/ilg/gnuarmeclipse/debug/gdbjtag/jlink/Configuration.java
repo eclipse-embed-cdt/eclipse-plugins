@@ -1,15 +1,4 @@
-/*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors:
- *     Liviu Ionescu - initial version
- *******************************************************************************/
-
-package ilg.gnuarmeclipse.debug.gdbjtag.qemu;
+package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
 import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
@@ -91,22 +80,111 @@ public class Configuration {
 
 			lst.add(executable);
 
-			// Added always, to get the 'Waiting for connection' message.
-			lst.add("-verbose");
+			String connection = configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_CONNECTION,
+					ConfigurationAttributes.GDB_SERVER_CONNECTION_DEFAULT);
+			String connectionAddress = configuration
+					.getAttribute(
+							ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
+							ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS_DEFAULT);
 
-			lst.add("-gdb");
-			lst.add("tcp::"
-					+ Integer.toString(configuration
-							.getAttribute(
-									ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
-									ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
+			connectionAddress = DebugUtils.resolveAll(connectionAddress,
+					configuration.getAttributes());
+			if (connectionAddress.length() > 0) {
+				if (ConfigurationAttributes.GDB_SERVER_CONNECTION_USB
+						.equals(connection)) {
 
-			// lst.add("-c");
-			// lst.add("telnet_port "
-			// + Integer.toString(configuration
-			// .getAttribute(
-			// ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
-			// ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
+					lst.add("-select");
+					lst.add("usb=" + connectionAddress);
+				} else if (ConfigurationAttributes.GDB_SERVER_CONNECTION_IP
+						.equals(connection)) {
+					lst.add("-select");
+					lst.add("ip=" + connectionAddress);
+				}
+			}
+
+			lst.add("-if");
+			lst.add(configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
+					ConfigurationAttributes.INTERFACE_DEFAULT));
+
+			String defaultName = configuration.getAttribute(
+					ConfigurationAttributes.FLASH_DEVICE_NAME_COMPAT,
+					ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
+
+			String name = configuration
+					.getAttribute(
+							ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
+							defaultName).trim();
+			name = DebugUtils.resolveAll(name, configuration.getAttributes());
+			if (name.length() > 0) {
+				lst.add("-device");
+				lst.add(name);
+			}
+
+			lst.add("-endian");
+			lst.add(configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_DEVICE_ENDIANNESS,
+					ConfigurationAttributes.ENDIANNESS_DEFAULT));
+
+			lst.add("-speed");
+			lst.add(configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_DEVICE_SPEED,
+					ConfigurationAttributes.GDB_SERVER_SPEED_DEFAULT));
+
+			lst.add("-port");
+			lst.add(Integer.toString(configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
+					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
+
+			lst.add("-swoport");
+			lst.add(Integer.toString(configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_SWO_PORT_NUMBER,
+					ConfigurationAttributes.GDB_SERVER_SWO_PORT_NUMBER_DEFAULT)));
+
+			lst.add("-telnetport");
+			lst.add(Integer.toString(configuration
+					.getAttribute(
+							ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
+							ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
+
+			if (configuration
+					.getAttribute(
+							ConfigurationAttributes.DO_GDB_SERVER_VERIFY_DOWNLOAD,
+							ConfigurationAttributes.DO_GDB_SERVER_VERIFY_DOWNLOAD_DEFAULT)) {
+				lst.add("-vd");
+			}
+
+			if (configuration.getAttribute(
+					ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+					ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT)) {
+				lst.add("-noreset");
+				lst.add("-noir");
+			} else {
+				if (configuration
+						.getAttribute(
+								ConfigurationAttributes.DO_GDB_SERVER_INIT_REGS,
+								ConfigurationAttributes.DO_GDB_SERVER_INIT_REGS_DEFAULT)) {
+					lst.add("-ir");
+				} else {
+					lst.add("-noir");
+				}
+			}
+
+			lst.add("-localhostonly");
+			if (configuration.getAttribute(
+					ConfigurationAttributes.DO_GDB_SERVER_LOCAL_ONLY,
+					ConfigurationAttributes.DO_GDB_SERVER_LOCAL_ONLY_DEFAULT)) {
+				lst.add("1");
+			} else {
+				lst.add("0");
+			}
+
+			if (configuration.getAttribute(
+					ConfigurationAttributes.DO_GDB_SERVER_SILENT,
+					ConfigurationAttributes.DO_GDB_SERVER_SILENT_DEFAULT)) {
+				lst.add("-silent");
+			}
 
 			String logFile = configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_LOG,
@@ -114,34 +192,19 @@ public class Configuration {
 
 			logFile = DebugUtils.resolveAll(logFile,
 					configuration.getAttributes());
+			if (logFile.length() > 0) {
+				lst.add("-log");
 
-			// if (EclipseUtils.isWindows()) {
-			// logFile = doubleBackslashes(logFile);
-			// }
-			if (!logFile.isEmpty()) {
-				lst.add("-D");
+				// lst.add(Utils.escapeWhitespaces(logFile));
 				lst.add(logFile);
 			}
 
 			String other = configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_OTHER,
 					ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT).trim();
-
 			other = DebugUtils.resolveAll(other, configuration.getAttributes());
-
-			// if (EclipseUtils.isWindows()) {
-			// other = doubleBackslashes(other);
-			// }
-			if (!other.isEmpty()) {
+			if (other.length() > 0) {
 				lst.addAll(StringUtils.splitCommandLineOptions(other));
-			}
-
-			if (configuration.getAttribute(
-					ConfigurationAttributes.ENABLE_SEMIHOSTING,
-					ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT)) {
-				String semihostingOption = ConfigurationAttributes.ENABLE_SEMIHOSTING_OPTION;
-				lst.addAll(StringUtils
-						.splitCommandLineOptions(semihostingOption));
 			}
 
 		} catch (CoreException e) {
@@ -220,6 +283,7 @@ public class Configuration {
 					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
 					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT)
 					.trim();
+			other = DebugUtils.resolveAll(other, configuration.getAttributes());
 			if (other.length() > 0) {
 				lst.addAll(StringUtils.splitCommandLineOptions(other));
 			}

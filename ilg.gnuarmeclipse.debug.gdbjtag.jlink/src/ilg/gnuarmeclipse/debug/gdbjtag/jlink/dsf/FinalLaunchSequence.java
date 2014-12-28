@@ -16,7 +16,6 @@ import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -28,22 +27,18 @@ import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.GDBJtagDeviceContribution;
 import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.GDBJtagDeviceContributionFactory;
 import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.IGDBJtagDevice;
 import org.eclipse.cdt.dsf.concurrent.CountingRequestMonitor;
-import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitorWithProgress;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.gdb.service.IGDBBackend;
 import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
 import org.eclipse.cdt.dsf.mi.service.IMIProcesses;
-import org.eclipse.cdt.dsf.mi.service.command.commands.CLICommand;
-import org.eclipse.cdt.dsf.mi.service.command.output.MIInfo;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.variables.VariablesPlugin;
 
 @SuppressWarnings("restriction")
 public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
@@ -152,16 +147,13 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	@Execute
 	public void stepSourceGDBInitFile(final RequestMonitor requestMonitor) {
-		try {
 
 			List<String> commandsList = new ArrayList<String>();
 
 			String otherInits = CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
 					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
-			otherInits = VariablesPlugin.getDefault()
-					.getStringVariableManager()
-					.performStringSubstitution(otherInits);
+			otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
 			if (otherInits.length() > 0) {
 				String[] commandsStr = otherInits.split("\\r?\\n"); //$NON-NLS-1$
 				for (String str : commandsStr) {
@@ -185,12 +177,6 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 			} else {
 				super.stepSourceGDBInitFile(requestMonitor);
 			}
-		} catch (CoreException e) {
-			requestMonitor.setStatus(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, -1,
-					"Cannot run other gdb client commands", e)); //$NON-NLS-1$
-			requestMonitor.done();
-		}
 	}
 
 	@Execute
@@ -538,7 +524,6 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 				rm0);
 		rm.setDoneCount(2);
 
-		try {
 			if (CDebugUtils.getAttribute(getAttributes(),
 					IGDBJtagConstants.ATTR_LOAD_SYMBOLS,
 					IGDBJtagConstants.DEFAULT_LOAD_SYMBOLS)) {
@@ -562,9 +547,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 							IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
 							IGDBJtagConstants.DEFAULT_SYMBOLS_FILE_NAME);
 					if (symbolsFileName.length() > 0) {
-						symbolsFileName = VariablesPlugin.getDefault()
-								.getStringVariableManager()
-								.performStringSubstitution(symbolsFileName);
+						symbolsFileName = DebugUtils.resolveAll(symbolsFileName, fAttributes);
 					} else {
 						symbolsFileName = null;
 					}
@@ -598,18 +581,12 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 			} else {
 				rm.done();
 			}
-		} catch (CoreException e) {
-			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
-					"Cannot load symbol", e)); //$NON-NLS-1$
-			rm.done();
-		}
 
 		boolean doConnectToRunning = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
 				ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
 
 		if (!doConnectToRunning) {
-			try {
 				String imageFileName = null;
 				if (CDebugUtils.getAttribute(getAttributes(),
 						IGDBJtagConstants.ATTR_LOAD_IMAGE,
@@ -634,9 +611,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 								IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
 								IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME);
 						if (imageFileName.length() > 0) {
-							imageFileName = VariablesPlugin.getDefault()
-									.getStringVariableManager()
-									.performStringSubstitution(imageFileName);
+							imageFileName = DebugUtils.resolveAll(imageFileName, fAttributes);
 						} else {
 							imageFileName = null;
 						}
@@ -671,11 +646,6 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 				} else {
 					rm.done();
 				}
-			} catch (CoreException e) {
-				rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
-						"Cannot load image", e)); //$NON-NLS-1$
-				rm.done();
-			}
 		} else {
 			rm.done();
 		}

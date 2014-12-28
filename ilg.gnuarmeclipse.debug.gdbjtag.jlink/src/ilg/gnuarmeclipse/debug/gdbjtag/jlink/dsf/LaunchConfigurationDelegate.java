@@ -14,7 +14,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.jlink.dsf;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmServerServicesLaunchSequence;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
-import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.TabDebugger;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Configuration;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
@@ -110,7 +110,7 @@ public class LaunchConfigurationDelegate extends
 	protected String getGDBVersion(ILaunchConfiguration config)
 			throws CoreException {
 
-		String gdbClientCommand = TabDebugger.getGdbClientCommand(config);
+		String gdbClientCommand = Configuration.getGdbClientCommand(config);
 		String version = DebugUtils.getGDBVersion(config, gdbClientCommand);
 		System.out.println("LaunchConfigurationDelegate.getGDBVersion "
 				+ version);

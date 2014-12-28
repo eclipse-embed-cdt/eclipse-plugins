@@ -13,7 +13,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.openocd.dsf;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmGdbServerBackend;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.TabDebugger;
+import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Configuration;
 
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.service.DsfSession;
@@ -100,7 +100,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 	@Override
 	public String[] getServerCommandLineArray() {
-		String[] commandLineArray = TabDebugger
+		String[] commandLineArray = Configuration
 				.getGdbServerCommandLineArray(fLaunchConfiguration);
 
 		return commandLineArray;

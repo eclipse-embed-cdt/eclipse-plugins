@@ -21,10 +21,10 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 
 import org.eclipse.cdt.core.CCorePlugin;
@@ -314,7 +314,19 @@ public class DebugUtils {
 			return CCorePlugin.getDefault().getCdtVariableManager()
 					.resolveValue(value, "", " ", cfgDescription); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (CdtVariableException e) {
-			Activator.log(e);
+			;
+		}
+		return value;
+	}
+
+	public static String resolveAll(String value, Map<String, Object> attributes) {
+
+		// TODO: Use attributes for project dependent variables.
+		try {
+			value = VariablesPlugin.getDefault().getStringVariableManager()
+					.performStringSubstitution(value).trim();
+		} catch (CoreException e) {
+			;
 		}
 		return value;
 	}

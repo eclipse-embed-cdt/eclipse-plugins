@@ -13,8 +13,8 @@ package ilg.gnuarmeclipse.debug.gdbjtag.openocd.dsf;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Configuration;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.TabDebugger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,10 +34,8 @@ import org.eclipse.cdt.dsf.mi.service.command.AbstractCLIProcess;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -131,9 +129,10 @@ public class Launch extends GnuArmLaunch {
 		if (doAddServerConsole) {
 
 			// Add the GDB server process to the launch tree
-			newProcess = addServerProcess(getServerCommandName(fConfig));
+			newProcess = addServerProcess(Configuration
+					.getServerCommandName(fConfig));
 			newProcess.setAttribute(IProcess.ATTR_CMDLINE,
-					TabDebugger.getGdbServerCommandLine(fConfig));
+					Configuration.getGdbServerCommandLine(fConfig));
 
 			monitor.worked(1);
 		}
@@ -147,10 +146,11 @@ public class Launch extends GnuArmLaunch {
 		IProcess newProcess;
 		{
 			// Add the GDB client process to the launch tree.
-			newProcess = addClientProcess(getClientCommandName(fConfig)); //$NON-NLS-1$
+			newProcess = addClientProcess(Configuration
+					.getClientCommandName(fConfig)); //$NON-NLS-1$
 
 			newProcess.setAttribute(IProcess.ATTR_CMDLINE,
-					TabDebugger.getGdbClientCommandLine(fConfig));
+					Configuration.getGdbClientCommandLine(fConfig));
 
 			monitor.worked(1);
 		}
@@ -242,26 +242,6 @@ public class Launch extends GnuArmLaunch {
 		}
 
 		return newProcess;
-	}
-
-	// ------------------------------------------------------------------------
-
-	public String getServerCommandName(ILaunchConfiguration config) {
-		String fullCommand = TabDebugger.getGdbServerCommand(config);
-		if (fullCommand == null)
-			return null;
-
-		IPath path = new Path(fullCommand);
-		return path.lastSegment();
-	}
-
-	public String getClientCommandName(ILaunchConfiguration config) {
-		String fullCommand = TabDebugger.getGdbClientCommand(config);
-		if (fullCommand == null)
-			return null;
-
-		IPath path = new Path(fullCommand);
-		return path.lastSegment();
 	}
 
 	// ------------------------------------------------------------------------

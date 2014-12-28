@@ -14,6 +14,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.WorkspacePreferences;
@@ -767,11 +768,9 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				}
 
 				try {
-					String path = VariablesPlugin
-							.getDefault()
-							.getStringVariableManager()
-							.performStringSubstitution(
-									imageFileName.getText().trim());
+					String path = imageFileName.getText().trim();
+					path = DebugUtils.resolveAll(path,
+							launchConfig.getAttributes());
 					IPath filePath = new Path(path);
 					if (!filePath.toFile().exists()) {
 						setErrorMessage(Messages
@@ -797,11 +796,9 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				}
 
 				try {
-					String path = VariablesPlugin
-							.getDefault()
-							.getStringVariableManager()
-							.performStringSubstitution(
-									symbolsFileName.getText().trim());
+					String path = symbolsFileName.getText().trim();
+					path = DebugUtils.resolveAll(path,
+							launchConfig.getAttributes());
 					IPath filePath = new Path(path);
 					if (!filePath.toFile().exists()) {
 						setErrorMessage(Messages

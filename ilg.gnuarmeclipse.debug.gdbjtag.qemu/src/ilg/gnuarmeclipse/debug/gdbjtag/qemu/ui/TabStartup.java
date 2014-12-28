@@ -14,6 +14,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.qemu.ui;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.qemu.ConfigurationAttributes;
 import ilg.gnuarmeclipse.debug.gdbjtag.qemu.WorkspacePersistentValues;
@@ -200,15 +201,15 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			doFirstReset.setToolTipText(Messages
 					.getString("StartupTab.doFirstReset_ToolTipText"));
 
-//			Label label = new Label(local, SWT.NONE);
-//			label.setText(Messages.getString("StartupTab.firstResetType_Text"));
-//			label.setToolTipText(Messages
-//					.getString("StartupTab.firstResetType_ToolTipText"));
+			// Label label = new Label(local, SWT.NONE);
+			// label.setText(Messages.getString("StartupTab.firstResetType_Text"));
+			// label.setToolTipText(Messages
+			// .getString("StartupTab.firstResetType_ToolTipText"));
 
-//			firstResetType = new Text(local, SWT.BORDER);
-//			gd = new GridData();
-//			gd.widthHint = 30;
-//			firstResetType.setLayoutData(gd);
+			// firstResetType = new Text(local, SWT.BORDER);
+			// gd = new GridData();
+			// gd.widthHint = 30;
+			// firstResetType.setLayoutData(gd);
 		}
 
 		{
@@ -252,7 +253,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			}
 		};
 
-// 		firstResetType.addModifyListener(scheduleUpdateJobModifyListener);
+		// firstResetType.addModifyListener(scheduleUpdateJobModifyListener);
 
 		initCommands.addModifyListener(scheduleUpdateJobModifyListener);
 
@@ -266,9 +267,9 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	private void doFirstResetChanged() {
 
-//		boolean enabled = doFirstReset.getSelection();
+		// boolean enabled = doFirstReset.getSelection();
 
-// 		firstResetType.setEnabled(enabled);
+		// firstResetType.setEnabled(enabled);
 	}
 
 	private void createLoadGroup(Composite parent) {
@@ -620,7 +621,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	private void doSecondResetChanged() {
 		boolean enabled = doSecondReset.getSelection();
-//		secondResetType.setEnabled(enabled);
+		// secondResetType.setEnabled(enabled);
 		secondResetWarning.setEnabled(enabled);
 	}
 
@@ -674,13 +675,13 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			doSecondReset.setToolTipText(Messages
 					.getString("StartupTab.doSecondReset_ToolTipText"));
 
-//			Label label = new Label(comp, SWT.NONE);
-//			label.setText(Messages.getString("StartupTab.secondResetType_Text"));
-//
-//			secondResetType = new Text(comp, SWT.BORDER);
-//			gd = new GridData();
-//			gd.widthHint = 30;
-//			secondResetType.setLayoutData(gd);
+			// Label label = new Label(comp, SWT.NONE);
+			// label.setText(Messages.getString("StartupTab.secondResetType_Text"));
+			//
+			// secondResetType = new Text(comp, SWT.BORDER);
+			// gd = new GridData();
+			// gd.widthHint = 30;
+			// secondResetType.setLayoutData(gd);
 
 			secondResetWarning = new Label(comp, SWT.NONE);
 			secondResetWarning.setText(Messages
@@ -731,7 +732,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			}
 		};
 
-//		secondResetType.addModifyListener(scheduleUpdateJobModifyListener);
+		// secondResetType.addModifyListener(scheduleUpdateJobModifyListener);
 
 		runCommands.addModifyListener(scheduleUpdateJobModifyListener);
 
@@ -742,10 +743,10 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		// System.out.println(flag);
 		doFirstReset.setEnabled(!flag);
-//		firstResetType.setEnabled(!flag);
+		// firstResetType.setEnabled(!flag);
 
 		doSecondReset.setEnabled(!flag);
-//		secondResetType.setEnabled(!flag);
+		// secondResetType.setEnabled(!flag);
 		secondResetWarning.setEnabled(!flag);
 
 		loadExecutable.setEnabled(!flag);
@@ -767,11 +768,9 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				}
 
 				try {
-					String path = VariablesPlugin
-							.getDefault()
-							.getStringVariableManager()
-							.performStringSubstitution(
-									imageFileName.getText().trim());
+					String path = imageFileName.getText().trim();
+					path = DebugUtils.resolveAll(path,
+							launchConfig.getAttributes());
 					IPath filePath = new Path(path);
 					if (!filePath.toFile().exists()) {
 						setErrorMessage(Messages
@@ -797,11 +796,9 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				}
 
 				try {
-					String path = VariablesPlugin
-							.getDefault()
-							.getStringVariableManager()
-							.performStringSubstitution(
-									symbolsFileName.getText().trim());
+					String path = symbolsFileName.getText().trim();
+					path = DebugUtils.resolveAll(path,
+							launchConfig.getAttributes());
 					IPath filePath = new Path(path);
 					if (!filePath.toFile().exists()) {
 						setErrorMessage(Messages
@@ -861,11 +858,11 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 								booleanDefault));
 
 				// Reset type
-//				stringDefault = WorkspacePersistentValues
-//						.getQemuInitialResetType(ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
-//				firstResetType.setText(configuration
-//						.getAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
-//								stringDefault));
+				// stringDefault = WorkspacePersistentValues
+				// .getQemuInitialResetType(ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
+				// firstResetType.setText(configuration
+				// .getAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
+				// stringDefault));
 
 				// Enable semihosting
 				booleanDefault = WorkspacePersistentValues
@@ -962,11 +959,11 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 								booleanDefault));
 
 				// Pre-run reset type
-//				stringDefault = WorkspacePersistentValues
-//						.getQemuPreRunResetType(ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
-//				secondResetType.setText(configuration.getAttribute(
-//						ConfigurationAttributes.SECOND_RESET_TYPE,
-//						stringDefault));
+				// stringDefault = WorkspacePersistentValues
+				// .getQemuPreRunResetType(ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+				// secondResetType.setText(configuration.getAttribute(
+				// ConfigurationAttributes.SECOND_RESET_TYPE,
+				// stringDefault));
 
 				// Other commands
 				stringDefault = WorkspacePersistentValues
@@ -1022,10 +1019,10 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			WorkspacePersistentValues.putQemuDoInitialReset(booleanValue);
 
 			// First reset type
-//			stringValue = firstResetType.getText().trim();
-//			configuration.setAttribute(
-//					ConfigurationAttributes.FIRST_RESET_TYPE, stringValue);
-//			WorkspacePersistentValues.putQemuInitialResetType(stringValue);
+			// stringValue = firstResetType.getText().trim();
+			// configuration.setAttribute(
+			// ConfigurationAttributes.FIRST_RESET_TYPE, stringValue);
+			// WorkspacePersistentValues.putQemuInitialResetType(stringValue);
 
 			// Other commands
 			stringValue = initCommands.getText().trim();
@@ -1094,10 +1091,10 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			WorkspacePersistentValues.putQemuDoPreRunReset(booleanValue);
 
 			// reset type
-//			stringValue = secondResetType.getText().trim();
-//			configuration.setAttribute(
-//					ConfigurationAttributes.SECOND_RESET_TYPE, stringValue);
-//			WorkspacePersistentValues.putQemuPreRunResetType(stringValue);
+			// stringValue = secondResetType.getText().trim();
+			// configuration.setAttribute(
+			// ConfigurationAttributes.SECOND_RESET_TYPE, stringValue);
+			// WorkspacePersistentValues.putQemuPreRunResetType(stringValue);
 
 			// Other commands
 			stringValue = runCommands.getText().trim();
@@ -1119,8 +1116,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		// Initialisation Commands
 		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
 				ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
-//		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
-//				ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
+		// configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
+		// ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
 
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING,
 				ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
@@ -1168,8 +1165,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		// Run Commands
 		configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
 				ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
-//		configuration.setAttribute(ConfigurationAttributes.SECOND_RESET_TYPE,
-//				ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+		// configuration.setAttribute(ConfigurationAttributes.SECOND_RESET_TYPE,
+		// ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
 
 		configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS,
 				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);

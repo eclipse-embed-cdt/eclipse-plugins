@@ -13,9 +13,9 @@ package ilg.gnuarmeclipse.debug.gdbjtag.jlink.dsf;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmGdbServerBackend;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Configuration;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.SemihostingProcess;
-import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.TabDebugger;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
@@ -176,7 +176,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 	@Override
 	public String[] getServerCommandLineArray() {
-		String[] commandLineArray = TabDebugger
+		String[] commandLineArray = Configuration
 				.getGdbServerCommandLineArray(fLaunchConfiguration);
 
 		return commandLineArray;

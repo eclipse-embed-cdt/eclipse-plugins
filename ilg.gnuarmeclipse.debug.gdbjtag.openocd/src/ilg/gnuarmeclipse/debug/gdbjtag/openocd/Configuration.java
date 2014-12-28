@@ -1,16 +1,6 @@
-/*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
- * All rights reserved. This program and the accompanying materials
- * are made available under the terms of the Eclipse Public License v1.0
- * which accompanies this distribution, and is available at
- * http://www.eclipse.org/legal/epl-v10.html
- * 
- * Contributors:
- *     Liviu Ionescu - initial version
- *******************************************************************************/
+package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
 
-package ilg.gnuarmeclipse.debug.gdbjtag.qemu;
-
+import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 
@@ -91,22 +81,19 @@ public class Configuration {
 
 			lst.add(executable);
 
-			// Added always, to get the 'Waiting for connection' message.
-			lst.add("-verbose");
-
-			lst.add("-gdb");
-			lst.add("tcp::"
+			lst.add("-c");
+			lst.add("gdb_port "
 					+ Integer.toString(configuration
 							.getAttribute(
 									ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
 									ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
 
-			// lst.add("-c");
-			// lst.add("telnet_port "
-			// + Integer.toString(configuration
-			// .getAttribute(
-			// ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
-			// ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
+			lst.add("-c");
+			lst.add("telnet_port "
+					+ Integer.toString(configuration
+							.getAttribute(
+									ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
+									ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
 
 			String logFile = configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_LOG,
@@ -115,11 +102,11 @@ public class Configuration {
 			logFile = DebugUtils.resolveAll(logFile,
 					configuration.getAttributes());
 
-			// if (EclipseUtils.isWindows()) {
-			// logFile = doubleBackslashes(logFile);
-			// }
+			if (EclipseUtils.isWindows()) {
+				logFile = StringUtils.duplicateBackslashes(logFile);
+			}
 			if (!logFile.isEmpty()) {
-				lst.add("-D");
+				lst.add("--log_output");
 				lst.add(logFile);
 			}
 
@@ -129,25 +116,22 @@ public class Configuration {
 
 			other = DebugUtils.resolveAll(other, configuration.getAttributes());
 
-			// if (EclipseUtils.isWindows()) {
-			// other = doubleBackslashes(other);
-			// }
+			if (EclipseUtils.isWindows()) {
+				other = StringUtils.duplicateBackslashes(other);
+			}
 			if (!other.isEmpty()) {
 				lst.addAll(StringUtils.splitCommandLineOptions(other));
-			}
-
-			if (configuration.getAttribute(
-					ConfigurationAttributes.ENABLE_SEMIHOSTING,
-					ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT)) {
-				String semihostingOption = ConfigurationAttributes.ENABLE_SEMIHOSTING_OPTION;
-				lst.addAll(StringUtils
-						.splitCommandLineOptions(semihostingOption));
 			}
 
 		} catch (CoreException e) {
 			Activator.log(e);
 			return null;
 		}
+
+		// Added as a marker, it is displayed if the configuration was processed
+		// properly.
+		lst.add("-c");
+		lst.add("echo \"Started by GNU ARM Eclipse\"");
 
 		return lst.toArray(new String[0]);
 	}
@@ -220,7 +204,10 @@ public class Configuration {
 					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
 					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT)
 					.trim();
-			if (other.length() > 0) {
+
+			other = DebugUtils.resolveAll(other, configuration.getAttributes());
+
+			if (!other.isEmpty()) {
 				lst.addAll(StringUtils.splitCommandLineOptions(other));
 			}
 		} catch (CoreException e) {

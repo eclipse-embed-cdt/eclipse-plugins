@@ -13,8 +13,8 @@ package ilg.gnuarmeclipse.debug.gdbjtag.jlink.dsf;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Configuration;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
-import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.TabDebugger;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +34,6 @@ import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -128,9 +127,10 @@ public class Launch extends GnuArmLaunch {
 		if (doAddServerConsole) {
 
 			// Add the GDB server process to the launch tree
-			newProcess = addServerProcess(getServerCommandName(fConfig));
+			newProcess = addServerProcess(Configuration
+					.getServerCommandName(fConfig));
 			newProcess.setAttribute(IProcess.ATTR_CMDLINE,
-					TabDebugger.getGdbServerCommandLine(fConfig));
+					Configuration.getGdbServerCommandLine(fConfig));
 
 			monitor.worked(1);
 		}
@@ -144,10 +144,11 @@ public class Launch extends GnuArmLaunch {
 		IProcess newProcess;
 		{
 			// Add the GDB client process to the launch tree.
-			newProcess = addClientProcess(getClientCommandName(fConfig)); //$NON-NLS-1$
+			newProcess = addClientProcess(Configuration
+					.getClientCommandName(fConfig)); //$NON-NLS-1$
 
 			newProcess.setAttribute(IProcess.ATTR_CMDLINE,
-					TabDebugger.getGdbClientCommandLine(fConfig));
+					Configuration.getGdbClientCommandLine(fConfig));
 
 			monitor.worked(1);
 		}
@@ -255,26 +256,6 @@ public class Launch extends GnuArmLaunch {
 
 	// ------------------------------------------------------------------------
 
-	public String getServerCommandName(ILaunchConfiguration config) {
-		String fullCommand = TabDebugger.getGdbServerCommand(config);
-		if (fullCommand == null)
-			return null;
-
-		String parts[] = fullCommand.trim().split("" + Path.SEPARATOR);
-		return parts[parts.length - 1];
-	}
-
-	public String getClientCommandName(ILaunchConfiguration config) {
-		String fullCommand = TabDebugger.getGdbClientCommand(config);
-		if (fullCommand == null)
-			return null;
-
-		String parts[] = fullCommand.trim().split("" + Path.SEPARATOR);
-		return parts[parts.length - 1];
-	}
-
-	// ------------------------------------------------------------------------
-
 	public static boolean getStartGdbServer(ILaunchConfiguration config)
 			throws CoreException {
 
@@ -304,7 +285,7 @@ public class Launch extends GnuArmLaunch {
 
 	public static String getServerDeviceName(ILaunchConfiguration config)
 			throws CoreException {
-		
+
 		return config.getAttribute(
 				ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
 				ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT).trim();

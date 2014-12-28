@@ -19,13 +19,11 @@ import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
-import org.eclipse.cdt.dsf.concurrent.CountingRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
@@ -37,13 +35,10 @@ import org.eclipse.cdt.dsf.gdb.service.IGDBProcesses;
 import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
 import org.eclipse.cdt.dsf.mi.service.IMICommandControl;
 import org.eclipse.cdt.dsf.mi.service.command.CommandFactory;
-import org.eclipse.cdt.dsf.mi.service.command.commands.CLICommand;
-import org.eclipse.cdt.dsf.mi.service.command.output.MIInfo;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.variables.VariablesPlugin;
 
 @SuppressWarnings("restriction")
 public class RestartProcessSequence extends ReflectionSequence {
@@ -195,12 +190,7 @@ public class RestartProcessSequence extends ReflectionSequence {
 				ConfigurationAttributes.OTHER_RUN_COMMANDS,
 				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT).trim();
 
-		try {
-			otherCmds = VariablesPlugin.getDefault().getStringVariableManager()
-					.performStringSubstitution(otherCmds, false);
-		} catch (CoreException e1) {
-			;
-		}
+		otherCmds = DebugUtils.resolveAll(otherCmds, fAttributes);
 
 		if (EclipseUtils.isWindows()) {
 			otherCmds = StringUtils.duplicateBackslashes(otherCmds);
