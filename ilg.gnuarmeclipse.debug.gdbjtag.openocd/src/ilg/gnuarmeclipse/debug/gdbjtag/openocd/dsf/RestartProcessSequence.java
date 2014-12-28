@@ -19,11 +19,13 @@ import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
+import org.eclipse.cdt.dsf.concurrent.CountingRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
@@ -41,6 +43,7 @@ import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.variables.VariablesPlugin;
 
 @SuppressWarnings("restriction")
 public class RestartProcessSequence extends ReflectionSequence {
@@ -106,11 +109,26 @@ public class RestartProcessSequence extends ReflectionSequence {
 
 	/** utility method; cuts down on clutter */
 	private void queueCommands(List<String> commands, RequestMonitor rm) {
-		if (!commands.isEmpty()) {
-			fCommandControl.queueCommand(
-					new CLICommand<MIInfo>(fCommandControl.getContext(),
-							DebugUtils.composeCommandWithLf(commands)),
-					new DataRequestMonitor<MIInfo>(getExecutor(), rm));
+
+		if (commands != null && !commands.isEmpty()) {
+
+			CountingRequestMonitor crm = new CountingRequestMonitor(
+					getExecutor(), rm);
+			crm.setDoneCount(commands.size());
+
+			Iterator<String> it = commands.iterator();
+			while (it.hasNext()) {
+				String s = it.next().trim();
+				if (s.isEmpty() || s.startsWith("#")) {
+					crm.done();
+					continue; // ignore empty lines and comments
+				}
+				// System.out.println("queueCommand('" + s + "')");
+				fCommandControl.queueCommand(new CLICommand<MIInfo>(
+						fCommandControl.getContext(), s),
+						new DataRequestMonitor<MIInfo>(getExecutor(), crm));
+			}
+
 		} else {
 			rm.done();
 		}
@@ -198,6 +216,13 @@ public class RestartProcessSequence extends ReflectionSequence {
 		String otherCmds = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.OTHER_RUN_COMMANDS,
 				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT).trim();
+
+		try {
+			otherCmds = VariablesPlugin.getDefault().getStringVariableManager()
+					.performStringSubstitution(otherCmds, false);
+		} catch (CoreException e1) {
+			;
+		}
 
 		if (EclipseUtils.isWindows()) {
 			otherCmds = StringUtils.duplicateBackslashes(otherCmds);

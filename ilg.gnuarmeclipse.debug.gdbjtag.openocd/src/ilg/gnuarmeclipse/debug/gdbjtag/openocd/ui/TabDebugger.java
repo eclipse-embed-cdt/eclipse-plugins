@@ -1347,7 +1347,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
 					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT)
 					.trim();
-			if (other.length() > 0) {
+			
+			other = VariablesPlugin.getDefault().getStringVariableManager()
+					.performStringSubstitution(other, false);
+
+			if (!other.isEmpty()) {
 				lst.addAll(splitOptions(other));
 			}
 		} catch (CoreException e) {

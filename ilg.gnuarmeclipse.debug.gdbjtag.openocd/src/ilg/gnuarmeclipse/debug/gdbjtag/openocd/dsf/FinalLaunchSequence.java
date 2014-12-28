@@ -180,15 +180,8 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 			otherInits = VariablesPlugin.getDefault()
 					.getStringVariableManager()
 					.performStringSubstitution(otherInits);
-			if (otherInits.length() > 0) {
-				String[] commandsStr = otherInits.split("\\r?\\n"); //$NON-NLS-1$
-				for (String str : commandsStr) {
-					str = str.trim();
-					if (str.length() > 0) {
-						commandsList.add(str);
-					}
-				}
-			}
+
+			DebugUtils.addMultiLine(otherInits, commandsList);
 
 			if (!commandsList.isEmpty()) {
 				CountingRequestMonitor crm = new CountingRequestMonitor(
@@ -303,6 +296,14 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					ConfigurationAttributes.OTHER_RUN_COMMANDS,
 					ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
 
+			try {
+				userCmd = VariablesPlugin.getDefault()
+						.getStringVariableManager()
+						.performStringSubstitution(userCmd, false);
+			} catch (CoreException e1) {
+				;
+			}
+
 			if (EclipseUtils.isWindows()) {
 				userCmd = StringUtils.duplicateBackslashes(userCmd);
 			}
@@ -409,7 +410,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					symbolsFileName = CDebugUtils.getAttribute(getAttributes(),
 							IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
 							IGDBJtagConstants.DEFAULT_SYMBOLS_FILE_NAME);
-					if (symbolsFileName.length() > 0) {
+					if (!symbolsFileName.isEmpty()) {
 						symbolsFileName = VariablesPlugin.getDefault()
 								.getStringVariableManager()
 								.performStringSubstitution(symbolsFileName);
@@ -438,7 +439,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 				String symbolsOffset = CDebugUtils.getAttribute(
 						getAttributes(), IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
 						IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
-				if (symbolsOffset.length() > 0) {
+				if (!symbolsOffset.isEmpty()) {
 					symbolsOffset = "0x" + symbolsOffset;
 				}
 				List<String> commands = new ArrayList<String>();
@@ -484,7 +485,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 								getAttributes(),
 								IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
 								IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME);
-						if (imageFileName.length() > 0) {
+						if (!imageFileName.isEmpty()) {
 							imageFileName = VariablesPlugin.getDefault()
 									.getStringVariableManager()
 									.performStringSubstitution(imageFileName);
