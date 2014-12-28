@@ -54,7 +54,7 @@
          point="org.eclipse.core.variables.valueVariables">
       <variable
             description="Path to OpenOCD installation folder"
-            initializerClass="ilg.gnuarmeclipse.debug.gdbjtag.openocd.OpenOcdVariableInitializer"
+            initializerClass="ilg.gnuarmeclipse.debug.gdbjtag.openocd.VariableInitializer"
             name="openocd_path" />
    </extension>
    
@@ -62,7 +62,7 @@
          point="org.eclipse.core.variables.valueVariables">
       <variable
             description="Name of the OpenOCD executable"
-            initializerClass="ilg.gnuarmeclipse.debug.gdbjtag.openocd.OpenOcdVariableInitializer"
+            initializerClass="ilg.gnuarmeclipse.debug.gdbjtag.openocd.VariableInitializer"
             name="openocd_executable" />
    </extension>
 

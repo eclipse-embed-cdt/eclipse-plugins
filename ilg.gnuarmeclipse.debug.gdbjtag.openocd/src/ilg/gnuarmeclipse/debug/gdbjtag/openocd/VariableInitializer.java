@@ -16,7 +16,7 @@ import ilg.gnuarmeclipse.core.EclipseUtils;
 import org.eclipse.core.variables.IValueVariable;
 import org.eclipse.core.variables.IValueVariableInitializer;
 
-public class OpenOcdVariableInitializer implements IValueVariableInitializer {
+public class VariableInitializer implements IValueVariableInitializer {
 
 	static final String OPENOCD_VARIABLE_NAME = "openocd_executable";
 	static final String OPENOCD_PATH = "openocd_path";
