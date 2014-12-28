@@ -157,6 +157,18 @@ public class RestartProcessSequence extends ReflectionSequence {
 
 		List<String> commandsList = new ArrayList<String>();
 
+		String commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
+		// String resetType = "";
+
+		if (CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.DO_SECOND_RESET,
+				ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
+			// resetType = CDebugUtils.getAttribute(fAttributes,
+			// ConfigurationAttributes.SECOND_RESET_TYPE,
+			// ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+		}
+		commandsList.add(commandStr /* + resetType */);
+
 		commandsList.add(ConfigurationAttributes.HALT_COMMAND);
 
 		if (CDebugUtils.getAttribute(fAttributes,
@@ -172,18 +184,6 @@ public class RestartProcessSequence extends ReflectionSequence {
 			}
 		}
 
-		String commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
-		// String resetType = "";
-
-		if (CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.DO_SECOND_RESET,
-				ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
-			// resetType = CDebugUtils.getAttribute(fAttributes,
-			// ConfigurationAttributes.SECOND_RESET_TYPE,
-			// ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
-		}
-		commandsList.add(commandStr /* + resetType */);
-
 		String otherCmds = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.OTHER_RUN_COMMANDS,
 				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT).trim();
@@ -194,7 +194,7 @@ public class RestartProcessSequence extends ReflectionSequence {
 			Activator.log(e);
 		}
 
-		commandsList.add("continue");
+		commandsList.add(ConfigurationAttributes.DO_CONTINUE_COMMAND);
 
 		queueCommands(commandsList, rm);
 	}

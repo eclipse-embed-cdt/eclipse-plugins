@@ -162,19 +162,6 @@ public class RestartProcessSequence extends ReflectionSequence {
 
 		commandsList.add(ConfigurationAttributes.CLRBP_COMMAND);
 
-		if (CDebugUtils.getAttribute(fAttributes,
-				IGDBJtagConstants.ATTR_SET_STOP_AT,
-				ConfigurationAttributes.DO_STOP_AT_DEFAULT)) {
-
-			String stopAtName = CDebugUtils.getAttribute(fAttributes,
-					IGDBJtagConstants.ATTR_STOP_AT,
-					ConfigurationAttributes.STOP_AT_NAME_DEFAULT).trim();
-
-			if (stopAtName.length() > 0) {
-				commandsList.add("tbreak " + stopAtName);
-			}
-		}
-
 		String commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
 		String resetType = "";
 
@@ -190,6 +177,19 @@ public class RestartProcessSequence extends ReflectionSequence {
 		commandsList.add(ConfigurationAttributes.HALT_COMMAND);
 		commandsList.add(ConfigurationAttributes.REGS_COMMAND);
 		commandsList.add(ConfigurationAttributes.FLUSH_REGISTERS_COMMAND);
+
+		if (CDebugUtils.getAttribute(fAttributes,
+				IGDBJtagConstants.ATTR_SET_STOP_AT,
+				ConfigurationAttributes.DO_STOP_AT_DEFAULT)) {
+
+			String stopAtName = CDebugUtils.getAttribute(fAttributes,
+					IGDBJtagConstants.ATTR_STOP_AT,
+					ConfigurationAttributes.STOP_AT_NAME_DEFAULT).trim();
+
+			if (stopAtName.length() > 0) {
+				commandsList.add("tbreak " + stopAtName);
+			}
+		}
 
 		String otherCmds = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.OTHER_RUN_COMMANDS,

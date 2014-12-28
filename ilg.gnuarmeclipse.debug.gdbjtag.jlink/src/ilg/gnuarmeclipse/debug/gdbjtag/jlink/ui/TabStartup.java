@@ -840,16 +840,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			pcRegister.setLayoutData(gd);
 		}
 
-		{
-			setStopAt = new Button(comp, SWT.CHECK);
-			setStopAt.setText(Messages.getString("StartupTab.setStopAt_Text"));
-
-			stopAt = new Text(comp, SWT.BORDER);
-			gd = new GridData();
-			gd.widthHint = 100;
-			stopAt.setLayoutData(gd);
-		}
-
 		// ----- Actions ------------------------------------------------------
 
 		setPcRegister.addSelectionListener(new SelectionAdapter() {
@@ -874,22 +864,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				scheduleUpdateJob();
 			}
 		});
-
-		setStopAt.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				stopAtChanged();
-				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
-			}
-		});
-
-		stopAt.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				scheduleUpdateJob();
-			}
-		});
-
 	}
 
 	private void doSecondResetChanged() {
@@ -959,7 +933,22 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			secondResetWarning = new Label(comp, SWT.NONE);
 			secondResetWarning.setText(Messages
 					.getString("StartupTab.secondResetWarning_Text"));
+			gd = new GridData();
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 3;
+			secondResetWarning.setLayoutData(gd);
 		}
+
+		{
+			setStopAt = new Button(comp, SWT.CHECK);
+			setStopAt.setText(Messages.getString("StartupTab.setStopAt_Text"));
+
+			stopAt = new Text(comp, SWT.BORDER);
+			gd = new GridData();
+			gd.widthHint = 100;
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
+			stopAt.setLayoutData(gd);
+		}
+
 		{
 			runCommands = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER
 					| SWT.V_SCROLL);
@@ -968,6 +957,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
 			runCommands.setLayoutData(gd);
 		}
+
 		{
 			doContinue = new Button(comp, SWT.CHECK);
 			doContinue
@@ -996,6 +986,21 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			public void verifyText(VerifyEvent e) {
 				e.doit = (Character.isDigit(e.character) || Character
 						.isISOControl(e.character));
+			}
+		});
+
+		setStopAt.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				stopAtChanged();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
+			}
+		});
+
+		stopAt.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				scheduleUpdateJob();
 			}
 		});
 

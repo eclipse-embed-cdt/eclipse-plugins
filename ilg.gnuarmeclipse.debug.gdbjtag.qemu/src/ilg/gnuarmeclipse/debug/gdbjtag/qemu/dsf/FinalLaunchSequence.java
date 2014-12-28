@@ -238,25 +238,31 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		try {
 			List<String> commandsList = new ArrayList<String>();
 
-			// boolean noReset = CDebugUtils.getAttribute(fAttributes,
-			// ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-			// ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
-			// if (!noReset) {
+			String commandStr;
 			if (CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.DO_SECOND_RESET,
 					ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
-				String commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
-				// String resetType = CDebugUtils.getAttribute(fAttributes,
-				// ConfigurationAttributes.SECOND_RESET_TYPE,
-				// ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+				commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
 				commandsList.add(commandStr /* + resetType */);
-
-				// Although the manual claims that reset always does a
-				// halt, better issue it explicitly
-				commandStr = ConfigurationAttributes.HALT_COMMAND;
-				commandsList.add(commandStr);
 			}
-			// }
+
+			// Although the manual claims that reset always does a
+			// halt, better issue it explicitly
+			commandStr = ConfigurationAttributes.HALT_COMMAND;
+			commandsList.add(commandStr);
+
+			if (CDebugUtils.getAttribute(fAttributes,
+					IGDBJtagConstants.ATTR_SET_STOP_AT,
+					ConfigurationAttributes.DO_STOP_AT_DEFAULT)) {
+
+				String stopAtName = CDebugUtils.getAttribute(fAttributes,
+						IGDBJtagConstants.ATTR_STOP_AT,
+						ConfigurationAttributes.STOP_AT_NAME_DEFAULT).trim();
+
+				if (!stopAtName.isEmpty()) {
+					commandsList.add("tbreak " + stopAtName);
+				}
+			}
 
 			String userCmd = CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.OTHER_RUN_COMMANDS,
@@ -468,20 +474,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	@Execute
 	public void stepStopScript(final RequestMonitor rm) {
 
-		if (CDebugUtils.getAttribute(getAttributes(),
-				IGDBJtagConstants.ATTR_SET_STOP_AT,
-				IGDBJtagConstants.DEFAULT_SET_STOP_AT)) {
-			String stopAt = CDebugUtils.getAttribute(getAttributes(),
-					IGDBJtagConstants.ATTR_STOP_AT,
-					IGDBJtagConstants.DEFAULT_STOP_AT);
-			List<String> commands = new ArrayList<String>();
-
-			// The tbreak is not optional if we want execution to halt
-			fGdbJtagDevice.doStopAt(stopAt, commands);
-			queueCommands(commands, rm);
-		} else {
-			rm.done();
-		}
+		rm.done();
 	}
 
 	// ------------------------------------------------------------------------

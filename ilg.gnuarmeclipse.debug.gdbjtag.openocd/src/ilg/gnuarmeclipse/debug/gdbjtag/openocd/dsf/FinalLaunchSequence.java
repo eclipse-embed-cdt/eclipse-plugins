@@ -263,6 +263,19 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 				}
 			}
 
+			if (CDebugUtils.getAttribute(getAttributes(),
+					IGDBJtagConstants.ATTR_SET_STOP_AT,
+					IGDBJtagConstants.DEFAULT_SET_STOP_AT)) {
+				String stopAt = CDebugUtils.getAttribute(getAttributes(),
+						IGDBJtagConstants.ATTR_STOP_AT,
+						IGDBJtagConstants.DEFAULT_STOP_AT).trim();
+
+				if (!stopAt.isEmpty()) {
+					// doAtopAt replaced by a simple tbreak
+					commandsList.add("tbreak " + stopAt);
+				}
+			}
+
 			String userCmd = CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.OTHER_RUN_COMMANDS,
 					ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
@@ -471,8 +484,10 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 						IGDBJtagConstants.ATTR_IMAGE_OFFSET,
 						IGDBJtagConstants.DEFAULT_IMAGE_OFFSET);
 				if (imageOffset.length() > 0) {
-					imageOffset = (imageFileName.endsWith(".elf")) ? ""
-							: "0x"	+ CDebugUtils.getAttribute(getAttributes(), IGDBJtagConstants.ATTR_IMAGE_OFFSET, IGDBJtagConstants.DEFAULT_IMAGE_OFFSET); //$NON-NLS-2$ 
+					imageOffset = (imageFileName.endsWith(".elf")) ? "" : "0x"
+							+ CDebugUtils.getAttribute(getAttributes(),
+									IGDBJtagConstants.ATTR_IMAGE_OFFSET,
+									IGDBJtagConstants.DEFAULT_IMAGE_OFFSET); //$NON-NLS-2$ 
 				}
 				List<String> commands = new ArrayList<String>();
 				fGdbJtagDevice
@@ -487,20 +502,8 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	@Execute
 	public void stepStopScript(final RequestMonitor rm) {
 
-		if (CDebugUtils.getAttribute(getAttributes(),
-				IGDBJtagConstants.ATTR_SET_STOP_AT,
-				IGDBJtagConstants.DEFAULT_SET_STOP_AT)) {
-			String stopAt = CDebugUtils.getAttribute(getAttributes(),
-					IGDBJtagConstants.ATTR_STOP_AT,
-					IGDBJtagConstants.DEFAULT_STOP_AT);
-			List<String> commands = new ArrayList<String>();
-
-			// The tbreak is not optional if we want execution to halt
-			fGdbJtagDevice.doStopAt(stopAt, commands);
-			queueCommands(commands, rm);
-		} else {
-			rm.done();
-		}
+		// tbreak moved to user step
+		rm.done();
 	}
 
 	// ------------------------------------------------------------------------
