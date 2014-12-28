@@ -36,10 +36,17 @@ import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.core.settings.model.ICProjectDescription;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
+import org.eclipse.cdt.dsf.concurrent.CountingRequestMonitor;
+import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
+import org.eclipse.cdt.dsf.concurrent.DsfExecutor;
+import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
 import org.eclipse.cdt.dsf.gdb.IGdbDebugPreferenceConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.gdb.launching.LaunchUtils;
+import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
+import org.eclipse.cdt.dsf.mi.service.command.commands.CLICommand;
+import org.eclipse.cdt.dsf.mi.service.command.output.MIInfo;
 import org.eclipse.cdt.internal.core.envvar.EnvVarCollector;
 import org.eclipse.cdt.internal.core.envvar.EnvVarDescriptor;
 import org.eclipse.cdt.internal.core.envvar.EnvironmentVariableManager;
@@ -215,6 +222,7 @@ public class DebugUtils {
 				cfg = projDesc.getActiveConfiguration();
 			}
 		} catch (CoreException e) {
+			Activator.log(e);
 		}
 		return cfg;
 	}
@@ -295,6 +303,7 @@ public class DebugUtils {
 
 			retVal = new Path(gdb);
 		} catch (CoreException e) {
+			Activator.log(e);
 		}
 		return retVal;
 	}
@@ -310,6 +319,15 @@ public class DebugUtils {
 		return value;
 	}
 
+	/**
+	 * Split a string into separate lines and add them to the list.
+	 * 
+	 * @param multiLine
+	 *            a string.
+	 * @param commandsList
+	 *            a list of strings.
+	 * @throws CoreException
+	 */
 	public static void addMultiLine(String multiLine, List<String> commandsList)
 			throws CoreException {
 
@@ -326,23 +344,23 @@ public class DebugUtils {
 		}
 	}
 
-	public static String composeCommandWithLf(Collection<String> commands) {
-		if (commands.isEmpty())
-			return null;
-		StringBuffer sb = new StringBuffer();
-		Iterator<String> it = commands.iterator();
-		while (it.hasNext()) {
-			String s = it.next().trim();
-			if (s.isEmpty() || s.startsWith("#"))
-				continue; // ignore empty lines and comment
-
-			sb.append(s);
-			if (it.hasNext()) {
-				sb.append("\n");
-			}
-		}
-		return sb.toString();
-	}
+	// public static String composeCommandWithLf(Collection<String> commands) {
+	// if (commands.isEmpty())
+	// return null;
+	// StringBuffer sb = new StringBuffer();
+	// Iterator<String> it = commands.iterator();
+	// while (it.hasNext()) {
+	// String s = it.next().trim();
+	// if (s.isEmpty() || s.startsWith("#"))
+	// continue; // ignore empty lines and comment
+	//
+	// sb.append(s);
+	// if (it.hasNext()) {
+	// sb.append("\n");
+	// }
+	// }
+	// return sb.toString();
+	// }
 
 	static public String escapeWhitespaces(String path) {
 		path = path.trim();
@@ -507,7 +525,7 @@ public class DebugUtils {
 	}
 
 	/**
-	 * Execute an exteral process.
+	 * Execute an external process.
 	 * 
 	 * @param commandLineArray
 	 *            a String array with the comman line.
@@ -549,7 +567,7 @@ public class DebugUtils {
 	 */
 	public static IPath getGdbWorkingDirectory(
 			ILaunchConfiguration launchConfiguration) throws CoreException {
-		
+
 		// First try to use the user-specified working directory for the
 		// debugged program.
 		// This is fine only with local debug.
@@ -608,11 +626,52 @@ public class DebugUtils {
 		}
 
 		// --------------------------------------------------------------------
-		
+
 		if (path == null) {
 			path = DebugUtils.getProjectOsPath(launchConfiguration);
 		}
 		return path;
 	}
+
+	/**
+	 * Queue a list of string commands to the executor. Ignore empty lines or
+	 * comments
+	 * 
+	 * @param commands
+	 *            a list of strings.
+	 * @param rm
+	 *            a request monitor.
+	 * @param control
+	 *            an IGDBControl.
+	 * @param executor
+	 *            an DsfExecutor.
+	 */
+	public static void queueCommands(List<String> commands, RequestMonitor rm,
+			IGDBControl control, DsfExecutor executor) {
+
+		if (commands != null && !commands.isEmpty()) {
+
+			CountingRequestMonitor crm = new CountingRequestMonitor(executor,
+					rm);
+			crm.setDoneCount(commands.size());
+
+			Iterator<String> it = commands.iterator();
+			while (it.hasNext()) {
+				String s = it.next().trim();
+				if (s.isEmpty() || s.startsWith("#")) {
+					crm.done();
+					continue; // ignore empty lines and comments
+				}
+				// System.out.println("queueCommand('" + s + "')");
+				control.queueCommand(
+						new CLICommand<MIInfo>(control.getContext(), s),
+						new DataRequestMonitor<MIInfo>(executor, crm));
+			}
+
+		} else {
+			rm.done();
+		}
+	}
+
 	// ------------------------------------------------------------------------
 }

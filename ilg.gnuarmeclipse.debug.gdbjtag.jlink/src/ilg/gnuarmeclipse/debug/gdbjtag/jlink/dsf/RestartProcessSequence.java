@@ -104,14 +104,7 @@ public class RestartProcessSequence extends ReflectionSequence {
 
 	/** utility method; cuts down on clutter */
 	private void queueCommands(List<String> commands, RequestMonitor rm) {
-		if (!commands.isEmpty()) {
-			fCommandControl.queueCommand(
-					new CLICommand<MIInfo>(fCommandControl.getContext(),
-							DebugUtils.composeCommandWithLf(commands)),
-					new DataRequestMonitor<MIInfo>(getExecutor(), rm));
-		} else {
-			rm.done();
-		}
+		DebugUtils.queueCommands(commands, rm, fCommandControl, getExecutor());
 	}
 
 	@Override

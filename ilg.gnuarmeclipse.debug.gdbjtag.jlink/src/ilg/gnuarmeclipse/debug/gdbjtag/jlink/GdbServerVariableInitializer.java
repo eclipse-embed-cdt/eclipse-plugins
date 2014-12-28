@@ -12,11 +12,10 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
-import java.io.File;
-
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.WindowsRegistry;
-import ilg.gnuarmeclipse.debug.gdbjtag.WindowsRegistryStreamReader;
+
+import java.io.File;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.variables.IValueVariable;

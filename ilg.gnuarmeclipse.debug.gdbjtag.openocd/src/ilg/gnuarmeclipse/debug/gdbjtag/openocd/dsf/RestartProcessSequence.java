@@ -109,29 +109,7 @@ public class RestartProcessSequence extends ReflectionSequence {
 
 	/** utility method; cuts down on clutter */
 	private void queueCommands(List<String> commands, RequestMonitor rm) {
-
-		if (commands != null && !commands.isEmpty()) {
-
-			CountingRequestMonitor crm = new CountingRequestMonitor(
-					getExecutor(), rm);
-			crm.setDoneCount(commands.size());
-
-			Iterator<String> it = commands.iterator();
-			while (it.hasNext()) {
-				String s = it.next().trim();
-				if (s.isEmpty() || s.startsWith("#")) {
-					crm.done();
-					continue; // ignore empty lines and comments
-				}
-				// System.out.println("queueCommand('" + s + "')");
-				fCommandControl.queueCommand(new CLICommand<MIInfo>(
-						fCommandControl.getContext(), s),
-						new DataRequestMonitor<MIInfo>(getExecutor(), crm));
-			}
-
-		} else {
-			rm.done();
-		}
+		DebugUtils.queueCommands(commands, rm, fCommandControl, getExecutor());
 	}
 
 	@Override
