@@ -65,7 +65,7 @@
          point="org.eclipse.core.variables.valueVariables">
       <variable
             description="Path to J-Link installation folder" 
-            initializerClass="ilg.gnuarmeclipse.debug.gdbjtag.jlink.GdbServerVariableInitializer" 
+            initializerClass="ilg.gnuarmeclipse.debug.gdbjtag.jlink.VariableInitializer" 
             name="jlink_path" />
    </extension>
    
@@ -73,7 +73,7 @@
          point="org.eclipse.core.variables.valueVariables">
       <variable
             description="Name of the J-Link GDB server executable"
-            initializerClass="ilg.gnuarmeclipse.debug.gdbjtag.jlink.GdbServerVariableInitializer"
+            initializerClass="ilg.gnuarmeclipse.debug.gdbjtag.jlink.VariableInitializer"
             name="jlink_gdbserver"/>
    </extension>
       

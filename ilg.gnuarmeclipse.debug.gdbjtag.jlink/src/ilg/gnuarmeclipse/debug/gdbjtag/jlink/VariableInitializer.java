@@ -21,7 +21,7 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.variables.IValueVariable;
 import org.eclipse.core.variables.IValueVariableInitializer;
 
-public class GdbServerVariableInitializer implements IValueVariableInitializer {
+public class VariableInitializer implements IValueVariableInitializer {
 
 	// ------------------------------------------------------------------------
 
