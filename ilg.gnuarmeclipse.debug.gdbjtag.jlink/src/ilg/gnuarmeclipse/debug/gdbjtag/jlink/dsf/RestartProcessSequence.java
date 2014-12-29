@@ -20,8 +20,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.cdt.debug.core.CDebugUtils;
-import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
+import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.IGDBJtagDevice;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
@@ -29,6 +28,7 @@ import org.eclipse.cdt.dsf.concurrent.ReflectionSequence;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.debug.service.IRunControl.IContainerDMContext;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
+import org.eclipse.cdt.dsf.gdb.service.IGDBBackend;
 import org.eclipse.cdt.dsf.gdb.service.IGDBProcesses;
 import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
 import org.eclipse.cdt.dsf.mi.service.IMICommandControl;
@@ -46,7 +46,8 @@ public class RestartProcessSequence extends ReflectionSequence {
 	private CommandFactory fCommandFactory;
 	private IGDBProcesses fProcService;
 	// private IReverseRunControl fReverseService;
-	// private IGDBBackend fBackend;
+	private IGDBBackend fBackend;
+	private IGDBJtagDevice fGdbJtagDevice;
 
 	private DsfServicesTracker fTracker;
 
@@ -99,7 +100,6 @@ public class RestartProcessSequence extends ReflectionSequence {
 		return fContainerDmc;
 	}
 
-	/** utility method; cuts down on clutter */
 	private void queueCommands(List<String> commands, RequestMonitor rm) {
 		DebugUtils.queueCommands(commands, rm, fCommandControl, getExecutor());
 	}
@@ -127,7 +127,9 @@ public class RestartProcessSequence extends ReflectionSequence {
 		fCommandFactory = fTracker.getService(IMICommandControl.class)
 				.getCommandFactory();
 		fProcService = fTracker.getService(IGDBProcesses.class);
-		// fBackend = fTracker.getService(IGDBBackend.class);
+		fBackend = fTracker.getService(IGDBBackend.class);
+
+		fGdbJtagDevice = DebugUtils.getGDBJtagDevice(fAttributes);
 
 		if (fCommandControl == null || fCommandFactory == null
 				|| fProcService == null) {
@@ -161,43 +163,14 @@ public class RestartProcessSequence extends ReflectionSequence {
 
 		commandsList.add(ConfigurationAttributes.CLRBP_COMMAND);
 
-		String commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
-		String resetType = "";
+		IStatus status = Launch.startRestart(fAttributes, true,
+				fBackend.getProgramPath(), fGdbJtagDevice, commandsList);
 
-		if (CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.DO_SECOND_RESET,
-				ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
-			resetType = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.SECOND_RESET_TYPE,
-					ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+		if (!status.isOK()) {
+			rm.setStatus(status); //$NON-NLS-1$
+			rm.done();
+			return;
 		}
-		commandsList.add(commandStr + resetType);
-
-		commandsList.add(ConfigurationAttributes.HALT_COMMAND);
-		commandsList.add(ConfigurationAttributes.REGS_COMMAND);
-		commandsList.add(ConfigurationAttributes.FLUSH_REGISTERS_COMMAND);
-
-		if (CDebugUtils.getAttribute(fAttributes,
-				IGDBJtagConstants.ATTR_SET_STOP_AT,
-				ConfigurationAttributes.DO_STOP_AT_DEFAULT)) {
-
-			String stopAtName = CDebugUtils.getAttribute(fAttributes,
-					IGDBJtagConstants.ATTR_STOP_AT,
-					ConfigurationAttributes.STOP_AT_NAME_DEFAULT).trim();
-
-			if (stopAtName.length() > 0) {
-				commandsList.add("tbreak " + stopAtName);
-			}
-		}
-
-		String otherCmds = CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.OTHER_RUN_COMMANDS,
-				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT).trim();
-
-		otherCmds = DebugUtils.resolveAll(otherCmds, fAttributes);
-		DebugUtils.addMultiLine(otherCmds, commandsList);
-
-		commandsList.add("continue");
 
 		queueCommands(commandsList, rm);
 	}

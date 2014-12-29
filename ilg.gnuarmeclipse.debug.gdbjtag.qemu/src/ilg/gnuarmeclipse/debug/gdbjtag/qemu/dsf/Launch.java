@@ -333,6 +333,8 @@ public class Launch extends GnuArmLaunch {
 			}
 		}
 
+		commandsList.add("delete breakpoints");
+
 		if (CDebugUtils.getAttribute(attributes,
 				IGDBJtagConstants.ATTR_SET_STOP_AT,
 				IGDBJtagConstants.DEFAULT_SET_STOP_AT)) {

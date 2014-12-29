@@ -25,7 +25,7 @@ import org.osgi.service.prefs.Preferences;
  *
  * Some of the values may be retrieved from the EclipseDefaults.
  */
-public class WorkspacePreferences {
+public class WorkspacePersistentValues {
 
 	// Tab Debugger
 	// GDB Server Setup
@@ -96,6 +96,9 @@ public class WorkspacePreferences {
 	public static final String GDB_JLINK_INIT_OTHER = GDB_JLINK + "init.other";
 
 	// Run Commands
+	public static final String GDB_JLINK_DO_DEBUG_IN_RAM = GDB_JLINK
+			+ "doDebugInRam";
+
 	public static final String GDB_JLINK_DO_PRERUN_RESET = GDB_JLINK
 			+ "doPreRunReset";
 	public static final String GDB_JLINK_PRERUN_RESET_TYPE = GDB_JLINK
@@ -444,6 +447,18 @@ public class WorkspacePreferences {
 	public static void putJLinkInitOther(String value) {
 
 		putValueForId(GDB_JLINK_INIT_OTHER, value);
+	}
+
+	// ----- jlink debug in ram ---------------------------------------------
+	public static boolean getJLinkDebugInRam(boolean defaultValue) {
+
+		return Boolean.valueOf(getValueForId(GDB_JLINK_DO_DEBUG_IN_RAM,
+				Boolean.toString(defaultValue)));
+	}
+
+	public static void putJLinkDebugInRam(boolean value) {
+
+		putValueForId(GDB_JLINK_DO_DEBUG_IN_RAM, Boolean.toString(value));
 	}
 
 	// ----- jlink do prerun reset -----------------------------------

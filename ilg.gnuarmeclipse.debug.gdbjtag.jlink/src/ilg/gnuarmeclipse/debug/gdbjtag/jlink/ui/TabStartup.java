@@ -17,7 +17,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
-import ilg.gnuarmeclipse.debug.gdbjtag.jlink.WorkspacePreferences;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.WorkspacePersistentValues;
 
 import java.io.File;
 
@@ -115,6 +115,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	private Text runCommands;
 	private Button doContinue;
+	private Button doDebugInRam;
 
 	// New GUI added to address bug 310304
 	private Button useProjectBinaryForImage;
@@ -230,6 +231,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					.getString("StartupTab.firstResetType_ToolTipText"));
 
 			firstResetType = new Text(local, SWT.BORDER);
+			firstResetType.setToolTipText(Messages
+					.getString("StartupTab.firstResetType_ToolTipText"));
 			gd = new GridData();
 			gd.widthHint = 100;
 			firstResetType.setLayoutData(gd);
@@ -240,6 +243,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					.getString("StartupTab.firstResetSpeed_ToolTipText"));
 
 			firstResetSpeed = new Text(local, SWT.BORDER);
+			firstResetSpeed.setToolTipText(Messages
+					.getString("StartupTab.firstResetSpeed_ToolTipText"));
 			gd = new GridData();
 			gd.widthHint = 40;
 			firstResetSpeed.setLayoutData(gd);
@@ -355,6 +360,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					.getString("StartupTab.swoEnableTargetCpuFreq_ToolTipText"));
 
 			swoEnableTargetCpuFreq = new Text(local, SWT.BORDER);
+			swoEnableTargetCpuFreq.setToolTipText(Messages
+					.getString("StartupTab.swoEnableTargetCpuFreq_ToolTipText"));
 			gd = new GridData();
 			gd.widthHint = 80;
 			swoEnableTargetCpuFreq.setLayoutData(gd);
@@ -370,6 +377,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					.getString("StartupTab.swoEnableTargetSwoFreq_ToolTipText"));
 
 			swoEnableTargetSwoFreq = new Text(local, SWT.BORDER);
+			swoEnableTargetSwoFreq.setToolTipText(Messages
+					.getString("StartupTab.swoEnableTargetSwoFreq_ToolTipText"));
 			gd = new GridData();
 			gd.widthHint = 60;
 			swoEnableTargetSwoFreq.setLayoutData(gd);
@@ -385,6 +394,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					.getString("StartupTab.swoEnableTargetPortMask_ToolTipText"));
 
 			swoEnableTargetPortMask = new Text(local, SWT.BORDER);
+			swoEnableTargetPortMask.setToolTipText(Messages
+					.getString("StartupTab.swoEnableTargetPortMask_ToolTipText"));
 			gd = new GridData();
 			gd.widthHint = 80;
 			swoEnableTargetPortMask.setLayoutData(gd);
@@ -393,6 +404,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		{
 			initCommands = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER
 					| SWT.V_SCROLL);
+			initCommands.setToolTipText(Messages
+					.getString("StartupTab.initCommands_ToolTipText"));
 			gd = new GridData(GridData.FILL_BOTH);
 			gd.heightHint = 60;
 			initCommands.setLayoutData(gd);
@@ -680,6 +693,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		}
 
 		// ----- Actions ------------------------------------------------------
+
 		loadExecutable.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -829,38 +843,17 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		comp.setLayoutData(gd);
 
-		{
-			setPcRegister = new Button(comp, SWT.CHECK);
-			setPcRegister.setText(Messages
-					.getString("StartupTab.setPcRegister_Text"));
-
-			pcRegister = new Text(comp, SWT.BORDER);
-			gd = new GridData();
-			gd.widthHint = 100;
-			pcRegister.setLayoutData(gd);
-		}
+		doDebugInRam = new Button(comp, SWT.CHECK);
+		doDebugInRam
+				.setText(Messages.getString("StartupTab.doDebugInRam_Text"));
+		doDebugInRam.setToolTipText(Messages
+				.getString("StartupTab.doDebugInRam_ToolTipText"));
 
 		// ----- Actions ------------------------------------------------------
 
-		setPcRegister.addSelectionListener(new SelectionAdapter() {
+		doDebugInRam.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				pcRegisterChanged();
-				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
-			}
-		});
-
-		pcRegister.addVerifyListener(new VerifyListener() {
-			@Override
-			public void verifyText(VerifyEvent e) {
-				e.doit = (Character.isDigit(e.character)
-						|| Character.isISOControl(e.character) || "abcdef"
-						.contains(String.valueOf(e.character).toLowerCase()));
-			}
-		});
-		pcRegister.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
 				scheduleUpdateJob();
 			}
 		});
@@ -939,23 +932,41 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		}
 
 		{
+			runCommands = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER
+					| SWT.V_SCROLL);
+			runCommands.setToolTipText(Messages
+					.getString("StartupTab.runCommands_ToolTipText"));
+			gd = new GridData(GridData.FILL_BOTH);
+			gd.heightHint = 60;
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
+			runCommands.setLayoutData(gd);
+		}
+
+		{
+			setPcRegister = new Button(comp, SWT.CHECK);
+			setPcRegister.setText(Messages
+					.getString("StartupTab.setPcRegister_Text"));
+			setPcRegister.setToolTipText(Messages
+					.getString("StartupTab.setPcRegister_ToolTipText"));
+
+			pcRegister = new Text(comp, SWT.BORDER);
+			gd = new GridData();
+			gd.widthHint = 100;
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
+			pcRegister.setLayoutData(gd);
+		}
+
+		{
 			setStopAt = new Button(comp, SWT.CHECK);
 			setStopAt.setText(Messages.getString("StartupTab.setStopAt_Text"));
+			setStopAt.setToolTipText(Messages
+					.getString("StartupTab.setStopAt_ToolTipText"));
 
 			stopAt = new Text(comp, SWT.BORDER);
 			gd = new GridData();
 			gd.widthHint = 100;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			stopAt.setLayoutData(gd);
-		}
-
-		{
-			runCommands = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER
-					| SWT.V_SCROLL);
-			gd = new GridData(GridData.FILL_BOTH);
-			gd.heightHint = 60;
-			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
-			runCommands.setLayoutData(gd);
 		}
 
 		{
@@ -986,6 +997,30 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			public void verifyText(VerifyEvent e) {
 				e.doit = (Character.isDigit(e.character) || Character
 						.isISOControl(e.character));
+			}
+		});
+
+		setPcRegister.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				pcRegisterChanged();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
+			}
+		});
+
+		pcRegister.addVerifyListener(new VerifyListener() {
+			@Override
+			public void verifyText(VerifyEvent e) {
+				e.doit = (Character.isDigit(e.character)
+						|| Character.isISOControl(e.character) || "abcdef"
+						.contains(String.valueOf(e.character).toLowerCase()));
+			}
+		});
+
+		pcRegister.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				scheduleUpdateJob();
 			}
 		});
 
@@ -1151,7 +1186,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Initialisation Commands
 			{
 				// Do initial reset
-				booleanDefault = WorkspacePreferences
+				booleanDefault = WorkspacePersistentValues
 						.getJLinkDoInitialReset(ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
 				doFirstReset
 						.setSelection(configuration.getAttribute(
@@ -1159,13 +1194,13 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 								booleanDefault));
 
 				// Reset type
-				stringDefault = WorkspacePreferences
+				stringDefault = WorkspacePersistentValues
 						.getJLinkInitialResetType(ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
 				firstResetType.setText(configuration
 						.getAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
 								stringDefault));
 
-				intDefault = WorkspacePreferences
+				intDefault = WorkspacePersistentValues
 						.getJLinkInitialResetSpeed(ConfigurationAttributes.FIRST_RESET_SPEED_DEFAULT);
 
 				// Type change from string to int, compatibility preserved
@@ -1188,7 +1223,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					}
 				}
 				// Speed
-				stringDefault = WorkspacePreferences
+				stringDefault = WorkspacePersistentValues
 						.getJLinkSpeed(ConfigurationAttributes.INTERFACE_SPEED_DEFAULT);
 				String physicalInterfaceSpeed = configuration.getAttribute(
 						ConfigurationAttributes.INTERFACE_SPEED, stringDefault);
@@ -1219,20 +1254,20 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				}
 
 				// Enable flash breakpoints
-				booleanDefault = WorkspacePreferences
+				booleanDefault = WorkspacePersistentValues
 						.getJLinkEnableFlashBreakpoints(ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS_DEFAULT);
 				enableFlashBreakpoints.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
 						booleanDefault));
 
 				// Enable semihosting
-				booleanDefault = WorkspacePreferences
+				booleanDefault = WorkspacePersistentValues
 						.getJLinkEnableSemihosting(ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
 				enableSemihosting.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.ENABLE_SEMIHOSTING,
 						booleanDefault));
 
-				booleanDefault = WorkspacePreferences
+				booleanDefault = WorkspacePersistentValues
 						.getJLinkSemihostingTelnet(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_DEFAULT);
 				semihostingTelnet
 						.setSelection(configuration
@@ -1240,7 +1275,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 										ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
 										booleanDefault));
 
-				booleanDefault = WorkspacePreferences
+				booleanDefault = WorkspacePersistentValues
 						.getJLinkSemihostingClient(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_DEFAULT);
 				semihostingGdbClient
 						.setSelection(configuration
@@ -1248,20 +1283,20 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 										ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
 										booleanDefault));
 
-				booleanDefault = WorkspacePreferences
+				booleanDefault = WorkspacePersistentValues
 						.getJLinkEnableSwo(ConfigurationAttributes.ENABLE_SWO_DEFAULT);
 				// System.out.println("getJLinkEnableSwo()="+booleanDefault+" "+configuration.getName());
 				enableSwo.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.ENABLE_SWO, booleanDefault));
 
-				intDefault = WorkspacePreferences
+				intDefault = WorkspacePersistentValues
 						.getJLinkSwoEnableTargetCpuFreq(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
 				swoEnableTargetCpuFreq
 						.setText(String.valueOf(configuration
 								.getAttribute(
 										ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
 										intDefault)));
-				intDefault = WorkspacePreferences
+				intDefault = WorkspacePersistentValues
 						.getJLinkSwoEnableTargetSwoFreq(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
 				swoEnableTargetSwoFreq
 						.setText(String.valueOf(configuration
@@ -1269,7 +1304,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 										ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
 										intDefault)));
 
-				stringDefault = WorkspacePreferences
+				stringDefault = WorkspacePersistentValues
 						.getJLinkSwoEnableTargetPortMask(ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT);
 				Object oValue = configuration.getAttribute(
 						ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
@@ -1283,7 +1318,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				swoEnableTargetPortMask.setText(sValue);
 
 				// Other commands
-				stringDefault = WorkspacePreferences
+				stringDefault = WorkspacePersistentValues
 						.getJLinkInitOther(ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
 				initCommands.setText(configuration.getAttribute(
 						ConfigurationAttributes.OTHER_INIT_COMMANDS,
@@ -1345,6 +1380,36 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			// Runtime Options
 			{
+				booleanDefault = WorkspacePersistentValues
+						.getJLinkDebugInRam(ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT);
+				doDebugInRam.setSelection(configuration
+						.getAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM,
+								booleanDefault));
+			}
+
+			// Run Commands
+			{
+				// Do pre-run reset
+				booleanDefault = WorkspacePersistentValues
+						.getJLinkDoPreRunReset(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
+				doSecondReset.setSelection(configuration
+						.getAttribute(ConfigurationAttributes.DO_SECOND_RESET,
+								booleanDefault));
+
+				// Pre-run reset type
+				stringDefault = WorkspacePersistentValues
+						.getJLinkPreRunResetType(ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+				secondResetType.setText(configuration.getAttribute(
+						ConfigurationAttributes.SECOND_RESET_TYPE,
+						stringDefault));
+
+				// Other commands
+				stringDefault = WorkspacePersistentValues
+						.getJLinkPreRunOther(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
+				runCommands.setText(configuration.getAttribute(
+						ConfigurationAttributes.OTHER_RUN_COMMANDS,
+						stringDefault));
+
 				setPcRegister.setSelection(configuration.getAttribute(
 						IGDBJtagConstants.ATTR_SET_PC_REGISTER,
 						IGDBJtagConstants.DEFAULT_SET_PC_REGISTER));
@@ -1358,30 +1423,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				stopAt.setText(configuration.getAttribute(
 						IGDBJtagConstants.ATTR_STOP_AT,
 						ConfigurationAttributes.STOP_AT_NAME_DEFAULT));
-			}
-
-			// Run Commands
-			{
-				// Do pre-run reset
-				booleanDefault = WorkspacePreferences
-						.getJLinkDoPreRunReset(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
-				doSecondReset.setSelection(configuration
-						.getAttribute(ConfigurationAttributes.DO_SECOND_RESET,
-								booleanDefault));
-
-				// Pre-run reset type
-				stringDefault = WorkspacePreferences
-						.getJLinkPreRunResetType(ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
-				secondResetType.setText(configuration.getAttribute(
-						ConfigurationAttributes.SECOND_RESET_TYPE,
-						stringDefault));
-
-				// Other commands
-				stringDefault = WorkspacePreferences
-						.getJLinkPreRunOther(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
-				runCommands.setText(configuration.getAttribute(
-						ConfigurationAttributes.OTHER_RUN_COMMANDS,
-						stringDefault));
 
 				// Do continue
 				doContinue.setSelection(configuration.getAttribute(
@@ -1447,13 +1488,13 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			booleanValue = doFirstReset.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
 					booleanValue);
-			WorkspacePreferences.putJLinkDoInitialReset(booleanValue);
+			WorkspacePersistentValues.putJLinkDoInitialReset(booleanValue);
 
 			// First reset type
 			stringValue = firstResetType.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.FIRST_RESET_TYPE, stringValue);
-			WorkspacePreferences.putJLinkInitialResetType(stringValue);
+			WorkspacePersistentValues.putJLinkInitialResetType(stringValue);
 
 			// First reset speed
 			try {
@@ -1463,7 +1504,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			}
 			configuration.setAttribute(
 					ConfigurationAttributes.FIRST_RESET_SPEED, intValue);
-			WorkspacePreferences.putJLinkInitialResetSpeed(intValue);
+			WorkspacePersistentValues.putJLinkInitialResetSpeed(intValue);
 
 			// Interface speed
 			stringValue = ConfigurationAttributes.INTERFACE_SPEED_DEFAULT;
@@ -1476,27 +1517,28 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			}
 			configuration.setAttribute(ConfigurationAttributes.INTERFACE_SPEED,
 					stringValue);
-			WorkspacePreferences.putJLinkSpeed(stringValue);
+			WorkspacePersistentValues.putJLinkSpeed(stringValue);
 
 			// Enable flash breakpoints
 			booleanValue = enableFlashBreakpoints.getSelection();
 			configuration.setAttribute(
 					ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
 					booleanValue);
-			WorkspacePreferences.putJLinkEnableFlashBreakpoints(booleanValue);
+			WorkspacePersistentValues
+					.putJLinkEnableFlashBreakpoints(booleanValue);
 
 			// Enable semihosting
 			booleanValue = enableSemihosting.getSelection();
 			configuration.setAttribute(
 					ConfigurationAttributes.ENABLE_SEMIHOSTING, booleanValue);
-			WorkspacePreferences.putJLinkEnableSemihosting(booleanValue);
+			WorkspacePersistentValues.putJLinkEnableSemihosting(booleanValue);
 
 			// Semihosting via telnet
 			booleanValue = semihostingTelnet.getSelection();
 			configuration.setAttribute(
 					ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
 					booleanValue);
-			WorkspacePreferences.putJLinkSemihostingTelnet(booleanValue);
+			WorkspacePersistentValues.putJLinkSemihostingTelnet(booleanValue);
 
 			// Semihosting via client
 			booleanValue = semihostingGdbClient.getSelection();
@@ -1504,14 +1546,14 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					.setAttribute(
 							ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
 							booleanValue);
-			WorkspacePreferences.putJLinkSemihostingClient(booleanValue);
+			WorkspacePersistentValues.putJLinkSemihostingClient(booleanValue);
 
 			// Enable swo
 			booleanValue = enableSwo.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.ENABLE_SWO,
 					booleanValue);
 			// System.out.println("putJLinkEnableSwo "+booleanValue+" "+configuration.getName());
-			WorkspacePreferences.putJLinkEnableSwo(booleanValue);
+			WorkspacePersistentValues.putJLinkEnableSwo(booleanValue);
 
 			// target speed
 			try {
@@ -1521,7 +1563,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			}
 			configuration.setAttribute(
 					ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ, intValue);
-			WorkspacePreferences.putJLinkSwoEnableTargetCpuFreq(intValue);
+			WorkspacePersistentValues.putJLinkSwoEnableTargetCpuFreq(intValue);
 
 			// Swo speed
 			try {
@@ -1531,20 +1573,21 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			}
 			configuration.setAttribute(
 					ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ, intValue);
-			WorkspacePreferences.putJLinkSwoEnableTargetSwoFreq(intValue);
+			WorkspacePersistentValues.putJLinkSwoEnableTargetSwoFreq(intValue);
 
 			// Swo port mask
 			stringValue = swoEnableTargetPortMask.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
 					stringValue);
-			WorkspacePreferences.putJLinkSwoEnableTargetPortMask(stringValue);
+			WorkspacePersistentValues
+					.putJLinkSwoEnableTargetPortMask(stringValue);
 
 			// Other commands
 			stringValue = initCommands.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.OTHER_INIT_COMMANDS, stringValue);
-			WorkspacePreferences.putJLinkInitOther(stringValue);
+			WorkspacePersistentValues.putJLinkInitOther(stringValue);
 		}
 
 		// Load Symbols & Image...
@@ -1582,14 +1625,10 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		// Runtime Options
 		{
-			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER,
-					setPcRegister.getSelection());
-			configuration.setAttribute(IGDBJtagConstants.ATTR_PC_REGISTER,
-					pcRegister.getText());
-			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_STOP_AT,
-					setStopAt.getSelection());
-			configuration.setAttribute(IGDBJtagConstants.ATTR_STOP_AT,
-					stopAt.getText());
+			booleanValue = doDebugInRam.getSelection();
+			configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM,
+					booleanValue);
+			WorkspacePersistentValues.putJLinkDebugInRam(booleanValue);
 		}
 
 		// Run Commands
@@ -1598,26 +1637,35 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			booleanValue = doSecondReset.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
 					doSecondReset.getSelection());
-			WorkspacePreferences.putJLinkDoPreRunReset(booleanValue);
+			WorkspacePersistentValues.putJLinkDoPreRunReset(booleanValue);
 
 			// reset type
 			stringValue = secondResetType.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.SECOND_RESET_TYPE, stringValue);
-			WorkspacePreferences.putJLinkPreRunResetType(stringValue);
+			WorkspacePersistentValues.putJLinkPreRunResetType(stringValue);
 
 			// Other commands
 			stringValue = runCommands.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.OTHER_RUN_COMMANDS, stringValue);
-			WorkspacePreferences.putJLinkPreRunOther(stringValue);
+			WorkspacePersistentValues.putJLinkPreRunOther(stringValue);
+
+			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER,
+					setPcRegister.getSelection());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_PC_REGISTER,
+					pcRegister.getText());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_STOP_AT,
+					setStopAt.getSelection());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_STOP_AT,
+					stopAt.getText());
 
 			// Continue
 			configuration.setAttribute(ConfigurationAttributes.DO_CONTINUE,
 					doContinue.getSelection());
 		}
 
-		WorkspacePreferences.flush();
+		WorkspacePersistentValues.flush();
 
 		if (DEBUG) {
 			System.out.println("TabStartup: performApply() completed "
@@ -1662,13 +1710,13 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SWO,
 				ConfigurationAttributes.ENABLE_SWO_DEFAULT);
 
-		int sharedCpuFreq = WorkspacePreferences
+		int sharedCpuFreq = WorkspacePersistentValues
 				.getJLinkSwoEnableTargetCpuFreq(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
 		configuration
 				.setAttribute(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
 						sharedCpuFreq);
 
-		int sharedSwoFreq = WorkspacePreferences
+		int sharedSwoFreq = WorkspacePersistentValues
 				.getJLinkSwoEnableTargetSwoFreq(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
 		configuration
 				.setAttribute(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
@@ -1708,6 +1756,18 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
 
 		// Runtime Options
+		configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM,
+				ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT);
+
+		// Run Commands
+		configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
+				ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
+		configuration.setAttribute(ConfigurationAttributes.SECOND_RESET_TYPE,
+				ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+
+		configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS,
+				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
+
 		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER,
 				IGDBJtagConstants.DEFAULT_SET_PC_REGISTER);
 		configuration.setAttribute(IGDBJtagConstants.ATTR_PC_REGISTER,
@@ -1719,17 +1779,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_RESUME,
 				IGDBJtagConstants.DEFAULT_SET_RESUME);
 
-		// Run Commands
-		configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
-				ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
-		configuration.setAttribute(ConfigurationAttributes.SECOND_RESET_TYPE,
-				ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
-
-		configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS,
-				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
-
 		configuration.setAttribute(ConfigurationAttributes.DO_CONTINUE,
 				ConfigurationAttributes.DO_CONTINUE_DEFAULT);
-
 	}
 }

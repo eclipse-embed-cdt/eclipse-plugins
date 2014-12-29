@@ -333,10 +333,11 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					crm.setStatus(status); //$NON-NLS-1$
 					crm.done();
 				}
-
 			} else {
 				crm.done();
 			}
+		} else {
+			crm.done();
 		}
 	}
 
