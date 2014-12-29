@@ -23,7 +23,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui;
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.WorkspacePreferences;
+import ilg.gnuarmeclipse.debug.gdbjtag.openocd.WorkspacePersistentValues;
 
 import java.io.File;
 
@@ -703,14 +703,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			// OpenOCD GDB server
 			{
 				// Start server locally
-				booleanDefault = WorkspacePreferences
+				booleanDefault = WorkspacePersistentValues
 						.getGdbServerDoStart(ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
 				doStartGdbServer.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.DO_START_GDB_SERVER,
 						booleanDefault));
 
 				// Executable
-				stringDefault = WorkspacePreferences
+				stringDefault = WorkspacePersistentValues
 						.getGdbServerExecutable(ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT);
 				gdbServerExecutable.setText(configuration.getAttribute(
 						ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
@@ -735,7 +735,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT));
 
 				// Other options
-				stringDefault = WorkspacePreferences
+				stringDefault = WorkspacePersistentValues
 						.getGdbServerOtherOptions(ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT);
 				gdbServerOtherOptions.setText(configuration
 						.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER,
@@ -764,7 +764,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			// GDB Client Setup
 			{
 				// Executable
-				stringDefault = WorkspacePreferences
+				stringDefault = WorkspacePersistentValues
 						.getGdbClientExecutable(ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT);
 				String gdbCommandAttr = configuration.getAttribute(
 						IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
@@ -772,13 +772,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				gdbClientExecutable.setText(gdbCommandAttr);
 
 				// Other options
-				stringDefault = WorkspacePreferences
+				stringDefault = WorkspacePersistentValues
 						.getGdbClientOtherOptions(ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT);
 				gdbClientOtherOptions.setText(configuration.getAttribute(
 						ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
 						stringDefault));
 
-				stringDefault = WorkspacePreferences
+				stringDefault = WorkspacePersistentValues
 						.getGdbClientCommands(ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
 				gdbClientOtherCommands.setText(configuration.getAttribute(
 						ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
@@ -873,13 +873,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			booleanValue = doStartGdbServer.getSelection();
 			configuration.setAttribute(
 					ConfigurationAttributes.DO_START_GDB_SERVER, booleanValue);
-			WorkspacePreferences.putGdbServerDoStart(booleanValue);
+			WorkspacePersistentValues.putGdbServerDoStart(booleanValue);
 
 			// Executable
 			stringValue = gdbServerExecutable.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_EXECUTABLE, stringValue);
-			WorkspacePreferences.putGdbServerExecutable(stringValue);
+			WorkspacePersistentValues.putGdbServerExecutable(stringValue);
 
 			// Ports
 			int port;
@@ -901,7 +901,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			stringValue = gdbServerOtherOptions.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_OTHER, stringValue);
-			WorkspacePreferences.putGdbServerOtherOptions(stringValue);
+			WorkspacePersistentValues.putGdbServerOtherOptions(stringValue);
 
 			// Allocate server console
 			configuration.setAttribute(
@@ -929,19 +929,19 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(
 					IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
 					stringValue); // DSF
-			WorkspacePreferences.putGdbClientExecutable(stringValue);
+			WorkspacePersistentValues.putGdbClientExecutable(stringValue);
 
 			stringValue = gdbClientOtherOptions.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
 					stringValue);
-			WorkspacePreferences.putGdbClientOtherOptions(stringValue);
+			WorkspacePersistentValues.putGdbClientOtherOptions(stringValue);
 
 			stringValue = gdbClientOtherCommands.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
 					stringValue);
-			WorkspacePreferences.putGdbClientCommands(stringValue);
+			WorkspacePersistentValues.putGdbClientCommands(stringValue);
 		}
 
 		// Connect to running
@@ -986,7 +986,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
 						fUpdateThreadlistOnSuspend.getSelection());
 
-		WorkspacePreferences.flush();
+		WorkspacePersistentValues.flush();
 	}
 
 	@Override
@@ -1031,7 +1031,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.DO_START_GDB_SERVER,
 					ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
 
-			String sharedName = WorkspacePreferences
+			String sharedName = WorkspacePersistentValues
 					.getGdbServerExecutable(ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT);
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_EXECUTABLE, sharedName);
@@ -1073,7 +1073,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration
 					.setAttribute(
 							IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
-							WorkspacePreferences
+							WorkspacePersistentValues
 									.getGdbClientExecutable(ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT));
 
 			configuration.setAttribute(

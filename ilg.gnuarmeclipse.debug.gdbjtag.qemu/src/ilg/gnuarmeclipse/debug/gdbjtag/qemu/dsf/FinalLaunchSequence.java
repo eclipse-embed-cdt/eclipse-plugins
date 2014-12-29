@@ -35,7 +35,6 @@ import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
 import org.eclipse.cdt.dsf.mi.service.IMIProcesses;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -208,80 +207,72 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	@Execute
 	public void stepUserInitCommands(final RequestMonitor rm) {
-		try {
-			List<String> commandsList = new ArrayList<String>();
 
-			String otherInits = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.OTHER_INIT_COMMANDS,
-					ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
+		List<String> commandsList = new ArrayList<String>();
 
-			DebugUtils.addMultiLine(otherInits, commandsList);
+		String otherInits = CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.OTHER_INIT_COMMANDS,
+				ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT).trim();
 
-			// if (CDebugUtils.getAttribute(fAttributes,
-			// ConfigurationAttributes.ENABLE_SEMIHOSTING,
-			// ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT)) {
-			// String commandStr =
-			// ConfigurationAttributes.ENABLE_SEMIHOSTING_COMMAND;
-			// commandsList.add(commandStr);
-			// }
+		otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
+		DebugUtils.addMultiLine(otherInits, commandsList);
 
-			queueCommands(commandsList, rm);
-		} catch (CoreException e) {
-			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
-					"Cannot run user defined init commands", e)); //$NON-NLS-1$
-			rm.done();
-		}
+		// if (CDebugUtils.getAttribute(fAttributes,
+		// ConfigurationAttributes.ENABLE_SEMIHOSTING,
+		// ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT)) {
+		// String commandStr =
+		// ConfigurationAttributes.ENABLE_SEMIHOSTING_COMMAND;
+		// commandsList.add(commandStr);
+		// }
+
+		queueCommands(commandsList, rm);
 	}
 
 	@Execute
 	public void stepUserDebugCommands(final RequestMonitor rm) {
-		try {
-			List<String> commandsList = new ArrayList<String>();
 
-			String commandStr;
-			if (CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.DO_SECOND_RESET,
-					ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
-				commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
-				commandsList.add(commandStr /* + resetType */);
-			}
+		List<String> commandsList = new ArrayList<String>();
 
-			// Although the manual claims that reset always does a
-			// halt, better issue it explicitly
-			commandStr = ConfigurationAttributes.HALT_COMMAND;
-			commandsList.add(commandStr);
-
-			if (CDebugUtils.getAttribute(fAttributes,
-					IGDBJtagConstants.ATTR_SET_STOP_AT,
-					ConfigurationAttributes.DO_STOP_AT_DEFAULT)) {
-
-				String stopAtName = CDebugUtils.getAttribute(fAttributes,
-						IGDBJtagConstants.ATTR_STOP_AT,
-						ConfigurationAttributes.STOP_AT_NAME_DEFAULT).trim();
-
-				if (!stopAtName.isEmpty()) {
-					commandsList.add("tbreak " + stopAtName);
-				}
-			}
-
-			String userCmd = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.OTHER_RUN_COMMANDS,
-					ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
-
-			DebugUtils.addMultiLine(userCmd, commandsList);
-
-			if (CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.DO_CONTINUE,
-					ConfigurationAttributes.DO_CONTINUE_DEFAULT)) {
-				commandsList.add(ConfigurationAttributes.DO_CONTINUE_COMMAND);
-			}
-
-			queueCommands(commandsList, rm);
-		} catch (CoreException e) {
-			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
-					"Cannot run user defined run commands", e)); //$NON-NLS-1$
-			rm.done();
+		String commandStr;
+		if (CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.DO_SECOND_RESET,
+				ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
+			commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
+			commandsList.add(commandStr /* + resetType */);
 		}
+
+		// Although the manual claims that reset always does a
+		// halt, better issue it explicitly
+		commandStr = ConfigurationAttributes.HALT_COMMAND;
+		commandsList.add(commandStr);
+
+		if (CDebugUtils.getAttribute(fAttributes,
+				IGDBJtagConstants.ATTR_SET_STOP_AT,
+				ConfigurationAttributes.DO_STOP_AT_DEFAULT)) {
+
+			String stopAtName = CDebugUtils.getAttribute(fAttributes,
+					IGDBJtagConstants.ATTR_STOP_AT,
+					ConfigurationAttributes.STOP_AT_NAME_DEFAULT).trim();
+
+			if (!stopAtName.isEmpty()) {
+				commandsList.add("tbreak " + stopAtName);
+			}
+		}
+
+		String userCmd = CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.OTHER_RUN_COMMANDS,
+				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT).trim();
+
+		userCmd = DebugUtils.resolveAll(userCmd, fAttributes);
+		DebugUtils.addMultiLine(userCmd, commandsList);
+
+		if (CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.DO_CONTINUE,
+				ConfigurationAttributes.DO_CONTINUE_DEFAULT)) {
+			commandsList.add(ConfigurationAttributes.DO_CONTINUE_COMMAND);
+		}
+
+		queueCommands(commandsList, rm);
 	}
 
 	protected Map<String, Object> getAttributes() {

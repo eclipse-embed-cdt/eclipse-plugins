@@ -25,8 +25,6 @@ import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.debug.gdbjtag.core.GDBJtagDSFFinalLaunchSequence;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
 import org.eclipse.cdt.debug.gdbjtag.core.Messages;
-import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.GDBJtagDeviceContribution;
-import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.GDBJtagDeviceContributionFactory;
 import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.IGDBJtagDevice;
 import org.eclipse.cdt.dsf.concurrent.CountingRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
@@ -37,7 +35,6 @@ import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
 import org.eclipse.cdt.dsf.mi.service.IMIProcesses;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -143,35 +140,29 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	@Execute
 	public void stepSourceGDBInitFile(final RequestMonitor requestMonitor) {
-		try {
 
-			List<String> commandsList = new ArrayList<String>();
+		List<String> commandsList = new ArrayList<String>();
 
-			String otherInits = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
-					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
-			otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
+		String otherInits = CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
+				ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT)
+				.trim();
 
-			DebugUtils.addMultiLine(otherInits, commandsList);
+		otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
+		DebugUtils.addMultiLine(otherInits, commandsList);
 
-			if (!commandsList.isEmpty()) {
-				CountingRequestMonitor crm = new CountingRequestMonitor(
-						getExecutor(), requestMonitor);
+		if (!commandsList.isEmpty()) {
+			CountingRequestMonitor crm = new CountingRequestMonitor(
+					getExecutor(), requestMonitor);
 
-				// One more for the parent step
-				crm.setDoneCount(1 + 1);
+			// One more for the parent step
+			crm.setDoneCount(1 + 1);
 
-				queueCommands(commandsList, crm);
+			queueCommands(commandsList, crm);
 
-				super.stepSourceGDBInitFile(crm);
-			} else {
-				super.stepSourceGDBInitFile(requestMonitor);
-			}
-		} catch (CoreException e) {
-			requestMonitor.setStatus(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, -1,
-					"Cannot run other gdb client commands", e)); //$NON-NLS-1$
-			requestMonitor.done();
+			super.stepSourceGDBInitFile(crm);
+		} else {
+			super.stepSourceGDBInitFile(requestMonitor);
 		}
 	}
 
@@ -211,115 +202,52 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	@Execute
 	public void stepUserInitCommands(final RequestMonitor rm) {
-		try {
-			List<String> commandsList = new ArrayList<String>();
 
-			String otherInits = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.OTHER_INIT_COMMANDS,
-					ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
+		List<String> commandsList = new ArrayList<String>();
 
-			if (EclipseUtils.isWindows()) {
-				otherInits = StringUtils.duplicateBackslashes(otherInits);
-			}
-			DebugUtils.addMultiLine(otherInits, commandsList);
+		String otherInits = CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.OTHER_INIT_COMMANDS,
+				ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT).trim();
 
-			if (CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.ENABLE_SEMIHOSTING,
-					ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT)) {
-				String commandStr = ConfigurationAttributes.ENABLE_SEMIHOSTING_COMMAND;
-				commandsList.add(commandStr);
-			}
-
-			queueCommands(commandsList, rm);
-		} catch (CoreException e) {
-			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
-					"Cannot run user defined init commands", e)); //$NON-NLS-1$
-			rm.done();
+		otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
+		if (EclipseUtils.isWindows()) {
+			otherInits = StringUtils.duplicateBackslashes(otherInits);
 		}
+		DebugUtils.addMultiLine(otherInits, commandsList);
+
+		if (CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.ENABLE_SEMIHOSTING,
+				ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT)) {
+			String commandStr = ConfigurationAttributes.ENABLE_SEMIHOSTING_COMMAND;
+			commandsList.add(commandStr);
+		}
+
+		queueCommands(commandsList, rm);
 	}
 
 	@Execute
 	public void stepUserDebugCommands(final RequestMonitor rm) {
-		try {
-			List<String> commandsList = new ArrayList<String>();
 
-			boolean noReset = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-					ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
-			if (!noReset) {
-				if (CDebugUtils.getAttribute(fAttributes,
-						ConfigurationAttributes.DO_SECOND_RESET,
-						ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
-					String commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
-					String resetType = CDebugUtils.getAttribute(fAttributes,
-							ConfigurationAttributes.SECOND_RESET_TYPE,
-							ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
-					commandsList.add(commandStr + resetType);
+		List<String> commandsList = new ArrayList<String>();
 
-					// Although the manual claims that reset always does a
-					// halt, better issue it explicitly
-					commandStr = ConfigurationAttributes.HALT_COMMAND;
-					commandsList.add(commandStr);
-				}
-			}
+		boolean doReset = !CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+				ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
 
-			if (CDebugUtils.getAttribute(getAttributes(),
-					IGDBJtagConstants.ATTR_SET_STOP_AT,
-					IGDBJtagConstants.DEFAULT_SET_STOP_AT)) {
-				String stopAt = CDebugUtils.getAttribute(getAttributes(),
-						IGDBJtagConstants.ATTR_STOP_AT,
-						IGDBJtagConstants.DEFAULT_STOP_AT).trim();
+		IStatus status = Launch.startRestart(fAttributes, doReset,
+				fGDBBackend.getProgramPath(), fGdbJtagDevice, commandsList);
 
-				if (!stopAt.isEmpty()) {
-					// doAtopAt replaced by a simple tbreak
-					commandsList.add("tbreak " + stopAt);
-				}
-			}
-
-			String userCmd = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.OTHER_RUN_COMMANDS,
-					ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
-
-			userCmd = DebugUtils.resolveAll(userCmd, fAttributes);
-
-			if (EclipseUtils.isWindows()) {
-				userCmd = StringUtils.duplicateBackslashes(userCmd);
-			}
-
-			DebugUtils.addMultiLine(userCmd, commandsList);
-
-			if (CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.DO_CONTINUE,
-					ConfigurationAttributes.DO_CONTINUE_DEFAULT)) {
-				commandsList.add(ConfigurationAttributes.DO_CONTINUE_COMMAND);
-			}
-
-			queueCommands(commandsList, rm);
-		} catch (CoreException e) {
-			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
-					"Cannot run user defined run commands", e)); //$NON-NLS-1$
+		if (!status.isOK()) {
+			rm.setStatus(status); //$NON-NLS-1$
 			rm.done();
+			return;
 		}
+
+		queueCommands(commandsList, rm);
 	}
 
 	protected Map<String, Object> getAttributes() {
 		return fAttributes;
-	}
-
-	private IGDBJtagDevice getGDBJtagDevice() {
-		IGDBJtagDevice gdbJtagDevice = null;
-		String jtagDeviceName = CDebugUtils.getAttribute(getAttributes(),
-				IGDBJtagConstants.ATTR_JTAG_DEVICE,
-				IGDBJtagConstants.DEFAULT_JTAG_DEVICE);
-		GDBJtagDeviceContribution[] availableDevices = GDBJtagDeviceContributionFactory
-				.getInstance().getGDBJtagDeviceContribution();
-		for (GDBJtagDeviceContribution availableDevice : availableDevices) {
-			if (jtagDeviceName.equals(availableDevice.getDeviceName())) {
-				gdbJtagDevice = availableDevice.getDevice();
-				break;
-			}
-		}
-		return gdbJtagDevice;
 	}
 
 	/*
@@ -330,7 +258,7 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	public void stepRetrieveJTAGDevice(final RequestMonitor rm) {
 		Exception exception = null;
 		try {
-			fGdbJtagDevice = getGDBJtagDevice();
+			fGdbJtagDevice = DebugUtils.getGDBJtagDevice(getAttributes());
 		} catch (NullPointerException e) {
 			exception = e;
 		}
@@ -432,71 +360,34 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 				ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
 
 		if (!doConnectToRunning) {
-			String imageFileName = null;
 			if (CDebugUtils.getAttribute(getAttributes(),
 					IGDBJtagConstants.ATTR_LOAD_IMAGE,
-					IGDBJtagConstants.DEFAULT_LOAD_IMAGE)) {
-				// New setting in Helios. Default is true. Check for
-				// existence
-				// in order to support older launch configs
-				if (getAttributes().containsKey(
-						IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE)
-						&& CDebugUtils
-								.getAttribute(
-										getAttributes(),
-										IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
-										IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_IMAGE)) {
-					IPath programFile = fGDBBackend.getProgramPath();
-					if (programFile != null) {
-						imageFileName = programFile.toOSString();
-					}
-				} else {
-					imageFileName = CDebugUtils.getAttribute(getAttributes(),
-							IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
-							IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME);
-					if (!imageFileName.isEmpty()) {
-						imageFileName = DebugUtils.resolveAll(imageFileName,
-								getAttributes());
-					} else {
-						imageFileName = null;
-					}
-				}
+					IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
+					&& !CDebugUtils.getAttribute(getAttributes(),
+							ConfigurationAttributes.DO_DEBUG_IN_RAM,
+							ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT)) {
 
-				if (imageFileName == null) {
-					rm.setStatus(new Status(
-							IStatus.ERROR,
-							Activator.PLUGIN_ID,
-							-1,
-							Messages.getString("GDBJtagDebugger.err_no_img_file"), null)); //$NON-NLS-1$
-					rm.done();
-					return;
-				}
-
-				if (EclipseUtils.isWindows()) {
-					// Escape windows path separator characters TWICE, once
-					// for
-					// Java and once for GDB.
-					imageFileName = StringUtils
-							.duplicateBackslashes(imageFileName); //$NON-NLS-1$ //$NON-NLS-2$
-				}
-
-				String imageOffset = CDebugUtils.getAttribute(getAttributes(),
-						IGDBJtagConstants.ATTR_IMAGE_OFFSET,
-						IGDBJtagConstants.DEFAULT_IMAGE_OFFSET);
-				if (imageOffset.length() > 0) {
-					imageOffset = (imageFileName.endsWith(".elf")) ? "" : "0x"
-							+ CDebugUtils.getAttribute(getAttributes(),
-									IGDBJtagConstants.ATTR_IMAGE_OFFSET,
-									IGDBJtagConstants.DEFAULT_IMAGE_OFFSET); //$NON-NLS-2$ 
-				}
 				List<String> commands = new ArrayList<String>();
-				fGdbJtagDevice
-						.doLoadImage(imageFileName, imageOffset, commands);
-				queueCommands(commands, rm);
+				IStatus status = Launch.loadImage(fAttributes,
+						fGDBBackend.getProgramPath(), fGdbJtagDevice, commands);
+
+				if (status.isOK()) {
+					queueCommands(commands, rm);
+				} else {
+					rm.setStatus(status); //$NON-NLS-1$
+					rm.done();
+				}
 			} else {
 				rm.done();
 			}
 		}
+	}
+
+	@Execute
+	public void stepSetProgramCounter(final RequestMonitor rm) {
+		
+		// set PC moved to user step
+		rm.done();
 	}
 
 	@Execute

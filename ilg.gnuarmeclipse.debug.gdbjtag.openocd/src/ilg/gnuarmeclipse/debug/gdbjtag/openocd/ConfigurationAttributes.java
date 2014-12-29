@@ -96,6 +96,9 @@ public interface ConfigurationAttributes {
 			+ ".otherInitCommands"; //$NON-NLS-1$
 	public static final String OTHER_INIT_COMMANDS_DEFAULT = "";
 
+	public static final String DO_DEBUG_IN_RAM = PREFIX + ".doDebugInRam"; //$NON-NLS-1$
+	public static final boolean DO_DEBUG_IN_RAM_DEFAULT = false;
+
 	public static final String DO_SECOND_RESET = PREFIX + ".doSecondReset"; //$NON-NLS-1$
 	public static final boolean DO_SECOND_RESET_DEFAULT = true;
 	public static final String DO_SECOND_RESET_COMMAND = "monitor reset ";

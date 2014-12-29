@@ -11,19 +11,15 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd.dsf;
 
-import ilg.gnuarmeclipse.core.EclipseUtils;
-import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.cdt.debug.core.CDebugUtils;
-import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
+import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.IGDBJtagDevice;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
@@ -31,12 +27,12 @@ import org.eclipse.cdt.dsf.concurrent.ReflectionSequence;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.debug.service.IRunControl.IContainerDMContext;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
+import org.eclipse.cdt.dsf.gdb.service.IGDBBackend;
 import org.eclipse.cdt.dsf.gdb.service.IGDBProcesses;
 import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
 import org.eclipse.cdt.dsf.mi.service.IMICommandControl;
 import org.eclipse.cdt.dsf.mi.service.command.CommandFactory;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -49,7 +45,8 @@ public class RestartProcessSequence extends ReflectionSequence {
 	private CommandFactory fCommandFactory;
 	private IGDBProcesses fProcService;
 	// private IReverseRunControl fReverseService;
-	// private IGDBBackend fBackend;
+	private IGDBBackend fBackend;
+	private IGDBJtagDevice fGdbJtagDevice;
 
 	private DsfServicesTracker fTracker;
 
@@ -130,7 +127,9 @@ public class RestartProcessSequence extends ReflectionSequence {
 		fCommandFactory = fTracker.getService(IMICommandControl.class)
 				.getCommandFactory();
 		fProcService = fTracker.getService(IGDBProcesses.class);
-		// fBackend = fTracker.getService(IGDBBackend.class);
+		fBackend = fTracker.getService(IGDBBackend.class);
+
+		fGdbJtagDevice = DebugUtils.getGDBJtagDevice(fAttributes);
 
 		if (fCommandControl == null || fCommandFactory == null
 				|| fProcService == null) {
@@ -159,49 +158,14 @@ public class RestartProcessSequence extends ReflectionSequence {
 
 		List<String> commandsList = new ArrayList<String>();
 
-		commandsList.add(ConfigurationAttributes.HALT_COMMAND);
+		IStatus status = Launch.startRestart(fAttributes, true,
+				fBackend.getProgramPath(), fGdbJtagDevice, commandsList);
 
-		String commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
-		String resetType = "";
-
-		if (CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.DO_SECOND_RESET,
-				ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
-			resetType = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.SECOND_RESET_TYPE,
-					ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+		if (!status.isOK()) {
+			rm.setStatus(status); //$NON-NLS-1$
+			rm.done();
+			return;
 		}
-		commandsList.add(commandStr + resetType);
-
-		if (CDebugUtils.getAttribute(fAttributes,
-				IGDBJtagConstants.ATTR_SET_STOP_AT,
-				ConfigurationAttributes.DO_STOP_AT_DEFAULT)) {
-
-			String stopAtName = CDebugUtils.getAttribute(fAttributes,
-					IGDBJtagConstants.ATTR_STOP_AT,
-					ConfigurationAttributes.STOP_AT_NAME_DEFAULT).trim();
-
-			if (stopAtName.length() > 0) {
-				commandsList.add("tbreak " + stopAtName);
-			}
-		}
-
-		String otherCmds = CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.OTHER_RUN_COMMANDS,
-				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT).trim();
-
-		otherCmds = DebugUtils.resolveAll(otherCmds, fAttributes);
-
-		if (EclipseUtils.isWindows()) {
-			otherCmds = StringUtils.duplicateBackslashes(otherCmds);
-		}
-		try {
-			DebugUtils.addMultiLine(otherCmds, commandsList);
-		} catch (CoreException e) {
-			Activator.log(e);
-		}
-
-		commandsList.add("continue");
 
 		queueCommands(commandsList, rm);
 	}

@@ -35,7 +35,6 @@ import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
 import org.eclipse.cdt.dsf.mi.service.IMIProcesses;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -292,185 +291,161 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	@Execute
 	public void stepUserInitCommands(final RequestMonitor rm) {
-		try {
-			List<String> commandsList = new ArrayList<String>();
 
-			String commandStr;
-			commandStr = ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS_COMMAND;
-			if (CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
-					ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS_DEFAULT))
-				commandStr += "1";
-			else
-				commandStr += "0";
+		List<String> commandsList = new ArrayList<String>();
+
+		String commandStr;
+		commandStr = ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS_COMMAND;
+		if (CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
+				ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS_DEFAULT))
+			commandStr += "1";
+		else
+			commandStr += "0";
+		commandsList.add(commandStr);
+
+		if (CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.ENABLE_SEMIHOSTING,
+				ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT)) {
+			commandStr = ConfigurationAttributes.ENABLE_SEMIHOSTING_COMMAND;
 			commandsList.add(commandStr);
 
-			if (CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.ENABLE_SEMIHOSTING,
-					ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT)) {
-				commandStr = ConfigurationAttributes.ENABLE_SEMIHOSTING_COMMAND;
-				commandsList.add(commandStr);
-
-				int ioclientMask = 0;
-				if (CDebugUtils
-						.getAttribute(
-								fAttributes,
-								ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
-								ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_DEFAULT)) {
-					ioclientMask |= ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_MASK;
-				}
-				if (CDebugUtils
-						.getAttribute(
-								fAttributes,
-								ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
-								ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_DEFAULT)) {
-					ioclientMask |= ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_MASK;
-				}
-
-				commandStr = ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_COMMAND
-						+ String.valueOf(ioclientMask);
-				commandsList.add(commandStr);
+			int ioclientMask = 0;
+			if (CDebugUtils
+					.getAttribute(
+							fAttributes,
+							ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
+							ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_DEFAULT)) {
+				ioclientMask |= ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_MASK;
+			}
+			if (CDebugUtils
+					.getAttribute(
+							fAttributes,
+							ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
+							ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_DEFAULT)) {
+				ioclientMask |= ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_MASK;
 			}
 
-			String attr;
-			attr = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
-					ConfigurationAttributes.INTERFACE_SWD);
-			if (ConfigurationAttributes.INTERFACE_SWD.equals(attr)) {
-
-				if (CDebugUtils.getAttribute(fAttributes,
-						ConfigurationAttributes.ENABLE_SWO,
-						ConfigurationAttributes.ENABLE_SWO_DEFAULT)) {
-
-					commandsList
-							.add(ConfigurationAttributes.DISABLE_SWO_COMMAND);
-
-					commandStr = ConfigurationAttributes.ENABLE_SWO_COMMAND;
-					commandStr += CDebugUtils
-							.getAttribute(
-									fAttributes,
-									ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
-									ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
-					commandStr += " ";
-					commandStr += CDebugUtils
-							.getAttribute(
-									fAttributes,
-									ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
-									ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
-					commandStr += " ";
-					commandStr += CDebugUtils
-							.getAttribute(
-									fAttributes,
-									ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
-									ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT);
-					commandStr += " 0";
-
-					commandsList.add(commandStr);
-
-					// commandStr =
-					// ConfigurationAttributes.ENABLE_SWO_GETSPEEDINFO_COMMAND;
-					// commandsList.add(commandStr);
-				}
-			}
-
-			String otherInits = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.OTHER_INIT_COMMANDS,
-					ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
-
-			@SuppressWarnings("unused")
-			boolean doConnectToRunning = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-					ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
-
-			// String flashDownload = doConnectToRunning ?
-			// ConfigurationAttributes.DISABLE_FLASH_DOWNLOAD_COMMAND
-			// : ConfigurationAttributes.ENABLE_FLASH_DOWNLOAD_COMMAND;
-			//
-			// otherInits += "\n" + flashDownload;
-
-			DebugUtils.addMultiLine(otherInits, commandsList);
-
-			queueCommands(commandsList, rm);
-		} catch (CoreException e) {
-			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
-					"Cannot run user defined init commands", e)); //$NON-NLS-1$
-			rm.done();
+			commandStr = ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_COMMAND
+					+ String.valueOf(ioclientMask);
+			commandsList.add(commandStr);
 		}
+
+		String attr;
+		attr = CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
+				ConfigurationAttributes.INTERFACE_SWD);
+		if (ConfigurationAttributes.INTERFACE_SWD.equals(attr)) {
+
+			if (CDebugUtils.getAttribute(fAttributes,
+					ConfigurationAttributes.ENABLE_SWO,
+					ConfigurationAttributes.ENABLE_SWO_DEFAULT)) {
+
+				commandsList.add(ConfigurationAttributes.DISABLE_SWO_COMMAND);
+
+				commandStr = ConfigurationAttributes.ENABLE_SWO_COMMAND;
+				commandStr += CDebugUtils
+						.getAttribute(
+								fAttributes,
+								ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
+								ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
+				commandStr += " ";
+				commandStr += CDebugUtils
+						.getAttribute(
+								fAttributes,
+								ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
+								ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
+				commandStr += " ";
+				commandStr += CDebugUtils
+						.getAttribute(
+								fAttributes,
+								ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
+								ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT);
+				commandStr += " 0";
+
+				commandsList.add(commandStr);
+			}
+		}
+
+		String otherInits = CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.OTHER_INIT_COMMANDS,
+				ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT).trim();
+
+		otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
+		DebugUtils.addMultiLine(otherInits, commandsList);
+
+		queueCommands(commandsList, rm);
 	}
 
 	@Execute
 	public void stepUserDebugCommands(final RequestMonitor rm) {
-		try {
-			List<String> commandsList = new ArrayList<String>();
 
-			boolean noReset = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-					ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
-			if (!noReset) {
-				if (CDebugUtils.getAttribute(fAttributes,
-						ConfigurationAttributes.DO_SECOND_RESET,
-						ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
+		List<String> commandsList = new ArrayList<String>();
 
-					String commandStr;
-
-					// Since reset does not clear breakpoints, we do it
-					// explicitly
-					commandStr = ConfigurationAttributes.CLRBP_COMMAND;
-					commandsList.add(commandStr);
-
-					commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
-					String resetType = CDebugUtils.getAttribute(fAttributes,
-							ConfigurationAttributes.SECOND_RESET_TYPE,
-							ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
-					commandsList.add(commandStr + resetType);
-
-					// Although the manual claims that reset always does a
-					// halt, better issue it explicitly
-					commandStr = ConfigurationAttributes.HALT_COMMAND;
-					commandsList.add(commandStr);
-
-					// Also add a command to see the registers in the
-					// location where execution halted
-					commandStr = ConfigurationAttributes.REGS_COMMAND;
-					commandsList.add(commandStr);
-
-					// Flush registers, GDB should read them again
-					commandStr = ConfigurationAttributes.FLUSH_REGISTERS_COMMAND;
-					commandsList.add(commandStr);
-				}
-			}
-
+		boolean noReset = CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+				ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
+		if (!noReset) {
 			if (CDebugUtils.getAttribute(fAttributes,
-					IGDBJtagConstants.ATTR_SET_STOP_AT,
-					ConfigurationAttributes.DO_STOP_AT_DEFAULT)) {
+					ConfigurationAttributes.DO_SECOND_RESET,
+					ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
 
-				String stopAtName = CDebugUtils.getAttribute(fAttributes,
-						IGDBJtagConstants.ATTR_STOP_AT,
-						ConfigurationAttributes.STOP_AT_NAME_DEFAULT).trim();
+				String commandStr;
 
-				if (!stopAtName.isEmpty()) {
-					commandsList.add("tbreak " + stopAtName);
-				}
+				// Since reset does not clear breakpoints, we do it
+				// explicitly
+				commandStr = ConfigurationAttributes.CLRBP_COMMAND;
+				commandsList.add(commandStr);
+
+				commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
+				String resetType = CDebugUtils.getAttribute(fAttributes,
+						ConfigurationAttributes.SECOND_RESET_TYPE,
+						ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+				commandsList.add(commandStr + resetType);
+
+				// Although the manual claims that reset always does a
+				// halt, better issue it explicitly
+				commandStr = ConfigurationAttributes.HALT_COMMAND;
+				commandsList.add(commandStr);
+
+				// Also add a command to see the registers in the
+				// location where execution halted
+				commandStr = ConfigurationAttributes.REGS_COMMAND;
+				commandsList.add(commandStr);
+
+				// Flush registers, GDB should read them again
+				commandStr = ConfigurationAttributes.FLUSH_REGISTERS_COMMAND;
+				commandsList.add(commandStr);
 			}
-
-			String userCmd = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.OTHER_RUN_COMMANDS,
-					ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
-
-			DebugUtils.addMultiLine(userCmd, commandsList);
-
-			if (CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.DO_CONTINUE,
-					ConfigurationAttributes.DO_CONTINUE_DEFAULT)) {
-				commandsList.add(ConfigurationAttributes.DO_CONTINUE_COMMAND);
-			}
-
-			queueCommands(commandsList, rm);
-		} catch (CoreException e) {
-			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
-					"Cannot run user defined run commands", e)); //$NON-NLS-1$
-			rm.done();
 		}
+
+		if (CDebugUtils.getAttribute(fAttributes,
+				IGDBJtagConstants.ATTR_SET_STOP_AT,
+				ConfigurationAttributes.DO_STOP_AT_DEFAULT)) {
+
+			String stopAtName = CDebugUtils.getAttribute(fAttributes,
+					IGDBJtagConstants.ATTR_STOP_AT,
+					ConfigurationAttributes.STOP_AT_NAME_DEFAULT).trim();
+
+			if (!stopAtName.isEmpty()) {
+				commandsList.add("tbreak " + stopAtName);
+			}
+		}
+
+		String userCmd = CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.OTHER_RUN_COMMANDS,
+				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT).trim();
+
+		userCmd = DebugUtils.resolveAll(userCmd, fAttributes);
+		DebugUtils.addMultiLine(userCmd, commandsList);
+
+		if (CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.DO_CONTINUE,
+				ConfigurationAttributes.DO_CONTINUE_DEFAULT)) {
+			commandsList.add(ConfigurationAttributes.DO_CONTINUE_COMMAND);
+		}
+
+		queueCommands(commandsList, rm);
 	}
 
 	protected Map<String, Object> getAttributes() {

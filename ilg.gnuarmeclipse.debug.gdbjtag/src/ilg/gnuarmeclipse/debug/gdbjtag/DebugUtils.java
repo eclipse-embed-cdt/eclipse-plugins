@@ -35,7 +35,12 @@ import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.core.settings.model.ICProjectDescription;
+import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
+import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
+import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.GDBJtagDeviceContribution;
+import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.GDBJtagDeviceContributionFactory;
+import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.IGDBJtagDevice;
 import org.eclipse.cdt.dsf.concurrent.CountingRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DsfExecutor;
@@ -338,14 +343,10 @@ public class DebugUtils {
 	 *            a string.
 	 * @param commandsList
 	 *            a list of strings.
-	 * @throws CoreException
 	 */
-	public static void addMultiLine(String multiLine, List<String> commandsList)
-			throws CoreException {
+	public static void addMultiLine(String multiLine, List<String> commandsList) {
 
-		if (multiLine.length() > 0) {
-			multiLine = VariablesPlugin.getDefault().getStringVariableManager()
-					.performStringSubstitution(multiLine);
+		if (!multiLine.isEmpty()) {
 			String[] commandsStr = multiLine.split("\\r?\\n"); //$NON-NLS-1$
 			for (String str : commandsStr) {
 				str = str.trim();
@@ -683,6 +684,23 @@ public class DebugUtils {
 		} else {
 			rm.done();
 		}
+	}
+
+	public static IGDBJtagDevice getGDBJtagDevice(Map<String, Object> attributes) {
+
+		IGDBJtagDevice gdbJtagDevice = null;
+		String jtagDeviceName = CDebugUtils.getAttribute(attributes,
+				IGDBJtagConstants.ATTR_JTAG_DEVICE,
+				IGDBJtagConstants.DEFAULT_JTAG_DEVICE);
+		GDBJtagDeviceContribution[] availableDevices = GDBJtagDeviceContributionFactory
+				.getInstance().getGDBJtagDeviceContribution();
+		for (GDBJtagDeviceContribution availableDevice : availableDevices) {
+			if (jtagDeviceName.equals(availableDevice.getDeviceName())) {
+				gdbJtagDevice = availableDevice.getDevice();
+				break;
+			}
+		}
+		return gdbJtagDevice;
 	}
 
 	// ------------------------------------------------------------------------

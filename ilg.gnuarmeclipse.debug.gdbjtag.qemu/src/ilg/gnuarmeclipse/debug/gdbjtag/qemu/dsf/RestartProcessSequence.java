@@ -34,7 +34,6 @@ import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
 import org.eclipse.cdt.dsf.mi.service.IMICommandControl;
 import org.eclipse.cdt.dsf.mi.service.command.CommandFactory;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -188,11 +187,8 @@ public class RestartProcessSequence extends ReflectionSequence {
 				ConfigurationAttributes.OTHER_RUN_COMMANDS,
 				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT).trim();
 
-		try {
-			DebugUtils.addMultiLine(otherCmds, commandsList);
-		} catch (CoreException e) {
-			Activator.log(e);
-		}
+		otherCmds = DebugUtils.resolveAll(otherCmds, fAttributes);
+		DebugUtils.addMultiLine(otherCmds, commandsList);
 
 		commandsList.add(ConfigurationAttributes.DO_CONTINUE_COMMAND);
 

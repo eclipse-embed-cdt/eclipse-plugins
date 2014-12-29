@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
-public class WorkspacePreferences {
+public class WorkspacePersistentValues {
 
 	// Tab Debugger
 	// GDB Server Setup
@@ -52,6 +52,9 @@ public class WorkspacePreferences {
 
 	public static final String GDB_OPENOCD_ENABLE_SEMIHOSTING = GDB_OPENOCD
 			+ "enableSemihosting";
+
+	public static final String GDB_OPENOCD_DO_DEBUG_IN_RAM = GDB_OPENOCD
+			+ "doDebugInRam";
 
 	// Run Commands
 	public static final String GDB_OPENOCD_DO_PRERUN_RESET = GDB_OPENOCD
@@ -215,6 +218,18 @@ public class WorkspacePreferences {
 	public static void putOpenOCDInitOther(String value) {
 
 		putValueForId(GDB_OPENOCD_INIT_OTHER, value);
+	}
+
+	// ----- OpenOCD debug in ram ---------------------------------------------
+	public static boolean getOpenOCDDebugInRam(boolean defaultValue) {
+
+		return Boolean.valueOf(getValueForId(GDB_OPENOCD_DO_DEBUG_IN_RAM,
+				Boolean.toString(defaultValue)));
+	}
+
+	public static void putOpenOCDDebugInRam(boolean value) {
+
+		putValueForId(GDB_OPENOCD_DO_DEBUG_IN_RAM, Boolean.toString(value));
 	}
 
 	// ----- OpenOCD do prerun reset ------------------------------------------
