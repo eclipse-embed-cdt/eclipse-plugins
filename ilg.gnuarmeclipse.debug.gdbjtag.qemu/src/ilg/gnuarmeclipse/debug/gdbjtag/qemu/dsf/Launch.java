@@ -11,17 +11,22 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.qemu.dsf;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch;
 import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Configuration;
 import ilg.gnuarmeclipse.debug.gdbjtag.qemu.ConfigurationAttributes;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.RejectedExecutionException;
 
+import org.eclipse.cdt.debug.core.CDebugUtils;
+import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
+import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.IGDBJtagDevice;
 import org.eclipse.cdt.dsf.concurrent.ConfinedToDsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.DefaultDsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.DsfRunnable;
@@ -34,6 +39,7 @@ import org.eclipse.cdt.dsf.mi.service.command.AbstractCLIProcess;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -268,6 +274,87 @@ public class Launch extends GnuArmLaunch {
 
 		return config.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER,
 				ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT).trim();
+	}
+
+	// ------------------------------------------------------------------------
+
+	public static IStatus startRestart(Map<String, Object> attributes,
+			boolean doReset, IPath programPath, IGDBJtagDevice jtagDevice,
+			List<String> commandsList) {
+
+		if (doReset) {
+			if (CDebugUtils.getAttribute(attributes,
+					ConfigurationAttributes.DO_SECOND_RESET,
+					ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
+				String commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
+				commandsList.add(commandStr);
+
+				// Although the manual claims that reset always does a
+				// halt, better issue it explicitly
+				commandStr = ConfigurationAttributes.HALT_COMMAND;
+				commandsList.add(commandStr);
+			}
+		}
+
+		if (CDebugUtils.getAttribute(attributes,
+				IGDBJtagConstants.ATTR_LOAD_IMAGE,
+				IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
+				&& CDebugUtils.getAttribute(attributes,
+						ConfigurationAttributes.DO_DEBUG_IN_RAM,
+						ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT)) {
+
+			IStatus status = DebugUtils.loadImage(attributes, programPath,
+					jtagDevice, false, commandsList);
+
+			if (!status.isOK()) {
+				return status;
+			}
+		}
+
+		String userCmd = CDebugUtils.getAttribute(attributes,
+				ConfigurationAttributes.OTHER_RUN_COMMANDS,
+				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT).trim();
+
+		userCmd = DebugUtils.resolveAll(userCmd, attributes);
+
+		DebugUtils.addMultiLine(userCmd, commandsList);
+
+		if (CDebugUtils.getAttribute(attributes,
+				IGDBJtagConstants.ATTR_SET_PC_REGISTER,
+				IGDBJtagConstants.DEFAULT_SET_PC_REGISTER)) {
+			String pcRegister = CDebugUtils.getAttribute(
+					attributes,
+					IGDBJtagConstants.ATTR_PC_REGISTER,
+					CDebugUtils.getAttribute(attributes,
+							IGDBJtagConstants.ATTR_IMAGE_OFFSET,
+							IGDBJtagConstants.DEFAULT_PC_REGISTER)).trim();
+			if (!pcRegister.isEmpty()) {
+				jtagDevice.doSetPC(pcRegister, commandsList);
+			}
+		}
+
+		if (CDebugUtils.getAttribute(attributes,
+				IGDBJtagConstants.ATTR_SET_STOP_AT,
+				IGDBJtagConstants.DEFAULT_SET_STOP_AT)) {
+			String stopAt = CDebugUtils.getAttribute(attributes,
+					IGDBJtagConstants.ATTR_STOP_AT,
+					IGDBJtagConstants.DEFAULT_STOP_AT).trim();
+
+			if (!stopAt.isEmpty()) {
+				// doAtopAt replaced by a simple tbreak
+				commandsList.add("tbreak " + stopAt);
+			}
+		}
+
+		// commandsList.add("monitor reg");
+
+		if (CDebugUtils.getAttribute(attributes,
+				ConfigurationAttributes.DO_CONTINUE,
+				ConfigurationAttributes.DO_CONTINUE_DEFAULT)) {
+			commandsList.add(ConfigurationAttributes.DO_CONTINUE_COMMAND);
+		}
+
+		return Status.OK_STATUS;
 	}
 
 	// ------------------------------------------------------------------------

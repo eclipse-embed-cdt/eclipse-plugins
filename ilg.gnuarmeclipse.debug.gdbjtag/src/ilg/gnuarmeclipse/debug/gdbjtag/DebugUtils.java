@@ -38,6 +38,7 @@ import org.eclipse.cdt.core.settings.model.ICProjectDescription;
 import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
+import org.eclipse.cdt.debug.gdbjtag.core.Messages;
 import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.GDBJtagDeviceContribution;
 import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.GDBJtagDeviceContributionFactory;
 import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.IGDBJtagDevice;
@@ -701,6 +702,110 @@ public class DebugUtils {
 			}
 		}
 		return gdbJtagDevice;
+	}
+
+	public static IStatus loadSymbols(Map<String, Object> attributes,
+			IPath programPath, IGDBJtagDevice jtagDevice,
+			boolean doubleBackslash, List<String> commandsList) {
+
+		String symbolsFileName = null;
+
+		// New setting in Helios. Default is true. Check for existence
+		// in order to support older launch configs
+		if (attributes
+				.containsKey(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS)
+				&& CDebugUtils.getAttribute(attributes,
+						IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
+						IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_SYMBOLS)) {
+			if (programPath != null) {
+				symbolsFileName = programPath.toOSString();
+			}
+		} else {
+			symbolsFileName = CDebugUtils.getAttribute(attributes,
+					IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
+					IGDBJtagConstants.DEFAULT_SYMBOLS_FILE_NAME);
+			if (!symbolsFileName.isEmpty()) {
+				symbolsFileName = DebugUtils.resolveAll(symbolsFileName,
+						attributes);
+			} else {
+				symbolsFileName = null;
+			}
+		}
+
+		if (symbolsFileName == null) {
+			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
+					Messages.getString("GDBJtagDebugger.err_no_img_file"), null); //$NON-NLS-1$
+		}
+
+		if (doubleBackslash && EclipseUtils.isWindows()) {
+			// Escape windows path separator characters TWICE, once for
+			// Java and once for GDB.
+			symbolsFileName = StringUtils.duplicateBackslashes(symbolsFileName); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		String symbolsOffset = CDebugUtils.getAttribute(attributes,
+				IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
+				IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
+		if (!symbolsOffset.isEmpty()) {
+			symbolsOffset = "0x" + symbolsOffset;
+		}
+		jtagDevice.doLoadSymbol(symbolsFileName, symbolsOffset, commandsList);
+
+		return Status.OK_STATUS;
+
+	}
+
+	public static IStatus loadImage(Map<String, Object> attributes,
+			IPath programPath, IGDBJtagDevice jtagDevice,
+			boolean doubleBackslash, List<String> commandsList) {
+
+		String imageFileName = null;
+
+		if (attributes
+				.containsKey(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE)
+				&& CDebugUtils.getAttribute(attributes,
+						IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
+						IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_IMAGE)) {
+			if (programPath != null) {
+				imageFileName = programPath.toOSString();
+			}
+		} else {
+			imageFileName = CDebugUtils.getAttribute(attributes,
+					IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
+					IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME);
+			if (!imageFileName.isEmpty()) {
+				imageFileName = DebugUtils
+						.resolveAll(imageFileName, attributes);
+			} else {
+				imageFileName = null;
+			}
+		}
+
+		if (imageFileName == null) {
+			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
+					Messages.getString("GDBJtagDebugger.err_no_img_file"), null); //$NON-NLS-1$
+		}
+
+		imageFileName = DebugUtils.resolveAll(imageFileName, attributes);
+
+		if (doubleBackslash && EclipseUtils.isWindows()) {
+			// Escape windows path separator characters TWICE, once
+			// for Java and once for GDB.
+			imageFileName = StringUtils.duplicateBackslashes(imageFileName); //$NON-NLS-1$ //$NON-NLS-2$
+		}
+
+		String imageOffset = CDebugUtils.getAttribute(attributes,
+				IGDBJtagConstants.ATTR_IMAGE_OFFSET,
+				IGDBJtagConstants.DEFAULT_IMAGE_OFFSET);
+		if (imageOffset.length() > 0) {
+			imageOffset = (imageFileName.endsWith(".elf")) ? "" : "0x"
+					+ CDebugUtils.getAttribute(attributes,
+							IGDBJtagConstants.ATTR_IMAGE_OFFSET,
+							IGDBJtagConstants.DEFAULT_IMAGE_OFFSET); //$NON-NLS-2$ 
+		}
+		jtagDevice.doLoadImage(imageFileName, imageOffset, commandsList);
+
+		return Status.OK_STATUS;
 	}
 
 	// ------------------------------------------------------------------------

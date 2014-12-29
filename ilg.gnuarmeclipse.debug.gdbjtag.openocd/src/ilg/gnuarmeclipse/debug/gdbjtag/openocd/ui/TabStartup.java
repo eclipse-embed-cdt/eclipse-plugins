@@ -1109,7 +1109,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			configuration.setAttribute(IGDBJtagConstants.ATTR_IMAGE_OFFSET,
 					imageOffset.getText());
-
 		}
 
 		// Runtime Options

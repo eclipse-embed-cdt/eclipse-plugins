@@ -24,7 +24,6 @@ import java.util.Map;
 import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.debug.gdbjtag.core.GDBJtagDSFFinalLaunchSequence;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
-import org.eclipse.cdt.debug.gdbjtag.core.Messages;
 import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.IGDBJtagDevice;
 import org.eclipse.cdt.dsf.concurrent.CountingRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
@@ -35,7 +34,6 @@ import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
 import org.eclipse.cdt.dsf.mi.service.IMIProcesses;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -131,7 +129,6 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	// ------------------------------------------------------------------------
 
-	/** utility method; cuts down on clutter */
 	private void queueCommands(List<String> commands, RequestMonitor rm) {
 		DebugUtils.queueCommands(commands, rm, fCommandControl, getExecutor());
 	}
@@ -287,72 +284,30 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	 */
 	/** @since 8.2 */
 	@Execute
-	public void stepLoadImage(final RequestMonitor rm0) {
+	public void stepLoadImage(final RequestMonitor rm) {
 
-		CountingRequestMonitor rm = new CountingRequestMonitor(getExecutor(),
-				rm0);
-		rm.setDoneCount(2);
+		CountingRequestMonitor crm = new CountingRequestMonitor(getExecutor(),
+				rm);
+		crm.setDoneCount(2);
 
 		if (CDebugUtils.getAttribute(getAttributes(),
 				IGDBJtagConstants.ATTR_LOAD_SYMBOLS,
 				IGDBJtagConstants.DEFAULT_LOAD_SYMBOLS)) {
-			String symbolsFileName = null;
 
-			// New setting in Helios. Default is true. Check for existence
-			// in order to support older launch configs
-			if (getAttributes().containsKey(
-					IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS)
-					&& CDebugUtils
-							.getAttribute(
-									getAttributes(),
-									IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
-									IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_SYMBOLS)) {
-				IPath programFile = fGDBBackend.getProgramPath();
-				if (programFile != null) {
-					symbolsFileName = programFile.toOSString();
-				}
-			} else {
-				symbolsFileName = CDebugUtils.getAttribute(getAttributes(),
-						IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
-						IGDBJtagConstants.DEFAULT_SYMBOLS_FILE_NAME);
-				if (!symbolsFileName.isEmpty()) {
-					symbolsFileName = DebugUtils.resolveAll(symbolsFileName,
-							getAttributes());
-				} else {
-					symbolsFileName = null;
-				}
-			}
-
-			if (symbolsFileName == null) {
-				rm.setStatus(new Status(
-						IStatus.ERROR,
-						Activator.PLUGIN_ID,
-						-1,
-						Messages.getString("GDBJtagDebugger.err_no_img_file"), null)); //$NON-NLS-1$
-				rm0.done();
-				return;
-			}
-
-			if (EclipseUtils.isWindows()) {
-				// Escape windows path separator characters TWICE, once for
-				// Java and once for GDB.
-				symbolsFileName = StringUtils
-						.duplicateBackslashes(symbolsFileName); //$NON-NLS-1$ //$NON-NLS-2$
-			}
-
-			String symbolsOffset = CDebugUtils.getAttribute(getAttributes(),
-					IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
-					IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
-			if (!symbolsOffset.isEmpty()) {
-				symbolsOffset = "0x" + symbolsOffset;
-			}
 			List<String> commands = new ArrayList<String>();
-			fGdbJtagDevice.doLoadSymbol(symbolsFileName, symbolsOffset,
+			IStatus status = DebugUtils.loadSymbols(fAttributes,
+					fGDBBackend.getProgramPath(), fGdbJtagDevice, true,
 					commands);
-			queueCommands(commands, rm);
+
+			if (status.isOK()) {
+				queueCommands(commands, crm);
+			} else {
+				crm.setStatus(status); //$NON-NLS-1$
+				crm.done();
+			}
 
 		} else {
-			rm.done();
+			crm.done();
 		}
 
 		boolean doConnectToRunning = CDebugUtils.getAttribute(fAttributes,
@@ -368,30 +323,32 @@ public class FinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 							ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT)) {
 
 				List<String> commands = new ArrayList<String>();
-				IStatus status = Launch.loadImage(fAttributes,
-						fGDBBackend.getProgramPath(), fGdbJtagDevice, commands);
+				IStatus status = DebugUtils.loadImage(fAttributes,
+						fGDBBackend.getProgramPath(), fGdbJtagDevice, true,
+						commands);
 
 				if (status.isOK()) {
-					queueCommands(commands, rm);
+					queueCommands(commands, crm);
 				} else {
-					rm.setStatus(status); //$NON-NLS-1$
-					rm.done();
+					crm.setStatus(status); //$NON-NLS-1$
+					crm.done();
 				}
+
 			} else {
-				rm.done();
+				crm.done();
 			}
 		}
 	}
 
 	@Execute
-	public void stepSetProgramCounter(final RequestMonitor rm) {
-		
+	public void stepSetProgramCounter(RequestMonitor rm) {
+
 		// set PC moved to user step
 		rm.done();
 	}
 
 	@Execute
-	public void stepStopScript(final RequestMonitor rm) {
+	public void stepStopScript(RequestMonitor rm) {
 
 		// tbreak moved to user step
 		rm.done();

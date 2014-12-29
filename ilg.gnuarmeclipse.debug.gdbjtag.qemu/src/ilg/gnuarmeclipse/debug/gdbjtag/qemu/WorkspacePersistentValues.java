@@ -52,6 +52,9 @@ public class WorkspacePersistentValues {
 			+ "enableSemihosting";
 
 	// Run Commands
+	public static final String GDB_QEMU_DO_DEBUG_IN_RAM = GDB_QEMU
+			+ "doDebugInRam";
+
 	public static final String GDB_QEMU_DO_PRERUN_RESET = GDB_QEMU
 			+ "doPreRunReset";
 	// public static final String GDB_QEMU_PRERUN_RESET_TYPE = GDB_QEMU
@@ -205,6 +208,18 @@ public class WorkspacePersistentValues {
 	public static void putQemuInitOther(String value) {
 
 		putValueForId(GDB_QEMU_INIT_OTHER, value);
+	}
+
+	// ----- jlink debug in ram ---------------------------------------------
+	public static boolean getQemuDebugInRam(boolean defaultValue) {
+
+		return Boolean.valueOf(getValueForId(GDB_QEMU_DO_DEBUG_IN_RAM,
+				Boolean.toString(defaultValue)));
+	}
+
+	public static void putQemuDebugInRam(boolean value) {
+
+		putValueForId(GDB_QEMU_DO_DEBUG_IN_RAM, Boolean.toString(value));
 	}
 
 	// ----- QEMU do prerun reset ------------------------------------------

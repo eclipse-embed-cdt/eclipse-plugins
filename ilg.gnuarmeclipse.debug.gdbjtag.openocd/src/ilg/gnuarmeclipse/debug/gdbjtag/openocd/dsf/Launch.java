@@ -28,7 +28,6 @@ import java.util.concurrent.RejectedExecutionException;
 
 import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
-import org.eclipse.cdt.debug.gdbjtag.core.Messages;
 import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.IGDBJtagDevice;
 import org.eclipse.cdt.dsf.concurrent.ConfinedToDsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.DefaultDsfExecutor;
@@ -279,58 +278,7 @@ public class Launch extends GnuArmLaunch {
 				ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT).trim();
 	}
 
-	public static IStatus loadImage(Map<String, Object> attributes,
-			IPath programPath, IGDBJtagDevice jtagDevice,
-			List<String> commandsList) {
-
-		String imageFileName = null;
-
-		if (attributes
-				.containsKey(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE)
-				&& CDebugUtils.getAttribute(attributes,
-						IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
-						IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_IMAGE)) {
-			if (programPath != null) {
-				imageFileName = programPath.toOSString();
-			}
-		} else {
-			imageFileName = CDebugUtils.getAttribute(attributes,
-					IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
-					IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME);
-			if (!imageFileName.isEmpty()) {
-				imageFileName = DebugUtils
-						.resolveAll(imageFileName, attributes);
-			} else {
-				imageFileName = null;
-			}
-		}
-
-		if (imageFileName == null) {
-			return new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
-					Messages.getString("GDBJtagDebugger.err_no_img_file"), null); //$NON-NLS-1$
-		}
-
-		imageFileName = DebugUtils.resolveAll(imageFileName, attributes);
-
-		if (EclipseUtils.isWindows()) {
-			// Escape windows path separator characters TWICE, once
-			// for Java and once for GDB.
-			imageFileName = StringUtils.duplicateBackslashes(imageFileName); //$NON-NLS-1$ //$NON-NLS-2$
-		}
-
-		String imageOffset = CDebugUtils.getAttribute(attributes,
-				IGDBJtagConstants.ATTR_IMAGE_OFFSET,
-				IGDBJtagConstants.DEFAULT_IMAGE_OFFSET);
-		if (imageOffset.length() > 0) {
-			imageOffset = (imageFileName.endsWith(".elf")) ? "" : "0x"
-					+ CDebugUtils.getAttribute(attributes,
-							IGDBJtagConstants.ATTR_IMAGE_OFFSET,
-							IGDBJtagConstants.DEFAULT_IMAGE_OFFSET); //$NON-NLS-2$ 
-		}
-		jtagDevice.doLoadImage(imageFileName, imageOffset, commandsList);
-
-		return Status.OK_STATUS;
-	}
+	// ------------------------------------------------------------------------
 
 	public static IStatus startRestart(Map<String, Object> attributes,
 			boolean doReset, IPath programPath, IGDBJtagDevice jtagDevice,
@@ -360,8 +308,8 @@ public class Launch extends GnuArmLaunch {
 						ConfigurationAttributes.DO_DEBUG_IN_RAM,
 						ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT)) {
 
-			IStatus status = Launch.loadImage(attributes, programPath,
-					jtagDevice, commandsList);
+			IStatus status = DebugUtils.loadImage(attributes, programPath,
+					jtagDevice, true, commandsList);
 
 			if (!status.isOK()) {
 				return status;
@@ -408,7 +356,7 @@ public class Launch extends GnuArmLaunch {
 		}
 
 		commandsList.add("monitor reg");
-		
+
 		if (CDebugUtils.getAttribute(attributes,
 				ConfigurationAttributes.DO_CONTINUE,
 				ConfigurationAttributes.DO_CONTINUE_DEFAULT)) {
@@ -417,5 +365,6 @@ public class Launch extends GnuArmLaunch {
 
 		return Status.OK_STATUS;
 	}
+
 	// ------------------------------------------------------------------------
 }

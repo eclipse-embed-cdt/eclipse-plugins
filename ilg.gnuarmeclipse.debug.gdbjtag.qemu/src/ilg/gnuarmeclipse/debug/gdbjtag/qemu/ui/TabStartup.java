@@ -97,6 +97,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	private Text runCommands;
 	private Button doContinue;
+	private Button doDebugInRam;
 
 	// New GUI added to address bug 310304
 	private Button useProjectBinaryForImage;
@@ -200,16 +201,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					.getString("StartupTab.doFirstReset_Text"));
 			doFirstReset.setToolTipText(Messages
 					.getString("StartupTab.doFirstReset_ToolTipText"));
-
-			// Label label = new Label(local, SWT.NONE);
-			// label.setText(Messages.getString("StartupTab.firstResetType_Text"));
-			// label.setToolTipText(Messages
-			// .getString("StartupTab.firstResetType_ToolTipText"));
-
-			// firstResetType = new Text(local, SWT.BORDER);
-			// gd = new GridData();
-			// gd.widthHint = 30;
-			// firstResetType.setLayoutData(gd);
 		}
 
 		{
@@ -556,38 +547,17 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		comp.setLayoutData(gd);
 
-		{
-			setPcRegister = new Button(comp, SWT.CHECK);
-			setPcRegister.setText(Messages
-					.getString("StartupTab.setPcRegister_Text"));
-
-			pcRegister = new Text(comp, SWT.BORDER);
-			gd = new GridData();
-			gd.widthHint = 100;
-			pcRegister.setLayoutData(gd);
-		}
+		doDebugInRam = new Button(comp, SWT.CHECK);
+		doDebugInRam
+				.setText(Messages.getString("StartupTab.doDebugInRam_Text"));
+		doDebugInRam.setToolTipText(Messages
+				.getString("StartupTab.doDebugInRam_ToolTipText"));
 
 		// ----- Actions ------------------------------------------------------
 
-		setPcRegister.addSelectionListener(new SelectionAdapter() {
+		doDebugInRam.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				pcRegisterChanged();
-				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
-			}
-		});
-
-		pcRegister.addVerifyListener(new VerifyListener() {
-			@Override
-			public void verifyText(VerifyEvent e) {
-				e.doit = (Character.isDigit(e.character)
-						|| Character.isISOControl(e.character) || "abcdef"
-						.contains(String.valueOf(e.character).toLowerCase()));
-			}
-		});
-		pcRegister.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
 				scheduleUpdateJob();
 			}
 		});
@@ -649,14 +619,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			doSecondReset.setToolTipText(Messages
 					.getString("StartupTab.doSecondReset_ToolTipText"));
 
-			// Label label = new Label(comp, SWT.NONE);
-			// label.setText(Messages.getString("StartupTab.secondResetType_Text"));
-			//
-			// secondResetType = new Text(comp, SWT.BORDER);
-			// gd = new GridData();
-			// gd.widthHint = 30;
-			// secondResetType.setLayoutData(gd);
-
 			secondResetWarning = new Label(comp, SWT.NONE);
 			secondResetWarning.setText(Messages
 					.getString("StartupTab.secondResetWarning_Text"));
@@ -667,23 +629,43 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		}
 
 		{
+			runCommands = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER
+					| SWT.V_SCROLL);
+			runCommands.setToolTipText(Messages
+					.getString("StartupTab.runCommands_ToolTipText"));
+			gd = new GridData(GridData.FILL_BOTH);
+			gd.heightHint = 60;
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
+			runCommands.setLayoutData(gd);
+		}
+
+		{
+			setPcRegister = new Button(comp, SWT.CHECK);
+			setPcRegister.setText(Messages
+					.getString("StartupTab.setPcRegister_Text"));
+			setPcRegister.setToolTipText(Messages
+					.getString("StartupTab.setPcRegister_ToolTipText"));
+
+			pcRegister = new Text(comp, SWT.BORDER);
+			pcRegister.setToolTipText(Messages
+					.getString("StartupTab.pcRegister_ToolTipText"));
+			gd = new GridData();
+			gd.widthHint = 100;
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
+			pcRegister.setLayoutData(gd);
+		}
+
+		{
 			setStopAt = new Button(comp, SWT.CHECK);
 			setStopAt.setText(Messages.getString("StartupTab.setStopAt_Text"));
+			setStopAt.setToolTipText(Messages
+					.getString("StartupTab.setStopAt_ToolTipText"));
 
 			stopAt = new Text(comp, SWT.BORDER);
 			gd = new GridData();
 			gd.widthHint = 100;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			stopAt.setLayoutData(gd);
-		}
-
-		{
-			runCommands = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER
-					| SWT.V_SCROLL);
-			gd = new GridData(GridData.FILL_BOTH);
-			gd.heightHint = 60;
-			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
-			runCommands.setLayoutData(gd);
 		}
 
 		{
@@ -706,6 +688,30 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				// doResetChanged();
 				doSecondResetChanged();
 				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
+			}
+		});
+
+		setPcRegister.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				pcRegisterChanged();
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
+			}
+		});
+
+		pcRegister.addVerifyListener(new VerifyListener() {
+			@Override
+			public void verifyText(VerifyEvent e) {
+				e.doit = (Character.isDigit(e.character)
+						|| Character.isISOControl(e.character) || "abcdef"
+						.contains(String.valueOf(e.character).toLowerCase()));
+			}
+		});
+
+		pcRegister.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				scheduleUpdateJob();
 			}
 		});
 
@@ -940,6 +946,29 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			// Runtime Options
 			{
+				booleanDefault = WorkspacePersistentValues
+						.getQemuDebugInRam(ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT);
+				doDebugInRam.setSelection(configuration
+						.getAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM,
+								booleanDefault));
+			}
+
+			// Run Commands
+			{
+				// Do pre-run reset
+				booleanDefault = WorkspacePersistentValues
+						.getQemuDoPreRunReset(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
+				doSecondReset.setSelection(configuration
+						.getAttribute(ConfigurationAttributes.DO_SECOND_RESET,
+								booleanDefault));
+
+				// Other commands
+				stringDefault = WorkspacePersistentValues
+						.getQemuPreRunOther(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
+				runCommands.setText(configuration.getAttribute(
+						ConfigurationAttributes.OTHER_RUN_COMMANDS,
+						stringDefault));
+
 				setPcRegister.setSelection(configuration.getAttribute(
 						IGDBJtagConstants.ATTR_SET_PC_REGISTER,
 						IGDBJtagConstants.DEFAULT_SET_PC_REGISTER));
@@ -953,30 +982,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				stopAt.setText(configuration.getAttribute(
 						IGDBJtagConstants.ATTR_STOP_AT,
 						ConfigurationAttributes.STOP_AT_NAME_DEFAULT));
-			}
-
-			// Run Commands
-			{
-				// Do pre-run reset
-				booleanDefault = WorkspacePersistentValues
-						.getQemuDoPreRunReset(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
-				doSecondReset.setSelection(configuration
-						.getAttribute(ConfigurationAttributes.DO_SECOND_RESET,
-								booleanDefault));
-
-				// Pre-run reset type
-				// stringDefault = WorkspacePersistentValues
-				// .getQemuPreRunResetType(ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
-				// secondResetType.setText(configuration.getAttribute(
-				// ConfigurationAttributes.SECOND_RESET_TYPE,
-				// stringDefault));
-
-				// Other commands
-				stringDefault = WorkspacePersistentValues
-						.getQemuPreRunOther(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
-				runCommands.setText(configuration.getAttribute(
-						ConfigurationAttributes.OTHER_RUN_COMMANDS,
-						stringDefault));
 
 				// Do continue
 				doContinue.setSelection(configuration.getAttribute(
@@ -1024,12 +1029,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					booleanValue);
 			WorkspacePersistentValues.putQemuDoInitialReset(booleanValue);
 
-			// First reset type
-			// stringValue = firstResetType.getText().trim();
-			// configuration.setAttribute(
-			// ConfigurationAttributes.FIRST_RESET_TYPE, stringValue);
-			// WorkspacePersistentValues.putQemuInitialResetType(stringValue);
-
 			// Other commands
 			stringValue = initCommands.getText().trim();
 			configuration.setAttribute(
@@ -1073,19 +1072,14 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			configuration.setAttribute(IGDBJtagConstants.ATTR_IMAGE_OFFSET,
 					imageOffset.getText());
-
 		}
 
 		// Runtime Options
 		{
-			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER,
-					setPcRegister.getSelection());
-			configuration.setAttribute(IGDBJtagConstants.ATTR_PC_REGISTER,
-					pcRegister.getText());
-			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_STOP_AT,
-					setStopAt.getSelection());
-			configuration.setAttribute(IGDBJtagConstants.ATTR_STOP_AT,
-					stopAt.getText());
+			booleanValue = doDebugInRam.getSelection();
+			configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM,
+					booleanValue);
+			WorkspacePersistentValues.putQemuDebugInRam(booleanValue);
 		}
 
 		// Run Commands
@@ -1096,17 +1090,20 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					booleanValue);
 			WorkspacePersistentValues.putQemuDoPreRunReset(booleanValue);
 
-			// reset type
-			// stringValue = secondResetType.getText().trim();
-			// configuration.setAttribute(
-			// ConfigurationAttributes.SECOND_RESET_TYPE, stringValue);
-			// WorkspacePersistentValues.putQemuPreRunResetType(stringValue);
-
 			// Other commands
 			stringValue = runCommands.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.OTHER_RUN_COMMANDS, stringValue);
 			WorkspacePersistentValues.putQemuPreRunOther(stringValue);
+
+			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER,
+					setPcRegister.getSelection());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_PC_REGISTER,
+					pcRegister.getText());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_STOP_AT,
+					setStopAt.getSelection());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_STOP_AT,
+					stopAt.getText());
 
 			// Continue
 			configuration.setAttribute(ConfigurationAttributes.DO_CONTINUE,
@@ -1122,8 +1119,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		// Initialisation Commands
 		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
 				ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
-		// configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
-		// ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
 
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING,
 				ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
@@ -1157,6 +1152,16 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
 
 		// Runtime Options
+		configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM,
+				ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT);
+
+		// Run Commands
+		configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
+				ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
+
+		configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS,
+				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
+
 		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER,
 				IGDBJtagConstants.DEFAULT_SET_PC_REGISTER);
 		configuration.setAttribute(IGDBJtagConstants.ATTR_PC_REGISTER,
@@ -1168,17 +1173,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_RESUME,
 				IGDBJtagConstants.DEFAULT_SET_RESUME);
 
-		// Run Commands
-		configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
-				ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
-		// configuration.setAttribute(ConfigurationAttributes.SECOND_RESET_TYPE,
-		// ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
-
-		configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS,
-				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
-
 		configuration.setAttribute(ConfigurationAttributes.DO_CONTINUE,
 				ConfigurationAttributes.DO_CONTINUE_DEFAULT);
-
 	}
 }

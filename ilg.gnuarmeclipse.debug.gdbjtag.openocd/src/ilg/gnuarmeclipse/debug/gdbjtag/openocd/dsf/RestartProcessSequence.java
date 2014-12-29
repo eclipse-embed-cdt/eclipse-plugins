@@ -99,7 +99,6 @@ public class RestartProcessSequence extends ReflectionSequence {
 		return fContainerDmc;
 	}
 
-	/** utility method; cuts down on clutter */
 	private void queueCommands(List<String> commands, RequestMonitor rm) {
 		DebugUtils.queueCommands(commands, rm, fCommandControl, getExecutor());
 	}
