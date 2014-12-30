@@ -93,7 +93,7 @@ public class LaunchConfigurationDelegate extends
 		System.out.println("LaunchConfigurationDelegate.createGdbLaunch("
 				+ configuration.getName() + "," + mode + ") " + this);
 
-		fDoStartGdbServer = Launch.getStartGdbServer(configuration);
+		fDoStartGdbServer = Configuration.getDoStartGdbServer(configuration);
 
 		DebugUtils.checkLaunchConfigurationStarted(configuration);
 
@@ -449,7 +449,7 @@ public class LaunchConfigurationDelegate extends
 
 		String configOptions = "";
 		try {
-			configOptions = Launch.getServerOtherConfig(config);
+			configOptions = Configuration.getGdbServerOtherConfig(config);
 		} catch (CoreException e) {
 			;
 		}

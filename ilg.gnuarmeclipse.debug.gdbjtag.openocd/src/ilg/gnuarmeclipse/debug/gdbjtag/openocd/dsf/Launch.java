@@ -14,7 +14,6 @@ package ilg.gnuarmeclipse.debug.gdbjtag.openocd.dsf;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Configuration;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -122,13 +121,14 @@ public class Launch extends GnuArmLaunch {
 		System.out.println("Launch.initializeServerConsole()");
 
 		IProcess newProcess;
-		boolean doAddServerConsole = getAddServerConsole(fConfig);
+		boolean doAddServerConsole = Configuration
+				.getDoAddServerConsole(fConfig);
 
 		if (doAddServerConsole) {
 
 			// Add the GDB server process to the launch tree
 			newProcess = addServerProcess(Configuration
-					.getServerCommandName(fConfig));
+					.getGdbServerCommandName(fConfig));
 			newProcess.setAttribute(IProcess.ATTR_CMDLINE,
 					Configuration.getGdbServerCommandLine(fConfig));
 
@@ -145,7 +145,7 @@ public class Launch extends GnuArmLaunch {
 		{
 			// Add the GDB client process to the launch tree.
 			newProcess = addClientProcess(Configuration
-					.getClientCommandName(fConfig)); //$NON-NLS-1$
+					.getGdbClientCommandName(fConfig)); //$NON-NLS-1$
 
 			newProcess.setAttribute(IProcess.ATTR_CMDLINE,
 					Configuration.getGdbClientCommandLine(fConfig));
@@ -197,32 +197,6 @@ public class Launch extends GnuArmLaunch {
 		}
 
 		return newProcess;
-	}
-
-	// ------------------------------------------------------------------------
-
-	public static boolean getStartGdbServer(ILaunchConfiguration config)
-			throws CoreException {
-
-		return config.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
-				ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
-	}
-
-	public static boolean getAddServerConsole(ILaunchConfiguration config)
-			throws CoreException {
-
-		return getStartGdbServer(config)
-				&& config
-						.getAttribute(
-								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
-								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
-	}
-
-	public static String getServerOtherConfig(ILaunchConfiguration config)
-			throws CoreException {
-
-		return config.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER,
-				ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT).trim();
 	}
 
 	// ------------------------------------------------------------------------
