@@ -47,7 +47,7 @@ public class GdbBackend extends GnuArmGdbBackend {
 
 		super(session, lc);
 
-		System.out.println("Backend() " + this);
+		System.out.println("GdbBackend() " + this);
 		fLaunchConfiguration = lc;
 	}
 
@@ -56,21 +56,21 @@ public class GdbBackend extends GnuArmGdbBackend {
 	@Override
 	public void initialize(final RequestMonitor rm) {
 
-		System.out.println("Backend.initialize() " + Thread.currentThread());
+		System.out.println("GdbBackend.initialize() " + Thread.currentThread());
 		super.initialize(rm);
 	}
 
 	@Override
 	public void destroy() {
 
-		System.out.println("Backend.destroy() " + Thread.currentThread());
+		System.out.println("GdbBackend.destroy() " + Thread.currentThread());
 		super.destroy();
 	}
 
 	@Override
 	public void shutdown(final RequestMonitor rm) {
 
-		System.out.println("Backend.shutdown() " + Thread.currentThread());
+		System.out.println("GdbBackend.shutdown() " + Thread.currentThread());
 		super.shutdown(rm);
 	}
 

@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.IGDBJtagDevice;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
@@ -28,7 +27,6 @@ import org.eclipse.cdt.dsf.concurrent.ReflectionSequence;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.debug.service.IRunControl.IContainerDMContext;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
-import org.eclipse.cdt.dsf.gdb.service.IGDBBackend;
 import org.eclipse.cdt.dsf.gdb.service.IGDBProcesses;
 import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
 import org.eclipse.cdt.dsf.mi.service.IMICommandControl;
@@ -46,9 +44,8 @@ public class GnuArmRestartProcessSequence extends ReflectionSequence {
 	private CommandFactory fCommandFactory;
 	private IGDBProcesses fProcService;
 	// private IReverseRunControl fReverseService;
-	private IGDBBackend fBackend;
-	@SuppressWarnings("unused")
-	private IGDBJtagDevice fGdbJtagDevice;
+	// private IGDBBackend fBackend;
+	// private IGDBJtagDevice fGdbJtagDevice;
 	private IGnuArmDebuggerCommandsService fDebuggerCommands;
 
 	private DsfServicesTracker fTracker;
@@ -70,6 +67,7 @@ public class GnuArmRestartProcessSequence extends ReflectionSequence {
 	// private boolean fUserBreakpointIsOnMain;
 
 	// private boolean fReverseEnabled;
+	@SuppressWarnings("unused")
 	private final Map<String, Object> fAttributes;
 
 	// private final boolean fRestart;
@@ -123,21 +121,17 @@ public class GnuArmRestartProcessSequence extends ReflectionSequence {
 	 */
 	@Execute
 	public void stepInitializeBaseSequence(RequestMonitor rm) {
+
 		fTracker = new DsfServicesTracker(GdbPlugin.getBundleContext(),
 				fContainerDmc.getSessionId());
 		fCommandControl = fTracker.getService(IGDBControl.class);
 		fCommandFactory = fTracker.getService(IMICommandControl.class)
 				.getCommandFactory();
 		fProcService = fTracker.getService(IGDBProcesses.class);
-		fBackend = fTracker.getService(IGDBBackend.class);
-
 		fDebuggerCommands = fTracker
 				.getService(IGnuArmDebuggerCommandsService.class);
-
-		fGdbJtagDevice = DebugUtils.getGDBJtagDevice(fAttributes);
-
 		if (fCommandControl == null || fCommandFactory == null
-				|| fProcService == null) {
+				|| fProcService == null || fDebuggerCommands == null) {
 			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					IDsfStatusConstants.INTERNAL_ERROR,
 					"Cannot obtain service", null)); //$NON-NLS-1$
@@ -145,16 +139,8 @@ public class GnuArmRestartProcessSequence extends ReflectionSequence {
 			return;
 		}
 
-		/*
-		 * fReverseService = fTracker.getService(IReverseRunControl.class); if
-		 * (fReverseService != null) { // Although the option to use reverse
-		 * debugging could be on, we only check // it if we actually have a
-		 * reverse debugging service. There is no point // in trying to handle
-		 * reverse debugging if it is not available. fReverseEnabled =
-		 * CDebugUtils.getAttribute(fAttributes,
-		 * IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_REVERSE,
-		 * IGDBLaunchConfigurationConstants.DEBUGGER_REVERSE_DEFAULT); }
-		 */
+		// fBackend = fTracker.getService(IGDBBackend.class);
+		// fGdbJtagDevice = DebugUtils.getGDBJtagDevice(fAttributes);
 		rm.done();
 	}
 
@@ -163,11 +149,11 @@ public class GnuArmRestartProcessSequence extends ReflectionSequence {
 
 		List<String> commandsList = new ArrayList<String>();
 
-		IStatus status = fDebuggerCommands.addStartRestartCommands(fAttributes,
-				true, fBackend.getProgramPath(), commandsList);
+		IStatus status = fDebuggerCommands
+				.addGnuArmRestartCommands(commandsList);
 
 		if (!status.isOK()) {
-			rm.setStatus(status); //$NON-NLS-1$
+			rm.setStatus(status);
 			rm.done();
 			return;
 		}

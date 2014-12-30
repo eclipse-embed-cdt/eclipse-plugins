@@ -43,6 +43,8 @@ public interface IGnuArmDebuggerCommandsService {
 
 	public IStatus addGnuArmStartCommands(List<String> commandsList);
 
+	public IStatus addGnuArmRestartCommands(List<String> commandsList);
+
 	// ------------------------------------------------------------------------
 
 	public IStatus addFirstResetCommands(List<String> commandsList);

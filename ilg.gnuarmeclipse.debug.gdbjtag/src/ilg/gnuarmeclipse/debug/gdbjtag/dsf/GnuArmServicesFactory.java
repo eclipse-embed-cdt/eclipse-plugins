@@ -76,6 +76,16 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 		return super.createService(clazz, session, optionalArguments);
 	}
 
+	// ------------------------------------------------------------------------
+
+	protected abstract GnuArmDebuggerCommandsService createDebuggerCommandsService(
+			DsfSession session, ILaunchConfiguration lc);
+
+	protected abstract GnuArmGdbServerBackend createGdbServerBackendService(
+			DsfSession session, ILaunchConfiguration lc);
+
+	// ------------------------------------------------------------------------
+
 	private PeripheralsService createPeripheralsService(DsfSession session) {
 		return new PeripheralsService(session);
 	}
@@ -85,20 +95,14 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 		return new PeripheralMemoryService(session);
 	}
 
-	protected abstract GnuArmDebuggerCommandsService createDebuggerCommandsService(
-			DsfSession session, ILaunchConfiguration lc);
-
-	protected abstract GnuArmGdbServerBackend createGdbServerBackendService(
-			DsfSession session, ILaunchConfiguration lc);
-
 	@Override
 	protected ICommandControl createCommandControl(DsfSession session,
 			ILaunchConfiguration config) {
 
-		System.out.println("ServicesFactory.createCommandControl(" + session
-				+ "," + config.getName() + ") " + this);
+		System.out.println("GnuArmServicesFactory.createCommandControl("
+				+ session + "," + config.getName() + ") " + this);
 
-		if (GDB_7_4_VERSION.compareTo(getVersion()) <= 0) {
+		if (GDB_7_4_VERSION.compareTo(fVersion) <= 0) {
 			return new GnuArmControl_7_4(session, config,
 					new GnuArmCommandFactory());
 		}
@@ -109,8 +113,8 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 	@Override
 	protected IProcesses createProcessesService(DsfSession session) {
 
-		System.out.println("ServicesFactory.createProcessesService(" + session
-				+ ") " + this);
+		System.out.println("GnuArmServicesFactory.createProcessesService("
+				+ session + ") " + this);
 
 		if (GDB_7_2_1_VERSION.compareTo(fVersion) <= 0) {
 			return new GnuArmProcesses_7_2_1(session);

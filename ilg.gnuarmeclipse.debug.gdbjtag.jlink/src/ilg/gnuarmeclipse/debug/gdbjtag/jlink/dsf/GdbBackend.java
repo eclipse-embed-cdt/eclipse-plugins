@@ -34,7 +34,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
  * The Kepler CDT GDBBackend does not allow such a simple customisation, we had
  * to copy a newer version locally and use it.
  */
-public class Backend extends GnuArmGdbBackend {
+public class GdbBackend extends GnuArmGdbBackend {
 
 	// ------------------------------------------------------------------------
 
@@ -42,11 +42,11 @@ public class Backend extends GnuArmGdbBackend {
 
 	// ------------------------------------------------------------------------
 
-	public Backend(DsfSession session, ILaunchConfiguration lc) {
+	public GdbBackend(DsfSession session, ILaunchConfiguration lc) {
 
 		super(session, lc);
 
-		System.out.println("Backend() " + this);
+		System.out.println("GdbBackend() " + this);
 		fLaunchConfiguration = lc;
 	}
 
@@ -55,7 +55,7 @@ public class Backend extends GnuArmGdbBackend {
 	@Override
 	public void initialize(final RequestMonitor rm) {
 
-		System.out.println("Backend.initialize() " + Thread.currentThread());
+		System.out.println("GdbBackend.initialize() " + Thread.currentThread());
 
 		super.initialize(rm);
 	}
@@ -63,14 +63,14 @@ public class Backend extends GnuArmGdbBackend {
 	@Override
 	public void destroy() {
 
-		System.out.println("Backend.destroy() " + Thread.currentThread());
+		System.out.println("GdbBackend.destroy() " + Thread.currentThread());
 		super.destroy();
 	}
 
 	@Override
 	public void shutdown(final RequestMonitor rm) {
 
-		System.out.println("Backend.shutdown() " + Thread.currentThread());
+		System.out.println("GdbBackend.shutdown() " + Thread.currentThread());
 		super.shutdown(rm);
 	}
 

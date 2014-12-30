@@ -96,10 +96,10 @@ public class LaunchConfigurationDelegate extends
 		System.out.println("LaunchConfigurationDelegate.createGdbLaunch("
 				+ configuration.getName() + "," + mode + ") " + this);
 
-		fDoStartGdbServer = Launch.getStartGdbServer(configuration);
+		fDoStartGdbServer = Configuration.getDoStartGdbServer(configuration);
 
-		fDoAddSemihostingConsole = Launch
-				.getAddSemihostingConsole(configuration);
+		fDoAddSemihostingConsole = Configuration
+				.getDoAddSemihostingConsole(configuration);
 
 		DebugUtils.checkLaunchConfigurationStarted(configuration);
 
@@ -464,7 +464,7 @@ public class LaunchConfigurationDelegate extends
 
 		String deviceName = "";
 		try {
-			deviceName = Launch.getServerDeviceName(config);
+			deviceName = Configuration.getGdbServerDeviceName(config);
 		} catch (CoreException e) {
 			;
 		}

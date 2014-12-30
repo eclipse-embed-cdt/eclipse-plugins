@@ -11,22 +11,16 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink.dsf;
 
-import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Configuration;
-import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.RejectedExecutionException;
 
-import org.eclipse.cdt.debug.core.CDebugUtils;
-import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
-import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.IGDBJtagDevice;
 import org.eclipse.cdt.dsf.concurrent.ConfinedToDsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.DefaultDsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.DsfRunnable;
@@ -37,7 +31,6 @@ import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -128,13 +121,14 @@ public class Launch extends GnuArmLaunch {
 		System.out.println("Launch.initializeServerConsole()");
 
 		IProcess newProcess;
-		boolean doAddServerConsole = getAddServerConsole(fConfig);
+		boolean doAddServerConsole = Configuration
+				.getDoAddServerConsole(fConfig);
 
 		if (doAddServerConsole) {
 
 			// Add the GDB server process to the launch tree
 			newProcess = addServerProcess(Configuration
-					.getServerCommandName(fConfig));
+					.getGdbServerCommandName(fConfig));
 			newProcess.setAttribute(IProcess.ATTR_CMDLINE,
 					Configuration.getGdbServerCommandLine(fConfig));
 
@@ -159,7 +153,8 @@ public class Launch extends GnuArmLaunch {
 			monitor.worked(1);
 		}
 
-		boolean doAddSemihostingConsole = getAddSemihostingConsole(fConfig);
+		boolean doAddSemihostingConsole = Configuration
+				.getDoAddSemihostingConsole(fConfig);
 		if (doAddSemihostingConsole) {
 
 			// Add the special semihosting and SWV process to the launch tree
@@ -258,141 +253,6 @@ public class Launch extends GnuArmLaunch {
 		}
 
 		return newProcess;
-	}
-
-	// ------------------------------------------------------------------------
-
-	public static boolean getStartGdbServer(ILaunchConfiguration config)
-			throws CoreException {
-
-		return config.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
-				ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
-	}
-
-	public static boolean getAddServerConsole(ILaunchConfiguration config)
-			throws CoreException {
-
-		return getStartGdbServer(config)
-				&& config
-						.getAttribute(
-								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
-								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
-	}
-
-	public static boolean getAddSemihostingConsole(ILaunchConfiguration config)
-			throws CoreException {
-
-		return getStartGdbServer(config)
-				&& config
-						.getAttribute(
-								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
-								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
-	}
-
-	public static String getServerDeviceName(ILaunchConfiguration config)
-			throws CoreException {
-
-		return config.getAttribute(
-				ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
-				ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT).trim();
-	}
-
-	// ------------------------------------------------------------------------
-
-	public static IStatus startRestart(Map<String, Object> attributes,
-			boolean doReset, IPath programPath, IGDBJtagDevice jtagDevice,
-			List<String> commandsList) {
-
-		String commandStr;
-
-		if (doReset) {
-			if (CDebugUtils.getAttribute(attributes,
-					ConfigurationAttributes.DO_SECOND_RESET,
-					ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
-
-				// Since reset does not clear breakpoints, we do it
-				// explicitly
-				commandStr = ConfigurationAttributes.CLRBP_COMMAND;
-				commandsList.add(commandStr);
-
-				commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
-				String resetType = CDebugUtils.getAttribute(attributes,
-						ConfigurationAttributes.SECOND_RESET_TYPE,
-						ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
-				commandsList.add(commandStr + resetType);
-
-				// Although the manual claims that reset always does a
-				// halt, better issue it explicitly
-				commandStr = ConfigurationAttributes.HALT_COMMAND;
-				commandsList.add(commandStr);
-			}
-		}
-
-		if (CDebugUtils.getAttribute(attributes,
-				IGDBJtagConstants.ATTR_LOAD_IMAGE,
-				IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
-				&& CDebugUtils.getAttribute(attributes,
-						ConfigurationAttributes.DO_DEBUG_IN_RAM,
-						ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT)) {
-
-			IStatus status = DebugUtils.loadImage(attributes, programPath,
-					jtagDevice, false, commandsList);
-
-			if (!status.isOK()) {
-				return status;
-			}
-		}
-
-		String userCmd = CDebugUtils.getAttribute(attributes,
-				ConfigurationAttributes.OTHER_RUN_COMMANDS,
-				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT).trim();
-
-		userCmd = DebugUtils.resolveAll(userCmd, attributes);
-		DebugUtils.addMultiLine(userCmd, commandsList);
-
-		if (CDebugUtils.getAttribute(attributes,
-				IGDBJtagConstants.ATTR_SET_PC_REGISTER,
-				IGDBJtagConstants.DEFAULT_SET_PC_REGISTER)) {
-			String pcRegister = CDebugUtils.getAttribute(
-					attributes,
-					IGDBJtagConstants.ATTR_PC_REGISTER,
-					CDebugUtils.getAttribute(attributes,
-							IGDBJtagConstants.ATTR_IMAGE_OFFSET,
-							IGDBJtagConstants.DEFAULT_PC_REGISTER)).trim();
-			if (!pcRegister.isEmpty()) {
-				jtagDevice.doSetPC(pcRegister, commandsList);
-			}
-		}
-
-		if (CDebugUtils.getAttribute(attributes,
-				IGDBJtagConstants.ATTR_SET_STOP_AT,
-				IGDBJtagConstants.DEFAULT_SET_STOP_AT)) {
-			String stopAt = CDebugUtils.getAttribute(attributes,
-					IGDBJtagConstants.ATTR_STOP_AT,
-					IGDBJtagConstants.DEFAULT_STOP_AT).trim();
-
-			if (!stopAt.isEmpty()) {
-				// doAtopAt replaced by a simple tbreak
-				commandsList.add("tbreak " + stopAt);
-			}
-		}
-
-		// Also add a command to see the registers in the
-		// location where execution halted
-		commandStr = ConfigurationAttributes.REGS_COMMAND;
-		commandsList.add(commandStr);
-
-		// Flush registers, GDB should read them again
-		commandStr = ConfigurationAttributes.FLUSH_REGISTERS_COMMAND;
-		commandsList.add(commandStr);
-
-		if (CDebugUtils.getAttribute(attributes,
-				ConfigurationAttributes.DO_CONTINUE,
-				ConfigurationAttributes.DO_CONTINUE_DEFAULT)) {
-			commandsList.add(ConfigurationAttributes.DO_CONTINUE_COMMAND);
-		}
-
-		return Status.OK_STATUS;
 	}
 
 	// ------------------------------------------------------------------------

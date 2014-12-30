@@ -37,6 +37,7 @@ public class ServicesFactory extends GnuArmServicesFactory {
 
 	// ------------------------------------------------------------------------
 
+	@Override
 	protected IMIBackend createBackendGDBService(DsfSession session,
 			ILaunchConfiguration lc) {
 		return new GdbBackend(session, lc);
@@ -48,6 +49,7 @@ public class ServicesFactory extends GnuArmServicesFactory {
 		return new GdbServerBackend(session, lc);
 	}
 
+	@Override
 	protected GnuArmDebuggerCommandsService createDebuggerCommandsService(
 			DsfSession session, ILaunchConfiguration lc) {
 		return new DebuggerCommands(session, lc);

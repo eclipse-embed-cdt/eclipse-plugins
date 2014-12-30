@@ -73,10 +73,11 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 		try {
 			// Update parent data member before calling initialise.
-			fDoStartGdbServer = Launch.getStartGdbServer(fLaunchConfiguration);
+			fDoStartGdbServer = Configuration
+					.getDoStartGdbServer(fLaunchConfiguration);
 
-			fDoStartSemihostingConsole = Launch
-					.getAddSemihostingConsole(fLaunchConfiguration);
+			fDoStartSemihostingConsole = Configuration
+					.getDoAddSemihostingConsole(fLaunchConfiguration);
 		} catch (CoreException e) {
 			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
 					"Cannot get configuration", e)); //$NON-NLS-1$
@@ -246,7 +247,8 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 			body = "Could not connect to target. Please check if powered and ribbon cable plugged properly.";
 		} else if (exitCode == -6) {
 			try {
-				String name = Launch.getServerDeviceName(fLaunchConfiguration);
+				String name = Configuration
+						.getGdbServerDeviceName(fLaunchConfiguration);
 				body = "Device name '"
 						+ name
 						+ "' not recognised. Please check http://www.segger.com/supported-devices.html for the supported device names.";

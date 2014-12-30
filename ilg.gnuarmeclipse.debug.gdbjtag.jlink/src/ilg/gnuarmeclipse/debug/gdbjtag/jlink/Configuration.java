@@ -215,13 +215,21 @@ public class Configuration {
 		return lst.toArray(new String[0]);
 	}
 
-	public static String getServerCommandName(ILaunchConfiguration config) {
+	public static String getGdbServerCommandName(ILaunchConfiguration config) {
 		String fullCommand = getGdbServerCommand(config);
 		if (fullCommand == null)
 			return null;
 
 		String parts[] = fullCommand.trim().split("" + Path.SEPARATOR);
 		return parts[parts.length - 1];
+	}
+
+	public static String getGdbServerDeviceName(ILaunchConfiguration config)
+			throws CoreException {
+
+		return config.getAttribute(
+				ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
+				ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT).trim();
 	}
 
 	// ------------------------------------------------------------------------
@@ -309,6 +317,35 @@ public class Configuration {
 
 		String parts[] = fullCommand.trim().split("" + Path.SEPARATOR);
 		return parts[parts.length - 1];
+	}
+
+	// ------------------------------------------------------------------------
+
+	public static boolean getDoStartGdbServer(ILaunchConfiguration config)
+			throws CoreException {
+
+		return config.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
+				ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
+	}
+
+	public static boolean getDoAddServerConsole(ILaunchConfiguration config)
+			throws CoreException {
+
+		return getDoStartGdbServer(config)
+				&& config
+						.getAttribute(
+								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
+								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
+	}
+
+	public static boolean getDoAddSemihostingConsole(ILaunchConfiguration config)
+			throws CoreException {
+
+		return getDoStartGdbServer(config)
+				&& config
+						.getAttribute(
+								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
+								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------

@@ -136,6 +136,15 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 	// ------------------------------------------------------------------------
 
 	@Override
+	public IStatus addGnuArmRestartCommands(List<String> commandsList) {
+
+		return addStartRestartCommands(fAttributes, true,
+				fGDBBackend.getProgramPath(), commandsList);
+	}
+
+	// ------------------------------------------------------------------------
+
+	@Override
 	public IStatus addLoadSymbolsCommands(Map<String, Object> attributes,
 			IPath programPath, List<String> commandsList) {
 
