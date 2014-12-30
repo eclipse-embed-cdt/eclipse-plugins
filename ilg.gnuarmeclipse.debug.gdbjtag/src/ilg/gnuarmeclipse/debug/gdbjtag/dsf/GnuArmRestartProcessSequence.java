@@ -9,10 +9,11 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.debug.gdbjtag.openocd.dsf;
+package ilg.gnuarmeclipse.debug.gdbjtag.dsf;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.services.IGnuArmDebuggerCommandsService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +38,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 @SuppressWarnings("restriction")
-public class RestartProcessSequence extends ReflectionSequence {
+public class GnuArmRestartProcessSequence extends ReflectionSequence {
 
 	// ------------------------------------------------------------------------
 
@@ -46,7 +47,9 @@ public class RestartProcessSequence extends ReflectionSequence {
 	private IGDBProcesses fProcService;
 	// private IReverseRunControl fReverseService;
 	private IGDBBackend fBackend;
+	@SuppressWarnings("unused")
 	private IGDBJtagDevice fGdbJtagDevice;
+	private IGnuArmDebuggerCommandsService fDebuggerCommands;
 
 	private DsfServicesTracker fTracker;
 
@@ -75,7 +78,7 @@ public class RestartProcessSequence extends ReflectionSequence {
 
 	// ------------------------------------------------------------------------
 
-	public RestartProcessSequence(DsfExecutor executor,
+	public GnuArmRestartProcessSequence(DsfExecutor executor,
 			IContainerDMContext containerDmc, Map<String, Object> attributes,
 			boolean restart, DataRequestMonitor<IContainerDMContext> rm) {
 		super(executor, rm);
@@ -128,6 +131,9 @@ public class RestartProcessSequence extends ReflectionSequence {
 		fProcService = fTracker.getService(IGDBProcesses.class);
 		fBackend = fTracker.getService(IGDBBackend.class);
 
+		fDebuggerCommands = fTracker
+				.getService(IGnuArmDebuggerCommandsService.class);
+
 		fGdbJtagDevice = DebugUtils.getGDBJtagDevice(fAttributes);
 
 		if (fCommandControl == null || fCommandFactory == null
@@ -157,8 +163,8 @@ public class RestartProcessSequence extends ReflectionSequence {
 
 		List<String> commandsList = new ArrayList<String>();
 
-		IStatus status = Launch.startRestart(fAttributes, true,
-				fBackend.getProgramPath(), fGdbJtagDevice, commandsList);
+		IStatus status = fDebuggerCommands.addStartRestartCommands(fAttributes,
+				true, fBackend.getProgramPath(), commandsList);
 
 		if (!status.isOK()) {
 			rm.setStatus(status); //$NON-NLS-1$

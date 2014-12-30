@@ -13,7 +13,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.jlink.dsf;
 
 import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
-import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GDBBackend;
+import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmGdbBackend;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Configuration;
 
@@ -34,7 +34,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
  * The Kepler CDT GDBBackend does not allow such a simple customisation, we had
  * to copy a newer version locally and use it.
  */
-public class Backend extends GDBBackend {
+public class Backend extends GnuArmGdbBackend {
 
 	// ------------------------------------------------------------------------
 

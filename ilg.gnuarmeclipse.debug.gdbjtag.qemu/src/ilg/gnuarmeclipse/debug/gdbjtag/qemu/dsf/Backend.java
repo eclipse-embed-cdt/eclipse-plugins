@@ -13,7 +13,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.qemu.dsf;
 
 import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
-import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GDBBackend;
+import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmGdbBackend;
 import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Configuration;
 
@@ -35,7 +35,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
  * to copy a newer version locally and use it.
  */
 
-public class Backend extends GDBBackend {
+public class Backend extends GnuArmGdbBackend {
 
 	// ------------------------------------------------------------------------
 

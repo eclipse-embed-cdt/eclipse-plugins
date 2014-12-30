@@ -29,4 +29,9 @@ public class JTagDevice extends DefaultGDBJtagDeviceImpl {
 	public void doReset(Collection<String> commands) {
 	}
 
+	@Override
+	public void doStopAt(String stopAt, Collection<String> commands) {
+		super.doStopAt(stopAt, commands);
+	}
+
 }

@@ -12,6 +12,7 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.dsf;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IGdbServerBackendService;
+import ilg.gnuarmeclipse.debug.gdbjtag.services.IGnuArmDebuggerCommandsService;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IPeripheralMemoryService;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IPeripheralsService;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.PeripheralMemoryService;
@@ -56,6 +57,13 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 			return (V) createPeripheralsService(session);
 		} else if (IPeripheralMemoryService.class.isAssignableFrom(clazz)) {
 			return (V) createPeripheralMemoryService(session);
+		} else if (IGnuArmDebuggerCommandsService.class.isAssignableFrom(clazz)) {
+			for (Object arg : optionalArguments) {
+				if (arg instanceof ILaunchConfiguration) {
+					return (V) createDebuggerCommandsService(session,
+							(ILaunchConfiguration) arg);
+				}
+			}
 		} else if (IGdbServerBackendService.class.isAssignableFrom(clazz)) {
 			for (Object arg : optionalArguments) {
 				if (arg instanceof ILaunchConfiguration) {
@@ -76,10 +84,28 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 		return new PeripheralMemoryService(session);
 	}
 
+	protected abstract GnuArmDebuggerCommandsService createDebuggerCommandsService(
+			DsfSession session, ILaunchConfiguration lc);
+
 	// TODO: make it abstract and update openocd
 	protected GnuArmGdbServerBackend createGdbServerBackendService(
 			DsfSession session, ILaunchConfiguration lc) {
 		return null;
+	}
+
+	@Override
+	protected ICommandControl createCommandControl(DsfSession session,
+			ILaunchConfiguration config) {
+
+		System.out.println("ServicesFactory.createCommandControl(" + session
+				+ "," + config.getName() + ") " + this);
+
+		if (GDB_7_4_VERSION.compareTo(getVersion()) <= 0) {
+			return new GnuArmControl_7_4(session, config,
+					new GnuArmCommandFactory());
+		}
+
+		return super.createCommandControl(session, config);
 	}
 
 	// Not yet functional

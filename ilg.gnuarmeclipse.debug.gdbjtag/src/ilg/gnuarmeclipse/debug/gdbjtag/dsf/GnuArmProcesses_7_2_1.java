@@ -7,8 +7,9 @@
  * 
  * Contributors:
  *     Marc Khouzam (Ericsson) - initial API and implementation
+ *     Liviu Ionescu - ARM version
  *******************************************************************************/
-package ilg.gnuarmeclipse.debug.gdbjtag.openocd.dsf;
+package ilg.gnuarmeclipse.debug.gdbjtag.dsf;
 
 import java.util.Map;
 
@@ -21,9 +22,9 @@ import org.eclipse.cdt.dsf.gdb.service.StartOrRestartProcessSequence_7_0;
 import org.eclipse.cdt.dsf.service.DsfSession;
 
 // Used to redefine the ProcessSequence, where the reset happens
-public class Processes_7_2_1 extends GDBProcesses_7_2_1 {
+public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 
-	public Processes_7_2_1(DsfSession session) {
+	public GnuArmProcesses_7_2_1(DsfSession session) {
 		super(session);
 	}
 
@@ -32,7 +33,7 @@ public class Processes_7_2_1 extends GDBProcesses_7_2_1 {
 			boolean restart, DataRequestMonitor<IContainerDMContext> rm) {
 
 		if (restart) {
-			return new RestartProcessSequence(executor, containerDmc,
+			return new GnuArmRestartProcessSequence(executor, containerDmc,
 					attributes, restart, rm);
 		} else {
 			return new StartOrRestartProcessSequence_7_0(executor,

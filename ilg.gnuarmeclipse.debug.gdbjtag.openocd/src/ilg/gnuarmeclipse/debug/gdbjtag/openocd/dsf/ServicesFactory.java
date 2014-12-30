@@ -11,12 +11,12 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd.dsf;
 
-import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmCommandFactory;
+import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmDebuggerCommandsService;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmGdbServerBackend;
+import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmProcesses_7_2_1;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmServicesFactory;
 
 import org.eclipse.cdt.dsf.debug.service.IProcesses;
-import org.eclipse.cdt.dsf.debug.service.command.ICommandControl;
 import org.eclipse.cdt.dsf.mi.service.IMIBackend;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -38,20 +38,6 @@ public class ServicesFactory extends GnuArmServicesFactory {
 
 	// ------------------------------------------------------------------------
 
-	@Override
-	protected ICommandControl createCommandControl(DsfSession session,
-			ILaunchConfiguration config) {
-
-		System.out.println("ServicesFactory.createCommandControl(" + session
-				+ "," + config.getName() + ") " + this);
-
-		if (GDB_7_4_VERSION.compareTo(getVersion()) <= 0) {
-			return new Control_7_4(session, config, new GnuArmCommandFactory());
-		}
-
-		return super.createCommandControl(session, config);
-	}
-
 	protected IMIBackend createBackendGDBService(DsfSession session,
 			ILaunchConfiguration lc) {
 
@@ -69,7 +55,7 @@ public class ServicesFactory extends GnuArmServicesFactory {
 				+ ") " + this);
 
 		if (GDB_7_2_1_VERSION.compareTo(fVersion) <= 0) {
-			return new Processes_7_2_1(session);
+			return new GnuArmProcesses_7_2_1(session);
 		}
 
 		return super.createProcessesService(session);
@@ -79,6 +65,11 @@ public class ServicesFactory extends GnuArmServicesFactory {
 	protected GnuArmGdbServerBackend createGdbServerBackendService(
 			DsfSession session, ILaunchConfiguration lc) {
 		return new GdbServerBackend(session, lc);
+	}
+
+	protected GnuArmDebuggerCommandsService createDebuggerCommandsService(
+			DsfSession session, ILaunchConfiguration lc) {
+		return new DebuggerCommands(session, lc);
 	}
 
 	// ------------------------------------------------------------------------

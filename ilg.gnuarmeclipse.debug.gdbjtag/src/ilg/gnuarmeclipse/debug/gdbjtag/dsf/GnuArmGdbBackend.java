@@ -25,8 +25,6 @@
  * - some imports
  * - @SuppressWarnings("restriction")
  *
- * DO NOT reindent!
- * 
  * ------------------------------------------------------------------------- */
 
 package ilg.gnuarmeclipse.debug.gdbjtag.dsf;
@@ -97,8 +95,8 @@ import org.osgi.framework.BundleContext;
  * @since 1.1
  */
 @SuppressWarnings("restriction")
-public class GDBBackend extends AbstractDsfService implements IGDBBackend,
-		IMIBackend2 {
+public class GnuArmGdbBackend extends AbstractDsfService implements
+		IGDBBackend, IMIBackend2 {
 
 	private final ILaunchConfiguration fLaunchConfiguration;
 
@@ -136,7 +134,7 @@ public class GDBBackend extends AbstractDsfService implements IGDBBackend,
 	 */
 	private MonitorInterruptJob fInterruptFailedJob;
 
-	public GDBBackend(DsfSession session, ILaunchConfiguration lc) {
+	public GnuArmGdbBackend(DsfSession session, ILaunchConfiguration lc) {
 		super(session);
 		fBackendId = "gdb[" + Integer.toString(fgInstanceCounter++) + "]"; //$NON-NLS-1$//$NON-NLS-2$
 		fLaunchConfiguration = lc;
@@ -183,7 +181,7 @@ public class GDBBackend extends AbstractDsfService implements IGDBBackend,
 	@Override
 	public void shutdown(final RequestMonitor requestMonitor) {
 
-		System.out.println("GDBBackend.shutdown()");
+		System.out.println("GnuArmGdbBackend.shutdown()");
 
 		final Sequence.Step[] shutdownSteps = new Sequence.Step[] {
 				new RegisterStep(
@@ -196,7 +194,7 @@ public class GDBBackend extends AbstractDsfService implements IGDBBackend,
 				new RequestMonitor(getExecutor(), requestMonitor) {
 					@Override
 					protected void handleCompleted() {
-						GDBBackend.super.shutdown(requestMonitor);
+						GnuArmGdbBackend.super.shutdown(requestMonitor);
 					}
 				}) {
 			@Override
@@ -883,7 +881,7 @@ public class GDBBackend extends AbstractDsfService implements IGDBBackend,
 					IMIBackend2.class.getName(), IGDBBackend.class.getName() },
 					new Hashtable<String, String>());
 
-			getSession().addServiceEventListener(GDBBackend.this, null);
+			getSession().addServiceEventListener(GnuArmGdbBackend.this, null);
 
 			/*
 			 * This event is not consumed by any one at present, instead it's
@@ -904,7 +902,7 @@ public class GDBBackend extends AbstractDsfService implements IGDBBackend,
 		@Override
 		protected void shutdown(RequestMonitor requestMonitor) {
 			unregister();
-			getSession().removeServiceEventListener(GDBBackend.this);
+			getSession().removeServiceEventListener(GnuArmGdbBackend.this);
 			requestMonitor.done();
 		}
 	}
