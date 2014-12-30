@@ -152,13 +152,20 @@ public class Configuration {
 		return lst.toArray(new String[0]);
 	}
 
-	public static String getServerCommandName(ILaunchConfiguration config) {
+	public static String getGdbServerCommandName(ILaunchConfiguration config) {
 		String fullCommand = getGdbServerCommand(config);
 		if (fullCommand == null)
 			return null;
 
 		String parts[] = fullCommand.trim().split("" + Path.SEPARATOR);
 		return parts[parts.length - 1];
+	}
+
+	public static String getGdbServerOtherConfig(ILaunchConfiguration config)
+			throws CoreException {
+
+		return config.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER,
+				ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT).trim();
 	}
 
 	// ------------------------------------------------------------------------
@@ -238,13 +245,32 @@ public class Configuration {
 		return StringUtils.join(cmdLineArray, " ");
 	}
 
-	public static String getClientCommandName(ILaunchConfiguration config) {
+	public static String getGdbClientCommandName(ILaunchConfiguration config) {
 		String fullCommand = getGdbClientCommand(config);
 		if (fullCommand == null)
 			return null;
 
 		String parts[] = fullCommand.trim().split("" + Path.SEPARATOR);
 		return parts[parts.length - 1];
+	}
+
+	// ------------------------------------------------------------------------
+
+	public static boolean getDoStartGdbServer(ILaunchConfiguration config)
+			throws CoreException {
+
+		return config.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
+				ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
+	}
+
+	public static boolean getDoAddServerConsole(ILaunchConfiguration config)
+			throws CoreException {
+
+		return getDoStartGdbServer(config)
+				&& config
+						.getAttribute(
+								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
+								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------

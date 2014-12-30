@@ -18,6 +18,7 @@ import ilg.gnuarmeclipse.debug.gdbjtag.services.IPeripheralsService;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.PeripheralMemoryService;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.PeripheralsService;
 
+import org.eclipse.cdt.dsf.debug.service.IProcesses;
 import org.eclipse.cdt.dsf.debug.service.command.ICommandControl;
 import org.eclipse.cdt.dsf.gdb.service.GdbDebugServicesFactory;
 import org.eclipse.cdt.dsf.gdb.service.command.GDBControl_7_0;
@@ -87,11 +88,8 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 	protected abstract GnuArmDebuggerCommandsService createDebuggerCommandsService(
 			DsfSession session, ILaunchConfiguration lc);
 
-	// TODO: make it abstract and update openocd
-	protected GnuArmGdbServerBackend createGdbServerBackendService(
-			DsfSession session, ILaunchConfiguration lc) {
-		return null;
-	}
+	protected abstract GnuArmGdbServerBackend createGdbServerBackendService(
+			DsfSession session, ILaunchConfiguration lc);
 
 	@Override
 	protected ICommandControl createCommandControl(DsfSession session,
@@ -106,6 +104,19 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 		}
 
 		return super.createCommandControl(session, config);
+	}
+
+	@Override
+	protected IProcesses createProcessesService(DsfSession session) {
+
+		System.out.println("ServicesFactory.createProcessesService(" + session
+				+ ") " + this);
+
+		if (GDB_7_2_1_VERSION.compareTo(fVersion) <= 0) {
+			return new GnuArmProcesses_7_2_1(session);
+		}
+
+		return super.createProcessesService(session);
 	}
 
 	// Not yet functional

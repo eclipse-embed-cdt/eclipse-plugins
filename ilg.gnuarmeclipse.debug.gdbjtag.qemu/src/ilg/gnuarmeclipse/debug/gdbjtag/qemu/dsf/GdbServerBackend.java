@@ -48,7 +48,8 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 		try {
 			// Update parent data member before calling initialise.
-			fDoStartGdbServer = Launch.getStartGdbServer(fLaunchConfiguration);
+			fDoStartGdbServer = Configuration
+					.getDoStartGdbServer(fLaunchConfiguration);
 		} catch (CoreException e) {
 			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
 					"Cannot get configuration", e)); //$NON-NLS-1$

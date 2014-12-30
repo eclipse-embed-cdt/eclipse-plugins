@@ -35,7 +35,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
  * to copy a newer version locally and use it.
  */
 
-public class Backend extends GnuArmGdbBackend {
+public class GdbBackend extends GnuArmGdbBackend {
 
 	// ------------------------------------------------------------------------
 
@@ -43,7 +43,7 @@ public class Backend extends GnuArmGdbBackend {
 
 	// ------------------------------------------------------------------------
 
-	public Backend(DsfSession session, ILaunchConfiguration lc) {
+	public GdbBackend(DsfSession session, ILaunchConfiguration lc) {
 
 		super(session, lc);
 
@@ -57,7 +57,6 @@ public class Backend extends GnuArmGdbBackend {
 	public void initialize(final RequestMonitor rm) {
 
 		System.out.println("Backend.initialize() " + Thread.currentThread());
-
 		super.initialize(rm);
 	}
 
