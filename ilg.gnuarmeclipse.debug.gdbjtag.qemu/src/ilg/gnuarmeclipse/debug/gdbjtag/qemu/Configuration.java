@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.qemu;
 
+import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 
@@ -114,9 +115,9 @@ public class Configuration {
 			logFile = DebugUtils.resolveAll(logFile,
 					configuration.getAttributes());
 
-			// if (EclipseUtils.isWindows()) {
-			// logFile = doubleBackslashes(logFile);
-			// }
+			if (EclipseUtils.isWindows()) {
+				logFile = StringUtils.duplicateBackslashes(logFile);
+			}
 			if (!logFile.isEmpty()) {
 				lst.add("-D");
 				lst.add(logFile);
@@ -128,9 +129,9 @@ public class Configuration {
 
 			other = DebugUtils.resolveAll(other, configuration.getAttributes());
 
-			// if (EclipseUtils.isWindows()) {
-			// other = doubleBackslashes(other);
-			// }
+			if (EclipseUtils.isWindows()) {
+				other = StringUtils.duplicateBackslashes(other);
+			}
 			if (!other.isEmpty()) {
 				lst.addAll(StringUtils.splitCommandLineOptions(other));
 			}

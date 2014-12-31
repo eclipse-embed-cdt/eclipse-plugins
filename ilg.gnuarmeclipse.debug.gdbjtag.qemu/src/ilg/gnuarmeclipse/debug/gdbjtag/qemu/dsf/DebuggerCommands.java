@@ -133,7 +133,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 				ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT).trim();
 
 		otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
-		if (EclipseUtils.isWindows()) {
+		if (fDoDoubleBackslash && EclipseUtils.isWindows()) {
 			otherInits = StringUtils.duplicateBackslashes(otherInits);
 		}
 		DebugUtils.addMultiLine(otherInits, commandsList);

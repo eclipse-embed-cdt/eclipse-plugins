@@ -11,8 +11,6 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.dsf;
 
-import ilg.gnuarmeclipse.core.EclipseUtils;
-import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IGnuArmDebuggerCommandsService;
@@ -185,11 +183,11 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 					Messages.getString("GDBJtagDebugger.err_no_img_file"), null); //$NON-NLS-1$
 		}
 
-		if (fDoDoubleBackslash && EclipseUtils.isWindows()) {
-			// Escape windows path separator characters TWICE, once for
-			// Java and once for GDB.
-			symbolsFileName = StringUtils.duplicateBackslashes(symbolsFileName); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+		// if (fDoDoubleBackslash && EclipseUtils.isWindows()) {
+		// // Escape windows path separator characters TWICE, once for
+		// // Java and once for GDB.
+		//			symbolsFileName = StringUtils.duplicateBackslashes(symbolsFileName); //$NON-NLS-1$ //$NON-NLS-2$
+		// }
 
 		String symbolsOffset = CDebugUtils.getAttribute(attributes,
 				IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
@@ -235,11 +233,11 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 
 		imageFileName = DebugUtils.resolveAll(imageFileName, attributes);
 
-		if (fDoDoubleBackslash && EclipseUtils.isWindows()) {
-			// Escape windows path separator characters TWICE, once
-			// for Java and once for GDB.
-			imageFileName = StringUtils.duplicateBackslashes(imageFileName); //$NON-NLS-1$ //$NON-NLS-2$
-		}
+		// if (fDoDoubleBackslash && EclipseUtils.isWindows()) {
+		// // Escape windows path separator characters TWICE, once
+		// // for Java and once for GDB.
+		//			imageFileName = StringUtils.duplicateBackslashes(imageFileName); //$NON-NLS-1$ //$NON-NLS-2$
+		// }
 
 		String imageOffset = CDebugUtils.getAttribute(attributes,
 				IGDBJtagConstants.ATTR_IMAGE_OFFSET,
