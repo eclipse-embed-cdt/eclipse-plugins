@@ -243,8 +243,11 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 		String body = "";
 
-		if (exitCode == -3) {
-			body = "Could not connect to target. Please check if powered and ribbon cable plugged properly.";
+		if (exitCode == -1) {
+			// TODO: check if TCP and adjust message accordingly
+			body = "Could not connect to J-Link. Please check if plugged into USB port or Ethernet switch.";
+		} else if (exitCode == -3) {
+			body = "Could not connect to target. Please check if target is powered and if ribbon cable is plugged properly.";
 		} else if (exitCode == -6) {
 			try {
 				String name = Configuration
