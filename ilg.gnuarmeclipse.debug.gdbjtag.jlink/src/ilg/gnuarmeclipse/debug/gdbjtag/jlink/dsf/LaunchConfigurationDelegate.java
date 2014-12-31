@@ -329,6 +329,10 @@ public class LaunchConfigurationDelegate extends
 				}
 
 				if (serverStatus != Status.OK_STATUS) {
+					if ("TERMINATED".equals(serverStatus.getMessage())) {
+						cleanupLaunch();
+						return;
+					}
 					System.out.println(serverStatus);
 					throw new CoreException(serverStatus);
 				}

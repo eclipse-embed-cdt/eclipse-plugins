@@ -400,7 +400,9 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 								fServerBackendState = State.STARTED;
 
 								// The launcher will wait for this.
-								fGdbServerExitStatus = Status.OK_STATUS;
+								if (fGdbServerExitStatus == null) {
+									fGdbServerExitStatus = Status.OK_STATUS;
+								}
 							}
 						}).get(); // Wait for it to complete.
 					} catch (InterruptedException e) {
@@ -497,7 +499,9 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 								fServerBackendState = State.STARTED;
 
 								// The launcher will wait for this.
-								fGdbServerExitStatus = Status.OK_STATUS;
+								if (fGdbServerExitStatus == null) {
+									fGdbServerExitStatus = Status.OK_STATUS;
+								}
 							}
 						}).get(); // Wait for it to complete.
 					} catch (InterruptedException e) {
@@ -1050,7 +1054,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 									// The launcher will wait for this.
 									fGdbServerExitStatus = new Status(
 											IStatus.ERROR, Activator.PLUGIN_ID,
-											message); //$NON-NLS-1$
+											message);
 								}
 							}).get(); // Wait for it to complete.
 						} catch (ExecutionException e) {
@@ -1075,8 +1079,10 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 							System.out
 									.println("GdbServerMonitorJob.run() run() State.TERMINATED");
 
-							fGdbServerExitStatus = new Status(IStatus.OK,
-									Activator.PLUGIN_ID, "TERMINATED"); //$NON-NLS-1$
+							if (fGdbServerExitStatus == null) {
+								fGdbServerExitStatus = new Status(IStatus.OK,
+										Activator.PLUGIN_ID, "TERMINATED"); //$NON-NLS-1$
+							}
 							fServerBackendState = State.TERMINATED;
 
 							// Notify world that server backend terminated.
