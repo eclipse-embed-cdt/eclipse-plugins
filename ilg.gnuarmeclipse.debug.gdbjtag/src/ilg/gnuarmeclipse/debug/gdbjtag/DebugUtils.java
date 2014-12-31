@@ -329,8 +329,9 @@ public class DebugUtils {
 
 		// TODO: Use attributes for project dependent variables.
 		try {
+			// Do not report undefined variables
 			value = VariablesPlugin.getDefault().getStringVariableManager()
-					.performStringSubstitution(value).trim();
+					.performStringSubstitution(value, false).trim();
 		} catch (CoreException e) {
 			;
 		}
