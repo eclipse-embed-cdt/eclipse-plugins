@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink.dsf;
 
+import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmGdbServerBackend;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Configuration;
@@ -31,7 +32,6 @@ import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugException;
@@ -191,11 +191,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		}
 
 		String fullCommand = commandLineArray[0];
-		if (fullCommand == null)
-			return null;
-
-		String parts[] = fullCommand.trim().split("" + Path.SEPARATOR);
-		return parts[parts.length - 1];
+		return StringUtils.extractNameFromPath(fullCommand);
 	}
 
 	@Override
@@ -325,7 +321,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 			};
 
 			final Job startSemihostingJob = new Job(
-					getStartingSemihostingJobName()) { //$NON-NLS-1$
+					getStartingSemihostingJobName()) {
 				{
 					setSystem(true);
 				}
@@ -425,7 +421,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 				return;
 			}
 
-			new Job(getTerminatingSemihostingJobName()) { //$NON-NLS-1$
+			new Job(getTerminatingSemihostingJobName()) {
 				{
 					setSystem(true);
 				}

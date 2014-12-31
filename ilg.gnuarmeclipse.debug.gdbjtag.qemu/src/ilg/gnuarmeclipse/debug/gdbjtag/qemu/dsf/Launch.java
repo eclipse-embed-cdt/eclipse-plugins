@@ -145,8 +145,7 @@ public class Launch extends GnuArmLaunch {
 		{
 			// Add the GDB client process to the launch tree.
 			newProcess = addClientProcess(Configuration
-					.getGdbClientCommandName(fConfig)); //$NON-NLS-1$
-
+					.getGdbClientCommandName(fConfig));
 			newProcess.setAttribute(IProcess.ATTR_CMDLINE,
 					Configuration.getGdbClientCommandLine(fConfig));
 

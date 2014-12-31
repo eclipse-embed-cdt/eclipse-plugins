@@ -22,7 +22,6 @@ import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
 import org.eclipse.cdt.dsf.gdb.IGdbDebugPreferenceConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
 
@@ -153,12 +152,9 @@ public class Configuration {
 	}
 
 	public static String getGdbServerCommandName(ILaunchConfiguration config) {
-		String fullCommand = getGdbServerCommand(config);
-		if (fullCommand == null)
-			return null;
 
-		String parts[] = fullCommand.trim().split("" + Path.SEPARATOR);
-		return parts[parts.length - 1];
+		String fullCommand = getGdbServerCommand(config);
+		return StringUtils.extractNameFromPath(fullCommand);
 	}
 
 	public static String getGdbServerOtherConfig(ILaunchConfiguration config)
@@ -241,17 +237,13 @@ public class Configuration {
 			ILaunchConfiguration configuration) {
 
 		String cmdLineArray[] = getGdbClientCommandLineArray(configuration);
-
 		return StringUtils.join(cmdLineArray, " ");
 	}
 
 	public static String getGdbClientCommandName(ILaunchConfiguration config) {
-		String fullCommand = getGdbClientCommand(config);
-		if (fullCommand == null)
-			return null;
 
-		String parts[] = fullCommand.trim().split("" + Path.SEPARATOR);
-		return parts[parts.length - 1];
+		String fullCommand = getGdbClientCommand(config);
+		return StringUtils.extractNameFromPath(fullCommand);
 	}
 
 	// ------------------------------------------------------------------------

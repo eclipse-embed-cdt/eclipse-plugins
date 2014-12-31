@@ -3,6 +3,9 @@ package ilg.gnuarmeclipse.core;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
+
 /**
  * A collection of utilities used for string processing.
  */
@@ -138,6 +141,29 @@ public class StringUtils {
 
 		str = StringUtils.join(sa, "\\\\");
 		// System.out.println(str);
+		return str;
+	}
+
+	/**
+	 * Split the path into segments and return the name.
+	 * 
+	 * @param str
+	 *            a string with the full path.
+	 * @return a string with the name, or the full path if error.
+	 */
+	public static String extractNameFromPath(String str) {
+
+		if (str == null) {
+			return null;
+		}
+
+		IPath path = new Path(str);
+
+		String ret = path.lastSegment();
+		if (ret != null) {
+			return ret;
+		}
+
 		return str;
 	}
 
