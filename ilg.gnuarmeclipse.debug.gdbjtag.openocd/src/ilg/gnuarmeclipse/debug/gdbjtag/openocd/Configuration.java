@@ -1,6 +1,5 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
 
-import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 
@@ -93,20 +92,20 @@ public class Configuration {
 									ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 									ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
 
-			String logFile = configuration.getAttribute(
-					ConfigurationAttributes.GDB_SERVER_LOG,
-					ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT).trim();
+			// String logFile = configuration.getAttribute(
+			// ConfigurationAttributes.GDB_SERVER_LOG,
+			// ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT).trim();
+			//
+			// logFile = DebugUtils.resolveAll(logFile,
+			// configuration.getAttributes());
 
-			logFile = DebugUtils.resolveAll(logFile,
-					configuration.getAttributes());
-
-			if (EclipseUtils.isWindows()) {
-				logFile = StringUtils.duplicateBackslashes(logFile);
-			}
-			if (!logFile.isEmpty()) {
-				lst.add("--log_output");
-				lst.add(logFile);
-			}
+			// if (EclipseUtils.isWindows()) {
+			// logFile = StringUtils.duplicateBackslashes(logFile);
+			// }
+			// if (!logFile.isEmpty()) {
+			// lst.add("--log_output");
+			// lst.add(logFile);
+			// }
 
 			String other = configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_OTHER,
@@ -114,9 +113,9 @@ public class Configuration {
 
 			other = DebugUtils.resolveAll(other, configuration.getAttributes());
 
-			if (EclipseUtils.isWindows()) {
-				other = StringUtils.duplicateBackslashes(other);
-			}
+			// if (EclipseUtils.isWindows()) {
+			// other = StringUtils.duplicateBackslashes(other);
+			// }
 			if (!other.isEmpty()) {
 				lst.addAll(StringUtils.splitCommandLineOptions(other));
 			}

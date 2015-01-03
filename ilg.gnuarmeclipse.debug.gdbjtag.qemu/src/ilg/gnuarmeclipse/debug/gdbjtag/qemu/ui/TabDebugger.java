@@ -85,8 +85,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Button gdbServerBrowseButton;
 	private Button gdbServerVariablesButton;
 
-	private Text gdbServerLog;
-	private Button gdbServerLogBrowse;
+	// private Text gdbServerLog;
+	// private Button gdbServerLogBrowse;
 	private Text gdbServerOtherOptions;
 
 	private Button doGdbServerAllocateConsole;
@@ -160,17 +160,17 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			text.setText(str);
 	}
 
-	private void browseSaveButtonSelected(String title, Text text) {
-		FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
-		dialog.setText(title);
-		String str = text.getText().trim();
-		int lastSeparatorIndex = str.lastIndexOf(File.separator);
-		if (lastSeparatorIndex != -1)
-			dialog.setFilterPath(str.substring(0, lastSeparatorIndex));
-		str = dialog.open();
-		if (str != null)
-			text.setText(str);
-	}
+	// private void browseSaveButtonSelected(String title, Text text) {
+	// FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
+	// dialog.setText(title);
+	// String str = text.getText().trim();
+	// int lastSeparatorIndex = str.lastIndexOf(File.separator);
+	// if (lastSeparatorIndex != -1)
+	// dialog.setFilterPath(str.substring(0, lastSeparatorIndex));
+	// str = dialog.open();
+	// if (str != null)
+	// text.setText(str);
+	// }
 
 	private void variablesButtonSelected(Text text) {
 		StringVariableSelectionDialog dialog = new StringVariableSelectionDialog(
@@ -320,15 +320,15 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			gd = new GridData(GridData.FILL_HORIZONTAL);
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			local.setLayoutData(gd);
-			{
-				gdbServerLog = new Text(local, SWT.BORDER);
-				gd = new GridData(GridData.FILL_HORIZONTAL);
-				gdbServerLog.setLayoutData(gd);
-
-				gdbServerLogBrowse = new Button(local, SWT.NONE);
-				gdbServerLogBrowse.setText(Messages
-						.getString("DebuggerTab.gdbServerLogBrowse_Button"));
-			}
+//			{
+//				gdbServerLog = new Text(local, SWT.BORDER);
+//				gd = new GridData(GridData.FILL_HORIZONTAL);
+//				gdbServerLog.setLayoutData(gd);
+//
+//				gdbServerLogBrowse = new Button(local, SWT.NONE);
+//				gdbServerLogBrowse.setText(Messages
+//						.getString("DebuggerTab.gdbServerLogBrowse_Button"));
+//			}
 		}
 
 		{
@@ -449,15 +449,15 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 //		gdbServerTelnetPort.addModifyListener(scheduleUpdateJobModifyListener);
 
-		gdbServerLog.addModifyListener(scheduleUpdateJobModifyListener);
-		gdbServerLogBrowse.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				browseSaveButtonSelected(Messages
-						.getString("DebuggerTab.gdbServerLogBrowse_Title"),
-						gdbServerLog);
-			}
-		});
+//		gdbServerLog.addModifyListener(scheduleUpdateJobModifyListener);
+//		gdbServerLogBrowse.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//				browseSaveButtonSelected(Messages
+//						.getString("DebuggerTab.gdbServerLogBrowse_Title"),
+//						gdbServerLog);
+//			}
+//		});
 
 		gdbServerOtherOptions
 				.addModifyListener(scheduleUpdateJobModifyListener);
@@ -666,8 +666,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		gdbServerVariablesButton.setEnabled(enabled);
 		gdbServerOtherOptions.setEnabled(enabled);
 
-		gdbServerLog.setEnabled(enabled);
-		gdbServerLogBrowse.setEnabled(enabled);
+//		gdbServerLog.setEnabled(enabled);
+//		gdbServerLogBrowse.setEnabled(enabled);
 
 		gdbServerGdbPort.setEnabled(enabled);
 //		gdbServerTelnetPort.setEnabled(enabled);
@@ -731,9 +731,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 //										ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
 
 				// Log file
-				gdbServerLog.setText(configuration.getAttribute(
-						ConfigurationAttributes.GDB_SERVER_LOG,
-						ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT));
+//				gdbServerLog.setText(configuration.getAttribute(
+//						ConfigurationAttributes.GDB_SERVER_LOG,
+//						ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT));
 
 				// Other options
 				stringDefault = WorkspacePersistentValues
@@ -895,8 +895,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 //							port);
 
 			// Log file
-			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_LOG,
-					gdbServerLog.getText().trim());
+			// configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_LOG,
+			// gdbServerLog.getText().trim());
 
 			// Other options
 			stringValue = gdbServerOtherOptions.getText().trim();

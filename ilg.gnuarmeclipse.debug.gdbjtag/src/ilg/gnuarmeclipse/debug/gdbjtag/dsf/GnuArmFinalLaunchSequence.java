@@ -22,11 +22,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.debug.gdbjtag.core.GDBJtagDSFFinalLaunchSequence;
-import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
-import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.GDBJtagDeviceContribution;
-import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.GDBJtagDeviceContributionFactory;
+import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.DefaultGDBJtagDeviceImpl;
 import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.IGDBJtagDevice;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitorWithProgress;
@@ -63,6 +60,9 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 			"stepCreatePeripheralMemoryService",
 			"stepCreateDebuggerCommandsService" };
 
+	private String[] topToRemove = { "stepRemoteConnection",
+			"stepAttachToProcess" };
+
 	private String[] jtagPreInitSteps = {};
 
 	private String[] jtagResetStep = { "stepGnuArmReset" };
@@ -98,6 +98,13 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 		if (GROUP_TOP_LEVEL.equals(group)) {
 
+			for (int i = 0; i < topToRemove.length; ++i) {
+				int ix = orderList.indexOf(jtagToRemove[i]);
+				if (ix >= 0) {
+					orderList.remove(ix);
+				}
+			}
+			
 			// Insert the new steps at he beginning
 			orderList.addAll(0, Arrays.asList(topPreInitSteps));
 
@@ -275,8 +282,8 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 		final List<String> commandsList = new ArrayList<String>();
 
-		IStatus status = fDebuggerCommands.addGdbInitCommandsCommands(
-				fAttributes, commandsList);
+		IStatus status = fDebuggerCommands
+				.addGdbInitCommandsCommands(commandsList);
 		if (!status.isOK()) {
 			rm.setStatus(status);
 			rm.done();
@@ -311,8 +318,9 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	public void stepRetrieveJTAGDevice(final RequestMonitor rm) {
 		Exception exception = null;
 		try {
-			fGdbJtagDevice = getGDBJtagDevice();
-			fDebuggerCommands.setJtagDevice(fGdbJtagDevice);
+			// fGdbJtagDevice = getGDBJtagDevice();
+			fGdbJtagDevice = new DefaultGDBJtagDeviceImpl();
+			// fDebuggerCommands.setJtagDevice(fGdbJtagDevice);
 		} catch (NullPointerException e) {
 			exception = e;
 		}
@@ -326,24 +334,41 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		}
 	}
 
-	public IGDBJtagDevice getGDBJtagDevice() {
-
-		IGDBJtagDevice gdbJtagDevice = null;
-		String jtagDeviceName = CDebugUtils.getAttribute(fAttributes,
-				IGDBJtagConstants.ATTR_JTAG_DEVICE,
-				IGDBJtagConstants.DEFAULT_JTAG_DEVICE);
-		GDBJtagDeviceContribution[] availableDevices = GDBJtagDeviceContributionFactory
-				.getInstance().getGDBJtagDeviceContribution();
-		for (GDBJtagDeviceContribution availableDevice : availableDevices) {
-			if (jtagDeviceName.equals(availableDevice.getDeviceName())) {
-				gdbJtagDevice = availableDevice.getDevice();
-				break;
-			}
-		}
-		return gdbJtagDevice;
-	}
+	// public IGDBJtagDevice getGDBJtagDevice() {
+	//
+	// IGDBJtagDevice gdbJtagDevice = null;
+	// String jtagDeviceName = CDebugUtils.getAttribute(fAttributes,
+	// IGDBJtagConstants.ATTR_JTAG_DEVICE,
+	// IGDBJtagConstants.DEFAULT_JTAG_DEVICE);
+	// GDBJtagDeviceContribution[] availableDevices =
+	// GDBJtagDeviceContributionFactory
+	// .getInstance().getGDBJtagDeviceContribution();
+	// for (GDBJtagDeviceContribution availableDevice : availableDevices) {
+	// if (jtagDeviceName.equals(availableDevice.getDeviceName())) {
+	// gdbJtagDevice = availableDevice.getDevice();
+	// break;
+	// }
+	// }
+	// return gdbJtagDevice;
+	// }
 
 	// ------------------------------------------------------------------------
+
+	@Execute
+	public void stepConnectToTarget(final RequestMonitor rm) {
+
+		List<String> commandsList = new ArrayList<String>();
+
+		IStatus status = fDebuggerCommands
+				.addGnuArmSelectRemoteCommands(commandsList);
+		if (!status.isOK()) {
+			rm.setStatus(status);
+			rm.done();
+			return;
+		}
+
+		queueCommands(commandsList, rm);
+	}
 
 	@Execute
 	public void stepGnuArmReset(RequestMonitor rm) {

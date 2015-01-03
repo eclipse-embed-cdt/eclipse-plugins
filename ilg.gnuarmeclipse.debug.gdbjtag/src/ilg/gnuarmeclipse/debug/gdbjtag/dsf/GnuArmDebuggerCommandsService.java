@@ -11,6 +11,8 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.dsf;
 
+import ilg.gnuarmeclipse.core.EclipseUtils;
+import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IGnuArmDebuggerCommandsService;
@@ -22,7 +24,6 @@ import java.util.Map;
 import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
 import org.eclipse.cdt.debug.gdbjtag.core.Messages;
-import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.IGDBJtagDevice;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.gdb.service.IGDBBackend;
@@ -42,11 +43,13 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 
 	protected DsfSession fSession;
 	protected ILaunchConfiguration fConfig;
-	protected IGDBJtagDevice fJtagDevice;
 	protected boolean fDoDoubleBackslash;
 	protected DsfServicesTracker fTracker;
-	protected IGDBBackend fGDBBackend;
+	protected IGDBBackend fGdbBackend;
 	protected Map<String, Object> fAttributes;
+
+	// protected static final String LINESEP = System
+	//			.getProperty("line.separator"); //$NON-NLS-1$
 
 	// ------------------------------------------------------------------------
 
@@ -97,8 +100,8 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 
 		fTracker = new DsfServicesTracker(GdbPlugin.getBundleContext(),
 				fSession.getId());
-		fGDBBackend = fTracker.getService(IGDBBackend.class);
-		if (fGDBBackend == null) {
+		fGdbBackend = fTracker.getService(IGDBBackend.class);
+		if (fGdbBackend == null) {
 			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
 					"Cannot obtain GDBBackend service", null)); //$NON-NLS-1$
 			rm.done();
@@ -122,31 +125,50 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 	// ------------------------------------------------------------------------
 
 	@Override
-	public void setJtagDevice(IGDBJtagDevice jtagDevice) {
-		fJtagDevice = jtagDevice;
-	};
-
-	@Override
 	public void setAttributes(Map<String, Object> attributes) {
 		fAttributes = attributes;
 	}
 
 	// ------------------------------------------------------------------------
 
+	public IStatus addGnuArmSelectRemoteCommands(List<String> commandsList) {
+
+		String remoteTcpHost = CDebugUtils.getAttribute(fAttributes,
+				IGDBJtagConstants.ATTR_IP_ADDRESS, IGDBJtagConstants.DEFAULT_IP_ADDRESS);
+		Integer remoteTcpPort = CDebugUtils.getAttribute(fAttributes,
+				IGDBJtagConstants.ATTR_PORT_NUMBER, IGDBJtagConstants.DEFAULT_PORT_NUMBER);
+
+		commandsList.add("-target-select remote " + remoteTcpHost + ":"
+				+ remoteTcpPort + "");
+
+		return Status.OK_STATUS;
+	}
+
 	@Override
 	public IStatus addGnuArmRestartCommands(List<String> commandsList) {
 
-		return addStartRestartCommands(fAttributes, true,
-				fGDBBackend.getProgramPath(), commandsList);
+		return addStartRestartCommands(true, commandsList);
 	}
 
 	// ------------------------------------------------------------------------
 
-	@Override
-	public IStatus addLoadSymbolsCommands(Map<String, Object> attributes,
-			IPath programPath, List<String> commandsList) {
+	protected String escapeSpaces(String file) {
+		if (file.indexOf(' ') >= 0) {
+			return '"' + file + '"';
+		}
+		return file;
+	}
 
-		if (!CDebugUtils.getAttribute(attributes,
+	/**
+	 * Add the "symbol-file <path>" command, using the jtag device definition.
+	 * Always duplicate backslashes on Windows.
+	 */
+	@Override
+	public IStatus addLoadSymbolsCommands(List<String> commandsList) {
+
+		IPath programPath = fGdbBackend.getProgramPath();
+
+		if (!CDebugUtils.getAttribute(fAttributes,
 				IGDBJtagConstants.ATTR_LOAD_SYMBOLS,
 				IGDBJtagConstants.DEFAULT_LOAD_SYMBOLS)) {
 
@@ -158,21 +180,21 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 
 		// New setting in Helios. Default is true. Check for existence
 		// in order to support older launch configs
-		if (attributes
+		if (fAttributes
 				.containsKey(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS)
-				&& CDebugUtils.getAttribute(attributes,
+				&& CDebugUtils.getAttribute(fAttributes,
 						IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
 						IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_SYMBOLS)) {
 			if (programPath != null) {
 				symbolsFileName = programPath.toOSString();
 			}
 		} else {
-			symbolsFileName = CDebugUtils.getAttribute(attributes,
+			symbolsFileName = CDebugUtils.getAttribute(fAttributes,
 					IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
 					IGDBJtagConstants.DEFAULT_SYMBOLS_FILE_NAME);
 			if (!symbolsFileName.isEmpty()) {
 				symbolsFileName = DebugUtils.resolveAll(symbolsFileName,
-						attributes);
+						fAttributes);
 			} else {
 				symbolsFileName = null;
 			}
@@ -183,44 +205,56 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 					Messages.getString("GDBJtagDebugger.err_no_img_file"), null); //$NON-NLS-1$
 		}
 
-		// if (fDoDoubleBackslash && EclipseUtils.isWindows()) {
-		// // Escape windows path separator characters TWICE, once for
-		// // Java and once for GDB.
-		//			symbolsFileName = StringUtils.duplicateBackslashes(symbolsFileName); //$NON-NLS-1$ //$NON-NLS-2$
-		// }
+		if (EclipseUtils.isWindows()) {
+			// Escape windows path separator characters TWICE, once for
+			// Java and once for GDB.
+			symbolsFileName = StringUtils.duplicateBackslashes(symbolsFileName);
+		}
 
-		String symbolsOffset = CDebugUtils.getAttribute(attributes,
+		String file = escapeSpaces(symbolsFileName);
+
+		String symbolsOffset = CDebugUtils.getAttribute(fAttributes,
 				IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
 				IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
 		if (!symbolsOffset.isEmpty()) {
 			symbolsOffset = "0x" + symbolsOffset;
+			// addCmd(commandsList, "add-symbol-file " + file + " "
+			// + symbolsOffset);
+			commandsList.add("add-symbol-file " + file + " " + symbolsOffset);
+		} else {
+			// addCmd(commandsList, "symbol-file " + file);
+			commandsList.add("symbol-file " + file);
 		}
-		fJtagDevice.doLoadSymbol(symbolsFileName, symbolsOffset, commandsList);
 
 		return Status.OK_STATUS;
 	}
 
+	/**
+	 * Add the "load <path>" command, using the jtag device definition. Always
+	 * duplicate backslashes on Windows.
+	 */
 	@Override
-	public IStatus addLoadImageCommands(Map<String, Object> attributes,
-			IPath programPath, List<String> commandsList) {
+	public IStatus addLoadImageCommands(List<String> commandsList) {
+
+		IPath programPath = fGdbBackend.getProgramPath();
 
 		String imageFileName = null;
 
-		if (attributes
+		if (fAttributes
 				.containsKey(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE)
-				&& CDebugUtils.getAttribute(attributes,
+				&& CDebugUtils.getAttribute(fAttributes,
 						IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
 						IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_IMAGE)) {
 			if (programPath != null) {
 				imageFileName = programPath.toOSString();
 			}
 		} else {
-			imageFileName = CDebugUtils.getAttribute(attributes,
+			imageFileName = CDebugUtils.getAttribute(fAttributes,
 					IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
 					IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME);
 			if (!imageFileName.isEmpty()) {
-				imageFileName = DebugUtils
-						.resolveAll(imageFileName, attributes);
+				imageFileName = DebugUtils.resolveAll(imageFileName,
+						fAttributes);
 			} else {
 				imageFileName = null;
 			}
@@ -231,24 +265,27 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 					Messages.getString("GDBJtagDebugger.err_no_img_file"), null); //$NON-NLS-1$
 		}
 
-		imageFileName = DebugUtils.resolveAll(imageFileName, attributes);
+		imageFileName = DebugUtils.resolveAll(imageFileName, fAttributes);
 
-		// if (fDoDoubleBackslash && EclipseUtils.isWindows()) {
-		// // Escape windows path separator characters TWICE, once
-		// // for Java and once for GDB.
-		//			imageFileName = StringUtils.duplicateBackslashes(imageFileName); //$NON-NLS-1$ //$NON-NLS-2$
-		// }
+		if (EclipseUtils.isWindows()) {
+			// Escape windows path separator characters TWICE, once
+			// for Java and once for GDB.
+			imageFileName = StringUtils.duplicateBackslashes(imageFileName);
+		}
 
-		String imageOffset = CDebugUtils.getAttribute(attributes,
+		String imageOffset = CDebugUtils.getAttribute(fAttributes,
 				IGDBJtagConstants.ATTR_IMAGE_OFFSET,
-				IGDBJtagConstants.DEFAULT_IMAGE_OFFSET);
-		if (imageOffset.length() > 0) {
+				IGDBJtagConstants.DEFAULT_IMAGE_OFFSET).trim();
+		if (!imageOffset.isEmpty()) {
 			imageOffset = (imageFileName.endsWith(".elf")) ? "" : "0x"
-					+ CDebugUtils.getAttribute(attributes,
+					+ CDebugUtils.getAttribute(fAttributes,
 							IGDBJtagConstants.ATTR_IMAGE_OFFSET,
 							IGDBJtagConstants.DEFAULT_IMAGE_OFFSET); //$NON-NLS-2$ 
 		}
-		fJtagDevice.doLoadImage(imageFileName, imageOffset, commandsList);
+
+		String file = escapeSpaces(imageFileName);
+		// addCmd(commandsList, "load " + file + ' ' + imageOffset);
+		commandsList.add("load " + file + ' ' + imageOffset);
 
 		return Status.OK_STATUS;
 	}
@@ -265,7 +302,7 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 							IGDBJtagConstants.ATTR_IMAGE_OFFSET,
 							IGDBJtagConstants.DEFAULT_PC_REGISTER)).trim();
 			if (!pcRegister.isEmpty()) {
-				fJtagDevice.doSetPC(pcRegister, commandsList);
+				commandsList.add("set $pc=0x" + pcRegister);
 			}
 		}
 

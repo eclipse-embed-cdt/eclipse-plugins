@@ -14,13 +14,9 @@ package ilg.gnuarmeclipse.debug.gdbjtag.services;
 import java.util.List;
 import java.util.Map;
 
-import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.IGDBJtagDevice;
-import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 
 public interface IGnuArmDebuggerCommandsService {
-
-	public void setJtagDevice(IGDBJtagDevice jtagDevice);
 
 	public void setAttributes(Map<String, Object> attributes);
 
@@ -34,10 +30,11 @@ public interface IGnuArmDebuggerCommandsService {
 	 * @param commandsList
 	 * @return Status.OK_STATUS or an IStatus object if error.
 	 */
-	public IStatus addGdbInitCommandsCommands(Map<String, Object> attributes,
-			List<String> commandsList);
+	public IStatus addGdbInitCommandsCommands(List<String> commandsList);
 
 	// ------------------------------------------------------------------------
+
+	public IStatus addGnuArmSelectRemoteCommands(List<String> commandsList);
 
 	public IStatus addGnuArmResetCommands(List<String> commandsList);
 
@@ -49,11 +46,9 @@ public interface IGnuArmDebuggerCommandsService {
 
 	public IStatus addFirstResetCommands(List<String> commandsList);
 
-	public IStatus addLoadSymbolsCommands(Map<String, Object> attributes,
-			IPath programPath, List<String> commandsList);
+	public IStatus addLoadSymbolsCommands(List<String> commandsList);
 
-	public IStatus addLoadImageCommands(Map<String, Object> attributes,
-			IPath programPath, List<String> commandsList);
+	public IStatus addLoadImageCommands(List<String> commandsList);
 
 	/**
 	 * Used by both FinalLaunchSequence & RestartProcessSequence.
@@ -64,8 +59,8 @@ public interface IGnuArmDebuggerCommandsService {
 	 * @param commandsList
 	 * @return
 	 */
-	public IStatus addStartRestartCommands(Map<String, Object> attributes,
-			boolean doReset, IPath programPath, List<String> commandsList);
+	public IStatus addStartRestartCommands(boolean doReset,
+			List<String> commandsList);
 
 	public IStatus addSetPcCommands(List<String> commandsList);
 

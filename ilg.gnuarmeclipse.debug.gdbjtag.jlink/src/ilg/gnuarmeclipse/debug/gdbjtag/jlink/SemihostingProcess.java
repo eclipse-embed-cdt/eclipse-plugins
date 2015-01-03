@@ -25,7 +25,7 @@ public class SemihostingProcess extends Process implements Runnable {
 	boolean fRunning;
 	Thread fThread = null;
 
-	Socket socket;
+	Socket fSocket;
 
 	/**
 	 * Size of buffer for processing data received from remote endpoint.
@@ -36,7 +36,7 @@ public class SemihostingProcess extends Process implements Runnable {
 	 * Holds raw bytes received from the remote endpoint, prior to any TELNET
 	 * protocol processing.
 	 */
-	protected byte[] rawBytes = new byte[BUFFER_SIZE];
+	protected byte[] fRawBytes = new byte[BUFFER_SIZE];
 
 	/**
 	 * This field holds a reference to an {@link InputStream} object used to
@@ -140,20 +140,20 @@ public class SemihostingProcess extends Process implements Runnable {
 			}
 
 			try {
-				if (!socket.isClosed()) {
+				if (fSocket != null && !fSocket.isClosed()) {
 
 					// Do not close(), it is too brutal.
 					// socket.close();
 
-					if (!socket.isInputShutdown()) {
+					if (!fSocket.isInputShutdown()) {
 						System.out
 								.println("SemihostingProcess.destroy() before shutdownInput");
-						socket.shutdownInput();
+						fSocket.shutdownInput();
 					}
-					if (!socket.isOutputShutdown()) {
+					if (!fSocket.isOutputShutdown()) {
 						System.out
 								.println("SemihostingProcess.destroy() before shutdownOutput");
-						socket.shutdownOutput();
+						fSocket.shutdownOutput();
 					}
 				}
 			} catch (IOException e) {
@@ -212,9 +212,9 @@ public class SemihostingProcess extends Process implements Runnable {
 		// wait max 10sec (50x200ms)
 		while (i > 0) {
 			InetSocketAddress address = new InetSocketAddress(fHost, fPort);
-			socket = new Socket();
+			fSocket = new Socket();
 			try {
-				socket.connect(address, nTimeout);
+				fSocket.connect(address, nTimeout);
 				break;
 			} catch (IOException e1) {
 				--i;
@@ -235,16 +235,16 @@ public class SemihostingProcess extends Process implements Runnable {
 
 		try {
 
-			fInputStream = socket.getInputStream();
-			fOutputStream = socket.getOutputStream();
+			fInputStream = fSocket.getInputStream();
+			fOutputStream = fSocket.getOutputStream();
 
-			socket.setKeepAlive(true);
+			fSocket.setKeepAlive(true);
 
-			while (socket.isConnected() & fRunning) {
+			while (fSocket.isConnected() & fRunning) {
 
 				int nRawBytes;
 				try {
-					nRawBytes = fInputStream.read(rawBytes);
+					nRawBytes = fInputStream.read(fRawBytes);
 				} catch (SocketException e) {
 					nRawBytes = -1; // EOS
 					// System.out.println(e);
@@ -264,7 +264,7 @@ public class SemihostingProcess extends Process implements Runnable {
 					break;
 				} else {
 					if (nRawBytes > 0) {
-						fPipeOut.write(rawBytes, 0, nRawBytes);
+						fPipeOut.write(fRawBytes, 0, nRawBytes);
 					}
 				}
 			}
@@ -282,8 +282,8 @@ public class SemihostingProcess extends Process implements Runnable {
 			}
 
 			try {
-				socket.close();
-				socket = null;
+				fSocket.close();
+				fSocket = null;
 			} catch (IOException e) {
 			}
 
