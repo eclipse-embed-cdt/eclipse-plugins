@@ -59,8 +59,12 @@ import org.eclipse.ui.views.navigator.ResourceComparator;
 
 public class TabStartup extends AbstractLaunchConfigurationTab {
 
+	// ------------------------------------------------------------------------
+	
 	private static final String TAB_NAME = "Startup";
 	private static final String TAB_ID = Activator.PLUGIN_ID + ".ui.startuptab";
+
+	// ------------------------------------------------------------------------
 
 	private Text fInitCommands;
 	// Text delay;
@@ -108,6 +112,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	private Label fSymbolsOffsetLabel;
 	private Label fProjBinaryLabel1;
 	private Label fProjBinaryLabel2;
+
+	// ------------------------------------------------------------------------
 
 	@Override
 	public String getName() {
@@ -398,6 +404,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		}
 
 		// ----- Actions ------------------------------------------------------
+		
 		fLoadExecutable.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -743,8 +750,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				scheduleUpdateJob();
 			}
 		};
-
-		// secondResetType.addModifyListener(scheduleUpdateJobModifyListener);
 
 		fRunCommands.addModifyListener(scheduleUpdateJobModifyListener);
 
@@ -1176,4 +1181,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(ConfigurationAttributes.DO_CONTINUE,
 				ConfigurationAttributes.DO_CONTINUE_DEFAULT);
 	}
+
+	// ------------------------------------------------------------------------
 }

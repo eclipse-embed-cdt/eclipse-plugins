@@ -62,11 +62,15 @@ import org.eclipse.swt.widgets.Text;
  */
 public class TabDebugger extends AbstractLaunchConfigurationTab {
 
+	// ------------------------------------------------------------------------
+
 	private static final String TAB_NAME = "Debugger";
 	private static final String TAB_ID = Activator.PLUGIN_ID
 			+ ".ui.debuggertab";
 
 	private static final boolean DEBUG = false;
+
+	// ------------------------------------------------------------------------
 
 	private Button fDoStartGdbServer;
 	private Text fGdbClientExecutable;
@@ -76,29 +80,22 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Text fTargetIpAddress;
 	private Text fTargetPortNumber;
 
-	// private Button doConnectToRunning;
-
 	private Text fGdbServerGdbPort;
-	// private Text gdbServerTelnetPort;
 
 	private Text fGdbServerExecutable;
 	private Button fGdbServerBrowseButton;
 	private Button fGdbServerVariablesButton;
 
-	// private Text gdbServerLog;
-	// private Button gdbServerLogBrowse;
 	private Text fGdbServerOtherOptions;
 
 	private Button fDoGdbServerAllocateConsole;
-	// private Button doGdbServerAllocateTelnetConsole;
 
 	protected Button fUpdateThreadlistOnSuspend;
 
-	// private TabStartup tabStartup;
+	// ------------------------------------------------------------------------
 
 	protected TabDebugger(TabStartup tabStartup) {
 		super();
-		// this.tabStartup = tabStartup;
 	}
 
 	@Override
@@ -129,8 +126,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		createGdbClientControls(comp);
 
-		// createOptionsControl(comp);
-
 		createRemoteControl(comp);
 
 		fUpdateThreadlistOnSuspend = new Button(comp, SWT.CHECK);
@@ -160,18 +155,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			text.setText(str);
 	}
 
-	// private void browseSaveButtonSelected(String title, Text text) {
-	// FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
-	// dialog.setText(title);
-	// String str = text.getText().trim();
-	// int lastSeparatorIndex = str.lastIndexOf(File.separator);
-	// if (lastSeparatorIndex != -1)
-	// dialog.setFilterPath(str.substring(0, lastSeparatorIndex));
-	// str = dialog.open();
-	// if (str != null)
-	// text.setText(str);
-	// }
-
 	private void variablesButtonSelected(Text text) {
 		StringVariableSelectionDialog dialog = new StringVariableSelectionDialog(
 				getShell());
@@ -195,28 +178,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		layout.numColumns = 1;
 		layout.marginHeight = 0;
 		comp.setLayout(layout);
-
-		// {
-		// doConnectToRunning = new Button(comp, SWT.CHECK);
-		// doConnectToRunning.setText(Messages
-		// .getString("DebuggerTab.noReset_Text"));
-		// doConnectToRunning.setToolTipText(Messages
-		// .getString("DebuggerTab.noReset_ToolTipText"));
-		// }
-
-		// ----- Actions ------------------------------------------------------
-
-		// doConnectToRunning.addSelectionListener(new SelectionAdapter() {
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		// updateLaunchConfigurationDialog();
-		//
-		// doConnectToRunningChanged();
-		// tabStartup.doConnectToRunningChanged(doConnectToRunning
-		// .getSelection());
-		// }
-		// });
-
 	}
 
 	private void createGdbServerGroup(Composite parent) {
@@ -293,44 +254,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fGdbServerGdbPort.setLayoutData(gd);
 		}
 
-		// {
-		// label = new Label(comp, SWT.NONE);
-		// label.setText(Messages
-		// .getString("DebuggerTab.gdbServerTelnetPort_Label"));
-		// label.setToolTipText(Messages
-		// .getString("DebuggerTab.gdbServerTelnetPort_ToolTipText"));
-		//
-		// gdbServerTelnetPort = new Text(comp, SWT.SINGLE | SWT.BORDER);
-		// gd = new GridData();
-		// gd.widthHint = 60;
-		// gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
-		// gdbServerTelnetPort.setLayoutData(gd);
-		// }
-
-		// {
-		// label = new Label(comp, SWT.NONE);
-		//			label.setText(Messages.getString("DebuggerTab.gdbServerLog_Label")); //$NON-NLS-1$
-		//
-		// Composite local = new Composite(comp, SWT.NONE);
-		// layout = new GridLayout();
-		// layout.numColumns = 2;
-		// layout.marginHeight = 0;
-		// layout.marginWidth = 0;
-		// local.setLayout(layout);
-		// gd = new GridData(GridData.FILL_HORIZONTAL);
-		// gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
-		// local.setLayoutData(gd);
-		// {
-		// gdbServerLog = new Text(local, SWT.BORDER);
-		// gd = new GridData(GridData.FILL_HORIZONTAL);
-		// gdbServerLog.setLayoutData(gd);
-		//
-		// gdbServerLogBrowse = new Button(local, SWT.NONE);
-		// gdbServerLogBrowse.setText(Messages
-		// .getString("DebuggerTab.gdbServerLogBrowse_Button"));
-		// }
-		// }
-
 		{
 			label = new Label(comp, SWT.NONE);
 			label.setText(Messages
@@ -369,21 +292,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							.getString("DebuggerTab.gdbServerAllocateConsole_ToolTipText"));
 			gd = new GridData(GridData.FILL_HORIZONTAL);
 			fDoGdbServerAllocateConsole.setLayoutData(gd);
-
-			// doGdbServerAllocateTelnetConsole = new Button(local, SWT.CHECK);
-			// doGdbServerAllocateTelnetConsole
-			// .setText(Messages
-			// .getString("DebuggerTab.gdbServerAllocateTelnetConsole_Label"));
-			// doGdbServerAllocateTelnetConsole
-			// .setToolTipText(Messages
-			// .getString("DebuggerTab.gdbServerAllocateTelnetConsole_ToolTipText"));
-			// gd = new GridData(GridData.FILL_HORIZONTAL);
-			// doGdbServerAllocateTelnetConsole.setLayoutData(gd);
-			//
-			// // update doStartGdbServerChanged() too
-			// doGdbServerAllocateTelnetConsole.setEnabled(false);
-
 		}
+
 		// ----- Actions ------------------------------------------------------
 
 		ModifyListener scheduleUpdateJobModifyListener = new ModifyListener() {
@@ -447,25 +357,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 		});
 
-		// gdbServerTelnetPort.addModifyListener(scheduleUpdateJobModifyListener);
-
-		// gdbServerLog.addModifyListener(scheduleUpdateJobModifyListener);
-		// gdbServerLogBrowse.addSelectionListener(new SelectionAdapter() {
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		// browseSaveButtonSelected(Messages
-		// .getString("DebuggerTab.gdbServerLogBrowse_Title"),
-		// gdbServerLog);
-		// }
-		// });
-
 		fGdbServerOtherOptions
 				.addModifyListener(scheduleUpdateJobModifyListener);
 
 		fDoGdbServerAllocateConsole
 				.addSelectionListener(scheduleUpdateJobSelectionAdapter);
-		// doGdbServerAllocateTelnetConsole
-		// .addSelectionListener(scheduleUpdateJobSelectionAdapter);
 	}
 
 	private void createGdbClientControls(Composite parent) {
@@ -549,6 +445,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		// ----- Actions ------------------------------------------------------
+
 		fGdbClientExecutable.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
@@ -627,6 +524,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		// ---- Actions -------------------------------------------------------
+
 		// Add watchers for user data entry
 		fTargetIpAddress.addModifyListener(new ModifyListener() {
 			@Override
@@ -656,21 +554,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		boolean enabled = fDoStartGdbServer.getSelection();
 
-		// gdbServerSpeedAuto.setSelection(enabled);
-		// gdbServerSpeedAdaptive.setSelection(enabled);
-		// gdbServerSpeedFixed.setSelection(enabled);
-		// gdbServerSpeedFixedValue.setEnabled(enabled);
-
 		fGdbServerExecutable.setEnabled(enabled);
 		fGdbServerBrowseButton.setEnabled(enabled);
 		fGdbServerVariablesButton.setEnabled(enabled);
 		fGdbServerOtherOptions.setEnabled(enabled);
 
-		// gdbServerLog.setEnabled(enabled);
-		// gdbServerLogBrowse.setEnabled(enabled);
-
 		fGdbServerGdbPort.setEnabled(enabled);
-		// gdbServerTelnetPort.setEnabled(enabled);
 
 		if (EclipseUtils.isWindows()) {
 			// Prevent disable it on Windows
@@ -678,8 +567,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		} else {
 			fDoGdbServerAllocateConsole.setEnabled(enabled);
 		}
-
-		// doGdbServerAllocateTelnetConsole.setEnabled(enabled);
 
 		// Disable remote target params when the server is started
 		fTargetIpAddress.setEnabled(!enabled);
@@ -689,9 +576,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private void doConnectToRunningChanged() {
 
 		if (fDoStartGdbServer.getSelection()) {
-
-			// boolean enabled = doConnectToRunning.getSelection();
-
+			;
 		}
 	}
 
@@ -724,17 +609,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 										ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
 										ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
 
-				// gdbServerTelnetPort
-				// .setText(Integer.toString(configuration
-				// .getAttribute(
-				// ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
-				// ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
-
-				// Log file
-				// gdbServerLog.setText(configuration.getAttribute(
-				// ConfigurationAttributes.GDB_SERVER_LOG,
-				// ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT));
-
 				// Other options
 				stringDefault = WorkspacePersistentValues
 						.getGdbServerOtherOptions(ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT);
@@ -752,14 +626,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 											ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
 											ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT));
 				}
-
-				// Allocate telnet console
-				// doGdbServerAllocateTelnetConsole
-				// .setSelection(configuration
-				// .getAttribute(
-				// ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE,
-				// ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE_DEFAULT));
-
 			}
 
 			// GDB Client Setup
@@ -786,13 +652,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						stringDefault));
 			}
 
-			// Connect to running
-			// {
-			// doConnectToRunning.setSelection(configuration.getAttribute(
-			// ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-			// ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT));
-			// }
-
 			// Remote target
 			{
 				fTargetIpAddress.setText(configuration.getAttribute(
@@ -811,7 +670,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				String portString = Integer.toString(storedPort); //$NON-NLS-1$
 				fTargetPortNumber.setText(portString);
 
-				// useRemoteChanged();
 			}
 
 			doStartGdbServerChanged();
@@ -888,16 +746,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER, port);
 
-			// port = Integer.parseInt(gdbServerTelnetPort.getText().trim());
-			// configuration
-			// .setAttribute(
-			// ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
-			// port);
-
-			// Log file
-			// configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_LOG,
-			// gdbServerLog.getText().trim());
-
 			// Other options
 			stringValue = fGdbServerOtherOptions.getText().trim();
 			configuration.setAttribute(
@@ -908,12 +756,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(
 					ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
 					fDoGdbServerAllocateConsole.getSelection());
-
-			// Allocate semihosting console
-			// configuration
-			// .setAttribute(
-			// ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE,
-			// doGdbServerAllocateTelnetConsole.getSelection());
 		}
 
 		// GDB client
@@ -945,13 +787,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			WorkspacePersistentValues.putGdbClientCommands(stringValue);
 		}
 
-		// Connect to running
-		// {
-		// configuration.setAttribute(
-		// ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-		// doConnectToRunning.getSelection());
-		// }
-		// Remote target
 		{
 			if (fDoStartGdbServer.getSelection()) {
 				configuration.setAttribute(IGDBJtagConstants.ATTR_IP_ADDRESS,
@@ -1020,12 +855,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							IGDBLaunchConfigurationConstants.DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND_DEFAULT);
 		}
 
-		// {
-		// configuration.setAttribute(
-		// ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-		// ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
-		// }
-
 		// QEMU GDB server setup
 		{
 			configuration.setAttribute(
@@ -1046,11 +875,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
 					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT);
 
-			// configuration
-			// .setAttribute(
-			// ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
-			// ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT);
-
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_LOG,
 					ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT);
 
@@ -1062,11 +886,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.setAttribute(
 							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
 							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
-
-			// configuration
-			// .setAttribute(
-			// ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE,
-			// ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE_DEFAULT);
 		}
 
 		// GDB client setup
@@ -1097,4 +916,5 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						ConfigurationAttributes.UPDATE_THREAD_LIST_DEFAULT);
 	}
 
+	// ------------------------------------------------------------------------
 }
