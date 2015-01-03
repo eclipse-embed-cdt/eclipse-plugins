@@ -60,7 +60,7 @@ import org.eclipse.ui.views.navigator.ResourceComparator;
 public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	// ------------------------------------------------------------------------
-	
+
 	private static final String TAB_NAME = "Startup";
 	private static final String TAB_ID = Activator.PLUGIN_ID + ".ui.startuptab";
 
@@ -114,6 +114,10 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	private Label fProjBinaryLabel2;
 
 	// ------------------------------------------------------------------------
+
+	public TabStartup() {
+		super();
+	}
 
 	@Override
 	public String getName() {
@@ -404,7 +408,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		}
 
 		// ----- Actions ------------------------------------------------------
-		
+
 		fLoadExecutable.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {

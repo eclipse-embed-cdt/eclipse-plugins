@@ -80,6 +80,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Text fTargetIpAddress;
 	private Text fTargetPortNumber;
 
+	private Text fQemuMachineName;
+	private Button fIsQemuVerbose;
+
 	private Text fGdbServerGdbPort;
 
 	private Text fGdbServerExecutable;
@@ -243,6 +246,23 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		{
 			label = new Label(comp, SWT.NONE);
 			label.setText(Messages
+					.getString("DebuggerTab.gdbServerBoard_Label"));
+			label.setToolTipText(Messages
+					.getString("DebuggerTab.gdbServerBoard_ToolTipText"));
+
+			fQemuMachineName = new Text(comp, SWT.SINGLE | SWT.BORDER);
+			fQemuMachineName.setToolTipText(Messages
+					.getString("DebuggerTab.gdbServerBoard_ToolTipText"));
+
+			gd = new GridData();
+			gd.widthHint = 125;
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
+			fQemuMachineName.setLayoutData(gd);
+		}
+
+		{
+			label = new Label(comp, SWT.NONE);
+			label.setText(Messages
 					.getString("DebuggerTab.gdbServerGdbPort_Label"));
 			label.setToolTipText(Messages
 					.getString("DebuggerTab.gdbServerGdbPort_ToolTipText"));
@@ -292,6 +312,15 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							.getString("DebuggerTab.gdbServerAllocateConsole_ToolTipText"));
 			gd = new GridData(GridData.FILL_HORIZONTAL);
 			fDoGdbServerAllocateConsole.setLayoutData(gd);
+
+			fIsQemuVerbose = new Button(local, SWT.CHECK);
+			fIsQemuVerbose.setText(Messages
+					.getString("DebuggerTab.gdbServerVerbose_Label"));
+			fIsQemuVerbose.setToolTipText(Messages
+					.getString("DebuggerTab.gdbServerVerbose_ToolTipText"));
+
+			gd = new GridData();
+			fIsQemuVerbose.setLayoutData(gd);
 		}
 
 		// ----- Actions ------------------------------------------------------
@@ -347,6 +376,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 		});
 
+		fQemuMachineName.addModifyListener(scheduleUpdateJobModifyListener);
+
 		fGdbServerGdbPort.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
@@ -362,6 +393,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		fDoGdbServerAllocateConsole
 				.addSelectionListener(scheduleUpdateJobSelectionAdapter);
+
+		fIsQemuVerbose.addSelectionListener(scheduleUpdateJobSelectionAdapter);
+
 	}
 
 	private void createGdbClientControls(Composite parent) {
@@ -602,6 +636,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
 						stringDefault));
 
+				// Board name
+				stringDefault = WorkspacePersistentValues
+						.getQemuMachineName(ConfigurationAttributes.GDB_SERVER_MACHINE_NAME_DEFAULT);
+				fQemuMachineName.setText(configuration.getAttribute(
+						ConfigurationAttributes.GDB_SERVER_MACHINE_NAME,
+						stringDefault));
+
 				// Ports
 				fGdbServerGdbPort
 						.setText(Integer.toString(configuration
@@ -626,6 +667,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 											ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
 											ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT));
 				}
+
+				fIsQemuVerbose.setSelection(configuration.getAttribute(
+						ConfigurationAttributes.IS_GDB_SERVER_VERBOSE,
+						ConfigurationAttributes.IS_GDB_SERVER_VERBOSE_DEFAULT));
+
 			}
 
 			// GDB Client Setup
@@ -746,6 +792,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER, port);
 
+			// Board name
+			stringValue = fQemuMachineName.getText().trim();
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_MACHINE_NAME,
+					stringValue);
+			WorkspacePersistentValues.putQemuMachineName(stringValue);
+
 			// Other options
 			stringValue = fGdbServerOtherOptions.getText().trim();
 			configuration.setAttribute(
@@ -756,6 +809,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(
 					ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
 					fDoGdbServerAllocateConsole.getSelection());
+
+			configuration.setAttribute(
+					ConfigurationAttributes.IS_GDB_SERVER_VERBOSE,
+					fIsQemuVerbose.getSelection());
 		}
 
 		// GDB client
@@ -875,8 +932,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
 					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT);
 
-			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_LOG,
-					ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT);
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_MACHINE_NAME,
+					ConfigurationAttributes.GDB_SERVER_MACHINE_NAME_DEFAULT);
 
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_OTHER,
@@ -886,6 +944,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.setAttribute(
 							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
 							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
+
+			configuration.setAttribute(
+					ConfigurationAttributes.IS_GDB_SERVER_VERBOSE,
+					ConfigurationAttributes.IS_GDB_SERVER_VERBOSE_DEFAULT);
 		}
 
 		// GDB client setup

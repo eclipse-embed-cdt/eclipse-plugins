@@ -51,6 +51,8 @@ public class WorkspacePersistentValues {
 	public static final String GDB_QEMU_ENABLE_SEMIHOSTING = GDB_QEMU
 			+ "enableSemihosting";
 
+	public static final String GDB_QEMU_MACHINE_NAME = GDB_QEMU + "machineName";
+
 	// Run Commands
 	public static final String GDB_QEMU_DO_DEBUG_IN_RAM = GDB_QEMU
 			+ "doDebugInRam";
@@ -176,17 +178,6 @@ public class WorkspacePersistentValues {
 		putValueForId(GDB_QEMU_DO_INITIAL_RESET, Boolean.toString(value));
 	}
 
-	// ----- QEMU initial reset type ---------------------------------------
-	// public static String getQemuInitialResetType(String defaultValue) {
-	//
-	// return getValueForId(GDB_QEMU_INITIAL_RESET_TYPE, defaultValue);
-	// }
-	//
-	// public static void putQemuInitialResetType(String value) {
-	//
-	// putValueForId(GDB_QEMU_INITIAL_RESET_TYPE, value);
-	// }
-
 	// ----- QEMU enable semihosting ---------------------------------------
 	public static boolean getQemuEnableSemihosting(boolean defaultValue) {
 
@@ -210,7 +201,18 @@ public class WorkspacePersistentValues {
 		putValueForId(GDB_QEMU_INIT_OTHER, value);
 	}
 
-	// ----- jlink debug in ram ---------------------------------------------
+	// ----- QEMU machine name ------------------------------------------------
+	public static String getQemuMachineName(String defaultValue) {
+
+		return getValueForId(GDB_QEMU_MACHINE_NAME, defaultValue);
+	}
+
+	public static void putQemuMachineName(String value) {
+
+		putValueForId(GDB_QEMU_MACHINE_NAME, value);
+	}
+
+	// ----- QEMU debug in ram ---------------------------------------------
 	public static boolean getQemuDebugInRam(boolean defaultValue) {
 
 		return Boolean.valueOf(getValueForId(GDB_QEMU_DO_DEBUG_IN_RAM,

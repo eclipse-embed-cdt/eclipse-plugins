@@ -451,20 +451,20 @@ public class LaunchConfigurationDelegate extends
 	protected IPath checkBinaryDetails(final ILaunchConfiguration config)
 			throws CoreException {
 
-		String configOptions = "";
+		String machine = "";
 		try {
-			configOptions = Configuration.getGdbServerOtherConfig(config);
+			machine = Configuration.getQemuMachineName(config);
 		} catch (CoreException e) {
 			;
 		}
 
-		if (configOptions.isEmpty()) {
+		if (machine.isEmpty()) {
 			throw new CoreException(
 					new Status(
 							IStatus.ERROR,
 							Activator.PLUGIN_ID,
-							"Missing mandatory configuration. "
-									+ "Fill-in the 'Config options:' field in the Debugger tab.")); //$NON-NLS-1$
+							"Missing mandatory board/machine. "
+									+ "Fill-in the 'Board name:' field in the Debugger tab.")); //$NON-NLS-1$
 		}
 
 		IPath path = super.checkBinaryDetails(config);

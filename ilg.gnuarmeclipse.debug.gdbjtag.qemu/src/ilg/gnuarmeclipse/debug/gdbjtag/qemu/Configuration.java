@@ -93,6 +93,22 @@ public class Configuration {
 			// Added always, to get the 'Waiting for connection' message.
 			lst.add("-verbose");
 
+			if (configuration.getAttribute(
+					ConfigurationAttributes.IS_GDB_SERVER_VERBOSE,
+					ConfigurationAttributes.IS_GDB_SERVER_VERBOSE_DEFAULT)) {
+				lst.add("-verbose");
+			}
+
+			lst.add("-machine");
+			String machine = configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_MACHINE_NAME,
+					ConfigurationAttributes.GDB_SERVER_MACHINE_NAME_DEFAULT)
+					.trim();
+
+			machine = DebugUtils.resolveAll(machine,
+					configuration.getAttributes());
+			lst.add(machine);
+
 			lst.add("-gdb");
 			lst.add("tcp::"
 					+ Integer.toString(configuration
@@ -137,6 +153,13 @@ public class Configuration {
 
 		return config.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER,
 				ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT).trim();
+	}
+
+	public static String getQemuMachineName(ILaunchConfiguration config)
+			throws CoreException {
+
+		return config.getAttribute(
+				ConfigurationAttributes.GDB_SERVER_MACHINE_NAME, "").trim();
 	}
 
 	// ------------------------------------------------------------------------
