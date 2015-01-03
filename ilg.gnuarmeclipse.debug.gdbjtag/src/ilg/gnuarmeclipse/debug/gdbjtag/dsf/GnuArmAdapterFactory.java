@@ -67,11 +67,14 @@ public class GnuArmAdapterFactory extends GdbAdapterFactory {
 			DsfSession session = fLaunch.getSession();
 
 			session.unregisterModelAdapter(IViewerInputProvider.class);
-			fViewModelAdapter.dispose();
+			if (fViewModelAdapter != null) {
+				fViewModelAdapter.dispose();
+			}
 
 			session.unregisterModelAdapter(SteppingController.class);
-			fSteppingController.dispose();
-
+			if (fSteppingController != null) {
+				fSteppingController.dispose();
+			}
 		}
 	}
 
