@@ -100,37 +100,12 @@ public class Configuration {
 									ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
 									ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
 
-			// lst.add("-c");
-			// lst.add("telnet_port "
-			// + Integer.toString(configuration
-			// .getAttribute(
-			// ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
-			// ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
-
-//			String logFile = configuration.getAttribute(
-//					ConfigurationAttributes.GDB_SERVER_LOG,
-//					ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT).trim();
-//
-//			logFile = DebugUtils.resolveAll(logFile,
-//					configuration.getAttributes());
-
-			// if (EclipseUtils.isWindows()) {
-			// logFile = StringUtils.duplicateBackslashes(logFile);
-			// }
-			// if (!logFile.isEmpty()) {
-			// lst.add("-D");
-			// lst.add(logFile);
-			// }
-
 			String other = configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_OTHER,
 					ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT).trim();
 
 			other = DebugUtils.resolveAll(other, configuration.getAttributes());
 
-			// if (EclipseUtils.isWindows()) {
-			// other = StringUtils.duplicateBackslashes(other);
-			// }
 			if (!other.isEmpty()) {
 				lst.addAll(StringUtils.splitCommandLineOptions(other));
 			}

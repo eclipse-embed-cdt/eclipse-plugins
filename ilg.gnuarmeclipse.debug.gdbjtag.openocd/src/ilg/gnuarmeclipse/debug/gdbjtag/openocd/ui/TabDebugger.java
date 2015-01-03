@@ -306,29 +306,29 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			gdbServerTelnetPort.setLayoutData(gd);
 		}
 
-		{
-			label = new Label(comp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.gdbServerLog_Label")); //$NON-NLS-1$
-
-			Composite local = new Composite(comp, SWT.NONE);
-			layout = new GridLayout();
-			layout.numColumns = 2;
-			layout.marginHeight = 0;
-			layout.marginWidth = 0;
-			local.setLayout(layout);
-			gd = new GridData(GridData.FILL_HORIZONTAL);
-			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
-			local.setLayoutData(gd);
-			// {
-			// gdbServerLog = new Text(local, SWT.BORDER);
-			// gd = new GridData(GridData.FILL_HORIZONTAL);
-			// gdbServerLog.setLayoutData(gd);
-			//
-			// gdbServerLogBrowse = new Button(local, SWT.NONE);
-			// gdbServerLogBrowse.setText(Messages
-			// .getString("DebuggerTab.gdbServerLogBrowse_Button"));
-			// }
-		}
+		// {
+		// label = new Label(comp, SWT.NONE);
+		//			label.setText(Messages.getString("DebuggerTab.gdbServerLog_Label")); //$NON-NLS-1$
+		//
+		// Composite local = new Composite(comp, SWT.NONE);
+		// layout = new GridLayout();
+		// layout.numColumns = 2;
+		// layout.marginHeight = 0;
+		// layout.marginWidth = 0;
+		// local.setLayout(layout);
+		// gd = new GridData(GridData.FILL_HORIZONTAL);
+		// gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
+		// local.setLayoutData(gd);
+		// {
+		// gdbServerLog = new Text(local, SWT.BORDER);
+		// gd = new GridData(GridData.FILL_HORIZONTAL);
+		// gdbServerLog.setLayoutData(gd);
+		//
+		// gdbServerLogBrowse = new Button(local, SWT.NONE);
+		// gdbServerLogBrowse.setText(Messages
+		// .getString("DebuggerTab.gdbServerLogBrowse_Button"));
+		// }
+		// }
 
 		{
 			label = new Label(comp, SWT.NONE);
