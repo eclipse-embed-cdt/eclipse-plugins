@@ -588,7 +588,7 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 		// Wait for the actual user of the streams to close it.
 		// Bug 339379
 
-		System.out.println("GDBBackend.destroy()");
+		System.out.println("GnuArmGdbBackend.destroy()");
 
 		// destroy() should be supported even if it's not spawner.
 		if (getState() == State.STARTED) {
