@@ -14,8 +14,7 @@
             name="%ActionDefinition.restart.name"
             categoryId="ilg.gnuarmeclipse.debug.gdbjtag.restart.category"
             description="%ActionDefinition.restart.description"
-            id="ilg.gnuarmeclipse.debug.gdbjtag.restart.commands.Restart"
-            defaultHandler="ilg.gnuarmeclipse.debug.gdbjtag.restart.RestartCommandHandler">
+            id="ilg.gnuarmeclipse.debug.gdbjtag.restart.commands.Restart">
       </command>    
    </extension>
    
@@ -32,6 +31,35 @@
             tooltip="%restartButton.tooltip">
          </command>
       </menuContribution>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.startup">
+      <startup
+            class="ilg.gnuarmeclipse.debug.gdbjtag.restart.Startup">
+      </startup>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="ilg.gnuarmeclipse.debug.gdbjtag.restart.RestartPropertyTester"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.restart.RestartPropertyTester"
+            namespace="ilg.gnuarmeclipse.debug.gdbjtag.restart"
+            properties="canRestart"
+            type="java.lang.Object">
+      </propertyTester>
+   </extension>
+   <extension
+         point="org.eclipse.ui.handlers">
+      <handler
+            class="ilg.gnuarmeclipse.debug.gdbjtag.restart.RestartCommandHandler"
+            commandId="ilg.gnuarmeclipse.debug.gdbjtag.restart.commands.Restart">
+         <enabledWhen>
+            <test
+                  property="ilg.gnuarmeclipse.debug.gdbjtag.restart.canRestart">
+            </test>
+         </enabledWhen>
+      </handler>
    </extension>
 
 </plugin>
