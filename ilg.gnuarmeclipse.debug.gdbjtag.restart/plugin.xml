@@ -11,10 +11,11 @@
       </category>
       
       <command
-            name="%ActionDefinition.restart.name"
             categoryId="ilg.gnuarmeclipse.debug.gdbjtag.restart.category"
+            defaultHandler="ilg.gnuarmeclipse.debug.gdbjtag.restart.RestartCommandHandler"
             description="%ActionDefinition.restart.description"
-            id="ilg.gnuarmeclipse.debug.gdbjtag.restart.commands.Restart">
+            id="ilg.gnuarmeclipse.debug.gdbjtag.restart.commands.Restart"
+            name="%ActionDefinition.restart.name">
       </command>    
    </extension>
    
@@ -39,6 +40,8 @@
             class="ilg.gnuarmeclipse.debug.gdbjtag.restart.Startup">
       </startup>
    </extension>
+   
+   <!--
    <extension
          point="org.eclipse.core.expressions.propertyTesters">
       <propertyTester
@@ -61,5 +64,5 @@
          </enabledWhen>
       </handler>
    </extension>
-
+   -->
 </plugin>
