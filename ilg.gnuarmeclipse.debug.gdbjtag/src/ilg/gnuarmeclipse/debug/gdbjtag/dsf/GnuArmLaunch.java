@@ -63,10 +63,6 @@ public class GnuArmLaunch extends GdbLaunch {
 	private DsfServicesTracker fTracker;
 	private DefaultDsfExecutor fExecutor;
 
-	// private boolean fWasShutdown = false;
-
-	// private DsfMemoryBlockRetrieval fMemRetrieval;
-
 	// ------------------------------------------------------------------------
 
 	public GnuArmLaunch(ILaunchConfiguration launchConfiguration, String mode,
@@ -121,43 +117,8 @@ public class GnuArmLaunch extends GdbLaunch {
 	@Override
 	public void shutdownSession(final RequestMonitor rm) {
 
-		// if (fWasShutdown) {
-		// System.out.println("Multiple shutdownSession() !!!");
-		// rm.done();
-		// return;
-		// }
-
+		System.out.println("GnuArmLaunch.shutdownSession() " + this);
 		super.shutdownSession(rm);
-
-		// Sequence shutdownSequence = new Sequence(fExecutor, new
-		// RequestMonitor(
-		// fExecutor, rm) {
-		// @Override
-		// protected void handleCompleted() {
-		// GnuArmLaunch.super.shutdownSession(rm);
-		// }
-		// }) {
-		//
-		// @Override
-		// public Step[] getSteps() {
-		// return new Step[] { new Step() {
-		// @Override
-		// public void execute(RequestMonitor stepRm) {
-		// GnuArmGdbServerBackend service = (GnuArmGdbServerBackend) fTracker
-		// .getService(IGdbServerBackendService.class);
-		// if (service == null) {
-		// stepRm.done();
-		// return;
-		// }
-		// service.shutdown(stepRm);
-		// ;
-		// }
-		// } };
-		// }
-		// };
-		// fExecutor.execute(shutdownSequence);
-
-		// fWasShutdown = true;
 	}
 
 	/**

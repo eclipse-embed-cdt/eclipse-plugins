@@ -20,6 +20,10 @@ import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.net.SocketException;
 
+/**
+ * Synthetic process (does not have a system process), used to get the
+ * semihosting output from the J-Link GDB server.
+ */
 public class SemihostingProcess extends Process implements Runnable {
 
 	boolean fRunning;
@@ -87,11 +91,11 @@ public class SemihostingProcess extends Process implements Runnable {
 		}
 	}
 
-	// fake output stream, never has data to read
+	// Fake output stream, ignores all writes.
 	protected class NullOutputStream extends OutputStream {
 
 		@Override
-		public void write(int arg0) throws IOException {
+		public void write(int arg) throws IOException {
 		}
 
 	}
@@ -256,7 +260,8 @@ public class SemihostingProcess extends Process implements Runnable {
 					// Announce to the user that the remote endpoint has closed
 					// the connection.
 
-					System.out.println("Connection closed by the GDB server.");
+					System.out
+							.println("SemihostingProcess.run() Connection closed by the GDB server.");
 
 					fPipeOut.write("Connection closed by the GDB server."
 							.getBytes());

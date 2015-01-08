@@ -19,6 +19,7 @@ import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.ImmediateDataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.ImmediateRequestMonitor;
+import org.eclipse.cdt.dsf.concurrent.Immutable;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.Sequence;
 import org.eclipse.cdt.dsf.datamodel.IDMContext;
@@ -26,6 +27,7 @@ import org.eclipse.cdt.dsf.debug.service.IRunControl.IContainerDMContext;
 import org.eclipse.cdt.dsf.gdb.service.GDBProcesses_7_2_1;
 import org.eclipse.cdt.dsf.gdb.service.IGDBBackend;
 import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
+import org.eclipse.cdt.dsf.mi.service.IMIBackend.State;
 import org.eclipse.cdt.dsf.mi.service.IMICommandControl;
 import org.eclipse.cdt.dsf.mi.service.IMIContainerDMContext;
 import org.eclipse.cdt.dsf.mi.service.IMIProcessDMContext;
@@ -38,6 +40,40 @@ import org.eclipse.core.runtime.Status;
 
 // Used to redefine the ProcessSequence, where the reset happens
 public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
+
+	// ========================================================================
+
+	/**
+	 * Event indicating that the server back end process has started or
+	 * terminated.
+	 */
+	@Immutable
+	public static class ProcessStateChangedEvent {
+
+		// --------------------------------------------------------------------
+
+		final private String fSessionId;
+		final private State fState;
+
+		// --------------------------------------------------------------------
+
+		public ProcessStateChangedEvent(String sessionId, State state) {
+			fSessionId = sessionId;
+			fState = state;
+		}
+
+		// --------------------------------------------------------------------
+
+		public String getSessionId() {
+			return fSessionId;
+		}
+
+		public State getState() {
+			return fState;
+		}
+
+		// --------------------------------------------------------------------
+	}
 
 	// ------------------------------------------------------------------------
 
@@ -100,8 +136,7 @@ public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 	}
 
 	/**
-	 * Custom termination, without interrupt and kill, to do not change the
-	 * target state (leave it running if it was running).
+	 * Process termination.
 	 */
 	@Override
 	public void terminate(IThreadDMContext thread, final RequestMonitor rm) {
@@ -118,34 +153,46 @@ public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 						protected void handleSuccess() {
 							if (getData() instanceof IMIContainerDMContext) {
 
-								if (true){
-								IMIRunControl runControl = getServicesTracker()
-										.getService(IMIRunControl.class);
-								if (runControl != null
-										&& !runControl
-												.isTargetAcceptingCommands()) {
-									System.out
-											.println("GnuArmProcesses_7_2_1.terminate() interrupt");
-									fBackend.interrupt();
-								}
+								if (true) {
+									IMIRunControl runControl = getServicesTracker()
+											.getService(IMIRunControl.class);
+									if (runControl != null
+											&& !runControl
+													.isTargetAcceptingCommands()) {
+										System.out
+												.println("GnuArmProcesses_7_2_1.terminate() interrupt");
+										fBackend.interrupt();
+									}
 
-								// Does nothing on terminate, just exit.
-								fCommandControl.queueCommand(
-										fCommandFactory
-												//.createMIGDBExit
-												.createMIInterpreterExecConsoleKill
-												((IMIContainerDMContext) getData()),
-										new ImmediateDataRequestMonitor<MIInfo>(
-												rm) {
-											@Override
-											protected void handleSuccess() {
-												System.out
-														.println("GnuArmProcesses_7_2_1.terminate() done");
-											}
-										});
+									// Does nothing on terminate, just exit.
+									fCommandControl.queueCommand(
+											fCommandFactory
+											// .createMIGDBExit
+													.createMIInterpreterExecConsoleKill((IMIContainerDMContext) getData()),
+											new ImmediateDataRequestMonitor<MIInfo>(
+													rm) {
+												@Override
+												protected void handleSuccess() {
+													System.out
+															.println("GnuArmProcesses_7_2_1.terminate() dispatchEvent(ProcessStateChangedEvent, TERMINATED)");
+
+													getSession()
+															.dispatchEvent(
+																	new ProcessStateChangedEvent(
+																			getSession()
+																					.getId(),
+																			State.TERMINATED),
+																	getProperties());
+
+													System.out
+															.println("GnuArmProcesses_7_2_1.terminate() done");
+
+													rm.done();
+												}
+											});
 								} else {
 									System.out
-									.println("GnuArmProcesses_7_2_1.terminate() done");
+											.println("GnuArmProcesses_7_2_1.terminate() done");
 									rm.done();
 								}
 							} else {

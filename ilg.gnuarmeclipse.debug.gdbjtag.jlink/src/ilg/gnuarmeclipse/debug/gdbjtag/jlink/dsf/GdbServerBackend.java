@@ -159,7 +159,8 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 				+ Thread.currentThread());
 
 		// Destroy the semihosting process
-		if (fSemihostingBackendState == State.STARTED) {
+		if (fSemihostingProcess != null
+				&& fSemihostingBackendState == State.STARTED) {
 			fSemihostingProcess.destroy();
 		}
 
@@ -242,6 +243,8 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		if (exitCode == -1) {
 			// TODO: check if TCP and adjust message accordingly
 			body = "Could not connect to J-Link. Please check if plugged into USB port or Ethernet switch.";
+		} else if (exitCode == -2) {
+			body = "Could not listen on tcp port. Please check if another version of the server is running.";
 		} else if (exitCode == -3) {
 			body = "Could not connect to target. Please check if target is powered and if ribbon cable is plugged properly.";
 		} else if (exitCode == -6) {
@@ -370,6 +373,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 					}
 
 					// TODO: check if the process started properly
+					// (parse input and check greeting).
 
 					fTmpLaunchRequestMonitor.done();
 					System.out.println("startSemihostingJob run completed");
@@ -637,5 +641,4 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	}
 
 	// ------------------------------------------------------------------------
-
 }

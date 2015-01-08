@@ -21,11 +21,9 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.RejectedExecutionException;
 
-import org.eclipse.cdt.dsf.concurrent.ConfinedToDsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.DefaultDsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.DsfRunnable;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
-import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.gdb.IGdbDebugConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
@@ -97,20 +95,6 @@ public class Launch extends GnuArmLaunch {
 					IDsfStatusConstants.INTERNAL_ERROR,
 					"Error initializing launch", e)); //$NON-NLS-1$
 		}
-	}
-
-	@Override
-	public void initializeControl() throws CoreException {
-
-		System.out.println("Launch.initializeControl()");
-		super.initializeControl();
-	}
-
-	@ConfinedToDsfExecutor("getSession().getExecutor()")
-	public void shutdownSession(final RequestMonitor rm) {
-
-		System.out.println("Launch.shutdownSession() " + this);
-		super.shutdownSession(rm);
 	}
 
 	// ------------------------------------------------------------------------

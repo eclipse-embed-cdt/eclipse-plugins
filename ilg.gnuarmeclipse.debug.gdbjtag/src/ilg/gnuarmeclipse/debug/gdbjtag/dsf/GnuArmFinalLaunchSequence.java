@@ -47,7 +47,7 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	private DsfSession fSession;
 
 	private DsfServicesTracker fTracker;
-	private IGDBBackend fGDBBackend;
+	private IGDBBackend fGdbBackend;
 	private IGDBControl fCommandControl;
 	private IMIProcesses fProcService;
 	private IGDBJtagDevice fGdbJtagDevice;
@@ -104,7 +104,7 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 					orderList.remove(ix);
 				}
 			}
-			
+
 			// Insert the new steps at he beginning
 			orderList.addAll(0, Arrays.asList(topPreInitSteps));
 
@@ -210,8 +210,8 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 		fTracker = new DsfServicesTracker(GdbPlugin.getBundleContext(),
 				fSession.getId());
-		fGDBBackend = fTracker.getService(IGDBBackend.class);
-		if (fGDBBackend == null) {
+		fGdbBackend = fTracker.getService(IGDBBackend.class);
+		if (fGdbBackend == null) {
 			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
 					"Cannot obtain GDBBackend service", null)); //$NON-NLS-1$
 			rm.done();
