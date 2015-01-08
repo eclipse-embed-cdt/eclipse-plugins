@@ -17,6 +17,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.EclipseDefaults;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.WorkspacePersistentValues;
 
 import java.io.File;
@@ -51,6 +52,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.model.WorkbenchContentProvider;
@@ -58,6 +60,8 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 import org.eclipse.ui.views.navigator.ResourceComparator;
 
 public class TabStartup extends AbstractLaunchConfigurationTab {
+
+	// ------------------------------------------------------------------------
 
 	private static final String TAB_NAME = "Startup";
 	private static final String TAB_ID = Activator.PLUGIN_ID + ".ui.startuptab";
@@ -127,6 +131,18 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	private Label projBinaryLabel1;
 	private Label projBinaryLabel2;
 
+	private String fSavedProgName;
+
+	// ------------------------------------------------------------------------
+
+	public TabStartup() {
+		super();
+
+		fSavedProgName = null;
+	}
+
+	// ------------------------------------------------------------------------
+
 	@Override
 	public String getName() {
 		return TAB_NAME;
@@ -160,7 +176,33 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		createRunOptionGroup(comp);
 		createRunGroup(comp);
 
+		Link restoreDefaults;
+		GridData gd;
+		{
+			restoreDefaults = new Link(comp, SWT.NONE);
+			restoreDefaults.setText(Messages
+					.getString("DebuggerTab.restoreDefaults_Link"));
+			restoreDefaults.setToolTipText(Messages
+					.getString("DebuggerTab.restoreDefaults_ToolTipText"));
+
+			gd = new GridData();
+			gd.grabExcessHorizontalSpace = true;
+			gd.horizontalAlignment = SWT.RIGHT;
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
+			restoreDefaults.setLayoutData(gd);
+		}
+
 		sc.setMinSize(comp.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+
+		// --------------------------------------------------------------------
+
+		restoreDefaults.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent event) {
+				initializeFromDefaults();
+				scheduleUpdateJob();
+			}
+		});
 	}
 
 	private void browseButtonSelected(String title, Text text) {
@@ -360,8 +402,9 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					.getString("StartupTab.swoEnableTargetCpuFreq_ToolTipText"));
 
 			swoEnableTargetCpuFreq = new Text(local, SWT.BORDER);
-			swoEnableTargetCpuFreq.setToolTipText(Messages
-					.getString("StartupTab.swoEnableTargetCpuFreq_ToolTipText"));
+			swoEnableTargetCpuFreq
+					.setToolTipText(Messages
+							.getString("StartupTab.swoEnableTargetCpuFreq_ToolTipText"));
 			gd = new GridData();
 			gd.widthHint = 80;
 			swoEnableTargetCpuFreq.setLayoutData(gd);
@@ -377,8 +420,9 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					.getString("StartupTab.swoEnableTargetSwoFreq_ToolTipText"));
 
 			swoEnableTargetSwoFreq = new Text(local, SWT.BORDER);
-			swoEnableTargetSwoFreq.setToolTipText(Messages
-					.getString("StartupTab.swoEnableTargetSwoFreq_ToolTipText"));
+			swoEnableTargetSwoFreq
+					.setToolTipText(Messages
+							.getString("StartupTab.swoEnableTargetSwoFreq_ToolTipText"));
 			gd = new GridData();
 			gd.widthHint = 60;
 			swoEnableTargetSwoFreq.setLayoutData(gd);
@@ -394,8 +438,9 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					.getString("StartupTab.swoEnableTargetPortMask_ToolTipText"));
 
 			swoEnableTargetPortMask = new Text(local, SWT.BORDER);
-			swoEnableTargetPortMask.setToolTipText(Messages
-					.getString("StartupTab.swoEnableTargetPortMask_ToolTipText"));
+			swoEnableTargetPortMask
+					.setToolTipText(Messages
+							.getString("StartupTab.swoEnableTargetPortMask_ToolTipText"));
 			gd = new GridData();
 			gd.widthHint = 80;
 			swoEnableTargetPortMask.setLayoutData(gd);
@@ -1376,6 +1421,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					projBinaryLabel1.setText(programName);
 					projBinaryLabel2.setText(programName);
 				}
+				fSavedProgName = programName;
 			}
 
 			// Runtime Options
@@ -1439,6 +1485,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			loadSymbolsChanged();
 			pcRegisterChanged();
 			stopAtChanged();
+
 			updateUseFileEnablement();
 
 		} catch (CoreException e) {
@@ -1450,6 +1497,160 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			System.out.println("TabStartup: initializeFrom() completed "
 					+ configuration.getName() + ", dirty=" + isDirty());
 		}
+	}
+
+	public void initializeFromDefaults() {
+
+		// String stringDefault;
+		boolean booleanDefault;
+		// int intDefault;
+
+		// Initialisation Commands
+		{
+			// Do initial reset
+			doFirstReset
+					.setSelection(ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
+
+			// Reset type
+			firstResetType
+					.setText(ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
+
+			// Type change from string to int, compatibility preserved
+			firstResetSpeed
+					.setText(String
+							.valueOf(ConfigurationAttributes.FIRST_RESET_SPEED_DEFAULT));
+
+			// Speed
+			String physicalInterfaceSpeed = ConfigurationAttributes.INTERFACE_SPEED_DEFAULT;
+
+			if (ConfigurationAttributes.INTERFACE_SPEED_AUTO
+					.equals(physicalInterfaceSpeed)) {
+				interfaceSpeedAuto.setSelection(true);
+				interfaceSpeedFixedValue.setEnabled(false);
+
+			} else if (ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE
+					.equals(physicalInterfaceSpeed)) {
+				interfaceSpeedAdaptive.setSelection(true);
+				interfaceSpeedFixedValue.setEnabled(false);
+			} else {
+				try {
+					Integer.parseInt(physicalInterfaceSpeed);
+					interfaceSpeedFixed.setSelection(true);
+					interfaceSpeedFixedValue.setEnabled(true);
+					interfaceSpeedFixedValue.setText(physicalInterfaceSpeed);
+				} catch (NumberFormatException e) {
+					String message = "unknown interface speed "
+							+ physicalInterfaceSpeed + ", using auto";
+					Activator.log(message);
+					interfaceSpeedAuto.setSelection(true);
+					interfaceSpeedFixedValue.setEnabled(false);
+				}
+			}
+
+			// Enable flash breakpoints
+			enableFlashBreakpoints
+					.setSelection(ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS_DEFAULT);
+
+			// Enable semihosting
+			booleanDefault = EclipseDefaults
+					.getJLinkEnableSemihosting(ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
+			enableSemihosting.setSelection(booleanDefault);
+
+			semihostingTelnet
+					.setSelection(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_DEFAULT);
+
+			semihostingGdbClient
+					.setSelection(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_DEFAULT);
+
+			booleanDefault = EclipseDefaults
+					.getJLinkEnableSwo(ConfigurationAttributes.ENABLE_SWO_DEFAULT);
+			// System.out.println("getJLinkEnableSwo()="+booleanDefault+" "+configuration.getName());
+			enableSwo.setSelection(booleanDefault);
+
+			swoEnableTargetCpuFreq
+					.setText(String
+							.valueOf(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT));
+			swoEnableTargetSwoFreq
+					.setText(String
+							.valueOf(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT));
+
+			swoEnableTargetPortMask
+					.setText(ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT);
+
+			// Other commands
+			initCommands
+					.setText(ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
+		}
+
+		// Load Symbols & Image
+		{
+			loadSymbols.setSelection(IGDBJtagConstants.DEFAULT_LOAD_SYMBOLS);
+			useProjectBinaryForSymbols
+					.setSelection(IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_SYMBOLS);
+			useFileForSymbols
+					.setSelection(IGDBJtagConstants.DEFAULT_USE_FILE_FOR_SYMBOLS);
+			symbolsFileName
+					.setText(IGDBJtagConstants.DEFAULT_SYMBOLS_FILE_NAME);
+			symbolsOffset.setText(IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
+
+			loadExecutable.setSelection(IGDBJtagConstants.DEFAULT_LOAD_IMAGE);
+			useProjectBinaryForImage
+					.setSelection(IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_IMAGE);
+			useFileForImage
+					.setSelection(IGDBJtagConstants.DEFAULT_USE_FILE_FOR_IMAGE);
+			imageFileName.setText(IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME);
+			imageOffset.setText(IGDBJtagConstants.DEFAULT_IMAGE_OFFSET);
+
+			String programName = fSavedProgName;
+			if (programName != null) {
+				projBinaryLabel1.setText(programName);
+				projBinaryLabel2.setText(programName);
+			}
+		}
+
+		// Runtime Options
+		{
+			doDebugInRam
+					.setSelection(ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT);
+		}
+
+		// Run Commands
+		{
+			// Do pre-run reset
+			doSecondReset
+					.setSelection(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
+
+			// Pre-run reset type
+			secondResetType
+					.setText(ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+
+			// Other commands
+			runCommands
+					.setText(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
+
+			setPcRegister
+					.setSelection(IGDBJtagConstants.DEFAULT_SET_PC_REGISTER);
+			pcRegister.setText(IGDBJtagConstants.DEFAULT_PC_REGISTER);
+
+			setStopAt.setSelection(ConfigurationAttributes.DO_STOP_AT_DEFAULT);
+			stopAt.setText(ConfigurationAttributes.STOP_AT_NAME_DEFAULT);
+
+			// Do continue
+			doContinue
+					.setSelection(ConfigurationAttributes.DO_CONTINUE_DEFAULT);
+		}
+
+		doFirstResetChanged();
+		doEnableSemihostingChanged();
+		doEnableSwoChanged();
+
+		doSecondResetChanged();
+		loadExecutableChanged();
+		loadSymbolsChanged();
+		pcRegisterChanged();
+		stopAtChanged();
+
+		updateUseFileEnablement();
 	}
 
 	@Override

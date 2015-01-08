@@ -223,7 +223,11 @@ public class WorkspacePersistentValues {
 	// ----- gdb server interface ---------------------------------------------
 	public static String getGdbServerInterface(String defaultValue) {
 
-		return getValueForId(GDB_SERVER_INTERFACE, defaultValue);
+		String value = getValueForId(GDB_SERVER_INTERFACE, null);
+		if (value != null) {
+			return value;
+		}
+		return EclipseDefaults.getJLinkInterface(defaultValue);
 	}
 
 	public static void putGdbServerInterface(String value) {
@@ -353,8 +357,11 @@ public class WorkspacePersistentValues {
 	// ----- jlink enable semihosting -----------------------------------
 	public static boolean getJLinkEnableSemihosting(boolean defaultValue) {
 
-		return Boolean.valueOf(getValueForId(GDB_JLINK_ENABLE_SEMIHOSTING,
-				Boolean.toString(defaultValue)));
+		String value = getValueForId(GDB_JLINK_ENABLE_SEMIHOSTING, null);
+		if (value != null) {
+			return Boolean.valueOf(value);
+		}
+		return EclipseDefaults.getJLinkEnableSemihosting(defaultValue);
 	}
 
 	public static void putJLinkEnableSemihosting(boolean value) {
@@ -389,8 +396,11 @@ public class WorkspacePersistentValues {
 	// ----- jlink enable swo -----------------------------------
 	public static boolean getJLinkEnableSwo(boolean defaultValue) {
 
-		return Boolean.valueOf(getValueForId(GDB_JLINK_ENABLE_SWO,
-				Boolean.toString(defaultValue)));
+		String value = getValueForId(GDB_JLINK_ENABLE_SWO, null);
+		if (value != null) {
+			return Boolean.valueOf(value);
+		}
+		return EclipseDefaults.getJLinkEnableSwo(defaultValue);
 	}
 
 	public static void putJLinkEnableSwo(boolean value) {

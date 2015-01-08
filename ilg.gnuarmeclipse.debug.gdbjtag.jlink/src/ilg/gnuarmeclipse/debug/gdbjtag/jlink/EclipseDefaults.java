@@ -18,6 +18,10 @@ public class EclipseDefaults {
 	// ------------------------------------------------------------------------
 
 	private static final String GDB_SERVER_EXECUTABLE = "gdb.server.executable.default";
+	private static final String JLINK_INTRFACE = "interface.default";
+	private static final String JLINK_ENABLE_SEMIHOSTING = "enableSemihosting.default";
+	private static final String JLINK_ENABLE_SWO = "enableSwo.default";
+
 	private static final String GDB_CLIENT_EXECUTABLE = "gdb.client.executable.default";
 
 	// ------------------------------------------------------------------------
@@ -28,8 +32,26 @@ public class EclipseDefaults {
 				name, defValue, null);
 	}
 
+	private static boolean getProperty(String name, boolean defValue) {
+
+		return Platform.getPreferencesService().getBoolean(Activator.PLUGIN_ID,
+				name, defValue, null);
+	}
+
 	public static String getGdbServerExecutable(String defValue) {
 		return getProperty(GDB_SERVER_EXECUTABLE, defValue);
+	}
+
+	public static String getJLinkInterface(String defValue) {
+		return getProperty(JLINK_INTRFACE, defValue);
+	}
+
+	public static boolean getJLinkEnableSemihosting(boolean defValue) {
+		return getProperty(JLINK_ENABLE_SEMIHOSTING, defValue);
+	}
+
+	public static boolean getJLinkEnableSwo(boolean defValue) {
+		return getProperty(JLINK_ENABLE_SWO, defValue);
 	}
 
 	public static String getGdbClientExecutable(String defValue) {

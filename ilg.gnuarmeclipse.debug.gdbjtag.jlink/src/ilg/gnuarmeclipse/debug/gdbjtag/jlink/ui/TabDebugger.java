@@ -26,6 +26,7 @@ import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.data.CProjectExtraDataManagerProxy;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.EclipseDefaults;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.WorkspacePersistentValues;
 
 import java.io.File;
@@ -122,6 +123,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Button doGdbServerAllocateSemihostingConsole;
 
 	protected Button fUpdateThreadlistOnSuspend;
+	protected String fSavedCmsisName;
 
 	private TabStartup tabStartup;
 
@@ -130,6 +132,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	protected TabDebugger(TabStartup tabStartup) {
 		super();
 		this.tabStartup = tabStartup;
+
+		fSavedCmsisName = "";
 	}
 
 	@Override
@@ -180,10 +184,36 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				.setToolTipText(Messages
 						.getString("DebuggerTab.update_thread_list_on_suspend_ToolTipText"));
 
+		Link restoreDefaults;
+		GridData gd;
+		{
+			restoreDefaults = new Link(comp, SWT.NONE);
+			restoreDefaults.setText(Messages
+					.getString("DebuggerTab.restoreDefaults_Link"));
+			restoreDefaults.setToolTipText(Messages
+					.getString("DebuggerTab.restoreDefaults_ToolTipText"));
+
+			gd = new GridData();
+			gd.grabExcessHorizontalSpace = true;
+			gd.horizontalAlignment = SWT.RIGHT;
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
+			restoreDefaults.setLayoutData(gd);
+		}
+
+		// --------------------------------------------------------------------
+
 		fUpdateThreadlistOnSuspend.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
+			}
+		});
+
+		restoreDefaults.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent event) {
+				initializeFromDefaults();
+				scheduleUpdateJob();
 			}
 		});
 	}
@@ -267,7 +297,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						.getString("DebuggerTab.noReset_ToolTipText"));
 				gd = new GridData(GridData.FILL_HORIZONTAL);
 				doConnectToRunning.setLayoutData(gd);
-
 			}
 		}
 
@@ -646,8 +675,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							.getString("DebuggerTab.gdbServerAllocateSemihostingConsole_ToolTipText"));
 			gd = new GridData(GridData.FILL_HORIZONTAL);
 			doGdbServerAllocateSemihostingConsole.setLayoutData(gd);
-
 		}
+
 		// ----- Actions ------------------------------------------------------
 
 		VerifyListener numericVerifyListener = new VerifyListener() {
@@ -1197,6 +1226,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 				// If the project has assigned a device name, use it
 				stringDefault = getCmsisDeviceName(configuration);
+				fSavedCmsisName = stringDefault;
 
 				// Device name
 				if (stringDefault == null || stringDefault.isEmpty()) {
@@ -1469,6 +1499,188 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			System.out.println("TabDebugger: initializeFrom() completed "
 					+ configuration.getName());
 		}
+	}
+
+	public void initializeFromDefaults() {
+
+		String stringDefault;
+
+		// J-Link GDB Server Setup
+		{
+			// Start server locally
+			doStartGdbServer
+					.setSelection(ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
+
+			doConnectToRunning
+					.setSelection(ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
+
+			// Executable
+			stringDefault = EclipseDefaults
+					.getGdbServerExecutable(ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT);
+			gdbServerExecutable.setText(stringDefault);
+
+			stringDefault = fSavedCmsisName != null ? fSavedCmsisName : "";
+			gdbFlashDeviceName.setText(stringDefault);
+
+			// Endianness
+			String endianness = ConfigurationAttributes.ENDIANNESS_DEFAULT;
+			if (ConfigurationAttributes.ENDIANNESS_LITTLE.equals(endianness))
+				gdbEndiannessLittle.setSelection(true);
+			else if (ConfigurationAttributes.ENDIANNESS_BIG.equals(endianness))
+				gdbEndiannessBig.setSelection(true);
+			else {
+				String message = "unknown endianness " + endianness
+						+ ", using little";
+				Activator.log(message);
+				gdbEndiannessLittle.setSelection(true);
+			}
+
+			// Connection
+			String connection = ConfigurationAttributes.GDB_SERVER_CONNECTION_DEFAULT;
+
+			if (ConfigurationAttributes.GDB_SERVER_CONNECTION_USB
+					.equals(connection)) {
+				gdbServerConnectionUsb.setSelection(true);
+				gdbServerConnectionIp.setSelection(false);
+			} else if (ConfigurationAttributes.GDB_SERVER_CONNECTION_IP
+					.equals(connection)) {
+				gdbServerConnectionUsb.setSelection(false);
+				gdbServerConnectionIp.setSelection(true);
+			}
+
+			// Connection address
+			gdbServerConnectionAddress
+					.setText(ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS_DEFAULT);
+
+			// Interface
+			String physicalInterface = EclipseDefaults
+					.getJLinkInterface(ConfigurationAttributes.INTERFACE_DEFAULT);
+
+			if (ConfigurationAttributes.INTERFACE_SWD.equals(physicalInterface)) {
+				gdbInterfaceSwd.setSelection(true);
+				tabStartup.doInterfaceSwdChanged(true);
+			} else if (ConfigurationAttributes.INTERFACE_JTAG
+					.equals(physicalInterface)) {
+				gdbInterfaceJtag.setSelection(true);
+				tabStartup.doInterfaceSwdChanged(false);
+			} else {
+				String message = "unknown interface " + physicalInterface
+						+ ", using swd";
+				Activator.log(message);
+				gdbInterfaceSwd.setSelection(true);
+			}
+
+			// Initial speed
+			String physicalInterfaceSpeed = ConfigurationAttributes.GDB_SERVER_SPEED_DEFAULT;
+
+			if (ConfigurationAttributes.INTERFACE_SPEED_AUTO
+					.equals(physicalInterfaceSpeed)) {
+				gdbServerSpeedAuto.setSelection(true);
+				gdbServerSpeedAdaptive.setSelection(false);
+				gdbServerSpeedFixed.setSelection(false);
+
+				gdbServerSpeedFixedValue.setEnabled(false);
+
+			} else if (ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE
+					.equals(physicalInterfaceSpeed)) {
+				gdbServerSpeedAuto.setSelection(false);
+				gdbServerSpeedAdaptive.setSelection(true);
+				gdbServerSpeedFixed.setSelection(false);
+
+				gdbServerSpeedFixedValue.setEnabled(false);
+			} else {
+				try {
+					Integer.parseInt(physicalInterfaceSpeed);
+					gdbServerSpeedAuto.setSelection(false);
+					gdbServerSpeedAdaptive.setSelection(false);
+					gdbServerSpeedFixed.setSelection(true);
+
+					gdbServerSpeedFixedValue.setEnabled(true);
+					gdbServerSpeedFixedValue.setText(physicalInterfaceSpeed);
+				} catch (NumberFormatException e) {
+					String message = "unknown interface speed "
+							+ physicalInterfaceSpeed + ", using auto";
+					Activator.log(message);
+					gdbServerSpeedAuto.setSelection(true);
+					gdbServerSpeedFixedValue.setEnabled(false);
+				}
+			}
+
+			// Ports
+			gdbServerGdbPort
+					.setText(Integer
+							.toString(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT));
+
+			gdbServerSwoPort
+					.setText(Integer
+							.toString(ConfigurationAttributes.GDB_SERVER_SWO_PORT_NUMBER_DEFAULT));
+
+			gdbServerTelnetPort
+					.setText(Integer
+							.toString(ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT));
+
+			// Flags
+			doGdbServerVerifyDownload
+					.setSelection(ConfigurationAttributes.DO_GDB_SERVER_VERIFY_DOWNLOAD_DEFAULT);
+
+			doGdbServerInitRegs
+					.setSelection(ConfigurationAttributes.DO_GDB_SERVER_INIT_REGS_DEFAULT);
+
+			doGdbServerLocalOnly
+					.setSelection(ConfigurationAttributes.DO_GDB_SERVER_LOCAL_ONLY_DEFAULT);
+
+			doGdbServerSilent
+					.setSelection(ConfigurationAttributes.DO_GDB_SERVER_SILENT_DEFAULT);
+
+			// Log file
+			gdbServerLog
+					.setText(ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT);
+
+			// Other options
+			gdbServerOtherOptions
+					.setText(ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT);
+
+			// Allocate server console
+			doGdbServerAllocateConsole
+					.setSelection(ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
+
+			// Allocate semihosting console
+			doGdbServerAllocateSemihostingConsole
+					.setSelection(ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
+		}
+
+		// GDB Client Setup
+		{
+			// Executable
+			gdbClientExecutable
+					.setText(ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT);
+
+			// Other options
+			gdbClientOtherOptions
+					.setText(ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT);
+
+			gdbClientOtherCommands
+					.setText(ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
+		}
+
+		// Remote Target
+		{
+			targetIpAddress
+					.setText(ConfigurationAttributes.REMOTE_IP_ADDRESS_DEFAULT); //$NON-NLS-1$
+
+			String portString = Integer
+					.toString(ConfigurationAttributes.REMOTE_PORT_NUMBER_DEFAULT); //$NON-NLS-1$
+			targetPortNumber.setText(portString);
+
+			// useRemoteChanged();
+		}
+
+		propagateStartGdbServerChanged();
+		propagateConnectToRunningChanged();
+
+		// Force thread update
+		fUpdateThreadlistOnSuspend
+				.setSelection(ConfigurationAttributes.UPDATE_THREAD_LIST_DEFAULT);
 	}
 
 	/*
