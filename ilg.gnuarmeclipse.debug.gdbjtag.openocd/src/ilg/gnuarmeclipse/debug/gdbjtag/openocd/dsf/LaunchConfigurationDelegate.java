@@ -331,7 +331,8 @@ public class LaunchConfigurationDelegate extends
 				Activator.log(e);
 			}
 
-			System.out.println("* Server confirmed started. *");
+			System.out
+					.println("launchDebugSession() * Server start confirmed. *");
 		}
 
 		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
