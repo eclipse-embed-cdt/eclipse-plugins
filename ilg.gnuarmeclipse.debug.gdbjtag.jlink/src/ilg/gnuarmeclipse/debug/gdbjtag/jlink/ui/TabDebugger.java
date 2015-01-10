@@ -71,11 +71,17 @@ import org.eclipse.swt.widgets.Text;
  */
 public class TabDebugger extends AbstractLaunchConfigurationTab {
 
+	// ------------------------------------------------------------------------
+
 	private static final String TAB_NAME = "Debugger";
 	private static final String TAB_ID = Activator.PLUGIN_ID
 			+ ".ui.debuggertab";
 
 	private static final boolean DEBUG = false;
+
+	private static int COLUMN_WIDTH = 70;
+
+	// ------------------------------------------------------------------------
 
 	private Button fDoStartGdbServer;
 	private Text fGdbClientExecutable;
@@ -127,7 +133,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private TabStartup fTabStartup;
 
-	private static int COLUMN_WIDTH = 70;
+	// ------------------------------------------------------------------------
 
 	protected TabDebugger(TabStartup tabStartup) {
 		super();
@@ -135,6 +141,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fTabStartup = tabStartup;
 		fSavedCmsisName = "";
 	}
+
+	// ------------------------------------------------------------------------
 
 	@Override
 	public String getName() {
@@ -219,6 +227,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	}
 
 	private void browseButtonSelected(String title, Text text) {
+
 		FileDialog dialog = new FileDialog(getShell(), SWT.NONE);
 		dialog.setText(title);
 		String str = text.getText().trim();
@@ -231,6 +240,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	}
 
 	private void browseSaveButtonSelected(String title, Text text) {
+
 		FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
 		dialog.setText(title);
 		String str = text.getText().trim();
@@ -243,6 +253,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	}
 
 	private void variablesButtonSelected(Text text) {
+
 		StringVariableSelectionDialog dialog = new StringVariableSelectionDialog(
 				getShell());
 		if (dialog.open() == StringVariableSelectionDialog.OK) {
@@ -1959,6 +1970,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					+ configuration.getName());
 		}
 
+		boolean defaultBoolean;
+		String defaultString;
+
 		configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE,
 				ConfigurationAttributes.JTAG_DEVICE);
 
@@ -1988,20 +2002,23 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		// J-Link GDB server setup
 		{
-			configuration.setAttribute(
-					ConfigurationAttributes.DO_START_GDB_SERVER,
-					ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
+			defaultBoolean = WorkspacePersistentValues
+					.getGdbServerDoStart(ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
+			configuration
+					.setAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
+							defaultBoolean);
 
 			configuration.setAttribute(
 					ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
 					ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
 
-			String sharedName = WorkspacePersistentValues
+			defaultString = WorkspacePersistentValues
 					.getGdbServerExecutable(ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT);
 			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_EXECUTABLE, sharedName);
+					ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
+					defaultString);
 
-			sharedName = getCmsisDeviceName(configuration);
+			String sharedName = getCmsisDeviceName(configuration);
 			if (sharedName == null || sharedName.isEmpty()) {
 				sharedName = WorkspacePersistentValues
 						.getFlashDeviceName(ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
@@ -2009,26 +2026,35 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_DEVICE_NAME, sharedName);
 
+			defaultString = WorkspacePersistentValues
+					.getGdbServerEndianness(ConfigurationAttributes.ENDIANNESS_DEFAULT);
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_DEVICE_ENDIANNESS,
-					ConfigurationAttributes.ENDIANNESS_DEFAULT);
+					defaultString);
 
+			defaultString = WorkspacePersistentValues
+					.getGdbServerConnection(ConfigurationAttributes.GDB_SERVER_CONNECTION_DEFAULT);
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_CONNECTION,
-					ConfigurationAttributes.GDB_SERVER_CONNECTION_DEFAULT);
+					defaultString);
 
-			configuration
-					.setAttribute(
-							ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
-							ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS_DEFAULT);
+			defaultString = WorkspacePersistentValues
+					.getGdbServerConnectionAddress(ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS_DEFAULT);
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
+					defaultString);
 
+			defaultString = WorkspacePersistentValues
+					.getGdbServerInterface(ConfigurationAttributes.INTERFACE_DEFAULT);
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
-					ConfigurationAttributes.INTERFACE_DEFAULT);
+					defaultString);
 
+			defaultString = WorkspacePersistentValues
+					.getGdbServerInitialSpeed(ConfigurationAttributes.GDB_SERVER_SPEED_DEFAULT);
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_DEVICE_SPEED,
-					ConfigurationAttributes.GDB_SERVER_SPEED_DEFAULT);
+					defaultString);
 
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
@@ -2063,9 +2089,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_LOG,
 					ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT);
 
+			defaultString = WorkspacePersistentValues
+					.getGdbServerOtherOptions(ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT);
 			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_OTHER,
-					ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT);
+					ConfigurationAttributes.GDB_SERVER_OTHER, defaultString);
 
 			configuration
 					.setAttribute(
@@ -2086,13 +2113,17 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							WorkspacePersistentValues
 									.getGdbClientExecutable(ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT));
 
+			defaultString = WorkspacePersistentValues
+					.getGdbClientOtherOptions(ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT);
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
 					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT);
 
+			defaultString = WorkspacePersistentValues
+					.getGdbClientCommands(ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
-					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
+					defaultString);
 		}
 
 		// Remote Target
@@ -2112,4 +2143,5 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						ConfigurationAttributes.UPDATE_THREAD_LIST_DEFAULT);
 	}
 
+	// ------------------------------------------------------------------------
 }
