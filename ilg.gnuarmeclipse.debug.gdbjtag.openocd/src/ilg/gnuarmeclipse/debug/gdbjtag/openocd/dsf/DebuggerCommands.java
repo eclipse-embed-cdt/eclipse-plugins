@@ -75,11 +75,6 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 			return status;
 		}
 
-		// boolean doConnectToRunning = CDebugUtils.getAttribute(fAttributes,
-		// ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-		// ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
-		//
-		// if (!doConnectToRunning) {
 		if (CDebugUtils.getAttribute(fAttributes,
 				IGDBJtagConstants.ATTR_LOAD_IMAGE,
 				IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
@@ -93,18 +88,13 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 				return status;
 			}
 		}
-		// }
+
 		return Status.OK_STATUS;
 	}
 
 	@Override
 	public IStatus addGnuArmStartCommands(List<String> commandsList) {
 
-		// boolean doReset = !CDebugUtils.getAttribute(fAttributes,
-		// ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-		// ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
-
-		// IStatus status = addStartRestartCommands(doReset, commandsList);
 		IStatus status = addStartRestartCommands(true, commandsList);
 
 		if (!status.isOK()) {
@@ -119,10 +109,6 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 	@Override
 	public IStatus addFirstResetCommands(List<String> commandsList) {
 
-		// boolean noReset = CDebugUtils.getAttribute(fAttributes,
-		// ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-		// ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
-		// if (!noReset) {
 		if (CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.DO_FIRST_RESET,
 				ConfigurationAttributes.DO_FIRST_RESET_DEFAULT)) {
@@ -138,7 +124,6 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 			commandStr = ConfigurationAttributes.HALT_COMMAND;
 			commandsList.add(commandStr);
 		}
-		// }
 
 		String otherInits = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.OTHER_INIT_COMMANDS,

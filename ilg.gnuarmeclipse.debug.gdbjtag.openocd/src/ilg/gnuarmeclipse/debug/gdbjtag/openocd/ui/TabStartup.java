@@ -423,6 +423,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		}
 
 		// ----- Actions ------------------------------------------------------
+
 		fLoadExecutable.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -537,7 +538,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				scheduleUpdateJob();
 			}
 		});
-
 	}
 
 	private void updateUseFileEnablement() {
@@ -786,19 +786,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		fDoContinue.addSelectionListener(scheduleUpdateJobSelectionAdapter);
 	}
-
-	// public void doConnectToRunningChanged(boolean flag) {
-	//
-	// // System.out.println(flag);
-	// doFirstReset.setEnabled(!flag);
-	// firstResetType.setEnabled(!flag);
-	//
-	// doSecondReset.setEnabled(!flag);
-	// secondResetType.setEnabled(!flag);
-	// secondResetWarning.setEnabled(!flag);
-	//
-	// loadExecutable.setEnabled(!flag);
-	// }
 
 	@Override
 	public boolean isValid(ILaunchConfiguration launchConfig) {
