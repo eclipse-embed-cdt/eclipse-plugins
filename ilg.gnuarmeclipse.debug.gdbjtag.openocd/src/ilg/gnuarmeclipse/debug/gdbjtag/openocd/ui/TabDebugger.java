@@ -864,6 +864,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE,
 				ConfigurationAttributes.JTAG_DEVICE);
 
+		String defaultString;
+		boolean defaultBoolean;
+
 		// These are inherited from the generic implementation.
 		// Some might need some trimming.
 		{
@@ -890,14 +893,17 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		// OpenOCD GDB server setup
 		{
-			configuration.setAttribute(
-					ConfigurationAttributes.DO_START_GDB_SERVER,
-					ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
+			defaultBoolean = WorkspacePersistentValues
+					.getGdbServerDoStart(ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
+			configuration
+					.setAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
+							defaultBoolean);
 
-			String sharedName = WorkspacePersistentValues
+			defaultString = WorkspacePersistentValues
 					.getGdbServerExecutable(ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT);
 			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_EXECUTABLE, sharedName);
+					ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
+					defaultString);
 
 			configuration
 					.setAttribute(
@@ -916,9 +922,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_LOG,
 					ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT);
 
+			defaultString = WorkspacePersistentValues
+					.getGdbServerOtherOptions(ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT);
 			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_OTHER,
-					ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT);
+					ConfigurationAttributes.GDB_SERVER_OTHER, defaultString);
 
 			configuration
 					.setAttribute(
@@ -933,23 +940,27 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		// GDB client setup
 		{
-			configuration
-					.setAttribute(
-							IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
-							WorkspacePersistentValues
-									.getGdbClientExecutable(ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT));
+			defaultString = WorkspacePersistentValues
+					.getGdbClientExecutable(ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT);
+			configuration.setAttribute(
+					IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
+					defaultString);
 
 			configuration.setAttribute(
 					IGDBJtagConstants.ATTR_USE_REMOTE_TARGET,
 					ConfigurationAttributes.USE_REMOTE_TARGET_DEFAULT);
 
+			defaultString = WorkspacePersistentValues
+					.getGdbClientOtherOptions(ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT);
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
-					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT);
+					defaultString);
 
+			defaultString = WorkspacePersistentValues
+					.getGdbClientCommands(ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
-					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
+					defaultString);
 		}
 
 		// Force thread update

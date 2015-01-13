@@ -1158,16 +1158,29 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 
-		// Initialisation Commands
-		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
-				ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
-		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
-				ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
+		String defaultString;
+		boolean defaultBoolean;
 
+		// Initialisation Commands
+		defaultBoolean = WorkspacePersistentValues
+				.getOpenOCDDoInitialReset(ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
+		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
+				defaultBoolean);
+
+		defaultString = WorkspacePersistentValues
+				.getOpenOCDInitialResetType(ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
+		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
+				defaultString);
+
+		defaultBoolean = WorkspacePersistentValues
+				.getOpenOCDEnableSemihosting(ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING,
-				ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
+				defaultBoolean);
+
+		defaultString = WorkspacePersistentValues
+				.getOpenOCDInitOther(ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS,
-				ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
+				defaultString);
 
 		// Load Image...
 		configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_IMAGE,
@@ -1196,17 +1209,26 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
 
 		// Runtime Options
+		defaultBoolean = WorkspacePersistentValues
+				.getOpenOCDDebugInRam(ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM,
-				ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT);
+				defaultBoolean);
 
 		// Run Commands
+		defaultBoolean = WorkspacePersistentValues
+				.getOpenOCDDoPreRunReset(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
-				ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
-		configuration.setAttribute(ConfigurationAttributes.SECOND_RESET_TYPE,
-				ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+				defaultBoolean);
 
+		defaultString = WorkspacePersistentValues
+				.getOpenOCDPreRunResetType(ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+		configuration.setAttribute(ConfigurationAttributes.SECOND_RESET_TYPE,
+				defaultString);
+
+		defaultString = WorkspacePersistentValues
+				.getOpenOCDPreRunOther(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS,
-				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
+				defaultString);
 
 		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER,
 				IGDBJtagConstants.DEFAULT_SET_PC_REGISTER);
