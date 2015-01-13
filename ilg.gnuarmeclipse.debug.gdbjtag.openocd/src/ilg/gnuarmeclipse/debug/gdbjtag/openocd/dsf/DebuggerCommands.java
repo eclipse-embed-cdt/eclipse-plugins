@@ -75,36 +75,37 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 			return status;
 		}
 
-		boolean doConnectToRunning = CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-				ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
+		// boolean doConnectToRunning = CDebugUtils.getAttribute(fAttributes,
+		// ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+		// ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
+		//
+		// if (!doConnectToRunning) {
+		if (CDebugUtils.getAttribute(fAttributes,
+				IGDBJtagConstants.ATTR_LOAD_IMAGE,
+				IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
+				&& !CDebugUtils.getAttribute(fAttributes,
+						ConfigurationAttributes.DO_DEBUG_IN_RAM,
+						ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT)) {
 
-		if (!doConnectToRunning) {
-			if (CDebugUtils.getAttribute(fAttributes,
-					IGDBJtagConstants.ATTR_LOAD_IMAGE,
-					IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
-					&& !CDebugUtils.getAttribute(fAttributes,
-							ConfigurationAttributes.DO_DEBUG_IN_RAM,
-							ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT)) {
+			status = addLoadImageCommands(commandsList);
 
-				status = addLoadImageCommands(commandsList);
-
-				if (!status.isOK()) {
-					return status;
-				}
+			if (!status.isOK()) {
+				return status;
 			}
 		}
+		// }
 		return Status.OK_STATUS;
 	}
 
 	@Override
 	public IStatus addGnuArmStartCommands(List<String> commandsList) {
 
-		boolean doReset = !CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-				ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
+		// boolean doReset = !CDebugUtils.getAttribute(fAttributes,
+		// ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+		// ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
 
-		IStatus status = addStartRestartCommands(doReset, commandsList);
+		// IStatus status = addStartRestartCommands(doReset, commandsList);
+		IStatus status = addStartRestartCommands(true, commandsList);
 
 		if (!status.isOK()) {
 			return status;
@@ -118,26 +119,26 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 	@Override
 	public IStatus addFirstResetCommands(List<String> commandsList) {
 
-		boolean noReset = CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-				ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
-		if (!noReset) {
-			if (CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.DO_FIRST_RESET,
-					ConfigurationAttributes.DO_FIRST_RESET_DEFAULT)) {
+		// boolean noReset = CDebugUtils.getAttribute(fAttributes,
+		// ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
+		// ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
+		// if (!noReset) {
+		if (CDebugUtils.getAttribute(fAttributes,
+				ConfigurationAttributes.DO_FIRST_RESET,
+				ConfigurationAttributes.DO_FIRST_RESET_DEFAULT)) {
 
-				String commandStr = ConfigurationAttributes.DO_FIRST_RESET_COMMAND;
-				String resetType = CDebugUtils.getAttribute(fAttributes,
-						ConfigurationAttributes.FIRST_RESET_TYPE,
-						ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
-				commandsList.add(commandStr + resetType);
+			String commandStr = ConfigurationAttributes.DO_FIRST_RESET_COMMAND;
+			String resetType = CDebugUtils.getAttribute(fAttributes,
+					ConfigurationAttributes.FIRST_RESET_TYPE,
+					ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
+			commandsList.add(commandStr + resetType);
 
-				// Although the manual claims that reset always does a
-				// halt, better issue it explicitly
-				commandStr = ConfigurationAttributes.HALT_COMMAND;
-				commandsList.add(commandStr);
-			}
+			// Although the manual claims that reset always does a
+			// halt, better issue it explicitly
+			commandStr = ConfigurationAttributes.HALT_COMMAND;
+			commandsList.add(commandStr);
 		}
+		// }
 
 		String otherInits = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.OTHER_INIT_COMMANDS,

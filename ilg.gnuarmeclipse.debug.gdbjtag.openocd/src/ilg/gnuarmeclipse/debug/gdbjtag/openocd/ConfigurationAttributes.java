@@ -20,9 +20,9 @@ public interface ConfigurationAttributes {
 	// Must be in sync with plugin.xml definition
 	public static final String JTAG_DEVICE = "GNU ARM OpenOCD";
 
-	public static final String DO_CONNECT_TO_RUNNING = PREFIX
-			+ ".doConnectToRunning"; //$NON-NLS-1$
-	public static final boolean DO_CONNECT_TO_RUNNING_DEFAULT = false;
+	// public static final String DO_CONNECT_TO_RUNNING = PREFIX
+	//			+ ".doConnectToRunning"; //$NON-NLS-1$
+	// public static final boolean DO_CONNECT_TO_RUNNING_DEFAULT = false;
 
 	public static final String DO_START_GDB_SERVER = PREFIX
 			+ ".doStartGdbServer"; //$NON-NLS-1$
