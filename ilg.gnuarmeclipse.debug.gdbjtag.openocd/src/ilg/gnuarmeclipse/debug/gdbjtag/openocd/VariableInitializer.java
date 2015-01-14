@@ -26,7 +26,7 @@ public class VariableInitializer implements IValueVariableInitializer {
 	static final String OPENOCD_VARIABLE_NAME = "openocd_executable";
 	static final String OPENOCD_PATH = "openocd_path";
 
-	static final String OSX_APPLICATIONS_PATH = "/Applications/GNU ARM Eclipse/OpenOCD/";
+	static final String OSX_APPLICATIONS_PATH = "/Applications/GNU ARM Eclipse/OpenOCD/bin/";
 	static final String OSX_MACPORTS_PATH = "/opt/local/bin/";
 
 	static final String LINUX_OPT_PATH = "/opt/gnuarmeclipse/openocd/bin/";
