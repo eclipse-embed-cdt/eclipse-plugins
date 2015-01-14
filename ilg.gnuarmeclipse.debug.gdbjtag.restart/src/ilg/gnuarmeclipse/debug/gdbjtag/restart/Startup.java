@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     Ningareddy Modase - initial implementation.
+ *     Liviu Ionescu - ARM version.
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.gdbjtag.restart;

@@ -9,7 +9,6 @@
             description="%runCategory.description"
             id="ilg.gnuarmeclipse.debug.gdbjtag.restart.category">
       </category>
-      
       <command
             categoryId="ilg.gnuarmeclipse.debug.gdbjtag.restart.category"
             defaultHandler="ilg.gnuarmeclipse.debug.gdbjtag.restart.RestartCommandHandler"
@@ -18,20 +17,24 @@
             name="%ActionDefinition.restart.name">
       </command>    
    </extension>
-   
+  
    <extension
-        point="org.eclipse.ui.menus">
-      <menuContribution
-            locationURI="toolbar:org.eclipse.debug.ui.main.toolbar?after=additions">
-         <command
-            commandId="ilg.gnuarmeclipse.debug.gdbjtag.restart.commands.Restart"
-            icon="icons/elcl16/restart_co.gif"
-            disabledIcon="icons/dlcl16/restart_co.gif"
-            label="%restartButton.label"
-            style="push"
-            tooltip="%restartButton.tooltip">
-         </command>
-      </menuContribution>
+         point="org.eclipse.ui.actionSets">
+      <actionSet
+            id="ilg.gnuarmeclipse.debug.gdbjtag.restart.actionset"
+            label="%ActionDefinition.restart.name"
+            visible="true">
+         <action
+               class="ilg.gnuarmeclipse.debug.gdbjtag.restart.action.RestartCommandActionDelegate"
+               definitionId="ilg.gnuarmeclipse.debug.gdbjtag.restart.commands.Restart"
+               disabledIcon="icons/dlcl16/restart_co.gif"
+               icon="icons/elcl16/restart_co.gif"
+               id="ilg.gnuarmeclipse.debug.gdbjtag.restart.action"
+               label="%ActionDefinition.restart.name"
+               toolbarPath="org.eclipse.debug.ui.main.toolbar/additions"
+               tooltip="%ActionDefinition.restart.description">
+         </action>
+      </actionSet>
    </extension>
    
    <extension
@@ -40,29 +43,4 @@
             class="ilg.gnuarmeclipse.debug.gdbjtag.restart.Startup">
       </startup>
    </extension>
-   
-   <!--
-   <extension
-         point="org.eclipse.core.expressions.propertyTesters">
-      <propertyTester
-            class="ilg.gnuarmeclipse.debug.gdbjtag.restart.RestartPropertyTester"
-            id="ilg.gnuarmeclipse.debug.gdbjtag.restart.RestartPropertyTester"
-            namespace="ilg.gnuarmeclipse.debug.gdbjtag.restart"
-            properties="canRestart"
-            type="java.lang.Object">
-      </propertyTester>
-   </extension>
-   <extension
-         point="org.eclipse.ui.handlers">
-      <handler
-            class="ilg.gnuarmeclipse.debug.gdbjtag.restart.RestartCommandHandler"
-            commandId="ilg.gnuarmeclipse.debug.gdbjtag.restart.commands.Restart">
-         <enabledWhen>
-            <test
-                  property="ilg.gnuarmeclipse.debug.gdbjtag.restart.canRestart">
-            </test>
-         </enabledWhen>
-      </handler>
-   </extension>
-   -->
 </plugin>

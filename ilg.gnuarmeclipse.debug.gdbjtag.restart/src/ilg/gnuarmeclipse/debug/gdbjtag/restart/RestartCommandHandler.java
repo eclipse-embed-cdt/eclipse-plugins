@@ -8,6 +8,7 @@
  * Contributors:
  *     Wind River Systems - initial API and implementation
  *     IBM Corporation - bug fixing
+ *     Liviu Ionescu - ARM version.
  *******************************************************************************/
 package ilg.gnuarmeclipse.debug.gdbjtag.restart;
 
