@@ -808,6 +808,7 @@
          <option
                browseType="none"
                command="-l"
+               commandGenerator="ilg.gnuarmeclipse.managedbuild.cross.LibrariesOptionCommandGenerator"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.libs"
                isAbstract="true"
                name="%option.linker.libs"
@@ -830,6 +831,7 @@
          </option>
          <option
                browseType="file"
+               commandGenerator="ilg.gnuarmeclipse.managedbuild.cross.OtherObjectsOptionCommandGenerator"
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.otherobjs"
                isAbstract="true"
                name="%option.linker.otherobjs"
