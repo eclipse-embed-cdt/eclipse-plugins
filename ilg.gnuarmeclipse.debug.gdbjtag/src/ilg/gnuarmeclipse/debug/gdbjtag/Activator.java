@@ -13,10 +13,6 @@ package ilg.gnuarmeclipse.debug.gdbjtag;
 
 import ilg.gnuarmeclipse.core.AbstractUIActivator;
 
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
-import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
 /**
@@ -53,60 +49,10 @@ public class Activator extends AbstractUIActivator {
 
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
-		
-		// Register images used by the Peripheral views
-		registerLocalImage("field");
-		registerLocalImage("memory");
-		registerLocalImage("peripheral");
-		registerLocalImage("register_obj");
-		registerLocalImage("registergroup_obj");
-		registerLocalImage("system_peripheral");
 	}
 
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
-	}
-
-	// ------------------------------------------------------------------------
-
-	public void registerLocalImage(String name) {
-		getImageRegistry().put(name, getImageDescriptor(name));
-	}
-	
-	public ImageDescriptor getImageDescriptor(String name) {
-
-		String str = name.toLowerCase();
-		ImageDescriptor imageDescriptor = getImageRegistry().getDescriptor(str);
-		if (imageDescriptor == null)
-			imageDescriptor = declareImage(str);
-		return imageDescriptor;
-	}
-
-	protected ImageDescriptor declareImage(String name) {
-
-		Object path = new Path("icons/", name);
-		String extension = ((IPath) path).getFileExtension();
-		if ((extension == null) || (extension.isEmpty()))
-			path = ((IPath) path).addFileExtension("png");
-		ImageDescriptor imageDescriptor = AbstractUIPlugin
-				.imageDescriptorFromPlugin(PLUGIN_ID, ((IPath) path).toString());
-		try {
-			String key = getKey(name);
-			if (getImageRegistry().getDescriptor(key) == null)
-				getImageRegistry().put(key, imageDescriptor);
-		} catch (Exception e) {
-		}
-		return imageDescriptor;
-	}
-
-	private String getKey(String name) {
-		return name.toLowerCase();
-	}
-
-	// ------------------------------------------------------------------------
-
-	public static void statusMessage(String msg, final boolean flag) {
-		System.out.println(msg);
 	}
 
 	// ------------------------------------------------------------------------

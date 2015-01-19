@@ -638,7 +638,7 @@ public class PeripheralRendering extends AbstractTableRendering implements
 
 	@Override
 	public Image getImage() {
-		return Activator.getInstance().getImageRegistry().get("peripheral");
+		return Activator.getInstance().getImage("peripheral");
 	}
 
 	@Override

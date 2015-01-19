@@ -169,8 +169,7 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 
 				// Get the image from the named file.
 				String name = ((PeripheralTreeVMNode) element).getImageName();
-
-				return Activator.getInstance().getImageRegistry().get(name);
+				return Activator.getInstance().getImage(name);
 			}
 		}
 		return null;

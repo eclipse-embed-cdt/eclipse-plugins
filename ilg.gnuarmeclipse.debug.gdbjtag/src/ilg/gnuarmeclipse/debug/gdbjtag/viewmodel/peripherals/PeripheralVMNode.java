@@ -299,11 +299,11 @@ public class PeripheralVMNode extends AbstractDMVMNode implements
 				ImageDescriptor descriptor = null;
 				Boolean isSystem = (Boolean) properties.get(PROPERTY_ISSYSTEM);
 				if (isSystem != null && isSystem.booleanValue()) {
-					descriptor = Activator.getInstance().getImageRegistry()
-							.getDescriptor("system_peripheral");
+					descriptor = Activator.getInstance().getImageDescriptor(
+							"system_peripheral");
 				} else {
-					descriptor = Activator.getInstance().getImageRegistry()
-							.getDescriptor("peripheral");
+					descriptor = Activator.getInstance().getImageDescriptor(
+							"peripheral");
 				}
 
 				if (descriptor != null) {
