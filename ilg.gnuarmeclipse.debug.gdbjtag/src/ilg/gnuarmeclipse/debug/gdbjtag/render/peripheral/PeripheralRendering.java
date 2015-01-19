@@ -638,8 +638,7 @@ public class PeripheralRendering extends AbstractTableRendering implements
 
 	@Override
 	public Image getImage() {
-		return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-				"icons/peripheral.png").createImage();
+		return Activator.getInstance().getImageRegistry().get("peripheral");
 	}
 
 	@Override

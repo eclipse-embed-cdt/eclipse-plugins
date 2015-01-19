@@ -29,6 +29,8 @@ public class PeripheralTopVMNode extends PeripheralGroupVMNode {
 			PeripheralMemoryBlockExtension memoryBlock) {
 
 		super(parent, dmNode);
+
+		System.out.println("PeripheralTopVMNode() " + dmNode.getName());
 		fMemoryBlock = memoryBlock;
 	}
 
@@ -36,6 +38,7 @@ public class PeripheralTopVMNode extends PeripheralGroupVMNode {
 	public void dispose() {
 
 		fMemoryBlock = null;
+		System.out.println("PeripheralTopVMNode.dispose()");
 		super.dispose();
 	}
 

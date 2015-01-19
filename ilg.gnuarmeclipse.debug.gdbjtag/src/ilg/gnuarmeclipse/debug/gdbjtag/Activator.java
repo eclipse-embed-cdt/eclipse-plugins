@@ -11,13 +11,13 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag;
 
+import ilg.gnuarmeclipse.core.AbstractUIActivator;
+
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-
-import ilg.gnuarmeclipse.core.AbstractUIActivator;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -53,6 +53,14 @@ public class Activator extends AbstractUIActivator {
 
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
+		
+		// Register images used by the Peripheral views
+		registerLocalImage("field");
+		registerLocalImage("memory");
+		registerLocalImage("peripheral");
+		registerLocalImage("register_obj");
+		registerLocalImage("registergroup_obj");
+		registerLocalImage("system_peripheral");
 	}
 
 	public void stop(BundleContext context) throws Exception {
@@ -61,6 +69,10 @@ public class Activator extends AbstractUIActivator {
 
 	// ------------------------------------------------------------------------
 
+	public void registerLocalImage(String name) {
+		getImageRegistry().put(name, getImageDescriptor(name));
+	}
+	
 	public ImageDescriptor getImageDescriptor(String name) {
 
 		String str = name.toLowerCase();
