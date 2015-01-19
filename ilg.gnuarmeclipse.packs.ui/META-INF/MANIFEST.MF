@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: ilg.gnuarmeclipse.packs.ui;singleton:=true
-Bundle-Version: 1.1.1.qualifier
+Bundle-Version: 1.2.1.qualifier
 Bundle-Activator: ilg.gnuarmeclipse.packs.ui.Activator
 Require-Bundle: ilg.gnuarmeclipse.core,
  ilg.gnuarmeclipse.packs.core,
