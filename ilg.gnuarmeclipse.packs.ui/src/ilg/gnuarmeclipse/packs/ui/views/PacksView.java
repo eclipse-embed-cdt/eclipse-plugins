@@ -119,34 +119,24 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 					// imageKey = ISharedImages.IMG_OBJ_FOLDER;
 					// return PlatformUI.getWorkbench().getSharedImages()
 					// .getImage(imageKey);
-					return Activator.imageDescriptorFromPlugin(
-							Activator.PLUGIN_ID, "icons/pack_folder.png")
-							.createImage();
+					return Activator.getInstance().getImage("pack_folder");
 				} else if (Type.PACKAGE.equals(type)) {
 					if (node.isBooleanProperty(Property.INSTALLED)) {
-						return Activator.imageDescriptorFromPlugin(
-								Activator.PLUGIN_ID, "icons/package_obj.png")
-								.createImage();
+						return Activator.getInstance().getImage("package_obj");
 					} else {
-						return Activator.imageDescriptorFromPlugin(
-								Activator.PLUGIN_ID,
-								"icons/package_obj_grey.png").createImage();
+						return Activator.getInstance().getImage(
+								"package_obj_grey");
 					}
 				} else if (Type.VERSION.equals(type)) {
 					if (node.isBooleanProperty(Property.INSTALLED)) {
-						return Activator
-								.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-										"icons/jtypeassist_co.png")
-								.createImage();
+						return Activator.getInstance().getImage(
+								"jtypeassist_co");
 					} else {
-						return Activator.imageDescriptorFromPlugin(
-								Activator.PLUGIN_ID,
-								"icons/jtypeassist_co_grey.png").createImage();
+						return Activator.getInstance().getImage(
+								"jtypeassist_co_grey");
 					}
 				} else if (Type.EXAMPLE.equals(type)) {
-					return Activator.imageDescriptorFromPlugin(
-							Activator.PLUGIN_ID, "icons/binaries_obj.gif")
-							.createImage();
+					return Activator.getInstance().getImage("binaries_obj");
 				}
 			}
 			return null;
@@ -301,7 +291,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 		fViewer = new TreeViewer(tree);
 		// TODO: change to a more elaborate widget, that allows tooltips
-		
+
 		fContentProvider = new ViewContentProvider();
 
 		// Register this view to the packs storage notifications

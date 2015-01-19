@@ -83,13 +83,9 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 						.getImage(imageKey);
 			} else if (Type.BOARD.equals(type)) {
 				if (node.isBooleanProperty(Property.ENABLED)) {
-					return Activator.imageDescriptorFromPlugin(
-							Activator.PLUGIN_ID, "icons/board.png")
-							.createImage();
+					return Activator.getInstance().getImage("board");
 				} else {
-					return Activator.imageDescriptorFromPlugin(
-							Activator.PLUGIN_ID, "icons/board_grey.png")
-							.createImage();
+					return Activator.getInstance().getImage("board_grey");
 				}
 			} else {
 				return null;
@@ -384,7 +380,7 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 	private Node getBoardsTree() {
 
 		final Node packsTree = fDataManager.getRepositoriesTree();
-		
+
 		final Node boardsRoot = new Node(Type.ROOT);
 		boardsRoot.setName("Boards");
 

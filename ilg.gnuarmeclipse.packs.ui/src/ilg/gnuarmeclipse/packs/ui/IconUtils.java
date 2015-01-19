@@ -24,23 +24,18 @@ public class IconUtils {
 
 		String url = node.getProperty(Node.URL_PROPERTY);
 		if (url.length() > 0) {
-			return Activator.imageDescriptorFromPlugin(ICONS_PLUGIN_ID,
-					"icons/external_browser.png").createImage();
+			return Activator.getInstance().getImage("external_browser");
 		}
 		String path = node.getProperty(Node.FILE_PROPERTY).toLowerCase();
 
 		if (path.endsWith(".pdf")) {
-			return Activator.imageDescriptorFromPlugin(ICONS_PLUGIN_ID,
-					"icons/pdficon_small.png").createImage();
+			return Activator.getInstance().getImage("pdficon_small");
 		} else if (path.endsWith(".chm")) {
-			return Activator.imageDescriptorFromPlugin(ICONS_PLUGIN_ID,
-					"icons/chm.png").createImage();
+			return Activator.getInstance().getImage("chm");
 		} else if (path.endsWith(".zip")) {
-			return Activator.imageDescriptorFromPlugin(ICONS_PLUGIN_ID,
-					"icons/zip.png").createImage();
+			return Activator.getInstance().getImage("zip");
 		} else {
-			return Activator.imageDescriptorFromPlugin(ICONS_PLUGIN_ID,
-					"icons/library_obj.png").createImage();
+			return Activator.getInstance().getImage("library_obj");
 		}
 	}
 }

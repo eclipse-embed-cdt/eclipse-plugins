@@ -135,129 +135,90 @@ public class OutlineView extends ViewPart {
 			}
 
 			if (Type.FAMILY.equals(type) || Type.SUBFAMILY.equals(type)
-					|| Type.DEVICE.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/hardware_chip.png").createImage();
+					|| Type.DEVICE.equals(type) || Type.VARIANT.equals(type)) {
+				return Activator.getInstance().getImage("hardware_chip");
 			} else if (Type.COMPATIBLEDEVICE.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/hardware_chip_grey.png").createImage();
+				return Activator.getInstance().getImage("hardware_chip_grey");
 			} else if (Type.BOARD.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/board.png").createImage();
+				return Activator.getInstance().getImage("board");
 			} else if (Type.VERSION.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/jtypeassist_co.png").createImage();
+				return Activator.getInstance().getImage("jtypeassist_co");
 			} else if (Type.EXAMPLE.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/binaries_obj.gif" /* "icons/exec_obj.gif" */)
-						.createImage();
+				return Activator.getInstance()
+						.getImage("binaries_obj" /* "icons/exec_obj.gif" */);
 			} else if (Type.COMPONENT.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/component.png" /* "icons/codeassist_co.gif" */)
-						.createImage();
+				return Activator.getInstance()
+						.getImage("component" /* "icons/codeassist_co.gif" */);
 			} else if (Type.BUNDLE.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/bundle.png" /* "icons/javaassist_co.png" */)
-						.createImage();
+				return Activator.getInstance()
+						.getImage("bundle" /* "icons/javaassist_co.png" */);
 			} else if (Type.CATEGORY.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/label_obj.gif").createImage();
+				return Activator.getInstance().getImage("label_obj");
 			} else if (Type.KEYWORD.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/info_obj.png").createImage();
+				return Activator.getInstance().getImage("info_obj");
 			} else if (Type.DEBUGINTERFACE.equals(type)
 					|| Type.DEBUG.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/exec_dbg_obj.gif").createImage();
+				return Activator.getInstance().getImage("exec_dbg_obj");
 			} else if (Type.FEATURE.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/genericvariable_obj.png").createImage();
+				return Activator.getInstance().getImage("genericvariable_obj");
 			} else if (Type.BOOK.equals(type)) {
 				return IconUtils.getBookIcon(node);
 			} else if (Type.PROCESSOR.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/methpro_obj.png").createImage();
+				return Activator.getInstance().getImage("methpro_obj");
 			} else if (Type.FILE.equals(type)) {
 				String category = node.getProperty(Property.CATEGORY);
 				if ("source".equals(category)) {
 					if (name.endsWith(".s")) {
-						return Activator.imageDescriptorFromPlugin(
-								Activator.PLUGIN_ID, "icons/s_file_obj.gif")
-								.createImage();
+						Activator.getInstance().getImage("s_file_obj");
 					} else {
-						return Activator.imageDescriptorFromPlugin(
-								Activator.PLUGIN_ID, "icons/c_file_obj.gif")
-								.createImage();
+						return Activator.getInstance().getImage("c_file_obj");
 					}
 				} else if ("header".equals(category)) {
-					return Activator.imageDescriptorFromPlugin(
-							Activator.PLUGIN_ID, "icons/h_file_obj.gif")
-							.createImage();
+					return Activator.getInstance().getImage("h_file_obj");
 				} else if ("include".equals(category)) {
-					return Activator
-							.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-									"icons/includes_container.gif")
-							.createImage();
+					return Activator.getInstance().getImage(
+							"includes_container");
 				} else if ("library".equals(category)) {
-					return Activator.imageDescriptorFromPlugin(
-							Activator.PLUGIN_ID, "icons/ar_obj.gif")
-							.createImage();
+					return Activator.getInstance().getImage("ar_obj");
 				} else if ("doc".equals(category)) {
 					if (name.endsWith(".pdf")) {
-						return Activator.imageDescriptorFromPlugin(
-								Activator.PLUGIN_ID, "icons/pdficon_small.png")
-								.createImage();
+						return Activator.getInstance()
+								.getImage("pdficon_small");
 					} else if (name.endsWith(".html")) {
-						return Activator.imageDescriptorFromPlugin(
-								Activator.PLUGIN_ID,
-								"icons/external_browser.png").createImage();
+						return Activator.getInstance().getImage(
+								"external_browser");
 					} else {
-						return Activator.imageDescriptorFromPlugin(
-								Activator.PLUGIN_ID, "icons/file_obj.png")
-								.createImage();
+						return Activator.getInstance().getImage("file_obj");
 					}
 				} else {
-					return Activator.imageDescriptorFromPlugin(
-							Activator.PLUGIN_ID, "icons/file_obj.png")
-							.createImage();
+					return Activator.getInstance().getImage("file_obj");
 				}
 			} else if (Type.HEADER.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/include_obj.gif").createImage();
+				return Activator.getInstance().getImage("include_obj");
 			} else if (Type.DEFINE.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/define_obj.gif").createImage();
+				return Activator.getInstance().getImage("define_obj");
 			} else if (Type.MEMORY.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/memory_view.png").createImage();
+				return Activator.getInstance().getImage("memory_view");
 			} else if (Type.TAXONOMY.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/jdoc_tag_obj.png").createImage();
+				return Activator.getInstance().getImage("jdoc_tag_obj");
 			} else if (Type.CONDITION.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/smartmode_co.png").createImage();
+				return Activator.getInstance().getImage("smartmode_co");
 			} else if (Type.REQUIRE.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/default_co.png").createImage();
+				return Activator.getInstance().getImage("default_co");
 			} else if (Type.ACCEPT.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/method_public_obj.gif").createImage();
+				return Activator.getInstance().getImage("method_public_obj");
 			} else if (Type.DENY.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/method_private_obj.gif").createImage();
+				return Activator.getInstance().getImage("method_private_obj");
 			} else if (Type.PACKAGE.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/package_obj.png").createImage();
+				return Activator.getInstance().getImage("package_obj");
 			} else if (Type.API.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/int_obj.gif").createImage();
+				return Activator.getInstance().getImage("int_obj");
 			} else if (Type.ENVIRONMENT.equals(type)) {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/config-profile.gif").createImage();
+				return Activator.getInstance().getImage("config-profile");
 			} else {
-				return Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-						"icons/unknown_obj.gif").createImage();
+				return Activator.getInstance().getImage("unknown_obj");
 			}
+			return null;
 		}
 
 		@Override

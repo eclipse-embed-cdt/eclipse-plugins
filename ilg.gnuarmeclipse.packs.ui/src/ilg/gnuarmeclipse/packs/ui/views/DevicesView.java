@@ -83,14 +83,9 @@ public class DevicesView extends ViewPart implements IDataManagerListener {
 						.getImage(imageKey);
 			} else if (Type.FAMILY.equals(type)) {
 				if (node.isBooleanProperty(Property.ENABLED)) {
-					return Activator.imageDescriptorFromPlugin(
-							Activator.PLUGIN_ID, "icons/hardware_chip.png")
-							.createImage();
+					return Activator.getInstance().getImage("hardware_chip");
 				} else {
-					return Activator
-							.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-									"icons/hardware_chip_grey.png")
-							.createImage();
+					return Activator.getInstance().getImage("hardware_chip_grey");
 				}
 			} else {
 				return null;
