@@ -122,6 +122,11 @@ public class PeripheralMemoryService extends MIMemory implements
 		return Activator.getInstance().getBundle().getBundleContext();
 	}
 
+	/**
+	 * The sequence of steps used to start the peripherals service. It is called
+	 * on each memory block extension, but only the first time is effective,
+	 * later it just returns 0 steps.
+	 */
 	private class PeripheralSequence extends Sequence {
 
 		private String fOriginalLanguage = MIGDBShowLanguageInfo.AUTO;
@@ -132,11 +137,13 @@ public class PeripheralMemoryService extends MIMemory implements
 		// once.
 		private Step[] fSteps = null;
 
-		public PeripheralSequence(IMemoryDMContext memContext1,
+		public PeripheralSequence(IMemoryDMContext memContext,
 				DsfExecutor executor, RequestMonitor rm) {
 			super(executor, rm);
 
-			fMemContext = memContext1;
+			System.out.println("PeripheralSequence() "
+					+ memContext.getSessionId());
+			fMemContext = memContext;
 		}
 
 		@Override
@@ -250,8 +257,6 @@ public class PeripheralMemoryService extends MIMemory implements
 						protected void handleCompleted() {
 							if (isSuccess()) {
 								fIsBigEndian = getData();
-								System.out.println("isBigEndian="
-										+ fIsBigEndian);
 							}
 							// Accept failure
 							requestMonitor.done();
@@ -299,6 +304,8 @@ public class PeripheralMemoryService extends MIMemory implements
 				});
 			}
 
+			System.out.println("PeripheralSequence has " + stepsList.size()
+					+ " steps.");
 			return stepsList.toArray(new Step[stepsList.size()]);
 		}
 	}
@@ -307,8 +314,16 @@ public class PeripheralMemoryService extends MIMemory implements
 	public void initializeMemoryData(final IMemoryDMContext memContext,
 			RequestMonitor rm) {
 
-		ImmediateExecutor.getInstance().execute(
-				new PeripheralSequence(memContext, getExecutor(), rm));
+		if (fAddressSizes == null || fIsBigEndian == null) {
+
+			// The address size and endianness do not change during a debug
+			// session, so avoid executing the special sequence if not
+			// necessary.
+			ImmediateExecutor.getInstance().execute(
+					new PeripheralSequence(memContext, getExecutor(), rm));
+		} else {
+			rm.done();
+		}
 	}
 
 	@DsfServiceEventHandler
@@ -353,7 +368,9 @@ public class PeripheralMemoryService extends MIMemory implements
 					@Override
 					protected void handleSuccess() {
 						try {
-							drm.setData(Integer.decode(getData().getValue()));
+							Integer data = Integer.decode(getData().getValue());
+							System.out.println("readAddressSize() " + data);
+							drm.setData(data);
 						} catch (NumberFormatException e) {
 							drm.setStatus(new Status(
 									IStatus.ERROR,
@@ -375,7 +392,9 @@ public class PeripheralMemoryService extends MIMemory implements
 						.getInstance(), drm) {
 					@Override
 					protected void handleSuccess() {
-						drm.setData(Boolean.valueOf(getData().isBigEndian()));
+						Boolean data = Boolean.valueOf(getData().isBigEndian());
+						System.out.println("readEndianness() " + data);
+						drm.setData(data);
 						drm.done();
 					}
 				});
@@ -409,6 +428,9 @@ public class PeripheralMemoryService extends MIMemory implements
 			drm.done();
 			return;
 		}
+
+		System.out.println(String.format("readMemoryBlock 0x%s+0x%X 0x%X",
+				address.toString(16), offset, word_count * word_size));
 
 		flushCache(memoryDMC);
 		readMemoryBlock(memoryDMC, address, offset, 1, word_count * word_size,
@@ -450,12 +472,13 @@ public class PeripheralMemoryService extends MIMemory implements
 			return;
 		}
 
-		// System.out.print("Write 0x");
+		// System.out.print("writeMemoryBlock 0x");
 		// for (int i=0; i < buffer.length; ++i){
 		// System.out.print(String.format(" %02X", buffer[i]));
 		// }
-		// System.out.println(" @ 0x"+address.toString(16)+"+0x"+String.format("%X",
-		// offset));
+		// System.out.print(" 0x");
+		System.out.println(String.format("writeMemoryBlock 0x%s+0x%X 0x%X",
+				address.toString(16), offset, word_count * word_size));
 
 		flushCache(memoryDMC);
 		writeMemoryBlock(memoryDMC, address, offset, 1, word_count * word_size,

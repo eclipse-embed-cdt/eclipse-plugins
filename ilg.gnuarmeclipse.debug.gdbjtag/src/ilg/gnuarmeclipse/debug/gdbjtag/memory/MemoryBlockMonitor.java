@@ -63,8 +63,10 @@ public class MemoryBlockMonitor {
 		return fgInstance;
 	}
 
+	// ------------------------------------------------------------------------
+
 	public MemoryBlockMonitor() {
-		;
+		System.out.println("MemoryBlockMonitor()");
 	}
 
 	// ------------------------------------------------------------------------
@@ -106,7 +108,7 @@ public class MemoryBlockMonitor {
 	 */
 	public void removeAllMemoryBlocks() {
 
-		System.out.println("removeAllMemoryBlocks()");
+		System.out.println("MemoryBlockMonitor.removeAllMemoryBlocks()");
 
 		IMemoryBlock[] memoryBlocks = DebugPlugin.getDefault()
 				.getMemoryBlockManager().getMemoryBlocks();
@@ -122,7 +124,8 @@ public class MemoryBlockMonitor {
 			PeripheralDMContext peripheralDMContext,
 			IMemoryBlockRetrieval memoryBlockRetrieval) {
 
-		System.out.println("addMemoryBlock()");
+		System.out.println("MemoryBlockMonitor.addMemoryBlock() "
+				+ peripheralDMContext.getName());
 
 		String addr = peripheralDMContext.getPeripheralInstance()
 				.getHexAddress();
@@ -166,7 +169,8 @@ public class MemoryBlockMonitor {
 	private void removeMemoryBlock(IWorkbenchWindow workbenchWindow,
 			PeripheralDMContext peripheralDMContext) {
 
-		System.out.println("removeMemoryBlock()");
+		System.out.println("MemoryBlockMonitor.removeMemoryBlock() "
+				+ peripheralDMContext.getName());
 
 		IMemoryBlock[] memoryBlocks = DebugPlugin.getDefault()
 				.getMemoryBlockManager().getMemoryBlocks();
@@ -249,6 +253,10 @@ public class MemoryBlockMonitor {
 	private void createRenderingInContainer(IWorkbenchWindow workbenchWindow,
 			IMemoryBlock memoryBlock, IMemoryRenderingType memoryRenderingType,
 			String id) throws CoreException {
+
+		System.out.println(String.format(
+				"MemoryBlockMonitor.createRenderingInContainer() 0x%X",
+				memoryBlock.getStartAddress()));
 
 		IMemoryRenderingSite memoryRenderingSite = getRenderingSite(workbenchWindow);
 		if (memoryRenderingSite != null) {
