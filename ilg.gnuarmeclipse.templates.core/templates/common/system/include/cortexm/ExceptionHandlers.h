@@ -60,19 +60,26 @@ extern "C"
   } ExceptionStackFrame;
 
 #if defined(TRACE)
+#if defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
   void
   dumpExceptionStack (ExceptionStackFrame* frame, uint32_t cfsr, uint32_t mmfar,
                       uint32_t bfar, uint32_t lr);
-#endif
+#endif // defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
+#if defined(__ARM_ARCH_6M__)
+  void
+  dumpExceptionStack (ExceptionStackFrame* frame, uint32_t lr);
+#endif // defined(__ARM_ARCH_6M__)
+#endif // defined(TRACE)
 
   void
   HardFault_Handler_C (ExceptionStackFrame* frame, uint32_t lr);
 
+#if defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
   void
   UsageFault_Handler_C (ExceptionStackFrame* frame, uint32_t lr);
-
   void
   BusFault_Handler_C (ExceptionStackFrame* frame, uint32_t lr);
+#endif // defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
 
 #if defined(__cplusplus)
 }
