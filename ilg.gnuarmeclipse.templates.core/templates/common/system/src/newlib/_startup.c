@@ -219,7 +219,7 @@ __data_end_guard = DATA_END_GUARD_VALUE;
 // For the call to work, and for the call to __initialize_hardware_early()
 // to work, the reset stack must point to a valid internal RAM area.
 
-void __attribute__ ((section(".after_vectors"),noreturn))
+void __attribute__ ((section(".after_vectors"),noreturn,weak))
 _start (void)
 {
 
