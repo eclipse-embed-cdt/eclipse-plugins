@@ -501,6 +501,7 @@ public class DebugUtils {
 			ILaunch launch = launches[i];
 			// System.out.println(ls[i].getLaunchConfiguration().getName());
 			if (!launch.isTerminated()
+					&& (launch.getLaunchConfiguration() != null)
 					&& configuration.getName().equals(
 							launch.getLaunchConfiguration().getName())) {
 
