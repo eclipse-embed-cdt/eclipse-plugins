@@ -13,7 +13,6 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.memory;
 
 import ilg.gnuarmeclipse.core.EclipseUtils;
-import ilg.gnuarmeclipse.core.SystemJob;
 import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.PeripheralDMContext;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.PeripheralDMNode;
@@ -21,10 +20,6 @@ import ilg.gnuarmeclipse.debug.gdbjtag.render.peripheral.PeripheralRendering;
 import ilg.gnuarmeclipse.debug.gdbjtag.ui.Messages;
 
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IProgressMonitor;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.model.IMemoryBlock;
@@ -35,9 +30,9 @@ import org.eclipse.debug.ui.memory.IMemoryRendering;
 import org.eclipse.debug.ui.memory.IMemoryRenderingContainer;
 import org.eclipse.debug.ui.memory.IMemoryRenderingSite;
 import org.eclipse.debug.ui.memory.IMemoryRenderingType;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.progress.UIJob;
 
 /**
  * This class manages adding/removing memory monitors. The memory monitors are
@@ -79,26 +74,27 @@ public class MemoryBlockMonitor {
 		System.out.println("MemoryBlockMonitor.displayPeripheralMonitor("
 				+ isChecked + ")");
 
-		PeripheralDMNode peripheralInstance = peripheralDMContext
-				.getPeripheralInstance();
 		Object object;
 		object = peripheralDMContext.getAdapter(PeripheralDMNode.class);
 
 		if ((object instanceof IMemoryBlockRetrieval)) {
 
 			final IMemoryBlockRetrieval memoryBlockRetrieval = (IMemoryBlockRetrieval) object;
-			Job job = new SystemJob(peripheralInstance.getName()) {
 
-				protected IStatus run(IProgressMonitor pm) {
-					if (isChecked)
+			/*
+			 * To improve rendering refresh, run this on the display thread
+			 */
+			Display.getDefault().asyncExec(new Runnable() {
+				@Override
+				public void run() {
+					if (isChecked) {
 						addMemoryBlock(workbenchWindow, peripheralDMContext,
 								memoryBlockRetrieval);
-					else
+					} else {
 						removeMemoryBlock(workbenchWindow, peripheralDMContext);
-					return Status.OK_STATUS;
+					}
 				}
-			};
-			job.schedule();
+			});
 		}
 	}
 
@@ -119,6 +115,13 @@ public class MemoryBlockMonitor {
 
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Called by displayPeripheralMonitor() from the UI thread.
+	 * 
+	 * @param workbenchWindow
+	 * @param peripheralDMContext
+	 * @param memoryBlockRetrieval
+	 */
 	// @SuppressWarnings("restriction")
 	private void addMemoryBlock(IWorkbenchWindow workbenchWindow,
 			PeripheralDMContext peripheralDMContext,
@@ -203,6 +206,13 @@ public class MemoryBlockMonitor {
 				.removeMemoryBlocks(memoryBlocks);
 	}
 
+	/**
+	 * Called from UI thread.
+	 * 
+	 * @param workbenchWindow
+	 * @param memoryBlock
+	 * @param id
+	 */
 	private void addDefaultRenderings(IWorkbenchWindow workbenchWindow,
 			IMemoryBlock memoryBlock, String id) {
 
@@ -290,26 +300,17 @@ public class MemoryBlockMonitor {
 	}
 
 	/**
-	 * Make the "Memory" view visible, by calling showView() in the UI thread.
+	 * Make the "Memory" view visible, by calling showView(). Called from the UI
+	 * thread, no need to start a separate job.
 	 * 
 	 * @param workbenchWindow
 	 */
 	private void showMemoryView(final IWorkbenchWindow workbenchWindow) {
-
-		UIJob job = new UIJob(MemoryBlockMonitor.class.getSimpleName()
-				+ "#showMemoryView") {
-
-			public IStatus runInUIThread(IProgressMonitor pm) {
-				try {
-					workbenchWindow.getActivePage().showView(
-							"org.eclipse.debug.ui.MemoryView");
-				} catch (Exception e) {
-				}
-				return Status.OK_STATUS;
-			}
-		};
-		job.setSystem(true);
-		job.schedule();
+		try {
+			workbenchWindow.getActivePage().showView(
+					"org.eclipse.debug.ui.MemoryView");
+		} catch (Exception e) {
+		}
 	}
 
 	// ------------------------------------------------------------------------
