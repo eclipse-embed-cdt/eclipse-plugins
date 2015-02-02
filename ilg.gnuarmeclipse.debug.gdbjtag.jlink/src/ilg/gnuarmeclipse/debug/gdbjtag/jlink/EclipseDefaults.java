@@ -24,6 +24,9 @@ public class EclipseDefaults {
 
 	private static final String GDB_CLIENT_EXECUTABLE = "gdb.client.executable.default";
 
+	private static final String TAB_MAIN_CHECK_PROGRAM = "tab.main.checkProgram";
+	private static final boolean TAB_MAIN_CHECK_PROGRAM_DEFAULT = false;
+
 	// ------------------------------------------------------------------------
 
 	private static String getProperty(String name, String defValue) {
@@ -56,6 +59,15 @@ public class EclipseDefaults {
 
 	public static String getGdbClientExecutable(String defValue) {
 		return getProperty(GDB_CLIENT_EXECUTABLE, defValue);
+	}
+
+	public static boolean getTabMainCheckProgram(boolean defValue) {
+		return getProperty(TAB_MAIN_CHECK_PROGRAM, defValue);
+	}
+
+	public static boolean getTabMainCheckProgram() {
+		return getProperty(TAB_MAIN_CHECK_PROGRAM,
+				TAB_MAIN_CHECK_PROGRAM_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------
