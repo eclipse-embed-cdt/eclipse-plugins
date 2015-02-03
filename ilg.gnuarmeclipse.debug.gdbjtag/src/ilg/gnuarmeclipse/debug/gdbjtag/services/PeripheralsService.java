@@ -112,6 +112,14 @@ public class PeripheralsService extends AbstractDsfService implements
 
 		System.out.println("PeripheralsService.getPeripherals()");
 
+		if (fPeripheralsDMContexts != null) {
+
+			// On subsequent calls, return existing array.
+			drm.setData(fPeripheralsDMContexts);
+			drm.done();
+			return;
+		}
+
 		if (fCommandControl instanceof ILaunchConfigurationProvider) {
 
 			// The launch configuration is obtained from the command control,
@@ -184,11 +192,16 @@ public class PeripheralsService extends AbstractDsfService implements
 			IDMContext parentIDMContext, List<Leaf> list) {
 
 		PeripheralDMContext contexts[] = new PeripheralDMContext[list.size()];
+		IDMContext[] parents;
+		if (parentIDMContext != null) {
+			parents = new IDMContext[] { parentIDMContext };
+		} else {
+			parents = new IDMContext[0];
+		}
 		int i = 0;
 		for (Leaf child : list) {
 			PeripheralDMNode node = new PeripheralDMNode(child);
-			contexts[i] = new PeripheralDMContext(getSession(),
-					new IDMContext[] { parentIDMContext }, node);
+			contexts[i] = new PeripheralDMContext(getSession(), parents, node);
 			++i;
 		}
 		Arrays.sort(contexts);

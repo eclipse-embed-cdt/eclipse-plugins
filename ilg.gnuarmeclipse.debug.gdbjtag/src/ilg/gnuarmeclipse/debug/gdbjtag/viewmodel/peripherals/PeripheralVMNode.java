@@ -16,9 +16,14 @@ import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.IPeripheralDMContext;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.PeripheralDMContext;
+import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.PeripheralDMNode;
+import ilg.gnuarmeclipse.debug.gdbjtag.memory.MemoryBlockMonitor;
+import ilg.gnuarmeclipse.debug.gdbjtag.memory.PeripheralMemoryBlockRetrieval;
 import ilg.gnuarmeclipse.debug.gdbjtag.render.peripherals.PeripheralsColumnPresentation;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IPeripheralsService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.RejectedExecutionException;
@@ -45,6 +50,7 @@ import org.eclipse.cdt.dsf.ui.viewmodel.properties.LabelText;
 import org.eclipse.cdt.dsf.ui.viewmodel.properties.PropertiesBasedLabelProvider;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.debug.core.model.IMemoryBlockRetrieval;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.ICheckUpdate;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IChildrenUpdate;
 import org.eclipse.debug.internal.ui.viewers.model.provisional.IElementEditor;
@@ -58,6 +64,9 @@ import org.eclipse.jface.viewers.CellEditor;
 import org.eclipse.jface.viewers.ICellModifier;
 import org.eclipse.jface.viewers.TreePath;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PlatformUI;
 
 @SuppressWarnings("restriction")
 public class PeripheralVMNode extends AbstractDMVMNode implements
@@ -190,7 +199,7 @@ public class PeripheralVMNode extends AbstractDMVMNode implements
 	@Override
 	protected boolean checkUpdate(IViewerUpdate update) {
 
-		// No longer used, prent check is enough
+		// No longer used, parent check is enough
 		if (!super.checkUpdate(update))
 			return false;
 
@@ -200,15 +209,15 @@ public class PeripheralVMNode extends AbstractDMVMNode implements
 	@Override
 	protected void updateElementsInSessionThread(final IChildrenUpdate update) {
 
-		System.out.println("updateElementsInSessionThread() " + this + " "
-				+ update);
+		System.out.println("PeripheralVMNode.updateElementsInSessionThread() "
+				+ this + " " + update);
 
 		DsfServicesTracker tracker = getServicesTracker();
 		IPeripheralsService peripheralsService = (IPeripheralsService) tracker
 				.getService(IPeripheralsService.class);
 		System.out.println("got service " + peripheralsService);
 
-		IRunControl.IContainerDMContext containerDMContext = (IRunControl.IContainerDMContext) findDmcInPath(
+		final IRunControl.IContainerDMContext containerDMContext = (IRunControl.IContainerDMContext) findDmcInPath(
 				update.getViewerInput(), update.getElementPath(),
 				IRunControl.IContainerDMContext.class);
 
@@ -240,6 +249,9 @@ public class PeripheralVMNode extends AbstractDMVMNode implements
 						if (isSuccess()) {
 							fPeripherals = (IDMContext[]) getData();
 							fillUpdateWithVMCs(update, fPeripherals);
+
+							addPersistentPeripherals(containerDMContext);
+
 							update.done();
 						} else {
 							EclipseUtils.showStatusErrorMessage(getStatus()
@@ -248,6 +260,61 @@ public class PeripheralVMNode extends AbstractDMVMNode implements
 						}
 					}
 				});
+	}
+
+	/**
+	 * Add memory monitors for persistent peripherals.
+	 * 
+	 * @param containerDMContext
+	 */
+	private void addPersistentPeripherals(
+			final IRunControl.IContainerDMContext containerDMContext) {
+
+		System.out.println("PeripheralVMNode.addPersistentPeripherals()");
+
+		final List<String> persistentPeripherals = new ArrayList<String>();
+
+		Object object = containerDMContext.getAdapter(PeripheralDMNode.class);
+		if (object instanceof PeripheralMemoryBlockRetrieval) {
+			persistentPeripherals
+					.addAll(((PeripheralMemoryBlockRetrieval) object)
+							.getPersistentPeripherals());
+		}
+
+		if (persistentPeripherals.isEmpty()) {
+			return;
+		}
+
+		// Call addMemoryBlock() on the UI thread to avoid refresh problems.
+		Display.getDefault().asyncExec(new Runnable() {
+
+			@Override
+			public void run() {
+
+				IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow();
+				IMemoryBlockRetrieval retrieval = (IMemoryBlockRetrieval) containerDMContext
+						.getAdapter(PeripheralDMNode.class);
+
+				for (String peripheralName : persistentPeripherals) {
+					for (int i = 0; i < fPeripherals.length; ++i) {
+						PeripheralDMContext peripheralDMContext = (PeripheralDMContext) fPeripherals[i];
+						if (peripheralName.equals(peripheralDMContext.getName())) {
+							System.out.println(fPeripherals[i]
+									+ " must be rendered");
+
+							MemoryBlockMonitor.getInstance().addMemoryBlock(
+									workbenchWindow, peripheralDMContext,
+									retrieval);
+						}
+					}
+				}
+
+				MemoryBlockMonitor.getInstance()
+						.showMemoryView(workbenchWindow);
+			}
+		});
+
 	}
 
 	@ConfinedToDsfExecutor("getSession().getExecutor()")
@@ -388,7 +455,7 @@ public class PeripheralVMNode extends AbstractDMVMNode implements
 			PeripheralDMContext peripheralDMContext = (PeripheralDMContext) peripheralVMContext
 					.getDMContext();
 
-			// System.out.println("getChecked()="
+			// System.out.println("PeripheralVMNode.getChecked()="
 			// + peripheralDMContext.hasMemoryMonitor() + " "
 			// + peripheralDMContext);
 			return peripheralDMContext.hasMemoryMonitor();

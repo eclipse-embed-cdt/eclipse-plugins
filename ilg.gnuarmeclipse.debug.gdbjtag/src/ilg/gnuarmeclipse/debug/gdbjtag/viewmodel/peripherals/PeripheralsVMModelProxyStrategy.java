@@ -41,6 +41,9 @@ public class PeripheralsVMModelProxyStrategy extends
 
 	// Contributed by ICheckboxModelProxy
 
+	/**
+	 * This is called when the radio button is checked in the interface.
+	 */
 	@Override
 	public boolean setChecked(IPresentationContext context, Object viewerInput,
 			TreePath path, boolean checked) {

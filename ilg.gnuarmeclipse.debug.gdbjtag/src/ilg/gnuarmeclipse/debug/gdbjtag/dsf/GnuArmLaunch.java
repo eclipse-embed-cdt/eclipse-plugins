@@ -143,7 +143,6 @@ public class GnuArmLaunch extends GdbLaunch {
 
 						System.out
 								.println("GnuArmLaunch.initializeControl() initialise memory retrieval");
-
 						// Create the memory block retrieval.
 						DsfMemoryBlockRetrieval memRetrieval = new PeripheralMemoryBlockRetrieval(
 								"org.eclipse.cdt.dsf.gdb",
@@ -156,6 +155,9 @@ public class GnuArmLaunch extends GdbLaunch {
 						fSession.registerModelAdapter(
 								IMemoryBlockRetrieval.class, memRetrieval);
 
+						// To notify exit
+						fSession.addServiceEventListener(memRetrieval, null);
+
 						// Create memory context from process context.
 						IProcesses.IProcessDMContext processDMContext = processes
 								.createProcessContext(
@@ -166,6 +168,7 @@ public class GnuArmLaunch extends GdbLaunch {
 						// Finally initialise memory retrieval with memory
 						// context.
 						memRetrieval.initialize(memoryDMContext);
+
 					}
 					return null;
 				}

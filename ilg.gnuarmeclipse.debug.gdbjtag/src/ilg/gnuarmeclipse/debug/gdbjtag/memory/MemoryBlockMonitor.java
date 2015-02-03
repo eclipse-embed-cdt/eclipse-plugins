@@ -90,6 +90,10 @@ public class MemoryBlockMonitor {
 					if (isChecked) {
 						addMemoryBlock(workbenchWindow, peripheralDMContext,
 								memoryBlockRetrieval);
+
+						// In case the Memory view was not visible, make it
+						// visible now.
+						showMemoryView(workbenchWindow);
 					} else {
 						removeMemoryBlock(workbenchWindow, peripheralDMContext);
 					}
@@ -116,14 +120,15 @@ public class MemoryBlockMonitor {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Called by displayPeripheralMonitor() from the UI thread.
+	 * Called by displayPeripheralMonitor() and addPersistentPeripherals() from
+	 * the UI thread.
 	 * 
 	 * @param workbenchWindow
 	 * @param peripheralDMContext
 	 * @param memoryBlockRetrieval
 	 */
 	// @SuppressWarnings("restriction")
-	private void addMemoryBlock(IWorkbenchWindow workbenchWindow,
+	public void addMemoryBlock(IWorkbenchWindow workbenchWindow,
 			PeripheralDMContext peripheralDMContext,
 			IMemoryBlockRetrieval memoryBlockRetrieval) {
 
@@ -245,9 +250,6 @@ public class MemoryBlockMonitor {
 		} catch (CoreException e) {
 			Activator.log(e);
 		}
-
-		// In case the Memory view was not visible, make it visible now.
-		showMemoryView(workbenchWindow);
 	}
 
 	/**
@@ -305,8 +307,9 @@ public class MemoryBlockMonitor {
 	 * 
 	 * @param workbenchWindow
 	 */
-	private void showMemoryView(final IWorkbenchWindow workbenchWindow) {
+	public void showMemoryView(final IWorkbenchWindow workbenchWindow) {
 		try {
+			System.out.println("showView(MemoryView)");
 			workbenchWindow.getActivePage().showView(
 					"org.eclipse.debug.ui.MemoryView");
 		} catch (Exception e) {
