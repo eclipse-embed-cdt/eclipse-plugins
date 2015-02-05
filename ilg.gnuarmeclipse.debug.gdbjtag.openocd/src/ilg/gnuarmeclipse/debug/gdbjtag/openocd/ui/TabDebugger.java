@@ -23,6 +23,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui;
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.openocd.EclipseDefaults;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.WorkspacePersistentValues;
 
 import java.io.File;
@@ -740,6 +741,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	public void initializeFromDefaults() {
 
+		String stringDefault;
+
 		// OpenOCD GDB server
 		{
 			// Start server locally
@@ -747,8 +750,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.setSelection(ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
 
 			// Executable
-			fGdbServerExecutable
-					.setText(ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT);
+			stringDefault = EclipseDefaults
+					.getGdbServerExecutable(ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT);
+			fGdbServerExecutable.setText(stringDefault);
 
 			// Ports
 			fGdbServerGdbPort

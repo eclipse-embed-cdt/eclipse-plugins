@@ -23,8 +23,8 @@ public class VariableInitializer implements IValueVariableInitializer {
 
 	// ------------------------------------------------------------------------
 
-	static final String OPENOCD_VARIABLE_NAME = "openocd_executable";
-	static final String OPENOCD_PATH = "openocd_path";
+	static final String VARIABLE_OPENOCD_EXECUTABLE = "openocd_executable";
+	static final String VARIABLE_OPENOCD_PATH = "openocd_path";
 
 	static final String OSX_APPLICATIONS_PATH = "/Applications/GNU ARM Eclipse/OpenOCD/bin/";
 	static final String OSX_MACPORTS_PATH = "/opt/local/bin/";
@@ -45,40 +45,45 @@ public class VariableInitializer implements IValueVariableInitializer {
 
 		String value;
 
-		if (OPENOCD_VARIABLE_NAME.equals(variable.getName())) {
+		if (VARIABLE_OPENOCD_EXECUTABLE.equals(variable.getName())) {
 
-			value = ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_NAME;
+			value = EclipseDefaults.getOpenocdExecutable();
+			if (value == null) {
+				value = ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_NAME;
+			}
 			variable.setValue(value);
 
-		} else if (OPENOCD_PATH.equals(variable.getName())) {
+		} else if (VARIABLE_OPENOCD_PATH.equals(variable.getName())) {
 
-			if (EclipseUtils.isWindows()) {
-				value = WindowsRegistry.query(LOCATION, KEY);
-				if (value == null) {
-					value = UNDEFINED_PATH;
-				}
-			} else if (EclipseUtils.isLinux()) {
-				if (isExecutablePresent(LINUX_OPT_PATH, "openocd")) {
-					value = LINUX_OPT_PATH;
-				} else if (isExecutablePresent(LINUX_LOCAL_PATH, "openocd")) {
-					value = LINUX_LOCAL_PATH;
-				} else if (isExecutablePresent(LINUX_PATH, "openocd")) {
-					value = LINUX_PATH;
+			value = EclipseDefaults.getOpenocdPath();
+			if (value == null) {
+				if (EclipseUtils.isWindows()) {
+					value = WindowsRegistry.query(LOCATION, KEY);
+					if (value == null) {
+						value = UNDEFINED_PATH;
+					}
+				} else if (EclipseUtils.isLinux()) {
+					if (isExecutablePresent(LINUX_OPT_PATH, "openocd")) {
+						value = LINUX_OPT_PATH;
+					} else if (isExecutablePresent(LINUX_LOCAL_PATH, "openocd")) {
+						value = LINUX_LOCAL_PATH;
+					} else if (isExecutablePresent(LINUX_PATH, "openocd")) {
+						value = LINUX_PATH;
+					} else {
+						value = UNDEFINED_PATH;
+					}
+				} else if (EclipseUtils.isMacOSX()) {
+					if (isExecutablePresent(OSX_APPLICATIONS_PATH, "openocd")) {
+						value = OSX_APPLICATIONS_PATH;
+					} else if (isExecutablePresent(OSX_MACPORTS_PATH, "openocd")) {
+						value = OSX_MACPORTS_PATH;
+					} else {
+						value = UNDEFINED_PATH;
+					}
 				} else {
 					value = UNDEFINED_PATH;
 				}
-			} else if (EclipseUtils.isMacOSX()) {
-				if (isExecutablePresent(OSX_APPLICATIONS_PATH, "openocd")) {
-					value = OSX_APPLICATIONS_PATH;
-				} else if (isExecutablePresent(OSX_MACPORTS_PATH, "openocd")) {
-					value = OSX_MACPORTS_PATH;
-				} else {
-					value = UNDEFINED_PATH;
-				}
-			} else {
-				value = UNDEFINED_PATH;
 			}
-
 			variable.setValue(value);
 		}
 	}

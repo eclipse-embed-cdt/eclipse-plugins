@@ -79,7 +79,7 @@ public class GdbBackend extends GnuArmGdbBackend {
 
 	/**
 	 * Overridden to get the full command line, including all options, from the
-	 * JLink configuration.
+	 * OpenOCD configuration.
 	 */
 	protected String[] getGDBCommandLineArray() {
 		String[] commandLineArray = Configuration
