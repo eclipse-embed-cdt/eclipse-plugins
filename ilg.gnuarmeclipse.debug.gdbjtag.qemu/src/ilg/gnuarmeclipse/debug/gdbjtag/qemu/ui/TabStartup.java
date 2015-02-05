@@ -51,6 +51,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.ElementTreeSelectionDialog;
 import org.eclipse.ui.model.WorkbenchContentProvider;
@@ -113,6 +114,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	private Label fProjBinaryLabel1;
 	private Label fProjBinaryLabel2;
 
+	private String fSavedProgName;
+
 	// ------------------------------------------------------------------------
 
 	public TabStartup() {
@@ -147,7 +150,33 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		createRunOptionGroup(comp);
 		createRunGroup(comp);
 
+		Link restoreDefaults;
+		GridData gd;
+		{
+			restoreDefaults = new Link(comp, SWT.NONE);
+			restoreDefaults.setText(Messages
+					.getString("DebuggerTab.restoreDefaults_Link"));
+			restoreDefaults.setToolTipText(Messages
+					.getString("DebuggerTab.restoreDefaults_ToolTipText"));
+
+			gd = new GridData();
+			gd.grabExcessHorizontalSpace = true;
+			gd.horizontalAlignment = SWT.RIGHT;
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
+			restoreDefaults.setLayoutData(gd);
+		}
+
 		sc.setMinSize(comp.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+
+		// --------------------------------------------------------------------
+
+		restoreDefaults.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent event) {
+				initializeFromDefaults();
+				scheduleUpdateJob();
+			}
+		});
 	}
 
 	private void browseButtonSelected(String title, Text text) {
@@ -951,6 +980,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					fProjBinaryLabel1.setText(programName);
 					fProjBinaryLabel2.setText(programName);
 				}
+				fSavedProgName = programName;
 			}
 
 			// Runtime Options
@@ -1005,11 +1035,94 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			loadSymbolsChanged();
 			pcRegisterChanged();
 			stopAtChanged();
+
 			updateUseFileEnablement();
 
 		} catch (CoreException e) {
 			Activator.log(e.getStatus());
 		}
+	}
+
+	public void initializeFromDefaults() {
+
+		// Initialisation Commands
+		{
+			// Do initial reset
+			fDoFirstReset
+					.setSelection(ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
+
+			// Enable semihosting
+			fEnableSemihosting
+					.setSelection(ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
+
+			// Other commands
+			fInitCommands
+					.setText(ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
+		}
+
+		// Load Symbols & Image
+		{
+			fLoadSymbols.setSelection(IGDBJtagConstants.DEFAULT_LOAD_SYMBOLS);
+			fUseProjectBinaryForSymbols
+					.setSelection(IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_SYMBOLS);
+			fUseFileForSymbols
+					.setSelection(IGDBJtagConstants.DEFAULT_USE_FILE_FOR_SYMBOLS);
+			fSymbolsFileName
+					.setText(IGDBJtagConstants.DEFAULT_SYMBOLS_FILE_NAME);
+			fSymbolsOffset.setText(IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
+
+			fLoadExecutable.setSelection(IGDBJtagConstants.DEFAULT_LOAD_IMAGE);
+			fUseProjectBinaryForImage
+					.setSelection(IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_IMAGE);
+			fUseFileForImage
+					.setSelection(IGDBJtagConstants.DEFAULT_USE_FILE_FOR_IMAGE);
+			fImageFileName.setText(IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME);
+			fImageOffset.setText(IGDBJtagConstants.DEFAULT_IMAGE_OFFSET);
+
+			String programName = fSavedProgName;
+			if (programName != null) {
+				fProjBinaryLabel1.setText(programName);
+				fProjBinaryLabel2.setText(programName);
+			}
+		}
+
+		// Runtime Options
+		{
+			fDoDebugInRam
+					.setSelection(ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT);
+		}
+
+		// Run Commands
+		{
+			// Do pre-run reset
+			fDoSecondReset
+					.setSelection(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
+
+			// Other commands
+			fRunCommands
+					.setText(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
+
+			fSetPcRegister
+					.setSelection(IGDBJtagConstants.DEFAULT_SET_PC_REGISTER);
+			fPcRegister.setText(IGDBJtagConstants.DEFAULT_PC_REGISTER);
+
+			fSetStopAt.setSelection(ConfigurationAttributes.DO_STOP_AT_DEFAULT);
+			fStopAt.setText(ConfigurationAttributes.STOP_AT_NAME_DEFAULT);
+
+			// Do continue
+			fDoContinue
+					.setSelection(ConfigurationAttributes.DO_CONTINUE_DEFAULT);
+		}
+
+		doFirstResetChanged();
+
+		doSecondResetChanged();
+		loadExecutableChanged();
+		loadSymbolsChanged();
+		pcRegisterChanged();
+		stopAtChanged();
+
+		updateUseFileEnablement();
 	}
 
 	@Override

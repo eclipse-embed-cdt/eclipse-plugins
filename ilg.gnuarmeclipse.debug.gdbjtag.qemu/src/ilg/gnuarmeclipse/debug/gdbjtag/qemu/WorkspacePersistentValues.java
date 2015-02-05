@@ -114,7 +114,11 @@ public class WorkspacePersistentValues {
 	// ----- gdb server executable --------------------------------------------
 	public static String getGdbServerExecutable(String defaultValue) {
 
-		return getValueForId(GDB_SERVER_EXECUTABLE, defaultValue);
+		String value = getValueForId(GDB_SERVER_EXECUTABLE, null);
+		if (value != null) {
+			return value;
+		}
+		return EclipseDefaults.getGdbServerExecutable(defaultValue);
 	}
 
 	public static void putGdbServerExecutable(String value) {
@@ -136,7 +140,11 @@ public class WorkspacePersistentValues {
 	// ----- gdb client executable --------------------------------------------
 	public static String getGdbClientExecutable(String defaultValue) {
 
-		return getValueForId(GDB_CLIENT_EXECUTABLE, defaultValue);
+		String value = getValueForId(GDB_CLIENT_EXECUTABLE, null);
+		if (value != null) {
+			return value;
+		}
+		return EclipseDefaults.getGdbClientExecutable(defaultValue);
 	}
 
 	public static void putGdbClientExecutable(String value) {

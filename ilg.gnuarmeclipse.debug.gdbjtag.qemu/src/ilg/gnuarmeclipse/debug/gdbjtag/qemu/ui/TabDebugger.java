@@ -23,6 +23,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.qemu.ui;
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.qemu.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.EclipseDefaults;
 import ilg.gnuarmeclipse.debug.gdbjtag.qemu.WorkspacePersistentValues;
 
 import java.io.File;
@@ -55,6 +56,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 
 /**
@@ -138,10 +140,36 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				.setToolTipText(Messages
 						.getString("DebuggerTab.update_thread_list_on_suspend_ToolTipText"));
 
+		Link restoreDefaults;
+		GridData gd;
+		{
+			restoreDefaults = new Link(comp, SWT.NONE);
+			restoreDefaults.setText(Messages
+					.getString("DebuggerTab.restoreDefaults_Link"));
+			restoreDefaults.setToolTipText(Messages
+					.getString("DebuggerTab.restoreDefaults_ToolTipText"));
+
+			gd = new GridData();
+			gd.grabExcessHorizontalSpace = true;
+			gd.horizontalAlignment = SWT.RIGHT;
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
+			restoreDefaults.setLayoutData(gd);
+		}
+
+		// --------------------------------------------------------------------
+
 		fUpdateThreadlistOnSuspend.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				updateLaunchConfigurationDialog();
+			}
+		});
+
+		restoreDefaults.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(final SelectionEvent event) {
+				initializeFromDefaults();
+				scheduleUpdateJob();
 			}
 		});
 	}
@@ -730,6 +758,71 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		} catch (CoreException e) {
 			Activator.log(e.getStatus());
+		}
+	}
+
+	public void initializeFromDefaults() {
+
+		String stringDefault;
+
+		// QEMU GDB server
+		{
+			// Start server locally
+			fDoStartGdbServer
+					.setSelection(ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
+
+			// Executable
+			stringDefault = EclipseDefaults
+					.getGdbServerExecutable(ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT);
+			fGdbServerExecutable.setText(stringDefault);
+
+			// Board name
+			fQemuMachineName
+					.setText(ConfigurationAttributes.GDB_SERVER_MACHINE_NAME_DEFAULT);
+
+			// Ports
+			fGdbServerGdbPort
+					.setText(Integer
+							.toString(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT));
+
+			// Other options
+			fGdbServerOtherOptions
+					.setText(ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT);
+
+			// Allocate server console
+			if (EclipseUtils.isWindows()) {
+				fDoGdbServerAllocateConsole.setSelection(true);
+			} else {
+				fDoGdbServerAllocateConsole
+						.setSelection(ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
+			}
+
+			fIsQemuVerbose
+					.setSelection(ConfigurationAttributes.IS_GDB_SERVER_VERBOSE_DEFAULT);
+		}
+
+		// GDB Client Setup
+		{
+			// Executable
+			fGdbClientExecutable
+					.setText(ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT);
+
+			// Other options
+			fGdbClientOtherOptions
+					.setText(ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT);
+
+			fGdbClientOtherCommands
+					.setText(ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
+		}
+
+		// Remote target
+		{
+			fTargetIpAddress
+					.setText(ConfigurationAttributes.REMOTE_IP_ADDRESS_DEFAULT); //$NON-NLS-1$
+
+			String portString = Integer
+					.toString(ConfigurationAttributes.REMOTE_PORT_NUMBER_DEFAULT); //$NON-NLS-1$
+			fTargetPortNumber.setText(portString);
 		}
 	}
 
