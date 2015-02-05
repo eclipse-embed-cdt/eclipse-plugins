@@ -17,7 +17,6 @@ import ilg.gnuarmeclipse.debug.gdbjtag.WindowsRegistry;
 
 import java.io.File;
 
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.variables.IValueVariable;
 import org.eclipse.core.variables.IValueVariableInitializer;
 
@@ -45,8 +44,7 @@ public class VariableInitializer implements IValueVariableInitializer {
 
 		if (VARIABLE_JLINK_GDBSERVER.equals(variable.getName())) {
 
-			value = Platform.getPreferencesService().getString(
-					Activator.PLUGIN_ID, "jlink_gdbserver.default", null, null);
+			value = EclipseDefaults.getJLinkGdbServer();
 			if (value == null) {
 				if (EclipseUtils.isWindows()) {
 					value = ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_NAME_WINDOWS;
@@ -62,8 +60,7 @@ public class VariableInitializer implements IValueVariableInitializer {
 
 		} else if (VARIABLE_JLINK_PATH.equals(variable.getName())) {
 
-			value = Platform.getPreferencesService().getString(
-					Activator.PLUGIN_ID, "jlink_path.default", null, null);
+			value = EclipseDefaults.getJLinkPath();
 			if (value == null) {
 				if (EclipseUtils.isWindows()) {
 					value = WindowsRegistry.query(LOCATION, KEY);

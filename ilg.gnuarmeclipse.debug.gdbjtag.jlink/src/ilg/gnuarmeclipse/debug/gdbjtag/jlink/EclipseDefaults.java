@@ -22,6 +22,9 @@ public class EclipseDefaults {
 	private static final String JLINK_ENABLE_SEMIHOSTING = "enableSemihosting.default";
 	private static final String JLINK_ENABLE_SWO = "enableSwo.default";
 
+	private static final String JLINK_GDBSERVER = "jlink_gdbserver.default";
+	private static final String JLINK_PATH = "jlink_path.default";
+
 	private static final String GDB_CLIENT_EXECUTABLE = "gdb.client.executable.default";
 
 	private static final String TAB_MAIN_CHECK_PROGRAM = "tab.main.checkProgram";
@@ -68,6 +71,14 @@ public class EclipseDefaults {
 	public static boolean getTabMainCheckProgram() {
 		return getProperty(TAB_MAIN_CHECK_PROGRAM,
 				TAB_MAIN_CHECK_PROGRAM_DEFAULT);
+	}
+
+	public static String getJLinkGdbServer() {
+		return getProperty(JLINK_GDBSERVER, null);
+	}
+
+	public static String getJLinkPath() {
+		return getProperty(JLINK_PATH, null);
 	}
 
 	// ------------------------------------------------------------------------
