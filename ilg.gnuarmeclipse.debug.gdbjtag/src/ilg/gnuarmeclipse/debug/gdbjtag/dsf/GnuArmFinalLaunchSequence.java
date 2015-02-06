@@ -27,7 +27,6 @@ import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.DefaultGDBJtagDeviceImpl;
 import org.eclipse.cdt.debug.gdbjtag.core.jtagdevice.IGDBJtagDevice;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitorWithProgress;
-import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.gdb.launching.GdbLaunch;
 import org.eclipse.cdt.dsf.gdb.service.IGDBBackend;
 import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
@@ -38,7 +37,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
 
-@SuppressWarnings("restriction")
 public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	// ------------------------------------------------------------------------
@@ -163,7 +161,7 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		IPeripheralMemoryService service = (IPeripheralMemoryService) launch
 				.getServiceFactory().createService(
 						IPeripheralMemoryService.class, launch.getSession(),
-						new Object[0]);
+						launch.getLaunchConfiguration());
 		System.out
 				.println("GnuArmFinalLaunchSequence.stepCreatePeripheralMemoryService() "
 						+ service);
@@ -208,8 +206,8 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		System.out
 				.println("GnuArmFinalLaunchSequence.stepInitializeFinalLaunchSequence()");
 
-		fTracker = new DsfServicesTracker(GdbPlugin.getBundleContext(),
-				fSession.getId());
+		fTracker = new DsfServicesTracker(Activator.getInstance().getBundle()
+				.getBundleContext(), fSession.getId());
 		fGdbBackend = fTracker.getService(IGDBBackend.class);
 		if (fGdbBackend == null) {
 			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,

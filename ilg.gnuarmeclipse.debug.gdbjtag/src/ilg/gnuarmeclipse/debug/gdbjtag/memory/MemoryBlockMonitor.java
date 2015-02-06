@@ -30,7 +30,6 @@ import org.eclipse.debug.ui.memory.IMemoryRendering;
 import org.eclipse.debug.ui.memory.IMemoryRenderingContainer;
 import org.eclipse.debug.ui.memory.IMemoryRenderingSite;
 import org.eclipse.debug.ui.memory.IMemoryRenderingType;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchWindow;
 
@@ -66,6 +65,13 @@ public class MemoryBlockMonitor {
 
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Called from UI Thread.
+	 * 
+	 * @param workbenchWindow
+	 * @param peripheralDMContext
+	 * @param isChecked
+	 */
 	public void displayPeripheralMonitor(
 			final IWorkbenchWindow workbenchWindow,
 			final PeripheralDMContext peripheralDMContext,
@@ -81,24 +87,16 @@ public class MemoryBlockMonitor {
 
 			final IMemoryBlockRetrieval memoryBlockRetrieval = (IMemoryBlockRetrieval) object;
 
-			/*
-			 * To improve rendering refresh, run this on the display thread
-			 */
-			Display.getDefault().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					if (isChecked) {
-						addMemoryBlock(workbenchWindow, peripheralDMContext,
-								memoryBlockRetrieval);
+			if (isChecked) {
+				addMemoryBlock(workbenchWindow, peripheralDMContext,
+						memoryBlockRetrieval);
 
-						// In case the Memory view was not visible, make it
-						// visible now.
-						showMemoryView(workbenchWindow);
-					} else {
-						removeMemoryBlock(workbenchWindow, peripheralDMContext);
-					}
-				}
-			});
+				// In case the Memory view was not visible, make it
+				// visible now.
+				showMemoryView(workbenchWindow);
+			} else {
+				removeMemoryBlock(workbenchWindow, peripheralDMContext);
+			}
 		}
 	}
 

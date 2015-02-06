@@ -26,7 +26,6 @@ import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
 import org.eclipse.cdt.dsf.concurrent.ReflectionSequence;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.debug.service.IRunControl.IContainerDMContext;
-import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.gdb.service.IGDBProcesses;
 import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
 import org.eclipse.cdt.dsf.mi.service.IMICommandControl;
@@ -35,7 +34,6 @@ import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
-@SuppressWarnings("restriction")
 public class GnuArmRestartProcessSequence extends ReflectionSequence {
 
 	// ------------------------------------------------------------------------
@@ -122,8 +120,8 @@ public class GnuArmRestartProcessSequence extends ReflectionSequence {
 	@Execute
 	public void stepInitializeBaseSequence(RequestMonitor rm) {
 
-		fTracker = new DsfServicesTracker(GdbPlugin.getBundleContext(),
-				fContainerDmc.getSessionId());
+		fTracker = new DsfServicesTracker(Activator.getInstance().getBundle()
+				.getBundleContext(), fContainerDmc.getSessionId());
 		fCommandControl = fTracker.getService(IGDBControl.class);
 		fCommandFactory = fTracker.getService(IMICommandControl.class)
 				.getCommandFactory();

@@ -12,11 +12,11 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.services;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.PeripheralDMNode;
+import ilg.gnuarmeclipse.debug.gdbjtag.memory.PeripheralMemoryBlockRetrieval;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Hashtable;
-import java.util.Map;
 
 import org.eclipse.cdt.core.IAddress;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
@@ -28,11 +28,16 @@ import org.eclipse.cdt.dsf.concurrent.ImmediateRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.Sequence;
 import org.eclipse.cdt.dsf.datamodel.DMContexts;
+import org.eclipse.cdt.dsf.debug.model.DsfMemoryBlockRetrieval;
 import org.eclipse.cdt.dsf.debug.service.IExpressions;
 import org.eclipse.cdt.dsf.debug.service.IExpressions.IExpressionDMContext;
+import org.eclipse.cdt.dsf.debug.service.IMemory;
+import org.eclipse.cdt.dsf.debug.service.IProcesses;
 import org.eclipse.cdt.dsf.debug.service.IRunControl.IContainerDMContext;
 import org.eclipse.cdt.dsf.debug.service.IRunControl.IExitedDMEvent;
+import org.eclipse.cdt.dsf.debug.service.command.ICommandControlService;
 import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
+import org.eclipse.cdt.dsf.mi.service.IMIProcesses;
 import org.eclipse.cdt.dsf.mi.service.MIMemory;
 import org.eclipse.cdt.dsf.mi.service.command.CommandFactory;
 import org.eclipse.cdt.dsf.mi.service.command.output.CLIShowEndianInfo;
@@ -40,9 +45,13 @@ import org.eclipse.cdt.dsf.mi.service.command.output.MIDataEvaluateExpressionInf
 import org.eclipse.cdt.dsf.mi.service.command.output.MIGDBShowLanguageInfo;
 import org.eclipse.cdt.dsf.mi.service.command.output.MIInfo;
 import org.eclipse.cdt.dsf.service.DsfServiceEventHandler;
+import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.core.DebugException;
+import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.model.IMemoryBlockRetrieval;
 import org.eclipse.debug.core.model.MemoryByte;
 import org.osgi.framework.BundleContext;
 
@@ -55,23 +64,32 @@ public class PeripheralMemoryService extends MIMemory implements
 
 	// ------------------------------------------------------------------------
 
+	private ILaunchConfiguration fConfig = null;
 	private IGDBControl fCommandControl;
+	private DsfSession fSession;
+	private DsfServicesTracker fTracker;
 
 	/**
 	 * Cache of the address sizes for each memory context.
 	 */
-	private Map<IMemoryDMContext, Integer> fAddressSizes = new HashMap<IMemoryDMContext, Integer>();
+	// private Map<IMemoryDMContext, Integer> fAddressSizes = new
+	// HashMap<IMemoryDMContext, Integer>();
 
 	/**
 	 * We assume the endianness is the same for all processes because GDB
 	 * supports only one target.
 	 */
 	private Boolean fIsBigEndian;
+	private Integer fAddressSize;
 
 	// ------------------------------------------------------------------------
 
-	public PeripheralMemoryService(DsfSession session) {
+	public PeripheralMemoryService(DsfSession session,
+			ILaunchConfiguration launchConfiguration) {
 		super(session);
+
+		fSession = session;
+		fConfig = launchConfiguration;
 	}
 
 	@Override
@@ -99,6 +117,52 @@ public class PeripheralMemoryService extends MIMemory implements
 
 		System.out.println("PeripheralMemoryService registered " + this);
 
+		fTracker = new DsfServicesTracker(Activator.getInstance().getBundle()
+				.getBundleContext(), fSession.getId());
+
+		ICommandControlService commandControlService = (ICommandControlService) fTracker
+				.getService(ICommandControlService.class);
+		IMIProcesses processes = (IMIProcesses) fTracker
+				.getService(IMIProcesses.class);
+		if ((commandControlService != null) && (processes != null)) {
+
+			System.out
+					.println("GnuArmLaunch.initializeControl() initialise memory retrieval");
+			// Create the memory block retrieval.
+			DsfMemoryBlockRetrieval memRetrieval;
+			try {
+				memRetrieval = new PeripheralMemoryBlockRetrieval(
+						"org.eclipse.cdt.dsf.gdb", fConfig, fSession);
+				// Register DMNode for memory retrieval.
+				fSession.registerModelAdapter(PeripheralDMNode.class,
+						memRetrieval);
+				// Register its own interface.
+				fSession.registerModelAdapter(IMemoryBlockRetrieval.class,
+						memRetrieval);
+
+				// To notify exit
+				fSession.addServiceEventListener(memRetrieval, null);
+
+				// Create memory context from process context.
+				IProcesses.IProcessDMContext processDMContext = processes
+						.createProcessContext(
+								commandControlService.getContext(), "");
+				IMemory.IMemoryDMContext memoryDMContext = (IMemory.IMemoryDMContext) processes
+						.createContainerContext(processDMContext, "");
+
+				// Finally initialise memory retrieval with memory
+				// context.
+				memRetrieval.initialize(memoryDMContext);
+
+				initializeMemoryData(memoryDMContext, rm);
+				return;
+
+			} catch (DebugException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+
 		rm.done();
 	}
 
@@ -110,7 +174,7 @@ public class PeripheralMemoryService extends MIMemory implements
 		// Remove this service from DSF.
 		unregister();
 
-		fAddressSizes.clear();
+		// fAddressSizes.clear();
 
 		super.shutdown(rm);
 	}
@@ -183,7 +247,8 @@ public class PeripheralMemoryService extends MIMemory implements
 						@Override
 						protected void handleCompleted() {
 							if (isSuccess()) {
-								fAddressSizes.put(fMemContext, getData());
+								// fAddressSizes.put(fMemContext, getData());
+								fAddressSize = getData();
 							}
 							// Accept failure
 							requestMonitor.done();
@@ -267,7 +332,8 @@ public class PeripheralMemoryService extends MIMemory implements
 		private Step[] prepareSteps() {
 			ArrayList<Step> stepsList = new ArrayList<Step>();
 
-			if (fAddressSizes.get(fMemContext) == null) {
+			// if (fAddressSizes.get(fMemContext) == null) {
+			if (fAddressSize == null) {
 				stepsList.add(new Step() {
 					// store original language
 					@Override
@@ -314,16 +380,16 @@ public class PeripheralMemoryService extends MIMemory implements
 	public void initializeMemoryData(final IMemoryDMContext memContext,
 			RequestMonitor rm) {
 
-		if (fAddressSizes == null || fIsBigEndian == null) {
+		// if (fAddressSizes == null || fIsBigEndian == null) {
 
-			// The address size and endianness do not change during a debug
-			// session, so avoid executing the special sequence if not
-			// necessary.
-			ImmediateExecutor.getInstance().execute(
-					new PeripheralSequence(memContext, getExecutor(), rm));
-		} else {
-			rm.done();
-		}
+		// The address size and endianness do not change during a debug
+		// session, so avoid executing the special sequence if not
+		// necessary.
+		ImmediateExecutor.getInstance().execute(
+				new PeripheralSequence(memContext, getExecutor(), rm));
+		// } else {
+		// rm.done();
+		// }
 	}
 
 	@DsfServiceEventHandler
@@ -332,15 +398,18 @@ public class PeripheralMemoryService extends MIMemory implements
 			IMemoryDMContext context = DMContexts.getAncestorOfType(
 					event.getDMContext(), IMemoryDMContext.class);
 			if (context != null) {
-				fAddressSizes.remove(context);
+				// fAddressSizes.remove(context);
+				fAddressSize = null;
+				fIsBigEndian = null;
 			}
 		}
 	}
 
 	@Override
 	public int getAddressSize(IMemoryDMContext context) {
-		Integer addressSize = fAddressSizes.get(context);
-		return (addressSize != null) ? addressSize.intValue() : 8;
+		// Integer addressSize = fAddressSizes.get(context);
+		// return (addressSize != null) ? addressSize.intValue() : 8;
+		return fAddressSize.intValue();
 	}
 
 	@Override

@@ -25,7 +25,6 @@ import org.eclipse.cdt.debug.core.CDebugUtils;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
 import org.eclipse.cdt.debug.gdbjtag.core.Messages;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
-import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.gdb.service.IGDBBackend;
 import org.eclipse.cdt.dsf.service.AbstractDsfService;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
@@ -35,7 +34,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 
-@SuppressWarnings("restriction")
 public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 		implements IGnuArmDebuggerCommandsService {
 
@@ -98,8 +96,8 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 
 		System.out.println(this.getClass().getName() + " registered ");
 
-		fTracker = new DsfServicesTracker(GdbPlugin.getBundleContext(),
-				fSession.getId());
+		fTracker = new DsfServicesTracker(Activator.getInstance().getBundle()
+				.getBundleContext(), fSession.getId());
 		fGdbBackend = fTracker.getService(IGDBBackend.class);
 		if (fGdbBackend == null) {
 			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
@@ -134,9 +132,11 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 	public IStatus addGnuArmSelectRemoteCommands(List<String> commandsList) {
 
 		String remoteTcpHost = CDebugUtils.getAttribute(fAttributes,
-				IGDBJtagConstants.ATTR_IP_ADDRESS, IGDBJtagConstants.DEFAULT_IP_ADDRESS);
+				IGDBJtagConstants.ATTR_IP_ADDRESS,
+				IGDBJtagConstants.DEFAULT_IP_ADDRESS);
 		Integer remoteTcpPort = CDebugUtils.getAttribute(fAttributes,
-				IGDBJtagConstants.ATTR_PORT_NUMBER, IGDBJtagConstants.DEFAULT_PORT_NUMBER);
+				IGDBJtagConstants.ATTR_PORT_NUMBER,
+				IGDBJtagConstants.DEFAULT_PORT_NUMBER);
 
 		commandsList.add("-target-select remote " + remoteTcpHost + ":"
 				+ remoteTcpPort + "");

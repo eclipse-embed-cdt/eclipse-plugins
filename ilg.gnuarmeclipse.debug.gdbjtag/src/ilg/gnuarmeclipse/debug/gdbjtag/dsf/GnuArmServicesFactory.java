@@ -57,7 +57,12 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 		if (IPeripheralsService.class.isAssignableFrom(clazz)) {
 			return (V) createPeripheralsService(session);
 		} else if (IPeripheralMemoryService.class.isAssignableFrom(clazz)) {
-			return (V) createPeripheralMemoryService(session);
+			for (Object arg : optionalArguments) {
+				if (arg instanceof ILaunchConfiguration) {
+					return (V) createPeripheralMemoryService(session,
+							(ILaunchConfiguration) arg);
+				}
+			}
 		} else if (IGnuArmDebuggerCommandsService.class.isAssignableFrom(clazz)) {
 			for (Object arg : optionalArguments) {
 				if (arg instanceof ILaunchConfiguration) {
@@ -91,8 +96,8 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 	}
 
 	private PeripheralMemoryService createPeripheralMemoryService(
-			DsfSession session) {
-		return new PeripheralMemoryService(session);
+			DsfSession session, ILaunchConfiguration launchConfiguration) {
+		return new PeripheralMemoryService(session, launchConfiguration);
 	}
 
 	@Override

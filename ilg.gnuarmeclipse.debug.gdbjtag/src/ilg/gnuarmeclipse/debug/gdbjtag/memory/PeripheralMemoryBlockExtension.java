@@ -46,7 +46,6 @@ import org.eclipse.cdt.dsf.debug.service.IMemory;
 import org.eclipse.cdt.dsf.debug.service.IMemory.IMemoryDMContext;
 import org.eclipse.cdt.dsf.debug.service.IRunControl;
 import org.eclipse.cdt.dsf.debug.service.command.ICommandControl;
-import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.mi.service.IMICommandControl;
 import org.eclipse.cdt.dsf.mi.service.command.CommandFactory;
 import org.eclipse.cdt.dsf.service.DsfServiceEventHandler;
@@ -157,8 +156,8 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 		fModelId = modelId;
 
 		String sessionId = memoryBlockRetrieval.getSession().getId();
-		final DsfServicesTracker tracker = new DsfServicesTracker(
-				GdbPlugin.getBundleContext(), sessionId);
+		final DsfServicesTracker tracker = new DsfServicesTracker(Activator
+				.getInstance().getBundle().getBundleContext(), sessionId);
 
 		@SuppressWarnings("rawtypes")
 		Query query = new Query() {
@@ -191,9 +190,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 					Activator.log("Error: cannot get IPeripheralMemoryService");
 				}
 
-				fMemoryService.initializeMemoryData(fMemoryDMContext, rm);
-				// No need for .done(), it is performed inside above
-				// initialisation.
+				rm.done();
 			}
 
 		};
@@ -533,6 +530,10 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	}
 
 	public void updatePeripheralRenderingValues() {
+
+		if (fReadbleMemoryRegions == null) {
+			return;
+		}
 
 		@SuppressWarnings("rawtypes")
 		Query query = new Query() {

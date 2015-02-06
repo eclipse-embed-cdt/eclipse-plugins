@@ -12,8 +12,6 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.dsf;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
-import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.PeripheralDMNode;
-import ilg.gnuarmeclipse.debug.gdbjtag.memory.PeripheralMemoryBlockRetrieval;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,15 +24,10 @@ import org.eclipse.cdt.dsf.concurrent.DsfRunnable;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.ThreadSafeAndProhibitedFromDsfExecutor;
-import org.eclipse.cdt.dsf.debug.model.DsfMemoryBlockRetrieval;
-import org.eclipse.cdt.dsf.debug.service.IMemory;
-import org.eclipse.cdt.dsf.debug.service.IProcesses;
-import org.eclipse.cdt.dsf.debug.service.command.ICommandControlService;
 import org.eclipse.cdt.dsf.gdb.IGdbDebugConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.gdb.launching.GdbLaunch;
 import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
-import org.eclipse.cdt.dsf.mi.service.IMIProcesses;
 import org.eclipse.cdt.dsf.mi.service.command.AbstractCLIProcess;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;
@@ -43,7 +36,6 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.model.IMemoryBlockRetrieval;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
 
@@ -58,7 +50,7 @@ public class GnuArmLaunch extends GdbLaunch {
 
 	// ------------------------------------------------------------------------
 
-	ILaunchConfiguration fConfig = null;
+	// private ILaunchConfiguration fConfig = null;
 	private DsfSession fSession;
 	private DsfServicesTracker fTracker;
 	private DefaultDsfExecutor fExecutor;
@@ -70,16 +62,17 @@ public class GnuArmLaunch extends GdbLaunch {
 
 		super(launchConfiguration, mode, locator);
 
-		fConfig = launchConfiguration;
+		// fConfig = launchConfiguration;
 		fExecutor = (DefaultDsfExecutor) getDsfExecutor();
 		fSession = getSession();
 	}
 
+	@SuppressWarnings("unused")
 	private DsfServicesTracker getTracker() {
 
 		if (fTracker == null)
-			fTracker = new DsfServicesTracker(GdbPlugin.getBundleContext(),
-					fSession.getId());
+			fTracker = new DsfServicesTracker(Activator.getInstance()
+					.getBundle().getBundleContext(), fSession.getId());
 
 		return fTracker;
 	}
@@ -95,8 +88,8 @@ public class GnuArmLaunch extends GdbLaunch {
 		Runnable initRunnable = new DsfRunnable() {
 			@Override
 			public void run() {
-				fTracker = new DsfServicesTracker(GdbPlugin.getBundleContext(),
-						fSession.getId());
+				fTracker = new DsfServicesTracker(Activator.getInstance()
+						.getBundle().getBundleContext(), fSession.getId());
 			}
 		};
 
@@ -130,61 +123,6 @@ public class GnuArmLaunch extends GdbLaunch {
 		System.out.println("GnuArmLaunch.initializeControl()");
 
 		super.initializeControl();
-
-		try {
-			fExecutor.submit(new Callable<Object>() {
-
-				public Object call() throws CoreException {
-					ICommandControlService commandControlService = (ICommandControlService) getTracker()
-							.getService(ICommandControlService.class);
-					IMIProcesses processes = (IMIProcesses) getTracker()
-							.getService(IMIProcesses.class);
-					if ((commandControlService != null) && (processes != null)) {
-
-						System.out
-								.println("GnuArmLaunch.initializeControl() initialise memory retrieval");
-						// Create the memory block retrieval.
-						DsfMemoryBlockRetrieval memRetrieval = new PeripheralMemoryBlockRetrieval(
-								"org.eclipse.cdt.dsf.gdb",
-								getLaunchConfiguration(), fSession);
-
-						// Register DMNode for memory retrieval.
-						fSession.registerModelAdapter(PeripheralDMNode.class,
-								memRetrieval);
-						// Register its own interface.
-						fSession.registerModelAdapter(
-								IMemoryBlockRetrieval.class, memRetrieval);
-
-						// To notify exit
-						fSession.addServiceEventListener(memRetrieval, null);
-
-						// Create memory context from process context.
-						IProcesses.IProcessDMContext processDMContext = processes
-								.createProcessContext(
-										commandControlService.getContext(), "");
-						IMemory.IMemoryDMContext memoryDMContext = (IMemory.IMemoryDMContext) processes
-								.createContainerContext(processDMContext, "");
-
-						// Finally initialise memory retrieval with memory
-						// context.
-						memRetrieval.initialize(memoryDMContext);
-
-					}
-					return null;
-				}
-			}).get();
-		} catch (InterruptedException e) {
-			Activator.log(e);
-			throw new CoreException(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, 0,
-					"Interrupted while creating memory retrieval", e));
-		} catch (ExecutionException e) {
-			Activator.log(e);
-			throw new CoreException(
-					new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,
-							"Cannot create memory retrieval", e));
-
-		}
 	}
 
 	/**
