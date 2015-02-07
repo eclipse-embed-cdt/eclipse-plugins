@@ -66,7 +66,9 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 
 	protected final ILaunchConfiguration fLaunchConfiguration;
 
+	// May be set to false by derived classes.
 	protected boolean fDoStartGdbServer = true;
+
 	protected Process fServerProcess;
 	protected PushBackProcess fServerPipedProcess;
 	protected GdbServerMonitorJob fServerMonitorJob;
@@ -237,11 +239,19 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 		// Only BackendStateChangedEvent debug events come here.
 		System.out.println("GnuArmGdbServerBackend.eventDispatched() " + e);
 
-		if (e.getState() == State.TERMINATED
-				&& e.getSessionId().equals(getSession().getId())
-				&& getServerState() == State.STARTED) {
+		if (fDoStartGdbServer) {
+			if (e.getState() == State.TERMINATED
+					&& e.getSessionId().equals(getSession().getId())
+					&& getServerState() == State.STARTED) {
 
-			destroy();
+				destroy();
+			}
+		} else {
+			System.out
+					.println("GnuArmGdbServerBackend.eventDispatched() -> dispatchEvent(ServerBackendStateChangedEvent, TERMINATED)");
+			getSession().dispatchEvent(
+					new ServerBackendStateChangedEvent(getSession().getId(),
+							getId(), State.TERMINATED), getProperties());
 		}
 	}
 

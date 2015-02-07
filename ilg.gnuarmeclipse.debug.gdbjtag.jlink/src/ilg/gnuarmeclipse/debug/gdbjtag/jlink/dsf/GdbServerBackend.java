@@ -99,7 +99,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 		System.out.println("GdbServerBackend.doInitialize()");
 
-		if (fDoStartSemihostingConsole) {
+		if (fDoStartGdbServer && fDoStartSemihostingConsole) {
 
 			final Sequence.Step[] initializeSteps = new Sequence.Step[] {
 
@@ -126,7 +126,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 		System.out.println("GdbServerBackend.shutdown()");
 
-		if (fDoStartSemihostingConsole) {
+		if (fDoStartGdbServer && fDoStartSemihostingConsole) {
 			final Sequence.Step[] shutdownSteps = new Sequence.Step[] {
 					new SemihostingMonitorStep(
 							InitializationShutdownStep.Direction.SHUTTING_DOWN),

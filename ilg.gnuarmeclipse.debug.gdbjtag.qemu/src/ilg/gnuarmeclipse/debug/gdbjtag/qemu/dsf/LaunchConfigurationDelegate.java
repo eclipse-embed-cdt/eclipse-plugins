@@ -242,38 +242,38 @@ public class LaunchConfigurationDelegate extends
 
 		boolean succeed = false;
 
-		if (fDoStartGdbServer) {
+		// Assign 4 work ticks.
+		IProgressMonitor subMonServer = new SubProgressMonitor(monitor, 4,
+				SubProgressMonitor.PREPEND_MAIN_LABEL_TO_SUBTASK);
 
-			// Assign 4 work ticks.
-			IProgressMonitor subMonServer = new SubProgressMonitor(monitor, 4,
-					SubProgressMonitor.PREPEND_MAIN_LABEL_TO_SUBTASK);
+		Sequence serverServicesLaunchSequence = getServerServicesSequence(
+				launch.getSession(), launch, subMonServer);
 
-			Sequence serverServicesLaunchSequence = getServerServicesSequence(
-					launch.getSession(), launch, subMonServer);
-
-			try {
-				// Execute on DSF thread and wait for it.
-				launch.getSession().getExecutor()
-						.execute(serverServicesLaunchSequence);
-				serverServicesLaunchSequence.get();
-				succeed = true;
-			} catch (InterruptedException e1) {
-				throw new DebugException(new Status(IStatus.ERROR,
-						GdbPlugin.PLUGIN_ID, DebugException.INTERNAL_ERROR,
-						"Interrupted Exception in dispatch thread", e1)); //$NON-NLS-1$
-			} catch (ExecutionException e1) {
-				throw new DebugException(new Status(IStatus.ERROR,
-						GdbPlugin.PLUGIN_ID, DebugException.REQUEST_FAILED,
-						"Error in services launch sequence", e1.getCause())); //$NON-NLS-1$
-			} catch (CancellationException e1) {
-				// Launch aborted, so exit cleanly
-				System.out.println("Launch aborted, so exit cleanly");
-				return;
-			} finally {
-				if (!succeed) {
-					cleanupLaunch();
-				}
+		try {
+			// Execute on DSF thread and wait for it.
+			launch.getSession().getExecutor()
+					.execute(serverServicesLaunchSequence);
+			serverServicesLaunchSequence.get();
+			succeed = true;
+		} catch (InterruptedException e1) {
+			throw new DebugException(new Status(IStatus.ERROR,
+					GdbPlugin.PLUGIN_ID, DebugException.INTERNAL_ERROR,
+					"Interrupted Exception in dispatch thread", e1)); //$NON-NLS-1$
+		} catch (ExecutionException e1) {
+			throw new DebugException(new Status(IStatus.ERROR,
+					GdbPlugin.PLUGIN_ID, DebugException.REQUEST_FAILED,
+					"Error in services launch sequence", e1.getCause())); //$NON-NLS-1$
+		} catch (CancellationException e1) {
+			// Launch aborted, so exit cleanly
+			System.out.println("Launch aborted, so exit cleanly");
+			return;
+		} finally {
+			if (!succeed) {
+				cleanupLaunch();
 			}
+		}
+
+		if (fDoStartGdbServer) {
 
 			// This contributes 1 work units to the monitor
 			((Launch) launch).initializeServerConsole(monitor);
