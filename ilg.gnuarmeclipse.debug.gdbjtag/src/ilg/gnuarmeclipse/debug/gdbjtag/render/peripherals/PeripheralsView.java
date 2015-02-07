@@ -12,13 +12,13 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.render.peripherals;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.core.SystemUIJob;
 import ilg.gnuarmeclipse.debug.gdbjtag.memory.MemoryBlockMonitor;
 import ilg.gnuarmeclipse.debug.gdbjtag.memory.PeripheralMemoryBlockExtension;
+
+import java.util.HashSet;
+import java.util.Set;
 
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
@@ -193,13 +193,16 @@ public class PeripheralsView extends VariablesView implements
 
 		System.out.println("PeripheralsView.dispose()");
 
-		// Remove all peripheral monitors
-		MemoryBlockMonitor
-				.getInstance()
-				.removeMemoryBlocks(
-						fMemoryBlocks
-								.toArray(new PeripheralMemoryBlockExtension[fMemoryBlocks
-										.size()]));
+		if (!fMemoryBlocks.isEmpty()) {
+
+			IMemoryBlock[] memoryBlocks = fMemoryBlocks
+					.toArray(new IMemoryBlock[fMemoryBlocks.size()]);
+
+			// Save open monitors
+			MemoryBlockMonitor.getInstance().savePeripheralNames(memoryBlocks);
+			// Remove all peripheral monitors
+			MemoryBlockMonitor.getInstance().removeMemoryBlocks(memoryBlocks);
+		}
 
 		// Confirm that all peripheral monitors were removed
 		assert (fMemoryBlocks.isEmpty());

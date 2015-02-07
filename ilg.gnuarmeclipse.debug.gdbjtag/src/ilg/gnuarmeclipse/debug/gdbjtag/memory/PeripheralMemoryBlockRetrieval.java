@@ -49,10 +49,10 @@ public class PeripheralMemoryBlockRetrieval extends GdbMemoryBlockRetrieval {
 
 	// ------------------------------------------------------------------------
 
-    private static final String PERIPHERALS_MEMENTO_ID = Activator.PLUGIN_ID
+	private static final String PERIPHERALS_MEMENTO_ID = Activator.PLUGIN_ID
 			+ ".PERIPHERALS";
 
-    // ------------------------------------------------------------------------
+	// ------------------------------------------------------------------------
 
 	private final ILaunchConfiguration fLaunchConfig;
 	private List<String> fPersistentPeripherals;
@@ -99,8 +99,9 @@ public class PeripheralMemoryBlockRetrieval extends GdbMemoryBlockRetrieval {
 	public IMemoryBlockExtension getExtendedMemoryBlock(String addr,
 			Object context) throws DebugException {
 
-		System.out.println("getExtendedMemoryBlock(" + addr + "," + context
-				+ ")");
+		System.out
+				.println("PeripheralMemoryBlockRetrieval.getExtendedMemoryBlock("
+						+ addr + "," + context + ")");
 		IMemoryBlockExtension memoryBlockExtension = null;
 		if (context instanceof PeripheralDMContext) {
 			PeripheralDMContext peripheralDMContext = (PeripheralDMContext) context;
@@ -124,8 +125,12 @@ public class PeripheralMemoryBlockRetrieval extends GdbMemoryBlockRetrieval {
 		}
 
 		if (memoryBlockExtension == null) {
-			System.out.println("getExtendedMemoryBlock(" + addr + "," + context
-					+ ") super.getExtendedMemoryBlock()");
+			System.out
+					.println("PeripheralMemoryBlockRetrieval.getExtendedMemoryBlock("
+							+ addr
+							+ ","
+							+ context
+							+ ") super.getExtendedMemoryBlock()");
 			// Needed for regular memory blocks
 			memoryBlockExtension = super.getExtendedMemoryBlock(addr, context);
 		}
@@ -148,11 +153,15 @@ public class PeripheralMemoryBlockRetrieval extends GdbMemoryBlockRetrieval {
 	@DsfServiceEventHandler
 	public void eventDispatched(IExitedDMEvent event) {
 		// If a memory context is exiting, save expressions and clean its used
-		// resources
-		saveMemoryBlocks();
+		// resources.
+		// Moved to MemoryBlockMonitor, to avoid race conditions.
+		// saveMemoryBlocks();
 	}
 
 	public void saveMemoryBlocks() {
+
+		System.out.println("PeripheralMemoryBlockRetrieval.saveMemoryBlocks()");
+
 		try {
 			ILaunchConfigurationWorkingCopy wc = fLaunchConfig.getWorkingCopy();
 			wc.setAttribute(PERIPHERALS_MEMENTO_ID, getMemento());
@@ -178,6 +187,8 @@ public class PeripheralMemoryBlockRetrieval extends GdbMemoryBlockRetrieval {
 				Element expression = document.createElement("peripheral");
 				expression.setAttribute("name", memoryBlock.getExpression());
 				expressionList.appendChild(expression);
+
+				System.out.println("Remember " + memoryBlock.getExpression());
 			}
 		}
 		document.appendChild(expressionList);
@@ -212,7 +223,7 @@ public class PeripheralMemoryBlockRetrieval extends GdbMemoryBlockRetrieval {
 				Element entry = (Element) node;
 				if (entry.getNodeName().equalsIgnoreCase("peripheral")) {
 					String name = entry.getAttribute("name");
-					System.out.println("Memento " + name);
+					System.out.println("Restore " + name);
 					peripherals.add(name);
 				}
 			}

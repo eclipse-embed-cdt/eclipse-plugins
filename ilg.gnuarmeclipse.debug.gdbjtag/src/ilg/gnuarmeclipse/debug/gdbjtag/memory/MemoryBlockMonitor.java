@@ -111,8 +111,36 @@ public class MemoryBlockMonitor {
 		IMemoryBlock[] memoryBlocks = DebugPlugin.getDefault()
 				.getMemoryBlockManager().getMemoryBlocks();
 
-		DebugPlugin.getDefault().getMemoryBlockManager()
-				.removeMemoryBlocks(memoryBlocks);
+		if (memoryBlocks != null) {
+
+			savePeripheralNames(memoryBlocks);
+
+			removeMemoryBlocks(memoryBlocks);
+		}
+	}
+
+	/**
+	 * Find memory block retrieval and save names.
+	 * 
+	 * @param memoryBlocks
+	 */
+	public void savePeripheralNames(IMemoryBlock[] memoryBlocks) {
+
+		for (int i = 0; i < memoryBlocks.length; ++i) {
+			if (memoryBlocks[i] instanceof PeripheralMemoryBlockExtension) {
+
+				PeripheralMemoryBlockExtension memBlock = (PeripheralMemoryBlockExtension) memoryBlocks[i];
+
+				IMemoryBlockRetrieval memRetrieval;
+				memRetrieval = memBlock.getMemoryBlockRetrieval();
+
+				if (memRetrieval instanceof PeripheralMemoryBlockRetrieval) {
+					((PeripheralMemoryBlockRetrieval) memRetrieval)
+							.saveMemoryBlocks();
+					break;
+				}
+			}
+		}
 	}
 
 	// ------------------------------------------------------------------------

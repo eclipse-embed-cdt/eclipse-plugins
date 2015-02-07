@@ -28,7 +28,6 @@ import org.eclipse.cdt.dsf.concurrent.ImmediateRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.Sequence;
 import org.eclipse.cdt.dsf.datamodel.DMContexts;
-import org.eclipse.cdt.dsf.debug.model.DsfMemoryBlockRetrieval;
 import org.eclipse.cdt.dsf.debug.service.IExpressions;
 import org.eclipse.cdt.dsf.debug.service.IExpressions.IExpressionDMContext;
 import org.eclipse.cdt.dsf.debug.service.IMemory;
@@ -68,6 +67,8 @@ public class PeripheralMemoryService extends MIMemory implements
 	private IGDBControl fCommandControl;
 	private DsfSession fSession;
 	private DsfServicesTracker fTracker;
+
+	private PeripheralMemoryBlockRetrieval fMemoryRetrieval;
 
 	/**
 	 * Cache of the address sizes for each memory context.
@@ -129,19 +130,18 @@ public class PeripheralMemoryService extends MIMemory implements
 			System.out
 					.println("GnuArmLaunch.initializeControl() initialise memory retrieval");
 			// Create the memory block retrieval.
-			DsfMemoryBlockRetrieval memRetrieval;
 			try {
-				memRetrieval = new PeripheralMemoryBlockRetrieval(
+				fMemoryRetrieval = new PeripheralMemoryBlockRetrieval(
 						"org.eclipse.cdt.dsf.gdb", fConfig, fSession);
 				// Register DMNode for memory retrieval.
 				fSession.registerModelAdapter(PeripheralDMNode.class,
-						memRetrieval);
+						fMemoryRetrieval);
 				// Register its own interface.
 				fSession.registerModelAdapter(IMemoryBlockRetrieval.class,
-						memRetrieval);
+						fMemoryRetrieval);
 
 				// To notify exit
-				fSession.addServiceEventListener(memRetrieval, null);
+				fSession.addServiceEventListener(fMemoryRetrieval, null);
 
 				// Create memory context from process context.
 				IProcesses.IProcessDMContext processDMContext = processes
@@ -152,7 +152,7 @@ public class PeripheralMemoryService extends MIMemory implements
 
 				// Finally initialise memory retrieval with memory
 				// context.
-				memRetrieval.initialize(memoryDMContext);
+				fMemoryRetrieval.initialize(memoryDMContext);
 
 				initializeMemoryData(memoryDMContext, rm);
 				return;
