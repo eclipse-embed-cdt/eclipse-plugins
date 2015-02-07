@@ -93,7 +93,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	private int fAddressSize = 4;
 	private IAddressFactory fAddressFactory;
 
-	private List<PeripheralMemoryRegion> fReadbleMemoryRegions;
+	private List<PeripheralMemoryRegion> fReadableMemoryRegions;
 
 	// ------------------------------------------------------------------------
 
@@ -112,7 +112,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 				if (fPeripheralTop == null)
 					return Status.OK_STATUS;
 
-				if (fReadbleMemoryRegions == null) {
+				if (fReadableMemoryRegions == null) {
 					return Status.OK_STATUS;
 				}
 
@@ -221,7 +221,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 		}
 
 		// Parse all registers and create a map of readable registers.
-		fReadbleMemoryRegions = createRegionsList();
+		fReadableMemoryRegions = createRegionsList();
 
 		scheduleUpdatePeripheralRendering();
 
@@ -248,7 +248,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 		}
 
 		fPeripheralDMContext.getPeripheralInstance().setMemoryBlock(null);
-		fReadbleMemoryRegions = null;
+		fReadableMemoryRegions = null;
 		fAddressFactory = null;
 	}
 
@@ -502,10 +502,14 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 		final CountingRequestMonitor countingRm = new CountingRequestMonitor(
 				executor, rm);
 
-		// Initialise the counting monitor with the number of memory regions.
-		countingRm.setDoneCount(fReadbleMemoryRegions.size());
+		if (fReadableMemoryRegions == null) {
+			return;
+		}
 
-		for (final PeripheralMemoryRegion region : fReadbleMemoryRegions) {
+		// Initialise the counting monitor with the number of memory regions.
+		countingRm.setDoneCount(fReadableMemoryRegions.size());
+
+		for (final PeripheralMemoryRegion region : fReadableMemoryRegions) {
 
 			DataRequestMonitor<MemoryByte[]> drm = new DataRequestMonitor<MemoryByte[]>(
 					executor, countingRm) {
@@ -531,10 +535,6 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 
 	public void updatePeripheralRenderingValues() {
 
-		if (fReadbleMemoryRegions == null) {
-			return;
-		}
-
 		@SuppressWarnings("rawtypes")
 		Query query = new Query() {
 
@@ -556,8 +556,12 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 			;
 		}
 
+		if (fReadableMemoryRegions == null) {
+			return;
+		}
+
 		// Iterate all regions.
-		for (PeripheralMemoryRegion region : fReadbleMemoryRegions) {
+		for (PeripheralMemoryRegion region : fReadableMemoryRegions) {
 
 			MemoryByte[] regionBytes = region.getBytes();
 			long regionOffset = region.getAddressOffset();
