@@ -1,0 +1,25 @@
+//@XCDL @include "$(commonDir)/src/main/main-100-include.c"
+//@XCDL @if "$(content)"=="blinky"
+//@XCDL @include "$(commonDir)/src/main/main-110-include-blinky.$(fileExtension)"
+//@XCDL @include "$(commonDir)/src/main/main-120-$(syscalls)-blinky.c"
+//@XCDL @elif "$(content)"=="empty"
+//@XCDL @include "$(commonDir)/src/main/main-120-$(syscalls)-empty.c"
+//@XCDL @endif
+//@XCDL @include "$(commonDir)/src/main/main-130-trace-via.c"
+//@XCDL @if "$(content)"=="blinky"
+// F3, F2, F1, F0 (no KLXX, no F4)
+//@XCDL @include "$(commonDir)/src/main/main-135-clock-comment.c"
+//@XCDL @include "$(commonDir)/src/main/main-140-defs-blinky.$(fileExtension)"
+//@XCDL @endif
+//@XCDL @include "$(commonDir)/src/main/main-150-begin.c"
+//@XCDL @if "$(content)"=="blinky"
+//@XCDL @include "$(commonDir)/src/main/main-180-$(syscalls)-hello.c"
+//@XCDL @include "$(commonDir)/src/main/main-190-clock-blinky.c"
+//@XCDL @include "$(commonDir)/src/main/main-200-loop-blinky.$(fileExtension)"
+//@XCDL @include "$(commonDir)/src/main/main-210-print.c"
+//@XCDL @include "$(commonDir)/src/main/main-220-loopend.c"
+//@XCDL @elif "$(content)"=="empty"
+//@XCDL @include "$(commonDir)/src/main/main-190-clock-empty.c"
+//@XCDL @include "$(commonDir)/src/main/main-200-loop-empty.c"
+//@XCDL @endif
+//@XCDL @include "$(commonDir)/src/main/main-230-end.c"
