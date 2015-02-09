@@ -11,7 +11,6 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
 
-import org.eclipse.cdt.core.templateengine.SharedDefaults;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
@@ -81,19 +80,7 @@ public class WorkspacePersistentValues {
 			return value;
 		}
 
-		// Keep this for compatibility
-		id = Activator.PLUGIN_ID + "." + id;
-
-		value = SharedDefaults.getInstance().getSharedDefaultsMap().get(id);
-
-		if (value == null)
-			value = "";
-
-		value = value.trim();
-		if (value.length() == 0 && defaultValue != null)
-			return defaultValue.trim();
-
-		return value;
+		return defaultValue;
 	}
 
 	private static void putValueForId(String id, String value) {
@@ -104,7 +91,6 @@ public class WorkspacePersistentValues {
 		Preferences preferences = InstanceScope.INSTANCE
 				.getNode(Activator.PLUGIN_ID);
 		preferences.put(id, value);
-
 	}
 
 	// ----- gdb server doStart -----------------------------------------------
@@ -137,7 +123,11 @@ public class WorkspacePersistentValues {
 	// ----- gdb server other options -----------------------------------------
 	public static String getGdbServerOtherOptions(String defaultValue) {
 
-		return getValueForId(GDB_SERVER_OTHER_OPTIONS, defaultValue);
+		String value = getValueForId(GDB_SERVER_OTHER_OPTIONS, null);
+		if (value != null) {
+			return value;
+		}
+		return EclipseDefaults.getOpenocdConfig(defaultValue);
 	}
 
 	public static void putGdbServerOtherOptions(String value) {

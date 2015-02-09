@@ -20,6 +20,8 @@ public class EclipseDefaults {
 	private static final String GDB_SERVER_EXECUTABLE = "gdb.server.executable.default";
 	private static final String GDB_CLIENT_EXECUTABLE = "gdb.client.executable.default";
 
+	private static final String OPENOCD_CONFIG = "openocd.config.default";
+
 	private static final String OPENOCD_EXECUTABLE = "openocd_executable.default";
 	private static final String OPENOCD_PATH = "openocd_path.default";
 
@@ -46,6 +48,10 @@ public class EclipseDefaults {
 
 	public static String getGdbClientExecutable(String defValue) {
 		return getProperty(GDB_CLIENT_EXECUTABLE, defValue);
+	}
+
+	public static String getOpenocdConfig(String defValue) {
+		return getProperty(OPENOCD_CONFIG, defValue);
 	}
 
 	public static boolean getTabMainCheckProgram(boolean defValue) {

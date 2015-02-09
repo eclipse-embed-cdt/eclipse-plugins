@@ -76,16 +76,11 @@ public class WorkspacePersistentValues {
 		value = preferences.get(id, null);
 		// System.out.println("Value of " + id + " is " + value);
 
-		if (value == null) {
-			value = "";
-		} else {
-			value = value.trim();
+		if (value != null) {
+			return value;
 		}
 
-		if (value.isEmpty() && defaultValue != null)
-			return defaultValue.trim();
-
-		return value;
+		return defaultValue;
 	}
 
 	// ----- setter -----------------------------------------------------------
