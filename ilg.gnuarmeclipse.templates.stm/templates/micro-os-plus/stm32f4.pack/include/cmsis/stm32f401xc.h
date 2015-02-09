@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f401xc.h
   * @author  MCD Application Team
-  * @version V2.1.0
-  * @date    19-June-2014
+  * @version V2.2.0
+  * @date    15-December-2014
   * @brief   CMSIS STM32F401xCxx Device Peripheral Access Layer Header File.
   *
   *          This file contains:
@@ -290,8 +290,7 @@ typedef struct
   __IO uint32_t PUPDR;    /*!< GPIO port pull-up/pull-down register,  Address offset: 0x0C      */
   __IO uint32_t IDR;      /*!< GPIO port input data register,         Address offset: 0x10      */
   __IO uint32_t ODR;      /*!< GPIO port output data register,        Address offset: 0x14      */
-  __IO uint16_t BSRRL;    /*!< GPIO port bit set/reset low register,  Address offset: 0x18      */
-  __IO uint16_t BSRRH;    /*!< GPIO port bit set/reset high register, Address offset: 0x1A      */
+  __IO uint32_t BSRR;     /*!< GPIO port bit set/reset register,      Address offset: 0x18      */
   __IO uint32_t LCKR;     /*!< GPIO port configuration lock register, Address offset: 0x1C      */
   __IO uint32_t AFR[2];   /*!< GPIO alternate function registers,     Address offset: 0x20-0x24 */
 } GPIO_TypeDef;
@@ -4511,14 +4510,14 @@ USB_OTG_HostChannelTypeDef;
                                        ((INSTANCE) == I2C3))
 
 /******************************** I2S Instances *******************************/
-#define IS_I2S_INSTANCE(INSTANCE)  (((INSTANCE) == SPI2) || \
+#define IS_I2S_ALL_INSTANCE(INSTANCE)  (((INSTANCE) == SPI2) || \
                                     ((INSTANCE) == SPI3))
 
 /*************************** I2S Extended Instances ***************************/
-#define IS_I2S_INSTANCE_EXT(PERIPH)  (((INSTANCE) == SPI2)    || \
-                                      ((INSTANCE) == SPI3)    || \
-                                      ((INSTANCE) == I2S2ext) || \
-                                      ((INSTANCE) == I2S3ext))
+#define IS_I2S_ALL_INSTANCE_EXT(PERIPH)  (((INSTANCE) == SPI2)    || \
+                                          ((INSTANCE) == SPI3)    || \
+                                          ((INSTANCE) == I2S2ext) || \
+                                          ((INSTANCE) == I2S3ext))
 
 /****************************** RTC Instances *********************************/
 #define IS_RTC_ALL_INSTANCE(INSTANCE)  ((INSTANCE) == RTC)
@@ -4728,6 +4727,14 @@ USB_OTG_HostChannelTypeDef;
 /****************************** WWDG Instances ********************************/
 #define IS_WWDG_ALL_INSTANCE(INSTANCE)  ((INSTANCE) == WWDG)
 
+/****************************** SDIO Instances ********************************/
+#define IS_SDIO_ALL_INSTANCE(INSTANCE) ((INSTANCE) == SDIO)
+
+/****************************** USB Exported Constants ************************/
+#define USB_OTG_FS_HOST_MAX_CHANNEL_NBR                8
+#define USB_OTG_FS_MAX_IN_ENDPOINTS                    4    /* Including EP0 */
+#define USB_OTG_FS_MAX_OUT_ENDPOINTS                   4    /* Including EP0 */
+#define USB_OTG_FS_TOTAL_FIFO_SIZE                     1280 /* in Bytes */
 
 /**
   * @}

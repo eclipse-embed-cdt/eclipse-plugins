@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_rcc.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   RCC HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Reset and Clock Control (RCC) peripheral:
@@ -34,6 +34,25 @@
       (+) Enable the clock for the peripheral(s) to be used
       (+) Configure the clock source(s) for peripherals which clocks are not
           derived from the System clock (I2S, RTC, ADC, USB OTG FS/SDIO/RNG)
+
+                      ##### RCC Limitations #####
+  ==============================================================================
+    [..]  
+      A delay between an RCC peripheral clock enable and the effective peripheral 
+      enabling should be taken into account in order to manage the peripheral read/write 
+      from/to registers.
+      (+) This delay depends on the peripheral mapping.
+      (+) If peripheral is mapped on AHB: the delay is 2 AHB clock cycle 
+          after the clock enable bit is set on the hardware register
+      (+) If peripheral is mapped on APB: the delay is 2 APB clock cycle 
+          after the clock enable bit is set on the hardware register
+
+    [..]  
+      Possible Workarounds:
+      (#) Enable the peripheral clock sometimes before the peripheral read/write 
+          register is required.
+      (#) For AHB peripheral, insert two dummy read to the peripheral register.
+      (#) For APB peripheral, insert a dummy read to the peripheral register.
 
   @endverbatim
   ******************************************************************************
@@ -73,7 +92,7 @@
   * @{
   */
 
-/** @defgroup RCC 
+/** @defgroup RCC RCC
   * @brief RCC HAL module driver
   * @{
   */
@@ -82,6 +101,9 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+/** @addtogroup RCC_Private_Constants
+  * @{
+  */
 #define HSE_TIMEOUT_VALUE          HSE_STARTUP_TIMEOUT
 #define HSI_TIMEOUT_VALUE          ((uint32_t)100)  /* 100 ms */
 #define LSI_TIMEOUT_VALUE          ((uint32_t)100)  /* 100 ms */
@@ -89,25 +111,34 @@
 #define CLOCKSWITCH_TIMEOUT_VALUE  ((uint32_t)5000) /* 5 s    */
 
 /* Private macro -------------------------------------------------------------*/
-#define __MCO1_CLK_ENABLE()   __GPIOA_CLK_ENABLE()
+#define __MCO1_CLK_ENABLE()   __HAL_RCC_GPIOA_CLK_ENABLE()
 #define MCO1_GPIO_PORT        GPIOA
 #define MCO1_PIN              GPIO_PIN_8 
 
-#define __MCO2_CLK_ENABLE()   __GPIOC_CLK_ENABLE()
+#define __MCO2_CLK_ENABLE()   __HAL_RCC_GPIOC_CLK_ENABLE()
 #define MCO2_GPIO_PORT         GPIOC
 #define MCO2_PIN               GPIO_PIN_9
+/**
+  * @}
+  */
 
 /* Private variables ---------------------------------------------------------*/
+/** @defgroup RCC_Private_Variables RCC Private Variables
+  * @{
+  */    
 const uint8_t APBAHBPrescTable[16] = {0, 0, 0, 0, 1, 2, 3, 4, 1, 2, 3, 4, 6, 7, 8, 9};
+/**
+  * @}
+  */
 
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
-/** @defgroup RCC_Private_Functions
-  * @{
+/** @defgroup RCC_Exported_Functions RCC Exported Functions
+  *  @{
   */
 
-/** @defgroup RCC_Group1 Initialization and de-initialization functions 
+/** @defgroup RCC_Exported_Functions_Group1 Initialization and de-initialization functions 
  *  @brief    Initialization and Configuration functions 
  *
 @verbatim    
@@ -138,7 +169,7 @@ const uint8_t APBAHBPrescTable[16] = {0, 0, 0, 0, 1, 2, 3, 4, 1, 2, 3, 4, 6, 7, 
 
          (#) CSS (Clock security system), once enable using the macro __HAL_RCC_CSS_ENABLE()
              and if a HSE clock failure occurs(HSE used directly or through PLL as System 
-             clock source), the System clockis automatically switched to HSI and an interrupt
+             clock source), the System clocks automatically switched to HSI and an interrupt
              is generated if enabled. The interrupt is linked to the Cortex-M4 NMI 
              (Non-Maskable Interrupt) exception vector.   
 
@@ -202,7 +233,6 @@ const uint8_t APBAHBPrescTable[16] = {0, 0, 0, 0, 1, 2, 3, 4, 1, 2, 3, 4, 6, 7, 
   * @note   This function doesn't modify the configuration of the
   *            - Peripheral clocks  
   *            - LSI, LSE and RTC clocks 
-  * @param  None
   * @retval None
   */
 void HAL_RCC_DeInit(void)
@@ -259,7 +289,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
     /* When the HSE is used as system clock or clock source for PLL in these cases HSE will not disabled */
     if((__HAL_RCC_GET_SYSCLK_SOURCE() == RCC_CFGR_SWS_HSE) || ((__HAL_RCC_GET_SYSCLK_SOURCE() == RCC_CFGR_SWS_PLL) && ((RCC->PLLCFGR & RCC_PLLCFGR_PLLSRC) == RCC_PLLCFGR_PLLSRC_HSE)))
     {
-      if((__HAL_RCC_GET_FLAG(RCC_FLAG_HSERDY) != RESET) && (RCC_OscInitStruct->HSEState != RCC_HSE_ON))
+      if((__HAL_RCC_GET_FLAG(RCC_FLAG_HSERDY) != RESET) && (RCC_OscInitStruct->HSEState == RCC_HSE_OFF))
       {
         return HAL_ERROR;
       }
@@ -285,7 +315,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
       __HAL_RCC_HSE_CONFIG(RCC_OscInitStruct->HSEState);
       
       /* Check the HSE State */
-      if((RCC_OscInitStruct->HSEState) == RCC_HSE_ON)
+      if((RCC_OscInitStruct->HSEState) != RCC_HSE_OFF)
       {
         /* Get Start Tick*/
         tickstart = HAL_GetTick();
@@ -428,7 +458,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
     assert_param(IS_RCC_LSE(RCC_OscInitStruct->LSEState));
     
     /* Enable Power Clock*/
-    __PWR_CLK_ENABLE();
+    __HAL_RCC_PWR_CLK_ENABLE();
     
     /* Enable write access to Backup domain */
     PWR->CR |= PWR_CR_DBP;
@@ -438,7 +468,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
     
     while((PWR->CR & PWR_CR_DBP) == RESET)
     {
-      if((HAL_GetTick() - tickstart ) > DBP_TIMEOUT_VALUE)
+      if((HAL_GetTick() - tickstart ) > RCC_DBP_TIMEOUT_VALUE)
       {
         return HAL_TIMEOUT;
       }      
@@ -453,7 +483,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
     /* Wait till LSE is ready */  
     while(__HAL_RCC_GET_FLAG(RCC_FLAG_LSERDY) != RESET)
     {
-      if((HAL_GetTick() - tickstart ) > LSE_TIMEOUT_VALUE)
+      if((HAL_GetTick() - tickstart ) > RCC_LSE_TIMEOUT_VALUE)
       {
         return HAL_TIMEOUT;
       }    
@@ -470,7 +500,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
       /* Wait till LSE is ready */  
       while(__HAL_RCC_GET_FLAG(RCC_FLAG_LSERDY) == RESET)
       {
-        if((HAL_GetTick() - tickstart ) > LSE_TIMEOUT_VALUE)
+        if((HAL_GetTick() - tickstart ) > RCC_LSE_TIMEOUT_VALUE)
         {
           return HAL_TIMEOUT;
         }       
@@ -484,7 +514,7 @@ HAL_StatusTypeDef HAL_RCC_OscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
       /* Wait till LSE is ready */  
       while(__HAL_RCC_GET_FLAG(RCC_FLAG_LSERDY) != RESET)
       {
-        if((HAL_GetTick() - tickstart ) > LSE_TIMEOUT_VALUE)
+        if((HAL_GetTick() - tickstart ) > RCC_LSE_TIMEOUT_VALUE)
         {
           return HAL_TIMEOUT;
         }       
@@ -815,7 +845,7 @@ HAL_StatusTypeDef HAL_RCC_ClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, ui
   * @}
   */
 
-/** @defgroup RCC_Group2 Peripheral Control functions 
+/** @defgroup RCC_Exported_Functions_Group2 Peripheral Control functions 
  *  @brief   RCC clocks control functions 
  *
 @verbatim   
@@ -870,7 +900,7 @@ void HAL_RCC_MCOConfig(uint32_t RCC_MCOx, uint32_t RCC_MCOSource, uint32_t RCC_M
     /* MCO1 Clock Enable */
     __MCO1_CLK_ENABLE();
     
-    /* Configue the MCO1 pin in alternate function mode */    
+    /* Configure the MCO1 pin in alternate function mode */    
     GPIO_InitStruct.Pin = MCO1_PIN;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
@@ -888,7 +918,7 @@ void HAL_RCC_MCOConfig(uint32_t RCC_MCOx, uint32_t RCC_MCOSource, uint32_t RCC_M
     /* MCO2 Clock Enable */
     __MCO2_CLK_ENABLE();
     
-    /* Configue the MCO2 pin in alternate function mode */
+    /* Configure the MCO2 pin in alternate function mode */
     GPIO_InitStruct.Pin = MCO2_PIN;
     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
     GPIO_InitStruct.Speed = GPIO_SPEED_HIGH;
@@ -908,22 +938,20 @@ void HAL_RCC_MCOConfig(uint32_t RCC_MCOx, uint32_t RCC_MCOSource, uint32_t RCC_M
   *         software about the failure (Clock Security System Interrupt, CSSI),
   *         allowing the MCU to perform rescue operations. The CSSI is linked to 
   *         the Cortex-M4 NMI (Non-Maskable Interrupt) exception vector.  
-  * @param  None
   * @retval None
   */
 void HAL_RCC_EnableCSS(void)
 {
-  *(__IO uint32_t *) CR_CSSON_BB = (uint32_t)ENABLE;
+  *(__IO uint32_t *) RCC_CR_CSSON_BB = (uint32_t)ENABLE;
 }
 
 /**
   * @brief  Disables the Clock Security System.
-  * @param  None
   * @retval None
   */
 void HAL_RCC_DisableCSS(void)
 {
-  *(__IO uint32_t *) CR_CSSON_BB = (uint32_t)DISABLE;
+  *(__IO uint32_t *) RCC_CR_CSSON_BB = (uint32_t)DISABLE;
 }
 
 /**
@@ -954,7 +982,6 @@ void HAL_RCC_DisableCSS(void)
   *         right SYSCLK value. Otherwise, any configuration based on this function will be incorrect.
   *         
   *               
-  * @param  None
   * @retval SYSCLK frequency
   */
 uint32_t HAL_RCC_GetSysClockFreq(void)
@@ -980,7 +1007,7 @@ uint32_t HAL_RCC_GetSysClockFreq(void)
       /* PLL_VCO = (HSE_VALUE or HSI_VALUE / PLLM) * PLLN
       SYSCLK = PLL_VCO / PLLP */
       pllm = RCC->PLLCFGR & RCC_PLLCFGR_PLLM;
-      if (__RCC_PLLSRC() != 0)
+      if(__HAL_RCC_GET_PLL_OSCSOURCE() != RCC_PLLSOURCE_HSI)
       {
         /* HSE used as PLL clock source */
         pllvco = ((HSE_VALUE / pllm) * ((RCC->PLLCFGR & RCC_PLLCFGR_PLLN) >> POSITION_VAL(RCC_PLLCFGR_PLLN)));
@@ -1011,7 +1038,6 @@ uint32_t HAL_RCC_GetSysClockFreq(void)
   * 
   * @note   The SystemCoreClock CMSIS variable is used to store System Clock Frequency 
   *         and updated within this function
-  * @param  None
   * @retval HCLK frequency
   */
 uint32_t HAL_RCC_GetHCLKFreq(void)
@@ -1024,7 +1050,6 @@ uint32_t HAL_RCC_GetHCLKFreq(void)
   * @brief  Returns the PCLK1 frequency     
   * @note   Each time PCLK1 changes, this function must be called to update the
   *         right PCLK1 value. Otherwise, any configuration based on this function will be incorrect.
-  * @param  None
   * @retval PCLK1 frequency
   */
 uint32_t HAL_RCC_GetPCLK1Freq(void)
@@ -1037,7 +1062,6 @@ uint32_t HAL_RCC_GetPCLK1Freq(void)
   * @brief  Returns the PCLK2 frequency     
   * @note   Each time PCLK2 changes, this function must be called to update the
   *         right PCLK2 value. Otherwise, any configuration based on this function will be incorrect.
-  * @param  None
   * @retval PCLK2 frequency
   */
 uint32_t HAL_RCC_GetPCLK2Freq(void)
@@ -1127,7 +1151,7 @@ void HAL_RCC_GetOscConfig(RCC_OscInitTypeDef  *RCC_OscInitStruct)
 /**
   * @brief  Configures the RCC_ClkInitStruct according to the internal 
   * RCC configuration registers.
-  * @param  RCC_OscInitStruct: pointer to an RCC_ClkInitTypeDef structure that 
+  * @param  RCC_ClkInitStruct: pointer to an RCC_ClkInitTypeDef structure that 
   * will be configured.
   * @param  pFLatency: Pointer on the Flash Latency.
   * @retval None
@@ -1156,7 +1180,6 @@ void HAL_RCC_GetClockConfig(RCC_ClkInitTypeDef  *RCC_ClkInitStruct, uint32_t *pF
 /**
   * @brief This function handles the RCC CSS interrupt request.
   * @note This API should be called under the NMI_Handler().
-  * @param None
   * @retval None
   */
 void HAL_RCC_NMI_IRQHandler(void)
@@ -1165,7 +1188,7 @@ void HAL_RCC_NMI_IRQHandler(void)
   if(__HAL_RCC_GET_IT(RCC_IT_CSS))
   {
     /* RCC Clock Security System interrupt user callback */
-    HAL_RCC_CCSCallback();
+    HAL_RCC_CSSCallback();
 
     /* Clear RCC CSS pending bit */
     __HAL_RCC_CLEAR_IT(RCC_IT_CSS);
@@ -1174,13 +1197,12 @@ void HAL_RCC_NMI_IRQHandler(void)
 
 /**
   * @brief  RCC Clock Security System interrupt callback
-  * @param  none 
-  * @retval none
+  * @retval None
   */
-__weak void HAL_RCC_CCSCallback(void)
+__weak void HAL_RCC_CSSCallback(void)
 {
   /* NOTE : This function Should not be modified, when the callback is needed,
-            the HAL_RCC_CCSCallback could be implemented in the user file
+            the HAL_RCC_CSSCallback could be implemented in the user file
    */ 
 }
 

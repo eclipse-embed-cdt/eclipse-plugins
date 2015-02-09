@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_i2s_ex.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   I2S HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of I2S extension peripheral:
@@ -108,7 +108,7 @@
   * @{
   */
 
-/** @defgroup I2SEx 
+/** @defgroup I2SEx I2SEx
   * @brief I2S HAL module driver
   * @{
   */
@@ -121,8 +121,15 @@
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
+/** @addtogroup I2SEx_Private_Functions
+  * @{
+  */
+/**
+  * @}
+  */
 
-/** @defgroup I2SEx_Private_Functions
+/* Exported functions --------------------------------------------------------*/
+/** @defgroup I2SEx_Exported_Functions I2S Exported Functions
   * @{
   */
 
@@ -470,7 +477,6 @@ HAL_StatusTypeDef HAL_I2SEx_TransmitReceive_IT(I2S_HandleTypeDef *hi2s, uint16_t
   }
 }
 
-
 /**
   * @brief Full-Duplex Transmit/Receive data in non-blocking mode using DMA  
   * @param  hi2s: pointer to a I2S_HandleTypeDef structure that contains
@@ -529,19 +535,19 @@ HAL_StatusTypeDef HAL_I2SEx_TransmitReceive_DMA(I2S_HandleTypeDef *hi2s, uint16_
     hi2s->State = HAL_I2S_STATE_BUSY_TX_RX;
     hi2s->ErrorCode = HAL_I2S_ERROR_NONE;
 
-    /* Set the I2S Rx DMA Half transfert complete callback */
+    /* Set the I2S Rx DMA Half transfer complete callback */
     hi2s->hdmarx->XferHalfCpltCallback = I2S_DMARxHalfCplt;
 
-    /* Set the I2S Rx DMA transfert complete callback */
+    /* Set the I2S Rx DMA transfer complete callback */
     hi2s->hdmarx->XferCpltCallback = I2S_DMARxCplt;
 
     /* Set the I2S Rx DMA error callback */
     hi2s->hdmarx->XferErrorCallback = I2S_DMAError;
 
-    /* Set the I2S Tx DMA Half transfert complete callback */
+    /* Set the I2S Tx DMA Half transfer complete callback */
     hi2s->hdmatx->XferHalfCpltCallback = I2S_DMATxHalfCplt;
 
-    /* Set the I2S Tx DMA transfert complete callback */
+    /* Set the I2S Tx DMA transfer complete callback */
     hi2s->hdmatx->XferCpltCallback = I2S_DMATxCplt;
 
     /* Set the I2S Tx DMA error callback */
@@ -627,6 +633,7 @@ HAL_StatusTypeDef HAL_I2SEx_TransmitReceive_DMA(I2S_HandleTypeDef *hi2s, uint16_
 /**
   * @}
   */
+
 
 /**
   * @brief Full-Duplex Transmit/Receive data in non-blocking mode using Interrupt 

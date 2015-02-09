@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_rcc_ex.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   Extension RCC HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities RCC extension peripheral:
@@ -46,8 +46,8 @@
   * @{
   */
 
-/** @defgroup RCC 
-  * @brief RCC HAL module driver
+/** @defgroup RCCEx RCCEx
+  * @brief RCCEx HAL module driver
   * @{
   */
 
@@ -55,18 +55,23 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+/** @addtogroup RCCEx_Private_Constants
+  * @{
+  */
 #define PLLI2S_TIMEOUT_VALUE    100 /* Timeout value fixed to 100 ms  */
 #define PLLSAI_TIMEOUT_VALUE    100 /* Timeout value fixed to 100 ms  */
+/**
+  * @}
+  */ 
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
-
-/** @defgroup RCCEx_Private_Functions
-  * @{
+/** @defgroup RCCEx_Exported_Functions RCCEx Exported Functions
+  *  @{
   */
 
-/** @defgroup RCCEx_Group1 Extended Peripheral Control functions 
+/** @defgroup RCCEx_Exported_Functions_Group1 Extended Peripheral Control functions 
  *  @brief  Extended Peripheral Control functions  
  *
 @verbatim   
@@ -259,7 +264,7 @@ HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClk
   if(((PeriphClkInit->PeriphClockSelection) & RCC_PERIPHCLK_RTC) == (RCC_PERIPHCLK_RTC))
   {
     /* Enable Power Clock*/
-    __PWR_CLK_ENABLE();
+    __HAL_RCC_PWR_CLK_ENABLE();
     
     /* Enable write access to Backup domain */
     PWR->CR |= PWR_CR_DBP;
@@ -269,13 +274,13 @@ HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClk
     
     while((PWR->CR & PWR_CR_DBP) == RESET)
     {
-      if((HAL_GetTick() - tickstart ) > DBP_TIMEOUT_VALUE)
+      if((HAL_GetTick() - tickstart ) > RCC_DBP_TIMEOUT_VALUE)
       {
         return HAL_TIMEOUT;
       }      
     }
     
-    /* Reset the Backup domain only if the RTC Clock source selction is modified */ 
+    /* Reset the Backup domain only if the RTC Clock source selection is modified */ 
     if((RCC->BDCR & RCC_BDCR_RTCSEL) != (PeriphClkInit->RTCClockSelection & RCC_BDCR_RTCSEL))
     {
       /* Store the content of BDCR register before the reset of Backup Domain */
@@ -296,7 +301,7 @@ HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClk
       /* Wait till LSE is ready */  
       while(__HAL_RCC_GET_FLAG(RCC_FLAG_LSERDY) == RESET)
       {
-        if((HAL_GetTick() - tickstart ) > LSE_TIMEOUT_VALUE)
+        if((HAL_GetTick() - tickstart ) > RCC_LSE_TIMEOUT_VALUE)
         {
           return HAL_TIMEOUT;
         }      
@@ -430,7 +435,7 @@ HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClk
   if(((PeriphClkInit->PeriphClockSelection) & RCC_PERIPHCLK_RTC) == (RCC_PERIPHCLK_RTC))
   {
     /* Enable Power Clock*/
-    __PWR_CLK_ENABLE();
+    __HAL_RCC_PWR_CLK_ENABLE();
     
     /* Enable write access to Backup domain */
     PWR->CR |= PWR_CR_DBP;
@@ -440,13 +445,13 @@ HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClk
 
     while((PWR->CR & PWR_CR_DBP) == RESET)
     {
-      if((HAL_GetTick() - tickstart ) > DBP_TIMEOUT_VALUE)
+      if((HAL_GetTick() - tickstart ) > RCC_DBP_TIMEOUT_VALUE)
       {
         return HAL_TIMEOUT;
       }      
     }
         
-    /* Reset the Backup domain only if the RTC Clock source selction is modified */ 
+    /* Reset the Backup domain only if the RTC Clock source selection is modified */ 
     if((RCC->BDCR & RCC_BDCR_RTCSEL) != (PeriphClkInit->RTCClockSelection & RCC_BDCR_RTCSEL))
     {
       /* Store the content of BDCR register before the reset of Backup Domain */
@@ -467,7 +472,7 @@ HAL_StatusTypeDef HAL_RCCEx_PeriphCLKConfig(RCC_PeriphCLKInitTypeDef  *PeriphClk
       /* Wait till LSE is ready */  
       while(__HAL_RCC_GET_FLAG(RCC_FLAG_LSERDY) == RESET)
       {
-        if((HAL_GetTick() - tickstart ) > LSE_TIMEOUT_VALUE)
+        if((HAL_GetTick() - tickstart ) > RCC_LSE_TIMEOUT_VALUE)
         {
           return HAL_TIMEOUT;
         }

@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_sai.h
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   Header file of SAI HAL module.
   ******************************************************************************
   * @attention
@@ -43,21 +43,38 @@
  extern "C" {
 #endif
 
-#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)
-
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal_def.h"  
 
 /** @addtogroup STM32F4xx_HAL_Driver
   * @{
   */
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)
 
 /** @addtogroup SAI
   * @{
   */ 
-
+  
 /* Exported types ------------------------------------------------------------*/ 
-
+/** @defgroup SAI_Exported_Types SAI Exported Types
+  * @{
+  */
+ 
+/** 
+  * @brief  HAL State structures definition  
+  */ 
+typedef enum
+{
+  HAL_SAI_STATE_RESET      = 0x00,  /*!< SAI not yet initialized or disabled                */
+  HAL_SAI_STATE_READY      = 0x01,  /*!< SAI initialized and ready for use                  */
+  HAL_SAI_STATE_BUSY       = 0x02,  /*!< SAI internal process is ongoing                    */
+  HAL_SAI_STATE_BUSY_TX    = 0x12,  /*!< Data transmission process is ongoing               */ 
+  HAL_SAI_STATE_BUSY_RX    = 0x22,  /*!< Data reception process is ongoing                  */  
+  HAL_SAI_STATE_TIMEOUT    = 0x03,  /*!< SAI timeout state                                  */
+  HAL_SAI_STATE_ERROR      = 0x04   /*!< SAI error state                                    */
+                                                                        
+}HAL_SAI_StateTypeDef;
+ 
 /** 
   * @brief  SAI Init Structure definition  
   */
@@ -157,21 +174,6 @@ typedef struct
 }SAI_SlotInitTypeDef;
 
 /** 
-  * @brief  HAL State structures definition  
-  */ 
-typedef enum
-{
-  HAL_SAI_STATE_RESET      = 0x00,  /*!< SAI not yet initialized or disabled                */
-  HAL_SAI_STATE_READY      = 0x01,  /*!< SAI initialized and ready for use                  */
-  HAL_SAI_STATE_BUSY       = 0x02,  /*!< SAI internal process is ongoing                    */
-  HAL_SAI_STATE_BUSY_TX    = 0x12,  /*!< Data transmission process is ongoing               */ 
-  HAL_SAI_STATE_BUSY_RX    = 0x22,  /*!< Data reception process is ongoing                  */  
-  HAL_SAI_STATE_TIMEOUT    = 0x03,  /*!< SAI timeout state                                  */
-  HAL_SAI_STATE_ERROR      = 0x04   /*!< SAI error state                                    */
-                                                                        
-}HAL_SAI_StateTypeDef;
-
-/** 
   * @brief  SAI handle Structure definition  
   */
 typedef struct
@@ -207,12 +209,17 @@ typedef struct
   __IO uint32_t             ErrorCode;   /*!< SAI Error code                          */
 }SAI_HandleTypeDef;
 
+/**
+  * @}
+  */
+
 /* Exported constants --------------------------------------------------------*/
 
-/** @defgroup SAI_Exported_Constants
+/** @defgroup SAI_Exported_Constants SAI Exported Constants
   * @{
   */
-/** @defgroup SAI Error Code 
+
+/** @defgroup SAI_Error_Code SAI Error Code 
   * @{
   */ 
 #define HAL_SAI_ERROR_NONE      ((uint32_t)0x00000000)     /*!< No error             */
@@ -223,21 +230,18 @@ typedef struct
   * @}
   */
 
-/** @defgroup SAI_Clock_Source
+/** @defgroup SAI_Clock_Source  SAI Clock Source
   * @{
   */
 #define SAI_CLKSOURCE_PLLSAI             ((uint32_t)RCC_SAIACLKSOURCE_PLLSAI)
 #define SAI_CLKSOURCE_PLLI2S             ((uint32_t)RCC_SAIACLKSOURCE_PLLI2S)
 #define SAI_CLKSOURCE_EXT                ((uint32_t)RCC_SAIACLKSOURCE_EXT)
 
-#define IS_SAI_CLK_SOURCE(SOURCE) (((SOURCE) == SAI_CLKSOURCE_PLLSAI) ||\
-                                   ((SOURCE) == SAI_CLKSOURCE_PLLI2S) ||\
-                                   ((SOURCE) == SAI_CLKSOURCE_EXT))
 /**
   * @}
   */
 
-/** @defgroup SAI_Audio_Frequency
+/** @defgroup SAI_Audio_Frequency SAI Audio Frequency
   * @{
   */
 #define SAI_AUDIO_FREQUENCY_192K          ((uint32_t)192000)
@@ -250,44 +254,33 @@ typedef struct
 #define SAI_AUDIO_FREQUENCY_11K           ((uint32_t)11025)
 #define SAI_AUDIO_FREQUENCY_8K            ((uint32_t)8000)    
 
-#define IS_SAI_AUDIO_FREQUENCY(AUDIO) (((AUDIO) == SAI_AUDIO_FREQUENCY_192K) || ((AUDIO) == SAI_AUDIO_FREQUENCY_96K) || \
-                                       ((AUDIO) == SAI_AUDIO_FREQUENCY_48K)  || ((AUDIO) == SAI_AUDIO_FREQUENCY_44K) || \
-                                       ((AUDIO) == SAI_AUDIO_FREQUENCY_32K)  || ((AUDIO) == SAI_AUDIO_FREQUENCY_22K) || \
-                                       ((AUDIO) == SAI_AUDIO_FREQUENCY_16K)  || ((AUDIO) == SAI_AUDIO_FREQUENCY_11K) || \
-                                       ((AUDIO) == SAI_AUDIO_FREQUENCY_8K))
 /**
   * @}
   */
 
-/** @defgroup SAI_Block_Mode 
+/** @defgroup SAI_Block_Mode SAI Block Mode
   * @{
   */
 #define SAI_MODEMASTER_TX         ((uint32_t)0x00000000)
 #define SAI_MODEMASTER_RX         ((uint32_t)0x00000001)
 #define SAI_MODESLAVE_TX          ((uint32_t)0x00000002)
 #define SAI_MODESLAVE_RX          ((uint32_t)0x00000003)
-#define IS_SAI_BLOCK_MODE(MODE)    (((MODE) == SAI_MODEMASTER_TX) || \
-                                    ((MODE) == SAI_MODEMASTER_RX) || \
-                                    ((MODE) == SAI_MODESLAVE_TX)  || \
-                                    ((MODE) == SAI_MODESLAVE_RX))
+
 /**
   * @}
   */
 
-/** @defgroup SAI_Block_Protocol 
+/** @defgroup SAI_Block_Protocol SAI Block Protocol
   * @{
   */
-
 #define SAI_FREE_PROTOCOL                 ((uint32_t)0x00000000)
 #define SAI_AC97_PROTOCOL                 ((uint32_t)SAI_xCR1_PRTCFG_1)
 
-#define IS_SAI_BLOCK_PROTOCOL(PROTOCOL) (((PROTOCOL) == SAI_FREE_PROTOCOL)  || \
-                                         ((PROTOCOL) == SAI_AC97_PROTOCOL))
 /**
   * @}
   */
 
-/** @defgroup SAI_Block_Data_Size 
+/** @defgroup SAI_Block_Data_Size SAI Block Data Size
   * @{
   */
 #define SAI_DATASIZE_8                   ((uint32_t)0x00000040)
@@ -297,168 +290,103 @@ typedef struct
 #define SAI_DATASIZE_24                  ((uint32_t)0x000000C0)
 #define SAI_DATASIZE_32                  ((uint32_t)0x000000E0)
 
-#define IS_SAI_BLOCK_DATASIZE(DATASIZE) (((DATASIZE) == SAI_DATASIZE_8)  || \
-                                         ((DATASIZE) == SAI_DATASIZE_10) || \
-                                         ((DATASIZE) == SAI_DATASIZE_16) || \
-                                         ((DATASIZE) == SAI_DATASIZE_20) || \
-                                         ((DATASIZE) == SAI_DATASIZE_24) || \
-                                         ((DATASIZE) == SAI_DATASIZE_32))
 /**
   * @}
   */ 
 
-/** @defgroup SAI_Block_MSB_LSB_transmission 
+/** @defgroup SAI_Block_MSB_LSB_transmission SAI Block MSB LSB transmission 
   * @{
   */
-
 #define SAI_FIRSTBIT_MSB                  ((uint32_t)0x00000000)
 #define SAI_FIRSTBIT_LSB                  ((uint32_t)SAI_xCR1_LSBFIRST)
 
-#define IS_SAI_BLOCK_FIRST_BIT(BIT) (((BIT) == SAI_FIRSTBIT_MSB) || \
-                                     ((BIT) == SAI_FIRSTBIT_LSB))
 /**
   * @}
   */
 
-/** @defgroup SAI_Block_Clock_Strobing 
+/** @defgroup SAI_Block_Clock_Strobing SAI Block Clock Strobing
   * @{
   */
 #define SAI_CLOCKSTROBING_FALLINGEDGE     ((uint32_t)0x00000000)
 #define SAI_CLOCKSTROBING_RISINGEDGE      ((uint32_t)SAI_xCR1_CKSTR)
 
-#define IS_SAI_BLOCK_CLOCK_STROBING(CLOCK) (((CLOCK) == SAI_CLOCKSTROBING_FALLINGEDGE) || \
-                                            ((CLOCK) == SAI_CLOCKSTROBING_RISINGEDGE))
 /**
   * @}
   */
 
-/** @defgroup SAI_Block_Synchronization 
+/** @defgroup SAI_Block_Synchronization SAI Block Synchronization
   * @{
   */
 #define SAI_ASYNCHRONOUS                  ((uint32_t)0x00000000)
 #define SAI_SYNCHRONOUS                   ((uint32_t)SAI_xCR1_SYNCEN_0)
 
-#define IS_SAI_BLOCK_SYNCHRO(SYNCHRO) (((SYNCHRO) == SAI_ASYNCHRONOUS) || \
-                                       ((SYNCHRO) == SAI_SYNCHRONOUS))
 /**
   * @}
   */ 
 
-/** @defgroup SAI_Block_Output_Drive 
+/** @defgroup SAI_Block_Output_Drive SAI Block Output Drive 
   * @{
   */
-#define SAI_OUTPUTDRIVE_DISABLED          ((uint32_t)0x00000000)
-#define SAI_OUTPUTDRIVE_ENABLED           ((uint32_t)SAI_xCR1_OUTDRIV)
+#define SAI_OUTPUTDRIVE_DISABLE          ((uint32_t)0x00000000)
+#define SAI_OUTPUTDRIVE_ENABLE           ((uint32_t)SAI_xCR1_OUTDRIV)
 
-#define IS_SAI_BLOCK_OUTPUT_DRIVE(DRIVE) (((DRIVE) == SAI_OUTPUTDRIVE_DISABLED) || \
-                                          ((DRIVE) == SAI_OUTPUTDRIVE_ENABLED))
 /**
   * @}
   */ 
 
-/** @defgroup SAI_Block_NoDivider 
+/** @defgroup SAI_Block_NoDivider SAI Block NoDivider
   * @{
   */
-#define SAI_MASTERDIVIDER_ENABLED         ((uint32_t)0x00000000)
-#define SAI_MASTERDIVIDER_DISABLED        ((uint32_t)SAI_xCR1_NODIV)
+#define SAI_MASTERDIVIDER_ENABLE         ((uint32_t)0x00000000)
+#define SAI_MASTERDIVIDER_DISABLE        ((uint32_t)SAI_xCR1_NODIV)
 
-#define IS_SAI_BLOCK_NODIVIDER(NODIVIDER) (((NODIVIDER) == SAI_MASTERDIVIDER_ENABLED) || \
-                                           ((NODIVIDER) == SAI_MASTERDIVIDER_DISABLED))
 /**
   * @}
   */
   
-/** @defgroup SAI_Block_Master_Divider 
-  * @{
-  */
-#define IS_SAI_BLOCK_MASTER_DIVIDER(DIVIDER) ((DIVIDER) <= 15)
-/**
-  * @}
-  */
-  
-/** @defgroup SAI_Block_Frame_Length 
-  * @{
-  */
-#define IS_SAI_BLOCK_FRAME_LENGTH(LENGTH) ((8 <= (LENGTH)) && ((LENGTH) <= 256))
-/**
-  * @}
-  */
-    
-/** @defgroup SAI_Block_Active_FrameLength 
-  * @{
-  */
-#define IS_SAI_BLOCK_ACTIVE_FRAME(LENGTH) ((1 <= (LENGTH)) && ((LENGTH) <= 128))
-/**
-  * @}
-  */
 
-/** @defgroup SAI_Block_FS_Definition 
+/** @defgroup SAI_Block_FS_Definition SAI Block FS Definition
   * @{
   */
 #define SAI_FS_STARTFRAME                 ((uint32_t)0x00000000)
 #define SAI_FS_CHANNEL_IDENTIFICATION     ((uint32_t)SAI_xFRCR_FSDEF)
 
-#define IS_SAI_BLOCK_FS_DEFINITION(DEFINITION) (((DEFINITION) == SAI_FS_STARTFRAME) || \
-                                                ((DEFINITION) == SAI_FS_CHANNEL_IDENTIFICATION))
 /**
   * @}
   */
 
-/** @defgroup SAI_Block_FS_Polarity 
+/** @defgroup SAI_Block_FS_Polarity SAI Block FS Polarity 
   * @{
   */
 #define SAI_FS_ACTIVE_LOW                  ((uint32_t)0x00000000)
 #define SAI_FS_ACTIVE_HIGH                 ((uint32_t)SAI_xFRCR_FSPO)
 
-#define IS_SAI_BLOCK_FS_POLARITY(POLARITY) (((POLARITY) == SAI_FS_ACTIVE_LOW) || \
-                                            ((POLARITY) == SAI_FS_ACTIVE_HIGH))
 /**
   * @}
   */
             
-/** @defgroup SAI_Block_FS_Offset 
+/** @defgroup SAI_Block_FS_Offset SAI Block FS Offset 
   * @{
   */
 #define SAI_FS_FIRSTBIT                   ((uint32_t)0x00000000)
 #define SAI_FS_BEFOREFIRSTBIT             ((uint32_t)SAI_xFRCR_FSOFF)
 
-#define IS_SAI_BLOCK_FS_OFFSET(OFFSET) (((OFFSET) == SAI_FS_FIRSTBIT) || \
-                                        ((OFFSET) == SAI_FS_BEFOREFIRSTBIT))
 /**
   * @}
   */
   
-/** @defgroup SAI_Block_Slot_FirstBit_Offset
-  * @{
-  */
-#define IS_SAI_BLOCK_FIRSTBIT_OFFSET(OFFSET) ((OFFSET) <= 24)
-/**
-  * @}
-  */
 
-  /** @defgroup SAI_Block_Slot_Size
+  /** @defgroup SAI_Block_Slot_Size SAI Block Slot Size
   * @{
   */
 #define SAI_SLOTSIZE_DATASIZE             ((uint32_t)0x00000000)  
 #define SAI_SLOTSIZE_16B                  ((uint32_t)SAI_xSLOTR_SLOTSZ_0)
 #define SAI_SLOTSIZE_32B                  ((uint32_t)SAI_xSLOTR_SLOTSZ_1)
-
-#define IS_SAI_BLOCK_SLOT_SIZE(SIZE) (((SIZE) == SAI_SLOTSIZE_DATASIZE) || \
-                                      ((SIZE) == SAI_SLOTSIZE_16B)      || \
-                                      ((SIZE) == SAI_SLOTSIZE_32B))
-/**
-  * @}
-  */
-
-/** @defgroup SAI_Block_Slot_Number
-  * @{
-  */
-#define IS_SAI_BLOCK_SLOT_NUMBER(NUMBER) ((1 <= (NUMBER)) && ((NUMBER) <= 16))
 /**
   * @}
   */
   
-/** @defgroup SAI_Block_Slot_Active
+/** @defgroup SAI_Block_Slot_Active SAI Block Slot Active
   * @{
   */
 #define SAI_SLOT_NOTACTIVE           ((uint32_t)0x00000000)
@@ -480,37 +408,31 @@ typedef struct
 #define SAI_SLOTACTIVE_15            ((uint32_t)0x80000000)
 #define SAI_SLOTACTIVE_ALL           ((uint32_t)0xFFFF0000)
 
-#define IS_SAI_SLOT_ACTIVE(ACTIVE) ((ACTIVE) != 0)
-
 /**
   * @}
   */
 
-/** @defgroup SAI_Mono_Stereo_Mode
+/** @defgroup SAI_Mono_Stereo_Mode SAI Mono Stereo Mode
   * @{
   */
 #define SAI_MONOMODE                      ((uint32_t)SAI_xCR1_MONO)
-#define SAI_STREOMODE                     ((uint32_t)0x00000000)
+#define SAI_STEREOMODE                    ((uint32_t)0x00000000)
 
-#define IS_SAI_BLOCK_MONO_STREO_MODE(MODE) (((MODE) == SAI_MONOMODE) ||\
-                                            ((MODE) == SAI_STREOMODE))
 /**
   * @}
   */
 
-/** @defgroup SAI_TRIState_Management
+/** @defgroup SAI_TRIState_Management SAI TRIState Management
   * @{
   */
 #define SAI_OUTPUT_NOTRELEASED              ((uint32_t)0x00000000)
 #define SAI_OUTPUT_RELEASED                 ((uint32_t)SAI_xCR2_TRIS)
 
-#define IS_SAI_BLOCK_TRISTATE_MANAGEMENT(STATE) (((STATE) == SAI_OUTPUT_NOTRELEASED) ||\
-                                                 ((STATE) == SAI_OUTPUT_RELEASED))
 /**
   * @}
   */
 
-/** @defgroup SAI_Block_Fifo_Threshold 
+/** @defgroup SAI_Block_Fifo_Threshold SAI Block Fifo Threshold 
   * @{
   */
 #define SAI_FIFOTHRESHOLD_EMPTY  ((uint32_t)0x00000000)
@@ -519,16 +441,11 @@ typedef struct
 #define SAI_FIFOTHRESHOLD_3QF    ((uint32_t)0x00000003)
 #define SAI_FIFOTHRESHOLD_FULL   ((uint32_t)0x00000004)
 
-#define IS_SAI_BLOCK_FIFO_THRESHOLD(THRESHOLD) (((THRESHOLD) == SAI_FIFOTHRESHOLD_EMPTY)   || \
-                                                ((THRESHOLD) == SAI_FIFOTHRESHOLD_1QF)     || \
-                                                ((THRESHOLD) == SAI_FIFOTHRESHOLD_HF)      || \
-                                                ((THRESHOLD) == SAI_FIFOTHRESHOLD_3QF)     || \
-                                                ((THRESHOLD) == SAI_FIFOTHRESHOLD_FULL))
 /**
   * @}
   */
   
-/** @defgroup SAI_Block_Companding_Mode
+/** @defgroup SAI_Block_Companding_Mode SAI Block Companding Mode
   * @{
   */
 #define SAI_NOCOMPANDING                  ((uint32_t)0x00000000)
@@ -537,36 +454,22 @@ typedef struct
 #define SAI_ULAW_2CPL_COMPANDING          ((uint32_t)0x0000A000)
 #define SAI_ALAW_2CPL_COMPANDING          ((uint32_t)0x0000E000)
 
-#define IS_SAI_BLOCK_COMPANDING_MODE(MODE)    (((MODE) == SAI_NOCOMPANDING)         || \
-                                               ((MODE) == SAI_ULAW_1CPL_COMPANDING) || \
-                                               ((MODE) == SAI_ALAW_1CPL_COMPANDING) || \
-                                               ((MODE) == SAI_ULAW_2CPL_COMPANDING) || \
-                                               ((MODE) == SAI_ALAW_2CPL_COMPANDING))
 /**
   * @}
   */
 
-/** @defgroup SAI_Block_Mute_Value
+/** @defgroup SAI_Block_Mute_Value SAI Block Mute Value
   * @{
   */
 #define SAI_ZERO_VALUE                     ((uint32_t)0x00000000)
 #define SAI_LAST_SENT_VALUE                 ((uint32_t)SAI_xCR2_MUTEVAL)
 
-#define IS_SAI_BLOCK_MUTE_VALUE(VALUE)    (((VALUE) == SAI_ZERO_VALUE)     || \
-                                           ((VALUE) == SAI_LAST_SENT_VALUE))
 /**
   * @}
   */
 
-/** @defgroup SAI_Block_Mute_Frame_Counter
-  * @{
-  */ 
-#define IS_SAI_BLOCK_MUTE_COUNTER(COUNTER) ((COUNTER) <= 63)
-/**
-  * @}
-  */
 
-/** @defgroup SAI_Block_Interrupts_Definition 
+/** @defgroup SAI_Block_Interrupts_Definition SAI Block Interrupts Definition
   * @{
   */
 #define SAI_IT_OVRUDR                     ((uint32_t)SAI_xIMR_OVRUDRIE)
@@ -577,18 +480,11 @@ typedef struct
 #define SAI_IT_AFSDET                     ((uint32_t)SAI_xIMR_AFSDETIE)
 #define SAI_IT_LFSDET                     ((uint32_t)SAI_xIMR_LFSDETIE)
 
-#define IS_SAI_BLOCK_CONFIG_IT(IT) (((IT) == SAI_IT_OVRUDR)  || \
-                                    ((IT) == SAI_IT_MUTEDET) || \
-                                    ((IT) == SAI_IT_WCKCFG)  || \
-                                    ((IT) == SAI_IT_FREQ)    || \
-                                    ((IT) == SAI_IT_CNRDY)   || \
-                                    ((IT) == SAI_IT_AFSDET)  || \
-                                    ((IT) == SAI_IT_LFSDET))
 /**
   * @}
   */
 
-/** @defgroup SAI_Block_Flags_Definition 
+/** @defgroup SAI_Block_Flags_Definition  SAI Block Flags Definition
   * @{
   */
 #define SAI_FLAG_OVRUDR                   ((uint32_t)SAI_xSR_OVRUDR)
@@ -599,51 +495,35 @@ typedef struct
 #define SAI_FLAG_AFSDET                   ((uint32_t)SAI_xSR_AFSDET)
 #define SAI_FLAG_LFSDET                   ((uint32_t)SAI_xSR_LFSDET)
 
-#define IS_SAI_BLOCK_GET_FLAG(FLAG) (((FLAG) == SAI_FLAG_OVRUDR)  || \
-                                    ((FLAG) == SAI_FLAG_MUTEDET)  || \
-                                    ((FLAG) == SAI_FLAG_WCKCFG)   || \
-                                    ((FLAG) == SAI_FLAG_FREQ)     || \
-                                    ((FLAG) == SAI_FLAG_CNRDY)    || \
-                                    ((FLAG) == SAI_FLAG_AFSDET)   || \
-                                    ((FLAG) == SAI_FLAG_LFSDET))
-                                   
-#define IS_SAI_BLOCK_CLEAR_FLAG(FLAG) (((FLAG) == SAI_FLAG_OVRUDR)  || \
-                                       ((FLAG) == SAI_FLAG_MUTEDET) || \
-                                       ((FLAG) == SAI_FLAG_WCKCFG)  || \
-                                       ((FLAG) == SAI_FLAG_FREQ)    || \
-                                       ((FLAG) == SAI_FLAG_CNRDY)   || \
-                                       ((FLAG) == SAI_FLAG_AFSDET)  || \
-                                       ((FLAG) == SAI_FLAG_LFSDET))
 /**
   * @}
   */
   
-/** @defgroup SAI_Block_Fifo_Status_Level 
+/** @defgroup SAI_Block_Fifo_Status_Level   SAI Block Fifo Status Level
   * @{
   */
-#define SAI_FIFOStatus_Empty              ((uint32_t)0x00000000)
-#define SAI_FIFOStatus_Less1QuarterFull   ((uint32_t)0x00010000)
-#define SAI_FIFOStatus_1QuarterFull       ((uint32_t)0x00020000)
-#define SAI_FIFOStatus_HalfFull           ((uint32_t)0x00030000) 
-#define SAI_FIFOStatus_3QuartersFull      ((uint32_t)0x00040000)
-#define SAI_FIFOStatus_Full               ((uint32_t)0x00050000)
+#define SAI_FIFOSTATUS_EMPTY              ((uint32_t)0x00000000)
+#define SAI_FIFOSTATUS_LESS1QUARTERFULL   ((uint32_t)0x00010000)
+#define SAI_FIFOSTATUS_1QUARTERFULL       ((uint32_t)0x00020000)
+#define SAI_FIFOSTATUS_HALFFULL           ((uint32_t)0x00030000) 
+#define SAI_FIFOSTATUS_3QUARTERFULL       ((uint32_t)0x00040000)
+#define SAI_FIFOSTATUS_FULL               ((uint32_t)0x00050000)
 
-#define IS_SAI_BLOCK_FIFO_STATUS(STATUS) (((STATUS) == SAI_FIFOStatus_Less1QuarterFull ) || \
-                                          ((STATUS) == SAI_FIFOStatus_HalfFull)          || \
-                                          ((STATUS) == SAI_FIFOStatus_1QuarterFull)      || \
-                                          ((STATUS) == SAI_FIFOStatus_3QuartersFull)     || \
-                                          ((STATUS) == SAI_FIFOStatus_Full)              || \
-                                          ((STATUS) == SAI_FIFOStatus_Empty)) 
 /**
   * @}
   */
 
-  
 /**
   * @}
   */
   
 /* Exported macro ------------------------------------------------------------*/
+
+/** @defgroup SAI_Exported_Macros SAI Exported Macros
+ *  @brief macros to handle interrupts and specific configurations
+ * @{
+ */
+ 
 /** @brief Reset SAI handle state
   * @param  __HANDLE__: specifies the SAI Handle.
   * @retval None
@@ -660,7 +540,7 @@ typedef struct
   *            @arg SAI_IT_FREQ: FIFO request interrupt enable                                  
   *            @arg SAI_IT_CNRDY: Codec not ready interrupt enable                               
   *            @arg SAI_IT_AFSDET: Anticipated frame synchronization detection interrupt enable   
-  *            @arg SAI_IT_LFSDET: Late frame synchronization detection interrupt enabl
+  *            @arg SAI_IT_LFSDET: Late frame synchronization detection interrupt enable
   * @retval None
   */
   
@@ -712,16 +592,34 @@ typedef struct
 
 #define __HAL_SAI_ENABLE(__HANDLE__) ((__HANDLE__)->Instance->CR1 |=  SAI_xCR1_SAIEN)
 #define __HAL_SAI_DISABLE(__HANDLE__) ((__HANDLE__)->Instance->CR1 &=  ~SAI_xCR1_SAIEN)
-                                                                               
+ 
+ /**
+  * @}
+  */
+                                                                                
 /* Exported functions --------------------------------------------------------*/
 
+/** @addtogroup SAI_Exported_Functions
+  * @{
+  */
+
 /* Initialization/de-initialization functions  **********************************/
+/** @addtogroup SAI_Exported_Functions_Group1
+  * @{
+  */
 HAL_StatusTypeDef HAL_SAI_Init(SAI_HandleTypeDef *hsai);
 HAL_StatusTypeDef HAL_SAI_DeInit (SAI_HandleTypeDef *hsai);
 void HAL_SAI_MspInit(SAI_HandleTypeDef *hsai);
 void HAL_SAI_MspDeInit(SAI_HandleTypeDef *hsai);
 
+/**
+  * @}
+  */
+
 /* I/O operation functions  *****************************************************/
+/** @addtogroup SAI_Exported_Functions_Group2
+  * @{
+  */
 /* Blocking mode: Polling */
 HAL_StatusTypeDef HAL_SAI_Transmit(SAI_HandleTypeDef *hsai, uint16_t *pData, uint16_t Size, uint32_t Timeout);
 HAL_StatusTypeDef HAL_SAI_Receive(SAI_HandleTypeDef *hsai, uint16_t *pData, uint16_t Size, uint32_t Timeout);
@@ -744,10 +642,162 @@ void HAL_SAI_TxCpltCallback(SAI_HandleTypeDef *hsai);
 void HAL_SAI_RxHalfCpltCallback(SAI_HandleTypeDef *hsai);
 void HAL_SAI_RxCpltCallback(SAI_HandleTypeDef *hsai);
 void HAL_SAI_ErrorCallback(SAI_HandleTypeDef *hsai);
+/**
+  * @}
+  */
 
+/** @addtogroup SAI_Exported_Functions_Group3
+  * @{
+  */
 /* Peripheral State functions  **************************************************/
 HAL_SAI_StateTypeDef HAL_SAI_GetState(SAI_HandleTypeDef *hsai);
 uint32_t HAL_SAI_GetError(SAI_HandleTypeDef *hsai);
+/**
+  * @}
+  */
+  
+/**
+  * @}
+  */
+
+/* Private types -------------------------------------------------------------*/
+/** @defgroup SAI_Private_Types SAI Private Types
+  * @{
+  */
+
+/**
+  * @}
+  */ 
+
+/* Private variables ---------------------------------------------------------*/
+/** @defgroup SAI_Private_Variables SAI Private Variables
+  * @{
+  */
+
+/**
+  * @}
+  */ 
+
+/* Private constants ---------------------------------------------------------*/
+/** @defgroup SAI_Private_Constants SAI Private Constants
+  * @{
+  */
+
+/**
+  * @}
+  */ 
+
+/* Private macros ------------------------------------------------------------*/
+/** @addtogroup SAI_Private_Macros
+  * @{
+  */
+#define IS_SAI_CLK_SOURCE(SOURCE) (((SOURCE) == SAI_CLKSOURCE_PLLSAI) ||\
+                                   ((SOURCE) == SAI_CLKSOURCE_PLLI2S) ||\
+                                   ((SOURCE) == SAI_CLKSOURCE_EXT))
+
+#define IS_SAI_AUDIO_FREQUENCY(AUDIO) (((AUDIO) == SAI_AUDIO_FREQUENCY_192K) || ((AUDIO) == SAI_AUDIO_FREQUENCY_96K) || \
+                                       ((AUDIO) == SAI_AUDIO_FREQUENCY_48K)  || ((AUDIO) == SAI_AUDIO_FREQUENCY_44K) || \
+                                       ((AUDIO) == SAI_AUDIO_FREQUENCY_32K)  || ((AUDIO) == SAI_AUDIO_FREQUENCY_22K) || \
+                                       ((AUDIO) == SAI_AUDIO_FREQUENCY_16K)  || ((AUDIO) == SAI_AUDIO_FREQUENCY_11K) || \
+                                       ((AUDIO) == SAI_AUDIO_FREQUENCY_8K))
+
+#define IS_SAI_BLOCK_MODE(MODE)    (((MODE) == SAI_MODEMASTER_TX) || \
+                                    ((MODE) == SAI_MODEMASTER_RX) || \
+                                    ((MODE) == SAI_MODESLAVE_TX)  || \
+                                    ((MODE) == SAI_MODESLAVE_RX))
+
+#define IS_SAI_BLOCK_PROTOCOL(PROTOCOL) (((PROTOCOL) == SAI_FREE_PROTOCOL)  || \
+                                         ((PROTOCOL) == SAI_AC97_PROTOCOL))
+
+#define IS_SAI_BLOCK_DATASIZE(DATASIZE) (((DATASIZE) == SAI_DATASIZE_8)  || \
+                                         ((DATASIZE) == SAI_DATASIZE_10) || \
+                                         ((DATASIZE) == SAI_DATASIZE_16) || \
+                                         ((DATASIZE) == SAI_DATASIZE_20) || \
+                                         ((DATASIZE) == SAI_DATASIZE_24) || \
+                                         ((DATASIZE) == SAI_DATASIZE_32))
+
+#define IS_SAI_BLOCK_FIRST_BIT(BIT) (((BIT) == SAI_FIRSTBIT_MSB) || \
+                                     ((BIT) == SAI_FIRSTBIT_LSB))
+
+#define IS_SAI_BLOCK_CLOCK_STROBING(CLOCK) (((CLOCK) == SAI_CLOCKSTROBING_FALLINGEDGE) || \
+                                            ((CLOCK) == SAI_CLOCKSTROBING_RISINGEDGE))
+
+#define IS_SAI_BLOCK_SYNCHRO(SYNCHRO) (((SYNCHRO) == SAI_ASYNCHRONOUS) || \
+                                       ((SYNCHRO) == SAI_SYNCHRONOUS))
+
+#define IS_SAI_BLOCK_OUTPUT_DRIVE(DRIVE) (((DRIVE) == SAI_OUTPUTDRIVE_DISABLE) || \
+                                          ((DRIVE) == SAI_OUTPUTDRIVE_ENABLE))
+
+#define IS_SAI_BLOCK_NODIVIDER(NODIVIDER) (((NODIVIDER) == SAI_MASTERDIVIDER_ENABLE) || \
+                                           ((NODIVIDER) == SAI_MASTERDIVIDER_DISABLE)) 
+                                           
+#define IS_SAI_BLOCK_FIFO_STATUS(STATUS) (((STATUS) == SAI_FIFOSTATUS_LESS1QUARTERFULL ) || \
+                                          ((STATUS) == SAI_FIFOSTATUS_HALFFULL)          || \
+                                          ((STATUS) == SAI_FIFOSTATUS_1QUARTERFULL)      || \
+                                          ((STATUS) == SAI_FIFOSTATUS_3QUARTERFULL)     || \
+                                          ((STATUS) == SAI_FIFOSTATUS_FULL)              || \
+                                          ((STATUS) == SAI_FIFOSTATUS_EMPTY)) 
+
+#define IS_SAI_BLOCK_MUTE_COUNTER(COUNTER) ((COUNTER) <= 63)
+
+#define IS_SAI_BLOCK_MUTE_VALUE(VALUE)    (((VALUE) == SAI_ZERO_VALUE)     || \
+                                           ((VALUE) == SAI_LAST_SENT_VALUE)) 
+
+#define IS_SAI_BLOCK_COMPANDING_MODE(MODE)    (((MODE) == SAI_NOCOMPANDING)         || \
+                                               ((MODE) == SAI_ULAW_1CPL_COMPANDING) || \
+                                               ((MODE) == SAI_ALAW_1CPL_COMPANDING) || \
+                                               ((MODE) == SAI_ULAW_2CPL_COMPANDING) || \
+                                               ((MODE) == SAI_ALAW_2CPL_COMPANDING)) 
+
+#define IS_SAI_BLOCK_FIFO_THRESHOLD(THRESHOLD) (((THRESHOLD) == SAI_FIFOTHRESHOLD_EMPTY)   || \
+                                                ((THRESHOLD) == SAI_FIFOTHRESHOLD_1QF)     || \
+                                                ((THRESHOLD) == SAI_FIFOTHRESHOLD_HF)      || \
+                                                ((THRESHOLD) == SAI_FIFOTHRESHOLD_3QF)     || \
+                                                ((THRESHOLD) == SAI_FIFOTHRESHOLD_FULL))  
+
+#define IS_SAI_BLOCK_TRISTATE_MANAGEMENT(STATE) (((STATE) == SAI_OUTPUT_NOTRELEASED) ||\
+                                                 ((STATE) == SAI_OUTPUT_RELEASED)) 
+
+#define IS_SAI_BLOCK_MONO_STEREO_MODE(MODE) (((MODE) == SAI_MONOMODE) ||\
+                                            ((MODE) == SAI_STEREOMODE)) 
+
+#define IS_SAI_SLOT_ACTIVE(ACTIVE) ((ACTIVE) != 0)
+
+#define IS_SAI_BLOCK_SLOT_NUMBER(NUMBER) ((1 <= (NUMBER)) && ((NUMBER) <= 16))  
+
+#define IS_SAI_BLOCK_SLOT_SIZE(SIZE) (((SIZE) == SAI_SLOTSIZE_DATASIZE) || \
+                                      ((SIZE) == SAI_SLOTSIZE_16B)      || \
+                                      ((SIZE) == SAI_SLOTSIZE_32B))
+
+#define IS_SAI_BLOCK_FIRSTBIT_OFFSET(OFFSET) ((OFFSET) <= 24) 
+
+#define IS_SAI_BLOCK_FS_OFFSET(OFFSET) (((OFFSET) == SAI_FS_FIRSTBIT) || \
+                                        ((OFFSET) == SAI_FS_BEFOREFIRSTBIT))
+
+#define IS_SAI_BLOCK_FS_POLARITY(POLARITY) (((POLARITY) == SAI_FS_ACTIVE_LOW) || \
+                                            ((POLARITY) == SAI_FS_ACTIVE_HIGH)) 
+
+#define IS_SAI_BLOCK_FS_DEFINITION(DEFINITION) (((DEFINITION) == SAI_FS_STARTFRAME) || \
+                                                ((DEFINITION) == SAI_FS_CHANNEL_IDENTIFICATION)) 
+                                                
+#define IS_SAI_BLOCK_MASTER_DIVIDER(DIVIDER) ((DIVIDER) <= 15)    
+
+#define IS_SAI_BLOCK_FRAME_LENGTH(LENGTH) ((8 <= (LENGTH)) && ((LENGTH) <= 256))      
+
+#define IS_SAI_BLOCK_ACTIVE_FRAME(LENGTH) ((1 <= (LENGTH)) && ((LENGTH) <= 128))  
+                                          
+/**
+  * @}
+  */
+
+/* Private functions ---------------------------------------------------------*/
+/** @defgroup SAI_Private_Functions SAI Private Functions
+  * @{
+  */
+
+/**
+  * @}
+  */
 
 #endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx */
 /**

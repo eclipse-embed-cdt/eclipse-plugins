@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_ll_usb.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   USB Low Layer HAL module driver.
   *    
   *          This file provides firmware functions to manage the following 
@@ -167,7 +167,7 @@ HAL_StatusTypeDef USB_DisableGlobalInt(USB_OTG_GlobalTypeDef *USBx)
   * @param  USBx : Selected device
   * @param  mode :  current core mode
   *          This parameter can be one of the these values:
-  *            @arg USB_OTG_DEVICE_MODE: Peripheral mode mode
+  *            @arg USB_OTG_DEVICE_MODE: Peripheral mode
   *            @arg USB_OTG_HOST_MODE: Host mode
   *            @arg USB_OTG_DRD_MODE: Dual Role Device mode  
   * @retval HAL status
@@ -786,12 +786,12 @@ HAL_StatusTypeDef USB_WritePacket(USB_OTG_GlobalTypeDef *USBx, uint8_t *src, uin
   * @param  USBx : Selected device  
   * @param  src : source pointer
   * @param  ch_ep_num : endpoint or host channel number
-  * @param  len : Noumber of bytes to read
+  * @param  len : Number of bytes to read
   * @param  dma: USB dma enabled or disabled 
   *          This parameter can be one of the these values:
   *           0 : DMA feature not used 
   *           1 : DMA feature used  
-  * @retval pointer to desctination buffer
+  * @retval pointer to destination buffer
   */
 void *USB_ReadPacket(USB_OTG_GlobalTypeDef *USBx, uint8_t *dest, uint16_t len)
 {
@@ -1317,7 +1317,7 @@ uint32_t USB_GetCurrentFrame (USB_OTG_GlobalTypeDef *USBx)
   * @param  ep_type : Endpoint Type
   *          This parameter can be one of the these values:
   *            @arg EP_TYPE_CTRL: Control type
-  *            @arg EP_TYPE_ISOC: Isochrounous type
+  *            @arg EP_TYPE_ISOC: Isochronous type
   *            @arg EP_TYPE_BULK: Bulk type
   *            @arg EP_TYPE_INTR: Interrupt type
   * @param  mps : Max Packet Size
@@ -1680,7 +1680,7 @@ HAL_StatusTypeDef USB_StopHost(USB_OTG_GlobalTypeDef *USBx)
     while ((USBx_HC(i)->HCCHAR & USB_OTG_HCCHAR_CHENA) == USB_OTG_HCCHAR_CHENA);
   }
 
-  /* Clear any pending Host interrups */  
+  /* Clear any pending Host interrupts */  
   USBx_HOST->HAINT = 0xFFFFFFFF;
   USBx->GINTSTS = 0xFFFFFFFF;
   USB_EnableGlobalInt(USBx);

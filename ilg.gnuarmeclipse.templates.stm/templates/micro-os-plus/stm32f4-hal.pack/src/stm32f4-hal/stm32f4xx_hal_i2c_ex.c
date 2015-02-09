@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_i2c_ex.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   I2C Extension HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of I2C extension peripheral:
@@ -64,7 +64,7 @@
   * @{
   */
 
-/** @defgroup I2CEx 
+/** @defgroup I2CEx I2CEx
   * @brief I2C HAL module driver
   * @{
   */
@@ -78,14 +78,13 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
-/* Private functions ---------------------------------------------------------*/
-
-/** @defgroup I2CEx_Private_Functions
+/* Exported functions --------------------------------------------------------*/
+/** @defgroup I2CEx_Exported_Functions I2C Exported Functions
   * @{
   */
 
 
-/** @defgroup I2CEx_Group1 Extension features functions 
+/** @defgroup I2CEx_Exported_Functions_Group1 Extension features functions 
  *  @brief   Extension features functions 
  *
 @verbatim   
@@ -106,7 +105,7 @@
   * @param  AnalogFilter: new state of the Analog filter.
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_I2CEx_AnalogFilter_Config(I2C_HandleTypeDef *hi2c, uint32_t AnalogFilter)
+HAL_StatusTypeDef HAL_I2CEx_ConfigAnalogFilter(I2C_HandleTypeDef *hi2c, uint32_t AnalogFilter)
 {
   uint32_t tmp = 0;
   
@@ -151,7 +150,7 @@ HAL_StatusTypeDef HAL_I2CEx_AnalogFilter_Config(I2C_HandleTypeDef *hi2c, uint32_
   * @param  DigitalFilter: Coefficient of digital noise filter between 0x00 and 0x0F.
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_I2CEx_DigitalFilter_Config(I2C_HandleTypeDef *hi2c, uint32_t DigitalFilter)
+HAL_StatusTypeDef HAL_I2CEx_ConfigDigitalFilter(I2C_HandleTypeDef *hi2c, uint32_t DigitalFilter)
 {
   uint16_t tmpreg = 0;
   uint32_t tmp = 0;  

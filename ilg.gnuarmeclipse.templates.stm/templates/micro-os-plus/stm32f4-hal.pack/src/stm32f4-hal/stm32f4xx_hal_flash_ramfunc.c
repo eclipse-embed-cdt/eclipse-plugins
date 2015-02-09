@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_flash_ramfunc.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   FLASH RAMFUNC module driver.
   *          This file provides a FLASH firmware functions which should be 
   *          executed from internal SRAM
@@ -70,7 +70,7 @@
   * @{
   */
 
-/** @defgroup FLASH_RAMFUNC 
+/** @defgroup FLASH_RAMFUNC FLASH RAMFUNC
   * @brief FLASH functions executed from RAM
   * @{
   */
@@ -84,13 +84,12 @@
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
-/* Private functions ---------------------------------------------------------*/
-
-/** @defgroup FLASH_RAMFUNC_Private_Functions
+/* Exported functions --------------------------------------------------------*/
+/** @defgroup FLASH_RAMFUNC_Exported_Functions FLASH RAMFUNC Exported Functions
   * @{
   */
 
-/** @defgroup FLASH_RAMFUNC_Group1 Peripheral features functions executed from internal RAM 
+/** @defgroup FLASH_RAMFUNC_Exported_Functions_Group1 Peripheral features functions executed from internal RAM 
   *  @brief Peripheral Extended features functions 
   *
 @verbatim   
@@ -109,15 +108,14 @@
 /**
   * @brief Stop the flash interface while System Run
   * @note  This mode is only available for STM32F411xx devices. 
-  * @note  This mode could n't be set while executing with the flash itself. 
+  * @note  This mode couldn't be set while executing with the flash itself. 
   *        It should be done with specific routine executed from RAM.     
-  * @param None
   * @retval None
   */
 __RAM_FUNC HAL_FLASHEx_StopFlashInterfaceClk(void)
 {
   /* Enable Power ctrl clock */
-  __PWR_CLK_ENABLE();
+  __HAL_RCC_PWR_CLK_ENABLE();
   /* Stop the flash interface while System Run */  
   SET_BIT(PWR->CR, PWR_CR_FISSR);
    
@@ -127,15 +125,14 @@ __RAM_FUNC HAL_FLASHEx_StopFlashInterfaceClk(void)
 /**
   * @brief Start the flash interface while System Run
   * @note  This mode is only available for STM32F411xx devices. 
-  * @note  This mode could n't be set while executing with the flash itself. 
+  * @note  This mode couldn't be set while executing with the flash itself. 
   *        It should be done with specific routine executed from RAM.     
-  * @param None
   * @retval None
   */
 __RAM_FUNC HAL_FLASHEx_StartFlashInterfaceClk(void)
 {
   /* Enable Power ctrl clock */
-  __PWR_CLK_ENABLE();
+  __HAL_RCC_PWR_CLK_ENABLE();
   /* Start the flash interface while System Run */
   CLEAR_BIT(PWR->CR, PWR_CR_FISSR);
 
@@ -147,13 +144,12 @@ __RAM_FUNC HAL_FLASHEx_StartFlashInterfaceClk(void)
   * @note  This mode is only available for STM32F411xx devices. 
   * @note  This mode could n't be set while executing with the flash itself. 
   *        It should be done with specific routine executed from RAM.     
-  * @param None
   * @retval None
   */
 __RAM_FUNC HAL_FLASHEx_EnableFlashSleepMode(void)
 {
   /* Enable Power ctrl clock */
-  __PWR_CLK_ENABLE();
+  __HAL_RCC_PWR_CLK_ENABLE();
   /* Enable the flash sleep while System Run */
   SET_BIT(PWR->CR, PWR_CR_FMSSR);
 
@@ -165,13 +161,12 @@ __RAM_FUNC HAL_FLASHEx_EnableFlashSleepMode(void)
   * @note  This mode is only available for STM32F411xx devices. 
   * @note  This mode could n't be set while executing with the flash itself. 
   *        It should be done with specific routine executed from RAM.     
-  * @param None
   * @retval None
   */
 __RAM_FUNC HAL_FLASHEx_DisableFlashSleepMode(void)
 {
   /* Enable Power ctrl clock */
-  __PWR_CLK_ENABLE();
+  __HAL_RCC_PWR_CLK_ENABLE();
   /* Disable the flash sleep while System Run */
   CLEAR_BIT(PWR->CR, PWR_CR_FMSSR);
   

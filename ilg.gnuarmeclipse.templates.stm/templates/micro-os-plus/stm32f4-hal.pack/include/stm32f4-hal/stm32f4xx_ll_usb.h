@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_ll_usb.h
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   Header file of USB Core HAL module.
   ******************************************************************************
   * @attention
@@ -224,11 +224,11 @@ typedef struct
   
 /* Exported constants --------------------------------------------------------*/
 
-/** @defgroup PCD_Exported_Constants
+/** @defgroup PCD_Exported_Constants PCD Exported Constants
   * @{
   */
 
-/** @defgroup USB_Core_Mode_
+/** @defgroup USB_Core_Mode_ USB Core Mode
   * @{
   */
 #define USB_OTG_MODE_DEVICE                    0
@@ -238,7 +238,7 @@ typedef struct
   * @}
   */
 
-/** @defgroup USB_Core_Speed_
+/** @defgroup USB_Core_Speed_   USB Core Speed
   * @{
   */  
 #define USB_OTG_SPEED_HIGH                     0
@@ -249,7 +249,7 @@ typedef struct
   * @}
   */
   
-/** @defgroup USB_Core_PHY_
+/** @defgroup USB_Core_PHY_   USB Core PHY
   * @{
   */   
 #define USB_OTG_ULPI_PHY                       1
@@ -258,7 +258,7 @@ typedef struct
   * @}
   */
   
-/** @defgroup USB_Core_MPS_
+/** @defgroup USB_Core_MPS_   USB Core MPS
   * @{
   */
 #define USB_OTG_HS_MAX_PACKET_SIZE           512
@@ -268,7 +268,7 @@ typedef struct
   * @}
   */
 
-/** @defgroup USB_Core_Phy_Frequency_
+/** @defgroup USB_Core_Phy_Frequency_   USB Core Phy Frequency
   * @{
   */
 #define DSTS_ENUMSPD_HS_PHY_30MHZ_OR_60MHZ     (0 << 1)
@@ -279,7 +279,7 @@ typedef struct
   * @}
   */
   
-/** @defgroup USB_CORE_Frame_Interval_
+/** @defgroup USB_CORE_Frame_Interval_   USB CORE Frame Interval
   * @{
   */  
 #define DCFG_FRAME_INTERVAL_80                 0
@@ -290,7 +290,7 @@ typedef struct
   * @}
   */
 
-/** @defgroup USB_EP0_MPS_
+/** @defgroup USB_EP0_MPS_  USB EP0 MPS
   * @{
   */
 #define DEP0CTL_MPS_64                         0
@@ -301,7 +301,7 @@ typedef struct
   * @}
   */
 
-/** @defgroup USB_EP_Speed_
+/** @defgroup USB_EP_Speed_  USB EP Speed
   * @{
   */
 #define EP_SPEED_LOW                           0
@@ -311,7 +311,7 @@ typedef struct
   * @}
   */
 
-/** @defgroup USB_EP_Type_
+/** @defgroup USB_EP_Type_  USB EP Type
   * @{
   */
 #define EP_TYPE_CTRL                           0
@@ -323,7 +323,7 @@ typedef struct
   * @}
   */
 
-/** @defgroup USB_STS_Defines_
+/** @defgroup USB_STS_Defines_   USB STS Defines
   * @{
   */
 #define STS_GOUT_NAK                           1
@@ -335,7 +335,7 @@ typedef struct
   * @}
   */
 
-/** @defgroup HCFG_SPEED_Defines_
+/** @defgroup HCFG_SPEED_Defines_   HCFG SPEED Defines
   * @{
   */  
 #define HCFG_30_60_MHZ                         0
@@ -345,7 +345,7 @@ typedef struct
   * @}
   */
     
-/** @defgroup HPRT0_PRTSPD_SPEED_Defines_
+/** @defgroup HPRT0_PRTSPD_SPEED_Defines_  HPRT0 PRTSPD SPEED Defines
   * @{
   */    
 #define HPRT0_PRTSPD_HIGH_SPEED                0
@@ -380,7 +380,9 @@ typedef struct
 
 #define USBx_HOST       ((USB_OTG_HostTypeDef *)((uint32_t )USBx + USB_OTG_HOST_BASE))  
 #define USBx_HC(i)      ((USB_OTG_HostChannelTypeDef *)((uint32_t)USBx + USB_OTG_HOST_CHANNEL_BASE + (i)*USB_OTG_HOST_CHANNEL_SIZE))
-
+/**
+  * @}
+  */
 /* Exported macro ------------------------------------------------------------*/
 #define USB_MASK_INTERRUPT(__INSTANCE__, __INTERRUPT__)     ((__INSTANCE__)->GINTMSK &= ~(__INTERRUPT__))
 #define USB_UNMASK_INTERRUPT(__INSTANCE__, __INTERRUPT__)   ((__INSTANCE__)->GINTMSK |= (__INTERRUPT__))

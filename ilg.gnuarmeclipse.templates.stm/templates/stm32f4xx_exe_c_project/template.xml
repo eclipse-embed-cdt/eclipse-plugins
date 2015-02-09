@@ -700,6 +700,21 @@
 				</element>
 			</complex-array>
 		</process>
+		
+		<!-- Copy legacy files in peripheral library -->
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="folders">
+				<element>
+					<simple name="source"
+						value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/Legacy" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/$(devicePeriph)/Legacy" />
+					<simple name="pattern" value="" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
 	</if>
 
 	<!-- ================================================================== -->

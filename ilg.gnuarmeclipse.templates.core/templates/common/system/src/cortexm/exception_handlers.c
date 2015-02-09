@@ -137,6 +137,9 @@ dumpExceptionStack (ExceptionStackFrame* frame, uint32_t lr)
 
 #if defined(OS_USE_SEMIHOSTING) || defined(OS_USE_TRACE_SEMIHOSTING_STDOUT) || defined(OS_USE_TRACE_SEMIHOSTING_DEBUG)
 
+int
+isSemihosting (ExceptionStackFrame* frame, uint16_t opCode);
+
 /**
  * This function provides the minimum functionality to make a semihosting program execute even without the debugger present.
  * @param frame pointer to an exception stack frame.

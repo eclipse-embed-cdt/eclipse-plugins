@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_eth.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   ETH HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Ethernet (ETH) peripheral:
@@ -26,9 +26,9 @@
 
       (#)Initialize the ETH low level resources through the HAL_ETH_MspInit() API:
           (##) Enable the Ethernet interface clock using 
-               (+++) __ETHMAC_CLK_ENABLE();
-               (+++) __ETHMACTX_CLK_ENABLE();
-               (+++) __ETHMACRX_CLK_ENABLE();
+               (+++) __HAL_RCC_ETHMAC_CLK_ENABLE();
+               (+++) __HAL_RCC_ETHMACTX_CLK_ENABLE();
+               (+++) __HAL_RCC_ETHMACRX_CLK_ENABLE();
            
           (##) Initialize the related GPIO clocks
           (##) Configure Ethernet pin-out
@@ -63,6 +63,9 @@
       
       (#) Configure the Ethernet DMA after ETH peripheral initialization
           HAL_ETH_ConfigDMA(); all DMA parameters should be filled.
+      
+      -@- The PTP protocol and the DMA descriptors ring mode are not supported 
+          in this driver
 
   @endverbatim
   ******************************************************************************
@@ -102,7 +105,7 @@
   * @{
   */
 
-/** @defgroup ETH 
+/** @defgroup ETH ETH 
   * @brief ETH HAL module driver
   * @{
   */
@@ -113,12 +116,21 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+/** @defgroup ETH_Private_Constants ETH Private Constants
+  * @{
+  */
 #define LINKED_STATE_TIMEOUT_VALUE          ((uint32_t)2000)  /* 2000 ms */
 #define AUTONEGO_COMPLETED_TIMEOUT_VALUE    ((uint32_t)1000)  /* 1000 ms */
 
+/**
+  * @}
+  */
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
+/** @defgroup ETH_Private_Functions ETH Private Functions
+  * @{
+  */
 static void ETH_MACDMAConfig(ETH_HandleTypeDef *heth, uint32_t err);
 static void ETH_MACAddressConfig(ETH_HandleTypeDef *heth, uint32_t MacAddr, uint8_t *Addr);
 static void ETH_MACReceptionEnable(ETH_HandleTypeDef *heth);
@@ -131,14 +143,17 @@ static void ETH_DMAReceptionEnable(ETH_HandleTypeDef *heth);
 static void ETH_DMAReceptionDisable(ETH_HandleTypeDef *heth);
 static void ETH_FlushTransmitFIFO(ETH_HandleTypeDef *heth);
 
+/**
+  * @}
+  */
 /* Private functions ---------------------------------------------------------*/
 
-/** @defgroup ETH_Private_Functions
+/** @defgroup ETH_Exported_Functions ETH Exported Functions
   * @{
   */
 
-/** @defgroup ETH_Group1 Initialization and de-initialization functions 
-  *  @brief    Initialization and Configuration functions 
+/** @defgroup ETH_Exported_Functions_Group1 Initialization and de-initialization functions 
+  *  @brief   Initialization and Configuration functions 
   *
   @verbatim    
   ===============================================================================
@@ -185,7 +200,7 @@ HAL_StatusTypeDef HAL_ETH_Init(ETH_HandleTypeDef *heth)
   }
   
   /* Enable SYSCFG Clock */
-  __SYSCFG_CLK_ENABLE();
+  __HAL_RCC_SYSCFG_CLK_ENABLE();
   
   /* Select MII or RMII Mode*/
   SYSCFG->PMC &= ~(SYSCFG_PMC_MII_RMII_SEL);
@@ -205,7 +220,7 @@ HAL_StatusTypeDef HAL_ETH_Init(ETH_HandleTypeDef *heth)
   /* Get the ETHERNET MACMIIAR value */
   tmpreg = (heth->Instance)->MACMIIAR;
   /* Clear CSR Clock Range CR[2:0] bits */
-  tmpreg &= MACMIIAR_CR_MASK;
+  tmpreg &= ETH_MACMIIAR_CR_MASK;
   
   /* Get hclk frequency value */
   hclk = HAL_RCC_GetHCLKFreq();
@@ -610,7 +625,7 @@ __weak void HAL_ETH_MspDeInit(ETH_HandleTypeDef *heth)
   * @}
   */
 
-/** @defgroup ETH_Group2 IO operation functions 
+/** @defgroup ETH_Exported_Functions_Group2 IO operation functions 
   *  @brief   Data transfers functions 
   *
   @verbatim   
@@ -1054,7 +1069,7 @@ HAL_StatusTypeDef HAL_ETH_ReadPHYRegister(ETH_HandleTypeDef *heth, uint16_t PHYR
   tmpreg = heth->Instance->MACMIIAR;
   
   /* Keep only the CSR Clock Range CR[2:0] bits value */
-  tmpreg &= ~MACMIIAR_CR_MASK;
+  tmpreg &= ~ETH_MACMIIAR_CR_MASK;
   
   /* Prepare the MII address register value */
   tmpreg |=(((uint32_t)heth->Init.PhyAddress << 11) & ETH_MACMIIAR_PA); /* Set the PHY device address   */
@@ -1126,7 +1141,7 @@ HAL_StatusTypeDef HAL_ETH_WritePHYRegister(ETH_HandleTypeDef *heth, uint16_t PHY
   tmpreg = heth->Instance->MACMIIAR;
   
   /* Keep only the CSR Clock Range CR[2:0] bits value */
-  tmpreg &= ~MACMIIAR_CR_MASK;
+  tmpreg &= ~ETH_MACMIIAR_CR_MASK;
   
   /* Prepare the MII register address value */
   tmpreg |=(((uint32_t)heth->Init.PhyAddress<<11) & ETH_MACMIIAR_PA); /* Set the PHY device address */
@@ -1171,7 +1186,7 @@ HAL_StatusTypeDef HAL_ETH_WritePHYRegister(ETH_HandleTypeDef *heth, uint16_t PHY
   * @}
   */
 
-/** @defgroup ETH_Group3 Peripheral Control functions
+/** @defgroup ETH_Exported_Functions_Group3 Peripheral Control functions
  *  @brief    Peripheral Control functions 
  *
 @verbatim   
@@ -1309,7 +1324,7 @@ HAL_StatusTypeDef HAL_ETH_ConfigMAC(ETH_HandleTypeDef *heth, ETH_MACInitTypeDef 
     assert_param(IS_ETH_CONTROL_FRAMES(macconf->PassControlFrames));
     assert_param(IS_ETH_BROADCAST_FRAMES_RECEPTION(macconf->BroadcastFramesReception));
     assert_param(IS_ETH_DESTINATION_ADDR_FILTER(macconf->DestinationAddrFilter));
-    assert_param(IS_ETH_PROMISCIOUS_MODE(macconf->PromiscuousMode));
+    assert_param(IS_ETH_PROMISCUOUS_MODE(macconf->PromiscuousMode));
     assert_param(IS_ETH_MULTICAST_FRAMES_FILTER(macconf->MulticastFramesFilter));
     assert_param(IS_ETH_UNICAST_FRAMES_FILTER(macconf->UnicastFramesFilter));
     assert_param(IS_ETH_PAUSE_TIME(macconf->PauseTime));
@@ -1325,7 +1340,7 @@ HAL_StatusTypeDef HAL_ETH_ConfigMAC(ETH_HandleTypeDef *heth, ETH_MACInitTypeDef 
     /* Get the ETHERNET MACCR value */
     tmpreg = (heth->Instance)->MACCR;
     /* Clear WD, PCE, PS, TE and RE bits */
-    tmpreg &= MACCR_CLEAR_MASK;
+    tmpreg &= ETH_MACCR_CLEAR_MASK;
     
     tmpreg |= (uint32_t)(macconf->Watchdog | 
                          macconf->Jabber | 
@@ -1378,7 +1393,7 @@ HAL_StatusTypeDef HAL_ETH_ConfigMAC(ETH_HandleTypeDef *heth, ETH_MACInitTypeDef 
      /* Get the ETHERNET MACFCR value */  
      tmpreg = (heth->Instance)->MACFCR;
      /* Clear xx bits */
-     tmpreg &= MACFCR_CLEAR_MASK;
+     tmpreg &= ETH_MACFCR_CLEAR_MASK;
      
      tmpreg |= (uint32_t)((macconf->PauseTime << 16) | 
                           macconf->ZeroQuantaPause |
@@ -1476,7 +1491,7 @@ HAL_StatusTypeDef HAL_ETH_ConfigDMA(ETH_HandleTypeDef *heth, ETH_DMAInitTypeDef 
   /* Get the ETHERNET DMAOMR value */
   tmpreg = (heth->Instance)->DMAOMR;
   /* Clear xx bits */
-  tmpreg &= DMAOMR_CLEAR_MASK;
+  tmpreg &= ETH_DMAOMR_CLEAR_MASK;
 
   tmpreg |= (uint32_t)(dmaconf->DropTCPIPChecksumErrorFrame | 
                        dmaconf->ReceiveStoreForward |
@@ -1527,7 +1542,7 @@ HAL_StatusTypeDef HAL_ETH_ConfigDMA(ETH_HandleTypeDef *heth, ETH_DMAInitTypeDef 
   * @}
   */
 
-/** @defgroup ETH_Group4 Peripheral State functions 
+/** @defgroup ETH_Exported_Functions_Group4 Peripheral State functions 
   *  @brief   Peripheral State functions 
   *
   @verbatim   
@@ -1559,6 +1574,14 @@ HAL_ETH_StateTypeDef HAL_ETH_GetState(ETH_HandleTypeDef *heth)
 
 /**
   * @}
+  */
+  
+/**
+  * @}
+  */
+  
+/** @addtogroup ETH_Private_Functions
+  * @{
   */
 
 /**
@@ -1607,7 +1630,7 @@ static void ETH_MACDMAConfig(ETH_HandleTypeDef *heth, uint32_t err)
   macinit.PassControlFrames = ETH_PASSCONTROLFRAMES_BLOCKALL;
   macinit.BroadcastFramesReception = ETH_BROADCASTFRAMESRECEPTION_ENABLE;
   macinit.DestinationAddrFilter = ETH_DESTINATIONADDRFILTER_NORMAL;
-  macinit.PromiscuousMode = ETH_PROMISCIOUSMODE_DISABLE;
+  macinit.PromiscuousMode = ETH_PROMISCUOUS_MODE_DISABLE;
   macinit.MulticastFramesFilter = ETH_MULTICASTFRAMESFILTER_PERFECT;
   macinit.UnicastFramesFilter = ETH_UNICASTFRAMESFILTER_PERFECT;
   macinit.HashTableHigh = 0x0;
@@ -1625,7 +1648,7 @@ static void ETH_MACDMAConfig(ETH_HandleTypeDef *heth, uint32_t err)
   /* Get the ETHERNET MACCR value */
   tmpreg = (heth->Instance)->MACCR;
   /* Clear WD, PCE, PS, TE and RE bits */
-  tmpreg &= MACCR_CLEAR_MASK;
+  tmpreg &= ETH_MACCR_CLEAR_MASK;
   /* Set the WD bit according to ETH Watchdog value */
   /* Set the JD: bit according to ETH Jabber value */
   /* Set the IFG bit according to ETH InterFrameGap value */
@@ -1698,7 +1721,7 @@ static void ETH_MACDMAConfig(ETH_HandleTypeDef *heth, uint32_t err)
    /* Get the ETHERNET MACFCR value */  
    tmpreg = (heth->Instance)->MACFCR;
    /* Clear xx bits */
-   tmpreg &= MACFCR_CLEAR_MASK;
+   tmpreg &= ETH_MACFCR_CLEAR_MASK;
    
    /* Set the PT bit according to ETH PauseTime value */
    /* Set the DZPQ bit according to ETH ZeroQuantaPause value */
@@ -1755,7 +1778,7 @@ static void ETH_MACDMAConfig(ETH_HandleTypeDef *heth, uint32_t err)
     /* Get the ETHERNET DMAOMR value */
     tmpreg = (heth->Instance)->DMAOMR;
     /* Clear xx bits */
-    tmpreg &= DMAOMR_CLEAR_MASK;
+    tmpreg &= ETH_DMAOMR_CLEAR_MASK;
     
     /* Set the DT bit according to ETH DropTCPIPChecksumErrorFrame value */
     /* Set the RSF bit according to ETH ReceiveStoreForward value */

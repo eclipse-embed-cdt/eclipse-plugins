@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_pwr_ex.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   Extended PWR HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of PWR extension peripheral:           
@@ -46,7 +46,7 @@
   * @{
   */
 
-/** @defgroup PWREx 
+/** @defgroup PWREx PWREx
   * @brief PWR HAL module driver
   * @{
   */
@@ -55,19 +55,25 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+/** @addtogroup PWREx_Private_Constants
+  * @{
+  */    
 #define PWR_OVERDRIVE_TIMEOUT_VALUE  1000
 #define PWR_UDERDRIVE_TIMEOUT_VALUE  1000
 #define PWR_BKPREG_TIMEOUT_VALUE     1000
+/**
+  * @}
+  */
+    
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
-
-/** @defgroup PWREx_Private_Functions
-  * @{
+/** @defgroup PWREx_Exported_Functions PWREx Exported Functions
+  *  @{
   */
 
-/** @defgroup PWREx_Group1 Peripheral Extended features functions 
+/** @defgroup PWREx_Exported_Functions_Group1 Peripheral Extended features functions 
   *  @brief Peripheral Extended features functions 
   *
 @verbatim   
@@ -83,7 +89,7 @@
           the CPU, and address in 32-bit, 16-bit or 8-bit mode. Its content is 
           retained even in Standby or VBAT mode when the low power backup regulator
           is enabled. It can be considered as an internal EEPROM when VBAT is 
-          always present. You can use the HAL_PWR_EnableBkUpReg() function to 
+          always present. You can use the HAL_PWREx_EnableBkUpReg() function to 
           enable the low power backup regulator. 
 
       (+) When the backup domain is supplied by VDD (analog switch connected to VDD) 
@@ -109,7 +115,7 @@
     =======================================
     [..] 
       (+) By setting the FPDS bit in the PWR_CR register by using the 
-          HAL_PWR_EnableFlashPowerDown() function, the Flash memory also enters power 
+          HAL_PWREx_EnableFlashPowerDown() function, the Flash memory also enters power 
           down mode when the device enters Stop mode. When the Flash memory 
           is in power down mode, an additional startup delay is incurred when 
           waking up from Stop mode.
@@ -146,9 +152,14 @@
   * @{
   */
 
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsign-conversion"
+#endif
+
 /**
   * @brief Enables the Backup Regulator.
-  * @param None
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_PWREx_EnableBkUpReg(void)
@@ -173,7 +184,6 @@ HAL_StatusTypeDef HAL_PWREx_EnableBkUpReg(void)
 
 /**
   * @brief Disables the Backup Regulator.
-  * @param None
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_PWREx_DisableBkUpReg(void)
@@ -198,7 +208,6 @@ HAL_StatusTypeDef HAL_PWREx_DisableBkUpReg(void)
 
 /**
   * @brief Enables the Flash Power Down in Stop mode.
-  * @param None
   * @retval None
   */
 void HAL_PWREx_EnableFlashPowerDown(void)
@@ -208,7 +217,6 @@ void HAL_PWREx_EnableFlashPowerDown(void)
 
 /**
   * @brief Disables the Flash Power Down in Stop mode.
-  * @param None
   * @retval None
   */
 void HAL_PWREx_DisableFlashPowerDown(void)
@@ -220,7 +228,6 @@ void HAL_PWREx_DisableFlashPowerDown(void)
 /**
   * @brief Enables Main Regulator low voltage mode.
   * @note  This mode is only available for STM32F401xx/STM32F411xx devices.   
-  * @param None
   * @retval None
   */
 void HAL_PWREx_EnableMainRegulatorLowVoltage(void)
@@ -231,7 +238,6 @@ void HAL_PWREx_EnableMainRegulatorLowVoltage(void)
 /**
   * @brief Disables Main Regulator low voltage mode.
   * @note  This mode is only available for STM32F401xx/STM32F411xx devices. 
-  * @param None
   * @retval None
   */
 void HAL_PWREx_DisableMainRegulatorLowVoltage(void)
@@ -242,7 +248,6 @@ void HAL_PWREx_DisableMainRegulatorLowVoltage(void)
 /**
   * @brief Enables Low Power Regulator low voltage mode.
   * @note  This mode is only available for STM32F401xx/STM32F411xx devices.   
-  * @param None
   * @retval None
   */
 void HAL_PWREx_EnableLowRegulatorLowVoltage(void)
@@ -253,7 +258,6 @@ void HAL_PWREx_EnableLowRegulatorLowVoltage(void)
 /**
   * @brief Disables Low Power Regulator low voltage mode.
   * @note  This mode is only available for STM32F401xx/STM32F411xx devices.   
-  * @param None
   * @retval None
   */
 void HAL_PWREx_DisableLowRegulatorLowVoltage(void)
@@ -273,14 +277,13 @@ void HAL_PWREx_DisableLowRegulatorLowVoltage(void)
   *         critical tasks and when the system clock source is either HSI or HSE. 
   *         During the Over-drive switch activation, no peripheral clocks should be enabled.   
   *         The peripheral clocks must be enabled once the Over-drive mode is activated.   
-  * @param  None
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_PWREx_ActivateOverDrive(void)
+HAL_StatusTypeDef HAL_PWREx_EnableOverDrive(void)
 {
   uint32_t tickstart = 0;
 
-  __PWR_CLK_ENABLE();
+  __HAL_RCC_PWR_CLK_ENABLE();
   
   /* Enable the Over-drive to extend the clock frequency to 180 Mhz */
   __HAL_PWR_OVERDRIVE_ENABLE();
@@ -321,14 +324,13 @@ HAL_StatusTypeDef HAL_PWREx_ActivateOverDrive(void)
   *         critical tasks and when the system clock source is either HSI or HSE. 
   *         During the Over-drive switch activation, no peripheral clocks should be enabled.   
   *         The peripheral clocks must be enabled once the Over-drive mode is activated.
-  * @param  None
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_PWREx_DeactivateOverDrive(void)
+HAL_StatusTypeDef HAL_PWREx_DisableOverDrive(void)
 {
   uint32_t tickstart = 0;
   
-  __PWR_CLK_ENABLE();
+  __HAL_RCC_PWR_CLK_ENABLE();
     
   /* Disable the Over-drive switch */
   __HAL_PWR_OVERDRIVESWITCHING_DISABLE();
@@ -380,7 +382,7 @@ HAL_StatusTypeDef HAL_PWREx_DeactivateOverDrive(void)
   *                    
   * @note   In Stop mode, all I/O pins keep the same state as in Run mode.
   *   
-  * @note   When exiting Stop mode by issuing an interrupt or a wakeup event, 
+  * @note   When exiting Stop mode by issuing an interrupt or a wake-up event, 
   *         the HSI RC oscillator is selected as system clock.
   *           
   * @note   When the voltage regulator operates in low power mode, an additional 
@@ -410,7 +412,7 @@ HAL_StatusTypeDef HAL_PWREx_EnterUnderDriveSTOPMode(uint32_t Regulator, uint8_t 
   assert_param(IS_PWR_STOP_ENTRY(STOPEntry));
   
   /* Enable Power ctrl clock */
-  __PWR_CLK_ENABLE();
+  __HAL_RCC_PWR_CLK_ENABLE();
   /* Enable the Under-drive Mode ---------------------------------------------*/
   /* Clear Under-drive flag */
   __HAL_PWR_CLEAR_ODRUDR_FLAG();
@@ -465,6 +467,11 @@ HAL_StatusTypeDef HAL_PWREx_EnterUnderDriveSTOPMode(uint32_t Regulator, uint8_t 
 /**
   * @}
   */
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
 
 /**
   * @}

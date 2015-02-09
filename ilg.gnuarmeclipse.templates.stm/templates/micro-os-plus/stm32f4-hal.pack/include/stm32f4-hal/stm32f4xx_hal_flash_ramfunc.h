@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_flash_ramfunc.h
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   Header file of FLASH RAMFUNC driver.
   ******************************************************************************
   * @attention
@@ -59,11 +59,24 @@
 /* Exported types ------------------------------------------------------------*/   
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions --------------------------------------------------------*/
+/** @addtogroup FLASH_RAMFUNC_Exported_Functions
+  * @{
+  */
+
+/** @addtogroup FLASH_RAMFUNC_Exported_Functions_Group1
+  * @{
+  */   
 __RAM_FUNC HAL_FLASHEx_StopFlashInterfaceClk(void);
 __RAM_FUNC HAL_FLASHEx_StartFlashInterfaceClk(void);
 __RAM_FUNC HAL_FLASHEx_EnableFlashSleepMode(void);
 __RAM_FUNC HAL_FLASHEx_DisableFlashSleepMode(void);
+/**
+  * @}
+  */ 
 
+/**
+  * @}
+  */
 #endif /* STM32F411xE */
 
 /**

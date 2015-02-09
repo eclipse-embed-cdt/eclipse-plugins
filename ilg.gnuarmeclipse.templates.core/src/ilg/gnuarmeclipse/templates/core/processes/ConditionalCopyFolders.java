@@ -123,6 +123,11 @@ public class ConditionalCopyFolders extends ProcessRunner {
 						}
 					}
 					
+					if (child.isDirectory()){
+						System.out.println(fileName + " skipped");
+						continue;
+					}
+					
 					URL sourceURL;
 					try {
 						sourceURL = child.toURL(); // using .toURI().toURL()

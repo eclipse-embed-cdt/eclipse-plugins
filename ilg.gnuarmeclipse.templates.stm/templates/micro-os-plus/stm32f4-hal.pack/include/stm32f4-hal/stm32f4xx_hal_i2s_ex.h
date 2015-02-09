@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_i2s_ex.h
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   Header file of I2S HAL module.
   ******************************************************************************
   * @attention
@@ -54,20 +54,81 @@
   * @{
   */ 
 
-/* Exported types ------------------------------------------------------------*/ 
-/* Exported constants --------------------------------------------------------*/  
+/* Exported types ------------------------------------------------------------*/
+/** @defgroup I2SEx_Exported_Types I2S Exported Types
+  * @{
+  */ 
+/**
+  * @}
+  */
+
+/* Exported constants --------------------------------------------------------*/
+/** @defgroup I2SEx_Exported_Constants I2S Exported Constants
+  * @{
+  */ 
+/**
+  * @}
+  */ 
+
 /* Exported macro ------------------------------------------------------------*/
+/** @defgroup I2SEx_Exported_Macros I2S Exported Macros
+  * @{
+  */
+
+/**
+  * @}
+  */ 
+
 /* Exported functions --------------------------------------------------------*/
+/** @addtogroup I2SEx_Exported_Functions
+  * @{
+  */
+
+/** @addtogroup I2SEx_Exported_Functions_Group1
+  * @{
+  */
 
 /* Extended features functions **************************************************/
- /* Blocking mode: Polling */
+/* Blocking mode: Polling */
 HAL_StatusTypeDef HAL_I2SEx_TransmitReceive(I2S_HandleTypeDef *hi2s, uint16_t *pTxData, uint16_t *pRxData, uint16_t Size, uint32_t Timeout);
- /* Non-Blocking mode: Interrupt */
+/* Non-Blocking mode: Interrupt */
 HAL_StatusTypeDef HAL_I2SEx_TransmitReceive_IT(I2S_HandleTypeDef *hi2s, uint16_t *pTxData, uint16_t *pRxData, uint16_t Size);
 /* Non-Blocking mode: DMA */
 HAL_StatusTypeDef HAL_I2SEx_TransmitReceive_DMA(I2S_HandleTypeDef *hi2s, uint16_t *pTxData, uint16_t *pRxData, uint16_t Size);
+/**
+  * @}
+  */ 
 
+/**
+  * @}
+  */
+/* Private types -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+/* Private constants ---------------------------------------------------------*/
+/** @defgroup I2SEx_Private_Constants I2S Private Constants
+  * @{
+  */
+/**
+  * @}
+  */
+
+/* Private macros ------------------------------------------------------------*/
+/** @defgroup I2SEx_Private_Macros I2S Private Macros
+  * @{
+  */
+/**
+  * @}
+  */
+
+/* Private functions ---------------------------------------------------------*/
+/** @defgroup I2SEx_Private_Functions I2S Private Functions
+  * @{
+  */
 HAL_StatusTypeDef I2SEx_TransmitReceive_IT(I2S_HandleTypeDef *hi2s);
+/**
+  * @}
+  */
+
 /**
   * @}
   */ 

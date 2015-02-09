@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_sdram.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   SDRAM HAL module driver.
   *          This file provides a generic firmware to drive SDRAM memories mounted 
   *          as external device.
@@ -97,7 +97,7 @@
   * @{
   */
 
-/** @defgroup SDRAM 
+/** @defgroup SDRAM SDRAM
   * @brief SDRAM driver modules
   * @{
   */
@@ -108,15 +108,13 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/    
 /* Private variables ---------------------------------------------------------*/
-/* Private function prototypes -----------------------------------------------*/
-
 /* Private functions ---------------------------------------------------------*/
-
-/** @defgroup SDRAM_Private_Functions
+/* Exported functions --------------------------------------------------------*/
+/** @defgroup SDRAM_Exported_Functions SDRAM Exported Functions
   * @{
   */
-
-/** @defgroup SDRAM_Group1 Initialization and de-initialization functions 
+  
+/** @defgroup SDRAM_Exported_Functions_Group1 Initialization and de-initialization functions 
   * @brief    Initialization and Configuration functions 
   *
   @verbatim    
@@ -288,7 +286,7 @@ __weak void HAL_SDRAM_DMA_XferErrorCallback(DMA_HandleTypeDef *hdma)
   * @}
   */
 
-/** @defgroup SDRAM_Group2 Input and Output functions 
+/** @defgroup SDRAM_Exported_Functions_Group2 Input and Output functions 
   * @brief    Input Output and memory control functions 
   *
   @verbatim    
@@ -341,8 +339,7 @@ HAL_StatusTypeDef HAL_SDRAM_Read_8b(SDRAM_HandleTypeDef *hsdram, uint32_t *pAddr
   
   return HAL_OK; 
 }
-
-
+ 
 /**
   * @brief  Writes 8-bit data buffer to SDRAM memory.
   * @param  hsdram: pointer to a SDRAM_HandleTypeDef structure that contains
@@ -385,7 +382,6 @@ HAL_StatusTypeDef HAL_SDRAM_Write_8b(SDRAM_HandleTypeDef *hsdram, uint32_t *pAdd
   
   return HAL_OK;   
 }
-
 
 /**
   * @brief  Reads 16-bit data buffer from the SDRAM memory. 
@@ -634,12 +630,11 @@ HAL_StatusTypeDef HAL_SDRAM_Write_DMA(SDRAM_HandleTypeDef *hsdram, uint32_t *pAd
   
   return HAL_OK;
 }
-
 /**
   * @}
   */
   
-/** @defgroup SDRAM_Group3 Control functions 
+/** @defgroup SDRAM_Exported_Functions_Group3 Control functions 
  *  @brief   management functions 
  *
 @verbatim   
@@ -728,7 +723,7 @@ HAL_StatusTypeDef HAL_SDRAM_SendCommand(SDRAM_HandleTypeDef *hsdram, FMC_SDRAM_C
   /* Send SDRAM command */
   FMC_SDRAM_SendCommand(hsdram->Instance, Command, Timeout);
   
-  /* Update the SDRAM controller state state */
+  /* Update the SDRAM controller state */
   if(Command->CommandMode == FMC_SDRAM_CMD_PALL)
   {
     hsdram->State = HAL_SDRAM_STATE_PRECHARGED;
@@ -811,7 +806,7 @@ uint32_t HAL_SDRAM_GetModeStatus(SDRAM_HandleTypeDef *hsdram)
   * @}
   */
   
-/** @defgroup SDRAM_Group4 State functions 
+/** @defgroup SDRAM_Exported_Functions_Group4 State functions 
  *  @brief   Peripheral State functions 
  *
 @verbatim   

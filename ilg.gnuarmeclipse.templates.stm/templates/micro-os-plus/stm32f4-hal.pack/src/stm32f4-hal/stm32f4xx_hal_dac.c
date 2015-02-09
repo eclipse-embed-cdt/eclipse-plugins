@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_dac.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   DAC HAL module driver.
   *         This file provides firmware functions to manage the following 
   *         functionalities of the Digital to Analog Converter (DAC) peripheral:
@@ -29,17 +29,17 @@
       *** DAC Triggers ***
       ====================
     [..]
-    Digital to Analog conversion can be non-triggered using DAC_Trigger_None
+    Digital to Analog conversion can be non-triggered using DAC_TRIGGER_NONE
     and DAC_OUT1/DAC_OUT2 is available once writing to DHRx register. 
     [..] 
     Digital to Analog conversion can be triggered by:
-      (#) External event: EXTI Line 9 (any GPIOx_Pin9) using DAC_Trigger_Ext_IT9.
+      (#) External event: EXTI Line 9 (any GPIOx_Pin9) using DAC_TRIGGER_EXT_IT9.
           The used pin (GPIOx_Pin9) must be configured in input mode.
   
       (#) Timers TRGO: TIM2, TIM4, TIM5, TIM6, TIM7 and TIM8 
-          (DAC_Trigger_T2_TRGO, DAC_Trigger_T4_TRGO...)
+          (DAC_TRIGGER_T2_TRGO, DAC_TRIGGER_T4_TRGO...)
   
-      (#) Software using DAC_Trigger_Software
+      (#) Software using DAC_TRIGGER_SOFTWARE
   
       *** DAC Buffer mode feature ***
       =============================== 
@@ -48,7 +48,7 @@
       reduce the output impedance, and to drive external loads directly
       without having to add an external operational amplifier.
       To enable, the output buffer use  
-      sConfig.DAC_OutputBuffer = DAC_OutputBuffer_Enable;
+      sConfig.DAC_OutputBuffer = DAC_OUTPUTBUFFER_ENABLE;
       [..]           
       (@) Refer to the device datasheet for more details about output 
           impedance value with and without output buffer.
@@ -109,7 +109,7 @@
      =================================
      [..]    
        (+) Start the DAC peripheral using HAL_DAC_Start() 
-       (+) To read the DAC last data output value value, use the HAL_DAC_GetValue() function.
+       (+) To read the DAC last data output value, use the HAL_DAC_GetValue() function.
        (+) Stop the DAC peripheral using HAL_DAC_Stop()
        
      *** DMA mode IO operation ***    
@@ -176,7 +176,7 @@
   * @{
   */
 
-/** @defgroup DAC 
+/** @defgroup DAC DAC
   * @brief DAC driver modules
   * @{
   */ 
@@ -188,18 +188,23 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
+/** @addtogroup DAC_Private_Functions
+  * @{
+  */
 /* Private function prototypes -----------------------------------------------*/
 static void DAC_DMAConvCpltCh1(DMA_HandleTypeDef *hdma);
 static void DAC_DMAErrorCh1(DMA_HandleTypeDef *hdma);
 static void DAC_DMAHalfConvCpltCh1(DMA_HandleTypeDef *hdma); 
+/**
+  * @}
+  */
 
-/* Private functions ---------------------------------------------------------*/
-
-/** @defgroup DAC_Private_Functions
+/* Exported functions --------------------------------------------------------*/
+/** @defgroup DAC_Exported_Functions DAC Exported Functions
   * @{
   */
 
-/** @defgroup DAC_Group1 Initialization and de-initialization functions 
+/** @defgroup DAC_Exported_Functions_Group1 Initialization and de-initialization functions 
  *  @brief    Initialization and Configuration functions 
  *
 @verbatim    
@@ -327,7 +332,7 @@ __weak void HAL_DAC_MspDeInit(DAC_HandleTypeDef* hdac)
   * @}
   */
 
-/** @defgroup DAC_Group2 IO operation functions
+/** @defgroup DAC_Exported_Functions_Group2 IO operation functions
  *  @brief    IO operation functions 
  *
 @verbatim   
@@ -368,7 +373,7 @@ HAL_StatusTypeDef HAL_DAC_Start(DAC_HandleTypeDef* hdac, uint32_t Channel)
   /* Change DAC state */
   hdac->State = HAL_DAC_STATE_BUSY;
   
-  /* Enable the Peripharal */
+  /* Enable the Peripheral */
   __HAL_DAC_ENABLE(hdac, Channel);
   
   if(Channel == DAC_CHANNEL_1)
@@ -545,7 +550,7 @@ HAL_StatusTypeDef HAL_DAC_Start_DMA(DAC_HandleTypeDef* hdac, uint32_t Channel, u
     HAL_DMA_Start_IT(hdac->DMA_Handle2, (uint32_t)pData, tmpreg, Length);
   }
   
-  /* Enable the Peripharal */
+  /* Enable the Peripheral */
   __HAL_DAC_ENABLE(hdac, Channel);
   
   /* Process Unlocked */
@@ -575,7 +580,7 @@ HAL_StatusTypeDef HAL_DAC_Stop_DMA(DAC_HandleTypeDef* hdac, uint32_t Channel)
   /* Disable the selected DAC channel DMA request */
    hdac->Instance->CR &= ~(DAC_CR_DMAEN1 << Channel);
     
-  /* Disable the Peripharal */
+  /* Disable the Peripheral */
   __HAL_DAC_DISABLE(hdac, Channel);
   
   /* Disable the DMA Channel */
@@ -590,9 +595,9 @@ HAL_StatusTypeDef HAL_DAC_Stop_DMA(DAC_HandleTypeDef* hdac, uint32_t Channel)
   }
 
   /* Check if DMA Channel effectively disabled */
-  if(status == HAL_ERROR)
+  if(status != HAL_OK)
   {
-    /* Update ADC state machine to error */
+    /* Update DAC state machine to error */
     hdac->State = HAL_DAC_STATE_ERROR;      
   }
   else
@@ -639,13 +644,13 @@ uint32_t HAL_DAC_GetValue(DAC_HandleTypeDef* hdac, uint32_t Channel)
   */
 void HAL_DAC_IRQHandler(DAC_HandleTypeDef* hdac)
 {
-  /* Check Overrun flag */
+  /* Check underrun channel 1 flag */
   if(__HAL_DAC_GET_FLAG(hdac, DAC_FLAG_DMAUDR1))
   {
     /* Change DAC state to error state */
     hdac->State = HAL_DAC_STATE_ERROR;
     
-    /* Set DAC error code to chanel1 DMA underrun error */
+    /* Set DAC error code to channel1 DMA underrun error */
     hdac->ErrorCode |= HAL_DAC_ERROR_DMAUNDERRUNCH1;
     
     /* Clear the underrun flag */
@@ -657,7 +662,8 @@ void HAL_DAC_IRQHandler(DAC_HandleTypeDef* hdac)
     /* Error callback */ 
     HAL_DAC_DMAUnderrunCallbackCh1(hdac);
   }
-  else
+  /* Check underrun channel 2 flag */
+  if(__HAL_DAC_GET_FLAG(hdac, DAC_FLAG_DMAUDR2))
   {
     /* Change DAC state to error state */
     hdac->State = HAL_DAC_STATE_ERROR;
@@ -717,7 +723,7 @@ __weak void HAL_DAC_ConvHalfCpltCallbackCh1(DAC_HandleTypeDef* hdac)
 __weak void HAL_DAC_ErrorCallbackCh1(DAC_HandleTypeDef *hdac)
 {
   /* NOTE : This function Should not be modified, when the callback is needed,
-            the HAL_DAC_ErrorCallback could be implemented in the user file
+            the HAL_DAC_ErrorCallbackCh1 could be implemented in the user file
    */
 }
 
@@ -743,7 +749,7 @@ __weak void HAL_DAC_DMAUnderrunCallbackCh1(DAC_HandleTypeDef *hdac)
   * @}
   */
   
-/** @defgroup DAC_Group3 Peripheral Control functions
+/** @defgroup DAC_Exported_Functions_Group3 Peripheral Control functions
  *  @brief   	Peripheral Control functions 
  *
 @verbatim   
@@ -785,7 +791,7 @@ HAL_StatusTypeDef HAL_DAC_ConfigChannel(DAC_HandleTypeDef* hdac, DAC_ChannelConf
   hdac->State = HAL_DAC_STATE_BUSY;
   
   /* Get the DAC CR value */
-  tmpreg1 = DAC->CR;
+  tmpreg1 = hdac->Instance->CR;
   /* Clear BOFFx, TENx, TSELx, WAVEx and MAMPx bits */
   tmpreg1 &= ~(((uint32_t)(DAC_CR_MAMP1 | DAC_CR_WAVE1 | DAC_CR_TSEL1 | DAC_CR_TEN1 | DAC_CR_BOFF1)) << Channel);
   /* Configure for the selected DAC channel: buffer output, trigger */
@@ -795,9 +801,9 @@ HAL_StatusTypeDef HAL_DAC_ConfigChannel(DAC_HandleTypeDef* hdac, DAC_ChannelConf
   /* Calculate CR register value depending on DAC_Channel */
   tmpreg1 |= tmpreg2 << Channel;
   /* Write to DAC CR */
-  DAC->CR = tmpreg1;
+  hdac->Instance->CR = tmpreg1;
   /* Disable wave generation */
-  DAC->CR &= ~(DAC_CR_WAVE1 << Channel);
+  hdac->Instance->CR &= ~(DAC_CR_WAVE1 << Channel);
   
   /* Change DAC state */
   hdac->State = HAL_DAC_STATE_READY;
@@ -837,11 +843,11 @@ HAL_StatusTypeDef HAL_DAC_SetValue(DAC_HandleTypeDef* hdac, uint32_t Channel, ui
   tmp = (uint32_t)hdac->Instance; 
   if(Channel == DAC_CHANNEL_1)
   {
-    tmp += __HAL_DHR12R1_ALIGNEMENT(Alignment);
+    tmp += DAC_DHR12R1_ALIGNMENT(Alignment);
   }
   else
   {
-    tmp += __HAL_DHR12R2_ALIGNEMENT(Alignment);
+    tmp += DAC_DHR12R2_ALIGNMENT(Alignment);
   }
 
   /* Set the DAC channel1 selected data holding register */
@@ -855,7 +861,7 @@ HAL_StatusTypeDef HAL_DAC_SetValue(DAC_HandleTypeDef* hdac, uint32_t Channel, ui
   * @}
   */
 
-/** @defgroup DAC_Group4 Peripheral State and Errors functions
+/** @defgroup DAC_Exported_Functions_Group4 Peripheral State and Errors functions
  *  @brief   Peripheral State and Errors functions 
  *
 @verbatim   

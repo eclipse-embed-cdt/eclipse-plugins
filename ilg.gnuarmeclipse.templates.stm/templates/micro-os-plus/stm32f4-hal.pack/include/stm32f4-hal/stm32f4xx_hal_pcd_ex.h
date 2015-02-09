@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_pcd_ex.h
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   Header file of PCD HAL module.
   ******************************************************************************
   * @attention
@@ -53,13 +53,18 @@
 /** @addtogroup PCDEx
   * @{
   */
-
+/* Exported types ------------------------------------------------------------*/
+/* Exported constants --------------------------------------------------------*/
+/* Exported macros -----------------------------------------------------------*/
 /* Exported functions --------------------------------------------------------*/
-
-/* Peripheral Extended functions  *********************************************/
+/** @addtogroup PCDEx_Exported_Functions PCDEx Exported Functions
+  * @{
+  */
+/** @addtogroup PCDEx_Exported_Functions_Group1 Peripheral Control functions
+  * @{
+  */
 HAL_StatusTypeDef HAL_PCDEx_SetTxFiFo(PCD_HandleTypeDef *hpcd, uint8_t fifo, uint16_t size);
 HAL_StatusTypeDef HAL_PCDEx_SetRxFiFo(PCD_HandleTypeDef *hpcd, uint16_t size);
-
 /**
   * @}
   */ 
@@ -67,6 +72,14 @@ HAL_StatusTypeDef HAL_PCDEx_SetRxFiFo(PCD_HandleTypeDef *hpcd, uint16_t size);
 /**
   * @}
   */ 
+
+/**
+  * @}
+  */ 
+
+/**
+  * @}
+  */
 
 #ifdef __cplusplus
 }

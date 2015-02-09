@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx.h
   * @author  MCD Application Team
-  * @version V2.1.0
-  * @date    19-June-2014
+  * @version V2.2.0
+  * @date    15-December-2014
   * @brief   CMSIS STM32F4xx Device Peripheral Access Layer Header File.           
   *            
   *          The file is the unique include file that the application programmer
@@ -63,11 +63,17 @@
 /** @addtogroup Library_configuration_section
   * @{
   */
+  
+/**
+  * @brief STM32 Family
+  */
+#if !defined  (STM32F4)
+#define STM32F4
+#endif /* STM32F4 */
 
 /* Uncomment the line below according to the target STM32 device used in your
    application 
   */
-
 #if !defined (STM32F405xx) && !defined (STM32F415xx) && !defined (STM32F407xx) && !defined (STM32F417xx) && \
     !defined (STM32F427xx) && !defined (STM32F437xx) && !defined (STM32F429xx) && !defined (STM32F439xx) && \
     !defined (STM32F401xC) && !defined (STM32F401xE) && !defined (STM32F411xE)
@@ -99,10 +105,10 @@
 #endif /* USE_HAL_DRIVER */
 
 /**
-  * @brief CMSIS Device version number V2.1.0
+  * @brief CMSIS Device version number V2.2.0
   */
 #define __STM32F4xx_CMSIS_DEVICE_VERSION_MAIN   (0x02) /*!< [31:24] main version */                                  
-#define __STM32F4xx_CMSIS_DEVICE_VERSION_SUB1   (0x01) /*!< [23:16] sub1 version */
+#define __STM32F4xx_CMSIS_DEVICE_VERSION_SUB1   (0x02) /*!< [23:16] sub1 version */
 #define __STM32F4xx_CMSIS_DEVICE_VERSION_SUB2   (0x00) /*!< [15:8]  sub2 version */
 #define __STM32F4xx_CMSIS_DEVICE_VERSION_RC     (0x00) /*!< [7:0]  release candidate */ 
 #define __STM32F4xx_CMSIS_DEVICE_VERSION        ((__STM32F4xx_CMSIS_DEVICE_VERSION_MAIN << 24)\

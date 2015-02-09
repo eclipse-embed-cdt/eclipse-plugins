@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_sram.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   SRAM HAL module driver.
   *          This file provides a generic firmware to drive SRAM memories  
   *          mounted as external device.
@@ -98,7 +98,7 @@
   * @{
   */
 
-/** @defgroup SRAM 
+/** @defgroup SRAM SRAM
   * @brief SRAM driver modules
   * @{
   */
@@ -110,15 +110,13 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/    
 /* Private variables ---------------------------------------------------------*/
-/* Private function prototypes -----------------------------------------------*/
-
 /* Private functions ---------------------------------------------------------*/
 
-/** @defgroup SRAM_Private_Functions
+/* Exported functions --------------------------------------------------------*/
+/** @defgroup SRAM_Exported_Functions SRAM Exported Functions
   * @{
   */
-
-/** @defgroup SRAM_Group1 Initialization and de-initialization functions 
+/** @defgroup SRAM_Exported_Functions_Group1 Initialization and de-initialization functions 
   * @brief    Initialization and Configuration functions 
   *
   @verbatim    
@@ -225,7 +223,7 @@ __weak void HAL_SRAM_MspDeInit(SRAM_HandleTypeDef *hsram)
 
 /**
   * @brief  DMA transfer complete callback.
-  * @param  hsram: pointer to a SRAM_HandleTypeDef structure that contains
+  * @param  hdma: pointer to a SRAM_HandleTypeDef structure that contains
   *                the configuration information for SRAM module.
   * @retval None
   */
@@ -238,7 +236,7 @@ __weak void HAL_SRAM_DMA_XferCpltCallback(DMA_HandleTypeDef *hdma)
 
 /**
   * @brief  DMA transfer complete error callback.
-  * @param  hsram: pointer to a SRAM_HandleTypeDef structure that contains
+  * @param  hdma: pointer to a SRAM_HandleTypeDef structure that contains
   *                the configuration information for SRAM module.
   * @retval None
   */
@@ -258,7 +256,7 @@ __weak void HAL_SRAM_DMA_XferErrorCallback(DMA_HandleTypeDef *hdma)
   * @}
   */
 
-/** @defgroup SRAM_Group2 Input and Output functions 
+/** @defgroup SRAM_Exported_Functions_Group2 Input and Output functions 
   * @brief    Input Output and memory control functions 
   *
   @verbatim    
@@ -578,7 +576,7 @@ HAL_StatusTypeDef HAL_SRAM_Write_DMA(SRAM_HandleTypeDef *hsram, uint32_t *pAddre
   * @}
   */
   
-/** @defgroup SRAM_Group3 Control functions 
+/** @defgroup SRAM_Exported_Functions_Group3 Control functions 
  *  @brief   management functions 
  *
 @verbatim   
@@ -646,7 +644,7 @@ HAL_StatusTypeDef HAL_SRAM_WriteOperation_Disable(SRAM_HandleTypeDef *hsram)
   * @}
   */
 
-/** @defgroup SRAM_Group4 State functions 
+/** @defgroup SRAM_Exported_Functions_Group4 State functions 
  *  @brief   Peripheral State functions 
  *
 @verbatim   
@@ -671,7 +669,6 @@ HAL_SRAM_StateTypeDef HAL_SRAM_GetState(SRAM_HandleTypeDef *hsram)
 {
   return hsram->State;
 }
-
 /**
   * @}
   */

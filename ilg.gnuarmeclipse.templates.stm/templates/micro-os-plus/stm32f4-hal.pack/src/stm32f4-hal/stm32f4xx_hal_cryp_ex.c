@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_cryp_ex.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   Extended CRYP HAL module driver
   *          This file provides firmware functions to manage the following 
   *          functionalities of CRYP extension peripheral:
@@ -16,7 +16,7 @@
     [..]
     The CRYP Extension HAL driver can be used as follows:
     (#)Initialize the CRYP low level resources by implementing the HAL_CRYP_MspInit():
-        (##) Enable the CRYP interface clock using __CRYP_CLK_ENABLE()
+        (##) Enable the CRYP interface clock using __HAL_RCC_CRYP_CLK_ENABLE()
         (##) In case of using interrupts (e.g. HAL_CRYPEx_AESGCM_Encrypt_IT())
             (+++) Configure the CRYP interrupt priority using HAL_NVIC_SetPriority()
             (+++) Enable the CRYP IRQ handler using HAL_NVIC_EnableIRQ()
@@ -26,7 +26,7 @@
             (+++) Configure and enable two DMA streams one for managing data transfer from
                 memory to peripheral (input stream) and another stream for managing data
                 transfer from peripheral to memory (output stream)
-            (+++) Associate the initilalized DMA handle to the CRYP DMA handle
+            (+++) Associate the initialized DMA handle to the CRYP DMA handle
                 using  __HAL_LINKDMA()
             (+++) Configure the priority and enable the NVIC for the transfer complete
                 interrupt on the two DMA Streams. The output stream should have higher
@@ -60,6 +60,9 @@
        Call those functions after the processing ones (polling, interrupt or DMA).
        e.g. in AES-CCM mode call HAL_CRYPEx_AESCCM_Encrypt() to encrypt the plain data
             then call HAL_CRYPEx_AESCCM_Finish() to get the authentication message
+    @note: For CCM Encrypt/Decrypt API's, only DataType = 8-bit is supported by this version.
+    @note: The HAL_CRYPEx_AESGCM_xxxx() implementation is limited to 32bits inputs data length 
+           (Plain/Cyphertext, Header) compared with GCM standards specifications (800-38D).
     (#)Call HAL_CRYP_DeInit() to deinitialize the CRYP peripheral.
 
   @endverbatim
@@ -100,7 +103,7 @@
   * @{
   */
 
-/** @defgroup CRYPEx 
+/** @defgroup CRYPEx CRYPEx
   * @brief CRYP Extension HAL module driver.
   * @{
   */
@@ -111,11 +114,21 @@
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
+/** @addtogroup CRYPEx_Private_define
+  * @{
+  */
 #define CRYPEx_TIMEOUT_VALUE  1
+/**
+  * @}
+  */ 
+  
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
-static void CRYPEx_GCMCCM_SetInitVector(CRYP_HandleTypeDef *hcryp, uint8_t *InitVector, uint32_t IVSize);
+/** @defgroup CRYPEx_Private_Functions_prototypes  CRYP Private Functions Prototypes
+  * @{
+  */
+static void CRYPEx_GCMCCM_SetInitVector(CRYP_HandleTypeDef *hcryp, uint8_t *InitVector);
 static void CRYPEx_GCMCCM_SetKey(CRYP_HandleTypeDef *hcryp, uint8_t *Key, uint32_t KeySize);
 static HAL_StatusTypeDef CRYPEx_GCMCCM_ProcessData(CRYP_HandleTypeDef *hcryp, uint8_t *Input, uint16_t Ilength, uint8_t *Output, uint32_t Timeout);
 static HAL_StatusTypeDef CRYPEx_GCMCCM_SetHeaderPhase(CRYP_HandleTypeDef *hcryp, uint8_t* Input, uint16_t Ilength, uint32_t Timeout);
@@ -123,14 +136,350 @@ static void CRYPEx_GCMCCM_DMAInCplt(DMA_HandleTypeDef *hdma);
 static void CRYPEx_GCMCCM_DMAOutCplt(DMA_HandleTypeDef *hdma);
 static void CRYPEx_GCMCCM_DMAError(DMA_HandleTypeDef *hdma);
 static void CRYPEx_GCMCCM_SetDMAConfig(CRYP_HandleTypeDef *hcryp, uint32_t inputaddr, uint16_t Size, uint32_t outputaddr);
-
+/**
+  * @}
+  */ 
+  
 /* Private functions ---------------------------------------------------------*/
-
-/** @defgroup CRYPEx_Private_Functions
+/** @addtogroup CRYPEx_Private_Functions
   * @{
   */
 
-/** @defgroup CRYPEx_Group1 Extended AES processing functions 
+/**
+  * @brief  DMA CRYP Input Data process complete callback. 
+  * @param  hdma: DMA handle
+  * @retval None
+  */
+static void CRYPEx_GCMCCM_DMAInCplt(DMA_HandleTypeDef *hdma)  
+{
+  CRYP_HandleTypeDef* hcryp = ( CRYP_HandleTypeDef* )((DMA_HandleTypeDef* )hdma)->Parent;
+  
+  /* Disable the DMA transfer for input Fifo request by resetting the DIEN bit
+     in the DMACR register */
+  CRYP->DMACR &= (uint32_t)(~CRYP_DMACR_DIEN);
+  
+  /* Call input data transfer complete callback */
+  HAL_CRYP_InCpltCallback(hcryp);
+}
+
+/**
+  * @brief  DMA CRYP Output Data process complete callback.
+  * @param  hdma: DMA handle
+  * @retval None
+  */
+static void CRYPEx_GCMCCM_DMAOutCplt(DMA_HandleTypeDef *hdma)
+{
+  CRYP_HandleTypeDef* hcryp = ( CRYP_HandleTypeDef* )((DMA_HandleTypeDef* )hdma)->Parent;
+  
+  /* Disable the DMA transfer for output Fifo request by resetting the DOEN bit
+     in the DMACR register */
+  CRYP->DMACR &= (uint32_t)(~CRYP_DMACR_DOEN);
+  
+  /* Enable the CRYP peripheral */
+  __HAL_CRYP_DISABLE();
+  
+  /* Change the CRYP peripheral state */
+  hcryp->State = HAL_CRYP_STATE_READY;
+  
+  /* Call output data transfer complete callback */
+  HAL_CRYP_OutCpltCallback(hcryp);
+}
+
+/**
+  * @brief  DMA CRYP communication error callback. 
+  * @param  hdma: DMA handle
+  * @retval None
+  */
+static void CRYPEx_GCMCCM_DMAError(DMA_HandleTypeDef *hdma)
+{
+  CRYP_HandleTypeDef* hcryp = ( CRYP_HandleTypeDef* )((DMA_HandleTypeDef* )hdma)->Parent;
+  hcryp->State= HAL_CRYP_STATE_READY;
+  HAL_CRYP_ErrorCallback(hcryp);
+}
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wunused-parameter"
+#endif
+
+/**
+  * @brief  Writes the Key in Key registers. 
+  * @param  hcryp: pointer to a CRYP_HandleTypeDef structure that contains
+  *         the configuration information for CRYP module
+  * @param  Key: Pointer to Key buffer
+  * @param  KeySize: Size of Key
+  * @retval None
+  */
+static void CRYPEx_GCMCCM_SetKey(CRYP_HandleTypeDef *hcryp, uint8_t *Key, uint32_t KeySize)
+{
+  uint32_t keyaddr = (uint32_t)Key;
+  
+  switch(KeySize)
+  {
+  case CRYP_KEYSIZE_256B:
+    /* Key Initialisation */
+    CRYP->K0LR = __REV(*(uint32_t*)(keyaddr));
+    keyaddr+=4;
+    CRYP->K0RR = __REV(*(uint32_t*)(keyaddr));
+    keyaddr+=4;
+    CRYP->K1LR = __REV(*(uint32_t*)(keyaddr));
+    keyaddr+=4;
+    CRYP->K1RR = __REV(*(uint32_t*)(keyaddr));
+    keyaddr+=4;
+    CRYP->K2LR = __REV(*(uint32_t*)(keyaddr));
+    keyaddr+=4;
+    CRYP->K2RR = __REV(*(uint32_t*)(keyaddr));
+    keyaddr+=4;
+    CRYP->K3LR = __REV(*(uint32_t*)(keyaddr));
+    keyaddr+=4;
+    CRYP->K3RR = __REV(*(uint32_t*)(keyaddr));
+    break;
+  case CRYP_KEYSIZE_192B:
+    CRYP->K1LR = __REV(*(uint32_t*)(keyaddr));
+    keyaddr+=4;
+    CRYP->K1RR = __REV(*(uint32_t*)(keyaddr));
+    keyaddr+=4;
+    CRYP->K2LR = __REV(*(uint32_t*)(keyaddr));
+    keyaddr+=4;
+    CRYP->K2RR = __REV(*(uint32_t*)(keyaddr));
+    keyaddr+=4;
+    CRYP->K3LR = __REV(*(uint32_t*)(keyaddr));
+    keyaddr+=4;
+    CRYP->K3RR = __REV(*(uint32_t*)(keyaddr));
+    break;
+  case CRYP_KEYSIZE_128B:       
+    CRYP->K2LR = __REV(*(uint32_t*)(keyaddr));
+    keyaddr+=4;
+    CRYP->K2RR = __REV(*(uint32_t*)(keyaddr));
+    keyaddr+=4;
+    CRYP->K3LR = __REV(*(uint32_t*)(keyaddr));
+    keyaddr+=4;
+    CRYP->K3RR = __REV(*(uint32_t*)(keyaddr));
+    break;
+  default:
+    break;
+  }
+}
+
+/**
+  * @brief  Writes the InitVector/InitCounter in IV registers.
+  * @param  hcryp: pointer to a CRYP_HandleTypeDef structure that contains
+  *         the configuration information for CRYP module
+  * @param  InitVector: Pointer to InitVector/InitCounter buffer
+  * @retval None
+  */
+static void CRYPEx_GCMCCM_SetInitVector(CRYP_HandleTypeDef *hcryp, uint8_t *InitVector)
+{
+  uint32_t ivaddr = (uint32_t)InitVector;
+  
+  CRYP->IV0LR = __REV(*(uint32_t*)(ivaddr));
+  ivaddr+=4;
+  CRYP->IV0RR = __REV(*(uint32_t*)(ivaddr));
+  ivaddr+=4;
+  CRYP->IV1LR = __REV(*(uint32_t*)(ivaddr));
+  ivaddr+=4;
+  CRYP->IV1RR = __REV(*(uint32_t*)(ivaddr));
+}
+
+/**
+  * @brief  Process Data: Writes Input data in polling mode and read the Output data.
+  * @param  hcryp: pointer to a CRYP_HandleTypeDef structure that contains
+  *         the configuration information for CRYP module
+  * @param  Input: Pointer to the Input buffer.
+  * @param  Ilength: Length of the Input buffer, must be a multiple of 16
+  * @param  Output: Pointer to the returned buffer
+  * @param  Timeout: Timeout value 
+  * @retval None
+  */
+static HAL_StatusTypeDef CRYPEx_GCMCCM_ProcessData(CRYP_HandleTypeDef *hcryp, uint8_t *Input, uint16_t Ilength, uint8_t *Output, uint32_t Timeout)
+{
+  uint32_t tickstart = 0;   
+  uint32_t i = 0;
+  uint32_t inputaddr  = (uint32_t)Input;
+  uint32_t outputaddr = (uint32_t)Output;
+  
+  for(i=0; (i < Ilength); i+=16)
+  {
+    /* Write the Input block in the IN FIFO */
+    CRYP->DR = *(uint32_t*)(inputaddr);
+    inputaddr+=4;
+    CRYP->DR = *(uint32_t*)(inputaddr);
+    inputaddr+=4;
+    CRYP->DR  = *(uint32_t*)(inputaddr);
+    inputaddr+=4;
+    CRYP->DR = *(uint32_t*)(inputaddr);
+    inputaddr+=4;
+    
+    /* Get tick */
+    tickstart = HAL_GetTick();
+ 
+    while(HAL_IS_BIT_CLR(CRYP->SR, CRYP_FLAG_OFNE))
+    {
+      /* Check for the Timeout */
+      if(Timeout != HAL_MAX_DELAY)
+      {
+        if((HAL_GetTick() - tickstart ) > CRYPEx_TIMEOUT_VALUE)
+        {
+          /* Change state */
+          hcryp->State = HAL_CRYP_STATE_TIMEOUT;
+          
+          /* Process Unlocked */
+          __HAL_UNLOCK(hcryp);
+          
+          return HAL_TIMEOUT;
+        }
+      }
+    }
+    /* Read the Output block from the OUT FIFO */
+    *(uint32_t*)(outputaddr) = CRYP->DOUT;
+    outputaddr+=4;
+    *(uint32_t*)(outputaddr) = CRYP->DOUT;
+    outputaddr+=4;
+    *(uint32_t*)(outputaddr) = CRYP->DOUT;
+    outputaddr+=4;
+    *(uint32_t*)(outputaddr) = CRYP->DOUT;
+    outputaddr+=4;
+  }
+  /* Return function status */
+  return HAL_OK;
+}
+
+/**
+  * @brief  Sets the header phase
+  * @param  hcryp: pointer to a CRYP_HandleTypeDef structure that contains
+  *         the configuration information for CRYP module
+  * @param  Input: Pointer to the Input buffer.
+  * @param  Ilength: Length of the Input buffer, must be a multiple of 16
+  * @param  Timeout: Timeout value   
+  * @retval None
+  */
+static HAL_StatusTypeDef CRYPEx_GCMCCM_SetHeaderPhase(CRYP_HandleTypeDef *hcryp, uint8_t* Input, uint16_t Ilength, uint32_t Timeout)
+{
+  uint32_t tickstart = 0;   
+  uint32_t loopcounter = 0;
+  uint32_t headeraddr = (uint32_t)Input;
+  
+  /***************************** Header phase *********************************/
+  if(hcryp->Init.HeaderSize != 0)
+  {
+    /* Select header phase */
+    __HAL_CRYP_SET_PHASE(CRYP_PHASE_HEADER);
+    /* Enable the CRYP peripheral */
+    __HAL_CRYP_ENABLE();
+    
+    for(loopcounter = 0; (loopcounter < hcryp->Init.HeaderSize); loopcounter+=16)
+    {
+      /* Get tick */
+      tickstart = HAL_GetTick();
+      
+      while(HAL_IS_BIT_CLR(CRYP->SR, CRYP_FLAG_IFEM))
+      {
+        /* Check for the Timeout */
+        if(Timeout != HAL_MAX_DELAY)
+        {
+          if((Timeout == 0)||((HAL_GetTick() - tickstart ) > Timeout))
+          {
+            /* Change state */
+            hcryp->State = HAL_CRYP_STATE_TIMEOUT;
+            
+            /* Process Unlocked */
+            __HAL_UNLOCK(hcryp);
+            
+            return HAL_TIMEOUT;
+          }
+        }
+      }
+      /* Write the Input block in the IN FIFO */
+      CRYP->DR = *(uint32_t*)(headeraddr);
+      headeraddr+=4;
+      CRYP->DR = *(uint32_t*)(headeraddr);
+      headeraddr+=4;
+      CRYP->DR = *(uint32_t*)(headeraddr);
+      headeraddr+=4;
+      CRYP->DR = *(uint32_t*)(headeraddr);
+      headeraddr+=4;
+    }
+    
+    /* Wait until the complete message has been processed */
+
+    /* Get tick */
+    tickstart = HAL_GetTick();
+
+    while((CRYP->SR & CRYP_FLAG_BUSY) == CRYP_FLAG_BUSY)
+    {
+      /* Check for the Timeout */
+      if(Timeout != HAL_MAX_DELAY)
+      {
+        if((Timeout == 0)||((HAL_GetTick() - tickstart ) > Timeout))
+        {
+          /* Change state */
+          hcryp->State = HAL_CRYP_STATE_TIMEOUT;
+          
+          /* Process Unlocked */
+          __HAL_UNLOCK(hcryp);
+          
+          return HAL_TIMEOUT;
+        }
+      }
+    }
+  }
+  /* Return function status */
+  return HAL_OK;
+}
+
+// [ILG]
+#if defined ( __GNUC__ )
+#pragma GCC diagnostic pop
+#endif
+
+/**
+  * @brief  Sets the DMA configuration and start the DMA transfer.
+  * @param  hcryp: pointer to a CRYP_HandleTypeDef structure that contains
+  *         the configuration information for CRYP module
+  * @param  inputaddr: Address of the Input buffer
+  * @param  Size: Size of the Input buffer, must be a multiple of 16
+  * @param  outputaddr: Address of the Output buffer
+  * @retval None
+  */
+static void CRYPEx_GCMCCM_SetDMAConfig(CRYP_HandleTypeDef *hcryp, uint32_t inputaddr, uint16_t Size, uint32_t outputaddr)
+{
+  /* Set the CRYP DMA transfer complete callback */
+  hcryp->hdmain->XferCpltCallback = CRYPEx_GCMCCM_DMAInCplt;
+  /* Set the DMA error callback */
+  hcryp->hdmain->XferErrorCallback = CRYPEx_GCMCCM_DMAError;
+  
+  /* Set the CRYP DMA transfer complete callback */
+  hcryp->hdmaout->XferCpltCallback = CRYPEx_GCMCCM_DMAOutCplt;
+  /* Set the DMA error callback */
+  hcryp->hdmaout->XferErrorCallback = CRYPEx_GCMCCM_DMAError;
+  
+  /* Enable the CRYP peripheral */
+  __HAL_CRYP_ENABLE();
+  
+  /* Enable the DMA In DMA Stream */
+  HAL_DMA_Start_IT(hcryp->hdmain, inputaddr, (uint32_t)&CRYP->DR, Size/4);
+  
+  /* Enable In DMA request */
+  CRYP->DMACR = CRYP_DMACR_DIEN;
+  
+  /* Enable the DMA Out DMA Stream */
+  HAL_DMA_Start_IT(hcryp->hdmaout, (uint32_t)&CRYP->DOUT, outputaddr, Size/4);
+  
+  /* Enable Out DMA request */
+  CRYP->DMACR |= CRYP_DMACR_DOEN;
+}
+
+/**
+  * @}
+  */ 
+
+/* Exported functions---------------------------------------------------------*/
+/** @addtogroup CRYPEx_Exported_Functions
+  * @{
+  */
+
+/** @defgroup CRYPEx_Exported_Functions_Group1 Extended AES processing functions 
  *  @brief   Extended processing functions. 
  *
 @verbatim   
@@ -274,7 +623,7 @@ HAL_StatusTypeDef HAL_CRYPEx_AESCCM_Encrypt(CRYP_HandleTypeDef *hcryp, uint8_t *
     __HAL_CRYP_SET_MODE(CRYP_CR_ALGOMODE_AES_CCM_ENCRYPT);
     
     /* Set the Initialization Vector */
-    CRYPEx_GCMCCM_SetInitVector(hcryp, ctr, CRYP_KEYSIZE_128B);
+    CRYPEx_GCMCCM_SetInitVector(hcryp, ctr);
     
     /* Select init phase */
     __HAL_CRYP_SET_PHASE(CRYP_PHASE_INIT);
@@ -445,7 +794,7 @@ HAL_StatusTypeDef HAL_CRYPEx_AESGCM_Encrypt(CRYP_HandleTypeDef *hcryp, uint8_t *
     __HAL_CRYP_SET_MODE(CRYP_CR_ALGOMODE_AES_GCM_ENCRYPT);
     
     /* Set the Initialization Vector */
-    CRYPEx_GCMCCM_SetInitVector(hcryp, hcryp->Init.pInitVect, CRYP_KEYSIZE_128B);
+    CRYPEx_GCMCCM_SetInitVector(hcryp, hcryp->Init.pInitVect);
     
     /* Flush FIFO */
     __HAL_CRYP_FIFO_FLUSH();
@@ -543,7 +892,7 @@ HAL_StatusTypeDef HAL_CRYPEx_AESGCM_Decrypt(CRYP_HandleTypeDef *hcryp, uint8_t *
     __HAL_CRYP_SET_MODE(CRYP_CR_ALGOMODE_AES_GCM_DECRYPT);
     
     /* Set the Initialization Vector */
-    CRYPEx_GCMCCM_SetInitVector(hcryp, hcryp->Init.pInitVect, CRYP_KEYSIZE_128B);
+    CRYPEx_GCMCCM_SetInitVector(hcryp, hcryp->Init.pInitVect);
     
     /* Flush FIFO */
     __HAL_CRYP_FIFO_FLUSH();
@@ -615,11 +964,11 @@ HAL_StatusTypeDef HAL_CRYPEx_AESGCM_Decrypt(CRYP_HandleTypeDef *hcryp, uint8_t *
   * @param  Timeout: Timeout duration
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_CRYPEx_AESGCM_Finish(CRYP_HandleTypeDef *hcryp, uint16_t Size, uint8_t *AuthTag, uint32_t Timeout)
+HAL_StatusTypeDef HAL_CRYPEx_AESGCM_Finish(CRYP_HandleTypeDef *hcryp, uint32_t Size, uint8_t *AuthTag, uint32_t Timeout)
 {
   uint32_t tickstart = 0;   
-  uint32_t headerlength = hcryp->Init.HeaderSize * 8; /* Header length in bits */
-  uint32_t inputlength = Size * 8; /* input length in bits */
+  uint64_t headerlength = hcryp->Init.HeaderSize * 8; /* Header length in bits */
+  uint64_t inputlength = Size * 8; /* input length in bits */
   uint32_t tagaddr = (uint32_t)AuthTag;
   
   /* Process Locked */
@@ -647,30 +996,30 @@ HAL_StatusTypeDef HAL_CRYPEx_AESGCM_Finish(CRYP_HandleTypeDef *hcryp, uint16_t S
        in the payload */
     if(hcryp->Init.DataType == CRYP_DATATYPE_1B)
     {
-      CRYP->DR = 0;
+      CRYP->DR = __RBIT(headerlength >> 32);
       CRYP->DR = __RBIT(headerlength);
-      CRYP->DR = 0;
+      CRYP->DR = __RBIT(inputlength >> 32);
       CRYP->DR = __RBIT(inputlength);
     }
     else if(hcryp->Init.DataType == CRYP_DATATYPE_8B)
     {
-      CRYP->DR = 0;
+      CRYP->DR = __REV(headerlength >> 32);
       CRYP->DR = __REV(headerlength);
-      CRYP->DR = 0;
+      CRYP->DR = __REV(inputlength >> 32);
       CRYP->DR = __REV(inputlength);
     }
     else if(hcryp->Init.DataType == CRYP_DATATYPE_16B)
     {
-      CRYP->DR = 0;
-      CRYP->DR = __REV16(headerlength);
-      CRYP->DR = 0;
-      CRYP->DR = __REV16(inputlength);
+      CRYP->DR = __ROR((uint32_t)(headerlength >> 32), 16);
+      CRYP->DR = __ROR((uint32_t)headerlength, 16);
+      CRYP->DR = __ROR((uint32_t)(inputlength >> 32), 16);
+      CRYP->DR = __ROR((uint32_t)inputlength, 16);
     }
     else if(hcryp->Init.DataType == CRYP_DATATYPE_32B)
     {
-      CRYP->DR = 0;
+      CRYP->DR = (uint32_t)(headerlength >> 32);
       CRYP->DR = (uint32_t)(headerlength);
-      CRYP->DR = 0;
+      CRYP->DR = (uint32_t)(inputlength >> 32);
       CRYP->DR = (uint32_t)(inputlength);
     }
     /* Get tick */
@@ -922,7 +1271,7 @@ HAL_StatusTypeDef HAL_CRYPEx_AESCCM_Decrypt(CRYP_HandleTypeDef *hcryp, uint8_t *
     __HAL_CRYP_SET_MODE(CRYP_CR_ALGOMODE_AES_CCM_DECRYPT);
     
     /* Set the Initialization Vector */
-    CRYPEx_GCMCCM_SetInitVector(hcryp, ctr, CRYP_KEYSIZE_128B);
+    CRYPEx_GCMCCM_SetInitVector(hcryp, ctr);
     
     /* Select init phase */
     __HAL_CRYP_SET_PHASE(CRYP_PHASE_INIT);
@@ -1098,7 +1447,7 @@ HAL_StatusTypeDef HAL_CRYPEx_AESGCM_Encrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_
       __HAL_CRYP_SET_MODE(CRYP_CR_ALGOMODE_AES_GCM_ENCRYPT);
       
       /* Set the Initialization Vector */
-      CRYPEx_GCMCCM_SetInitVector(hcryp, hcryp->Init.pInitVect, CRYP_KEYSIZE_128B);
+      CRYPEx_GCMCCM_SetInitVector(hcryp, hcryp->Init.pInitVect);
       
       /* Flush FIFO */
       __HAL_CRYP_FIFO_FLUSH();
@@ -1334,7 +1683,7 @@ HAL_StatusTypeDef HAL_CRYPEx_AESCCM_Encrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_
       __HAL_CRYP_SET_MODE(CRYP_CR_ALGOMODE_AES_CCM_ENCRYPT);
       
       /* Set the Initialization Vector */
-      CRYPEx_GCMCCM_SetInitVector(hcryp, ctr, hcryp->Init.KeySize);
+      CRYPEx_GCMCCM_SetInitVector(hcryp, ctr);
       
       /* Select init phase */
       __HAL_CRYP_SET_PHASE(CRYP_PHASE_INIT);
@@ -1548,7 +1897,7 @@ HAL_StatusTypeDef HAL_CRYPEx_AESGCM_Decrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_
       __HAL_CRYP_SET_MODE(CRYP_CR_ALGOMODE_AES_GCM_DECRYPT);
       
       /* Set the Initialization Vector */
-      CRYPEx_GCMCCM_SetInitVector(hcryp, hcryp->Init.pInitVect, CRYP_KEYSIZE_128B);
+      CRYPEx_GCMCCM_SetInitVector(hcryp, hcryp->Init.pInitVect);
       
       /* Flush FIFO */
       __HAL_CRYP_FIFO_FLUSH();
@@ -1780,7 +2129,7 @@ HAL_StatusTypeDef HAL_CRYPEx_AESCCM_Decrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_
       __HAL_CRYP_SET_MODE(CRYP_CR_ALGOMODE_AES_CCM_DECRYPT);
       
       /* Set the Initialization Vector */
-      CRYPEx_GCMCCM_SetInitVector(hcryp, ctr, hcryp->Init.KeySize);
+      CRYPEx_GCMCCM_SetInitVector(hcryp, ctr);
       
       /* Select init phase */
       __HAL_CRYP_SET_PHASE(CRYP_PHASE_INIT);
@@ -1983,7 +2332,7 @@ HAL_StatusTypeDef HAL_CRYPEx_AESGCM_Encrypt_DMA(CRYP_HandleTypeDef *hcryp, uint8
       __HAL_CRYP_SET_MODE(CRYP_CR_ALGOMODE_AES_GCM_ENCRYPT);
       
       /* Set the Initialization Vector */
-      CRYPEx_GCMCCM_SetInitVector(hcryp, hcryp->Init.pInitVect, CRYP_KEYSIZE_128B);
+      CRYPEx_GCMCCM_SetInitVector(hcryp, hcryp->Init.pInitVect);
       
       /* Flush FIFO */
       __HAL_CRYP_FIFO_FLUSH();
@@ -2173,7 +2522,7 @@ HAL_StatusTypeDef HAL_CRYPEx_AESCCM_Encrypt_DMA(CRYP_HandleTypeDef *hcryp, uint8
       __HAL_CRYP_SET_MODE(CRYP_CR_ALGOMODE_AES_CCM_ENCRYPT);
       
       /* Set the Initialization Vector */
-      CRYPEx_GCMCCM_SetInitVector(hcryp, ctr, CRYP_KEYSIZE_128B);
+      CRYPEx_GCMCCM_SetInitVector(hcryp, ctr);
       
       /* Select init phase */
       __HAL_CRYP_SET_PHASE(CRYP_PHASE_INIT);
@@ -2334,7 +2683,7 @@ HAL_StatusTypeDef HAL_CRYPEx_AESGCM_Decrypt_DMA(CRYP_HandleTypeDef *hcryp, uint8
       __HAL_CRYP_SET_MODE(CRYP_CR_ALGOMODE_AES_GCM_DECRYPT);
       
       /* Set the Initialization Vector */
-      CRYPEx_GCMCCM_SetInitVector(hcryp, hcryp->Init.pInitVect, CRYP_KEYSIZE_128B);
+      CRYPEx_GCMCCM_SetInitVector(hcryp, hcryp->Init.pInitVect);
       
       /* Enable CRYP to start the init phase */
       __HAL_CRYP_ENABLE();
@@ -2517,7 +2866,7 @@ HAL_StatusTypeDef HAL_CRYPEx_AESCCM_Decrypt_DMA(CRYP_HandleTypeDef *hcryp, uint8
       __HAL_CRYP_SET_MODE(CRYP_CR_ALGOMODE_AES_CCM_DECRYPT);
       
       /* Set the Initialization Vector */
-      CRYPEx_GCMCCM_SetInitVector(hcryp, ctr, CRYP_KEYSIZE_128B);
+      CRYPEx_GCMCCM_SetInitVector(hcryp, ctr);
       
       /* Select init phase */
       __HAL_CRYP_SET_PHASE(CRYP_PHASE_INIT);
@@ -2648,11 +2997,29 @@ HAL_StatusTypeDef HAL_CRYPEx_AESCCM_Decrypt_DMA(CRYP_HandleTypeDef *hcryp, uint8
 #endif
 
 /**
-  * @brief  This function handles CRYP interrupt request.
-  * @param  hcryp: pointer to a CRYP_HandleTypeDef structure that contains
+  * @}
+  */
+  
+/** @defgroup CRYPEx_Exported_Functions_Group2 CRYPEx IRQ handler management  
+ *  @brief   CRYPEx IRQ handler.
+ *
+@verbatim   
+  ==============================================================================
+                ##### CRYPEx IRQ handler management #####
+  ==============================================================================  
+[..]  This section provides CRYPEx IRQ handler function.
+
+@endverbatim
+  * @{
+  */
+
+/**
+  * @brief  This function handles CRYPEx interrupt request.
+  * @param  hcryp: pointer to a CRYPEx_HandleTypeDef structure that contains
   *         the configuration information for CRYP module
   * @retval None
   */
+
 void HAL_CRYPEx_GCMCCM_IRQHandler(CRYP_HandleTypeDef *hcryp)
 {
   switch(CRYP->CR & CRYP_CR_ALGOMODE_DIRECTION)
@@ -2681,350 +3048,6 @@ void HAL_CRYPEx_GCMCCM_IRQHandler(CRYP_HandleTypeDef *hcryp)
 /**
   * @}
   */
-
-/**
-  * @brief  DMA CRYP Input Data process complete callback. 
-  * @param  hdma: DMA handle
-  * @retval None
-  */
-static void CRYPEx_GCMCCM_DMAInCplt(DMA_HandleTypeDef *hdma)  
-{
-  CRYP_HandleTypeDef* hcryp = ( CRYP_HandleTypeDef* )((DMA_HandleTypeDef* )hdma)->Parent;
-  
-  /* Disable the DMA transfer for input Fifo request by resetting the DIEN bit
-     in the DMACR register */
-  CRYP->DMACR &= (uint32_t)(~CRYP_DMACR_DIEN);
-  
-  /* Call input data transfer complete callback */
-  HAL_CRYP_InCpltCallback(hcryp);
-}
-
-/**
-  * @brief  DMA CRYP Output Data process complete callback.
-  * @param  hdma: DMA handle
-  * @retval None
-  */
-static void CRYPEx_GCMCCM_DMAOutCplt(DMA_HandleTypeDef *hdma)
-{
-  CRYP_HandleTypeDef* hcryp = ( CRYP_HandleTypeDef* )((DMA_HandleTypeDef* )hdma)->Parent;
-  
-  /* Disable the DMA transfer for output Fifo request by resetting the DOEN bit
-     in the DMACR register */
-  CRYP->DMACR &= (uint32_t)(~CRYP_DMACR_DOEN);
-  
-  /* Enable the CRYP peripheral */
-  __HAL_CRYP_DISABLE();
-  
-  /* Change the CRYP peripheral state */
-  hcryp->State = HAL_CRYP_STATE_READY;
-  
-  /* Call output data transfer complete callback */
-  HAL_CRYP_OutCpltCallback(hcryp);
-}
-
-/**
-  * @brief  DMA CRYP communication error callback. 
-  * @param  hdma: DMA handle
-  * @retval None
-  */
-static void CRYPEx_GCMCCM_DMAError(DMA_HandleTypeDef *hdma)
-{
-  CRYP_HandleTypeDef* hcryp = ( CRYP_HandleTypeDef* )((DMA_HandleTypeDef* )hdma)->Parent;
-  hcryp->State= HAL_CRYP_STATE_READY;
-  HAL_CRYP_ErrorCallback(hcryp);
-}
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
-/**
-  * @brief  Writes the Key in Key registers. 
-  * @param  hcryp: pointer to a CRYP_HandleTypeDef structure that contains
-  *         the configuration information for CRYP module
-  * @param  Key: Pointer to Key buffer
-  * @param  KeySize: Size of Key
-  * @retval None
-  */
-static void CRYPEx_GCMCCM_SetKey(CRYP_HandleTypeDef *hcryp, uint8_t *Key, uint32_t KeySize)
-{
-  uint32_t keyaddr = (uint32_t)Key;
-  
-  switch(KeySize)
-  {
-  case CRYP_KEYSIZE_256B:
-    /* Key Initialisation */
-    CRYP->K0LR = __REV(*(uint32_t*)(keyaddr));
-    keyaddr+=4;
-    CRYP->K0RR = __REV(*(uint32_t*)(keyaddr));
-    keyaddr+=4;
-    CRYP->K1LR = __REV(*(uint32_t*)(keyaddr));
-    keyaddr+=4;
-    CRYP->K1RR = __REV(*(uint32_t*)(keyaddr));
-    keyaddr+=4;
-    CRYP->K2LR = __REV(*(uint32_t*)(keyaddr));
-    keyaddr+=4;
-    CRYP->K2RR = __REV(*(uint32_t*)(keyaddr));
-    keyaddr+=4;
-    CRYP->K3LR = __REV(*(uint32_t*)(keyaddr));
-    keyaddr+=4;
-    CRYP->K3RR = __REV(*(uint32_t*)(keyaddr));
-    break;
-  case CRYP_KEYSIZE_192B:
-    CRYP->K1LR = __REV(*(uint32_t*)(keyaddr));
-    keyaddr+=4;
-    CRYP->K1RR = __REV(*(uint32_t*)(keyaddr));
-    keyaddr+=4;
-    CRYP->K2LR = __REV(*(uint32_t*)(keyaddr));
-    keyaddr+=4;
-    CRYP->K2RR = __REV(*(uint32_t*)(keyaddr));
-    keyaddr+=4;
-    CRYP->K3LR = __REV(*(uint32_t*)(keyaddr));
-    keyaddr+=4;
-    CRYP->K3RR = __REV(*(uint32_t*)(keyaddr));
-    break;
-  case CRYP_KEYSIZE_128B:       
-    CRYP->K2LR = __REV(*(uint32_t*)(keyaddr));
-    keyaddr+=4;
-    CRYP->K2RR = __REV(*(uint32_t*)(keyaddr));
-    keyaddr+=4;
-    CRYP->K3LR = __REV(*(uint32_t*)(keyaddr));
-    keyaddr+=4;
-    CRYP->K3RR = __REV(*(uint32_t*)(keyaddr));
-    break;
-  default:
-    break;
-  }
-}
-
-/**
-  * @brief  Writes the InitVector/InitCounter in IV registers.
-  * @param  hcryp: pointer to a CRYP_HandleTypeDef structure that contains
-  *         the configuration information for CRYP module
-  * @param  InitVector: Pointer to InitVector/InitCounter buffer
-  * @param  IVSize: Size of the InitVector/InitCounter
-  * @retval None
-  */
-static void CRYPEx_GCMCCM_SetInitVector(CRYP_HandleTypeDef *hcryp, uint8_t *InitVector, uint32_t IVSize)
-{
-  uint32_t ivaddr = (uint32_t)InitVector;
-  
-  switch(IVSize)
-  {
-  case CRYP_KEYSIZE_128B:
-    CRYP->IV0LR = __REV(*(uint32_t*)(ivaddr));
-    ivaddr+=4;
-    CRYP->IV0RR = __REV(*(uint32_t*)(ivaddr));
-    ivaddr+=4;
-    CRYP->IV1LR = __REV(*(uint32_t*)(ivaddr));
-    ivaddr+=4;
-    CRYP->IV1RR = __REV(*(uint32_t*)(ivaddr));
-    break;
-    /* Whatever key size 192 or 256, Init vector is written in IV0LR and IV0RR */
-  case CRYP_KEYSIZE_192B:
-    CRYP->IV0LR = __REV(*(uint32_t*)(ivaddr));
-    ivaddr+=4;
-    CRYP->IV0RR = __REV(*(uint32_t*)(ivaddr));
-    break;
-  case CRYP_KEYSIZE_256B:
-    CRYP->IV0LR = __REV(*(uint32_t*)(ivaddr));
-    ivaddr+=4;
-    CRYP->IV0RR = __REV(*(uint32_t*)(ivaddr));
-    break;
-  default:
-    break;
-  }
-}
-
-/**
-  * @brief  Process Data: Writes Input data in polling mode and read the Output data.
-  * @param  hcryp: pointer to a CRYP_HandleTypeDef structure that contains
-  *         the configuration information for CRYP module
-  * @param  Input: Pointer to the Input buffer.
-  * @param  Ilength: Length of the Input buffer, must be a multiple of 16
-  * @param  Output: Pointer to the returned buffer
-  * @param  Timeout: Timeout value 
-  * @retval None
-  */
-static HAL_StatusTypeDef CRYPEx_GCMCCM_ProcessData(CRYP_HandleTypeDef *hcryp, uint8_t *Input, uint16_t Ilength, uint8_t *Output, uint32_t Timeout)
-{
-  uint32_t tickstart = 0;   
-  uint32_t i = 0;
-  uint32_t inputaddr  = (uint32_t)Input;
-  uint32_t outputaddr = (uint32_t)Output;
-  
-  for(i=0; (i < Ilength); i+=16)
-  {
-    /* Write the Input block in the IN FIFO */
-    CRYP->DR = *(uint32_t*)(inputaddr);
-    inputaddr+=4;
-    CRYP->DR = *(uint32_t*)(inputaddr);
-    inputaddr+=4;
-    CRYP->DR  = *(uint32_t*)(inputaddr);
-    inputaddr+=4;
-    CRYP->DR = *(uint32_t*)(inputaddr);
-    inputaddr+=4;
-    
-    /* Get tick */
-    tickstart = HAL_GetTick();
- 
-    while(HAL_IS_BIT_CLR(CRYP->SR, CRYP_FLAG_OFNE))
-    {
-      /* Check for the Timeout */
-      if(Timeout != HAL_MAX_DELAY)
-      {
-        if((HAL_GetTick() - tickstart ) > CRYPEx_TIMEOUT_VALUE)
-        {
-          /* Change state */
-          hcryp->State = HAL_CRYP_STATE_TIMEOUT;
-          
-          /* Process Unlocked */
-          __HAL_UNLOCK(hcryp);
-          
-          return HAL_TIMEOUT;
-        }
-      }
-    }
-    /* Read the Output block from the OUT FIFO */
-    *(uint32_t*)(outputaddr) = CRYP->DOUT;
-    outputaddr+=4;
-    *(uint32_t*)(outputaddr) = CRYP->DOUT;
-    outputaddr+=4;
-    *(uint32_t*)(outputaddr) = CRYP->DOUT;
-    outputaddr+=4;
-    *(uint32_t*)(outputaddr) = CRYP->DOUT;
-    outputaddr+=4;
-  }
-  /* Return function status */
-  return HAL_OK;
-}
-
-/**
-  * @brief  Sets the header phase
-  * @param  hcryp: pointer to a CRYP_HandleTypeDef structure that contains
-  *         the configuration information for CRYP module
-  * @param  Input: Pointer to the Input buffer.
-  * @param  Ilength: Length of the Input buffer, must be a multiple of 16
-  * @param  Timeout: Timeout value   
-  * @retval None
-  */
-static HAL_StatusTypeDef CRYPEx_GCMCCM_SetHeaderPhase(CRYP_HandleTypeDef *hcryp, uint8_t* Input, uint16_t Ilength, uint32_t Timeout)
-{
-  uint32_t tickstart = 0;   
-  uint32_t loopcounter = 0;
-  uint32_t headeraddr = (uint32_t)Input;
-  
-  /***************************** Header phase *********************************/
-  if(hcryp->Init.HeaderSize != 0)
-  {
-    /* Select header phase */
-    __HAL_CRYP_SET_PHASE(CRYP_PHASE_HEADER);
-    /* Enable the CRYP peripheral */
-    __HAL_CRYP_ENABLE();
-    
-    for(loopcounter = 0; (loopcounter < hcryp->Init.HeaderSize); loopcounter+=16)
-    {
-      /* Get tick */
-      tickstart = HAL_GetTick();
-      
-      while(HAL_IS_BIT_CLR(CRYP->SR, CRYP_FLAG_IFEM))
-      {
-        /* Check for the Timeout */
-        if(Timeout != HAL_MAX_DELAY)
-        {
-          if((Timeout == 0)||((HAL_GetTick() - tickstart ) > Timeout))
-          {
-            /* Change state */
-            hcryp->State = HAL_CRYP_STATE_TIMEOUT;
-            
-            /* Process Unlocked */
-            __HAL_UNLOCK(hcryp);
-            
-            return HAL_TIMEOUT;
-          }
-        }
-      }
-      /* Write the Input block in the IN FIFO */
-      CRYP->DR = *(uint32_t*)(headeraddr);
-      headeraddr+=4;
-      CRYP->DR = *(uint32_t*)(headeraddr);
-      headeraddr+=4;
-      CRYP->DR = *(uint32_t*)(headeraddr);
-      headeraddr+=4;
-      CRYP->DR = *(uint32_t*)(headeraddr);
-      headeraddr+=4;
-    }
-    
-    /* Wait until the complete message has been processed */
-
-    /* Get tick */
-    tickstart = HAL_GetTick();
-
-    while((CRYP->SR & CRYP_FLAG_BUSY) == CRYP_FLAG_BUSY)
-    {
-      /* Check for the Timeout */
-      if(Timeout != HAL_MAX_DELAY)
-      {
-        if((Timeout == 0)||((HAL_GetTick() - tickstart ) > Timeout))
-        {
-          /* Change state */
-          hcryp->State = HAL_CRYP_STATE_TIMEOUT;
-          
-          /* Process Unlocked */
-          __HAL_UNLOCK(hcryp);
-          
-          return HAL_TIMEOUT;
-        }
-      }
-    }
-  }
-  /* Return function status */
-  return HAL_OK;
-}
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
-
-/**
-  * @brief  Sets the DMA configuration and start the DMA transfert.
-  * @param  hcryp: pointer to a CRYP_HandleTypeDef structure that contains
-  *         the configuration information for CRYP module
-  * @param  inputaddr: Address of the Input buffer
-  * @param  Size: Size of the Input buffer, must be a multiple of 16
-  * @param  outputaddr: Address of the Output buffer
-  * @retval None
-  */
-static void CRYPEx_GCMCCM_SetDMAConfig(CRYP_HandleTypeDef *hcryp, uint32_t inputaddr, uint16_t Size, uint32_t outputaddr)
-{
-  /* Set the CRYP DMA transfer complete callback */
-  hcryp->hdmain->XferCpltCallback = CRYPEx_GCMCCM_DMAInCplt;
-  /* Set the DMA error callback */
-  hcryp->hdmain->XferErrorCallback = CRYPEx_GCMCCM_DMAError;
-  
-  /* Set the CRYP DMA transfer complete callback */
-  hcryp->hdmaout->XferCpltCallback = CRYPEx_GCMCCM_DMAOutCplt;
-  /* Set the DMA error callback */
-  hcryp->hdmaout->XferErrorCallback = CRYPEx_GCMCCM_DMAError;
-  
-  /* Enable the CRYP peripheral */
-  __HAL_CRYP_ENABLE();
-  
-  /* Enable the DMA In DMA Stream */
-  HAL_DMA_Start_IT(hcryp->hdmain, inputaddr, (uint32_t)&CRYP->DR, Size/4);
-  
-  /* Enable In DMA request */
-  CRYP->DMACR = CRYP_DMACR_DIEN;
-  
-  /* Enable the DMA Out DMA Stream */
-  HAL_DMA_Start_IT(hcryp->hdmaout, (uint32_t)&CRYP->DOUT, outputaddr, Size/4);
-  
-  /* Enable Out DMA request */
-  CRYP->DMACR |= CRYP_DMACR_DOEN;
-}
 
 /**
   * @}

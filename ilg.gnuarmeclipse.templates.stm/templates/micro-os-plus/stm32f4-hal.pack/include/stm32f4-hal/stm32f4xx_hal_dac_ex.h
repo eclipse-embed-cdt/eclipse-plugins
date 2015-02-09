@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_dac.h
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   Header file of DAC HAL Extension module.
   ******************************************************************************
   * @attention
@@ -57,28 +57,22 @@
   */
 
 /* Exported types ------------------------------------------------------------*/
-   
-/** 
-  * @brief  HAL State structures definition  
-  */ 
-
 /* Exported constants --------------------------------------------------------*/
-  
-/** @defgroup DACEx_wave_generation 
+/** @defgroup DACEx_Exported_Constants DAC Exported Constants
+  * @{
+  */
+   
+/** @defgroup DACEx_wave_generation DAC Wave Generation
   * @{
   */
 #define DAC_WAVEGENERATION_NONE            ((uint32_t)0x00000000)
 #define DAC_WAVEGENERATION_NOISE           ((uint32_t)DAC_CR_WAVE1_0)
 #define DAC_WAVEGENERATION_TRIANGLE        ((uint32_t)DAC_CR_WAVE1_1)
-
-#define IS_DAC_GENERATE_WAVE(WAVE) (((WAVE) == DAC_WAVEGENERATION_NONE) || \
-                                    ((WAVE) == DAC_WAVEGENERATION_NOISE) || \
-                                    ((WAVE) == DAC_WAVEGENERATION_TRIANGLE))
 /**
   * @}
   */
 
-/** @defgroup DACEx_lfsrunmask_triangleamplitude
+/** @defgroup DACEx_lfsrunmask_triangleamplitude DAC LFS Run Mask Triangle Amplitude
   * @{
   */
 #define DAC_LFSRUNMASK_BIT0                ((uint32_t)0x00000000) /*!< Unmask DAC channel LFSR bit0 for noise wave generation */
@@ -105,7 +99,66 @@
 #define DAC_TRIANGLEAMPLITUDE_1023         ((uint32_t)DAC_CR_MAMP1_3 | DAC_CR_MAMP1_0) /*!< Select max triangle amplitude of 1023 */
 #define DAC_TRIANGLEAMPLITUDE_2047         ((uint32_t)DAC_CR_MAMP1_3 | DAC_CR_MAMP1_1) /*!< Select max triangle amplitude of 2047 */
 #define DAC_TRIANGLEAMPLITUDE_4095         ((uint32_t)DAC_CR_MAMP1_3 | DAC_CR_MAMP1_1 | DAC_CR_MAMP1_0) /*!< Select max triangle amplitude of 4095 */
+/**
+  * @}
+  */
 
+/** @defgroup DACEx_wave_Format DAC Wave Format
+  * @{
+  */
+#define DAC_WAVE_NOISE                     ((uint32_t)DAC_CR_WAVE1_0)
+#define DAC_WAVE_TRIANGLE                  ((uint32_t)DAC_CR_WAVE1_1)
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+/* Exported macro ------------------------------------------------------------*/
+/* Exported functions --------------------------------------------------------*/
+/** @addtogroup DACEx_Exported_Functions
+  * @{
+  */
+
+/** @addtogroup DACEx_Exported_Functions_Group1
+  * @{
+  */
+/* Extension features functions ***********************************************/
+uint32_t HAL_DACEx_DualGetValue(DAC_HandleTypeDef* hdac);
+HAL_StatusTypeDef HAL_DACEx_TriangleWaveGenerate(DAC_HandleTypeDef* hdac, uint32_t Channel, uint32_t Amplitude);
+HAL_StatusTypeDef HAL_DACEx_NoiseWaveGenerate(DAC_HandleTypeDef* hdac, uint32_t Channel, uint32_t Amplitude);
+HAL_StatusTypeDef HAL_DACEx_DualSetValue(DAC_HandleTypeDef* hdac, uint32_t Alignment, uint32_t Data1, uint32_t Data2);
+
+void HAL_DACEx_ConvCpltCallbackCh2(DAC_HandleTypeDef* hdac);
+void HAL_DACEx_ConvHalfCpltCallbackCh2(DAC_HandleTypeDef* hdac);
+void HAL_DACEx_ErrorCallbackCh2(DAC_HandleTypeDef* hdac);
+void HAL_DACEx_DMAUnderrunCallbackCh2(DAC_HandleTypeDef* hdac);
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */
+/* Private types -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+/* Private constants ---------------------------------------------------------*/
+/** @defgroup DACEx_Private_Constants DAC Private Constants
+  * @{
+  */
+
+/**
+  * @}
+  */
+
+/* Private macros ------------------------------------------------------------*/
+/** @defgroup DACEx_Private_Macros DAC Private Macros
+  * @{
+  */
+#define IS_DAC_GENERATE_WAVE(WAVE) (((WAVE) == DAC_WAVEGENERATION_NONE) || \
+                                    ((WAVE) == DAC_WAVEGENERATION_NOISE) || \
+                                    ((WAVE) == DAC_WAVEGENERATION_TRIANGLE))
 #define IS_DAC_LFSR_UNMASK_TRIANGLE_AMPLITUDE(VALUE) (((VALUE) == DAC_LFSRUNMASK_BIT0) || \
                                                       ((VALUE) == DAC_LFSRUNMASK_BITS1_0) || \
                                                       ((VALUE) == DAC_LFSRUNMASK_BITS2_0) || \
@@ -130,40 +183,22 @@
                                                       ((VALUE) == DAC_TRIANGLEAMPLITUDE_1023) || \
                                                       ((VALUE) == DAC_TRIANGLEAMPLITUDE_2047) || \
                                                       ((VALUE) == DAC_TRIANGLEAMPLITUDE_4095))
-/**
-  * @}
-  */
-
-/** @defgroup DACEx_wave_generation 
-  * @{
-  */
-#define DAC_WAVE_NOISE                     ((uint32_t)DAC_CR_WAVE1_0)
-#define DAC_WAVE_TRIANGLE                  ((uint32_t)DAC_CR_WAVE1_1)
-
 #define IS_DAC_WAVE(WAVE) (((WAVE) == DAC_WAVE_NOISE) || \
                            ((WAVE) == DAC_WAVE_TRIANGLE))
 /**
   * @}
   */
 
-/* Exported macro ------------------------------------------------------------*/
-/* Exported functions --------------------------------------------------------*/  
-
-/* Extension features functions ***********************************************/
-uint32_t HAL_DACEx_DualGetValue(DAC_HandleTypeDef* hdac);
-HAL_StatusTypeDef HAL_DACEx_TriangleWaveGenerate(DAC_HandleTypeDef* hdac, uint32_t Channel, uint32_t Amplitude);
-HAL_StatusTypeDef HAL_DACEx_NoiseWaveGenerate(DAC_HandleTypeDef* hdac, uint32_t Channel, uint32_t Amplitude);
-HAL_StatusTypeDef HAL_DACEx_DualSetValue(DAC_HandleTypeDef* hdac, uint32_t Alignment, uint32_t Data1, uint32_t Data2);
-
-void HAL_DACEx_ConvCpltCallbackCh2(DAC_HandleTypeDef* hdac);
-void HAL_DACEx_ConvHalfCpltCallbackCh2(DAC_HandleTypeDef* hdac);
-void HAL_DACEx_ErrorCallbackCh2(DAC_HandleTypeDef* hdac);
-void HAL_DACEx_DMAUnderrunCallbackCh2(DAC_HandleTypeDef* hdac);
-
+/* Private functions ---------------------------------------------------------*/
+/** @defgroup DACEx_Private_Functions DAC Private Functions
+  * @{
+  */
 void DAC_DMAConvCpltCh2(DMA_HandleTypeDef *hdma);
 void DAC_DMAErrorCh2(DMA_HandleTypeDef *hdma);
 void DAC_DMAHalfConvCpltCh2(DMA_HandleTypeDef *hdma); 
-
+/**
+  * @}
+  */
 #endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx */
 
 /**

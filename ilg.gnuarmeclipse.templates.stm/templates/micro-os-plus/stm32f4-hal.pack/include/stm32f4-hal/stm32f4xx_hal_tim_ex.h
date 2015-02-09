@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_tim_ex.h
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   Header file of TIM HAL Extension module.
   ******************************************************************************
   * @attention
@@ -46,7 +46,7 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal_def.h"
 
-/** @addtogroup STM32F4xx_HAL
+/** @addtogroup STM32F4xx_HAL_Driver
   * @{
   */
 
@@ -55,7 +55,10 @@
   */ 
 
 /* Exported types ------------------------------------------------------------*/ 
-
+/** @defgroup TIMEx_Exported_Types TIM Exported Types
+  * @{
+  */
+  
 /** 
   * @brief  TIM Hall sensor Configuration Structure definition  
   */
@@ -105,16 +108,18 @@ typedef struct
   uint32_t AutomaticOutput;	 	      /*!< TIM Automatic Output Enable state. 
                                          This parameter can be a value of @ref TIM_AOE_Bit_Set_Reset */           
 }TIM_BreakDeadTimeConfigTypeDef;
-
+/**
+  * @}
+  */
+  
 /* Exported constants --------------------------------------------------------*/
-/** @defgroup TIMEx_Exported_Constants
+/** @defgroup TIMEx_Exported_Constants  TIM Exported Constants
   * @{
   */
   
-/** @defgroup TIMEx_Remap 
+/** @defgroup TIMEx_Remap  TIM Remap
   * @{
   */
-
 #define TIM_TIM2_TIM8_TRGO                     (0x00000000)
 #define TIM_TIM2_ETH_PTP                       (0x00000400)
 #define TIM_TIM2_USBFS_SOF                     (0x00000800)
@@ -125,30 +130,23 @@ typedef struct
 #define TIM_TIM5_RTC                           (0x000000C0)
 #define TIM_TIM11_GPIO                         (0x00000000)
 #define TIM_TIM11_HSE                          (0x00000002)
-
-#define IS_TIM_REMAP(TIM_REMAP)	 (((TIM_REMAP) == TIM_TIM2_TIM8_TRGO)||\
-                                  ((TIM_REMAP) == TIM_TIM2_ETH_PTP)||\
-                                  ((TIM_REMAP) == TIM_TIM2_USBFS_SOF)||\
-                                  ((TIM_REMAP) == TIM_TIM2_USBHS_SOF)||\
-                                  ((TIM_REMAP) == TIM_TIM5_GPIO)||\
-                                  ((TIM_REMAP) == TIM_TIM5_LSI)||\
-                                  ((TIM_REMAP) == TIM_TIM5_LSE)||\
-                                  ((TIM_REMAP) == TIM_TIM5_RTC)||\
-                                  ((TIM_REMAP) == TIM_TIM11_GPIO)||\
-                                  ((TIM_REMAP) == TIM_TIM11_HSE))
-
-/**
-  * @}
-  */ 
-
 /**
   * @}
   */   
-  
+ 
+/**
+  * @}
+  */ 
+    
 /* Exported macro ------------------------------------------------------------*/
-
 /* Exported functions --------------------------------------------------------*/
+/** @addtogroup TIMEx_Exported_Functions
+  * @{
+  */
 
+/** @addtogroup TIMEx_Exported_Functions_Group1
+  * @{
+  */
 /*  Timer Hall Sensor functions  **********************************************/
 HAL_StatusTypeDef HAL_TIMEx_HallSensor_Init(TIM_HandleTypeDef* htim, TIM_HallSensor_InitTypeDef* sConfig);
 HAL_StatusTypeDef HAL_TIMEx_HallSensor_DeInit(TIM_HandleTypeDef* htim);
@@ -165,7 +163,13 @@ HAL_StatusTypeDef HAL_TIMEx_HallSensor_Stop_IT(TIM_HandleTypeDef* htim);
 /* Non-Blocking mode: DMA */
 HAL_StatusTypeDef HAL_TIMEx_HallSensor_Start_DMA(TIM_HandleTypeDef* htim, uint32_t *pData, uint16_t Length);
 HAL_StatusTypeDef HAL_TIMEx_HallSensor_Stop_DMA(TIM_HandleTypeDef* htim);
+/**
+  * @}
+  */
 
+/** @addtogroup TIMEx_Exported_Functions_Group2
+  * @{
+  */
 /*  Timer Complementary Output Compare functions  *****************************/
 /* Blocking mode: Polling */
 HAL_StatusTypeDef HAL_TIMEx_OCN_Start(TIM_HandleTypeDef* htim, uint32_t Channel);
@@ -178,7 +182,13 @@ HAL_StatusTypeDef HAL_TIMEx_OCN_Stop_IT(TIM_HandleTypeDef* htim, uint32_t Channe
 /* Non-Blocking mode: DMA */
 HAL_StatusTypeDef HAL_TIMEx_OCN_Start_DMA(TIM_HandleTypeDef* htim, uint32_t Channel, uint32_t *pData, uint16_t Length);
 HAL_StatusTypeDef HAL_TIMEx_OCN_Stop_DMA(TIM_HandleTypeDef* htim, uint32_t Channel);
+/**
+  * @}
+  */
 
+/** @addtogroup TIMEx_Exported_Functions_Group3
+  * @{
+  */
 /*  Timer Complementary PWM functions  ****************************************/
 /* Blocking mode: Polling */
 HAL_StatusTypeDef HAL_TIMEx_PWMN_Start(TIM_HandleTypeDef* htim, uint32_t Channel);
@@ -190,7 +200,13 @@ HAL_StatusTypeDef HAL_TIMEx_PWMN_Stop_IT(TIM_HandleTypeDef* htim, uint32_t Chann
 /* Non-Blocking mode: DMA */
 HAL_StatusTypeDef HAL_TIMEx_PWMN_Start_DMA(TIM_HandleTypeDef* htim, uint32_t Channel, uint32_t *pData, uint16_t Length);
 HAL_StatusTypeDef HAL_TIMEx_PWMN_Stop_DMA(TIM_HandleTypeDef* htim, uint32_t Channel);
+/**
+  * @}
+  */
 
+/** @addtogroup TIMEx_Exported_Functions_Group4
+  * @{
+  */
 /*  Timer Complementary One Pulse functions  **********************************/
 /* Blocking mode: Polling */
 HAL_StatusTypeDef HAL_TIMEx_OnePulseN_Start(TIM_HandleTypeDef* htim, uint32_t OutputChannel);
@@ -199,23 +215,40 @@ HAL_StatusTypeDef HAL_TIMEx_OnePulseN_Stop(TIM_HandleTypeDef* htim, uint32_t Out
 /* Non-Blocking mode: Interrupt */
 HAL_StatusTypeDef HAL_TIMEx_OnePulseN_Start_IT(TIM_HandleTypeDef* htim, uint32_t OutputChannel);
 HAL_StatusTypeDef HAL_TIMEx_OnePulseN_Stop_IT(TIM_HandleTypeDef* htim, uint32_t OutputChannel);
+/**
+  * @}
+  */
 
-/* Extnsion Control functions  ************************************************/
+/** @addtogroup TIMEx_Exported_Functions_Group5
+  * @{
+  */
+/* Extension Control functions  ************************************************/
 HAL_StatusTypeDef HAL_TIMEx_ConfigCommutationEvent(TIM_HandleTypeDef* htim, uint32_t  InputTrigger, uint32_t  CommutationSource);
 HAL_StatusTypeDef HAL_TIMEx_ConfigCommutationEvent_IT(TIM_HandleTypeDef* htim, uint32_t  InputTrigger, uint32_t  CommutationSource);
 HAL_StatusTypeDef HAL_TIMEx_ConfigCommutationEvent_DMA(TIM_HandleTypeDef* htim, uint32_t  InputTrigger, uint32_t  CommutationSource);
 HAL_StatusTypeDef HAL_TIMEx_MasterConfigSynchronization(TIM_HandleTypeDef* htim, TIM_MasterConfigTypeDef * sMasterConfig);
 HAL_StatusTypeDef HAL_TIMEx_ConfigBreakDeadTime(TIM_HandleTypeDef* htim, TIM_BreakDeadTimeConfigTypeDef *sBreakDeadTimeConfig);
 HAL_StatusTypeDef HAL_TIMEx_RemapConfig(TIM_HandleTypeDef* htim, uint32_t Remap);
+/**
+  * @}
+  */
 
+/** @addtogroup TIMEx_Exported_Functions_Group6
+  * @{
+  */ 
 /* Extension Callback *********************************************************/
 void HAL_TIMEx_CommutationCallback(TIM_HandleTypeDef* htim);
 void HAL_TIMEx_BreakCallback(TIM_HandleTypeDef* htim);
-void HAL_TIMEx_DMACommutationCplt(DMA_HandleTypeDef *hdma);
+void TIMEx_DMACommutationCplt(DMA_HandleTypeDef *hdma);
+/**
+  * @}
+  */
 
+/** @addtogroup TIMEx_Exported_Functions_Group7
+  * @{
+  */
 /* Extension Peripheral State functions  **************************************/
 HAL_TIM_StateTypeDef HAL_TIMEx_HallSensor_GetState(TIM_HandleTypeDef* htim);
-
 /**
   * @}
   */ 
@@ -223,7 +256,47 @@ HAL_TIM_StateTypeDef HAL_TIMEx_HallSensor_GetState(TIM_HandleTypeDef* htim);
 /**
   * @}
   */ 
+
+/* Private types -------------------------------------------------------------*/
+/* Private variables ---------------------------------------------------------*/
+/* Private constants ---------------------------------------------------------*/
+/* Private macros ------------------------------------------------------------*/
+/** @defgroup TIMEx_Private_Macros TIM Private Macros
+  * @{
+  */
+#define IS_TIM_REMAP(TIM_REMAP)	 (((TIM_REMAP) == TIM_TIM2_TIM8_TRGO)||\
+                                  ((TIM_REMAP) == TIM_TIM2_ETH_PTP)||\
+                                  ((TIM_REMAP) == TIM_TIM2_USBFS_SOF)||\
+                                  ((TIM_REMAP) == TIM_TIM2_USBHS_SOF)||\
+                                  ((TIM_REMAP) == TIM_TIM5_GPIO)||\
+                                  ((TIM_REMAP) == TIM_TIM5_LSI)||\
+                                  ((TIM_REMAP) == TIM_TIM5_LSE)||\
+                                  ((TIM_REMAP) == TIM_TIM5_RTC)||\
+                                  ((TIM_REMAP) == TIM_TIM11_GPIO)||\
+                                  ((TIM_REMAP) == TIM_TIM11_HSE))
+
+#define IS_TIM_DEADTIME(DEADTIME)      ((DEADTIME) <= 0xFF) 
+/**
+  * @}
+  */  
   
+/* Private functions ---------------------------------------------------------*/
+/** @defgroup TIMEx_Private_Functions TIM Private Functions
+  * @{
+  */
+  
+/**
+  * @}
+  */
+
+/**
+  * @}
+  */ 
+
+/**
+  * @}
+  */
+    
 #ifdef __cplusplus
 }
 #endif

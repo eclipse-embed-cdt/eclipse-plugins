@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_crc.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   CRC HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Cyclic Redundancy Check (CRC) peripheral:
@@ -18,7 +18,7 @@
     [..]
       The CRC HAL driver can be used as follows:
 
-      (#) Enable CRC AHB clock using __CRC_CLK_ENABLE();
+      (#) Enable CRC AHB clock using __HAL_RCC_CRC_CLK_ENABLE();
 
       (#) Use HAL_CRC_Accumulate() function to compute the CRC value of 
           a 32-bit data buffer using combination of the previous CRC value
@@ -66,8 +66,7 @@
   * @{
   */
 
-/** @defgroup CRC 
-  * @brief CRC HAL module driver.
+/** @addtogroup CRC 
   * @{
   */
 
@@ -79,15 +78,16 @@
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
+/* Exported functions --------------------------------------------------------*/
 
-/** @defgroup CRC_Private_Functions
+/** @addtogroup CRC_Exported_Functions
   * @{
   */
 
-/** @defgroup CRC_Group1 Initialization and de-initialization functions 
- *  @brief    Initialization and Configuration functions. 
+/** @addtogroup CRC_Exported_Functions_Group1
+ *  @brief   Initialization and de-initialization functions 
  *
-@verbatim    
+@verbatim     
   ==============================================================================
             ##### Initialization and de-initialization functions #####
   ==============================================================================
@@ -208,12 +208,12 @@ __weak void HAL_CRC_MspDeInit(CRC_HandleTypeDef *hcrc)
 
 /**
   * @}
-  */
+  */ 
 
-/** @defgroup CRC_Group2 Peripheral Control functions 
- *  @brief    management functions. 
+/** @addtogroup CRC_Exported_Functions_Group2
+ *  @brief   Peripheral Control functions 
  *
-@verbatim   
+@verbatim  
   ==============================================================================
                       ##### Peripheral Control functions #####
   ==============================================================================  
@@ -302,10 +302,11 @@ uint32_t HAL_CRC_Calculate(CRC_HandleTypeDef *hcrc, uint32_t pBuffer[], uint32_t
 
 /**
   * @}
-  */
+  */ 
 
-/** @defgroup CRC_Group3 Peripheral State functions 
- *  @brief    Peripheral State functions. 
+  
+/** @addtogroup CRC_Exported_Functions_Group3
+ *  @brief   Peripheral State functions 
  *
 @verbatim   
   ==============================================================================

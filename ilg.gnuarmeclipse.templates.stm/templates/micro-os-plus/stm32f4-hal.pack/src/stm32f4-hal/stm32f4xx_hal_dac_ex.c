@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_dac_ex.c
   * @author  MCD Application Team
-  * @version V1.1.0
-  * @date    19-June-2014
+  * @version V1.2.0
+  * @date    26-December-2014
   * @brief   DAC HAL module driver.
   *         This file provides firmware functions to manage the following 
   *         functionalities of DAC extension peripheral:
@@ -60,7 +60,7 @@
   * @{
   */
 
-/** @defgroup DACEx 
+/** @defgroup DACEx DACEx
   * @brief DAC driver modules
   * @{
   */ 
@@ -75,12 +75,12 @@
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
-
-/** @defgroup DACEx_Private_Functions
+/* Exported functions --------------------------------------------------------*/
+/** @defgroup DACEx_Exported_Functions DAC Exported Functions
   * @{
   */
 
-/** @defgroup DACEx_Group1 Extended features functions
+/** @defgroup DACEx_Exported_Functions_Group1 Extended features functions
  *  @brief    Extended features functions 
  *
 @verbatim   
@@ -153,7 +153,7 @@ HAL_StatusTypeDef HAL_DACEx_TriangleWaveGenerate(DAC_HandleTypeDef* hdac, uint32
   hdac->State = HAL_DAC_STATE_BUSY;
   
   /* Enable the selected wave generation for the selected DAC channel */
-  hdac->Instance->CR |= (DAC_WAVE_TRIANGLE | Amplitude) << Channel;
+  MODIFY_REG(hdac->Instance->CR, (DAC_CR_WAVE1 | DAC_CR_MAMP1) << Channel, (DAC_WAVE_TRIANGLE | Amplitude) << Channel);
   
   /* Change DAC state */
   hdac->State = HAL_DAC_STATE_READY;
@@ -201,7 +201,7 @@ HAL_StatusTypeDef HAL_DACEx_NoiseWaveGenerate(DAC_HandleTypeDef* hdac, uint32_t 
   hdac->State = HAL_DAC_STATE_BUSY;
   
   /* Enable the selected wave generation for the selected DAC channel */
-  hdac->Instance->CR |= (DAC_WAVE_NOISE | Amplitude) << Channel;
+  MODIFY_REG(hdac->Instance->CR, (DAC_CR_WAVE1 | DAC_CR_MAMP1) << Channel, (DAC_WAVE_NOISE | Amplitude) << Channel);
   
   /* Change DAC state */
   hdac->State = HAL_DAC_STATE_READY;
@@ -248,7 +248,7 @@ HAL_StatusTypeDef HAL_DACEx_DualSetValue(DAC_HandleTypeDef* hdac, uint32_t Align
   }
   
   tmp = (uint32_t)hdac->Instance;
-  tmp += __HAL_DHR12RD_ALIGNEMENT(Alignment);
+  tmp += DAC_DHR12RD_ALIGNMENT(Alignment);
 
   /* Set the dual DAC selected data holding register */
   *(__IO uint32_t *)tmp = data;
