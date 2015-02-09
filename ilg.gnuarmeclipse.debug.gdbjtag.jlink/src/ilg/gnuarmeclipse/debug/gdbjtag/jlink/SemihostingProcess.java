@@ -149,12 +149,12 @@ public class SemihostingProcess extends Process implements Runnable {
 					// Do not close(), it is too brutal.
 					// socket.close();
 
-					if (!fSocket.isInputShutdown()) {
+					if (fSocket != null && !fSocket.isInputShutdown()) {
 						System.out
 								.println("SemihostingProcess.destroy() before shutdownInput");
 						fSocket.shutdownInput();
 					}
-					if (!fSocket.isOutputShutdown()) {
+					if (fSocket != null && !fSocket.isOutputShutdown()) {
 						System.out
 								.println("SemihostingProcess.destroy() before shutdownOutput");
 						fSocket.shutdownOutput();
@@ -279,23 +279,28 @@ public class SemihostingProcess extends Process implements Runnable {
 			try {
 				fPipeOut.close();
 			} catch (IOException e1) {
+				;
 			}
 
 			try {
 				fErrorStream.close();
 			} catch (IOException e1) {
+				;
 			}
 
 			try {
 				fSocket.close();
 				fSocket = null;
 			} catch (IOException e) {
+				;
 			}
 
 			try {
 				fInputStream.close();
 			} catch (NullPointerException e) {
+				;
 			} catch (IOException e) {
+				;
 			}
 
 			fRunning = false;
