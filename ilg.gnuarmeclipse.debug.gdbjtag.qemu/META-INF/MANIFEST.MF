@@ -28,4 +28,5 @@ Bundle-Vendor: %bundle.vendor
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Export-Package: ilg.gnuarmeclipse.debug.gdbjtag.qemu,
+ ilg.gnuarmeclipse.debug.gdbjtag.qemu.dsf,
  ilg.gnuarmeclipse.debug.gdbjtag.qemu.ui
