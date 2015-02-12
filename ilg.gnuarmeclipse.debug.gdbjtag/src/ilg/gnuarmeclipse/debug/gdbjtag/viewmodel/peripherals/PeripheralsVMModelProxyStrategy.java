@@ -52,9 +52,9 @@ public class PeripheralsVMModelProxyStrategy extends
 				+ checked + ")");
 
 		Object segment = path.getLastSegment();
-		if ((segment instanceof PeripheralVMNode.PeripheralVMContext)) {
+		if ((segment instanceof PeripheralsVMNode.PeripheralsVMContext)) {
 
-			PeripheralVMNode.PeripheralVMContext peripheralVMContext = (PeripheralVMNode.PeripheralVMContext) segment;
+			PeripheralsVMNode.PeripheralsVMContext peripheralVMContext = (PeripheralsVMNode.PeripheralsVMContext) segment;
 			PeripheralDMContext peripheralDMContext = (PeripheralDMContext) peripheralVMContext
 					.getDMContext();
 			peripheralDMContext.setChecked(checked);

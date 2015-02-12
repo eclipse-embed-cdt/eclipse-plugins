@@ -44,7 +44,7 @@ public class PeripheralsVMProvider extends AbstractDMVMProvider implements
 				+ " " + session);
 
 		RootDMVMNode rootDMVMNode = new RootDMVMNode(this);
-		PeripheralVMNode peripheralVMNode = new PeripheralVMNode(this,
+		PeripheralsVMNode peripheralVMNode = new PeripheralsVMNode(this,
 				getSession());
 		addChildNodes(rootDMVMNode, new IVMNode[] { peripheralVMNode });
 		setRootNode(rootDMVMNode);

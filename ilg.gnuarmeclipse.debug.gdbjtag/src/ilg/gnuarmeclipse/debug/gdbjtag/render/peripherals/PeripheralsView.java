@@ -214,6 +214,7 @@ public class PeripheralsView extends VariablesView implements
 	}
 
 	private void refresh() {
+		System.out.println("PeripheralsView.refresh()");
 		fRefreshUIjob.schedule();
 	}
 
