@@ -15,7 +15,6 @@ package ilg.gnuarmeclipse.debug.gdbjtag.memory;
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.PeripheralDMContext;
-import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.PeripheralDMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.render.peripheral.PeripheralRendering;
 import ilg.gnuarmeclipse.debug.gdbjtag.ui.Messages;
 
@@ -26,6 +25,7 @@ import org.eclipse.debug.core.model.IMemoryBlock;
 import org.eclipse.debug.core.model.IMemoryBlockRetrieval;
 import org.eclipse.debug.core.model.IMemoryBlockRetrievalExtension;
 import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.debug.ui.memory.IMemoryRendering;
 import org.eclipse.debug.ui.memory.IMemoryRenderingContainer;
 import org.eclipse.debug.ui.memory.IMemoryRenderingSite;
@@ -81,7 +81,8 @@ public class MemoryBlockMonitor {
 				+ isChecked + ")");
 
 		Object object;
-		object = peripheralDMContext.getAdapter(PeripheralDMNode.class);
+		object = peripheralDMContext
+				.getAdapter(PeripheralMemoryBlockRetrieval.class);
 
 		if ((object instanceof IMemoryBlockRetrieval)) {
 
@@ -101,30 +102,13 @@ public class MemoryBlockMonitor {
 	}
 
 	/**
-	 * Called when the debug session is terminated, to remove all memory
-	 * monitors, regardless the type.
-	 */
-	public void removeAllMemoryBlocks() {
-
-		System.out.println("MemoryBlockMonitor.removeAllMemoryBlocks()");
-
-		IMemoryBlock[] memoryBlocks = DebugPlugin.getDefault()
-				.getMemoryBlockManager().getMemoryBlocks();
-
-		if (memoryBlocks != null) {
-
-			savePeripheralNames(memoryBlocks);
-
-			removeMemoryBlocks(memoryBlocks);
-		}
-	}
-
-	/**
 	 * Find memory block retrieval and save names.
 	 * 
 	 * @param memoryBlocks
 	 */
 	public void savePeripheralNames(IMemoryBlock[] memoryBlocks) {
+
+		System.out.println("MemoryBlockMonitor.savePeripheralNames()");
 
 		for (int i = 0; i < memoryBlocks.length; ++i) {
 			if (memoryBlocks[i] instanceof PeripheralMemoryBlockExtension) {
@@ -178,9 +162,10 @@ public class MemoryBlockMonitor {
 							.addMemoryBlocks(
 									new IMemoryBlock[] { memoryBlockToAdd });
 
-					// Render it using the custom rendering.
+					// Add a custom rendering for the memory block.
 					addDefaultRenderings(workbenchWindow, memoryBlockToAdd,
 							PeripheralRendering.ID);
+
 				} else {
 					EclipseUtils.openError(Messages.AddMemoryBlockAction_title,
 							Messages.AddMemoryBlockAction_noMemoryBlock, null);
@@ -242,20 +227,21 @@ public class MemoryBlockMonitor {
 	 * 
 	 * @param workbenchWindow
 	 * @param memoryBlock
-	 * @param id
+	 * @param renderingId
 	 */
 	private void addDefaultRenderings(IWorkbenchWindow workbenchWindow,
-			IMemoryBlock memoryBlock, String id) {
+			IMemoryBlock memoryBlock, String renderingId) {
 
-		if (id == null)
-			id = "";
+		if (renderingId == null)
+			renderingId = "";
 
 		Object type = null;
 		IMemoryRenderingType primaryType = DebugUITools
 				.getMemoryRenderingManager().getPrimaryRenderingType(
 						memoryBlock);
-		if ((primaryType != null) && (id.equals(primaryType.getId())))
+		if ((primaryType != null) && (renderingId.equals(primaryType.getId()))) {
 			type = primaryType;
+		}
 		if (type == null) {
 			IMemoryRenderingType[] defaultTypes = DebugUITools
 					.getMemoryRenderingManager().getDefaultRenderingTypes(
@@ -263,15 +249,16 @@ public class MemoryBlockMonitor {
 			for (IMemoryRenderingType defaultType : defaultTypes) {
 				System.out.println((defaultType.getId()));
 				type = defaultType;
-				if (id.equals(defaultType.getId()))
+				if (renderingId.equals(defaultType.getId())) {
 					break;
+				}
 			}
 		}
 		try {
 			if (type != null) {
 				createRenderingInContainer(workbenchWindow, memoryBlock,
 						(IMemoryRenderingType) type,
-						"org.eclipse.debug.ui.MemoryView.RenderingViewPane.1");
+						IDebugUIConstants.ID_RENDERING_VIEW_PANE_1);
 			}
 		} catch (CoreException e) {
 			Activator.log(e);
@@ -285,27 +272,25 @@ public class MemoryBlockMonitor {
 	 * @param workbenchWindow
 	 * @param memoryBlock
 	 * @param memoryRenderingType
-	 * @param id
+	 * @param paneId
 	 * @throws CoreException
 	 */
 	private void createRenderingInContainer(IWorkbenchWindow workbenchWindow,
 			IMemoryBlock memoryBlock, IMemoryRenderingType memoryRenderingType,
-			String id) throws CoreException {
+			String paneId) throws CoreException {
 
 		System.out.println(String.format(
 				"MemoryBlockMonitor.createRenderingInContainer() 0x%X",
 				memoryBlock.getStartAddress()));
 
-		IMemoryRenderingSite memoryRenderingSite = getRenderingSite(workbenchWindow);
-		if (memoryRenderingSite != null) {
+		IMemoryRenderingSite site = getRenderingSite(workbenchWindow);
+		if (site != null) {
 
-			IMemoryRenderingContainer memoryRenderingContainer = memoryRenderingSite
-					.getContainer(id);
-			IMemoryRendering memoryRendering = memoryRenderingType
-					.createRendering();
-			if (memoryRendering != null) {
-				memoryRendering.init(memoryRenderingContainer, memoryBlock);
-				memoryRenderingContainer.addMemoryRendering(memoryRendering);
+			IMemoryRenderingContainer container = site.getContainer(paneId);
+			IMemoryRendering rendering = memoryRenderingType.createRendering();
+			if (rendering != null) {
+				rendering.init(container, memoryBlock);
+				container.addMemoryRendering(rendering);
 			}
 		}
 	}
@@ -321,7 +306,7 @@ public class MemoryBlockMonitor {
 
 		if (workbenchWindow != null) {
 			IViewPart viewPart = workbenchWindow.getActivePage().findView(
-					"org.eclipse.debug.ui.MemoryView");
+					IDebugUIConstants.ID_MEMORY_VIEW);
 			return (IMemoryRenderingSite) viewPart;
 		}
 		return null;
@@ -337,7 +322,7 @@ public class MemoryBlockMonitor {
 		try {
 			System.out.println("showView(MemoryView)");
 			workbenchWindow.getActivePage().showView(
-					"org.eclipse.debug.ui.MemoryView");
+					IDebugUIConstants.ID_MEMORY_VIEW);
 		} catch (Exception e) {
 		}
 	}

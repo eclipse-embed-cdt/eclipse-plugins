@@ -81,7 +81,7 @@
              categoryId="ilg.gnuarmeclipse.debug.gdbjtag.peripheral.colors"
              id="ilg.gnuarmeclipse.debug.gdbjtag.peripheral.color.readonly"
              label="ReadOnly Color"
-             value="COLOR_INFO_BACKGROUND">
+             value="181,255,213">
           <description>
              Color for the Read Only peripherals/registers.
           </description>

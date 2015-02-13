@@ -25,7 +25,6 @@ import org.eclipse.cdt.dsf.debug.service.IMemory;
 import org.eclipse.cdt.dsf.debug.service.IMemory.IMemoryDMContext;
 import org.eclipse.cdt.dsf.debug.service.IRunControl.IExitedDMEvent;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
-import org.eclipse.cdt.dsf.gdb.internal.memory.GdbMemoryBlockRetrieval;
 import org.eclipse.cdt.dsf.internal.DsfPlugin;
 import org.eclipse.cdt.dsf.service.DsfServiceEventHandler;
 import org.eclipse.cdt.dsf.service.DsfSession;
@@ -45,12 +44,24 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
 @SuppressWarnings("restriction")
-public class PeripheralMemoryBlockRetrieval extends GdbMemoryBlockRetrieval {
+public class PeripheralMemoryBlockRetrieval extends DsfMemoryBlockRetrieval {
 
 	// ------------------------------------------------------------------------
 
 	private static final String PERIPHERALS_MEMENTO_ID = Activator.PLUGIN_ID
 			+ ".PERIPHERALS";
+
+	// Duplicate hear for not being public in parent class
+	private static final String DSF_LAUNCH_ID = "org.eclipse.dsf.launch"; //$NON-NLS-1$
+	private static final String ATTR_DEBUGGER_MEMORY_BLOCKS = DSF_LAUNCH_ID
+			+ ".MEMORY_BLOCKS"; //$NON-NLS-1$
+
+	private static final String MEMORY_BLOCK_EXPRESSION_LIST = "memoryBlockExpressionList"; //$NON-NLS-1$
+	private static final String ATTR_EXPRESSION_LIST_CONTEXT = "context"; //$NON-NLS-1$   
+	private static final String MEMORY_BLOCK_EXPRESSION = "memoryBlockExpression"; //$NON-NLS-1$
+	private static final String ATTR_MEMORY_BLOCK_EXPR_LABEL = "label"; //$NON-NLS-1$
+	private static final String ATTR_MEMORY_BLOCK_EXPR_ADDRESS = "address"; //$NON-NLS-1$
+	private static final String CONTEXT_STRING = "Context string";
 
 	// ------------------------------------------------------------------------
 
@@ -76,6 +87,9 @@ public class PeripheralMemoryBlockRetrieval extends GdbMemoryBlockRetrieval {
 	}
 
 	public List<String> getPersistentPeripherals() {
+
+		System.out
+				.println("PeripheralMemoryBlockRetrieval.getPersistentPeripherals()");
 
 		if (fPersistentPeripherals == null) {
 			String memento;
@@ -124,17 +138,18 @@ public class PeripheralMemoryBlockRetrieval extends GdbMemoryBlockRetrieval {
 					getModelId(), peripheralDMContext);
 		}
 
-		if (memoryBlockExtension == null) {
-			System.out
-					.println("PeripheralMemoryBlockRetrieval.getExtendedMemoryBlock("
-							+ addr
-							+ ","
-							+ context
-							+ ") super.getExtendedMemoryBlock()");
-			// Needed for regular memory blocks
-			memoryBlockExtension = super.getExtendedMemoryBlock(addr, context);
+		if (memoryBlockExtension != null) {
+			return memoryBlockExtension;
 		}
+
+		System.out
+				.println("PeripheralMemoryBlockRetrieval.getExtendedMemoryBlock("
+						+ addr + ") super.getExtendedMemoryBlock()");
+		// Needed for regular memory blocks
+		memoryBlockExtension = super.getExtendedMemoryBlock(addr, context);
+
 		return memoryBlockExtension;
+
 	}
 
 	@Override
@@ -164,7 +179,15 @@ public class PeripheralMemoryBlockRetrieval extends GdbMemoryBlockRetrieval {
 
 		try {
 			ILaunchConfigurationWorkingCopy wc = fLaunchConfig.getWorkingCopy();
-			wc.setAttribute(PERIPHERALS_MEMENTO_ID, getMemento());
+
+			if (fPersistentPeripherals != null) {
+				// Save peripherals only if the Peripherals view was used,
+				// otherwise leave them as before.
+				wc.setAttribute(PERIPHERALS_MEMENTO_ID, getPeripheralsMemento());
+			}
+
+			wc.setAttribute(ATTR_DEBUGGER_MEMORY_BLOCKS, getMemoryMemento());
+
 			wc.doSave();
 		} catch (CoreException e) {
 			DsfPlugin.getDefault().getLog().log(e.getStatus());
@@ -174,8 +197,7 @@ public class PeripheralMemoryBlockRetrieval extends GdbMemoryBlockRetrieval {
 	/**
 	 * Get a memento with the current peripheral memory blocks.
 	 */
-	@Override
-	public String getMemento() throws CoreException {
+	public String getPeripheralsMemento() throws CoreException {
 
 		IMemoryBlock[] blocks = DebugPlugin.getDefault()
 				.getMemoryBlockManager().getMemoryBlocks(this);
@@ -186,6 +208,44 @@ public class PeripheralMemoryBlockRetrieval extends GdbMemoryBlockRetrieval {
 				PeripheralMemoryBlockExtension memoryBlock = (PeripheralMemoryBlockExtension) block;
 				Element expression = document.createElement("peripheral");
 				expression.setAttribute("name", memoryBlock.getExpression());
+				expressionList.appendChild(expression);
+
+				System.out.println("Remember " + memoryBlock.getExpression());
+			}
+		}
+		document.appendChild(expressionList);
+		return DebugPlugin.serializeDocument(document);
+	}
+
+	/**
+	 * Return a memento to represent all active blocks created by this retrieval
+	 * object (blocks currently registered with the platform's
+	 * IMemoryBlockManager). We will be expected to recreate the blocks in
+	 * {@link #createBlocksFromConfiguration(IMemoryDMContext, String)}.
+	 * 
+	 * @return a string memento
+	 * @throws CoreException
+	 */
+	public String getMemoryMemento() throws CoreException {
+		IMemoryBlock[] blocks = DebugPlugin.getDefault()
+				.getMemoryBlockManager().getMemoryBlocks(this);
+		Document document = DebugPlugin.newDocument();
+		Element expressionList = document
+				.createElement(MEMORY_BLOCK_EXPRESSION_LIST);
+		expressionList.setAttribute(ATTR_EXPRESSION_LIST_CONTEXT,
+				CONTEXT_STRING);
+		for (IMemoryBlock block : blocks) {
+			if (block instanceof PeripheralMemoryBlockExtension) {
+				continue; // skip peripherals
+			}
+			if (block instanceof IMemoryBlockExtension) {
+				IMemoryBlockExtension memoryBlock = (IMemoryBlockExtension) block;
+				Element expression = document
+						.createElement(MEMORY_BLOCK_EXPRESSION);
+				expression.setAttribute(ATTR_MEMORY_BLOCK_EXPR_LABEL,
+						memoryBlock.getExpression());
+				expression.setAttribute(ATTR_MEMORY_BLOCK_EXPR_ADDRESS,
+						memoryBlock.getBigBaseAddress().toString());
 				expressionList.appendChild(expression);
 
 				System.out.println("Remember " + memoryBlock.getExpression());

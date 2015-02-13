@@ -85,7 +85,7 @@ public class PeripheralRendering extends AbstractTableRendering implements
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "ilg.gnuarmeclipse.debug.core.memoryRendering";
+	public static final String ID = "ilg.gnuarmeclipse.debug.gdbjtag.memoryRendering";
 
 	private static final PeripheralColumnInfo[] fgColumnInfo = new PeripheralColumnInfo[] {
 			new PeripheralColumnInfo("Register", 4,

@@ -24,9 +24,11 @@ import org.eclipse.cdt.dsf.concurrent.DsfRunnable;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.ThreadSafeAndProhibitedFromDsfExecutor;
+import org.eclipse.cdt.dsf.debug.internal.provisional.model.IMemoryBlockRetrievalManager;
 import org.eclipse.cdt.dsf.gdb.IGdbDebugConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.gdb.launching.GdbLaunch;
+import org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate;
 import org.eclipse.cdt.dsf.gdb.service.command.IGDBControl;
 import org.eclipse.cdt.dsf.mi.service.command.AbstractCLIProcess;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
@@ -54,6 +56,7 @@ public class GnuArmLaunch extends GdbLaunch {
 	private DsfSession fSession;
 	private DsfServicesTracker fTracker;
 	private DefaultDsfExecutor fExecutor;
+	private IMemoryBlockRetrievalManager fMemRetrievalManager;
 
 	// ------------------------------------------------------------------------
 
@@ -122,7 +125,39 @@ public class GnuArmLaunch extends GdbLaunch {
 
 		System.out.println("GnuArmLaunch.initializeControl()");
 
-		super.initializeControl();
+		// The parent defines and register GdbMemoryBlockRetrievalManager
+		// but we do not want this.
+		// super.initializeControl();
+
+		// Create a memory retrieval manager and register it with the session
+		// to maintain a mapping of memory contexts to the corresponding memory
+		// retrieval in this session.
+		// The manager is called to create a memory retrieval on session START.
+		try {
+			fExecutor.submit(new Callable<Object>() {
+				@Override
+				public Object call() throws CoreException {
+					fMemRetrievalManager = new GdbArmMemoryBlockRetrievalManager(
+							GdbLaunchDelegate.GDB_DEBUG_MODEL_ID,
+							getLaunchConfiguration(), fSession);
+					fSession.registerModelAdapter(
+							IMemoryBlockRetrievalManager.class,
+							fMemRetrievalManager);
+					fSession.addServiceEventListener(fMemRetrievalManager, null);
+					return null;
+				}
+			}).get();
+		} catch (InterruptedException e) {
+			throw new CoreException(new Status(IStatus.ERROR,
+					Activator.PLUGIN_ID, 0,
+					"Interrupted while waiting for get process callable.", e)); //$NON-NLS-1$
+		} catch (ExecutionException e) {
+			throw (CoreException) e.getCause();
+		} catch (RejectedExecutionException e) {
+			throw new CoreException(new Status(IStatus.ERROR,
+					Activator.PLUGIN_ID, 0,
+					"Debugger shut down before launch was completed.", e)); //$NON-NLS-1$
+		}
 	}
 
 	/**

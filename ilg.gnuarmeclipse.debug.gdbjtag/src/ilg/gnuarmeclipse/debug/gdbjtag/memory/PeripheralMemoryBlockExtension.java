@@ -362,13 +362,11 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 			Object object = events[i].getSource();
 			if (events[i].getKind() == DebugEvent.TERMINATE) {
 
-				// Remove all monitors at the end.
-				MemoryBlockMonitor.getInstance().removeAllMemoryBlocks();
-
+				// Do not remove monitors here, since they are saved by the
+				// monitor
 			} else if ((events[i].getKind() == DebugEvent.MODEL_SPECIFIC)
 					|| !(object instanceof PeripheralMemoryBlockExtension)) {
 				// Currently no longer fired
-				// updatePeripheralRendering();
 			}
 		}
 	}
@@ -935,6 +933,17 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	@Override
 	public void clearCache() {
 		;
+	}
+
+	// ------------------------------------------------------------------------
+
+	@Override
+	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
+
+		if (adapter.equals(IMemoryBlockRetrieval.class))
+			return getMemoryBlockRetrieval();
+
+		return super.getAdapter(adapter);
 	}
 
 	// ------------------------------------------------------------------------

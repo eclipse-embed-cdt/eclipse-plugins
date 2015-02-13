@@ -16,7 +16,6 @@ import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.IPeripheralDMContext;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.PeripheralDMContext;
-import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.PeripheralDMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.memory.MemoryBlockMonitor;
 import ilg.gnuarmeclipse.debug.gdbjtag.memory.PeripheralMemoryBlockRetrieval;
 import ilg.gnuarmeclipse.debug.gdbjtag.render.peripherals.PeripheralsColumnPresentation;
@@ -200,8 +199,8 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 	protected boolean checkUpdate(IViewerUpdate update) {
 
 		// System.out.println("PeripheralsVMNode.checkUpdate() " + this + " "
-		// 		+ update);
-		
+		// + update);
+
 		// As recommended, first check parent.
 		if (!super.checkUpdate(update))
 			return false;
@@ -281,7 +280,8 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 
 		final List<String> persistentPeripherals = new ArrayList<String>();
 
-		Object object = containerDMContext.getAdapter(PeripheralDMNode.class);
+		Object object = containerDMContext
+				.getAdapter(PeripheralMemoryBlockRetrieval.class);
 		if (object instanceof PeripheralMemoryBlockRetrieval) {
 			persistentPeripherals
 					.addAll(((PeripheralMemoryBlockRetrieval) object)
@@ -301,7 +301,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 				IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench()
 						.getActiveWorkbenchWindow();
 				IMemoryBlockRetrieval retrieval = (IMemoryBlockRetrieval) containerDMContext
-						.getAdapter(PeripheralDMNode.class);
+						.getAdapter(PeripheralMemoryBlockRetrieval.class);
 
 				for (String peripheralName : persistentPeripherals) {
 					for (int i = 0; i < fPeripherals.length; ++i) {

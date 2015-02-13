@@ -12,8 +12,6 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.services;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
-import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.PeripheralDMNode;
-import ilg.gnuarmeclipse.debug.gdbjtag.memory.PeripheralMemoryBlockRetrieval;
 
 import java.util.ArrayList;
 import java.util.Hashtable;
@@ -48,9 +46,7 @@ import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunchConfiguration;
-import org.eclipse.debug.core.model.IMemoryBlockRetrieval;
 import org.eclipse.debug.core.model.MemoryByte;
 import org.osgi.framework.BundleContext;
 
@@ -63,12 +59,13 @@ public class PeripheralMemoryService extends MIMemory implements
 
 	// ------------------------------------------------------------------------
 
+	@SuppressWarnings("unused")
 	private ILaunchConfiguration fConfig = null;
 	private IGDBControl fCommandControl;
 	private DsfSession fSession;
 	private DsfServicesTracker fTracker;
 
-	private PeripheralMemoryBlockRetrieval fMemoryRetrieval;
+	// private PeripheralMemoryBlockRetrieval fMemoryRetrieval;
 
 	/**
 	 * Cache of the address sizes for each memory context.
@@ -127,42 +124,17 @@ public class PeripheralMemoryService extends MIMemory implements
 				.getService(IMIProcesses.class);
 		if ((commandControlService != null) && (processes != null)) {
 
-			System.out
-					.println("GnuArmLaunch.initializeControl() initialise memory retrieval");
-			// Create the memory block retrieval.
-			try {
-				fMemoryRetrieval = new PeripheralMemoryBlockRetrieval(
-						"org.eclipse.cdt.dsf.gdb", fConfig, fSession);
-				// Register DMNode for memory retrieval.
-				fSession.registerModelAdapter(PeripheralDMNode.class,
-						fMemoryRetrieval);
-				// Register its own interface.
-				fSession.registerModelAdapter(IMemoryBlockRetrieval.class,
-						fMemoryRetrieval);
+			// Create memory context from process context.
+			IProcesses.IProcessDMContext processDMContext = processes
+					.createProcessContext(commandControlService.getContext(),
+							"");
+			IMemory.IMemoryDMContext memoryDMContext = (IMemory.IMemoryDMContext) processes
+					.createContainerContext(processDMContext, "");
 
-				// To notify exit
-				fSession.addServiceEventListener(fMemoryRetrieval, null);
+			initializeMemoryData(memoryDMContext, rm);
+			return;
 
-				// Create memory context from process context.
-				IProcesses.IProcessDMContext processDMContext = processes
-						.createProcessContext(
-								commandControlService.getContext(), "");
-				IMemory.IMemoryDMContext memoryDMContext = (IMemory.IMemoryDMContext) processes
-						.createContainerContext(processDMContext, "");
-
-				// Finally initialise memory retrieval with memory
-				// context.
-				fMemoryRetrieval.initialize(memoryDMContext);
-
-				initializeMemoryData(memoryDMContext, rm);
-				return;
-
-			} catch (DebugException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
-
 		rm.done();
 	}
 
