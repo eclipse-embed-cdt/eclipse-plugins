@@ -59,6 +59,7 @@
              defaultIds="ilg.gnuarmeclipse.debug.gdbjtag.memoryRendering"
              primaryId="ilg.gnuarmeclipse.debug.gdbjtag.memoryRendering"
              renderingIds="ilg.gnuarmeclipse.debug.gdbjtag.memoryRendering">
+             <!-- org.eclipse.debug.ui.rendering.raw_memory not yet functional -->
 			<enablement>
 			<or>
 				<!-- Without this instanceof, adding memory renderings fail with NPE -->

@@ -30,8 +30,10 @@ import org.eclipse.debug.ui.memory.IMemoryRendering;
 import org.eclipse.debug.ui.memory.IMemoryRenderingContainer;
 import org.eclipse.debug.ui.memory.IMemoryRenderingSite;
 import org.eclipse.debug.ui.memory.IMemoryRenderingType;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchWindow;
+import org.eclipse.ui.PartInitException;
 
 /**
  * This class manages adding/removing memory monitors. The memory monitors are
@@ -319,12 +321,19 @@ public class MemoryBlockMonitor {
 	 * @param workbenchWindow
 	 */
 	public void showMemoryView(final IWorkbenchWindow workbenchWindow) {
-		try {
-			System.out.println("showView(MemoryView)");
-			workbenchWindow.getActivePage().showView(
-					IDebugUIConstants.ID_MEMORY_VIEW);
-		} catch (Exception e) {
-		}
+		System.out.println("showView(MemoryView)");
+
+		Display.getDefault().asyncExec(new Runnable() {
+			public void run() {
+				try {
+					workbenchWindow.getActivePage().showView(
+							IDebugUIConstants.ID_MEMORY_VIEW);
+					System.out.println("showView(MemoryView) done");
+				} catch (PartInitException e) {
+					Activator.log(e);
+				}
+			}
+		});
 	}
 
 	// ------------------------------------------------------------------------
