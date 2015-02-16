@@ -11,11 +11,12 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
 
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
-public class WorkspacePersistentValues {
+public class PersistentValues {
 
 	// Tab Debugger
 	// GDB Server Setup
@@ -64,26 +65,22 @@ public class WorkspacePersistentValues {
 	public static final String GDB_OPENOCD_PRERUN_OTHER = GDB_OPENOCD
 			+ "preRun.other";
 
-	// ----- getter & setter --------------------------------------------------
+	// ----- Defaults ---------------------------------------------------------
+	public static final String OPENOCD_EXECUTABLE = "openocd_executable";
+	public static final String OPENOCD_PATH = "openocd_path";
+
+	public static final String TAB_MAIN_CHECK_PROGRAM = "tab.main.checkProgram";
+	public static final boolean TAB_MAIN_CHECK_PROGRAM_DEFAULT = false;
+
+	// ----- getter -----------------------------------------------------------
 	private static String getValueForId(String id, String defaultValue) {
 
-		// Access the instanceScope
-		Preferences preferences = InstanceScope.INSTANCE
-				.getNode(Activator.PLUGIN_ID);
-
-		String value;
-		// preferences.get(id, defaultValue);
-		value = preferences.get(id, null);
-		// System.out.println("Value of " + id + " is " + value);
-
-		if (value != null) {
-			return value;
-		}
-
-		return defaultValue;
+		return Platform.getPreferencesService().getString(Activator.PLUGIN_ID,
+				id, defaultValue, null);
 	}
 
-	private static void putValueForId(String id, String value) {
+	// ----- setter -----------------------------------------------------------
+	private static void putWorkspaceValueForId(String id, String value) {
 
 		value = value.trim();
 
@@ -91,6 +88,18 @@ public class WorkspacePersistentValues {
 		Preferences preferences = InstanceScope.INSTANCE
 				.getNode(Activator.PLUGIN_ID);
 		preferences.put(id, value);
+	}
+
+	// ----- flush ------------------------------------------------------------
+	public static void flush() {
+
+		try {
+			InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).flush();
+		} catch (BackingStoreException e) {
+			// TODO Auto-generated catch block
+			// e.printStackTrace();
+		}
+
 	}
 
 	// ----- gdb server doStart -----------------------------------------------
@@ -102,7 +111,7 @@ public class WorkspacePersistentValues {
 
 	public static void putGdbServerDoStart(boolean value) {
 
-		putValueForId(GDB_SERVER_DO_START, Boolean.toString(value));
+		putWorkspaceValueForId(GDB_SERVER_DO_START, Boolean.toString(value));
 	}
 
 	// ----- gdb server executable --------------------------------------------
@@ -117,7 +126,7 @@ public class WorkspacePersistentValues {
 
 	public static void putGdbServerExecutable(String value) {
 
-		putValueForId(GDB_SERVER_EXECUTABLE, value);
+		putWorkspaceValueForId(GDB_SERVER_EXECUTABLE, value);
 	}
 
 	// ----- gdb server other options -----------------------------------------
@@ -132,7 +141,7 @@ public class WorkspacePersistentValues {
 
 	public static void putGdbServerOtherOptions(String value) {
 
-		putValueForId(GDB_SERVER_OTHER_OPTIONS, value);
+		putWorkspaceValueForId(GDB_SERVER_OTHER_OPTIONS, value);
 	}
 
 	// ----- gdb client executable --------------------------------------------
@@ -147,7 +156,7 @@ public class WorkspacePersistentValues {
 
 	public static void putGdbClientExecutable(String value) {
 
-		putValueForId(GDB_CLIENT_EXECUTABLE, value);
+		putWorkspaceValueForId(GDB_CLIENT_EXECUTABLE, value);
 	}
 
 	// ----- gdb client other options -----------------------------------------
@@ -158,7 +167,7 @@ public class WorkspacePersistentValues {
 
 	public static void putGdbClientOtherOptions(String value) {
 
-		putValueForId(GDB_CLIENT_OTHER_OPTIONS, value);
+		putWorkspaceValueForId(GDB_CLIENT_OTHER_OPTIONS, value);
 	}
 
 	// ----- gdb client commands ----------------------------------------------
@@ -169,7 +178,7 @@ public class WorkspacePersistentValues {
 
 	public static void putGdbClientCommands(String value) {
 
-		putValueForId(GDB_CLIENT_COMMANDS, value);
+		putWorkspaceValueForId(GDB_CLIENT_COMMANDS, value);
 	}
 
 	// ----- OpenOCD do initial reset -----------------------------------------
@@ -181,7 +190,8 @@ public class WorkspacePersistentValues {
 
 	public static void putOpenOCDDoInitialReset(boolean value) {
 
-		putValueForId(GDB_OPENOCD_DO_INITIAL_RESET, Boolean.toString(value));
+		putWorkspaceValueForId(GDB_OPENOCD_DO_INITIAL_RESET,
+				Boolean.toString(value));
 	}
 
 	// ----- OpenOCD initial reset type ---------------------------------------
@@ -192,7 +202,7 @@ public class WorkspacePersistentValues {
 
 	public static void putOpenOCDInitialResetType(String value) {
 
-		putValueForId(GDB_OPENOCD_INITIAL_RESET_TYPE, value);
+		putWorkspaceValueForId(GDB_OPENOCD_INITIAL_RESET_TYPE, value);
 	}
 
 	// ----- OpenOCD enable semihosting ---------------------------------------
@@ -204,7 +214,8 @@ public class WorkspacePersistentValues {
 
 	public static void putOpenOCDEnableSemihosting(boolean value) {
 
-		putValueForId(GDB_OPENOCD_ENABLE_SEMIHOSTING, Boolean.toString(value));
+		putWorkspaceValueForId(GDB_OPENOCD_ENABLE_SEMIHOSTING,
+				Boolean.toString(value));
 	}
 
 	// ----- OpenOCD init other -----------------------------------------------
@@ -215,7 +226,7 @@ public class WorkspacePersistentValues {
 
 	public static void putOpenOCDInitOther(String value) {
 
-		putValueForId(GDB_OPENOCD_INIT_OTHER, value);
+		putWorkspaceValueForId(GDB_OPENOCD_INIT_OTHER, value);
 	}
 
 	// ----- OpenOCD debug in ram ---------------------------------------------
@@ -227,7 +238,8 @@ public class WorkspacePersistentValues {
 
 	public static void putOpenOCDDebugInRam(boolean value) {
 
-		putValueForId(GDB_OPENOCD_DO_DEBUG_IN_RAM, Boolean.toString(value));
+		putWorkspaceValueForId(GDB_OPENOCD_DO_DEBUG_IN_RAM,
+				Boolean.toString(value));
 	}
 
 	// ----- OpenOCD do prerun reset ------------------------------------------
@@ -239,7 +251,8 @@ public class WorkspacePersistentValues {
 
 	public static void putOpenOCDDoPreRunReset(boolean value) {
 
-		putValueForId(GDB_OPENOCD_DO_PRERUN_RESET, Boolean.toString(value));
+		putWorkspaceValueForId(GDB_OPENOCD_DO_PRERUN_RESET,
+				Boolean.toString(value));
 	}
 
 	// ----- OpenOCD prerun reset type ----------------------------------------
@@ -250,10 +263,10 @@ public class WorkspacePersistentValues {
 
 	public static void putOpenOCDPreRunResetType(String value) {
 
-		putValueForId(GDB_OPENOCD_PRERUN_RESET_TYPE, value);
+		putWorkspaceValueForId(GDB_OPENOCD_PRERUN_RESET_TYPE, value);
 	}
 
-	// ----- OpenOCD init other -----------------------------------------
+	// ----- OpenOCD init other -----------------------------------------------
 	public static String getOpenOCDPreRunOther(String defaultValue) {
 
 		return getValueForId(GDB_OPENOCD_PRERUN_OTHER, defaultValue);
@@ -261,18 +274,8 @@ public class WorkspacePersistentValues {
 
 	public static void putOpenOCDPreRunOther(String value) {
 
-		putValueForId(GDB_OPENOCD_PRERUN_OTHER, value);
+		putWorkspaceValueForId(GDB_OPENOCD_PRERUN_OTHER, value);
 	}
 
-	// ----- flush -----------------------------------------------------------
-	public static void flush() {
-
-		try {
-			InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).flush();
-		} catch (BackingStoreException e) {
-			// TODO Auto-generated catch block
-			// e.printStackTrace();
-		}
-
-	}
+	// ------------------------------------------------------------------------
 }
