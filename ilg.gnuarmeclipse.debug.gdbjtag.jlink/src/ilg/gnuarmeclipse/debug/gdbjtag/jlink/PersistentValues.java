@@ -12,6 +12,7 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
 import org.eclipse.cdt.core.templateengine.SharedDefaults;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
@@ -25,7 +26,7 @@ import org.osgi.service.prefs.Preferences;
  *
  * Some of the values may be retrieved from the EclipseDefaults.
  */
-public class WorkspacePersistentValues {
+public class PersistentValues {
 
 	// Tab Debugger
 	// GDB Server Setup
@@ -107,23 +108,27 @@ public class WorkspacePersistentValues {
 	public static final String GDB_JLINK_PRERUN_OTHER = GDB_JLINK
 			+ "preRun.other";
 
-	// ----- getter & setter --------------------------------------------------
+	// ----- Defaults ---------------------------------------------------------
+	public static final String JLINK_GDBSERVER = "jlink_gdbserver";
+	public static final String JLINK_PATH = "jlink_path";
+
+	public static final String TAB_MAIN_CHECK_PROGRAM = "tab.main.checkProgram";
+	public static final boolean TAB_MAIN_CHECK_PROGRAM_DEFAULT = false;
+
+	// ----- getter -----------------------------------------------------------
 	private static String getValueForId(String id, String defaultValue) {
 
-		// Access the instanceScope
-		Preferences preferences = InstanceScope.INSTANCE
-				.getNode(Activator.PLUGIN_ID);
-
 		String value;
-		// preferences.get(id, defaultValue);
-		value = preferences.get(id, null);
+		value = Platform.getPreferencesService().getString(Activator.PLUGIN_ID,
+				id, null, null);
 		// System.out.println("Value of " + id + " is " + value);
 
 		if (value != null) {
 			return value;
 		}
 
-		// For compatibility reasons, keep this for a while.
+		// For compatibility reasons, still keep this for a while, on older
+		// versions preferences were erroneously saved in the shared defaults.
 		id = Activator.PLUGIN_ID + "." + id;
 
 		value = SharedDefaults.getInstance().getSharedDefaultsMap().get(id);
@@ -139,6 +144,7 @@ public class WorkspacePersistentValues {
 		return defaultValue;
 	}
 
+	// ----- setter -----------------------------------------------------------
 	private static void putValueForId(String id, String value) {
 
 		value = value.trim();
@@ -149,7 +155,17 @@ public class WorkspacePersistentValues {
 		preferences.put(id, value);
 	}
 
-	// ----- gdb server doStart -----------------------------------
+	// ----- flush ------------------------------------------------------------
+	public static void flush() {
+
+		try {
+			InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).flush();
+		} catch (BackingStoreException e) {
+			Activator.log(e);
+		}
+	}
+
+	// ----- gdb server doStart -----------------------------------------------
 	public static boolean getGdbServerDoStart(boolean defaultValue) {
 
 		return Boolean.valueOf(getValueForId(GDB_SERVER_DO_START,
@@ -227,7 +243,7 @@ public class WorkspacePersistentValues {
 		if (value != null) {
 			return value;
 		}
-		return EclipseDefaults.getJLinkInterface(defaultValue);
+		return EclipseDefaults.getGdbServerInterface(defaultValue);
 	}
 
 	public static void putGdbServerInterface(String value) {
@@ -294,7 +310,7 @@ public class WorkspacePersistentValues {
 		putValueForId(GDB_CLIENT_COMMANDS, value);
 	}
 
-	// ----- jlink do initial reset -----------------------------------
+	// ----- jlink do initial reset -------------------------------------------
 	public static boolean getJLinkDoInitialReset(boolean defaultValue) {
 
 		return Boolean.valueOf(getValueForId(GDB_JLINK_DO_INITIAL_RESET,
@@ -317,7 +333,7 @@ public class WorkspacePersistentValues {
 		putValueForId(GDB_JLINK_INITIAL_RESET_TYPE, value);
 	}
 
-	// ----- jlink initial reset speed ---------------------------------------
+	// ----- jlink initial reset speed ----------------------------------------
 	public static int getJLinkInitialResetSpeed(int defaultValue) {
 
 		return Integer.valueOf(getValueForId(GDB_JLINK_INITIAL_RESET_SPEED,
@@ -329,7 +345,7 @@ public class WorkspacePersistentValues {
 		putValueForId(GDB_JLINK_INITIAL_RESET_SPEED, Integer.toString(value));
 	}
 
-	// ----- jlink speed -----------------------------------------
+	// ----- jlink speed ------------------------------------------------------
 	public static String getJLinkSpeed(String defaultValue) {
 
 		return getValueForId(GDB_JLINK_SPEED, defaultValue);
@@ -354,7 +370,7 @@ public class WorkspacePersistentValues {
 				Boolean.toString(value));
 	}
 
-	// ----- jlink enable semihosting -----------------------------------
+	// ----- jlink enable semihosting -----------------------------------------
 	public static boolean getJLinkEnableSemihosting(boolean defaultValue) {
 
 		String value = getValueForId(GDB_JLINK_ENABLE_SEMIHOSTING, null);
@@ -369,7 +385,7 @@ public class WorkspacePersistentValues {
 		putValueForId(GDB_JLINK_ENABLE_SEMIHOSTING, Boolean.toString(value));
 	}
 
-	// ----- jlink semihosting telnet -----------------------------------
+	// ----- jlink semihosting telnet -----------------------------------------
 	public static boolean getJLinkSemihostingTelnet(boolean defaultValue) {
 
 		return Boolean.valueOf(getValueForId(GDB_JLINK_SEMIHOSTING_TELNET,
@@ -381,7 +397,7 @@ public class WorkspacePersistentValues {
 		putValueForId(GDB_JLINK_SEMIHOSTING_TELNET, Boolean.toString(value));
 	}
 
-	// ----- jlink semihosting client -----------------------------------
+	// ----- jlink semihosting client -----------------------------------------
 	public static boolean getJLinkSemihostingClient(boolean defaultValue) {
 
 		return Boolean.valueOf(getValueForId(GDB_JLINK_SEMIHOSTING_CLIENT,
@@ -393,7 +409,7 @@ public class WorkspacePersistentValues {
 		putValueForId(GDB_JLINK_SEMIHOSTING_CLIENT, Boolean.toString(value));
 	}
 
-	// ----- jlink enable swo -----------------------------------
+	// ----- jlink enable swo -------------------------------------------------
 	public static boolean getJLinkEnableSwo(boolean defaultValue) {
 
 		String value = getValueForId(GDB_JLINK_ENABLE_SWO, null);
@@ -408,7 +424,7 @@ public class WorkspacePersistentValues {
 		putValueForId(GDB_JLINK_ENABLE_SWO, Boolean.toString(value));
 	}
 
-	// ----- jlink swo cpu frequency -----------------------------------------
+	// ----- jlink swo cpu frequency ------------------------------------------
 	public static int getJLinkSwoEnableTargetCpuFreq(int defaultValue) {
 
 		return Integer.valueOf(getValueForId(
@@ -422,7 +438,7 @@ public class WorkspacePersistentValues {
 				Integer.toString(value));
 	}
 
-	// ----- jlink swo frequency -----------------------------------------
+	// ----- jlink swo frequency ----------------------------------------------
 	public static int getJLinkSwoEnableTargetSwoFreq(int defaultValue) {
 
 		return Integer.valueOf(getValueForId(
@@ -436,7 +452,7 @@ public class WorkspacePersistentValues {
 				Integer.toString(value));
 	}
 
-	// ----- jlink swo mask -----------------------------------------
+	// ----- jlink swo mask ---------------------------------------------------
 	public static String getJLinkSwoEnableTargetPortMask(String defaultValue) {
 
 		return getValueForId(GDB_JLINK_SWO_ENABLE_TARGET_PORT_MASK,
@@ -448,7 +464,7 @@ public class WorkspacePersistentValues {
 		putValueForId(GDB_JLINK_SWO_ENABLE_TARGET_PORT_MASK, value);
 	}
 
-	// ----- jlink init other -----------------------------------------
+	// ----- jlink init other -------------------------------------------------
 	public static String getJLinkInitOther(String defaultValue) {
 
 		return getValueForId(GDB_JLINK_INIT_OTHER, defaultValue);
@@ -459,7 +475,7 @@ public class WorkspacePersistentValues {
 		putValueForId(GDB_JLINK_INIT_OTHER, value);
 	}
 
-	// ----- jlink debug in ram ---------------------------------------------
+	// ----- jlink debug in ram -----------------------------------------------
 	public static boolean getJLinkDebugInRam(boolean defaultValue) {
 
 		return Boolean.valueOf(getValueForId(GDB_JLINK_DO_DEBUG_IN_RAM,
@@ -483,7 +499,7 @@ public class WorkspacePersistentValues {
 		putValueForId(GDB_JLINK_DO_PRERUN_RESET, Boolean.toString(value));
 	}
 
-	// ----- jlink prerun reset type -----------------------------------------
+	// ----- jlink prerun reset type ------------------------------------------
 	public static String getJLinkPreRunResetType(String defaultValue) {
 
 		return getValueForId(GDB_JLINK_PRERUN_RESET_TYPE, defaultValue);
@@ -494,7 +510,7 @@ public class WorkspacePersistentValues {
 		putValueForId(GDB_JLINK_PRERUN_RESET_TYPE, value);
 	}
 
-	// ----- jlink init other -----------------------------------------
+	// ----- jlink init other -------------------------------------------------
 	public static String getJLinkPreRunOther(String defaultValue) {
 
 		return getValueForId(GDB_JLINK_PRERUN_OTHER, defaultValue);
@@ -505,13 +521,5 @@ public class WorkspacePersistentValues {
 		putValueForId(GDB_JLINK_PRERUN_OTHER, value);
 	}
 
-	// ----- flush -----------------------------------------------------------
-	public static void flush() {
-
-		try {
-			InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).flush();
-		} catch (BackingStoreException e) {
-			Activator.log(e);
-		}
-	}
+	// ------------------------------------------------------------------------
 }
