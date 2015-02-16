@@ -11,58 +11,45 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.qemu;
 
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.preferences.DefaultScope;
 
 public class EclipseDefaults {
 
 	// ------------------------------------------------------------------------
 
-	private static final String GDB_SERVER_EXECUTABLE = "gdb.server.executable.default";
-	private static final String GDB_CLIENT_EXECUTABLE = "gdb.client.executable.default";
+	private static String getString(String name, String defValue) {
 
-	private static final String QEMU_EXECUTABLE = "qemu_executable.default";
-	private static final String QEMU_PATH = "qemu_path.default";
+		return DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID).get(name,
+				defValue);
+	}
 
-	private static final String TAB_MAIN_CHECK_PROGRAM = "tab.main.checkProgram";
-	private static final boolean TAB_MAIN_CHECK_PROGRAM_DEFAULT = false;
+	private static boolean getBoolean(String name, boolean defValue) {
+
+		return DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID).getBoolean(
+				name, defValue);
+	}
 
 	// ------------------------------------------------------------------------
 
-	private static String getProperty(String name, String defValue) {
-
-		return Platform.getPreferencesService().getString(Activator.PLUGIN_ID,
-				name, defValue, null);
-	}
-
-	private static boolean getProperty(String name, boolean defValue) {
-
-		return Platform.getPreferencesService().getBoolean(Activator.PLUGIN_ID,
-				name, defValue, null);
-	}
-
 	public static String getGdbServerExecutable(String defValue) {
-		return getProperty(GDB_SERVER_EXECUTABLE, defValue);
+		return getString(PersistentValues.GDB_SERVER_EXECUTABLE, defValue);
 	}
 
 	public static String getGdbClientExecutable(String defValue) {
-		return getProperty(GDB_CLIENT_EXECUTABLE, defValue);
-	}
-
-	public static boolean getTabMainCheckProgram(boolean defValue) {
-		return getProperty(TAB_MAIN_CHECK_PROGRAM, defValue);
+		return getString(PersistentValues.GDB_CLIENT_EXECUTABLE, defValue);
 	}
 
 	public static boolean getTabMainCheckProgram() {
-		return getProperty(TAB_MAIN_CHECK_PROGRAM,
-				TAB_MAIN_CHECK_PROGRAM_DEFAULT);
+		return getBoolean(PersistentValues.TAB_MAIN_CHECK_PROGRAM,
+				PersistentValues.TAB_MAIN_CHECK_PROGRAM_DEFAULT);
 	}
 
 	public static String getQemuExecutable() {
-		return getProperty(QEMU_EXECUTABLE, null);
+		return getString(PersistentValues.QEMU_EXECUTABLE, null);
 	}
 
 	public static String getQemuPath() {
-		return getProperty(QEMU_PATH, null);
+		return getString(PersistentValues.QEMU_PATH, null);
 	}
 
 	// ------------------------------------------------------------------------
