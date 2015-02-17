@@ -28,6 +28,7 @@ import ilg.gnuarmeclipse.packs.xcdl.ContentSerialiser;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.text.DateFormat;
@@ -44,8 +45,11 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.operation.IRunnableContext;
+import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.console.MessageConsoleStream;
+import org.eclipse.ui.handlers.HandlerUtil;
 
 /**
  * Update content.xml files from all repositories. This is the equivalent of
@@ -66,12 +70,14 @@ public class UpdatePacksHandler extends AbstractHandler {
 
 	private IProgressMonitor fMonitor;
 
+	private IWorkbenchWindow window;
+
 	/**
 	 * The constructor.
 	 */
 	public UpdatePacksHandler() {
 
-		// System.out.println("RefreshHandler()");
+		System.out.println("UpdatePacksHandler()");
 		fRunning = false;
 
 		fOut = ConsoleStream.getConsoleOut();
@@ -86,20 +92,29 @@ public class UpdatePacksHandler extends AbstractHandler {
 	 */
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		Job job = new Job("Update Packs") {
-			@Override
-			protected IStatus run(IProgressMonitor monitor) {
-				return myRun(monitor);
-			}
-		};
+		window = HandlerUtil.getActiveWorkbenchWindow(event);
+		IRunnableContext context = window.getWorkbench().getProgressService();
+		try {
+			context.run(true, true, new IRunnableWithProgress() {
+				public void run(IProgressMonitor monitor)
+						throws InvocationTargetException, InterruptedException {
+					myRun(monitor);
+				}
+			});
 
-		job.schedule();
+		} catch (InvocationTargetException e) {
+			Activator.log(e);
+		} catch (InterruptedException e) {
+			Activator.log(e);
+		}
 		return null;
 	}
 
 	// ------------------------------------------------------------------------
 
 	private IStatus myRun(IProgressMonitor monitor) {
+
+		System.out.println("UpdatePacksHandler.myRun()");
 
 		if (fRunning) {
 			return Status.CANCEL_STATUS;
@@ -155,7 +170,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 			workUnits += 1; // One more to avoid reaching 100% too early
 
 			// Set total number of work units to the number of pdsc files
-			monitor.beginTask("Refresh packs", workUnits);
+			monitor.beginTask("Refresh all packs from all repositories.", workUnits);
 
 			for (Map<String, Object> repo : reposList) {
 
@@ -290,10 +305,16 @@ public class UpdatePacksHandler extends AbstractHandler {
 				if (!cachedFile.exists()) {
 
 					// If local file does not exist, create it
-					Utils.copyFile(sourceUrl, cachedFile, fOut, null);
+					if (Utils.copyFileWithShell(sourceUrl, cachedFile, fOut,
+							null, window.getShell())) {
 
-					Utils.reportInfo("File " + pdscName + " version "
-							+ pdscVersion + " cached locally.");
+						Utils.reportInfo("File " + pdscName + " version "
+								+ pdscVersion + " cached locally.");
+					} else {
+						fOut.println(Utils.reportWarning("Missing \""
+								+ cachedFile + "\", ignored by user request."));
+						continue;
+					}
 				}
 
 				if (cachedFile.exists()) {
@@ -303,13 +324,14 @@ public class UpdatePacksHandler extends AbstractHandler {
 
 				} else {
 					fOut.println(Utils.reportWarning("Missing \"" + cachedFile
-							+ "\", ignored"));
+							+ "\", ignored."));
 					return;
 				}
 
 			} catch (Exception e) {
-				fOut.println(Utils.reportWarning("Failed with \""
-						+ e.getMessage() + "\", ignored"));
+				// e.printStackTrace();
+				fOut.println(Utils.reportWarning("\"" + e.getMessage()
+						+ "\", ignored."));
 				return;
 			}
 

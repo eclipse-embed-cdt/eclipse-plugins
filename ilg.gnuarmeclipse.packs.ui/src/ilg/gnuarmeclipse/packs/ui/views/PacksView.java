@@ -48,6 +48,7 @@ import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.TreeColumnLayout;
 import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ILabelProviderListener;
@@ -66,7 +67,6 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
 import org.eclipse.ui.IActionBars;
@@ -739,14 +739,14 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 		if (isNonEmpty) {
 
-			MessageBox dlg = new MessageBox(fComposite.getShell(), SWT.OK
-					| SWT.CANCEL);
-
 			String msg = "One of the destination folders is not empty.";
 			msg += "\nDo you agree to delete the previous content?";
-			dlg.setMessage(msg);
-			if (dlg.open() == SWT.OK) {
-				return true;
+
+			String[] buttons = new String[] { "OK", "Cancel" };
+			MessageDialog dlg = new MessageDialog(fComposite.getShell(), null,
+					null, msg, MessageDialog.ERROR, buttons, 0);
+			if (dlg.open() == 0) {
+				return true; // OK
 			}
 
 			return false;

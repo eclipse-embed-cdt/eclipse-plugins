@@ -258,6 +258,8 @@ public class Repos {
 		String s = url;
 		if (s.startsWith("http://")) {
 			s = s.substring(7); // skip first part
+		} else if (s.startsWith("file://")) {
+			s = s.substring(7); // skip first part
 		}
 
 		// Keep only domain name (cut everything past first slash)

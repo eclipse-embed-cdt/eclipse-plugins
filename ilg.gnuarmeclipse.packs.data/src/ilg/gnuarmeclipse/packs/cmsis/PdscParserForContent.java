@@ -12,7 +12,6 @@
 package ilg.gnuarmeclipse.packs.cmsis;
 
 import ilg.gnuarmeclipse.core.Xml;
-import ilg.gnuarmeclipse.packs.core.Activator;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
@@ -141,7 +140,7 @@ public class PdscParserForContent extends PdscParser {
 					size = String.valueOf(sz);
 				}
 			} catch (IOException e) {
-				Activator.log(e);
+				;
 			}
 			verNode.putProperty(Property.ARCHIVE_SIZE, size);
 

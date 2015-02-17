@@ -222,6 +222,15 @@ public class InstallJob extends Job {
 		return workUnits;
 	}
 
+	/**
+	 * Try to install a specific version of a pack.
+	 * 
+	 * @param versionNode
+	 * @return true if the pack was correctly downloaded and expanded, false it
+	 *         the user decided to ignore this pack.
+	 * @throws IOException
+	 *             for download errors.
+	 */
 	private boolean installPack(Node versionNode) throws IOException {
 
 		// Package node
@@ -239,11 +248,14 @@ public class InstallJob extends Job {
 
 			// To minimise incomplete file risks, first use a temporary
 			// file, then rename to final name.
-			copyFile(packUrl, archiveFileDownload);
+			if (copyFile(packUrl, archiveFileDownload)) {
 
-			archiveFileDownload.renameTo(archiveFile);
+				archiveFileDownload.renameTo(archiveFile);
 
-			Utils.reportInfo("Pack " + archiveName + " downloaded.");
+				Utils.reportInfo("Pack " + archiveName + " downloaded.");
+			} else {
+				return false;
+			}
 		} else {
 			fMonitor.worked((int) archiveFile.length());
 		}
@@ -290,10 +302,21 @@ public class InstallJob extends Job {
 		return true;
 	}
 
-	private void copyFile(URL sourceUrl, File destinationFile)
+	/**
+	 * Try to download a file from a URL.
+	 * 
+	 * @param sourceUrl
+	 * @param destinationFile
+	 * @return true for successful download; false if the user decided to ignore
+	 *         it.
+	 * @throws IOException
+	 *             for download errors.
+	 */
+	private boolean copyFile(URL sourceUrl, File destinationFile)
 			throws IOException {
 
 		Utils.copyFile(sourceUrl, destinationFile, fOut, fMonitor);
+		return true;
 	}
 
 	private boolean unzip(File archiveFile, IPath destRelativePath)

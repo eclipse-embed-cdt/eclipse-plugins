@@ -18,6 +18,9 @@ import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.console.MessageConsoleStream;
 
 public class Utils {
@@ -57,6 +60,48 @@ public class Utils {
 		}
 
 		return length;
+	}
+
+	public static boolean copyFileWithShell(final URL sourceUrl,
+			File destinationFile, MessageConsoleStream out,
+			IProgressMonitor monitor, final Shell shell) throws IOException {
+
+		while (true) {
+			try {
+				Utils.copyFile(sourceUrl, destinationFile, out, monitor);
+				return true;
+			} catch (final IOException e) {
+
+				class ErrorMessageDialog implements Runnable {
+
+					public int retCode = 0;
+
+					@Override
+					public void run() {
+						String[] buttons = new String[] { "Retry", "Ignore",
+								"Abort" };
+						MessageDialog dialog = new MessageDialog(shell,
+								"Read error", null, sourceUrl.toString() + "\n"
+										+ e.getMessage(), MessageDialog.ERROR,
+								buttons, 0);
+						retCode = dialog.open();
+					}
+				}
+
+				ErrorMessageDialog messageDialog = new ErrorMessageDialog();
+				Display.getDefault().syncExec(messageDialog);
+
+				if (messageDialog.retCode == 2) {
+					throw e; // Abort
+				} else if (messageDialog.retCode == 1) {
+					return false; // Ignore
+				}
+
+				// Else try again
+			}
+		}
+
+		// HandlerUtil.getActiveShell(event)
 	}
 
 	public static void copyFile(URL sourceUrl, File destinationFile,
