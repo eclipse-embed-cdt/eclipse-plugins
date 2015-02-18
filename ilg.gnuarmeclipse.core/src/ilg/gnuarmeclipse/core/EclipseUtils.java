@@ -101,6 +101,22 @@ public class EclipseUtils {
 
 	// ------------------------------------------------------------------------
 
+	/**
+	 * Get the separator used to compose PATHs.
+	 * 
+	 * @return a string.
+	 */
+	static public String getPathSeparator() {
+		
+		if (isWindows()) {
+			return ";";
+		} else {
+			return ":";
+		}
+	}
+
+	// ------------------------------------------------------------------------
+
 	public static void openExternalBrowser(URL url) throws PartInitException {
 
 		// System.out.println("Open " + url);
@@ -298,5 +314,4 @@ public class EclipseUtils {
 	}
 
 	// ------------------------------------------------------------------------
-
 }

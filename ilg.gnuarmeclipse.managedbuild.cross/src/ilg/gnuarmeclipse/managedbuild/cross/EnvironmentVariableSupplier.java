@@ -12,8 +12,9 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross;
 
+import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.managedbuild.cross.ui.ProjectStorage;
-import ilg.gnuarmeclipse.managedbuild.cross.ui.EclipsePreferences;
+import ilg.gnuarmeclipse.managedbuild.cross.ui.PersistentPreferences;
 
 import java.io.File;
 
@@ -72,50 +73,59 @@ public class EnvironmentVariableSupplier implements
 				IConfiguration configuration) {
 			IToolChain toolchain = configuration.getToolChain();
 
-			String path = null;
+			String path = PersistentPreferences.getBuildToolsPath();
+
+			String toolchainPath = null;
 
 			boolean isPathPerProject = ProjectStorage
 					.isToolchainPathPerProject(configuration);
 
 			if (isPathPerProject) {
-				path = ProjectStorage.getToolchainPath(configuration);
+				toolchainPath = ProjectStorage.getToolchainPath(configuration);
 			} else {
 				IOption option;
 				option = toolchain
 						.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); //$NON-NLS-1$
 				String toolchainName = (String) option.getValue();
 
-				path = EclipsePreferences.getToolchainPath(toolchainName);
+				toolchainPath = PersistentPreferences
+						.getToolchainPath(toolchainName);
 			}
 
-			if (path != null) {
-				path = path.trim();
-
-				if (path.length() > 0) {
-
-					// if present, substitute macros
-					if (path.indexOf("${") >= 0) {
-						path = resolveMacros(path, configuration);
-					}
-
-					File sysroot = new File(path);
-					File bin = new File(sysroot, "bin"); //$NON-NLS-1$
-					if (bin.isDirectory())
-						sysroot = bin;
-					if (false) {
-						System.out.println("PATH="
-								+ sysroot
-								+ " opt="
-								+ path
-								+ " cfg="
-								+ configuration
-								+ " prj="
-								+ configuration.getManagedProject().getOwner()
-										.getName());
-					}
-					return new PathEnvironmentVariable(sysroot);
+			if (path.isEmpty()) {
+				path = toolchainPath;
+			} else {
+				if (!toolchainPath.isEmpty()) {
+					path += EclipseUtils.getPathSeparator();
+					path += toolchainPath;
 				}
 			}
+
+			if (!path.isEmpty()) {
+
+				// if present, substitute macros
+				if (path.indexOf("${") >= 0) {
+					path = resolveMacros(path, configuration);
+				}
+
+				File sysroot = new File(path);
+				File bin = new File(sysroot, "bin"); //$NON-NLS-1$
+				if (bin.isDirectory())
+					sysroot = bin;
+				if (false) {
+					System.out.println("PATH="
+							+ sysroot
+							+ " opt="
+							+ path
+							+ " cfg="
+							+ configuration
+							+ " prj="
+							+ configuration.getManagedProject().getOwner()
+									.getName());
+				}
+				return new PathEnvironmentVariable(sysroot);
+			}
+
 			// System.out.println("create(" + configuration.getName()
 			// + ") returns null");
 			return null;

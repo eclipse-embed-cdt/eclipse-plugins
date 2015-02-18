@@ -57,10 +57,10 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 		// store them on the permanent storage in
 		// workspace/.plugins/org.eclipse.cdt.core/shareddefaults.xml
 
-		EclipsePreferences.putToolchainPath(toolchainName, path);
-		EclipsePreferences.putToolchainName(toolchainName);
+		PersistentPreferences.putToolchainPath(toolchainName, path);
+		PersistentPreferences.putToolchainName(toolchainName);
 
-		EclipsePreferences.update();
+		PersistentPreferences.flush();
 
 		IProject project = ResourcesPlugin.getWorkspace().getRoot()
 				.getProject(projectName);
@@ -80,7 +80,8 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 			} catch (BuildException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
-				System.out.println("SetCrossCommandWizardOperation " + e.getMessage());
+				System.out.println("SetCrossCommandWizardOperation "
+						+ e.getMessage());
 			}
 		}
 

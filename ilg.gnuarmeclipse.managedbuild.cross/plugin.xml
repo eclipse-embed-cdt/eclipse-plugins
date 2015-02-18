@@ -4350,6 +4350,41 @@
             class="ilg.gnuarmeclipse.managedbuild.cross.xpi.CProjectExtraDataManagerFactory">
       </factory>
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.cdt.ui.preferences.BuildSettings"
+            class="ilg.gnuarmeclipse.managedbuild.cross.preferences.WorkspaceToolsPathsPreferencePage"
+            id="ilg.gnuarmeclipse.managedbuild.cross.preferencePage.toolsPaths"
+            name="%preferences.toolsPaths">
+      </page>
+      <page
+            category="org.eclipse.cdt.ui.preferences.BuildSettings"
+            class="ilg.gnuarmeclipse.managedbuild.cross.preferences.GlobalToolsPathsPreferencePage"
+            id="ilg.gnuarmeclipse.managedbuild.cross.preferencePage.globalToolsPaths"
+            name="%preferences.globalToolsPaths">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            category="org.eclipse.cdt.managedbuilder.ui.properties.Page_head_build"
+            class="ilg.gnuarmeclipse.managedbuild.cross.properties.ProjectToolsPathPropertyPage"
+            id="ilg.gnuarmeclipse.managedbuild.cross.properties.samplePropertyPage"
+            name="%properties.projectToolsPaths">
+         <enabledWhen>
+            <instanceof
+                  value="org.eclipse.core.resources.IProject">
+            </instanceof>
+         </enabledWhen>
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="ilg.gnuarmeclipse.managedbuild.cross.ui.DefaultPreferenceInitializer">
+      </initializer>
+   </extension>
     
    <!--       
    <extension

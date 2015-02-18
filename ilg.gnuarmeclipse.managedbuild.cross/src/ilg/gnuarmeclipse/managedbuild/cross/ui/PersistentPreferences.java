@@ -14,11 +14,12 @@ package ilg.gnuarmeclipse.managedbuild.cross.ui;
 import ilg.gnuarmeclipse.managedbuild.cross.Activator;
 
 import org.eclipse.cdt.core.templateengine.SharedDefaults;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
-public class EclipsePreferences {
+public class PersistentPreferences {
 
 	// Note: The shared defaults keys don't have "cross" in them because we want
 	// to keep
@@ -26,47 +27,60 @@ public class EclipsePreferences {
 	static final String SHARED_CROSS_TOOLCHAIN_NAME = SetCrossCommandWizardPage.CROSS_TOOLCHAIN_NAME;
 	static final String SHARED_CROSS_TOOLCHAIN_PATH = SetCrossCommandWizardPage.CROSS_TOOLCHAIN_PATH;
 
-	// ----- getter & setter --------------------------------------------------
+	public static final String BUILD_TOOLS_PATH = "buildTools.path";
+
+	// ----- getter -----------------------------------------------------------
 	private static String getValueForId(String id, String defaultValue) {
 
-		// Access the instanceScope
-		Preferences preferences = ConfigurationScope.INSTANCE
-				.getNode(Activator.PLUGIN_ID);
-
 		String value;
-		// preferences.get(id, defaultValue);
-		value = preferences.get(id, null);
+		value = Platform.getPreferencesService().getString(Activator.PLUGIN_ID,
+				id, defaultValue, null);
 		// System.out.println("Value of " + id + " is " + value);
 
 		if (value != null) {
-			return value;
+			return value.trim();
 		}
 
-		// Keep this for compatibility
-		id = Activator.PLUGIN_ID + "." + id;
+		{
+			// Keep this a while for compatibility with the first versions
+			// which erroneously stored values in the shared storage.
+			value = SharedDefaults.getInstance().getSharedDefaultsMap()
+					.get(Activator.PLUGIN_ID + "." + id);
 
-		value = SharedDefaults.getInstance().getSharedDefaultsMap().get(id);
+			if (value == null)
+				value = "";
 
-		if (value == null)
-			value = "";
+			value = value.trim();
+			if (!value.isEmpty()) {
+				return value;
+			}
+		}
 
-		value = value.trim();
-		if (value.length() == 0 && defaultValue != null)
-			return defaultValue.trim();
-
-		return value;
+		return defaultValue;
 	}
 
-	private static void putValueForId(String id, String value) {
+	// ----- setter -----------------------------------------------------------
+	private static void putEclipseValueForId(String id, String value) {
 
 		value = value.trim();
 
-		// Access the instanceScope
+		// Access the Eclipse scope
 		Preferences preferences = ConfigurationScope.INSTANCE
 				.getNode(Activator.PLUGIN_ID);
 		preferences.put(id, value);
-
 	}
+
+	public static void flush() {
+
+		try {
+			ConfigurationScope.INSTANCE.getNode(Activator.PLUGIN_ID).flush();
+		} catch (BackingStoreException e) {
+			// TODO Auto-generated catch block
+			// e.printStackTrace();
+		}
+	}
+
+	// ------------------------------------------------------------------------
 
 	public static String getToolchainName() {
 
@@ -80,9 +94,15 @@ public class EclipsePreferences {
 
 	public static void putToolchainName(String toolchainName) {
 
-		putValueForId(SHARED_CROSS_TOOLCHAIN_NAME, toolchainName);
+		putEclipseValueForId(SHARED_CROSS_TOOLCHAIN_NAME, toolchainName);
 	}
 
+	/**
+	 * Get the toolchain path for a given toolchain name.
+	 * 
+	 * @param toolchainName
+	 * @return a string, possibly empty.
+	 */
 	public static String getToolchainPath(String toolchainName) {
 
 		String name = toolchainName.trim();
@@ -101,16 +121,19 @@ public class EclipsePreferences {
 
 		String pathKey = SHARED_CROSS_TOOLCHAIN_PATH + "."
 				+ Math.abs(toolchainName.trim().hashCode());
-		putValueForId(pathKey, path.trim());
+		putEclipseValueForId(pathKey, path.trim());
 	}
 
-	public static void update() {
+	// ------------------------------------------------------------------------
+	
+	/**
+	 * Get the value for the build tools path.
+	 * 
+	 * @return a string, possibly empty.
+	 */
+	public static String getBuildToolsPath() {
 
-		try {
-			ConfigurationScope.INSTANCE.getNode(Activator.PLUGIN_ID).flush();
-		} catch (BackingStoreException e) {
-			// TODO Auto-generated catch block
-			// e.printStackTrace();
-		}
+		return getValueForId(BUILD_TOOLS_PATH, "");
 	}
+	// ------------------------------------------------------------------------
 }

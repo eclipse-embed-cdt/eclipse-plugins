@@ -60,6 +60,12 @@ public class ProjectStorage {
 		return true;
 	}
 
+	/**
+	 * Get the toolchain path for a given configuration.
+	 * 
+	 * @param config
+	 * @return a string, possibly empty.
+	 */
 	public static String getToolchainPath(IConfiguration config) {
 
 		IProject project = (IProject) config.getManagedProject().getOwner();
@@ -70,7 +76,7 @@ public class ProjectStorage {
 					.getId(), TOOLCHAIN_PATH));
 		} catch (CoreException e) {
 			// e.printStackTrace();
-			System.out.println("getToolchainPath " + e.getMessage());
+			System.out.println("getToolchainPath() = " + e.getMessage());
 			return "";
 		}
 

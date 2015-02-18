@@ -85,6 +85,8 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	private Text m_projectPathText;
 	private Button m_projectPathButton;
 
+	// private Button fUseGlobalToolsCheckButton;
+
 	private Button m_flashButton;
 	private Button m_listingButton;
 	private Button m_sizeButton;
@@ -370,7 +372,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 		updateControlsForConfig(m_config);
 
-		String toolchainPath = EclipsePreferences
+		String toolchainPath = PersistentPreferences
 				.getToolchainPath(m_selectedToolchainName);
 		if (toolchainPath != null) {
 			m_globalPathText.setText(toolchainPath);
@@ -431,7 +433,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			m_commandRmText.setText(newCommandRm);
 		}
 
-		String path = EclipsePreferences.getToolchainPath(td.getName());
+		String path = PersistentPreferences.getToolchainPath(td.getName());
 		m_globalPathText.setText(path);
 
 		// leave the bottom three buttons as the user set them
@@ -674,7 +676,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 		m_useGlobalCheckButton.setSelection(useGlobalPath);
 
-		String path = EclipsePreferences
+		String path = PersistentPreferences
 				.getToolchainPath(m_selectedToolchainName);
 		m_globalPathText.setText(path);
 
@@ -834,15 +836,15 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			ProjectStorage.putToolchainPath(config, m_projectPathText.getText()
 					.trim());
 
-			String sGlobalToolchainPath = EclipsePreferences
+			String sGlobalToolchainPath = PersistentPreferences
 					.getToolchainPath(td.getName());
 			String sNewToolchainPath = m_globalPathText.getText().trim();
 
 			if (sGlobalToolchainPath.length() == 0
 					|| !sGlobalToolchainPath.equals(sNewToolchainPath)) {
-				EclipsePreferences.putToolchainPath(td.getName(),
+				PersistentPreferences.putToolchainPath(td.getName(),
 						sNewToolchainPath);
-				EclipsePreferences.update();
+				PersistentPreferences.flush();
 			}
 
 		} catch (NullPointerException e) {
