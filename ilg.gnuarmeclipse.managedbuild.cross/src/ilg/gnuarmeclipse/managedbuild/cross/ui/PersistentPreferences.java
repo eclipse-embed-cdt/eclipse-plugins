@@ -141,5 +141,6 @@ public class PersistentPreferences {
 
 		return getValueForId(BUILD_TOOLS_PATH, "");
 	}
+	
 	// ------------------------------------------------------------------------
 }

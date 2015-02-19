@@ -25,17 +25,21 @@ import org.eclipse.cdt.managedbuilder.macros.IConfigurationBuildMacroSupplier;
 public class ConfigurationBuildMacroSupplier implements
 		IConfigurationBuildMacroSupplier {
 
-	private String[] m_asCmds = { "cross_prefix", "cross_suffix", "cross_c",
+	// ------------------------------------------------------------------------
+
+	private String[] fCmds = { "cross_prefix", "cross_suffix", "cross_c",
 			"cross_cpp", "cross_ar", "cross_objcopy", "cross_objdump",
 			"cross_size", "cross_make", "cross_rm" };
 
 	private static String CROSS_FLAGS = "cross_toolchain_flags";
 
+	// ------------------------------------------------------------------------
+
 	@Override
 	public IBuildMacro getMacro(String macroName, IConfiguration configuration,
 			IBuildMacroProvider provider) {
 
-		for (String sCmd : m_asCmds) {
+		for (String sCmd : fCmds) {
 			if (sCmd.equals(macroName)) {
 				IToolChain toolchain = configuration.getToolChain();
 
@@ -86,7 +90,7 @@ public class ConfigurationBuildMacroSupplier implements
 		ArrayList<IBuildMacro> oMacrosList = new ArrayList<IBuildMacro>();
 
 		String sValue;
-		for (String cmd : m_asCmds) {
+		for (String cmd : fCmds) {
 			String sId = Option.OPTION_PREFIX + ".command."
 					+ cmd.replace("cross_", "");
 
@@ -108,4 +112,5 @@ public class ConfigurationBuildMacroSupplier implements
 		return oMacrosList.toArray(new IBuildMacro[0]);
 	}
 
+	// ------------------------------------------------------------------------
 }

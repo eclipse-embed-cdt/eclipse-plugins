@@ -21,6 +21,8 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 
+	// ------------------------------------------------------------------------
+
 	private static final String MESSAGES = Activator.PLUGIN_ID + ".ui.messages"; //$NON-NLS-1$
 
 	public static String SetCrossCommandWizardPage_browse;
@@ -59,6 +61,8 @@ public class Messages extends NLS {
 	public static String WorkspaceToolsPathsPropertyPage_description;
 	public static String GlobalToolsPathsPropertyPage_description;
 
+	// ------------------------------------------------------------------------
+
 	static {
 		// initialise resource bundle
 		NLS.initializeMessages(MESSAGES, Messages.class);
@@ -83,4 +87,6 @@ public class Messages extends NLS {
 			return '!' + key + '!';
 		}
 	}
+	
+	// ------------------------------------------------------------------------
 }

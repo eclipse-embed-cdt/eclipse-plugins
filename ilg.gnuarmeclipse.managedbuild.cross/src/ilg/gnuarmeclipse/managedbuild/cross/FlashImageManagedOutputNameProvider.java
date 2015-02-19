@@ -20,6 +20,8 @@ import org.eclipse.core.runtime.Path;
 public class FlashImageManagedOutputNameProvider implements
 		IManagedOutputNameProvider {
 
+	// ------------------------------------------------------------------------
+
 	public IPath[] getOutputNames(ITool tool, IPath[] primaryInputNames) {
 
 		String value = null;
@@ -47,4 +49,5 @@ public class FlashImageManagedOutputNameProvider implements
 		return iPath;
 	}
 
+	// ------------------------------------------------------------------------
 }

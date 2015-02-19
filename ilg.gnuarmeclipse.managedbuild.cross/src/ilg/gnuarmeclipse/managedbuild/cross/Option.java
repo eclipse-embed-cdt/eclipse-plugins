@@ -17,6 +17,8 @@ import org.eclipse.cdt.managedbuilder.core.IOption;
 
 public class Option {
 
+	// ------------------------------------------------------------------------
+
 	public static final String OPTION_PREFIX = IDs.getIdPrefix() + ".option";
 
 	public static final String OPTION_ARCHITECTURE = OPTION_PREFIX
@@ -666,4 +668,5 @@ public class Option {
 		return sReturn;
 	}
 
+	// ------------------------------------------------------------------------
 }

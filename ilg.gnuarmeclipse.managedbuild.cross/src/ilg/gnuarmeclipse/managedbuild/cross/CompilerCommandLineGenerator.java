@@ -8,6 +8,8 @@ import org.eclipse.cdt.managedbuilder.internal.core.ManagedCommandLineInfo;
 @SuppressWarnings("restriction")
 public class CompilerCommandLineGenerator extends ManagedCommandLineGenerator {
 
+	// ------------------------------------------------------------------------
+
 	@Override
 	public IManagedCommandLineInfo generateCommandLineInfo(ITool tool,
 			String commandName, String[] flags, String outputFlag,
@@ -32,4 +34,6 @@ public class CompilerCommandLineGenerator extends ManagedCommandLineGenerator {
 	private String updateMT(String s) {
 		return s.replace("-MT\"$(@:%.o=%.d)\"", "-MT\"$@\"");
 	}
+
+	// ------------------------------------------------------------------------
 }

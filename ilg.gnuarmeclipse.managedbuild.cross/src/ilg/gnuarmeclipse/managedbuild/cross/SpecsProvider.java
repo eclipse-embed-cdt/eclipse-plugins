@@ -16,8 +16,12 @@ import org.eclipse.cdt.core.language.settings.providers.LanguageSettingsManager;
 
 public class SpecsProvider {
 
+	// ------------------------------------------------------------------------
+
 	private static String PROVIDER_ID = IDs.getIdPrefix()
 			+ ".GCCBuiltinSpecsDetector";
+
+	// ------------------------------------------------------------------------
 
 	// private static String PROVIDER_ID =
 	// "org.eclipse.cdt.managedbuilder.core.GCCBuiltinSpecsDetector";
@@ -33,4 +37,6 @@ public class SpecsProvider {
 	// ((AbstractBuiltinSpecsDetector) provider).clear();
 	// // System.out.println("clear " + provider.getName());
 	// }
+
+	// ------------------------------------------------------------------------
 }

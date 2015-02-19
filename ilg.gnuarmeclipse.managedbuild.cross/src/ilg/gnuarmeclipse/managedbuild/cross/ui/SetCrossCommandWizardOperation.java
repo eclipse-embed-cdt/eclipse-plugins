@@ -37,6 +37,8 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
  */
 public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 
+	// ------------------------------------------------------------------------
+
 	public void run(IProgressMonitor monitor) throws InvocationTargetException,
 			InterruptedException {
 
@@ -116,4 +118,5 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 		TabToolchains.setOptionsForToolchain(config, toolchainIndex);
 	}
 
+	// ------------------------------------------------------------------------
 }

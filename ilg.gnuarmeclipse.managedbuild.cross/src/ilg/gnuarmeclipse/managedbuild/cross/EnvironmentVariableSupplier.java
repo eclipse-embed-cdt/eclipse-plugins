@@ -32,6 +32,8 @@ import org.eclipse.core.runtime.Platform;
 public class EnvironmentVariableSupplier implements
 		IConfigurationEnvironmentVariableSupplier {
 
+	// ------------------------------------------------------------------------
+
 	public IBuildEnvironmentVariable getVariable(String variableName,
 			IConfiguration configuration, IEnvironmentVariableProvider provider) {
 		if (PathEnvironmentVariable.isVar(variableName)) {
@@ -173,4 +175,6 @@ public class EnvironmentVariableSupplier implements
 		}
 
 	}
+
+	// ------------------------------------------------------------------------
 }

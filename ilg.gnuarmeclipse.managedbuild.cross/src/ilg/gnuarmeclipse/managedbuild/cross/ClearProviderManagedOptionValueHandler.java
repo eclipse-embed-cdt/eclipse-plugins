@@ -19,6 +19,8 @@ import org.eclipse.cdt.managedbuilder.core.IOption;
 public class ClearProviderManagedOptionValueHandler implements
 		IManagedOptionValueHandler {
 
+	// ------------------------------------------------------------------------
+
 	@Override
 	public boolean handleValue(IBuildObject configuration,
 			IHoldsOptions holder, IOption option, String extraArgument,
@@ -55,4 +57,5 @@ public class ClearProviderManagedOptionValueHandler implements
 		return false;
 	}
 
+	// ------------------------------------------------------------------------
 }

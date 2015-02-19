@@ -23,6 +23,8 @@ import org.eclipse.cdt.managedbuilder.core.IToolChain;
 
 public class Utils {
 
+	// ------------------------------------------------------------------------
+
 	public static String BUILD_ARTEFACT_TYPE = "org.eclipse.cdt.build.core.buildArtefactType";
 	public static String BUILD_ARTEFACT_TYPE_EXE = BUILD_ARTEFACT_TYPE + ".exe";
 	public static String BUILD_ARTEFACT_TYPE_STATICLIB = BUILD_ARTEFACT_TYPE
@@ -157,4 +159,5 @@ public class Utils {
 		}
 	}
 
+	// ------------------------------------------------------------------------
 }

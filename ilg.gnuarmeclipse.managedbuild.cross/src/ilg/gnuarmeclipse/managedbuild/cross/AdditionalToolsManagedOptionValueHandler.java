@@ -23,6 +23,8 @@ import org.eclipse.cdt.managedbuilder.internal.core.ResourceConfiguration;
 public class AdditionalToolsManagedOptionValueHandler extends
 		ManagedOptionValueHandler {
 
+	// ------------------------------------------------------------------------
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -73,4 +75,5 @@ public class AdditionalToolsManagedOptionValueHandler extends
 		return false;
 	}
 
+	// ------------------------------------------------------------------------
 }

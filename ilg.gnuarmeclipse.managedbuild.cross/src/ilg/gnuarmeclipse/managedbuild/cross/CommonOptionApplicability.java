@@ -18,6 +18,8 @@ import org.eclipse.cdt.managedbuilder.core.IOptionApplicability;
 
 public class CommonOptionApplicability implements IOptionApplicability {
 
+	// ------------------------------------------------------------------------
+
 	@Override
 	public boolean isOptionUsedInCommandLine(IBuildObject configuration,
 			IHoldsOptions holder, IOption option) {
@@ -42,9 +44,11 @@ public class CommonOptionApplicability implements IOptionApplicability {
 	private boolean isOption(IBuildObject configuration, IHoldsOptions holder,
 			IOption option) {
 
-		//IToolChain toolchain = (IToolChain) holder;
+		// IToolChain toolchain = (IToolChain) holder;
 		// not yet used
-		
+
 		return true;
 	}
+
+	// ------------------------------------------------------------------------
 }

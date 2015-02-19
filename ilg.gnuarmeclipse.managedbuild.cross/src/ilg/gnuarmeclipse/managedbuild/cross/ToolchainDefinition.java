@@ -16,112 +16,122 @@ import java.util.List;
 
 public class ToolchainDefinition {
 
-	private String m_sName;
-	private String m_sPrefix;
-	private String m_sSuffix;
-	private String m_sArchitecture;
-	private String m_cmdMake;
-	private String m_cmdRm;
-	private String m_cmdWinMake;
-	private String m_cmdWinRm;
-	private String m_cmdC;
-	private String m_cmdCpp;
-	private String m_cmdAr;
-	private String m_cmdObjcopy;
-	private String m_cmdObjdump;
-	private String m_cmdSize;
+	// ------------------------------------------------------------------------
 
-	private static String m_architectures[] = { "ARM (AArch32)",
+	public static final String DEFAULT_TOOLCHAIN_NAME = "GNU Tools for ARM Embedded Processors";
+
+	// ------------------------------------------------------------------------
+
+	private String fName;
+	private String fPrefix;
+	private String fSuffix;
+	private String fArchitecture;
+	private String fCmdMake;
+	private String fCmdRm;
+	private String fCmdWinMake;
+	private String fCmdWinRm;
+	private String fCmdC;
+	private String fCmdCpp;
+	private String fCmdAr;
+	private String fCmdObjcopy;
+	private String fCmdObjdump;
+	private String fCmdSize;
+
+	private static String fArchitectures[] = { "ARM (AArch32)",
 			"ARM64 (AArch64)" };
 
+	// ------------------------------------------------------------------------
+
 	public ToolchainDefinition(String sName, String sPrefix) {
-		m_sName = sName;
-		m_sPrefix = sPrefix;
-		m_sSuffix = "";
-		m_sArchitecture = "arm";
-		m_cmdMake = "make";
-		m_cmdRm = "rm";
-		m_cmdC = "gcc";
-		m_cmdCpp = "g++";
-		m_cmdAr = "ar";
-		m_cmdObjcopy = "objcopy";
-		m_cmdObjdump = "objdump";
-		m_cmdSize = "size";
+		fName = sName;
+		fPrefix = sPrefix;
+		fSuffix = "";
+		fArchitecture = "arm";
+		fCmdMake = "make";
+		fCmdRm = "rm";
+		fCmdC = "gcc";
+		fCmdCpp = "g++";
+		fCmdAr = "ar";
+		fCmdObjcopy = "objcopy";
+		fCmdObjdump = "objdump";
+		fCmdSize = "size";
 	}
 
 	public ToolchainDefinition(String sName, String sPrefix,
 			String sArchitecture) {
 		this(sName, sPrefix);
-		m_sArchitecture = sArchitecture;
+		fArchitecture = sArchitecture;
 	}
 
 	public ToolchainDefinition(String sName, String sPrefix,
 			String sArchitecture, String cmdMake, String cmdRm) {
 		this(sName, sPrefix, sArchitecture);
-		m_sArchitecture = sArchitecture;
-		m_cmdMake = cmdMake;
-		m_cmdRm = cmdRm;
+		fArchitecture = sArchitecture;
+		fCmdMake = cmdMake;
+		fCmdRm = cmdRm;
 	}
 
+	// ------------------------------------------------------------------------
+
 	public void setWin(String cmdMake, String cmdRm) {
-		m_cmdMake = cmdMake;
-		m_cmdRm = cmdRm;
+		fCmdMake = cmdMake;
+		fCmdRm = cmdRm;
 	}
 
 	public String getName() {
-		return m_sName;
+		return fName;
 	}
 
 	public String getPrefix() {
-		return m_sPrefix;
+		return fPrefix;
 	}
 
 	public String getSuffix() {
-		return m_sSuffix;
+		return fSuffix;
 	}
 
 	public String getArchitecture() {
-		return m_sArchitecture;
+		return fArchitecture;
 	}
 
 	public String getCmdMake() {
-		return m_cmdMake;
+		return fCmdMake;
 	}
 
 	public String getCmdRm() {
-		return m_cmdRm;
+		return fCmdRm;
 	}
 
 	public String getCmdWinMake() {
-		return m_cmdWinMake;
+		return fCmdWinMake;
 	}
 
 	public String getCmdWinRm() {
-		return m_cmdWinRm;
+		return fCmdWinRm;
 	}
 
 	public String getCmdC() {
-		return m_cmdC;
+		return fCmdC;
 	}
 
 	public String getCmdCpp() {
-		return m_cmdCpp;
+		return fCmdCpp;
 	}
 
 	public String getCmdAr() {
-		return m_cmdAr;
+		return fCmdAr;
 	}
 
 	public String getCmdObjcopy() {
-		return m_cmdObjcopy;
+		return fCmdObjcopy;
 	}
 
 	public String getCmdObjdump() {
-		return m_cmdObjdump;
+		return fCmdObjdump;
 	}
 
 	public String getCmdSize() {
-		return m_cmdSize;
+		return fCmdSize;
 	}
 
 	public String getFullCmdC() {
@@ -131,13 +141,6 @@ public class ToolchainDefinition {
 	public String getFullName() {
 		return getName() + " (" + getFullCmdC() + ")";
 	}
-
-	/*
-	 * private void setTest() { m_sSuffix = "mySuffix"; m_sArchitecture =
-	 * "myArch"; m_cmdMake = "myMake"; m_cmdRm = "myRm"; m_cmdC = "myGcc";
-	 * m_cmdCpp = "myG++"; m_cmdAr = "myAr"; m_cmdObjcopy = "myObjcopy";
-	 * m_cmdObjdump = "myObjdump"; m_cmdSize = "mySize"; }
-	 */
 
 	// Static members
 	private static List<ToolchainDefinition> ms_list;
@@ -161,7 +164,7 @@ public class ToolchainDefinition {
 	public static int findToolchainByName(String sName) {
 		int i = 0;
 		for (ToolchainDefinition td : ms_list) {
-			if (td.m_sName.equals(sName))
+			if (td.fName.equals(sName))
 				return i;
 			i++;
 		}
@@ -186,11 +189,11 @@ public class ToolchainDefinition {
 	}
 
 	public static String[] getArchitectures() {
-		return m_architectures;
+		return fArchitectures;
 	}
 
 	public static String getArchitecture(int index) {
-		return m_architectures[index];
+		return fArchitectures[index];
 	}
 
 	// Initialise the list of known toolchains
@@ -198,8 +201,8 @@ public class ToolchainDefinition {
 		ms_list = new ArrayList<ToolchainDefinition>();
 
 		// 0
-		ms_list.add(new ToolchainDefinition(
-				"GNU Tools for ARM Embedded Processors", "arm-none-eabi-"));
+		ms_list.add(new ToolchainDefinition(DEFAULT_TOOLCHAIN_NAME,
+				"arm-none-eabi-"));
 		// 1
 		ToolchainDefinition tc;
 		tc = new ToolchainDefinition("Sourcery CodeBench Lite for ARM EABI",
@@ -252,8 +255,7 @@ public class ToolchainDefinition {
 				"aarch64"));
 
 		// 11
-		ms_list.add(new ToolchainDefinition(
-				"Custom", "arm-none-eabi-"));
+		ms_list.add(new ToolchainDefinition("Custom", "arm-none-eabi-"));
 
 		// 12
 		// tc = new ToolchainDefinition("test", "myPrefix");
@@ -261,4 +263,6 @@ public class ToolchainDefinition {
 		// ms_list.add(tc);
 
 	}
+
+	// ------------------------------------------------------------------------
 }

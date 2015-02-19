@@ -20,6 +20,8 @@ import org.eclipse.cdt.utils.cdtvariables.IVariableSubstitutor;
 
 public class LikerScriptCommandGenerator implements IOptionCommandGenerator {
 
+	// ------------------------------------------------------------------------
+
 	@Override
 	public String generateCommand(IOption option,
 			IVariableSubstitutor macroSubstitutor) {
@@ -64,4 +66,5 @@ public class LikerScriptCommandGenerator implements IOptionCommandGenerator {
 		return command.toString().trim();
 	}
 
+	// ------------------------------------------------------------------------
 }

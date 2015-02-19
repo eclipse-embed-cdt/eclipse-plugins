@@ -12,6 +12,8 @@ import org.eclipse.cdt.managedbuilder.internal.core.FolderInfo;
 @SuppressWarnings("restriction")
 public class FloatABIManagedOptionHandleValue extends ManagedOptionValueHandler {
 
+	// ------------------------------------------------------------------------
+
 	/*
 	 * (non-Javadoc)
 	 * 
@@ -78,4 +80,6 @@ public class FloatABIManagedOptionHandleValue extends ManagedOptionValueHandler 
 
 		return false;
 	}
+
+	// ------------------------------------------------------------------------
 }

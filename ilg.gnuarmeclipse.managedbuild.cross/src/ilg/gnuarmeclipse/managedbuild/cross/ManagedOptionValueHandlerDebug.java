@@ -22,6 +22,8 @@ import org.eclipse.cdt.managedbuilder.core.ManagedOptionValueHandler;
 
 public class ManagedOptionValueHandlerDebug {
 
+	// ------------------------------------------------------------------------
+
 	public static void dump(IBuildObject configuration, IHoldsOptions holder,
 			IOption option, String extraArgument, int event) {
 
@@ -64,4 +66,6 @@ public class ManagedOptionValueHandlerDebug {
 				extraArgument + ")"); //$NON-NLS-1$
 
 	}
+
+	// ------------------------------------------------------------------------
 }

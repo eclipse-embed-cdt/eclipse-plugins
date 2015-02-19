@@ -18,8 +18,12 @@ import org.eclipse.core.runtime.QualifiedName;
 
 public class ProjectStorage {
 
+	// ------------------------------------------------------------------------
+
 	private static String TOOLCHAIN_PATH = "toolchain.path";
 	private static String IS_TOOLCHAIN_PATH_PER_PROJECT = "is.toolchain.path.per.project";
+
+	// ------------------------------------------------------------------------
 
 	// Was used from PathManagedOptionValueHandler
 
@@ -102,4 +106,5 @@ public class ProjectStorage {
 		return true;
 	}
 
+	// ------------------------------------------------------------------------
 }

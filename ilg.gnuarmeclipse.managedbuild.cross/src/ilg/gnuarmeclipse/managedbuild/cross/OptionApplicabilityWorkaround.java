@@ -44,6 +44,8 @@ import org.eclipse.cdt.managedbuilder.internal.core.Option;
 @SuppressWarnings("restriction")
 public class OptionApplicabilityWorkaround implements IOptionApplicability {
 
+	// ------------------------------------------------------------------------
+
 	@Override
 	public boolean isOptionEnabled(IBuildObject configuration,
 			IHoldsOptions holder, IOption option) {
@@ -156,4 +158,5 @@ public class OptionApplicabilityWorkaround implements IOptionApplicability {
 		return null;
 	}
 
+	// ------------------------------------------------------------------------
 }
