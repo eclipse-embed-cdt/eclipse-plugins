@@ -21,13 +21,20 @@ import org.osgi.service.prefs.Preferences;
 
 public class PersistentPreferences {
 
+	// ------------------------------------------------------------------------
+
+	static final String TOOLCHAIN_NAME = "toolchain.name";
+	static final String TOOLCHAIN_PATH = "toolchain.path";
+
+	public static final String BUILD_TOOLS_PATH = "buildTools.path";
+
 	// Note: The shared defaults keys don't have "cross" in them because we want
 	// to keep
 	// compatibility with defaults that were saved when it used to be a template
-	static final String SHARED_CROSS_TOOLCHAIN_NAME = SetCrossCommandWizardPage.CROSS_TOOLCHAIN_NAME;
-	static final String SHARED_CROSS_TOOLCHAIN_PATH = SetCrossCommandWizardPage.CROSS_TOOLCHAIN_PATH;
-
-	public static final String BUILD_TOOLS_PATH = "buildTools.path";
+	// static final String SHARED_CROSS_TOOLCHAIN_NAME =
+	// SetCrossCommandWizardPage.CROSS_TOOLCHAIN_NAME;
+	// static final String SHARED_CROSS_TOOLCHAIN_PATH =
+	// SetCrossCommandWizardPage.CROSS_TOOLCHAIN_PATH;
 
 	// ----- getter -----------------------------------------------------------
 	private static String getValueForId(String id, String defaultValue) {
@@ -84,7 +91,7 @@ public class PersistentPreferences {
 
 	public static String getToolchainName() {
 
-		String toolchainName = getValueForId(SHARED_CROSS_TOOLCHAIN_NAME, "");
+		String toolchainName = getValueForId(TOOLCHAIN_NAME, "");
 
 		if (toolchainName.length() == 0)
 			toolchainName = DefaultPreferences.getToolchainName();
@@ -94,7 +101,7 @@ public class PersistentPreferences {
 
 	public static void putToolchainName(String toolchainName) {
 
-		putEclipseValueForId(SHARED_CROSS_TOOLCHAIN_NAME, toolchainName);
+		putEclipseValueForId(TOOLCHAIN_NAME, toolchainName);
 	}
 
 	/**
@@ -106,8 +113,7 @@ public class PersistentPreferences {
 	public static String getToolchainPath(String toolchainName) {
 
 		String name = toolchainName.trim();
-		String pathKey = SHARED_CROSS_TOOLCHAIN_PATH + "."
-				+ Math.abs(name.hashCode());
+		String pathKey = TOOLCHAIN_PATH + "." + Math.abs(name.hashCode());
 		String sPath = getValueForId(pathKey, "");
 
 		if (sPath.length() == 0) {
@@ -119,13 +125,13 @@ public class PersistentPreferences {
 
 	public static void putToolchainPath(String toolchainName, String path) {
 
-		String pathKey = SHARED_CROSS_TOOLCHAIN_PATH + "."
+		String pathKey = TOOLCHAIN_PATH + "."
 				+ Math.abs(toolchainName.trim().hashCode());
 		putEclipseValueForId(pathKey, path.trim());
 	}
 
 	// ------------------------------------------------------------------------
-	
+
 	/**
 	 * Get the value for the build tools path.
 	 * 

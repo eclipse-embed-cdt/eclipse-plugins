@@ -31,11 +31,11 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
-	public static final String TOOLCHAIN = "toolchains.prefs";
+	// DEPRECATED, non-standard location
 	public static final String DEFAULT_NAME = "default.name";
 	public static final String DEFAULT_PATH = "default.path";
-
-	private static Properties ms_toolchainProperties;
+	public static final String TOOLCHAIN = "toolchains.prefs";
+	private static Properties fgToolchainProperties;
 
 	// LOCAL_MACHINE
 	private static final String REG_SUBKEY = "SOFTWARE\\GNU ARM Eclipse\\Build Tools";
@@ -60,29 +60,58 @@ public class DefaultPreferences {
 
 	public static String getToolchainName() {
 
-		try {
-			Properties prop = getToolchainProperties();
-			return prop.getProperty(DEFAULT_NAME, "").trim();
-		} catch (IOException e) {
-			return "";
+		String value = getString(PersistentPreferences.TOOLCHAIN_NAME, null);
+		if (value != null) {
+			return value;
 		}
+
+		value = "";
+
+		{
+			// DEPRECATED
+			try {
+				Properties prop = getToolchainProperties();
+				value = prop.getProperty(DEFAULT_NAME, "").trim();
+			} catch (IOException e) {
+				;
+			}
+		}
+
+		return value;
 	}
 
 	public static String getToolchainPath(String toolchainName) {
 
 		int hash = Math.abs(toolchainName.trim().hashCode());
-		String property = DEFAULT_PATH + "." + String.valueOf(hash);
-		try {
-			Properties prop = getToolchainProperties();
-			return prop.getProperty(property, "").trim();
-		} catch (IOException e) {
-			return "";
+
+		String value = getString(PersistentPreferences.TOOLCHAIN_PATH + "."
+				+ String.valueOf(hash), null);
+		if (value != null) {
+			return value;
 		}
+
+		value = "";
+
+		{
+			// DEPRECATED
+			try {
+				Properties prop = getToolchainProperties();
+				value = prop.getProperty(
+						DEFAULT_PATH + "." + String.valueOf(hash), "").trim();
+			} catch (IOException e) {
+				;
+			}
+		}
+
+		return value;
 	}
+
+	// DEPRECATED, non-standard location:
+	// eclipse/configuration/ilg.gnuarmeclipse.managedbuild.cross/toolchain.prefs/name=value
 
 	private static Properties getToolchainProperties() throws IOException {
 
-		if (ms_toolchainProperties == null) {
+		if (fgToolchainProperties == null) {
 
 			URL url = Platform.getInstallLocation().getURL();
 
@@ -94,10 +123,10 @@ public class DefaultPreferences {
 			Properties prop = new Properties();
 			prop.load(is);
 
-			ms_toolchainProperties = prop;
+			fgToolchainProperties = prop;
 		}
 
-		return ms_toolchainProperties;
+		return fgToolchainProperties;
 	}
 
 	// ------------------------------------------------------------------------
