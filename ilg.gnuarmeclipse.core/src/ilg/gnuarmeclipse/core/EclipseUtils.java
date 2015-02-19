@@ -1,3 +1,14 @@
+/*******************************************************************************
+ * Copyright (c) 2014 Liviu Ionescu.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ *
+ * Contributors:
+ *    Liviu Ionescu - initial version
+ *******************************************************************************/
+
 package ilg.gnuarmeclipse.core;
 
 import java.net.URL;
@@ -8,6 +19,7 @@ import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
@@ -15,6 +27,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.ConfigurationScope;
+import org.eclipse.core.runtime.preferences.DefaultScope;
+import org.eclipse.core.runtime.preferences.IScopeContext;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Display;
@@ -107,7 +123,7 @@ public class EclipseUtils {
 	 * @return a string.
 	 */
 	static public String getPathSeparator() {
-		
+
 		if (isWindows()) {
 			return ";";
 		} else {
@@ -311,6 +327,44 @@ public class EclipseUtils {
 				}
 			}
 		});
+	}
+
+	// ------------------------------------------------------------------------
+
+	public static String getPreferenceValueForId(String pluginId, String id,
+			String defaultValue, IProject project) {
+
+		// If the project is known, the contexts searched will include the
+		// specific ProjectScope.
+		IScopeContext[] contexts;
+		if (project != null) {
+			contexts = new IScopeContext[] { new ProjectScope(project),
+					InstanceScope.INSTANCE, ConfigurationScope.INSTANCE,
+					DefaultScope.INSTANCE };
+		} else {
+			contexts = new IScopeContext[] { InstanceScope.INSTANCE,
+					ConfigurationScope.INSTANCE, DefaultScope.INSTANCE };
+		}
+
+		String value = null;
+
+		for (int i = 0; i < contexts.length; ++i) {
+			value = contexts[i].getNode(pluginId).get(id, null);
+
+			if (value != null) {
+				value = value.trim();
+
+				if (!value.isEmpty()) {
+					break;
+				}
+			}
+		}
+
+		if (value != null) {
+			return value;
+		}
+
+		return defaultValue;
 	}
 
 	// ------------------------------------------------------------------------

@@ -159,10 +159,18 @@ public class DefaultPreferences {
 					value += "\\bin";
 				}
 			}
+		} else if (EclipseUtils.isMacOSX()) {
+			// value = "/opt/local/bin";
 		}
 
 		if (value != null) {
 			value = value.trim();
+
+			// Validate registry path. If folder does not exist, ignore.
+			File file = new File(value);
+			if (!file.isDirectory()) {
+				value = "";
+			}
 		} else {
 			value = "";
 		}

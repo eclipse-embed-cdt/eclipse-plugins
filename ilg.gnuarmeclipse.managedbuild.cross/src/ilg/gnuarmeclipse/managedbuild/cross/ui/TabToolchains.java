@@ -60,6 +60,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 	// private Composite fComposite;
 	private IConfiguration fConfig;
+	private IProject fProject;
 	private IConfiguration fLastUpdatedConfig = null;
 
 	// ---
@@ -123,6 +124,8 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		super.createControls(parent);
 
 		fConfig = getCfg();
+		fProject = (IProject) fConfig.getManagedProject().getOwner();
+
 		System.out.println("createControls() fConfig=" + fConfig);
 
 		// usercomp is defined in parent class
@@ -376,8 +379,8 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 		updateControlsForConfig(fConfig);
 
-		String toolchainPath = PersistentPreferences
-				.getToolchainPath(fSelectedToolchainName);
+		String toolchainPath = PersistentPreferences.getToolchainPath(
+				fSelectedToolchainName, fProject);
 		if (toolchainPath != null) {
 			fGlobalPathText.setText(toolchainPath);
 		}
@@ -437,7 +440,8 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			fCommandRmText.setText(newCommandRm);
 		}
 
-		String path = PersistentPreferences.getToolchainPath(td.getName());
+		String path = PersistentPreferences.getToolchainPath(td.getName(),
+				fProject);
 		fGlobalPathText.setText(path);
 
 		// leave the bottom three buttons as the user set them
@@ -680,8 +684,8 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 		fUseGlobalCheckButton.setSelection(useGlobalPath);
 
-		String path = PersistentPreferences
-				.getToolchainPath(fSelectedToolchainName);
+		String path = PersistentPreferences.getToolchainPath(
+				fSelectedToolchainName, fProject);
 		fGlobalPathText.setText(path);
 
 		String toolchainPath = ProjectStorage.getToolchainPath(config);
@@ -719,6 +723,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		}
 
 		fConfig = config;
+		fProject = (IProject) fConfig.getManagedProject().getOwner();
 		System.out.println("updateControlsForConfig() fConfig=" + fConfig);
 
 		fLastUpdatedConfig = config;
@@ -840,7 +845,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 					.trim());
 
 			String sGlobalToolchainPath = PersistentPreferences
-					.getToolchainPath(td.getName());
+					.getToolchainPath(td.getName(), fProject);
 			String sNewToolchainPath = fGlobalPathText.getText().trim();
 
 			if (sGlobalToolchainPath.length() == 0
@@ -1039,6 +1044,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 	private boolean isThisPlugin() {
 		fConfig = getCfg();
+		fProject = (IProject) fConfig.getManagedProject().getOwner();
 		System.out.println("isThisPlugin() fConfig=" + fConfig);
 
 		IToolChain toolchain = fConfig.getToolChain();

@@ -11,10 +11,11 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross.ui;
 
+import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.managedbuild.cross.Activator;
 
 import org.eclipse.cdt.core.templateengine.SharedDefaults;
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
@@ -37,15 +38,13 @@ public class PersistentPreferences {
 	// SetCrossCommandWizardPage.CROSS_TOOLCHAIN_PATH;
 
 	// ----- getter -----------------------------------------------------------
-	private static String getValueForId(String id, String defaultValue) {
+	private static String getValueForId(String id, String defaultValue,
+			IProject project) {
 
-		String value;
-		value = Platform.getPreferencesService().getString(Activator.PLUGIN_ID,
-				id, defaultValue, null);
-		// System.out.println("Value of " + id + " is " + value);
-
+		String value = EclipseUtils.getPreferenceValueForId(
+				Activator.PLUGIN_ID, id, null, project);
 		if (value != null) {
-			return value.trim();
+			return value;
 		}
 
 		{
@@ -89,9 +88,9 @@ public class PersistentPreferences {
 
 	// ------------------------------------------------------------------------
 
-	public static String getToolchainName() {
+	public static String getToolchainName(IProject project) {
 
-		String toolchainName = getValueForId(TOOLCHAIN_NAME, "");
+		String toolchainName = getValueForId(TOOLCHAIN_NAME, "", project);
 
 		if (toolchainName.length() == 0)
 			toolchainName = DefaultPreferences.getToolchainName();
@@ -110,11 +109,11 @@ public class PersistentPreferences {
 	 * @param toolchainName
 	 * @return a string, possibly empty.
 	 */
-	public static String getToolchainPath(String toolchainName) {
+	public static String getToolchainPath(String toolchainName, IProject project) {
 
 		String name = toolchainName.trim();
 		String pathKey = TOOLCHAIN_PATH + "." + Math.abs(name.hashCode());
-		String sPath = getValueForId(pathKey, "");
+		String sPath = getValueForId(pathKey, "", project);
 
 		if (sPath.length() == 0) {
 			sPath = DefaultPreferences.getToolchainPath(name);
@@ -137,10 +136,10 @@ public class PersistentPreferences {
 	 * 
 	 * @return a string, possibly empty.
 	 */
-	public static String getBuildToolsPath() {
+	public static String getBuildToolsPath(IProject project) {
 
-		return getValueForId(BUILD_TOOLS_PATH, "");
+		return getValueForId(BUILD_TOOLS_PATH, "", project);
 	}
-	
+
 	// ------------------------------------------------------------------------
 }

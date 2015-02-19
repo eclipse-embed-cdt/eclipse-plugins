@@ -27,6 +27,7 @@ import org.eclipse.cdt.managedbuilder.envvar.IBuildEnvironmentVariable;
 import org.eclipse.cdt.managedbuilder.envvar.IConfigurationEnvironmentVariableSupplier;
 import org.eclipse.cdt.managedbuilder.envvar.IEnvironmentVariableProvider;
 import org.eclipse.cdt.managedbuilder.macros.IBuildMacroProvider;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 
 public class EnvironmentVariableSupplier implements
@@ -75,7 +76,10 @@ public class EnvironmentVariableSupplier implements
 				IConfiguration configuration) {
 			IToolChain toolchain = configuration.getToolChain();
 
-			String path = PersistentPreferences.getBuildToolsPath();
+			IProject project = (IProject) configuration.getManagedProject()
+					.getOwner();
+
+			String path = PersistentPreferences.getBuildToolsPath(project);
 
 			String toolchainPath = null;
 
@@ -90,8 +94,8 @@ public class EnvironmentVariableSupplier implements
 						.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); //$NON-NLS-1$
 				String toolchainName = (String) option.getValue();
 
-				toolchainPath = PersistentPreferences
-						.getToolchainPath(toolchainName);
+				toolchainPath = PersistentPreferences.getToolchainPath(
+						toolchainName, project);
 			}
 
 			if (path.isEmpty()) {

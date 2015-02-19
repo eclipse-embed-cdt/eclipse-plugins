@@ -114,7 +114,8 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 
 		// decide which one is selected
 		try {
-			fSelectedToolchainName = PersistentPreferences.getToolchainName();
+			fSelectedToolchainName = PersistentPreferences
+					.getToolchainName(null);
 			// System.out.println("Previous toolchain name "
 			// + fSelectedToolchainName);
 			if (fSelectedToolchainName != null
@@ -143,7 +144,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 				updateToolchainNameProperty();
 
 				String crossCommandPath = PersistentPreferences
-						.getToolchainPath(fSelectedToolchainName);
+						.getToolchainPath(fSelectedToolchainName, null);
 				fPathTxt.setText(crossCommandPath);
 
 			}
@@ -154,8 +155,8 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		label.setText(Messages.SetCrossCommandWizardPage_path);
 
 		fPathTxt = new Text(fComposite, SWT.SINGLE | SWT.BORDER);
-		String crossCommandPath = PersistentPreferences
-				.getToolchainPath(fSelectedToolchainName);
+		String crossCommandPath = PersistentPreferences.getToolchainPath(
+				fSelectedToolchainName, null);
 		fPathTxt.setText(crossCommandPath);
 		updatePathProperty();
 
