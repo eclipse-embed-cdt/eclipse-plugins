@@ -39,6 +39,7 @@ public class DefaultPreferences {
 
 	// LOCAL_MACHINE
 	private static final String REG_SUBKEY = "SOFTWARE\\GNU ARM Eclipse\\Build Tools";
+	private static final String REG32_SUBKEY = "SOFTWARE\\Wow6432Node\\GNU ARM Eclipse\\Build Tools";
 	private static final String REG_NAME = "InstallFolder";
 
 	// ------------------------------------------------------------------------
@@ -149,6 +150,10 @@ public class DefaultPreferences {
 			WindowsRegistry registry = WindowsRegistry.getRegistry();
 			if (registry != null) {
 				value = registry.getLocalMachineValue(REG_SUBKEY, REG_NAME);
+				if (value == null) {
+					value = registry.getLocalMachineValue(REG32_SUBKEY,
+							REG_NAME);
+				}
 
 				if (value != null && !value.endsWith("\\bin")) {
 					value += "\\bin";
@@ -167,5 +172,6 @@ public class DefaultPreferences {
 
 		return value;
 	}
+
 	// ------------------------------------------------------------------------
 }
