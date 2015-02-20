@@ -2,13 +2,13 @@ package ilg.gnuarmeclipse.managedbuild.cross.properties;
 
 import ilg.gnuarmeclipse.core.ScopedPreferenceStoreWithoutDefaults;
 import ilg.gnuarmeclipse.core.ui.FieldEditorPropertyPage;
-import ilg.gnuarmeclipse.core.ui.ToolsPathFieldEditor;
 import ilg.gnuarmeclipse.managedbuild.cross.Activator;
 import ilg.gnuarmeclipse.managedbuild.cross.ui.Messages;
 import ilg.gnuarmeclipse.managedbuild.cross.ui.PersistentPreferences;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
+import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
 
@@ -36,7 +36,7 @@ public class ProjectToolsPathPropertyPage extends FieldEditorPropertyPage {
 	@Override
 	protected void createFieldEditors() {
 
-		FieldEditor buildTooslPath = new ToolsPathFieldEditor(
+		FieldEditor buildTooslPath = new DirectoryFieldEditor(
 				PersistentPreferences.BUILD_TOOLS_PATH,
 				Messages.ToolsPaths_label, getFieldEditorParent());
 		addField(buildTooslPath);

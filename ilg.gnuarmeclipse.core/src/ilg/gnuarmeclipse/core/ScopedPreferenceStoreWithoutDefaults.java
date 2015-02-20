@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 /**
- * Custom
+ * Custom preferences store that does not use the defaults scope.
  *
  */
 public class ScopedPreferenceStoreWithoutDefaults extends ScopedPreferenceStore {
@@ -30,21 +30,30 @@ public class ScopedPreferenceStoreWithoutDefaults extends ScopedPreferenceStore 
 
 	// ------------------------------------------------------------------------
 
+	/**
+	 * An internal routine to get values from scopes, except defaults. The
+	 * difference is in the false in getPreferenceNodes().
+	 * 
+	 * @param key
+	 * @return a string value or null if not found.
+	 */
 	protected String internalGet(String key) {
 		return Platform.getPreferencesService().get(key, null,
 				getPreferenceNodes(false));
 	}
 
+	/**
+	 * Needed because the internalGet() is protected in the parent class.
+	 */
 	@Override
 	public String getString(String name) {
 		String value = internalGet(name);
 		return value == null ? STRING_DEFAULT_DEFAULT : value;
 	}
 
-	public String getDefaultStringSuper(String name) {
-		return super.getDefaultString(name);
-	}
-
+	/**
+	 * Make sure the default string is always empty.
+	 */
 	@Override
 	public String getDefaultString(String name) {
 		return "";

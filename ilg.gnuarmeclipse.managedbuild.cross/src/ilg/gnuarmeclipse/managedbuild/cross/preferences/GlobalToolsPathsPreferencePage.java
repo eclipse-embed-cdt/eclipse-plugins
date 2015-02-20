@@ -11,17 +11,17 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross.preferences;
 
-import ilg.gnuarmeclipse.core.ScopedPreferenceStoreWithoutDefaults;
-import ilg.gnuarmeclipse.core.ui.ToolsPathFieldEditor;
 import ilg.gnuarmeclipse.managedbuild.cross.Activator;
 import ilg.gnuarmeclipse.managedbuild.cross.ui.Messages;
 import ilg.gnuarmeclipse.managedbuild.cross.ui.PersistentPreferences;
 
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
+import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 /**
  * This class represents a preference page that is contributed to the
@@ -42,7 +42,7 @@ public class GlobalToolsPathsPreferencePage extends FieldEditorPreferencePage
 	public GlobalToolsPathsPreferencePage() {
 		super(GRID);
 
-		setPreferenceStore(new ScopedPreferenceStoreWithoutDefaults(
+		setPreferenceStore(new ScopedPreferenceStore(
 				ConfigurationScope.INSTANCE, Activator.PLUGIN_ID));
 
 		setDescription(Messages.GlobalToolsPathsPropertyPage_description);
@@ -65,7 +65,7 @@ public class GlobalToolsPathsPreferencePage extends FieldEditorPreferencePage
 	@Override
 	protected void createFieldEditors() {
 
-		FieldEditor workspaceBuildTooslPath = new ToolsPathFieldEditor(
+		FieldEditor workspaceBuildTooslPath = new DirectoryFieldEditor(
 				PersistentPreferences.BUILD_TOOLS_PATH,
 				Messages.ToolsPaths_label, getFieldEditorParent());
 		addField(workspaceBuildTooslPath);
