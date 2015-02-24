@@ -13,6 +13,7 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross.ui;
 
+import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.managedbuild.cross.Activator;
 import ilg.gnuarmeclipse.managedbuild.cross.IDs;
 import ilg.gnuarmeclipse.managedbuild.cross.Option;
@@ -39,13 +40,11 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
@@ -60,7 +59,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 	// private Composite fComposite;
 	private IConfiguration fConfig;
-	private IProject fProject;
 	private IConfiguration fLastUpdatedConfig = null;
 
 	// ---
@@ -82,14 +80,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	private Text fCommandMakeText;
 	private Text fCommandRmText;
 
-	private Button fUseGlobalCheckButton;
-	private Text fGlobalPathText;
-	private Button fGlobalPathButton;
-	private Text fProjectPathText;
-	private Button fProjectPathButton;
-
-	// private Button fUseGlobalToolsCheckButton;
-
 	private Button fFlashButton;
 	private Button fListingButton;
 	private Button fSizeButton;
@@ -104,13 +94,13 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	@Override
 	public void createControls(Composite parent) {
 
-		if (Utils.isLinux()) {
+		if (EclipseUtils.isLinux()) {
 			WIDTH_HINT = 150;
 		}
 
 		// fComposite = parent;
 		// Disabled, otherwise toolchain changes fail
-		System.out.println("Toolchains.createControls()");
+		System.out.println("TabToolchains.createControls()");
 		if (!isThisPlugin()) {
 			System.out.println("not this plugin");
 			return;
@@ -124,7 +114,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		super.createControls(parent);
 
 		fConfig = getCfg();
-		fProject = (IProject) fConfig.getManagedProject().getOwner();
 
 		System.out.println("createControls() fConfig=" + fConfig);
 
@@ -276,86 +265,12 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			}
 		});
 
-		{
-			// ----- Use Global Path ------------------------------------------
-
-			fUseGlobalCheckButton = new Button(usercomp, SWT.CHECK);
-			fUseGlobalCheckButton
-					.setText(Messages.ToolChainSettingsTab_useGlobal);
-			fUseGlobalCheckButton
-					.setToolTipText(Messages.ToolChainSettingsTab_useGlobal_toolTip);
-
-			layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1);
-			fUseGlobalCheckButton.setLayoutData(layoutData);
-
-			fUseGlobalCheckButton.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					useGlobalChanged();
-				}
-			});
-		}
-
-		{
-			// ----- Global Path ----------------------------------------------
-			Label pathLabel = new Label(usercomp, SWT.NONE);
-			pathLabel.setText(Messages.ToolChainSettingsTab_globalPath);
-			pathLabel
-					.setToolTipText(Messages.ToolChainSettingsTab_globalPath_toolTip);
-
-			fGlobalPathText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-			layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
-			fGlobalPathText.setLayoutData(layoutData);
-
-			fGlobalPathButton = new Button(usercomp, SWT.NONE);
-			fGlobalPathButton.setText(Messages.ToolChainSettingsTab_browse);
-			fGlobalPathButton.addSelectionListener(new SelectionListener() {
-
-				public void widgetDefaultSelected(SelectionEvent e) {
-				}
-
-				public void widgetSelected(SelectionEvent e) {
-					DirectoryDialog dirDialog = new DirectoryDialog(usercomp
-							.getShell(), SWT.APPLICATION_MODAL);
-					String browsedDirectory = dirDialog.open();
-					if (browsedDirectory != null) {
-						fGlobalPathText.setText(browsedDirectory);
-					}
-				}
-			});
-			layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1);
-			fGlobalPathButton.setLayoutData(layoutData);
-		}
-		{
-			// ----- Project Path ---------------------------------------------
-			Label pathLabel = new Label(usercomp, SWT.NONE);
-			pathLabel.setText(Messages.ToolChainSettingsTab_projectPath);
-			pathLabel
-					.setToolTipText(Messages.ToolChainSettingsTab_projectPath_toolTip);
-
-			fProjectPathText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-			layoutData = new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1);
-			fProjectPathText.setLayoutData(layoutData);
-
-			fProjectPathButton = new Button(usercomp, SWT.NONE);
-			fProjectPathButton.setText(Messages.ToolChainSettingsTab_browse);
-			fProjectPathButton.addSelectionListener(new SelectionListener() {
-
-				public void widgetDefaultSelected(SelectionEvent e) {
-				}
-
-				public void widgetSelected(SelectionEvent e) {
-					DirectoryDialog dirDialog = new DirectoryDialog(usercomp
-							.getShell(), SWT.APPLICATION_MODAL);
-					String browsedDirectory = dirDialog.open();
-					if (browsedDirectory != null) {
-						fProjectPathText.setText(browsedDirectory);
-					}
-				}
-			});
-			layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1);
-			fProjectPathButton.setLayoutData(layoutData);
-		}
+		Label empty = new Label(usercomp, SWT.NONE);
+		empty.setText("");
+		layoutData = new GridData();
+		layoutData.horizontalSpan = 2;
+		layoutData.widthHint = WIDTH_HINT;
+		empty.setLayoutData(layoutData);
 
 		// ----- Flash --------------------------------------------------------
 		fFlashButton = new Button(usercomp, SWT.CHECK);
@@ -379,32 +294,14 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 		updateControlsForConfig(fConfig);
 
-		String toolchainPath = PersistentPreferences.getToolchainPath(
-				fSelectedToolchainName, fProject);
-		if (toolchainPath != null) {
-			fGlobalPathText.setText(toolchainPath);
-		}
-
-		useGlobalChanged();
-
 		// --------------------------------------------------------------------
 
 	}
 
-	private void useGlobalChanged() {
-
-		boolean enabled = fUseGlobalCheckButton.getSelection();
-
-		fGlobalPathText.setEnabled(enabled);
-		fGlobalPathButton.setEnabled(enabled);
-
-		fProjectPathText.setEnabled(!enabled);
-		fProjectPathButton.setEnabled(!enabled);
-	}
-
 	private void updateInterfaceAfterToolchainChange() {
 
-		System.out.println("Toolchains.updateInterfaceAfterToolchainChange()");
+		System.out
+				.println("TabToolchains.updateInterfaceAfterToolchainChange()");
 		int index;
 		try {
 			String sSelectedCombo = fToolchainCombo.getText();
@@ -440,10 +337,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			fCommandRmText.setText(newCommandRm);
 		}
 
-		String path = PersistentPreferences.getToolchainPath(td.getName(),
-				fProject);
-		fGlobalPathText.setText(path);
-
 		// leave the bottom three buttons as the user set them
 		// leave the project toolchain path as the user set it
 	}
@@ -457,7 +350,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			return;
 
 		// fConfig = getCfg();
-		System.out.println("Toolchains.updateData() " + getCfg().getName());
+		System.out.println("TabToolchains.updateData() " + getCfg().getName());
 
 		boolean isExecutable;
 		boolean isStaticLibrary;
@@ -500,15 +393,13 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		fFlashButton.setEnabled(isExecutable);
 		fListingButton.setEnabled(isExecutable);
 		fSizeButton.setEnabled(isExecutable);
-
-		useGlobalChanged();
 	}
 
 	@Override
 	protected void performApply(ICResourceDescription src,
 			ICResourceDescription dst) {
 
-		System.out.println("Toolchains.performApply() " + src.getName());
+		System.out.println("TabToolchains.performApply() " + src.getName());
 		IConfiguration config = getCfg(src.getConfiguration());
 
 		updateOptions(config);
@@ -678,24 +569,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			fCommandRmText.setText(toolchainDefinition.getCmdRm());
 		}
 
-		// Initialise field from per project storage
-		boolean useGlobalPath = !ProjectStorage
-				.isToolchainPathPerProject(config);
-
-		fUseGlobalCheckButton.setSelection(useGlobalPath);
-
-		String path = PersistentPreferences.getToolchainPath(
-				fSelectedToolchainName, fProject);
-		fGlobalPathText.setText(path);
-
-		String toolchainPath = ProjectStorage.getToolchainPath(config);
-
-		if (toolchainPath != null) {
-			fProjectPathText.setText(toolchainPath);
-		} else {
-			fProjectPathText.setText("");
-		}
-
 		Boolean isCreateFlash = Option.getOptionBooleanValue(config,
 				Option.OPTION_ADDTOOLS_CREATEFLASH);
 		if (isCreateFlash != null) {
@@ -723,7 +596,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		}
 
 		fConfig = config;
-		fProject = (IProject) fConfig.getManagedProject().getOwner();
 		System.out.println("updateControlsForConfig() fConfig=" + fConfig);
 
 		fLastUpdatedConfig = config;
@@ -837,23 +709,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			option = toolchain
 					.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_PRINTSIZE); //$NON-NLS-1$
 			config.setOption(toolchain, option, fSizeButton.getSelection());
-
-			ProjectStorage.putToolchainPathPerProject(config,
-					!fUseGlobalCheckButton.getSelection());
-
-			ProjectStorage.putToolchainPath(config, fProjectPathText.getText()
-					.trim());
-
-			String sGlobalToolchainPath = PersistentPreferences
-					.getToolchainPath(td.getName(), fProject);
-			String sNewToolchainPath = fGlobalPathText.getText().trim();
-
-			if (sGlobalToolchainPath.length() == 0
-					|| !sGlobalToolchainPath.equals(sNewToolchainPath)) {
-				PersistentPreferences.putToolchainPath(td.getName(),
-						sNewToolchainPath);
-				PersistentPreferences.flush();
-			}
 
 		} catch (NullPointerException e) {
 			e.printStackTrace();
@@ -991,7 +846,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 					System.out.println("propagateCommandRmUpdate "
 							+ e.getMessage());
 				}
-
 			}
 		}
 	}
@@ -1040,11 +894,11 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 	@Override
 	protected void updateButtons() {
-	} // Do nothing. No buttons to update.
+		// Do nothing. No buttons to update.
+	}
 
 	private boolean isThisPlugin() {
 		fConfig = getCfg();
-		fProject = (IProject) fConfig.getManagedProject().getOwner();
 		System.out.println("isThisPlugin() fConfig=" + fConfig);
 
 		IToolChain toolchain = fConfig.getToolChain();

@@ -13,6 +13,7 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross.ui;
 
+import ilg.gnuarmeclipse.core.Activator;
 import ilg.gnuarmeclipse.managedbuild.cross.ToolchainDefinition;
 
 import java.lang.reflect.InvocationTargetException;
@@ -33,7 +34,6 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
  * An operation that runs when the new project wizard finishes for the Cross GCC
  * toolchain. It reuses the information from {@link SetCrossCommandWizardPage}
  * to store options (index and path) in persistent storage.
- * 
  */
 public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 
@@ -56,12 +56,9 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 				SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_PATH);
 
-		// store them on the permanent storage in
-		// workspace/.plugins/org.eclipse.cdt.core/shareddefaults.xml
-
+		// Store persistent values in Eclipse scope
 		PersistentPreferences.putToolchainPath(toolchainName, path);
 		PersistentPreferences.putToolchainName(toolchainName);
-
 		PersistentPreferences.flush();
 
 		IProject project = ResourcesPlugin.getWorkspace().getRoot()
@@ -80,8 +77,7 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 			try {
 				updateOptions(config);
 			} catch (BuildException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Activator.log(e);
 				System.out.println("SetCrossCommandWizardOperation "
 						+ e.getMessage());
 			}

@@ -16,7 +16,9 @@ import ilg.gnuarmeclipse.managedbuild.cross.Activator;
 
 import org.eclipse.cdt.core.templateengine.SharedDefaults;
 import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
@@ -24,10 +26,12 @@ public class PersistentPreferences {
 
 	// ------------------------------------------------------------------------
 
-	static final String TOOLCHAIN_NAME = "toolchain.name";
-	static final String TOOLCHAIN_PATH = "toolchain.path";
+	public static final String TOOLCHAIN_NAME_KEY = "toolchain.name";
+	private static final String TOOLCHAIN_PATH_KEY = "toolchain.path.%d";
+	private static final String TOOLCHAIN_SEARCH_PATH_KEY = "toolchain.search.path.%d";
+	private static final String TOOLCHAIN_SEARCH_PATH_OS_KEY = "toolchain.search.path.%s.%d";
 
-	public static final String BUILD_TOOLS_PATH = "buildTools.path";
+	public static final String BUILD_TOOLS_PATH_KEY = "buildTools.path";
 
 	// Note: The shared defaults keys don't have "cross" in them because we want
 	// to keep
@@ -37,21 +41,22 @@ public class PersistentPreferences {
 	// static final String SHARED_CROSS_TOOLCHAIN_PATH =
 	// SetCrossCommandWizardPage.CROSS_TOOLCHAIN_PATH;
 
-	// ----- getter -----------------------------------------------------------
-	private static String getValueForId(String id, String defaultValue,
+	// ----- Getters ----------------------------------------------------------
+	private static String getString(String key, String defaultValue,
 			IProject project) {
 
 		String value = EclipseUtils.getPreferenceValueForId(
-				Activator.PLUGIN_ID, id, null, project);
-		if (value != null) {
+				Activator.PLUGIN_ID, key, null, project);
+		if (value != null && !value.isEmpty()) {
 			return value;
 		}
 
 		{
+			// TODO: remove DEPRECATED
 			// Keep this a while for compatibility with the first versions
 			// which erroneously stored values in the shared storage.
 			value = SharedDefaults.getInstance().getSharedDefaultsMap()
-					.get(Activator.PLUGIN_ID + "." + id);
+					.get(Activator.PLUGIN_ID + "." + key);
 
 			if (value == null)
 				value = "";
@@ -65,42 +70,129 @@ public class PersistentPreferences {
 		return defaultValue;
 	}
 
-	// ----- setter -----------------------------------------------------------
-	private static void putEclipseValueForId(String id, String value) {
+	@SuppressWarnings("unused")
+	private static String getEclipseString(String key, String defaultValue) {
+
+		// Access the Eclipse scope
+		Preferences preferences = ConfigurationScope.INSTANCE
+				.getNode(Activator.PLUGIN_ID);
+
+		String value = preferences.get(key, defaultValue);
+		return value;
+	}
+
+	private static String getWorkspaceString(String key, String defaultValue) {
+
+		// Access the Eclipse scope
+		Preferences preferences = InstanceScope.INSTANCE
+				.getNode(Activator.PLUGIN_ID);
+
+		String value = preferences.get(key, defaultValue);
+		return value;
+	}
+
+	// ----- Setters ----------------------------------------------------------
+
+	private static void putString(String key, String value) {
+
+		String oldValue = getWorkspaceString(key, null);
+		if (oldValue != null) {
+			putWorkspaceString(key, value);
+		} else {
+			putEclipseString(key, value);
+		}
+	}
+
+	private static void putEclipseString(String key, String value) {
 
 		value = value.trim();
 
 		// Access the Eclipse scope
 		Preferences preferences = ConfigurationScope.INSTANCE
 				.getNode(Activator.PLUGIN_ID);
-		preferences.put(id, value);
+		preferences.put(key, value);
+	}
+
+	private static void putWorkspaceString(String key, String value) {
+
+		value = value.trim();
+
+		// Access the Workspace scope
+		Preferences preferences = InstanceScope.INSTANCE
+				.getNode(Activator.PLUGIN_ID);
+		preferences.put(key, value);
 	}
 
 	public static void flush() {
 
 		try {
 			ConfigurationScope.INSTANCE.getNode(Activator.PLUGIN_ID).flush();
+			InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).flush();
 		} catch (BackingStoreException e) {
-			// TODO Auto-generated catch block
-			// e.printStackTrace();
+			;
+		}
+	}
+
+	private static void putProjectString(String key, String value,
+			IProject project) {
+
+		value = value.trim();
+
+		// Access the Eclipse scope
+		Preferences preferences = new ProjectScope(project)
+				.getNode(Activator.PLUGIN_ID);
+		preferences.put(key, value);
+	}
+
+	public static void flush(IProject project) {
+
+		try {
+			new ProjectScope(project).getNode(Activator.PLUGIN_ID).flush();
+		} catch (BackingStoreException e) {
+			;
 		}
 	}
 
 	// ------------------------------------------------------------------------
 
-	public static String getToolchainName(IProject project) {
+	/**
+	 * Get the last used toolchain name.
+	 * 
+	 * @return a trimmed string, possibly empty.
+	 */
+	public static String getToolchainName() {
 
-		String toolchainName = getValueForId(TOOLCHAIN_NAME, "", project);
+		String toolchainName = getString(TOOLCHAIN_NAME_KEY, null, null);
+		if (toolchainName != null && !toolchainName.isEmpty()) {
+			return toolchainName;
+		}
 
-		if (toolchainName.length() == 0)
+		{
+			// TODO: remove DEPRECATED
 			toolchainName = DefaultPreferences.getToolchainName();
+		}
 
-		return toolchainName.trim();
+		return toolchainName;
 	}
 
+	/**
+	 * Store the toolchain name in the Workspace/Eclipse scope. Used in the
+	 * project wizard, to maintain global persistency.
+	 * 
+	 * @param toolchainName
+	 *            a string.
+	 */
 	public static void putToolchainName(String toolchainName) {
+		putString(TOOLCHAIN_NAME_KEY, toolchainName);
+	}
 
-		putEclipseValueForId(TOOLCHAIN_NAME, toolchainName);
+	// ------------------------------------------------------------------------
+
+	public static String getToolchainKey(String toolchainName) {
+
+		int hash = Math.abs(toolchainName.trim().hashCode());
+		String key = String.format(TOOLCHAIN_PATH_KEY, hash);
+		return key;
 	}
 
 	/**
@@ -111,34 +203,75 @@ public class PersistentPreferences {
 	 */
 	public static String getToolchainPath(String toolchainName, IProject project) {
 
-		String name = toolchainName.trim();
-		String pathKey = TOOLCHAIN_PATH + "." + Math.abs(name.hashCode());
-		String sPath = getValueForId(pathKey, "", project);
-
-		if (sPath.length() == 0) {
-			sPath = DefaultPreferences.getToolchainPath(name);
+		String value = getString(getToolchainKey(toolchainName), null, project);
+		if (value != null && !value.isEmpty()) {
+			return value;
 		}
 
-		return sPath.trim();
+		value = "";
+		{
+			// TODO: remove DEPRECATED
+			value = DefaultPreferences.getToolchainPath(toolchainName);
+		}
+
+		return value;
 	}
 
+	/**
+	 * Store the toolchain path in the Workspace/Eclipse scope. Used in the
+	 * project wizard, to maintain global persistency.
+	 * 
+	 * @param toolchainName
+	 * @param path
+	 */
 	public static void putToolchainPath(String toolchainName, String path) {
 
-		String pathKey = TOOLCHAIN_PATH + "."
-				+ Math.abs(toolchainName.trim().hashCode());
-		putEclipseValueForId(pathKey, path.trim());
+		putString(getToolchainKey(toolchainName), path);
+	}
+
+	/**
+	 * Store the toolchain path in the Project scope. Used in
+	 * EnvironmentVariableSupplier to copy path from old storage to new storage.
+	 * 
+	 * @param toolchainName
+	 * @param path
+	 * @param project
+	 */
+	public static void putToolchainPath(String toolchainName, String path,
+			IProject project) {
+
+		putProjectString(getToolchainKey(toolchainName), path, project);
+	}
+
+	// ------------------------------------------------------------------------
+
+	public static String getToolchainSearchKey(String toolchainName) {
+
+		int hash = Math.abs(toolchainName.trim().hashCode());
+		String key = String.format(TOOLCHAIN_SEARCH_PATH_KEY, hash);
+		// System.out.println(key);
+		return key;
+	}
+
+	public static String getToolchainSearchOsKey(String toolchainName) {
+
+		int hash = Math.abs(toolchainName.trim().hashCode());
+		String os = EclipseUtils.getOsFamily();
+		String key = String.format(TOOLCHAIN_SEARCH_PATH_OS_KEY, os, hash);
+		// System.out.println(key);
+		return key;
 	}
 
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Get the value for the build tools path.
+	 * Get the build tools path. Search all possible scopes.
 	 * 
 	 * @return a string, possibly empty.
 	 */
 	public static String getBuildToolsPath(IProject project) {
 
-		return getValueForId(BUILD_TOOLS_PATH, "", project);
+		return getString(BUILD_TOOLS_PATH_KEY, "", project);
 	}
 
 	// ------------------------------------------------------------------------

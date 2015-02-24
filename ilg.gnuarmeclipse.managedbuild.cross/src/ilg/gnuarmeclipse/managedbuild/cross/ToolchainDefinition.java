@@ -11,6 +11,8 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross;
 
+import ilg.gnuarmeclipse.core.EclipseUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,7 +20,8 @@ public class ToolchainDefinition {
 
 	// ------------------------------------------------------------------------
 
-	public static final String DEFAULT_TOOLCHAIN_NAME = "GNU Tools for ARM Embedded Processors";
+	public static final String GNU_TOOLS_FOR_ARM_EMBEDDED = "GNU Tools for ARM Embedded Processors";
+	public static final String DEFAULT_TOOLCHAIN_NAME = GNU_TOOLS_FOR_ARM_EMBEDDED;
 
 	// ------------------------------------------------------------------------
 
@@ -143,27 +146,36 @@ public class ToolchainDefinition {
 	}
 
 	// Static members
-	private static List<ToolchainDefinition> ms_list;
+	private static List<ToolchainDefinition> fgList;
 
 	public static List<ToolchainDefinition> getList() {
-		return ms_list;
+		return fgList;
 	}
 
 	public static ToolchainDefinition getToolchain(int index) {
-		return ms_list.get(index);
+		return fgList.get(index);
 	}
 
 	public static ToolchainDefinition getToolchain(String index) {
-		return ms_list.get(Integer.parseInt(index));
+		return fgList.get(Integer.parseInt(index));
 	}
 
 	public static int getSize() {
-		return ms_list.size();
+		return fgList.size();
 	}
 
+	/**
+	 * Try to identify toolcahin by name. If not possible, throw
+	 * IndexOutOfBoundsException().
+	 * 
+	 * @param sName
+	 *            a string with the toolchain name.
+	 * @return non-negative index.
+	 */
 	public static int findToolchainByName(String sName) {
+
 		int i = 0;
-		for (ToolchainDefinition td : ms_list) {
+		for (ToolchainDefinition td : fgList) {
 			if (td.fName.equals(sName))
 				return i;
 			i++;
@@ -173,8 +185,9 @@ public class ToolchainDefinition {
 	}
 
 	public static int findToolchainByFullName(String sName) {
+
 		int i = 0;
-		for (ToolchainDefinition td : ms_list) {
+		for (ToolchainDefinition td : fgList) {
 			String sFullName = td.getFullName();
 			if (sFullName.equals(sName))
 				return i;
@@ -198,64 +211,66 @@ public class ToolchainDefinition {
 
 	// Initialise the list of known toolchains
 	static {
-		ms_list = new ArrayList<ToolchainDefinition>();
+		fgList = new ArrayList<ToolchainDefinition>();
 
 		// 0
-		ms_list.add(new ToolchainDefinition(DEFAULT_TOOLCHAIN_NAME,
+		fgList.add(new ToolchainDefinition(DEFAULT_TOOLCHAIN_NAME,
 				"arm-none-eabi-"));
 		// 1
 		ToolchainDefinition tc;
 		tc = new ToolchainDefinition("Sourcery CodeBench Lite for ARM EABI",
 				"arm-none-eabi-");
-		if (Utils.isPlatform("windows"))
+		if (EclipseUtils.isWindows()) {
 			tc.setWin("cs-make", "cs-rm");
-		ms_list.add(tc);
+		}
+		fgList.add(tc);
 
 		// 2
 		tc = new ToolchainDefinition(
 				"Sourcery CodeBench Lite for ARM GNU/Linux",
 				"arm-none-linux-gnueabi-");
-		if (Utils.isPlatform("windows"))
+		if (EclipseUtils.isWindows()) {
 			tc.setWin("cs-make", "cs-rm");
-		ms_list.add(tc);
+		}
+		fgList.add(tc);
 
 		// 3
-		ms_list.add(new ToolchainDefinition("devkitPro ARM EABI", "arm-eabi-"));
+		fgList.add(new ToolchainDefinition("devkitPro ARM EABI", "arm-eabi-"));
 
 		// 4
-		ms_list.add(new ToolchainDefinition("Yagarto, Summon, etc. ARM EABI",
+		fgList.add(new ToolchainDefinition("Yagarto, Summon, etc. ARM EABI",
 				"arm-none-eabi-"));
 
 		// 5
-		ms_list.add(new ToolchainDefinition("Linaro ARMv7 Linux GNU EABI HF",
+		fgList.add(new ToolchainDefinition("Linaro ARMv7 Linux GNU EABI HF",
 				"arm-linux-gnueabihf-"));
 
 		// 6
-		ms_list.add(new ToolchainDefinition(
+		fgList.add(new ToolchainDefinition(
 				"Linaro ARMv7 Big-Endian Linux GNU EABI HF",
 				"armeb-linux-gnueabihf-"));
 
 		// 64 bit toolchains
 		// 7
-		ms_list.add(new ToolchainDefinition("Linaro AArch64 bare-metal ELF",
+		fgList.add(new ToolchainDefinition("Linaro AArch64 bare-metal ELF",
 				"aarch64-none-elf-", "aarch64"));
 
 		// 8
-		ms_list.add(new ToolchainDefinition(
+		fgList.add(new ToolchainDefinition(
 				"Linaro AArch64 big-endian bare-metal ELF",
 				"aarch64_be-none-elf-", "aarch64"));
 
 		// 9
-		ms_list.add(new ToolchainDefinition("Linaro AArch64 Linux GNU",
+		fgList.add(new ToolchainDefinition("Linaro AArch64 Linux GNU",
 				"aarch64-linux-gnu-", "aarch64"));
 
 		// 10
-		ms_list.add(new ToolchainDefinition(
+		fgList.add(new ToolchainDefinition(
 				"Linaro AArch64 big-endian Linux GNU", "aarch64_be-linux-gnu-",
 				"aarch64"));
 
 		// 11
-		ms_list.add(new ToolchainDefinition("Custom", "arm-none-eabi-"));
+		fgList.add(new ToolchainDefinition("Custom", "arm-none-eabi-"));
 
 		// 12
 		// tc = new ToolchainDefinition("test", "myPrefix");

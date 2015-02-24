@@ -19,7 +19,10 @@ public class ProjectToolsPathPropertyPage extends FieldEditorPropertyPage {
 	public ProjectToolsPathPropertyPage() {
 		super(GRID);
 
-		setDescription(Messages.ProjectToolsPathsPropertyPage_description);
+		String toolchainName = PersistentPreferences.getToolchainName();
+		setDescription(String.format(
+				Messages.ProjectToolsPathsPropertyPage_description,
+				toolchainName));
 	}
 
 	// ------------------------------------------------------------------------
@@ -36,10 +39,16 @@ public class ProjectToolsPathPropertyPage extends FieldEditorPropertyPage {
 	@Override
 	protected void createFieldEditors() {
 
-		FieldEditor buildTooslPath = new DirectoryFieldEditor(
-				PersistentPreferences.BUILD_TOOLS_PATH,
+		FieldEditor buildToolsPathField = new DirectoryFieldEditor(
+				PersistentPreferences.BUILD_TOOLS_PATH_KEY,
 				Messages.ToolsPaths_label, getFieldEditorParent());
-		addField(buildTooslPath);
+		addField(buildToolsPathField);
+
+		String toolchainName = PersistentPreferences.getToolchainName();
+		String key = PersistentPreferences.getToolchainKey(toolchainName);
+		FieldEditor toolchainPathField = new DirectoryFieldEditor(key,
+				Messages.ToolchainPaths_label, getFieldEditorParent());
+		addField(toolchainPathField);
 	}
 
 	// ------------------------------------------------------------------------

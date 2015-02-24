@@ -11,6 +11,8 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross;
 
+import ilg.gnuarmeclipse.core.EclipseUtils;
+
 import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IBuildObject;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
@@ -29,31 +31,6 @@ public class Utils {
 	public static String BUILD_ARTEFACT_TYPE_EXE = BUILD_ARTEFACT_TYPE + ".exe";
 	public static String BUILD_ARTEFACT_TYPE_STATICLIB = BUILD_ARTEFACT_TYPE
 			+ ".staticLib";
-
-	private static final String PROPERTY_OS_NAME = "os.name"; //$NON-NLS-1$
-	public static final String PROPERTY_OS_VALUE_WINDOWS = "windows";//$NON-NLS-1$
-	public static final String PROPERTY_OS_VALUE_LINUX = "linux";//$NON-NLS-1$
-	public static final String PROPERTY_OS_VALUE_MACOSX = "mac";//$NON-NLS-1$
-
-	public static boolean isPlatform(String sPlatform) {
-		return (System.getProperty(PROPERTY_OS_NAME).toLowerCase()
-				.startsWith(sPlatform));
-	}
-
-	static public boolean isWindows() {
-		return System.getProperty(PROPERTY_OS_NAME).toLowerCase()
-				.startsWith(PROPERTY_OS_VALUE_WINDOWS);
-	}
-
-	static public boolean isLinux() {
-		return System.getProperty(PROPERTY_OS_NAME).toLowerCase()
-				.startsWith(PROPERTY_OS_VALUE_LINUX);
-	}
-
-	static public boolean isMacOSX() {
-		return System.getProperty(PROPERTY_OS_NAME).toLowerCase()
-				.startsWith(PROPERTY_OS_VALUE_MACOSX);
-	}
 
 	/**
 	 * Extracts a resource info from a build object. If no resource info can be
@@ -125,7 +102,7 @@ public class Utils {
 		// Escape the spaces in the path/filename if it has any
 		String[] segments = path.split("\\s"); //$NON-NLS-1$
 		if (segments.length > 1) {
-			if (isWindows()) {
+			if (EclipseUtils.isWindows()) {
 				if (path.startsWith("\"") || path.startsWith("'"))
 					return path;
 

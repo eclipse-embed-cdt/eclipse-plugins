@@ -45,7 +45,10 @@ public class GlobalToolsPathsPreferencePage extends FieldEditorPreferencePage
 		setPreferenceStore(new ScopedPreferenceStore(
 				ConfigurationScope.INSTANCE, Activator.PLUGIN_ID));
 
-		setDescription(Messages.GlobalToolsPathsPropertyPage_description);
+		String toolchainName = PersistentPreferences.getToolchainName();
+		setDescription(String.format(
+				Messages.GlobalToolsPathsPropertyPage_description,
+				toolchainName));
 	}
 
 	// ------------------------------------------------------------------------
@@ -65,10 +68,21 @@ public class GlobalToolsPathsPreferencePage extends FieldEditorPreferencePage
 	@Override
 	protected void createFieldEditors() {
 
-		FieldEditor workspaceBuildTooslPath = new DirectoryFieldEditor(
-				PersistentPreferences.BUILD_TOOLS_PATH,
+		FieldEditor buildToolsPathField = new DirectoryFieldEditor(
+				PersistentPreferences.BUILD_TOOLS_PATH_KEY,
 				Messages.ToolsPaths_label, getFieldEditorParent());
-		addField(workspaceBuildTooslPath);
+		addField(buildToolsPathField);
+
+		FieldEditor toolchainNameField = new ToolchainsFieldEditor(
+				PersistentPreferences.TOOLCHAIN_NAME_KEY,
+				Messages.ToolchainName_label, getFieldEditorParent());
+		addField(toolchainNameField);
+
+		String toolchainName = PersistentPreferences.getToolchainName();
+		String key = PersistentPreferences.getToolchainKey(toolchainName);
+		FieldEditor toolchainPathField = new DirectoryFieldEditor(key,
+				Messages.ToolchainPaths_label, getFieldEditorParent());
+		addField(toolchainPathField);
 	}
 
 	// ------------------------------------------------------------------------

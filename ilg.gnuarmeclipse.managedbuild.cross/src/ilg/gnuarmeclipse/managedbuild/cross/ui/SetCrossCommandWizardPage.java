@@ -114,14 +114,17 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 
 		// decide which one is selected
 		try {
-			fSelectedToolchainName = PersistentPreferences
-					.getToolchainName(null);
+			fSelectedToolchainName = PersistentPreferences.getToolchainName();
 			// System.out.println("Previous toolchain name "
 			// + fSelectedToolchainName);
 			if (fSelectedToolchainName != null
 					&& fSelectedToolchainName.length() > 0) {
-				fSelectedToolchainIndex = ToolchainDefinition
-						.findToolchainByName(fSelectedToolchainName);
+				try {
+					fSelectedToolchainIndex = ToolchainDefinition
+							.findToolchainByName(fSelectedToolchainName);
+				} catch (IndexOutOfBoundsException e) {
+					fSelectedToolchainIndex = ToolchainDefinition.getDefault();
+				}
 			} else {
 				fSelectedToolchainIndex = ToolchainDefinition.getDefault();
 				fSelectedToolchainName = ToolchainDefinition.getToolchain(

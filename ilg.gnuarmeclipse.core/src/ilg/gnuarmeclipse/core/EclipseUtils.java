@@ -115,6 +115,24 @@ public class EclipseUtils {
 				.startsWith("mac");
 	}
 
+	/**
+	 * Get a short string to identify the OS Family.
+	 * 
+	 * @return a String, one of "windows", "linux", "osx", "other".
+	 */
+	static public String getOsFamily() {
+
+		if (isWindows()) {
+			return "windows";
+		} else if (isLinux()) {
+			return "linux";
+		} else if (isMacOSX()) {
+			return "osx";
+		} else {
+			return "other";
+		}
+	}
+
 	// ------------------------------------------------------------------------
 
 	/**
@@ -331,25 +349,27 @@ public class EclipseUtils {
 
 	// ------------------------------------------------------------------------
 
-	public static String getPreferenceValueForId(String pluginId, String id,
-			String defaultValue, IProject project) {
-
-		// If the project is known, the contexts searched will include the
-		// specific ProjectScope.
-		IScopeContext[] contexts;
-		if (project != null) {
-			contexts = new IScopeContext[] { new ProjectScope(project),
-					InstanceScope.INSTANCE, ConfigurationScope.INSTANCE,
-					DefaultScope.INSTANCE };
-		} else {
-			contexts = new IScopeContext[] { InstanceScope.INSTANCE,
-					ConfigurationScope.INSTANCE, DefaultScope.INSTANCE };
-		}
+	/**
+	 * Search the given scopes and return the non empty trimmed string or the
+	 * default.
+	 * 
+	 * @param pluginId
+	 *            a string with the plugin id.
+	 * @param key
+	 *            a string with the key to search.
+	 * @param defaultValue
+	 *            a string with the default, possibly null.
+	 * @param contexts
+	 *            an array of IScopeContext.
+	 * @return a trimmed string or the given default, possibly null.
+	 */
+	public static String getPreferenceValueForId(String pluginId, String key,
+			String defaultValue, IScopeContext[] contexts) {
 
 		String value = null;
 
 		for (int i = 0; i < contexts.length; ++i) {
-			value = contexts[i].getNode(pluginId).get(id, null);
+			value = contexts[i].getNode(pluginId).get(key, null);
 
 			if (value != null) {
 				value = value.trim();
@@ -365,6 +385,49 @@ public class EclipseUtils {
 		}
 
 		return defaultValue;
+	}
+
+	/**
+	 * Compute a maximum array of scopes where to search for.
+	 * 
+	 * @param project
+	 *            the IProject reference to the project, possibly null.
+	 * @return an array of IScopeContext.
+	 */
+	public static IScopeContext[] getPreferenceScopeContexts(IProject project) {
+
+		// If the project is known, the contexts searched will include the
+		// specific ProjectScope.
+		IScopeContext[] contexts;
+		if (project != null) {
+			contexts = new IScopeContext[] { new ProjectScope(project),
+					InstanceScope.INSTANCE, ConfigurationScope.INSTANCE,
+					DefaultScope.INSTANCE };
+		} else {
+			contexts = new IScopeContext[] { InstanceScope.INSTANCE,
+					ConfigurationScope.INSTANCE, DefaultScope.INSTANCE };
+		}
+		return contexts;
+	}
+
+	/**
+	 * Search all scopes and return the non empty trimmed string or the default.
+	 * 
+	 * @param pluginId
+	 *            a string with the plugin id.
+	 * @param key
+	 *            a string with the key to search.
+	 * @param defaultValue
+	 *            a string with the default, possibly null.
+	 * @param project
+	 *            the IProject reference to the project, possibly null.
+	 * @return a trimmed string or the given default, possibly null.
+	 */
+	public static String getPreferenceValueForId(String pluginId, String key,
+			String defaultValue, IProject project) {
+
+		IScopeContext[] contexts = getPreferenceScopeContexts(project);
+		return getPreferenceValueForId(pluginId, key, defaultValue, contexts);
 	}
 
 	// ------------------------------------------------------------------------

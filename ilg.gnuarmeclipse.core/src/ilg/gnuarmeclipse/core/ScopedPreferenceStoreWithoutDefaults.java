@@ -43,7 +43,7 @@ public class ScopedPreferenceStoreWithoutDefaults extends ScopedPreferenceStore 
 	}
 
 	/**
-	 * Needed because the internalGet() is protected in the parent class.
+	 * Redefined because the internalGet() is protected in the parent class.
 	 */
 	@Override
 	public String getString(String name) {

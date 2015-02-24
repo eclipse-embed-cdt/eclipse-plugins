@@ -81,27 +81,52 @@ public class EnvironmentVariableSupplier implements
 
 			String path = PersistentPreferences.getBuildToolsPath(project);
 
+			IOption option;
+			option = toolchain
+					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); //$NON-NLS-1$
+			String toolchainName = (String) option.getValue();
+
 			String toolchainPath = null;
 
-			boolean isPathPerProject = ProjectStorage
-					.isToolchainPathPerProject(configuration);
+			{
+				// TODO: remove DEPRECATED
 
-			if (isPathPerProject) {
-				toolchainPath = ProjectStorage.getToolchainPath(configuration);
-			} else {
-				IOption option;
-				option = toolchain
-						.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); //$NON-NLS-1$
-				String toolchainName = (String) option.getValue();
+				// Warning: since multiple per configuration paths are copied
+				// into a single per project path, in case the configuration
+				// paths were different, each usage will override the previous
+				// values.
+				boolean isPathPerProject = ProjectStorage
+						.isToolchainPathPerProject(configuration);
 
-				toolchainPath = PersistentPreferences.getToolchainPath(
-						toolchainName, project);
+				if (isPathPerProject) {
+					// Get per configuration path
+					toolchainPath = ProjectStorage
+							.getToolchainPath(configuration);
+
+					// Copy the toolchain path from the wrong storage to project
+					// preferences.
+					PersistentPreferences.putToolchainPath(toolchainName,
+							toolchainPath, project);
+
+					// Disable flag
+					ProjectStorage.putToolchainPathPerProject(configuration,
+							false);
+
+					System.out.println("Path \"" + toolchainPath
+							+ "\" copied to project " + project.getName());
+				}
 			}
+
+			// Get the most specific toolchain path (project, workspace,
+			// Eclipse, defaults).
+			toolchainPath = PersistentPreferences.getToolchainPath(
+					toolchainName, project);
 
 			if (path.isEmpty()) {
 				path = toolchainPath;
 			} else {
 				if (!toolchainPath.isEmpty()) {
+					// Concatenate build tools path with toolchain path.
 					path += EclipseUtils.getPathSeparator();
 					path += toolchainPath;
 				}

@@ -16,6 +16,15 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.QualifiedName;
 
+/**
+ * DEPRECATED!
+ * 
+ * This storage is a per project binary file located in
+ * .metadata/.plugins/org.eclipse
+ * .core.resources/.projects/f4/.indexes/properties.index
+ * 
+ * The two values stored here (a flag and a path) were moved to preferences.
+ */
 public class ProjectStorage {
 
 	// ------------------------------------------------------------------------
