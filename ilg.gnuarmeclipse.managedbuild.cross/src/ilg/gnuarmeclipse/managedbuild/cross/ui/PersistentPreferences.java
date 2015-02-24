@@ -33,6 +33,11 @@ public class PersistentPreferences {
 
 	public static final String BUILD_TOOLS_PATH_KEY = "buildTools.path";
 
+	public static final String GLOBAL_TOOLCHAIN_PATH_STRICT = "global.toolchain.path.strict";
+	public static final String GLOBAL_BUILDTOOLS_PATH_STRICT = "global.buildTools.path.strict";
+	public static final String WORKSPACE_TOOLCHAIN_PATH_STRICT = "workspace.toolchain.path.strict";
+	public static final String WORKSPACE_BUILDTOOLS_PATH_STRICT = "workspace.buildTools.path.strict";
+	
 	// Note: The shared defaults keys don't have "cross" in them because we want
 	// to keep
 	// compatibility with defaults that were saved when it used to be a template

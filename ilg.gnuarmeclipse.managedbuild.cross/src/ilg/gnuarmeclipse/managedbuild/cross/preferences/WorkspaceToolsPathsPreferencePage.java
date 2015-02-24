@@ -13,6 +13,7 @@ package ilg.gnuarmeclipse.managedbuild.cross.preferences;
 
 import ilg.gnuarmeclipse.core.ScopedPreferenceStoreWithoutDefaults;
 import ilg.gnuarmeclipse.managedbuild.cross.Activator;
+import ilg.gnuarmeclipse.managedbuild.cross.ui.DefaultPreferences;
 import ilg.gnuarmeclipse.managedbuild.cross.ui.Messages;
 import ilg.gnuarmeclipse.managedbuild.cross.ui.PersistentPreferences;
 
@@ -68,9 +69,14 @@ public class WorkspaceToolsPathsPreferencePage extends
 	@Override
 	protected void createFieldEditors() {
 
-		FieldEditor buildToolsPathField = new DirectoryFieldEditor(
+		boolean isStrict;
+		isStrict = DefaultPreferences.getBoolean(
+				PersistentPreferences.WORKSPACE_BUILDTOOLS_PATH_STRICT, true);
+		FieldEditor buildToolsPathField;
+		buildToolsPathField = new DirectoryNotStrictFieldEditor(
 				PersistentPreferences.BUILD_TOOLS_PATH_KEY,
-				Messages.ToolsPaths_label, getFieldEditorParent());
+				Messages.ToolsPaths_label, getFieldEditorParent(), isStrict);
+
 		addField(buildToolsPathField);
 
 		FieldEditor toolchainNameField = new ToolchainsFieldEditor(
@@ -80,8 +86,14 @@ public class WorkspaceToolsPathsPreferencePage extends
 
 		String toolchainName = PersistentPreferences.getToolchainName();
 		String key = PersistentPreferences.getToolchainKey(toolchainName);
-		FieldEditor toolchainPathField = new DirectoryFieldEditor(key,
-				Messages.ToolchainPaths_label, getFieldEditorParent());
+
+		isStrict = DefaultPreferences.getBoolean(
+				PersistentPreferences.WORKSPACE_TOOLCHAIN_PATH_STRICT, true);
+
+		FieldEditor toolchainPathField;
+		toolchainPathField = new DirectoryNotStrictFieldEditor(key,
+				Messages.ToolchainPaths_label, getFieldEditorParent(), isStrict);
+
 		addField(toolchainPathField);
 	}
 

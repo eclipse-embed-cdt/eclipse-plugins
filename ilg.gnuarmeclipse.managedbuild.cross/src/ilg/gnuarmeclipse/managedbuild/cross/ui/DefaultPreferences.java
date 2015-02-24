@@ -72,7 +72,7 @@ public class DefaultPreferences {
 	 *            a string with the default, possibly null.
 	 * @return a trimmed string, or a null default.
 	 */
-	private static String getString(String key, String defaulValue) {
+	public static String getString(String key, String defaulValue) {
 
 		String value;
 		value = getPreferences().get(key, defaulValue);
@@ -84,8 +84,7 @@ public class DefaultPreferences {
 		return value;
 	}
 
-	@SuppressWarnings("unused")
-	private static boolean getBoolean(String key, boolean defaultValue) {
+	public static boolean getBoolean(String key, boolean defaultValue) {
 
 		return getPreferences().getBoolean(key, defaultValue);
 	}
