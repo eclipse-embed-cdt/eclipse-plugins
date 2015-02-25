@@ -16,6 +16,10 @@ public class ProjectToolsPathPropertyPage extends FieldEditorPropertyPage {
 
 	// ------------------------------------------------------------------------
 
+	public static final String ID = "ilg.gnuarmeclipse.managedbuild.cross.properties.toolsPage";
+	
+	// ------------------------------------------------------------------------
+
 	public ProjectToolsPathPropertyPage() {
 		super(GRID);
 

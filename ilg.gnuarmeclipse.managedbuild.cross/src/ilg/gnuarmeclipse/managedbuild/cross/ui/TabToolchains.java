@@ -19,6 +19,9 @@ import ilg.gnuarmeclipse.managedbuild.cross.IDs;
 import ilg.gnuarmeclipse.managedbuild.cross.Option;
 import ilg.gnuarmeclipse.managedbuild.cross.ToolchainDefinition;
 import ilg.gnuarmeclipse.managedbuild.cross.Utils;
+import ilg.gnuarmeclipse.managedbuild.cross.preferences.GlobalToolsPathsPreferencePage;
+import ilg.gnuarmeclipse.managedbuild.cross.preferences.WorkspaceToolsPathsPreferencePage;
+import ilg.gnuarmeclipse.managedbuild.cross.properties.ProjectToolsPathPropertyPage;
 
 import org.eclipse.cdt.core.settings.model.ICResourceDescription;
 import org.eclipse.cdt.managedbuilder.buildproperties.IBuildPropertyValue;
@@ -35,6 +38,7 @@ import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.NullProgressMonitor;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -46,7 +50,9 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 
 /**
  * @noextend This class is not intended to be subclassed by clients.
@@ -79,6 +85,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	private Text fCommandSizeText;
 	private Text fCommandMakeText;
 	private Text fCommandRmText;
+	private Text fPathLabel;
 
 	private Button fFlashButton;
 	private Button fListingButton;
@@ -91,8 +98,29 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 	// ------------------------------------------------------------------------
 
+	protected IProject getProject() {
+		assert (fConfig != null);
+		return (IProject) fConfig.getManagedProject().getOwner();
+	}
+
+	protected String getSelectedToolchainName() {
+
+		assert (fToolchainCombo != null);
+
+		int index;
+		try {
+			String sSelectedCombo = fToolchainCombo.getText();
+			index = ToolchainDefinition.findToolchainByFullName(sSelectedCombo);
+		} catch (NullPointerException e) {
+			index = 0;
+		}
+		ToolchainDefinition td = ToolchainDefinition.getToolchain(index);
+
+		return td.getName();
+	}
+
 	@Override
-	public void createControls(Composite parent) {
+	public void createControls(final Composite parent) {
 
 		if (EclipseUtils.isLinux()) {
 			WIDTH_HINT = 150;
@@ -265,12 +293,77 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			}
 		});
 
-		Label empty = new Label(usercomp, SWT.NONE);
-		empty.setText("");
-		layoutData = new GridData();
-		layoutData.horizontalSpan = 2;
-		layoutData.widthHint = WIDTH_HINT;
-		empty.setLayoutData(layoutData);
+		{
+			Label empty = new Label(usercomp, SWT.NONE);
+			empty.setText("");
+			layoutData = new GridData();
+			layoutData.horizontalSpan = 3;
+			empty.setLayoutData(layoutData);
+		}
+
+		{
+			Label label = new Label(usercomp, SWT.NONE);
+			label.setText(Messages.ToolChainSettingsTab_path_label);
+
+			fPathLabel = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
+			layoutData = new GridData(SWT.FILL, 0, true, false);
+			layoutData.horizontalSpan = 2;
+			fPathLabel.setLayoutData(layoutData);
+
+			fPathLabel.setEnabled(true);
+			fPathLabel.setEditable(false);
+		}
+
+		{
+			Label label = new Label(usercomp, SWT.NONE);
+			label.setText("");
+
+			Link link = new Link(usercomp, SWT.NONE);
+			link.setText(Messages.ToolChainSettingsTab_path_link);
+			layoutData = new GridData();
+			layoutData.horizontalSpan = 2;
+			link.setLayoutData(layoutData);
+
+			link.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+
+					String text = e.text;
+					System.out.println(text);
+
+					int ret = -1;
+					if ("global".equals(text)) {
+						ret = PreferencesUtil.createPreferenceDialogOn(
+								parent.getShell(),
+								GlobalToolsPathsPreferencePage.ID, null, null)
+								.open();
+					} else if ("workspace".equals(text)) {
+						ret = PreferencesUtil.createPreferenceDialogOn(
+								parent.getShell(),
+								WorkspaceToolsPathsPreferencePage.ID, null,
+								null).open();
+					} else if ("project".equals(text)) {
+						ret = PreferencesUtil.createPropertyDialogOn(
+								parent.getShell(), getProject(),
+								ProjectToolsPathPropertyPage.ID,
+								new String[] {}, null, 0).open();
+					}
+
+					if (ret == Window.OK) {
+						updateToolchainPath(getSelectedToolchainName());
+					}
+				}
+			});
+
+		}
+
+		{
+			Label empty = new Label(usercomp, SWT.NONE);
+			empty.setText("");
+			layoutData = new GridData();
+			layoutData.horizontalSpan = 3;
+			empty.setLayoutData(layoutData);
+		}
 
 		// ----- Flash --------------------------------------------------------
 		fFlashButton = new Button(usercomp, SWT.CHECK);
@@ -312,12 +405,13 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		ToolchainDefinition td = ToolchainDefinition.getToolchain(index);
 
 		String sArchitecture = td.getArchitecture();
-		if ("arm".equals(sArchitecture))
+		if ("arm".equals(sArchitecture)) {
 			index = 0;
-		else if ("aarch64".equals(sArchitecture))
+		} else if ("aarch64".equals(sArchitecture)) {
 			index = 1;
-		else
+		} else {
 			index = 0; // default is ARM
+		}
 		fArchitectureCombo.setText(ToolchainDefinition.getArchitecture(index));
 
 		fPrefixText.setText(td.getPrefix());
@@ -337,8 +431,16 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			fCommandRmText.setText(newCommandRm);
 		}
 
-		// leave the bottom three buttons as the user set them
-		// leave the project toolchain path as the user set it
+		updateToolchainPath(td.getName());
+	}
+
+	protected void updateToolchainPath(String toolchainName) {
+
+		assert (fConfig != null);
+		IProject project = (IProject) fConfig.getManagedProject().getOwner();
+		String toolchainPath = PersistentPreferences.getToolchainPath(
+				toolchainName, project);
+		fPathLabel.setText(toolchainPath);
 	}
 
 	// This event comes when the tab is selected after the windows is
@@ -599,6 +701,8 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		System.out.println("updateControlsForConfig() fConfig=" + fConfig);
 
 		fLastUpdatedConfig = config;
+
+		updateToolchainPath(toolchainDefinition.getName());
 	}
 
 	private void updateOptions(IConfiguration config) {

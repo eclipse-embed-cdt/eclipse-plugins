@@ -18,7 +18,6 @@ import ilg.gnuarmeclipse.managedbuild.cross.ui.Messages;
 import ilg.gnuarmeclipse.managedbuild.cross.ui.PersistentPreferences;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
@@ -37,6 +36,10 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 
 public class WorkspaceToolsPathsPreferencePage extends
 		FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+
+	// ------------------------------------------------------------------------
+
+	public static final String ID = "ilg.gnuarmeclipse.managedbuild.cross.preferencePage.workspaceToolsPaths";
 
 	// ------------------------------------------------------------------------
 
