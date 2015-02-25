@@ -11,6 +11,11 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross.preferences;
 
+import java.io.File;
+
+import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.variables.IStringVariableManager;
+import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.swt.widgets.Composite;
 
@@ -26,8 +31,27 @@ public class DirectoryNotStrictFieldEditor extends DirectoryFieldEditor {
 
 	@Override
 	protected boolean doCheckState() {
+
 		if (fIsStrict) {
-			return super.doCheckState();
+			String fileName = getTextControl().getText();
+			fileName = fileName.trim();
+			if (fileName.length() == 0 && isEmptyStringAllowed()) {
+				// Empty fields are accepted.
+				return true;
+			}
+
+			IStringVariableManager manager = VariablesPlugin.getDefault()
+					.getStringVariableManager();
+			String substitutedFileName;
+			try {
+				substitutedFileName = manager
+						.performStringSubstitution(fileName);
+			} catch (CoreException e) {
+				// It's apparently invalid
+				return false;
+			}
+			File file = new File(substitutedFileName);
+			return file.isDirectory();
 		} else {
 			return true;
 		}
