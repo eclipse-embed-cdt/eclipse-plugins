@@ -345,8 +345,8 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 					} else if ("project".equals(text)) {
 						ret = PreferencesUtil.createPropertyDialogOn(
 								parent.getShell(), getProject(),
-								ProjectToolsPathPropertyPage.ID,
-								new String[] {}, null, 0).open();
+								ProjectToolsPathPropertyPage.ID, null, null, 0)
+								.open();
 					}
 
 					if (ret == Window.OK) {
@@ -354,7 +354,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 					}
 				}
 			});
-
 		}
 
 		{
