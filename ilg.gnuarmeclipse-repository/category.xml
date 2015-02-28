@@ -15,9 +15,11 @@
    <feature url="features/ilg.gnuarmeclipse.debug.gdbjtag.openocd-feature_3.1.1.qualifier.jar" id="ilg.gnuarmeclipse.debug.gdbjtag.openocd" version="3.1.1.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
+   <!-- 
    <feature url="features/ilg.gnuarmeclipse.debug.gdbjtag.qemu-feature_1.1.1.qualifier.jar" id="ilg.gnuarmeclipse.debug.gdbjtag.qemu" version="1.1.1.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
+    -->
    <feature url="features/ilg.gnuarmeclipse.templates.cortexm-feature_1.2.3.qualifier.jar" id="ilg.gnuarmeclipse.templates.cortexm" version="1.2.3.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
