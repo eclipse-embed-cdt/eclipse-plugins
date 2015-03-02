@@ -421,7 +421,9 @@ public class OutlineView extends ViewPart {
 					fPageSelectionListener);
 		}
 
-		System.out.println("OutlineView.dispose()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("OutlineView.dispose()");
+		}
 	}
 
 	/**
@@ -505,11 +507,9 @@ public class OutlineView extends ViewPart {
 					"Parse Outline", (PackNode) versionNode));
 
 		} catch (InvocationTargetException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			Activator.log(e1);
 		} catch (InterruptedException e1) {
-			// TODO Auto-generated catch block
-			e1.printStackTrace();
+			Activator.log(e1);
 		}
 
 	}
@@ -540,7 +540,9 @@ public class OutlineView extends ViewPart {
 
 		fOpenWithText = new Action() {
 			public void run() {
-				System.out.println("openWithText");
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("openWithText");
+				}
 
 				ISelection selection = fViewer.getSelection();
 				Object obj = ((IStructuredSelection) selection)
@@ -559,7 +561,9 @@ public class OutlineView extends ViewPart {
 
 		fOpenWithSystem = new Action() {
 			public void run() {
-				System.out.println("openWithSystem");
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("openWithSystem");
+				}
 
 				ISelection selection = fViewer.getSelection();
 				Object obj = ((IStructuredSelection) selection)
@@ -645,7 +649,9 @@ public class OutlineView extends ViewPart {
 
 		String type = node.getType();
 		if (fPackageAbsolutePath == null) {
-			System.out.println("null m_packagePath");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("null m_packagePath");
+			}
 			return;
 		}
 
@@ -672,7 +678,9 @@ public class OutlineView extends ViewPart {
 			} else if ("include".equals(category) || "library".equals(category)) {
 				; // ignore folders
 			} else {
-				System.out.println("File " + node + "  " + category);
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("File " + node + "  " + category);
+				}
 			}
 
 		} else if (Type.BOOK.equals(type)) {
@@ -691,7 +699,9 @@ public class OutlineView extends ViewPart {
 						.append(relativeFile));
 
 			} else {
-				System.out.println("Book " + node);
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("Book " + node);
+				}
 			}
 
 		} else if (Type.HEADER.equals(type)) {

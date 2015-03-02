@@ -1,5 +1,6 @@
 package ilg.gnuarmeclipse.templates.core.processes;
 
+import ilg.gnuarmeclipse.templates.core.Activator;
 import ilg.gnuarmeclipse.templates.core.Utils;
 
 import java.util.Map;
@@ -28,8 +29,10 @@ public class ConditionalSetProperty extends ProcessRunner {
 		if (values.containsKey(propertyName)) {
 			values.put(propertyName, propertyValue);
 		} else {
-			System.out.println("Property "+propertyName+" not defined.");
+			if (Activator.getInstance().isDebugging()) {
+				System.out
+						.println("Property " + propertyName + " not defined.");
+			}
 		}
-
 	}
 }

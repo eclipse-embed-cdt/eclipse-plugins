@@ -128,14 +128,20 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 		// fComposite = parent;
 		// Disabled, otherwise toolchain changes fail
-		System.out.println("TabToolchains.createControls()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("TabToolchains.createControls()");
+		}
 		if (!isThisPlugin()) {
-			System.out.println("not this plugin");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("not this plugin");
+			}
 			return;
 		}
 		//
 		if (!page.isForProject()) {
-			System.out.println("not this project");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("not this project");
+			}
 			return;
 		}
 		//
@@ -143,7 +149,9 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 		fConfig = getCfg();
 
-		System.out.println("createControls() fConfig=" + fConfig);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("createControls() fConfig=" + fConfig);
+		}
 
 		// usercomp is defined in parent class
 
@@ -329,7 +337,9 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 				public void widgetSelected(SelectionEvent e) {
 
 					String text = e.text;
-					System.out.println(text);
+					if (Activator.getInstance().isDebugging()) {
+						System.out.println(text);
+					}
 
 					int ret = -1;
 					if ("global".equals(text)) {
@@ -392,8 +402,10 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 	private void updateInterfaceAfterToolchainChange() {
 
-		System.out
-				.println("TabToolchains.updateInterfaceAfterToolchainChange()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("TabToolchains.updateInterfaceAfterToolchainChange()");
+		}
 		int index;
 		try {
 			String sSelectedCombo = fToolchainCombo.getText();
@@ -451,7 +463,10 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			return;
 
 		// fConfig = getCfg();
-		System.out.println("TabToolchains.updateData() " + getCfg().getName());
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("TabToolchains.updateData() "
+					+ getCfg().getName());
+		}
 
 		boolean isExecutable;
 		boolean isStaticLibrary;
@@ -500,7 +515,9 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	protected void performApply(ICResourceDescription src,
 			ICResourceDescription dst) {
 
-		System.out.println("TabToolchains.performApply() " + src.getName());
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("TabToolchains.performApply() " + src.getName());
+		}
 		IConfiguration config = getCfg(src.getConfiguration());
 
 		updateOptions(config);
@@ -514,19 +531,25 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	protected void performOK() {
 
 		IConfiguration config = getCfg();
-		System.out.println("Toolchains.performOK() " + config);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Toolchains.performOK() " + config);
+		}
 
 		if (fLastUpdatedConfig.equals(config)) {
 			updateOptions(config);
 		} else {
-			System.out.println("skipped " + fConfig);
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("skipped " + fConfig);
+			}
 		}
 	}
 
 	private void updateControlsForConfig(IConfiguration config) {
 
-		System.out.println("Toolchains.updateControlsForConfig() "
-				+ config.getName());
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Toolchains.updateControlsForConfig() "
+					+ config.getName());
+		}
 
 		// int fSelectedToolchainIndex;
 		// String fSelectedToolchainName;
@@ -548,7 +571,9 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			fSelectedToolchainIndex = ToolchainDefinition
 					.findToolchainByName(fSelectedToolchainName);
 		} else {
-			System.out.println("No toolchain selected");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("No toolchain selected");
+			}
 			// This is not a project created with the wizard
 			// (most likely it is the result of a toolchain change)
 			fSelectedToolchainIndex = ToolchainDefinition.getDefault();
@@ -561,8 +586,9 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 				setOptionsForToolchain(config, fSelectedToolchainIndex);
 
 			} catch (BuildException e1) {
-				System.out.println("cannot setOptionsForToolchain");
-				// e1.printStackTrace();
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("cannot setOptionsForToolchain");
+				}
 			}
 		}
 
@@ -697,7 +723,9 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		}
 
 		fConfig = config;
-		System.out.println("updateControlsForConfig() fConfig=" + fConfig);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("updateControlsForConfig() fConfig=" + fConfig);
+		}
 
 		fLastUpdatedConfig = config;
 
@@ -706,7 +734,10 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 	private void updateOptions(IConfiguration config) {
 
-		System.out.println("Toolchains.updateOptions() " + config.getName());
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("Toolchains.updateOptions() " + config.getName());
+		}
 
 		if (config instanceof MultiConfiguration) {
 			MultiConfiguration multi = (MultiConfiguration) config;
@@ -814,7 +845,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			config.setOption(toolchain, option, fSizeButton.getSelection());
 
 		} catch (NullPointerException e) {
-			e.printStackTrace();
 			Activator.log(e);
 		} catch (BuildException e) {
 			Activator.log(e);
@@ -946,8 +976,10 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 					makefileGenerator.regenerateMakefiles();
 				} catch (CoreException e) {
 					// This had better be allowed during a build
-					System.out.println("propagateCommandRmUpdate "
-							+ e.getMessage());
+					if (Activator.getInstance().isDebugging()) {
+						System.out.println("propagateCommandRmUpdate "
+								+ e.getMessage());
+					}
 				}
 			}
 		}
@@ -956,7 +988,9 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	@Override
 	protected void performDefaults() {
 
-		System.out.println("Toolchains.performDefaults()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Toolchains.performDefaults()");
+		}
 		updateInterfaceAfterToolchainChange();
 
 		fFlashButton.setSelection(Option.OPTION_ADDTOOLS_CREATEFLASH_DEFAULT);
@@ -1002,7 +1036,9 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 	private boolean isThisPlugin() {
 		fConfig = getCfg();
-		System.out.println("isThisPlugin() fConfig=" + fConfig);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("isThisPlugin() fConfig=" + fConfig);
+		}
 
 		IToolChain toolchain = fConfig.getToolChain();
 		String sToolchainId = toolchain.getBaseId();

@@ -11,6 +11,8 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross.ui;
 
+import ilg.gnuarmeclipse.managedbuild.cross.Activator;
+
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
@@ -45,8 +47,10 @@ public class ProjectStorage {
 			value = project.getPersistentProperty(new QualifiedName(config
 					.getId(), IS_TOOLCHAIN_PATH_PER_PROJECT));
 		} catch (CoreException e) {
-			// e.printStackTrace();
-			System.out.println("isToolchainPathPerProject " + e.getMessage());
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("isToolchainPathPerProject "
+						+ e.getMessage());
+			}
 			return false;
 		}
 
@@ -65,8 +69,10 @@ public class ProjectStorage {
 			project.setPersistentProperty(new QualifiedName(config.getId(),
 					IS_TOOLCHAIN_PATH_PER_PROJECT), String.valueOf(value));
 		} catch (CoreException e) {
-			// e.printStackTrace();
-			System.out.println("putToolchainPathPerProject " + e.getMessage());
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("putToolchainPathPerProject "
+						+ e.getMessage());
+			}
 			return false;
 		}
 
@@ -88,8 +94,9 @@ public class ProjectStorage {
 			value = project.getPersistentProperty(new QualifiedName(config
 					.getId(), TOOLCHAIN_PATH));
 		} catch (CoreException e) {
-			// e.printStackTrace();
-			System.out.println("getToolchainPath() = " + e.getMessage());
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("getToolchainPath() = " + e.getMessage());
+			}
 			return "";
 		}
 
@@ -107,8 +114,9 @@ public class ProjectStorage {
 			project.setPersistentProperty(new QualifiedName(config.getId(),
 					TOOLCHAIN_PATH), value.trim());
 		} catch (CoreException e) {
-			// e.printStackTrace();
-			System.out.println("putToolchainPath " + e.getMessage());
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("putToolchainPath " + e.getMessage());
+			}
 			return false;
 		}
 

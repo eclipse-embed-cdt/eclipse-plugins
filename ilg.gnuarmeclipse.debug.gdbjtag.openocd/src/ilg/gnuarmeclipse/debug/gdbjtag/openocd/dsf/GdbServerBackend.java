@@ -35,8 +35,10 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	public GdbServerBackend(DsfSession session, ILaunchConfiguration lc) {
 		super(session, lc);
 
-		System.out.println("GdbServerBackend(" + session + "," + lc.getName()
-				+ ")");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GdbServerBackend(" + session + ","
+					+ lc.getName() + ")");
+		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -44,7 +46,9 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	@Override
 	public void initialize(final RequestMonitor rm) {
 
-		System.out.println("GdbServerBackend.initialize()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GdbServerBackend.initialize()");
+		}
 
 		try {
 			// Update parent data member before calling initialise.
@@ -69,14 +73,18 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 	private void doInitialize(RequestMonitor rm) {
 
-		System.out.println("GdbServerBackend.doInitialize()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GdbServerBackend.doInitialize()");
+		}
 		rm.done();
 	}
 
 	@Override
 	public void shutdown(final RequestMonitor rm) {
 
-		System.out.println("GdbServerBackend.shutdown()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GdbServerBackend.shutdown()");
+		}
 
 		super.shutdown(rm);
 	}
@@ -84,8 +92,10 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	@Override
 	public void destroy() {
 
-		System.out.println("GdbServerBackend.destroy() "
-				+ Thread.currentThread());
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GdbServerBackend.destroy() "
+					+ Thread.currentThread());
+		}
 
 		// Destroy the parent (the GDB server; the client is also destroyed
 		// there).

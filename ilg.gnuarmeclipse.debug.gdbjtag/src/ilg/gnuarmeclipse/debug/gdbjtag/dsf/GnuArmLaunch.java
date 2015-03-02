@@ -83,7 +83,9 @@ public class GnuArmLaunch extends GdbLaunch {
 	@Override
 	public void initialize() {
 
-		System.out.println("GnuArmLaunch.initialize() " + this);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuArmLaunch.initialize() " + this);
+		}
 
 		super.initialize();
 
@@ -113,7 +115,9 @@ public class GnuArmLaunch extends GdbLaunch {
 	@Override
 	public void shutdownSession(final RequestMonitor rm) {
 
-		System.out.println("GnuArmLaunch.shutdownSession() " + this);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuArmLaunch.shutdownSession() " + this);
+		}
 		super.shutdownSession(rm);
 	}
 
@@ -123,7 +127,9 @@ public class GnuArmLaunch extends GdbLaunch {
 	@Override
 	public void initializeControl() throws CoreException {
 
-		System.out.println("GnuArmLaunch.initializeControl()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuArmLaunch.initializeControl()");
+		}
 
 		// The parent defines and register GdbMemoryBlockRetrievalManager
 		// but we do not want this.

@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.dsf;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IGdbServerBackendService;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IGdbServerBackendService.ServerBackendStateChangedEvent;
 
@@ -102,7 +103,9 @@ public class GnuArmControl_7_2 extends GDBControl_7_2 {
 	@DsfServiceEventHandler
 	public void eventDispatched(ServerBackendStateChangedEvent e) {
 
-		System.out.println("GnuArmControl_7_2.eventDispatched() " + e);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuArmControl_7_2.eventDispatched() " + e);
+		}
 
 		if (e.getState() == IMIBackend.State.TERMINATED
 				&& e.getSessionId().equals(getSession().getId())

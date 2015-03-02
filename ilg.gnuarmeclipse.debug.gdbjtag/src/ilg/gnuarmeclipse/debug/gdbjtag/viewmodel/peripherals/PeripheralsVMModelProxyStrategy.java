@@ -12,6 +12,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripherals;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.PeripheralDMContext;
 
 import org.eclipse.cdt.dsf.ui.viewmodel.AbstractVMProvider;
@@ -33,8 +34,10 @@ public class PeripheralsVMModelProxyStrategy extends
 			Object rootElement) {
 		super(provider, rootElement);
 
-		System.out.println("PeripheralsVMModelProxyStrategy() " + this + " "
-				+ provider + " " + rootElement);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralsVMModelProxyStrategy() " + this
+					+ " " + provider + " " + rootElement);
+		}
 
 		fRootElement = rootElement;
 	}
@@ -48,8 +51,10 @@ public class PeripheralsVMModelProxyStrategy extends
 	public boolean setChecked(IPresentationContext context, Object viewerInput,
 			TreePath path, boolean checked) {
 
-		System.out.println("PeripheralsVMModelProxyStrategy.setChecked("
-				+ checked + ")");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralsVMModelProxyStrategy.setChecked("
+					+ checked + ")");
+		}
 
 		Object segment = path.getLastSegment();
 		if ((segment instanceof PeripheralsVMNode.PeripheralsVMContext)) {

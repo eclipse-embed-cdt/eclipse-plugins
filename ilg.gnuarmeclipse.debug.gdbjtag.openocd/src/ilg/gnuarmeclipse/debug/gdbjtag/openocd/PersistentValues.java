@@ -96,8 +96,7 @@ public class PersistentValues {
 		try {
 			InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).flush();
 		} catch (BackingStoreException e) {
-			// TODO Auto-generated catch block
-			// e.printStackTrace();
+			Activator.log(e);
 		}
 
 	}

@@ -70,8 +70,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private static final String TAB_ID = Activator.PLUGIN_ID
 			+ ".ui.debuggertab";
 
-	private static final boolean DEBUG = false;
-
 	// ------------------------------------------------------------------------
 
 	private Button fDoStartGdbServer;
@@ -839,7 +837,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
-		if (DEBUG) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabDebugger: activated() "
 					+ workingCopy.getName());
 		}
@@ -847,7 +845,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
-		if (DEBUG) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabDebugger: deactivated() "
 					+ workingCopy.getName());
 		}

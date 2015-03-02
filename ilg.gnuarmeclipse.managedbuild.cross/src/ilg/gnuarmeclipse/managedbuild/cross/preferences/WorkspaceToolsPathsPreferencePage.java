@@ -60,7 +60,9 @@ public class WorkspaceToolsPathsPreferencePage extends
 	// Contributed by IWorkbenchPreferencePage
 	@Override
 	public void init(IWorkbench workbench) {
-		System.out.println("WorkspaceToolsPathsPage.init()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("WorkspaceToolsPathsPage.init()");
+		}
 	}
 
 	/**

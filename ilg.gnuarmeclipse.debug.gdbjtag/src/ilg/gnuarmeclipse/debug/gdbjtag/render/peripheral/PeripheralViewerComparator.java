@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.render.peripheral;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralRegisterFieldVMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralTreeVMNode;
 
@@ -42,7 +43,9 @@ public class PeripheralViewerComparator extends ViewerComparator {
 
 	public void setColumn(int column) {
 
-		System.out.println("Column " + column);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Column " + column);
+		}
 		if (column == fColumnIndex) {
 			// Same column as last sort; toggle the direction
 			fDirection = 1 - fDirection;

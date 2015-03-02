@@ -76,8 +76,10 @@ public class LaunchConfigurationDelegate extends
 	protected IDsfDebugServicesFactory newServiceFactory(
 			ILaunchConfiguration config, String version) {
 
-		System.out.println("LaunchConfigurationDelegate.newServiceFactory("
-				+ config.getName() + "," + version + ") " + this);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("LaunchConfigurationDelegate.newServiceFactory("
+					+ config.getName() + "," + version + ") " + this);
+		}
 
 		fConfig = config;
 		return new ServicesFactory(version);
@@ -90,8 +92,10 @@ public class LaunchConfigurationDelegate extends
 	protected GdbLaunch createGdbLaunch(ILaunchConfiguration configuration,
 			String mode, ISourceLocator locator) throws CoreException {
 
-		System.out.println("LaunchConfigurationDelegate.createGdbLaunch("
-				+ configuration.getName() + "," + mode + ") " + this);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("LaunchConfigurationDelegate.createGdbLaunch("
+					+ configuration.getName() + "," + mode + ") " + this);
+		}
 
 		fDoStartGdbServer = Configuration.getDoStartGdbServer(configuration);
 
@@ -106,8 +110,10 @@ public class LaunchConfigurationDelegate extends
 
 		String gdbClientCommand = Configuration.getGdbClientCommand(config);
 		String version = DebugUtils.getGDBVersion(config, gdbClientCommand);
-		System.out.println("LaunchConfigurationDelegate.getGDBVersion "
-				+ version);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("LaunchConfigurationDelegate.getGDBVersion "
+					+ version);
+		}
 		return version;
 	}
 
@@ -120,8 +126,10 @@ public class LaunchConfigurationDelegate extends
 	public void launch(ILaunchConfiguration config, String mode,
 			ILaunch launch, IProgressMonitor monitor) throws CoreException {
 
-		System.out.println("LaunchConfigurationDelegate.launch("
-				+ config.getName() + "," + mode + ") " + this);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("LaunchConfigurationDelegate.launch("
+					+ config.getName() + "," + mode + ") " + this);
+		}
 
 		org.eclipse.cdt.launch.LaunchUtils.enableActivity(
 				"org.eclipse.cdt.debug.dsfgdbActivity", true); //$NON-NLS-1$
@@ -137,8 +145,10 @@ public class LaunchConfigurationDelegate extends
 	private void launchDebugger(ILaunchConfiguration config, ILaunch launch,
 			IProgressMonitor monitor) throws CoreException {
 
-		System.out.println("LaunchConfigurationDelegate.launchDebugger("
-				+ config.getName() + ") " + this);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("LaunchConfigurationDelegate.launchDebugger("
+					+ config.getName() + ") " + this);
+		}
 
 		int totalWork = 10;
 		if (fDoStartGdbServer) {
@@ -164,8 +174,11 @@ public class LaunchConfigurationDelegate extends
 	protected void launchDebugSession(final ILaunchConfiguration config,
 			ILaunch l, IProgressMonitor monitor) throws CoreException {
 
-		System.out.println("LaunchConfigurationDelegate.launchDebugSession("
-				+ config.getName() + ") " + this);
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("LaunchConfigurationDelegate.launchDebugSession("
+							+ config.getName() + ") " + this);
+		}
 
 		// From here it is almost identical with the system one, except
 		// the console creation, explicitly marked with '+++++'.
@@ -265,7 +278,9 @@ public class LaunchConfigurationDelegate extends
 					"Error in services launch sequence", e1.getCause())); //$NON-NLS-1$
 		} catch (CancellationException e1) {
 			// Launch aborted, so exit cleanly
-			System.out.println("Launch aborted, so exit cleanly");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("Launch aborted, so exit cleanly");
+			}
 			return;
 		} finally {
 			if (!succeed) {
@@ -304,16 +319,20 @@ public class LaunchConfigurationDelegate extends
 				serverStatus = null;
 				while (serverStatus == null) {
 					if (monitor.isCanceled()) {
-						System.out
-								.println("LaunchConfigurationDelegate.launchDebugSession() sleep cancelled"
-										+ this);
+						if (Activator.getInstance().isDebugging()) {
+							System.out
+									.println("LaunchConfigurationDelegate.launchDebugSession() sleep cancelled"
+											+ this);
+						}
 						cleanupLaunch();
 						return;
 					}
 					Thread.sleep(10);
 					serverStatus = launch.getSession().getExecutor()
 							.submit(callable).get();
-					System.out.print('!');
+					if (Activator.getInstance().isDebugging()) {
+						System.out.print('!');
+					}
 				}
 
 				if (serverStatus != Status.OK_STATUS) {
@@ -321,7 +340,9 @@ public class LaunchConfigurationDelegate extends
 						cleanupLaunch();
 						return;
 					}
-					System.out.println(serverStatus);
+					if (Activator.getInstance().isDebugging()) {
+						System.out.println(serverStatus);
+					}
 					throw new CoreException(serverStatus);
 				}
 
@@ -331,8 +352,10 @@ public class LaunchConfigurationDelegate extends
 				Activator.log(e);
 			}
 
-			System.out
-					.println("launchDebugSession() * Server start confirmed. *");
+			if (Activator.getInstance().isDebugging()) {
+				System.out
+						.println("launchDebugSession() * Server start confirmed. *");
+			}
 		}
 
 		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -478,7 +501,10 @@ public class LaunchConfigurationDelegate extends
 	protected Sequence getServicesSequence(DsfSession session, ILaunch launch,
 			IProgressMonitor progressMonitor) {
 
-		System.out.println("LaunchConfigurationDelegate.getServicesSequence()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("LaunchConfigurationDelegate.getServicesSequence()");
+		}
 
 		return new ServicesLaunchSequence(session, (GdbLaunch) launch,
 				progressMonitor);
@@ -487,8 +513,10 @@ public class LaunchConfigurationDelegate extends
 	protected Sequence getServerServicesSequence(DsfSession session,
 			ILaunch launch, IProgressMonitor progressMonitor) {
 
-		System.out
-				.println("LaunchConfigurationDelegate.getServerServicesSequence()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("LaunchConfigurationDelegate.getServerServicesSequence()");
+		}
 
 		return new GnuArmServerServicesLaunchSequence(session,
 				(GdbLaunch) launch, progressMonitor);

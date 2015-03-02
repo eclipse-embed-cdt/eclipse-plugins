@@ -181,7 +181,9 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 		super.dispose();
 		fDataManager.removeListener(this);
 
-		System.out.println("BoardsView.dispose()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("BoardsView.dispose()");
+		}
 	}
 
 	private void addProviders() {
@@ -300,7 +302,9 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 		// Setting the selection will force the outline update
 		fViewer.setSelection(fViewer.getSelection());
 
-		System.out.println("DevicesView.refresh() " + obj);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DevicesView.refresh() " + obj);
+		}
 	}
 
 	public void update(Object obj) {
@@ -314,7 +318,9 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 		} else {
 			fViewer.update(obj, null);
 		}
-		System.out.println("BoardsView.updated()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("BoardsView.updated()");
+		}
 	}
 
 	public String toString() {

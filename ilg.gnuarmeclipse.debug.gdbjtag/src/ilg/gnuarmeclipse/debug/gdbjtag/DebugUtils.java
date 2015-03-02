@@ -549,8 +549,11 @@ public class DebugUtils {
 	public static Process exec(String[] commandLineArray, String[] environ,
 			File dir) throws CoreException {
 
-		System.out.println("exec " + StringUtils.join(commandLineArray, " "));
-		System.out.println("dir " + dir);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("exec "
+					+ StringUtils.join(commandLineArray, " "));
+			System.out.println("dir " + dir);
+		}
 
 		Process proc = null;
 		try {

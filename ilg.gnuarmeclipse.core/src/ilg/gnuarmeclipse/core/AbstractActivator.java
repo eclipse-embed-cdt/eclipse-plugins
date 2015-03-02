@@ -12,6 +12,7 @@
 package ilg.gnuarmeclipse.core;
 
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.eclipse.core.runtime.Status;
 import org.osgi.framework.BundleContext;
@@ -35,24 +36,42 @@ public abstract class AbstractActivator extends Plugin {
 
 	// ------------------------------------------------------------------------
 
+	protected boolean fIsDebugging;
+
+	// ------------------------------------------------------------------------
+
 	public AbstractActivator() {
 
 		super();
 		fgInstance = this;
+
+		fIsDebugging = "true".equalsIgnoreCase(Platform
+				.getDebugOption(getBundleId() + "/debug"));
 	}
 
 	// ------------------------------------------------------------------------
 
 	public void start(BundleContext context) throws Exception {
 
-		System.out.println(getBundleId() + ".start()");
+		if (isDebugging()) {
+			System.out.println(getBundleId() + ".start()");
+		}
 		super.start(context);
 	}
 
 	public void stop(BundleContext context) throws Exception {
 
 		super.stop(context);
-		System.out.println(getBundleId() + ".stop()");
+		if (isDebugging()) {
+			System.out.println(getBundleId() + ".stop()");
+		}
+	}
+
+	// ------------------------------------------------------------------------
+
+	public boolean isDebugging() {
+
+		return fIsDebugging;
 	}
 
 	// ------------------------------------------------------------------------

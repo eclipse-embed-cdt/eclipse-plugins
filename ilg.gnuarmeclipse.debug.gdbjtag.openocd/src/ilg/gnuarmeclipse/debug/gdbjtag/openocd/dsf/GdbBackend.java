@@ -47,7 +47,9 @@ public class GdbBackend extends GnuArmGdbBackend {
 
 		super(session, lc);
 
-		System.out.println("GdbBackend() " + this);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GdbBackend() " + this);
+		}
 		fLaunchConfiguration = lc;
 	}
 
@@ -56,7 +58,10 @@ public class GdbBackend extends GnuArmGdbBackend {
 	@Override
 	public void initialize(final RequestMonitor rm) {
 
-		System.out.println("GdbBackend.initialize() " + Thread.currentThread());
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GdbBackend.initialize() "
+					+ Thread.currentThread());
+		}
 
 		super.initialize(rm);
 	}
@@ -64,14 +69,20 @@ public class GdbBackend extends GnuArmGdbBackend {
 	@Override
 	public void destroy() {
 
-		System.out.println("GdbBackend.destroy() " + Thread.currentThread());
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("GdbBackend.destroy() " + Thread.currentThread());
+		}
 		super.destroy();
 	}
 
 	@Override
 	public void shutdown(final RequestMonitor rm) {
 
-		System.out.println("GdbBackend.shutdown() " + Thread.currentThread());
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GdbBackend.shutdown() "
+					+ Thread.currentThread());
+		}
 		super.shutdown(rm);
 	}
 
@@ -103,8 +114,10 @@ public class GdbBackend extends GnuArmGdbBackend {
 			dir = new File(path.toOSString());
 		}
 
-		System.out.println("exec " + StringUtils.join(commandLine, " "));
-		System.out.println("dir " + dir);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("exec " + StringUtils.join(commandLine, " "));
+			System.out.println("dir " + dir);
+		}
 		try {
 			proc = ProcessFactory.getFactory().exec(commandLine,
 					DebugUtils.getLaunchEnvironment(fLaunchConfiguration), dir);
@@ -138,7 +151,9 @@ public class GdbBackend extends GnuArmGdbBackend {
 			path = DebugUtils.getProjectOsPath(fLaunchConfiguration);
 		}
 
-		System.out.println("getGDBWorkingDirectory() " + path);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("getGDBWorkingDirectory() " + path);
+		}
 		return path;
 	}
 

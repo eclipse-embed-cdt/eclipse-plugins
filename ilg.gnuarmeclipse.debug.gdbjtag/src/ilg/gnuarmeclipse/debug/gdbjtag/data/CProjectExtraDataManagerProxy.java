@@ -80,8 +80,10 @@ public class CProjectExtraDataManagerProxy implements ICProjectExtraDataManager 
 						// Create the extension point data manager.
 						fDataManagers[i] = factory.create();
 					} else {
-						System.out
-								.println("no ICProjectExtraDataManagerFactory");
+						if (Activator.getInstance().isDebugging()) {
+							System.out
+									.println("no ICProjectExtraDataManagerFactory");
+						}
 					}
 				} catch (CoreException e) {
 					Activator.log("cannot get factory for "

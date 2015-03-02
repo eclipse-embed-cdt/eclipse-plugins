@@ -102,7 +102,9 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 			IMemoryDMContext memoryDMContext, String modelId,
 			final PeripheralDMContext peripheralDMContext) {
 
-		System.out.println("PeripheralMemoryBlockExtension()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralMemoryBlockExtension()");
+		}
 
 		// Used in scheduleUpdatePeripheralRendering()
 		fUpdatePeripheralRenderingJob = new SystemJob(
@@ -122,10 +124,11 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 					updatePeripheralRenderingValues();
 
 					// Notify world that this block possibly changed
-					System.out
-							.println("PeripheralMemoryBlockExtension "
-									+ fBlockDisplayName
-									+ " fireDebugEventSet(changed)");
+					if (Activator.getInstance().isDebugging()) {
+						System.out.println("PeripheralMemoryBlockExtension "
+								+ fBlockDisplayName
+								+ " fireDebugEventSet(changed)");
+					}
 					DebugPlugin
 							.getDefault()
 							.fireDebugEventSet(
@@ -198,7 +201,9 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 				.getExecutor().execute(query);
 		try {
 			query.get();
-			System.out.println("memory service data initialised");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("memory service data initialised");
+			}
 		} catch (InterruptedException e) {
 			;
 		} catch (ExecutionException e) {
@@ -232,7 +237,9 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	@Override
 	public void dispose() throws DebugException {
 
-		System.out.println("PeripheralMemoryBlockExtension.dispose()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralMemoryBlockExtension.dispose()");
+		}
 
 		removeDebugEventListeners();
 		fCommandControl = null;
@@ -303,9 +310,11 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	@DsfServiceEventHandler
 	public void eventDispatched(IMemory.IMemoryChangedEvent event) {
 
-		System.out
-				.println("PeripheralMemoryBlockExtension.eventDispatched(IMemoryChangedEvent) "
-						+ fBlockDisplayName + " " + event);
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("PeripheralMemoryBlockExtension.eventDispatched(IMemoryChangedEvent) "
+							+ fBlockDisplayName + " " + event);
+		}
 		if (((IMemory.IMemoryDMContext) event.getDMContext())
 				.equals(fMemoryDMContext)) {
 			IAddress[] addresses = event.getAddresses();
@@ -318,9 +327,11 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	@DsfServiceEventHandler
 	public void eventDispatched(IRunControl.ISuspendedDMEvent event) {
 
-		System.out
-				.println("PeripheralMemoryBlockExtension.eventDispatched(ISuspendedDMEvent) "
-						+ fBlockDisplayName + " " + event);
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("PeripheralMemoryBlockExtension.eventDispatched(ISuspendedDMEvent) "
+							+ fBlockDisplayName + " " + event);
+		}
 
 		// Each time execution is suspended, the peripheral monitors are
 		// updated.
@@ -331,9 +342,11 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 
 	public void handleMemoryChange(BigInteger bigInteger) {
 
-		System.out
-				.println("PeripheralMemoryBlockExtension.handleMemoryChange() 0x"
-						+ bigInteger.toString(16) + " not used");
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("PeripheralMemoryBlockExtension.handleMemoryChange() 0x"
+							+ bigInteger.toString(16) + " not used");
+		}
 
 		// updatePeripheralRegisters();
 	}
@@ -351,12 +364,15 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	@Override
 	public void handleDebugEvents(DebugEvent[] events) {
 
-		System.out.print("PeripheralMemoryBlockExtension.handleDebugEvents() "
-				+ fBlockDisplayName + " " + events.length);
-		for (int i = 0; i < events.length; ++i) {
-			System.out.print(" " + events[i]);
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.print("PeripheralMemoryBlockExtension.handleDebugEvents() "
+							+ fBlockDisplayName + " " + events.length);
+			for (int i = 0; i < events.length; ++i) {
+				System.out.print(" " + events[i]);
+			}
+			System.out.println();
 		}
-		System.out.println();
 
 		for (int i = 0; i < events.length; ++i) {
 			Object object = events[i].getSource();
@@ -488,9 +504,11 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	 */
 	private void readPeripheralMemoryRegions(RequestMonitor rm) {
 
-		System.out
-				.println("PeripheralMemoryBlockExtension.readPeripheralMemoryRegions() "
-						+ fBlockDisplayName);
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("PeripheralMemoryBlockExtension.readPeripheralMemoryRegions() "
+							+ fBlockDisplayName);
+		}
 
 		IAddress address = getAddressFactory().createAddress(
 				fPeripheralTop.getBigAbsoluteAddress());

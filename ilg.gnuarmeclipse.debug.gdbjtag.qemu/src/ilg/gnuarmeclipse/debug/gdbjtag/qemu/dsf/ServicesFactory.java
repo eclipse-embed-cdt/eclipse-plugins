@@ -14,6 +14,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.qemu.dsf;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmDebuggerCommandsService;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmGdbServerBackend;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmServicesFactory;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
 
 import org.eclipse.cdt.dsf.mi.service.IMIBackend;
 import org.eclipse.cdt.dsf.service.DsfSession;
@@ -31,7 +32,9 @@ public class ServicesFactory extends GnuArmServicesFactory {
 	public ServicesFactory(String version) {
 		super(version);
 
-		System.out.println("ServicesFactory(" + version + ") " + this);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("ServicesFactory(" + version + ") " + this);
+		}
 		fVersion = version;
 	}
 

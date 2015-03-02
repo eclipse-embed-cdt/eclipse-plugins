@@ -30,7 +30,7 @@ public class Utils {
 
 		if (condition == null)
 			return true;
-		
+
 		condition = condition.trim();
 		if (condition.length() == 0) {
 			// No condition string present, take it as ALWAYS
@@ -39,7 +39,9 @@ public class Utils {
 
 		String sa[] = condition.split(" ");
 		if (sa.length != 3) {
-			System.out.println("Unrecognised condition "+condition);
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("Unrecognised condition " + condition);
+			}
 			return false;
 		}
 

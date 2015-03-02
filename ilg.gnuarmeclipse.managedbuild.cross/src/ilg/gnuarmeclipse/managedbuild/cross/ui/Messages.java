@@ -73,7 +73,7 @@ public class Messages extends NLS {
 		try {
 			RESOURCE_BUNDLE = ResourceBundle.getBundle(MESSAGES);
 		} catch (MissingResourceException e) {
-			System.out.println(e.getMessage());
+			Activator.log(e);
 		}
 	}
 

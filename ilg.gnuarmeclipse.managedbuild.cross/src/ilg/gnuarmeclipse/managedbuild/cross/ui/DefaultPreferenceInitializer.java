@@ -38,8 +38,11 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 	 */
 	@Override
 	public void initializeDefaultPreferences() {
-		System.out
-				.println("DefaultPreferenceInitializer.initializeDefaultPreferences()");
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("DefaultPreferenceInitializer.initializeDefaultPreferences()");
+		}
 
 		// Default toolchain name
 		String toolchainName = ToolchainDefinition.DEFAULT_TOOLCHAIN_NAME;
@@ -63,8 +66,10 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		@Override
 		public void added(NodeChangeEvent event) {
 
-			System.out.println("LateInitializer.added() " + event + " "
-					+ event.getChild().name());
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("LateInitializer.added() " + event + " "
+						+ event.getChild().name());
+			}
 
 			if (Activator.PLUGIN_ID.equals(event.getChild().name())) {
 
@@ -79,7 +84,9 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		@Override
 		public void removed(NodeChangeEvent event) {
 
-			System.out.println("LateInitializer.removed() " + event);
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("LateInitializer.removed() " + event);
+			}
 		}
 
 		/**

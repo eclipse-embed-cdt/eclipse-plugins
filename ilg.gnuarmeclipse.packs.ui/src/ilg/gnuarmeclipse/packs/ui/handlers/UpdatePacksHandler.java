@@ -77,7 +77,9 @@ public class UpdatePacksHandler extends AbstractHandler {
 	 */
 	public UpdatePacksHandler() {
 
-		System.out.println("UpdatePacksHandler()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("UpdatePacksHandler()");
+		}
 		fRunning = false;
 
 		fOut = ConsoleStream.getConsoleOut();
@@ -114,7 +116,9 @@ public class UpdatePacksHandler extends AbstractHandler {
 
 	private IStatus myRun(IProgressMonitor monitor) {
 
-		System.out.println("UpdatePacksHandler.myRun()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("UpdatePacksHandler.myRun()");
+		}
 
 		if (fRunning) {
 			return Status.CANCEL_STATUS;
@@ -170,7 +174,8 @@ public class UpdatePacksHandler extends AbstractHandler {
 			workUnits += 1; // One more to avoid reaching 100% too early
 
 			// Set total number of work units to the number of pdsc files
-			monitor.beginTask("Refresh all packs from all repositories.", workUnits);
+			monitor.beginTask("Refresh all packs from all repositories.",
+					workUnits);
 
 			for (Map<String, Object> repo : reposList) {
 
@@ -329,7 +334,6 @@ public class UpdatePacksHandler extends AbstractHandler {
 				}
 
 			} catch (Exception e) {
-				// e.printStackTrace();
 				fOut.println(Utils.reportWarning("\"" + e.getMessage()
 						+ "\", ignored."));
 				return;

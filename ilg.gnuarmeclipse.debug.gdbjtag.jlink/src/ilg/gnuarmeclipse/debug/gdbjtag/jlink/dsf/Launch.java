@@ -54,8 +54,10 @@ public class Launch extends GnuArmLaunch {
 
 		super(launchConfiguration, mode, locator);
 
-		System.out.println("Launch(" + launchConfiguration.getName() + ","
-				+ mode + ") " + this);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Launch(" + launchConfiguration.getName() + ","
+					+ mode + ") " + this);
+		}
 
 		fConfig = launchConfiguration;
 		fExecutor = (DefaultDsfExecutor) getDsfExecutor();
@@ -67,7 +69,9 @@ public class Launch extends GnuArmLaunch {
 	@Override
 	public void initialize() {
 
-		System.out.println("Launch.initialize() " + this);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Launch.initialize() " + this);
+		}
 
 		super.initialize();
 
@@ -102,7 +106,9 @@ public class Launch extends GnuArmLaunch {
 	public void initializeServerConsole(IProgressMonitor monitor)
 			throws CoreException {
 
-		System.out.println("Launch.initializeServerConsole()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Launch.initializeServerConsole()");
+		}
 
 		IProcess newProcess;
 		boolean doAddServerConsole = Configuration
@@ -123,7 +129,9 @@ public class Launch extends GnuArmLaunch {
 	public void initializeConsoles(IProgressMonitor monitor)
 			throws CoreException {
 
-		System.out.println("Launch.initializeConsoles()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Launch.initializeConsoles()");
+		}
 
 		IProcess newProcess;
 		{

@@ -12,6 +12,7 @@
 package ilg.gnuarmeclipse.packs.jobs;
 
 import ilg.gnuarmeclipse.core.StringUtils;
+import ilg.gnuarmeclipse.packs.Activator;
 import ilg.gnuarmeclipse.packs.core.ConsoleStream;
 import ilg.gnuarmeclipse.packs.core.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
@@ -203,7 +204,9 @@ public class CopyExampleJob extends Job {
 			} else if (file.isFile()) {
 				countBytes += file.length();
 			} else {
-				System.out.println("File " + file + " unaccounted.");
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("File " + file + " unaccounted.");
+				}
 			}
 		}
 

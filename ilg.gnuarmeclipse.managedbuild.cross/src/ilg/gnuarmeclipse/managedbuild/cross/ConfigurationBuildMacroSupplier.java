@@ -63,7 +63,9 @@ public class ConfigurationBuildMacroSupplier implements
 							sVal);
 				}
 
-				System.out.println("Missing value of " + sId);
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("Missing value of " + sId);
+				}
 				return null;
 			}
 		}

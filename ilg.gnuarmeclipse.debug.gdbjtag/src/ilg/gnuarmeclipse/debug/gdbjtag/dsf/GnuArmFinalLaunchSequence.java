@@ -85,8 +85,10 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	@Override
 	protected String[] getExecutionOrder(String group) {
 
-		System.out.println("GnuArmFinalLaunchSequence.getExecutionOrder("
-				+ group + ")");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuArmFinalLaunchSequence.getExecutionOrder("
+					+ group + ")");
+		}
 
 		// Initialise the list with the base class' steps
 		// We need to create a list that we can modify, which is why we
@@ -141,9 +143,11 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		IPeripheralsService service = (IPeripheralsService) launch
 				.getServiceFactory().createService(IPeripheralsService.class,
 						launch.getSession(), new Object[0]);
-		System.out
-				.println("GnuArmFinalLaunchSequence.stepCreatePeripheralService() "
-						+ service);
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("GnuArmFinalLaunchSequence.stepCreatePeripheralService() "
+							+ service);
+		}
 		if (service != null) {
 			service.initialize(rm);
 		} else {
@@ -162,9 +166,11 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 				.getServiceFactory().createService(
 						IPeripheralMemoryService.class, launch.getSession(),
 						launch.getLaunchConfiguration());
-		System.out
-				.println("GnuArmFinalLaunchSequence.stepCreatePeripheralMemoryService() "
-						+ service);
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("GnuArmFinalLaunchSequence.stepCreatePeripheralMemoryService() "
+							+ service);
+		}
 		if (service != null) {
 			service.initialize(rm);
 		} else {
@@ -185,9 +191,11 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 				.getServiceFactory().createService(
 						IGnuArmDebuggerCommandsService.class,
 						launch.getSession(), launch.getLaunchConfiguration());
-		System.out
-				.println("GnuArmFinalLaunchSequence.stepCreateDebuggerCommandsService() "
-						+ service);
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("GnuArmFinalLaunchSequence.stepCreateDebuggerCommandsService() "
+							+ service);
+		}
 		if (service != null) {
 			service.initialize(rm);
 		} else {
@@ -203,8 +211,10 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	@Execute
 	public void stepInitializeFinalLaunchSequence(RequestMonitor rm) {
 
-		System.out
-				.println("GnuArmFinalLaunchSequence.stepInitializeFinalLaunchSequence()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("GnuArmFinalLaunchSequence.stepInitializeFinalLaunchSequence()");
+		}
 
 		fTracker = new DsfServicesTracker(Activator.getInstance().getBundle()
 				.getBundleContext(), fSession.getId());
@@ -250,8 +260,10 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	@Execute
 	public void stepInitializeJTAGFinalLaunchSequence(RequestMonitor rm) {
 
-		System.out
-				.println("GnuArmFinalLaunchSequence.stepInitializeJTAGFinalLaunchSequence()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("GnuArmFinalLaunchSequence.stepInitializeJTAGFinalLaunchSequence()");
+		}
 
 		super.stepInitializeJTAGFinalLaunchSequence(rm);
 	}

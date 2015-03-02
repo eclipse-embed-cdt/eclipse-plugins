@@ -326,21 +326,29 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 		// m_composite = parent;
 		// Disabled, otherwise toolchain changes fail
-		System.out.println("Devices.createControls()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Devices.createControls()");
+		}
 		if (!isThisPlugin()) {
-			System.out.println("Devices.not this plugin");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("Devices.not this plugin");
+			}
 			return;
 		}
 		//
 		if (!page.isForProject()) {
-			System.out.println("Devices.not this project");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("Devices.not this project");
+			}
 			return;
 		}
 		//
 		super.createControls(parent);
 
 		fConfig = getCfg();
-		System.out.println("Devices.createControls() fConfig=" + fConfig);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Devices.createControls() fConfig=" + fConfig);
+		}
 
 		fDataManager = PacksDataManagerFactoryProxy.getInstance()
 				.createDataManager();
@@ -360,7 +368,9 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 		createMemoryGroup(usercomp);
 
-		System.out.println("Devices.createControls() completed");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Devices.createControls() completed");
+		}
 	}
 
 	private void createDeviceGroup(Composite parent) {
@@ -662,7 +672,9 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 			return;
 
 		// fConfig = getCfg();
-		System.out.println("Devices.updateData() " + getCfg().getName());
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Devices.updateData() " + getCfg().getName());
+		}
 
 		IConfiguration config = getCfg(cfgd.getConfiguration());
 		if (config instanceof MultiConfiguration) {
@@ -681,8 +693,10 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 	protected void performApply(ICResourceDescription src,
 			ICResourceDescription dst) {
 
-		System.out.println("Devices.performApply() " + src.getName() + " -> "
-				+ dst.getName());
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Devices.performApply() " + src.getName()
+					+ " -> " + dst.getName());
+		}
 
 		if (page.isForProject()) {
 			IConfiguration cfg1 = getCfg(src.getConfiguration());
@@ -697,7 +711,9 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 	protected void performOK() {
 
 		IConfiguration config = getCfg();
-		System.out.println("Devices.performOK() " + config.getName());
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Devices.performOK() " + config.getName());
+		}
 
 		updateStorage(config);
 
@@ -706,8 +722,10 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 	private void updateControlsForConfig(IConfiguration config) {
 
-		System.out.println("Devices.updateControlsForConfig() "
-				+ config.getName());
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Devices.updateControlsForConfig() "
+					+ config.getName());
+		}
 
 		fConfig = config;
 
@@ -804,8 +822,9 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 	 */
 	private void updateStorage(IConfiguration config) {
 
-		// System.out.println("Devices.updateStorage() " + config.getName() + " "
-		//		+ config.getClass());
+		// System.out.println("Devices.updateStorage() " + config.getName() +
+		// " "
+		// + config.getClass());
 
 		if (fSelectedDeviceNode == null) {
 			return;
@@ -832,9 +851,11 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 					if (node.isType(Type.DEVICE)) {
 						st.setOption(CProjectPacksStorage.DEVICE_NAME,
 								node.getName());
-						System.out
-								.println("Devices.updateStorage() device.name="
-										+ node.getName());
+						if (Activator.getInstance().isDebugging()) {
+							System.out
+									.println("Devices.updateStorage() device.name="
+											+ node.getName());
+						}
 					} else if (node.isType(Type.SUBFAMILY)) {
 						st.setOption(CProjectPacksStorage.SUBFAMILY_NAME,
 								node.getName());
@@ -906,7 +927,9 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 	@Override
 	protected void performDefaults() {
 
-		System.out.println("Devices.performDefaults()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Devices.performDefaults()");
+		}
 
 		// No defaults to apply
 	}
@@ -954,7 +977,9 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 	private boolean isThisPlugin() {
 
 		fConfig = getCfg();
-		System.out.println("Devices.isThisPlugin() fConfig=" + fConfig);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Devices.isThisPlugin() fConfig=" + fConfig);
+		}
 
 		IToolChain toolchain = fConfig.getToolChain();
 		String sToolchainId = toolchain.getBaseId();

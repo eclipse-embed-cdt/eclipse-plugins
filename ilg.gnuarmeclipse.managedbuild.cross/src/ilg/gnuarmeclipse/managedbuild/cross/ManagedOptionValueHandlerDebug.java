@@ -55,16 +55,17 @@ public class ManagedOptionValueHandlerDebug {
 		}
 
 		// Print the event
-		System.out.println(eventLabel + "(" + //$NON-NLS-1$
-				configLabel + " = " + //$NON-NLS-1$
-				configuration.getId() + ", " + //$NON-NLS-1$
-				holderLabel + " = " + //$NON-NLS-1$
-				holder.getId() + ", " + //$NON-NLS-1$
-				"IOption = " + //$NON-NLS-1$
-				option.getId() + ", " + //$NON-NLS-1$
-				"String = " + //$NON-NLS-1$
-				extraArgument + ")"); //$NON-NLS-1$
-
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println(eventLabel + "(" + //$NON-NLS-1$
+					configLabel + " = " + //$NON-NLS-1$
+					configuration.getId() + ", " + //$NON-NLS-1$
+					holderLabel + " = " + //$NON-NLS-1$
+					holder.getId() + ", " + //$NON-NLS-1$
+					"IOption = " + //$NON-NLS-1$
+					option.getId() + ", " + //$NON-NLS-1$
+					"String = " + //$NON-NLS-1$
+					extraArgument + ")"); //$NON-NLS-1$
+		}
 	}
 
 	// ------------------------------------------------------------------------

@@ -314,7 +314,9 @@ public class EclipseUtils {
 	 */
 	public static void showStatusMessage(final String message) {
 
-		System.out.println(message);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println(message);
+		}
 		// Display.getDefault().syncExec(new Runnable() {
 		Display.getDefault().asyncExec(new Runnable() {
 
@@ -331,7 +333,9 @@ public class EclipseUtils {
 
 	public static void showStatusErrorMessage(final String message) {
 
-		System.out.println(message);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println(message);
+		}
 		Activator.log(message);
 		// Display.getDefault().syncExec(new Runnable() {
 		Display.getDefault().asyncExec(new Runnable() {

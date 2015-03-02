@@ -325,7 +325,9 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 		fDataManager.removeListener(this);
 
-		System.out.println("PacksView.dispose()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PacksView.dispose()");
+		}
 	}
 
 	private void addProviders() {
@@ -573,7 +575,9 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 				TreeSelection selection = (TreeSelection) fViewer
 						.getSelection();
-				System.out.println(selection);
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println(selection);
+				}
 
 				Job job = new InstallJob("Install Packs", selection);
 				job.schedule();
@@ -690,7 +694,9 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 		// Return focus to this view
 		setFocus();
 
-		System.out.println("PacksView.refresh() " + obj);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PacksView.refresh() " + obj);
+		}
 	}
 
 	public void update(Object obj) {
@@ -702,7 +708,9 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 		} else {
 			fViewer.update(obj, null);
 		}
-		System.out.println("PacksView.updated() " + obj);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PacksView.updated() " + obj);
+		}
 	}
 
 	public String toString() {

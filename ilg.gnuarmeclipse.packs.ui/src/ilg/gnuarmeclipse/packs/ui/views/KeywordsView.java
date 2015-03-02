@@ -143,7 +143,9 @@ public class KeywordsView extends ViewPart implements IDataManagerListener {
 		super.dispose();
 		fDataManager.removeListener(this);
 
-		System.out.println("KeywordsView.dispose()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("KeywordsView.dispose()");
+		}
 	}
 
 	private void addProviders() {
@@ -230,7 +232,9 @@ public class KeywordsView extends ViewPart implements IDataManagerListener {
 		} else {
 			fViewer.update(obj, null);
 		}
-		System.out.println("KeywordsView.updated()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("KeywordsView.updated()");
+		}
 	}
 
 	public String toString() {
@@ -286,7 +290,7 @@ public class KeywordsView extends ViewPart implements IDataManagerListener {
 	private Node getKeywordsTree() {
 
 		final Node packsTree = fDataManager.getRepositoriesTree();
-		
+
 		final Node keywordsRoot = new Node(Type.ROOT);
 
 		if (packsTree.hasChildren()) {

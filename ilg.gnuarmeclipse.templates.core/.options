@@ -1,0 +1,2 @@
+# Control if trace messages are shown.
+ilg.gnuarmeclipse.templates.core/debug=false

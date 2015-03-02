@@ -11,6 +11,8 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.qemu.ui;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
+
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
@@ -21,7 +23,9 @@ public class ButtonResetHandler extends AbstractHandler {
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		System.out.println("ButtonResetHandler.execute(" + event + ")");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("ButtonResetHandler.execute(" + event + ")");
+		}
 		return null;
 	}
 

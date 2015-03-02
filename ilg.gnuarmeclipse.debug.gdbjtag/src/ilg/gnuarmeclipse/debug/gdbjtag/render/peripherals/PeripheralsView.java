@@ -14,6 +14,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.render.peripherals;
 
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.core.SystemUIJob;
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.memory.MemoryBlockMonitor;
 import ilg.gnuarmeclipse.debug.gdbjtag.memory.PeripheralMemoryBlockExtension;
 
@@ -65,7 +66,9 @@ public class PeripheralsView extends VariablesView implements
 
 	public PeripheralsView() {
 
-		System.out.println("PeripheralsView()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralsView()");
+		}
 
 		fMemoryBlocks = new HashSet<PeripheralMemoryBlockExtension>();
 	}
@@ -94,12 +97,14 @@ public class PeripheralsView extends VariablesView implements
 	@Override
 	public void handleDebugEvents(DebugEvent[] events) {
 
-		System.out
-				.print("PeripheralsView.handleDebugEvents() " + events.length);
-		for (int i = 0; i < events.length; ++i) {
-			System.out.print(" " + events[i]);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.print("PeripheralsView.handleDebugEvents() "
+					+ events.length);
+			for (int i = 0; i < events.length; ++i) {
+				System.out.print(" " + events[i]);
+			}
+			System.out.println();
 		}
-		System.out.println();
 
 		for (int i = 0; i < events.length; ++i) {
 
@@ -140,8 +145,11 @@ public class PeripheralsView extends VariablesView implements
 			if ((memoryBlocks[i] instanceof PeripheralMemoryBlockExtension)) {
 
 				PeripheralMemoryBlockExtension memoryBlockExtension = (PeripheralMemoryBlockExtension) memoryBlocks[i];
-				System.out.println("PeripheralsView.memoryBlocksAdded() [] "
-						+ memoryBlockExtension);
+				if (Activator.getInstance().isDebugging()) {
+					System.out
+							.println("PeripheralsView.memoryBlocksAdded() [] "
+									+ memoryBlockExtension);
+				}
 
 				fMemoryBlocks.add(memoryBlockExtension);
 			}
@@ -158,8 +166,11 @@ public class PeripheralsView extends VariablesView implements
 			if ((memoryBlocks[i] instanceof PeripheralMemoryBlockExtension)) {
 
 				PeripheralMemoryBlockExtension memoryBlockExtension = (PeripheralMemoryBlockExtension) memoryBlocks[i];
-				System.out.println("PeripheralsView.memoryBlocksRemoved() [] "
-						+ memoryBlockExtension);
+				if (Activator.getInstance().isDebugging()) {
+					System.out
+							.println("PeripheralsView.memoryBlocksRemoved() [] "
+									+ memoryBlockExtension);
+				}
 
 				fMemoryBlocks.remove(memoryBlockExtension);
 			}
@@ -175,7 +186,9 @@ public class PeripheralsView extends VariablesView implements
 	@Override
 	public Viewer createViewer(Composite composite) {
 
-		System.out.println("PeripheralsView.createViewer()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralsView.createViewer()");
+		}
 
 		TreeModelViewer viewer = (TreeModelViewer) super
 				.createViewer(composite);
@@ -191,7 +204,9 @@ public class PeripheralsView extends VariablesView implements
 	@Override
 	public void dispose() {
 
-		System.out.println("PeripheralsView.dispose()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralsView.dispose()");
+		}
 
 		if (!fMemoryBlocks.isEmpty()) {
 
@@ -214,7 +229,10 @@ public class PeripheralsView extends VariablesView implements
 	}
 
 	private void refresh() {
-		System.out.println("PeripheralsView.refresh()");
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralsView.refresh()");
+		}
 		fRefreshUIjob.schedule();
 	}
 

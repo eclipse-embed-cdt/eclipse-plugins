@@ -15,6 +15,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.datamodel;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.debug.core.model.IMemoryBlockExtension;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 
 /**
@@ -40,7 +41,9 @@ public class PeripheralDMNode extends SvdPeripheralDMNode implements IAdaptable 
 
 	public void dispose() {
 
-		System.out.println("dispose() " + this);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("dispose() " + this);
+		}
 		if (fMemoryBlock != null) {
 			fMemoryBlock = null;
 		}

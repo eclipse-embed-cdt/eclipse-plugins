@@ -58,7 +58,9 @@ public class PeripheralsService extends AbstractDsfService implements
 
 	public void initialize(final RequestMonitor rm) {
 
-		System.out.println("PeripheralsService.initialize()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralsService.initialize()");
+		}
 
 		super.initialize(new RequestMonitor(getExecutor(), rm) {
 
@@ -71,7 +73,9 @@ public class PeripheralsService extends AbstractDsfService implements
 	@SuppressWarnings("rawtypes")
 	private void doInitialize(RequestMonitor rm) {
 
-		System.out.println("PeripheralsService.doInitialize()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralsService.doInitialize()");
+		}
 
 		// Get and remember the command control service
 		fCommandControl = ((ICommandControlService) getServicesTracker()
@@ -83,7 +87,9 @@ public class PeripheralsService extends AbstractDsfService implements
 		register(new String[] { IPeripheralsService.class.getName(),
 				PeripheralsService.class.getName() }, new Hashtable());
 
-		System.out.println("PeripheralsService registered " + this);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralsService registered " + this);
+		}
 
 		rm.done();
 	}
@@ -91,7 +97,9 @@ public class PeripheralsService extends AbstractDsfService implements
 	@Override
 	public void shutdown(RequestMonitor rm) {
 
-		System.out.println("PeripheralsService.shutdown()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralsService.shutdown()");
+		}
 
 		// Remove this service from DSF.
 		unregister();
@@ -110,7 +118,9 @@ public class PeripheralsService extends AbstractDsfService implements
 	public void getPeripherals(IContainerDMContext containerDMContext,
 			DataRequestMonitor<IPeripheralDMContext[]> drm) {
 
-		System.out.println("PeripheralsService.getPeripherals()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralsService.getPeripherals()");
+		}
 
 		if (fPeripheralsDMContexts != null) {
 
@@ -137,7 +147,9 @@ public class PeripheralsService extends AbstractDsfService implements
 				// The third step is to get the CDT configuration.
 				IConfiguration config = EclipseUtils
 						.getConfigurationFromDescription(cConfigDescription);
-				System.out.println(config);
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println(config);
+				}
 
 				try {
 					String vendorId = null;

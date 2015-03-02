@@ -58,9 +58,9 @@ public class LikerScriptCommandGenerator implements IOptionCommandGenerator {
 				}
 			}
 		} catch (BuildException e) {
-			e.printStackTrace();
+			Activator.log(e);
 		} catch (CdtVariableException e) {
-			e.printStackTrace();
+			Activator.log(e);
 		}
 
 		return command.toString().trim();

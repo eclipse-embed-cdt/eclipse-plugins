@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdDMNode;
 
 import java.math.BigInteger;
@@ -64,7 +65,9 @@ public class PeripheralGroupVMNode extends PeripheralTreeVMNode implements
 	// ------------------------------------------------------------------------
 
 	public void update() {
-		System.out.println("update() unimplemented");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("update() unimplemented");
+		}
 	}
 
 	public void update(String str) {

@@ -14,6 +14,7 @@ package ilg.gnuarmeclipse.managedbuild.packs.ui.views;
 import ilg.gnuarmeclipse.core.CProjectPacksStorage;
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.managedbuild.cross.IDs;
+import ilg.gnuarmeclipse.managedbuild.packs.Activator;
 import ilg.gnuarmeclipse.packs.core.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.core.tree.AbstractTreePreOrderIterator;
 import ilg.gnuarmeclipse.packs.core.tree.ITreeIterator;
@@ -243,7 +244,9 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 			getSite().getPage().removePartListener(fPartListener);
 		}
 
-		System.out.println("DocsView.dispose()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DocsView.dispose()");
+		}
 	}
 
 	private void addProviders() {
@@ -311,7 +314,9 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 							} else if (firstSel instanceof Folder) {
 								project = ((Folder) firstSel).getProject();
 							} else {
-								System.out.println("ignored");
+								if (Activator.getInstance().isDebugging()) {
+									System.out.println("ignored");
+								}
 							}
 
 							fLatestSelectedConfig = getConfigurationForProject(project);
@@ -337,7 +342,9 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 			public void partActivated(IWorkbenchPart part) {
 
 				if (part instanceof DocsView) {
-					System.out.println("partActivated() " + part);
+					if (Activator.getInstance().isDebugging()) {
+						System.out.println("partActivated() " + part);
+					}
 
 					setInputForConfig(fLatestSelectedConfig, false);
 				}

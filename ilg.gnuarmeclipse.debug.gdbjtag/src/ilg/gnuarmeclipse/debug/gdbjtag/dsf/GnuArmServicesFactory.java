@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.dsf;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IGdbServerBackendService;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IGnuArmDebuggerCommandsService;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IPeripheralMemoryService;
@@ -104,8 +105,10 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 	protected ICommandControl createCommandControl(DsfSession session,
 			ILaunchConfiguration config) {
 
-		System.out.println("GnuArmServicesFactory.createCommandControl("
-				+ session + "," + config.getName() + ") " + this);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuArmServicesFactory.createCommandControl("
+					+ session + "," + config.getName() + ") " + this);
+		}
 
 		if (GDB_7_4_VERSION.compareTo(fVersion) <= 0) {
 			return new GnuArmControl_7_4(session, config,
@@ -118,8 +121,10 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 	@Override
 	protected IProcesses createProcessesService(DsfSession session) {
 
-		System.out.println("GnuArmServicesFactory.createProcessesService("
-				+ session + ") " + this);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuArmServicesFactory.createProcessesService("
+					+ session + ") " + this);
+		}
 
 		if (GDB_7_2_1_VERSION.compareTo(fVersion) <= 0) {
 			return new GnuArmProcesses_7_2_1(session);

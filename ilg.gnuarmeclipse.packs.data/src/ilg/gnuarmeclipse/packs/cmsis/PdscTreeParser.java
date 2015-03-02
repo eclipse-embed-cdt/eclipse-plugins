@@ -16,6 +16,7 @@ import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
+import ilg.gnuarmeclipse.packs.data.Activator;
 import ilg.gnuarmeclipse.packs.data.Utils;
 
 import org.eclipse.ui.console.MessageConsoleStream;
@@ -48,7 +49,10 @@ public class PdscTreeParser {
 		String schemaVersion = firstChild.getProperty("schemaVersion");
 
 		if (!PdscUtils.isSchemaValid(schemaVersion)) {
-			System.out.println("Unrecognised schema version " + schemaVersion);
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("Unrecognised schema version "
+						+ schemaVersion);
+			}
 			return false;
 		}
 		return true;

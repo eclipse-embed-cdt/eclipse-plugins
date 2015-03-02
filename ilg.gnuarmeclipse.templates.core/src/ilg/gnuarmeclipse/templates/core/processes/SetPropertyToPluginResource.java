@@ -1,5 +1,7 @@
 package ilg.gnuarmeclipse.templates.core.processes;
 
+import ilg.gnuarmeclipse.templates.core.Activator;
+
 import java.io.IOException;
 import java.net.URL;
 import java.util.Map;
@@ -41,8 +43,10 @@ public class SetPropertyToPluginResource extends ProcessRunner {
 			if (values.containsKey(propertyName)) {
 				values.put(propertyName, location);
 			} else {
-				System.out
-						.println("Property " + propertyName + " not defined.");
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("Property " + propertyName
+							+ " not defined.");
+				}
 			}
 		} catch (IOException e) {
 			throw new ProcessFailureException(getProcessMessage(processId,

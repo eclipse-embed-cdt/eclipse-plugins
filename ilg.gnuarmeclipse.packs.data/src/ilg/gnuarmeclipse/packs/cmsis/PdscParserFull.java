@@ -17,6 +17,7 @@ import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.PackNode;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
+import ilg.gnuarmeclipse.packs.data.Activator;
 
 import java.io.IOException;
 import java.util.List;
@@ -56,8 +57,10 @@ public class PdscParserFull extends PdscParser {
 		Element packageElement = fDocument.getDocumentElement();
 		String firstElementName = packageElement.getNodeName();
 		if (!"package".equals(firstElementName)) {
-			System.out.println("Missing <packages>, <" + firstElementName
-					+ "> encountered");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("Missing <packages>, <" + firstElementName
+						+ "> encountered");
+			}
 			return tree;
 		}
 
@@ -65,7 +68,10 @@ public class PdscParserFull extends PdscParser {
 				.trim();
 
 		if (!PdscUtils.isSchemaValid(schemaVersion)) {
-			System.out.println("Unrecognised schema version " + schemaVersion);
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("Unrecognised schema version "
+						+ schemaVersion);
+			}
 			return tree;
 		}
 
@@ -159,8 +165,10 @@ public class PdscParserFull extends PdscParser {
 						processKeywordElement(childElement2, tree);
 
 					} else {
-						System.out.println("Not processed <" + elementName2
-								+ ">");
+						if (Activator.getInstance().isDebugging()) {
+							System.out.println("Not processed <" + elementName2
+									+ ">");
+						}
 					}
 				}
 
@@ -179,8 +187,10 @@ public class PdscParserFull extends PdscParser {
 						processFamilyElement(childElement2, tree);
 
 					} else {
-						System.out.println("Not processed <" + elementName2
-								+ ">");
+						if (Activator.getInstance().isDebugging()) {
+							System.out.println("Not processed <" + elementName2
+									+ ">");
+						}
 					}
 				}
 
@@ -196,8 +206,10 @@ public class PdscParserFull extends PdscParser {
 						processBoardElement(childElement2, tree);
 
 					} else {
-						System.out.println("Not processed <" + elementName2
-								+ ">");
+						if (Activator.getInstance().isDebugging()) {
+							System.out.println("Not processed <" + elementName2
+									+ ">");
+						}
 					}
 				}
 
@@ -213,8 +225,10 @@ public class PdscParserFull extends PdscParser {
 						processConditionElement(childElement2, tree);
 
 					} else {
-						System.out.println("Not processed <" + elementName2
-								+ ">");
+						if (Activator.getInstance().isDebugging()) {
+							System.out.println("Not processed <" + elementName2
+									+ ">");
+						}
 					}
 				}
 
@@ -230,8 +244,10 @@ public class PdscParserFull extends PdscParser {
 						processExampleElement(childElement2, tree, false);
 
 					} else {
-						System.out.println("Not processed <" + elementName2
-								+ ">");
+						if (Activator.getInstance().isDebugging()) {
+							System.out.println("Not processed <" + elementName2
+									+ ">");
+						}
 					}
 				}
 
@@ -251,8 +267,10 @@ public class PdscParserFull extends PdscParser {
 						processBundleElement(childElement2, tree);
 
 					} else {
-						System.out.println("Not processed <" + elementName2
-								+ ">");
+						if (Activator.getInstance().isDebugging()) {
+							System.out.println("Not processed <" + elementName2
+									+ ">");
+						}
 					}
 				}
 
@@ -275,8 +293,10 @@ public class PdscParserFull extends PdscParser {
 						processApiElement(childElement2, tree);
 
 					} else {
-						System.out.println("Not processed <" + elementName2
-								+ ">");
+						if (Activator.getInstance().isDebugging()) {
+							System.out.println("Not processed <" + elementName2
+									+ ">");
+						}
 					}
 				}
 
@@ -292,8 +312,10 @@ public class PdscParserFull extends PdscParser {
 						processTaxonomyDescription(childElement2, tree);
 
 					} else {
-						System.out.println("Not processed <" + elementName2
-								+ ">");
+						if (Activator.getInstance().isDebugging()) {
+							System.out.println("Not processed <" + elementName2
+									+ ">");
+						}
 					}
 				}
 				// } else if ("generators".equals(elementName)) {
@@ -301,7 +323,9 @@ public class PdscParserFull extends PdscParser {
 				// Ignore
 
 			} else {
-				System.out.println("Not processed <" + elementName + ">");
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("Not processed <" + elementName + ">");
+				}
 			}
 		}
 
@@ -834,7 +858,9 @@ public class PdscParserFull extends PdscParser {
 
 			String Pname = el.getAttribute("Pname").trim();
 			if (Pname.length() > 0) {
-				System.out.println("Pname not processed " + Pname + "");
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("Pname not processed " + Pname + "");
+				}
 			}
 
 			Node headerNode = new Node(Type.HEADER);
@@ -990,7 +1016,9 @@ public class PdscParserFull extends PdscParser {
 			// } else if ("environment".equals(elementName)) {
 
 		} else {
-			System.out.println("Not processed <" + elementName + ">");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("Not processed <" + elementName + ">");
+			}
 		}
 	}
 
@@ -1246,7 +1274,10 @@ public class PdscParserFull extends PdscParser {
 					debugNode.setDescription(description);
 
 				} else {
-					System.out.println("Not processed <" + elementName + ">");
+					if (Activator.getInstance().isDebugging()) {
+						System.out.println("Not processed <" + elementName
+								+ ">");
+					}
 				}
 			}
 		}
@@ -1458,12 +1489,17 @@ public class PdscParserFull extends PdscParser {
 							processFileElement(childElement2, componentNode);
 
 						} else {
-							System.out.println("Not processed <" + elementName2
-									+ ">");
+							if (Activator.getInstance().isDebugging()) {
+								System.out.println("Not processed <"
+										+ elementName2 + ">");
+							}
 						}
 					}
 				} else {
-					System.out.println("Not processed <" + elementName + ">");
+					if (Activator.getInstance().isDebugging()) {
+						System.out.println("Not processed <" + elementName
+								+ ">");
+					}
 				}
 			}
 		}
@@ -1663,7 +1699,10 @@ public class PdscParserFull extends PdscParser {
 					processComponentElement(childElement, bundleNode, Cclass);
 
 				} else {
-					System.out.println("Not processed <" + elementName + ">");
+					if (Activator.getInstance().isDebugging()) {
+						System.out.println("Not processed <" + elementName
+								+ ">");
+					}
 				}
 			}
 		}
@@ -1823,7 +1862,9 @@ public class PdscParserFull extends PdscParser {
 				node.setDescription(description);
 
 			} else {
-				System.out.println("Not processed <" + elementName + ">");
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("Not processed <" + elementName + ">");
+				}
 			}
 		}
 
@@ -1905,12 +1946,16 @@ public class PdscParserFull extends PdscParser {
 						processFileElement(childElement2, apiNode);
 
 					} else {
-						System.out.println("Not processed <" + elementName2
-								+ ">");
+						if (Activator.getInstance().isDebugging()) {
+							System.out.println("Not processed <" + elementName2
+									+ ">");
+						}
 					}
 				}
 			} else {
-				System.out.println("Not processed <" + elementName + ">");
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("Not processed <" + elementName + ">");
+				}
 			}
 		}
 
@@ -2067,8 +2112,10 @@ public class PdscParserFull extends PdscParser {
 							environmentNode.setDescription(description);
 
 						} else {
-							System.out.println("Not processed <" + elementName2
-									+ ">");
+							if (Activator.getInstance().isDebugging()) {
+								System.out.println("Not processed <"
+										+ elementName2 + ">");
+							}
 						}
 					}
 
@@ -2177,12 +2224,17 @@ public class PdscParserFull extends PdscParser {
 							processKeywordElement(childElement2, linkNode);
 
 						} else {
-							System.out.println("Not processed <" + elementName2
-									+ ">");
+							if (Activator.getInstance().isDebugging()) {
+								System.out.println("Not processed <"
+										+ elementName2 + ">");
+							}
 						}
 					}
 				} else {
-					System.out.println("Not processed <" + elementName + ">");
+					if (Activator.getInstance().isDebugging()) {
+						System.out.println("Not processed <" + elementName
+								+ ">");
+					}
 				}
 			}
 		}

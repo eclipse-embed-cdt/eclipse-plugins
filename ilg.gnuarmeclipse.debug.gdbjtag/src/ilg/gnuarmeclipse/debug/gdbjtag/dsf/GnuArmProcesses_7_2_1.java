@@ -92,7 +92,9 @@ public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 	@Override
 	public void initialize(final RequestMonitor rm) {
 
-		System.out.println("GnuArmProcesses_7_2_1.initialize()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuArmProcesses_7_2_1.initialize()");
+		}
 		super.initialize(new ImmediateRequestMonitor(rm) {
 			@Override
 			protected void handleSuccess() {
@@ -109,7 +111,9 @@ public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 				IMICommandControl.class).getCommandFactory();
 		rm.done();
 
-		System.out.println("GnuArmProcesses_7_2_1.initialize() done");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuArmProcesses_7_2_1.initialize() done");
+		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -141,7 +145,9 @@ public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 	@Override
 	public void terminate(IThreadDMContext thread, final RequestMonitor rm) {
 
-		System.out.println("GnuArmProcesses_7_2_1.terminate()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuArmProcesses_7_2_1.terminate()");
+		}
 
 		// For a core session, there is no concept of killing the inferior,
 		// so lets kill GDB
@@ -159,8 +165,11 @@ public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 									if (runControl != null
 											&& !runControl
 													.isTargetAcceptingCommands()) {
-										System.out
-												.println("GnuArmProcesses_7_2_1.terminate() interrupt");
+										if (Activator.getInstance()
+												.isDebugging()) {
+											System.out
+													.println("GnuArmProcesses_7_2_1.terminate() interrupt");
+										}
 										fBackend.interrupt();
 									}
 
@@ -173,8 +182,11 @@ public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 													rm) {
 												@Override
 												protected void handleSuccess() {
-													System.out
-															.println("GnuArmProcesses_7_2_1.terminate() dispatchEvent(ProcessStateChangedEvent, TERMINATED)");
+													if (Activator.getInstance()
+															.isDebugging()) {
+														System.out
+																.println("GnuArmProcesses_7_2_1.terminate() dispatchEvent(ProcessStateChangedEvent, TERMINATED)");
+													}
 
 													getSession()
 															.dispatchEvent(
@@ -184,15 +196,20 @@ public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 																			State.TERMINATED),
 																	getProperties());
 
-													System.out
-															.println("GnuArmProcesses_7_2_1.terminate() done");
+													if (Activator.getInstance()
+															.isDebugging()) {
+														System.out
+																.println("GnuArmProcesses_7_2_1.terminate() done");
+													}
 
 													rm.done();
 												}
 											});
 								} else {
-									System.out
-											.println("GnuArmProcesses_7_2_1.terminate() done");
+									if (Activator.getInstance().isDebugging()) {
+										System.out
+												.println("GnuArmProcesses_7_2_1.terminate() done");
+									}
 									rm.done();
 								}
 							} else {

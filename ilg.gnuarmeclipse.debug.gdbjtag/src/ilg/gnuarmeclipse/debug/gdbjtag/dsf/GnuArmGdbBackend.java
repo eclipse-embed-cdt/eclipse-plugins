@@ -29,6 +29,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.dsf;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmProcesses_7_2_1.ProcessStateChangedEvent;
 
 import java.io.BufferedReader;
@@ -154,7 +155,9 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 	@Override
 	public void initialize(final RequestMonitor requestMonitor) {
 
-		System.out.println("GnuArmGdbBackend.initialize()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuArmGdbBackend.initialize()");
+		}
 
 		super.initialize(new ImmediateRequestMonitor(requestMonitor) {
 			@Override
@@ -186,7 +189,9 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 	@Override
 	public void shutdown(final RequestMonitor requestMonitor) {
 
-		System.out.println("GnuArmGdbBackend.shutdown()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuArmGdbBackend.shutdown()");
+		}
 
 		final Sequence.Step[] shutdownSteps = new Sequence.Step[] {
 				new RegisterStep(
@@ -593,7 +598,9 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 		// Wait for the actual user of the streams to close it.
 		// Bug 339379
 
-		System.out.println("GnuArmGdbBackend.destroy()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuArmGdbBackend.destroy()");
+		}
 
 		// destroy() should be supported even if it's not spawner.
 		if (getState() == State.STARTED) {
@@ -640,7 +647,9 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 		@Override
 		public void initialize(final RequestMonitor requestMonitor) {
 
-			System.out.println("GDBProcessStep.initialise()");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("GDBProcessStep.initialise()");
+			}
 
 			class GDBLaunchMonitor {
 				boolean fLaunched = false;
@@ -652,8 +661,10 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 					getExecutor(), requestMonitor) {
 				@Override
 				protected void handleCompleted() {
-					System.out
-							.println("GDBProcessStep.initialise() handleCompleted()");
+					if (Activator.getInstance().isDebugging()) {
+						System.out
+								.println("GDBProcessStep.initialise() handleCompleted()");
+					}
 
 					if (!fGDBLaunchMonitor.fTimedOut) {
 						fGDBLaunchMonitor.fLaunched = true;
@@ -673,7 +684,10 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 				@Override
 				protected IStatus run(IProgressMonitor monitor) {
 
-					System.out.println("GDBProcessStep.initialise() Job run()");
+					if (Activator.getInstance().isDebugging()) {
+						System.out
+								.println("GDBProcessStep.initialise() Job run()");
+					}
 
 					if (gdbLaunchRequestMonitor.isCanceled()) {
 						gdbLaunchRequestMonitor.setStatus(new Status(
@@ -785,7 +799,9 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 		@Override
 		protected void shutdown(final RequestMonitor requestMonitor) {
 
-			System.out.println("GDBProcessStep.shutdown()");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("GDBProcessStep.shutdown()");
+			}
 
 			if (getState() != State.STARTED) {
 				// gdb not started yet or already killed, don't bother starting
@@ -805,7 +821,10 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 						// Need to do this on the executor for thread-safety
 						// And we should wait for it to complete since we then
 						// check if the killing of GDB worked.
-						System.out.println("GDBProcessStep.shutdown() run()");
+						if (Activator.getInstance().isDebugging()) {
+							System.out
+									.println("GDBProcessStep.shutdown() run()");
+						}
 						getExecutor().submit(new DsfRunnable() {
 							@Override
 							public void run() {
@@ -818,8 +837,10 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 									// we need to set our state and send the
 									// event
 									fBackendState = State.TERMINATED;
-									System.out
-											.println("GDBProcessStep.shutdown() run() dispatchEvent(BackendStateChangedEvent, TERMINATED)");
+									if (Activator.getInstance().isDebugging()) {
+										System.out
+												.println("GDBProcessStep.shutdown() run() dispatchEvent(BackendStateChangedEvent, TERMINATED)");
+									}
 									getSession().dispatchEvent(
 											new BackendStateChangedEvent(
 													getSession().getId(),
@@ -844,8 +865,10 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 																	// not
 																	// exited
 
-							System.out
-									.println("GDBProcessStep.shutdown() run() return");
+							if (Activator.getInstance().isDebugging()) {
+								System.out
+										.println("GDBProcessStep.shutdown() run() return");
+							}
 							requestMonitor.done();
 							return Status.OK_STATUS;
 						} catch (IllegalThreadStateException ie) {
@@ -856,8 +879,10 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 						}
 						attempts++;
 					}
-					System.out
-							.println("GDBProcessStep.shutdown() run() REQUEST_FAILED");
+					if (Activator.getInstance().isDebugging()) {
+						System.out
+								.println("GDBProcessStep.shutdown() run() REQUEST_FAILED");
+					}
 					requestMonitor.setStatus(new Status(IStatus.ERROR,
 							GdbPlugin.PLUGIN_ID,
 							IDsfStatusConstants.REQUEST_FAILED,
@@ -876,7 +901,9 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 
 		@Override
 		public void initialize(final RequestMonitor requestMonitor) {
-			System.out.println("MonitorJobStep.initialize()");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("MonitorJobStep.initialize()");
+			}
 			fMonitorJob = new MonitorJob(fProcess, new DsfRunnable() {
 				@Override
 				public void run() {
@@ -889,12 +916,16 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 		@Override
 		protected void shutdown(RequestMonitor requestMonitor) {
 
-			System.out.println("MonitorJobStep.shutdown()");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("MonitorJobStep.shutdown()");
+			}
 			if (fMonitorJob != null) {
 				fMonitorJob.kill();
 			}
 			requestMonitor.done();
-			System.out.println("MonitorJobStep.shutdown() done");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("MonitorJobStep.shutdown() done");
+			}
 		}
 	}
 
@@ -952,21 +983,26 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 					fMonProcess.waitFor();
 					fGDBExitValue = fMonProcess.exitValue();
 
-					System.out.println("MonitorJob.run() exitValue() "
-							+ fGDBExitValue);
-
+					if (Activator.getInstance().isDebugging()) {
+						System.out.println("MonitorJob.run() exitValue() "
+								+ fGDBExitValue);
+					}
 					// Need to do this on the executor for thread-safety
 					getExecutor().submit(new DsfRunnable() {
 						@Override
 						public void run() {
 
-							System.out.println("MonitorJob.run() run() ");
+							if (Activator.getInstance().isDebugging()) {
+								System.out.println("MonitorJob.run() run() ");
+							}
 
 							destroy();
 							fBackendState = State.TERMINATED;
 
-							System.out
-									.println("MonitorJob.run() run() dispatchEvent(BackendStateChangedEvent, TERMINATED)");
+							if (Activator.getInstance().isDebugging()) {
+								System.out
+										.println("MonitorJob.run() run() dispatchEvent(BackendStateChangedEvent, TERMINATED)");
+							}
 							getSession()
 									.dispatchEvent(
 											new BackendStateChangedEvent(
@@ -1092,7 +1128,9 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 	@DsfServiceEventHandler
 	public void eventDispatched(final ProcessStateChangedEvent e) {
 
-		System.out.println("GnuArmGdbBackend.eventDispatched() " + e);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuArmGdbBackend.eventDispatched() " + e);
+		}
 
 		// When the process is terminated, also terminate the backend.
 		if (e.getState() == State.TERMINATED

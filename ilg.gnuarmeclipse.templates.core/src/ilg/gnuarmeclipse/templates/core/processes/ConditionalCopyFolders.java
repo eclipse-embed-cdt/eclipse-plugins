@@ -11,6 +11,7 @@
  *******************************************************************************/
 package ilg.gnuarmeclipse.templates.core.processes;
 
+import ilg.gnuarmeclipse.templates.core.Activator;
 import ilg.gnuarmeclipse.templates.core.Utils;
 
 import java.io.ByteArrayInputStream;
@@ -84,10 +85,10 @@ public class ConditionalCopyFolders extends ProcessRunner {
 			String folderTargetPath = folder[1].getSimpleValue();
 			String pattern = folder[2].getSimpleValue().trim();
 			boolean replaceable = folder[3].getSimpleValue().equals("true"); //$NON-NLS-1$
-			
-			//System.out.println(folderSourcePath);
-			//System.out.println(folderTargetPath);
-			//System.out.println(pattern);
+
+			// System.out.println(folderSourcePath);
+			// System.out.println(folderTargetPath);
+			// System.out.println(pattern);
 			File dir = new File(folderSourcePath);
 			try {
 				if (!dir.isAbsolute()) {
@@ -107,27 +108,30 @@ public class ConditionalCopyFolders extends ProcessRunner {
 					dir = new File(folderURL.getFile());
 				}
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+				Activator.log(e);
 			}
 			if (dir.isDirectory()) {
 				for (File child : dir.listFiles()) {
-					//System.out.println(child);
-					//System.out.println(child.getName());
+					// System.out.println(child);
+					// System.out.println(child.getName());
 
 					String fileName = child.getName();
-					if (pattern.length() > 0){
-						if (!fileName.matches(pattern)){
-							System.out.println(fileName + " skipped");
+					if (pattern.length() > 0) {
+						if (!fileName.matches(pattern)) {
+							if (Activator.getInstance().isDebugging()) {
+								System.out.println(fileName + " skipped");
+							}
 							continue;
 						}
 					}
-					
-					if (child.isDirectory()){
-						System.out.println(fileName + " skipped");
+
+					if (child.isDirectory()) {
+						if (Activator.getInstance().isDebugging()) {
+							System.out.println(fileName + " skipped");
+						}
 						continue;
 					}
-					
+
 					URL sourceURL;
 					try {
 						sourceURL = child.toURL(); // using .toURI().toURL()

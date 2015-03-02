@@ -251,7 +251,9 @@ public class Utils {
 			marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
 			marker.setAttribute(IMarker.LOCATION, "-");
 		} catch (CoreException e) {
-			System.out.println(message);
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println(message);
+			}
 		}
 
 		return message;
@@ -266,7 +268,9 @@ public class Utils {
 			marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_WARNING);
 			marker.setAttribute(IMarker.LOCATION, "-");
 		} catch (CoreException e) {
-			System.out.println(message);
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println(message);
+			}
 		}
 
 		return message;
@@ -281,7 +285,9 @@ public class Utils {
 			marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_INFO);
 			marker.setAttribute(IMarker.LOCATION, "-");
 		} catch (CoreException e) {
-			System.out.println(message);
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println(message);
+			}
 		}
 
 		return message;

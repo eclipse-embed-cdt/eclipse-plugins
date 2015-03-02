@@ -12,6 +12,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripherals;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.render.peripherals.PeripheralsColumnPresentation;
 
 import org.eclipse.cdt.dsf.service.DsfSession;
@@ -40,8 +41,10 @@ public class PeripheralsVMProvider extends AbstractDMVMProvider implements
 
 		super(adapter, presentationContext, session);
 
-		System.out.println("PeripheralsVMProvider() " + presentationContext
-				+ " " + session);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralsVMProvider() " + presentationContext
+					+ " " + session);
+		}
 
 		RootDMVMNode rootDMVMNode = new RootDMVMNode(this);
 		PeripheralsVMNode peripheralVMNode = new PeripheralsVMNode(this,

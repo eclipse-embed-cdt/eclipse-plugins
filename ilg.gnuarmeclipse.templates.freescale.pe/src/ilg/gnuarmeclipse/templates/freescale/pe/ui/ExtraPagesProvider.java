@@ -6,18 +6,12 @@ import java.util.Map;
 import org.eclipse.cdt.ui.templateengine.AbstractWizardDataPage;
 import org.eclipse.cdt.ui.templateengine.IPagesAfterTemplateSelectionProvider;
 import org.eclipse.cdt.ui.templateengine.IWizardDataPage;
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.wizard.IWizard;
-import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchWizard;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.wizards.IWizardDescriptor;
 
 public class ExtraPagesProvider implements IPagesAfterTemplateSelectionProvider {
 

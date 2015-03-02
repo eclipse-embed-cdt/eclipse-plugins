@@ -112,8 +112,10 @@ public class EnvironmentVariableSupplier implements
 					ProjectStorage.putToolchainPathPerProject(configuration,
 							false);
 
-					System.out.println("Path \"" + toolchainPath
-							+ "\" copied to project " + project.getName());
+					if (Activator.getInstance().isDebugging()) {
+						System.out.println("Path \"" + toolchainPath
+								+ "\" copied to project " + project.getName());
+					}
 				}
 			}
 
@@ -144,15 +146,17 @@ public class EnvironmentVariableSupplier implements
 				if (bin.isDirectory())
 					sysroot = bin;
 				if (false) {
-					System.out.println("PATH="
-							+ sysroot
-							+ " opt="
-							+ path
-							+ " cfg="
-							+ configuration
-							+ " prj="
-							+ configuration.getManagedProject().getOwner()
-									.getName());
+					if (Activator.getInstance().isDebugging()) {
+						System.out.println("PATH="
+								+ sysroot
+								+ " opt="
+								+ path
+								+ " cfg="
+								+ configuration
+								+ " prj="
+								+ configuration.getManagedProject().getOwner()
+										.getName());
+					}
 				}
 				return new PathEnvironmentVariable(sysroot);
 			}
@@ -173,7 +177,9 @@ public class EnvironmentVariableSupplier implements
 								str,
 								"", " ", IBuildMacroProvider.CONTEXT_CONFIGURATION, configuration); //$NON-NLS-1$	//$NON-NLS-2$
 			} catch (CdtVariableException e) {
-				System.out.println("resolveMacros " + e.getMessage());
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("resolveMacros " + e.getMessage());
+				}
 			}
 
 			return result;

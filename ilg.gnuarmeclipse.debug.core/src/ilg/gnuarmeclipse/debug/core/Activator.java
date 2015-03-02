@@ -57,9 +57,9 @@ public class Activator extends AbstractActivator {
 
 	// ------------------------------------------------------------------------
 
-	public static void statusMessage(String msg, final boolean flag) {
-		System.out.println(msg);
-	}
+	// public static void statusMessage(String msg, final boolean flag) {
+	// System.out.println(msg);
+	// }
 
 	// ------------------------------------------------------------------------
 }

@@ -70,7 +70,9 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 
 	public void initialize(final RequestMonitor rm) {
 
-		System.out.println("GnuArmDebuggerCommandsService.initialize()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuArmDebuggerCommandsService.initialize()");
+		}
 
 		super.initialize(new RequestMonitor(getExecutor(), rm) {
 
@@ -83,7 +85,9 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 	@SuppressWarnings("rawtypes")
 	private void doInitialize(RequestMonitor rm) {
 
-		System.out.println("GnuArmDebuggerCommandsService.doInitialize()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuArmDebuggerCommandsService.doInitialize()");
+		}
 
 		// Get and remember the command control service
 		// fCommandControl = ((ICommandControlService) getServicesTracker()
@@ -94,7 +98,9 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 		register(new String[] { IGnuArmDebuggerCommandsService.class.getName(),
 				this.getClass().getName() }, new Hashtable());
 
-		System.out.println(this.getClass().getName() + " registered ");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println(this.getClass().getName() + " registered ");
+		}
 
 		fTracker = new DsfServicesTracker(Activator.getInstance().getBundle()
 				.getBundleContext(), fSession.getId());
@@ -112,7 +118,9 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 	@Override
 	public void shutdown(RequestMonitor rm) {
 
-		System.out.println("GnuArmDebuggerCommandsService.shutdown()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuArmDebuggerCommandsService.shutdown()");
+		}
 
 		// Remove this service from DSF.
 		unregister();

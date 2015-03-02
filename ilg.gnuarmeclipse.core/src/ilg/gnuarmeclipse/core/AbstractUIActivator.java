@@ -14,6 +14,7 @@ package ilg.gnuarmeclipse.core;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Path;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.graphics.Image;
@@ -41,17 +42,26 @@ public abstract class AbstractUIActivator extends AbstractUIPlugin {
 
 	// ------------------------------------------------------------------------
 
+	protected boolean fIsDebugging;
+
+	// ------------------------------------------------------------------------
+
 	public AbstractUIActivator() {
 
 		super();
 		fgInstance = this;
+
+		fIsDebugging = "true".equalsIgnoreCase(Platform
+				.getDebugOption(getBundleId() + "/debug"));
 	}
 
 	// ------------------------------------------------------------------------
 
 	public void start(BundleContext context) throws Exception {
 
-		System.out.println(getBundleId() + ".start()");
+		if (isDebugging()) {
+			System.out.println(getBundleId() + ".start()");
+		}
 		super.start(context);
 
 	}
@@ -59,7 +69,16 @@ public abstract class AbstractUIActivator extends AbstractUIPlugin {
 	public void stop(BundleContext context) throws Exception {
 
 		super.stop(context);
-		System.out.println(getBundleId() + ".stop()");
+		if (isDebugging()) {
+			System.out.println(getBundleId() + ".stop()");
+		}
+	}
+
+	// ------------------------------------------------------------------------
+
+	public boolean isDebugging() {
+
+		return fIsDebugging;
 	}
 
 	// ------------------------------------------------------------------------
@@ -170,7 +189,9 @@ public abstract class AbstractUIActivator extends AbstractUIPlugin {
 
 	public static void log(IStatus status) {
 		getInstance().getLog().log(status);
-		System.out.println(status);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println(status);
+		}
 	}
 
 	public static void log(Throwable e) {

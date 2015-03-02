@@ -149,8 +149,10 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 	@Override
 	public void update(final IPropertiesUpdate[] updates) {
 
-		System.out.println("PeripheralsVMNode.update() properties " + this
-				+ ", " + updates.length + " objs");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralsVMNode.update() properties " + this
+					+ ", " + updates.length + " objs");
+		}
 
 		try {
 			getSession().getExecutor().execute(new DsfRunnable() {
@@ -168,8 +170,10 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 	@Override
 	public void update(ILabelUpdate[] updates) {
 
-		System.out.println("PeripheralsVMNode.update() labels " + this + ", "
-				+ updates.length + " objs");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralsVMNode.update() labels " + this
+					+ ", " + updates.length + " objs");
+		}
 
 		{
 			for (int i = 0; i < updates.length; i++) {
@@ -213,8 +217,11 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 	@Override
 	protected void updateElementsInSessionThread(final IChildrenUpdate update) {
 
-		System.out.println("PeripheralsVMNode.updateElementsInSessionThread() "
-				+ this + " " + update);
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("PeripheralsVMNode.updateElementsInSessionThread() "
+							+ this + " " + update);
+		}
 
 		DsfServicesTracker tracker = getServicesTracker();
 		IPeripheralsService peripheralsService = (IPeripheralsService) tracker
@@ -234,8 +241,10 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 
 		if (fPeripherals != null) {
 			// On subsequent calls, use cached values.
-			System.out
-					.println("PeripheralsVMNode.updateElementsInSessionThread() use cached values");
+			if (Activator.getInstance().isDebugging()) {
+				System.out
+						.println("PeripheralsVMNode.updateElementsInSessionThread() use cached values");
+			}
 			fillUpdateWithVMCs(update, fPeripherals);
 			update.done();
 			return;
@@ -276,7 +285,9 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 	private void addPersistentPeripherals(
 			final IRunControl.IContainerDMContext containerDMContext) {
 
-		System.out.println("PeripheralsVMNode.addPersistentPeripherals()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralsVMNode.addPersistentPeripherals()");
+		}
 
 		final List<String> persistentPeripherals = new ArrayList<String>();
 
@@ -307,8 +318,10 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 					for (int i = 0; i < fPeripherals.length; ++i) {
 						PeripheralDMContext peripheralDMContext = (PeripheralDMContext) fPeripherals[i];
 						if (peripheralName.equals(peripheralDMContext.getName())) {
-							System.out.println(fPeripherals[i]
-									+ " must be rendered");
+							if (Activator.getInstance().isDebugging()) {
+								System.out.println(fPeripherals[i]
+										+ " must be rendered");
+							}
 
 							MemoryBlockMonitor.getInstance().addMemoryBlock(
 									workbenchWindow, peripheralDMContext,
@@ -327,9 +340,11 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 	@ConfinedToDsfExecutor("getSession().getExecutor()")
 	protected void updatePropertiesInSessionThread(IPropertiesUpdate[] updates) {
 
-		System.out
-				.println("PeripheralsVMNode.updatePropertiesInSessionThread() "
-						+ this + ", " + updates.length + " objs");
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("PeripheralsVMNode.updatePropertiesInSessionThread() "
+							+ this + ", " + updates.length + " objs");
+		}
 
 		for (final IPropertiesUpdate update : updates) {
 

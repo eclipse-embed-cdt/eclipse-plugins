@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.dsf;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IGdbServerBackendService;
 
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
@@ -46,7 +47,9 @@ public class GnuArmServerServicesLaunchSequence extends Sequence {
 		super(session.getExecutor(), progressMonitor, "Start Server",
 				"Start Server Rollback");
 
-		System.out.println("GnuArmServerServicesLaunchSequence()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GnuArmServerServicesLaunchSequence()");
+		}
 
 		fSession = session;
 		fLaunch = launch;

@@ -93,7 +93,9 @@ public class PeripheralMemoryService extends MIMemory implements
 	@Override
 	public void initialize(final RequestMonitor rm) {
 
-		System.out.println("PeripheralMemoryService.initialize()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralMemoryService.initialize()");
+		}
 		super.initialize(new ImmediateRequestMonitor(rm) {
 			@Override
 			protected void handleSuccess() {
@@ -113,7 +115,9 @@ public class PeripheralMemoryService extends MIMemory implements
 				PeripheralMemoryService.class.getName(), },
 				new Hashtable<String, String>());
 
-		System.out.println("PeripheralMemoryService registered " + this);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralMemoryService registered " + this);
+		}
 
 		fTracker = new DsfServicesTracker(Activator.getInstance().getBundle()
 				.getBundleContext(), fSession.getId());
@@ -141,7 +145,9 @@ public class PeripheralMemoryService extends MIMemory implements
 	@Override
 	public void shutdown(RequestMonitor rm) {
 
-		System.out.println("PeripheralMemoryService.shutdown()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralMemoryService.shutdown()");
+		}
 
 		// Remove this service from DSF.
 		unregister();
@@ -177,8 +183,10 @@ public class PeripheralMemoryService extends MIMemory implements
 				DsfExecutor executor, RequestMonitor rm) {
 			super(executor, rm);
 
-			System.out.println("PeripheralSequence() "
-					+ memContext.getSessionId());
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("PeripheralSequence() "
+						+ memContext.getSessionId());
+			}
 			fMemContext = memContext;
 		}
 
@@ -342,8 +350,10 @@ public class PeripheralMemoryService extends MIMemory implements
 				});
 			}
 
-			System.out.println("PeripheralSequence has " + stepsList.size()
-					+ " steps.");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("PeripheralSequence has " + stepsList.size()
+						+ " steps.");
+			}
 			return stepsList.toArray(new Step[stepsList.size()]);
 		}
 	}
@@ -410,7 +420,9 @@ public class PeripheralMemoryService extends MIMemory implements
 					protected void handleSuccess() {
 						try {
 							Integer data = Integer.decode(getData().getValue());
-							System.out.println("readAddressSize() " + data);
+							if (Activator.getInstance().isDebugging()) {
+								System.out.println("readAddressSize() " + data);
+							}
 							drm.setData(data);
 						} catch (NumberFormatException e) {
 							drm.setStatus(new Status(
@@ -434,7 +446,9 @@ public class PeripheralMemoryService extends MIMemory implements
 					@Override
 					protected void handleSuccess() {
 						Boolean data = Boolean.valueOf(getData().isBigEndian());
-						System.out.println("readEndianness() " + data);
+						if (Activator.getInstance().isDebugging()) {
+							System.out.println("readEndianness() " + data);
+						}
 						drm.setData(data);
 						drm.done();
 					}
@@ -470,8 +484,10 @@ public class PeripheralMemoryService extends MIMemory implements
 			return;
 		}
 
-		System.out.println(String.format("readMemoryBlock 0x%s+0x%X 0x%X",
-				address.toString(16), offset, word_count * word_size));
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println(String.format("readMemoryBlock 0x%s+0x%X 0x%X",
+					address.toString(16), offset, word_count * word_size));
+		}
 
 		flushCache(memoryDMC);
 		readMemoryBlock(memoryDMC, address, offset, 1, word_count * word_size,
@@ -513,13 +529,15 @@ public class PeripheralMemoryService extends MIMemory implements
 			return;
 		}
 
-		// System.out.print("writeMemoryBlock 0x");
-		// for (int i=0; i < buffer.length; ++i){
-		// System.out.print(String.format(" %02X", buffer[i]));
-		// }
-		// System.out.print(" 0x");
-		System.out.println(String.format("writeMemoryBlock 0x%s+0x%X 0x%X",
-				address.toString(16), offset, word_count * word_size));
+		if (Activator.getInstance().isDebugging()) {
+			// System.out.print("writeMemoryBlock 0x");
+			// for (int i=0; i < buffer.length; ++i){
+			// System.out.print(String.format(" %02X", buffer[i]));
+			// }
+			// System.out.print(" 0x");
+			System.out.println(String.format("writeMemoryBlock 0x%s+0x%X 0x%X",
+					address.toString(16), offset, word_count * word_size));
+		}
 
 		flushCache(memoryDMC);
 		writeMemoryBlock(memoryDMC, address, offset, 1, word_count * word_size,

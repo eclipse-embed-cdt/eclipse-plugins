@@ -85,7 +85,8 @@ public class DevicesView extends ViewPart implements IDataManagerListener {
 				if (node.isBooleanProperty(Property.ENABLED)) {
 					return Activator.getInstance().getImage("hardware_chip");
 				} else {
-					return Activator.getInstance().getImage("hardware_chip_grey");
+					return Activator.getInstance().getImage(
+							"hardware_chip_grey");
 				}
 			} else {
 				return null;
@@ -181,7 +182,9 @@ public class DevicesView extends ViewPart implements IDataManagerListener {
 		super.dispose();
 		fDataManager.removeListener(this);
 
-		System.out.println("DevicesView.dispose()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DevicesView.dispose()");
+		}
 	}
 
 	private void addProviders() {

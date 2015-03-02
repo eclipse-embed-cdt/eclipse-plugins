@@ -68,13 +68,17 @@ public class PacksDataManagerFactoryProxy implements IPacksDataManagerFactory,
 			return fDataManager;
 		}
 
-		System.out.println("DataManagerFactoryProxy.createDataManager()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DataManagerFactoryProxy.createDataManager()");
+		}
 
 		IExtension[] extensions = Platform.getExtensionRegistry()
 				.getExtensionPoint(Activator.PLUGIN_ID, "data").getExtensions();
 
 		if (extensions.length != 1) {
-			System.out.println("no single core.data xp");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("no single core.data xp");
+			}
 			return null;
 		}
 
@@ -84,7 +88,9 @@ public class PacksDataManagerFactoryProxy implements IPacksDataManagerFactory,
 		IConfigurationElement configElement = configElements[0];
 
 		if (!FACTORY_ELEMENT.equals(configElement.getName())) {
-			System.out.println("no <factory> element");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("no <factory> element");
+			}
 			return null;
 		}
 
@@ -97,14 +103,18 @@ public class PacksDataManagerFactoryProxy implements IPacksDataManagerFactory,
 				factory = (IPacksDataManagerFactory) obj;
 				fDataManager = factory.createDataManager();
 
-				System.out
-						.println("DataManagerFactoryProxy.createDataManager() completed");
+				if (Activator.getInstance().isDebugging()) {
+					System.out
+							.println("DataManagerFactoryProxy.createDataManager() completed");
+				}
 				return fDataManager;
 			} else {
 				return null;
 			}
 		} catch (CoreException e) {
-			System.out.println("cannot get factory");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("cannot get factory");
+			}
 			return null;
 		}
 	}

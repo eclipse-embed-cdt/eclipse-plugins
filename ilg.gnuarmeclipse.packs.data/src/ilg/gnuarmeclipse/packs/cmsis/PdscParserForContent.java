@@ -15,6 +15,7 @@ import ilg.gnuarmeclipse.core.Xml;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
+import ilg.gnuarmeclipse.packs.data.Activator;
 import ilg.gnuarmeclipse.packs.data.Utils;
 
 import java.io.IOException;
@@ -34,8 +35,10 @@ public class PdscParserForContent extends PdscParser {
 		Element packageElement = fDocument.getDocumentElement();
 		String firstElementName = packageElement.getNodeName();
 		if (!"package".equals(firstElementName)) {
-			System.out.println("Missing <package>, <" + firstElementName
-					+ "> encountered");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("Missing <package>, <" + firstElementName
+						+ "> encountered");
+			}
 			return;
 		}
 

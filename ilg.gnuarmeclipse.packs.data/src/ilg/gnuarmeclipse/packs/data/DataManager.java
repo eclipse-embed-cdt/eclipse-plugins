@@ -656,7 +656,9 @@ public class DataManager implements IPacksDataManager {
 	 */
 	private void clearCachedInstalledObjectsForBuild() {
 
-		System.out.println("clearCachedInstalledObjectsForBuild()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("clearCachedInstalledObjectsForBuild()");
+		}
 
 		fInstalledObjectsForBuild = null;
 

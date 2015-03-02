@@ -1,5 +1,7 @@
 package ilg.gnuarmeclipse.templates.freescale.pe.processes;
 
+import ilg.gnuarmeclipse.templates.freescale.pe.Activator;
+
 import org.eclipse.cdt.core.templateengine.TemplateCore;
 import org.eclipse.cdt.core.templateengine.process.ProcessArgument;
 import org.eclipse.cdt.core.templateengine.process.ProcessFailureException;
@@ -20,7 +22,10 @@ public class RunProcessorExpertWizard extends ProcessRunner {
 			throws ProcessFailureException {
 
 		String projectName = args[0].getSimpleValue();
-		System.out.println("ProcessorExpertWizard.process(projectName='"+projectName+"')");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("ProcessorExpertWizard.process(projectName='"
+					+ projectName + "')");
+		}
 
 		String id = "com.processorexpert.ui.pewizard.newprjwizard";
 
@@ -34,18 +39,19 @@ public class RunProcessorExpertWizard extends ProcessRunner {
 				Display display = Display.getCurrent();
 
 				// We need a method to pass the project name to the wizard.
-				// This can be done either with a separate constructor or a 
+				// This can be done either with a separate constructor or a
 				// new method, for example:
 				// wizard.setProjectName(projectName);
-				
-				WizardDialog wd = new WizardDialog(
-						display.getActiveShell(), wizard);
+
+				WizardDialog wd = new WizardDialog(display.getActiveShell(),
+						wizard);
 				wd.setTitle(wizard.getWindowTitle());
-				
+
 				wd.open();
 			}
 		} catch (CoreException e) {
-			e.printStackTrace();
+			Activator.log(e);
+			;
 		}
 	}
 

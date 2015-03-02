@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdDMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdRegisterDMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdUtils;
@@ -94,13 +95,17 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 	@Override
 	public void setValue(String value) throws DebugException {
 
-		System.out.println("setValue(" + value + ")");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("setValue(" + value + ")");
+		}
 	}
 
 	@Override
 	public void setValue(IValue value) throws DebugException {
 
-		System.out.println("setValue(" + value + ")");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("setValue(" + value + ")");
+		}
 
 		if ((value instanceof PeripheralValue)) {
 			fValue = ((PeripheralValue) value);
@@ -293,7 +298,9 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 			return;
 
 		// TODO: implement forceReadRegister()
-		System.out.println("unimplemented forceReadRegister()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("unimplemented forceReadRegister()");
+		}
 	}
 
 	public int getOffsetBits() {

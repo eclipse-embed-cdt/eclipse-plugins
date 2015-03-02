@@ -60,7 +60,9 @@ public class GlobalToolsPathsPreferencePage extends FieldEditorPreferencePage
 	// Contributed by IWorkbenchPreferencePage
 	@Override
 	public void init(IWorkbench workbench) {
-		System.out.println("GlobalToolsPathsPage.init()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("GlobalToolsPathsPage.init()");
+		}
 	}
 
 	/**

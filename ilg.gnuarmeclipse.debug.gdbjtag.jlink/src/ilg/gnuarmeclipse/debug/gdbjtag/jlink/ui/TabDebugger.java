@@ -77,8 +77,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private static final String TAB_ID = Activator.PLUGIN_ID
 			+ ".ui.debuggertab";
 
-	private static final boolean DEBUG = false;
-
 	private static int COLUMN_WIDTH = 70;
 
 	// ------------------------------------------------------------------------
@@ -157,7 +155,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	@Override
 	public void createControl(Composite parent) {
 
-		if (DEBUG) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabDebugger: createControl() ");
 		}
 
@@ -1207,7 +1205,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 
-		if (DEBUG) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabDebugger: initializeFrom() "
 					+ configuration.getName());
 		}
@@ -1507,7 +1505,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			Activator.log(e.getStatus());
 		}
 
-		if (DEBUG) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabDebugger: initializeFrom() completed "
 					+ configuration.getName());
 		}
@@ -1717,7 +1715,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
-		if (DEBUG) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabDebugger: activated() "
 					+ workingCopy.getName());
 		}
@@ -1725,7 +1723,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
-		if (DEBUG) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabDebugger: deactivated() "
 					+ workingCopy.getName());
 		}
@@ -1734,7 +1732,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 
-		if (DEBUG) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabDebugger: performApply() "
 					+ configuration.getName() + ", dirty=" + isDirty());
 		}
@@ -1965,7 +1963,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		PersistentValues.flush();
 
-		if (DEBUG) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabDebugger: performApply() completed "
 					+ configuration.getName() + ", dirty=" + isDirty());
 		}
@@ -1974,7 +1972,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 
-		if (DEBUG) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabDebugger: setDefaults() "
 					+ configuration.getName());
 		}

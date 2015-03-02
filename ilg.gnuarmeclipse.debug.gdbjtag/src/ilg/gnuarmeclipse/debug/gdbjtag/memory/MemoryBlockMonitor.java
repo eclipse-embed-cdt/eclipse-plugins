@@ -62,7 +62,9 @@ public class MemoryBlockMonitor {
 	// ------------------------------------------------------------------------
 
 	public MemoryBlockMonitor() {
-		System.out.println("MemoryBlockMonitor()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("MemoryBlockMonitor()");
+		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -79,8 +81,10 @@ public class MemoryBlockMonitor {
 			final PeripheralDMContext peripheralDMContext,
 			final boolean isChecked) {
 
-		System.out.println("MemoryBlockMonitor.displayPeripheralMonitor("
-				+ isChecked + ")");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("MemoryBlockMonitor.displayPeripheralMonitor("
+					+ isChecked + ")");
+		}
 
 		Object object;
 		object = peripheralDMContext
@@ -110,7 +114,9 @@ public class MemoryBlockMonitor {
 	 */
 	public void savePeripheralNames(IMemoryBlock[] memoryBlocks) {
 
-		System.out.println("MemoryBlockMonitor.savePeripheralNames()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("MemoryBlockMonitor.savePeripheralNames()");
+		}
 
 		for (int i = 0; i < memoryBlocks.length; ++i) {
 			if (memoryBlocks[i] instanceof PeripheralMemoryBlockExtension) {
@@ -144,8 +150,10 @@ public class MemoryBlockMonitor {
 			PeripheralDMContext peripheralDMContext,
 			IMemoryBlockRetrieval memoryBlockRetrieval) {
 
-		System.out.println("MemoryBlockMonitor.addMemoryBlock() "
-				+ peripheralDMContext.getName());
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("MemoryBlockMonitor.addMemoryBlock() "
+					+ peripheralDMContext.getName());
+		}
 
 		String addr = peripheralDMContext.getPeripheralInstance()
 				.getHexAddress();
@@ -190,8 +198,10 @@ public class MemoryBlockMonitor {
 	private void removeMemoryBlock(IWorkbenchWindow workbenchWindow,
 			PeripheralDMContext peripheralDMContext) {
 
-		System.out.println("MemoryBlockMonitor.removeMemoryBlock() "
-				+ peripheralDMContext.getName());
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("MemoryBlockMonitor.removeMemoryBlock() "
+					+ peripheralDMContext.getName());
+		}
 
 		IMemoryBlock[] memoryBlocks = DebugPlugin.getDefault()
 				.getMemoryBlockManager().getMemoryBlocks();
@@ -249,7 +259,9 @@ public class MemoryBlockMonitor {
 					.getMemoryRenderingManager().getDefaultRenderingTypes(
 							memoryBlock);
 			for (IMemoryRenderingType defaultType : defaultTypes) {
-				System.out.println((defaultType.getId()));
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println((defaultType.getId()));
+				}
 				type = defaultType;
 				if (renderingId.equals(defaultType.getId())) {
 					break;
@@ -281,9 +293,11 @@ public class MemoryBlockMonitor {
 			IMemoryBlock memoryBlock, IMemoryRenderingType memoryRenderingType,
 			String paneId) throws CoreException {
 
-		System.out.println(String.format(
-				"MemoryBlockMonitor.createRenderingInContainer() 0x%X",
-				memoryBlock.getStartAddress()));
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println(String.format(
+					"MemoryBlockMonitor.createRenderingInContainer() 0x%X",
+					memoryBlock.getStartAddress()));
+		}
 
 		IMemoryRenderingSite site = getRenderingSite(workbenchWindow);
 		if (site != null) {
@@ -321,14 +335,19 @@ public class MemoryBlockMonitor {
 	 * @param workbenchWindow
 	 */
 	public void showMemoryView(final IWorkbenchWindow workbenchWindow) {
-		System.out.println("showView(MemoryView)");
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("showView(MemoryView)");
+		}
 
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
 				try {
 					workbenchWindow.getActivePage().showView(
 							IDebugUIConstants.ID_MEMORY_VIEW);
-					System.out.println("showView(MemoryView) done");
+					if (Activator.getInstance().isDebugging()) {
+						System.out.println("showView(MemoryView) done");
+					}
 				} catch (PartInitException e) {
 					Activator.log(e);
 				}

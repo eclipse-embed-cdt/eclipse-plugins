@@ -16,6 +16,7 @@ import ilg.gnuarmeclipse.core.Xml;
 import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
+import ilg.gnuarmeclipse.packs.data.Activator;
 
 import java.util.List;
 
@@ -34,8 +35,10 @@ public class PdscParserForBuild extends PdscParser {
 		Element packageElement = fDocument.getDocumentElement();
 		String firstElementName = packageElement.getNodeName();
 		if (!"package".equals(firstElementName)) {
-			System.out.println("Missing <package>, <" + firstElementName
-					+ "> encountered");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("Missing <package>, <" + firstElementName
+						+ "> encountered");
+			}
 			return;
 		}
 
@@ -43,7 +46,10 @@ public class PdscParserForBuild extends PdscParser {
 				.trim();
 
 		if (!PdscUtils.isSchemaValid(schemaVersion)) {
-			System.out.println("Unrecognised schema version " + schemaVersion);
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("Unrecognised schema version "
+						+ schemaVersion);
+			}
 			return;
 		}
 
@@ -257,8 +263,10 @@ public class PdscParserForBuild extends PdscParser {
 		Element packageElement = fDocument.getDocumentElement();
 		String firstElementName = packageElement.getNodeName();
 		if (!"package".equals(firstElementName)) {
-			System.out.println("Missing <packages>, <" + firstElementName
-					+ "> encountered");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("Missing <packages>, <" + firstElementName
+						+ "> encountered");
+			}
 			return;
 		}
 
@@ -266,7 +274,10 @@ public class PdscParserForBuild extends PdscParser {
 				.trim();
 
 		if (!PdscUtils.isSchemaValid(schemaVersion)) {
-			System.out.println("Unrecognised schema version " + schemaVersion);
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("Unrecognised schema version "
+						+ schemaVersion);
+			}
 			return;
 		}
 

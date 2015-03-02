@@ -1,5 +1,7 @@
 package ilg.gnuarmeclipse.templates.core.processes;
 
+import ilg.gnuarmeclipse.templates.core.Activator;
+
 import java.util.Map;
 
 import org.eclipse.cdt.core.templateengine.TemplateCore;
@@ -34,12 +36,16 @@ public class SetPropertyIfHasNature extends ProcessRunner {
 				if (values.containsKey(propertyName)) {
 					values.put(propertyName, propertyValue);
 				} else {
-					System.out.println("Property " + propertyName
-							+ " not defined.");
+					if (Activator.getInstance().isDebugging()) {
+						System.out.println("Property " + propertyName
+								+ " not defined.");
+					}
 				}
 			}
 		} catch (CoreException e1) {
-			System.out.println("has not nature");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("has not nature");
+			}
 		}
 
 	}

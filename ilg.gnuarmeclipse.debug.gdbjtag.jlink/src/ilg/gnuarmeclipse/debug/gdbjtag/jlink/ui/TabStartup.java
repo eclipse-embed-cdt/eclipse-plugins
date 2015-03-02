@@ -66,8 +66,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	private static final String TAB_NAME = "Startup";
 	private static final String TAB_ID = Activator.PLUGIN_ID + ".ui.startuptab";
 
-	private static final boolean DEBUG = false;
-
 	// ------------------------------------------------------------------------
 
 	private Text fInitCommands;
@@ -158,7 +156,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	@Override
 	public void createControl(Composite parent) {
 
-		if (DEBUG) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabStartup: createControl() ");
 		}
 
@@ -1220,7 +1218,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 
-		if (DEBUG) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabStartup: initializeFrom() "
 					+ configuration.getName() + ", dirty=" + isDirty());
 		}
@@ -1493,11 +1491,13 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			updateUseFileEnablement();
 
 		} catch (CoreException e) {
-			System.out.println(e.getStatus());
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println(e.getStatus());
+			}
 			Activator.log(e.getStatus());
 		}
 
-		if (DEBUG) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabStartup: initializeFrom() completed "
 					+ configuration.getName() + ", dirty=" + isDirty());
 		}
@@ -1672,7 +1672,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
-		if (DEBUG) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabStartup: activated() "
 					+ workingCopy.getName());
 		}
@@ -1680,7 +1680,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
-		if (DEBUG) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabStartup: deactivated() "
 					+ workingCopy.getName());
 		}
@@ -1689,7 +1689,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 
-		if (DEBUG) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabStartup: performApply() "
 					+ configuration.getName() + ", dirty=" + isDirty());
 		}
@@ -1883,7 +1883,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		PersistentValues.flush();
 
-		if (DEBUG) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabStartup: performApply() completed "
 					+ configuration.getName() + ", dirty=" + isDirty());
 		}
@@ -1892,7 +1892,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 
-		if (DEBUG) {
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabStartup: setDefaults() "
 					+ configuration.getName());
 		}

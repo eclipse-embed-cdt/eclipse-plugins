@@ -18,6 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 
 import ilg.gnuarmeclipse.core.CProjectPacksStorage;
 import ilg.gnuarmeclipse.debug.core.data.ICProjectExtraDataManager;
+import ilg.gnuarmeclipse.managedbuild.cross.Activator;
 
 public class CProjectExtraDataManager implements ICProjectExtraDataManager {
 
@@ -37,7 +38,9 @@ public class CProjectExtraDataManager implements ICProjectExtraDataManager {
 	// ------------------------------------------------------------------------
 
 	public CProjectExtraDataManager() {
-		System.out.println("CProjectExtraDataManager()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("CProjectExtraDataManager()");
+		}
 	}
 
 	// ------------------------------------------------------------------------

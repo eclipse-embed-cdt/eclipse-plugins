@@ -125,7 +125,9 @@ public class DefaultPreferences {
 	public static void putToolchainName(String name) {
 
 		String key = PersistentPreferences.TOOLCHAIN_NAME_KEY;
-		System.out.println("Default " + key + "=" + name);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Default " + key + "=" + name);
+		}
 		putString(key, name);
 	}
 
@@ -166,7 +168,9 @@ public class DefaultPreferences {
 	public static void putToolchainPath(String toolchainName, String value) {
 
 		String key = PersistentPreferences.getToolchainKey(toolchainName);
-		System.out.println("Default " + key + "=" + value);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Default " + key + "=" + value);
+		}
 		putString(key, value);
 	}
 
@@ -191,7 +195,9 @@ public class DefaultPreferences {
 	public static void putToolchainSearchPath(String toolchainName, String value) {
 
 		String key = PersistentPreferences.getToolchainSearchKey(toolchainName);
-		System.out.println("Default " + key + "=" + value);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Default " + key + "=" + value);
+		}
 		putString(key, value);
 	}
 
@@ -229,7 +235,9 @@ public class DefaultPreferences {
 	public static void putBuildToolsPath(String value) {
 
 		String key = PersistentPreferences.BUILD_TOOLS_PATH_KEY;
-		System.out.println("Default " + key + "=" + value);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Default " + key + "=" + value);
+		}
 
 		putString(key, value);
 	}
@@ -273,8 +281,10 @@ public class DefaultPreferences {
 			value = "";
 		}
 
-		System.out.println("DefaultPreferences.discoverBuildToolsPath()=\""
-				+ value + "\"");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.discoverBuildToolsPath()=\""
+					+ value + "\"");
+		}
 
 		return value;
 	}

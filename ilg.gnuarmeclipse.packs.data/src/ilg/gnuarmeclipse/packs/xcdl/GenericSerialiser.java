@@ -16,6 +16,7 @@ import ilg.gnuarmeclipse.packs.core.tree.Leaf;
 import ilg.gnuarmeclipse.packs.core.tree.Node;
 import ilg.gnuarmeclipse.packs.core.tree.Property;
 import ilg.gnuarmeclipse.packs.core.tree.Type;
+import ilg.gnuarmeclipse.packs.data.Activator;
 
 import java.io.File;
 import java.io.IOException;
@@ -178,18 +179,14 @@ public class GenericSerialiser {
 					Set<String> propertyNames = getPropertyNames();
 					if (propertyNames != null
 							&& propertyNames.contains(propertyName)) {
-						fWriter.println("<"
-								+ propertyName
-								+ ">"
-								+ Xml.xmlEscape(properties.get(key)
-										.toString()) + "</" + propertyName
-								+ ">");
+						fWriter.println("<" + propertyName + ">"
+								+ Xml.xmlEscape(properties.get(key).toString())
+								+ "</" + propertyName + ">");
 					} else {
-						fWriter.println("<property name=\""
-								+ propertyName
+						fWriter.println("<property name=\"" + propertyName
 								+ "\">"
-								+ Xml.xmlEscape(properties.get(key)
-										.toString()) + "</property>");
+								+ Xml.xmlEscape(properties.get(key).toString())
+								+ "</property>");
 					}
 				}
 
@@ -202,7 +199,9 @@ public class GenericSerialiser {
 			if (node.hasChildren()) {
 
 				if (eo.doIgnoreChildren) {
-					System.out.println("Ignoring children of " + node);
+					if (Activator.getInstance().isDebugging()) {
+						System.out.println("Ignoring children of " + node);
+					}
 				} else {
 					if (eo.fDoOutputNodes) {
 						putIndentation(depth + 1);
