@@ -337,7 +337,7 @@ HardFault_Handler (void)
   );
 }
 
-void __attribute__ ((section(".after_vectors"),weak))
+void __attribute__ ((section(".after_vectors"),weak,used))
 HardFault_Handler_C (ExceptionStackFrame* frame __attribute__((unused)),
                      uint32_t lr __attribute__((unused)))
 {
@@ -414,7 +414,7 @@ HardFault_Handler (void)
   );
 }
 
-void __attribute__ ((section(".after_vectors"),weak))
+void __attribute__ ((section(".after_vectors"),weak,used))
 HardFault_Handler_C (ExceptionStackFrame* frame __attribute__((unused)),
                      uint32_t lr __attribute__((unused)))
 {
@@ -462,7 +462,7 @@ BusFault_Handler (void)
   );
 }
 
-void __attribute__ ((section(".after_vectors"),weak))
+void __attribute__ ((section(".after_vectors"),weak,used))
 BusFault_Handler_C (ExceptionStackFrame* frame __attribute__((unused)),
                     uint32_t lr __attribute__((unused)))
 {
@@ -498,7 +498,7 @@ UsageFault_Handler (void)
   );
 }
 
-void __attribute__ ((section(".after_vectors"),weak))
+void __attribute__ ((section(".after_vectors"),weak,used))
 UsageFault_Handler_C (ExceptionStackFrame* frame __attribute__((unused)),
                       uint32_t lr __attribute__((unused)))
 {
