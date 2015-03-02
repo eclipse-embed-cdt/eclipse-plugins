@@ -2,7 +2,7 @@
 <feature
       id="ilg.gnuarmeclipse.templates.cortexm"
       label="%featureName"
-      version="1.2.3.qualifier"
+      version="1.2.4.qualifier"
       provider-name="%providerName"
       plugin="ilg.gnuarmeclipse.templates.cortexm">
 
