@@ -31,7 +31,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			default="%CM.ramSize.default" hidden="false" persist="true" />
 
 		<property id="syscalls" label="%syscalls.label" description="%syscalls.description"
-			type="select" default="retarget" hidden="false" persist="true">
+			type="select" default="none" hidden="false" persist="true">
 			<item value="none" label="Freestanding (no POSIX system calls)" />
 			<item value="retarget"
 				label="POSIX (system calls implemented by application code)" />

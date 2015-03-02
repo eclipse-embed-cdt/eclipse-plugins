@@ -37,7 +37,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		<!-- ============================================================== -->
 
 		<property id="syscalls" label="%syscalls.label" description="%syscalls.description"
-			type="select" default="retarget" hidden="false" persist="true">
+			type="select" default="none" hidden="false" persist="true">
 			<item value="none" label="Freestanding (no POSIX system calls)" />
 			<item value="retarget"
 				label="POSIX (system calls implemented by application code)" />
@@ -45,7 +45,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		</property>
 
 		<property id="trace" label="%trace.label" description="%trace.description"
-			type="select" default="ITM" hidden="false" persist="true">
+			type="select" default="DEBUG" hidden="false" persist="true">
 			<item value="NONE" label="None (no trace output)" />
 			<item value="STDOUT" label="Semihosting STDOUT stream" />
 			<item value="DEBUG" label="Semihosting DEBUG channel" />
