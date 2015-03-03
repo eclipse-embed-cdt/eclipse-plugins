@@ -260,7 +260,8 @@ public class MemoryBlockMonitor {
 							memoryBlock);
 			for (IMemoryRenderingType defaultType : defaultTypes) {
 				if (Activator.getInstance().isDebugging()) {
-					System.out.println((defaultType.getId()));
+					System.out.println("addDefaultRenderings() "
+							+ (defaultType.getId()));
 				}
 				type = defaultType;
 				if (renderingId.equals(defaultType.getId())) {

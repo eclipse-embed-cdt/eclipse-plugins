@@ -78,10 +78,6 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 				updateOptions(config);
 			} catch (BuildException e) {
 				Activator.log(e);
-				if (Activator.getInstance().isDebugging()) {
-					System.out.println("SetCrossCommandWizardOperation "
-							+ e.getMessage());
-				}
 			}
 		}
 

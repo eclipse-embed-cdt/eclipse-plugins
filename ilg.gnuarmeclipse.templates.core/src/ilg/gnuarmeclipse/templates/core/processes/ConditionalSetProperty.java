@@ -29,10 +29,7 @@ public class ConditionalSetProperty extends ProcessRunner {
 		if (values.containsKey(propertyName)) {
 			values.put(propertyName, propertyValue);
 		} else {
-			if (Activator.getInstance().isDebugging()) {
-				System.out
-						.println("Property " + propertyName + " not defined.");
-			}
+			Activator.log("Property " + propertyName + " not defined.");
 		}
 	}
 }

@@ -586,9 +586,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 				setOptionsForToolchain(config, fSelectedToolchainIndex);
 
 			} catch (BuildException e1) {
-				if (Activator.getInstance().isDebugging()) {
-					System.out.println("cannot setOptionsForToolchain");
-				}
+				Activator.log(e1);
 			}
 		}
 
@@ -975,11 +973,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 							config.getBuilder(), new NullProgressMonitor());
 					makefileGenerator.regenerateMakefiles();
 				} catch (CoreException e) {
-					// This had better be allowed during a build
-					if (Activator.getInstance().isDebugging()) {
-						System.out.println("propagateCommandRmUpdate "
-								+ e.getMessage());
-					}
+					Activator.log(e.getStatus());
 				}
 			}
 		}
@@ -1042,9 +1036,9 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 		IToolChain toolchain = fConfig.getToolChain();
 		String sToolchainId = toolchain.getBaseId();
-		if (sToolchainId.startsWith(IDs.TOOLCHAIN_ID + "."))
+		if (sToolchainId.startsWith(IDs.TOOLCHAIN_ID + ".")) {
 			return true;
-
+		}
 		return false;
 	}
 

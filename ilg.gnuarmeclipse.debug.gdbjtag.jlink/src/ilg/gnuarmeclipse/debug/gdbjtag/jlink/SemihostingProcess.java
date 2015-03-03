@@ -67,7 +67,7 @@ public class SemihostingProcess extends Process implements Runnable {
 				Thread.sleep(10000);
 			} catch (InterruptedException e) {
 				if (Activator.getInstance().isDebugging()) {
-					System.out.println("NullInputStream read interrupted");
+					System.out.println("NullInputStream.read() interrupted");
 				}
 			}
 			return 0;

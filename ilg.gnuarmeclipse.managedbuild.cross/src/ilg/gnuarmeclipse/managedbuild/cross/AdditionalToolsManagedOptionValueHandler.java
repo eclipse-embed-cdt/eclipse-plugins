@@ -66,10 +66,8 @@ public class AdditionalToolsManagedOptionValueHandler extends
 				return false; // should we return true?
 
 			} else {
-				if (Activator.getInstance().isDebugging()) {
-					System.out.println("unexpected instanceof configuration "
-							+ configuration.getClass().getCanonicalName());
-				}
+				Activator.log("unexpected instanceof configuration "
+						+ configuration.getClass().getCanonicalName());
 			}
 
 		}

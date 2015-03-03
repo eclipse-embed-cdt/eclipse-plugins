@@ -47,10 +47,7 @@ public class ProjectStorage {
 			value = project.getPersistentProperty(new QualifiedName(config
 					.getId(), IS_TOOLCHAIN_PATH_PER_PROJECT));
 		} catch (CoreException e) {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println("isToolchainPathPerProject "
-						+ e.getMessage());
-			}
+			Activator.log(e.getStatus());
 			return false;
 		}
 
@@ -69,10 +66,7 @@ public class ProjectStorage {
 			project.setPersistentProperty(new QualifiedName(config.getId(),
 					IS_TOOLCHAIN_PATH_PER_PROJECT), String.valueOf(value));
 		} catch (CoreException e) {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println("putToolchainPathPerProject "
-						+ e.getMessage());
-			}
+			Activator.log(e.getStatus());
 			return false;
 		}
 
@@ -94,9 +88,7 @@ public class ProjectStorage {
 			value = project.getPersistentProperty(new QualifiedName(config
 					.getId(), TOOLCHAIN_PATH));
 		} catch (CoreException e) {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println("getToolchainPath() = " + e.getMessage());
-			}
+			Activator.log(e.getStatus());
 			return "";
 		}
 
@@ -114,9 +106,7 @@ public class ProjectStorage {
 			project.setPersistentProperty(new QualifiedName(config.getId(),
 					TOOLCHAIN_PATH), value.trim());
 		} catch (CoreException e) {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println("putToolchainPath " + e.getMessage());
-			}
+			Activator.log(e.getStatus());
 			return false;
 		}
 

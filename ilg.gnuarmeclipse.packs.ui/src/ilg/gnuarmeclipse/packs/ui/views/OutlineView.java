@@ -649,9 +649,7 @@ public class OutlineView extends ViewPart {
 
 		String type = node.getType();
 		if (fPackageAbsolutePath == null) {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println("null m_packagePath");
-			}
+			Activator.log("doubleClickAction() null fPackageAbsolutePath");
 			return;
 		}
 
@@ -678,9 +676,7 @@ public class OutlineView extends ViewPart {
 			} else if ("include".equals(category) || "library".equals(category)) {
 				; // ignore folders
 			} else {
-				if (Activator.getInstance().isDebugging()) {
-					System.out.println("File " + node + "  " + category);
-				}
+				Activator.log("File " + node + "  " + category + " ignored");
 			}
 
 		} else if (Type.BOOK.equals(type)) {
@@ -699,9 +695,7 @@ public class OutlineView extends ViewPart {
 						.append(relativeFile));
 
 			} else {
-				if (Activator.getInstance().isDebugging()) {
-					System.out.println("Book " + node);
-				}
+				Activator.log("Book " + node + " ignored");
 			}
 
 		} else if (Type.HEADER.equals(type)) {

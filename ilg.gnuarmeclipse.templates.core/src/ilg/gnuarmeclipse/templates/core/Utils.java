@@ -39,9 +39,7 @@ public class Utils {
 
 		String sa[] = condition.split(" ");
 		if (sa.length != 3) {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println("Unrecognised condition " + condition);
-			}
+			Activator.log("Unrecognised condition " + condition);
 			return false;
 		}
 

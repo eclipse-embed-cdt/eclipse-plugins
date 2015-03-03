@@ -36,16 +36,11 @@ public class SetPropertyIfHasNature extends ProcessRunner {
 				if (values.containsKey(propertyName)) {
 					values.put(propertyName, propertyValue);
 				} else {
-					if (Activator.getInstance().isDebugging()) {
-						System.out.println("Property " + propertyName
-								+ " not defined.");
-					}
+					Activator.log("Property " + propertyName + " not defined.");
 				}
 			}
 		} catch (CoreException e1) {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println("has not nature");
-			}
+			Activator.log(e1.getStatus());
 		}
 
 	}

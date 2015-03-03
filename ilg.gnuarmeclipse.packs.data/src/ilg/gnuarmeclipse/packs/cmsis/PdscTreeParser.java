@@ -49,10 +49,7 @@ public class PdscTreeParser {
 		String schemaVersion = firstChild.getProperty("schemaVersion");
 
 		if (!PdscUtils.isSchemaValid(schemaVersion)) {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println("Unrecognised schema version "
-						+ schemaVersion);
-			}
+			Activator.log("Unrecognised schema version " + schemaVersion);
 			return false;
 		}
 		return true;

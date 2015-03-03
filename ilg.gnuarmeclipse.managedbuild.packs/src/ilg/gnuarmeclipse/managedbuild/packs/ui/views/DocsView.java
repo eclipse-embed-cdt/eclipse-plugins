@@ -314,9 +314,7 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 							} else if (firstSel instanceof Folder) {
 								project = ((Folder) firstSel).getProject();
 							} else {
-								if (Activator.getInstance().isDebugging()) {
-									System.out.println("ignored");
-								}
+								Activator.log(firstSel + " ignored");
 							}
 
 							fLatestSelectedConfig = getConfigurationForProject(project);

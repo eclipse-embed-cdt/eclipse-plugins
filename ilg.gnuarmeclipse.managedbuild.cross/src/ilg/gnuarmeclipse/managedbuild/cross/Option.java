@@ -254,14 +254,10 @@ public class Option {
 			try {
 				sReturn = option.getStringValue().trim();
 			} catch (BuildException e) {
-				if (Activator.getInstance().isDebugging()) {
-					System.out.println(sOptionId + " not value");
-				}
+				Activator.log(e);
 			}
 		} else {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println(sOptionId + " not found");
-			}
+			Activator.log(sOptionId + " not found");
 		}
 
 		return sReturn;
@@ -278,14 +274,10 @@ public class Option {
 				String sEnumId = option.getStringValue();
 				sReturn = option.getEnumCommand(sEnumId).trim();
 			} catch (BuildException e) {
-				if (Activator.getInstance().isDebugging()) {
-					System.out.println(sOptionId + " not value");
-				}
+				Activator.log(e);
 			}
 		} else {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println(sOptionId + " not found");
-			}
+			Activator.log(sOptionId + " not found");
 		}
 
 		return sReturn;
@@ -301,14 +293,10 @@ public class Option {
 			try {
 				bReturn = new Boolean(option.getBooleanValue());
 			} catch (BuildException e) {
-				if (Activator.getInstance().isDebugging()) {
-					System.out.println(sOptionId + " not value");
-				}
+				Activator.log(e);
 			}
 		} else {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println(sOptionId + " not found");
-			}
+			Activator.log(sOptionId + " not found");
 		}
 
 		return bReturn;
@@ -329,14 +317,10 @@ public class Option {
 
 				bReturn = new Boolean(option.getBooleanValue());
 			} catch (BuildException e) {
-				if (Activator.getInstance().isDebugging()) {
-					System.out.println(sOptionId + " not value");
-				}
+				Activator.log(e);
 			}
 		} else {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println(sOptionId + " not found");
-			}
+			Activator.log(sOptionId + " not found");
 		}
 
 		return bReturn;
@@ -353,14 +337,10 @@ public class Option {
 				if (option.getBooleanValue())
 					sReturn = option.getCommand().trim();
 			} catch (BuildException e) {
-				if (Activator.getInstance().isDebugging()) {
-					System.out.println(sOptionId + " not value");
-				}
+				Activator.log(e);
 			}
 		} else {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println(sOptionId + " not found");
-			}
+			Activator.log(sOptionId + " not found");
 		}
 
 		return sReturn;

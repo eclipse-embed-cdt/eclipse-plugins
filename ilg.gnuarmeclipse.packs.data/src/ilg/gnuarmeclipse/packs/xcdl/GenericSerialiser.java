@@ -199,9 +199,7 @@ public class GenericSerialiser {
 			if (node.hasChildren()) {
 
 				if (eo.doIgnoreChildren) {
-					if (Activator.getInstance().isDebugging()) {
-						System.out.println("Ignoring children of " + node);
-					}
+					Activator.log("Ignoring children of " + node);
 				} else {
 					if (eo.fDoOutputNodes) {
 						putIndentation(depth + 1);

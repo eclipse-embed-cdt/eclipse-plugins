@@ -177,9 +177,7 @@ public class EnvironmentVariableSupplier implements
 								str,
 								"", " ", IBuildMacroProvider.CONTEXT_CONFIGURATION, configuration); //$NON-NLS-1$	//$NON-NLS-2$
 			} catch (CdtVariableException e) {
-				if (Activator.getInstance().isDebugging()) {
-					System.out.println("resolveMacros " + e.getMessage());
-				}
+				Activator.log("resolveMacros " + e.getMessage());
 			}
 
 			return result;

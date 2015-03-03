@@ -35,10 +35,8 @@ public class PdscParserForContent extends PdscParser {
 		Element packageElement = fDocument.getDocumentElement();
 		String firstElementName = packageElement.getNodeName();
 		if (!"package".equals(firstElementName)) {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println("Missing <package>, <" + firstElementName
-						+ "> encountered");
-			}
+			Activator.log("Missing <package>, <" + firstElementName
+					+ "> encountered");
 			return;
 		}
 

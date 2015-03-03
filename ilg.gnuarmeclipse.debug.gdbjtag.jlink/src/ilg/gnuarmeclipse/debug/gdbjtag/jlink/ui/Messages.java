@@ -29,7 +29,7 @@ public class Messages {
 		try {
 			RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 		} catch (MissingResourceException e) {
-			System.out.println(e.getMessage());
+			Activator.log(e.getMessage());
 		}
 	}
 

@@ -57,10 +57,8 @@ public class PdscParserFull extends PdscParser {
 		Element packageElement = fDocument.getDocumentElement();
 		String firstElementName = packageElement.getNodeName();
 		if (!"package".equals(firstElementName)) {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println("Missing <packages>, <" + firstElementName
-						+ "> encountered");
-			}
+			Activator.log("Missing <packages>, <" + firstElementName
+					+ "> encountered");
 			return tree;
 		}
 
@@ -68,10 +66,7 @@ public class PdscParserFull extends PdscParser {
 				.trim();
 
 		if (!PdscUtils.isSchemaValid(schemaVersion)) {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println("Unrecognised schema version "
-						+ schemaVersion);
-			}
+			Activator.log("Unrecognised schema version " + schemaVersion);
 			return tree;
 		}
 
@@ -165,10 +160,7 @@ public class PdscParserFull extends PdscParser {
 						processKeywordElement(childElement2, tree);
 
 					} else {
-						if (Activator.getInstance().isDebugging()) {
-							System.out.println("Not processed <" + elementName2
-									+ ">");
-						}
+						Activator.log("Not processed <" + elementName2 + ">");
 					}
 				}
 
@@ -187,10 +179,7 @@ public class PdscParserFull extends PdscParser {
 						processFamilyElement(childElement2, tree);
 
 					} else {
-						if (Activator.getInstance().isDebugging()) {
-							System.out.println("Not processed <" + elementName2
-									+ ">");
-						}
+						Activator.log("Not processed <" + elementName2 + ">");
 					}
 				}
 
@@ -206,10 +195,7 @@ public class PdscParserFull extends PdscParser {
 						processBoardElement(childElement2, tree);
 
 					} else {
-						if (Activator.getInstance().isDebugging()) {
-							System.out.println("Not processed <" + elementName2
-									+ ">");
-						}
+						Activator.log("Not processed <" + elementName2 + ">");
 					}
 				}
 
@@ -225,10 +211,7 @@ public class PdscParserFull extends PdscParser {
 						processConditionElement(childElement2, tree);
 
 					} else {
-						if (Activator.getInstance().isDebugging()) {
-							System.out.println("Not processed <" + elementName2
-									+ ">");
-						}
+						Activator.log("Not processed <" + elementName2 + ">");
 					}
 				}
 
@@ -244,10 +227,7 @@ public class PdscParserFull extends PdscParser {
 						processExampleElement(childElement2, tree, false);
 
 					} else {
-						if (Activator.getInstance().isDebugging()) {
-							System.out.println("Not processed <" + elementName2
-									+ ">");
-						}
+						Activator.log("Not processed <" + elementName2 + ">");
 					}
 				}
 
@@ -267,10 +247,7 @@ public class PdscParserFull extends PdscParser {
 						processBundleElement(childElement2, tree);
 
 					} else {
-						if (Activator.getInstance().isDebugging()) {
-							System.out.println("Not processed <" + elementName2
-									+ ">");
-						}
+						Activator.log("Not processed <" + elementName2 + ">");
 					}
 				}
 
@@ -293,10 +270,7 @@ public class PdscParserFull extends PdscParser {
 						processApiElement(childElement2, tree);
 
 					} else {
-						if (Activator.getInstance().isDebugging()) {
-							System.out.println("Not processed <" + elementName2
-									+ ">");
-						}
+						Activator.log("Not processed <" + elementName2 + ">");
 					}
 				}
 
@@ -312,10 +286,7 @@ public class PdscParserFull extends PdscParser {
 						processTaxonomyDescription(childElement2, tree);
 
 					} else {
-						if (Activator.getInstance().isDebugging()) {
-							System.out.println("Not processed <" + elementName2
-									+ ">");
-						}
+						Activator.log("Not processed <" + elementName2 + ">");
 					}
 				}
 				// } else if ("generators".equals(elementName)) {
@@ -323,9 +294,7 @@ public class PdscParserFull extends PdscParser {
 				// Ignore
 
 			} else {
-				if (Activator.getInstance().isDebugging()) {
-					System.out.println("Not processed <" + elementName + ">");
-				}
+				Activator.log("Not processed <" + elementName + ">");
 			}
 		}
 
@@ -858,9 +827,7 @@ public class PdscParserFull extends PdscParser {
 
 			String Pname = el.getAttribute("Pname").trim();
 			if (Pname.length() > 0) {
-				if (Activator.getInstance().isDebugging()) {
-					System.out.println("Pname not processed " + Pname + "");
-				}
+				Activator.log("Pname not processed " + Pname + "");
 			}
 
 			Node headerNode = new Node(Type.HEADER);
@@ -1016,9 +983,7 @@ public class PdscParserFull extends PdscParser {
 			// } else if ("environment".equals(elementName)) {
 
 		} else {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println("Not processed <" + elementName + ">");
-			}
+			Activator.log("Not processed <" + elementName + ">");
 		}
 	}
 
@@ -1274,10 +1239,7 @@ public class PdscParserFull extends PdscParser {
 					debugNode.setDescription(description);
 
 				} else {
-					if (Activator.getInstance().isDebugging()) {
-						System.out.println("Not processed <" + elementName
-								+ ">");
-					}
+					Activator.log("Not processed <" + elementName + ">");
 				}
 			}
 		}
@@ -1489,17 +1451,12 @@ public class PdscParserFull extends PdscParser {
 							processFileElement(childElement2, componentNode);
 
 						} else {
-							if (Activator.getInstance().isDebugging()) {
-								System.out.println("Not processed <"
-										+ elementName2 + ">");
-							}
+							Activator.log("Not processed <" + elementName2
+									+ ">");
 						}
 					}
 				} else {
-					if (Activator.getInstance().isDebugging()) {
-						System.out.println("Not processed <" + elementName
-								+ ">");
-					}
+					Activator.log("Not processed <" + elementName + ">");
 				}
 			}
 		}
@@ -1699,10 +1656,7 @@ public class PdscParserFull extends PdscParser {
 					processComponentElement(childElement, bundleNode, Cclass);
 
 				} else {
-					if (Activator.getInstance().isDebugging()) {
-						System.out.println("Not processed <" + elementName
-								+ ">");
-					}
+					Activator.log("Not processed <" + elementName + ">");
 				}
 			}
 		}
@@ -1862,9 +1816,7 @@ public class PdscParserFull extends PdscParser {
 				node.setDescription(description);
 
 			} else {
-				if (Activator.getInstance().isDebugging()) {
-					System.out.println("Not processed <" + elementName + ">");
-				}
+				Activator.log("Not processed <" + elementName + ">");
 			}
 		}
 
@@ -1946,16 +1898,11 @@ public class PdscParserFull extends PdscParser {
 						processFileElement(childElement2, apiNode);
 
 					} else {
-						if (Activator.getInstance().isDebugging()) {
-							System.out.println("Not processed <" + elementName2
-									+ ">");
-						}
+						Activator.log("Not processed <" + elementName2 + ">");
 					}
 				}
 			} else {
-				if (Activator.getInstance().isDebugging()) {
-					System.out.println("Not processed <" + elementName + ">");
-				}
+				Activator.log("Not processed <" + elementName + ">");
 			}
 		}
 
@@ -2112,10 +2059,8 @@ public class PdscParserFull extends PdscParser {
 							environmentNode.setDescription(description);
 
 						} else {
-							if (Activator.getInstance().isDebugging()) {
-								System.out.println("Not processed <"
-										+ elementName2 + ">");
-							}
+							Activator.log("Not processed <" + elementName2
+									+ ">");
 						}
 					}
 
@@ -2224,17 +2169,12 @@ public class PdscParserFull extends PdscParser {
 							processKeywordElement(childElement2, linkNode);
 
 						} else {
-							if (Activator.getInstance().isDebugging()) {
-								System.out.println("Not processed <"
-										+ elementName2 + ">");
-							}
+							Activator.log("Not processed <" + elementName2
+									+ ">");
 						}
 					}
 				} else {
-					if (Activator.getInstance().isDebugging()) {
-						System.out.println("Not processed <" + elementName
-								+ ">");
-					}
+					Activator.log("Not processed <" + elementName + ">");
 				}
 			}
 		}

@@ -204,9 +204,7 @@ public class CopyExampleJob extends Job {
 			} else if (file.isFile()) {
 				countBytes += file.length();
 			} else {
-				if (Activator.getInstance().isDebugging()) {
-					System.out.println("File " + file + " unaccounted.");
-				}
+				Activator.log("File " + file + " unaccounted.");
 			}
 		}
 

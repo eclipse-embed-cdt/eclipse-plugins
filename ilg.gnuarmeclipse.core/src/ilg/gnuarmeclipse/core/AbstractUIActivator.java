@@ -189,9 +189,6 @@ public abstract class AbstractUIActivator extends AbstractUIPlugin {
 
 	public static void log(IStatus status) {
 		getInstance().getLog().log(status);
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println(status);
-		}
 	}
 
 	public static void log(Throwable e) {

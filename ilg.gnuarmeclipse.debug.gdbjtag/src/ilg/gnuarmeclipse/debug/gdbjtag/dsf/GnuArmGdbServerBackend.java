@@ -366,7 +366,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 			StringBuffer errBuffer) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("checkServer()");
+			System.out.println("GnuArmGdbServerBackend.checkServer()");
 		}
 
 		// The strategy is to parse the output stream and stop
@@ -1197,9 +1197,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService
 						}
 						thread.interrupt();
 					} else {
-						if (Activator.getInstance().isDebugging()) {
-							System.out.println("null thread");
-						}
+						Activator.log("GdbServerMonitorJob.kill() null thread");
 					}
 				}
 			}

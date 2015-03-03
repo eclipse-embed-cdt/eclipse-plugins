@@ -652,9 +652,8 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 						}
 						thread.interrupt();
 					} else {
-						if (Activator.getInstance().isDebugging()) {
-							System.out.println("null thread");
-						}
+						Activator
+								.log("SemihostingMonitorJob.kill() null thread");
 					}
 				}
 			}

@@ -112,9 +112,7 @@ public class PacksDataManagerFactoryProxy implements IPacksDataManagerFactory,
 				return null;
 			}
 		} catch (CoreException e) {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println("cannot get factory");
-			}
+			Activator.log(e.getStatus());
 			return null;
 		}
 	}
