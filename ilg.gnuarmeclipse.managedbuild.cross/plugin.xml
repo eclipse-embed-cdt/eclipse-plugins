@@ -4373,9 +4373,14 @@
             id="ilg.gnuarmeclipse.managedbuild.cross.properties.toolsPage"
             name="%properties.projectToolsPaths">
          <enabledWhen>
-            <instanceof
+            <and>
+               <instanceof
                   value="org.eclipse.core.resources.IProject">
-            </instanceof>
+               </instanceof>
+               <test
+                     property="ilg.gnuarmeclipse.managedbuild.cross.isGnuArm">
+               </test>
+            </and>
          </enabledWhen>
       </page>
    </extension>
@@ -4384,6 +4389,16 @@
       <initializer
             class="ilg.gnuarmeclipse.managedbuild.cross.ui.DefaultPreferenceInitializer">
       </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.core.expressions.propertyTesters">
+      <propertyTester
+            class="ilg.gnuarmeclipse.managedbuild.cross.ui.GnuArmPropertyTester"
+            id="ilg.gnuarmeclipse.managedbuild.cross.propertyTester"
+            namespace="ilg.gnuarmeclipse.managedbuild.cross"
+            properties="isGnuArm"
+            type="java.lang.Object">
+      </propertyTester>
    </extension>
     
    <!--       

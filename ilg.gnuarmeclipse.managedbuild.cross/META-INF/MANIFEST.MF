@@ -17,7 +17,8 @@ Require-Bundle: ilg.gnuarmeclipse.core,
  org.eclipse.ui.ide;bundle-version="3.9.0",
  org.eclipse.cdt.ui;bundle-version="5.6.0",
  org.eclipse.ui;bundle-version="3.105.0",
- org.eclipse.core.variables
+ org.eclipse.core.variables;bundle-version="3.2.700",
+ org.eclipse.core.expressions;bundle-version="3.4.500"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %bundle.vendor
