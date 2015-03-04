@@ -106,18 +106,31 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				}
 			}
 
+			// Toolchains paths
 			for (ToolchainDefinition toolchain : ToolchainDefinition.getList()) {
+
 				String toolchainName = toolchain.getName();
 
+				// Check if the toolchain path is explictly defined in the
+				// default preferences.
+				String path = DefaultPreferences
+						.getToolchainPath(toolchainName);
+				if (!path.isEmpty()) {
+					continue; // Already defined, use it as is.
+				}
+
+				// Check if the search path is defined in the default
+				// preferences.
 				String searchPath = DefaultPreferences
 						.getToolchainSearchPath(toolchainName);
 				if (searchPath.isEmpty()) {
 
-					// If not defined at all, get the OS Specific default
+					// If not defined, get the OS Specific default
 					// from preferences.ini.
 					searchPath = DefaultPreferences
 							.getToolchainSearchPathOs(toolchainName);
 					if (!searchPath.isEmpty()) {
+						// Store the search path in the preferences
 						DefaultPreferences.putToolchainSearchPath(
 								toolchainName, searchPath);
 					}
@@ -128,6 +141,8 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 					value = DefaultPreferences.discoverToolchainPath(
 							toolchainName, searchPath);
 					if (value != null && !value.isEmpty()) {
+						// If the toolchain path was finally discovered, store
+						// it in the preferences.
 						DefaultPreferences.putToolchainPath(toolchainName,
 								value);
 					}

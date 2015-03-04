@@ -186,6 +186,11 @@ public class DefaultPreferences {
 	 */
 	public static String getToolchainSearchPath(String toolchainName) {
 
+		String key = PersistentPreferences.getToolchainSearchKey(toolchainName);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Check " + key + " for \"" + toolchainName
+					+ "\"");
+		}
 		String value = getString(
 				PersistentPreferences.getToolchainSearchKey(toolchainName), "");
 
