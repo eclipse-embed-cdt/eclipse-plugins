@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/ilg.gnuarmeclipse.managedbuild.cross-feature_1.12.1.qualifier.jar" id="ilg.gnuarmeclipse.managedbuild.cross" version="1.12.1.qualifier">
+   <feature url="features/ilg.gnuarmeclipse.managedbuild.cross-feature_1.13.1.qualifier.jar" id="ilg.gnuarmeclipse.managedbuild.cross" version="1.13.1.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
    <feature url="features/ilg.gnuarmeclipse.templates.stm-feature_2.2.3.qualifier.jar" id="ilg.gnuarmeclipse.templates.stm" version="2.2.4.qualifier">
@@ -12,7 +12,7 @@
    <feature url="features/ilg.gnuarmeclipse.debug.gdbjtag.jlink-feature_3.1.2.qualifier.jar" id="ilg.gnuarmeclipse.debug.gdbjtag.jlink" version="3.1.2.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
-   <feature url="features/ilg.gnuarmeclipse.debug.gdbjtag.openocd-feature_3.1.1.qualifier.jar" id="ilg.gnuarmeclipse.debug.gdbjtag.openocd" version="3.1.1.qualifier">
+   <feature url="features/ilg.gnuarmeclipse.debug.gdbjtag.openocd-feature_3.2.1.qualifier.jar" id="ilg.gnuarmeclipse.debug.gdbjtag.openocd" version="3.2.1.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
    <!-- 
