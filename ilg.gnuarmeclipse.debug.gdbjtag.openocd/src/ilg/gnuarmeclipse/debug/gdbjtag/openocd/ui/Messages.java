@@ -17,17 +17,32 @@ import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
 import java.util.MissingResourceException;
 import java.util.ResourceBundle;
 
+import org.eclipse.osgi.util.NLS;
+
 public class Messages {
 
-	private static final String BUNDLE_NAME = Activator.PLUGIN_ID
-			+ ".ui.messages"; //$NON-NLS-1$
+	// ------------------------------------------------------------------------
 
-	private static/* final */ResourceBundle RESOURCE_BUNDLE; // =
-															// ResourceBundle.getBundle(BUNDLE_NAME);
+	private static final String MESSAGES = Activator.PLUGIN_ID + ".ui.messages"; //$NON-NLS-1$
+
+	public static String OpenOCDPagePropertyPage_description;
+	public static String OpenOCDPagePropertyPage_executable_label;
+	public static String OpenOCDPagePropertyPage_executable_folder;
+
+	public static String Variable_executable_description;
+	public static String Variable_path_description;
+
+	// ------------------------------------------------------------------------
 
 	static {
+		// initialise resource bundle
+		NLS.initializeMessages(MESSAGES, Messages.class);
+	}
+
+	private static ResourceBundle RESOURCE_BUNDLE;
+	static {
 		try {
-			RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
+			RESOURCE_BUNDLE = ResourceBundle.getBundle(MESSAGES);
 		} catch (MissingResourceException e) {
 			Activator.log(e);
 		}

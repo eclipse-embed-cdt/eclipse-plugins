@@ -53,7 +53,6 @@
    <extension
          point="org.eclipse.core.variables.valueVariables">
       <variable
-            description="Path to OpenOCD installation folder"
             initializerClass="ilg.gnuarmeclipse.debug.gdbjtag.openocd.VariableInitializer"
             name="openocd_path" />
    </extension>
@@ -61,9 +60,23 @@
    <extension
          point="org.eclipse.core.variables.valueVariables">
       <variable
-            description="Name of the OpenOCD executable"
             initializerClass="ilg.gnuarmeclipse.debug.gdbjtag.openocd.VariableInitializer"
             name="openocd_executable" />
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.debug.ui.DebugPreferencePage"
+            class="ilg.gnuarmeclipse.debug.gdbjtag.openocd.preferences.OpenOcdPage"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.openocd.preferencePage"
+            name="%preferences.openOcd">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="ilg.gnuarmeclipse.debug.gdbjtag.openocd.DefaultPreferenceInitializer">
+      </initializer>
    </extension>
 
 </plugin>

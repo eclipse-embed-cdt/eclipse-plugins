@@ -9,10 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.managedbuild.cross.ui;
-
-import ilg.gnuarmeclipse.managedbuild.cross.Activator;
-import ilg.gnuarmeclipse.managedbuild.cross.ToolchainDefinition;
+package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
@@ -43,10 +40,6 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 			System.out
 					.println("DefaultPreferenceInitializer.initializeDefaultPreferences()");
 		}
-
-		// Default toolchain name
-		String toolchainName = ToolchainDefinition.DEFAULT_TOOLCHAIN_NAME;
-		DefaultPreferences.putToolchainName(toolchainName);
 
 		// When the 'ilg.gnuarmeclipse.managedbuild.cross' node is completely
 		// added to /default, a NodeChangeEvent is raised.
@@ -97,57 +90,49 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		 */
 		public void finalizeInitializationsDefaultPreferences() {
 
-			String value;
+			if (Activator.getInstance().isDebugging()) {
+				System.out
+						.println("LateInitializer.finalizeInitializationsDefaultPreferences()");
+			}
 
-			// Build tools path
-			value = DefaultPreferences.getBuildToolsPath();
-			if (value.isEmpty()) {
-				// If not defined elsewhere, discover build tools.
-				value = DefaultPreferences.discoverBuildToolsPath();
-				if (!value.isEmpty()) {
-					DefaultPreferences.putBuildToolsPath(value);
+			// OpenOCD executable name
+			String name = DefaultPreferences.getExecutableName();
+			if (name.isEmpty()) {
+				// If not defined elsewhere, get platform specific name.
+				name = DefaultPreferences.getExecutableNameOs();
+				if (!name.isEmpty()) {
+					DefaultPreferences.putExecutableName(name);
 				}
 			}
 
-			// Toolchains paths
-			for (ToolchainDefinition toolchain : ToolchainDefinition.getList()) {
-
-				String toolchainName = toolchain.getName();
-
-				// Check if the toolchain path is explictly defined in the
-				// default preferences.
-				String path = DefaultPreferences
-						.getToolchainPath(toolchainName);
-				if (!path.isEmpty()) {
-					continue; // Already defined, use it as is.
-				}
+			// OpenOCD install folder
+			// Check if the toolchain path is explictly defined in the
+			// default preferences.
+			String folder = DefaultPreferences.getInstallFolder();
+			if (folder.isEmpty()) {
 
 				// Check if the search path is defined in the default
 				// preferences.
-				String searchPath = DefaultPreferences
-						.getToolchainSearchPath(toolchainName);
+				String searchPath = DefaultPreferences.getInstallSearchPath();
 				if (searchPath.isEmpty()) {
 
 					// If not defined, get the OS Specific default
 					// from preferences.ini.
-					searchPath = DefaultPreferences
-							.getToolchainSearchPathOs(toolchainName);
+					searchPath = DefaultPreferences.getInstallSearchPathOs();
 					if (!searchPath.isEmpty()) {
 						// Store the search path in the preferences
-						DefaultPreferences.putToolchainSearchPath(
-								toolchainName, searchPath);
+						DefaultPreferences.putInstallSearchPath(searchPath);
 					}
 				}
 
 				if (!searchPath.isEmpty()) {
 					// If the search path is known, discover toolchain.
-					value = DefaultPreferences.discoverToolchainPath(
-							toolchainName, searchPath);
-					if (value != null && !value.isEmpty()) {
-						// If the toolchain path was finally discovered, store
+					folder = DefaultPreferences
+							.discoverInstallFolder(searchPath);
+					if (folder != null && !folder.isEmpty()) {
+						// If the install folder was finally discovered, store
 						// it in the preferences.
-						DefaultPreferences.putToolchainPath(toolchainName,
-								value);
+						DefaultPreferences.putInstallFolder(folder);
 					}
 				}
 			}

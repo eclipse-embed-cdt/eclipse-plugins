@@ -12,7 +12,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui;
 
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.EclipseDefaults;
+import ilg.gnuarmeclipse.debug.gdbjtag.openocd.DefaultPreferences;
 
 import org.eclipse.cdt.dsf.gdb.internal.ui.launching.CMainTab;
 
@@ -23,7 +23,7 @@ import org.eclipse.cdt.dsf.gdb.internal.ui.launching.CMainTab;
 public class TabMain extends CMainTab {
 
 	public TabMain() {
-		super((EclipseDefaults.getTabMainCheckProgram() ? 0
+		super((DefaultPreferences.getTabMainCheckProgram() ? 0
 				: CMainTab.DONT_CHECK_PROGRAM)
 				| CMainTab.INCLUDE_BUILD_SETTINGS);
 	}

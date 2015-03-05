@@ -108,7 +108,6 @@ public class DefaultPreferences {
 		}
 
 		value = "";
-
 		{
 			// TODO: remove DEPRECATED
 			try {
@@ -122,13 +121,13 @@ public class DefaultPreferences {
 		return value;
 	}
 
-	public static void putToolchainName(String name) {
+	public static void putToolchainName(String value) {
 
 		String key = PersistentPreferences.TOOLCHAIN_NAME_KEY;
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Default " + key + "=" + name);
+			System.out.println("Default " + key + "=" + value);
 		}
-		putString(key, name);
+		putString(key, value);
 	}
 
 	// ------------------------------------------------------------------------
@@ -248,8 +247,8 @@ public class DefaultPreferences {
 	}
 
 	/**
-	 * Find where the build tools might have been installed. The path is known
-	 * to be an existing folder path.
+	 * Find where the build tools might have been installed. The returned folder
+	 * is known to be an existing folder.
 	 * 
 	 * @return a trimmed string, possibly empty.
 	 */
@@ -353,6 +352,7 @@ public class DefaultPreferences {
 	 * 
 	 * @param toolchainName
 	 * @param searchPath
+	 *            a string with a sequence of folders.
 	 * @return a String with the absolute folder path, or null if not found.
 	 */
 	public static String discoverToolchainPath(String toolchainName,
@@ -400,7 +400,7 @@ public class DefaultPreferences {
 		}
 		String executableName = ToolchainDefinition.getToolchain(ix)
 				.getFullCmdC();
-		if (EclipseUtils.isWindows()) {
+		if (EclipseUtils.isWindows() && !executableName.endsWith(".exe")) {
 			executableName += ".exe";
 		}
 

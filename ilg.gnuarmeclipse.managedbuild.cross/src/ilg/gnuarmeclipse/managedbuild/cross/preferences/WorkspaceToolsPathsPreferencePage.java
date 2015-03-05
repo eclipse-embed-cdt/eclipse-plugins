@@ -12,6 +12,7 @@
 package ilg.gnuarmeclipse.managedbuild.cross.preferences;
 
 import ilg.gnuarmeclipse.core.ScopedPreferenceStoreWithoutDefaults;
+import ilg.gnuarmeclipse.core.preferences.DirectoryNotStrictFieldEditor;
 import ilg.gnuarmeclipse.managedbuild.cross.Activator;
 import ilg.gnuarmeclipse.managedbuild.cross.ui.DefaultPreferences;
 import ilg.gnuarmeclipse.managedbuild.cross.ui.Messages;
@@ -33,7 +34,6 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * preference store that belongs to the main plug-in class. That way,
  * preferences can be accessed directly via the preference store.
  */
-
 public class WorkspaceToolsPathsPreferencePage extends
 		FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
@@ -70,7 +70,6 @@ public class WorkspaceToolsPathsPreferencePage extends
 	 * GUI blocks needed to manipulate various types of preferences. Each field
 	 * editor knows how to save and restore itself.
 	 */
-
 	@Override
 	protected void createFieldEditors() {
 

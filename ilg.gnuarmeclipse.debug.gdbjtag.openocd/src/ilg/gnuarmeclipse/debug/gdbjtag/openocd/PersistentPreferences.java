@@ -16,7 +16,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
-public class PersistentValues {
+public class PersistentPreferences {
 
 	// Tab Debugger
 	// GDB Server Setup
@@ -66,8 +66,16 @@ public class PersistentValues {
 			+ "preRun.other";
 
 	// ----- Defaults ---------------------------------------------------------
-	public static final String OPENOCD_EXECUTABLE = "openocd_executable";
-	public static final String OPENOCD_PATH = "openocd_path";
+	public static final String OPENOCD_EXECUTABLE = "openocd.executable";
+	public static final String OPENOCD_EXECUTABLE_OS = "openocd.executable.%s";
+	public static final String OPENOCD_FOLDER = "openocd.folder";
+	public static final String OPENOCD_SEARCH_PATH = "openocd.search.path";
+	public static final String OPENOCD_SEARCH_PATH_OS = "openocd.search.path.%s";
+
+	public static final String OPENOCD_FOLDER_STRICT = "openocd.folder.strict";
+
+	public static final String OPENOCD_EXECUTABLE_DEPRECATED = "openocd_executable";
+	public static final String OPENOCD_PATH_DEPRECATED = "openocd_path";
 
 	public static final String TAB_MAIN_CHECK_PROGRAM = "tab.main.checkProgram";
 	public static final boolean TAB_MAIN_CHECK_PROGRAM_DEFAULT = false;
@@ -120,7 +128,7 @@ public class PersistentValues {
 		if (value != null) {
 			return value;
 		}
-		return EclipseDefaults.getGdbServerExecutable(defaultValue);
+		return DefaultPreferences.getGdbServerExecutable(defaultValue);
 	}
 
 	public static void putGdbServerExecutable(String value) {
@@ -135,7 +143,7 @@ public class PersistentValues {
 		if (value != null) {
 			return value;
 		}
-		return EclipseDefaults.getOpenocdConfig(defaultValue);
+		return DefaultPreferences.getOpenocdConfig(defaultValue);
 	}
 
 	public static void putGdbServerOtherOptions(String value) {
@@ -150,7 +158,7 @@ public class PersistentValues {
 		if (value != null) {
 			return value;
 		}
-		return EclipseDefaults.getGdbClientExecutable(defaultValue);
+		return DefaultPreferences.getGdbClientExecutable(defaultValue);
 	}
 
 	public static void putGdbClientExecutable(String value) {

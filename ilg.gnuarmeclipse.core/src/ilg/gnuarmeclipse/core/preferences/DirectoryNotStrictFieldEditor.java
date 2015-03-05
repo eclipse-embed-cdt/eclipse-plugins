@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.managedbuild.cross.preferences;
+package ilg.gnuarmeclipse.core.preferences;
 
 import java.io.File;
 
@@ -21,13 +21,19 @@ import org.eclipse.swt.widgets.Composite;
 
 public class DirectoryNotStrictFieldEditor extends DirectoryFieldEditor {
 
+	// ------------------------------------------------------------------------
+
 	private boolean fIsStrict;
+
+	// ------------------------------------------------------------------------
 
 	public DirectoryNotStrictFieldEditor(String buildToolsPathKey,
 			String toolsPaths_label, Composite fieldEditorParent,
 			boolean isStrict) {
 		super(buildToolsPathKey, toolsPaths_label, fieldEditorParent);
 	}
+
+	// ------------------------------------------------------------------------
 
 	@Override
 	protected boolean doCheckState() {
@@ -56,4 +62,6 @@ public class DirectoryNotStrictFieldEditor extends DirectoryFieldEditor {
 			return true;
 		}
 	}
+
+	// ------------------------------------------------------------------------
 }

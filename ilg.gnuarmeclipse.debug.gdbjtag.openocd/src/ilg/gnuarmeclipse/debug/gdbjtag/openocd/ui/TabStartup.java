@@ -17,7 +17,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.PersistentValues;
+import ilg.gnuarmeclipse.debug.gdbjtag.openocd.PersistentPreferences;
 
 import java.io.File;
 
@@ -916,7 +916,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Initialisation Commands
 			{
 				// Do initial reset
-				booleanDefault = PersistentValues
+				booleanDefault = PersistentPreferences
 						.getOpenOCDDoInitialReset(ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
 				fDoFirstReset
 						.setSelection(configuration.getAttribute(
@@ -924,21 +924,21 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 								booleanDefault));
 
 				// Reset type
-				stringDefault = PersistentValues
+				stringDefault = PersistentPreferences
 						.getOpenOCDInitialResetType(ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
 				fFirstResetType.setText(configuration
 						.getAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
 								stringDefault));
 
 				// Enable semihosting
-				booleanDefault = PersistentValues
+				booleanDefault = PersistentPreferences
 						.getOpenOCDEnableSemihosting(ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
 				fEnableSemihosting.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.ENABLE_SEMIHOSTING,
 						booleanDefault));
 
 				// Other commands
-				stringDefault = PersistentValues
+				stringDefault = PersistentPreferences
 						.getOpenOCDInitOther(ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
 				fInitCommands.setText(configuration.getAttribute(
 						ConfigurationAttributes.OTHER_INIT_COMMANDS,
@@ -1001,7 +1001,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			// Runtime Options
 			{
-				booleanDefault = PersistentValues
+				booleanDefault = PersistentPreferences
 						.getOpenOCDDebugInRam(ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT);
 				fDoDebugInRam.setSelection(configuration
 						.getAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM,
@@ -1011,21 +1011,21 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Run Commands
 			{
 				// Do pre-run reset
-				booleanDefault = PersistentValues
+				booleanDefault = PersistentPreferences
 						.getOpenOCDDoPreRunReset(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
 				fDoSecondReset.setSelection(configuration
 						.getAttribute(ConfigurationAttributes.DO_SECOND_RESET,
 								booleanDefault));
 
 				// Pre-run reset type
-				stringDefault = PersistentValues
+				stringDefault = PersistentPreferences
 						.getOpenOCDPreRunResetType(ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
 				fSecondResetType.setText(configuration.getAttribute(
 						ConfigurationAttributes.SECOND_RESET_TYPE,
 						stringDefault));
 
 				// Other commands
-				stringDefault = PersistentValues
+				stringDefault = PersistentPreferences
 						.getOpenOCDPreRunOther(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
 				fRunCommands.setText(configuration.getAttribute(
 						ConfigurationAttributes.OTHER_RUN_COMMANDS,
@@ -1179,25 +1179,25 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			booleanValue = fDoFirstReset.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
 					booleanValue);
-			PersistentValues.putOpenOCDDoInitialReset(booleanValue);
+			PersistentPreferences.putOpenOCDDoInitialReset(booleanValue);
 
 			// First reset type
 			stringValue = fFirstResetType.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.FIRST_RESET_TYPE, stringValue);
-			PersistentValues.putOpenOCDInitialResetType(stringValue);
+			PersistentPreferences.putOpenOCDInitialResetType(stringValue);
 
 			// Other commands
 			stringValue = fInitCommands.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.OTHER_INIT_COMMANDS, stringValue);
-			PersistentValues.putOpenOCDInitOther(stringValue);
+			PersistentPreferences.putOpenOCDInitOther(stringValue);
 
 			// Enable semihosting
 			booleanValue = fEnableSemihosting.getSelection();
 			configuration.setAttribute(
 					ConfigurationAttributes.ENABLE_SEMIHOSTING, booleanValue);
-			PersistentValues.putOpenOCDEnableSemihosting(booleanValue);
+			PersistentPreferences.putOpenOCDEnableSemihosting(booleanValue);
 		}
 
 		// Load Symbols & Image...
@@ -1237,7 +1237,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			booleanValue = fDoDebugInRam.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM,
 					booleanValue);
-			PersistentValues.putOpenOCDDebugInRam(booleanValue);
+			PersistentPreferences.putOpenOCDDebugInRam(booleanValue);
 		}
 
 		// Run Commands
@@ -1246,19 +1246,19 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			booleanValue = fDoSecondReset.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
 					booleanValue);
-			PersistentValues.putOpenOCDDoPreRunReset(booleanValue);
+			PersistentPreferences.putOpenOCDDoPreRunReset(booleanValue);
 
 			// reset type
 			stringValue = fSecondResetType.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.SECOND_RESET_TYPE, stringValue);
-			PersistentValues.putOpenOCDPreRunResetType(stringValue);
+			PersistentPreferences.putOpenOCDPreRunResetType(stringValue);
 
 			// Other commands
 			stringValue = fRunCommands.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.OTHER_RUN_COMMANDS, stringValue);
-			PersistentValues.putOpenOCDPreRunOther(stringValue);
+			PersistentPreferences.putOpenOCDPreRunOther(stringValue);
 
 			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER,
 					fSetPcRegister.getSelection());
@@ -1274,7 +1274,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					fDoContinue.getSelection());
 		}
 
-		PersistentValues.flush();
+		PersistentPreferences.flush();
 	}
 
 	@Override
@@ -1284,22 +1284,22 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		boolean defaultBoolean;
 
 		// Initialisation Commands
-		defaultBoolean = PersistentValues
+		defaultBoolean = PersistentPreferences
 				.getOpenOCDDoInitialReset(ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
 				defaultBoolean);
 
-		defaultString = PersistentValues
+		defaultString = PersistentPreferences
 				.getOpenOCDInitialResetType(ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
 				defaultString);
 
-		defaultBoolean = PersistentValues
+		defaultBoolean = PersistentPreferences
 				.getOpenOCDEnableSemihosting(ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING,
 				defaultBoolean);
 
-		defaultString = PersistentValues
+		defaultString = PersistentPreferences
 				.getOpenOCDInitOther(ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS,
 				defaultString);
@@ -1331,23 +1331,23 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
 
 		// Runtime Options
-		defaultBoolean = PersistentValues
+		defaultBoolean = PersistentPreferences
 				.getOpenOCDDebugInRam(ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM,
 				defaultBoolean);
 
 		// Run Commands
-		defaultBoolean = PersistentValues
+		defaultBoolean = PersistentPreferences
 				.getOpenOCDDoPreRunReset(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
 				defaultBoolean);
 
-		defaultString = PersistentValues
+		defaultString = PersistentPreferences
 				.getOpenOCDPreRunResetType(ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.SECOND_RESET_TYPE,
 				defaultString);
 
-		defaultString = PersistentValues
+		defaultString = PersistentPreferences
 				.getOpenOCDPreRunOther(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS,
 				defaultString);

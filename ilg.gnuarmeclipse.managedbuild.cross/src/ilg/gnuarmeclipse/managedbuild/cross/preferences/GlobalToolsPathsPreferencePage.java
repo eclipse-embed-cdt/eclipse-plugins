@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross.preferences;
 
+import ilg.gnuarmeclipse.core.preferences.DirectoryNotStrictFieldEditor;
 import ilg.gnuarmeclipse.managedbuild.cross.Activator;
 import ilg.gnuarmeclipse.managedbuild.cross.ui.DefaultPreferences;
 import ilg.gnuarmeclipse.managedbuild.cross.ui.Messages;

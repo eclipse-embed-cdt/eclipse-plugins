@@ -11,10 +11,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
 
-import ilg.gnuarmeclipse.core.EclipseUtils;
-import ilg.gnuarmeclipse.debug.gdbjtag.WindowsRegistry;
-
-import java.io.File;
+import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ui.Messages;
 
 import org.eclipse.core.variables.IValueVariable;
 import org.eclipse.core.variables.IValueVariableInitializer;
@@ -23,20 +20,10 @@ public class VariableInitializer implements IValueVariableInitializer {
 
 	// ------------------------------------------------------------------------
 
-	static final String VARIABLE_OPENOCD_EXECUTABLE = "openocd_executable";
-	static final String VARIABLE_OPENOCD_PATH = "openocd_path";
-
-	static final String OSX_APPLICATIONS_PATH = "/Applications/GNU ARM Eclipse/OpenOCD/bin/";
-	static final String OSX_MACPORTS_PATH = "/opt/local/bin/";
-
-	static final String LINUX_OPT_PATH = "/opt/gnuarmeclipse/openocd/bin/";
-	static final String LINUX_LOCAL_PATH = "/usr/local/bin/";
-	static final String LINUX_PATH = "/usr/bin/";
+	public static final String VARIABLE_OPENOCD_EXECUTABLE = "openocd_executable";
+	public static final String VARIABLE_OPENOCD_PATH = "openocd_path";
 
 	static final String UNDEFINED_PATH = "undefined_path";
-
-	private static final String LOCATION = "HKEY_LOCAL_MACHINE\\SOFTWARE\\GNU ARM Eclipse\\OpenOCD";
-	private static final String KEY = "InstallFolder";
 
 	// ------------------------------------------------------------------------
 
@@ -47,62 +34,23 @@ public class VariableInitializer implements IValueVariableInitializer {
 
 		if (VARIABLE_OPENOCD_EXECUTABLE.equals(variable.getName())) {
 
-			value = EclipseDefaults.getOpenocdExecutable();
+			value = DefaultPreferences.getExecutableName();
 			if (value == null) {
 				value = ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_NAME;
 			}
 			variable.setValue(value);
+			variable.setDescription(Messages.Variable_executable_description);
 
 		} else if (VARIABLE_OPENOCD_PATH.equals(variable.getName())) {
 
-			value = EclipseDefaults.getOpenocdPath();
+			value = DefaultPreferences.getInstallFolder();
 			if (value == null) {
-				if (EclipseUtils.isWindows()) {
-					value = WindowsRegistry.query(LOCATION, KEY);
-					if (value == null) {
-						value = UNDEFINED_PATH;
-					}
-				} else if (EclipseUtils.isLinux()) {
-					if (isExecutablePresent(LINUX_OPT_PATH, "openocd")) {
-						value = LINUX_OPT_PATH;
-					} else if (isExecutablePresent(LINUX_LOCAL_PATH, "openocd")) {
-						value = LINUX_LOCAL_PATH;
-					} else if (isExecutablePresent(LINUX_PATH, "openocd")) {
-						value = LINUX_PATH;
-					} else {
-						value = UNDEFINED_PATH;
-					}
-				} else if (EclipseUtils.isMacOSX()) {
-					if (isExecutablePresent(OSX_APPLICATIONS_PATH, "openocd")) {
-						value = OSX_APPLICATIONS_PATH;
-					} else if (isExecutablePresent(OSX_MACPORTS_PATH, "openocd")) {
-						value = OSX_MACPORTS_PATH;
-					} else {
-						value = UNDEFINED_PATH;
-					}
-				} else {
-					value = UNDEFINED_PATH;
-				}
+				value = UNDEFINED_PATH;
 			}
 			variable.setValue(value);
+			variable.setDescription(Messages.Variable_path_description);
+
 		}
-	}
-
-	private boolean isExecutablePresent(String pathBase, String name) {
-
-		File folder = new File(pathBase);
-		if (!folder.isDirectory()) {
-			return false;
-		}
-
-		// Assume pathBase ends with separator
-		String path = pathBase + name;
-		File file = new File(path);
-		if (!file.isFile()) {
-			return false;
-		}
-
-		return true;
 	}
 
 	// ------------------------------------------------------------------------

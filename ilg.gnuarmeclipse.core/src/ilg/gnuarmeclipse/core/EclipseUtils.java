@@ -21,6 +21,7 @@ import org.eclipse.core.filesystem.IFileStore;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.resources.ResourcesPlugin;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -31,6 +32,9 @@ import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.core.variables.IStringVariableManager;
+import org.eclipse.core.variables.IValueVariable;
+import org.eclipse.core.variables.VariablesPlugin;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Display;
@@ -131,6 +135,19 @@ public class EclipseUtils {
 		} else {
 			return "other";
 		}
+	}
+
+	/**
+	 * Get a platform specific key, where %s is replaced by the os family.
+	 * 
+	 * @param key
+	 * @return
+	 */
+	static public String getKeyOs(String key) {
+
+		String os = getOsFamily();
+		String keyOs = String.format(key, os);
+		return keyOs;
 	}
 
 	// ------------------------------------------------------------------------
@@ -432,6 +449,85 @@ public class EclipseUtils {
 
 		IScopeContext[] contexts = getPreferenceScopeContexts(project);
 		return getPreferenceValueForId(pluginId, key, defaultValue, contexts);
+	}
+
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Get the variable value. The variables are accesible in the Run/Debug ->
+	 * String Substitution preferences page.
+	 * 
+	 * @param name
+	 *            a String with the variable name.
+	 * @return a String with the variable value, or null if not found.
+	 */
+	public static String getVariableValue(String name) {
+
+		IValueVariable variable = VariablesPlugin.getDefault()
+				.getStringVariableManager().getValueVariable(name);
+		if (variable != null) {
+			return variable.getValue();
+		} else {
+			Activator.log("Variable \"" + name + "\" not found.");
+		}
+
+		return null;
+	}
+
+	/**
+	 * Set a variable value. The variables are accessible in the Run/Debug ->
+	 * String Substitution preferences page.
+	 * 
+	 * @param name
+	 *            a String with the variable name.
+	 * @param value
+	 *            a String with the variable value.
+	 */
+	public static void setVariableValue(String name, String value) {
+
+		IValueVariable variable = VariablesPlugin.getDefault()
+				.getStringVariableManager().getValueVariable(name);
+		if (variable != null) {
+			variable.setValue(value);
+		} else {
+			Activator.log("Variable \"" + name + "\" not set.");
+		}
+	}
+
+	/**
+	 * Set a variable value. The variables are accessible in the Run/Debug ->
+	 * String Substitution preferences page.
+	 * 
+	 * If the variable does not exist, it is created. Unfortunately the
+	 * 'Contributed By' field is not filled in.
+	 * 
+	 * @param name
+	 *            a String with the variable name.
+	 * @param description
+	 *            a String with the variable description.
+	 * @param value
+	 *            a String with the variable value.
+	 */
+	public static void setVariableValue(String name, String description,
+			String value) {
+
+		IStringVariableManager manager = VariablesPlugin.getDefault()
+				.getStringVariableManager();
+		IValueVariable variable = manager.getValueVariable(name);
+		if (variable == null) {
+			variable = manager.newValueVariable(name, description);
+			try {
+				manager.addVariables(new IValueVariable[] { variable });
+			} catch (CoreException e) {
+				Activator.log(e);
+				variable = null;
+			}
+		}
+		if (variable != null) {
+			variable.setValue(value);
+		} else {
+			Activator.log("Variable \"" + name + "\" not set.");
+		}
 	}
 
 	// ------------------------------------------------------------------------
