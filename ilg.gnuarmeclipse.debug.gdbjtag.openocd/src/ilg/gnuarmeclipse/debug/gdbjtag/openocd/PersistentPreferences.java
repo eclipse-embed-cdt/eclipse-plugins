@@ -18,6 +18,8 @@ import org.osgi.service.prefs.Preferences;
 
 public class PersistentPreferences {
 
+	// ------------------------------------------------------------------------
+
 	// Tab Debugger
 	// GDB Server Setup
 	public static final String GDB_SERVER = "gdb.server.";
@@ -106,7 +108,6 @@ public class PersistentPreferences {
 		} catch (BackingStoreException e) {
 			Activator.log(e);
 		}
-
 	}
 
 	// ----- gdb server doStart -----------------------------------------------

@@ -11,6 +11,11 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
 
+import ilg.gnuarmeclipse.core.EclipseUtils;
+import ilg.gnuarmeclipse.core.preferences.Discoverer;
+
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.core.runtime.preferences.DefaultScope;
@@ -26,6 +31,12 @@ import org.osgi.service.prefs.Preferences;
  * 
  */
 public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer {
+
+	// ------------------------------------------------------------------------
+
+	// LOCAL_MACHINE
+	private static final String REG_SUBKEY = "\\GNU ARM Eclipse\\OpenOCD";
+	private static final String REG_NAME = "InstallFolder";
 
 	// ------------------------------------------------------------------------
 
@@ -105,10 +116,27 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				}
 			}
 
+			String executableName = EclipseUtils
+					.getVariableValue(VariableInitializer.VARIABLE_OPENOCD_EXECUTABLE);
+			if (executableName == null || executableName.isEmpty()) {
+				executableName = DefaultPreferences.getExecutableName();
+			}
+			if (EclipseUtils.isWindows() && !executableName.endsWith(".exe")) {
+				executableName += ".exe";
+			}
+
 			// OpenOCD install folder
 			// Check if the toolchain path is explictly defined in the
 			// default preferences.
 			String folder = DefaultPreferences.getInstallFolder();
+			if (!folder.isEmpty()) {
+				IPath path = (new Path(folder)).append(executableName);
+				if (!path.toFile().isFile()) {
+					// If the file does not exist, refuse the given folder
+					// and prefer to search.
+					folder = "";
+				}
+			}
 			if (folder.isEmpty()) {
 
 				// Check if the search path is defined in the default
@@ -126,9 +154,10 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				}
 
 				if (!searchPath.isEmpty()) {
+
 					// If the search path is known, discover toolchain.
-					folder = DefaultPreferences
-							.discoverInstallFolder(searchPath);
+					folder = Discoverer.discoverInstallFolder(executableName,
+							searchPath, REG_SUBKEY, REG_NAME);
 					if (folder != null && !folder.isEmpty()) {
 						// If the install folder was finally discovered, store
 						// it in the preferences.
