@@ -68,39 +68,42 @@ public class PersistentPreferences {
 			+ "preRun.other";
 
 	// ----- Defaults ---------------------------------------------------------
-	public static final String OPENOCD_EXECUTABLE = "openocd.executable";
-	public static final String OPENOCD_EXECUTABLE_OS = "openocd.executable.%s";
-	public static final String OPENOCD_FOLDER = "openocd.folder";
-	public static final String OPENOCD_SEARCH_PATH = "openocd.search.path";
-	public static final String OPENOCD_SEARCH_PATH_OS = "openocd.search.path.%s";
 
-	public static final String OPENOCD_FOLDER_STRICT = "openocd.folder.strict";
+	public static final String EXECUTABLE_NAME = "executable.name";
+	public static final String EXECUTABLE_NAME_OS = EXECUTABLE_NAME + ".%s";
+	public static final String INSTALL_FOLDER = "install.folder";
+	public static final String SEARCH_PATH = "search.path";
+	public static final String SEARCH_PATH_OS = SEARCH_PATH + ".%s";
 
-	public static final String OPENOCD_EXECUTABLE_DEPRECATED = "openocd_executable";
-	public static final String OPENOCD_PATH_DEPRECATED = "openocd_path";
+	public static final String FOLDER_STRICT = "folder.strict";
 
 	public static final String TAB_MAIN_CHECK_PROGRAM = "tab.main.checkProgram";
 	public static final boolean TAB_MAIN_CHECK_PROGRAM_DEFAULT = false;
 
-	// ----- getter -----------------------------------------------------------
-	private static String getValueForId(String id, String defaultValue) {
+	// TODO: remove DEPRECATED
+	public static final String OPENOCD_EXECUTABLE_DEPRECATED = "openocd_executable";
+	public static final String OPENOCD_PATH_DEPRECATED = "openocd_path";
+
+	// ----- Getters ----------------------------------------------------------
+
+	private static String getString(String key, String defaultValue) {
 
 		return Platform.getPreferencesService().getString(Activator.PLUGIN_ID,
-				id, defaultValue, null);
+				key, defaultValue, null);
 	}
 
-	// ----- setter -----------------------------------------------------------
-	private static void putWorkspaceValueForId(String id, String value) {
+	// ----- Setters ----------------------------------------------------------
+
+	private static void putWorkspaceString(String key, String value) {
 
 		value = value.trim();
 
 		// Access the instanceScope
 		Preferences preferences = InstanceScope.INSTANCE
 				.getNode(Activator.PLUGIN_ID);
-		preferences.put(id, value);
+		preferences.put(key, value);
 	}
 
-	// ----- flush ------------------------------------------------------------
 	public static void flush() {
 
 		try {
@@ -113,19 +116,19 @@ public class PersistentPreferences {
 	// ----- gdb server doStart -----------------------------------------------
 	public static boolean getGdbServerDoStart(boolean defaultValue) {
 
-		return Boolean.valueOf(getValueForId(GDB_SERVER_DO_START,
+		return Boolean.valueOf(getString(GDB_SERVER_DO_START,
 				Boolean.toString(defaultValue)));
 	}
 
 	public static void putGdbServerDoStart(boolean value) {
 
-		putWorkspaceValueForId(GDB_SERVER_DO_START, Boolean.toString(value));
+		putWorkspaceString(GDB_SERVER_DO_START, Boolean.toString(value));
 	}
 
 	// ----- gdb server executable --------------------------------------------
 	public static String getGdbServerExecutable(String defaultValue) {
 
-		String value = getValueForId(GDB_SERVER_EXECUTABLE, null);
+		String value = getString(GDB_SERVER_EXECUTABLE, null);
 		if (value != null) {
 			return value;
 		}
@@ -134,13 +137,13 @@ public class PersistentPreferences {
 
 	public static void putGdbServerExecutable(String value) {
 
-		putWorkspaceValueForId(GDB_SERVER_EXECUTABLE, value);
+		putWorkspaceString(GDB_SERVER_EXECUTABLE, value);
 	}
 
 	// ----- gdb server other options -----------------------------------------
 	public static String getGdbServerOtherOptions(String defaultValue) {
 
-		String value = getValueForId(GDB_SERVER_OTHER_OPTIONS, null);
+		String value = getString(GDB_SERVER_OTHER_OPTIONS, null);
 		if (value != null) {
 			return value;
 		}
@@ -149,13 +152,13 @@ public class PersistentPreferences {
 
 	public static void putGdbServerOtherOptions(String value) {
 
-		putWorkspaceValueForId(GDB_SERVER_OTHER_OPTIONS, value);
+		putWorkspaceString(GDB_SERVER_OTHER_OPTIONS, value);
 	}
 
 	// ----- gdb client executable --------------------------------------------
 	public static String getGdbClientExecutable(String defaultValue) {
 
-		String value = getValueForId(GDB_CLIENT_EXECUTABLE, null);
+		String value = getString(GDB_CLIENT_EXECUTABLE, null);
 		if (value != null) {
 			return value;
 		}
@@ -164,125 +167,123 @@ public class PersistentPreferences {
 
 	public static void putGdbClientExecutable(String value) {
 
-		putWorkspaceValueForId(GDB_CLIENT_EXECUTABLE, value);
+		putWorkspaceString(GDB_CLIENT_EXECUTABLE, value);
 	}
 
 	// ----- gdb client other options -----------------------------------------
 	public static String getGdbClientOtherOptions(String defaultValue) {
 
-		return getValueForId(GDB_CLIENT_OTHER_OPTIONS, defaultValue);
+		return getString(GDB_CLIENT_OTHER_OPTIONS, defaultValue);
 	}
 
 	public static void putGdbClientOtherOptions(String value) {
 
-		putWorkspaceValueForId(GDB_CLIENT_OTHER_OPTIONS, value);
+		putWorkspaceString(GDB_CLIENT_OTHER_OPTIONS, value);
 	}
 
 	// ----- gdb client commands ----------------------------------------------
 	public static String getGdbClientCommands(String defaultValue) {
 
-		return getValueForId(GDB_CLIENT_COMMANDS, defaultValue);
+		return getString(GDB_CLIENT_COMMANDS, defaultValue);
 	}
 
 	public static void putGdbClientCommands(String value) {
 
-		putWorkspaceValueForId(GDB_CLIENT_COMMANDS, value);
+		putWorkspaceString(GDB_CLIENT_COMMANDS, value);
 	}
 
 	// ----- OpenOCD do initial reset -----------------------------------------
 	public static boolean getOpenOCDDoInitialReset(boolean defaultValue) {
 
-		return Boolean.valueOf(getValueForId(GDB_OPENOCD_DO_INITIAL_RESET,
+		return Boolean.valueOf(getString(GDB_OPENOCD_DO_INITIAL_RESET,
 				Boolean.toString(defaultValue)));
 	}
 
 	public static void putOpenOCDDoInitialReset(boolean value) {
 
-		putWorkspaceValueForId(GDB_OPENOCD_DO_INITIAL_RESET,
+		putWorkspaceString(GDB_OPENOCD_DO_INITIAL_RESET,
 				Boolean.toString(value));
 	}
 
 	// ----- OpenOCD initial reset type ---------------------------------------
 	public static String getOpenOCDInitialResetType(String defaultValue) {
 
-		return getValueForId(GDB_OPENOCD_INITIAL_RESET_TYPE, defaultValue);
+		return getString(GDB_OPENOCD_INITIAL_RESET_TYPE, defaultValue);
 	}
 
 	public static void putOpenOCDInitialResetType(String value) {
 
-		putWorkspaceValueForId(GDB_OPENOCD_INITIAL_RESET_TYPE, value);
+		putWorkspaceString(GDB_OPENOCD_INITIAL_RESET_TYPE, value);
 	}
 
 	// ----- OpenOCD enable semihosting ---------------------------------------
 	public static boolean getOpenOCDEnableSemihosting(boolean defaultValue) {
 
-		return Boolean.valueOf(getValueForId(GDB_OPENOCD_ENABLE_SEMIHOSTING,
+		return Boolean.valueOf(getString(GDB_OPENOCD_ENABLE_SEMIHOSTING,
 				Boolean.toString(defaultValue)));
 	}
 
 	public static void putOpenOCDEnableSemihosting(boolean value) {
 
-		putWorkspaceValueForId(GDB_OPENOCD_ENABLE_SEMIHOSTING,
+		putWorkspaceString(GDB_OPENOCD_ENABLE_SEMIHOSTING,
 				Boolean.toString(value));
 	}
 
 	// ----- OpenOCD init other -----------------------------------------------
 	public static String getOpenOCDInitOther(String defaultValue) {
 
-		return getValueForId(GDB_OPENOCD_INIT_OTHER, defaultValue);
+		return getString(GDB_OPENOCD_INIT_OTHER, defaultValue);
 	}
 
 	public static void putOpenOCDInitOther(String value) {
 
-		putWorkspaceValueForId(GDB_OPENOCD_INIT_OTHER, value);
+		putWorkspaceString(GDB_OPENOCD_INIT_OTHER, value);
 	}
 
 	// ----- OpenOCD debug in ram ---------------------------------------------
 	public static boolean getOpenOCDDebugInRam(boolean defaultValue) {
 
-		return Boolean.valueOf(getValueForId(GDB_OPENOCD_DO_DEBUG_IN_RAM,
+		return Boolean.valueOf(getString(GDB_OPENOCD_DO_DEBUG_IN_RAM,
 				Boolean.toString(defaultValue)));
 	}
 
 	public static void putOpenOCDDebugInRam(boolean value) {
 
-		putWorkspaceValueForId(GDB_OPENOCD_DO_DEBUG_IN_RAM,
-				Boolean.toString(value));
+		putWorkspaceString(GDB_OPENOCD_DO_DEBUG_IN_RAM, Boolean.toString(value));
 	}
 
 	// ----- OpenOCD do prerun reset ------------------------------------------
 	public static boolean getOpenOCDDoPreRunReset(boolean defaultValue) {
 
-		return Boolean.valueOf(getValueForId(GDB_OPENOCD_DO_PRERUN_RESET,
+		return Boolean.valueOf(getString(GDB_OPENOCD_DO_PRERUN_RESET,
 				Boolean.toString(defaultValue)));
 	}
 
 	public static void putOpenOCDDoPreRunReset(boolean value) {
 
-		putWorkspaceValueForId(GDB_OPENOCD_DO_PRERUN_RESET,
-				Boolean.toString(value));
+		putWorkspaceString(GDB_OPENOCD_DO_PRERUN_RESET, Boolean.toString(value));
 	}
 
 	// ----- OpenOCD prerun reset type ----------------------------------------
 	public static String getOpenOCDPreRunResetType(String defaultValue) {
 
-		return getValueForId(GDB_OPENOCD_PRERUN_RESET_TYPE, defaultValue);
+		return getString(GDB_OPENOCD_PRERUN_RESET_TYPE, defaultValue);
 	}
 
 	public static void putOpenOCDPreRunResetType(String value) {
 
-		putWorkspaceValueForId(GDB_OPENOCD_PRERUN_RESET_TYPE, value);
+		putWorkspaceString(GDB_OPENOCD_PRERUN_RESET_TYPE, value);
 	}
 
 	// ----- OpenOCD init other -----------------------------------------------
 	public static String getOpenOCDPreRunOther(String defaultValue) {
 
-		return getValueForId(GDB_OPENOCD_PRERUN_OTHER, defaultValue);
+		return getString(GDB_OPENOCD_PRERUN_OTHER, defaultValue);
 	}
 
 	public static void putOpenOCDPreRunOther(String value) {
 
-		putWorkspaceValueForId(GDB_OPENOCD_PRERUN_OTHER, value);
+		putWorkspaceString(GDB_OPENOCD_PRERUN_OTHER, value);
 	}
 
 	// ------------------------------------------------------------------------

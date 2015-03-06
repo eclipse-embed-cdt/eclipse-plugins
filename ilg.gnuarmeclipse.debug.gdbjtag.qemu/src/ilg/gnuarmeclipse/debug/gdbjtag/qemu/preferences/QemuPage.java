@@ -76,7 +76,7 @@ public class QemuPage extends FieldEditorPreferencePage implements
 
 		FieldEditor executable;
 		executable = new StringVariableFieldEditor(
-				PersistentPreferences.QEMU_EXECUTABLE,
+				PersistentPreferences.EXECUTABLE_NAME,
 				VariableInitializer.VARIABLE_QEMU_EXECUTABLE,
 				Messages.Variable_executable_description,
 				Messages.QemuPagePropertyPage_executable_label,
@@ -85,11 +85,11 @@ public class QemuPage extends FieldEditorPreferencePage implements
 
 		boolean isStrict;
 		isStrict = DefaultPreferences.getBoolean(
-				PersistentPreferences.QEMU_FOLDER_STRICT, true);
+				PersistentPreferences.FOLDER_STRICT, true);
 
 		FieldEditor folder;
 		folder = new DirectoryNotStrictVariableFieldEditor(
-				PersistentPreferences.QEMU_FOLDER,
+				PersistentPreferences.INSTALL_FOLDER,
 				VariableInitializer.VARIABLE_QEMU_PATH,
 				Messages.Variable_path_description,
 				Messages.QemuPagePropertyPage_executable_folder,

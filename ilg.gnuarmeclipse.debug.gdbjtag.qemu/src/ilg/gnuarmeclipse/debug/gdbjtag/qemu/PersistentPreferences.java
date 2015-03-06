@@ -69,33 +69,36 @@ public class PersistentPreferences {
 			+ "preRun.other";
 
 	// ----- Defaults ---------------------------------------------------------
-	public static final String QEMU_EXECUTABLE = "qemu.executable";
-	public static final String QEMU_EXECUTABLE_OS = "qemu.executable.%s";
-	public static final String QEMU_FOLDER = "qemu.folder";
-	public static final String QEMU_SEARCH_PATH = "qemu.search.path";
-	public static final String QEMU_SEARCH_PATH_OS = "qemu.search.path.%s";
 
-	public static final String QEMU_FOLDER_STRICT = "qemu.folder.strict";
+	public static final String EXECUTABLE_NAME = "executable.name";
+	public static final String EXECUTABLE_NAME_OS = EXECUTABLE_NAME + ".%s";
+	public static final String INSTALL_FOLDER = "install.folder";
+	public static final String SEARCH_PATH = "search.path";
+	public static final String SEARCH_PATH_OS = SEARCH_PATH + ".%s";
+
+	public static final String FOLDER_STRICT = "folder.strict";
 
 	public static final String TAB_MAIN_CHECK_PROGRAM = "tab.main.checkProgram";
 	public static final boolean TAB_MAIN_CHECK_PROGRAM_DEFAULT = false;
 
-	// ----- getter -----------------------------------------------------------
-	private static String getStringValueForId(String id, String defaultValue) {
+	// ----- Getters ----------------------------------------------------------
+
+	private static String getString(String id, String defaultValue) {
 
 		return Platform.getPreferencesService().getString(Activator.PLUGIN_ID,
 				id, defaultValue, null);
 	}
 
 	@SuppressWarnings("unused")
-	private static boolean getBooleanValueForId(String id, boolean defaultValue) {
+	private static boolean getBoolean(String id, boolean defaultValue) {
 
 		return Platform.getPreferencesService().getBoolean(Activator.PLUGIN_ID,
 				id, defaultValue, null);
 	}
 
-	// ----- setter -----------------------------------------------------------
-	private static void putWorkspaceValueForId(String id, String value) {
+	// ----- Setters ----------------------------------------------------------
+
+	private static void putWorkspaceString(String id, String value) {
 
 		value = value.trim();
 
@@ -105,7 +108,6 @@ public class PersistentPreferences {
 		preferences.put(id, value);
 	}
 
-	// ----- flush -----------------------------------------------------------
 	public static void flush() {
 
 		try {
@@ -118,164 +120,149 @@ public class PersistentPreferences {
 	// ----- gdb server doStart -----------------------------------------------
 	public static boolean getGdbServerDoStart(boolean defaultValue) {
 
-		return Boolean.valueOf(getStringValueForId(GDB_SERVER_DO_START,
+		return Boolean.valueOf(getString(GDB_SERVER_DO_START,
 				Boolean.toString(defaultValue)));
 	}
 
 	public static void putGdbServerDoStart(boolean value) {
 
-		putWorkspaceValueForId(GDB_SERVER_DO_START, Boolean.toString(value));
+		putWorkspaceString(GDB_SERVER_DO_START, Boolean.toString(value));
 	}
 
 	// ----- gdb server executable --------------------------------------------
 	public static String getGdbServerExecutable(String defaultValue) {
 
-		return getStringValueForId(GDB_SERVER_EXECUTABLE, defaultValue);
+		return getString(GDB_SERVER_EXECUTABLE, defaultValue);
 	}
 
 	public static void putGdbServerExecutable(String value) {
 
-		putWorkspaceValueForId(GDB_SERVER_EXECUTABLE, value);
+		putWorkspaceString(GDB_SERVER_EXECUTABLE, value);
 	}
 
 	// ----- gdb server other options -----------------------------------------
 	public static String getGdbServerOtherOptions(String defaultValue) {
 
-		return getStringValueForId(GDB_SERVER_OTHER_OPTIONS, defaultValue);
+		return getString(GDB_SERVER_OTHER_OPTIONS, defaultValue);
 	}
 
 	public static void putGdbServerOtherOptions(String value) {
 
-		putWorkspaceValueForId(GDB_SERVER_OTHER_OPTIONS, value);
+		putWorkspaceString(GDB_SERVER_OTHER_OPTIONS, value);
 	}
 
 	// ----- gdb client executable --------------------------------------------
 	public static String getGdbClientExecutable(String defaultValue) {
 
-		return getStringValueForId(GDB_CLIENT_EXECUTABLE, defaultValue);
+		return getString(GDB_CLIENT_EXECUTABLE, defaultValue);
 	}
 
 	public static void putGdbClientExecutable(String value) {
 
-		putWorkspaceValueForId(GDB_CLIENT_EXECUTABLE, value);
+		putWorkspaceString(GDB_CLIENT_EXECUTABLE, value);
 	}
 
 	// ----- gdb client other options -----------------------------------------
 	public static String getGdbClientOtherOptions(String defaultValue) {
 
-		return getStringValueForId(GDB_CLIENT_OTHER_OPTIONS, defaultValue);
+		return getString(GDB_CLIENT_OTHER_OPTIONS, defaultValue);
 	}
 
 	public static void putGdbClientOtherOptions(String value) {
 
-		putWorkspaceValueForId(GDB_CLIENT_OTHER_OPTIONS, value);
+		putWorkspaceString(GDB_CLIENT_OTHER_OPTIONS, value);
 	}
 
 	// ----- gdb client commands ----------------------------------------------
 	public static String getGdbClientCommands(String defaultValue) {
 
-		return getStringValueForId(GDB_CLIENT_COMMANDS, defaultValue);
+		return getString(GDB_CLIENT_COMMANDS, defaultValue);
 	}
 
 	public static void putGdbClientCommands(String value) {
 
-		putWorkspaceValueForId(GDB_CLIENT_COMMANDS, value);
+		putWorkspaceString(GDB_CLIENT_COMMANDS, value);
 	}
 
 	// ----- QEMU do initial reset -----------------------------------------
 	public static boolean getQemuDoInitialReset(boolean defaultValue) {
 
-		return Boolean.valueOf(getStringValueForId(GDB_QEMU_DO_INITIAL_RESET,
+		return Boolean.valueOf(getString(GDB_QEMU_DO_INITIAL_RESET,
 				Boolean.toString(defaultValue)));
 	}
 
 	public static void putQemuDoInitialReset(boolean value) {
 
-		putWorkspaceValueForId(GDB_QEMU_DO_INITIAL_RESET,
-				Boolean.toString(value));
+		putWorkspaceString(GDB_QEMU_DO_INITIAL_RESET, Boolean.toString(value));
 	}
 
 	// ----- QEMU enable semihosting ---------------------------------------
 	public static boolean getQemuEnableSemihosting(boolean defaultValue) {
 
-		return Boolean.valueOf(getStringValueForId(GDB_QEMU_ENABLE_SEMIHOSTING,
+		return Boolean.valueOf(getString(GDB_QEMU_ENABLE_SEMIHOSTING,
 				Boolean.toString(defaultValue)));
 	}
 
 	public static void putQemuEnableSemihosting(boolean value) {
 
-		putWorkspaceValueForId(GDB_QEMU_ENABLE_SEMIHOSTING,
-				Boolean.toString(value));
+		putWorkspaceString(GDB_QEMU_ENABLE_SEMIHOSTING, Boolean.toString(value));
 	}
 
 	// ----- QEMU init other -----------------------------------------------
 	public static String getQemuInitOther(String defaultValue) {
 
-		return getStringValueForId(GDB_QEMU_INIT_OTHER, defaultValue);
+		return getString(GDB_QEMU_INIT_OTHER, defaultValue);
 	}
 
 	public static void putQemuInitOther(String value) {
 
-		putWorkspaceValueForId(GDB_QEMU_INIT_OTHER, value);
+		putWorkspaceString(GDB_QEMU_INIT_OTHER, value);
 	}
 
 	// ----- QEMU machine name ------------------------------------------------
 	public static String getQemuMachineName(String defaultValue) {
 
-		return getStringValueForId(GDB_QEMU_MACHINE_NAME, defaultValue);
+		return getString(GDB_QEMU_MACHINE_NAME, defaultValue);
 	}
 
 	public static void putQemuMachineName(String value) {
 
-		putWorkspaceValueForId(GDB_QEMU_MACHINE_NAME, value);
+		putWorkspaceString(GDB_QEMU_MACHINE_NAME, value);
 	}
 
 	// ----- QEMU debug in ram ---------------------------------------------
 	public static boolean getQemuDebugInRam(boolean defaultValue) {
 
-		return Boolean.valueOf(getStringValueForId(GDB_QEMU_DO_DEBUG_IN_RAM,
+		return Boolean.valueOf(getString(GDB_QEMU_DO_DEBUG_IN_RAM,
 				Boolean.toString(defaultValue)));
 	}
 
 	public static void putQemuDebugInRam(boolean value) {
 
-		putWorkspaceValueForId(GDB_QEMU_DO_DEBUG_IN_RAM,
-				Boolean.toString(value));
+		putWorkspaceString(GDB_QEMU_DO_DEBUG_IN_RAM, Boolean.toString(value));
 	}
 
 	// ----- QEMU do prerun reset ------------------------------------------
 	public static boolean getQemuDoPreRunReset(boolean defaultValue) {
 
-		return Boolean.valueOf(getStringValueForId(GDB_QEMU_DO_PRERUN_RESET,
+		return Boolean.valueOf(getString(GDB_QEMU_DO_PRERUN_RESET,
 				Boolean.toString(defaultValue)));
 	}
 
 	public static void putQemuDoPreRunReset(boolean value) {
 
-		putWorkspaceValueForId(GDB_QEMU_DO_PRERUN_RESET,
-				Boolean.toString(value));
+		putWorkspaceString(GDB_QEMU_DO_PRERUN_RESET, Boolean.toString(value));
 	}
-
-	// ----- QEMU prerun reset type ----------------------------------------
-	// public static String getQemuPreRunResetType(String defaultValue) {
-	//
-	// return getValueForId(GDB_QEMU_PRERUN_RESET_TYPE, defaultValue);
-	// }
-	//
-	// public static void putQemuPreRunResetType(String value) {
-	//
-	// putValueForId(GDB_QEMU_PRERUN_RESET_TYPE, value);
-	// }
 
 	// ----- QEMU init other --------------------------------------------------
 	public static String getQemuPreRunOther(String defaultValue) {
 
-		return getStringValueForId(GDB_QEMU_PRERUN_OTHER, defaultValue);
+		return getString(GDB_QEMU_PRERUN_OTHER, defaultValue);
 	}
 
 	public static void putQemuPreRunOther(String value) {
 
-		putWorkspaceValueForId(GDB_QEMU_PRERUN_OTHER, value);
+		putWorkspaceString(GDB_QEMU_PRERUN_OTHER, value);
 	}
 
 	// ------------------------------------------------------------------------

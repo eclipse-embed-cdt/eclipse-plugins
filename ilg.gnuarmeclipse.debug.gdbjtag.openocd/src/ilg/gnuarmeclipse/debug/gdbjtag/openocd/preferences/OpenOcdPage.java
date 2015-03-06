@@ -76,7 +76,7 @@ public class OpenOcdPage extends FieldEditorPreferencePage implements
 
 		FieldEditor executable;
 		executable = new StringVariableFieldEditor(
-				PersistentPreferences.OPENOCD_EXECUTABLE,
+				PersistentPreferences.EXECUTABLE_NAME,
 				VariableInitializer.VARIABLE_OPENOCD_EXECUTABLE,
 				Messages.Variable_executable_description,
 				Messages.OpenOCDPagePropertyPage_executable_label,
@@ -85,11 +85,11 @@ public class OpenOcdPage extends FieldEditorPreferencePage implements
 
 		boolean isStrict;
 		isStrict = DefaultPreferences.getBoolean(
-				PersistentPreferences.OPENOCD_FOLDER_STRICT, true);
+				PersistentPreferences.FOLDER_STRICT, true);
 
 		FieldEditor folder;
 		folder = new DirectoryNotStrictVariableFieldEditor(
-				PersistentPreferences.OPENOCD_FOLDER,
+				PersistentPreferences.INSTALL_FOLDER,
 				VariableInitializer.VARIABLE_OPENOCD_PATH,
 				Messages.Variable_path_description,
 				Messages.OpenOCDPagePropertyPage_executable_folder,

@@ -142,15 +142,15 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 
 				// Check if the search path is defined in the default
 				// preferences.
-				String searchPath = DefaultPreferences.getInstallSearchPath();
+				String searchPath = DefaultPreferences.getSearchPath();
 				if (searchPath.isEmpty()) {
 
 					// If not defined, get the OS Specific default
 					// from preferences.ini.
-					searchPath = DefaultPreferences.getInstallSearchPathOs();
+					searchPath = DefaultPreferences.getSearchPathOs();
 					if (!searchPath.isEmpty()) {
 						// Store the search path in the preferences
-						DefaultPreferences.putInstallSearchPath(searchPath);
+						DefaultPreferences.putSearchPath(searchPath);
 					}
 				}
 

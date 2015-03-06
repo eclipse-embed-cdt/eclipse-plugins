@@ -20,6 +20,7 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
+	// TODO: remove DEPRECATED
 	// These values are deprecated. Use the definitions in PersistentValues.
 	private static final String GDB_SERVER_EXECUTABLE_DEPRECATED = "gdb.server.executable.default";
 	private static final String GDB_CLIENT_EXECUTABLE_DEPRECATED = "gdb.client.executable.default";
@@ -119,7 +120,7 @@ public class DefaultPreferences {
 
 	public static String getExecutableName() {
 
-		String key = PersistentPreferences.OPENOCD_EXECUTABLE;
+		String key = PersistentPreferences.EXECUTABLE_NAME;
 		String value = getString(key, null);
 		if (value == null) {
 
@@ -140,7 +141,7 @@ public class DefaultPreferences {
 	public static String getExecutableNameOs() {
 
 		String key = EclipseUtils
-				.getKeyOs(PersistentPreferences.OPENOCD_EXECUTABLE_OS);
+				.getKeyOs(PersistentPreferences.EXECUTABLE_NAME_OS);
 
 		String value = getString(key, "");
 		if (Activator.getInstance().isDebugging()) {
@@ -152,7 +153,7 @@ public class DefaultPreferences {
 
 	public static void putExecutableName(String value) {
 
-		String key = PersistentPreferences.OPENOCD_EXECUTABLE;
+		String key = PersistentPreferences.EXECUTABLE_NAME;
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("Default " + key + "=" + value);
@@ -164,7 +165,7 @@ public class DefaultPreferences {
 
 	public static String getInstallFolder() {
 
-		String key = PersistentPreferences.OPENOCD_FOLDER;
+		String key = PersistentPreferences.INSTALL_FOLDER;
 		String value = getString(key, null);
 		if (value == null) {
 
@@ -184,7 +185,7 @@ public class DefaultPreferences {
 
 	public static void putInstallFolder(String value) {
 
-		String key = PersistentPreferences.OPENOCD_FOLDER;
+		String key = PersistentPreferences.INSTALL_FOLDER;
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("Default " + key + "=" + value);
@@ -194,31 +195,31 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
-	public static String getInstallSearchPath() {
+	public static String getSearchPath() {
 
-		String key = PersistentPreferences.OPENOCD_SEARCH_PATH;
+		String key = PersistentPreferences.SEARCH_PATH;
 		String value = getString(key, "");
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getInstallSearchPath()=\"" + value + "\"");
+			System.out.println("getSearchPath()=\"" + value + "\"");
 		}
 		return value;
 	}
 
-	public static String getInstallSearchPathOs() {
+	public static String getSearchPathOs() {
 
 		String key = EclipseUtils
-				.getKeyOs(PersistentPreferences.OPENOCD_SEARCH_PATH_OS);
+				.getKeyOs(PersistentPreferences.SEARCH_PATH_OS);
 		String value = getString(key, "");
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getInstallSearchPathOs()=\"" + value + "\" ("
-					+ key + ")");
+			System.out.println("getSearchPathOs()=\"" + value + "\" (" + key
+					+ ")");
 		}
 		return value;
 	}
 
-	public static void putInstallSearchPath(String value) {
+	public static void putSearchPath(String value) {
 
-		String key = PersistentPreferences.OPENOCD_SEARCH_PATH;
+		String key = PersistentPreferences.SEARCH_PATH;
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("Default " + key + "=" + value);
