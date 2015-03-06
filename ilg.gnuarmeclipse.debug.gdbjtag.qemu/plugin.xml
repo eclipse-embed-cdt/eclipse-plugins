@@ -65,5 +65,20 @@
             initializerClass="ilg.gnuarmeclipse.debug.gdbjtag.qemu.VariableInitializer"
             name="qemu_executable" />
    </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.debug.ui.DebugPreferencePage"
+            class="ilg.gnuarmeclipse.debug.gdbjtag.qemu.preferences.QemuPage"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.qemu.preferencePage"
+            name="%preferences.qemu">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="ilg.gnuarmeclipse.debug.gdbjtag.qemu.DefaultPreferenceInitializer">
+      </initializer>
+   </extension>
 
 </plugin>

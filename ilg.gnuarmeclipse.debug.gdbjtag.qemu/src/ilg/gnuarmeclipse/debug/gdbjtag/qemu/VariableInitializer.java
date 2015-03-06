@@ -11,8 +11,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.qemu;
 
-import ilg.gnuarmeclipse.core.EclipseUtils;
-import ilg.gnuarmeclipse.debug.gdbjtag.WindowsRegistry;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.ui.Messages;
 
 import org.eclipse.core.variables.IValueVariable;
 import org.eclipse.core.variables.IValueVariableInitializer;
@@ -21,13 +20,10 @@ public class VariableInitializer implements IValueVariableInitializer {
 
 	// ------------------------------------------------------------------------
 
-	static final String VARIABLE_QEMU_NAME = "qemu_executable";
-	static final String VARIABLE_QEMU_PATH = "qemu_path";
+	public static final String VARIABLE_QEMU_EXECUTABLE = "qemu_executable";
+	public static final String VARIABLE_QEMU_PATH = "qemu_path";
 
 	static final String UNDEFINED_PATH = "undefined_path";
-
-	private static final String LOCATION = "HKEY_LOCAL_MACHINE\\SOFTWARE\\GNU ARM Eclipse\\QEMU";
-	private static final String KEY = "InstallFolder";
 
 	// ------------------------------------------------------------------------
 
@@ -36,33 +32,24 @@ public class VariableInitializer implements IValueVariableInitializer {
 
 		String value;
 
-		if (VARIABLE_QEMU_NAME.equals(variable.getName())) {
+		if (VARIABLE_QEMU_EXECUTABLE.equals(variable.getName())) {
 
-			value = EclipseDefaults.getQemuExecutable();
+			value = DefaultPreferences.getExecutableName();
 			if (value == null) {
 				value = ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_NAME;
 			}
 			variable.setValue(value);
+			variable.setDescription(Messages.Variable_executable_description);
 
 		} else if (VARIABLE_QEMU_PATH.equals(variable.getName())) {
 
-			value = EclipseDefaults.getQemuPath();
+			value = DefaultPreferences.getInstallFolder();
 			if (value == null) {
-				if (EclipseUtils.isWindows()) {
-					value = WindowsRegistry.query(LOCATION, KEY);
-					if (value == null) {
-						value = UNDEFINED_PATH;
-					}
-				} else if (EclipseUtils.isLinux()) {
-					value = "/usr/bin";
-				} else if (EclipseUtils.isMacOSX()) {
-					value = "/opt/local/bin";
-				} else {
-					value = UNDEFINED_PATH;
-				}
+				value = UNDEFINED_PATH;
 			}
-
 			variable.setValue(value);
+			variable.setDescription(Messages.Variable_path_description);
+
 		}
 	}
 

@@ -16,7 +16,9 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
-public class PersistentValues {
+public class PersistentPreferences {
+
+	// ------------------------------------------------------------------------
 
 	// Tab Debugger
 	// GDB Server Setup
@@ -67,8 +69,13 @@ public class PersistentValues {
 			+ "preRun.other";
 
 	// ----- Defaults ---------------------------------------------------------
-	public static final String QEMU_EXECUTABLE = "qemu_executable";
-	public static final String QEMU_PATH = "qemu_path";
+	public static final String QEMU_EXECUTABLE = "qemu.executable";
+	public static final String QEMU_EXECUTABLE_OS = "qemu.executable.%s";
+	public static final String QEMU_FOLDER = "qemu.folder";
+	public static final String QEMU_SEARCH_PATH = "qemu.search.path";
+	public static final String QEMU_SEARCH_PATH_OS = "qemu.search.path.%s";
+
+	public static final String QEMU_FOLDER_STRICT = "qemu.folder.strict";
 
 	public static final String TAB_MAIN_CHECK_PROGRAM = "tab.main.checkProgram";
 	public static final boolean TAB_MAIN_CHECK_PROGRAM_DEFAULT = false;
@@ -86,20 +93,6 @@ public class PersistentValues {
 		return Platform.getPreferencesService().getBoolean(Activator.PLUGIN_ID,
 				id, defaultValue, null);
 	}
-
-	// private static String _getDefaultStringValueForId(String id,
-	// String defaultValue) {
-	//
-	// return DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID).get(id,
-	// defaultValue);
-	// }
-	//
-	// private static boolean _getDefaultBooleanValueForId(String id,
-	// boolean defaultValue) {
-	//
-	// return DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID).getBoolean(
-	// id, defaultValue);
-	// }
 
 	// ----- setter -----------------------------------------------------------
 	private static void putWorkspaceValueForId(String id, String value) {
