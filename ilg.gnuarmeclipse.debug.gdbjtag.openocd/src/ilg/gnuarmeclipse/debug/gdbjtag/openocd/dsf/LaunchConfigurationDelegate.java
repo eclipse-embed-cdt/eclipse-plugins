@@ -475,20 +475,26 @@ public class LaunchConfigurationDelegate extends
 	protected IPath checkBinaryDetails(final ILaunchConfiguration config)
 			throws CoreException {
 
-		String configOptions = "";
-		try {
-			configOptions = Configuration.getGdbServerOtherConfig(config);
-		} catch (CoreException e) {
-			;
-		}
+		boolean doStartServer = Configuration.getDoStartGdbServer(config);
+		if (doStartServer) {
 
-		if (configOptions.isEmpty()) {
-			throw new CoreException(
-					new Status(
-							IStatus.ERROR,
-							Activator.PLUGIN_ID,
-							"Missing mandatory configuration. "
-									+ "Fill-in the 'Config options:' field in the Debugger tab.")); //$NON-NLS-1$
+			// If we should start the server, there must be a configuration
+			// present, otherwise refuse to start.
+			String configOptions = "";
+			try {
+				configOptions = Configuration.getGdbServerOtherConfig(config);
+			} catch (CoreException e) {
+				;
+			}
+
+			if (configOptions.isEmpty()) {
+				throw new CoreException(
+						new Status(
+								IStatus.ERROR,
+								Activator.PLUGIN_ID,
+								"Missing mandatory configuration. "
+										+ "Fill-in the 'Config options:' field in the Debugger tab.")); //$NON-NLS-1$
+			}
 		}
 
 		IPath path = super.checkBinaryDetails(config);
