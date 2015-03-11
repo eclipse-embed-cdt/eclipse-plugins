@@ -36,8 +36,11 @@ public class Discoverer {
 
 	// ------------------------------------------------------------------------
 
-	private static final String REG_PREFIX = "SOFTWARE";
-	private static final String REG32_PREFIX = "SOFTWARE\\Wow6432Node";
+	private static final String CU_REG_PREFIX = "Software";
+	private static final String CU_REG32_PREFIX = "Software\\Wow6432Node";
+
+	private static final String LM_REG_PREFIX = "SOFTWARE";
+	private static final String LM_REG32_PREFIX = "SOFTWARE\\Wow6432Node";
 
 	// ------------------------------------------------------------------------
 
@@ -45,33 +48,68 @@ public class Discoverer {
 	 * Find where the executable might have been installed. The returned path is
 	 * known to be an existing folder.
 	 * 
+	 * @param executableName
 	 * @param searchPath
 	 *            a string with a sequence of folders.
+	 * @param registrySubKey
+	 * @param registryName
 	 * @return a String with the absolute folder path, or null if not found.
 	 */
 	public static String discoverInstallFolder(String executableName,
 			String searchPath, String registrySubKey, String registryName) {
+
+		return discoverInstallFolder(executableName, searchPath, "bin",
+				registrySubKey, registryName);
+	}
+
+	/**
+	 * Find where the executable might have been installed. The returned path is
+	 * known to be an existing folder.
+	 * 
+	 * @param executableName
+	 * @param searchPath
+	 *            a string with a sequence of folders.
+	 * @param binFolder
+	 *            a String, usually "bin", or null.
+	 * @param registrySubKey
+	 * @param registryName
+	 * @return a String with the absolute folder path, or null if not found.
+	 */
+	public static String discoverInstallFolder(String executableName,
+			String searchPath, String binFolder, String registrySubKey,
+			String registryName) {
 
 		String value = null;
 		if (EclipseUtils.isWindows()) {
 
 			WindowsRegistry registry = WindowsRegistry.getRegistry();
 			if (registry != null) {
-				value = registry.getLocalMachineValue(REG_PREFIX
+				// Check both HKEY_CURRENT_USER and HKEY_LOCAL_MACHINE
+				value = registry.getCurrentUserValue(CU_REG_PREFIX
 						+ registrySubKey, registryName);
 				if (value == null) {
-					value = registry.getLocalMachineValue(REG32_PREFIX
+					value = registry.getCurrentUserValue(CU_REG32_PREFIX
 							+ registrySubKey, registryName);
+					if (value == null) {
+						value = registry.getLocalMachineValue(LM_REG_PREFIX
+								+ registrySubKey, registryName);
+						if (value == null) {
+							value = registry.getLocalMachineValue(
+									LM_REG32_PREFIX + registrySubKey,
+									registryName);
+						}
+					}
 				}
 
-				if (value != null && !value.endsWith("\\bin")) {
-					value += "\\bin";
+				if (binFolder != null && value != null
+						&& !value.endsWith("\\" + binFolder)) {
+					value += "\\" + binFolder;
 				}
 
 				if (value != null) {
 					IPath path = new Path(value);
 					// Make portable
-					value = path.toString(); // includes /bin
+					value = path.toString(); // includes /bin, if it exists
 					if (Activator.getInstance().isDebugging()) {
 						System.out
 								.println("Discoverer.discoverInstallFolder() WinReg "
@@ -137,7 +175,7 @@ public class Discoverer {
 
 		// Try paths in order; return the first.
 		for (int i = 0; i < paths.length; ++i) {
-			value = getLastExecutable(paths[i], executableName);
+			value = getLastExecutable(paths[i], binFolder, executableName);
 			if (value != null && !value.isEmpty()) {
 				return value;
 			}
@@ -153,11 +191,13 @@ public class Discoverer {
 	 * The returned path includes the ending /bin.
 	 * 
 	 * @param folder
+	 * @param binFolder
+	 *            a String, usually "bin", or null.
 	 * @param executableName
 	 * @return a String with the folder absolute path, or null if not found.
 	 */
 	public static String getLastExecutable(String folderName,
-			final String executableName) {
+			final String binFolder, final String executableName) {
 
 		IPath folderPath = new Path(folderName);
 
@@ -180,9 +220,13 @@ public class Discoverer {
 			 */
 			@Override
 			public boolean accept(File dir, String name) {
-				IPath path = (new Path(dir.getAbsolutePath())).append(name)
-						.append("bin").append(executableName);
+				IPath path = (new Path(dir.getAbsolutePath())).append(name);
 
+				if (binFolder != null) {
+					path = path.append(binFolder).append(executableName);
+				} else {
+					path = path.append(executableName);
+				}
 				if (path.toFile().isFile()) {
 					return true;
 				}
@@ -203,15 +247,25 @@ public class Discoverer {
 			String last = list.get(list.size() - 1);
 
 			// System.out.println(last);
-			IPath path = (new Path(folderName)).append(last).append("bin");
+			IPath path = (new Path(folderName)).append(last);
+			if (binFolder != null) {
+				path = path.append(binFolder);
+			}
 			return path.toString();
 		} else {
-			IPath path = (new Path(folderName)).append("bin").append(
-					executableName);
+			IPath path = (new Path(folderName));
+			if (binFolder != null) {
+				path = path.append(binFolder).append(executableName);
+			} else {
+				path = path.append(executableName);
+			}
 			folder = path.toFile();
 			if (folder.isFile()) {
 				// System.out.println(folder + " not a folder");
-				path = (new Path(folderName)).append("bin");
+				path = (new Path(folderName));
+				if (binFolder != null) {
+					path = path.append(binFolder);
+				}
 				return path.toString();
 			}
 		}
