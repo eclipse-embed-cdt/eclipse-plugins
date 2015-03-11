@@ -8,7 +8,7 @@
 	<packaging>pom</packaging>
 
 	<properties>
-		<tycho.version>0.20.0</tycho.version>
+		<tycho.version>0.22.0</tycho.version>
 	</properties>
 
 	<modules>
@@ -59,7 +59,8 @@
 		<repository>
 			<id>eclipse-kepler</id>
 			<layout>p2</layout>
-			<url>http://download.eclipse.org/releases/kepler</url>
+			<!-- Explicit reference to Kepler SR2 -->
+			<url>http://download.eclipse.org/releases/kepler/201402280900</url>
 		</repository>
 	</repositories>
 
