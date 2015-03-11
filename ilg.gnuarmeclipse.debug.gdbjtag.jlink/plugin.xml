@@ -76,5 +76,20 @@
             initializerClass="ilg.gnuarmeclipse.debug.gdbjtag.jlink.VariableInitializer"
             name="jlink_gdbserver"/>
    </extension>
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="ilg.gnuarmeclipse.debug.gdbjtag.jlink.DefaultPreferenceInitializer">
+      </initializer>
+   </extension>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            category="org.eclipse.debug.ui.DebugPreferencePage"
+            class="ilg.gnuarmeclipse.debug.gdbjtag.jlink.preferences.JlinkPage"
+            id="ilg.gnuarmeclipse.debug.gdbjtag.jlink.preferencePage"
+            name="%preferences.jlink">
+      </page>
+   </extension>
       
 </plugin>

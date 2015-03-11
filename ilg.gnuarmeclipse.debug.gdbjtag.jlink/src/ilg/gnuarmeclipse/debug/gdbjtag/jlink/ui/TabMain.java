@@ -12,7 +12,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui;
 
-import ilg.gnuarmeclipse.debug.gdbjtag.jlink.EclipseDefaults;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.DefaultPreferences;
 
 import org.eclipse.cdt.dsf.gdb.internal.ui.launching.CMainTab;
 
@@ -28,7 +28,7 @@ public class TabMain extends CMainTab {
 	 * not check program, to allow project-less debug sessions.
 	 */
 	public TabMain() {
-		super((EclipseDefaults.getTabMainCheckProgram() ? 0
+		super((DefaultPreferences.getTabMainCheckProgram() ? 0
 				: CMainTab.DONT_CHECK_PROGRAM)
 				| CMainTab.INCLUDE_BUILD_SETTINGS);
 	}

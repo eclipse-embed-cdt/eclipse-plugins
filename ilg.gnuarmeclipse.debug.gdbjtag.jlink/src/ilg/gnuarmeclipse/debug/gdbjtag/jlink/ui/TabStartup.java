@@ -17,8 +17,8 @@ package ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
-import ilg.gnuarmeclipse.debug.gdbjtag.jlink.EclipseDefaults;
-import ilg.gnuarmeclipse.debug.gdbjtag.jlink.PersistentValues;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.DefaultPreferences;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.PersistentPreferences;
 
 import java.io.File;
 
@@ -1231,7 +1231,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Initialisation Commands
 			{
 				// Do initial reset
-				booleanDefault = PersistentValues
+				booleanDefault = PersistentPreferences
 						.getJLinkDoInitialReset(ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
 				fDoFirstReset
 						.setSelection(configuration.getAttribute(
@@ -1239,13 +1239,13 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 								booleanDefault));
 
 				// Reset type
-				stringDefault = PersistentValues
+				stringDefault = PersistentPreferences
 						.getJLinkInitialResetType(ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
 				fFirstResetType.setText(configuration
 						.getAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
 								stringDefault));
 
-				intDefault = PersistentValues
+				intDefault = PersistentPreferences
 						.getJLinkInitialResetSpeed(ConfigurationAttributes.FIRST_RESET_SPEED_DEFAULT);
 
 				// Type change from string to int, compatibility preserved
@@ -1268,7 +1268,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					}
 				}
 				// Speed
-				stringDefault = PersistentValues
+				stringDefault = PersistentPreferences
 						.getJLinkSpeed(ConfigurationAttributes.INTERFACE_SPEED_DEFAULT);
 				String physicalInterfaceSpeed = configuration.getAttribute(
 						ConfigurationAttributes.INTERFACE_SPEED, stringDefault);
@@ -1299,7 +1299,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				}
 
 				// Enable flash breakpoints
-				booleanDefault = PersistentValues
+				booleanDefault = PersistentPreferences
 						.getJLinkEnableFlashBreakpoints(ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS_DEFAULT);
 				fEnableFlashBreakpoints
 						.setSelection(configuration
@@ -1308,13 +1308,13 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 										booleanDefault));
 
 				// Enable semihosting
-				booleanDefault = PersistentValues
+				booleanDefault = PersistentPreferences
 						.getJLinkEnableSemihosting(ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
 				fEnableSemihosting.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.ENABLE_SEMIHOSTING,
 						booleanDefault));
 
-				booleanDefault = PersistentValues
+				booleanDefault = PersistentPreferences
 						.getJLinkSemihostingTelnet(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_DEFAULT);
 				fSemihostingTelnet
 						.setSelection(configuration
@@ -1322,7 +1322,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 										ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
 										booleanDefault));
 
-				booleanDefault = PersistentValues
+				booleanDefault = PersistentPreferences
 						.getJLinkSemihostingClient(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_DEFAULT);
 				fSemihostingGdbClient
 						.setSelection(configuration
@@ -1330,20 +1330,20 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 										ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
 										booleanDefault));
 
-				booleanDefault = PersistentValues
+				booleanDefault = PersistentPreferences
 						.getJLinkEnableSwo(ConfigurationAttributes.ENABLE_SWO_DEFAULT);
 				// System.out.println("getJLinkEnableSwo()="+booleanDefault+" "+configuration.getName());
 				fEnableSwo.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.ENABLE_SWO, booleanDefault));
 
-				intDefault = PersistentValues
+				intDefault = PersistentPreferences
 						.getJLinkSwoEnableTargetCpuFreq(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
 				fSwoEnableTargetCpuFreq
 						.setText(String.valueOf(configuration
 								.getAttribute(
 										ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
 										intDefault)));
-				intDefault = PersistentValues
+				intDefault = PersistentPreferences
 						.getJLinkSwoEnableTargetSwoFreq(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
 				fSwoEnableTargetSwoFreq
 						.setText(String.valueOf(configuration
@@ -1351,7 +1351,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 										ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
 										intDefault)));
 
-				stringDefault = PersistentValues
+				stringDefault = PersistentPreferences
 						.getJLinkSwoEnableTargetPortMask(ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT);
 				Object oValue = configuration.getAttribute(
 						ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
@@ -1365,7 +1365,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				fSwoEnableTargetPortMask.setText(sValue);
 
 				// Other commands
-				stringDefault = PersistentValues
+				stringDefault = PersistentPreferences
 						.getJLinkInitOther(ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
 				fInitCommands.setText(configuration.getAttribute(
 						ConfigurationAttributes.OTHER_INIT_COMMANDS,
@@ -1428,7 +1428,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			// Runtime Options
 			{
-				booleanDefault = PersistentValues
+				booleanDefault = PersistentPreferences
 						.getJLinkDebugInRam(ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT);
 				fDoDebugInRam.setSelection(configuration
 						.getAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM,
@@ -1438,21 +1438,21 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Run Commands
 			{
 				// Do pre-run reset
-				booleanDefault = PersistentValues
+				booleanDefault = PersistentPreferences
 						.getJLinkDoPreRunReset(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
 				fDoSecondReset.setSelection(configuration
 						.getAttribute(ConfigurationAttributes.DO_SECOND_RESET,
 								booleanDefault));
 
 				// Pre-run reset type
-				stringDefault = PersistentValues
+				stringDefault = PersistentPreferences
 						.getJLinkPreRunResetType(ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
 				fSecondResetType.setText(configuration.getAttribute(
 						ConfigurationAttributes.SECOND_RESET_TYPE,
 						stringDefault));
 
 				// Other commands
-				stringDefault = PersistentValues
+				stringDefault = PersistentPreferences
 						.getJLinkPreRunOther(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
 				fRunCommands.setText(configuration.getAttribute(
 						ConfigurationAttributes.OTHER_RUN_COMMANDS,
@@ -1509,22 +1509,22 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		// Initialisation Commands
 		{
 			// Do initial reset
-			booleanDefault = EclipseDefaults
+			booleanDefault = DefaultPreferences
 					.getJLinkDoInitialReset(ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
 			fDoFirstReset.setSelection(booleanDefault);
 
 			// Reset type
-			stringDefault = EclipseDefaults
+			stringDefault = DefaultPreferences
 					.getJLinkInitialResetType(ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
 			fFirstResetType.setText(stringDefault);
 
 			// Type change from string to int, compatibility preserved
-			intDefault = EclipseDefaults
+			intDefault = DefaultPreferences
 					.getJLinkInitialResetSpeed(ConfigurationAttributes.FIRST_RESET_SPEED_DEFAULT);
 			fFirstResetSpeed.setText(String.valueOf(intDefault));
 
 			// Speed
-			String physicalInterfaceSpeed = EclipseDefaults
+			String physicalInterfaceSpeed = DefaultPreferences
 					.getJLinkSpeed(ConfigurationAttributes.INTERFACE_SPEED_DEFAULT);
 
 			if (ConfigurationAttributes.INTERFACE_SPEED_AUTO
@@ -1552,42 +1552,42 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			}
 
 			// Enable flash breakpoints
-			booleanDefault = EclipseDefaults
+			booleanDefault = DefaultPreferences
 					.getJLinkEnableFlashBreakpoints(ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS_DEFAULT);
 			fEnableFlashBreakpoints.setSelection(booleanDefault);
 
 			// Enable semihosting
-			booleanDefault = EclipseDefaults
+			booleanDefault = DefaultPreferences
 					.getJLinkEnableSemihosting(ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
 			fEnableSemihosting.setSelection(booleanDefault);
 
-			booleanDefault = EclipseDefaults
+			booleanDefault = DefaultPreferences
 					.getJLinkSemihostingTelnet(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_DEFAULT);
 			fSemihostingTelnet.setSelection(booleanDefault);
 
-			booleanDefault = EclipseDefaults
+			booleanDefault = DefaultPreferences
 					.getJLinkSemihostingClient(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_DEFAULT);
 			fSemihostingGdbClient.setSelection(booleanDefault);
 
-			booleanDefault = EclipseDefaults
+			booleanDefault = DefaultPreferences
 					.getJLinkEnableSwo(ConfigurationAttributes.ENABLE_SWO_DEFAULT);
 			// System.out.println("getJLinkEnableSwo()="+booleanDefault+" "+configuration.getName());
 			fEnableSwo.setSelection(booleanDefault);
 
-			intDefault = EclipseDefaults
+			intDefault = DefaultPreferences
 					.getJLinkSwoEnableTargetCpuFreq(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
 			fSwoEnableTargetCpuFreq.setText(String.valueOf(intDefault));
 
-			intDefault = EclipseDefaults
+			intDefault = DefaultPreferences
 					.getJLinkSwoEnableTargetSwoFreq(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
 			fSwoEnableTargetSwoFreq.setText(String.valueOf(intDefault));
 
-			stringDefault = EclipseDefaults
+			stringDefault = DefaultPreferences
 					.getJLinkSwoEnableTargetPortMask(ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT);
 			fSwoEnableTargetPortMask.setText(stringDefault);
 
 			// Other commands
-			stringDefault = EclipseDefaults
+			stringDefault = DefaultPreferences
 					.getJLinkInitOther(ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
 			fInitCommands.setText(stringDefault);
 		}
@@ -1620,7 +1620,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		// Runtime Options
 		{
-			booleanDefault = EclipseDefaults
+			booleanDefault = DefaultPreferences
 					.getJLinkDebugInRam(ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT);
 			fDoDebugInRam.setSelection(booleanDefault);
 		}
@@ -1628,17 +1628,17 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		// Run Commands
 		{
 			// Do pre-run reset
-			booleanDefault = EclipseDefaults
+			booleanDefault = DefaultPreferences
 					.getJLinkDoPreRunReset(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
 			fDoSecondReset.setSelection(booleanDefault);
 
 			// Pre-run reset type
-			stringDefault = EclipseDefaults
+			stringDefault = DefaultPreferences
 					.getJLinkPreRunResetType(ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
 			fSecondResetType.setText(stringDefault);
 
 			// Other commands
-			stringDefault = EclipseDefaults
+			stringDefault = DefaultPreferences
 					.getJLinkPreRunOther(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
 			fRunCommands.setText(stringDefault);
 
@@ -1703,13 +1703,13 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			booleanValue = fDoFirstReset.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
 					booleanValue);
-			PersistentValues.putJLinkDoInitialReset(booleanValue);
+			PersistentPreferences.putJLinkDoInitialReset(booleanValue);
 
 			// First reset type
 			stringValue = fFirstResetType.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.FIRST_RESET_TYPE, stringValue);
-			PersistentValues.putJLinkInitialResetType(stringValue);
+			PersistentPreferences.putJLinkInitialResetType(stringValue);
 
 			// First reset speed
 			try {
@@ -1719,7 +1719,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			}
 			configuration.setAttribute(
 					ConfigurationAttributes.FIRST_RESET_SPEED, intValue);
-			PersistentValues.putJLinkInitialResetSpeed(intValue);
+			PersistentPreferences.putJLinkInitialResetSpeed(intValue);
 
 			// Interface speed
 			stringValue = ConfigurationAttributes.INTERFACE_SPEED_DEFAULT;
@@ -1732,27 +1732,27 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			}
 			configuration.setAttribute(ConfigurationAttributes.INTERFACE_SPEED,
 					stringValue);
-			PersistentValues.putJLinkSpeed(stringValue);
+			PersistentPreferences.putJLinkSpeed(stringValue);
 
 			// Enable flash breakpoints
 			booleanValue = fEnableFlashBreakpoints.getSelection();
 			configuration.setAttribute(
 					ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
 					booleanValue);
-			PersistentValues.putJLinkEnableFlashBreakpoints(booleanValue);
+			PersistentPreferences.putJLinkEnableFlashBreakpoints(booleanValue);
 
 			// Enable semihosting
 			booleanValue = fEnableSemihosting.getSelection();
 			configuration.setAttribute(
 					ConfigurationAttributes.ENABLE_SEMIHOSTING, booleanValue);
-			PersistentValues.putJLinkEnableSemihosting(booleanValue);
+			PersistentPreferences.putJLinkEnableSemihosting(booleanValue);
 
 			// Semihosting via telnet
 			booleanValue = fSemihostingTelnet.getSelection();
 			configuration.setAttribute(
 					ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
 					booleanValue);
-			PersistentValues.putJLinkSemihostingTelnet(booleanValue);
+			PersistentPreferences.putJLinkSemihostingTelnet(booleanValue);
 
 			// Semihosting via client
 			booleanValue = fSemihostingGdbClient.getSelection();
@@ -1760,14 +1760,14 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					.setAttribute(
 							ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
 							booleanValue);
-			PersistentValues.putJLinkSemihostingClient(booleanValue);
+			PersistentPreferences.putJLinkSemihostingClient(booleanValue);
 
 			// Enable swo
 			booleanValue = fEnableSwo.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.ENABLE_SWO,
 					booleanValue);
 			// System.out.println("putJLinkEnableSwo "+booleanValue+" "+configuration.getName());
-			PersistentValues.putJLinkEnableSwo(booleanValue);
+			PersistentPreferences.putJLinkEnableSwo(booleanValue);
 
 			// target speed
 			try {
@@ -1777,7 +1777,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			}
 			configuration.setAttribute(
 					ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ, intValue);
-			PersistentValues.putJLinkSwoEnableTargetCpuFreq(intValue);
+			PersistentPreferences.putJLinkSwoEnableTargetCpuFreq(intValue);
 
 			// Swo speed
 			try {
@@ -1787,20 +1787,20 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			}
 			configuration.setAttribute(
 					ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ, intValue);
-			PersistentValues.putJLinkSwoEnableTargetSwoFreq(intValue);
+			PersistentPreferences.putJLinkSwoEnableTargetSwoFreq(intValue);
 
 			// Swo port mask
 			stringValue = fSwoEnableTargetPortMask.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
 					stringValue);
-			PersistentValues.putJLinkSwoEnableTargetPortMask(stringValue);
+			PersistentPreferences.putJLinkSwoEnableTargetPortMask(stringValue);
 
 			// Other commands
 			stringValue = fInitCommands.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.OTHER_INIT_COMMANDS, stringValue);
-			PersistentValues.putJLinkInitOther(stringValue);
+			PersistentPreferences.putJLinkInitOther(stringValue);
 		}
 
 		// Load Symbols & Image...
@@ -1841,7 +1841,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			booleanValue = fDoDebugInRam.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM,
 					booleanValue);
-			PersistentValues.putJLinkDebugInRam(booleanValue);
+			PersistentPreferences.putJLinkDebugInRam(booleanValue);
 		}
 
 		// Run Commands
@@ -1850,19 +1850,19 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			booleanValue = fDoSecondReset.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
 					fDoSecondReset.getSelection());
-			PersistentValues.putJLinkDoPreRunReset(booleanValue);
+			PersistentPreferences.putJLinkDoPreRunReset(booleanValue);
 
 			// reset type
 			stringValue = fSecondResetType.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.SECOND_RESET_TYPE, stringValue);
-			PersistentValues.putJLinkPreRunResetType(stringValue);
+			PersistentPreferences.putJLinkPreRunResetType(stringValue);
 
 			// Other commands
 			stringValue = fRunCommands.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.OTHER_RUN_COMMANDS, stringValue);
-			PersistentValues.putJLinkPreRunOther(stringValue);
+			PersistentPreferences.putJLinkPreRunOther(stringValue);
 
 			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER,
 					fSetPcRegister.getSelection());
@@ -1878,7 +1878,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 					fDoContinue.getSelection());
 		}
 
-		PersistentValues.flush();
+		PersistentPreferences.flush();
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabStartup: performApply() completed "
@@ -1899,71 +1899,71 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		int defaultInt;
 
 		// Initialisation Commands
-		defaultBoolean = PersistentValues
+		defaultBoolean = PersistentPreferences
 				.getJLinkDoInitialReset(ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
 				defaultBoolean);
 
-		defaultString = PersistentValues
+		defaultString = PersistentPreferences
 				.getJLinkInitialResetType(ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
 				defaultString);
 
-		defaultInt = PersistentValues
+		defaultInt = PersistentPreferences
 				.getJLinkInitialResetSpeed(ConfigurationAttributes.FIRST_RESET_SPEED_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_SPEED,
 				defaultInt);
 
-		defaultString = PersistentValues
+		defaultString = PersistentPreferences
 				.getJLinkSpeed(ConfigurationAttributes.INTERFACE_SPEED_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.INTERFACE_SPEED,
 				defaultString);
 
-		defaultBoolean = PersistentValues
+		defaultBoolean = PersistentPreferences
 				.getJLinkEnableFlashBreakpoints(ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS_DEFAULT);
 		configuration.setAttribute(
 				ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
 				defaultBoolean);
 
-		defaultBoolean = PersistentValues
+		defaultBoolean = PersistentPreferences
 				.getJLinkEnableSemihosting(ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING,
 				defaultBoolean);
 
-		defaultBoolean = PersistentValues
+		defaultBoolean = PersistentPreferences
 				.getJLinkSemihostingTelnet(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_DEFAULT);
 		configuration.setAttribute(
 				ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
 				defaultBoolean);
 
-		defaultBoolean = PersistentValues
+		defaultBoolean = PersistentPreferences
 				.getJLinkSemihostingClient(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_DEFAULT);
 		configuration.setAttribute(
 				ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
 				defaultBoolean);
 
-		defaultBoolean = PersistentValues
+		defaultBoolean = PersistentPreferences
 				.getJLinkEnableSwo(ConfigurationAttributes.ENABLE_SWO_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SWO,
 				defaultBoolean);
 
-		defaultInt = PersistentValues
+		defaultInt = PersistentPreferences
 				.getJLinkSwoEnableTargetCpuFreq(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
 		configuration.setAttribute(
 				ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ, defaultInt);
 
-		defaultInt = PersistentValues
+		defaultInt = PersistentPreferences
 				.getJLinkSwoEnableTargetSwoFreq(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
 		configuration.setAttribute(
 				ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ, defaultInt);
 
-		defaultString = PersistentValues
+		defaultString = PersistentPreferences
 				.getJLinkSwoEnableTargetPortMask(ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT);
 		configuration.setAttribute(
 				ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
 				defaultString);
 
-		defaultString = PersistentValues
+		defaultString = PersistentPreferences
 				.getJLinkInitOther(ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS,
 				defaultString);
@@ -1995,23 +1995,23 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
 
 		// Runtime Options
-		defaultBoolean = PersistentValues
+		defaultBoolean = PersistentPreferences
 				.getJLinkDebugInRam(ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM,
 				defaultBoolean);
 
 		// Run Commands
-		defaultBoolean = PersistentValues
+		defaultBoolean = PersistentPreferences
 				.getJLinkDoPreRunReset(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
 				defaultBoolean);
 
-		defaultString = PersistentValues
+		defaultString = PersistentPreferences
 				.getJLinkPreRunResetType(ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.SECOND_RESET_TYPE,
 				defaultString);
 
-		defaultString = PersistentValues
+		defaultString = PersistentPreferences
 				.getJLinkPreRunOther(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
 		configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS,
 				defaultString);

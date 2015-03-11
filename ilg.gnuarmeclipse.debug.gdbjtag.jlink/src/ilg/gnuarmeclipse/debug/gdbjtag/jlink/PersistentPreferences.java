@@ -26,7 +26,7 @@ import org.osgi.service.prefs.Preferences;
  *
  * Some of the values may be retrieved from the EclipseDefaults.
  */
-public class PersistentValues {
+public class PersistentPreferences {
 
 	// Tab Debugger
 	// GDB Server Setup
@@ -109,14 +109,25 @@ public class PersistentValues {
 			+ "preRun.other";
 
 	// ----- Defaults ---------------------------------------------------------
-	public static final String JLINK_GDBSERVER = "jlink_gdbserver";
-	public static final String JLINK_PATH = "jlink_path";
+
+	public static final String EXECUTABLE_NAME = "executable.name";
+	public static final String EXECUTABLE_NAME_OS = EXECUTABLE_NAME + ".%s";
+	public static final String INSTALL_FOLDER = "install.folder";
+	public static final String SEARCH_PATH = "search.path";
+	public static final String SEARCH_PATH_OS = SEARCH_PATH + ".%s";
+
+	public static final String FOLDER_STRICT = "folder.strict";
 
 	public static final String TAB_MAIN_CHECK_PROGRAM = "tab.main.checkProgram";
 	public static final boolean TAB_MAIN_CHECK_PROGRAM_DEFAULT = false;
 
-	// ----- getter -----------------------------------------------------------
-	private static String getValueForId(String id, String defaultValue) {
+	// TODO: remove DEPRECATED
+	public static final String JLINK_GDBSERVER_DEPRECATED = "jlink_gdbserver";
+	public static final String JLINK_PATH_DEPRECATED = "jlink_path";
+
+	// ----- Getters ----------------------------------------------------------
+
+	private static String getString(String id, String defaultValue) {
 
 		String value;
 		value = Platform.getPreferencesService().getString(Activator.PLUGIN_ID,
@@ -144,8 +155,9 @@ public class PersistentValues {
 		return defaultValue;
 	}
 
-	// ----- setter -----------------------------------------------------------
-	private static void putValueForId(String id, String value) {
+	// ----- Setters ----------------------------------------------------------
+
+	private static void putWorkspaceString(String id, String value) {
 
 		value = value.trim();
 
@@ -155,7 +167,6 @@ public class PersistentValues {
 		preferences.put(id, value);
 	}
 
-	// ----- flush ------------------------------------------------------------
 	public static void flush() {
 
 		try {
@@ -168,357 +179,357 @@ public class PersistentValues {
 	// ----- gdb server doStart -----------------------------------------------
 	public static boolean getGdbServerDoStart(boolean defaultValue) {
 
-		return Boolean.valueOf(getValueForId(GDB_SERVER_DO_START,
+		return Boolean.valueOf(getString(GDB_SERVER_DO_START,
 				Boolean.toString(defaultValue)));
 	}
 
 	public static void putGdbServerDoStart(boolean value) {
 
-		putValueForId(GDB_SERVER_DO_START, Boolean.toString(value));
+		putWorkspaceString(GDB_SERVER_DO_START, Boolean.toString(value));
 	}
 
 	// ----- gdb server executable --------------------------------------------
 	public static String getGdbServerExecutable(String defaultValue) {
 
-		String value = getValueForId(GDB_SERVER_EXECUTABLE, null);
+		String value = getString(GDB_SERVER_EXECUTABLE, null);
 		if (value != null) {
 			return value;
 		}
-		return EclipseDefaults.getGdbServerExecutable(defaultValue);
+		return DefaultPreferences.getGdbServerExecutable(defaultValue);
 	}
 
 	public static void putGdbServerExecutable(String value) {
 
-		putValueForId(GDB_SERVER_EXECUTABLE, value);
+		putWorkspaceString(GDB_SERVER_EXECUTABLE, value);
 	}
 
 	// ----- flash device id --------------------------------------------------
 	public static String getFlashDeviceName(String defaultValue) {
 
-		return getValueForId(FLASH_DEVICE_NAME, defaultValue);
+		return getString(FLASH_DEVICE_NAME, defaultValue);
 	}
 
 	public static void putFlashDeviceName(String value) {
 
-		putValueForId(FLASH_DEVICE_NAME, value);
+		putWorkspaceString(FLASH_DEVICE_NAME, value);
 	}
 
 	// ----- gdb server endianness --------------------------------------------
 	public static String getGdbServerEndianness(String defaultValue) {
 
-		return getValueForId(GDB_SERVER_ENDIANNESS, defaultValue);
+		return getString(GDB_SERVER_ENDIANNESS, defaultValue);
 	}
 
 	public static void putGdbServerEndianness(String value) {
 
-		putValueForId(GDB_SERVER_ENDIANNESS, value);
+		putWorkspaceString(GDB_SERVER_ENDIANNESS, value);
 	}
 
 	// ----- gdb server connection --------------------------------------------
 	public static String getGdbServerConnection(String defaultValue) {
 
-		return getValueForId(GDB_SERVER_CONNECTION, defaultValue);
+		return getString(GDB_SERVER_CONNECTION, defaultValue);
 	}
 
 	public static void putGdbServerConnection(String value) {
 
-		putValueForId(GDB_SERVER_CONNECTION, value);
+		putWorkspaceString(GDB_SERVER_CONNECTION, value);
 	}
 
 	// ----- gdb server connection address ------------------------------------
 	public static String getGdbServerConnectionAddress(String defaultValue) {
 
-		return getValueForId(GDB_SERVER_CONNECTION_ADDRESS, defaultValue);
+		return getString(GDB_SERVER_CONNECTION_ADDRESS, defaultValue);
 	}
 
 	public static void putGdbServerConnectionAddress(String value) {
 
-		putValueForId(GDB_SERVER_CONNECTION_ADDRESS, value);
+		putWorkspaceString(GDB_SERVER_CONNECTION_ADDRESS, value);
 	}
 
 	// ----- gdb server interface ---------------------------------------------
 	public static String getGdbServerInterface(String defaultValue) {
 
-		String value = getValueForId(GDB_SERVER_INTERFACE, null);
+		String value = getString(GDB_SERVER_INTERFACE, null);
 		if (value != null) {
 			return value;
 		}
-		return EclipseDefaults.getGdbServerInterface(defaultValue);
+		return DefaultPreferences.getGdbServerInterface(defaultValue);
 	}
 
 	public static void putGdbServerInterface(String value) {
 
-		putValueForId(GDB_SERVER_INTERFACE, value);
+		putWorkspaceString(GDB_SERVER_INTERFACE, value);
 	}
 
 	// ----- gdb server initial speed -----------------------------------------
 	public static String getGdbServerInitialSpeed(String defaultValue) {
 
-		return getValueForId(GDB_SERVER_INITIAL_SPEED, defaultValue);
+		return getString(GDB_SERVER_INITIAL_SPEED, defaultValue);
 	}
 
 	public static void putGdbServerInitialSpeed(String value) {
 
-		putValueForId(GDB_SERVER_INITIAL_SPEED, value);
+		putWorkspaceString(GDB_SERVER_INITIAL_SPEED, value);
 	}
 
 	// ----- gdb server other options -----------------------------------------
 	public static String getGdbServerOtherOptions(String defaultValue) {
 
-		return getValueForId(GDB_SERVER_OTHER_OPTIONS, defaultValue);
+		return getString(GDB_SERVER_OTHER_OPTIONS, defaultValue);
 	}
 
 	public static void putGdbServerOtherOptions(String value) {
 
-		putValueForId(GDB_SERVER_OTHER_OPTIONS, value);
+		putWorkspaceString(GDB_SERVER_OTHER_OPTIONS, value);
 	}
 
 	// ----- gdb client executable --------------------------------------------
 	public static String getGdbClientExecutable(String defaultValue) {
 
-		String value = getValueForId(GDB_CLIENT_EXECUTABLE, null);
+		String value = getString(GDB_CLIENT_EXECUTABLE, null);
 		if (value != null) {
 			return value;
 		}
-		return EclipseDefaults.getGdbClientExecutable(defaultValue);
+		return DefaultPreferences.getGdbClientExecutable(defaultValue);
 	}
 
 	public static void putGdbClientExecutable(String value) {
 
-		putValueForId(GDB_CLIENT_EXECUTABLE, value);
+		putWorkspaceString(GDB_CLIENT_EXECUTABLE, value);
 	}
 
 	// ----- gdb client other options -----------------------------------------
 	public static String getGdbClientOtherOptions(String defaultValue) {
 
-		return getValueForId(GDB_CLIENT_OTHER_OPTIONS, defaultValue);
+		return getString(GDB_CLIENT_OTHER_OPTIONS, defaultValue);
 	}
 
 	public static void putGdbClientOtherOptions(String value) {
 
-		putValueForId(GDB_CLIENT_OTHER_OPTIONS, value);
+		putWorkspaceString(GDB_CLIENT_OTHER_OPTIONS, value);
 	}
 
 	// ----- gdb client commands ----------------------------------------------
 	public static String getGdbClientCommands(String defaultValue) {
 
-		return getValueForId(GDB_CLIENT_COMMANDS, defaultValue);
+		return getString(GDB_CLIENT_COMMANDS, defaultValue);
 	}
 
 	public static void putGdbClientCommands(String value) {
 
-		putValueForId(GDB_CLIENT_COMMANDS, value);
+		putWorkspaceString(GDB_CLIENT_COMMANDS, value);
 	}
 
 	// ----- jlink do initial reset -------------------------------------------
 	public static boolean getJLinkDoInitialReset(boolean defaultValue) {
 
-		return Boolean.valueOf(getValueForId(GDB_JLINK_DO_INITIAL_RESET,
+		return Boolean.valueOf(getString(GDB_JLINK_DO_INITIAL_RESET,
 				Boolean.toString(defaultValue)));
 	}
 
 	public static void putJLinkDoInitialReset(boolean value) {
 
-		putValueForId(GDB_JLINK_DO_INITIAL_RESET, Boolean.toString(value));
+		putWorkspaceString(GDB_JLINK_DO_INITIAL_RESET, Boolean.toString(value));
 	}
 
 	// ----- jlink initial reset type -----------------------------------------
 	public static String getJLinkInitialResetType(String defaultValue) {
 
-		return getValueForId(GDB_JLINK_INITIAL_RESET_TYPE, defaultValue);
+		return getString(GDB_JLINK_INITIAL_RESET_TYPE, defaultValue);
 	}
 
 	public static void putJLinkInitialResetType(String value) {
 
-		putValueForId(GDB_JLINK_INITIAL_RESET_TYPE, value);
+		putWorkspaceString(GDB_JLINK_INITIAL_RESET_TYPE, value);
 	}
 
 	// ----- jlink initial reset speed ----------------------------------------
 	public static int getJLinkInitialResetSpeed(int defaultValue) {
 
-		return Integer.valueOf(getValueForId(GDB_JLINK_INITIAL_RESET_SPEED,
+		return Integer.valueOf(getString(GDB_JLINK_INITIAL_RESET_SPEED,
 				Integer.toString(defaultValue)));
 	}
 
 	public static void putJLinkInitialResetSpeed(int value) {
 
-		putValueForId(GDB_JLINK_INITIAL_RESET_SPEED, Integer.toString(value));
+		putWorkspaceString(GDB_JLINK_INITIAL_RESET_SPEED,
+				Integer.toString(value));
 	}
 
 	// ----- jlink speed ------------------------------------------------------
 	public static String getJLinkSpeed(String defaultValue) {
 
-		return getValueForId(GDB_JLINK_SPEED, defaultValue);
+		return getString(GDB_JLINK_SPEED, defaultValue);
 	}
 
 	public static void putJLinkSpeed(String value) {
 
-		putValueForId(GDB_JLINK_SPEED, value);
+		putWorkspaceString(GDB_JLINK_SPEED, value);
 	}
 
 	// ----- jlink enable flash breakpoints -----------------------------------
 	public static boolean getJLinkEnableFlashBreakpoints(boolean defaultValue) {
 
-		return Boolean.valueOf(getValueForId(
-				GDB_JLINK_ENABLE_FLASH_BREAKPOINTS,
+		return Boolean.valueOf(getString(GDB_JLINK_ENABLE_FLASH_BREAKPOINTS,
 				Boolean.toString(defaultValue)));
 	}
 
 	public static void putJLinkEnableFlashBreakpoints(boolean value) {
 
-		putValueForId(GDB_JLINK_ENABLE_FLASH_BREAKPOINTS,
+		putWorkspaceString(GDB_JLINK_ENABLE_FLASH_BREAKPOINTS,
 				Boolean.toString(value));
 	}
 
 	// ----- jlink enable semihosting -----------------------------------------
 	public static boolean getJLinkEnableSemihosting(boolean defaultValue) {
 
-		String value = getValueForId(GDB_JLINK_ENABLE_SEMIHOSTING, null);
+		String value = getString(GDB_JLINK_ENABLE_SEMIHOSTING, null);
 		if (value != null) {
 			return Boolean.valueOf(value);
 		}
-		return EclipseDefaults.getJLinkEnableSemihosting(defaultValue);
+		return DefaultPreferences.getJLinkEnableSemihosting(defaultValue);
 	}
 
 	public static void putJLinkEnableSemihosting(boolean value) {
 
-		putValueForId(GDB_JLINK_ENABLE_SEMIHOSTING, Boolean.toString(value));
+		putWorkspaceString(GDB_JLINK_ENABLE_SEMIHOSTING,
+				Boolean.toString(value));
 	}
 
 	// ----- jlink semihosting telnet -----------------------------------------
 	public static boolean getJLinkSemihostingTelnet(boolean defaultValue) {
 
-		return Boolean.valueOf(getValueForId(GDB_JLINK_SEMIHOSTING_TELNET,
+		return Boolean.valueOf(getString(GDB_JLINK_SEMIHOSTING_TELNET,
 				Boolean.toString(defaultValue)));
 	}
 
 	public static void putJLinkSemihostingTelnet(boolean value) {
 
-		putValueForId(GDB_JLINK_SEMIHOSTING_TELNET, Boolean.toString(value));
+		putWorkspaceString(GDB_JLINK_SEMIHOSTING_TELNET,
+				Boolean.toString(value));
 	}
 
 	// ----- jlink semihosting client -----------------------------------------
 	public static boolean getJLinkSemihostingClient(boolean defaultValue) {
 
-		return Boolean.valueOf(getValueForId(GDB_JLINK_SEMIHOSTING_CLIENT,
+		return Boolean.valueOf(getString(GDB_JLINK_SEMIHOSTING_CLIENT,
 				Boolean.toString(defaultValue)));
 	}
 
 	public static void putJLinkSemihostingClient(boolean value) {
 
-		putValueForId(GDB_JLINK_SEMIHOSTING_CLIENT, Boolean.toString(value));
+		putWorkspaceString(GDB_JLINK_SEMIHOSTING_CLIENT,
+				Boolean.toString(value));
 	}
 
 	// ----- jlink enable swo -------------------------------------------------
 	public static boolean getJLinkEnableSwo(boolean defaultValue) {
 
-		String value = getValueForId(GDB_JLINK_ENABLE_SWO, null);
+		String value = getString(GDB_JLINK_ENABLE_SWO, null);
 		if (value != null) {
 			return Boolean.valueOf(value);
 		}
-		return EclipseDefaults.getJLinkEnableSwo(defaultValue);
+		return DefaultPreferences.getJLinkEnableSwo(defaultValue);
 	}
 
 	public static void putJLinkEnableSwo(boolean value) {
 
-		putValueForId(GDB_JLINK_ENABLE_SWO, Boolean.toString(value));
+		putWorkspaceString(GDB_JLINK_ENABLE_SWO, Boolean.toString(value));
 	}
 
 	// ----- jlink swo cpu frequency ------------------------------------------
 	public static int getJLinkSwoEnableTargetCpuFreq(int defaultValue) {
 
-		return Integer.valueOf(getValueForId(
-				GDB_JLINK_SWO_ENABLE_TARGET_CPU_FREQ,
+		return Integer.valueOf(getString(GDB_JLINK_SWO_ENABLE_TARGET_CPU_FREQ,
 				Integer.toString(defaultValue)));
 	}
 
 	public static void putJLinkSwoEnableTargetCpuFreq(int value) {
 
-		putValueForId(GDB_JLINK_SWO_ENABLE_TARGET_CPU_FREQ,
+		putWorkspaceString(GDB_JLINK_SWO_ENABLE_TARGET_CPU_FREQ,
 				Integer.toString(value));
 	}
 
 	// ----- jlink swo frequency ----------------------------------------------
 	public static int getJLinkSwoEnableTargetSwoFreq(int defaultValue) {
 
-		return Integer.valueOf(getValueForId(
-				GDB_JLINK_SWO_ENABLE_TARGET_SWO_FREQ,
+		return Integer.valueOf(getString(GDB_JLINK_SWO_ENABLE_TARGET_SWO_FREQ,
 				Integer.toString(defaultValue)));
 	}
 
 	public static void putJLinkSwoEnableTargetSwoFreq(int value) {
 
-		putValueForId(GDB_JLINK_SWO_ENABLE_TARGET_SWO_FREQ,
+		putWorkspaceString(GDB_JLINK_SWO_ENABLE_TARGET_SWO_FREQ,
 				Integer.toString(value));
 	}
 
 	// ----- jlink swo mask ---------------------------------------------------
 	public static String getJLinkSwoEnableTargetPortMask(String defaultValue) {
 
-		return getValueForId(GDB_JLINK_SWO_ENABLE_TARGET_PORT_MASK,
-				defaultValue);
+		return getString(GDB_JLINK_SWO_ENABLE_TARGET_PORT_MASK, defaultValue);
 	}
 
 	public static void putJLinkSwoEnableTargetPortMask(String value) {
 
-		putValueForId(GDB_JLINK_SWO_ENABLE_TARGET_PORT_MASK, value);
+		putWorkspaceString(GDB_JLINK_SWO_ENABLE_TARGET_PORT_MASK, value);
 	}
 
 	// ----- jlink init other -------------------------------------------------
 	public static String getJLinkInitOther(String defaultValue) {
 
-		return getValueForId(GDB_JLINK_INIT_OTHER, defaultValue);
+		return getString(GDB_JLINK_INIT_OTHER, defaultValue);
 	}
 
 	public static void putJLinkInitOther(String value) {
 
-		putValueForId(GDB_JLINK_INIT_OTHER, value);
+		putWorkspaceString(GDB_JLINK_INIT_OTHER, value);
 	}
 
 	// ----- jlink debug in ram -----------------------------------------------
 	public static boolean getJLinkDebugInRam(boolean defaultValue) {
 
-		return Boolean.valueOf(getValueForId(GDB_JLINK_DO_DEBUG_IN_RAM,
+		return Boolean.valueOf(getString(GDB_JLINK_DO_DEBUG_IN_RAM,
 				Boolean.toString(defaultValue)));
 	}
 
 	public static void putJLinkDebugInRam(boolean value) {
 
-		putValueForId(GDB_JLINK_DO_DEBUG_IN_RAM, Boolean.toString(value));
+		putWorkspaceString(GDB_JLINK_DO_DEBUG_IN_RAM, Boolean.toString(value));
 	}
 
 	// ----- jlink do prerun reset -----------------------------------
 	public static boolean getJLinkDoPreRunReset(boolean defaultValue) {
 
-		return Boolean.valueOf(getValueForId(GDB_JLINK_DO_PRERUN_RESET,
+		return Boolean.valueOf(getString(GDB_JLINK_DO_PRERUN_RESET,
 				Boolean.toString(defaultValue)));
 	}
 
 	public static void putJLinkDoPreRunReset(boolean value) {
 
-		putValueForId(GDB_JLINK_DO_PRERUN_RESET, Boolean.toString(value));
+		putWorkspaceString(GDB_JLINK_DO_PRERUN_RESET, Boolean.toString(value));
 	}
 
 	// ----- jlink prerun reset type ------------------------------------------
 	public static String getJLinkPreRunResetType(String defaultValue) {
 
-		return getValueForId(GDB_JLINK_PRERUN_RESET_TYPE, defaultValue);
+		return getString(GDB_JLINK_PRERUN_RESET_TYPE, defaultValue);
 	}
 
 	public static void putJLinkPreRunResetType(String value) {
 
-		putValueForId(GDB_JLINK_PRERUN_RESET_TYPE, value);
+		putWorkspaceString(GDB_JLINK_PRERUN_RESET_TYPE, value);
 	}
 
 	// ----- jlink init other -------------------------------------------------
 	public static String getJLinkPreRunOther(String defaultValue) {
 
-		return getValueForId(GDB_JLINK_PRERUN_OTHER, defaultValue);
+		return getString(GDB_JLINK_PRERUN_OTHER, defaultValue);
 	}
 
 	public static void putJLinkPreRunOther(String value) {
 
-		putValueForId(GDB_JLINK_PRERUN_OTHER, value);
+		putWorkspaceString(GDB_JLINK_PRERUN_OTHER, value);
 	}
 
 	// ------------------------------------------------------------------------
