@@ -12,6 +12,7 @@
 package ilg.gnuarmeclipse.core.preferences;
 
 import ilg.gnuarmeclipse.core.Activator;
+import ilg.gnuarmeclipse.core.AltWindowsRegistry;
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.core.StringUtils;
 
@@ -36,11 +37,8 @@ public class Discoverer {
 
 	// ------------------------------------------------------------------------
 
-	private static final String CU_REG_PREFIX = "Software";
-	private static final String CU_REG32_PREFIX = "Software\\Wow6432Node";
-
-	private static final String LM_REG_PREFIX = "SOFTWARE";
-	private static final String LM_REG32_PREFIX = "SOFTWARE\\Wow6432Node";
+	private static final String REG_PREFIX = "SOFTWARE";
+	private static final String REG32_PREFIX = "SOFTWARE\\Wow6432Node";
 
 	// ------------------------------------------------------------------------
 
@@ -83,22 +81,14 @@ public class Discoverer {
 		if (EclipseUtils.isWindows()) {
 
 			WindowsRegistry registry = WindowsRegistry.getRegistry();
+
 			if (registry != null) {
-				// Check both HKEY_CURRENT_USER and HKEY_LOCAL_MACHINE
-				value = registry.getCurrentUserValue(CU_REG_PREFIX
-						+ registrySubKey, registryName);
+				value = getRegistryValue(registry, REG_PREFIX, registrySubKey,
+						registryName);
 				if (value == null) {
-					value = registry.getCurrentUserValue(CU_REG32_PREFIX
-							+ registrySubKey, registryName);
-					if (value == null) {
-						value = registry.getLocalMachineValue(LM_REG_PREFIX
-								+ registrySubKey, registryName);
-						if (value == null) {
-							value = registry.getLocalMachineValue(
-									LM_REG32_PREFIX + registrySubKey,
-									registryName);
-						}
-					}
+					// If on 64-bit, check the 32-bit registry too.
+					value = getRegistryValue(registry, REG32_PREFIX,
+							registrySubKey, registryName);
 				}
 
 				if (binFolder != null && value != null
@@ -182,6 +172,39 @@ public class Discoverer {
 		}
 
 		return null;
+	}
+
+	/**
+	 * Get the value of a registry key. It first tests the current user key,
+	 * then the local machine key.
+	 * 
+	 * @param registry
+	 * @param prefix
+	 * @param registrySubKey
+	 * @param registryName
+	 * @return a String, or null if not found.
+	 */
+	private static String getRegistryValue(WindowsRegistry registry,
+			String prefix, String registrySubKey, String registryName) {
+
+		String value;
+		// TODO: remove kludge after SEGGER fixes the bug
+		if (!registrySubKey.startsWith("\\SEGGER")) {
+			value = registry.getCurrentUserValue(prefix + registrySubKey,
+					registryName);
+		} else {
+			// Kludge to compensate for SEGGER and CDT bug (the value is
+			// terminated with lots of zeroes, more than CDT WindowsRegistry
+			// class can handle).
+			value = AltWindowsRegistry.query("HKEY_CURRENT_USER\\" + prefix
+					+ registrySubKey, registryName);
+		}
+		if (value == null) {
+			value = registry.getLocalMachineValue(prefix + registrySubKey,
+					registryName);
+		}
+
+		return value;
 	}
 
 	/**
