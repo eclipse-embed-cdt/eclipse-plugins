@@ -488,6 +488,10 @@ public class EclipseUtils {
 		IValueVariable variable = VariablesPlugin.getDefault()
 				.getStringVariableManager().getValueVariable(name);
 		if (variable != null) {
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("Variable \"" + name + "\"=\"" + value
+						+ "\"");
+			}
 			variable.setValue(value);
 		} else {
 			Activator.log("Variable \"" + name + "\" not set.");
@@ -524,6 +528,10 @@ public class EclipseUtils {
 			}
 		}
 		if (variable != null) {
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("Variable \"" + name + "\"=\"" + value
+						+ "\"");
+			}
 			variable.setValue(value);
 		} else {
 			Activator.log("Variable \"" + name + "\" not set.");
