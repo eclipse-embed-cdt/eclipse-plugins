@@ -17,8 +17,7 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 
-	private static final String MESSAGES = Activator.PLUGIN_ID
-			+ ".ui.messages"; //$NON-NLS-1$
+	private static final String MESSAGES = Activator.PLUGIN_ID + ".ui.messages"; //$NON-NLS-1$
 
 	public static String PeripheralsView_NameColumn_text;
 	public static String PeripheralsView_AddressColumn_text;
@@ -26,7 +25,14 @@ public class Messages extends NLS {
 
 	public static String PeripheralRegister_Msg_Unknown_expression;
 	public static String PeripheralRegister_Msg_Not_a_number;
-	
+
+	public static String PeripheralsPreferencePage_description;
+	public static String PeripheralsPreferencePage_readOnlyColor_label;
+	public static String PeripheralsPreferencePage_writeOnlyColor_label;
+	public static String PeripheralsPreferencePage_changedSaturateColor_label;
+	public static String PeripheralsPreferencePage_changedMediumColor_label;
+	public static String PeripheralsPreferencePage_changedLightColor_label;
+
 	public static String AddMemoryBlockAction_title;
 	public static String AddMemoryBlockAction_noMemoryBlock;
 	public static String AddMemoryBlockAction_failed;

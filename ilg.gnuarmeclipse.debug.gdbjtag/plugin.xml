@@ -73,38 +73,70 @@
           point="org.eclipse.ui.themes">
        <themeElementCategory
              id="ilg.gnuarmeclipse.debug.gdbjtag.peripheral.colors"
-             label="Peripheral colors">
+             label="Peripherals views">
           <description>
-             Colors used in the peripheral views.
+             Colors used in the peripherals views.
           </description>
        </themeElementCategory>
        <colorDefinition
              categoryId="ilg.gnuarmeclipse.debug.gdbjtag.peripheral.colors"
-             id="ilg.gnuarmeclipse.debug.gdbjtag.peripheral.color.readonly"
-             label="ReadOnly Color"
-             value="181,255,213">
+             colorFactory="ilg.gnuarmeclipse.debug.gdbjtag.preferences.ColorReadOnlyFactory"
+             id="ilg.gnuarmeclipse.debug.gdbjtag.peripherals.color.readonly"
+             isEditable="true"
+             label="Read only background">
           <description>
-             Color for the Read Only peripherals/registers.
+             Color for the read only peripherals/registers.
           </description>
        </colorDefinition>
        <colorDefinition
              categoryId="ilg.gnuarmeclipse.debug.gdbjtag.peripheral.colors"
-             id="ilg.gnuarmeclipse.debug.gdbjtag.peripheral.color.writeonly"
-             label="WriteOnly Color"
-             value="181,213,255">
+             colorFactory="ilg.gnuarmeclipse.debug.gdbjtag.preferences.ColorWriteOnlyFactory"
+             id="ilg.gnuarmeclipse.debug.gdbjtag.peripherals.color.writeonly"
+             isEditable="true"
+             label="Write only background">
           <description>
-             Color for the Write Only peripherals/registers.
+             Color for the write only peripherals/registers.
           </description>
        </colorDefinition>
        <colorDefinition
              categoryId="ilg.gnuarmeclipse.debug.gdbjtag.peripheral.colors"
-             id="ilg.gnuarmeclipse.debug.gdbjtag.peripheral.color.changed"
-             label="Changed Color"
-             value="COLOR_YELLOW">
+             colorFactory="ilg.gnuarmeclipse.debug.gdbjtag.preferences.ColorChangedFactory"
+             id="ilg.gnuarmeclipse.debug.gdbjtag.peripherals.color.changed"
+             isEditable="true"
+             label="Changed background">
           <description>
              Color for the value fields that changed during edit.
           </description>
        </colorDefinition>
+       <colorDefinition
+             categoryId="ilg.gnuarmeclipse.debug.gdbjtag.peripheral.colors"
+             colorFactory="ilg.gnuarmeclipse.debug.gdbjtag.preferences.ColorChangedLightFactory"
+             id="ilg.gnuarmeclipse.debug.gdbjtag.peripherals.color.changed.light"
+             isEditable="true"
+             label="Changed background (light)">
+          <description>
+             Color for the value fields that changed during edit, light contrast.
+          </description>
+       </colorDefinition>
+       <colorDefinition
+             categoryId="ilg.gnuarmeclipse.debug.gdbjtag.peripheral.colors"
+             colorFactory="ilg.gnuarmeclipse.debug.gdbjtag.preferences.ColorChangedMediumFactory"
+             id="ilg.gnuarmeclipse.debug.gdbjtag.peripherals.color.changed.medium"
+             isEditable="true"
+             label="Changed background (medium)">
+          <description>
+             Color for the value fields that changed during edit, medium contrast.
+          </description>
+       </colorDefinition>
+    </extension>
+    <extension
+          point="org.eclipse.ui.preferencePages">
+       <page
+             category="org.eclipse.debug.ui.DebugPreferencePage"
+             class="ilg.gnuarmeclipse.debug.gdbjtag.preferences.PeripheralsPage"
+             id="ilg.gnuarmeclipse.debug.gdbjtag.jlink.preferencePage.peripherals"
+             name="%preferences.peripherals">
+       </page>
     </extension>
    
    
