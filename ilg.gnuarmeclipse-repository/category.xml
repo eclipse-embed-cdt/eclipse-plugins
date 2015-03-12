@@ -9,7 +9,7 @@
    <feature url="features/ilg.gnuarmeclipse.templates.freescale-feature_2.2.3.qualifier.jar" id="ilg.gnuarmeclipse.templates.freescale" version="2.2.4.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
-   <feature url="features/ilg.gnuarmeclipse.debug.gdbjtag.jlink-feature_3.1.2.qualifier.jar" id="ilg.gnuarmeclipse.debug.gdbjtag.jlink" version="3.1.2.qualifier">
+   <feature url="features/ilg.gnuarmeclipse.debug.gdbjtag.jlink-feature_3.2.1.qualifier.jar" id="ilg.gnuarmeclipse.debug.gdbjtag.jlink" version="3.2.1.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
    <feature url="features/ilg.gnuarmeclipse.debug.gdbjtag.openocd-feature_3.2.1.qualifier.jar" id="ilg.gnuarmeclipse.debug.gdbjtag.openocd" version="3.2.1.qualifier">
