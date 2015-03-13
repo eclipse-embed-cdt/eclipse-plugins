@@ -33,6 +33,8 @@ public class Messages extends NLS {
 	public static String PeripheralsPreferencePage_changedMediumColor_label;
 	public static String PeripheralsPreferencePage_changedLightColor_label;
 
+	public static String PeripheralsPreferencePage_useFadingBackground_label;
+
 	public static String AddMemoryBlockAction_title;
 	public static String AddMemoryBlockAction_noMemoryBlock;
 	public static String AddMemoryBlockAction_failed;

@@ -36,6 +36,9 @@ public class PersistentPreferences {
 	public static final String PERIPHERALS_COLOR_CHANGED_MEDIUM = "peripherals.color.changed.medium";
 	public static final String PERIPHERALS_COLOR_CHANGED_LIGHT = "peripherals.color.changed.light";
 
+	public static final String PERIPHERALS_CHANGED_USE_FADING_BACKGROUND = "peripherals.changed.useFadingBackground";
+	public static final boolean PERIPHERALS_CHANGED_USE_FADING_BACKGROUND_DEFAULT = true;
+
 	// ----- Getters ----------------------------------------------------------
 
 	public static String getString(String key, String defaultValue) {
@@ -50,6 +53,15 @@ public class PersistentPreferences {
 		}
 
 		return defaultValue;
+	}
+
+	public static boolean getBoolean(String key, boolean defaultValue) {
+
+		boolean value;
+		value = Platform.getPreferencesService().getBoolean(
+				Activator.PLUGIN_ID, key, defaultValue, null);
+		// System.out.println("Value of " + id + " is " + value);
+		return value;
 	}
 
 	// ----- Setters ----------------------------------------------------------
@@ -71,6 +83,13 @@ public class PersistentPreferences {
 		} catch (BackingStoreException e) {
 			Activator.log(e);
 		}
+	}
+
+	// ------------------------------------------------------------------------
+
+	public static boolean getPeripheralsChangedUseFadingBackground() {
+		return getBoolean(PERIPHERALS_CHANGED_USE_FADING_BACKGROUND,
+				PERIPHERALS_CHANGED_USE_FADING_BACKGROUND_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------

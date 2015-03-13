@@ -211,7 +211,7 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 		}
 
 		// Update the current field with the newly computed value.
-		fHasChanged = getPeripheralValue().update(bigValue);
+		setChanged(getPeripheralValue().update(bigValue));
 	}
 
 	@Override

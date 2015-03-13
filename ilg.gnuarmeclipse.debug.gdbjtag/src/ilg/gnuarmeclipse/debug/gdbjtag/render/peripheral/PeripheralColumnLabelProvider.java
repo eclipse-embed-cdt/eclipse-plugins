@@ -13,6 +13,7 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.render.peripheral;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.PersistentPreferences;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdEnumeratedValueDMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.render.peripheral.PeripheralColumnInfo.ColumnType;
 import ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralRegisterFieldVMNode;
@@ -52,9 +53,13 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 	private Color fColorReadOnlyBackground;
 	private Color fColorWriteOnlyBackground;
 	private Color fColorChangedBackground;
+	private Color fColorChangedMediumBackground;
+	private Color fColorChangedLightBackground;
 
 	private ColumnType fColumnType;
 	private TreeViewer fViewer;
+
+	private boolean fUseFadingBackground;
 
 	// ------------------------------------------------------------------------
 
@@ -71,6 +76,9 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 		themeManager.addPropertyChangeListener(this);
 
 		setupColors();
+
+		fUseFadingBackground = PersistentPreferences
+				.getPeripheralsChangedUseFadingBackground();
 	}
 
 	@Override
@@ -105,6 +113,8 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 		fColorReadOnlyBackground = colorRegistry.get(COLOR_READONLY);
 		fColorWriteOnlyBackground = colorRegistry.get(COLOR_WRITEONLY);
 		fColorChangedBackground = colorRegistry.get(COLOR_CHANGED);
+		fColorChangedMediumBackground = colorRegistry.get(COLOR_CHANGED_MEDIUM);
+		fColorChangedLightBackground = colorRegistry.get(COLOR_CHANGED_LIGHT);
 	}
 
 	@Override
@@ -116,6 +126,9 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 		boolean isWriteOnly = false;
 		boolean isReadAllowed = true;
 		boolean hasChanged = false;
+
+		int fadingLevel = 0;
+
 		if ((element instanceof PeripheralTreeVMNode)) {
 
 			PeripheralTreeVMNode node = (PeripheralTreeVMNode) element;
@@ -134,6 +147,8 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 					;
 				}
 			}
+
+			fadingLevel = node.getFadingLevel();
 		}
 
 		// Set the colours in order of importance.
@@ -145,10 +160,19 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 
 		// Initially was && (fColumnType == ColumnType.VALUE),
 		// but was aligned with the Registers view behaviour.
-		if (hasChanged) {
-			color = fColorChangedBackground;
+		if (fUseFadingBackground) {
+			if (fadingLevel == 3) {
+				color = fColorChangedBackground;
+			} else if (fadingLevel == 2) {
+				color = fColorChangedMediumBackground;
+			} else if (fadingLevel == 1) {
+				color = fColorChangedLightBackground;
+			}
+		} else {
+			if (hasChanged) {
+				color = fColorChangedBackground;
+			}
 		}
-
 		return color;
 	}
 

@@ -19,6 +19,7 @@ import ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralClusterArr
 import ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralGroupVMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralRegisterArrayVMNode;
 import ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralRegisterVMNode;
+import ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralTreeVMNode;
 
 import java.math.BigInteger;
 
@@ -122,7 +123,7 @@ public class PeripheralRendering extends AbstractTableRendering implements
 
 			public IStatus runInUIThread(IProgressMonitor pm) {
 				if (!fPeripheralViewer.getTree().isDisposed()) {
-					fPeripheralViewer.refresh();
+					refresh();
 				}
 				return Status.OK_STATUS;
 			}
@@ -255,7 +256,7 @@ public class PeripheralRendering extends AbstractTableRendering implements
 				int dir = fComparator.getDirection();
 				fPeripheralViewer.getTree().setSortDirection(dir);
 				fPeripheralViewer.getTree().setSortColumn(column);
-				fPeripheralViewer.refresh();
+				refresh();
 			}
 		};
 		return selectionAdapter;
@@ -396,7 +397,20 @@ public class PeripheralRendering extends AbstractTableRendering implements
 
 	@Override
 	public void refresh() {
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("PeripheralRendering.refresh()");
+		}
 		fPeripheralViewer.refresh();
+
+		if (fMemoryBlock != null) {
+			PeripheralTreeVMNode node = fMemoryBlock
+					.getPeripheralRegisterGroup();
+			node.decrementFadingLevel();
+			if (Activator.getInstance().isDebugging()) {
+				System.out
+						.println("PeripheralRendering.refresh() decrementRecentChanges");
+			}
+		}
 	}
 
 	// ------------------------------------------------------------------------

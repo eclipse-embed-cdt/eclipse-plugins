@@ -42,7 +42,8 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 	protected SvdDMNode fDMNode;
 	protected PeripheralPath fPath;
 	protected String fName;
-	protected boolean fHasChanged;
+	private boolean fHasChanged;
+	protected int fFadingLevel;
 
 	// protected BigInteger fBigArrayAddressOffset;
 
@@ -63,6 +64,8 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 
 		fPath = null;
 		fHasChanged = false;
+
+		fFadingLevel = 0;
 
 		// The implementation display name is used for views.
 		fName = fDMNode.getDisplayName();
@@ -544,6 +547,52 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 				index = "[]";
 			}
 			fName = String.format(fName, index);
+		}
+	}
+
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Inform node when content changed. If really changed, set the fading level
+	 * to 3.
+	 * 
+	 * @param hasChanged
+	 */
+	public void setChanged(boolean hasChanged) {
+
+		fHasChanged = hasChanged;
+
+		if (fHasChanged) {
+			setFadingLevel(3);
+		}
+	}
+
+	public int getFadingLevel() {
+		return fFadingLevel;
+	}
+
+	public void setFadingLevel(int level) {
+
+		fFadingLevel = level;
+
+		if (fFadingLevel > 0) {
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("PeripheralTreeVMNode.setFadingLevel() "
+						+ fName + " " + fFadingLevel);
+			}
+		}
+	}
+
+	public void decrementFadingLevel() {
+
+		if (fFadingLevel > 0) {
+			setFadingLevel(fFadingLevel - 1);
+		}
+
+		if (fChildren != null) {
+			for (PeripheralTreeVMNode node : fChildren) {
+				node.decrementFadingLevel();
+			}
 		}
 	}
 

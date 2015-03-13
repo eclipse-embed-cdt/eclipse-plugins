@@ -18,6 +18,7 @@ import ilg.gnuarmeclipse.debug.gdbjtag.render.peripheral.PeripheralColumnLabelPr
 import ilg.gnuarmeclipse.debug.gdbjtag.ui.Messages;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
@@ -113,6 +114,12 @@ public class PeripheralsPage extends FieldEditorPreferencePage implements
 				getFieldEditorParent());
 		addField(colourChangedLight);
 
+		FieldEditor hasFadingBackground;
+		hasFadingBackground = new BooleanFieldEditor(
+				PersistentPreferences.PERIPHERALS_CHANGED_USE_FADING_BACKGROUND,
+				Messages.PeripheralsPreferencePage_useFadingBackground_label,
+				getFieldEditorParent());
+		addField(hasFadingBackground);
 	}
 
 	// ------------------------------------------------------------------------

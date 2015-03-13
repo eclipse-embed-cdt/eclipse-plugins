@@ -112,7 +112,7 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 		} else {
 			setValue(value.getValueString());
 		}
-		fHasChanged = true;
+		setChanged(true);
 	}
 
 	@Override
@@ -131,7 +131,7 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 
 	public boolean setNumericValue(String value) {
 
-		fHasChanged = false;
+		setChanged(false);
 		try {
 			if (!verifyValue(value)) {
 				return false;
@@ -184,7 +184,7 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 	public void setValue(BigInteger newValue) {
 
 		// Update with actual value.
-		fHasChanged = getPeripheralValue().update(newValue);
+		setChanged(getPeripheralValue().update(newValue));
 
 		Object[] children = getChildren();
 		for (int i = 0; i < children.length; ++i) {
