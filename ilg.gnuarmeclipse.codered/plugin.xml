@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.perspectives">
+      <perspective
+            class="ilg.gnuarmeclipse.codered.perspectives.CodeRedPerspectiveFactory"
+            icon="icons/cr.gif"
+            id="ilg.gnuarmeclipse.codered.perspectives.CodeRedPerspective"
+            name="%perspectives.codered">
+      </perspective>
+   </extension>
+   
+   <extension
+         point="org.eclipse.ui.perspectiveExtensions">
+      <perspectiveExtension
+            targetID="org.eclipse.ui.resourcePerspective">
+         <perspectiveShortcut
+               id="com.crt.lite.perspective.CRTPerspective">
+         </perspectiveShortcut>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="org.eclipse.debug.ui.DebugPerspective">
+         <perspectiveShortcut
+               id="com.crt.lite.perspective.CRTPerspective">
+         </perspectiveShortcut>
+      </perspectiveExtension>
+      <perspectiveExtension
+            targetID="com.crt.lite.perspective.CRTPerspective">
+         <perspectiveShortcut
+               id="org.eclipse.team.ui.TeamSynchronizingPerspective">
+         </perspectiveShortcut>
+         <view
+               id="org.eclipse.debug.ui.ExpressionView"
+               minimized="false"
+               relationship="stack"
+               relative="org.eclipse.debug.ui.VariableView"
+               visible="true">
+         </view>
+         <viewShortcut
+               id="org.eclipse.debug.ui.ExpressionView">
+         </viewShortcut>
+         <viewShortcut id="org.eclipse.cdt.ui.includeBrowser"/>
+         <actionSet id="org.eclipse.cdt.ui.buildConfigActionSet"/>
+         <actionSet id="org.eclipse.debug.ui.launchActionSet"/>
+         <actionSet id="org.eclipse.cdt.ui.NavigationActionSet"/>
+         <actionSet id="org.eclipse.cdt.ui.OpenActionSet"/>
+         <actionSet id="org.eclipse.ui.edit.text.actionSet.presentation"/>
+         <showInPart id="org.eclipse.cdt.ui.includeBrowser"/>
+         <showInPart id="org.eclipse.cdt.ui.CView"/>
+         <showInPart id="org.eclipse.ui.navigator.ProjectExplorer"/>
+         <viewShortcut id="org.eclipse.ui.navigator.ProjectExplorer"/>
+       </perspectiveExtension>
+   </extension>
+   
+</plugin>

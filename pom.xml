@@ -48,7 +48,10 @@
 		<module>ilg.gnuarmeclipse.packs.ui</module>
 		<module>ilg.gnuarmeclipse.managedbuild.packs</module>
 		<module>ilg.gnuarmeclipse.packs-feature</module>
-		
+
+        <module>ilg.gnuarmeclipse.codered</module>
+        <module>ilg.gnuarmeclipse.codered-feature</module>
+
 		<module>ilg.gnuarmeclipse.doc.user</module>
 		<module>ilg.gnuarmeclipse.doc.user-feature</module>
 		
