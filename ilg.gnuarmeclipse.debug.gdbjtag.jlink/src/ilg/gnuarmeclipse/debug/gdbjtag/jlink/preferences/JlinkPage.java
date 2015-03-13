@@ -52,7 +52,7 @@ public class JlinkPage extends FieldEditorPreferencePage implements
 		setPreferenceStore(new ScopedPreferenceStore(InstanceScope.INSTANCE,
 				Activator.PLUGIN_ID));
 
-		setDescription(Messages.JLinkPagePropertyPage_description);
+		setDescription(Messages.JLinkPreferencePage_description);
 	}
 
 	// ------------------------------------------------------------------------
@@ -79,7 +79,7 @@ public class JlinkPage extends FieldEditorPreferencePage implements
 				PersistentPreferences.EXECUTABLE_NAME,
 				VariableInitializer.VARIABLE_JLINK_EXECUTABLE,
 				Messages.Variable_executable_description,
-				Messages.JLinkPagePropertyPage_executable_label,
+				Messages.JLinkPreferencePage_executable_label,
 				getFieldEditorParent());
 		addField(executable);
 
@@ -92,7 +92,7 @@ public class JlinkPage extends FieldEditorPreferencePage implements
 				PersistentPreferences.INSTALL_FOLDER,
 				VariableInitializer.VARIABLE_JLINK_PATH,
 				Messages.Variable_path_description,
-				Messages.JLinkPagePropertyPage_executable_folder,
+				Messages.JLinkPropertyPage_executable_folder,
 				getFieldEditorParent(), isStrict);
 		addField(folder);
 	}

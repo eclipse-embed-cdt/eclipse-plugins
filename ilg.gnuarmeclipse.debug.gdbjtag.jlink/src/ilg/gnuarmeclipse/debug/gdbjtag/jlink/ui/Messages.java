@@ -25,9 +25,9 @@ public class Messages {
 
 	private static final String MESSAGES = Activator.PLUGIN_ID + ".ui.messages"; //$NON-NLS-1$
 
-	public static String JLinkPagePropertyPage_description;
-	public static String JLinkPagePropertyPage_executable_label;
-	public static String JLinkPagePropertyPage_executable_folder;
+	public static String JLinkPreferencePage_description;
+	public static String JLinkPreferencePage_executable_label;
+	public static String JLinkPropertyPage_executable_folder;
 
 	public static String Variable_executable_description;
 	public static String Variable_path_description;
