@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial implementation.
+ *     		(many thanks to Code Red for providing the inspiration)
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.codered.perspectives;
@@ -17,13 +18,9 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.eclipse.core.runtime.Platform;
-import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
-import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfigurationType;
 import org.eclipse.debug.core.ILaunchManager;
-import org.eclipse.debug.core.ILaunchesListener2;
-import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.ui.DebugUITools;
 import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.swt.widgets.Display;
@@ -38,23 +35,15 @@ import org.eclipse.ui.console.IConsoleConstants;
 import org.osgi.framework.Bundle;
 
 /**
- * This class is meant to serve as an example for how various contributions are
- * made to a perspective. Note that some of the extension point id's are
- * referred to as API constants while others are hardcoded and may be subject to
- * change.
+ * The CodeRed debug perspective is a homage to the team that created the Code
+ * Red suite (now defunct, followed by NXP LPCXpresso), and a small help to
+ * ensure continuity to its users.
  */
 public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 
 	// ------------------------------------------------------------------------
 
 	public static final String ID = "ilg.gnuarmeclipse.packs.ui.perspectives.CodeRedPerspective";
-
-	// ------------------------------------------------------------------------
-
-	private ILaunchesListener2 fLaunchesListener;
-
-	@SuppressWarnings("unused")
-	private IPageLayout fLayout;
 
 	// ------------------------------------------------------------------------
 
@@ -76,18 +65,23 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 					.println("CodeRedPerspectiveFactory.createInitialLayout()");
 		}
 
-		fLayout = layout;
-
 		createLayout(layout);
 
+		// Action sets are defined in plugin.xml
+
+		// ShowView menus are defined in plugin.xml
+
+		// Currently do not associate launchers.
 		// setDebugPerspective();
-		// addLaunchesListener();
+
+		if (isDebugViewVisble()) {
+			displayView(IDebugUIConstants.ID_DEBUG_VIEW);
+		}
 	}
 
 	@SuppressWarnings("unused")
 	private void createLayout(IPageLayout layout) {
 
-		boolean bool = isDebugViewVisble();
 		Bundle bundle;
 
 		String editorId = layout.getEditorArea();
@@ -155,16 +149,6 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 		sideRightLayout
 				.addPlaceholder("org.eclipse.cdt.dsf.debug.ui.disassembly.view");
 
-		// Action sets
-		addActionSets(layout);
-		
-		if (bool) {
-			displayView(IDebugUIConstants.ID_DEBUG_VIEW);
-		}
-
-		setContentsOfShowViewMenu(layout);
-		
-		layout.addPerspectiveShortcut(ID);
 	}
 
 	private boolean isDebugViewVisble() {
@@ -203,34 +187,13 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 		});
 	}
 
-	protected void addActionSets(IPageLayout layout) {
-
-		layout.addActionSet("org.eclipse.cdt.ui.buildConfigActionSet");
-
-		layout.addActionSet(IDebugUIConstants.LAUNCH_ACTION_SET);
-		layout.addActionSet(IDebugUIConstants.DEBUG_ACTION_SET);
-	}
-
-	/**
-	 * Sets the initial contents of the "Show View" menu.
-	 */
-	protected void setContentsOfShowViewMenu(IPageLayout layout) {
-		layout.addShowViewShortcut(IDebugUIConstants.ID_DEBUG_VIEW);
-		layout.addShowViewShortcut(IDebugUIConstants.ID_VARIABLE_VIEW);
-		layout.addShowViewShortcut(IDebugUIConstants.ID_BREAKPOINT_VIEW);
-		layout.addShowViewShortcut(IDebugUIConstants.ID_EXPRESSION_VIEW);
-		layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);
-		layout.addShowViewShortcut(IConsoleConstants.ID_CONSOLE_VIEW);
-		layout.addShowViewShortcut(IPageLayout.ID_TASK_LIST);
-	}
-
 	private static final String[] launchIds = {
 			"ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationType",
 			"ilg.gnuarmeclipse.debug.gdbjtag.qemu.launchConfigurationType",
 			"ilg.gnuarmeclipse.debug.gdbjtag.openocd.launchConfigurationType" };
 
 	/**
-	 * Associate some launcher with this perspective. Currently not used.
+	 * Associate some launchers with this perspective. Currently not used.
 	 */
 	@SuppressWarnings("unused")
 	private void setDebugPerspective() {
@@ -252,49 +215,6 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 		while (it.hasNext()) {
 			ILaunchConfigurationType type = it.next();
 			DebugUITools.setLaunchPerspective(type, "debug", ID);
-		}
-	}
-
-	/**
-	 * Currently not used.
-	 */
-	@SuppressWarnings("unused")
-	private void addLaunchesListener() {
-
-		int i = 1;
-		if (i != 0) {
-			this.fLaunchesListener = new ILaunchesListener2() {
-				public void launchesAdded(ILaunch[] launches) {
-					traceIt("added", launches);
-				}
-
-				public void launchesChanged(ILaunch[] launches) {
-					traceIt("changed", launches);
-				}
-
-				public void launchesRemoved(ILaunch[] launches) {
-					launchesTerminated(launches);
-				}
-
-				public void launchesTerminated(ILaunch[] launches) {
-					traceIt("terminated", launches);
-				}
-
-				private void traceIt(String actionName, ILaunch[] launches) {
-					for (int i = 0; i < launches.length; i++) {
-						IDebugTarget[] targets = launches[i].getDebugTargets();
-						for (int j = 0; j < targets.length; j++)
-							try {
-								System.out.println(actionName + ">>"
-										+ targets[j].getName());
-							} catch (DebugException e) {
-								;
-							}
-					}
-				}
-			};
-			DebugPlugin.getDefault().getLaunchManager()
-					.addLaunchListener(fLaunchesListener);
 		}
 	}
 

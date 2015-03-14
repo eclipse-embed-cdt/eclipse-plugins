@@ -14,22 +14,7 @@
    <extension
          point="org.eclipse.ui.perspectiveExtensions">
       <perspectiveExtension
-            targetID="org.eclipse.ui.resourcePerspective">
-         <perspectiveShortcut
-               id="com.crt.lite.perspective.CRTPerspective">
-         </perspectiveShortcut>
-      </perspectiveExtension>
-      <perspectiveExtension
-            targetID="org.eclipse.debug.ui.DebugPerspective">
-         <perspectiveShortcut
-               id="com.crt.lite.perspective.CRTPerspective">
-         </perspectiveShortcut>
-      </perspectiveExtension>
-      <perspectiveExtension
-            targetID="com.crt.lite.perspective.CRTPerspective">
-         <perspectiveShortcut
-               id="org.eclipse.team.ui.TeamSynchronizingPerspective">
-         </perspectiveShortcut>
+            targetID="ilg.gnuarmeclipse.codered.perspectives.CodeRedPerspective">
          <view
                id="org.eclipse.debug.ui.ExpressionView"
                minimized="false"
@@ -37,20 +22,44 @@
                relative="org.eclipse.debug.ui.VariableView"
                visible="true">
          </view>
-         <viewShortcut
-               id="org.eclipse.debug.ui.ExpressionView">
-         </viewShortcut>
-         <viewShortcut id="org.eclipse.cdt.ui.includeBrowser"/>
+
          <actionSet id="org.eclipse.cdt.ui.buildConfigActionSet"/>
          <actionSet id="org.eclipse.debug.ui.launchActionSet"/>
          <actionSet id="org.eclipse.cdt.ui.NavigationActionSet"/>
          <actionSet id="org.eclipse.cdt.ui.OpenActionSet"/>
          <actionSet id="org.eclipse.ui.edit.text.actionSet.presentation"/>
+         <actionSet id="org.eclipse.debug.ui.debugActionSet"/>
+                  
+         <perspectiveShortcut id="org.eclipse.team.ui.TeamSynchronizingPerspective"/>
+
+		 <viewShortcut id="org.eclipse.debug.ui.DebugView"/>
+		 <viewShortcut id="org.eclipse.debug.ui.VariableView"/>
+		 <viewShortcut id="org.eclipse.debug.ui.BreakpointView"/>
+         <viewShortcut id="org.eclipse.debug.ui.ExpressionView"/>         
+		 <viewShortcut id="org.eclipse.ui.views.ContentOutline"/>
+		 <viewShortcut id="org.eclipse.ui.console.ConsoleView"/>
+		 <viewShortcut id="org.eclipse.ui.views.TaskList"/>
+         
+         <viewShortcut id="org.eclipse.cdt.ui.includeBrowser"/>
+         <viewShortcut id="org.eclipse.ui.navigator.ProjectExplorer"/>
+	     <viewShortcut id="org.eclipse.pde.runtime.LogView"/>
+         
          <showInPart id="org.eclipse.cdt.ui.includeBrowser"/>
          <showInPart id="org.eclipse.cdt.ui.CView"/>
          <showInPart id="org.eclipse.ui.navigator.ProjectExplorer"/>
-         <viewShortcut id="org.eclipse.ui.navigator.ProjectExplorer"/>
+         
        </perspectiveExtension>
+       
+      <perspectiveExtension
+            targetID="org.eclipse.cdt.ui.CPerspective">
+         <perspectiveShortcut id="ilg.gnuarmeclipse.codered.perspectives.CodeRedPerspective"/>
+      </perspectiveExtension>
+
+      <perspectiveExtension
+            targetID="org.eclipse.debug.ui.DebugPerspective">
+         <perspectiveShortcut id="ilg.gnuarmeclipse.codered.perspectives.CodeRedPerspective"/>
+      </perspectiveExtension>
+       
    </extension>
-   
+
 </plugin>
