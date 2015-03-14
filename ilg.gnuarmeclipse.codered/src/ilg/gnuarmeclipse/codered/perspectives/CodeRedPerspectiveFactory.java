@@ -25,6 +25,7 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.ILaunchesListener2;
 import org.eclipse.debug.core.model.IDebugTarget;
 import org.eclipse.debug.ui.DebugUITools;
+import org.eclipse.debug.ui.IDebugUIConstants;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IFolderLayout;
 import org.eclipse.ui.IPageLayout;
@@ -33,6 +34,7 @@ import org.eclipse.ui.IPlaceholderFolderLayout;
 import org.eclipse.ui.IViewReference;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.console.IConsoleConstants;
 import org.osgi.framework.Bundle;
 
 /**
@@ -91,11 +93,11 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 		String editorId = layout.getEditorArea();
 		IFolderLayout topLeftLayout = layout.createFolder("topLeft",
 				IPageLayout.LEFT, 0.33F, editorId);
-		topLeftLayout.addView("org.eclipse.ui.navigator.ProjectExplorer");
+		topLeftLayout.addView(IPageLayout.ID_PROJECT_EXPLORER);
 		topLeftLayout.addPlaceholder("org.eclipse.cdt.ui.CView");
-		topLeftLayout.addPlaceholder("org.eclipse.ui.views.BookmarkView");
+		topLeftLayout.addPlaceholder(IPageLayout.ID_BOOKMARKS);
 
-		topLeftLayout.addView("org.eclipse.debug.ui.RegisterView");
+		topLeftLayout.addView(IDebugUIConstants.ID_REGISTER_VIEW);
 		bundle = Platform.getBundle("ilg.gnuarmeclipse.debug.gdbjtag");
 		if (bundle != null) {
 			topLeftLayout
@@ -116,21 +118,21 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 		IFolderLayout bottomLeftLayout = layout.createFolder("bottomLeft",
 				IPageLayout.BOTTOM, 0.5F, "topLeft");
 		// localIFolderLayout2.addView("com.crt.quickstart.views.QuickstartView");
-		bottomLeftLayout.addView("org.eclipse.debug.ui.VariableView");
-		bottomLeftLayout.addView("org.eclipse.debug.ui.BreakpointView");
-		bottomLeftLayout.addView("org.eclipse.ui.views.ContentOutline");
-		bottomLeftLayout.addPlaceholder("org.eclipse.debug.ui.ExpressionView");
+		bottomLeftLayout.addView(IDebugUIConstants.ID_VARIABLE_VIEW);
+		bottomLeftLayout.addView(IDebugUIConstants.ID_BREAKPOINT_VIEW);
+		bottomLeftLayout.addView(IPageLayout.ID_OUTLINE);
+		bottomLeftLayout.addPlaceholder(IDebugUIConstants.ID_EXPRESSION_VIEW);
 
 		IPlaceholderFolderLayout topLayout = layout.createPlaceholderFolder(
 				"top", 3, 0.175F, editorId);
-		topLayout.addPlaceholder("org.eclipse.debug.ui.DebugView");
+		topLayout.addPlaceholder(IDebugUIConstants.ID_DEBUG_VIEW);
 
 		IFolderLayout consoleLayout = layout.createFolder("consoleEtc",
 				IPageLayout.BOTTOM, 0.8F, editorId);
-		consoleLayout.addView("org.eclipse.ui.console.ConsoleView");
-		consoleLayout.addView("org.eclipse.ui.views.ProblemView");
-		consoleLayout.addPlaceholder("org.eclipse.ui.views.ProgressView");
-		consoleLayout.addView("org.eclipse.debug.ui.MemoryView");
+		consoleLayout.addView(IConsoleConstants.ID_CONSOLE_VIEW);
+		consoleLayout.addView(IPageLayout.ID_PROBLEM_VIEW);
+		consoleLayout.addPlaceholder(IPageLayout.ID_PROGRESS_VIEW);
+		consoleLayout.addView(IDebugUIConstants.ID_MEMORY_VIEW);
 
 		IFolderLayout bottomLayout = layout.createFolder("bottom",
 				IPageLayout.BOTTOM, 0.75F, editorId);
@@ -147,18 +149,22 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 		// bottomLayout
 		// .addPlaceholder("com.crt.redtracepreview.views.Preview");
 
-		layout.addActionSet("org.eclipse.cdt.ui.buildConfigActionSet");
-
-		if (bool) {
-			displayView("org.eclipse.debug.ui.DebugView");
-		}
-		layout.addActionSet("org.eclipse.debug.ui.debugActionSet");
-
 		IPlaceholderFolderLayout sideRightLayout = layout
 				.createPlaceholderFolder("sideRight", IPageLayout.RIGHT, 0.66F,
 						editorId);
 		sideRightLayout
 				.addPlaceholder("org.eclipse.cdt.dsf.debug.ui.disassembly.view");
+
+		// Action sets
+		addActionSets(layout);
+		
+		if (bool) {
+			displayView(IDebugUIConstants.ID_DEBUG_VIEW);
+		}
+
+		setContentsOfShowViewMenu(layout);
+		
+		layout.addPerspectiveShortcut(ID);
 	}
 
 	private boolean isDebugViewVisble() {
@@ -195,6 +201,27 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 				}
 			}
 		});
+	}
+
+	protected void addActionSets(IPageLayout layout) {
+
+		layout.addActionSet("org.eclipse.cdt.ui.buildConfigActionSet");
+
+		layout.addActionSet(IDebugUIConstants.LAUNCH_ACTION_SET);
+		layout.addActionSet(IDebugUIConstants.DEBUG_ACTION_SET);
+	}
+
+	/**
+	 * Sets the initial contents of the "Show View" menu.
+	 */
+	protected void setContentsOfShowViewMenu(IPageLayout layout) {
+		layout.addShowViewShortcut(IDebugUIConstants.ID_DEBUG_VIEW);
+		layout.addShowViewShortcut(IDebugUIConstants.ID_VARIABLE_VIEW);
+		layout.addShowViewShortcut(IDebugUIConstants.ID_BREAKPOINT_VIEW);
+		layout.addShowViewShortcut(IDebugUIConstants.ID_EXPRESSION_VIEW);
+		layout.addShowViewShortcut(IPageLayout.ID_OUTLINE);
+		layout.addShowViewShortcut(IConsoleConstants.ID_CONSOLE_VIEW);
+		layout.addShowViewShortcut(IPageLayout.ID_TASK_LIST);
 	}
 
 	private static final String[] launchIds = {
