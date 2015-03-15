@@ -67,15 +67,15 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 
 		createLayout(layout);
 
-		// Action sets are defined in plugin.xml
+		// Action sets are defined in plugin.xml.
 
-		// ShowView menus are defined in plugin.xml
+		// ShowView menus are defined in plugin.xml.
 
 		// Currently do not associate launchers.
 		// setDebugPerspective();
 
 		if (isDebugViewVisble()) {
-			displayView(IDebugUIConstants.ID_DEBUG_VIEW);
+			showView(IDebugUIConstants.ID_DEBUG_VIEW);
 		}
 	}
 
@@ -98,20 +98,10 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 					.addView("ilg.gnuarmeclipse.debug.gdbjtag.ui.views.PeripheralsView");
 		}
 
-		// bundle = Platform.getBundle("com.crt.trueview");
-		// if (bundle != null) {
-		// topLeftLayout.addView("com.crt.trueview.views.CRTRegisterViewer");
-		// topLeftLayout.addView("com.crt.trueview.views.PeripheralsViewer");
-		// }
-		// bundle = Platform.getBundle("com.crt.dsfdebug");
-		// if (bundle != null) {
-		// topLeftLayout.addView("com.crt.peripheral.PeripheralView");
-		// topLeftLayout.addView("org.eclipse.debug.ui.RegisterView");
-		// }
-
 		IFolderLayout bottomLeftLayout = layout.createFolder("bottomLeft",
 				IPageLayout.BOTTOM, 0.5F, "topLeft");
-		// localIFolderLayout2.addView("com.crt.quickstart.views.QuickstartView");
+
+		// Here the QuickstartView was placed.
 		bottomLeftLayout.addView(IDebugUIConstants.ID_VARIABLE_VIEW);
 		bottomLeftLayout.addView(IDebugUIConstants.ID_BREAKPOINT_VIEW);
 		bottomLeftLayout.addView(IPageLayout.ID_OUTLINE);
@@ -130,18 +120,8 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 
 		IFolderLayout bottomLayout = layout.createFolder("bottom",
 				IPageLayout.BOTTOM, 0.75F, editorId);
-		// bundle = Platform.getBundle("com.crt.trueview");
-		// if (bundle != null) {
-		// bottomLayout
-		// .addPlaceholder("com.crt.trueview.views.DisassemblyViewer");
-		// }
-		// bundle = Platform.getBundle("com.crt.dsfswv");
-		// if (bundle != null)
-		// bottomLayout.addPlaceholder("com.crt.dsfswv.views.SwvViews");
-		// bundle = Platform.getBundle("com.crt.redtracepreview");
-		// if (bundle != null)
-		// bottomLayout
-		// .addPlaceholder("com.crt.redtracepreview.views.Preview");
+
+		// TODO: add placeholder for SWV & other tracing, when available.
 
 		IPlaceholderFolderLayout sideRightLayout = layout
 				.createPlaceholderFolder("sideRight", IPageLayout.RIGHT, 0.66F,
@@ -151,6 +131,12 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 
 	}
 
+	/**
+	 * Check if the Eclipse debug view is visible. Iterate all pages and all
+	 * view references until the DebugView is identified.
+	 * 
+	 * @return true if DebugView is visible.
+	 */
 	private boolean isDebugViewVisble() {
 
 		boolean bool = false;
@@ -171,7 +157,13 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 		return bool;
 	}
 
-	private void displayView(final String id) {
+	/**
+	 * Make the view identified by ID visible.
+	 * 
+	 * @param id
+	 *            a String with view id.
+	 */
+	private void showView(final String id) {
 
 		final IWorkbenchPage[] pages = PlatformUI.getWorkbench()
 				.getActiveWorkbenchWindow().getPages();
@@ -196,7 +188,7 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 	 * Associate some launchers with this perspective. Currently not used.
 	 */
 	@SuppressWarnings("unused")
-	private void setDebugPerspective() {
+	private void setLaunchPerspective() {
 
 		String[] ids = launchIds;
 		ILaunchManager launchManager = DebugPlugin.getDefault()

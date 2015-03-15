@@ -31,6 +31,8 @@
          <actionSet id="org.eclipse.debug.ui.debugActionSet"/>
                   
          <perspectiveShortcut id="org.eclipse.team.ui.TeamSynchronizingPerspective"/>
+         <perspectiveShortcut id="org.eclipse.debug.ui.DebugPerspective"/>
+         <perspectiveShortcut id="org.eclipse.cdt.ui.CPerspective"/>
 
 		 <viewShortcut id="org.eclipse.debug.ui.DebugView"/>
 		 <viewShortcut id="org.eclipse.debug.ui.VariableView"/>
@@ -38,11 +40,18 @@
          <viewShortcut id="org.eclipse.debug.ui.ExpressionView"/>         
 		 <viewShortcut id="org.eclipse.ui.views.ContentOutline"/>
 		 <viewShortcut id="org.eclipse.ui.console.ConsoleView"/>
+		 <viewShortcut id="org.eclipse.debug.ui.MemoryView"/>
 		 <viewShortcut id="org.eclipse.ui.views.TaskList"/>
-         
+		 <viewShortcut id="org.eclipse.ui.views.ProblemView"/>
+		 <viewShortcut id="org.eclipse.debug.ui.RegisterView"/>
+                
          <viewShortcut id="org.eclipse.cdt.ui.includeBrowser"/>
          <viewShortcut id="org.eclipse.ui.navigator.ProjectExplorer"/>
 	     <viewShortcut id="org.eclipse.pde.runtime.LogView"/>
+
+	     <viewShortcut id="org.eclipse.cdt.dsf.debug.ui.disassembly.view"/>
+ 
+ 		 <viewShortcut id="ilg.gnuarmeclipse.debug.gdbjtag.ui.views.PeripheralsView"/>
          
          <showInPart id="org.eclipse.cdt.ui.includeBrowser"/>
          <showInPart id="org.eclipse.cdt.ui.CView"/>
