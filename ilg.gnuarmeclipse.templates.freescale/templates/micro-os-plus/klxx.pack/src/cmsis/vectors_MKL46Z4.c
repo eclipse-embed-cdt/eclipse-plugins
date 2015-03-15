@@ -398,6 +398,9 @@ pHandler gConfigs[] =
 void __attribute__ ((section(".after_vectors")))
 Default_Handler(void)
 {
+#if defined(DEBUG)
+  __DEBUG_BKPT();
+#endif
   while (1)
     {
     }

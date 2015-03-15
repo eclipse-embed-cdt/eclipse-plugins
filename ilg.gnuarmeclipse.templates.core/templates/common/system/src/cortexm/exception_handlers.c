@@ -53,6 +53,9 @@ Reset_Handler(void)
 void __attribute__ ((section(".after_vectors"),weak))
 NMI_Handler (void)
 {
+#if defined(DEBUG)
+  __DEBUG_BKPT();
+#endif
   while (1)
     {
     }
@@ -374,6 +377,9 @@ HardFault_Handler_C (ExceptionStackFrame* frame __attribute__((unused)),
   dumpExceptionStack (frame, cfsr, mmfar, bfar, lr);
 #endif // defined(TRACE)
 
+#if defined(DEBUG)
+  __DEBUG_BKPT();
+#endif
   while (1)
     {
     }
@@ -426,6 +432,9 @@ HardFault_Handler_C (ExceptionStackFrame* frame __attribute__((unused)),
   dumpExceptionStack (frame, lr);
 #endif // defined(TRACE)
 
+#if defined(DEBUG)
+  __DEBUG_BKPT();
+#endif
   while (1)
     {
     }
@@ -439,6 +448,9 @@ HardFault_Handler_C (ExceptionStackFrame* frame __attribute__((unused)),
 void __attribute__ ((section(".after_vectors"),weak))
 MemManage_Handler (void)
 {
+#if defined(DEBUG)
+  __DEBUG_BKPT();
+#endif
   while (1)
     {
     }
@@ -475,6 +487,9 @@ BusFault_Handler_C (ExceptionStackFrame* frame __attribute__((unused)),
   dumpExceptionStack (frame, cfsr, mmfar, bfar, lr);
 #endif // defined(TRACE)
 
+#if defined(DEBUG)
+  __DEBUG_BKPT();
+#endif
   while (1)
     {
     }
@@ -526,6 +541,9 @@ UsageFault_Handler_C (ExceptionStackFrame* frame __attribute__((unused)),
   dumpExceptionStack (frame, cfsr, mmfar, bfar, lr);
 #endif // defined(TRACE)
 
+#if defined(DEBUG)
+  __DEBUG_BKPT();
+#endif
   while (1)
     {
     }
@@ -536,6 +554,9 @@ UsageFault_Handler_C (ExceptionStackFrame* frame __attribute__((unused)),
 void __attribute__ ((section(".after_vectors"),weak))
 SVC_Handler (void)
 {
+#if defined(DEBUG)
+  __DEBUG_BKPT();
+#endif
   while (1)
     {
     }
@@ -546,6 +567,9 @@ SVC_Handler (void)
 void __attribute__ ((section(".after_vectors"),weak))
 DebugMon_Handler (void)
 {
+#if defined(DEBUG)
+  __DEBUG_BKPT();
+#endif
   while (1)
     {
     }
@@ -556,6 +580,9 @@ DebugMon_Handler (void)
 void __attribute__ ((section(".after_vectors"),weak))
 PendSV_Handler (void)
 {
+#if defined(DEBUG)
+  __DEBUG_BKPT();
+#endif
   while (1)
     {
     }

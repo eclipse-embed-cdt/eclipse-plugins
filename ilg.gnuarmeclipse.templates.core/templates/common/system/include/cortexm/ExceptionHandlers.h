@@ -8,6 +8,10 @@
 
 #include <stdint.h>
 
+#if defined(DEBUG)
+#define __DEBUG_BKPT()  asm volatile ("bkpt 0")
+#endif
+
 // ----------------------------------------------------------------------------
 
 #if defined(__cplusplus)
