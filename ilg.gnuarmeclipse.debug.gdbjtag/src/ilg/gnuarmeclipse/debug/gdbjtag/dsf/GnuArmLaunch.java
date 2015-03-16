@@ -19,6 +19,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.RejectedExecutionException;
 
+import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
 import org.eclipse.cdt.dsf.concurrent.DefaultDsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.DsfRunnable;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
@@ -38,6 +39,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
 
@@ -87,6 +89,15 @@ public class GnuArmLaunch extends GdbLaunch {
 			System.out.println("GnuArmLaunch.initialize() " + this);
 		}
 
+		ILaunchConfigurationWorkingCopy config;
+		try {
+			config = getLaunchConfiguration().getWorkingCopy();
+			provideDefaults(config);
+			config.doSave();
+		} catch (CoreException e) {
+			Activator.log(e);
+		}
+
 		super.initialize();
 
 		// Used to get the tracker
@@ -109,6 +120,33 @@ public class GnuArmLaunch extends GdbLaunch {
 			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					IDsfStatusConstants.INTERNAL_ERROR,
 					"Error initializing launch", e)); //$NON-NLS-1$
+		}
+	}
+
+	/**
+	 * Define some of the mandatory CDT attributes with default values, in case
+	 * the launch configuration was generated externally, for example by a
+	 * wizard.
+	 * 
+	 * @param config
+	 *            a writable copy of the launch configuration.
+	 * @throws CoreException
+	 */
+	protected void provideDefaults(ILaunchConfigurationWorkingCopy config)
+			throws CoreException {
+
+		if (!config
+				.hasAttribute(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE)) {
+			config.setAttribute(
+					IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE, true);
+		}
+		if (!config
+				.hasAttribute(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS)) {
+			config.setAttribute(
+					IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS, true);
+		}
+		if (!config.hasAttribute(IGDBJtagConstants.ATTR_USE_REMOTE_TARGET)) {
+			config.setAttribute(IGDBJtagConstants.ATTR_USE_REMOTE_TARGET, true);
 		}
 	}
 

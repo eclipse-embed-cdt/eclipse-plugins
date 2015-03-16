@@ -14,6 +14,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.jlink.dsf;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Configuration;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,9 +22,11 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.RejectedExecutionException;
 
+import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
 import org.eclipse.cdt.dsf.concurrent.DefaultDsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.DsfRunnable;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
+import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
 import org.eclipse.cdt.dsf.gdb.IGdbDebugConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
@@ -34,6 +37,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
 
@@ -98,6 +102,34 @@ public class Launch extends GnuArmLaunch {
 			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					IDsfStatusConstants.INTERNAL_ERROR,
 					"Error initializing launch", e)); //$NON-NLS-1$
+		}
+	}
+
+	@Override
+	protected void provideDefaults(ILaunchConfigurationWorkingCopy config)
+			throws CoreException {
+
+		super.provideDefaults(config);
+
+		if (!config.hasAttribute(IGDBJtagConstants.ATTR_IP_ADDRESS)) {
+			config.setAttribute(IGDBJtagConstants.ATTR_IP_ADDRESS, "localhost");
+		}
+
+		if (!config.hasAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE)) {
+			config.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE,
+					ConfigurationAttributes.JTAG_DEVICE);
+		}
+
+		if (!config.hasAttribute(IGDBJtagConstants.ATTR_PORT_NUMBER)) {
+			config.setAttribute(IGDBJtagConstants.ATTR_PORT_NUMBER,
+					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT);
+		}
+
+		if (!config
+				.hasAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME)) {
+			config.setAttribute(
+					IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
+					ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT);
 		}
 	}
 
