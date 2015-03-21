@@ -17,6 +17,7 @@ import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmDebuggerCommandsService;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.openocd.DefaultPreferences;
 
 import java.util.List;
 
@@ -50,8 +51,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 		String otherInits = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
-				ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT)
-				.trim();
+				DefaultPreferences.GDB_CLIENT_OTHER_COMMANDS_DEFAULT).trim();
 
 		otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
 		DebugUtils.addMultiLine(otherInits, commandsList);
@@ -80,7 +80,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 				IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
 				&& !CDebugUtils.getAttribute(fAttributes,
 						ConfigurationAttributes.DO_DEBUG_IN_RAM,
-						ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT)) {
+						DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT)) {
 
 			status = addLoadImageCommands(commandsList);
 
@@ -111,23 +111,23 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 		if (CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.DO_FIRST_RESET,
-				ConfigurationAttributes.DO_FIRST_RESET_DEFAULT)) {
+				DefaultPreferences.DO_FIRST_RESET_DEFAULT)) {
 
-			String commandStr = ConfigurationAttributes.DO_FIRST_RESET_COMMAND;
+			String commandStr = DefaultPreferences.DO_FIRST_RESET_COMMAND;
 			String resetType = CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.FIRST_RESET_TYPE,
-					ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
+					DefaultPreferences.FIRST_RESET_TYPE_DEFAULT);
 			commandsList.add(commandStr + resetType);
 
 			// Although the manual claims that reset always does a
 			// halt, better issue it explicitly
-			commandStr = ConfigurationAttributes.HALT_COMMAND;
+			commandStr = DefaultPreferences.HALT_COMMAND;
 			commandsList.add(commandStr);
 		}
 
 		String otherInits = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.OTHER_INIT_COMMANDS,
-				ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT).trim();
+				DefaultPreferences.OTHER_INIT_COMMANDS_DEFAULT).trim();
 
 		otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
 		if (fDoDoubleBackslash && EclipseUtils.isWindows()) {
@@ -137,8 +137,8 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 		if (CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.ENABLE_SEMIHOSTING,
-				ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT)) {
-			String commandStr = ConfigurationAttributes.ENABLE_SEMIHOSTING_COMMAND;
+				DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT)) {
+			String commandStr = DefaultPreferences.ENABLE_SEMIHOSTING_COMMAND;
 			commandsList.add(commandStr);
 		}
 
@@ -152,16 +152,16 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 		if (doReset) {
 			if (CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.DO_SECOND_RESET,
-					ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
-				String commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
+					DefaultPreferences.DO_SECOND_RESET_DEFAULT)) {
+				String commandStr = DefaultPreferences.DO_SECOND_RESET_COMMAND;
 				String resetType = CDebugUtils.getAttribute(fAttributes,
 						ConfigurationAttributes.SECOND_RESET_TYPE,
-						ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT);
+						DefaultPreferences.SECOND_RESET_TYPE_DEFAULT);
 				commandsList.add(commandStr + resetType);
 
 				// Although the manual claims that reset always does a
 				// halt, better issue it explicitly
-				commandStr = ConfigurationAttributes.HALT_COMMAND;
+				commandStr = DefaultPreferences.HALT_COMMAND;
 				commandsList.add(commandStr);
 			}
 		}
@@ -171,7 +171,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 				IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
 				&& CDebugUtils.getAttribute(fAttributes,
 						ConfigurationAttributes.DO_DEBUG_IN_RAM,
-						ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT)) {
+						DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT)) {
 
 			IStatus status = addLoadImageCommands(commandsList);
 
@@ -182,7 +182,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 		String userCmd = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.OTHER_RUN_COMMANDS,
-				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT).trim();
+				DefaultPreferences.OTHER_RUN_COMMANDS_DEFAULT).trim();
 
 		userCmd = DebugUtils.resolveAll(userCmd, fAttributes);
 
@@ -200,8 +200,8 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 		if (CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.DO_CONTINUE,
-				ConfigurationAttributes.DO_CONTINUE_DEFAULT)) {
-			commandsList.add(ConfigurationAttributes.DO_CONTINUE_COMMAND);
+				DefaultPreferences.DO_CONTINUE_DEFAULT)) {
+			commandsList.add(DefaultPreferences.DO_CONTINUE_COMMAND);
 		}
 
 		return Status.OK_STATUS;

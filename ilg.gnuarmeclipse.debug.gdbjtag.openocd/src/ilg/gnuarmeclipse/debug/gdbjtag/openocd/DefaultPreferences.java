@@ -20,6 +20,69 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
+	// Constants
+	public static final String REMOTE_IP_ADDRESS_LOCALHOST = "localhost"; //$NON-NLS-1$
+
+	// ------------------------------------------------------------------------
+
+	// Preferences
+	protected static final boolean TAB_MAIN_CHECK_PROGRAM_DEFAULT = false;
+
+	protected static final String GDB_SERVER_EXECUTABLE_DEFAULT = "${openocd_path}/${openocd_executable}";
+
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_NAME = "openocd";
+	protected static final String GDB_CLIENT_EXECUTABLE_DEFAULT = "${cross_prefix}gdb${cross_suffix}";
+
+	// ------------------------------------------------------------------------
+
+	// Not yet preferences
+	public static final boolean DO_START_GDB_SERVER_DEFAULT = true;
+	public static final String GDB_SERVER_CONNECTION_ADDRESS_DEFAULT = "";
+	public static final int GDB_SERVER_GDB_PORT_NUMBER_DEFAULT = 3333;
+	public static final int GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT = 4444;
+	public static final String GDB_SERVER_LOG_DEFAULT = ""; //$NON-NLS-1$
+	public static final String GDB_SERVER_OTHER_DEFAULT = ""; //$NON-NLS-1$
+	public static final boolean DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT = true;
+	public static final boolean DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE_DEFAULT = false;
+
+	public static final String GDB_CLIENT_OTHER_OPTIONS_DEFAULT = "";
+
+	public static final boolean USE_REMOTE_TARGET_DEFAULT = true;
+	public static final String REMOTE_IP_ADDRESS_DEFAULT = REMOTE_IP_ADDRESS_LOCALHOST; //$NON-NLS-1$
+	public static final int REMOTE_PORT_NUMBER_DEFAULT = GDB_SERVER_GDB_PORT_NUMBER_DEFAULT;
+
+	public static final boolean UPDATE_THREAD_LIST_DEFAULT = false;
+
+	public static final boolean DO_FIRST_RESET_DEFAULT = true;
+	public static final String FIRST_RESET_TYPE_DEFAULT = "init";
+
+	public static final boolean ENABLE_SEMIHOSTING_DEFAULT = true;
+
+	public static final boolean DO_DEBUG_IN_RAM_DEFAULT = false;
+
+	public static final boolean DO_SECOND_RESET_DEFAULT = true;
+
+	public static final String SECOND_RESET_TYPE_DEFAULT = "halt";
+
+	public static final boolean DO_STOP_AT_DEFAULT = true;
+	public static final String STOP_AT_NAME_DEFAULT = "main";
+
+	public static final boolean DO_CONTINUE_DEFAULT = true;
+
+	// ------------------------------------------------------------------------
+
+	// Debugger commands
+	public static final String GDB_CLIENT_OTHER_COMMANDS_DEFAULT = "set mem inaccessible-by-default off\n";
+	public static final String DO_FIRST_RESET_COMMAND = "monitor reset ";
+	public static final String HALT_COMMAND = "monitor halt";
+	public static final String ENABLE_SEMIHOSTING_COMMAND = "monitor arm semihosting enable";
+	public static final String DO_SECOND_RESET_COMMAND = "monitor reset ";
+	public static final String DO_CONTINUE_COMMAND = "continue";
+	public static final String OTHER_INIT_COMMANDS_DEFAULT = "";
+	public static final String OTHER_RUN_COMMANDS_DEFAULT = "";
+
+	// ------------------------------------------------------------------------
+
 	// TODO: remove DEPRECATED
 	// These values are deprecated. Use the definitions in PersistentValues.
 	private static final String GDB_SERVER_EXECUTABLE_DEPRECATED = "gdb.server.executable.default";
@@ -74,39 +137,50 @@ public class DefaultPreferences {
 		return getPreferences().getBoolean(key, defaultValue);
 	}
 
-	private static void putString(String key, String value) {
+	public static void putString(String key, String value) {
 		getPreferences().put(key, value);
+	}
+
+	public static void putInt(String key, int value) {
+		getPreferences().putInt(key, value);
+	}
+
+	public static void putBoolean(String key, boolean value) {
+		getPreferences().putBoolean(key, value);
 	}
 
 	// ------------------------------------------------------------------------
 
-	public static String getGdbServerExecutable(String defValue) {
+	public static String getGdbServerExecutable() {
 		String value = getString(PersistentPreferences.GDB_SERVER_EXECUTABLE,
 				null);
 		if (value != null) {
 			return value;
 		}
-		return getString(GDB_SERVER_EXECUTABLE_DEPRECATED, defValue);
+		return getString(GDB_SERVER_EXECUTABLE_DEPRECATED,
+				GDB_SERVER_EXECUTABLE_DEFAULT);
 	}
 
-	public static String getGdbClientExecutable(String defValue) {
+	public static String getGdbClientExecutable() {
 		String value = getString(PersistentPreferences.GDB_CLIENT_EXECUTABLE,
 				null);
 		if (value != null) {
 			return value;
 		}
-		return getString(GDB_CLIENT_EXECUTABLE_DEPRECATED, defValue);
+		return getString(GDB_CLIENT_EXECUTABLE_DEPRECATED,
+				GDB_CLIENT_EXECUTABLE_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------
 
-	public static String getOpenocdConfig(String defValue) {
+	public static String getOpenocdConfig() {
 		String value = getString(
 				PersistentPreferences.GDB_SERVER_OTHER_OPTIONS, null);
 		if (value != null) {
 			return value;
 		}
-		return getString(OPENOCD_CONFIG_DEPRECATED, defValue);
+		return getString(OPENOCD_CONFIG_DEPRECATED,
+				DefaultPreferences.GDB_SERVER_OTHER_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------

@@ -15,6 +15,7 @@ import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Configuration;
 import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.openocd.DefaultPreferences;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -122,14 +123,14 @@ public class Launch extends GnuArmLaunch {
 
 		if (!config.hasAttribute(IGDBJtagConstants.ATTR_PORT_NUMBER)) {
 			config.setAttribute(IGDBJtagConstants.ATTR_PORT_NUMBER,
-					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT);
+					DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT);
 		}
 
 		if (!config
 				.hasAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME)) {
 			config.setAttribute(
 					IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
-					ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT);
+					DefaultPreferences.getGdbClientExecutable());
 		}
 	}
 

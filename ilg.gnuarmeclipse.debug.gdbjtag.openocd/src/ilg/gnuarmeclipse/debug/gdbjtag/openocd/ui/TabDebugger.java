@@ -357,7 +357,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				doStartGdbServerChanged();
 				if (fDoStartGdbServer.getSelection()) {
 					fTargetIpAddress
-							.setText(ConfigurationAttributes.REMOTE_IP_ADDRESS_LOCALHOST);
+							.setText(DefaultPreferences.REMOTE_IP_ADDRESS_LOCALHOST);
 				}
 				scheduleUpdateJob();
 			}
@@ -627,15 +627,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			// OpenOCD GDB server
 			{
 				// Start server locally
-				booleanDefault = PersistentPreferences
-						.getGdbServerDoStart(ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
+				booleanDefault = PersistentPreferences.getGdbServerDoStart();
 				fDoStartGdbServer.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.DO_START_GDB_SERVER,
 						booleanDefault));
 
 				// Executable
-				stringDefault = PersistentPreferences
-						.getGdbServerExecutable(ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT);
+				stringDefault = PersistentPreferences.getGdbServerExecutable();
 				fGdbServerExecutable.setText(configuration.getAttribute(
 						ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
 						stringDefault));
@@ -645,17 +643,17 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						.setText(Integer.toString(configuration
 								.getAttribute(
 										ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
-										ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
+										DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
 
 				fGdbServerTelnetPort
 						.setText(Integer.toString(configuration
 								.getAttribute(
 										ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
-										ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
+										DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
 
 				// Other options
 				stringDefault = PersistentPreferences
-						.getGdbServerOtherOptions(ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT);
+						.getGdbServerOtherOptions();
 				fGdbServerOtherOptions.setText(configuration
 						.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER,
 								stringDefault));
@@ -668,7 +666,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							.setSelection(configuration
 									.getAttribute(
 											ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
-											ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT));
+											DefaultPreferences.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT));
 				}
 
 				// Allocate telnet console
@@ -676,15 +674,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						.setSelection(configuration
 								.getAttribute(
 										ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE,
-										ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE_DEFAULT));
+										DefaultPreferences.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE_DEFAULT));
 
 			}
 
 			// GDB Client Setup
 			{
 				// Executable
-				stringDefault = PersistentPreferences
-						.getGdbClientExecutable(ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT);
+				stringDefault = PersistentPreferences.getGdbClientExecutable();
 				String gdbCommandAttr = configuration.getAttribute(
 						IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
 						stringDefault);
@@ -692,13 +689,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 				// Other options
 				stringDefault = PersistentPreferences
-						.getGdbClientOtherOptions(ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT);
+						.getGdbClientOtherOptions();
 				fGdbClientOtherOptions.setText(configuration.getAttribute(
 						ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
 						stringDefault));
 
-				stringDefault = PersistentPreferences
-						.getGdbClientCommands(ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
+				stringDefault = PersistentPreferences.getGdbClientCommands();
 				fGdbClientOtherCommands.setText(configuration.getAttribute(
 						ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
 						stringDefault));
@@ -708,7 +704,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			{
 				fTargetIpAddress.setText(configuration.getAttribute(
 						IGDBJtagConstants.ATTR_IP_ADDRESS,
-						ConfigurationAttributes.REMOTE_IP_ADDRESS_DEFAULT)); //$NON-NLS-1$
+						DefaultPreferences.REMOTE_IP_ADDRESS_DEFAULT)); //$NON-NLS-1$
 
 				int storedPort = 0;
 				storedPort = configuration.getAttribute(
@@ -716,7 +712,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 				// 0 means undefined, use default
 				if ((storedPort <= 0) || (65535 < storedPort)) {
-					storedPort = ConfigurationAttributes.REMOTE_PORT_NUMBER_DEFAULT;
+					storedPort = DefaultPreferences.REMOTE_PORT_NUMBER_DEFAULT;
 				}
 
 				String portString = Integer.toString(storedPort); //$NON-NLS-1$
@@ -729,7 +725,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			boolean updateThreadsOnSuspend = configuration
 					.getAttribute(
 							IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
-							ConfigurationAttributes.UPDATE_THREAD_LIST_DEFAULT);
+							DefaultPreferences.UPDATE_THREAD_LIST_DEFAULT);
 			fUpdateThreadlistOnSuspend.setSelection(updateThreadsOnSuspend);
 
 		} catch (CoreException e) {
@@ -745,25 +741,23 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		{
 			// Start server locally
 			fDoStartGdbServer
-					.setSelection(ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
+					.setSelection(DefaultPreferences.DO_START_GDB_SERVER_DEFAULT);
 
 			// Executable
-			stringDefault = DefaultPreferences
-					.getGdbServerExecutable(ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT);
+			stringDefault = DefaultPreferences.getGdbServerExecutable();
 			fGdbServerExecutable.setText(stringDefault);
 
 			// Ports
 			fGdbServerGdbPort
 					.setText(Integer
-							.toString(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT));
+							.toString(DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT));
 
 			fGdbServerTelnetPort
 					.setText(Integer
-							.toString(ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT));
+							.toString(DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT));
 
 			// Other options
-			stringDefault = DefaultPreferences
-					.getOpenocdConfig(ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT);
+			stringDefault = DefaultPreferences.getOpenocdConfig();
 			fGdbServerOtherOptions.setText(stringDefault);
 
 			// Allocate server console
@@ -771,37 +765,36 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fDoGdbServerAllocateConsole.setSelection(true);
 			} else {
 				fDoGdbServerAllocateConsole
-						.setSelection(ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
+						.setSelection(DefaultPreferences.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
 			}
 
 			// Allocate telnet console
 			fDoGdbServerAllocateTelnetConsole
-					.setSelection(ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE_DEFAULT);
+					.setSelection(DefaultPreferences.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE_DEFAULT);
 
 		}
 
 		// GDB Client Setup
 		{
 			// Executable
-			stringDefault = DefaultPreferences
-					.getGdbClientExecutable(ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT);
+			stringDefault = DefaultPreferences.getGdbClientExecutable();
 			fGdbClientExecutable.setText(stringDefault);
 
 			// Other options
 			fGdbClientOtherOptions
-					.setText(ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT);
+					.setText(DefaultPreferences.GDB_CLIENT_OTHER_OPTIONS_DEFAULT);
 
 			fGdbClientOtherCommands
-					.setText(ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
+					.setText(DefaultPreferences.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
 		}
 
 		// Remote target
 		{
 			fTargetIpAddress
-					.setText(ConfigurationAttributes.REMOTE_IP_ADDRESS_DEFAULT); //$NON-NLS-1$
+					.setText(DefaultPreferences.REMOTE_IP_ADDRESS_DEFAULT); //$NON-NLS-1$
 
 			String portString = Integer
-					.toString(ConfigurationAttributes.REMOTE_PORT_NUMBER_DEFAULT); //$NON-NLS-1$
+					.toString(DefaultPreferences.REMOTE_PORT_NUMBER_DEFAULT); //$NON-NLS-1$
 			fTargetPortNumber.setText(portString);
 		}
 
@@ -809,7 +802,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		// Force thread update
 		fUpdateThreadlistOnSuspend
-				.setSelection(ConfigurationAttributes.UPDATE_THREAD_LIST_DEFAULT);
+				.setSelection(DefaultPreferences.UPDATE_THREAD_LIST_DEFAULT);
 	}
 
 	/*
@@ -900,7 +893,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			// always use remote
 			configuration.setAttribute(
 					IGDBJtagConstants.ATTR_USE_REMOTE_TARGET,
-					ConfigurationAttributes.USE_REMOTE_TARGET_DEFAULT);
+					DefaultPreferences.USE_REMOTE_TARGET_DEFAULT);
 
 			stringValue = fGdbClientExecutable.getText().trim();
 			configuration.setAttribute(
@@ -994,71 +987,62 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		// OpenOCD GDB server setup
 		{
-			defaultBoolean = PersistentPreferences
-					.getGdbServerDoStart(ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
+			defaultBoolean = PersistentPreferences.getGdbServerDoStart();
 			configuration
 					.setAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
 							defaultBoolean);
 
-			defaultString = PersistentPreferences
-					.getGdbServerExecutable(ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT);
+			defaultString = PersistentPreferences.getGdbServerExecutable();
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
 					defaultString);
 
-			configuration
-					.setAttribute(
-							ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
-							ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS_DEFAULT);
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
+					DefaultPreferences.GDB_SERVER_CONNECTION_ADDRESS_DEFAULT);
 
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
-					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT);
+					DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT);
 
-			configuration
-					.setAttribute(
-							ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
-							ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT);
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
+					DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT);
 
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_LOG,
-					ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT);
+					DefaultPreferences.GDB_SERVER_LOG_DEFAULT);
 
-			defaultString = PersistentPreferences
-					.getGdbServerOtherOptions(ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT);
+			defaultString = PersistentPreferences.getGdbServerOtherOptions();
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_OTHER, defaultString);
 
-			configuration
-					.setAttribute(
-							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
-							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
+			configuration.setAttribute(
+					ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
+					DefaultPreferences.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
 
 			configuration
 					.setAttribute(
 							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE,
-							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE_DEFAULT);
+							DefaultPreferences.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE_DEFAULT);
 		}
 
 		// GDB client setup
 		{
-			defaultString = PersistentPreferences
-					.getGdbClientExecutable(ConfigurationAttributes.GDB_CLIENT_EXECUTABLE_DEFAULT);
+			defaultString = PersistentPreferences.getGdbClientExecutable();
 			configuration.setAttribute(
 					IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
 					defaultString);
 
 			configuration.setAttribute(
 					IGDBJtagConstants.ATTR_USE_REMOTE_TARGET,
-					ConfigurationAttributes.USE_REMOTE_TARGET_DEFAULT);
+					DefaultPreferences.USE_REMOTE_TARGET_DEFAULT);
 
-			defaultString = PersistentPreferences
-					.getGdbClientOtherOptions(ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT);
+			defaultString = PersistentPreferences.getGdbClientOtherOptions();
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
 					defaultString);
 
-			defaultString = PersistentPreferences
-					.getGdbClientCommands(ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
+			defaultString = PersistentPreferences.getGdbClientCommands();
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
 					defaultString);
@@ -1068,7 +1052,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		configuration
 				.setAttribute(
 						IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
-						ConfigurationAttributes.UPDATE_THREAD_LIST_DEFAULT);
+						DefaultPreferences.UPDATE_THREAD_LIST_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------

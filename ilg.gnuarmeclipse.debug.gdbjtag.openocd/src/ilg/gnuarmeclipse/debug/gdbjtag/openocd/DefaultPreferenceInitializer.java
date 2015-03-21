@@ -52,6 +52,17 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 					.println("DefaultPreferenceInitializer.initializeDefaultPreferences()");
 		}
 
+		DefaultPreferences.putBoolean(
+				PersistentPreferences.GDB_SERVER_DO_START,
+				DefaultPreferences.DO_START_GDB_SERVER_DEFAULT);
+
+		DefaultPreferences.putString(PersistentPreferences.GDB_CLIENT_COMMANDS,
+				DefaultPreferences.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
+
+		DefaultPreferences.putBoolean(
+				PersistentPreferences.TAB_MAIN_CHECK_PROGRAM,
+				DefaultPreferences.TAB_MAIN_CHECK_PROGRAM_DEFAULT);
+
 		// When the 'ilg.gnuarmeclipse.managedbuild.cross' node is completely
 		// added to /default, a NodeChangeEvent is raised.
 		// This is the moment when all final default values are in, possibly

@@ -114,10 +114,10 @@ public class PersistentPreferences {
 	}
 
 	// ----- gdb server doStart -----------------------------------------------
-	public static boolean getGdbServerDoStart(boolean defaultValue) {
+	public static boolean getGdbServerDoStart() {
 
-		return Boolean.valueOf(getString(GDB_SERVER_DO_START,
-				Boolean.toString(defaultValue)));
+		return Boolean.valueOf(getString(GDB_SERVER_DO_START, Boolean
+				.toString(DefaultPreferences.DO_START_GDB_SERVER_DEFAULT)));
 	}
 
 	public static void putGdbServerDoStart(boolean value) {
@@ -126,13 +126,13 @@ public class PersistentPreferences {
 	}
 
 	// ----- gdb server executable --------------------------------------------
-	public static String getGdbServerExecutable(String defaultValue) {
+	public static String getGdbServerExecutable() {
 
 		String value = getString(GDB_SERVER_EXECUTABLE, null);
 		if (value != null) {
 			return value;
 		}
-		return DefaultPreferences.getGdbServerExecutable(defaultValue);
+		return DefaultPreferences.getGdbServerExecutable();
 	}
 
 	public static void putGdbServerExecutable(String value) {
@@ -141,13 +141,13 @@ public class PersistentPreferences {
 	}
 
 	// ----- gdb server other options -----------------------------------------
-	public static String getGdbServerOtherOptions(String defaultValue) {
+	public static String getGdbServerOtherOptions() {
 
 		String value = getString(GDB_SERVER_OTHER_OPTIONS, null);
 		if (value != null) {
 			return value;
 		}
-		return DefaultPreferences.getOpenocdConfig(defaultValue);
+		return DefaultPreferences.getOpenocdConfig();
 	}
 
 	public static void putGdbServerOtherOptions(String value) {
@@ -156,13 +156,13 @@ public class PersistentPreferences {
 	}
 
 	// ----- gdb client executable --------------------------------------------
-	public static String getGdbClientExecutable(String defaultValue) {
+	public static String getGdbClientExecutable() {
 
 		String value = getString(GDB_CLIENT_EXECUTABLE, null);
 		if (value != null) {
 			return value;
 		}
-		return DefaultPreferences.getGdbClientExecutable(defaultValue);
+		return DefaultPreferences.getGdbClientExecutable();
 	}
 
 	public static void putGdbClientExecutable(String value) {
@@ -171,9 +171,10 @@ public class PersistentPreferences {
 	}
 
 	// ----- gdb client other options -----------------------------------------
-	public static String getGdbClientOtherOptions(String defaultValue) {
+	public static String getGdbClientOtherOptions() {
 
-		return getString(GDB_CLIENT_OTHER_OPTIONS, defaultValue);
+		return getString(GDB_CLIENT_OTHER_OPTIONS,
+				DefaultPreferences.GDB_CLIENT_OTHER_OPTIONS_DEFAULT);
 	}
 
 	public static void putGdbClientOtherOptions(String value) {
@@ -182,9 +183,10 @@ public class PersistentPreferences {
 	}
 
 	// ----- gdb client commands ----------------------------------------------
-	public static String getGdbClientCommands(String defaultValue) {
+	public static String getGdbClientCommands() {
 
-		return getString(GDB_CLIENT_COMMANDS, defaultValue);
+		return getString(GDB_CLIENT_COMMANDS,
+				DefaultPreferences.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
 	}
 
 	public static void putGdbClientCommands(String value) {
@@ -193,10 +195,10 @@ public class PersistentPreferences {
 	}
 
 	// ----- OpenOCD do initial reset -----------------------------------------
-	public static boolean getOpenOCDDoInitialReset(boolean defaultValue) {
+	public static boolean getOpenOCDDoInitialReset() {
 
 		return Boolean.valueOf(getString(GDB_OPENOCD_DO_INITIAL_RESET,
-				Boolean.toString(defaultValue)));
+				Boolean.toString(DefaultPreferences.DO_FIRST_RESET_DEFAULT)));
 	}
 
 	public static void putOpenOCDDoInitialReset(boolean value) {
@@ -206,9 +208,10 @@ public class PersistentPreferences {
 	}
 
 	// ----- OpenOCD initial reset type ---------------------------------------
-	public static String getOpenOCDInitialResetType(String defaultValue) {
+	public static String getOpenOCDInitialResetType() {
 
-		return getString(GDB_OPENOCD_INITIAL_RESET_TYPE, defaultValue);
+		return getString(GDB_OPENOCD_INITIAL_RESET_TYPE,
+				DefaultPreferences.FIRST_RESET_TYPE_DEFAULT);
 	}
 
 	public static void putOpenOCDInitialResetType(String value) {
@@ -217,10 +220,12 @@ public class PersistentPreferences {
 	}
 
 	// ----- OpenOCD enable semihosting ---------------------------------------
-	public static boolean getOpenOCDEnableSemihosting(boolean defaultValue) {
+	public static boolean getOpenOCDEnableSemihosting() {
 
-		return Boolean.valueOf(getString(GDB_OPENOCD_ENABLE_SEMIHOSTING,
-				Boolean.toString(defaultValue)));
+		return Boolean
+				.valueOf(getString(
+						GDB_OPENOCD_ENABLE_SEMIHOSTING,
+						Boolean.toString(DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT)));
 	}
 
 	public static void putOpenOCDEnableSemihosting(boolean value) {
@@ -230,9 +235,10 @@ public class PersistentPreferences {
 	}
 
 	// ----- OpenOCD init other -----------------------------------------------
-	public static String getOpenOCDInitOther(String defaultValue) {
+	public static String getOpenOCDInitOther() {
 
-		return getString(GDB_OPENOCD_INIT_OTHER, defaultValue);
+		return getString(GDB_OPENOCD_INIT_OTHER,
+				DefaultPreferences.OTHER_INIT_COMMANDS_DEFAULT);
 	}
 
 	public static void putOpenOCDInitOther(String value) {
@@ -241,10 +247,10 @@ public class PersistentPreferences {
 	}
 
 	// ----- OpenOCD debug in ram ---------------------------------------------
-	public static boolean getOpenOCDDebugInRam(boolean defaultValue) {
+	public static boolean getOpenOCDDebugInRam() {
 
 		return Boolean.valueOf(getString(GDB_OPENOCD_DO_DEBUG_IN_RAM,
-				Boolean.toString(defaultValue)));
+				Boolean.toString(DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT)));
 	}
 
 	public static void putOpenOCDDebugInRam(boolean value) {
@@ -253,10 +259,10 @@ public class PersistentPreferences {
 	}
 
 	// ----- OpenOCD do prerun reset ------------------------------------------
-	public static boolean getOpenOCDDoPreRunReset(boolean defaultValue) {
+	public static boolean getOpenOCDDoPreRunReset() {
 
 		return Boolean.valueOf(getString(GDB_OPENOCD_DO_PRERUN_RESET,
-				Boolean.toString(defaultValue)));
+				Boolean.toString(DefaultPreferences.DO_SECOND_RESET_DEFAULT)));
 	}
 
 	public static void putOpenOCDDoPreRunReset(boolean value) {
@@ -265,9 +271,10 @@ public class PersistentPreferences {
 	}
 
 	// ----- OpenOCD prerun reset type ----------------------------------------
-	public static String getOpenOCDPreRunResetType(String defaultValue) {
+	public static String getOpenOCDPreRunResetType() {
 
-		return getString(GDB_OPENOCD_PRERUN_RESET_TYPE, defaultValue);
+		return getString(GDB_OPENOCD_PRERUN_RESET_TYPE,
+				DefaultPreferences.SECOND_RESET_TYPE_DEFAULT);
 	}
 
 	public static void putOpenOCDPreRunResetType(String value) {
@@ -276,9 +283,10 @@ public class PersistentPreferences {
 	}
 
 	// ----- OpenOCD init other -----------------------------------------------
-	public static String getOpenOCDPreRunOther(String defaultValue) {
+	public static String getOpenOCDPreRunOther() {
 
-		return getString(GDB_OPENOCD_PRERUN_OTHER, defaultValue);
+		return getString(GDB_OPENOCD_PRERUN_OTHER,
+				DefaultPreferences.OTHER_RUN_COMMANDS_DEFAULT);
 	}
 
 	public static void putOpenOCDPreRunOther(String value) {

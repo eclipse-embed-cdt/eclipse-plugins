@@ -26,12 +26,12 @@ public class Configuration {
 		try {
 			if (!configuration.getAttribute(
 					ConfigurationAttributes.DO_START_GDB_SERVER,
-					ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT))
+					DefaultPreferences.DO_START_GDB_SERVER_DEFAULT))
 				return null;
 
 			executable = configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
-					ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT);
+					DefaultPreferences.GDB_SERVER_EXECUTABLE_DEFAULT);
 			// executable = Utils.escapeWhitespaces(executable).trim();
 			executable = executable.trim();
 			if (executable.length() == 0)
@@ -69,7 +69,7 @@ public class Configuration {
 		try {
 			if (!configuration.getAttribute(
 					ConfigurationAttributes.DO_START_GDB_SERVER,
-					ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT))
+					DefaultPreferences.DO_START_GDB_SERVER_DEFAULT))
 				return null;
 
 			String executable = getGdbServerCommand(configuration);
@@ -83,18 +83,18 @@ public class Configuration {
 					+ Integer.toString(configuration
 							.getAttribute(
 									ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
-									ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
+									DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
 
 			lst.add("-c");
 			lst.add("telnet_port "
 					+ Integer.toString(configuration
 							.getAttribute(
 									ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
-									ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
+									DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
 
 			String other = configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_OTHER,
-					ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT).trim();
+					DefaultPreferences.GDB_SERVER_OTHER_DEFAULT).trim();
 
 			other = DebugUtils.resolveAll(other, configuration.getAttributes());
 
@@ -125,7 +125,7 @@ public class Configuration {
 			throws CoreException {
 
 		return config.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER,
-				ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT).trim();
+				DefaultPreferences.GDB_SERVER_OTHER_DEFAULT).trim();
 	}
 
 	// ------------------------------------------------------------------------
@@ -185,8 +185,7 @@ public class Configuration {
 		try {
 			other = configuration.getAttribute(
 					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
-					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT)
-					.trim();
+					DefaultPreferences.GDB_CLIENT_OTHER_OPTIONS_DEFAULT).trim();
 
 			other = DebugUtils.resolveAll(other, configuration.getAttributes());
 
@@ -219,7 +218,7 @@ public class Configuration {
 			throws CoreException {
 
 		return config.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
-				ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
+				DefaultPreferences.DO_START_GDB_SERVER_DEFAULT);
 	}
 
 	public static boolean getDoAddServerConsole(ILaunchConfiguration config)
@@ -229,7 +228,7 @@ public class Configuration {
 				&& config
 						.getAttribute(
 								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
-								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
+								DefaultPreferences.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------
