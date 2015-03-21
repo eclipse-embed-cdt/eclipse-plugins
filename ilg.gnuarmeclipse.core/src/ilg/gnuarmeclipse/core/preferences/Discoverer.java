@@ -49,75 +49,14 @@ public class Discoverer {
 	 * @param executableName
 	 * @param searchPath
 	 *            a string with a sequence of folders.
-	 * @param registrySubKey
-	 * @param registryName
-	 * @return a String with the absolute folder path, or null if not found.
-	 */
-	public static String discoverInstallFolder(String executableName,
-			String searchPath, String registrySubKey, String registryName) {
-
-		return discoverInstallFolder(executableName, searchPath, "bin",
-				registrySubKey, registryName);
-	}
-
-	/**
-	 * Find where the executable might have been installed. The returned path is
-	 * known to be an existing folder.
-	 * 
-	 * @param executableName
-	 * @param searchPath
-	 *            a string with a sequence of folders.
 	 * @param binFolder
 	 *            a String, usually "bin", or null.
-	 * @param registrySubKey
-	 * @param registryName
 	 * @return a String with the absolute folder path, or null if not found.
 	 */
-	public static String discoverInstallFolder(String executableName,
-			String searchPath, String binFolder, String registrySubKey,
-			String registryName) {
+	public static String searchInstallFolder(String executableName,
+			String searchPath, String binFolder) {
 
 		String value = null;
-		if (EclipseUtils.isWindows()) {
-
-			WindowsRegistry registry = WindowsRegistry.getRegistry();
-
-			if (registry != null) {
-				value = getRegistryValue(registry, REG_PREFIX, registrySubKey,
-						registryName);
-				if (value == null) {
-					// If on 64-bit, check the 32-bit registry too.
-					value = getRegistryValue(registry, REG32_PREFIX,
-							registrySubKey, registryName);
-				}
-
-				if (binFolder != null && value != null
-						&& !value.endsWith("\\" + binFolder)) {
-					value += "\\" + binFolder;
-				}
-
-				if (value != null) {
-					IPath path = new Path(value);
-					// Make portable
-					value = path.toString(); // includes /bin, if it exists
-					if (Activator.getInstance().isDebugging()) {
-						System.out
-								.println("Discoverer.discoverInstallFolder() WinReg "
-										+ registryName + " " + value);
-					}
-
-					File folder = path.append(executableName).toFile();
-					if (folder.isFile()) {
-						if (Activator.getInstance().isDebugging()) {
-							System.out
-									.println("Discoverer.discoverInstallFolder() WinReg="
-											+ value);
-						}
-						return value;
-					}
-				}
-			}
-		}
 
 		if (searchPath == null || searchPath.isEmpty()) {
 			return null;
@@ -159,7 +98,7 @@ public class Discoverer {
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out
-					.println("Discoverer.discoverInstallFolder() resolved path "
+					.println("Discoverer.searchInstallFolder() resolved path "
 							+ resolvedPath);
 		}
 
@@ -168,6 +107,65 @@ public class Discoverer {
 			value = getLastExecutable(paths[i], binFolder, executableName);
 			if (value != null && !value.isEmpty()) {
 				return value;
+			}
+		}
+
+		return null;
+	}
+
+	/**
+	 * Get key value from registry and validate the executable. The returned
+	 * path is known to be an existing folder.
+	 * 
+	 * @param executableName
+	 * @param binFolder
+	 *            a String, usually "bin", or null.
+	 * @param registrySubKey
+	 * @param registryName
+	 * @return a String with the absolute folder path, or null if not found.
+	 */
+	public static String getRegistryInstallFolder(String executableName,
+			String binFolder, String registrySubKey, String registryName) {
+
+		String value = null;
+		if (EclipseUtils.isWindows()) {
+
+			WindowsRegistry registry = WindowsRegistry.getRegistry();
+
+			if (registry != null) {
+				value = getRegistryValue(registry, REG_PREFIX, registrySubKey,
+						registryName);
+				if (value == null) {
+					// If on 64-bit, check the 32-bit registry too.
+					value = getRegistryValue(registry, REG32_PREFIX,
+							registrySubKey, registryName);
+				}
+
+				if (binFolder != null && value != null
+						&& !value.endsWith("\\" + binFolder)) {
+					value += "\\" + binFolder;
+				}
+
+				if (value != null) {
+					IPath path = new Path(value);
+					// Make portable
+					value = path.toString(); // includes /bin, if it exists
+					if (Activator.getInstance().isDebugging()) {
+						System.out
+								.println("Discoverer.getRegistryInstallFolder() "
+										+ registryName + " " + value);
+					}
+
+					File folder = path.append(executableName).toFile();
+					if (folder.isFile()) {
+						if (Activator.getInstance().isDebugging()) {
+							System.out
+									.println("Discoverer.getRegistryInstallFolder()="
+											+ value);
+						}
+						return value;
+					}
+				}
 			}
 		}
 

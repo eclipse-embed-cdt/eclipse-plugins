@@ -34,9 +34,12 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 
 	// ------------------------------------------------------------------------
 
-	// LOCAL_MACHINE
+	// HKCU & HKLM LOCAL_MACHINE
 	private static final String REG_SUBKEY = "\\GNU ARM Eclipse\\OpenOCD";
-	private static final String REG_NAME = "InstallFolder";
+	// Standard Microsoft recommendation.
+	private static final String REG_NAME = "InstallLocation";
+	// Custom name, used before reading the standard.
+	private static final String REG_NAME_DEPRECATED = "InstallFolder";
 
 	// ------------------------------------------------------------------------
 
@@ -136,6 +139,21 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				executableName += ".exe";
 			}
 
+			// Check if the search path is defined in the default
+			// preferences.
+			String searchPath = DefaultPreferences.getSearchPath();
+			if (searchPath.isEmpty()) {
+
+				// If not defined, get the OS Specific default
+				// from preferences.ini.
+				searchPath = DefaultPreferences.getSearchPathOs();
+
+				if (!searchPath.isEmpty()) {
+					// Store the search path in the preferences
+					DefaultPreferences.putSearchPath(searchPath);
+				}
+			}
+
 			// OpenOCD install folder
 			// Check if the toolchain path is explictly defined in the
 			// default preferences.
@@ -148,33 +166,30 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 					folder = "";
 				}
 			}
+
 			if (folder.isEmpty()) {
 
-				// Check if the search path is defined in the default
-				// preferences.
-				String searchPath = DefaultPreferences.getSearchPath();
-				if (searchPath.isEmpty()) {
+				// If the search path is known, discover toolchain.
+				folder = Discoverer.getRegistryInstallFolder(executableName,
+						"bin", REG_SUBKEY, REG_NAME);
 
-					// If not defined, get the OS Specific default
-					// from preferences.ini.
-					searchPath = DefaultPreferences.getSearchPathOs();
-					if (!searchPath.isEmpty()) {
-						// Store the search path in the preferences
-						DefaultPreferences.putSearchPath(searchPath);
-					}
+				// Search the non standard key too.
+				if (folder == null) {
+					folder = Discoverer.getRegistryInstallFolder(
+							executableName, "bin", REG_SUBKEY,
+							REG_NAME_DEPRECATED);
 				}
 
-				if (!searchPath.isEmpty()) {
-
-					// If the search path is known, discover toolchain.
-					folder = Discoverer.discoverInstallFolder(executableName,
-							searchPath, REG_SUBKEY, REG_NAME);
-					if (folder != null && !folder.isEmpty()) {
-						// If the install folder was finally discovered, store
-						// it in the preferences.
-						DefaultPreferences.putInstallFolder(folder);
-					}
+				if (folder == null) {
+					folder = Discoverer.searchInstallFolder(executableName,
+							searchPath, "bin");
 				}
+			}
+
+			if (folder != null && !folder.isEmpty()) {
+				// If the install folder was finally discovered, store
+				// it in the preferences.
+				DefaultPreferences.putInstallFolder(folder);
 			}
 		}
 	}

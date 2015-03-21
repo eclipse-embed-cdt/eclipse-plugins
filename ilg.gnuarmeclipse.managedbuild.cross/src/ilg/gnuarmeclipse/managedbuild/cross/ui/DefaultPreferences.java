@@ -12,6 +12,7 @@
 package ilg.gnuarmeclipse.managedbuild.cross.ui;
 
 import ilg.gnuarmeclipse.core.EclipseUtils;
+import ilg.gnuarmeclipse.core.preferences.Discoverer;
 import ilg.gnuarmeclipse.managedbuild.cross.Activator;
 import ilg.gnuarmeclipse.managedbuild.cross.ToolchainDefinition;
 
@@ -26,7 +27,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Properties;
 
-import org.eclipse.cdt.utils.WindowsRegistry;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -40,10 +40,16 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
-	// LOCAL_MACHINE
-	private static final String REG_SUBKEY = "SOFTWARE\\GNU ARM Eclipse\\Build Tools";
-	private static final String REG32_SUBKEY = "SOFTWARE\\Wow6432Node\\GNU ARM Eclipse\\Build Tools";
-	private static final String REG_NAME = "InstallFolder";
+	// HKCU & HKLM LOCAL_MACHINE
+	private static final String REG_SUBKEY = "\\GNU ARM Eclipse\\Build Tools";
+	// Standard Microsoft recommendation.
+	private static final String REG_NAME = "InstallLocation";
+	// Custom name, used before reading the standard.
+	private static final String REG_NAME_DEPRECATED = "InstallFolder";
+
+	private static final String EXECUTABLE_NAME = "make.exe";
+
+	// ------------------------------------------------------------------------
 
 	// ------------------------------------------------------------------------
 
@@ -85,7 +91,6 @@ public class DefaultPreferences {
 	}
 
 	public static boolean getBoolean(String key, boolean defaultValue) {
-
 		return getPreferences().getBoolean(key, defaultValue);
 	}
 
@@ -102,22 +107,22 @@ public class DefaultPreferences {
 	 */
 	public static String getToolchainName() {
 
-		String value = getString(PersistentPreferences.TOOLCHAIN_NAME_KEY, null);
-		if (value != null && !value.isEmpty()) {
-			return value;
-		}
+		String key = PersistentPreferences.TOOLCHAIN_NAME_KEY;
+		String value = getString(key, null);
+		if (value == null) {
 
-		value = "";
-		{
 			// TODO: remove DEPRECATED
 			try {
 				Properties prop = getToolchainProperties();
 				value = prop.getProperty(DEFAULT_NAME, "").trim();
 			} catch (IOException e) {
-				;
+				value = "";
 			}
 		}
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("getToolchainName()=\"" + value + "\"");
+		}
 		return value;
 	}
 
@@ -142,14 +147,10 @@ public class DefaultPreferences {
 	 */
 	public static String getToolchainPath(String toolchainName) {
 
-		String value = getString(
-				PersistentPreferences.getToolchainKey(toolchainName), null);
-		if (value != null && !value.isEmpty()) {
-			return value;
-		}
+		String key = PersistentPreferences.getToolchainKey(toolchainName);
+		String value = getString(key, null);
+		if (value == null) {
 
-		value = "";
-		{
 			// TODO: remove DEPRECATED
 			try {
 				Properties prop = getToolchainProperties();
@@ -157,10 +158,14 @@ public class DefaultPreferences {
 				value = prop.getProperty(
 						DEFAULT_PATH + "." + String.valueOf(hash), "").trim();
 			} catch (IOException e) {
-				;
+				value = "";
 			}
 		}
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("getToolchainPath()=\"" + value + "\" (" + key
+					+ ")");
+		}
 		return value;
 	}
 
@@ -232,7 +237,6 @@ public class DefaultPreferences {
 	 * @return a trimmed string, possibly empty.
 	 */
 	public static String getBuildToolsPath() {
-
 		return getString(PersistentPreferences.BUILD_TOOLS_PATH_KEY, "");
 	}
 
@@ -257,18 +261,13 @@ public class DefaultPreferences {
 		String value = null;
 		if (EclipseUtils.isWindows()) {
 
-			WindowsRegistry registry = WindowsRegistry.getRegistry();
-			if (registry != null) {
-				value = registry.getLocalMachineValue(REG_SUBKEY, REG_NAME);
-				if (value == null) {
-					value = registry.getLocalMachineValue(REG32_SUBKEY,
-							REG_NAME);
-				}
-
-				if (value != null && !value.endsWith("\\bin")) {
-					value += "\\bin";
-				}
+			value = Discoverer.getRegistryInstallFolder(EXECUTABLE_NAME, "bin",
+					REG_SUBKEY, REG_NAME);
+			if (value == null) {
+				value = Discoverer.getRegistryInstallFolder(EXECUTABLE_NAME,
+						"bin", REG_SUBKEY, REG_NAME_DEPRECATED);
 			}
+
 		} else if (EclipseUtils.isMacOSX()) {
 			// value = "/opt/local/bin";
 		}

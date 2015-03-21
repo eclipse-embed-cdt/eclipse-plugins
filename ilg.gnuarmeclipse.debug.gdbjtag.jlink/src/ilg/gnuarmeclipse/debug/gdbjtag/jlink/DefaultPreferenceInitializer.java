@@ -227,6 +227,20 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				executableName += ".exe";
 			}
 
+			// Check if the search path is defined in the default
+			// preferences.
+			String searchPath = DefaultPreferences.getSearchPath();
+			if (searchPath.isEmpty()) {
+
+				// If not defined, get the OS Specific default
+				// from preferences.ini.
+				searchPath = DefaultPreferences.getSearchPathOs();
+				if (!searchPath.isEmpty()) {
+					// Store the search path in the preferences
+					DefaultPreferences.putSearchPath(searchPath);
+				}
+			}
+
 			// J-Link GDB Server install folder
 			// Check if the toolchain path is explictly defined in the
 			// default preferences.
@@ -239,33 +253,23 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 					folder = "";
 				}
 			}
+
 			if (folder.isEmpty()) {
 
-				// Check if the search path is defined in the default
-				// preferences.
-				String searchPath = DefaultPreferences.getSearchPath();
-				if (searchPath.isEmpty()) {
+				// If the search path is known, discover toolchain.
+				folder = Discoverer.getRegistryInstallFolder(executableName,
+						"bin", REG_SUBKEY, REG_NAME);
 
-					// If not defined, get the OS Specific default
-					// from preferences.ini.
-					searchPath = DefaultPreferences.getSearchPathOs();
-					if (!searchPath.isEmpty()) {
-						// Store the search path in the preferences
-						DefaultPreferences.putSearchPath(searchPath);
-					}
+				if (folder == null) {
+					folder = Discoverer.searchInstallFolder(executableName,
+							searchPath, null);
 				}
+			}
 
-				if (!searchPath.isEmpty()) {
-
-					// If the search path is known, discover toolchain.
-					folder = Discoverer.discoverInstallFolder(executableName,
-							searchPath, null, REG_SUBKEY, REG_NAME);
-					if (folder != null && !folder.isEmpty()) {
-						// If the install folder was finally discovered, store
-						// it in the preferences.
-						DefaultPreferences.putInstallFolder(folder);
-					}
-				}
+			if (folder != null && !folder.isEmpty()) {
+				// If the install folder was finally discovered, store
+				// it in the preferences.
+				DefaultPreferences.putInstallFolder(folder);
 			}
 		}
 	}
