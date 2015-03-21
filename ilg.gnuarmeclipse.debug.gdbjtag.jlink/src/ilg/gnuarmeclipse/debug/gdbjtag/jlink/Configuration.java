@@ -26,12 +26,12 @@ public class Configuration {
 		try {
 			if (!configuration.getAttribute(
 					ConfigurationAttributes.DO_START_GDB_SERVER,
-					ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT))
+					DefaultPreferences.getGdbServerDoStart()))
 				return null;
 
 			executable = configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
-					ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT);
+					DefaultPreferences.getGdbServerExecutable());
 			// executable = Utils.escapeWhitespaces(executable).trim();
 			executable = executable.trim();
 			if (executable.length() == 0)
@@ -70,7 +70,7 @@ public class Configuration {
 		try {
 			if (!configuration.getAttribute(
 					ConfigurationAttributes.DO_START_GDB_SERVER,
-					ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT))
+					DefaultPreferences.getGdbServerDoStart()))
 				return null;
 
 			String executable = getGdbServerCommand(configuration);
@@ -81,21 +81,20 @@ public class Configuration {
 
 			String connection = configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_CONNECTION,
-					ConfigurationAttributes.GDB_SERVER_CONNECTION_DEFAULT);
-			String connectionAddress = configuration
-					.getAttribute(
-							ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
-							ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS_DEFAULT);
+					DefaultPreferences.getGdbServerConnection());
+			String connectionAddress = configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
+					DefaultPreferences.getGdbServerConnectionAddress());
 
 			connectionAddress = DebugUtils.resolveAll(connectionAddress,
 					configuration.getAttributes());
 			if (connectionAddress.length() > 0) {
-				if (ConfigurationAttributes.GDB_SERVER_CONNECTION_USB
+				if (DefaultPreferences.GDB_SERVER_CONNECTION_USB
 						.equals(connection)) {
 
 					lst.add("-select");
 					lst.add("usb=" + connectionAddress);
-				} else if (ConfigurationAttributes.GDB_SERVER_CONNECTION_IP
+				} else if (DefaultPreferences.GDB_SERVER_CONNECTION_IP
 						.equals(connection)) {
 					lst.add("-select");
 					lst.add("ip=" + connectionAddress);
@@ -105,11 +104,11 @@ public class Configuration {
 			lst.add("-if");
 			lst.add(configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
-					ConfigurationAttributes.INTERFACE_DEFAULT));
+					DefaultPreferences.getGdbServerInterface()));
 
 			String defaultName = configuration.getAttribute(
 					ConfigurationAttributes.FLASH_DEVICE_NAME_COMPAT,
-					ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT);
+					DefaultPreferences.FLASH_DEVICE_NAME_DEFAULT);
 
 			String name = configuration
 					.getAttribute(
@@ -124,46 +123,43 @@ public class Configuration {
 			lst.add("-endian");
 			lst.add(configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_DEVICE_ENDIANNESS,
-					ConfigurationAttributes.ENDIANNESS_DEFAULT));
+					DefaultPreferences.getGdbServerEndianness()));
 
 			lst.add("-speed");
 			lst.add(configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_DEVICE_SPEED,
-					ConfigurationAttributes.GDB_SERVER_SPEED_DEFAULT));
+					DefaultPreferences.getGdbServerInitialSpeed()));
 
 			lst.add("-port");
 			lst.add(Integer.toString(configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
-					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
+					DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
 
 			lst.add("-swoport");
 			lst.add(Integer.toString(configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_SWO_PORT_NUMBER,
-					ConfigurationAttributes.GDB_SERVER_SWO_PORT_NUMBER_DEFAULT)));
+					DefaultPreferences.GDB_SERVER_SWO_PORT_NUMBER_DEFAULT)));
 
 			lst.add("-telnetport");
-			lst.add(Integer.toString(configuration
-					.getAttribute(
-							ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
-							ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
+			lst.add(Integer.toString(configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
+					DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
 
-			if (configuration
-					.getAttribute(
-							ConfigurationAttributes.DO_GDB_SERVER_VERIFY_DOWNLOAD,
-							ConfigurationAttributes.DO_GDB_SERVER_VERIFY_DOWNLOAD_DEFAULT)) {
+			if (configuration.getAttribute(
+					ConfigurationAttributes.DO_GDB_SERVER_VERIFY_DOWNLOAD,
+					DefaultPreferences.DO_GDB_SERVER_VERIFY_DOWNLOAD_DEFAULT)) {
 				lst.add("-vd");
 			}
 
 			if (configuration.getAttribute(
 					ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-					ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT)) {
+					DefaultPreferences.DO_CONNECT_TO_RUNNING_DEFAULT)) {
 				lst.add("-noreset");
 				lst.add("-noir");
 			} else {
-				if (configuration
-						.getAttribute(
-								ConfigurationAttributes.DO_GDB_SERVER_INIT_REGS,
-								ConfigurationAttributes.DO_GDB_SERVER_INIT_REGS_DEFAULT)) {
+				if (configuration.getAttribute(
+						ConfigurationAttributes.DO_GDB_SERVER_INIT_REGS,
+						DefaultPreferences.DO_GDB_SERVER_INIT_REGS_DEFAULT)) {
 					lst.add("-ir");
 				} else {
 					lst.add("-noir");
@@ -173,7 +169,7 @@ public class Configuration {
 			lst.add("-localhostonly");
 			if (configuration.getAttribute(
 					ConfigurationAttributes.DO_GDB_SERVER_LOCAL_ONLY,
-					ConfigurationAttributes.DO_GDB_SERVER_LOCAL_ONLY_DEFAULT)) {
+					DefaultPreferences.DO_GDB_SERVER_LOCAL_ONLY_DEFAULT)) {
 				lst.add("1");
 			} else {
 				lst.add("0");
@@ -181,13 +177,13 @@ public class Configuration {
 
 			if (configuration.getAttribute(
 					ConfigurationAttributes.DO_GDB_SERVER_SILENT,
-					ConfigurationAttributes.DO_GDB_SERVER_SILENT_DEFAULT)) {
+					DefaultPreferences.DO_GDB_SERVER_SILENT_DEFAULT)) {
 				lst.add("-silent");
 			}
 
 			String logFile = configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_LOG,
-					ConfigurationAttributes.GDB_SERVER_LOG_DEFAULT).trim();
+					DefaultPreferences.GDB_SERVER_LOG_DEFAULT).trim();
 
 			logFile = DebugUtils.resolveAll(logFile,
 					configuration.getAttributes());
@@ -200,7 +196,7 @@ public class Configuration {
 
 			String other = configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_OTHER,
-					ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT).trim();
+					DefaultPreferences.getGdbServerOtherOptions()).trim();
 			other = DebugUtils.resolveAll(other, configuration.getAttributes());
 			if (other.length() > 0) {
 				lst.addAll(StringUtils.splitCommandLineOptions(other));
@@ -225,7 +221,7 @@ public class Configuration {
 
 		return config.getAttribute(
 				ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
-				ConfigurationAttributes.FLASH_DEVICE_NAME_DEFAULT).trim();
+				DefaultPreferences.FLASH_DEVICE_NAME_DEFAULT).trim();
 	}
 
 	// ------------------------------------------------------------------------
@@ -285,8 +281,7 @@ public class Configuration {
 		try {
 			other = configuration.getAttribute(
 					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
-					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS_DEFAULT)
-					.trim();
+					DefaultPreferences.getGdbClientOtherOptions()).trim();
 			other = DebugUtils.resolveAll(other, configuration.getAttributes());
 			if (other.length() > 0) {
 				lst.addAll(StringUtils.splitCommandLineOptions(other));
@@ -317,7 +312,7 @@ public class Configuration {
 			throws CoreException {
 
 		return config.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
-				ConfigurationAttributes.DO_START_GDB_SERVER_DEFAULT);
+				DefaultPreferences.getGdbServerDoStart());
 	}
 
 	public static boolean getDoAddServerConsole(ILaunchConfiguration config)
@@ -327,7 +322,7 @@ public class Configuration {
 				&& config
 						.getAttribute(
 								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
-								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
+								DefaultPreferences.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
 	}
 
 	public static boolean getDoAddSemihostingConsole(ILaunchConfiguration config)
@@ -337,7 +332,7 @@ public class Configuration {
 				&& config
 						.getAttribute(
 								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
-								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
+								DefaultPreferences.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------

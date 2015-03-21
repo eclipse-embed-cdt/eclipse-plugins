@@ -16,6 +16,7 @@ import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmGdbServerBackend;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Configuration;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.DefaultPreferences;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.SemihostingProcess;
 
 import java.util.concurrent.ExecutionException;
@@ -375,7 +376,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 						int port = fLaunchConfiguration
 								.getAttribute(
 										ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
-										ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT);
+										DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT);
 
 						fSemihostingProcess = launchSemihostingProcess(host,
 								port);

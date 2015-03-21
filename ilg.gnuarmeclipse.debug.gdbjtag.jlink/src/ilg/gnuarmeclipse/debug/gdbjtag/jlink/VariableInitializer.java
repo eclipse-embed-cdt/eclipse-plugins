@@ -12,7 +12,6 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink;
 
-import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui.Messages;
 
 import org.eclipse.core.variables.IValueVariable;
@@ -26,6 +25,7 @@ public class VariableInitializer implements IValueVariableInitializer {
 	public static final String VARIABLE_JLINK_PATH = "jlink_path";
 
 	static final String UNDEFINED_PATH = "undefined_path";
+	static final String UNDEFINED_NAME = "undefined";
 
 	// ------------------------------------------------------------------------
 
@@ -38,15 +38,7 @@ public class VariableInitializer implements IValueVariableInitializer {
 
 			value = DefaultPreferences.getExecutableName();
 			if (value == null) {
-				if (EclipseUtils.isWindows()) {
-					value = ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_NAME_WINDOWS;
-				} else if (EclipseUtils.isLinux()) {
-					value = ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_NAME_LINUX;
-				} else if (EclipseUtils.isMacOSX()) {
-					value = ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_NAME_MAC;
-				} else {
-					value = ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_NAME;
-				}
+				value = UNDEFINED_NAME;
 			}
 			variable.setValue(value);
 			variable.setDescription(Messages.Variable_executable_description);

@@ -52,6 +52,108 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 					.println("DefaultPreferenceInitializer.initializeDefaultPreferences()");
 		}
 
+		DefaultPreferences.putString(
+				PersistentPreferences.GDB_SERVER_INTERFACE,
+				DefaultPreferences.SERVER_INTERFACE_DEFAULT);
+
+		DefaultPreferences.putBoolean(
+				PersistentPreferences.GDB_JLINK_ENABLE_SEMIHOSTING,
+				DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT);
+
+		DefaultPreferences.putBoolean(
+				PersistentPreferences.GDB_JLINK_ENABLE_SWO,
+				DefaultPreferences.ENABLE_SWO_DEFAULT);
+
+		DefaultPreferences.putBoolean(
+				PersistentPreferences.TAB_MAIN_CHECK_PROGRAM,
+				DefaultPreferences.TAB_MAIN_CHECK_PROGRAM_DEFAULT);
+
+		DefaultPreferences.putBoolean(
+				PersistentPreferences.GDB_SERVER_DO_START,
+				DefaultPreferences.SERVER_DO_START_DEFAULT);
+
+		DefaultPreferences.putString(
+				PersistentPreferences.GDB_SERVER_ENDIANNESS,
+				DefaultPreferences.SERVER_ENDIANNESS_DEFAULT);
+
+		DefaultPreferences.putString(
+				PersistentPreferences.GDB_SERVER_CONNECTION,
+				DefaultPreferences.SERVER_CONNECTION_DEFAULT);
+
+		DefaultPreferences.putString(
+				PersistentPreferences.GDB_SERVER_CONNECTION_ADDRESS,
+				DefaultPreferences.SERVER_CONNECTION_ADDRESS_DEFAULT);
+
+		DefaultPreferences.putString(
+				PersistentPreferences.GDB_SERVER_INITIAL_SPEED,
+				DefaultPreferences.SERVER_INITIAL_SPEED_DEFAULT);
+
+		DefaultPreferences.putString(
+				PersistentPreferences.GDB_SERVER_OTHER_OPTIONS,
+				DefaultPreferences.SERVER_OTHER_OPTIONS_DEFAULT);
+
+		DefaultPreferences.putString(PersistentPreferences.GDB_CLIENT_COMMANDS,
+				DefaultPreferences.CLIENT_COMMANDS_DEFAULT);
+
+		DefaultPreferences.putBoolean(
+				PersistentPreferences.GDB_JLINK_DO_INITIAL_RESET,
+				DefaultPreferences.DO_INITIAL_RESET_DEFAULT);
+
+		DefaultPreferences.putString(
+				PersistentPreferences.GDB_JLINK_INITIAL_RESET_TYPE,
+				DefaultPreferences.INITIAL_RESET_TYPE_DEFAULT);
+
+		DefaultPreferences.putInt(
+				PersistentPreferences.GDB_JLINK_INITIAL_RESET_SPEED,
+				DefaultPreferences.INITIAL_RESET_SPEED_DEFAULT);
+
+		DefaultPreferences.putString(PersistentPreferences.GDB_JLINK_SPEED,
+				DefaultPreferences.JLINK_SPEED_DEFAULT);
+
+		DefaultPreferences.putBoolean(
+				PersistentPreferences.GDB_JLINK_ENABLE_FLASH_BREAKPOINTS,
+				DefaultPreferences.ENABLE_FLASH_BREAKPOINTS_DEFAULT);
+
+		DefaultPreferences.putBoolean(
+				PersistentPreferences.GDB_JLINK_SEMIHOSTING_TELNET,
+				DefaultPreferences.SEMIHOSTING_TELNET_DEFAULT);
+
+		DefaultPreferences.putBoolean(
+				PersistentPreferences.GDB_JLINK_SEMIHOSTING_CLIENT,
+				DefaultPreferences.SEMIHOSTING_CLIENT_DEFAULT);
+
+		DefaultPreferences.putInt(
+				PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_CPU_FREQ,
+				DefaultPreferences.SWO_ENABLE_TARGET_CPU_FREQ_DEFAULT);
+
+		DefaultPreferences.putInt(
+				PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_SWO_FREQ,
+				DefaultPreferences.SWO_ENABLE_TARGET_SWO_FREQ_DEFAULT);
+
+		DefaultPreferences.putString(
+				PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_PORT_MASK,
+				DefaultPreferences.SWO_ENABLE_TARGET_PORT_MASK_DEFAULT);
+
+		DefaultPreferences.putString(
+				PersistentPreferences.GDB_JLINK_INIT_OTHER,
+				DefaultPreferences.INIT_OTHER_DEFAULT);
+
+		DefaultPreferences.putBoolean(
+				PersistentPreferences.GDB_JLINK_DO_DEBUG_IN_RAM,
+				DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT);
+
+		DefaultPreferences.putBoolean(
+				PersistentPreferences.GDB_JLINK_DO_PRERUN_RESET,
+				DefaultPreferences.DO_PRERUN_RESET_DEFAULT);
+
+		DefaultPreferences.putString(
+				PersistentPreferences.GDB_JLINK_PRERUN_RESET_TYPE,
+				DefaultPreferences.PRERUN_RESET_TYPE_DEFAULT);
+
+		DefaultPreferences.putString(
+				PersistentPreferences.GDB_JLINK_PRERUN_OTHER,
+				DefaultPreferences.PRERUN_OTHER_DEFAULT);
+
 		// When the 'ilg.gnuarmeclipse.managedbuild.cross' node is completely
 		// added to /default, a NodeChangeEvent is raised.
 		// This is the moment when all final default values are in, possibly

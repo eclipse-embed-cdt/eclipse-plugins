@@ -17,6 +17,7 @@ import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmDebuggerCommandsService;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.jlink.DefaultPreferences;
 
 import java.util.List;
 
@@ -50,8 +51,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 		String otherInits = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
-				ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT)
-				.trim();
+				DefaultPreferences.getGdbClientCommands()).trim();
 
 		otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
 		DebugUtils.addMultiLine(otherInits, commandsList);
@@ -77,7 +77,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 		boolean doConnectToRunning = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-				ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
+				DefaultPreferences.DO_CONNECT_TO_RUNNING_DEFAULT);
 
 		if (!doConnectToRunning) {
 			if (CDebugUtils.getAttribute(fAttributes,
@@ -85,7 +85,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 					IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
 					&& !CDebugUtils.getAttribute(fAttributes,
 							ConfigurationAttributes.DO_DEBUG_IN_RAM,
-							ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT)) {
+							DefaultPreferences.getJLinkDebugInRam())) {
 
 				status = addLoadImageCommands(commandsList);
 
@@ -102,7 +102,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 		boolean doReset = !CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-				ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
+				DefaultPreferences.DO_CONNECT_TO_RUNNING_DEFAULT);
 
 		IStatus status = addStartRestartCommands(doReset, commandsList);
 
@@ -129,75 +129,70 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 		try {
 			attr = String.valueOf(CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.FIRST_RESET_SPEED,
-					ConfigurationAttributes.FIRST_RESET_SPEED_DEFAULT));
+					DefaultPreferences.getJLinkInitialResetSpeed()));
 		} catch (Exception e) {
-			attr = CDebugUtils
-					.getAttribute(
-							fAttributes,
-							ConfigurationAttributes.FIRST_RESET_SPEED,
-							String.valueOf(ConfigurationAttributes.FIRST_RESET_SPEED_DEFAULT));
+			attr = CDebugUtils.getAttribute(fAttributes,
+					ConfigurationAttributes.FIRST_RESET_SPEED, String
+							.valueOf(DefaultPreferences
+									.getJLinkInitialResetSpeed()));
 		}
 		if (!attr.isEmpty()) {
-			commandsList
-					.add(ConfigurationAttributes.INTERFACE_SPEED_FIXED_COMMAND
-							+ attr);
+			commandsList.add(DefaultPreferences.INTERFACE_SPEED_FIXED_COMMAND
+					+ attr);
 		}
 
 		String commandStr;
 		boolean noReset = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
-				ConfigurationAttributes.DO_CONNECT_TO_RUNNING_DEFAULT);
+				DefaultPreferences.DO_CONNECT_TO_RUNNING_DEFAULT);
 		if (!noReset) {
 			if (CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.DO_FIRST_RESET,
-					ConfigurationAttributes.DO_FIRST_RESET_DEFAULT)) {
+					DefaultPreferences.getJLinkDoInitialReset())) {
 
 				// Since reset does not clear breakpoints, we do it explicitly
-				commandStr = ConfigurationAttributes.CLRBP_COMMAND;
+				commandStr = DefaultPreferences.CLRBP_COMMAND;
 				commandsList.add(commandStr);
 
-				commandStr = ConfigurationAttributes.DO_FIRST_RESET_COMMAND;
+				commandStr = DefaultPreferences.DO_FIRST_RESET_COMMAND;
 				String resetType = CDebugUtils.getAttribute(fAttributes,
 						ConfigurationAttributes.FIRST_RESET_TYPE,
-						ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
+						DefaultPreferences.getJLinkInitialResetType());
 				commandsList.add(commandStr + resetType);
 
 				// Although the manual claims that reset always does a
 				// halt, better issue it explicitly
-				commandStr = ConfigurationAttributes.HALT_COMMAND;
+				commandStr = DefaultPreferences.HALT_COMMAND;
 				commandsList.add(commandStr);
 
 				// Also add a command to see the registers in the
 				// location where execution halted
-				commandStr = ConfigurationAttributes.REGS_COMMAND;
+				commandStr = DefaultPreferences.REGS_COMMAND;
 				commandsList.add(commandStr);
 
 				// Flush registers, GDB should read them again
-				commandStr = ConfigurationAttributes.FLUSH_REGISTERS_COMMAND;
+				commandStr = DefaultPreferences.FLUSH_REGISTERS_COMMAND;
 				commandsList.add(commandStr);
 			}
 		}
 
 		attr = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.INTERFACE_SPEED,
-				ConfigurationAttributes.INTERFACE_SPEED_AUTO);
-		if (ConfigurationAttributes.INTERFACE_SPEED_AUTO.equals(attr)) {
+				DefaultPreferences.INTERFACE_SPEED_AUTO);
+		if (DefaultPreferences.INTERFACE_SPEED_AUTO.equals(attr)) {
+			commandsList.add(DefaultPreferences.INTERFACE_SPEED_AUTO_COMMAND);
+		} else if (DefaultPreferences.INTERFACE_SPEED_ADAPTIVE.equals(attr)) {
 			commandsList
-					.add(ConfigurationAttributes.INTERFACE_SPEED_AUTO_COMMAND);
-		} else if (ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE
-				.equals(attr)) {
-			commandsList
-					.add(ConfigurationAttributes.INTERFACE_SPEED_ADAPTIVE_COMMAND);
+					.add(DefaultPreferences.INTERFACE_SPEED_ADAPTIVE_COMMAND);
 		} else {
-			commandsList
-					.add(ConfigurationAttributes.INTERFACE_SPEED_FIXED_COMMAND
-							+ attr);
+			commandsList.add(DefaultPreferences.INTERFACE_SPEED_FIXED_COMMAND
+					+ attr);
 		}
 
-		commandStr = ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS_COMMAND;
+		commandStr = DefaultPreferences.ENABLE_FLASH_BREAKPOINTS_COMMAND;
 		if (CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS,
-				ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS_DEFAULT))
+				DefaultPreferences.getJLinkEnableFlashBreakpoints()))
 			commandStr += "1";
 		else
 			commandStr += "0";
@@ -205,60 +200,52 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 		if (CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.ENABLE_SEMIHOSTING,
-				ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT)) {
-			commandStr = ConfigurationAttributes.ENABLE_SEMIHOSTING_COMMAND;
+				DefaultPreferences.getJLinkEnableSemihosting())) {
+			commandStr = DefaultPreferences.ENABLE_SEMIHOSTING_COMMAND;
 			commandsList.add(commandStr);
 
 			int ioclientMask = 0;
-			if (CDebugUtils
-					.getAttribute(
-							fAttributes,
-							ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
-							ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_DEFAULT)) {
-				ioclientMask |= ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_MASK;
+			if (CDebugUtils.getAttribute(fAttributes,
+					ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET,
+					DefaultPreferences.getJLinkSemihostingTelnet())) {
+				ioclientMask |= DefaultPreferences.ENABLE_SEMIHOSTING_IOCLIENT_TELNET_MASK;
 			}
 			if (CDebugUtils
 					.getAttribute(
 							fAttributes,
 							ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT,
-							ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_DEFAULT)) {
-				ioclientMask |= ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_MASK;
+							DefaultPreferences.getJLinkSemihostingClient())) {
+				ioclientMask |= DefaultPreferences.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT_MASK;
 			}
 
-			commandStr = ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_COMMAND
+			commandStr = DefaultPreferences.ENABLE_SEMIHOSTING_IOCLIENT_COMMAND
 					+ String.valueOf(ioclientMask);
 			commandsList.add(commandStr);
 		}
 
 		attr = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.GDB_SERVER_DEBUG_INTERFACE,
-				ConfigurationAttributes.INTERFACE_SWD);
-		if (ConfigurationAttributes.INTERFACE_SWD.equals(attr)) {
+				DefaultPreferences.INTERFACE_SWD);
+		if (DefaultPreferences.INTERFACE_SWD.equals(attr)) {
 
 			if (CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.ENABLE_SWO,
-					ConfigurationAttributes.ENABLE_SWO_DEFAULT)) {
+					DefaultPreferences.getJLinkEnableSwo())) {
 
-				commandsList.add(ConfigurationAttributes.DISABLE_SWO_COMMAND);
+				commandsList.add(DefaultPreferences.DISABLE_SWO_COMMAND);
 
-				commandStr = ConfigurationAttributes.ENABLE_SWO_COMMAND;
-				commandStr += CDebugUtils
-						.getAttribute(
-								fAttributes,
-								ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
-								ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ_DEFAULT);
+				commandStr = DefaultPreferences.ENABLE_SWO_COMMAND;
+				commandStr += CDebugUtils.getAttribute(fAttributes,
+						ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ,
+						DefaultPreferences.getJLinkSwoEnableTargetCpuFreq());
 				commandStr += " ";
-				commandStr += CDebugUtils
-						.getAttribute(
-								fAttributes,
-								ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
-								ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ_DEFAULT);
+				commandStr += CDebugUtils.getAttribute(fAttributes,
+						ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ,
+						DefaultPreferences.getJLinkSwoEnableTargetSwoFreq());
 				commandStr += " ";
-				commandStr += CDebugUtils
-						.getAttribute(
-								fAttributes,
-								ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
-								ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK_DEFAULT);
+				commandStr += CDebugUtils.getAttribute(fAttributes,
+						ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
+						DefaultPreferences.getJLinkSwoEnableTargetPortMask());
 				commandStr += " 0";
 
 				commandsList.add(commandStr);
@@ -267,7 +254,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 		String otherInits = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.OTHER_INIT_COMMANDS,
-				ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT).trim();
+				DefaultPreferences.getJLinkInitOther()).trim();
 
 		otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
 		if (fDoDoubleBackslash && EclipseUtils.isWindows()) {
@@ -287,23 +274,22 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 		if (doReset) {
 			if (CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.DO_SECOND_RESET,
-					ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
+					DefaultPreferences.getJLinkDoPreRunReset())) {
 
 				// Since reset does not clear breakpoints, we do it
 				// explicitly
-				commandStr = ConfigurationAttributes.CLRBP_COMMAND;
+				commandStr = DefaultPreferences.CLRBP_COMMAND;
 				commandsList.add(commandStr);
 
-				commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
+				commandStr = DefaultPreferences.DO_SECOND_RESET_COMMAND;
 				String resetType = CDebugUtils.getAttribute(fAttributes,
 						ConfigurationAttributes.SECOND_RESET_TYPE,
-						ConfigurationAttributes.SECOND_RESET_TYPE_DEFAULT)
-						.trim();
+						DefaultPreferences.getJLinkPreRunResetType()).trim();
 				commandsList.add(commandStr + resetType);
 
 				// Although the manual claims that reset always does a
 				// halt, better issue it explicitly
-				commandStr = ConfigurationAttributes.HALT_COMMAND;
+				commandStr = DefaultPreferences.HALT_COMMAND;
 				commandsList.add(commandStr);
 			}
 		}
@@ -313,7 +299,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 				IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
 				&& CDebugUtils.getAttribute(fAttributes,
 						ConfigurationAttributes.DO_DEBUG_IN_RAM,
-						ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT)) {
+						DefaultPreferences.getJLinkDebugInRam())) {
 
 			IStatus status = addLoadImageCommands(commandsList);
 
@@ -324,7 +310,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 		String userCmd = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.OTHER_RUN_COMMANDS,
-				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT).trim();
+				DefaultPreferences.getJLinkPreRunOther()).trim();
 
 		userCmd = DebugUtils.resolveAll(userCmd, fAttributes);
 
@@ -340,17 +326,17 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 		// Also add a command to see the registers in the
 		// location where execution halted
-		commandStr = ConfigurationAttributes.REGS_COMMAND;
+		commandStr = DefaultPreferences.REGS_COMMAND;
 		commandsList.add(commandStr);
 
 		// Flush registers, GDB should read them again
-		commandStr = ConfigurationAttributes.FLUSH_REGISTERS_COMMAND;
+		commandStr = DefaultPreferences.FLUSH_REGISTERS_COMMAND;
 		commandsList.add(commandStr);
 
 		if (CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.DO_CONTINUE,
-				ConfigurationAttributes.DO_CONTINUE_DEFAULT)) {
-			commandsList.add(ConfigurationAttributes.DO_CONTINUE_COMMAND);
+				DefaultPreferences.DO_CONTINUE_DEFAULT)) {
+			commandsList.add(DefaultPreferences.DO_CONTINUE_COMMAND);
 		}
 
 		return Status.OK_STATUS;
