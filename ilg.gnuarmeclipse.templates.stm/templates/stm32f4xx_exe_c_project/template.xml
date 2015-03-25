@@ -645,7 +645,7 @@
 			<complex-array name="folders">
 				<element>
 					<simple name="source" value="$(commonDir)/system/src/newlib" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/$(newlibDir)" />
 					<simple name="pattern" value=".*[.](c.*|txt)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -1572,7 +1572,7 @@
 					<simple-array name="values">
 						<element value="OS_INCLUDE_STARTUP_INIT_MULTIPLE_RAM_SECTIONS" />
 					</simple-array>
-					<simple name="path" value="system/src/newlib/_startup.c" />
+					<simple name="path" value="$(sysDir)/$(sourceDir)/$(newlibDir)/_startup.c" />
 				</element>
 			</complex-array>
 		</process>

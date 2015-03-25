@@ -623,7 +623,7 @@
 			<complex-array name="folders">
 				<element>
 					<simple name="source" value="$(commonDir)/system/src/newlib" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/$(newlibDir)" />
 					<simple name="pattern" value=".*[.](c.*|txt)" />
 					<simple name="replaceable" value="true" />
 				</element>
