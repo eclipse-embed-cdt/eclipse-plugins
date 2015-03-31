@@ -501,25 +501,6 @@ pHandler __isr_vectors[] =
 
 #elif defined(STM32F411xE)
 
-      WWDG_IRQHandler,        // Window WatchDog
-      PVD_IRQHandler, // PVD through EXTI Line detection
-      TAMP_STAMP_IRQHandler,  // Tamper and TimeStamps through the EXTI line
-      RTC_WKUP_IRQHandler,    // RTC Wakeup through the EXTI line
-      FLASH_IRQHandler,       // FLASH
-      RCC_IRQHandler, // RCC
-      EXTI0_IRQHandler,       // EXTI Line0
-      EXTI1_IRQHandler,       // EXTI Line1
-      EXTI2_IRQHandler,       // EXTI Line2
-      EXTI3_IRQHandler,       // EXTI Line3
-      EXTI4_IRQHandler,       // EXTI Line4
-      DMA1_Stream0_IRQHandler,        // DMA1 Stream 0
-      DMA1_Stream1_IRQHandler,        // DMA1 Stream 1
-      DMA1_Stream2_IRQHandler,        // DMA1 Stream 2
-      DMA1_Stream3_IRQHandler,        // DMA1 Stream 3
-      DMA1_Stream4_IRQHandler,        // DMA1 Stream 4
-      DMA1_Stream5_IRQHandler,        // DMA1 Stream 5
-      DMA1_Stream6_IRQHandler,        // DMA1 Stream 6
-      ADC_IRQHandler, // ADC1, ADC2 and ADC3s
       0,      // Reserved
       0,      // Reserved
       0,      // Reserved
