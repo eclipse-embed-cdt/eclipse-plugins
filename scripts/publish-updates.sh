@@ -1,7 +1,7 @@
 #! /bin/bash
 
-# This script runs on Mac OS X ans is intended to 
-# publishes the ilg.gnuarmeclipse-repository site
+# This script runs on Mac OS X and is intended to
+# publish the ilg.gnuarmeclipse-repository site
 # to the File Release System (FRS) folder on SourceForge
 
 TEST=""
@@ -16,14 +16,14 @@ SF_FOLDER="Eclipse/updates"
 
 echo "Updating $SF_FOLDER$TEST"
 
-if [ $# -gt 0 ] && [ "$1" = "dry" ]
+if [ $# -gt 0 ] && [ "$1" == "dry" ]
 then
   DRY="dry"
   shift
   echo "Dry run"
 fi
 
-if [ $# -gt 0 ] && [ "$1" = "force" ]
+if [ $# -gt 0 ] && [ "$1" == "force" ]
 then
   FORCE="force"
   shift
@@ -39,12 +39,12 @@ SOURCE_LIST="."
 RSYNC_OPTS="-vrCt --exclude=scripts --exclude=.*"
 RSYNC_OPTS+=" --delete"
 
-if [ "$DRY" = "dry" ]
+if [ "${DRY}" == "dry" ]
 then
   RSYNC_OPTS+=" -n"
 fi
 
-if [ "$FORCE" = "force" ]
+if [ "${FORCE}" == "force" ]
 then
   RSYNC_OPTS+=" --ignore-times"
 else
@@ -59,10 +59,10 @@ fi
 
 cd ../ilg.gnuarmeclipse-repository/target
 
-echo "Rsync-ing SourceForge $SF_FOLDER$TEST site ($RSYNC_OPTS)"
-(cd repository; rsync -e ssh $RSYNC_OPTS $SOURCE_LIST $SF_DESTINATION)
+echo "Rsync-ing SourceForge ${SF_FOLDER}${TEST} site (${RSYNC_OPTS})"
+(cd repository; rsync -e ssh ${RSYNC_OPTS} ${SOURCE_LIST} ${SF_DESTINATION})
 
-if [ "$TEST" = "-test" ]
+if [ "${TEST}" == "-test" ]
 then
   echo "Published on the test site."
 else
@@ -74,19 +74,16 @@ then
   NUMDATE=$(ls repository/plugins/ilg.gnuarmeclipse.managedbuild.cross* | sed -e 's/.*_[0-9]*[.][0-9]*[.][0-9]*[.]\([0-9]*\)[.]jar/\1/')
   ARCHIVE_PREFIX=$(ls *-SNAPSHOT.zip | sed -e 's/\(.*\)-SNAPSHOT[.]zip/\1/')
 
-  ARCHIVE_FOLDER=~/tmp/gnuarmeclipse-archive
+  ARCHIVE_FOLDER="${HOME}/My Files/MacBookPro Projects/GNU ARM Eclipse/archive"
   
-  if [ ! -d $ARCHIVE_FOLDER ]
-  then
-    mkdir -p $ARCHIVE_FOLDER
-  fi
-  mv -fv $ARCHIVE_PREFIX-SNAPSHOT.zip $ARCHIVE_FOLDER/$ARCHIVE_PREFIX-$NUMDATE.zip
+  mkdir -p "${ARCHIVE_FOLDER}"
+  mv -fv "${ARCHIVE_PREFIX}-SNAPSHOT.zip" "${ARCHIVE_FOLDER}/${ARCHIVE_PREFIX}-${NUMDATE}.zip"
 fi
 
-if [ "$TEST" == "-test" ]
+if [ "${TEST}" == "-test" ]
 then
   echo "When final, don't forget to publish the archive too!"
-  echo "It is available from $ARCHIVE_FOLDER/$ARCHIVE_PREFIX-$NUMDATE.zip"
+  echo "It is available from ${ARCHIVE_FOLDER}/${ARCHIVE_PREFIX}-${NUMDATE}.zip"
 fi
 
 
