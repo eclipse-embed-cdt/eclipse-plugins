@@ -448,39 +448,45 @@ __initialize_args (int* p_argc, char*** p_argv)
       int ch;
 
       while ((ch = *p) != '\0')
-        {
-          if (isInArgument == 0)
-            {
-              if (!isblank(ch))
-                {
-                  if (argc
-                      >= (int) ((sizeof(argv_buf) / sizeof(argv_buf[0])) - 1))
-                    break;
+	{
+	  if (isInArgument == 0)
+	    {
+	      if (!isblank(ch))
+		{
+		  if (argc
+		      >= (int) ((sizeof(argv_buf) / sizeof(argv_buf[0])) - 1))
+		    break;
 
-                  if (ch == '"' || ch == '\'')
-                    {
-                      // Remember the delimiter to search for the
-                      // corresponding terminator
-                      delim = ch;
-                      ++p;                        // skip the delimiter
-                      ch = *p;
-                    }
-                  // Remember the arg beginning address
-                  argv_buf[argc++] = p;
-                  isInArgument = 1;
-                }
-            }
-          else
-            {
-              if ((ch == delim) || isblank(ch))
-                {
-                  delim = '\0';
-                  *p = '\0';
-                  isInArgument = 0;
-                }
-            }
-          ++p;
-        }
+		  if (ch == '"' || ch == '\'')
+		    {
+		      // Remember the delimiter to search for the
+		      // corresponding terminator
+		      delim = ch;
+		      ++p;                        // skip the delimiter
+		      ch = *p;
+		    }
+		  // Remember the arg beginning address
+		  argv_buf[argc++] = p;
+		  isInArgument = 1;
+		}
+	    }
+	  else if (delim != '\0')
+	    {
+	      if ((ch == delim))
+		{
+		  delim = '\0';
+		  *p = '\0';
+		  isInArgument = 0;
+		}
+	    }
+	  else if (isblank(ch))
+	    {
+	      delim = '\0';
+	      *p = '\0';
+	      isInArgument = 0;
+	    }
+	  ++p;
+	}
     }
 
   if (argc == 0)
