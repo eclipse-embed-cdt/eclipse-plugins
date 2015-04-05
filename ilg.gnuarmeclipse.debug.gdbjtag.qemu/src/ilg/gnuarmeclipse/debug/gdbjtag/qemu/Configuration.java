@@ -129,9 +129,17 @@ public class Configuration {
 			if (configuration.getAttribute(
 					ConfigurationAttributes.ENABLE_SEMIHOSTING,
 					ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT)) {
-				String semihostingOption = ConfigurationAttributes.ENABLE_SEMIHOSTING_OPTION;
-				lst.addAll(StringUtils
-						.splitCommandLineOptions(semihostingOption));
+
+				lst.add("-semihosting-config");
+				lst.add("enable=on,target=native");
+
+				String semihostingCmdline = configuration.getAttribute(
+						ConfigurationAttributes.SEMIHOSTING_CMDLINE, "").trim();
+
+				if (!semihostingCmdline.isEmpty()) {
+					lst.add("-semihosting-cmdline");
+					lst.add(semihostingCmdline);
+				}
 			}
 
 		} catch (CoreException e) {

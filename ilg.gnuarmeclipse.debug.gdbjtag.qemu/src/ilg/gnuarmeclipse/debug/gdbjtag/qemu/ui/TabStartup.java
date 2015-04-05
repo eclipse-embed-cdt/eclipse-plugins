@@ -68,18 +68,11 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	// ------------------------------------------------------------------------
 
 	private Text fInitCommands;
-	// Text delay;
-	// Button doReset;
-	// Button doHalt;
 
 	private Button fDoFirstReset;
-	// private Text firstResetType;
 
 	private Button fDoSecondReset;
-	// private Text secondResetType;
 	private Label fSecondResetWarning;
-
-	private Button fEnableSemihosting;
 
 	private Button fLoadExecutable;
 	private Text fImageFileName;
@@ -250,22 +243,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			fInitCommands.setLayoutData(gd);
 		}
 
-		{
-			Composite local = new Composite(comp, SWT.NONE);
-			layout = new GridLayout();
-			layout.numColumns = 1;
-			layout.marginHeight = 0;
-			layout.marginWidth = 0;
-			local.setLayout(layout);
-			// local.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-			fEnableSemihosting = new Button(local, SWT.CHECK);
-			fEnableSemihosting.setText(Messages
-					.getString("StartupTab.enableSemihosting_Text"));
-			fEnableSemihosting.setToolTipText(Messages
-					.getString("StartupTab.enableSemihosting_ToolTipText"));
-		}
-
 		// Actions
 		fDoFirstReset.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -286,13 +263,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		// firstResetType.addModifyListener(scheduleUpdateJobModifyListener);
 
 		fInitCommands.addModifyListener(scheduleUpdateJobModifyListener);
-
-		fEnableSemihosting.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				scheduleUpdateJob();
-			}
-		});
 	}
 
 	private void doFirstResetChanged() {
@@ -907,20 +877,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 								ConfigurationAttributes.DO_FIRST_RESET,
 								booleanDefault));
 
-				// Reset type
-				// stringDefault = WorkspacePersistentValues
-				// .getQemuInitialResetType(ConfigurationAttributes.FIRST_RESET_TYPE_DEFAULT);
-				// firstResetType.setText(configuration
-				// .getAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
-				// stringDefault));
-
-				// Enable semihosting
-				booleanDefault = PersistentPreferences
-						.getQemuEnableSemihosting(ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
-				fEnableSemihosting.setSelection(configuration.getAttribute(
-						ConfigurationAttributes.ENABLE_SEMIHOSTING,
-						booleanDefault));
-
 				// Other commands
 				stringDefault = PersistentPreferences
 						.getQemuInitOther(ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
@@ -1051,10 +1007,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			fDoFirstReset
 					.setSelection(ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
 
-			// Enable semihosting
-			fEnableSemihosting
-					.setSelection(ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
-
 			// Other commands
 			fInitCommands
 					.setText(ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
@@ -1156,12 +1108,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(
 					ConfigurationAttributes.OTHER_INIT_COMMANDS, stringValue);
 			PersistentPreferences.putQemuInitOther(stringValue);
-
-			// Enable semihosting
-			booleanValue = fEnableSemihosting.getSelection();
-			configuration.setAttribute(
-					ConfigurationAttributes.ENABLE_SEMIHOSTING, booleanValue);
-			PersistentPreferences.putQemuEnableSemihosting(booleanValue);
 		}
 
 		// Load Symbols & Image...

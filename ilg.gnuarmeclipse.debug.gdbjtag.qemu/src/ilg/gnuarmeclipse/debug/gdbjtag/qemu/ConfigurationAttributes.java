@@ -81,7 +81,11 @@ public interface ConfigurationAttributes {
 			+ ".enableSemihosting"; //$NON-NLS-1$
 	public static final boolean ENABLE_SEMIHOSTING_DEFAULT = true;
 
-	public static final String ENABLE_SEMIHOSTING_OPTION = "-semihosting-config enable=on,target=native";
+	public static final String SEMIHOSTING_CMDLINE = PREFIX
+			+ ".semihosting.cmdline"; //$NON-NLS-1$
+
+	// public static final String ENABLE_SEMIHOSTING_OPTION =
+	// "-semihosting-config enable=on,target=native";
 
 	public static final String OTHER_INIT_COMMANDS = PREFIX
 			+ ".otherInitCommands"; //$NON-NLS-1$

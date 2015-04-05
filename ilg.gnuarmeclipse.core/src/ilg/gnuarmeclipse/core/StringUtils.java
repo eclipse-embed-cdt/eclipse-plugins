@@ -176,9 +176,9 @@ public class StringUtils {
 	/**
 	 * Split a string containing command line option separated by white spaces
 	 * into substrings. Content of quoted options is not parsed, but preserved
-	 * as a single substring.
+	 * as a single substring. Quotes are removed.
 	 * 
-	 * @param str
+	 * @param str a command line string, possibly with single/double quotes.
 	 * @return array of strings.
 	 */
 	public static List<String> splitCommandLineOptions(String str) {
@@ -186,6 +186,7 @@ public class StringUtils {
 		List<String> lst = new ArrayList<String>();
 		SplitState state = SplitState.None;
 
+		char quote = 0;
 		StringBuffer sb = new StringBuffer();
 		for (int i = 0; i < str.length(); ++i) {
 			char ch = str.charAt(i);
@@ -195,7 +196,8 @@ public class StringUtils {
 			switch (state) {
 			case None:
 
-				if (ch == '"') {
+				if (ch == '"' || ch == '\'') {
+					quote = ch;
 					sb.setLength(0);
 
 					state = SplitState.InString;
@@ -221,12 +223,13 @@ public class StringUtils {
 
 			case InString:
 
-				if (ch != '"') {
+				if (ch != quote) {
 					sb.append(ch);
 				} else {
 					lst.add(sb.toString());
 
 					state = SplitState.None;
+					quote = 0;
 				}
 
 				break;

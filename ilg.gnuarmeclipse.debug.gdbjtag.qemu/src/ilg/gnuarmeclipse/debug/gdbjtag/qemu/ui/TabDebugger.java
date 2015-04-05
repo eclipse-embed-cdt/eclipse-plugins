@@ -77,6 +77,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Text fGdbClientOtherOptions;
 	private Text fGdbClientOtherCommands;
 
+	private Button fEnableSemihosting;
+	private Text fSemihostingCmdline;
+
 	private Text fTargetIpAddress;
 	private Text fTargetPortNumber;
 
@@ -94,6 +97,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Button fDoGdbServerAllocateConsole;
 
 	protected Button fUpdateThreadlistOnSuspend;
+
+	protected String fProjectName;
 
 	// ------------------------------------------------------------------------
 
@@ -319,6 +324,34 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		{
+			fEnableSemihosting = new Button(comp, SWT.CHECK);
+			fEnableSemihosting.setText(Messages
+					.getString("DebuggerTab.enableSemihosting_Text"));
+			fEnableSemihosting.setToolTipText(Messages
+					.getString("DebuggerTab.enableSemihosting_ToolTipText"));
+
+			gd = new GridData();
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
+			fEnableSemihosting.setLayoutData(gd);
+		}
+
+		{
+			label = new Label(comp, SWT.NONE);
+			label.setText(Messages
+					.getString("DebuggerTab.gdbSemihostingCmdline_Label")); //$NON-NLS-1$
+			label.setToolTipText(Messages
+					.getString("DebuggerTab.gdbSemihostingCmdline_ToolTipText"));
+			gd = new GridData();
+			gd.verticalAlignment = SWT.TOP;
+			label.setLayoutData(gd);
+
+			fSemihostingCmdline = new Text(comp, SWT.SINGLE | SWT.BORDER);
+			gd = new GridData(SWT.FILL, SWT.FILL, true, true);
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
+			fSemihostingCmdline.setLayoutData(gd);
+		}
+
+		{
 			Composite local = new Composite(comp, SWT.NONE);
 			layout = new GridLayout();
 			layout.numColumns = 2;
@@ -377,6 +410,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 		});
 
+		fEnableSemihosting.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				doEnableSemihostingChanged();
+				scheduleUpdateJob();
+			}
+		});
+
 		fGdbServerExecutable.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
@@ -416,6 +457,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		fGdbServerOtherOptions
 				.addModifyListener(scheduleUpdateJobModifyListener);
+
+		fSemihostingCmdline.addModifyListener(scheduleUpdateJobModifyListener);
 
 		fDoGdbServerAllocateConsole
 				.addSelectionListener(scheduleUpdateJobSelectionAdapter);
@@ -621,16 +664,23 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		fGdbServerGdbPort.setEnabled(enabled);
 
-		if (EclipseUtils.isWindows()) {
-			// Prevent disable it on Windows
-			fDoGdbServerAllocateConsole.setEnabled(false);
-		} else {
-			fDoGdbServerAllocateConsole.setEnabled(enabled);
-		}
+		fEnableSemihosting.setEnabled(enabled);
+		fSemihostingCmdline.setEnabled(enabled
+				&& fEnableSemihosting.getSelection());
+		fDoGdbServerAllocateConsole.setEnabled(enabled);
+
+		fQemuMachineName.setEnabled(enabled);
+		fIsQemuVerbose.setEnabled(enabled);
 
 		// Disable remote target params when the server is started
 		fTargetIpAddress.setEnabled(!enabled);
 		fTargetPortNumber.setEnabled(!enabled);
+	}
+
+	private void doEnableSemihostingChanged() {
+		boolean enabled = fEnableSemihosting.getSelection();
+
+		fSemihostingCmdline.setEnabled(enabled);
 	}
 
 	private void doConnectToRunningChanged() {
@@ -640,8 +690,33 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 	}
 
+	/**
+	 * Get the project name associated to this launch configuration.
+	 * 
+	 * @param configuration
+	 * @return a String with the project name, or empty.
+	 */
+	private String getProjectName(ILaunchConfiguration configuration) {
+
+		if (configuration != null) {
+			fProjectName = "Baburiba";
+		}
+
+		if (fProjectName == null) {
+			fProjectName = "";
+		}
+
+		return fProjectName;
+	}
+
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("TabDebugger: initializeFrom() "
+					+ configuration.getName());
+		}
+
 		try {
 			Boolean booleanDefault;
 			String stringDefault;
@@ -682,6 +757,18 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fGdbServerOtherOptions.setText(configuration
 						.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER,
 								stringDefault));
+
+				// Enable semihosting
+				booleanDefault = PersistentPreferences
+						.getQemuEnableSemihosting(ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
+				fEnableSemihosting.setSelection(configuration.getAttribute(
+						ConfigurationAttributes.ENABLE_SEMIHOSTING,
+						booleanDefault));
+
+				stringDefault = getProjectName(configuration);
+				fSemihostingCmdline.setText(configuration.getAttribute(
+						ConfigurationAttributes.SEMIHOSTING_CMDLINE,
+						stringDefault));
 
 				// Allocate server console
 				if (EclipseUtils.isWindows()) {
@@ -761,6 +848,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	public void initializeFromDefaults() {
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("TabDebugger: initializeFromDefaults()");
+		}
+
 		String stringDefault;
 
 		// QEMU GDB server
@@ -786,6 +877,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			// Other options
 			fGdbServerOtherOptions
 					.setText(ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT);
+
+			// Enable semihosting
+			fEnableSemihosting
+					.setSelection(ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
+
+			fSemihostingCmdline.setText(getProjectName(null));
 
 			// Allocate server console
 			if (EclipseUtils.isWindows()) {
@@ -854,6 +951,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("TabDebugger: performApply() "
+					+ configuration.getName());
+		}
+
 		{
 			// legacy definition; although the jtag device class is not used,
 			// it must be there, to avoid NPEs
@@ -896,6 +998,17 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_OTHER, stringValue);
 			PersistentPreferences.putGdbServerOtherOptions(stringValue);
+
+			// Enable semihosting
+			booleanValue = fEnableSemihosting.getSelection();
+			configuration.setAttribute(
+					ConfigurationAttributes.ENABLE_SEMIHOSTING, booleanValue);
+			PersistentPreferences.putQemuEnableSemihosting(booleanValue);
+
+			// Semihosting command line
+			stringValue = fSemihostingCmdline.getText().trim();
+			configuration.setAttribute(
+					ConfigurationAttributes.SEMIHOSTING_CMDLINE, stringValue);
 
 			// Allocate server console
 			configuration.setAttribute(
@@ -977,6 +1090,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("TabDebugger: setDefaults() "
+					+ configuration.getName());
+		}
+
 		configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE,
 				ConfigurationAttributes.JTAG_DEVICE);
 
@@ -1031,6 +1149,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_OTHER,
 					ConfigurationAttributes.GDB_SERVER_OTHER_DEFAULT);
+
+			configuration.setAttribute(
+					ConfigurationAttributes.ENABLE_SEMIHOSTING,
+					ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
+
+			configuration.setAttribute(
+					ConfigurationAttributes.SEMIHOSTING_CMDLINE,
+					getProjectName(configuration));
 
 			configuration
 					.setAttribute(
