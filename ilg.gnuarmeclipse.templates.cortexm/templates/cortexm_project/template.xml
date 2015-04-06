@@ -333,7 +333,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="src/main-30.c" />
+					<simple name="source" value="src/main-30-$(syscalls).c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -343,7 +343,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="src/main-50.c" />
+					<simple name="source" value="src/main-50-$(syscalls).c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>

@@ -355,7 +355,7 @@
 				</element>
 				<element>
 					<simple name="source"
-						value="$(commonDir)/src/main/main-200-loop-blinky.$(fileExtension)" />
+						value="$(commonDir)/src/main/main-200-$(syscalls)-loop-blinky.$(fileExtension)" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -365,12 +365,12 @@
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="$(commonDir)/src/main/main-220-loopend.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-220-$(syscalls)-loopend.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="$(commonDir)/src/main/main-230-end.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-230-$(syscalls)-end.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -490,12 +490,12 @@
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="$(commonDir)/src/main/main-200-loop-empty.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-200-$(syscalls)-loop-empty.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="$(commonDir)/src/main/main-230-end.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-230-$(syscalls)-end.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
