@@ -28,6 +28,7 @@ import ilg.gnuarmeclipse.debug.gdbjtag.qemu.PersistentPreferences;
 
 import java.io.File;
 
+import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
 import org.eclipse.cdt.debug.gdbjtag.ui.GDBJtagImages;
 import org.eclipse.cdt.debug.mi.core.IMILaunchConfigurationConstants;
@@ -699,7 +700,15 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private String getProjectName(ILaunchConfiguration configuration) {
 
 		if (configuration != null) {
-			fProjectName = "Baburiba";
+			// Get project name from launch configuration.
+			try {
+				String str = configuration.getAttribute(
+						ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME,
+						(String) null);
+				fProjectName = str.replace(' ', '_');
+			} catch (CoreException e) {
+				;
+			}
 		}
 
 		if (fProjectName == null) {
