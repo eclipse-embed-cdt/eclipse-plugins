@@ -91,15 +91,15 @@ public class Configuration {
 			lst.add(executable);
 
 			// Added always, to get the 'Waiting for connection' message.
-			lst.add("-verbose");
+			lst.add("--verbose");
 
 			if (configuration.getAttribute(
 					ConfigurationAttributes.IS_GDB_SERVER_VERBOSE,
 					ConfigurationAttributes.IS_GDB_SERVER_VERBOSE_DEFAULT)) {
-				lst.add("-verbose");
+				lst.add("--verbose");
 			}
 
-			lst.add("-machine");
+			lst.add("--machine");
 			String machine = configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_MACHINE_NAME,
 					ConfigurationAttributes.GDB_SERVER_MACHINE_NAME_DEFAULT)
@@ -109,7 +109,7 @@ public class Configuration {
 					configuration.getAttributes());
 			lst.add(machine);
 
-			lst.add("-gdb");
+			lst.add("--gdb");
 			lst.add("tcp::"
 					+ Integer.toString(configuration
 							.getAttribute(
@@ -130,15 +130,16 @@ public class Configuration {
 					ConfigurationAttributes.ENABLE_SEMIHOSTING,
 					ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT)) {
 
-				lst.add("-semihosting-config");
+				lst.add("--semihosting-config");
 				lst.add("enable=on,target=native");
 
 				String semihostingCmdline = configuration.getAttribute(
 						ConfigurationAttributes.SEMIHOSTING_CMDLINE, "").trim();
 
+				// This option must be the last one.
 				if (!semihostingCmdline.isEmpty()) {
-					lst.add("-semihosting-cmdline");
-					lst.add(semihostingCmdline);
+					lst.add("--semihosting-cmdline");
+					lst.addAll(StringUtils.splitCommandLineOptions(semihostingCmdline));
 				}
 			}
 
