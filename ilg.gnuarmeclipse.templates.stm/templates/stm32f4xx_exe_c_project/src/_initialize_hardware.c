@@ -52,18 +52,12 @@ configure_system_clock(void);
 void
 __initialize_hardware(void)
 {
-  // Call the CSMSIS system initialisation routine.
-  SystemInit();
+  // Enable HSE Oscillator and activate PLL with HSE as source
+  configure_system_clock();
 
-#if defined (__VFP_FP__) && !defined (__SOFTFP__)
-
-  // Enable the Cortex-M4 FPU only when -mfloat-abi=hard.
-  // Code taken from Section 7.1, Cortex-M4 TRM (DDI0439C)
-
-  // Set bits 20-23 to enable CP10 and CP11 coprocessor
-  SCB->CPACR |= (0xF << 20);
-
-#endif // (__VFP_FP__) && !(__SOFTFP__)
+  // Call the CSMSIS system clock routine to store the clock frequency
+  // in the SystemCoreClock global RAM location.
+  SystemCoreClockUpdate();
 
   // Initialise the HAL Library; it must be the first
   // instruction to be executed in the main program.
@@ -76,9 +70,6 @@ __initialize_hardware(void)
   // Unless explicitly enabled by the application, we prefer
   // to keep the timer interrupts off.
   HAL_SuspendTick();
-
-  // Enable HSE Oscillator and activate PLL with HSE as source
-  configure_system_clock();
 }
 
 #if 0

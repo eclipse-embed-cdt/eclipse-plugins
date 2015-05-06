@@ -1,5 +1,8 @@
 /*
- * Default linker script for STM32Fxxx.
+ * Default linker script for Cortex-M (it includes specifics for STM32F[34]xx).
+ * 
+ * To make use of the multi-region initialisations, define
+ * OS_INCLUDE_STARTUP_INIT_MULTIPLE_RAM_SECTIONS for the _startup.c file.
  */
 
 /*
@@ -21,7 +24,8 @@ PROVIDE ( _Main_Stack_Size = __Main_Stack_Size ) ;
 
 __Main_Stack_Limit = __stack  - __Main_Stack_Size ;
 
-/*"PROVIDE" allows to easily override these values from an object file or the command line. */
+/* "PROVIDE" allows to easily override these values from an 
+ * object file or the command line. */
 PROVIDE ( _Main_Stack_Limit = __Main_Stack_Limit ) ;
 
 /*
@@ -51,11 +55,14 @@ SECTIONS
 {
     /*
      * For Cortex-M devices, the beginning of the startup code is stored in
-     * the .isr_vector section, which goes to FLASH 
+     * the .isr_vector section, which goes to FLASH. 
      */
-    .isr_vector :
+    .isr_vector : ALIGN(4)
     {
-        . = ALIGN(4);
+        FILL(0xFF)
+        
+        __vectors_start = ABSOLUTE(.) ;
+        __vectors_start__ = ABSOLUTE(.) ; /* STM specific definition */
         KEEP(*(.isr_vector))     	/* Interrupt vectors */
         
 		KEEP(*(.cfmconfig))			/* Freescale configuration words */   
@@ -67,13 +74,54 @@ SECTIONS
          */
         *(.after_vectors .after_vectors.*)	/* Startup code and ISR */
 
-        . = ALIGN(4);
     } >FLASH
 
-    .inits :
+    .inits : ALIGN(4)
     {
-        . = ALIGN(4);
+        /* 
+         * Memory regions initialisation arrays.
+         *
+         * Thee are two kinds of arrays for each RAM region, one for 
+         * data and one for bss. Each is iterrated at startup and the   
+         * region initialisation is performed.
+         * 
+         * The data array includes:
+         * - from (LOADADDR())
+         * - region_begin (ADDR())
+         * - region_end (ADDR()+SIZEOF())
+         *
+         * The bss array includes:
+         * - region_begin (ADDR())
+         * - region_end (ADDR()+SIZEOF())
+         *
+         * WARNING: It is mandatory that the regions are word aligned, 
+         * since the initialisation code works only on words.
+         */
+         
+        __data_regions_array_start = .;
         
+        LONG(LOADADDR(.data));
+        LONG(ADDR(.data));
+        LONG(ADDR(.data)+SIZEOF(.data));
+        
+        LONG(LOADADDR(.data_CCMRAM));
+        LONG(ADDR(.data_CCMRAM));
+        LONG(ADDR(.data_CCMRAM)+SIZEOF(.data_CCMRAM));
+        
+        __data_regions_array_end = .;
+        
+        __bss_regions_array_start = .;
+        
+        LONG(ADDR(.bss));
+        LONG(ADDR(.bss)+SIZEOF(.bss));
+        
+        LONG(ADDR(.bss_CCMRAM));
+        LONG(ADDR(.bss_CCMRAM)+SIZEOF(.bss_CCMRAM));
+        
+        __bss_regions_array_end = .;
+
+        /* End of memory regions initialisation arrays. */
+    
         /*
          * These are the old initialisation sections, intended to contain
          * naked code, with the prologue/epilogue added by crti.o/crtn.o
@@ -128,7 +176,6 @@ SECTIONS
 		KEEP(*(SORT(.fini_array.*)))
 		KEEP(*(.fini_array))
 		PROVIDE_HIDDEN (__fini_array_end = .);
-        . = ALIGN(4);
 
     } >FLASH
 
@@ -136,11 +183,9 @@ SECTIONS
      * For some STRx devices, the beginning of the startup code
      * is stored in the .flashtext section, which goes to FLASH.
      */
-    .flashtext :
+    .flashtext : ALIGN(4)
     {
-        . = ALIGN(4);
         *(.flashtext .flashtext.*)	/* Startup code */
-        . = ALIGN(4);
     } >FLASH
  
     
@@ -148,13 +193,12 @@ SECTIONS
      * The program code is stored in the .text section, 
      * which goes to FLASH.
      */
-    .text :
+    .text : ALIGN(4)
     {
-        . = ALIGN(4);
-	    
         *(.text .text.*)			/* all remaining code */
  
-        *(.rodata .rodata.*) 		/* read-only data (constants) */
+ 		/* read-only data (constants) */
+        *(.rodata .rodata.* .constdata .constdata.*) 		
 
         *(vtable)					/* C++ virtual tables */
 
@@ -173,13 +217,14 @@ SECTIONS
     } >FLASH
 
 	/* ARM magic sections */
-	.ARM.extab :
+	.ARM.extab : ALIGN(4)
    	{
        *(.ARM.extab* .gnu.linkonce.armextab.*)
    	} > FLASH
    	
+    . = ALIGN(4);
    	__exidx_start = .;   	
-   	.ARM.exidx :
+   	.ARM.exidx : ALIGN(4)
    	{
        *(.ARM.exidx* .gnu.linkonce.armexidx.*)
    	} > FLASH
@@ -188,12 +233,6 @@ SECTIONS
     . = ALIGN(4);
     _etext = .;
     __etext = .;
-
-	/* 
-     * This address is used by the startup code to 
-     * initialise the .data section.
-     */
-    _sidata = _etext;
     
     /* MEMORY_ARRAY */
     /*
@@ -203,17 +242,33 @@ SECTIONS
     } >MEMORY_ARRAY
     */
 
+	/*
+	 * The secondary initialised data section.
+	 */
+    .data_CCMRAM : ALIGN(4)
+    {
+       FILL(0xFF)
+       *(.data.CCMRAM .data.CCMRAM.*)
+       . = ALIGN(4) ;
+    } > CCMRAM AT>FLASH
+
+	/* 
+     * This address is used by the startup code to 
+     * initialise the .data section.
+     */
+    _sidata = LOADADDR(.data);
+
     /*
      * The initialised data section.
+     *
      * The program executes knowing that the data is in the RAM
      * but the loader puts the initial values in the FLASH (inidata).
      * It is one task of the startup to copy the initial values from 
      * FLASH to RAM.
      */
-    .data  : AT ( _sidata )
+    .data : ALIGN(4)
     {
-	    . = ALIGN(4);
-
+    	FILL(0xFF)
         /* This is used by the startup code to initialise the .data section */
         _sdata = . ;        	/* STM specific definition */
         __data_start__ = . ;
@@ -228,16 +283,22 @@ SECTIONS
         _edata = . ;        	/* STM specific definition */
         __data_end__ = . ;
 
-    } >RAM
-      
-
+    } >RAM AT>FLASH
+    
     /*
-     * The uninitialised data section. NOLOAD is used to avoid
+     * The uninitialised data sections. NOLOAD is used to avoid
      * the "section `.bss' type changed to PROGBITS" warning
      */
-    .bss (NOLOAD) :
+     
+    /* The secondary uninitialised data section. */
+	.bss_CCMRAM (NOLOAD) : ALIGN(4)
+	{
+		*(.bss.CCMRAM .bss.CCMRAM.*)
+	} > CCMRAM
+
+    /* The primary uninitialised data section. */
+    .bss (NOLOAD) : ALIGN(4)
     {
-	    . = ALIGN(4);
         __bss_start__ = .;     	/* standard newlib definition */
         _sbss = .;              /* STM specific definition */
         *(.bss_begin .bss_begin.*)
@@ -250,10 +311,14 @@ SECTIONS
         __bss_end__ = .;        /* standard newlib definition */
         _ebss = . ;             /* STM specific definition */
     } >RAM
-    
-    .noinit (NOLOAD) :
+
+    .noinit_CCMRAM (NOLOAD) : ALIGN(4)
     {
-	    . = ALIGN(4);
+        *(.noinit.CCMRAM .noinit.CCMRAM.*)         
+    } > CCMRAM
+    
+    .noinit (NOLOAD) : ALIGN(4)
+    {
         _noinit = .;
         
         *(.noinit .noinit.*) 
@@ -274,26 +339,17 @@ SECTIONS
      * This is just to check that there is enough RAM left for the Main
      * stack. It should generate an error if it's full.
      */
-    ._check_stack :
+    ._check_stack : ALIGN(4)
     {
-	    . = ALIGN(4);
-        
         . = . + _Minimum_Stack_Size ;
-        
-	    . = ALIGN(4);
     } >RAM
     
-	.bss_CCMRAM : ALIGN(4)
-	{
-		*(.bss.CCMRAM .bss.CCMRAM.*)
-	} > CCMRAM
-   
     /*
      * The FLASH Bank1.
      * The C or assembly source must explicitly place the code 
      * or data there using the "section" attribute.
      */
-    .b1text :
+    .b1text : ALIGN(4)
     {
         *(.b1text)                   /* remaining code */
         *(.b1rodata)                 /* read-only data (constants) */
@@ -307,7 +363,7 @@ SECTIONS
      */
 
     /* EXTMEM Bank0 */
-    .eb0text :
+    .eb0text : ALIGN(4)
     {
         *(.eb0text)                   /* remaining code */
         *(.eb0rodata)                 /* read-only data (constants) */
@@ -315,7 +371,7 @@ SECTIONS
     } >EXTMEMB0
     
     /* EXTMEM Bank1 */
-    .eb1text :
+    .eb1text : ALIGN(4)
     {
         *(.eb1text)                   /* remaining code */
         *(.eb1rodata)                 /* read-only data (constants) */
@@ -323,7 +379,7 @@ SECTIONS
     } >EXTMEMB1
     
     /* EXTMEM Bank2 */
-    .eb2text :
+    .eb2text : ALIGN(4)
     {
         *(.eb2text)                   /* remaining code */
         *(.eb2rodata)                 /* read-only data (constants) */
@@ -331,7 +387,7 @@ SECTIONS
     } >EXTMEMB2
     
     /* EXTMEM Bank0 */
-    .eb3text :
+    .eb3text : ALIGN(4)
     {
         *(.eb3text)                   /* remaining code */
         *(.eb3rodata)                 /* read-only data (constants) */

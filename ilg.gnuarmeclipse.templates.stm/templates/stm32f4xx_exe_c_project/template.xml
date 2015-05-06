@@ -912,7 +912,7 @@
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="../common/ldscripts/sections-ccmram.ld" />
+					<simple name="source" value="$(commonDir)/ldscripts/sections.ld" />
 					<simple name="target" value="$(ldscriptsDir)/sections.ld" />
 					<simple name="replaceable" value="true" />
 				</element>
