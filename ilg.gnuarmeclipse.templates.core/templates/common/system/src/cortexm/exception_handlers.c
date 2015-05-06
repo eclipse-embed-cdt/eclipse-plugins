@@ -183,7 +183,7 @@ isSemihosting (ExceptionStackFrame* frame, uint16_t opCode)
         case SEMIHOSTING_SYS_TICKFREQ:
         case SEMIHOSTING_SYS_TMPNAM:
         case SEMIHOSTING_SYS_ISTTY:
-          frame->r0 = -1; // the call is not successful or not supported
+          frame->r0 = (uint32_t)-1; // the call is not successful or not supported
           break;
 
         case SEMIHOSTING_SYS_CLOSE:
@@ -253,7 +253,7 @@ isSemihosting (ExceptionStackFrame* frame, uint16_t opCode)
                   break;
                 }
             }
-          frame->r0 = -1; // the call is not successful or not supported
+          frame->r0 = (uint32_t)-1; // the call is not successful or not supported
           break;
 
         case SEMIHOSTING_SYS_WRITE:
