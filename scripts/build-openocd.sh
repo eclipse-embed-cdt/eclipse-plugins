@@ -18,8 +18,7 @@ IFS=$'\n\t'
 # Prerequisites:
 #
 #   Docker
-#   curl, git, automake, tar, unzip
-#   gcc
+#   curl, git, automake, patch, tar, unzip
 #
 # When running on OS X, MacPorts with the following ports installed:
 #
@@ -33,11 +32,30 @@ APP_NAME="OpenOCD"
 
 APP_LC_NAME=$(echo "${APP_NAME}" | tr '[:upper:]' '[:lower:]')
 
-WORK_PARENT_FOLDER="${HOME}/Work"
-WORK_FOLDER="${WORK_PARENT_FOLDER}/${APP_LC_NAME}"
+# On Parallels virtual machines, prefer host Work folder.
+# Second choice are Work folders on secondary disks.
+# Final choice is a Work folder in HOME.
+if [ -d /media/psf/Home/Work ]
+then
+  WORK_FOLDER=${WORK_FOLDER:-"/media/psf/Home/Work/${APP_LC_NAME}"}
+elif [ -d /media/${USER}/Work ]
+then
+  WORK_FOLDER=${WORK_FOLDER:-"/media/${USER}/Work/${APP_LC_NAME}"}
+elif [ -d /media/Work ]
+then
+  WORK_FOLDER=${WORK_FOLDER:-"/media/Work/${APP_LC_NAME}"}
+else
+  # Final choice, a Work folder in HOME.
+  WORK_FOLDER=${WORK_FOLDER:-"${HOME}/Work/${APP_LC_NAME}"}
+fi
 
-# Create Work folder.
+# ----- Create Work folder. -----
+
+echo
+echo "Using \"${WORK_FOLDER}\" as Work folder..."
+
 mkdir -p "${WORK_FOLDER}"
+
 
 # ----- Parse actions and command line options. -----
 
@@ -53,7 +71,7 @@ while [ $# -gt 0 ]
 do
   case "$1" in
 
-    clean|pull|checkout-dev|checkout-stable)
+    clean|pull|checkout-dev|checkout-stable|build-images)
       ACTION="$1"
       shift
       ;;
@@ -109,6 +127,7 @@ do
 
 done
 
+# ----- Prepare build scripts. -----
 
 build_script=$0
 if [[ "${build_script}" != /* ]]
@@ -147,10 +166,36 @@ fi
 
 helper_script="${WORK_FOLDER}/scripts/build-helper.sh"
 
+# ----- Process actions. -----
+
+if [ "${ACTION}" == "clean" ]
+then
+  # Remove most build and temporary folders.
+  echo
+  echo "Remove most of the build folders..."
+
+  rm -rf "${BUILD_FOLDER}"
+  rm -rf "${WORK_FOLDER}/install"
+  rm -rf "${WORK_FOLDER}/${LIBUSB1_FOLDER}"
+  rm -rf "${WORK_FOLDER}/${LIBUSB0_FOLDER}"
+  rm -rf "${WORK_FOLDER}/${LIBUSB_W32_FOLDER}"
+  rm -rf "${WORK_FOLDER}/${LIBFTDI_FOLDER}"
+  rm -rf "${WORK_FOLDER}/${HIDAPI_FOLDER}"
+  rm -rf "${WORK_FOLDER}/scripts"
+
+  echo
+  echo "Clean completed. Proceed with a regular build."
+
+  exit 0
+fi
+
+# ----- Start build. -----
+
 source "$helper_script" --start-timer
 
 source "$helper_script" --detect-host
 
+# ----- Define build constants. -----
 
 GIT_FOLDER="${WORK_FOLDER}/gnuarmeclipse-${APP_LC_NAME}.git"
 
@@ -190,35 +235,39 @@ HIDAPI_FOLDER="hidapi-${HIDAPI_VERSION}"
 HIDAPI="${HIDAPI_FOLDER}"
 HIDAPI_ARCHIVE="${HIDAPI}.zip"
 
-# ----- Process actions. -----
 
-if [ "${ACTION}" == "clean" ]
+# ----- Prepare prerequisites. -----
+
+source "$helper_script" --prepare-prerequisites
+
+# ----- Process "build-images" action. -----
+
+if [ "${ACTION}" == "build-images" ]
 then
   # Remove most build and temporary folders.
   echo
-  echo "Remove most of the build folders..."
+  echo "Build Docker images..."
 
-  rm -rf "${BUILD_FOLDER}"
-  rm -rf "${WORK_FOLDER}/install"
-  rm -rf "${WORK_FOLDER}/${LIBUSB1_FOLDER}"
-  rm -rf "${WORK_FOLDER}/${LIBUSB0_FOLDER}"
-  rm -rf "${WORK_FOLDER}/${LIBUSB_W32_FOLDER}"
-  rm -rf "${WORK_FOLDER}/${LIBFTDI_FOLDER}"
-  rm -rf "${WORK_FOLDER}/${HIDAPI_FOLDER}"
+  # Be sure it will not crash on errors, in case the images are already there.
+  set +e
 
-  echo
-  echo "Clean completed. Proceed with a regular build."
+  docker build --tag "ilegeul/debian32:7-gnuarm-gcc" \
+  https://github.com/ilg-ul/docker/raw/master/debian32/7-gnuarm-gcc/Dockerfile
+
+  docker build --tag "ilegeul/debian:7-gnuarm-gcc" \
+  https://github.com/ilg-ul/docker/raw/master/debian/7-gnuarm-gcc/Dockerfile
+
+  docker build --tag "qemu-builds:d8-x64-mingw" \
+  https://github.com/ilg-ul/docker/raw/master/builds/d8_x64_mingw/Dockerfile
+
+  docker images
 
   source "$helper_script" "--stop-timer"
-
-  rm -rf "${WORK_FOLDER}/scripts"
 
   exit 0
 fi
 
-source "$helper_script" --prepare-prerequisites
-
-# Check some more prerequisites
+# ----- Check some more prerequisites. -----
 
 echo "Checking host automake..."
 automake --version 2>/dev/null | grep automake
@@ -275,7 +324,9 @@ fi
 cd "${GIT_FOLDER}"
 GIT_HEAD=$(git symbolic-ref -q --short HEAD)
 
-# The UTC date part in the name of the archive.
+# ----- Get current date. -----
+
+# Use the UTC date as version in the name of the distribution file.
 DISTRIBUTION_FILE_DATE=${DISTRIBUTION_FILE_DATE:-$(date -u +%Y%m%d%H%M)}
 
 # ----- Get the USB libraries. -----
@@ -391,7 +442,7 @@ then
 fi
 
 
-# -----------------------------------------------------------------------------
+# v===========================================================================v
 # Create the build script (needs to be separate for Docker).
 
 script_name="build.sh"
@@ -1214,7 +1265,7 @@ then
 
 fi
 
-# ----- Copy the license files -----
+# ----- Copy the license files. -----
 
 echo
 echo "Copying license files..."
@@ -1390,7 +1441,8 @@ exit 0
 
 EOF
 # The above marker must start in the first column.
-# -----------------------------------------------------------------------------
+# ^===========================================================================^
+
 
 # ----- Build the Windows 64-bits distribution. -----
 
