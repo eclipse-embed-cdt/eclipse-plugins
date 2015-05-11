@@ -28,27 +28,16 @@ IFS=$'\n\t'
 #   sudo port install texinfo texlive
 #
 
-build_script=$0
-if [[ "${build_script}" != /* ]]
-then
-  # Make relative path absolute.
-  build_script=$(pwd)/$0
-fi
-
-helper_script=$1
-if [[ "${helper_script}" != /* ]]
-then
-  # Make relative path absolute.
-  helper_script=$(pwd)/$1
-fi
-shift
-
-source "$helper_script" --start-timer
-
-# Mandatory definition before detecting host.
+# Mandatory definition.
 APP_NAME="OpenOCD"
 
-source "$helper_script" --detect-host
+APP_LC_NAME=$(echo "${APP_NAME}" | tr '[:upper:]' '[:lower:]')
+
+WORK_PARENT_FOLDER="${HOME}/Work"
+WORK_FOLDER="${WORK_PARENT_FOLDER}/${APP_LC_NAME}"
+
+# Create Work folder.
+mkdir -p "${WORK_FOLDER}"
 
 # ----- Parse actions and command line options. -----
 
@@ -58,6 +47,7 @@ DO_BUILD_WIN64=""
 DO_BUILD_DEB32=""
 DO_BUILD_DEB64=""
 DO_BUILD_OSX=""
+helper_script=""
 
 while [ $# -gt 0 ]
 do
@@ -65,22 +55,28 @@ do
 
     clean|pull|checkout-dev|checkout-stable)
       ACTION="$1"
+      shift
       ;;
 
     --win32|--window32)
       DO_BUILD_WIN32="y"
+      shift
       ;;
     --win64|windows64)
       DO_BUILD_WIN64="y"
+      shift
       ;;
     --deb32|--debian32)
       DO_BUILD_DEB32="y"
+      shift
       ;;
     --deb64|--debian64)
       DO_BUILD_DEB64="y"
+      shift
       ;;
     --osx)
       DO_BUILD_OSX="y"
+      shift
       ;;
 
     --all)
@@ -89,6 +85,12 @@ do
       DO_BUILD_DEB32="y"
       DO_BUILD_DEB64="y"
       DO_BUILD_OSX="y"
+      shift
+      ;;
+
+    --helper-script)
+      helper_script=$2
+      shift 2
       ;;
 
     --help)
@@ -105,15 +107,55 @@ do
       ;;
   esac
 
-  shift
 done
 
 
-GIT_FOLDER="${WORK_FOLDER}/gnuarmeclipse-openocd.git"
+build_script=$0
+if [[ "${build_script}" != /* ]]
+then
+  # Make relative path absolute.
+  build_script=$(pwd)/$0
+fi
+
+# Copy the current script to Work area, to later copy it into the install folder.
+mkdir -p "${WORK_FOLDER}/scripts"
+cp "${build_script}" "${WORK_FOLDER}/scripts/build-${APP_LC_NAME}.sh"
+
+
+if [ -z "${helper_script}" ]
+then
+  if [ ! -f "${WORK_FOLDER}/scripts/build-helper.sh" ]
+  then
+    # Download helper script from SF git.
+    curl -L "https://sourceforge.net/p/gnuarmeclipse/se/ci/develop/tree/scripts/build-helper.sh?format=raw" \
+      --output "${WORK_FOLDER}/scripts/build-helper.sh"
+  fi
+else
+  if [[ "${helper_script}" != /* ]]
+  then
+    # Make relative path absolute.
+    helper_script="$(pwd)/${helper_script}"
+  fi
+
+  # Copy the current helper script to Work area, to later copy it into the install folder.
+  mkdir -p "${WORK_FOLDER}/scripts"
+  if [ "${helper_script}" != "${WORK_FOLDER}/scripts/build-helper.sh" ]
+  then
+    cp "${helper_script}" "${WORK_FOLDER}/scripts/build-helper.sh"
+  fi
+fi
+
+helper_script="${WORK_FOLDER}/scripts/build-helper.sh"
+
+source "$helper_script" --start-timer
+
+source "$helper_script" --detect-host
+
+
+GIT_FOLDER="${WORK_FOLDER}/gnuarmeclipse-${APP_LC_NAME}.git"
 
 DOWNLOAD_FOLDER="${WORK_FOLDER}/download"
 BUILD_FOLDER="${WORK_FOLDER}/build"
-distribution_install_folder="${WORK_FOLDER}/install"
 
 # For updates, please check the corresponding pages.
 
@@ -157,8 +199,7 @@ then
   echo "Remove most of the build folders..."
 
   rm -rf "${BUILD_FOLDER}"
-  rm -rf "${distribution_install_folder}"
-  rm -rf "${WORK_FOLDER}/scripts"
+  rm -rf "${WORK_FOLDER}/install"
   rm -rf "${WORK_FOLDER}/${LIBUSB1_FOLDER}"
   rm -rf "${WORK_FOLDER}/${LIBUSB0_FOLDER}"
   rm -rf "${WORK_FOLDER}/${LIBUSB_W32_FOLDER}"
@@ -169,6 +210,9 @@ then
   echo "Clean completed. Proceed with a regular build."
 
   source "$helper_script" "--stop-timer"
+
+  rm -rf "${WORK_FOLDER}/scripts"
+
   exit 0
 fi
 
@@ -206,10 +250,10 @@ then
     # Shortcut for ilg, who has full access to the repo.
     echo
     echo "Enter SourceForge password for git clone"
-    git clone ssh://ilg-ul@git.code.sf.net/p/gnuarmeclipse/openocd gnuarmeclipse-openocd.git
+    git clone ssh://ilg-ul@git.code.sf.net/p/gnuarmeclipse/openocd gnuarmeclipse-${APP_LC_NAME}.git
   else
     # For regular read/only access, use the git url.
-    git clone http://git.code.sf.net/p/gnuarmeclipse/openocd gnuarmeclipse-openocd.git
+    git clone http://git.code.sf.net/p/gnuarmeclipse/openocd gnuarmeclipse-${APP_LC_NAME}.git
   fi
 
   # Change to the gnuarmeclipse branch. On subsequent runs use "git pull".
@@ -230,11 +274,6 @@ fi
 # the development release.
 cd "${GIT_FOLDER}"
 GIT_HEAD=$(git symbolic-ref -q --short HEAD)
-
-# Copy the current scripts to Work area, to later copy it into the install folder.
-mkdir -p "${WORK_FOLDER}/scripts"
-cp "${build_script}" "${WORK_FOLDER}/scripts/build-${APP_LC_NAME}.sh"
-cp "${helper_script}" "${WORK_FOLDER}/scripts/build-helper.sh"
 
 # The UTC date part in the name of the archive.
 DISTRIBUTION_FILE_DATE=${DISTRIBUTION_FILE_DATE:-$(date -u +%Y%m%d%H%M)}
@@ -430,6 +469,10 @@ do
       install_folder="$2"
       shift 2
       ;;
+    --helper-script)
+      helper_script="$2"
+      shift 2
+      ;;
     *)
       echo "Unknown option $1, exit."
       exit 1
@@ -440,6 +483,9 @@ git_folder="${work_folder}/gnuarmeclipse-${APP_LC_NAME}.git"
 
 echo
 uname -a
+
+# Run the helper script in this shell, to get the support functions.
+source "${helper_script}"
 
 target_folder=${target_name}${target_bits:-""}
 
@@ -454,8 +500,6 @@ then
   then
     cross_compile_prefix="x86_64-w64-mingw32"
   fi
-  HIDAPI_TARGET="windows"
-  HIDAPI_OBJECT="hid.o"
 
   apt-get -y install cmake
 
@@ -463,14 +507,7 @@ elif [ "${target_name}" == "osx" ]
 then
 
   target_bits="64"
-  HIDAPI_TARGET="mac"
-  HIDAPI_OBJECT="hid.o"
 
-elif [ "${target_name}" == "debian" ]
-then
-
-  HIDAPI_TARGET="linux"
-  HIDAPI_OBJECT="hid-libusb.o"
 fi
 
 mkdir -p ${build_folder}
@@ -529,13 +566,13 @@ then
 
   if [ "${target_name}" == "win" ]
   then
-    CFLAGS="-Wno-non-literal-null-conversion -m${target_bits}" \
+    CFLAGS="-Wno-non-literal-null-conversion -m${target_bits} -pipe" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/cross-pkg-config" \
     "${work_folder}/${LIBUSB1_FOLDER}/configure" \
       --host="${cross_compile_prefix}" \
       --prefix="${install_folder}"
   else
-    CFLAGS="-Wno-non-literal-null-conversion -m${target_bits}" \
+    CFLAGS="-Wno-non-literal-null-conversion -m${target_bits} -pipe" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/cross-pkg-config" \
     "${work_folder}/${LIBUSB1_FOLDER}/configure" \
       --prefix="${install_folder}"
@@ -574,7 +611,7 @@ then
 
   cd "${build_folder}/${LIBUSB0_FOLDER}"
 
-  CFLAGS="-m${target_bits}" \
+  CFLAGS="-m${target_bits} -pipe" \
   \
   PKG_CONFIG_LIBDIR=\
 "${install_folder}/lib/pkgconfig":\
@@ -614,7 +651,7 @@ then
   patch -p1 < "${git_folder}/gnuarmeclipse/patches/${LIBUSB_W32}-mingw-w64.patch"
 
   # Build.
-  CFLAGS="-m${target_bits}" \
+  CFLAGS="-m${target_bits} -pipe" \
   make host_prefix=${cross_compile_prefix} host_prefix_x86=i686-w64-mingw32 dll
 
   mkdir -p "${install_folder}/bin"
@@ -656,7 +693,7 @@ then
   then
 
     # Configure.
-    CFLAGS="-m${target_bits}" \
+    CFLAGS="-m${target_bits} -pipe" \
     \
     PKG_CONFIG_LIBDIR=\
 "${install_folder}/lib/pkgconfig":\
@@ -678,7 +715,7 @@ then
 
   else
 
-    CFLAGS="-m${target_bits}" \
+    CFLAGS="-m${target_bits} -pipe" \
     \
     PKG_CONFIG_LIBDIR=\
 "${install_folder}/lib/pkgconfig":\
@@ -716,6 +753,20 @@ fi
 
 # ----- Build the new HDI library. -----
 
+if [ "${target_name}" == "win" ]
+then
+  HIDAPI_TARGET="windows"
+  HIDAPI_OBJECT="hid.o"
+elif [ "${target_name}" == "osx" ]
+then
+  HIDAPI_TARGET="mac"
+  HIDAPI_OBJECT="hid.o"
+elif [ "${target_name}" == "debian" ]
+then
+  HIDAPI_TARGET="linux"
+  HIDAPI_OBJECT="hid-libusb.o"
+fi
+
 if [ ! -f "${install_folder}/lib/libhid.a" ]
 then
 
@@ -733,7 +784,7 @@ then
   if [ "${target_name}" == "win" ]
   then
 
-    CFLAGS="-m${target_bits}" \
+    CFLAGS="-m${target_bits} -pipe" \
     \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig":"${install_folder}/lib64/pkgconfig" \
     \
@@ -748,7 +799,7 @@ then
 
   else
 
-    CFLAGS="-m${target_bits}" \
+    CFLAGS="-m${target_bits} -pipe" \
     \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig":"${install_folder}/lib64/pkgconfig" \
     \
@@ -796,7 +847,7 @@ then
     # Be sure all these lines end in '\' to ensure lines are concatenated.
     OUTPUT_DIR="${build_folder}" \
     \
-    CPPFLAGS="-m${target_bits}" \
+    CPPFLAGS="-m${target_bits} -pipe" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/cross-pkg-config" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     PKG_CONFIG_PREFIX="${install_folder}" \
@@ -814,6 +865,7 @@ then
     --enable-amtjtagaccel \
     --enable-armjtagew \
     --enable-cmsis-dap \
+    --enable-dummy \
     --enable-ftdi \
     --enable-gw16012 \
     --enable-jlink \
@@ -836,6 +888,7 @@ then
     --enable-usbprog \
     --enable-vsllink \
     | tee "${output_folder}/configure-output.txt"
+    # Note: don't forget to update the INFO.txt file after changing these.
 
   elif [ "${target_name}" == "debian" ]
   then
@@ -847,7 +900,7 @@ then
     # All variables below are passed on the command line before 'configure'.
     # Be sure all these lines end in '\' to ensure lines are concatenated.
     # On some machines libftdi ends in lib64, so we refer both lib & lib64
-    CPPFLAGS="-m${target_bits}" \
+    CPPFLAGS="-m${target_bits} -pipe" \
     LDFLAGS='-Wl,-rpath=\$$ORIGIN -lpthread' \
     \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig":"${install_folder}/lib64/pkgconfig" \
@@ -865,6 +918,7 @@ then
     --enable-amtjtagaccel \
     --enable-armjtagew \
     --enable-cmsis-dap \
+    --enable-dummy \
     --enable-ftdi \
     --enable-gw16012 \
     --enable-jlink \
@@ -887,6 +941,7 @@ then
     --enable-usbprog \
     --enable-vsllink \
     | tee "${output_folder}/configure-output.txt"
+    # Note: don't forget to update the INFO.txt file after changing these.
 
     # Note: a very important detail here is LDFLAGS='-Wl,-rpath=\$$ORIGIN which
     # adds a special record to the ELF file asking the loader to search for the 
@@ -903,7 +958,7 @@ then
 
     # All variables below are passed on the command line before 'configure'.
     # Be sure all these lines end in '\' to ensure lines are concatenated.
-    CPPFLAGS="-m${target_bits}" \
+    CPPFLAGS="-m${target_bits} -pipe" \
     \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig":"${install_folder}/lib64/pkgconfig" \
     \
@@ -920,6 +975,7 @@ then
     --disable-amtjtagaccel \
     --enable-armjtagew \
     --enable-cmsis-dap \
+    --enable-dummy \
     --enable-ftdi \
     --disable-gw16012 \
     --enable-jlink \
@@ -942,6 +998,7 @@ then
     --enable-usbprog \
     --enable-vsllink \
     | tee "${output_folder}/configure-output.txt"
+    # Note: don't forget to update the INFO.txt file after changing these.
 
   fi
 
@@ -998,67 +1055,6 @@ else
 fi
 
 # ----- Copy dynamic libraries to the install bin folder. -----
-
-# v===========================================================================v
-do_copy_gcc_dll() {
-
-  # First try Ubuntu specific locations,
-  # then do a long full search.
-
-  if [ -f "/usr/lib/gcc/${cross_compile_prefix}/${CROSS_GCC_VERSION}/$1" ]
-  then
-    cp -v "/usr/lib/gcc/${cross_compile_prefix}/${CROSS_GCC_VERSION}/$1" \
-      "${install_folder}/${APP_LC_NAME}/bin"
-  elif [ -f "/usr/lib/gcc/${cross_compile_prefix}/${CROSS_GCC_VERSION_SHORT}/$1" ]
-  then
-    cp -v "/usr/lib/gcc/${cross_compile_prefix}/${CROSS_GCC_VERSION_SHORT}/$1" \
-      "${install_folder}/${APP_LC_NAME}/bin"
-  elif [ -f "/usr/lib/gcc/${cross_compile_prefix}/${CROSS_GCC_VERSION_SHORT}${SUBLOCATION}/$1" ]
-  then
-    cp -v "/usr/lib/gcc/${cross_compile_prefix}/${CROSS_GCC_VERSION_SHORT}${SUBLOCATION}/$1" \
-      "${install_folder}/${APP_LC_NAME}/bin"
-  else
-    echo "Searching /usr for $1..."
-    SJLJ_PATH=$(find /usr \! -readable -prune -o -name $1 -print | grep ${cross_compile_prefix})
-    cp -v ${SJLJ_PATH} "${install_folder}/${APP_LC_NAME}/bin"
-  fi
-}
-
-# v===========================================================================v
-do_copy_gcc_dlls() {
-
-  if [ -d "/usr/lib/gcc/${cross_compile_prefix}/${CROSS_GCC_VERSION}/" ]
-  then
-    cp -v "/usr/lib/gcc/${cross_compile_prefix}/${CROSS_GCC_VERSION}/"*.dll \
-      "${install_folder}/${APP_LC_NAME}/bin"
-  elif [ -d "/usr/lib/gcc/${cross_compile_prefix}/${CROSS_GCC_VERSION_SHORT}/" ]
-  then
-    cp -v "/usr/lib/gcc/${cross_compile_prefix}/${CROSS_GCC_VERSION_SHORT}/"*.dll \
-      "${install_folder}/${APP_LC_NAME}/bin"
-  elif [ -d "/usr/lib/gcc/${cross_compile_prefix}/${CROSS_GCC_VERSION_SHORT}${SUBLOCATION}/" ]
-  then
-    cp -v "/usr/lib/gcc/${cross_compile_prefix}/${CROSS_GCC_VERSION_SHORT}${SUBLOCATION}/"*.dll \
-      "${install_folder}/${APP_LC_NAME}/bin"
-  else
-    echo "No DLLs"
-    exit 1
-  fi
-}
-
-# v===========================================================================v
-do_copy_libwinpthread_dll() {
-
-  if [ -f "/usr/${cross_compile_prefix}/lib/libwinpthread-1.dll" ]
-  then
-    cp "/usr/${cross_compile_prefix}/lib/libwinpthread-1.dll" \
-      "${install_folder}/${APP_LC_NAME}/bin"
-  else
-    echo "Searching /usr for libwinpthread-1.dll..."
-    PTHREAD_PATH=$(find /usr \! -readable -prune -o -name 'libwinpthread-1.dll' -print | grep ${cross_compile_prefix})
-    cp -v "${PTHREAD_PATH}" "${install_folder}/${APP_LC_NAME}/bin"
-  fi
-}
-# ^===========================================================================^
 
 if [ "${target_name}" == "win" ]
 then
@@ -1220,42 +1216,6 @@ fi
 
 # ----- Copy the license files -----
 
-# v===========================================================================v
-do_copy_license() {
-
-  # $1 - absolute path to input folder
-  # $2 - name of output folder below INSTALL_FOLDER
-
-  # Iterate all files in a folder and install some of them in the
-  # destination folder
-  echo "$2"
-  for f in "$1/"*
-  do
-    if [ -f "$f" ]
-    then
-      if [[ "$f" =~ AUTHORS.*|NEWS.*|COPYING.*|README.*|LICENSE.*|FAQ.*|DEPENDENCIES.*|THANKS.* ]]
-      then
-        /usr/bin/install -d -m 0755 "${install_folder}/${APP_LC_NAME}/license/$2"
-        /usr/bin/install -v -c -m 644 "$f" "${install_folder}/${APP_LC_NAME}/license/$2"
-      fi
-    fi
-  done
-}
-
-# v===========================================================================v
-do_unix2dos() {
-
-  if [ "${target_name}" == "win" ]
-  then
-    while (($#))
-    do
-      unix2dos "$1"
-      shift
-    done
-  fi
-}
-# ^===========================================================================^
-
 echo
 echo "Copying license files..."
 
@@ -1280,34 +1240,41 @@ fi
 
 # ----- Copy the GNU ARM Eclipse info files. -----
 
+if [ "${target_name}" == "debian" ]
+then
+  generic_target_name="linux"
+else
+  generic_target_name="${target_name}"
+fi
+
 echo
 echo "Copying info files..."
 
-/usr/bin/install -c -m 644 "${git_folder}/gnuarmeclipse/info/INFO-osx.txt" \
+/usr/bin/install -cv -m 644 "${git_folder}/gnuarmeclipse/info/INFO-${generic_target_name}.txt" \
   "${install_folder}/openocd/INFO.txt"
 do_unix2dos "${install_folder}/openocd/INFO.txt"
 
 mkdir -p "${install_folder}/openocd/gnuarmeclipse"
 
-/usr/bin/install -c -m 644 "${git_folder}/gnuarmeclipse/info/BUILD-osx.txt" \
+/usr/bin/install -cv -m 644 "${git_folder}/gnuarmeclipse/info/BUILD-${generic_target_name}.txt" \
   "${install_folder}/openocd/gnuarmeclipse/BUILD.txt"
 do_unix2dos "${install_folder}/openocd/gnuarmeclipse/BUILD.txt"
 
-/usr/bin/install -c -m 644 "${git_folder}/gnuarmeclipse/info/CHANGES.txt" \
+/usr/bin/install -cv -m 644 "${git_folder}/gnuarmeclipse/info/CHANGES.txt" \
   "${install_folder}/openocd/gnuarmeclipse/CHANGES.txt"
 do_unix2dos "${install_folder}/openocd/gnuarmeclipse/CHANGES.txt"
 
 # Copy the current build script
-/usr/bin/install -c -m 644 "${work_folder}/scripts/build-${APP_LC_NAME}.sh" \
+/usr/bin/install -cv -m 644 "${work_folder}/scripts/build-${APP_LC_NAME}.sh" \
   "${install_folder}/openocd/gnuarmeclipse/build-${APP_LC_NAME}.sh"
 do_unix2dos "${install_folder}/openocd/gnuarmeclipse/build-${APP_LC_NAME}.sh"
 
 # Copy the current build helper script
-/usr/bin/install -c -m 644 "${work_folder}/scripts/build-helper.sh" \
+/usr/bin/install -cv -m 644 "${work_folder}/scripts/build-helper.sh" \
   "${install_folder}/openocd/gnuarmeclipse/build-helper.sh"
 do_unix2dos "${install_folder}/openocd/gnuarmeclipse/build-helper.sh"
 
-/usr/bin/install -c -m 644 "${output_folder}/config.log" \
+/usr/bin/install -cv -m 644 "${output_folder}/config.log" \
   "${install_folder}/openocd/gnuarmeclipse/config.log"
 do_unix2dos "${install_folder}/openocd/gnuarmeclipse/config.log"
 
@@ -1416,117 +1383,14 @@ then
 
 fi
 
-echo
-if [ "${result}" == "0" ]
-then
-  echo "Build completed."
-  echo "Distribution file ${distribution_file} created."
-else
-  echo "Build failed."
-fi
-
-echo
-echo "Script \"$(basename $0)\" completed."
+# Requires ${distribution_file} and ${result}
+source "$helper_script" --completed
 
 exit 0
 
 EOF
 # The above marker must start in the first column.
 # -----------------------------------------------------------------------------
-
-# v===========================================================================v
-# This function is called multiple times, once for each target.
-
-do_build_target() {
-
-  message="$1"
-  shift
-
-  echo
-  echo "================================================================================"
-  echo "${message}"
-
-  target_bits=""
-  docker_image=""
-
-  while [ $# -gt 0 ]
-  do
-    case "$1" in
-      --target-name)
-        target_name="$2"
-        shift 2
-        ;;
-      --target-bits)
-        target_bits="$2"
-        shift 2
-        ;;
-      --docker-image)
-        docker_image="$2"
-        shift 2
-        ;;
-      *)
-        echo "Unknown option $1, exit."
-        exit 1
-    esac
-  done
-
-  # Must be located before adjusting target_bits for osx.
-  target_folder=${target_name}${target_bits}
-
-  cross_compile_prefix=""
-  if [ "${target_name}" == "win" ]
-  then
-    # For Windows targets, decide which cross toolchain to use.
-    if [ ${target_bits} == "32" ]
-    then
-      cross_compile_prefix="i686-w64-mingw32"
-    elif [ ${target_bits} == "64" ]
-    then
-      cross_compile_prefix="x86_64-w64-mingw32"
-    fi
-  elif [ "${target_name}" == "osx" ]
-  then
-    target_bits="64"
-  fi
-
-  # echo $target_folder
-
-  docker_script_file="${DOCKER_HOST_WORK}/scripts/${script_name}"
-
-  docker_container_name="${APP_LC_NAME}-${target_folder}-build"
-
-
-  if [ -n "${docker_image}" ]
-  then
-
-    run_docker_script \
-      --script "${docker_script_file}" \
-      --docker-image "${docker_image}" \
-      --docker-container-name "${docker_container_name}" \
-      -- \
-      --build-folder "${DOCKER_HOST_WORK}/build/${target_folder}" \
-      --target-name "${target_name}" \
-      --target-bits "${target_bits}" \
-      --output-folder "${DOCKER_HOST_WORK}/output/${target_folder}" \
-      --distribution-folder "${DOCKER_HOST_WORK}/output" \
-      --install-folder "${DOCKER_HOST_WORK}/install/${target_folder}" \
-      --work-folder "${DOCKER_HOST_WORK}"
-
-  else
-
-    run_local_script \
-      --script "${script_file}" \
-      -- \
-      --build-folder "${WORK_FOLDER}/build/${target_folder}" \
-      --target-name "${target_name}" \
-      --output-folder "${WORK_FOLDER}/output/${target_folder}" \
-      --distribution-folder "${WORK_FOLDER}/output" \
-      --install-folder "${WORK_FOLDER}/install/${target_folder}" \
-      --work-folder "${WORK_FOLDER}"
-
-  fi
-}
-# ^===========================================================================^
 
 # ----- Build the Windows 64-bits distribution. -----
 
