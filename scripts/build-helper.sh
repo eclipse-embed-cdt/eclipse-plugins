@@ -8,13 +8,13 @@ while [ $# -gt 0 ]
 do
   case "$1" in
 
-    --start-timer) # ----------------------------------------------------------
+    --start-timer) # -----
 
       BEGIN_SEC=$(date +%s)
       echo "Script \"$0\" started at $(date)."
       ;;
 
-    --stop-timer) # -----------------------------------------------------------
+    --stop-timer) # -----
 
       END_SEC=$(date +%s)
       echo
@@ -29,7 +29,7 @@ do
       fi
       ;;
 
-    --detect-host) # ----------------------------------------------------------
+    --detect-host) # -----
 
       HOST_DISTRO_NAME=""
       HOST_UNAME="$(uname)"
@@ -87,7 +87,7 @@ do
       DOCKER_BUILD="/root/build"
       ;;
 
-    --prepare-prerequisites) # ------------------------------------------------
+    --prepare-prerequisites) # -----
 
       if [ "${HOST_UNAME}" == "Darwin" ]
       then
@@ -140,7 +140,161 @@ do
       git --version
       ;;
 
-    --completed) # ----- Runs inside Docker contained -------------------------
+    --get-git-head) # -----
+
+      # Get the current Git branch name, to know if we are building the stable or
+      # the development release.
+      cd "${GIT_FOLDER}"
+      GIT_HEAD=$(git symbolic-ref -q --short HEAD)
+      ;;
+
+    --get-current-date) # -----
+
+      # Use the UTC date as version in the name of the distribution file.
+      DISTRIBUTION_FILE_DATE=${DISTRIBUTION_FILE_DATE:-$(date -u +%Y%m%d%H%M)}
+      ;;
+
+    # ----- Run inside Docker container ---------------------------------------
+    --copy-info)
+      if [ "${target_name}" == "debian" ]
+      then
+        generic_target_name="linux"
+      else
+        generic_target_name="${target_name}"
+      fi
+
+      echo
+      echo "Copying info files..."
+
+      /usr/bin/install -cv -m 644 "${git_folder}/gnuarmeclipse/info/INFO-${generic_target_name}.txt" \
+        "${install_folder}/${APP_LC_NAME}/INFO.txt"
+      do_unix2dos "${install_folder}/${APP_LC_NAME}/INFO.txt"
+
+      mkdir -p "${install_folder}/${APP_LC_NAME}/gnuarmeclipse"
+
+      /usr/bin/install -cv -m 644 "${git_folder}/gnuarmeclipse/info/BUILD-${generic_target_name}.txt" \
+        "${install_folder}/${APP_LC_NAME}/gnuarmeclipse/BUILD.txt"
+      do_unix2dos "${install_folder}/${APP_LC_NAME}/gnuarmeclipse/BUILD.txt"
+
+      /usr/bin/install -cv -m 644 "${git_folder}/gnuarmeclipse/info/CHANGES.txt" \
+        "${install_folder}/${APP_LC_NAME}/gnuarmeclipse/CHANGES.txt"
+      do_unix2dos "${install_folder}/${APP_LC_NAME}/gnuarmeclipse/CHANGES.txt"
+
+      # Copy the current build script
+      /usr/bin/install -cv -m 644 "${work_folder}/scripts/build-${APP_LC_NAME}.sh" \
+        "${install_folder}/${APP_LC_NAME}/gnuarmeclipse/build-${APP_LC_NAME}.sh"
+      do_unix2dos "${install_folder}/${APP_LC_NAME}/gnuarmeclipse/build-${APP_LC_NAME}.sh"
+
+      # Copy the current build helper script
+      /usr/bin/install -cv -m 644 "${work_folder}/scripts/build-helper.sh" \
+        "${install_folder}/${APP_LC_NAME}/gnuarmeclipse/build-helper.sh"
+      do_unix2dos "${install_folder}/${APP_LC_NAME}/gnuarmeclipse/build-helper.sh"
+
+      /usr/bin/install -cv -m 644 "${output_folder}/config.log" \
+        "${install_folder}/${APP_LC_NAME}/gnuarmeclipse/config.log"
+      do_unix2dos "${install_folder}/${APP_LC_NAME}/gnuarmeclipse/config.log"
+      ;;
+
+    --create-distribution)
+      if [ "${target_name}" == "win" ]
+      then
+
+        echo
+        echo "Creating setup..."
+        echo
+
+        distribution_file="${distribution_folder}/gnuarmeclipse-${APP_LC_NAME}-${target_folder}-${distribution_file_version}-setup.exe"
+
+        # Not passed as it, used by makensis for the MUI_PAGE_LICENSE; must be DOS.
+        cp "${git_folder}/COPYING" \
+          "${install_folder}/${APP_LC_NAME}/COPYING"
+        unix2dos "${install_folder}/${APP_LC_NAME}/COPYING"
+
+        nsis_folder="${git_folder}/gnuarmeclipse/nsis"
+        nsis_file="${nsis_folder}/gnuarmeclipse-${APP_LC_NAME}.nsi"
+
+        cd "${build_folder}"
+        makensis -V4 -NOCD \
+          -DINSTALL_FOLDER="${install_folder}/${APP_LC_NAME}" \
+          -DNSIS_FOLDER="${nsis_folder}" \
+          -DOUTFILE="${distribution_file}" \
+          -DW${target_bits} \
+          -DBITS=${target_bits} \
+          -DVERSION=${distribution_file_version} \
+          "${nsis_file}"
+        result="$?"
+
+        # Display some information about the created application.
+        echo
+        echo "DLLs:"
+        set +e
+        ${cross_compile_prefix}-objdump -x "${install_folder}/${APP_LC_NAME}/bin/${distribution_executable_name}.exe" | grep -i 'DLL Name'
+        set -e
+
+      elif [ "${target_name}" == "debian" ]
+      then
+
+        echo
+        echo "Creating tgz archive..."
+        echo
+
+        distribution_file="${distribution_folder}/gnuarmeclipse-${APP_LC_NAME}-${target_folder}-${distribution_file_version}.tgz"
+
+        rm -rf "${install_folder}/archive/"
+        mkdir -p "${install_folder}/archive/${APP_LC_NAME}/${distribution_file_version}"
+        cp -r "${install_folder}/${APP_LC_NAME}"/* "${install_folder}/archive/${APP_LC_NAME}/${distribution_file_version}"
+        cd "${install_folder}/archive"
+        tar czf "${distribution_file}" --owner root --group root ${APP_LC_NAME}
+
+        # Display some information about the created application.
+        echo
+        echo "Libraries:"
+        set +e
+        readelf -d "${install_folder}/archive/${APP_LC_NAME}/${distribution_file_version}/bin/${distribution_executable_name}" \
+        | egrep -i 'library|dynamic'
+        set -e
+
+        echo
+        ls -l "${install_folder}/archive/${APP_LC_NAME}/${distribution_file_version}/bin"
+
+        # Check if the application starts (if all dynamic libraries are available).
+        echo
+        "${install_folder}/archive/${APP_LC_NAME}/${distribution_file_version}/bin/${distribution_executable_name}" --version
+        result="$?"
+
+      elif [ "${target_name}" == "osx" ]
+      then
+
+        echo
+        echo "Creating installer package..."
+        echo
+
+        distribution_file="${distribution_folder}/gnuarmeclipse-${APP_LC_NAME}-${target_folder}-${distribution_file_version}.pkg"
+
+        distribution_install_folder=${distribution_install_folder:-"/Applications/GNU ARM Eclipse/${APP_NAME}"}
+
+        # Create the installer package, with content from the
+        # ${distribution_install_folder}/${APP_LC_NAME} folder.
+        # The "${distribution_install_folder:1}" is a substring that skips first char.
+        cd "${work_folder}"
+        pkgbuild --identifier ilg.gnuarmeclipse.${APP_LC_NAME} \
+          --root "${install_folder}/${APP_LC_NAME}" \
+          --version "${distribution_file_version}" \
+          --install-location "${distribution_install_folder:1}/${distribution_file_version}" \
+          "${distribution_file}"
+
+        echo
+        ls -l "${install_folder}/${APP_LC_NAME}/bin"
+
+        # Check if the application starts (if all dynamic libraries are available).
+        echo
+        "${install_folder}/${APP_LC_NAME}/bin/${distribution_executable_name}" --version
+        result="$?"
+
+      fi
+      ;;
+
+    --completed)
       echo
       if [ "${result}" == "0" ]
       then
@@ -165,6 +319,43 @@ done
 
 
 # ----- Functions used in the host build script. -----
+
+# v===========================================================================v
+do_download() {
+
+  while [ $# -gt 0 ]
+  do
+    case "$1" in
+      --url)
+        url="$2"
+        shift 2
+        ;;
+      --download-folder)
+        download_folder="$2"
+        shift 2
+        ;;
+      --archive-name)
+        archive_name="$2"
+        shift 2
+        ;;
+      *)
+        echo "Unknown option $1, exit."
+        exit 1
+    esac
+  done
+
+  if [ ! -f "${download_folder}/${archive_name}" ]
+  then
+    mkdir -p "${download_folder}"
+
+    cd "${download_folder}"
+
+    echo
+    echo "Downloading ${url}..."
+    curl -L "${url}" --output "${archive_name}"
+  fi
+
+}
 
 # v===========================================================================v
 do_build_target() {
@@ -233,6 +424,7 @@ do_build_target() {
       --output-folder "${DOCKER_HOST_WORK}/output/${target_folder}" \
       --distribution-folder "${DOCKER_HOST_WORK}/output" \
       --install-folder "${DOCKER_HOST_WORK}/install/${target_folder}" \
+      --download-folder "${DOCKER_HOST_WORK}/download" \
       --helper-script "${DOCKER_HOST_WORK}/scripts/build-helper.sh" \
       --work-folder "${DOCKER_HOST_WORK}"
 
@@ -246,6 +438,7 @@ do_build_target() {
       --output-folder "${WORK_FOLDER}/output/${target_folder}" \
       --distribution-folder "${WORK_FOLDER}/output" \
       --install-folder "${WORK_FOLDER}/install/${target_folder}" \
+      --download-folder "${WORK_FOLDER}/download" \
       --helper-script "${WORK_FOLDER}/scripts/build-helper.sh" \
       --work-folder "${WORK_FOLDER}"
 
@@ -291,7 +484,7 @@ run_docker_script() {
     --tty \
     --hostname "docker" \
     --workdir="/root" \
-    --volume="${WORK_PARENT_FOLDER}:/root/Host/Work" \
+    --volume="${WORK_FOLDER}/..:/root/Host/Work" \
     ${docker_image} \
     /bin/bash "${docker_script}" \
       --docker-container-name "${docker_container_name}" \
@@ -423,6 +616,29 @@ do_unix2dos() {
     done
   fi
 }
+
+# v===========================================================================v
+do_strip() {
+
+  strip_app="$1"
+  shift
+
+  echo
+
+  for f in "$@"
+  do
+    base="$(basename $f)"
+    tmp_file=$(mktemp /tmp/${base}.XXXXXX)
+
+    cp "$f" "${tmp_file}"
+    echo "${strip_app}" "$f"
+    "${strip_app}" "${tmp_file}"
+    cp "${tmp_file}" "$f"
+
+    rm "${tmp_file}"
+  done
+}
+
 # ^===========================================================================^
 
 

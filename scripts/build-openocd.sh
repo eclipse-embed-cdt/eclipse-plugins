@@ -12,7 +12,7 @@ IFS=$'\n\t'
 # The build is structured in 2 steps, one running on the host machine
 # and one running inside the Docker container.
 #
-# At first run, Docker will automatically download 3 relatively large
+# At first run, Docker will download/build 3 relatively large
 # images (1-2GB) from Docker Hub.
 #
 # Prerequisites:
@@ -114,7 +114,7 @@ do
     --help)
       echo "Build the GNU ARM Eclipse ${APP_NAME} distributions."
       echo "Usage:"
-      echo "    bash $0 helper_script [--win32] [--win64] [--deb32] [--deb64] [--osx] [--all] [clean|pull|checkput-dev|checkout-stable] [--help]"
+      echo "    bash $0 helper_script [--win32] [--win64] [--deb32] [--deb64] [--osx] [--all] [clean|pull|checkput-dev|checkout-stable|build-images] [--help]"
       echo
       exit 1
       ;;
@@ -166,40 +166,6 @@ fi
 
 helper_script="${WORK_FOLDER}/scripts/build-helper.sh"
 
-# ----- Process actions. -----
-
-if [ "${ACTION}" == "clean" ]
-then
-  # Remove most build and temporary folders.
-  echo
-  echo "Remove most of the build folders..."
-
-  rm -rf "${BUILD_FOLDER}"
-  rm -rf "${WORK_FOLDER}/install"
-  rm -rf "${WORK_FOLDER}/${LIBUSB1_FOLDER}"
-  rm -rf "${WORK_FOLDER}/${LIBUSB0_FOLDER}"
-  rm -rf "${WORK_FOLDER}/${LIBUSB_W32_FOLDER}"
-  rm -rf "${WORK_FOLDER}/${LIBFTDI_FOLDER}"
-  rm -rf "${WORK_FOLDER}/${HIDAPI_FOLDER}"
-  rm -rf "${WORK_FOLDER}/scripts"
-
-  echo
-  echo "Clean completed. Proceed with a regular build."
-
-  exit 0
-fi
-
-# ----- Start build. -----
-
-source "$helper_script" --start-timer
-
-source "$helper_script" --detect-host
-
-# ----- Define build constants. -----
-
-GIT_FOLDER="${WORK_FOLDER}/gnuarmeclipse-${APP_LC_NAME}.git"
-
-DOWNLOAD_FOLDER="${WORK_FOLDER}/download"
 BUILD_FOLDER="${WORK_FOLDER}/build"
 
 # For updates, please check the corresponding pages.
@@ -234,6 +200,44 @@ HIDAPI_VERSION="0.7.0"
 HIDAPI_FOLDER="hidapi-${HIDAPI_VERSION}"
 HIDAPI="${HIDAPI_FOLDER}"
 HIDAPI_ARCHIVE="${HIDAPI}.zip"
+
+
+# ----- Process actions. -----
+
+if [ "${ACTION}" == "clean" ]
+then
+  # Remove most build and temporary folders.
+  echo
+  echo "Remove most of the build folders..."
+
+  rm -rf "${BUILD_FOLDER}"
+  rm -rf "${WORK_FOLDER}/install"
+
+  rm -rf "${WORK_FOLDER}/${LIBUSB1_FOLDER}"
+  rm -rf "${WORK_FOLDER}/${LIBUSB0_FOLDER}"
+  rm -rf "${WORK_FOLDER}/${LIBUSB_W32_FOLDER}"
+  rm -rf "${WORK_FOLDER}/${LIBFTDI_FOLDER}"
+  rm -rf "${WORK_FOLDER}/${HIDAPI_FOLDER}"
+
+  rm -rf "${WORK_FOLDER}/scripts"
+
+  echo
+  echo "Clean completed. Proceed with a regular build."
+
+  exit 0
+fi
+
+# ----- Start build. -----
+
+source "$helper_script" --start-timer
+
+source "$helper_script" --detect-host
+
+# ----- Define build constants. -----
+
+GIT_FOLDER="${WORK_FOLDER}/gnuarmeclipse-${APP_LC_NAME}.git"
+
+DOWNLOAD_FOLDER="${WORK_FOLDER}/download"
 
 
 # ----- Prepare prerequisites. -----
@@ -458,6 +462,7 @@ cat <<EOF >> "${script_file}"
 set -euo pipefail
 IFS=\$'\n\t'
 
+APP_NAME="${APP_NAME}"
 APP_LC_NAME="${APP_LC_NAME}"
 GIT_HEAD="${GIT_HEAD}"
 DISTRIBUTION_FILE_DATE="${DISTRIBUTION_FILE_DATE}"
@@ -518,6 +523,10 @@ do
       ;;
     --install-folder)
       install_folder="$2"
+      shift 2
+      ;;
+    --download-folder)
+      download_folder="$2"
       shift 2
       ;;
     --helper-script)
@@ -903,7 +912,7 @@ then
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     PKG_CONFIG_PREFIX="${install_folder}" \
     \
-    "${git_folder}/configure" \
+    bash "${git_folder}/configure" \
     --build="$(uname -m)-linux-gnu" \
     --host="${cross_compile_prefix}" \
     --prefix="${install_folder}/openocd"  \
@@ -958,7 +967,7 @@ then
     \
     LD_LIBRARY_PATH="${install_folder}/lib":"${install_folder}/lib64":"${LD_LIBRARY_PATH}" \
     \
-    "${git_folder}/configure" \
+    bash "${git_folder}/configure" \
     --prefix="${install_folder}/openocd"  \
     --datarootdir="${install_folder}" \
     --infodir="${install_folder}/openocd/info"  \
@@ -1015,7 +1024,7 @@ then
     \
     DYLD_LIBRARY_PATH="${install_folder}/lib":"${DYLD_LIBRARY_PATH}" \
     \
-    "${git_folder}/configure" \
+    bash "${git_folder}/configure" \
     --prefix="${install_folder}/openocd"  \
     --datarootdir="${install_folder}" \
     --infodir="${install_folder}/openocd/info"  \
@@ -1055,8 +1064,9 @@ then
 
 fi
 
-cd "${build_folder}/openocd"
+cd "${build_folder}/${APP_LC_NAME}"
 cp config.* "${output_folder}"
+
 
 # ----- Full build, with documentation. -----
 
@@ -1070,7 +1080,7 @@ then
   echo
   echo "Running make all..."
 
-  cd "${build_folder}/openocd"
+  cd "${build_folder}/${APP_LC_NAME}"
   make bindir="bin" pkgdatadir="" all pdf html \
   | tee "${output_folder}/make-all-output.txt"
 
@@ -1081,34 +1091,25 @@ fi
 echo
 echo "Running make install..."
 
-rm -rf "${install_folder}/openocd"
-mkdir -p "${install_folder}/openocd"
+rm -rf "${install_folder}/${APP_LC_NAME}"
+mkdir -p "${install_folder}/${APP_LC_NAME}"
 
-cd "${build_folder}/openocd"
+cd "${build_folder}/${APP_LC_NAME}"
 
-if [ "${target_name}" == "win" ]
-then
-
-  make install install-pdf install-html install-man \
-  | tee "${output_folder}/make-install-output.txt"
-
-  # Probably due to a VirtualBox shared folder error, the following fails with:
-  # i686-w64-mingw32-strip:/root/Host/Work/openocd/install/win32/openocd/bin/stE4wx0V: Protocol error
-  # ${cross_compile_prefix}-strip "${install_folder}/openocd/bin/openocd.exe"
-
-  cp "${install_folder}/openocd/bin/openocd.exe" /tmp/openocd.exe
-  ${cross_compile_prefix}-strip /tmp/openocd.exe
-  cp /tmp/openocd.exe "${install_folder}/openocd/bin/openocd.exe"
-
-else
-  make install-strip install-pdf install-html install-man \
-  | tee "${output_folder}/make-install-output.txt"
-fi
+make install install-pdf install-html install-man \
+| tee "${output_folder}/make-install-output.txt"
 
 # ----- Copy dynamic libraries to the install bin folder. -----
 
 if [ "${target_name}" == "win" ]
 then
+
+  # Probably due to a VirtualBox shared folder bug, the following fails with:
+  # i686-w64-mingw32-strip:/root/Host/Work/openocd/install/win32/openocd/bin/stE4wx0V: Protocol error
+  # ${cross_compile_prefix}-strip "${install_folder}/openocd/bin/openocd.exe"
+
+  do_strip ${cross_compile_prefix}-strip \
+    "${install_folder}/openocd/bin/openocd.exe"
 
   echo
   echo "Copying DLLs..."
@@ -1136,6 +1137,8 @@ then
 
 elif [ "${target_name}" == "debian" ]
 then
+
+  do_strip strip "${install_folder}/openocd/bin/openocd"
 
   echo
   echo "Copying shared libs..."
@@ -1224,6 +1227,8 @@ then
 elif [ "${target_name}" == "osx" ]
 then
 
+  do_strip strip "${install_folder}/openocd/bin/openocd"
+
   echo
   echo "Copying dynamic libs..."
 
@@ -1291,43 +1296,7 @@ fi
 
 # ----- Copy the GNU ARM Eclipse info files. -----
 
-if [ "${target_name}" == "debian" ]
-then
-  generic_target_name="linux"
-else
-  generic_target_name="${target_name}"
-fi
-
-echo
-echo "Copying info files..."
-
-/usr/bin/install -cv -m 644 "${git_folder}/gnuarmeclipse/info/INFO-${generic_target_name}.txt" \
-  "${install_folder}/openocd/INFO.txt"
-do_unix2dos "${install_folder}/openocd/INFO.txt"
-
-mkdir -p "${install_folder}/openocd/gnuarmeclipse"
-
-/usr/bin/install -cv -m 644 "${git_folder}/gnuarmeclipse/info/BUILD-${generic_target_name}.txt" \
-  "${install_folder}/openocd/gnuarmeclipse/BUILD.txt"
-do_unix2dos "${install_folder}/openocd/gnuarmeclipse/BUILD.txt"
-
-/usr/bin/install -cv -m 644 "${git_folder}/gnuarmeclipse/info/CHANGES.txt" \
-  "${install_folder}/openocd/gnuarmeclipse/CHANGES.txt"
-do_unix2dos "${install_folder}/openocd/gnuarmeclipse/CHANGES.txt"
-
-# Copy the current build script
-/usr/bin/install -cv -m 644 "${work_folder}/scripts/build-${APP_LC_NAME}.sh" \
-  "${install_folder}/openocd/gnuarmeclipse/build-${APP_LC_NAME}.sh"
-do_unix2dos "${install_folder}/openocd/gnuarmeclipse/build-${APP_LC_NAME}.sh"
-
-# Copy the current build helper script
-/usr/bin/install -cv -m 644 "${work_folder}/scripts/build-helper.sh" \
-  "${install_folder}/openocd/gnuarmeclipse/build-helper.sh"
-do_unix2dos "${install_folder}/openocd/gnuarmeclipse/build-helper.sh"
-
-/usr/bin/install -cv -m 644 "${output_folder}/config.log" \
-  "${install_folder}/openocd/gnuarmeclipse/config.log"
-do_unix2dos "${install_folder}/openocd/gnuarmeclipse/config.log"
+source "$helper_script" --copy-info
 
 
 # ----- Create the distribution package. -----
@@ -1342,97 +1311,9 @@ then
   distribution_file_version=$(cat "${git_folder}/gnuarmeclipse/VERSION-dev")-${DISTRIBUTION_FILE_DATE}-dev
 fi
 
-if [ "${target_name}" == "win" ]
-then
+distribution_executable_name="openocd"
 
-  echo
-  echo "Creating setup..."
-  echo
-
-  distribution_file="${distribution_folder}/gnuarmeclipse-openocd-${target_folder}-${distribution_file_version}-setup.exe"
-
-  # Not passed as it, used by makensis for the MUI_PAGE_LICENSE; must be DOS.
-  cp "${git_folder}/COPYING" \
-    "${install_folder}/openocd/COPYING"
-  unix2dos "${install_folder}/openocd/COPYING"
-
-  nsis_folder="${git_folder}/gnuarmeclipse/nsis"
-  nsis_file="${nsis_folder}/gnuarmeclipse-openocd.nsi"
-
-  cd "${build_folder}"
-  makensis -V4 -NOCD \
-    -DINSTALL_FOLDER="${install_folder}/openocd" \
-    -DNSIS_FOLDER="${nsis_folder}" \
-    -DOUTFILE="${distribution_file}" \
-    -DW${target_bits} \
-    -DBITS=${target_bits} \
-    -DVERSION=${distribution_file_version} \
-    "${nsis_file}"
-  result="$?"
-
-  # Display some information about the created application.
-  echo
-  echo "DLLs:"
-  ${cross_compile_prefix}-objdump -x "${install_folder}/openocd/bin/openocd.exe" | grep -i 'DLL Name'
-
-elif [ "${target_name}" == "debian" ]
-then
-
-  echo
-  echo "Creating tgz archive..."
-  echo
-
-  distribution_file="${distribution_folder}/gnuarmeclipse-openocd-${target_folder}-${distribution_file_version}.tgz"
-
-  rm -rf "${install_folder}/archive/"
-  mkdir -p "${install_folder}/archive/openocd/${distribution_file_version}"
-  cp -r "${install_folder}/openocd"/* "${install_folder}/archive/openocd/${distribution_file_version}"
-  cd "${install_folder}/archive"
-  tar czf "${distribution_file}" --owner root --group root openocd
-
-  # Display some information about the created application.
-  echo
-  echo "Libraries:"
-  readelf -d "${install_folder}/openocd/bin/openocd" | grep -i 'library'
-
-  echo
-  ls -l "${install_folder}/openocd/bin"
-
-  # Check if the application starts (if all dynamic libraries are available).
-  echo
-  "${install_folder}/openocd/bin/openocd" --version
-  result="$?"
-
-elif [ "${target_name}" == "osx" ]
-then
-
-  echo
-  echo "Creating installer package..."
-  echo
-
-  distribution_file="${distribution_folder}/gnuarmeclipse-openocd-${target_folder}-${distribution_file_version}.pkg"
-
-  distribution_install_folder=${distribution_install_folder:-"/Applications/GNU ARM Eclipse/OpenOCD"}
-
-  # Create the installer package, with content from the
-  # ${distribution_install_folder}/openocd folder.
-  # The "${distribution_install_folder:1}" is a substring that skips first char.
-  cd "${work_folder}"
-  pkgbuild --identifier ilg.gnuarmeclipse.openocd \
-    --root "${install_folder}/openocd" \
-    --version "${distribution_file_version}" \
-    --install-location "${distribution_install_folder:1}/${distribution_file_version}" \
-    "${distribution_file}"
-
-  echo
-  ls -l "${install_folder}/openocd/bin"
-
-  # Check if the application starts (if all dynamic libraries are available).
-  echo
-  "${install_folder}/openocd/bin/openocd" --version
-  result="$?"
-
-fi
+source "$helper_script" --create-distribution
 
 # Requires ${distribution_file} and ${result}
 source "$helper_script" --completed
