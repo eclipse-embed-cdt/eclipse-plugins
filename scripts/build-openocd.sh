@@ -71,7 +71,7 @@ while [ $# -gt 0 ]
 do
   case "$1" in
 
-    clean|pull|checkout-dev|checkout-stable|build-images)
+    clean|pull|checkout-dev|checkout-stable|build-images|preload-images)
       ACTION="$1"
       shift
       ;;
@@ -244,6 +244,34 @@ DOWNLOAD_FOLDER="${WORK_FOLDER}/download"
 
 source "$helper_script" --prepare-prerequisites
 
+# ----- Process "preload-images" action. -----
+
+if [ "${ACTION}" == "preload-images" ]
+then
+  echo
+  echo "Check/Preload Docker images..."
+
+  echo
+  docker run --interactive --tty ilegeul/debian32:7-gnuarm-gcc \
+  lsb_release --description --short
+
+  echo
+  docker run --interactive --tty ilegeul/debian:7-gnuarm-gcc \
+  lsb_release --description --short
+
+  echo
+  docker run --interactive --tty ilegeul/debian:8-gnuarm-mingw \
+  lsb_release --description --short
+
+  echo
+  docker images
+
+  source "$helper_script" "--stop-timer"
+
+  exit 0
+fi
+
+
 # ----- Process "build-images" action. -----
 
 if [ "${ACTION}" == "build-images" ]
@@ -261,8 +289,11 @@ then
   docker build --tag "ilegeul/debian:7-gnuarm-gcc" \
   https://github.com/ilg-ul/docker/raw/master/debian/7-gnuarm-gcc/Dockerfile
 
-  docker build --tag "qemu-builds:d8-x64-mingw" \
-  https://github.com/ilg-ul/docker/raw/master/builds/d8_x64_mingw/Dockerfile
+  docker build --tag "ilegeul/debian:8-gnuarm-gcc" \
+  https://github.com/ilg-ul/docker/raw/master/debian/8-gnuarm-gcc/Dockerfile
+
+  docker build --tag "ilegeul/debian:8-gnuarm-mingw" \
+  https://github.com/ilg-ul/docker/raw/master/debian/8-gnuarm-mingw/Dockerfile
 
   docker images
 
@@ -560,8 +591,6 @@ then
   then
     cross_compile_prefix="x86_64-w64-mingw32"
   fi
-
-  apt-get -y install cmake
 
 elif [ "${target_name}" == "osx" ]
 then
@@ -1332,7 +1361,7 @@ then
   do_build_target "Creating Windows 64-bits setup..." \
     --target-name win \
     --target-bits 64 \
-    --docker-image ilegeul/builds:d8-x64-mingw
+    --docker-image ilegeul/debian:8-gnuarm-mingw
 fi
 
 # ----- Build the Windows 32-bits distribution. -----
@@ -1342,7 +1371,7 @@ then
   do_build_target "Creating Windows 32-bits setup..." \
     --target-name win \
     --target-bits 32 \
-    --docker-image ilegeul/builds:d8-x64-mingw
+    --docker-image ilegeul/debian:8-gnuarm-mingw
 fi
 
 # ----- Build the Debian 64-bits distribution. -----
