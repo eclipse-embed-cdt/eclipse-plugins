@@ -156,6 +156,7 @@ do
 
     # ----- Run inside Docker container ---------------------------------------
     --copy-info)
+
       if [ "${target_name}" == "debian" ]
       then
         generic_target_name="linux"
@@ -196,6 +197,7 @@ do
       ;;
 
     --create-distribution)
+
       if [ "${target_name}" == "win" ]
       then
 
@@ -295,6 +297,7 @@ do
       ;;
 
     --completed)
+
       echo
       if [ "${result}" == "0" ]
       then

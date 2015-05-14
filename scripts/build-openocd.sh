@@ -80,7 +80,7 @@ do
       DO_BUILD_WIN32="y"
       shift
       ;;
-    --win64|windows64)
+    --win64|--windows64)
       DO_BUILD_WIN64="y"
       shift
       ;;

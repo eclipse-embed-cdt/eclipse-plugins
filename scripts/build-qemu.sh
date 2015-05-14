@@ -79,7 +79,7 @@ do
       DO_BUILD_WIN32="y"
       shift
       ;;
-    --win64|windows64)
+    --win64|--windows64)
       DO_BUILD_WIN64="y"
       shift
       ;;
@@ -291,10 +291,10 @@ then
     # Shortcut for ilg, who has full access to the repo.
     echo
     echo "Enter SourceForge password for git clone"
-    git clone ssh://ilg-ul@git.code.sf.net/p/gnuarmeclipse/openocd gnuarmeclipse-${APP_LC_NAME}.git
+    git clone ssh://ilg-ul@git.code.sf.net/p/gnuarmeclipse/${APP_LC_NAME} gnuarmeclipse-${APP_LC_NAME}.git
   else
     # For regular read/only access, use the git url.
-    git clone http://git.code.sf.net/p/gnuarmeclipse/openocd gnuarmeclipse-${APP_LC_NAME}.git
+    git clone http://git.code.sf.net/p/gnuarmeclipse/${APP_LC_NAME} gnuarmeclipse-${APP_LC_NAME}.git
   fi
 
   # Add DTC module.
