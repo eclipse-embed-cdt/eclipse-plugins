@@ -277,11 +277,13 @@ do
 
         # Create the installer package, with content from the
         # ${distribution_install_folder}/${APP_LC_NAME} folder.
+        # The ID includes the version, which is a kludge to prevent the
+        # installer to remove preious versions.
         # The "${distribution_install_folder:1}" is a substring that skips first char.
         cd "${work_folder}"
-        pkgbuild --identifier ilg.gnuarmeclipse.${APP_LC_NAME} \
+        pkgbuild \
           --root "${install_folder}/${APP_LC_NAME}" \
-          --version "${distribution_file_version}" \
+          --identifier "ilg.gnuarmeclipse.${APP_LC_NAME}.${DISTRIBUTION_FILE_DATE}" \
           --install-location "${distribution_install_folder:1}/${distribution_file_version}" \
           "${distribution_file}"
 
@@ -530,6 +532,8 @@ do_copy_gcc_dll() {
 
   # First try Ubuntu specific locations,
   # then do a long full search.
+
+  # $1 = dll name
 
   if [ -f "/usr/lib/gcc/${cross_compile_prefix}/${CROSS_GCC_VERSION}/$1" ]
   then
