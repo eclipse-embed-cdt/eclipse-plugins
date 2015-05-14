@@ -303,6 +303,7 @@ then
   # Add DTC module.
   cd "${GIT_FOLDER}"
   git submodule update --init dtc
+  git submodule update --init pixman
 
   # Change to the gnuarmeclipse branch. On subsequent runs use "git pull".
   cd "${GIT_FOLDER}"
