@@ -12,6 +12,8 @@ IFS=$'\n\t'
 # The build is structured in 2 steps, one running on the host machine
 # and one running inside the Docker container.
 #
+# Note: The Windows 64-bits executable fails when timers are enabled.
+#
 # At first run, Docker will download/build 3 relatively large
 # images (1-2GB) from Docker Hub.
 #
@@ -145,6 +147,7 @@ then
   if [ ! -f "${WORK_FOLDER}/scripts/build-helper.sh" ]
   then
     # Download helper script from SF git.
+    echo "Downloading helper script..."
     curl -L "https://sourceforge.net/p/gnuarmeclipse/se/ci/develop/tree/scripts/build-helper.sh?format=raw" \
       --output "${WORK_FOLDER}/scripts/build-helper.sh"
   fi
@@ -618,19 +621,36 @@ then
 
   echo "${CROSS_GCC_VERSION}" "${CROSS_GCC_VERSION_SHORT}" "${SUBLOCATION}"
 
-  do_copy_gcc_dlls
+  # find "/usr/lib/gcc/${cross_compile_prefix}" -name '*.dll'
+  # find "/usr/${cross_compile_prefix}" -name '*.dll'
 
-  do_copy_libwinpthread_dll
-
-  if [ "${target_bits}" == "64" ]
+  if [ "${target_bits}" == "32" ]
   then
-    # for f in libintl-8.dll libiconv-2.dll libffi-6.dll libcharset-1.dll libasprintf-0.dll
-    for f in libintl-8.dll libiconv-2.dll libglib-2.0-0.dll libpixman-1-0.dll zlib1.dll
+
+    do_copy_gcc_dll "libgcc_s_sjlj-1.dll"
+    do_copy_gcc_dll "libssp-0.dll"
+    do_copy_gcc_dll "libstdc++-6.dll"
+
+    do_copy_libwinpthread_dll
+
+  elif [ "${target_bits}" == "64" ]
+  then
+
+    do_copy_gcc_dll "libgcc_s_seh-1.dll"
+    do_copy_gcc_dll "libssp-0.dll"
+    do_copy_gcc_dll "libstdc++-6.dll"
+
+  fi
+
+  if [ "${target_bits}" == "32" ]
+  then
+    for f in libglib-2.0-0.dll zlib1.dll libgthread-2.0-0.dll intl.dll
     do
       cp -v "/usr/${cross_compile_prefix}/bin/${f}" "${install_folder}/qemu/bin"
     done
-  else
-    for f in libglib-2.0-0.dll zlib1.dll libgthread-2.0-0.dll intl.dll
+  elif [ "${target_bits}" == "64" ]
+  then
+    for f in libintl-8.dll libiconv-2.dll libglib-2.0-0.dll libpixman-1-0.dll zlib1.dll
     do
       cp -v "/usr/${cross_compile_prefix}/bin/${f}" "${install_folder}/qemu/bin"
     done
