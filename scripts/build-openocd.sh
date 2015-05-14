@@ -146,6 +146,7 @@ then
   if [ ! -f "${WORK_FOLDER}/scripts/build-helper.sh" ]
   then
     # Download helper script from SF git.
+    echo "Downloading helper script..."
     curl -L "https://sourceforge.net/p/gnuarmeclipse/se/ci/develop/tree/scripts/build-helper.sh?format=raw" \
       --output "${WORK_FOLDER}/scripts/build-helper.sh"
   fi
