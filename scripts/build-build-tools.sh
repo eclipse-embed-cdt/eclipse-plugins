@@ -153,7 +153,7 @@ then
   echo "Remove most of the build folders..."
 
   rm -rf "${BUILD_FOLDER}"
-  rm -rf "${BUILD_FOLDER}/msys2"
+  rm -rf "${WORK_FOLDER}/msys2"
   rm -rf "${WORK_FOLDER}/install"
 
   rm -rf "${WORK_FOLDER}/scripts"
