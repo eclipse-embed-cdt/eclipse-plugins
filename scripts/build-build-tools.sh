@@ -8,7 +8,7 @@ IFS=$'\n\t'
 # The build is structured in 2 steps, one running on the host machine
 # and one running inside the Docker container.
 
-# Note: the 64-bit is not yet functional, BusyBox sh.exe fails.
+# Note: the 64-bits is not yet functional, BusyBox sh.exe fails.
 
 # At first run, Docker will download/build a relatively large
 # image (2.5GB) from Docker Hub.
@@ -23,7 +23,7 @@ IFS=$'\n\t'
 # sudo apt-get install mingw-w64 mingw-w64-tools mingw-w64-i686-dev 
 # sudo apt-get install autopoint gettext
 
-# Mandatory definition.
+# Mandatory definitions.
 APP_NAME="Windows Build Tools"
 APP_LC_NAME="build-tools"
 
@@ -121,6 +121,7 @@ then
   if [ ! -f "${WORK_FOLDER}/scripts/build-helper.sh" ]
   then
     # Download helper script from SF git.
+    echo "Downloading helper script..."
     curl -L "https://sourceforge.net/p/gnuarmeclipse/se/ci/develop/tree/scripts/build-helper.sh?format=raw" \
       --output "${WORK_FOLDER}/scripts/build-helper.sh"
   fi
@@ -532,10 +533,22 @@ do_strip ${cross_compile_prefix}-strip "${install_folder}/make-${MAKE_VERSION}/b
 # ----- Copy files to the install bin folder -----
 
 echo 
-mkdir -p "${install_folder}/build-tools/bin"
+mkdir -p "${install_folder}/${APP_LC_NAME}/bin"
 cp -v "${install_folder}/make-${MAKE_VERSION}/bin/make.exe" \
- "${install_folder}/build-tools/bin"
+ "${install_folder}/${APP_LC_NAME}/bin"
 
+echo
+echo "Copying DLLs..."
+
+if [ "${target_bits}" == "32" ]
+then
+  ls -l "/usr/${cross_compile_prefix}/bin/"*.dll
+  cp -v "/usr/${cross_compile_prefix}/bin/intl.dll" "${install_folder}/${APP_LC_NAME}/bin"
+elif [ "${target_bits}" == "64" ]
+then
+  cp -v "/usr/${cross_compile_prefix}/bin/libintl-8.dll" "${install_folder}/${APP_LC_NAME}/bin"
+  cp -v "/usr/${cross_compile_prefix}/bin/libiconv-2.dll" "${install_folder}/${APP_LC_NAME}/bin"
+fi
 
 # ----- Build BusyBox. -----
 
