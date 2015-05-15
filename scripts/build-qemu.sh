@@ -467,6 +467,15 @@ else
   gcc --version 2>/dev/null | egrep -e 'gcc|clang'
 fi
 
+if [ "${target_name}" == "osx" ]
+then
+  echo "Checking md5..."
+  md5 -s "test"
+else
+  echo "Checking md5sum..."
+  md5sum --version
+fi
+
 # ----- Remove and recreate the output folder. -----
 
 rm -rf "${output_folder}"

@@ -464,6 +464,8 @@ unix2dos --version 2>&1 | grep unix2dos
 echo "Checking makensis..."
 echo "makensis $(makensis -VERSION)"
 
+echo "Checking md5sum..."
+md5sum --version
 
 # ----- Remove and recreate the output folder. -----
 
@@ -685,6 +687,8 @@ makensis -V4 -NOCD \
   -DVERSION=${distribution_file_version} \
   "${nsis_file}"
 result="$?"
+
+do_compute_md5 md5sum "${distribution_file}"
 
 # Requires ${distribution_file} and ${result}
 source "$helper_script" --completed

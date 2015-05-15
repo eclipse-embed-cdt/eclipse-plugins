@@ -226,6 +226,8 @@ do
           "${nsis_file}"
         result="$?"
 
+        do_compute_md5 "md5sum" "${distribution_file}"
+
         # Display some information about the created application.
         echo
         echo "DLLs:"
@@ -247,6 +249,8 @@ do
         cp -r "${install_folder}/${APP_LC_NAME}"/* "${install_folder}/archive/${APP_LC_NAME}/${distribution_file_version}"
         cd "${install_folder}/archive"
         tar czf "${distribution_file}" --owner root --group root ${APP_LC_NAME}
+
+        do_compute_md5 "md5sum" "${distribution_file}"
 
         # Display some information about the created application.
         echo
@@ -286,6 +290,8 @@ do
           --identifier "ilg.gnuarmeclipse.${APP_LC_NAME}.${DISTRIBUTION_FILE_DATE}" \
           --install-location "${distribution_install_folder:1}/${distribution_file_version}" \
           "${distribution_file}"
+
+        do_compute_md5 "md5" "${distribution_file}"
 
         echo
         ls -l "${install_folder}/${APP_LC_NAME}/bin"
@@ -448,6 +454,17 @@ do_build_target() {
       --work-folder "${WORK_FOLDER}"
 
   fi
+}
+
+# v===========================================================================v
+do_compute_md5() {
+  # $1 md5 program
+  # $2 file
+
+  md5_file=$(echo "$2" | sed -e 's/\.[etp][xga][ezk]$/.md5/')
+  cd $(dirname $2)
+  "$1" "$(basename $2)" >"${md5_file}"
+  echo "MD5: $(cat ${md5_file})"
 }
 
 # v===========================================================================v
