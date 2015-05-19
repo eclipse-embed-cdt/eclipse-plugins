@@ -114,7 +114,7 @@ do
     --help)
       echo "Build the GNU ARM Eclipse ${APP_NAME} distributions."
       echo "Usage:"
-      echo "    bash $0 helper_script [--win32] [--win64] [--deb32] [--deb64] [--osx] [--all] [clean|pull|checkput-dev|checkout-stable|build-images] [--help]"
+      echo "    bash $0 helper_script [--win32] [--win64] [--deb32] [--deb64] [--osx] [--all] [clean|pull|checkout-dev|checkout-stable|build-images] [--help]"
       echo
       exit 1
       ;;
@@ -317,6 +317,75 @@ tar --version
 echo "Checking host unzip..."
 unzip | grep UnZip
 
+
+do_repo_action() {
+
+  # $1 = action (pull, checkout-dev, checkout-stable)
+
+  # Update current branch and prepare autotools.
+  echo
+  if [ "${ACTION}" == "pull" ]
+  then
+    echo "Running git pull..."
+  elif [ "${ACTION}" == "checkout-dev" ]
+  then
+    echo "Running git checkout gnuarmeclipse-dev & pull..."
+  elif [ "${ACTION}" == "checkout-stable" ]
+  then
+    echo "Running git checkout gnuarmeclipse & pull..."
+  fi
+
+  if [ -d "${GIT_FOLDER}" ]
+  then
+    echo
+    if [ "${USER}" == "ilg" ]
+    then
+      echo "Enter SourceForge password for git pull"
+    fi
+
+    cd "${GIT_FOLDER}"
+
+    if [ "${ACTION}" == "checkout-dev" ]
+    then
+      git checkout gnuarmeclipse-dev
+    elif [ "${ACTION}" == "checkout-stable" ]
+    then
+      git checkout gnuarmeclipse
+    fi
+
+    git pull
+    git submodule update
+
+    rm -rf "${BUILD_FOLDER}/openocd"
+
+    # Prepare autotools.
+    echo
+    echo "Running bootstrap..."
+
+    cd "${GIT_FOLDER}"
+    ./bootstrap
+
+    echo
+    echo "Pull completed. Proceed with a regular build."
+    exit 0
+  else
+	echo "No git folder."
+    exit 1
+  fi
+
+}
+
+# ----- Process "pull|checkout-dev|checkout-stable" actions. -----
+
+# For this to work, the following settings are required:
+# git branch --set-upstream-to=origin/gnuarmeclipse-dev gnuarmeclipse-dev
+# git branch --set-upstream-to=origin/gnuarmeclipse gnuarmeclipse
+
+case "${ACTION}" in
+  pull|checkout-dev|checkout-stable)
+    do_repo_action "${ACTION}"
+    ;;
+esac
 
 # ----- Get the GNU ARM Eclipse OpenOCD git repository. -----
 
@@ -1364,6 +1433,17 @@ EOF
 # ^===========================================================================^
 
 
+# ----- Build the OS X distribution. -----
+
+if [ "${HOST_UNAME}" == "Darwin" ]
+then
+  if [ "${DO_BUILD_OSX}" == "y" ]
+  then
+    do_build_target "Creating OS X package..." \
+      --target-name osx
+  fi
+fi
+
 # ----- Build the Windows 64-bits distribution. -----
 
 if [ "${DO_BUILD_WIN64}" == "y" ]
@@ -1404,16 +1484,7 @@ then
     --docker-image ilegeul/debian32:7-gnuarm-gcc
 fi
 
-# ----- Build the OS X distribution. -----
-
-if [ "${HOST_UNAME}" == "Darwin" ]
-then
-  if [ "${DO_BUILD_OSX}" == "y" ]
-  then
-    do_build_target "Creating OS X package..." \
-      --target-name osx
-  fi
-fi
+cat "${WORK_FOLDER}/output/"*.md5
 
 source "$helper_script" "--stop-timer"
 

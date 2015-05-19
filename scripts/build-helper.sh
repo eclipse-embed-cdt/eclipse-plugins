@@ -226,7 +226,7 @@ do
           "${nsis_file}"
         result="$?"
 
-        do_compute_md5 "md5sum" "${distribution_file}"
+        do_compute_md5 "md5sum" "" "${distribution_file}"
 
         # Display some information about the created application.
         echo
@@ -250,7 +250,7 @@ do
         cd "${install_folder}/archive"
         tar czf "${distribution_file}" --owner root --group root ${APP_LC_NAME}
 
-        do_compute_md5 "md5sum" "${distribution_file}"
+        do_compute_md5 "md5sum" "" "${distribution_file}"
 
         # Display some information about the created application.
         echo
@@ -291,7 +291,7 @@ do
           --install-location "${distribution_install_folder:1}/${distribution_file_version}" \
           "${distribution_file}"
 
-        do_compute_md5 "md5" "${distribution_file}"
+        do_compute_md5 "md5" "-r" "${distribution_file}"
 
         echo
         ls -l "${install_folder}/${APP_LC_NAME}/bin"
@@ -459,11 +459,12 @@ do_build_target() {
 # v===========================================================================v
 do_compute_md5() {
   # $1 md5 program
-  # $2 file
+  # $2 options
+  # $3 file
 
-  md5_file=$(echo "$2" | sed -e 's/\.[etp][xga][ezk]$/.md5/')
-  cd $(dirname $2)
-  "$1" "$(basename $2)" >"${md5_file}"
+  md5_file=$(echo "$3" | sed -e 's/\.[etp][xgk][ezg]$/.md5/')
+  cd $(dirname $3)
+  "$1" "$2" "$(basename $3)" >"${md5_file}"
   echo "MD5: $(cat ${md5_file})"
 }
 
