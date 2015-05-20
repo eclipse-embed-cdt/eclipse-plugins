@@ -82,7 +82,7 @@ do
       # When running on Docker, the host Work folder is used, if available.
       HOST_WORK_FOLDER="${WORK_FOLDER}/../../Host/Work/${APP_LC_NAME}"
 
-      DOCKER_HOST_WORK="/root/Host/Work/${APP_LC_NAME}"
+      DOCKER_HOST_WORK="/Host/Work/${APP_LC_NAME}"
       DOCKER_GIT_FOLDER="${DOCKER_HOST_WORK}/${APP_LC_NAME}.git"
       DOCKER_BUILD="/root/build"
       ;;
@@ -226,7 +226,7 @@ do
           "${nsis_file}"
         result="$?"
 
-        do_compute_md5 "md5sum" "" "${distribution_file}"
+        do_compute_md5 "md5sum" "-t" "${distribution_file}"
 
         # Display some information about the created application.
         echo
@@ -250,7 +250,7 @@ do
         cd "${install_folder}/archive"
         tar czf "${distribution_file}" --owner root --group root ${APP_LC_NAME}
 
-        do_compute_md5 "md5sum" "" "${distribution_file}"
+        do_compute_md5 "md5sum" "-t" "${distribution_file}"
 
         # Display some information about the created application.
         echo
@@ -507,7 +507,7 @@ run_docker_script() {
     --tty \
     --hostname "docker" \
     --workdir="/root" \
-    --volume="${WORK_FOLDER}/..:/root/Host/Work" \
+    --volume="${WORK_FOLDER}/..:/Host/Work" \
     ${docker_image} \
     /bin/bash "${docker_script}" \
       --docker-container-name "${docker_container_name}" \

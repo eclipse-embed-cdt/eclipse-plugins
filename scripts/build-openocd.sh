@@ -1213,7 +1213,7 @@ if [ "${target_name}" == "win" ]
 then
 
   # Probably due to a VirtualBox shared folder bug, the following fails with:
-  # i686-w64-mingw32-strip:/root/Host/Work/openocd/install/win32/openocd/bin/stE4wx0V: Protocol error
+  # i686-w64-mingw32-strip:/Host/Work/openocd/install/win32/openocd/bin/stE4wx0V: Protocol error
   # ${cross_compile_prefix}-strip "${install_folder}/openocd/bin/openocd.exe"
 
   do_strip ${cross_compile_prefix}-strip \
