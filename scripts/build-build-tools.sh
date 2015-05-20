@@ -688,7 +688,7 @@ makensis -V4 -NOCD \
   "${nsis_file}"
 result="$?"
 
-do_compute_md5 md5sum "${distribution_file}"
+do_compute_md5 "md5sum" "-t" "${distribution_file}"
 
 # Requires ${distribution_file} and ${result}
 source "$helper_script" --completed
