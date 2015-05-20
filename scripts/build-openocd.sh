@@ -356,7 +356,7 @@ do_repo_action() {
     git pull
     git submodule update
 
-    rm -rf "${BUILD_FOLDER}/openocd"
+    rm -rf "${BUILD_FOLDER}/${APP_LC_NAME}"
 
     # Prepare autotools.
     echo

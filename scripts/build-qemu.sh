@@ -277,6 +277,70 @@ echo "Checking host unzip..."
 unzip | grep UnZip
 
 
+do_repo_action() {
+
+  # $1 = action (pull, checkout-dev, checkout-stable)
+
+  # Update current branch and prepare autotools.
+  echo
+  if [ "${ACTION}" == "pull" ]
+  then
+    echo "Running git pull..."
+  elif [ "${ACTION}" == "checkout-dev" ]
+  then
+    echo "Running git checkout gnuarmeclipse-dev & pull..."
+  elif [ "${ACTION}" == "checkout-stable" ]
+  then
+    echo "Running git checkout gnuarmeclipse & pull..."
+  fi
+
+  if [ -d "${GIT_FOLDER}" ]
+  then
+    echo
+    if [ "${USER}" == "ilg" ]
+    then
+      echo "Enter SourceForge password for git pull"
+    fi
+
+    cd "${GIT_FOLDER}"
+
+    if [ "${ACTION}" == "checkout-dev" ]
+    then
+      git checkout gnuarmeclipse-dev
+    elif [ "${ACTION}" == "checkout-stable" ]
+    then
+      git checkout gnuarmeclipse
+    fi
+
+    git pull
+    git submodule update
+
+    rm -rf "${BUILD_FOLDER}/${APP_LC_NAME}"
+
+    echo
+    echo "Pull completed. Proceed with a regular build."
+    exit 0
+  else
+	echo "No git folder."
+    exit 1
+  fi
+
+}
+
+
+# ----- Process "pull|checkout-dev|checkout-stable" actions. -----
+
+# For this to work, the following settings are required:
+# git branch --set-upstream-to=origin/gnuarmeclipse-dev gnuarmeclipse-dev
+# git branch --set-upstream-to=origin/gnuarmeclipse gnuarmeclipse
+
+case "${ACTION}" in
+  pull|checkout-dev|checkout-stable)
+    do_repo_action "${ACTION}"
+    ;;
+esac
+
+
 # ----- Get the GNU ARM Eclipse QEMU git repository. -----
 
 # The custom QEMU branch is available from the dedicated Git repository
