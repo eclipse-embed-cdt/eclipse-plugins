@@ -911,6 +911,17 @@ EOF
 # ^===========================================================================^
 
 
+# ----- Build the OS X distribution. -----
+
+if [ "${HOST_UNAME}" == "Darwin" ]
+then
+  if [ "${DO_BUILD_OSX}" == "y" ]
+  then
+    do_build_target "Creating OS X package..." \
+      --target-name osx
+  fi
+fi
+
 # ----- Build the Windows 64-bits distribution. -----
 
 if [ "${DO_BUILD_WIN64}" == "y" ]
@@ -951,16 +962,7 @@ then
     --docker-image ilegeul/debian32:7-gnuarm-gcc
 fi
 
-# ----- Build the OS X distribution. -----
-
-if [ "${HOST_UNAME}" == "Darwin" ]
-then
-  if [ "${DO_BUILD_OSX}" == "y" ]
-  then
-    do_build_target "Creating OS X package..." \
-      --target-name osx
-  fi
-fi
+cat "${WORK_FOLDER}/output/"*.md5
 
 source "$helper_script" "--stop-timer"
 
