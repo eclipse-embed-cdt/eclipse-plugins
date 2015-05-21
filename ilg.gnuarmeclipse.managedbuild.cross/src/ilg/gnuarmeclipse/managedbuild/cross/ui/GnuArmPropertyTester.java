@@ -11,9 +11,14 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross.ui;
 
+import ilg.gnuarmeclipse.managedbuild.cross.Option;
+
+import org.eclipse.cdt.managedbuilder.core.BuildException;
+import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
 import org.eclipse.cdt.managedbuilder.core.IManagedProject;
-import org.eclipse.cdt.managedbuilder.core.IProjectType;
+import org.eclipse.cdt.managedbuilder.core.IOption;
+import org.eclipse.cdt.managedbuilder.core.IToolChain;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.core.expressions.PropertyTester;
 import org.eclipse.core.resources.IProject;
@@ -26,7 +31,7 @@ import org.eclipse.core.resources.IProject;
  */
 public class GnuArmPropertyTester extends PropertyTester {
 
-	private static final String TYPE_PREFIX = "ilg.gnuarmeclipse.managedbuild.cross.target.";
+	public static final String TYPE_PREFIX = "ilg.gnuarmeclipse.managedbuild.cross.target.";
 
 	@Override
 	public boolean test(Object receiver, String property, Object[] args,
@@ -43,12 +48,37 @@ public class GnuArmPropertyTester extends PropertyTester {
 				}
 
 				IManagedProject managedProject = info.getManagedProject();
-				IProjectType projectType = managedProject.getProjectType();
-
-				if (projectType != null
-						&& projectType.getId().startsWith(TYPE_PREFIX)) {
-					return true;
+				IConfiguration[] cfgs = managedProject.getConfigurations();
+				for (int i=0; i < cfgs.length; ++i){
+					IToolChain toolchain = cfgs[i].getToolChain();
+					if (toolchain == null) {
+						continue;
+					}
+					IOption option = toolchain
+							.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME);
+					if (option == null) {
+						continue;
+					}
+					try {
+						String name = option.getStringValue();
+						if (name != null && !name.isEmpty()){
+							return true;
+						}
+					} catch (BuildException e) {
+						;
+					}
+				
 				}
+				
+				return false;
+
+				// IProjectType projectType = managedProject.getProjectType();
+				//
+				// if (projectType == null
+				// || !projectType.getId().startsWith(TYPE_PREFIX)) {
+				// return false;
+				// }
+				// return true;
 			}
 		}
 		return false;
