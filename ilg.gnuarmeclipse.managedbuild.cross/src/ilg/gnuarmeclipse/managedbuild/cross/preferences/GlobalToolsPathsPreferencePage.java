@@ -11,12 +11,24 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross.preferences;
 
+import java.util.HashSet;
+import java.util.Set;
+
+import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.core.preferences.DirectoryNotStrictFieldEditor;
+import ilg.gnuarmeclipse.core.preferences.LabelFakeFieldEditor;
 import ilg.gnuarmeclipse.managedbuild.cross.Activator;
+import ilg.gnuarmeclipse.managedbuild.cross.Option;
 import ilg.gnuarmeclipse.managedbuild.cross.ui.DefaultPreferences;
 import ilg.gnuarmeclipse.managedbuild.cross.ui.Messages;
 import ilg.gnuarmeclipse.managedbuild.cross.ui.PersistentPreferences;
 
+import org.eclipse.cdt.managedbuilder.core.BuildException;
+import org.eclipse.cdt.managedbuilder.core.IConfiguration;
+import org.eclipse.cdt.managedbuilder.core.IOption;
+import org.eclipse.cdt.managedbuilder.core.IToolChain;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
@@ -50,10 +62,7 @@ public class GlobalToolsPathsPreferencePage extends FieldEditorPreferencePage
 		setPreferenceStore(new ScopedPreferenceStore(
 				ConfigurationScope.INSTANCE, Activator.PLUGIN_ID));
 
-		String toolchainName = PersistentPreferences.getToolchainName();
-		setDescription(String.format(
-				Messages.GlobalToolsPathsPropertyPage_description,
-				toolchainName));
+		setDescription(Messages.GlobalToolsPathsPropertyPage_description);
 	}
 
 	// ------------------------------------------------------------------------
@@ -90,17 +99,57 @@ public class GlobalToolsPathsPreferencePage extends FieldEditorPreferencePage
 				Messages.ToolchainName_label, getFieldEditorParent());
 		addField(toolchainNameField);
 
-		String toolchainName = PersistentPreferences.getToolchainName();
-		String key = PersistentPreferences.getToolchainKey(toolchainName);
+		Set<String> toolchainNames = new HashSet<String>();
 
-		isStrict = DefaultPreferences.getBoolean(
-				PersistentPreferences.GLOBAL_TOOLCHAIN_PATH_STRICT, true);
+		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
+				.getProjects();
+		for (int i = 0; i < projects.length; ++i) {
+			IConfiguration[] configs = EclipseUtils
+					.getConfigurationsForProject(projects[i]);
+			if (configs != null) {
+				for (int j = 0; j < configs.length; ++j) {
+					IToolChain toolchain = configs[j].getToolChain();
+					if (toolchain == null) {
+						continue;
+					}
+					IOption option = toolchain
+							.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME);
+					if (option == null) {
+						continue;
+					}
+					try {
+						String name = option.getStringValue();
+						toolchainNames.add(name);
+					} catch (BuildException e) {
+						;
+					}
+				}
+			}
+		}
 
-		FieldEditor toolchainPathField;
-		toolchainPathField = new DirectoryNotStrictFieldEditor(key,
-				Messages.ToolchainPaths_label, getFieldEditorParent(), isStrict);
+		if (toolchainNames.isEmpty()) {
+			toolchainNames.add(PersistentPreferences.getToolchainName());
+		}
 
-		addField(toolchainPathField);
+		for (String toolchainName : toolchainNames) {
+
+			FieldEditor labelField = new LabelFakeFieldEditor(toolchainName,
+					Messages.ToolsPaths_ToolchainName_label,
+					getFieldEditorParent());
+			addField(labelField);
+
+			String key = PersistentPreferences.getToolchainKey(toolchainName);
+
+			isStrict = DefaultPreferences.getBoolean(
+					PersistentPreferences.GLOBAL_TOOLCHAIN_PATH_STRICT, true);
+
+			FieldEditor toolchainPathField;
+			toolchainPathField = new DirectoryNotStrictFieldEditor(key,
+					Messages.ToolchainPaths_label, getFieldEditorParent(),
+					isStrict);
+
+			addField(toolchainPathField);
+		}
 	}
 
 	// ------------------------------------------------------------------------

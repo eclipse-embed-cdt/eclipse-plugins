@@ -54,6 +54,8 @@ public class Messages extends NLS {
 	public static String ToolChainSettingsTab_path_link;
 
 	public static String ToolsPaths_label;
+	public static String ToolsPaths_ToolchainName_label;
+
 	public static String ToolchainPaths_label;
 	public static String ToolchainName_label;
 
