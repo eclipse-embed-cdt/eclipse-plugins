@@ -12,9 +12,14 @@
 package ilg.gnuarmeclipse.core;
 
 import java.net.URL;
+import java.util.LinkedList;
+import java.util.List;
 
+import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
+import org.eclipse.cdt.core.settings.model.ICProjectDescription;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
+import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
 import org.eclipse.core.filesystem.EFS;
 import org.eclipse.core.filesystem.IFileStore;
@@ -536,6 +541,49 @@ public class EclipseUtils {
 		} else {
 			Activator.log("Variable \"" + name + "\" not set.");
 		}
+	}
+
+	/**
+	 * Get the configuration of a project.
+	 * 
+	 * @param project
+	 * @return array of configurations or null.
+	 */
+	public static IConfiguration[] getConfigurationsForProject(IProject project) {
+
+		ICProjectDescription cProjectDescription = CoreModel.getDefault()
+				.getProjectDescription(project);
+		if (cProjectDescription == null) {
+			return null;
+		}
+		ICConfigurationDescription[] cfgs = cProjectDescription
+				.getConfigurations();
+		if (cfgs == null) {
+			return null;
+		}
+
+		List<IConfiguration> list = new LinkedList<IConfiguration>();
+
+		for (int i = 0; i < cfgs.length; ++i) {
+			// System.out.println(cfgs[i].getName());
+			IManagedBuildInfo info = ManagedBuildManager.getBuildInfo(project);
+			if (info == null) {
+				continue;
+			}
+			IConfiguration config = info.getManagedProject().getConfiguration(
+					cfgs[i].getId());
+			if (config == null) {
+				continue;
+
+			}
+			list.add(config);
+		}
+
+		if (list.size() == 0) {
+			return null;
+		}
+
+		return list.toArray(new IConfiguration[list.size()]);
 	}
 
 	// ------------------------------------------------------------------------
