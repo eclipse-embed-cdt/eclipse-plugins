@@ -27,7 +27,9 @@ import org.eclipse.cdt.core.settings.model.ICResourceDescription;
 import org.eclipse.cdt.managedbuilder.buildproperties.IBuildPropertyValue;
 import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
+import org.eclipse.cdt.managedbuilder.core.IManagedProject;
 import org.eclipse.cdt.managedbuilder.core.IOption;
+import org.eclipse.cdt.managedbuilder.core.IProjectType;
 import org.eclipse.cdt.managedbuilder.core.IToolChain;
 import org.eclipse.cdt.managedbuilder.internal.core.MultiConfiguration;
 import org.eclipse.cdt.managedbuilder.makegen.IManagedBuilderMakefileGenerator;
@@ -233,73 +235,87 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		layoutData.widthHint = WIDTH_HINT;
 		fCommandCppText.setLayoutData(layoutData);
 
-		// ----- Command ar ---------------------------------------------------
-		Label commandArLabel = new Label(usercomp, SWT.NONE);
-		commandArLabel.setText(Messages.ToolChainSettingsTab_arCmd);
+		if (isManaged()) {
+			// ----- Command ar
+			// ---------------------------------------------------
+			Label commandArLabel = new Label(usercomp, SWT.NONE);
+			commandArLabel.setText(Messages.ToolChainSettingsTab_arCmd);
 
-		fCommandArText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-		layoutData = new GridData();
-		layoutData.horizontalSpan = 2;
-		layoutData.widthHint = WIDTH_HINT;
-		fCommandArText.setLayoutData(layoutData);
+			fCommandArText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
+			layoutData = new GridData();
+			layoutData.horizontalSpan = 2;
+			layoutData.widthHint = WIDTH_HINT;
+			fCommandArText.setLayoutData(layoutData);
 
-		// ----- Command objcopy ----------------------------------------------
-		Label commandObjcopyLabel = new Label(usercomp, SWT.NONE);
-		commandObjcopyLabel.setText(Messages.ToolChainSettingsTab_objcopyCmd);
+			// ----- Command objcopy ------------------------------------------
+			Label commandObjcopyLabel = new Label(usercomp, SWT.NONE);
+			commandObjcopyLabel
+					.setText(Messages.ToolChainSettingsTab_objcopyCmd);
 
-		fCommandObjcopyText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-		layoutData = new GridData();
-		layoutData.horizontalSpan = 2;
-		layoutData.widthHint = WIDTH_HINT;
-		fCommandObjcopyText.setLayoutData(layoutData);
+			fCommandObjcopyText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
+			layoutData = new GridData();
+			layoutData.horizontalSpan = 2;
+			layoutData.widthHint = WIDTH_HINT;
+			fCommandObjcopyText.setLayoutData(layoutData);
 
-		// ----- Command objdump ----------------------------------------------
-		Label commandObjdumpLabel = new Label(usercomp, SWT.NONE);
-		commandObjdumpLabel.setText(Messages.ToolChainSettingsTab_objdumpCmd);
+			// ----- Command objdump ------------------------------------------
+			Label commandObjdumpLabel = new Label(usercomp, SWT.NONE);
+			commandObjdumpLabel
+					.setText(Messages.ToolChainSettingsTab_objdumpCmd);
 
-		fCommandObjdumpText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-		layoutData = new GridData();
-		layoutData.horizontalSpan = 2;
-		layoutData.widthHint = WIDTH_HINT;
-		fCommandObjdumpText.setLayoutData(layoutData);
+			fCommandObjdumpText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
+			layoutData = new GridData();
+			layoutData.horizontalSpan = 2;
+			layoutData.widthHint = WIDTH_HINT;
+			fCommandObjdumpText.setLayoutData(layoutData);
 
-		// ----- Command size -------------------------------------------------
-		Label commandSizeLabel = new Label(usercomp, SWT.NONE);
-		commandSizeLabel.setText(Messages.ToolChainSettingsTab_sizeCmd);
+			// ----- Command size ---------------------------------------------
+			Label commandSizeLabel = new Label(usercomp, SWT.NONE);
+			commandSizeLabel.setText(Messages.ToolChainSettingsTab_sizeCmd);
 
-		fCommandSizeText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-		layoutData = new GridData();
-		layoutData.horizontalSpan = 2;
-		layoutData.widthHint = WIDTH_HINT;
-		fCommandSizeText.setLayoutData(layoutData);
+			fCommandSizeText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
+			layoutData = new GridData();
+			layoutData.horizontalSpan = 2;
+			layoutData.widthHint = WIDTH_HINT;
+			fCommandSizeText.setLayoutData(layoutData);
 
-		// ----- Command make -------------------------------------------------
-		Label commandMakeLabel = new Label(usercomp, SWT.NONE);
-		commandMakeLabel.setText(Messages.ToolChainSettingsTab_makeCmd);
+			// ----- Command make ---------------------------------------------
+			Label commandMakeLabel = new Label(usercomp, SWT.NONE);
+			commandMakeLabel.setText(Messages.ToolChainSettingsTab_makeCmd);
 
-		fCommandMakeText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-		layoutData = new GridData();
-		layoutData.horizontalSpan = 2;
-		layoutData.widthHint = WIDTH_HINT;
-		fCommandMakeText.setLayoutData(layoutData);
+			fCommandMakeText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
+			layoutData = new GridData();
+			layoutData.horizontalSpan = 2;
+			layoutData.widthHint = WIDTH_HINT;
+			fCommandMakeText.setLayoutData(layoutData);
 
-		// ----- Command rm ---------------------------------------------------
-		Label commandRmLabel = new Label(usercomp, SWT.NONE);
-		commandRmLabel.setText(Messages.ToolChainSettingsTab_rmCmd);
+			// ----- Command rm -----------------------------------------------
+			Label commandRmLabel = new Label(usercomp, SWT.NONE);
+			commandRmLabel.setText(Messages.ToolChainSettingsTab_rmCmd);
 
-		fCommandRmText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
-		layoutData = new GridData();
-		layoutData.horizontalSpan = 2;
-		layoutData.widthHint = WIDTH_HINT;
-		fCommandRmText.setLayoutData(layoutData);
+			fCommandRmText = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
+			layoutData = new GridData();
+			layoutData.horizontalSpan = 2;
+			layoutData.widthHint = WIDTH_HINT;
+			fCommandRmText.setLayoutData(layoutData);
 
-		fCommandRmText.addModifyListener(new ModifyListener() {
+			fCommandRmText.addModifyListener(new ModifyListener() {
 
-			@Override
-			public void modifyText(ModifyEvent e) {
-				// System.out.println("commandRm modified");
-			}
-		});
+				@Override
+				public void modifyText(ModifyEvent e) {
+					// System.out.println("commandRm modified");
+				}
+			});
+		} else {
+			Label label = new Label(usercomp, SWT.NONE);
+			label.setText("");
+
+			Label link = new Label(usercomp, SWT.NONE);
+			link.setText(Messages.ToolChainSettingsTab_warning_link);
+			layoutData = new GridData();
+			layoutData.horizontalSpan = 2;
+			link.setLayoutData(layoutData);
+		}
 
 		{
 			Label empty = new Label(usercomp, SWT.NONE);
@@ -374,25 +390,27 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			empty.setLayoutData(layoutData);
 		}
 
-		// ----- Flash --------------------------------------------------------
-		fFlashButton = new Button(usercomp, SWT.CHECK);
-		fFlashButton.setText(Messages.ToolChainSettingsTab_flash);
-		layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1);
-		fFlashButton.setLayoutData(layoutData);
+		if (isManaged()) {
+			// ----- Flash ----------------------------------------------------
+			fFlashButton = new Button(usercomp, SWT.CHECK);
+			fFlashButton.setText(Messages.ToolChainSettingsTab_flash);
+			layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1);
+			fFlashButton.setLayoutData(layoutData);
 
-		// ----- Listing ------------------------------------------------------
-		fListingButton = new Button(usercomp, SWT.CHECK);
-		fListingButton.setText(Messages.ToolChainSettingsTab_listing);
-		layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1);
-		fListingButton.setLayoutData(layoutData);
+			// ----- Listing --------------------------------------------------
+			fListingButton = new Button(usercomp, SWT.CHECK);
+			fListingButton.setText(Messages.ToolChainSettingsTab_listing);
+			layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1);
+			fListingButton.setLayoutData(layoutData);
 
-		// ----- Size ---------------------------------------------------------
-		fSizeButton = new Button(usercomp, SWT.CHECK);
-		fSizeButton.setText(Messages.ToolChainSettingsTab_size);
-		layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1);
-		fSizeButton.setLayoutData(layoutData);
+			// ----- Size -----------------------------------------------------
+			fSizeButton = new Button(usercomp, SWT.CHECK);
+			fSizeButton.setText(Messages.ToolChainSettingsTab_size);
+			layoutData = new GridData(SWT.LEFT, SWT.TOP, false, false, 3, 1);
+			fSizeButton.setLayoutData(layoutData);
 
-		// fIsCreated = true;
+			// fIsCreated = true;
+		}
 
 		updateControlsForConfig(fConfig);
 
@@ -429,17 +447,20 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		fSuffixText.setText(td.getSuffix());
 		fCommandCText.setText(td.getCmdC());
 		fCommandCppText.setText(td.getCmdCpp());
-		fCommandArText.setText(td.getCmdAr());
-		fCommandObjcopyText.setText(td.getCmdObjcopy());
-		fCommandObjdumpText.setText(td.getCmdObjdump());
-		fCommandSizeText.setText(td.getCmdSize());
 
-		fCommandMakeText.setText(td.getCmdMake());
-		String oldCommandRm = fCommandRmText.getText();
-		String newCommandRm = td.getCmdRm();
-		if (oldCommandRm == null || !oldCommandRm.equals(newCommandRm)) {
-			// if same value skip it, to avoid remove the makefile
-			fCommandRmText.setText(newCommandRm);
+		if (isManaged()) {
+			fCommandArText.setText(td.getCmdAr());
+			fCommandObjcopyText.setText(td.getCmdObjcopy());
+			fCommandObjdumpText.setText(td.getCmdObjdump());
+			fCommandSizeText.setText(td.getCmdSize());
+
+			fCommandMakeText.setText(td.getCmdMake());
+			String oldCommandRm = fCommandRmText.getText();
+			String newCommandRm = td.getCmdRm();
+			if (oldCommandRm == null || !oldCommandRm.equals(newCommandRm)) {
+				// if same value skip it, to avoid remove the makefile
+				fCommandRmText.setText(newCommandRm);
+			}
 		}
 
 		updateToolchainPath(td.getName());
@@ -500,15 +521,17 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 		updateControlsForConfig(config);
 
-		fCommandArText.setEnabled(isStaticLibrary);
+		if (isManaged()) {
+			fCommandArText.setEnabled(isStaticLibrary);
 
-		fCommandObjcopyText.setEnabled(isExecutable);
-		fCommandObjdumpText.setEnabled(isExecutable);
-		fCommandSizeText.setEnabled(isExecutable);
+			fCommandObjcopyText.setEnabled(isExecutable);
+			fCommandObjdumpText.setEnabled(isExecutable);
+			fCommandSizeText.setEnabled(isExecutable);
 
-		fFlashButton.setEnabled(isExecutable);
-		fListingButton.setEnabled(isExecutable);
-		fSizeButton.setEnabled(isExecutable);
+			fFlashButton.setEnabled(isExecutable);
+			fListingButton.setEnabled(isExecutable);
+			fSizeButton.setEnabled(isExecutable);
+		}
 	}
 
 	@Override
@@ -646,78 +669,83 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			fCommandCppText.setText(toolchainDefinition.getCmdCpp());
 		}
 
-		String commandAr = Option.getOptionStringValue(config,
-				Option.OPTION_COMMAND_AR);
-		if (commandAr != null) {
-			fCommandArText.setText(commandAr);
-		} else {
-			fCommandArText.setText(toolchainDefinition.getCmdAr());
-		}
+		if (isManaged()) {
+			String commandAr = Option.getOptionStringValue(config,
+					Option.OPTION_COMMAND_AR);
+			if (commandAr != null) {
+				fCommandArText.setText(commandAr);
+			} else {
+				fCommandArText.setText(toolchainDefinition.getCmdAr());
+			}
 
-		String commandObjcopy = Option.getOptionStringValue(config,
-				Option.OPTION_COMMAND_OBJCOPY);
-		if (commandObjcopy != null) {
-			fCommandObjcopyText.setText(commandObjcopy);
-		} else {
-			fCommandObjcopyText.setText(toolchainDefinition.getCmdObjcopy());
-		}
+			String commandObjcopy = Option.getOptionStringValue(config,
+					Option.OPTION_COMMAND_OBJCOPY);
+			if (commandObjcopy != null) {
+				fCommandObjcopyText.setText(commandObjcopy);
+			} else {
+				fCommandObjcopyText
+						.setText(toolchainDefinition.getCmdObjcopy());
+			}
 
-		String commandObjdump = Option.getOptionStringValue(config,
-				Option.OPTION_COMMAND_OBJDUMP);
-		if (commandObjdump != null) {
-			fCommandObjdumpText.setText(commandObjdump);
-		} else {
-			fCommandObjdumpText.setText(toolchainDefinition.getCmdObjdump());
-		}
+			String commandObjdump = Option.getOptionStringValue(config,
+					Option.OPTION_COMMAND_OBJDUMP);
+			if (commandObjdump != null) {
+				fCommandObjdumpText.setText(commandObjdump);
+			} else {
+				fCommandObjdumpText
+						.setText(toolchainDefinition.getCmdObjdump());
+			}
 
-		String commandSize = Option.getOptionStringValue(config,
-				Option.OPTION_COMMAND_SIZE);
-		if (commandSize != null) {
-			fCommandSizeText.setText(commandSize);
-		} else {
-			fCommandSizeText.setText(toolchainDefinition.getCmdSize());
-		}
+			String commandSize = Option.getOptionStringValue(config,
+					Option.OPTION_COMMAND_SIZE);
+			if (commandSize != null) {
+				fCommandSizeText.setText(commandSize);
+			} else {
+				fCommandSizeText.setText(toolchainDefinition.getCmdSize());
+			}
 
-		String commandMake = Option.getOptionStringValue(config,
-				Option.OPTION_COMMAND_MAKE);
-		if (commandMake != null) {
-			fCommandMakeText.setText(commandMake);
-		} else {
-			fCommandMakeText.setText(toolchainDefinition.getCmdMake());
-		}
+			String commandMake = Option.getOptionStringValue(config,
+					Option.OPTION_COMMAND_MAKE);
+			if (commandMake != null) {
+				fCommandMakeText.setText(commandMake);
+			} else {
+				fCommandMakeText.setText(toolchainDefinition.getCmdMake());
+			}
 
-		String commandRm = Option.getOptionStringValue(config,
-				Option.OPTION_COMMAND_RM);
-		if (commandRm != null) {
-			fCommandRmText.setText(commandRm);
-		} else {
-			fCommandRmText.setText(toolchainDefinition.getCmdRm());
-		}
+			String commandRm = Option.getOptionStringValue(config,
+					Option.OPTION_COMMAND_RM);
+			if (commandRm != null) {
+				fCommandRmText.setText(commandRm);
+			} else {
+				fCommandRmText.setText(toolchainDefinition.getCmdRm());
+			}
 
-		Boolean isCreateFlash = Option.getOptionBooleanValue(config,
-				Option.OPTION_ADDTOOLS_CREATEFLASH);
-		if (isCreateFlash != null) {
-			fFlashButton.setSelection(isCreateFlash);
-		} else {
-			fFlashButton
-					.setSelection(Option.OPTION_ADDTOOLS_CREATEFLASH_DEFAULT);
-		}
+			Boolean isCreateFlash = Option.getOptionBooleanValue(config,
+					Option.OPTION_ADDTOOLS_CREATEFLASH);
+			if (isCreateFlash != null) {
+				fFlashButton.setSelection(isCreateFlash);
+			} else {
+				fFlashButton
+						.setSelection(Option.OPTION_ADDTOOLS_CREATEFLASH_DEFAULT);
+			}
 
-		Boolean isCreateListing = Option.getOptionBooleanValue(config,
-				Option.OPTION_ADDTOOLS_CREATELISTING);
-		if (isCreateListing != null) {
-			fListingButton.setSelection(isCreateListing);
-		} else {
-			fListingButton
-					.setSelection(Option.OPTION_ADDTOOLS_CREATELISTING_DEFAULT);
-		}
+			Boolean isCreateListing = Option.getOptionBooleanValue(config,
+					Option.OPTION_ADDTOOLS_CREATELISTING);
+			if (isCreateListing != null) {
+				fListingButton.setSelection(isCreateListing);
+			} else {
+				fListingButton
+						.setSelection(Option.OPTION_ADDTOOLS_CREATELISTING_DEFAULT);
+			}
 
-		Boolean isPrintSize = Option.getOptionBooleanValue(config,
-				Option.OPTION_ADDTOOLS_PRINTSIZE);
-		if (isPrintSize != null) {
-			fSizeButton.setSelection(isPrintSize);
-		} else {
-			fSizeButton.setSelection(Option.OPTION_ADDTOOLS_PRINTSIZE_DEFAULT);
+			Boolean isPrintSize = Option.getOptionBooleanValue(config,
+					Option.OPTION_ADDTOOLS_PRINTSIZE);
+			if (isPrintSize != null) {
+				fSizeButton.setSelection(isPrintSize);
+			} else {
+				fSizeButton
+						.setSelection(Option.OPTION_ADDTOOLS_PRINTSIZE_DEFAULT);
+			}
 		}
 
 		fConfig = config;
@@ -794,53 +822,57 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			config.setOption(toolchain, option, fCommandCppText.getText()
 					.trim());
 
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_COMMAND_AR); //$NON-NLS-1$
-			config.setOption(toolchain, option, fCommandArText.getText().trim());
+			if (isManaged()) {
+				option = toolchain
+						.getOptionBySuperClassId(Option.OPTION_COMMAND_AR); //$NON-NLS-1$
+				config.setOption(toolchain, option, fCommandArText.getText()
+						.trim());
 
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_COMMAND_OBJCOPY); //$NON-NLS-1$
-			config.setOption(toolchain, option, fCommandObjcopyText.getText()
-					.trim());
+				option = toolchain
+						.getOptionBySuperClassId(Option.OPTION_COMMAND_OBJCOPY); //$NON-NLS-1$
+				config.setOption(toolchain, option, fCommandObjcopyText
+						.getText().trim());
 
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_COMMAND_OBJDUMP); //$NON-NLS-1$
-			config.setOption(toolchain, option, fCommandObjdumpText.getText()
-					.trim());
+				option = toolchain
+						.getOptionBySuperClassId(Option.OPTION_COMMAND_OBJDUMP); //$NON-NLS-1$
+				config.setOption(toolchain, option, fCommandObjdumpText
+						.getText().trim());
 
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_COMMAND_SIZE); //$NON-NLS-1$
-			config.setOption(toolchain, option, fCommandSizeText.getText()
-					.trim());
+				option = toolchain
+						.getOptionBySuperClassId(Option.OPTION_COMMAND_SIZE); //$NON-NLS-1$
+				config.setOption(toolchain, option, fCommandSizeText.getText()
+						.trim());
 
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_COMMAND_MAKE); //$NON-NLS-1$
-			config.setOption(toolchain, option, fCommandMakeText.getText()
-					.trim());
+				option = toolchain
+						.getOptionBySuperClassId(Option.OPTION_COMMAND_MAKE); //$NON-NLS-1$
+				config.setOption(toolchain, option, fCommandMakeText.getText()
+						.trim());
 
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_COMMAND_RM); //$NON-NLS-1$
-			String oldValue = option.getStringValue();
-			String newValue = fCommandRmText.getText().trim();
+				option = toolchain
+						.getOptionBySuperClassId(Option.OPTION_COMMAND_RM); //$NON-NLS-1$
+				String oldValue = option.getStringValue();
+				String newValue = fCommandRmText.getText().trim();
 
-			if (newValue != null && !newValue.equals(oldValue)) {
-				config.setOption(toolchain, option, newValue);
+				if (newValue != null && !newValue.equals(oldValue)) {
+					config.setOption(toolchain, option, newValue);
 
-				// propagate is expensive, run it only if needed
-				propagateCommandRmUpdate(config);
+					// propagate is expensive, run it only if needed
+					propagateCommandRmUpdate(config);
+				}
+
+				option = toolchain
+						.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_CREATEFLASH); //$NON-NLS-1$
+				config.setOption(toolchain, option, fFlashButton.getSelection());
+
+				option = toolchain
+						.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_CREATELISTING); //$NON-NLS-1$
+				config.setOption(toolchain, option,
+						fListingButton.getSelection());
+
+				option = toolchain
+						.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_PRINTSIZE); //$NON-NLS-1$
+				config.setOption(toolchain, option, fSizeButton.getSelection());
 			}
-
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_CREATEFLASH); //$NON-NLS-1$
-			config.setOption(toolchain, option, fFlashButton.getSelection());
-
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_CREATELISTING); //$NON-NLS-1$
-			config.setOption(toolchain, option, fListingButton.getSelection());
-
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_ADDTOOLS_PRINTSIZE); //$NON-NLS-1$
-			config.setOption(toolchain, option, fSizeButton.getSelection());
 
 		} catch (NullPointerException e) {
 			Activator.log(e);
@@ -987,11 +1019,14 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		}
 		updateInterfaceAfterToolchainChange();
 
-		fFlashButton.setSelection(Option.OPTION_ADDTOOLS_CREATEFLASH_DEFAULT);
-		fListingButton
-				.setSelection(Option.OPTION_ADDTOOLS_CREATELISTING_DEFAULT);
-		fSizeButton.setSelection(Option.OPTION_ADDTOOLS_PRINTSIZE_DEFAULT);
-		// System.out.println("performDefaults()");
+		if (isManaged()) {
+			fFlashButton
+					.setSelection(Option.OPTION_ADDTOOLS_CREATEFLASH_DEFAULT);
+			fListingButton
+					.setSelection(Option.OPTION_ADDTOOLS_CREATELISTING_DEFAULT);
+			fSizeButton.setSelection(Option.OPTION_ADDTOOLS_PRINTSIZE_DEFAULT);
+			// System.out.println("performDefaults()");
+		}
 	}
 
 	@Override
@@ -1029,6 +1064,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	}
 
 	private boolean isThisPlugin() {
+
 		fConfig = getCfg();
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("isThisPlugin() fConfig=" + fConfig);
@@ -1036,10 +1072,27 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 		IToolChain toolchain = fConfig.getToolChain();
 		String sToolchainId = toolchain.getBaseId();
-		if (sToolchainId.startsWith(IDs.TOOLCHAIN_ID + ".")) {
-			return true;
+		if (!sToolchainId.startsWith(IDs.TOOLCHAIN_ID + ".")) {
+			return false;
 		}
-		return false;
+
+		return true;
+	}
+
+	public static final String TYPE_PREFIX = "ilg.gnuarmeclipse.managedbuild.cross.target.";
+
+	private boolean isManaged() {
+
+		fConfig = getCfg();
+
+		IManagedProject managedProject = fConfig.getManagedProject();
+		IProjectType projectType = managedProject.getProjectType();
+
+		if (projectType == null || !projectType.getId().startsWith(TYPE_PREFIX)) {
+			return false;
+		}
+
+		return true;
 	}
 
 	// ------------------------------------------------------------------------
