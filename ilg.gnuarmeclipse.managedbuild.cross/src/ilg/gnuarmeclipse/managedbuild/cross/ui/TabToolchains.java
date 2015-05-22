@@ -558,7 +558,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			System.out.println("Toolchains.performOK() " + config);
 		}
 
-		if (fLastUpdatedConfig.equals(config)) {
+		if (fLastUpdatedConfig != null && fLastUpdatedConfig.equals(config)) {
 			updateOptions(config);
 		} else {
 			if (Activator.getInstance().isDebugging()) {
@@ -599,9 +599,9 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			}
 			// This is not a project created with the wizard
 			// (most likely it is the result of a toolchain change)
-			fSelectedToolchainIndex = ToolchainDefinition.getDefault();
-			fSelectedToolchainName = ToolchainDefinition.getToolchain(
-					fSelectedToolchainIndex).getName();
+			fSelectedToolchainName = PersistentPreferences.getToolchainName();
+			fSelectedToolchainIndex = ToolchainDefinition
+					.findToolchainByName(fSelectedToolchainName);
 
 			// Initialise .cproject options that were not done at project
 			// creation by the toolchain wizard
