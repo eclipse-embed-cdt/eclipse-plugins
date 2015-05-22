@@ -77,7 +77,9 @@ public class ProjectToolsPathPropertyPage extends FieldEditorPropertyPage {
 					}
 					try {
 						String name = option.getStringValue();
-						toolchainNames.add(name);
+						if (!name.isEmpty()){
+							toolchainNames.add(name);
+						}
 					} catch (BuildException e) {
 						;
 					}
