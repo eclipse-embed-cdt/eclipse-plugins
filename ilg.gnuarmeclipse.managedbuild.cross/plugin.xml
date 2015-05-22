@@ -1190,6 +1190,11 @@
                   name="arm9tdmi">
             </enumeratedOptionValue>
             <enumeratedOptionValue
+                  command="-mcpu=cortex-a12"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-a12"
+                  name="cortex-a12">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
                   command="-mcpu=cortex-a15"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-a15"
                   name="cortex-a15">
@@ -1220,14 +1225,29 @@
                   name="cortex-m0">
             </enumeratedOptionValue>
             <enumeratedOptionValue
+                  command="-mcpu=cortex-m0.small-multiply"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m0-small-multiply"
+                  name="cortex-m0.small-multiply">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
                   command="-mcpu=cortex-m0plus"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m0plus"
                   name="cortex-m0plus">
             </enumeratedOptionValue>
             <enumeratedOptionValue
+                  command="-mcpu=cortex-m0plus.small-multiply"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m0plus-small-multiply"
+                  name="cortex-m0plus.small-multiply">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
                   command="-mcpu=cortex-m1"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m1"
                   name="cortex-m1">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=cortex-m1.small-multiply"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m1-small-multiply"
+                  name="cortex-m1.small-multiply">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mcpu=cortex-m3"
@@ -1501,9 +1521,24 @@
                   name="armv7e-m">
             </enumeratedOptionValue>
             <enumeratedOptionValue
+                  command="-march=armv7ve"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv7ve"
+                  name="armv7ve">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
                   command="-march=armv8-a"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv8-a"
                   name="armv8-a">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv8-a+crc"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv8-a-crc"
+                  name="armv8-a+crc">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=ep9312"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.ep9312"
+                  name="ep9312">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-march=iwmmxt"
@@ -1514,11 +1549,6 @@
                   command="-march=iwmmxt2"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.iwmmxt2"
                   name="iwmmxt2">
-            </enumeratedOptionValue>
-            <enumeratedOptionValue
-                  command="-march=ep9312"
-                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.ep9312"
-                  name="ep9312">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-march=native"
@@ -1637,11 +1667,23 @@
                      </checkOption>
                      <checkOption
                            optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.family"
+                           value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m0-small-multiply">
+                     </checkOption>
+                     <checkOption
+                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.family"
                            value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m0plus">
                      </checkOption>
                      <checkOption
                            optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.family"
+                           value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m0plus-small-multiply">
+                     </checkOption>
+                     <checkOption
+                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.family"
                            value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m1">
+                     </checkOption>
+                     <checkOption
+                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.family"
+                           value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m1-small-multiply">
                      </checkOption>
                      <checkOption
                            optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.family"
@@ -1707,11 +1749,23 @@
                      </checkOption>
                      <checkOption
                            optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.family"
+                           value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m0-small-multiply">
+                     </checkOption>
+                     <checkOption
+                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.family"
                            value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m0plus">
                      </checkOption>
                      <checkOption
                            optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.family"
+                           value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m0plus-small-multiply">
+                     </checkOption>
+                     <checkOption
+                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.family"
                            value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m1">
+                     </checkOption>
+                     <checkOption
+                           optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.family"
+                           value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m1-small-multiply">
                      </checkOption>
                      <checkOption
                            optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.family"

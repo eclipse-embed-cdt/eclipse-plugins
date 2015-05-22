@@ -18,8 +18,8 @@ Supported arch & cpu:
 	armv6 
 	armv6-m 
 	armv6j 
-	armv6k 
-	armv6s-m 	+[2014-02-20, accepted, but not in 4.8]
+	 	armv6k 	-(4.9)
+	 	armv6s-m 	+[2014-02-20, accepted, but not in 4.8] -(4.9)
 	armv6t2 
 	armv6z 
 	armv6zk 
@@ -28,13 +28,16 @@ Supported arch & cpu:
 	armv7-m 
 	armv7-r 
 	armv7e-m 
+	armv7ve			+[2015-05-22]
 	armv8-a 
+	armv8-a+crc 	+[2015-05-22]
+	ep9312
 	iwmmxt 
 	iwmmxt2 
 	native
 
 -mcpu
-	arm1020e 
+	arm1020e 		
 	arm1020t 
 	arm1022e 
 	arm1026ej-s 
@@ -45,7 +48,7 @@ Supported arch & cpu:
 	arm1156t2-s 
 	arm1156t2f-s 
 	arm1176jz-s 
-	arm1176jzf-s 
+	arm1176jzf-s 	
 	arm2 
 	arm250 
 	arm3 
@@ -87,14 +90,20 @@ Supported arch & cpu:
 	arm968e-s 
 	arm9e 
 	arm9tdmi 
+	cortex-a12 		+[2015-05-22]
 	cortex-a15 
+	cortex-a53		+?
+	cortex-a57		+?
 	cortex-a5 
 	cortex-a7 
 	cortex-a8 
 	cortex-a9 
 	cortex-m0 
+	cortex-m0.small-multiply		+[2015-05-22] 
 	cortex-m0plus 
+	cortex-m0plus.small-multiply	+[2015-05-22] 
 	cortex-m1 
+	cortex-m1.small-multiply		+[2015-05-22]
 	cortex-m3 
 	cortex-m4 
 	cortex-m7		+[2014-11-20] 
@@ -112,13 +121,13 @@ Supported arch & cpu:
 	generic-armv7-a +[2014-02-20]
 	iwmmxt 
 	iwmmxt2 
-	marvell-f		? not in 4.8
+		marvell-f		? not in 4.8
 	marvell-pj4 
-	mpcore 
-	mpcorenovfp 
+		mpcore 
+		mpcorenovfp 
 	native 
-	strongarm 
-	strongarm110 
-	strongarm1100 
-	strongarm1110 
-	xscale
+		strongarm 
+		strongarm110 
+		strongarm1100 
+		strongarm1110 
+		xscale
