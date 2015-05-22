@@ -4245,6 +4245,9 @@
          <toolchain
                toolchainID="ilg.gnuarmeclipse.managedbuild.cross.toolchain.lib.release">
          </toolchain>
+         <toolchain
+               toolchainID="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
+         </toolchain>
       </wizardPage>
    </extension>
    <extension
