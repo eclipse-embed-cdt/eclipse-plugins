@@ -49,7 +49,7 @@ public class GnuArmPropertyTester extends PropertyTester {
 
 				IManagedProject managedProject = info.getManagedProject();
 				IConfiguration[] cfgs = managedProject.getConfigurations();
-				for (int i=0; i < cfgs.length; ++i){
+				for (int i = 0; i < cfgs.length; ++i) {
 					IToolChain toolchain = cfgs[i].getToolChain();
 					if (toolchain == null) {
 						continue;
@@ -61,15 +61,16 @@ public class GnuArmPropertyTester extends PropertyTester {
 					}
 					try {
 						String name = option.getStringValue();
-						if (name != null && !name.isEmpty()){
+						// Might be empty
+						if (name != null) {
 							return true;
 						}
 					} catch (BuildException e) {
 						;
 					}
-				
+
 				}
-				
+
 				return false;
 
 				// IProjectType projectType = managedProject.getProjectType();
