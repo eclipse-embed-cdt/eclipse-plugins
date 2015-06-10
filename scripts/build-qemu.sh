@@ -205,6 +205,11 @@ DOWNLOAD_FOLDER="${WORK_FOLDER}/download"
 
 source "$helper_script" --prepare-prerequisites
 
+if [ -n "${DO_BUILD_WIN32}${DO_BUILD_WIN64}${DO_BUILD_DEB32}${DO_BUILD_DEB64}" ]
+then
+  source "$helper_script" --prepare-docker
+fi
+
 # ----- Process "preload-images" action. -----
 
 if [ "${ACTION}" == "preload-images" ]

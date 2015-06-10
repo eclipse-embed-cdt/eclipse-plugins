@@ -108,6 +108,16 @@ do
       fi
 
       echo
+      echo "Checking host curl..."
+      curl --version | grep curl
+
+      echo "Checking host git..."
+      git --version
+      ;;
+
+    --prepare-docker) # -----
+
+      echo
       echo "Checking Docker..."
       set +e
       docker --version
@@ -131,13 +141,6 @@ do
         echo "Preparing Docker environment..."
         eval "$(boot2docker shellinit)"
       fi
-
-      echo
-      echo "Checking host curl..."
-      curl --version | grep curl
-
-      echo "Checking host git..."
-      git --version
       ;;
 
     --get-git-head) # -----
