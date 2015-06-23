@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: ilg.gnuarmeclipse.templates.stm;singleton:=true
-Bundle-Version: 2.2.6.qualifier
+Bundle-Version: 2.3.1.qualifier
 Bundle-Activator: ilg.gnuarmeclipse.templates.stm.Activator
 Require-Bundle: ilg.gnuarmeclipse.core,
  ilg.gnuarmeclipse.templates.core,
