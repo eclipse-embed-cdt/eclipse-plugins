@@ -41,15 +41,28 @@ public class Utils {
 
 	public static int getRemoteFileSize(URL url) throws IOException {
 
-		URLConnection connection = url.openConnection();
-		connection.getInputStream();
-		if (connection instanceof HttpURLConnection) {
-			int responseCode = ((HttpURLConnection) connection)
-					.getResponseCode();
-			if (responseCode != HttpURLConnection.HTTP_OK) {
-				throw new IOException(
-						"Failed to open connection, response code "
-								+ responseCode);
+		URLConnection connection;
+		while (true) {
+			connection = url.openConnection();
+			if (connection instanceof HttpURLConnection) {
+				int responseCode = ((HttpURLConnection) connection)
+						.getResponseCode();
+				if (responseCode == HttpURLConnection.HTTP_OK) {
+					break;
+				} else {
+					if (responseCode == HttpURLConnection.HTTP_MOVED_TEMP
+							|| responseCode == HttpURLConnection.HTTP_MOVED_PERM
+							|| responseCode == HttpURLConnection.HTTP_SEE_OTHER) {
+						String newUrl = connection.getHeaderField("Location");
+						url = new URL(newUrl);
+
+						// System.out.println("Redirect to URL : " + newUrl);
+					} else {
+						throw new IOException(
+								"Failed to open connection, response code "
+										+ responseCode);
+					}
+				}
 			}
 		}
 
@@ -108,16 +121,32 @@ public class Utils {
 			MessageConsoleStream out, IProgressMonitor monitor)
 			throws IOException {
 
-		URLConnection connection = sourceUrl.openConnection();
-		if (connection instanceof HttpURLConnection) {
-			int responseCode = ((HttpURLConnection) connection)
-					.getResponseCode();
-			if (responseCode != HttpURLConnection.HTTP_OK) {
-				throw new IOException(
-						"Failed to open connection, response code "
-								+ responseCode);
+		URL url = sourceUrl;
+		URLConnection connection;
+		while (true) {
+			connection = url.openConnection();
+			if (connection instanceof HttpURLConnection) {
+				int responseCode = ((HttpURLConnection) connection)
+						.getResponseCode();
+				if (responseCode == HttpURLConnection.HTTP_OK) {
+					break;
+				} else {
+					if (responseCode == HttpURLConnection.HTTP_MOVED_TEMP
+							|| responseCode == HttpURLConnection.HTTP_MOVED_PERM
+							|| responseCode == HttpURLConnection.HTTP_SEE_OTHER) {
+						String newUrl = connection.getHeaderField("Location");
+						url = new URL(newUrl);
+
+						// System.out.println("Redirect to URL : " + newUrl);
+					} else {
+						throw new IOException(
+								"Failed to open connection, response code "
+										+ responseCode);
+					}
+				}
 			}
 		}
+
 		int size = connection.getContentLength();
 		if (size < 0) {
 			throw new IOException("Illegal http file size " + size);
@@ -129,7 +158,10 @@ public class Utils {
 				s = s.substring(0, s.length() - ".download".length());
 			}
 			out.println("Copy " + sizeString);
-			out.println(" from \"" + sourceUrl + "\"");
+			out.println(" from \"" + url + "\"");
+			if (!url.equals(sourceUrl)) {
+				out.println(" redirected from \"" + sourceUrl + "\"");
+			}
 			out.println(" to   \"" + s + "\"");
 		}
 
