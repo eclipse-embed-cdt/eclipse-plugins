@@ -21,6 +21,7 @@
 			<item value="STM32F429xx" label="STM32F429xx" />
 			<item value="STM32F437xx" label="STM32F437xx" />
 			<item value="STM32F439xx" label="STM32F439xx" />
+			<item value="STM32F446xx" label="STM32F446xx" />
 		</property>
 		<property id="STM32F4flashSize" label="%STM32F4xx.flashSize.label"
 			description="%STM32F4xx.flashSize.description" type="input" pattern="[0-9]*"
@@ -725,8 +726,7 @@
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="configIdPattern" value=".*" />
 			<simple-array name="filePatterns">
-				<element
-					value="/$(projectName)/$(sysDir)/$(sourceDir)/$(devicePeriph)/stm32f4xx_hal_adc.*[.]c" />
+				<element value=".*/stm32f4xx_hal_adc.*[.]c" />
 				<element value=".*/stm32f4xx_hal_can[.]c" />
 				<element value=".*/stm32f4xx_hal_crc[.]c" />
 				<element value=".*/stm32f4xx_hal_cryp.*[.]c" />
@@ -734,6 +734,7 @@
 				<element value=".*/stm32f4xx_hal_dcmi.*[.]c" />
 				<element value=".*/stm32f4xx_hal_dma.*[.]c" />
 				<element value=".*/stm32f4xx_hal_eth[.]c" />
+				<element value=".*/stm32f4xx_hal_fmpi2c.*[.]c" />
 				<element value=".*/stm32f4xx_hal_hash.*[.]c" />
 				<element value=".*/stm32f4xx_hal_hcd[.]c" />
 				<element value=".*/stm32f4xx_hal_i2c.*[.]c" />
@@ -746,17 +747,16 @@
 				<element value=".*/stm32f4xx_hal_nand[.]c" />
 				<element value=".*/stm32f4xx_hal_nor[.]c" />
 				<element value=".*/stm32f4xx_hal_pccard[.]c" />
-				<element value=".*/stm32f4xx_hal_pcd[.]c" />
+				<element value=".*/stm32f4xx_hal_pcd.*[.]c" />
+				<element value=".*/stm32f4xx_hal_qspi[.]c" />
 				<element value=".*/stm32f4xx_hal_rng[.]c" />
 				<element value=".*/stm32f4xx_hal_rtc.*[.]c" />
-				<element value=".*/stm32f4xx_hal_sai[.]c" />
+				<element value=".*/stm32f4xx_hal_sai.*[.]c" />
 				<element value=".*/stm32f4xx_hal_sd[.]c" />
 				<element value=".*/stm32f4xx_hal_sdram[.]c" />
 				<element value=".*/stm32f4xx_hal_smartcard[.]c" />
 				<element value=".*/stm32f4xx_hal_spi[.]c" />
-				<element value=".*/stm32f4xx_hal_sdram[.]c" />
-				<element value=".*/stm32f4xx_hal_smartcard[.]c" />
-				<element value=".*/stm32f4xx_hal_spi[.]c" />
+				<element value=".*/stm32f4xx_hal_spdifrx[.]c" />
 				<element value=".*/stm32f4xx_hal_sram.*[.]c" />
 				<element value=".*/stm32f4xx_hal_tim.*[.]c" />
 				<element value=".*/stm32f4xx_hal_uart[.]c" />
@@ -900,6 +900,18 @@
 			<complex-array name="files">
 				<element>
 					<simple name="source" value="ldscripts/mem192.ld" />
+					<simple name="target" value="$(ldscriptsDir)/mem.ld" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(STM32F4chipFamilyCube)==STM32F446xx">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="ldscripts/mem128.ld" />
 					<simple name="target" value="$(ldscriptsDir)/mem.ld" />
 					<simple name="replaceable" value="true" />
 				</element>
