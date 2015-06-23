@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_dac.h
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   Header file of DAC HAL Extension module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -43,7 +43,9 @@
  extern "C" {
 #endif
 
-#if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)
+#if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) ||\
+    defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) ||\
+    defined(STM32F446xx)
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal_def.h"
@@ -60,16 +62,6 @@
 /* Exported constants --------------------------------------------------------*/
 /** @defgroup DACEx_Exported_Constants DAC Exported Constants
   * @{
-  */
-   
-/** @defgroup DACEx_wave_generation DAC Wave Generation
-  * @{
-  */
-#define DAC_WAVEGENERATION_NONE            ((uint32_t)0x00000000)
-#define DAC_WAVEGENERATION_NOISE           ((uint32_t)DAC_CR_WAVE1_0)
-#define DAC_WAVEGENERATION_TRIANGLE        ((uint32_t)DAC_CR_WAVE1_1)
-/**
-  * @}
   */
 
 /** @defgroup DACEx_lfsrunmask_triangleamplitude DAC LFS Run Mask Triangle Amplitude
@@ -103,18 +95,10 @@
   * @}
   */
 
-/** @defgroup DACEx_wave_Format DAC Wave Format
-  * @{
-  */
-#define DAC_WAVE_NOISE                     ((uint32_t)DAC_CR_WAVE1_0)
-#define DAC_WAVE_TRIANGLE                  ((uint32_t)DAC_CR_WAVE1_1)
 /**
   * @}
   */
 
-/**
-  * @}
-  */
 /* Exported macro ------------------------------------------------------------*/
 /* Exported functions --------------------------------------------------------*/
 /** @addtogroup DACEx_Exported_Functions
@@ -156,9 +140,6 @@ void HAL_DACEx_DMAUnderrunCallbackCh2(DAC_HandleTypeDef* hdac);
 /** @defgroup DACEx_Private_Macros DAC Private Macros
   * @{
   */
-#define IS_DAC_GENERATE_WAVE(WAVE) (((WAVE) == DAC_WAVEGENERATION_NONE) || \
-                                    ((WAVE) == DAC_WAVEGENERATION_NOISE) || \
-                                    ((WAVE) == DAC_WAVEGENERATION_TRIANGLE))
 #define IS_DAC_LFSR_UNMASK_TRIANGLE_AMPLITUDE(VALUE) (((VALUE) == DAC_LFSRUNMASK_BIT0) || \
                                                       ((VALUE) == DAC_LFSRUNMASK_BITS1_0) || \
                                                       ((VALUE) == DAC_LFSRUNMASK_BITS2_0) || \
@@ -183,8 +164,6 @@ void HAL_DACEx_DMAUnderrunCallbackCh2(DAC_HandleTypeDef* hdac);
                                                       ((VALUE) == DAC_TRIANGLEAMPLITUDE_1023) || \
                                                       ((VALUE) == DAC_TRIANGLEAMPLITUDE_2047) || \
                                                       ((VALUE) == DAC_TRIANGLEAMPLITUDE_4095))
-#define IS_DAC_WAVE(WAVE) (((WAVE) == DAC_WAVE_NOISE) || \
-                           ((WAVE) == DAC_WAVE_TRIANGLE))
 /**
   * @}
   */
@@ -199,7 +178,9 @@ void DAC_DMAHalfConvCpltCh2(DMA_HandleTypeDef *hdma);
 /**
   * @}
   */
-#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx */
+#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx ||\
+          STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx ||\
+          STM32F446xx */
 
 /**
   * @}

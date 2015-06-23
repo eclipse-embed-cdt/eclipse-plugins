@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_pcd.h
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   Header file of PCD HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -71,6 +71,16 @@ typedef enum
   HAL_PCD_STATE_TIMEOUT = 0x04
 } PCD_StateTypeDef;
 
+#ifdef USB_OTG_GLPMCFG_LPMEN
+/* Device LPM suspend state */
+typedef enum  
+{
+  LPM_L0 = 0x00, /* on */
+  LPM_L1 = 0x01, /* LPM L1 sleep */
+  LPM_L2 = 0x02, /* suspend */
+  LPM_L3 = 0x03, /* off */
+}PCD_LPM_StateTypeDef;
+#endif /* USB_OTG_GLPMCFG_LPMEN */
 
 typedef USB_OTG_GlobalTypeDef  PCD_TypeDef;
 typedef USB_OTG_CfgTypeDef     PCD_InitTypeDef;
@@ -81,15 +91,20 @@ typedef USB_OTG_EPTypeDef      PCD_EPTypeDef ;
   */ 
 typedef struct
 {
-  PCD_TypeDef             *Instance;   /*!< Register base address              */ 
-  PCD_InitTypeDef         Init;       /*!< PCD required parameters            */
-  PCD_EPTypeDef           IN_ep[15];  /*!< IN endpoint parameters             */
-  PCD_EPTypeDef           OUT_ep[15]; /*!< OUT endpoint parameters            */ 
-  HAL_LockTypeDef         Lock;       /*!< PCD peripheral status              */
-  __IO PCD_StateTypeDef   State;      /*!< PCD communication state            */
-  uint32_t                Setup[12];  /*!< Setup packet buffer                */
-  void                    *pData;      /*!< Pointer to upper stack Handler     */    
-  
+  PCD_TypeDef             *Instance;    /*!< Register base address              */ 
+  PCD_InitTypeDef         Init;         /*!< PCD required parameters            */
+  PCD_EPTypeDef           IN_ep[15];    /*!< IN endpoint parameters             */
+  PCD_EPTypeDef           OUT_ep[15];   /*!< OUT endpoint parameters            */ 
+  HAL_LockTypeDef         Lock;         /*!< PCD peripheral status              */
+  __IO PCD_StateTypeDef   State;        /*!< PCD communication state            */
+  uint32_t                Setup[12];    /*!< Setup packet buffer                */
+#ifdef USB_OTG_GLPMCFG_LPMEN
+  PCD_LPM_StateTypeDef    LPM_State;    /*!< LPM State                          */
+  uint32_t                BESL;
+  uint32_t                lpm_active;   /*!< Enable or disable the Link Power Management .                                  
+                                        This parameter can be set to ENABLE or DISABLE */
+#endif /* USB_OTG_GLPMCFG_LPMEN */
+  void                    *pData;       /*!< Pointer to upper stack Handler */    
 } PCD_HandleTypeDef;
 
 /**
@@ -274,7 +289,8 @@ PCD_StateTypeDef HAL_PCD_GetState(PCD_HandleTypeDef *hpcd);
 /** @defgroup PCD_Instance_definition PCD Instance definition
   * @{
   */
-#if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)
+#if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F427xx) || defined(STM32F437xx) ||\
+    defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F446xx)
  #define IS_PCD_ALL_INSTANCE(INSTANCE) (((INSTANCE) == USB_OTG_FS) || \
                                         ((INSTANCE) == USB_OTG_HS))
 #elif defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE)

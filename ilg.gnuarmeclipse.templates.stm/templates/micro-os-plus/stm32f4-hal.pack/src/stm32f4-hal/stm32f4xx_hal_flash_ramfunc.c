@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_flash_ramfunc.c
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   FLASH RAMFUNC module driver.
   *          This file provides a FLASH firmware functions which should be 
   *          executed from internal SRAM
@@ -36,7 +36,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -70,14 +70,14 @@
   * @{
   */
 
-/** @defgroup FLASH_RAMFUNC FLASH RAMFUNC
+/** @defgroup FLASHRAMFUNC FLASH RAMFUNC
   * @brief FLASH functions executed from RAM
   * @{
   */
 
 #ifdef HAL_FLASH_MODULE_ENABLED
 
-#if defined(STM32F411xE)
+#if defined(STM32F411xE) || defined(STM32F446xx)
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -85,11 +85,11 @@
 /* Private variables ---------------------------------------------------------*/
 /* Private function prototypes -----------------------------------------------*/
 /* Exported functions --------------------------------------------------------*/
-/** @defgroup FLASH_RAMFUNC_Exported_Functions FLASH RAMFUNC Exported Functions
+/** @defgroup FLASHRAMFUNC_Exported_Functions FLASH RAMFUNC Exported Functions
   * @{
   */
 
-/** @defgroup FLASH_RAMFUNC_Exported_Functions_Group1 Peripheral features functions executed from internal RAM 
+/** @defgroup FLASHRAMFUNC_Exported_Functions_Group1 Peripheral features functions executed from internal RAM 
   *  @brief Peripheral Extended features functions 
   *
 @verbatim   
@@ -159,7 +159,7 @@ __RAM_FUNC HAL_FLASHEx_EnableFlashSleepMode(void)
 /**
   * @brief Disable the flash sleep while System Run
   * @note  This mode is only available for STM32F411xx devices. 
-  * @note  This mode could n't be set while executing with the flash itself. 
+  * @note  This mode couldn't be set while executing with the flash itself. 
   *        It should be done with specific routine executed from RAM.     
   * @retval None
   */
@@ -181,7 +181,7 @@ __RAM_FUNC HAL_FLASHEx_DisableFlashSleepMode(void)
   * @}
   */
 
-#endif /* STM32F411xE */
+#endif /* STM32F411xE || STM32F446xx */
 #endif /* HAL_FLASH_MODULE_ENABLED */
 /**
   * @}

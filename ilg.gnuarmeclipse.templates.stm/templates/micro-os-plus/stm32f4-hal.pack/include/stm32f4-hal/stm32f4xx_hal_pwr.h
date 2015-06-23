@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_pwr.h
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   Header file of PWR HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -84,7 +84,8 @@ typedef struct
 /** @defgroup PWR_WakeUp_Pins PWR WakeUp Pins
   * @{
   */
-#define PWR_WAKEUP_PIN1                 PWR_CSR_EWUP
+#define PWR_WAKEUP_PIN1                 ((uint32_t)0x00000100)
+#define PWR_WAKEUP_PIN2                 ((uint32_t)0x00000080)
 /**
   * @}
   */
@@ -147,16 +148,6 @@ typedef struct
   * @}
   */
 
-/** @defgroup PWR_Regulator_Voltage_Scale PWR Regulator Voltage Scale
-  * @{
-  */
-#define PWR_REGULATOR_VOLTAGE_SCALE1         PWR_CR_VOS
-#define PWR_REGULATOR_VOLTAGE_SCALE2         PWR_CR_VOS_1
-#define PWR_REGULATOR_VOLTAGE_SCALE3         PWR_CR_VOS_0
-/**
-  * @}
-  */
-
 /** @defgroup PWR_Flag PWR Flag
   * @{
   */
@@ -178,6 +169,24 @@ typedef struct
   * @{
   */
 
+#if defined(STM32F405xx) || defined(STM32F407xx) || defined(STM32F415xx) || defined(STM32F417xx)
+/** @brief  macros configure the main internal regulator output voltage.
+  * @param  __REGULATOR__: specifies the regulator output voltage to achieve
+  *         a tradeoff between performance and power consumption when the device does
+  *         not operate at the maximum frequency (refer to the datasheets for more details).
+  *          This parameter can be one of the following values:
+  *            @arg PWR_REGULATOR_VOLTAGE_SCALE1: Regulator voltage output Scale 1 mode
+  *            @arg PWR_REGULATOR_VOLTAGE_SCALE2: Regulator voltage output Scale 2 mode
+  * @retval None
+  */
+#define __HAL_PWR_VOLTAGESCALING_CONFIG(__REGULATOR__) do {                                                     \
+                                                            __IO uint32_t tmpreg;                               \
+                                                            MODIFY_REG(PWR->CR, PWR_CR_VOS, (__REGULATOR__));   \
+                                                            /* Delay after an RCC peripheral clock enabling */  \
+                                                            tmpreg = READ_BIT(PWR->CR, PWR_CR_VOS);             \
+                                                            UNUSED(tmpreg);                                     \
+				                                                	} while(0)
+#else
 /** @brief  macros configure the main internal regulator output voltage.
   * @param  __REGULATOR__: specifies the regulator output voltage to achieve
   *         a tradeoff between performance and power consumption when the device does
@@ -188,7 +197,14 @@ typedef struct
   *            @arg PWR_REGULATOR_VOLTAGE_SCALE3: Regulator voltage output Scale 3 mode
   * @retval None
   */
-#define __HAL_PWR_VOLTAGESCALING_CONFIG(__REGULATOR__) (MODIFY_REG(PWR->CR, PWR_CR_VOS, (__REGULATOR__)))
+#define __HAL_PWR_VOLTAGESCALING_CONFIG(__REGULATOR__) do {                                                     \
+                                                            __IO uint32_t tmpreg;                               \
+                                                            MODIFY_REG(PWR->CR, PWR_CR_VOS, (__REGULATOR__));   \
+                                                            /* Delay after an RCC peripheral clock enabling */  \
+                                                            tmpreg = READ_BIT(PWR->CR, PWR_CR_VOS);             \
+                                                            UNUSED(tmpreg);                                     \
+				                                                	} while(0)
+#endif /* STM32F405xx || STM32F407xx || STM32F415xx || STM32F417xx */ 
 
 /** @brief  Check PWR flag is set or not.
   * @param  __FLAG__: specifies the flag to check.
@@ -370,7 +386,7 @@ void HAL_PWR_DisableSEVOnPend(void);
 /** @defgroup PWR_PVD_EXTI_Line PWR PVD EXTI Line
   * @{
   */
-#define PWR_EXTI_LINE_PVD  ((uint32_t)0x00010000)  /*!< External interrupt line 16 Connected to the PVD EXTI Line */
+#define PWR_EXTI_LINE_PVD  ((uint32_t)EXTI_IMR_MR16)  /*!< External interrupt line 16 Connected to the PVD EXTI Line */
 /**
   * @}
   */
@@ -394,15 +410,15 @@ void HAL_PWR_DisableSEVOnPend(void);
 /* --- CR Register ---*/
 /* Alias word address of DBP bit */
 #define DBP_BIT_NUMBER   POSITION_VAL(PWR_CR_DBP)
-#define CR_DBP_BB        (PERIPH_BB_BASE + (PWR_CR_OFFSET_BB * 32) + (DBP_BIT_NUMBER * 4))
+#define CR_DBP_BB        (uint32_t)(PERIPH_BB_BASE + (PWR_CR_OFFSET_BB * 32) + (DBP_BIT_NUMBER * 4))
 
 /* Alias word address of PVDE bit */
 #define PVDE_BIT_NUMBER  POSITION_VAL(PWR_CR_PVDE)
-#define CR_PVDE_BB       (PERIPH_BB_BASE + (PWR_CR_OFFSET_BB * 32) + (PVDE_BIT_NUMBER * 4))
+#define CR_PVDE_BB       (uint32_t)(PERIPH_BB_BASE + (PWR_CR_OFFSET_BB * 32) + (PVDE_BIT_NUMBER * 4))
 
 /* Alias word address of PMODE bit */
 #define PMODE_BIT_NUMBER  POSITION_VAL(PWR_CR_PMODE)
-#define CR_PMODE_BB      (PERIPH_BB_BASE + (PWR_CR_OFFSET_BB * 32) + (PMODE_BIT_NUMBER * 4))
+#define CR_PMODE_BB      (uint32_t)(PERIPH_BB_BASE + (PWR_CR_OFFSET_BB * 32) + (PMODE_BIT_NUMBER * 4))
 /**
   * @}
   */
@@ -429,7 +445,7 @@ void HAL_PWR_DisableSEVOnPend(void);
 /** @defgroup PWR_IS_PWR_Definitions PWR Private macros to check input parameters
   * @{
   */
-#define IS_PWR_WAKEUP_PIN(PIN) ((PIN) == PWR_WAKEUP_PIN1)
+#define IS_PWR_WAKEUP_PIN(PIN) (((PIN) == PWR_WAKEUP_PIN1) || ((PIN) == PWR_WAKEUP_PIN2))
 #define IS_PWR_PVD_LEVEL(LEVEL) (((LEVEL) == PWR_PVDLEVEL_0) || ((LEVEL) == PWR_PVDLEVEL_1)|| \
                                  ((LEVEL) == PWR_PVDLEVEL_2) || ((LEVEL) == PWR_PVDLEVEL_3)|| \
                                  ((LEVEL) == PWR_PVDLEVEL_4) || ((LEVEL) == PWR_PVDLEVEL_5)|| \
@@ -442,10 +458,6 @@ void HAL_PWR_DisableSEVOnPend(void);
                                      ((REGULATOR) == PWR_LOWPOWERREGULATOR_ON))
 #define IS_PWR_SLEEP_ENTRY(ENTRY) (((ENTRY) == PWR_SLEEPENTRY_WFI) || ((ENTRY) == PWR_SLEEPENTRY_WFE))
 #define IS_PWR_STOP_ENTRY(ENTRY) (((ENTRY) == PWR_STOPENTRY_WFI) || ((ENTRY) == PWR_STOPENTRY_WFE))
-#define IS_PWR_REGULATOR_VOLTAGE(VOLTAGE) (((VOLTAGE) == PWR_REGULATOR_VOLTAGE_SCALE1) || \
-                                           ((VOLTAGE) == PWR_REGULATOR_VOLTAGE_SCALE2) || \
-                                           ((VOLTAGE) == PWR_REGULATOR_VOLTAGE_SCALE3))
-
 /**
   * @}
   */

@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_smartcard.c
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   SMARTCARD HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the SMARTCARD peripheral:
@@ -100,7 +100,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -247,6 +247,8 @@ HAL_StatusTypeDef HAL_SMARTCARD_Init(SMARTCARD_HandleTypeDef *hsc)
 
   if(hsc->State == HAL_SMARTCARD_STATE_RESET)
   {  
+    /* Allocate lock resource and initialize it */
+    hsc->Lock = HAL_UNLOCKED;
     /* Init the low level hardware : GPIO, CLOCK, CORTEX...etc */
     HAL_SMARTCARD_MspInit(hsc);
   }
@@ -455,34 +457,16 @@ HAL_StatusTypeDef HAL_SMARTCARD_Transmit(SMARTCARD_HandleTypeDef *hsc, uint8_t *
     hsc->TxXferCount = Size;
     while(hsc->TxXferCount > 0)
     {
-      hsc->TxXferCount--;
-      if(hsc->Init.WordLength == SMARTCARD_WORDLENGTH_9B)
+      hsc->TxXferCount--;      
+      if(SMARTCARD_WaitOnFlagUntilTimeout(hsc, SMARTCARD_FLAG_TXE, RESET, Timeout) != HAL_OK)
       {
-        if(SMARTCARD_WaitOnFlagUntilTimeout(hsc, SMARTCARD_FLAG_TXE, RESET, Timeout) != HAL_OK)
-        {
-          return HAL_TIMEOUT;
-        }
-        tmp = (uint16_t*) pData;
-        hsc->Instance->DR = (*tmp & (uint16_t)0x01FF);
-        if(hsc->Init.Parity == SMARTCARD_PARITY_NONE)
-        {
-          pData +=2;
-        }
-        else
-        {
-          pData +=1;
-        }
+        return HAL_TIMEOUT;
       }
-      else
-      {
-        if(SMARTCARD_WaitOnFlagUntilTimeout(hsc, SMARTCARD_FLAG_TXE, RESET, Timeout) != HAL_OK)
-        {
-          return HAL_TIMEOUT;
-        }
-        hsc->Instance->DR = (*pData++ & (uint8_t)0xFF);
-      }
+      tmp = (uint16_t*) pData;
+      hsc->Instance->DR = (*tmp & (uint16_t)0x01FF);
+      pData +=1;
     }
-
+    
     if(SMARTCARD_WaitOnFlagUntilTimeout(hsc, SMARTCARD_FLAG_TC, RESET, Timeout) != HAL_OK)
     {
       return HAL_TIMEOUT;
@@ -547,43 +531,18 @@ HAL_StatusTypeDef HAL_SMARTCARD_Receive(SMARTCARD_HandleTypeDef *hsc, uint8_t *p
 
     hsc->RxXferSize = Size;
     hsc->RxXferCount = Size;
+
     /* Check the remain data to be received */
     while(hsc->RxXferCount > 0)
     {
       hsc->RxXferCount--;
-      if(hsc->Init.WordLength == SMARTCARD_WORDLENGTH_9B)
+      if(SMARTCARD_WaitOnFlagUntilTimeout(hsc, SMARTCARD_FLAG_RXNE, RESET, Timeout) != HAL_OK)
       {
-        if(SMARTCARD_WaitOnFlagUntilTimeout(hsc, SMARTCARD_FLAG_RXNE, RESET, Timeout) != HAL_OK)
-        {
-          return HAL_TIMEOUT;
-        }
-        tmp = (uint16_t*) pData;
-        if(hsc->Init.Parity == SMARTCARD_PARITY_NONE)
-        {
-          *tmp = (uint16_t)(hsc->Instance->DR & (uint16_t)0x01FF);
-          pData +=2;
-        }
-        else
-        {
-          *tmp = (uint16_t)(hsc->Instance->DR & (uint16_t)0x00FF);
-          pData +=1;
-        }
+        return HAL_TIMEOUT;
       }
-      else
-      {
-        if(SMARTCARD_WaitOnFlagUntilTimeout(hsc, SMARTCARD_FLAG_RXNE, RESET, Timeout) != HAL_OK)
-        {
-          return HAL_TIMEOUT;
-        }
-        if(hsc->Init.Parity == SMARTCARD_PARITY_NONE)
-        {
-          *pData++ = (uint8_t)(hsc->Instance->DR & (uint8_t)0x00FF);
-        }
-        else
-        {
-          *pData++ = (uint8_t)(hsc->Instance->DR & (uint8_t)0x007F);
-        }
-      }
+      tmp = (uint16_t*) pData;
+      *tmp = (uint16_t)(hsc->Instance->DR & (uint16_t)0x00FF);
+      pData +=1;
     }
 
     /* Check if a non-blocking transmit process is ongoing or not */
@@ -651,8 +610,8 @@ HAL_StatusTypeDef HAL_SMARTCARD_Transmit_IT(SMARTCARD_HandleTypeDef *hsc, uint8_
     /* Enable the SMARTCARD Parity Error Interrupt */
     __HAL_SMARTCARD_ENABLE_IT(hsc, SMARTCARD_IT_PE);
 
-    /* Enable the SMARTCARD Error Interrupt: (Frame error, noise error, overrun error) */
-    __HAL_SMARTCARD_ENABLE_IT(hsc, SMARTCARD_IT_ERR);
+    /* Disable the SMARTCARD Error Interrupt: (Frame error, noise error, overrun error) */
+    __HAL_SMARTCARD_DISABLE_IT(hsc, SMARTCARD_IT_ERR);
 
     /* Enable the SMARTCARD Transmit data register empty Interrupt */
     __HAL_SMARTCARD_ENABLE_IT(hsc, SMARTCARD_IT_TXE);
@@ -913,7 +872,7 @@ void HAL_SMARTCARD_IRQHandler(SMARTCARD_HandleTypeDef *hsc)
 
   tmp2 = __HAL_SMARTCARD_GET_IT_SOURCE(hsc, SMARTCARD_IT_TC);
   /* SMARTCARD in mode Transmitter (transmission end) ------------------------*/
-  if((tmp1 != RESET) && (tmp2 != RESET))
+  if(((tmp1 & SMARTCARD_FLAG_TC) != RESET) && (tmp2 != RESET))
   {
     SMARTCARD_EndTransmit_IT(hsc);
   }
@@ -1168,23 +1127,9 @@ static HAL_StatusTypeDef SMARTCARD_Transmit_IT(SMARTCARD_HandleTypeDef *hsc)
   tmp1 = hsc->State;
   if((tmp1 == HAL_SMARTCARD_STATE_BUSY_TX) || (tmp1 == HAL_SMARTCARD_STATE_BUSY_TX_RX))
   {
-    if(hsc->Init.WordLength == SMARTCARD_WORDLENGTH_9B)
-    {
-      tmp = (uint16_t*) hsc->pTxBuffPtr;
-      hsc->Instance->DR = (uint16_t)(*tmp & (uint16_t)0x01FF);
-      if(hsc->Init.Parity == SMARTCARD_PARITY_NONE)
-      {
-        hsc->pTxBuffPtr += 2;
-      }
-      else
-      {
-        hsc->pTxBuffPtr += 1;
-      }
-    } 
-    else
-    {
-      hsc->Instance->DR = (uint8_t)(*hsc->pTxBuffPtr++ & (uint8_t)0x00FF);
-    }
+    tmp = (uint16_t*) hsc->pTxBuffPtr;
+    hsc->Instance->DR = (uint16_t)(*tmp & (uint16_t)0x01FF);
+    hsc->pTxBuffPtr += 1;    
     
     if(--hsc->TxXferCount == 0)
     {
@@ -1246,31 +1191,9 @@ static HAL_StatusTypeDef SMARTCARD_Receive_IT(SMARTCARD_HandleTypeDef *hsc)
   tmp1 = hsc->State;
   if((tmp1 == HAL_SMARTCARD_STATE_BUSY_RX) || (tmp1 == HAL_SMARTCARD_STATE_BUSY_TX_RX))
   {
-    if(hsc->Init.WordLength == SMARTCARD_WORDLENGTH_9B)
-    {
-      tmp = (uint16_t*) hsc->pRxBuffPtr;
-      if(hsc->Init.Parity == SMARTCARD_PARITY_NONE)
-      {
-        *tmp = (uint16_t)(hsc->Instance->DR & (uint16_t)0x01FF);
-        hsc->pRxBuffPtr += 2;
-      }
-      else
-      {
-        *tmp = (uint16_t)(hsc->Instance->DR & (uint16_t)0x00FF);
-        hsc->pRxBuffPtr += 1;
-      }
-    } 
-    else
-    {
-      if(hsc->Init.Parity == SMARTCARD_PARITY_NONE)
-      {
-        *hsc->pRxBuffPtr++ = (uint8_t)(hsc->Instance->DR & (uint8_t)0x00FF);
-      }
-      else
-      {
-        *hsc->pRxBuffPtr++ = (uint8_t)(hsc->Instance->DR & (uint8_t)0x007F);
-      }
-    }
+    tmp = (uint16_t*) hsc->pRxBuffPtr;
+    *tmp = (uint16_t)(hsc->Instance->DR & (uint16_t)0x00FF);
+    hsc->pRxBuffPtr += 1;
     
     if(--hsc->RxXferCount == 0)
     {

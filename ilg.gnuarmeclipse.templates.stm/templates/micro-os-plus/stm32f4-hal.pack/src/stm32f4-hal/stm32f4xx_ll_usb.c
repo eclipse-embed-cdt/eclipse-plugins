@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_ll_usb.c
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   USB Low Layer HAL module driver.
   *    
   *          This file provides firmware functions to manage the following 
@@ -22,13 +22,13 @@
   
       (#) Call USB_CoreInit() API to initialize the USB Core peripheral.
 
-      (#) The upper HAL HCD/PCD driver will call the righ routines for its internal processes.
+      (#) The upper HAL HCD/PCD driver will call the right routines for its internal processes.
 
   @endverbatim
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -202,13 +202,27 @@ HAL_StatusTypeDef USB_DevInit (USB_OTG_GlobalTypeDef *USBx, USB_OTG_CfgTypeDef c
   uint32_t i = 0;
 
   /*Activate VBUS Sensing B */
+#if defined(STM32F446xx)
+  USBx->GCCFG |= USB_OTG_GCCFG_VBDEN;
+  
+  if (cfg.vbus_sensing_enable == 0)
+  {
+    /*Desactivate VBUS Sensing B */
+    USBx->GCCFG &= ~USB_OTG_GCCFG_VBDEN;
+    
+    /* B-peripheral session valid override enable*/ 
+    USBx->GOTGCTL |= USB_OTG_GOTGCTL_BVALOEN;
+    USBx->GOTGCTL |= USB_OTG_GOTGCTL_BVALOVAL;
+  }
+#else
   USBx->GCCFG |= USB_OTG_GCCFG_VBUSBSEN;
   
   if (cfg.vbus_sensing_enable == 0)
   {
     USBx->GCCFG |= USB_OTG_GCCFG_NOVBUSSENS;
   }
-   
+#endif /* STM32F446xx */
+
   /* Restart the Phy Clock */
   USBx_PCGCCTL = 0;
 
@@ -1128,11 +1142,15 @@ HAL_StatusTypeDef USB_HostInit (USB_OTG_GlobalTypeDef *USBx, USB_OTG_CfgTypeDef 
   /* Restart the Phy Clock */
   USBx_PCGCCTL = 0;
   
-  /* no VBUS sensing*/
+  /* Activate VBUS Sensing B */
+#if defined(STM32F446xx)
+  USBx->GCCFG |= USB_OTG_GCCFG_VBDEN;
+#else
   USBx->GCCFG &=~ (USB_OTG_GCCFG_VBUSASEN);
   USBx->GCCFG &=~ (USB_OTG_GCCFG_VBUSBSEN);
   USBx->GCCFG |= USB_OTG_GCCFG_NOVBUSSENS;
-  
+#endif /* STM32F446xx */
+
   /* Disable the FS/LS support mode only */
   if((cfg.speed == USB_OTG_SPEED_FULL)&&
      (USBx != USB_OTG_FS))

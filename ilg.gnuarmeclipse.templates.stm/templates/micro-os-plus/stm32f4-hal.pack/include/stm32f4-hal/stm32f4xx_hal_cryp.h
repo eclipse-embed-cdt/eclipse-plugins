@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_cryp.h
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   Header file of CRYP HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -139,6 +139,8 @@ typedef enum
   
 typedef struct
 {
+      CRYP_TypeDef             *Instance;        /*!< CRYP registers base address */
+
       CRYP_InitTypeDef         Init;             /*!< CRYP required parameters */
 
       uint8_t                  *pCrypInBuffPtr;  /*!< Pointer to CRYP processing (encryption, decryption,...) buffer */
@@ -263,25 +265,29 @@ typedef struct
 
 /**
   * @brief  Enable/Disable the CRYP peripheral.
+  * @param  __HANDLE__: specifies the CRYP handle.
   * @retval None
   */
-#define __HAL_CRYP_ENABLE()  (CRYP->CR |=  CRYP_CR_CRYPEN)
-#define __HAL_CRYP_DISABLE() (CRYP->CR &=  ~CRYP_CR_CRYPEN)
+#define __HAL_CRYP_ENABLE(__HANDLE__)  ((__HANDLE__)->Instance->CR |=  CRYP_CR_CRYPEN)
+#define __HAL_CRYP_DISABLE(__HANDLE__) ((__HANDLE__)->Instance->CR &=  ~CRYP_CR_CRYPEN)
 
 /**
   * @brief  Flush the data FIFO.
+  * @param  __HANDLE__: specifies the CRYP handle.
   * @retval None
   */
-#define __HAL_CRYP_FIFO_FLUSH() (CRYP->CR |=  CRYP_CR_FFLUSH)
+#define __HAL_CRYP_FIFO_FLUSH(__HANDLE__) ((__HANDLE__)->Instance->CR |=  CRYP_CR_FFLUSH)
 
 /**
   * @brief  Set the algorithm mode: AES-ECB, AES-CBC, AES-CTR, DES-ECB, DES-CBC.
+  * @param  __HANDLE__: specifies the CRYP handle.
   * @param  MODE: The algorithm mode.
   * @retval None
   */
-#define __HAL_CRYP_SET_MODE(MODE)  CRYP->CR |= (uint32_t)(MODE)
+#define __HAL_CRYP_SET_MODE(__HANDLE__, MODE)  ((__HANDLE__)->Instance->CR |= (uint32_t)(MODE))
 
 /** @brief  Check whether the specified CRYP flag is set or not.
+  * @param  __HANDLE__: specifies the CRYP handle.
   * @param  __FLAG__: specifies the flag to check.
   *         This parameter can be one of the following values:
   *            @arg CRYP_FLAG_BUSY: The CRYP core is currently processing a block of data 
@@ -295,31 +301,34 @@ typedef struct
   * @retval The new state of __FLAG__ (TRUE or FALSE).
   */
 
-#define __HAL_CRYP_GET_FLAG(__FLAG__) ((((uint8_t)((__FLAG__) >> 24)) == 0x01)?(((CRYP->RISR) & ((__FLAG__) & CRYP_FLAG_MASK)) == ((__FLAG__) & CRYP_FLAG_MASK)): \
-                                                 (((CRYP->RISR) & ((__FLAG__) & CRYP_FLAG_MASK)) == ((__FLAG__) & CRYP_FLAG_MASK)))
+#define __HAL_CRYP_GET_FLAG(__HANDLE__, __FLAG__) ((((uint8_t)((__FLAG__) >> 24)) == 0x01)?((((__HANDLE__)->Instance->RISR) & ((__FLAG__) & CRYP_FLAG_MASK)) == ((__FLAG__) & CRYP_FLAG_MASK)): \
+                                                 ((((__HANDLE__)->Instance->RISR) & ((__FLAG__) & CRYP_FLAG_MASK)) == ((__FLAG__) & CRYP_FLAG_MASK)))
 
 /** @brief  Check whether the specified CRYP interrupt is set or not.
+  * @param  __HANDLE__: specifies the CRYP handle.
   * @param  __INTERRUPT__: specifies the interrupt to check.
   *         This parameter can be one of the following values:
   *            @arg CRYP_IT_INRIS: Input FIFO service raw interrupt is pending
   *            @arg CRYP_IT_OUTRIS: Output FIFO service raw interrupt is pending
   * @retval The new state of __INTERRUPT__ (TRUE or FALSE).
   */
-#define __HAL_CRYP_GET_IT(__INTERRUPT__) ((CRYP->MISR & (__INTERRUPT__)) == (__INTERRUPT__))
+#define __HAL_CRYP_GET_IT(__HANDLE__, __INTERRUPT__) (((__HANDLE__)->Instance->MISR & (__INTERRUPT__)) == (__INTERRUPT__))
 
 /**
   * @brief  Enable the CRYP interrupt.
+  * @param  __HANDLE__: specifies the CRYP handle.
   * @param  __INTERRUPT__: CRYP Interrupt.
   * @retval None
   */
-#define __HAL_CRYP_ENABLE_IT(__INTERRUPT__) ((CRYP->IMSCR) |= (__INTERRUPT__))
+#define __HAL_CRYP_ENABLE_IT(__HANDLE__, __INTERRUPT__) (((__HANDLE__)->Instance->IMSCR) |= (__INTERRUPT__))
 
 /**
   * @brief  Disable the CRYP interrupt.
+  * @param  __HANDLE__: specifies the CRYP handle.
   * @param  __INTERRUPT__: CRYP interrupt.
   * @retval None
   */
-#define __HAL_CRYP_DISABLE_IT(__INTERRUPT__) ((CRYP->IMSCR) &= ~(__INTERRUPT__))
+#define __HAL_CRYP_DISABLE_IT(__HANDLE__, __INTERRUPT__) (((__HANDLE__)->Instance->IMSCR) &= ~(__INTERRUPT__))
 
 /**
   * @}

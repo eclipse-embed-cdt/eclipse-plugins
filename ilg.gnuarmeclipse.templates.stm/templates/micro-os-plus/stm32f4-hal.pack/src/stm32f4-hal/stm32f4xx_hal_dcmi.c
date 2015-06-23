@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_dcmi.c
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   DCMI HAL module driver
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Digital Camera Interface (DCMI) peripheral:
@@ -63,7 +63,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -103,7 +103,8 @@
 
 #ifdef HAL_DCMI_MODULE_ENABLED
 
-#if defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)
+#if defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F427xx) || defined(STM32F437xx) ||\
+    defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F446xx)
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
 #define HAL_TIMEOUT_DCMI_STOP    ((uint32_t)1000)  /* 1s  */
@@ -141,7 +142,7 @@ static void       DCMI_DMAError(DMA_HandleTypeDef *hdma);
   *                the configuration information for DCMI.
   * @retval HAL status
   */
-HAL_StatusTypeDef HAL_DCMI_Init(DCMI_HandleTypeDef *hdcmi)
+__weak HAL_StatusTypeDef HAL_DCMI_Init(DCMI_HandleTypeDef *hdcmi)
 {     
   /* Check the DCMI peripheral state */
   if(hdcmi == NULL)
@@ -161,13 +162,15 @@ HAL_StatusTypeDef HAL_DCMI_Init(DCMI_HandleTypeDef *hdcmi)
 
   if(hdcmi->State == HAL_DCMI_STATE_RESET)
   {
+    /* Allocate lock resource and initialize it */
+    hdcmi->Lock = HAL_UNLOCKED;
     /* Init the low level hardware */
     HAL_DCMI_MspInit(hdcmi);
   } 
   
   /* Change the DCMI state */
   hdcmi->State = HAL_DCMI_STATE_BUSY; 
-                                                                                /* Configures the HS, VS, DE and PC polarity */
+  /* Configures the HS, VS, DE and PC polarity */
   hdcmi->Instance->CR &= ~(DCMI_CR_PCKPOL | DCMI_CR_HSPOL  | DCMI_CR_VSPOL  | DCMI_CR_EDM_0 |
                            DCMI_CR_EDM_1  | DCMI_CR_FCRC_0 | DCMI_CR_FCRC_1 | DCMI_CR_JPEG  |
                            DCMI_CR_ESS);
@@ -835,7 +838,8 @@ static void DCMI_DMAError(DMA_HandleTypeDef *hdma)
 /**
   * @}
   */
-#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx */
+#endif /* STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx ||\
+          STM32F429xx || STM32F439xx || STM32F446xx */
 #endif /* HAL_DCMI_MODULE_ENABLED */
 /**
   * @}

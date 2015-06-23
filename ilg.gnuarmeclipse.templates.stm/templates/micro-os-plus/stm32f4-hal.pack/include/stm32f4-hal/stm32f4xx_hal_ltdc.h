@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_ltdc.h
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   Header file of LTDC HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -561,7 +561,7 @@ uint32_t              HAL_LTDC_GetError(LTDC_HandleTypeDef *hltdc);
 /** @defgroup LTDC_Private_Macros LTDC Private Macros
   * @{
   */
-#define LTDC_LAYER(__HANDLE__, __LAYER__)         ((LTDC_Layer_TypeDef *)(((uint32_t)((__HANDLE__)->Instance)) + 0x84 + (0x80*(__LAYER__))))
+#define LTDC_LAYER(__HANDLE__, __LAYER__)         ((LTDC_Layer_TypeDef *)((uint32_t)(((uint32_t)((__HANDLE__)->Instance)) + 0x84 + (0x80*(__LAYER__)))))
 #define IS_LTDC_LAYER(LAYER)                      ((LAYER) <= MAX_LAYER)
 #define IS_LTDC_HSPOL(HSPOL)                      (((HSPOL) == LTDC_HSPOLARITY_AL) || \
                                                    ((HSPOL) == LTDC_HSPOLARITY_AH))

@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_i2s.h
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   Header file of I2S HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -167,6 +167,8 @@ typedef struct
   */
 #define I2S_CLOCK_PLL                     ((uint32_t)0x00000000)
 #define I2S_CLOCK_EXTERNAL                ((uint32_t)0x00000001)
+#define I2S_CLOCK_PLLR                    ((uint32_t)0x00000002)
+#define I2S_CLOCK_PLLSRC                  ((uint32_t)0x00000003)
 /**
   * @}
   */
@@ -437,6 +439,8 @@ void HAL_I2S_ErrorCallback(I2S_HandleTypeDef *hi2s);
   * @{
   */
 #define IS_I2S_CLOCKSOURCE(CLOCK) (((CLOCK) == I2S_CLOCK_EXTERNAL) || \
+                                   ((CLOCK) == I2S_CLOCK_PLLR)     ||\
+                                   ((CLOCK) == I2S_CLOCK_PLLSRC)   ||\
                                    ((CLOCK) == I2S_CLOCK_PLL))
                                    
 #define IS_I2S_MODE(MODE) (((MODE) == I2S_MODE_SLAVE_TX)  || \
@@ -483,6 +487,8 @@ void              I2S_DMARxCplt(DMA_HandleTypeDef *hdma);
 void              I2S_DMARxHalfCplt(DMA_HandleTypeDef *hdma);
 void              I2S_DMAError(DMA_HandleTypeDef *hdma);
 HAL_StatusTypeDef I2S_WaitFlagStateUntilTimeout(I2S_HandleTypeDef *hi2s, uint32_t Flag, uint32_t Status, uint32_t Timeout);
+HAL_StatusTypeDef I2S_Transmit_IT(I2S_HandleTypeDef *hi2s);
+HAL_StatusTypeDef I2S_Receive_IT(I2S_HandleTypeDef *hi2s);
 /**
   * @}
   */

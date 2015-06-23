@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_pwr.c
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   PWR HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Power Controller (PWR) peripheral:
@@ -13,7 +13,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -177,7 +177,8 @@ void HAL_PWR_DisableBkUpAccess(void)
     [..]
       (+) Wake-up pin is used to wake up the system from Standby mode. This pin is 
           forced in input pull-down configuration and is active on rising edges.
-      (+) There is only one Wake-up pin: Wake-up Pin 1 on PA.00.
+      (+) There is one Wake-up pin: Wake-up Pin 1 on PA.00.
+	        Only for STM32F446xx there are two Wake-Up pins: Pin1 on PA.00 and Pin 2 on PC.13
 
     *** Low Power modes configuration ***
     =====================================
@@ -356,13 +357,16 @@ void HAL_PWR_DisablePVD(void)
   * @param WakeUpPinx: Specifies the Power Wake-Up pin to enable.
   *         This parameter can be one of the following values:
   *           @arg PWR_WAKEUP_PIN1
+  *           @arg PWR_WAKEUP_PIN2 only available in case of STM32F446xx devices
   * @retval None
   */
 void HAL_PWR_EnableWakeUpPin(uint32_t WakeUpPinx)
 {
   /* Check the parameter */
   assert_param(IS_PWR_WAKEUP_PIN(WakeUpPinx));
-  *(__IO uint32_t *) CSR_EWUP_BB = (uint32_t)ENABLE;
+
+  /* Enable the wake up pin */
+  SET_BIT(PWR->CSR, WakeUpPinx);
 }
 
 /**
@@ -370,13 +374,16 @@ void HAL_PWR_EnableWakeUpPin(uint32_t WakeUpPinx)
   * @param WakeUpPinx: Specifies the Power Wake-Up pin to disable.
   *         This parameter can be one of the following values:
   *           @arg PWR_WAKEUP_PIN1
+  *           @arg PWR_WAKEUP_PIN2 only available in case of STM32F446xx devices
   * @retval None
   */
 void HAL_PWR_DisableWakeUpPin(uint32_t WakeUpPinx)
 {
   /* Check the parameter */
   assert_param(IS_PWR_WAKEUP_PIN(WakeUpPinx));  
-  *(__IO uint32_t *) CSR_EWUP_BB = (uint32_t)DISABLE;
+
+  /* Disable the wake up pin */
+  CLEAR_BIT(PWR->CSR, WakeUpPinx);
 }
   
 /**

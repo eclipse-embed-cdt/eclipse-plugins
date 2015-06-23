@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_usart.h
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   Header file of USART HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -554,7 +554,7 @@ uint32_t               HAL_USART_GetError(USART_HandleTypeDef *husart);
 #define IS_USART_MODE(MODE) ((((MODE) & (uint32_t)0xFFF3) == 0x00) && ((MODE) != (uint32_t)0x00))
 #define IS_USART_BAUDRATE(BAUDRATE) ((BAUDRATE) < 10500001)
 
-#define USART_DIV(_PCLK_, _BAUD_)                  (((_PCLK_)*25)/(4*(_BAUD_)))
+#define USART_DIV(_PCLK_, _BAUD_)                  (((_PCLK_)*25)/(2*(_BAUD_)))
 #define USART_DIVMANT(_PCLK_, _BAUD_)              (USART_DIV((_PCLK_), (_BAUD_))/100)
 #define USART_DIVFRAQ(_PCLK_, _BAUD_)              (((USART_DIV((_PCLK_), (_BAUD_)) - (USART_DIVMANT((_PCLK_), (_BAUD_)) * 100)) * 16 + 50) / 100)
 #define USART_BRR(_PCLK_, _BAUD_)                  ((USART_DIVMANT((_PCLK_), (_BAUD_)) << 4)|(USART_DIVFRAQ((_PCLK_), (_BAUD_)) & 0x0F))

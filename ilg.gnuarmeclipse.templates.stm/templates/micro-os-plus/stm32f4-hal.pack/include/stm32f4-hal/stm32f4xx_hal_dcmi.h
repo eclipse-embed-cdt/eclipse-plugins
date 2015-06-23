@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_dcmi.h
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   Header file of DCMI HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -43,10 +43,14 @@
  extern "C" {
 #endif
 
-#if defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)
+#if defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F427xx) || defined(STM32F437xx) ||\
+    defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F446xx)
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal_def.h"
 
+/* Include DCMI HAL Extended module */
+/* (include on top of file since DCMI structures are defined in extended file) */
+#include "stm32f4xx_hal_dcmi_ex.h"
 
 /** @addtogroup STM32F4xx_HAL_Driver
   * @{
@@ -70,46 +74,6 @@ typedef enum
   DCMI_OVERRUN   = 2,      /*!< DCMI Overrun */
 }DCMI_ErrorTypeDef;
 
-/** 
-  * @brief   DCMI Embedded Synchronisation CODE Init structure definition
-  */ 
-typedef struct
-{
-  uint8_t FrameStartCode; /*!< Specifies the code of the frame start delimiter. */
-  uint8_t LineStartCode;  /*!< Specifies the code of the line start delimiter.  */
-  uint8_t LineEndCode;    /*!< Specifies the code of the line end delimiter.    */
-  uint8_t FrameEndCode;   /*!< Specifies the code of the frame end delimiter.   */
-}DCMI_CodesInitTypeDef;
-
-/** 
-  * @brief   DCMI Init structure definition
-  */ 
-typedef struct
-{
-  uint32_t  SynchroMode;                /*!< Specifies the Synchronization Mode: Hardware or Embedded.
-                                             This parameter can be a value of @ref DCMI_Synchronization_Mode */
-
-  uint32_t  PCKPolarity;                /*!< Specifies the Pixel clock polarity: Falling or Rising.
-                                             This parameter can be a value of @ref DCMI_PIXCK_Polarity       */
-
-  uint32_t  VSPolarity;                 /*!< Specifies the Vertical synchronization polarity: High or Low.
-                                             This parameter can be a value of @ref DCMI_VSYNC_Polarity       */
-
-  uint32_t  HSPolarity;                 /*!< Specifies the Horizontal synchronization polarity: High or Low.
-                                             This parameter can be a value of @ref DCMI_HSYNC_Polarity       */
-
-  uint32_t  CaptureRate;                /*!< Specifies the frequency of frame capture: All, 1/2 or 1/4.
-                                             This parameter can be a value of @ref DCMI_Capture_Rate         */
-
-  uint32_t  ExtendedDataMode;           /*!< Specifies the data width: 8-bit, 10-bit, 12-bit or 14-bit.
-                                             This parameter can be a value of @ref DCMI_Extended_Data_Mode   */
-
-  DCMI_CodesInitTypeDef SyncroCode;     /*!< Specifies the code of the frame start delimiter.                */
-
-  uint32_t JPEGMode;                    /*!< Enable or Disable the JPEG mode.                                
-                                             This parameter can be a value of @ref DCMI_MODE_JPEG            */
-
-}DCMI_InitTypeDef;
 
 /** 
   * @brief  HAL DCMI State structures definition
@@ -531,7 +495,8 @@ uint32_t              HAL_DCMI_GetError(DCMI_HandleTypeDef *hdcmi);
   * @}
   */
       
-#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx */
+#endif /* STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx ||\
+          STM32F429xx || STM32F439xx || STM32F446xx */
 
 /**
   * @}

@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_ll_sdmmc.h
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   Header file of SDMMC HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -791,7 +791,8 @@ typedef struct
   * @retval None
   */  
 #define __SDIO_SUSPEND_CMD_DISABLE()   (*(__IO uint32_t *) CMD_SDIOSUSPEND_BB = DISABLE)
-    
+
+#if !defined(STM32F446xx)   
 /**
   * @brief  Enable the command completion signal.
   * @retval None
@@ -827,7 +828,7 @@ typedef struct
   * @retval None
   */  
 #define __SDIO_CEATA_SENDCMD_DISABLE()   (*(__IO uint32_t *) CMD_ATACMD_BB = DISABLE)
-  
+#endif /* !defined(STM32F446xx)  */
 /**
   * @}
   */

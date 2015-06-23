@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal.c
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   HAL module driver.
   *          This is the common part of the HAL initialization
   *
@@ -23,7 +23,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -68,11 +68,11 @@
   * @{
   */
 /**
-  * @brief STM32F4xx HAL Driver version number V1.2.0
+  * @brief STM32F4xx HAL Driver version number V1.3.1
   */
 #define __STM32F4xx_HAL_VERSION_MAIN   (0x01) /*!< [31:24] main version */
-#define __STM32F4xx_HAL_VERSION_SUB1   (0x02) /*!< [23:16] sub1 version */
-#define __STM32F4xx_HAL_VERSION_SUB2   (0x00) /*!< [15:8]  sub2 version */
+#define __STM32F4xx_HAL_VERSION_SUB1   (0x03) /*!< [23:16] sub1 version */
+#define __STM32F4xx_HAL_VERSION_SUB2   (0x01) /*!< [15:8]  sub2 version */
 #define __STM32F4xx_HAL_VERSION_RC     (0x00) /*!< [7:0]  release candidate */ 
 #define __STM32F4xx_HAL_VERSION         ((__STM32F4xx_HAL_VERSION_MAIN << 24)\
                                         |(__STM32F4xx_HAL_VERSION_SUB1 << 16)\
@@ -87,13 +87,13 @@
 /* Alias word address of UFB_MODE bit */ 
 #define MEMRMP_OFFSET             SYSCFG_OFFSET 
 #define UFB_MODE_BIT_NUMBER       POSITION_VAL(SYSCFG_MEMRMP_UFB_MODE)
-#define UFB_MODE_BB               (PERIPH_BB_BASE + (MEMRMP_OFFSET * 32) + (UFB_MODE_BIT_NUMBER * 4)) 
+#define UFB_MODE_BB               (uint32_t)(PERIPH_BB_BASE + (MEMRMP_OFFSET * 32) + (UFB_MODE_BIT_NUMBER * 4)) 
 
 /* ---  CMPCR Register ---*/ 
 /* Alias word address of CMP_PD bit */ 
 #define CMPCR_OFFSET              (SYSCFG_OFFSET + 0x20) 
 #define CMP_PD_BIT_NUMBER         POSITION_VAL(SYSCFG_CMPCR_CMP_PD)
-#define CMPCR_CMP_PD_BB           (PERIPH_BB_BASE + (CMPCR_OFFSET * 32) + (CMP_PD_BIT_NUMBER * 4))
+#define CMPCR_CMP_PD_BB           (uint32_t)(PERIPH_BB_BASE + (CMPCR_OFFSET * 32) + (CMP_PD_BIT_NUMBER * 4))
 /**
   * @}
   */

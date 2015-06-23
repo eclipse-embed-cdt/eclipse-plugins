@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_flash.h
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   Header file of FLASH HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -234,15 +234,18 @@ typedef struct
   * @note   This function must be used only when the Instruction Cache is disabled.  
   * @retval None
   */
-#define __HAL_FLASH_INSTRUCTION_CACHE_RESET()  (FLASH->ACR |= FLASH_ACR_ICRST)
+#define __HAL_FLASH_INSTRUCTION_CACHE_RESET() do {FLASH->ACR |= FLASH_ACR_ICRST;  \
+                                                  FLASH->ACR &= ~FLASH_ACR_ICRST; \
+                                                 }while(0)
 
 /**
   * @brief  Resets the FLASH data Cache.
   * @note   This function must be used only when the data Cache is disabled.  
   * @retval None
   */
-#define __HAL_FLASH_DATA_CACHE_RESET()  (FLASH->ACR |= FLASH_ACR_DCRST)
-
+#define __HAL_FLASH_DATA_CACHE_RESET() do {FLASH->ACR |= FLASH_ACR_DCRST;  \
+                                           FLASH->ACR &= ~FLASH_ACR_DCRST; \
+                                          }while(0)
 /**
   * @brief  Enable the specified FLASH interrupt.
   * @param  __INTERRUPT__ : FLASH interrupt 

@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_pccard.h
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   Header file of PCCARD HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -44,11 +44,11 @@
 #endif
 
 /* Includes ------------------------------------------------------------------*/
-#if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx)|| defined(STM32F417xx)
+#if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx)
   #include "stm32f4xx_ll_fsmc.h"
 #endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx */
 
-#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx)|| defined(STM32F439xx)
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)
   #include "stm32f4xx_ll_fmc.h"
 #endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx */
 
@@ -56,7 +56,9 @@
   * @{
   */
 
-#if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)
+#if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) ||\
+    defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)
+
 /** @addtogroup PCCARD
   * @{
   */ 
@@ -186,6 +188,7 @@ HAL_PCCARD_StatusTypeDef HAL_PCCARD_ReadStatus(PCCARD_HandleTypeDef *hpccard);
 #define ATA_STATUS_CMD                 ((uint8_t)0x07)    /* Status(read)/Command(write) register */
 #define ATA_STATUS_CMD_ALTERNATE       ((uint8_t)0x0E)    /* Alternate Status(read)/Command(write) register */
 #define ATA_COMMON_DATA_AREA           ((uint16_t)0x0400) /* Start of data area (for Common access only!) */
+#define ATA_CARD_CONFIGURATION         ((uint16_t)0x0202) /* Card Configuration and Status Register */
 
 /* Flash-ATA commands */
 #define ATA_READ_SECTOR_CMD            ((uint8_t)0x20)
@@ -247,7 +250,8 @@ HAL_PCCARD_StatusTypeDef HAL_PCCARD_ReadStatus(PCCARD_HandleTypeDef *hpccard);
   * @}
   */
 
-#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx */
+#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx ||\
+          STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx */
 
 
 /**

@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_uart.c
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   UART HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Universal Asynchronous Receiver Transmitter (UART) peripheral:
@@ -126,7 +126,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -261,6 +261,8 @@ HAL_StatusTypeDef HAL_UART_Init(UART_HandleTypeDef *huart)
   
   if(huart->State == HAL_UART_STATE_RESET)
   {  
+    /* Allocate lock resource and initialize it */
+    huart->Lock = HAL_UNLOCKED;
     /* Init the low level hardware */
     HAL_UART_MspInit(huart);
   }
@@ -310,7 +312,9 @@ HAL_StatusTypeDef HAL_HalfDuplex_Init(UART_HandleTypeDef *huart)
   assert_param(IS_UART_OVERSAMPLING(huart->Init.OverSampling));
 
   if(huart->State == HAL_UART_STATE_RESET)
-  {   
+  { 
+    /* Allocate lock resource and initialize it */
+    huart->Lock = HAL_UNLOCKED;
     /* Init the low level hardware */
     HAL_UART_MspInit(huart);
   }
@@ -368,7 +372,9 @@ HAL_StatusTypeDef HAL_LIN_Init(UART_HandleTypeDef *huart, uint32_t BreakDetectLe
   assert_param(IS_UART_LIN_OVERSAMPLING(huart->Init.OverSampling));
   
   if(huart->State == HAL_UART_STATE_RESET)
-  {   
+  {
+    /* Allocate lock resource and initialize it */
+    huart->Lock = HAL_UNLOCKED;
     /* Init the low level hardware */
     HAL_UART_MspInit(huart);
   }
@@ -432,7 +438,9 @@ HAL_StatusTypeDef HAL_MultiProcessor_Init(UART_HandleTypeDef *huart, uint8_t Add
   assert_param(IS_UART_OVERSAMPLING(huart->Init.OverSampling));
 
   if(huart->State == HAL_UART_STATE_RESET)
-  {   
+  {
+    /* Allocate lock resource and initialize it */
+    huart->Lock = HAL_UNLOCKED;
     /* Init the low level hardware */
     HAL_UART_MspInit(huart);
   }

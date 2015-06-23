@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_smartcard.h
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   Header file of SMARTCARD HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -180,7 +180,6 @@ typedef struct
 /** @defgroup SMARTCARD_Word_Length SMARTCARD Word Length
   * @{
   */
-#define SMARTCARD_WORDLENGTH_8B                  ((uint32_t)0x00000000)
 #define SMARTCARD_WORDLENGTH_9B                  ((uint32_t)USART_CR1_M)
 /**
   * @}
@@ -189,9 +188,7 @@ typedef struct
 /** @defgroup SMARTCARD_Stop_Bits SMARTCARD Number of Stop Bits
   * @{
   */
-#define SMARTCARD_STOPBITS_1                     ((uint32_t)0x00000000)
 #define SMARTCARD_STOPBITS_0_5                   ((uint32_t)USART_CR2_STOP_0)
-#define SMARTCARD_STOPBITS_2                     ((uint32_t)USART_CR2_STOP_1)
 #define SMARTCARD_STOPBITS_1_5                   ((uint32_t)(USART_CR2_STOP_0 | USART_CR2_STOP_1))
 /**
   * @}
@@ -200,7 +197,6 @@ typedef struct
 /** @defgroup SMARTCARD_Parity SMARTCARD Parity
   * @{
   */
-#define SMARTCARD_PARITY_NONE                    ((uint32_t)0x00000000)
 #define SMARTCARD_PARITY_EVEN                    ((uint32_t)USART_CR1_PCE)
 #define SMARTCARD_PARITY_ODD                     ((uint32_t)(USART_CR1_PCE | USART_CR1_PS)) 
 /**
@@ -582,14 +578,10 @@ uint32_t HAL_SMARTCARD_GetError(SMARTCARD_HandleTypeDef *hsc);
 /** @defgroup SMARTCARD_Private_Macros   SMARTCARD Private Macros
   * @{
   */
-#define IS_SMARTCARD_WORD_LENGTH(LENGTH) (((LENGTH) == SMARTCARD_WORDLENGTH_8B) || \
-                                          ((LENGTH) == SMARTCARD_WORDLENGTH_9B))
-#define IS_SMARTCARD_STOPBITS(STOPBITS) (((STOPBITS) == SMARTCARD_STOPBITS_1) || \
-                                         ((STOPBITS) == SMARTCARD_STOPBITS_0_5) || \
-                                         ((STOPBITS) == SMARTCARD_STOPBITS_1_5) || \
-                                         ((STOPBITS) == SMARTCARD_STOPBITS_2))
-#define IS_SMARTCARD_PARITY(PARITY) (((PARITY) == SMARTCARD_PARITY_NONE) || \
-                                     ((PARITY) == SMARTCARD_PARITY_EVEN) || \
+#define IS_SMARTCARD_WORD_LENGTH(LENGTH) ((LENGTH) == SMARTCARD_WORDLENGTH_9B)
+#define IS_SMARTCARD_STOPBITS(STOPBITS) (((STOPBITS) == SMARTCARD_STOPBITS_0_5) || \
+                                         ((STOPBITS) == SMARTCARD_STOPBITS_1_5))
+#define IS_SMARTCARD_PARITY(PARITY) (((PARITY) == SMARTCARD_PARITY_EVEN) || \
                                      ((PARITY) == SMARTCARD_PARITY_ODD))
 #define IS_SMARTCARD_MODE(MODE) ((((MODE) & (uint32_t)0x0000FFF3) == 0x00) && ((MODE) != (uint32_t)0x000000))
 #define IS_SMARTCARD_POLARITY(CPOL) (((CPOL) == SMARTCARD_POLARITY_LOW) || ((CPOL) == SMARTCARD_POLARITY_HIGH))

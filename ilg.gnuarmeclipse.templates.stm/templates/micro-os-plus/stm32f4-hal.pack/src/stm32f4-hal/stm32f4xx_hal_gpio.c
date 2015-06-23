@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_gpio.c
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   GPIO HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the General Purpose Input/Output (GPIO) peripheral:
@@ -95,7 +95,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -348,17 +348,22 @@ void HAL_GPIO_DeInit(GPIO_TypeDef  *GPIOx, uint32_t GPIO_Pin)
       GPIOx->PUPDR &= ~(GPIO_PUPDR_PUPDR0 << (position * 2));
 
       /*------------------------- EXTI Mode Configuration --------------------*/
-      /* Configure the External Interrupt or event for the current IO */
-      tmp = ((uint32_t)0x0F) << (4 * (position & 0x03));
-      SYSCFG->EXTICR[position >> 2] &= ~tmp;
+      tmp = SYSCFG->EXTICR[position >> 2];
+      tmp &= (((uint32_t)0x0F) << (4 * (position & 0x03)));
+      if(tmp == ((uint32_t)(GET_GPIO_SOURCE(GPIOx)) << (4 * (position & 0x03))))
+      {
+        /* Configure the External Interrupt or event for the current IO */
+        tmp = ((uint32_t)0x0F) << (4 * (position & 0x03));
+        SYSCFG->EXTICR[position >> 2] &= ~tmp;
 
-      /* Clear EXTI line configuration */
-      EXTI->IMR &= ~((uint32_t)iocurrent);
-      EXTI->EMR &= ~((uint32_t)iocurrent);
-
-      /* Clear Rising Falling edge configuration */
-      EXTI->RTSR &= ~((uint32_t)iocurrent);
-      EXTI->FTSR &= ~((uint32_t)iocurrent);
+        /* Clear EXTI line configuration */
+        EXTI->IMR &= ~((uint32_t)iocurrent);
+        EXTI->EMR &= ~((uint32_t)iocurrent);
+        
+        /* Clear Rising Falling edge configuration */
+        EXTI->RTSR &= ~((uint32_t)iocurrent);
+        EXTI->FTSR &= ~((uint32_t)iocurrent);
+      }
     }
   }
 }

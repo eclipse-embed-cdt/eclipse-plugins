@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_adc.h
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   Header file of ADC HAL extension module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -111,10 +111,14 @@ typedef struct
   uint32_t NbrOfDiscConversion;   /*!< Specifies the number of ADC discontinuous conversions that will be done 
                                        using the sequencer for regular channel group.
                                        This parameter must be a number between Min_Data = 1 and Max_Data = 8. */
-  uint32_t ExternalTrigConvEdge;  /*!< Select the external trigger edge and enable the trigger of a regular group. 
-                                       This parameter can be a value of @ref ADC_External_trigger_edge_Regular */
-  uint32_t ExternalTrigConv;      /*!< Select the external event used to trigger the start of conversion of a regular group.
-                                       This parameter can be a value of @ref ADC_External_trigger_Source_Regular */ 
+  uint32_t ExternalTrigConv;      /*!< Selects the external event used to trigger the conversion start of regular group.
+                                       If set to ADC_SOFTWARE_START, external triggers are disabled.
+                                       This parameter can be a value of @ref ADC_External_trigger_Source_Regular
+                                       Note: This parameter can be modified only if there is no conversion is ongoing. */
+  uint32_t ExternalTrigConvEdge;  /*!< Selects the external trigger edge of regular group.
+                                       If trigger is set to ADC_SOFTWARE_START, this parameter is discarded.
+                                       This parameter can be a value of @ref ADC_External_trigger_edge_Regular
+                                       Note: This parameter can be modified only if there is no conversion is ongoing. */
 }ADC_InitTypeDef;
 
 /** 
@@ -248,7 +252,9 @@ typedef struct
 
 /** @defgroup ADC_External_trigger_Source_Regular ADC External Trigger Source Regular
   * @{
-  */ 
+  */
+/* Note: Parameter ADC_SOFTWARE_START is a software parameter used for        */
+/*       compatibility with other STM32 devices.                              */
 #define ADC_EXTERNALTRIGCONV_T1_CC1    ((uint32_t)0x00000000)
 #define ADC_EXTERNALTRIGCONV_T1_CC2    ((uint32_t)ADC_CR2_EXTSEL_0)
 #define ADC_EXTERNALTRIGCONV_T1_CC3    ((uint32_t)ADC_CR2_EXTSEL_1)
@@ -265,6 +271,7 @@ typedef struct
 #define ADC_EXTERNALTRIGCONV_T8_CC1    ((uint32_t)(ADC_CR2_EXTSEL_3 | ADC_CR2_EXTSEL_2 | ADC_CR2_EXTSEL_0))
 #define ADC_EXTERNALTRIGCONV_T8_TRGO   ((uint32_t)(ADC_CR2_EXTSEL_3 | ADC_CR2_EXTSEL_2 | ADC_CR2_EXTSEL_1))
 #define ADC_EXTERNALTRIGCONV_Ext_IT11  ((uint32_t)ADC_CR2_EXTSEL)
+#define ADC_SOFTWARE_START             ((uint32_t)ADC_CR2_EXTSEL + 1)
 /**
   * @}
   */ 
@@ -439,7 +446,7 @@ typedef struct
   * @param  __INTERRUPT__: specifies the ADC interrupt source to check.
   * @retval The new state of __IT__ (TRUE or FALSE).
   */
-#define __HAL_ADC_GET_IT_SOURCE(__HANDLE__, __INTERRUPT__) ((((__HANDLE__)->Instance->CR1 & (__INTERRUPT__)) == (__INTERRUPT__)) ? SET : RESET)
+#define __HAL_ADC_GET_IT_SOURCE(__HANDLE__, __INTERRUPT__)  (((__HANDLE__)->Instance->CR1 & (__INTERRUPT__)) == (__INTERRUPT__))
 
 /**
   * @brief  Clear the ADC's pending flags.
@@ -538,7 +545,14 @@ uint32_t HAL_ADC_GetError(ADC_HandleTypeDef *hadc);
 /** @defgroup ADC_Private_Constants ADC Private Constants
   * @{
   */
-
+/* Delay for ADC stabilization time.                                        */
+/* Maximum delay is 1us (refer to device datasheet, parameter tSTAB).       */
+/* Unit: us                                                                 */
+#define ADC_STAB_DELAY_US               ((uint32_t) 3)
+/* Delay for temperature sensor stabilization time.                         */
+/* Maximum delay is 10us (refer to device datasheet, parameter tSTART).     */
+/* Unit: us                                                                 */
+#define ADC_TEMPSENSOR_DELAY_US         ((uint32_t) 10)
 /**
   * @}
   */
@@ -590,28 +604,10 @@ uint32_t HAL_ADC_GetError(ADC_HandleTypeDef *hadc);
                                   ((REGTRIG) == ADC_EXTERNALTRIGCONV_T5_CC3)  || \
                                   ((REGTRIG) == ADC_EXTERNALTRIGCONV_T8_CC1)  || \
                                   ((REGTRIG) == ADC_EXTERNALTRIGCONV_T8_TRGO) || \
-                                  ((REGTRIG) == ADC_EXTERNALTRIGCONV_Ext_IT11))
+                                  ((REGTRIG) == ADC_EXTERNALTRIGCONV_Ext_IT11)|| \
+                                  ((REGTRIG) == ADC_SOFTWARE_START))
 #define IS_ADC_DATA_ALIGN(ALIGN) (((ALIGN) == ADC_DATAALIGN_RIGHT) || \
                                   ((ALIGN) == ADC_DATAALIGN_LEFT))
-#define IS_ADC_CHANNEL(CHANNEL) (((CHANNEL) == ADC_CHANNEL_0)  || \
-                                 ((CHANNEL) == ADC_CHANNEL_1)  || \
-                                 ((CHANNEL) == ADC_CHANNEL_2)  || \
-                                 ((CHANNEL) == ADC_CHANNEL_3)  || \
-                                 ((CHANNEL) == ADC_CHANNEL_4)  || \
-                                 ((CHANNEL) == ADC_CHANNEL_5)  || \
-                                 ((CHANNEL) == ADC_CHANNEL_6)  || \
-                                 ((CHANNEL) == ADC_CHANNEL_7)  || \
-                                 ((CHANNEL) == ADC_CHANNEL_8)  || \
-                                 ((CHANNEL) == ADC_CHANNEL_9)  || \
-                                 ((CHANNEL) == ADC_CHANNEL_10) || \
-                                 ((CHANNEL) == ADC_CHANNEL_11) || \
-                                 ((CHANNEL) == ADC_CHANNEL_12) || \
-                                 ((CHANNEL) == ADC_CHANNEL_13) || \
-                                 ((CHANNEL) == ADC_CHANNEL_14) || \
-                                 ((CHANNEL) == ADC_CHANNEL_15) || \
-                                 ((CHANNEL) == ADC_CHANNEL_16) || \
-                                 ((CHANNEL) == ADC_CHANNEL_17) || \
-                                 ((CHANNEL) == ADC_CHANNEL_18))
 #define IS_ADC_SAMPLE_TIME(TIME) (((TIME) == ADC_SAMPLETIME_3CYCLES)   || \
                                   ((TIME) == ADC_SAMPLETIME_15CYCLES)  || \
                                   ((TIME) == ADC_SAMPLETIME_28CYCLES)  || \
@@ -705,7 +701,7 @@ uint32_t HAL_ADC_GetError(ADC_HandleTypeDef *hadc);
   * @param  _NBR_DISCONTINUOUSCONV_: Number of discontinuous conversions.
   * @retval None
   */
-#define ADC_CR1_DISCONTINUOUS(_NBR_DISCONTINUOUSCONV_) (((_NBR_DISCONTINUOUSCONV_) - 1) << 13)
+#define ADC_CR1_DISCONTINUOUS(_NBR_DISCONTINUOUSCONV_) (((_NBR_DISCONTINUOUSCONV_) - 1) << POSITION_VAL(ADC_CR1_DISCNUM))
 
 /**
   * @brief  Enable ADC scan mode.

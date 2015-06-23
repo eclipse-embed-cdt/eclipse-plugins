@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_adc_ex.c
   * @author  MCD Application Team
-  * @version V1.2.0
-  * @date    26-December-2014
+  * @version V1.3.1
+  * @date    25-March-2015
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the ADC extension peripheral:
   *           + Extended features functions
@@ -86,7 +86,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2014 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -176,7 +176,8 @@ static void ADC_MultiModeDMAHalfConvCplt(DMA_HandleTypeDef *hdma);
   */
 HAL_StatusTypeDef HAL_ADCEx_InjectedStart(ADC_HandleTypeDef* hadc)
 {
-  uint32_t i = 0, tmp1 = 0, tmp2 = 0;
+  __IO uint32_t counter = 0;
+  uint32_t tmp1 = 0, tmp2 = 0;
   
   /* Process locked */
   __HAL_LOCK(hadc);
@@ -200,10 +201,12 @@ HAL_StatusTypeDef HAL_ADCEx_InjectedStart(ADC_HandleTypeDef* hadc)
     /* Enable the Peripheral */
     __HAL_ADC_ENABLE(hadc);
     
-    /* Delay inserted to wait during Tstab time the ADC's stabilization */
-    for(; i <= 540; i++)
+    /* Delay for temperature sensor stabilization time */
+    /* Compute number of CPU cycles to wait for */
+    counter = (ADC_STAB_DELAY_US * (SystemCoreClock / 1000000));
+    while(counter != 0)
     {
-      __NOP();
+      counter--;
     }
   }
   
@@ -245,7 +248,8 @@ HAL_StatusTypeDef HAL_ADCEx_InjectedStart(ADC_HandleTypeDef* hadc)
   */
 HAL_StatusTypeDef HAL_ADCEx_InjectedStart_IT(ADC_HandleTypeDef* hadc)
 {
-  uint32_t i = 0, tmp1 = 0, tmp2 =0;
+  __IO uint32_t counter = 0;
+  uint32_t tmp1 = 0, tmp2 =0;
   
   /* Process locked */
   __HAL_LOCK(hadc);
@@ -272,10 +276,12 @@ HAL_StatusTypeDef HAL_ADCEx_InjectedStart_IT(ADC_HandleTypeDef* hadc)
     /* Enable the Peripheral */
     __HAL_ADC_ENABLE(hadc);
     
-    /* Delay inserted to wait during Tstab time the ADC's stabilization */
-    for(; i <= 540; i++)
+    /* Delay for temperature sensor stabilization time */
+    /* Compute number of CPU cycles to wait for */
+    counter = (ADC_STAB_DELAY_US * (SystemCoreClock / 1000000));
+    while(counter != 0)
     {
-      __NOP();
+      counter--;
     }
   }
   
@@ -472,7 +478,7 @@ uint32_t HAL_ADCEx_InjectedGetValue(ADC_HandleTypeDef* hadc, uint32_t InjectedRa
   */
 HAL_StatusTypeDef HAL_ADCEx_MultiModeStart_DMA(ADC_HandleTypeDef* hadc, uint32_t* pData, uint32_t Length)
 {
-  uint16_t counter = 0;
+  __IO uint32_t counter = 0;
   
   /* Check the parameters */
   assert_param(IS_FUNCTIONAL_STATE(hadc->Init.ContinuousConvMode));
@@ -518,15 +524,17 @@ HAL_StatusTypeDef HAL_ADCEx_MultiModeStart_DMA(ADC_HandleTypeDef* hadc, uint32_t
     /* Enable the Peripheral */
     __HAL_ADC_ENABLE(hadc);
     
-    /* Delay inserted to wait during Tstab time the ADC's stabilization */
-    for(; counter <= 540; counter++)
+    /* Delay for temperature sensor stabilization time */
+    /* Compute number of CPU cycles to wait for */
+    counter = (ADC_STAB_DELAY_US * (SystemCoreClock / 1000000));
+    while(counter != 0)
     {
-      __NOP();
+      counter--;
     }
   }
   
   /* if no external trigger present enable software conversion of regular channels */
-  if (hadc->Init.ExternalTrigConvEdge == ADC_EXTERNALTRIGCONVEDGE_NONE)
+  if((hadc->Instance->CR2 & ADC_CR2_EXTEN) == RESET) 
   {
     /* Enable the selected ADC software conversion for regular group */
     hadc->Instance->CR2 |= (uint32_t)ADC_CR2_SWSTART;
