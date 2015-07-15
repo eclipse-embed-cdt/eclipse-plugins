@@ -25,6 +25,7 @@ IFS=$'\n\t'
 
 # Mandatory definitions.
 APP_NAME="Windows Build Tools"
+
 APP_LC_NAME="build-tools"
 
 # On Parallels virtual machines, prefer host Work folder.
@@ -180,6 +181,11 @@ DOWNLOAD_FOLDER="${WORK_FOLDER}/download"
 
 source "$helper_script" --prepare-prerequisites
 
+if [ -n "${DO_BUILD_WIN32}${DO_BUILD_WIN64}" ]
+then
+  source "$helper_script" --prepare-docker
+fi
+
 # ----- Process "preload-images" action. -----
 
 if [ "${ACTION}" == "preload-images" ]
@@ -313,7 +319,7 @@ fi
 # http://intgat.tigress.co.uk/rmy/busybox/index.html
 # https://github.com/rmyorston/busybox-w32
 
-BUSYBOX_COMMIT="ec39cb770ddd5c0e085d5c4ee10be65bab5e7a44"
+BUSYBOX_COMMIT="9fe16f6102d8ab907c056c484988057904092c06"
 # BUSYBOX_COMMIT=master
 BUSYBOX_ARCHIVE="${BUSYBOX_COMMIT}.zip"
 BUSYBOX_URL="https://github.com/rmyorston/busybox-w32/archive/${BUSYBOX_ARCHIVE}"
@@ -591,7 +597,14 @@ then
   echo "Running BusyBox make..."
 
   cd "${busybox_build_folder}"
-  make
+  if [ ${target_bits} == "32" ]
+  then
+    make
+  elif [ ${target_bits} == "64" ]
+  then
+    make mingw64_defconfig
+    make
+  fi
 
 fi
 
@@ -721,6 +734,7 @@ then
     --docker-image ilegeul/debian:8-gnuarm-mingw
 fi
 
+cat "${WORK_FOLDER}/output/"*.md5
 
 source "$helper_script" "--stop-timer"
 
