@@ -765,6 +765,23 @@ then
     "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
   install_name_tool -change "/opt/local/lib/libusb-1.0.0.dylib" "@executable_path/libusb-1.0.0.dylib" \
     "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+  install_name_tool -change "/opt/local/lib/libz.1.dylib" "@executable_path/libz.1.dylib" \
+    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+  install_name_tool -change "/opt/local/lib/libpixman-1.0.dylib" "@executable_path/libpixman-1.0.dylib" \
+    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+  install_name_tool -change "/opt/local/lib/libSDL-1.2.0.dylib" "@executable_path/libSDL-1.2.0.dylib" \
+    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+  install_name_tool -change "/opt/local/lib/libSDL_image-1.2.0.dylib" "@executable_path/libSDL_image-1.2.0.dylib" \
+    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+  install_name_tool -change "/opt/local/lib/libX11.6.dylib" "@executable_path/libX11.6.dylib" \
+    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+  install_name_tool -change "/opt/local/lib/libgthread-2.0.0.dylib" "@executable_path/libgthread-2.0.0.dylib" \
+    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+  install_name_tool -change "/opt/local/lib/libglib-2.0.0.dylib" "@executable_path/libglib-2.0.0.dylib" \
+    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+  install_name_tool -change "/opt/local/lib/libintl.8.dylib" "@executable_path/libintl.8.dylib" \
+    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+
   otool -L "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
 
   echo
@@ -867,9 +884,178 @@ then
   install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
   otool -L "${install_folder}/qemu/bin/${ILIB}"
 
+  echo
+  ILIB=libpixman-1.0.dylib
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  # otool -L "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  otool -L "${install_folder}/qemu/bin/${ILIB}"
+
+  echo
+  ILIB=libSDL-1.2.0.dylib
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  # otool -L "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libX11.6.dylib" "@executable_path/libX11.6.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libXext.6.dylib" "@executable_path/libXext.6.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libXrandr.2.dylib" "@executable_path/libXrandr.2.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libXrender.1.dylib" "@executable_path/libXrender.1.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  otool -L "${install_folder}/qemu/bin/${ILIB}"
+
+  echo
+  ILIB=libSDL_image-1.2.0.dylib
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  # otool -L "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libpng16.16.dylib" "@executable_path/libpng16.16.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libjpeg.9.dylib" "@executable_path/libjpeg.9.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libtiff.5.dylib" "@executable_path/libtiff.5.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libz.1.dylib" "@executable_path/libz.1.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libSDL-1.2.0.dylib" "@executable_path/libSDL-1.2.0.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  otool -L "${install_folder}/qemu/bin/${ILIB}"
+
+  echo
+  ILIB=libX11.6.dylib
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  # otool -L "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libxcb.1.dylib" "@executable_path/libxcb.1.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  otool -L "${install_folder}/qemu/bin/${ILIB}"
+
+  echo
+  ILIB=libXext.6.dylib
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  # otool -L "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libX11.6.dylib" "@executable_path/libX11.6.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  otool -L "${install_folder}/qemu/bin/${ILIB}"
+
+  echo
+  ILIB=libXrandr.2.dylib
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  # otool -L "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libXext.6.dylib" "@executable_path/libXext.6.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libXrender.1.dylib" "@executable_path/libXrender.1.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libX11.6.dylib" "@executable_path/libX11.6.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  otool -L "${install_folder}/qemu/bin/${ILIB}"
+
+  echo
+  ILIB=libXrender.1.dylib
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  # otool -L "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libX11.6.dylib" "@executable_path/libX11.6.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  otool -L "${install_folder}/qemu/bin/${ILIB}"
+
+  echo
+  ILIB=libgthread-2.0.0.dylib
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  # otool -L "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libglib-2.0.0.dylib" "@executable_path/libglib-2.0.0.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libiconv.2.dylib" "@executable_path/libiconv.2.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libintl.8.dylib" "@executable_path/libintl.8.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  otool -L "${install_folder}/qemu/bin/${ILIB}"
+
+  echo
+  ILIB=libglib-2.0.0.dylib
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  # otool -L "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libiconv.2.dylib" "@executable_path/libiconv.2.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libintl.8.dylib" "@executable_path/libintl.8.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  otool -L "${install_folder}/qemu/bin/${ILIB}"
+
+  echo
+  ILIB=libxcb.1.dylib
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  # otool -L "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libXau.6.dylib" "@executable_path/libXau.6.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libXdmcp.6.dylib" "@executable_path/libXdmcp.6.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  otool -L "${install_folder}/qemu/bin/${ILIB}"
+
+  echo
+  ILIB=libXau.6.dylib
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  # otool -L "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  otool -L "${install_folder}/qemu/bin/${ILIB}"
+
+  echo
+  ILIB=libXdmcp.6.dylib
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  # otool -L "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  otool -L "${install_folder}/qemu/bin/${ILIB}"
+
+  echo
+  ILIB=libpng16.16.dylib
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  # otool -L "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libz.1.dylib" "@executable_path/libz.1.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  otool -L "${install_folder}/qemu/bin/${ILIB}"
+
+  echo
+  ILIB=libjpeg.9.dylib
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  # otool -L "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  otool -L "${install_folder}/qemu/bin/${ILIB}"
+
+  echo
+  ILIB=libtiff.5.dylib
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  # otool -L "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libz.1.dylib" "@executable_path/libz.1.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/liblzma.5.dylib" "@executable_path/liblzma.5.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -change "/opt/local/lib/libjpeg.9.dylib" "@executable_path/libjpeg.9.dylib" \
+    "${install_folder}/qemu/bin/${ILIB}"
+  otool -L "${install_folder}/qemu/bin/${ILIB}"
+
+  echo
+  ILIB=liblzma.5.dylib
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  # otool -L "${install_folder}/qemu/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  otool -L "${install_folder}/qemu/bin/${ILIB}"
+
   # Do not strip resulting dylib files!
 
 fi
+
+# ----- Copy the images files. -----
+
+mkdir -p "${install_folder}/qemu/share/qemu/images"
+cp "${git_folder}/gnuarmeclipse/images/"* "${install_folder}/qemu/share/qemu/images"
 
 # ----- Copy the license files. -----
 
