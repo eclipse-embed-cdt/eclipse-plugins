@@ -7,6 +7,6 @@
 // on the trace device. In release configurations the message is
 // simply discarded.
 //
-// Then demonstrates how to blink a led with 1Hz, using a
+// Then demonstrates how to blink a led with 1 Hz, using a
 // continuous loop and SysTick delays.
 //

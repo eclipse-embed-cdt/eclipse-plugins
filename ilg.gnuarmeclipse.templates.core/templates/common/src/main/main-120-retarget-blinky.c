@@ -10,7 +10,7 @@
 // To demonstrate POSIX retargetting, reroute the STDOUT and STDERR to the
 // trace device and display messages on both of them.
 //
-// Then demonstrates how to blink a led with 1Hz, using a
+// Then demonstrates how to blink a led with 1 Hz, using a
 // continuous loop and SysTick delays.
 //
 // On DEBUG, the uptime in seconds is also displayed on the trace device.

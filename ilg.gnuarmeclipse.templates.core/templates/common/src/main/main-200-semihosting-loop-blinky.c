@@ -18,7 +18,7 @@
   for (int i = 0; i < loops; i++)
     {
       blink_led_on();
-      timer_sleep(BLINK_ON_TICKS);
+      timer_sleep(i == 0 ? TIMER_FREQUENCY_HZ : BLINK_ON_TICKS);
 
       blink_led_off();
       timer_sleep(BLINK_OFF_TICKS);

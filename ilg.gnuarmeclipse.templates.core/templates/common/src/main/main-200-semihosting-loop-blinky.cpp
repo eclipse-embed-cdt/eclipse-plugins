@@ -22,7 +22,7 @@
   for (int i = 0; i < loops; i++)
     {
       blinkLed.turnOn();
-      timer.sleep(BLINK_ON_TICKS);
+      timer.sleep(i == 0 ? Timer::FREQUENCY_HZ : BLINK_ON_TICKS);
 
       blinkLed.turnOff();
       timer.sleep(BLINK_OFF_TICKS);

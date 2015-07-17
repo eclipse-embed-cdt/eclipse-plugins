@@ -28,7 +28,7 @@
 // on the trace device. In release configurations the message is
 // simply discarded.
 //
-// Then demonstrates how to blink a led with 1Hz, using a
+// Then demonstrates how to blink a led with 1 Hz, using a
 // continuous loop and SysTick delays.
 //@XCDL @elif "$(syscalls)"=="retarget"
 //@XCDL @line "// $(shortChipFamily) led blink sample (trace via $(trace))."
@@ -39,7 +39,7 @@
 // To demonstrate POSIX retargetting, reroute the STDOUT and STDERR to the
 // trace device and display messages on both of them.
 //
-// Then demonstrates how to blink a led with 1Hz, using a
+// Then demonstrates how to blink a led with 1 Hz, using a
 // continuous loop and SysTick delays.
 //
 // On DEBUG, the uptime in seconds is also displayed on the trace device.
@@ -52,7 +52,7 @@
 // To demonstrate semihosting, display a message on the standard output
 // and another message on the standard error.
 //
-// Then demonstrates how to blink a led with 1Hz, using a
+// Then demonstrates how to blink a led with 1 Hz, using a
 // continuous loop and SysTick delays.
 //
 // On DEBUG, the uptime in seconds is also displayed on the trace device.
@@ -80,7 +80,7 @@
 //@XCDL @line "// The value selected during project creation was HSE_VALUE=$(hseValue)."
 //
 // Note: The default clock settings take the user defined HSE_VALUE and try
-// to reach the maximum possible system clock. For the default 8MHz input
+// to reach the maximum possible system clock. For the default 8 MHz input
 // the result is guaranteed, but for other values it might not be possible,
 //@XCDL @line "// so please adjust the PLL settings in system/src/cmsis/system_$(CMSIS_name).c"
 //
@@ -89,6 +89,7 @@
 // ----- Timing definitions ---------------------------------------------------
 
 // Keep the LED on for 2/3 of a second.
+#define BLINK_1S_TICKS  (TIMER_FREQUENCY_HZ)
 #define BLINK_ON_TICKS  (TIMER_FREQUENCY_HZ * 2 / 3)
 #define BLINK_OFF_TICKS (TIMER_FREQUENCY_HZ - BLINK_ON_TICKS)
 //@XCDL @elif "$(fileExtension)"=="cpp"
@@ -98,6 +99,7 @@
     // ----- Timing definitions -----------------------------------------------
 
     // Keep the LED on for 2/3 of a second.
+    constexpr Timer::ticks_t BLINK_1S_TICKS = Timer::FREQUENCY_HZ;
     constexpr Timer::ticks_t BLINK_ON_TICKS = Timer::FREQUENCY_HZ * 2 / 3;
     constexpr Timer::ticks_t BLINK_OFF_TICKS = Timer::FREQUENCY_HZ - BLINK_ON_TICKS;
   }
@@ -151,7 +153,7 @@ main (int argc, char* argv[])
 
   // At this stage the system clock should have already been configured
   // at high speed.
-  trace_printf ("System clock: %uHz\n", SystemCoreClock);
+  trace_printf ("System clock: %u Hz\n", SystemCoreClock);
 
 //@XCDL @if "$(fileExtension)"=="c"
   timer_start ();
@@ -161,10 +163,10 @@ main (int argc, char* argv[])
   uint32_t seconds = 0;
 
   // Infinite loop
-  while (1)
+  for (int i = 0; ; i++)
     {
       blink_led_on ();
-      timer_sleep (BLINK_ON_TICKS);
+      timer_sleep (i == 0 ? BLINK_1S_TICKS : BLINK_ON_TICKS);
 
       blink_led_off ();
       timer_sleep (BLINK_OFF_TICKS);
@@ -185,10 +187,10 @@ main (int argc, char* argv[])
   uint32_t seconds = 0;
 
   // Infinite loop
-  while (1)
+  for (int i = 0; ; i++)
     {
       blinkLed.turnOn ();
-      timer.sleep (BLINK_ON_TICKS);
+      timer_sleep (i == 0 ? BLINK_1S_TICKS : BLINK_ON_TICKS);
 
       blinkLed.turnOff ();
       timer.sleep (BLINK_OFF_TICKS);
