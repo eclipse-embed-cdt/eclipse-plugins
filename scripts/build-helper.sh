@@ -256,13 +256,25 @@ do
         do_compute_md5 "md5sum" "-t" "${distribution_file}"
 
         # Display some information about the created application.
+        pushd "${install_folder}/archive/${APP_LC_NAME}/${distribution_file_version}/bin"
+        rm -rf /tmp/mylibs
         echo
         echo "Libraries:"
         set +e
-        readelf -d "${install_folder}/archive/${APP_LC_NAME}/${distribution_file_version}/bin/${distribution_executable_name}" \
-        | egrep -i 'library|dynamic'
+        echo "${distribution_executable_name}"
+        readelf -d "${distribution_executable_name}" | egrep -i 'library|dynamic'
+        readelf -d "${distribution_executable_name}" | egrep -i 'library|dynamic' | grep NEEDED >>/tmp/mylibs
+        for f in `find . -type f -name '*.so*' -print`
+        do
+          echo "${f}"
+          readelf -d "${f}" | egrep -i 'library|dynamic'
+          readelf -d "${f}" | egrep -i 'library|dynamic' | grep NEEDED >>/tmp/mylibs
+        done
+        echo
+        echo "Needed:"
+        sort -u /tmp/mylibs
+        popd
         set -e
-
         echo
         ls -l "${install_folder}/archive/${APP_LC_NAME}/${distribution_file_version}/bin"
 
@@ -314,6 +326,7 @@ do
       then
         echo "Build completed."
         echo "Distribution file ${distribution_file} created."
+        ls -l "${distribution_file}"
       else
         echo "Build failed."
       fi
@@ -549,6 +562,61 @@ run_local_script() {
 # ----- Functions used in the Docker script. -----
 
 # v===========================================================================v
+do_copy_system_dll() {
+  # $1 = dll name
+
+  ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name $1'.so.*.*' -print)
+  if [ ! -z "${ILIB}" ]
+  then
+    echo "Found ${ILIB}"
+    ILIB_BASE="$(basename ${ILIB})"
+    /usr/bin/install -v -c -m 644 "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin"
+    ILIB_SHORT="$(echo $ILIB_BASE | sed -e 's/\([[:alnum:]]*\)[.]\([[:alnum:]]*\)[.]\([[:digit:]]*\)[.].*/\1.\2.\3/')"
+    (cd "${install_folder}/${APP_LC_NAME}/bin"; ln -sv "${ILIB_BASE}" "${ILIB_SHORT}")
+    ILIB_SHORT="$(echo $ILIB_BASE | sed -e 's/\([[:alnum:]]*\)[.]\([[:alnum:]]*\)[.]\([[:digit:]]*\)[.].*/\1.\2/')"
+    (cd "${install_folder}/${APP_LC_NAME}/bin"; ln -sv "${ILIB_BASE}" "${ILIB_SHORT}")
+  else
+    ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name $1'.so.*' -print)
+    if [ ! -z "${ILIB}" ]
+    then
+      echo "Found2 ${ILIB}"
+      ILIB_BASE="$(basename ${ILIB})"
+      /usr/bin/install -v -c -m 644 "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin"
+      ILIB_SHORT="$(echo $ILIB_BASE | sed -e 's/\([[:alnum:]]*\)[.]\([[:alnum:]]*\)[.]\([[:digit:]]*\).*/\1.\2/')"
+      echo "${ILIB_SHORT}"
+      (cd "${install_folder}/${APP_LC_NAME}/bin"; ln -sv "${ILIB_BASE}" "${ILIB_SHORT}")
+    else
+      ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name $1'.so' -print)
+      if [ ! -z "${ILIB}" ]
+      then
+        echo "Found3 ${ILIB}"
+        ILIB_BASE="$(basename ${ILIB})"
+        /usr/bin/install -v -c -m 644 "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin"
+      else
+        echo $1 not found
+        exit 1
+      fi
+    fi
+  fi
+}
+
+do_copy_librt_dll() {
+  ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name 'librt-*.so' -print | grep -v i686)
+  if [ ! -z "${ILIB}" ]
+  then
+    echo "Found ${ILIB}"
+    ILIB_BASE="$(basename ${ILIB})"
+    /usr/bin/install -v -c -m 644 "${ILIB}" \
+    "${install_folder}/${APP_LC_NAME}/bin"
+    (cd "${install_folder}/${APP_LC_NAME}/bin"; ln -sv "${ILIB_BASE}" "librt.so.1")
+    (cd "${install_folder}/${APP_LC_NAME}/bin"; ln -sv "${ILIB_BASE}" "librt.so")
+  else
+    echo
+    echo "WARNING: librt.so not copied locally!"
+    exit 1
+  fi
+}
+
 do_copy_gcc_dll() {
 
   # First try Ubuntu specific locations,

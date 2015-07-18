@@ -597,15 +597,13 @@ then
     # Linux target
     cd "${build_folder}/qemu"
 
-    LDFLAGS="-v -Wl,-rpath=\$\$ORIGIN" \
+    LDFLAGS="-v -Wl,-rpath=\$$ORIGIN" \
     \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_PATH="${install_folder}/lib/pkgconfig":"${install_folder}/lib64/pkgconfig" \
     \
     bash "${git_folder}/configure" \
-      --static \
-      \
-      --extra-cflags="-pipe -I${install_folder}/include -Wno-missing-format-attribute" \
+      --extra-cflags="-pipe -I${install_folder}/include -Wno-missing-format-attribute -Wno-error=format=" \
       --extra-ldflags="-L${install_folder}/lib" \
       --target-list="gnuarmeclipse-softmmu" \
       --prefix="${install_folder}/qemu" \
@@ -746,7 +744,68 @@ then
 
   do_strip strip "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
 
-  # No need to copy any shared libraries, the build is static.
+  echo
+  echo "Copying shared libs..."
+
+  if [ "${target_bits}" == "64" ]
+  then
+    distro_machine="x86_64"
+  elif [ "${target_bits}" == "32" ]
+  then
+    distro_machine="i386"
+  fi
+
+if false
+then
+  for f in \
+    libFLAC libICE \
+    libSDL-1.2 libSDL_image-1.2 \
+    libSM \
+    libX11 libXau libXdmcp libXext libXi libXtst \
+    libasound libasyncns libattr \
+    libcaca libcap libdbus-1 libdirect-1.2 libdirectfb-1.2 libfusion-1.2 \
+    libgthread-2.0 \
+    libglib-2.0 libjbig libjpeg libjson-c liblzma libncursesw \
+    libogg libpcre \
+    libpng12 libpulse-simple libpulse libpulsecommon-5.0 \
+    libslang libsndfile libtiff \
+    libuuid libtinfo libvorbis libvorbisenc libwebp libwrap libxcb libz
+  do
+    echo do_copy_system_dll "${f}"
+  done
+fi
+
+  do_copy_system_dll libpcre
+  do_copy_system_dll libgthread-2.0
+  do_copy_system_dll libglib-2.0
+  do_copy_system_dll libz
+
+  do_copy_librt_dll
+
+  ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name 'libutil-*.so' -print)
+  if [ ! -z "${ILIB}" ]
+  then
+    echo "Found ${ILIB}"
+    ILIB_BASE="$(basename ${ILIB})"
+    /usr/bin/install -v -c -m 644 "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin"
+    (cd "${install_folder}/${APP_LC_NAME}/bin"; ln -sv "${ILIB_BASE}" "libutil.so.1")
+    (cd "${install_folder}/${APP_LC_NAME}/bin"; ln -sv "${ILIB_BASE}" "libutil.so")
+  else
+    echo libutil not found
+    exit 1
+  fi
+
+  ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name 'libpthread.so' -print)
+  if [ ! -z "${ILIB}" ]
+  then
+    echo "Found ${ILIB}"
+    ILIB_BASE="$(basename ${ILIB})"
+    /usr/bin/install -v -c -m 644 "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin"
+    (cd "${install_folder}/${APP_LC_NAME}/bin"; ln -sv "${ILIB_BASE}" "libpthread.so.0")
+  else
+    echo libpthread not found
+    exit 1
+  fi
 
 elif [ "${target_name}" == "osx" ]
 then
@@ -1140,7 +1199,7 @@ then
   do_build_target "Creating Debian 64-bits archive..." \
     --target-name debian \
     --target-bits 64 \
-    --docker-image ilegeul/debian:7-gnuarm-gcc
+    --docker-image ilegeul/debian:8-gnuarm-gcc-sdl
 fi
 
 # ----- Build the Debian 32-bits distribution. -----
