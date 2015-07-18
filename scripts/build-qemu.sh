@@ -568,6 +568,11 @@ then
 
 fi
 
+if [ "${target_name}" == "debian" ]
+then
+  apt-get install
+fi
+
 mkdir -p ${build_folder}
 cd ${build_folder}
 
@@ -635,9 +640,31 @@ then
     "${work_folder}/${LIBSDL_FOLDER}/configure" \
       --host="${cross_compile_prefix}" \
       --prefix="${install_folder}"
+
   elif [ "${target_name}" == "debian" ]
   then
-    echo "deb"
+    CFLAGS="-m${target_bits} -pipe" \
+    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/cross-pkg-config" \
+    "${work_folder}/${LIBSDL_FOLDER}/configure" \
+      --prefix="${install_folder}" \
+      \
+      --disable-audio \
+      --disable-events \
+      --disable-joystick \
+      --disable-cdrom \
+      --disable-timers \
+      --disable-file \
+      --disable-video-photon \
+      --disable-video-fbcon \
+      --disable-video-directfb \
+      --disable-video-ps2gs \
+      --disable-video-ps3 \
+      --disable-video-svga \
+      --disable-video-vgl \
+      --disable-video-wscons \
+      --disable-video-xbios \
+      --disable-video-gem \
+
   elif [ "${target_name}" == "osx" ]
   then
     CFLAGS="-m${target_bits} -pipe -I/opt/local/include" \
@@ -662,9 +689,6 @@ then
       --disable-video-xbios \
       --disable-video-gem \
 
-  else
-    echo "none"
-    exit 1
   fi
 
   echo
@@ -696,9 +720,31 @@ then
     "${work_folder}/${LIBSDL_FOLDER}/configure" \
       --host="${cross_compile_prefix}" \
       --prefix="${install_folder}"
+      
   elif [ "${target_name}" == "debian" ]
   then
-    echo "deb"
+    CFLAGS="-m${target_bits} -pipe " \
+    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/cross-pkg-config" \
+    "${work_folder}/${LIBSDL_IMAGE_FOLDER}/configure" \
+      --prefix="${install_folder}" \
+      \
+      --disable-bmp \
+      --disable-gif \
+      --disable-jpg \
+      --disable-jpg-shared \
+      --disable-lbm \
+      --disable-pcx \
+      --disable-pnm \
+      --disable-tga \
+      --disable-tif \
+      --disable-tif-shared \
+      --disable-xcf \
+      --disable-xpm \
+      --disable-xv \
+      --disable-wepp \
+      --disable-wepp-shared \
+      --disable-pthreads
+
   elif [ "${target_name}" == "osx" ]
   then
     CFLAGS="-m${target_bits} -pipe " \
@@ -721,10 +767,8 @@ then
       --disable-xv \
       --disable-wepp \
       --disable-wepp-shared \
+      --disable-pthreads
 
-  else
-    echo "none"
-    exit 1
   fi
 
   echo
@@ -960,10 +1004,21 @@ then
   done
 fi
 
+  do_copy_user_dll libSDL-1.2
+  do_copy_user_dll libSDL_image-1.2
+
   do_copy_system_dll libpcre
   do_copy_system_dll libgthread-2.0
   do_copy_system_dll libglib-2.0
   do_copy_system_dll libz
+
+if false
+then
+  do_copy_system_dll libX11
+  do_copy_system_dll libxcb
+  do_copy_system_dll libXau
+  do_copy_system_dll libXdmcp
+fi
 
   do_copy_librt_dll
 
@@ -980,17 +1035,21 @@ fi
     exit 1
   fi
 
-  ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name 'libpthread.so' -print)
+if false
+then
+  ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name 'libpthread-*.so' -print)
   if [ ! -z "${ILIB}" ]
   then
     echo "Found ${ILIB}"
     ILIB_BASE="$(basename ${ILIB})"
     /usr/bin/install -v -c -m 644 "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin"
     (cd "${install_folder}/${APP_LC_NAME}/bin"; ln -sv "${ILIB_BASE}" "libpthread.so.0")
+    (cd "${install_folder}/${APP_LC_NAME}/bin"; ln -sv "${ILIB_BASE}" "libpthread.so")
   else
     echo libpthread not found
     exit 1
   fi
+fi
 
 elif [ "${target_name}" == "osx" ]
 then

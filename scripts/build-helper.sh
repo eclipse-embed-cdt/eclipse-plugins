@@ -562,13 +562,14 @@ run_local_script() {
 # ----- Functions used in the Docker script. -----
 
 # v===========================================================================v
-do_copy_system_dll() {
+
+do_copy_user_dll() {
   # $1 = dll name
 
-  ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name $1'.so.*.*' -print)
+  ILIB=$(find ${install_folder}/lib -type f -name $1'.so.*.*' -print)
   if [ ! -z "${ILIB}" ]
   then
-    echo "Found ${ILIB}"
+    echo "Found user ${ILIB}"
     ILIB_BASE="$(basename ${ILIB})"
     /usr/bin/install -v -c -m 644 "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin"
     ILIB_SHORT="$(echo $ILIB_BASE | sed -e 's/\([[:alnum:]]*\)[.]\([[:alnum:]]*\)[.]\([[:digit:]]*\)[.].*/\1.\2.\3/')"
@@ -579,7 +580,7 @@ do_copy_system_dll() {
     ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name $1'.so.*' -print)
     if [ ! -z "${ILIB}" ]
     then
-      echo "Found2 ${ILIB}"
+      echo "Found user 2 ${ILIB}"
       ILIB_BASE="$(basename ${ILIB})"
       /usr/bin/install -v -c -m 644 "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin"
       ILIB_SHORT="$(echo $ILIB_BASE | sed -e 's/\([[:alnum:]]*\)[.]\([[:alnum:]]*\)[.]\([[:digit:]]*\).*/\1.\2/')"
@@ -589,7 +590,45 @@ do_copy_system_dll() {
       ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name $1'.so' -print)
       if [ ! -z "${ILIB}" ]
       then
-        echo "Found3 ${ILIB}"
+        echo "Found user 3 ${ILIB}"
+        ILIB_BASE="$(basename ${ILIB})"
+        /usr/bin/install -v -c -m 644 "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin"
+      else
+        echo $1 not found
+        exit 1
+      fi
+    fi
+  fi
+}
+
+do_copy_system_dll() {
+  # $1 = dll name
+
+  ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name $1'.so.*.*' -print)
+  if [ ! -z "${ILIB}" ]
+  then
+    echo "Found system ${ILIB}"
+    ILIB_BASE="$(basename ${ILIB})"
+    /usr/bin/install -v -c -m 644 "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin"
+    ILIB_SHORT="$(echo $ILIB_BASE | sed -e 's/\([[:alnum:]]*\)[.]\([[:alnum:]]*\)[.]\([[:digit:]]*\)[.].*/\1.\2.\3/')"
+    (cd "${install_folder}/${APP_LC_NAME}/bin"; ln -sv "${ILIB_BASE}" "${ILIB_SHORT}")
+    ILIB_SHORT="$(echo $ILIB_BASE | sed -e 's/\([[:alnum:]]*\)[.]\([[:alnum:]]*\)[.]\([[:digit:]]*\)[.].*/\1.\2/')"
+    (cd "${install_folder}/${APP_LC_NAME}/bin"; ln -sv "${ILIB_BASE}" "${ILIB_SHORT}")
+  else
+    ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name $1'.so.*' -print)
+    if [ ! -z "${ILIB}" ]
+    then
+      echo "Found system 2 ${ILIB}"
+      ILIB_BASE="$(basename ${ILIB})"
+      /usr/bin/install -v -c -m 644 "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin"
+      ILIB_SHORT="$(echo $ILIB_BASE | sed -e 's/\([[:alnum:]]*\)[.]\([[:alnum:]]*\)[.]\([[:digit:]]*\).*/\1.\2/')"
+      echo "${ILIB_SHORT}"
+      (cd "${install_folder}/${APP_LC_NAME}/bin"; ln -sv "${ILIB_BASE}" "${ILIB_SHORT}")
+    else
+      ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name $1'.so' -print)
+      if [ ! -z "${ILIB}" ]
+      then
+        echo "Found system 3 ${ILIB}"
         ILIB_BASE="$(basename ${ILIB})"
         /usr/bin/install -v -c -m 644 "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin"
       else
