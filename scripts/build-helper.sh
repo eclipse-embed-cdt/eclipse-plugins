@@ -515,7 +515,7 @@ run_docker_script() {
   set -e
 
   echo
-  echo "Running \"$(basename "${docker_script}")\" script inside \"${docker_container_name}\" container..."
+  echo "Running \"$(basename "${docker_script}")\" script inside \"${docker_container_name}\" container, image \"${docker_image}\"..."
 
   # Run the second pass script in a fresh Docker container.
   docker run \
