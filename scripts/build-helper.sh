@@ -577,7 +577,7 @@ do_copy_user_dll() {
     ILIB_SHORT="$(echo $ILIB_BASE | sed -e 's/\([[:alnum:]]*\)[.]\([[:alnum:]]*\)[.]\([[:digit:]]*\)[.].*/\1.\2/')"
     (cd "${install_folder}/${APP_LC_NAME}/bin"; ln -sv "${ILIB_BASE}" "${ILIB_SHORT}")
   else
-    ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name $1'.so.*' -print)
+    ILIB=$(find ${install_folder}/lib -type f -name $1'.so.*' -print)
     if [ ! -z "${ILIB}" ]
     then
       echo "Found user 2 ${ILIB}"
@@ -587,7 +587,7 @@ do_copy_user_dll() {
       echo "${ILIB_SHORT}"
       (cd "${install_folder}/${APP_LC_NAME}/bin"; ln -sv "${ILIB_BASE}" "${ILIB_SHORT}")
     else
-      ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name $1'.so' -print)
+      ILIB=$(find ${install_folder}/lib -type f -name $1'.so' -print)
       if [ ! -z "${ILIB}" ]
       then
         echo "Found user 3 ${ILIB}"
@@ -643,7 +643,7 @@ do_copy_librt_dll() {
   ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name 'librt-*.so' -print | grep -v i686)
   if [ ! -z "${ILIB}" ]
   then
-    echo "Found ${ILIB}"
+    echo "Found system ${ILIB}"
     ILIB_BASE="$(basename ${ILIB})"
     /usr/bin/install -v -c -m 644 "${ILIB}" \
     "${install_folder}/${APP_LC_NAME}/bin"
