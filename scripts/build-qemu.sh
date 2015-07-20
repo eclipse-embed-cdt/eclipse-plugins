@@ -67,6 +67,7 @@ DO_BUILD_DEB32=""
 DO_BUILD_DEB64=""
 DO_BUILD_OSX=""
 helper_script=""
+do_no_strip=""
 
 while [ $# -gt 0 ]
 do
@@ -110,6 +111,11 @@ do
     --helper-script)
       helper_script=$2
       shift 2
+      ;;
+
+    --no-strip)
+      do_no_strip="y"
+      shift
       ;;
 
     --help)
@@ -170,12 +176,13 @@ helper_script="${WORK_FOLDER}/scripts/build-helper.sh"
 
 BUILD_FOLDER="${WORK_FOLDER}/build"
 
-# https://sourceforge.net/projects/libpng/files/libpng16/1.6.17/
+# SDL_image 1.2 requires PNG 12
+# https://sourceforge.net/projects/libpng/files/libpng12/1.2.53/
 
-LIBPNG_VERSION="1.6.17"
+LIBPNG_VERSION="1.2.53"
 LIBPNG_FOLDER="libpng-${LIBPNG_VERSION}"
 LIBPNG_ARCHIVE="${LIBPNG_FOLDER}.tar.gz"
-LIBPNG_URL="https://sourceforge.net/projects/libpng/files/libpng16/${LIBPNG_VERSION}/${LIBPNG_ARCHIVE}"
+LIBPNG_URL="https://sourceforge.net/projects/libpng/files/libpng12/${LIBPNG_VERSION}/${LIBPNG_ARCHIVE}"
 
 
 # https://www.libsdl.org/download-1.2.php
@@ -633,6 +640,8 @@ LIBICONV_FOLDER="${LIBICONV_FOLDER}"
 LIBGETTEXT_FOLDER="${LIBGETTEXT_FOLDER}"
 LIBGLIB_FOLDER="${LIBGLIB_FOLDER}"
 
+do_no_strip="${do_no_strip}"
+
 EOF
 
 # Note: EOF is quoted to prevent substitutions here.
@@ -729,7 +738,9 @@ fi
 if [ "${target_name}" == "debian" ]
 then
   # for glib
-  apt-get install libffi-dev
+  # apt-get install libffi-dev
+  # apt-get -y install libx11-dev libxext-dev
+  echo
 fi
 
 mkdir -p ${build_folder}
@@ -768,7 +779,7 @@ then
   md5 -s "test"
 else
   echo "Checking md5sum..."
-  md5sum --version
+  md5sum --version | grep md5sum
 fi
 
 # ----- Remove and recreate the output folder. -----
@@ -796,6 +807,7 @@ then
   then
     CFLAGS="-m${target_bits} -pipe" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/cross-pkg-config" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     "${work_folder}/${LIBPNG_FOLDER}/configure" \
       --host="${cross_compile_prefix}" \
@@ -805,6 +817,7 @@ then
   then
     CFLAGS="-m${target_bits} -pipe" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     "${work_folder}/${LIBPNG_FOLDER}/configure" \
       --prefix="${install_folder}"
@@ -813,6 +826,7 @@ then
   then
     CFLAGS="-m${target_bits} -pipe" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     "${work_folder}/${LIBPNG_FOLDER}/configure" \
       --prefix="${install_folder}"
@@ -847,6 +861,7 @@ then
   then
     CFLAGS="-m${target_bits} -pipe" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/cross-pkg-config" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     "${work_folder}/${LIBSDL_FOLDER}/configure" \
       --host="${cross_compile_prefix}" \
@@ -867,13 +882,13 @@ then
       --disable-video-vgl \
       --disable-video-wscons \
       --disable-video-xbios \
-      --disable-video-gem \
-      --disable-pthreads
+      --disable-video-gem
 
   elif [ "${target_name}" == "debian" ]
   then
     CFLAGS="-m${target_bits} -pipe" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     "${work_folder}/${LIBSDL_FOLDER}/configure" \
       --prefix="${install_folder}" \
@@ -893,8 +908,7 @@ then
       --disable-video-vgl \
       --disable-video-wscons \
       --disable-video-xbios \
-      --disable-video-gem \
-      --disable-pthreads
+      --disable-video-gem
 
   elif [ "${target_name}" == "osx" ]
   then
@@ -902,6 +916,7 @@ then
     # The system does not longer provide X11 support, so use MacPorts
     CFLAGS="-m${target_bits} -pipe -Wno-deprecated-declarations" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     "${work_folder}/${LIBSDL_FOLDER}/configure" \
       --prefix="${install_folder}" \
@@ -922,8 +937,7 @@ then
       --disable-video-vgl \
       --disable-video-wscons \
       --disable-video-xbios \
-      --disable-video-gem \
-      --disable-pthreads
+      --disable-video-gem 
 
   fi
 
@@ -954,9 +968,7 @@ then
     CFLAGS="-m${target_bits} -pipe -I${install_folder}/include/SDL" \
     LDFLAGS="-L${install_folder}/lib" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/cross-pkg-config" \
-    PKG_CONFIG_LIBDIR=\
-"${install_folder}/lib/pkgconfig":\
-"${install_folder}/lib64/pkgconfig" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     "${work_folder}/${LIBSDL_IMAGE_FOLDER}/configure" \
       --host="${cross_compile_prefix}" \
@@ -982,13 +994,12 @@ then
   then
     CFLAGS="-m${target_bits} -pipe " \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
-    PKG_CONFIG_LIBDIR=\
-"${install_folder}/lib/pkgconfig":\
-"${install_folder}/lib64/pkgconfig" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     "${work_folder}/${LIBSDL_IMAGE_FOLDER}/configure" \
       --prefix="${install_folder}" \
       \
+      --disable-png-shared \
       --disable-bmp \
       --disable-gif \
       --disable-jpg \
@@ -1009,9 +1020,7 @@ then
   then
     CFLAGS="-m${target_bits} -pipe " \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
-    PKG_CONFIG_LIBDIR=\
-"${install_folder}/lib/pkgconfig":\
-"${install_folder}/lib64/pkgconfig" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     "${work_folder}/${LIBSDL_IMAGE_FOLDER}/configure" \
       --prefix="${install_folder}" \
@@ -1038,10 +1047,7 @@ then
   echo "Running libSDL_image make install..."
 
   # Build.
-  if [ "${target_name}" != "debian" ]
-  then
-    make clean install
-  fi
+  make clean install
 fi
 
 # ----- Build and install the FFI library. -----
@@ -1064,6 +1070,7 @@ then
   then
     CFLAGS="-m${target_bits} -pipe" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/cross-pkg-config" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     bash "${work_folder}/${LIBFFI_FOLDER}/configure" \
       --host="${cross_compile_prefix}" \
@@ -1073,6 +1080,7 @@ then
   then
     CFLAGS="-m${target_bits} -pipe" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     bash "${work_folder}/${LIBFFI_FOLDER}/configure" \
       --prefix="${install_folder}"
@@ -1082,6 +1090,7 @@ then
 
     CFLAGS="-m${target_bits} -pipe" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     bash "${work_folder}/${LIBFFI_FOLDER}/configure" \
       --prefix="${install_folder}"
@@ -1098,6 +1107,9 @@ fi
 
 # ----- Build and install the ICONV library. -----
 
+if [ "${target_name}" != "debian" ]
+then
+
 if [ ! \( -f "${install_folder}/lib/libiconv.la" -o \
           -f "${install_folder}/lib64/libiconv.la" \) ]
 then
@@ -1108,7 +1120,7 @@ then
   mkdir -p "${install_folder}"
 
   echo
-  echo "Running configure libffi..."
+  echo "Running configure libiconv..."
 
   cd "${build_folder}/${LIBICONV_FOLDER}"
 
@@ -1116,27 +1128,39 @@ then
   then
     CFLAGS="-m${target_bits} -pipe" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/cross-pkg-config" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     bash "${work_folder}/${LIBICONV_FOLDER}/configure" \
       --host="${cross_compile_prefix}" \
       --prefix="${install_folder}" \
+      \
+      --with-gnu-ld \
+      --disable-nls
 
   elif [ "${target_name}" == "debian" ]
   then
     CFLAGS="-m${target_bits} -pipe" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     bash "${work_folder}/${LIBICONV_FOLDER}/configure" \
-      --prefix="${install_folder}"
+      --prefix="${install_folder}" \
+      \
+      --with-gnu-ld \
+      --disable-nls
 
   elif [ "${target_name}" == "osx" ]
   then
 
     CFLAGS="-m${target_bits} -pipe" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     bash "${work_folder}/${LIBICONV_FOLDER}/configure" \
-      --prefix="${install_folder}"
+      --prefix="${install_folder}" \
+      \
+      --with-gnu-ld \
+      --disable-nls
 
   fi
 
@@ -1148,7 +1172,12 @@ then
 
 fi
 
+fi
+
 # ----- Build and install the GETTEXT library. -----
+
+if [ "${target_name}" != "debian" ]
+then
 
 if [ ! \( -f "${install_folder}/lib/libintl.a" -o \
           -f "${install_folder}/lib64/libintl.a" \) ]
@@ -1162,32 +1191,52 @@ then
   echo
   echo "Running configure gettext..."
 
-  cd "${build_folder}/${LIBFFI_FOLDER}"
+  cd "${build_folder}/${LIBGETTEXT_FOLDER}"
 
   if [ "${target_name}" == "win" ]
   then
     CFLAGS="-m${target_bits} -pipe" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/cross-pkg-config" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
-    bash "${work_folder}/${LIBGETTEXT_FOLDER}/configure" \
+    bash "${work_folder}/${LIBGETTEXT_FOLDER}/gettext-runtime/configure" \
       --host="${cross_compile_prefix}" \
       --prefix="${install_folder}" \
       \
       --disable-java \
+      --disable-native-java \
+      --enable-csharp \
+      --disable-c++ \
+      --disable-libasprintf \
+      --disable-openmp \
+      --with-gnu-ld \
       --without-bzip2 \
-      --without-xz
+      --without-xz \
+      --without-emacs \
+      --without-lispdir \
+      --without-cvs
 
   elif [ "${target_name}" == "debian" ]
   then
     CFLAGS="-m${target_bits} -pipe" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
-    bash "${work_folder}/${LIBGETTEXT_FOLDER}/configure" \
+    bash "${work_folder}/${LIBGETTEXT_FOLDER}/gettext-runtime/configure" \
       --prefix="${install_folder}" \
       \
       --disable-java \
+      --disable-native-java \
+      --enable-csharp \
+      --disable-c++ \
+      --disable-libasprintf \
+      --disable-openmp \
+      --with-gnu-ld \
       --without-bzip2 \
-      --without-xz
+      --without-xz \
+      --without-emacs \
+      --without-lispdir \
+      --without-cvs
 
   elif [ "${target_name}" == "osx" ]
   then
@@ -1195,13 +1244,23 @@ then
     # The system does not longer provide X11 support, so use MacPorts
     CFLAGS="-m${target_bits} -pipe" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
-    bash "${work_folder}/${LIBGETTEXT_FOLDER}/configure" \
+    bash "${work_folder}/${LIBGETTEXT_FOLDER}/gettext-runtime/configure" \
       --prefix="${install_folder}" \
       \
       --disable-java \
+      --disable-native-java \
+      --enable-csharp \
+      --disable-c++ \
+      --disable-libasprintf \
+      --disable-openmp \
+      --with-gnu-ld \
       --without-bzip2 \
-      --without-xz
+      --without-xz \
+      --without-emacs \
+      --without-lispdir \
+      --without-cvs
 
   fi
 
@@ -1210,6 +1269,8 @@ then
 
   # Build.
   make clean install
+
+fi
 
 fi
 
@@ -1235,9 +1296,7 @@ then
     LDFLAGS="-L${install_folder}/lib" \
     LIBFFI_CFLAGS="-I${install_folder}/lib/${LIBFFI_FOLDER}/include" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/cross-pkg-config" \
-    PKG_CONFIG_LIBDIR=\
-"${install_folder}/lib/pkgconfig":\
-"${install_folder}/lib64/pkgconfig" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     bash "${work_folder}/${LIBGLIB_FOLDER}/configure" \
       --host="${cross_compile_prefix}" \
@@ -1248,7 +1307,7 @@ then
     CFLAGS="-m${target_bits} -pipe " \
     LIBFFI_CFLAGS="-I${install_folder}/lib/${LIBFFI_FOLDER}/include" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
-    PKG_CONFIG_PATH="${install_folder}/lib/pkgconfig" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     bash "${work_folder}/${LIBGLIB_FOLDER}/configure" \
       --prefix="${install_folder}"
@@ -1260,7 +1319,7 @@ then
     LIBFFI_CFLAGS="-I${install_folder}/lib/${LIBFFI_FOLDER}/include" \
     LDFLAGS="-L/opt/local/lib" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
-    PKG_CONFIG_PATH="${install_folder}/lib/pkgconfig" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     bash "${work_folder}/${LIBGLIB_FOLDER}/configure" \
       --prefix="${install_folder}"
@@ -1304,7 +1363,7 @@ then
     LDFLAGS="-L${install_folder}/lib" \
     \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/${cross_compile_prefix}-pkg-config" \
-    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig":"${install_folder}/lib64/pkgconfig" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     bash "${git_folder}/configure" \
       --cross-prefix="${cross_compile_prefix}-" \
@@ -1319,8 +1378,6 @@ then
       --enable-trace-backend=stderr \
       | tee "${output_folder}/configure-output.txt"
 
-    mkdir -p "/usr/${cross_compile_prefix}/include/SDL"
-
   elif [ "${target_name}" == "debian" ]
   then
 
@@ -1330,7 +1387,7 @@ then
     LDFLAGS="-v -Wl,-rpath=\$\$ORIGIN" \
     \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
-    PKG_CONFIG_PATH="${install_folder}/lib/pkgconfig" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     bash "${git_folder}/configure" \
       --extra-cflags="-pipe -I${install_folder}/include -I${install_folder}/include/SDL -I/usr/include/SDL -Wno-missing-format-attribute -Wno-error=format=" \
@@ -1354,6 +1411,10 @@ then
 
     # OS X target
     cd "${build_folder}/qemu"
+
+    #    PKG_CONFIG_PATH="${install_folder}/lib/pkgconfig" \
+    #    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
+    # Without PKG_CONFIG_PATH pixman build fails.
 
     # With PKG_CONFIG_PATH, pkg-config will always search system folders.
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
@@ -1416,8 +1477,11 @@ make install install-pdf
 if [ "${target_name}" == "win" ]
 then
 
-  do_strip ${cross_compile_prefix}-strip \
-    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse.exe"
+  if [ -z "${do_no_strip}" ]
+  then
+    do_strip ${cross_compile_prefix}-strip \
+      "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse.exe"
+  fi
 
   echo
   echo "Copying DLLs..."
@@ -1466,7 +1530,10 @@ then
 
   cp -v "${install_folder}/bin/"*.dll "${install_folder}/qemu/bin"
 
-  do_strip ${cross_compile_prefix}-strip "${install_folder}/qemu/bin/"*.dll
+  if [ -z "${do_no_strip}" ]
+  then
+    do_strip ${cross_compile_prefix}-strip "${install_folder}/qemu/bin/"*.dll
+  fi
 
   # Remove some unexpected files.
   rm -f "${install_folder}/qemu/bin/target-x86_64.conf"
@@ -1475,7 +1542,10 @@ then
 elif [ "${target_name}" == "debian" ]
 then
 
-  do_strip strip "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+  if [ -z "${do_no_strip}" ]
+  then
+    do_strip strip "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+  fi
 
   echo
   echo "Copying shared libs..."
@@ -1508,7 +1578,7 @@ then
   done
 fi
 
-if false
+if true
 then
   do_copy_user_dll libSDL-1.2
 else
@@ -1518,11 +1588,16 @@ fi
 if true
 then
   do_copy_user_dll libSDL_image-1.2
-  do_copy_user_dll libpng16
 else
   do_copy_system_dll libSDL_image-1.2
-  #do_copy_system_dll libpng16
 fi
+
+if true
+then
+  do_copy_user_dll libpng12
+fi
+
+  do_copy_user_dll libffi
 
 if true
 then
@@ -1533,7 +1608,7 @@ else
   do_copy_system_dll libglib-2.0
 fi
 
-  do_copy_system_dll libpcre
+  # do_copy_system_dll libpcre
   do_copy_system_dll libz
 
 if false
@@ -1549,7 +1624,7 @@ fi
   ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name 'libutil-*.so' -print)
   if [ ! -z "${ILIB}" ]
   then
-    echo "Found ${ILIB}"
+    echo "Found system ${ILIB}"
     ILIB_BASE="$(basename ${ILIB})"
     /usr/bin/install -v -c -m 644 "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin"
     (cd "${install_folder}/${APP_LC_NAME}/bin"; ln -sv "${ILIB_BASE}" "libutil.so.1")
@@ -1564,7 +1639,7 @@ then
   ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name 'libpthread-*.so' -print)
   if [ ! -z "${ILIB}" ]
   then
-    echo "Found ${ILIB}"
+    echo "Found system ${ILIB}"
     ILIB_BASE="$(basename ${ILIB})"
     /usr/bin/install -v -c -m 644 "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin"
     (cd "${install_folder}/${APP_LC_NAME}/bin"; ln -sv "${ILIB_BASE}" "libpthread.so.0")
@@ -1578,7 +1653,10 @@ fi
 elif [ "${target_name}" == "osx" ]
 then
 
-  do_strip strip "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+  if [ -z "${do_no_strip}" ]
+  then
+    do_strip strip "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+  fi
 
   echo
   echo "Copying dynamic libs..."
@@ -1658,7 +1736,7 @@ fi
 
   echo
   # Local
-  ILIB=libpng16.16.dylib
+  ILIB=libpng12.0.dylib
   cp "${install_folder}/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
   # otool -L "${install_folder}/openocd/bin/${DLIB}"
   install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
@@ -1960,6 +2038,17 @@ echo
 echo "Copying license files..."
 
 do_copy_license "${git_folder}" "qemu-$(cat ${git_folder}/VERSION)"
+do_copy_license "${work_folder}/${LIBGETTEXT_FOLDER}" "${LIBGETTEXT_FOLDER}"
+do_copy_license "${work_folder}/${LIBGLIB_FOLDER}" "${LIBGLIB_FOLDER}"
+do_copy_license "${work_folder}/${LIBPNG_FOLDER}" "${LIBPNG_FOLDER}"
+do_copy_license "${work_folder}/${LIBSDL_FOLDER}" "${LIBSDL_FOLDER}"
+do_copy_license "${work_folder}/${LIBSDL_IMAGE_FOLDER}" "${LIBSDL_IMAGE_FOLDER}"
+do_copy_license "${work_folder}/${LIBFFI_FOLDER}" "${LIBFFI_FOLDER}"
+
+if [ "${target_name}" != "debian" ]
+then
+  do_copy_license "${work_folder}/${LIBICONV_FOLDER}" "${LIBICONV_FOLDER}"
+fi
 
 if [ "${target_name}" == "win" ]
 then
@@ -2037,7 +2126,7 @@ then
   do_build_target "Creating Debian 64-bits archive..." \
     --target-name debian \
     --target-bits 64 \
-    --docker-image ilegeul/debian:8-gnuarm-gcc-sdl
+    --docker-image ilegeul/debian:8-gnuarm-gcc-x11
 fi
 
 # ----- Build the Debian 32-bits distribution. -----
@@ -2047,7 +2136,7 @@ then
   do_build_target "Creating Debian 32-bits archive..." \
     --target-name debian \
     --target-bits 32 \
-    --docker-image ilegeul/debian32:8-gnuarm-gcc-sdl
+    --docker-image ilegeul/debian32:8-gnuarm-gcc-x11
 fi
 
 cat "${WORK_FOLDER}/output/"*.md5
