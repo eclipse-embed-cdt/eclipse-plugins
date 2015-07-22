@@ -176,14 +176,33 @@ helper_script="${WORK_FOLDER}/scripts/build-helper.sh"
 
 BUILD_FOLDER="${WORK_FOLDER}/build"
 
+# http://zlib.net
+# https://sourceforge.net/projects/libpng/files/zlib/
+
+LIBZ_VERSION="1.2.8"
+LIBZ_FOLDER="zlib-${LIBZ_VERSION}"
+LIBZ_ARCHIVE="${LIBZ_FOLDER}.tar.gz"
+LIBZ_URL="https://sourceforge.net/projects/libpng/files/zlib/${LIBZ_VERSION}/${LIBZ_ARCHIVE}"
+
+
 # SDL_image 1.2 requires PNG 12
 # https://sourceforge.net/projects/libpng/files/libpng12/1.2.53/
 
-LIBPNG_VERSION="1.2.53"
+LIBPNG_VERSION="1.6.17"
+#LIBPNG_VERSION="1.2.53"
+LIBPNG_SFOLDER="libpng16"
+#LIBPNG_SFOLDER="libpng12"
 LIBPNG_FOLDER="libpng-${LIBPNG_VERSION}"
 LIBPNG_ARCHIVE="${LIBPNG_FOLDER}.tar.gz"
-LIBPNG_URL="https://sourceforge.net/projects/libpng/files/libpng12/${LIBPNG_VERSION}/${LIBPNG_ARCHIVE}"
+LIBPNG_URL="https://sourceforge.net/projects/libpng/files/${LIBPNG_SFOLDER}/${LIBPNG_VERSION}/${LIBPNG_ARCHIVE}"
 
+# http://www.ijg.org
+# http://www.ijg.org/files/
+
+LIBJPG_VERSION="9a"
+LIBJPG_FOLDER="jpeg-${LIBJPG_VERSION}"
+LIBJPG_ARCHIVE="jpegsrc.v${LIBJPG_VERSION}.tar.gz"
+LIBJPG_URL="http://www.ijg.org/files/${LIBJPG_ARCHIVE}"
 
 # https://www.libsdl.org/download-1.2.php
 # https://www.libsdl.org/release/SDL-1.2.15.tar.gz
@@ -210,6 +229,7 @@ LIBFFI_FOLDER="libffi-${LIBFFI_VERSION}"
 LIBFFI_ARCHIVE="${LIBFFI_FOLDER}.tar.gz"
 LIBFFI_URL="ftp://sourceware.org/pub/libffi/${LIBFFI_ARCHIVE}"
 
+
 # http://www.gnu.org/software/libiconv/
 # http://ftp.gnu.org/pub/gnu/libiconv/
 
@@ -224,7 +244,7 @@ LIBICONV_URL="http://ftp.gnu.org/pub/gnu/libiconv/${LIBICONV_ARCHIVE}"
 LIBGETTEXT_VERSION="0.19.5.1"
 LIBGETTEXT_FOLDER="gettext-${LIBGETTEXT_VERSION}"
 LIBGETTEXT_ARCHIVE="${LIBGETTEXT_FOLDER}.tar.xz"
-LIBGETTEXT_URL="http://ftp.gnu.org/pub/gnu/gettext//${LIBGETTEXT_ARCHIVE}"
+LIBGETTEXT_URL="http://ftp.gnu.org/pub/gnu/gettext/${LIBGETTEXT_ARCHIVE}"
 
 
 # http://ftp.gnome.org/pub/GNOME/sources/glib/2.44/glib-2.44.1.tar.xz
@@ -234,6 +254,15 @@ LIBGLIB_VERSION="${LIBGLIB_MVERSION}.1"
 LIBGLIB_FOLDER="glib-${LIBGLIB_VERSION}"
 LIBGLIB_ARCHIVE="${LIBGLIB_FOLDER}.tar.xz"
 LIBGLIB_URL="http://ftp.gnome.org/pub/GNOME/sources/glib/${LIBGLIB_MVERSION}/${LIBGLIB_ARCHIVE}"
+
+
+# http://www.pixman.org
+# http://cairographics.org/releases/
+
+LIBPIXMAN_VERSION="0.32.6"
+LIBPIXMAN_FOLDER="pixman-${LIBPIXMAN_VERSION}"
+LIBPIXMAN_ARCHIVE="${LIBPIXMAN_FOLDER}.tar.gz"
+LIBPIXMAN_URL="http://cairographics.org/releases/${LIBPIXMAN_ARCHIVE}"
 
 # ----- Process actions. -----
 
@@ -245,13 +274,16 @@ then
 
   rm -rf "${BUILD_FOLDER}"
   rm -rf "${WORK_FOLDER}/install"
-  rm -rf "${WORK_FOLDER}/${LIBSDL_FOLDER}"
-  rm -rf "${WORK_FOLDER}/${LIBSDL_IMAGE_FOLDER}"
+  rm -rf "${WORK_FOLDER}/${LIBZ_FOLDER}"
   rm -rf "${WORK_FOLDER}/${LIBPNG_FOLDER}"
+  rm -rf "${WORK_FOLDER}/${LIBJPG_FOLDER}"
   rm -rf "${WORK_FOLDER}/${LIBFFI_FOLDER}"
   rm -rf "${WORK_FOLDER}/${LIBICONV_FOLDER}"
   rm -rf "${WORK_FOLDER}/${LIBGETTEXT_FOLDER}"
   rm -rf "${WORK_FOLDER}/${LIBGLIB_FOLDER}"
+  rm -rf "${WORK_FOLDER}/${LIBSDL_FOLDER}"
+  rm -rf "${WORK_FOLDER}/${LIBSDL_IMAGE_FOLDER}"
+  rm -rf "${WORK_FOLDER}/${LIPIXMAN_FOLDER}"
 
   rm -rf "${WORK_FOLDER}/scripts"
 
@@ -290,11 +322,11 @@ then
   echo "Check/Preload Docker images..."
 
   echo
-  docker run --interactive --tty ilegeul/debian32:7-gnuarm-gcc \
+  docker run --interactive --tty ilegeul/debian32:8-gnuarm-gcc-x11 \
   lsb_release --description --short
 
   echo
-  docker run --interactive --tty ilegeul/debian:7-gnuarm-gcc \
+  docker run --interactive --tty ilegeul/debian:8-gnuarm-gcc-x11 \
   lsb_release --description --short
 
   echo
@@ -320,14 +352,11 @@ then
   # Be sure it will not crash on errors, in case the images are already there.
   set +e
 
-  docker build --tag "ilegeul/debian32:7-gnuarm-gcc" \
-  https://github.com/ilg-ul/docker/raw/master/debian32/7-gnuarm-gcc/Dockerfile
+  docker build --tag "ilegeul/debian32:8-gnuarm-gcc-x11" \
+  https://github.com/ilg-ul/docker/raw/master/debian32/8-gnuarm-gcc-x11/Dockerfile
 
-  docker build --tag "ilegeul/debian:7-gnuarm-gcc" \
-  https://github.com/ilg-ul/docker/raw/master/debian/7-gnuarm-gcc/Dockerfile
-
-  docker build --tag "ilegeul/debian:8-gnuarm-gcc" \
-  https://github.com/ilg-ul/docker/raw/master/debian/8-gnuarm-gcc/Dockerfile
+  docker build --tag "ilegeul/debian:8-gnuarm-gcc-x11" \
+  https://github.com/ilg-ul/docker/raw/master/debian/8-gnuarm-gcc-x11/Dockerfile
 
   docker build --tag "ilegeul/debian:8-gnuarm-mingw" \
   https://github.com/ilg-ul/docker/raw/master/debian/8-gnuarm-mingw/Dockerfile
@@ -441,11 +470,6 @@ then
     git clone http://git.code.sf.net/p/gnuarmeclipse/${APP_LC_NAME} gnuarmeclipse-${APP_LC_NAME}.git
   fi
 
-  # Add DTC module.
-  cd "${GIT_FOLDER}"
-  git submodule update --init dtc
-  git submodule update --init pixman
-
   # Change to the gnuarmeclipse branch. On subsequent runs use "git pull".
   cd "${GIT_FOLDER}"
   git checkout gnuarmeclipse-dev
@@ -461,6 +485,27 @@ source "$helper_script" "--get-git-head"
 # ----- Get current date. -----
 
 source "$helper_script" "--get-current-date"
+
+# ----- Get the Z library. -----
+
+# Download the Z library.
+if [ ! -f "${DOWNLOAD_FOLDER}/${LIBZ_ARCHIVE}" ]
+then
+  mkdir -p "${DOWNLOAD_FOLDER}"
+
+  cd "${DOWNLOAD_FOLDER}"
+  curl -L "${LIBZ_URL}" --output "${LIBZ_ARCHIVE}"
+fi
+
+# Unpack the Z library.
+if [ ! -d "${WORK_FOLDER}/${LIBZ_FOLDER}" ]
+then
+  cd "${WORK_FOLDER}"
+  # tar -xzvf "${DOWNLOAD_FOLDER}/${LIBZ_ARCHIVE}"
+
+  cd "${WORK_FOLDER}/${LIBZ_FOLDER}"
+  #patch -p0 -u --verbose < "${GIT_FOLDER}/gnuarmeclipse/patches/xxx.patch"
+fi
 
 # ----- Get the PNG library. -----
 
@@ -480,6 +525,27 @@ then
   tar -xzvf "${DOWNLOAD_FOLDER}/${LIBPNG_ARCHIVE}"
 
   cd "${WORK_FOLDER}/${LIBPNG_FOLDER}"
+  #patch -p0 -u --verbose < "${GIT_FOLDER}/gnuarmeclipse/patches/xxx.patch"
+fi
+
+# ----- Get the JPG library. -----
+
+# Download the JPG library.
+if [ ! -f "${DOWNLOAD_FOLDER}/${LIBJPG_ARCHIVE}" ]
+then
+  mkdir -p "${DOWNLOAD_FOLDER}"
+
+  cd "${DOWNLOAD_FOLDER}"
+  curl -L "${LIBJPG_URL}" --output "${LIBJPG_ARCHIVE}"
+fi
+
+# Unpack the JPG library.
+if [ ! -d "${WORK_FOLDER}/${LIBJPG_FOLDER}" ]
+then
+  cd "${WORK_FOLDER}"
+  tar -xzvf "${DOWNLOAD_FOLDER}/${LIBJPG_ARCHIVE}"
+
+  cd "${WORK_FOLDER}/${LIBJPG_FOLDER}"
   #patch -p0 -u --verbose < "${GIT_FOLDER}/gnuarmeclipse/patches/xxx.patch"
 fi
 
@@ -609,6 +675,27 @@ then
   #patch -p0 -u --verbose < "${GIT_FOLDER}/gnuarmeclipse/patches/xxx.patch"
 fi
 
+# ----- Get the PIXMAN library. -----
+
+# Download the PIXMAN library.
+if [ ! -f "${DOWNLOAD_FOLDER}/${LIBPIXMAN_ARCHIVE}" ]
+then
+  mkdir -p "${DOWNLOAD_FOLDER}"
+
+  cd "${DOWNLOAD_FOLDER}"
+  curl -L "${LIBPIXMAN_URL}" --output "${LIBPIXMAN_ARCHIVE}"
+fi
+
+# Unpack the PIXMAN library.
+if [ ! -d "${WORK_FOLDER}/${LIBPIXMAN_FOLDER}" ]
+then
+  cd "${WORK_FOLDER}"
+  tar -xjvf "${DOWNLOAD_FOLDER}/${LIBPIXMAN_ARCHIVE}"
+
+  cd "${WORK_FOLDER}/${LIBPIXMAN_FOLDER}"
+  #patch -p0 -u --verbose < "${GIT_FOLDER}/gnuarmeclipse/patches/xxx.patch"
+fi
+
 # ----- Here insert the code to perform other downloads, if needed. -----
 
 # v===========================================================================v
@@ -632,13 +719,22 @@ APP_LC_NAME="${APP_LC_NAME}"
 GIT_HEAD="${GIT_HEAD}"
 DISTRIBUTION_FILE_DATE="${DISTRIBUTION_FILE_DATE}"
 
+LIBZ_FOLDER="${LIBZ_FOLDER}"
+LIBZ_ARCHIVE="${LIBZ_ARCHIVE}"
+
 LIBPNG_FOLDER="${LIBPNG_FOLDER}"
+LIBJPG_FOLDER="${LIBJPG_FOLDER}"
 LIBSDL_FOLDER="${LIBSDL_FOLDER}"
+
 LIBSDL_IMAGE_FOLDER="${LIBSDL_IMAGE_FOLDER}"
+LIBSDL_IMAGE_ARCHIVE="${LIBSDL_IMAGE_ARCHIVE}"
+
 LIBFFI_FOLDER="${LIBFFI_FOLDER}"
 LIBICONV_FOLDER="${LIBICONV_FOLDER}"
 LIBGETTEXT_FOLDER="${LIBGETTEXT_FOLDER}"
 LIBGLIB_FOLDER="${LIBGLIB_FOLDER}"
+
+LIBPIXMAN_FOLDER="${LIBPIXMAN_FOLDER}"
 
 do_no_strip="${do_no_strip}"
 
@@ -707,6 +803,8 @@ do
 done
 
 git_folder="${work_folder}/gnuarmeclipse-${APP_LC_NAME}.git"
+
+DOWNLOAD_FOLDER="${work_folder}/download"
 
 echo
 uname -a
@@ -787,31 +885,28 @@ fi
 rm -rf "${output_folder}"
 mkdir -p "${output_folder}"
 
-# ----- Build and install the PNG library. -----
+# ----- Build and install the ZLIB library. -----
 
-if [ ! \( -f "${install_folder}/lib/libpng.a" -o \
-          -f "${install_folder}/lib64/libpng.a" \) ]
+if [ ! -f "${install_folder}/lib/libz.a" ]
 then
 
-  rm -rf "${build_folder}/${LIBPNG_FOLDER}"
-  mkdir -p "${build_folder}/${LIBPNG_FOLDER}"
+  rm -rf "${build_folder}/${LIBZ_FOLDER}"
+  mkdir -p "${build_folder}/${LIBZ_FOLDER}"
 
   mkdir -p "${install_folder}"
 
   echo
-  echo "Running configure libpng..."
+  echo "Running zlib configure..."
 
-  cd "${build_folder}/${LIBPNG_FOLDER}"
+  cd "${build_folder}"
+  tar -xzvf "${DOWNLOAD_FOLDER}/${LIBZ_ARCHIVE}"
+
+  cd "${build_folder}/${LIBZ_FOLDER}"
 
   if [ "${target_name}" == "win" ]
   then
-    CFLAGS="-m${target_bits} -pipe" \
-    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/cross-pkg-config" \
-    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
-    \
-    "${work_folder}/${LIBPNG_FOLDER}/configure" \
-      --host="${cross_compile_prefix}" \
-      --prefix="${install_folder}"
+
+    true
 
   elif [ "${target_name}" == "debian" ]
   then
@@ -819,7 +914,7 @@ then
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
-    "${work_folder}/${LIBPNG_FOLDER}/configure" \
+    bash "${work_folder}/${LIBZ_FOLDER}/configure" \
       --prefix="${install_folder}"
       
   elif [ "${target_name}" == "osx" ]
@@ -828,7 +923,80 @@ then
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
-    "${work_folder}/${LIBPNG_FOLDER}/configure" \
+    bash "${work_folder}/${LIBZ_FOLDER}/configure" \
+      --prefix="${install_folder}"
+      
+  fi
+
+  echo
+  echo "Running zlib make install..."
+
+  if [ "${target_name}" == "win" ]
+  then
+
+    sed -e 's/PREFIX =/#PREFIX =/' -e 's/STRIP = .*/STRIP = file /' -e 's/SHARED_MODE=0/SHARED_MODE=1/' win32/Makefile.gcc >win32/Makefile.gcc2
+
+    CFLAGS="-m${target_bits} -pipe" \
+    LDFLAGS="-v" \
+    PREFIX="${cross_compile_prefix}-" \
+    INCLUDE_PATH="${install_folder}/include" \
+    LIBRARY_PATH="${install_folder}/lib" \
+    BINARY_PATH="${install_folder}/bin" \
+    make -f win32/Makefile.gcc2 install
+
+  else
+
+    # Build.
+    make clean install
+  fi
+
+fi
+
+# ----- Build and install the PNG library. -----
+
+if [ ! -f "${install_folder}/lib/libpng.a" ]
+then
+
+  rm -rf "${build_folder}/${LIBPNG_FOLDER}"
+  mkdir -p "${build_folder}/${LIBPNG_FOLDER}"
+
+  mkdir -p "${install_folder}"
+
+  echo
+  echo "Running libpng configure..."
+
+  cd "${build_folder}/${LIBPNG_FOLDER}"
+
+  # The explicit folders are needed to find zlib, pkg-config not used for it.
+  if [ "${target_name}" == "win" ]
+  then
+    CPPFLAGS="-m${target_bits} -pipe -I${install_folder}/include" \
+    LDFLAGS="-L${install_folder}/lib" \
+    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
+    \
+    bash "${work_folder}/${LIBPNG_FOLDER}/configure" \
+      --host="${cross_compile_prefix}" \
+      --prefix="${install_folder}"
+
+  elif [ "${target_name}" == "debian" ]
+  then
+    CPPFLAGS="-m${target_bits} -pipe -I${install_folder}/include" \
+    LDFLAGS="-L${install_folder}/lib" \
+    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
+    \
+    bash "${work_folder}/${LIBPNG_FOLDER}/configure" \
+      --prefix="${install_folder}"
+      
+  elif [ "${target_name}" == "osx" ]
+  then
+    CPPFLAGS="-m${target_bits} -pipe -I${install_folder}/include" \
+    LDFLAGS="-L${install_folder}/lib" \
+    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
+    \
+    bash "${work_folder}/${LIBPNG_FOLDER}/configure" \
       --prefix="${install_folder}"
       
   fi
@@ -841,10 +1009,62 @@ then
 
 fi
 
+# ----- Build and install the JPG library. -----
+
+if [ ! -f "${install_folder}/lib/libjpeg.a" ]
+then
+
+  rm -rf "${build_folder}/${LIBJPG_FOLDER}"
+  mkdir -p "${build_folder}/${LIBJPG_FOLDER}"
+
+  mkdir -p "${install_folder}"
+
+  echo
+  echo "Running libjpg configure..."
+
+  cd "${build_folder}/${LIBJPG_FOLDER}"
+
+  if [ "${target_name}" == "win" ]
+  then
+    CFLAGS="-m${target_bits} -pipe" \
+    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
+    \
+    bash "${work_folder}/${LIBJPG_FOLDER}/configure" \
+      --host="${cross_compile_prefix}" \
+      --prefix="${install_folder}"
+
+  elif [ "${target_name}" == "debian" ]
+  then
+    CFLAGS="-m${target_bits} -pipe" \
+    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
+    \
+    bash "${work_folder}/${LIBJPG_FOLDER}/configure" \
+      --prefix="${install_folder}"
+      
+  elif [ "${target_name}" == "osx" ]
+  then
+    CFLAGS="-m${target_bits} -pipe" \
+    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
+    \
+    bash "${work_folder}/${LIBJPG_FOLDER}/configure" \
+      --prefix="${install_folder}"
+      
+  fi
+
+  echo
+  echo "Running libjpg make install..."
+
+  # Build.
+  make clean install
+
+fi
+
 # ----- Build and install the SDL library. -----
 
-if [ ! \( -f "${install_folder}/lib/libSDL.a" -o \
-          -f "${install_folder}/lib64/libSDL.a" \) ]
+if [ ! -f "${install_folder}/lib/libSDL.a" ]
 then
 
   rm -rf "${build_folder}/${LIBSDL_FOLDER}"
@@ -853,36 +1073,21 @@ then
   mkdir -p "${install_folder}"
 
   echo
-  echo "Running configure libSDL..."
+  echo "Running libSDL configure..."
 
   cd "${build_folder}/${LIBSDL_FOLDER}"
 
   if [ "${target_name}" == "win" ]
   then
     CFLAGS="-m${target_bits} -pipe" \
-    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/cross-pkg-config" \
+    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
-    "${work_folder}/${LIBSDL_FOLDER}/configure" \
+    bash "${work_folder}/${LIBSDL_FOLDER}/configure" \
       --host="${cross_compile_prefix}" \
       --prefix="${install_folder}" \
       \
-      --disable-audio \
-      --disable-events \
-      --disable-joystick \
-      --disable-cdrom \
-      --disable-timers \
-      --disable-file \
-      --disable-video-photon \
-      --disable-video-fbcon \
-      --disable-video-directfb \
-      --disable-video-ps2gs \
-      --disable-video-ps3 \
-      --disable-video-svga \
-      --disable-video-vgl \
-      --disable-video-wscons \
-      --disable-video-xbios \
-      --disable-video-gem
+      --disable-stdio-redirect
 
   elif [ "${target_name}" == "debian" ]
   then
@@ -890,25 +1095,8 @@ then
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
-    "${work_folder}/${LIBSDL_FOLDER}/configure" \
-      --prefix="${install_folder}" \
-      \
-      --disable-audio \
-      --disable-events \
-      --disable-joystick \
-      --disable-cdrom \
-      --disable-timers \
-      --disable-file \
-      --disable-video-photon \
-      --disable-video-fbcon \
-      --disable-video-directfb \
-      --disable-video-ps2gs \
-      --disable-video-ps3 \
-      --disable-video-svga \
-      --disable-video-vgl \
-      --disable-video-wscons \
-      --disable-video-xbios \
-      --disable-video-gem
+    bash "${work_folder}/${LIBSDL_FOLDER}/configure" \
+      --prefix="${install_folder}"
 
   elif [ "${target_name}" == "osx" ]
   then
@@ -918,26 +1106,9 @@ then
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
-    "${work_folder}/${LIBSDL_FOLDER}/configure" \
+    bash "${work_folder}/${LIBSDL_FOLDER}/configure" \
       --prefix="${install_folder}" \
-      --x-includes="/opt/local/include" \
-      \
-      --disable-audio \
-      --disable-events \
-      --disable-joystick \
-      --disable-cdrom \
-      --disable-timers \
-      --disable-file \
-      --disable-video-photon \
-      --disable-video-fbcon \
-      --disable-video-directfb \
-      --disable-video-ps2gs \
-      --disable-video-ps3 \
-      --disable-video-svga \
-      --disable-video-vgl \
-      --disable-video-wscons \
-      --disable-video-xbios \
-      --disable-video-gem 
+      --x-includes="/opt/local/include"
 
   fi
 
@@ -949,8 +1120,7 @@ then
 
 fi
 
-if [ ! \( -f "${install_folder}/lib/libSDL_image.a" -o \
-          -f "${install_folder}/lib64/libSDL_image.a" \) ]
+if [ ! -f "${install_folder}/lib/libSDL_image.a" ]
 then
 
   rm -rf "${build_folder}/${LIBSDL_IMAGE_FOLDER}"
@@ -959,25 +1129,30 @@ then
   mkdir -p "${install_folder}"
 
   echo
-  echo "Running configure libSDL_image..."
+  echo "Running libSDL_image configure..."
 
   cd "${build_folder}/${LIBSDL_IMAGE_FOLDER}"
 
+  # The explicit folders are needed to find jpeg, pkg-config not used for it.
   if [ "${target_name}" == "win" ]
   then
-    CFLAGS="-m${target_bits} -pipe -I${install_folder}/include/SDL" \
+    CFLAGS="-m${target_bits} -pipe -I${install_folder}/include" \
     LDFLAGS="-L${install_folder}/lib" \
-    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/cross-pkg-config" \
+    LIBS="-lpng16 -ljpeg" \
+    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
-    "${work_folder}/${LIBSDL_IMAGE_FOLDER}/configure" \
+    bash "${work_folder}/${LIBSDL_IMAGE_FOLDER}/configure" \
       --host="${cross_compile_prefix}" \
       --prefix="${install_folder}" \
+      --with-gnu-ld \
       \
+      --enable-jpg \
+      --disable-jpg-shared \
+      --enable-png \
+      --disable-png-shared \
       --disable-bmp \
       --disable-gif \
-      --disable-jpg \
-      --disable-jpg-shared \
       --disable-lbm \
       --disable-pcx \
       --disable-pnm \
@@ -992,18 +1167,22 @@ then
 
   elif [ "${target_name}" == "debian" ]
   then
-    CFLAGS="-m${target_bits} -pipe " \
+    CFLAGS="-m${target_bits} -pipe -I${install_folder}/include" \
+    LDFLAGS="-L${install_folder}/lib" \
+    LIBPNG_LIBS="-lpng16 -ljpeg" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
-    "${work_folder}/${LIBSDL_IMAGE_FOLDER}/configure" \
+    bash "${work_folder}/${LIBSDL_IMAGE_FOLDER}/configure" \
       --prefix="${install_folder}" \
+      --with-gnu-ld \
       \
+      --enable-jpg \
+      --disable-jpg-shared \
+      --enable-png \
       --disable-png-shared \
       --disable-bmp \
       --disable-gif \
-      --disable-jpg \
-      --disable-jpg-shared \
       --disable-lbm \
       --disable-pcx \
       --disable-pnm \
@@ -1018,17 +1197,21 @@ then
 
   elif [ "${target_name}" == "osx" ]
   then
-    CFLAGS="-m${target_bits} -pipe " \
+    CFLAGS="-m${target_bits} -pipe -I${install_folder}/include" \
+    LDFLAGS="-L${install_folder}/lib" \
+    LIBS="-lpng16 -ljpeg" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
-    "${work_folder}/${LIBSDL_IMAGE_FOLDER}/configure" \
+    bash "${work_folder}/${LIBSDL_IMAGE_FOLDER}/configure" \
       --prefix="${install_folder}" \
       \
+      --enable-jpg \
+      --disable-jpg-shared \
+      --enable-png \
+      --disable-png-shared \
       --disable-bmp \
       --disable-gif \
-      --disable-jpg \
-      --disable-jpg-shared \
       --disable-lbm \
       --disable-pcx \
       --disable-pnm \
@@ -1052,8 +1235,7 @@ fi
 
 # ----- Build and install the FFI library. -----
 
-if [ ! \( -f "${install_folder}/lib/libffi.a" -o \
-          -f "${install_folder}/lib64/libffi.a" \) ]
+if [ ! -f "${install_folder}/lib/libffi.a" ]
 then
 
   rm -rf "${build_folder}/${LIBFFI_FOLDER}"
@@ -1062,14 +1244,14 @@ then
   mkdir -p "${install_folder}"
 
   echo
-  echo "Running configure libffi..."
+  echo "Running libffi configure..."
 
   cd "${build_folder}/${LIBFFI_FOLDER}"
 
   if [ "${target_name}" == "win" ]
   then
     CFLAGS="-m${target_bits} -pipe" \
-    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/cross-pkg-config" \
+    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     bash "${work_folder}/${LIBFFI_FOLDER}/configure" \
@@ -1087,7 +1269,6 @@ then
 
   elif [ "${target_name}" == "osx" ]
   then
-
     CFLAGS="-m${target_bits} -pipe" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
@@ -1110,8 +1291,7 @@ fi
 if [ "${target_name}" != "debian" ]
 then
 
-if [ ! \( -f "${install_folder}/lib/libiconv.la" -o \
-          -f "${install_folder}/lib64/libiconv.la" \) ]
+if [ ! -f "${install_folder}/lib/libiconv.la" ]
 then
 
   rm -rf "${build_folder}/${LIBICONV_FOLDER}"
@@ -1120,21 +1300,21 @@ then
   mkdir -p "${install_folder}"
 
   echo
-  echo "Running configure libiconv..."
+  echo "Running libiconv configure..."
 
   cd "${build_folder}/${LIBICONV_FOLDER}"
 
   if [ "${target_name}" == "win" ]
   then
     CFLAGS="-m${target_bits} -pipe" \
-    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/cross-pkg-config" \
+    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     bash "${work_folder}/${LIBICONV_FOLDER}/configure" \
       --host="${cross_compile_prefix}" \
       --prefix="${install_folder}" \
-      \
       --with-gnu-ld \
+      \
       --disable-nls
 
   elif [ "${target_name}" == "debian" ]
@@ -1145,8 +1325,8 @@ then
     \
     bash "${work_folder}/${LIBICONV_FOLDER}/configure" \
       --prefix="${install_folder}" \
-      \
       --with-gnu-ld \
+      \
       --disable-nls
 
   elif [ "${target_name}" == "osx" ]
@@ -1157,10 +1337,7 @@ then
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     bash "${work_folder}/${LIBICONV_FOLDER}/configure" \
-      --prefix="${install_folder}" \
-      \
-      --with-gnu-ld \
-      --disable-nls
+      --prefix="${install_folder}"
 
   fi
 
@@ -1179,8 +1356,7 @@ fi
 if [ "${target_name}" != "debian" ]
 then
 
-if [ ! \( -f "${install_folder}/lib/libintl.a" -o \
-          -f "${install_folder}/lib64/libintl.a" \) ]
+if [ ! -f "${install_folder}/lib/libintl.a" ]
 then
 
   rm -rf "${build_folder}/${LIBGETTEXT_FOLDER}"
@@ -1189,19 +1365,20 @@ then
   mkdir -p "${install_folder}"
 
   echo
-  echo "Running configure gettext..."
+  echo "Running gettext configure..."
 
   cd "${build_folder}/${LIBGETTEXT_FOLDER}"
 
   if [ "${target_name}" == "win" ]
   then
     CFLAGS="-m${target_bits} -pipe" \
-    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/cross-pkg-config" \
+    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     bash "${work_folder}/${LIBGETTEXT_FOLDER}/gettext-runtime/configure" \
       --host="${cross_compile_prefix}" \
       --prefix="${install_folder}" \
+      --with-gnu-ld \
       \
       --disable-java \
       --disable-native-java \
@@ -1209,7 +1386,6 @@ then
       --disable-c++ \
       --disable-libasprintf \
       --disable-openmp \
-      --with-gnu-ld \
       --without-bzip2 \
       --without-xz \
       --without-emacs \
@@ -1224,6 +1400,7 @@ then
     \
     bash "${work_folder}/${LIBGETTEXT_FOLDER}/gettext-runtime/configure" \
       --prefix="${install_folder}" \
+      --with-gnu-ld \
       \
       --disable-java \
       --disable-native-java \
@@ -1231,7 +1408,6 @@ then
       --disable-c++ \
       --disable-libasprintf \
       --disable-openmp \
-      --with-gnu-ld \
       --without-bzip2 \
       --without-xz \
       --without-emacs \
@@ -1255,7 +1431,6 @@ then
       --disable-c++ \
       --disable-libasprintf \
       --disable-openmp \
-      --with-gnu-ld \
       --without-bzip2 \
       --without-xz \
       --without-emacs \
@@ -1276,8 +1451,7 @@ fi
 
 # ----- Build and install the GLIB library. -----
 
-if [ ! \( -f "${install_folder}/lib/libglib-2.0.la" -o \
-          -f "${install_folder}/lib64/libglib-2.0.la" \) ]
+if [ ! -f "${install_folder}/lib/libglib-2.0.la" ]
 then
 
   rm -rf "${build_folder}/${LIBGLIB_FOLDER}"
@@ -1286,16 +1460,15 @@ then
   mkdir -p "${install_folder}"
 
   echo
-  echo "Running configure libglib..."
+  echo "Running libglib configure..."
 
   cd "${build_folder}/${LIBGLIB_FOLDER}"
 
   if [ "${target_name}" == "win" ]
   then
-    CFLAGS="-m${target_bits} -pipe" \
+    CFLAGS="-m${target_bits} -pipe -I${install_folder}/include" \
     LDFLAGS="-L${install_folder}/lib" \
-    LIBFFI_CFLAGS="-I${install_folder}/lib/${LIBFFI_FOLDER}/include" \
-    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/cross-pkg-config" \
+    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     bash "${work_folder}/${LIBGLIB_FOLDER}/configure" \
@@ -1304,8 +1477,8 @@ then
 
   elif [ "${target_name}" == "debian" ]
   then
-    CFLAGS="-m${target_bits} -pipe " \
-    LIBFFI_CFLAGS="-I${install_folder}/lib/${LIBFFI_FOLDER}/include" \
+    CFLAGS="-m${target_bits} -pipe -I${install_folder}/include" \
+    LDFLAGS="-L${install_folder}/lib" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
@@ -1314,10 +1487,9 @@ then
 
   elif [ "${target_name}" == "osx" ]
   then
-    # To find libintl, add the MacPorts path. -I/opt/local/include
+    # To find libintl, add explicit paths.
     CFLAGS="-m${target_bits} -pipe -I${install_folder}/include" \
-    LIBFFI_CFLAGS="-I${install_folder}/lib/${LIBFFI_FOLDER}/include" \
-    LDFLAGS="-L/opt/local/lib" \
+    LDFLAGS="-L${install_folder}/lib" \
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
@@ -1334,6 +1506,63 @@ then
 
 fi
 
+# ----- Build and install the PIXMAN library. -----
+
+if [ ! -f "${install_folder}/lib/libpixman-1.a" ]
+then
+
+  rm -rf "${build_folder}/${LIBPIXMAN_FOLDER}"
+  mkdir -p "${build_folder}/${LIBPIXMAN_FOLDER}"
+
+  mkdir -p "${install_folder}"
+
+  echo
+  echo "Running libpixman configure..."
+
+  cd "${build_folder}/${LIBPIXMAN_FOLDER}"
+
+  if [ "${target_name}" == "win" ]
+  then
+    CFLAGS="-m${target_bits} -pipe -I${install_folder}/include" \
+    LDFLAGS="-L${install_folder}/lib" \
+    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
+    \
+    bash "${work_folder}/${LIBPIXMAN_FOLDER}/configure" \
+      --host="${cross_compile_prefix}" \
+      --prefix="${install_folder}"
+
+  elif [ "${target_name}" == "debian" ]
+  then
+    CFLAGS="-m${target_bits} -pipe -I${install_folder}/include" \
+    LDFLAGS="-L${install_folder}/lib" \
+    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
+    \
+    bash "${work_folder}/${LIBPIXMAN_FOLDER}/configure" \
+      --prefix="${install_folder}"
+
+  elif [ "${target_name}" == "osx" ]
+  then
+    # To find libintl, add explicit paths.
+    CFLAGS="-m${target_bits} -pipe -I${install_folder}/include" \
+    LDFLAGS="-L${install_folder}/lib" \
+    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
+    \
+    bash "${work_folder}/${LIBPIXMAN_FOLDER}/configure" \
+      --prefix="${install_folder}"
+
+  fi
+
+  echo
+  echo "Running libpixman make install..."
+
+  # Build.
+  make clean install
+
+fi
+
 # ----- Here insert the code to build more libraries, if needed. -----
 
 # ----- Create the build folder. -----
@@ -1342,11 +1571,11 @@ mkdir -p "${build_folder}/${APP_LC_NAME}"
 
 # ----- Configure QEMU. -----
 
-if [ ! -f "${build_folder}/qemu/config-host.mak" ]
+if [ ! -f "${build_folder}/${APP_LC_NAME}/config-host.mak" ]
 then
 
   echo
-  echo "Running configure QEMU..."
+  echo "Running QEMU configure..."
 
   # All variables are passed on the command line before 'configure'.
   # Be sure all these lines end in '\' to ensure lines are concatenated.
@@ -1355,26 +1584,21 @@ then
   then
 
     # Windows target, 32/64-bit
-    cd "${build_folder}/qemu"
+    cd "${build_folder}/${APP_LC_NAME}"
 
-    # To avaid a warning
-    mkdir -p "/usr/${cross_compile_prefix}/include/SDL"
-
-    LDFLAGS="-L${install_folder}/lib" \
-    \
-    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/${cross_compile_prefix}-pkg-config" \
+    PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     bash "${git_folder}/configure" \
       --cross-prefix="${cross_compile_prefix}-" \
       \
-      --extra-cflags="-pipe -I${install_folder}/include -I${install_folder}/include/SDL -Wno-missing-format-attribute -Wno-pointer-to-int-cast -D_POSIX=1 -mthreads" \
-      --extra-ldflags="-v" \
+      --extra-cflags="-g -pipe -I${install_folder}/include -Wno-missing-format-attribute -Wno-pointer-to-int-cast -D_POSIX=1 -mthreads" \
+      --extra-ldflags="-v -L${install_folder}/lib" \
       --target-list="gnuarmeclipse-softmmu" \
-      --prefix="${install_folder}/qemu" \
-      --bindir="${install_folder}/qemu/bin" \
-      --docdir="${install_folder}/qemu/doc" \
-      --mandir="${install_folder}/qemu/man" \
+      --prefix="${install_folder}/${APP_LC_NAME}" \
+      --bindir="${install_folder}/${APP_LC_NAME}/bin" \
+      --docdir="${install_folder}/${APP_LC_NAME}/doc" \
+      --mandir="${install_folder}/${APP_LC_NAME}/man" \
       --enable-trace-backend=stderr \
       | tee "${output_folder}/configure-output.txt"
 
@@ -1382,52 +1606,48 @@ then
   then
 
     # Linux target
-    cd "${build_folder}/qemu"
+    cd "${build_folder}/${APP_LC_NAME}"
 
-    LDFLAGS="-v -Wl,-rpath=\$\$ORIGIN" \
-    \
+    #LDFLAGS="-v -Wl,-rpath=\$\$ORIGIN" \
+
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     bash "${git_folder}/configure" \
-      --extra-cflags="-pipe -I${install_folder}/include -I${install_folder}/include/SDL -I/usr/include/SDL -Wno-missing-format-attribute -Wno-error=format=" \
-      --extra-ldflags="-L${install_folder}/lib" \
+      --extra-cflags="-g -pipe -I${install_folder}/include -Wno-missing-format-attribute -Wno-error=format=" \
+      --extra-ldflags="-v -Wl,-rpath=\$\$ORIGIN -L${install_folder}/lib" \
       --target-list="gnuarmeclipse-softmmu" \
-      --prefix="${install_folder}/qemu" \
-      --bindir="${install_folder}/qemu/bin" \
-      --docdir="${install_folder}/qemu/doc" \
-      --mandir="${install_folder}/qemu/man" \
+      --prefix="${install_folder}/${APP_LC_NAME}" \
+      --bindir="${install_folder}/${APP_LC_NAME}/bin" \
+      --docdir="${install_folder}/${APP_LC_NAME}/doc" \
+      --mandir="${install_folder}/${APP_LC_NAME}/man" \
       --enable-trace-backend=stderr \
     | tee "${output_folder}/configure-output.txt"
 
-    # Note: a very important detail here is LDFLAGS='-Wl,-rpath=\$$ORIGIN which
-    # adds a special record to the ELF file asking the loader to search for the
-    # libraries first in the same folder where the executable is located. The
-    # task is complicated due to the multiple substitutions that are done on
-    # the way, and need to be escaped.
+    # Note: a very important detail here is
+    #   --extra-ldflags='-Wl,-rpath=\$$ORIGIN
+    # which adds a special record to the ELF file asking the loader to search
+    # for the libraries first in the same folder where the executable is
+    # located. The task is complicated due to the multiple substitutions
+    # that are done on the way, and need to be escaped.
 
   elif [ "${target_name}" == "osx" ]
   then
 
     # OS X target
-    cd "${build_folder}/qemu"
+    cd "${build_folder}/${APP_LC_NAME}"
 
-    #    PKG_CONFIG_PATH="${install_folder}/lib/pkgconfig" \
-    #    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
-    # Without PKG_CONFIG_PATH pixman build fails.
-
-    # With PKG_CONFIG_PATH, pkg-config will always search system folders.
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
-    PKG_CONFIG_PATH="${install_folder}/lib/pkgconfig" \
+    PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     bash "${git_folder}/configure" \
-      --extra-cflags="-pipe -I${install_folder}/include -I${install_folder}/include/SDL -Wno-missing-format-attribute" \
+      --extra-cflags="-g -pipe -I${install_folder}/include -Wno-missing-format-attribute" \
       --extra-ldflags="-v -L${install_folder}/lib" \
       --target-list="gnuarmeclipse-softmmu" \
-      --prefix="${install_folder}/qemu" \
-      --bindir="${install_folder}/qemu/bin" \
-      --docdir="${install_folder}/qemu/doc" \
-      --mandir="${install_folder}/qemu/man" \
+      --prefix="${install_folder}/${APP_LC_NAME}" \
+      --bindir="${install_folder}/${APP_LC_NAME}/bin" \
+      --docdir="${install_folder}/${APP_LC_NAME}/doc" \
+      --mandir="${install_folder}/${APP_LC_NAME}/man" \
       --enable-trace-backend=stderr \
     | tee "${output_folder}/configure-output.txt"
 
@@ -1442,14 +1662,14 @@ cp config.* "${output_folder}"
 
 # ----- Full build, with documentation. -----
 
-if [ ! \( -f "${build_folder}/qemu/gnuarmeclipse-softmmu/qemu-system-gnuarmeclipse" \) -a \
-     ! \( -f "${build_folder}/qemu/gnuarmeclipse-softmmu/qemu-system-gnuarmeclipse.exe" \) ]
+if [ ! \( -f "${build_folder}/${APP_LC_NAME}/gnuarmeclipse-softmmu/qemu-system-gnuarmeclipse" \) -a \
+     ! \( -f "${build_folder}/${APP_LC_NAME}/gnuarmeclipse-softmmu/qemu-system-gnuarmeclipse.exe" \) ]
 then
 
   echo
   echo "Running QEMU make all..."
 
-  cd "${build_folder}/qemu"
+  cd "${build_folder}/${APP_LC_NAME}"
   make all pdf \
   | tee "${output_folder}/make-all-output.txt"
 
@@ -1468,9 +1688,13 @@ rm -rf "${install_folder}/${APP_LC_NAME}"
 cd "${build_folder}/${APP_LC_NAME}"
 make install install-pdf
 
+# cd "${build_folder}/${APP_LC_NAME}/pixman"
+# make install
+
+
 # Remove useless files
 
-# rm -rf "${install_folder}/qemu/etc"
+# rm -rf "${install_folder}/${APP_LC_NAME}/etc"
 
 # ----- Copy dynamic libraries to the install bin folder. -----
 
@@ -1480,7 +1704,7 @@ then
   if [ -z "${do_no_strip}" ]
   then
     do_strip ${cross_compile_prefix}-strip \
-      "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse.exe"
+      "${install_folder}/${APP_LC_NAME}/bin/qemu-system-gnuarmeclipse.exe"
   fi
 
   echo
@@ -1514,37 +1738,25 @@ then
 
   fi
 
-  if [ "${target_bits}" == "32" ]
-  then
-    for f in libglib-2.0-0.dll zlib1.dll libgthread-2.0-0.dll intl.dll
-    do
-      cp -v "/usr/${cross_compile_prefix}/bin/${f}" "${install_folder}/qemu/bin"
-    done
-  elif [ "${target_bits}" == "64" ]
-  then
-    for f in libintl-8.dll libiconv-2.dll libglib-2.0-0.dll libpixman-1-0.dll zlib1.dll
-    do
-      cp -v "/usr/${cross_compile_prefix}/bin/${f}" "${install_folder}/qemu/bin"
-    done
-  fi
-
-  cp -v "${install_folder}/bin/"*.dll "${install_folder}/qemu/bin"
+  # Copy all compiled DLLs
+  cp -v "${install_folder}/bin/"*.dll "${install_folder}/${APP_LC_NAME}/bin"
 
   if [ -z "${do_no_strip}" ]
   then
-    do_strip ${cross_compile_prefix}-strip "${install_folder}/qemu/bin/"*.dll
+    do_strip ${cross_compile_prefix}-strip "${install_folder}/${APP_LC_NAME}/bin/"*.dll
   fi
 
   # Remove some unexpected files.
-  rm -f "${install_folder}/qemu/bin/target-x86_64.conf"
-  rm -f "${install_folder}/qemu/bin/trace-events"
+  # rm -f "${install_folder}/${APP_LC_NAME}/bin/target-x86_64.conf"
+  # rm -f "${install_folder}/${APP_LC_NAME}/bin/trace-events"
+  rm -f "${install_folder}/${APP_LC_NAME}/bin/qemu-system-gnuarmeclipsew.exe"
 
 elif [ "${target_name}" == "debian" ]
 then
 
   if [ -z "${do_no_strip}" ]
   then
-    do_strip strip "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+    do_strip strip "${install_folder}/${APP_LC_NAME}/bin/qemu-system-gnuarmeclipse"
   fi
 
   echo
@@ -1558,68 +1770,21 @@ then
     distro_machine="i386"
   fi
 
-if false
-then
-  for f in \
-    libFLAC libICE \
-    libSDL-1.2 libSDL_image-1.2 \
-    libSM \
-    libX11 libXau libXdmcp libXext libXi libXtst \
-    libasound libasyncns libattr \
-    libcaca libcap libdbus-1 libdirect-1.2 libdirectfb-1.2 libfusion-1.2 \
-    libgthread-2.0 \
-    libglib-2.0 libjbig libjpeg libjson-c liblzma libncursesw \
-    libogg libpcre \
-    libpng12 libpulse-simple libpulse libpulsecommon-5.0 \
-    libslang libsndfile libtiff \
-    libuuid libtinfo libvorbis libvorbisenc libwebp libwrap libxcb libz
-  do
-    echo do_copy_system_dll "${f}"
-  done
-fi
+  do_copy_user_so libSDL-1.2
+  do_copy_user_so libSDL_image-1.2
+  do_copy_user_so libpng16
 
-if true
-then
-  do_copy_user_dll libSDL-1.2
-else
-  do_copy_system_dll libSDL-1.2
-fi
+  do_copy_user_so libjpeg
+  do_copy_user_so libffi
 
-if true
-then
-  do_copy_user_dll libSDL_image-1.2
-else
-  do_copy_system_dll libSDL_image-1.2
-fi
-
-if true
-then
-  do_copy_user_dll libpng12
-fi
-
-  do_copy_user_dll libffi
-
-if true
-then
-  do_copy_user_dll libgthread-2.0
-  do_copy_user_dll libglib-2.0
-else
-  do_copy_system_dll libgthread-2.0
-  do_copy_system_dll libglib-2.0
-fi
+  do_copy_user_so libgthread-2.0
+  do_copy_user_so libglib-2.0
+  do_copy_user_so libpixman-1
 
   # do_copy_system_dll libpcre
-  do_copy_system_dll libz
+  do_copy_user_so libz
 
-if false
-then
-  do_copy_system_dll libX11
-  do_copy_system_dll libxcb
-  do_copy_system_dll libXau
-  do_copy_system_dll libXdmcp
-fi
-
-  do_copy_librt_dll
+  do_copy_librt_so
 
   ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name 'libutil-*.so' -print)
   if [ ! -z "${ILIB}" ]
@@ -1655,7 +1820,7 @@ then
 
   if [ -z "${do_no_strip}" ]
   then
-    do_strip strip "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+    do_strip strip "${install_folder}/${APP_LC_NAME}/bin/qemu-system-gnuarmeclipse"
   fi
 
   echo
@@ -1665,362 +1830,314 @@ then
   # Post-process dynamic libraries paths to be relative to executable folder.
 
   echo
-  # otool -L "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/qemu-system-gnuarmeclipse"
   install_name_tool -change "/opt/local/lib/libgnutls.28.dylib" \
     "@executable_path/libgnutls.28.dylib" \
-    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+    "${install_folder}/${APP_LC_NAME}/bin/qemu-system-gnuarmeclipse"
   install_name_tool -change "/opt/local/lib/libusb-1.0.0.dylib" \
     "@executable_path/libusb-1.0.0.dylib" \
-    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
-  install_name_tool -change "/opt/local/lib/libz.1.dylib" \
+    "${install_folder}/${APP_LC_NAME}/bin/qemu-system-gnuarmeclipse"
+  install_name_tool -change "${install_folder}/lib/libz.1.dylib" \
     "@executable_path/libz.1.dylib" \
-    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+    "${install_folder}/${APP_LC_NAME}/bin/qemu-system-gnuarmeclipse"
   install_name_tool -change "/opt/local/lib/libpixman-1.0.dylib" \
     "@executable_path/libpixman-1.0.dylib" \
-    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+    "${install_folder}/${APP_LC_NAME}/bin/qemu-system-gnuarmeclipse"
   install_name_tool -change "${install_folder}/lib/libSDL-1.2.0.dylib" \
     "@executable_path/libSDL-1.2.0.dylib" \
-    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+    "${install_folder}/${APP_LC_NAME}/bin/qemu-system-gnuarmeclipse"
   install_name_tool -change "${install_folder}/lib/libSDL_image-1.2.0.dylib" \
     "@executable_path/libSDL_image-1.2.0.dylib" \
-    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+    "${install_folder}/${APP_LC_NAME}/bin/qemu-system-gnuarmeclipse"
   install_name_tool -change "/opt/local/lib/libX11.6.dylib" \
     "@executable_path/libX11.6.dylib" \
-    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
-if false
-then
-  install_name_tool -change "/opt/local/lib/libgthread-2.0.0.dylib" \
-    "@executable_path/libgthread-2.0.0.dylib" \
-    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
-  install_name_tool -change "/opt/local/lib/libglib-2.0.0.dylib" \
-    "@executable_path/libglib-2.0.0.dylib" \
-    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
-else
+    "${install_folder}/${APP_LC_NAME}/bin/qemu-system-gnuarmeclipse"
   install_name_tool -change "${install_folder}/lib/libgthread-2.0.0.dylib" \
     "@executable_path/libgthread-2.0.0.dylib" \
-    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+    "${install_folder}/${APP_LC_NAME}/bin/qemu-system-gnuarmeclipse"
   install_name_tool -change "${install_folder}/lib/libglib-2.0.0.dylib" \
     "@executable_path/libglib-2.0.0.dylib" \
-    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
-fi
-if false
-then
-  install_name_tool -change "/opt/local/lib/libintl.8.dylib" \
-    "@executable_path/libintl.8.dylib" \
-    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
-else
+    "${install_folder}/${APP_LC_NAME}/bin/qemu-system-gnuarmeclipse"
   install_name_tool -change "${install_folder}/lib/libintl.8.dylib" \
     "@executable_path/libintl.8.dylib" \
-    "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
-fi
-  otool -L "${install_folder}/qemu/bin/qemu-system-gnuarmeclipse"
+    "${install_folder}/${APP_LC_NAME}/bin/qemu-system-gnuarmeclipse"
+  install_name_tool -change "${install_folder}/lib/libpixman-1.0.dylib" \
+    "@executable_path/libpixman-1.0.dylib" \
+    "${install_folder}/${APP_LC_NAME}/bin/qemu-system-gnuarmeclipse"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/qemu-system-gnuarmeclipse"
 
   echo
   # Local
   ILIB=libSDL-1.2.0.dylib
-  cp "${install_folder}/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/openocd/bin/${DLIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+  cp "${install_folder}/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${DLIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   echo
   # Local
   ILIB=libSDL_image-1.2.0.dylib
-  cp "${install_folder}/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/openocd/bin/${DLIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  cp "${install_folder}/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${DLIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "${install_folder}/lib/libSDL-1.2.0.dylib" \
     "@executable_path/libSDL-1.2.0.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -change "${install_folder}/lib/libpng16.16.dylib" \
+    "@executable_path/libpng16.16.dylib" \
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -change "${install_folder}/lib/libjpeg.9.dylib" \
+    "@executable_path/libjpeg.9.dylib" \
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -change "${install_folder}/lib/libz.1.dylib" \
+    "@executable_path/libz.1.dylib" \
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   echo
   # Local
-  ILIB=libpng12.0.dylib
-  cp "${install_folder}/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/openocd/bin/${DLIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -change "/usr/lib/libz.1.dylib" \
+  ILIB=libpng16.16.dylib
+  cp "${install_folder}/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${DLIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -change "${install_folder}/lib/libz.1.dylib" \
     "@executable_path/libz.1.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+
+  echo
+  # Local
+  ILIB=libjpeg.9.dylib
+  cp "${install_folder}/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${DLIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -change "${install_folder}/lib/libz.1.dylib" \
+    "@executable_path/libz.1.dylib" \
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   echo
   ILIB=libffi.6.dylib
-if false
-then
-  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-else
-  cp -v "${install_folder}/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-fi
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+  cp -v "${install_folder}/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   echo
   ILIB=libiconv.2.dylib
-if false
-then
-  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-else
-  cp -v "${install_folder}/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-fi
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+  cp -v "${install_folder}/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   echo
   ILIB=libintl.8.dylib
-if false
-then
-  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id ${ILIB} "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -change "/opt/local/lib/libiconv.2.dylib" \
-    "@executable_path/libiconv.2.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-else
-  cp -v "${install_folder}/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id ${ILIB} "${install_folder}/qemu/bin/${ILIB}"
+  cp -v "${install_folder}/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -id ${ILIB} "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "${install_folder}/lib/libiconv.2.dylib" \
     "@executable_path/libiconv.2.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-fi
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
 
   echo
   ILIB=libglib-2.0.0.dylib
-if false
-then
-  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -change "/opt/local/lib/libiconv.2.dylib" \
+  cp "${install_folder}/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${DLIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -change "${install_folder}/lib/libiconv.2.dylib" \
     "@executable_path/libiconv.2.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -change "/opt/local/lib/libintl.8.dylib" \
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -change "${install_folder}/lib/libintl.8.dylib" \
     "@executable_path/libintl.8.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-else
-  cp "${install_folder}/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/openocd/bin/${DLIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -change "/opt/local/lib/libiconv.2.dylib" \
-    "@executable_path/libiconv.2.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -change "/opt/local/lib/libintl.8.dylib" \
-    "@executable_path/libintl.8.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-fi
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   echo
   ILIB=libgthread-2.0.0.dylib
-if false
-then
-  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -change "/opt/local/lib/libglib-2.0.0.dylib" \
-    "@executable_path/libglib-2.0.0.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -change "/opt/local/lib/libiconv.2.dylib" \
-    "@executable_path/libiconv.2.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -change "/opt/local/lib/libintl.8.dylib" \
-    "@executable_path/libintl.8.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-else
-  cp "${install_folder}/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/openocd/bin/${DLIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  cp "${install_folder}/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${DLIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "${install_folder}/lib/libglib-2.0.0.dylib" \
     "@executable_path/libglib-2.0.0.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -change "/opt/local/lib/libiconv.2.dylib" \
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -change "${install_folder}/lib/libiconv.2.dylib" \
     "@executable_path/libiconv.2.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -change "/opt/local/lib/libintl.8.dylib" \
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -change "${install_folder}/lib/libintl.8.dylib" \
     "@executable_path/libintl.8.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-fi
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   echo
   # Different input name
   ILIB=libz.1.dylib
   cp -v "/opt/local/lib/libz.1.2.8.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id ${ILIB} "${install_folder}/qemu/bin/${ILIB}"
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
-
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -id ${ILIB} "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   echo
   ILIB=libgnutls.28.dylib
   cp -v "/opt/local/lib/${ILIB}" \
-    "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id libgnutls.28.dylib "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -id libgnutls.28.dylib "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "/opt/local/lib/libz.1.dylib" \
     "@executable_path/libz.1.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "/opt/local/lib/libiconv.2.dylib" \
     "@executable_path/libiconv.2.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "/opt/local/lib/libp11-kit.0.dylib" \
     "@executable_path/libp11-kit.0.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "/opt/local/lib/libtasn1.6.dylib" \
     "@executable_path/libtasn1.6.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "/opt/local/lib/libnettle.4.dylib" \
     "@executable_path/libnettle.4.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "/opt/local/lib/libhogweed.2.dylib" \
     "@executable_path/libhogweed.2.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "/opt/local/lib/libgmp.10.dylib" \
     "@executable_path/libgmp.10.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "/opt/local/lib/libintl.8.dylib" \
     "@executable_path/libintl.8.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   echo
   ILIB=libp11-kit.0.dylib
-  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "/opt/local/lib/libffi.6.dylib" \
     "@executable_path/libffi.6.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "/opt/local/lib/libintl.8.dylib" \
     "@executable_path/libintl.8.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   echo
   ILIB=libtasn1.6.dylib
-  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   echo
   ILIB=libnettle.4.dylib
-  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   echo
   ILIB=libhogweed.2.dylib
-  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "/opt/local/lib/libnettle.4.dylib" \
     "@executable_path/libnettle.4.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "/opt/local/lib/libgmp.10.dylib" \
     "@executable_path/libgmp.10.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   echo
   ILIB=libgmp.10.dylib
-  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   echo
   ILIB=libpixman-1.0.dylib
-  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   echo
   ILIB=libX11.6.dylib
-  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "/opt/local/lib/libxcb.1.dylib" \
     "@executable_path/libxcb.1.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   echo
   ILIB=libXext.6.dylib
-  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "/opt/local/lib/libX11.6.dylib" \
     "@executable_path/libX11.6.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   echo
   ILIB=libXrandr.2.dylib
-  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "/opt/local/lib/libXext.6.dylib" \
     "@executable_path/libXext.6.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "/opt/local/lib/libXrender.1.dylib" \
     "@executable_path/libXrender.1.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "/opt/local/lib/libX11.6.dylib" \
     "@executable_path/libX11.6.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   echo
   ILIB=libXrender.1.dylib
-  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "/opt/local/lib/libX11.6.dylib" \
     "@executable_path/libX11.6.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
 
   echo
   ILIB=libxcb.1.dylib
-  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "/opt/local/lib/libXau.6.dylib" \
     "@executable_path/libXau.6.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
   install_name_tool -change "/opt/local/lib/libXdmcp.6.dylib" \
     "@executable_path/libXdmcp.6.dylib" \
-    "${install_folder}/qemu/bin/${ILIB}"
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+    "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   echo
   ILIB=libXau.6.dylib
-  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   echo
   ILIB=libXdmcp.6.dylib
-  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  # otool -L "${install_folder}/qemu/bin/${ILIB}"
-  install_name_tool -id "${ILIB}" "${install_folder}/qemu/bin/${ILIB}"
-  otool -L "${install_folder}/qemu/bin/${ILIB}"
+  cp -v "/opt/local/lib/${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  # otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  install_name_tool -id "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
+  otool -L "${install_folder}/${APP_LC_NAME}/bin/${ILIB}"
 
   # Do not strip resulting dylib files!
 
@@ -2028,9 +2145,9 @@ fi
 
 # ----- Copy the images files. -----
 
-mkdir -p "${install_folder}/qemu/share/qemu/images"
+mkdir -p "${install_folder}/${APP_LC_NAME}/share/qemu/images"
 cp "${git_folder}/gnuarmeclipse/images/"* \
-  "${install_folder}/qemu/share/qemu/images"
+  "${install_folder}/${APP_LC_NAME}/share/qemu/images"
 
 # ----- Copy the license files. -----
 
@@ -2041,9 +2158,12 @@ do_copy_license "${git_folder}" "qemu-$(cat ${git_folder}/VERSION)"
 do_copy_license "${work_folder}/${LIBGETTEXT_FOLDER}" "${LIBGETTEXT_FOLDER}"
 do_copy_license "${work_folder}/${LIBGLIB_FOLDER}" "${LIBGLIB_FOLDER}"
 do_copy_license "${work_folder}/${LIBPNG_FOLDER}" "${LIBPNG_FOLDER}"
+do_copy_license "${work_folder}/${LIBJPG_FOLDER}" "${LIBJPG_FOLDER}"
 do_copy_license "${work_folder}/${LIBSDL_FOLDER}" "${LIBSDL_FOLDER}"
 do_copy_license "${work_folder}/${LIBSDL_IMAGE_FOLDER}" "${LIBSDL_IMAGE_FOLDER}"
 do_copy_license "${work_folder}/${LIBFFI_FOLDER}" "${LIBFFI_FOLDER}"
+do_copy_license "${work_folder}/${LIBZ_FOLDER}" "${LIBZ_FOLDER}"
+do_copy_license "${work_folder}/${LIBPIXMAN_FOLDER}" "${LIBPIXMAN_FOLDER}"
 
 if [ "${target_name}" != "debian" ]
 then
