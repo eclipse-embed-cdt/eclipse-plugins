@@ -563,7 +563,7 @@ run_local_script() {
 
 # v===========================================================================v
 
-do_copy_user_dll() {
+do_copy_user_so() {
   # $1 = dll name
 
   ILIB=$(find ${install_folder}/lib -type f -name $1'.so.*.*' -print)
@@ -601,7 +601,7 @@ do_copy_user_dll() {
   fi
 }
 
-do_copy_system_dll() {
+do_copy_system_so() {
   # $1 = dll name
 
   ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name $1'.so.*.*' -print)
@@ -639,7 +639,7 @@ do_copy_system_dll() {
   fi
 }
 
-do_copy_librt_dll() {
+do_copy_librt_so() {
   ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name 'librt-*.so' -print | grep -v i686)
   if [ ! -z "${ILIB}" ]
   then
@@ -656,6 +656,8 @@ do_copy_librt_dll() {
   fi
 }
 
+
+# v===========================================================================v
 do_copy_gcc_dll() {
 
   # First try Ubuntu specific locations,
