@@ -559,7 +559,13 @@ then
   tar -xzvf "${DOWNLOAD_FOLDER}/${LIBSDL_ARCHIVE}"
 
   cd "${WORK_FOLDER}/${LIBSDL_FOLDER}"
+
+  echo
+  echo "applying patch sdl-1.2.15-no-CGDirectPaletteRef.patch..."
   patch -p0 -u --verbose < "${GIT_FOLDER}/gnuarmeclipse/patches/sdl-1.2.15-no-CGDirectPaletteRef.patch"
+
+  echo
+  echo "applying patch ssdl-1.2.15-x11.patch..."
   patch -p0 -u --verbose < "${GIT_FOLDER}/gnuarmeclipse/patches/sdl-1.2.15-x11.patch"
 fi
 
@@ -577,9 +583,6 @@ if [ ! -d "${WORK_FOLDER}/${LIBSDL_IMAGE_FOLDER}" ]
 then
   cd "${WORK_FOLDER}"
   tar -xzvf "${DOWNLOAD_FOLDER}/${LIBSDL_IMAGE_ARCHIVE}"
-
-  cd "${WORK_FOLDER}/${LIBSDL_IMAGE_FOLDER}"
-  # patch -p0 -u --verbose < "${GIT_FOLDER}/gnuarmeclipse/patches/xxx.patch"
 fi
 
 # ----- Get the FFI library. -----
@@ -598,9 +601,6 @@ if [ ! -d "${WORK_FOLDER}/${LIBFFI_FOLDER}" ]
 then
   cd "${WORK_FOLDER}"
   tar -xzvf "${DOWNLOAD_FOLDER}/${LIBFFI_ARCHIVE}"
-
-  cd "${WORK_FOLDER}/${LIBFFI_FOLDER}"
-  #patch -p0 -u --verbose < "${GIT_FOLDER}/gnuarmeclipse/patches/xxx.patch"
 fi
 
 # ----- Get the ICONV library. -----
@@ -619,9 +619,6 @@ if [ ! -d "${WORK_FOLDER}/${LIBICONV_FOLDER}" ]
 then
   cd "${WORK_FOLDER}"
   tar -xzvf "${DOWNLOAD_FOLDER}/${LIBICONV_ARCHIVE}"
-
-  cd "${WORK_FOLDER}/${LIBICONV_FOLDER}"
-  #patch -p0 -u --verbose < "${GIT_FOLDER}/gnuarmeclipse/patches/xxx.patch"
 fi
 
 # ----- Get the GETTEXT library. -----
@@ -639,10 +636,7 @@ fi
 if [ ! -d "${WORK_FOLDER}/${LIBGETTEXT_FOLDER}" ]
 then
   cd "${WORK_FOLDER}"
-  tar -xjvf "${DOWNLOAD_FOLDER}/${LIBGETTEXT_ARCHIVE}"
-
-  cd "${WORK_FOLDER}/${LIBGETTEXT_FOLDER}"
-  #patch -p0 -u --verbose < "${GIT_FOLDER}/gnuarmeclipse/patches/xxx.patch"
+  tar -xvf "${DOWNLOAD_FOLDER}/${LIBGETTEXT_ARCHIVE}"
 fi
 
 # ----- Get the GLIB library. -----
@@ -660,10 +654,7 @@ fi
 if [ ! -d "${WORK_FOLDER}/${LIBGLIB_FOLDER}" ]
 then
   cd "${WORK_FOLDER}"
-  tar -xjvf "${DOWNLOAD_FOLDER}/${LIBGLIB_ARCHIVE}"
-
-  cd "${WORK_FOLDER}/${LIBGLIB_FOLDER}"
-  #patch -p0 -u --verbose < "${GIT_FOLDER}/gnuarmeclipse/patches/xxx.patch"
+  tar -xvf "${DOWNLOAD_FOLDER}/${LIBGLIB_ARCHIVE}"
 fi
 
 # ----- Get the PIXMAN library. -----
@@ -681,10 +672,7 @@ fi
 if [ ! -d "${WORK_FOLDER}/${LIBPIXMAN_FOLDER}" ]
 then
   cd "${WORK_FOLDER}"
-  tar -xjvf "${DOWNLOAD_FOLDER}/${LIBPIXMAN_ARCHIVE}"
-
-  cd "${WORK_FOLDER}/${LIBPIXMAN_FOLDER}"
-  #patch -p0 -u --verbose < "${GIT_FOLDER}/gnuarmeclipse/patches/xxx.patch"
+  tar -xvf "${DOWNLOAD_FOLDER}/${LIBPIXMAN_ARCHIVE}"
 fi
 
 # ----- Here insert the code to perform other downloads, if needed. -----
