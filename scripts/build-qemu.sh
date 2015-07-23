@@ -283,7 +283,7 @@ then
   rm -rf "${WORK_FOLDER}/${LIBGLIB_FOLDER}"
   rm -rf "${WORK_FOLDER}/${LIBSDL_FOLDER}"
   rm -rf "${WORK_FOLDER}/${LIBSDL_IMAGE_FOLDER}"
-  rm -rf "${WORK_FOLDER}/${LIPIXMAN_FOLDER}"
+  rm -rf "${WORK_FOLDER}/${LIBPIXMAN_FOLDER}"
 
   rm -rf "${WORK_FOLDER}/scripts"
 
@@ -497,15 +497,7 @@ then
   curl -L "${LIBZ_URL}" --output "${LIBZ_ARCHIVE}"
 fi
 
-# Unpack the Z library.
-if [ ! -d "${WORK_FOLDER}/${LIBZ_FOLDER}" ]
-then
-  cd "${WORK_FOLDER}"
-  # tar -xzvf "${DOWNLOAD_FOLDER}/${LIBZ_ARCHIVE}"
-
-  cd "${WORK_FOLDER}/${LIBZ_FOLDER}"
-  #patch -p0 -u --verbose < "${GIT_FOLDER}/gnuarmeclipse/patches/xxx.patch"
-fi
+# Unpack the Z library -> done when building.
 
 # ----- Get the PNG library. -----
 
@@ -631,7 +623,6 @@ then
   cd "${WORK_FOLDER}/${LIBICONV_FOLDER}"
   #patch -p0 -u --verbose < "${GIT_FOLDER}/gnuarmeclipse/patches/xxx.patch"
 fi
-
 
 # ----- Get the GETTEXT library. -----
 
@@ -914,7 +905,7 @@ then
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
-    bash "${work_folder}/${LIBZ_FOLDER}/configure" \
+    bash "configure" \
       --prefix="${install_folder}"
       
   elif [ "${target_name}" == "osx" ]
@@ -923,7 +914,7 @@ then
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
-    bash "${work_folder}/${LIBZ_FOLDER}/configure" \
+    bash "configure" \
       --prefix="${install_folder}"
       
   fi
