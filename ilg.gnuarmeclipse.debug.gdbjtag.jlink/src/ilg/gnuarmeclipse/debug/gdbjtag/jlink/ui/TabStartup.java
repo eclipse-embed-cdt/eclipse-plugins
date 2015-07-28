@@ -1494,6 +1494,10 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	public void initializeFromDefaults() {
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("TabDebugger: initializeFromDefaults()");
+		}
+
 		String stringDefault;
 		boolean booleanDefault;
 		int intDefault;

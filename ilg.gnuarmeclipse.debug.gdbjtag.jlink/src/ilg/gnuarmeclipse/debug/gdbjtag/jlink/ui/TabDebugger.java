@@ -20,19 +20,15 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui;
 
-import ilg.gnuarmeclipse.core.CProjectPacksStorage;
 import ilg.gnuarmeclipse.core.EclipseUtils;
-import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
-import ilg.gnuarmeclipse.debug.gdbjtag.data.CProjectExtraDataManagerProxy;
+import ilg.gnuarmeclipse.debug.gdbjtag.data.CProjectAttributes;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.DefaultPreferences;
 import ilg.gnuarmeclipse.debug.gdbjtag.jlink.PersistentPreferences;
 
 import java.io.File;
-import java.util.Map;
 
-import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
 import org.eclipse.cdt.debug.gdbjtag.ui.GDBJtagImages;
 import org.eclipse.cdt.debug.mi.core.IMILaunchConfigurationConstants;
@@ -40,7 +36,6 @@ import org.eclipse.cdt.debug.mi.core.MIPlugin;
 import org.eclipse.cdt.debug.mi.core.command.factories.CommandFactoryDescriptor;
 import org.eclipse.cdt.debug.mi.core.command.factories.CommandFactoryManager;
 import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
-import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -127,7 +122,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Button fDoGdbServerAllocateSemihostingConsole;
 
 	protected Button fUpdateThreadlistOnSuspend;
-	protected String fSavedCmsisName;
+	protected String fSavedCmsisDeviceName;
 
 	private TabStartup fTabStartup;
 
@@ -137,7 +132,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		super();
 
 		fTabStartup = tabStartup;
-		fSavedCmsisName = "";
+		fSavedCmsisDeviceName = "";
 	}
 
 	// ------------------------------------------------------------------------
@@ -1169,39 +1164,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 	}
 
-	private String getCmsisDeviceName(ILaunchConfiguration configuration) {
-
-		// Get the build configuration description from the launch configuration
-		ICConfigurationDescription cConfigDescription = DebugUtils
-				.getBuildConfigDescription(configuration);
-
-		String cmsisDeviceName = null;
-		if (cConfigDescription != null) {
-			// System.out.println(cConfigDescription);
-
-			// The next step is to get the CDT configuration.
-			IConfiguration config = EclipseUtils
-					.getConfigurationFromDescription(cConfigDescription);
-			// System.out.println(config);
-
-			// The custom storage is specific to the CDT configuration.
-			CProjectExtraDataManagerProxy dataManager = CProjectExtraDataManagerProxy
-					.getInstance();
-			Map<String, String> propertiesMap = dataManager
-					.getExtraProperties(config);
-			if (propertiesMap != null) {
-				cmsisDeviceName = propertiesMap
-						.get(CProjectPacksStorage.DEVICE_NAME);
-			}
-
-			// System.out.println("CMSIS device name: " + cmsisDeviceName
-			// + ", config: " + config + "/"
-			// + config.getArtifactName() + ", launch: "
-			// + configuration);
-		}
-		return cmsisDeviceName;
-	}
-
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 
@@ -1233,8 +1195,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						stringDefault));
 
 				// If the project has assigned a device name, use it
-				stringDefault = getCmsisDeviceName(configuration);
-				fSavedCmsisName = stringDefault;
+				stringDefault = CProjectAttributes
+						.getCmsisDeviceName(configuration);
+				fSavedCmsisDeviceName = stringDefault;
 
 				// Device name
 				if (stringDefault == null || stringDefault.isEmpty()) {
@@ -1498,6 +1461,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	public void initializeFromDefaults() {
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("TabDebugger: initializeFromDefaults()");
+		}
+
 		String stringDefault;
 		boolean booleanDefault;
 
@@ -1514,7 +1481,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			stringDefault = DefaultPreferences.getGdbServerExecutable();
 			fGdbServerExecutable.setText(stringDefault);
 
-			stringDefault = fSavedCmsisName != null ? fSavedCmsisName : "";
+			stringDefault = fSavedCmsisDeviceName != null ? fSavedCmsisDeviceName
+					: "";
 			fGdbFlashDeviceName.setText(stringDefault);
 
 			// Endianness
@@ -1997,7 +1965,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
 					defaultString);
 
-			String sharedName = getCmsisDeviceName(configuration);
+			String sharedName = CProjectAttributes
+					.getCmsisDeviceName(configuration);
 			if (sharedName == null || sharedName.isEmpty()) {
 				sharedName = PersistentPreferences.getFlashDeviceName();
 			}
