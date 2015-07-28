@@ -15,7 +15,6 @@ package ilg.gnuarmeclipse.debug.gdbjtag.services;
 import ilg.gnuarmeclipse.core.CProjectPacksStorage;
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
-import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.ILaunchConfigurationProvider;
 import ilg.gnuarmeclipse.debug.gdbjtag.data.CProjectExtraDataManagerProxy;
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.IPeripheralDMContext;
@@ -138,7 +137,7 @@ public class PeripheralsService extends AbstractDsfService implements
 					.getLaunchConfiguration();
 
 			// The second step is to get the build configuration description.
-			ICConfigurationDescription cConfigDescription = DebugUtils
+			ICConfigurationDescription cConfigDescription = EclipseUtils
 					.getBuildConfigDescription(launchConfiguration);
 
 			if (cConfigDescription != null) {

@@ -31,10 +31,8 @@ import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.cdtvariables.CdtVariableException;
 import org.eclipse.cdt.core.cdtvariables.ICdtVariable;
 import org.eclipse.cdt.core.envvar.IEnvironmentVariable;
-import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
-import org.eclipse.cdt.core.settings.model.ICProjectDescription;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.dsf.concurrent.CountingRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
@@ -80,7 +78,8 @@ public class DebugUtils {
 	public static String[] getLaunchEnvironment(ILaunchConfiguration config)
 			throws CoreException {
 
-		ICConfigurationDescription cfg = getBuildConfigDescription(config);
+		ICConfigurationDescription cfg = EclipseUtils
+				.getBuildConfigDescription(config);
 		if (cfg == null)
 			return getLaunchEnvironmentWithoutProject();
 
@@ -170,63 +169,6 @@ public class DebugUtils {
 		return retVal;
 	}
 
-	/**
-	 * Get the build configuration associated with the debug launch
-	 * configuration, if defined in the first tab.
-	 * 
-	 * @param config
-	 *            a debug launch configuration.
-	 * @return the build configuration, or null if not found or not defined.
-	 */
-	public static ICConfigurationDescription getBuildConfigDescription(
-			ILaunchConfiguration config) {
-
-		ICConfigurationDescription cfg = null;
-
-		// Get the project
-		String projectName;
-		try {
-			projectName = config.getAttribute(
-					ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME,
-					(String) null);
-			if (projectName == null) {
-				return null;
-			}
-			projectName = projectName.trim();
-			if (projectName.isEmpty()) {
-				return null;
-			}
-			IProject project = ResourcesPlugin.getWorkspace().getRoot()
-					.getProject(projectName);
-			if (project == null || !project.isAccessible()) {
-				return null;
-			}
-
-			ICProjectDescription projDesc = CoreModel.getDefault()
-					.getProjectDescription(project, false);
-
-			// Not a CDT project?
-			if (projDesc == null) {
-				return null;
-			}
-
-			String buildConfigID = config
-					.getAttribute(
-							ICDTLaunchConfigurationConstants.ATTR_PROJECT_BUILD_CONFIG_ID,
-							""); //$NON-NLS-1$
-			if (buildConfigID.length() != 0) {
-				cfg = projDesc.getConfigurationById(buildConfigID);
-			}
-			// if configuration is null fall-back to active
-			if (cfg == null) {
-				cfg = projDesc.getActiveConfiguration();
-			}
-		} catch (CoreException e) {
-			Activator.log(e);
-		}
-		return cfg;
-	}
-
 	public static File getProjectOsPath(String projectName) {
 		IPath path = null;
 		if (projectName.length() > 0) {
@@ -296,7 +238,8 @@ public class DebugUtils {
 			gdb = VariablesPlugin.getDefault().getStringVariableManager()
 					.performStringSubstitution(gdb, false);
 
-			ICConfigurationDescription buildConfig = getBuildConfigDescription(configuration);
+			ICConfigurationDescription buildConfig = EclipseUtils
+					.getBuildConfigDescription(configuration);
 			if (buildConfig != null) {
 				gdb = resolveAll(gdb, buildConfig);
 			}

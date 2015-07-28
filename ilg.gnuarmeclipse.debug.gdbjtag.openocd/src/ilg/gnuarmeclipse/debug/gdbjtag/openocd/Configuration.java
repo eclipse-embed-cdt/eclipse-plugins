@@ -1,5 +1,6 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd;
 
+import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 
@@ -40,7 +41,7 @@ public class Configuration {
 			executable = DebugUtils.resolveAll(executable,
 					configuration.getAttributes());
 
-			ICConfigurationDescription buildConfig = DebugUtils
+			ICConfigurationDescription buildConfig = EclipseUtils
 					.getBuildConfigDescription(configuration);
 			if (buildConfig != null) {
 				executable = DebugUtils.resolveAll(executable, buildConfig);
@@ -148,7 +149,7 @@ public class Configuration {
 			executable = DebugUtils.resolveAll(executable,
 					configuration.getAttributes());
 
-			ICConfigurationDescription buildConfig = DebugUtils
+			ICConfigurationDescription buildConfig = EclipseUtils
 					.getBuildConfigDescription(configuration);
 			if (buildConfig != null) {
 				executable = DebugUtils.resolveAll(executable, buildConfig);

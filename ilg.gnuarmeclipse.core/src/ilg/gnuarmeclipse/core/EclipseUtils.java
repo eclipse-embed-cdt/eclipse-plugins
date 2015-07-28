@@ -18,6 +18,7 @@ import java.util.List;
 import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.core.settings.model.ICProjectDescription;
+import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.core.IManagedBuildInfo;
 import org.eclipse.cdt.managedbuilder.core.ManagedBuildManager;
@@ -40,6 +41,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.IValueVariable;
 import org.eclipse.core.variables.VariablesPlugin;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Display;
@@ -584,6 +586,65 @@ public class EclipseUtils {
 		}
 
 		return list.toArray(new IConfiguration[list.size()]);
+	}
+
+	// ------------------------------------------------------------------------
+
+	/**
+	 * Get the build configuration associated with the debug launch
+	 * configuration, if defined in the first tab.
+	 * 
+	 * @param config
+	 *            a debug launch configuration.
+	 * @return the build configuration, or null if not found or not defined.
+	 */
+	public static ICConfigurationDescription getBuildConfigDescription(
+			ILaunchConfiguration config) {
+
+		ICConfigurationDescription cfg = null;
+
+		// Get the project
+		String projectName;
+		try {
+			projectName = config.getAttribute(
+					ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME,
+					(String) null);
+			if (projectName == null) {
+				return null;
+			}
+			projectName = projectName.trim();
+			if (projectName.isEmpty()) {
+				return null;
+			}
+			IProject project = ResourcesPlugin.getWorkspace().getRoot()
+					.getProject(projectName);
+			if (project == null || !project.isAccessible()) {
+				return null;
+			}
+
+			ICProjectDescription projDesc = CoreModel.getDefault()
+					.getProjectDescription(project, false);
+
+			// Not a CDT project?
+			if (projDesc == null) {
+				return null;
+			}
+
+			String buildConfigID = config
+					.getAttribute(
+							ICDTLaunchConfigurationConstants.ATTR_PROJECT_BUILD_CONFIG_ID,
+							""); //$NON-NLS-1$
+			if (buildConfigID.length() != 0) {
+				cfg = projDesc.getConfigurationById(buildConfigID);
+			}
+			// if configuration is null fall-back to active
+			if (cfg == null) {
+				cfg = projDesc.getActiveConfiguration();
+			}
+		} catch (CoreException e) {
+			Activator.log(e);
+		}
+		return cfg;
 	}
 
 	// ------------------------------------------------------------------------
