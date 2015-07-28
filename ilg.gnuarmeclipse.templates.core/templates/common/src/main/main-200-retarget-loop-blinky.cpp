@@ -13,7 +13,7 @@
   while (1)
     {
       blinkLed.turnOn();
-      timer.sleep(i == 0 ? Timer::FREQUENCY_HZ : BLINK_ON_TICKS);
+      timer.sleep(seconds == 0 ? Timer::FREQUENCY_HZ : BLINK_ON_TICKS);
 
       blinkLed.turnOff();
       timer.sleep(BLINK_OFF_TICKS);
