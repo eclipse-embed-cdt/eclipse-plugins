@@ -31,7 +31,7 @@ public class DefaultPreferences {
 	public static final String QEMU_DEVICE_NAME_DEFAULT = "?";
 
 	public static final int SERVER_GDB_PORT_NUMBER_DEFAULT = 1234;
-	public static final String SERVER_OTHER_OPTIONS_DEFAULT = ""; //$NON-NLS-1$
+	public static final String SERVER_OTHER_OPTIONS_DEFAULT = "-d unimp,guest_errors"; //$NON-NLS-1$
 
 	public static final boolean DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT = true;
 
