@@ -57,7 +57,10 @@ public class PersistentPreferences {
 
 	public static final String GDB_QEMU_DEVICE_NAME = GDB_QEMU + "deviceName";
 
-	private static final String GDB_QEMU_IS_VERBOSE = GDB_QEMU + "isVerbose";;
+	private static final String GDB_QEMU_IS_VERBOSE = GDB_QEMU + "isVerbose";
+
+	public static final String GDB_QEMU_DISABLE_GRAPHICS = GDB_QEMU
+			+ "disableGraphics";
 
 	// Run Commands
 	public static final String GDB_QEMU_DO_DEBUG_IN_RAM = GDB_QEMU
@@ -308,6 +311,18 @@ public class PersistentPreferences {
 	public static void putQemuPreRunOther(String value) {
 
 		putWorkspaceString(GDB_QEMU_PRERUN_OTHER, value);
+	}
+
+	// ----- QEMU debug in ram ---------------------------------------------
+	public static boolean getQemuDisableGraphics() {
+
+		return Boolean.valueOf(getString(GDB_QEMU_DISABLE_GRAPHICS,
+				Boolean.toString(DefaultPreferences.DISABLE_GRAPHICS_DEFAULT)));
+	}
+
+	public static void putQemuDisableGraphics(boolean value) {
+
+		putWorkspaceString(GDB_QEMU_DO_DEBUG_IN_RAM, Boolean.toString(value));
 	}
 
 	// ------------------------------------------------------------------------

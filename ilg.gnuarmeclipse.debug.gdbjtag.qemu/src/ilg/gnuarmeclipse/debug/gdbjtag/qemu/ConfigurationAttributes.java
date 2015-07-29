@@ -64,6 +64,8 @@ public interface ConfigurationAttributes {
 	public static final String SEMIHOSTING_CMDLINE = PREFIX
 			+ ".semihosting.cmdline"; //$NON-NLS-1$
 
+	public static final String DISABLE_GRAPHICS = PREFIX + ".disableGraphics"; //$NON-NLS-1$;
+
 	public static final String OTHER_INIT_COMMANDS = PREFIX
 			+ ".otherInitCommands"; //$NON-NLS-1$
 
@@ -75,4 +77,5 @@ public interface ConfigurationAttributes {
 			+ ".otherRunCommands"; //$NON-NLS-1$
 
 	public static final String DO_CONTINUE = PREFIX + ".doContinue"; //$NON-NLS-1$
+
 }

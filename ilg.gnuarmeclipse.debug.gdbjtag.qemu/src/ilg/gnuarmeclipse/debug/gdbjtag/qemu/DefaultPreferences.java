@@ -70,6 +70,7 @@ public class DefaultPreferences {
 	public static final boolean DO_CONTINUE_DEFAULT = true;
 
 	public static final String DO_CONTINUE_COMMAND = "continue";
+	public static final boolean DISABLE_GRAPHICS_DEFAULT = false;
 
 	// ------------------------------------------------------------------------
 
@@ -299,6 +300,11 @@ public class DefaultPreferences {
 	public static String getQemuPreRunOther() {
 		return getString(PersistentPreferences.GDB_QEMU_PRERUN_OTHER,
 				PRERUN_OTHER_DEFAULT);
+	}
+
+	public static boolean getQemuDisableGraphics() {
+		return getBoolean(PersistentPreferences.GDB_QEMU_DISABLE_GRAPHICS,
+				DISABLE_GRAPHICS_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------

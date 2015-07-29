@@ -134,6 +134,13 @@ public class Configuration {
 				lst.addAll(StringUtils.splitCommandLineOptions(other));
 			}
 
+			boolean nographic = configuration.getAttribute(
+					ConfigurationAttributes.DISABLE_GRAPHICS,
+					DefaultPreferences.DISABLE_GRAPHICS_DEFAULT);
+			if (nographic) {
+				lst.add("--nographic");
+			}
+
 			boolean isSemihosting = configuration.getAttribute(
 					ConfigurationAttributes.ENABLE_SEMIHOSTING,
 					DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT);
@@ -175,11 +182,18 @@ public class Configuration {
 				DefaultPreferences.SERVER_OTHER_OPTIONS_DEFAULT).trim();
 	}
 
-	public static String getQemuMachineName(ILaunchConfiguration config)
+	public static String getQemuBoardName(ILaunchConfiguration config)
 			throws CoreException {
 
 		return config.getAttribute(
 				ConfigurationAttributes.GDB_SERVER_BOARD_NAME, "").trim();
+	}
+
+	public static String getQemuDeviceName(ILaunchConfiguration config)
+			throws CoreException {
+
+		return config.getAttribute(
+				ConfigurationAttributes.GDB_SERVER_DEVICE_NAME, "").trim();
 	}
 
 	// ------------------------------------------------------------------------

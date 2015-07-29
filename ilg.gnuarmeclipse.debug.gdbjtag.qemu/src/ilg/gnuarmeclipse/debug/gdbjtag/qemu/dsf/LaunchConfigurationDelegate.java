@@ -475,20 +475,22 @@ public class LaunchConfigurationDelegate extends
 	protected IPath checkBinaryDetails(final ILaunchConfiguration config)
 			throws CoreException {
 
-		String machine = "";
+		String boardName = "";
+		String deviceName = "";
 		try {
-			machine = Configuration.getQemuMachineName(config);
+			boardName = Configuration.getQemuBoardName(config);
+			deviceName = Configuration.getQemuDeviceName(config);
 		} catch (CoreException e) {
 			;
 		}
 
-		if (machine.isEmpty()) {
+		if (boardName.isEmpty() && deviceName.isEmpty()) {
 			throw new CoreException(
 					new Status(
 							IStatus.ERROR,
 							Activator.PLUGIN_ID,
-							"Missing mandatory board/machine. "
-									+ "Fill-in the 'Board name:' field in the Debugger tab.")); //$NON-NLS-1$
+							"Missing mandatory board or device. "
+									+ "Fill-in the 'Board name:' and/or 'Device name' field(s) in the Debugger tab.")); //$NON-NLS-1$
 		}
 
 		IPath path = super.checkBinaryDetails(config);

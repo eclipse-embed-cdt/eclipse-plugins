@@ -82,6 +82,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Button fEnableSemihosting;
 	private Text fSemihostingCmdline;
 
+	private Button fDisableGraphics;
+
 	private Text fTargetIpAddress;
 	private Text fTargetPortNumber;
 
@@ -357,15 +359,34 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		{
-			fEnableSemihosting = new Button(comp, SWT.CHECK);
+			Composite local = new Composite(comp, SWT.NONE);
+			layout = new GridLayout();
+			layout.numColumns = 2;
+			layout.marginHeight = 0;
+			layout.marginWidth = 0;
+			layout.makeColumnsEqualWidth = true;
+			local.setLayout(layout);
+			gd = new GridData(GridData.FILL_HORIZONTAL);
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
+			local.setLayoutData(gd);
+
+			fEnableSemihosting = new Button(local, SWT.CHECK);
 			fEnableSemihosting.setText(Messages
 					.getString("DebuggerTab.enableSemihosting_Text"));
 			fEnableSemihosting.setToolTipText(Messages
 					.getString("DebuggerTab.enableSemihosting_ToolTipText"));
 
-			gd = new GridData();
-			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
+			gd = new GridData(GridData.FILL_HORIZONTAL);
 			fEnableSemihosting.setLayoutData(gd);
+
+			fDisableGraphics = new Button(local, SWT.CHECK);
+			fDisableGraphics.setText(Messages
+					.getString("DebuggerTab.disableGraphics_Text"));
+			fDisableGraphics.setToolTipText(Messages
+					.getString("DebuggerTab.disableGraphics_ToolTipText"));
+
+			gd = new GridData(GridData.FILL_HORIZONTAL);
+			fDisableGraphics.setLayoutData(gd);
 		}
 
 		{
@@ -415,7 +436,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fIsQemuVerbose.setToolTipText(Messages
 					.getString("DebuggerTab.gdbServerVerbose_ToolTipText"));
 
-			gd = new GridData();
+			gd = new GridData(GridData.FILL_HORIZONTAL);
 			fIsQemuVerbose.setLayoutData(gd);
 		}
 
@@ -705,6 +726,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fSemihostingCmdline.setEnabled(enabled
 				&& fEnableSemihosting.getSelection());
 		fDoGdbServerAllocateConsole.setEnabled(enabled);
+		fDisableGraphics.setEnabled(enabled);
 
 		fQemuBoardName.setEnabled(enabled);
 		fIsQemuVerbose.setEnabled(enabled);
@@ -718,13 +740,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		boolean enabled = fEnableSemihosting.getSelection();
 
 		fSemihostingCmdline.setEnabled(enabled);
-	}
-
-	private void doConnectToRunningChanged() {
-
-		if (fDoStartGdbServer.getSelection()) {
-			;
-		}
 	}
 
 	/**
@@ -837,6 +852,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						ConfigurationAttributes.SEMIHOSTING_CMDLINE,
 						stringDefault));
 
+				// Disable graphics
+				booleanDefault = PersistentPreferences.getQemuDisableGraphics();
+				fDisableGraphics.setSelection(configuration.getAttribute(
+						ConfigurationAttributes.DISABLE_GRAPHICS,
+						booleanDefault));
+
 				// Allocate server console
 				if (EclipseUtils.isWindows()) {
 					fDoGdbServerAllocateConsole.setSelection(true);
@@ -898,7 +919,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 
 			doStartGdbServerChanged();
-			doConnectToRunningChanged();
 
 			// Force thread update
 			boolean updateThreadsOnSuspend = configuration
@@ -955,6 +975,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fEnableSemihosting.setSelection(booleanDefault);
 
 			fSemihostingCmdline.setText(getProjectName(null));
+
+			// Disable graphics
+			booleanDefault = DefaultPreferences.getQemuDisableGraphics();
+			fDisableGraphics.setSelection(booleanDefault);
 
 			// Allocate server console
 			if (EclipseUtils.isWindows()) {
@@ -1087,6 +1111,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			stringValue = fSemihostingCmdline.getText().trim();
 			configuration.setAttribute(
 					ConfigurationAttributes.SEMIHOSTING_CMDLINE, stringValue);
+
+			// Disable graphics
+			booleanValue = fDisableGraphics.getSelection();
+			configuration.setAttribute(
+					ConfigurationAttributes.DISABLE_GRAPHICS, booleanValue);
+			PersistentPreferences.putQemuDisableGraphics(booleanValue);
 
 			// Allocate server console
 			configuration.setAttribute(
