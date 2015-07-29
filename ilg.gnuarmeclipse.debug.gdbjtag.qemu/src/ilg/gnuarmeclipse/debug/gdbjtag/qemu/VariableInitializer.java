@@ -36,7 +36,7 @@ public class VariableInitializer implements IValueVariableInitializer {
 
 			value = DefaultPreferences.getExecutableName();
 			if (value == null) {
-				value = ConfigurationAttributes.GDB_SERVER_EXECUTABLE_DEFAULT_NAME;
+				value = DefaultPreferences.SERVER_EXECUTABLE_DEFAULT_NAME;
 			}
 			variable.setValue(value);
 			variable.setDescription(Messages.Variable_executable_description);

@@ -17,6 +17,7 @@ package ilg.gnuarmeclipse.debug.gdbjtag.qemu.ui;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.qemu.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.DefaultPreferences;
 import ilg.gnuarmeclipse.debug.gdbjtag.qemu.PersistentPreferences;
 
 import java.io.File;
@@ -870,16 +871,14 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Initialisation Commands
 			{
 				// Do initial reset
-				booleanDefault = PersistentPreferences
-						.getQemuDoInitialReset(ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
+				booleanDefault = PersistentPreferences.getQemuDoInitialReset();
 				fDoFirstReset
 						.setSelection(configuration.getAttribute(
 								ConfigurationAttributes.DO_FIRST_RESET,
 								booleanDefault));
 
 				// Other commands
-				stringDefault = PersistentPreferences
-						.getQemuInitOther(ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
+				stringDefault = PersistentPreferences.getQemuInitOther();
 				fInitCommands.setText(configuration.getAttribute(
 						ConfigurationAttributes.OTHER_INIT_COMMANDS,
 						stringDefault));
@@ -941,8 +940,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			// Runtime Options
 			{
-				booleanDefault = PersistentPreferences
-						.getQemuDebugInRam(ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT);
+				booleanDefault = PersistentPreferences.getQemuDebugInRam();
 				fDoDebugInRam.setSelection(configuration
 						.getAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM,
 								booleanDefault));
@@ -951,15 +949,13 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Run Commands
 			{
 				// Do pre-run reset
-				booleanDefault = PersistentPreferences
-						.getQemuDoPreRunReset(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
+				booleanDefault = PersistentPreferences.getQemuDoPreRunReset();
 				fDoSecondReset.setSelection(configuration
 						.getAttribute(ConfigurationAttributes.DO_SECOND_RESET,
 								booleanDefault));
 
 				// Other commands
-				stringDefault = PersistentPreferences
-						.getQemuPreRunOther(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
+				stringDefault = PersistentPreferences.getQemuPreRunOther();
 				fRunCommands.setText(configuration.getAttribute(
 						ConfigurationAttributes.OTHER_RUN_COMMANDS,
 						stringDefault));
@@ -973,15 +969,15 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 				fSetStopAt.setSelection(configuration.getAttribute(
 						IGDBJtagConstants.ATTR_SET_STOP_AT,
-						ConfigurationAttributes.DO_STOP_AT_DEFAULT));
+						DefaultPreferences.DO_STOP_AT_DEFAULT));
 				fStopAt.setText(configuration.getAttribute(
 						IGDBJtagConstants.ATTR_STOP_AT,
-						ConfigurationAttributes.STOP_AT_NAME_DEFAULT));
+						DefaultPreferences.STOP_AT_NAME_DEFAULT));
 
 				// Do continue
 				fDoContinue.setSelection(configuration.getAttribute(
 						ConfigurationAttributes.DO_CONTINUE,
-						ConfigurationAttributes.DO_CONTINUE_DEFAULT));
+						DefaultPreferences.DO_CONTINUE_DEFAULT));
 			}
 
 			doFirstResetChanged();
@@ -1001,15 +997,18 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	public void initializeFromDefaults() {
 
+		String stringDefault;
+		boolean booleanDefault;
+
 		// Initialisation Commands
 		{
 			// Do initial reset
-			fDoFirstReset
-					.setSelection(ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
+			booleanDefault = DefaultPreferences.getQemuDoInitialReset();
+			fDoFirstReset.setSelection(booleanDefault);
 
 			// Other commands
-			fInitCommands
-					.setText(ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
+			stringDefault = DefaultPreferences.getQemuInitOther();
+			fInitCommands.setText(stringDefault);
 		}
 
 		// Load Symbols & Image
@@ -1040,30 +1039,29 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		// Runtime Options
 		{
-			fDoDebugInRam
-					.setSelection(ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT);
+			booleanDefault = DefaultPreferences.getQemuDebugInRam();
+			fDoDebugInRam.setSelection(booleanDefault);
 		}
 
 		// Run Commands
 		{
 			// Do pre-run reset
-			fDoSecondReset
-					.setSelection(ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
+			booleanDefault = DefaultPreferences.getQemuDoPreRunReset();
+			fDoSecondReset.setSelection(booleanDefault);
 
 			// Other commands
-			fRunCommands
-					.setText(ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
+			stringDefault = DefaultPreferences.getQemuPreRunOther();
+			fRunCommands.setText(stringDefault);
 
 			fSetPcRegister
 					.setSelection(IGDBJtagConstants.DEFAULT_SET_PC_REGISTER);
 			fPcRegister.setText(IGDBJtagConstants.DEFAULT_PC_REGISTER);
 
-			fSetStopAt.setSelection(ConfigurationAttributes.DO_STOP_AT_DEFAULT);
-			fStopAt.setText(ConfigurationAttributes.STOP_AT_NAME_DEFAULT);
+			fSetStopAt.setSelection(DefaultPreferences.DO_STOP_AT_DEFAULT);
+			fStopAt.setText(DefaultPreferences.STOP_AT_NAME_DEFAULT);
 
 			// Do continue
-			fDoContinue
-					.setSelection(ConfigurationAttributes.DO_CONTINUE_DEFAULT);
+			fDoContinue.setSelection(DefaultPreferences.DO_CONTINUE_DEFAULT);
 		}
 
 		doFirstResetChanged();
@@ -1184,14 +1182,26 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 
-		// Initialisation Commands
-		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
-				ConfigurationAttributes.DO_FIRST_RESET_DEFAULT);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("TabStartup: setDefaults() "
+					+ configuration.getName());
+		}
 
+		boolean defaultBoolean;
+		String defaultString;
+
+		// Initialisation Commands
+		defaultBoolean = PersistentPreferences.getQemuDoInitialReset();
+		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
+				defaultBoolean);
+
+		defaultBoolean = PersistentPreferences.getQemuEnableSemihosting();
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING,
-				ConfigurationAttributes.ENABLE_SEMIHOSTING_DEFAULT);
+				defaultBoolean);
+
+		defaultString = PersistentPreferences.getQemuInitOther();
 		configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS,
-				ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT);
+				defaultString);
 
 		// Load Image...
 		configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_IMAGE,
@@ -1220,29 +1230,32 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
 
 		// Runtime Options
+		defaultBoolean = PersistentPreferences.getQemuDebugInRam();
 		configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM,
-				ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT);
+				defaultBoolean);
 
 		// Run Commands
+		defaultBoolean = PersistentPreferences.getQemuDoPreRunReset();
 		configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
-				ConfigurationAttributes.DO_SECOND_RESET_DEFAULT);
+				defaultBoolean);
 
+		defaultString = PersistentPreferences.getQemuPreRunOther();
 		configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS,
-				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT);
+				defaultString);
 
 		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER,
 				IGDBJtagConstants.DEFAULT_SET_PC_REGISTER);
 		configuration.setAttribute(IGDBJtagConstants.ATTR_PC_REGISTER,
 				IGDBJtagConstants.DEFAULT_PC_REGISTER);
 		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_STOP_AT,
-				ConfigurationAttributes.DO_STOP_AT_DEFAULT);
+				DefaultPreferences.DO_STOP_AT_DEFAULT);
 		configuration.setAttribute(IGDBJtagConstants.ATTR_STOP_AT,
-				ConfigurationAttributes.STOP_AT_NAME_DEFAULT);
+				DefaultPreferences.STOP_AT_NAME_DEFAULT);
 		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_RESUME,
 				IGDBJtagConstants.DEFAULT_SET_RESUME);
 
 		configuration.setAttribute(ConfigurationAttributes.DO_CONTINUE,
-				ConfigurationAttributes.DO_CONTINUE_DEFAULT);
+				DefaultPreferences.DO_CONTINUE_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------

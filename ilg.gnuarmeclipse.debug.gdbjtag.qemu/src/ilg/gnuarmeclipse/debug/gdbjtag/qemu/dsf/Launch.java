@@ -15,6 +15,7 @@ import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch;
 import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Configuration;
 import ilg.gnuarmeclipse.debug.gdbjtag.qemu.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.DefaultPreferences;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -122,7 +123,7 @@ public class Launch extends GnuArmLaunch {
 
 		if (!config.hasAttribute(IGDBJtagConstants.ATTR_PORT_NUMBER)) {
 			config.setAttribute(IGDBJtagConstants.ATTR_PORT_NUMBER,
-					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT);
+					DefaultPreferences.SERVER_GDB_PORT_NUMBER_DEFAULT);
 		}
 
 		if (!config

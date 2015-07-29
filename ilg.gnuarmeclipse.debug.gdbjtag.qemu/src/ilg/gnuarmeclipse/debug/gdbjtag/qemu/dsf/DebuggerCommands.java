@@ -17,6 +17,7 @@ import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmDebuggerCommandsService;
 import ilg.gnuarmeclipse.debug.gdbjtag.qemu.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.DefaultPreferences;
 
 import java.util.List;
 
@@ -50,8 +51,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 		String otherInits = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
-				ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS_DEFAULT)
-				.trim();
+				DefaultPreferences.getGdbClientCommands()).trim();
 
 		otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
 		DebugUtils.addMultiLine(otherInits, commandsList);
@@ -80,7 +80,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 				IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
 				&& !CDebugUtils.getAttribute(fAttributes,
 						ConfigurationAttributes.DO_DEBUG_IN_RAM,
-						ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT)) {
+						DefaultPreferences.getQemuDebugInRam())) {
 
 			status = addLoadImageCommands(commandsList);
 
@@ -111,20 +111,20 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 		if (CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.DO_FIRST_RESET,
-				ConfigurationAttributes.DO_FIRST_RESET_DEFAULT)) {
+				DefaultPreferences.getQemuDoInitialReset())) {
 
-			String commandStr = ConfigurationAttributes.DO_FIRST_RESET_COMMAND;
+			String commandStr = DefaultPreferences.DO_INITIAL_RESET_COMMAND;
 			commandsList.add(commandStr);
 
 			// Although the manual claims that reset always does a
 			// halt, better issue it explicitly
-			commandStr = ConfigurationAttributes.HALT_COMMAND;
+			commandStr = DefaultPreferences.HALT_COMMAND;
 			commandsList.add(commandStr);
 		}
 
 		String otherInits = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.OTHER_INIT_COMMANDS,
-				ConfigurationAttributes.OTHER_INIT_COMMANDS_DEFAULT).trim();
+				DefaultPreferences.getQemuInitOther()).trim();
 
 		otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
 		if (fDoDoubleBackslash && EclipseUtils.isWindows()) {
@@ -142,13 +142,13 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 		if (doReset) {
 			if (CDebugUtils.getAttribute(fAttributes,
 					ConfigurationAttributes.DO_SECOND_RESET,
-					ConfigurationAttributes.DO_SECOND_RESET_DEFAULT)) {
-				String commandStr = ConfigurationAttributes.DO_SECOND_RESET_COMMAND;
+					DefaultPreferences.getQemuDoPreRunReset())) {
+				String commandStr = DefaultPreferences.DO_PRERUN_RESET_COMMAND;
 				commandsList.add(commandStr);
 
 				// Although the manual claims that reset always does a
 				// halt, better issue it explicitly
-				commandStr = ConfigurationAttributes.HALT_COMMAND;
+				commandStr = DefaultPreferences.HALT_COMMAND;
 				commandsList.add(commandStr);
 			}
 		}
@@ -158,7 +158,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 				IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
 				&& CDebugUtils.getAttribute(fAttributes,
 						ConfigurationAttributes.DO_DEBUG_IN_RAM,
-						ConfigurationAttributes.DO_DEBUG_IN_RAM_DEFAULT)) {
+						DefaultPreferences.getQemuDebugInRam())) {
 
 			IStatus status = addLoadImageCommands(commandsList);
 
@@ -169,7 +169,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 		String userCmd = CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.OTHER_RUN_COMMANDS,
-				ConfigurationAttributes.OTHER_RUN_COMMANDS_DEFAULT).trim();
+				DefaultPreferences.getQemuPreRunOther()).trim();
 
 		userCmd = DebugUtils.resolveAll(userCmd, fAttributes);
 
@@ -187,8 +187,8 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 		if (CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.DO_CONTINUE,
-				ConfigurationAttributes.DO_CONTINUE_DEFAULT)) {
-			commandsList.add(ConfigurationAttributes.DO_CONTINUE_COMMAND);
+				DefaultPreferences.DO_CONTINUE_DEFAULT)) {
+			commandsList.add(DefaultPreferences.DO_CONTINUE_COMMAND);
 		}
 
 		return Status.OK_STATUS;

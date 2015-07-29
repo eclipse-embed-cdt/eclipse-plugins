@@ -89,7 +89,7 @@ public class GdbBackend extends GnuArmGdbBackend {
 
 	/**
 	 * Overridden to get the full command line, including all options, from the
-	 * JLink configuration.
+	 * QEMU configuration.
 	 */
 	protected String[] getGDBCommandLineArray() {
 		String[] commandLineArray = Configuration
