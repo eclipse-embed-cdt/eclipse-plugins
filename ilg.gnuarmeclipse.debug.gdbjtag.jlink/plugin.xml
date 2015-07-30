@@ -6,7 +6,7 @@
          point="org.eclipse.debug.core.launchConfigurationTypes">
       <launchConfigurationType
             id="ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationType"
-            modes="debug"
+            modes="debug,run"
             name="%launchConfig.name"
             public="true"/>
    </extension>
@@ -18,7 +18,7 @@
             delegate="ilg.gnuarmeclipse.debug.gdbjtag.jlink.dsf.LaunchConfigurationDelegate"
             delegateDescription="%launchDelegate.jtagDsf.description"
             id="ilg.gnuarmeclipse.debug.gdbjtag.jlink.core.dsfLaunchDelegate"
-            modes="debug"
+            modes="debug,run"
             name="%launchDelegate.jtagDsf.name"
             sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
             sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer"
