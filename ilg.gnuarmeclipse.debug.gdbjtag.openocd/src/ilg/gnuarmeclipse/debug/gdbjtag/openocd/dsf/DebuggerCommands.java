@@ -33,8 +33,9 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 	// ------------------------------------------------------------------------
 
-	public DebuggerCommands(DsfSession session, ILaunchConfiguration lc) {
-		super(session, lc, true); // do double backslash
+	public DebuggerCommands(DsfSession session, ILaunchConfiguration lc,
+			String mode) {
+		super(session, lc, mode, true); // do double backslash
 	}
 
 	// ------------------------------------------------------------------------

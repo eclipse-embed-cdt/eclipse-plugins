@@ -33,6 +33,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
+import org.eclipse.debug.core.ILaunchManager;
 
 public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 		implements IGnuArmDebuggerCommandsService {
@@ -45,6 +46,7 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 	protected DsfServicesTracker fTracker;
 	protected IGDBBackend fGdbBackend;
 	protected Map<String, Object> fAttributes;
+	protected String fMode;
 
 	// protected static final String LINESEP = System
 	//			.getProperty("line.separator"); //$NON-NLS-1$
@@ -52,17 +54,18 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 	// ------------------------------------------------------------------------
 
 	public GnuArmDebuggerCommandsService(DsfSession session,
-			ILaunchConfiguration lc) {
-		this(session, lc, false);
+			ILaunchConfiguration lc, String mode) {
+		this(session, lc, mode, false);
 	}
 
 	public GnuArmDebuggerCommandsService(DsfSession session,
-			ILaunchConfiguration lc, boolean doubleBackslash) {
+			ILaunchConfiguration lc, String mode, boolean doubleBackslash) {
 		super(session);
 
 		fSession = session;
 		fConfig = lc;
 
+		fMode = mode;
 		fDoDoubleBackslash = doubleBackslash;
 	}
 
@@ -319,16 +322,20 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 
 	public IStatus addStopAtCommands(List<String> commandsList) {
 
-		if (CDebugUtils.getAttribute(fAttributes,
-				IGDBJtagConstants.ATTR_SET_STOP_AT,
-				IGDBJtagConstants.DEFAULT_SET_STOP_AT)) {
-			String stopAt = CDebugUtils.getAttribute(fAttributes,
-					IGDBJtagConstants.ATTR_STOP_AT,
-					IGDBJtagConstants.DEFAULT_STOP_AT).trim();
+		// This code is also used to start run configurations.
+		// Set the breakpoint only for debug.
+		if (fMode.equals(ILaunchManager.DEBUG_MODE)) {
+			if (CDebugUtils.getAttribute(fAttributes,
+					IGDBJtagConstants.ATTR_SET_STOP_AT,
+					IGDBJtagConstants.DEFAULT_SET_STOP_AT)) {
+				String stopAt = CDebugUtils.getAttribute(fAttributes,
+						IGDBJtagConstants.ATTR_STOP_AT,
+						IGDBJtagConstants.DEFAULT_STOP_AT).trim();
 
-			if (!stopAt.isEmpty()) {
-				// doAtopAt replaced by a simple tbreak
-				commandsList.add("tbreak " + stopAt);
+				if (!stopAt.isEmpty()) {
+					// doAtopAt replaced by a simple tbreak
+					commandsList.add("tbreak " + stopAt);
+				}
 			}
 		}
 

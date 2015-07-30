@@ -187,10 +187,12 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 		GdbLaunch launch = ((GdbLaunch) this.fSession
 				.getModelAdapter(ILaunch.class));
+		String mode = launch.getLaunchMode();
 		GnuArmDebuggerCommandsService service = (GnuArmDebuggerCommandsService) launch
 				.getServiceFactory().createService(
 						IGnuArmDebuggerCommandsService.class,
-						launch.getSession(), launch.getLaunchConfiguration());
+						launch.getSession(), launch.getLaunchConfiguration(),
+						mode);
 		if (Activator.getInstance().isDebugging()) {
 			System.out
 					.println("GnuArmFinalLaunchSequence.stepCreateDebuggerCommandsService() "

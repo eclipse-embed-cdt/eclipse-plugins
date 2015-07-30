@@ -65,11 +65,12 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 				}
 			}
 		} else if (IGnuArmDebuggerCommandsService.class.isAssignableFrom(clazz)) {
-			for (Object arg : optionalArguments) {
-				if (arg instanceof ILaunchConfiguration) {
-					return (V) createDebuggerCommandsService(session,
-							(ILaunchConfiguration) arg);
-				}
+			if (optionalArguments[0] instanceof ILaunchConfiguration
+					&& optionalArguments[1] instanceof String) {
+				ILaunchConfiguration lc = (ILaunchConfiguration) optionalArguments[0];
+				String mode = (String) optionalArguments[1];
+				return (V) createDebuggerCommandsService(session, lc, mode);
+
 			}
 		} else if (IGdbServerBackendService.class.isAssignableFrom(clazz)) {
 			for (Object arg : optionalArguments) {
@@ -85,7 +86,7 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 	// ------------------------------------------------------------------------
 
 	protected abstract GnuArmDebuggerCommandsService createDebuggerCommandsService(
-			DsfSession session, ILaunchConfiguration lc);
+			DsfSession session, ILaunchConfiguration lc, String mode);
 
 	protected abstract GnuArmGdbServerBackend createGdbServerBackendService(
 			DsfSession session, ILaunchConfiguration lc);

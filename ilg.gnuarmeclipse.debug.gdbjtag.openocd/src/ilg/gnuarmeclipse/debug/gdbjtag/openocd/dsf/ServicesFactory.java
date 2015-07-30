@@ -54,8 +54,8 @@ public class ServicesFactory extends GnuArmServicesFactory {
 
 	@Override
 	protected GnuArmDebuggerCommandsService createDebuggerCommandsService(
-			DsfSession session, ILaunchConfiguration lc) {
-		return new DebuggerCommands(session, lc);
+			DsfSession session, ILaunchConfiguration lc, String mode) {
+		return new DebuggerCommands(session, lc, mode);
 	}
 
 	// ------------------------------------------------------------------------
