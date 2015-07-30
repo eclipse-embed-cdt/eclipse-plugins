@@ -136,10 +136,10 @@ public class LaunchConfigurationDelegate extends
 		if (monitor == null) {
 			monitor = new NullProgressMonitor();
 		}
-		if (mode.equals(ILaunchManager.DEBUG_MODE)) {
+		if (mode.equals(ILaunchManager.DEBUG_MODE)
+				|| mode.equals(ILaunchManager.RUN_MODE)) {
 			launchDebugger(config, launch, monitor);
 		}
-		// TODO: check what is needed to launch non-debug sessions.
 	}
 
 	private void launchDebugger(ILaunchConfiguration config, ILaunch launch,
