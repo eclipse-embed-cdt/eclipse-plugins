@@ -85,7 +85,21 @@ public class LaunchConfigurationDelegate extends
 		}
 
 		fConfig = config;
-		return new ServicesFactory(version);
+		return new ServicesFactory(version, ILaunchManager.DEBUG_MODE);
+		// return new GdbJtagDebugServicesFactory(version);
+	}
+
+	protected IDsfDebugServicesFactory newServiceFactory(
+			ILaunchConfiguration config, String version, String mode) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("LaunchConfigurationDelegate.newServiceFactory("
+					+ config.getName() + "," + version + "," + mode + ") "
+					+ this);
+		}
+
+		fConfig = config;
+		return new ServicesFactory(version, mode);
 		// return new GdbJtagDebugServicesFactory(version);
 	}
 
@@ -261,7 +275,8 @@ public class LaunchConfigurationDelegate extends
 							"Post-mortem tracing is not supported for GDB " + gdbVersion + ", GDB " + NON_STOP_FIRST_VERSION + " or higher is required.", null)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$        	
 		}
 
-		launch.setServiceFactory(newServiceFactory(config, gdbVersion));
+		launch.setServiceFactory(newServiceFactory(config, gdbVersion,
+				launch.getLaunchMode()));
 
 		// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 

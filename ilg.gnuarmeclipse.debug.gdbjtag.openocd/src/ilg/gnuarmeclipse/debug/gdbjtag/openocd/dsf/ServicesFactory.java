@@ -29,11 +29,12 @@ public class ServicesFactory extends GnuArmServicesFactory {
 
 	// ------------------------------------------------------------------------
 
-	public ServicesFactory(String version) {
-		super(version);
+	public ServicesFactory(String version, String mode) {
+		super(version, mode);
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("ServicesFactory(" + version + ") " + this);
+			System.out.println("ServicesFactory(" + version + "," + mode + ") "
+					+ this);
 		}
 		fVersion = version;
 	}
