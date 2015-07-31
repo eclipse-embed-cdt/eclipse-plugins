@@ -30,8 +30,8 @@ public class GnuArmControl_7_4 extends GnuArmControl_7_2 implements
 	// ------------------------------------------------------------------------
 
 	public GnuArmControl_7_4(DsfSession session, ILaunchConfiguration config,
-			CommandFactory factory) {
-		super(session, config, factory);
+			CommandFactory factory, String mode) {
+		super(session, config, factory, mode);
 
 		fConfig = config;
 	}

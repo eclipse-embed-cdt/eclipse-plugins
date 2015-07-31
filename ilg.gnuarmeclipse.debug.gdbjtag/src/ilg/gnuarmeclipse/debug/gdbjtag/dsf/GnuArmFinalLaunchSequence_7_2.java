@@ -40,8 +40,9 @@ public class GnuArmFinalLaunchSequence_7_2 extends GnuArmFinalLaunchSequence {
 	// ------------------------------------------------------------------------
 
 	public GnuArmFinalLaunchSequence_7_2(DsfSession session,
-			Map<String, Object> attributes, RequestMonitorWithProgress rm) {
-		super(session, attributes, rm);
+			Map<String, Object> attributes, String mode,
+			RequestMonitorWithProgress rm) {
+		super(session, attributes, mode, rm);
 		fSession = session;
 	}
 

@@ -53,12 +53,15 @@ public class GnuArmControl_7_2 extends GDBControl_7_2 {
 	// ------------------------------------------------------------------------
 
 	private IGdbServerBackendService fServerBackend;
+	private String fMode;
 
 	// ------------------------------------------------------------------------
 
 	public GnuArmControl_7_2(DsfSession session, ILaunchConfiguration config,
-			CommandFactory factory) {
+			CommandFactory factory, String mode) {
 		super(session, config, factory);
+
+		fMode = mode;
 	}
 
 	// ------------------------------------------------------------------------
@@ -85,7 +88,8 @@ public class GnuArmControl_7_2 extends GDBControl_7_2 {
 	@Override
 	protected Sequence getCompleteInitializationSequence(
 			Map<String, Object> attributes, RequestMonitorWithProgress rm) {
-		return new GnuArmFinalLaunchSequence_7_2(getSession(), attributes, rm);
+		return new GnuArmFinalLaunchSequence_7_2(getSession(), attributes,
+				fMode, rm);
 	}
 
 	/**

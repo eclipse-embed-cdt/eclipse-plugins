@@ -36,6 +36,7 @@ import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunch;
+import org.eclipse.debug.core.ILaunchManager;
 
 public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
@@ -49,6 +50,7 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	private IGDBControl fCommandControl;
 	private IMIProcesses fProcService;
 	private IGDBJtagDevice fGdbJtagDevice;
+	private String fMode;
 
 	private IGnuArmDebuggerCommandsService fDebuggerCommands;
 
@@ -74,10 +76,12 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	// ------------------------------------------------------------------------
 
 	public GnuArmFinalLaunchSequence(DsfSession session,
-			Map<String, Object> attributes, RequestMonitorWithProgress rm) {
+			Map<String, Object> attributes, String mode,
+			RequestMonitorWithProgress rm) {
 		super(session, attributes, rm);
 		fAttributes = attributes;
 		fSession = session;
+		fMode = mode;
 	}
 
 	// ------------------------------------------------------------------------
@@ -187,12 +191,10 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 		GdbLaunch launch = ((GdbLaunch) this.fSession
 				.getModelAdapter(ILaunch.class));
-		String mode = launch.getLaunchMode();
 		GnuArmDebuggerCommandsService service = (GnuArmDebuggerCommandsService) launch
 				.getServiceFactory().createService(
 						IGnuArmDebuggerCommandsService.class,
-						launch.getSession(), launch.getLaunchConfiguration(),
-						mode);
+						launch.getSession(), launch.getLaunchConfiguration());
 		if (Activator.getInstance().isDebugging()) {
 			System.out
 					.println("GnuArmFinalLaunchSequence.stepCreateDebuggerCommandsService() "
@@ -414,4 +416,14 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	// ------------------------------------------------------------------------
 
+	@Execute
+	public void stepStartTrackingBreakpoints(final RequestMonitor rm) {
+		if (fMode.equals(ILaunchManager.DEBUG_MODE)) {
+			super.stepStartTrackingBreakpoints(rm);
+		} else {
+			rm.done();
+		}
+	}
+
+	// ------------------------------------------------------------------------
 }

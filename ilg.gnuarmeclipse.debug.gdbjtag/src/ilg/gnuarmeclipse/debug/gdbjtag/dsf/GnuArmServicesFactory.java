@@ -40,13 +40,15 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 	// ------------------------------------------------------------------------
 
 	private final String fVersion;
+	private String fMode;
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmServicesFactory(String version) {
+	public GnuArmServicesFactory(String version, String mode) {
 		super(version);
 
 		fVersion = version;
+		fMode = mode;
 	}
 
 	// ------------------------------------------------------------------------
@@ -65,12 +67,11 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 				}
 			}
 		} else if (IGnuArmDebuggerCommandsService.class.isAssignableFrom(clazz)) {
-			if (optionalArguments[0] instanceof ILaunchConfiguration
-					&& optionalArguments[1] instanceof String) {
-				ILaunchConfiguration lc = (ILaunchConfiguration) optionalArguments[0];
-				String mode = (String) optionalArguments[1];
-				return (V) createDebuggerCommandsService(session, lc, mode);
-
+			for (Object arg : optionalArguments) {
+				if (arg instanceof ILaunchConfiguration) {
+					return (V) createDebuggerCommandsService(session,
+							(ILaunchConfiguration) arg, fMode);
+				}
 			}
 		} else if (IGdbServerBackendService.class.isAssignableFrom(clazz)) {
 			for (Object arg : optionalArguments) {
@@ -113,7 +114,7 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 
 		if (GDB_7_4_VERSION.compareTo(fVersion) <= 0) {
 			return new GnuArmControl_7_4(session, config,
-					new GnuArmCommandFactory());
+					new GnuArmCommandFactory(), fMode);
 		}
 
 		return super.createCommandControl(session, config);
