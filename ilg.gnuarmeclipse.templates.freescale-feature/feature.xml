@@ -2,7 +2,7 @@
 <feature
       id="ilg.gnuarmeclipse.templates.freescale"
       label="%featureName"
-      version="2.2.6.qualifier"
+      version="2.2.7.qualifier"
       provider-name="%providerName"
       plugin="ilg.gnuarmeclipse.templates.freescale">
 
