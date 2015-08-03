@@ -27,6 +27,9 @@ Timer::sleep(ticks_t ticks)
 extern "C" void
 SysTick_Handler(void)
 {
+#if defined(USE_HAL_DRIVER)
+  HAL_IncTick();
+#endif
   Timer::tick();
 }
 

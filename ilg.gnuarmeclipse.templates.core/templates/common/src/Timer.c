@@ -51,6 +51,9 @@ timer_tick (void)
 void
 SysTick_Handler (void)
 {
+#if defined(USE_HAL_DRIVER)
+  HAL_IncTick();
+#endif
   timer_tick ();
 }
 
