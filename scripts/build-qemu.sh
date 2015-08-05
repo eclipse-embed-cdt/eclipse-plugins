@@ -1715,6 +1715,8 @@ then
     do_copy_gcc_dll "libssp-0.dll"
     do_copy_gcc_dll "libstdc++-6.dll"
 
+    do_copy_libwinpthread_dll
+
   fi
 
   # Copy all compiled DLLs
