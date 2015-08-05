@@ -85,21 +85,6 @@ SysTick_Handler(void)
 
 /**
  * @brief  System Clock Configuration
- *         The system Clock is configured as follow :
- *            System Clock source            = PLL (HSE)
- *            SYSCLK(Hz)                     = 168000000
- *            HCLK(Hz)                       = 168000000
- *            AHB Prescaler                  = 1
- *            APB1 Prescaler                 = 4
- *            APB2 Prescaler                 = 2
- *            HSE Frequency(Hz)              = HSE_VALUE
- *            PLL_M                          = (HSE_VALUE/1000000u)
- *            PLL_N                          = 336
- *            PLL_P                          = 2
- *            PLL_Q                          = 7
- *            VDD(V)                         = 3.3
- *            Main regulator output voltage  = Scale1 mode
- *            Flash Latency(WS)              = 5
  * @param  None
  * @retval None
  */
@@ -122,32 +107,37 @@ SystemClock_Config(void)
   // This is tuned for STM32F4-DISCOVERY; update it for your board.
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
   // This assumes the HSE_VALUE is a multiple of 1MHz. If this is not
   // your case, you have to recompute these PLL constants.
   RCC_OscInitStruct.PLL.PLLM = (HSE_VALUE/1000000u);
-  RCC_OscInitStruct.PLL.PLLN = 336;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
-  RCC_OscInitStruct.PLL.PLLQ = 7;
-  HAL_RCC_OscConfig(&RCC_OscInitStruct);
 #else
   // Use HSI and activate PLL with HSI as source.
   // This is tuned for NUCLEO-F411; update it for your board.
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   RCC_OscInitStruct.HSICalibrationValue = 16;
-  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
   // This assumes the HSI_VALUE is a multiple of 1MHz. If this is not
   // your case, you have to recompute these PLL constants.
   RCC_OscInitStruct.PLL.PLLM = (HSI_VALUE/1000000u);
-  RCC_OscInitStruct.PLL.PLLN = 336;
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4;
-  RCC_OscInitStruct.PLL.PLLQ = 4;
-  HAL_RCC_OscConfig(&RCC_OscInitStruct);
 #endif
 
+  RCC_OscInitStruct.PLL.PLLN = 336;
+#if defined(STM32F401xC) || defined (STM32F401xE) || define(STM32F411xE)
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4; /* 84 MHz */
+#elif defined(STM32F427xx) || defined (STM32F437xx) || defined(STM32F429xx) || defined (STM32F439xx)
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2; /* 168 MHz */
+#elif defined (STM32F405xx) || defined (STM32F415xx) || defined (STM32F407xx) || defined (STM32F417xx)
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2; /* 168 MHz */
+#elif defined (STM32F446xx)
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2; /* 168 MHz */
+#else
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4; /* 84 MHz, conservative */
+#endif
+  RCC_OscInitStruct.PLL.PLLQ = 7; /* To make USB work */
+  RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
+  HAL_RCC_OscConfig(&RCC_OscInitStruct);
 
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
   // Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
@@ -155,13 +145,14 @@ SystemClock_Config(void)
   RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK
       | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-#if define(STM32F411xE)
+#if defined(STM32F401xC) || defined(STM32F401xE) || define(STM32F411xE)
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
   HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2);
 #else
-  // This is tuned for STM32F407; update it for your device.
+  // This is expected to work for most large cores.
+  // Check and update it for your own configuration.
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
