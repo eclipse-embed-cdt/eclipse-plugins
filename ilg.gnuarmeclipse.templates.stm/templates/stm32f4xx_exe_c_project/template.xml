@@ -350,6 +350,12 @@
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
+					<simple name="source"
+						value="src/main/main-145-leds-blinky.$(fileExtension)" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
 					<simple name="source" value="$(commonDir)/src/main/main-150-begin.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
@@ -367,17 +373,7 @@
 				</element>
 				<element>
 					<simple name="source"
-						value="$(commonDir)/src/main/main-200-$(syscalls)-loop-blinky.$(fileExtension)" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/src/main/main-210-print.c" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(commonDir)/src/main/main-220-$(syscalls)-loopend.c" />
+						value="src/main/main-200-$(syscalls)-loop-blinky.$(fileExtension)" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -408,11 +404,11 @@
 
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
 			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="" />
+			<simple name="condition" value="$(fileExtension) == cpp" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/BlinkLed.$(fileExtension)" />
-					<simple name="target" value="$(sourceDir)/BlinkLed.$(fileExtension)" />
+					<simple name="source" value="src/BlinkLed2.cpp" />
+					<simple name="target" value="$(sourceDir)/BlinkLed.cpp" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -420,7 +416,31 @@
 
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
 			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="" />
+			<simple name="condition" value="$(fileExtension) == c" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="src/BlinkLed.c" />
+					<simple name="target" value="$(sourceDir)/BlinkLed.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(fileExtension) == cpp" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="src/BlinkLed2-cpp.h" />
+					<simple name="target" value="$(includeDir)/BlinkLed.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(fileExtension) == c" />
 			<complex-array name="files">
 				<element>
 					<simple name="source" value="../common/src/BlinkLed-10-begin.h" />
@@ -431,7 +451,7 @@
 		</process>
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
 			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="" />
+			<simple name="condition" value="$(fileExtension) == c" />
 			<complex-array name="files">
 				<element>
 					<simple name="source" value="src/BlinkLed-20-headers.h" />
