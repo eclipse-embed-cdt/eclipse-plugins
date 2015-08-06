@@ -89,6 +89,7 @@ SysTick_Handler(void)
  * @retval None
  */
 void
+__attribute__((weak))
 SystemClock_Config(void)
 {
   // Enable Power Control clock
@@ -100,6 +101,9 @@ SystemClock_Config(void)
   // datasheet.
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
+#warning "Please check if the SystemClock_Config() settings match your board!"
+  // Comment out the warning after checking and updating.
+
   RCC_OscInitTypeDef RCC_OscInitStruct;
 
 #if defined(HSE_VALUE) && (HSE_VALUE != 0)
@@ -108,7 +112,7 @@ SystemClock_Config(void)
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSE;
   RCC_OscInitStruct.HSEState = RCC_HSE_ON;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSE;
-  // This assumes the HSE_VALUE is a multiple of 1MHz. If this is not
+  // This assumes the HSE_VALUE is a multiple of 1 MHz. If this is not
   // your case, you have to recompute these PLL constants.
   RCC_OscInitStruct.PLL.PLLM = (HSE_VALUE/1000000u);
 #else
@@ -116,26 +120,27 @@ SystemClock_Config(void)
   // This is tuned for NUCLEO-F411; update it for your board.
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
+  // 16 is the average calibration value, adjust for your own board.
   RCC_OscInitStruct.HSICalibrationValue = 16;
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
-  // This assumes the HSI_VALUE is a multiple of 1MHz. If this is not
+  // This assumes the HSI_VALUE is a multiple of 1 MHz. If this is not
   // your case, you have to recompute these PLL constants.
   RCC_OscInitStruct.PLL.PLLM = (HSI_VALUE/1000000u);
 #endif
 
   RCC_OscInitStruct.PLL.PLLN = 336;
-#if defined(STM32F401xC) || defined (STM32F401xE) || define(STM32F411xE)
+#if defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE)
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4; /* 84 MHz */
-#elif defined(STM32F427xx) || defined (STM32F437xx) || defined(STM32F429xx) || defined (STM32F439xx)
+#elif defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2; /* 168 MHz */
-#elif defined (STM32F405xx) || defined (STM32F415xx) || defined (STM32F407xx) || defined (STM32F417xx)
+#elif defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx)
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2; /* 168 MHz */
-#elif defined (STM32F446xx)
+#elif defined(STM32F446xx)
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2; /* 168 MHz */
 #else
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4; /* 84 MHz, conservative */
 #endif
-  RCC_OscInitStruct.PLL.PLLQ = 7; /* To make USB work */
+  RCC_OscInitStruct.PLL.PLLQ = 7; /* To make USB work. */
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   HAL_RCC_OscConfig(&RCC_OscInitStruct);
 
@@ -145,7 +150,7 @@ SystemClock_Config(void)
   RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK
       | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-#if defined(STM32F401xC) || defined(STM32F401xE) || define(STM32F411xE)
+#if defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE)
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
