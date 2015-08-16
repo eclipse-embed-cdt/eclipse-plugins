@@ -817,6 +817,7 @@ then
   # for glib
   # apt-get install libffi-dev
   # apt-get -y install libx11-dev libxext-dev
+  # apt-get -y install chrpath
   echo
 fi
 
@@ -1587,14 +1588,12 @@ then
     # Linux target
     cd "${build_folder}/${APP_LC_NAME}"
 
-    #LDFLAGS="-v -Wl,-rpath=\$\$ORIGIN" \
-
     PKG_CONFIG="${git_folder}/gnuarmeclipse/scripts/pkg-config-dbg" \
     PKG_CONFIG_LIBDIR="${install_folder}/lib/pkgconfig" \
     \
     bash "${git_folder}/configure" \
       --extra-cflags="-g -pipe -I${install_folder}/include -Wno-missing-format-attribute -Wno-error=format=" \
-      --extra-ldflags="-v -Wl,-rpath=\$\$ORIGIN -L${install_folder}/lib" \
+      --extra-ldflags="-v -L${install_folder}/lib" \
       --target-list="gnuarmeclipse-softmmu" \
       --prefix="${install_folder}/${APP_LC_NAME}" \
       --bindir="${install_folder}/${APP_LC_NAME}/bin" \
@@ -1602,13 +1601,6 @@ then
       --mandir="${install_folder}/${APP_LC_NAME}/man" \
       --enable-trace-backend=stderr \
     | tee "${output_folder}/configure-output.txt"
-
-    # Note: a very important detail here is
-    #   --extra-ldflags='-Wl,-rpath=\$$ORIGIN
-    # which adds a special record to the ELF file asking the loader to search
-    # for the libraries first in the same folder where the executable is
-    # located. The task is complicated due to the multiple substitutions
-    # that are done on the way, and need to be escaped.
 
   elif [ "${target_name}" == "osx" ]
   then
@@ -1740,6 +1732,14 @@ then
     do_strip strip "${install_folder}/${APP_LC_NAME}/bin/qemu-system-gnuarmeclipse"
   fi
 
+  # Note: this is a very important detail, 'chrpath' changes rpath
+  # in the ELF file to $ORIGIN, asking the loader to search
+  # for the libraries first in the same folder where the executable is
+  # located.
+
+  chrpath --replace '$ORIGIN' \
+  "${install_folder}/${APP_LC_NAME}/bin/qemu-system-gnuarmeclipse"
+
   echo
   echo "Copying shared libs..."
 
@@ -1779,22 +1779,6 @@ then
     echo libutil not found
     exit 1
   fi
-
-if false
-then
-  ILIB=$(find /lib/${distro_machine}-linux-gnu /usr/lib/${distro_machine}-linux-gnu -type f -name 'libpthread-*.so' -print)
-  if [ ! -z "${ILIB}" ]
-  then
-    echo "Found system ${ILIB}"
-    ILIB_BASE="$(basename ${ILIB})"
-    /usr/bin/install -v -c -m 644 "${ILIB}" "${install_folder}/${APP_LC_NAME}/bin"
-    (cd "${install_folder}/${APP_LC_NAME}/bin"; ln -sv "${ILIB_BASE}" "libpthread.so.0")
-    (cd "${install_folder}/${APP_LC_NAME}/bin"; ln -sv "${ILIB_BASE}" "libpthread.so")
-  else
-    echo libpthread not found
-    exit 1
-  fi
-fi
 
 elif [ "${target_name}" == "osx" ]
 then
@@ -2227,7 +2211,7 @@ then
   do_build_target "Creating Debian 64-bits archive..." \
     --target-name debian \
     --target-bits 64 \
-    --docker-image ilegeul/debian:8-gnuarm-gcc-x11
+    --docker-image ilegeul/debian:8-gnuarm-gcc-x11-v2
 fi
 
 # ----- Build the Debian 32-bits distribution. -----
@@ -2237,7 +2221,7 @@ then
   do_build_target "Creating Debian 32-bits archive..." \
     --target-name debian \
     --target-bits 32 \
-    --docker-image ilegeul/debian32:8-gnuarm-gcc-x11
+    --docker-image ilegeul/debian32:8-gnuarm-gcc-x11-v2
 fi
 
 cat "${WORK_FOLDER}/output/"*.md5
