@@ -1,2 +1,3 @@
-# gnuarmeclipse
-A family of Eclipse CDT extensions for GNU ARM development
+# The GNU ARM Eclipse plug-ins
+
+These are the Eclipse projects used to build the GNU ARM Eclipse plug-ins.
