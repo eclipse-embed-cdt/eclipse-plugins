@@ -114,8 +114,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	protected TabDebugger(TabStartup tabStartup) {
 		super();
 
-		fSavedCmsisDeviceName = "";
-		fSavedCmsisBoardName = "";
+		fSavedCmsisDeviceName = null;
+		fSavedCmsisBoardName = null;
 	}
 
 	@Override
@@ -795,35 +795,29 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
 						stringDefault));
 
-				// If the project has assigned a board name, use it
-				stringDefault = CProjectAttributes
+				String boardName = CProjectAttributes
 						.getCmsisBoardName(configuration);
-				fSavedCmsisBoardName = stringDefault;
+				fSavedCmsisBoardName = boardName;
+				String deviceName = CProjectAttributes
+						.getCmsisDeviceName(configuration);
+				fSavedCmsisDeviceName = deviceName;
 
-				// Board name
-				if (stringDefault == null || stringDefault.isEmpty()) {
-					// Otherwise try the name used previously
-					stringDefault = PersistentPreferences.getQemuBoardName();
+				// If the project has assigned either a board name,
+				// or a device name, use them.
+				if (((boardName == null || boardName.isEmpty()) && (deviceName == null || deviceName
+						.isEmpty()))) {
+
+					// Otherwise try the names used previously
+					boardName = PersistentPreferences.getQemuBoardName();
+					deviceName = PersistentPreferences.getQemuDeviceName();
 				}
 
 				fQemuBoardName.setText(configuration.getAttribute(
 						ConfigurationAttributes.GDB_SERVER_BOARD_NAME,
-						stringDefault));
-
-				// If the project has assigned a device name, use it
-				stringDefault = CProjectAttributes
-						.getCmsisDeviceName(configuration);
-				fSavedCmsisDeviceName = stringDefault;
-
-				// Device name
-				if (stringDefault == null || stringDefault.isEmpty()) {
-					// Otherwise try the name used previously
-					stringDefault = PersistentPreferences.getQemuDeviceName();
-				}
-
+						boardName == null ? "" : boardName));
 				fQemuDeviceName.setText(configuration.getAttribute(
 						ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
-						stringDefault));
+						deviceName == null ? "" : deviceName));
 
 				// Ports
 				fGdbServerGdbPort
@@ -950,15 +944,22 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			stringDefault = DefaultPreferences.getGdbServerExecutable();
 			fGdbServerExecutable.setText(stringDefault);
 
-			// Board name
-			stringDefault = fSavedCmsisBoardName != null ? fSavedCmsisBoardName
-					: DefaultPreferences.QEMU_BOARD_NAME_DEFAULT;
-			fQemuBoardName.setText(stringDefault);
+			String boardName;
+			String deviceName;
+			if (fSavedCmsisBoardName != null || fSavedCmsisDeviceName != null) {
+				// If the project has assigned either a board name,
+				// or a device name, use them.
+				boardName = fSavedCmsisBoardName != null ? fSavedCmsisBoardName
+						: "";
+				deviceName = fSavedCmsisDeviceName != null ? fSavedCmsisDeviceName
+						: "";
+			} else {
+				boardName = DefaultPreferences.QEMU_BOARD_NAME_DEFAULT;
+				deviceName = DefaultPreferences.QEMU_DEVICE_NAME_DEFAULT;
+			}
 
-			// Device name
-			stringDefault = fSavedCmsisDeviceName != null ? fSavedCmsisDeviceName
-					: DefaultPreferences.QEMU_DEVICE_NAME_DEFAULT;
-			fQemuDeviceName.setText(stringDefault);
+			fQemuBoardName.setText(boardName);
+			fQemuDeviceName.setText(deviceName);
 
 			// Ports
 			fGdbServerGdbPort
@@ -1267,9 +1268,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 
 			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_BOARD_NAME, boardName);
+					ConfigurationAttributes.GDB_SERVER_BOARD_NAME,
+					boardName == null ? "" : boardName);
 			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_DEVICE_NAME, deviceName);
+					ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
+					deviceName == null ? "" : deviceName);
 
 			defaultString = PersistentPreferences.getGdbServerOtherOptions();
 			configuration.setAttribute(
