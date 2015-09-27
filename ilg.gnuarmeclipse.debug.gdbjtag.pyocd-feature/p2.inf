@@ -1,0 +1,12 @@
+
+# add update sites
+instructions.configure=\
+ org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(location:http${#58}//gnuarmeclipse.sourceforge.net/updates,type:0,name:GNU ARM Eclipse Plug-ins);\
+ org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(location:http${#58}//gnuarmeclipse.sourceforge.net/updates,type:1,name:GNU ARM Eclipse Plug-ins);
+ 
+# remove update sites
+instructions.unconfigure=\
+ org.eclipse.equinox.p2.touchpoint.eclipse.removeRepository(location:http${#58}//gnuarmeclipse.sourceforge.net/updates,type:0,name:GNU ARM Eclipse Plug-ins);\
+ org.eclipse.equinox.p2.touchpoint.eclipse.removeRepository(location:http${#58}//gnuarmeclipse.sourceforge.net/updates,type:1,name:GNU ARM Eclipse Plug-ins);
+
+# eof

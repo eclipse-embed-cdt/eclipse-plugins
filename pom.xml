@@ -35,6 +35,9 @@
 		<module>ilg.gnuarmeclipse.debug.gdbjtag.openocd</module>
 		<module>ilg.gnuarmeclipse.debug.gdbjtag.openocd-feature</module>
 
+		<module>ilg.gnuarmeclipse.debug.gdbjtag.pyocd</module>
+		<module>ilg.gnuarmeclipse.debug.gdbjtag.pyocd-feature</module>
+
 		<module>ilg.gnuarmeclipse.debug.gdbjtag.qemu</module>
 		<module>ilg.gnuarmeclipse.debug.gdbjtag.qemu-feature</module>
 
