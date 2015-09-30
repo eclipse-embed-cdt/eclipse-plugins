@@ -30,7 +30,7 @@ public class DefaultPreferences {
 
 	protected static final String GDB_SERVER_EXECUTABLE_DEFAULT = "${pyocd_path}/${pyocd_executable}";
 
-	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_NAME = "pyocd";
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_NAME = "pyocd-gdbserver";
 	protected static final String GDB_CLIENT_EXECUTABLE_DEFAULT = "${cross_prefix}gdb${cross_suffix}";
 
 	// ------------------------------------------------------------------------

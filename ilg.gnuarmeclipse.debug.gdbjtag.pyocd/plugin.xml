@@ -67,7 +67,7 @@
          point="org.eclipse.ui.preferencePages">
       <page
             category="org.eclipse.debug.ui.DebugPreferencePage"
-            class="ilg.gnuarmeclipse.debug.gdbjtag.pyocd.preferences.pyocdPage"
+            class="ilg.gnuarmeclipse.debug.gdbjtag.pyocd.preferences.PyOcdPage"
             id="ilg.gnuarmeclipse.debug.gdbjtag.pyocd.preferencePage"
             name="%preferences.pyocd">
       </page>
