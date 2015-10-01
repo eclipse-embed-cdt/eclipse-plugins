@@ -15,7 +15,7 @@
 		<module>ilg.gnuarmeclipse.core</module>
 		<module>ilg.gnuarmeclipse.managedbuild.cross</module>
 		<module>ilg.gnuarmeclipse.managedbuild.cross-feature</module>
-		
+
 		<module>ilg.gnuarmeclipse.templates.core</module>
 		<module>ilg.gnuarmeclipse.templates.cortexm</module>
 		<module>ilg.gnuarmeclipse.templates.cortexm-feature</module>
@@ -24,14 +24,16 @@
 		<module>ilg.gnuarmeclipse.templates.freescale</module>
 		<module>ilg.gnuarmeclipse.templates.freescale.pe</module>
 		<module>ilg.gnuarmeclipse.templates.freescale-feature</module>
+		<module>ilg.gnuarmeclipse.templates.aducm36x</module>
+		<module>ilg.gnuarmeclipse.templates.aducm36x-feature</module>
 
 		<module>ilg.gnuarmeclipse.debug.core</module>
-		
+
 		<module>ilg.gnuarmeclipse.debug.gdbjtag</module>
-		
+
 		<module>ilg.gnuarmeclipse.debug.gdbjtag.jlink</module>
 		<module>ilg.gnuarmeclipse.debug.gdbjtag.jlink-feature</module>
-		
+
 		<module>ilg.gnuarmeclipse.debug.gdbjtag.openocd</module>
 		<module>ilg.gnuarmeclipse.debug.gdbjtag.openocd-feature</module>
 
@@ -39,9 +41,9 @@
 		<module>ilg.gnuarmeclipse.debug.gdbjtag.qemu-feature</module>
 
 		<module>ilg.gnuarmeclipse.debug.packs</module>
-		
+
 		<module>ilg.gnuarmeclipse.debug.gdbjtag.restart</module>
-		
+
 		<module>ilg.gnuarmeclipse.packs</module>
 		<module>ilg.gnuarmeclipse.packs.core</module>
 		<module>ilg.gnuarmeclipse.packs.data</module>
@@ -54,7 +56,7 @@
 
 		<module>ilg.gnuarmeclipse.doc.user</module>
 		<module>ilg.gnuarmeclipse.doc.user-feature</module>
-		
+
 		<module>ilg.gnuarmeclipse-repository</module>
 	</modules>
 

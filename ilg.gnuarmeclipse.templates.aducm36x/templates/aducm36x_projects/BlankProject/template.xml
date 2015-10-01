@@ -1,0 +1,666 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<template type="ProjTempl" version="1.0" supplier="Eclipse.org"
+	revision="1.0" author="Liviu Ionescu"
+	copyright="Copyright (c) 2014 Liviu Ionescu. All rights reserved. This \
+program and the accompanying materials are made available under the terms \
+of the Eclipse Public License v1.0 which accompanies this distribution, \
+and is available athttp://www.eclipse.org/legal/epl-v10.html"
+	id="ADUCM36x_Blank_Project" label="%ADUCM36x.BlankProjecttemplate.label" description="%ADUCM36x.BlankProjecttemplate.description"
+	help="help.html">
+
+	<property-group id="chip" label="%ADUCM36x.BlankProjectgroup.target.label"
+		description="%ADUCM36x.BlankProjectgroup.target.description" type="PAGES-ONLY" help="help.html">
+
+		<property id="ADUCM36x" label="%ADUCM36x.BlankProjectcore.label" description="%ADUCM36x.BlankProjectcore.description"
+			type="select" default="ADuCM360" hidden="false" persist="true">
+			<item value="ADuCM360" label="ADuCM360" />
+			<item value="ADuCM361" label="ADuCM361" />
+		</property>
+
+	</property-group>
+<property-group id="folders" label="%group.folders.label"
+		description="%group.folders.description" type="PAGES-ONLY" help="help.html">
+		<property id="includeDir" label="%includeDir.label"
+			description="%includeDir.description" type="input" default="%includeDir.default"
+			pattern="[a-zA-Z0-9/]+" hidden="true" persist="true" />
+		<property id="sourceDir" label="%sourceDir.label"
+			description="%sourceDir.description" type="input" default="%sourceDir.default"
+			pattern="[a-zA-Z0-9/]+" hidden="true" persist="true" />
+		<property id="sysDir" label="%sysDir.label" description="%sysDir.description"
+			type="input" default="%sysDir.default" pattern="[a-zA-Z0-9/]+"
+			hidden="true" persist="true" />
+		<property id="cmsisDir" label="%cmsisDir.label" description="%cmsisDir.description"
+			type="input" default="%cmsisDir.default" pattern="[a-zA-Z0-9/]+"
+			hidden="true" persist="true" />
+		<property id="newlibDir" label="%newlibDir.label"
+			description="%newlibDir.description" type="input" default="%newlibDir.default"
+			pattern="[a-zA-Z0-9/]+" hidden="true" persist="true" />
+		<property id="ldscriptsDir" label="%ldscriptsDir.label"
+			description="%ldscriptsDir.description" type="input" default="%ldscriptsDir.default"
+			pattern="[a-zA-Z0-9/]+" hidden="true" persist="true" />
+		<!-- ============================================================== -->
+		<property id="fileExtension" label="Source file extension"
+			description="Will be set to cpp for ccnature" mandatory="true"
+			hidden="true" default="c" persist="false" />
+
+		<property id="commonDir" label="common files"
+			description="Will be set to ...templates.core/templates/common/ folder"
+			mandatory="true" hidden="true" default="commonDir" persist="false" />
+
+		<property id="CMSIS_name" label="CMSIS specific header name"
+			description="Will be set to the vendor specific part of header names"
+			mandatory="true" hidden="true" default="undefined" persist="false" />
+
+		<property id="devicePeriph" label="Device periperal folder name"
+			description="Will be set to the vendor specific part of header names"
+			mandatory="true" hidden="true" default="undefined" persist="false" />
+
+	</property-group>
+
+	<!-- Note: the redundant 'condition="1==1"' is a workaround to control the 
+		evaluation order. Without it, processes are evaluated after all ifs. -->
+
+	<if condition="1==1">
+		<process type="org.eclipse.cdt.managedbuilder.core.NewManagedProject">
+			<simple name="name" value="$(projectName)" />
+			<simple name="artifactExtension" value="elf" />
+			<simple name="isCProject" value="true" />
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process type="ilg.gnuarmeclipse.templates.core.SetPropertyIfHasNature">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="natureString" value="org.eclipse.cdt.core.ccnature" />
+			<simple name="propertyName" value="fileExtension" />
+			<simple name="propertyValue" value="cpp" />
+		</process>
+
+		<process type="org.eclipse.cdt.core.AddNature">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="natureId" value="org.eclipse.cdt.core.ccnature" />
+		</process>
+
+		<process
+			type="ilg.gnuarmeclipse.templates.core.SetPropertyToPluginResource">
+			<simple name="pluginId" value="ilg.gnuarmeclipse.templates.core" />
+			<simple name="relativePath" value="templates/common" />
+			<simple name="propertyName" value="commonDir" />
+		</process>
+
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalSetProperty">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<simple name="propertyName" value="CMSIS_name" />
+			<simple name="propertyValue" value="$(ADUCM36x)" />
+		</process>
+
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalSetProperty">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<simple name="propertyName" value="devicePeriph" />
+			<simple name="propertyValue" value="$(ADUCM36x)" />
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
+
+	<!-- Create include header folders -->
+	<!-- The order must be: -->
+	<!-- include -->
+	<!-- system/include -->
+	<!-- system/include/cmsis -->
+	<!-- system/include/$(devicePeriph) -->
+
+	<if condition="1==1">
+		<!-- include -->
+		<process type="org.eclipse.cdt.core.CreateFolder">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="path" value="$(includeDir)" />
+		</process>
+
+		<!-- add to include paths -->
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;../$(includeDir)&quot;" />
+					</simple-array>
+					<simple name="path" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<!-- system/include -->
+		<!-- system/include/cmsis -->
+		<process type="org.eclipse.cdt.core.CreateFolder">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="path" value="$(sysDir)/$(includeDir)/$(cmsisDir)" />
+		</process>
+
+		<!-- add to include paths -->
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;../$(sysDir)/$(includeDir)&quot;" />
+					</simple-array>
+					<simple name="path" value="" />
+				</element>
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;../$(sysDir)/$(includeDir)/$(cmsisDir)&quot;" />
+					</simple-array>
+					<simple name="path" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<!-- system/include/$(devicePeriph) -->
+		<process type="org.eclipse.cdt.core.CreateFolder">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="path" value="$(sysDir)/$(includeDir)/$(devicePeriph)" />
+		</process>
+
+		<!-- add to include paths -->
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;../$(sysDir)/$(includeDir)/$(devicePeriph)&quot;" />
+					</simple-array>
+					<simple name="path" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
+
+	<!-- Create source folders -->
+	<if condition="1==1">
+		<!-- src -->
+		<process type="org.eclipse.cdt.core.CreateSourceFolder">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="path" value="$(sourceDir)" />
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<!-- system -->
+		<process type="org.eclipse.cdt.core.CreateSourceFolder">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="path" value="$(sysDir)" />
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
+
+	<!-- the main.[c|cpp] file -->
+	<if condition="1==1">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="src/main-11.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+
+		<process type="org.eclipse.cdt.core.AppendCreate">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="src/main-16.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+	</if>
+
+		
+
+
+	<!-- ================================================================== -->
+
+	<!-- CMSIS files -->
+	<if condition="1==1">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="folders">
+				<element>
+					<simple name="source" value="$(commonDir)/system/include/cmsis" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)" />
+					<simple name="pattern" value="core_cm3.h|core_cmInstr.h|core_cmFunc.h|\
+					    arm_common_tables.h|arm_const_structs.h|arm_math.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
+
+	<!-- Vendor CMSIS files -->
+	<if condition="1==1">
+		<!-- Vendor/DEVICE/include -->
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="Vendor/DEVICE/include/$(CMSIS_name).h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/$(CMSIS_name).h" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="Vendor/DEVICE/include/system_$(CMSIS_name).h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/system_$(CMSIS_name).h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="include/cmsis_device.h" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(cmsisDir)/cmsis_device.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="Vendor/DEVICE/src/system_$(CMSIS_name).c" />
+					<simple name="target"
+						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/system_$(CMSIS_name).c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="Vendor/DEVICE/src/vectors_$(CMSIS_name).c" />
+					<simple name="target"
+						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_$(CMSIS_name).c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+		
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="folders">
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/cortexm" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/cortexm" />
+					<simple name="pattern" value=".*[.](c.*|txt)" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	
+	
+	<if condition="1==1">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="Vendor/CORTEXM/src/exception_handlers.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/cortexm/exception_handlers.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="Vendor/CORTEXM/include/ExceptionHandlers.h" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/cortexm/ExceptionHandlers.h" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	
+	<if condition="1==1">
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="folders">
+				<element>
+					<simple name="source" value="Vendor/NEWLIB" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/$(newlibDir)" />
+					<simple name="pattern" value="_exit.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+	</if>
+	<if condition="1==1">	
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="Vendor/NEWLIB/_startup.c" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_startup.c"/>
+					<simple name="replaceable" value="false" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<!-- ================================================================== -->
+
+	<!-- Peripheral library -->
+	<if condition="1==1">
+		<!-- Vendor/DRIVERS/include & src READMEs -->
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="folders">
+				<element>
+					<simple name="source" value="Vendor/DRIVERS/include/$(CMSIS_name)" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(CMSIS_name)" />
+					<simple name="pattern" value=".*[.](h.*)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="Vendor/DRIVERS/src/$(CMSIS_name)" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/$(CMSIS_name)" />
+					<simple name="pattern" value=".*[.](c.*)" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
+
+	<!-- Linker files -->
+	<if condition="1==1">
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="ldscripts/mem.ld" />
+					<simple name="target" value="$(ldscriptsDir)/mem.ld" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="$(commonDir)/ldscripts/libs.ld" />
+					<simple name="target" value="$(ldscriptsDir)/libs.ld" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/ldscripts/sections.ld" />
+					<simple name="target" value="$(ldscriptsDir)/sections.ld" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
+
+	<!-- Target options -->
+	<if condition="1==1">
+		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.family" />
+					<simple name="value"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m3" />
+					<simple name="path" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+
+	<!-- ================================================================== -->
+
+	<!-- Global options -->
+
+		<if condition="1==1">
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level" />
+					<simple name="value"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level.none" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="debug" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.nomoveloopinvariants" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="debug" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.format" />
+					<simple name="value"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.format.default" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="debug" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level" />
+					<simple name="value"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.optimization.level.size" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="release" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
+
+	<!-- C options -->
+	<if condition="1==1">
+		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std" />
+					<simple name="value"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.gnu11" />
+					<simple name="path" value="" />
+				</element>
+			</complex-array>
+		</process>
+
+		</if>
+	
+	<!-- ================================================================== -->
+
+	<!-- Linker options -->
+	<if condition="1==1">
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.SetMBSStringListOptionValues">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.paths" />
+					<simple-array name="values">
+						<element value="&quot;../$(ldscriptsDir)&quot;" />
+					</simple-array>
+					<simple name="path" value="" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.SetMBSStringListOptionValues">
+			<simple name="projectName" value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.scriptfile" />
+					<simple-array name="values">
+						<element value="mem.ld" />
+						<element value="libs.ld" />
+						<element value="sections.ld" />
+					</simple-array>
+					<simple name="path" value="" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.nostart" />
+					<simple name="value" value="true" />
+					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+
+
+	<!-- ================================================================== -->
+
+	<!-- Macro definitions -->
+	<if condition="1==1">
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
+					<simple-array name="values">
+						<element value="DEBUG" />
+					</simple-array>
+					<simple name="path" value="" />
+					<simple name="buildType" value="debug" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	
+
+	<if condition="1==1">
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
+					<simple-array name="values">
+						<element value="TRACE" />
+					</simple-array>
+					<simple name="path" value="" />
+					<simple name="buildType" value="debug" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+
+	<!-- ================================================================== -->
+
+	<!-- Open editor -->
+	<process type="org.eclipse.cdt.ui.OpenFiles">
+		<simple name="projectName" value="$(projectName)" />
+		<complex-array name="files">
+			<element>
+				<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+			</element>
+		</complex-array>
+	</process>
+
+</template>
