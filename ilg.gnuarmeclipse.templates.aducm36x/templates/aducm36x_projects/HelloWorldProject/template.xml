@@ -391,13 +391,13 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="Vendor/DEVICE/include/$(CMSIS_name).h" />
+					<simple name="source" value="../common/Vendor/DEVICE/include/$(CMSIS_name).h" />
 					<simple name="target"
 						value="$(sysDir)/$(includeDir)/$(cmsisDir)/$(CMSIS_name).h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="Vendor/DEVICE/include/system_$(CMSIS_name).h" />
+					<simple name="source" value="../common/Vendor/DEVICE/include/system_$(CMSIS_name).h" />
 					<simple name="target"
 						value="$(sysDir)/$(includeDir)/$(cmsisDir)/system_$(CMSIS_name).h" />
 					<simple name="replaceable" value="true" />
@@ -421,13 +421,13 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="Vendor/DEVICE/src/system_$(CMSIS_name).c" />
+					<simple name="source" value="../common/Vendor/DEVICE/src/system_$(CMSIS_name).c" />
 					<simple name="target"
 						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/system_$(CMSIS_name).c" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="Vendor/DEVICE/src/vectors_$(CMSIS_name).c" />
+					<simple name="source" value="../common/Vendor/DEVICE/src/vectors_$(CMSIS_name).c" />
 					<simple name="target"
 						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_$(CMSIS_name).c" />
 					<simple name="replaceable" value="true" />
@@ -531,14 +531,14 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="condition" value="" />
 			<complex-array name="folders">
 				<element>
-					<simple name="source" value="Vendor/DRIVERS/include/$(CMSIS_name)" />
+					<simple name="source" value="../common/Vendor/DRIVERS/include/$(CMSIS_name)" />
 					<simple name="target"
 						value="$(sysDir)/$(includeDir)/$(CMSIS_name)" />
 					<simple name="pattern" value=".*[.](h.*)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="Vendor/DRIVERS/src/$(CMSIS_name)" />
+					<simple name="source" value="../common/Vendor/DRIVERS/src/$(CMSIS_name)" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/$(CMSIS_name)" />
 					<simple name="pattern" value=".*[.](c.*)" />
 					<simple name="replaceable" value="true" />
@@ -555,7 +555,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="ldscripts/mem.ld" />
+					<simple name="source" value="../common/ldscripts/mem.ld" />
 					<simple name="target" value="$(ldscriptsDir)/mem.ld" />
 					<simple name="replaceable" value="true" />
 				</element>
