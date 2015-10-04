@@ -243,5 +243,15 @@ public class Configuration {
 								DefaultPreferences.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
 	}
 
+	public static boolean getDoAddSemihostingConsole(ILaunchConfiguration config)
+			throws CoreException {
+
+		return getDoStartGdbServer(config)
+				&& config
+						.getAttribute(
+								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
+								DefaultPreferences.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
+	}
+
 	// ------------------------------------------------------------------------
 }

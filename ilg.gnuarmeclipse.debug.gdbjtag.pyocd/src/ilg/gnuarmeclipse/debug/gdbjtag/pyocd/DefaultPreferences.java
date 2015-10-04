@@ -44,6 +44,7 @@ public class DefaultPreferences {
 	public static final String GDB_SERVER_OTHER_DEFAULT = ""; //$NON-NLS-1$
 	public static final boolean DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT = true;
 	public static final boolean DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE_DEFAULT = false;
+	public static final boolean DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT = true;
 
 	public static final String GDB_CLIENT_OTHER_OPTIONS_DEFAULT = "";
 

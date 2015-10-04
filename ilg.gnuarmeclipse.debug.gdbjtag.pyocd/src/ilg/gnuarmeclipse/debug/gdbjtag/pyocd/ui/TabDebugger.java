@@ -331,7 +331,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fDoGdbServerAllocateTelnetConsole.setLayoutData(gd);
 
 			// update doStartGdbServerChanged() too
-			fDoGdbServerAllocateTelnetConsole.setEnabled(false);
+//			fDoGdbServerAllocateTelnetConsole.setEnabled(false);
 
 		}
 
@@ -613,6 +613,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fDoGdbServerAllocateConsole.setEnabled(enabled);
 		}
 
+		fDoGdbServerAllocateTelnetConsole.setEnabled(enabled);
+			
 		// Disable remote target params when the server is started
 		fTargetIpAddress.setEnabled(!enabled);
 		fTargetPortNumber.setEnabled(!enabled);

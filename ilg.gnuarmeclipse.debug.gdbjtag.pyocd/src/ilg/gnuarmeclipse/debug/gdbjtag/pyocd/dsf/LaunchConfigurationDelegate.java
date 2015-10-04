@@ -69,6 +69,7 @@ public class LaunchConfigurationDelegate extends
 	@SuppressWarnings("unused")
 	private boolean fIsNonStopSession = false;
 	private boolean fDoStartGdbServer = false;
+	private boolean fDoAddSemihostingConsole = false;
 
 	// ------------------------------------------------------------------------
 
@@ -112,6 +113,9 @@ public class LaunchConfigurationDelegate extends
 		}
 
 		fDoStartGdbServer = Configuration.getDoStartGdbServer(configuration);
+
+		fDoAddSemihostingConsole = Configuration
+				.getDoAddSemihostingConsole(configuration);
 
 		DebugUtils.checkLaunchConfigurationStarted(configuration);
 
@@ -166,8 +170,9 @@ public class LaunchConfigurationDelegate extends
 
 		int totalWork = 10;
 		if (fDoStartGdbServer) {
-			// Extra units due to server console
-			totalWork += 1;
+			if (fDoAddSemihostingConsole) {
+				totalWork += 1;
+			}
 		}
 
 		monitor.beginTask(
@@ -490,27 +495,27 @@ public class LaunchConfigurationDelegate extends
 	protected IPath checkBinaryDetails(final ILaunchConfiguration config)
 			throws CoreException {
 
-		boolean doStartServer = Configuration.getDoStartGdbServer(config);
-		if (doStartServer) {
-
-			// If we should start the server, there must be a configuration
-			// present, otherwise refuse to start.
-			String configOptions = "";
-			try {
-				configOptions = Configuration.getGdbServerOtherConfig(config);
-			} catch (CoreException e) {
-				;
-			}
-
-			if (configOptions.isEmpty()) {
-				throw new CoreException(
-						new Status(
-								IStatus.ERROR,
-								Activator.PLUGIN_ID,
-								"Missing mandatory configuration. "
-										+ "Fill-in the 'Config options:' field in the Debugger tab.")); //$NON-NLS-1$
-			}
-		}
+//		boolean doStartServer = Configuration.getDoStartGdbServer(config);
+//		if (doStartServer) {
+//
+//			// If we should start the server, there must be a configuration
+//			// present, otherwise refuse to start.
+//			String configOptions = "";
+//			try {
+//				configOptions = Configuration.getGdbServerOtherConfig(config);
+//			} catch (CoreException e) {
+//				;
+//			}
+//
+//			if (configOptions.isEmpty()) {
+//				throw new CoreException(
+//						new Status(
+//								IStatus.ERROR,
+//								Activator.PLUGIN_ID,
+//								"Missing mandatory configuration. "
+//										+ "Fill-in the 'Config options:' field in the Debugger tab.")); //$NON-NLS-1$
+//			}
+//		}
 
 		IPath path = super.checkBinaryDetails(config);
 		return path;

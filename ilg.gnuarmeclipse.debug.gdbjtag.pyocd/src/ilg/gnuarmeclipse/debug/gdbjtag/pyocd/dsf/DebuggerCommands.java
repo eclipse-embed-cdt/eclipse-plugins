@@ -197,7 +197,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 		addStopAtCommands(commandsList);
 
-		commandsList.add("monitor reg");
+//		commandsList.add("monitor reg");
 
 		if (CDebugUtils.getAttribute(fAttributes,
 				ConfigurationAttributes.DO_CONTINUE,
