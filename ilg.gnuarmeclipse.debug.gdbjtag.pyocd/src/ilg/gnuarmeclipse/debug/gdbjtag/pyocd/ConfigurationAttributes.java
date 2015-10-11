@@ -38,6 +38,9 @@ public interface ConfigurationAttributes {
 
 	public static final String GDB_SERVER_TELNET_PORT_NUMBER = PREFIX
 			+ ".gdbServerTelnetPortNumber"; //$NON-NLS-1$
+	
+	public static final String GDB_SERVER_BUS_SPEED = PREFIX
+			+ ".gdbServerBusSpeed"; //$NON-NLS-1$
 
 	public static final String GDB_SERVER_LOG = PREFIX + ".gdbServerLog"; //$NON-NLS-1$
 

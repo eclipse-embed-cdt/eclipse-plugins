@@ -90,20 +90,23 @@ public class Configuration {
 
 			lst.add(executable);
 
-			lst.add("-c");
-			lst.add("gdb_port "
-					+ Integer.toString(configuration
+			lst.add("-p");
+			lst.add(Integer.toString(configuration
 							.getAttribute(
 									ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
 									DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
 
-			lst.add("-c");
-			lst.add("telnet_port "
-					+ Integer.toString(configuration
+			lst.add("-T");
+			lst.add(Integer.toString(configuration
 							.getAttribute(
 									ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 									DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
 
+			lst.add("-f");
+			lst.add(Integer.toString(configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_BUS_SPEED,
+					DefaultPreferences.GDB_SERVER_BUS_SPEED_DEFAULT)));
+			
 			String other = configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_OTHER,
 					DefaultPreferences.GDB_SERVER_OTHER_DEFAULT).trim();

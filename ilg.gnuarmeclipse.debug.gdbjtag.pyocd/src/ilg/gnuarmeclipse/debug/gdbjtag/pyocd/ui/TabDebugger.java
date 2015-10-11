@@ -53,6 +53,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -82,6 +83,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private Text fGdbServerGdbPort;
 	private Text fGdbServerTelnetPort;
+	
+	private Combo fGdbServerBusSpeed;
 
 	private Text fGdbServerExecutable;
 	private Button fGdbServerBrowseButton;
@@ -280,6 +283,29 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			fGdbServerTelnetPort.setLayoutData(gd);
 		}
+		
+		{
+			label = new Label(comp, SWT.NONE);
+			label.setText(Messages
+					.getString("DebuggerTab.gdbServerBusSpeed_Label"));
+			label.setToolTipText(Messages
+					.getString("DebuggerTab.gdbServerBusSpeed_ToolTipText"));
+			
+			fGdbServerBusSpeed = new Combo(comp, SWT.DROP_DOWN);
+			gd = new GridData();
+			gd.widthHint = 120;
+			fGdbServerBusSpeed.setLayoutData(gd);
+			fGdbServerBusSpeed.setItems(new String[] { 
+					"1000000", "2000000", "8000000", "12000000" } );
+			fGdbServerBusSpeed.select(0);
+			
+			label = new Label(comp, SWT.NONE);
+			label.setText(Messages
+					.getString("DebuggerTab.gdbServerBusSpeedUnits_Label"));
+			gd = new GridData();
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 2;
+			label.setLayoutData(gd);
+		}
 
 		{
 			label = new Label(comp, SWT.NONE);
@@ -399,6 +425,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		});
 
 		fGdbServerTelnetPort.addModifyListener(scheduleUpdateJobModifyListener);
+		
+		fGdbServerBusSpeed.addModifyListener(scheduleUpdateJobModifyListener);
 
 		fGdbServerOtherOptions
 				.addModifyListener(scheduleUpdateJobModifyListener);
@@ -605,6 +633,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		fGdbServerGdbPort.setEnabled(enabled);
 		fGdbServerTelnetPort.setEnabled(enabled);
+		fGdbServerBusSpeed.setEnabled(enabled);
 
 		if (EclipseUtils.isWindows()) {
 			// Prevent disable it on Windows
@@ -653,6 +682,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 										ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 										DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
 
+				// Bus speed
+				fGdbServerBusSpeed.setText(Integer.toString(
+						configuration.getAttribute(
+								ConfigurationAttributes.GDB_SERVER_BUS_SPEED,
+								DefaultPreferences.GDB_SERVER_BUS_SPEED_DEFAULT)));
+				
 				// Other options
 				stringDefault = PersistentPreferences
 						.getGdbServerOtherOptions();
@@ -758,6 +793,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.setText(Integer
 							.toString(DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT));
 
+			// Bus speed
+			fGdbServerBusSpeed.setText(Integer.toString(
+					DefaultPreferences.GDB_SERVER_BUS_SPEED_DEFAULT));
+			
 			// Other options
 			stringDefault = DefaultPreferences.getPyocdConfig();
 			fGdbServerOtherOptions.setText(stringDefault);
@@ -871,6 +910,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.setAttribute(
 							ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 							port);
+			
+			// Bus speed
+			int freq;
+			freq = Integer.parseInt(fGdbServerBusSpeed.getText().trim());
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_BUS_SPEED, freq);
 
 			// Other options
 			stringValue = fGdbServerOtherOptions.getText().trim();
@@ -1010,6 +1055,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 					DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT);
+			
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_BUS_SPEED,
+					DefaultPreferences.GDB_SERVER_BUS_SPEED_DEFAULT);
 
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_LOG,
 					DefaultPreferences.GDB_SERVER_LOG_DEFAULT);
