@@ -38,7 +38,7 @@ to ensure that the resulting application performs as required and is safe.
 		- Data to output to DAC.
 	@return DAC data.
 **/
-int DacWr(int iChan, int iData)
+int DacWr(__attribute__((unused)) int iChan, int iData)
 	{
 	pADI_DAC->DACDAT = iData;
 	return pADI_DAC->DACDAT;
@@ -110,7 +110,7 @@ int DacCfg(int iDisable, int iRef, int iDrv, int iMode)
 	@warning
 		Uses T1.
 **/
-int DacSync(int iChan, int iSync, int iTime)
+int DacSync(__attribute__((unused)) int iChan, int iSync, int iTime)
 	{
 	int i1;
 	
@@ -156,7 +156,7 @@ int DacSync(int iChan, int iSync, int iTime)
 	@return 1.
 */
 
-int DacDma(int iChan, int iDmaSel)
+int DacDma(__attribute__((unused)) int iChan, int iDmaSel)
 	{
 	if(iDmaSel)	pADI_DAC->DACCON |= 1<<10;
 	else	pADI_DAC->DACCON &= ~(1<<10);
