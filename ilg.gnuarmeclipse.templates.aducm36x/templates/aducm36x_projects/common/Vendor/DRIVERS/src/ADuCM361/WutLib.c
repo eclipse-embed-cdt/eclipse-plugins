@@ -42,7 +42,7 @@
    @brief    Set of wake up Timer peripheral functions.
    @version  V0.3
    @author   ADI
-   @date     May 2013
+   @date     October 2015
    @par Revision History:
    - V0.1, May 2012: initial version.
    - V0.2, May 2013: corrected WutLdRd() - correct values returned.

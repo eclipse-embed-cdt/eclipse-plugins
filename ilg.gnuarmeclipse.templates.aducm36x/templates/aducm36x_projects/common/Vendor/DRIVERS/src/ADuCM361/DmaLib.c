@@ -45,7 +45,7 @@
 
    @version    V0.5
    @author     ADI
-   @date       August 2015
+   @date       October 2015
    @par Revision History:
    - V0.1, October 2012: initial version.
    - V0.2, September 2013: Fixed doxygen comments for DmaCycleCntCtrl()
@@ -545,20 +545,6 @@ int DmaStructPtrOutSetup(int iChan, int iNumVals, unsigned char *pucTX_DMA)
 
       break;
 
-   case 10: // ADC0 write to control registers
-      iChan--;
-
-      if (iChanSel == 0) { // - primary structure
-         dmaChanDesc[iChan].srcEndPtr    = (unsigned int)(pucTX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan].destEndPtr   = (unsigned int)(&pADI_ADC0->MSKI + iNumVals - 0x1);
-
-      } else { // Alternate structure used
-         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr    = (unsigned int)(pucTX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan + CCD_SIZE].destEndPtr   = (unsigned int)(&pADI_ADC0->MSKI + iNumVals - 0x1);
-      }
-
-      break;
-
    case 11: // ADC1 write to control registers
       iChan--;
 
@@ -786,19 +772,6 @@ int AdcDmaReadSetup(int iType, int iCfg, int iNumVals, int *pucRX_DMA)
 
 
    switch (iType) {
-   case ADC0DMAREAD:
-      Desc.srcEndPtr                  = (unsigned int)&pADI_ADC0->DAT;
-      Desc.destEndPtr                 = (unsigned int)(pucRX_DMA + iNumVals - 0x1);
-
-      if (iChanSel == 0) {
-         *Dma_GetDescriptor(ADC0_C - 1, 0) = Desc;   // primary structure
-
-      } else {
-         *Dma_GetDescriptor(ADC0_C - 1, 1) = Desc;   // alternate structure
-      }
-
-      break;
-
    case ADC1DMAREAD:
       Desc.srcEndPtr                  = (unsigned int)&pADI_ADC1->DAT;
       Desc.destEndPtr                 = (unsigned int)(pucRX_DMA + iNumVals - 0x1);
@@ -888,19 +861,6 @@ int AdcDmaWriteSetup(int iType, int iCfg, int iNumVals, int *pucTX_DMA)
    Desc.ctrlCfg.Bits.dst_inc          = ((iCfg & 0xC0000000) >> 30);
 
    switch (iType) {
-   case ADC0DMAWRITE:
-      Desc.srcEndPtr                  = (unsigned int)&pucTX_DMA;
-      Desc.destEndPtr                 = (unsigned int)(pADI_ADC0->MSKI + iNumVals - 0x1);
-
-      if (iChanSel == 0) {
-         *Dma_GetDescriptor(ADC0_C - 1, 0) = Desc;   // primary structure
-
-      } else {
-         *Dma_GetDescriptor(ADC0_C - 1, 1) = Desc;   // alternate structure
-      }
-
-      break;
-
    case ADC1DMAWRITE:
       Desc.srcEndPtr                  = (unsigned int)&pucTX_DMA;
       Desc.destEndPtr                 = (unsigned int)(pADI_ADC1->MSKI + iNumVals - 0x1);

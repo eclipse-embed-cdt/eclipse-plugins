@@ -45,7 +45,7 @@
 
    @version    V0.5
    @author     ADI
-   @date       August 2015
+   @date       October 2015
    @par Revision History:
    - V0.1, October 2012: initial version.
    - V0.2, September 2013: Fixed doxygen comments for DmaCycleCntCtrl()

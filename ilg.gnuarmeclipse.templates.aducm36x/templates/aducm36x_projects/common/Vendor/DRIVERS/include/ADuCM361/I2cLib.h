@@ -40,9 +40,10 @@
    @brief    Set of I2C peripheral functions.
    @version  V0.2
    @author   ADI
-   @date     April 2012
+   @date     October 2015
 
    @par Revision History:
+   - V0.1, April 2012: Initial release.
    - V0.2, October 2015: Coding style cleanup - no functional changes.
 
 **/

@@ -40,7 +40,7 @@
    @brief    Set of watchdog Timer peripheral functions.
    @version  V0.3
    @author   ADI
-   @date     September 2012
+   @date     October 2015
    @par Revision History:
    - V0.1, May 2012: initial version.
    - V0.2, September 2012: WdtClrInt now checks if it is safe to write to T3CLRI and

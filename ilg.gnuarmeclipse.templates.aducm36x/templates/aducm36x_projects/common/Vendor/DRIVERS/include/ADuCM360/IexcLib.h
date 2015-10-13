@@ -43,7 +43,7 @@
 
    @version  V0.3
    @author   ADI
-   @date     January 2013
+   @date     October 2015
    @par Revision History:
    - V0.1, March 2011: initial version.
    - V0.2, January 2013: Fixed IexcDat() - current outputs are all correct.

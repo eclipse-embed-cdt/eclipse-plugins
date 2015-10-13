@@ -40,8 +40,9 @@
    @brief    Set of PWM peripheral functions.
    @version  V0.3
    @author   ADI
-   @date     September 2012
+   @date     October 2015
    @par Revision History:
+   - V0.2, September 2012: Initial release.
    - V0.3, October 2015: Coding style cleanup - no functional changes.
 
 *****************************************************************************/

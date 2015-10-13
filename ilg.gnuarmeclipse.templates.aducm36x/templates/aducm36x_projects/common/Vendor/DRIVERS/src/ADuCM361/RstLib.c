@@ -42,7 +42,7 @@
    @brief    Reads the reset status bits and allows them to be reset.
    @version  V0.3
    @author   ADI
-   @date     September 2012
+   @date     October 2015
    @par Revision History:
    - V0.1, December 2010: initial version.
    - V0.2, September 2012: Functions now CMSIS compliant

@@ -40,7 +40,7 @@
    @brief    Set of Digital IO peripheral functions.
    @version  V0.4
    @author   ADI
-   @date     November 2012
+   @date     October 2015
 
    @par Revision History:
    - V0.1, May 2012: initial version.
@@ -51,7 +51,7 @@
    - V0.4, October 2015: Coding style cleanup - no functional changes.
 
 *****************************************************************************/
-#include "ADuCM360.h"
+#include "ADuCM361.h"
 
 #define PIN0 0x0
 #define PIN1 0x1

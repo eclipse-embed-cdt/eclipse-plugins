@@ -44,8 +44,9 @@
 
    @version    V0.2
    @author     ADI
-   @date       August 2011
+   @date       October 2015
    @par Revision History:
+   - V0.1, August 2011: Initial release.
    - V0.2, October 2015: Coding style cleanup - no functional changes.
 
 **/

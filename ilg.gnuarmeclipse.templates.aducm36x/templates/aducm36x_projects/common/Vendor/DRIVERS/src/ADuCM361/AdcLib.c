@@ -50,7 +50,7 @@
 
    @version    V0.6
    @author     ADI
-   @date       April 2013
+   @date       October 2015
    @par Revision History:
    - V0.1, November 2010: initial version.
    - V0.2, September 2012: Fixed AdcDiag() - correct bits are modified now.
@@ -500,26 +500,6 @@ int AdcDetCon(ADI_ADCSTEP_TypeDef *pPort, int iCtrl, int iAdcSel, int iRate )
 int AdcDmaCon(int iChan, int iEnable)
 {
    switch (iChan) {
-   case ADC0DMAWRITE:
-      if (iEnable == 0) {
-         pADI_ADCDMA->ADCDMACON &= 0x1E; // disable ADC0 DMA channel
-
-      } else {
-         pADI_ADCDMA->ADCDMACON |= 0x1; // Enable ADC0 DMA write channel
-      }
-
-      break;
-
-   case ADC0DMAREAD:
-      if (iEnable == 0) {
-         pADI_ADCDMA->ADCDMACON &= 0x1E; // disable ADC0 DMA channel
-
-      } else {
-         pADI_ADCDMA->ADCDMACON |= 0x3; // Enable ADC0 DMA read channel
-      }
-
-      break;
-
    case ADC1DMAWRITE:
       if (iEnable == 0) {
          pADI_ADCDMA->ADCDMACON &= 0x1B; // disable ADC1 DMA channel

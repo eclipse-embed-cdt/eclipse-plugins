@@ -44,7 +44,7 @@
 
    @version    V0.5
    @author     ADI
-   @date    January 2013
+   @date    October 2015
    @par Revision History:
    - V0.1, December 2010: initial version.
    - V0.2, January 2012: Changed Clkcfg() - removed write to XOSCCON.

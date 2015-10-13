@@ -50,8 +50,9 @@
 
    @version    V0.3
    @author     ADI
-   @date       November 2010
+   @date       October 2015
    @par Revision History:
+   - V0.1, November 2010: Initial release.
    - V0.2, October 2015: Coding style cleanup - no functional changes.
    - V0.3, October 2015: Avoid unused parameter warnings.
 

@@ -43,7 +43,7 @@
 
    @version    V0.3
    @author     ADI
-   @date       May 2014
+   @date       October 2015
    @par Revision History:
    - V0.1, October 2012: initial version.
    - V0.2, May 2014: Added #define for iALTERNATE, bPrimary and bPrimary

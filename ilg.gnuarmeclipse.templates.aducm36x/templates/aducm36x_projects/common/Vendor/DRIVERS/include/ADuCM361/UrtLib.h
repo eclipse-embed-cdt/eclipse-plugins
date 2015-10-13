@@ -47,7 +47,7 @@
 
    @version  V0.3
    @author   ADI
-   @date     October 2012
+   @date     October 2015
    @par Revision History:
    - V0.1, March 2012: initial version.
    - V0.2, October 2012: Fixed Baud rate generation function

@@ -50,7 +50,7 @@
 
    @version    V0.6
    @author     ADI
-   @date       April 2013
+   @date       October 2015
    @par Revision History:
    - V0.1, November 2010: initial version.
    - V0.2, September 2012: Fixed AdcDiag() - correct bits are modified now.

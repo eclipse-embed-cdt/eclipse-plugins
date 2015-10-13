@@ -42,13 +42,14 @@
    @brief    Functions for controling power modes
    @version  V0.2
    @author   PAD CSE group
-   @date     September 2012
+   @date     October 2015
    @par Revision History:
+   - V0.1, September 2012: Initial release.
    - V0.2, October 2015: Coding style cleanup - no functional changes.
 
 **/
 #include "PwrLib.h"
-#include "ADuCM360.h"
+#include "ADuCM361.h"
 
 /**
    @brief int PwrCfg(int iMode)

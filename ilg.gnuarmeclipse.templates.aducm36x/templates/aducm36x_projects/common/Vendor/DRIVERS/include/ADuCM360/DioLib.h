@@ -40,7 +40,7 @@
    @brief    Set of Digital IO peripheral functions.
    @version  V0.4
    @author   ADI
-   @date     November 2012
+   @date     October 2015
 
    @par Revision History:
    - V0.1, May 2012: initial version.

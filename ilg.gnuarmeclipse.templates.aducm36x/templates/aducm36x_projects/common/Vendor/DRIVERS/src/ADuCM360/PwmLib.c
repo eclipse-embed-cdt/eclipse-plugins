@@ -42,7 +42,7 @@
    @brief    Set of PWM peripheral functions.
    @version  V0.5
    @author   ADI
-   @date     August 2013
+   @date     October 2015
 
    @par Revision History:
    - V0.2, September 2012: initial version.

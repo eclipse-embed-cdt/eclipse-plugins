@@ -40,8 +40,9 @@
    @brief    Set of wake up Timer peripheral functions.
    @version  V0.2
    @author   ADI
-   @date     May 2012
+   @date     October 2015
    @par Revision History:
+   - V0.1, May 2012: Initial release.
    - V0.2, October 2015: Coding style cleanup - no functional changes.
 
 **/

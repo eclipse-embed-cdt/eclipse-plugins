@@ -44,7 +44,7 @@
 
    @version  V0.4
    @author   ADI
-   @date     April 2013
+   @date     October 2015
 
    @par Revision History:
    - V0.1, May 2012: initial version.

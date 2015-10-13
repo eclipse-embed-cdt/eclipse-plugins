@@ -38,7 +38,7 @@
 @mainpage ADuCM360 Low Level Functions
 @version  V0.6
 @author   ADI
-@date     June 2013
+@date     October 2015
 
 @section intro Introduction
 The ADuCM360/361 is a fully integrated microcontroller with dual/single 24-bit ADCs for low power applications.
@@ -83,7 +83,7 @@ to ensure that the resulting application performs as required and is safe.
             - Fixed functions in GptLib and WutLib.
             - Corrected parameters in ClkLib and AdcLib.
             - Addition of CN-0319 code example.
-   - V0.2, October 2015:
+   - V0.6, October 2015:
             - Coding style cleanup - no functional changes.
 
 @section notes Release notes
