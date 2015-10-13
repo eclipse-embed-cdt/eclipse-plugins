@@ -1,12 +1,48 @@
-/** 
+/*******************************************************************************
+* Copyright 2015(c) Analog Devices, Inc.
+*
+* All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without modification,
+* are permitted provided that the following conditions are met:
+*  - Redistributions of source code must retain the above copyright
+*    notice, this list of conditions and the following disclaimer.
+*  - Redistributions in binary form must reproduce the above copyright
+*    notice, this list of conditions and the following disclaimer in
+*    the documentation and/or other materials provided with the
+*    distribution.
+*  - Neither the name of Analog Devices, Inc. nor the names of its
+*    contributors may be used to endorse or promote products derived
+*    from this software without specific prior written permission.
+*  - The use of this software may or may not infringe the patent rights
+*    of one or more patent holders.  This license does not release you
+*    from the requirement that you obtain separate licenses from these
+*    patent holders to use this software.
+*  - Use of the software either in source or binary form, must be run
+*    on or directly connected to an Analog Devices Inc. component.
+*
+* THIS SOFTWARE IS PROVIDED BY ANALOG DEVICES "AS IS" AND ANY EXPRESS OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, NON-INFRINGEMENT, MERCHANTABILITY
+* AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+* IN NO EVENT SHALL ANALOG DEVICES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+* INTELLECTUAL PROPERTY RIGHTS, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+* ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+*******************************************************************************/
+
+/**
 @mainpage ADuCM360 Low Level Functions
-@version  V0.5
+@version  V0.6
 @author   ADI
-@date     June 2013 
+@date     June 2013
 
 @section intro Introduction
 The ADuCM360/361 is a fully integrated microcontroller with dual/single 24-bit ADCs for low power applications.
-A set of code examples demonstrating the use of the ADuCM360/361 peripherals are provided. For example, thermocouple/RTD 
+A set of code examples demonstrating the use of the ADuCM360/361 peripherals are provided. For example, thermocouple/RTD
 interfacing examples (CN0221,CN0300) and examples of 4-20mA loop controlled by the on-chip DAC or on-chip PWM (CN0300, CN0319) are provided.
 All examples are based on low level functions, also described in this document.
 
@@ -22,8 +58,8 @@ It is the responsibility of the person integrating this code into an application
 to ensure that the resulting application performs as required and is safe.
 
 @par Revision History:
-   - V0.1, February 2012: initial version. 
-   - V0.2, October 2012: 
+   - V0.1, February 2012: initial version.
+   - V0.2, October 2012:
             - addition of PwrLib, FeeLib and DmaLib.
             - added dma functions to SPI Library.
             - fixed baud rate generation inside UrtCfg.
@@ -47,7 +83,8 @@ to ensure that the resulting application performs as required and is safe.
             - Fixed functions in GptLib and WutLib.
             - Corrected parameters in ClkLib and AdcLib.
             - Addition of CN-0319 code example.
-
+   - V0.2, October 2015:
+            - Coding style cleanup - no functional changes.
 
 @section notes Release notes
 Functions and examples still work in progress. Check for updates regularly.
@@ -71,7 +108,7 @@ Functions and examples still work in progress. Check for updates regularly.
       @defgroup urt UART
       @defgroup wdt Watchdong Timer
       @defgroup wut Wake Up Timer
-      
+
       Low Level Peripheral functions
    @}
 

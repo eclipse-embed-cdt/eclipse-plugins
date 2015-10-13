@@ -1,22 +1,54 @@
+/*******************************************************************************
+* Copyright 2015(c) Analog Devices, Inc.
+*
+* All rights reserved.
+*
+* Redistribution and use in source and binary forms, with or without modification,
+* are permitted provided that the following conditions are met:
+*  - Redistributions of source code must retain the above copyright
+*    notice, this list of conditions and the following disclaimer.
+*  - Redistributions in binary form must reproduce the above copyright
+*    notice, this list of conditions and the following disclaimer in
+*    the documentation and/or other materials provided with the
+*    distribution.
+*  - Neither the name of Analog Devices, Inc. nor the names of its
+*    contributors may be used to endorse or promote products derived
+*    from this software without specific prior written permission.
+*  - The use of this software may or may not infringe the patent rights
+*    of one or more patent holders.  This license does not release you
+*    from the requirement that you obtain separate licenses from these
+*    patent holders to use this software.
+*  - Use of the software either in source or binary form, must be run
+*    on or directly connected to an Analog Devices Inc. component.
+*
+* THIS SOFTWARE IS PROVIDED BY ANALOG DEVICES "AS IS" AND ANY EXPRESS OR IMPLIED
+* WARRANTIES, INCLUDING, BUT NOT LIMITED TO, NON-INFRINGEMENT, MERCHANTABILITY
+* AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.
+* IN NO EVENT SHALL ANALOG DEVICES BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+* SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,
+* INTELLECTUAL PROPERTY RIGHTS, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES;
+* LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+* ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+* (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+* SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+*
+*******************************************************************************/
+
 /**
  *****************************************************************************
-   @addtogroup fee 
+   @addtogroup fee
    @{
 
    @file     FeeLib.c
    @brief    Set of Flash peripheral functions.
-   @version  V0.2
+   @version  V0.4
    @author   ADI
-   @date     November 2012
+   @date     November 2013
    @par Revision History:
-   - V0.1, October 2012: initial version. 
+   - V0.1, October 2012: initial version.
    - V0.2, November 2012: Added warnings about 64k parts
-
-All files for ADuCM360/361 provided by ADI, including this file, are
-provided  as is without warranty of any kind, either expressed or implied.
-The user assumes any and all risk from the use of this code.
-It is the responsibility of the person integrating this code into an application
-to ensure that the resulting application performs as required and is safe.
+   - V0.3, November 2013: Added notes about FeeFAKey() and FeeWrPro()
+   - V0.4, October 2015: Coding style cleanup - no functional changes.
 
 **/
 
@@ -33,8 +65,10 @@ to ensure that the resulting application performs as required and is safe.
 **/
 int FeeMErs(void)
 {
-   if (pADI_FEE->FEESTA == 1) return 0;
-   
+   if (pADI_FEE->FEESTA == 1) {
+      return 0;
+   }
+
    pADI_FEE->FEEKEY =  0xF456;
    pADI_FEE->FEEKEY =  0xF123;
 
@@ -50,21 +84,23 @@ int FeeMErs(void)
    @param lPage :{0-0x1FFFF}
       - Specifies the address of the page to be erased
    @return 1 if the command was issued, 0 if the the flash controller was busy.
-   
+
 **/
 
 int FeePErs(unsigned long lPage)
 {
-   if (pADI_FEE->FEESTA  == 1) return 0;
-   
+   if (pADI_FEE->FEESTA  == 1) {
+      return 0;
+   }
+
    pADI_FEE->FEEKEY =  0xF456;
    pADI_FEE->FEEKEY =  0xF123;
-   
+
    pADI_FEE->FEEADR0L = lPage & 0xFFFF;
    pADI_FEE->FEEADR0H = lPage >> 16;
-   
+
    pADI_FEE->FEECMD = 0x1;
-   
+
    return 1;
 }
 
@@ -77,8 +113,10 @@ int FeePErs(unsigned long lPage)
       by clearing bit 1 and so forth for all 32 blocks
    @return 1
    @note This function always protects the last block of flash, which contains the write protection location.
+         This function should be used for debugging. If protection is required during
+         production the protection patterns should be stored within the executable image.
    @warning For 64k parts you must change the WR_PR #define in FeeLib.h to 0x0FFF8.
-   
+
 **/
 
 
@@ -86,7 +124,7 @@ int FeeWrPro(unsigned long lKey)
 {
    pADI_FEE->FEEKEY =  0xF456;
    pADI_FEE->FEEKEY =  0xF123;
-   WR_PR = lKey & 0x7FFFFFFF;   
+   WR_PR = lKey & 0x7FFFFFFF;
    return 1;
 }
 
@@ -99,7 +137,7 @@ int FeeWrPro(unsigned long lKey)
       - Block 0 is write protected by clearing bit 0, Block 1 is write protected
       by clearing bit 1 and so forth for all 32 blocks
    @return 1
-   
+
 **/
 
 
@@ -109,7 +147,7 @@ int FeeWrProTmp(unsigned long lKey)
    pADI_FEE->FEEKEY =  0xF123;
    pADI_FEE->FEEPROL = lKey & 0xFFFF;
    pADI_FEE->FEEPROH = lKey >> 16;
-   
+
    return 1;
 }
 
@@ -121,7 +159,7 @@ int FeeWrProTmp(unsigned long lKey)
       - 0 or FEECON1_DBG_DIS disables serial wire access
       - 1 or FEECON1_DBG_EN enables serial wire access
    @return 1
-   @note A permanent protection can be enabled in the startup file as shown 
+   @note A permanent protection can be enabled in the startup file as shown
          in the FlashProtect project
 
 **/
@@ -130,7 +168,7 @@ int FeeRdProTmp(int iMde)
 {
    pADI_FEE->FEEKEY =  0xF456;
    pADI_FEE->FEEKEY =  0xF123;
-   
+
    pADI_FEE->FEECON1 = iMde & 0x1;
    pADI_FEE->FEEKEY = 0x0;
    pADI_FEE->FEEKEY = 0x0;
@@ -145,16 +183,18 @@ int FeeRdProTmp(int iMde)
       - 0 disables writing to flash
       - 1 enables writing to flash
    @return 1
-   
+
 **/
 
 int FeeWrEn(int iMde)
 {
-   if (iMde)
+   if (iMde) {
       pADI_FEE->FEECON0 |= 0x4;
-   else
+
+   } else {
       pADI_FEE->FEECON0 &= 0xFB;
-   
+   }
+
    return 1;
 }
 
@@ -186,18 +226,22 @@ int FeeSta(void)
    @param udKey :{0-0xFFFFFFFFFFFFFFFF}
       - This key is used for failure analysis
    @return 1
+   @note This function should be used for debugging. During production the keys should be stored
+         within the executable image
    @warning For 64k parts you must change the FA_KEYH and FA_KEYL #defines in FeeLib.h
       to 0x0FFF4 and 0x0FFF0.
-   
+
 **/
 
 int FeeFAKey(unsigned long long udKey)
 {
-   if (pADI_FEE->FEESTA == 1) return 0;
-   
+   if (pADI_FEE->FEESTA == 1) {
+      return 0;
+   }
+
    pADI_FEE->FEEKEY =  0xF456;
    pADI_FEE->FEEKEY =  0xF123;
-   
+
    FA_KEYL = udKey & 0xFFFFFFFF;
    FA_KEYH = udKey >> 32;
    return 1;
@@ -250,7 +294,7 @@ int FeeFAKey(unsigned long long udKey)
       - FEEAEN2_PWM1 = PWM1 interrupt will abort flash commands
       - FEEAEN2_PWM2 = PWM2 interrupt will abort flash commands
    @return 1
-   
+
 **/
 
 int FeeIntAbt(unsigned int iAEN0, unsigned int iAEN1, unsigned int iAEN2)
@@ -258,7 +302,7 @@ int FeeIntAbt(unsigned int iAEN0, unsigned int iAEN1, unsigned int iAEN2)
    pADI_FEE->FEEAEN0 = iAEN0;
    pADI_FEE->FEEAEN1 = iAEN1;
    pADI_FEE->FEEAEN2 = iAEN2;
-   
+
    return 1;
 }
 
@@ -267,7 +311,7 @@ int FeeIntAbt(unsigned int iAEN0, unsigned int iAEN1, unsigned int iAEN2)
          ========== Return the address of the location written when the write was aborted.
 
    @return ((FEEADRAH<<16) | FEEADRAL)
-   
+
 **/
 
 int FeeAbtAdr(void)
@@ -287,22 +331,24 @@ int FeeAbtAdr(void)
    @param ulEndAddr :{0-0x1FFFF}
       - The end address of the block to be checked
    @return 1 if the command was issued, 0 if the the flash controller was busy.
-   
+
 **/
 
 int FeeSign(unsigned long ulStartAddr, unsigned long ulEndAddr)
 {
-   if (pADI_FEE->FEESTA == 1) return 0;
-   
+   if (pADI_FEE->FEESTA == 1) {
+      return 0;
+   }
+
    pADI_FEE->FEEADR0L = ulStartAddr & 0xFFFF;
    pADI_FEE->FEEADR0H = ulStartAddr >> 16;
-   
+
    pADI_FEE->FEEADR1L = ulEndAddr & 0xFFFF;
    pADI_FEE->FEEADR1H = ulEndAddr >> 16;
-   
+
    pADI_FEE->FEEKEY =  0xF456;
    pADI_FEE->FEEKEY =  0xF123;
-   
+
    pADI_FEE->FEECMD = 0x2;
    return 1;
 }
@@ -312,7 +358,7 @@ int FeeSign(unsigned long ulStartAddr, unsigned long ulEndAddr)
          ========== Return the flash integrity signature calculated by the controller.
 
    @return ((FEESIGH<<16) | FEESIGL)
-   
+
 **/
 
 int FeeSig(void)
