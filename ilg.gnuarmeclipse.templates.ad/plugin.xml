@@ -5,27 +5,27 @@
          point="org.eclipse.cdt.core.templates">
       <template
             filterPattern=".*g[c\+][c\+]"
-            id="ilg.gnuarmeclipse.templates.aducm36x.ADUCM36x_Blank_Project"
-            location="$nl$/templates/aducm36x_projects/BlankProject/template.xml"
+            id="ilg.gnuarmeclipse.templates.ad.ADUCM36x_Blank_Project"
+            location="$nl$/templates/ad_projects/BlankProject/template.xml"
             projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
       </template>
 	  <template
             filterPattern=".*g[c\+][c\+]"
-            id="ilg.gnuarmeclipse.templates.aducm36x.ADUCM36x_HelloWorld_Project"
-            location="$nl$/templates/aducm36x_projects/HelloWorldProject/template.xml"
+            id="ilg.gnuarmeclipse.templates.ad.ADUCM36x_HelloWorld_Project"
+            location="$nl$/templates/ad_projects/HelloWorldProject/template.xml"
             projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
       </template>
    </extension>
    <extension
          point="org.eclipse.cdt.core.templateAssociations">
       <template
-            id="ilg.gnuarmeclipse.templates.aducm36x.ADUCM36x_Blank_Project">
+            id="ilg.gnuarmeclipse.templates.ad.ADUCM36x_Blank_Project">
          <toolChain
                id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
          </toolChain>
       </template>
 	   <template
-            id="ilg.gnuarmeclipse.templates.aducm36x.ADUCM36x_HelloWorld_Project">
+            id="ilg.gnuarmeclipse.templates.ad.ADUCM36x_HelloWorld_Project">
          <toolChain
                id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
          </toolChain>

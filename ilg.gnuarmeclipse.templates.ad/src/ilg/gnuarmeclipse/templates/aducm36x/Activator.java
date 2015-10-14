@@ -9,7 +9,7 @@
  *    Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.templates.aducm36x;
+package ilg.gnuarmeclipse.templates.ad;
 
 import ilg.gnuarmeclipse.core.AbstractActivator;
 
@@ -23,7 +23,7 @@ public class Activator extends AbstractActivator {
 	// ------------------------------------------------------------------------
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "ilg.gnuarmeclipse.templates.aducm36x"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "ilg.gnuarmeclipse.templates.ad"; //$NON-NLS-1$
 
 	@Override
 	public String getBundleId() {

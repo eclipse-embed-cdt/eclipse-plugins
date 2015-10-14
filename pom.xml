@@ -24,8 +24,8 @@
 		<module>ilg.gnuarmeclipse.templates.freescale</module>
 		<module>ilg.gnuarmeclipse.templates.freescale.pe</module>
 		<module>ilg.gnuarmeclipse.templates.freescale-feature</module>
-		<module>ilg.gnuarmeclipse.templates.aducm36x</module>
-		<module>ilg.gnuarmeclipse.templates.aducm36x-feature</module>
+		<module>ilg.gnuarmeclipse.templates.ad</module>
+		<module>ilg.gnuarmeclipse.templates.ad-feature</module>
 
 		<module>ilg.gnuarmeclipse.debug.core</module>
 
