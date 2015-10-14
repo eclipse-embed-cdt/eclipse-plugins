@@ -23,12 +23,7 @@
  *
  ******************************************************************************/
 
-#include "ADuCM361.h"
-#include <WdtLib.h>
-#include <ClkLib.h>
-#include <DioLib.h>
-#include <GptLib.h>
-#include <AdcLib.h>
+#include "ADuCM360.h"
 
 /*----------------------------------------------------------------------------
   Define clocks
@@ -89,15 +84,11 @@ void SystemInit (void)
    /* SetSystemExtClkFreq(Freq); // if an external clock is used SetSystemExtClkFreq must be called
                                  // before calling SystemCoreClockUpdate() */
 
-   /* Disable Watchdog timer resets */
-   WdtCfg(T3CON_PRE_DIV1, T3CON_IRQ_EN, T3CON_PD_DIS);
-
-   /* Enable clock to all peripherals */
-   ClkDis(0);
-
-   /*Configures system clock */
-   ClkCfg(CLK_CD0, CLK_HF, CLKSYSDIV_DIV2EN_DIS, CLK_UCLKCG);
-   ClkSel(CLK_CD0, CLK_CD0, CLK_CD0, CLK_CD0);
+   pADI_WDT->T3CON  = 0;                    /* disable watchdog */
+   pADI_CLKCTL->CLKCON0   = 0x0;            /* 16MHz output of UCLK divide */
+   pADI_CLKCTL->CLKSYSDIV = 0;              /* No divide of 16MHz system clock */
+   pADI_CLKCTL->CLKCON1   = 0x0;            /* PWM = 16MHz, UART = 16MHz, SPI1 = 16MHz, SPI0=16MHz */
+   pADI_CLKCTL->CLKDIS    = 0x0;            /* Enable clock to all peripherals */
 
    /* compute internal clocks */
    SystemCoreClockUpdate();
@@ -127,3 +118,4 @@ uint32_t GetSystemExtClkFreq (void)
 {
    return  SystemExtClock;
 }
+

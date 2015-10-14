@@ -6,13 +6,13 @@
       <template
             filterPattern=".*g[c\+][c\+]"
             id="ilg.gnuarmeclipse.templates.ad.ADUCM36x_Blank_Project"
-            location="$nl$/templates/ad_projects/BlankProject/template.xml"
+            location="$nl$/templates/aducm36x_projects/BlankProject/template.xml"
             projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
       </template>
 	  <template
             filterPattern=".*g[c\+][c\+]"
             id="ilg.gnuarmeclipse.templates.ad.ADUCM36x_HelloWorld_Project"
-            location="$nl$/templates/ad_projects/HelloWorldProject/template.xml"
+            location="$nl$/templates/aducm36x_projects/HelloWorldProject/template.xml"
             projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
       </template>
    </extension>

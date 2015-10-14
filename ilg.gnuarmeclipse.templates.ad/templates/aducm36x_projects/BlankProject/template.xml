@@ -13,8 +13,8 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 
 		<property id="ADUCM36x" label="%ADUCM36x.BlankProjectcore.label" description="%ADUCM36x.BlankProjectcore.description"
 			type="select" default="ADuCM360" hidden="false" persist="true">
-			<item value="ADuCM360" label="ADuCM360" />
-			<item value="ADuCM361" label="ADuCM361" />
+			<item value="aducm360" label="ADuCM360" />
+			<item value="aducm361" label="ADuCM361" />
 		</property>
 
 	</property-group>
@@ -267,18 +267,18 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 
 	<!-- Vendor CMSIS files -->
 	<if condition="1==1">
-		<!-- Vendor/DEVICE/include -->
+		<!-- Vendor/device/include -->
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="../common/Vendor/DEVICE/include/$(CMSIS_name).h" />
+					<simple name="source" value="../common/vendor/device/include/$(CMSIS_name).h" />
 					<simple name="target"
 						value="$(sysDir)/$(includeDir)/$(cmsisDir)/$(CMSIS_name).h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="../common/Vendor/DEVICE/include/system_$(CMSIS_name).h" />
+					<simple name="source" value="../common/vendor/device/include/system_$(CMSIS_name).h" />
 					<simple name="target"
 						value="$(sysDir)/$(includeDir)/$(cmsisDir)/system_$(CMSIS_name).h" />
 					<simple name="replaceable" value="true" />
@@ -302,13 +302,13 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="../common/Vendor/DEVICE/src/system_$(CMSIS_name).c" />
+					<simple name="source" value="../common/vendor/device/src/system_$(CMSIS_name).c" />
 					<simple name="target"
 						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/system_$(CMSIS_name).c" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="../common/Vendor/DEVICE/src/vectors_$(CMSIS_name).c" />
+					<simple name="source" value="../common/vendor/device/src/vectors_$(CMSIS_name).c" />
 					<simple name="target"
 						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_$(CMSIS_name).c" />
 					<simple name="replaceable" value="true" />
@@ -336,7 +336,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="../common/Vendor/CORTEXM/src/exception_handlers.c" />
+					<simple name="source" value="../common/vendor/cortexm/src/exception_handlers.c" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/cortexm/exception_handlers.c" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -347,7 +347,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="../common/Vendor/CORTEXM/include/ExceptionHandlers.h" />
+					<simple name="source" value="../common/vendor/cortexm/include/ExceptionHandlers.h" />
 					<simple name="target" value="$(sysDir)/$(includeDir)/cortexm/ExceptionHandlers.h" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -361,7 +361,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="condition" value="" />
 			<complex-array name="folders">
 				<element>
-					<simple name="source" value="../common/Vendor/NEWLIB" />
+					<simple name="source" value="../common/vendor/newlib" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/$(newlibDir)" />
 					<simple name="pattern" value="_exit.c" />
 					<simple name="replaceable" value="true" />
@@ -375,7 +375,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="../common/Vendor/NEWLIB/_startup.c" />
+					<simple name="source" value="../common/vendor/newlib/_startup.c" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/newlib/_startup.c"/>
 					<simple name="replaceable" value="false" />
 				</element>
@@ -392,14 +392,14 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="condition" value="" />
 			<complex-array name="folders">
 				<element>
-					<simple name="source" value="../common/Vendor/DRIVERS/include/$(CMSIS_name)" />
+					<simple name="source" value="../common/vendor/drivers/include/$(CMSIS_name)" />
 					<simple name="target"
 						value="$(sysDir)/$(includeDir)/$(CMSIS_name)" />
 					<simple name="pattern" value=".*[.](h.*)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="../common/Vendor/DRIVERS/src/$(CMSIS_name)" />
+					<simple name="source" value="../common/vendor/drivers/src/$(CMSIS_name)" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/$(CMSIS_name)" />
 					<simple name="pattern" value=".*[.](c.*)" />
 					<simple name="replaceable" value="true" />

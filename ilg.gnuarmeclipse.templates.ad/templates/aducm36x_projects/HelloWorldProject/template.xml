@@ -384,20 +384,20 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 
 	<!-- ================================================================== -->
 
-	<!-- Vendor CMSIS files -->
+	<!-- vendor CMSIS files -->
 	<if condition="1==1">
-		<!-- Vendor/DEVICE/include -->
+		<!-- vendor/DEVICE/include -->
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="../common/Vendor/DEVICE/include/$(CMSIS_name).h" />
+					<simple name="source" value="../common/vendor/device/include/$(CMSIS_name).h" />
 					<simple name="target"
 						value="$(sysDir)/$(includeDir)/$(cmsisDir)/$(CMSIS_name).h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="../common/Vendor/DEVICE/include/system_$(CMSIS_name).h" />
+					<simple name="source" value="../common/vendor/device/include/system_$(CMSIS_name).h" />
 					<simple name="target"
 						value="$(sysDir)/$(includeDir)/$(cmsisDir)/system_$(CMSIS_name).h" />
 					<simple name="replaceable" value="true" />
@@ -421,13 +421,13 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="../common/Vendor/DEVICE/src/system_$(CMSIS_name).c" />
+					<simple name="source" value="../common/vendor/device/src/system_$(CMSIS_name).c" />
 					<simple name="target"
 						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/system_$(CMSIS_name).c" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="../common/Vendor/DEVICE/src/vectors_$(CMSIS_name).c" />
+					<simple name="source" value="../common/vendor/device/src/vectors_$(CMSIS_name).c" />
 					<simple name="target"
 						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_$(CMSIS_name).c" />
 					<simple name="replaceable" value="true" />
@@ -524,21 +524,44 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 	<!-- ================================================================== -->
 
 	<!-- Peripheral library -->
-	<if condition="1==1">
-		<!-- Vendor/DRIVERS/include & src READMEs -->
+	<if condition="$(CMSIS_name)==ADuCM360">
+		<!-- vendor/drivers/include & src READMEs -->
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="condition" value="" />
 			<complex-array name="folders">
 				<element>
-					<simple name="source" value="../common/Vendor/DRIVERS/include/$(CMSIS_name)" />
+					<simple name="source" value="../common/vendor/drivers/include/aducm360" />
 					<simple name="target"
 						value="$(sysDir)/$(includeDir)/$(CMSIS_name)" />
 					<simple name="pattern" value=".*[.](h.*)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="../common/Vendor/DRIVERS/src/$(CMSIS_name)" />
+					<simple name="source" value="../common/vendor/drivers/src/aducm360" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/$(CMSIS_name)" />
+					<simple name="pattern" value=".*[.](c.*)" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="$(CMSIS_name)==ADuCM361">
+		<!-- vendor/drivers/include & src READMEs -->
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalCopyFolders">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="folders">
+				<element>
+					<simple name="source" value="../common/vendor/drivers/include/aducm361" />
+					<simple name="target"
+						value="$(sysDir)/$(includeDir)/$(CMSIS_name)" />
+					<simple name="pattern" value=".*[.](h.*)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="../common/vendor/drivers/src/aducm361" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/$(CMSIS_name)" />
 					<simple name="pattern" value=".*[.](c.*)" />
 					<simple name="replaceable" value="true" />
