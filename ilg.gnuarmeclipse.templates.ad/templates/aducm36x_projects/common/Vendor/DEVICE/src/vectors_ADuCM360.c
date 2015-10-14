@@ -72,78 +72,78 @@ typedef void
 // This relies on the linker script to place at correct location in memory.
 
 __attribute__ ((section(".isr_vector")))
-pHandler __isr_vectors[] =
-  { //
-    (pHandler) &_estack,                          // The initial stack pointer
-        Reset_Handler,                            // The reset handler
+pHandler __isr_vectors[] = {
+   //
+   (pHandler) &_estack,                          // The initial stack pointer
+   Reset_Handler,                            // The reset handler
 
-        NMI_Handler,                              // The NMI handler
-        HardFault_Handler,                        // The hard fault handler
+   NMI_Handler,                              // The NMI handler
+   HardFault_Handler,                        // The hard fault handler
 
 #if defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
-        MemManage_Handler,                        // The MPU fault handler
-        BusFault_Handler,// The bus fault handler
-        UsageFault_Handler,// The usage fault handler
+   MemManage_Handler,                        // The MPU fault handler
+   BusFault_Handler,// The bus fault handler
+   UsageFault_Handler,// The usage fault handler
 #else
-        0, 0, 0,				  // Reserved
+   0, 0, 0,             // Reserved
 #endif
-        0,                                        // Reserved
-        0,                                        // Reserved
-        0,                                        // Reserved
-        0,                                        // Reserved
-        SVC_Handler,                              // SVCall handler
+   0,                                        // Reserved
+   0,                                        // Reserved
+   0,                                        // Reserved
+   0,                                        // Reserved
+   SVC_Handler,                              // SVCall handler
 #if defined(__ARM_ARCH_7M__) || defined(__ARM_ARCH_7EM__)
-        DebugMon_Handler,                         // Debug monitor handler
+   DebugMon_Handler,                         // Debug monitor handler
 #else
-        0,					  // Reserved
+   0,                // Reserved
 #endif
-        0,                                        // Reserved
-        PendSV_Handler,                           // The PendSV handler
-        SysTick_Handler,                          // The SysTick handler
+   0,                                        // Reserved
+   PendSV_Handler,                           // The PendSV handler
+   SysTick_Handler,                          // The SysTick handler
 
-        // ----------------------------------------------------------------------
-        // ADuCM360 vectors
-		WakeUp_Int_Handler,        //[ 0]
-		Ext_Int0_Handler,          //[ 1]
-		Ext_Int1_Handler,          //[ 2]
-		Ext_Int2_Handler,          //[ 3]
-		Ext_Int3_Handler,          //[ 4]
-		Ext_Int4_Handler,          //[ 5]
-		Ext_Int5_Handler,          //[ 6]
-		Ext_Int6_Handler,          //[ 7]
-		Ext_Int7_Handler,          //[ 8]
-		WDog_Tmr_Int_Handler,      //[ 9]
-		0,                         //[10]
-		GP_Tmr0_Int_Handler,       //[11]
-		GP_Tmr1_Int_Handler,       //[12]
-		ADC0_Int_Handler,          //[13]
-		ADC1_Int_Handler,          //[14]
-		SINC2_Int_Handler,         //[15]
-		Flsh_Int_Handler,          //[16]
-		UART_Int_Handler,          //[17]
-		SPI0_Int_Handler,          //[18]
-		SPI1_Int_Handler,          //[19]
-		I2C0_Slave_Int_Handler,    //[20]
-		I2C0_Master_Int_Handler,   //[21]
-		DMA_Err_Int_Handler,       //[22]
-		DMA_SPI1_TX_Int_Handler,   //[23]
-		DMA_SPI1_RX_Int_Handler,   //[24]
-		DMA_UART_TX_Int_Handler,   //[25]
-		DMA_UART_RX_Int_Handler,   //[26]
-		DMA_I2C0_STX_Int_Handler,  //[27]
-		DMA_I2C0_SRX_Int_Handler,  //[28]
-		DMA_I2C0_MTX_Int_Handler,  //[29]
-		DMA_I2C0_MRX_Int_Handler,  //[30]
-		DMA_DAC_Out_Int_Handler,   //[31]
-		DMA_ADC0_Int_Handler,      //[32]
-		DMA_ADC1_Int_Handler,      //[33]
-		DMA_SINC2_Int_Handler,     //[34]
-		PWMTRIP_Int_Handler,       //[35]
-		PWM0_Int_Handler,          //[36]
-		PWM1_Int_Handler,          //[37]
-		PWM2_Int_Handler,          //[38]
-		0,                         //[39]
-    };
+   // ----------------------------------------------------------------------
+   // ADuCM360 vectors
+   WakeUp_Int_Handler,        //[ 0]
+   Ext_Int0_Handler,          //[ 1]
+   Ext_Int1_Handler,          //[ 2]
+   Ext_Int2_Handler,          //[ 3]
+   Ext_Int3_Handler,          //[ 4]
+   Ext_Int4_Handler,          //[ 5]
+   Ext_Int5_Handler,          //[ 6]
+   Ext_Int6_Handler,          //[ 7]
+   Ext_Int7_Handler,          //[ 8]
+   WDog_Tmr_Int_Handler,      //[ 9]
+   0,                         //[10]
+   GP_Tmr0_Int_Handler,       //[11]
+   GP_Tmr1_Int_Handler,       //[12]
+   ADC0_Int_Handler,          //[13]
+   ADC1_Int_Handler,          //[14]
+   SINC2_Int_Handler,         //[15]
+   Flsh_Int_Handler,          //[16]
+   UART_Int_Handler,          //[17]
+   SPI0_Int_Handler,          //[18]
+   SPI1_Int_Handler,          //[19]
+   I2C0_Slave_Int_Handler,    //[20]
+   I2C0_Master_Int_Handler,   //[21]
+   DMA_Err_Int_Handler,       //[22]
+   DMA_SPI1_TX_Int_Handler,   //[23]
+   DMA_SPI1_RX_Int_Handler,   //[24]
+   DMA_UART_TX_Int_Handler,   //[25]
+   DMA_UART_RX_Int_Handler,   //[26]
+   DMA_I2C0_STX_Int_Handler,  //[27]
+   DMA_I2C0_SRX_Int_Handler,  //[28]
+   DMA_I2C0_MTX_Int_Handler,  //[29]
+   DMA_I2C0_MRX_Int_Handler,  //[30]
+   DMA_DAC_Out_Int_Handler,   //[31]
+   DMA_ADC0_Int_Handler,      //[32]
+   DMA_ADC1_Int_Handler,      //[33]
+   DMA_SINC2_Int_Handler,     //[34]
+   PWMTRIP_Int_Handler,       //[35]
+   PWM0_Int_Handler,          //[36]
+   PWM1_Int_Handler,          //[37]
+   PWM2_Int_Handler,          //[38]
+   0,                         //[39]
+};
 
 // ----------------------------------------------------------------------------
 
@@ -153,9 +153,8 @@ pHandler __isr_vectors[] =
 void __attribute__ ((section(".after_vectors")))
 Default_Handler(void)
 {
-  while (1)
-    {
-    }
+   while (1) {
+   }
 }
 
 // ----------------------------------------------------------------------------
