@@ -90,23 +90,69 @@ public class Configuration {
 
 			lst.add(executable);
 
-			lst.add("-p");
+			// GDB port
+			lst.add("--port");
 			lst.add(Integer.toString(configuration
 							.getAttribute(
 									ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
 									DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
 
-			lst.add("-T");
+			// Telnet port
+			lst.add("--telnet-port");
 			lst.add(Integer.toString(configuration
 							.getAttribute(
 									ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 									DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
+			
+			// Override target
+			if (configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_OVERRIDE_TARGET,
+					DefaultPreferences.GDB_SERVER_OVERRIDE_TARGET_DEFAULT)) {
+				lst.add("--target");
+				lst.add(configuration.getAttribute(
+						ConfigurationAttributes.GDB_SERVER_TARGET_NAME,
+						DefaultPreferences.GDB_SERVER_TARGET_NAME_DEFAULT));
+			}
 
-			lst.add("-f");
+			// Bus speed
+			lst.add("--frequency");
 			lst.add(Integer.toString(configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_BUS_SPEED,
 					DefaultPreferences.GDB_SERVER_BUS_SPEED_DEFAULT)));
 			
+			// Halt at hard fault
+			if (!configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_HALT_AT_HARD_FAULT,
+					DefaultPreferences.GDB_SERVER_HALT_AT_HARD_FAULT_DEFAULT)) {
+				lst.add("--nobreak");
+			}
+			
+			// Step into interrupts
+			if (configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_STEP_INTO_INTERRUPTS,
+					DefaultPreferences.GDB_SERVER_STEP_INTO_INTERRUPTS_DEFAULT)) {
+				lst.add("--step-int");
+			}
+			
+			// Flash mode
+			int flashMode = configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
+					DefaultPreferences.GDB_SERVER_FLASH_MODE_DEFAULT);
+			switch (flashMode) {
+			case PreferenceConstants.AUTO_ERASE:
+				break;
+			case PreferenceConstants.CHIP_ERASE:
+				lst.add("--chip_erase");
+				break;
+			case PreferenceConstants.SECTOR_ERASE:
+				lst.add("--sector_erase");
+				break;
+			case PreferenceConstants.FAST_PROGRAM:
+				lst.add("--fast_program");
+				break;
+			}
+			
+			// Other
 			String other = configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_OTHER,
 					DefaultPreferences.GDB_SERVER_OTHER_DEFAULT).trim();

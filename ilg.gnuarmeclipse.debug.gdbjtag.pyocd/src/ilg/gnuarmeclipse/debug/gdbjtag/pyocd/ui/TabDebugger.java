@@ -46,6 +46,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
@@ -84,7 +85,15 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Text fGdbServerGdbPort;
 	private Text fGdbServerTelnetPort;
 	
+	private Button fGdbServerOverrideTarget;
+	private Combo fGdbServerTargetName;
+	
 	private Combo fGdbServerBusSpeed;
+	
+	private Button fGdbServerHaltAtHardFault;
+	private Button fGdbServerStepIntoInterrupts;
+	
+	private Combo fGdbServerFlashMode;
 
 	private Text fGdbServerExecutable;
 	private Button fGdbServerBrowseButton;
@@ -285,6 +294,34 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 		
 		{
+			fGdbServerOverrideTarget = new Button(comp, SWT.CHECK);
+			fGdbServerOverrideTarget.setText(Messages
+					.getString("DebuggerTab.gdbServerOverrideTarget_Label"));
+			fGdbServerOverrideTarget
+					.setToolTipText(Messages
+							.getString("DebuggerTab.gdbServerOverrideTarget_ToolTipText"));
+			gd = new GridData();
+			fGdbServerOverrideTarget.setLayoutData(gd);
+			
+			fGdbServerTargetName = new Combo(comp, SWT.DROP_DOWN);
+			gd = new GridData();
+			gd.widthHint = 120;
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
+			fGdbServerTargetName.setLayoutData(gd);
+			fGdbServerTargetName.setItems(new String[] { 
+					"cortex_m",
+					"k20d50m", "k22f", "k64f", "kl26z", 
+					"kl02z", "kl05z", "kl25z", "kl28z", "kl46z",
+					"kinetis",
+					"lpc11u24", "lpc1768", "lpc4330", "lpc800",
+                    "stm32f103rc", "stm32f051",
+                    "maxwsnenv",
+                    "max32600mbed",
+                    "nrf51",
+                    "w7500" } );
+		}
+		
+		{
 			label = new Label(comp, SWT.NONE);
 			label.setText(Messages
 					.getString("DebuggerTab.gdbServerBusSpeed_Label"));
@@ -305,6 +342,53 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			gd = new GridData();
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 2;
 			label.setLayoutData(gd);
+		}
+		
+		{
+			fGdbServerHaltAtHardFault = new Button(comp, SWT.CHECK);
+			fGdbServerHaltAtHardFault.setText(Messages
+					.getString("DebuggerTab.gdbServerHaltAtHardFault_Label"));
+			fGdbServerHaltAtHardFault
+					.setToolTipText(Messages
+							.getString("DebuggerTab.gdbServerHaltAtHardFault_ToolTipText"));
+			gd = new GridData();
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
+			fGdbServerHaltAtHardFault.setLayoutData(gd);
+		}
+		
+		{
+			fGdbServerStepIntoInterrupts = new Button(comp, SWT.CHECK);
+			fGdbServerStepIntoInterrupts.setText(Messages
+					.getString("DebuggerTab.gdbServerStepIntoInterrupts_Label"));
+			fGdbServerStepIntoInterrupts
+					.setToolTipText(Messages
+							.getString("DebuggerTab.gdbServerStepIntoInterrupts_ToolTipText"));
+			gd = new GridData();
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
+			fGdbServerStepIntoInterrupts.setLayoutData(gd);
+		}
+		
+		{
+			label = new Label(comp, SWT.NONE);
+			label.setText(Messages
+					.getString("DebuggerTab.gdbServerFlashMode_Label")); //$NON-NLS-1$
+			label.setToolTipText(Messages
+					.getString("DebuggerTab.gdbServerFlashMode_ToolTipText"));
+			gd = new GridData();
+			label.setLayoutData(gd);
+
+			fGdbServerFlashMode = new Combo(comp, SWT.DROP_DOWN | SWT.READ_ONLY);
+			gd = new GridData();
+			gd.widthHint = 120;
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
+			fGdbServerFlashMode.setLayoutData(gd);
+			fGdbServerFlashMode.setItems(new String[] {
+					Messages.getString("DebuggerTab.gdbServerFlashMode.AutoErase"),
+					Messages.getString("DebuggerTab.gdbServerFlashMode.ChipErase"), 
+					Messages.getString("DebuggerTab.gdbServerFlashMode.SectorErase"),
+					Messages.getString("DebuggerTab.gdbServerFlashMode.FastProgram"),
+					} );
+			fGdbServerFlashMode.select(0);
 		}
 
 		{
@@ -355,9 +439,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 							.getString("DebuggerTab.gdbServerAllocateTelnetConsole_ToolTipText"));
 			gd = new GridData(GridData.FILL_HORIZONTAL);
 			fDoGdbServerAllocateTelnetConsole.setLayoutData(gd);
-
-			// update doStartGdbServerChanged() too
-//			fDoGdbServerAllocateTelnetConsole.setEnabled(false);
 
 		}
 
@@ -423,10 +504,26 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				scheduleUpdateJob();
 			}
 		});
+		
+		fGdbServerOverrideTarget.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				overrideTargetChanged();
+				scheduleUpdateJob();
+			}
+		});
 
 		fGdbServerTelnetPort.addModifyListener(scheduleUpdateJobModifyListener);
 		
 		fGdbServerBusSpeed.addModifyListener(scheduleUpdateJobModifyListener);
+
+		fGdbServerTargetName.addModifyListener(scheduleUpdateJobModifyListener);
+
+		fGdbServerHaltAtHardFault.addSelectionListener(scheduleUpdateJobSelectionAdapter);
+
+		fGdbServerStepIntoInterrupts.addSelectionListener(scheduleUpdateJobSelectionAdapter);
+
+		fGdbServerFlashMode.addModifyListener(scheduleUpdateJobModifyListener);
 
 		fGdbServerOtherOptions
 				.addModifyListener(scheduleUpdateJobModifyListener);
@@ -634,6 +731,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fGdbServerGdbPort.setEnabled(enabled);
 		fGdbServerTelnetPort.setEnabled(enabled);
 		fGdbServerBusSpeed.setEnabled(enabled);
+		fGdbServerOverrideTarget.setEnabled(enabled);
+		fGdbServerTargetName.setEnabled(enabled
+				&& fGdbServerOverrideTarget.getSelection());
+		fGdbServerHaltAtHardFault.setEnabled(enabled);
+		fGdbServerStepIntoInterrupts.setEnabled(enabled);
+		fGdbServerFlashMode.setEnabled(enabled);
 
 		if (EclipseUtils.isWindows()) {
 			// Prevent disable it on Windows
@@ -647,6 +750,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		// Disable remote target params when the server is started
 		fTargetIpAddress.setEnabled(!enabled);
 		fTargetPortNumber.setEnabled(!enabled);
+	}
+	
+	private void overrideTargetChanged() {
+		boolean enabled = fGdbServerOverrideTarget.getSelection();
+		
+		fGdbServerTargetName.setEnabled(enabled);
 	}
 
 	@Override
@@ -682,6 +791,33 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 										ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 										DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
 
+				// Target override
+				fGdbServerOverrideTarget.setSelection(
+						configuration.getAttribute(
+								ConfigurationAttributes.GDB_SERVER_OVERRIDE_TARGET,
+								DefaultPreferences.GDB_SERVER_OVERRIDE_TARGET_DEFAULT));
+				
+				fGdbServerTargetName.setText(
+						configuration.getAttribute(
+								ConfigurationAttributes.GDB_SERVER_TARGET_NAME,
+								DefaultPreferences.GDB_SERVER_TARGET_NAME_DEFAULT));
+				
+				// Misc options
+				fGdbServerHaltAtHardFault.setSelection(
+						configuration.getAttribute(
+								ConfigurationAttributes.GDB_SERVER_HALT_AT_HARD_FAULT,
+								DefaultPreferences.GDB_SERVER_HALT_AT_HARD_FAULT_DEFAULT));
+				
+				fGdbServerStepIntoInterrupts.setSelection(
+						configuration.getAttribute(
+								ConfigurationAttributes.GDB_SERVER_STEP_INTO_INTERRUPTS,
+								DefaultPreferences.GDB_SERVER_STEP_INTO_INTERRUPTS_DEFAULT));
+				
+				fGdbServerFlashMode.select(
+						configuration.getAttribute(
+								ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
+								DefaultPreferences.GDB_SERVER_FLASH_MODE_DEFAULT));
+				
 				// Bus speed
 				fGdbServerBusSpeed.setText(Integer.toString(
 						configuration.getAttribute(
@@ -793,6 +929,21 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.setText(Integer
 							.toString(DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT));
 
+			// Target override
+			fGdbServerOverrideTarget.setSelection(
+					DefaultPreferences.GDB_SERVER_OVERRIDE_TARGET_DEFAULT);
+			
+			fGdbServerTargetName.setText(DefaultPreferences.GDB_SERVER_TARGET_NAME_DEFAULT);
+			
+			// Misc options
+			fGdbServerHaltAtHardFault.setSelection(
+					DefaultPreferences.GDB_SERVER_HALT_AT_HARD_FAULT_DEFAULT);
+			
+			fGdbServerStepIntoInterrupts.setSelection(
+					DefaultPreferences.GDB_SERVER_STEP_INTO_INTERRUPTS_DEFAULT);
+			
+			fGdbServerFlashMode.select(DefaultPreferences.GDB_SERVER_FLASH_MODE_DEFAULT);
+			
 			// Bus speed
 			fGdbServerBusSpeed.setText(Integer.toString(
 					DefaultPreferences.GDB_SERVER_BUS_SPEED_DEFAULT));
@@ -840,6 +991,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		doStartGdbServerChanged();
+		overrideTargetChanged();
 
 		// Force thread update
 		fUpdateThreadlistOnSuspend
@@ -910,7 +1062,29 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.setAttribute(
 							ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 							port);
+
+			// Target override
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_OVERRIDE_TARGET,
+					fGdbServerOverrideTarget.getSelection());
 			
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_TARGET_NAME,
+					fGdbServerTargetName.getText());
+			
+			// Misc options
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_HALT_AT_HARD_FAULT,
+					fGdbServerHaltAtHardFault.getSelection());
+			
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_STEP_INTO_INTERRUPTS,
+					fGdbServerStepIntoInterrupts.getSelection());
+			
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
+					fGdbServerFlashMode.getSelectionIndex());
+
 			// Bus speed
 			int freq;
 			freq = Integer.parseInt(fGdbServerBusSpeed.getText().trim());

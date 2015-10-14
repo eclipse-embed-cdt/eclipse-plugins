@@ -41,6 +41,21 @@ public interface ConfigurationAttributes {
 	
 	public static final String GDB_SERVER_BUS_SPEED = PREFIX
 			+ ".gdbServerBusSpeed"; //$NON-NLS-1$
+	
+	public static final String GDB_SERVER_OVERRIDE_TARGET = PREFIX
+			+ ".gdbServerOverrideTarget"; //$NON-NLS-1$
+	
+	public static final String GDB_SERVER_TARGET_NAME = PREFIX
+			+ ".gdbServerTargetName"; //$NON-NLS-1$
+	
+	public static final String GDB_SERVER_HALT_AT_HARD_FAULT = PREFIX
+			+ ".gdbServerHaltAtHardFault"; //$NON-NLS-1$
+	
+	public static final String GDB_SERVER_STEP_INTO_INTERRUPTS = PREFIX
+			+ ".gdbServerStepIntoInterrutps"; //$NON-NLS-1$
+	
+	public static final String GDB_SERVER_FLASH_MODE = PREFIX
+			+ ".gdbServerFlashMode"; //$NON-NLS-1$
 
 	public static final String GDB_SERVER_LOG = PREFIX + ".gdbServerLog"; //$NON-NLS-1$
 

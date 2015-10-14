@@ -14,5 +14,10 @@ package ilg.gnuarmeclipse.debug.gdbjtag.pyocd;
 public interface PreferenceConstants {
 
 	public static final String DEFAULT_GDB_COMMAND = "arm-none-eabi-gdb"; //$NON-NLS-1$
+	
+	public static final int AUTO_ERASE = 0;
+	public static final int CHIP_ERASE = 1;
+	public static final int SECTOR_ERASE = 2;
+	public static final int FAST_PROGRAM = 3;
 
 }
