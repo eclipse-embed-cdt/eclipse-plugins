@@ -5,28 +5,17 @@
 program and the accompanying materials are made available under the terms \
 of the Eclipse Public License v1.0 which accompanies this distribution, \
 and is available athttp://www.eclipse.org/legal/epl-v10.html"
-	id="ADUCM36x_HelloWorld_Project" label="%ADUCM36x.HelloWorldtemplate.label" description="%ADUCM36x.HelloWorldtemplate.description"
+	id="ADUCM36x_Project" label="%ADUCM36x.template.label" description="%ADUCM36x.template.description"
 	help="help.html">
 
-	<property-group id="chip" label="%ADUCM36x.HelloWorldgroup.target.label"
-		description="%ADUCM36x.HelloWorldgroup.target.description" type="PAGES-ONLY" help="help.html">
+	<property-group id="chip" label="%ADUCM36x.group.target.label"
+		description="%ADUCM36x.group.target.description" type="PAGES-ONLY" help="help.html">
 
-		<property id="ADUCM36x" label="%ADUCM36x.HelloWorldcore.label" description="%ADUCM36x.HelloWorldcore.description"
+		<property id="ADUCM36x" label="%ADUCM36x.core.label" description="%ADUCM36x.core.description"
 			type="select" default="ADuCM360" hidden="false" persist="true">
 			<item value="ADuCM360" label="ADuCM360" />
 			<item value="ADuCM361" label="ADuCM361" />
-		</property>
-
-		<property id="ADUCM36xHelloWorldXtalValue" label="%ADUCM36x.HelloWorldxtalValue.label"
-			description="%ADUCM36x.HelloWorldxtalValue.description" type="input" pattern="[0-9]*"
-			default="%ADUCM36x.HelloWorldxtalValue.default" hidden="true" persist="true" />
-
-		<property id="ADUCM36xHelloWorldflashSize" label="%ADUCM36x.HelloWorldflashSize.label"
-			description="%ADUCM36x.HelloWorldflashSize.description" type="input" pattern="[0-9]*"
-			default="%ADUCM36x.HelloWorldflashSize.default" hidden="true" persist="true" />
-		<property id="ADUCM36xHelloWorldramSize" label="%ADUCM36x.HelloWorldramSize.label"
-			description="%ADUCM36x.HelloWorldramSize.description" type="input" pattern="[0-9]*"
-			default="%ADUCM36x.HelloWorldramSize.default" hidden="true" persist="true" />		
+		</property>	
 			
 		<property id="syscalls" label="%syscalls.label" description="%syscalls.description"
 			type="select" default="none" hidden="false" persist="true">
@@ -42,6 +31,13 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<item value="ITM" label="ARM ITM (via SWO)" />
 			<item value="STDOUT" label="Semihosting STDOUT stream" />
 			<item value="DEBUG" label="Semihosting DEBUG channel" />
+		</property>
+		
+		<property id="ADuCM36xcontent" label="%ADUCM36x.content.label"
+			description="%ADUCM36x.content.description" type="select" default="empty"
+			hidden="false" persist="true">
+			<item value="empty" label="Empty (add your own content)" />
+			<item value="helloworld" label="Hello World (a classic Hello World project)" />
 		</property>
 
 		<property id="useSomeWarnings" label="%someWarnings.label"
@@ -95,6 +91,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		<property id="commonDir" label="common files"
 			description="Will be set to ...templates.core/templates/common/ folder"
 			mandatory="true" hidden="true" default="commonDir" persist="false" />
+			
+		<property id="content" label="Project content (empty/helloworld)"
+			description="Will be set to content" mandatory="true" hidden="true"
+			default="undefined" persist="false" />
 
 		<property id="CMSIS_name" label="CMSIS specific header name"
 			description="Will be set to the vendor specific part of header names"
@@ -135,6 +135,13 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="pluginId" value="ilg.gnuarmeclipse.templates.core" />
 			<simple name="relativePath" value="templates/common" />
 			<simple name="propertyName" value="commonDir" />
+		</process>
+		
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalSetProperty">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<simple name="propertyName" value="content" />
+			<simple name="propertyValue" value="$(ADuCM36xcontent)" />
 		</process>
 
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalSetProperty">
@@ -264,45 +271,38 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 	<!-- ================================================================== -->
 
 	<!-- the main.[c|cpp] file -->
-	<if condition="1==1">
-		<process type="org.eclipse.cdt.core.AddFiles">
+	<if condition="$(content)==helloworld">
+		<!-- main.c - retarget/semihosting/none - HelloWorld -->
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
 			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/main-10.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-100-include.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
 		</process>
-
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="condition" value="" />
 			<complex-array name="files">
+				<element>
+					<simple name="source" value="src/main-101-include-timer.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
 				<element>
 					<simple name="source" value="$(commonDir)/src/main/main-130-trace-via.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
-			</complex-array>
-		</process>
-
-		<process type="org.eclipse.cdt.core.AppendCreate">
-			<simple name="projectName" value="$(projectName)" />
-			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/main-15.c" />
+					<simple name="source" value="$(commonDir)/src/main/main-150-begin.c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
-			</complex-array>
-		</process>
-
-		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
-			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="" />
-			<complex-array name="files">
 				<element>
 					<simple name="source"
 						value="$(commonDir)/src/main/main-180-$(syscalls)-hello.c" />
@@ -321,30 +321,45 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/main-20-timer-init.$(fileExtension)" />
+					<simple name="source" value="src/main-201-start-timer.$(fileExtension)" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="src/main-30-$(syscalls).c" />
+					<simple name="source" value="src/main-202-$(syscalls).c" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="src/main-40-timer-sleep.$(fileExtension)" />
-					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="src/main-50-$(syscalls).c" />
+					<simple name="source" value="src/main-203-timer-sleep.$(fileExtension)" />
 					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
 		</process>
-	</if>
+		
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="$(commonDir)/src/main/main-210-print.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/src/main/main-220-$(syscalls)-loopend.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/src/main/main-230-$(syscalls)-end.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
 
-	<if condition="1==1">
 		<process type="ilg.gnuarmeclipse.templates.core.AddAbsolutePathFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
@@ -361,6 +376,59 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			</complex-array>
 		</process>
 	</if>
+	
+	<if condition="$(content)==empty">
+		<!-- main.c - retarget/semihosting/none - empty -->
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="$(commonDir)/src/main/main-100-include.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="files">
+				<element>
+					<simple name="source"
+						value="$(commonDir)/src/main/main-120-$(syscalls)-empty.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/src/main/main-130-trace-via.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/src/main/main-150-begin.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/src/main/main-190-clock-empty.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/src/main/main-200-$(syscalls)-loop-empty.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(commonDir)/src/main/main-230-$(syscalls)-end.c" />
+					<simple name="target" value="$(sourceDir)/main.$(fileExtension)" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
 
 	<!-- ================================================================== -->
 
@@ -391,13 +459,13 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="../common/vendor/device/include/$(CMSIS_name).h" />
+					<simple name="source" value="vendor/device/include/$(CMSIS_name).h" />
 					<simple name="target"
 						value="$(sysDir)/$(includeDir)/$(cmsisDir)/$(CMSIS_name).h" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="../common/vendor/device/include/system_$(CMSIS_name).h" />
+					<simple name="source" value="vendor/device/include/system_$(CMSIS_name).h" />
 					<simple name="target"
 						value="$(sysDir)/$(includeDir)/$(cmsisDir)/system_$(CMSIS_name).h" />
 					<simple name="replaceable" value="true" />
@@ -421,13 +489,13 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="../common/vendor/device/src/system_$(CMSIS_name).c" />
+					<simple name="source" value="vendor/device/src/system_$(CMSIS_name).c" />
 					<simple name="target"
 						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/system_$(CMSIS_name).c" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="../common/vendor/device/src/vectors_$(CMSIS_name).c" />
+					<simple name="source" value="vendor/device/src/vectors_$(CMSIS_name).c" />
 					<simple name="target"
 						value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_$(CMSIS_name).c" />
 					<simple name="replaceable" value="true" />
@@ -531,14 +599,14 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="condition" value="" />
 			<complex-array name="folders">
 				<element>
-					<simple name="source" value="../common/vendor/drivers/include/aducm360" />
+					<simple name="source" value="vendor/drivers/include/aducm360" />
 					<simple name="target"
 						value="$(sysDir)/$(includeDir)/$(CMSIS_name)" />
 					<simple name="pattern" value=".*[.](h.*)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="../common/vendor/drivers/src/aducm360" />
+					<simple name="source" value="vendor/drivers/src/aducm360" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/$(CMSIS_name)" />
 					<simple name="pattern" value=".*[.](c.*)" />
 					<simple name="replaceable" value="true" />
@@ -554,14 +622,14 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="condition" value="" />
 			<complex-array name="folders">
 				<element>
-					<simple name="source" value="../common/vendor/drivers/include/aducm361" />
+					<simple name="source" value="vendor/drivers/include/aducm361" />
 					<simple name="target"
 						value="$(sysDir)/$(includeDir)/$(CMSIS_name)" />
 					<simple name="pattern" value=".*[.](h.*)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
-					<simple name="source" value="../common/vendor/drivers/src/aducm361" />
+					<simple name="source" value="vendor/drivers/src/aducm361" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/$(CMSIS_name)" />
 					<simple name="pattern" value=".*[.](c.*)" />
 					<simple name="replaceable" value="true" />
@@ -578,7 +646,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<simple name="projectName" value="$(projectName)" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="../common/ldscripts/mem.ld" />
+					<simple name="source" value="ldscripts/mem.ld" />
 					<simple name="target" value="$(ldscriptsDir)/mem.ld" />
 					<simple name="replaceable" value="true" />
 				</element>
