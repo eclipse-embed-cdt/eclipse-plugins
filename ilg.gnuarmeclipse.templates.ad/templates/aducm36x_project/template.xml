@@ -17,6 +17,15 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<item value="ADuCM361" label="ADuCM361" />
 		</property>	
 			
+		<property id="ADuCM36xcontent" label="%ADUCM36x.content.label"
+			description="%ADUCM36x.content.description" type="select" default="empty"
+			hidden="false" persist="true">
+			<item value="empty" label="Empty (add your own content)" />
+			<item value="helloworld" label="Hello World (a classic Hello World project)" />
+		</property>
+
+		<!-- ============================================================== -->
+
 		<property id="syscalls" label="%syscalls.label" description="%syscalls.description"
 			type="select" default="none" hidden="false" persist="true">
 			<item value="none" label="Freestanding (no POSIX system calls)" />
@@ -33,13 +42,6 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<item value="DEBUG" label="Semihosting DEBUG channel" />
 		</property>
 		
-		<property id="ADuCM36xcontent" label="%ADUCM36x.content.label"
-			description="%ADUCM36x.content.description" type="select" default="empty"
-			hidden="false" persist="true">
-			<item value="empty" label="Empty (add your own content)" />
-			<item value="helloworld" label="Hello World (a classic Hello World project)" />
-		</property>
-
 		<property id="useSomeWarnings" label="%someWarnings.label"
 			description="%someWarnings.description" type="boolean" default="true"
 			hidden="false" persist="true" />
@@ -83,6 +85,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		<property id="ldscriptsDir" label="%ldscriptsDir.label"
 			description="%ldscriptsDir.description" type="input" default="%ldscriptsDir.default"
 			pattern="[a-zA-Z0-9/]+" hidden="true" persist="true" />
+
 		<!-- ============================================================== -->
 		<property id="fileExtension" label="Source file extension"
 			description="Will be set to cpp for ccnature" mandatory="true"
