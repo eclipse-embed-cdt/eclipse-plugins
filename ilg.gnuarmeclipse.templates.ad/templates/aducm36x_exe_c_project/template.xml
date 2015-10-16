@@ -378,6 +378,17 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				</element>
 			</complex-array>
 		</process>
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendCreate">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(syscalls) == retarget" />
+			<complex-array name="files">
+				<element>
+					<simple name="source" value="$(commonDir)/system/src/_write.c" />
+					<simple name="target" value="$(sourceDir)/_write.c" />
+					<simple name="replaceable" value="true" />
+				</element>
+			</complex-array>
+		</process>
 	</if>
 	
 	<if condition="$(content)==empty">
