@@ -1,6 +1,6 @@
 /**************************************************************************//**
- * @file     core_cmInstr.h
- * @brief    CMSIS Cortex-M Core Instruction Access Header File
+ * @file     core_cmSimd.h
+ * @brief    CMSIS Cortex-M SIMD Header File
  * @version  V4.20
  * @date     02. July 2015
  ******************************************************************************/
@@ -38,13 +38,22 @@
   #pragma clang system_header   /* treat file as system include file */
 #endif
 
-#ifndef __CORE_CMINSTR_H
-#define __CORE_CMINSTR_H
+#ifndef __CORE_CMSIMD_H
+#define __CORE_CMSIMD_H
+
+#ifdef __cplusplus
+ extern "C" {
+#endif
 
 
-/* ##########################  Core Instruction Access  ######################### */
-/** \defgroup CMSIS_Core_InstructionInterface CMSIS Core Instruction Interface
-  Access to dedicated instructions
+/*******************************************************************************
+ *                Hardware Abstraction Layer
+ ******************************************************************************/
+
+
+/* ###################  Compiler specific Intrinsics  ########################### */
+/** \defgroup CMSIS_SIMD_intrinsics CMSIS SIMD Intrinsics
+  Access to dedicated SIMD instructions
   @{
 */
 
@@ -75,6 +84,11 @@
 
 #endif
 
-/*@}*/ /* end of group CMSIS_Core_InstructionInterface */
+/*@} end of group CMSIS_SIMD_intrinsics */
 
-#endif /* __CORE_CMINSTR_H */
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __CORE_CMSIMD_H */
