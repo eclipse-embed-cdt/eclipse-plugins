@@ -39,6 +39,9 @@ public interface ConfigurationAttributes {
 	public static final String GDB_SERVER_TELNET_PORT_NUMBER = PREFIX
 			+ ".gdbServerTelnetPortNumber"; //$NON-NLS-1$
 	
+	public static final String GDB_SERVER_BOARD_ID = PREFIX
+			+ ".gdbServerBoardId"; //$NON-NLS-1$
+	
 	public static final String GDB_SERVER_BUS_SPEED = PREFIX
 			+ ".gdbServerBusSpeed"; //$NON-NLS-1$
 	
@@ -57,15 +60,21 @@ public interface ConfigurationAttributes {
 	public static final String GDB_SERVER_FLASH_MODE = PREFIX
 			+ ".gdbServerFlashMode"; //$NON-NLS-1$
 
+	public static final String GDB_SERVER_FLASH_FAST_VERIFY = PREFIX
+			+ ".gdbServerFlashFastVerify"; //$NON-NLS-1$
+
+	public static final String GDB_SERVER_ENABLE_SEMIHOSTING = PREFIX
+			+ ".gdbServerEnableSemihosting"; //$NON-NLS-1$
+
+	public static final String GDB_SERVER_USE_GDB_SYSCALLS = PREFIX
+			+ ".gdbServerUseGdbSyscalls"; //$NON-NLS-1$
+
 	public static final String GDB_SERVER_LOG = PREFIX + ".gdbServerLog"; //$NON-NLS-1$
 
 	public static final String GDB_SERVER_OTHER = PREFIX + ".gdbServerOther"; //$NON-NLS-1$
 
 	public static final String DO_GDB_SERVER_ALLOCATE_CONSOLE = PREFIX
 			+ ".doGdbServerAllocateConsole"; //$NON-NLS-1$
-
-	public static final String DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE = PREFIX
-			+ ".doGdbServerAllocateTelnetConsole"; //$NON-NLS-1$
 
 	public static final String DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE = PREFIX
 			+ ".doGdbServerAllocateSemihostingConsole"; //$NON-NLS-1$

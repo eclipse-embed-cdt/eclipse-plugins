@@ -25,6 +25,7 @@ import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.Activator;
 import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.ConfigurationAttributes;
 import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.DefaultPreferences;
 import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.PersistentPreferences;
+import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.PyOCD;
 
 import java.io.File;
 
@@ -38,6 +39,7 @@ import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
+import org.eclipse.debug.internal.ui.launchConfigurations.LaunchConfigurationDialog;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.StringVariableSelectionDialog;
 import org.eclipse.swt.SWT;
@@ -46,7 +48,6 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.events.VerifyEvent;
 import org.eclipse.swt.events.VerifyListener;
 import org.eclipse.swt.graphics.Image;
@@ -81,6 +82,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private Text fTargetIpAddress;
 	private Text fTargetPortNumber;
+	
+	private Combo fGdbServerBoardId;
+	private Button fGdbServerRefreshBoards;
 
 	private Text fGdbServerGdbPort;
 	private Text fGdbServerTelnetPort;
@@ -94,6 +98,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Button fGdbServerStepIntoInterrupts;
 	
 	private Combo fGdbServerFlashMode;
+	private Button fGdbServerFlashFastVerify;
+	
+	private Button fGdbServerEnableSemihosting;
+	private Button fGdbServerUseGdbSyscallsForSemihosting;
 
 	private Text fGdbServerExecutable;
 	private Button fGdbServerBrowseButton;
@@ -102,7 +110,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Text fGdbServerOtherOptions;
 
 	private Button fDoGdbServerAllocateConsole;
-	private Button fDoGdbServerAllocateTelnetConsole;
+	private Button fDoGdbServerAllocateSemihostingConsole;
 
 	protected Button fUpdateThreadlistOnSuspend;
 
@@ -122,6 +130,22 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	@Override
 	public Image getImage() {
 		return GDBJtagImages.getDebuggerTabImage();
+	}
+	
+	private Composite createHorizontalLayout(Composite comp, int columns, int spanSub) {
+		Composite local = new Composite(comp, SWT.NONE);
+		GridLayout layout = new GridLayout();
+		layout.numColumns = columns;
+		layout.marginHeight = 0;
+		layout.marginWidth = 0;
+		local.setLayout(layout);
+		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+		if (spanSub > 0) {
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - spanSub;
+		}
+		local.setLayoutData(gd);
+		return local;
+		
 	}
 
 	@Override
@@ -222,6 +246,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		comp.setLayoutData(gd);
 
+		Composite local;
 		Label label;
 		{
 			fDoStartGdbServer = new Button(comp, SWT.CHECK);
@@ -241,15 +266,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			label.setToolTipText(Messages
 					.getString("DebuggerTab.gdbServerExecutable_ToolTipText"));
 
-			Composite local = new Composite(comp, SWT.NONE);
-			layout = new GridLayout();
-			layout.numColumns = 3;
-			layout.marginHeight = 0;
-			layout.marginWidth = 0;
-			local.setLayout(layout);
-			gd = new GridData(GridData.FILL_HORIZONTAL);
-			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
-			local.setLayoutData(gd);
+			local = createHorizontalLayout(comp, 3, 1);
 			{
 				fGdbServerExecutable = new Text(local, SWT.SINGLE | SWT.BORDER);
 				gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -271,12 +288,25 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.getString("DebuggerTab.gdbServerGdbPort_Label"));
 			label.setToolTipText(Messages
 					.getString("DebuggerTab.gdbServerGdbPort_ToolTipText"));
+			
+			local = createHorizontalLayout(comp, 3, 1);
+			{
+				fGdbServerGdbPort = new Text(local, SWT.SINGLE | SWT.BORDER);
+				gd = new GridData();
+				gd.widthHint = 60;
+				fGdbServerGdbPort.setLayoutData(gd);
 
-			fGdbServerGdbPort = new Text(comp, SWT.SINGLE | SWT.BORDER);
-			gd = new GridData();
-			gd.widthHint = 60;
-			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
-			fGdbServerGdbPort.setLayoutData(gd);
+				fDoGdbServerAllocateConsole = new Button(local, SWT.CHECK);
+				fDoGdbServerAllocateConsole.setText(Messages
+						.getString("DebuggerTab.gdbServerAllocateConsole_Label"));
+				fDoGdbServerAllocateConsole
+						.setToolTipText(Messages
+								.getString("DebuggerTab.gdbServerAllocateConsole_ToolTipText"));
+				gd = new GridData();
+				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
+				fDoGdbServerAllocateConsole.setLayoutData(gd);
+			
+			}
 		}
 
 		{
@@ -286,11 +316,47 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			label.setToolTipText(Messages
 					.getString("DebuggerTab.gdbServerTelnetPort_ToolTipText"));
 
-			fGdbServerTelnetPort = new Text(comp, SWT.SINGLE | SWT.BORDER);
-			gd = new GridData();
-			gd.widthHint = 60;
-			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
-			fGdbServerTelnetPort.setLayoutData(gd);
+			local = createHorizontalLayout(comp, 3, 1);
+			{
+				fGdbServerTelnetPort = new Text(local, SWT.SINGLE | SWT.BORDER);
+				gd = new GridData();
+				gd.widthHint = 60;
+				fGdbServerTelnetPort.setLayoutData(gd);
+	
+				fDoGdbServerAllocateSemihostingConsole = new Button(local, SWT.CHECK);
+				fDoGdbServerAllocateSemihostingConsole
+						.setText(Messages
+								.getString("DebuggerTab.gdbServerAllocateTelnetConsole_Label"));
+				fDoGdbServerAllocateSemihostingConsole
+						.setToolTipText(Messages
+								.getString("DebuggerTab.gdbServerAllocateTelnetConsole_ToolTipText"));
+				gd = new GridData();
+				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
+				fDoGdbServerAllocateSemihostingConsole.setLayoutData(gd);
+			}
+		}
+		
+		createSeparator(comp, ((GridLayout) comp.getLayout()).numColumns);
+				
+		{
+			label = new Label(comp, SWT.NONE);
+			label.setText(Messages
+					.getString("DebuggerTab.gdbServerBoardId_Label"));
+			label.setToolTipText(Messages
+					.getString("DebuggerTab.gdbServerBoardId_ToolTipText"));
+
+			local = createHorizontalLayout(comp, 2, 1);
+			{
+				fGdbServerBoardId = new Combo(local, SWT.DROP_DOWN | SWT.READ_ONLY);
+				gd = new GridData(GridData.FILL_HORIZONTAL);
+				fGdbServerBoardId.setLayoutData(gd);
+				fGdbServerBoardId.setItems(new String[] { } );
+				fGdbServerBoardId.select(0);
+				
+				fGdbServerRefreshBoards = new Button(local, SWT.NONE);
+				fGdbServerRefreshBoards.setText(Messages
+						.getString("DebuggerTab.gdbServerRefreshBoards_Label"));
+			}
 		}
 		
 		{
@@ -345,6 +411,37 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 		
 		{
+			label = new Label(comp, SWT.NONE);
+			label.setText(Messages
+					.getString("DebuggerTab.gdbServerFlashMode_Label")); //$NON-NLS-1$
+			label.setToolTipText(Messages
+					.getString("DebuggerTab.gdbServerFlashMode_ToolTipText"));
+			gd = new GridData();
+			label.setLayoutData(gd);
+
+			fGdbServerFlashMode = new Combo(comp, SWT.DROP_DOWN | SWT.READ_ONLY);
+			gd = new GridData();
+			gd.widthHint = 120;
+			fGdbServerFlashMode.setLayoutData(gd);
+			fGdbServerFlashMode.setItems(new String[] {
+					Messages.getString("DebuggerTab.gdbServerFlashMode.AutoErase"),
+					Messages.getString("DebuggerTab.gdbServerFlashMode.ChipErase"), 
+					Messages.getString("DebuggerTab.gdbServerFlashMode.SectorErase"),
+					} );
+			fGdbServerFlashMode.select(0);
+
+			fGdbServerFlashFastVerify = new Button(comp, SWT.CHECK);
+			fGdbServerFlashFastVerify.setText(Messages
+					.getString("DebuggerTab.gdbServerFlashFastVerify_Label"));
+			fGdbServerFlashFastVerify
+					.setToolTipText(Messages
+							.getString("DebuggerTab.gdbServerFlashFastVerify_ToolTipText"));
+			gd = new GridData();
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 2;
+			fGdbServerFlashFastVerify.setLayoutData(gd);
+		}
+		
+		{
 			fGdbServerHaltAtHardFault = new Button(comp, SWT.CHECK);
 			fGdbServerHaltAtHardFault.setText(Messages
 					.getString("DebuggerTab.gdbServerHaltAtHardFault_Label"));
@@ -369,26 +466,27 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 		
 		{
-			label = new Label(comp, SWT.NONE);
-			label.setText(Messages
-					.getString("DebuggerTab.gdbServerFlashMode_Label")); //$NON-NLS-1$
-			label.setToolTipText(Messages
-					.getString("DebuggerTab.gdbServerFlashMode_ToolTipText"));
+			fGdbServerEnableSemihosting = new Button(comp, SWT.CHECK);
+			fGdbServerEnableSemihosting.setText(Messages
+					.getString("DebuggerTab.gdbServerEnableSemihosting_Label"));
+			fGdbServerEnableSemihosting
+					.setToolTipText(Messages
+							.getString("DebuggerTab.gdbServerEnableSemihosting_ToolTipText"));
 			gd = new GridData();
-			label.setLayoutData(gd);
-
-			fGdbServerFlashMode = new Combo(comp, SWT.DROP_DOWN | SWT.READ_ONLY);
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
+			fGdbServerEnableSemihosting.setLayoutData(gd);
+		}
+		
+		{
+			fGdbServerUseGdbSyscallsForSemihosting = new Button(comp, SWT.CHECK);
+			fGdbServerUseGdbSyscallsForSemihosting.setText(Messages
+					.getString("DebuggerTab.gdbServerUseGdbSyscallsForSemihosting_Label"));
+			fGdbServerUseGdbSyscallsForSemihosting
+					.setToolTipText(Messages
+							.getString("DebuggerTab.gdbServerUseGdbSyscallsForSemihosting_ToolTipText"));
 			gd = new GridData();
-			gd.widthHint = 120;
-			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
-			fGdbServerFlashMode.setLayoutData(gd);
-			fGdbServerFlashMode.setItems(new String[] {
-					Messages.getString("DebuggerTab.gdbServerFlashMode.AutoErase"),
-					Messages.getString("DebuggerTab.gdbServerFlashMode.ChipErase"), 
-					Messages.getString("DebuggerTab.gdbServerFlashMode.SectorErase"),
-					Messages.getString("DebuggerTab.gdbServerFlashMode.FastProgram"),
-					} );
-			fGdbServerFlashMode.select(0);
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
+			fGdbServerUseGdbSyscallsForSemihosting.setLayoutData(gd);
 		}
 
 		{
@@ -407,39 +505,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			gd.heightHint = 60;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			fGdbServerOtherOptions.setLayoutData(gd);
-		}
-
-		{
-			Composite local = new Composite(comp, SWT.NONE);
-			layout = new GridLayout();
-			layout.numColumns = 2;
-			layout.marginHeight = 0;
-			layout.marginWidth = 0;
-			layout.makeColumnsEqualWidth = true;
-			local.setLayout(layout);
-			gd = new GridData(GridData.FILL_HORIZONTAL);
-			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
-			local.setLayoutData(gd);
-
-			fDoGdbServerAllocateConsole = new Button(local, SWT.CHECK);
-			fDoGdbServerAllocateConsole.setText(Messages
-					.getString("DebuggerTab.gdbServerAllocateConsole_Label"));
-			fDoGdbServerAllocateConsole
-					.setToolTipText(Messages
-							.getString("DebuggerTab.gdbServerAllocateConsole_ToolTipText"));
-			gd = new GridData(GridData.FILL_HORIZONTAL);
-			fDoGdbServerAllocateConsole.setLayoutData(gd);
-
-			fDoGdbServerAllocateTelnetConsole = new Button(local, SWT.CHECK);
-			fDoGdbServerAllocateTelnetConsole
-					.setText(Messages
-							.getString("DebuggerTab.gdbServerAllocateTelnetConsole_Label"));
-			fDoGdbServerAllocateTelnetConsole
-					.setToolTipText(Messages
-							.getString("DebuggerTab.gdbServerAllocateTelnetConsole_ToolTipText"));
-			gd = new GridData(GridData.FILL_HORIZONTAL);
-			fDoGdbServerAllocateTelnetConsole.setLayoutData(gd);
-
 		}
 
 		// ----- Actions ------------------------------------------------------
@@ -473,7 +538,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fGdbServerExecutable.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-
+				updateBoardsAndTargets();
 				scheduleUpdateJob(); // provides much better performance for
 										// Text listeners
 			}
@@ -505,6 +570,21 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 		});
 		
+		fGdbServerBoardId.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				System.out.printf("board id selected #%d",
+						((Combo)e.widget).getSelectionIndex());
+			}
+		});
+		
+		fGdbServerRefreshBoards.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				updateBoardsAndTargets();
+			}
+		});
+		
 		fGdbServerOverrideTarget.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -525,12 +605,18 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		fGdbServerFlashMode.addModifyListener(scheduleUpdateJobModifyListener);
 
+		fGdbServerFlashFastVerify.addSelectionListener(scheduleUpdateJobSelectionAdapter);
+
+		fGdbServerEnableSemihosting.addSelectionListener(scheduleUpdateJobSelectionAdapter);
+
+		fGdbServerUseGdbSyscallsForSemihosting.addSelectionListener(scheduleUpdateJobSelectionAdapter);
+
 		fGdbServerOtherOptions
 				.addModifyListener(scheduleUpdateJobModifyListener);
 
 		fDoGdbServerAllocateConsole
 				.addSelectionListener(scheduleUpdateJobSelectionAdapter);
-		fDoGdbServerAllocateTelnetConsole
+		fDoGdbServerAllocateSemihostingConsole
 				.addSelectionListener(scheduleUpdateJobSelectionAdapter);
 	}
 
@@ -560,14 +646,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			label.setToolTipText(Messages
 					.getString("DebuggerTab.gdbCommand_ToolTipText"));
 
-			Composite local = new Composite(comp, SWT.NONE);
-			layout = new GridLayout();
-			layout.numColumns = 3;
-			layout.marginHeight = 0;
-			layout.marginWidth = 0;
-			local.setLayout(layout);
-			gd = new GridData(GridData.FILL_HORIZONTAL);
-			local.setLayoutData(gd);
+			Composite local = createHorizontalLayout(comp, 3, -1);
 			{
 				fGdbClientExecutable = new Text(local, SWT.SINGLE | SWT.BORDER);
 				gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -665,12 +744,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 		group.setLayoutData(gd);
 
-		Composite comp = new Composite(group, SWT.NONE);
-		layout = new GridLayout();
-		layout.numColumns = 2;
-		layout.marginHeight = 0;
-		comp.setLayout(layout);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
+		Composite comp = createHorizontalLayout(group, 2, -1);
 		comp.setLayoutData(gd);
 
 		// Create entry fields for TCP/IP connections
@@ -745,7 +819,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fDoGdbServerAllocateConsole.setEnabled(enabled);
 		}
 
-		fDoGdbServerAllocateTelnetConsole.setEnabled(enabled);
+		fDoGdbServerAllocateSemihostingConsole.setEnabled(enabled);
 			
 		// Disable remote target params when the server is started
 		fTargetIpAddress.setEnabled(!enabled);
@@ -756,6 +830,18 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		boolean enabled = fGdbServerOverrideTarget.getSelection();
 		
 		fGdbServerTargetName.setEnabled(enabled);
+	}
+	
+	private void updateBoardsAndTargets() {
+//		((LaunchConfigurationDialog)getLaunchConfigurationDialog());
+//		ILaunchConfiguration config;
+		try {
+			String path = "/Users/creed/projects/pyOCD-flit/dev/bin/pyocd-gdbserver";
+			PyOCD.getBoards(path);
+			PyOCD.getTargets(path);
+		} catch (CoreException e) {
+			Activator.log(e.getStatus());
+		}
 	}
 
 	@Override
@@ -790,6 +876,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 								.getAttribute(
 										ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 										DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
+				
+				// Board ID
+//				fGdbServerBoardId.setText(
+//						configuration.getAttribute(
+//								ConfigurationAttributes.GDB_SERVER_BOARD_ID,
+//								DefaultPreferences.GDB_SERVER_BOARD_ID_DEFAULT));
 
 				// Target override
 				fGdbServerOverrideTarget.setSelection(
@@ -813,11 +905,28 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 								ConfigurationAttributes.GDB_SERVER_STEP_INTO_INTERRUPTS,
 								DefaultPreferences.GDB_SERVER_STEP_INTO_INTERRUPTS_DEFAULT));
 				
+				// Flash
 				fGdbServerFlashMode.select(
 						configuration.getAttribute(
 								ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
 								DefaultPreferences.GDB_SERVER_FLASH_MODE_DEFAULT));
-				
+
+				fGdbServerFlashFastVerify.setSelection(
+						configuration.getAttribute(
+								ConfigurationAttributes.GDB_SERVER_FLASH_FAST_VERIFY,
+								DefaultPreferences.GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT));
+
+				// Semihosting
+				fGdbServerEnableSemihosting.setSelection(
+						configuration.getAttribute(
+								ConfigurationAttributes.GDB_SERVER_ENABLE_SEMIHOSTING,
+								DefaultPreferences.GDB_SERVER_ENABLE_SEMIHOSTING_DEFAULT));
+
+				fGdbServerUseGdbSyscallsForSemihosting.setSelection(
+						configuration.getAttribute(
+								ConfigurationAttributes.GDB_SERVER_USE_GDB_SYSCALLS,
+								DefaultPreferences.GDB_SERVER_USE_GDB_SYSCALLS_DEFAULT));
+
 				// Bus speed
 				fGdbServerBusSpeed.setText(Integer.toString(
 						configuration.getAttribute(
@@ -843,11 +952,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				}
 
 				// Allocate telnet console
-				fDoGdbServerAllocateTelnetConsole
+				fDoGdbServerAllocateSemihostingConsole
 						.setSelection(configuration
 								.getAttribute(
-										ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE,
-										DefaultPreferences.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE_DEFAULT));
+										ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
+										DefaultPreferences.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT));
 
 			}
 
@@ -893,6 +1002,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 
 			doStartGdbServerChanged();
+			overrideTargetChanged();
+			updateBoardsAndTargets();
 
 			// Force thread update
 			boolean updateThreadsOnSuspend = configuration
@@ -928,6 +1039,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fGdbServerTelnetPort
 					.setText(Integer
 							.toString(DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT));
+			
+			// Board ID
+//			fGdbServerBoardId.setText(DefaultPreferences.GDB_SERVER_BOARD_ID_DEFAULT);
 
 			// Target override
 			fGdbServerOverrideTarget.setSelection(
@@ -942,8 +1056,19 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fGdbServerStepIntoInterrupts.setSelection(
 					DefaultPreferences.GDB_SERVER_STEP_INTO_INTERRUPTS_DEFAULT);
 			
+			// Flash
 			fGdbServerFlashMode.select(DefaultPreferences.GDB_SERVER_FLASH_MODE_DEFAULT);
-			
+
+			fGdbServerFlashFastVerify.setSelection(
+					DefaultPreferences.GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT);
+
+			// Semihosting
+			fGdbServerEnableSemihosting.setSelection(
+					DefaultPreferences.GDB_SERVER_ENABLE_SEMIHOSTING_DEFAULT);
+
+			fGdbServerUseGdbSyscallsForSemihosting.setSelection(
+					DefaultPreferences.GDB_SERVER_USE_GDB_SYSCALLS_DEFAULT);
+
 			// Bus speed
 			fGdbServerBusSpeed.setText(Integer.toString(
 					DefaultPreferences.GDB_SERVER_BUS_SPEED_DEFAULT));
@@ -961,8 +1086,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 
 			// Allocate telnet console
-			fDoGdbServerAllocateTelnetConsole
-					.setSelection(DefaultPreferences.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE_DEFAULT);
+			fDoGdbServerAllocateSemihostingConsole
+					.setSelection(DefaultPreferences.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
 
 		}
 
@@ -992,6 +1117,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		doStartGdbServerChanged();
 		overrideTargetChanged();
+		updateBoardsAndTargets();
 
 		// Force thread update
 		fUpdateThreadlistOnSuspend
@@ -1062,6 +1188,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					.setAttribute(
 							ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 							port);
+			
+			// Board ID
+//			configuration.setAttribute(
+//					ConfigurationAttributes.GDB_SERVER_BOARD_ID,
+//					DefaultPreferences.GDB_SERVER_BOARD_ID_DEFAULT);
 
 			// Target override
 			configuration.setAttribute(
@@ -1081,9 +1212,23 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.GDB_SERVER_STEP_INTO_INTERRUPTS,
 					fGdbServerStepIntoInterrupts.getSelection());
 			
+			// Flash
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
 					fGdbServerFlashMode.getSelectionIndex());
+
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_FLASH_FAST_VERIFY,
+					fGdbServerFlashFastVerify.getSelection());
+
+			// Semihosting
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_ENABLE_SEMIHOSTING,
+					fGdbServerEnableSemihosting.getSelection());
+
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_USE_GDB_SYSCALLS,
+					fGdbServerUseGdbSyscallsForSemihosting.getSelection());
 
 			// Bus speed
 			int freq;
@@ -1105,8 +1250,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			// Allocate semihosting console
 			configuration
 					.setAttribute(
-							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE,
-							fDoGdbServerAllocateTelnetConsole.getSelection());
+							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
+							fDoGdbServerAllocateSemihostingConsole.getSelection());
 		}
 
 		// GDB client
@@ -1230,9 +1375,51 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 					ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 					DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT);
 			
+			// Board ID
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_BOARD_ID,
+					DefaultPreferences.GDB_SERVER_BOARD_ID_DEFAULT);
+			
+			// Bus speed
 			configuration.setAttribute(
 					ConfigurationAttributes.GDB_SERVER_BUS_SPEED,
 					DefaultPreferences.GDB_SERVER_BUS_SPEED_DEFAULT);
+			
+			// Target override
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_OVERRIDE_TARGET,
+					DefaultPreferences.GDB_SERVER_OVERRIDE_TARGET_DEFAULT);
+
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_TARGET_NAME,
+					DefaultPreferences.GDB_SERVER_TARGET_NAME_DEFAULT);
+			
+			// Misc options
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_HALT_AT_HARD_FAULT,
+					DefaultPreferences.GDB_SERVER_HALT_AT_HARD_FAULT_DEFAULT);
+	
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_STEP_INTO_INTERRUPTS,
+					DefaultPreferences.GDB_SERVER_STEP_INTO_INTERRUPTS_DEFAULT);
+			
+			// Flash
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
+					DefaultPreferences.GDB_SERVER_FLASH_MODE_DEFAULT);
+
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_FLASH_FAST_VERIFY,
+					DefaultPreferences.GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT);
+
+			// Semihosting
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_ENABLE_SEMIHOSTING,
+					DefaultPreferences.GDB_SERVER_ENABLE_SEMIHOSTING_DEFAULT);
+
+			configuration.setAttribute(
+					ConfigurationAttributes.GDB_SERVER_USE_GDB_SYSCALLS,
+					DefaultPreferences.GDB_SERVER_USE_GDB_SYSCALLS_DEFAULT);
 
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_LOG,
 					DefaultPreferences.GDB_SERVER_LOG_DEFAULT);
@@ -1247,8 +1434,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			configuration
 					.setAttribute(
-							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE,
-							DefaultPreferences.DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE_DEFAULT);
+							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
+							DefaultPreferences.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
 		}
 
 		// GDB client setup
@@ -1278,7 +1465,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				.setAttribute(
 						IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
 						DefaultPreferences.UPDATE_THREAD_LIST_DEFAULT);
-	}
+	}	
 
 	// ------------------------------------------------------------------------
 }

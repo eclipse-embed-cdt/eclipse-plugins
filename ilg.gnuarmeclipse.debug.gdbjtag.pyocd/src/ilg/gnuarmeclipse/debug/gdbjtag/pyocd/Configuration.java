@@ -104,6 +104,15 @@ public class Configuration {
 									ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 									DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
 			
+			// Board ID
+			String boardId = configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_BOARD_ID,
+					DefaultPreferences.GDB_SERVER_BOARD_ID_DEFAULT);
+			if (!boardId.isEmpty()) {
+				lst.add("--board");
+				lst.add(boardId);
+			}
+			
 			// Override target
 			if (configuration.getAttribute(
 					ConfigurationAttributes.GDB_SERVER_OVERRIDE_TARGET,
@@ -139,17 +148,33 @@ public class Configuration {
 					ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
 					DefaultPreferences.GDB_SERVER_FLASH_MODE_DEFAULT);
 			switch (flashMode) {
-			case PreferenceConstants.AUTO_ERASE:
-				break;
-			case PreferenceConstants.CHIP_ERASE:
-				lst.add("--chip_erase");
-				break;
-			case PreferenceConstants.SECTOR_ERASE:
-				lst.add("--sector_erase");
-				break;
-			case PreferenceConstants.FAST_PROGRAM:
+				case PreferenceConstants.AUTO_ERASE:
+					break;
+				case PreferenceConstants.CHIP_ERASE:
+					lst.add("--chip_erase");
+					break;
+				case PreferenceConstants.SECTOR_ERASE:
+					lst.add("--sector_erase");
+					break;
+			}
+			
+			if (configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_FLASH_FAST_VERIFY,
+					DefaultPreferences.GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT)) {
 				lst.add("--fast_program");
-				break;
+			}
+			
+			// Semihosting
+			if (configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_ENABLE_SEMIHOSTING,
+					DefaultPreferences.GDB_SERVER_ENABLE_SEMIHOSTING_DEFAULT)) {
+				lst.add("--semihosting");
+			}
+			
+			if (configuration.getAttribute(
+					ConfigurationAttributes.GDB_SERVER_USE_GDB_SYSCALLS,
+					DefaultPreferences.GDB_SERVER_USE_GDB_SYSCALLS_DEFAULT)) {
+				lst.add("--gdb-syscall");
 			}
 			
 			// Other
