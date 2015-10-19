@@ -18,7 +18,7 @@
    <feature url="features/ilg.gnuarmeclipse.debug.gdbjtag.qemu-feature_2.1.2.qualifier.jar" id="ilg.gnuarmeclipse.debug.gdbjtag.qemu" version="2.1.2.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
-   <feature url="features/ilg.gnuarmeclipse.templates.cortexm-feature_1.2.6.qualifier.jar" id="ilg.gnuarmeclipse.templates.cortexm" version="1.2.6.qualifier">
+   <feature url="features/ilg.gnuarmeclipse.templates.cortexm-feature_1.3.1.qualifier.jar" id="ilg.gnuarmeclipse.templates.cortexm" version="1.3.1.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
    <feature url="features/ilg.gnuarmeclipse.packs-feature_2.2.2.qualifier.jar" id="ilg.gnuarmeclipse.packs" version="2.2.2.qualifier">
