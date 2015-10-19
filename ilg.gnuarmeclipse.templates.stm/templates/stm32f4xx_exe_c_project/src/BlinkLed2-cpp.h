@@ -8,6 +8,9 @@
 
 // ----------------------------------------------------------------------------
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpadded"
+
 class BlinkLed
 {
 public:
@@ -34,6 +37,8 @@ private:
   unsigned int fBitMask;
   bool fIsActiveLow;
 };
+
+#pragma GCC diagnostic pop
 
 // ----------------------------------------------------------------------------
 

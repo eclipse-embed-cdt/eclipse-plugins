@@ -1253,6 +1253,22 @@
 				</element>
 			</complex-array>
 		</process>
+
+		<!-- Disable warnings for HAL sources. -->
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otherwarnings" />
+					<simple name="value"
+						value=" -Wno-bad-function-cast -Wno-conversion -Wno-sign-conversion -Wno-unused-parameter -Wno-sign-compare -Wno-missing-prototypes -Wno-missing-declarations" />
+					<simple name="path" value="$(sysDir)/$(sourceDir)/$(devicePeriph)" />
+					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
 	</if>
 
 	<!-- ================================================================== -->

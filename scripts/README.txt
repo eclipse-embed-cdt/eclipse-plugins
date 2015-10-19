@@ -13,6 +13,12 @@ Always use the sed script to get the vectors from the assembly file:
 $ sed -f vectors.sed startup_stm32f411xe.s >x.s
 
 
+GNU C/C++ Formatting Style
+==========================
+
+Available from [Gist](https://gist.github.com/ilg-ul/b14101ce7a58a06f3346).
+
+
 Copy from µOS++
 ===============
 

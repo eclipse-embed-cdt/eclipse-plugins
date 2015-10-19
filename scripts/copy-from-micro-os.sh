@@ -20,6 +20,7 @@ done
 echo
 cp -nv $src/architectures/arm/arm.pack/include/arm/semihosting.h $system/include/arm
 
+## Moved to xPacks
 # cp -n $src/architectures/arm/cortexm.pack/include/cmsis/*.h $system/include/cmsis
 # cp -n $src/architectures/arm/cortexm.pack/include/cmsis/README*.txt $system/include/cmsis
 
@@ -126,11 +127,12 @@ cp -Rnv $src/vendors/stm/stm32f4.pack/include/cmsis/* $stm/stm32f4.pack/include/
 mkdir -p $stm/stm32f4.pack/src/cmsis
 cp -Rnv $src/vendors/stm/stm32f4.pack/src/cmsis/* $stm/stm32f4.pack/src/cmsis
 
+## Moved to xPacks
 # stm32f4 hal drivers
-echo
-rm -rf $stm/stm32f4-hal.pack
-mkdir -p $stm/stm32f4-hal.pack
-cp -Rnv $src/vendors/stm/stm32f4-hal.pack/* $stm/stm32f4-hal.pack
+# echo
+# rm -rf $stm/stm32f4-hal.pack
+# mkdir -p $stm/stm32f4-hal.pack
+# cp -Rnv $src/vendors/stm/stm32f4-hal.pack/* $stm/stm32f4-hal.pack
 
 # -----------------------------------------------------------------------------
 
@@ -163,8 +165,20 @@ cp -Rnv $src/vendors/$vendor/$device.pack/* $vendor_dest/$device.pack
 
 # --- xPacks
 
-src=../../../xPacks/arm-cmsis-core.git
+xpacks_src=../../../xPacks
 
+# CMSIS core
+src=${xpacks_src}/arm-cmsis-core.git
 echo
 cp -nv $src/CMSIS/Include/*.h $system/include/cmsis
 cp -nv $src/CMSIS/README.txt $system/include/cmsis/README_CMSIS.txt
+
+# STM32F4 HAL
+src=${xpacks_src}/stm32f4-hal.git
+echo
+rm -rf $stm/stm32f4-hal.pack
+mkdir -p $stm/stm32f4-hal.pack/include/stm32f4-hal
+mkdir -p $stm/stm32f4-hal.pack/src/stm32f4-hal
+cp -Rnv $src/Drivers/STM32F4xx_HAL_Driver/Inc/* $stm/stm32f4-hal.pack/include/stm32f4-hal/
+cp -Rnv $src/Drivers/STM32F4xx_HAL_Driver/Src/* $stm/stm32f4-hal.pack/src/stm32f4-hal/
+cp -Rnv $src/Drivers/STM32F4xx_HAL_Driver/Release_Notes.html $stm/stm32f4-hal.pack/

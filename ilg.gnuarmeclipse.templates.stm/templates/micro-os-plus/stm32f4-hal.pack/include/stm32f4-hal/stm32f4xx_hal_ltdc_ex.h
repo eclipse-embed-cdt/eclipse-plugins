@@ -1,10 +1,10 @@
 /**
   ******************************************************************************
-  * @file    stm32f4xx_hal_pcd_ex.h
+  * @file    stm32f4xx_hal_ltdc_ex.h
   * @author  MCD Application Team
   * @version V1.4.0
   * @date    14-August-2015
-  * @brief   Header file of PCD HAL module.
+  * @brief   Header file of LTDC HAL Extension module.
   ******************************************************************************
   * @attention
   *
@@ -36,59 +36,101 @@
   */ 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
-#ifndef __STM32F4xx_HAL_PCD_EX_H
-#define __STM32F4xx_HAL_PCD_EX_H
+#ifndef __STM32F4xx_HAL_LTDC_EX_H
+#define __STM32F4xx_HAL_LTDC_EX_H
 
 #ifdef __cplusplus
  extern "C" {
 #endif
-#if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) || \
-    defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || \
-    defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F446xx) || \
-    defined(STM32F469xx) || defined(STM32F479xx) 
+
+#if defined(STM32F469xx) || defined(STM32F479xx)
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal_def.h"
-   
+#include "stm32f4xx_hal_dsi.h"
+
 /** @addtogroup STM32F4xx_HAL_Driver
   * @{
   */
 
-/** @addtogroup PCDEx
+/** @addtogroup LTDCEx
   * @{
   */
-/* Exported types ------------------------------------------------------------*/
-#if defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx) 
-typedef enum  
-{
-  PCD_LPM_L0_ACTIVE = 0x00, /* on */
-  PCD_LPM_L1_ACTIVE = 0x01, /* LPM L1 sleep */
-}PCD_LPM_MsgTypeDef;
-#endif /* STM32F446xx || STM32F469xx || STM32F479xx  */
 
+/* Exported types ------------------------------------------------------------*/ 
 /* Exported constants --------------------------------------------------------*/
-/* Exported macros -----------------------------------------------------------*/
+   
+/** @defgroup LTDCEx_Exported_Constants   LTDCEx Exported Constants
+  * @{
+  */
+
+/**
+  * @}
+  */
+
+/* Exported macro ------------------------------------------------------------*/
+/** @defgroup LTDCEx_Exported_Macros LTDC Exported Macros
+  * @{
+  */
+
+/**
+  * @}
+  */
+
 /* Exported functions --------------------------------------------------------*/
-/** @addtogroup PCDEx_Exported_Functions PCD Extended Exported Functions
+/** @defgroup LTDCEx_Exported_Functions LTDC Extended Exported Functions
   * @{
   */
-/** @addtogroup PCDEx_Exported_Functions_Group1 Peripheral Control functions
+HAL_StatusTypeDef HAL_LTDC_StructInitFromVideoConfig(LTDC_HandleTypeDef* hltdc, DSI_VidCfgTypeDef *VidCfg);
+HAL_StatusTypeDef HAL_LTDC_StructInitFromAdaptedCommandConfig(LTDC_HandleTypeDef* hltdc, DSI_CmdCfgTypeDef *CmdCfg);
+/**
+  * @}
+  */ 
+ 
+
+ /* Private types -------------------------------------------------------------*/
+/** @defgroup LTDCEx_Private_Types LTDCEx Private Types
   * @{
   */
-HAL_StatusTypeDef HAL_PCDEx_SetTxFiFo(PCD_HandleTypeDef *hpcd, uint8_t fifo, uint16_t size);
-HAL_StatusTypeDef HAL_PCDEx_SetRxFiFo(PCD_HandleTypeDef *hpcd, uint16_t size);
-#if defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx) 
-HAL_StatusTypeDef HAL_PCDEx_ActivateLPM(PCD_HandleTypeDef *hpcd);
-HAL_StatusTypeDef HAL_PCDEx_DeActivateLPM(PCD_HandleTypeDef *hpcd);
-void HAL_PCDEx_LPM_Callback(PCD_HandleTypeDef *hpcd, PCD_LPM_MsgTypeDef msg);
-#endif /* STM32F446xx || STM32F469xx || STM32F479xx  */
 
 /**
   * @}
   */ 
 
+/* Private variables ---------------------------------------------------------*/
+/** @defgroup LTDCEx_Private_Variables LTDCEx Private Variables
+  * @{
+  */
+
 /**
   * @}
   */ 
+
+/* Private constants ---------------------------------------------------------*/
+/** @defgroup LTDCEx_Private_Constants LTDCEx Private Constants
+  * @{
+  */
+
+/**
+  * @}
+  */ 
+
+/* Private macros ------------------------------------------------------------*/
+/** @defgroup LTDCEx_Private_Macros LTDCEx Private Macros
+  * @{
+  */
+
+ /**
+  * @}
+  */ 
+  
+/* Private functions ---------------------------------------------------------*/
+/** @defgroup LTDCEx_Private_Functions LTDCEx Private Functions
+  * @{
+  */
+
+/**
+  * @}
+  */
 
 /**
   * @}
@@ -97,13 +139,13 @@ void HAL_PCDEx_LPM_Callback(PCD_HandleTypeDef *hpcd, PCD_LPM_MsgTypeDef msg);
 /**
   * @}
   */
-#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx ||
-          STM32F401xC || STM32F401xE || STM32F411xE || STM32F446xx || STM32F469xx || STM32F479xx  */
+
+#endif /* STM32F469xx || STM32F479xx */ 
+  
 #ifdef __cplusplus
 }
 #endif
 
-
-#endif /* __STM32F4xx_HAL_PCD_EX_H */
+#endif /* __STM32F4xx_HAL_LTDC_EX_H */
 
 /************************ (C) COPYRIGHT STMicroelectronics *****END OF FILE****/
