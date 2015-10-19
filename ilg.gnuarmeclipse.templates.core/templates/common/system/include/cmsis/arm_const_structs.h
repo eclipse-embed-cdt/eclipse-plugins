@@ -1,8 +1,8 @@
 /* ----------------------------------------------------------------------
-* Copyright (C) 2010-2013 ARM Limited. All rights reserved.
+* Copyright (C) 2010-2014 ARM Limited. All rights reserved.
 *
-* $Date:        16. October 2013
-* $Revision: 	V1.4.2
+* $Date:        19. March 2015
+* $Revision: 	V.1.4.5
 *
 * Project: 	    CMSIS DSP Library
 * Title:	    arm_const_structs.h
@@ -55,5 +55,25 @@
    extern const arm_cfft_instance_f32 arm_cfft_sR_f32_len1024;
    extern const arm_cfft_instance_f32 arm_cfft_sR_f32_len2048;
    extern const arm_cfft_instance_f32 arm_cfft_sR_f32_len4096;
+
+   extern const arm_cfft_instance_q31 arm_cfft_sR_q31_len16;
+   extern const arm_cfft_instance_q31 arm_cfft_sR_q31_len32;
+   extern const arm_cfft_instance_q31 arm_cfft_sR_q31_len64;
+   extern const arm_cfft_instance_q31 arm_cfft_sR_q31_len128;
+   extern const arm_cfft_instance_q31 arm_cfft_sR_q31_len256;
+   extern const arm_cfft_instance_q31 arm_cfft_sR_q31_len512;
+   extern const arm_cfft_instance_q31 arm_cfft_sR_q31_len1024;
+   extern const arm_cfft_instance_q31 arm_cfft_sR_q31_len2048;
+   extern const arm_cfft_instance_q31 arm_cfft_sR_q31_len4096;
+
+   extern const arm_cfft_instance_q15 arm_cfft_sR_q15_len16;
+   extern const arm_cfft_instance_q15 arm_cfft_sR_q15_len32;
+   extern const arm_cfft_instance_q15 arm_cfft_sR_q15_len64;
+   extern const arm_cfft_instance_q15 arm_cfft_sR_q15_len128;
+   extern const arm_cfft_instance_q15 arm_cfft_sR_q15_len256;
+   extern const arm_cfft_instance_q15 arm_cfft_sR_q15_len512;
+   extern const arm_cfft_instance_q15 arm_cfft_sR_q15_len1024;
+   extern const arm_cfft_instance_q15 arm_cfft_sR_q15_len2048;
+   extern const arm_cfft_instance_q15 arm_cfft_sR_q15_len4096;
 
 #endif

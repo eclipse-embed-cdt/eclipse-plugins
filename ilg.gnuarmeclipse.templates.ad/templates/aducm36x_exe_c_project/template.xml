@@ -455,11 +455,9 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple name="source" value="$(commonDir)/system/include/cmsis" />
 					<simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)" />
-					<simple name="pattern" value="core_cm3.h|core_cmInstr.h|core_cmFunc.h|\
-					    arm_common_tables.h|arm_const_structs.h|arm_math.h" />
+					<simple name="pattern" value=".*[.](h|txt)" />
 					<simple name="replaceable" value="true" />
 				</element>
-
 			</complex-array>
 		</process>
 	</if>
