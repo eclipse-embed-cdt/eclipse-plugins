@@ -17,6 +17,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<item value="cortex-m0plus" label="Cortex-M0+" />
 			<item value="cortex-m3" label="Cortex-M3" />
 			<item value="cortex-m4" label="Cortex-M4" />
+			<item value="cortex-m7" label="Cortex-M7" />
 		</property>
 
 		<property id="CMxtalValue" label="%CM.xtalValue.label"
