@@ -123,7 +123,7 @@ typedef enum {
 /** @} */ /* End of group Configuration_of_CMSIS */
 
 #include <core_cm3.h>                       /*!< Cortex-M3 processor and core peripherals */
-#include "system_ADUCM360.h"               /*!< ADUCM360 System                      */
+#include "system_ADuCM360.h"               /*!< ADUCM360 System                      */
 
 /** @addtogroup Device_Peripheral_Registers
   * @{
