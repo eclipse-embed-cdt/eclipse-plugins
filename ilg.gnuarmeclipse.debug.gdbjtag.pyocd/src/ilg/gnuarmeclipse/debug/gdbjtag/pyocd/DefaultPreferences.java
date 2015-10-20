@@ -42,6 +42,7 @@ public class DefaultPreferences {
 	public static final int GDB_SERVER_GDB_PORT_NUMBER_DEFAULT = 3333;
 	public static final int GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT = 4444;
 	public static final String GDB_SERVER_BOARD_ID_DEFAULT = "";
+	public static final String GDB_SERVER_BOARD_NAME_DEFAULT = "";
 	public static final int GDB_SERVER_BUS_SPEED_DEFAULT = 1000000;
 	public static final boolean GDB_SERVER_OVERRIDE_TARGET_DEFAULT = false;
 	public static final String GDB_SERVER_TARGET_NAME_DEFAULT = ""; //$NON-NLS-1$

@@ -42,6 +42,9 @@ public interface ConfigurationAttributes {
 	public static final String GDB_SERVER_BOARD_ID = PREFIX
 			+ ".gdbServerBoardId"; //$NON-NLS-1$
 	
+	public static final String GDB_SERVER_BOARD_NAME = PREFIX
+			+ ".gdbServerBoardName"; //$NON-NLS-1$
+	
 	public static final String GDB_SERVER_BUS_SPEED = PREFIX
 			+ ".gdbServerBusSpeed"; //$NON-NLS-1$
 	

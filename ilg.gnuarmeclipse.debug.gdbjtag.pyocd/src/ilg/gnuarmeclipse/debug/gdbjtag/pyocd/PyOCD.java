@@ -16,6 +16,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.eclipse.cdt.dsf.gdb.launching.LaunchUtils;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
@@ -30,35 +32,97 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import ilg.gnuarmeclipse.core.StringUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 
+import org.json.simple.JSONObject;
+import org.json.simple.JSONArray;
+
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 /**
  * Utilities for managing pyOCD.
  *
  */
 public class PyOCD {
 	
+	/// Latest version of the JSON data format returned by pyOCD. 
+	public static final long FORMAT_MAJOR_VERSION = 1;
+	
+	// Dictionary keys for JSON data. 
+	public static final String VERSION_KEY = "version";
+	public static final String VERSION_MAJOR_KEY = "major";
+	public static final String VERSION_MINOR_KEY = "minor";
+	public static final String STATUS_KEY = "status";
+	public static final String ERROR_KEY = "error";
+	public static final String BOARDS_KEY = "boards";
+	public static final String TARGETS_KEY = "targets";
+	
+	public static final String BOARD_INFO_KEY = "info";
+	public static final String BOARD_NAME_KEY = "board_name";
+	public static final String BOARD_VENDOR_NAME_KEY = "vendor_name";
+	public static final String BOARD_PRODUCT_NAME_KEY = "product_name";
+	public static final String BOARD_TARGET_KEY = "target";
+	public static final String BOARD_UNIQUE_ID_KEY = "unique_id";
+	
+	public static final String TARGET_NAME_KEY = "name";
+	public static final String TARGET_PART_NUMBER_KEY = "part_number";
+	public static final String TARGET_SVD_PATH_KEY = "svd_path";
+	
 	/**
 	 * Info about an available board.
 	 *
 	 */
-	public class Board {
+	public static class Board {
 		public String fName;
+		public String fVendorName;
+		public String fProductName;
 		public String fTargetName;
 		public String fDescription;
 		public String fUniqueId;
+
+		public static final Comparator COMPARATOR = new Comparator();
+		
+		/**
+		 * Comparator to sort boards by name.
+		 */
+		private static class Comparator implements java.util.Comparator<Board> {
+			public int compare(Board o1, Board o2) {
+				return o1.fName.compareTo(o2.fName);
+			}
+		}
+		
+		@Override
+		public String toString() {
+			return String.format("<Board: %s [%s] %s>", fName, fTargetName, fUniqueId);
+		}
 	}
 	
 	/**
 	 * Info about a target supported by pyOCD.
 	 *
 	 */
-	public class Target {
+	public static class Target {
 		public String fName; 
 		public String fPartNumber;
 		public String fSvdPath;
+
+		public static final Comparator COMPARATOR = new Comparator();
+
+		/**
+		 * Comparator to sort targets by name.
+		 */
+		public static class Comparator implements java.util.Comparator<Target> {
+			public int compare(Target o1, Target o2) {
+				return o1.fName.compareTo(o2.fName);
+			}
+		}
+		
+		@Override
+		public String toString() {
+			return String.format("<Target: %s [%s]>", fName, fPartNumber);
+		}
 	}
 	
-	public static Board[] getBoards(ILaunchConfiguration configuration)
-			throws CoreException {
+	public static List<Board> getBoards(ILaunchConfiguration configuration) {
 		
 		String pyOCDPath = Configuration.getGdbServerCommand(configuration);
 		if (pyOCDPath == null) {
@@ -67,8 +131,7 @@ public class PyOCD {
 		return getBoards(pyOCDPath);
 	}
 	
-	public static Target[] getTargets(ILaunchConfiguration configuration)
-			throws CoreException {
+	public static List<Target> getTargets(ILaunchConfiguration configuration) {
 		
 		String pyOCDPath = Configuration.getGdbServerCommand(configuration);
 		if (pyOCDPath == null) {
@@ -77,22 +140,130 @@ public class PyOCD {
 		return getTargets(pyOCDPath);
 	}
 	
-	public static Board[] getBoards(String pyOCDPath)
-			throws CoreException {
+	private static boolean checkOutput(JSONObject output) {
+		// Check version
+		if (!output.containsKey(VERSION_KEY)) {
+			System.out.printf("No data format version from pyOCD\n");
+			return false;
+		}
 		
-		String output = getOutput(pyOCDPath, "--list");
-		System.out.printf("pyOCD boards = %s\n", output);
+		JSONObject version = (JSONObject)output.get(VERSION_KEY);
+		if (!version.containsKey(VERSION_MAJOR_KEY)) {
+			System.out.printf("No data format major version from pyOCD\n");
+			return false;
+		}
+		if (!version.get(VERSION_MAJOR_KEY).equals(Long.valueOf(FORMAT_MAJOR_VERSION))) {
+			System.out.printf("Unsupported version %d of data from pyOCD\n",
+					version.get(VERSION_MAJOR_KEY));
+			return false;
+		}
 		
-		return null;
+		// Check status
+		if (!output.containsKey(STATUS_KEY)
+				|| !output.get(STATUS_KEY).equals(Long.valueOf(0))) {
+			String msg = (String)output.getOrDefault(ERROR_KEY, "unknown error");
+			System.out.printf("Error %d reading from pyOCD: %s\n",
+					output.get(STATUS_KEY), msg);
+			return false;
+		}
+		
+		return true;
 	}
 	
-	public static Target[] getTargets(String pyOCDPath)
-			throws CoreException {
+	public static List<Board> getBoards(String pyOCDPath) {
 		
-		String output = getOutput(pyOCDPath, "--list-targets");
-		System.out.printf("pyOCD targets = %s\n", output);
+		JSONObject output = getJsonOutput(pyOCDPath, "--list");
+//		System.out.printf("pyOCD boards = %s\n", output);
 		
-		return null;
+		if (!checkOutput(output)) {
+			return null;
+		}
+		
+		if (!output.containsKey(BOARDS_KEY)) {
+			return null;
+		}
+		
+		Object boardsObj = output.get(BOARDS_KEY);
+		if (!(boardsObj instanceof JSONArray)) {
+			return null;
+		}
+		
+		JSONArray boards = (JSONArray)boardsObj;
+		
+		ArrayList<Board> result = new ArrayList<Board>();
+		for (Object b : boards) {
+			try {
+				JSONObject bobj = (JSONObject)b;
+				
+				Board boardInfo = new Board();
+				boardInfo.fDescription = (String)bobj.get(BOARD_INFO_KEY);
+				boardInfo.fName = (String)bobj.get(BOARD_NAME_KEY);
+				boardInfo.fVendorName = (String)bobj.get(BOARD_VENDOR_NAME_KEY);
+				boardInfo.fProductName = (String)bobj.get(BOARD_PRODUCT_NAME_KEY);
+				boardInfo.fTargetName = (String)bobj.get(BOARD_TARGET_KEY);
+				boardInfo.fUniqueId = (String)bobj.get(BOARD_UNIQUE_ID_KEY);
+				
+				result.add(boardInfo);
+			} catch (Exception e) {
+				continue;
+			}
+		}
+		
+		return result;
+	}
+	
+	public static List<Target> getTargets(String pyOCDPath) {
+		
+		JSONObject output = getJsonOutput(pyOCDPath, "--list-targets");
+//		System.out.printf("pyOCD targets = %s\n", output);
+		
+		if (!checkOutput(output)) {
+			return null;
+		}
+		
+		if (!output.containsKey(TARGETS_KEY)) {
+			return null;
+		}
+		
+		Object targetsObj = output.get(TARGETS_KEY);
+		if (!(targetsObj instanceof JSONArray)) {
+			return null;
+		}
+		
+		JSONArray targets = (JSONArray)targetsObj;
+		
+		ArrayList<Target> result = new ArrayList<Target>();
+		for (Object t : targets) {
+			try {
+				JSONObject tobj = (JSONObject)t;
+				
+				Target targetInfo = new Target();
+				targetInfo.fName = (String)tobj.get(TARGET_NAME_KEY);
+				targetInfo.fPartNumber = (String)tobj.get(TARGET_PART_NUMBER_KEY);
+				targetInfo.fSvdPath = (String)tobj.get(TARGET_SVD_PATH_KEY);
+				
+				result.add(targetInfo);
+			} catch (Exception e) {
+				continue;
+			}
+		}
+		
+		return result;
+	}
+
+	private static JSONObject getJsonOutput(final String pyOCDPath, String listArg) {
+		try {
+			String result = getOutput(pyOCDPath, listArg);
+			JSONParser parser = new JSONParser();
+			Object obj = parser.parse(result);
+			return (JSONObject)obj;
+		} catch (ParseException e) {
+			System.out.printf("Parse exception: %s\n", e);
+			return null;
+		} catch (CoreException e) {
+			System.out.printf("Core exception: %s\n", e);
+			return null;
+		}
 	}
 	
 	private static String getOutput(final String pyOCDPath, String listArg)
