@@ -3,5 +3,13 @@ archive, the folder:
 
 	STM32Cube_FW_F4_V1.8.0/Drivers/STM32F4xx_HAL_Driver/Src
 
+There should be no changes from ST originals.
 
-The changes include only adding pragmas to disable compilation warnings.
+To disable compilation warnings, the compiler settings were changed
+to include -Wno-*.
+
+Files excluded from build can be re-enabled by using:
+
+  	right click -> Resource Configurations -> Exclude from build 
+	uncheck Debug and/or Release
+

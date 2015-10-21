@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f429xx.h
   * @author  MCD Application Team
-  * @version V2.3.1
-  * @date    03-April-2015
+  * @version V2.4.0
+  * @date    14-August-2015
   * @brief   CMSIS STM32F429xx Device Peripheral Access Layer Header File.
   *
   *          This file contains:
@@ -6516,7 +6516,7 @@ USB_OTG_HostChannelTypeDef;
 #define  SAI_xSR_FLVL                     ((uint32_t)0x00070000)         /*!<FLVL[2:0] (FIFO Level Threshold)               */
 #define  SAI_xSR_FLVL_0                   ((uint32_t)0x00010000)         /*!<Bit 0 */
 #define  SAI_xSR_FLVL_1                   ((uint32_t)0x00020000)         /*!<Bit 1 */
-#define  SAI_xSR_FLVL_2                   ((uint32_t)0x00030000)         /*!<Bit 2 */
+#define  SAI_xSR_FLVL_2                   ((uint32_t)0x00040000)         /*!<Bit 2 */
 
 /******************  Bit definition for SAI_xCLRFR register  ******************/
 #define  SAI_xCLRFR_COVRUDR               ((uint32_t)0x00000001)        /*!<Clear Overrun underrun                               */

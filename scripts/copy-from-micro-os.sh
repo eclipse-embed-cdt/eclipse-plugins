@@ -1,4 +1,6 @@
 #! /bin/bash
+set -euo pipefail
+IFS=$'\n\t'
 
 # This script must be executed in the scripts folder, paths are relative to it.
 # $ cd .../gnuarmeclipse-se-git/scripts
@@ -119,13 +121,14 @@ mkdir -p $stm/stm32f3-stdperiph.pack
 cp -Rnv $src/vendors/stm/stm32f3-stdperiph.pack/* $stm/stm32f3-stdperiph.pack
 
 
+## Moved to xPacks
 # stm32f4 cmsis
-echo
-rm -rf $stm/stm32f4.pack
-mkdir -p $stm/stm32f4.pack/include/cmsis
-cp -Rnv $src/vendors/stm/stm32f4.pack/include/cmsis/* $stm/stm32f4.pack/include/cmsis
-mkdir -p $stm/stm32f4.pack/src/cmsis
-cp -Rnv $src/vendors/stm/stm32f4.pack/src/cmsis/* $stm/stm32f4.pack/src/cmsis
+# echo
+# rm -rf $stm/stm32f4.pack
+# mkdir -p $stm/stm32f4.pack/include/cmsis
+# cp -Rnv $src/vendors/stm/stm32f4.pack/include/cmsis/* $stm/stm32f4.pack/include/cmsis
+# mkdir -p $stm/stm32f4.pack/src/cmsis
+# cp -Rnv $src/vendors/stm/stm32f4.pack/src/cmsis/* $stm/stm32f4.pack/src/cmsis
 
 ## Moved to xPacks
 # stm32f4 hal drivers
@@ -163,7 +166,7 @@ rm -rf $vendor_dest/$device.pack
 mkdir -p $vendor_dest/$device.pack
 cp -Rnv $src/vendors/$vendor/$device.pack/* $vendor_dest/$device.pack
 
-# --- xPacks
+# --- xPacks ---
 
 xpacks_src=../../../xPacks
 
@@ -172,6 +175,18 @@ src=${xpacks_src}/arm-cmsis-core.git
 echo
 cp -nv $src/CMSIS/Include/*.h $system/include/cmsis
 cp -nv $src/CMSIS/README.txt $system/include/cmsis/README_CMSIS.txt
+
+# STM32F4 CMSIS
+src=${xpacks_src}/stm32f4-cmsis.git
+echo
+rm -rf $stm/stm32f4.pack
+mkdir -p $stm/stm32f4.pack/include/cmsis
+cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Include/* $stm/stm32f4.pack/include/cmsis
+cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Release_Notes.html $stm/stm32f4.pack/include/cmsis
+cp -Rnv $src/README.md $stm/stm32f4.pack/include/cmsis/README_DEVICE.md
+mkdir -p $stm/stm32f4.pack/src/cmsis
+cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/*.c $stm/stm32f4.pack/src/cmsis
+cp -Rnv $src/README.md $stm/stm32f4.pack/src/cmsis/README_DEVICE.md
 
 # STM32F4 HAL
 src=${xpacks_src}/stm32f4-hal.git
@@ -182,3 +197,6 @@ mkdir -p $stm/stm32f4-hal.pack/src/stm32f4-hal
 cp -Rnv $src/Drivers/STM32F4xx_HAL_Driver/Inc/* $stm/stm32f4-hal.pack/include/stm32f4-hal/
 cp -Rnv $src/Drivers/STM32F4xx_HAL_Driver/Src/* $stm/stm32f4-hal.pack/src/stm32f4-hal/
 cp -Rnv $src/Drivers/STM32F4xx_HAL_Driver/Release_Notes.html $stm/stm32f4-hal.pack/
+
+echo
+echo Done
