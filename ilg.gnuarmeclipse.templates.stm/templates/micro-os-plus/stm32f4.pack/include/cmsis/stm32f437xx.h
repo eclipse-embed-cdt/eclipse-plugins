@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f437xx.h
   * @author  MCD Application Team
-  * @version V2.4.0
-  * @date    14-August-2015
+  * @version V2.4.1
+  * @date    09-October-2015
   * @brief   CMSIS STM32F437xx Device Peripheral Access Layer Header File.
   *
   *          This file contains:

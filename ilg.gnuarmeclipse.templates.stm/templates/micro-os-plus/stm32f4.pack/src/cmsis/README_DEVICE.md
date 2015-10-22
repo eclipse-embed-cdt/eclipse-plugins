@@ -4,13 +4,14 @@ This project, available from [GitHub](https://github.com/xpacks), includes the C
 
 ## Version
 
-    v1.8.0
+* package v1.9.0
+* CMSIS v2.4.1
 
 ## Original files
 
 The original files are available from the `originals` branch.
 
-These files were extracted from `stm32cube_fw_f4_v180.zip`.
+These files were extracted from `stm32cube_fw_f4_v190.zip`.
 
 To save space, only the following folder was preserved:
 

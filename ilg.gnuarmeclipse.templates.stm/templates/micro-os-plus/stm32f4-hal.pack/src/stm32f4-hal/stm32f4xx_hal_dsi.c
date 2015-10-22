@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_dsi.c
   * @author  MCD Application Team
-  * @version V1.4.0
-  * @date    14-August-2015
+  * @version V1.4.1
+  * @date    09-October-2015
   * @brief   DSI HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the DSI peripheral:
@@ -231,7 +231,7 @@ HAL_StatusTypeDef HAL_DSI_Init(DSI_HandleTypeDef *hdsi, DSI_PLLInitTypeDef *PLLI
     unitIntervalx4 = (4000000 * tempIDF * (1 << PLLInit->PLLODF)) / ((HSE_VALUE/1000) * PLLInit->PLLNDIV);
 	
     /* Set the bit period in high-speed mode */
-    hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_UIX4;
+    hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_UIX4;
     hdsi->Instance->WPCR[0] |= unitIntervalx4;
   
   /****************************** Error management *****************************/
@@ -941,12 +941,25 @@ HAL_StatusTypeDef HAL_DSI_ConfigFlowControl(DSI_HandleTypeDef *hdsi, uint32_t Fl
   */
 HAL_StatusTypeDef HAL_DSI_ConfigPhyTimer(DSI_HandleTypeDef *hdsi, DSI_PHY_TimerTypeDef *PhyTimers)
 {
+  uint32_t maxTime;
   /* Process locked */
   __HAL_LOCK(hdsi);
   
+  maxTime = (PhyTimers->ClockLaneLP2HSTime > PhyTimers->ClockLaneHS2LPTime)? PhyTimers->ClockLaneLP2HSTime: PhyTimers->ClockLaneHS2LPTime;
+
   /* Clock lane timer configuration */
+
+  /* In Automatic Clock Lane control mode, the DSI Host can turn off the clock lane between two
+     High-Speed transmission.
+     To do so, the DSI Host calculates the time required for the clock lane to change from HighSpeed
+     to Low-Power and from Low-Power to High-Speed.
+     This timings are configured by the HS2LP_TIME and LP2HS_TIME in the DSI Host Clock Lane Timer Configuration Register (DSI_CLTCR).
+     But the DSI Host is not calculating LP2HS_TIME + HS2LP_TIME but 2 x HS2LP_TIME.
+
+     Workaround : Configure HS2LP_TIME and LP2HS_TIME with the same value being the max of HS2LP_TIME or LP2HS_TIME.
+  */
   hdsi->Instance->CLTCR &= ~(DSI_CLTCR_LP2HS_TIME | DSI_CLTCR_HS2LP_TIME);
-  hdsi->Instance->CLTCR |= (PhyTimers->ClockLaneLP2HSTime | ((PhyTimers->ClockLaneHS2LPTime)<<16));
+  hdsi->Instance->CLTCR |= (maxTime | ((maxTime)<<16));
   
   /* Data lane timer configuration */
   hdsi->Instance->DLTCR &= ~(DSI_DLTCR_MRD_TIME | DSI_DLTCR_LP2HS_TIME | DSI_DLTCR_HS2LP_TIME);
@@ -980,35 +993,35 @@ HAL_StatusTypeDef HAL_DSI_ConfigHostTimeouts(DSI_HandleTypeDef *hdsi, DSI_HOST_T
   hdsi->Instance->CCR = ((HostTimeouts->TimeoutCkdiv)<<8);
   
   /* High-speed transmission timeout */
-  hdsi->Instance->TCCR[0] &= ~DSI_TCCR1_HSTX_TOCNT;
+  hdsi->Instance->TCCR[0] &= ~DSI_TCCR0_HSTX_TOCNT;
   hdsi->Instance->TCCR[0] |= ((HostTimeouts->HighSpeedTransmissionTimeout)<<16);
   
   /* Low-power reception timeout */
-  hdsi->Instance->TCCR[0] &= ~DSI_TCCR1_LPRX_TOCNT;
+  hdsi->Instance->TCCR[0] &= ~DSI_TCCR0_LPRX_TOCNT;
   hdsi->Instance->TCCR[0] |= HostTimeouts->LowPowerReceptionTimeout;
   
   /* High-speed read timeout */
-  hdsi->Instance->TCCR[1] &= ~DSI_TCCR2_HSRD_TOCNT;
+  hdsi->Instance->TCCR[1] &= ~DSI_TCCR1_HSRD_TOCNT;
   hdsi->Instance->TCCR[1] |= HostTimeouts->HighSpeedReadTimeout;
   
   /* Low-power read timeout */
-  hdsi->Instance->TCCR[2] &= ~DSI_TCCR3_LPRD_TOCNT;
+  hdsi->Instance->TCCR[2] &= ~DSI_TCCR2_LPRD_TOCNT;
   hdsi->Instance->TCCR[2] |= HostTimeouts->LowPowerReadTimeout;
   
   /* High-speed write timeout */
-  hdsi->Instance->TCCR[3] &= ~DSI_TCCR4_HSWR_TOCNT;
+  hdsi->Instance->TCCR[3] &= ~DSI_TCCR3_HSWR_TOCNT;
   hdsi->Instance->TCCR[3] |= HostTimeouts->HighSpeedWriteTimeout;
   
   /* High-speed write presp mode */
-  hdsi->Instance->TCCR[3] &= ~DSI_TCCR4_PM;
+  hdsi->Instance->TCCR[3] &= ~DSI_TCCR3_PM;
   hdsi->Instance->TCCR[3] |= HostTimeouts->HighSpeedWritePrespMode;
   
   /* Low-speed write timeout */
-  hdsi->Instance->TCCR[4] &= ~DSI_TCCR5_LPWR_TOCNT;
+  hdsi->Instance->TCCR[4] &= ~DSI_TCCR4_LPWR_TOCNT;
   hdsi->Instance->TCCR[4] |= HostTimeouts->LowPowerWriteTimeout;
   
   /* BTA timeout */
-  hdsi->Instance->TCCR[5] &= ~DSI_TCCR6_BTA_TOCNT;
+  hdsi->Instance->TCCR[5] &= ~DSI_TCCR5_BTA_TOCNT;
   hdsi->Instance->TCCR[5] |= HostTimeouts->BTATimeout;
   
   /* Process unlocked */
@@ -1726,13 +1739,13 @@ HAL_StatusTypeDef HAL_DSI_SetSlewRateAndDelayTuning(DSI_HandleTypeDef *hdsi, uin
     if(Lane == DSI_CLOCK_LANE)
     {
       /* High-Speed Transmission Slew Rate Control on Clock Lane */
-      hdsi->Instance->WPCR[1] &= ~DSI_WPCR2_HSTXSRCCL;
+      hdsi->Instance->WPCR[1] &= ~DSI_WPCR1_HSTXSRCCL;
       hdsi->Instance->WPCR[1] |= Value<<16;
     }
     else if(Lane == DSI_DATA_LANES)
     {
       /* High-Speed Transmission Slew Rate Control on Data Lanes */
-      hdsi->Instance->WPCR[1] &= ~DSI_WPCR2_HSTXSRCDL;
+      hdsi->Instance->WPCR[1] &= ~DSI_WPCR1_HSTXSRCDL;
       hdsi->Instance->WPCR[1] |= Value<<18;
     }
     break;
@@ -1740,13 +1753,13 @@ HAL_StatusTypeDef HAL_DSI_SetSlewRateAndDelayTuning(DSI_HandleTypeDef *hdsi, uin
     if(Lane == DSI_CLOCK_LANE)
     {
       /* Low-Power transmission Slew Rate Compensation on Clock Lane */
-      hdsi->Instance->WPCR[1] &= ~DSI_WPCR2_LPSRCCL;
+      hdsi->Instance->WPCR[1] &= ~DSI_WPCR1_LPSRCCL;
       hdsi->Instance->WPCR[1] |= Value<<6;
     }
     else if(Lane == DSI_DATA_LANES)
     {
       /* Low-Power transmission Slew Rate Compensation on Data Lanes */
-      hdsi->Instance->WPCR[1] &= ~DSI_WPCR2_LPSRCDL;
+      hdsi->Instance->WPCR[1] &= ~DSI_WPCR1_LPSRCDL;
       hdsi->Instance->WPCR[1] |= Value<<8;
     }
     break;
@@ -1754,13 +1767,13 @@ HAL_StatusTypeDef HAL_DSI_SetSlewRateAndDelayTuning(DSI_HandleTypeDef *hdsi, uin
     if(Lane == DSI_CLOCK_LANE)
     {
       /* High-Speed Transmission Delay on Clock Lane */
-      hdsi->Instance->WPCR[1] &= ~DSI_WPCR2_HSTXDCL;
+      hdsi->Instance->WPCR[1] &= ~DSI_WPCR1_HSTXDCL;
       hdsi->Instance->WPCR[1] |= Value;
     }
     else if(Lane == DSI_DATA_LANES)
     {
       /* High-Speed Transmission Delay on Data Lanes */
-      hdsi->Instance->WPCR[1] &= ~DSI_WPCR2_HSTXDDL;
+      hdsi->Instance->WPCR[1] &= ~DSI_WPCR1_HSTXDDL;
       hdsi->Instance->WPCR[1] |= Value<<2;
     }
     break;
@@ -1787,7 +1800,7 @@ HAL_StatusTypeDef HAL_DSI_SetLowPowerRXFilter(DSI_HandleTypeDef *hdsi, uint32_t 
   __HAL_LOCK(hdsi);
   
   /* Low-Power RX low-pass Filtering Tuning */
-  hdsi->Instance->WPCR[1] &= ~DSI_WPCR2_LPRXFT;
+  hdsi->Instance->WPCR[1] &= ~DSI_WPCR1_LPRXFT;
   hdsi->Instance->WPCR[1] |= Frequency<<25;
   
   /* Process unlocked */
@@ -1813,7 +1826,7 @@ HAL_StatusTypeDef HAL_DSI_SetSDD(DSI_HandleTypeDef *hdsi, FunctionalState State)
   assert_param(IS_FUNCTIONAL_STATE(State));
   
   /* Activate/Disactivate additional current path on all lanes */
-  hdsi->Instance->WPCR[1] &= ~DSI_WPCR2_SDDC;
+  hdsi->Instance->WPCR[1] &= ~DSI_WPCR1_SDDC;
   hdsi->Instance->WPCR[1] |= State<<12;
   
   /* Process unlocked */
@@ -1849,19 +1862,19 @@ HAL_StatusTypeDef HAL_DSI_SetLanePinsConfiguration(DSI_HandleTypeDef *hdsi, uint
     if(Lane == DSI_CLOCK_LANE)
     {
       /* Swap pins on clock lane */
-      hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_SWCL;
+      hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_SWCL;
       hdsi->Instance->WPCR[0] |= (State<<6);
     }
     else if(Lane == DSI_DATA_LANE0)
     {
       /* Swap pins on data lane 0 */
-      hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_SWDL0;
+      hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_SWDL0;
       hdsi->Instance->WPCR[0] |= (State<<7);
     }
     else if(Lane == DSI_DATA_LANE1)
     {
       /* Swap pins on data lane 1 */
-      hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_SWDL1;
+      hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_SWDL1;
       hdsi->Instance->WPCR[0] |= (State<<8);
     }
     break;
@@ -1869,19 +1882,19 @@ HAL_StatusTypeDef HAL_DSI_SetLanePinsConfiguration(DSI_HandleTypeDef *hdsi, uint
     if(Lane == DSI_CLOCK_LANE)
     {
       /* Invert HS signal on clock lane */
-      hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_HSICL;
+      hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_HSICL;
       hdsi->Instance->WPCR[0] |= (State<<9);
     }
     else if(Lane == DSI_DATA_LANE0)
     {
       /* Invert HS signal on data lane 0 */
-      hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_HSIDL0;
+      hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_HSIDL0;
       hdsi->Instance->WPCR[0] |= (State<<10);
     }
     else if(Lane == DSI_DATA_LANE1)
     {
       /* Invert HS signal on data lane 1 */
-      hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_HSIDL1;
+      hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_HSIDL1;
       hdsi->Instance->WPCR[0] |= (State<<11);
     }
     break;
@@ -1918,117 +1931,117 @@ HAL_StatusTypeDef HAL_DSI_SetPHYTimings(DSI_HandleTypeDef *hdsi, uint32_t Timing
   {
   case DSI_TCLK_POST:
     /* Enable/Disable custom timing setting */
-    hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_TCLKPOSTEN;
+    hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_TCLKPOSTEN;
     hdsi->Instance->WPCR[0] |= (State<<27);
     
     if(State)
     {
       /* Set custom value */
-      hdsi->Instance->WPCR[4] &= ~DSI_WPCR5_TCLKPOST;
+      hdsi->Instance->WPCR[4] &= ~DSI_WPCR4_TCLKPOST;
       hdsi->Instance->WPCR[4] |= Value;
     }
     
     break;
   case DSI_TLPX_CLK:
     /* Enable/Disable custom timing setting */
-    hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_TLPXCEN;
+    hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_TLPXCEN;
     hdsi->Instance->WPCR[0] |= (State<<26);
     
     if(State)
     {
       /* Set custom value */
-      hdsi->Instance->WPCR[3] &= ~DSI_WPCR4_TLPXC;
+      hdsi->Instance->WPCR[3] &= ~DSI_WPCR3_TLPXC;
       hdsi->Instance->WPCR[3] |= Value;
     }
     
     break;
   case DSI_THS_EXIT:
     /* Enable/Disable custom timing setting */
-    hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_THSEXITEN;
+    hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_THSEXITEN;
     hdsi->Instance->WPCR[0] |= (State<<25);
     
     if(State)
     {
       /* Set custom value */
-      hdsi->Instance->WPCR[3] &= ~DSI_WPCR4_THSEXIT;
+      hdsi->Instance->WPCR[3] &= ~DSI_WPCR3_THSEXIT;
       hdsi->Instance->WPCR[3] |= Value;
     }
     
     break;
   case DSI_TLPX_DATA:
     /* Enable/Disable custom timing setting */
-    hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_TLPXDEN;
+    hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_TLPXDEN;
     hdsi->Instance->WPCR[0] |= (State<<24);
     
     if(State)
     {
       /* Set custom value */
-      hdsi->Instance->WPCR[3] &= ~DSI_WPCR4_TLPXD;
+      hdsi->Instance->WPCR[3] &= ~DSI_WPCR3_TLPXD;
       hdsi->Instance->WPCR[3] |= Value;
     }
     
     break;
   case DSI_THS_ZERO:
     /* Enable/Disable custom timing setting */
-    hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_THSZEROEN;
+    hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_THSZEROEN;
     hdsi->Instance->WPCR[0] |= (State<<23);
     
     if(State)
     {
       /* Set custom value */
-      hdsi->Instance->WPCR[3] &= ~DSI_WPCR4_THSZERO;
+      hdsi->Instance->WPCR[3] &= ~DSI_WPCR3_THSZERO;
       hdsi->Instance->WPCR[3] |= Value;
     }
     
     break;
   case DSI_THS_TRAIL:
     /* Enable/Disable custom timing setting */
-    hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_THSTRAILEN;
+    hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_THSTRAILEN;
     hdsi->Instance->WPCR[0] |= (State<<22);
     
     if(State)
     {
       /* Set custom value */
-      hdsi->Instance->WPCR[2] &= ~DSI_WPCR3_THSTRAIL;
+      hdsi->Instance->WPCR[2] &= ~DSI_WPCR2_THSTRAIL;
       hdsi->Instance->WPCR[2] |= Value;
     }
     
     break;
   case DSI_THS_PREPARE:
     /* Enable/Disable custom timing setting */
-    hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_THSPREPEN;
+    hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_THSPREPEN;
     hdsi->Instance->WPCR[0] |= (State<<21);
     
     if(State)
     {
       /* Set custom value */
-      hdsi->Instance->WPCR[2] &= ~DSI_WPCR3_THSPREP;
+      hdsi->Instance->WPCR[2] &= ~DSI_WPCR2_THSPREP;
       hdsi->Instance->WPCR[2] |= Value;
     }
     
     break;
   case DSI_TCLK_ZERO:
     /* Enable/Disable custom timing setting */
-    hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_TCLKZEROEN;
+    hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_TCLKZEROEN;
     hdsi->Instance->WPCR[0] |= (State<<20);
     
     if(State)
     {
       /* Set custom value */
-      hdsi->Instance->WPCR[2] &= ~DSI_WPCR3_TCLKZERO;
+      hdsi->Instance->WPCR[2] &= ~DSI_WPCR2_TCLKZERO;
       hdsi->Instance->WPCR[2] |= Value;
     }
     
     break;
   case DSI_TCLK_PREPARE:
     /* Enable/Disable custom timing setting */
-    hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_TCLKPREPEN;
+    hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_TCLKPREPEN;
     hdsi->Instance->WPCR[0] |= (State<<19);
     
     if(State)
     {
       /* Set custom value */
-      hdsi->Instance->WPCR[2] &= ~DSI_WPCR3_TCLKPREP;
+      hdsi->Instance->WPCR[2] &= ~DSI_WPCR2_TCLKPREP;
       hdsi->Instance->WPCR[2] |= Value;
     }
     
@@ -2064,13 +2077,13 @@ HAL_StatusTypeDef HAL_DSI_ForceTXStopMode(DSI_HandleTypeDef *hdsi, uint32_t Lane
   if(Lane == DSI_CLOCK_LANE)
   {
     /* Force/Unforce the Clock Lane in TX Stop Mode */
-    hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_FTXSMCL;
+    hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_FTXSMCL;
     hdsi->Instance->WPCR[0] |= (State<<12);
   }
   else if(Lane == DSI_DATA_LANES)
   {
     /* Force/Unforce the Data Lanes in TX Stop Mode */
-    hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_FTXSMDL;
+    hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_FTXSMDL;
     hdsi->Instance->WPCR[0] |= (State<<13);
   }
   
@@ -2096,7 +2109,7 @@ HAL_StatusTypeDef HAL_DSI_ForceRXLowPower(DSI_HandleTypeDef *hdsi, FunctionalSta
   assert_param(IS_FUNCTIONAL_STATE(State));
   
   /* Force/Unforce LP Receiver in Low-Power Mode */
-  hdsi->Instance->WPCR[1] &= ~DSI_WPCR2_FLPRXLPM;
+  hdsi->Instance->WPCR[1] &= ~DSI_WPCR1_FLPRXLPM;
   hdsi->Instance->WPCR[1] |= State<<22;
   
   /* Process unlocked */
@@ -2121,7 +2134,7 @@ HAL_StatusTypeDef HAL_DSI_ForceDataLanesInRX(DSI_HandleTypeDef *hdsi, Functional
   assert_param(IS_FUNCTIONAL_STATE(State));
   
   /* Force Data Lanes in RX Mode */
-  hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_TDDL;
+  hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_TDDL;
   hdsi->Instance->WPCR[0] |= State<<16;
   
   /* Process unlocked */
@@ -2146,7 +2159,7 @@ HAL_StatusTypeDef HAL_DSI_SetPullDown(DSI_HandleTypeDef *hdsi, FunctionalState S
   assert_param(IS_FUNCTIONAL_STATE(State));
   
   /* Enable/Disable pull-down on lanes */
-  hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_PDEN;
+  hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_PDEN;
   hdsi->Instance->WPCR[0] |= State<<18;
   
   /* Process unlocked */
@@ -2171,7 +2184,7 @@ HAL_StatusTypeDef HAL_DSI_SetContentionDetectionOff(DSI_HandleTypeDef *hdsi, Fun
   assert_param(IS_FUNCTIONAL_STATE(State));
   
   /* Contention Detection on Data Lanes OFF */
-  hdsi->Instance->WPCR[0] &= ~DSI_WPCR1_CDOFFDL;
+  hdsi->Instance->WPCR[0] &= ~DSI_WPCR0_CDOFFDL;
   hdsi->Instance->WPCR[0] |= State<<14;
   
   /* Process unlocked */

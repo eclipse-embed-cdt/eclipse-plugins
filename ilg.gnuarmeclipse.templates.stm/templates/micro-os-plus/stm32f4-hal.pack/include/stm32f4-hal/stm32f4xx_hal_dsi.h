@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_dsi.h
   * @author  MCD Application Team
-  * @version V1.4.0
-  * @date    14-August-2015
+  * @version V1.4.1
+  * @date    09-October-2015
   * @brief   Header file of DSI HAL module.
   ******************************************************************************
   * @attention
@@ -645,7 +645,7 @@ typedef struct
   * @{
   */
 #define DSI_HS_PM_DISABLE 0
-#define DSI_HS_PM_ENABLE DSI_TCCR4_PM
+#define DSI_HS_PM_ENABLE DSI_TCCR3_PM
 /**
   * @}
   */

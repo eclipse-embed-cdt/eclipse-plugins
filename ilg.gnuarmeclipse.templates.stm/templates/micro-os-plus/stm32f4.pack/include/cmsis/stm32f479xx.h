@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f479xx.h
   * @author  MCD Application Team
-  * @version V2.4.0
-  * @date    14-August-2015
+  * @version V2.4.1
+  * @date    09-October-2015
   * @brief   CMSIS STM32F479xx Device Peripheral Access Layer Header File.
   *
   *          This file contains:
@@ -4083,139 +4083,139 @@ typedef struct
 #define DSI_GPSR_PRDFF                 ((uint32_t)0x00000020)               /*!< Payload Read FIFO Full */
 #define DSI_GPSR_RCB                   ((uint32_t)0x00000040)               /*!< Read Command Busy */
 
-/*******************  Bit definition for DSI_TCCR1 register  **************/
-#define DSI_TCCR1_LPRX_TOCNT           ((uint32_t)0x0000FFFF)               /*!< Low-power Reception Timeout Counter */
-#define DSI_TCCR1_LPRX_TOCNT0          ((uint32_t)0x00000001)
-#define DSI_TCCR1_LPRX_TOCNT1          ((uint32_t)0x00000002)
-#define DSI_TCCR1_LPRX_TOCNT2          ((uint32_t)0x00000004)
-#define DSI_TCCR1_LPRX_TOCNT3          ((uint32_t)0x00000008)
-#define DSI_TCCR1_LPRX_TOCNT4          ((uint32_t)0x00000010)
-#define DSI_TCCR1_LPRX_TOCNT5          ((uint32_t)0x00000020)
-#define DSI_TCCR1_LPRX_TOCNT6          ((uint32_t)0x00000040)
-#define DSI_TCCR1_LPRX_TOCNT7          ((uint32_t)0x00000080)
-#define DSI_TCCR1_LPRX_TOCNT8          ((uint32_t)0x00000100)
-#define DSI_TCCR1_LPRX_TOCNT9          ((uint32_t)0x00000200)
-#define DSI_TCCR1_LPRX_TOCNT10         ((uint32_t)0x00000400)
-#define DSI_TCCR1_LPRX_TOCNT11         ((uint32_t)0x00000800)
-#define DSI_TCCR1_LPRX_TOCNT12         ((uint32_t)0x00001000)
-#define DSI_TCCR1_LPRX_TOCNT13         ((uint32_t)0x00002000)
-#define DSI_TCCR1_LPRX_TOCNT14         ((uint32_t)0x00004000)
-#define DSI_TCCR1_LPRX_TOCNT15         ((uint32_t)0x00008000)
+/*******************  Bit definition for DSI_TCCR0 register  **************/
+#define DSI_TCCR0_LPRX_TOCNT           ((uint32_t)0x0000FFFF)               /*!< Low-power Reception Timeout Counter */
+#define DSI_TCCR0_LPRX_TOCNT0          ((uint32_t)0x00000001)
+#define DSI_TCCR0_LPRX_TOCNT1          ((uint32_t)0x00000002)
+#define DSI_TCCR0_LPRX_TOCNT2          ((uint32_t)0x00000004)
+#define DSI_TCCR0_LPRX_TOCNT3          ((uint32_t)0x00000008)
+#define DSI_TCCR0_LPRX_TOCNT4          ((uint32_t)0x00000010)
+#define DSI_TCCR0_LPRX_TOCNT5          ((uint32_t)0x00000020)
+#define DSI_TCCR0_LPRX_TOCNT6          ((uint32_t)0x00000040)
+#define DSI_TCCR0_LPRX_TOCNT7          ((uint32_t)0x00000080)
+#define DSI_TCCR0_LPRX_TOCNT8          ((uint32_t)0x00000100)
+#define DSI_TCCR0_LPRX_TOCNT9          ((uint32_t)0x00000200)
+#define DSI_TCCR0_LPRX_TOCNT10         ((uint32_t)0x00000400)
+#define DSI_TCCR0_LPRX_TOCNT11         ((uint32_t)0x00000800)
+#define DSI_TCCR0_LPRX_TOCNT12         ((uint32_t)0x00001000)
+#define DSI_TCCR0_LPRX_TOCNT13         ((uint32_t)0x00002000)
+#define DSI_TCCR0_LPRX_TOCNT14         ((uint32_t)0x00004000)
+#define DSI_TCCR0_LPRX_TOCNT15         ((uint32_t)0x00008000)
 
-#define DSI_TCCR1_HSTX_TOCNT           ((uint32_t)0xFFFF0000)               /*!< High-Speed Transmission Timeout Counter */
-#define DSI_TCCR1_HSTX_TOCNT0          ((uint32_t)0x00010000)
-#define DSI_TCCR1_HSTX_TOCNT1          ((uint32_t)0x00020000)
-#define DSI_TCCR1_HSTX_TOCNT2          ((uint32_t)0x00040000)
-#define DSI_TCCR1_HSTX_TOCNT3          ((uint32_t)0x00080000)
-#define DSI_TCCR1_HSTX_TOCNT4          ((uint32_t)0x00100000)
-#define DSI_TCCR1_HSTX_TOCNT5          ((uint32_t)0x00200000)
-#define DSI_TCCR1_HSTX_TOCNT6          ((uint32_t)0x00400000)
-#define DSI_TCCR1_HSTX_TOCNT7          ((uint32_t)0x00800000)
-#define DSI_TCCR1_HSTX_TOCNT8          ((uint32_t)0x01000000)
-#define DSI_TCCR1_HSTX_TOCNT9          ((uint32_t)0x02000000)
-#define DSI_TCCR1_HSTX_TOCNT10         ((uint32_t)0x04000000)
-#define DSI_TCCR1_HSTX_TOCNT11         ((uint32_t)0x08000000)
-#define DSI_TCCR1_HSTX_TOCNT12         ((uint32_t)0x10000000)
-#define DSI_TCCR1_HSTX_TOCNT13         ((uint32_t)0x20000000)
-#define DSI_TCCR1_HSTX_TOCNT14         ((uint32_t)0x40000000)
-#define DSI_TCCR1_HSTX_TOCNT15         ((uint32_t)0x80000000)
+#define DSI_TCCR0_HSTX_TOCNT           ((uint32_t)0xFFFF0000)               /*!< High-Speed Transmission Timeout Counter */
+#define DSI_TCCR0_HSTX_TOCNT0          ((uint32_t)0x00010000)
+#define DSI_TCCR0_HSTX_TOCNT1          ((uint32_t)0x00020000)
+#define DSI_TCCR0_HSTX_TOCNT2          ((uint32_t)0x00040000)
+#define DSI_TCCR0_HSTX_TOCNT3          ((uint32_t)0x00080000)
+#define DSI_TCCR0_HSTX_TOCNT4          ((uint32_t)0x00100000)
+#define DSI_TCCR0_HSTX_TOCNT5          ((uint32_t)0x00200000)
+#define DSI_TCCR0_HSTX_TOCNT6          ((uint32_t)0x00400000)
+#define DSI_TCCR0_HSTX_TOCNT7          ((uint32_t)0x00800000)
+#define DSI_TCCR0_HSTX_TOCNT8          ((uint32_t)0x01000000)
+#define DSI_TCCR0_HSTX_TOCNT9          ((uint32_t)0x02000000)
+#define DSI_TCCR0_HSTX_TOCNT10         ((uint32_t)0x04000000)
+#define DSI_TCCR0_HSTX_TOCNT11         ((uint32_t)0x08000000)
+#define DSI_TCCR0_HSTX_TOCNT12         ((uint32_t)0x10000000)
+#define DSI_TCCR0_HSTX_TOCNT13         ((uint32_t)0x20000000)
+#define DSI_TCCR0_HSTX_TOCNT14         ((uint32_t)0x40000000)
+#define DSI_TCCR0_HSTX_TOCNT15         ((uint32_t)0x80000000)
+
+/*******************  Bit definition for DSI_TCCR1 register  **************/
+#define DSI_TCCR1_HSRD_TOCNT           ((uint32_t)0x0000FFFF)               /*!< High-Speed Read Timeout Counter */
+#define DSI_TCCR1_HSRD_TOCNT0          ((uint32_t)0x00000001)
+#define DSI_TCCR1_HSRD_TOCNT1          ((uint32_t)0x00000002)
+#define DSI_TCCR1_HSRD_TOCNT2          ((uint32_t)0x00000004)
+#define DSI_TCCR1_HSRD_TOCNT3          ((uint32_t)0x00000008)
+#define DSI_TCCR1_HSRD_TOCNT4          ((uint32_t)0x00000010)
+#define DSI_TCCR1_HSRD_TOCNT5          ((uint32_t)0x00000020)
+#define DSI_TCCR1_HSRD_TOCNT6          ((uint32_t)0x00000040)
+#define DSI_TCCR1_HSRD_TOCNT7          ((uint32_t)0x00000080)
+#define DSI_TCCR1_HSRD_TOCNT8          ((uint32_t)0x00000100)
+#define DSI_TCCR1_HSRD_TOCNT9          ((uint32_t)0x00000200)
+#define DSI_TCCR1_HSRD_TOCNT10         ((uint32_t)0x00000400)
+#define DSI_TCCR1_HSRD_TOCNT11         ((uint32_t)0x00000800)
+#define DSI_TCCR1_HSRD_TOCNT12         ((uint32_t)0x00001000)
+#define DSI_TCCR1_HSRD_TOCNT13         ((uint32_t)0x00002000)
+#define DSI_TCCR1_HSRD_TOCNT14         ((uint32_t)0x00004000)
+#define DSI_TCCR1_HSRD_TOCNT15         ((uint32_t)0x00008000)
 
 /*******************  Bit definition for DSI_TCCR2 register  **************/
-#define DSI_TCCR2_HSRD_TOCNT           ((uint32_t)0x0000FFFF)               /*!< High-Speed Read Timeout Counter */
-#define DSI_TCCR2_HSRD_TOCNT0          ((uint32_t)0x00000001)
-#define DSI_TCCR2_HSRD_TOCNT1          ((uint32_t)0x00000002)
-#define DSI_TCCR2_HSRD_TOCNT2          ((uint32_t)0x00000004)
-#define DSI_TCCR2_HSRD_TOCNT3          ((uint32_t)0x00000008)
-#define DSI_TCCR2_HSRD_TOCNT4          ((uint32_t)0x00000010)
-#define DSI_TCCR2_HSRD_TOCNT5          ((uint32_t)0x00000020)
-#define DSI_TCCR2_HSRD_TOCNT6          ((uint32_t)0x00000040)
-#define DSI_TCCR2_HSRD_TOCNT7          ((uint32_t)0x00000080)
-#define DSI_TCCR2_HSRD_TOCNT8          ((uint32_t)0x00000100)
-#define DSI_TCCR2_HSRD_TOCNT9          ((uint32_t)0x00000200)
-#define DSI_TCCR2_HSRD_TOCNT10         ((uint32_t)0x00000400)
-#define DSI_TCCR2_HSRD_TOCNT11         ((uint32_t)0x00000800)
-#define DSI_TCCR2_HSRD_TOCNT12         ((uint32_t)0x00001000)
-#define DSI_TCCR2_HSRD_TOCNT13         ((uint32_t)0x00002000)
-#define DSI_TCCR2_HSRD_TOCNT14         ((uint32_t)0x00004000)
-#define DSI_TCCR2_HSRD_TOCNT15         ((uint32_t)0x00008000)
+#define DSI_TCCR2_LPRD_TOCNT           ((uint32_t)0x0000FFFF)               /*!< Low-Power Read Timeout Counter */
+#define DSI_TCCR2_LPRD_TOCNT0          ((uint32_t)0x00000001)
+#define DSI_TCCR2_LPRD_TOCNT1          ((uint32_t)0x00000002)
+#define DSI_TCCR2_LPRD_TOCNT2          ((uint32_t)0x00000004)
+#define DSI_TCCR2_LPRD_TOCNT3          ((uint32_t)0x00000008)
+#define DSI_TCCR2_LPRD_TOCNT4          ((uint32_t)0x00000010)
+#define DSI_TCCR2_LPRD_TOCNT5          ((uint32_t)0x00000020)
+#define DSI_TCCR2_LPRD_TOCNT6          ((uint32_t)0x00000040)
+#define DSI_TCCR2_LPRD_TOCNT7          ((uint32_t)0x00000080)
+#define DSI_TCCR2_LPRD_TOCNT8          ((uint32_t)0x00000100)
+#define DSI_TCCR2_LPRD_TOCNT9          ((uint32_t)0x00000200)
+#define DSI_TCCR2_LPRD_TOCNT10         ((uint32_t)0x00000400)
+#define DSI_TCCR2_LPRD_TOCNT11         ((uint32_t)0x00000800)
+#define DSI_TCCR2_LPRD_TOCNT12         ((uint32_t)0x00001000)
+#define DSI_TCCR2_LPRD_TOCNT13         ((uint32_t)0x00002000)
+#define DSI_TCCR2_LPRD_TOCNT14         ((uint32_t)0x00004000)
+#define DSI_TCCR2_LPRD_TOCNT15         ((uint32_t)0x00008000)
 
 /*******************  Bit definition for DSI_TCCR3 register  **************/
-#define DSI_TCCR3_LPRD_TOCNT           ((uint32_t)0x0000FFFF)               /*!< Low-Power Read Timeout Counter */
-#define DSI_TCCR3_LPRD_TOCNT0          ((uint32_t)0x00000001)
-#define DSI_TCCR3_LPRD_TOCNT1          ((uint32_t)0x00000002)
-#define DSI_TCCR3_LPRD_TOCNT2          ((uint32_t)0x00000004)
-#define DSI_TCCR3_LPRD_TOCNT3          ((uint32_t)0x00000008)
-#define DSI_TCCR3_LPRD_TOCNT4          ((uint32_t)0x00000010)
-#define DSI_TCCR3_LPRD_TOCNT5          ((uint32_t)0x00000020)
-#define DSI_TCCR3_LPRD_TOCNT6          ((uint32_t)0x00000040)
-#define DSI_TCCR3_LPRD_TOCNT7          ((uint32_t)0x00000080)
-#define DSI_TCCR3_LPRD_TOCNT8          ((uint32_t)0x00000100)
-#define DSI_TCCR3_LPRD_TOCNT9          ((uint32_t)0x00000200)
-#define DSI_TCCR3_LPRD_TOCNT10         ((uint32_t)0x00000400)
-#define DSI_TCCR3_LPRD_TOCNT11         ((uint32_t)0x00000800)
-#define DSI_TCCR3_LPRD_TOCNT12         ((uint32_t)0x00001000)
-#define DSI_TCCR3_LPRD_TOCNT13         ((uint32_t)0x00002000)
-#define DSI_TCCR3_LPRD_TOCNT14         ((uint32_t)0x00004000)
-#define DSI_TCCR3_LPRD_TOCNT15         ((uint32_t)0x00008000)
+#define DSI_TCCR3_HSWR_TOCNT           ((uint32_t)0x0000FFFF)               /*!< High-Speed Write Timeout Counter */
+#define DSI_TCCR3_HSWR_TOCNT0          ((uint32_t)0x00000001)
+#define DSI_TCCR3_HSWR_TOCNT1          ((uint32_t)0x00000002)
+#define DSI_TCCR3_HSWR_TOCNT2          ((uint32_t)0x00000004)
+#define DSI_TCCR3_HSWR_TOCNT3          ((uint32_t)0x00000008)
+#define DSI_TCCR3_HSWR_TOCNT4          ((uint32_t)0x00000010)
+#define DSI_TCCR3_HSWR_TOCNT5          ((uint32_t)0x00000020)
+#define DSI_TCCR3_HSWR_TOCNT6          ((uint32_t)0x00000040)
+#define DSI_TCCR3_HSWR_TOCNT7          ((uint32_t)0x00000080)
+#define DSI_TCCR3_HSWR_TOCNT8          ((uint32_t)0x00000100)
+#define DSI_TCCR3_HSWR_TOCNT9          ((uint32_t)0x00000200)
+#define DSI_TCCR3_HSWR_TOCNT10         ((uint32_t)0x00000400)
+#define DSI_TCCR3_HSWR_TOCNT11         ((uint32_t)0x00000800)
+#define DSI_TCCR3_HSWR_TOCNT12         ((uint32_t)0x00001000)
+#define DSI_TCCR3_HSWR_TOCNT13         ((uint32_t)0x00002000)
+#define DSI_TCCR3_HSWR_TOCNT14         ((uint32_t)0x00004000)
+#define DSI_TCCR3_HSWR_TOCNT15         ((uint32_t)0x00008000)
+
+#define DSI_TCCR3_PM                   ((uint32_t)0x01000000)               /*!< Presp Mode */
 
 /*******************  Bit definition for DSI_TCCR4 register  **************/
-#define DSI_TCCR4_HSWR_TOCNT           ((uint32_t)0x0000FFFF)               /*!< High-Speed Write Timeout Counter */
-#define DSI_TCCR4_HSWR_TOCNT0          ((uint32_t)0x00000001)
-#define DSI_TCCR4_HSWR_TOCNT1          ((uint32_t)0x00000002)
-#define DSI_TCCR4_HSWR_TOCNT2          ((uint32_t)0x00000004)
-#define DSI_TCCR4_HSWR_TOCNT3          ((uint32_t)0x00000008)
-#define DSI_TCCR4_HSWR_TOCNT4          ((uint32_t)0x00000010)
-#define DSI_TCCR4_HSWR_TOCNT5          ((uint32_t)0x00000020)
-#define DSI_TCCR4_HSWR_TOCNT6          ((uint32_t)0x00000040)
-#define DSI_TCCR4_HSWR_TOCNT7          ((uint32_t)0x00000080)
-#define DSI_TCCR4_HSWR_TOCNT8          ((uint32_t)0x00000100)
-#define DSI_TCCR4_HSWR_TOCNT9          ((uint32_t)0x00000200)
-#define DSI_TCCR4_HSWR_TOCNT10         ((uint32_t)0x00000400)
-#define DSI_TCCR4_HSWR_TOCNT11         ((uint32_t)0x00000800)
-#define DSI_TCCR4_HSWR_TOCNT12         ((uint32_t)0x00001000)
-#define DSI_TCCR4_HSWR_TOCNT13         ((uint32_t)0x00002000)
-#define DSI_TCCR4_HSWR_TOCNT14         ((uint32_t)0x00004000)
-#define DSI_TCCR4_HSWR_TOCNT15         ((uint32_t)0x00008000)
-
-#define DSI_TCCR4_PM                   ((uint32_t)0x01000000)               /*!< Presp Mode */
+#define DSI_TCCR4_LPWR_TOCNT           ((uint32_t)0x0000FFFF)               /*!< Low-Power Write Timeout Counter */
+#define DSI_TCCR4_LPWR_TOCNT0          ((uint32_t)0x00000001)
+#define DSI_TCCR4_LPWR_TOCNT1          ((uint32_t)0x00000002)
+#define DSI_TCCR4_LPWR_TOCNT2          ((uint32_t)0x00000004)
+#define DSI_TCCR4_LPWR_TOCNT3          ((uint32_t)0x00000008)
+#define DSI_TCCR4_LPWR_TOCNT4          ((uint32_t)0x00000010)
+#define DSI_TCCR4_LPWR_TOCNT5          ((uint32_t)0x00000020)
+#define DSI_TCCR4_LPWR_TOCNT6          ((uint32_t)0x00000040)
+#define DSI_TCCR4_LPWR_TOCNT7          ((uint32_t)0x00000080)
+#define DSI_TCCR4_LPWR_TOCNT8          ((uint32_t)0x00000100)
+#define DSI_TCCR4_LPWR_TOCNT9          ((uint32_t)0x00000200)
+#define DSI_TCCR4_LPWR_TOCNT10         ((uint32_t)0x00000400)
+#define DSI_TCCR4_LPWR_TOCNT11         ((uint32_t)0x00000800)
+#define DSI_TCCR4_LPWR_TOCNT12         ((uint32_t)0x00001000)
+#define DSI_TCCR4_LPWR_TOCNT13         ((uint32_t)0x00002000)
+#define DSI_TCCR4_LPWR_TOCNT14         ((uint32_t)0x00004000)
+#define DSI_TCCR4_LPWR_TOCNT15         ((uint32_t)0x00008000)
 
 /*******************  Bit definition for DSI_TCCR5 register  **************/
-#define DSI_TCCR5_LPWR_TOCNT           ((uint32_t)0x0000FFFF)               /*!< Low-Power Write Timeout Counter */
-#define DSI_TCCR5_LPWR_TOCNT0          ((uint32_t)0x00000001)
-#define DSI_TCCR5_LPWR_TOCNT1          ((uint32_t)0x00000002)
-#define DSI_TCCR5_LPWR_TOCNT2          ((uint32_t)0x00000004)
-#define DSI_TCCR5_LPWR_TOCNT3          ((uint32_t)0x00000008)
-#define DSI_TCCR5_LPWR_TOCNT4          ((uint32_t)0x00000010)
-#define DSI_TCCR5_LPWR_TOCNT5          ((uint32_t)0x00000020)
-#define DSI_TCCR5_LPWR_TOCNT6          ((uint32_t)0x00000040)
-#define DSI_TCCR5_LPWR_TOCNT7          ((uint32_t)0x00000080)
-#define DSI_TCCR5_LPWR_TOCNT8          ((uint32_t)0x00000100)
-#define DSI_TCCR5_LPWR_TOCNT9          ((uint32_t)0x00000200)
-#define DSI_TCCR5_LPWR_TOCNT10         ((uint32_t)0x00000400)
-#define DSI_TCCR5_LPWR_TOCNT11         ((uint32_t)0x00000800)
-#define DSI_TCCR5_LPWR_TOCNT12         ((uint32_t)0x00001000)
-#define DSI_TCCR5_LPWR_TOCNT13         ((uint32_t)0x00002000)
-#define DSI_TCCR5_LPWR_TOCNT14         ((uint32_t)0x00004000)
-#define DSI_TCCR5_LPWR_TOCNT15         ((uint32_t)0x00008000)
-
-/*******************  Bit definition for DSI_TCCR6 register  **************/
-#define DSI_TCCR6_BTA_TOCNT            ((uint32_t)0x0000FFFF)               /*!< Bus-Turn-Around Timeout Counter */
-#define DSI_TCCR6_BTA_TOCNT0           ((uint32_t)0x00000001)
-#define DSI_TCCR6_BTA_TOCNT1           ((uint32_t)0x00000002)
-#define DSI_TCCR6_BTA_TOCNT2           ((uint32_t)0x00000004)
-#define DSI_TCCR6_BTA_TOCNT3           ((uint32_t)0x00000008)
-#define DSI_TCCR6_BTA_TOCNT4           ((uint32_t)0x00000010)
-#define DSI_TCCR6_BTA_TOCNT5           ((uint32_t)0x00000020)
-#define DSI_TCCR6_BTA_TOCNT6           ((uint32_t)0x00000040)
-#define DSI_TCCR6_BTA_TOCNT7           ((uint32_t)0x00000080)
-#define DSI_TCCR6_BTA_TOCNT8           ((uint32_t)0x00000100)
-#define DSI_TCCR6_BTA_TOCNT9           ((uint32_t)0x00000200)
-#define DSI_TCCR6_BTA_TOCNT10          ((uint32_t)0x00000400)
-#define DSI_TCCR6_BTA_TOCNT11          ((uint32_t)0x00000800)
-#define DSI_TCCR6_BTA_TOCNT12          ((uint32_t)0x00001000)
-#define DSI_TCCR6_BTA_TOCNT13          ((uint32_t)0x00002000)
-#define DSI_TCCR6_BTA_TOCNT14          ((uint32_t)0x00004000)
-#define DSI_TCCR6_BTA_TOCNT15          ((uint32_t)0x00008000)
+#define DSI_TCCR5_BTA_TOCNT            ((uint32_t)0x0000FFFF)               /*!< Bus-Turn-Around Timeout Counter */
+#define DSI_TCCR5_BTA_TOCNT0           ((uint32_t)0x00000001)
+#define DSI_TCCR5_BTA_TOCNT1           ((uint32_t)0x00000002)
+#define DSI_TCCR5_BTA_TOCNT2           ((uint32_t)0x00000004)
+#define DSI_TCCR5_BTA_TOCNT3           ((uint32_t)0x00000008)
+#define DSI_TCCR5_BTA_TOCNT4           ((uint32_t)0x00000010)
+#define DSI_TCCR5_BTA_TOCNT5           ((uint32_t)0x00000020)
+#define DSI_TCCR5_BTA_TOCNT6           ((uint32_t)0x00000040)
+#define DSI_TCCR5_BTA_TOCNT7           ((uint32_t)0x00000080)
+#define DSI_TCCR5_BTA_TOCNT8           ((uint32_t)0x00000100)
+#define DSI_TCCR5_BTA_TOCNT9           ((uint32_t)0x00000200)
+#define DSI_TCCR5_BTA_TOCNT10          ((uint32_t)0x00000400)
+#define DSI_TCCR5_BTA_TOCNT11          ((uint32_t)0x00000800)
+#define DSI_TCCR5_BTA_TOCNT12          ((uint32_t)0x00001000)
+#define DSI_TCCR5_BTA_TOCNT13          ((uint32_t)0x00002000)
+#define DSI_TCCR5_BTA_TOCNT14          ((uint32_t)0x00004000)
+#define DSI_TCCR5_BTA_TOCNT15          ((uint32_t)0x00008000)
 
 /*******************  Bit definition for DSI_TDCR register  ***************/
 #define DSI_TDCR_3DM                   ((uint32_t)0x00000003)               /*!< 3D Mode */
@@ -4714,165 +4714,165 @@ typedef struct
 #define DSI_WIFCR_CPLLUIF                ((uint32_t)0x00000400)              /*!< Clear PLL Unlock Interrupt Flag */
 #define DSI_WIFCR_CRRIF                  ((uint32_t)0x00002000)              /*!< Clear Regulator Ready Interrupt Flag */
 
-/*******************  Bit definition for DSI_WPCR1 register  ***************/
-#define DSI_WPCR1_UIX4                   ((uint32_t)0x0000003F)              /*!< Unit Interval multiplied by 4 */
-#define DSI_WPCR1_UIX4_0                 ((uint32_t)0x00000001)
-#define DSI_WPCR1_UIX4_1                 ((uint32_t)0x00000002)
-#define DSI_WPCR1_UIX4_2                 ((uint32_t)0x00000004)
-#define DSI_WPCR1_UIX4_3                 ((uint32_t)0x00000008)
-#define DSI_WPCR1_UIX4_4                 ((uint32_t)0x00000010)
-#define DSI_WPCR1_UIX4_5                 ((uint32_t)0x00000020)
+/*******************  Bit definition for DSI_WPCR0 register  ***************/
+#define DSI_WPCR0_UIX4                   ((uint32_t)0x0000003F)              /*!< Unit Interval multiplied by 4 */
+#define DSI_WPCR0_UIX4_0                 ((uint32_t)0x00000001)
+#define DSI_WPCR0_UIX4_1                 ((uint32_t)0x00000002)
+#define DSI_WPCR0_UIX4_2                 ((uint32_t)0x00000004)
+#define DSI_WPCR0_UIX4_3                 ((uint32_t)0x00000008)
+#define DSI_WPCR0_UIX4_4                 ((uint32_t)0x00000010)
+#define DSI_WPCR0_UIX4_5                 ((uint32_t)0x00000020)
 
-#define DSI_WPCR1_SWCL                   ((uint32_t)0x00000040)              /*!< Swap pins on clock lane */
-#define DSI_WPCR1_SWDL0                  ((uint32_t)0x00000080)              /*!< Swap pins on data lane 1 */
-#define DSI_WPCR1_SWDL1                  ((uint32_t)0x00000100)              /*!< Swap pins on data lane 2 */
-#define DSI_WPCR1_HSICL                  ((uint32_t)0x00000200)              /*!< Invert the high-speed data signal on clock lane */
-#define DSI_WPCR1_HSIDL0                 ((uint32_t)0x00000400)              /*!< Invert the high-speed data signal on lane 1 */
-#define DSI_WPCR1_HSIDL1                 ((uint32_t)0x00000800)              /*!< Invert the high-speed data signal on lane 2 */
-#define DSI_WPCR1_FTXSMCL                ((uint32_t)0x00001000)              /*!< Force clock lane in TX stop mode */
-#define DSI_WPCR1_FTXSMDL                ((uint32_t)0x00002000)              /*!< Force data lanes in TX stop mode */
-#define DSI_WPCR1_CDOFFDL                ((uint32_t)0x00004000)              /*!< Contention detection OFF */
-#define DSI_WPCR1_TDDL                   ((uint32_t)0x00010000)              /*!< Turn Disable Data Lanes */
-#define DSI_WPCR1_PDEN                   ((uint32_t)0x00040000)              /*!< Pull-Down Enable */
-#define DSI_WPCR1_TCLKPREPEN             ((uint32_t)0x00080000)              /*!< Timer for t-CLKPREP Enable */
-#define DSI_WPCR1_TCLKZEROEN             ((uint32_t)0x00100000)              /*!< Timer for t-CLKZERO Enable */
-#define DSI_WPCR1_THSPREPEN              ((uint32_t)0x00200000)              /*!< Timer for t-HSPREP Enable */
-#define DSI_WPCR1_THSTRAILEN             ((uint32_t)0x00400000)              /*!< Timer for t-HSTRAIL Enable */
-#define DSI_WPCR1_THSZEROEN              ((uint32_t)0x00800000)              /*!< Timer for t-HSZERO Enable */
-#define DSI_WPCR1_TLPXDEN                ((uint32_t)0x01000000)              /*!< Timer for t-LPXD Enable */
-#define DSI_WPCR1_THSEXITEN              ((uint32_t)0x02000000)              /*!< Timer for t-HSEXIT Enable */
-#define DSI_WPCR1_TLPXCEN                ((uint32_t)0x04000000)              /*!< Timer for t-LPXC Enable */
-#define DSI_WPCR1_TCLKPOSTEN             ((uint32_t)0x08000000)              /*!< Timer for t-CLKPOST Enable */
+#define DSI_WPCR0_SWCL                   ((uint32_t)0x00000040)              /*!< Swap pins on clock lane */
+#define DSI_WPCR0_SWDL0                  ((uint32_t)0x00000080)              /*!< Swap pins on data lane 1 */
+#define DSI_WPCR0_SWDL1                  ((uint32_t)0x00000100)              /*!< Swap pins on data lane 2 */
+#define DSI_WPCR0_HSICL                  ((uint32_t)0x00000200)              /*!< Invert the high-speed data signal on clock lane */
+#define DSI_WPCR0_HSIDL0                 ((uint32_t)0x00000400)              /*!< Invert the high-speed data signal on lane 1 */
+#define DSI_WPCR0_HSIDL1                 ((uint32_t)0x00000800)              /*!< Invert the high-speed data signal on lane 2 */
+#define DSI_WPCR0_FTXSMCL                ((uint32_t)0x00001000)              /*!< Force clock lane in TX stop mode */
+#define DSI_WPCR0_FTXSMDL                ((uint32_t)0x00002000)              /*!< Force data lanes in TX stop mode */
+#define DSI_WPCR0_CDOFFDL                ((uint32_t)0x00004000)              /*!< Contention detection OFF */
+#define DSI_WPCR0_TDDL                   ((uint32_t)0x00010000)              /*!< Turn Disable Data Lanes */
+#define DSI_WPCR0_PDEN                   ((uint32_t)0x00040000)              /*!< Pull-Down Enable */
+#define DSI_WPCR0_TCLKPREPEN             ((uint32_t)0x00080000)              /*!< Timer for t-CLKPREP Enable */
+#define DSI_WPCR0_TCLKZEROEN             ((uint32_t)0x00100000)              /*!< Timer for t-CLKZERO Enable */
+#define DSI_WPCR0_THSPREPEN              ((uint32_t)0x00200000)              /*!< Timer for t-HSPREP Enable */
+#define DSI_WPCR0_THSTRAILEN             ((uint32_t)0x00400000)              /*!< Timer for t-HSTRAIL Enable */
+#define DSI_WPCR0_THSZEROEN              ((uint32_t)0x00800000)              /*!< Timer for t-HSZERO Enable */
+#define DSI_WPCR0_TLPXDEN                ((uint32_t)0x01000000)              /*!< Timer for t-LPXD Enable */
+#define DSI_WPCR0_THSEXITEN              ((uint32_t)0x02000000)              /*!< Timer for t-HSEXIT Enable */
+#define DSI_WPCR0_TLPXCEN                ((uint32_t)0x04000000)              /*!< Timer for t-LPXC Enable */
+#define DSI_WPCR0_TCLKPOSTEN             ((uint32_t)0x08000000)              /*!< Timer for t-CLKPOST Enable */
+
+/*******************  Bit definition for DSI_WPCR1 register  ***************/
+#define DSI_WPCR1_HSTXDCL                ((uint32_t)0x00000003)              /*!< High-Speed Transmission Delay on Clock Lane */
+#define DSI_WPCR1_HSTXDCL0               ((uint32_t)0x00000001)
+#define DSI_WPCR1_HSTXDCL1               ((uint32_t)0x00000002)
+
+#define DSI_WPCR1_HSTXDDL                ((uint32_t)0x0000000C)              /*!< High-Speed Transmission Delay on Data Lane */
+#define DSI_WPCR1_HSTXDDL0               ((uint32_t)0x00000004)
+#define DSI_WPCR1_HSTXDDL1               ((uint32_t)0x00000008)
+
+#define DSI_WPCR1_LPSRCCL                ((uint32_t)0x000000C0)              /*!< Low-Power transmission Slew Rate Compensation on Clock Lane */
+#define DSI_WPCR1_LPSRCCL0               ((uint32_t)0x00000040)
+#define DSI_WPCR1_LPSRCCL1               ((uint32_t)0x00000080)
+
+#define DSI_WPCR1_LPSRCDL                ((uint32_t)0x00000300)              /*!< Low-Power transmission Slew Rate Compensation on Data Lane */
+#define DSI_WPCR1_LPSRCDL0               ((uint32_t)0x00000100)
+#define DSI_WPCR1_LPSRCDL1               ((uint32_t)0x00000200)
+
+#define DSI_WPCR1_SDDC                   ((uint32_t)0x00001000)              /*!< SDD Control */
+
+#define DSI_WPCR1_LPRXVCDL               ((uint32_t)0x0000C000)              /*!< Low-Power Reception V-IL Compensation on Data Lanes */
+#define DSI_WPCR1_LPRXVCDL0              ((uint32_t)0x00004000)
+#define DSI_WPCR1_LPRXVCDL1              ((uint32_t)0x00008000)
+
+#define DSI_WPCR1_HSTXSRCCL              ((uint32_t)0x00030000)              /*!< High-Speed Transmission Delay on Clock Lane */
+#define DSI_WPCR1_HSTXSRCCL0             ((uint32_t)0x00010000)
+#define DSI_WPCR1_HSTXSRCCL1             ((uint32_t)0x00020000)
+
+#define DSI_WPCR1_HSTXSRCDL              ((uint32_t)0x000C0000)              /*!< High-Speed Transmission Delay on Data Lane */
+#define DSI_WPCR1_HSTXSRCDL0             ((uint32_t)0x00040000)
+#define DSI_WPCR1_HSTXSRCDL1             ((uint32_t)0x00080000)
+
+#define DSI_WPCR1_FLPRXLPM               ((uint32_t)0x00400000)              /*!< Forces LP Receiver in Low-Power Mode */
+
+#define DSI_WPCR1_LPRXFT                 ((uint32_t)0x06000000)              /*!< Low-Power RX low-pass Filtering Tuning */
+#define DSI_WPCR1_LPRXFT0                ((uint32_t)0x02000000)
+#define DSI_WPCR1_LPRXFT1                ((uint32_t)0x04000000)
 
 /*******************  Bit definition for DSI_WPCR2 register  ***************/
-#define DSI_WPCR2_HSTXDCL                ((uint32_t)0x00000003)              /*!< High-Speed Transmission Delay on Clock Lane */
-#define DSI_WPCR2_HSTXDCL0               ((uint32_t)0x00000001)
-#define DSI_WPCR2_HSTXDCL1               ((uint32_t)0x00000002)
+#define DSI_WPCR2_TCLKPREP               ((uint32_t)0x000000FF)              /*!< t-CLKPREP */
+#define DSI_WPCR2_TCLKPREP0              ((uint32_t)0x00000001)
+#define DSI_WPCR2_TCLKPREP1              ((uint32_t)0x00000002)
+#define DSI_WPCR2_TCLKPREP2              ((uint32_t)0x00000004)
+#define DSI_WPCR2_TCLKPREP3              ((uint32_t)0x00000008)
+#define DSI_WPCR2_TCLKPREP4              ((uint32_t)0x00000010)
+#define DSI_WPCR2_TCLKPREP5              ((uint32_t)0x00000020)
+#define DSI_WPCR2_TCLKPREP6              ((uint32_t)0x00000040)
+#define DSI_WPCR2_TCLKPREP7              ((uint32_t)0x00000080)
 
-#define DSI_WPCR2_HSTXDDL                ((uint32_t)0x0000000C)              /*!< High-Speed Transmission Delay on Data Lane */
-#define DSI_WPCR2_HSTXDDL0               ((uint32_t)0x00000004)
-#define DSI_WPCR2_HSTXDDL1               ((uint32_t)0x00000008)
+#define DSI_WPCR2_TCLKZERO               ((uint32_t)0x0000FF00)              /*!< t-CLKZERO */
+#define DSI_WPCR2_TCLKZERO0              ((uint32_t)0x00000100)
+#define DSI_WPCR2_TCLKZERO1              ((uint32_t)0x00000200)
+#define DSI_WPCR2_TCLKZERO2              ((uint32_t)0x00000400)
+#define DSI_WPCR2_TCLKZERO3              ((uint32_t)0x00000800)
+#define DSI_WPCR2_TCLKZERO4              ((uint32_t)0x00001000)
+#define DSI_WPCR2_TCLKZERO5              ((uint32_t)0x00002000)
+#define DSI_WPCR2_TCLKZERO6              ((uint32_t)0x00004000)
+#define DSI_WPCR2_TCLKZERO7              ((uint32_t)0x00008000)
 
-#define DSI_WPCR2_LPSRCCL                ((uint32_t)0x000000C0)              /*!< Low-Power transmission Slew Rate Compensation on Clock Lane */
-#define DSI_WPCR2_LPSRCCL0               ((uint32_t)0x00000040)
-#define DSI_WPCR2_LPSRCCL1               ((uint32_t)0x00000080)
+#define DSI_WPCR2_THSPREP                ((uint32_t)0x00FF0000)              /*!< t-HSPREP */
+#define DSI_WPCR2_THSPREP0               ((uint32_t)0x00010000)
+#define DSI_WPCR2_THSPREP1               ((uint32_t)0x00020000)
+#define DSI_WPCR2_THSPREP2               ((uint32_t)0x00040000)
+#define DSI_WPCR2_THSPREP3               ((uint32_t)0x00080000)
+#define DSI_WPCR2_THSPREP4               ((uint32_t)0x00100000)
+#define DSI_WPCR2_THSPREP5               ((uint32_t)0x00200000)
+#define DSI_WPCR2_THSPREP6               ((uint32_t)0x00400000)
+#define DSI_WPCR2_THSPREP7               ((uint32_t)0x00800000)
 
-#define DSI_WPCR2_LPSRCDL                ((uint32_t)0x00000300)              /*!< Low-Power transmission Slew Rate Compensation on Data Lane */
-#define DSI_WPCR2_LPSRCDL0               ((uint32_t)0x00000100)
-#define DSI_WPCR2_LPSRCDL1               ((uint32_t)0x00000200)
-
-#define DSI_WPCR2_SDDC                   ((uint32_t)0x00001000)              /*!< SDD Control */
-
-#define DSI_WPCR2_LPRXVCDL               ((uint32_t)0x0000C000)              /*!< Low-Power Reception V-IL Compensation on Data Lanes */
-#define DSI_WPCR2_LPRXVCDL0              ((uint32_t)0x00004000)
-#define DSI_WPCR2_LPRXVCDL1              ((uint32_t)0x00008000)
-
-#define DSI_WPCR2_HSTXSRCCL              ((uint32_t)0x00030000)              /*!< High-Speed Transmission Delay on Clock Lane */
-#define DSI_WPCR2_HSTXSRCCL0             ((uint32_t)0x00010000)
-#define DSI_WPCR2_HSTXSRCCL1             ((uint32_t)0x00020000)
-
-#define DSI_WPCR2_HSTXSRCDL              ((uint32_t)0x000C0000)              /*!< High-Speed Transmission Delay on Data Lane */
-#define DSI_WPCR2_HSTXSRCDL0             ((uint32_t)0x00040000)
-#define DSI_WPCR2_HSTXSRCDL1             ((uint32_t)0x00080000)
-
-#define DSI_WPCR2_FLPRXLPM               ((uint32_t)0x00400000)              /*!< Forces LP Receiver in Low-Power Mode */
-
-#define DSI_WPCR2_LPRXFT                 ((uint32_t)0x06000000)              /*!< Low-Power RX low-pass Filtering Tuning */
-#define DSI_WPCR2_LPRXFT0                ((uint32_t)0x02000000)
-#define DSI_WPCR2_LPRXFT1                ((uint32_t)0x04000000)
+#define DSI_WPCR2_THSTRAIL               ((uint32_t)0xFF000000)              /*!< t-HSTRAIL */
+#define DSI_WPCR2_THSTRAIL0              ((uint32_t)0x01000000)
+#define DSI_WPCR2_THSTRAIL1              ((uint32_t)0x02000000)
+#define DSI_WPCR2_THSTRAIL2              ((uint32_t)0x04000000)
+#define DSI_WPCR2_THSTRAIL3              ((uint32_t)0x08000000)
+#define DSI_WPCR2_THSTRAIL4              ((uint32_t)0x10000000)
+#define DSI_WPCR2_THSTRAIL5              ((uint32_t)0x20000000)
+#define DSI_WPCR2_THSTRAIL6              ((uint32_t)0x40000000)
+#define DSI_WPCR2_THSTRAIL7              ((uint32_t)0x80000000)
 
 /*******************  Bit definition for DSI_WPCR3 register  ***************/
-#define DSI_WPCR3_TCLKPREP               ((uint32_t)0x000000FF)              /*!< t-CLKPREP */
-#define DSI_WPCR3_TCLKPREP0              ((uint32_t)0x00000001)
-#define DSI_WPCR3_TCLKPREP1              ((uint32_t)0x00000002)
-#define DSI_WPCR3_TCLKPREP2              ((uint32_t)0x00000004)
-#define DSI_WPCR3_TCLKPREP3              ((uint32_t)0x00000008)
-#define DSI_WPCR3_TCLKPREP4              ((uint32_t)0x00000010)
-#define DSI_WPCR3_TCLKPREP5              ((uint32_t)0x00000020)
-#define DSI_WPCR3_TCLKPREP6              ((uint32_t)0x00000040)
-#define DSI_WPCR3_TCLKPREP7              ((uint32_t)0x00000080)
+#define DSI_WPCR3_THSZERO                ((uint32_t)0x000000FF)              /*!< t-HSZERO */
+#define DSI_WPCR3_THSZERO0               ((uint32_t)0x00000001)
+#define DSI_WPCR3_THSZERO1               ((uint32_t)0x00000002)
+#define DSI_WPCR3_THSZERO2               ((uint32_t)0x00000004)
+#define DSI_WPCR3_THSZERO3               ((uint32_t)0x00000008)
+#define DSI_WPCR3_THSZERO4               ((uint32_t)0x00000010)
+#define DSI_WPCR3_THSZERO5               ((uint32_t)0x00000020)
+#define DSI_WPCR3_THSZERO6               ((uint32_t)0x00000040)
+#define DSI_WPCR3_THSZERO7               ((uint32_t)0x00000080)
 
-#define DSI_WPCR3_TCLKZERO               ((uint32_t)0x0000FF00)              /*!< t-CLKZERO */
-#define DSI_WPCR3_TCLKZERO0              ((uint32_t)0x00000100)
-#define DSI_WPCR3_TCLKZERO1              ((uint32_t)0x00000200)
-#define DSI_WPCR3_TCLKZERO2              ((uint32_t)0x00000400)
-#define DSI_WPCR3_TCLKZERO3              ((uint32_t)0x00000800)
-#define DSI_WPCR3_TCLKZERO4              ((uint32_t)0x00001000)
-#define DSI_WPCR3_TCLKZERO5              ((uint32_t)0x00002000)
-#define DSI_WPCR3_TCLKZERO6              ((uint32_t)0x00004000)
-#define DSI_WPCR3_TCLKZERO7              ((uint32_t)0x00008000)
+#define DSI_WPCR3_TLPXD                  ((uint32_t)0x0000FF00)              /*!< t-LPXD */
+#define DSI_WPCR3_TLPXD0                 ((uint32_t)0x00000100)
+#define DSI_WPCR3_TLPXD1                 ((uint32_t)0x00000200)
+#define DSI_WPCR3_TLPXD2                 ((uint32_t)0x00000400)
+#define DSI_WPCR3_TLPXD3                 ((uint32_t)0x00000800)
+#define DSI_WPCR3_TLPXD4                 ((uint32_t)0x00001000)
+#define DSI_WPCR3_TLPXD5                 ((uint32_t)0x00002000)
+#define DSI_WPCR3_TLPXD6                 ((uint32_t)0x00004000)
+#define DSI_WPCR3_TLPXD7                 ((uint32_t)0x00008000)
 
-#define DSI_WPCR3_THSPREP                ((uint32_t)0x00FF0000)              /*!< t-HSPREP */
-#define DSI_WPCR3_THSPREP0               ((uint32_t)0x00010000)
-#define DSI_WPCR3_THSPREP1               ((uint32_t)0x00020000)
-#define DSI_WPCR3_THSPREP2               ((uint32_t)0x00040000)
-#define DSI_WPCR3_THSPREP3               ((uint32_t)0x00080000)
-#define DSI_WPCR3_THSPREP4               ((uint32_t)0x00100000)
-#define DSI_WPCR3_THSPREP5               ((uint32_t)0x00200000)
-#define DSI_WPCR3_THSPREP6               ((uint32_t)0x00400000)
-#define DSI_WPCR3_THSPREP7               ((uint32_t)0x00800000)
+#define DSI_WPCR3_THSEXIT                ((uint32_t)0x00FF0000)              /*!< t-HSEXIT */
+#define DSI_WPCR3_THSEXIT0               ((uint32_t)0x00010000)
+#define DSI_WPCR3_THSEXIT1               ((uint32_t)0x00020000)
+#define DSI_WPCR3_THSEXIT2               ((uint32_t)0x00040000)
+#define DSI_WPCR3_THSEXIT3               ((uint32_t)0x00080000)
+#define DSI_WPCR3_THSEXIT4               ((uint32_t)0x00100000)
+#define DSI_WPCR3_THSEXIT5               ((uint32_t)0x00200000)
+#define DSI_WPCR3_THSEXIT6               ((uint32_t)0x00400000)
+#define DSI_WPCR3_THSEXIT7               ((uint32_t)0x00800000)
 
-#define DSI_WPCR3_THSTRAIL               ((uint32_t)0xFF000000)              /*!< t-HSTRAIL */
-#define DSI_WPCR3_THSTRAIL0              ((uint32_t)0x01000000)
-#define DSI_WPCR3_THSTRAIL1              ((uint32_t)0x02000000)
-#define DSI_WPCR3_THSTRAIL2              ((uint32_t)0x04000000)
-#define DSI_WPCR3_THSTRAIL3              ((uint32_t)0x08000000)
-#define DSI_WPCR3_THSTRAIL4              ((uint32_t)0x10000000)
-#define DSI_WPCR3_THSTRAIL5              ((uint32_t)0x20000000)
-#define DSI_WPCR3_THSTRAIL6              ((uint32_t)0x40000000)
-#define DSI_WPCR3_THSTRAIL7              ((uint32_t)0x80000000)
+#define DSI_WPCR3_TLPXC                  ((uint32_t)0xFF000000)              /*!< t-LPXC */
+#define DSI_WPCR3_TLPXC0                 ((uint32_t)0x01000000)
+#define DSI_WPCR3_TLPXC1                 ((uint32_t)0x02000000)
+#define DSI_WPCR3_TLPXC2                 ((uint32_t)0x04000000)
+#define DSI_WPCR3_TLPXC3                 ((uint32_t)0x08000000)
+#define DSI_WPCR3_TLPXC4                 ((uint32_t)0x10000000)
+#define DSI_WPCR3_TLPXC5                 ((uint32_t)0x20000000)
+#define DSI_WPCR3_TLPXC6                 ((uint32_t)0x40000000)
+#define DSI_WPCR3_TLPXC7                 ((uint32_t)0x80000000)
 
 /*******************  Bit definition for DSI_WPCR4 register  ***************/
-#define DSI_WPCR4_THSZERO                ((uint32_t)0x000000FF)              /*!< t-HSZERO */
-#define DSI_WPCR4_THSZERO0               ((uint32_t)0x00000001)
-#define DSI_WPCR4_THSZERO1               ((uint32_t)0x00000002)
-#define DSI_WPCR4_THSZERO2               ((uint32_t)0x00000004)
-#define DSI_WPCR4_THSZERO3               ((uint32_t)0x00000008)
-#define DSI_WPCR4_THSZERO4               ((uint32_t)0x00000010)
-#define DSI_WPCR4_THSZERO5               ((uint32_t)0x00000020)
-#define DSI_WPCR4_THSZERO6               ((uint32_t)0x00000040)
-#define DSI_WPCR4_THSZERO7               ((uint32_t)0x00000080)
-
-#define DSI_WPCR4_TLPXD                  ((uint32_t)0x0000FF00)              /*!< t-LPXD */
-#define DSI_WPCR4_TLPXD0                 ((uint32_t)0x00000100)
-#define DSI_WPCR4_TLPXD1                 ((uint32_t)0x00000200)
-#define DSI_WPCR4_TLPXD2                 ((uint32_t)0x00000400)
-#define DSI_WPCR4_TLPXD3                 ((uint32_t)0x00000800)
-#define DSI_WPCR4_TLPXD4                 ((uint32_t)0x00001000)
-#define DSI_WPCR4_TLPXD5                 ((uint32_t)0x00002000)
-#define DSI_WPCR4_TLPXD6                 ((uint32_t)0x00004000)
-#define DSI_WPCR4_TLPXD7                 ((uint32_t)0x00008000)
-
-#define DSI_WPCR4_THSEXIT                ((uint32_t)0x00FF0000)              /*!< t-HSEXIT */
-#define DSI_WPCR4_THSEXIT0               ((uint32_t)0x00010000)
-#define DSI_WPCR4_THSEXIT1               ((uint32_t)0x00020000)
-#define DSI_WPCR4_THSEXIT2               ((uint32_t)0x00040000)
-#define DSI_WPCR4_THSEXIT3               ((uint32_t)0x00080000)
-#define DSI_WPCR4_THSEXIT4               ((uint32_t)0x00100000)
-#define DSI_WPCR4_THSEXIT5               ((uint32_t)0x00200000)
-#define DSI_WPCR4_THSEXIT6               ((uint32_t)0x00400000)
-#define DSI_WPCR4_THSEXIT7               ((uint32_t)0x00800000)
-
-#define DSI_WPCR4_TLPXC                  ((uint32_t)0xFF000000)              /*!< t-LPXC */
-#define DSI_WPCR4_TLPXC0                 ((uint32_t)0x01000000)
-#define DSI_WPCR4_TLPXC1                 ((uint32_t)0x02000000)
-#define DSI_WPCR4_TLPXC2                 ((uint32_t)0x04000000)
-#define DSI_WPCR4_TLPXC3                 ((uint32_t)0x08000000)
-#define DSI_WPCR4_TLPXC4                 ((uint32_t)0x10000000)
-#define DSI_WPCR4_TLPXC5                 ((uint32_t)0x20000000)
-#define DSI_WPCR4_TLPXC6                 ((uint32_t)0x40000000)
-#define DSI_WPCR4_TLPXC7                 ((uint32_t)0x80000000)
-
-/*******************  Bit definition for DSI_WPCR5 register  ***************/
-#define DSI_WPCR5_TCLKPOST               ((uint32_t)0x000000FF)              /*!< t-CLKPOST */
-#define DSI_WPCR5_TCLKPOST0              ((uint32_t)0x00000001)
-#define DSI_WPCR5_TCLKPOST1              ((uint32_t)0x00000002)
-#define DSI_WPCR5_TCLKPOST2              ((uint32_t)0x00000004)
-#define DSI_WPCR5_TCLKPOST3              ((uint32_t)0x00000008)
-#define DSI_WPCR5_TCLKPOST4              ((uint32_t)0x00000010)
-#define DSI_WPCR5_TCLKPOST5              ((uint32_t)0x00000020)
-#define DSI_WPCR5_TCLKPOST6              ((uint32_t)0x00000040)
-#define DSI_WPCR5_TCLKPOST7              ((uint32_t)0x00000080)
+#define DSI_WPCR4_TCLKPOST               ((uint32_t)0x000000FF)              /*!< t-CLKPOST */
+#define DSI_WPCR4_TCLKPOST0              ((uint32_t)0x00000001)
+#define DSI_WPCR4_TCLKPOST1              ((uint32_t)0x00000002)
+#define DSI_WPCR4_TCLKPOST2              ((uint32_t)0x00000004)
+#define DSI_WPCR4_TCLKPOST3              ((uint32_t)0x00000008)
+#define DSI_WPCR4_TCLKPOST4              ((uint32_t)0x00000010)
+#define DSI_WPCR4_TCLKPOST5              ((uint32_t)0x00000020)
+#define DSI_WPCR4_TCLKPOST6              ((uint32_t)0x00000040)
+#define DSI_WPCR4_TCLKPOST7              ((uint32_t)0x00000080)
 
 /*******************  Bit definition for DSI_WRPCR register  ***************/
 #define DSI_WRPCR_PLLEN                  ((uint32_t)0x00000001)              /*!< PLL Enable */
