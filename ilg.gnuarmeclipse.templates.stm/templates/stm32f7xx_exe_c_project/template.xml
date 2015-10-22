@@ -857,9 +857,7 @@
 				<element value=".*/$(CMSIS_name)_hal_nor[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_pccard[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_pcd.*[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_pwr_.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_qspi[.]c" />
-				<element value=".*/$(CMSIS_name)_hal_rcc_.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_rng[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_rtc.*[.]c" />
 				<element value=".*/$(CMSIS_name)_hal_sai.*[.]c" />
