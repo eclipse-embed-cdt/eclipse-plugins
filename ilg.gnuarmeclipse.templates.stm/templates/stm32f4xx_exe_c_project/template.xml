@@ -576,7 +576,7 @@
 				<element>
 					<simple name="source" value="$(commonDir)/system/include/cmsis" />
 					<simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)" />
-					<simple name="pattern" value=".*[.](h|txt)" />
+					<simple name="pattern" value=".*[.](h|txt|md)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -593,8 +593,8 @@
 			<simple name="condition" value="" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="$(osDir)/$(device).pack/include/cmsis/README_CMSIS.txt" />
-					<simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)/README_CMSIS.txt" />
+					<simple name="source" value="$(osDir)/$(device).pack/include/cmsis/README_DEVICE_CMSIS.md" />
+					<simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)/README_DEVICE_CMSIS.md" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
@@ -621,6 +621,11 @@
 				<element>
 					<simple name="source" value="$(osDir)/$(device).pack/src/cmsis/system_$(CMSIS_name).c" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/$(cmsisDir)/system_$(CMSIS_name).c" />
+					<simple name="replaceable" value="true" />
+				</element>
+				<element>
+					<simple name="source" value="$(osDir)/$(device).pack/src/cmsis/README_DEVICE_CMSIS.md" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/$(cmsisDir)/README_DEVICE_CMSIS.md" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -951,7 +956,7 @@
 				<element>
 					<simple name="source" value="$(commonDir)/system/src/cortexm" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/cortexm" />
-					<simple name="pattern" value=".*[.](c.*|txt)" />
+					<simple name="pattern" value=".*[.](c.*|txt|md)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -963,7 +968,7 @@
 				<element>
 					<simple name="source" value="$(commonDir)/system/src/newlib" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/$(newlibDir)" />
-					<simple name="pattern" value=".*[.](c.*|txt)" />
+					<simple name="pattern" value=".*[.](c.*|txt|md)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -985,7 +990,7 @@
 				<element>
 					<simple name="source" value="$(commonDir)/system/src/diag" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/diag" />
-					<simple name="pattern" value=".*[.](c.*|txt)" />
+					<simple name="pattern" value=".*[.](c.*|txt|md)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>

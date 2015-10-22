@@ -174,7 +174,7 @@ xpacks_src=../../../xPacks
 src=${xpacks_src}/arm-cmsis-core.git
 echo
 cp -nv $src/CMSIS/Include/*.h $system/include/cmsis
-cp -nv $src/CMSIS/README.txt $system/include/cmsis/README_CMSIS.txt
+cp -nv $src/CMSIS/Include/*.md $system/include/cmsis
 
 # STM32F4 CMSIS
 src=${xpacks_src}/stm32f4-cmsis.git
@@ -183,10 +183,9 @@ rm -rf $stm/stm32f4.pack
 mkdir -p $stm/stm32f4.pack/include/cmsis
 cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Include/* $stm/stm32f4.pack/include/cmsis
 cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Release_Notes.html $stm/stm32f4.pack/include/cmsis
-cp -Rnv $src/README.md $stm/stm32f4.pack/include/cmsis/README_DEVICE.md
 mkdir -p $stm/stm32f4.pack/src/cmsis
 cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/*.c $stm/stm32f4.pack/src/cmsis
-cp -Rnv $src/README.md $stm/stm32f4.pack/src/cmsis/README_DEVICE.md
+cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/*.md $stm/stm32f4.pack/src/cmsis
 
 # STM32F4 HAL
 src=${xpacks_src}/stm32f4-hal.git
@@ -197,6 +196,27 @@ mkdir -p $stm/stm32f4-hal.pack/src/stm32f4-hal
 cp -Rnv $src/Drivers/STM32F4xx_HAL_Driver/Inc/* $stm/stm32f4-hal.pack/include/stm32f4-hal/
 cp -Rnv $src/Drivers/STM32F4xx_HAL_Driver/Src/* $stm/stm32f4-hal.pack/src/stm32f4-hal/
 cp -Rnv $src/Drivers/STM32F4xx_HAL_Driver/Release_Notes.html $stm/stm32f4-hal.pack/
+
+# STM32F7 CMSIS
+src=${xpacks_src}/stm32f7-cmsis.git
+echo
+rm -rf $stm/stm32f7.pack
+mkdir -p $stm/stm32f7.pack/include/cmsis
+cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F7xx/Include/* $stm/stm32f7.pack/include/cmsis
+cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F7xx/Release_Notes.html $stm/stm32f7.pack/include/cmsis
+mkdir -p $stm/stm32f7.pack/src/cmsis
+cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F7xx/Source/Templates/*.c $stm/stm32f7.pack/src/cmsis
+cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F7xx/Source/Templates/*.md $stm/stm32f7.pack/src/cmsis
+
+# STM32F7 HAL
+src=${xpacks_src}/stm32f7-hal.git
+echo
+rm -rf $stm/stm32f7-hal.pack
+mkdir -p $stm/stm32f7-hal.pack/include/stm32f7-hal
+mkdir -p $stm/stm32f7-hal.pack/src/stm32f7-hal
+cp -Rnv $src/Drivers/STM32F7xx_HAL_Driver/Inc/* $stm/stm32f7-hal.pack/include/stm32f7-hal/
+cp -Rnv $src/Drivers/STM32F7xx_HAL_Driver/Src/* $stm/stm32f7-hal.pack/src/stm32f7-hal/
+cp -Rnv $src/Drivers/STM32F7xx_HAL_Driver/Release_Notes.html $stm/stm32f7-hal.pack/
 
 echo
 echo Done
