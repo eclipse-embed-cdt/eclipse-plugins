@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<template type="ProjTempl" version="1.0" supplier="SourceForge"
+<template type="ProjTempl" version="1.0" supplier="GNU ARM Eclipse"
 	revision="1.0" author="Liviu Ionescu" copyright="Copyright (c) 2013 Liviu Ionescu."
 	id="stm32f4xx.exe.c.project" label="%STM32F4xx.Ctemplate.label"
 	description="%STM32F4xx.Ctemplate.description" help="help.html">
