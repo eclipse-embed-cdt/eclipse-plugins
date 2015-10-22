@@ -55,6 +55,10 @@ SystemClock_Config(void);
 void
 __initialize_hardware(void)
 {
+  // Enable instruction & data cache.
+  SCB_EnableICache();
+  SCB_EnableDCache();
+
   // Initialise the HAL Library; it must be the first function
   // to be executed before the call of any HAL function.
   HAL_Init();
@@ -117,7 +121,7 @@ SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLM = (HSE_VALUE/1000000u);
 #else
   // Use HSI and activate PLL with HSI as source.
-  // This is tuned for NUCLEO-F711; update it for your board.
+  // This is generic; update it for your board.
   RCC_OscInitStruct.OscillatorType = RCC_OSCILLATORTYPE_HSI;
   RCC_OscInitStruct.HSIState = RCC_HSI_ON;
   // 16 is the average calibration value, adjust for your own board.
@@ -128,21 +132,24 @@ SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLM = (HSI_VALUE/1000000u);
 #endif
 
-  RCC_OscInitStruct.PLL.PLLN = 336;
-#if defined(STM32F701xC) || defined(STM32F701xE) || defined(STM32F711xE)
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4; /* 84 MHz */
-#elif defined(STM32F727xx) || defined(STM32F737xx) || defined(STM32F729xx) || defined(STM32F739xx)
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2; /* 168 MHz */
-#elif defined(STM32F705xx) || defined(STM32F715xx) || defined(STM32F707xx) || defined(STM32F717xx)
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2; /* 168 MHz */
-#elif defined(STM32F746xx)
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2; /* 168 MHz */
-#else
-  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV4; /* 84 MHz, conservative */
-#endif
-  RCC_OscInitStruct.PLL.PLLQ = 7; /* To make USB work. */
+  RCC_OscInitStruct.PLL.PLLN = 400;
+  RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
+  RCC_OscInitStruct.PLL.PLLQ = 8; /* To make USB work. */
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   HAL_RCC_OscConfig(&RCC_OscInitStruct);
+
+  // Activate the OverDrive to reach the 200 Mhz Frequency
+  HAL_PWREx_EnableOverDrive();
+
+  RCC_PeriphCLKInitTypeDef PeriphClkInitStruct;
+
+  /* Select PLLSAI output as USB clock source */
+  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_CLK48;
+  PeriphClkInitStruct.Clk48ClockSelection = RCC_CLK48SOURCE_PLLSAIP;
+  PeriphClkInitStruct.PLLSAI.PLLSAIN = 192;
+  PeriphClkInitStruct.PLLSAI.PLLSAIQ = 4;
+  PeriphClkInitStruct.PLLSAI.PLLSAIP = RCC_PLLSAIP_DIV4;
+  HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct);
 
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
   // Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
@@ -150,19 +157,12 @@ SystemClock_Config(void)
   RCC_ClkInitStruct.ClockType = (RCC_CLOCKTYPE_SYSCLK | RCC_CLOCKTYPE_HCLK
       | RCC_CLOCKTYPE_PCLK1 | RCC_CLOCKTYPE_PCLK2);
   RCC_ClkInitStruct.SYSCLKSource = RCC_SYSCLKSOURCE_PLLCLK;
-#if defined(STM32F701xC) || defined(STM32F701xE) || defined(STM32F711xE)
-  RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
-  RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV2;
-  RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV1;
-  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_2);
-#else
   // This is expected to work for most large cores.
   // Check and update it for your own configuration.
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
-  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_5);
-#endif
+  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_6);
 
   HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
 
