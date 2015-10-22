@@ -132,24 +132,14 @@ SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLM = (HSI_VALUE/1000000u);
 #endif
 
-  RCC_OscInitStruct.PLL.PLLN = 400;
+  RCC_OscInitStruct.PLL.PLLN = 384; /* 192 MHz */
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 8; /* To make USB work. */
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
   HAL_RCC_OscConfig(&RCC_OscInitStruct);
 
-  // Activate the OverDrive to reach the 200 Mhz Frequency
+  // Activate the OverDrive to reach the 200 MHz Frequency
   HAL_PWREx_EnableOverDrive();
-
-  RCC_PeriphCLKInitTypeDef PeriphClkInitStruct;
-
-  /* Select PLLSAI output as USB clock source */
-  PeriphClkInitStruct.PeriphClockSelection = RCC_PERIPHCLK_CLK48;
-  PeriphClkInitStruct.Clk48ClockSelection = RCC_CLK48SOURCE_PLLSAIP;
-  PeriphClkInitStruct.PLLSAI.PLLSAIN = 192;
-  PeriphClkInitStruct.PLLSAI.PLLSAIQ = 4;
-  PeriphClkInitStruct.PLLSAI.PLLSAIP = RCC_PLLSAIP_DIV4;
-  HAL_RCCEx_PeriphCLKConfig(&PeriphClkInitStruct);
 
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
   // Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
