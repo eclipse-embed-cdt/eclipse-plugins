@@ -9,7 +9,7 @@
 // ----------------------------------------------------------------------------
 
 #if defined(USE_HAL_DRIVER)
-void HAL_IncTick();
+void HAL_IncTick(void);
 #endif
 
 // Forward declarations.
