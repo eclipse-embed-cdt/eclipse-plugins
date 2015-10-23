@@ -972,6 +972,36 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				</element>
 			</complex-array>
 		</process>
+
+		<!-- Disable warnings for peripheral sources. -->
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otherwarnings" />
+					<simple name="value"
+						value=" -Wno-padded -Wno-conversion -Wno-sign-conversion" />
+					<simple name="path" value="$(sysDir)/$(sourceDir)/$(devicePeriph)" />
+					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otherwarnings" />
+					<simple name="value"
+						value=" -Wno-missing-prototypes -Wno-padded -Wno-missing-declarations" />
+					<simple name="path" value="$(sysDir)/$(sourceDir)/$(cmsisDir)/system_$(CMSIS_name).c" />
+					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
 	</if>
 
 	<!-- ================================================================== -->
