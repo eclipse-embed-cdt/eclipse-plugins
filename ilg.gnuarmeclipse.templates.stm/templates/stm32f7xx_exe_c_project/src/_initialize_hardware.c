@@ -33,42 +33,60 @@
 // Forward declarations.
 
 void
-__initialize_hardware(void);
+__initialize_hardware (void);
 
 void
-SystemClock_Config(void);
+__initialize_hardware_early (void);
+
+void
+SystemClock_Config (void);
 
 // ----------------------------------------------------------------------------
+
+#if 0
+
+// These are the very first initialisations, performed immediately after
+// reset.
+//
+// Redefine this function to enable external RAM before data & bss init.
+
+void
+__initialize_hardware_early (void)
+{
+}
+
+#endif
 
 // This is the application hardware initialisation routine,
 // redefined to add more inits.
 //
-// Called early from _start(), right after data & bss init, before
+// Called from _start(), right after data & bss init, before
 // constructors.
 //
-// After Reset the Cortex-M processor is in Thread mode,
+// After reset the Cortex-M processor is in Thread mode,
 // priority is Privileged, and the Stack is set to Main.
 //
 // Warning: The HAL requires the system timer, running at 1000 Hz
 // and calling HAL_IncTick().
 
 void
-__initialize_hardware(void)
+__initialize_hardware (void)
 {
   // Enable instruction & data cache.
-  SCB_EnableICache();
-  SCB_EnableDCache();
+  SCB_EnableICache ();
+  SCB_EnableDCache ();
 
   // Initialise the HAL Library; it must be the first function
   // to be executed before the call of any HAL function.
-  HAL_Init();
+  // More HAL initialisations can be defined in $(CMSIS_name)_hal_msp.c
+  HAL_Init ();
 
   // Enable HSE Oscillator and activate PLL with HSE as source
-  SystemClock_Config();
+  SystemClock_Config ();
 
   // Call the CSMSIS system clock routine to store the clock frequency
   // in the SystemCoreClock global RAM location.
-  SystemCoreClockUpdate();
+  SystemCoreClockUpdate ();
 }
 
 // Disable when using RTOSes, since they have their own handler.
@@ -77,11 +95,11 @@ __initialize_hardware(void)
 // This is a sample SysTick handler, use it if you need HAL timings.
 void __attribute__ ((section(".after_vectors")))
 SysTick_Handler(void)
-{
+  {
 #if defined(USE_HAL_DRIVER)
-	HAL_IncTick();
+    HAL_IncTick();
 #endif
-}
+  }
 
 #endif
 
@@ -94,10 +112,11 @@ SysTick_Handler(void)
  */
 void
 __attribute__((weak))
-SystemClock_Config(void)
+SystemClock_Config (void)
 {
   // Enable Power Control clock
-  __PWR_CLK_ENABLE();
+  __PWR_CLK_ENABLE()
+  ;
 
   // The voltage scaling allows optimizing the power consumption when the
   // device is clocked below the maximum system frequency, to update the
@@ -105,6 +124,7 @@ SystemClock_Config(void)
   // datasheet.
   __HAL_PWR_VOLTAGESCALING_CONFIG(PWR_REGULATOR_VOLTAGE_SCALE1);
 
+// Comment this out after checking.
 #warning "Please check if the SystemClock_Config() settings match your board!"
   // Comment out the warning after checking and updating.
 
@@ -129,17 +149,17 @@ SystemClock_Config(void)
   RCC_OscInitStruct.PLL.PLLSource = RCC_PLLSOURCE_HSI;
   // This assumes the HSI_VALUE is a multiple of 1 MHz. If this is not
   // your case, you have to recompute these PLL constants.
-  RCC_OscInitStruct.PLL.PLLM = (HSI_VALUE/1000000u);
+  RCC_OscInitStruct.PLL.PLLM = (HSI_VALUE / 1000000u);
 #endif
 
   RCC_OscInitStruct.PLL.PLLN = 384; /* 192 MHz */
   RCC_OscInitStruct.PLL.PLLP = RCC_PLLP_DIV2;
   RCC_OscInitStruct.PLL.PLLQ = 8; /* To make USB work. */
   RCC_OscInitStruct.PLL.PLLState = RCC_PLL_ON;
-  HAL_RCC_OscConfig(&RCC_OscInitStruct);
+  HAL_RCC_OscConfig (&RCC_OscInitStruct);
 
   // Activate the OverDrive to reach the 200 MHz Frequency
-  HAL_PWREx_EnableOverDrive();
+  HAL_PWREx_EnableOverDrive ();
 
   RCC_ClkInitTypeDef RCC_ClkInitStruct;
   // Select PLL as system clock source and configure the HCLK, PCLK1 and PCLK2
@@ -152,11 +172,11 @@ SystemClock_Config(void)
   RCC_ClkInitStruct.AHBCLKDivider = RCC_SYSCLK_DIV1;
   RCC_ClkInitStruct.APB1CLKDivider = RCC_HCLK_DIV4;
   RCC_ClkInitStruct.APB2CLKDivider = RCC_HCLK_DIV2;
-  HAL_RCC_ClockConfig(&RCC_ClkInitStruct, FLASH_LATENCY_6);
+  HAL_RCC_ClockConfig (&RCC_ClkInitStruct, FLASH_LATENCY_6);
 
-  HAL_SYSTICK_Config(HAL_RCC_GetHCLKFreq()/1000);
+  HAL_SYSTICK_Config (HAL_RCC_GetHCLKFreq () / 1000);
 
-  HAL_SYSTICK_CLKSourceConfig(SYSTICK_CLKSOURCE_HCLK);
+  HAL_SYSTICK_CLKSourceConfig (SYSTICK_CLKSOURCE_HCLK);
 }
 
 // ----------------------------------------------------------------------------
