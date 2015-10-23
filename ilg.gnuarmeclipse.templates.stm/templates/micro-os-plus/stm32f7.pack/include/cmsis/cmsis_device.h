@@ -1,5 +1,5 @@
 //
-// This file is part of the µOS++ III distribution.
+// This file is part of the GNU ARM Eclipse distribution.
 // Copyright (c) 2015 Liviu Ionescu.
 //
 
