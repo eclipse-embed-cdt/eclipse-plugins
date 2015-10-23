@@ -531,7 +531,7 @@
 				<element>
 					<simple name="source" value="$(commonDir)/system/include/cmsis" />
 					<simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)" />
-					<simple name="pattern" value=".*[.](h|txt)" />
+					<simple name="pattern" value=".*[.](h|txt|md)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -550,13 +550,13 @@
 				<element>
 					<simple name="source" value="$(osDir)/$(device).pack/include/cmsis" />
 					<simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)" />
-					<simple name="pattern" value=".*[.](h|txt)" />
+					<simple name="pattern" value=".*[.](h|txt|md)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="$(osDir)/$(device).pack/src/cmsis" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/$(cmsisDir)" />
-					<simple name="pattern" value=".*[.](c|txt)" />
+					<simple name="pattern" value=".*[.](c|txt|md)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -615,7 +615,7 @@
 				<element>
 					<simple name="source" value="$(commonDir)/system/src/cortexm" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/cortexm" />
-					<simple name="pattern" value=".*[.](c.*|txt)" />
+					<simple name="pattern" value=".*[.](c.*|txt|md)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -627,7 +627,7 @@
 				<element>
 					<simple name="source" value="$(commonDir)/system/src/newlib" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/$(newlibDir)" />
-					<simple name="pattern" value=".*[.](c.*|txt)" />
+					<simple name="pattern" value=".*[.](c.*|txt|md)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -649,7 +649,7 @@
 				<element>
 					<simple name="source" value="$(commonDir)/system/src/diag" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/diag" />
-					<simple name="pattern" value=".*[.](c.*|txt)" />
+					<simple name="pattern" value=".*[.](c.*|txt|md)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>

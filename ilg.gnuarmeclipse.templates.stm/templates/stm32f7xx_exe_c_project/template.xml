@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <template type="ProjTempl" version="1.0" supplier="GNU ARM Eclipse"
 	revision="1.0" author="Liviu Ionescu" copyright="Copyright (c) 2013 Liviu Ionescu."
 	id="stm32f7xx.exe.c.project" label="%STM32F7xx.Ctemplate.label"
