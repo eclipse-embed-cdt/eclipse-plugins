@@ -156,9 +156,15 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalSetProperty">
 			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="" />
+			<simple name="condition" value="$(ADUCM36x) == ADuCM360" />
 			<simple name="propertyName" value="devicePeriph" />
-			<simple name="propertyValue" value="$(ADUCM36x)" />
+			<simple name="propertyValue" value="aducm360" />
+		</process>
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalSetProperty">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(ADUCM36x) == ADuCM361" />
+			<simple name="propertyName" value="devicePeriph" />
+			<simple name="propertyValue" value="aducm361" />
 		</process>
 	</if>
 
@@ -613,13 +619,13 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple name="source" value="vendor/drivers/include/aducm360" />
 					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(CMSIS_name)" />
+						value="$(sysDir)/$(includeDir)/$(devicePeriph)" />
 					<simple name="pattern" value=".*[.](h.*)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="vendor/drivers/src/aducm360" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/$(CMSIS_name)" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/$(devicePeriph)" />
 					<simple name="pattern" value=".*[.](c.*)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -636,13 +642,13 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple name="source" value="vendor/drivers/include/aducm361" />
 					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(CMSIS_name)" />
+						value="$(sysDir)/$(includeDir)/$(devicePeriph)" />
 					<simple name="pattern" value=".*[.](h.*)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="vendor/drivers/src/aducm361" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/$(CMSIS_name)" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/$(devicePeriph)" />
 					<simple name="pattern" value=".*[.](c.*)" />
 					<simple name="replaceable" value="true" />
 				</element>
