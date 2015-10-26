@@ -329,20 +329,13 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("Devices.createControls()");
 		}
-		if (!isThisPlugin()) {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println("Devices.not this plugin");
-			}
-			return;
-		}
-		//
+
 		if (!page.isForProject()) {
 			if (Activator.getInstance().isDebugging()) {
 				System.out.println("Devices.not this project");
 			}
 			return;
 		}
-		//
 		super.createControls(parent);
 
 		fConfig = getCfg();
