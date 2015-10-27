@@ -185,6 +185,7 @@ cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Include/* $stm/stm32f4.pack/inclu
 cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Release_Notes.html $stm/stm32f4.pack/include/cmsis
 mkdir -p $stm/stm32f4.pack/src/cmsis
 cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/*.c $stm/stm32f4.pack/src/cmsis
+cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/*.c $stm/stm32f4.pack/src/cmsis
 cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/*.md $stm/stm32f4.pack/src/cmsis
 
 # STM32F4 HAL
@@ -206,6 +207,7 @@ cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F7xx/Include/* $stm/stm32f7.pack/inclu
 cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F7xx/Release_Notes.html $stm/stm32f7.pack/include/cmsis
 mkdir -p $stm/stm32f7.pack/src/cmsis
 cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F7xx/Source/Templates/*.c $stm/stm32f7.pack/src/cmsis
+cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F7xx/Source/Templates/gcc/*.c $stm/stm32f7.pack/src/cmsis
 cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F7xx/Source/Templates/*.md $stm/stm32f7.pack/src/cmsis
 
 # STM32F7 HAL
