@@ -1,5 +1,5 @@
 //
-// This file is part of the GNU ARM Eclipse distribution.
+// This file is part of the GNU ARM Eclipse Plug-ins distribution.
 // Copyright (c) 2014 Liviu Ionescu
 //
 
