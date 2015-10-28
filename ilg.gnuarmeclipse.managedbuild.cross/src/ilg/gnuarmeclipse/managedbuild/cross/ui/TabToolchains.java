@@ -35,6 +35,9 @@ import org.eclipse.cdt.managedbuilder.internal.core.MultiConfiguration;
 import org.eclipse.cdt.managedbuilder.makegen.IManagedBuilderMakefileGenerator;
 import org.eclipse.cdt.managedbuilder.makegen.gnu.GnuMakefileGenerator;
 import org.eclipse.cdt.managedbuilder.ui.properties.AbstractCBuildPropertyTab;
+import org.eclipse.cdt.managedbuilder.ui.properties.Page_BuildSettings;
+import org.eclipse.cdt.ui.newui.ICPropertyProvider2;
+import org.eclipse.cdt.ui.newui.ICPropertyTab;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.runtime.CoreException;
@@ -133,20 +136,14 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabToolchains.createControls()");
 		}
-		if (!isThisPlugin()) {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println("not this plugin");
-			}
-			return;
-		}
-		//
+
 		if (!page.isForProject()) {
 			if (Activator.getInstance().isDebugging()) {
 				System.out.println("not this project");
 			}
 			return;
 		}
-		//
+
 		super.createControls(parent);
 
 		fConfig = getCfg();
@@ -577,6 +574,13 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		// int fSelectedToolchainIndex;
 		// String fSelectedToolchainName;
 
+		if (!isThisPlugin()) {
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("not this plugin");
+			}
+			return;
+		}
+
 		// create the selection array
 		String[] toolchains = new String[ToolchainDefinition.getSize()];
 		for (int i = 0; i < ToolchainDefinition.getSize(); ++i) {
@@ -607,7 +611,6 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			// creation by the toolchain wizard
 			try {
 				setOptionsForToolchain(config, fSelectedToolchainIndex);
-
 			} catch (BuildException e1) {
 				Activator.log(e1);
 			}
@@ -1093,6 +1096,37 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		}
 
 		return true;
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.cdt.ui.newui.AbstractCPropertyTab#handleTabEvent(int,
+	 * java.lang.Object)
+	 */
+	@Override
+	public void handleTabEvent(int kind, Object data) {
+		super.handleTabEvent(kind, data);
+
+		switch (kind) {
+		case ICPropertyTab.UPDATE: {
+			/*
+			 * If the page needs updating fire the handleMessage() method. This
+			 * redraws the tabs and if the page visibility has been modified the
+			 * tab will be updated (removed or added). This is necessary to
+			 * solved the following problem: When in project properties > C/C++
+			 * Build > Settings, if you change to another configuration that
+			 * uses a different toolchain (eg Linux GCC) using the Configuration
+			 * combo (at the top of the dialog) the tabs in Settings do not get
+			 * updated. Note, data is not used so set to null.
+			 */
+			Page_BuildSettings pageConcrete = (Page_BuildSettings) ((ICPropertyProvider2) page);
+			pageConcrete.handleMessage(ICPropertyTab.MANAGEDBUILDSTATE, null);
+		}
+			break;
+		default:
+			break;
+		}
 	}
 
 	// ------------------------------------------------------------------------

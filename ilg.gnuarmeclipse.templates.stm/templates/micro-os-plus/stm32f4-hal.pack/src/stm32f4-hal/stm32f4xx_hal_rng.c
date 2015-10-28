@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_rng.c
   * @author  MCD Application Team
-  * @version V1.3.1
-  * @date    25-March-2015
+  * @version V1.4.1
+  * @date    09-October-2015
   * @brief   RNG HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Random Number Generator (RNG) peripheral:
@@ -70,7 +70,9 @@
 #ifdef HAL_RNG_MODULE_ENABLED
 
 #if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) ||\
-    defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)
+    defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) ||\
+    defined(STM32F410Tx) || defined(STM32F410Cx) || defined(STM32F410Rx) || defined(STM32F469xx) ||\
+    defined(STM32F479xx) 
 
 
 /* Private types -------------------------------------------------------------*/
@@ -182,12 +184,6 @@ HAL_StatusTypeDef HAL_RNG_DeInit(RNG_HandleTypeDef *hrng)
   return HAL_OK;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief  Initializes the RNG MSP.
   * @param  hrng: pointer to a RNG_HandleTypeDef structure that contains
@@ -213,11 +209,6 @@ __weak void HAL_RNG_MspDeInit(RNG_HandleTypeDef *hrng)
             function HAL_RNG_MspDeInit must be implemented in the user file.
    */
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @}
@@ -389,12 +380,6 @@ void HAL_RNG_IRQHandler(RNG_HandleTypeDef *hrng)
   }
 } 
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief  Returns generated random number in polling mode (Obsolete)
   *         Use HAL_RNG_GenerateRandomNumber() API instead.
@@ -478,12 +463,6 @@ __weak void HAL_RNG_ErrorCallback(RNG_HandleTypeDef *hrng)
             function HAL_RNG_ErrorCallback must be implemented in the user file.
    */
 }
- 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
-
 /**
   * @}
   */ 
@@ -523,7 +502,8 @@ HAL_RNG_StateTypeDef HAL_RNG_GetState(RNG_HandleTypeDef *hrng)
   * @}
   */
 
-#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx */
+#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx ||\
+          STM32F429xx || STM32F439xx || STM32F410xx || STM32F469xx || STM32F479xx  */
 
 #endif /* HAL_RNG_MODULE_ENABLED */
 

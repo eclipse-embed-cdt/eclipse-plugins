@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <template type="ProjTempl" version="1.0" supplier="Eclipse.org"
 	revision="1.0" author="Liviu Ionescu"
 	copyright="Copyright (c) 2014 Liviu Ionescu. All rights reserved. This \
@@ -156,9 +156,15 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalSetProperty">
 			<simple name="projectName" value="$(projectName)" />
-			<simple name="condition" value="" />
+			<simple name="condition" value="$(ADUCM36x) == ADuCM360" />
 			<simple name="propertyName" value="devicePeriph" />
-			<simple name="propertyValue" value="$(ADUCM36x)" />
+			<simple name="propertyValue" value="aducm360" />
+		</process>
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalSetProperty">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="$(ADUCM36x) == ADuCM361" />
+			<simple name="propertyName" value="devicePeriph" />
+			<simple name="propertyValue" value="aducm361" />
 		</process>
 	</if>
 
@@ -455,7 +461,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple name="source" value="$(commonDir)/system/include/cmsis" />
 					<simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)" />
-					<simple name="pattern" value=".*[.](h|txt)" />
+					<simple name="pattern" value=".*[.](h|txt|md)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -568,7 +574,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple name="source" value="$(commonDir)/system/src/cortexm" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/cortexm" />
-					<simple name="pattern" value=".*[.](c.*|txt)" />
+					<simple name="pattern" value=".*[.](c.*|txt|md)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -580,7 +586,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple name="source" value="$(commonDir)/system/src/newlib" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/$(newlibDir)" />
-					<simple name="pattern" value=".*[.](c.*|txt)" />
+					<simple name="pattern" value=".*[.](c.*|txt|md)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -594,7 +600,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple name="source" value="$(commonDir)/system/src/diag" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/diag" />
-					<simple name="pattern" value=".*[.](c.*|txt)" />
+					<simple name="pattern" value=".*[.](c.*|txt|md)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -613,13 +619,13 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple name="source" value="vendor/drivers/include/aducm360" />
 					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(CMSIS_name)" />
+						value="$(sysDir)/$(includeDir)/$(devicePeriph)" />
 					<simple name="pattern" value=".*[.](h.*)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="vendor/drivers/src/aducm360" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/$(CMSIS_name)" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/$(devicePeriph)" />
 					<simple name="pattern" value=".*[.](c.*)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -636,13 +642,13 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple name="source" value="vendor/drivers/include/aducm361" />
 					<simple name="target"
-						value="$(sysDir)/$(includeDir)/$(CMSIS_name)" />
+						value="$(sysDir)/$(includeDir)/$(devicePeriph)" />
 					<simple name="pattern" value=".*[.](h.*)" />
 					<simple name="replaceable" value="true" />
 				</element>
 				<element>
 					<simple name="source" value="vendor/drivers/src/aducm361" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/$(CMSIS_name)" />
+					<simple name="target" value="$(sysDir)/$(sourceDir)/$(devicePeriph)" />
 					<simple name="pattern" value=".*[.](c.*)" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -968,6 +974,36 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.warning.badfunctioncast" />
 					<simple name="value" value="true" />
 					<simple name="path" value="" />
+					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
+
+		<!-- Disable warnings for peripheral sources. -->
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otherwarnings" />
+					<simple name="value"
+						value=" -Wno-padded -Wno-conversion -Wno-sign-conversion" />
+					<simple name="path" value="$(sysDir)/$(sourceDir)/$(devicePeriph)" />
+					<simple name="buildType" value="" />
+				</element>
+			</complex-array>
+		</process>
+		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringOptionValue">
+			<simple name="projectName" value="$(projectName)" />
+			<simple name="condition" value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.otherwarnings" />
+					<simple name="value"
+						value=" -Wno-missing-prototypes -Wno-padded -Wno-missing-declarations" />
+					<simple name="path" value="$(sysDir)/$(sourceDir)/$(cmsisDir)/system_$(CMSIS_name).c" />
 					<simple name="buildType" value="" />
 				</element>
 			</complex-array>

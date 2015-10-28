@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_sd.c
   * @author  MCD Application Team
-  * @version V1.3.1
-  * @date    25-March-2015
+  * @version V1.4.1
+  * @date    09-October-2015
   * @brief   SD card HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Secure Digital (SD) peripheral:
@@ -180,7 +180,10 @@
 #include "stm32f4xx_hal.h"
 
 #ifdef HAL_SD_MODULE_ENABLED
-
+#if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) || \
+    defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || \
+    defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F446xx) || \
+    defined(STM32F469xx) || defined(STM32F479xx) 
 /** @addtogroup STM32F4xx_HAL_Driver
   * @{
   */
@@ -404,11 +407,6 @@ HAL_StatusTypeDef HAL_SD_DeInit(SD_HandleTypeDef *hsd)
   return HAL_OK;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
 
 /**
   * @brief  Initializes the SD MSP.
@@ -433,11 +431,6 @@ __weak void HAL_SD_MspDeInit(SD_HandleTypeDef *hsd)
             the HAL_SD_MspDeInit could be implemented in the user file
    */
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @}
@@ -1440,11 +1433,6 @@ void HAL_SD_IRQHandler(SD_HandleTypeDef *hsd)
 #endif /* SDIO_STA_STBITERR */
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
 
 /**
   * @brief  SD end of transfer callback.
@@ -1522,11 +1510,6 @@ __weak void HAL_SD_DMA_TxErrorCallback(DMA_HandleTypeDef *hdma)
    */ 
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
-
 /**
   * @}
   */
@@ -1545,13 +1528,6 @@ __weak void HAL_SD_DMA_TxErrorCallback(DMA_HandleTypeDef *hdma)
 @endverbatim
   * @{
   */
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wsign-conversion"
-#endif
 
 /**
   * @brief  Returns information about specific card.
@@ -1764,11 +1740,6 @@ HAL_SD_ErrorTypedef HAL_SD_Get_CardInfo(SD_HandleTypeDef *hsd, HAL_SD_CardInfoTy
   
   return errorstate;
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @brief  Enables wide bus operation for the requested card if supported by 
@@ -2194,12 +2165,6 @@ HAL_SD_TransferStateTypedef HAL_SD_GetStatus(SD_HandleTypeDef *hsd)
   }
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-
 /**
   * @brief  Gets the SD card status.
   * @param  hsd: SD handle      
@@ -2282,11 +2247,6 @@ HAL_SD_ErrorTypedef HAL_SD_GetCardStatus(SD_HandleTypeDef *hsd, HAL_SD_CardStatu
   
   return errorstate;
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
          
 /**
   * @}
@@ -3517,7 +3477,8 @@ static HAL_SD_ErrorTypedef SD_IsCardProgramming(SD_HandleTypeDef *hsd, uint8_t *
 /**
   * @}
   */
-
+#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx ||
+          STM32F401xC || STM32F401xE || STM32F411xE || STM32F446xx || STM32F469xx || STM32F479xx  */
 #endif /* HAL_SD_MODULE_ENABLED */
 
 /**

@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_pcd_ex.c
   * @author  MCD Application Team
-  * @version V1.3.1
-  * @date    25-March-2015
+  * @version V1.4.1
+  * @date    09-October-2015
   * @brief   PCD HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the USB Peripheral Controller:
@@ -51,7 +51,10 @@
   * @{
   */
 #ifdef HAL_PCD_MODULE_ENABLED
-
+#if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) || \
+    defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || \
+    defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F446xx) || \
+    defined(STM32F469xx) || defined(STM32F479xx) 
 /* Private types -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
 /* Private constants ---------------------------------------------------------*/
@@ -59,7 +62,7 @@
 /* Private functions ---------------------------------------------------------*/
 /* Exported functions --------------------------------------------------------*/
 
-/** @defgroup PCDEx_Exported_Functions PCDEx Exported Functions
+/** @defgroup PCDEx_Exported_Functions PCD Extended Exported Functions
   * @{
   */
 
@@ -76,12 +79,6 @@
 @endverbatim
   * @{
   */
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsign-conversion"
-#endif
 
 /**
   * @brief  Set Tx FIFO
@@ -109,7 +106,7 @@ HAL_StatusTypeDef HAL_PCDEx_SetTxFiFo(PCD_HandleTypeDef *hpcd, uint8_t fifo, uin
   
   if(fifo == 0)
   {
-    hpcd->Instance->DIEPTXF0_HNPTXFSIZ = (size << 16) | Tx_Offset;
+    hpcd->Instance->DIEPTXF0_HNPTXFSIZ = (uint32_t)(((uint32_t)size << 16) | Tx_Offset);
   }
   else
   {
@@ -120,17 +117,11 @@ HAL_StatusTypeDef HAL_PCDEx_SetTxFiFo(PCD_HandleTypeDef *hpcd, uint8_t fifo, uin
     }
     
     /* Multiply Tx_Size by 2 to get higher performance */
-    hpcd->Instance->DIEPTXF[fifo - 1] = (size << 16) | Tx_Offset;
-    
+    hpcd->Instance->DIEPTXF[fifo - 1] = (uint32_t)(((uint32_t)size << 16) | Tx_Offset);        
   }
   
   return HAL_OK;
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @brief  Set Rx FIFO
@@ -145,9 +136,9 @@ HAL_StatusTypeDef HAL_PCDEx_SetRxFiFo(PCD_HandleTypeDef *hpcd, uint16_t size)
   return HAL_OK;
 }
 
-#if defined(STM32F446xx)
+#if defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx) 
 /**
-  * @brief  HAL_PCDEx_ActivateLPM : active LPM Feature
+  * @brief  Activate LPM feature
   * @param  hpcd: PCD handle
   * @retval HAL status
   */
@@ -164,7 +155,7 @@ HAL_StatusTypeDef HAL_PCDEx_ActivateLPM(PCD_HandleTypeDef *hpcd)
 }
 
 /**
-  * @brief  HAL_PCDEx_DeActivateLPM : de-active LPM feature
+  * @brief  Deactivate LPM feature.
   * @param  hpcd: PCD handle
   * @retval HAL status
   */
@@ -179,14 +170,8 @@ HAL_StatusTypeDef HAL_PCDEx_DeActivateLPM(PCD_HandleTypeDef *hpcd)
   return HAL_OK;  
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
-  * @brief  HAL_PCDEx_LPM_Callback : Send LPM message to user layer
+  * @brief  Send LPM message to user layer callback.
   * @param  hpcd: PCD handle
   * @param  msg: LPM message
   * @retval HAL status
@@ -194,13 +179,7 @@ HAL_StatusTypeDef HAL_PCDEx_DeActivateLPM(PCD_HandleTypeDef *hpcd)
 __weak void HAL_PCDEx_LPM_Callback(PCD_HandleTypeDef *hpcd, PCD_LPM_MsgTypeDef msg)
 {
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
-
-#endif /* STM32F446xx */
+#endif /* STM32F446xx || STM32F469xx || STM32F479xx  */
 
 /**
   * @}
@@ -210,6 +189,8 @@ __weak void HAL_PCDEx_LPM_Callback(PCD_HandleTypeDef *hpcd, PCD_LPM_MsgTypeDef m
   * @}
   */
 
+#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx ||
+          STM32F401xC || STM32F401xE || STM32F411xE || STM32F446xx || STM32F469xx || STM32F479xx  */
 #endif /* HAL_PCD_MODULE_ENABLED */
 /**
   * @}

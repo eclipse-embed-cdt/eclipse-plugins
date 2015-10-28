@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_adc_ex.c
   * @author  MCD Application Team
-  * @version V1.3.1
-  * @date    25-March-2015
+  * @version V1.4.1
+  * @date    09-October-2015
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the ADC extension peripheral:
   *           + Extended features functions
@@ -580,12 +580,6 @@ HAL_StatusTypeDef HAL_ADCEx_MultiModeStop_DMA(ADC_HandleTypeDef* hadc)
   return HAL_OK;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief  Returns the last ADC1, ADC2 and ADC3 regular conversions results 
   *         data in the selected multi mode.
@@ -612,11 +606,6 @@ __weak void HAL_ADCEx_InjectedConvCpltCallback(ADC_HandleTypeDef* hadc)
    */
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
-
 /**
   * @brief  Configures for the selected ADC injected channel its corresponding
   *         rank in the sequencer and its sample time.
@@ -637,7 +626,6 @@ HAL_StatusTypeDef HAL_ADCEx_InjectedConfigChannel(ADC_HandleTypeDef* hadc, ADC_I
   assert_param(IS_ADC_INJECTED_RANK(sConfigInjected->InjectedRank));
   assert_param(IS_ADC_SAMPLE_TIME(sConfigInjected->InjectedSamplingTime));
   assert_param(IS_ADC_EXT_INJEC_TRIG(sConfigInjected->ExternalTrigInjecConv));
-  assert_param(IS_ADC_EXT_INJEC_TRIG_EDGE(sConfigInjected->ExternalTrigInjecConvEdge));
   assert_param(IS_ADC_INJECTED_LENGTH(sConfigInjected->InjectedNbrOfConversion));
   assert_param(IS_FUNCTIONAL_STATE(sConfigInjected->AutoInjectedConv));
   assert_param(IS_FUNCTIONAL_STATE(sConfigInjected->InjectedDiscontinuousConvMode));
@@ -646,6 +634,11 @@ HAL_StatusTypeDef HAL_ADCEx_InjectedConfigChannel(ADC_HandleTypeDef* hadc, ADC_I
   tmp = ADC_GET_RESOLUTION(hadc);
   assert_param(IS_ADC_RANGE(tmp, sConfigInjected->InjectedOffset));
 #endif /* USE_FULL_ASSERT  */
+
+  if(sConfigInjected->ExternalTrigInjecConvEdge != ADC_INJECTED_SOFTWARE_START)
+  {
+    assert_param(IS_ADC_EXT_INJEC_TRIG_EDGE(sConfigInjected->ExternalTrigInjecConvEdge));
+  }
 
   /* Process locked */
   __HAL_LOCK(hadc);
@@ -680,13 +673,27 @@ HAL_StatusTypeDef HAL_ADCEx_InjectedConfigChannel(ADC_HandleTypeDef* hadc, ADC_I
   /* Set the SQx bits for the selected rank */
   hadc->Instance->JSQR |= ADC_JSQR(sConfigInjected->InjectedChannel, sConfigInjected->InjectedRank,sConfigInjected->InjectedNbrOfConversion);
 
-  /* Select external trigger to start conversion */
-  hadc->Instance->CR2 &= ~(ADC_CR2_JEXTSEL);
-  hadc->Instance->CR2 |=  sConfigInjected->ExternalTrigInjecConv;
-  
-  /* Select external trigger polarity */
-  hadc->Instance->CR2 &= ~(ADC_CR2_JEXTEN);
-  hadc->Instance->CR2 |= sConfigInjected->ExternalTrigInjecConvEdge;
+  /* Enable external trigger if trigger selection is different of software  */
+  /* start.                                                                 */
+  /* Note: This configuration keeps the hardware feature of parameter       */
+  /*       ExternalTrigConvEdge "trigger edge none" equivalent to           */
+  /*       software start.                                                  */ 
+  if(sConfigInjected->ExternalTrigInjecConv != ADC_INJECTED_SOFTWARE_START)
+  {  
+    /* Select external trigger to start conversion */
+    hadc->Instance->CR2 &= ~(ADC_CR2_JEXTSEL);
+    hadc->Instance->CR2 |=  sConfigInjected->ExternalTrigInjecConv;
+    
+    /* Select external trigger polarity */
+    hadc->Instance->CR2 &= ~(ADC_CR2_JEXTEN);
+    hadc->Instance->CR2 |= sConfigInjected->ExternalTrigInjecConvEdge;
+  }
+  else
+  {
+    /* Reset the external trigger */
+    hadc->Instance->CR2 &= ~(ADC_CR2_JEXTSEL);
+    hadc->Instance->CR2 &= ~(ADC_CR2_JEXTEN);  
+  }
   
   if (sConfigInjected->AutoInjectedConv != DISABLE)
   {

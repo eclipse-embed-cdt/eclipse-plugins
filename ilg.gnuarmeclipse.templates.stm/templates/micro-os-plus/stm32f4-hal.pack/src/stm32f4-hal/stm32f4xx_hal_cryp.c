@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_cryp.c
   * @author  MCD Application Team
-  * @version V1.3.1
-  * @date    25-March-2015
+  * @version V1.4.1
+  * @date    09-October-2015
   * @brief   CRYP HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Cryptography (CRYP) peripheral:
@@ -111,7 +111,7 @@
 
 #ifdef HAL_CRYP_MODULE_ENABLED
 
-#if defined(STM32F415xx) || defined(STM32F417xx) || defined(STM32F437xx) || defined(STM32F439xx)
+#if defined(STM32F415xx) || defined(STM32F417xx) || defined(STM32F437xx) || defined(STM32F439xx) || defined(STM32F479xx)
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -204,12 +204,6 @@ static void CRYP_DMAError(DMA_HandleTypeDef *hdma)
   hcryp->State= HAL_CRYP_STATE_READY;
   HAL_CRYP_ErrorCallback(hcryp);
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
 
 /**
   * @brief  Writes the Key in Key registers. 
@@ -308,11 +302,6 @@ static void CRYP_SetInitVector(CRYP_HandleTypeDef *hcryp, uint8_t *InitVector, u
     break;
   }
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @brief  Process Data: Writes Input data in polling mode and read the output data
@@ -698,12 +687,6 @@ HAL_StatusTypeDef HAL_CRYP_DeInit(CRYP_HandleTypeDef *hcryp)
   return HAL_OK;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief  Initializes the CRYP MSP.
   * @param  hcryp: pointer to a CRYP_HandleTypeDef structure that contains
@@ -729,11 +712,6 @@ __weak void HAL_CRYP_MspDeInit(CRYP_HandleTypeDef *hcryp)
             the HAL_CRYP_MspDeInit could be implemented in the user file
    */
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @}
@@ -1161,12 +1139,6 @@ HAL_StatusTypeDef HAL_CRYP_AESCTR_Decrypt(CRYP_HandleTypeDef *hcryp, uint8_t *pC
   /* Return function status */
   return HAL_OK;
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
 
 /**
   * @brief  Initializes the CRYP peripheral in AES ECB encryption mode using Interrupt.
@@ -1847,11 +1819,6 @@ HAL_StatusTypeDef HAL_CRYP_AESCTR_Decrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t 
   return HAL_OK;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
-
 /**
   * @brief  Initializes the CRYP peripheral in AES ECB encryption mode using DMA.
   * @param  hcryp: pointer to a CRYP_HandleTypeDef structure that contains
@@ -2437,12 +2404,6 @@ HAL_StatusTypeDef HAL_CRYP_DESCBC_Decrypt(CRYP_HandleTypeDef *hcryp, uint8_t *pP
   /* Return function status */
   return HAL_OK;
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
 
 /**
   * @brief  Initializes the CRYP peripheral in DES ECB encryption mode using IT.
@@ -3481,11 +3442,6 @@ HAL_StatusTypeDef HAL_CRYP_TDESCBC_Decrypt_IT(CRYP_HandleTypeDef *hcryp, uint8_t
   return HAL_OK;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
-
 /**
   * @brief  Initializes the CRYP peripheral in TDES ECB encryption mode using DMA.
   * @param  hcryp: pointer to a CRYP_HandleTypeDef structure that contains
@@ -3678,12 +3634,6 @@ HAL_StatusTypeDef HAL_CRYP_TDESCBC_Decrypt_DMA(CRYP_HandleTypeDef *hcryp, uint8_
   * @{
   */
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief  Input FIFO transfer completed callbacks.
   * @param  hcryp: pointer to a CRYP_HandleTypeDef structure that contains
@@ -3722,11 +3672,6 @@ __weak void HAL_CRYP_OutCpltCallback(CRYP_HandleTypeDef *hcryp)
             the HAL_CRYP_ErrorCallback could be implemented in the user file
    */ 
 }
-
- // [ILG]
- #if defined ( __GNUC__ )
- #pragma GCC diagnostic pop
- #endif
 
 /**
   * @}
@@ -3854,7 +3799,7 @@ HAL_CRYP_STATETypeDef HAL_CRYP_GetState(CRYP_HandleTypeDef *hcryp)
   * @}
   */
 
-#endif /* STM32F415xx || STM32F417xx || STM32F437xx || STM32F439xx */
+#endif /* STM32F415xx || STM32F417xx || STM32F437xx || STM32F439xx || STM32F479xx */
 
 #endif /* HAL_CRYP_MODULE_ENABLED */
 /**

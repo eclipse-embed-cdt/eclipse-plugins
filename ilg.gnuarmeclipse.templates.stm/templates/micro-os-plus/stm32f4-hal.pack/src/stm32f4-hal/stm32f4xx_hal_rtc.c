@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_rtc.c
   * @author  MCD Application Team
-  * @version V1.3.1
-  * @date    25-March-2015
+  * @version V1.4.1
+  * @date    09-October-2015
   * @brief   RTC HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Real Time Clock (RTC) peripheral:
@@ -369,12 +369,6 @@ HAL_StatusTypeDef HAL_RTC_DeInit(RTC_HandleTypeDef *hrtc)
   return HAL_OK;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief  Initializes the RTC MSP.
   * @param  hrtc: pointer to a RTC_HandleTypeDef structure that contains
@@ -400,11 +394,6 @@ __weak void HAL_RTC_MspDeInit(RTC_HandleTypeDef* hrtc)
             the HAL_RTC_MspDeInit could be implemented in the user file
    */ 
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @}
@@ -558,9 +547,13 @@ HAL_StatusTypeDef HAL_RTC_SetTime(RTC_HandleTypeDef *hrtc, RTC_TimeTypeDef *sTim
   *          This parameter can be one of the following values:
   *            @arg RTC_FORMAT_BIN: Binary data format 
   *            @arg RTC_FORMAT_BCD: BCD data format
+  * @note  You can use SubSeconds and SecondFraction (sTime structure fields returned) to convert SubSeconds
+  *        value in second fraction ratio with time unit following generic formula:
+  *        Second fraction ratio * time_unit= [(SecondFraction-SubSeconds)/(SecondFraction+1)] * time_unit
+  *        This conversion can be performed only if no shift operation is pending (ie. SHFP=0) when PREDIV_S >= SS
   * @note You must call HAL_RTC_GetDate() after HAL_RTC_GetTime() to unlock the values 
-  * in the higher-order calendar shadow registers to ensure consistency between the time and date values.
-  * Reading RTC current time locks the values in calendar shadow registers until Current date is read.
+  *        in the higher-order calendar shadow registers to ensure consistency between the time and date values.
+  *        Reading RTC current time locks the values in calendar shadow registers until current date is read.
   * @retval HAL status
   */
 HAL_StatusTypeDef HAL_RTC_GetTime(RTC_HandleTypeDef *hrtc, RTC_TimeTypeDef *sTime, uint32_t Format)
@@ -570,8 +563,11 @@ HAL_StatusTypeDef HAL_RTC_GetTime(RTC_HandleTypeDef *hrtc, RTC_TimeTypeDef *sTim
   /* Check the parameters */
   assert_param(IS_RTC_FORMAT(Format));
   
-  /* Get subseconds values from the correspondent registers*/
+  /* Get subseconds structure field from the corresponding register */
   sTime->SubSeconds = (uint32_t)(hrtc->Instance->SSR);
+  
+  /* Get SecondFraction structure field from the corresponding register field*/
+  sTime->SecondFraction = (uint32_t)(hrtc->Instance->PRER & RTC_PRER_PREDIV_S);
 
   /* Get the TR register */
   tmpreg = (uint32_t)(hrtc->Instance->TR & RTC_TR_RESERVED_MASK); 
@@ -1229,13 +1225,7 @@ HAL_StatusTypeDef HAL_RTC_DeactivateAlarm(RTC_HandleTypeDef *hrtc, uint32_t Alar
   
   return HAL_OK; 
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-
+           
 /**
   * @brief  Gets the RTC Alarm value and masks.
   * @param  hrtc: pointer to a RTC_HandleTypeDef structure that contains
@@ -1296,11 +1286,6 @@ HAL_StatusTypeDef HAL_RTC_GetAlarm(RTC_HandleTypeDef *hrtc, RTC_AlarmTypeDef *sA
   return HAL_OK;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
-
 /**
   * @brief  This function handles Alarm interrupt request.
   * @param  hrtc: pointer to a RTC_HandleTypeDef structure that contains
@@ -1342,12 +1327,6 @@ void HAL_RTC_AlarmIRQHandler(RTC_HandleTypeDef* hrtc)
   hrtc->State = HAL_RTC_STATE_READY; 
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief  Alarm A callback.
   * @param  hrtc: pointer to a RTC_HandleTypeDef structure that contains
@@ -1360,11 +1339,6 @@ __weak void HAL_RTC_AlarmAEventCallback(RTC_HandleTypeDef *hrtc)
             the HAL_RTC_AlarmAEventCallback could be implemented in the user file
    */
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @brief  This function handles AlarmA Polling request.
@@ -1524,12 +1498,6 @@ HAL_StatusTypeDef RTC_EnterInitMode(RTC_HandleTypeDef* hrtc)
   return HAL_OK;  
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wsign-conversion"
-#endif
 
 /**
   * @brief  Converts a 2 digit decimal to BCD format.
@@ -1560,11 +1528,6 @@ uint8_t RTC_Bcd2ToByte(uint8_t Value)
   tmp = ((uint8_t)(Value & (uint8_t)0xF0) >> (uint8_t)0x4) * 10;
   return (tmp + (Value & (uint8_t)0x0F));
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @}

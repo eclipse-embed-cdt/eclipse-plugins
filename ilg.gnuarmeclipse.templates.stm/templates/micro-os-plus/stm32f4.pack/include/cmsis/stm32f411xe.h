@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f411xe.h
   * @author  MCD Application Team
-  * @version V2.3.1
-  * @date    03-April-2015
+  * @version V2.4.1
+  * @date    09-October-2015
   * @brief   CMSIS STM32F411xExx Device Peripheral Access Layer Header File. 
   *
   *          This file contains:

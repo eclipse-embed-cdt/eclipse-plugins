@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="ISO-8859-1"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <template type="ProjTempl" version="1.0" supplier="Eclipse.org"
 	revision="1.0" author="Liviu Ionescu"
 	copyright="Copyright (c) 2014 Liviu Ionescu. All rights reserved. This \
@@ -17,6 +17,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<item value="cortex-m0plus" label="Cortex-M0+" />
 			<item value="cortex-m3" label="Cortex-M3" />
 			<item value="cortex-m4" label="Cortex-M4" />
+			<item value="cortex-m7" label="Cortex-M7" />
 		</property>
 
 		<property id="CMxtalValue" label="%CM.xtalValue.label"
@@ -380,7 +381,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple name="source" value="$(commonDir)/system/include/cmsis" />
 					<simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)" />
-					<simple name="pattern" value=".*[.](h|txt)" />
+					<simple name="pattern" value=".*[.](h|txt|md)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -505,7 +506,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple name="source" value="$(commonDir)/system/src/cortexm" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/cortexm" />
-					<simple name="pattern" value=".*[.](c.*|txt)" />
+					<simple name="pattern" value=".*[.](c.*|txt|md)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -517,7 +518,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple name="source" value="$(commonDir)/system/src/newlib" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/$(newlibDir)" />
-					<simple name="pattern" value=".*[.](c.*|txt)" />
+					<simple name="pattern" value=".*[.](c.*|txt|md)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>
@@ -539,7 +540,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple name="source" value="$(commonDir)/system/src/diag" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/diag" />
-					<simple name="pattern" value=".*[.](c.*|txt)" />
+					<simple name="pattern" value=".*[.](c.*|txt|md)" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>

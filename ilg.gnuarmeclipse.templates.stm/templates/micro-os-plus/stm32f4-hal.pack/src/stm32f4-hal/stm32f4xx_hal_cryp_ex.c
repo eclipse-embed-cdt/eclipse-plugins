@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_cryp_ex.c
   * @author  MCD Application Team
-  * @version V1.3.1
-  * @date    25-March-2015
+  * @version V1.4.1
+  * @date    09-October-2015
   * @brief   Extended CRYP HAL module driver
   *          This file provides firmware functions to manage the following 
   *          functionalities of CRYP extension peripheral:
@@ -110,7 +110,7 @@
 
 #ifdef HAL_CRYP_MODULE_ENABLED
 
-#if defined(STM32F437xx) || defined(STM32F439xx)
+#if defined(STM32F437xx) || defined(STM32F439xx) || defined(STM32F479xx)
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -196,12 +196,6 @@ static void CRYPEx_GCMCCM_DMAError(DMA_HandleTypeDef *hdma)
   hcryp->State= HAL_CRYP_STATE_READY;
   HAL_CRYP_ErrorCallback(hcryp);
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
 
 /**
   * @brief  Writes the Key in Key registers. 
@@ -428,11 +422,6 @@ static HAL_StatusTypeDef CRYPEx_GCMCCM_SetHeaderPhase(CRYP_HandleTypeDef *hcryp,
   return HAL_OK;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
-
 /**
   * @brief  Sets the DMA configuration and start the DMA transfer.
   * @param  hcryp: pointer to a CRYP_HandleTypeDef structure that contains
@@ -499,13 +488,6 @@ static void CRYPEx_GCMCCM_SetDMAConfig(CRYP_HandleTypeDef *hcryp, uint32_t input
   * @{
   */
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#pragma GCC diagnostic ignored "-Wsign-conversion"
-#pragma GCC diagnostic ignored "-Wsign-compare"
-#endif
 
 /**
   * @brief  Initializes the CRYP peripheral in AES CCM encryption mode then 
@@ -2991,11 +2973,6 @@ HAL_StatusTypeDef HAL_CRYPEx_AESCCM_Decrypt_DMA(CRYP_HandleTypeDef *hcryp, uint8
   }
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
-
 /**
   * @}
   */
@@ -3052,7 +3029,7 @@ void HAL_CRYPEx_GCMCCM_IRQHandler(CRYP_HandleTypeDef *hcryp)
 /**
   * @}
   */
-#endif /* STM32F437xx || STM32F439xx */
+#endif /* STM32F437xx || STM32F439xx || STM32F479xx */
 
 #endif /* HAL_CRYP_MODULE_ENABLED */
 /**

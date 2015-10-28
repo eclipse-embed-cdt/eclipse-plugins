@@ -16,5 +16,5 @@
   </parent>
   
   <name>GNU ARM Eclipse QEMU debug feature</name>
-  <url>http://gnuarmeclipse.livius.net</url>
+  <url>http://gnuarmeclipse.github.io</url>
 </project>

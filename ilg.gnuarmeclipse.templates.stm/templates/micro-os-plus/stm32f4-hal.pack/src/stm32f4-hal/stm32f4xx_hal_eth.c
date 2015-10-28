@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_eth.c
   * @author  MCD Application Team
-  * @version V1.3.1
-  * @date    25-March-2015
+  * @version V1.4.1
+  * @date    09-October-2015
   * @brief   ETH HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Ethernet (ETH) peripheral:
@@ -112,7 +112,8 @@
 
 #ifdef HAL_ETH_MODULE_ENABLED
 
-#if defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx)
+#if defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F427xx) || defined(STM32F437xx) ||\
+    defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F469xx) || defined(STM32F479xx)
 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
@@ -586,12 +587,6 @@ HAL_StatusTypeDef HAL_ETH_DMARxDescListInit(ETH_HandleTypeDef *heth, ETH_DMADesc
   return HAL_OK;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief  Initializes the ETH MSP.
   * @param  heth: pointer to a ETH_HandleTypeDef structure that contains
@@ -617,11 +612,6 @@ __weak void HAL_ETH_MspDeInit(ETH_HandleTypeDef *heth)
   the HAL_ETH_MspDeInit could be implemented in the user file
   */
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @}
@@ -989,12 +979,6 @@ void HAL_ETH_IRQHandler(ETH_HandleTypeDef *heth)
   }
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief  Tx Transfer completed callbacks.
   * @param  heth: pointer to a ETH_HandleTypeDef structure that contains
@@ -1033,11 +1017,6 @@ __weak void HAL_ETH_ErrorCallback(ETH_HandleTypeDef *heth)
   the HAL_ETH_TxCpltCallback could be implemented in the user file
   */ 
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @brief  Reads a PHY register
@@ -1843,12 +1822,6 @@ static void ETH_MACDMAConfig(ETH_HandleTypeDef *heth, uint32_t err)
      ETH_MACAddressConfig(heth, ETH_MAC_ADDRESS0, heth->Init.MACAddr);
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief  Configures the selected MAC address.
   * @param  heth: pointer to a ETH_HandleTypeDef structure that contains
@@ -1879,11 +1852,6 @@ static void ETH_MACAddressConfig(ETH_HandleTypeDef *heth, uint32_t MacAddr, uint
   /* Load the selected MAC address low register */
   (*(__IO uint32_t *)((uint32_t)(ETH_MAC_ADDR_LBASE + MacAddr))) = tmpreg1;
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @brief  Enables the MAC transmission.
@@ -2037,7 +2005,8 @@ static void ETH_FlushTransmitFIFO(ETH_HandleTypeDef *heth)
   * @}
   */
 
-#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx */
+#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx || STM32F427xx ||\
+          STM32F437xx || STM32F429xx || STM32F439xx || STM32F469xx || STM32F479xx */
 #endif /* HAL_ETH_MODULE_ENABLED */
 /**
   * @}

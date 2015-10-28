@@ -55,5 +55,5 @@
 </build>
   
     <name>GNU ARM Eclipse repository</name>
-	<url>http://gnuarmeclipse.livius.net</url>
+	<url>http://gnuarmeclipse.github.io</url>
 </project>

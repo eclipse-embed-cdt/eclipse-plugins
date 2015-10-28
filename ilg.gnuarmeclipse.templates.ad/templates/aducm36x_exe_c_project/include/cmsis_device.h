@@ -1,6 +1,16 @@
-#ifndef _CMSIS_H_
-#define _CMSIS_H_
+//
+// This file is part of the GNU ARM Eclipse distribution.
+// Copyright (c) 2015 Liviu Ionescu.
+//
+
+#ifndef _CMSIS_DEVICE_H_
+#define _CMSIS_DEVICE_H_
+
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wpadded"
 
 #include "$(CMSIS_name).h"
 
-#endif // _CMSIS_H_
+#pragma GCC diagnostic pop
+
+#endif // _CMSIS_DEVICE_H_

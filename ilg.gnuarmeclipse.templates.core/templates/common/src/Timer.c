@@ -1,5 +1,5 @@
 //
-// This file is part of the GNU ARM Eclipse Plug-ins project.
+// This file is part of the GNU ARM Eclipse distribution.
 // Copyright (c) 2014 Liviu Ionescu.
 //
 
@@ -7,6 +7,10 @@
 #include "cortexm/ExceptionHandlers.h"
 
 // ----------------------------------------------------------------------------
+
+#if defined(USE_HAL_DRIVER)
+void HAL_IncTick(void);
+#endif
 
 // Forward declarations.
 

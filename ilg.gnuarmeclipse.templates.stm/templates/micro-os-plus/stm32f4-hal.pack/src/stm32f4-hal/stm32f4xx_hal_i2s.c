@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_i2s.c
   * @author  MCD Application Team
-  * @version V1.3.1
-  * @date    25-March-2015
+  * @version V1.4.1
+  * @date    09-October-2015
   * @brief   I2S HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Integrated Interchip Sound (I2S) peripheral:
@@ -349,12 +349,6 @@ HAL_StatusTypeDef HAL_I2S_DeInit(I2S_HandleTypeDef *hi2s)
   return HAL_OK;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief I2S MSP Init
   * @param  hi2s: pointer to a I2S_HandleTypeDef structure that contains
@@ -380,12 +374,6 @@ HAL_StatusTypeDef HAL_I2S_DeInit(I2S_HandleTypeDef *hi2s)
             the HAL_I2S_MspDeInit could be implemented in the user file
    */ 
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
-
 /**
   * @}
   */
@@ -431,12 +419,6 @@ HAL_StatusTypeDef HAL_I2S_DeInit(I2S_HandleTypeDef *hi2s)
 @endverbatim
   * @{
   */
-
- // [ILG]
- #if defined ( __GNUC__ )
- #pragma GCC diagnostic push
- #pragma GCC diagnostic ignored "-Wconversion"
- #endif
 
 /**
   * @brief Transmit an amount of data in blocking mode
@@ -499,12 +481,15 @@ HAL_StatusTypeDef HAL_I2S_Transmit(I2S_HandleTypeDef *hi2s, uint16_t *pData, uin
         return HAL_TIMEOUT;
       }
     } 
-    /* Wait until Busy flag is reset */
-    if (I2S_WaitFlagStateUntilTimeout(hi2s, I2S_FLAG_BSY, SET, Timeout) != HAL_OK)
+    /* Check if Slave mode is selected */
+    if(((hi2s->Instance->I2SCFGR & SPI_I2SCFGR_I2SCFG) == I2S_MODE_SLAVE_TX) || ((hi2s->Instance->I2SCFGR & SPI_I2SCFGR_I2SCFG) == I2S_MODE_SLAVE_RX))
     {
-      return HAL_TIMEOUT;
+      /* Wait until Busy flag is reset */
+      if (I2S_WaitFlagStateUntilTimeout(hi2s, I2S_FLAG_BSY, SET, Timeout) != HAL_OK)
+      {
+        return HAL_TIMEOUT;
+      }
     }
-
     hi2s->State = HAL_I2S_STATE_READY; 
     
     /* Process Unlocked */
@@ -915,11 +900,6 @@ HAL_StatusTypeDef HAL_I2S_Receive_DMA(I2S_HandleTypeDef *hi2s, uint16_t *pData, 
   }
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
-
 /**
   * @brief Pauses the audio stream playing from the Media.
   * @param  hi2s: pointer to a I2S_HandleTypeDef structure that contains
@@ -1008,12 +988,6 @@ __weak HAL_StatusTypeDef HAL_I2S_DMAResume(I2S_HandleTypeDef *hi2s)
   
   return HAL_OK;
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
 
 /**
   * @brief Resumes the audio stream playing from the Media.
@@ -1111,17 +1085,6 @@ __weak void HAL_I2S_IRQHandler(I2S_HandleTypeDef *hi2s)
   }
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief Tx Transfer Half completed callbacks
   * @param  hi2s: pointer to a I2S_HandleTypeDef structure that contains
@@ -1186,11 +1149,6 @@ __weak void HAL_I2S_RxCpltCallback(I2S_HandleTypeDef *hi2s)
             the HAL_I2S_ErrorCallback could be implemented in the user file
    */ 
 }
-
- // [ILG]
- #if defined ( __GNUC__ )
- #pragma GCC diagnostic pop
- #endif
 
 /**
   * @}
@@ -1324,12 +1282,6 @@ HAL_StatusTypeDef I2S_Transmit_IT(I2S_HandleTypeDef *hi2s)
   }
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-
 /**
   * @brief Receive an amount of data in non-blocking mode with Interrupt
   * @param  hi2s: pointer to a I2S_HandleTypeDef structure that contains
@@ -1381,11 +1333,6 @@ HAL_StatusTypeDef I2S_Receive_IT(I2S_HandleTypeDef *hi2s)
     return HAL_BUSY; 
   } 
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @brief This function handles I2S Communication Timeout.

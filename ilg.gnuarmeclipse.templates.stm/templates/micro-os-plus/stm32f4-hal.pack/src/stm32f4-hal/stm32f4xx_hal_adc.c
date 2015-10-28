@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_adc.c
   * @author  MCD Application Team
-  * @version V1.3.1
-  * @date    25-March-2015
+  * @version V1.4.1
+  * @date    09-October-2015
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the Analog to Digital Convertor (ADC) peripheral:
   *           + Initialization and de-initialization functions
@@ -341,12 +341,6 @@ HAL_StatusTypeDef HAL_ADC_DeInit(ADC_HandleTypeDef* hadc)
   return HAL_OK;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief  Initializes the ADC MSP.
   * @param  hadc: pointer to a ADC_HandleTypeDef structure that contains
@@ -372,11 +366,6 @@ __weak void HAL_ADC_MspDeInit(ADC_HandleTypeDef* hadc)
             the HAL_ADC_MspDeInit could be implemented in the user file
    */ 
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @}
@@ -982,12 +971,6 @@ uint32_t HAL_ADC_GetValue(ADC_HandleTypeDef* hadc)
   return hadc->Instance->DR;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief  Regular conversion complete callback in non blocking mode 
   * @param  hadc: pointer to a ADC_HandleTypeDef structure that contains
@@ -1039,11 +1022,6 @@ __weak void HAL_ADC_ErrorCallback(ADC_HandleTypeDef *hadc)
             the HAL_ADC_ErrorCallback could be implemented in the user file
    */
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @}

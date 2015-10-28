@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_iwdg.c
   * @author  MCD Application Team
-  * @version V1.3.1
-  * @date    25-March-2015
+  * @version V1.4.1
+  * @date    09-October-2015
   * @brief   IWDG HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Independent Watchdog (IWDG) peripheral:
@@ -203,12 +203,6 @@ HAL_StatusTypeDef HAL_IWDG_Init(IWDG_HandleTypeDef *hiwdg)
   return HAL_OK;
 }
 
-  // [ILG]
-  #if defined ( __GNUC__ )
-  #pragma GCC diagnostic push
-  #pragma GCC diagnostic ignored "-Wunused-parameter"
-  #endif
-
 /**
   * @brief  Initializes the IWDG MSP.
   * @param  hiwdg: pointer to a IWDG_HandleTypeDef structure that contains
@@ -221,11 +215,6 @@ __weak void HAL_IWDG_MspInit(IWDG_HandleTypeDef *hiwdg)
             the HAL_IWDG_MspInit could be implemented in the user file
    */
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @}

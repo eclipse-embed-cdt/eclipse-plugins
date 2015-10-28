@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_nor.c
   * @author  MCD Application Team
-  * @version V1.3.1
-  * @date    25-March-2015
+  * @version V1.4.1
+  * @date    09-October-2015
   * @brief   NOR HAL module driver.
   *          This file provides a generic firmware to drive NOR memories mounted 
   *          as external device.
@@ -96,7 +96,7 @@
 #ifdef HAL_NOR_MODULE_ENABLED
 #if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) ||\
     defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) ||\
-    defined(STM32F446xx)
+    defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx) 
 /* Private typedef -----------------------------------------------------------*/
 /* Private define ------------------------------------------------------------*/
       
@@ -224,12 +224,6 @@ HAL_StatusTypeDef HAL_NOR_DeInit(NOR_HandleTypeDef *hnor)
   return HAL_OK;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief  NOR MSP Init
   * @param  hnor: pointer to a NOR_HandleTypeDef structure that contains
@@ -270,11 +264,6 @@ __weak void HAL_NOR_MspWait(NOR_HandleTypeDef *hnor, uint32_t Timeout)
    */ 
 }
   
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
-
 /**
   * @}
   */
@@ -400,12 +389,6 @@ HAL_StatusTypeDef HAL_NOR_ReturnToReadMode(NOR_HandleTypeDef *hnor)
   return HAL_OK;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-
 /**
   * @brief  Read data from NOR memory 
   * @param  hnor: pointer to the NOR handle
@@ -450,7 +433,7 @@ HAL_StatusTypeDef HAL_NOR_Read(NOR_HandleTypeDef *hnor, uint32_t *pAddress, uint
   /* Send read data command */
   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, NOR_MEMORY_8B, NOR_CMD_ADDRESS_FIRST), NOR_CMD_DATA_FIRST); 
   NOR_WRITE(NOR_ADDR_SHIFT(deviceaddress, NOR_MEMORY_8B, NOR_CMD_ADDRESS_SECOND), NOR_CMD_DATA_SECOND);  
- __NOR_WRITE((uint32_t)pAddress, NOR_CMD_DATA_READ_RESET);
+  NOR_WRITE((uint32_t)pAddress, NOR_CMD_DATA_READ_RESET);
 
   /* Read the data */
  *pData = *(__IO uint32_t *)(uint32_t)pAddress;
@@ -463,11 +446,6 @@ HAL_StatusTypeDef HAL_NOR_Read(NOR_HandleTypeDef *hnor, uint32_t *pAddress, uint
   
   return HAL_OK;  
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @brief  Program data to NOR memory 
@@ -592,12 +570,6 @@ HAL_StatusTypeDef HAL_NOR_ReadBuffer(NOR_HandleTypeDef *hnor, uint32_t uwAddress
   return HAL_OK;  
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-
 /**
   * @brief  Writes a half-word buffer to the NOR memory. This function must be used 
             only with S29GL128P NOR memory. 
@@ -679,11 +651,6 @@ HAL_StatusTypeDef HAL_NOR_ProgramBuffer(NOR_HandleTypeDef *hnor, uint32_t uwAddr
   
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
-
 /**
   * @brief  Erase the specified block of the NOR memory 
   * @param  hnor: pointer to the NOR handle
@@ -743,12 +710,6 @@ HAL_StatusTypeDef HAL_NOR_Erase_Block(NOR_HandleTypeDef *hnor, uint32_t BlockAdd
  
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief  Erase the entire NOR chip.
   * @param  hnor: pointer to the NOR handle
@@ -805,11 +766,6 @@ HAL_StatusTypeDef HAL_NOR_Erase_Chip(NOR_HandleTypeDef *hnor, uint32_t Address)
   
   return HAL_OK;  
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @brief  Read NOR flash CFI IDs
@@ -1038,7 +994,8 @@ HAL_NOR_StatusTypeDef HAL_NOR_GetStatus(NOR_HandleTypeDef *hnor, uint32_t Addres
   * @}
   */
 #endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx || STM32F427xx ||\
-          STM32F437xx || STM32F429xx || STM32F439xx || STM32F446xx */
+          STM32F437xx || STM32F429xx || STM32F439xx || STM32F446xx || STM32F469xx ||\
+          STM32F479xx  */
 #endif /* HAL_NOR_MODULE_ENABLED */
 /**
   * @}

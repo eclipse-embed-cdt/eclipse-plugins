@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_uart.c
   * @author  MCD Application Team
-  * @version V1.3.1
-  * @date    25-March-2015
+  * @version V1.4.1
+  * @date    09-October-2015
   * @brief   UART HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Universal Asynchronous Receiver Transmitter (UART) peripheral:
@@ -509,12 +509,6 @@ HAL_StatusTypeDef HAL_UART_DeInit(UART_HandleTypeDef *huart)
   return HAL_OK;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief  UART MSP Init.
   * @param  huart: pointer to a UART_HandleTypeDef structure that contains
@@ -540,11 +534,6 @@ HAL_StatusTypeDef HAL_UART_DeInit(UART_HandleTypeDef *huart)
            the HAL_UART_MspDeInit could be implemented in the user file
    */ 
 }
-
- // [ILG]
- #if defined ( __GNUC__ )
- #pragma GCC diagnostic pop
- #endif
 
 /**
   * @}
@@ -1238,12 +1227,6 @@ void HAL_UART_IRQHandler(UART_HandleTypeDef *huart)
   }  
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief  Tx Transfer completed callbacks.
   * @param  huart: pointer to a UART_HandleTypeDef structure that contains
@@ -1308,11 +1291,6 @@ __weak void HAL_UART_RxHalfCpltCallback(UART_HandleTypeDef *huart)
            the HAL_UART_ErrorCallback could be implemented in the user file
    */ 
 }
-
- // [ILG]
- #if defined ( __GNUC__ )
- #pragma GCC diagnostic pop
- #endif
 
 /**
   * @}

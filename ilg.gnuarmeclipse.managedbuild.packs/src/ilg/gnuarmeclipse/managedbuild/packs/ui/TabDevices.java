@@ -329,20 +329,13 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("Devices.createControls()");
 		}
-		if (!isThisPlugin()) {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println("Devices.not this plugin");
-			}
-			return;
-		}
-		//
+
 		if (!page.isForProject()) {
 			if (Activator.getInstance().isDebugging()) {
 				System.out.println("Devices.not this project");
 			}
 			return;
 		}
-		//
 		super.createControls(parent);
 
 		fConfig = getCfg();
@@ -937,23 +930,8 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 	@Override
 	public boolean canBeVisible() {
 
-		if (!isThisPlugin())
-			return false;
-
 		if (page.isForProject()) {
 			return true;
-			// if (page.isMultiCfg()) {
-			// ICMultiItemsHolder mih = (ICMultiItemsHolder) getCfg();
-			// IConfiguration[] cfs = (IConfiguration[]) mih.getItems();
-			// for (int i = 0; i < cfs.length; i++) {
-			// if (cfs[i].getBuilder().isManagedBuildOn())
-			// return true;
-			// }
-			// return false;
-			// } else {
-			//
-			// return getCfg().getBuilder().isManagedBuildOn();
-			// }
 		} else
 			return false;
 	}

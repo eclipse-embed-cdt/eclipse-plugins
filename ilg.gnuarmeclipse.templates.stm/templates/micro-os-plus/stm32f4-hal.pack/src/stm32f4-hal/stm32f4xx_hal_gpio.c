@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_gpio.c
   * @author  MCD Application Team
-  * @version V1.3.1
-  * @date    25-March-2015
+  * @version V1.4.1
+  * @date    09-October-2015
   * @brief   GPIO HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the General Purpose Input/Output (GPIO) peripheral:
@@ -350,7 +350,7 @@ void HAL_GPIO_DeInit(GPIO_TypeDef  *GPIOx, uint32_t GPIO_Pin)
       /*------------------------- EXTI Mode Configuration --------------------*/
       tmp = SYSCFG->EXTICR[position >> 2];
       tmp &= (((uint32_t)0x0F) << (4 * (position & 0x03)));
-      if(tmp == ((uint32_t)(GET_GPIO_SOURCE(GPIOx)) << (4 * (position & 0x03))))
+      if(tmp == ((uint32_t)(GPIO_GET_INDEX(GPIOx)) << (4 * (position & 0x03))))
       {
         /* Configure the External Interrupt or event for the current IO */
         tmp = ((uint32_t)0x0F) << (4 * (position & 0x03));
@@ -512,12 +512,6 @@ void HAL_GPIO_EXTI_IRQHandler(uint16_t GPIO_Pin)
   }
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief  EXTI line detection callbacks.
   * @param  GPIO_Pin: Specifies the pins connected EXTI line
@@ -529,11 +523,6 @@ __weak void HAL_GPIO_EXTI_Callback(uint16_t GPIO_Pin)
            the HAL_GPIO_EXTI_Callback could be implemented in the user file
    */
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @}
