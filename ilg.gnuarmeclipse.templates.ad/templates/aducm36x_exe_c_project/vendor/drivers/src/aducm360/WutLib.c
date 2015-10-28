@@ -40,22 +40,21 @@
    @{
    @file     WutLib.c
    @brief    Set of wake up Timer peripheral functions.
-   @version  V0.3
+   @version  V0.4
    @author   ADI
    @date     October 2015
    @par Revision History:
    - V0.1, May 2012: initial version.
    - V0.2, May 2013: corrected WutLdRd() - correct values returned.
    - V0.3, October 2015: Coding style cleanup - no functional changes.
+   - V0.4, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
 
 #include "WutLib.h"
-#include <ADuCM360.h>
-
 
 /**
-   @brief int WutCfg(int iMode, int iWake, int iPre, int iClkSrc)
+   @brief uint32_t WutCfg(uint32_t iMode, uint32_t iWake, uint32_t iPre, uint32_t iClkSrc)
 
    @param iMode :{T2CON_MOD_PERIODIC,T2CON_MOD_FREERUN}
       - 0 or T2CON_MOD_PERIODIC for periodic mode
@@ -77,9 +76,9 @@
 
 **/
 
-int WutCfg(int iMode, int iWake, int iPre, int iClkSrc)
+uint32_t WutCfg(uint32_t iMode, uint32_t iWake, uint32_t iPre, uint32_t iClkSrc)
 {
-   int i1 = 0;
+   uint32_t i1 = 0;
 
    i1 |= iMode;
    i1 |= iWake;
@@ -92,14 +91,14 @@ int WutCfg(int iMode, int iWake, int iPre, int iClkSrc)
 
 
 /**
-   @brief int WutInc(int iInc);
+   @brief uint32_t WutInc(uint32_t iInc);
          ==========Sets timer increment value.
    @param iInc :{0-0xFFF}
       - Sets increment value TxLD to iInc.
                 - if the timer is already running, this function stops WUA during update of increment register
    @return 1
 **/
-int WutInc(int iInc)
+uint32_t WutInc(uint32_t iInc)
 {
    if (T2CON_ENABLE_BBA == 1) {
       T2CON_STOPINC_BBA = 1;
@@ -112,7 +111,7 @@ int WutInc(int iInc)
 
 
 /**
-   @brief int WutLdWr(int iField, unsigned long lTld);
+   @brief uint32_t WutLdWr(uint32_t iField, uint32_t lTld);
          ==========Sets timer reload value.
    @param iField :{0, 1, 2, 3}
       - 0 for field A
@@ -124,7 +123,7 @@ int WutInc(int iInc)
    @return 0 if invalid field or 1 if field is valid
    @note If the timer is already running the corresponding interrupt should be diabled.
 **/
-int WutLdWr(int iField, unsigned long lTld)
+uint32_t WutLdWr(uint32_t iField, uint32_t lTld)
 {
    switch (iField) {
    case 0: {
@@ -132,26 +131,26 @@ int WutLdWr(int iField, unsigned long lTld)
          T2CON_STOPINC_BBA = 1;
       }
 
-      pADI_WUT->T2WUFA0 = (short)(lTld & 0x0000FFFF);
-      pADI_WUT->T2WUFA1 = (short)(lTld >> 16);
+      pADI_WUT->T2WUFA0 = (uint16_t)(lTld & 0x0000FFFF);
+      pADI_WUT->T2WUFA1 = (uint16_t)(lTld >> 16);
       break;
    }
 
    case 1: {
-      pADI_WUT->T2WUFB0 = (short)(lTld & 0x0000FFFF);
-      pADI_WUT->T2WUFB1 = (short)(lTld >> 16);
+      pADI_WUT->T2WUFB0 = (uint16_t)(lTld & 0x0000FFFF);
+      pADI_WUT->T2WUFB1 = (uint16_t)(lTld >> 16);
       break;
    }
 
    case 2: {
-      pADI_WUT->T2WUFC0 = (short)(lTld & 0x0000FFFF);
-      pADI_WUT->T2WUFC1 = (short)(lTld >> 16);
+      pADI_WUT->T2WUFC0 = (uint16_t)(lTld & 0x0000FFFF);
+      pADI_WUT->T2WUFC1 = (uint16_t)(lTld >> 16);
       break;
    }
 
    case 3: {
-      pADI_WUT->T2WUFD0 = (short)(lTld & 0x0000FFFF);
-      pADI_WUT->T2WUFD1 = (short)(lTld >> 16);
+      pADI_WUT->T2WUFD0 = (uint16_t)(lTld & 0x0000FFFF);
+      pADI_WUT->T2WUFD1 = (uint16_t)(lTld >> 16);
       break;
    }
 
@@ -163,7 +162,7 @@ int WutLdWr(int iField, unsigned long lTld)
 }
 
 /**
-   @brief unsigned long WutLdRd(int iField);
+   @brief uint32_t WutLdRd(uint32_t iField);
          ==========Sets timer reload value.
    @param iField :{0, 1, 2, 3}
       - 0 for field A
@@ -173,9 +172,9 @@ int WutLdWr(int iField, unsigned long lTld)
    @return TxLD corresponding to iField or 0 if iField is not valid
 **/
 
-unsigned long WutLdRd(int iField)
+uint32_t WutLdRd(uint32_t iField)
 {
-   unsigned long uL;
+   uint32_t uL;
 
    switch (iField) {
    case 0: {
@@ -223,9 +222,9 @@ unsigned long WutLdRd(int iField)
                  or timer value T2VAL.
 **/
 
-long WutVal(void)
+uint32_t WutVal(void)
 {
-   long lVal;
+   uint32_t lVal;
 
    if (T2CON_FREEZE_BBA == 0) {
       T2CON_FREEZE_BBA = 1;
@@ -244,20 +243,20 @@ long WutVal(void)
 
 
 /**
-   @brief int WutSta(void);
+   @brief uint32_t WutSta(void);
          ==========Returns Timer Status.
    @return T2STA.
 **/
 
-int WutSta(void)
+uint32_t WutSta(void)
 {
-   return (pADI_WUT->T2STA);
+   return pADI_WUT->T2STA;
 }
 
 
 
 /**
-   @brief int WutClrInt(int iSource);
+   @brief uint32_t WutClrInt(uint32_t iSource);
          ==========Clear timer interrupts.
    @param iSource :{T2CLRI_WUFA,T2CLRI_WUFB,T2CLRI_WUFC,T2CLRI_WUFD,T2CLRI_ROLL}
       - 0 or T2CLRI_WUFA for wake up field A interrupt
@@ -267,15 +266,15 @@ int WutSta(void)
                 - 4 or T2CLRI_ROLL for timer overflow interrupt
    @return 1.
 **/
-int WutClrInt(int iSource)
+uint32_t WutClrInt(uint32_t iSource)
 {
-   (pADI_WUT->T2CLRI) = iSource;
+   pADI_WUT->T2CLRI = iSource;
    return 1;
 }
 
 
 /**
-   @brief int WutCfgInt(int iSource, iEnable);
+   @brief uint32_t WutCfgInt(uint32_t iSource, iEnable);
          ==========Clear timer interrupts.
    @param iSource :{T2IEN_WUFA| T2IEN_WUFB| T2IEN_WUFC| T2IEN_WUFD| T2IEN_ROLL}
       - 0x1 or T2IEN_WUFA for wake up field A interrupt
@@ -288,9 +287,9 @@ int WutClrInt(int iSource)
       - 1 enable interrupt
    @return 1.
 **/
-int WutCfgInt(int iSource, int iEnable)
+uint32_t WutCfgInt(uint32_t iSource, uint32_t iEnable)
 {
-   int iInterrupt = 0;
+   uint32_t iInterrupt = 0;
 
    if (iEnable == 1) {           // Enabling interrupts
       iInterrupt = (iSource & 0x1F);
@@ -307,14 +306,14 @@ int WutCfgInt(int iSource, int iEnable)
 
 
 /**
-   @brief int WutGo(int iEnable);
+   @brief uint32_t WutGo(uint32_t iEnable);
          ==========Enable or reset the wake up timer
    @param iEnable :{T2CON_ENABLE_DIS,T2CON_ENABLE_EN}
       - 0 or T2CON_ENABLE_DIS to reset the timer
       - 0x80 or T2CON_ENABLE_EN to enable the timer
    @return 1.
 **/
-int WutGo(int iEnable)
+uint32_t WutGo(uint32_t iEnable)
 {
    if (iEnable == T2CON_ENABLE_DIS) {
       pADI_WUT->T2CON = T2CON_ENABLE_DIS;

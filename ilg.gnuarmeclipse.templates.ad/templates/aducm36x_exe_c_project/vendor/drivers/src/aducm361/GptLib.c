@@ -42,7 +42,7 @@
    @brief Set of Timer peripheral functions.
    - Example:
 
-   @version  V0.4
+   @version  V0.5
    @author   ADI
    @date     October 2015
 
@@ -51,16 +51,14 @@
    - V0.2, February 2013:   Fixed GptBsy().
    - V0.3, April 2013: fixed capture event list in GptCapSrc()
    - V0.4, October 2015: Coding style cleanup - no functional changes.
+   - V0.5, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
 
 #include "GptLib.h"
-#include <ADuCM361.h>
-
-
 
 /**
-   @brief int GptCfg(ADI_TIMER_TypeDef *pTMR, int iClkSrc, int iScale, int iMode)
+   @brief uint32_t GptCfg(ADI_TIMER_TypeDef *pTMR, uint32_t iClkSrc, uint32_t iScale, uint32_t iMode)
          ==========Configures timer GPTx if not busy.
    @param pTMR :{pADI_TM0,pADI_TM1}
       - pADI_TM0 for timer 0.
@@ -88,9 +86,9 @@
 
 **/
 
-int GptCfg(ADI_TIMER_TypeDef *pTMR, int iClkSrc, int iScale, int iMode)
+uint32_t GptCfg(ADI_TIMER_TypeDef *pTMR, uint32_t iClkSrc, uint32_t iScale, uint32_t iMode)
 {
-   int i1;
+   uint32_t i1;
 
    if(pTMR->STA & TSTA_CON) {
       return 0;
@@ -105,7 +103,7 @@ int GptCfg(ADI_TIMER_TypeDef *pTMR, int iClkSrc, int iScale, int iMode)
 }
 
 /**
-   @brief int GptLd(ADI_TIMER_TypeDef *pTMR, int iTLd);
+   @brief uint32_t GptLd(ADI_TIMER_TypeDef *pTMR, uint32_t iTLd);
          ==========Sets timer reload value.
    @param pTMR :{pADI_TM0,pADI_TM1}
       - pADI_TM0 for timer 0.
@@ -115,7 +113,7 @@ int GptCfg(ADI_TIMER_TypeDef *pTMR, int iClkSrc, int iScale, int iMode)
    @return 1.
 **/
 
-int GptLd(ADI_TIMER_TypeDef *pTMR, int iTLd)
+uint32_t GptLd(ADI_TIMER_TypeDef *pTMR, uint32_t iTLd)
 {
    pTMR->LD = iTLd;
    return 1;
@@ -123,7 +121,7 @@ int GptLd(ADI_TIMER_TypeDef *pTMR, int iTLd)
 
 
 /**
-   @brief int GptVal(ADI_TIMER_TypeDef *pTMR);
+   @brief uint32_t GptVal(ADI_TIMER_TypeDef *pTMR);
          ==========Reads timer value.
    @param pTMR :{pADI_TM0,pADI_TM1}
       - pADI_TM0 for timer 0.
@@ -131,13 +129,13 @@ int GptLd(ADI_TIMER_TypeDef *pTMR, int iTLd)
    @return timer value TxVAL.
 **/
 
-int GptVal(ADI_TIMER_TypeDef *pTMR)
+uint32_t GptVal(ADI_TIMER_TypeDef *pTMR)
 {
    return pTMR->VAL;
 }
 
 /**
-   @brief int GptCapRd(ADI_TIMER_TypeDef *pTMR);
+   @brief uint32_t GptCapRd(ADI_TIMER_TypeDef *pTMR);
          ==========Reads capture value. Allows capture of a new value.
    @param pTMR :{pADI_TM0,pADI_TM1}
       - pADI_TM0 for timer 0.
@@ -145,13 +143,13 @@ int GptVal(ADI_TIMER_TypeDef *pTMR)
    @return capture value TxCAP.
 **/
 
-int GptCapRd(ADI_TIMER_TypeDef *pTMR)
+uint32_t GptCapRd(ADI_TIMER_TypeDef *pTMR)
 {
    return pTMR->CAP;
 }
 
 /**
-   @brief int GptCapSrc(ADI_TIMER_TypeDef *pTMR, int iTCapSrc);
+   @brief uint32_t GptCapSrc(ADI_TIMER_TypeDef *pTMR, uint32_t iTCapSrc);
          ==========Sets capture source.
    @param pTMR :{pADI_TM0,pADI_TM1}
       - pADI_TM0 for timer 0.
@@ -178,9 +176,9 @@ int GptCapRd(ADI_TIMER_TypeDef *pTMR)
    @return 1.
 **/
 
-int GptCapSrc(ADI_TIMER_TypeDef *pTMR, int iTCapSrc)
+uint32_t GptCapSrc(ADI_TIMER_TypeDef *pTMR, uint32_t iTCapSrc)
 {
-   int i1;
+   uint32_t i1;
 
    if(pTMR->STA & TSTA_CON) {
       return 0;
@@ -194,7 +192,7 @@ int GptCapSrc(ADI_TIMER_TypeDef *pTMR, int iTCapSrc)
 
 
 /**
-   @brief int GptSta(ADI_TIMER_TypeDef *pTMR);
+   @brief uint32_t GptSta(ADI_TIMER_TypeDef *pTMR);
          ==========Reads timer status register.
    @param pTMR :{pADI_TM0,pADI_TM1}
       - pADI_TM0 for timer 0.
@@ -202,14 +200,14 @@ int GptCapSrc(ADI_TIMER_TypeDef *pTMR, int iTCapSrc)
    @return TxSTA.
 **/
 
-int GptSta(ADI_TIMER_TypeDef *pTMR)
+uint32_t GptSta(ADI_TIMER_TypeDef *pTMR)
 {
    return pTMR->STA;
 }
 
 
 /**
-   @brief int GptClrInt(ADI_TIMER_TypeDef *pTMR, int iSource);
+   @brief uint32_t GptClrInt(ADI_TIMER_TypeDef *pTMR, uint32_t iSource);
          ==========clears current Timer interrupt by writing to TxCLRI.
    @param pTMR :{pADI_TM0,pADI_TM1}
       - pADI_TM0 for timer 0.
@@ -220,21 +218,21 @@ int GptSta(ADI_TIMER_TypeDef *pTMR)
    @return 1.
 **/
 
-int GptClrInt(ADI_TIMER_TypeDef *pTMR, int iSource)
+uint32_t GptClrInt(ADI_TIMER_TypeDef *pTMR, uint32_t iSource)
 {
    pTMR->CLRI = iSource;
    return 1;
 }
 
 /**
-   @brief int GptBsy(ADI_TIMER_TypeDef *pTMR);
+   @brief uint32_t GptBsy(ADI_TIMER_TypeDef *pTMR);
          ==========Checks the busy bit.
    @param pTMR :{pADI_TM0,pADI_TM1}
       - pADI_TM0 for timer 0.
       - pADI_TM1 for timer 1.
 @return busy bit: 0 is not busy, 1 is busy.
 **/
-int GptBsy(ADI_TIMER_TypeDef *pTMR)
+uint32_t GptBsy(ADI_TIMER_TypeDef *pTMR)
 {
    if (pTMR == pADI_TM0) {
       return T0STA_CON_BBA;

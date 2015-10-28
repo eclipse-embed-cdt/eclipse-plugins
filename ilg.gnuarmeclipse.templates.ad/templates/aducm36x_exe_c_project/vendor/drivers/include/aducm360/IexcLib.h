@@ -41,20 +41,34 @@
    - Configure Excitation Currents with IexcCfg().
    - Select output current with IexcDat()
 
-   @version  V0.3
+   @version  V0.4
    @author   ADI
    @date     October 2015
    @par Revision History:
    - V0.1, March 2011: initial version.
    - V0.2, January 2013: Fixed IexcDat() - current outputs are all correct.
    - V0.3, October 2015: Coding style cleanup - no functional changes.
+   - V0.4, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
+#ifndef __ADUCM36X_IEXCLIB_H
+#define __ADUCM36X_IEXCLIB_H
 
-int IexcCfg(int iPd, int iRefsel, int iPinsel1, int iPinsel0);
-int IexcDat(int iIDAT, int iIDAT0);
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
+#include <ADuCM360.h>
+
+uint32_t IexcCfg(uint32_t iPd, uint32_t iRefsel, uint32_t iPinsel1, uint32_t iPinsel0);
+uint32_t IexcDat(uint32_t iIDAT, uint32_t iIDAT0);
 
 #define IDAT0En   1
 #define IDAT0Dis  0
 
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __ADUCM36X_IEXCLIB_H */
 

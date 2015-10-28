@@ -38,21 +38,33 @@
  *****************************************************************************
    @file     RstLib.h
    @brief    Reads the reset status bits and allows them to be reset.
-   @version  V0.3
+   @version  V0.4
    @author   ADI
    @date     October 2015
    @par Revision History:
    - V0.1, December 2010: initial version.
    - V0.2, September 2012: Functions now CMSIS compliant
    - V0.3, October 2015: Coding style cleanup - no functional changes.
+   - V0.4, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
+#ifndef __ADUCM36X_RSTLIB_H
+#define __ADUCM36X_RSTLIB_H
 
+#ifdef __cplusplus
+ extern "C" {
+#endif
 
-extern int ReadRstSta(void);
-extern int ClearRstSta(int iStaClr );
+#include <ADuCM361.h>
+
+extern uint32_t ReadRstSta(void);
+extern uint32_t ClearRstSta(uint32_t iStaClr );
 
 //Reset status.
 #define RST_NONE  0
 
+#ifdef __cplusplus
+}
+#endif
 
+#endif /* __ADUCM36X_RSTLIB_H */

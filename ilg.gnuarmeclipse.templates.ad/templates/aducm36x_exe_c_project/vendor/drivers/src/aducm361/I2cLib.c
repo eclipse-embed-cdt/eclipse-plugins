@@ -41,7 +41,7 @@
    @file     I2cLib.c
    @brief    Set of I2C peripheral functions.
 
-   @version  V0.4
+   @version  V0.5
    @author   ADI
    @date     October 2015
 
@@ -50,15 +50,14 @@
    - V0.2, May 2013:   corrected comments in I2cBaud().
    - V0.3, July 2013:  corrected I2cMRdCfg().
    - V0.4, October 2015: Coding style cleanup - no functional changes.
+   - V0.5, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
 
 #include "I2cLib.h"
-#include <ADuCM361.h>
-
 
 /**
-   @brief int I2cMCfg(int iDMACfg, int iIntSources, int iConfig)
+   @brief uint32_t I2cMCfg(uint32_t iDMACfg, uint32_t iIntSources, uint32_t iConfig)
          ========== Configure the I2C master channel.
    @param iDMACfg :{0|I2CMCON_TXDMA|I2CMCON_RXDMA} \n
       - 0 by default to disable all DMA operation.
@@ -78,9 +77,9 @@
       - I2CMCON_MAS_EN to enable I2C Master mode. I2CMCON_MAS_DIS by default.
 **/
 
-int I2cMCfg(int iDMACfg, int iIntSources, int iConfig)
+uint32_t I2cMCfg(uint32_t iDMACfg, uint32_t iIntSources, uint32_t iConfig)
 {
-   int i1;
+   uint32_t i1;
 
    i1 = iDMACfg;
    i1 |= iIntSources;
@@ -90,7 +89,7 @@ int I2cMCfg(int iDMACfg, int iIntSources, int iConfig)
    return 1;
 }
 /**
-   @brief int I2cStretch(int iMode, int iStretch)
+   @brief uint32_t I2cStretch(uint32_t iMode, uint32_t iStretch)
          ========== Configure the I2C Clock stretching.
    @param iMode :{MASTER, SLAVE} \n
       - 0 or MASTER  to control I2C Master clock stretch.
@@ -99,7 +98,7 @@ int I2cMCfg(int iDMACfg, int iIntSources, int iConfig)
       - 0 or STRETCH_DIS to disable clock stretching.
       - 1 or STRETCH_EN to enable clock stretching.
 **/
-int I2cStretch(int iMode, int iStretch)
+uint32_t I2cStretch(uint32_t iMode, uint32_t iStretch)
 {
    if (iMode == MASTER) {
       if (iStretch == STRETCH_EN) {  // Enable master clock stretching
@@ -122,7 +121,7 @@ int I2cStretch(int iMode, int iStretch)
 }
 
 /**
-   @brief int I2cFifoFlush(int iMode, int iFlush)
+   @brief uint32_t I2cFifoFlush(uint32_t iMode, uint32_t iFlush)
          ========== Flush Master or Slave Tx FIFO
    @param iMode :{MASTER, SLAVE}
       - 0 or MASTER for I2C Master operation.
@@ -133,7 +132,7 @@ int I2cStretch(int iMode, int iStretch)
    @return 1 if successful
 **/
 
-int I2cFifoFlush(int iMode, int iFlush)
+uint32_t I2cFifoFlush(uint32_t iMode, uint32_t iFlush)
 {
    if (iMode == 1) { // slave
       if (iFlush == 1) {
@@ -156,7 +155,7 @@ int I2cFifoFlush(int iMode, int iFlush)
 }
 
 /**
-   @brief int I2cSCfg(int iDMACfg, int iIntSources, int iConfig)
+   @brief uint32_t I2cSCfg(uint32_t iDMACfg, uint32_t iIntSources, uint32_t iConfig)
          ========== Configure the SPI channel.
    @param iDMACfg :{0|I2CSCON_TXDMA|I2CSCON_RXDMA} \n
       - 0 by default to disable all DMA operation.
@@ -179,9 +178,9 @@ int I2cFifoFlush(int iMode, int iFlush)
       - I2CSCON_SLV_EN to enable Slave mode. I2CSCON_SLVEN_DIS by default.
 **/
 
-int I2cSCfg(int iDMACfg, int iIntSources, int iConfig)
+uint32_t I2cSCfg(uint32_t iDMACfg, uint32_t iIntSources, uint32_t iConfig)
 {
-   int i1;
+   uint32_t i1;
 
    i1 = iDMACfg;
    i1 |= iIntSources;
@@ -193,7 +192,7 @@ int I2cSCfg(int iDMACfg, int iIntSources, int iConfig)
 
 
 /**
-   @brief int I2cRx(int iMode)
+   @brief uint32_t I2cRx(uint32_t iMode)
          ========== Reads 8 bits of I2CMRX or I2CSRX
    @param iMode :{MASTER, SLAVE}
       - 0 or MASTER for I2C Master operation.
@@ -201,9 +200,9 @@ int I2cSCfg(int iDMACfg, int iIntSources, int iConfig)
    @return I2CSRX or I2CMRX
 **/
 
-int I2cRx(int iMode)
+uint32_t I2cRx(uint32_t iMode)
 {
-   int i1;
+   uint32_t i1;
 
    i1 = iMode;
 
@@ -218,7 +217,7 @@ int I2cRx(int iMode)
 
 
 /**
-   @brief int I2cTx(int iMode, int iTx)
+   @brief uint32_t I2cTx(uint32_t iMode, uint32_t iTx)
          ========== Write 8 bits of iTx to I2CMTX ro I2CSTX
    @param iMode :{MASTER, SLAVE}
       - 0 or MASTER for I2C Master operation.
@@ -228,9 +227,9 @@ int I2cRx(int iMode)
    @return 1 if successful
 **/
 
-int I2cTx(int iMode, int iTx)
+uint32_t I2cTx(uint32_t iMode, uint32_t iTx)
 {
-   unsigned int i1;
+   uint32_t i1;
 
    i1 = iTx;
 
@@ -246,7 +245,7 @@ int I2cTx(int iMode, int iTx)
 
 
 /**
-   @brief int I2cBaud(int iHighPeriod, int iLowPeriod)
+   @brief uint32_t I2cBaud(uint32_t iHighPeriod, uint32_t iLowPeriod)
    ========== Set the I2C clock rate in Master mode - CLKCON1 setting not accounted for
 
    @brief iHighPeriod configures the Master Clock high period               \n
@@ -260,9 +259,9 @@ int I2cTx(int iMode, int iTx)
    @return 1
 **/
 
-int I2cBaud(int iHighPeriod, int iLowPeriod)
+uint32_t I2cBaud(uint32_t iHighPeriod, uint32_t iLowPeriod)
 {
-   unsigned int i1;
+   uint32_t i1;
 
    i1 =  iLowPeriod;
    i1 |= (iHighPeriod << 8);
@@ -272,7 +271,7 @@ int I2cBaud(int iHighPeriod, int iLowPeriod)
 
 
 /**
-   @brief int I2cMWrCfg(unsigned int uiDevAddr)
+   @brief uint32_t I2cMWrCfg(uint32_t uiDevAddr)
          ========== Configure I2CADR0/I2CADR1 - Device address register.
 
    @param uiDevAddr :{0-1023}     \n
@@ -280,7 +279,7 @@ int I2cBaud(int iHighPeriod, int iLowPeriod)
    @return 1
 **/
 
-int I2cMWrCfg(unsigned int uiDevAddr)
+uint32_t I2cMWrCfg(uint32_t uiDevAddr)
 {
    uiDevAddr &= 0xFFFE;     // Ensure write bit is configured
 
@@ -298,7 +297,7 @@ int I2cMWrCfg(unsigned int uiDevAddr)
 
 
 /**
-   @brief int I2cMRdCfg(unsigned int uiDevAddr, int iNumBytes, int iExt)
+   @brief uint32_t I2cMRdCfg(uint32_t uiDevAddr, uint32_t iNumBytes, uint32_t iExt)
          ========== Configure I2CMRXCNT - Master read control register.
    @param uiDevAddr :{0-1023}     \n
    @param iNumBytes :{0-256}     \n
@@ -307,7 +306,7 @@ int I2cMWrCfg(unsigned int uiDevAddr)
       - ENABLE for Master to read more than 256 bytes
    @return 1
 **/
-int I2cMRdCfg(unsigned int uiDevAddr, int iNumBytes, int iExt)
+uint32_t I2cMRdCfg(uint32_t uiDevAddr, uint32_t iNumBytes, uint32_t iExt)
 {
    pADI_I2C->I2CMRXCNT = (iNumBytes - 1) | (iExt << 8);
 
@@ -324,7 +323,7 @@ int I2cMRdCfg(unsigned int uiDevAddr, int iNumBytes, int iExt)
 }
 
 /**
-   @brief int I2cSta(int iMode)
+   @brief uint32_t I2cSta(uint32_t iMode)
          ========== Read the status register for the I2C Master or Slave.
 @param iMode :{MASTER, SLAVE}
       - 0 or MASTER for I2C Master operation.
@@ -358,7 +357,7 @@ int I2cMRdCfg(unsigned int uiDevAddr, int iNumBytes, int iExt)
       - I2CMSTA.12 = I2C Tx Under-run condition
 **/
 
-int I2cSta(int iMode)
+uint32_t I2cSta(uint32_t iMode)
 {
    if (iMode == 1) {
       return pADI_I2C->I2CSSTA;
@@ -370,27 +369,27 @@ int I2cSta(int iMode)
 
 
 /**
-   @brief int I2cMRdCnt(void)
+   @brief uint32_t I2cMRdCnt(void)
          ========== Master Read count register - read by master to keep track of number of bytes received.
 
    @return value of I2CMCRXCNT.
 **/
 
-int I2cMRdCnt(void)
+uint32_t I2cMRdCnt(void)
 {
    return pADI_I2C->I2CMCRXCNT;
 }
 
 
 /**
-   @brief int I2cSGCallCfg(int iHWGCallAddr)
+   @brief uint32_t I2cSGCallCfg(uint32_t iHWGCallAddr)
          ========== Configure ID value for Hardware General Calls.
 
    @param iHWGCallAddr :{0-255}
    @return 1
 **/
 
-int I2cSGCallCfg(int iHWGCallAddr)
+uint32_t I2cSGCallCfg(uint32_t iHWGCallAddr)
 {
    pADI_I2C->I2CALT = iHWGCallAddr;
    return 1;
@@ -398,7 +397,7 @@ int I2cSGCallCfg(int iHWGCallAddr)
 
 
 /**
-   @brief int I2cSIDCfg(int iSlaveID0, int iSlaveID1,int iSlaveID2,int iSlaveID3)
+   @brief uint32_t I2cSIDCfg(uint32_t iSlaveID0, uint32_t iSlaveID1,uint32_t iSlaveID2,uint32_t iSlaveID3)
          ========== Configure ID value for Slave address - value betweeen 0-0xFF.
 
    @param iSlaveID0 :{0-255}
@@ -408,7 +407,7 @@ int I2cSGCallCfg(int iHWGCallAddr)
    @return 1
 **/
 
-int I2cSIDCfg(int iSlaveID0, int iSlaveID1, int iSlaveID2, int iSlaveID3)
+uint32_t I2cSIDCfg(uint32_t iSlaveID0, uint32_t iSlaveID1, uint32_t iSlaveID2, uint32_t iSlaveID3)
 {
    pADI_I2C->I2CID0 = iSlaveID0;
    pADI_I2C->I2CID1 = iSlaveID1;

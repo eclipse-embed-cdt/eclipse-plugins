@@ -36,7 +36,7 @@
 
 /**
 @mainpage ADuCM360 Low Level Functions
-@version  V0.6
+@version  V0.7
 @author   ADI
 @date     October 2015
 
@@ -85,6 +85,7 @@ to ensure that the resulting application performs as required and is safe.
             - Addition of CN-0319 code example.
    - V0.6, October 2015:
             - Coding style cleanup - no functional changes.
+   - V0.7, October 2015:   Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 @section notes Release notes
 Functions and examples still work in progress. Check for updates regularly.
@@ -100,7 +101,7 @@ Functions and examples still work in progress. Check for updates regularly.
       @defgroup gpt General Purpose Timer
       @defgroup i2c I2C
       @defgroup iexc Excitation Current Source
-      @defgroup int Interrupts
+      @defgroup uint32_t Interrupts
       @defgroup pwm PWM
       @defgroup pwr Power
       @defgroup rst Reset

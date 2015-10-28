@@ -40,24 +40,35 @@
    @brief Set of Timer peripheral functions.
    - Example:
 
-   @version  V0.2
+   @version  V0.3
    @author   ADI
    @date     October 2015
 
    @par Revision History:
    - V0.1, May 2012: Initial release.
    - V0.2, October 2015: Coding style cleanup - no functional changes.
-
+   - V0.3, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 **/
+#ifndef __ADUCM36X_GPTLIB_H
+#define __ADUCM36X_GPTLIB_H
+
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
 #include <ADuCM360.h>
 
-extern int GptCfg(ADI_TIMER_TypeDef *pTMR, int iClkSrc, int iScale, int iMode);
-extern int GptLd(ADI_TIMER_TypeDef *pTMR, int iTLd);
-extern int GptVal(ADI_TIMER_TypeDef *pTMR);
-extern int GptCapRd(ADI_TIMER_TypeDef *pTMR);
-extern int GptCapSrc(ADI_TIMER_TypeDef *pTMR, int iTCapSrc);
-extern int GptSta(ADI_TIMER_TypeDef *pTMR);
-extern int GptClrInt(ADI_TIMER_TypeDef *pTMR, int iSource);
-extern int GptBsy(ADI_TIMER_TypeDef *pTMR);
+extern uint32_t GptCfg(ADI_TIMER_TypeDef *pTMR, uint32_t iClkSrc, uint32_t iScale, uint32_t iMode);
+extern uint32_t GptLd(ADI_TIMER_TypeDef *pTMR, uint32_t iTLd);
+extern uint32_t GptVal(ADI_TIMER_TypeDef *pTMR);
+extern uint32_t GptCapRd(ADI_TIMER_TypeDef *pTMR);
+extern uint32_t GptCapSrc(ADI_TIMER_TypeDef *pTMR, uint32_t iTCapSrc);
+extern uint32_t GptSta(ADI_TIMER_TypeDef *pTMR);
+extern uint32_t GptClrInt(ADI_TIMER_TypeDef *pTMR, uint32_t iSource);
+extern uint32_t GptBsy(ADI_TIMER_TypeDef *pTMR);
 
+#ifdef __cplusplus
+}
+#endif
 
+#endif /* __ADUCM36X_GPTLIB_H */

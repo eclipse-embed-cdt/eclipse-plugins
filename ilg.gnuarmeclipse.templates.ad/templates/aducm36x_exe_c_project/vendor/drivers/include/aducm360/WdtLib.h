@@ -38,7 +38,7 @@
  *****************************************************************************
    @file     WdtLib.h
    @brief    Set of watchdog Timer peripheral functions.
-   @version  V0.3
+   @version  V0.4
    @author   ADI
    @date     October 2015
    @par Revision History:
@@ -46,13 +46,27 @@
    - V0.2, September 2012: WdtClrInt now checks if it is safe to write to T3CLRI and
             this is now a function with no inputs
    - V0.3, October 2015: Coding style cleanup - no functional changes.
+   - V0.4, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
+#ifndef __ADUCM36X_WDTLIB_H
+#define __ADUCM36X_WDTLIB_H
 
-extern int WdtCfg(int iPre, int iInt, int iPd);
-extern int WdtGo(int iEnable);
-extern int WdtLd(int iTld);
-extern int WdtVal(void);
-extern int WdtSta(void);
-extern int WdtClrInt(void);
+#ifdef __cplusplus
+ extern "C" {
+#endif
 
+#include <ADuCM360.h>
+
+extern uint32_t WdtCfg(uint32_t iPre, uint32_t iInt, uint32_t iPd);
+extern uint32_t WdtGo(uint32_t iEnable);
+extern uint32_t WdtLd(uint32_t iTld);
+extern uint32_t WdtVal(void);
+extern uint32_t WdtSta(void);
+extern uint32_t WdtClrInt(void);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __ADUCM36X_WDTLIB_H */

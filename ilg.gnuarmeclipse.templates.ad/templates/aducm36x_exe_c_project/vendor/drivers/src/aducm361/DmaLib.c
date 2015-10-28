@@ -43,7 +43,7 @@
    - DmaBase(), DmaSet(), DmaClr(), DmaSta() and DmaErr() apply to all DMA channels together.
    - The rest of the functions apply for each channel separately.
 
-   @version    V0.5
+   @version    V0.6
    @author     ADI
    @date       October 2015
    @par Revision History:
@@ -55,6 +55,7 @@
                      Fixed numerous doxygen parameter comments.
    - V0.4, August 2015: Initialise every new instance of DmaDesc
    - V0.5, October 2015: Coding style cleanup - no functional changes.
+   - V0.6, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
 #include <stdio.h>
@@ -80,7 +81,7 @@ DmaDesc dmaChanDesc     [CCD_SIZE * 2];
 
 
 /**
-   @brief DmaDesc * Dma_GetDescriptor(unsigned int iChan,int iAlternate);
+   @brief DmaDesc * Dma_GetDescriptor(uint32_t iChan,uint32_t iAlternate);
          ========== Returns the Primary or Alternate structure descriptor of the
          specified channel.
    @param iChan :{SPI1TX_C,SPI1RX_C,UARTTX_C,UARTRX_C,I2CSTX_C,I2CSRX_C,I2CMTX_C,
@@ -106,7 +107,7 @@ DmaDesc dmaChanDesc     [CCD_SIZE * 2];
 
 **/
 
-DmaDesc *Dma_GetDescriptor(unsigned int iChan, int iAlternate)
+DmaDesc *Dma_GetDescriptor(uint32_t iChan, uint32_t iAlternate)
 {
    if (iChan < CCD_SIZE) {
       if (iAlternate != 0) {
@@ -122,22 +123,22 @@ DmaDesc *Dma_GetDescriptor(unsigned int iChan, int iAlternate)
 }
 
 /**
-   @brief int DmaBase(void)
+   @brief uint32_t DmaBase(void)
          ========== Sets the Address of DMA Data base pointer.
    @return 1.
 **/
-int DmaBase(void)
+uint32_t DmaBase(void)
 {
-   volatile unsigned int uiBasPtr = 0;
+   volatile uint32_t uiBasPtr = 0;
 
    memset(dmaChanDesc, 0x0, sizeof(dmaChanDesc));    // Clear all the DMA descriptors (individual blocks will update their  descriptors
-   uiBasPtr = (unsigned int)&dmaChanDesc; // Setup the DMA base pointer.
+   uiBasPtr = (uint32_t)&dmaChanDesc; // Setup the DMA base pointer.
    pADI_DMA->DMAPDBPTR = uiBasPtr;
    pADI_DMA->DMACFG = 1;                             // Enable DMA controller
    return 1;
 }
 /**
-   @brief int DmaSet(int iMask, int iEnable, int iAlt, int iPriority)
+   @brief uint32_t DmaSet(uint32_t iMask, uint32_t iEnable, uint32_t iAlt, uint32_t iPriority)
          ========== Controls Mask, Primary Enable, Alternate enable and priority enable bits
    @param iMask :{0|DMARMSKSET_SPI1TX|DMARMSKSET_SPI1RX|DMARMSKSET_UARTTX|DMARMSKSET_UARTRX
                   |DMARMSKSET_I2CSTX|DMARMSKSET_I2CSRX|DMARMSKSET_I2CMTX|DMARMSKSET_I2CMRX
@@ -209,7 +210,7 @@ int DmaBase(void)
    - 0x800 or DMAPRISET_SINC2 to high prioritize SINC2
    @return 1.
 **/
-int DmaSet(int iMask, int iEnable, int iAlt, int iPriority)
+uint32_t DmaSet(uint32_t iMask, uint32_t iEnable, uint32_t iAlt, uint32_t iPriority)
 {
    pADI_DMA->DMARMSKSET = iMask;
    pADI_DMA->DMAENSET = iEnable;
@@ -219,7 +220,7 @@ int DmaSet(int iMask, int iEnable, int iAlt, int iPriority)
 }
 
 /**
-   @brief int DmaClr(int iMask, int iEnable, int iAlt, int iPriority)
+   @brief uint32_t DmaClr(uint32_t iMask, uint32_t iEnable, uint32_t iAlt, uint32_t iPriority)
          ========== Controls Mask, Primary Enable, Alternate enable and priority Clear bits
    @param iMask :{0|DMARMSKCLR_SPI1TX|DMARMSKCLR_SPI1RX|DMARMSKCLR_UARTTX|DMARMSKCLR_UARTRX
                      |DMARMSKCLR_I2CSTX|DMARMSKCLR_I2CSRX|DMARMSKCLR_I2CMTX|DMARMSKCLR_I2CMRX
@@ -291,7 +292,7 @@ int DmaSet(int iMask, int iEnable, int iAlt, int iPriority)
       - 0x800 or DMAPRICLR_SINC2 to default prioritize SINC2
    @return 1.
 **/
-int DmaClr(int iMask, int iEnable, int iAlt, int iPriority)
+uint32_t DmaClr(uint32_t iMask, uint32_t iEnable, uint32_t iAlt, uint32_t iPriority)
 {
    pADI_DMA->DMARMSKCLR = iMask;
    pADI_DMA->DMAENCLR = iEnable;
@@ -302,7 +303,7 @@ int DmaClr(int iMask, int iEnable, int iAlt, int iPriority)
 
 
 /**
-   @brief int DmaSta(void)
+   @brief uint32_t DmaSta(void)
       ========== Reads the status of the DMA controller.
    @return value of DMASTA /n
       bit 0 - enabled   /n
@@ -322,13 +323,13 @@ int DmaClr(int iMask, int iEnable, int iAlt, int iPriority)
       - number of DMA channels available -1
 
 **/
-int DmaSta(void)
+uint32_t DmaSta(void)
 {
    return pADI_DMA->DMASTA;
 }
 
 /**
-   @brief int DmaErr(int iErrClr)
+   @brief uint32_t DmaErr(uint32_t iErrClr)
          ========== Reads and optionally clears DMA error bit.
    @param iErrClr :{DMA_ERR_RD,DMA_ERR_CLR}
       - 0 or DMA_ERR_RD only reads error bit.
@@ -337,7 +338,7 @@ int DmaSta(void)
       - 0 - flags no error
       - 1 - flags error.
 **/
-int DmaErr(int iErrClr)
+uint32_t DmaErr(uint32_t iErrClr)
 {
    if(iErrClr) {
       pADI_DMA->DMAERRCLR = 1;
@@ -348,7 +349,7 @@ int DmaErr(int iErrClr)
 
 
 /**
-   @brief int DmaPeripheralStructSetup(int iChan, int iCfg)
+   @brief uint32_t DmaPeripheralStructSetup(uint32_t iChan, uint32_t iCfg)
          ==========Sets up DMA config structure for the required channel
 
    @param iChan :{0,SPI1TX_C,SPI1RX_C,UARTTX_C,UARTRX_C,I2CSTX_C,I2CSRX_C,I2CMTX_C,I2CMRX_C,
@@ -391,9 +392,9 @@ int DmaErr(int iErrClr)
    @return 1:
 
 **/
-int DmaPeripheralStructSetup(int iChan, int iCfg)
+uint32_t DmaPeripheralStructSetup(uint32_t iChan, uint32_t iCfg)
 {
-   int iChanSel = 0;
+   uint32_t iChanSel = 0;
    DmaDesc Desc;
    Desc.ctrlCfg.ctrlCfgVal = 0;
    Desc.destEndPtr = 0;
@@ -433,7 +434,7 @@ int DmaPeripheralStructSetup(int iChan, int iCfg)
    return 1;
 }
 /**
-   @brief int DmaStructPtrOutSetup(int iChan, int iNumVals, unsigned char *pucTX_DMA)
+   @brief uint32_t DmaStructPtrOutSetup(uint32_t iChan, uint32_t iNumVals, uint8_t *pucTX_DMA)
             ==========For DMA operations where the destination is fixed (peripheral register is fixed)
    @param iChan :{0,SPI1TX_C,UARTTX_C,I2CSTX_C,I2CMTX_C,DAC_C,ADC0_C,ADC1_C,
          SPI1TX_C+ALTERNATE,UARTTX_C+ALTERNATE,I2CSTX_C+ALTERNATE,I2CMTX_C+ALTERNATE,
@@ -462,9 +463,9 @@ int DmaPeripheralStructSetup(int iChan, int iCfg)
 
 **/
 
-int DmaStructPtrOutSetup(int iChan, int iNumVals, unsigned char *pucTX_DMA)
+uint32_t DmaStructPtrOutSetup(uint32_t iChan, uint32_t iNumVals, uint8_t *pucTX_DMA)
 {
-   int iChanSel = 0;
+   uint32_t iChanSel = 0;
 
    if (iChan > CCD_SIZE) {
       iChanSel = 1;  // Alternalte
@@ -479,12 +480,12 @@ int DmaStructPtrOutSetup(int iChan, int iNumVals, unsigned char *pucTX_DMA)
       iChan--;
 
       if (iChanSel == 0) { // - primary structure
-         dmaChanDesc[iChan].srcEndPtr    = (unsigned int)(pucTX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan].destEndPtr   = (unsigned int)(&pADI_SPI1->SPITX);
+         dmaChanDesc[iChan].srcEndPtr    = (uint32_t)(pucTX_DMA + iNumVals - 0x1);
+         dmaChanDesc[iChan].destEndPtr   = (uint32_t)(&pADI_SPI1->SPITX);
 
       } else { // Alternate structure used
-         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr    = (unsigned int)(pucTX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan + CCD_SIZE].destEndPtr   = (unsigned int)(&pADI_SPI1->SPITX);
+         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr    = (uint32_t)(pucTX_DMA + iNumVals - 0x1);
+         dmaChanDesc[iChan + CCD_SIZE].destEndPtr   = (uint32_t)(&pADI_SPI1->SPITX);
       }
 
       break;
@@ -493,12 +494,12 @@ int DmaStructPtrOutSetup(int iChan, int iNumVals, unsigned char *pucTX_DMA)
       iChan--;
 
       if (iChanSel == 0) { // - primary structure
-         dmaChanDesc[iChan].srcEndPtr    = (unsigned int)(pucTX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan].destEndPtr   = (unsigned int)(&pADI_UART->COMTX);
+         dmaChanDesc[iChan].srcEndPtr    = (uint32_t)(pucTX_DMA + iNumVals - 0x1);
+         dmaChanDesc[iChan].destEndPtr   = (uint32_t)(&pADI_UART->COMTX);
 
       } else { // Alternate structure used
-         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr    = (unsigned int)(pucTX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan + CCD_SIZE].destEndPtr   = (unsigned int)(&pADI_UART->COMTX);
+         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr    = (uint32_t)(pucTX_DMA + iNumVals - 0x1);
+         dmaChanDesc[iChan + CCD_SIZE].destEndPtr   = (uint32_t)(&pADI_UART->COMTX);
       }
 
       break;
@@ -507,12 +508,12 @@ int DmaStructPtrOutSetup(int iChan, int iNumVals, unsigned char *pucTX_DMA)
       iChan--;
 
       if (iChanSel == 0) { // - primary structure
-         dmaChanDesc[iChan].srcEndPtr    = (unsigned int)(pucTX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan].destEndPtr   = (unsigned int)(&pADI_I2C->I2CSTX);
+         dmaChanDesc[iChan].srcEndPtr    = (uint32_t)(pucTX_DMA + iNumVals - 0x1);
+         dmaChanDesc[iChan].destEndPtr   = (uint32_t)(&pADI_I2C->I2CSTX);
 
       } else { // Alternate structure used
-         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr    = (unsigned int)(pucTX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan + CCD_SIZE].destEndPtr   = (unsigned int)(&pADI_I2C->I2CSTX);
+         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr    = (uint32_t)(pucTX_DMA + iNumVals - 0x1);
+         dmaChanDesc[iChan + CCD_SIZE].destEndPtr   = (uint32_t)(&pADI_I2C->I2CSTX);
       }
 
       break;
@@ -521,12 +522,12 @@ int DmaStructPtrOutSetup(int iChan, int iNumVals, unsigned char *pucTX_DMA)
       iChan--;
 
       if (iChanSel == 0) { // - primary structure
-         dmaChanDesc[iChan].srcEndPtr    = (unsigned int)(pucTX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan].destEndPtr   = (unsigned int)(&pADI_I2C->I2CMTX);
+         dmaChanDesc[iChan].srcEndPtr    = (uint32_t)(pucTX_DMA + iNumVals - 0x1);
+         dmaChanDesc[iChan].destEndPtr   = (uint32_t)(&pADI_I2C->I2CMTX);
 
       } else { // Alternate structure used
-         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr    = (unsigned int)(pucTX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan + CCD_SIZE].destEndPtr   = (unsigned int)(&pADI_I2C->I2CMTX);
+         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr    = (uint32_t)(pucTX_DMA + iNumVals - 0x1);
+         dmaChanDesc[iChan + CCD_SIZE].destEndPtr   = (uint32_t)(&pADI_I2C->I2CMTX);
       }
 
       break;
@@ -535,12 +536,12 @@ int DmaStructPtrOutSetup(int iChan, int iNumVals, unsigned char *pucTX_DMA)
       iChan--;
 
       if (iChanSel == 0) { // - primary structure
-         dmaChanDesc[iChan].srcEndPtr    = (unsigned int)(pucTX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan].destEndPtr   = (unsigned int)(&pADI_DAC->DACDAT);
+         dmaChanDesc[iChan].srcEndPtr    = (uint32_t)(pucTX_DMA + iNumVals - 0x1);
+         dmaChanDesc[iChan].destEndPtr   = (uint32_t)(&pADI_DAC->DACDAT);
 
       } else { // Alternate structure used
-         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr    = (unsigned int)(pucTX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan + CCD_SIZE].destEndPtr   = (unsigned int)(&pADI_DAC->DACDAT);
+         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr    = (uint32_t)(pucTX_DMA + iNumVals - 0x1);
+         dmaChanDesc[iChan + CCD_SIZE].destEndPtr   = (uint32_t)(&pADI_DAC->DACDAT);
       }
 
       break;
@@ -549,12 +550,12 @@ int DmaStructPtrOutSetup(int iChan, int iNumVals, unsigned char *pucTX_DMA)
       iChan--;
 
       if (iChanSel == 0) { // - primary structure
-         dmaChanDesc[iChan].srcEndPtr    = (unsigned int)(pucTX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan].destEndPtr   = (unsigned int)(&pADI_ADC1->MSKI + iNumVals - 0x1);
+         dmaChanDesc[iChan].srcEndPtr    = (uint32_t)(pucTX_DMA + iNumVals - 0x1);
+         dmaChanDesc[iChan].destEndPtr   = (uint32_t)(&pADI_ADC1->MSKI + iNumVals - 0x1);
 
       } else { // Alternate structure used
-         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr    = (unsigned int)(pucTX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan + CCD_SIZE].destEndPtr   = (unsigned int)(&pADI_ADC1->MSKI + iNumVals - 0x1);
+         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr    = (uint32_t)(pucTX_DMA + iNumVals - 0x1);
+         dmaChanDesc[iChan + CCD_SIZE].destEndPtr   = (uint32_t)(&pADI_ADC1->MSKI + iNumVals - 0x1);
       }
 
       break;
@@ -566,7 +567,7 @@ int DmaStructPtrOutSetup(int iChan, int iNumVals, unsigned char *pucTX_DMA)
    return 1;
 }
 /**
-   @brief int DmaStructPtrInSetup(int iChan, int iNumVals, unsigned char *pucRX_DMA);
+   @brief uint32_t DmaStructPtrInSetup(uint32_t iChan, uint32_t iNumVals, uint8_t *pucRX_DMA);
             ==========For DMA operations where the destination is fixed (peripheral register is fixed)
    @param iChan :{0,SPI1RX_C,UARTRX_C,I2CSRX_C,I2CMRX_C,
                   SPI1RX_C+ALTERNATE,UARTRX_C+ALTERNATE,I2CSRX_C+ALTERNATE,
@@ -587,9 +588,9 @@ int DmaStructPtrOutSetup(int iChan, int iNumVals, unsigned char *pucTX_DMA)
    @return 1:
 
 **/
-int DmaStructPtrInSetup(int iChan, int iNumVals, unsigned char *pucRX_DMA)
+uint32_t DmaStructPtrInSetup(uint32_t iChan, uint32_t iNumVals, uint8_t *pucRX_DMA)
 {
-   int iChanSel = 0;
+   uint32_t iChanSel = 0;
 
    if (iChan > CCD_SIZE) {
       iChanSel = 1;  // Alternalte
@@ -604,12 +605,12 @@ int DmaStructPtrInSetup(int iChan, int iNumVals, unsigned char *pucRX_DMA)
       iChan--;
 
       if (iChanSel == 0) { // - primary structure
-         dmaChanDesc[iChan].destEndPtr    = (unsigned int)(pucRX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan].srcEndPtr   = (unsigned int)(&pADI_SPI1->SPIRX);
+         dmaChanDesc[iChan].destEndPtr    = (uint32_t)(pucRX_DMA + iNumVals - 0x1);
+         dmaChanDesc[iChan].srcEndPtr   = (uint32_t)(&pADI_SPI1->SPIRX);
 
       } else { // Alternate structure used
-         dmaChanDesc[iChan + CCD_SIZE].destEndPtr    = (unsigned int)(pucRX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr   = (unsigned int)(&pADI_SPI1->SPIRX);
+         dmaChanDesc[iChan + CCD_SIZE].destEndPtr    = (uint32_t)(pucRX_DMA + iNumVals - 0x1);
+         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr   = (uint32_t)(&pADI_SPI1->SPIRX);
       }
 
       break;
@@ -618,12 +619,12 @@ int DmaStructPtrInSetup(int iChan, int iNumVals, unsigned char *pucRX_DMA)
       iChan--;
 
       if (iChanSel == 0) { // - primary structure
-         dmaChanDesc[iChan].destEndPtr    = (unsigned int)(pucRX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan].srcEndPtr   = (unsigned int)(&pADI_UART->COMRX);
+         dmaChanDesc[iChan].destEndPtr    = (uint32_t)(pucRX_DMA + iNumVals - 0x1);
+         dmaChanDesc[iChan].srcEndPtr   = (uint32_t)(&pADI_UART->COMRX);
 
       } else { // Alternate structure used
-         dmaChanDesc[iChan + CCD_SIZE].destEndPtr    = (unsigned int)(pucRX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr   = (unsigned int)(&pADI_UART->COMRX);
+         dmaChanDesc[iChan + CCD_SIZE].destEndPtr    = (uint32_t)(pucRX_DMA + iNumVals - 0x1);
+         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr   = (uint32_t)(&pADI_UART->COMRX);
       }
 
       break;
@@ -632,12 +633,12 @@ int DmaStructPtrInSetup(int iChan, int iNumVals, unsigned char *pucRX_DMA)
       iChan--;
 
       if (iChanSel == 0) { // - primary structure
-         dmaChanDesc[iChan].destEndPtr    = (unsigned int)(pucRX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan].srcEndPtr   = (unsigned int)(&pADI_I2C->I2CSRX);
+         dmaChanDesc[iChan].destEndPtr    = (uint32_t)(pucRX_DMA + iNumVals - 0x1);
+         dmaChanDesc[iChan].srcEndPtr   = (uint32_t)(&pADI_I2C->I2CSRX);
 
       } else { // Alternate structure used
-         dmaChanDesc[iChan + CCD_SIZE].destEndPtr    = (unsigned int)(pucRX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr   = (unsigned int)(&pADI_I2C->I2CSRX);
+         dmaChanDesc[iChan + CCD_SIZE].destEndPtr    = (uint32_t)(pucRX_DMA + iNumVals - 0x1);
+         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr   = (uint32_t)(&pADI_I2C->I2CSRX);
       }
 
       break;
@@ -646,12 +647,12 @@ int DmaStructPtrInSetup(int iChan, int iNumVals, unsigned char *pucRX_DMA)
       iChan--;
 
       if (iChanSel == 0) { // - primary structure
-         dmaChanDesc[iChan].destEndPtr    = (unsigned int)(pucRX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan].srcEndPtr   = (unsigned int)(&pADI_I2C->I2CMRX);
+         dmaChanDesc[iChan].destEndPtr    = (uint32_t)(pucRX_DMA + iNumVals - 0x1);
+         dmaChanDesc[iChan].srcEndPtr   = (uint32_t)(&pADI_I2C->I2CMRX);
 
       } else { // Alternate structure used
-         dmaChanDesc[iChan + CCD_SIZE].destEndPtr    = (unsigned int)(pucRX_DMA + iNumVals - 0x1);
-         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr   = (unsigned int)(&pADI_I2C->I2CMRX);
+         dmaChanDesc[iChan + CCD_SIZE].destEndPtr    = (uint32_t)(pucRX_DMA + iNumVals - 0x1);
+         dmaChanDesc[iChan + CCD_SIZE].srcEndPtr   = (uint32_t)(&pADI_I2C->I2CMRX);
       }
 
       break;
@@ -663,7 +664,7 @@ int DmaStructPtrInSetup(int iChan, int iNumVals, unsigned char *pucRX_DMA)
    return 1;
 }
 /**
-   @brief int DmaCycleCntCtrl(unsigned int iChan, int iNumx, int iCfg)
+   @brief uint32_t DmaCycleCntCtrl(uint32_t iChan, uint32_t iNumx, uint32_t iCfg)
             ==========Used to re-enable DMA config structure when moving ADC results direct to memory
    @param iChan :{0,SPI1TX_C,SPI1RX_C,UARTTX_C,UARTRX_C,I2CSTX_C,I2CSRX_C,I2CMTX_C,I2CMRX_C,
          DAC_C,ADC0_C,ADC1_C,SINC2_C,
@@ -702,7 +703,7 @@ int DmaStructPtrInSetup(int iChan, int iNumVals, unsigned char *pucRX_DMA)
  @return 1:
 
 **/
-int DmaCycleCntCtrl(unsigned int iChan, int iNumx, int iCfg)
+uint32_t DmaCycleCntCtrl(uint32_t iChan, uint32_t iNumx, uint32_t iCfg)
 {
    iChan--;
    dmaChanDesc[iChan].ctrlCfg.Bits.cycle_ctrl       = (iCfg & 0x7);
@@ -713,7 +714,7 @@ int DmaCycleCntCtrl(unsigned int iChan, int iNumx, int iCfg)
 
 
 /**
-   @brief int AdcDmaReadSetup(int iType, int iCfg, int iNumVals, int *pucRX_DMA)
+   @brief uint32_t AdcDmaReadSetup(uint32_t iType, uint32_t iCfg, uint32_t iNumVals, uint32_t *pucRX_DMA)
          ==========Sets up DMA config structure when moving ADC results direct to memory
    @param iType :{ADC0DMAREAD,ADC1DMAREAD,SINC2DMAREAD,
                  ADC0DMAREAD+iALTERNATE,
@@ -740,9 +741,9 @@ int DmaCycleCntCtrl(unsigned int iChan, int iNumx, int iCfg)
    @return 1:
 
 **/
-int AdcDmaReadSetup(int iType, int iCfg, int iNumVals, int *pucRX_DMA)
+uint32_t AdcDmaReadSetup(uint32_t iType, uint32_t iCfg, uint32_t iNumVals, uint32_t *pucRX_DMA)
 {
-   int iChanSel = 0;
+   uint32_t iChanSel = 0;
    DmaDesc Desc;
    Desc.ctrlCfg.ctrlCfgVal = 0;
    Desc.destEndPtr = 0;
@@ -773,8 +774,8 @@ int AdcDmaReadSetup(int iType, int iCfg, int iNumVals, int *pucRX_DMA)
 
    switch (iType) {
    case ADC1DMAREAD:
-      Desc.srcEndPtr                  = (unsigned int)&pADI_ADC1->DAT;
-      Desc.destEndPtr                 = (unsigned int)(pucRX_DMA + iNumVals - 0x1);
+      Desc.srcEndPtr                  = (uint32_t)&pADI_ADC1->DAT;
+      Desc.destEndPtr                 = (uint32_t)(pucRX_DMA + iNumVals - 0x1);
 
       if (iChanSel == 0) {
          *Dma_GetDescriptor(ADC1_C - 1, 0) = Desc;   // primary structure
@@ -786,8 +787,8 @@ int AdcDmaReadSetup(int iType, int iCfg, int iNumVals, int *pucRX_DMA)
       break;
 
    case SINC2DMAREAD:
-      Desc.srcEndPtr                 = (unsigned int)&pADI_ADCSTEP->STEPDAT;
-      Desc.destEndPtr                = (unsigned int)(pucRX_DMA + iNumVals - 0x1); //
+      Desc.srcEndPtr                 = (uint32_t)&pADI_ADCSTEP->STEPDAT;
+      Desc.destEndPtr                = (uint32_t)(pucRX_DMA + iNumVals - 0x1); //
 
       if (iChanSel == 0) {
          *Dma_GetDescriptor(SINC2_C - 1, 0) = Desc;   // primary structure
@@ -805,7 +806,7 @@ int AdcDmaReadSetup(int iType, int iCfg, int iNumVals, int *pucRX_DMA)
    return 1;
 }
 /**
-   @brief int AdcDmaWriteSetup(int iType, int iCfg, int iNumVals, int *pucTX_DMA)
+   @brief uint32_t AdcDmaWriteSetup(uint32_t iType, uint32_t iCfg, uint32_t iNumVals, uint32_t *pucTX_DMA)
          ==========Sets up DMA config structure when moving values from memory to the ADC control registers
        Source address always starts with ADCxMSKI register.
    @param iType :{ADC0DMAWRITE,ADC1DMAWRITE,
@@ -830,9 +831,9 @@ int AdcDmaReadSetup(int iType, int iCfg, int iNumVals, int *pucRX_DMA)
    @return 1:
 
 **/
-int AdcDmaWriteSetup(int iType, int iCfg, int iNumVals, int *pucTX_DMA)
+uint32_t AdcDmaWriteSetup(uint32_t iType, uint32_t iCfg, uint32_t iNumVals, uint32_t *pucTX_DMA)
 {
-   int iChanSel = 0;
+   uint32_t iChanSel = 0;
    DmaDesc Desc;
    Desc.ctrlCfg.ctrlCfgVal = 0;
    Desc.destEndPtr = 0;
@@ -862,8 +863,8 @@ int AdcDmaWriteSetup(int iType, int iCfg, int iNumVals, int *pucTX_DMA)
 
    switch (iType) {
    case ADC1DMAWRITE:
-      Desc.srcEndPtr                  = (unsigned int)&pucTX_DMA;
-      Desc.destEndPtr                 = (unsigned int)(pADI_ADC1->MSKI + iNumVals - 0x1);
+      Desc.srcEndPtr                  = (uint32_t)&pucTX_DMA;
+      Desc.destEndPtr                 = (uint32_t)(pADI_ADC1->MSKI + iNumVals - 0x1);
 
       if (iChanSel == 0) {
          *Dma_GetDescriptor(ADC1_C - 1, 0) = Desc;   // primary structure
@@ -881,7 +882,7 @@ int AdcDmaWriteSetup(int iType, int iCfg, int iNumVals, int *pucTX_DMA)
    return 1;
 }
 /**
-   @brief int DacDmaWriteSetup(int iType, int iCfg, int iNumVals, int *pucTX_DMA)
+   @brief uint32_t DacDmaWriteSetup(uint32_t iType, uint32_t iCfg, uint32_t iNumVals, uint32_t *pucTX_DMA)
             ==========Specific function to setup DAC DMA control structure
        Source address always starts with ADCxMSKI register.
    @param iType :{DAC_C,DAC_C+iALTERNATE}
@@ -902,9 +903,9 @@ int AdcDmaWriteSetup(int iType, int iCfg, int iNumVals, int *pucTX_DMA)
    @return 1:
 
 **/
-int DacDmaWriteSetup(int iType, int iCfg, int iNumVals, int *pucTX_DMA)
+uint32_t DacDmaWriteSetup(uint32_t iType, uint32_t iCfg, uint32_t iNumVals, uint32_t *pucTX_DMA)
 {
-   int iChanSel = 0;
+   uint32_t iChanSel = 0;
    DmaDesc Desc;
    Desc.ctrlCfg.ctrlCfgVal = 0;
    Desc.destEndPtr = 0;
@@ -931,8 +932,8 @@ int DacDmaWriteSetup(int iType, int iCfg, int iNumVals, int *pucTX_DMA)
    Desc.ctrlCfg.Bits.src_inc          = ((iCfg & 0xC000000) >> 26);
    Desc.ctrlCfg.Bits.dst_inc          = ((iCfg & 0xC0000000) >> 30);
 
-   Desc.srcEndPtr                  = (unsigned int)(pucTX_DMA + iNumVals - 0x1);
-   Desc.destEndPtr                 = (unsigned int)(&pADI_DAC->DACDAT);
+   Desc.srcEndPtr                  = (uint32_t)(pucTX_DMA + iNumVals - 0x1);
+   Desc.destEndPtr                 = (uint32_t)(&pADI_DAC->DACDAT);
 
    if (iChanSel == 0) {
       *Dma_GetDescriptor(DAC_C - 1, 0) = Desc;   // primary structure

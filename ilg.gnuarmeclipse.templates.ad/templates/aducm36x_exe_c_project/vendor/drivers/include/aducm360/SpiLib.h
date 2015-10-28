@@ -38,7 +38,7 @@
  *****************************************************************************
    @file     SpiLib.h
    @brief    Set of SPI peripheral functions.
-   @version  V0.4
+   @version  V0.5
    @author   ADI
    @date     October 2015
    @par Revision History:
@@ -46,19 +46,31 @@
    - V0.2, October 2012: Added SPI DMA support
    - V0.3, November 2012: Moved SPI DMA functionality to DmaLib
    - V0.4, October 2015: Coding style cleanup - no functional changes.
+   - V0.5, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
+#ifndef __ADUCM36X_SPILIB_H
+#define __ADUCM36X_SPILIB_H
+
+#ifdef __cplusplus
+ extern "C" {
+#endif
 
 #include <ADuCM360.h>
 
-extern int SpiCfg(ADI_SPI_TypeDef *pSPI, int iFifoSize, int iMasterEn, int iConfig);
-extern int SpiRx(ADI_SPI_TypeDef *pSPI);
-extern int SpiTx(ADI_SPI_TypeDef *pSPI, int iTx);
-extern int SpiSta(ADI_SPI_TypeDef *pSPI);
-extern int SpiBaud(ADI_SPI_TypeDef *pSPI, int iClkDiv, int iCserr);
-extern int SpiFifoFlush(ADI_SPI_TypeDef *pSPI, int iTxFlush, int iRxFlush);
-extern int SpiTxFifoFlush(ADI_SPI_TypeDef *pSPI, int iTxFlush);
-extern int SpiRxFifoFlush(ADI_SPI_TypeDef *pSPI, int iRxFlush);
-extern int SpiDma(ADI_SPI_TypeDef *pSPI, int iDmaRxSel, int iDmaTxSel, int iDmaEn);
-extern int SpiCountRd(ADI_SPI_TypeDef *pSPI);
+extern uint32_t SpiCfg(ADI_SPI_TypeDef *pSPI, uint32_t iFifoSize, uint32_t iMasterEn, uint32_t iConfig);
+extern uint32_t SpiRx(ADI_SPI_TypeDef *pSPI);
+extern uint32_t SpiTx(ADI_SPI_TypeDef *pSPI, uint32_t iTx);
+extern uint32_t SpiSta(ADI_SPI_TypeDef *pSPI);
+extern uint32_t SpiBaud(ADI_SPI_TypeDef *pSPI, uint32_t iClkDiv, uint32_t iCserr);
+extern uint32_t SpiFifoFlush(ADI_SPI_TypeDef *pSPI, uint32_t iTxFlush, uint32_t iRxFlush);
+extern uint32_t SpiTxFifoFlush(ADI_SPI_TypeDef *pSPI, uint32_t iTxFlush);
+extern uint32_t SpiRxFifoFlush(ADI_SPI_TypeDef *pSPI, uint32_t iRxFlush);
+extern uint32_t SpiDma(ADI_SPI_TypeDef *pSPI, uint32_t iDmaRxSel, uint32_t iDmaTxSel, uint32_t iDmaEn);
+extern uint32_t SpiCountRd(ADI_SPI_TypeDef *pSPI);
 
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __ADUCM36X_SPILIB_H */

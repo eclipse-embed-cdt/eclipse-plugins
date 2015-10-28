@@ -40,7 +40,7 @@
    @{
    @file     DioLib.c
    @brief    Set of Digital IO peripheral functions.
-   @version  V0.4
+   @version  V0.5
    @author   ADI
    @date     October 2015
 
@@ -51,14 +51,14 @@
                          addition of Tristate functions.
    - V0.3, November 2012: several comment corrections.
    - V0.4, October 2015: Coding style cleanup - no functional changes.
+   - V0.5, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
 
-#include "ADuCM361.h"
 #include "DioLib.h"
 
 /**
-   @brief int DioCfg(ADI_GPIO_TypeDef *pPort, int iMpx)
+   @brief uint32_t DioCfg(ADI_GPIO_TypeDef *pPort, uint32_t iMpx)
          ========== Sets Digital IO port multiplexer.
    @param pPort :{pADI_GP0,pADI_GP1,pADI_GP2}
       - pADI_GP0 for GP0.
@@ -69,14 +69,14 @@
    @return 1.
 **/
 
-int DioCfg(ADI_GPIO_TypeDef *pPort, int iMpx)
+uint32_t DioCfg(ADI_GPIO_TypeDef *pPort, uint32_t iMpx)
 {
    pPort->GPCON = iMpx;
    return 1;
 }
 
 /**
-   @brief int DioDrv(ADI_GPIO_TypeDef *pPort, int iOen, int iPul, int iOce)
+   @brief uint32_t DioDrv(ADI_GPIO_TypeDef *pPort, uint32_t iOen, uint32_t iPul, uint32_t iOce)
          ========== Sets output drive of port pins.
    @param pPort :{pADI_GP0,pADI_GP1,pADI_GP2}
       - pADI_GP0 for GP0.
@@ -90,7 +90,7 @@ int DioCfg(ADI_GPIO_TypeDef *pPort, int iMpx)
       - Select combination of BIT0 to BIT7 outputs to be open collector.
    @return 1.
 **/
-int DioDrv(ADI_GPIO_TypeDef *pPort, int iOen, int iPul, int iOce)
+uint32_t DioDrv(ADI_GPIO_TypeDef *pPort, uint32_t iOen, uint32_t iPul, uint32_t iOce)
 {
    pPort->GPOEN = iOen;
    pPort->GPPUL = iPul;
@@ -99,7 +99,7 @@ int DioDrv(ADI_GPIO_TypeDef *pPort, int iOen, int iPul, int iOce)
 }
 
 /**
-   @brief int DioOen(ADI_GPIO_TypeDef *pPort, int iOen)
+   @brief uint32_t DioOen(ADI_GPIO_TypeDef *pPort, uint32_t iOen)
          ========== Sets GPIO direction, in or out.
    @param pPort :{pADI_GP0,pADI_GP1,pADI_GP2}
       - pADI_GP0 for GP0.
@@ -111,14 +111,14 @@ int DioDrv(ADI_GPIO_TypeDef *pPort, int iOen, int iPul, int iOce)
                 - BITX|BITY, all pins are inputs except Pin X and Pin Y of the specified port.
    @return 1.
 **/
-int DioOen(ADI_GPIO_TypeDef *pPort, int iOen)
+uint32_t DioOen(ADI_GPIO_TypeDef *pPort, uint32_t iOen)
 {
    pPort->GPOEN = iOen;
    return 1;
 }
 
 /**
-   @brief int DioPul(ADI_GPIO_TypeDef *pPort, int iPul)
+   @brief uint32_t DioPul(ADI_GPIO_TypeDef *pPort, uint32_t iPul)
          ========== Sets pull up resistors of port pins.
    @param pPort :{pADI_GP0,pADI_GP1,pADI_GP2}
       - pADI_GP0 for GP0.
@@ -130,14 +130,14 @@ int DioOen(ADI_GPIO_TypeDef *pPort, int iOen)
                 - BITX|BITY, all pull ups are disabled except on Pin X and Pin Y of the specified port.
         @return 1.
 **/
-int DioPul(ADI_GPIO_TypeDef *pPort, int iPul)
+uint32_t DioPul(ADI_GPIO_TypeDef *pPort, uint32_t iPul)
 {
    pPort->GPPUL = iPul;
    return 1;
 }
 
 /**
-   @brief int DioOce(ADI_GPIO_TypeDef *pPort, int iOce)
+   @brief uint32_t DioOce(ADI_GPIO_TypeDef *pPort, uint32_t iOce)
          ========== Sets open collector  of port pins.
    @param pPort :{pADI_GP0,pADI_GP1,pADI_GP2}
       - pADI_GP0 for GP0.
@@ -150,14 +150,14 @@ int DioPul(ADI_GPIO_TypeDef *pPort, int iPul)
               If OCE only is set, then the GPIO is operating normally as an input.
    @return 1.
 **/
-int DioOce(ADI_GPIO_TypeDef *pPort, int iOce)
+uint32_t DioOce(ADI_GPIO_TypeDef *pPort, uint32_t iOce)
 {
    pPort->GPOCE = iOce;
    return 1;
 }
 
 /**
-   @brief int DioTriState(ADI_GPIO_TypeDef *pPort)
+   @brief uint32_t DioTriState(ADI_GPIO_TypeDef *pPort)
          ========== Places all pins of the specified port in tristate.
    @param pPort :{pADI_GP0,pADI_GP1,pADI_GP2}
       - pADI_GP0 for GP0.
@@ -165,7 +165,7 @@ int DioOce(ADI_GPIO_TypeDef *pPort, int iOce)
       - pADI_GP2 for GP2.
    @return 1.
 **/
-int DioTriState(ADI_GPIO_TypeDef *pPort)
+uint32_t DioTriState(ADI_GPIO_TypeDef *pPort)
 {
    pPort->GPOCE = 0xFF;
    pPort->GPOEN = 0xFF;
@@ -173,7 +173,7 @@ int DioTriState(ADI_GPIO_TypeDef *pPort)
    return 1;
 }
 /**
-   @brief int DioCfgPin(ADI_GPIO_TypeDef *pPort, int iPin, int iMode)
+   @brief uint32_t DioCfgPin(ADI_GPIO_TypeDef *pPort, uint32_t iPin, uint32_t iMode)
          ========== Configures the mode of 1 GPIO of the specified port.
    @param pPort :{pADI_GP0,pADI_GP1,pADI_GP2}
       - pADI_GP0 for GP0.
@@ -193,9 +193,9 @@ int DioTriState(ADI_GPIO_TypeDef *pPort)
    @return 1.
 **/
 
-int DioCfgPin(ADI_GPIO_TypeDef *pPort, int iPin, int iMode)
+uint32_t DioCfgPin(ADI_GPIO_TypeDef *pPort, uint32_t iPin, uint32_t iMode)
 {
-   unsigned short a = pPort->GPCON;
+   uint16_t a = pPort->GPCON;
    a &= (0xFFFF - (0x3 << (2 * iPin)));  // keep all configurations except iPin
    a += (iMode << 2 * iPin);             // configure iPin
    pPort->GPCON = a;
@@ -204,7 +204,7 @@ int DioCfgPin(ADI_GPIO_TypeDef *pPort, int iPin, int iMode)
 
 
 /**
-   @brief DioOenPin(ADI_GPIO_TypeDef *pPort, int iPin, int iOen)
+   @brief DioOenPin(ADI_GPIO_TypeDef *pPort, uint32_t iPin, uint32_t iOen)
          ========== Configures the output drive of 1 GPIO of the specified port.
    @param pPort :{pADI_GP0,pADI_GP1,pADI_GP2}
       - pADI_GP0 for GP0.
@@ -224,9 +224,9 @@ int DioCfgPin(ADI_GPIO_TypeDef *pPort, int iPin, int iMode)
                 - 1 to configure as an output
    @return 1.
 **/
-int DioOenPin(ADI_GPIO_TypeDef *pPort, int iPin, int iOen)
+uint32_t DioOenPin(ADI_GPIO_TypeDef *pPort, uint32_t iPin, uint32_t iOen)
 {
-   unsigned short a = pPort->GPOEN;
+   uint16_t a = pPort->GPOEN;
    a &= (0xFF - (0x1 << iPin));   // keep all configurations except iPin
    a += (iOen << iPin);            // configure iPin
    pPort->GPOEN = a;
@@ -235,7 +235,7 @@ int DioOenPin(ADI_GPIO_TypeDef *pPort, int iPin, int iOen)
 
 
 /**
-   @brief DioPulPin(ADI_GPIO_TypeDef *pPort, int iPin, int iPul)
+   @brief DioPulPin(ADI_GPIO_TypeDef *pPort, uint32_t iPin, uint32_t iPul)
          ========== Configures the pull up of 1 GPIO of the specified port.
    @param pPort :{pADI_GP0,pADI_GP1,pADI_GP2}
       - pADI_GP0 for GP0.
@@ -255,9 +255,9 @@ int DioOenPin(ADI_GPIO_TypeDef *pPort, int iPin, int iOen)
                 - 1 to enable the pull up
    @return 1.
 **/
-int DioPulPin(ADI_GPIO_TypeDef *pPort, int iPin, int iPul)
+uint32_t DioPulPin(ADI_GPIO_TypeDef *pPort, uint32_t iPin, uint32_t iPul)
 {
-   unsigned short a = pPort->GPPUL;
+   uint16_t a = pPort->GPPUL;
    a &= (0xFF - (0x1 << iPin));   // keep all configurations except iPin
    a += (iPul << iPin);            // configure iPin
    pPort->GPPUL = a;
@@ -265,7 +265,7 @@ int DioPulPin(ADI_GPIO_TypeDef *pPort, int iPin, int iPul)
 }
 
 /**
-   @brief DioOcePin(ADI_GPIO_TypeDef *pPort, int iPin, int iOce)
+   @brief DioOcePin(ADI_GPIO_TypeDef *pPort, uint32_t iPin, uint32_t iOce)
          ========== Configures the collector of 1 GPIO of the specified port.
    @param pPort :{pADI_GP0,pADI_GP1,pADI_GP2}
       - pADI_GP0 for GP0.
@@ -288,9 +288,9 @@ int DioPulPin(ADI_GPIO_TypeDef *pPort, int iPin, int iPul)
               If OCE only is set, then the GPIO is operating normally as an input.
    @return 1.
 **/
-int DioOcePin(ADI_GPIO_TypeDef *pPort, int iPin, int iOce)
+uint32_t DioOcePin(ADI_GPIO_TypeDef *pPort, uint32_t iPin, uint32_t iOce)
 {
-   unsigned short a = pPort->GPOCE;
+   uint16_t a = pPort->GPOCE;
    a &= (0xFF - (0x1 << iPin));   // keep all configurations except iPin
    a += (iOce << iPin);            // configure iPin
    pPort->GPOCE = a;
@@ -299,7 +299,7 @@ int DioOcePin(ADI_GPIO_TypeDef *pPort, int iPin, int iOce)
 }
 
 /**
-   @brief DioTriStatePin(ADI_GPIO_TypeDef *pPort, int iPin)
+   @brief DioTriStatePin(ADI_GPIO_TypeDef *pPort, uint32_t iPin)
          ========== Configures in tristate 1 GPIO of the specified port.
    @param pPort :{pADI_GP0,pADI_GP1,pADI_GP2}
       - pADI_GP0 for GP0.
@@ -320,9 +320,9 @@ int DioOcePin(ADI_GPIO_TypeDef *pPort, int iPin, int iOce)
 
    @return 1.
 **/
-int DioTriStatePin(ADI_GPIO_TypeDef *pPort, int iPin)
+uint32_t DioTriStatePin(ADI_GPIO_TypeDef *pPort, uint32_t iPin)
 {
-   unsigned short a = (1 << iPin);
+   uint16_t a = (1 << iPin);
    pPort->GPOCE |= a;
    pPort->GPOEN |= a;
    pPort->GPOUT |= a;
@@ -330,7 +330,7 @@ int DioTriStatePin(ADI_GPIO_TypeDef *pPort, int iPin)
 }
 
 /**
-   @brief int DioRd(ADI_GPIO_TypeDef *pPort)
+   @brief uint32_t DioRd(ADI_GPIO_TypeDef *pPort)
          ========== Reads values of port pins.
    @param pPort :{pADI_GP0,pADI_GP1,pADI_GP2}
       - pADI_GP0 for GP0.
@@ -338,13 +338,13 @@ int DioTriStatePin(ADI_GPIO_TypeDef *pPort, int iPin)
       - pADI_GP2 for GP2.
         @return value on port pins.
 **/
-int DioRd(ADI_GPIO_TypeDef *pPort)
+uint32_t DioRd(ADI_GPIO_TypeDef *pPort)
 {
    return (pPort->GPIN);
 }
 
 /**
-   @brief int DioWr(ADI_GPIO_TypeDef *pPort, int iVal)
+   @brief uint32_t DioWr(ADI_GPIO_TypeDef *pPort, uint32_t iVal)
          ========== Writes values to outputs.
    @param pPort :{pADI_GP0,pADI_GP1,pADI_GP2}
       - pADI_GP0 for GP0.
@@ -355,14 +355,14 @@ int DioRd(ADI_GPIO_TypeDef *pPort)
       -  unselected outputs will be low.
    @return value on port pins.
 **/
-int DioWr(ADI_GPIO_TypeDef *pPort, int iVal)
+uint32_t DioWr(ADI_GPIO_TypeDef *pPort, uint32_t iVal)
 {
    pPort->GPOUT = iVal;
    return (pPort->GPOUT);
 }
 
 /**
-   @brief int DioSet(ADI_GPIO_TypeDef *pPort, int iVal)
+   @brief uint32_t DioSet(ADI_GPIO_TypeDef *pPort, uint32_t iVal)
          ========== Sets individual outputs.
    @param pPort :{pADI_GP0,pADI_GP1,pADI_GP2}
       - pADI_GP0 for GP0.
@@ -373,14 +373,14 @@ int DioWr(ADI_GPIO_TypeDef *pPort, int iVal)
       - unselected outputs will be unchanged.
    @return value on port pins.
 **/
-int DioSet(ADI_GPIO_TypeDef *pPort, int iVal)
+uint32_t DioSet(ADI_GPIO_TypeDef *pPort, uint32_t iVal)
 {
    pPort->GPSET = iVal;
    return (pPort->GPSET);
 }
 
 /**
-   @brief int DioClr(ADI_GPIO_TypeDef *pPort, int iVal)
+   @brief uint32_t DioClr(ADI_GPIO_TypeDef *pPort, uint32_t iVal)
          ========== Clears individual outputs.
    @param pPort :{pADI_GP0,pADI_GP1,pADI_GP2}
       - pADI_GP0 for GP0.
@@ -391,14 +391,14 @@ int DioSet(ADI_GPIO_TypeDef *pPort, int iVal)
       -  unselected outputs will be unchanged.
    @return value on port pins.
 **/
-int DioClr(ADI_GPIO_TypeDef *pPort, int iVal)
+uint32_t DioClr(ADI_GPIO_TypeDef *pPort, uint32_t iVal)
 {
    pPort->GPCLR = iVal;
    return (pPort->GPCLR);
 }
 
 /**
-   @brief int DioTgl(ADI_GPIO_TypeDef *pPort, int iVal)
+   @brief uint32_t DioTgl(ADI_GPIO_TypeDef *pPort, uint32_t iVal)
          ========== Toggles individual outputs.
    @param pPort :{pADI_GP0,pADI_GP1,pADI_GP2}
       - pADI_GP0 for GP0.
@@ -409,7 +409,7 @@ int DioClr(ADI_GPIO_TypeDef *pPort, int iVal)
       -  unselected outputs will be unchanged.
    @return value on port pins.
 **/
-int DioTgl(ADI_GPIO_TypeDef *pPort, int iVal)
+uint32_t DioTgl(ADI_GPIO_TypeDef *pPort, uint32_t iVal)
 {
    pPort->GPTGL = iVal;
    return (pPort->GPTGL);

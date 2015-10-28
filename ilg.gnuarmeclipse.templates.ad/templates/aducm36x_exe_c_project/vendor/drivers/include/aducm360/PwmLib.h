@@ -38,22 +38,31 @@
  *****************************************************************************
    @file     PwmLib.h
    @brief    Set of PWM peripheral functions.
-   @version  V0.3
+   @version  V0.4
    @author   ADI
    @date     October 2015
    @par Revision History:
    - V0.2, September 2012: Initial release.
    - V0.3, October 2015: Coding style cleanup - no functional changes.
+   - V0.4, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 *****************************************************************************/
+#ifndef __ADUCM36X_PWMLIB_H
+#define __ADUCM36X_PWMLIB_H
 
-extern int PwmInit(unsigned int iPWMCP, unsigned int iPWMIEN, unsigned int iSYNC, unsigned int iTRIP);
-extern int PwmClrInt(unsigned int iSource);
-extern int PwmTime(int iPair, unsigned int uiFreq, unsigned int uiPWMH_High, unsigned int uiPWML_High);
-extern int PwmGo(unsigned int iPWMEN, unsigned int iHMODE);
-extern int PwmHBCfg(unsigned int iENA, unsigned int iPOINV, unsigned int iHOFF, unsigned int iDIR);
-extern int PwmInvert(int iInv1, int iInv3, int iInv5);
-extern int PwmLoad(int iLoad);
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
+#include <ADuCM360.h>
+
+extern uint32_t PwmInit(uint32_t iPWMCP, uint32_t iPWMIEN, uint32_t iSYNC, uint32_t iTRIP);
+extern uint32_t PwmClrInt(uint32_t iSource);
+extern uint32_t PwmTime(uint32_t iPair, uint32_t uiFreq, uint32_t uiPWMH_High, uint32_t uiPWML_High);
+extern uint32_t PwmGo(uint32_t iPWMEN, uint32_t iHMODE);
+extern uint32_t PwmHBCfg(uint32_t iENA, uint32_t iPOINV, uint32_t iHOFF, uint32_t iDIR);
+extern uint32_t PwmInvert(uint32_t iInv1, uint32_t iInv3, uint32_t iInv5);
+extern uint32_t PwmLoad(uint32_t iLoad);
 
 #define  UCLK_2 0
 #define  UCLK_4 0x40
@@ -67,3 +76,9 @@ extern int PwmLoad(int iLoad);
 #define  PWM0_1 0
 #define  PWM2_3 1
 #define  PWM4_5 2
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __ADUCM36X_PWMLIB_H */

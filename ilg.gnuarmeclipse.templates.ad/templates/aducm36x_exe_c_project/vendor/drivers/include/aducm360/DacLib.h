@@ -46,16 +46,31 @@
       for(i1 = 0; i1<0x10000000; i1 += 0x1000000)
          DacWr(0,i1);
 
-   @version    V0.2
+   @version    V0.3
    @author     ADI
    @date       November 2010
    @par Revision History:
    - V0.1, November 2010: Initial release.
    - V0.2, October 2015: Coding style cleanup - no functional changes.
-
+   - V0.3, October 2015:   Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 **/
-extern int DacCfg(int iDisable, int iRef, int iDrv, int iMode);
-extern int DacWr(int iChan, int iData);
-extern int DacSync(int iChan, int iSync, int iTime);
-extern int DacDma(int iChan, int iDmaSel);
 
+#ifndef __ADUCM36X_DACLIB_H
+#define __ADUCM36X_DACLIB_H
+
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
+#include <ADuCM360.h>
+
+extern uint32_t DacCfg(uint32_t iDisable, uint32_t iRef, uint32_t iDrv, uint32_t iMode);
+extern uint32_t DacWr(uint32_t iChan, uint32_t iData);
+extern uint32_t DacSync(uint32_t iChan, uint32_t iSync, uint32_t iTime);
+extern uint32_t DacDma(uint32_t iChan, uint32_t iDmaSel);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __ADUCM36X_DACLIB_H */

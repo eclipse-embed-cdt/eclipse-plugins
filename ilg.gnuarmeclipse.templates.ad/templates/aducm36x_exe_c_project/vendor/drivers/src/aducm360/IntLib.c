@@ -44,20 +44,20 @@
    - clear external interrupt flag with EiClr()
    - Example: Library used in Timers project
 
-   @version    V0.2
+   @version    V0.3
    @author     ADI
    @date       October 2015
    @par Revision History:
    - V0.1, August 2011: Initial release.
    - V0.2, October 2015: Coding style cleanup - no functional changes.
+   - V0.3, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
 
 #include "IntLib.h"
-#include <ADuCM360.h>
 
 /**
-   @brief int EiClr(int iEiNr)
+   @brief uint32_t EiClr(uint32_t iEiNr)
          ==========clear external interrupt flag
    @param iEiNr :{EICLR_IRQ0, EICLR_IRQ1, EXTINT2, EXTINT3, EXTINT4, EXTINT5, EXTINT6, EXTINT7}
       - 0x0: EXTINT0, External Interrupt 0
@@ -72,14 +72,14 @@
    @warning
 
 **/
-int EiClr(int iEiNr)
+uint32_t EiClr(uint32_t iEiNr)
 {
    pADI_INTERRUPT->EICLR = 0x1UL << iEiNr;
    return 1;
 }
 
 /**
-   @brief int EiCfg(int iEiNr, int iEnable, int iMode)
+   @brief uint32_t EiCfg(uint32_t iEiNr, uint32_t iEnable, uint32_t iMode)
          ==========configures external interrupt
    @param iEiNr :{EXTINT0, EXTINT1, EXTINT2, EXTINT3, EXTINT4, EXTINT5, EXTINT6, EXTINT7}
       - 0x0: EXTINT0, External Interrupt 0
@@ -103,17 +103,17 @@ int EiClr(int iEiNr)
    @warning
       the NVIC also needs to be configured
                 external interrupts are available regardless of the GPIO configuration
-                only ext int 0, 1 and 2 are available in SHUTDOWN mode
+                only ext uint32_t 0, 1 and 2 are available in SHUTDOWN mode
 **/
 
-int EiCfg(int iEiNr, int iEnable, int iMode)
+uint32_t EiCfg(uint32_t iEiNr, uint32_t iEnable, uint32_t iMode)
 {
-   volatile unsigned long *pEIxCFG;
-   unsigned long EIxCFG_A, EI0CFG_A, ulOffset, ulContent, ulMask;
-   EI0CFG_A = (unsigned long)& pADI_INTERRUPT->EI0CFG;
+   volatile uint32_t *pEIxCFG;
+   uint32_t EIxCFG_A, EI0CFG_A, ulOffset, ulContent, ulMask;
+   EI0CFG_A = (uint32_t)& pADI_INTERRUPT->EI0CFG;
 
    EIxCFG_A = EI0CFG_A + ((iEiNr / 4) * 4); // determine correct EIxCFG register
-   pEIxCFG = (volatile unsigned long *)EIxCFG_A;
+   pEIxCFG = (volatile uint32_t *)EIxCFG_A;
    ulOffset = (iEiNr % 4) * 4;  // determine correct offset in register
 
    if (iEnable == INT_DIS) {

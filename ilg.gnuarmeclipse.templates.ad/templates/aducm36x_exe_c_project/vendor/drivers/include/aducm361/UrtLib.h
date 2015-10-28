@@ -45,28 +45,35 @@
    - Output character with UrtTx().
    - Read characters with UrtRx().
 
-   @version  V0.3
+   @version  V0.4
    @author   ADI
    @date     October 2015
    @par Revision History:
    - V0.1, March 2012: initial version.
    - V0.2, October 2012: Fixed Baud rate generation function
    - V0.3, October 2015: Coding style cleanup - no functional changes.
+   - V0.4, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
+#ifndef __ADUCM36X_URTLIB_H
+#define __ADUCM36X_URTLIB_H
+
+#ifdef __cplusplus
+ extern "C" {
+#endif
 
 #include <ADuCM361.h>
 
-extern int UrtCfg(ADI_UART_TypeDef *pPort, int iBaud, int iBits, int iFormat);
-extern int UrtBrk(ADI_UART_TypeDef *pPort, int iBrk);
-extern int UrtLinSta(ADI_UART_TypeDef *pPort);
-extern int UrtTx(ADI_UART_TypeDef *pPort, int iTx);
-extern int UrtRx(ADI_UART_TypeDef *pPort);
-extern int UrtMod(ADI_UART_TypeDef *pPort, int iMcr, int iWr);
-extern int UrtModSta(ADI_UART_TypeDef *pPort);
-extern int UrtDma(ADI_UART_TypeDef *pPort, int iDmaSel);
-extern int UrtIntCfg(ADI_UART_TypeDef *pPort, int iIrq);
-extern int UrtIntSta(ADI_UART_TypeDef *pPort);
+extern uint32_t UrtCfg(ADI_UART_TypeDef *pPort, uint32_t iBaud, uint32_t iBits, uint32_t iFormat);
+extern uint32_t UrtBrk(ADI_UART_TypeDef *pPort, uint32_t iBrk);
+extern uint32_t UrtLinSta(ADI_UART_TypeDef *pPort);
+extern uint32_t UrtTx(ADI_UART_TypeDef *pPort, uint32_t iTx);
+extern uint32_t UrtRx(ADI_UART_TypeDef *pPort);
+extern uint32_t UrtMod(ADI_UART_TypeDef *pPort, uint32_t iMcr, uint32_t iWr);
+extern uint32_t UrtModSta(ADI_UART_TypeDef *pPort);
+extern uint32_t UrtDma(ADI_UART_TypeDef *pPort, uint32_t iDmaSel);
+extern uint32_t UrtIntCfg(ADI_UART_TypeDef *pPort, uint32_t iIrq);
+extern uint32_t UrtIntSta(ADI_UART_TypeDef *pPort);
 
 
 // baud rate settings
@@ -81,3 +88,9 @@ extern int UrtIntSta(ADI_UART_TypeDef *pPort);
 #define B115200   115200
 #define B230400   230400
 #define B430800   430800
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __ADUCM36X_URTLIB_H */

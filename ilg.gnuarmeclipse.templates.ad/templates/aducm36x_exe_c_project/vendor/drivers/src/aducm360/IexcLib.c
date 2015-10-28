@@ -43,22 +43,21 @@
    - Configure Excitation Currents with IexcCfg().
    - Select output current with IexcDat()
 
-   @version  V0.3
+   @version  V0.4
    @author   ADI
    @date     October 2015
    @par Revision History:
    - V0.1, March 2011: initial version.
    - V0.2, January 2013: Fixed IexcDat() - current outputs are all correct.
    - V0.3, October 2015: Coding style cleanup - no functional changes.
+   - V0.4, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
 
-
 #include "IexcLib.h"
-#include <ADuCM360.h>
 
 /**
-   @brief int IexcCfg(int iPd, int iRefsel, int iPinsel1, int iPinsel0)
+   @brief uint32_t IexcCfg(uint32_t iPd, uint32_t iRefsel, uint32_t iPinsel1, uint32_t iPinsel0)
          ==========Configures clock system.
    @param iPd :{IEXCCON_PD_En, IEXCCON_PD_off}
       - 128 or IEXCCON_PD_En to Power down Excitation Current source block.
@@ -82,9 +81,9 @@
 
 **/
 
-int IexcCfg(int iPd, int iRefsel, int iPinsel1, int iPinsel0)
+uint32_t IexcCfg(uint32_t iPd, uint32_t iRefsel, uint32_t iPinsel1, uint32_t iPinsel0)
 {
-   int   i1;
+   uint32_t   i1;
 
    i1 = iPd & 0x80;
    i1 |= (iRefsel & 0x40);
@@ -95,7 +94,7 @@ int IexcCfg(int iPd, int iRefsel, int iPinsel1, int iPinsel0)
    return 1;
 }
 /**
-   @brief  int IexcDat(int iIDAT, int iIDAT0)
+   @brief  uint32_t IexcDat(uint32_t iIDAT, uint32_t iIDAT0)
          ==========Sets Excitation Current output value.
    @param iIDAT :{IEXCDAT_IDAT_0uA, IEXCDAT_IDAT_50uA, IEXCDAT_IDAT_100uA, IEXCDAT_IDAT_150uA, IEXCDAT_IDAT_200uA,
    IEXCDAT_IDAT_250uA, IEXCDAT_IDAT_300uA, IEXCDAT_IDAT_400uA, IEXCDAT_IDAT_450uA, IEXCDAT_IDAT_500uA,
@@ -120,9 +119,9 @@ int IexcCfg(int iPd, int iRefsel, int iPinsel1, int iPinsel0)
 
    @return 1.
 **/
-int IexcDat(int iIDAT, int iIDAT0)
+uint32_t IexcDat(uint32_t iIDAT, uint32_t iIDAT0)
 {
-   int   i1;
+   uint32_t   i1;
 
    i1 = iIDAT0 & 0x1;
    i1 |= iIDAT & IEXCDAT_IDAT_MSK;

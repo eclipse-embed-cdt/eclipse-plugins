@@ -38,7 +38,7 @@
  *****************************************************************************
    @file     DioLib.h
    @brief    Set of Digital IO peripheral functions.
-   @version  V0.4
+   @version  V0.5
    @author   ADI
    @date     October 2015
 
@@ -49,9 +49,17 @@
                          addition of Tristate functions.
    - V0.3, November 2012: several comment corrections.
    - V0.4, October 2015: Coding style cleanup - no functional changes.
+   - V0.5, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 *****************************************************************************/
-#include "ADuCM360.h"
+#ifndef __ADUCM36X_DIOLIB_H
+#define __ADUCM36X_DIOLIB_H
+
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
+#include <ADuCM360.h>
 
 #define PIN0 0x0
 #define PIN1 0x1
@@ -63,26 +71,28 @@
 #define PIN7 0x7
 
 // port configuration
-extern int DioCfg(ADI_GPIO_TypeDef *pPort, int iMpx);
-extern int DioDrv(ADI_GPIO_TypeDef *pPort, int iOen, int iPul, int iOce);
-extern int DioOen(ADI_GPIO_TypeDef *pPort, int iOen);
-extern int DioPul(ADI_GPIO_TypeDef *pPort, int iPul);
-extern int DioOce(ADI_GPIO_TypeDef *pPort, int iOce);
-extern int DioTriState(ADI_GPIO_TypeDef *pPort); // new
+extern uint32_t DioCfg(ADI_GPIO_TypeDef *pPort, uint32_t iMpx);
+extern uint32_t DioDrv(ADI_GPIO_TypeDef *pPort, uint32_t iOen, uint32_t iPul, uint32_t iOce);
+extern uint32_t DioOen(ADI_GPIO_TypeDef *pPort, uint32_t iOen);
+extern uint32_t DioPul(ADI_GPIO_TypeDef *pPort, uint32_t iPul);
+extern uint32_t DioOce(ADI_GPIO_TypeDef *pPort, uint32_t iOce);
+extern uint32_t DioTriState(ADI_GPIO_TypeDef *pPort); // new
 
 // pin configuration
-extern int DioCfgPin(ADI_GPIO_TypeDef *pPort, int iPin, int iMode);  // new
-extern int DioOenPin(ADI_GPIO_TypeDef *pPort, int iPin, int iOen);   // new
-extern int DioPulPin(ADI_GPIO_TypeDef *pPort, int iPin, int iPul);   // new
-extern int DioOcePin(ADI_GPIO_TypeDef *pPort, int iPin, int iOce);   // new
-extern int DioTriStatePin(ADI_GPIO_TypeDef *pPort, int iPin);        // new
+extern uint32_t DioCfgPin(ADI_GPIO_TypeDef *pPort, uint32_t iPin, uint32_t iMode);  // new
+extern uint32_t DioOenPin(ADI_GPIO_TypeDef *pPort, uint32_t iPin, uint32_t iOen);   // new
+extern uint32_t DioPulPin(ADI_GPIO_TypeDef *pPort, uint32_t iPin, uint32_t iPul);   // new
+extern uint32_t DioOcePin(ADI_GPIO_TypeDef *pPort, uint32_t iPin, uint32_t iOce);   // new
+extern uint32_t DioTriStatePin(ADI_GPIO_TypeDef *pPort, uint32_t iPin);        // new
 
-extern int DioRd(ADI_GPIO_TypeDef *pPort);
-extern int DioWr(ADI_GPIO_TypeDef *pPort, int iVal);
-extern int DioSet(ADI_GPIO_TypeDef *pPort, int iVal);
-extern int DioClr(ADI_GPIO_TypeDef *pPort, int iVal);
-extern int DioTgl(ADI_GPIO_TypeDef *pPort, int iVal);
+extern uint32_t DioRd(ADI_GPIO_TypeDef *pPort);
+extern uint32_t DioWr(ADI_GPIO_TypeDef *pPort, uint32_t iVal);
+extern uint32_t DioSet(ADI_GPIO_TypeDef *pPort, uint32_t iVal);
+extern uint32_t DioClr(ADI_GPIO_TypeDef *pPort, uint32_t iVal);
+extern uint32_t DioTgl(ADI_GPIO_TypeDef *pPort, uint32_t iVal);
 
+#ifdef __cplusplus
+}
+#endif
 
-
-
+#endif /* __ADUCM36X_DIOLIB_H */

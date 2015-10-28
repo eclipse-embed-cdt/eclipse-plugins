@@ -70,6 +70,26 @@ extern void SystemInit (void);
  */
 extern void SystemCoreClockUpdate (void);
 
+/**
+ * @brief  Sets the system external clock frequency
+ *
+ * @param  ExtClkFreq   External clock frequency in Hz
+ * @return none
+ *
+ * Sets the clock frequency of the source connected to P0.5 clock input source
+ */
+extern void SetSystemExtClkFreq (uint32_t ExtClkFreq);
+
+/**
+ * @brief  Gets the system external clock frequency
+ *
+ * @return External Clock frequency
+ *
+ * Gets the clock frequency of the source connected to P0.5 clock input source
+ */
+extern uint32_t GetSystemExtClkFreq (void);
+
+
 #ifdef __cplusplus
 }
 #endif

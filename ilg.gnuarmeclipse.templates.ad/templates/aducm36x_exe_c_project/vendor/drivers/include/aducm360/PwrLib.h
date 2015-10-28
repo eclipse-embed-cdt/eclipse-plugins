@@ -38,16 +38,30 @@
  *****************************************************************************
    @file     PwrLib.h
    @brief    Functions for controling power modes
-   @version  V0.2
+   @version  V0.3
    @author   ADI
    @date     October 2015
    @par Revision History:
    - V0.1, September 2012: Initial release.
    - V0.2, October 2015: Coding style cleanup - no functional changes.
+   - V0.3, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
+#ifndef __ADUCM36X_PWRLIB_H
+#define __ADUCM36X_PWRLIB_H
+
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
 #include <ADuCM360.h>
 
-extern int PwrCfg(int iMode);
-extern int PwrRead(void);
 
+extern uint32_t PwrCfg(uint32_t iMode);
+extern uint32_t PwrRead(void);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __ADUCM36X_PWRLIB_H */

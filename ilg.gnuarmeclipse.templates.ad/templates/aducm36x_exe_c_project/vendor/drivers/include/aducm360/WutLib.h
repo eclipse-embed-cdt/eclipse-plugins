@@ -38,25 +38,36 @@
  *****************************************************************************
    @file     WutLib.h
    @brief    Set of wake up Timer peripheral functions.
-   @version  V0.2
+   @version  V0.3
    @author   ADI
    @date     October 2015
    @par Revision History:
    - V0.1, May 2012: Initial release.
    - V0.2, October 2015: Coding style cleanup - no functional changes.
+   - V0.3, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
+#ifndef __ADUCM36X_WUTLIB_H
+#define __ADUCM36X_WUTLIB_H
 
+#ifdef __cplusplus
+ extern "C" {
+#endif
 
 #include <ADuCM360.h>
 
-extern int WutCfg(int iMode, int iWake, int iPre, int iClkSrc);
-extern int WutLdWr(int iField, unsigned long lTld);
-extern unsigned long WutLdRd(int iField);
-extern int WutInc(int iInc);
-extern int WutClrInt(int iSource);
-extern int WutCfgInt(int iSource, int iEnable);
-extern long WutVal(void);
-extern int WutSta(void);
-extern int WutGo(int iEnable);
+extern uint32_t WutCfg(uint32_t iMode, uint32_t iWake, uint32_t iPre, uint32_t iClkSrc);
+extern uint32_t WutLdWr(uint32_t iField, uint32_t lTld);
+extern uint32_t WutLdRd(uint32_t iField);
+extern uint32_t WutInc(uint32_t iInc);
+extern uint32_t WutClrInt(uint32_t iSource);
+extern uint32_t WutCfgInt(uint32_t iSource, uint32_t iEnable);
+extern uint32_t WutVal(void);
+extern uint32_t WutSta(void);
+extern uint32_t WutGo(uint32_t iEnable);
 
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __ADUCM36X_WUTLIB_H */

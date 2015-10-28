@@ -44,7 +44,7 @@
    - ClkCfg(CLK_CD3,CLK_HF,CLK_HFO,CLK_OFF);
    - ClkSel(CLK_OFF,CLK_OFF,CLK_CD0,CLK_OFF);
 
-   @version    V0.5
+   @version    V0.6
    @author     ADI
    @date    October 2015
    @par Revision History:
@@ -53,16 +53,13 @@
    - V0.3, January 2013: corrected comments.
    - v0.4, February 2013: corrected parameters in ClkDis()
    - V0.5, October 2015: Coding style cleanup - no functional changes.
-
+   - V0.6, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 **/
 
-
 #include "ClkLib.h"
-#include <ADuCM361.h>
-
 
 /**
-   @brief int ClkCfg(int iCd, int iClkSrc, int iSysClockDiv, int iClkOut)
+   @brief uint32_t ClkCfg(uint32_t iCd, uint32_t iClkSrc, uint32_t iSysClockDiv, uint32_t iClkOut)
          ==========Configures clock system.
    @param iCd :{CLK_CD0,CLK_CD1,CLK_CD2,CLK_CD3,CLK_CD4,CLK_CD5,CLK_CD6,CLK_CD7}
       - 0 or CLK_CD0 to divide clock by 1.
@@ -91,9 +88,9 @@
    @return  1
 **/
 
-int ClkCfg(int iCd, int iClkSrc, int iSysClockDiv, int iClkOut)
+uint32_t ClkCfg(uint32_t iCd, uint32_t iClkSrc, uint32_t iSysClockDiv, uint32_t iClkOut)
 {
-   int   i1;
+   uint32_t   i1;
 
    i1 = iCd & 7;
    i1 |= (iClkSrc & 3) << 3;
@@ -104,7 +101,7 @@ int ClkCfg(int iCd, int iClkSrc, int iSysClockDiv, int iClkOut)
 }
 
 /**
-   @brief int ClkSel(int iSpiCd, int iI2cCd, int iUrtCd, int iPwmCd)
+   @brief uint32_t ClkSel(uint32_t iSpiCd, uint32_t iI2cCd, uint32_t iUrtCd, uint32_t iPwmCd)
          ==========Sets clocks of digital peripherals - SPI0/SPI1 will have same setting
    @param iSpiCd :{CLK_CD0,CLK_CD1,CLK_CD2,CLK_CD3,CLK_CD4,CLK_CD5,CLK_CD6,CLK_CD7}
       - 0 or CLK_CD0 to divide SPI clock by 1.
@@ -145,9 +142,9 @@ int ClkCfg(int iCd, int iClkSrc, int iSysClockDiv, int iClkOut)
    @return 1.
 **/
 
-int ClkSel(int iSpiCd, int iI2cCd, int iUrtCd, int iPwmCd)
+uint32_t ClkSel(uint32_t iSpiCd, uint32_t iI2cCd, uint32_t iUrtCd, uint32_t iPwmCd)
 {
-   int   i1;
+   uint32_t   i1;
 
    i1 = iSpiCd & 0x7;
    i1 |= (iSpiCd << 3);       // Same clock divide setting for SPI0 and SPI1
@@ -159,7 +156,7 @@ int ClkSel(int iSpiCd, int iI2cCd, int iUrtCd, int iPwmCd)
 }
 
 /**
-   @brief int ClkDis(int iClkDis)
+   @brief uint32_t ClkDis(uint32_t iClkDis)
          ==========Disables Clock to Peripheral blocks
 
    @param iClkDis :{0|CLKDIS_DISSPI0CLK| CLKDIS_DISSPI1CLK| CLKDIS_DISI2CCLK| CLKDIS_DISUARTCLK| CLKDIS_DISPWMCLK| CLKDIS_DIST0CLK| CLKDIS_DIST1CLK| CLKDIS_DISDACCLK| CLKDIS_DISDMACLK| CLKDIS_DISADCCLK}
@@ -178,7 +175,7 @@ int ClkSel(int iSpiCd, int iI2cCd, int iUrtCd, int iPwmCd)
       - 512 or DISADCCLK disable ADC peripheral Clock
    @return 1.
 **/
-int ClkDis(int iClkDis)
+uint32_t ClkDis(uint32_t iClkDis)
 {
 
    ADI_CLKCTL_TypeDef *pTmp;
@@ -189,7 +186,7 @@ int ClkDis(int iClkDis)
 }
 
 /**
-   @brief int XOSCCfg(int iXosc)
+   @brief uint32_t XOSCCfg(uint32_t iXosc)
          ==========Configures External Crystal.
 
    @param iXosc :{CLK_XOFF,CLK_XON,CLK_XON2}
@@ -199,9 +196,9 @@ int ClkDis(int iClkDis)
       - 8 or CLK_STA to read external crystal status bit
    @return  1
 **/
-int XOSCCfg(int iXosc)
+uint32_t XOSCCfg(uint32_t iXosc)
 {
-   int   i1;
+   uint32_t   i1;
 
    i1 = iXosc & 5;
    pADI_CLKCTL->XOSCCON = i1;

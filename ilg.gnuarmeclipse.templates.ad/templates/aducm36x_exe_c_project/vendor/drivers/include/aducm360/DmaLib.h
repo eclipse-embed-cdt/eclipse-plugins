@@ -41,39 +41,47 @@
    - DmaBase(), DmaSet(), DmaClr(), DmaSta() and DmaErr() apply to all DMA channels together.
    - DmaOn() apply for each channel separately.
 
-   @version    V0.3
+   @version    V0.4
    @author     ADI
    @date       October 2015
    @par Revision History:
    - V0.1, October 2012: initial version.
    - V0.2, May 2014: Added #define for iALTERNATE, bPrimary and bPrimary
    - V0.3, October 2015: Coding style cleanup - no functional changes.
+   - V0.4, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
+#ifndef __ADUCM36X_DMALIB_H
+#define __ADUCM36X_DMALIB_H
+
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
 #include <ADuCM360.h>
 
 typedef struct {
-   unsigned int cycle_ctrl    : 3;
-   unsigned int next_useburst : 1;
-   unsigned int n_minus_1     : 10;
-   unsigned int r_power       : 4;
-   unsigned int src_prot_ctrl : 3;
-   unsigned int dst_prot_ctrl : 3;
-   unsigned int src_size      : 2;
-   unsigned int src_inc       : 2;
-   unsigned int dst_size      : 2;
-   unsigned int dst_inc       : 2;
+   uint32_t cycle_ctrl    : 3;
+   uint32_t next_useburst : 1;
+   uint32_t n_minus_1     : 10;
+   uint32_t r_power       : 4;
+   uint32_t src_prot_ctrl : 3;
+   uint32_t dst_prot_ctrl : 3;
+   uint32_t src_size      : 2;
+   uint32_t src_inc       : 2;
+   uint32_t dst_size      : 2;
+   uint32_t dst_inc       : 2;
 } CtrlCfgBits;
 
 // Define the structure of a DMA descriptor.
 typedef struct dmaDesc {
-   unsigned int srcEndPtr;
-   unsigned int destEndPtr;
+   uint32_t srcEndPtr;
+   uint32_t destEndPtr;
    union {
-      unsigned int   ctrlCfgVal;
+      uint32_t   ctrlCfgVal;
       CtrlCfgBits    Bits;
    } ctrlCfg ;
-   unsigned int reserved4Bytes;
+   uint32_t reserved4Bytes;
 } DmaDesc;
 //typedef enum {false = 0, true = !false} boolean;
 // Suitable aLignment for the DMA descriptors
@@ -81,21 +89,21 @@ typedef struct dmaDesc {
 /* CCD allocation must be an integral power of two, i.e., 12 channels is allocated as 16 */
 #define CCD_SIZE                       (16)
 
-extern int DmaBase(void);
-extern DmaDesc *Dma_GetDescriptor(unsigned int iChan, int iAlternate);
-extern int DmaSet(int iMask, int iEnable, int iAlt, int iPriority);
-extern int DmaClr(int iMask, int iEnable, int iAlt, int iPriority);
-extern int DmaSta(void);
-extern int DmaErr(int iErrClr);
+extern uint32_t DmaBase(void);
+extern DmaDesc *Dma_GetDescriptor(uint32_t iChan, uint32_t iAlternate);
+extern uint32_t DmaSet(uint32_t iMask, uint32_t iEnable, uint32_t iAlt, uint32_t iPriority);
+extern uint32_t DmaClr(uint32_t iMask, uint32_t iEnable, uint32_t iAlt, uint32_t iPriority);
+extern uint32_t DmaSta(void);
+extern uint32_t DmaErr(uint32_t iErrClr);
 
-extern int AdcDmaReadSetup(int iType, int iCfg, int iNumVals, int *pucRX_DMA);
-extern int AdcDmaWriteSetup(int iType, int iCfg, int iNumVals, int *pucTX_DMA);
-extern int DacDmaWriteSetup(int iType, int iCfg, int iNumVals, int *pucTX_DMA);
+extern uint32_t AdcDmaReadSetup(uint32_t iType, uint32_t iCfg, uint32_t iNumVals, uint32_t *pucRX_DMA);
+extern uint32_t AdcDmaWriteSetup(uint32_t iType, uint32_t iCfg, uint32_t iNumVals, uint32_t *pucTX_DMA);
+extern uint32_t DacDmaWriteSetup(uint32_t iType, uint32_t iCfg, uint32_t iNumVals, uint32_t *pucTX_DMA);
 
-extern int DmaPeripheralStructSetup(int iChan, int iCfg);
-extern int DmaStructPtrOutSetup(int iChan, int iNumVals, unsigned char *pucTX_DMA);
-extern int DmaStructPtrInSetup(int iChan, int iNumVals, unsigned char *pucRX_DMA);
-extern int DmaCycleCntCtrl(unsigned int iChan, int iNumx, int iCfg);
+extern uint32_t DmaPeripheralStructSetup(uint32_t iChan, uint32_t iCfg);
+extern uint32_t DmaStructPtrOutSetup(uint32_t iChan, uint32_t iNumVals, unsigned char *pucTX_DMA);
+extern uint32_t DmaStructPtrInSetup(uint32_t iChan, uint32_t iNumVals, unsigned char *pucRX_DMA);
+extern uint32_t DmaCycleCntCtrl(uint32_t iChan, uint32_t iNumx, uint32_t iCfg);
 //DMA channel numbers.
 #define  SPI1TX_C 1
 #define  SPI1RX_C 2
@@ -169,5 +177,8 @@ extern int DmaCycleCntCtrl(unsigned int iChan, int iNumx, int iCfg);
 #define ALTERNATE      CCD_SIZE
 #define iALTERNATE     (12)
 
+#ifdef __cplusplus
+}
+#endif
 
-
+#endif /* __ADUCM36X_DMALIB_H */

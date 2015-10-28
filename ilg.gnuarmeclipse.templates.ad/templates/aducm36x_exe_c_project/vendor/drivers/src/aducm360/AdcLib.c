@@ -48,7 +48,7 @@
    - Read result with AdcRd().
    - Example:
 
-   @version    V0.6
+   @version    V0.7
    @author     ADI
    @date       October 2015
    @par Revision History:
@@ -62,16 +62,15 @@
                          Removed BOOST15 option.
                          Fixed doxygen comments
    - V0.6, October 2015: Coding style cleanup - no functional changes.
+   - V0.7, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
 
-
 #include "AdcLib.h"
-#include <ADuCM360.h>
 #include "DmaLib.h"
 
 /**
-   @brief int AdcRng(ADI_ADC_TypeDef *pPort, int iRef, int iGain, int iCode)
+   @brief uint32_t AdcRng(ADI_ADC_TypeDef *pPort, uint32_t iRef, uint32_t iGain, uint32_t iCode)
          ==========Sets ADC measurement range.
    @param pPort :{pADI_ADC0, pADI_ADC1}
       - pADI_ADC0 for ADC0.
@@ -102,9 +101,9 @@
    @return 1.
    @warning None
 **/
-int AdcRng(ADI_ADC_TypeDef *pPort, int iRef, int iGain, int iCode)
+uint32_t AdcRng(ADI_ADC_TypeDef *pPort, uint32_t iRef, uint32_t iGain, uint32_t iCode)
 {
-   int   i1 = 0;
+   uint32_t   i1 = 0;
 
    i1 = pPort->MDE & 0xff07;
    pPort->MDE = i1 | ((iGain & 0xf8));
@@ -119,7 +118,7 @@ int AdcRng(ADI_ADC_TypeDef *pPort, int iRef, int iGain, int iCode)
 }
 
 /**
-   @brief int AdcFlt(ADI_ADC_TypeDef *pPort, int iSF, int iAF, int iFltCfg)
+   @brief uint32_t AdcFlt(ADI_ADC_TypeDef *pPort, uint32_t iSF, uint32_t iAF, uint32_t iFltCfg)
          ==========Sets filter details.
    @param pPort :{pADI_ADC0, pADI_ADC1}
       - pADI_ADC0 for ADC0.
@@ -139,9 +138,9 @@ int AdcRng(ADI_ADC_TypeDef *pPort, int iRef, int iGain, int iCode)
    @return ADCxFLT MMR.  Not normally of interest.
    @note See the Digital Filter Response Model on the product page if required.
 **/
-int AdcFlt(ADI_ADC_TypeDef *pPort, int iSF, int iAF, int iFltCfg)
+uint32_t AdcFlt(ADI_ADC_TypeDef *pPort, uint32_t iSF, uint32_t iAF, uint32_t iFltCfg)
 {
-   int   i1 = 0;
+   uint32_t   i1 = 0;
 
    i1 = (iSF & 0x7f) | ((iAF << 8) & 0xf00) | (iFltCfg & 0xD080);
    pPort->FLT = i1;
@@ -149,7 +148,7 @@ int AdcFlt(ADI_ADC_TypeDef *pPort, int iSF, int iAF, int iFltCfg)
 }
 
 /**
-   @brief int AdcGo(ADI_ADC_TypeDef *pPort, int iStart)
+   @brief uint32_t AdcGo(ADI_ADC_TypeDef *pPort, uint32_t iStart)
          ==========Start ADC conversion.
    @param pPort :{pADI_ADC0, pADI_ADC1}
       - pADI_ADC0 for ADC0.
@@ -169,9 +168,9 @@ int AdcFlt(ADI_ADC_TypeDef *pPort, int iSF, int iAF, int iFltCfg)
       up are not accurate.
 **/
 
-int AdcGo(ADI_ADC_TypeDef *pPort, int iStart)
+uint32_t AdcGo(ADI_ADC_TypeDef *pPort, uint32_t iStart)
 {
-   int   i1 = 0;
+   uint32_t   i1 = 0;
    i1 = pPort->CON;
 
    if(iStart) {
@@ -188,7 +187,7 @@ int AdcGo(ADI_ADC_TypeDef *pPort, int iStart)
 }
 
 /**
-   @brief int AdcSta(ADI_ADC_TypeDef  *pPort)
+   @brief uint32_t AdcSta(ADI_ADC_TypeDef  *pPort)
          ==========Reads the ADC status.
    @param pPort :{pADI_ADC0, pADI_ADC1}
       - pADI_ADC0 for ADC0.
@@ -202,12 +201,12 @@ int AdcGo(ADI_ADC_TypeDef *pPort, int iStart)
       - bit4 or ADCxSTA_CAL => Calibration data available.
 **/
 
-int AdcSta(ADI_ADC_TypeDef *pPort)
+uint32_t AdcSta(ADI_ADC_TypeDef *pPort)
 {
    return pPort->STA;
 }
 /**
-   @brief int AdcDetSta(ADI_ADCSTEP_TypeDef  *pPort)
+   @brief uint32_t AdcDetSta(ADI_ADCSTEP_TypeDef  *pPort)
          ==========Reads the ADC status.
    @param pPort :{pADI_ADCSTEP,}
       - pADI_ADCSTEP.
@@ -219,7 +218,7 @@ int AdcSta(ADI_ADC_TypeDef *pPort)
       - bit4 or DETSTA_REFSTA => External reference detection error.
 **/
 
-int AdcDetSta(ADI_ADCSTEP_TypeDef *pPort)
+uint32_t AdcDetSta(ADI_ADCSTEP_TypeDef *pPort)
 {
    return pPort->DETSTA;
 }
@@ -227,7 +226,7 @@ int AdcDetSta(ADI_ADCSTEP_TypeDef *pPort)
 
 
 /**
-   @brief int AdcRd(ADI_ADC_TypeDef *pPort)
+   @brief int32_t AdcRd(ADI_ADC_TypeDef *pPort)
          ==========Reads the ADC status.
    @param pPort :{pADI_ADC0, pADI_ADC1}
       - pADI_ADC0 for ADC0.
@@ -241,13 +240,13 @@ int AdcDetSta(ADI_ADCSTEP_TypeDef *pPort)
 **/
 
 
-int AdcRd(ADI_ADC_TypeDef *pPort)
+int32_t AdcRd(ADI_ADC_TypeDef *pPort)
 {
    return pPort->DAT;
 }
 
 /**
-   @brief int AdcStpRd(ADI_ADCSTEP_TypeDef *pPort)
+   @brief uint32_t AdcStpRd(ADI_ADCSTEP_TypeDef *pPort)
          ==========Reads the ADC status.
    @param pPort :{pADI_ADCSTEP,}
       Set to pADI_ADCSTEP. Only one channel available.
@@ -255,12 +254,12 @@ int AdcRd(ADI_ADC_TypeDef *pPort)
    @warning Returns STEPDAT even if it does not contain new data.
 **/
 
-int AdcStpRd(ADI_ADCSTEP_TypeDef *pPort)
+uint32_t AdcStpRd(ADI_ADCSTEP_TypeDef *pPort)
 {
    return pPort->STEPDAT;
 }
 /**
-   @brief int AdcBuf(ADI_ADC_TypeDef *pPort, int iBufCfg, int iRBufCfg)
+   @brief uint32_t AdcBuf(ADI_ADC_TypeDef *pPort, uint32_t iBufCfg, uint32_t iRBufCfg)
          ==========Configures ADC buffers.
    @param pPort :{pADI_ADC0, pADI_ADC1}
       - pADI_ADC0 for ADC0.
@@ -282,9 +281,9 @@ int AdcStpRd(ADI_ADCSTEP_TypeDef *pPort)
    @return 1.
 **/
 
-int AdcBuf(ADI_ADC_TypeDef *pPort, int iRBufCfg, int iBufCfg)
+uint32_t AdcBuf(ADI_ADC_TypeDef *pPort, uint32_t iRBufCfg, uint32_t iBufCfg)
 {
-   int   i1 = 0;
+   uint32_t   i1 = 0;
 
    i1 = pPort->CON & 0x000C3fff;   // Mask off bits 17:14
    i1 |= (iBufCfg & 0x3C000);
@@ -296,7 +295,7 @@ int AdcBuf(ADI_ADC_TypeDef *pPort, int iRBufCfg, int iBufCfg)
 }
 
 /**
-   @brief int AdcDiag(ADI_ADC_TypeDef *pPort, int iDiag)
+   @brief uint32_t AdcDiag(ADI_ADC_TypeDef *pPort, uint32_t iDiag)
          ==========Applies diagnostic currents on ADC pins.
    @param pPort :{pADI_ADC0, pADI_ADC1}
       - pADI_ADC0 for ADC0.
@@ -308,9 +307,9 @@ int AdcBuf(ADI_ADC_TypeDef *pPort, int iRBufCfg, int iBufCfg)
       - 3 or ADCCON_ADCDIAG_DIAG_ALL to switch both diagnostic currents on
    @return 1.
 **/
-int AdcDiag(ADI_ADC_TypeDef *pPort, int iDiag)
+uint32_t AdcDiag(ADI_ADC_TypeDef *pPort, uint32_t iDiag)
 {
-   int   i1 = 0;
+   uint32_t   i1 = 0;
 
    i1 = pPort->CON;
    i1 &= 0xFF3FF;
@@ -319,7 +318,7 @@ int AdcDiag(ADI_ADC_TypeDef *pPort, int iDiag)
 }
 
 /**
-   @brief int AdcPin(ADI_ADC_TypeDef *pPort, int iInN, int iInP)
+   @brief uint32_t AdcPin(ADI_ADC_TypeDef *pPort, uint32_t iInN, uint32_t iInP)
          ==========Reads ADC data.
    @param pPort :{pADI_ADC0, pADI_ADC1}
       - pADI_ADC0 for ADC0.
@@ -346,9 +345,9 @@ int AdcDiag(ADI_ADC_TypeDef *pPort, int iDiag)
    @return 1.
 **/
 
-int AdcPin(ADI_ADC_TypeDef *pPort, int iInN, int iInP)
+uint32_t AdcPin(ADI_ADC_TypeDef *pPort, uint32_t iInN, uint32_t iInP)
 {
-   int   i1 = 0;
+   uint32_t   i1 = 0;
 
    i1 = pPort->CON & 0x000fffc00;
    i1 |= ((iInP) & 0x3E0);
@@ -358,7 +357,7 @@ int AdcPin(ADI_ADC_TypeDef *pPort, int iInN, int iInP)
 }
 
 /**
-   @brief int AdcMski(ADI_ADC_TypeDef *pPort, int iMski, int iWr)
+   @brief uint32_t AdcMski(ADI_ADC_TypeDef *pPort, uint32_t iMski, uint32_t iWr)
          ==========Masks in dividual ADC interupt flags.
    @param pPort :{pADI_ADC0, pADI_ADC1}
       - pADI_ADC0 for ADC0.
@@ -381,7 +380,7 @@ int AdcPin(ADI_ADC_TypeDef *pPort, int iInN, int iInP)
       - bit3 or ADCMSKI_ATHEX => Mask accumulator threshold exceeded interupt.
 **/
 
-int AdcMski(ADI_ADC_TypeDef *pPort, int iMski, int iWr)
+uint32_t AdcMski(ADI_ADC_TypeDef *pPort, uint32_t iMski, uint32_t iWr)
 {
    if(iWr) {
       pPort->MSKI = iMski;
@@ -391,7 +390,7 @@ int AdcMski(ADI_ADC_TypeDef *pPort, int iMski, int iWr)
 }
 
 /**
-   @brief int AdcBias(ADI_ADC_TypeDef *pPort, int iBiasPin, int iBiasBoost, int iGndSw)
+   @brief uint32_t AdcBias(ADI_ADC_TypeDef *pPort, uint32_t iBiasPin, uint32_t iBiasBoost, uint32_t iGndSw)
          ==========Adds bias and ground switch to ADC input.
    @param pPort :{pADI_ADC0, pADI_ADC1}
       - pADI_ADC0 for ADC0.
@@ -413,9 +412,9 @@ int AdcMski(ADI_ADC_TypeDef *pPort, int iMski, int iWr)
    @return 1.
 **/
 
-int AdcBias(ADI_ADC_TypeDef *pPort, int iBiasPin, int iBiasBoost, int iGndSw)
+uint32_t AdcBias(ADI_ADC_TypeDef *pPort, uint32_t iBiasPin, uint32_t iBiasBoost, uint32_t iGndSw)
 {
-   int   i1 = 0;
+   uint32_t   i1 = 0;
    i1 = pPort->ADCCFG & 0x000001f;
    i1 += (iBiasPin & 0x700);
    i1 += (iBiasBoost & 0x3000);
@@ -423,7 +422,7 @@ int AdcBias(ADI_ADC_TypeDef *pPort, int iBiasPin, int iBiasBoost, int iGndSw)
    return 1;
 }
 /**
-   @brief int AdcPGAErr(ADI_ADC_TypeDef *pPort, int iAdcSta)
+   @brief uint32_t AdcPGAErr(ADI_ADC_TypeDef *pPort, uint32_t iAdcSta)
          ==========Handles PGA threshold exceeded Error
    @param pPort :{pADI_ADC0, pADI_ADC1}
       - pADI_ADC0 for ADC0.
@@ -437,7 +436,7 @@ int AdcBias(ADI_ADC_TypeDef *pPort, int iBiasPin, int iBiasBoost, int iGndSw)
    @return 1.
 **/
 
-int AdcPGAErr(ADI_ADC_TypeDef *pPort, int iAdcSta)
+uint32_t AdcPGAErr(ADI_ADC_TypeDef *pPort, uint32_t iAdcSta)
 {
    if((iAdcSta & 0x4) == 0x4) {
       pPort->MSKI |= 0x4;
@@ -455,7 +454,7 @@ int AdcPGAErr(ADI_ADC_TypeDef *pPort, int iAdcSta)
 
 
 /**
-   @brief int AdcDetCon(ADI_ADCSTEP_TypeDef *pPort, int iCtrl, int iAdcSel, int iRate )
+   @brief uint32_t AdcDetCon(ADI_ADCSTEP_TypeDef *pPort, uint32_t iCtrl, uint32_t iAdcSel, uint32_t iRate )
             ==========Setup DETCON register.
    @param pPort :{pADI_ADCSTEP,}
          - pADI_ADCSTEP.
@@ -474,16 +473,16 @@ int AdcPGAErr(ADI_ADC_TypeDef *pPort, int iAdcSta)
    @return 1:
 
 **/
-int AdcDetCon(ADI_ADCSTEP_TypeDef *pPort, int iCtrl, int iAdcSel, int iRate )
+uint32_t AdcDetCon(ADI_ADCSTEP_TypeDef *pPort, uint32_t iCtrl, uint32_t iAdcSel, uint32_t iRate )
 {
-   int   i1 = 0;
+   uint32_t   i1 = 0;
 
    i1 |= (iCtrl | iAdcSel | iRate);
    pPort->DETCON = i1;
    return 1;
 }
 /**
-   @brief int AdcDmaCon(int iChan, int iEnable)
+   @brief uint32_t AdcDmaCon(uint32_t iChan, uint32_t iEnable)
             ==========First part of setting up ADC DMA channel structure
    @param iChan :{ADC0DMAWRITE,ADC0DMAREAD,ADC1DMAWRITE,ADC1DMAREAD,SINC2DMAREAD}
          - 0 or ADC0DMAWRITE for ADC0 DMA write to control registers
@@ -497,7 +496,7 @@ int AdcDetCon(ADI_ADCSTEP_TypeDef *pPort, int iCtrl, int iAdcSel, int iRate )
    @return 1:
 
 **/
-int AdcDmaCon(int iChan, int iEnable)
+uint32_t AdcDmaCon(uint32_t iChan, uint32_t iEnable)
 {
    switch (iChan) {
    case ADC0DMAWRITE:

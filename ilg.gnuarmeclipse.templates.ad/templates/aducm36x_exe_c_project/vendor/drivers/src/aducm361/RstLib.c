@@ -40,32 +40,33 @@
    @{
    @file     RstLib.c
    @brief    Reads the reset status bits and allows them to be reset.
-   @version  V0.3
+   @version  V0.4
    @author   ADI
    @date     October 2015
    @par Revision History:
    - V0.1, December 2010: initial version.
    - V0.2, September 2012: Functions now CMSIS compliant
    - V0.3, October 2015: Coding style cleanup - no functional changes.
+   - V0.4, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
+
 #include "RstLib.h"
-#include <ADuCM361.h>
 
 /**
-   @brief int ReadRstSta(void)
+   @brief uint32_t ReadRstSta(void)
          ==========Read RstSta status bits.
    @return Value of RSTSTA.
    @note .
 **/
 
-int ReadRstSta(void)
+uint32_t ReadRstSta(void)
 {
    return pADI_RESET->RSTSTA;
 }
 
 /**
-@brief int ClearRstSta(int iStaClr)
+@brief uint32_t ClearRstSta(uint32_t iStaClr)
       ==========Clear and read selected status bits.
 @param iStaClr :{RST_NONE|RSTSTA_POR|RSTSTA_EXTRST|RSTSTA_WDRST|RSTSTA_SWRST} \n
    RSTSTA.0-3
@@ -79,7 +80,7 @@ int ReadRstSta(void)
 @note If iStaClr = RST_NONE then RSTSTA is read without changing it.
 **/
 
-int ClearRstSta(int iStaClr )
+uint32_t ClearRstSta(uint32_t iStaClr )
 {
    (pADI_RESET->RSTCLR) = (iStaClr & 0xF);
    return pADI_RESET->RSTSTA;

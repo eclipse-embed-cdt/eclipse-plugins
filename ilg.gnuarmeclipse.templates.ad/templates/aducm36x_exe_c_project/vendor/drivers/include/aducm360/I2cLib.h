@@ -38,32 +38,38 @@
  *****************************************************************************
    @file     I2cLib.h
    @brief    Set of I2C peripheral functions.
-   @version  V0.2
+   @version  V0.3
    @author   ADI
    @date     October 2015
 
    @par Revision History:
    - V0.1, April 2012: Initial release.
    - V0.2, October 2015: Coding style cleanup - no functional changes.
+   - V0.3, October 2015:   Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
+#ifndef __ADUCM36X_I2CLIB_H
+#define __ADUCM36X_I2CLIB_H
+
+#ifdef __cplusplus
+ extern "C" {
+#endif
 
 #include <ADuCM360.h>
 
-
-extern int I2cMCfg(int iDMACfg, int iIntSources, int iConfig);
-extern int I2cStretch(int iMode, int iStretch);
-extern int I2cFifoFlush(int iMode, int iFlush);
-extern int I2cSCfg(int iDMACfg, int iIntSources, int iConfig);
-extern int I2cRx(int iMode);
-extern int I2cTx(int iMode, int iTx);
-extern int I2cBaud(int iHighPeriod, int iLowPeriod);
-extern int I2cMWrCfg(unsigned int uiDevAddr);
-extern int I2cMRdCfg(unsigned int uiDevAddr, int iNumBytes, int iExt);
-extern int I2cSta(int iMode);
-extern int I2cMRdCnt(void);
-extern int I2cSGCallCfg(int iHWGCallAddr);
-extern int I2cSIDCfg(int iSlaveID0, int iSlaveID1, int iSlaveID2, int iSlaveID3);
+extern uint32_t I2cMCfg(uint32_t iDMACfg, uint32_t iIntSources, uint32_t iConfig);
+extern uint32_t I2cStretch(uint32_t iMode, uint32_t iStretch);
+extern uint32_t I2cFifoFlush(uint32_t iMode, uint32_t iFlush);
+extern uint32_t I2cSCfg(uint32_t iDMACfg, uint32_t iIntSources, uint32_t iConfig);
+extern uint32_t I2cRx(uint32_t iMode);
+extern uint32_t I2cTx(uint32_t iMode, uint32_t iTx);
+extern uint32_t I2cBaud(uint32_t iHighPeriod, uint32_t iLowPeriod);
+extern uint32_t I2cMWrCfg(uint32_t uiDevAddr);
+extern uint32_t I2cMRdCfg(uint32_t uiDevAddr, uint32_t iNumBytes, uint32_t iExt);
+extern uint32_t I2cSta(uint32_t iMode);
+extern uint32_t I2cMRdCnt(void);
+extern uint32_t I2cSGCallCfg(uint32_t iHWGCallAddr);
+extern uint32_t I2cSIDCfg(uint32_t iSlaveID0, uint32_t iSlaveID1, uint32_t iSlaveID2, uint32_t iSlaveID3);
 
 #define MASTER 0
 #define SLAVE 1
@@ -72,3 +78,9 @@ extern int I2cSIDCfg(int iSlaveID0, int iSlaveID1, int iSlaveID2, int iSlaveID3)
 
 #define STRETCH_DIS 0
 #define STRETCH_EN 1
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __ADUCM36X_I2CLIB_H */

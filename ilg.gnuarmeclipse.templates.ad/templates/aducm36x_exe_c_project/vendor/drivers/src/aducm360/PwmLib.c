@@ -40,7 +40,7 @@
    @{
    @file     PwmLib.c
    @brief    Set of PWM peripheral functions.
-   @version  V0.5
+   @version  V0.6
    @author   ADI
    @date     October 2015
 
@@ -49,15 +49,14 @@
    - V0.3, April 2013: corrected comment on PWM period calculation
    - V0.4, August 2013: corrected  PwmHBCfg() function
    - V0.5, October 2015: Coding style cleanup - no functional changes.
+   - V0.6, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
 
 #include "PwmLib.h"
-#include <ADuCM360.h>
-
 
 /**
-      @brief int PwmInit(unsigned int iPWMCP, unsigned int iPWMIEN, unsigned int iSYNC, unsigned int iTRIP)
+      @brief uint32_t PwmInit(uint32_t iPWMCP, uint32_t iPWMIEN, uint32_t iSYNC, uint32_t iTRIP)
          ========== Configure the PWM peripheral clock, interrupt, synchronisation and trip.
 
       @param iPWMCP :{UCLK_2,UCLK_4,UCLK_8,UCLK_16,UCLK_32,UCLK_64,UCLK_128,UCLK_256}
@@ -92,9 +91,9 @@
         This function disables HBridge mode and other configurations.
         It should be called before any other PWM functions.
 **/
-int PwmInit(unsigned int iPWMCP, unsigned int iPWMIEN, unsigned int iSYNC, unsigned int iTRIP)
+uint32_t PwmInit(uint32_t iPWMCP, uint32_t iPWMIEN, uint32_t iSYNC, uint32_t iTRIP)
 {
-   unsigned int i1;
+   uint32_t i1;
    i1 = iPWMCP;
    i1 |= iPWMIEN;
    i1 |= iSYNC;
@@ -107,7 +106,7 @@ int PwmInit(unsigned int iPWMCP, unsigned int iPWMIEN, unsigned int iSYNC, unsig
 
 /**
 
-      @brief int PwmTime(int iPair, unsigned int uiFreq, unsigned int uiPWMH_High, unsigned int uiPWML_High)
+      @brief uint32_t PwmTime(uint32_t iPair, uint32_t uiFreq, uint32_t uiPWMH_High, uint32_t uiPWML_High)
          ========== Configure period and duty cycle of a pair.
 
       @param iPair :{PWM0_1, PWM2_3, PWM4_5}
@@ -139,7 +138,7 @@ int PwmInit(unsigned int iPWMCP, unsigned int iPWMIEN, unsigned int iSYNC, unsig
       @return 2     Failure: uiPWML_High > pADI_PWM->PWM0COM1 - this will result in lower than expected duty cycle on PWML output
 **/
 
-int PwmTime(int iPair, unsigned int uiFreq, unsigned int uiPWMH_High, unsigned int uiPWML_High)
+uint32_t PwmTime(uint32_t iPair, uint32_t uiFreq, uint32_t uiPWMH_High, uint32_t uiPWML_High)
 {
    if  (uiPWMH_High < uiPWML_High) {
       return 0x0;   // Error: PWM0 High period must be >= PWM1 High period; PWM2 High period must be >= PWM3 High period; PWM4 High period must be >= PWM5 High period
@@ -197,7 +196,7 @@ int PwmTime(int iPair, unsigned int uiFreq, unsigned int uiPWMH_High, unsigned i
 
 
 /**
-      @brief int PwmClrInt(unsigned int iSource)
+      @brief uint32_t PwmClrInt(uint32_t iSource)
          ========== Clear PWMs interrupt flags.
 
       @param iSource :{PWMCLRI_TRIP|PWMCLRI_PWM2|PWMCLRI_PWM1|PWMCLRI_PWM0}
@@ -207,13 +206,13 @@ int PwmTime(int iPair, unsigned int uiFreq, unsigned int uiPWMH_High, unsigned i
 
       @return 1
 **/
-int PwmClrInt(unsigned int iSource)
+uint32_t PwmClrInt(uint32_t iSource)
 {
    pADI_PWM->PWMCLRI |= iSource;
    return 1;
 }
 /**
-      @brief int PwmLoad(int iLoad)
+      @brief uint32_t PwmLoad(uint32_t iLoad)
          ========== Controls how PWM compare registers are loaded.
 
       @param iLoad :{PWMCON0_LCOMP_DIS,PWMCON0_LCOMP_EN}
@@ -222,9 +221,9 @@ int PwmClrInt(unsigned int iSource)
 
       @return 1
 **/
-int PwmLoad(int iLoad)
+uint32_t PwmLoad(uint32_t iLoad)
 {
-   unsigned int i1;
+   uint32_t i1;
 
    i1 = (pADI_PWM->PWMCON0 & 0xFFF7); // mask off bit 3
    i1 |= iLoad;
@@ -233,7 +232,7 @@ int PwmLoad(int iLoad)
 }
 
 /**
-      @brief int PwmGo(unsigned int iPWMEN, unsigned int iHMODE)
+      @brief uint32_t PwmGo(uint32_t iPWMEN, uint32_t iHMODE)
          ========== Starts/Stops the PWM in standard or H-Bridge mode.
 
       @param iPWMEN :{PWMCON0_ENABLE_DIS,PWMCON0_ENABLE_EN}
@@ -246,7 +245,7 @@ int PwmLoad(int iLoad)
       @return 1
 
 **/
-int PwmGo(unsigned int iPWMEN, unsigned int iHMODE)
+uint32_t PwmGo(uint32_t iPWMEN, uint32_t iHMODE)
 {
    if (iHMODE == PWMCON0_MOD_DIS) {
       PWMCON0_MOD_BBA = 0;   // Standard mode
@@ -266,7 +265,7 @@ int PwmGo(unsigned int iPWMEN, unsigned int iHMODE)
 }
 
 /**
-      @brief int PwmInvert(int iInv1, int iInv3, int iInv5)
+      @brief uint32_t PwmInvert(uint32_t iInv1, uint32_t iInv3, uint32_t iInv5)
          ========== Selects PWM outputs for inversion.
 
       @param iInv1 :{PWMCON0_PWM1INV_DIS, PWMCON0_PWM1INV_EN}
@@ -281,9 +280,9 @@ int PwmGo(unsigned int iPWMEN, unsigned int iHMODE)
       @return 1
 
 **/
-int PwmInvert(int iInv1, int iInv3, int iInv5)
+uint32_t PwmInvert(uint32_t iInv1, uint32_t iInv3, uint32_t iInv5)
 {
-   unsigned int i1;
+   uint32_t i1;
 
    i1 = (pADI_PWM->PWMCON0 & 0x87FF); // mask off bits  11, 12, 13
    i1 |= (iInv1 + iInv3 + iInv5);
@@ -292,7 +291,7 @@ int PwmInvert(int iInv1, int iInv3, int iInv5)
 }
 
 /**
-      @brief int PwmHBCfg(unsigned int iENA, unsigned int iPOINV, unsigned int iHOFF, unsigned int iDIR)
+      @brief uint32_t PwmHBCfg(uint32_t iENA, uint32_t iPOINV, uint32_t iHOFF, uint32_t iDIR)
          ========== HBridge mode - configure PWMs.
 
       @param iENA :{PWMCON0_ENA_DIS,PWMCON0_ENA_EN}
@@ -313,9 +312,9 @@ int PwmInvert(int iInv1, int iInv3, int iInv5)
 
       @return 1
 **/
-int PwmHBCfg(unsigned int iENA, unsigned int iPOINV, unsigned int iHOFF, unsigned int iDIR)
+uint32_t PwmHBCfg(uint32_t iENA, uint32_t iPOINV, uint32_t iHOFF, uint32_t iDIR)
 {
-   unsigned int i1;
+   uint32_t i1;
 
    i1 = (pADI_PWM->PWMCON0 & 0xFDCB);   // Mask bits 9,5,4,2
    i1 |= iENA;

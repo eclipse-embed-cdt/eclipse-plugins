@@ -40,19 +40,20 @@
    @{
    @file     PwrLib.c
    @brief    Functions for controling power modes
-   @version  V0.2
+   @version  V0.3
    @author   PAD CSE group
    @date     October 2015
    @par Revision History:
    - V0.1, September 2012: Initial release.
    - V0.2, October 2015: Coding style cleanup - no functional changes.
+   - V0.3, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
+
 #include "PwrLib.h"
-#include "ADuCM361.h"
 
 /**
-   @brief int PwrCfg(int iMode)
+   @brief uint32_t PwrCfg(uint32_t iMode)
          ========== Sets MCU power mode.
    @param iMode :{PWRMOD_MOD_FULLACTIVE,PWRMOD_MOD_MCUHALT,PWRMOD_MOD_PERHALT,PWRMOD_MOD_SYSHALT,PWRMOD_MOD_TOTALHALT,PWRMOD_MOD_HIBERNATE }
       - 0 or PWRMOD_MOD_FULLACTIVE for fully active mode.
@@ -65,9 +66,9 @@
    @return 1.
 **/
 
-int PwrCfg(int iMode)
+uint32_t PwrCfg(uint32_t iMode)
 {
-   int index = 0;
+   uint32_t index = 0;
 
    if (iMode > 5) { // Check for invalid sleep mode value
       iMode = 0;
@@ -90,13 +91,13 @@ int PwrCfg(int iMode)
    return 1;
 }
 /**
-   @brief int PwrRead(void)
+   @brief uint32_t PwrRead(void)
          ========== reads MCU control register including WCENACK bit.
 
    @note
    @return 1.
 **/
-int PwrRead(void)
+uint32_t PwrRead(void)
 {
    return pADI_PWRCTL->PWRMOD;
 }

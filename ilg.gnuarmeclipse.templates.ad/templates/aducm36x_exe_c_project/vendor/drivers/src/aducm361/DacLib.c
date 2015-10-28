@@ -48,22 +48,21 @@
       for(i1 = 0; i1<0x10000000; i1 += 0x1000000)
          DacWr(0,i1);
 
-   @version    V0.3
+   @version    V0.4
    @author     ADI
    @date       October 2015
    @par Revision History:
    - V0.1, November 2010: Initial release.
    - V0.2, October 2015: Coding style cleanup - no functional changes.
    - V0.3, October 2015: Avoid unused parameter warnings.
+   - V0.4, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
 
 #include "DacLib.h"
-#include <ADuCM361.h>
-
 
 /**
-   @brief int DacWr(int iChan, int iData)
+   @brief uint32_t DacWr(uint32_t iChan, uint32_t iData)
          ==========Writes the DAC value.
    @param iChan :{0,}   \n
       Set to 0. This value is ignored since there is only one channel.
@@ -72,7 +71,7 @@
       - Data to output to DAC.
    @return DAC data.
 **/
-int DacWr(int iChan, int iData)
+uint32_t DacWr(uint32_t iChan, uint32_t iData)
 {
    (void) iChan;
    pADI_DAC->DACDAT = iData;
@@ -80,7 +79,7 @@ int DacWr(int iChan, int iData)
 }
 
 /**
-   @brief int DacCfg(int iDisable, int iRef, int iDrv, int iMode)
+   @brief uint32_t DacCfg(uint32_t iDisable, uint32_t iRef, uint32_t iDrv, uint32_t iMode)
          ==========Sets the output range of a DAC.
    @param iDisable :{DACCON_CLR_Off, DACCON_CLR_On}
       - 0 or DACCON_CLR_On to Disable DAC output.
@@ -104,9 +103,9 @@ int DacWr(int iChan, int iData)
    @return new DACCON.
 **/
 
-int DacCfg(int iDisable, int iRef, int iDrv, int iMode)
+uint32_t DacCfg(uint32_t iDisable, uint32_t iRef, uint32_t iDrv, uint32_t iMode)
 {
-   int   i1;
+   uint32_t   i1;
 
    if((iMode & 0x200) == 0x200) {
       i1 = 0x200;          //Power down.
@@ -123,7 +122,7 @@ int DacCfg(int iDisable, int iRef, int iDrv, int iMode)
 
 
 /**
-   @brief int DacSync(int iChan, int iSync, int iTime)
+   @brief uint32_t DacSync(uint32_t iChan, uint32_t iSync, uint32_t iTime)
          ==========Sets DAC sync mode.
    @param iChan :{0,}   \n
       Set to 0. This value is ignored since there is only one channel.
@@ -143,10 +142,10 @@ int DacCfg(int iDisable, int iRef, int iDrv, int iMode)
    @warning
       Uses T1.
 **/
-int DacSync(int iChan, int iSync, int iTime)
+uint32_t DacSync(uint32_t iChan, uint32_t iSync, uint32_t iTime)
 {
   (void) iChan;
-  int i1;
+  uint32_t i1;
 
    if(iTime >= 0x1000000) {
       iTime /= 0x8000;
@@ -181,7 +180,7 @@ int DacSync(int iChan, int iSync, int iTime)
 }
 
 /**
-   @brief int DacDma(int iChan, int iDmaSel)
+   @brief uint32_t DacDma(uint32_t iChan, uint32_t iDmaSel)
          ==========Enables/Disables DAC DMA.
    @param iChan :{0,}
       Set to 0. This value is ignored since there is only one channel.
@@ -191,7 +190,7 @@ int DacSync(int iChan, int iSync, int iTime)
    @return 1.
 */
 
-int DacDma(int iChan, int iDmaSel)
+uint32_t DacDma(uint32_t iChan, uint32_t iDmaSel)
 {
   (void) iChan;
 

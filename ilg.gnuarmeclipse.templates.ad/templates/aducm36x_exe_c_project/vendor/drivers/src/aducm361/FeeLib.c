@@ -41,7 +41,7 @@
 
    @file     FeeLib.c
    @brief    Set of Flash peripheral functions.
-   @version  V0.4
+   @version  V0.5
    @author   ADI
    @date     October 2015
    @par Revision History:
@@ -49,21 +49,20 @@
    - V0.2, November 2012: Added warnings about 64k parts
    - V0.3, November 2013: Added notes about FeeFAKey() and FeeWrPro()
    - V0.4, October 2015: Coding style cleanup - no functional changes.
+   - V0.5, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
 
 #include "FeeLib.h"
-#include <ADuCM361.h>
-
 
 /**
-   @brief int FeeMErs();
+   @brief uint32_t FeeMErs();
          ========== Performs a mass erase if the flash controller is not busy.
 
    @return 1 if the command was issued, 0 if the the flash controller was busy.
 
 **/
-int FeeMErs(void)
+uint32_t FeeMErs(void)
 {
    if (pADI_FEE->FEESTA == 1) {
       return 0;
@@ -78,7 +77,7 @@ int FeeMErs(void)
 }
 
 /**
-   @brief int FeePErs(unsigned long lPage);
+   @brief uint32_t FeePErs(uint32_t lPage);
          ========== Performs a page erase if the flash controller is not busy.
 
    @param lPage :{0-0x1FFFF}
@@ -87,7 +86,7 @@ int FeeMErs(void)
 
 **/
 
-int FeePErs(unsigned long lPage)
+uint32_t FeePErs(uint32_t lPage)
 {
    if (pADI_FEE->FEESTA  == 1) {
       return 0;
@@ -105,7 +104,7 @@ int FeePErs(unsigned long lPage)
 }
 
 /**
-   @brief int FeeWrPro(unsigned long lKey);
+   @brief uint32_t FeeWrPro(uint32_t lKey);
          ========== Enables write protection on the part.
 
    @param lKey :{0-0x7FFFFFFF}
@@ -120,7 +119,7 @@ int FeePErs(unsigned long lPage)
 **/
 
 
-int FeeWrPro(unsigned long lKey)
+uint32_t FeeWrPro(uint32_t lKey)
 {
    pADI_FEE->FEEKEY =  0xF456;
    pADI_FEE->FEEKEY =  0xF123;
@@ -129,7 +128,7 @@ int FeeWrPro(unsigned long lKey)
 }
 
 /**
-   @brief int FeeWrProTmp(unsigned long lKey);
+   @brief uint32_t FeeWrProTmp(uint32_t lKey);
          ========== Temporarily enables write protection on the part.
          Write protectiong is disables after a reset
 
@@ -141,7 +140,7 @@ int FeeWrPro(unsigned long lKey)
 **/
 
 
-int FeeWrProTmp(unsigned long lKey)
+uint32_t FeeWrProTmp(uint32_t lKey)
 {
    pADI_FEE->FEEKEY =  0xF456;
    pADI_FEE->FEEKEY =  0xF123;
@@ -152,7 +151,7 @@ int FeeWrProTmp(unsigned long lKey)
 }
 
 /**
-   @brief int FeeRdProTmp(int iMde);
+   @brief uint32_t FeeRdProTmp(uint32_t iMde);
          ========== Temporarly enables or disables read protection on the part.
 
    @param iMde :{FEECON1_DBG_DIS,FEECON1_DBG_EN}
@@ -164,7 +163,7 @@ int FeeWrProTmp(unsigned long lKey)
 
 **/
 
-int FeeRdProTmp(int iMde)
+uint32_t FeeRdProTmp(uint32_t iMde)
 {
    pADI_FEE->FEEKEY =  0xF456;
    pADI_FEE->FEEKEY =  0xF123;
@@ -176,7 +175,7 @@ int FeeRdProTmp(int iMde)
 }
 
 /**
-   @brief int FeeWrEn(int iMde);
+   @brief uint32_t FeeWrEn(uint32_t iMde);
          ========== Enables or disables writing to flash.
 
    @param iMde :{0,1}
@@ -186,7 +185,7 @@ int FeeRdProTmp(int iMde)
 
 **/
 
-int FeeWrEn(int iMde)
+uint32_t FeeWrEn(uint32_t iMde)
 {
    if (iMde) {
       pADI_FEE->FEECON0 |= 0x4;
@@ -199,7 +198,7 @@ int FeeWrEn(int iMde)
 }
 
 /**
-   @brief int FeeSta(void);
+   @brief uint32_t FeeSta(void);
          ========== Returns the status register of the flash controller.
 
    @return value of FEESTA
@@ -214,13 +213,13 @@ int FeeWrEn(int iMde)
       - FEESTA_SIGNERR = Singnature check failed
 **/
 
-int FeeSta(void)
+uint32_t FeeSta(void)
 {
    return pADI_FEE->FEESTA;
 }
 
 /**
-   @brief int FeeFAKey(unsigned long long udKey);
+   @brief uint64_t FeeFAKey(uint64_t udKey);
          ========== Writes the FA key to a specific location.
 
    @param udKey :{0-0xFFFFFFFFFFFFFFFF}
@@ -233,7 +232,7 @@ int FeeSta(void)
 
 **/
 
-int FeeFAKey(unsigned long long udKey)
+uint32_t FeeFAKey(uint64_t udKey)
 {
    if (pADI_FEE->FEESTA == 1) {
       return 0;
@@ -243,12 +242,12 @@ int FeeFAKey(unsigned long long udKey)
    pADI_FEE->FEEKEY =  0xF123;
 
    FA_KEYL = udKey & 0xFFFFFFFF;
-   FA_KEYH = udKey >> 32;
+   FA_KEYH = (uint32_t)(udKey >> 32);
    return 1;
 }
 
 /**
-   @brief int FeeIntAbt(unsigned int iAEN0, unsigned int iAEN1, unsigned int iAEN2);
+   @brief uint32_t FeeIntAbt(uint32_t iAEN0, uint32_t iAEN1, uint32_t iAEN2);
          ========== Choose which interrupts can abort flash commands.
 
    @param iAEN0 :{0|FEEAEN0_T2|FEEAEN0_EXTINT0|FEEAEN0_EXTINT1|FEEAEN0_EXTINT2|FEEAEN0_EXTINT3|FEEAEN0_EXTINT4|
@@ -297,7 +296,7 @@ int FeeFAKey(unsigned long long udKey)
 
 **/
 
-int FeeIntAbt(unsigned int iAEN0, unsigned int iAEN1, unsigned int iAEN2)
+uint32_t FeeIntAbt(uint32_t iAEN0, uint32_t iAEN1, uint32_t iAEN2)
 {
    pADI_FEE->FEEAEN0 = iAEN0;
    pADI_FEE->FEEAEN1 = iAEN1;
@@ -307,22 +306,22 @@ int FeeIntAbt(unsigned int iAEN0, unsigned int iAEN1, unsigned int iAEN2)
 }
 
 /**
-   @brief int FeeAbtAdr();
+   @brief uint32_t FeeAbtAdr();
          ========== Return the address of the location written when the write was aborted.
 
    @return ((FEEADRAH<<16) | FEEADRAL)
 
 **/
 
-int FeeAbtAdr(void)
+uint32_t FeeAbtAdr(void)
 {
-   int ret = pADI_FEE->FEEADRAL & 0xFFFF;
-   ret |= (pADI_FEE->FEEADRAH << 16);
+   uint32_t ret = pADI_FEE->FEEADRAL & 0xFFFF;
+   ret |= (uint32_t)pADI_FEE->FEEADRAH << 16;
    return ret;
 }
 
 /**
-   @brief int FeeSign(unsigned long ulStartAddr, unsigned long ulEndAddr)();
+   @brief uint32_t FeeSign(uint32_t ulStartAddr, uint32_t ulEndAddr)();
          ========== Perform flash integrity signature check.
 
    @param ulStartAddr :{0-0x1FFFF}
@@ -334,7 +333,7 @@ int FeeAbtAdr(void)
 
 **/
 
-int FeeSign(unsigned long ulStartAddr, unsigned long ulEndAddr)
+uint32_t FeeSign(uint32_t ulStartAddr, uint32_t ulEndAddr)
 {
    if (pADI_FEE->FEESTA == 1) {
       return 0;
@@ -354,17 +353,17 @@ int FeeSign(unsigned long ulStartAddr, unsigned long ulEndAddr)
 }
 
 /**
-   @brief int FeeSig();
+   @brief uint32_t FeeSig();
          ========== Return the flash integrity signature calculated by the controller.
 
    @return ((FEESIGH<<16) | FEESIGL)
 
 **/
 
-int FeeSig(void)
+uint32_t FeeSig(void)
 {
-   int ret = pADI_FEE->FEESIGL & 0xFFFF;
-   ret |= (pADI_FEE->FEESIGH << 16);
+   uint32_t ret = pADI_FEE->FEESIGL & 0xFFFF;
+   ret |= (uint32_t)pADI_FEE->FEESIGH << 16;
    return ret;
 }
 

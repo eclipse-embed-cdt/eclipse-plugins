@@ -40,7 +40,7 @@
    @{
    @file     WdtLib.c
    @brief    Set of watchdog Timer peripheral functions.
-   @version  V0.3
+   @version  V0.4
    @author   ADI
    @date     October 2015
    @par Revision History:
@@ -48,14 +48,14 @@
    - V0.2, September 2012: WdtClrInt now checks if it is safe to write to T3CLRI and
             this is now a function with no inputs
    - V0.3, October 2015: Coding style cleanup - no functional changes.
+   - V0.4, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
-#include "WdtLib.h"
-#include <ADuCM361.h>
 
+#include "WdtLib.h"
 
 /**
-   @brief int WdtCfg(int iPre, int iInt, int iPd);
+   @brief uint32_t WdtCfg(uint32_t iPre, uint32_t iInt, uint32_t iPd);
          ========== Configures the watchdog timer.
    @param iPre :{T3CON_PRE_DIV1,T3CON_PRE_DIV16,T3CON_PRE_DIV256,T3CON_PRE_DIV4096}
       - T3CON_PRE_DIV1, for a prescaler of 1.
@@ -72,9 +72,9 @@
 
 **/
 
-int WdtCfg(int iPre, int iInt, int iPd)
+uint32_t WdtCfg(uint32_t iPre, uint32_t iInt, uint32_t iPd)
 {
-   int i1;
+   uint32_t i1;
    i1 = pADI_WDT->T3CON & 0x20;  // keep bit 5
    i1 |= 0x40;                   // reserved bit that should be set
    i1 |= iPre;
@@ -87,14 +87,14 @@ int WdtCfg(int iPre, int iInt, int iPd)
 
 
 /**
-   @brief int WdtGo(int iEnable);
+   @brief uint32_t WdtGo(uint32_t iEnable);
          ========== Enable or reset the watchdog timer.
    @param iEnable :{T3CON_ENABLE_DIS,T3CON_ENABLE_EN}
       - T3CON_ENABLE_DIS, to reset the timer.
       - T3CON_ENABLE_EN, to enable the timer.
    @return 1.
 **/
-int WdtGo(int iEnable)
+uint32_t WdtGo(uint32_t iEnable)
 {
    if (iEnable == T3CON_ENABLE_DIS) {
       T3CON_ENABLE_BBA = 0;
@@ -108,13 +108,13 @@ int WdtGo(int iEnable)
 
 
 /**
-   @brief int WdtLd(int iTld);
+   @brief uint32_t WdtLd(uint32_t iTld);
          ========== Sets timer reload value.
    @param iTld :{0-0xFFFF}
       - Sets reload value T3LD to iTld.
    @return 1.
 **/
-int WdtLd(int iTld)
+uint32_t WdtLd(uint32_t iTld)
 {
    pADI_WDT->T3LD = iTld;
    return 1;
@@ -122,24 +122,24 @@ int WdtLd(int iTld)
 
 
 /**
-   @brief int WdtVal(void);
+   @brief uint32_t WdtVal(void);
          ========== Reads timer value.
    @return Timer value T3VAL.
 **/
 
-int WdtVal(void)
+uint32_t WdtVal(void)
 {
    return pADI_WDT->T3VAL;
 }
 
 
 /**
-   @brief int WdtSta(void);
+   @brief uint32_t WdtSta(void);
          ========== Returns timer Status.
    @return T3STA.
 **/
 
-int WdtSta(void)
+uint32_t WdtSta(void)
 {
    return pADI_WDT->T3STA;
 }
@@ -147,11 +147,11 @@ int WdtSta(void)
 
 
 /**
-   @brief int WdtClrInt(void);
+   @brief uint32_t WdtClrInt(void);
          ========== Clear timer interrupts.
    @return 1 if the interrupt was cleared successfully, 0 otherwise.
 **/
-int WdtClrInt(void)
+uint32_t WdtClrInt(void)
 {
    if(T3STA_CLRI_BBA == 0) {
       pADI_WDT->T3CLRI = 0xCCCC;

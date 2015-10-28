@@ -42,7 +42,7 @@
    - ClkCfg(CLK_CD3,CLK_HF,CLK_HFO,CLK_OFF);
    - ClkSel(CLK_OFF,CLK_OFF,CLK_CD0,CLK_OFF);
 
-   @version    V0.5
+   @version    V0.6
    @author     ADI
    @date    October 2015
    @par Revision History:
@@ -51,13 +51,23 @@
    - V0.3, January 2013: corrected comments.
    - V0.4, February 2013: corrected parameters in ClkDis()
    - V0.5, October 2015: Coding style cleanup - no functional changes.
+   - V0.6, October 2015:   Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
 
-extern int ClkCfg(int iCd, int iClkSrc, int iSysClockDiv, int iClkOut);
-extern int ClkSel(int iSpiCd, int iI2cCd, int iUrtCd, int iPwmCd);
-extern int ClkDis(int iClkDis);
-extern int XOSCCfg(int iXosc);
+#ifndef __ADUCM36X_CLKLIB_H
+#define __ADUCM36X_CLKLIB_H
+
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
+#include <ADuCM361.h>
+
+extern uint32_t ClkCfg(uint32_t iCd, uint32_t iClkSrc, uint32_t iSysClockDiv, uint32_t iClkOut);
+extern uint32_t ClkSel(uint32_t iSpiCd, uint32_t iI2cCd, uint32_t iUrtCd, uint32_t iPwmCd);
+extern uint32_t ClkDis(uint32_t iClkDis);
+extern uint32_t XOSCCfg(uint32_t iXosc);
 
 #define  CLK_OFF     -1
 #define  CLK_CD0     0
@@ -84,3 +94,9 @@ extern int XOSCCfg(int iXosc);
 #define  CLK_XOFF 0
 #define  CLK_XON     1
 #define  CLK_XON2 5
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __ADUCM36X_CLKLIB_H */

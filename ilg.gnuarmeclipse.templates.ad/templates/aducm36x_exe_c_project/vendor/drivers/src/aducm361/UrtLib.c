@@ -47,7 +47,7 @@
    - Output character with UrtTx().
    - Read characters with UrtRx().
 
-   @version  V0.5
+   @version  V0.6
    @author   ADI
    @date     October 2015
    @par Revision History:
@@ -56,15 +56,15 @@
    - V0.3, April 2013: Fixed doxygen comments.
    - V0.4, July 2013: Fixed doxygen comments.
    - V0.5, October 2015: Coding style cleanup - no functional changes.
+   - V0.6, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
 
 #include "UrtLib.h"
-#include <ADuCM361.h>
 #include "DmaLib.h"
 
 /**
-   @brief int UrtCfg(ADI_UART_TypeDef *pPort, int iBaud, int iBits, int iFormat)
+   @brief uint32_t UrtCfg(ADI_UART_TypeDef *pPort, uint32_t iBaud, uint32_t iBits, uint32_t iFormat)
          ==========Configure the UART.
    @param pPort :{pADI_UART,} \n
       Set to pADI_UART. Only one channel available.
@@ -91,10 +91,10 @@
       - Non standard baudrates are accurate to better than 1% plus clock error.
 **/
 
-int UrtCfg(ADI_UART_TypeDef *pPort, int iBaud, int iBits, int iFormat)
+uint32_t UrtCfg(ADI_UART_TypeDef *pPort, uint32_t iBaud, uint32_t iBits, uint32_t iFormat)
 {
-   int i1;
-   int iDiv;
+   uint32_t i1;
+   uint32_t iDiv;
 
    iDiv = (pADI_CLKCTL->CLKCON1 & 0x0E00); // Read UART clock as set by CLKCON1
    iDiv = iDiv >> 9;
@@ -149,7 +149,7 @@ int UrtCfg(ADI_UART_TypeDef *pPort, int iBaud, int iBits, int iFormat)
 }
 
 /**
-   @brief int UrtBrk(ADI_UART_TypeDef *pPort, int iBrk)
+   @brief uint32_t UrtBrk(ADI_UART_TypeDef *pPort, uint32_t iBrk)
          ==========Force SOUT pin to 0
    @param pPort :{pADI_UART,} \n
       Set to pADI_UART. Only one channel available.
@@ -160,7 +160,7 @@ int UrtCfg(ADI_UART_TypeDef *pPort, int iBaud, int iBits, int iFormat)
 
 
 **/
-int UrtBrk(ADI_UART_TypeDef *pPort, int iBrk)
+uint32_t UrtBrk(ADI_UART_TypeDef *pPort, uint32_t iBrk)
 {
    if(iBrk == 0) {
       pPort->COMLCR &= 0x3F;   //Disable break condition on SOUT pin.
@@ -172,7 +172,7 @@ int UrtBrk(ADI_UART_TypeDef *pPort, int iBrk)
    return   pPort->COMLSR;
 }
 /**
-   @brief int UrtLinSta(ADI_UART_TypeDef *pPort)
+   @brief uint32_t UrtLinSta(ADI_UART_TypeDef *pPort)
          ==========Read the status byte of the UART.
    @param pPort :{pADI_UART,} \n
       Set to pADI_UART. Only one channel available.
@@ -187,14 +187,14 @@ int UrtBrk(ADI_UART_TypeDef *pPort, int iBrk)
    @warning UART must be configured before checking status
 **/
 
-int UrtLinSta(ADI_UART_TypeDef *pPort)
+uint32_t UrtLinSta(ADI_UART_TypeDef *pPort)
 
 {
    return   pPort->COMLSR;
 }
 
 /**
-   @brief int UrtTx(ADI_UART_TypeDef *pPort, int iTx)
+   @brief uint32_t UrtTx(ADI_UART_TypeDef *pPort, uint32_t iTx)
          ==========Write 8 bits of iTx to the UART.
    @param pPort :{pADI_UART,} \n
       Set to pADI_UART. Only one channel available.
@@ -206,7 +206,7 @@ int UrtLinSta(ADI_UART_TypeDef *pPort)
       Character is lost if TX buffer already full.
 **/
 
-int UrtTx(ADI_UART_TypeDef *pPort, int iTx)
+uint32_t UrtTx(ADI_UART_TypeDef *pPort, uint32_t iTx)
 {
    if(pPort->COMLSR & COMLSR_THRE) {
       pPort->COMTX = iTx;
@@ -217,7 +217,7 @@ int UrtTx(ADI_UART_TypeDef *pPort, int iTx)
 }
 
 /**
-   @brief int UrtRx(ADI_UART_TypeDef *pPort)
+   @brief uint32_t UrtRx(ADI_UART_TypeDef *pPort)
          ==========Read the UART data.
    @param pPort :{pADI_UART,} \n
       Set to pADI_UART. Only one channel available.
@@ -226,13 +226,13 @@ int UrtTx(ADI_UART_TypeDef *pPort, int iTx)
       - Does not wait if no new character available.
 **/
 
-int UrtRx(ADI_UART_TypeDef *pPort)
+uint32_t UrtRx(ADI_UART_TypeDef *pPort)
 {
    return pPort->COMRX & 0xff;
 }
 
 /**
-   @brief int UrtMod(ADI_UART_TypeDef *pPort, int iMcr, int iWr)
+   @brief uint32_t UrtMod(ADI_UART_TypeDef *pPort, uint32_t iMcr, uint32_t iWr)
          ==========Write iMcr to UART Modem Control Register
    @param pPort :{pADI_UART,} \n
       Set to pADI_UART. Only one channel available.
@@ -259,7 +259,7 @@ int UrtRx(ADI_UART_TypeDef *pPort)
    @note This function does not change the Port Multiplexers.
 **/
 
-int UrtMod(ADI_UART_TypeDef *pPort, int iMcr, int iWr)
+uint32_t UrtMod(ADI_UART_TypeDef *pPort, uint32_t iMcr, uint32_t iWr)
 {
    if(iWr) {
       pPort->COMMCR = iMcr;
@@ -268,7 +268,7 @@ int UrtMod(ADI_UART_TypeDef *pPort, int iMcr, int iWr)
    return pPort->COMMSR & 0x0ff;
 }
 /**
-   @brief int UrtModSta(ADI_UART_TypeDef *pPort)
+   @brief uint32_t UrtModSta(ADI_UART_TypeDef *pPort)
          ==========Read the Modem status register byte of the UART.
    @param pPort :{pADI_UART,} \n
       Set to pADI_UART. Only one channel available.
@@ -284,14 +284,14 @@ int UrtMod(ADI_UART_TypeDef *pPort, int iMcr, int iWr)
    @warning UART must be configured before checking status
 **/
 
-int UrtModSta(ADI_UART_TypeDef *pPort)
+uint32_t UrtModSta(ADI_UART_TypeDef *pPort)
 
 {
    return   pPort->COMMSR;
 }
 
 /**
-   @brief int UrtDma(ADI_UART_TypeDef *pPort, int iDmaSel)
+   @brief uint32_t UrtDma(ADI_UART_TypeDef *pPort, uint32_t iDmaSel)
          ==========Enables/Disables DMA channel.
    @param pPort :{pADI_UART,} \n
       Set to pADI_UART. Only one channel available.
@@ -303,9 +303,9 @@ int UrtModSta(ADI_UART_TypeDef *pPort)
    @return 1.
 **/
 
-int UrtDma(ADI_UART_TypeDef *pPort, int iDmaSel)
+uint32_t UrtDma(ADI_UART_TypeDef *pPort, uint32_t iDmaSel)
 {
-   int i1;
+   uint32_t i1;
    i1 = pPort->COMIEN & ~COMIEN_EDMAT & ~COMIEN_EDMAR;
    i1 |= iDmaSel;
    pPort->COMIEN = i1;
@@ -314,7 +314,7 @@ int UrtDma(ADI_UART_TypeDef *pPort, int iDmaSel)
 
 
 /**
-   @brief int UrtIntCfg(ADI_UART_TypeDef *pPort, int iIrq)
+   @brief uint32_t UrtIntCfg(ADI_UART_TypeDef *pPort, uint32_t iIrq)
          ==========Enables/Disables UART Interrupt sources.
 
    @param pPort :{pADI_UART,} \n
@@ -330,14 +330,14 @@ int UrtDma(ADI_UART_TypeDef *pPort, int iDmaSel)
       - COMIEN_EDMAR to enable UART DMA Rx IRQ.
    @return 1.
 **/
-int UrtIntCfg(ADI_UART_TypeDef *pPort, int iIrq)
+uint32_t UrtIntCfg(ADI_UART_TypeDef *pPort, uint32_t iIrq)
 {
    pPort->COMIEN = iIrq;
    return 1;
 }
 
 /**
-   @brief int UrtIntSta(ADI_UART_TypeDef *pPort)
+   @brief uint32_t UrtIntSta(ADI_UART_TypeDef *pPort)
          ==========return UART interrupt status.
    @param pPort :{pADI_UART,} \n
       Set to pADI_UART. Only one channel available.
@@ -345,7 +345,7 @@ int UrtIntCfg(ADI_UART_TypeDef *pPort, int iIrq)
    @return COMIIR.
 **/
 
-int UrtIntSta(ADI_UART_TypeDef *pPort)
+uint32_t UrtIntSta(ADI_UART_TypeDef *pPort)
 {
    return pPort->COMIIR;
 }

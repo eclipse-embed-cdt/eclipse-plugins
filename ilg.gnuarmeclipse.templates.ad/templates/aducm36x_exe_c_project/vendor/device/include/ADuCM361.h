@@ -3948,6 +3948,7 @@ typedef struct {                            /*!< pADI_UART Structure            
   __IO uint16_t  COMDIV;                    /*!< Baud rate Divisor register            */
   __I  uint16_t  RESERVED8[3];
   __IO uint8_t   COMCON;                    /*!< UART control register                 */
+  __I  uint8_t   RESERVED9[3];
 } ADI_UART_TypeDef;
 #else // (__NO_MMR_STRUCTS__==0)
 #define          COMTX                                      (*(volatile unsigned char      *) 0x40005000)
@@ -4290,6 +4291,7 @@ typedef struct {                            /*!< pADI_GP0 Structure             
   __IO uint8_t   GPCLR;                     /*!< GPIO Port 0 data out clear.           */
   __I  uint8_t   RESERVED7[3];
   __IO uint8_t   GPTGL;                     /*!< GPIO Port 0 pin toggle.               */
+  __I  uint8_t   RESERVED8[3];
 } ADI_GPIO_TypeDef;
 #else // (__NO_MMR_STRUCTS__==0)
 #define          GP0CON                                     (*(volatile unsigned short int *) 0x40006000)
@@ -5809,6 +5811,7 @@ typedef struct {                            /*!< pADI_ANA Structure             
   __IO uint8_t   IEXCCON;                   /*!< Controls the on-chip Excitation Current Sources */
   __I  uint8_t   RESERVED2[3];
   __IO uint8_t   IEXCDAT;                   /*!< Sets the output current setting for both Excitation Current sources */
+  __I  uint8_t   RESERVED3[3];
 } ADI_ANA_TypeDef;
 #else // (__NO_MMR_STRUCTS__==0)
 #define          REFCTRL                                    (*(volatile unsigned short int *) 0x40008840)
@@ -5931,6 +5934,7 @@ typedef struct {                            /*!< pADI_DMA Structure             
   __IO uint8_t   DMAPCELLID2;               /*!< PrimeCell identification 2            */
   __I  uint8_t   RESERVED11[3];
   __IO uint8_t   DMAPCELLID3;               /*!< PrimeCell identification 3            */
+  __I  uint8_t   RESERVED12[3];
 } ADI_DMA_TypeDef;
 #else // (__NO_MMR_STRUCTS__==0)
 #define          DMASTA                                     (*(volatile unsigned long      *) 0x40010000)
@@ -9201,6 +9205,7 @@ typedef struct {                            /*!< pADI_ADCSTEP Structure         
 typedef struct {                            /*!< pADI_ADCDMA Structure                  */
   __I  uint32_t  RESERVED0[2];
   __IO uint16_t  ADCDMACON;                 /*!< ADC DMA mode Configuration register   */
+  __I  uint16_t  RESERVED1;
 } ADI_ADCDMA_TypeDef;
 #else // (__NO_MMR_STRUCTS__==0)
 #define          ADCDMACON                                  (*(volatile unsigned short int *) 0x400300F8)

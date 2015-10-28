@@ -46,7 +46,7 @@
    - Read result with AdcRd().
    - Example:
 
-   @version    V0.5
+   @version    V0.6
    @author     ADI
    @date       October 2015
    @par Revision History:
@@ -58,27 +58,34 @@
                            the pPort passed in.
    - V0.4, April 2013:     Added parameters definitions for AdcBias function
    - V0.5, October 2015:   Coding style cleanup - no functional changes.
+   - V0.6, October 2015:   Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
+#ifndef __ADUCM36X_ADCLIB_H
+#define __ADUCM36X_ADCLIB_H
+
+#ifdef __cplusplus
+ extern "C" {
+#endif
+
 #include <ADuCM361.h>
 
-extern int AdcRng(ADI_ADC_TypeDef *pPort, int iRef, int iGain, int iCode);
-extern int AdcGo(ADI_ADC_TypeDef *pPort, int iStart);
-extern int AdcRd(ADI_ADC_TypeDef *pPort);
-extern int AdcBuf(ADI_ADC_TypeDef *pPort, int iRBufCfg, int iBufCfg);
-extern int AdcDiag(ADI_ADC_TypeDef *pPort, int iDiag);
-extern int AdcBias(ADI_ADC_TypeDef *pPort, int iBiasPin, int iBiasBoost, int iGndSw);
-extern int AdcPin(ADI_ADC_TypeDef *pPort, int iInN, int iInP);
-extern int AdcFlt(ADI_ADC_TypeDef *pPort, int iSF, int iAF, int iFltCfg);
-extern int AdcMski(ADI_ADC_TypeDef *pPort, int iMski, int iWr);
-extern int AdcSta(ADI_ADC_TypeDef *pPort);
-//extern int AdcDma(ADI_ADC_TypeDef *pPort, int iDmaRdWr);
-extern int AdcPGAErr(ADI_ADC_TypeDef *pPort, int iAdcSta);
-extern int AdcDetSta(ADI_ADCSTEP_TypeDef *pPort);
-extern int AdcDetCon(ADI_ADCSTEP_TypeDef *pPort, int iCtrl, int iAdcSel, int iRate );
-extern int AdcStpRd(ADI_ADCSTEP_TypeDef *pPort);
-extern int AdcDmaCon(int iChan, int iEnable);
-
+extern uint32_t AdcRng(ADI_ADC_TypeDef *pPort, uint32_t iRef, uint32_t iGain, uint32_t iCode);
+extern uint32_t AdcGo(ADI_ADC_TypeDef *pPort, uint32_t iStart);
+extern int32_t AdcRd(ADI_ADC_TypeDef *pPort);
+extern uint32_t AdcBuf(ADI_ADC_TypeDef *pPort, uint32_t iRBufCfg, uint32_t iBufCfg);
+extern uint32_t AdcDiag(ADI_ADC_TypeDef *pPort, uint32_t iDiag);
+extern uint32_t AdcBias(ADI_ADC_TypeDef *pPort, uint32_t iBiasPin, uint32_t iBiasBoost, uint32_t iGndSw);
+extern uint32_t AdcPin(ADI_ADC_TypeDef *pPort, uint32_t iInN, uint32_t iInP);
+extern uint32_t AdcFlt(ADI_ADC_TypeDef *pPort, uint32_t iSF, uint32_t iAF, uint32_t iFltCfg);
+extern uint32_t AdcMski(ADI_ADC_TypeDef *pPort, uint32_t iMski, uint32_t iWr);
+extern uint32_t AdcSta(ADI_ADC_TypeDef *pPort);
+//extern uint32_t AdcDma(ADI_ADC_TypeDef *pPort, uint32_t iDmaRdWr);
+extern uint32_t AdcPGAErr(ADI_ADC_TypeDef *pPort, uint32_t iAdcSta);
+extern uint32_t AdcDetSta(ADI_ADCSTEP_TypeDef *pPort);
+extern uint32_t AdcDetCon(ADI_ADCSTEP_TypeDef *pPort, uint32_t iCtrl, uint32_t iAdcSel, uint32_t iRate );
+extern uint32_t AdcStpRd(ADI_ADCSTEP_TypeDef *pPort);
+extern uint32_t AdcDmaCon(uint32_t iChan, uint32_t iEnable);
 
 
 //ADC filter extra features disabled
@@ -95,4 +102,8 @@ extern int AdcDmaCon(int iChan, int iEnable);
 #define  DETCON_RATE_6ms 2
 #define  DETCON_RATE_8ms 3
 
+#ifdef __cplusplus
+}
+#endif
 
+#endif /* __ADUCM36X_ADCLIB_H */

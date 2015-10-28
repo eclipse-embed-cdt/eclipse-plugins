@@ -42,18 +42,26 @@
    - clear external interrupt flag with EiClr()
    - Example: Library used in Timers project
 
-   @version    V0.2
+   @version    V0.3
    @author     ADI
    @date       October 2015
    @par Revision History:
    - V0.1, August 2011: Initial release.
    - V0.2, October 2015: Coding style cleanup - no functional changes.
+   - V0.3, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
+#ifndef __ADUCM36X_INTLIB_H
+#define __ADUCM36X_INTLIB_H
 
+#ifdef __cplusplus
+ extern "C" {
+#endif
 
-extern int EiCfg(int iEiNr, int iEnable, int iMode);
-extern int EiClr(int iEiNr);
+#include <ADuCM361.h>
+
+extern uint32_t EiCfg(uint32_t iEiNr, uint32_t iEnable, uint32_t iMode);
+extern uint32_t EiClr(uint32_t iEiNr);
 
 
 //iEiNr in EiCfg()
@@ -77,3 +85,8 @@ extern int EiClr(int iEiNr);
 #define INT_HIGH 0x3
 #define INT_LOW   0x4
 
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __ADUCM36X_INTLIB_H */

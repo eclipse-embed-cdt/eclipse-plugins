@@ -38,33 +38,45 @@
  *****************************************************************************
    @file     FeeLib.h
    @brief    Set of Flash peripheral functions.
-   @version  V0.3
+   @version  V0.4
    @author   ADI
    @date     October 2015
    @par Revision History:
    - V0.1, October 2012: initial version.
    - V0.2, November 2012: Added warnings about 64k parts
    - V0.3, October 2015: Coding style cleanup - no functional changes.
+   - V0.4, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
+#ifndef __ADUCM36X_FEELIB_H
+#define __ADUCM36X_FEELIB_H
 
+#ifdef __cplusplus
+ extern "C" {
+#endif
 
 #include <ADuCM361.h>
 
-#define FA_KEYH (*(volatile unsigned long *) 0x1FFF4)
-#define FA_KEYL (*(volatile unsigned long *) 0x1FFF0)
-#define WR_PR (*(volatile unsigned long *) 0x1FFF8)
+#define FA_KEYH (*(volatile uint32_t *) 0x1FFF4)
+#define FA_KEYL (*(volatile uint32_t *) 0x1FFF0)
+#define WR_PR (*(volatile uint32_t *) 0x1FFF8)
 
 
-extern int FeeMErs(void);
-extern int FeePErs(unsigned long lPage);
-extern int FeeWrPro(unsigned long lKey);
-extern int FeeWrProTmp(unsigned long lKey);
-extern int FeeRdProTmp(int iMde);
-extern int FeeWrEn(int iMde);
-extern int FeeSta(void);
-extern int FeeFAKey(unsigned long long udKey);
-extern int FeeIntAbt(unsigned int iAEN0, unsigned int iAEN1, unsigned int iAEN2);
-extern int FeeAbtAdr(void);
-extern int FeeSign(unsigned long ulStartAddr, unsigned long ulEndAddr);
-extern int FeeSig(void);
+extern uint32_t FeeMErs(void);
+extern uint32_t FeePErs(uint32_t lPage);
+extern uint32_t FeeWrPro(uint32_t lKey);
+extern uint32_t FeeWrProTmp(uint32_t lKey);
+extern uint32_t FeeRdProTmp(uint32_t iMde);
+extern uint32_t FeeWrEn(uint32_t iMde);
+extern uint32_t FeeSta(void);
+extern uint32_t FeeFAKey(uint64_t udKey);
+extern uint32_t FeeIntAbt(uint32_t iAEN0, uint32_t iAEN1, uint32_t iAEN2);
+extern uint32_t FeeAbtAdr(void);
+extern uint32_t FeeSign(uint32_t ulStartAddr, uint32_t ulEndAddr);
+extern uint32_t FeeSig(void);
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif /* __ADUCM36X_FEELIB_H */

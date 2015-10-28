@@ -40,7 +40,7 @@
    @{
    @file     SpiLib.c
    @brief    Set of SPI peripheral functions.
-   @version  V0.4
+   @version  V0.5
    @author   ADI
    @date     October 2015
    @par Revision History:
@@ -48,15 +48,15 @@
    - V0.2, October 2012: Added SPI DMA support
    - V0.3, November 2012: Moved SPI DMA functionality to DmaLib
    - V0.4, October 2015: Coding style cleanup - no functional changes.
+   - V0.5, October 2015: Use Standard Integer Types, prefer unsigned types, add include and C++ guards.
 
 **/
 
 #include "SpiLib.h"
-#include <ADuCM361.h>
 #include "DmaLib.h"
 
 /**
-      @brief int SpiCfg(ADI_SPI_TypeDef *pSPI, int iFifoSize, int iMasterEn, int iConfig);
+      @brief uint32_t SpiCfg(ADI_SPI_TypeDef *pSPI, uint32_t iFifoSize, uint32_t iMasterEn, uint32_t iConfig);
          ========== Configure the SPI channel.
       @param pSPI :{pADI_SPI0 , pADI_SPI1}
       - pADI_SPI0 for SPI0.
@@ -89,9 +89,9 @@
    @return 1.
 **/
 
-int SpiCfg(ADI_SPI_TypeDef *pSPI, int iFifoSize, int iMasterEn, int iConfig)
+uint32_t SpiCfg(ADI_SPI_TypeDef *pSPI, uint32_t iFifoSize, uint32_t iMasterEn, uint32_t iConfig)
 {
-   int i1;
+   uint32_t i1;
    i1  = iFifoSize;
    i1 |= iMasterEn;
    i1 |= iConfig;
@@ -100,7 +100,7 @@ int SpiCfg(ADI_SPI_TypeDef *pSPI, int iFifoSize, int iMasterEn, int iConfig)
 }
 
 /**
-   @brief int SpiBaud(ADI_SPI_TypeDef *pSPI, int iClkDiv, int iCserr)
+   @brief uint32_t SpiBaud(ADI_SPI_TypeDef *pSPI, uint32_t iClkDiv, uint32_t iCserr)
          ========== Set the SPI clock rate in Master mode.
    @param pSPI :{pADI_SPI0 , pADI_SPI1}
       - pADI_SPI0 for SPI0.
@@ -112,9 +112,9 @@ int SpiCfg(ADI_SPI_TypeDef *pSPI, int iFifoSize, int iMasterEn, int iConfig)
       - SPIDIV_BCRST_EN to Enable CS error detection.
    @return 1.
 **/
-int SpiBaud(ADI_SPI_TypeDef *pSPI, int iClkDiv, int iCserr)
+uint32_t SpiBaud(ADI_SPI_TypeDef *pSPI, uint32_t iClkDiv, uint32_t iCserr)
 {
-   int i1;
+   uint32_t i1;
    i1 = iCserr;
    i1 |= iClkDiv;
    pSPI->SPIDIV = i1;
@@ -122,20 +122,20 @@ int SpiBaud(ADI_SPI_TypeDef *pSPI, int iClkDiv, int iCserr)
 }
 
 /**
-   @brief int SpiRx(ADI_SPI_TypeDef *pSPI)
+   @brief uint32_t SpiRx(ADI_SPI_TypeDef *pSPI)
          ========== Write 8 bits of iRx to SPIxRX.
    @param pSPI :{pADI_SPI0 , pADI_SPI1}
       - pADI_SPI0 for SPI0.
       - pADI_SPI1 for SPI1.
    @return SPIRX value.
 **/
-int SpiRx(ADI_SPI_TypeDef *pSPI)
+uint32_t SpiRx(ADI_SPI_TypeDef *pSPI)
 {
    return pSPI->SPIRX;
 }
 
 /**
-   @brief int SpiTx(ADI_SPI_TypeDef *pSPI, int iTx);
+   @brief uint32_t SpiTx(ADI_SPI_TypeDef *pSPI, uint32_t iTx);
          ========== Write 8 bits of iTx to SPIxTX.
    @param pSPI :{pADI_SPI0 , pADI_SPI1}
       - pADI_SPI0 for SPI0.
@@ -144,14 +144,14 @@ int SpiRx(ADI_SPI_TypeDef *pSPI)
       - Byte to transmit.
    @return 1.
 **/
-int SpiTx(ADI_SPI_TypeDef *pSPI, int iTx)
+uint32_t SpiTx(ADI_SPI_TypeDef *pSPI, uint32_t iTx)
 {
    pSPI->SPITX = iTx;
    return 1;
 }
 
 /**
-   @brief int SpiSta(ADI_SPI_TypeDef *pSPI)
+   @brief uint32_t SpiSta(ADI_SPI_TypeDef *pSPI)
          ========== Read the status register for the SPI.
    @param pSPI :{pADI_SPI0, pADI_SPI1}
       - pADI_SPI0 for SPI0.
@@ -169,14 +169,14 @@ int SpiTx(ADI_SPI_TypeDef *pSPI, int iTx)
                 - SPISTA_RXS, SPI Rx FIFO excess bytes in FIFO.
                 - SPISTA_CSERR, Chip select SPI error.
 **/
-int SpiSta(ADI_SPI_TypeDef *pSPI)
+uint32_t SpiSta(ADI_SPI_TypeDef *pSPI)
 {
    return pSPI->SPISTA;
 }
 
 
 /**
-   @brief int SpiFifoFlush(ADI_SPI_TypeDef *pSPI, int iTxFlush, int iRxFlush);
+   @brief uint32_t SpiFifoFlush(ADI_SPI_TypeDef *pSPI, uint32_t iTxFlush, uint32_t iRxFlush);
          ========== Function to flush Rx or Tx FIFOs.
    @param pSPI :{pADI_SPI0 , pADI_SPI1}
       - pADI_SPI0 for SPI0.
@@ -191,7 +191,7 @@ int SpiSta(ADI_SPI_TypeDef *pSPI)
       - SPICON_RFLUSH_EN to flush Rx FIFO.
    @return 1.
 **/
-int SpiFifoFlush(ADI_SPI_TypeDef *pSPI, int iTxFlush, int iRxFlush)
+uint32_t SpiFifoFlush(ADI_SPI_TypeDef *pSPI, uint32_t iTxFlush, uint32_t iRxFlush)
 {
    if (iTxFlush == SPICON_TFLUSH_EN) {
       pSPI->SPICON  |= 0x2000;
@@ -207,7 +207,7 @@ int SpiFifoFlush(ADI_SPI_TypeDef *pSPI, int iTxFlush, int iRxFlush)
 }
 
 /**
-   @brief int SpiTxFifoFlush(ADI_SPI_TypeDef *pSPI, int iTxFlush)
+   @brief uint32_t SpiTxFifoFlush(ADI_SPI_TypeDef *pSPI, uint32_t iTxFlush)
          ========== Function to flush Tx FIFO.
    @param pSPI :{pADI_SPI0 , pADI_SPI1}
       - pADI_SPI0 for SPI0.
@@ -220,7 +220,7 @@ int SpiFifoFlush(ADI_SPI_TypeDef *pSPI, int iTxFlush, int iRxFlush)
                 The flush bit stays set or cleared.
    @return 1.
 **/
-int SpiTxFifoFlush(ADI_SPI_TypeDef *pSPI, int iTxFlush)
+uint32_t SpiTxFifoFlush(ADI_SPI_TypeDef *pSPI, uint32_t iTxFlush)
 {
    if (iTxFlush == SPICON_TFLUSH_EN) {
       pSPI->SPICON  |= 0x2000;
@@ -233,7 +233,7 @@ int SpiTxFifoFlush(ADI_SPI_TypeDef *pSPI, int iTxFlush)
 }
 
 /**
-   @brief int SpiRxFifoFlush(ADI_SPI_TypeDef *pSPI, int iRxFlush)
+   @brief uint32_t SpiRxFifoFlush(ADI_SPI_TypeDef *pSPI, uint32_t iRxFlush)
          ========== Function to flush Rx FIFO.
    @param pSPI :{pADI_SPI0 , pADI_SPI1}
       - pADI_SPI0 for SPI0.
@@ -246,7 +246,7 @@ int SpiTxFifoFlush(ADI_SPI_TypeDef *pSPI, int iTxFlush)
                 The flush bit stays set or cleared.
    @return 1.
 **/
-int SpiRxFifoFlush(ADI_SPI_TypeDef *pSPI, int iRxFlush)
+uint32_t SpiRxFifoFlush(ADI_SPI_TypeDef *pSPI, uint32_t iRxFlush)
 {
    if (iRxFlush == SPICON_RFLUSH_EN) {
       pSPI->SPICON  |= 0x1000;
@@ -259,7 +259,7 @@ int SpiRxFifoFlush(ADI_SPI_TypeDef *pSPI, int iRxFlush)
 }
 
 /**
-   @brief int SpiDma(ADI_SPI_TypeDef *pSPI, int iDmaRxSel, int iDmaTxSel, int iDmaEn);
+   @brief uint32_t SpiDma(ADI_SPI_TypeDef *pSPI, uint32_t iDmaRxSel, uint32_t iDmaTxSel, uint32_t iDmaEn);
          ========== Enables/Disables DMA channel.
    @param pSPI :{0,pADI_SPI1}
       - pADI_SPI1 for SPI1.
@@ -274,9 +274,9 @@ int SpiRxFifoFlush(ADI_SPI_TypeDef *pSPI, int iRxFlush)
       - SPIDMA_ENABLE_EN to enable SPI DMA mode.
    @return 1.
 */
-int SpiDma(ADI_SPI_TypeDef *pSPI, int iDmaRxSel, int iDmaTxSel, int iDmaEn)
+uint32_t SpiDma(ADI_SPI_TypeDef *pSPI, uint32_t iDmaRxSel, uint32_t iDmaTxSel, uint32_t iDmaEn)
 {
-   int i1;
+   uint32_t i1;
    i1 = iDmaRxSel;
    i1 |= iDmaTxSel;
    i1 |= iDmaEn;
@@ -285,7 +285,7 @@ int SpiDma(ADI_SPI_TypeDef *pSPI, int iDmaRxSel, int iDmaTxSel, int iDmaEn)
 }
 
 /**
-   @brief int SpiCountRd(ADI_SPI_TypeDef *pSPI);
+   @brief uint32_t SpiCountRd(ADI_SPI_TypeDef *pSPI);
          ========== Read the SPIxCNT register for the SPI - number of bytes received.
    @param pSPI :{pADI_SPI0 , pADI_SPI1}
       - pADI_SPI0 for SPI0.
@@ -294,7 +294,7 @@ int SpiDma(ADI_SPI_TypeDef *pSPI, int iDmaRxSel, int iDmaTxSel, int iDmaEn)
       SPICNT, Number of bytes received.
 **/
 
-int SpiCountRd(ADI_SPI_TypeDef *pSPI)
+uint32_t SpiCountRd(ADI_SPI_TypeDef *pSPI)
 {
    return pSPI->SPICNT;
 }
