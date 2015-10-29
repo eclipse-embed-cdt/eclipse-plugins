@@ -7,7 +7,8 @@
 #define _CMSIS_DEVICE_H_
 
 #pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpadded"
+// Add pragmas if the header triggers warnings.
+// #pragma GCC diagnostic ignored "-Wpadded"
 
 #include "$(CMSIS_name).h"
 
