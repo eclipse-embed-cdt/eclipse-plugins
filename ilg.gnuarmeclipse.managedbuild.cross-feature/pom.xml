@@ -5,7 +5,7 @@
   
   <groupId>ilg.gnuarmeclipse.features</groupId>
   <artifactId>ilg.gnuarmeclipse.managedbuild.cross</artifactId>
-  <version>1.14.1-SNAPSHOT</version>
+  <version>1.15.1-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
   
   <parent>
