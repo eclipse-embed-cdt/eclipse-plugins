@@ -1878,6 +1878,16 @@
                   name="%option.target.arm.fpuType.neonvfpv4">
             </enumeratedOptionValue>
             <enumeratedOptionValue
+                  command="-mfpu=fpv5-d16"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.fpv5d16"
+                  name="%option.target.arm.fpuType.fpv5d16">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mfpu=fpv5-sp-d16"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.fpv5spd16"
+                  name="%option.target.arm.fpuType.fpv5spd16">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
                   command="-mfpu=fp-armv8"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.fparmv8"
                   name="%option.target.arm.fpuType.fparmv8">
