@@ -261,7 +261,7 @@ public class ToolchainDefinition {
 		// 64 bit toolchains
 		// 9
 		fgList.add(new ToolchainDefinition("Linaro AArch64 bare-metal ELF",
-				"aarch64-none-elf-", "aarch64"));
+				"aarch64-elf-", "aarch64"));
 
 		// 10
 		fgList.add(new ToolchainDefinition(
