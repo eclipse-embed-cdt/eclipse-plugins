@@ -476,6 +476,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 		});
 
+		fDisableGraphics
+				.addSelectionListener(scheduleUpdateJobSelectionAdapter);
+
 		fGdbServerExecutable.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
