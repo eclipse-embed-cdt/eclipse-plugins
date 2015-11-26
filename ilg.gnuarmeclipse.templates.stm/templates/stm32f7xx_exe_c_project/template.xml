@@ -9,7 +9,7 @@
 		help="help.html">
 		<property id="STM32F7chipFamilyCube" label="%STM32F7xx.chipFamily.label"
 			description="%STM32F7xx.chipFamily.description" type="select"
-			default="STM32F707xx" hidden="false" persist="true">
+			default="STM32F745xx" hidden="false" persist="true">
 			<item value="STM32F745xx" label="STM32F745xx" />
 			<item value="STM32F746xx" label="STM32F746xx" />
 			<item value="STM32F756xx" label="STM32F756xx" />
