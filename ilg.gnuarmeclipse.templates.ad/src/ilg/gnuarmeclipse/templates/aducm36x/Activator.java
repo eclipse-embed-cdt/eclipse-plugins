@@ -9,7 +9,7 @@
  *    Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.templates.ad;
+package ilg.gnuarmeclipse.templates.aducm36x;
 
 import ilg.gnuarmeclipse.core.AbstractActivator;
 
