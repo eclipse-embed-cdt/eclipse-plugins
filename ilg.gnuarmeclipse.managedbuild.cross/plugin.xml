@@ -13,6 +13,7 @@
 # Liviu Ionescu - ARM version  
 -->
 <plugin>
+   <extension-point id="toolchains" name="Extra toolchains" schema="schema/toolchains.exsd"/>
 
    <extension
          point="org.eclipse.cdt.managedbuilder.core.buildDefinitions">
@@ -4491,4 +4492,8 @@
    </extension>
    -->
    
+   <extension
+      point="ilg.gnuarmeclipse.managedbuild.cross.toolchains">
+      <toolchain name="Custom" prefix="arm-none-eabi-" />
+   </extension>
 </plugin>
