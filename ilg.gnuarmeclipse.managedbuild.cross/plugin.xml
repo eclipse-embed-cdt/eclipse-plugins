@@ -3703,6 +3703,11 @@
             </optionCategory>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.misc"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.flags"
+                  superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.flags">
+            </option>
+            <option
+                  category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.misc"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.otherobjs"
                   superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.otherobjs">
             </option>
