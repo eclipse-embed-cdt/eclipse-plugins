@@ -2,19 +2,19 @@
   ******************************************************************************
   * @file    stm32f7xx.h
   * @author  MCD Application Team
-  * @version V1.0.2
-  * @date    21-September-2015
-  * @brief   CMSIS STM32F7xx Device Peripheral Access Layer Header File.
-  *
+  * @version V1.0.1
+  * @date    25-June-2015
+  * @brief   CMSIS STM32F7xx Device Peripheral Access Layer Header File.           
+  *            
   *          The file is the unique include file that the application programmer
   *          is using in the C source code, usually in main.c. This file contains:
   *           - Configuration section that allows to select:
   *              - The STM32F7xx device used in the target application
   *              - To use or not the peripheral's drivers in application code(i.e.
   *                code will be based on direct access to peripheral's registers
-  *                rather than drivers API), this option is controlled by
+  *                rather than drivers API), this option is controlled by 
   *                "#define USE_HAL_DRIVER"
-  *
+  *  
   ******************************************************************************
   * @attention
   *
@@ -52,20 +52,14 @@
 /** @addtogroup stm32f7xx
   * @{
   */
-
+    
 #ifndef __STM32F7xx_H
 #define __STM32F7xx_H
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpadded"
-#endif
 
 #ifdef __cplusplus
  extern "C" {
 #endif /* __cplusplus */
-
+  
 /** @addtogroup Library_configuration_section
   * @{
   */
@@ -78,7 +72,7 @@
 #endif /* STM32F7 */
 
 /* Uncomment the line below according to the target STM32 device used in your
-   application
+   application 
   */
 #if !defined (STM32F756xx) && !defined (STM32F746xx) && !defined (STM32F745xx)
   /* #define STM32F756xx */   /*!< STM32F756VG, STM32F756ZG, STM32F756ZG, STM32F756IG, STM32F756BG,
@@ -95,19 +89,19 @@
 #if !defined  (USE_HAL_DRIVER)
 /**
  * @brief Comment the line below if you will not use the peripherals drivers.
-   In this case, these drivers will not be included and the application code will
-   be based on direct access to peripherals registers
+   In this case, these drivers will not be included and the application code will 
+   be based on direct access to peripherals registers 
    */
   /*#define USE_HAL_DRIVER */
 #endif /* USE_HAL_DRIVER */
 
 /**
-  * @brief CMSIS Device version number V1.0.2
+  * @brief CMSIS Device version number V1.0.1
   */
 #define __STM32F7xx_CMSIS_DEVICE_VERSION_MAIN   (0x01) /*!< [31:24] main version */
 #define __STM32F7xx_CMSIS_DEVICE_VERSION_SUB1   (0x00) /*!< [23:16] sub1 version */
-#define __STM32F7xx_CMSIS_DEVICE_VERSION_SUB2   (0x02) /*!< [15:8]  sub2 version */
-#define __STM32F7xx_CMSIS_DEVICE_VERSION_RC     (0x00) /*!< [7:0]  release candidate */
+#define __STM32F7xx_CMSIS_DEVICE_VERSION_SUB2   (0x01) /*!< [15:8]  sub2 version */
+#define __STM32F7xx_CMSIS_DEVICE_VERSION_RC     (0x00) /*!< [7:0]  release candidate */ 
 #define __STM32F7xx_CMSIS_DEVICE_VERSION        ((__STM32F7xx_CMSIS_DEVICE_VERSION_MAIN << 24)\
                                                 |(__STM32F7xx_CMSIS_DEVICE_VERSION_SUB1 << 16)\
                                                 |(__STM32F7xx_CMSIS_DEVICE_VERSION_SUB2 << 8 )\
@@ -135,30 +129,30 @@
 
 /** @addtogroup Exported_types
   * @{
-  */
-typedef enum
+  */ 
+typedef enum 
 {
-  RESET = 0,
+  RESET = 0, 
   SET = !RESET
 } FlagStatus, ITStatus;
 
-typedef enum
+typedef enum 
 {
-  DISABLE = 0,
+  DISABLE = 0, 
   ENABLE = !DISABLE
 } FunctionalState;
 #define IS_FUNCTIONAL_STATE(STATE) (((STATE) == DISABLE) || ((STATE) == ENABLE))
 
-typedef enum
+typedef enum 
 {
-  ERROR = 0,
+  ERROR = 0, 
   SUCCESS = !ERROR
 } ErrorStatus;
 
 /**
   * @}
   */
-
+  
 /** @addtogroup Exported_macro
   * @{
   */
@@ -176,7 +170,7 @@ typedef enum
 
 #define MODIFY_REG(REG, CLEARMASK, SETMASK)  WRITE_REG((REG), (((READ_REG(REG)) & (~(CLEARMASK))) | (SETMASK)))
 
-#define POSITION_VAL(VAL)     (__CLZ(__RBIT(VAL)))
+#define POSITION_VAL(VAL)     (__CLZ(__RBIT(VAL))) 
 
 /**
   * @}
@@ -189,11 +183,6 @@ typedef enum
 #ifdef __cplusplus
 }
 #endif /* __cplusplus */
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 #endif /* __STM32F7xx_H */
 

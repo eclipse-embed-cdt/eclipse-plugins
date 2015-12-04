@@ -532,7 +532,7 @@
 			<simple name="condition" value="" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="src/$(CMSIS_name)_hal_conf.h" />
+					<simple name="source" value="$(osDir)/$(devicePeriph).pack/include/$(devicePeriph)/$(CMSIS_name)_hal_conf_template.h" />
 					<simple name="target" value="$(includeDir)/$(CMSIS_name)_hal_conf.h" />
 					<simple name="replaceable" value="true" />
 				</element>
@@ -579,11 +579,6 @@
 			<simple name="condition" value="" />
 			<complex-array name="files">
 				<element>
-					<simple name="source" value="$(osDir)/$(device).pack/include/cmsis/README_DEVICE_CMSIS.md" />
-					<simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)/README_DEVICE_CMSIS.md" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
 					<simple name="source" value="$(osDir)/$(device).pack/include/cmsis/cmsis_device.h" />
 					<simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)/cmsis_device.h" />
 					<simple name="replaceable" value="true" />
@@ -607,11 +602,6 @@
 				<element>
 					<simple name="source" value="$(osDir)/$(device).pack/src/cmsis/system_$(CMSIS_name).c" />
 					<simple name="target" value="$(sysDir)/$(sourceDir)/$(cmsisDir)/system_$(CMSIS_name).c" />
-					<simple name="replaceable" value="true" />
-				</element>
-				<element>
-					<simple name="source" value="$(osDir)/$(device).pack/src/cmsis/README_DEVICE_CMSIS.md" />
-					<simple name="target" value="$(sysDir)/$(sourceDir)/$(cmsisDir)/README_DEVICE_CMSIS.md" />
 					<simple name="replaceable" value="true" />
 				</element>
 			</complex-array>

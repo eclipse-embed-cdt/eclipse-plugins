@@ -2,16 +2,16 @@
   ******************************************************************************
   * @file    stm32f4xx.h
   * @author  MCD Application Team
-  * @version V2.4.1
-  * @date    09-October-2015
+  * @version V2.4.0
+  * @date    14-August-2015
   * @brief   CMSIS STM32F4xx Device Peripheral Access Layer Header File.
   *            
   *          The file is the unique include file that the application programmer
   *          is using in the C source code, usually in main.c. This file contains:
   *           - Configuration section that allows to select:
   *              - The STM32F4xx device used in the target application
-  *              - To use or not the peripheral’s drivers in application code(i.e. 
-  *                code will be based on direct access to peripheral’s registers 
+  *              - To use or not the peripheral's drivers in application code(i.e.
+  *                code will be based on direct access to peripheral's registers
   *                rather than drivers API), this option is controlled by 
   *                "#define USE_HAL_DRIVER"
   *  
@@ -116,11 +116,11 @@
 #endif /* USE_HAL_DRIVER */
 
 /**
-  * @brief CMSIS Device version number V2.4.1
+  * @brief CMSIS Device version number V2.4.0
   */
 #define __STM32F4xx_CMSIS_DEVICE_VERSION_MAIN   (0x02) /*!< [31:24] main version */                                  
 #define __STM32F4xx_CMSIS_DEVICE_VERSION_SUB1   (0x04) /*!< [23:16] sub1 version */
-#define __STM32F4xx_CMSIS_DEVICE_VERSION_SUB2   (0x01) /*!< [15:8]  sub2 version */
+#define __STM32F4xx_CMSIS_DEVICE_VERSION_SUB2   (0x00) /*!< [15:8]  sub2 version */
 #define __STM32F4xx_CMSIS_DEVICE_VERSION_RC     (0x00) /*!< [7:0]  release candidate */ 
 #define __STM32F4xx_CMSIS_DEVICE_VERSION        ((__STM32F4xx_CMSIS_DEVICE_VERSION_MAIN << 24)\
                                                 |(__STM32F4xx_CMSIS_DEVICE_VERSION_SUB1 << 16)\

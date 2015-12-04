@@ -34,17 +34,11 @@
   * OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
   *
   ******************************************************************************
-  */
+  */ 
 
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F4xx_HAL_H
 #define __STM32F4xx_HAL_H
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpadded"
-#endif
 
 #ifdef __cplusplus
  extern "C" {
@@ -59,7 +53,7 @@
 
 /** @addtogroup HAL
   * @{
-  */
+  */ 
 
 /* Exported types ------------------------------------------------------------*/
 /* Exported constants --------------------------------------------------------*/
@@ -68,7 +62,7 @@
   * @{
   */
 
-/** @brief  Freeze/Unfreeze Peripherals in Debug mode
+/** @brief  Freeze/Unfreeze Peripherals in Debug mode 
   */
 #define __HAL_DBGMCU_FREEZE_TIM2()           (DBGMCU->APB1FZ |= (DBGMCU_APB1_FZ_DBG_TIM2_STOP))
 #define __HAL_DBGMCU_FREEZE_TIM3()           (DBGMCU->APB1FZ |= (DBGMCU_APB1_FZ_DBG_TIM3_STOP))
@@ -260,15 +254,10 @@ void HAL_DisableMemorySwappingBank(void);
 
 /**
   * @}
-  */
-
+  */ 
+  
 #ifdef __cplusplus
 }
-#endif
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
 #endif
 
 #endif /* __STM32F4xx_HAL_H */
