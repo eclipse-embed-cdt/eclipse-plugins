@@ -168,16 +168,16 @@ cp -Rnv $src/vendors/$vendor/$device.pack/* $vendor_dest/$device.pack
 
 # --- xPacks ---
 
-xpacks_src=../../../xPacks
+xpacks_repo=../../../xPacks/xpacks-repo.git
 
 # CMSIS core
-src=${xpacks_src}/arm-cmsis-core.git
+src=${xpacks_repo}/ilg/arm/arm-cmsis-xpack
 echo
 cp -nv $src/CMSIS/Include/*.h $system/include/cmsis
-cp -nv $src/CMSIS/Include/*.md $system/include/cmsis
+# cp -nv $src/CMSIS/Include/*.md $system/include/cmsis
 
 # STM32F4 CMSIS
-src=${xpacks_src}/stm32f4-cmsis.git
+src=${xpacks_repo}/ilg/stm/stm32f4-cmsis-xpack
 echo
 rm -rf $stm/stm32f4.pack
 mkdir -p $stm/stm32f4.pack/include/cmsis
@@ -186,10 +186,10 @@ cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Release_Notes.html $stm/stm32f4.p
 mkdir -p $stm/stm32f4.pack/src/cmsis
 cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/*.c $stm/stm32f4.pack/src/cmsis
 cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/*.c $stm/stm32f4.pack/src/cmsis
-cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/*.md $stm/stm32f4.pack/src/cmsis
+# cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/*.md $stm/stm32f4.pack/src/cmsis
 
 # STM32F4 HAL
-src=${xpacks_src}/stm32f4-hal.git
+src=${xpacks_repo}/ilg/stm/stm32f4-hal-xpack
 echo
 rm -rf $stm/stm32f4-hal.pack
 mkdir -p $stm/stm32f4-hal.pack/include/stm32f4-hal
@@ -199,7 +199,7 @@ cp -Rnv $src/Drivers/STM32F4xx_HAL_Driver/Src/* $stm/stm32f4-hal.pack/src/stm32f
 cp -Rnv $src/Drivers/STM32F4xx_HAL_Driver/Release_Notes.html $stm/stm32f4-hal.pack/
 
 # STM32F7 CMSIS
-src=${xpacks_src}/stm32f7-cmsis.git
+src=${xpacks_repo}/ilg/stm/stm32f7-cmsis-xpack
 echo
 rm -rf $stm/stm32f7.pack
 mkdir -p $stm/stm32f7.pack/include/cmsis
@@ -208,10 +208,10 @@ cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F7xx/Release_Notes.html $stm/stm32f7.p
 mkdir -p $stm/stm32f7.pack/src/cmsis
 cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F7xx/Source/Templates/*.c $stm/stm32f7.pack/src/cmsis
 cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F7xx/Source/Templates/gcc/*.c $stm/stm32f7.pack/src/cmsis
-cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F7xx/Source/Templates/*.md $stm/stm32f7.pack/src/cmsis
+# cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F7xx/Source/Templates/*.md $stm/stm32f7.pack/src/cmsis
 
 # STM32F7 HAL
-src=${xpacks_src}/stm32f7-hal.git
+src=${xpacks_repo}/ilg/stm/stm32f7-hal-xpack
 echo
 rm -rf $stm/stm32f7-hal.pack
 mkdir -p $stm/stm32f7-hal.pack/include/stm32f7-hal
