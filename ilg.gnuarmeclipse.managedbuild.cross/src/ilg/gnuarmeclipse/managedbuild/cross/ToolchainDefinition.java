@@ -374,7 +374,7 @@ public class ToolchainDefinition {
 		// 10
 		fgList.add(new ToolchainDefinition(
 				"Linaro AArch64 big-endian bare-metal ELF",
-				"aarch64_be-none-elf-", "aarch64"));
+				"aarch64_be-elf-", "aarch64"));
 
 		// 11
 		fgList.add(new ToolchainDefinition("Linaro AArch64 Linux GNU",
