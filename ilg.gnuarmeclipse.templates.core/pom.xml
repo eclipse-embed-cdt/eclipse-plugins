@@ -5,7 +5,7 @@
   
   <groupId>ilg.gnuarmeclipse</groupId>
   <artifactId>ilg.gnuarmeclipse.templates.core</artifactId>
-  <version>2.5.2-SNAPSHOT</version>
+  <version>2.5.3-SNAPSHOT</version>
   <packaging>eclipse-plugin</packaging>
   
   <parent>
