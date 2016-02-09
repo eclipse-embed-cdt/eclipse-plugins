@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_sdram.h
   * @author  MCD Application Team
-  * @version V1.3.1
-  * @date    25-March-2015
+  * @version V1.4.4
+  * @date    22-January-2016
   * @brief   Header file of SDRAM HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -43,7 +43,8 @@
  extern "C" {
 #endif
 
-#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F446xx)
+#if defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) ||\
+    defined(STM32F446xx) || defined(STM32F469xx) || defined(STM32F479xx)
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_ll_fmc.h"
@@ -66,12 +67,12 @@
   */ 
 typedef enum
 {
-  HAL_SDRAM_STATE_RESET             = 0x00,  /*!< SDRAM not yet initialized or disabled */
-  HAL_SDRAM_STATE_READY             = 0x01,  /*!< SDRAM initialized and ready for use   */
-  HAL_SDRAM_STATE_BUSY              = 0x02,  /*!< SDRAM internal process is ongoing     */
-  HAL_SDRAM_STATE_ERROR             = 0x03,  /*!< SDRAM error state                     */
-  HAL_SDRAM_STATE_WRITE_PROTECTED   = 0x04,  /*!< SDRAM device write protected          */
-  HAL_SDRAM_STATE_PRECHARGED        = 0x05   /*!< SDRAM device precharged               */
+  HAL_SDRAM_STATE_RESET             = 0x00U,  /*!< SDRAM not yet initialized or disabled */
+  HAL_SDRAM_STATE_READY             = 0x01U,  /*!< SDRAM initialized and ready for use   */
+  HAL_SDRAM_STATE_BUSY              = 0x02U,  /*!< SDRAM internal process is ongoing     */
+  HAL_SDRAM_STATE_ERROR             = 0x03U,  /*!< SDRAM error state                     */
+  HAL_SDRAM_STATE_WRITE_PROTECTED   = 0x04U,  /*!< SDRAM device write protected          */
+  HAL_SDRAM_STATE_PRECHARGED        = 0x05U   /*!< SDRAM device precharged               */
   
 }HAL_SDRAM_StateTypeDef;
 
@@ -181,7 +182,7 @@ HAL_SDRAM_StateTypeDef  HAL_SDRAM_GetState(SDRAM_HandleTypeDef *hsdram);
   * @}
   */
 
-#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F446xx */
+#endif /* STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx || STM32F446xx || STM32F469xx || STM32F479xx */
 
 /**
   * @}

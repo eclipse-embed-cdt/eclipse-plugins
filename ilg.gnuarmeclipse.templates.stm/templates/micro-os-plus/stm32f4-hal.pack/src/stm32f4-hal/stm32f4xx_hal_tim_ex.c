@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_tim_ex.c
   * @author  MCD Application Team
-  * @version V1.3.1
-  * @date    25-March-2015
+  * @version V1.4.4
+  * @date    22-January-2016
   * @brief   TIM HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Timer extension peripheral:
@@ -69,7 +69,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -251,12 +251,6 @@ HAL_StatusTypeDef HAL_TIMEx_HallSensor_DeInit(TIM_HandleTypeDef *htim)
   return HAL_OK;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief  Initializes the TIM Hall Sensor MSP.
   * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
@@ -265,6 +259,8 @@ HAL_StatusTypeDef HAL_TIMEx_HallSensor_DeInit(TIM_HandleTypeDef *htim)
   */
 __weak void HAL_TIMEx_HallSensor_MspInit(TIM_HandleTypeDef *htim)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_TIMEx_HallSensor_MspInit could be implemented in the user file
    */
@@ -278,15 +274,12 @@ __weak void HAL_TIMEx_HallSensor_MspInit(TIM_HandleTypeDef *htim)
   */
 __weak void HAL_TIMEx_HallSensor_MspDeInit(TIM_HandleTypeDef *htim)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_TIMEx_HallSensor_MspDeInit could be implemented in the user file
    */
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @brief  Starts the TIM Hall Sensor Interface.
@@ -401,7 +394,7 @@ HAL_StatusTypeDef HAL_TIMEx_HallSensor_Start_DMA(TIM_HandleTypeDef *htim, uint32
   }
   else if((htim->State == HAL_TIM_STATE_READY))
   {
-    if(((uint32_t)pData == 0 ) && (Length > 0)) 
+    if(((uint32_t)pData == 0U) && (Length > 0U)) 
     {
       return HAL_ERROR;                                    
     }
@@ -708,7 +701,7 @@ HAL_StatusTypeDef HAL_TIMEx_OCN_Start_DMA(TIM_HandleTypeDef *htim, uint32_t Chan
   }
   else if((htim->State == HAL_TIM_STATE_READY))
   {
-    if(((uint32_t)pData == 0 ) && (Length > 0)) 
+    if(((uint32_t)pData == 0U) && (Length > 0U)) 
     {
       return HAL_ERROR;                                    
     }
@@ -1126,7 +1119,7 @@ HAL_StatusTypeDef HAL_TIMEx_PWMN_Start_DMA(TIM_HandleTypeDef *htim, uint32_t Cha
   }
   else if((htim->State == HAL_TIM_STATE_READY))
   {
-    if(((uint32_t)pData == 0 ) && (Length > 0)) 
+    if(((uint32_t)pData == 0U) && (Length > 0U)) 
     {
       return HAL_ERROR;                                    
     }
@@ -1734,6 +1727,7 @@ HAL_StatusTypeDef HAL_TIMEx_RemapConfig(TIM_HandleTypeDef *htim, uint32_t Remap)
   
   return HAL_OK;
 }
+
 /**
   * @}
   */
@@ -1754,12 +1748,6 @@ HAL_StatusTypeDef HAL_TIMEx_RemapConfig(TIM_HandleTypeDef *htim, uint32_t Remap)
   * @{
   */
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
 /**
   * @brief  Hall commutation changed callback in non blocking mode 
   * @param  htim: pointer to a TIM_HandleTypeDef structure that contains
@@ -1768,6 +1756,8 @@ HAL_StatusTypeDef HAL_TIMEx_RemapConfig(TIM_HandleTypeDef *htim, uint32_t Remap)
   */
 __weak void HAL_TIMEx_CommutationCallback(TIM_HandleTypeDef *htim)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_TIMEx_CommutationCallback could be implemented in the user file
    */
@@ -1781,16 +1771,12 @@ __weak void HAL_TIMEx_CommutationCallback(TIM_HandleTypeDef *htim)
   */
 __weak void HAL_TIMEx_BreakCallback(TIM_HandleTypeDef *htim)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(htim);
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_TIMEx_BreakCallback could be implemented in the user file
    */
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
-
 /**
   * @}
   */
@@ -1857,7 +1843,7 @@ void TIMEx_DMACommutationCplt(DMA_HandleTypeDef *hdma)
   */
 static void TIM_CCxNChannelCmd(TIM_TypeDef* TIMx, uint32_t Channel, uint32_t ChannelNState)
 {
-  uint32_t tmp = 0;
+  uint32_t tmp = 0U;
 
   /* Check the parameters */
   assert_param(IS_TIM_CC4_INSTANCE(TIMx));

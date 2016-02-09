@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f417xx.h
   * @author  MCD Application Team
-  * @version V2.3.1
-  * @date    03-April-2015
+  * @version V2.4.2
+  * @date    13-November-2015
   * @brief   CMSIS STM32F417xx Device Peripheral Access Layer Header File.
   *
   *          This file contains:
@@ -3598,6 +3598,10 @@ USB_OTG_HostChannelTypeDef;
 #define  FSMC_BCR1_WAITEN                    ((uint32_t)0x00002000)        /*!<Wait enable bit                        */
 #define  FSMC_BCR1_EXTMOD                    ((uint32_t)0x00004000)        /*!<Extended mode enable                   */
 #define  FSMC_BCR1_ASYNCWAIT                 ((uint32_t)0x00008000)        /*!<Asynchronous wait                      */
+#define  FSMC_BCR1_CPSIZE                    ((uint32_t)0x00070000)        /*!<CRAM page size */
+#define  FSMC_BCR1_CPSIZE_0                  ((uint32_t)0x00010000)        /*!<Bit 0 */
+#define  FSMC_BCR1_CPSIZE_1                  ((uint32_t)0x00020000)        /*!<Bit 1 */
+#define  FSMC_BCR1_CPSIZE_2                  ((uint32_t)0x00040000)        /*!<Bit 2 */
 #define  FSMC_BCR1_CBURSTRW                  ((uint32_t)0x00080000)        /*!<Write burst enable                     */
 
 /******************  Bit definition for FSMC_BCR2 register  *******************/
@@ -3621,6 +3625,10 @@ USB_OTG_HostChannelTypeDef;
 #define  FSMC_BCR2_WAITEN                    ((uint32_t)0x00002000)        /*!<Wait enable bit                        */
 #define  FSMC_BCR2_EXTMOD                    ((uint32_t)0x00004000)        /*!<Extended mode enable                   */
 #define  FSMC_BCR2_ASYNCWAIT                 ((uint32_t)0x00008000)        /*!<Asynchronous wait                      */
+#define  FSMC_BCR2_CPSIZE                    ((uint32_t)0x00070000)        /*!<CRAM page size */
+#define  FSMC_BCR2_CPSIZE_0                  ((uint32_t)0x00010000)        /*!<Bit 0 */
+#define  FSMC_BCR2_CPSIZE_1                  ((uint32_t)0x00020000)        /*!<Bit 1 */
+#define  FSMC_BCR2_CPSIZE_2                  ((uint32_t)0x00040000)        /*!<Bit 2 */
 #define  FSMC_BCR2_CBURSTRW                  ((uint32_t)0x00080000)        /*!<Write burst enable                     */
 
 /******************  Bit definition for FSMC_BCR3 register  *******************/
@@ -3644,6 +3652,10 @@ USB_OTG_HostChannelTypeDef;
 #define  FSMC_BCR3_WAITEN                    ((uint32_t)0x00002000)        /*!<Wait enable bit                        */
 #define  FSMC_BCR3_EXTMOD                    ((uint32_t)0x00004000)        /*!<Extended mode enable                   */
 #define  FSMC_BCR3_ASYNCWAIT                 ((uint32_t)0x00008000)        /*!<Asynchronous wait                      */
+#define  FSMC_BCR3_CPSIZE                    ((uint32_t)0x00070000)        /*!<CRAM page size */
+#define  FSMC_BCR3_CPSIZE_0                  ((uint32_t)0x00010000)        /*!<Bit 0 */
+#define  FSMC_BCR3_CPSIZE_1                  ((uint32_t)0x00020000)        /*!<Bit 1 */
+#define  FSMC_BCR3_CPSIZE_2                  ((uint32_t)0x00040000)        /*!<Bit 2 */
 #define  FSMC_BCR3_CBURSTRW                  ((uint32_t)0x00080000)        /*!<Write burst enable                     */
 
 /******************  Bit definition for FSMC_BCR4 register  *******************/
@@ -3667,6 +3679,10 @@ USB_OTG_HostChannelTypeDef;
 #define  FSMC_BCR4_WAITEN                    ((uint32_t)0x00002000)        /*!<Wait enable bit                        */
 #define  FSMC_BCR4_EXTMOD                    ((uint32_t)0x00004000)        /*!<Extended mode enable                   */
 #define  FSMC_BCR4_ASYNCWAIT                 ((uint32_t)0x00008000)        /*!<Asynchronous wait                      */
+#define  FSMC_BCR4_CPSIZE                    ((uint32_t)0x00070000)        /*!<CRAM page size */
+#define  FSMC_BCR4_CPSIZE_0                  ((uint32_t)0x00010000)        /*!<Bit 0 */
+#define  FSMC_BCR4_CPSIZE_1                  ((uint32_t)0x00020000)        /*!<Bit 1 */
+#define  FSMC_BCR4_CPSIZE_2                  ((uint32_t)0x00040000)        /*!<Bit 2 */
 #define  FSMC_BCR4_CBURSTRW                  ((uint32_t)0x00080000)        /*!<Write burst enable                     */
 
 /******************  Bit definition for FSMC_BTR1 register  ******************/
@@ -3682,11 +3698,15 @@ USB_OTG_HostChannelTypeDef;
 #define  FSMC_BTR1_ADDHLD_2                  ((uint32_t)0x00000040)        /*!<Bit 2 */
 #define  FSMC_BTR1_ADDHLD_3                  ((uint32_t)0x00000080)        /*!<Bit 3 */
 
-#define  FSMC_BTR1_DATAST                    ((uint32_t)0x0000FF00)        /*!<DATAST [3:0] bits (Data-phase duration) */
+#define  FSMC_BTR1_DATAST                    ((uint32_t)0x0000FF00)        /*!<DATAST [7:0] bits (Data-phase duration) */
 #define  FSMC_BTR1_DATAST_0                  ((uint32_t)0x00000100)        /*!<Bit 0 */
 #define  FSMC_BTR1_DATAST_1                  ((uint32_t)0x00000200)        /*!<Bit 1 */
 #define  FSMC_BTR1_DATAST_2                  ((uint32_t)0x00000400)        /*!<Bit 2 */
 #define  FSMC_BTR1_DATAST_3                  ((uint32_t)0x00000800)        /*!<Bit 3 */
+#define  FSMC_BTR1_DATAST_4                  ((uint32_t)0x00001000)        /*!<Bit 4 */
+#define  FSMC_BTR1_DATAST_5                  ((uint32_t)0x00002000)        /*!<Bit 5 */
+#define  FSMC_BTR1_DATAST_6                  ((uint32_t)0x00004000)        /*!<Bit 6 */
+#define  FSMC_BTR1_DATAST_7                  ((uint32_t)0x00008000)        /*!<Bit 7 */
 
 #define  FSMC_BTR1_BUSTURN                   ((uint32_t)0x000F0000)        /*!<BUSTURN[3:0] bits (Bus turnaround phase duration) */
 #define  FSMC_BTR1_BUSTURN_0                 ((uint32_t)0x00010000)        /*!<Bit 0 */
@@ -3723,11 +3743,15 @@ USB_OTG_HostChannelTypeDef;
 #define  FSMC_BTR2_ADDHLD_2                  ((uint32_t)0x00000040)        /*!<Bit 2 */
 #define  FSMC_BTR2_ADDHLD_3                  ((uint32_t)0x00000080)        /*!<Bit 3 */
 
-#define  FSMC_BTR2_DATAST                    ((uint32_t)0x0000FF00)        /*!<DATAST [3:0] bits (Data-phase duration) */
+#define  FSMC_BTR2_DATAST                    ((uint32_t)0x0000FF00)        /*!<DATAST [7:0] bits (Data-phase duration) */
 #define  FSMC_BTR2_DATAST_0                  ((uint32_t)0x00000100)        /*!<Bit 0 */
 #define  FSMC_BTR2_DATAST_1                  ((uint32_t)0x00000200)        /*!<Bit 1 */
 #define  FSMC_BTR2_DATAST_2                  ((uint32_t)0x00000400)        /*!<Bit 2 */
 #define  FSMC_BTR2_DATAST_3                  ((uint32_t)0x00000800)        /*!<Bit 3 */
+#define  FSMC_BTR2_DATAST_4                  ((uint32_t)0x00001000)        /*!<Bit 4 */
+#define  FSMC_BTR2_DATAST_5                  ((uint32_t)0x00002000)        /*!<Bit 5 */
+#define  FSMC_BTR2_DATAST_6                  ((uint32_t)0x00004000)        /*!<Bit 6 */
+#define  FSMC_BTR2_DATAST_7                  ((uint32_t)0x00008000)        /*!<Bit 7 */
 
 #define  FSMC_BTR2_BUSTURN                   ((uint32_t)0x000F0000)        /*!<BUSTURN[3:0] bits (Bus turnaround phase duration) */
 #define  FSMC_BTR2_BUSTURN_0                 ((uint32_t)0x00010000)        /*!<Bit 0 */
@@ -3764,11 +3788,15 @@ USB_OTG_HostChannelTypeDef;
 #define  FSMC_BTR3_ADDHLD_2                  ((uint32_t)0x00000040)        /*!<Bit 2 */
 #define  FSMC_BTR3_ADDHLD_3                  ((uint32_t)0x00000080)        /*!<Bit 3 */
 
-#define  FSMC_BTR3_DATAST                    ((uint32_t)0x0000FF00)        /*!<DATAST [3:0] bits (Data-phase duration) */
+#define  FSMC_BTR3_DATAST                    ((uint32_t)0x0000FF00)        /*!<DATAST [7:0] bits (Data-phase duration) */
 #define  FSMC_BTR3_DATAST_0                  ((uint32_t)0x00000100)        /*!<Bit 0 */
 #define  FSMC_BTR3_DATAST_1                  ((uint32_t)0x00000200)        /*!<Bit 1 */
 #define  FSMC_BTR3_DATAST_2                  ((uint32_t)0x00000400)        /*!<Bit 2 */
 #define  FSMC_BTR3_DATAST_3                  ((uint32_t)0x00000800)        /*!<Bit 3 */
+#define  FSMC_BTR3_DATAST_4                  ((uint32_t)0x00001000)        /*!<Bit 4 */
+#define  FSMC_BTR3_DATAST_5                  ((uint32_t)0x00002000)        /*!<Bit 5 */
+#define  FSMC_BTR3_DATAST_6                  ((uint32_t)0x00004000)        /*!<Bit 6 */
+#define  FSMC_BTR3_DATAST_7                  ((uint32_t)0x00008000)        /*!<Bit 7 */
 
 #define  FSMC_BTR3_BUSTURN                   ((uint32_t)0x000F0000)        /*!<BUSTURN[3:0] bits (Bus turnaround phase duration) */
 #define  FSMC_BTR3_BUSTURN_0                 ((uint32_t)0x00010000)        /*!<Bit 0 */
@@ -3805,11 +3833,15 @@ USB_OTG_HostChannelTypeDef;
 #define  FSMC_BTR4_ADDHLD_2                  ((uint32_t)0x00000040)        /*!<Bit 2 */
 #define  FSMC_BTR4_ADDHLD_3                  ((uint32_t)0x00000080)        /*!<Bit 3 */
 
-#define  FSMC_BTR4_DATAST                    ((uint32_t)0x0000FF00)        /*!<DATAST [3:0] bits (Data-phase duration) */
+#define  FSMC_BTR4_DATAST                    ((uint32_t)0x0000FF00)        /*!<DATAST [7:0] bits (Data-phase duration) */
 #define  FSMC_BTR4_DATAST_0                  ((uint32_t)0x00000100)        /*!<Bit 0 */
 #define  FSMC_BTR4_DATAST_1                  ((uint32_t)0x00000200)        /*!<Bit 1 */
 #define  FSMC_BTR4_DATAST_2                  ((uint32_t)0x00000400)        /*!<Bit 2 */
 #define  FSMC_BTR4_DATAST_3                  ((uint32_t)0x00000800)        /*!<Bit 3 */
+#define  FSMC_BTR4_DATAST_4                  ((uint32_t)0x00001000)        /*!<Bit 4 */
+#define  FSMC_BTR4_DATAST_5                  ((uint32_t)0x00002000)        /*!<Bit 5 */
+#define  FSMC_BTR4_DATAST_6                  ((uint32_t)0x00004000)        /*!<Bit 6 */
+#define  FSMC_BTR4_DATAST_7                  ((uint32_t)0x00008000)        /*!<Bit 7 */
 
 #define  FSMC_BTR4_BUSTURN                   ((uint32_t)0x000F0000)        /*!<BUSTURN[3:0] bits (Bus turnaround phase duration) */
 #define  FSMC_BTR4_BUSTURN_0                 ((uint32_t)0x00010000)        /*!<Bit 0 */
@@ -3846,29 +3878,21 @@ USB_OTG_HostChannelTypeDef;
 #define  FSMC_BWTR1_ADDHLD_2                 ((uint32_t)0x00000040)        /*!<Bit 2 */
 #define  FSMC_BWTR1_ADDHLD_3                 ((uint32_t)0x00000080)        /*!<Bit 3 */
 
-#define  FSMC_BWTR1_DATAST                   ((uint32_t)0x0000FF00)        /*!<DATAST [3:0] bits (Data-phase duration) */
+#define  FSMC_BWTR1_DATAST                   ((uint32_t)0x0000FF00)        /*!<DATAST [7:0] bits (Data-phase duration) */
 #define  FSMC_BWTR1_DATAST_0                 ((uint32_t)0x00000100)        /*!<Bit 0 */
 #define  FSMC_BWTR1_DATAST_1                 ((uint32_t)0x00000200)        /*!<Bit 1 */
 #define  FSMC_BWTR1_DATAST_2                 ((uint32_t)0x00000400)        /*!<Bit 2 */
 #define  FSMC_BWTR1_DATAST_3                 ((uint32_t)0x00000800)        /*!<Bit 3 */
+#define  FSMC_BWTR1_DATAST_4                 ((uint32_t)0x00001000)        /*!<Bit 4 */
+#define  FSMC_BWTR1_DATAST_5                 ((uint32_t)0x00002000)        /*!<Bit 5 */
+#define  FSMC_BWTR1_DATAST_6                 ((uint32_t)0x00004000)        /*!<Bit 6 */
+#define  FSMC_BWTR1_DATAST_7                 ((uint32_t)0x00008000)        /*!<Bit 7 */
 
 #define  FSMC_BWTR1_BUSTURN                  ((uint32_t)0x000F0000)        /*!<BUSTURN[3:0] bits (Bus turnaround duration) */
 #define  FSMC_BWTR1_BUSTURN_0                ((uint32_t)0x00010000)        /*!<Bit 0 */
 #define  FSMC_BWTR1_BUSTURN_1                ((uint32_t)0x00020000)        /*!<Bit 1 */
 #define  FSMC_BWTR1_BUSTURN_2                ((uint32_t)0x00040000)        /*!<Bit 2 */
 #define  FSMC_BWTR1_BUSTURN_3                ((uint32_t)0x00080000)        /*!<Bit 3 */
-
-#define  FSMC_BWTR1_CLKDIV                   ((uint32_t)0x00F00000)        /*!<CLKDIV[3:0] bits (Clock divide ratio) */
-#define  FSMC_BWTR1_CLKDIV_0                 ((uint32_t)0x00100000)        /*!<Bit 0 */
-#define  FSMC_BWTR1_CLKDIV_1                 ((uint32_t)0x00200000)        /*!<Bit 1 */
-#define  FSMC_BWTR1_CLKDIV_2                 ((uint32_t)0x00400000)        /*!<Bit 2 */
-#define  FSMC_BWTR1_CLKDIV_3                 ((uint32_t)0x00800000)        /*!<Bit 3 */
-
-#define  FSMC_BWTR1_DATLAT                   ((uint32_t)0x0F000000)        /*!<DATLA[3:0] bits (Data latency) */
-#define  FSMC_BWTR1_DATLAT_0                 ((uint32_t)0x01000000)        /*!<Bit 0 */
-#define  FSMC_BWTR1_DATLAT_1                 ((uint32_t)0x02000000)        /*!<Bit 1 */
-#define  FSMC_BWTR1_DATLAT_2                 ((uint32_t)0x04000000)        /*!<Bit 2 */
-#define  FSMC_BWTR1_DATLAT_3                 ((uint32_t)0x08000000)        /*!<Bit 3 */
 
 #define  FSMC_BWTR1_ACCMOD                   ((uint32_t)0x30000000)        /*!<ACCMOD[1:0] bits (Access mode) */
 #define  FSMC_BWTR1_ACCMOD_0                 ((uint32_t)0x10000000)        /*!<Bit 0 */
@@ -3887,29 +3911,21 @@ USB_OTG_HostChannelTypeDef;
 #define  FSMC_BWTR2_ADDHLD_2                 ((uint32_t)0x00000040)        /*!<Bit 2 */
 #define  FSMC_BWTR2_ADDHLD_3                 ((uint32_t)0x00000080)        /*!<Bit 3 */
 
-#define  FSMC_BWTR2_DATAST                   ((uint32_t)0x0000FF00)        /*!<DATAST [3:0] bits (Data-phase duration) */
+#define  FSMC_BWTR2_DATAST                   ((uint32_t)0x0000FF00)        /*!<DATAST [7:0] bits (Data-phase duration) */
 #define  FSMC_BWTR2_DATAST_0                 ((uint32_t)0x00000100)        /*!<Bit 0 */
 #define  FSMC_BWTR2_DATAST_1                 ((uint32_t)0x00000200)        /*!<Bit 1 */
 #define  FSMC_BWTR2_DATAST_2                 ((uint32_t)0x00000400)        /*!<Bit 2 */
 #define  FSMC_BWTR2_DATAST_3                 ((uint32_t)0x00000800)        /*!<Bit 3 */
+#define  FSMC_BWTR2_DATAST_4                 ((uint32_t)0x00001000)        /*!<Bit 4 */
+#define  FSMC_BWTR2_DATAST_5                 ((uint32_t)0x00002000)        /*!<Bit 5 */
+#define  FSMC_BWTR2_DATAST_6                 ((uint32_t)0x00004000)        /*!<Bit 6 */
+#define  FSMC_BWTR2_DATAST_7                 ((uint32_t)0x00008000)        /*!<Bit 7 */
 
 #define  FSMC_BWTR2_BUSTURN                  ((uint32_t)0x000F0000)        /*!<BUSTURN[3:0] bits (Bus turnaround duration) */
 #define  FSMC_BWTR2_BUSTURN_0                ((uint32_t)0x00010000)        /*!<Bit 0 */
 #define  FSMC_BWTR2_BUSTURN_1                ((uint32_t)0x00020000)        /*!<Bit 1 */
 #define  FSMC_BWTR2_BUSTURN_2                ((uint32_t)0x00040000)        /*!<Bit 2 */
 #define  FSMC_BWTR2_BUSTURN_3                ((uint32_t)0x00080000)        /*!<Bit 3 */
-
-#define  FSMC_BWTR2_CLKDIV                   ((uint32_t)0x00F00000)        /*!<CLKDIV[3:0] bits (Clock divide ratio) */
-#define  FSMC_BWTR2_CLKDIV_0                 ((uint32_t)0x00100000)        /*!<Bit 0 */
-#define  FSMC_BWTR2_CLKDIV_1                 ((uint32_t)0x00200000)        /*!<Bit 1*/
-#define  FSMC_BWTR2_CLKDIV_2                 ((uint32_t)0x00400000)        /*!<Bit 2 */
-#define  FSMC_BWTR2_CLKDIV_3                 ((uint32_t)0x00800000)        /*!<Bit 3 */
-
-#define  FSMC_BWTR2_DATLAT                   ((uint32_t)0x0F000000)        /*!<DATLA[3:0] bits (Data latency) */
-#define  FSMC_BWTR2_DATLAT_0                 ((uint32_t)0x01000000)        /*!<Bit 0 */
-#define  FSMC_BWTR2_DATLAT_1                 ((uint32_t)0x02000000)        /*!<Bit 1 */
-#define  FSMC_BWTR2_DATLAT_2                 ((uint32_t)0x04000000)        /*!<Bit 2 */
-#define  FSMC_BWTR2_DATLAT_3                 ((uint32_t)0x08000000)        /*!<Bit 3 */
 
 #define  FSMC_BWTR2_ACCMOD                   ((uint32_t)0x30000000)        /*!<ACCMOD[1:0] bits (Access mode) */
 #define  FSMC_BWTR2_ACCMOD_0                 ((uint32_t)0x10000000)        /*!<Bit 0 */
@@ -3928,29 +3944,21 @@ USB_OTG_HostChannelTypeDef;
 #define  FSMC_BWTR3_ADDHLD_2                 ((uint32_t)0x00000040)        /*!<Bit 2 */
 #define  FSMC_BWTR3_ADDHLD_3                 ((uint32_t)0x00000080)        /*!<Bit 3 */
 
-#define  FSMC_BWTR3_DATAST                   ((uint32_t)0x0000FF00)        /*!<DATAST [3:0] bits (Data-phase duration) */
+#define  FSMC_BWTR3_DATAST                   ((uint32_t)0x0000FF00)        /*!<DATAST [7:0] bits (Data-phase duration) */
 #define  FSMC_BWTR3_DATAST_0                 ((uint32_t)0x00000100)        /*!<Bit 0 */
 #define  FSMC_BWTR3_DATAST_1                 ((uint32_t)0x00000200)        /*!<Bit 1 */
 #define  FSMC_BWTR3_DATAST_2                 ((uint32_t)0x00000400)        /*!<Bit 2 */
 #define  FSMC_BWTR3_DATAST_3                 ((uint32_t)0x00000800)        /*!<Bit 3 */
+#define  FSMC_BWTR3_DATAST_4                 ((uint32_t)0x00001000)        /*!<Bit 4 */
+#define  FSMC_BWTR3_DATAST_5                 ((uint32_t)0x00002000)        /*!<Bit 5 */
+#define  FSMC_BWTR3_DATAST_6                 ((uint32_t)0x00004000)        /*!<Bit 6 */
+#define  FSMC_BWTR3_DATAST_7                 ((uint32_t)0x00008000)        /*!<Bit 7 */
 
 #define  FSMC_BWTR3_BUSTURN                  ((uint32_t)0x000F0000)        /*!<BUSTURN[3:0] bits (Bus turnaround duration) */
 #define  FSMC_BWTR3_BUSTURN_0                ((uint32_t)0x00010000)        /*!<Bit 0 */
 #define  FSMC_BWTR3_BUSTURN_1                ((uint32_t)0x00020000)        /*!<Bit 1 */
 #define  FSMC_BWTR3_BUSTURN_2                ((uint32_t)0x00040000)        /*!<Bit 2 */
 #define  FSMC_BWTR3_BUSTURN_3                ((uint32_t)0x00080000)        /*!<Bit 3 */
-
-#define  FSMC_BWTR3_CLKDIV                   ((uint32_t)0x00F00000)        /*!<CLKDIV[3:0] bits (Clock divide ratio) */
-#define  FSMC_BWTR3_CLKDIV_0                 ((uint32_t)0x00100000)        /*!<Bit 0 */
-#define  FSMC_BWTR3_CLKDIV_1                 ((uint32_t)0x00200000)        /*!<Bit 1 */
-#define  FSMC_BWTR3_CLKDIV_2                 ((uint32_t)0x00400000)        /*!<Bit 2 */
-#define  FSMC_BWTR3_CLKDIV_3                 ((uint32_t)0x00800000)        /*!<Bit 3 */
-
-#define  FSMC_BWTR3_DATLAT                   ((uint32_t)0x0F000000)        /*!<DATLA[3:0] bits (Data latency) */
-#define  FSMC_BWTR3_DATLAT_0                 ((uint32_t)0x01000000)        /*!<Bit 0 */
-#define  FSMC_BWTR3_DATLAT_1                 ((uint32_t)0x02000000)        /*!<Bit 1 */
-#define  FSMC_BWTR3_DATLAT_2                 ((uint32_t)0x04000000)        /*!<Bit 2 */
-#define  FSMC_BWTR3_DATLAT_3                 ((uint32_t)0x08000000)        /*!<Bit 3 */
 
 #define  FSMC_BWTR3_ACCMOD                   ((uint32_t)0x30000000)        /*!<ACCMOD[1:0] bits (Access mode) */
 #define  FSMC_BWTR3_ACCMOD_0                 ((uint32_t)0x10000000)        /*!<Bit 0 */
@@ -3969,29 +3977,21 @@ USB_OTG_HostChannelTypeDef;
 #define  FSMC_BWTR4_ADDHLD_2                 ((uint32_t)0x00000040)        /*!<Bit 2 */
 #define  FSMC_BWTR4_ADDHLD_3                 ((uint32_t)0x00000080)        /*!<Bit 3 */
 
-#define  FSMC_BWTR4_DATAST                   ((uint32_t)0x0000FF00)        /*!<DATAST [3:0] bits (Data-phase duration) */
+#define  FSMC_BWTR4_DATAST                   ((uint32_t)0x0000FF00)        /*!<DATAST [7:0] bits (Data-phase duration) */
 #define  FSMC_BWTR4_DATAST_0                 ((uint32_t)0x00000100)        /*!<Bit 0 */
 #define  FSMC_BWTR4_DATAST_1                 ((uint32_t)0x00000200)        /*!<Bit 1 */
 #define  FSMC_BWTR4_DATAST_2                 ((uint32_t)0x00000400)        /*!<Bit 2 */
 #define  FSMC_BWTR4_DATAST_3                 ((uint32_t)0x00000800)        /*!<Bit 3 */
+#define  FSMC_BWTR4_DATAST_4                 ((uint32_t)0x00001000)        /*!<Bit 4 */
+#define  FSMC_BWTR4_DATAST_5                 ((uint32_t)0x00002000)        /*!<Bit 5 */
+#define  FSMC_BWTR4_DATAST_6                 ((uint32_t)0x00004000)        /*!<Bit 6 */
+#define  FSMC_BWTR4_DATAST_7                 ((uint32_t)0x00008000)        /*!<Bit 7 */
 
 #define  FSMC_BWTR4_BUSTURN                  ((uint32_t)0x000F0000)        /*!<BUSTURN[3:0] bits (Bus turnaround duration) */
 #define  FSMC_BWTR4_BUSTURN_0                ((uint32_t)0x00010000)        /*!<Bit 0 */
 #define  FSMC_BWTR4_BUSTURN_1                ((uint32_t)0x00020000)        /*!<Bit 1 */
 #define  FSMC_BWTR4_BUSTURN_2                ((uint32_t)0x00040000)        /*!<Bit 2 */
 #define  FSMC_BWTR4_BUSTURN_3                ((uint32_t)0x00080000)        /*!<Bit 3 */
-
-#define  FSMC_BWTR4_CLKDIV                   ((uint32_t)0x00F00000)        /*!<CLKDIV[3:0] bits (Clock divide ratio) */
-#define  FSMC_BWTR4_CLKDIV_0                 ((uint32_t)0x00100000)        /*!<Bit 0 */
-#define  FSMC_BWTR4_CLKDIV_1                 ((uint32_t)0x00200000)        /*!<Bit 1 */
-#define  FSMC_BWTR4_CLKDIV_2                 ((uint32_t)0x00400000)        /*!<Bit 2 */
-#define  FSMC_BWTR4_CLKDIV_3                 ((uint32_t)0x00800000)        /*!<Bit 3 */
-
-#define  FSMC_BWTR4_DATLAT                   ((uint32_t)0x0F000000)        /*!<DATLA[3:0] bits (Data latency) */
-#define  FSMC_BWTR4_DATLAT_0                 ((uint32_t)0x01000000)        /*!<Bit 0 */
-#define  FSMC_BWTR4_DATLAT_1                 ((uint32_t)0x02000000)        /*!<Bit 1 */
-#define  FSMC_BWTR4_DATLAT_2                 ((uint32_t)0x04000000)        /*!<Bit 2 */
-#define  FSMC_BWTR4_DATLAT_3                 ((uint32_t)0x08000000)        /*!<Bit 3 */
 
 #define  FSMC_BWTR4_ACCMOD                   ((uint32_t)0x30000000)        /*!<ACCMOD[1:0] bits (Access mode) */
 #define  FSMC_BWTR4_ACCMOD_0                 ((uint32_t)0x10000000)        /*!<Bit 0 */
@@ -4767,17 +4767,27 @@ USB_OTG_HostChannelTypeDef;
 #define HASH_CR_LKEY                         ((uint32_t)0x00010000)
 
 /******************  Bits definition for HASH_STR register  *******************/
-#define HASH_STR_NBW                         ((uint32_t)0x0000001F)
-#define HASH_STR_NBW_0                       ((uint32_t)0x00000001)
-#define HASH_STR_NBW_1                       ((uint32_t)0x00000002)
-#define HASH_STR_NBW_2                       ((uint32_t)0x00000004)
-#define HASH_STR_NBW_3                       ((uint32_t)0x00000008)
-#define HASH_STR_NBW_4                       ((uint32_t)0x00000010)
+#define HASH_STR_NBLW                        ((uint32_t)0x0000001F)
+#define HASH_STR_NBLW_0                      ((uint32_t)0x00000001)
+#define HASH_STR_NBLW_1                      ((uint32_t)0x00000002)
+#define HASH_STR_NBLW_2                      ((uint32_t)0x00000004)
+#define HASH_STR_NBLW_3                      ((uint32_t)0x00000008)
+#define HASH_STR_NBLW_4                      ((uint32_t)0x00000010)
 #define HASH_STR_DCAL                        ((uint32_t)0x00000100)
+/* Aliases for HASH_STR register */
+#define HASH_STR_NBW                         HASH_STR_NBLW
+#define HASH_STR_NBW_0                       HASH_STR_NBLW_0
+#define HASH_STR_NBW_1                       HASH_STR_NBLW_1
+#define HASH_STR_NBW_2                       HASH_STR_NBLW_2
+#define HASH_STR_NBW_3                       HASH_STR_NBLW_3
+#define HASH_STR_NBW_4                       HASH_STR_NBLW_4
 
 /******************  Bits definition for HASH_IMR register  *******************/
-#define HASH_IMR_DINIM                       ((uint32_t)0x00000001)
-#define HASH_IMR_DCIM                        ((uint32_t)0x00000002)
+#define HASH_IMR_DINIE                       ((uint32_t)0x00000001)
+#define HASH_IMR_DCIE                        ((uint32_t)0x00000002)
+/* Aliases for HASH_IMR register */
+#define HASH_IMR_DINIM                       HASH_IMR_DINIE
+#define HASH_IMR_DCIM                        HASH_IMR_DCIE
 
 /******************  Bits definition for HASH_SR register  ********************/
 #define HASH_SR_DINIS                        ((uint32_t)0x00000001)
@@ -8178,6 +8188,15 @@ USB_OTG_HostChannelTypeDef;
                                     ((INSTANCE) == UART4)  || \
                                     ((INSTANCE) == UART5)  || \
                                     ((INSTANCE) == USART6))     
+
+/*********************** PCD Instances ****************************************/
+/*********************** PCD Instances ****************************************/
+#define IS_PCD_ALL_INSTANCE(INSTANCE) (((INSTANCE) == USB_OTG_FS) || \
+                                        ((INSTANCE) == USB_OTG_HS))
+
+/*********************** HCD Instances ****************************************/
+#define IS_HCD_ALL_INSTANCE(INSTANCE) (((INSTANCE) == USB_OTG_FS) || \
+                                       ((INSTANCE) == USB_OTG_HS))
 
 /****************************** IWDG Instances ********************************/
 #define IS_IWDG_ALL_INSTANCE(INSTANCE)  ((INSTANCE) == IWDG)

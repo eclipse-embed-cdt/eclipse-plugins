@@ -1,6 +1,6 @@
 //
-// This file is part of the µOS++ III distribution.
-// Copyright (c) 2014 Liviu Ionescu.
+// Copyright (c) 2015 Liviu Ionescu.
+// This file is part of the xPacks project (https://xpacks.github.io).
 //
 
 #ifndef STM32F4_CMSIS_DEVICE_H_

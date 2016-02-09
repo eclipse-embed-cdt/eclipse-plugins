@@ -2,7 +2,7 @@
 <feature
       id="ilg.gnuarmeclipse.debug.gdbjtag.qemu"
       label="%featureName"
-      version="2.1.2.qualifier"
+      version="2.1.3.qualifier"
       provider-name="%providerName"
       plugin="ilg.gnuarmeclipse.debug.gdbjtag.qemu">
 

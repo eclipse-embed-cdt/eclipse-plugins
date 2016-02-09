@@ -2,13 +2,13 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_hcd.h
   * @author  MCD Application Team
-  * @version V1.3.1
-  * @date    25-March-2015
+  * @version V1.4.4
+  * @date    22-January-2016
   * @brief   Header file of HCD HAL module.
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -42,7 +42,10 @@
 #ifdef __cplusplus
  extern "C" {
 #endif
-
+#if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) || \
+    defined(STM32F427xx) || defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || \
+    defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE) || defined(STM32F446xx) || \
+    defined(STM32F469xx) || defined(STM32F479xx)
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_ll_usb.h"
    
@@ -50,8 +53,7 @@
   * @{
   */
 
-/** @defgroup HCD HCD
-  * @brief HCD HAL module driver
+/** @addtogroup HCD
   * @{
   */
 
@@ -65,11 +67,11 @@
   */
 typedef enum 
 {
-  HAL_HCD_STATE_RESET    = 0x00,
-  HAL_HCD_STATE_READY    = 0x01,
-  HAL_HCD_STATE_ERROR    = 0x02,
-  HAL_HCD_STATE_BUSY     = 0x03,
-  HAL_HCD_STATE_TIMEOUT  = 0x04
+  HAL_HCD_STATE_RESET    = 0x00U,
+  HAL_HCD_STATE_READY    = 0x01U,
+  HAL_HCD_STATE_ERROR    = 0x02U,
+  HAL_HCD_STATE_BUSY     = 0x03U,
+  HAL_HCD_STATE_TIMEOUT  = 0x04U
 } HCD_StateTypeDef;
 
 typedef USB_OTG_GlobalTypeDef   HCD_TypeDef;
@@ -99,18 +101,19 @@ typedef struct
 
 /**
   * @}
-  */ 
+  */
 
 /* Exported constants --------------------------------------------------------*/
 /** @defgroup HCD_Exported_Constants HCD Exported Constants
   * @{
   */
+
 /** @defgroup HCD_Speed HCD Speed
   * @{
   */
-#define HCD_SPEED_HIGH               0
-#define HCD_SPEED_LOW                2  
-#define HCD_SPEED_FULL               3
+#define HCD_SPEED_HIGH               0U
+#define HCD_SPEED_LOW                2U
+#define HCD_SPEED_FULL               3U
 /**
   * @}
   */
@@ -118,8 +121,8 @@ typedef struct
 /** @defgroup HCD_PHY_Module HCD PHY Module
   * @{
   */
-#define HCD_PHY_ULPI                 1
-#define HCD_PHY_EMBEDDED             2
+#define HCD_PHY_ULPI                 1U
+#define HCD_PHY_EMBEDDED             2U
 /**
   * @}
   */
@@ -138,7 +141,7 @@ typedef struct
    
 #define __HAL_HCD_GET_FLAG(__HANDLE__, __INTERRUPT__)      ((USB_ReadInterrupts((__HANDLE__)->Instance) & (__INTERRUPT__)) == (__INTERRUPT__))
 #define __HAL_HCD_CLEAR_FLAG(__HANDLE__, __INTERRUPT__)    (((__HANDLE__)->Instance->GINTSTS) = (__INTERRUPT__))
-#define __HAL_HCD_IS_INVALID_INTERRUPT(__HANDLE__)         (USB_ReadInterrupts((__HANDLE__)->Instance) == 0)    
+#define __HAL_HCD_IS_INVALID_INTERRUPT(__HANDLE__)         (USB_ReadInterrupts((__HANDLE__)->Instance) == 0U)    
   
 #define __HAL_HCD_CLEAR_HC_INT(chnum, __INTERRUPT__)  (USBx_HC(chnum)->HCINT = (__INTERRUPT__)) 
 #define __HAL_HCD_MASK_HALT_HC_INT(chnum)             (USBx_HC(chnum)->HCINTMSK &= ~USB_OTG_HCINTMSK_CHHM) 
@@ -150,11 +153,12 @@ typedef struct
   */
 
 /* Exported functions --------------------------------------------------------*/
-/** @defgroup HCD_Exported_Functions HCD Exported Functions
+/** @addtogroup HCD_Exported_Functions HCD Exported Functions
   * @{
   */
 
-/** @defgroup HCD_Exported_Functions_Group1 Initialization and de-initialization functions
+/* Initialization/de-initialization functions  ********************************/
+/** @addtogroup HCD_Exported_Functions_Group1 Initialization and de-initialization functions
   * @{
   */
 HAL_StatusTypeDef   HAL_HCD_Init(HCD_HandleTypeDef *hhcd);
@@ -168,13 +172,15 @@ HAL_StatusTypeDef   HAL_HCD_HC_Init(HCD_HandleTypeDef *hhcd,
                                     uint16_t mps);
 
 HAL_StatusTypeDef   HAL_HCD_HC_Halt(HCD_HandleTypeDef *hhcd, uint8_t ch_num);
+
 void                HAL_HCD_MspInit(HCD_HandleTypeDef *hhcd);
 void                HAL_HCD_MspDeInit(HCD_HandleTypeDef *hhcd);
 /**
   * @}
   */
 
-/** @defgroup HCD_Exported_Functions_Group2 IO operation functions
+/* I/O operation functions  ***************************************************/
+/** @addtogroup HCD_Exported_Functions_Group2 Input and Output operation functions
   * @{
   */
 HAL_StatusTypeDef   HAL_HCD_HC_SubmitRequest(HCD_HandleTypeDef *hhcd,
@@ -198,7 +204,8 @@ void                HAL_HCD_HC_NotifyURBChange_Callback(HCD_HandleTypeDef *hhcd,
   * @}
   */
 
-/** @defgroup HCD_Exported_Functions_Group3 Peripheral Control functions
+/* Peripheral Control functions  **********************************************/
+/** @addtogroup HCD_Exported_Functions_Group3 Peripheral Control functions
   * @{
   */
 HAL_StatusTypeDef   HAL_HCD_ResetPort(HCD_HandleTypeDef *hhcd);
@@ -208,7 +215,8 @@ HAL_StatusTypeDef   HAL_HCD_Stop(HCD_HandleTypeDef *hhcd);
   * @}
   */
 
-/** @defgroup HCD_Exported_Functions_Group4 Peripheral State functions
+/* Peripheral State functions  ************************************************/
+/** @addtogroup HCD_Exported_Functions_Group4 Peripheral State functions
   * @{
   */
 HCD_StateTypeDef    HAL_HCD_GetState(HCD_HandleTypeDef *hhcd);
@@ -229,37 +237,6 @@ uint32_t            HAL_HCD_GetCurrentSpeed(HCD_HandleTypeDef *hhcd);
 /** @defgroup HCD_Private_Macros HCD Private Macros
  * @{
  */
-/** @defgroup HCD_Instance_definition HCD Instance definition
-  * @{
-  */
-#if defined(STM32F405xx) || defined(STM32F415xx) || defined(STM32F407xx) || defined(STM32F417xx) || defined(STM32F427xx) ||\
-    defined(STM32F437xx) || defined(STM32F429xx) || defined(STM32F439xx) || defined(STM32F446xx)
- #define IS_HCD_ALL_INSTANCE(INSTANCE) (((INSTANCE) == USB_OTG_FS) || \
-                                        ((INSTANCE) == USB_OTG_HS))
-#elif defined(STM32F401xC) || defined(STM32F401xE) || defined(STM32F411xE)
- #define IS_HCD_ALL_INSTANCE(INSTANCE) (((INSTANCE) == USB_OTG_FS))
-#endif
-/**
-  * @}
-  */
-
-/**
-  * @}
-  */
-
-/* Private functions prototypes ----------------------------------------------*/
-/** @defgroup HCD_Private_Functions_Prototypes HCD Private Functions Prototypes
-  * @{
-  */
-
-/**
-  * @}
-  */
-
-/* Private functions ---------------------------------------------------------*/
-/** @defgroup HCD_Private_Functions HCD Private Functions
-  * @{
-  */
 
 /**
   * @}
@@ -272,7 +249,8 @@ uint32_t            HAL_HCD_GetCurrentSpeed(HCD_HandleTypeDef *hhcd);
 /**
   * @}
   */ 
-
+#endif /* STM32F405xx || STM32F415xx || STM32F407xx || STM32F417xx || STM32F427xx || STM32F437xx || STM32F429xx || STM32F439xx ||
+          STM32F401xC || STM32F401xE || STM32F411xE || STM32F446xx || STM32F469xx || STM32F479xx */
 #ifdef __cplusplus
 }
 #endif

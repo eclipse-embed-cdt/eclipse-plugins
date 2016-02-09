@@ -12,6 +12,7 @@
 package ilg.gnuarmeclipse.debug.gdbjtag.dsf;
 
 import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IGdbServerBackendService;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IGnuArmDebuggerCommandsService;
 import ilg.gnuarmeclipse.debug.gdbjtag.services.IPeripheralMemoryService;
@@ -112,7 +113,7 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 					+ session + "," + config.getName() + ") " + this);
 		}
 
-		if (GDB_7_4_VERSION.compareTo(fVersion) <= 0) {
+		if (DebugUtils.compareVersions(GDB_7_4_VERSION, fVersion) <= 0) {
 			return new GnuArmControl_7_4(session, config,
 					new GnuArmCommandFactory(), fMode);
 		}
@@ -128,7 +129,7 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 					+ session + ") " + this);
 		}
 
-		if (GDB_7_2_1_VERSION.compareTo(fVersion) <= 0) {
+		if (DebugUtils.compareVersions(GDB_7_2_1_VERSION, fVersion) <= 0) {
 			return new GnuArmProcesses_7_2_1(session);
 		}
 
@@ -146,15 +147,15 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 		// return new GDBControl_7_7(session, config,
 		// new GnuArmCommandFactory());
 		// }
-		if (GDB_7_4_VERSION.compareTo(fVersion) <= 0) {
+		if (DebugUtils.compareVersions(GDB_7_4_VERSION, fVersion) <= 0) {
 			return new GDBControl_7_4(session, config,
 					new GnuArmCommandFactory());
 		}
-		if (GDB_7_2_VERSION.compareTo(fVersion) <= 0) {
+		if (DebugUtils.compareVersions(GDB_7_2_VERSION, fVersion) <= 0) {
 			return new GDBControl_7_2(session, config,
 					new GnuArmCommandFactory());
 		}
-		if (GDB_7_0_VERSION.compareTo(fVersion) <= 0) {
+		if (DebugUtils.compareVersions(GDB_7_0_VERSION, fVersion) <= 0) {
 			return new GDBControl_7_0(session, config,
 					new GnuArmCommandFactory());
 		}

@@ -42,7 +42,7 @@ assert_failed (uint8_t* file, uint32_t line);
 
 // Called from the assert_param() macro, usually defined in the stm32f*_conf.h
 void
-__attribute__((noreturn))
+__attribute__((noreturn, weak))
 assert_failed (uint8_t* file, uint32_t line)
 {
   trace_printf ("assert_param() failed: file \"%s\", line %d\n", file, line);
