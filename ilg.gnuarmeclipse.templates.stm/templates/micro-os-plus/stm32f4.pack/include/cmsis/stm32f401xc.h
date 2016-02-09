@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f401xc.h
   * @author  MCD Application Team
-  * @version V2.4.0
-  * @date    14-August-2015
+  * @version V2.4.2
+  * @date    13-November-2015
   * @brief   CMSIS STM32F401xCxx Device Peripheral Access Layer Header File.
   *
   *          This file contains:
@@ -4734,6 +4734,12 @@ USB_OTG_HostChannelTypeDef;
 #define IS_IRDA_INSTANCE(INSTANCE) (((INSTANCE) == USART1) || \
                                     ((INSTANCE) == USART2) || \
                                     ((INSTANCE) == USART6))     
+
+/*********************** PCD Instances ****************************************/
+#define IS_PCD_ALL_INSTANCE(INSTANCE) (((INSTANCE) == USB_OTG_FS))
+
+/*********************** HCD Instances ****************************************/
+#define IS_HCD_ALL_INSTANCE(INSTANCE) (((INSTANCE) == USB_OTG_FS))
 
 /****************************** IWDG Instances ********************************/
 #define IS_IWDG_ALL_INSTANCE(INSTANCE)  ((INSTANCE) == IWDG)

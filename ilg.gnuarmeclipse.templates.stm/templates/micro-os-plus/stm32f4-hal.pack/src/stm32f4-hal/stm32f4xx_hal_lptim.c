@@ -2,10 +2,9 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_lptim.c
   * @author  MCD Application Team
-  * @version V1.4.1
-  * @date    09-October-2015
-  * @brief   LPTIM HAL module driver.
-  *    
+  * @version V1.4.4
+  * @date    22-January-2016
+  * @brief   LPTIM HAL module driver. 
   *          This file provides firmware functions to manage the following 
   *          functionalities of the Low Power Timer (LPTIM) peripheral:
   *           + Initialization and de-initialization functions.
@@ -25,27 +24,27 @@
         HAL_LPTIM_MspInit():
          (##) Enable the LPTIM interface clock using __LPTIMx_CLK_ENABLE().
          (##) In case of using interrupts (e.g. HAL_LPTIM_PWM_Start_IT()):
-             (+) Configure the LPTIM interrupt priority using HAL_NVIC_SetPriority().
-             (+) Enable the LPTIM IRQ handler using HAL_NVIC_EnableIRQ().
-             (+) In LPTIM IRQ handler, call HAL_LPTIM_IRQHandler().
+             (+++) Configure the LPTIM interrupt priority using HAL_NVIC_SetPriority().
+             (+++) Enable the LPTIM IRQ handler using HAL_NVIC_EnableIRQ().
+             (+++) In LPTIM IRQ handler, call HAL_LPTIM_IRQHandler().
 
       (#)Initialize the LPTIM HAL using HAL_LPTIM_Init(). This function
          configures mainly:
          (##) The instance: LPTIM1.
          (##) Clock: the counter clock.
-                 - Source   : it can be either the ULPTIM input (IN1) or one of
+             (+++) Source   : it can be either the ULPTIM input (IN1) or one of
                               the internal clock; (APB, LSE, LSI or MSI).
-                 - Prescaler: select the clock divider.
+             (+++) Prescaler: select the clock divider.
          (##)  UltraLowPowerClock : To be used only if the ULPTIM is selected
                as counter clock source.
-                 - Polarity:   polarity of the active edge for the counter unit
+             (+++) Polarity:   polarity of the active edge for the counter unit
                                if the ULPTIM input is selected.
-                 - SampleTime: clock sampling time to configure the clock glitch
+             (+++) SampleTime: clock sampling time to configure the clock glitch
                                filter.              
          (##) Trigger: How the counter start.
-                 - Source: trigger can be software or one of the hardware triggers.
-                 - ActiveEdge : only for hardware trigger.
-                 - SampleTime : trigger sampling time to configure the trigger
+             (+++) Source: trigger can be software or one of the hardware triggers.
+             (+++) ActiveEdge : only for hardware trigger.
+             (+++) SampleTime : trigger sampling time to configure the trigger
                                 glitch filter.
          (##) OutputPolarity : 2 opposite polarities are possibles.
          (##) UpdateMode: specifies whether the update of the autoreload and
@@ -93,7 +92,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -228,7 +227,7 @@
   */
 HAL_StatusTypeDef HAL_LPTIM_Init(LPTIM_HandleTypeDef *hlptim)
 {
-  uint32_t tmpcfgr = 0;
+  uint32_t tmpcfgr = 0U;
 
   /* Check the LPTIM handle allocation */
   if(hlptim == NULL)
@@ -353,6 +352,8 @@ HAL_StatusTypeDef HAL_LPTIM_DeInit(LPTIM_HandleTypeDef *hlptim)
   */
 __weak void HAL_LPTIM_MspInit(LPTIM_HandleTypeDef *hlptim)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hlptim);
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_LPTIM_MspInit could be implemented in the user file
    */
@@ -365,6 +366,8 @@ __weak void HAL_LPTIM_MspInit(LPTIM_HandleTypeDef *hlptim)
   */
 __weak void HAL_LPTIM_MspDeInit(LPTIM_HandleTypeDef *hlptim)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hlptim);
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_LPTIM_MspDeInit could be implemented in the user file
    */
@@ -907,7 +910,7 @@ HAL_StatusTypeDef HAL_LPTIM_SetOnce_Stop_IT(LPTIM_HandleTypeDef *hlptim)
   */
 HAL_StatusTypeDef HAL_LPTIM_Encoder_Start(LPTIM_HandleTypeDef *hlptim, uint32_t Period)
 {
-  uint32_t tmpcfgr = 0;
+  uint32_t tmpcfgr = 0U;
 
   /* Check the parameters */
   assert_param(IS_LPTIM_INSTANCE(hlptim->Instance));
@@ -985,7 +988,7 @@ HAL_StatusTypeDef HAL_LPTIM_Encoder_Stop(LPTIM_HandleTypeDef *hlptim)
   */
 HAL_StatusTypeDef HAL_LPTIM_Encoder_Start_IT(LPTIM_HandleTypeDef *hlptim, uint32_t Period)
 {
-  uint32_t tmpcfgr = 0;
+  uint32_t tmpcfgr = 0U;
 
   /* Check the parameters */
   assert_param(IS_LPTIM_INSTANCE(hlptim->Instance));
@@ -1528,6 +1531,8 @@ void HAL_LPTIM_IRQHandler(LPTIM_HandleTypeDef *hlptim)
   */
 __weak void HAL_LPTIM_CompareMatchCallback(LPTIM_HandleTypeDef *hlptim)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hlptim);
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_LPTIM_CompareMatchCallback could be implemented in the user file
    */  
@@ -1540,6 +1545,8 @@ __weak void HAL_LPTIM_CompareMatchCallback(LPTIM_HandleTypeDef *hlptim)
   */
 __weak void HAL_LPTIM_AutoReloadMatchCallback(LPTIM_HandleTypeDef *hlptim)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hlptim);
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_LPTIM_AutoReloadMatchCallback could be implemented in the user file
    */  
@@ -1552,6 +1559,8 @@ __weak void HAL_LPTIM_AutoReloadMatchCallback(LPTIM_HandleTypeDef *hlptim)
   */
 __weak void HAL_LPTIM_TriggerCallback(LPTIM_HandleTypeDef *hlptim)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hlptim);
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_LPTIM_TriggerCallback could be implemented in the user file
    */  
@@ -1564,6 +1573,8 @@ __weak void HAL_LPTIM_TriggerCallback(LPTIM_HandleTypeDef *hlptim)
   */
 __weak void HAL_LPTIM_CompareWriteCallback(LPTIM_HandleTypeDef *hlptim)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hlptim);
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_LPTIM_CompareWriteCallback could be implemented in the user file
    */  
@@ -1576,6 +1587,8 @@ __weak void HAL_LPTIM_CompareWriteCallback(LPTIM_HandleTypeDef *hlptim)
   */
 __weak void HAL_LPTIM_AutoReloadWriteCallback(LPTIM_HandleTypeDef *hlptim)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hlptim);
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_LPTIM_AutoReloadWriteCallback could be implemented in the user file
    */  
@@ -1588,6 +1601,8 @@ __weak void HAL_LPTIM_AutoReloadWriteCallback(LPTIM_HandleTypeDef *hlptim)
   */
 __weak void HAL_LPTIM_DirectionUpCallback(LPTIM_HandleTypeDef *hlptim)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hlptim);
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_LPTIM_DirectionUpCallback could be implemented in the user file
    */  
@@ -1600,6 +1615,8 @@ __weak void HAL_LPTIM_DirectionUpCallback(LPTIM_HandleTypeDef *hlptim)
   */
 __weak void HAL_LPTIM_DirectionDownCallback(LPTIM_HandleTypeDef *hlptim)
 {
+  /* Prevent unused argument(s) compilation warning */
+  UNUSED(hlptim);
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_LPTIM_DirectionDownCallback could be implemented in the user file
    */  
