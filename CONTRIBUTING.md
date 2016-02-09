@@ -2,7 +2,7 @@
 
 There are many ways you can contribute to this project, and all contributions are highly appreciated.
 
-## Post your findings & questions 
+## Post your findings & questions
 
 If you have interesting use cases, if you have custom configurations, and generally if you have any experience that you want to share with others, please use the [GNU ARM Eclipse forum](http://www.element14.com/community/groups/gnu-arm-eclipse).
 
@@ -27,7 +27,7 @@ When entering a new issue, be sure you provide:
 
 Please understand that without being able to reproduce the bug we cannot identify your problem.
 
-To be allowed to enter issues, you need to first login to GitHug.
+To be allowed to enter issues, you need to first login to GitHub.
 
 Note: the text should respect the markdown syntax; preview the message before posting and correct if it does not look as  expected, especially inline code or other quoted text.
 
@@ -46,9 +46,3 @@ In short, the process is something like this:
 * submit the pull request
 
 It might be necessary to first be granted _Collaborators_ access to the repository; if this is the case, please let us know your GitHub user id and access will be granted.
-
-
-
-
-
-
