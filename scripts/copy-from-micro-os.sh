@@ -168,7 +168,17 @@ cp -Rnv $src/vendors/$vendor/$device.pack/* $vendor_dest/$device.pack
 
 # --- xPacks ---
 
-xpacks_repo=../../../xPacks/xpacks-repo.git
+xpacks_repo=../../../uOS/micro-os-plus-iiie.git
+
+cp-vectors() {
+# $1 = source folder
+# $2 = destination folder
+
+  for f in $1/vectors_*.c 
+  do
+  	sed -e 's|<cmsis-plus/cortexm/exception-handlers.h>|"cortexm/ExceptionHandlers.h"|' $f >$2/$(basename $f)
+  done
+}
 
 # CMSIS core
 src=${xpacks_repo}/ilg/arm/arm-cmsis-xpack
@@ -185,7 +195,8 @@ cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Include/* $stm/stm32f4.pack/inclu
 cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Release_Notes.html $stm/stm32f4.pack/include/cmsis
 mkdir -p $stm/stm32f4.pack/src/cmsis
 cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/*.c $stm/stm32f4.pack/src/cmsis
-cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/*.c $stm/stm32f4.pack/src/cmsis
+#cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/*.c $stm/stm32f4.pack/src/cmsis
+cp-vectors $src/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/gcc/ $stm/stm32f4.pack/src/cmsis
 # cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F4xx/Source/Templates/*.md $stm/stm32f4.pack/src/cmsis
 
 # STM32F4 HAL
@@ -207,7 +218,8 @@ cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F7xx/Include/* $stm/stm32f7.pack/inclu
 cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F7xx/Release_Notes.html $stm/stm32f7.pack/include/cmsis
 mkdir -p $stm/stm32f7.pack/src/cmsis
 cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F7xx/Source/Templates/*.c $stm/stm32f7.pack/src/cmsis
-cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F7xx/Source/Templates/gcc/*.c $stm/stm32f7.pack/src/cmsis
+#cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F7xx/Source/Templates/gcc/*.c $stm/stm32f7.pack/src/cmsis
+cp-vectors $src/Drivers/CMSIS/Device/ST/STM32F7xx/Source/Templates/gcc/ $stm/stm32f7.pack/src/cmsis
 # cp -Rnv $src/Drivers/CMSIS/Device/ST/STM32F7xx/Source/Templates/*.md $stm/stm32f7.pack/src/cmsis
 
 # STM32F7 HAL
