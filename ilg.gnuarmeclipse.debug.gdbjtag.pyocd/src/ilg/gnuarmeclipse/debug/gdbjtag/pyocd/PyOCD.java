@@ -141,6 +141,11 @@ public class PyOCD {
 	}
 	
 	private static boolean checkOutput(JSONObject output) {
+		// Make sure we even have valid output.
+		if (output == null) {
+			return false;
+		}
+		
 		// Check version
 		if (!output.containsKey(VERSION_KEY)) {
 			System.out.printf("No data format version from pyOCD\n");
