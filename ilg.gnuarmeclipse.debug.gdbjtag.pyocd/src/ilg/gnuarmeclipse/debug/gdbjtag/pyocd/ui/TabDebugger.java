@@ -826,14 +826,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fGdbServerHaltAtHardFault.setEnabled(enabled);
 		fGdbServerStepIntoInterrupts.setEnabled(enabled);
 		fGdbServerFlashMode.setEnabled(enabled);
+		fGdbServerFlashFastVerify.setEnabled(enabled);
 
-		if (EclipseUtils.isWindows()) {
-			// Prevent disable it on Windows
-			fDoGdbServerAllocateConsole.setEnabled(false);
-		} else {
-			fDoGdbServerAllocateConsole.setEnabled(enabled);
-		}
-
+		fDoGdbServerAllocateConsole.setEnabled(enabled);
 		fDoGdbServerAllocateSemihostingConsole.setEnabled(enabled);
 			
 		// Disable remote target params when the server is started
