@@ -15,6 +15,9 @@
    <feature url="features/ilg.gnuarmeclipse.debug.gdbjtag.openocd-feature_3.2.1.qualifier.jar" id="ilg.gnuarmeclipse.debug.gdbjtag.openocd" version="3.2.1.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
+   <feature url="features/ilg.gnuarmeclipse.debug.gdbjtag.pyocd-feature_0.2.0.qualifier.jar" id="ilg.gnuarmeclipse.debug.gdbjtag.pyocd" version="0.2.0.qualifier">
+      <category name="ilg.gnuarmeclipse.category"/>
+   </feature>
    <feature url="features/ilg.gnuarmeclipse.debug.gdbjtag.qemu-feature_2.1.3.qualifier.jar" id="ilg.gnuarmeclipse.debug.gdbjtag.qemu" version="2.1.3.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
@@ -30,11 +33,8 @@
    <feature url="features/ilg.gnuarmeclipse.templates.ad-feature_1.1.3.qualifier.jar" id="ilg.gnuarmeclipse.templates.ad" version="1.1.3.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
-
-
    <feature url="features/ilg.gnuarmeclipse.codered-feature_1.1.1.qualifier.jar" id="ilg.gnuarmeclipse.codered" version="1.1.1.qualifier">
       <category name="ilg.gnuarmeclipse.category"/>
    </feature>
-
    <category-def name="ilg.gnuarmeclipse.category" label="GNU ARM C/C++ Cross Development Tools"/>
 </site>
