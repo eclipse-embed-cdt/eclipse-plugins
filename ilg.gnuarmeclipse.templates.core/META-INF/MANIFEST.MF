@@ -14,3 +14,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Eclipse-BundleShape: dir
+Bundle-ActivationPolicy: lazy
