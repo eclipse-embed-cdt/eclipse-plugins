@@ -285,7 +285,6 @@ class VersionParser implements Parser<Version> {
         int major = Integer.parseInt(numericIdentifier());
         consumeNextCharacter(DOT);
         int minor = Integer.parseInt(numericIdentifier());
-        consumeNextCharacter(DOT);
         int patch;
 		try {
 			consumeNextCharacter(DOT);
