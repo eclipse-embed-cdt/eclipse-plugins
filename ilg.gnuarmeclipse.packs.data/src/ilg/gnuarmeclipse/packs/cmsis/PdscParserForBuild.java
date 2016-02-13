@@ -22,7 +22,18 @@ import java.util.List;
 
 import org.w3c.dom.Element;
 
+import com.github.zafarkhaja.semver.Version;
+
+// Deprecated, parsing done via the intermediate tree with PdscTreeParser.
+
 public class PdscParserForBuild extends PdscParser {
+
+	// ------------------------------------------------------------------------
+
+	private Version deviceSchemaSemVer;
+	private Version boardSchemaSemVer;
+
+	// ------------------------------------------------------------------------
 
 	public PdscParserForBuild() {
 		super();
@@ -30,32 +41,30 @@ public class PdscParserForBuild extends PdscParser {
 
 	// ------------------------------------------------------------------------
 
-	public void parseDevices(Node tree) {
+	// Deprecated
+	public void _parseDevices(Node tree) {
 
 		Element packageElement = fDocument.getDocumentElement();
 		String firstElementName = packageElement.getNodeName();
 		if (!"package".equals(firstElementName)) {
-			Activator.log("Missing <package>, <" + firstElementName
-					+ "> encountered");
+			Activator.log("Missing <package>, <" + firstElementName + "> encountered");
 			return;
 		}
 
-		String schemaVersion = packageElement.getAttribute("schemaVersion")
-				.trim();
+		String schemaVersion = packageElement.getAttribute("schemaVersion").trim();
+		deviceSchemaSemVer = Version.valueOf(schemaVersion);
 
-		if (!PdscUtils.isSchemaValid(schemaVersion)) {
+		if (!PdscUtils.isSchemaValid(deviceSchemaSemVer)) {
 			Activator.log("Unrecognised schema version " + schemaVersion);
 			return;
 		}
 
-		List<Element> childElements = Xml
-				.getChildrenElementsList(packageElement);
+		List<Element> childElements = Xml.getChildrenElementsList(packageElement);
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
 			if ("devices".equals(elementName)) {
-				List<Element> childElements2 = Xml
-						.getChildrenElementsList(childElement);
+				List<Element> childElements2 = Xml.getChildrenElementsList(childElement);
 				for (Element childElement2 : childElements2) {
 
 					String elementName2 = childElement2.getNodeName();
@@ -96,8 +105,7 @@ public class PdscParserForBuild extends PdscParser {
 
 		Node vendorNode = addUniqueVendor(parent, va[0], va[1]);
 
-		Node familyNode = Node.addUniqueChild(vendorNode, Type.FAMILY,
-				familyName);
+		Node familyNode = Node.addUniqueChild(vendorNode, Type.FAMILY, familyName);
 
 		// The last encountered value one will be preserved
 		// TODO: update vendor name from vendor id based on a conversion table
@@ -147,8 +155,7 @@ public class PdscParserForBuild extends PdscParser {
 
 		String subFamilyName = el.getAttribute("DsubFamily").trim();
 
-		Node subFamilyNode = Node.addUniqueChild(parent, Type.SUBFAMILY,
-				subFamilyName);
+		Node subFamilyNode = Node.addUniqueChild(parent, Type.SUBFAMILY, subFamilyName);
 
 		List<Element> childElements = Xml.getChildrenElementsList(el);
 
@@ -198,8 +205,7 @@ public class PdscParserForBuild extends PdscParser {
 		// Required
 		String variantName = el.getAttribute("Dvariant").trim();
 
-		Node variantNode = Node.addUniqueChild(parent, Type.VARIANT,
-				variantName);
+		Node variantNode = Node.addUniqueChild(parent, Type.VARIANT, variantName);
 
 		List<Element> childElements2 = Xml.getChildrenElementsList(el);
 		for (Element childElement2 : childElements2) {
@@ -253,32 +259,30 @@ public class PdscParserForBuild extends PdscParser {
 
 	// ------------------------------------------------------------------------
 
-	public void parseBoards(Node tree) {
+	// Deprecated
+	public void _parseBoards(Node tree) {
 
 		Element packageElement = fDocument.getDocumentElement();
 		String firstElementName = packageElement.getNodeName();
 		if (!"package".equals(firstElementName)) {
-			Activator.log("Missing <packages>, <" + firstElementName
-					+ "> encountered");
+			Activator.log("Missing <packages>, <" + firstElementName + "> encountered");
 			return;
 		}
 
-		String schemaVersion = packageElement.getAttribute("schemaVersion")
-				.trim();
+		String schemaVersion = packageElement.getAttribute("schemaVersion").trim();
+		boardSchemaSemVer = Version.valueOf(schemaVersion);
 
-		if (!PdscUtils.isSchemaValid(schemaVersion)) {
+		if (!PdscUtils.isSchemaValid(boardSchemaSemVer)) {
 			Activator.log("Unrecognised schema version " + schemaVersion);
 			return;
 		}
 
-		List<Element> childElements = Xml
-				.getChildrenElementsList(packageElement);
+		List<Element> childElements = Xml.getChildrenElementsList(packageElement);
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
 			if ("boards".equals(elementName)) {
-				List<Element> childElements2 = Xml
-						.getChildrenElementsList(childElement);
+				List<Element> childElements2 = Xml.getChildrenElementsList(childElement);
 				for (Element childElement2 : childElements2) {
 
 					String elementName2 = childElement2.getNodeName();

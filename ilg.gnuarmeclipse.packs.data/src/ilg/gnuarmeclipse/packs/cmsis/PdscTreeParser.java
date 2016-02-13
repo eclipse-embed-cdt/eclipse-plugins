@@ -21,9 +21,13 @@ import ilg.gnuarmeclipse.packs.data.Utils;
 
 import org.eclipse.ui.console.MessageConsoleStream;
 
+import com.github.zafarkhaja.semver.Version;
+
 public class PdscTreeParser {
 
 	protected MessageConsoleStream fOut;
+
+	protected Version fSemVer;
 
 	public PdscTreeParser() {
 
@@ -38,8 +42,7 @@ public class PdscTreeParser {
 
 		Leaf firstChild = node.getFirstChild();
 		if (!firstChild.isType("package")) {
-			String msg = "Missing <package>; instead, <" + firstChild.getType()
-					+ "> encountered";
+			String msg = "Missing <package>; instead, <" + firstChild.getType() + "> encountered";
 
 			fOut.println("Error+" + msg);
 			Utils.reportError(msg);
@@ -47,16 +50,15 @@ public class PdscTreeParser {
 		}
 
 		String schemaVersion = firstChild.getProperty("schemaVersion");
-
-		if (!PdscUtils.isSchemaValid(schemaVersion)) {
+		fSemVer = Version.valueOf(schemaVersion);
+		if (!PdscUtils.isSchemaValid(fSemVer)) {
 			Activator.log("Unrecognised schema version " + schemaVersion);
 			return false;
 		}
 		return true;
 	}
 
-	protected Node addUniqueVendor(Node parent, String vendorName,
-			String vendorId) {
+	protected Node addUniqueVendor(Node parent, String vendorName, String vendorId) {
 
 		if (parent.hasChildren()) {
 			for (Leaf child : parent.getChildren()) {
