@@ -286,7 +286,13 @@ class VersionParser implements Parser<Version> {
         consumeNextCharacter(DOT);
         int minor = Integer.parseInt(numericIdentifier());
         consumeNextCharacter(DOT);
-        int patch = Integer.parseInt(numericIdentifier());
+        int patch;
+		try {
+			consumeNextCharacter(DOT);
+			patch = Integer.parseInt(numericIdentifier());
+		} catch (UnexpectedCharacterException e) {
+			patch = 0;
+		}
         return new NormalVersion(major, minor, patch);
     }
 
