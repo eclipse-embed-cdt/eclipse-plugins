@@ -11,6 +11,8 @@
 
 package ilg.gnuarmeclipse.packs.cmsis;
 
+import com.github.zafarkhaja.semver.Version;
+
 /**
  * Static class used to support the PDSC parsing.
  */
@@ -19,14 +21,16 @@ public class PdscUtils {
 	/**
 	 * Validate the schema version.
 	 * 
-	 * @param schemaVersion
-	 *            a string with the xml attribute of the <package> element.
+	 * @param semVer
+	 *            a semantic version object.
 	 * @return true if the value is valid.
 	 */
-	public static boolean isSchemaValid(String schemaVersion) {
+	public static boolean isSchemaValid(Version semVer) {
 
-		if ("1.0".equals(schemaVersion) || "1.1".equals(schemaVersion)
-				|| "1.2".equals(schemaVersion) || "1.3".equals(schemaVersion)) {
+		int major = semVer.getMajorVersion();
+		int minor = semVer.getMinorVersion();
+
+		if ((major == 1) && (minor <= 4)) {
 			return true;
 		} else {
 			return false;

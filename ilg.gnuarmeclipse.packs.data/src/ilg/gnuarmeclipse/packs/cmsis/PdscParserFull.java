@@ -27,6 +27,8 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+import com.github.zafarkhaja.semver.Version;
+
 public class PdscParserFull extends PdscParser {
 
 	private boolean fIsBrief;
@@ -46,26 +48,23 @@ public class PdscParserFull extends PdscParser {
 		return fIsBrief;
 	}
 
-	public Node parsePdscFull() throws ParserConfigurationException,
-			SAXException, IOException {
+	public Node parsePdscFull() throws ParserConfigurationException, SAXException, IOException {
 
 		Node tree = new Node(Type.OUTLINE);
 		tree.setName("Full Outline");
-		tree.putProperty(Node.FOLDER_PROPERTY, fPath.removeLastSegments(1)
-				.toString());
+		tree.putProperty(Node.FOLDER_PROPERTY, fPath.removeLastSegments(1).toString());
 
 		Element packageElement = fDocument.getDocumentElement();
 		String firstElementName = packageElement.getNodeName();
 		if (!"package".equals(firstElementName)) {
-			Activator.log("Missing <packages>, <" + firstElementName
-					+ "> encountered");
+			Activator.log("Missing <packages>, <" + firstElementName + "> encountered");
 			return tree;
 		}
 
-		String schemaVersion = packageElement.getAttribute("schemaVersion")
-				.trim();
+		String schemaVersion = packageElement.getAttribute("schemaVersion").trim();
+		Version semVer = Version.valueOf(schemaVersion);
 
-		if (!PdscUtils.isSchemaValid(schemaVersion)) {
+		if (!PdscUtils.isSchemaValid(semVer)) {
 			Activator.log("Unrecognised schema version " + schemaVersion);
 			return tree;
 		}
@@ -77,8 +76,7 @@ public class PdscParserFull extends PdscParser {
 
 		String packDescription = "";
 
-		List<Element> childElements = Xml
-				.getChildrenElementsList(packageElement);
+		List<Element> childElements = Xml.getChildrenElementsList(packageElement);
 		for (Element childElement : childElements) {
 
 			String elementName = childElement.getNodeName();
@@ -98,8 +96,7 @@ public class PdscParserFull extends PdscParser {
 			} else if ("description".equals(elementName)) {
 
 				// Warning: must be located after <name>
-				packDescription = extendDescription(packDescription,
-						Xml.getElementContent(childElement));
+				packDescription = extendDescription(packDescription, Xml.getElementContent(childElement));
 
 			} else if ("url".equals(elementName)) {
 
@@ -114,34 +111,28 @@ public class PdscParserFull extends PdscParser {
 				license = updatePosixSeparators(license);
 				packNode.putNonEmptyProperty(Node.LICENSE_PROPERTY, license);
 
-				packDescription = extendDescription(packDescription, "license",
-						license);
+				packDescription = extendDescription(packDescription, "license", license);
 
 			} else if ("releases".equals(elementName)) {
 
-				List<Element> releaseElements = Xml.getChildrenElementsList(
-						childElement, "release");
+				List<Element> releaseElements = Xml.getChildrenElementsList(childElement, "release");
 				for (Element releaseElement : releaseElements) {
 
-					String releaseVersion = releaseElement.getAttribute(
-							"version").trim();
+					String releaseVersion = releaseElement.getAttribute("version").trim();
 					// Optional
-					String releaseDate = releaseElement.getAttribute("date")
-							.trim();
+					String releaseDate = releaseElement.getAttribute("date").trim();
 
 					String description;
 					description = "Version: " + releaseVersion;
 					if (releaseDate.length() > 0) {
 						description += ", from " + releaseDate;
 					}
-					description = extendDescription(description,
-							Xml.getElementContent(releaseElement));
+					description = extendDescription(description, Xml.getElementContent(releaseElement));
 
 					Node versionNode = new Node(Type.VERSION);
 					versionNode.setName(releaseVersion);
 					versionNode.putProperty(Node.NAME_PROPERTY, releaseVersion);
-					versionNode.putNonEmptyProperty(Node.DATE_PROPERTY,
-							releaseDate);
+					versionNode.putNonEmptyProperty(Node.DATE_PROPERTY, releaseDate);
 
 					versionNode.setDescription(description);
 
@@ -150,8 +141,7 @@ public class PdscParserFull extends PdscParser {
 
 			} else if ("keywords".equals(elementName)) {
 
-				List<Element> childElements2 = Xml
-						.getChildrenElementsList(childElement);
+				List<Element> childElements2 = Xml.getChildrenElementsList(childElement);
 				for (Element childElement2 : childElements2) {
 
 					String elementName2 = childElement2.getNodeName();
@@ -169,8 +159,7 @@ public class PdscParserFull extends PdscParser {
 				// TreeNode devicesNode = new TreeNode(Type.DEVICES);
 				// tree.addChild(devicesNode);
 
-				List<Element> childElements2 = Xml
-						.getChildrenElementsList(childElement);
+				List<Element> childElements2 = Xml.getChildrenElementsList(childElement);
 				for (Element childElement2 : childElements2) {
 
 					String elementName2 = childElement2.getNodeName();
@@ -185,8 +174,7 @@ public class PdscParserFull extends PdscParser {
 
 			} else if ("boards".equals(elementName)) {
 
-				List<Element> childElements2 = Xml
-						.getChildrenElementsList(childElement);
+				List<Element> childElements2 = Xml.getChildrenElementsList(childElement);
 				for (Element childElement2 : childElements2) {
 
 					String elementName2 = childElement2.getNodeName();
@@ -201,8 +189,7 @@ public class PdscParserFull extends PdscParser {
 
 			} else if ("conditions".equals(elementName)) {
 
-				List<Element> childElements2 = Xml
-						.getChildrenElementsList(childElement);
+				List<Element> childElements2 = Xml.getChildrenElementsList(childElement);
 				for (Element childElement2 : childElements2) {
 
 					String elementName2 = childElement2.getNodeName();
@@ -217,8 +204,7 @@ public class PdscParserFull extends PdscParser {
 
 			} else if ("examples".equals(elementName)) {
 
-				List<Element> childElements2 = Xml
-						.getChildrenElementsList(childElement);
+				List<Element> childElements2 = Xml.getChildrenElementsList(childElement);
 				for (Element childElement2 : childElements2) {
 
 					String elementName2 = childElement2.getNodeName();
@@ -233,8 +219,7 @@ public class PdscParserFull extends PdscParser {
 
 			} else if ("components".equals(elementName)) {
 
-				List<Element> childElements2 = Xml
-						.getChildrenElementsList(childElement);
+				List<Element> childElements2 = Xml.getChildrenElementsList(childElement);
 				for (Element childElement2 : childElements2) {
 
 					String elementName2 = childElement2.getNodeName();
@@ -260,8 +245,7 @@ public class PdscParserFull extends PdscParser {
 				// </xs:sequence>
 				// </xs:complexType>
 
-				List<Element> childElements2 = Xml
-						.getChildrenElementsList(childElement);
+				List<Element> childElements2 = Xml.getChildrenElementsList(childElement);
 				for (Element childElement2 : childElements2) {
 
 					String elementName2 = childElement2.getNodeName();
@@ -276,8 +260,7 @@ public class PdscParserFull extends PdscParser {
 
 			} else if ("taxonomy".equals(elementName)) {
 
-				List<Element> childElements2 = Xml
-						.getChildrenElementsList(childElement);
+				List<Element> childElements2 = Xml.getChildrenElementsList(childElement);
 				for (Element childElement2 : childElements2) {
 
 					String elementName2 = childElement2.getNodeName();
@@ -298,8 +281,7 @@ public class PdscParserFull extends PdscParser {
 			}
 		}
 
-		packDescription = extendDescription(packDescription, "schema",
-				schemaVersion);
+		packDescription = extendDescription(packDescription, "schema", schemaVersion);
 		packNode.setDescription(packDescription);
 
 		return tree;
@@ -310,18 +292,15 @@ public class PdscParserFull extends PdscParser {
 
 		Element packageElement = fDocument.getDocumentElement();
 
-		Element examplesElement = Xml.getFirstChildElement(packageElement,
-				"examples");
+		Element examplesElement = Xml.getFirstChildElement(packageElement, "examples");
 		if (examplesElement != null) {
 
 			// Enumerate <example> in *.pdsc.
-			List<Element> exampleElements = Xml.getChildrenElementsList(
-					examplesElement, "example");
+			List<Element> exampleElements = Xml.getChildrenElementsList(examplesElement, "example");
 			for (Element exampleElement : exampleElements) {
 				String exampleName = exampleElement.getAttribute("name").trim();
 
-				Element boardElement = Xml.getFirstChildElement(exampleElement,
-						"board");
+				Element boardElement = Xml.getFirstChildElement(exampleElement, "board");
 
 				// Example names are not unique, add the first board to
 				// help identify them.
@@ -333,16 +312,14 @@ public class PdscParserFull extends PdscParser {
 
 				// Examples must be PackNode, to accomodate outlines.
 				PackNode exampleNode;
-				exampleNode = (PackNode) parent.findChild(Type.EXAMPLE,
-						exampleName);
+				exampleNode = (PackNode) parent.findChild(Type.EXAMPLE, exampleName);
 				if (exampleNode == null) {
 					exampleNode = new PackNode(Type.EXAMPLE);
 					parent.addChild(exampleNode);
 					exampleNode.setName(exampleName);
 				}
 
-				Element descriptionElement = Xml.getFirstChildElement(
-						exampleElement, "description");
+				Element descriptionElement = Xml.getFirstChildElement(exampleElement, "description");
 				String description;
 				description = Xml.getElementContent(descriptionElement);
 				exampleNode.setDescription(description);
@@ -413,15 +390,13 @@ public class PdscParserFull extends PdscParser {
 			if (isBrief()) {
 				if ("description".equals(elementName)) {
 
-					familyDescription = extendDescription(familyDescription,
-							Xml.getElementContent(childElement));
+					familyDescription = extendDescription(familyDescription, Xml.getElementContent(childElement));
 
 				}
 			} else {
 				if ("description".equals(elementName)) {
 
-					familyDescription = extendDescription(familyDescription,
-							Xml.getElementContent(childElement));
+					familyDescription = extendDescription(familyDescription, Xml.getElementContent(childElement));
 
 				} else if ("subFamily".equals(elementName)) {
 
@@ -493,8 +468,7 @@ public class PdscParserFull extends PdscParser {
 
 		String description = "Processor";
 		description = extendDescription(description, "Dcore", Dcore);
-		description = extendDescription(description, "DcoreVersion",
-				DcoreVersion);
+		description = extendDescription(description, "DcoreVersion", DcoreVersion);
 		description = extendDescription(description, "Dfpu", Dfpu);
 		description = extendDescription(description, "Dmpu", Dmpu);
 		description = extendDescription(description, "Dendian", Dendian);
@@ -577,8 +551,7 @@ public class PdscParserFull extends PdscParser {
 		String posixName = updatePosixSeparators(bookName);
 
 		// Instead of NAME_PROPERTY we store URL or FILE
-		if (bookName.startsWith("http://") || bookName.startsWith("https://")
-				|| bookName.startsWith("ftp://")) {
+		if (bookName.startsWith("http://") || bookName.startsWith("https://") || bookName.startsWith("ftp://")) {
 			bookNode.putNonEmptyProperty(Node.URL_PROPERTY, bookName);
 			description = extendDescription(description, "url", bookName);
 		} else {
@@ -626,8 +599,7 @@ public class PdscParserFull extends PdscParser {
 			String elementName = childElement.getNodeName();
 			if ("description".equals(elementName)) {
 
-				description = extendDescription(description,
-						Xml.getElementContent(childElement));
+				description = extendDescription(description, Xml.getElementContent(childElement));
 
 			} else if ("device".equals(elementName)) {
 
@@ -686,8 +658,7 @@ public class PdscParserFull extends PdscParser {
 			} else if ("variant".equals(elementName)) {
 
 				// Required
-				String variantName = childElement.getAttribute("Dvariant")
-						.trim();
+				String variantName = childElement.getAttribute("Dvariant").trim();
 
 				Node variantNode = new Node(Type.VARIANT);
 				deviceNode.addChild(variantNode);
@@ -695,18 +666,15 @@ public class PdscParserFull extends PdscParser {
 				variantNode.setName(variantName + " (variant)");
 				variantNode.putProperty(Node.NAME_PROPERTY, variantName);
 
-				String variantDescriptionContent = "Device variant: "
-						+ variantName;
+				String variantDescriptionContent = "Device variant: " + variantName;
 
-				List<Element> childElements2 = Xml
-						.getChildrenElementsList(childElement);
+				List<Element> childElements2 = Xml.getChildrenElementsList(childElement);
 				for (Element childElement2 : childElements2) {
 
 					String elementName2 = childElement2.getNodeName();
 					if ("description".equals(elementName2)) {
 
-						variantDescriptionContent = extendDescription(
-								variantDescriptionContent,
+						variantDescriptionContent = extendDescription(variantDescriptionContent,
 								Xml.getElementContent(childElement));
 					} else {
 						processDevicePropertiesGroup(childElement2, variantNode);
@@ -759,8 +727,7 @@ public class PdscParserFull extends PdscParser {
 			deviceDescription += String.valueOf(romKB) + " kB ROM";
 		}
 
-		deviceDescription = extendDescription(deviceDescription,
-				descriptionContent);
+		deviceDescription = extendDescription(deviceDescription, descriptionContent);
 
 		deviceNode.setDescription(deviceDescription);
 	}
@@ -1041,14 +1008,10 @@ public class PdscParserFull extends PdscParser {
 		String boardDescription = "Board: " + boardName;
 
 		String descriptionTail = "";
-		descriptionTail = extendDescription(descriptionTail, "revision",
-				boardRevision);
-		descriptionTail = extendDescription(descriptionTail, "vendor",
-				boardVendor);
-		descriptionTail = extendDescription(descriptionTail, "salesContact",
-				salesContact);
-		descriptionTail = extendDescription(descriptionTail, "orderForm",
-				orderForm);
+		descriptionTail = extendDescription(descriptionTail, "revision", boardRevision);
+		descriptionTail = extendDescription(descriptionTail, "vendor", boardVendor);
+		descriptionTail = extendDescription(descriptionTail, "salesContact", salesContact);
+		descriptionTail = extendDescription(descriptionTail, "orderForm", orderForm);
 
 		List<Element> childElements = Xml.getChildrenElementsList(el);
 
@@ -1059,15 +1022,13 @@ public class PdscParserFull extends PdscParser {
 			if (isBrief()) {
 				if ("description".equals(elementName)) {
 
-					boardDescription = extendDescription(boardDescription,
-							Xml.getElementContent(childElement));
+					boardDescription = extendDescription(boardDescription, Xml.getElementContent(childElement));
 
 				}
 			} else {
 				if ("description".equals(elementName)) {
 
-					boardDescription = extendDescription(boardDescription,
-							Xml.getElementContent(childElement));
+					boardDescription = extendDescription(boardDescription, Xml.getElementContent(childElement));
 
 				} else if ("image".equals(elementName)) {
 
@@ -1096,16 +1057,12 @@ public class PdscParserFull extends PdscParser {
 					// </xs:complexType>
 
 					// Required
-					String Dvendor = childElement.getAttribute("Dvendor")
-							.trim();
+					String Dvendor = childElement.getAttribute("Dvendor").trim();
 
 					// Optional
-					String deviceIndex = childElement.getAttribute(
-							"deviceIndex").trim();
-					String Dfamily = childElement.getAttribute("Dfamily")
-							.trim();
-					String DsubFamily = childElement.getAttribute("DsubFamily")
-							.trim();
+					String deviceIndex = childElement.getAttribute("deviceIndex").trim();
+					String Dfamily = childElement.getAttribute("Dfamily").trim();
+					String DsubFamily = childElement.getAttribute("DsubFamily").trim();
 					String Dname = childElement.getAttribute("Dname").trim();
 
 					Node deviceNode = new Node(Type.DEVICE);
@@ -1115,12 +1072,9 @@ public class PdscParserFull extends PdscParser {
 					deviceNode.putProperty(Node.VENDOR_PROPERTY, va[0]);
 					deviceNode.putProperty(Node.VENDORID_PROPERTY, va[1]);
 
-					deviceNode.putNonEmptyProperty(Node.DEVICEINDEX_PROPERTY,
-							deviceIndex);
-					deviceNode.putNonEmptyProperty(Node.FAMILY_PROPERTY,
-							Dfamily);
-					deviceNode.putNonEmptyProperty(Node.SUBFAMILY_PROPERTY,
-							DsubFamily);
+					deviceNode.putNonEmptyProperty(Node.DEVICEINDEX_PROPERTY, deviceIndex);
+					deviceNode.putNonEmptyProperty(Node.FAMILY_PROPERTY, Dfamily);
+					deviceNode.putNonEmptyProperty(Node.SUBFAMILY_PROPERTY, DsubFamily);
 					deviceNode.putNonEmptyProperty(Node.NAME_PROPERTY, Dname);
 
 					String name = "";
@@ -1131,16 +1085,11 @@ public class PdscParserFull extends PdscParser {
 					deviceNode.setName(name);
 
 					String deviceDescription = "Mounted device: " + name;
-					deviceDescription = extendDescription(deviceDescription,
-							"deviceIndex", deviceIndex);
-					deviceDescription = extendDescription(deviceDescription,
-							"Dvendor", Dvendor);
-					deviceDescription = extendDescription(deviceDescription,
-							"Dfamily", Dfamily);
-					deviceDescription = extendDescription(deviceDescription,
-							"DsubFamily", DsubFamily);
-					deviceDescription = extendDescription(deviceDescription,
-							"Dname", Dname);
+					deviceDescription = extendDescription(deviceDescription, "deviceIndex", deviceIndex);
+					deviceDescription = extendDescription(deviceDescription, "Dvendor", Dvendor);
+					deviceDescription = extendDescription(deviceDescription, "Dfamily", Dfamily);
+					deviceDescription = extendDescription(deviceDescription, "DsubFamily", DsubFamily);
+					deviceDescription = extendDescription(deviceDescription, "Dname", Dname);
 
 					deviceNode.setDescription(deviceDescription);
 
@@ -1160,14 +1109,10 @@ public class PdscParserFull extends PdscParser {
 					// </xs:complexType>
 
 					// Optional
-					String deviceIndex = childElement.getAttribute(
-							"deviceIndex").trim();
-					String Dvendor = childElement.getAttribute("Dvendor")
-							.trim();
-					String Dfamily = childElement.getAttribute("Dfamily")
-							.trim();
-					String DsubFamily = childElement.getAttribute("DsubFamily")
-							.trim();
+					String deviceIndex = childElement.getAttribute("deviceIndex").trim();
+					String Dvendor = childElement.getAttribute("Dvendor").trim();
+					String Dfamily = childElement.getAttribute("Dfamily").trim();
+					String DsubFamily = childElement.getAttribute("DsubFamily").trim();
 					String Dname = childElement.getAttribute("Dname").trim();
 
 					Node deviceNode = new Node(Type.COMPATIBLEDEVICE);
@@ -1177,12 +1122,9 @@ public class PdscParserFull extends PdscParser {
 					deviceNode.putProperty(Node.VENDOR_PROPERTY, va[0]);
 					deviceNode.putProperty(Node.VENDORID_PROPERTY, va[1]);
 
-					deviceNode.putNonEmptyProperty(Node.DEVICEINDEX_PROPERTY,
-							deviceIndex);
-					deviceNode.putNonEmptyProperty(Node.FAMILY_PROPERTY,
-							Dfamily);
-					deviceNode.putNonEmptyProperty(Node.SUBFAMILY_PROPERTY,
-							DsubFamily);
+					deviceNode.putNonEmptyProperty(Node.DEVICEINDEX_PROPERTY, deviceIndex);
+					deviceNode.putNonEmptyProperty(Node.FAMILY_PROPERTY, Dfamily);
+					deviceNode.putNonEmptyProperty(Node.SUBFAMILY_PROPERTY, DsubFamily);
 					deviceNode.putNonEmptyProperty(Node.NAME_PROPERTY, Dname);
 
 					String name = "";
@@ -1193,16 +1135,11 @@ public class PdscParserFull extends PdscParser {
 					deviceNode.setName(name);
 
 					String deviceDescription = "Compatible device: " + name;
-					deviceDescription = extendDescription(deviceDescription,
-							"deviceIndex", deviceIndex);
-					deviceDescription = extendDescription(deviceDescription,
-							"Dvendor", Dvendor);
-					deviceDescription = extendDescription(deviceDescription,
-							"Dfamily", Dfamily);
-					deviceDescription = extendDescription(deviceDescription,
-							"DsubFamily", DsubFamily);
-					deviceDescription = extendDescription(deviceDescription,
-							"Dname", Dname);
+					deviceDescription = extendDescription(deviceDescription, "deviceIndex", deviceIndex);
+					deviceDescription = extendDescription(deviceDescription, "Dvendor", Dvendor);
+					deviceDescription = extendDescription(deviceDescription, "Dfamily", Dfamily);
+					deviceDescription = extendDescription(deviceDescription, "DsubFamily", DsubFamily);
+					deviceDescription = extendDescription(deviceDescription, "Dname", Dname);
 
 					deviceNode.setDescription(deviceDescription);
 
@@ -1220,10 +1157,8 @@ public class PdscParserFull extends PdscParser {
 					// <xs:attribute name="connector" type="xs:string"/>
 					// </xs:complexType>
 
-					String adapter = childElement.getAttribute("adapter")
-							.trim();
-					String connector = childElement.getAttribute("connector")
-							.trim();
+					String adapter = childElement.getAttribute("adapter").trim();
+					String connector = childElement.getAttribute("connector").trim();
 
 					Node debugNode = new Node(Type.DEBUGINTERFACE);
 					boardNode.addChild(debugNode);
@@ -1234,8 +1169,7 @@ public class PdscParserFull extends PdscParser {
 					debugNode.setName(adapter);
 
 					String description = "Debug interface: " + adapter;
-					description = extendDescription(description, "connector",
-							connector);
+					description = extendDescription(description, "connector", connector);
 					debugNode.setDescription(description);
 
 				} else {
@@ -1323,8 +1257,7 @@ public class PdscParserFull extends PdscParser {
 	// </xs:complexType>
 	// </xs:element>
 
-	private void processComponentElement(Element el, Node parent,
-			String parentClass) {
+	private void processComponentElement(Element el, Node parent, String parentClass) {
 
 		// Required
 		String Cclass = el.getAttribute("Cclass").trim(); // may be inherited
@@ -1352,12 +1285,9 @@ public class PdscParserFull extends PdscParser {
 			componentNode.putNonEmptyProperty(Node.VARIANT_PROPERTY, Cvariant);
 			componentNode.putNonEmptyProperty(Node.VENDOR_PROPERTY, Cvendor);
 
-			componentNode.putNonEmptyProperty(Node.CONDITION_PROPERTY,
-					condition);
-			componentNode.putNonEmptyProperty(Node.APIVERSION_PROPERTY,
-					apiVersion);
-			componentNode.putNonEmptyProperty(Node.MAXINSTANCES_PROPERTY,
-					maxInstances);
+			componentNode.putNonEmptyProperty(Node.CONDITION_PROPERTY, condition);
+			componentNode.putNonEmptyProperty(Node.APIVERSION_PROPERTY, apiVersion);
+			componentNode.putNonEmptyProperty(Node.MAXINSTANCES_PROPERTY, maxInstances);
 		}
 
 		String name = "";
@@ -1376,16 +1306,11 @@ public class PdscParserFull extends PdscParser {
 		descriptionTail = extendDescription(descriptionTail, "Cclass", Cclass);
 		descriptionTail = extendDescription(descriptionTail, "Cgroup", Cgroup);
 		descriptionTail = extendDescription(descriptionTail, "Csub", Csub);
-		descriptionTail = extendDescription(descriptionTail, "Cvariant",
-				Cvariant);
-		descriptionTail = extendDescription(descriptionTail, "Cversion",
-				Cversion);
-		descriptionTail = extendDescription(descriptionTail, "condition",
-				condition);
-		descriptionTail = extendDescription(descriptionTail, "apiVersion",
-				apiVersion);
-		descriptionTail = extendDescription(descriptionTail, "maxInstances",
-				maxInstances);
+		descriptionTail = extendDescription(descriptionTail, "Cvariant", Cvariant);
+		descriptionTail = extendDescription(descriptionTail, "Cversion", Cversion);
+		descriptionTail = extendDescription(descriptionTail, "condition", condition);
+		descriptionTail = extendDescription(descriptionTail, "apiVersion", apiVersion);
+		descriptionTail = extendDescription(descriptionTail, "maxInstances", maxInstances);
 
 		List<Element> childElements = Xml.getChildrenElementsList(el);
 
@@ -1396,17 +1321,13 @@ public class PdscParserFull extends PdscParser {
 			if (isBrief()) {
 				if ("description".equals(elementName)) {
 
-					componentDescription = extendDescription(
-							componentDescription,
-							Xml.getElementContent(childElement));
+					componentDescription = extendDescription(componentDescription, Xml.getElementContent(childElement));
 
 				}
 			} else {
 				if ("description".equals(elementName)) {
 
-					componentDescription = extendDescription(
-							componentDescription,
-							Xml.getElementContent(childElement));
+					componentDescription = extendDescription(componentDescription, Xml.getElementContent(childElement));
 
 				} else if ("RTE_Components_h".equals(elementName)) {
 
@@ -1428,8 +1349,7 @@ public class PdscParserFull extends PdscParser {
 					// default="false"/>
 
 					String deprecated = Xml.getElementContent(childElement);
-					componentNode.putNonEmptyProperty(Node.DEPRECATED_PROPERTY,
-							deprecated);
+					componentNode.putNonEmptyProperty(Node.DEPRECATED_PROPERTY, deprecated);
 
 				} else if ("files".equals(elementName)) {
 
@@ -1442,8 +1362,7 @@ public class PdscParserFull extends PdscParser {
 					// </xs:complexType>
 					// </xs:element>
 
-					List<Element> childElements2 = Xml
-							.getChildrenElementsList(childElement);
+					List<Element> childElements2 = Xml.getChildrenElementsList(childElement);
 					for (Element childElement2 : childElements2) {
 						String elementName2 = childElement2.getNodeName();
 						if ("file".equals(elementName2)) {
@@ -1451,8 +1370,7 @@ public class PdscParserFull extends PdscParser {
 							processFileElement(childElement2, componentNode);
 
 						} else {
-							Activator.log("Not processed <" + elementName2
-									+ ">");
+							Activator.log("Not processed <" + elementName2 + ">");
 						}
 					}
 				} else {
@@ -1461,8 +1379,7 @@ public class PdscParserFull extends PdscParser {
 			}
 		}
 
-		componentDescription = extendDescription(componentDescription,
-				descriptionTail);
+		componentDescription = extendDescription(componentDescription, descriptionTail);
 		componentNode.setDescription(componentDescription);
 	}
 
@@ -1621,8 +1538,7 @@ public class PdscParserFull extends PdscParser {
 		descriptionTail = extendDescription(descriptionTail, "Cvendor", Cvendor);
 		descriptionTail = extendDescription(descriptionTail, "Cbundle", Cbundle);
 		descriptionTail = extendDescription(descriptionTail, "Cclass", Cclass);
-		descriptionTail = extendDescription(descriptionTail, "Cversion",
-				Cversion);
+		descriptionTail = extendDescription(descriptionTail, "Cversion", Cversion);
 
 		List<Element> childElements = Xml.getChildrenElementsList(el);
 
@@ -1633,22 +1549,19 @@ public class PdscParserFull extends PdscParser {
 			if (isBrief()) {
 				if ("description".equals(elementName)) {
 
-					bundleDescription = extendDescription(bundleDescription,
-							Xml.getElementContent(childElement));
+					bundleDescription = extendDescription(bundleDescription, Xml.getElementContent(childElement));
 
 				}
 			} else {
 				if ("description".equals(elementName)) {
 
-					bundleDescription = extendDescription(bundleDescription,
-							Xml.getElementContent(childElement));
+					bundleDescription = extendDescription(bundleDescription, Xml.getElementContent(childElement));
 
 				} else if ("doc".equals(elementName)) {
 
 					String doc = Xml.getElementContent(childElement);
 					String posixDoc = updatePosixSeparators(doc);
-					descriptionTail = extendDescription(descriptionTail, "doc",
-							posixDoc);
+					descriptionTail = extendDescription(descriptionTail, "doc", posixDoc);
 					bundleNode.putNonEmptyProperty(Node.URL_PROPERTY, doc);
 
 				} else if ("component".equals(elementName)) {
@@ -1661,8 +1574,7 @@ public class PdscParserFull extends PdscParser {
 			}
 		}
 
-		bundleDescription = extendDescription(bundleDescription,
-				descriptionTail);
+		bundleDescription = extendDescription(bundleDescription, descriptionTail);
 		bundleNode.setDescription(bundleDescription);
 	}
 
@@ -1747,12 +1659,9 @@ public class PdscParserFull extends PdscParser {
 			String elementName = childElement.getNodeName();
 			if ("description".equals(elementName)) {
 
-				conditionDescription = extendDescription(conditionDescription,
-						Xml.getElementContent(childElement));
+				conditionDescription = extendDescription(conditionDescription, Xml.getElementContent(childElement));
 
-			} else if ("accept".equals(elementName)
-					|| "require".equals(elementName)
-					|| "deny".equals(elementName)) {
+			} else if ("accept".equals(elementName) || "require".equals(elementName) || "deny".equals(elementName)) {
 
 				// <xs:complexType name="FilterType">
 				// <xs:attribute name="Dfamily" type="xs:string"/>
@@ -1792,8 +1701,7 @@ public class PdscParserFull extends PdscParser {
 				}
 				conditionNode.addChild(node);
 
-				List<String> attrNames = Xml.getAttributesNames(childElement,
-						Node.CONDITION_ATTRIBUTES);
+				List<String> attrNames = Xml.getAttributesNames(childElement, Node.CONDITION_ATTRIBUTES);
 				for (String attrName : attrNames) {
 
 					String value = childElement.getAttribute(attrName).trim();
@@ -1802,14 +1710,12 @@ public class PdscParserFull extends PdscParser {
 					node.putNonEmptyProperty(attrName, value);
 
 					if ("Dvendor".equals(attrName)) {
-						conditionName = extendName(conditionName,
-								value.split(":")[0]);
+						conditionName = extendName(conditionName, value.split(":")[0]);
 					} else {
 						conditionName = extendName(conditionName, value);
 					}
 
-					description = extendDescription(description, attrName,
-							value);
+					description = extendDescription(description, attrName, value);
 				}
 
 				node.setName(conditionName);
@@ -1872,10 +1778,8 @@ public class PdscParserFull extends PdscParser {
 		String descriptionTail = "";
 		descriptionTail = extendDescription(descriptionTail, "Cclass", Cclass);
 		descriptionTail = extendDescription(descriptionTail, "Cgroup", Cgroup);
-		descriptionTail = extendDescription(descriptionTail, "exclusive",
-				exclusive);
-		descriptionTail = extendDescription(descriptionTail, "CapiVersion",
-				apiVersion);
+		descriptionTail = extendDescription(descriptionTail, "exclusive", exclusive);
+		descriptionTail = extendDescription(descriptionTail, "CapiVersion", apiVersion);
 
 		List<Element> childElements = Xml.getChildrenElementsList(el);
 
@@ -1884,13 +1788,11 @@ public class PdscParserFull extends PdscParser {
 			String elementName = childElement.getNodeName();
 			if ("description".equals(elementName)) {
 
-				apiDescription = extendDescription(apiDescription,
-						Xml.getElementContent(childElement));
+				apiDescription = extendDescription(apiDescription, Xml.getElementContent(childElement));
 
 			} else if ("files".equals(elementName)) {
 
-				List<Element> childElements2 = Xml
-						.getChildrenElementsList(childElement);
+				List<Element> childElements2 = Xml.getChildrenElementsList(childElement);
 				for (Element childElement2 : childElements2) {
 					String elementName2 = childElement2.getNodeName();
 					if ("file".equals(elementName2)) {
@@ -1957,24 +1859,18 @@ public class PdscParserFull extends PdscParser {
 			exampleNode.putProperty(Node.FOLDER_PROPERTY, posixFolder);
 			exampleNode.putProperty(Node.DOC_PROPERTY, exampleDoc);
 
-			exampleNode
-					.putNonEmptyProperty(Node.VENDOR_PROPERTY, exampleVendor);
-			exampleNode.putNonEmptyProperty(Node.VERSION_PROPERTY,
-					exampleVersion);
-			exampleNode.putNonEmptyProperty(Node.ARCHIVE_PROPERTY,
-					exampleArchive);
+			exampleNode.putNonEmptyProperty(Node.VENDOR_PROPERTY, exampleVendor);
+			exampleNode.putNonEmptyProperty(Node.VERSION_PROPERTY, exampleVersion);
+			exampleNode.putNonEmptyProperty(Node.ARCHIVE_PROPERTY, exampleArchive);
 		}
 
 		String exampleDescription = "Example: " + exampleName;
 
 		String descriptionTail = "";
-		descriptionTail = extendDescription(descriptionTail, "folder",
-				posixFolder);
+		descriptionTail = extendDescription(descriptionTail, "folder", posixFolder);
 		descriptionTail = extendDescription(descriptionTail, "doc", posixDoc);
-		descriptionTail = extendDescription(descriptionTail, "version",
-				exampleVersion);
-		descriptionTail = extendDescription(descriptionTail, "archive",
-				exampleArchive);
+		descriptionTail = extendDescription(descriptionTail, "version", exampleVersion);
+		descriptionTail = extendDescription(descriptionTail, "archive", exampleArchive);
 
 		Node linkNode;
 		if (isFlat) {
@@ -1993,8 +1889,7 @@ public class PdscParserFull extends PdscParser {
 
 				if ("description".equals(elementName)) {
 
-					exampleDescription = extendDescription(exampleDescription,
-							Xml.getElementContent(childElement));
+					exampleDescription = extendDescription(exampleDescription, Xml.getElementContent(childElement));
 
 				} else if ("board".equals(elementName)) {
 
@@ -2006,8 +1901,7 @@ public class PdscParserFull extends PdscParser {
 
 				if ("description".equals(elementName)) {
 
-					exampleDescription = extendDescription(exampleDescription,
-							Xml.getElementContent(childElement));
+					exampleDescription = extendDescription(exampleDescription, Xml.getElementContent(childElement));
 
 				} else if ("board".equals(elementName)) {
 
@@ -2028,39 +1922,31 @@ public class PdscParserFull extends PdscParser {
 					// </xs:sequence>
 					// </xs:complexType>
 
-					List<Element> childElements2 = Xml
-							.getChildrenElementsList(childElement);
+					List<Element> childElements2 = Xml.getChildrenElementsList(childElement);
 					for (Element childElement2 : childElements2) {
 
 						String elementName2 = childElement2.getNodeName();
 						if ("environment".equals(elementName2)) {
 
 							// Required
-							String name = childElement2.getAttribute("name")
-									.trim();
-							String load = childElement2.getAttribute("load")
-									.trim();
+							String name = childElement2.getAttribute("name").trim();
+							String load = childElement2.getAttribute("load").trim();
 
 							Node environmentNode = new Node(Type.ENVIRONMENT);
 							linkNode.addChild(environmentNode);
 
-							environmentNode.putProperty(Node.NAME_PROPERTY,
-									name);
-							environmentNode.putProperty(Node.LOAD_PROPERTY,
-									load);
+							environmentNode.putProperty(Node.NAME_PROPERTY, name);
+							environmentNode.putProperty(Node.LOAD_PROPERTY, load);
 
 							environmentNode.setName(load + " (" + name + ")");
 
 							String description = "Environment";
-							description = extendDescription(description,
-									"name", name);
-							description = extendDescription(description,
-									"load", load);
+							description = extendDescription(description, "name", name);
+							description = extendDescription(description, "load", load);
 							environmentNode.setDescription(description);
 
 						} else {
-							Activator.log("Not processed <" + elementName2
-									+ ">");
+							Activator.log("Not processed <" + elementName2 + ">");
 						}
 					}
 
@@ -2078,8 +1964,7 @@ public class PdscParserFull extends PdscParser {
 					// </xs:choice>
 					// </xs:complexType>
 
-					List<Element> childElements2 = Xml
-							.getChildrenElementsList(childElement);
+					List<Element> childElements2 = Xml.getChildrenElementsList(childElement);
 					for (Element childElement2 : childElements2) {
 
 						String elementName2 = childElement2.getNodeName();
@@ -2088,15 +1973,12 @@ public class PdscParserFull extends PdscParser {
 							Node categoryNode = new Node(Type.CATEGORY);
 							linkNode.addChild(categoryNode);
 
-							String category = Xml
-									.getElementContent(childElement2);
+							String category = Xml.getElementContent(childElement2);
 
-							categoryNode.putProperty(Node.NAME_PROPERTY,
-									category);
+							categoryNode.putProperty(Node.NAME_PROPERTY, category);
 
 							categoryNode.setName(category);
-							categoryNode
-									.setDescription("Category: " + category);
+							categoryNode.setDescription("Category: " + category);
 
 						} else if ("component".equals(elementName2)) {
 
@@ -2114,34 +1996,23 @@ public class PdscParserFull extends PdscParser {
 							// </xs:complexType>
 
 							// Required
-							String Cclass = childElement2
-									.getAttribute("Cclass").trim();
+							String Cclass = childElement2.getAttribute("Cclass").trim();
 
 							// Optional
-							String Cgroup = childElement2
-									.getAttribute("Cgroup").trim();
-							String Csub = childElement2.getAttribute("Csub")
-									.trim();
-							String Cversion = childElement2.getAttribute(
-									"Cversion").trim();
-							String Cvendor = childElement2.getAttribute(
-									"Cvendor").trim();
+							String Cgroup = childElement2.getAttribute("Cgroup").trim();
+							String Csub = childElement2.getAttribute("Csub").trim();
+							String Cversion = childElement2.getAttribute("Cversion").trim();
+							String Cvendor = childElement2.getAttribute("Cvendor").trim();
 
 							Node componentNode = new Node(Type.COMPONENT);
 							linkNode.addChild(componentNode);
 
-							componentNode.putProperty(Node.CLASS_PROPERTY,
-									Cclass);
-							componentNode.putNonEmptyProperty(
-									Node.CLASS_PROPERTY, Cclass);
-							componentNode.putNonEmptyProperty(
-									Node.GROUP_PROPERTY, Cgroup);
-							componentNode.putNonEmptyProperty(
-									Node.SUBGROUP_PROPERTY, Csub);
-							componentNode.putNonEmptyProperty(
-									Node.VERSION_PROPERTY, Cversion);
-							componentNode.putNonEmptyProperty(
-									Node.VENDOR_PROPERTY, Cvendor);
+							componentNode.putProperty(Node.CLASS_PROPERTY, Cclass);
+							componentNode.putNonEmptyProperty(Node.CLASS_PROPERTY, Cclass);
+							componentNode.putNonEmptyProperty(Node.GROUP_PROPERTY, Cgroup);
+							componentNode.putNonEmptyProperty(Node.SUBGROUP_PROPERTY, Csub);
+							componentNode.putNonEmptyProperty(Node.VERSION_PROPERTY, Cversion);
+							componentNode.putNonEmptyProperty(Node.VENDOR_PROPERTY, Cvendor);
 
 							String name = "";
 							name = extendName(name, Cclass);
@@ -2151,16 +2022,11 @@ public class PdscParserFull extends PdscParser {
 							componentNode.setName(name);
 
 							String description = "Referred component: " + name;
-							description = extendDescription(description,
-									"Cvendor", Cvendor);
-							description = extendDescription(description,
-									"Cclass", Cclass);
-							description = extendDescription(description,
-									"Cgroup", Cgroup);
-							description = extendDescription(description,
-									"Csub", Csub);
-							description = extendDescription(description,
-									"Cversion", Cversion);
+							description = extendDescription(description, "Cvendor", Cvendor);
+							description = extendDescription(description, "Cclass", Cclass);
+							description = extendDescription(description, "Cgroup", Cgroup);
+							description = extendDescription(description, "Csub", Csub);
+							description = extendDescription(description, "Cversion", Cversion);
 
 							componentNode.setDescription(description);
 
@@ -2169,8 +2035,7 @@ public class PdscParserFull extends PdscParser {
 							processKeywordElement(childElement2, linkNode);
 
 						} else {
-							Activator.log("Not processed <" + elementName2
-									+ ">");
+							Activator.log("Not processed <" + elementName2 + ">");
 						}
 					}
 				} else {
@@ -2200,8 +2065,7 @@ public class PdscParserFull extends PdscParser {
 			exampleNode.removeChildren();
 		}
 
-		exampleDescription = extendDescription(exampleDescription,
-				descriptionTail);
+		exampleDescription = extendDescription(exampleDescription, descriptionTail);
 		exampleNode.setDescription(exampleDescription);
 	}
 

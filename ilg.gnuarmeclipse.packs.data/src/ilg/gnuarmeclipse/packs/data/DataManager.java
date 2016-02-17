@@ -164,8 +164,7 @@ public class DataManager implements IPacksDataManager {
 		clearCachedInstalledObjectsForBuild();
 
 		// System.out.println("PacksStorage notifyRefresh()");
-		DataManagerEvent event = new DataManagerEvent(this,
-				DataManagerEvent.Type.NEW_INPUT);
+		DataManagerEvent event = new DataManagerEvent(this, DataManagerEvent.Type.NEW_INPUT);
 
 		notifyListener(event);
 	}
@@ -180,8 +179,7 @@ public class DataManager implements IPacksDataManager {
 		clearCachedInstalledObjectsForBuild();
 
 		// System.out.println("PacksStorage notifyRefresh()");
-		DataManagerEvent event = new DataManagerEvent(this,
-				DataManagerEvent.Type.UPDATE_PACKS);
+		DataManagerEvent event = new DataManagerEvent(this, DataManagerEvent.Type.UPDATE_PACKS);
 
 		notifyListener(event);
 	}
@@ -265,15 +263,12 @@ public class DataManager implements IPacksDataManager {
 	 *            a string with the package version (for example 4.1.1).
 	 * @return a version node or null if not found.
 	 */
-	public PackNode findPackVersion(String vendorName, String packName,
-			String version) {
+	public PackNode findPackVersion(String vendorName, String packName, String version) {
 
-		return findPackVersion(vendorName, packName, version,
-				new DurationMonitor());
+		return findPackVersion(vendorName, packName, version, new DurationMonitor());
 	}
 
-	private PackNode findPackVersion(String vendorName, String packName,
-			String version, DurationMonitor dm) {
+	private PackNode findPackVersion(String vendorName, String packName, String version, DurationMonitor dm) {
 
 		// Be sure the map is populated.
 		getRepositoriesTree(dm);
@@ -303,8 +298,7 @@ public class DataManager implements IPacksDataManager {
 		return findPackLatest(vendorName, packName, new DurationMonitor());
 	}
 
-	private PackNode findPackLatest(String vendorName, String packName,
-			DurationMonitor dm) {
+	private PackNode findPackLatest(String vendorName, String packName, DurationMonitor dm) {
 
 		// Be sure the map is populated.
 		getRepositoriesTree(dm);
@@ -435,8 +429,7 @@ public class DataManager implements IPacksDataManager {
 			if (versionNode.hasChildren()) {
 				for (Leaf child : versionNode.getChildren()) {
 
-					if (child.isType(Type.OUTLINE)
-							|| child.isType(Type.EXTERNAL)) {
+					if (child.isType(Type.OUTLINE) || child.isType(Type.EXTERNAL)) {
 						if (child.hasChildren()) {
 							for (Leaf node : ((Node) child).getChildren()) {
 
@@ -445,23 +438,19 @@ public class DataManager implements IPacksDataManager {
 								String type = node.getType();
 								if (Type.FAMILY.equals(type)) {
 
-									selector = new Selector(
-											Selector.Type.DEVICEFAMILY);
+									selector = new Selector(Selector.Type.DEVICEFAMILY);
 									selector.setValue(node.getName());
-									selector.setVendorId(node
-											.getProperty(Property.VENDOR_ID));
+									selector.setVendorId(node.getProperty(Property.VENDOR_ID));
 
 								} else if (Type.BOARD.equals(type)) {
 
 									selector = new Selector(Selector.Type.BOARD);
 									selector.setValue(node.getName());
-									selector.setVendor(node
-											.getProperty(Property.VENDOR_NAME));
+									selector.setVendor(node.getProperty(Property.VENDOR_NAME));
 
 								} else if (Type.KEYWORD.equals(type)) {
 
-									selector = new Selector(
-											Selector.Type.KEYWORD);
+									selector = new Selector(Selector.Type.KEYWORD);
 									selector.setValue(node.getName());
 								}
 
@@ -502,8 +491,7 @@ public class DataManager implements IPacksDataManager {
 					// Add an explicit property for more visibility
 					versionNode.setBooleanProperty(Property.INSTALLED, true);
 					if (versionNode.getParent().isType(Type.PACKAGE)) {
-						versionNode.getParent().setBooleanProperty(
-								Property.INSTALLED, true);
+						versionNode.getParent().setBooleanProperty(Property.INSTALLED, true);
 					}
 
 					count++;
@@ -539,8 +527,7 @@ public class DataManager implements IPacksDataManager {
 		return getInstalledPacksLatestVersionsList(new DurationMonitor());
 	}
 
-	private List<PackNode> getInstalledPacksLatestVersionsList(
-			DurationMonitor dm) {
+	private List<PackNode> getInstalledPacksLatestVersionsList(DurationMonitor dm) {
 
 		if (fInstalledPacksLatestVersionsList != null) {
 			return fInstalledPacksLatestVersionsList;
@@ -589,11 +576,9 @@ public class DataManager implements IPacksDataManager {
 		return getParsedPdscTree(pdscName, version, new DurationMonitor());
 	}
 
-	private Node getParsedPdscTree(String pdscName, String version,
-			final DurationMonitor dm) {
+	private Node getParsedPdscTree(String pdscName, String version, final DurationMonitor dm) {
 
-		final String fileName = PacksStorage.makeCachedPdscName(pdscName,
-				version);
+		final String fileName = PacksStorage.makeCachedPdscName(pdscName, version);
 		if (fParsedPdsc != null) {
 			Node node = fParsedPdsc.get(fileName);
 			if (node != null) {
@@ -627,8 +612,7 @@ public class DataManager implements IPacksDataManager {
 		try {
 
 			File file = PacksStorage.getCachedFileObject(fileName);
-			fOut.println("Parsing cached PDSC file \"" + file.getPath()
-					+ "\"...");
+			fOut.println("Parsing cached PDSC file \"" + file.getPath() + "\"...");
 			Document document = Xml.parseFile(file);
 
 			PdscGenericParser parser = new PdscGenericParser();
@@ -663,8 +647,7 @@ public class DataManager implements IPacksDataManager {
 		fInstalledObjectsForBuild = null;
 
 		try {
-			File devicesFile = PacksStorage
-					.getCachedFileObject(PacksStorage.INSTALLED_DEVICES_FILE_NAME);
+			File devicesFile = PacksStorage.getCachedFileObject(PacksStorage.INSTALLED_DEVICES_FILE_NAME);
 
 			if (devicesFile != null) {
 				devicesFile.delete();
@@ -721,8 +704,7 @@ public class DataManager implements IPacksDataManager {
 		Node rootNode = null;
 		File devicesFile = null;
 		try {
-			devicesFile = PacksStorage
-					.getCachedFileObject(PacksStorage.INSTALLED_DEVICES_FILE_NAME);
+			devicesFile = PacksStorage.getCachedFileObject(PacksStorage.INSTALLED_DEVICES_FILE_NAME);
 
 			if (devicesFile.exists()) {
 
@@ -751,8 +733,7 @@ public class DataManager implements IPacksDataManager {
 					serialiser.serialise(rootNode, devicesFile);
 				} catch (IOException e) {
 
-					String msg = e.getMessage() + ", file: "
-							+ devicesFile.getName();
+					String msg = e.getMessage() + ", file: " + devicesFile.getName();
 					fOut.println("Error: " + msg);
 					Utils.reportError(msg);
 					Activator.log(e);
@@ -880,12 +861,10 @@ public class DataManager implements IPacksDataManager {
 
 	public Leaf findInstalledDevice(String deviceVendorId, String deviceName) {
 
-		return findInstalledDevice(deviceVendorId, deviceName,
-				new DurationMonitor());
+		return findInstalledDevice(deviceVendorId, deviceName, new DurationMonitor());
 	}
 
-	private Leaf findInstalledDevice(String deviceVendorId, String deviceName,
-			DurationMonitor dm) {
+	private Leaf findInstalledDevice(String deviceVendorId, String deviceName, DurationMonitor dm) {
 
 		String key = makeMapKey(deviceVendorId, deviceName);
 		if (fInstalledDevicesMap.containsKey(key)) {
@@ -906,8 +885,7 @@ public class DataManager implements IPacksDataManager {
 
 			@Override
 			public boolean isLeaf(Leaf node) {
-				if (node.isType(Type.DEVICE)
-						|| node.isType(Type.BOARDS_SUBTREE)) {
+				if (node.isType(Type.DEVICE) || node.isType(Type.BOARDS_SUBTREE)) {
 					return true;
 				}
 				return false;
@@ -930,8 +908,7 @@ public class DataManager implements IPacksDataManager {
 			while (node != null && !node.isType(Type.VENDOR)) {
 
 				if (node.hasProperty(Property.VENDOR_ID)) {
-					installedDeviceVendorId = node
-							.getProperty(Property.VENDOR_ID);
+					installedDeviceVendorId = node.getProperty(Property.VENDOR_ID);
 					break;
 				}
 				node = node.getParent();
@@ -951,12 +928,10 @@ public class DataManager implements IPacksDataManager {
 
 	public Leaf findInstalledBoard(String boardVendorName, String boardName) {
 
-		return findInstalledBoard(boardVendorName, boardName,
-				new DurationMonitor());
+		return findInstalledBoard(boardVendorName, boardName, new DurationMonitor());
 	}
 
-	private Leaf findInstalledBoard(String boardVendorName, String boardName,
-			DurationMonitor dm) {
+	private Leaf findInstalledBoard(String boardVendorName, String boardName, DurationMonitor dm) {
 
 		String key = makeMapKey(boardVendorName, boardName);
 		if (fInstalledBoardsMap.containsKey(key)) {
@@ -977,8 +952,7 @@ public class DataManager implements IPacksDataManager {
 
 			@Override
 			public boolean isLeaf(Leaf node) {
-				if (node.isType(Type.BOARD)
-						|| node.isType(Type.DEVICES_SUBTREE)) {
+				if (node.isType(Type.BOARD) || node.isType(Type.DEVICES_SUBTREE)) {
 					return true;
 				}
 				return false;
@@ -996,8 +970,7 @@ public class DataManager implements IPacksDataManager {
 			if (!boardName.equals(installedBoardName)) {
 				continue; // Different board name, try next
 			}
-			String installedBoardVendorName = installedBoard
-					.getProperty(Property.VENDOR_NAME);
+			String installedBoardVendorName = installedBoard.getProperty(Property.VENDOR_NAME);
 			if (boardVendorName.equals(installedBoardVendorName)) {
 				// Both board name & vendor name match
 				fInstalledBoardsMap.put(key, installedBoard);
@@ -1045,15 +1018,11 @@ public class DataManager implements IPacksDataManager {
 
 	public String getDestinationFolder(Leaf node, DurationMonitor dm) {
 
-		String vendorName = collectProperty(node, Property.PACK_VENDOR,
-				Type.DEVICES_SUBTREE);
-		String packName = collectProperty(node, Property.PACK_NAME,
-				Type.DEVICES_SUBTREE);
-		String version = collectProperty(node, Property.PACK_VERSION,
-				Type.DEVICES_SUBTREE);
+		String vendorName = collectProperty(node, Property.PACK_VENDOR, Type.DEVICES_SUBTREE);
+		String packName = collectProperty(node, Property.PACK_NAME, Type.DEVICES_SUBTREE);
+		String version = collectProperty(node, Property.PACK_VERSION, Type.DEVICES_SUBTREE);
 
-		Leaf summaryVersionNode = findPackVersion(vendorName, packName,
-				version, dm);
+		Leaf summaryVersionNode = findPackVersion(vendorName, packName, version, dm);
 
 		String destFolder = "";
 		if (summaryVersionNode != null) {
@@ -1066,15 +1035,13 @@ public class DataManager implements IPacksDataManager {
 	@Override
 	public IPath getSVDAbsolutePath(String deviceVendorId, String deviceName) {
 
-		Leaf installedDeviceNode = findInstalledDevice(deviceVendorId,
-				deviceName);
+		Leaf installedDeviceNode = findInstalledDevice(deviceVendorId, deviceName);
 
 		if (installedDeviceNode == null) {
 			return null;
 		}
 
-		String svdFile = installedDeviceNode.getPropertyWithParent(
-				Property.SVD_FILE, null);
+		String svdFile = installedDeviceNode.getPropertyWithParent(Property.SVD_FILE, null);
 		if (svdFile == null) {
 			return null;
 		}
@@ -1082,8 +1049,7 @@ public class DataManager implements IPacksDataManager {
 		String destFolder = getDestinationFolder(installedDeviceNode);
 		IPath path;
 		try {
-			path = PacksStorage.getFolderPath().append(destFolder)
-					.append(svdFile);
+			path = PacksStorage.getFolderPath().append(destFolder).append(svdFile);
 		} catch (IOException e) {
 			return null;
 		}
