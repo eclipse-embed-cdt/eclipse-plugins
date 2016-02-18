@@ -29,9 +29,6 @@ import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.PersistentPreferences;
 import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.PyOCD;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -867,10 +864,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			System.out.printf("pyOCD resolved path = %s\n", path);
 			
 			// Validate path.
-			Path pyocd = Paths.get(path);
-			if (!Files.exists(pyocd) || Files.isDirectory(pyocd)
-					|| !Files.isExecutable(pyocd))
-			{
+			
+			File file = new File(path);
+			if (!file.exists() || file.isDirectory()) {
+				// TODO: Use java.nio.Files when we move to Java 7 to also check that file is executable 
 				System.out.printf("pyOCD path is invalid\n");
 				return null;
 			}
