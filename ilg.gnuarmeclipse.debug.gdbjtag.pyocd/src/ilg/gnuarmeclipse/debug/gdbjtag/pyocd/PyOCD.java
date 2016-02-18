@@ -11,6 +11,8 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.pyocd;
 
+import ilg.gnuarmeclipse.core.StringUtils;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -19,7 +21,6 @@ import java.io.Reader;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.eclipse.cdt.dsf.gdb.launching.LaunchUtils;
 import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -28,13 +29,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunchConfiguration;
-
-import ilg.gnuarmeclipse.core.StringUtils;
-import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
-
-import org.json.simple.JSONObject;
 import org.json.simple.JSONArray;
-
+import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
@@ -166,7 +162,10 @@ public class PyOCD {
 		// Check status
 		if (!output.containsKey(STATUS_KEY)
 				|| !output.get(STATUS_KEY).equals(Long.valueOf(0))) {
-			String msg = (String)output.getOrDefault(ERROR_KEY, "unknown error");
+			String msg = "unknown error";
+			if (output.containsKey(ERROR_KEY)) {
+				msg = (String)output.get(ERROR_KEY);
+			}
 			System.out.printf("Error %d reading from pyOCD: %s\n",
 					output.get(STATUS_KEY), msg);
 			return false;

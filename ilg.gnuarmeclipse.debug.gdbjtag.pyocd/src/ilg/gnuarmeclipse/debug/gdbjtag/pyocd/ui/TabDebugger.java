@@ -30,11 +30,11 @@ import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.PyOCD;
 
 import java.io.File;
 import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.function.Consumer;
 
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
@@ -61,8 +61,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -922,21 +922,21 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 			System.out.printf("board = %s\n", boards);
 			
-			boards.sort(PyOCD.Board.COMPARATOR);
+			Collections.sort(boards, PyOCD.Board.COMPARATOR);
 			
 			fBoards = boards;
 			
 			final ArrayList<String> itemList = new ArrayList<String>();
-			boards.forEach(new Consumer<PyOCD.Board>() {
-					public void accept(PyOCD.Board b) {
-						String desc = b.fProductName;
-						if (!b.fProductName.startsWith(b.fVendorName)) {
-							desc = b.fVendorName + " " + b.fProductName;
-						}
-						itemList.add(String.format("%s - %s (%s)",
-								b.fName, desc, b.fUniqueId));
-					}
-			});
+			
+			for (PyOCD.Board board : boards) {
+				String desc = board.fProductName;
+				if (!board.fProductName.startsWith(board.fVendorName)) {
+					desc = board.fVendorName + " " + board.fProductName;
+				}
+				itemList.add(String.format("%s - %s (%s)",
+						board.fName, desc, board.fUniqueId));
+			}
+		
 			String[] items = itemList.toArray(new String[itemList.size()]);
 			
 			fGdbServerBoardId.setItems(items);
@@ -954,16 +954,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 			System.out.printf("target = %s\n", targets);
 			
-			targets.sort(PyOCD.Target.COMPARATOR);
+			Collections.sort(targets, PyOCD.Target.COMPARATOR);
 			
 			fTargets = targets;
 
 			final ArrayList<String> itemList = new ArrayList<String>();
-			targets.forEach(new Consumer<PyOCD.Target>() {
-					public void accept(PyOCD.Target t) {
-						itemList.add(String.format("%s", t.fPartNumber));
-					}
-			});
+			for (PyOCD.Target target : targets) {
+				itemList.add(String.format("%s", target.fPartNumber));
+			}
 			String[] items = itemList.toArray(new String[itemList.size()]);
 			
 			fGdbServerTargetName.setItems(items);
