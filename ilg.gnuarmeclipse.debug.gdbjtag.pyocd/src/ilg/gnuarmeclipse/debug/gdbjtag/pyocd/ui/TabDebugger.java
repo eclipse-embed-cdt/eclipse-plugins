@@ -386,17 +386,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			gd.widthHint = 120;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			fGdbServerTargetName.setLayoutData(gd);
-			fGdbServerTargetName.setItems(new String[] { 
-					"cortex_m",
-					"k20d50m", "k22f", "k64f", "kl26z", 
-					"kl02z", "kl05z", "kl25z", "kl28z", "kl46z",
-					"kinetis",
-					"lpc11u24", "lpc1768", "lpc4330", "lpc800",
-                    "stm32f103rc", "stm32f051",
-                    "maxwsnenv",
-                    "max32600mbed",
-                    "nrf51",
-                    "w7500" } );
 		}
 		
 		{
