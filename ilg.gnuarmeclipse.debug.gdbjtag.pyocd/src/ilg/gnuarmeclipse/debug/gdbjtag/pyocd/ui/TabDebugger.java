@@ -31,7 +31,9 @@ import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.PyOCD;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
@@ -79,12 +81,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	// ------------------------------------------------------------------------
 
-	private ILaunchConfigurationWorkingCopy fWorkingCopy;
-	
-	private boolean fIsActive;
+	/** The launch configuration this GUI is showing/modifying */  
+	private ILaunchConfiguration fConfiguration;
 	
 	private List<PyOCD.Board> fBoards;
-	private List<PyOCD.Target> fTargets;
 	private String fSelectedBoardId;
 	
 	private Button fDoStartGdbServer;
@@ -125,7 +125,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Button fDoGdbServerAllocateSemihostingConsole;
 
 	protected Button fUpdateThreadlistOnSuspend;
+	
+	/** Active errors , if any. When any, only first is shown */
+	private Set<String> fErrors = new LinkedHashSet<String>();
 
+	private static class Msgs {
+		public static final String INVALID_PYOCD_EXECUTABLE = "pyOCD gdbserver not found where specified";
+	}
 	// ------------------------------------------------------------------------
 
 	protected TabDebugger(TabStartup tabStartup) {
@@ -539,10 +545,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fGdbServerExecutable.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				updateBoards();
-				updateTargets();
-				scheduleUpdateJob(); // provides much better performance for
-										// Text listeners
+				if (fConfiguration != null) {
+					updateBoards();
+					updateTargets();
+					scheduleUpdateJob(); // provides much better performance for
+											// Text listeners
+				}
 			}
 		});
 
@@ -832,20 +840,16 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		String path = null;
 		
 		try {
-			if (!fIsActive || fWorkingCopy == null) {
-				return null;
-			}
-			
 			path = fGdbServerExecutable.getText().trim();
 			if (path.length() == 0) {
 				return null;
 			}
 			System.out.printf("pyOCD path = %s\n", path);
 			
-			path = DebugUtils.resolveAll(path, fWorkingCopy.getAttributes());
+			path = DebugUtils.resolveAll(path, fConfiguration.getAttributes());
 			
 			ICConfigurationDescription buildConfig = EclipseUtils
-					.getBuildConfigDescription(fWorkingCopy);
+					.getBuildConfigDescription(fConfiguration);
 			if (buildConfig != null) {
 				path = DebugUtils.resolveAll(path, buildConfig);
 			}
@@ -902,6 +906,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private void updateBoards() {
 		String path = getPyOCDExecutablePath();
 		if (path != null) {
+			deregisterError(Msgs.INVALID_PYOCD_EXECUTABLE);
 			List<PyOCD.Board> boards = PyOCD.getBoards(path);
 			if (boards == null) {
 				boards = new ArrayList<PyOCD.Board>();
@@ -929,11 +934,17 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			
 			selectActiveBoard();
 		}
+		else {
+			fGdbServerBoardId.setItems(new String[]{});
+			registerError(Msgs.INVALID_PYOCD_EXECUTABLE);
+		}
 	}
 
 	private void updateTargets() {
 		String path = getPyOCDExecutablePath();
 		if (path != null) {
+			deregisterError(Msgs.INVALID_PYOCD_EXECUTABLE);
+			
 			List<PyOCD.Target> targets = PyOCD.getTargets(path);
 			if (targets == null) {
 				targets = new ArrayList<PyOCD.Target>();
@@ -942,8 +953,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			
 			Collections.sort(targets, PyOCD.Target.COMPARATOR);
 			
-			fTargets = targets;
-
 			final ArrayList<String> itemList = new ArrayList<String>();
 			for (PyOCD.Target target : targets) {
 				itemList.add(String.format("%s", target.fPartNumber));
@@ -951,6 +960,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			String[] items = itemList.toArray(new String[itemList.size()]);
 			
 			fGdbServerTargetName.setItems(items);
+		}
+		else {
+			// Clear combobox and show error
+			fGdbServerTargetName.setItems(new String[]{});
+			registerError(Msgs.INVALID_PYOCD_EXECUTABLE);
 		}
 	}
 
@@ -1111,6 +1125,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fTargetPortNumber.setText(portString);
 			}
 
+			fConfiguration = configuration;
+			
 			doStartGdbServerChanged();
 			overrideTargetChanged();
 			updateBoards();
@@ -1248,27 +1264,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabDebugger: activated() "
-					+ workingCopy.getName());
-		}
-		
-		fIsActive = true;
-		fWorkingCopy = workingCopy;
-		
-		updateBoards();
-		updateTargets();
+		// Do nothing. Override is necessary to avoid heavy cost of
+		// reinitialization (see super implementation)  
 	}
 
 	@Override
 	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabDebugger: deactivated() "
-					+ workingCopy.getName());
-		}
-		
-		fIsActive = false;
-		fWorkingCopy = null;
+		// Do nothing. Override is necessary to avoid heavy unnecessary Apply
+		// (see super implementation)
 	}
 
 	@Override
@@ -1594,5 +1597,36 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						DefaultPreferences.UPDATE_THREAD_LIST_DEFAULT);
 	}	
 
+	
+	/**
+	 * Register an error
+	 * 
+	 * <p>
+	 * Any number of unique errors can be registered. Only one is shown to the
+	 * user. First come first serve.
+	 */
+	private void registerError(String msg) {
+		if (fErrors.isEmpty()) {
+			setErrorMessage(msg);
+		}
+		fErrors.add(msg);
+	}
+	
+	/**
+	 * Remove a previously registered error.
+	 *  
+	 * If the removed error was being displayed, the next in line (if any) is shown.
+	 */
+	private void deregisterError(String msg) {
+		if (fErrors.remove(msg)) {
+			if (fErrors.isEmpty()) {
+				setErrorMessage(null);
+			}
+			else {
+				setErrorMessage(fErrors.iterator().next());
+			}
+		}
+	}
+	
 	// ------------------------------------------------------------------------
 }
