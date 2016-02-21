@@ -24,6 +24,8 @@ import java.util.List;
 
 import org.w3c.dom.Element;
 
+import com.github.zafarkhaja.semver.Version;
+
 public class PdscParserForContent extends PdscParser {
 
 	public void parse(String pdscNname, String version, Node parent) {
@@ -35,17 +37,16 @@ public class PdscParserForContent extends PdscParser {
 		Element packageElement = fDocument.getDocumentElement();
 		String firstElementName = packageElement.getNodeName();
 		if (!"package".equals(firstElementName)) {
-			Activator.log("Missing <package>, <" + firstElementName
-					+ "> encountered");
+			Activator.log("Missing <package>, <" + firstElementName + "> encountered");
 			return;
 		}
 
-		String schemaVersion = packageElement.getAttribute("schemaVersion")
-				.trim();
+		String schemaVersion = packageElement.getAttribute("schemaVersion").trim();
+		Version semVer = Version.valueOf(schemaVersion);
 
 		String msg = "Schema version \"" + schemaVersion + "\"";
 
-		if (!PdscUtils.isSchemaValid(schemaVersion)) {
+		if (!PdscUtils.isSchemaValid(semVer)) {
 			msg += " not recognised, package " + pdscNname + " ignored.";
 			fOut.println(msg);
 			Utils.reportWarning(msg);
@@ -74,28 +75,24 @@ public class PdscParserForContent extends PdscParser {
 
 		packNode = Node.addUniqueChild(parent, Type.PACKAGE, packName);
 
-		Element packDescriptionElement = Xml.getFirstChildElement(
-				packageElement, "description");
+		Element packDescriptionElement = Xml.getFirstChildElement(packageElement, "description");
 		if (packDescriptionElement == null) {
 			fOut.println("Missing <description>.");
 			return;
 		}
-		String packDescription = Xml
-				.getElementMultiLineContent(packDescriptionElement);
+		String packDescription = Xml.getElementMultiLineContent(packDescriptionElement);
 
 		// TODO: do it only when the version is right
 		packNode.setDescription(packDescription);
 
-		Element vendorElement = Xml.getFirstChildElement(packageElement,
-				"vendor");
+		Element vendorElement = Xml.getFirstChildElement(packageElement, "vendor");
 		if (vendorElement == null) {
 			fOut.println("Missing <vendor>.");
 			return;
 		}
 		String packVendorName = Xml.getElementContent(vendorElement);
 
-		Element releasesElement = Xml.getFirstChildElement(packageElement,
-				"releases");
+		Element releasesElement = Xml.getFirstChildElement(packageElement, "releases");
 		if (releasesElement == null) {
 			fOut.println("Missing <releases>.");
 			return;
@@ -109,8 +106,7 @@ public class PdscParserForContent extends PdscParser {
 		Node versionNode = null;
 
 		boolean isFirst = true;
-		List<Element> releaseElements = Xml.getChildrenElementsList(
-				releasesElement, "release");
+		List<Element> releaseElements = Xml.getChildrenElementsList(releasesElement, "release");
 		for (Element releaseElement : releaseElements) {
 
 			String releaseName = releaseElement.getAttribute("version").trim();
@@ -118,8 +114,7 @@ public class PdscParserForContent extends PdscParser {
 			String releaseDate = releaseElement.getAttribute("date").trim();
 			String description = Xml.getElementMultiLineContent(releaseElement);
 
-			Node verNode = Node.addUniqueChild(packNode, Type.VERSION,
-					releaseName);
+			Node verNode = Node.addUniqueChild(packNode, Type.VERSION, releaseName);
 
 			verNode.putProperty(Property.TYPE, "cmsis.pack");
 
@@ -127,8 +122,7 @@ public class PdscParserForContent extends PdscParser {
 			verNode.putProperty(Property.PACK_NAME, packName);
 			verNode.putProperty(Property.VERSION_NAME, releaseName);
 
-			String archiveName = packVendorName + "." + packName + "."
-					+ releaseName + ".pack";
+			String archiveName = packVendorName + "." + packName + "." + releaseName + ".pack";
 			String archiveUrl = shortUrl + "/" + archiveName;
 			verNode.putProperty(Property.ARCHIVE_URL, archiveUrl);
 			verNode.putProperty(Property.ARCHIVE_NAME, archiveName);
@@ -145,8 +139,7 @@ public class PdscParserForContent extends PdscParser {
 			}
 			verNode.putProperty(Property.ARCHIVE_SIZE, size);
 
-			String unpackFolder = packVendorName + "/" + packName + "/"
-					+ releaseName;
+			String unpackFolder = packVendorName + "/" + packName + "/" + releaseName;
 			verNode.putProperty(Property.DEST_FOLDER, unpackFolder);
 
 			String pdscName = packVendorName + "." + packName + ".pdsc";
@@ -162,8 +155,7 @@ public class PdscParserForContent extends PdscParser {
 
 			if (isFirst) {
 				if (!version.equals(releaseName)) {
-					fOut.println("Index version=\"" + version
-							+ "\" not the most recent (" + releaseName + ").");
+					fOut.println("Index version=\"" + version + "\" not the most recent (" + releaseName + ").");
 
 				}
 
@@ -180,12 +172,10 @@ public class PdscParserForContent extends PdscParser {
 		Node externNode = new Node(Type.EXTERNAL);
 
 		// Keywords
-		Element keywordsElement = Xml.getFirstChildElement(packageElement,
-				"keywords");
+		Element keywordsElement = Xml.getFirstChildElement(packageElement, "keywords");
 		if (keywordsElement != null) {
 
-			List<Element> childElements = Xml
-					.getChildrenElementsList(keywordsElement);
+			List<Element> childElements = Xml.getChildrenElementsList(keywordsElement);
 			for (Element childElement : childElements) {
 
 				String elementName2 = childElement.getNodeName();
@@ -199,94 +189,74 @@ public class PdscParserForContent extends PdscParser {
 		}
 
 		// Devices
-		Element devicesElement = Xml.getFirstChildElement(packageElement,
-				"devices");
+		Element devicesElement = Xml.getFirstChildElement(packageElement, "devices");
 		if (devicesElement != null) {
 
-			List<Element> familyElements = Xml.getChildrenElementsList(
-					devicesElement, Type.FAMILY);
+			List<Element> familyElements = Xml.getChildrenElementsList(devicesElement, Type.FAMILY);
 			for (Element familyElement : familyElements) {
 
 				String family = familyElement.getAttribute("Dfamily").trim();
 				String vendor = familyElement.getAttribute("Dvendor").trim();
 
-				Element deviceDescriptionElement = Xml.getFirstChildElement(
-						familyElement, "description");
+				Element deviceDescriptionElement = Xml.getFirstChildElement(familyElement, "description");
 				String description = "";
 
-				description = extendDescription(
-						description,
-						Xml.getElementMultiLineContent(deviceDescriptionElement));
+				description = extendDescription(description, Xml.getElementMultiLineContent(deviceDescriptionElement));
 
 				String va[] = vendor.split("[:]");
 				if (va.length < 2) {
-					fOut.println("Dvendor=\"" + vendor
-							+ "\" not enumeration, ignored.");
+					fOut.println("Dvendor=\"" + vendor + "\" not enumeration, ignored.");
 					continue;
 				}
 
-				Node deviceFamilyNode = Node.addUniqueChild(outlineNode,
-						Type.FAMILY, family);
+				Node deviceFamilyNode = Node.addUniqueChild(outlineNode, Type.FAMILY, family);
 				deviceFamilyNode.setDescription(description);
 
-				deviceFamilyNode.putNonEmptyProperty(Property.VENDOR_NAME,
-						va[0]);
+				deviceFamilyNode.putNonEmptyProperty(Property.VENDOR_NAME, va[0]);
 				deviceFamilyNode.putNonEmptyProperty(Property.VENDOR_ID, va[1]);
 			}
 		}
 
 		// Boards
-		Element boardsElement = Xml.getFirstChildElement(packageElement,
-				"boards");
+		Element boardsElement = Xml.getFirstChildElement(packageElement, "boards");
 		if (boardsElement != null) {
 
-			List<Element> boardElements = Xml.getChildrenElementsList(
-					boardsElement, "board");
+			List<Element> boardElements = Xml.getChildrenElementsList(boardsElement, "board");
 			for (Element boardElement : boardElements) {
 				String vendor = boardElement.getAttribute("vendor").trim();
 				String boardName = boardElement.getAttribute("name").trim();
 				// String revision =
 				// boardElement.getAttribute("revision").trim();
 
-				Element descriptionElement = Xml.getFirstChildElement(
-						boardElement, "description");
+				Element descriptionElement = Xml.getFirstChildElement(boardElement, "description");
 				String description = "";
-				description = Xml
-						.getElementMultiLineContent(descriptionElement);
+				description = Xml.getElementMultiLineContent(descriptionElement);
 
-				Node boardNode = Node.addUniqueChild(outlineNode, Type.BOARD,
-						boardName);
+				Node boardNode = Node.addUniqueChild(outlineNode, Type.BOARD, boardName);
 				boardNode.putProperty(Property.VENDOR_NAME, vendor);
 
 				boardNode.setDescription(description);
 
 				// For boards with compatible family devices, add them to the
 				// package selected conditions
-				List<Element> compatibleDevicesElements = Xml
-						.getChildrenElementsList(boardElement,
-								"compatibleDevice");
+				List<Element> compatibleDevicesElements = Xml.getChildrenElementsList(boardElement, "compatibleDevice");
 
 				for (Element compatibleDevicesElement : compatibleDevicesElements) {
 
-					String family = compatibleDevicesElement.getAttribute(
-							"Dfamily").trim();
+					String family = compatibleDevicesElement.getAttribute("Dfamily").trim();
 					if (family.length() > 0) {
 
-						String vendor2 = compatibleDevicesElement.getAttribute(
-								"Dvendor").trim();
+						String vendor2 = compatibleDevicesElement.getAttribute("Dvendor").trim();
 						String va[] = vendor2.split("[:]");
 						if (va.length < 2) {
-							fOut.println("Dvendor=\"" + vendor2
-									+ "\" not enumeration, ignored.");
+							fOut.println("Dvendor=\"" + vendor2 + "\" not enumeration, ignored.");
 							continue;
 						}
 
 						// Contribute external device family
-						Node deviceFamilyNode = Node.addUniqueChild(externNode,
-								Type.FAMILY, family);
+						Node deviceFamilyNode = Node.addUniqueChild(externNode, Type.FAMILY, family);
 
-						deviceFamilyNode.putProperty(Property.VENDOR_NAME,
-								va[0]);
+						deviceFamilyNode.putProperty(Property.VENDOR_NAME, va[0]);
 						deviceFamilyNode.putProperty(Property.VENDOR_ID, va[1]);
 					}
 				}
@@ -294,12 +264,10 @@ public class PdscParserForContent extends PdscParser {
 		}
 
 		// Components
-		Element componentsElement = Xml.getFirstChildElement(packageElement,
-				"components");
+		Element componentsElement = Xml.getFirstChildElement(packageElement, "components");
 		if (componentsElement != null) {
 
-			List<Element> componentElements = Xml.getChildrenElementsList(
-					componentsElement, "component");
+			List<Element> componentElements = Xml.getChildrenElementsList(componentsElement, "component");
 			for (Element componentElement : componentElements) {
 
 				// Required
@@ -310,10 +278,8 @@ public class PdscParserForContent extends PdscParser {
 
 				// Optional
 				String Csub = componentElement.getAttribute("Csub").trim();
-				String Cvariant = componentElement.getAttribute("Cvariant")
-						.trim();
-				String Cvendor = componentElement.getAttribute("Cvendor")
-						.trim();
+				String Cvariant = componentElement.getAttribute("Cvariant").trim();
+				String Cvendor = componentElement.getAttribute("Cvendor").trim();
 
 				Node componentNode = new Node(Type.COMPONENT);
 				outlineNode.addChild(componentNode);
@@ -327,19 +293,16 @@ public class PdscParserForContent extends PdscParser {
 
 				componentNode.setName(name);
 
-				Element componentsDescriptionElement = Xml
-						.getFirstChildElement(componentElement, "description");
+				Element componentsDescriptionElement = Xml.getFirstChildElement(componentElement, "description");
 				if (componentsDescriptionElement != null) {
 
-					String componentDescription = Xml
-							.getElementMultiLineContent(componentsDescriptionElement);
+					String componentDescription = Xml.getElementMultiLineContent(componentsDescriptionElement);
 
 					componentNode.setDescription(componentDescription);
 				}
 			}
 
-			List<Element> bundleElements = Xml.getChildrenElementsList(
-					componentsElement, "bundle");
+			List<Element> bundleElements = Xml.getChildrenElementsList(componentsElement, "bundle");
 			for (Element el : bundleElements) {
 
 				// Required
@@ -358,12 +321,10 @@ public class PdscParserForContent extends PdscParser {
 				name = extendName(name, Cbundle);
 				bundleNode.setName(name);
 
-				Element bundleDescriptionElement = Xml.getFirstChildElement(el,
-						"description");
+				Element bundleDescriptionElement = Xml.getFirstChildElement(el, "description");
 				if (bundleDescriptionElement != null) {
 
-					String bundleDescription = Xml
-							.getElementMultiLineContent(bundleDescriptionElement);
+					String bundleDescription = Xml.getElementMultiLineContent(bundleDescriptionElement);
 
 					bundleNode.setDescription(bundleDescription);
 				}
@@ -371,28 +332,23 @@ public class PdscParserForContent extends PdscParser {
 		}
 
 		// Examples
-		Element examplesElement = Xml.getFirstChildElement(packageElement,
-				"examples");
+		Element examplesElement = Xml.getFirstChildElement(packageElement, "examples");
 		if (examplesElement != null) {
 
-			List<Element> exampleElements = Xml.getChildrenElementsList(
-					examplesElement, "example");
+			List<Element> exampleElements = Xml.getChildrenElementsList(examplesElement, "example");
 			for (Element exampleElement : exampleElements) {
 
 				String firstBoardName = "";
 				// String firstBoardVendorName = "";
 
-				Element boardElement = Xml.getFirstChildElement(exampleElement,
-						"board");
+				Element boardElement = Xml.getFirstChildElement(exampleElement, "board");
 				if (boardElement != null) {
 
-					String boardVendor = boardElement.getAttribute("vendor")
-							.trim();
+					String boardVendor = boardElement.getAttribute("vendor").trim();
 					String boardName = boardElement.getAttribute("name").trim();
 
 					// Contribute external board
-					Node boardNode = Node.addUniqueChild(externNode,
-							Type.BOARD, boardName);
+					Node boardNode = Node.addUniqueChild(externNode, Type.BOARD, boardName);
 					boardNode.putProperty(Property.VENDOR_NAME, boardVendor);
 
 					if (firstBoardName.length() == 0) {
@@ -420,24 +376,19 @@ public class PdscParserForContent extends PdscParser {
 				}
 				exampleNode.setName(exampleName);
 
-				Element exampleDescriptionElement = Xml.getFirstChildElement(
-						exampleElement, "description");
+				Element exampleDescriptionElement = Xml.getFirstChildElement(exampleElement, "description");
 				if (exampleDescriptionElement != null) {
 
-					String exampleDescription = Xml
-							.getElementMultiLineContent(exampleDescriptionElement);
+					String exampleDescription = Xml.getElementMultiLineContent(exampleDescriptionElement);
 
 					exampleNode.setDescription(exampleDescription);
 				}
 
 				// contribute possible keywords
-				Element attributesElement = Xml.getFirstChildElement(
-						exampleElement, "attributes");
+				Element attributesElement = Xml.getFirstChildElement(exampleElement, "attributes");
 				if (attributesElement != null) {
 
-					List<Element> keywordElements = Xml
-							.getChildrenElementsList(attributesElement,
-									"keyword");
+					List<Element> keywordElements = Xml.getChildrenElementsList(attributesElement, "keyword");
 
 					for (Element keywordElement : keywordElements) {
 

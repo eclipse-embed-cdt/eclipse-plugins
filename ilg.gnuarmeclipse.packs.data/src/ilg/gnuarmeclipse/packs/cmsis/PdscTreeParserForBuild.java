@@ -121,8 +121,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 		Node vendorNode = addUniqueVendor(parent, va[0], va[1]);
 
-		Node familyNode = Node.addUniqueChild(vendorNode, Type.FAMILY,
-				familyName);
+		Node familyNode = Node.addUniqueChild(vendorNode, Type.FAMILY, familyName);
 
 		// The last encountered value one will be preserved
 		// TODO: update vendor name from vendor id based on a conversion table
@@ -152,8 +151,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 		String subFamilyName = node.getProperty("DsubFamily");
 
-		Node subFamilyNode = Node.addUniqueChild(parent, Type.SUBFAMILY,
-				subFamilyName);
+		Node subFamilyNode = Node.addUniqueChild(parent, Type.SUBFAMILY, subFamilyName);
 
 		if (node.hasChildren()) {
 			for (Leaf child : ((Node) node).getChildren()) {
@@ -220,8 +218,16 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 	private void processMemoryNode(Leaf node, Node parent) {
 
-		// Required
+		// Deprecated in 1.4
 		String id = node.getProperty("id");
+
+		// Added to 1.4
+		String nm = node.getProperty("name", id);
+		String access = node.getProperty("access");
+		String alias = node.getProperty("alias");
+
+		// Either name or id required
+
 		String start = node.getProperty("start");
 		String size = node.getProperty("size");
 
@@ -231,7 +237,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 		// Optional
 		String startup = node.getProperty("startup");
 
-		Leaf memoryNode = Leaf.addUniqueChild(parent, Type.MEMORY, id);
+		Leaf memoryNode = Leaf.addUniqueChild(parent, Type.MEMORY, nm);
 
 		// memoryNode.putProperty(Property.ID, id);
 		memoryNode.putProperty(Property.START, start);
@@ -239,6 +245,9 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 
 		memoryNode.putNonEmptyProperty(Property.PNAME, Pname);
 		memoryNode.putNonEmptyProperty(Property.STARTUP, startup);
+
+		memoryNode.putProperty(Property.ACCESS, access);
+		memoryNode.putProperty(Property.ALIAS, alias);
 	}
 
 	private void processCompileNode(Leaf node, Node parent) {
@@ -272,8 +281,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 		bookNode.setName(title);
 
 		String posixName = updatePosixSeparators(bookName);
-		if (bookName.startsWith("http://") || bookName.startsWith("https://")
-				|| bookName.startsWith("ftp://")) {
+		if (bookName.startsWith("http://") || bookName.startsWith("https://") || bookName.startsWith("ftp://")) {
 			bookNode.putNonEmptyProperty(Property.URL, bookName);
 		} else {
 			bookNode.putNonEmptyProperty(Property.FILE, posixName);
@@ -319,8 +327,7 @@ public class PdscTreeParserForBuild extends PdscTreeParser {
 					String Dname = child.getProperty("Dname");
 
 					if (Dname.length() > 0) {
-						Node deviceNode = Node.addNewChild(boardNode,
-								Type.DEVICE);
+						Node deviceNode = Node.addNewChild(boardNode, Type.DEVICE);
 						deviceNode.setName(Dname);
 
 						String va[] = Dvendor.split(":");

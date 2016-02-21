@@ -29,12 +29,11 @@ import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.PersistentPreferences;
 import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.PyOCD;
 
 import java.io.File;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.function.Consumer;
+import java.util.Set;
 
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
@@ -61,8 +60,8 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
-import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Combo;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
@@ -82,12 +81,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	// ------------------------------------------------------------------------
 
-	private ILaunchConfigurationWorkingCopy fWorkingCopy;
-	
-	private boolean fIsActive;
+	/** The launch configuration this GUI is showing/modifying */  
+	private ILaunchConfiguration fConfiguration;
 	
 	private List<PyOCD.Board> fBoards;
-	private List<PyOCD.Target> fTargets;
 	private String fSelectedBoardId;
 	
 	private Button fDoStartGdbServer;
@@ -128,7 +125,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Button fDoGdbServerAllocateSemihostingConsole;
 
 	protected Button fUpdateThreadlistOnSuspend;
+	
+	/** Active errors , if any. When any, only first is shown */
+	private Set<String> fErrors = new LinkedHashSet<String>();
 
+	private static class Msgs {
+		public static final String INVALID_PYOCD_EXECUTABLE = "pyOCD gdbserver not found where specified";
+	}
 	// ------------------------------------------------------------------------
 
 	protected TabDebugger(TabStartup tabStartup) {
@@ -389,17 +392,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			gd.widthHint = 120;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			fGdbServerTargetName.setLayoutData(gd);
-			fGdbServerTargetName.setItems(new String[] { 
-					"cortex_m",
-					"k20d50m", "k22f", "k64f", "kl26z", 
-					"kl02z", "kl05z", "kl25z", "kl28z", "kl46z",
-					"kinetis",
-					"lpc11u24", "lpc1768", "lpc4330", "lpc800",
-                    "stm32f103rc", "stm32f051",
-                    "maxwsnenv",
-                    "max32600mbed",
-                    "nrf51",
-                    "w7500" } );
 		}
 		
 		{
@@ -553,10 +545,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fGdbServerExecutable.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				updateBoards();
-				updateTargets();
-				scheduleUpdateJob(); // provides much better performance for
-										// Text listeners
+				if (fConfiguration != null) {
+					updateBoards();
+					updateTargets();
+					scheduleUpdateJob(); // provides much better performance for
+											// Text listeners
+				}
 			}
 		});
 
@@ -846,20 +840,16 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		String path = null;
 		
 		try {
-			if (!fIsActive || fWorkingCopy == null) {
-				return null;
-			}
-			
 			path = fGdbServerExecutable.getText().trim();
 			if (path.length() == 0) {
 				return null;
 			}
 			System.out.printf("pyOCD path = %s\n", path);
 			
-			path = DebugUtils.resolveAll(path, fWorkingCopy.getAttributes());
+			path = DebugUtils.resolveAll(path, fConfiguration.getAttributes());
 			
 			ICConfigurationDescription buildConfig = EclipseUtils
-					.getBuildConfigDescription(fWorkingCopy);
+					.getBuildConfigDescription(fConfiguration);
 			if (buildConfig != null) {
 				path = DebugUtils.resolveAll(path, buildConfig);
 			}
@@ -867,10 +857,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			System.out.printf("pyOCD resolved path = %s\n", path);
 			
 			// Validate path.
-			Path pyocd = Paths.get(path);
-			if (!Files.exists(pyocd) || Files.isDirectory(pyocd)
-					|| !Files.isExecutable(pyocd))
-			{
+			
+			File file = new File(path);
+			if (!file.exists() || file.isDirectory()) {
+				// TODO: Use java.nio.Files when we move to Java 7 to also check that file is executable 
 				System.out.printf("pyOCD path is invalid\n");
 				return null;
 			}
@@ -916,57 +906,65 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private void updateBoards() {
 		String path = getPyOCDExecutablePath();
 		if (path != null) {
+			deregisterError(Msgs.INVALID_PYOCD_EXECUTABLE);
 			List<PyOCD.Board> boards = PyOCD.getBoards(path);
 			if (boards == null) {
 				boards = new ArrayList<PyOCD.Board>();
 			}
 			System.out.printf("board = %s\n", boards);
 			
-			boards.sort(PyOCD.Board.COMPARATOR);
+			Collections.sort(boards, PyOCD.Board.COMPARATOR);
 			
 			fBoards = boards;
 			
 			final ArrayList<String> itemList = new ArrayList<String>();
-			boards.forEach(new Consumer<PyOCD.Board>() {
-					public void accept(PyOCD.Board b) {
-						String desc = b.fProductName;
-						if (!b.fProductName.startsWith(b.fVendorName)) {
-							desc = b.fVendorName + " " + b.fProductName;
-						}
-						itemList.add(String.format("%s - %s (%s)",
-								b.fName, desc, b.fUniqueId));
-					}
-			});
+			
+			for (PyOCD.Board board : boards) {
+				String desc = board.fProductName;
+				if (!board.fProductName.startsWith(board.fVendorName)) {
+					desc = board.fVendorName + " " + board.fProductName;
+				}
+				itemList.add(String.format("%s - %s (%s)",
+						board.fName, desc, board.fUniqueId));
+			}
+		
 			String[] items = itemList.toArray(new String[itemList.size()]);
 			
 			fGdbServerBoardId.setItems(items);
 			
 			selectActiveBoard();
 		}
+		else {
+			fGdbServerBoardId.setItems(new String[]{});
+			registerError(Msgs.INVALID_PYOCD_EXECUTABLE);
+		}
 	}
 
 	private void updateTargets() {
 		String path = getPyOCDExecutablePath();
 		if (path != null) {
+			deregisterError(Msgs.INVALID_PYOCD_EXECUTABLE);
+			
 			List<PyOCD.Target> targets = PyOCD.getTargets(path);
 			if (targets == null) {
 				targets = new ArrayList<PyOCD.Target>();
 			}
 			System.out.printf("target = %s\n", targets);
 			
-			targets.sort(PyOCD.Target.COMPARATOR);
+			Collections.sort(targets, PyOCD.Target.COMPARATOR);
 			
-			fTargets = targets;
-
 			final ArrayList<String> itemList = new ArrayList<String>();
-			targets.forEach(new Consumer<PyOCD.Target>() {
-					public void accept(PyOCD.Target t) {
-						itemList.add(String.format("%s", t.fPartNumber));
-					}
-			});
+			for (PyOCD.Target target : targets) {
+				itemList.add(String.format("%s", target.fPartNumber));
+			}
 			String[] items = itemList.toArray(new String[itemList.size()]);
 			
 			fGdbServerTargetName.setItems(items);
+		}
+		else {
+			// Clear combobox and show error
+			fGdbServerTargetName.setItems(new String[]{});
+			registerError(Msgs.INVALID_PYOCD_EXECUTABLE);
 		}
 	}
 
@@ -1127,6 +1125,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fTargetPortNumber.setText(portString);
 			}
 
+			fConfiguration = configuration;
+			
 			doStartGdbServerChanged();
 			overrideTargetChanged();
 			updateBoards();
@@ -1264,27 +1264,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabDebugger: activated() "
-					+ workingCopy.getName());
-		}
-		
-		fIsActive = true;
-		fWorkingCopy = workingCopy;
-		
-		updateBoards();
-		updateTargets();
+		// Do nothing. Override is necessary to avoid heavy cost of
+		// reinitialization (see super implementation)  
 	}
 
 	@Override
 	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabDebugger: deactivated() "
-					+ workingCopy.getName());
-		}
-		
-		fIsActive = false;
-		fWorkingCopy = null;
+		// Do nothing. Override is necessary to avoid heavy unnecessary Apply
+		// (see super implementation)
 	}
 
 	@Override
@@ -1610,5 +1597,36 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						DefaultPreferences.UPDATE_THREAD_LIST_DEFAULT);
 	}	
 
+	
+	/**
+	 * Register an error
+	 * 
+	 * <p>
+	 * Any number of unique errors can be registered. Only one is shown to the
+	 * user. First come first serve.
+	 */
+	private void registerError(String msg) {
+		if (fErrors.isEmpty()) {
+			setErrorMessage(msg);
+		}
+		fErrors.add(msg);
+	}
+	
+	/**
+	 * Remove a previously registered error.
+	 *  
+	 * If the removed error was being displayed, the next in line (if any) is shown.
+	 */
+	private void deregisterError(String msg) {
+		if (fErrors.remove(msg)) {
+			if (fErrors.isEmpty()) {
+				setErrorMessage(null);
+			}
+			else {
+				setErrorMessage(fErrors.iterator().next());
+			}
+		}
+	}
+	
 	// ------------------------------------------------------------------------
 }

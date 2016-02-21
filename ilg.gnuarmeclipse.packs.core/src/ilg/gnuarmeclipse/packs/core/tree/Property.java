@@ -14,6 +14,8 @@ package ilg.gnuarmeclipse.packs.core.tree;
 public class Property {
 
 	// Node properties (sorted)
+	public static final String ACCESS = "access";
+	public static final String ALIAS = "alias";
 	public static final String ARCHIVE_NAME = "archive.name";
 	public static final String ARCHIVE_SIZE = "archive.size";
 	public static final String ARCHIVE_URL = "archive.url";

@@ -273,7 +273,7 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		return str;
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Object getAdapter(Class adapter) {
 		// TODO Auto-generated method stub
