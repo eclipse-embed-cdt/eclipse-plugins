@@ -139,8 +139,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void createControl(Composite parent) {
-		ScrolledComposite sc = new ScrolledComposite(parent, SWT.V_SCROLL
-				| SWT.H_SCROLL);
+		ScrolledComposite sc = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL);
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
 		setControl(sc);
@@ -159,10 +158,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		GridData gd;
 		{
 			restoreDefaults = new Link(comp, SWT.NONE);
-			restoreDefaults.setText(Messages
-					.getString("DebuggerTab.restoreDefaults_Link"));
-			restoreDefaults.setToolTipText(Messages
-					.getString("DebuggerTab.restoreDefaults_ToolTipText"));
+			restoreDefaults.setText(Messages.getString("DebuggerTab.restoreDefaults_Link"));
+			restoreDefaults.setToolTipText(Messages.getString("DebuggerTab.restoreDefaults_ToolTipText"));
 
 			gd = new GridData();
 			gd.grabExcessHorizontalSpace = true;
@@ -197,8 +194,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	}
 
 	private void browseWsButtonSelected(String title, Text text) {
-		ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(
-				getShell(), new WorkbenchLabelProvider(),
+		ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(getShell(), new WorkbenchLabelProvider(),
 				new WorkbenchContentProvider());
 		dialog.setTitle(title);
 		dialog.setMessage(Messages.getString("StartupTab.FileBrowseWs_Message"));
@@ -207,8 +203,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		if (dialog.open() == IDialogConstants.OK_ID) {
 			IResource resource = (IResource) dialog.getFirstResult();
 			String arg = resource.getFullPath().toOSString();
-			String fileLoc = VariablesPlugin.getDefault()
-					.getStringVariableManager()
+			String fileLoc = VariablesPlugin.getDefault().getStringVariableManager()
 					.generateVariableExpression("workspace_loc", arg); //$NON-NLS-1$
 			text.setText(fileLoc);
 		}
@@ -241,29 +236,23 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// local.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 			fDoFirstReset = new Button(local, SWT.CHECK);
-			fDoFirstReset.setText(Messages
-					.getString("StartupTab.doFirstReset_Text"));
-			fDoFirstReset.setToolTipText(Messages
-					.getString("StartupTab.doFirstReset_ToolTipText"));
+			fDoFirstReset.setText(Messages.getString("StartupTab.doFirstReset_Text"));
+			fDoFirstReset.setToolTipText(Messages.getString("StartupTab.doFirstReset_ToolTipText"));
 
 			Label label = new Label(local, SWT.NONE);
 			label.setText(Messages.getString("StartupTab.firstResetType_Text"));
-			label.setToolTipText(Messages
-					.getString("StartupTab.firstResetType_ToolTipText"));
+			label.setToolTipText(Messages.getString("StartupTab.firstResetType_ToolTipText"));
 
 			fFirstResetType = new Text(local, SWT.BORDER);
-			fFirstResetType.setToolTipText(Messages
-					.getString("StartupTab.firstResetType_ToolTipText"));
+			fFirstResetType.setToolTipText(Messages.getString("StartupTab.firstResetType_ToolTipText"));
 			gd = new GridData();
 			gd.widthHint = 30;
 			fFirstResetType.setLayoutData(gd);
 		}
 
 		{
-			fInitCommands = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER
-					| SWT.V_SCROLL);
-			fInitCommands.setToolTipText(Messages
-					.getString("StartupTab.initCommands_ToolTipText"));
+			fInitCommands = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
+			fInitCommands.setToolTipText(Messages.getString("StartupTab.initCommands_ToolTipText"));
 			gd = new GridData(GridData.FILL_BOTH);
 			gd.heightHint = 60;
 			fInitCommands.setLayoutData(gd);
@@ -279,10 +268,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// local.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 			fEnableSemihosting = new Button(local, SWT.CHECK);
-			fEnableSemihosting.setText(Messages
-					.getString("StartupTab.enableSemihosting_Text"));
-			fEnableSemihosting.setToolTipText(Messages
-					.getString("StartupTab.enableSemihosting_ToolTipText"));
+			fEnableSemihosting.setText(Messages.getString("StartupTab.enableSemihosting_Text"));
+			fEnableSemihosting.setToolTipText(Messages.getString("StartupTab.enableSemihosting_ToolTipText"));
 		}
 
 		// Actions
@@ -342,8 +329,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		{
 			fLoadSymbols = new Button(comp, SWT.CHECK);
-			fLoadSymbols.setText(Messages
-					.getString("StartupTab.loadSymbols_Text"));
+			fLoadSymbols.setText(Messages.getString("StartupTab.loadSymbols_Text"));
 		}
 
 		{
@@ -356,10 +342,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			{
 				fUseProjectBinaryForSymbols = new Button(local, SWT.RADIO);
-				fUseProjectBinaryForSymbols.setText(Messages
-						.getString("StartupTab.useProjectBinary_Label"));
-				fUseProjectBinaryForSymbols.setToolTipText(Messages
-						.getString("StartupTab.useProjectBinary_ToolTip"));
+				fUseProjectBinaryForSymbols.setText(Messages.getString("StartupTab.useProjectBinary_Label"));
+				fUseProjectBinaryForSymbols.setToolTipText(Messages.getString("StartupTab.useProjectBinary_ToolTip"));
 
 				fProjBinaryLabel2 = new Label(local, SWT.NONE);
 				gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -369,25 +353,21 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			{
 				fUseFileForSymbols = new Button(local, SWT.RADIO);
-				fUseFileForSymbols.setText(Messages
-						.getString("StartupTab.useFile_Label"));
+				fUseFileForSymbols.setText(Messages.getString("StartupTab.useFile_Label"));
 
 				fSymbolsFileName = new Text(local, SWT.BORDER);
 				gd = new GridData(GridData.FILL_HORIZONTAL);
 				fSymbolsFileName.setLayoutData(gd);
 
-				fSymbolsFileBrowseWs = createPushButton(local,
-						Messages.getString("StartupTab.FileBrowseWs_Label"),
+				fSymbolsFileBrowseWs = createPushButton(local, Messages.getString("StartupTab.FileBrowseWs_Label"),
 						null);
 
-				fSymbolsFileBrowse = createPushButton(local,
-						Messages.getString("StartupTab.FileBrowse_Label"), null);
+				fSymbolsFileBrowse = createPushButton(local, Messages.getString("StartupTab.FileBrowse_Label"), null);
 			}
 
 			{
 				fSymbolsOffsetLabel = new Label(local, SWT.NONE);
-				fSymbolsOffsetLabel.setText(Messages
-						.getString("StartupTab.symbolsOffsetLabel_Text"));
+				fSymbolsOffsetLabel.setText(Messages.getString("StartupTab.symbolsOffsetLabel_Text"));
 
 				fSymbolsOffset = new Text(local, SWT.BORDER);
 				gd = new GridData();
@@ -399,8 +379,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		{
 			fLoadExecutable = new Button(comp, SWT.CHECK);
-			fLoadExecutable.setText(Messages
-					.getString("StartupTab.loadImage_Text"));
+			fLoadExecutable.setText(Messages.getString("StartupTab.loadImage_Text"));
 		}
 
 		{
@@ -413,10 +392,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			{
 				fUseProjectBinaryForImage = new Button(local, SWT.RADIO);
-				fUseProjectBinaryForImage.setText(Messages
-						.getString("StartupTab.useProjectBinary_Label"));
-				fUseProjectBinaryForImage.setToolTipText(Messages
-						.getString("StartupTab.useProjectBinary_ToolTipText"));
+				fUseProjectBinaryForImage.setText(Messages.getString("StartupTab.useProjectBinary_Label"));
+				fUseProjectBinaryForImage.setToolTipText(Messages.getString("StartupTab.useProjectBinary_ToolTipText"));
 
 				fProjBinaryLabel1 = new Label(local, SWT.NONE);
 				gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -426,25 +403,20 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			{
 				fUseFileForImage = new Button(local, SWT.RADIO);
-				fUseFileForImage.setText(Messages
-						.getString("StartupTab.useFile_Label"));
+				fUseFileForImage.setText(Messages.getString("StartupTab.useFile_Label"));
 
 				fImageFileName = new Text(local, SWT.BORDER);
 				gd = new GridData(GridData.FILL_HORIZONTAL);
 				fImageFileName.setLayoutData(gd);
 
-				fImageFileBrowseWs = createPushButton(local,
-						Messages.getString("StartupTab.FileBrowseWs_Label"),
-						null);
+				fImageFileBrowseWs = createPushButton(local, Messages.getString("StartupTab.FileBrowseWs_Label"), null);
 
-				fImageFileBrowse = createPushButton(local,
-						Messages.getString("StartupTab.FileBrowse_Label"), null);
+				fImageFileBrowse = createPushButton(local, Messages.getString("StartupTab.FileBrowse_Label"), null);
 			}
 
 			{
 				fImageOffsetLabel = new Label(local, SWT.NONE);
-				fImageOffsetLabel.setText(Messages
-						.getString("StartupTab.imageOffsetLabel_Text"));
+				fImageOffsetLabel.setText(Messages.getString("StartupTab.imageOffsetLabel_Text"));
 
 				fImageOffset = new Text(local, SWT.BORDER);
 				gd = new GridData();
@@ -493,27 +465,22 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		fImageFileBrowseWs.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				browseWsButtonSelected(Messages
-						.getString("StartupTab.imageFileBrowseWs_Title"),
-						fImageFileName);
+				browseWsButtonSelected(Messages.getString("StartupTab.imageFileBrowseWs_Title"), fImageFileName);
 			}
 		});
 
 		fImageFileBrowse.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				browseButtonSelected(
-						Messages.getString("StartupTab.imageFileBrowse_Title"),
-						fImageFileName);
+				browseButtonSelected(Messages.getString("StartupTab.imageFileBrowse_Title"), fImageFileName);
 			}
 		});
 
 		fImageOffset.addVerifyListener(new VerifyListener() {
 			@Override
 			public void verifyText(VerifyEvent e) {
-				e.doit = (Character.isDigit(e.character)
-						|| Character.isISOControl(e.character) || "abcdef"
-						.contains(String.valueOf(e.character).toLowerCase()));
+				e.doit = (Character.isDigit(e.character) || Character.isISOControl(e.character)
+						|| "abcdef".contains(String.valueOf(e.character).toLowerCase()));
 			}
 		});
 		fImageOffset.addModifyListener(new ModifyListener() {
@@ -541,27 +508,22 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		fSymbolsFileBrowseWs.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				browseWsButtonSelected(Messages
-						.getString("StartupTab.symbolsFileBrowseWs_Title"),
-						fSymbolsFileName);
+				browseWsButtonSelected(Messages.getString("StartupTab.symbolsFileBrowseWs_Title"), fSymbolsFileName);
 			}
 		});
 
 		fSymbolsFileBrowse.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				browseButtonSelected(Messages
-						.getString("StartupTab.symbolsFileBrowse_Title"),
-						fSymbolsFileName);
+				browseButtonSelected(Messages.getString("StartupTab.symbolsFileBrowse_Title"), fSymbolsFileName);
 			}
 		});
 
 		fSymbolsOffset.addVerifyListener(new VerifyListener() {
 			@Override
 			public void verifyText(VerifyEvent e) {
-				e.doit = (Character.isDigit(e.character)
-						|| Character.isISOControl(e.character) || "abcdef"
-						.contains(String.valueOf(e.character).toLowerCase()));
+				e.doit = (Character.isDigit(e.character) || Character.isISOControl(e.character)
+						|| "abcdef".contains(String.valueOf(e.character).toLowerCase()));
 			}
 		});
 		fSymbolsOffset.addModifyListener(new ModifyListener() {
@@ -574,14 +536,12 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	private void updateUseFileEnablement() {
 
-		boolean enabled = fLoadExecutable.getSelection()
-				&& fUseFileForImage.getSelection();
+		boolean enabled = fLoadExecutable.getSelection() && fUseFileForImage.getSelection();
 		fImageFileName.setEnabled(enabled);
 		fImageFileBrowseWs.setEnabled(enabled);
 		fImageFileBrowse.setEnabled(enabled);
 
-		enabled = fLoadSymbols.getSelection()
-				&& fUseFileForSymbols.getSelection();
+		enabled = fLoadSymbols.getSelection() && fUseFileForSymbols.getSelection();
 		fSymbolsFileName.setEnabled(enabled);
 		fSymbolsFileBrowseWs.setEnabled(enabled);
 		fSymbolsFileBrowse.setEnabled(enabled);
@@ -605,10 +565,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		comp.setLayoutData(gd);
 
 		fDoDebugInRam = new Button(comp, SWT.CHECK);
-		fDoDebugInRam.setText(Messages
-				.getString("StartupTab.doDebugInRam_Text"));
-		fDoDebugInRam.setToolTipText(Messages
-				.getString("StartupTab.doDebugInRam_ToolTipText"));
+		fDoDebugInRam.setText(Messages.getString("StartupTab.doDebugInRam_Text"));
+		fDoDebugInRam.setToolTipText(Messages.getString("StartupTab.doDebugInRam_ToolTipText"));
 
 		// ----- Actions ------------------------------------------------------
 
@@ -671,36 +629,29 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		{
 			fDoSecondReset = new Button(comp, SWT.CHECK);
-			fDoSecondReset.setText(Messages
-					.getString("StartupTab.doSecondReset_Text"));
-			fDoSecondReset.setToolTipText(Messages
-					.getString("StartupTab.doSecondReset_ToolTipText"));
+			fDoSecondReset.setText(Messages.getString("StartupTab.doSecondReset_Text"));
+			fDoSecondReset.setToolTipText(Messages.getString("StartupTab.doSecondReset_ToolTipText"));
 
 			Label label = new Label(comp, SWT.NONE);
 			label.setText(Messages.getString("StartupTab.secondResetType_Text"));
-			label.setToolTipText(Messages
-					.getString("StartupTab.secondResetType_ToolTipText"));
+			label.setToolTipText(Messages.getString("StartupTab.secondResetType_ToolTipText"));
 
 			fSecondResetType = new Text(comp, SWT.BORDER);
-			fSecondResetType.setToolTipText(Messages
-					.getString("StartupTab.secondResetType_ToolTipText"));
+			fSecondResetType.setToolTipText(Messages.getString("StartupTab.secondResetType_ToolTipText"));
 			gd = new GridData();
 			gd.widthHint = 30;
 			fSecondResetType.setLayoutData(gd);
 
 			fSecondResetWarning = new Label(comp, SWT.NONE);
-			fSecondResetWarning.setText(Messages
-					.getString("StartupTab.secondResetWarning_Text"));
+			fSecondResetWarning.setText(Messages.getString("StartupTab.secondResetWarning_Text"));
 			gd = new GridData();
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 3;
 			fSecondResetWarning.setLayoutData(gd);
 		}
 
 		{
-			fRunCommands = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER
-					| SWT.V_SCROLL);
-			fRunCommands.setToolTipText(Messages
-					.getString("StartupTab.runCommands_ToolTipText"));
+			fRunCommands = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
+			fRunCommands.setToolTipText(Messages.getString("StartupTab.runCommands_ToolTipText"));
 			gd = new GridData(GridData.FILL_BOTH);
 			gd.heightHint = 60;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
@@ -709,14 +660,11 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		{
 			fSetPcRegister = new Button(comp, SWT.CHECK);
-			fSetPcRegister.setText(Messages
-					.getString("StartupTab.setPcRegister_Text"));
-			fSetPcRegister.setToolTipText(Messages
-					.getString("StartupTab.setPcRegister_ToolTipText"));
+			fSetPcRegister.setText(Messages.getString("StartupTab.setPcRegister_Text"));
+			fSetPcRegister.setToolTipText(Messages.getString("StartupTab.setPcRegister_ToolTipText"));
 
 			fPcRegister = new Text(comp, SWT.BORDER);
-			fPcRegister.setToolTipText(Messages
-					.getString("StartupTab.pcRegister_ToolTipText"));
+			fPcRegister.setToolTipText(Messages.getString("StartupTab.pcRegister_ToolTipText"));
 			gd = new GridData();
 			gd.widthHint = 100;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
@@ -726,8 +674,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		{
 			fSetStopAt = new Button(comp, SWT.CHECK);
 			fSetStopAt.setText(Messages.getString("StartupTab.setStopAt_Text"));
-			fSetStopAt.setToolTipText(Messages
-					.getString("StartupTab.setStopAt_ToolTipText"));
+			fSetStopAt.setToolTipText(Messages.getString("StartupTab.setStopAt_ToolTipText"));
 
 			fStopAt = new Text(comp, SWT.BORDER);
 			gd = new GridData();
@@ -738,10 +685,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		{
 			fDoContinue = new Button(comp, SWT.CHECK);
-			fDoContinue.setText(Messages
-					.getString("StartupTab.doContinue_Text"));
-			fDoContinue.setToolTipText(Messages
-					.getString("StartupTab.doContinue_ToolTipText"));
+			fDoContinue.setText(Messages.getString("StartupTab.doContinue_Text"));
+			fDoContinue.setToolTipText(Messages.getString("StartupTab.doContinue_ToolTipText"));
 
 			gd = new GridData();
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
@@ -770,9 +715,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		fPcRegister.addVerifyListener(new VerifyListener() {
 			@Override
 			public void verifyText(VerifyEvent e) {
-				e.doit = (Character.isDigit(e.character)
-						|| Character.isISOControl(e.character) || "abcdef"
-						.contains(String.valueOf(e.character).toLowerCase()));
+				e.doit = (Character.isDigit(e.character) || Character.isISOControl(e.character)
+						|| "abcdef".contains(String.valueOf(e.character).toLowerCase()));
 			}
 		});
 
@@ -829,25 +773,21 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		if (fLoadExecutable.getSelection()) {
 			if (!fUseProjectBinaryForImage.getSelection()) {
 				if (fImageFileName.getText().trim().length() == 0) {
-					setErrorMessage(Messages
-							.getString("StartupTab.imageFileName_not_specified"));
+					setErrorMessage(Messages.getString("StartupTab.imageFileName_not_specified"));
 					return false;
 				}
 
 				try {
 					String path = fImageFileName.getText().trim();
-					path = DebugUtils.resolveAll(path,
-							launchConfig.getAttributes());
+					path = DebugUtils.resolveAll(path, launchConfig.getAttributes());
 					IPath filePath = new Path(path);
 					if (!filePath.toFile().exists()) {
-						setErrorMessage(Messages
-								.getString("StartupTab.imageFileName_does_not_exist"));
+						setErrorMessage(Messages.getString("StartupTab.imageFileName_does_not_exist"));
 						return false;
 					}
 				} catch (CoreException e) { // string substitution throws this
 											// if expression doesn't resolve
-					setErrorMessage(Messages
-							.getString("StartupTab.imageFileName_does_not_exist"));
+					setErrorMessage(Messages.getString("StartupTab.imageFileName_does_not_exist"));
 					return false;
 				}
 			}
@@ -857,25 +797,21 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		if (fLoadSymbols.getSelection()) {
 			if (!fUseProjectBinaryForSymbols.getSelection()) {
 				if (fSymbolsFileName.getText().trim().length() == 0) {
-					setErrorMessage(Messages
-							.getString("StartupTab.symbolsFileName_not_specified"));
+					setErrorMessage(Messages.getString("StartupTab.symbolsFileName_not_specified"));
 					return false;
 				}
 
 				try {
 					String path = fSymbolsFileName.getText().trim();
-					path = DebugUtils.resolveAll(path,
-							launchConfig.getAttributes());
+					path = DebugUtils.resolveAll(path, launchConfig.getAttributes());
 					IPath filePath = new Path(path);
 					if (!filePath.toFile().exists()) {
-						setErrorMessage(Messages
-								.getString("StartupTab.symbolsFileName_does_not_exist"));
+						setErrorMessage(Messages.getString("StartupTab.symbolsFileName_does_not_exist"));
 						return false;
 					}
 				} catch (CoreException e) { // string substitution throws this
 											// if expression doesn't resolve
-					setErrorMessage(Messages
-							.getString("StartupTab.symbolsFileName_does_not_exist"));
+					setErrorMessage(Messages.getString("StartupTab.symbolsFileName_does_not_exist"));
 					return false;
 				}
 			}
@@ -885,8 +821,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		if (fSetPcRegister.getSelection()) {
 			if (fPcRegister.getText().trim().length() == 0) {
-				setErrorMessage(Messages
-						.getString("StartupTab.pcRegister_not_specified"));
+				setErrorMessage(Messages.getString("StartupTab.pcRegister_not_specified"));
 				return false;
 			}
 		} else {
@@ -894,8 +829,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		}
 		if (fSetStopAt.getSelection()) {
 			if (fStopAt.getText().trim().length() == 0) {
-				setErrorMessage(Messages
-						.getString("StartupTab.stopAt_not_specified"));
+				setErrorMessage(Messages.getString("StartupTab.stopAt_not_specified"));
 			}
 		} else {
 			setErrorMessage(null);
@@ -917,70 +851,50 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Initialisation Commands
 			{
 				// Do initial reset
-				booleanDefault = PersistentPreferences
-						.getPyOCDDoInitialReset();
-				fDoFirstReset
-						.setSelection(configuration.getAttribute(
-								ConfigurationAttributes.DO_FIRST_RESET,
-								booleanDefault));
+				booleanDefault = PersistentPreferences.getPyOCDDoInitialReset();
+				fDoFirstReset.setSelection(
+						configuration.getAttribute(ConfigurationAttributes.DO_FIRST_RESET, booleanDefault));
 
 				// Reset type
-				stringDefault = PersistentPreferences
-						.getPyOCDInitialResetType();
-				fFirstResetType.setText(configuration
-						.getAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
-								stringDefault));
+				stringDefault = PersistentPreferences.getPyOCDInitialResetType();
+				fFirstResetType
+						.setText(configuration.getAttribute(ConfigurationAttributes.FIRST_RESET_TYPE, stringDefault));
 
 				// Enable semihosting
-				booleanDefault = PersistentPreferences
-						.getPyOCDEnableSemihosting();
-				fEnableSemihosting.setSelection(configuration.getAttribute(
-						ConfigurationAttributes.ENABLE_SEMIHOSTING,
-						booleanDefault));
+				booleanDefault = PersistentPreferences.getPyOCDEnableSemihosting();
+				fEnableSemihosting.setSelection(
+						configuration.getAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING, booleanDefault));
 
 				// Other commands
 				stringDefault = PersistentPreferences.getPyOCDInitOther();
-				fInitCommands.setText(configuration.getAttribute(
-						ConfigurationAttributes.OTHER_INIT_COMMANDS,
-						stringDefault));
+				fInitCommands.setText(
+						configuration.getAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS, stringDefault));
 			}
 
 			// Load Symbols & Image
 			{
-				fLoadSymbols.setSelection(configuration.getAttribute(
-						IGDBJtagConstants.ATTR_LOAD_SYMBOLS,
+				fLoadSymbols.setSelection(configuration.getAttribute(IGDBJtagConstants.ATTR_LOAD_SYMBOLS,
 						IGDBJtagConstants.DEFAULT_LOAD_SYMBOLS));
 				fUseProjectBinaryForSymbols
-						.setSelection(configuration
-								.getAttribute(
-										IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
-										IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_SYMBOLS));
-				fUseFileForSymbols.setSelection(configuration.getAttribute(
-						IGDBJtagConstants.ATTR_USE_FILE_FOR_SYMBOLS,
+						.setSelection(configuration.getAttribute(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
+								IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_SYMBOLS));
+				fUseFileForSymbols.setSelection(configuration.getAttribute(IGDBJtagConstants.ATTR_USE_FILE_FOR_SYMBOLS,
 						IGDBJtagConstants.DEFAULT_USE_FILE_FOR_SYMBOLS));
-				fSymbolsFileName.setText(configuration.getAttribute(
-						IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
+				fSymbolsFileName.setText(configuration.getAttribute(IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
 						IGDBJtagConstants.DEFAULT_SYMBOLS_FILE_NAME));
-				fSymbolsOffset.setText(configuration.getAttribute(
-						IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
+				fSymbolsOffset.setText(configuration.getAttribute(IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
 						IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET));
 
-				fLoadExecutable.setSelection(configuration.getAttribute(
-						IGDBJtagConstants.ATTR_LOAD_IMAGE,
+				fLoadExecutable.setSelection(configuration.getAttribute(IGDBJtagConstants.ATTR_LOAD_IMAGE,
 						IGDBJtagConstants.DEFAULT_LOAD_IMAGE));
 				fUseProjectBinaryForImage
-						.setSelection(configuration
-								.getAttribute(
-										IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
-										IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_IMAGE));
-				fUseFileForImage.setSelection(configuration.getAttribute(
-						IGDBJtagConstants.ATTR_USE_FILE_FOR_IMAGE,
+						.setSelection(configuration.getAttribute(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
+								IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_IMAGE));
+				fUseFileForImage.setSelection(configuration.getAttribute(IGDBJtagConstants.ATTR_USE_FILE_FOR_IMAGE,
 						IGDBJtagConstants.DEFAULT_USE_FILE_FOR_IMAGE));
-				fImageFileName.setText(configuration.getAttribute(
-						IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
+				fImageFileName.setText(configuration.getAttribute(IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
 						IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME));
-				fImageOffset.setText(configuration.getAttribute(
-						IGDBJtagConstants.ATTR_IMAGE_OFFSET,
+				fImageOffset.setText(configuration.getAttribute(IGDBJtagConstants.ATTR_IMAGE_OFFSET,
 						IGDBJtagConstants.DEFAULT_IMAGE_OFFSET));
 
 				String programName = CDebugUtils.getProgramName(configuration);
@@ -1002,50 +916,39 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Runtime Options
 			{
 				booleanDefault = PersistentPreferences.getPyOCDDebugInRam();
-				fDoDebugInRam.setSelection(configuration
-						.getAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM,
-								booleanDefault));
+				fDoDebugInRam.setSelection(
+						configuration.getAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM, booleanDefault));
 			}
 
 			// Run Commands
 			{
 				// Do pre-run reset
-				booleanDefault = PersistentPreferences
-						.getPyOCDDoPreRunReset();
-				fDoSecondReset.setSelection(configuration
-						.getAttribute(ConfigurationAttributes.DO_SECOND_RESET,
-								booleanDefault));
+				booleanDefault = PersistentPreferences.getPyOCDDoPreRunReset();
+				fDoSecondReset.setSelection(
+						configuration.getAttribute(ConfigurationAttributes.DO_SECOND_RESET, booleanDefault));
 
 				// Pre-run reset type
-				stringDefault = PersistentPreferences
-						.getPyOCDPreRunResetType();
-				fSecondResetType.setText(configuration.getAttribute(
-						ConfigurationAttributes.SECOND_RESET_TYPE,
-						stringDefault));
+				stringDefault = PersistentPreferences.getPyOCDPreRunResetType();
+				fSecondResetType
+						.setText(configuration.getAttribute(ConfigurationAttributes.SECOND_RESET_TYPE, stringDefault));
 
 				// Other commands
 				stringDefault = PersistentPreferences.getPyOCDPreRunOther();
-				fRunCommands.setText(configuration.getAttribute(
-						ConfigurationAttributes.OTHER_RUN_COMMANDS,
-						stringDefault));
+				fRunCommands
+						.setText(configuration.getAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS, stringDefault));
 
-				fSetPcRegister.setSelection(configuration.getAttribute(
-						IGDBJtagConstants.ATTR_SET_PC_REGISTER,
+				fSetPcRegister.setSelection(configuration.getAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER,
 						IGDBJtagConstants.DEFAULT_SET_PC_REGISTER));
-				fPcRegister.setText(configuration.getAttribute(
-						IGDBJtagConstants.ATTR_PC_REGISTER,
+				fPcRegister.setText(configuration.getAttribute(IGDBJtagConstants.ATTR_PC_REGISTER,
 						IGDBJtagConstants.DEFAULT_PC_REGISTER));
 
-				fSetStopAt.setSelection(configuration.getAttribute(
-						IGDBJtagConstants.ATTR_SET_STOP_AT,
+				fSetStopAt.setSelection(configuration.getAttribute(IGDBJtagConstants.ATTR_SET_STOP_AT,
 						DefaultPreferences.DO_STOP_AT_DEFAULT));
-				fStopAt.setText(configuration.getAttribute(
-						IGDBJtagConstants.ATTR_STOP_AT,
+				fStopAt.setText(configuration.getAttribute(IGDBJtagConstants.ATTR_STOP_AT,
 						DefaultPreferences.STOP_AT_NAME_DEFAULT));
 
 				// Do continue
-				fDoContinue.setSelection(configuration.getAttribute(
-						ConfigurationAttributes.DO_CONTINUE,
+				fDoContinue.setSelection(configuration.getAttribute(ConfigurationAttributes.DO_CONTINUE,
 						DefaultPreferences.DO_CONTINUE_DEFAULT));
 			}
 
@@ -1068,38 +971,29 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		// Initialisation Commands
 		{
 			// Do initial reset
-			fDoFirstReset
-					.setSelection(DefaultPreferences.DO_FIRST_RESET_DEFAULT);
+			fDoFirstReset.setSelection(DefaultPreferences.DO_FIRST_RESET_DEFAULT);
 
 			// Reset type
-			fFirstResetType
-					.setText(DefaultPreferences.FIRST_RESET_TYPE_DEFAULT);
+			fFirstResetType.setText(DefaultPreferences.FIRST_RESET_TYPE_DEFAULT);
 
 			// Enable semihosting
-			fEnableSemihosting
-					.setSelection(DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT);
+			fEnableSemihosting.setSelection(DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT);
 
 			// Other commands
-			fInitCommands
-					.setText(DefaultPreferences.OTHER_INIT_COMMANDS_DEFAULT);
+			fInitCommands.setText(DefaultPreferences.OTHER_INIT_COMMANDS_DEFAULT);
 		}
 
 		// Load Symbols & Image
 		{
 			fLoadSymbols.setSelection(IGDBJtagConstants.DEFAULT_LOAD_SYMBOLS);
-			fUseProjectBinaryForSymbols
-					.setSelection(IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_SYMBOLS);
-			fUseFileForSymbols
-					.setSelection(IGDBJtagConstants.DEFAULT_USE_FILE_FOR_SYMBOLS);
-			fSymbolsFileName
-					.setText(IGDBJtagConstants.DEFAULT_SYMBOLS_FILE_NAME);
+			fUseProjectBinaryForSymbols.setSelection(IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_SYMBOLS);
+			fUseFileForSymbols.setSelection(IGDBJtagConstants.DEFAULT_USE_FILE_FOR_SYMBOLS);
+			fSymbolsFileName.setText(IGDBJtagConstants.DEFAULT_SYMBOLS_FILE_NAME);
 			fSymbolsOffset.setText(IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
 
 			fLoadExecutable.setSelection(IGDBJtagConstants.DEFAULT_LOAD_IMAGE);
-			fUseProjectBinaryForImage
-					.setSelection(IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_IMAGE);
-			fUseFileForImage
-					.setSelection(IGDBJtagConstants.DEFAULT_USE_FILE_FOR_IMAGE);
+			fUseProjectBinaryForImage.setSelection(IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_IMAGE);
+			fUseFileForImage.setSelection(IGDBJtagConstants.DEFAULT_USE_FILE_FOR_IMAGE);
 			fImageFileName.setText(IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME);
 			fImageOffset.setText(IGDBJtagConstants.DEFAULT_IMAGE_OFFSET);
 
@@ -1112,25 +1006,21 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		// Runtime Options
 		{
-			fDoDebugInRam
-					.setSelection(DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT);
+			fDoDebugInRam.setSelection(DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT);
 		}
 
 		// Run Commands
 		{
 			// Do pre-run reset
-			fDoSecondReset
-					.setSelection(DefaultPreferences.DO_SECOND_RESET_DEFAULT);
+			fDoSecondReset.setSelection(DefaultPreferences.DO_SECOND_RESET_DEFAULT);
 
 			// Pre-run reset type
-			fSecondResetType
-					.setText(DefaultPreferences.SECOND_RESET_TYPE_DEFAULT);
+			fSecondResetType.setText(DefaultPreferences.SECOND_RESET_TYPE_DEFAULT);
 
 			// Other commands
 			fRunCommands.setText(DefaultPreferences.OTHER_RUN_COMMANDS_DEFAULT);
 
-			fSetPcRegister
-					.setSelection(IGDBJtagConstants.DEFAULT_SET_PC_REGISTER);
+			fSetPcRegister.setSelection(IGDBJtagConstants.DEFAULT_SET_PC_REGISTER);
 			fPcRegister.setText(IGDBJtagConstants.DEFAULT_PC_REGISTER);
 
 			fSetStopAt.setSelection(DefaultPreferences.DO_STOP_AT_DEFAULT);
@@ -1173,66 +1063,48 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		{
 			// Do first reset
 			booleanValue = fDoFirstReset.getSelection();
-			configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
-					booleanValue);
+			configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET, booleanValue);
 			PersistentPreferences.putPyOCDDoInitialReset(booleanValue);
 
 			// First reset type
 			stringValue = fFirstResetType.getText().trim();
-			configuration.setAttribute(
-					ConfigurationAttributes.FIRST_RESET_TYPE, stringValue);
+			configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE, stringValue);
 			PersistentPreferences.putPyOCDInitialResetType(stringValue);
 
 			// Other commands
 			stringValue = fInitCommands.getText().trim();
-			configuration.setAttribute(
-					ConfigurationAttributes.OTHER_INIT_COMMANDS, stringValue);
+			configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS, stringValue);
 			PersistentPreferences.putPyOCDInitOther(stringValue);
 
 			// Enable semihosting
 			booleanValue = fEnableSemihosting.getSelection();
-			configuration.setAttribute(
-					ConfigurationAttributes.ENABLE_SEMIHOSTING, booleanValue);
+			configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING, booleanValue);
 			PersistentPreferences.putPyOCDEnableSemihosting(booleanValue);
 		}
 
 		// Load Symbols & Image...
 		{
-			configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_SYMBOLS,
-					fLoadSymbols.getSelection());
-			configuration.setAttribute(
-					IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
+			configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_SYMBOLS, fLoadSymbols.getSelection());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
 					fUseProjectBinaryForSymbols.getSelection());
-			configuration.setAttribute(
-					IGDBJtagConstants.ATTR_USE_FILE_FOR_SYMBOLS,
-					fUseFileForSymbols.getSelection());
-			configuration.setAttribute(
-					IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME, fSymbolsFileName
-							.getText().trim());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_USE_FILE_FOR_SYMBOLS, fUseFileForSymbols.getSelection());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME, fSymbolsFileName.getText().trim());
 
-			configuration.setAttribute(IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
-					fSymbolsOffset.getText());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_SYMBOLS_OFFSET, fSymbolsOffset.getText());
 
-			configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_IMAGE,
-					fLoadExecutable.getSelection());
-			configuration.setAttribute(
-					IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
+			configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_IMAGE, fLoadExecutable.getSelection());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
 					fUseProjectBinaryForImage.getSelection());
-			configuration.setAttribute(
-					IGDBJtagConstants.ATTR_USE_FILE_FOR_IMAGE,
-					fUseFileForImage.getSelection());
-			configuration.setAttribute(IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
-					fImageFileName.getText().trim());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_USE_FILE_FOR_IMAGE, fUseFileForImage.getSelection());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_IMAGE_FILE_NAME, fImageFileName.getText().trim());
 
-			configuration.setAttribute(IGDBJtagConstants.ATTR_IMAGE_OFFSET,
-					fImageOffset.getText());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_IMAGE_OFFSET, fImageOffset.getText());
 		}
 
 		// Runtime Options
 		{
 			booleanValue = fDoDebugInRam.getSelection();
-			configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM,
-					booleanValue);
+			configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM, booleanValue);
 			PersistentPreferences.putPyOCDDebugInRam(booleanValue);
 		}
 
@@ -1240,34 +1112,26 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		{
 			// Pre-run reset
 			booleanValue = fDoSecondReset.getSelection();
-			configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
-					booleanValue);
+			configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET, booleanValue);
 			PersistentPreferences.putPyOCDDoPreRunReset(booleanValue);
 
 			// reset type
 			stringValue = fSecondResetType.getText().trim();
-			configuration.setAttribute(
-					ConfigurationAttributes.SECOND_RESET_TYPE, stringValue);
+			configuration.setAttribute(ConfigurationAttributes.SECOND_RESET_TYPE, stringValue);
 			PersistentPreferences.putPyOCDPreRunResetType(stringValue);
 
 			// Other commands
 			stringValue = fRunCommands.getText().trim();
-			configuration.setAttribute(
-					ConfigurationAttributes.OTHER_RUN_COMMANDS, stringValue);
+			configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS, stringValue);
 			PersistentPreferences.putPyOCDPreRunOther(stringValue);
 
-			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER,
-					fSetPcRegister.getSelection());
-			configuration.setAttribute(IGDBJtagConstants.ATTR_PC_REGISTER,
-					fPcRegister.getText());
-			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_STOP_AT,
-					fSetStopAt.getSelection());
-			configuration.setAttribute(IGDBJtagConstants.ATTR_STOP_AT,
-					fStopAt.getText());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER, fSetPcRegister.getSelection());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_PC_REGISTER, fPcRegister.getText());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_STOP_AT, fSetStopAt.getSelection());
+			configuration.setAttribute(IGDBJtagConstants.ATTR_STOP_AT, fStopAt.getText());
 
 			// Continue
-			configuration.setAttribute(ConfigurationAttributes.DO_CONTINUE,
-					fDoContinue.getSelection());
+			configuration.setAttribute(ConfigurationAttributes.DO_CONTINUE, fDoContinue.getSelection());
 		}
 
 		PersistentPreferences.flush();
@@ -1281,78 +1145,57 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		// Initialisation Commands
 		defaultBoolean = PersistentPreferences.getPyOCDDoInitialReset();
-		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET,
-				defaultBoolean);
+		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET, defaultBoolean);
 
 		defaultString = PersistentPreferences.getPyOCDInitialResetType();
-		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE,
-				defaultString);
+		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE, defaultString);
 
 		defaultBoolean = PersistentPreferences.getPyOCDEnableSemihosting();
-		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING,
-				defaultBoolean);
+		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING, defaultBoolean);
 
 		defaultString = PersistentPreferences.getPyOCDInitOther();
-		configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS,
-				defaultString);
+		configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS, defaultString);
 
 		// Load Image...
-		configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_IMAGE,
-				IGDBJtagConstants.DEFAULT_LOAD_IMAGE);
-		configuration.setAttribute(
-				IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
+		configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_IMAGE, IGDBJtagConstants.DEFAULT_LOAD_IMAGE);
+		configuration.setAttribute(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
 				IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_IMAGE);
 		configuration.setAttribute(IGDBJtagConstants.ATTR_USE_FILE_FOR_IMAGE,
 				IGDBJtagConstants.DEFAULT_USE_FILE_FOR_IMAGE);
-		configuration.setAttribute(IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
-				IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME);
-		configuration.setAttribute(IGDBJtagConstants.ATTR_IMAGE_OFFSET,
-				IGDBJtagConstants.DEFAULT_IMAGE_OFFSET);
+		configuration.setAttribute(IGDBJtagConstants.ATTR_IMAGE_FILE_NAME, IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME);
+		configuration.setAttribute(IGDBJtagConstants.ATTR_IMAGE_OFFSET, IGDBJtagConstants.DEFAULT_IMAGE_OFFSET);
 
 		// .. and Symbols
-		configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_SYMBOLS,
-				IGDBJtagConstants.DEFAULT_LOAD_SYMBOLS);
-		configuration.setAttribute(
-				IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
+		configuration.setAttribute(IGDBJtagConstants.ATTR_LOAD_SYMBOLS, IGDBJtagConstants.DEFAULT_LOAD_SYMBOLS);
+		configuration.setAttribute(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
 				IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_SYMBOLS);
 		configuration.setAttribute(IGDBJtagConstants.ATTR_USE_FILE_FOR_SYMBOLS,
 				IGDBJtagConstants.DEFAULT_USE_FILE_FOR_SYMBOLS);
 		configuration.setAttribute(IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
 				IGDBJtagConstants.DEFAULT_SYMBOLS_FILE_NAME);
-		configuration.setAttribute(IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
-				IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
+		configuration.setAttribute(IGDBJtagConstants.ATTR_SYMBOLS_OFFSET, IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
 
 		// Runtime Options
 		defaultBoolean = PersistentPreferences.getPyOCDDebugInRam();
-		configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM,
-				defaultBoolean);
+		configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM, defaultBoolean);
 
 		// Run Commands
 		defaultBoolean = PersistentPreferences.getPyOCDDoPreRunReset();
-		configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET,
-				defaultBoolean);
+		configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET, defaultBoolean);
 
 		defaultString = PersistentPreferences.getPyOCDPreRunResetType();
-		configuration.setAttribute(ConfigurationAttributes.SECOND_RESET_TYPE,
-				defaultString);
+		configuration.setAttribute(ConfigurationAttributes.SECOND_RESET_TYPE, defaultString);
 
 		defaultString = PersistentPreferences.getPyOCDPreRunOther();
-		configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS,
-				defaultString);
+		configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS, defaultString);
 
-		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER,
-				IGDBJtagConstants.DEFAULT_SET_PC_REGISTER);
-		configuration.setAttribute(IGDBJtagConstants.ATTR_PC_REGISTER,
-				IGDBJtagConstants.DEFAULT_PC_REGISTER);
-		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_STOP_AT,
-				DefaultPreferences.DO_STOP_AT_DEFAULT);
-		configuration.setAttribute(IGDBJtagConstants.ATTR_STOP_AT,
-				DefaultPreferences.STOP_AT_NAME_DEFAULT);
-		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_RESUME,
-				IGDBJtagConstants.DEFAULT_SET_RESUME);
+		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER, IGDBJtagConstants.DEFAULT_SET_PC_REGISTER);
+		configuration.setAttribute(IGDBJtagConstants.ATTR_PC_REGISTER, IGDBJtagConstants.DEFAULT_PC_REGISTER);
+		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_STOP_AT, DefaultPreferences.DO_STOP_AT_DEFAULT);
+		configuration.setAttribute(IGDBJtagConstants.ATTR_STOP_AT, DefaultPreferences.STOP_AT_NAME_DEFAULT);
+		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_RESUME, IGDBJtagConstants.DEFAULT_SET_RESUME);
 
-		configuration.setAttribute(ConfigurationAttributes.DO_CONTINUE,
-				DefaultPreferences.DO_CONTINUE_DEFAULT);
+		configuration.setAttribute(ConfigurationAttributes.DO_CONTINUE, DefaultPreferences.DO_CONTINUE_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------

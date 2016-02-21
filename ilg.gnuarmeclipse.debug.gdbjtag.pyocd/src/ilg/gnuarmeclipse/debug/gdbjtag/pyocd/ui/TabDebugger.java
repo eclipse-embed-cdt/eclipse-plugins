@@ -76,17 +76,16 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	// ------------------------------------------------------------------------
 
 	private static final String TAB_NAME = "Debugger";
-	private static final String TAB_ID = Activator.PLUGIN_ID
-			+ ".ui.debuggertab";
+	private static final String TAB_ID = Activator.PLUGIN_ID + ".ui.debuggertab";
 
 	// ------------------------------------------------------------------------
 
-	/** The launch configuration this GUI is showing/modifying */  
+	/** The launch configuration this GUI is showing/modifying */
 	private ILaunchConfiguration fConfiguration;
-	
+
 	private List<PyOCD.Board> fBoards;
 	private String fSelectedBoardId;
-	
+
 	private Button fDoStartGdbServer;
 	private Text fGdbClientExecutable;
 	private Text fGdbClientOtherOptions;
@@ -94,24 +93,24 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private Text fTargetIpAddress;
 	private Text fTargetPortNumber;
-	
+
 	private Combo fGdbServerBoardId;
 	private Button fGdbServerRefreshBoards;
 
 	private Text fGdbServerGdbPort;
 	private Text fGdbServerTelnetPort;
-	
+
 	private Button fGdbServerOverrideTarget;
 	private Combo fGdbServerTargetName;
-	
+
 	private Combo fGdbServerBusSpeed;
-	
+
 	private Button fGdbServerHaltAtHardFault;
 	private Button fGdbServerStepIntoInterrupts;
-	
+
 	private Combo fGdbServerFlashMode;
 	private Button fGdbServerFlashFastVerify;
-	
+
 	private Button fGdbServerEnableSemihosting;
 	private Button fGdbServerUseGdbSyscallsForSemihosting;
 
@@ -125,7 +124,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Button fDoGdbServerAllocateSemihostingConsole;
 
 	protected Button fUpdateThreadlistOnSuspend;
-	
+
 	/** Active errors , if any. When any, only first is shown */
 	private Set<String> fErrors = new LinkedHashSet<String>();
 
@@ -149,7 +148,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	public Image getImage() {
 		return GDBJtagImages.getDebuggerTabImage();
 	}
-	
+
 	private Composite createHorizontalLayout(Composite comp, int columns, int spanSub) {
 		Composite local = new Composite(comp, SWT.NONE);
 		GridLayout layout = new GridLayout();
@@ -163,14 +162,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 		local.setLayoutData(gd);
 		return local;
-		
+
 	}
 
 	@Override
 	public void createControl(Composite parent) {
 
-		ScrolledComposite sc = new ScrolledComposite(parent, SWT.V_SCROLL
-				| SWT.H_SCROLL);
+		ScrolledComposite sc = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL);
 		sc.setExpandHorizontal(true);
 		sc.setExpandVertical(true);
 		setControl(sc);
@@ -187,20 +185,16 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		createRemoteControl(comp);
 
 		fUpdateThreadlistOnSuspend = new Button(comp, SWT.CHECK);
-		fUpdateThreadlistOnSuspend.setText(Messages
-				.getString("DebuggerTab.update_thread_list_on_suspend_Text"));
+		fUpdateThreadlistOnSuspend.setText(Messages.getString("DebuggerTab.update_thread_list_on_suspend_Text"));
 		fUpdateThreadlistOnSuspend
-				.setToolTipText(Messages
-						.getString("DebuggerTab.update_thread_list_on_suspend_ToolTipText"));
+				.setToolTipText(Messages.getString("DebuggerTab.update_thread_list_on_suspend_ToolTipText"));
 
 		Link restoreDefaults;
 		GridData gd;
 		{
 			restoreDefaults = new Link(comp, SWT.NONE);
-			restoreDefaults.setText(Messages
-					.getString("DebuggerTab.restoreDefaults_Link"));
-			restoreDefaults.setToolTipText(Messages
-					.getString("DebuggerTab.restoreDefaults_ToolTipText"));
+			restoreDefaults.setText(Messages.getString("DebuggerTab.restoreDefaults_Link"));
+			restoreDefaults.setToolTipText(Messages.getString("DebuggerTab.restoreDefaults_ToolTipText"));
 
 			gd = new GridData();
 			gd.grabExcessHorizontalSpace = true;
@@ -240,8 +234,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	}
 
 	private void variablesButtonSelected(Text text) {
-		StringVariableSelectionDialog dialog = new StringVariableSelectionDialog(
-				getShell());
+		StringVariableSelectionDialog dialog = new StringVariableSelectionDialog(getShell());
 		if (dialog.open() == StringVariableSelectionDialog.OK) {
 			text.insert(dialog.getVariableExpression());
 		}
@@ -268,10 +261,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		Label label;
 		{
 			fDoStartGdbServer = new Button(comp, SWT.CHECK);
-			fDoStartGdbServer.setText(Messages
-					.getString("DebuggerTab.doStartGdbServer_Text"));
-			fDoStartGdbServer.setToolTipText(Messages
-					.getString("DebuggerTab.doStartGdbServer_ToolTipText"));
+			fDoStartGdbServer.setText(Messages.getString("DebuggerTab.doStartGdbServer_Text"));
+			fDoStartGdbServer.setToolTipText(Messages.getString("DebuggerTab.doStartGdbServer_ToolTipText"));
 			gd = new GridData();
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
 			fDoStartGdbServer.setLayoutData(gd);
@@ -279,10 +270,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		{
 			label = new Label(comp, SWT.NONE);
-			label.setText(Messages
-					.getString("DebuggerTab.gdbServerExecutable_Label"));
-			label.setToolTipText(Messages
-					.getString("DebuggerTab.gdbServerExecutable_ToolTipText"));
+			label.setText(Messages.getString("DebuggerTab.gdbServerExecutable_Label"));
+			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerExecutable_ToolTipText"));
 
 			local = createHorizontalLayout(comp, 3, 1);
 			{
@@ -291,22 +280,18 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fGdbServerExecutable.setLayoutData(gd);
 
 				fGdbServerBrowseButton = new Button(local, SWT.NONE);
-				fGdbServerBrowseButton.setText(Messages
-						.getString("DebuggerTab.gdbServerExecutableBrowse"));
+				fGdbServerBrowseButton.setText(Messages.getString("DebuggerTab.gdbServerExecutableBrowse"));
 
 				fGdbServerVariablesButton = new Button(local, SWT.NONE);
-				fGdbServerVariablesButton.setText(Messages
-						.getString("DebuggerTab.gdbServerExecutableVariable"));
+				fGdbServerVariablesButton.setText(Messages.getString("DebuggerTab.gdbServerExecutableVariable"));
 			}
 		}
 
 		{
 			label = new Label(comp, SWT.NONE);
-			label.setText(Messages
-					.getString("DebuggerTab.gdbServerGdbPort_Label"));
-			label.setToolTipText(Messages
-					.getString("DebuggerTab.gdbServerGdbPort_ToolTipText"));
-			
+			label.setText(Messages.getString("DebuggerTab.gdbServerGdbPort_Label"));
+			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerGdbPort_ToolTipText"));
+
 			local = createHorizontalLayout(comp, 3, 1);
 			{
 				fGdbServerGdbPort = new Text(local, SWT.SINGLE | SWT.BORDER);
@@ -315,24 +300,20 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fGdbServerGdbPort.setLayoutData(gd);
 
 				fDoGdbServerAllocateConsole = new Button(local, SWT.CHECK);
-				fDoGdbServerAllocateConsole.setText(Messages
-						.getString("DebuggerTab.gdbServerAllocateConsole_Label"));
+				fDoGdbServerAllocateConsole.setText(Messages.getString("DebuggerTab.gdbServerAllocateConsole_Label"));
 				fDoGdbServerAllocateConsole
-						.setToolTipText(Messages
-								.getString("DebuggerTab.gdbServerAllocateConsole_ToolTipText"));
+						.setToolTipText(Messages.getString("DebuggerTab.gdbServerAllocateConsole_ToolTipText"));
 				gd = new GridData();
 				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
 				fDoGdbServerAllocateConsole.setLayoutData(gd);
-			
+
 			}
 		}
 
 		{
 			label = new Label(comp, SWT.NONE);
-			label.setText(Messages
-					.getString("DebuggerTab.gdbServerTelnetPort_Label"));
-			label.setToolTipText(Messages
-					.getString("DebuggerTab.gdbServerTelnetPort_ToolTipText"));
+			label.setText(Messages.getString("DebuggerTab.gdbServerTelnetPort_Label"));
+			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerTelnetPort_ToolTipText"));
 
 			local = createHorizontalLayout(comp, 3, 1);
 			{
@@ -340,89 +321,76 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				gd = new GridData();
 				gd.widthHint = 60;
 				fGdbServerTelnetPort.setLayoutData(gd);
-	
+
 				fDoGdbServerAllocateSemihostingConsole = new Button(local, SWT.CHECK);
 				fDoGdbServerAllocateSemihostingConsole
-						.setText(Messages
-								.getString("DebuggerTab.gdbServerAllocateTelnetConsole_Label"));
+						.setText(Messages.getString("DebuggerTab.gdbServerAllocateTelnetConsole_Label"));
 				fDoGdbServerAllocateSemihostingConsole
-						.setToolTipText(Messages
-								.getString("DebuggerTab.gdbServerAllocateTelnetConsole_ToolTipText"));
+						.setToolTipText(Messages.getString("DebuggerTab.gdbServerAllocateTelnetConsole_ToolTipText"));
 				gd = new GridData();
 				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
 				fDoGdbServerAllocateSemihostingConsole.setLayoutData(gd);
 			}
 		}
-		
+
 		createSeparator(comp, ((GridLayout) comp.getLayout()).numColumns);
-				
+
 		{
 			label = new Label(comp, SWT.NONE);
-			label.setText(Messages
-					.getString("DebuggerTab.gdbServerBoardId_Label"));
-			label.setToolTipText(Messages
-					.getString("DebuggerTab.gdbServerBoardId_ToolTipText"));
+			label.setText(Messages.getString("DebuggerTab.gdbServerBoardId_Label"));
+			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerBoardId_ToolTipText"));
 
 			local = createHorizontalLayout(comp, 2, 1);
 			{
 				fGdbServerBoardId = new Combo(local, SWT.DROP_DOWN | SWT.READ_ONLY);
 				gd = new GridData(GridData.FILL_HORIZONTAL);
 				fGdbServerBoardId.setLayoutData(gd);
-				fGdbServerBoardId.setItems(new String[] { } );
+				fGdbServerBoardId.setItems(new String[] {});
 				fGdbServerBoardId.select(0);
-				
+
 				fGdbServerRefreshBoards = new Button(local, SWT.NONE);
-				fGdbServerRefreshBoards.setText(Messages
-						.getString("DebuggerTab.gdbServerRefreshBoards_Label"));
+				fGdbServerRefreshBoards.setText(Messages.getString("DebuggerTab.gdbServerRefreshBoards_Label"));
 			}
 		}
-		
+
 		{
 			fGdbServerOverrideTarget = new Button(comp, SWT.CHECK);
-			fGdbServerOverrideTarget.setText(Messages
-					.getString("DebuggerTab.gdbServerOverrideTarget_Label"));
+			fGdbServerOverrideTarget.setText(Messages.getString("DebuggerTab.gdbServerOverrideTarget_Label"));
 			fGdbServerOverrideTarget
-					.setToolTipText(Messages
-							.getString("DebuggerTab.gdbServerOverrideTarget_ToolTipText"));
+					.setToolTipText(Messages.getString("DebuggerTab.gdbServerOverrideTarget_ToolTipText"));
 			gd = new GridData();
 			fGdbServerOverrideTarget.setLayoutData(gd);
-			
+
 			fGdbServerTargetName = new Combo(comp, SWT.DROP_DOWN);
 			gd = new GridData();
 			gd.widthHint = 120;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			fGdbServerTargetName.setLayoutData(gd);
 		}
-		
+
 		{
 			label = new Label(comp, SWT.NONE);
-			label.setText(Messages
-					.getString("DebuggerTab.gdbServerBusSpeed_Label"));
-			label.setToolTipText(Messages
-					.getString("DebuggerTab.gdbServerBusSpeed_ToolTipText"));
-			
+			label.setText(Messages.getString("DebuggerTab.gdbServerBusSpeed_Label"));
+			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerBusSpeed_ToolTipText"));
+
 			fGdbServerBusSpeed = new Combo(comp, SWT.DROP_DOWN);
 			gd = new GridData();
 			gd.widthHint = 120;
 			fGdbServerBusSpeed.setLayoutData(gd);
-			fGdbServerBusSpeed.setItems(new String[] { 
-					"1000000", "2000000", "8000000", "12000000" } );
+			fGdbServerBusSpeed.setItems(new String[] { "1000000", "2000000", "8000000", "12000000" });
 			fGdbServerBusSpeed.select(0);
-			
+
 			label = new Label(comp, SWT.NONE);
-			label.setText(Messages
-					.getString("DebuggerTab.gdbServerBusSpeedUnits_Label"));
+			label.setText(Messages.getString("DebuggerTab.gdbServerBusSpeedUnits_Label"));
 			gd = new GridData();
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 2;
 			label.setLayoutData(gd);
 		}
-		
+
 		{
 			label = new Label(comp, SWT.NONE);
-			label.setText(Messages
-					.getString("DebuggerTab.gdbServerFlashMode_Label")); //$NON-NLS-1$
-			label.setToolTipText(Messages
-					.getString("DebuggerTab.gdbServerFlashMode_ToolTipText"));
+			label.setText(Messages.getString("DebuggerTab.gdbServerFlashMode_Label")); //$NON-NLS-1$
+			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerFlashMode_ToolTipText"));
 			gd = new GridData();
 			label.setLayoutData(gd);
 
@@ -430,67 +398,56 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			gd = new GridData();
 			gd.widthHint = 120;
 			fGdbServerFlashMode.setLayoutData(gd);
-			fGdbServerFlashMode.setItems(new String[] {
-					Messages.getString("DebuggerTab.gdbServerFlashMode.AutoErase"),
-					Messages.getString("DebuggerTab.gdbServerFlashMode.ChipErase"), 
-					Messages.getString("DebuggerTab.gdbServerFlashMode.SectorErase"),
-					} );
+			fGdbServerFlashMode.setItems(new String[] { Messages.getString("DebuggerTab.gdbServerFlashMode.AutoErase"),
+					Messages.getString("DebuggerTab.gdbServerFlashMode.ChipErase"),
+					Messages.getString("DebuggerTab.gdbServerFlashMode.SectorErase"), });
 			fGdbServerFlashMode.select(0);
 
 			fGdbServerFlashFastVerify = new Button(comp, SWT.CHECK);
-			fGdbServerFlashFastVerify.setText(Messages
-					.getString("DebuggerTab.gdbServerFlashFastVerify_Label"));
+			fGdbServerFlashFastVerify.setText(Messages.getString("DebuggerTab.gdbServerFlashFastVerify_Label"));
 			fGdbServerFlashFastVerify
-					.setToolTipText(Messages
-							.getString("DebuggerTab.gdbServerFlashFastVerify_ToolTipText"));
+					.setToolTipText(Messages.getString("DebuggerTab.gdbServerFlashFastVerify_ToolTipText"));
 			gd = new GridData();
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 2;
 			fGdbServerFlashFastVerify.setLayoutData(gd);
 		}
-		
+
 		{
 			fGdbServerHaltAtHardFault = new Button(comp, SWT.CHECK);
-			fGdbServerHaltAtHardFault.setText(Messages
-					.getString("DebuggerTab.gdbServerHaltAtHardFault_Label"));
+			fGdbServerHaltAtHardFault.setText(Messages.getString("DebuggerTab.gdbServerHaltAtHardFault_Label"));
 			fGdbServerHaltAtHardFault
-					.setToolTipText(Messages
-							.getString("DebuggerTab.gdbServerHaltAtHardFault_ToolTipText"));
+					.setToolTipText(Messages.getString("DebuggerTab.gdbServerHaltAtHardFault_ToolTipText"));
 			gd = new GridData();
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
 			fGdbServerHaltAtHardFault.setLayoutData(gd);
 		}
-		
+
 		{
 			fGdbServerStepIntoInterrupts = new Button(comp, SWT.CHECK);
-			fGdbServerStepIntoInterrupts.setText(Messages
-					.getString("DebuggerTab.gdbServerStepIntoInterrupts_Label"));
+			fGdbServerStepIntoInterrupts.setText(Messages.getString("DebuggerTab.gdbServerStepIntoInterrupts_Label"));
 			fGdbServerStepIntoInterrupts
-					.setToolTipText(Messages
-							.getString("DebuggerTab.gdbServerStepIntoInterrupts_ToolTipText"));
+					.setToolTipText(Messages.getString("DebuggerTab.gdbServerStepIntoInterrupts_ToolTipText"));
 			gd = new GridData();
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
 			fGdbServerStepIntoInterrupts.setLayoutData(gd);
 		}
-		
+
 		{
 			fGdbServerEnableSemihosting = new Button(comp, SWT.CHECK);
-			fGdbServerEnableSemihosting.setText(Messages
-					.getString("DebuggerTab.gdbServerEnableSemihosting_Label"));
+			fGdbServerEnableSemihosting.setText(Messages.getString("DebuggerTab.gdbServerEnableSemihosting_Label"));
 			fGdbServerEnableSemihosting
-					.setToolTipText(Messages
-							.getString("DebuggerTab.gdbServerEnableSemihosting_ToolTipText"));
+					.setToolTipText(Messages.getString("DebuggerTab.gdbServerEnableSemihosting_ToolTipText"));
 			gd = new GridData();
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
 			fGdbServerEnableSemihosting.setLayoutData(gd);
 		}
-		
+
 		{
 			fGdbServerUseGdbSyscallsForSemihosting = new Button(comp, SWT.CHECK);
-			fGdbServerUseGdbSyscallsForSemihosting.setText(Messages
-					.getString("DebuggerTab.gdbServerUseGdbSyscallsForSemihosting_Label"));
 			fGdbServerUseGdbSyscallsForSemihosting
-					.setToolTipText(Messages
-							.getString("DebuggerTab.gdbServerUseGdbSyscallsForSemihosting_ToolTipText"));
+					.setText(Messages.getString("DebuggerTab.gdbServerUseGdbSyscallsForSemihosting_Label"));
+			fGdbServerUseGdbSyscallsForSemihosting.setToolTipText(
+					Messages.getString("DebuggerTab.gdbServerUseGdbSyscallsForSemihosting_ToolTipText"));
 			gd = new GridData();
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
 			fGdbServerUseGdbSyscallsForSemihosting.setLayoutData(gd);
@@ -498,16 +455,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		{
 			label = new Label(comp, SWT.NONE);
-			label.setText(Messages
-					.getString("DebuggerTab.gdbServerOther_Label")); //$NON-NLS-1$
-			label.setToolTipText(Messages
-					.getString("DebuggerTab.gdbServerOther_ToolTipText"));
+			label.setText(Messages.getString("DebuggerTab.gdbServerOther_Label")); //$NON-NLS-1$
+			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerOther_ToolTipText"));
 			gd = new GridData();
 			gd.verticalAlignment = SWT.TOP;
 			label.setLayoutData(gd);
 
-			fGdbServerOtherOptions = new Text(comp, SWT.MULTI | SWT.WRAP
-					| SWT.BORDER | SWT.V_SCROLL);
+			fGdbServerOtherOptions = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
 			gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 			gd.heightHint = 60;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
@@ -535,8 +489,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			public void widgetSelected(SelectionEvent e) {
 				doStartGdbServerChanged();
 				if (fDoStartGdbServer.getSelection()) {
-					fTargetIpAddress
-							.setText(DefaultPreferences.REMOTE_IP_ADDRESS_LOCALHOST);
+					fTargetIpAddress.setText(DefaultPreferences.REMOTE_IP_ADDRESS_LOCALHOST);
 				}
 				scheduleUpdateJob();
 			}
@@ -557,8 +510,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fGdbServerBrowseButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				browseButtonSelected(
-						Messages.getString("DebuggerTab.gdbServerExecutableBrowse_Title"),
+				browseButtonSelected(Messages.getString("DebuggerTab.gdbServerExecutableBrowse_Title"),
 						fGdbServerExecutable);
 			}
 		});
@@ -579,21 +531,21 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				scheduleUpdateJob();
 			}
 		});
-		
+
 		fGdbServerBoardId.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				boardSelected(((Combo)e.widget).getSelectionIndex());
+				boardSelected(((Combo) e.widget).getSelectionIndex());
 			}
 		});
-		
+
 		fGdbServerRefreshBoards.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				updateBoards();
 			}
 		});
-		
+
 		fGdbServerOverrideTarget.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -603,7 +555,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		});
 
 		fGdbServerTelnetPort.addModifyListener(scheduleUpdateJobModifyListener);
-		
+
 		fGdbServerBusSpeed.addModifyListener(scheduleUpdateJobModifyListener);
 
 		fGdbServerTargetName.addModifyListener(scheduleUpdateJobModifyListener);
@@ -620,13 +572,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		fGdbServerUseGdbSyscallsForSemihosting.addSelectionListener(scheduleUpdateJobSelectionAdapter);
 
-		fGdbServerOtherOptions
-				.addModifyListener(scheduleUpdateJobModifyListener);
+		fGdbServerOtherOptions.addModifyListener(scheduleUpdateJobModifyListener);
 
-		fDoGdbServerAllocateConsole
-				.addSelectionListener(scheduleUpdateJobSelectionAdapter);
-		fDoGdbServerAllocateSemihostingConsole
-				.addSelectionListener(scheduleUpdateJobSelectionAdapter);
+		fDoGdbServerAllocateConsole.addSelectionListener(scheduleUpdateJobSelectionAdapter);
+		fDoGdbServerAllocateSemihostingConsole.addSelectionListener(scheduleUpdateJobSelectionAdapter);
 	}
 
 	private void createGdbClientControls(Composite parent) {
@@ -652,8 +601,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		{
 			label = new Label(comp, SWT.NONE);
 			label.setText(Messages.getString("DebuggerTab.gdbCommand_Label"));
-			label.setToolTipText(Messages
-					.getString("DebuggerTab.gdbCommand_ToolTipText"));
+			label.setToolTipText(Messages.getString("DebuggerTab.gdbCommand_ToolTipText"));
 
 			Composite local = createHorizontalLayout(comp, 3, -1);
 			{
@@ -662,21 +610,17 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fGdbClientExecutable.setLayoutData(gd);
 
 				browseButton = new Button(local, SWT.NONE);
-				browseButton.setText(Messages
-						.getString("DebuggerTab.gdbCommandBrowse"));
+				browseButton.setText(Messages.getString("DebuggerTab.gdbCommandBrowse"));
 
 				variableButton = new Button(local, SWT.NONE);
-				variableButton.setText(Messages
-						.getString("DebuggerTab.gdbCommandVariable"));
+				variableButton.setText(Messages.getString("DebuggerTab.gdbCommandVariable"));
 			}
 		}
 
 		{
 			label = new Label(comp, SWT.NONE);
-			label.setText(Messages
-					.getString("DebuggerTab.gdbOtherOptions_Label"));
-			label.setToolTipText(Messages
-					.getString("DebuggerTab.gdbOtherOptions_ToolTipText"));
+			label.setText(Messages.getString("DebuggerTab.gdbOtherOptions_Label"));
+			label.setToolTipText(Messages.getString("DebuggerTab.gdbOtherOptions_ToolTipText"));
 			gd = new GridData();
 			label.setLayoutData(gd);
 
@@ -687,16 +631,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		{
 			label = new Label(comp, SWT.NONE);
-			label.setText(Messages
-					.getString("DebuggerTab.gdbOtherCommands_Label"));
-			label.setToolTipText(Messages
-					.getString("DebuggerTab.gdbOtherCommands_ToolTipText"));
+			label.setText(Messages.getString("DebuggerTab.gdbOtherCommands_Label"));
+			label.setToolTipText(Messages.getString("DebuggerTab.gdbOtherCommands_ToolTipText"));
 			gd = new GridData();
 			gd.verticalAlignment = SWT.TOP;
 			label.setLayoutData(gd);
 
-			fGdbClientOtherCommands = new Text(comp, SWT.MULTI | SWT.WRAP
-					| SWT.BORDER | SWT.V_SCROLL);
+			fGdbClientOtherCommands = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
 			gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 			gd.heightHint = 60;
 			fGdbClientOtherCommands.setLayoutData(gd);
@@ -730,9 +671,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		browseButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				browseButtonSelected(Messages
-						.getString("DebuggerTab.gdbCommandBrowse_Title"),
-						fGdbClientExecutable);
+				browseButtonSelected(Messages.getString("DebuggerTab.gdbCommandBrowse_Title"), fGdbClientExecutable);
 			}
 		});
 
@@ -789,8 +728,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fTargetPortNumber.addVerifyListener(new VerifyListener() {
 			@Override
 			public void verifyText(VerifyEvent e) {
-				e.doit = Character.isDigit(e.character)
-						|| Character.isISOControl(e.character);
+				e.doit = Character.isDigit(e.character) || Character.isISOControl(e.character);
 			}
 		});
 		fTargetPortNumber.addModifyListener(new ModifyListener() {
@@ -815,8 +753,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fGdbServerTelnetPort.setEnabled(enabled);
 		fGdbServerBusSpeed.setEnabled(enabled);
 		fGdbServerOverrideTarget.setEnabled(enabled);
-		fGdbServerTargetName.setEnabled(enabled
-				&& fGdbServerOverrideTarget.getSelection());
+		fGdbServerTargetName.setEnabled(enabled && fGdbServerOverrideTarget.getSelection());
 		fGdbServerHaltAtHardFault.setEnabled(enabled);
 		fGdbServerStepIntoInterrupts.setEnabled(enabled);
 		fGdbServerFlashMode.setEnabled(enabled);
@@ -824,55 +761,59 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		fDoGdbServerAllocateConsole.setEnabled(enabled);
 		fDoGdbServerAllocateSemihostingConsole.setEnabled(enabled);
-			
+
 		// Disable remote target params when the server is started
 		fTargetIpAddress.setEnabled(!enabled);
 		fTargetPortNumber.setEnabled(!enabled);
 	}
-	
+
 	private void overrideTargetChanged() {
 		boolean enabled = fGdbServerOverrideTarget.getSelection();
-		
+
 		fGdbServerTargetName.setEnabled(enabled);
 	}
-	
+
 	private String getPyOCDExecutablePath() {
 		String path = null;
-		
+
 		try {
 			path = fGdbServerExecutable.getText().trim();
 			if (path.length() == 0) {
 				return null;
 			}
-			System.out.printf("pyOCD path = %s\n", path);
-			
+			if (Activator.getInstance().isDebugging()) {
+				System.out.printf("pyOCD path = %s\n", path);
+			}
 			path = DebugUtils.resolveAll(path, fConfiguration.getAttributes());
-			
-			ICConfigurationDescription buildConfig = EclipseUtils
-					.getBuildConfigDescription(fConfiguration);
+
+			ICConfigurationDescription buildConfig = EclipseUtils.getBuildConfigDescription(fConfiguration);
 			if (buildConfig != null) {
 				path = DebugUtils.resolveAll(path, buildConfig);
 			}
 
-			System.out.printf("pyOCD resolved path = %s\n", path);
-			
+			if (Activator.getInstance().isDebugging()) {
+				System.out.printf("pyOCD resolved path = %s\n", path);
+			}
 			// Validate path.
-			
+
 			File file = new File(path);
 			if (!file.exists() || file.isDirectory()) {
-				// TODO: Use java.nio.Files when we move to Java 7 to also check that file is executable 
-				System.out.printf("pyOCD path is invalid\n");
+				// TODO: Use java.nio.Files when we move to Java 7 to also check
+				// that file is executable
+				if (Activator.getInstance().isDebugging()) {
+					System.out.printf("pyOCD path is invalid\n");
+				}
 				return null;
 			}
-			
+
 		} catch (CoreException e) {
 			Activator.log(e);
 			return null;
 		}
-		
+
 		return path;
 	}
-	
+
 	private int indexForBoardId(String boardId) {
 		// Search for a matching board.
 		if (fBoards != null) {
@@ -886,23 +827,23 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 		return -1;
 	}
-	
+
 	private void boardSelected(int index) {
 		PyOCD.Board selectedBoard = fBoards.get(index);
 		fSelectedBoardId = selectedBoard.fUniqueId;
 	}
-	
+
 	private void selectActiveBoard() {
 		// Get current board ID.
 		int index = indexForBoardId(fSelectedBoardId);
 		if (index != -1) {
 			fGdbServerBoardId.select(index);
 		} else {
-			
+
 		}
-	
+
 	}
-	
+
 	private void updateBoards() {
 		String path = getPyOCDExecutablePath();
 		if (path != null) {
@@ -912,30 +853,28 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				boards = new ArrayList<PyOCD.Board>();
 			}
 			System.out.printf("board = %s\n", boards);
-			
+
 			Collections.sort(boards, PyOCD.Board.COMPARATOR);
-			
+
 			fBoards = boards;
-			
+
 			final ArrayList<String> itemList = new ArrayList<String>();
-			
+
 			for (PyOCD.Board board : boards) {
 				String desc = board.fProductName;
 				if (!board.fProductName.startsWith(board.fVendorName)) {
 					desc = board.fVendorName + " " + board.fProductName;
 				}
-				itemList.add(String.format("%s - %s (%s)",
-						board.fName, desc, board.fUniqueId));
+				itemList.add(String.format("%s - %s (%s)", board.fName, desc, board.fUniqueId));
 			}
-		
+
 			String[] items = itemList.toArray(new String[itemList.size()]);
-			
+
 			fGdbServerBoardId.setItems(items);
-			
+
 			selectActiveBoard();
-		}
-		else {
-			fGdbServerBoardId.setItems(new String[]{});
+		} else {
+			fGdbServerBoardId.setItems(new String[] {});
 			registerError(Msgs.INVALID_PYOCD_EXECUTABLE);
 		}
 	}
@@ -944,26 +883,25 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		String path = getPyOCDExecutablePath();
 		if (path != null) {
 			deregisterError(Msgs.INVALID_PYOCD_EXECUTABLE);
-			
+
 			List<PyOCD.Target> targets = PyOCD.getTargets(path);
 			if (targets == null) {
 				targets = new ArrayList<PyOCD.Target>();
 			}
 			System.out.printf("target = %s\n", targets);
-			
+
 			Collections.sort(targets, PyOCD.Target.COMPARATOR);
-			
+
 			final ArrayList<String> itemList = new ArrayList<String>();
 			for (PyOCD.Target target : targets) {
 				itemList.add(String.format("%s", target.fPartNumber));
 			}
 			String[] items = itemList.toArray(new String[itemList.size()]);
-			
+
 			fGdbServerTargetName.setItems(items);
-		}
-		else {
+		} else {
 			// Clear combobox and show error
-			fGdbServerTargetName.setItems(new String[]{});
+			fGdbServerTargetName.setItems(new String[] {});
 			registerError(Msgs.INVALID_PYOCD_EXECUTABLE);
 		}
 	}
@@ -978,109 +916,85 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			{
 				// Start server locally
 				booleanDefault = PersistentPreferences.getGdbServerDoStart();
-				fDoStartGdbServer.setSelection(configuration.getAttribute(
-						ConfigurationAttributes.DO_START_GDB_SERVER,
-						booleanDefault));
+				fDoStartGdbServer.setSelection(
+						configuration.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER, booleanDefault));
 
 				// Executable
 				stringDefault = PersistentPreferences.getGdbServerExecutable();
-				fGdbServerExecutable.setText(configuration.getAttribute(
-						ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
-						stringDefault));
+				fGdbServerExecutable.setText(
+						configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_EXECUTABLE, stringDefault));
 
 				// Ports
-				fGdbServerGdbPort
-						.setText(Integer.toString(configuration
-								.getAttribute(
-										ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
-										DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
+				fGdbServerGdbPort.setText(
+						Integer.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
+								DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
 
-				fGdbServerTelnetPort
-						.setText(Integer.toString(configuration
-								.getAttribute(
-										ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
-										DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
-				
+				fGdbServerTelnetPort.setText(Integer
+						.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
+								DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
+
 				// Board ID
-				fSelectedBoardId = configuration.getAttribute(
-								ConfigurationAttributes.GDB_SERVER_BOARD_ID,
-								DefaultPreferences.GDB_SERVER_BOARD_ID_DEFAULT);
+				fSelectedBoardId = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_ID,
+						DefaultPreferences.GDB_SERVER_BOARD_ID_DEFAULT);
 				selectActiveBoard();
 
 				// Target override
-				fGdbServerOverrideTarget.setSelection(
-						configuration.getAttribute(
-								ConfigurationAttributes.GDB_SERVER_OVERRIDE_TARGET,
+				fGdbServerOverrideTarget
+						.setSelection(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_OVERRIDE_TARGET,
 								DefaultPreferences.GDB_SERVER_OVERRIDE_TARGET_DEFAULT));
-				
-				fGdbServerTargetName.setText(
-						configuration.getAttribute(
-								ConfigurationAttributes.GDB_SERVER_TARGET_NAME,
-								DefaultPreferences.GDB_SERVER_TARGET_NAME_DEFAULT));
-				
-				// Misc options
-				fGdbServerHaltAtHardFault.setSelection(
-						configuration.getAttribute(
-								ConfigurationAttributes.GDB_SERVER_HALT_AT_HARD_FAULT,
-								DefaultPreferences.GDB_SERVER_HALT_AT_HARD_FAULT_DEFAULT));
-				
-				fGdbServerStepIntoInterrupts.setSelection(
-						configuration.getAttribute(
-								ConfigurationAttributes.GDB_SERVER_STEP_INTO_INTERRUPTS,
-								DefaultPreferences.GDB_SERVER_STEP_INTO_INTERRUPTS_DEFAULT));
-				
-				// Flash
-				fGdbServerFlashMode.select(
-						configuration.getAttribute(
-								ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
-								DefaultPreferences.GDB_SERVER_FLASH_MODE_DEFAULT));
 
-				fGdbServerFlashFastVerify.setSelection(
-						configuration.getAttribute(
-								ConfigurationAttributes.GDB_SERVER_FLASH_FAST_VERIFY,
+				fGdbServerTargetName.setText(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_TARGET_NAME,
+						DefaultPreferences.GDB_SERVER_TARGET_NAME_DEFAULT));
+
+				// Misc options
+				fGdbServerHaltAtHardFault
+						.setSelection(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_HALT_AT_HARD_FAULT,
+								DefaultPreferences.GDB_SERVER_HALT_AT_HARD_FAULT_DEFAULT));
+
+				fGdbServerStepIntoInterrupts.setSelection(
+						configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_STEP_INTO_INTERRUPTS,
+								DefaultPreferences.GDB_SERVER_STEP_INTO_INTERRUPTS_DEFAULT));
+
+				// Flash
+				fGdbServerFlashMode.select(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
+						DefaultPreferences.GDB_SERVER_FLASH_MODE_DEFAULT));
+
+				fGdbServerFlashFastVerify
+						.setSelection(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_FAST_VERIFY,
 								DefaultPreferences.GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT));
 
 				// Semihosting
-				fGdbServerEnableSemihosting.setSelection(
-						configuration.getAttribute(
-								ConfigurationAttributes.GDB_SERVER_ENABLE_SEMIHOSTING,
+				fGdbServerEnableSemihosting
+						.setSelection(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_ENABLE_SEMIHOSTING,
 								DefaultPreferences.GDB_SERVER_ENABLE_SEMIHOSTING_DEFAULT));
 
-				fGdbServerUseGdbSyscallsForSemihosting.setSelection(
-						configuration.getAttribute(
-								ConfigurationAttributes.GDB_SERVER_USE_GDB_SYSCALLS,
+				fGdbServerUseGdbSyscallsForSemihosting
+						.setSelection(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_USE_GDB_SYSCALLS,
 								DefaultPreferences.GDB_SERVER_USE_GDB_SYSCALLS_DEFAULT));
 
 				// Bus speed
-				fGdbServerBusSpeed.setText(Integer.toString(
-						configuration.getAttribute(
-								ConfigurationAttributes.GDB_SERVER_BUS_SPEED,
+				fGdbServerBusSpeed.setText(
+						Integer.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_BUS_SPEED,
 								DefaultPreferences.GDB_SERVER_BUS_SPEED_DEFAULT)));
-				
+
 				// Other options
-				stringDefault = PersistentPreferences
-						.getGdbServerOtherOptions();
-				fGdbServerOtherOptions.setText(configuration
-						.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER,
-								stringDefault));
+				stringDefault = PersistentPreferences.getGdbServerOtherOptions();
+				fGdbServerOtherOptions
+						.setText(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER, stringDefault));
 
 				// Allocate server console
 				if (EclipseUtils.isWindows()) {
 					fDoGdbServerAllocateConsole.setSelection(true);
 				} else {
-					fDoGdbServerAllocateConsole
-							.setSelection(configuration
-									.getAttribute(
-											ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
-											DefaultPreferences.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT));
+					fDoGdbServerAllocateConsole.setSelection(
+							configuration.getAttribute(ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
+									DefaultPreferences.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT));
 				}
 
 				// Allocate telnet console
-				fDoGdbServerAllocateSemihostingConsole
-						.setSelection(configuration
-								.getAttribute(
-										ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
-										DefaultPreferences.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT));
+				fDoGdbServerAllocateSemihostingConsole.setSelection(
+						configuration.getAttribute(ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
+								DefaultPreferences.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT));
 
 			}
 
@@ -1088,55 +1002,49 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			{
 				// Executable
 				stringDefault = PersistentPreferences.getGdbClientExecutable();
-				String gdbCommandAttr = configuration.getAttribute(
-						IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
+				String gdbCommandAttr = configuration.getAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
 						stringDefault);
 				fGdbClientExecutable.setText(gdbCommandAttr);
 
 				// Other options
-				stringDefault = PersistentPreferences
-						.getGdbClientOtherOptions();
-				fGdbClientOtherOptions.setText(configuration.getAttribute(
-						ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
-						stringDefault));
+				stringDefault = PersistentPreferences.getGdbClientOtherOptions();
+				fGdbClientOtherOptions.setText(
+						configuration.getAttribute(ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS, stringDefault));
 
 				stringDefault = PersistentPreferences.getGdbClientCommands();
-				fGdbClientOtherCommands.setText(configuration.getAttribute(
-						ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
-						stringDefault));
+				fGdbClientOtherCommands.setText(
+						configuration.getAttribute(ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS, stringDefault));
 			}
 
 			// Remote target
 			{
-				fTargetIpAddress.setText(configuration.getAttribute(
-						IGDBJtagConstants.ATTR_IP_ADDRESS,
-						DefaultPreferences.REMOTE_IP_ADDRESS_DEFAULT)); //$NON-NLS-1$
+				fTargetIpAddress.setText(configuration.getAttribute(IGDBJtagConstants.ATTR_IP_ADDRESS,
+						DefaultPreferences.REMOTE_IP_ADDRESS_DEFAULT)); // $NON-NLS-1$
 
 				int storedPort = 0;
-				storedPort = configuration.getAttribute(
-						IGDBJtagConstants.ATTR_PORT_NUMBER, 0); // Default 0
+				storedPort = configuration.getAttribute(IGDBJtagConstants.ATTR_PORT_NUMBER, 0); // Default
+																								// 0
 
 				// 0 means undefined, use default
 				if ((storedPort <= 0) || (65535 < storedPort)) {
 					storedPort = DefaultPreferences.REMOTE_PORT_NUMBER_DEFAULT;
 				}
 
-				String portString = Integer.toString(storedPort); //$NON-NLS-1$
+				String portString = Integer.toString(storedPort); // $NON-NLS-1$
 				fTargetPortNumber.setText(portString);
 			}
 
 			fConfiguration = configuration;
-			
+
 			doStartGdbServerChanged();
 			overrideTargetChanged();
 			updateBoards();
 			updateTargets();
 
 			// Force thread update
-			boolean updateThreadsOnSuspend = configuration
-					.getAttribute(
-							IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
-							DefaultPreferences.UPDATE_THREAD_LIST_DEFAULT);
+			boolean updateThreadsOnSuspend = configuration.getAttribute(
+					IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
+					DefaultPreferences.UPDATE_THREAD_LIST_DEFAULT);
 			fUpdateThreadlistOnSuspend.setSelection(updateThreadsOnSuspend);
 
 		} catch (CoreException e) {
@@ -1151,55 +1059,43 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		// PyOCD GDB server
 		{
 			// Start server locally
-			fDoStartGdbServer
-					.setSelection(DefaultPreferences.DO_START_GDB_SERVER_DEFAULT);
+			fDoStartGdbServer.setSelection(DefaultPreferences.DO_START_GDB_SERVER_DEFAULT);
 
 			// Executable
 			stringDefault = DefaultPreferences.getGdbServerExecutable();
 			fGdbServerExecutable.setText(stringDefault);
 
 			// Ports
-			fGdbServerGdbPort
-					.setText(Integer
-							.toString(DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT));
+			fGdbServerGdbPort.setText(Integer.toString(DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT));
 
-			fGdbServerTelnetPort
-					.setText(Integer
-							.toString(DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT));
-			
+			fGdbServerTelnetPort.setText(Integer.toString(DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT));
+
 			// Board ID
-//			fGdbServerBoardId.setText(DefaultPreferences.GDB_SERVER_BOARD_ID_DEFAULT);
+			// fGdbServerBoardId.setText(DefaultPreferences.GDB_SERVER_BOARD_ID_DEFAULT);
 
 			// Target override
-			fGdbServerOverrideTarget.setSelection(
-					DefaultPreferences.GDB_SERVER_OVERRIDE_TARGET_DEFAULT);
-			
+			fGdbServerOverrideTarget.setSelection(DefaultPreferences.GDB_SERVER_OVERRIDE_TARGET_DEFAULT);
+
 			fGdbServerTargetName.setText(DefaultPreferences.GDB_SERVER_TARGET_NAME_DEFAULT);
-			
+
 			// Misc options
-			fGdbServerHaltAtHardFault.setSelection(
-					DefaultPreferences.GDB_SERVER_HALT_AT_HARD_FAULT_DEFAULT);
-			
-			fGdbServerStepIntoInterrupts.setSelection(
-					DefaultPreferences.GDB_SERVER_STEP_INTO_INTERRUPTS_DEFAULT);
-			
+			fGdbServerHaltAtHardFault.setSelection(DefaultPreferences.GDB_SERVER_HALT_AT_HARD_FAULT_DEFAULT);
+
+			fGdbServerStepIntoInterrupts.setSelection(DefaultPreferences.GDB_SERVER_STEP_INTO_INTERRUPTS_DEFAULT);
+
 			// Flash
 			fGdbServerFlashMode.select(DefaultPreferences.GDB_SERVER_FLASH_MODE_DEFAULT);
 
-			fGdbServerFlashFastVerify.setSelection(
-					DefaultPreferences.GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT);
+			fGdbServerFlashFastVerify.setSelection(DefaultPreferences.GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT);
 
 			// Semihosting
-			fGdbServerEnableSemihosting.setSelection(
-					DefaultPreferences.GDB_SERVER_ENABLE_SEMIHOSTING_DEFAULT);
+			fGdbServerEnableSemihosting.setSelection(DefaultPreferences.GDB_SERVER_ENABLE_SEMIHOSTING_DEFAULT);
 
-			fGdbServerUseGdbSyscallsForSemihosting.setSelection(
-					DefaultPreferences.GDB_SERVER_USE_GDB_SYSCALLS_DEFAULT);
+			fGdbServerUseGdbSyscallsForSemihosting.setSelection(DefaultPreferences.GDB_SERVER_USE_GDB_SYSCALLS_DEFAULT);
 
 			// Bus speed
-			fGdbServerBusSpeed.setText(Integer.toString(
-					DefaultPreferences.GDB_SERVER_BUS_SPEED_DEFAULT));
-			
+			fGdbServerBusSpeed.setText(Integer.toString(DefaultPreferences.GDB_SERVER_BUS_SPEED_DEFAULT));
+
 			// Other options
 			stringDefault = DefaultPreferences.getPyocdConfig();
 			fGdbServerOtherOptions.setText(stringDefault);
@@ -1208,8 +1104,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			if (EclipseUtils.isWindows()) {
 				fDoGdbServerAllocateConsole.setSelection(true);
 			} else {
-				fDoGdbServerAllocateConsole
-						.setSelection(DefaultPreferences.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
+				fDoGdbServerAllocateConsole.setSelection(DefaultPreferences.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
 			}
 
 			// Allocate telnet console
@@ -1225,20 +1120,16 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fGdbClientExecutable.setText(stringDefault);
 
 			// Other options
-			fGdbClientOtherOptions
-					.setText(DefaultPreferences.GDB_CLIENT_OTHER_OPTIONS_DEFAULT);
+			fGdbClientOtherOptions.setText(DefaultPreferences.GDB_CLIENT_OTHER_OPTIONS_DEFAULT);
 
-			fGdbClientOtherCommands
-					.setText(DefaultPreferences.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
+			fGdbClientOtherCommands.setText(DefaultPreferences.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
 		}
 
 		// Remote target
 		{
-			fTargetIpAddress
-					.setText(DefaultPreferences.REMOTE_IP_ADDRESS_DEFAULT); //$NON-NLS-1$
+			fTargetIpAddress.setText(DefaultPreferences.REMOTE_IP_ADDRESS_DEFAULT); // $NON-NLS-1$
 
-			String portString = Integer
-					.toString(DefaultPreferences.REMOTE_PORT_NUMBER_DEFAULT); //$NON-NLS-1$
+			String portString = Integer.toString(DefaultPreferences.REMOTE_PORT_NUMBER_DEFAULT); // $NON-NLS-1$
 			fTargetPortNumber.setText(portString);
 		}
 
@@ -1248,8 +1139,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		updateTargets();
 
 		// Force thread update
-		fUpdateThreadlistOnSuspend
-				.setSelection(DefaultPreferences.UPDATE_THREAD_LIST_DEFAULT);
+		fUpdateThreadlistOnSuspend.setSelection(DefaultPreferences.UPDATE_THREAD_LIST_DEFAULT);
 	}
 
 	/*
@@ -1265,7 +1155,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	@Override
 	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
 		// Do nothing. Override is necessary to avoid heavy cost of
-		// reinitialization (see super implementation)  
+		// reinitialization (see super implementation)
 	}
 
 	@Override
@@ -1280,8 +1170,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		{
 			// legacy definition; although the jtag device class is not used,
 			// it must be there, to avoid NPEs
-			configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE,
-					ConfigurationAttributes.JTAG_DEVICE);
+			configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE, ConfigurationAttributes.JTAG_DEVICE);
 		}
 
 		boolean booleanValue;
@@ -1291,144 +1180,110 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		{
 			// Start server
 			booleanValue = fDoStartGdbServer.getSelection();
-			configuration.setAttribute(
-					ConfigurationAttributes.DO_START_GDB_SERVER, booleanValue);
+			configuration.setAttribute(ConfigurationAttributes.DO_START_GDB_SERVER, booleanValue);
 			PersistentPreferences.putGdbServerDoStart(booleanValue);
 
 			// Executable
 			stringValue = fGdbServerExecutable.getText().trim();
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_EXECUTABLE, stringValue);
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_EXECUTABLE, stringValue);
 			PersistentPreferences.putGdbServerExecutable(stringValue);
 
 			// Ports
 			int port;
 			port = Integer.parseInt(fGdbServerGdbPort.getText().trim());
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER, port);
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER, port);
 
 			port = Integer.parseInt(fGdbServerTelnetPort.getText().trim());
-			configuration
-					.setAttribute(
-							ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
-							port);
-			
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER, port);
+
 			// Board ID
 			if (fSelectedBoardId != null) {
-				configuration.setAttribute(
-						ConfigurationAttributes.GDB_SERVER_BOARD_ID,
-						fSelectedBoardId);
+				configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_ID, fSelectedBoardId);
 			}
 
 			// Target override
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_OVERRIDE_TARGET,
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_OVERRIDE_TARGET,
 					fGdbServerOverrideTarget.getSelection());
-			
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_TARGET_NAME,
-					fGdbServerTargetName.getText());
-			
+
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TARGET_NAME, fGdbServerTargetName.getText());
+
 			// Misc options
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_HALT_AT_HARD_FAULT,
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_HALT_AT_HARD_FAULT,
 					fGdbServerHaltAtHardFault.getSelection());
-			
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_STEP_INTO_INTERRUPTS,
+
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_STEP_INTO_INTERRUPTS,
 					fGdbServerStepIntoInterrupts.getSelection());
-			
+
 			// Flash
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
 					fGdbServerFlashMode.getSelectionIndex());
 
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_FLASH_FAST_VERIFY,
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_FAST_VERIFY,
 					fGdbServerFlashFastVerify.getSelection());
 
 			// Semihosting
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_ENABLE_SEMIHOSTING,
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_ENABLE_SEMIHOSTING,
 					fGdbServerEnableSemihosting.getSelection());
 
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_USE_GDB_SYSCALLS,
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_USE_GDB_SYSCALLS,
 					fGdbServerUseGdbSyscallsForSemihosting.getSelection());
 
 			// Bus speed
 			int freq;
 			freq = Integer.parseInt(fGdbServerBusSpeed.getText().trim());
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_BUS_SPEED, freq);
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_BUS_SPEED, freq);
 
 			// Other options
 			stringValue = fGdbServerOtherOptions.getText().trim();
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_OTHER, stringValue);
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_OTHER, stringValue);
 			PersistentPreferences.putGdbServerOtherOptions(stringValue);
 
 			// Allocate server console
-			configuration.setAttribute(
-					ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
+			configuration.setAttribute(ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
 					fDoGdbServerAllocateConsole.getSelection());
 
 			// Allocate semihosting console
-			configuration
-					.setAttribute(
-							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
-							fDoGdbServerAllocateSemihostingConsole.getSelection());
+			configuration.setAttribute(ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
+					fDoGdbServerAllocateSemihostingConsole.getSelection());
 		}
 
 		// GDB client
 		{
 			// always use remote
-			configuration.setAttribute(
-					IGDBJtagConstants.ATTR_USE_REMOTE_TARGET,
+			configuration.setAttribute(IGDBJtagConstants.ATTR_USE_REMOTE_TARGET,
 					DefaultPreferences.USE_REMOTE_TARGET_DEFAULT);
 
 			stringValue = fGdbClientExecutable.getText().trim();
-			configuration.setAttribute(
-					IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
-					stringValue); // DSF
+			configuration.setAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME, stringValue); // DSF
 			PersistentPreferences.putGdbClientExecutable(stringValue);
 
 			stringValue = fGdbClientOtherOptions.getText().trim();
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
-					stringValue);
+			configuration.setAttribute(ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS, stringValue);
 			PersistentPreferences.putGdbClientOtherOptions(stringValue);
 
 			stringValue = fGdbClientOtherCommands.getText().trim();
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
-					stringValue);
+			configuration.setAttribute(ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS, stringValue);
 			PersistentPreferences.putGdbClientCommands(stringValue);
 		}
 
 		{
 			if (fDoStartGdbServer.getSelection()) {
-				configuration.setAttribute(IGDBJtagConstants.ATTR_IP_ADDRESS,
-						"localhost");
+				configuration.setAttribute(IGDBJtagConstants.ATTR_IP_ADDRESS, "localhost");
 
 				try {
 					int port;
 					port = Integer.parseInt(fGdbServerGdbPort.getText().trim());
-					configuration.setAttribute(
-							IGDBJtagConstants.ATTR_PORT_NUMBER, port);
+					configuration.setAttribute(IGDBJtagConstants.ATTR_PORT_NUMBER, port);
 				} catch (NumberFormatException e) {
 					Activator.log(e);
 				}
 			} else {
 				String ip = fTargetIpAddress.getText().trim();
-				configuration.setAttribute(IGDBJtagConstants.ATTR_IP_ADDRESS,
-						ip);
+				configuration.setAttribute(IGDBJtagConstants.ATTR_IP_ADDRESS, ip);
 
 				try {
-					int port = Integer.valueOf(
-							fTargetPortNumber.getText().trim()).intValue();
-					configuration.setAttribute(
-							IGDBJtagConstants.ATTR_PORT_NUMBER, port);
+					int port = Integer.valueOf(fTargetPortNumber.getText().trim()).intValue();
+					configuration.setAttribute(IGDBJtagConstants.ATTR_PORT_NUMBER, port);
 				} catch (NumberFormatException e) {
 					Activator.log(e);
 				}
@@ -1436,10 +1291,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		// Force thread update
-		configuration
-				.setAttribute(
-						IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
-						fUpdateThreadlistOnSuspend.getSelection());
+		configuration.setAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
+				fUpdateThreadlistOnSuspend.getSelection());
 
 		PersistentPreferences.flush();
 	}
@@ -1447,8 +1300,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 
-		configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE,
-				ConfigurationAttributes.JTAG_DEVICE);
+		configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE, ConfigurationAttributes.JTAG_DEVICE);
 
 		String defaultString;
 		boolean defaultBoolean;
@@ -1456,148 +1308,107 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		// These are inherited from the generic implementation.
 		// Some might need some trimming.
 		{
-			CommandFactoryManager cfManager = MIPlugin.getDefault()
-					.getCommandFactoryManager();
-			CommandFactoryDescriptor defDesc = cfManager
-					.getDefaultDescriptor(IGDBJtagConstants.DEBUGGER_ID);
-			configuration
-					.setAttribute(
-							IMILaunchConfigurationConstants.ATTR_DEBUGGER_COMMAND_FACTORY,
-							defDesc.getName());
-			configuration.setAttribute(
-					IMILaunchConfigurationConstants.ATTR_DEBUGGER_PROTOCOL,
+			CommandFactoryManager cfManager = MIPlugin.getDefault().getCommandFactoryManager();
+			CommandFactoryDescriptor defDesc = cfManager.getDefaultDescriptor(IGDBJtagConstants.DEBUGGER_ID);
+			configuration.setAttribute(IMILaunchConfigurationConstants.ATTR_DEBUGGER_COMMAND_FACTORY,
+					defDesc.getName());
+			configuration.setAttribute(IMILaunchConfigurationConstants.ATTR_DEBUGGER_PROTOCOL,
 					defDesc.getMIVersions()[0]);
-			configuration
-					.setAttribute(
-							IMILaunchConfigurationConstants.ATTR_DEBUGGER_VERBOSE_MODE,
-							IMILaunchConfigurationConstants.DEBUGGER_VERBOSE_MODE_DEFAULT);
-			configuration
-					.setAttribute(
-							IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
-							IGDBLaunchConfigurationConstants.DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND_DEFAULT);
+			configuration.setAttribute(IMILaunchConfigurationConstants.ATTR_DEBUGGER_VERBOSE_MODE,
+					IMILaunchConfigurationConstants.DEBUGGER_VERBOSE_MODE_DEFAULT);
+			configuration.setAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
+					IGDBLaunchConfigurationConstants.DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND_DEFAULT);
 		}
 
 		// PyOCD GDB server setup
 		{
 			defaultBoolean = PersistentPreferences.getGdbServerDoStart();
-			configuration
-					.setAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
-							defaultBoolean);
+			configuration.setAttribute(ConfigurationAttributes.DO_START_GDB_SERVER, defaultBoolean);
 
 			defaultString = PersistentPreferences.getGdbServerExecutable();
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
-					defaultString);
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_EXECUTABLE, defaultString);
 
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
 					DefaultPreferences.GDB_SERVER_CONNECTION_ADDRESS_DEFAULT);
 
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
 					DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT);
 
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 					DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT);
-			
+
 			// Board ID
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_BOARD_ID,
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_ID,
 					DefaultPreferences.GDB_SERVER_BOARD_ID_DEFAULT);
-			
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_BOARD_NAME,
+
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_NAME,
 					DefaultPreferences.GDB_SERVER_BOARD_NAME_DEFAULT);
-			
+
 			// Bus speed
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_BUS_SPEED,
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_BUS_SPEED,
 					DefaultPreferences.GDB_SERVER_BUS_SPEED_DEFAULT);
-			
+
 			// Target override
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_OVERRIDE_TARGET,
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_OVERRIDE_TARGET,
 					DefaultPreferences.GDB_SERVER_OVERRIDE_TARGET_DEFAULT);
 
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_TARGET_NAME,
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TARGET_NAME,
 					DefaultPreferences.GDB_SERVER_TARGET_NAME_DEFAULT);
-			
+
 			// Misc options
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_HALT_AT_HARD_FAULT,
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_HALT_AT_HARD_FAULT,
 					DefaultPreferences.GDB_SERVER_HALT_AT_HARD_FAULT_DEFAULT);
-	
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_STEP_INTO_INTERRUPTS,
+
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_STEP_INTO_INTERRUPTS,
 					DefaultPreferences.GDB_SERVER_STEP_INTO_INTERRUPTS_DEFAULT);
-			
+
 			// Flash
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_MODE,
 					DefaultPreferences.GDB_SERVER_FLASH_MODE_DEFAULT);
 
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_FLASH_FAST_VERIFY,
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_FLASH_FAST_VERIFY,
 					DefaultPreferences.GDB_SERVER_FLASH_FAST_VERIFY_DEFAULT);
 
 			// Semihosting
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_ENABLE_SEMIHOSTING,
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_ENABLE_SEMIHOSTING,
 					DefaultPreferences.GDB_SERVER_ENABLE_SEMIHOSTING_DEFAULT);
 
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_USE_GDB_SYSCALLS,
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_USE_GDB_SYSCALLS,
 					DefaultPreferences.GDB_SERVER_USE_GDB_SYSCALLS_DEFAULT);
 
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_LOG,
 					DefaultPreferences.GDB_SERVER_LOG_DEFAULT);
 
 			defaultString = PersistentPreferences.getGdbServerOtherOptions();
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_SERVER_OTHER, defaultString);
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_OTHER, defaultString);
 
-			configuration.setAttribute(
-					ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
+			configuration.setAttribute(ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
 					DefaultPreferences.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
 
-			configuration
-					.setAttribute(
-							ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
-							DefaultPreferences.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
+			configuration.setAttribute(ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE,
+					DefaultPreferences.DO_GDB_SERVER_ALLOCATE_SEMIHOSTING_CONSOLE_DEFAULT);
 		}
 
 		// GDB client setup
 		{
 			defaultString = PersistentPreferences.getGdbClientExecutable();
-			configuration.setAttribute(
-					IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
-					defaultString);
+			configuration.setAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME, defaultString);
 
-			configuration.setAttribute(
-					IGDBJtagConstants.ATTR_USE_REMOTE_TARGET,
+			configuration.setAttribute(IGDBJtagConstants.ATTR_USE_REMOTE_TARGET,
 					DefaultPreferences.USE_REMOTE_TARGET_DEFAULT);
 
 			defaultString = PersistentPreferences.getGdbClientOtherOptions();
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
-					defaultString);
+			configuration.setAttribute(ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS, defaultString);
 
 			defaultString = PersistentPreferences.getGdbClientCommands();
-			configuration.setAttribute(
-					ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
-					defaultString);
+			configuration.setAttribute(ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS, defaultString);
 		}
 
 		// Force thread update
-		configuration
-				.setAttribute(
-						IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
-						DefaultPreferences.UPDATE_THREAD_LIST_DEFAULT);
-	}	
+		configuration.setAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
+				DefaultPreferences.UPDATE_THREAD_LIST_DEFAULT);
+	}
 
-	
 	/**
 	 * Register an error
 	 * 
@@ -1611,22 +1422,22 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 		fErrors.add(msg);
 	}
-	
+
 	/**
 	 * Remove a previously registered error.
-	 *  
-	 * If the removed error was being displayed, the next in line (if any) is shown.
+	 * 
+	 * If the removed error was being displayed, the next in line (if any) is
+	 * shown.
 	 */
 	private void deregisterError(String msg) {
 		if (fErrors.remove(msg)) {
 			if (fErrors.isEmpty()) {
 				setErrorMessage(null);
-			}
-			else {
+			} else {
 				setErrorMessage(fErrors.iterator().next());
 			}
 		}
 	}
-	
+
 	// ------------------------------------------------------------------------
 }

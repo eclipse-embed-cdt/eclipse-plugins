@@ -17,8 +17,7 @@ import org.eclipse.debug.ui.ILaunchConfigurationDialog;
 import org.eclipse.debug.ui.ILaunchConfigurationTab;
 import org.eclipse.debug.ui.sourcelookup.SourceLookupTab;
 
-public class TabGroupLaunchConfiguration extends
-		AbstractLaunchConfigurationTabGroup {
+public class TabGroupLaunchConfiguration extends AbstractLaunchConfigurationTabGroup {
 
 	@Override
 	public void createTabs(ILaunchConfigurationDialog dialog, String mode) {
@@ -35,9 +34,8 @@ public class TabGroupLaunchConfiguration extends
 
 		TabStartup tabStartup = new TabStartup();
 
-		ILaunchConfigurationTab tabs[] = new ILaunchConfigurationTab[] {
-				new TabMain(), new TabDebugger(tabStartup), tabStartup,
-				new SourceLookupTab(), new CommonTab() };
+		ILaunchConfigurationTab tabs[] = new ILaunchConfigurationTab[] { new TabMain(), new TabDebugger(tabStartup),
+				tabStartup, new SourceLookupTab(), new CommonTab() };
 
 		setTabs(tabs);
 

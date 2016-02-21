@@ -33,8 +33,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 	// ------------------------------------------------------------------------
 
-	public DebuggerCommands(DsfSession session, ILaunchConfiguration lc,
-			String mode) {
+	public DebuggerCommands(DsfSession session, ILaunchConfiguration lc, String mode) {
 		super(session, lc, mode, true); // do double backslash
 	}
 
@@ -50,8 +49,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 	@Override
 	public IStatus addGdbInitCommandsCommands(List<String> commandsList) {
 
-		String otherInits = CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
+		String otherInits = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
 				DefaultPreferences.GDB_CLIENT_OTHER_COMMANDS_DEFAULT).trim();
 
 		otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
@@ -76,11 +74,9 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 			return status;
 		}
 
-		if (CDebugUtils.getAttribute(fAttributes,
-				IGDBJtagConstants.ATTR_LOAD_IMAGE,
+		if (CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_IMAGE,
 				IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
-				&& !CDebugUtils.getAttribute(fAttributes,
-						ConfigurationAttributes.DO_DEBUG_IN_RAM,
+				&& !CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_DEBUG_IN_RAM,
 						DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT)) {
 
 			status = addLoadImageCommands(commandsList);
@@ -110,13 +106,11 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 	@Override
 	public IStatus addFirstResetCommands(List<String> commandsList) {
 
-		if (CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.DO_FIRST_RESET,
+		if (CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_FIRST_RESET,
 				DefaultPreferences.DO_FIRST_RESET_DEFAULT)) {
 
 			String commandStr = DefaultPreferences.DO_FIRST_RESET_COMMAND;
-			String resetType = CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.FIRST_RESET_TYPE,
+			String resetType = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.FIRST_RESET_TYPE,
 					DefaultPreferences.FIRST_RESET_TYPE_DEFAULT);
 			commandsList.add(commandStr + resetType);
 
@@ -126,8 +120,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 			commandsList.add(commandStr);
 		}
 
-		String otherInits = CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.OTHER_INIT_COMMANDS,
+		String otherInits = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.OTHER_INIT_COMMANDS,
 				DefaultPreferences.OTHER_INIT_COMMANDS_DEFAULT).trim();
 
 		otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
@@ -136,8 +129,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 		}
 		DebugUtils.addMultiLine(otherInits, commandsList);
 
-		if (CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.ENABLE_SEMIHOSTING,
+		if (CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.ENABLE_SEMIHOSTING,
 				DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT)) {
 			String commandStr = DefaultPreferences.ENABLE_SEMIHOSTING_COMMAND;
 			commandsList.add(commandStr);
@@ -147,16 +139,13 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 	}
 
 	@Override
-	public IStatus addStartRestartCommands(boolean doReset,
-			List<String> commandsList) {
+	public IStatus addStartRestartCommands(boolean doReset, List<String> commandsList) {
 
 		if (doReset) {
-			if (CDebugUtils.getAttribute(fAttributes,
-					ConfigurationAttributes.DO_SECOND_RESET,
+			if (CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_SECOND_RESET,
 					DefaultPreferences.DO_SECOND_RESET_DEFAULT)) {
 				String commandStr = DefaultPreferences.DO_SECOND_RESET_COMMAND;
-				String resetType = CDebugUtils.getAttribute(fAttributes,
-						ConfigurationAttributes.SECOND_RESET_TYPE,
+				String resetType = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.SECOND_RESET_TYPE,
 						DefaultPreferences.SECOND_RESET_TYPE_DEFAULT);
 				commandsList.add(commandStr + resetType);
 
@@ -167,11 +156,9 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 			}
 		}
 
-		if (CDebugUtils.getAttribute(fAttributes,
-				IGDBJtagConstants.ATTR_LOAD_IMAGE,
+		if (CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_IMAGE,
 				IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
-				&& CDebugUtils.getAttribute(fAttributes,
-						ConfigurationAttributes.DO_DEBUG_IN_RAM,
+				&& CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_DEBUG_IN_RAM,
 						DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT)) {
 
 			IStatus status = addLoadImageCommands(commandsList);
@@ -181,8 +168,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 			}
 		}
 
-		String userCmd = CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.OTHER_RUN_COMMANDS,
+		String userCmd = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.OTHER_RUN_COMMANDS,
 				DefaultPreferences.OTHER_RUN_COMMANDS_DEFAULT).trim();
 
 		userCmd = DebugUtils.resolveAll(userCmd, fAttributes);
@@ -197,10 +183,9 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 		addStopAtCommands(commandsList);
 
-//		commandsList.add("monitor reg");
+		// commandsList.add("monitor reg");
 
-		if (CDebugUtils.getAttribute(fAttributes,
-				ConfigurationAttributes.DO_CONTINUE,
+		if (CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_CONTINUE,
 				DefaultPreferences.DO_CONTINUE_DEFAULT)) {
 			commandsList.add(DefaultPreferences.DO_CONTINUE_COMMAND);
 		}

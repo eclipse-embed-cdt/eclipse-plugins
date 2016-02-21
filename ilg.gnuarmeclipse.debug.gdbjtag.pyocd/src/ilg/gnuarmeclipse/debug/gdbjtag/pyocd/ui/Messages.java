@@ -40,6 +40,7 @@ public class Messages {
 	}
 
 	private static ResourceBundle RESOURCE_BUNDLE;
+
 	static {
 		try {
 			RESOURCE_BUNDLE = ResourceBundle.getBundle(MESSAGES);

@@ -80,8 +80,7 @@ public class SemihostingProcess extends Process implements Runnable {
 		public void close() throws IOException {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("NullInputStream.close() "
-						+ Thread.currentThread());
+				System.out.println("NullInputStream.close() " + Thread.currentThread());
 			}
 
 			if (fIsOpened) {
@@ -89,8 +88,8 @@ public class SemihostingProcess extends Process implements Runnable {
 				fIsOpened = false;
 				if (fThread != null) {
 					if (Activator.getInstance().isDebugging()) {
-						System.out.println("NullInputStream.close() interrupt "
-								+ Thread.currentThread() + " " + fThread);
+						System.out
+								.println("NullInputStream.close() interrupt " + Thread.currentThread() + " " + fThread);
 					}
 					fThread.interrupt();
 				}
@@ -116,8 +115,7 @@ public class SemihostingProcess extends Process implements Runnable {
 	public SemihostingProcess(String host, int port) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("SemihostingProcess(" + host + "," + port + ") "
-					+ this);
+			System.out.println("SemihostingProcess(" + host + "," + port + ") " + this);
 		}
 
 		fHost = host;
@@ -142,8 +140,7 @@ public class SemihostingProcess extends Process implements Runnable {
 	public void destroy() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("SemihostingProcess.destroy() "
-					+ Thread.currentThread() + " " + fThread);
+			System.out.println("SemihostingProcess.destroy() " + Thread.currentThread() + " " + fThread);
 		}
 
 		if (fRunning) {
@@ -151,8 +148,7 @@ public class SemihostingProcess extends Process implements Runnable {
 			if (fThread != null && fThread != Thread.currentThread()) {
 				fThread.interrupt();
 				if (Activator.getInstance().isDebugging()) {
-					System.out
-							.println("SemihostingProcess.destroy() after interrupt");
+					System.out.println("SemihostingProcess.destroy() after interrupt");
 				}
 			}
 
@@ -164,15 +160,13 @@ public class SemihostingProcess extends Process implements Runnable {
 
 					if (fSocket != null && !fSocket.isInputShutdown()) {
 						if (Activator.getInstance().isDebugging()) {
-							System.out
-									.println("SemihostingProcess.destroy() before shutdownInput");
+							System.out.println("SemihostingProcess.destroy() before shutdownInput");
 						}
 						fSocket.shutdownInput();
 					}
 					if (fSocket != null && !fSocket.isOutputShutdown()) {
 						if (Activator.getInstance().isDebugging()) {
-							System.out
-									.println("SemihostingProcess.destroy() before shutdownOutput");
+							System.out.println("SemihostingProcess.destroy() before shutdownOutput");
 						}
 						fSocket.shutdownOutput();
 					}
@@ -215,13 +209,11 @@ public class SemihostingProcess extends Process implements Runnable {
 	@Override
 	public int waitFor() throws InterruptedException {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("SemihostingProcess.waitFor() "
-					+ Thread.currentThread() + " will wait for " + fThread);
+			System.out.println("SemihostingProcess.waitFor() " + Thread.currentThread() + " will wait for " + fThread);
 		}
 		fThread.join();
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("SemihostingProcess.waitFor() return "
-					+ Thread.currentThread());
+			System.out.println("SemihostingProcess.waitFor() return " + Thread.currentThread());
 		}
 		return 0;
 	}
@@ -229,8 +221,7 @@ public class SemihostingProcess extends Process implements Runnable {
 	public void run() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("SemihostingProcess.run() "
-					+ Thread.currentThread());
+			System.out.println("SemihostingProcess.run() " + Thread.currentThread());
 		}
 
 		fRunning = true;
@@ -288,12 +279,10 @@ public class SemihostingProcess extends Process implements Runnable {
 					// the connection.
 
 					if (Activator.getInstance().isDebugging()) {
-						System.out
-								.println("SemihostingProcess.run() Connection closed by the GDB server.");
+						System.out.println("SemihostingProcess.run() Connection closed by the GDB server.");
 					}
 
-					fPipeOut.write("Connection closed by the GDB server."
-							.getBytes());
+					fPipeOut.write("Connection closed by the GDB server.".getBytes());
 
 					break;
 				} else {
@@ -342,8 +331,7 @@ public class SemihostingProcess extends Process implements Runnable {
 
 	public void submit() {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("SemihostingProcess.submit() "
-					+ Thread.currentThread());
+			System.out.println("SemihostingProcess.submit() " + Thread.currentThread());
 		}
 		fThread = new Thread(this);
 		fThread.setName("Semihosting and SWV fake process");

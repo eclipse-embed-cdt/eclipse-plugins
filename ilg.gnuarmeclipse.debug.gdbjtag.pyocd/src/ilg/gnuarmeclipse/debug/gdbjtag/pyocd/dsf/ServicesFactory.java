@@ -33,8 +33,7 @@ public class ServicesFactory extends GnuArmServicesFactory {
 		super(version, mode);
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("ServicesFactory(" + version + "," + mode + ") "
-					+ this);
+			System.out.println("ServicesFactory(" + version + "," + mode + ") " + this);
 		}
 		fVersion = version;
 	}
@@ -42,20 +41,18 @@ public class ServicesFactory extends GnuArmServicesFactory {
 	// ------------------------------------------------------------------------
 
 	@Override
-	protected IMIBackend createBackendGDBService(DsfSession session,
-			ILaunchConfiguration lc) {
+	protected IMIBackend createBackendGDBService(DsfSession session, ILaunchConfiguration lc) {
 		return new GdbBackend(session, lc);
 	}
 
 	@Override
-	protected GnuArmGdbServerBackend createGdbServerBackendService(
-			DsfSession session, ILaunchConfiguration lc) {
+	protected GnuArmGdbServerBackend createGdbServerBackendService(DsfSession session, ILaunchConfiguration lc) {
 		return new GdbServerBackend(session, lc);
 	}
 
 	@Override
-	protected GnuArmDebuggerCommandsService createDebuggerCommandsService(
-			DsfSession session, ILaunchConfiguration lc, String mode) {
+	protected GnuArmDebuggerCommandsService createDebuggerCommandsService(DsfSession session, ILaunchConfiguration lc,
+			String mode) {
 		return new DebuggerCommands(session, lc, mode);
 	}
 

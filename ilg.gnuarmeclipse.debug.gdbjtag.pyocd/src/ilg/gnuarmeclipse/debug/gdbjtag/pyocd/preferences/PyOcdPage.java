@@ -35,8 +35,7 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
  * This page uses special filed editors, that get the default values from the
  * preferences store, but the values are from the variables store.
  */
-public class PyOcdPage extends FieldEditorPreferencePage implements
-		IWorkbenchPreferencePage {
+public class PyOcdPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	// ------------------------------------------------------------------------
 
@@ -49,8 +48,7 @@ public class PyOcdPage extends FieldEditorPreferencePage implements
 
 		// Not really used, the field editors directly access the variables
 		// store.
-		setPreferenceStore(new ScopedPreferenceStore(InstanceScope.INSTANCE,
-				Activator.PLUGIN_ID));
+		setPreferenceStore(new ScopedPreferenceStore(InstanceScope.INSTANCE, Activator.PLUGIN_ID));
 
 		setDescription(Messages.PyOCDPagePropertyPage_description);
 	}
@@ -75,25 +73,18 @@ public class PyOcdPage extends FieldEditorPreferencePage implements
 	protected void createFieldEditors() {
 
 		FieldEditor executable;
-		executable = new StringVariableFieldEditor(
-				PersistentPreferences.EXECUTABLE_NAME,
-				VariableInitializer.VARIABLE_PYOCD_EXECUTABLE,
-				Messages.Variable_executable_description,
-				Messages.PyOCDPagePropertyPage_executable_label,
-				getFieldEditorParent());
+		executable = new StringVariableFieldEditor(PersistentPreferences.EXECUTABLE_NAME,
+				VariableInitializer.VARIABLE_PYOCD_EXECUTABLE, Messages.Variable_executable_description,
+				Messages.PyOCDPagePropertyPage_executable_label, getFieldEditorParent());
 		addField(executable);
 
 		boolean isStrict;
-		isStrict = DefaultPreferences.getBoolean(
-				PersistentPreferences.FOLDER_STRICT, true);
+		isStrict = DefaultPreferences.getBoolean(PersistentPreferences.FOLDER_STRICT, true);
 
 		FieldEditor folder;
-		folder = new DirectoryNotStrictVariableFieldEditor(
-				PersistentPreferences.INSTALL_FOLDER,
-				VariableInitializer.VARIABLE_PYOCD_PATH,
-				Messages.Variable_path_description,
-				Messages.PyOCDPagePropertyPage_executable_folder,
-				getFieldEditorParent(), isStrict);
+		folder = new DirectoryNotStrictVariableFieldEditor(PersistentPreferences.INSTALL_FOLDER,
+				VariableInitializer.VARIABLE_PYOCD_PATH, Messages.Variable_path_description,
+				Messages.PyOCDPagePropertyPage_executable_folder, getFieldEditorParent(), isStrict);
 		addField(folder);
 	}
 
