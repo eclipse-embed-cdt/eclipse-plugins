@@ -19,7 +19,7 @@ import org.eclipse.cdt.dsf.gdb.internal.ui.launching.CMainTab;
 /**
  * @since 7.0
  */
-@SuppressWarnings({ "restriction", "deprecation" })
+@SuppressWarnings({ "restriction" })
 public class TabMain extends CMainTab {
 
 	public TabMain() {
