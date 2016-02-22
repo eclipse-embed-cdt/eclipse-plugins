@@ -412,45 +412,46 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fGdbServerFlashFastVerify.setLayoutData(gd);
 		}
 
+		// Composite for next four checkboxes. Will render using two columns
+		Composite subcomp = new Composite(comp, SWT.NONE);;
+		gd = new GridData();
+		gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
+		subcomp.setLayoutData(gd);
+		layout = new GridLayout(2, false);
+		layout.horizontalSpacing = 50; // leave some space between columns
+		layout.marginWidth = layout.marginHeight = 0;
+		subcomp.setLayout(layout);
 		{
-			fGdbServerHaltAtHardFault = new Button(comp, SWT.CHECK);
+			fGdbServerHaltAtHardFault = new Button(subcomp, SWT.CHECK);
+			fGdbServerHaltAtHardFault.setLayoutData(new GridData());
 			fGdbServerHaltAtHardFault.setText(Messages.getString("DebuggerTab.gdbServerHaltAtHardFault_Label"));
 			fGdbServerHaltAtHardFault
 					.setToolTipText(Messages.getString("DebuggerTab.gdbServerHaltAtHardFault_ToolTipText"));
-			gd = new GridData();
-			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
-			fGdbServerHaltAtHardFault.setLayoutData(gd);
 		}
 
 		{
-			fGdbServerStepIntoInterrupts = new Button(comp, SWT.CHECK);
+			fGdbServerStepIntoInterrupts = new Button(subcomp, SWT.CHECK);
+			fGdbServerStepIntoInterrupts.setLayoutData(new GridData());
 			fGdbServerStepIntoInterrupts.setText(Messages.getString("DebuggerTab.gdbServerStepIntoInterrupts_Label"));
 			fGdbServerStepIntoInterrupts
 					.setToolTipText(Messages.getString("DebuggerTab.gdbServerStepIntoInterrupts_ToolTipText"));
-			gd = new GridData();
-			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
-			fGdbServerStepIntoInterrupts.setLayoutData(gd);
 		}
 
 		{
-			fGdbServerEnableSemihosting = new Button(comp, SWT.CHECK);
+			fGdbServerEnableSemihosting = new Button(subcomp, SWT.CHECK);
+			fGdbServerEnableSemihosting.setLayoutData(new GridData());
 			fGdbServerEnableSemihosting.setText(Messages.getString("DebuggerTab.gdbServerEnableSemihosting_Label"));
 			fGdbServerEnableSemihosting
 					.setToolTipText(Messages.getString("DebuggerTab.gdbServerEnableSemihosting_ToolTipText"));
-			gd = new GridData();
-			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
-			fGdbServerEnableSemihosting.setLayoutData(gd);
 		}
 
 		{
-			fGdbServerUseGdbSyscallsForSemihosting = new Button(comp, SWT.CHECK);
+			fGdbServerUseGdbSyscallsForSemihosting = new Button(subcomp, SWT.CHECK);
+			fGdbServerUseGdbSyscallsForSemihosting.setLayoutData(new GridData());
 			fGdbServerUseGdbSyscallsForSemihosting
 					.setText(Messages.getString("DebuggerTab.gdbServerUseGdbSyscallsForSemihosting_Label"));
 			fGdbServerUseGdbSyscallsForSemihosting.setToolTipText(
 					Messages.getString("DebuggerTab.gdbServerUseGdbSyscallsForSemihosting_ToolTipText"));
-			gd = new GridData();
-			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
-			fGdbServerUseGdbSyscallsForSemihosting.setLayoutData(gd);
 		}
 
 		{
