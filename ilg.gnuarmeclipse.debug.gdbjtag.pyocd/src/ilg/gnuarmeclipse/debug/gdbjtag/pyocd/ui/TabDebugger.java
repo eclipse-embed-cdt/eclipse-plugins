@@ -133,7 +133,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	 * pixels) between columns
 	 */
 	private static final int COLUMN_PAD = 30;
-	
+
 	private static class Msgs {
 		public static final String INVALID_PYOCD_EXECUTABLE = "pyOCD gdbserver not found where specified";
 	}
@@ -323,8 +323,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fDoGdbServerAllocateConsole = new Button(subcomp2, SWT.CHECK);
 				fDoGdbServerAllocateConsole.setLayoutData(new GridData());
 				fDoGdbServerAllocateConsole.setText(Messages.getString("DebuggerTab.gdbServerAllocateConsole_Label"));
-				fDoGdbServerAllocateConsole.setToolTipText(Messages
-						.getString("DebuggerTab.gdbServerAllocateConsole_ToolTipText"));
+				fDoGdbServerAllocateConsole
+						.setToolTipText(Messages.getString("DebuggerTab.gdbServerAllocateConsole_ToolTipText"));
 			}
 
 			label = new Label(subcomp, SWT.NONE);
@@ -347,10 +347,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 				fDoGdbServerAllocateSemihostingConsole = new Button(subcomp2, SWT.CHECK);
 				fDoGdbServerAllocateSemihostingConsole.setLayoutData(new GridData());
-				fDoGdbServerAllocateSemihostingConsole.setText(Messages
-						.getString("DebuggerTab.gdbServerAllocateTelnetConsole_Label"));
-				fDoGdbServerAllocateSemihostingConsole.setToolTipText(Messages
-						.getString("DebuggerTab.gdbServerAllocateTelnetConsole_ToolTipText"));
+				fDoGdbServerAllocateSemihostingConsole
+						.setText(Messages.getString("DebuggerTab.gdbServerAllocateTelnetConsole_Label"));
+				fDoGdbServerAllocateSemihostingConsole
+						.setToolTipText(Messages.getString("DebuggerTab.gdbServerAllocateTelnetConsole_ToolTipText"));
 				fDoGdbServerAllocateSemihostingConsole.setLayoutData(new GridData());
 			}
 		}
@@ -378,8 +378,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		{
 			fGdbServerOverrideTarget = new Button(comp, SWT.CHECK);
 			fGdbServerOverrideTarget.setText(Messages.getString("DebuggerTab.gdbServerOverrideTarget_Label"));
-			fGdbServerOverrideTarget.setToolTipText(Messages
-					.getString("DebuggerTab.gdbServerOverrideTarget_ToolTipText"));
+			fGdbServerOverrideTarget
+					.setToolTipText(Messages.getString("DebuggerTab.gdbServerOverrideTarget_ToolTipText"));
 			gd = new GridData();
 			fGdbServerOverrideTarget.setLayoutData(gd);
 
@@ -427,8 +427,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			fGdbServerFlashFastVerify = new Button(comp, SWT.CHECK);
 			fGdbServerFlashFastVerify.setText(Messages.getString("DebuggerTab.gdbServerFlashFastVerify_Label"));
-			fGdbServerFlashFastVerify.setToolTipText(Messages
-					.getString("DebuggerTab.gdbServerFlashFastVerify_ToolTipText"));
+			fGdbServerFlashFastVerify
+					.setToolTipText(Messages.getString("DebuggerTab.gdbServerFlashFastVerify_ToolTipText"));
 			gd = new GridData();
 
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 2;
@@ -450,34 +450,34 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fGdbServerHaltAtHardFault = new Button(subcomp, SWT.CHECK);
 				fGdbServerHaltAtHardFault.setLayoutData(new GridData());
 				fGdbServerHaltAtHardFault.setText(Messages.getString("DebuggerTab.gdbServerHaltAtHardFault_Label"));
-				fGdbServerHaltAtHardFault.setToolTipText(Messages
-						.getString("DebuggerTab.gdbServerHaltAtHardFault_ToolTipText"));
+				fGdbServerHaltAtHardFault
+						.setToolTipText(Messages.getString("DebuggerTab.gdbServerHaltAtHardFault_ToolTipText"));
 			}
 
 			{
 				fGdbServerStepIntoInterrupts = new Button(subcomp, SWT.CHECK);
 				fGdbServerStepIntoInterrupts.setLayoutData(new GridData());
-				fGdbServerStepIntoInterrupts.setText(Messages
-						.getString("DebuggerTab.gdbServerStepIntoInterrupts_Label"));
-				fGdbServerStepIntoInterrupts.setToolTipText(Messages
-						.getString("DebuggerTab.gdbServerStepIntoInterrupts_ToolTipText"));
+				fGdbServerStepIntoInterrupts
+						.setText(Messages.getString("DebuggerTab.gdbServerStepIntoInterrupts_Label"));
+				fGdbServerStepIntoInterrupts
+						.setToolTipText(Messages.getString("DebuggerTab.gdbServerStepIntoInterrupts_ToolTipText"));
 			}
 
 			{
 				fGdbServerEnableSemihosting = new Button(subcomp, SWT.CHECK);
 				fGdbServerEnableSemihosting.setLayoutData(new GridData());
 				fGdbServerEnableSemihosting.setText(Messages.getString("DebuggerTab.gdbServerEnableSemihosting_Label"));
-				fGdbServerEnableSemihosting.setToolTipText(Messages
-						.getString("DebuggerTab.gdbServerEnableSemihosting_ToolTipText"));
+				fGdbServerEnableSemihosting
+						.setToolTipText(Messages.getString("DebuggerTab.gdbServerEnableSemihosting_ToolTipText"));
 			}
 
 			{
 				fGdbServerUseGdbSyscallsForSemihosting = new Button(subcomp, SWT.CHECK);
 				fGdbServerUseGdbSyscallsForSemihosting.setLayoutData(new GridData());
-				fGdbServerUseGdbSyscallsForSemihosting.setText(Messages
-						.getString("DebuggerTab.gdbServerUseGdbSyscallsForSemihosting_Label"));
-				fGdbServerUseGdbSyscallsForSemihosting.setToolTipText(Messages
-						.getString("DebuggerTab.gdbServerUseGdbSyscallsForSemihosting_ToolTipText"));
+				fGdbServerUseGdbSyscallsForSemihosting
+						.setText(Messages.getString("DebuggerTab.gdbServerUseGdbSyscallsForSemihosting_Label"));
+				fGdbServerUseGdbSyscallsForSemihosting.setToolTipText(
+						Messages.getString("DebuggerTab.gdbServerUseGdbSyscallsForSemihosting_ToolTipText"));
 			}
 		}
 

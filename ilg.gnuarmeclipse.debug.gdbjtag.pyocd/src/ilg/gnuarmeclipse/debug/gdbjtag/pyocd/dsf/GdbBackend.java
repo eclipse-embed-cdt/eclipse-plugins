@@ -117,7 +117,7 @@ public class GdbBackend extends GnuArmGdbBackend {
 			proc = ProcessFactory.getFactory().exec(commandLine, DebugUtils.getLaunchEnvironment(fLaunchConfiguration),
 					dir);
 		} catch (IOException e) {
-			String message = "Error while launching command: " + StringUtil.join(commandLine, " "); //$NON-NLS-2$ //$NON-NLS-2$
+			String message = "Error while launching command: " + StringUtil.join(commandLine, " "); //$NON-NLS-2$
 			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, message, e));
 		}
 
