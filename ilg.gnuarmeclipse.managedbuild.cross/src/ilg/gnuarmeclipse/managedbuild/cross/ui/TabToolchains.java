@@ -13,16 +13,6 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross.ui;
 
-import ilg.gnuarmeclipse.core.EclipseUtils;
-import ilg.gnuarmeclipse.managedbuild.cross.Activator;
-import ilg.gnuarmeclipse.managedbuild.cross.IDs;
-import ilg.gnuarmeclipse.managedbuild.cross.Option;
-import ilg.gnuarmeclipse.managedbuild.cross.ToolchainDefinition;
-import ilg.gnuarmeclipse.managedbuild.cross.Utils;
-import ilg.gnuarmeclipse.managedbuild.cross.preferences.GlobalToolsPathsPreferencePage;
-import ilg.gnuarmeclipse.managedbuild.cross.preferences.WorkspaceToolsPathsPreferencePage;
-import ilg.gnuarmeclipse.managedbuild.cross.properties.ProjectToolsPathPropertyPage;
-
 import org.eclipse.cdt.core.settings.model.ICResourceDescription;
 import org.eclipse.cdt.managedbuilder.buildproperties.IBuildPropertyValue;
 import org.eclipse.cdt.managedbuilder.core.BuildException;
@@ -58,6 +48,16 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PreferencesUtil;
+
+import ilg.gnuarmeclipse.core.EclipseUtils;
+import ilg.gnuarmeclipse.managedbuild.cross.Activator;
+import ilg.gnuarmeclipse.managedbuild.cross.IDs;
+import ilg.gnuarmeclipse.managedbuild.cross.Option;
+import ilg.gnuarmeclipse.managedbuild.cross.ToolchainDefinition;
+import ilg.gnuarmeclipse.managedbuild.cross.Utils;
+import ilg.gnuarmeclipse.managedbuild.cross.preferences.GlobalToolsPathsPreferencePage;
+import ilg.gnuarmeclipse.managedbuild.cross.preferences.WorkspaceToolsPathsPreferencePage;
+import ilg.gnuarmeclipse.managedbuild.cross.properties.ProjectToolsPathPropertyPage;
 
 /**
  * @noextend This class is not intended to be subclassed by clients.
@@ -538,9 +538,15 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("TabToolchains.performApply() " + src.getName());
 		}
-		IConfiguration config = getCfg(src.getConfiguration());
 
-		updateOptions(config);
+		// need to apply changes in both configurations
+		// dst is the new description, will be used when saving changes on disk (set project description)
+		// src is the old description used in current page
+		IConfiguration config1 = getCfg(src.getConfiguration());
+		IConfiguration config2 = getCfg(dst.getConfiguration());
+		updateOptions(config1);
+		updateOptions(config2);
+
 		// does not work like this
 		// SpecsProvider.clear();
 
