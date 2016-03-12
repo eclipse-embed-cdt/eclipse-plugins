@@ -1,5 +1,6 @@
 /*******************************************************************************
  * Copyright (c) 2015 Liviu Ionescu.
+ * Copyright (c) 2015-2016 Chris Reed.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +8,7 @@
  *
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Chris Reed - pyOCD changes
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.gdbjtag.pyocd.preferences;

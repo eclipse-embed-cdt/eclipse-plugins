@@ -10,6 +10,7 @@
  *     Andy Jin - Hardware debugging UI improvements, bug 229946
  *     Andy Jin - Added DSF debugging, bug 248593
  *     Liviu Ionescu - ARM version
+ *     Chris Reed - pyOCD changes
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.gdbjtag.pyocd.ui;

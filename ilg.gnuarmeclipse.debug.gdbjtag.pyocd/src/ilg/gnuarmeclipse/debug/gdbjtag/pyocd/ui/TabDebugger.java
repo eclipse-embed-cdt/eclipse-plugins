@@ -16,6 +16,8 @@
  *              - API generalization to become transport-independent (e.g. to
  *                allow connections via serial ports and pipes).
  *     Liviu Ionescu - ARM version
+ *     Chris Reed - pyOCD changes
+ *     John Cortell - cleanup and fixes
  ******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.gdbjtag.pyocd.ui;
