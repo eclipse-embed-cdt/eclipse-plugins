@@ -1,5 +1,6 @@
 /*******************************************************************************
- * Copyright (c) 2015 Chris Reed.
+ * Copyright (c) 2015-2016 Chris Reed.
+ * Copyright (c) 2016 John Cortell.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -7,6 +8,7 @@
  *
  * Contributors:
  *     Chris Reed - initial version
+ *     John Cortell - cleanup and fixes
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.gdbjtag.pyocd;
@@ -144,27 +146,35 @@ public class PyOCD {
 
 		// Check version
 		if (!output.containsKey(VERSION_KEY)) {
-			System.out.printf("No data format version from pyOCD\n");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.printf("No data format version from pyOCD\n");
+			}
 			return false;
 		}
 
 		JSONObject version = (JSONObject) output.get(VERSION_KEY);
 		if (!version.containsKey(VERSION_MAJOR_KEY)) {
-			System.out.printf("No data format major version from pyOCD\n");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.printf("No data format major version from pyOCD\n");
+			}
 			return false;
 		}
 		if (!version.get(VERSION_MAJOR_KEY).equals(Long.valueOf(FORMAT_MAJOR_VERSION))) {
-			System.out.printf("Unsupported version %d of data from pyOCD\n", version.get(VERSION_MAJOR_KEY));
+			if (Activator.getInstance().isDebugging()) {
+				System.out.printf("Unsupported version %d of data from pyOCD\n", version.get(VERSION_MAJOR_KEY));
+			}
 			return false;
 		}
 
 		// Check status
 		if (!output.containsKey(STATUS_KEY) || !output.get(STATUS_KEY).equals(Long.valueOf(0))) {
-			String msg = "unknown error";
-			if (output.containsKey(ERROR_KEY)) {
-				msg = (String) output.get(ERROR_KEY);
+			if (Activator.getInstance().isDebugging()) {
+				String msg = "unknown error";
+				if (output.containsKey(ERROR_KEY)) {
+					msg = (String) output.get(ERROR_KEY);
+				}
+				System.out.printf("Error %d reading from pyOCD: %s\n", output.get(STATUS_KEY), msg);
 			}
-			System.out.printf("Error %d reading from pyOCD: %s\n", output.get(STATUS_KEY), msg);
 			return false;
 		}
 
@@ -259,10 +269,14 @@ public class PyOCD {
 			Object obj = parser.parse(result);
 			return (JSONObject) obj;
 		} catch (ParseException e) {
-			System.out.printf("Parse exception: %s\n", e);
+			if (Activator.getInstance().isDebugging()) {
+				System.out.printf("Parse exception: %s\n", e);
+			}
 			return null;
 		} catch (CoreException e) {
-			System.out.printf("Core exception: %s\n", e);
+			if (Activator.getInstance().isDebugging()) {
+				System.out.printf("Core exception: %s\n", e);
+			}
 			return null;
 		}
 	}
@@ -276,8 +290,7 @@ public class PyOCD {
 
 		final Process process;
 		try {
-			process = ProcessFactory.getFactory().exec(cmdArray); // ,
-			// DebugUtils.getLaunchEnvironment(configuration));
+			process = ProcessFactory.getFactory().exec(cmdArray);
 		} catch (IOException e) {
 			throw new DebugException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, DebugException.REQUEST_FAILED,
 					"Error while launching command: " + StringUtils.join(cmdArray, " "), e.getCause()));//$NON-NLS-2$
@@ -338,17 +351,6 @@ public class PyOCD {
 		}
 
 		return cmdOutput.toString();
-
-		// String gdbVersion = LaunchUtils.getGDBVersionFromText(cmdOutput
-		// .toString());
-		// if (gdbVersion == null || gdbVersion.isEmpty()) {
-		// throw new DebugException(new Status(IStatus.ERROR,
-		// Activator.PLUGIN_ID, DebugException.REQUEST_FAILED,
-		// "Could not determine GDB version after sending: "
-		// + StringUtils.join(cmdArray, " ") + ", response: "
-		// + cmdOutput, null));//$NON-NLS-1$
-		// }
-		// return gdbVersion;
 	}
 
 }

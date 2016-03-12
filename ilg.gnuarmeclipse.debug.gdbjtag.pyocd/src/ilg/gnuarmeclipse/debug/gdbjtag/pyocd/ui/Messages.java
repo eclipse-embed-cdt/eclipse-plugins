@@ -8,6 +8,7 @@
  *  Contributors:
  *      QNX Software Systems - initial API and implementation
  *      Liviu Ionescu - ARM version
+ *      Chris Reed - pyOCD changes
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.gdbjtag.pyocd.ui;
