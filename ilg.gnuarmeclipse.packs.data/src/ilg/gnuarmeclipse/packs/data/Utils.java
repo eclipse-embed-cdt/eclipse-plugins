@@ -55,6 +55,9 @@ public class Utils {
 		URLConnection connection;
 		while (true) {
 			connection = url.openConnection();
+			if ("file".equals(url.getProtocol())) { //$NON-NLS-1$
+				break;
+			}
 			if (connection instanceof HttpURLConnection) {
 				int responseCode = ((HttpURLConnection) connection)
 						.getResponseCode();
@@ -136,6 +139,9 @@ public class Utils {
 		URLConnection connection;
 		while (true) {
 			connection = url.openConnection();
+			if ("file".equals(url.getProtocol())) { //$NON-NLS-1$
+				break;
+			}
 			if (connection instanceof HttpURLConnection) {
 				int responseCode = ((HttpURLConnection) connection)
 						.getResponseCode();
@@ -159,8 +165,8 @@ public class Utils {
 		}
 
 		int size = connection.getContentLength();
-		if (size < 0) {
-			throw new IOException("Illegal http file size " + size);
+		if (size <= 0) {
+			throw new IOException("Illegal PDSC file size " + size);
 		}
 		String sizeString = StringUtils.convertSizeToString(size);
 		if (out != null) {
