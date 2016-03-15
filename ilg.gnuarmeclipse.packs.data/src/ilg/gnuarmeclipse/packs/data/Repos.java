@@ -288,13 +288,17 @@ public class Repos {
 	public String getFileNamePrefixFromUrl(String url) {
 
 		String s = url;
-		if (s.startsWith("http://")) {
+		if (s.startsWith("http://")) { //$NON-NLS-1$
 			s = s.substring(7); // skip first part
+		} else if (s.startsWith("file:///")) { //$NON-NLS-1$
+			s = s.substring(8); // skip first part
 		}
 
 		// Convert chars that are not allowed in a file name
 		s = s.replace('/', '_');
 		s = s.replace('?', '_');
+		s = s.replace(':', '_');
+		s = s.replace('|', '_');
 
 		// Cut suffixes
 		for (String suffix : new String[] { "content.xml", "index.idx",
@@ -307,7 +311,7 @@ public class Repos {
 		}
 
 		s = s.replace('.', '_');
-		if (s.endsWith("_")) {
+		if (s.endsWith("_")) { //$NON-NLS-1$
 			return s.substring(0, s.length() - 1); // Cut trailing '_'
 		} else {
 			return s;
