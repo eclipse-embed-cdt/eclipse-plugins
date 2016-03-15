@@ -299,6 +299,8 @@ public class Repos {
 		s = s.replace('?', '_');
 		s = s.replace(':', '_');
 		s = s.replace('|', '_');
+		// Also convert space
+		s = s.replace(' ', '_');
 
 		// Cut suffixes
 		for (String suffix : new String[] { "content.xml", "index.idx",
