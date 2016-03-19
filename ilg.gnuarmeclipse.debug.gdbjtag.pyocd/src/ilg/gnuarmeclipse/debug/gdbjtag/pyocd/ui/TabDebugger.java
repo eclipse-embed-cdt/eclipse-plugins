@@ -31,6 +31,7 @@ import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.PersistentPreferences;
 import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.PyOCD;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedHashSet;
@@ -803,6 +804,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fGdbServerTargetName.setEnabled(enabled);
 	}
 
+	/**
+	 * Resolve the string in the gdbserver field and validate it. Return the
+	 * result if valid, otherwise return null.
+	 * 
+	 * @return an absolute path, relative path or just the name of the
+	 *         executable (if it's in PATH)
+	 */
 	private String getPyOCDExecutablePath() {
 		String path = null;
 
@@ -824,10 +832,31 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			if (Activator.getInstance().isDebugging()) {
 				System.out.printf("pyOCD resolved path = %s\n", path);
 			}
-			// Validate path.
 
+			// Validate path.
+			
+
+			// First check using the most efficient means: see if the file
+			// exists. If it does, that's good enough.
 			File file = new File(path);
-			if (!file.exists() || file.isDirectory()) {
+			if (!file.exists()) {
+				// Support pyOCD being in PATH and specified sans path (issue# 102)
+				try {
+					Process process = Runtime.getRuntime().exec(path + " --version");
+					// If no exception, then it's an executable in PATH
+					try {
+						process.waitFor();
+					} catch (InterruptedException e) {
+						// No harm, no foul
+					}
+				} catch (IOException e) {
+					if (Activator.getInstance().isDebugging()) {
+						System.out.printf("pyOCD path is invalid\n");
+					}
+					return null;
+				}				
+			}
+			else if (file.isDirectory()) {
 				// TODO: Use java.nio.Files when we move to Java 7 to also check
 				// that file is executable
 				if (Activator.getInstance().isDebugging()) {
