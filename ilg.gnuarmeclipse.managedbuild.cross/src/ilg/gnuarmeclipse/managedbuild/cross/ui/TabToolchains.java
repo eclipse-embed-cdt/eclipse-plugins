@@ -601,8 +601,12 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		// .println("Previous toolchain name " + fSelectedToolchainName);
 		if (fSelectedToolchainName != null
 				&& fSelectedToolchainName.length() > 0) {
-			fSelectedToolchainIndex = ToolchainDefinition
-					.findToolchainByName(fSelectedToolchainName);
+			try {
+				fSelectedToolchainIndex = ToolchainDefinition
+						.findToolchainByName(fSelectedToolchainName);
+			} catch (IndexOutOfBoundsException e) {
+				fSelectedToolchainIndex = ToolchainDefinition.getDefault();
+			}
 		} else {
 			if (Activator.getInstance().isDebugging()) {
 				System.out.println("No toolchain selected");
