@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -37,6 +37,7 @@ import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
@@ -98,25 +99,26 @@ public class GnuArmLaunch extends GdbLaunch {
 			Activator.log(e);
 		}
 
-		super.initialize();
-
-		// Used to get the tracker
-		Runnable initRunnable = new DsfRunnable() {
-			@Override
-			public void run() {
-				fTracker = new DsfServicesTracker(Activator.getInstance()
-						.getBundle().getBundleContext(), fSession.getId());
-			}
-		};
-
-		// Invoke the execution code and block waiting for the result.
 		try {
+			// In CDT 9.0 super.initialize started raising a checked exception,
+			// but because we are trying to support both pre and post 9.0 API
+			// we can't throw the exception here. So we log it instead. The
+			// exception case is that the tracker cannot be created, which
+			// is very improbable and the sign that things are very broken.
+			super.initialize();
+
+			// Used to get the tracker
+			Runnable initRunnable = new DsfRunnable() {
+				@Override
+				public void run() {
+					fTracker = new DsfServicesTracker(Activator.getInstance()
+							.getBundle().getBundleContext(), fSession.getId());
+				}
+			};
+
+			// Invoke the execution code and block waiting for the result.
 			fExecutor.submit(initRunnable).get();
-		} catch (InterruptedException e) {
-			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					IDsfStatusConstants.INTERNAL_ERROR,
-					"Error initializing launch", e)); //$NON-NLS-1$
-		} catch (ExecutionException e) {
+		} catch (Exception e) {
 			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					IDsfStatusConstants.INTERNAL_ERROR,
 					"Error initializing launch", e)); //$NON-NLS-1$
@@ -127,7 +129,7 @@ public class GnuArmLaunch extends GdbLaunch {
 	 * Define some of the mandatory CDT attributes with default values, in case
 	 * the launch configuration was generated externally, for example by a
 	 * wizard.
-	 * 
+	 *
 	 * @param config
 	 *            a writable copy of the launch configuration.
 	 * @throws CoreException
@@ -207,7 +209,7 @@ public class GnuArmLaunch extends GdbLaunch {
 	/**
 	 * Identical to addCLIProcess(), just that it returns the process, so we can
 	 * add properties to it later.
-	 * 
+	 *
 	 * @param label
 	 * @return the IProcess created.
 	 * @throws CoreException

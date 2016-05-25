@@ -20,7 +20,7 @@ Require-Bundle: ilg.gnuarmeclipse.core,
  org.eclipse.core.variables;bundle-version="3.2.700",
  org.eclipse.core.expressions;bundle-version="3.4.500"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Export-Package: ilg.gnuarmeclipse.managedbuild.cross,
