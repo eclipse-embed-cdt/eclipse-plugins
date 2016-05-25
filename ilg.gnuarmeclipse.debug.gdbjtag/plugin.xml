@@ -42,9 +42,16 @@
 	    <factory
 	          adaptableType="ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch"
 	          class="ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmAdapterFactory">
+	         <!-- this list needs to match the list of adapters that GnuArmAdapterFactory's super class
+	              can adapt to, see org.eclipse.cdt.dsf.gdb.ui/plugin.xml for reference list -->
 	         <adapter type="org.eclipse.debug.internal.ui.viewers.model.provisional.IElementContentProvider"/>
 	         <adapter type="org.eclipse.debug.internal.ui.viewers.model.provisional.IModelProxyFactory"/>
+	         <adapter type="org.eclipse.debug.ui.contexts.ISuspendTrigger"/>
 	         <adapter type="org.eclipse.debug.internal.ui.viewers.model.provisional.IColumnPresentationFactory"/>
+	         <adapter type="org.eclipse.debug.core.commands.ITerminateHandler"/>
+	         <adapter type="org.eclipse.cdt.debug.core.model.IConnectHandler"/>
+	         <adapter type="org.eclipse.debug.core.commands.IDisconnectHandler"/>
+	         <adapter type="org.eclipse.cdt.debug.core.model.IDebugNewExecutableHandler"/>
 	    </factory>
 	</extension>
 	
