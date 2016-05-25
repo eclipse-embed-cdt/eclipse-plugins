@@ -7,15 +7,10 @@
  *
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Jonah Graham - fix for Neon
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.gdbjtag.qemu.dsf;
-
-import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch;
-import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
-import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Configuration;
-import ilg.gnuarmeclipse.debug.gdbjtag.qemu.ConfigurationAttributes;
-import ilg.gnuarmeclipse.debug.gdbjtag.qemu.DefaultPreferences;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,6 +36,12 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
+
+import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Configuration;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.DefaultPreferences;
 
 @SuppressWarnings("restriction")
 public class Launch extends GnuArmLaunch {

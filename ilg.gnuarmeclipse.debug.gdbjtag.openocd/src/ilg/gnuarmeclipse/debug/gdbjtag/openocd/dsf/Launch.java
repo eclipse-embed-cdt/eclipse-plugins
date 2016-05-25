@@ -11,12 +11,6 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.openocd.dsf;
 
-import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Configuration;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
-import ilg.gnuarmeclipse.debug.gdbjtag.openocd.DefaultPreferences;
-
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
@@ -41,6 +35,12 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
+
+import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch;
+import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.openocd.Configuration;
+import ilg.gnuarmeclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.openocd.DefaultPreferences;
 
 @SuppressWarnings("restriction")
 public class Launch extends GnuArmLaunch {

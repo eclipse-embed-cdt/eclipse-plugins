@@ -9,6 +9,7 @@
  * Contributors:
  *     Liviu Ionescu - initial version
  *     Chris Reed - pyOCD changes
+ *     Jonah Graham - fix for Neon
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.gdbjtag.pyocd.dsf;

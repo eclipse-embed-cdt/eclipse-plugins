@@ -16,6 +16,7 @@
  *              - API generalization to become transport-independent (e.g. to
  *                allow connections via serial ports and pipes).
  *     Liviu Ionescu - ARM version
+ *     Jonah Graham - fix for Neon
  ******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.gdbjtag.jlink.ui;

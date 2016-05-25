@@ -9,15 +9,10 @@
  * Contributors:
  *     Liviu Ionescu - initial version
  *     Chris Reed - pyOCD changes
+ *     Jonah Graham - fix for Neon
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.gdbjtag.pyocd.dsf;
-
-import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch;
-import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.Activator;
-import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.Configuration;
-import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.ConfigurationAttributes;
-import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.DefaultPreferences;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -43,6 +38,12 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
+
+import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmLaunch;
+import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.Configuration;
+import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.pyocd.DefaultPreferences;
 
 @SuppressWarnings("restriction")
 public class Launch extends GnuArmLaunch {

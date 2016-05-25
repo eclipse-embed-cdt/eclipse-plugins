@@ -7,11 +7,10 @@
  *
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Jonah Graham - fix for Neon
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.gdbjtag.dsf;
-
-import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -37,12 +36,13 @@ import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.DebugPlugin;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
+
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
 
 /**
  * Common launcher, used to initialise the memory bloc retrieval used by the

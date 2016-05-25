@@ -18,6 +18,7 @@
  *     Liviu Ionescu - ARM version
  *     Chris Reed - pyOCD changes
  *     John Cortell - cleanup and fixes
+ *     Jonah Graham - fix for Neon
  ******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.gdbjtag.pyocd.ui;

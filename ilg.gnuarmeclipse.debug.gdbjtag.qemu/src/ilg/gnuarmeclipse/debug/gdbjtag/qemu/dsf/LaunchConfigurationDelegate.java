@@ -7,6 +7,7 @@
  *
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Jonah Graham - fix for Neon
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.gdbjtag.qemu.dsf;
