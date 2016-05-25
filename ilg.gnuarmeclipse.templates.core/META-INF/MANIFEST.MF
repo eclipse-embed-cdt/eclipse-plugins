@@ -10,7 +10,7 @@ Require-Bundle: ilg.gnuarmeclipse.core,
  org.eclipse.cdt.managedbuilder.core;bundle-version="8.2.0",
  org.eclipse.cdt.core;bundle-version="5.5.0",
  org.eclipse.core.resources;bundle-version="3.8.100"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Eclipse-BundleShape: dir

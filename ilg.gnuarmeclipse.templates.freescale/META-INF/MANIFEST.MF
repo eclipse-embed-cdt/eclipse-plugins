@@ -11,7 +11,7 @@ Require-Bundle: ilg.gnuarmeclipse.core,
  org.eclipse.cdt.ui;bundle-version="5.6.0",
  org.eclipse.cdt.core;bundle-version="5.5.0",
  org.eclipse.cdt.managedbuilder.ui;bundle-version="8.2.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.6
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
