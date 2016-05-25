@@ -4,23 +4,17 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
 package ilg.gnuarmeclipse.debug.gdbjtag.qemu.dsf;
 
-import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
-import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmServerServicesLaunchSequence;
-import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
-import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Configuration;
-
 import java.util.concurrent.Callable;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.ExecutionException;
 
-import org.eclipse.cdt.debug.gdbjtag.core.GDBJtagDSFLaunchConfigurationDelegate;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.ImmediateExecutor;
 import org.eclipse.cdt.dsf.concurrent.Query;
@@ -49,17 +43,22 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ISourceLocator;
 
+import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
+import ilg.gnuarmeclipse.debug.gdbjtag.dsf.AbstractGnuArmLaunchConfigurationDelegate;
+import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmServerServicesLaunchSequence;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Configuration;
+
 /**
  * This class is referred in the plugin.xml as an
  * "org.eclipse.debug.core.launchDelegates" extension point.
- * 
+ *
  * It inherits directly from the GDB Hardware Debug plug-in.
- * 
+ *
  *
  */
 @SuppressWarnings("restriction")
-public class LaunchConfigurationDelegate extends
-		GDBJtagDSFLaunchConfigurationDelegate {
+public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurationDelegate {
 
 	// ------------------------------------------------------------------------
 
@@ -133,7 +132,7 @@ public class LaunchConfigurationDelegate extends
 
 	/**
 	 * After Launch.initialise(), call here to effectively launch.
-	 * 
+	 *
 	 * The main reason for this is the custom launchDebugSession().
 	 */
 	@Override
@@ -173,7 +172,7 @@ public class LaunchConfigurationDelegate extends
 		monitor.beginTask(
 				LaunchMessages.getString("GdbLaunchDelegate.0"), totalWork); //$NON-NLS-1$
 		if (monitor.isCanceled()) {
-			cleanupLaunch();
+			cleanupLaunchLocal(launch);
 			return;
 		}
 
@@ -200,7 +199,7 @@ public class LaunchConfigurationDelegate extends
 		// --------------------------------------------------------------------
 
 		if (monitor.isCanceled()) {
-			cleanupLaunch();
+			cleanupLaunchLocal(l);
 			return;
 		}
 
@@ -243,29 +242,35 @@ public class LaunchConfigurationDelegate extends
 		// mode
 		if (LaunchUtils.getIsNonStopMode(config)
 				&& !isNonStopSupportedInGdbVersion(gdbVersion)) {
-			cleanupLaunch();
+			cleanupLaunchLocal(launch);
 			throw new DebugException(
 					new Status(
 							IStatus.ERROR,
 							Activator.PLUGIN_ID,
 							DebugException.REQUEST_FAILED,
-							"Non-stop mode is not supported for GDB " + gdbVersion + ", GDB " + NON_STOP_FIRST_VERSION + " or higher is required.", null)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$        	
+							"Non-stop mode is not supported for GDB " + gdbVersion + ", GDB " + NON_STOP_FIRST_VERSION + " or higher is required.", null)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 
 		if (LaunchUtils.getIsPostMortemTracing(config)
 				&& !isPostMortemTracingSupportedInGdbVersion(gdbVersion)) {
-			cleanupLaunch();
+			cleanupLaunchLocal(launch);
 			throw new DebugException(
 					new Status(
 							IStatus.ERROR,
 							Activator.PLUGIN_ID,
 							DebugException.REQUEST_FAILED,
-							"Post-mortem tracing is not supported for GDB " + gdbVersion + ", GDB " + NON_STOP_FIRST_VERSION + " or higher is required.", null)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$        	
+							"Post-mortem tracing is not supported for GDB " + gdbVersion + ", GDB " + NON_STOP_FIRST_VERSION + " or higher is required.", null)); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 		}
 
 		launch.setServiceFactory(newServiceFactory(config, gdbVersion,
 				launch.getLaunchMode()));
 
+        // Time to start the DSF stuff.  First initialize the launch.
+        // We do this here to avoid having to cleanup in case
+        // the launch is cancelled above.
+        // This initialize() call is the first thing that requires cleanup
+        // followed by the steps further down which also need cleanup.
+    	launch.initialize();
 		// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 		boolean succeed = false;
@@ -299,7 +304,7 @@ public class LaunchConfigurationDelegate extends
 			return;
 		} finally {
 			if (!succeed) {
-				cleanupLaunch();
+				cleanupLaunchLocal(launch);
 			}
 		}
 
@@ -339,7 +344,7 @@ public class LaunchConfigurationDelegate extends
 									.println("LaunchConfigurationDelegate.launchDebugSession() sleep cancelled"
 											+ this);
 						}
-						cleanupLaunch();
+						cleanupLaunchLocal(launch);
 						return;
 					}
 					Thread.sleep(10);
@@ -352,7 +357,7 @@ public class LaunchConfigurationDelegate extends
 
 				if (serverStatus != Status.OK_STATUS) {
 					if ("TERMINATED".equals(serverStatus.getMessage())) {
-						cleanupLaunch();
+						cleanupLaunchLocal(launch);
 						return;
 					}
 					if (Activator.getInstance().isDebugging()) {
@@ -400,12 +405,12 @@ public class LaunchConfigurationDelegate extends
 			return;
 		} finally {
 			if (!succeed) {
-				cleanupLaunch();
+				cleanupLaunchLocal(launch);
 			}
 		}
 
 		if (monitor.isCanceled()) {
-			cleanupLaunch();
+			cleanupLaunchLocal(launch);
 			return;
 		}
 
@@ -477,7 +482,7 @@ public class LaunchConfigurationDelegate extends
 				// finalLaunchSequence failed. Shutdown the session so that all
 				// started
 				// services including any GDB process are shutdown. (bug 251486)
-				cleanupLaunch();
+				cleanupLaunchLocal(launch);
 			}
 		}
 		// --------------------------------------------------------------------

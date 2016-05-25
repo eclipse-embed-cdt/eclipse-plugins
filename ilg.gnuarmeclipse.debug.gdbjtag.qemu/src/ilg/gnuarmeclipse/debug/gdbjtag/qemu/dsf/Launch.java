@@ -4,7 +4,7 @@
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
  *******************************************************************************/
@@ -96,13 +96,13 @@ public class Launch extends GnuArmLaunch {
 		try {
 			fExecutor.submit(initRunnable).get();
 		} catch (InterruptedException e) {
-			new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					IDsfStatusConstants.INTERNAL_ERROR,
-					"Error initializing launch", e); //$NON-NLS-1$
+					"Error initializing launch", e)); //$NON-NLS-1$
 		} catch (ExecutionException e) {
-			new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 					IDsfStatusConstants.INTERNAL_ERROR,
-					"Error initializing launch", e); //$NON-NLS-1$
+					"Error initializing launch", e)); //$NON-NLS-1$
 		}
 	}
 

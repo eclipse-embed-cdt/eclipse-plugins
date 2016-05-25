@@ -20,22 +20,11 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.qemu.ui;
 
-import ilg.gnuarmeclipse.core.EclipseUtils;
-import ilg.gnuarmeclipse.debug.gdbjtag.data.CProjectAttributes;
-import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
-import ilg.gnuarmeclipse.debug.gdbjtag.qemu.ConfigurationAttributes;
-import ilg.gnuarmeclipse.debug.gdbjtag.qemu.DefaultPreferences;
-import ilg.gnuarmeclipse.debug.gdbjtag.qemu.PersistentPreferences;
-
 import java.io.File;
 
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
 import org.eclipse.cdt.debug.gdbjtag.ui.GDBJtagImages;
-import org.eclipse.cdt.debug.mi.core.IMILaunchConfigurationConstants;
-import org.eclipse.cdt.debug.mi.core.MIPlugin;
-import org.eclipse.cdt.debug.mi.core.command.factories.CommandFactoryDescriptor;
-import org.eclipse.cdt.debug.mi.core.command.factories.CommandFactoryManager;
 import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -60,6 +49,13 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
+
+import ilg.gnuarmeclipse.core.EclipseUtils;
+import ilg.gnuarmeclipse.debug.gdbjtag.data.CProjectAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.ConfigurationAttributes;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.DefaultPreferences;
+import ilg.gnuarmeclipse.debug.gdbjtag.qemu.PersistentPreferences;
 
 /**
  * @since 7.0
@@ -1218,21 +1214,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		// These are inherited from the generic implementation.
 		// Some might need some trimming.
 		{
-			CommandFactoryManager cfManager = MIPlugin.getDefault()
-					.getCommandFactoryManager();
-			CommandFactoryDescriptor defDesc = cfManager
-					.getDefaultDescriptor(IGDBJtagConstants.DEBUGGER_ID);
-			configuration
-					.setAttribute(
-							IMILaunchConfigurationConstants.ATTR_DEBUGGER_COMMAND_FACTORY,
-							defDesc.getName());
-			configuration.setAttribute(
-					IMILaunchConfigurationConstants.ATTR_DEBUGGER_PROTOCOL,
-					defDesc.getMIVersions()[0]);
-			configuration
-					.setAttribute(
-							IMILaunchConfigurationConstants.ATTR_DEBUGGER_VERBOSE_MODE,
-							IMILaunchConfigurationConstants.DEBUGGER_VERBOSE_MODE_DEFAULT);
 			configuration
 					.setAttribute(
 							IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
