@@ -2,11 +2,11 @@
 
 In case you encounter problems while using the plug-ins, please consider the following:
 
-* [] read the documentation pages carefully
-* [] check the [Known issues](http://gnuarmeclipse.github.io/support/known-issues/)
-* [] check the [FAQ](http://gnuarmeclipse.github.io/support/faq/)
-* [] check the [GNU ARM Eclipse forum](http://gnuarmeclipse.github.io/support/forum/) for similar problems
-* [] check the GitHub Issues [tracker](https://github.com/gnuarmeclipse/plug-ins/issues/)
+* [ ] read the documentation pages carefully
+* [ ] check the [Known issues](http://gnuarmeclipse.github.io/support/known-issues/)
+* [ ] check the [FAQ](http://gnuarmeclipse.github.io/support/faq/)
+* [ ] check the [GNU ARM Eclipse forum](http://gnuarmeclipse.github.io/support/forum/) for similar problems
+* [ ] check the GitHub Issues [tracker](https://github.com/gnuarmeclipse/plug-ins/issues/)
 
 If you still could not find a solution, if you have interesting use cases, if you have custom 
 configurations, and generally if you have any experience that you want to share with others, 
