@@ -1,10 +1,12 @@
+### Prerequisites
+
 In case you encounter problems while using the plug-ins, please consider the following:
 
-* read the documentation pages carefully
-* check the [Known issues](http://gnuarmeclipse.github.io/support/known-issues/)
-* check the [FAQ](http://gnuarmeclipse.github.io/support/faq/)
-* check the [GNU ARM Eclipse forum](http://gnuarmeclipse.github.io/support/forum/) for similar problems
-* check the GitHub Issues [tracker](https://github.com/gnuarmeclipse/plug-ins/issues/)
+* [] read the documentation pages carefully
+* [] check the [Known issues](http://gnuarmeclipse.github.io/support/known-issues/)
+* [] check the [FAQ](http://gnuarmeclipse.github.io/support/faq/)
+* [] check the [GNU ARM Eclipse forum](http://gnuarmeclipse.github.io/support/forum/) for similar problems
+* [] check the GitHub Issues [tracker](https://github.com/gnuarmeclipse/plug-ins/issues/)
 
 If you still could not find a solution, if you have interesting use cases, if you have custom 
 configurations, and generally if you have any experience that you want to share with others, 
@@ -14,18 +16,31 @@ If you are convinced that you identified a bug (if you have doubts, use the foru
 pertinent suggestion how to enhance the GNU ARM Eclipse plug-ins, continue and register
 an issue.
 
-When entering a new issue, be sure you provide:
+### Description
 
-* plug-in version (sorry, no support for 0.5.x)
-* Eclipse version
-* Java version
-* operating system (sorry, no requests for Win XP 64)
-* toolchain version
-* the detailed and complete list of steps to reproduce the bug (mandatory)
+[Description of the bug or feature]
+
+### Steps to Reproduce
+
+1. [First Step]
+2. [Second Step]
+3. [and so on...]
+
+**Expected behavior:** [What you expected to happen]
+
+**Actual behavior:** [What actually happened]
+
+### Versions
+
+* [plug-in version]
+* [Eclipse version]
+* [Java version]
+* [operating system]
+* [toolchain version]
 
 Please understand that without being able to reproduce the bug we cannot identify your problem.
 
 ---
 
-Note: Remove this text after reading, before entering your ticket.
+Note: Remove unnecessary text after reading, before entering your ticket.
 
