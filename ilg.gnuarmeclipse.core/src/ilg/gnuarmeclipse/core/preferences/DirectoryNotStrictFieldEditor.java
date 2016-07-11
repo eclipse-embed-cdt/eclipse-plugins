@@ -31,6 +31,7 @@ public class DirectoryNotStrictFieldEditor extends DirectoryFieldEditor {
 			String toolsPaths_label, Composite fieldEditorParent,
 			boolean isStrict) {
 		super(buildToolsPathKey, toolsPaths_label, fieldEditorParent);
+		fIsStrict = isStrict;
 	}
 
 	// ------------------------------------------------------------------------
