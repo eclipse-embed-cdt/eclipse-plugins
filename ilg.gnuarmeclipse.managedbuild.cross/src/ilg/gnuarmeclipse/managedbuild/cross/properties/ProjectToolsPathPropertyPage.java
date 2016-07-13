@@ -13,13 +13,14 @@ package ilg.gnuarmeclipse.managedbuild.cross.properties;
 
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.core.ScopedPreferenceStoreWithoutDefaults;
+import ilg.gnuarmeclipse.core.preferences.DirectoryNotStrictFieldEditor;
 import ilg.gnuarmeclipse.core.preferences.LabelFakeFieldEditor;
 import ilg.gnuarmeclipse.core.ui.FieldEditorPropertyPage;
 import ilg.gnuarmeclipse.managedbuild.cross.Activator;
 import ilg.gnuarmeclipse.managedbuild.cross.Option;
+import ilg.gnuarmeclipse.managedbuild.cross.ui.DefaultPreferences;
 import ilg.gnuarmeclipse.managedbuild.cross.ui.Messages;
 import ilg.gnuarmeclipse.managedbuild.cross.ui.PersistentPreferences;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -29,7 +30,6 @@ import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.core.IToolChain;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.ProjectScope;
-import org.eclipse.jface.preference.DirectoryFieldEditor;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
 
@@ -61,10 +61,11 @@ public class ProjectToolsPathPropertyPage extends FieldEditorPropertyPage {
 
 	@Override
 	protected void createFieldEditors() {
-
-		FieldEditor buildToolsPathField = new DirectoryFieldEditor(
+		boolean isStrict = DefaultPreferences.getBoolean(
+				PersistentPreferences.PROJECT_BUILDTOOLS_PATH_STRICT, true);
+		FieldEditor buildToolsPathField = new DirectoryNotStrictFieldEditor(
 				PersistentPreferences.BUILD_TOOLS_PATH_KEY,
-				Messages.ToolsPaths_label, getFieldEditorParent());
+				Messages.ToolsPaths_label, getFieldEditorParent(), isStrict);
 		addField(buildToolsPathField);
 
 		Set<String> toolchainNames = new HashSet<String>();
@@ -108,9 +109,11 @@ public class ProjectToolsPathPropertyPage extends FieldEditorPropertyPage {
 					getFieldEditorParent());
 			addField(labelField);
 
+			isStrict = DefaultPreferences.getBoolean(
+					PersistentPreferences.PROJECT_TOOLCHAIN_PATH_STRICT, true);
 			String key = PersistentPreferences.getToolchainKey(toolchainName);
-			FieldEditor toolchainPathField = new DirectoryFieldEditor(key,
-					Messages.ToolchainPaths_label, getFieldEditorParent());
+			FieldEditor toolchainPathField = new DirectoryNotStrictFieldEditor(
+					key, Messages.ToolchainPaths_label, getFieldEditorParent(), isStrict);
 			addField(toolchainPathField);
 		}
 	}
