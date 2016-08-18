@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_msp_template.c
   * @author  MCD Application Team
-  * @version V1.4.4
-  * @date    22-January-2016
+  * @version V1.5.0
+  * @date    06-May-2016
   * @brief   This file contains the HAL System and Peripheral (PPP) MSP initialization
   *          and de-initialization functions.
   *          It should be copied to the application folder and renamed into 'stm32f4xx_hal_msp.c'.           

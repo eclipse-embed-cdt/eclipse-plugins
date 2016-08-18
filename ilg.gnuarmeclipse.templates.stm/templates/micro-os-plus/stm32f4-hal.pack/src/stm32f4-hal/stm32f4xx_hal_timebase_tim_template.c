@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f4xx_hal_timebase_tim_template.c 
   * @author  MCD Application Team
-  * @version V1.4.4
-  * @date    22-January-2016
+  * @version V1.5.0
+  * @date    06-May-2016
   * @brief   HAL time base based on the hardware TIM Template.
   *    
   *          This file override the native HAL time base functions (defined as weak)
@@ -43,7 +43,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f4xx_hal.h"
-#include "stm32f4xx_hal_tim.h"
+
 /** @addtogroup STM32F4xx_HAL_Driver
   * @{
   */
