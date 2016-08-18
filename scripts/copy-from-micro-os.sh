@@ -168,7 +168,7 @@ cp -Rnv $src/vendors/$vendor/$device.pack/* $vendor_dest/$device.pack
 
 # --- xPacks ---
 
-xpacks_repo=../../../uOS/micro-os-plus-iiie.git
+xpacks_repo=../../../uOS/micro-os-plus-iii-tree.git
 
 cp-vectors() {
 # $1 = source folder
