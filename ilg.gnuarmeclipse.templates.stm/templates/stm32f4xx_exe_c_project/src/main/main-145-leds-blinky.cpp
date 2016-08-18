@@ -17,7 +17,7 @@ BlinkLed blinkLeds[1] =
 
 #elif defined(STM32F407xx)
 
-#warning "Assume a STM32F4-Discovery board, PC12-PC15, active high."
+#warning "Assume a STM32F4-Discovery board, PD12-PD15, active high."
 
 #define BLINK_PORT_NUMBER         (3)
 #define BLINK_PIN_NUMBER_GREEN    (12)

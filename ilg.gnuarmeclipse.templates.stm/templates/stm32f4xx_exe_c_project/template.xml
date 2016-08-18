@@ -18,6 +18,10 @@
 			<item value="STM32F410Rx" label="STM32F410Rx" />
 			<item value="STM32F410Tx" label="STM32F410Tx" />
 			<item value="STM32F411xE" label="STM32F411xE" />
+			<item value="STM32F412Cx" label="STM32F412Cx" />
+			<item value="STM32F412Rx" label="STM32F412Rx" />
+			<item value="STM32F412Vx" label="STM32F412Vx" />
+			<item value="STM32F412Zx" label="STM32F412Zx" />
 			<item value="STM32F415xx" label="STM32F415xx" />
 			<item value="STM32F417xx" label="STM32F417xx" />
 			<item value="STM32F427xx" label="STM32F427xx" />
@@ -748,6 +752,70 @@
 				</element>
 			</complex-array>
 		</process>
+        <process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
+            <simple name="projectName" value="$(projectName)" />
+            <simple name="condition" value="$(STM32F4chipFamilyCube) == STM32F412Cx" />
+            <complex-array name="files">
+                <element>
+                    <simple name="source" value="$(osDir)/$(device).pack/include/cmsis/stm32f412cx.h" />
+                    <simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f412cx.h" />
+                    <simple name="replaceable" value="true" />
+                </element>
+                <element>
+                    <simple name="source" value="$(osDir)/$(device).pack/src/cmsis/vectors_stm32f412cx.c" />
+                    <simple name="target" value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_stm32f412cx.c" />
+                    <simple name="replaceable" value="true" />
+                </element>
+            </complex-array>
+        </process>
+        <process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
+            <simple name="projectName" value="$(projectName)" />
+            <simple name="condition" value="$(STM32F4chipFamilyCube) == STM32F412Rx" />
+            <complex-array name="files">
+                <element>
+                    <simple name="source" value="$(osDir)/$(device).pack/include/cmsis/stm32f412rx.h" />
+                    <simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f412rx.h" />
+                    <simple name="replaceable" value="true" />
+                </element>
+                <element>
+                    <simple name="source" value="$(osDir)/$(device).pack/src/cmsis/vectors_stm32f412rx.c" />
+                    <simple name="target" value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_stm32f412rx.c" />
+                    <simple name="replaceable" value="true" />
+                </element>
+            </complex-array>
+        </process>
+        <process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
+            <simple name="projectName" value="$(projectName)" />
+            <simple name="condition" value="$(STM32F4chipFamilyCube) == STM32F412Vx" />
+            <complex-array name="files">
+                <element>
+                    <simple name="source" value="$(osDir)/$(device).pack/include/cmsis/stm32f412vx.h" />
+                    <simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f412vx.h" />
+                    <simple name="replaceable" value="true" />
+                </element>
+                <element>
+                    <simple name="source" value="$(osDir)/$(device).pack/src/cmsis/vectors_stm32f412vx.c" />
+                    <simple name="target" value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_stm32f412vx.c" />
+                    <simple name="replaceable" value="true" />
+                </element>
+            </complex-array>
+        </process>
+        <process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
+            <simple name="projectName" value="$(projectName)" />
+            <simple name="condition" value="$(STM32F4chipFamilyCube) == STM32F412Zx" />
+            <complex-array name="files">
+                <element>
+                    <simple name="source" value="$(osDir)/$(device).pack/include/cmsis/stm32f412zx.h" />
+                    <simple name="target" value="$(sysDir)/$(includeDir)/$(cmsisDir)/stm32f412zx.h" />
+                    <simple name="replaceable" value="true" />
+                </element>
+                <element>
+                    <simple name="source" value="$(osDir)/$(device).pack/src/cmsis/vectors_stm32f412zx.c" />
+                    <simple name="target" value="$(sysDir)/$(sourceDir)/$(cmsisDir)/vectors_stm32f412zx.c" />
+                    <simple name="replaceable" value="true" />
+                </element>
+            </complex-array>
+        </process>
 		<process type="ilg.gnuarmeclipse.templates.core.ConditionalAddFiles">
 			<simple name="projectName" value="$(projectName)" />
 			<simple name="condition" value="$(STM32F4chipFamilyCube) == STM32F415xx" />
@@ -1209,6 +1277,54 @@
 			</complex-array>
 		</process>
 	</if>
+    <if condition="$(STM32F4chipFamilyCube)==STM32F412Cx">
+        <process type="org.eclipse.cdt.core.AddFiles">
+            <simple name="projectName" value="$(projectName)" />
+            <complex-array name="files">
+                <element>
+                    <simple name="source" value="ldscripts/mem256.ld" />
+                    <simple name="target" value="$(ldscriptsDir)/mem.ld" />
+                    <simple name="replaceable" value="true" />
+                </element>
+            </complex-array>
+        </process>
+    </if>
+    <if condition="$(STM32F4chipFamilyCube)==STM32F412Rx">
+        <process type="org.eclipse.cdt.core.AddFiles">
+            <simple name="projectName" value="$(projectName)" />
+            <complex-array name="files">
+                <element>
+                    <simple name="source" value="ldscripts/mem256.ld" />
+                    <simple name="target" value="$(ldscriptsDir)/mem.ld" />
+                    <simple name="replaceable" value="true" />
+                </element>
+            </complex-array>
+        </process>
+    </if>
+    <if condition="$(STM32F4chipFamilyCube)==STM32F412Vx">
+        <process type="org.eclipse.cdt.core.AddFiles">
+            <simple name="projectName" value="$(projectName)" />
+            <complex-array name="files">
+                <element>
+                    <simple name="source" value="ldscripts/mem256.ld" />
+                    <simple name="target" value="$(ldscriptsDir)/mem.ld" />
+                    <simple name="replaceable" value="true" />
+                </element>
+            </complex-array>
+        </process>
+    </if>
+    <if condition="$(STM32F4chipFamilyCube)==STM32F412Zx">
+        <process type="org.eclipse.cdt.core.AddFiles">
+            <simple name="projectName" value="$(projectName)" />
+            <complex-array name="files">
+                <element>
+                    <simple name="source" value="ldscripts/mem256.ld" />
+                    <simple name="target" value="$(ldscriptsDir)/mem.ld" />
+                    <simple name="replaceable" value="true" />
+                </element>
+            </complex-array>
+        </process>
+    </if>
 	<if condition="$(STM32F4chipFamilyCube)==STM32F415xx">
 		<process type="org.eclipse.cdt.core.AddFiles">
 			<simple name="projectName" value="$(projectName)" />
