@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f7xx_hal_cortex.c
   * @author  MCD Application Team
-  * @version V1.0.3
-  * @date    13-November-2015
+  * @version V1.1.0
+  * @date    22-April-2016
   * @brief   CORTEX HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the CORTEX:
@@ -70,7 +70,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -458,8 +458,6 @@ void HAL_SYSTICK_IRQHandler(void)
   */
 __weak void HAL_SYSTICK_Callback(void)
 {
-__IO uint32_t tmpreg = 0x00;
-  UNUSED(tmpreg);
   /* NOTE : This function Should not be modified, when the callback is needed,
             the HAL_SYSTICK_Callback could be implemented in the user file
    */

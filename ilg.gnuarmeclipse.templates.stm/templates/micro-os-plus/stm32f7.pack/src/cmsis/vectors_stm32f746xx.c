@@ -342,7 +342,7 @@ pHandler __isr_vectors[] =
     OTG_HS_IRQHandler,                 // USB OTG HS
     DCMI_IRQHandler,                   // DCMI
     0,                                 // Reserved
-    RNG_IRQHandler,                    // Hash and Rng
+    RNG_IRQHandler,                    // Rng
     FPU_IRQHandler,                    // FPU
     UART7_IRQHandler,                  // UART7
     UART8_IRQHandler,                  // UART8

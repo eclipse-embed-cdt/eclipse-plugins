@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f7xx_hal_flash.c
   * @author  MCD Application Team
-  * @version V1.0.3
-  * @date    13-November-2015
+  * @version V1.1.0
+  * @date    22-April-2016
   * @brief   FLASH HAL module driver.
   *          This file provides firmware functions to manage the following 
   *          functionalities of the internal FLASH memory:
@@ -72,7 +72,7 @@
   ******************************************************************************
   * @attention
   *
-  * <h2><center>&copy; COPYRIGHT(c) 2015 STMicroelectronics</center></h2>
+  * <h2><center>&copy; COPYRIGHT(c) 2016 STMicroelectronics</center></h2>
   *
   * Redistribution and use in source and binary forms, with or without modification,
   * are permitted provided that the following conditions are met:
@@ -118,8 +118,8 @@
 /** @addtogroup FLASH_Private_Constants
   * @{
   */
-#define SECTOR_MASK               ((uint32_t)0xFFFFFF07)
-#define FLASH_TIMEOUT_VALUE       ((uint32_t)50000)/* 50 s */
+#define SECTOR_MASK               ((uint32_t)0xFFFFFF07U)
+#define FLASH_TIMEOUT_VALUE       ((uint32_t)50000U)/* 50 s */
 /**
   * @}
   */         
@@ -352,7 +352,7 @@ void HAL_FLASH_IRQHandler(void)
         {
           /* No more sectors to Erase, user callback can be called.*/
           /* Reset Sector and stop Erase sectors procedure */
-          pFlash.Sector = temp = 0xFFFFFFFF;
+          pFlash.Sector = temp = 0xFFFFFFFFU;
           /* FLASH EOP interrupt user callback */
           HAL_FLASH_EndOfOperationCallback(temp);
           /* Sector Erase procedure is completed */
@@ -400,7 +400,7 @@ void HAL_FLASH_IRQHandler(void)
       {
         /* return the faulty sector */
         temp = pFlash.Sector;
-        pFlash.Sector = 0xFFFFFFFF;
+        pFlash.Sector = 0xFFFFFFFFU;
         break;
       }
       case FLASH_PROC_MASSERASE :
@@ -456,8 +456,7 @@ void HAL_FLASH_IRQHandler(void)
 __weak void HAL_FLASH_EndOfOperationCallback(uint32_t ReturnValue)
 {
   /* Prevent unused argument(s) compilation warning */
-__IO uint32_t tmpreg = 0x00;
-  UNUSED(tmpreg);
+  UNUSED(ReturnValue);
   /* NOTE : This function Should not be modified, when the callback is needed,
   the HAL_FLASH_EndOfOperationCallback could be implemented in the user file
   */ 
@@ -475,8 +474,7 @@ __IO uint32_t tmpreg = 0x00;
 __weak void HAL_FLASH_OperationErrorCallback(uint32_t ReturnValue)
 {
   /* Prevent unused argument(s) compilation warning */
-__IO uint32_t tmpreg = 0x00;
-  UNUSED(tmpreg);
+  UNUSED(ReturnValue);
   /* NOTE : This function Should not be modified, when the callback is needed,
   the HAL_FLASH_OperationErrorCallback could be implemented in the user file
    */ 
