@@ -95,14 +95,14 @@
 //@XCDL @elif "$(fileExtension)"=="cpp"
 // Definitions visible only within this translation unit.
 //@XCDL @line "namespace"
-  {
-    // ----- Timing definitions -----------------------------------------------
+{
+	// ----- Timing definitions -----------------------------------------------
 
-    // Keep the LED on for 2/3 of a second.
-    constexpr Timer::ticks_t BLINK_1S_TICKS = Timer::FREQUENCY_HZ;
-    constexpr Timer::ticks_t BLINK_ON_TICKS = Timer::FREQUENCY_HZ * 2 / 3;
-    constexpr Timer::ticks_t BLINK_OFF_TICKS = Timer::FREQUENCY_HZ - BLINK_ON_TICKS;
-  }
+	// Keep the LED on for 2/3 of a second.
+	constexpr Timer::ticks_t BLINK_1S_TICKS = Timer::FREQUENCY_HZ;
+	constexpr Timer::ticks_t BLINK_ON_TICKS = Timer::FREQUENCY_HZ * 2 / 3;
+	constexpr Timer::ticks_t BLINK_OFF_TICKS = Timer::FREQUENCY_HZ - BLINK_ON_TICKS;
+}
 //@XCDL @endif // fileExtension
 //@XCDL @endif // content
 
@@ -115,101 +115,96 @@
 #pragma GCC diagnostic ignored "-Wmissing-declarations"
 #pragma GCC diagnostic ignored "-Wreturn-type"
 
-int
-main (int argc, char* argv[])
-{
+int main(int argc, char* argv[]) {
 //@XCDL @if "$(content)"=="blinky"
 //@XCDL @if "$(syscalls)"=="retarget"
-  // By customising __initialize_args() it is possible to pass arguments,
-  // for example when running tests with semihosting you can pass various
-  // options to the test.
-  // trace_dump_args(argc, argv);
+	// By customising __initialize_args() it is possible to pass arguments,
+	// for example when running tests with semihosting you can pass various
+	// options to the test.
+	// trace_dump_args(argc, argv);
 //@XCDL @elif "$(syscalls)"=="semihosting"
-  // Show the program parameters (passed via semihosting).
-  // Output is via the semihosting output channel.
-  trace_dump_args (argc, argv);
+	// Show the program parameters (passed via semihosting).
+	// Output is via the semihosting output channel.
+	trace_dump_args(argc, argv);
 //@XCDL @endif // syscalls
 
-  // Send a greeting to the trace device (skipped on Release).
-  trace_puts ("Hello ARM World!");
+	// Send a greeting to the trace device (skipped on Release).
+	trace_puts("Hello ARM World!");
 
 //@XCDL @if "$(syscalls)"=="retarget"
-  // The standard output and the standard error should be forwarded to
-  // the trace device. For this to work, a redirection in _write.c is
-  // required.
+	// The standard output and the standard error should be forwarded to
+	// the trace device. For this to work, a redirection in _write.c is
+	// required.
 
-  // Send a message to the standard output.
-  puts ("Standard output message.");
+	// Send a message to the standard output.
+	puts("Standard output message.");
 
-  // Send a message to the standard error.
-  fprintf (stderr, "Standard error message.\n");
+	// Send a message to the standard error.
+	fprintf(stderr, "Standard error message.\n");
 //@XCDL @elif "$(syscalls)"=="semihosting"
-  // Send a message to the standard output.
-  puts ("Standard output message.");
+	// Send a message to the standard output.
+	puts("Standard output message.");
 
-  // Send a message to the standard error.
-  fprintf (stderr, "Standard error message.\n");
+	// Send a message to the standard error.
+	fprintf(stderr, "Standard error message.\n");
 //@XCDL @endif // syscalls
 
-  // At this stage the system clock should have already been configured
-  // at high speed.
-  trace_printf ("System clock: %u Hz\n", SystemCoreClock);
+	// At this stage the system clock should have already been configured
+	// at high speed.
+	trace_printf("System clock: %u Hz\n", SystemCoreClock);
 
 //@XCDL @if "$(fileExtension)"=="c"
-  timer_start ();
+	timer_start();
 
-  blink_led_init ();
+	blink_led_init();
 
-  uint32_t seconds = 0;
+	uint32_t seconds = 0;
 
-  // Infinite loop
-  for (int i = 0; ; i++)
-    {
-      blink_led_on ();
-      timer_sleep (i == 0 ? BLINK_1S_TICKS : BLINK_ON_TICKS);
+	// Infinite loop
+	for (int i = 0;; i++) {
+		blink_led_on();
+		timer_sleep(i == 0 ? BLINK_1S_TICKS : BLINK_ON_TICKS);
 
-      blink_led_off ();
-      timer_sleep (BLINK_OFF_TICKS);
+		blink_led_off();
+		timer_sleep(BLINK_OFF_TICKS);
 
-      ++seconds;
-      // Count seconds on the trace device.
-      trace_printf ("Second %u\n", seconds);
-    }
+		++seconds;
+		// Count seconds on the trace device.
+		trace_printf("Second %u\n", seconds);
+	}
 //@XCDL @elif "$(fileExtension)"=="cpp"
-  Timer timer;
-  timer.start ();
+	Timer timer;
+	timer.start();
 
-  BlinkLed blinkLed;
+	BlinkLed blinkLed;
 
-  // Perform all necessary initialisations for the LED.
-  blinkLed.powerUp ();
+	// Perform all necessary initialisations for the LED.
+	blinkLed.powerUp();
 
-  uint32_t seconds = 0;
+	uint32_t seconds = 0;
 
-  // Infinite loop
-  for (int i = 0; ; i++)
-    {
-      blinkLed.turnOn ();
-      timer_sleep (i == 0 ? BLINK_1S_TICKS : BLINK_ON_TICKS);
+	// Infinite loop
+	for (int i = 0;; i++) {
+		blinkLed.turnOn();
+		timer_sleep(i == 0 ? BLINK_1S_TICKS : BLINK_ON_TICKS);
 
-      blinkLed.turnOff ();
-      timer.sleep (BLINK_OFF_TICKS);
+		blinkLed.turnOff();
+		timer.sleep(BLINK_OFF_TICKS);
 
-      ++seconds;
-      // Count seconds on the trace device.
-      trace_printf ("Second %u\n", seconds);
-    }
+		++seconds;
+		// Count seconds on the trace device.
+		trace_printf("Second %u\n", seconds);
+	}
 //@XCDL @endif // fileExtension
-  // Infinite loop, never return.
+	// Infinite loop, never return.
 //@XCDL @elif "$(content)"=="empty"
-  // At this stage the system clock should have already been configured
-  // at high speed.
+	// At this stage the system clock should have already been configured
+	// at high speed.
 
-  // Infinite loop
-  while (1)
-    {
-      // Add your code here.
-    }
+	// Infinite loop
+	while (1) {
+		// Add your code here.
+	}
 //@XCDL @endif // content
 }
 
