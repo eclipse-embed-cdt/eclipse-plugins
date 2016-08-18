@@ -52,6 +52,8 @@ TIM2_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 TIM3_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
+TIM6_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
 TIM6_DAC_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 TIM14_IRQHandler(void);
@@ -81,6 +83,8 @@ ADC1_COMP_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 PVD_VDDIO2_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
+VDDIO2_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
 RCC_CRS_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 TSC_IRQHandler(void);
@@ -89,11 +93,19 @@ TIM7_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 USART3_4_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
+USART3_6_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+USART3_8_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
 CEC_CAN_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 USB_IRQHandler(void);
 void __attribute__ ((weak, alias ("Default_Handler")))
 DMA1_Channel4_5_6_7_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+DMA1_Ch2_3_DMA2_Ch1_2_IRQHandler(void);
+void __attribute__ ((weak, alias ("Default_Handler")))
+DMA1_Ch4_7_DMA2_Ch3_5_IRQHandler(void);
 
 // ----------------------------------------------------------------------------
 
@@ -172,6 +184,42 @@ pHandler g_pfnVectors[] =
       USART1_IRQHandler, //
       USART2_IRQHandler, //
       0, //
+      0, //
+      0, //
+
+#elif defined(STM32F030xC)
+
+      // Chip Level - STM32F030
+      WWDG_IRQHandler, //
+      0, //
+      RTC_IRQHandler, //
+      FLASH_IRQHandler, //
+      RCC_IRQHandler, //
+      EXTI0_1_IRQHandler, //
+      EXTI2_3_IRQHandler, //
+      EXTI4_15_IRQHandler, //
+      0, //
+      DMA1_Channel1_IRQHandler, //
+      DMA1_Channel2_3_IRQHandler, //
+      DMA1_Channel4_5_IRQHandler, //
+      ADC1_IRQHandler, //
+      TIM1_BRK_UP_TRG_COM_IRQHandler, //
+      TIM1_CC_IRQHandler, //
+      0, //
+      TIM3_IRQHandler, //
+      TIM6_IRQHandler, //
+      TIM7_IRQHandler, //
+      TIM14_IRQHandler, //
+      TIM15_IRQHandler, //
+      TIM16_IRQHandler, //
+      TIM17_IRQHandler, //
+      I2C1_IRQHandler, //
+      I2C2_IRQHandler, //
+      SPI1_IRQHandler, //
+      SPI2_IRQHandler, //
+      USART1_IRQHandler, //
+      USART2_IRQHandler, //
+      USART3_6_IRQHandler, //
       0, //
       0, //
 
@@ -283,7 +331,79 @@ pHandler g_pfnVectors[] =
       CEC_IRQHandler, //
       0, //
 
-#elif defined(STM32F072)
+#elif defined (STM32F070x6)
+
+      // Chip Level - STM32F070
+      WWDG_IRQHandler, //
+      0, //
+      RTC_IRQHandler, //
+      FLASH_IRQHandler, //
+      RCC_IRQHandler, //
+      EXTI0_1_IRQHandler, //
+      EXTI2_3_IRQHandler, //
+      EXTI4_15_IRQHandler, //
+      0, //
+      DMA1_Channel1_IRQHandler, //
+      DMA1_Channel2_3_IRQHandler, //
+      DMA1_Channel4_5_IRQHandler, //
+      ADC1_IRQHandler, //
+      TIM1_BRK_UP_TRG_COM_IRQHandler, //
+      TIM1_CC_IRQHandler, //
+      0, //
+      TIM3_IRQHandler, //
+      0, //
+      0, //
+      TIM14_IRQHandler, //
+      0, //
+      TIM16_IRQHandler, //
+      TIM17_IRQHandler, //
+      I2C1_IRQHandler, //
+      0, //
+      SPI1_IRQHandler, //
+      0, //
+      USART1_IRQHandler, //
+      USART2_IRQHandler, //
+      0, //
+      0, //
+      USB_IRQHandler, //
+
+#elif defined (STM32F070xB)
+
+      // Chip Level - STM32F070
+      WWDG_IRQHandler, //
+      0, //
+      RTC_IRQHandler, //
+      FLASH_IRQHandler, //
+      RCC_IRQHandler, //
+      EXTI0_1_IRQHandler, //
+      EXTI2_3_IRQHandler, //
+      EXTI4_15_IRQHandler, //
+      0, //
+      DMA1_Channel1_IRQHandler, //
+      DMA1_Channel2_3_IRQHandler, //
+      DMA1_Channel4_5_IRQHandler, //
+      ADC1_IRQHandler, //
+      TIM1_BRK_UP_TRG_COM_IRQHandler, //
+      TIM1_CC_IRQHandler, //
+      0, //
+      TIM3_IRQHandler, //
+      TIM6_DAC_IRQHandler, //
+      TIM7_IRQHandler, //
+      TIM14_IRQHandler, //
+      TIM15_IRQHandler, //
+      TIM16_IRQHandler, //
+      TIM17_IRQHandler, //
+      I2C1_IRQHandler, //
+      I2C2_IRQHandler, //
+      SPI1_IRQHandler, //
+      SPI2_IRQHandler, //
+      USART1_IRQHandler, //
+      USART2_IRQHandler, //
+      USART3_4_IRQHandler, //
+      0, //
+      USB_IRQHandler, //
+
+#elif defined (STM32F072)
 
       // Chip Level - STM32F051 (was STM32F0xx MD)
       WWDG_IRQHandler, //
@@ -318,6 +438,42 @@ pHandler g_pfnVectors[] =
       USART3_4_IRQHandler, //
       CEC_CAN_IRQHandler, //
       USB_IRQHandler, //
+
+#elif defined (STM32F091)
+
+      // Chip Level - STM32F091
+      WWDG_IRQHandler, //
+      PVD_VDDIO2_IRQHandler, //
+      RTC_IRQHandler, //
+      FLASH_IRQHandler, //
+      RCC_CRS_IRQHandler, //
+      EXTI0_1_IRQHandler, //
+      EXTI2_3_IRQHandler, //
+      EXTI4_15_IRQHandler, //
+      TSC_IRQHandler, //
+      DMA1_Channel1_IRQHandler, //
+      DMA1_Ch2_3_DMA2_Ch1_2_IRQHandler, //
+      DMA1_Ch4_7_DMA2_Ch3_5_IRQHandler, //
+      ADC1_COMP_IRQHandler, //
+      TIM1_BRK_UP_TRG_COM_IRQHandler, //
+      TIM1_CC_IRQHandler, //
+      TIM2_IRQHandler, //
+      TIM3_IRQHandler, //
+      TIM6_DAC_IRQHandler, //
+      TIM7_IRQHandler, //
+      TIM14_IRQHandler, //
+      TIM15_IRQHandler, //
+      TIM16_IRQHandler, //
+      TIM17_IRQHandler, //
+      I2C1_IRQHandler, //
+      I2C2_IRQHandler, //
+      SPI1_IRQHandler, //
+      SPI2_IRQHandler, //
+      USART1_IRQHandler, //
+      USART2_IRQHandler, //
+      USART3_8_IRQHandler, //
+      CEC_CAN_IRQHandler, //
+      0, //
 
 #else
 #error "missing vectors"

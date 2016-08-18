@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f0xx_dac.c
   * @author  MCD Application Team
-  * @version V1.3.0
-  * @date    16-January-2014
+  * @version V1.5.0
+  * @date    05-December-2014
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the Digital-to-Analog Converter (DAC) peripheral
   *          applicable only on STM32F051 and STM32F072 devices:

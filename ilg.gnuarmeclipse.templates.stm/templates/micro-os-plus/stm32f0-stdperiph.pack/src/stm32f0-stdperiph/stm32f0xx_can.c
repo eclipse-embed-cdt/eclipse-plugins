@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f0xx_can.c
   * @author  MCD Application Team
-  * @version V1.3.0
-  * @date    16-January-2014
+  * @version V1.5.0
+  * @date    05-December-2014
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the Controller area network (CAN) peripheral and 
   *          applicable only for STM32F072 devices :           
@@ -144,13 +144,7 @@ static ITStatus CheckITStatus(uint32_t CAN_Reg, uint32_t It_Bit);
 @endverbatim
   * @{
   */
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wunused-parameter"
-#endif
-
+  
 /**
   * @brief  Deinitializes the CAN peripheral registers to their default reset values.
   * @param  CANx: where x can be 1 to select the CAN peripheral.
@@ -166,11 +160,6 @@ void CAN_DeInit(CAN_TypeDef* CANx)
   /* Release CAN from reset state */
   RCC_APB1PeriphResetCmd(RCC_APB1Periph_CAN, DISABLE);
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @brief  Initializes the CAN peripheral according to the specified
@@ -726,12 +715,6 @@ void CAN_CancelTransmit(CAN_TypeDef* CANx, uint8_t Mailbox)
   * @{
   */
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-
 /**
   * @brief  Receives a correct CAN frame.
   * @param  CANx: where x can be 1 to select the CAN peripheral.
@@ -782,11 +765,6 @@ void CAN_Receive(CAN_TypeDef* CANx, uint8_t FIFONumber, CanRxMsg* RxMessage)
     CANx->RF1R |= CAN_RF1R_RFOM1;
   }
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @brief  Releases the specified receive FIFO.

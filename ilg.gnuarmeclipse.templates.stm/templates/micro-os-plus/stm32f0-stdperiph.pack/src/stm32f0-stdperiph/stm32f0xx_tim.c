@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f0xx_tim.c
   * @author  MCD Application Team
-  * @version V1.3.0
-  * @date    16-January-2014
+  * @version V1.5.0
+  * @date    05-December-2014
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the TIM peripheral:
   *            + TimeBase management
@@ -1104,12 +1104,6 @@ void TIM_OCStructInit(TIM_OCInitTypeDef* TIM_OCInitStruct)
   TIM_OCInitStruct->TIM_OCNIdleState = TIM_OCNIdleState_Reset;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-
 /**
   * @brief  Selects the TIM Output Compare Mode.
   * @note   This function disables the selected channel before changing the Output
@@ -1172,11 +1166,6 @@ void TIM_SelectOCxM(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_OCMode
     *(__IO uint32_t *) tmp |= (uint16_t)(TIM_OCMode << 8);
   }
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @brief  Sets the TIMx Capture Compare1 Register value
@@ -1896,12 +1885,6 @@ void TIM_SelectOCREFClear(TIM_TypeDef* TIMx, uint16_t TIM_OCReferenceClear)
   TIMx->SMCR |=  TIM_OCReferenceClear;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-
 /**
   * @brief  Enables or disables the TIM Capture Compare Channel x.
   * @param  TIMx: where x can be 1, 2, 3, 14, 15, 16 or 17 to select the TIM peripheral.
@@ -1962,11 +1945,6 @@ void TIM_CCxNCmd(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_CCxN)
   /* Set or reset the CCxNE Bit */ 
   TIMx->CCER |=  (uint16_t)(TIM_CCxN << TIM_Channel);
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @brief  Selects the TIM peripheral Commutation event.

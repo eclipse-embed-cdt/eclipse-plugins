@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f0xx_tim.h
   * @author  MCD Application Team
-  * @version V1.3.0
-  * @date    16-January-2014
+  * @version V1.5.0
+  * @date    05-December-2014
   * @brief   This file contains all the functions prototypes for the TIM 
   *          firmware library. 
   ******************************************************************************
@@ -29,12 +29,6 @@
 /* Define to prevent recursive inclusion -------------------------------------*/
 #ifndef __STM32F0XX_TIM_H
 #define __STM32F0XX_TIM_H
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wpadded"
-#endif
 
 #ifdef __cplusplus
  extern "C" {
@@ -1177,11 +1171,6 @@ void TIM_RemapConfig(TIM_TypeDef* TIMx, uint16_t TIM_Remap);
 
 #ifdef __cplusplus
 }
-#endif
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
 #endif
 
 #endif /*__STM32F0XX_TIM_H */

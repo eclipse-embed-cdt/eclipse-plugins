@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f0xx_flash.c
   * @author  MCD Application Team
-  * @version V1.3.0
-  * @date    16-January-2014
+  * @version V1.5.0
+  * @date    05-December-2014
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the FLASH peripheral:
   *            - FLASH Interface configuration
@@ -322,12 +322,6 @@ FLASH_Status FLASH_EraseAllPages(void)
   return status;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-
 /**
   * @brief  Programs a word at a specified address.
   * @note   To correctly run this function, the FLASH_Unlock() function must be called before.
@@ -384,11 +378,6 @@ FLASH_Status FLASH_ProgramWord(uint32_t Address, uint32_t Data)
   /* Return the Program Status */
   return status;
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @brief  Programs a half word at a specified address.

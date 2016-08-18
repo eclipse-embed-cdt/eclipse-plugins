@@ -2,8 +2,8 @@
   ******************************************************************************
   * @file    stm32f0xx_spi.c
   * @author  MCD Application Team
-  * @version V1.3.0
-  * @date    16-January-2014
+  * @version V1.5.0
+  * @date    05-December-2014
   * @brief   This file provides firmware functions to manage the following 
   *          functionalities of the Serial peripheral interface (SPI):
   *           + Initialization and Configuration
@@ -320,12 +320,6 @@ void I2S_StructInit(I2S_InitTypeDef* I2S_InitStruct)
   I2S_InitStruct->I2S_CPOL = I2S_CPOL_Low;
 }
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsign-conversion"
-#endif
-
 /**
   * @brief  Initializes the SPIx peripheral according to the specified 
   *         parameters in the I2S_InitStruct.
@@ -435,11 +429,6 @@ void I2S_Init(SPI_TypeDef* SPIx, I2S_InitTypeDef* I2S_InitStruct)
   /* Write to SPIx I2SCFGR */
   SPIx->I2SCFGR = tmpreg;
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @brief  Enables or disables the specified SPI peripheral.
@@ -1136,12 +1125,6 @@ void SPI_LastDMATransferCmd(SPI_TypeDef* SPIx, uint16_t SPI_LastDMATransfer)
   * @{
   */
 
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wconversion"
-#endif
-
 /**
   * @brief  Enables or disables the specified SPI/I2S interrupts.
   * @param  SPIx: where x can be 1 or 2 in SPI mode or 1 in I2S mode to select 
@@ -1331,11 +1314,6 @@ ITStatus SPI_I2S_GetITStatus(SPI_TypeDef* SPIx, uint8_t SPI_I2S_IT)
   /* Return the SPI_I2S_IT status */
   return bitstatus;
 }
-
-// [ILG]
-#if defined ( __GNUC__ )
-#pragma GCC diagnostic pop
-#endif
 
 /**
   * @}
