@@ -11,10 +11,14 @@
 			description="%STM32F0xx.chipFamily.description" type="select"
 			default="STM32F051" hidden="false" persist="true">
 			<item value="STM32F030" label="STM32F030" />
+            <item value="STM32F030xC" label="STM32F030xC" />
 			<item value="STM32F031" label="STM32F031" />
 			<item value="STM32F042" label="STM32F042" />
-			<item value="STM32F051" label="STM32F051" />
-			<item value="STM32F072" label="STM32F072" />
+            <item value="STM32F051" label="STM32F051" />
+            <item value="STM32F070x6" label="STM32F070x6" />
+            <item value="STM32F070xB" label="STM32F070xB" />
+            <item value="STM32F072" label="STM32F072" />
+            <item value="STM32F091" label="STM32F091" />
 		</property>
 		<property id="STM32F0flashSize" label="%STM32F0xx.flashSize.label"
 			description="%STM32F0xx.flashSize.description" type="input" pattern="[0-9]*"
