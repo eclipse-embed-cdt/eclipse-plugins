@@ -50,6 +50,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.handlers.HandlerUtil;
+import org.xml.sax.SAXParseException;
 
 /**
  * Update content.xml files from all repositories. This is the equivalent of
@@ -98,8 +99,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 		IRunnableContext context = window.getWorkbench().getProgressService();
 		try {
 			context.run(true, true, new IRunnableWithProgress() {
-				public void run(IProgressMonitor monitor)
-						throws InvocationTargetException, InterruptedException {
+				public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 					myRun(monitor);
 				}
 			});
@@ -166,16 +166,14 @@ public class UpdatePacksHandler extends AbstractHandler {
 					workUnits++;
 
 				} else {
-					fOut.println(Utils.reportWarning("Repo type \"" + type
-							+ "\" not supported."));
+					fOut.println(Utils.reportWarning("Repo type \"" + type + "\" not supported."));
 				}
 			}
 
 			workUnits += 1; // One more to avoid reaching 100% too early
 
 			// Set total number of work units to the number of pdsc files
-			monitor.beginTask("Refresh all packs from all repositories.",
-					workUnits);
+			monitor.beginTask("Refresh all packs from all repositories.", workUnits);
 
 			for (Map<String, Object> repo : reposList) {
 
@@ -225,8 +223,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 				duration = 1;
 			}
 
-			fOut.println(Utils.reportInfo("Update packs completed in "
-					+ (duration + 500) / 1000 + "s."));
+			fOut.println(Utils.reportInfo("Update packs completed in " + (duration + 500) / 1000 + "s."));
 
 			status = Status.OK_STATUS;
 		}
@@ -279,8 +276,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 		DateFormat dateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
 		dateFormat.setTimeZone(TimeZone.getTimeZone("UTC"));
 		Calendar cal = Calendar.getInstance();
-		contentRoot
-				.putProperty(Property.DATE, dateFormat.format(cal.getTime()));
+		contentRoot.putProperty(Property.DATE, dateFormat.format(cal.getTime()));
 
 		PdscParserForContent parser = new PdscParserForContent();
 		// parser.setIsBrief(true);
@@ -303,21 +299,16 @@ public class UpdatePacksHandler extends AbstractHandler {
 
 				URL sourceUrl = new URL(pdscUrl + pdscName);
 
-				String cachedFileName = PacksStorage.makeCachedPdscName(
-						pdscName, pdscVersion);
-				File cachedFile = PacksStorage
-						.getCachedFileObject(cachedFileName);
+				String cachedFileName = PacksStorage.makeCachedPdscName(pdscName, pdscVersion);
+				File cachedFile = PacksStorage.getCachedFileObject(cachedFileName);
 				if (!cachedFile.exists()) {
 
 					// If local file does not exist, create it
-					if (Utils.copyFileWithShell(sourceUrl, cachedFile, fOut,
-							null, window.getShell())) {
+					if (Utils.copyFileWithShell(sourceUrl, cachedFile, fOut, null, window.getShell())) {
 
-						Utils.reportInfo("File " + pdscName + " version "
-								+ pdscVersion + " cached locally.");
+						Utils.reportInfo("File " + pdscName + " version " + pdscVersion + " cached locally.");
 					} else {
-						fOut.println(Utils.reportWarning("Missing \""
-								+ cachedFile + "\", ignored by user request."));
+						fOut.println(Utils.reportWarning("Missing \"" + cachedFile + "\", ignored by user request."));
 						continue;
 					}
 				}
@@ -328,15 +319,20 @@ public class UpdatePacksHandler extends AbstractHandler {
 					parser.parse(pdscName, pdscVersion, contentRoot);
 
 				} else {
-					fOut.println(Utils.reportWarning("Missing \"" + cachedFile
-							+ "\", ignored."));
-					return;
+					fOut.println(Utils.reportWarning("Missing \"" + cachedFile + "\", ignored."));
+					// return;
 				}
 
+			} catch (SAXParseException e) {
+				String xmsg = "line=" + e.getLineNumber() + ", column=" + e.getColumnNumber() + ", \"" + e.getMessage()
+						+ "\"";
+				fOut.println(xmsg + ",  ignored.");
+				Utils.reportWarning(
+						"File " + pdscName + " version " + pdscVersion + " parse error (" + xmsg + "), ignored");
 			} catch (Exception e) {
-				fOut.println(Utils.reportWarning("\"" + e.getMessage()
-						+ "\", ignored."));
-				return;
+				fOut.println(Utils.reportWarning("\"" + e.getMessage() + "\", ignored."));
+				Utils.reportWarning(
+						"File " + pdscName + " version " + pdscVersion + "  error (" + e.getMessage() + "), ignored");
 			}
 
 			// One more unit completed
@@ -351,12 +347,12 @@ public class UpdatePacksHandler extends AbstractHandler {
 				String fileName = fRepos.getRepoContentXmlFromUrl(repoUrl);
 
 				ContentSerialiser serialiser = new ContentSerialiser();
-				serialiser.serialise(contentRoot,
-						PacksStorage.getFileObject(fileName));
+				serialiser.serialise(contentRoot, PacksStorage.getFileObject(fileName));
 
 				File file;
 				file = PacksStorage.getFileObject(fileName);
 				fOut.println("File \"" + file.getPath() + "\" written.");
+				fOut.println();
 
 			} catch (IOException e) {
 				fOut.println(Utils.reportError(e.toString()));
