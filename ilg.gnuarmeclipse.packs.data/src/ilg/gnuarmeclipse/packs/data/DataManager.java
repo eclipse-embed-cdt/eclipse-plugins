@@ -588,11 +588,39 @@ public class DataManager implements IPacksDataManager {
 			fParsedPdsc = new HashMap<String, Node>();
 		}
 
+		File file = null;
+		try {
+			String parts[] = pdscName.split("\\.", 3);
+			if (!"pdsc".equals(parts[2])) {
+				String msg = pdscName + " not a valid PDSC file name (vendor.name.pdsc).";
+				fOut.println("Error: " + msg);
+				Utils.reportError(msg);
+				Activator.log(msg);
+
+				return null;
+			}
+			file = PacksStorage.getPackageFileObject(parts[0], parts[1], version, pdscName);
+			if (!file.isFile()) {
+				// Second chance: check if it was cached.
+				file = PacksStorage.getCachedFileObject(fileName);
+			}
+		} catch (IOException e) {
+			String msg = e.getMessage() + ", file: " + file.getName();
+			fOut.println("Error: " + msg);
+			Utils.reportError(msg);
+			Activator.log(e);
+
+			return null;
+		}
+		final File finalFile = file;
 		assert dm != null;
 		dm.displayTimeAndRun(new Runnable() {
 
 			public void run() {
-				loadPdscTree(fileName, dm);
+				Node node = parsePdscFile(finalFile, dm);
+				if (node != null) {
+					fParsedPdsc.put(fileName, node);
+				}
 			}
 		});
 
@@ -600,35 +628,32 @@ public class DataManager implements IPacksDataManager {
 	}
 
 	/**
-	 * Load the cached PDSC file and parse it with the generic parser.
+	 * Load the PDSC file and parse it with the generic parser.
 	 * <p>
 	 * The tree reflects 100% the content in the original file, just that it is
 	 * easier to store and further parse.
 	 * 
 	 * @return a tree starting with node "package".
 	 */
-	private void loadPdscTree(String fileName, DurationMonitor dm) {
+	private Node parsePdscFile(File file, DurationMonitor dm) {
 
 		try {
 
-			File file = PacksStorage.getCachedFileObject(fileName);
-			fOut.println("Parsing cached PDSC file \"" + file.getPath() + "\"...");
+			fOut.println("Parsing PDSC file \"" + file.getPath() + "\"...");
 			Document document = Xml.parseFile(file);
 
 			PdscGenericParser parser = new PdscGenericParser();
 			Node node = parser.parse(document);
-			if (node != null) {
-
-				// Put the tree in the map, for further use
-				fParsedPdsc.put(fileName, node);
-			}
+			return node;
 
 		} catch (Exception e) {
-			String msg = e.getMessage() + ", file: " + fileName;
+			String msg = e.getMessage() + ", file: " + file.getName();
 			fOut.println("Error: " + msg);
 			Utils.reportError(msg);
 			Activator.log(e);
 		}
+
+		return null;
 	}
 
 	// ------------------------------------------------------------------------
@@ -649,7 +674,7 @@ public class DataManager implements IPacksDataManager {
 		try {
 			File devicesFile = PacksStorage.getCachedFileObject(PacksStorage.INSTALLED_DEVICES_FILE_NAME);
 
-			if (devicesFile != null) {
+			if (devicesFile.isFile()) {
 				devicesFile.delete();
 			}
 		} catch (IOException e) {
@@ -706,7 +731,7 @@ public class DataManager implements IPacksDataManager {
 		try {
 			devicesFile = PacksStorage.getCachedFileObject(PacksStorage.INSTALLED_DEVICES_FILE_NAME);
 
-			if (devicesFile.exists()) {
+			if (devicesFile.isFile()) {
 
 				// If the cached file exists, try to use it
 				rootNode = loadCachedInstalledObjectsForBuild(devicesFile);
@@ -714,6 +739,7 @@ public class DataManager implements IPacksDataManager {
 			}
 
 		} catch (IOException e1) {
+			;
 		}
 
 		if (rootNode == null) {
@@ -807,7 +833,7 @@ public class DataManager implements IPacksDataManager {
 			String pdscName = node.getProperty(Property.PDSC_NAME);
 			String version = node.getName();
 
-			// Get the parsed PDSC, either from memory or from disc cache.
+			// Get the parsed PDSC, either from memory or from disc.
 			Node tree = getParsedPdscTree(pdscName, version, dm);
 
 			// Extract the devices.

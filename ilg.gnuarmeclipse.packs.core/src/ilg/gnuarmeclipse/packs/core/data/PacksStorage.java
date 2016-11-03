@@ -56,6 +56,16 @@ public class PacksStorage {
 		return file; // Cannot return null
 	}
 
+	public static File getPackageFileObject(String vendor, String packageName, String version, String name) throws IOException {
+
+		IPath path = getFolderPath().append(vendor).append(packageName).append(version).append(name);
+		File file = path.toFile();
+		if (file == null) {
+			throw new IOException(name + " File object null.");
+		}
+		return file; // Cannot return null
+	}
+	
 	// Return the absolute 'Packages' path.
 	public static synchronized IPath getFolderPath() throws IOException {
 
