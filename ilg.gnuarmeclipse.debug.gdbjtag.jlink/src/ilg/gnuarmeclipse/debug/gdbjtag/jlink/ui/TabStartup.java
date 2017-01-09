@@ -524,7 +524,14 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		fInterfaceSpeedFixedValue
 				.addModifyListener(scheduleUpdateJobModifyListener);
-
+		
+		fEnableFlashBreakpoints.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				scheduleUpdateJob(); // updateLaunchConfigurationDialog();
+			}
+		});
+		
 		fEnableSemihosting.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
