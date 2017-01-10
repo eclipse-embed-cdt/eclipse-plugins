@@ -211,10 +211,6 @@ public class Launch extends GnuArmLaunch {
 			// First set attribute to specify we want to create the gdb process.
 			// Bug 210366
 			Map<String, String> attributes = new HashMap<String, String>();
-			if (true) {
-				attributes.put(IGdbDebugConstants.PROCESS_TYPE_CREATION_ATTR,
-						IGdbDebugConstants.GDB_PROCESS_CREATION_VALUE);
-			}
 			if (serverProc != null) {
 				newProcess = DebugPlugin.newProcess(this, serverProc, label,
 						attributes);
