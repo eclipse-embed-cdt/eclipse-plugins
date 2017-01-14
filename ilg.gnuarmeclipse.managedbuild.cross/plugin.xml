@@ -320,6 +320,11 @@
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.format.dwarf4"
                   name="%option.debugging.dwarf4">
             </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-gdwarf-5"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.format.dwarf5"
+                  name="%option.debugging.dwarf5">
+            </enumeratedOptionValue>
          </option>
          <option
                command="-p"
