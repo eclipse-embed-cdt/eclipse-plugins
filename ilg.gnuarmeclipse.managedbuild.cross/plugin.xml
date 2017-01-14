@@ -3017,9 +3017,18 @@
                   useByScannerDiscovery="true"
                   valueType="enumerated">
                <enumeratedOptionValue
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.default"
+                     name="%option.c.compiler.std.default">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
                      command="-ansi"
                      id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.ansi"
                      name="%option.c.compiler.std.ansi">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-std=gnu90"
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.gnu90"
+                     name="%option.c.compiler.std.gnu90">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=c99"
@@ -3027,18 +3036,14 @@
                      name="%option.c.compiler.std.c99">
                </enumeratedOptionValue>
                <enumeratedOptionValue
-                     command="-std=c11"
-                     id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.c11"
-                     name="%option.c.compiler.std.c11">
-               </enumeratedOptionValue>
-               <enumeratedOptionValue
-                     id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.default"
-                     name="%option.c.compiler.std.default">
-               </enumeratedOptionValue>
-               <enumeratedOptionValue
                      command="-std=gnu99"
                      id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.gnu99"
                      name="%option.c.compiler.std.gnu99">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-std=c11"
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.std.c11"
+                     name="%option.c.compiler.std.c11">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=gnu11"
@@ -3208,18 +3213,18 @@
                   useByScannerDiscovery="true"
                   valueType="enumerated">
                <enumeratedOptionValue
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.default"
+                     name="%option.cpp.compiler.std.default">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
                      command="-ansi"
                      id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.ansi"
                      name="%option.cpp.compiler.std.ansi">
                </enumeratedOptionValue>
                <enumeratedOptionValue
-                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.default"
-                     name="%option.cpp.compiler.std.default">
-               </enumeratedOptionValue>
-               <enumeratedOptionValue
-                     command="-std=c++0x"
-                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.cpp0x"
-                     name="%option.cpp.compiler.std.cpp0x">
+                     command="-std=gnu++98"
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp98"
+                     name="%option.cpp.compiler.std.gnucpp98">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=c++11"
@@ -3227,9 +3232,9 @@
                      name="%option.cpp.compiler.std.cpp11">
                </enumeratedOptionValue>
                <enumeratedOptionValue
-                     command="-std=gnu++0x"
-                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp0x"
-                     name="%option.cpp.compiler.std.gnucpp0x">
+                     command="-std=c++0x"
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.cpp0x"
+                     name="%option.cpp.compiler.std.cpp0x">
                </enumeratedOptionValue>
                <enumeratedOptionValue
                      command="-std=gnu++11"
@@ -3238,14 +3243,39 @@
                      name="%option.cpp.compiler.std.gnucpp11">
                </enumeratedOptionValue>
                <enumeratedOptionValue
+                     command="-std=gnu++0x"
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp0x"
+                     name="%option.cpp.compiler.std.gnucpp0x">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-std=c++14"
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.cpp14"
+                     name="%option.cpp.compiler.std.cpp14">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
                      command="-std=c++1y"
                      id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.cpp1y"
                      name="%option.cpp.compiler.std.cpp1y">
                </enumeratedOptionValue>
                <enumeratedOptionValue
+                     command="-std=gnu++14"
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp14"
+                     name="%option.cpp.compiler.std.gnucpp14">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
                      command="-std=gnu++1y"
                      id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp1y"
                      name="%option.cpp.compiler.std.gnucpp1y">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-std=c++1z"
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.cpp1z"
+                     name="%option.cpp.compiler.std.cpp1z">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-std=gnu++1z"
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.std.gnucpp1z"
+                     name="%option.cpp.compiler.std.gnucpp1z">
                </enumeratedOptionValue>
             </option>
             <option
