@@ -31,6 +31,9 @@ Supported arch & cpu:
 	armv7ve			+[2015-05-22]
 	armv8-a 
 	armv8-a+crc 	+[2015-05-22]
+	armv8-m.base       +[2017-01-14]
+	armv8-m.main       +[2017-01-14]
+	armv8-m.main+dsp   +[2017-01-14]
 	ep9312
 	iwmmxt 
 	iwmmxt2 
@@ -96,6 +99,7 @@ Supported arch & cpu:
 	cortex-a57		+?
 	cortex-a5 
 	cortex-a7 
+    cortex-a72          [2017-01-14]
 	cortex-a8 
 	cortex-a9 
 	cortex-m0 
@@ -111,7 +115,9 @@ Supported arch & cpu:
 	cortex-r4f 
 	cortex-r5 		+[2014-02-20]
 	cortex-r7 		+[2014-02-20]
+	cortex-r8          [2017-01-14]
 	ep9312 
+	exynos-m1          [2017-01-14]
 	fa526 
 	fa606te 
 	fa626 
@@ -121,13 +127,14 @@ Supported arch & cpu:
 	generic-armv7-a +[2014-02-20]
 	iwmmxt 
 	iwmmxt2 
-		marvell-f		? not in 4.8
+	marvell-f		? not in 4.8
 	marvell-pj4 
-		mpcore 
-		mpcorenovfp 
+	mpcore 
+	mpcorenovfp 
 	native 
-		strongarm 
-		strongarm110 
-		strongarm1100 
-		strongarm1110 
-		xscale
+	strongarm 
+	strongarm110 
+	strongarm1100 
+	strongarm1110 
+	xgene1             [2017-01-14]
+	xscale

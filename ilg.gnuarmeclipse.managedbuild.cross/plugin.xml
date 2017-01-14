@@ -1213,6 +1213,11 @@
                   name="cortex-a7">
             </enumeratedOptionValue>
             <enumeratedOptionValue
+                  command="-mcpu=cortex-a72"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-a72"
+                  name="cortex-a72">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
                   command="-mcpu=cortex-a8"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-a8"
                   name="cortex-a8">
@@ -1289,9 +1294,19 @@
                   name="cortex-r7">
             </enumeratedOptionValue>
             <enumeratedOptionValue
+                  command="-mcpu=cortex-r8"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-r8"
+                  name="cortex-r8">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
                   command="-mcpu=ep9312"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.ep9312"
                   name="ep9312">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=exynos-m1"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.exynos-m1"
+                  name="exynos-m1">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mcpu=fa526"
@@ -1383,6 +1398,11 @@
                   command="-mcpu=strongarm1110"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.strongarm1110"
                   name="strongarm1110">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-mcpu=xgene1"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.xgene1"
+                  name="xgene1">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-mcpu=xscale"
@@ -1537,6 +1557,21 @@
                   command="-march=armv8-a+crc"
                   id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv8-a-crc"
                   name="armv8-a+crc">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv8-m.base"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv8-m-base"
+                  name="armv8-m.base">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv8-m.main"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv8-m-main"
+                  name="armv8-m.main">
+            </enumeratedOptionValue>
+            <enumeratedOptionValue
+                  command="-march=armv8-m.main+dsp"
+                  id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv8-m-main-dsp"
+                  name="armv8-m.main+dsp">
             </enumeratedOptionValue>
             <enumeratedOptionValue
                   command="-march=ep9312"
