@@ -665,6 +665,7 @@
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.preprocessor.defs"
                isAbstract="true"
                name="%option.compiler.defs"
+               useByScannerDiscovery="true"
                valueType="definedSymbols">
          </option>
          <option
@@ -680,6 +681,7 @@
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.preprocessor.undefs"
                isAbstract="true"
                name="%option.compiler.undefs"
+               useByScannerDiscovery="true"
                valueType="undefDefinedSymbols">
          </option>
          <option
@@ -706,7 +708,7 @@
                id="ilg.gnuarmeclipse.managedbuild.cross.option.base.dirs.include.files"
                isAbstract="true"
                name="%option.compiler.include.files"
-               useByScannerDiscovery="false"
+               useByScannerDiscovery="true"
                valueType="includeFiles">
          </option>
          <option
