@@ -3289,6 +3289,21 @@
                      id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.abiversion.6"
                      name="%option.cpp.compiler.abiversion.6">
                </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-fabi-version=7"
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.abiversion.7"
+                     name="%option.cpp.compiler.abiversion.7">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-fabi-version=8"
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.abiversion.8"
+                     name="%option.cpp.compiler.abiversion.8">
+               </enumeratedOptionValue>
+               <enumeratedOptionValue
+                     command="-fabi-version=9"
+                     id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.abiversion.9"
+                     name="%option.cpp.compiler.abiversion.9">
+               </enumeratedOptionValue>
             </option>
             <option
                   category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.optimization"
