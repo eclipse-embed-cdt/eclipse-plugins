@@ -1,12 +1,12 @@
 # The GNU ARM Eclipse plug-ins
 
+These are the Eclipse projects used to build the [GNU ARM Eclipse](http://gnuarmeclipse.github.io) plug-ins.
+
 ## Build status
 
 [![Build Status](https://travis-ci.org/gnuarmeclipse/plug-ins.svg?branch=develop)](https://travis-ci.org/gnuarmeclipse/plug-ins)
 
-These are the Eclipse projects used to build the [GNU ARM Eclipse](http://gnuarmeclipse.github.io) plug-ins.
-
-## Update site
+## How to install
 
 The recommended install method is via Eclipse Marketplace.
 
@@ -37,8 +37,13 @@ The Eclipse build is described in the [project web](http://gnuarmeclipse.github.
 
 ## Run-time dependencies
 
-The resulted plug-ins minimum requirements are
+The minimum requirements for running the GNU ARM Eclipse plug-ins are:
 
 - JavaSE-1.7
 - CDT 8.6.0 (Luna SR2)
+
+Recommended:
+
+- JavaSE-1.8-111 or later
+- Eclipse Mars.2
 
