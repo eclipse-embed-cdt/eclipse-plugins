@@ -2,7 +2,7 @@
 
 ## Build status
 
-[![Build Status](https://travis-ci.org/gnuarmeclipse/plug-ins.svg?branch=master)](https://travis-ci.org/gnuarmeclipse/plug-ins)
+[![Build Status](https://travis-ci.org/gnuarmeclipse/plug-ins.svg?branch=develop)](https://travis-ci.org/gnuarmeclipse/plug-ins)
 
 These are the Eclipse projects used to build the [GNU ARM Eclipse](http://gnuarmeclipse.github.io) plug-ins.
 
