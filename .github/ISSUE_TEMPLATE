@@ -1,3 +1,15 @@
+### Important notice
+
+SourceForce recently updated the security certicates, making Eclipse install/upgrades fail with messages like this:
+
+```
+No repository found at http://gnuarmeclipse.sourceforge.net/updates
+```
+
+The solution is to upgrade JDK to a version higher than 8u101.
+
+For more details see [GNU ARM Eclipse plug-ins sun.security.validator.ValidatorException](http://gnuarmeclipse.github.io/blog/2016/12/02/plugins-install-issue/).
+
 ### Prerequisites
 
 In case you encounter problems while using the plug-ins, please consider the following:
