@@ -503,6 +503,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		fQemuBoardName.addModifyListener(scheduleUpdateJobModifyListener);
 
+		fQemuDeviceName.addModifyListener(scheduleUpdateJobModifyListener);
+
 		fGdbServerGdbPort.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
