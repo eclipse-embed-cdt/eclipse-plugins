@@ -1,25 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
-   <extension
-         point="org.eclipse.cdt.core.templates">
-      <template
-            filterPattern=".*gcc"
-            id="ilg.gnuarmeclipse.templates.freescale.pe.pex.c.project"
-            location="$nl$/templates/pex_c_project/template.xml"
-            projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
-      </template>
-   </extension>
-   
-   <extension
-         point="org.eclipse.cdt.core.templateAssociations">
-      <template
-            id="ilg.gnuarmeclipse.templates.freescale.pe.pex.c.project">
-         <toolChain
-               id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
-         </toolChain>
-      </template>
-   </extension>
+	<extension point="org.eclipse.cdt.core.templates">
+		<template
+			filterPattern=".*gcc"
+			id="ilg.gnuarmeclipse.templates.freescale.pe.pex.c.project"
+			location="$nl$/templates/pex_c_project/template.xml"
+			projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
+		</template>
+	</extension>
+
+	<extension point="org.eclipse.cdt.core.templateAssociations">
+		<template id="ilg.gnuarmeclipse.templates.freescale.pe.pex.c.project">
+			<toolChain id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
+			</toolChain>
+		</template>
+	</extension>
    
 <!--
    <extension
@@ -35,16 +31,14 @@
    </extension>
    -->
 
-   <extension
-         point="org.eclipse.cdt.core.templateProcessTypes">
-      <processType
-            name="RunProcessorExpertWizard"
-            processRunner="ilg.gnuarmeclipse.templates.freescale.pe.processes.RunProcessorExpertWizard">
-         <simple
-               name="projectName">
-         </simple>
-      </processType>
-   </extension>
+	<extension point="org.eclipse.cdt.core.templateProcessTypes">
+		<processType
+			name="RunProcessorExpertWizard"
+			processRunner="ilg.gnuarmeclipse.templates.freescale.pe.processes.RunProcessorExpertWizard">
+			<simple name="projectName">
+			</simple>
+		</processType>
+	</extension>
    
    <!-- 
    <extension
@@ -63,5 +57,5 @@
       </wizard>
    </extension>
    -->
-   
+
 </plugin>
