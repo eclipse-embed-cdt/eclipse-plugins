@@ -44,8 +44,7 @@ public class PersistentPreferences {
 	public static String getString(String key, String defaultValue) {
 
 		String value;
-		value = Platform.getPreferencesService().getString(Activator.PLUGIN_ID,
-				key, null, null);
+		value = Platform.getPreferencesService().getString(Activator.PLUGIN_ID, key, null, null);
 		// System.out.println("Value of " + id + " is " + value);
 
 		if (value != null) {
@@ -58,8 +57,7 @@ public class PersistentPreferences {
 	public static boolean getBoolean(String key, boolean defaultValue) {
 
 		boolean value;
-		value = Platform.getPreferencesService().getBoolean(
-				Activator.PLUGIN_ID, key, defaultValue, null);
+		value = Platform.getPreferencesService().getBoolean(Activator.PLUGIN_ID, key, defaultValue, null);
 		// System.out.println("Value of " + id + " is " + value);
 		return value;
 	}
@@ -71,8 +69,7 @@ public class PersistentPreferences {
 		value = value.trim();
 
 		// Access the instanceScope
-		Preferences preferences = InstanceScope.INSTANCE
-				.getNode(Activator.PLUGIN_ID);
+		Preferences preferences = InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID);
 		preferences.put(key, value);
 	}
 
@@ -88,8 +85,7 @@ public class PersistentPreferences {
 	// ------------------------------------------------------------------------
 
 	public static boolean getPeripheralsChangedUseFadingBackground() {
-		return getBoolean(PERIPHERALS_CHANGED_USE_FADING_BACKGROUND,
-				PERIPHERALS_CHANGED_USE_FADING_BACKGROUND_DEFAULT);
+		return getBoolean(PERIPHERALS_CHANGED_USE_FADING_BACKGROUND, PERIPHERALS_CHANGED_USE_FADING_BACKGROUND_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------

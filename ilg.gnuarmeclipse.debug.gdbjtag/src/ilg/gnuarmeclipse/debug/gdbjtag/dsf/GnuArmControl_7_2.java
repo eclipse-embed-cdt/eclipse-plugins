@@ -40,12 +40,10 @@ public class GnuArmControl_7_2 extends GDBControl_7_2 {
 	 * ICommandControlShutdownDMEvent, this is used by GDBLaunch to hunt for
 	 * this event.
 	 */
-	private static class GnuArmCommandControlShutdownDMEvent extends
-			AbstractDMEvent<ICommandControlDMContext> implements
-			ICommandControlShutdownDMEvent {
+	private static class GnuArmCommandControlShutdownDMEvent extends AbstractDMEvent<ICommandControlDMContext>
+			implements ICommandControlShutdownDMEvent {
 
-		public GnuArmCommandControlShutdownDMEvent(
-				ICommandControlDMContext context) {
+		public GnuArmCommandControlShutdownDMEvent(ICommandControlDMContext context) {
 			super(context);
 		}
 	}
@@ -57,8 +55,7 @@ public class GnuArmControl_7_2 extends GDBControl_7_2 {
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmControl_7_2(DsfSession session, ILaunchConfiguration config,
-			CommandFactory factory, String mode) {
+	public GnuArmControl_7_2(DsfSession session, ILaunchConfiguration config, CommandFactory factory, String mode) {
 		super(session, config, factory);
 
 		fMode = mode;
@@ -78,18 +75,16 @@ public class GnuArmControl_7_2 extends GDBControl_7_2 {
 
 	private void doInitialize(final RequestMonitor rm) {
 
-		fServerBackend = getServicesTracker().getService(
-				IGdbServerBackendService.class);
+		fServerBackend = getServicesTracker().getService(IGdbServerBackendService.class);
 		rm.done();
 	}
 
 	// ------------------------------------------------------------------------
 
 	@Override
-	protected Sequence getCompleteInitializationSequence(
-			Map<String, Object> attributes, RequestMonitorWithProgress rm) {
-		return new GnuArmFinalLaunchSequence_7_2(getSession(), attributes,
-				fMode, rm);
+	protected Sequence getCompleteInitializationSequence(Map<String, Object> attributes,
+			RequestMonitorWithProgress rm) {
+		return new GnuArmFinalLaunchSequence_7_2(getSession(), attributes, fMode, rm);
 	}
 
 	/**
@@ -111,16 +106,13 @@ public class GnuArmControl_7_2 extends GDBControl_7_2 {
 			System.out.println("GnuArmControl_7_2.eventDispatched() " + e);
 		}
 
-		if (e.getState() == IMIBackend.State.TERMINATED
-				&& e.getSessionId().equals(getSession().getId())
+		if (e.getState() == IMIBackend.State.TERMINATED && e.getSessionId().equals(getSession().getId())
 				&& e.getBackendId().equals(fServerBackend.getId())) {
 
 			// Will be captured by GdbLaunch (waiting for
 			// ICommandControlShutdownDMEvent), which will trigger
 			// sessionShutdown.
-			getSession().dispatchEvent(
-					new GnuArmCommandControlShutdownDMEvent(getContext()),
-					getProperties());
+			getSession().dispatchEvent(new GnuArmCommandControlShutdownDMEvent(getContext()), getProperties());
 		}
 	}
 

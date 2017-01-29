@@ -56,7 +56,8 @@ public class PacksStorage {
 		return file; // Cannot return null
 	}
 
-	public static File getPackageFileObject(String vendor, String packageName, String version, String name) throws IOException {
+	public static File getPackageFileObject(String vendor, String packageName, String version, String name)
+			throws IOException {
 
 		IPath path = getFolderPath().append(vendor).append(packageName).append(version).append(name);
 		File file = path.toFile();
@@ -65,7 +66,7 @@ public class PacksStorage {
 		}
 		return file; // Cannot return null
 	}
-	
+
 	// Return the absolute 'Packages' path.
 	public static synchronized IPath getFolderPath() throws IOException {
 
@@ -82,8 +83,7 @@ public class PacksStorage {
 	public static String getFolderPathString() throws IOException {
 
 		IPreferenceStore store = Preferences.getPreferenceStore();
-		String folderPath = store.getString(Preferences.PACKS_FOLDER_PATH)
-				.trim();
+		String folderPath = store.getString(Preferences.PACKS_FOLDER_PATH).trim();
 
 		if (folderPath == null) {
 			throw new IOException("Missing folder path.");

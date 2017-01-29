@@ -51,19 +51,16 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 	public void initializeDefaultPreferences() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out
-					.println("DefaultPreferenceInitializer.initializeDefaultPreferences()");
+			System.out.println("DefaultPreferenceInitializer.initializeDefaultPreferences()");
 		}
 
-		DefaultPreferences.putBoolean(
-				PersistentPreferences.GDB_SERVER_DO_START,
+		DefaultPreferences.putBoolean(PersistentPreferences.GDB_SERVER_DO_START,
 				DefaultPreferences.DO_START_GDB_SERVER_DEFAULT);
 
 		DefaultPreferences.putString(PersistentPreferences.GDB_CLIENT_COMMANDS,
 				DefaultPreferences.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
 
-		DefaultPreferences.putBoolean(
-				PersistentPreferences.TAB_MAIN_CHECK_PROGRAM,
+		DefaultPreferences.putBoolean(PersistentPreferences.TAB_MAIN_CHECK_PROGRAM,
 				DefaultPreferences.TAB_MAIN_CHECK_PROGRAM_DEFAULT);
 
 		// When the 'ilg.gnuarmeclipse.managedbuild.cross' node is completely
@@ -71,11 +68,9 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		// This is the moment when all final default values are in, possibly
 		// set by product or command line.
 
-		Preferences prefs = Platform.getPreferencesService().getRootNode()
-				.node(DefaultScope.SCOPE);
+		Preferences prefs = Platform.getPreferencesService().getRootNode().node(DefaultScope.SCOPE);
 		if (prefs instanceof IEclipsePreferences) {
-			((IEclipsePreferences) prefs)
-					.addNodeChangeListener(new LateInitializer());
+			((IEclipsePreferences) prefs).addNodeChangeListener(new LateInitializer());
 		}
 	}
 
@@ -88,8 +83,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void added(NodeChangeEvent event) {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("LateInitializer.added() " + event + " "
-						+ event.getChild().name());
+				System.out.println("LateInitializer.added() " + event + " " + event.getChild().name());
 			}
 
 			if (Activator.PLUGIN_ID.equals(event.getChild().name())) {
@@ -97,8 +91,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				finalizeInitializationsDefaultPreferences();
 
 				// We're done, de-register listener.
-				((IEclipsePreferences) (event.getSource()))
-						.removeNodeChangeListener(this);
+				((IEclipsePreferences) (event.getSource())).removeNodeChangeListener(this);
 			}
 		}
 
@@ -116,8 +109,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void finalizeInitializationsDefaultPreferences() {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out
-						.println("LateInitializer.finalizeInitializationsDefaultPreferences()");
+				System.out.println("LateInitializer.finalizeInitializationsDefaultPreferences()");
 			}
 
 			// OpenOCD executable name
@@ -130,8 +122,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				}
 			}
 
-			String executableName = EclipseUtils
-					.getVariableValue(VariableInitializer.VARIABLE_OPENOCD_EXECUTABLE);
+			String executableName = EclipseUtils.getVariableValue(VariableInitializer.VARIABLE_OPENOCD_EXECUTABLE);
 			if (executableName == null || executableName.isEmpty()) {
 				executableName = DefaultPreferences.getExecutableName();
 			}
@@ -170,19 +161,16 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 			if (folder.isEmpty()) {
 
 				// If the search path is known, discover toolchain.
-				folder = Discoverer.getRegistryInstallFolder(executableName,
-						"bin", REG_SUBKEY, REG_NAME);
+				folder = Discoverer.getRegistryInstallFolder(executableName, "bin", REG_SUBKEY, REG_NAME);
 
 				// Search the non standard key too.
 				if (folder == null) {
-					folder = Discoverer.getRegistryInstallFolder(
-							executableName, "bin", REG_SUBKEY,
+					folder = Discoverer.getRegistryInstallFolder(executableName, "bin", REG_SUBKEY,
 							REG_NAME_DEPRECATED);
 				}
 
 				if (folder == null) {
-					folder = Discoverer.searchInstallFolder(executableName,
-							searchPath, "bin");
+					folder = Discoverer.searchInstallFolder(executableName, searchPath, "bin");
 				}
 			}
 

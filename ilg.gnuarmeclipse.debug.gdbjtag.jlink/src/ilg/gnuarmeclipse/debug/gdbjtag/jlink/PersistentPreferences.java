@@ -36,16 +36,12 @@ public class PersistentPreferences {
 
 	public static final String GDB_SERVER_DO_START = GDB_SERVER + "doStart";
 
-	public static final String GDB_SERVER_EXECUTABLE = GDB_SERVER
-			+ "executable";
+	public static final String GDB_SERVER_EXECUTABLE = GDB_SERVER + "executable";
 
-	public static final String GDB_SERVER_ENDIANNESS = GDB_SERVER
-			+ "endianness";
+	public static final String GDB_SERVER_ENDIANNESS = GDB_SERVER + "endianness";
 
-	public static final String GDB_SERVER_CONNECTION = GDB_SERVER
-			+ "connection";
-	public static final String GDB_SERVER_CONNECTION_ADDRESS = GDB_SERVER
-			+ "connection.address";
+	public static final String GDB_SERVER_CONNECTION = GDB_SERVER + "connection";
+	public static final String GDB_SERVER_CONNECTION_ADDRESS = GDB_SERVER + "connection.address";
 
 	public static final String GDB_SERVER_INTERFACE = GDB_SERVER + "interface";
 
@@ -56,8 +52,7 @@ public class PersistentPreferences {
 	// GDB Client Setup
 	public static final String GDB_CLIENT = "gdb.client.";
 
-	public static final String GDB_CLIENT_EXECUTABLE = GDB_CLIENT
-			+ "executable";
+	public static final String GDB_CLIENT_EXECUTABLE = GDB_CLIENT + "executable";
 
 	public static final String GDB_CLIENT_OTHER_OPTIONS = GDB_CLIENT + "other";
 
@@ -67,46 +62,32 @@ public class PersistentPreferences {
 	// Initialisation Commands
 	public static final String GDB_JLINK = "gdb.jlink.";
 
-	public static final String GDB_JLINK_DO_INITIAL_RESET = GDB_JLINK
-			+ "doInitialReset";
-	public static final String GDB_JLINK_INITIAL_RESET_TYPE = GDB_JLINK
-			+ "initialReset.type";
-	public static final String GDB_JLINK_INITIAL_RESET_SPEED = GDB_JLINK
-			+ "initialReset.speed";
+	public static final String GDB_JLINK_DO_INITIAL_RESET = GDB_JLINK + "doInitialReset";
+	public static final String GDB_JLINK_INITIAL_RESET_TYPE = GDB_JLINK + "initialReset.type";
+	public static final String GDB_JLINK_INITIAL_RESET_SPEED = GDB_JLINK + "initialReset.speed";
 
 	public static final String GDB_JLINK_SPEED = GDB_JLINK + "speed";
 
-	public static final String GDB_JLINK_ENABLE_FLASH_BREAKPOINTS = GDB_JLINK
-			+ "enableFlashBreakpoints";
-	public static final String GDB_JLINK_ENABLE_SEMIHOSTING = GDB_JLINK
-			+ "enableSemihosting";
-	public static final String GDB_JLINK_SEMIHOSTING_TELNET = GDB_JLINK
-			+ "semihosting.telnet";
-	public static final String GDB_JLINK_SEMIHOSTING_CLIENT = GDB_JLINK
-			+ "semihosting.client";
+	public static final String GDB_JLINK_ENABLE_FLASH_BREAKPOINTS = GDB_JLINK + "enableFlashBreakpoints";
+	public static final String GDB_JLINK_ENABLE_SEMIHOSTING = GDB_JLINK + "enableSemihosting";
+	public static final String GDB_JLINK_SEMIHOSTING_TELNET = GDB_JLINK + "semihosting.telnet";
+	public static final String GDB_JLINK_SEMIHOSTING_CLIENT = GDB_JLINK + "semihosting.client";
 
 	public static final String GDB_JLINK_ENABLE_SWO = GDB_JLINK + "enableSwo";
 
-	public static final String GDB_JLINK_SWO_ENABLE_TARGET_CPU_FREQ = GDB_JLINK
-			+ "swoEnableTarget.cpuFreq";
-	public static final String GDB_JLINK_SWO_ENABLE_TARGET_SWO_FREQ = GDB_JLINK
-			+ "swoEnableTarget.swoFreq";
-	public static final String GDB_JLINK_SWO_ENABLE_TARGET_PORT_MASK = GDB_JLINK
-			+ "swoEnableTarget.portMask";
+	public static final String GDB_JLINK_SWO_ENABLE_TARGET_CPU_FREQ = GDB_JLINK + "swoEnableTarget.cpuFreq";
+	public static final String GDB_JLINK_SWO_ENABLE_TARGET_SWO_FREQ = GDB_JLINK + "swoEnableTarget.swoFreq";
+	public static final String GDB_JLINK_SWO_ENABLE_TARGET_PORT_MASK = GDB_JLINK + "swoEnableTarget.portMask";
 
 	public static final String GDB_JLINK_INIT_OTHER = GDB_JLINK + "init.other";
 
 	// Run Commands
-	public static final String GDB_JLINK_DO_DEBUG_IN_RAM = GDB_JLINK
-			+ "doDebugInRam";
+	public static final String GDB_JLINK_DO_DEBUG_IN_RAM = GDB_JLINK + "doDebugInRam";
 
-	public static final String GDB_JLINK_DO_PRERUN_RESET = GDB_JLINK
-			+ "doPreRunReset";
-	public static final String GDB_JLINK_PRERUN_RESET_TYPE = GDB_JLINK
-			+ "preRunReset.type";
+	public static final String GDB_JLINK_DO_PRERUN_RESET = GDB_JLINK + "doPreRunReset";
+	public static final String GDB_JLINK_PRERUN_RESET_TYPE = GDB_JLINK + "preRunReset.type";
 
-	public static final String GDB_JLINK_PRERUN_OTHER = GDB_JLINK
-			+ "preRun.other";
+	public static final String GDB_JLINK_PRERUN_OTHER = GDB_JLINK + "preRun.other";
 
 	// ----- Defaults ---------------------------------------------------------
 
@@ -129,8 +110,7 @@ public class PersistentPreferences {
 	private static String getString(String id, String defaultValue) {
 
 		String value;
-		value = Platform.getPreferencesService().getString(Activator.PLUGIN_ID,
-				id, null, null);
+		value = Platform.getPreferencesService().getString(Activator.PLUGIN_ID, id, null, null);
 		// System.out.println("Value of " + id + " is " + value);
 
 		if (value != null) {
@@ -161,8 +141,7 @@ public class PersistentPreferences {
 		value = value.trim();
 
 		// Access the instanceScope
-		Preferences preferences = InstanceScope.INSTANCE
-				.getNode(Activator.PLUGIN_ID);
+		Preferences preferences = InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID);
 		preferences.put(id, value);
 	}
 
@@ -178,8 +157,8 @@ public class PersistentPreferences {
 	// ----- gdb server doStart -----------------------------------------------
 	public static boolean getGdbServerDoStart() {
 
-		return Boolean.valueOf(getString(GDB_SERVER_DO_START,
-				Boolean.toString(DefaultPreferences.SERVER_DO_START_DEFAULT)));
+		return Boolean
+				.valueOf(getString(GDB_SERVER_DO_START, Boolean.toString(DefaultPreferences.SERVER_DO_START_DEFAULT)));
 	}
 
 	public static void putGdbServerDoStart(boolean value) {
@@ -205,8 +184,7 @@ public class PersistentPreferences {
 	// ----- flash device id --------------------------------------------------
 	public static String getFlashDeviceName() {
 
-		return getString(FLASH_DEVICE_NAME,
-				DefaultPreferences.FLASH_DEVICE_NAME_DEFAULT);
+		return getString(FLASH_DEVICE_NAME, DefaultPreferences.FLASH_DEVICE_NAME_DEFAULT);
 	}
 
 	public static void putFlashDeviceName(String value) {
@@ -217,8 +195,7 @@ public class PersistentPreferences {
 	// ----- gdb server endianness --------------------------------------------
 	public static String getGdbServerEndianness() {
 
-		return getString(GDB_SERVER_ENDIANNESS,
-				DefaultPreferences.SERVER_ENDIANNESS_DEFAULT);
+		return getString(GDB_SERVER_ENDIANNESS, DefaultPreferences.SERVER_ENDIANNESS_DEFAULT);
 	}
 
 	public static void putGdbServerEndianness(String value) {
@@ -229,8 +206,7 @@ public class PersistentPreferences {
 	// ----- gdb server connection --------------------------------------------
 	public static String getGdbServerConnection() {
 
-		return getString(GDB_SERVER_CONNECTION,
-				DefaultPreferences.SERVER_CONNECTION_DEFAULT);
+		return getString(GDB_SERVER_CONNECTION, DefaultPreferences.SERVER_CONNECTION_DEFAULT);
 	}
 
 	public static void putGdbServerConnection(String value) {
@@ -241,8 +217,7 @@ public class PersistentPreferences {
 	// ----- gdb server connection address ------------------------------------
 	public static String getGdbServerConnectionAddress() {
 
-		return getString(GDB_SERVER_CONNECTION_ADDRESS,
-				DefaultPreferences.SERVER_CONNECTION_ADDRESS_DEFAULT);
+		return getString(GDB_SERVER_CONNECTION_ADDRESS, DefaultPreferences.SERVER_CONNECTION_ADDRESS_DEFAULT);
 	}
 
 	public static void putGdbServerConnectionAddress(String value) {
@@ -268,8 +243,7 @@ public class PersistentPreferences {
 	// ----- gdb server initial speed -----------------------------------------
 	public static String getGdbServerInitialSpeed() {
 
-		return getString(GDB_SERVER_INITIAL_SPEED,
-				DefaultPreferences.SERVER_INITIAL_SPEED_DEFAULT);
+		return getString(GDB_SERVER_INITIAL_SPEED, DefaultPreferences.SERVER_INITIAL_SPEED_DEFAULT);
 	}
 
 	public static void putGdbServerInitialSpeed(String value) {
@@ -280,8 +254,7 @@ public class PersistentPreferences {
 	// ----- gdb server other options -----------------------------------------
 	public static String getGdbServerOtherOptions() {
 
-		return getString(GDB_SERVER_OTHER_OPTIONS,
-				DefaultPreferences.SERVER_OTHER_OPTIONS_DEFAULT);
+		return getString(GDB_SERVER_OTHER_OPTIONS, DefaultPreferences.SERVER_OTHER_OPTIONS_DEFAULT);
 	}
 
 	public static void putGdbServerOtherOptions(String value) {
@@ -307,8 +280,7 @@ public class PersistentPreferences {
 	// ----- gdb client other options -----------------------------------------
 	public static String getGdbClientOtherOptions() {
 
-		return getString(GDB_CLIENT_OTHER_OPTIONS,
-				DefaultPreferences.CLIENT_OTHER_OPTIONS_DEFAULT);
+		return getString(GDB_CLIENT_OTHER_OPTIONS, DefaultPreferences.CLIENT_OTHER_OPTIONS_DEFAULT);
 	}
 
 	public static void putGdbClientOtherOptions(String value) {
@@ -319,8 +291,7 @@ public class PersistentPreferences {
 	// ----- gdb client commands ----------------------------------------------
 	public static String getGdbClientCommands() {
 
-		return getString(GDB_CLIENT_COMMANDS,
-				DefaultPreferences.CLIENT_COMMANDS_DEFAULT);
+		return getString(GDB_CLIENT_COMMANDS, DefaultPreferences.CLIENT_COMMANDS_DEFAULT);
 	}
 
 	public static void putGdbClientCommands(String value) {
@@ -331,8 +302,8 @@ public class PersistentPreferences {
 	// ----- jlink do initial reset -------------------------------------------
 	public static boolean getJLinkDoInitialReset() {
 
-		return Boolean.valueOf(getString(GDB_JLINK_DO_INITIAL_RESET,
-				Boolean.toString(DefaultPreferences.DO_INITIAL_RESET_DEFAULT)));
+		return Boolean.valueOf(
+				getString(GDB_JLINK_DO_INITIAL_RESET, Boolean.toString(DefaultPreferences.DO_INITIAL_RESET_DEFAULT)));
 	}
 
 	public static void putJLinkDoInitialReset(boolean value) {
@@ -343,8 +314,7 @@ public class PersistentPreferences {
 	// ----- jlink initial reset type -----------------------------------------
 	public static String getJLinkInitialResetType() {
 
-		return getString(GDB_JLINK_INITIAL_RESET_TYPE,
-				DefaultPreferences.INITIAL_RESET_TYPE_DEFAULT);
+		return getString(GDB_JLINK_INITIAL_RESET_TYPE, DefaultPreferences.INITIAL_RESET_TYPE_DEFAULT);
 	}
 
 	public static void putJLinkInitialResetType(String value) {
@@ -355,21 +325,19 @@ public class PersistentPreferences {
 	// ----- jlink initial reset speed ----------------------------------------
 	public static int getJLinkInitialResetSpeed() {
 
-		return Integer.valueOf(getString(GDB_JLINK_INITIAL_RESET_SPEED, Integer
-				.toString(DefaultPreferences.INITIAL_RESET_SPEED_DEFAULT)));
+		return Integer.valueOf(getString(GDB_JLINK_INITIAL_RESET_SPEED,
+				Integer.toString(DefaultPreferences.INITIAL_RESET_SPEED_DEFAULT)));
 	}
 
 	public static void putJLinkInitialResetSpeed(int value) {
 
-		putWorkspaceString(GDB_JLINK_INITIAL_RESET_SPEED,
-				Integer.toString(value));
+		putWorkspaceString(GDB_JLINK_INITIAL_RESET_SPEED, Integer.toString(value));
 	}
 
 	// ----- jlink speed ------------------------------------------------------
 	public static String getJLinkSpeed() {
 
-		return getString(GDB_JLINK_SPEED,
-				DefaultPreferences.JLINK_SPEED_DEFAULT);
+		return getString(GDB_JLINK_SPEED, DefaultPreferences.JLINK_SPEED_DEFAULT);
 	}
 
 	public static void putJLinkSpeed(String value) {
@@ -380,16 +348,13 @@ public class PersistentPreferences {
 	// ----- jlink enable flash breakpoints -----------------------------------
 	public static boolean getJLinkEnableFlashBreakpoints() {
 
-		return Boolean
-				.valueOf(getString(
-						GDB_JLINK_ENABLE_FLASH_BREAKPOINTS,
-						Boolean.toString(DefaultPreferences.ENABLE_FLASH_BREAKPOINTS_DEFAULT)));
+		return Boolean.valueOf(getString(GDB_JLINK_ENABLE_FLASH_BREAKPOINTS,
+				Boolean.toString(DefaultPreferences.ENABLE_FLASH_BREAKPOINTS_DEFAULT)));
 	}
 
 	public static void putJLinkEnableFlashBreakpoints(boolean value) {
 
-		putWorkspaceString(GDB_JLINK_ENABLE_FLASH_BREAKPOINTS,
-				Boolean.toString(value));
+		putWorkspaceString(GDB_JLINK_ENABLE_FLASH_BREAKPOINTS, Boolean.toString(value));
 	}
 
 	// ----- jlink enable semihosting -----------------------------------------
@@ -404,38 +369,31 @@ public class PersistentPreferences {
 
 	public static void putJLinkEnableSemihosting(boolean value) {
 
-		putWorkspaceString(GDB_JLINK_ENABLE_SEMIHOSTING,
-				Boolean.toString(value));
+		putWorkspaceString(GDB_JLINK_ENABLE_SEMIHOSTING, Boolean.toString(value));
 	}
 
 	// ----- jlink semihosting telnet -----------------------------------------
 	public static boolean getJLinkSemihostingTelnet() {
 
-		return Boolean
-				.valueOf(getString(
-						GDB_JLINK_SEMIHOSTING_TELNET,
-						Boolean.toString(DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT)));
+		return Boolean.valueOf(getString(GDB_JLINK_SEMIHOSTING_TELNET,
+				Boolean.toString(DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT)));
 	}
 
 	public static void putJLinkSemihostingTelnet(boolean value) {
 
-		putWorkspaceString(GDB_JLINK_SEMIHOSTING_TELNET,
-				Boolean.toString(value));
+		putWorkspaceString(GDB_JLINK_SEMIHOSTING_TELNET, Boolean.toString(value));
 	}
 
 	// ----- jlink semihosting client -----------------------------------------
 	public static boolean getJLinkSemihostingClient() {
 
-		return Boolean
-				.valueOf(getString(
-						GDB_JLINK_SEMIHOSTING_CLIENT,
-						Boolean.toString(DefaultPreferences.SEMIHOSTING_CLIENT_DEFAULT)));
+		return Boolean.valueOf(getString(GDB_JLINK_SEMIHOSTING_CLIENT,
+				Boolean.toString(DefaultPreferences.SEMIHOSTING_CLIENT_DEFAULT)));
 	}
 
 	public static void putJLinkSemihostingClient(boolean value) {
 
-		putWorkspaceString(GDB_JLINK_SEMIHOSTING_CLIENT,
-				Boolean.toString(value));
+		putWorkspaceString(GDB_JLINK_SEMIHOSTING_CLIENT, Boolean.toString(value));
 	}
 
 	// ----- jlink enable swo -------------------------------------------------
@@ -456,38 +414,31 @@ public class PersistentPreferences {
 	// ----- jlink swo cpu frequency ------------------------------------------
 	public static int getJLinkSwoEnableTargetCpuFreq() {
 
-		return Integer
-				.valueOf(getString(
-						GDB_JLINK_SWO_ENABLE_TARGET_CPU_FREQ,
-						Integer.toString(DefaultPreferences.SWO_ENABLE_TARGET_CPU_FREQ_DEFAULT)));
+		return Integer.valueOf(getString(GDB_JLINK_SWO_ENABLE_TARGET_CPU_FREQ,
+				Integer.toString(DefaultPreferences.SWO_ENABLE_TARGET_CPU_FREQ_DEFAULT)));
 	}
 
 	public static void putJLinkSwoEnableTargetCpuFreq(int value) {
 
-		putWorkspaceString(GDB_JLINK_SWO_ENABLE_TARGET_CPU_FREQ,
-				Integer.toString(value));
+		putWorkspaceString(GDB_JLINK_SWO_ENABLE_TARGET_CPU_FREQ, Integer.toString(value));
 	}
 
 	// ----- jlink swo frequency ----------------------------------------------
 	public static int getJLinkSwoEnableTargetSwoFreq() {
 
-		return Integer
-				.valueOf(getString(
-						GDB_JLINK_SWO_ENABLE_TARGET_SWO_FREQ,
-						Integer.toString(DefaultPreferences.SWO_ENABLE_TARGET_SWO_FREQ_DEFAULT)));
+		return Integer.valueOf(getString(GDB_JLINK_SWO_ENABLE_TARGET_SWO_FREQ,
+				Integer.toString(DefaultPreferences.SWO_ENABLE_TARGET_SWO_FREQ_DEFAULT)));
 	}
 
 	public static void putJLinkSwoEnableTargetSwoFreq(int value) {
 
-		putWorkspaceString(GDB_JLINK_SWO_ENABLE_TARGET_SWO_FREQ,
-				Integer.toString(value));
+		putWorkspaceString(GDB_JLINK_SWO_ENABLE_TARGET_SWO_FREQ, Integer.toString(value));
 	}
 
 	// ----- jlink swo mask ---------------------------------------------------
 	public static String getJLinkSwoEnableTargetPortMask() {
 
-		return getString(GDB_JLINK_SWO_ENABLE_TARGET_PORT_MASK,
-				DefaultPreferences.SWO_ENABLE_TARGET_PORT_MASK_DEFAULT);
+		return getString(GDB_JLINK_SWO_ENABLE_TARGET_PORT_MASK, DefaultPreferences.SWO_ENABLE_TARGET_PORT_MASK_DEFAULT);
 	}
 
 	public static void putJLinkSwoEnableTargetPortMask(String value) {
@@ -498,8 +449,7 @@ public class PersistentPreferences {
 	// ----- jlink init other -------------------------------------------------
 	public static String getJLinkInitOther() {
 
-		return getString(GDB_JLINK_INIT_OTHER,
-				DefaultPreferences.INIT_OTHER_DEFAULT);
+		return getString(GDB_JLINK_INIT_OTHER, DefaultPreferences.INIT_OTHER_DEFAULT);
 	}
 
 	public static void putJLinkInitOther(String value) {
@@ -510,8 +460,8 @@ public class PersistentPreferences {
 	// ----- jlink debug in ram -----------------------------------------------
 	public static boolean getJLinkDebugInRam() {
 
-		return Boolean.valueOf(getString(GDB_JLINK_DO_DEBUG_IN_RAM,
-				Boolean.toString(DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT)));
+		return Boolean.valueOf(
+				getString(GDB_JLINK_DO_DEBUG_IN_RAM, Boolean.toString(DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT)));
 	}
 
 	public static void putJLinkDebugInRam(boolean value) {
@@ -522,8 +472,8 @@ public class PersistentPreferences {
 	// ----- jlink do prerun reset -----------------------------------
 	public static boolean getJLinkDoPreRunReset() {
 
-		return Boolean.valueOf(getString(GDB_JLINK_DO_PRERUN_RESET,
-				Boolean.toString(DefaultPreferences.DO_PRERUN_RESET_DEFAULT)));
+		return Boolean.valueOf(
+				getString(GDB_JLINK_DO_PRERUN_RESET, Boolean.toString(DefaultPreferences.DO_PRERUN_RESET_DEFAULT)));
 	}
 
 	public static void putJLinkDoPreRunReset(boolean value) {
@@ -534,8 +484,7 @@ public class PersistentPreferences {
 	// ----- jlink prerun reset type ------------------------------------------
 	public static String getJLinkPreRunResetType() {
 
-		return getString(GDB_JLINK_PRERUN_RESET_TYPE,
-				DefaultPreferences.PRERUN_RESET_TYPE_DEFAULT);
+		return getString(GDB_JLINK_PRERUN_RESET_TYPE, DefaultPreferences.PRERUN_RESET_TYPE_DEFAULT);
 	}
 
 	public static void putJLinkPreRunResetType(String value) {
@@ -546,8 +495,7 @@ public class PersistentPreferences {
 	// ----- jlink init other -------------------------------------------------
 	public static String getJLinkPreRunOther() {
 
-		return getString(GDB_JLINK_PRERUN_OTHER,
-				DefaultPreferences.PRERUN_OTHER_DEFAULT);
+		return getString(GDB_JLINK_PRERUN_OTHER, DefaultPreferences.PRERUN_OTHER_DEFAULT);
 	}
 
 	public static void putJLinkPreRunOther(String value) {

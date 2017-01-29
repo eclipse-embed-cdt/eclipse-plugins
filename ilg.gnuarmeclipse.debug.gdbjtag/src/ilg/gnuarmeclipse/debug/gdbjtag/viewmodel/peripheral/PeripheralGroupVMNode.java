@@ -28,8 +28,7 @@ import org.eclipse.debug.core.model.IRegisterGroup;
  * SvdCluster. Groups are descendants of other groups and group children can be
  * groups or registers.
  */
-public class PeripheralGroupVMNode extends PeripheralTreeVMNode implements
-		IRegisterGroup {
+public class PeripheralGroupVMNode extends PeripheralTreeVMNode implements IRegisterGroup {
 
 	// ------------------------------------------------------------------------
 
@@ -110,8 +109,7 @@ public class PeripheralGroupVMNode extends PeripheralTreeVMNode implements
 
 	@Override
 	public IRegister[] getRegisters() throws DebugException {
-		return fRegisters.toArray(new PeripheralRegisterVMNode[fRegisters
-				.size()]);
+		return fRegisters.toArray(new PeripheralRegisterVMNode[fRegisters.size()]);
 	}
 
 	@Override

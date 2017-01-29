@@ -29,27 +29,22 @@ public class CProjectAttributes {
 	 * @param attributeName
 	 * @return attribute value or null.
 	 */
-	public static String getCmsisAttribute(ILaunchConfiguration configuration,
-			String attributeName) {
+	public static String getCmsisAttribute(ILaunchConfiguration configuration, String attributeName) {
 
 		// Get the build configuration description from the launch configuration
-		ICConfigurationDescription cConfigDescription = EclipseUtils
-				.getBuildConfigDescription(configuration);
+		ICConfigurationDescription cConfigDescription = EclipseUtils.getBuildConfigDescription(configuration);
 
 		String atttributeValue = null;
 		if (cConfigDescription != null) {
 			// System.out.println(cConfigDescription);
 
 			// The next step is to get the CDT configuration.
-			IConfiguration config = EclipseUtils
-					.getConfigurationFromDescription(cConfigDescription);
+			IConfiguration config = EclipseUtils.getConfigurationFromDescription(cConfigDescription);
 			// System.out.println(config);
 
 			// The custom storage is specific to the CDT configuration.
-			CProjectExtraDataManagerProxy dataManager = CProjectExtraDataManagerProxy
-					.getInstance();
-			Map<String, String> propertiesMap = dataManager
-					.getExtraProperties(config);
+			CProjectExtraDataManagerProxy dataManager = CProjectExtraDataManagerProxy.getInstance();
+			Map<String, String> propertiesMap = dataManager.getExtraProperties(config);
 			if (propertiesMap != null) {
 				atttributeValue = propertiesMap.get(attributeName);
 			}
@@ -64,8 +59,7 @@ public class CProjectAttributes {
 
 	public static String getCmsisDeviceName(ILaunchConfiguration configuration) {
 
-		return getCmsisAttribute(configuration,
-				CProjectPacksStorage.DEVICE_NAME);
+		return getCmsisAttribute(configuration, CProjectPacksStorage.DEVICE_NAME);
 	}
 
 	public static String getCmsisBoardName(ILaunchConfiguration configuration) {

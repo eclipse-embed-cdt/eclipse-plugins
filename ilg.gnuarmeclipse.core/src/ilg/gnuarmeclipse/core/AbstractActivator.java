@@ -45,8 +45,7 @@ public abstract class AbstractActivator extends Plugin {
 		super();
 		fgInstance = this;
 
-		fIsDebugging = "true".equalsIgnoreCase(Platform
-				.getDebugOption(getBundleId() + "/debug"));
+		fIsDebugging = "true".equalsIgnoreCase(Platform.getDebugOption(getBundleId() + "/debug"));
 	}
 
 	// ------------------------------------------------------------------------
@@ -81,13 +80,11 @@ public abstract class AbstractActivator extends Plugin {
 	}
 
 	public static void log(Throwable e) {
-		log(new Status(IStatus.ERROR, getInstance().getBundleId(), 1,
-				"Internal Error", e)); //$NON-NLS-1$
+		log(new Status(IStatus.ERROR, getInstance().getBundleId(), 1, "Internal Error", e)); //$NON-NLS-1$
 	}
 
 	public static void log(String message) {
-		log(new Status(IStatus.ERROR, getInstance().getBundleId(), 1, message,
-				null)); //$NON-NLS-1$
+		log(new Status(IStatus.ERROR, getInstance().getBundleId(), 1, message, null)); // $NON-NLS-1$
 	}
 
 	// ------------------------------------------------------------------------

@@ -59,8 +59,7 @@ public class GdbBackend extends GnuArmGdbBackend {
 	public void initialize(final RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GdbBackend.initialize() "
-					+ Thread.currentThread());
+			System.out.println("GdbBackend.initialize() " + Thread.currentThread());
 		}
 
 		super.initialize(rm);
@@ -70,8 +69,7 @@ public class GdbBackend extends GnuArmGdbBackend {
 	public void destroy() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out
-					.println("GdbBackend.destroy() " + Thread.currentThread());
+			System.out.println("GdbBackend.destroy() " + Thread.currentThread());
 		}
 		super.destroy();
 	}
@@ -80,8 +78,7 @@ public class GdbBackend extends GnuArmGdbBackend {
 	public void shutdown(final RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GdbBackend.shutdown() "
-					+ Thread.currentThread());
+			System.out.println("GdbBackend.shutdown() " + Thread.currentThread());
 		}
 		super.shutdown(rm);
 	}
@@ -93,8 +90,7 @@ public class GdbBackend extends GnuArmGdbBackend {
 	 * OpenOCD configuration.
 	 */
 	protected String[] getGDBCommandLineArray() {
-		String[] commandLineArray = Configuration
-				.getGdbClientCommandLineArray(fLaunchConfiguration);
+		String[] commandLineArray = Configuration.getGdbClientCommandLineArray(fLaunchConfiguration);
 
 		return commandLineArray;
 	}
@@ -105,8 +101,7 @@ public class GdbBackend extends GnuArmGdbBackend {
 	 * (stepSetEnvironmentDirector in FinalLaunchSequence).
 	 */
 	@Override
-	protected Process launchGDBProcess(String[] commandLine)
-			throws CoreException {
+	protected Process launchGDBProcess(String[] commandLine) throws CoreException {
 		Process proc = null;
 		File dir = null;
 		IPath path = getGDBWorkingDirectory();
@@ -119,13 +114,11 @@ public class GdbBackend extends GnuArmGdbBackend {
 			System.out.println("dir " + dir);
 		}
 		try {
-			proc = ProcessFactory.getFactory().exec(commandLine,
-					DebugUtils.getLaunchEnvironment(fLaunchConfiguration), dir);
+			proc = ProcessFactory.getFactory().exec(commandLine, DebugUtils.getLaunchEnvironment(fLaunchConfiguration),
+					dir);
 		} catch (IOException e) {
-			String message = "Error while launching command: "
-					+ StringUtil.join(commandLine, " "); //$NON-NLS-1$ //$NON-NLS-2$
-			throw new CoreException(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, -1, message, e));
+			String message = "Error while launching command: " + StringUtil.join(commandLine, " "); //$NON-NLS-2$ //$NON-NLS-2$
+			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, message, e));
 		}
 
 		return proc;

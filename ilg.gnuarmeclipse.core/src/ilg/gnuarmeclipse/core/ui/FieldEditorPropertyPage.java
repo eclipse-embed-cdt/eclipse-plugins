@@ -15,8 +15,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbenchPropertyPage;
 
-public abstract class FieldEditorPropertyPage extends FieldEditorPreferencePage
-		implements IWorkbenchPropertyPage {
+public abstract class FieldEditorPropertyPage extends FieldEditorPreferencePage implements IWorkbenchPropertyPage {
 
 	/**
 	 * The element.
@@ -30,10 +29,10 @@ public abstract class FieldEditorPropertyPage extends FieldEditorPreferencePage
 		super();
 	}
 
-    protected FieldEditorPropertyPage(int style) {
-    	super(style);
-    }
-    
+	protected FieldEditorPropertyPage(int style) {
+		super(style);
+	}
+
 	/*
 	 * (non-Javadoc)
 	 * 

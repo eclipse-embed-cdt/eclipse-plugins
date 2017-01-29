@@ -52,8 +52,7 @@ public class Index {
 		URL u = new URL(indexUrl);
 
 		// Read from url to local buffer
-		BufferedReader in = new BufferedReader(new InputStreamReader(
-				u.openStream()));
+		BufferedReader in = new BufferedReader(new InputStreamReader(u.openStream()));
 		String line = null;
 
 		// Insert missing root element
@@ -69,11 +68,9 @@ public class Index {
 		buffer.append("</root>\n");
 
 		// Parse from local buffer
-		InputSource inputSource = new InputSource(new StringReader(
-				buffer.toString()));
+		InputSource inputSource = new InputSource(new StringReader(buffer.toString()));
 
-		DocumentBuilder parser = DocumentBuilderFactory.newInstance()
-				.newDocumentBuilder();
+		DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		Document document = parser.parse(inputSource);
 
 		Element el = document.getDocumentElement();

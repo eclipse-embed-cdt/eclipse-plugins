@@ -24,7 +24,8 @@ import org.eclipse.cdt.managedbuilder.internal.core.BooleanExpressionApplicabili
 import org.eclipse.cdt.managedbuilder.internal.core.Option;
 
 /**
- * A workaround for MBS bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=273822 <br>
+ * A workaround for MBS bug https://bugs.eclipse.org/bugs/show_bug.cgi?id=273822
+ * <br>
  * <br>
  * When attached to an option as its applicabilityCalculator, this class will
  * evaluate the option's enablements for visibility, command line enablement and
@@ -47,15 +48,13 @@ public class OptionApplicabilityWorkaround implements IOptionApplicability {
 	// ------------------------------------------------------------------------
 
 	@Override
-	public boolean isOptionEnabled(IBuildObject configuration,
-			IHoldsOptions holder, IOption option) {
+	public boolean isOptionEnabled(IBuildObject configuration, IHoldsOptions holder, IOption option) {
 
 		// Invoke the options enablement expressions
 		if (!(option instanceof Option))
 			throw new AssertionError();
 		Option opt = (Option) option;
-		BooleanExpressionApplicabilityCalculator app = opt
-				.getBooleanExpressionCalculator(false);
+		BooleanExpressionApplicabilityCalculator app = opt.getBooleanExpressionCalculator(false);
 
 		IResourceInfo rcInfo = getResourceInfo(configuration);
 
@@ -67,14 +66,12 @@ public class OptionApplicabilityWorkaround implements IOptionApplicability {
 	}
 
 	@Override
-	public boolean isOptionUsedInCommandLine(IBuildObject configuration,
-			IHoldsOptions holder, IOption option) {
+	public boolean isOptionUsedInCommandLine(IBuildObject configuration, IHoldsOptions holder, IOption option) {
 
 		if (!(option instanceof Option))
 			throw new AssertionError();
 		Option opt = (Option) option;
-		BooleanExpressionApplicabilityCalculator app = opt
-				.getBooleanExpressionCalculator(false);
+		BooleanExpressionApplicabilityCalculator app = opt.getBooleanExpressionCalculator(false);
 
 		IResourceInfo rcInfo = getResourceInfo(configuration);
 
@@ -86,14 +83,12 @@ public class OptionApplicabilityWorkaround implements IOptionApplicability {
 	}
 
 	@Override
-	public boolean isOptionVisible(IBuildObject configuration,
-			IHoldsOptions holder, IOption option) {
+	public boolean isOptionVisible(IBuildObject configuration, IHoldsOptions holder, IOption option) {
 
 		if (!(option instanceof Option))
 			throw new AssertionError();
 		Option opt = (Option) option;
-		BooleanExpressionApplicabilityCalculator app = opt
-				.getBooleanExpressionCalculator(false);
+		BooleanExpressionApplicabilityCalculator app = opt.getBooleanExpressionCalculator(false);
 
 		IResourceInfo rcInfo = getResourceInfo(configuration);
 

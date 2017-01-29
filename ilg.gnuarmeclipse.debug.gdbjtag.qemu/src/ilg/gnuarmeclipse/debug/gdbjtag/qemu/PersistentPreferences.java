@@ -25,16 +25,14 @@ public class PersistentPreferences {
 
 	public static final String GDB_SERVER_DO_START = GDB_SERVER + "doStart";
 
-	public static final String GDB_SERVER_EXECUTABLE = GDB_SERVER
-			+ "executable";
+	public static final String GDB_SERVER_EXECUTABLE = GDB_SERVER + "executable";
 
 	public static final String GDB_SERVER_OTHER_OPTIONS = GDB_SERVER + "other";
 
 	// GDB Client Setup
 	public static final String GDB_CLIENT = "gdb.client.";
 
-	public static final String GDB_CLIENT_EXECUTABLE = GDB_CLIENT
-			+ "executable";
+	public static final String GDB_CLIENT_EXECUTABLE = GDB_CLIENT + "executable";
 
 	public static final String GDB_CLIENT_OTHER_OPTIONS = GDB_CLIENT + "other";
 
@@ -43,13 +41,11 @@ public class PersistentPreferences {
 	// Tab Startup
 	public static final String GDB_QEMU = "gdb.qemu.";
 
-	public static final String GDB_QEMU_DO_INITIAL_RESET = GDB_QEMU
-			+ "doInitialReset";
+	public static final String GDB_QEMU_DO_INITIAL_RESET = GDB_QEMU + "doInitialReset";
 
 	public static final String GDB_QEMU_INIT_OTHER = GDB_QEMU + "init.other";
 
-	public static final String GDB_QEMU_ENABLE_SEMIHOSTING = GDB_QEMU
-			+ "enableSemihosting";
+	public static final String GDB_QEMU_ENABLE_SEMIHOSTING = GDB_QEMU + "enableSemihosting";
 
 	public static final String GDB_QEMU_BOARD_NAME = GDB_QEMU + "boardName";
 
@@ -59,18 +55,14 @@ public class PersistentPreferences {
 
 	private static final String GDB_QEMU_IS_VERBOSE = GDB_QEMU + "isVerbose";
 
-	public static final String GDB_QEMU_DISABLE_GRAPHICS = GDB_QEMU
-			+ "disableGraphics";
+	public static final String GDB_QEMU_DISABLE_GRAPHICS = GDB_QEMU + "disableGraphics";
 
 	// Run Commands
-	public static final String GDB_QEMU_DO_DEBUG_IN_RAM = GDB_QEMU
-			+ "doDebugInRam";
+	public static final String GDB_QEMU_DO_DEBUG_IN_RAM = GDB_QEMU + "doDebugInRam";
 
-	public static final String GDB_QEMU_DO_PRERUN_RESET = GDB_QEMU
-			+ "doPreRunReset";
+	public static final String GDB_QEMU_DO_PRERUN_RESET = GDB_QEMU + "doPreRunReset";
 
-	public static final String GDB_QEMU_PRERUN_OTHER = GDB_QEMU
-			+ "preRun.other";
+	public static final String GDB_QEMU_PRERUN_OTHER = GDB_QEMU + "preRun.other";
 
 	// ----- Defaults ---------------------------------------------------------
 
@@ -89,14 +81,12 @@ public class PersistentPreferences {
 
 	private static String getString(String id, String defaultValue) {
 
-		return Platform.getPreferencesService().getString(Activator.PLUGIN_ID,
-				id, defaultValue, null);
+		return Platform.getPreferencesService().getString(Activator.PLUGIN_ID, id, defaultValue, null);
 	}
 
 	private static boolean getBoolean(String id, boolean defaultValue) {
 
-		return Platform.getPreferencesService().getBoolean(Activator.PLUGIN_ID,
-				id, defaultValue, null);
+		return Platform.getPreferencesService().getBoolean(Activator.PLUGIN_ID, id, defaultValue, null);
 	}
 
 	// ----- Setters ----------------------------------------------------------
@@ -106,8 +96,7 @@ public class PersistentPreferences {
 		value = value.trim();
 
 		// Access the instanceScope
-		Preferences preferences = InstanceScope.INSTANCE
-				.getNode(Activator.PLUGIN_ID);
+		Preferences preferences = InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID);
 		preferences.put(id, value);
 	}
 
@@ -123,8 +112,8 @@ public class PersistentPreferences {
 	// ----- gdb server doStart -----------------------------------------------
 	public static boolean getGdbServerDoStart() {
 
-		return Boolean.valueOf(getString(GDB_SERVER_DO_START,
-				Boolean.toString(DefaultPreferences.SERVER_DO_START_DEFAULT)));
+		return Boolean
+				.valueOf(getString(GDB_SERVER_DO_START, Boolean.toString(DefaultPreferences.SERVER_DO_START_DEFAULT)));
 	}
 
 	public static void putGdbServerDoStart(boolean value) {
@@ -150,8 +139,7 @@ public class PersistentPreferences {
 	// ----- gdb server other options -----------------------------------------
 	public static String getGdbServerOtherOptions() {
 
-		return getString(GDB_SERVER_OTHER_OPTIONS,
-				DefaultPreferences.SERVER_OTHER_OPTIONS_DEFAULT);
+		return getString(GDB_SERVER_OTHER_OPTIONS, DefaultPreferences.SERVER_OTHER_OPTIONS_DEFAULT);
 	}
 
 	public static void putGdbServerOtherOptions(String value) {
@@ -177,8 +165,7 @@ public class PersistentPreferences {
 	// ----- gdb client other options -----------------------------------------
 	public static String getGdbClientOtherOptions() {
 
-		return getString(GDB_CLIENT_OTHER_OPTIONS,
-				DefaultPreferences.CLIENT_OTHER_OPTIONS_DEFAULT);
+		return getString(GDB_CLIENT_OTHER_OPTIONS, DefaultPreferences.CLIENT_OTHER_OPTIONS_DEFAULT);
 	}
 
 	public static void putGdbClientOtherOptions(String value) {
@@ -189,8 +176,7 @@ public class PersistentPreferences {
 	// ----- gdb client commands ----------------------------------------------
 	public static String getGdbClientCommands() {
 
-		return getString(GDB_CLIENT_COMMANDS,
-				DefaultPreferences.CLIENT_COMMANDS_DEFAULT);
+		return getString(GDB_CLIENT_COMMANDS, DefaultPreferences.CLIENT_COMMANDS_DEFAULT);
 	}
 
 	public static void putGdbClientCommands(String value) {
@@ -201,8 +187,8 @@ public class PersistentPreferences {
 	// ----- QEMU do initial reset -----------------------------------------
 	public static boolean getQemuDoInitialReset() {
 
-		return Boolean.valueOf(getString(GDB_QEMU_DO_INITIAL_RESET,
-				Boolean.toString(DefaultPreferences.DO_INITIAL_RESET_DEFAULT)));
+		return Boolean.valueOf(
+				getString(GDB_QEMU_DO_INITIAL_RESET, Boolean.toString(DefaultPreferences.DO_INITIAL_RESET_DEFAULT)));
 	}
 
 	public static void putQemuDoInitialReset(boolean value) {
@@ -229,8 +215,7 @@ public class PersistentPreferences {
 	// ----- QEMU init other -----------------------------------------------
 	public static String getQemuInitOther() {
 
-		return getString(GDB_QEMU_INIT_OTHER,
-				DefaultPreferences.INIT_OTHER_DEFAULT);
+		return getString(GDB_QEMU_INIT_OTHER, DefaultPreferences.INIT_OTHER_DEFAULT);
 	}
 
 	public static void putQemuInitOther(String value) {
@@ -245,8 +230,7 @@ public class PersistentPreferences {
 		if (value != null) {
 			return value;
 		}
-		return getString(GDB_QEMU_MACHINE_NAME,
-				DefaultPreferences.QEMU_BOARD_NAME_DEFAULT);
+		return getString(GDB_QEMU_MACHINE_NAME, DefaultPreferences.QEMU_BOARD_NAME_DEFAULT);
 	}
 
 	public static void putQemuBoardName(String value) {
@@ -257,8 +241,7 @@ public class PersistentPreferences {
 	// ----- QEMU device name ------------------------------------------------
 	public static String getQemuDeviceName() {
 
-		return getString(GDB_QEMU_DEVICE_NAME,
-				DefaultPreferences.QEMU_DEVICE_NAME_DEFAULT);
+		return getString(GDB_QEMU_DEVICE_NAME, DefaultPreferences.QEMU_DEVICE_NAME_DEFAULT);
 	}
 
 	public static void putQemuDeviceName(String value) {
@@ -268,8 +251,7 @@ public class PersistentPreferences {
 
 	// ----- QEMU is verbose ---------------------------------------------
 	public static Boolean getQemuIsVerbose() {
-		return getBoolean(GDB_QEMU_IS_VERBOSE,
-				DefaultPreferences.QEMU_IS_VERBOSE_DEFAULT);
+		return getBoolean(GDB_QEMU_IS_VERBOSE, DefaultPreferences.QEMU_IS_VERBOSE_DEFAULT);
 	}
 
 	public static void putQemuIsVerbose(boolean value) {
@@ -280,8 +262,8 @@ public class PersistentPreferences {
 	// ----- QEMU debug in ram ---------------------------------------------
 	public static boolean getQemuDebugInRam() {
 
-		return Boolean.valueOf(getString(GDB_QEMU_DO_DEBUG_IN_RAM,
-				Boolean.toString(DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT)));
+		return Boolean.valueOf(
+				getString(GDB_QEMU_DO_DEBUG_IN_RAM, Boolean.toString(DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT)));
 	}
 
 	public static void putQemuDebugInRam(boolean value) {
@@ -292,8 +274,8 @@ public class PersistentPreferences {
 	// ----- QEMU do prerun reset ------------------------------------------
 	public static boolean getQemuDoPreRunReset() {
 
-		return Boolean.valueOf(getString(GDB_QEMU_DO_PRERUN_RESET,
-				Boolean.toString(DefaultPreferences.DO_PRERUN_RESET_DEFAULT)));
+		return Boolean.valueOf(
+				getString(GDB_QEMU_DO_PRERUN_RESET, Boolean.toString(DefaultPreferences.DO_PRERUN_RESET_DEFAULT)));
 	}
 
 	public static void putQemuDoPreRunReset(boolean value) {
@@ -304,8 +286,7 @@ public class PersistentPreferences {
 	// ----- QEMU init other --------------------------------------------------
 	public static String getQemuPreRunOther() {
 
-		return getString(GDB_QEMU_PRERUN_OTHER,
-				DefaultPreferences.PRERUN_OTHER_DEFAULT);
+		return getString(GDB_QEMU_PRERUN_OTHER, DefaultPreferences.PRERUN_OTHER_DEFAULT);
 	}
 
 	public static void putQemuPreRunOther(String value) {
@@ -316,8 +297,8 @@ public class PersistentPreferences {
 	// ----- QEMU debug in ram ---------------------------------------------
 	public static boolean getQemuDisableGraphics() {
 
-		return Boolean.valueOf(getString(GDB_QEMU_DISABLE_GRAPHICS,
-				Boolean.toString(DefaultPreferences.DISABLE_GRAPHICS_DEFAULT)));
+		return Boolean.valueOf(
+				getString(GDB_QEMU_DISABLE_GRAPHICS, Boolean.toString(DefaultPreferences.DISABLE_GRAPHICS_DEFAULT)));
 	}
 
 	public static void putQemuDisableGraphics(boolean value) {

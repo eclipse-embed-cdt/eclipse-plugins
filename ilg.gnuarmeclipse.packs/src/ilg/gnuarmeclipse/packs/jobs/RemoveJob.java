@@ -81,8 +81,7 @@ public class RemoveJob extends Job {
 
 			Node node = (Node) obj;
 
-			if (node.isType(Type.VERSION)
-					& node.isBooleanProperty(Property.INSTALLED)) {
+			if (node.isType(Type.VERSION) & node.isBooleanProperty(Property.INSTALLED)) {
 
 				// Filter installed versions only
 				packsToRemove.add(node);
@@ -102,8 +101,7 @@ public class RemoveJob extends Job {
 				break;
 			}
 
-			String packFullName = versionNode
-					.getProperty(Property.ARCHIVE_NAME);
+			String packFullName = versionNode.getProperty(Property.ARCHIVE_NAME);
 
 			// Name the subtask with the pack name
 			monitor.subTask(packFullName);
@@ -141,8 +139,7 @@ public class RemoveJob extends Job {
 		int count = removedPacksList.size();
 
 		if (count > 0) {
-			fDataManager.notifyUpdateView(
-					DataManagerEvent.Type.UPDATE_VERSIONS, removedPacksList);
+			fDataManager.notifyUpdateView(DataManagerEvent.Type.UPDATE_VERSIONS, removedPacksList);
 			fDataManager.notifyInstallRemove();
 		}
 

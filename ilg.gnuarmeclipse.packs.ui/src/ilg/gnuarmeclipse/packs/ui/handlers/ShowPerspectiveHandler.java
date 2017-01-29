@@ -11,7 +11,6 @@
 
 package ilg.gnuarmeclipse.packs.ui.handlers;
 
-
 import ilg.gnuarmeclipse.packs.ui.perspectives.PacksPerspective;
 
 import org.eclipse.core.commands.AbstractHandler;
@@ -25,12 +24,10 @@ public class ShowPerspectiveHandler extends AbstractHandler {
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
-		IPerspectiveDescriptor persDescription1 = PlatformUI.getWorkbench()
-				.getPerspectiveRegistry()
+		IPerspectiveDescriptor persDescription1 = PlatformUI.getWorkbench().getPerspectiveRegistry()
 				.findPerspectiveWithId(PacksPerspective.ID);
 
-		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.setPerspective(persDescription1);
+		PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().setPerspective(persDescription1);
 
 		return null;
 	}

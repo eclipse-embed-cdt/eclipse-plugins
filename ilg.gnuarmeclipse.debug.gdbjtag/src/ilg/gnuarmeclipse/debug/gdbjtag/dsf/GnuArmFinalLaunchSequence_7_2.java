@@ -39,8 +39,7 @@ public class GnuArmFinalLaunchSequence_7_2 extends GnuArmFinalLaunchSequence {
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmFinalLaunchSequence_7_2(DsfSession session,
-			Map<String, Object> attributes, String mode,
+	public GnuArmFinalLaunchSequence_7_2(DsfSession session, Map<String, Object> attributes, String mode,
 			RequestMonitorWithProgress rm) {
 		super(session, attributes, mode, rm);
 		fSession = session;
@@ -54,16 +53,13 @@ public class GnuArmFinalLaunchSequence_7_2 extends GnuArmFinalLaunchSequence {
 		// Initialise the list with the base class' steps
 		// We need to create a list that we can modify, which is why we
 		// create our own ArrayList.
-		List<String> orderList = new ArrayList<String>(Arrays.asList(super
-				.getExecutionOrder(group)));
+		List<String> orderList = new ArrayList<String>(Arrays.asList(super.getExecutionOrder(group)));
 
 		if (GROUP_JTAG.equals(group)) {
 
 			// Insert our steps right after the existing steps.
-			orderList
-					.addAll(orderList
-							.indexOf("stepInitializeJTAGFinalLaunchSequence") + 1,
-							Arrays.asList(jtagInitSteps));
+			orderList.addAll(orderList.indexOf("stepInitializeJTAGFinalLaunchSequence") + 1,
+					Arrays.asList(jtagInitSteps));
 
 		}
 
@@ -78,20 +74,18 @@ public class GnuArmFinalLaunchSequence_7_2 extends GnuArmFinalLaunchSequence {
 	 */
 	@Execute
 	public void stepInitializeJTAGSequence_7_2(RequestMonitor rm) {
-		DsfServicesTracker tracker = new DsfServicesTracker(Activator
-				.getInstance().getBundle().getBundleContext(), fSession.getId());
+		DsfServicesTracker tracker = new DsfServicesTracker(Activator.getInstance().getBundle().getBundleContext(),
+				fSession.getId());
 		IGDBControl gdbControl = tracker.getService(IGDBControl.class);
 		IGDBProcesses procService = tracker.getService(IGDBProcesses.class);
 		tracker.dispose();
 
 		if (gdbControl == null || procService == null) {
-			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
-					"Cannot obtain service", null)); //$NON-NLS-1$
+			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, "Cannot obtain service", null)); //$NON-NLS-1$
 			rm.done();
 			return;
 		}
-		setContainerContext(procService.createContainerContextFromGroupId(
-				gdbControl.getContext(), "i1")); //$NON-NLS-1$
+		setContainerContext(procService.createContainerContextFromGroupId(gdbControl.getContext(), "i1")); //$NON-NLS-1$
 		rm.done();
 	}
 

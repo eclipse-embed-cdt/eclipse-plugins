@@ -36,8 +36,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		super(session, lc);
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GdbServerBackend(" + session + ","
-					+ lc.getName() + ")");
+			System.out.println("GdbServerBackend(" + session + "," + lc.getName() + ")");
 		}
 	}
 
@@ -52,11 +51,9 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 		try {
 			// Update parent data member before calling initialise.
-			fDoStartGdbServer = Configuration
-					.getDoStartGdbServer(fLaunchConfiguration);
+			fDoStartGdbServer = Configuration.getDoStartGdbServer(fLaunchConfiguration);
 		} catch (CoreException e) {
-			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
-					"Cannot get configuration", e)); //$NON-NLS-1$
+			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, "Cannot get configuration", e)); //$NON-NLS-1$
 			rm.done();
 			return;
 		}
@@ -93,8 +90,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	public void destroy() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GdbServerBackend.destroy() "
-					+ Thread.currentThread());
+			System.out.println("GdbServerBackend.destroy() " + Thread.currentThread());
 		}
 
 		// Destroy the parent (the GDB server; the client is also destroyed
@@ -111,8 +107,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 	@Override
 	public String[] getServerCommandLineArray() {
-		String[] commandLineArray = Configuration
-				.getGdbServerCommandLineArray(fLaunchConfiguration);
+		String[] commandLineArray = Configuration.getGdbServerCommandLineArray(fLaunchConfiguration);
 
 		return commandLineArray;
 	}
@@ -176,8 +171,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		String tail = "\n\nFor more details, see the " + name + " console.";
 
 		if (body.isEmpty()) {
-			return getServerName() + " failed with code (" + exitCode + ")."
-					+ tail;
+			return getServerName() + " failed with code (" + exitCode + ")." + tail;
 		} else {
 			return getServerName() + " failed: \n" + body + tail;
 		}

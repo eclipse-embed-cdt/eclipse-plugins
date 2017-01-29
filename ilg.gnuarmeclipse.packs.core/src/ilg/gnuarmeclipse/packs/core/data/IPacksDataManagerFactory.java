@@ -15,7 +15,7 @@ public interface IPacksDataManagerFactory {
 
 	// Create a DataManager object
 	public IPacksDataManager createDataManager();
-	
+
 	public void dispose();
 
 }

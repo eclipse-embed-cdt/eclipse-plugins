@@ -54,8 +54,7 @@ import org.osgi.framework.BundleContext;
  * More or less a duplicate of GDBMemory from CDT 8.3, but without any cache.
  * 
  */
-public class PeripheralMemoryService extends MIMemory implements
-		IPeripheralMemoryService {
+public class PeripheralMemoryService extends MIMemory implements IPeripheralMemoryService {
 
 	// ------------------------------------------------------------------------
 
@@ -82,8 +81,7 @@ public class PeripheralMemoryService extends MIMemory implements
 
 	// ------------------------------------------------------------------------
 
-	public PeripheralMemoryService(DsfSession session,
-			ILaunchConfiguration launchConfiguration) {
+	public PeripheralMemoryService(DsfSession session, ILaunchConfiguration launchConfiguration) {
 		super(session);
 
 		fSession = session;
@@ -111,27 +109,23 @@ public class PeripheralMemoryService extends MIMemory implements
 		// Register this service to DSF.
 		// For completeness, use both the interface and the class name.
 		// Used in PeripheralMemoryBlockExtension by interface name.
-		register(new String[] { IPeripheralMemoryService.class.getName(),
-				PeripheralMemoryService.class.getName(), },
+		register(new String[] { IPeripheralMemoryService.class.getName(), PeripheralMemoryService.class.getName(), },
 				new Hashtable<String, String>());
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("PeripheralMemoryService registered " + this);
 		}
 
-		fTracker = new DsfServicesTracker(Activator.getInstance().getBundle()
-				.getBundleContext(), fSession.getId());
+		fTracker = new DsfServicesTracker(Activator.getInstance().getBundle().getBundleContext(), fSession.getId());
 
 		ICommandControlService commandControlService = (ICommandControlService) fTracker
 				.getService(ICommandControlService.class);
-		IMIProcesses processes = (IMIProcesses) fTracker
-				.getService(IMIProcesses.class);
+		IMIProcesses processes = (IMIProcesses) fTracker.getService(IMIProcesses.class);
 		if ((commandControlService != null) && (processes != null)) {
 
 			// Create memory context from process context.
 			IProcesses.IProcessDMContext processDMContext = processes
-					.createProcessContext(commandControlService.getContext(),
-							"");
+					.createProcessContext(commandControlService.getContext(), "");
 			IMemory.IMemoryDMContext memoryDMContext = (IMemory.IMemoryDMContext) processes
 					.createContainerContext(processDMContext, "");
 
@@ -179,13 +173,11 @@ public class PeripheralMemoryService extends MIMemory implements
 		// once.
 		private Step[] fSteps = null;
 
-		public PeripheralSequence(IMemoryDMContext memContext,
-				DsfExecutor executor, RequestMonitor rm) {
+		public PeripheralSequence(IMemoryDMContext memContext, DsfExecutor executor, RequestMonitor rm) {
 			super(executor, rm);
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("PeripheralSequence() "
-						+ memContext.getSessionId());
+				System.out.println("PeripheralSequence() " + memContext.getSessionId());
 			}
 			fMemContext = memContext;
 		}
@@ -201,10 +193,8 @@ public class PeripheralMemoryService extends MIMemory implements
 
 		private void stepShowLanguage(final RequestMonitor requestMonitor) {
 
-			fCommandControl.queueCommand(fCommandControl.getCommandFactory()
-					.createMIGDBShowLanguage(fMemContext),
-					new ImmediateDataRequestMonitor<MIGDBShowLanguageInfo>(
-							requestMonitor) {
+			fCommandControl.queueCommand(fCommandControl.getCommandFactory().createMIGDBShowLanguage(fMemContext),
+					new ImmediateDataRequestMonitor<MIGDBShowLanguageInfo>(requestMonitor) {
 						@Override
 						protected void handleCompleted() {
 							if (isSuccess()) {
@@ -222,18 +212,17 @@ public class PeripheralMemoryService extends MIMemory implements
 			// Run this step even if the language
 			// commands where aborted, but accept
 			// failures.
-			readAddressSize(fMemContext,
-					new ImmediateDataRequestMonitor<Integer>(requestMonitor) {
-						@Override
-						protected void handleCompleted() {
-							if (isSuccess()) {
-								// fAddressSizes.put(fMemContext, getData());
-								fAddressSize = getData();
-							}
-							// Accept failure
-							requestMonitor.done();
-						}
-					});
+			readAddressSize(fMemContext, new ImmediateDataRequestMonitor<Integer>(requestMonitor) {
+				@Override
+				protected void handleCompleted() {
+					if (isSuccess()) {
+						// fAddressSizes.put(fMemContext, getData());
+						fAddressSize = getData();
+					}
+					// Accept failure
+					requestMonitor.done();
+				}
+			});
 		}
 
 		private void stepSetLanguage(final RequestMonitor requestMonitor) {
@@ -243,8 +232,8 @@ public class PeripheralMemoryService extends MIMemory implements
 				return;
 			}
 
-			fCommandControl.queueCommand(fCommandControl.getCommandFactory()
-					.createMIGDBSetLanguage(fMemContext, fOriginalLanguage),
+			fCommandControl.queueCommand(
+					fCommandControl.getCommandFactory().createMIGDBSetLanguage(fMemContext, fOriginalLanguage),
 					new ImmediateDataRequestMonitor<MIInfo>(requestMonitor) {
 						@Override
 						protected void handleCompleted() {
@@ -266,27 +255,21 @@ public class PeripheralMemoryService extends MIMemory implements
 								// work, which is why we don't abort the
 								// sequence (which would cause the entire
 								// session to fail).
-								fCommandControl
-										.queueCommand(
-												fCommandControl
-														.getCommandFactory()
-														.createMIGDBSetLanguage(
-																fMemContext,
-																MIGDBShowLanguageInfo.AUTO),
-												new ImmediateDataRequestMonitor<MIInfo>(
-														requestMonitor) {
-													@Override
-													protected void handleCompleted() {
-														if (!isSuccess()) {
-															// See above
-															Activator
-																	.log(getStatus());
-														}
-														// Accept
-														// failure
-														requestMonitor.done();
-													}
-												});
+								fCommandControl.queueCommand(
+										fCommandControl.getCommandFactory().createMIGDBSetLanguage(fMemContext,
+												MIGDBShowLanguageInfo.AUTO),
+										new ImmediateDataRequestMonitor<MIInfo>(requestMonitor) {
+											@Override
+											protected void handleCompleted() {
+												if (!isSuccess()) {
+													// See above
+													Activator.log(getStatus());
+												}
+												// Accept
+												// failure
+												requestMonitor.done();
+											}
+										});
 							} else {
 								requestMonitor.done();
 							}
@@ -296,17 +279,16 @@ public class PeripheralMemoryService extends MIMemory implements
 
 		private void stepReadEndianess(final RequestMonitor requestMonitor) {
 
-			readEndianness(fMemContext,
-					new ImmediateDataRequestMonitor<Boolean>(requestMonitor) {
-						@Override
-						protected void handleCompleted() {
-							if (isSuccess()) {
-								fIsBigEndian = getData();
-							}
-							// Accept failure
-							requestMonitor.done();
-						}
-					});
+			readEndianness(fMemContext, new ImmediateDataRequestMonitor<Boolean>(requestMonitor) {
+				@Override
+				protected void handleCompleted() {
+					if (isSuccess()) {
+						fIsBigEndian = getData();
+					}
+					// Accept failure
+					requestMonitor.done();
+				}
+			});
 		}
 
 		private Step[] prepareSteps() {
@@ -351,24 +333,21 @@ public class PeripheralMemoryService extends MIMemory implements
 			}
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("PeripheralSequence has " + stepsList.size()
-						+ " steps.");
+				System.out.println("PeripheralSequence has " + stepsList.size() + " steps.");
 			}
 			return stepsList.toArray(new Step[stepsList.size()]);
 		}
 	}
 
 	@Override
-	public void initializeMemoryData(final IMemoryDMContext memContext,
-			RequestMonitor rm) {
+	public void initializeMemoryData(final IMemoryDMContext memContext, RequestMonitor rm) {
 
 		// if (fAddressSizes == null || fIsBigEndian == null) {
 
 		// The address size and endianness do not change during a debug
 		// session, so avoid executing the special sequence if not
 		// necessary.
-		ImmediateExecutor.getInstance().execute(
-				new PeripheralSequence(memContext, getExecutor(), rm));
+		ImmediateExecutor.getInstance().execute(new PeripheralSequence(memContext, getExecutor(), rm));
 		// } else {
 		// rm.done();
 		// }
@@ -377,8 +356,7 @@ public class PeripheralMemoryService extends MIMemory implements
 	@DsfServiceEventHandler
 	public void eventDispatched(IExitedDMEvent event) {
 		if (event.getDMContext() instanceof IContainerDMContext) {
-			IMemoryDMContext context = DMContexts.getAncestorOfType(
-					event.getDMContext(), IMemoryDMContext.class);
+			IMemoryDMContext context = DMContexts.getAncestorOfType(event.getDMContext(), IMemoryDMContext.class);
 			if (context != null) {
 				// fAddressSizes.remove(context);
 				fAddressSize = null;
@@ -398,24 +376,18 @@ public class PeripheralMemoryService extends MIMemory implements
 	public boolean isBigEndian(IMemoryDMContext context) {
 		assert fIsBigEndian != null;
 		if (fIsBigEndian == null) {
-			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					"Endianness was never initialized!")); //$NON-NLS-1$
+			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Endianness was never initialized!")); //$NON-NLS-1$
 			return false;
 		}
 		return fIsBigEndian;
 	}
 
-	protected void readAddressSize(IMemoryDMContext memContext,
-			final DataRequestMonitor<Integer> drm) {
-		IExpressions exprService = getServicesTracker().getService(
-				IExpressions.class);
-		IExpressionDMContext exprContext = exprService.createExpression(
-				memContext, "sizeof (void*)"); //$NON-NLS-1$
+	protected void readAddressSize(IMemoryDMContext memContext, final DataRequestMonitor<Integer> drm) {
+		IExpressions exprService = getServicesTracker().getService(IExpressions.class);
+		IExpressionDMContext exprContext = exprService.createExpression(memContext, "sizeof (void*)"); //$NON-NLS-1$
 		CommandFactory commandFactory = fCommandControl.getCommandFactory();
-		fCommandControl.queueCommand(commandFactory
-				.createMIDataEvaluateExpression(exprContext),
-				new DataRequestMonitor<MIDataEvaluateExpressionInfo>(
-						ImmediateExecutor.getInstance(), drm) {
+		fCommandControl.queueCommand(commandFactory.createMIDataEvaluateExpression(exprContext),
+				new DataRequestMonitor<MIDataEvaluateExpressionInfo>(ImmediateExecutor.getInstance(), drm) {
 					@Override
 					protected void handleSuccess() {
 						try {
@@ -425,24 +397,18 @@ public class PeripheralMemoryService extends MIMemory implements
 							}
 							drm.setData(data);
 						} catch (NumberFormatException e) {
-							drm.setStatus(new Status(
-									IStatus.ERROR,
-									Activator.PLUGIN_ID,
-									String.format(
-											"Invalid address size: %s", getData().getValue()))); //$NON-NLS-1$
+							drm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
+									String.format("Invalid address size: %s", getData().getValue()))); //$NON-NLS-1$
 						}
 						drm.done();
 					}
 				});
 	}
 
-	protected void readEndianness(IMemoryDMContext memContext,
-			final DataRequestMonitor<Boolean> drm) {
+	protected void readEndianness(IMemoryDMContext memContext, final DataRequestMonitor<Boolean> drm) {
 		CommandFactory commandFactory = fCommandControl.getCommandFactory();
-		fCommandControl.queueCommand(
-				commandFactory.createCLIShowEndian(memContext),
-				new DataRequestMonitor<CLIShowEndianInfo>(ImmediateExecutor
-						.getInstance(), drm) {
+		fCommandControl.queueCommand(commandFactory.createCLIShowEndian(memContext),
+				new DataRequestMonitor<CLIShowEndianInfo>(ImmediateExecutor.getInstance(), drm) {
 					@Override
 					protected void handleSuccess() {
 						Boolean data = Boolean.valueOf(getData().isBigEndian());
@@ -458,72 +424,64 @@ public class PeripheralMemoryService extends MIMemory implements
 	// ------------------------------------------------------------------------
 
 	@Override
-	public void getMemory(IMemoryDMContext memoryDMC, IAddress address,
-			long offset, int word_size, int word_count,
+	public void getMemory(IMemoryDMContext memoryDMC, IAddress address, long offset, int word_size, int word_count,
 			DataRequestMonitor<MemoryByte[]> drm) {
 
 		if (memoryDMC == null) {
-			drm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					INTERNAL_ERROR, "Unknown context type", null)); //$NON-NLS-1$);
+			drm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, INTERNAL_ERROR, "Unknown context type", null)); //$NON-NLS-1$ );
 			drm.done();
 			return;
 		}
 
 		if (word_size < 1) {
-			drm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					NOT_SUPPORTED, "Word size not supported (< 1)", null)); //$NON-NLS-1$
+			drm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, NOT_SUPPORTED, "Word size not supported (< 1)", //$NON-NLS-1$
+					null));
 			drm.done();
 			return;
 		}
 
 		if (word_count < 0) {
-			drm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					IDsfStatusConstants.INTERNAL_ERROR,
+			drm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, IDsfStatusConstants.INTERNAL_ERROR,
 					"Invalid word count (< 0)", null)); //$NON-NLS-1$
 			drm.done();
 			return;
 		}
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println(String.format("readMemoryBlock 0x%s+0x%X 0x%X",
-					address.toString(16), offset, word_count * word_size));
+			System.out.println(String.format("readMemoryBlock 0x%s+0x%X 0x%X", address.toString(16), offset,
+					word_count * word_size));
 		}
 
 		flushCache(memoryDMC);
-		readMemoryBlock(memoryDMC, address, offset, 1, word_count * word_size,
-				drm);
+		readMemoryBlock(memoryDMC, address, offset, 1, word_count * word_size, drm);
 	}
 
 	@Override
-	public void setMemory(IMemoryDMContext memoryDMC, IAddress address,
-			long offset, int word_size, int word_count, byte[] buffer,
-			RequestMonitor rm) {
+	public void setMemory(IMemoryDMContext memoryDMC, IAddress address, long offset, int word_size, int word_count,
+			byte[] buffer, RequestMonitor rm) {
 
 		if (memoryDMC == null) {
-			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					INTERNAL_ERROR, "Unknown context type", null)); //$NON-NLS-1$);
+			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, INTERNAL_ERROR, "Unknown context type", null)); //$NON-NLS-1$ );
 			rm.done();
 			return;
 		}
 
 		if (word_size < 1) {
-			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					NOT_SUPPORTED, "Word size not supported (< 1)", null)); //$NON-NLS-1$
+			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, NOT_SUPPORTED, "Word size not supported (< 1)", //$NON-NLS-1$
+					null));
 			rm.done();
 			return;
 		}
 
 		if (word_count < 0) {
-			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					IDsfStatusConstants.INTERNAL_ERROR,
+			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, IDsfStatusConstants.INTERNAL_ERROR,
 					"Invalid word count (< 0)", null)); //$NON-NLS-1$
 			rm.done();
 			return;
 		}
 
 		if (buffer.length < word_count * word_size) {
-			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					IDsfStatusConstants.INTERNAL_ERROR,
+			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, IDsfStatusConstants.INTERNAL_ERROR,
 					"Buffer too short", null)); //$NON-NLS-1$
 			rm.done();
 			return;
@@ -535,13 +493,12 @@ public class PeripheralMemoryService extends MIMemory implements
 			// System.out.print(String.format(" %02X", buffer[i]));
 			// }
 			// System.out.print(" 0x");
-			System.out.println(String.format("writeMemoryBlock 0x%s+0x%X 0x%X",
-					address.toString(16), offset, word_count * word_size));
+			System.out.println(String.format("writeMemoryBlock 0x%s+0x%X 0x%X", address.toString(16), offset,
+					word_count * word_size));
 		}
 
 		flushCache(memoryDMC);
-		writeMemoryBlock(memoryDMC, address, offset, 1, word_count * word_size,
-				buffer, rm);
+		writeMemoryBlock(memoryDMC, address, offset, 1, word_count * word_size, buffer, rm);
 
 		// TODO: maybe notify MemoryChangedEvent
 	}

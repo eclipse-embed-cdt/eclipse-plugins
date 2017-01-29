@@ -28,8 +28,7 @@ public class TabMain extends CMainTab {
 	 * not check program, to allow project-less debug sessions.
 	 */
 	public TabMain() {
-		super((DefaultPreferences.getTabMainCheckProgram() ? 0
-				: CMainTab.DONT_CHECK_PROGRAM)
+		super((DefaultPreferences.getTabMainCheckProgram() ? 0 : CMainTab.DONT_CHECK_PROGRAM)
 				| CMainTab.INCLUDE_BUILD_SETTINGS);
 	}
 }

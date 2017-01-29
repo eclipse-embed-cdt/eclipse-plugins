@@ -75,24 +75,20 @@ public class DebugUtils {
 
 	// ------------------------------------------------------------------------
 
-	public static String[] getLaunchEnvironment(ILaunchConfiguration config)
-			throws CoreException {
+	public static String[] getLaunchEnvironment(ILaunchConfiguration config) throws CoreException {
 
-		ICConfigurationDescription cfg = EclipseUtils
-				.getBuildConfigDescription(config);
+		ICConfigurationDescription cfg = EclipseUtils.getBuildConfigDescription(config);
 		if (cfg == null)
 			return getLaunchEnvironmentWithoutProject();
 
 		// Environment variables and inherited vars
 		HashMap<String, String> envMap = new HashMap<String, String>();
-		IEnvironmentVariable[] vars = CCorePlugin.getDefault()
-				.getBuildEnvironmentManager().getVariables(cfg, true);
+		IEnvironmentVariable[] vars = CCorePlugin.getDefault().getBuildEnvironmentManager().getVariables(cfg, true);
 		for (IEnvironmentVariable var : vars)
 			envMap.put(var.getName(), var.getValue());
 
 		// Add variables from build info
-		ICdtVariable[] build_vars = CCorePlugin.getDefault()
-				.getCdtVariableManager().getVariables(cfg);
+		ICdtVariable[] build_vars = CCorePlugin.getDefault().getCdtVariableManager().getVariables(cfg);
 		for (ICdtVariable var : build_vars) {
 			try {
 				// The project_classpath variable contributed by JDT is useless
@@ -127,21 +123,17 @@ public class DebugUtils {
 	 * @return String [] of environment variables in variable=value format.
 	 * @throws CoreException
 	 */
-	public static String[] getLaunchEnvironmentWithoutProject()
-			throws CoreException {
+	public static String[] getLaunchEnvironmentWithoutProject() throws CoreException {
 		String[] retVal = null;
-		IEnvironmentContextInfo contextInfo = EnvironmentVariableManager
-				.getDefault().getContextInfo(null);
-		EnvVarCollector envVarMergedCollection = EnvironmentVariableManager
-				.getVariables(contextInfo, true);
+		IEnvironmentContextInfo contextInfo = EnvironmentVariableManager.getDefault().getContextInfo(null);
+		EnvVarCollector envVarMergedCollection = EnvironmentVariableManager.getVariables(contextInfo, true);
 		if (null != envVarMergedCollection) {
 			EnvVarDescriptor envVars[] = envVarMergedCollection.toArray(false);
 			if (envVars != null) {
 				List<String> strings = new ArrayList<String>();
 				for (int i = 0; i < envVars.length; i++) {
-					IEnvironmentVariable resolved = EnvironmentVariableManager
-							.getDefault().calculateResolvedVariable(envVars[i],
-									contextInfo);
+					IEnvironmentVariable resolved = EnvironmentVariableManager.getDefault()
+							.calculateResolvedVariable(envVars[i], contextInfo);
 					if (null != resolved) {
 						// The project_classpath variable contributed by JDT is
 						// useless
@@ -152,8 +144,7 @@ public class DebugUtils {
 						// limit. See
 						// http://bugs.eclipse.org/bugs/show_bug.cgi?id=408522
 						if (!"project_classpath".equals(resolved.getName())) {//$NON-NLS-1$
-							StringBuffer buffer = new StringBuffer(
-									resolved.getName());
+							StringBuffer buffer = new StringBuffer(resolved.getName());
 							buffer.append('=').append(resolved.getValue());
 							strings.add(buffer.toString());
 						}
@@ -162,9 +153,8 @@ public class DebugUtils {
 				retVal = strings.toArray(new String[strings.size()]);
 			}
 		} else {
-			throw new CoreException(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID,
-					"Error retrieving workspace environment."));
+			throw new CoreException(
+					new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Error retrieving workspace environment."));
 		}
 		return retVal;
 	}
@@ -188,8 +178,7 @@ public class DebugUtils {
 	 * @return Working directory
 	 * @throws CoreException
 	 */
-	public static File getProjectOsDir(ILaunchConfiguration configuration)
-			throws CoreException {
+	public static File getProjectOsDir(ILaunchConfiguration configuration) throws CoreException {
 
 		IPath path = getProjectOsPath(configuration);
 		File dir = null;
@@ -199,13 +188,11 @@ public class DebugUtils {
 		return dir;
 	}
 
-	public static IPath getProjectOsPath(ILaunchConfiguration configuration)
-			throws CoreException {
+	public static IPath getProjectOsPath(ILaunchConfiguration configuration) throws CoreException {
 
 		IPath path = null;
 		if (null != configuration) {
-			String projectName = configuration.getAttribute(
-					"org.eclipse.cdt.launch.PROJECT_ATTR", "");
+			String projectName = configuration.getAttribute("org.eclipse.cdt.launch.PROJECT_ATTR", "");
 			if (projectName.length() > 0) {
 				IWorkspace workspace = ResourcesPlugin.getWorkspace();
 				IProject project = workspace.getRoot().getProject(projectName);
@@ -215,8 +202,7 @@ public class DebugUtils {
 				 * If project-less launch then PROGRAM_NAME will be an absolute
 				 * path
 				 */
-				String executableName = configuration.getAttribute(
-						"org.eclipse.cdt.launch.PROGRAM_NAME", "");
+				String executableName = configuration.getAttribute("org.eclipse.cdt.launch.PROGRAM_NAME", "");
 				path = new Path(executableName).removeLastSegments(1);
 			}
 		}
@@ -224,22 +210,17 @@ public class DebugUtils {
 	}
 
 	public static IPath getGDBPath(ILaunchConfiguration configuration) {
-		String defaultGdbCommand = Platform.getPreferencesService().getString(
-				GdbPlugin.PLUGIN_ID,
+		String defaultGdbCommand = Platform.getPreferencesService().getString(GdbPlugin.PLUGIN_ID,
 				IGdbDebugPreferenceConstants.PREF_DEFAULT_GDB_COMMAND,
-				IGDBLaunchConfigurationConstants.DEBUGGER_DEBUG_NAME_DEFAULT,
-				null);
+				IGDBLaunchConfigurationConstants.DEBUGGER_DEBUG_NAME_DEFAULT, null);
 
 		IPath retVal = new Path(defaultGdbCommand);
 		try {
-			String gdb = configuration.getAttribute(
-					IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
+			String gdb = configuration.getAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
 					defaultGdbCommand);
-			gdb = VariablesPlugin.getDefault().getStringVariableManager()
-					.performStringSubstitution(gdb, false);
+			gdb = VariablesPlugin.getDefault().getStringVariableManager().performStringSubstitution(gdb, false);
 
-			ICConfigurationDescription buildConfig = EclipseUtils
-					.getBuildConfigDescription(configuration);
+			ICConfigurationDescription buildConfig = EclipseUtils.getBuildConfigDescription(configuration);
 			if (buildConfig != null) {
 				gdb = resolveAll(gdb, buildConfig);
 			}
@@ -251,11 +232,9 @@ public class DebugUtils {
 		return retVal;
 	}
 
-	public static String resolveAll(String value,
-			ICConfigurationDescription cfgDescription) {
+	public static String resolveAll(String value, ICConfigurationDescription cfgDescription) {
 		try {
-			return CCorePlugin.getDefault().getCdtVariableManager()
-					.resolveValue(value, "", " ", cfgDescription); //$NON-NLS-1$ //$NON-NLS-2$
+			return CCorePlugin.getDefault().getCdtVariableManager().resolveValue(value, "", " ", cfgDescription); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (CdtVariableException e) {
 			;
 		}
@@ -267,8 +246,8 @@ public class DebugUtils {
 		// TODO: Use attributes for project dependent variables.
 		try {
 			// Do not report undefined variables
-			value = VariablesPlugin.getDefault().getStringVariableManager()
-					.performStringSubstitution(value, false).trim();
+			value = VariablesPlugin.getDefault().getStringVariableManager().performStringSubstitution(value, false)
+					.trim();
 		} catch (CoreException e) {
 			;
 		}
@@ -341,8 +320,7 @@ public class DebugUtils {
 	 * the version of the GDB that is being used. This method should ideally be
 	 * called only once and the resulting version string stored for future uses.
 	 */
-	public static String getGDBVersion(
-			final ILaunchConfiguration configuration, String gdbClientCommand)
+	public static String getGDBVersion(final ILaunchConfiguration configuration, String gdbClientCommand)
 			throws CoreException {
 
 		String[] cmdArray = new String[2];
@@ -351,13 +329,10 @@ public class DebugUtils {
 
 		final Process process;
 		try {
-			process = ProcessFactory.getFactory().exec(cmdArray,
-					DebugUtils.getLaunchEnvironment(configuration));
+			process = ProcessFactory.getFactory().exec(cmdArray, DebugUtils.getLaunchEnvironment(configuration));
 		} catch (IOException e) {
-			throw new DebugException(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, DebugException.REQUEST_FAILED,
-					"Error while launching command: "
-							+ StringUtils.join(cmdArray, " "), e.getCause()));//$NON-NLS-1$
+			throw new DebugException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, DebugException.REQUEST_FAILED,
+					"Error while launching command: " + StringUtils.join(cmdArray, " "), e.getCause()));//$NON-NLS-2$
 		}
 
 		// Start a timeout job to make sure we don't get stuck waiting for
@@ -391,11 +366,10 @@ public class DebugUtils {
 				cmdOutput.append('\n');
 			}
 		} catch (IOException e) {
-			throw new DebugException(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, DebugException.REQUEST_FAILED,
-					"Error reading GDB STDOUT after sending: "
-							+ StringUtils.join(cmdArray, " ") + ", response: "
-							+ cmdOutput, e.getCause()));//$NON-NLS-1$
+			throw new DebugException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, DebugException.REQUEST_FAILED,
+					"Error reading GDB STDOUT after sending: " + StringUtils.join(cmdArray, " ") + ", response: "
+							+ cmdOutput,
+					e.getCause()));// $NON-NLS-1$
 		} finally {
 			// If we get here we are obviously not stuck so we can cancel the
 			// timeout job.
@@ -415,16 +389,14 @@ public class DebugUtils {
 			process.destroy();
 		}
 
-		String gdbVersion = LaunchUtils.getGDBVersionFromText(cmdOutput
-				.toString());
+		String gdbVersion = LaunchUtils.getGDBVersionFromText(cmdOutput.toString());
 		if (gdbVersion == null || gdbVersion.isEmpty()) {
-			throw new DebugException(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, DebugException.REQUEST_FAILED,
-					"Could not determine GDB version after sending: "
-							+ StringUtils.join(cmdArray, " ") + ", response: "
-							+ cmdOutput, null));//$NON-NLS-1$
+			throw new DebugException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, DebugException.REQUEST_FAILED,
+					"Could not determine GDB version after sending: " + StringUtils.join(cmdArray, " ") + ", response: "
+							+ cmdOutput,
+					null));// $NON-NLS-1$
 		}
-		
+
 		// Used to test if version comparison works
 		// System.out.println(gdbVersion);
 		// gdbVersion = "7.10";
@@ -438,19 +410,15 @@ public class DebugUtils {
 	 * @param configuration
 	 * @return true if already present.
 	 */
-	public static boolean isLaunchConfigurationStarted(
-			ILaunchConfiguration configuration) {
+	public static boolean isLaunchConfigurationStarted(ILaunchConfiguration configuration) {
 
-		ILaunchManager launchManager = DebugPlugin.getDefault()
-				.getLaunchManager();
+		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
 		ILaunch[] launches = launchManager.getLaunches();
 		for (int i = 0; i < launches.length; ++i) {
 			ILaunch launch = launches[i];
 			// System.out.println(ls[i].getLaunchConfiguration().getName());
-			if (!launch.isTerminated()
-					&& (launch.getLaunchConfiguration() != null)
-					&& configuration.getName().equals(
-							launch.getLaunchConfiguration().getName())) {
+			if (!launch.isTerminated() && (launch.getLaunchConfiguration() != null)
+					&& configuration.getName().equals(launch.getLaunchConfiguration().getName())) {
 
 				return true;
 			}
@@ -465,18 +433,12 @@ public class DebugUtils {
 	 * @param configuration
 	 * @throws CoreException
 	 */
-	public static void checkLaunchConfigurationStarted(
-			ILaunchConfiguration configuration) throws CoreException {
+	public static void checkLaunchConfigurationStarted(ILaunchConfiguration configuration) throws CoreException {
 
 		if (isLaunchConfigurationStarted(configuration)) {
 
-			throw new CoreException(
-					new Status(
-							IStatus.ERROR,
-							Activator.PLUGIN_ID,
-							"Debug session '"
-									+ configuration.getName()
-									+ "' already started. Terminate the first one before restarting."));
+			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, "Debug session '"
+					+ configuration.getName() + "' already started. Terminate the first one before restarting."));
 
 		}
 	}
@@ -493,24 +455,19 @@ public class DebugUtils {
 	 * @return a Process object.
 	 * @throws CoreException
 	 */
-	public static Process exec(String[] commandLineArray, String[] environ,
-			File dir) throws CoreException {
+	public static Process exec(String[] commandLineArray, String[] environ, File dir) throws CoreException {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("exec "
-					+ StringUtils.join(commandLineArray, " "));
+			System.out.println("exec " + StringUtils.join(commandLineArray, " "));
 			System.out.println("dir " + dir);
 		}
 
 		Process proc = null;
 		try {
-			proc = ProcessFactory.getFactory().exec(commandLineArray, environ,
-					dir);
+			proc = ProcessFactory.getFactory().exec(commandLineArray, environ, dir);
 		} catch (IOException e) {
-			String message = "Launching command ["
-					+ StringUtils.join(commandLineArray, " ") + "] failed."; //$NON-NLS-1$
-			throw new CoreException(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, -1, message, e));
+			String message = "Launching command [" + StringUtils.join(commandLineArray, " ") + "] failed."; //$NON-NLS-2$
+			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, message, e));
 		}
 
 		return proc;
@@ -525,8 +482,7 @@ public class DebugUtils {
 	 * @return
 	 * @throws CoreException
 	 */
-	public static IPath getGdbWorkingDirectory(
-			ILaunchConfiguration launchConfiguration) throws CoreException {
+	public static IPath getGdbWorkingDirectory(ILaunchConfiguration launchConfiguration) throws CoreException {
 
 		// First try to use the user-specified working directory for the
 		// debugged program.
@@ -543,13 +499,11 @@ public class DebugUtils {
 		// debugger implementation to make the distinction.
 		//
 		IPath path = null;
-		String location = launchConfiguration.getAttribute(
-				ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY,
+		String location = launchConfiguration.getAttribute(ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY,
 				(String) null);
 
 		if (location != null) {
-			String expandedLocation = VariablesPlugin.getDefault()
-					.getStringVariableManager()
+			String expandedLocation = VariablesPlugin.getDefault().getStringVariableManager()
 					.performStringSubstitution(location);
 			if (expandedLocation.length() > 0) {
 				path = new Path(expandedLocation);
@@ -563,8 +517,7 @@ public class DebugUtils {
 				if (!dir.isDirectory())
 					path = null;
 			} else {
-				IResource res = ResourcesPlugin.getWorkspace().getRoot()
-						.findMember(path);
+				IResource res = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
 				if (res instanceof IContainer && res.exists()) {
 					path = res.getLocation();
 				} else
@@ -606,13 +559,12 @@ public class DebugUtils {
 	 * @param executor
 	 *            an DsfExecutor.
 	 */
-	public static void queueCommands(List<String> commands, RequestMonitor rm,
-			IGDBControl control, DsfExecutor executor) {
+	public static void queueCommands(List<String> commands, RequestMonitor rm, IGDBControl control,
+			DsfExecutor executor) {
 
 		if (commands != null && !commands.isEmpty()) {
 
-			CountingRequestMonitor crm = new CountingRequestMonitor(executor,
-					rm);
+			CountingRequestMonitor crm = new CountingRequestMonitor(executor, rm);
 			crm.setDoneCount(commands.size());
 
 			Iterator<String> it = commands.iterator();
@@ -623,8 +575,7 @@ public class DebugUtils {
 					continue; // ignore empty lines and comments
 				}
 				// System.out.println("queueCommand('" + s + "')");
-				control.queueCommand(
-						new CLICommand<MIInfo>(control.getContext(), s),
+				control.queueCommand(new CLICommand<MIInfo>(control.getContext(), s),
 						new DataRequestMonitor<MIInfo>(executor, crm));
 			}
 

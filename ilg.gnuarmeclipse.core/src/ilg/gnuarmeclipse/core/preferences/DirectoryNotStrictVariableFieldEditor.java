@@ -15,8 +15,7 @@ import ilg.gnuarmeclipse.core.EclipseUtils;
 
 import org.eclipse.swt.widgets.Composite;
 
-public class DirectoryNotStrictVariableFieldEditor extends
-		DirectoryNotStrictFieldEditor {
+public class DirectoryNotStrictVariableFieldEditor extends DirectoryNotStrictFieldEditor {
 
 	// ------------------------------------------------------------------------
 
@@ -25,10 +24,8 @@ public class DirectoryNotStrictVariableFieldEditor extends
 
 	// ------------------------------------------------------------------------
 
-	public DirectoryNotStrictVariableFieldEditor(String buildToolsPathKey,
-			String variableName, String variableDescription,
-			String toolsPaths_label, Composite fieldEditorParent,
-			boolean isStrict) {
+	public DirectoryNotStrictVariableFieldEditor(String buildToolsPathKey, String variableName,
+			String variableDescription, String toolsPaths_label, Composite fieldEditorParent, boolean isStrict) {
 		super(buildToolsPathKey, toolsPaths_label, fieldEditorParent, isStrict);
 
 		fVariableName = variableName;
@@ -46,8 +43,7 @@ public class DirectoryNotStrictVariableFieldEditor extends
 		if (getTextControl() != null) {
 			String value = EclipseUtils.getVariableValue(fVariableName);
 			if (value == null) {
-				value = getPreferenceStore().getDefaultString(
-						getPreferenceName());
+				value = getPreferenceStore().getDefaultString(getPreferenceName());
 				setPresentsDefaultValue(false);
 			}
 			getTextControl().setText(value);
@@ -61,8 +57,7 @@ public class DirectoryNotStrictVariableFieldEditor extends
 	@Override
 	protected void doStore() {
 		String value = getTextControl().getText();
-		EclipseUtils.setVariableValue(fVariableName, fVariableDescription,
-				value);
+		EclipseUtils.setVariableValue(fVariableName, fVariableDescription, value);
 	}
 
 	// ------------------------------------------------------------------------

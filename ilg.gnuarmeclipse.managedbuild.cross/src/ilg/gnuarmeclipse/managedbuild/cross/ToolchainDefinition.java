@@ -43,8 +43,7 @@ public class ToolchainDefinition {
 	private String fCmdObjdump;
 	private String fCmdSize;
 
-	private static String fArchitectures[] = { "ARM (AArch32)",
-			"ARM64 (AArch64)" };
+	private static String fArchitectures[] = { "ARM (AArch32)", "ARM64 (AArch64)" };
 
 	// ------------------------------------------------------------------------
 
@@ -68,14 +67,12 @@ public class ToolchainDefinition {
 		fPrefix = sPrefix;
 	}
 
-	public ToolchainDefinition(String sName, String sPrefix,
-			String sArchitecture) {
+	public ToolchainDefinition(String sName, String sPrefix, String sArchitecture) {
 		this(sName, sPrefix);
 		fArchitecture = sArchitecture;
 	}
 
-	public ToolchainDefinition(String sName, String sPrefix,
-			String sArchitecture, String cmdMake, String cmdRm) {
+	public ToolchainDefinition(String sName, String sPrefix, String sArchitecture, String cmdMake, String cmdRm) {
 		this(sName, sPrefix, sArchitecture);
 		fArchitecture = sArchitecture;
 		fCmdMake = cmdMake;
@@ -212,8 +209,7 @@ public class ToolchainDefinition {
 	// Static members
 	private static List<ToolchainDefinition> fgList;
 
-	private static final String CUSTOM_TOOLCHAINS_EXT_POTNT_ID = Activator.PLUGIN_ID
-			+ ".toolchains";
+	private static final String CUSTOM_TOOLCHAINS_EXT_POTNT_ID = Activator.PLUGIN_ID + ".toolchains";
 
 	public static List<ToolchainDefinition> getList() {
 		return fgList;
@@ -287,8 +283,7 @@ public class ToolchainDefinition {
 
 			try {
 				findToolchainByName(name);
-				Activator.log("Duplicate toolchain name '" + name
-						+ "', ignored.");
+				Activator.log("Duplicate toolchain name '" + name + "', ignored.");
 			} catch (IndexOutOfBoundsException e) {
 				ToolchainDefinition td = new ToolchainDefinition(name);
 				String prefix = element.getAttribute("prefix");
@@ -322,21 +317,17 @@ public class ToolchainDefinition {
 		fgList = new ArrayList<ToolchainDefinition>();
 
 		// 0
-		fgList.add(new ToolchainDefinition(GNU_TOOLS_FOR_ARM_EMBEDDED,
-				"arm-none-eabi-"));
+		fgList.add(new ToolchainDefinition(GNU_TOOLS_FOR_ARM_EMBEDDED, "arm-none-eabi-"));
 		// 1
 		ToolchainDefinition tc;
-		tc = new ToolchainDefinition("Sourcery CodeBench Lite for ARM EABI",
-				"arm-none-eabi-");
+		tc = new ToolchainDefinition("Sourcery CodeBench Lite for ARM EABI", "arm-none-eabi-");
 		if (EclipseUtils.isWindows()) {
 			tc.setWin("cs-make", "cs-rm");
 		}
 		fgList.add(tc);
 
 		// 2
-		tc = new ToolchainDefinition(
-				"Sourcery CodeBench Lite for ARM GNU/Linux",
-				"arm-none-linux-gnueabi-");
+		tc = new ToolchainDefinition("Sourcery CodeBench Lite for ARM GNU/Linux", "arm-none-linux-gnueabi-");
 		if (EclipseUtils.isWindows()) {
 			tc.setWin("cs-make", "cs-rm");
 		}
@@ -346,44 +337,32 @@ public class ToolchainDefinition {
 		fgList.add(new ToolchainDefinition("devkitPro ARM EABI", "arm-eabi-"));
 
 		// 4
-		fgList.add(new ToolchainDefinition("Yagarto, Summon, etc. ARM EABI",
-				"arm-none-eabi-"));
+		fgList.add(new ToolchainDefinition("Yagarto, Summon, etc. ARM EABI", "arm-none-eabi-"));
 
 		// 5
-		fgList.add(new ToolchainDefinition("Linaro ARMv7 bare-metal EABI",
-				"arm-none-eabi-"));
+		fgList.add(new ToolchainDefinition("Linaro ARMv7 bare-metal EABI", "arm-none-eabi-"));
 
 		// 6
-		fgList.add(new ToolchainDefinition(
-				"Linaro ARMv7 big-endian bare-metal EABI", "armeb-none-eabi-"));
+		fgList.add(new ToolchainDefinition("Linaro ARMv7 big-endian bare-metal EABI", "armeb-none-eabi-"));
 
 		// 7
-		fgList.add(new ToolchainDefinition("Linaro ARMv7 Linux GNU EABI HF",
-				"arm-linux-gnueabihf-"));
+		fgList.add(new ToolchainDefinition("Linaro ARMv7 Linux GNU EABI HF", "arm-linux-gnueabihf-"));
 
 		// 8
-		fgList.add(new ToolchainDefinition(
-				"Linaro ARMv7 big-endian Linux GNU EABI HF",
-				"armeb-linux-gnueabihf-"));
+		fgList.add(new ToolchainDefinition("Linaro ARMv7 big-endian Linux GNU EABI HF", "armeb-linux-gnueabihf-"));
 
 		// 64 bit toolchains
 		// 9
-		fgList.add(new ToolchainDefinition("Linaro AArch64 bare-metal ELF",
-				"aarch64-elf-", "aarch64"));
+		fgList.add(new ToolchainDefinition("Linaro AArch64 bare-metal ELF", "aarch64-elf-", "aarch64"));
 
 		// 10
-		fgList.add(new ToolchainDefinition(
-				"Linaro AArch64 big-endian bare-metal ELF",
-				"aarch64_be-elf-", "aarch64"));
+		fgList.add(new ToolchainDefinition("Linaro AArch64 big-endian bare-metal ELF", "aarch64_be-elf-", "aarch64"));
 
 		// 11
-		fgList.add(new ToolchainDefinition("Linaro AArch64 Linux GNU",
-				"aarch64-linux-gnu-", "aarch64"));
+		fgList.add(new ToolchainDefinition("Linaro AArch64 Linux GNU", "aarch64-linux-gnu-", "aarch64"));
 
 		// 12
-		fgList.add(new ToolchainDefinition(
-				"Linaro AArch64 big-endian Linux GNU", "aarch64_be-linux-gnu-",
-				"aarch64"));
+		fgList.add(new ToolchainDefinition("Linaro AArch64 big-endian Linux GNU", "aarch64_be-linux-gnu-", "aarch64"));
 
 		// 13 - Moved to extension point
 		// fgList.add(new ToolchainDefinition("Custom", "arm-none-eabi-"));

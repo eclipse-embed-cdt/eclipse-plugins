@@ -831,13 +831,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 
 			// Validate path.
-			
 
 			// First check using the most efficient means: see if the file
 			// exists. If it does, that's good enough.
 			File file = new File(path);
 			if (!file.exists()) {
-				// Support pyOCD being in PATH and specified sans path (issue# 102)
+				// Support pyOCD being in PATH and specified sans path (issue#
+				// 102)
 				try {
 					Process process = Runtime.getRuntime().exec(path + " --version");
 					// If no exception, then it's an executable in PATH
@@ -851,9 +851,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						System.out.printf("pyOCD path is invalid\n");
 					}
 					return null;
-				}				
-			}
-			else if (file.isDirectory()) {
+				}
+			} else if (file.isDirectory()) {
 				// TODO: Use java.nio.Files when we move to Java 7 to also check
 				// that file is executable
 				if (Activator.getInstance().isDebugging()) {

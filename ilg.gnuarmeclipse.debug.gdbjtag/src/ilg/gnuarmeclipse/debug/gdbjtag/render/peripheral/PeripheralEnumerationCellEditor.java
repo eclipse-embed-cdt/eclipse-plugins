@@ -29,8 +29,7 @@ public class PeripheralEnumerationCellEditor extends ComboBoxCellEditor {
 	public PeripheralEnumerationCellEditor(Composite editorParent,
 			PeripheralRegisterFieldVMNode peripheralRegisterField) {
 
-		super(editorParent, peripheralRegisterField.getEnumerationComboItems(),
-				SWT.BORDER);
+		super(editorParent, peripheralRegisterField.getEnumerationComboItems(), SWT.BORDER);
 	}
 
 	protected Control createControl(Composite composite) {

@@ -17,8 +17,7 @@ public class PeripheralClusterArrayVMNode extends PeripheralClusterVMNode {
 
 	// ------------------------------------------------------------------------
 
-	public PeripheralClusterArrayVMNode(PeripheralTreeVMNode parent,
-			SvdDMNode dmNode) {
+	public PeripheralClusterArrayVMNode(PeripheralTreeVMNode parent, SvdDMNode dmNode) {
 
 		super(parent, dmNode);
 

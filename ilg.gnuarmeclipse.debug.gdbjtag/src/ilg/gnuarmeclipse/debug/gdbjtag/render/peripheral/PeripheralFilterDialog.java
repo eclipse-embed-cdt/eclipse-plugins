@@ -48,8 +48,7 @@ public class PeripheralFilterDialog extends TitleAreaDialog {
 	public void create() {
 		super.create();
 		setTitle("Filter");
-		setMessage("Hide register/fields not containing the filter string",
-				IMessageProvider.NONE);
+		setMessage("Hide register/fields not containing the filter string", IMessageProvider.NONE);
 	}
 
 	@Override

@@ -28,20 +28,17 @@ import org.eclipse.ui.wizards.IWizardDescriptor;
 public class RunProcessorExpertWizard extends ProcessRunner {
 
 	@Override
-	public void process(TemplateCore template, ProcessArgument[] args,
-			String processId, IProgressMonitor monitor)
+	public void process(TemplateCore template, ProcessArgument[] args, String processId, IProgressMonitor monitor)
 			throws ProcessFailureException {
 
 		String projectName = args[0].getSimpleValue();
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("ProcessorExpertWizard.process(projectName='"
-					+ projectName + "')");
+			System.out.println("ProcessorExpertWizard.process(projectName='" + projectName + "')");
 		}
 
 		String id = "com.processorexpert.ui.pewizard.newprjwizard";
 
-		IWizardDescriptor descriptor = PlatformUI.getWorkbench()
-				.getNewWizardRegistry().findWizard(id);
+		IWizardDescriptor descriptor = PlatformUI.getWorkbench().getNewWizardRegistry().findWizard(id);
 
 		try {
 			// Then if we have a wizard, open it.
@@ -54,8 +51,7 @@ public class RunProcessorExpertWizard extends ProcessRunner {
 				// new method, for example:
 				// wizard.setProjectName(projectName);
 
-				WizardDialog wd = new WizardDialog(display.getActiveShell(),
-						wizard);
+				WizardDialog wd = new WizardDialog(display.getActiveShell(), wizard);
 				wd.setTitle(wizard.getWindowTitle());
 
 				wd.open();

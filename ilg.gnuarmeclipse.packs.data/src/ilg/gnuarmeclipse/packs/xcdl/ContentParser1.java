@@ -42,16 +42,14 @@ public class ContentParser1 {
 		Element firstElement = fDocument.getDocumentElement();
 		String firstElementName = firstElement.getNodeName();
 		if (!"root".equals(firstElementName)) {
-			throw new DocumentParseException("Missing <root>, <"
-					+ firstElementName + "> encountered");
+			throw new DocumentParseException("Missing <root>, <" + firstElementName + "> encountered");
 		}
 
 		String schemaVersion = firstElement.getAttribute("version").trim();
 		if ("1.1".equals(schemaVersion)) {
 			;
 		} else {
-			throw new DocumentParseException("Unrecognised schema version "
-					+ schemaVersion);
+			throw new DocumentParseException("Unrecognised schema version " + schemaVersion);
 		}
 
 		List<Element> childElements = Xml.getChildrenElementsList(firstElement);

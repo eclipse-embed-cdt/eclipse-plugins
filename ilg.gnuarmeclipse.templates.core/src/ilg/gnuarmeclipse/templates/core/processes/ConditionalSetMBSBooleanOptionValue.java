@@ -8,7 +8,7 @@
  * Contributors:
  * Bala Torati (Symbian) - Initial API and implementation
  *******************************************************************************/
- package ilg.gnuarmeclipse.templates.core.processes;
+package ilg.gnuarmeclipse.templates.core.processes;
 
 import ilg.gnuarmeclipse.templates.core.Utils;
 
@@ -33,7 +33,6 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IProgressMonitor;
 
-
 /**
  * This class sets the Managed Build System Option boolean Values.
  *
@@ -43,7 +42,8 @@ import org.eclipse.core.runtime.IProgressMonitor;
 public class ConditionalSetMBSBooleanOptionValue extends ProcessRunner {
 
 	@Override
-	public void process(TemplateCore template, ProcessArgument[] args, String processId, IProgressMonitor monitor) throws ProcessFailureException {
+	public void process(TemplateCore template, ProcessArgument[] args, String processId, IProgressMonitor monitor)
+			throws ProcessFailureException {
 		String projectName = args[0].getSimpleValue();
 		IProject projectHandle = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
@@ -52,13 +52,13 @@ public class ConditionalSetMBSBooleanOptionValue extends ProcessRunner {
 		workspaceDesc.setAutoBuilding(false);
 		try {
 			workspace.setDescription(workspaceDesc);
-		} catch (CoreException e) {//ignore
+		} catch (CoreException e) {// ignore
 		}
 
 		String condition = args[1].getSimpleValue();
 		if (!Utils.isConditionSatisfied(condition))
 			return;
-		
+
 		ProcessArgument[][] resourcePathObjects = args[2].getComplexArrayValue();
 		boolean modified = false;
 		for (ProcessArgument[] resourcePathObject : resourcePathObjects) {
@@ -79,18 +79,20 @@ public class ConditionalSetMBSBooleanOptionValue extends ProcessRunner {
 		workspaceDesc.setAutoBuilding(autoBuilding);
 		try {
 			workspace.setDescription(workspaceDesc);
-		} catch (CoreException e) {//ignore
+		} catch (CoreException e) {// ignore
 		}
 	}
 
-	private boolean setOptionValue(IProject projectHandle, String id, String value, String path, String buildType) throws BuildException, ProcessFailureException {
-		IConfiguration[] projectConfigs = ManagedBuildManager.getBuildInfo(projectHandle).getManagedProject().getConfigurations();
+	private boolean setOptionValue(IProject projectHandle, String id, String value, String path, String buildType)
+			throws BuildException, ProcessFailureException {
+		IConfiguration[] projectConfigs = ManagedBuildManager.getBuildInfo(projectHandle).getManagedProject()
+				.getConfigurations();
 
 		boolean resource = !(path == null || path.equals("") || path.equals("/")); //$NON-NLS-1$ //$NON-NLS-2$
 		boolean modified = false;
 
 		for (IConfiguration config : projectConfigs) {
-			if (!Utils.isBuildType(config, buildType)){
+			if (!Utils.isBuildType(config, buildType)) {
 				continue;
 			}
 			IResourceConfiguration resourceConfig = null;
@@ -121,13 +123,15 @@ public class ConditionalSetMBSBooleanOptionValue extends ProcessRunner {
 		return modified;
 	}
 
-	private boolean setOptionForResourceConfig(String id, String value, IResourceConfiguration resourceConfig, IOption[] options, IHoldsOptions optionHolder) throws BuildException {
+	private boolean setOptionForResourceConfig(String id, String value, IResourceConfiguration resourceConfig,
+			IOption[] options, IHoldsOptions optionHolder) throws BuildException {
 		boolean modified = false;
 		String lowerId = id.toLowerCase();
 		for (IOption option : options) {
 			if (option.getBaseId().toLowerCase().matches(lowerId)) {
 				if (option.getValueType() == IOption.BOOLEAN) {
-					ManagedBuildManager.setOption(resourceConfig, optionHolder, option, Boolean.valueOf(value).booleanValue());
+					ManagedBuildManager.setOption(resourceConfig, optionHolder, option,
+							Boolean.valueOf(value).booleanValue());
 					modified = true;
 				}
 			}
@@ -135,7 +139,8 @@ public class ConditionalSetMBSBooleanOptionValue extends ProcessRunner {
 		return modified;
 	}
 
-	private boolean setOptionForConfig(String id, String value, IConfiguration config, IOption[] options, IHoldsOptions optionHolder) throws BuildException {
+	private boolean setOptionForConfig(String id, String value, IConfiguration config, IOption[] options,
+			IHoldsOptions optionHolder) throws BuildException {
 		boolean modified = false;
 		String lowerId = id.toLowerCase();
 		for (IOption option : options) {

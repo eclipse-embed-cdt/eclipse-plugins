@@ -26,8 +26,8 @@ import org.eclipse.ui.IWorkbenchWindow;
  * Model.
  * 
  */
-public class PeripheralDMContext extends AbstractDMContext implements
-		IPeripheralDMContext, Comparable<IPeripheralDMContext> {
+public class PeripheralDMContext extends AbstractDMContext
+		implements IPeripheralDMContext, Comparable<IPeripheralDMContext> {
 
 	// ------------------------------------------------------------------------
 
@@ -38,8 +38,7 @@ public class PeripheralDMContext extends AbstractDMContext implements
 
 	// ------------------------------------------------------------------------
 
-	public PeripheralDMContext(DsfSession session, IDMContext[] parents,
-			PeripheralDMNode instance) {
+	public PeripheralDMContext(DsfSession session, IDMContext[] parents, PeripheralDMNode instance) {
 
 		super(session, parents);
 
@@ -124,8 +123,7 @@ public class PeripheralDMContext extends AbstractDMContext implements
 	 */
 	public void displayPeripheralMonitor(IWorkbenchWindow workbenchWindow) {
 
-		MemoryBlockMonitor.getInstance().displayPeripheralMonitor(
-				workbenchWindow, this, isChecked());
+		MemoryBlockMonitor.getInstance().displayPeripheralMonitor(workbenchWindow, this, isChecked());
 	}
 
 	@Override
@@ -146,9 +144,8 @@ public class PeripheralDMContext extends AbstractDMContext implements
 
 	@Override
 	public String toString() {
-		return "[" + getSessionId() + ", " + getName() + ", " + getRawAddress()
-				+ ", " + getBigLength() + ", \"" + getDescription() + "\""
-				+ "]";
+		return "[" + getSessionId() + ", " + getName() + ", " + getRawAddress() + ", " + getBigLength() + ", \""
+				+ getDescription() + "\"" + "]";
 	}
 
 	// ------------------------------------------------------------------------

@@ -25,8 +25,8 @@ public class StringVariableFieldEditor extends StringFieldEditor {
 
 	// ------------------------------------------------------------------------
 
-	public StringVariableFieldEditor(String name, String variableName,
-			String variableDescription, String labelText, Composite parent) {
+	public StringVariableFieldEditor(String name, String variableName, String variableDescription, String labelText,
+			Composite parent) {
 		super(name, labelText, parent);
 
 		fVariableName = variableName;
@@ -44,8 +44,7 @@ public class StringVariableFieldEditor extends StringFieldEditor {
 		if (getTextControl() != null) {
 			String value = EclipseUtils.getVariableValue(fVariableName);
 			if (value == null) {
-				value = getPreferenceStore().getDefaultString(
-						getPreferenceName());
+				value = getPreferenceStore().getDefaultString(getPreferenceName());
 				setPresentsDefaultValue(false);
 			}
 			getTextControl().setText(value);
@@ -59,8 +58,7 @@ public class StringVariableFieldEditor extends StringFieldEditor {
 	@Override
 	protected void doStore() {
 		String value = getTextControl().getText();
-		EclipseUtils.setVariableValue(fVariableName, fVariableDescription,
-				value);
+		EclipseUtils.setVariableValue(fVariableName, fVariableDescription, value);
 	}
 
 	// ------------------------------------------------------------------------

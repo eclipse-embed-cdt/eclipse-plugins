@@ -34,18 +34,15 @@ public class GnuArmServerServicesLaunchSequence extends Sequence {
 		@Override
 		public void execute(RequestMonitor requestMonitor) {
 			fLaunch.getServiceFactory()
-					.createService(IGdbServerBackendService.class, fSession,
-							fLaunch.getLaunchConfiguration())
+					.createService(IGdbServerBackendService.class, fSession, fLaunch.getLaunchConfiguration())
 					.initialize(requestMonitor);
 		}
 	} };
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmServerServicesLaunchSequence(DsfSession session,
-			GdbLaunch launch, IProgressMonitor progressMonitor) {
-		super(session.getExecutor(), progressMonitor, "Start Server",
-				"Start Server Rollback");
+	public GnuArmServerServicesLaunchSequence(DsfSession session, GdbLaunch launch, IProgressMonitor progressMonitor) {
+		super(session.getExecutor(), progressMonitor, "Start Server", "Start Server Rollback");
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("GnuArmServerServicesLaunchSequence()");

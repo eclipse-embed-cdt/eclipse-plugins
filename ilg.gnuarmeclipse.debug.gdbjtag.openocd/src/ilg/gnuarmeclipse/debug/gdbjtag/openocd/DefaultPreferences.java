@@ -48,7 +48,7 @@ public class DefaultPreferences {
 	public static final String GDB_CLIENT_OTHER_OPTIONS_DEFAULT = "";
 
 	public static final boolean USE_REMOTE_TARGET_DEFAULT = true;
-	public static final String REMOTE_IP_ADDRESS_DEFAULT = REMOTE_IP_ADDRESS_LOCALHOST; //$NON-NLS-1$
+	public static final String REMOTE_IP_ADDRESS_DEFAULT = REMOTE_IP_ADDRESS_LOCALHOST; // $NON-NLS-1$
 	public static final int REMOTE_PORT_NUMBER_DEFAULT = GDB_SERVER_GDB_PORT_NUMBER_DEFAULT;
 
 	public static final boolean UPDATE_THREAD_LIST_DEFAULT = false;
@@ -152,35 +152,29 @@ public class DefaultPreferences {
 	// ------------------------------------------------------------------------
 
 	public static String getGdbServerExecutable() {
-		String value = getString(PersistentPreferences.GDB_SERVER_EXECUTABLE,
-				null);
+		String value = getString(PersistentPreferences.GDB_SERVER_EXECUTABLE, null);
 		if (value != null) {
 			return value;
 		}
-		return getString(GDB_SERVER_EXECUTABLE_DEPRECATED,
-				GDB_SERVER_EXECUTABLE_DEFAULT);
+		return getString(GDB_SERVER_EXECUTABLE_DEPRECATED, GDB_SERVER_EXECUTABLE_DEFAULT);
 	}
 
 	public static String getGdbClientExecutable() {
-		String value = getString(PersistentPreferences.GDB_CLIENT_EXECUTABLE,
-				null);
+		String value = getString(PersistentPreferences.GDB_CLIENT_EXECUTABLE, null);
 		if (value != null) {
 			return value;
 		}
-		return getString(GDB_CLIENT_EXECUTABLE_DEPRECATED,
-				GDB_CLIENT_EXECUTABLE_DEFAULT);
+		return getString(GDB_CLIENT_EXECUTABLE_DEPRECATED, GDB_CLIENT_EXECUTABLE_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------
 
 	public static String getOpenocdConfig() {
-		String value = getString(
-				PersistentPreferences.GDB_SERVER_OTHER_OPTIONS, null);
+		String value = getString(PersistentPreferences.GDB_SERVER_OTHER_OPTIONS, null);
 		if (value != null) {
 			return value;
 		}
-		return getString(OPENOCD_CONFIG_DEPRECATED,
-				DefaultPreferences.GDB_SERVER_OTHER_DEFAULT);
+		return getString(OPENOCD_CONFIG_DEPRECATED, DefaultPreferences.GDB_SERVER_OTHER_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------
@@ -199,8 +193,7 @@ public class DefaultPreferences {
 		if (value == null) {
 
 			// TODO: remove DEPRECATED
-			value = getString(
-					PersistentPreferences.OPENOCD_EXECUTABLE_DEPRECATED, null);
+			value = getString(PersistentPreferences.OPENOCD_EXECUTABLE_DEPRECATED, null);
 			if (value == null) {
 				value = getString(OPENOCD_EXECUTABLE_DEPRECATED, "");
 			}
@@ -214,13 +207,11 @@ public class DefaultPreferences {
 
 	public static String getExecutableNameOs() {
 
-		String key = EclipseUtils
-				.getKeyOs(PersistentPreferences.EXECUTABLE_NAME_OS);
+		String key = EclipseUtils.getKeyOs(PersistentPreferences.EXECUTABLE_NAME_OS);
 
 		String value = getString(key, "");
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getExecutableNameOs()=\"" + value + "\" ("
-					+ key + ")");
+			System.out.println("getExecutableNameOs()=\"" + value + "\" (" + key + ")");
 		}
 		return value;
 	}
@@ -244,8 +235,7 @@ public class DefaultPreferences {
 		if (value == null) {
 
 			// TODO: remove DEPRECATED
-			value = getString(PersistentPreferences.OPENOCD_PATH_DEPRECATED,
-					null);
+			value = getString(PersistentPreferences.OPENOCD_PATH_DEPRECATED, null);
 			if (value == null) {
 				value = getString(OPENOCD_PATH_DEPRECATED, "");
 			}
@@ -281,12 +271,10 @@ public class DefaultPreferences {
 
 	public static String getSearchPathOs() {
 
-		String key = EclipseUtils
-				.getKeyOs(PersistentPreferences.SEARCH_PATH_OS);
+		String key = EclipseUtils.getKeyOs(PersistentPreferences.SEARCH_PATH_OS);
 		String value = getString(key, "");
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getSearchPathOs()=\"" + value + "\" (" + key
-					+ ")");
+			System.out.println("getSearchPathOs()=\"" + value + "\" (" + key + ")");
 		}
 		return value;
 	}

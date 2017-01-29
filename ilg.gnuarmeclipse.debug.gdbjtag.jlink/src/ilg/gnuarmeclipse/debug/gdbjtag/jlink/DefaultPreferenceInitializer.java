@@ -48,110 +48,83 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 	public void initializeDefaultPreferences() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out
-					.println("DefaultPreferenceInitializer.initializeDefaultPreferences()");
+			System.out.println("DefaultPreferenceInitializer.initializeDefaultPreferences()");
 		}
 
-		DefaultPreferences.putString(
-				PersistentPreferences.GDB_SERVER_INTERFACE,
+		DefaultPreferences.putString(PersistentPreferences.GDB_SERVER_INTERFACE,
 				DefaultPreferences.SERVER_INTERFACE_DEFAULT);
 
-		DefaultPreferences.putBoolean(
-				PersistentPreferences.GDB_JLINK_ENABLE_SEMIHOSTING,
+		DefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_ENABLE_SEMIHOSTING,
 				DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT);
 
-		DefaultPreferences.putBoolean(
-				PersistentPreferences.GDB_JLINK_ENABLE_SWO,
+		DefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_ENABLE_SWO,
 				DefaultPreferences.ENABLE_SWO_DEFAULT);
 
-		DefaultPreferences.putBoolean(
-				PersistentPreferences.TAB_MAIN_CHECK_PROGRAM,
+		DefaultPreferences.putBoolean(PersistentPreferences.TAB_MAIN_CHECK_PROGRAM,
 				DefaultPreferences.TAB_MAIN_CHECK_PROGRAM_DEFAULT);
 
-		DefaultPreferences.putBoolean(
-				PersistentPreferences.GDB_SERVER_DO_START,
+		DefaultPreferences.putBoolean(PersistentPreferences.GDB_SERVER_DO_START,
 				DefaultPreferences.SERVER_DO_START_DEFAULT);
 
-		DefaultPreferences.putString(
-				PersistentPreferences.GDB_SERVER_ENDIANNESS,
+		DefaultPreferences.putString(PersistentPreferences.GDB_SERVER_ENDIANNESS,
 				DefaultPreferences.SERVER_ENDIANNESS_DEFAULT);
 
-		DefaultPreferences.putString(
-				PersistentPreferences.GDB_SERVER_CONNECTION,
+		DefaultPreferences.putString(PersistentPreferences.GDB_SERVER_CONNECTION,
 				DefaultPreferences.SERVER_CONNECTION_DEFAULT);
 
-		DefaultPreferences.putString(
-				PersistentPreferences.GDB_SERVER_CONNECTION_ADDRESS,
+		DefaultPreferences.putString(PersistentPreferences.GDB_SERVER_CONNECTION_ADDRESS,
 				DefaultPreferences.SERVER_CONNECTION_ADDRESS_DEFAULT);
 
-		DefaultPreferences.putString(
-				PersistentPreferences.GDB_SERVER_INITIAL_SPEED,
+		DefaultPreferences.putString(PersistentPreferences.GDB_SERVER_INITIAL_SPEED,
 				DefaultPreferences.SERVER_INITIAL_SPEED_DEFAULT);
 
-		DefaultPreferences.putString(
-				PersistentPreferences.GDB_SERVER_OTHER_OPTIONS,
+		DefaultPreferences.putString(PersistentPreferences.GDB_SERVER_OTHER_OPTIONS,
 				DefaultPreferences.SERVER_OTHER_OPTIONS_DEFAULT);
 
 		DefaultPreferences.putString(PersistentPreferences.GDB_CLIENT_COMMANDS,
 				DefaultPreferences.CLIENT_COMMANDS_DEFAULT);
 
-		DefaultPreferences.putBoolean(
-				PersistentPreferences.GDB_JLINK_DO_INITIAL_RESET,
+		DefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_DO_INITIAL_RESET,
 				DefaultPreferences.DO_INITIAL_RESET_DEFAULT);
 
-		DefaultPreferences.putString(
-				PersistentPreferences.GDB_JLINK_INITIAL_RESET_TYPE,
+		DefaultPreferences.putString(PersistentPreferences.GDB_JLINK_INITIAL_RESET_TYPE,
 				DefaultPreferences.INITIAL_RESET_TYPE_DEFAULT);
 
-		DefaultPreferences.putInt(
-				PersistentPreferences.GDB_JLINK_INITIAL_RESET_SPEED,
+		DefaultPreferences.putInt(PersistentPreferences.GDB_JLINK_INITIAL_RESET_SPEED,
 				DefaultPreferences.INITIAL_RESET_SPEED_DEFAULT);
 
-		DefaultPreferences.putString(PersistentPreferences.GDB_JLINK_SPEED,
-				DefaultPreferences.JLINK_SPEED_DEFAULT);
+		DefaultPreferences.putString(PersistentPreferences.GDB_JLINK_SPEED, DefaultPreferences.JLINK_SPEED_DEFAULT);
 
-		DefaultPreferences.putBoolean(
-				PersistentPreferences.GDB_JLINK_ENABLE_FLASH_BREAKPOINTS,
+		DefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_ENABLE_FLASH_BREAKPOINTS,
 				DefaultPreferences.ENABLE_FLASH_BREAKPOINTS_DEFAULT);
 
-		DefaultPreferences.putBoolean(
-				PersistentPreferences.GDB_JLINK_SEMIHOSTING_TELNET,
+		DefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_SEMIHOSTING_TELNET,
 				DefaultPreferences.SEMIHOSTING_TELNET_DEFAULT);
 
-		DefaultPreferences.putBoolean(
-				PersistentPreferences.GDB_JLINK_SEMIHOSTING_CLIENT,
+		DefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_SEMIHOSTING_CLIENT,
 				DefaultPreferences.SEMIHOSTING_CLIENT_DEFAULT);
 
-		DefaultPreferences.putInt(
-				PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_CPU_FREQ,
+		DefaultPreferences.putInt(PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_CPU_FREQ,
 				DefaultPreferences.SWO_ENABLE_TARGET_CPU_FREQ_DEFAULT);
 
-		DefaultPreferences.putInt(
-				PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_SWO_FREQ,
+		DefaultPreferences.putInt(PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_SWO_FREQ,
 				DefaultPreferences.SWO_ENABLE_TARGET_SWO_FREQ_DEFAULT);
 
-		DefaultPreferences.putString(
-				PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_PORT_MASK,
+		DefaultPreferences.putString(PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_PORT_MASK,
 				DefaultPreferences.SWO_ENABLE_TARGET_PORT_MASK_DEFAULT);
 
-		DefaultPreferences.putString(
-				PersistentPreferences.GDB_JLINK_INIT_OTHER,
-				DefaultPreferences.INIT_OTHER_DEFAULT);
+		DefaultPreferences.putString(PersistentPreferences.GDB_JLINK_INIT_OTHER, DefaultPreferences.INIT_OTHER_DEFAULT);
 
-		DefaultPreferences.putBoolean(
-				PersistentPreferences.GDB_JLINK_DO_DEBUG_IN_RAM,
+		DefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_DO_DEBUG_IN_RAM,
 				DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT);
 
-		DefaultPreferences.putBoolean(
-				PersistentPreferences.GDB_JLINK_DO_PRERUN_RESET,
+		DefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_DO_PRERUN_RESET,
 				DefaultPreferences.DO_PRERUN_RESET_DEFAULT);
 
-		DefaultPreferences.putString(
-				PersistentPreferences.GDB_JLINK_PRERUN_RESET_TYPE,
+		DefaultPreferences.putString(PersistentPreferences.GDB_JLINK_PRERUN_RESET_TYPE,
 				DefaultPreferences.PRERUN_RESET_TYPE_DEFAULT);
 
-		DefaultPreferences.putString(
-				PersistentPreferences.GDB_JLINK_PRERUN_OTHER,
+		DefaultPreferences.putString(PersistentPreferences.GDB_JLINK_PRERUN_OTHER,
 				DefaultPreferences.PRERUN_OTHER_DEFAULT);
 
 		// When the 'ilg.gnuarmeclipse.managedbuild.cross' node is completely
@@ -159,11 +132,9 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		// This is the moment when all final default values are in, possibly
 		// set by product or command line.
 
-		Preferences prefs = Platform.getPreferencesService().getRootNode()
-				.node(DefaultScope.SCOPE);
+		Preferences prefs = Platform.getPreferencesService().getRootNode().node(DefaultScope.SCOPE);
 		if (prefs instanceof IEclipsePreferences) {
-			((IEclipsePreferences) prefs)
-					.addNodeChangeListener(new LateInitializer());
+			((IEclipsePreferences) prefs).addNodeChangeListener(new LateInitializer());
 		}
 	}
 
@@ -176,8 +147,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void added(NodeChangeEvent event) {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("LateInitializer.added() " + event + " "
-						+ event.getChild().name());
+				System.out.println("LateInitializer.added() " + event + " " + event.getChild().name());
 			}
 
 			if (Activator.PLUGIN_ID.equals(event.getChild().name())) {
@@ -185,8 +155,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				finalizeInitializationsDefaultPreferences();
 
 				// We're done, de-register listener.
-				((IEclipsePreferences) (event.getSource()))
-						.removeNodeChangeListener(this);
+				((IEclipsePreferences) (event.getSource())).removeNodeChangeListener(this);
 			}
 		}
 
@@ -204,8 +173,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void finalizeInitializationsDefaultPreferences() {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out
-						.println("LateInitializer.finalizeInitializationsDefaultPreferences()");
+				System.out.println("LateInitializer.finalizeInitializationsDefaultPreferences()");
 			}
 
 			// J-Link GDB Server executable name
@@ -218,8 +186,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				}
 			}
 
-			String executableName = EclipseUtils
-					.getVariableValue(VariableInitializer.VARIABLE_JLINK_EXECUTABLE);
+			String executableName = EclipseUtils.getVariableValue(VariableInitializer.VARIABLE_JLINK_EXECUTABLE);
 			if (executableName == null || executableName.isEmpty()) {
 				executableName = DefaultPreferences.getExecutableName();
 			}
@@ -257,12 +224,10 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 			if (folder.isEmpty()) {
 
 				// If the search path is known, discover toolchain.
-				folder = Discoverer.getRegistryInstallFolder(executableName,
-						"bin", REG_SUBKEY, REG_NAME);
+				folder = Discoverer.getRegistryInstallFolder(executableName, "bin", REG_SUBKEY, REG_NAME);
 
 				if (folder == null) {
-					folder = Discoverer.searchInstallFolder(executableName,
-							searchPath, null);
+					folder = Discoverer.searchInstallFolder(executableName, searchPath, null);
 				}
 			}
 

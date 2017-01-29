@@ -34,15 +34,13 @@ public class GnuArmPropertyTester extends PropertyTester {
 	public static final String TYPE_PREFIX = "ilg.gnuarmeclipse.managedbuild.cross.target.";
 
 	@Override
-	public boolean test(Object receiver, String property, Object[] args,
-			Object expectedValue) {
+	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
 
 		if ("isGnuArm".equals(property)) {
 			if (receiver instanceof IProject) {
 
 				IProject project = (IProject) receiver;
-				IManagedBuildInfo info = ManagedBuildManager
-						.getBuildInfo(project);
+				IManagedBuildInfo info = ManagedBuildManager.getBuildInfo(project);
 				if (info == null) {
 					return false; // Not managed build
 				}
@@ -54,8 +52,7 @@ public class GnuArmPropertyTester extends PropertyTester {
 					if (toolchain == null) {
 						continue;
 					}
-					IOption option = toolchain
-							.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME);
+					IOption option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME);
 					if (option == null) {
 						continue;
 					}

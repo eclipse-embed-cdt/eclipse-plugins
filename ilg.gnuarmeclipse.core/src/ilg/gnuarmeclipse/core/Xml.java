@@ -33,13 +33,11 @@ import org.xml.sax.SAXException;
 // Add some ease to the usual complicated xml parser interface.
 public class Xml {
 
-	public static Document parseFile(File file)
-			throws ParserConfigurationException, SAXException, IOException {
+	public static Document parseFile(File file) throws ParserConfigurationException, SAXException, IOException {
 
 		InputSource inputSource = new InputSource(new FileInputStream(file));
 
-		DocumentBuilder xml = DocumentBuilderFactory.newInstance()
-				.newDocumentBuilder();
+		DocumentBuilder xml = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		Document document = xml.parse(inputSource);
 
 		return document;
@@ -178,13 +176,13 @@ public class Xml {
 	 * @return the escaped string
 	 */
 	public static String xmlEscape(String value) {
-	
-		value = value.replaceAll("\\&", "&amp;"); //$NON-NLS-1$ //$NON-NLS-2$ 
-		value = value.replaceAll("\\\"", "&quot;"); //$NON-NLS-1$ //$NON-NLS-2$ 
-		value = value.replaceAll("\\\'", "&apos;"); //$NON-NLS-1$ //$NON-NLS-2$ 
-		value = value.replaceAll("\\<", "&lt;"); //$NON-NLS-1$ //$NON-NLS-2$ 
-		value = value.replaceAll("\\>", "&gt;"); //$NON-NLS-1$ //$NON-NLS-2$ 
-	
+
+		value = value.replaceAll("\\&", "&amp;"); //$NON-NLS-1$ //$NON-NLS-2$
+		value = value.replaceAll("\\\"", "&quot;"); //$NON-NLS-1$ //$NON-NLS-2$
+		value = value.replaceAll("\\\'", "&apos;"); //$NON-NLS-1$ //$NON-NLS-2$
+		value = value.replaceAll("\\<", "&lt;"); //$NON-NLS-1$ //$NON-NLS-2$
+		value = value.replaceAll("\\>", "&gt;"); //$NON-NLS-1$ //$NON-NLS-2$
+
 		return value;
 	}
 
@@ -192,17 +190,18 @@ public class Xml {
 	 * If the string contains line separators, split the string in lines, trim
 	 * each line and then join everything back to a single string.
 	 * 
-	 * @param str a string that might span multiple lines.
+	 * @param str
+	 *            a string that might span multiple lines.
 	 * @return a string with lines joined, or the original string.
 	 */
 	public static String joinMultiLine(String str) {
-	
+
 		assert str != null;
 		String sa[] = str.split("\\r?\\n");
 		if (sa.length == 1) {
 			return str; // If no multi line, return original string
 		}
-	
+
 		return StringUtils.join(sa, " ");
 	}
 

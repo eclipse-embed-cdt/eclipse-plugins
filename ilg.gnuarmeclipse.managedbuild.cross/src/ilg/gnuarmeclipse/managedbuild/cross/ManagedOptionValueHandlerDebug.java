@@ -24,8 +24,8 @@ public class ManagedOptionValueHandlerDebug {
 
 	// ------------------------------------------------------------------------
 
-	public static void dump(IBuildObject configuration, IHoldsOptions holder,
-			IOption option, String extraArgument, int event) {
+	public static void dump(IBuildObject configuration, IHoldsOptions holder, IOption option, String extraArgument,
+			int event) {
 
 		String configLabel = "config"; //$NON-NLS-1$
 		String holderLabel = "holder"; //$NON-NLS-1$
@@ -45,13 +45,17 @@ public class ManagedOptionValueHandlerDebug {
 
 		switch (event) {
 		case ManagedOptionValueHandler.EVENT_OPEN:
-			eventLabel = "EVENT_OPEN";break; //$NON-NLS-1$
+			eventLabel = "EVENT_OPEN"; //$NON-NLS-1$
+			break;
 		case ManagedOptionValueHandler.EVENT_APPLY:
-			eventLabel = "EVENT_APPLY";break; //$NON-NLS-1$
+			eventLabel = "EVENT_APPLY"; //$NON-NLS-1$
+			break;
 		case ManagedOptionValueHandler.EVENT_SETDEFAULT:
-			eventLabel = "EVENT_SETDEFAULT";break; //$NON-NLS-1$
+			eventLabel = "EVENT_SETDEFAULT"; //$NON-NLS-1$
+			break;
 		case ManagedOptionValueHandler.EVENT_CLOSE:
-			eventLabel = "EVENT_CLOSE";break; //$NON-NLS-1$
+			eventLabel = "EVENT_CLOSE"; //$NON-NLS-1$
+			break;
 		}
 
 		// Print the event

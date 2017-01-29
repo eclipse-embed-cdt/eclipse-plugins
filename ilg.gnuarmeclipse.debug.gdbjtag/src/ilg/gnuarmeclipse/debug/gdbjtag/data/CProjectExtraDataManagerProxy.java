@@ -48,8 +48,7 @@ public class CProjectExtraDataManagerProxy implements ICProjectExtraDataManager 
 
 	public CProjectExtraDataManagerProxy() {
 
-		IExtension[] extensions = Platform.getExtensionRegistry()
-				.getExtensionPoint(EXTENSION_POINT_ID).getExtensions();
+		IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT_ID).getExtensions();
 
 		if (extensions.length == 0) {
 			Activator.log("no cprojectExtra extension point");
@@ -63,16 +62,14 @@ public class CProjectExtraDataManagerProxy implements ICProjectExtraDataManager 
 			fDataManagers[i] = null;
 
 			IExtension extension = extensions[i];
-			IConfigurationElement[] configElements = extension
-					.getConfigurationElements();
+			IConfigurationElement[] configElements = extension.getConfigurationElements();
 			IConfigurationElement configElement = configElements[0];
 
 			if (FACTORY_ELEMENT.equals(configElement.getName())) {
 
 				ICProjectExtraDataManagerFactory factory;
 				try {
-					Object obj = configElement
-							.createExecutableExtension(CLASS_ATTRIBUTE);
+					Object obj = configElement.createExecutableExtension(CLASS_ATTRIBUTE);
 
 					if (obj instanceof ICProjectExtraDataManagerFactory) {
 						factory = (ICProjectExtraDataManagerFactory) obj;
@@ -83,8 +80,7 @@ public class CProjectExtraDataManagerProxy implements ICProjectExtraDataManager 
 						Activator.log("no ICProjectExtraDataManagerFactory");
 					}
 				} catch (CoreException e) {
-					Activator.log("cannot get factory for "
-							+ EXTENSION_POINT_ID);
+					Activator.log("cannot get factory for " + EXTENSION_POINT_ID);
 				}
 			} else {
 				Activator.log("no <factory> element");

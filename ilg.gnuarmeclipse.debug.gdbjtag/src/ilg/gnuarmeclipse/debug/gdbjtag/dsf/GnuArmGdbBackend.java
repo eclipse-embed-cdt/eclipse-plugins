@@ -98,8 +98,7 @@ import org.osgi.framework.BundleContext;
  * @since 1.1
  */
 @SuppressWarnings("restriction")
-public class GnuArmGdbBackend extends AbstractDsfService implements
-		IGDBBackend, IMIBackend2 {
+public class GnuArmGdbBackend extends AbstractDsfService implements IGDBBackend, IMIBackend2 {
 
 	private final ILaunchConfiguration fLaunchConfiguration;
 
@@ -170,12 +169,9 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 	private void doInitialize(final RequestMonitor requestMonitor) {
 
 		final Sequence.Step[] initializeSteps = new Sequence.Step[] {
-				new GDBProcessStep(
-						InitializationShutdownStep.Direction.INITIALIZING),
-				new MonitorJobStep(
-						InitializationShutdownStep.Direction.INITIALIZING),
-				new RegisterStep(
-						InitializationShutdownStep.Direction.INITIALIZING), };
+				new GDBProcessStep(InitializationShutdownStep.Direction.INITIALIZING),
+				new MonitorJobStep(InitializationShutdownStep.Direction.INITIALIZING),
+				new RegisterStep(InitializationShutdownStep.Direction.INITIALIZING), };
 
 		Sequence startupSequence = new Sequence(getExecutor(), requestMonitor) {
 			@Override
@@ -194,19 +190,15 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 		}
 
 		final Sequence.Step[] shutdownSteps = new Sequence.Step[] {
-				new RegisterStep(
-						InitializationShutdownStep.Direction.SHUTTING_DOWN),
-				new MonitorJobStep(
-						InitializationShutdownStep.Direction.SHUTTING_DOWN),
-				new GDBProcessStep(
-						InitializationShutdownStep.Direction.SHUTTING_DOWN), };
-		Sequence shutdownSequence = new Sequence(getExecutor(),
-				new RequestMonitor(getExecutor(), requestMonitor) {
-					@Override
-					protected void handleCompleted() {
-						GnuArmGdbBackend.super.shutdown(requestMonitor);
-					}
-				}) {
+				new RegisterStep(InitializationShutdownStep.Direction.SHUTTING_DOWN),
+				new MonitorJobStep(InitializationShutdownStep.Direction.SHUTTING_DOWN),
+				new GDBProcessStep(InitializationShutdownStep.Direction.SHUTTING_DOWN), };
+		Sequence shutdownSequence = new Sequence(getExecutor(), new RequestMonitor(getExecutor(), requestMonitor) {
+			@Override
+			protected void handleCompleted() {
+				GnuArmGdbBackend.super.shutdown(requestMonitor);
+			}
+		}) {
 			@Override
 			public Step[] getSteps() {
 				return shutdownSteps;
@@ -257,14 +249,11 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 	@Override
 	public String getGDBInitFile() throws CoreException {
 		if (fGDBInitFile == null) {
-			String defaultGdbInit = Platform.getPreferencesService().getString(
-					GdbPlugin.PLUGIN_ID,
+			String defaultGdbInit = Platform.getPreferencesService().getString(GdbPlugin.PLUGIN_ID,
 					IGdbDebugPreferenceConstants.PREF_DEFAULT_GDB_INIT,
-					IGDBLaunchConfigurationConstants.DEBUGGER_GDB_INIT_DEFAULT,
-					null);
+					IGDBLaunchConfigurationConstants.DEBUGGER_GDB_INIT_DEFAULT, null);
 
-			fGDBInitFile = fLaunchConfiguration.getAttribute(
-					IGDBLaunchConfigurationConstants.ATTR_GDB_INIT,
+			fGDBInitFile = fLaunchConfiguration.getAttribute(IGDBLaunchConfigurationConstants.ATTR_GDB_INIT,
 					defaultGdbInit);
 		}
 
@@ -290,13 +279,11 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 			// debugger implementation to make the distinction.
 			//
 			IPath path = null;
-			String location = fLaunchConfiguration.getAttribute(
-					ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY,
+			String location = fLaunchConfiguration.getAttribute(ICDTLaunchConfigurationConstants.ATTR_WORKING_DIRECTORY,
 					(String) null);
 
 			if (location != null) {
-				String expandedLocation = VariablesPlugin.getDefault()
-						.getStringVariableManager()
+				String expandedLocation = VariablesPlugin.getDefault().getStringVariableManager()
 						.performStringSubstitution(location);
 				if (expandedLocation.length() > 0) {
 					path = new Path(expandedLocation);
@@ -310,8 +297,7 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 					if (!dir.isDirectory())
 						path = null;
 				} else {
-					IResource res = ResourcesPlugin.getWorkspace().getRoot()
-							.findMember(path);
+					IResource res = ResourcesPlugin.getWorkspace().getRoot().findMember(path);
 					if (res instanceof IContainer && res.exists()) {
 						path = res.getLocation();
 					} else
@@ -341,13 +327,11 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 	@Override
 	public String getProgramArguments() throws CoreException {
 		if (fProgramArguments == null) {
-			fProgramArguments = fLaunchConfiguration.getAttribute(
-					ICDTLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS,
-					(String) null);
+			fProgramArguments = fLaunchConfiguration
+					.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROGRAM_ARGUMENTS, (String) null);
 
 			if (fProgramArguments != null) {
-				fProgramArguments = VariablesPlugin.getDefault()
-						.getStringVariableManager()
+				fProgramArguments = VariablesPlugin.getDefault().getStringVariableManager()
 						.performStringSubstitution(fProgramArguments);
 			}
 		}
@@ -363,9 +347,8 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 	@Override
 	public List<String> getSharedLibraryPaths() throws CoreException {
 		if (fSharedLibPaths == null) {
-			fSharedLibPaths = fLaunchConfiguration.getAttribute(
-					IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_SOLIB_PATH,
-					new ArrayList<String>(0));
+			fSharedLibPaths = fLaunchConfiguration
+					.getAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_SOLIB_PATH, new ArrayList<String>(0));
 		}
 
 		return fSharedLibPaths;
@@ -386,24 +369,19 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 			// returning just the
 			// list of new variables.
 
-			boolean append = fLaunchConfiguration.getAttribute(
-					ILaunchManager.ATTR_APPEND_ENVIRONMENT_VARIABLES, true);
+			boolean append = fLaunchConfiguration.getAttribute(ILaunchManager.ATTR_APPEND_ENVIRONMENT_VARIABLES, true);
 
 			String[] properties;
 			if (append) {
-				ILaunchConfigurationWorkingCopy wc = fLaunchConfiguration
-						.copy(""); //$NON-NLS-1$
+				ILaunchConfigurationWorkingCopy wc = fLaunchConfiguration.copy(""); //$NON-NLS-1$
 				// Don't save this change, it is just temporary, and in just a
 				// copy of our launchConfig.
-				wc.setAttribute(
-						ILaunchManager.ATTR_APPEND_ENVIRONMENT_VARIABLES, false);
-				properties = DebugPlugin.getDefault().getLaunchManager()
-						.getEnvironment(wc);
+				wc.setAttribute(ILaunchManager.ATTR_APPEND_ENVIRONMENT_VARIABLES, false);
+				properties = DebugPlugin.getDefault().getLaunchManager().getEnvironment(wc);
 			} else {
 				// We're getting rid of the environment anyway, so this call
 				// will only yield the new variables.
-				properties = DebugPlugin.getDefault().getLaunchManager()
-						.getEnvironment(fLaunchConfiguration);
+				properties = DebugPlugin.getDefault().getLaunchManager().getEnvironment(fLaunchConfiguration);
 			}
 
 			if (properties == null) {
@@ -428,17 +406,15 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 	/** @since 3.0 */
 	@Override
 	public boolean getClearEnvironment() throws CoreException {
-		return !fLaunchConfiguration.getAttribute(
-				ILaunchManager.ATTR_APPEND_ENVIRONMENT_VARIABLES, true);
+		return !fLaunchConfiguration.getAttribute(ILaunchManager.ATTR_APPEND_ENVIRONMENT_VARIABLES, true);
 	}
 
 	/** @since 3.0 */
 	@Override
 	public boolean getUpdateThreadListOnSuspend() throws CoreException {
-		return fLaunchConfiguration
-				.getAttribute(
-						IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
-						IGDBLaunchConfigurationConstants.DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND_DEFAULT);
+		return fLaunchConfiguration.getAttribute(
+				IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
+				IGDBLaunchConfigurationConstants.DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND_DEFAULT);
 	}
 
 	protected Process launchGDBProcess() throws CoreException {
@@ -464,8 +440,7 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 		// is. If it is the same, we can use the command line array instead
 		// using the more robust
 		// non-deprecated call to launchGDBProcess.
-		String unmodifiedCmdLine = StringUtil.join(getGDBCommandLineArray(),
-				" ").trim(); //$NON-NLS-1$
+		String unmodifiedCmdLine = StringUtil.join(getGDBCommandLineArray(), " ").trim(); //$NON-NLS-1$
 		if (unmodifiedCmdLine.equals(commandLine.trim()) == false) {
 			Process proc = null;
 			try {
@@ -473,8 +448,7 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 						LaunchUtils.getLaunchEnvironment(fLaunchConfiguration));
 			} catch (IOException e) {
 				String message = "Error while launching command " + commandLine; //$NON-NLS-1$
-				throw new CoreException(new Status(IStatus.ERROR,
-						GdbPlugin.PLUGIN_ID, -1, message, e));
+				throw new CoreException(new Status(IStatus.ERROR, GdbPlugin.PLUGIN_ID, -1, message, e));
 			}
 			return proc;
 		}
@@ -489,16 +463,14 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 	 * 
 	 * @since 4.6
 	 */
-	protected Process launchGDBProcess(String[] commandLine)
-			throws CoreException {
+	protected Process launchGDBProcess(String[] commandLine) throws CoreException {
 		Process proc = null;
 		try {
 			proc = ProcessFactory.getFactory().exec(commandLine,
 					LaunchUtils.getLaunchEnvironment(fLaunchConfiguration));
 		} catch (IOException e) {
 			String message = "Error while launching command: " + StringUtil.join(commandLine, " "); //$NON-NLS-1$ //$NON-NLS-2$
-			throw new CoreException(new Status(IStatus.ERROR,
-					GdbPlugin.PLUGIN_ID, -1, message, e));
+			throw new CoreException(new Status(IStatus.ERROR, GdbPlugin.PLUGIN_ID, -1, message, e));
 		}
 
 		return proc;
@@ -567,8 +539,7 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 			}
 			fInterruptFailedJob = new MonitorInterruptJob(timeout, rm);
 		} else {
-			rm.setStatus(new Status(IStatus.ERROR, GdbPlugin.PLUGIN_ID,
-					IDsfStatusConstants.NOT_SUPPORTED,
+			rm.setStatus(new Status(IStatus.ERROR, GdbPlugin.PLUGIN_ID, IDsfStatusConstants.NOT_SUPPORTED,
 					"Cannot interrupt.", null)); //$NON-NLS-1$
 			rm.done();
 		}
@@ -578,15 +549,13 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 	 * @since 3.0
 	 */
 	@Override
-	public void interruptInferiorAndWait(long pid, int timeout,
-			RequestMonitor rm) {
+	public void interruptInferiorAndWait(long pid, int timeout, RequestMonitor rm) {
 		if (fProcess instanceof Spawner) {
 			Spawner gdbSpawner = (Spawner) fProcess;
 			gdbSpawner.raise((int) pid, gdbSpawner.INT);
 			fInterruptFailedJob = new MonitorInterruptJob(timeout, rm);
 		} else {
-			rm.setStatus(new Status(IStatus.ERROR, GdbPlugin.PLUGIN_ID,
-					IDsfStatusConstants.NOT_SUPPORTED,
+			rm.setStatus(new Status(IStatus.ERROR, GdbPlugin.PLUGIN_ID, IDsfStatusConstants.NOT_SUPPORTED,
 					"Cannot interrupt.", null)); //$NON-NLS-1$
 			rm.done();
 		}
@@ -657,13 +626,11 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 			}
 			final GDBLaunchMonitor fGDBLaunchMonitor = new GDBLaunchMonitor();
 
-			final RequestMonitor gdbLaunchRequestMonitor = new RequestMonitor(
-					getExecutor(), requestMonitor) {
+			final RequestMonitor gdbLaunchRequestMonitor = new RequestMonitor(getExecutor(), requestMonitor) {
 				@Override
 				protected void handleCompleted() {
 					if (Activator.getInstance().isDebugging()) {
-						System.out
-								.println("GDBProcessStep.initialise() handleCompleted()");
+						System.out.println("GDBProcessStep.initialise() handleCompleted()");
 					}
 
 					if (!fGDBLaunchMonitor.fTimedOut) {
@@ -685,14 +652,12 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 				protected IStatus run(IProgressMonitor monitor) {
 
 					if (Activator.getInstance().isDebugging()) {
-						System.out
-								.println("GDBProcessStep.initialise() Job run()");
+						System.out.println("GDBProcessStep.initialise() Job run()");
 					}
 
 					if (gdbLaunchRequestMonitor.isCanceled()) {
-						gdbLaunchRequestMonitor.setStatus(new Status(
-								IStatus.CANCEL, GdbPlugin.PLUGIN_ID, -1,
-								"Canceled starting GDB", null)); //$NON-NLS-1$
+						gdbLaunchRequestMonitor.setStatus(
+								new Status(IStatus.CANCEL, GdbPlugin.PLUGIN_ID, -1, "Canceled starting GDB", null)); //$NON-NLS-1$
 						gdbLaunchRequestMonitor.done();
 						return Status.OK_STATUS;
 					}
@@ -710,9 +675,8 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 						// until we have registered this service
 						// so that other services can have access to it.
 					} catch (CoreException e) {
-						gdbLaunchRequestMonitor.setStatus(new Status(
-								IStatus.ERROR, GdbPlugin.PLUGIN_ID, -1, e
-										.getMessage(), e));
+						gdbLaunchRequestMonitor
+								.setStatus(new Status(IStatus.ERROR, GdbPlugin.PLUGIN_ID, -1, e.getMessage(), e));
 						gdbLaunchRequestMonitor.done();
 						return Status.OK_STATUS;
 					}
@@ -722,8 +686,7 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 					boolean success = false;
 					try {
 						// Read initial GDB prompt
-						inputReader = new BufferedReader(new InputStreamReader(
-								getMIInputStream()));
+						inputReader = new BufferedReader(new InputStreamReader(getMIInputStream()));
 						String line;
 						while ((line = inputReader.readLine()) != null) {
 							line = line.trim();
@@ -735,21 +698,18 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 
 						// Failed to read initial prompt, check for error
 						if (!success) {
-							errorReader = new BufferedReader(
-									new InputStreamReader(getMIErrorStream()));
+							errorReader = new BufferedReader(new InputStreamReader(getMIErrorStream()));
 							String errorInfo = errorReader.readLine();
 							if (errorInfo == null) {
 								errorInfo = "GDB prompt not read"; //$NON-NLS-1$
 							}
-							gdbLaunchRequestMonitor.setStatus(new Status(
-									IStatus.ERROR, GdbPlugin.PLUGIN_ID, -1,
-									errorInfo, null));
+							gdbLaunchRequestMonitor
+									.setStatus(new Status(IStatus.ERROR, GdbPlugin.PLUGIN_ID, -1, errorInfo, null));
 						}
 					} catch (IOException e) {
 						success = false;
-						gdbLaunchRequestMonitor.setStatus(new Status(
-								IStatus.ERROR, GdbPlugin.PLUGIN_ID, -1,
-								"Error reading GDB output", e)); //$NON-NLS-1$
+						gdbLaunchRequestMonitor.setStatus(
+								new Status(IStatus.ERROR, GdbPlugin.PLUGIN_ID, -1, "Error reading GDB output", e)); //$NON-NLS-1$
 					}
 
 					// In the case of failure, close the MI streams so
@@ -786,10 +746,8 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 						if (jobThread != null) {
 							jobThread.interrupt();
 						}
-						requestMonitor.setStatus(new Status(IStatus.ERROR,
-								GdbPlugin.PLUGIN_ID,
-								DebugException.TARGET_REQUEST_FAILED,
-								"Timed out trying to launch GDB.", null)); //$NON-NLS-1$
+						requestMonitor.setStatus(new Status(IStatus.ERROR, GdbPlugin.PLUGIN_ID,
+								DebugException.TARGET_REQUEST_FAILED, "Timed out trying to launch GDB.", null)); //$NON-NLS-1$
 						requestMonitor.done();
 					}
 				}
@@ -822,8 +780,7 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 						// And we should wait for it to complete since we then
 						// check if the killing of GDB worked.
 						if (Activator.getInstance().isDebugging()) {
-							System.out
-									.println("GDBProcessStep.shutdown() run()");
+							System.out.println("GDBProcessStep.shutdown() run()");
 						}
 						getExecutor().submit(new DsfRunnable() {
 							@Override
@@ -838,14 +795,11 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 									// event
 									fBackendState = State.TERMINATED;
 									if (Activator.getInstance().isDebugging()) {
-										System.out
-												.println("GDBProcessStep.shutdown() run() dispatchEvent(BackendStateChangedEvent, TERMINATED)");
+										System.out.println(
+												"GDBProcessStep.shutdown() run() dispatchEvent(BackendStateChangedEvent, TERMINATED)");
 									}
-									getSession().dispatchEvent(
-											new BackendStateChangedEvent(
-													getSession().getId(),
-													getId(), State.TERMINATED),
-											getProperties());
+									getSession().dispatchEvent(new BackendStateChangedEvent(getSession().getId(),
+											getId(), State.TERMINATED), getProperties());
 								}
 							}
 						}).get();
@@ -866,8 +820,7 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 																	// exited
 
 							if (Activator.getInstance().isDebugging()) {
-								System.out
-										.println("GDBProcessStep.shutdown() run() return");
+								System.out.println("GDBProcessStep.shutdown() run() return");
 							}
 							requestMonitor.done();
 							return Status.OK_STATUS;
@@ -880,13 +833,10 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 						attempts++;
 					}
 					if (Activator.getInstance().isDebugging()) {
-						System.out
-								.println("GDBProcessStep.shutdown() run() REQUEST_FAILED");
+						System.out.println("GDBProcessStep.shutdown() run() REQUEST_FAILED");
 					}
-					requestMonitor.setStatus(new Status(IStatus.ERROR,
-							GdbPlugin.PLUGIN_ID,
-							IDsfStatusConstants.REQUEST_FAILED,
-							"GDB terminate failed", null)); //$NON-NLS-1$
+					requestMonitor.setStatus(new Status(IStatus.ERROR, GdbPlugin.PLUGIN_ID,
+							IDsfStatusConstants.REQUEST_FAILED, "GDB terminate failed", null)); //$NON-NLS-1$
 					requestMonitor.done();
 					return Status.OK_STATUS;
 				}
@@ -936,9 +886,8 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 
 		@Override
 		public void initialize(final RequestMonitor requestMonitor) {
-			register(new String[] { IMIBackend.class.getName(),
-					IMIBackend2.class.getName(), IGDBBackend.class.getName() },
-					new Hashtable<String, String>());
+			register(new String[] { IMIBackend.class.getName(), IMIBackend2.class.getName(),
+					IGDBBackend.class.getName() }, new Hashtable<String, String>());
 
 			getSession().addServiceEventListener(GnuArmGdbBackend.this, null);
 
@@ -951,9 +900,8 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 			 * We send the event in the register step because that is when other
 			 * services have access to it.
 			 */
-			getSession().dispatchEvent(
-					new BackendStateChangedEvent(getSession().getId(), getId(),
-							State.STARTED), getProperties());
+			getSession().dispatchEvent(new BackendStateChangedEvent(getSession().getId(), getId(), State.STARTED),
+					getProperties());
 
 			requestMonitor.done();
 		}
@@ -984,8 +932,7 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 					fGDBExitValue = fMonProcess.exitValue();
 
 					if (Activator.getInstance().isDebugging()) {
-						System.out.println("MonitorJob.run() exitValue() "
-								+ fGDBExitValue);
+						System.out.println("MonitorJob.run() exitValue() " + fGDBExitValue);
 					}
 					// Need to do this on the executor for thread-safety
 					getExecutor().submit(new DsfRunnable() {
@@ -1000,15 +947,12 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 							fBackendState = State.TERMINATED;
 
 							if (Activator.getInstance().isDebugging()) {
-								System.out
-										.println("MonitorJob.run() run() dispatchEvent(BackendStateChangedEvent, TERMINATED)");
+								System.out.println(
+										"MonitorJob.run() run() dispatchEvent(BackendStateChangedEvent, TERMINATED)");
 							}
-							getSession()
-									.dispatchEvent(
-											new BackendStateChangedEvent(
-													getSession().getId(),
-													getId(), State.TERMINATED),
-											getProperties());
+							getSession().dispatchEvent(
+									new BackendStateChangedEvent(getSession().getId(), getId(), State.TERMINATED),
+									getProperties());
 						}
 					});
 				} catch (InterruptedException ie) {
@@ -1077,10 +1021,8 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 				@Override
 				public void run() {
 					fInterruptFailedJob = null;
-					fRequestMonitor.setStatus(new Status(IStatus.ERROR,
-							GdbPlugin.PLUGIN_ID,
-							IDsfStatusConstants.REQUEST_FAILED,
-							"Interrupt failed.", null)); //$NON-NLS-1$
+					fRequestMonitor.setStatus(new Status(IStatus.ERROR, GdbPlugin.PLUGIN_ID,
+							IDsfStatusConstants.REQUEST_FAILED, "Interrupt failed.", null)); //$NON-NLS-1$
 					fRequestMonitor.done();
 				}
 			});
@@ -1133,8 +1075,7 @@ public class GnuArmGdbBackend extends AbstractDsfService implements
 		}
 
 		// When the process is terminated, also terminate the backend.
-		if (e.getState() == State.TERMINATED
-				&& e.getSessionId().equals(getSession().getId())
+		if (e.getState() == State.TERMINATED && e.getSessionId().equals(getSession().getId())
 				&& getState() == State.STARTED) {
 
 			destroy();

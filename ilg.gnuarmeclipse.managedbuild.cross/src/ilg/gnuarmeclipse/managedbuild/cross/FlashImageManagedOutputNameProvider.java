@@ -17,8 +17,7 @@ import org.eclipse.cdt.managedbuilder.core.ITool;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 
-public class FlashImageManagedOutputNameProvider implements
-		IManagedOutputNameProvider {
+public class FlashImageManagedOutputNameProvider implements IManagedOutputNameProvider {
 
 	// ------------------------------------------------------------------------
 
@@ -26,8 +25,7 @@ public class FlashImageManagedOutputNameProvider implements
 
 		String value = null;
 
-		IOption option = tool
-				.getOptionBySuperClassId(Option.OPTION_CREATEFLASH_CHOICE);
+		IOption option = tool.getOptionBySuperClassId(Option.OPTION_CREATEFLASH_CHOICE);
 		if (option != null)
 			value = (String) option.getValue();
 		// System.out.println(value);

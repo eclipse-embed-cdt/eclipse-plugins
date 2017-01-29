@@ -35,8 +35,7 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
  * preferences store, but the values are from the variables store.
  */
 
-public class PeripheralsPage extends FieldEditorPreferencePage implements
-		IWorkbenchPreferencePage {
+public class PeripheralsPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	// ------------------------------------------------------------------------
 
@@ -48,8 +47,7 @@ public class PeripheralsPage extends FieldEditorPreferencePage implements
 		super(GRID);
 
 		// Explicit use of the workspace storage.
-		setPreferenceStore(new ScopedPreferenceStore(InstanceScope.INSTANCE,
-				Activator.PLUGIN_ID));
+		setPreferenceStore(new ScopedPreferenceStore(InstanceScope.INSTANCE, Activator.PLUGIN_ID));
 
 		setDescription(Messages.PeripheralsPreferencePage_description);
 	}
@@ -75,50 +73,38 @@ public class PeripheralsPage extends FieldEditorPreferencePage implements
 	protected void createFieldEditors() {
 
 		FieldEditor colourReadOnly;
-		colourReadOnly = new ThemeColorFieldEditor(
-				PersistentPreferences.PERIPHERALS_COLOR_READONLY,
-				PeripheralColumnLabelProvider.COLOR_READONLY,
-				Messages.PeripheralsPreferencePage_readOnlyColor_label,
+		colourReadOnly = new ThemeColorFieldEditor(PersistentPreferences.PERIPHERALS_COLOR_READONLY,
+				PeripheralColumnLabelProvider.COLOR_READONLY, Messages.PeripheralsPreferencePage_readOnlyColor_label,
 				getFieldEditorParent());
 		addField(colourReadOnly);
 
 		FieldEditor colourWriteOnly;
-		colourWriteOnly = new ThemeColorFieldEditor(
-				PersistentPreferences.PERIPHERALS_COLOR_WRITEONLY,
-				PeripheralColumnLabelProvider.COLOR_WRITEONLY,
-				Messages.PeripheralsPreferencePage_writeOnlyColor_label,
+		colourWriteOnly = new ThemeColorFieldEditor(PersistentPreferences.PERIPHERALS_COLOR_WRITEONLY,
+				PeripheralColumnLabelProvider.COLOR_WRITEONLY, Messages.PeripheralsPreferencePage_writeOnlyColor_label,
 				getFieldEditorParent());
 		addField(colourWriteOnly);
 
 		FieldEditor colourChangedSaturate;
-		colourChangedSaturate = new ThemeColorFieldEditor(
-				PersistentPreferences.PERIPHERALS_COLOR_CHANGED,
+		colourChangedSaturate = new ThemeColorFieldEditor(PersistentPreferences.PERIPHERALS_COLOR_CHANGED,
 				PeripheralColumnLabelProvider.COLOR_CHANGED,
-				Messages.PeripheralsPreferencePage_changedSaturateColor_label,
-				getFieldEditorParent());
+				Messages.PeripheralsPreferencePage_changedSaturateColor_label, getFieldEditorParent());
 		addField(colourChangedSaturate);
 
 		FieldEditor colourChangedMedium;
-		colourChangedMedium = new ThemeColorFieldEditor(
-				PersistentPreferences.PERIPHERALS_COLOR_CHANGED_MEDIUM,
+		colourChangedMedium = new ThemeColorFieldEditor(PersistentPreferences.PERIPHERALS_COLOR_CHANGED_MEDIUM,
 				PeripheralColumnLabelProvider.COLOR_CHANGED_MEDIUM,
-				Messages.PeripheralsPreferencePage_changedMediumColor_label,
-				getFieldEditorParent());
+				Messages.PeripheralsPreferencePage_changedMediumColor_label, getFieldEditorParent());
 		addField(colourChangedMedium);
 
 		FieldEditor colourChangedLight;
-		colourChangedLight = new ThemeColorFieldEditor(
-				PersistentPreferences.PERIPHERALS_COLOR_CHANGED_LIGHT,
+		colourChangedLight = new ThemeColorFieldEditor(PersistentPreferences.PERIPHERALS_COLOR_CHANGED_LIGHT,
 				PeripheralColumnLabelProvider.COLOR_CHANGED_LIGHT,
-				Messages.PeripheralsPreferencePage_changedLightColor_label,
-				getFieldEditorParent());
+				Messages.PeripheralsPreferencePage_changedLightColor_label, getFieldEditorParent());
 		addField(colourChangedLight);
 
 		FieldEditor hasFadingBackground;
-		hasFadingBackground = new BooleanFieldEditor(
-				PersistentPreferences.PERIPHERALS_CHANGED_USE_FADING_BACKGROUND,
-				Messages.PeripheralsPreferencePage_useFadingBackground_label,
-				getFieldEditorParent());
+		hasFadingBackground = new BooleanFieldEditor(PersistentPreferences.PERIPHERALS_CHANGED_USE_FADING_BACKGROUND,
+				Messages.PeripheralsPreferencePage_useFadingBackground_label, getFieldEditorParent());
 		addField(hasFadingBackground);
 	}
 

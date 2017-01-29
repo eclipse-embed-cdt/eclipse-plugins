@@ -52,8 +52,7 @@ public class PacksFilter extends ViewerFilter {
 		// make the entire parent invisible.
 		if (Type.VENDOR.equals(node.getType())) {
 			StructuredViewer sviewer = (StructuredViewer) viewer;
-			ITreeContentProvider provider = (ITreeContentProvider) sviewer
-					.getContentProvider();
+			ITreeContentProvider provider = (ITreeContentProvider) sviewer.getContentProvider();
 			for (Object child : provider.getChildren(element)) {
 				if (select(viewer, element, child))
 					return true;
@@ -131,8 +130,7 @@ public class PacksFilter extends ViewerFilter {
 				}
 			} else if (Type.BOARD.equals(selectionNodeType)) {
 
-				if (selector.getVendor().equals(
-						selectionNode.getProperty(Property.VENDOR_NAME))
+				if (selector.getVendor().equals(selectionNode.getProperty(Property.VENDOR_NAME))
 						&& selector.getValue().equals(selectionNode.getName())) {
 					return true;
 				}
@@ -145,16 +143,14 @@ public class PacksFilter extends ViewerFilter {
 			if (Type.VENDOR.equals(selectionNodeType)) {
 
 				// compare the selectors vendor id with the selection vendor id
-				if (selector.getVendorId().equals(
-						selectionNode.getProperty(Property.VENDOR_ID, ""))) {
+				if (selector.getVendorId().equals(selectionNode.getProperty(Property.VENDOR_ID, ""))) {
 					return true;
 				}
 			} else if (Type.FAMILY.equals(selectionNodeType)) {
 
 				// Compare the condition vendor id with the selection vendor id
 				// and the condition name with selection family name.
-				if (selector.getVendorId().equals(
-						selectionNode.getProperty(Property.VENDOR_ID, ""))
+				if (selector.getVendorId().equals(selectionNode.getProperty(Property.VENDOR_ID, ""))
 						&& selector.getValue().equals(selectionNode.getName())) {
 					return true;
 				}

@@ -40,8 +40,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * Preferences dialog.
  */
 
-public class ReposPage extends PreferencePage implements
-		IWorkbenchPreferencePage {
+public class ReposPage extends PreferencePage implements IWorkbenchPreferencePage {
 
 	private Composite fComposite;
 
@@ -52,8 +51,8 @@ public class ReposPage extends PreferencePage implements
 
 	private Composite fButtonsComposite;
 
-	private String[] fButtonsNames = { AbstractCPropertyTab.ADD_STR,
-			AbstractCPropertyTab.EDIT_STR, AbstractCPropertyTab.DEL_STR };
+	private String[] fButtonsNames = { AbstractCPropertyTab.ADD_STR, AbstractCPropertyTab.EDIT_STR,
+			AbstractCPropertyTab.DEL_STR };
 
 	private Button[] fButtons; // right side buttons
 
@@ -255,8 +254,7 @@ public class ReposPage extends PreferencePage implements
 			return; // nothing selected
 		}
 
-		NewRepoDialog dlg = new NewRepoDialog(fComposite.getShell(),
-				fRepos.convertToArray(fContentList.get(index)));
+		NewRepoDialog dlg = new NewRepoDialog(fComposite.getShell(), fRepos.convertToArray(fContentList.get(index)));
 		if (dlg.open() == Dialog.OK) {
 			fContentList.set(index, fRepos.convertToMap(dlg.getData()));
 			// System.out.println("edited");

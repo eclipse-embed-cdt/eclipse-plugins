@@ -47,16 +47,14 @@ public class PeripheralNameFilter extends ViewerFilter {
 		if (element instanceof PeripheralRegisterVMNode) {
 
 			String qualifiedName;
-			qualifiedName = ((PeripheralRegisterVMNode) element)
-					.getQualifiedName();
+			qualifiedName = ((PeripheralRegisterVMNode) element).getQualifiedName();
 
 			if (qualifiedName == null) {
 				return true;
 			}
 
 			// Comparison performed as upper text
-			if (qualifiedName.toUpperCase()
-					.contains((CharSequence) fFilterText)) {
+			if (qualifiedName.toUpperCase().contains((CharSequence) fFilterText)) {
 				// Registers & fields are visible only if they
 				// match the filter
 				return true;

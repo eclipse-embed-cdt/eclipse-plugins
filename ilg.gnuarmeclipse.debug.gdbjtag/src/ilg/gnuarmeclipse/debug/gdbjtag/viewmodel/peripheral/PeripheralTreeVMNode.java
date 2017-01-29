@@ -30,8 +30,7 @@ import org.eclipse.debug.core.model.IRegister;
 import org.eclipse.debug.core.model.IRegisterGroup;
 import org.eclipse.debug.core.model.IValue;
 
-public abstract class PeripheralTreeVMNode implements IRegister,
-		Comparable<PeripheralTreeVMNode> {
+public abstract class PeripheralTreeVMNode implements IRegister, Comparable<PeripheralTreeVMNode> {
 
 	// ------------------------------------------------------------------------
 
@@ -129,8 +128,7 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 		if (fChildren == null) {
 			prepareChildren();
 		}
-		PeripheralTreeVMNode[] children = fChildren
-				.toArray(new PeripheralTreeVMNode[fChildren.size()]);
+		PeripheralTreeVMNode[] children = fChildren.toArray(new PeripheralTreeVMNode[fChildren.size()]);
 
 		Arrays.sort(children);
 		// System.out.println(getPath() + " has " + children.length +
@@ -264,8 +262,7 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 			PeripheralTreeVMNode parent = (PeripheralTreeVMNode) getParent();
 
 			if (parent != null) {
-				return new PeripheralPath(parent.getPath(), new PeripheralPath(
-						fName));
+				return new PeripheralPath(parent.getPath(), new PeripheralPath(fName));
 			} else {
 				return new PeripheralPath(fName);
 			}
@@ -317,8 +314,7 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 
 		BigInteger peripheralBaseAddress;
 		try {
-			peripheralBaseAddress = ((PeripheralTopVMNode) getRegisterGroup())
-					.getBigAbsoluteAddress();
+			peripheralBaseAddress = ((PeripheralTopVMNode) getRegisterGroup()).getBigAbsoluteAddress();
 		} catch (DebugException e) {
 			peripheralBaseAddress = BigInteger.ZERO;
 		}
@@ -471,15 +467,12 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 				processDimGroup((SvdDMNode) child);
 			} else if (this instanceof PeripheralRegisterVMNode) {
 				if (child instanceof SvdFieldDMNode) {
-					new PeripheralRegisterFieldVMNode(this,
-							(SvdFieldDMNode) child);
+					new PeripheralRegisterFieldVMNode(this, (SvdFieldDMNode) child);
 				} else {
-					Activator.log(child.getClass().getSimpleName()
-							+ " not processed");
+					Activator.log(child.getClass().getSimpleName() + " not processed");
 				}
 			} else {
-				Activator.log(this.getClass().getSimpleName()
-						+ " not processed");
+				Activator.log(this.getClass().getSimpleName() + " not processed");
 			}
 		}
 	}
@@ -494,8 +487,7 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 			} else if (child instanceof SvdRegisterDMNode) {
 				new PeripheralRegisterVMNode(this, child);
 			} else {
-				Activator.log(child.getClass().getSimpleName()
-						+ " not processed");
+				Activator.log(child.getClass().getSimpleName() + " not processed");
 			}
 
 			return;
@@ -508,25 +500,21 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 		// array elements.
 		if (child instanceof SvdClusterDMNode) {
 
-			PeripheralTreeVMNode arrayNode = new PeripheralClusterArrayVMNode(
-					this, child);
+			PeripheralTreeVMNode arrayNode = new PeripheralClusterArrayVMNode(this, child);
 			arrayNode.substituteIndex("");
 			BigInteger offset = BigInteger.ZERO;
 			for (int i = 0; i < indices.length; ++i) {
-				new PeripheralClusterArrayElementVMNode(arrayNode, child,
-						indices[i], offset);
+				new PeripheralClusterArrayElementVMNode(arrayNode, child, indices[i], offset);
 
 				offset = offset.add(increment);
 			}
 		} else if (child instanceof SvdRegisterDMNode) {
 
-			PeripheralTreeVMNode arrayNode = new PeripheralRegisterArrayVMNode(
-					this, child);
+			PeripheralTreeVMNode arrayNode = new PeripheralRegisterArrayVMNode(this, child);
 			arrayNode.substituteIndex("");
 			BigInteger offset = BigInteger.ZERO;
 			for (int i = 0; i < indices.length; ++i) {
-				new PeripheralRegisterArrayElementVMNode(arrayNode, child,
-						indices[i], offset);
+				new PeripheralRegisterArrayElementVMNode(arrayNode, child, indices[i], offset);
 
 				offset = offset.add(increment);
 			}
@@ -577,8 +565,7 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 
 		if (fFadingLevel > 0) {
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("PeripheralTreeVMNode.setFadingLevel() "
-						+ fName + " " + fFadingLevel);
+				System.out.println("PeripheralTreeVMNode.setFadingLevel() " + fName + " " + fFadingLevel);
 			}
 		}
 	}
@@ -600,8 +587,7 @@ public abstract class PeripheralTreeVMNode implements IRegister,
 
 	@Override
 	public String toString() {
-		return "[" + getClass().getSimpleName() + ": " + getDisplayNodeType()
-				+ ":" + getQualifiedName() + "]";
+		return "[" + getClass().getSimpleName() + ": " + getDisplayNodeType() + ":" + getQualifiedName() + "]";
 	}
 
 	@Override

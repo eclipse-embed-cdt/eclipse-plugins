@@ -67,24 +67,24 @@ public abstract class AbstractGnuArmLaunchConfigurationDelegate extends GDBJtagD
 
 	}
 
+	// This is the first method to be called in the launch sequence, even before
+	// preLaunchCheck()
+	// If we cancel the launch, we need to cleanup what is allocated in this
+	// method. The cleanup
+	// can be performed by GdbLaunch.shutdownSession()
+	@Override
+	public ILaunch getLaunch(ILaunchConfiguration configuration, String mode) throws CoreException {
+		GdbLaunch launch = createGdbLaunch(configuration, mode, null);
+		// Don't initialize the GdbLaunch yet to avoid needing to cleanup.
+		// We will initialize the launch once we know it will proceed and
+		// that we need to start using it.
 
-    // This is the first method to be called in the launch sequence, even before preLaunchCheck()
-    // If we cancel the launch, we need to cleanup what is allocated in this method.  The cleanup
-    // can be performed by GdbLaunch.shutdownSession()
-    @Override
-    public ILaunch getLaunch(ILaunchConfiguration configuration, String mode) throws CoreException {
-    	GdbLaunch launch = createGdbLaunch(configuration, mode, null);
-    	// Don't initialize the GdbLaunch yet to avoid needing to cleanup.
-    	// We will initialize the launch once we know it will proceed and
-    	// that we need to start using it.
-
-        // Need to configure the source locator before returning the launch
-        // because once the launch is created and added to the launch manager,
-        // the adapters will be created for the whole session, including
-        // the source lookup adapter.
-    	launch.setSourceLocator(getSourceLocator(configuration, launch.getSession()));
-        return launch;
-    }
-
+		// Need to configure the source locator before returning the launch
+		// because once the launch is created and added to the launch manager,
+		// the adapters will be created for the whole session, including
+		// the source lookup adapter.
+		launch.setSourceLocator(getSourceLocator(configuration, launch.getSession()));
+		return launch;
+	}
 
 }

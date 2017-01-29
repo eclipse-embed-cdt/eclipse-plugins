@@ -123,9 +123,7 @@ public class StringUtils {
 		} else if (size < 1024 * 1024) {
 			sizeString = String.valueOf((size + (1024 / 2)) / 1024) + "kB";
 		} else {
-			sizeString = String.valueOf((size + ((1024 * 1024) / 2))
-					/ (1024 * 1024))
-					+ "MB";
+			sizeString = String.valueOf((size + ((1024 * 1024) / 2)) / (1024 * 1024)) + "MB";
 		}
 		return sizeString;
 	}
@@ -189,7 +187,8 @@ public class StringUtils {
 	 * into substrings. Content of quoted options is not parsed, but preserved
 	 * as a single substring. Quotes are removed.
 	 * 
-	 * @param str a command line string, possibly with single/double quotes.
+	 * @param str
+	 *            a command line string, possibly with single/double quotes.
 	 * @return array of strings.
 	 */
 	public static List<String> splitCommandLineOptions(String str) {

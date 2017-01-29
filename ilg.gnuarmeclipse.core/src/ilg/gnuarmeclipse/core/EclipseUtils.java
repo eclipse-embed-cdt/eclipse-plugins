@@ -105,25 +105,21 @@ public class EclipseUtils {
 	static public boolean isWindows() {
 
 		// Platform.OS_WIN32 might be not appropriate, use shorter prefix
-		return System.getProperty(PROPERTY_OS_NAME).toLowerCase()
-				.startsWith("win");
+		return System.getProperty(PROPERTY_OS_NAME).toLowerCase().startsWith("win");
 	}
 
 	static public boolean isWindowsXP() {
-		return System.getProperty(PROPERTY_OS_NAME).toLowerCase()
-				.equalsIgnoreCase("Windows XP");
+		return System.getProperty(PROPERTY_OS_NAME).toLowerCase().equalsIgnoreCase("Windows XP");
 	}
 
 	static public boolean isLinux() {
-		return System.getProperty(PROPERTY_OS_NAME).toLowerCase()
-				.startsWith(Platform.OS_LINUX);
+		return System.getProperty(PROPERTY_OS_NAME).toLowerCase().startsWith(Platform.OS_LINUX);
 	}
 
 	static public boolean isMacOSX() {
 		// Platform.OS_MACOSX is not appropriate, since the returned value
 		// contains spaces "Mac OS X".
-		return System.getProperty(PROPERTY_OS_NAME).toLowerCase()
-				.startsWith("mac");
+		return System.getProperty(PROPERTY_OS_NAME).toLowerCase().startsWith("mac");
 	}
 
 	/**
@@ -178,15 +174,13 @@ public class EclipseUtils {
 	public static void openExternalBrowser(URL url) throws PartInitException {
 
 		// System.out.println("Open " + url);
-		PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser()
-				.openURL(url);
+		PlatformUI.getWorkbench().getBrowserSupport().getExternalBrowser().openURL(url);
 
 	}
 
 	public static void openExternalFile(IPath path) throws PartInitException {
 
-		IWorkbenchPage page = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage();
+		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
 		// System.out.println("Path " + relativeFile);
 		IFileStore fileStore = EFS.getLocalFileSystem().getStore(path);
@@ -196,11 +190,9 @@ public class EclipseUtils {
 		IDE.openEditorOnFileStore(page, fileStore);
 	}
 
-	public static void openFileWithInternalEditor(IPath path)
-			throws PartInitException {
+	public static void openFileWithInternalEditor(IPath path) throws PartInitException {
 
-		IWorkbenchPage page = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getActivePage();
+		IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 
 		IFileStore fileStore = EFS.getLocalFileSystem().getStore(path);
 
@@ -233,19 +225,15 @@ public class EclipseUtils {
 	 */
 	public static IProject getSelectedProject() {
 
-		IWorkbenchWindow window = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow();
+		IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 		if (window != null) {
 
 			Object selection = window.getSelectionService().getSelection();
-			if ((selection != null)
-					&& (selection instanceof IStructuredSelection)
+			if ((selection != null) && (selection instanceof IStructuredSelection)
 					&& (((IStructuredSelection) selection).size() == 1)) {
-				Object firstElement = ((IStructuredSelection) selection)
-						.getFirstElement();
+				Object firstElement = ((IStructuredSelection) selection).getFirstElement();
 				if (firstElement instanceof IAdaptable) {
-					IProject project = (IProject) ((IAdaptable) firstElement)
-							.getAdapter(IProject.class);
+					IProject project = (IProject) ((IAdaptable) firstElement).getAdapter(IProject.class);
 					return project;
 				}
 			}
@@ -264,8 +252,7 @@ public class EclipseUtils {
 	 */
 	public static IWorkbenchPage getActivePage() {
 
-		return PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-				.getActivePage();
+		return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
 	}
 
 	public static IWorkbenchPage getActivePage(IWorkbenchPart part) {
@@ -278,10 +265,8 @@ public class EclipseUtils {
 
 	// ------------------------------------------------------------------------
 
-	public static IConfiguration getConfigurationFromDescription(
-			ICConfigurationDescription configDescription) {
-		return ManagedBuildManager
-				.getConfigurationForDescription(configDescription);
+	public static IConfiguration getConfigurationFromDescription(ICConfigurationDescription configDescription) {
+		return ManagedBuildManager.getConfigurationForDescription(configDescription);
 	}
 
 	// ------------------------------------------------------------------------
@@ -293,8 +278,7 @@ public class EclipseUtils {
 	 * @param message
 	 * @param e
 	 */
-	static public void openError(final String title, final String message,
-			final Exception e) {
+	static public void openError(final String title, final String message, final Exception e) {
 		UIJob uiJob = new SystemUIJob("open error") { //$NON-NLS-1$
 
 			@Override
@@ -305,7 +289,7 @@ public class EclipseUtils {
 					msg = "\n" + e.getMessage();
 				}
 
-				MessageDialog.openError(getShell(), title, msg); //$NON-NLS-1$
+				MessageDialog.openError(getShell(), title, msg); // $NON-NLS-1$
 				return Status.OK_STATUS;
 			}
 		};
@@ -318,8 +302,7 @@ public class EclipseUtils {
 		Display.getDefault().syncExec(new Runnable() {
 
 			public void run() {
-				IWorkbenchWindow window = PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow();
+				IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 				if (window instanceof WorkbenchWindow) {
 					WorkbenchWindow w = (WorkbenchWindow) window;
 					w.getStatusLineManager().setErrorMessage("");
@@ -345,8 +328,7 @@ public class EclipseUtils {
 		Display.getDefault().asyncExec(new Runnable() {
 
 			public void run() {
-				IWorkbenchWindow window = PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow();
+				IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 				if (window instanceof WorkbenchWindow) {
 					WorkbenchWindow w = (WorkbenchWindow) window;
 					w.getStatusLineManager().setMessage(message);
@@ -365,8 +347,7 @@ public class EclipseUtils {
 		Display.getDefault().asyncExec(new Runnable() {
 
 			public void run() {
-				IWorkbenchWindow window = PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow();
+				IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 				if (window instanceof WorkbenchWindow) {
 					WorkbenchWindow w = (WorkbenchWindow) window;
 					w.getStatusLineManager().setErrorMessage("  " + message);
@@ -391,8 +372,8 @@ public class EclipseUtils {
 	 *            an array of IScopeContext.
 	 * @return a trimmed string or the given default, possibly null.
 	 */
-	public static String getPreferenceValueForId(String pluginId, String key,
-			String defaultValue, IScopeContext[] contexts) {
+	public static String getPreferenceValueForId(String pluginId, String key, String defaultValue,
+			IScopeContext[] contexts) {
 
 		String value = null;
 
@@ -428,12 +409,11 @@ public class EclipseUtils {
 		// specific ProjectScope.
 		IScopeContext[] contexts;
 		if (project != null) {
-			contexts = new IScopeContext[] { new ProjectScope(project),
-					InstanceScope.INSTANCE, ConfigurationScope.INSTANCE,
-					DefaultScope.INSTANCE };
-		} else {
-			contexts = new IScopeContext[] { InstanceScope.INSTANCE,
+			contexts = new IScopeContext[] { new ProjectScope(project), InstanceScope.INSTANCE,
 					ConfigurationScope.INSTANCE, DefaultScope.INSTANCE };
+		} else {
+			contexts = new IScopeContext[] { InstanceScope.INSTANCE, ConfigurationScope.INSTANCE,
+					DefaultScope.INSTANCE };
 		}
 		return contexts;
 	}
@@ -451,8 +431,7 @@ public class EclipseUtils {
 	 *            the IProject reference to the project, possibly null.
 	 * @return a trimmed string or the given default, possibly null.
 	 */
-	public static String getPreferenceValueForId(String pluginId, String key,
-			String defaultValue, IProject project) {
+	public static String getPreferenceValueForId(String pluginId, String key, String defaultValue, IProject project) {
 
 		IScopeContext[] contexts = getPreferenceScopeContexts(project);
 		return getPreferenceValueForId(pluginId, key, defaultValue, contexts);
@@ -470,8 +449,7 @@ public class EclipseUtils {
 	 */
 	public static String getVariableValue(String name) {
 
-		IValueVariable variable = VariablesPlugin.getDefault()
-				.getStringVariableManager().getValueVariable(name);
+		IValueVariable variable = VariablesPlugin.getDefault().getStringVariableManager().getValueVariable(name);
 		if (variable != null) {
 			return variable.getValue();
 		} else {
@@ -492,12 +470,10 @@ public class EclipseUtils {
 	 */
 	public static void setVariableValue(String name, String value) {
 
-		IValueVariable variable = VariablesPlugin.getDefault()
-				.getStringVariableManager().getValueVariable(name);
+		IValueVariable variable = VariablesPlugin.getDefault().getStringVariableManager().getValueVariable(name);
 		if (variable != null) {
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("Variable \"" + name + "\"=\"" + value
-						+ "\"");
+				System.out.println("Variable \"" + name + "\"=\"" + value + "\"");
 			}
 			variable.setValue(value);
 		} else {
@@ -519,11 +495,9 @@ public class EclipseUtils {
 	 * @param value
 	 *            a String with the variable value.
 	 */
-	public static void setVariableValue(String name, String description,
-			String value) {
+	public static void setVariableValue(String name, String description, String value) {
 
-		IStringVariableManager manager = VariablesPlugin.getDefault()
-				.getStringVariableManager();
+		IStringVariableManager manager = VariablesPlugin.getDefault().getStringVariableManager();
 		IValueVariable variable = manager.getValueVariable(name);
 		if (variable == null) {
 			variable = manager.newValueVariable(name, description);
@@ -536,8 +510,7 @@ public class EclipseUtils {
 		}
 		if (variable != null) {
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("Variable \"" + name + "\"=\"" + value
-						+ "\"");
+				System.out.println("Variable \"" + name + "\"=\"" + value + "\"");
 			}
 			variable.setValue(value);
 		} else {
@@ -553,13 +526,11 @@ public class EclipseUtils {
 	 */
 	public static IConfiguration[] getConfigurationsForProject(IProject project) {
 
-		ICProjectDescription cProjectDescription = CoreModel.getDefault()
-				.getProjectDescription(project);
+		ICProjectDescription cProjectDescription = CoreModel.getDefault().getProjectDescription(project);
 		if (cProjectDescription == null) {
 			return null;
 		}
-		ICConfigurationDescription[] cfgs = cProjectDescription
-				.getConfigurations();
+		ICConfigurationDescription[] cfgs = cProjectDescription.getConfigurations();
 		if (cfgs == null) {
 			return null;
 		}
@@ -572,8 +543,7 @@ public class EclipseUtils {
 			if (info == null) {
 				continue;
 			}
-			IConfiguration config = info.getManagedProject().getConfiguration(
-					cfgs[i].getId());
+			IConfiguration config = info.getManagedProject().getConfiguration(cfgs[i].getId());
 			if (config == null) {
 				continue;
 
@@ -598,17 +568,14 @@ public class EclipseUtils {
 	 *            a debug launch configuration.
 	 * @return the build configuration, or null if not found or not defined.
 	 */
-	public static ICConfigurationDescription getBuildConfigDescription(
-			ILaunchConfiguration config) {
+	public static ICConfigurationDescription getBuildConfigDescription(ILaunchConfiguration config) {
 
 		ICConfigurationDescription cfg = null;
 
 		// Get the project
 		String projectName;
 		try {
-			projectName = config.getAttribute(
-					ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME,
-					(String) null);
+			projectName = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_NAME, (String) null);
 			if (projectName == null) {
 				return null;
 			}
@@ -616,24 +583,20 @@ public class EclipseUtils {
 			if (projectName.isEmpty()) {
 				return null;
 			}
-			IProject project = ResourcesPlugin.getWorkspace().getRoot()
-					.getProject(projectName);
+			IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 			if (project == null || !project.isAccessible()) {
 				return null;
 			}
 
-			ICProjectDescription projDesc = CoreModel.getDefault()
-					.getProjectDescription(project, false);
+			ICProjectDescription projDesc = CoreModel.getDefault().getProjectDescription(project, false);
 
 			// Not a CDT project?
 			if (projDesc == null) {
 				return null;
 			}
 
-			String buildConfigID = config
-					.getAttribute(
-							ICDTLaunchConfigurationConstants.ATTR_PROJECT_BUILD_CONFIG_ID,
-							""); //$NON-NLS-1$
+			String buildConfigID = config.getAttribute(ICDTLaunchConfigurationConstants.ATTR_PROJECT_BUILD_CONFIG_ID,
+					""); //$NON-NLS-1$
 			if (buildConfigID.length() != 0) {
 				cfg = projDesc.getConfigurationById(buildConfigID);
 			}

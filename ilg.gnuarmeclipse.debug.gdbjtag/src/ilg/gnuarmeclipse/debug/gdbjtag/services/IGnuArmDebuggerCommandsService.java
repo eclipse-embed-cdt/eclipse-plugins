@@ -59,8 +59,7 @@ public interface IGnuArmDebuggerCommandsService {
 	 * @param commandsList
 	 * @return
 	 */
-	public IStatus addStartRestartCommands(boolean doReset,
-			List<String> commandsList);
+	public IStatus addStartRestartCommands(boolean doReset, List<String> commandsList);
 
 	public IStatus addSetPcCommands(List<String> commandsList);
 

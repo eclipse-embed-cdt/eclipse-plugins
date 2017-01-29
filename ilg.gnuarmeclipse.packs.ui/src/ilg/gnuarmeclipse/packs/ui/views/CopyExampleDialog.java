@@ -51,8 +51,7 @@ public class CopyExampleDialog extends Dialog {
 		// m_exampleName = exampleNode.getProperty(Property.EXAMPLE_NAME,
 		// exampleNode.getName());
 
-		String folderPath = Preferences.getPreferenceStore().getString(
-				Preferences.PACKS_FOLDER_PATH);
+		String folderPath = Preferences.getPreferenceStore().getString(Preferences.PACKS_FOLDER_PATH);
 		// m_inputFolder = folderPath + "/../Examples/" + m_exampleName;
 		fInputFolder = new Path(folderPath).append("../Examples/").toOSString();
 
@@ -142,8 +141,7 @@ public class CopyExampleDialog extends Dialog {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 
-				DirectoryDialog dialog = new DirectoryDialog(getShell(),
-						SWT.SAVE);
+				DirectoryDialog dialog = new DirectoryDialog(getShell(), SWT.SAVE);
 				dialog.setText("Destination folder");
 				String str = dialog.open();
 				if (str != null) {

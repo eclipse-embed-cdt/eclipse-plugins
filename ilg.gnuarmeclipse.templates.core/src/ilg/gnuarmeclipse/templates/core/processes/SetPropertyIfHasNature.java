@@ -27,8 +27,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 public class SetPropertyIfHasNature extends ProcessRunner {
 
 	@Override
-	public void process(TemplateCore template, ProcessArgument[] args,
-			String processId, IProgressMonitor monitor)
+	public void process(TemplateCore template, ProcessArgument[] args, String processId, IProgressMonitor monitor)
 			throws ProcessFailureException {
 
 		String projectName = args[0].getSimpleValue();
@@ -36,8 +35,7 @@ public class SetPropertyIfHasNature extends ProcessRunner {
 		String propertyName = args[2].getSimpleValue();
 		String propertyValue = args[3].getSimpleValue();
 
-		IProject projectHandle = ResourcesPlugin.getWorkspace().getRoot()
-				.getProject(projectName);
+		IProject projectHandle = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		try {
 			if (projectHandle.hasNature(natureString)) {
 				// System.out.println("is " + natureString + " set "

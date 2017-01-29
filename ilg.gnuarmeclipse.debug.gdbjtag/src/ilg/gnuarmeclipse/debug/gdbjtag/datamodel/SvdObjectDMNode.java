@@ -55,7 +55,7 @@ public class SvdObjectDMNode {
 
 		if (fNode == null) {
 			// System.out.println("dispose() " + getClass().getSimpleName()
-			//		+ " already disposed");
+			// + " already disposed");
 			return;
 		}
 
@@ -252,8 +252,7 @@ public class SvdObjectDMNode {
 	 * @return a string with the property value or the defaultValue if not
 	 *         found.
 	 */
-	public String getPropertyWithDerivedWithParent(String name,
-			String defaultValue) {
+	public String getPropertyWithDerivedWithParent(String name, String defaultValue) {
 
 		String property = fNode.getProperty(name);
 		if (!property.isEmpty()) {
@@ -300,8 +299,7 @@ public class SvdObjectDMNode {
 
 	@Override
 	public String toString() {
-		return "[" + getClass().getSimpleName() + ": " + getName() + ", \""
-				+ getDescription() + "\"]";
+		return "[" + getClass().getSimpleName() + ": " + getName() + ", \"" + getDescription() + "\"]";
 	}
 
 	// ------------------------------------------------------------------------

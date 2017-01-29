@@ -74,9 +74,8 @@ public class GnuArmRestartProcessSequence extends ReflectionSequence {
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmRestartProcessSequence(DsfExecutor executor,
-			IContainerDMContext containerDmc, Map<String, Object> attributes,
-			boolean restart, DataRequestMonitor<IContainerDMContext> rm) {
+	public GnuArmRestartProcessSequence(DsfExecutor executor, IContainerDMContext containerDmc,
+			Map<String, Object> attributes, boolean restart, DataRequestMonitor<IContainerDMContext> rm) {
 		super(executor, rm);
 
 		assert executor != null;
@@ -106,7 +105,7 @@ public class GnuArmRestartProcessSequence extends ReflectionSequence {
 	protected String[] getExecutionOrder(String group) {
 		if (GROUP_TOP_LEVEL.equals(group)) {
 			return new String[] { //
-			"stepInitializeBaseSequence", //$NON-NLS-1$
+					"stepInitializeBaseSequence", //$NON-NLS-1$
 					"stepRestartCommands", //$NON-NLS-1$
 			};
 		}
@@ -120,18 +119,14 @@ public class GnuArmRestartProcessSequence extends ReflectionSequence {
 	@Execute
 	public void stepInitializeBaseSequence(RequestMonitor rm) {
 
-		fTracker = new DsfServicesTracker(Activator.getInstance().getBundle()
-				.getBundleContext(), fContainerDmc.getSessionId());
+		fTracker = new DsfServicesTracker(Activator.getInstance().getBundle().getBundleContext(),
+				fContainerDmc.getSessionId());
 		fCommandControl = fTracker.getService(IGDBControl.class);
-		fCommandFactory = fTracker.getService(IMICommandControl.class)
-				.getCommandFactory();
+		fCommandFactory = fTracker.getService(IMICommandControl.class).getCommandFactory();
 		fProcService = fTracker.getService(IGDBProcesses.class);
-		fDebuggerCommands = fTracker
-				.getService(IGnuArmDebuggerCommandsService.class);
-		if (fCommandControl == null || fCommandFactory == null
-				|| fProcService == null || fDebuggerCommands == null) {
-			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					IDsfStatusConstants.INTERNAL_ERROR,
+		fDebuggerCommands = fTracker.getService(IGnuArmDebuggerCommandsService.class);
+		if (fCommandControl == null || fCommandFactory == null || fProcService == null || fDebuggerCommands == null) {
+			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, IDsfStatusConstants.INTERNAL_ERROR,
 					"Cannot obtain service", null)); //$NON-NLS-1$
 			rm.done();
 			return;
@@ -147,8 +142,7 @@ public class GnuArmRestartProcessSequence extends ReflectionSequence {
 
 		List<String> commandsList = new ArrayList<String>();
 
-		IStatus status = fDebuggerCommands
-				.addGnuArmRestartCommands(commandsList);
+		IStatus status = fDebuggerCommands.addGnuArmRestartCommands(commandsList);
 
 		if (!status.isOK()) {
 			rm.setStatus(status);

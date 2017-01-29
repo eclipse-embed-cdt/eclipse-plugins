@@ -53,18 +53,15 @@ public class ProjectToolsPathPropertyPage extends FieldEditorPropertyPage {
 
 		Object element = getElement();
 		if (element instanceof IProject) {
-			return new ScopedPreferenceStoreWithoutDefaults(new ProjectScope(
-					(IProject) element), Activator.PLUGIN_ID);
+			return new ScopedPreferenceStoreWithoutDefaults(new ProjectScope((IProject) element), Activator.PLUGIN_ID);
 		}
 		return null;
 	}
 
 	@Override
 	protected void createFieldEditors() {
-		boolean isStrict = DefaultPreferences.getBoolean(
-				PersistentPreferences.PROJECT_BUILDTOOLS_PATH_STRICT, true);
-		FieldEditor buildToolsPathField = new DirectoryNotStrictFieldEditor(
-				PersistentPreferences.BUILD_TOOLS_PATH_KEY,
+		boolean isStrict = DefaultPreferences.getBoolean(PersistentPreferences.PROJECT_BUILDTOOLS_PATH_STRICT, true);
+		FieldEditor buildToolsPathField = new DirectoryNotStrictFieldEditor(PersistentPreferences.BUILD_TOOLS_PATH_KEY,
 				Messages.ToolsPaths_label, getFieldEditorParent(), isStrict);
 		addField(buildToolsPathField);
 
@@ -74,22 +71,20 @@ public class ProjectToolsPathPropertyPage extends FieldEditorPropertyPage {
 		if (element instanceof IProject) {
 			// TODO: get project toolchain name. How?
 			IProject project = (IProject) element;
-			IConfiguration[] configs = EclipseUtils
-					.getConfigurationsForProject(project);
+			IConfiguration[] configs = EclipseUtils.getConfigurationsForProject(project);
 			if (configs != null) {
 				for (int i = 0; i < configs.length; ++i) {
 					IToolChain toolchain = configs[i].getToolChain();
 					if (toolchain == null) {
 						continue;
 					}
-					IOption option = toolchain
-							.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME);
+					IOption option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME);
 					if (option == null) {
 						continue;
 					}
 					try {
 						String name = option.getStringValue();
-						if (!name.isEmpty()){
+						if (!name.isEmpty()) {
 							toolchainNames.add(name);
 						}
 					} catch (BuildException e) {
@@ -104,16 +99,14 @@ public class ProjectToolsPathPropertyPage extends FieldEditorPropertyPage {
 
 		for (String toolchainName : toolchainNames) {
 
-			FieldEditor labelField = new LabelFakeFieldEditor(toolchainName,
-					Messages.ToolsPaths_ToolchainName_label,
+			FieldEditor labelField = new LabelFakeFieldEditor(toolchainName, Messages.ToolsPaths_ToolchainName_label,
 					getFieldEditorParent());
 			addField(labelField);
 
-			isStrict = DefaultPreferences.getBoolean(
-					PersistentPreferences.PROJECT_TOOLCHAIN_PATH_STRICT, true);
+			isStrict = DefaultPreferences.getBoolean(PersistentPreferences.PROJECT_TOOLCHAIN_PATH_STRICT, true);
 			String key = PersistentPreferences.getToolchainKey(toolchainName);
-			FieldEditor toolchainPathField = new DirectoryNotStrictFieldEditor(
-					key, Messages.ToolchainPaths_label, getFieldEditorParent(), isStrict);
+			FieldEditor toolchainPathField = new DirectoryNotStrictFieldEditor(key, Messages.ToolchainPaths_label,
+					getFieldEditorParent(), isStrict);
 			addField(toolchainPathField);
 		}
 	}

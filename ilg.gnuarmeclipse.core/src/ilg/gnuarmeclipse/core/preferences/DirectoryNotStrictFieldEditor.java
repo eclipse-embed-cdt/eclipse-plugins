@@ -27,8 +27,7 @@ public class DirectoryNotStrictFieldEditor extends DirectoryFieldEditor {
 
 	// ------------------------------------------------------------------------
 
-	public DirectoryNotStrictFieldEditor(String buildToolsPathKey,
-			String toolsPaths_label, Composite fieldEditorParent,
+	public DirectoryNotStrictFieldEditor(String buildToolsPathKey, String toolsPaths_label, Composite fieldEditorParent,
 			boolean isStrict) {
 		super(buildToolsPathKey, toolsPaths_label, fieldEditorParent);
 		fIsStrict = isStrict;
@@ -47,12 +46,10 @@ public class DirectoryNotStrictFieldEditor extends DirectoryFieldEditor {
 				return true;
 			}
 
-			IStringVariableManager manager = VariablesPlugin.getDefault()
-					.getStringVariableManager();
+			IStringVariableManager manager = VariablesPlugin.getDefault().getStringVariableManager();
 			String substitutedFileName;
 			try {
-				substitutedFileName = manager
-						.performStringSubstitution(fileName);
+				substitutedFileName = manager.performStringSubstitution(fileName);
 			} catch (CoreException e) {
 				// It's apparently invalid
 				return false;

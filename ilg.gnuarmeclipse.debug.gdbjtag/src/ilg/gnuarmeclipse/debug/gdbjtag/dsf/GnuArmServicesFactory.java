@@ -55,30 +55,26 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 	// ------------------------------------------------------------------------
 
 	@SuppressWarnings("unchecked")
-	public <V> V createService(Class<V> clazz, DsfSession session,
-			Object... optionalArguments) {
+	public <V> V createService(Class<V> clazz, DsfSession session, Object... optionalArguments) {
 
 		if (IPeripheralsService.class.isAssignableFrom(clazz)) {
 			return (V) createPeripheralsService(session);
 		} else if (IPeripheralMemoryService.class.isAssignableFrom(clazz)) {
 			for (Object arg : optionalArguments) {
 				if (arg instanceof ILaunchConfiguration) {
-					return (V) createPeripheralMemoryService(session,
-							(ILaunchConfiguration) arg);
+					return (V) createPeripheralMemoryService(session, (ILaunchConfiguration) arg);
 				}
 			}
 		} else if (IGnuArmDebuggerCommandsService.class.isAssignableFrom(clazz)) {
 			for (Object arg : optionalArguments) {
 				if (arg instanceof ILaunchConfiguration) {
-					return (V) createDebuggerCommandsService(session,
-							(ILaunchConfiguration) arg, fMode);
+					return (V) createDebuggerCommandsService(session, (ILaunchConfiguration) arg, fMode);
 				}
 			}
 		} else if (IGdbServerBackendService.class.isAssignableFrom(clazz)) {
 			for (Object arg : optionalArguments) {
 				if (arg instanceof ILaunchConfiguration) {
-					return (V) createGdbServerBackendService(session,
-							(ILaunchConfiguration) arg);
+					return (V) createGdbServerBackendService(session, (ILaunchConfiguration) arg);
 				}
 			}
 		}
@@ -87,11 +83,11 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 
 	// ------------------------------------------------------------------------
 
-	protected abstract GnuArmDebuggerCommandsService createDebuggerCommandsService(
-			DsfSession session, ILaunchConfiguration lc, String mode);
+	protected abstract GnuArmDebuggerCommandsService createDebuggerCommandsService(DsfSession session,
+			ILaunchConfiguration lc, String mode);
 
-	protected abstract GnuArmGdbServerBackend createGdbServerBackendService(
-			DsfSession session, ILaunchConfiguration lc);
+	protected abstract GnuArmGdbServerBackend createGdbServerBackendService(DsfSession session,
+			ILaunchConfiguration lc);
 
 	// ------------------------------------------------------------------------
 
@@ -99,23 +95,21 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 		return new PeripheralsService(session);
 	}
 
-	private PeripheralMemoryService createPeripheralMemoryService(
-			DsfSession session, ILaunchConfiguration launchConfiguration) {
+	private PeripheralMemoryService createPeripheralMemoryService(DsfSession session,
+			ILaunchConfiguration launchConfiguration) {
 		return new PeripheralMemoryService(session, launchConfiguration);
 	}
 
 	@Override
-	protected ICommandControl createCommandControl(DsfSession session,
-			ILaunchConfiguration config) {
+	protected ICommandControl createCommandControl(DsfSession session, ILaunchConfiguration config) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmServicesFactory.createCommandControl("
-					+ session + "," + config.getName() + ") " + this);
+			System.out.println(
+					"GnuArmServicesFactory.createCommandControl(" + session + "," + config.getName() + ") " + this);
 		}
 
 		if (DebugUtils.compareVersions(GDB_7_4_VERSION, fVersion) <= 0) {
-			return new GnuArmControl_7_4(session, config,
-					new GnuArmCommandFactory(), fMode);
+			return new GnuArmControl_7_4(session, config, new GnuArmCommandFactory(), fMode);
 		}
 
 		return super.createCommandControl(session, config);
@@ -125,8 +119,7 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 	protected IProcesses createProcessesService(DsfSession session) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmServicesFactory.createProcessesService("
-					+ session + ") " + this);
+			System.out.println("GnuArmServicesFactory.createProcessesService(" + session + ") " + this);
 		}
 
 		if (DebugUtils.compareVersions(GDB_7_2_1_VERSION, fVersion) <= 0) {
@@ -137,8 +130,7 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 	}
 
 	// Not yet functional
-	protected ICommandControl _createCommandControl(DsfSession session,
-			ILaunchConfiguration config) {
+	protected ICommandControl _createCommandControl(DsfSession session, ILaunchConfiguration config) {
 
 		// TODO: keep it in sync with future versions
 
@@ -148,16 +140,13 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 		// new GnuArmCommandFactory());
 		// }
 		if (DebugUtils.compareVersions(GDB_7_4_VERSION, fVersion) <= 0) {
-			return new GDBControl_7_4(session, config,
-					new GnuArmCommandFactory());
+			return new GDBControl_7_4(session, config, new GnuArmCommandFactory());
 		}
 		if (DebugUtils.compareVersions(GDB_7_2_VERSION, fVersion) <= 0) {
-			return new GDBControl_7_2(session, config,
-					new GnuArmCommandFactory());
+			return new GDBControl_7_2(session, config, new GnuArmCommandFactory());
 		}
 		if (DebugUtils.compareVersions(GDB_7_0_VERSION, fVersion) <= 0) {
-			return new GDBControl_7_0(session, config,
-					new GnuArmCommandFactory());
+			return new GDBControl_7_0(session, config, new GnuArmCommandFactory());
 		}
 
 		return super.createCommandControl(session, config);

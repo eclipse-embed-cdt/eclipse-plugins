@@ -22,20 +22,17 @@ public interface IPeripheralMemoryService extends IDsfService {
 
 	// ------------------------------------------------------------------------
 
-	public abstract void initializeMemoryData(
-			final IMemoryDMContext memContext, RequestMonitor rm);
+	public abstract void initializeMemoryData(final IMemoryDMContext memContext, RequestMonitor rm);
 
 	public abstract boolean isBigEndian(IMemoryDMContext context);
 
 	public abstract int getAddressSize(IMemoryDMContext context);
 
-	public abstract void getMemory(IMemoryDMContext memoryDMC,
-			IAddress address, long offset, int word_size, int word_count,
-			DataRequestMonitor<MemoryByte[]> drm);
+	public abstract void getMemory(IMemoryDMContext memoryDMC, IAddress address, long offset, int word_size,
+			int word_count, DataRequestMonitor<MemoryByte[]> drm);
 
-	public abstract void setMemory(IMemoryDMContext memoryDMC,
-			IAddress address, long offset, int word_size, int word_count,
-			byte[] buffer, RequestMonitor rm);
+	public abstract void setMemory(IMemoryDMContext memoryDMC, IAddress address, long offset, int word_size,
+			int word_count, byte[] buffer, RequestMonitor rm);
 
 	// ------------------------------------------------------------------------
 }

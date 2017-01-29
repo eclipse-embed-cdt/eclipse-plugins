@@ -33,8 +33,7 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 
 	// ------------------------------------------------------------------------
 
-	public PeripheralRegisterFieldVMNode(PeripheralTreeVMNode parent,
-			SvdDMNode dmNode) {
+	public PeripheralRegisterFieldVMNode(PeripheralTreeVMNode parent, SvdDMNode dmNode) {
 
 		super(parent, dmNode);
 
@@ -48,8 +47,7 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 	public SvdEnumeratedValueDMNode getEnumeratedValueDMNode() {
 		if (fEnumeratedValueDMNode == null) {
 			try {
-				fEnumeratedValueDMNode = ((SvdFieldDMNode) fDMNode)
-						.findEnumeratedValue((PeripheralValue) getValue());
+				fEnumeratedValueDMNode = ((SvdFieldDMNode) fDMNode).findEnumeratedValue((PeripheralValue) getValue());
 			} catch (DebugException e) {
 				Activator.log(e);
 			}
@@ -62,8 +60,7 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 	}
 
 	public String[] getEnumerationComboItems() {
-		SvdEnumerationDMNode enumeration = ((SvdFieldDMNode) fDMNode)
-				.getWriteEnumerationDMNode();
+		SvdEnumerationDMNode enumeration = ((SvdFieldDMNode) fDMNode).getWriteEnumerationDMNode();
 
 		List<String> list = new LinkedList<String>();
 		if (enumeration != null) {
@@ -71,8 +68,7 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 			for (int i = 0; i < children.length; ++i) {
 				SvdEnumeratedValueDMNode child = (SvdEnumeratedValueDMNode) children[i];
 				String name = child.getName();
-				BigInteger bigValue = SvdUtils
-						.parseScaledNonNegativeBigInteger(child.getValue());
+				BigInteger bigValue = SvdUtils.parseScaledNonNegativeBigInteger(child.getValue());
 				// Use the same format as for displaying, "value: name"
 				list.add(String.format("0x%X: %s", bigValue, name));
 			}
@@ -90,8 +86,7 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 	public Integer getEnumerationComboIndex() {
 
 		try {
-			return ((SvdFieldDMNode) fDMNode)
-					.findEnumeratedComboIndex((PeripheralValue) getValue());
+			return ((SvdFieldDMNode) fDMNode).findEnumeratedComboIndex((PeripheralValue) getValue());
 
 		} catch (DebugException e) {
 			;
@@ -182,8 +177,7 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 			bigValue = bigValue.andNot(getBitMask().shiftLeft(getOffsetBits()));
 
 			// Mask in new value, using or().
-			bigValue = bigValue.or(newValue.and(getBitMask()).shiftLeft(
-					getOffsetBits()));
+			bigValue = bigValue.or(newValue.and(getBitMask()).shiftLeft(getOffsetBits()));
 
 			// Update the parent with the newly computed value.
 			// This in turn will use updateFieldValueFromParent() to update

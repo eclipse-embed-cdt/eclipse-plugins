@@ -49,8 +49,7 @@ public class RestartCommandAction extends DebugCommandAction {
 
 	@Override
 	public ImageDescriptor getDisabledImageDescriptor() {
-		return AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-				"icons/dlcl16/restart_co.gif");
+		return AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/dlcl16/restart_co.gif");
 	}
 
 	@Override
@@ -60,8 +59,7 @@ public class RestartCommandAction extends DebugCommandAction {
 
 	@Override
 	public ImageDescriptor getImageDescriptor() {
-		return AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-				"icons/elcl16/restart_co.gif");
+		return AbstractUIPlugin.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/elcl16/restart_co.gif");
 	}
 
 	@Override

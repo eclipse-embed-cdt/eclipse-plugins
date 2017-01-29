@@ -76,8 +76,8 @@ public class PacksPerspective implements IPerspectiveFactory {
 		// topRight.addView("ilg.gnuarmeclipse.packs.ui.views.PackagesView");
 
 		// Leave 20% for the editor
-		fFactory.addView("ilg.gnuarmeclipse.packs.ui.views.PackagesView",
-				IPageLayout.TOP, 0.8f, fFactory.getEditorArea());
+		fFactory.addView("ilg.gnuarmeclipse.packs.ui.views.PackagesView", IPageLayout.TOP, 0.8f,
+				fFactory.getEditorArea());
 
 		// factory.addFastView("org.eclipse.team.ccvs.ui.RepositoriesView",0.50f);
 		// //NON-NLS-1

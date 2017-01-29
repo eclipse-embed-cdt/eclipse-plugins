@@ -22,31 +22,27 @@ import org.eclipse.cdt.managedbuilder.macros.IBuildMacroProvider;
 import org.eclipse.cdt.managedbuilder.macros.IConfigurationBuildMacroSupplier;
 
 @SuppressWarnings("restriction")
-public class ConfigurationBuildMacroSupplier implements
-		IConfigurationBuildMacroSupplier {
+public class ConfigurationBuildMacroSupplier implements IConfigurationBuildMacroSupplier {
 
 	// ------------------------------------------------------------------------
 
-	private String[] fCmds = { "cross_prefix", "cross_suffix", "cross_c",
-			"cross_cpp", "cross_ar", "cross_objcopy", "cross_objdump",
-			"cross_size", "cross_make", "cross_rm" };
+	private String[] fCmds = { "cross_prefix", "cross_suffix", "cross_c", "cross_cpp", "cross_ar", "cross_objcopy",
+			"cross_objdump", "cross_size", "cross_make", "cross_rm" };
 
 	private static String CROSS_FLAGS = "cross_toolchain_flags";
 
 	// ------------------------------------------------------------------------
 
 	@Override
-	public IBuildMacro getMacro(String macroName, IConfiguration configuration,
-			IBuildMacroProvider provider) {
+	public IBuildMacro getMacro(String macroName, IConfiguration configuration, IBuildMacroProvider provider) {
 
 		for (String sCmd : fCmds) {
 			if (sCmd.equals(macroName)) {
 				IToolChain toolchain = configuration.getToolChain();
 
-				String sId = Option.OPTION_PREFIX + ".command."
-						+ sCmd.replace("cross_", "");
+				String sId = Option.OPTION_PREFIX + ".command." + sCmd.replace("cross_", "");
 
-				IOption option = toolchain.getOptionBySuperClassId(sId); //$NON-NLS-1$
+				IOption option = toolchain.getOptionBySuperClassId(sId); // $NON-NLS-1$
 				if (option != null) {
 					String sVal = (String) option.getValue();
 
@@ -59,8 +55,7 @@ public class ConfigurationBuildMacroSupplier implements
 					// + " prj="
 					// + configuration.getManagedProject().getOwner()
 					// .getName());
-					return new BuildMacro(macroName, BuildMacro.VALUE_TEXT,
-							sVal);
+					return new BuildMacro(macroName, BuildMacro.VALUE_TEXT, sVal);
 				}
 
 				if (Activator.getInstance().isDebugging()) {
@@ -85,30 +80,26 @@ public class ConfigurationBuildMacroSupplier implements
 	// toolchain commands (like ${cross_c}) to the make generator.
 
 	@Override
-	public IBuildMacro[] getMacros(IConfiguration configuration,
-			IBuildMacroProvider provider) {
+	public IBuildMacro[] getMacros(IConfiguration configuration, IBuildMacroProvider provider) {
 
 		IToolChain toolchain = configuration.getToolChain();
 		ArrayList<IBuildMacro> oMacrosList = new ArrayList<IBuildMacro>();
 
 		String sValue;
 		for (String cmd : fCmds) {
-			String sId = Option.OPTION_PREFIX + ".command."
-					+ cmd.replace("cross_", "");
+			String sId = Option.OPTION_PREFIX + ".command." + cmd.replace("cross_", "");
 
-			IOption option = toolchain.getOptionBySuperClassId(sId); //$NON-NLS-1$
+			IOption option = toolchain.getOptionBySuperClassId(sId); // $NON-NLS-1$
 			if (option != null) {
 				sValue = (String) option.getValue();
 
-				oMacrosList.add(new BuildMacro(cmd, BuildMacro.VALUE_TEXT,
-						sValue));
+				oMacrosList.add(new BuildMacro(cmd, BuildMacro.VALUE_TEXT, sValue));
 			}
 		}
 
 		sValue = Option.getToolChainFlags(configuration);
 		if (sValue != null && sValue.length() > 0) {
-			oMacrosList.add(new BuildMacro(CROSS_FLAGS, BuildMacro.VALUE_TEXT,
-					sValue));
+			oMacrosList.add(new BuildMacro(CROSS_FLAGS, BuildMacro.VALUE_TEXT, sValue));
 		}
 
 		return oMacrosList.toArray(new IBuildMacro[0]);

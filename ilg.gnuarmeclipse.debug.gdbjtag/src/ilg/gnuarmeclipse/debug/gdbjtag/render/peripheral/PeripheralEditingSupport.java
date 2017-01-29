@@ -59,8 +59,8 @@ public class PeripheralEditingSupport extends EditingSupport {
 			PeripheralRegisterFieldVMNode peripheralRegisterField = (PeripheralRegisterFieldVMNode) element;
 			if (peripheralRegisterField.supportsValueModification()) {
 				if (peripheralRegisterField.isEnumeration()) {
-					fEnumerationCellEditor = new PeripheralEnumerationCellEditor(
-							fEditorParent, peripheralRegisterField);
+					fEnumerationCellEditor = new PeripheralEnumerationCellEditor(fEditorParent,
+							peripheralRegisterField);
 					return fEnumerationCellEditor;
 				}
 				return fTextCellEditor;
@@ -118,8 +118,7 @@ public class PeripheralEditingSupport extends EditingSupport {
 	 *            the view node where to get the value from.
 	 * @return a string with the value, an Integer, or null if none.
 	 */
-	private Object getValueForCellEditor(
-			PeripheralRegisterVMNode peripheralRegister) {
+	private Object getValueForCellEditor(PeripheralRegisterVMNode peripheralRegister) {
 
 		String value = peripheralRegister.getValueString();
 		if (peripheralRegister instanceof PeripheralRegisterFieldVMNode) {
@@ -145,8 +144,7 @@ public class PeripheralEditingSupport extends EditingSupport {
 			// This editor sends either a numeric value as string, or an
 			// Integer object, with enumeration index.
 			if (value instanceof String) {
-				doNeedRefresh = peripheralRegisterField
-						.setNumericValue((String) value);
+				doNeedRefresh = peripheralRegisterField.setNumericValue((String) value);
 			} else if (value instanceof Integer) {
 				// Value is either the selection or -1 if the string
 				// was entered manually. Since the selection text includes

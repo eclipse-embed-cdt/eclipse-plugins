@@ -25,8 +25,7 @@ public class PeripheralsColorFactory implements IColorFactory {
 
 	// ------------------------------------------------------------------------
 
-	protected PeripheralsColorFactory(String themeColorName,
-			String preferenceName) {
+	protected PeripheralsColorFactory(String themeColorName, String preferenceName) {
 
 		fThemeColorName = themeColorName;
 		fPreferenceName = preferenceName;
@@ -38,17 +37,14 @@ public class PeripheralsColorFactory implements IColorFactory {
 	public RGB createColor() {
 
 		String value;
-		value = InstanceScope.INSTANCE.getNode("org.eclipse.ui.workbench").get(
-				fThemeColorName, null);
+		value = InstanceScope.INSTANCE.getNode("org.eclipse.ui.workbench").get(fThemeColorName, null);
 		if (value == null) {
-			value = DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID).get(
-					fPreferenceName, "0,0,0");
+			value = DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID).get(fPreferenceName, "0,0,0");
 		}
 		String a[] = value.split(",");
 		RGB rgb;
 		try {
-			rgb = new RGB(Integer.parseInt(a[0]), Integer.parseInt(a[1]),
-					Integer.parseInt(a[2]));
+			rgb = new RGB(Integer.parseInt(a[0]), Integer.parseInt(a[1]), Integer.parseInt(a[2]));
 		} catch (Exception e) {
 			rgb = new RGB(0, 0, 0);
 		}

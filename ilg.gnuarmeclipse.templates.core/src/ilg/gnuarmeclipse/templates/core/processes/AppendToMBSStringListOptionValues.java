@@ -48,12 +48,10 @@ public class AppendToMBSStringListOptionValues extends ProcessRunner {
 	 * Values.
 	 */
 	@Override
-	public void process(TemplateCore template, ProcessArgument[] args,
-			String processId, IProgressMonitor monitor)
+	public void process(TemplateCore template, ProcessArgument[] args, String processId, IProgressMonitor monitor)
 			throws ProcessFailureException {
 		String projectName = args[0].getSimpleValue();
-		IProject projectHandle = ResourcesPlugin.getWorkspace().getRoot()
-				.getProject(projectName);
+		IProject projectHandle = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 		IWorkspaceDescription workspaceDesc = workspace.getDescription();
 		boolean autoBuilding = workspaceDesc.isAutoBuilding();
@@ -63,8 +61,7 @@ public class AppendToMBSStringListOptionValues extends ProcessRunner {
 		} catch (CoreException e) {// ignore
 		}
 
-		ProcessArgument[][] resourcePathObjects = args[1]
-				.getComplexArrayValue();
+		ProcessArgument[][] resourcePathObjects = args[1].getComplexArrayValue();
 		boolean modified = false;
 		for (ProcessArgument[] resourcePathObject : resourcePathObjects) {
 			String id = resourcePathObject[0].getSimpleValue();
@@ -72,8 +69,7 @@ public class AppendToMBSStringListOptionValues extends ProcessRunner {
 			String path = resourcePathObject[2].getSimpleValue();
 			String buildType = resourcePathObject[3].getSimpleValue();
 			try {
-				modified |= setOptionValue(projectHandle, id, values, path,
-						buildType);
+				modified |= setOptionValue(projectHandle, id, values, path, buildType);
 			} catch (BuildException e) {
 				throw new ProcessFailureException(
 						Messages.getString("AppendToMBSStringListOptionValues.0") + e.getMessage(), e); //$NON-NLS-1$
@@ -90,18 +86,16 @@ public class AppendToMBSStringListOptionValues extends ProcessRunner {
 		}
 	}
 
-	private boolean setOptionValue(IProject projectHandle, String id,
-			String[] value, String path, String buildType)
+	private boolean setOptionValue(IProject projectHandle, String id, String[] value, String path, String buildType)
 			throws BuildException, ProcessFailureException {
-		IConfiguration[] projectConfigs = ManagedBuildManager
-				.getBuildInfo(projectHandle).getManagedProject()
+		IConfiguration[] projectConfigs = ManagedBuildManager.getBuildInfo(projectHandle).getManagedProject()
 				.getConfigurations();
 
 		boolean resource = !(path == null || path.equals("") || path.equals("/")); //$NON-NLS-1$ //$NON-NLS-2$
 		boolean modified = false;
 
 		for (IConfiguration config : projectConfigs) {
-			if (!Utils.isBuildType(config, buildType)){
+			if (!Utils.isBuildType(config, buildType)) {
 				continue;
 			}
 			IResourceConfiguration resourceConfig = null;
@@ -117,18 +111,15 @@ public class AppendToMBSStringListOptionValues extends ProcessRunner {
 				}
 				ITool[] tools = resourceConfig.getTools();
 				for (ITool tool : tools) {
-					modified |= setOptionForResourceConfig(id, value,
-							resourceConfig, tool.getOptions(), tool);
+					modified |= setOptionForResourceConfig(id, value, resourceConfig, tool.getOptions(), tool);
 				}
 			} else {
 				IToolChain toolChain = config.getToolChain();
-				modified |= setOptionForConfig(id, value, config,
-						toolChain.getOptions(), toolChain);
+				modified |= setOptionForConfig(id, value, config, toolChain.getOptions(), toolChain);
 
 				ITool[] tools = config.getTools();
 				for (ITool tool : tools) {
-					modified |= setOptionForConfig(id, value, config,
-							tool.getOptions(), tool);
+					modified |= setOptionForConfig(id, value, config, tool.getOptions(), tool);
 				}
 			}
 		}
@@ -136,8 +127,34 @@ public class AppendToMBSStringListOptionValues extends ProcessRunner {
 		return modified;
 	}
 
-	private boolean setOptionForResourceConfig(String id, String[] value,
-			IResourceConfiguration resourceConfig, IOption[] options,
+	private boolean setOptionForResourceConfig(String id, String[] value, IResourceConfiguration resourceConfig,
+			IOption[] options, IHoldsOptions optionHolder) throws BuildException {
+		boolean modified = false;
+		String lowerId = id.toLowerCase();
+		for (IOption option : options) {
+			if (option.getBaseId().toLowerCase().matches(lowerId)) {
+				switch (option.getValueType()) {
+				case IOption.STRING_LIST:
+				case IOption.INCLUDE_PATH:
+				case IOption.PREPROCESSOR_SYMBOLS:
+				case IOption.LIBRARIES:
+				case IOption.OBJECTS:
+				case IOption.INCLUDE_FILES:
+				case IOption.LIBRARY_PATHS:
+				case IOption.LIBRARY_FILES:
+				case IOption.MACRO_FILES:
+					@SuppressWarnings("unchecked")
+					List<String> list = (List<String>) option.getValue();
+					String[] newValue = concat(list.toArray(new String[list.size()]), value);
+					ManagedBuildManager.setOption(resourceConfig, optionHolder, option, newValue);
+					modified = true;
+				}
+			}
+		}
+		return modified;
+	}
+
+	private boolean setOptionForConfig(String id, String[] value, IConfiguration config, IOption[] options,
 			IHoldsOptions optionHolder) throws BuildException {
 		boolean modified = false;
 		String lowerId = id.toLowerCase();
@@ -155,40 +172,8 @@ public class AppendToMBSStringListOptionValues extends ProcessRunner {
 				case IOption.MACRO_FILES:
 					@SuppressWarnings("unchecked")
 					List<String> list = (List<String>) option.getValue();
-					String[] newValue = concat(
-							list.toArray(new String[list.size()]), value);
-					ManagedBuildManager.setOption(resourceConfig, optionHolder,
-							option, newValue);
-					modified = true;
-				}
-			}
-		}
-		return modified;
-	}
-
-	private boolean setOptionForConfig(String id, String[] value,
-			IConfiguration config, IOption[] options, IHoldsOptions optionHolder)
-			throws BuildException {
-		boolean modified = false;
-		String lowerId = id.toLowerCase();
-		for (IOption option : options) {
-			if (option.getBaseId().toLowerCase().matches(lowerId)) {
-				switch (option.getValueType()) {
-				case IOption.STRING_LIST:
-				case IOption.INCLUDE_PATH:
-				case IOption.PREPROCESSOR_SYMBOLS:
-				case IOption.LIBRARIES:
-				case IOption.OBJECTS:
-				case IOption.INCLUDE_FILES:
-				case IOption.LIBRARY_PATHS:
-				case IOption.LIBRARY_FILES:
-				case IOption.MACRO_FILES:
-					@SuppressWarnings("unchecked")
-					List<String> list = (List<String>) option.getValue();
-					String[] newValue = concat(
-							list.toArray(new String[list.size()]), value);
-					ManagedBuildManager.setOption(config, optionHolder, option,
-							newValue);
+					String[] newValue = concat(list.toArray(new String[list.size()]), value);
+					ManagedBuildManager.setOption(config, optionHolder, option, newValue);
 					modified = true;
 				}
 			}

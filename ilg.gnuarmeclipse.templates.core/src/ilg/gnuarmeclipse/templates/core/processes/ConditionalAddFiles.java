@@ -45,8 +45,7 @@ public class ConditionalAddFiles extends ProcessRunner {
 	 */
 	@SuppressWarnings("deprecation")
 	@Override
-	public void process(TemplateCore template, ProcessArgument[] args,
-			String processId, IProgressMonitor monitor)
+	public void process(TemplateCore template, ProcessArgument[] args, String processId, IProgressMonitor monitor)
 			throws ProcessFailureException {
 		IProject projectHandle = null;
 		ProcessArgument[][] files = null;
@@ -57,8 +56,7 @@ public class ConditionalAddFiles extends ProcessRunner {
 		for (ProcessArgument arg : args) {
 			String argName = arg.getName();
 			if (argName.equals("projectName")) { //$NON-NLS-1$
-				projectHandle = ResourcesPlugin.getWorkspace().getRoot()
-						.getProject(arg.getSimpleValue());
+				projectHandle = ResourcesPlugin.getWorkspace().getRoot().getProject(arg.getSimpleValue());
 			} else if (argName.equals("files")) { //$NON-NLS-1$
 				files = arg.getComplexArrayValue();
 			} else if (argName.equals("startPattern")) { //$NON-NLS-1$
@@ -71,12 +69,12 @@ public class ConditionalAddFiles extends ProcessRunner {
 		}
 
 		if (projectHandle == null)
-			throw new ProcessFailureException(getProcessMessage(processId,
-					IStatus.ERROR, Messages.getString("AddFiles.8"))); //$NON-NLS-1$
+			throw new ProcessFailureException(
+					getProcessMessage(processId, IStatus.ERROR, Messages.getString("AddFiles.8"))); //$NON-NLS-1$
 
 		if (files == null)
-			throw new ProcessFailureException(getProcessMessage(processId,
-					IStatus.ERROR, Messages.getString("AddFiles.9"))); //$NON-NLS-1$
+			throw new ProcessFailureException(
+					getProcessMessage(processId, IStatus.ERROR, Messages.getString("AddFiles.9"))); //$NON-NLS-1$
 
 		if (!Utils.isConditionSatisfied(condition))
 			return;
@@ -91,26 +89,20 @@ public class ConditionalAddFiles extends ProcessRunner {
 			try {
 				File f = new File(fileSourcePath);
 				if (f.isAbsolute()) {
-					sourceURL = f.toURL(); // using .toURI().toURL() fails, due to
-										// spaces substitution
+					sourceURL = f.toURL(); // using .toURI().toURL() fails, due
+											// to
+											// spaces substitution
 				} else {
-					sourceURL = TemplateEngineHelper
-							.getTemplateResourceURLRelativeToTemplate(template,
-									fileSourcePath);
+					sourceURL = TemplateEngineHelper.getTemplateResourceURLRelativeToTemplate(template, fileSourcePath);
 					if (sourceURL == null) {
-						throw new ProcessFailureException(
-								getProcessMessage(
-										processId,
-										IStatus.ERROR,
-										Messages.getString("AddFiles.1") + fileSourcePath)); //$NON-NLS-1$
+						throw new ProcessFailureException(getProcessMessage(processId, IStatus.ERROR,
+								Messages.getString("AddFiles.1") + fileSourcePath)); //$NON-NLS-1$
 					}
 				}
 			} catch (MalformedURLException e2) {
-				throw new ProcessFailureException(
-						Messages.getString("AddFiles.2") + fileSourcePath); //$NON-NLS-1$
+				throw new ProcessFailureException(Messages.getString("AddFiles.2") + fileSourcePath); //$NON-NLS-1$
 			} catch (IOException e) {
-				throw new ProcessFailureException(
-						Messages.getString("AddFiles.2") + fileSourcePath); //$NON-NLS-1$
+				throw new ProcessFailureException(Messages.getString("AddFiles.2") + fileSourcePath); //$NON-NLS-1$
 			}
 
 			InputStream contents = null;
@@ -119,27 +111,22 @@ public class ConditionalAddFiles extends ProcessRunner {
 				try {
 					fileContents = ProcessHelper.readFromFile(sourceURL);
 				} catch (IOException e) {
-					throw new ProcessFailureException(
-							Messages.getString("AddFiles.3") + fileSourcePath); //$NON-NLS-1$
+					throw new ProcessFailureException(Messages.getString("AddFiles.3") + fileSourcePath); //$NON-NLS-1$
 				}
 				if (startPattern != null && endPattern != null)
-					fileContents = ProcessHelper.getValueAfterExpandingMacros(
-							fileContents, ProcessHelper.getReplaceKeys(
-									fileContents, startPattern, endPattern),
+					fileContents = ProcessHelper.getValueAfterExpandingMacros(fileContents,
+							ProcessHelper.getReplaceKeys(fileContents, startPattern, endPattern),
 							template.getValueStore(), startPattern, endPattern);
 				else
-					fileContents = ProcessHelper.getValueAfterExpandingMacros(
-							fileContents,
-							ProcessHelper.getReplaceKeys(fileContents),
-							template.getValueStore());
+					fileContents = ProcessHelper.getValueAfterExpandingMacros(fileContents,
+							ProcessHelper.getReplaceKeys(fileContents), template.getValueStore());
 
 				contents = new ByteArrayInputStream(fileContents.getBytes());
 			} else {
 				try {
 					contents = sourceURL.openStream();
 				} catch (IOException e) {
-					throw new ProcessFailureException(getProcessMessage(
-							processId, IStatus.ERROR,
+					throw new ProcessFailureException(getProcessMessage(processId, IStatus.ERROR,
 							Messages.getString("AddFiles.4") + fileSourcePath)); //$NON-NLS-1$
 				}
 			}
@@ -147,9 +134,8 @@ public class ConditionalAddFiles extends ProcessRunner {
 			try {
 				IFile iFile = projectHandle.getFile(fileTargetPath);
 				if (!iFile.getParent().exists()) {
-					ProcessHelper.mkdirs(projectHandle, projectHandle
-							.getFolder(iFile.getParent()
-									.getProjectRelativePath()));
+					ProcessHelper.mkdirs(projectHandle,
+							projectHandle.getFolder(iFile.getParent().getProjectRelativePath()));
 				}
 
 				if (iFile.exists()) {
@@ -158,8 +144,7 @@ public class ConditionalAddFiles extends ProcessRunner {
 					if (replaceable) {
 						iFile.setContents(contents, true, true, null);
 					} else {
-						throw new ProcessFailureException(
-								Messages.getString("AddFiles.5")); //$NON-NLS-1$
+						throw new ProcessFailureException(Messages.getString("AddFiles.5")); //$NON-NLS-1$
 					}
 
 				} else {
@@ -167,15 +152,13 @@ public class ConditionalAddFiles extends ProcessRunner {
 					iFile.refreshLocal(IResource.DEPTH_ONE, null);
 				}
 			} catch (CoreException e) {
-				throw new ProcessFailureException(
-						Messages.getString("AddFiles.6") + e.getMessage(), e); //$NON-NLS-1$
+				throw new ProcessFailureException(Messages.getString("AddFiles.6") + e.getMessage(), e); //$NON-NLS-1$
 			}
 		}
 		try {
 			projectHandle.refreshLocal(IResource.DEPTH_INFINITE, null);
 		} catch (CoreException e) {
-			throw new ProcessFailureException(
-					Messages.getString("AddFiles.7") + e.getMessage(), e); //$NON-NLS-1$
+			throw new ProcessFailureException(Messages.getString("AddFiles.7") + e.getMessage(), e); //$NON-NLS-1$
 		}
 	}
 }

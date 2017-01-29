@@ -56,8 +56,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	// ------------------------------------------------------------------------
 
 	// must match the plugin.xml <wizardPage ID="">
-	public static final String PAGE_ID = IDs.getIdPrefix()
-			+ ".setCrossCommandWizardPage"; //$NON-NLS-1$
+	public static final String PAGE_ID = IDs.getIdPrefix() + ".setCrossCommandWizardPage"; //$NON-NLS-1$
 
 	public static final String CROSS_PROJECT_NAME = "projectName"; //$NON-NLS-1$
 
@@ -117,18 +116,15 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 			fSelectedToolchainName = PersistentPreferences.getToolchainName();
 			// System.out.println("Previous toolchain name "
 			// + fSelectedToolchainName);
-			if (fSelectedToolchainName != null
-					&& fSelectedToolchainName.length() > 0) {
+			if (fSelectedToolchainName != null && fSelectedToolchainName.length() > 0) {
 				try {
-					fSelectedToolchainIndex = ToolchainDefinition
-							.findToolchainByName(fSelectedToolchainName);
+					fSelectedToolchainIndex = ToolchainDefinition.findToolchainByName(fSelectedToolchainName);
 				} catch (IndexOutOfBoundsException e) {
 					fSelectedToolchainIndex = ToolchainDefinition.getDefault();
 				}
 			} else {
 				fSelectedToolchainIndex = ToolchainDefinition.getDefault();
-				fSelectedToolchainName = ToolchainDefinition.getToolchain(
-						fSelectedToolchainIndex).getName();
+				fSelectedToolchainName = ToolchainDefinition.getToolchain(fSelectedToolchainIndex).getName();
 			}
 		} catch (Exception e) {
 			fSelectedToolchainIndex = 0;
@@ -142,12 +138,10 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 			public void widgetSelected(SelectionEvent event) {
 				// System.out.println("Combo " + toolchainCombo.getText());
 				fSelectedToolchainIndex = fToolchainCombo.getSelectionIndex();
-				fSelectedToolchainName = ToolchainDefinition.getToolchain(
-						fSelectedToolchainIndex).getName();
+				fSelectedToolchainName = ToolchainDefinition.getToolchain(fSelectedToolchainIndex).getName();
 				updateToolchainNameProperty();
 
-				String crossCommandPath = PersistentPreferences
-						.getToolchainPath(fSelectedToolchainName, null);
+				String crossCommandPath = PersistentPreferences.getToolchainPath(fSelectedToolchainName, null);
 				fPathTxt.setText(crossCommandPath);
 
 			}
@@ -158,8 +152,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		label.setText(Messages.SetCrossCommandWizardPage_path);
 
 		fPathTxt = new Text(fComposite, SWT.SINGLE | SWT.BORDER);
-		String crossCommandPath = PersistentPreferences.getToolchainPath(
-				fSelectedToolchainName, null);
+		String crossCommandPath = PersistentPreferences.getToolchainPath(fSelectedToolchainName, null);
 		fPathTxt.setText(crossCommandPath);
 		updatePathProperty();
 
@@ -181,8 +174,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 			}
 
 			public void widgetSelected(SelectionEvent e) {
-				DirectoryDialog dirDialog = new DirectoryDialog(fComposite
-						.getShell(), SWT.APPLICATION_MODAL);
+				DirectoryDialog dirDialog = new DirectoryDialog(fComposite.getShell(), SWT.APPLICATION_MODAL);
 				String browsedDirectory = dirDialog.open();
 				fPathTxt.setText(browsedDirectory);
 
@@ -244,24 +236,20 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	 * SetCrossCommandOperation
 	 */
 	private void updatePathProperty() {
-		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_PATH,
-				fPathTxt.getText());
+		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_PATH, fPathTxt.getText());
 	}
 
 	private void updateToolchainNameProperty() {
 		// save current toolchain name
-		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_NAME,
-				fSelectedToolchainName);
+		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_TOOLCHAIN_NAME, fSelectedToolchainName);
 	}
 
 	private void updateProjectNameProperty() {
 		IWizardPage[] pages = getWizard().getPages();
 		for (IWizardPage wizardPage : pages) {
 			if (wizardPage instanceof WizardNewProjectCreationPage) {
-				MBSCustomPageManager.addPageProperty(PAGE_ID,
-						CROSS_PROJECT_NAME,
-						((WizardNewProjectCreationPage) wizardPage)
-								.getProjectName());
+				MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_PROJECT_NAME,
+						((WizardNewProjectCreationPage) wizardPage).getProjectName());
 				break;
 			}
 		}

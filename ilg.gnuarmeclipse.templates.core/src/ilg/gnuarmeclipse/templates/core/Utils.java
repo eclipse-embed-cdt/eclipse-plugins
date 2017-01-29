@@ -15,8 +15,7 @@ import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 
 public class Utils {
 
-	public static boolean isBuildType(IConfiguration config,
-			String buildTypeSuffix) {
+	public static boolean isBuildType(IConfiguration config, String buildTypeSuffix) {
 
 		if (buildTypeSuffix == null)
 			return true;
@@ -26,11 +25,9 @@ public class Utils {
 		if (buildTypeSuffix.length() == 0)
 			return true;
 
-		String configBuildTypeValue = config.getBuildProperties()
-				.getProperty("org.eclipse.cdt.build.core.buildType").getValue()
-				.toString();
-		if (configBuildTypeValue != null
-				&& configBuildTypeValue.endsWith(buildTypeSuffix)) {
+		String configBuildTypeValue = config.getBuildProperties().getProperty("org.eclipse.cdt.build.core.buildType")
+				.getValue().toString();
+		if (configBuildTypeValue != null && configBuildTypeValue.endsWith(buildTypeSuffix)) {
 			return true;
 		}
 

@@ -87,37 +87,29 @@ public class CopyExampleJob extends Job {
 			PackNode exampleNode = (PackNode) o;
 			PackNode versionNode = (PackNode) exampleNode.getParent();
 
-			Leaf outlineExampleNode = exampleNode.getOutline().findChild(
-					Type.EXAMPLE);
+			Leaf outlineExampleNode = exampleNode.getOutline().findChild(Type.EXAMPLE);
 
-			String packRelativeFolder = versionNode
-					.getProperty(Property.DEST_FOLDER);
-			String exampleRelativeFolder = outlineExampleNode
-					.getProperty(Node.FOLDER_PROPERTY);
+			String packRelativeFolder = versionNode.getProperty(Property.DEST_FOLDER);
+			String exampleRelativeFolder = outlineExampleNode.getProperty(Node.FOLDER_PROPERTY);
 
-			fOut.println("Copying example folder \""
-					+ new Path(packRelativeFolder)
-							.append(exampleRelativeFolder) + "\"...");
+			fOut.println(
+					"Copying example folder \"" + new Path(packRelativeFolder).append(exampleRelativeFolder) + "\"...");
 
-			File destFolder = fDestFolderPath.append(exampleRelativeFolder)
-					.toFile();
+			File destFolder = fDestFolderPath.append(exampleRelativeFolder).toFile();
 
 			if (!destFolder.exists()) {
 				if (!destFolder.mkdirs()) {
-					fOut.println("Cannot create destination folder \""
-							+ destFolder.toString() + "\".");
+					fOut.println("Cannot create destination folder \"" + destFolder.toString() + "\".");
 					return Status.CANCEL_STATUS;
 				}
 			}
 			if (!destFolder.isDirectory()) {
-				fOut.println("Destination \"" + destFolder.toString()
-						+ "\" is not a folder.");
+				fOut.println("Destination \"" + destFolder.toString() + "\" is not a folder.");
 				return Status.CANCEL_STATUS;
 			}
 
 			if (destFolder.listFiles().length > 0) {
-				fOut.println("Destination \"" + destFolder.toString()
-						+ "\" is not an empty folder.");
+				fOut.println("Destination \"" + destFolder.toString() + "\" is not an empty folder.");
 				fOut.println("Deleting previous content...");
 				int count = Utils.deleteFolderRecursive(destFolder);
 				fOut.println(count + " files deleted.");
@@ -136,8 +128,7 @@ public class CopyExampleJob extends Job {
 				}
 				srcFolderPath = srcFolderPath.append(exampleRelativeFolder);
 
-				int totalWork = (int) getFilesSizeRecursive(srcFolderPath
-						.toFile());
+				int totalWork = (int) getFilesSizeRecursive(srcFolderPath.toFile());
 				monitor.beginTask("Copy folder", totalWork);
 
 				int count = 0;

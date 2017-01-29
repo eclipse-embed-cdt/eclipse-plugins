@@ -48,17 +48,15 @@ public class ThemeColorFieldEditor extends ColorFieldEditor {
 	 * @param parent
 	 *            the parent of the field editor's control.
 	 */
-	public ThemeColorFieldEditor(String name, String themeColorName,
-			String labelText, Composite parent) {
+	public ThemeColorFieldEditor(String name, String themeColorName, String labelText, Composite parent) {
 		super(name, labelText, parent);
 
 		fThemeColorName = themeColorName;
 
-		IThemeManager themeManager = PlatformUI.getWorkbench()
-				.getThemeManager();
+		IThemeManager themeManager = PlatformUI.getWorkbench().getThemeManager();
 		ITheme theme = themeManager.getCurrentTheme();
 		fColorRegistry = theme.getColorRegistry();
-		
+
 	}
 
 	// ------------------------------------------------------------------------
@@ -88,10 +86,9 @@ public class ThemeColorFieldEditor extends ColorFieldEditor {
 		if (getColorSelector() == null) {
 			return;
 		}
-		RGB rgb = PreferenceConverter.getDefaultColor(getPreferenceStore(),
-				getPreferenceName());
+		RGB rgb = PreferenceConverter.getDefaultColor(getPreferenceStore(), getPreferenceName());
 		getColorSelector().setColorValue(rgb);
-		
+
 		setPresentsDefaultValue(false);
 	}
 
@@ -107,8 +104,7 @@ public class ThemeColorFieldEditor extends ColorFieldEditor {
 
 		String value = String.format("%d,%d,%d", rgb.red, rgb.green, rgb.blue);
 
-		IEclipsePreferences preferences = InstanceScope.INSTANCE
-				.getNode("org.eclipse.ui.workbench");
+		IEclipsePreferences preferences = InstanceScope.INSTANCE.getNode("org.eclipse.ui.workbench");
 
 		if (!value.equals(preferences.get(fThemeColorName, ""))) {
 

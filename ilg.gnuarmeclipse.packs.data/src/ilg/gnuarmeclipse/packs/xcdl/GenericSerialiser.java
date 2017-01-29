@@ -144,9 +144,7 @@ public class GenericSerialiser {
 			String description = node.getDescription();
 			if (description != null && description.length() > 0) {
 				putIndentation(depth + 1);
-				fWriter.println("<description>"
-						+ Xml.xmlEscape(node.getDescription())
-						+ "</description>");
+				fWriter.println("<description>" + Xml.xmlEscape(node.getDescription()) + "</description>");
 			}
 
 			if (node.hasRelevantProperties()) {
@@ -177,16 +175,12 @@ public class GenericSerialiser {
 
 					String propertyName = key.toString();
 					Set<String> propertyNames = getPropertyNames();
-					if (propertyNames != null
-							&& propertyNames.contains(propertyName)) {
-						fWriter.println("<" + propertyName + ">"
-								+ Xml.xmlEscape(properties.get(key).toString())
-								+ "</" + propertyName + ">");
+					if (propertyNames != null && propertyNames.contains(propertyName)) {
+						fWriter.println("<" + propertyName + ">" + Xml.xmlEscape(properties.get(key).toString()) + "</"
+								+ propertyName + ">");
 					} else {
-						fWriter.println("<property name=\"" + propertyName
-								+ "\">"
-								+ Xml.xmlEscape(properties.get(key).toString())
-								+ "</property>");
+						fWriter.println("<property name=\"" + propertyName + "\">"
+								+ Xml.xmlEscape(properties.get(key).toString()) + "</property>");
 					}
 				}
 

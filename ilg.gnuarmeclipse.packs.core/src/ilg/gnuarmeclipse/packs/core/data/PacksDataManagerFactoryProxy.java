@@ -26,12 +26,10 @@ import org.eclipse.core.runtime.Platform;
  * Usage:
  * 
  * <pre>
- * IPacksDataManager dataManager = PacksDataManagerFactoryProxy.getInstance()
- * 		.createDataManager();
+ * IPacksDataManager dataManager = PacksDataManagerFactoryProxy.getInstance().createDataManager();
  * </pre>
  */
-public class PacksDataManagerFactoryProxy implements IPacksDataManagerFactory,
-		IAvailableSupport {
+public class PacksDataManagerFactoryProxy implements IPacksDataManagerFactory, IAvailableSupport {
 
 	private static final String FACTORY_ELEMENT = "factory";
 	private static final String CLASS_ATTRIBUTE = "class";
@@ -72,8 +70,8 @@ public class PacksDataManagerFactoryProxy implements IPacksDataManagerFactory,
 			System.out.println("DataManagerFactoryProxy.createDataManager()");
 		}
 
-		IExtension[] extensions = Platform.getExtensionRegistry()
-				.getExtensionPoint(Activator.PLUGIN_ID, "data").getExtensions();
+		IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint(Activator.PLUGIN_ID, "data")
+				.getExtensions();
 
 		if (extensions.length != 1) {
 			if (Activator.getInstance().isDebugging()) {
@@ -83,8 +81,7 @@ public class PacksDataManagerFactoryProxy implements IPacksDataManagerFactory,
 		}
 
 		IExtension extension = extensions[0];
-		IConfigurationElement[] configElements = extension
-				.getConfigurationElements();
+		IConfigurationElement[] configElements = extension.getConfigurationElements();
 		IConfigurationElement configElement = configElements[0];
 
 		if (!FACTORY_ELEMENT.equals(configElement.getName())) {
@@ -96,16 +93,14 @@ public class PacksDataManagerFactoryProxy implements IPacksDataManagerFactory,
 
 		IPacksDataManagerFactory factory;
 		try {
-			Object obj = configElement
-					.createExecutableExtension(CLASS_ATTRIBUTE);
+			Object obj = configElement.createExecutableExtension(CLASS_ATTRIBUTE);
 
 			if (obj instanceof IPacksDataManagerFactory) {
 				factory = (IPacksDataManagerFactory) obj;
 				fDataManager = factory.createDataManager();
 
 				if (Activator.getInstance().isDebugging()) {
-					System.out
-							.println("DataManagerFactoryProxy.createDataManager() completed");
+					System.out.println("DataManagerFactoryProxy.createDataManager() completed");
 				}
 				return fDataManager;
 			} else {

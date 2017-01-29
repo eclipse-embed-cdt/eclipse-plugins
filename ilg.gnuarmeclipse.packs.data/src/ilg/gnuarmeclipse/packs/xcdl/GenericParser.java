@@ -70,14 +70,12 @@ public class GenericParser {
 	}
 
 	// Override this in derived class
-	public void checkSchemaVersion(String schemaVersion)
-			throws DocumentParseException {
+	public void checkSchemaVersion(String schemaVersion) throws DocumentParseException {
 
 		if ("1.1".equals(schemaVersion)) {
 			;
 		} else {
-			throw new DocumentParseException("Unrecognised schema version "
-					+ schemaVersion);
+			throw new DocumentParseException("Unrecognised schema version " + schemaVersion);
 		}
 	}
 
@@ -88,8 +86,7 @@ public class GenericParser {
 		Element firstElement = document.getDocumentElement();
 		String firstElementName = firstElement.getNodeName();
 		if (!"root".equals(firstElementName)) {
-			throw new DocumentParseException("Missing <root>, <"
-					+ firstElementName + "> encountered");
+			throw new DocumentParseException("Missing <root>, <" + firstElementName + "> encountered");
 		}
 
 		String schemaVersion = firstElement.getAttribute("version").trim();
@@ -184,8 +181,7 @@ public class GenericParser {
 				processPropertyElement(childElement, node);
 			} else {
 				Set<String> propertyNames = getPropertyNames();
-				if (propertyNames != null
-						&& propertyNames.contains(elementName)) {
+				if (propertyNames != null && propertyNames.contains(elementName)) {
 					processPropertyElement(childElement, node);
 				} else {
 					// All other nodes go here

@@ -31,8 +31,7 @@ import org.osgi.framework.Bundle;
 public class SetPropertyToPluginResource extends ProcessRunner {
 
 	@Override
-	public void process(TemplateCore template, ProcessArgument[] args,
-			String processId, IProgressMonitor monitor)
+	public void process(TemplateCore template, ProcessArgument[] args, String processId, IProgressMonitor monitor)
 			throws ProcessFailureException {
 
 		String bundleId = args[0].getSimpleValue();
@@ -42,8 +41,7 @@ public class SetPropertyToPluginResource extends ProcessRunner {
 		Bundle bundle = Platform.getBundle(bundleId);
 		URL url = FileLocator.find(bundle, new Path(relativePath), null);
 		if (url == null) {
-			throw new ProcessFailureException(getProcessMessage(processId,
-					IStatus.ERROR,
+			throw new ProcessFailureException(getProcessMessage(processId, IStatus.ERROR,
 					"Bundle resource not found " + bundle + " " + relativePath)); //$NON-NLS-1$
 		}
 		String location;
@@ -57,8 +55,7 @@ public class SetPropertyToPluginResource extends ProcessRunner {
 				Activator.log("Property " + propertyName + " not defined.");
 			}
 		} catch (IOException e) {
-			throw new ProcessFailureException(getProcessMessage(processId,
-					IStatus.ERROR, "Cannot resolve url " + url)); //$NON-NLS-1$
+			throw new ProcessFailureException(getProcessMessage(processId, IStatus.ERROR, "Cannot resolve url " + url)); //$NON-NLS-1$
 		}
 
 	}

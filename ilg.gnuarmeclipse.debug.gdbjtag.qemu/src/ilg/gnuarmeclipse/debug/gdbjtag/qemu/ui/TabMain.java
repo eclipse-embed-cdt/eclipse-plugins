@@ -23,8 +23,7 @@ import org.eclipse.cdt.dsf.gdb.internal.ui.launching.CMainTab;
 public class TabMain extends CMainTab {
 
 	public TabMain() {
-		super((DefaultPreferences.getTabMainCheckProgram() ? 0
-				: CMainTab.DONT_CHECK_PROGRAM)
+		super((DefaultPreferences.getTabMainCheckProgram() ? 0 : CMainTab.DONT_CHECK_PROGRAM)
 				| CMainTab.INCLUDE_BUILD_SETTINGS);
 	}
 }

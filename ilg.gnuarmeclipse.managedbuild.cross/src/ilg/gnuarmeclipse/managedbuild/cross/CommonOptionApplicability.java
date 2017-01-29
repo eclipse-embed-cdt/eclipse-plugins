@@ -21,28 +21,24 @@ public class CommonOptionApplicability implements IOptionApplicability {
 	// ------------------------------------------------------------------------
 
 	@Override
-	public boolean isOptionUsedInCommandLine(IBuildObject configuration,
-			IHoldsOptions holder, IOption option) {
+	public boolean isOptionUsedInCommandLine(IBuildObject configuration, IHoldsOptions holder, IOption option) {
 
 		return isOption(configuration, holder, option);
 	}
 
 	@Override
-	public boolean isOptionVisible(IBuildObject configuration,
-			IHoldsOptions holder, IOption option) {
+	public boolean isOptionVisible(IBuildObject configuration, IHoldsOptions holder, IOption option) {
 
 		return isOption(configuration, holder, option);
 	}
 
 	@Override
-	public boolean isOptionEnabled(IBuildObject configuration,
-			IHoldsOptions holder, IOption option) {
+	public boolean isOptionEnabled(IBuildObject configuration, IHoldsOptions holder, IOption option) {
 
 		return isOption(configuration, holder, option);
 	}
 
-	private boolean isOption(IBuildObject configuration, IHoldsOptions holder,
-			IOption option) {
+	private boolean isOption(IBuildObject configuration, IHoldsOptions holder, IOption option) {
 
 		// IToolChain toolchain = (IToolChain) holder;
 		// not yet used

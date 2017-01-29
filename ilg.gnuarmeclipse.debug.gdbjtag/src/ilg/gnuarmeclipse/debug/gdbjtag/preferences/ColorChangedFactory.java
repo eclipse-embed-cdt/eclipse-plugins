@@ -18,7 +18,6 @@ import ilg.gnuarmeclipse.debug.gdbjtag.render.peripheral.PeripheralColumnLabelPr
 public class ColorChangedFactory extends PeripheralsColorFactory {
 
 	public ColorChangedFactory() {
-		super(PeripheralColumnLabelProvider.COLOR_CHANGED,
-				PersistentPreferences.PERIPHERALS_COLOR_CHANGED);
+		super(PeripheralColumnLabelProvider.COLOR_CHANGED, PersistentPreferences.PERIPHERALS_COLOR_CHANGED);
 	}
 }

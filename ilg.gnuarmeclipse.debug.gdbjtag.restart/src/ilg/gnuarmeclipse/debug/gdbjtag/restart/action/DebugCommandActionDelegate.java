@@ -20,8 +20,7 @@ import org.eclipse.ui.IActionDelegate2;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
-public abstract class DebugCommandActionDelegate implements
-		IWorkbenchWindowActionDelegate, IActionDelegate2 {
+public abstract class DebugCommandActionDelegate implements IWorkbenchWindowActionDelegate, IActionDelegate2 {
 
 	// ------------------------------------------------------------------------
 

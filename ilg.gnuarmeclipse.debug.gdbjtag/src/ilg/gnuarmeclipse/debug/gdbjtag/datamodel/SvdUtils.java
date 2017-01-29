@@ -110,8 +110,7 @@ public class SvdUtils {
 		return str;
 	}
 
-	public static long parseScaledNonNegativeLong(String str)
-			throws NumberFormatException {
+	public static long parseScaledNonNegativeLong(String str) throws NumberFormatException {
 
 		str = adjustForSign(str);
 		int radix = computeRadix(str);
@@ -126,8 +125,7 @@ public class SvdUtils {
 		return value;
 	}
 
-	public static BigInteger parseScaledNonNegativeBigInteger(String str)
-			throws NumberFormatException {
+	public static BigInteger parseScaledNonNegativeBigInteger(String str) throws NumberFormatException {
 
 		str = adjustForSign(str);
 		int radix = computeRadix(str);
@@ -157,8 +155,7 @@ public class SvdUtils {
 	 *             differentiate when the Packs plug-in is not installed or when
 	 *             the device is not found in the installed packages.
 	 */
-	public static Leaf getTree(String deviceVendorId, String deviceName)
-			throws CoreException {
+	public static Leaf getTree(String deviceVendorId, String deviceName) throws CoreException {
 
 		MessageConsoleStream out = ConsoleStream.getConsoleOut();
 
@@ -171,21 +168,18 @@ public class SvdUtils {
 		if (path == null) {
 
 			// Try to get the SVD from the CMSIS Packs.
-			IPacksDataManager dataManager = PacksDataManagerFactoryProxy
-					.getInstance().createDataManager();
+			IPacksDataManager dataManager = PacksDataManagerFactoryProxy.getInstance().createDataManager();
 
 			if (dataManager == null) {
-				throw new CoreException(
-						new Status(Status.ERROR, Activator.PLUGIN_ID,
-								"Peripherals descriptions are available only via the Packs plug-in."));
+				throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID,
+						"Peripherals descriptions are available only via the Packs plug-in."));
 			}
 
 			path = dataManager.getSVDAbsolutePath(deviceVendorId, deviceName);
 
 			if (path == null) {
-				throw new CoreException(
-						new Status(Status.ERROR, Activator.PLUGIN_ID,
-								"There are no peripherals descriptions available, install the required packs."));
+				throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID,
+						"There are no peripherals descriptions available, install the required packs."));
 			}
 		}
 
@@ -205,19 +199,16 @@ public class SvdUtils {
 
 		} catch (ParserConfigurationException e) {
 			Activator.log(e);
-			throw new CoreException(new Status(Status.ERROR,
-					Activator.PLUGIN_ID,
-					"Failed to get the peripherals descriptions.", e));
+			throw new CoreException(
+					new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed to get the peripherals descriptions.", e));
 		} catch (SAXException e) {
 			Activator.log(e);
-			throw new CoreException(new Status(Status.ERROR,
-					Activator.PLUGIN_ID,
-					"Failed to get the peripherals descriptions.", e));
+			throw new CoreException(
+					new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed to get the peripherals descriptions.", e));
 		} catch (IOException e) {
 			Activator.log(e);
-			throw new CoreException(new Status(Status.ERROR,
-					Activator.PLUGIN_ID,
-					"Failed to get the peripherals descriptions.", e));
+			throw new CoreException(
+					new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed to get the peripherals descriptions.", e));
 		}
 	}
 

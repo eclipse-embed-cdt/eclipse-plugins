@@ -70,13 +70,11 @@ public class CProjectPacksStorage {
 
 		if (config instanceof Configuration) {
 			fConfig = (Configuration) config;
-			ICConfigurationDescription configDesc = fConfig
-					.getConfigurationDescription();
+			ICConfigurationDescription configDesc = fConfig.getConfigurationDescription();
 			fStorage = configDesc.getStorage(STORAGE_NAME, true);
 		} else {
-			throw new CoreException(new Status(Status.ERROR,
-					Activator.PLUGIN_ID,
-					"ConfigStorage() requires Configuration"));
+			throw new CoreException(
+					new Status(Status.ERROR, Activator.PLUGIN_ID, "ConfigStorage() requires Configuration"));
 		}
 	}
 
@@ -219,8 +217,7 @@ public class CProjectPacksStorage {
 	 *            a string with 1 if the section will be used for startup (to
 	 *            host the vectors table)
 	 */
-	public void setMemory(String section, String start, String size,
-			String startup) {
+	public void setMemory(String section, String start, String size, String startup) {
 
 		ICStorageElement memory = null;
 		for (ICStorageElement child : fStorage.getChildrenByName("memory")) {
@@ -252,8 +249,8 @@ public class CProjectPacksStorage {
 		for (ICStorageElement child : fStorage.getChildrenByName("memory")) {
 
 			String section = child.getAttribute("section");
-			String arr[] = new String[] { section, child.getAttribute("start"),
-					child.getAttribute("size"), child.getAttribute("startup") };
+			String arr[] = new String[] { section, child.getAttribute("start"), child.getAttribute("size"),
+					child.getAttribute("startup") };
 			map.put(section, arr);
 		}
 

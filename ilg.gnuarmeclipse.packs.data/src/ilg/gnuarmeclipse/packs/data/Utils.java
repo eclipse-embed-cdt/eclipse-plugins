@@ -36,11 +36,9 @@ import org.eclipse.ui.console.MessageConsoleStream;
 
 public class Utils {
 
-	public static InputStream checkForUtf8BOM(InputStream inputStream)
-			throws IOException {
+	public static InputStream checkForUtf8BOM(InputStream inputStream) throws IOException {
 
-		PushbackInputStream pushbackInputStream = new PushbackInputStream(
-				new BufferedInputStream(inputStream), 3);
+		PushbackInputStream pushbackInputStream = new PushbackInputStream(new BufferedInputStream(inputStream), 3);
 		byte[] bom = new byte[3];
 		if (pushbackInputStream.read(bom) != -1) {
 			if (!(bom[0] == (byte) 0xEF && bom[1] == (byte) 0xBB && bom[2] == (byte) 0xBF)) {
@@ -59,8 +57,7 @@ public class Utils {
 				break;
 			}
 			if (connection instanceof HttpURLConnection) {
-				int responseCode = ((HttpURLConnection) connection)
-						.getResponseCode();
+				int responseCode = ((HttpURLConnection) connection).getResponseCode();
 				if (responseCode == HttpURLConnection.HTTP_OK) {
 					break;
 				} else {
@@ -72,9 +69,7 @@ public class Utils {
 
 						// System.out.println("Redirect to URL : " + newUrl);
 					} else {
-						throw new IOException(
-								"Failed to open connection, response code "
-										+ responseCode);
+						throw new IOException("Failed to open connection, response code " + responseCode);
 					}
 				}
 			}
@@ -89,8 +84,7 @@ public class Utils {
 		return length;
 	}
 
-	public static boolean copyFileWithShell(final URL sourceUrl,
-			File destinationFile, MessageConsoleStream out,
+	public static boolean copyFileWithShell(final URL sourceUrl, File destinationFile, MessageConsoleStream out,
 			IProgressMonitor monitor, final Shell shell) throws IOException {
 
 		while (true) {
@@ -105,12 +99,9 @@ public class Utils {
 
 					@Override
 					public void run() {
-						String[] buttons = new String[] { "Retry", "Ignore",
-								"Abort" };
-						MessageDialog dialog = new MessageDialog(shell,
-								"Read error", null, sourceUrl.toString() + "\n"
-										+ e.getMessage(), MessageDialog.ERROR,
-								buttons, 0);
+						String[] buttons = new String[] { "Retry", "Ignore", "Abort" };
+						MessageDialog dialog = new MessageDialog(shell, "Read error", null,
+								sourceUrl.toString() + "\n" + e.getMessage(), MessageDialog.ERROR, buttons, 0);
 						retCode = dialog.open();
 					}
 				}
@@ -131,8 +122,7 @@ public class Utils {
 		// HandlerUtil.getActiveShell(event)
 	}
 
-	public static void copyFile(URL sourceUrl, File destinationFile,
-			MessageConsoleStream out, IProgressMonitor monitor)
+	public static void copyFile(URL sourceUrl, File destinationFile, MessageConsoleStream out, IProgressMonitor monitor)
 			throws IOException {
 
 		URL url = sourceUrl;
@@ -143,8 +133,7 @@ public class Utils {
 				break;
 			}
 			if (connection instanceof HttpURLConnection) {
-				int responseCode = ((HttpURLConnection) connection)
-						.getResponseCode();
+				int responseCode = ((HttpURLConnection) connection).getResponseCode();
 				if (responseCode == HttpURLConnection.HTTP_OK) {
 					break;
 				} else {
@@ -156,9 +145,7 @@ public class Utils {
 
 						// System.out.println("Redirect to URL : " + newUrl);
 					} else {
-						throw new IOException(
-								"Failed to open connection, response code "
-										+ responseCode);
+						throw new IOException("Failed to open connection, response code " + responseCode);
 					}
 				}
 			}
@@ -204,9 +191,8 @@ public class Utils {
 		}
 	}
 
-	public static void copyFile(File sourceFile, File destinationFile,
-			MessageConsoleStream out, IProgressMonitor monitor)
-			throws IOException {
+	public static void copyFile(File sourceFile, File destinationFile, MessageConsoleStream out,
+			IProgressMonitor monitor) throws IOException {
 
 		if (out != null) {
 			int size = (int) sourceFile.length();
@@ -294,8 +280,7 @@ public class Utils {
 	public static String reportError(String message) {
 
 		try {
-			IMarker marker = ResourcesPlugin.getWorkspace().getRoot()
-					.createMarker(MARKER_ID);
+			IMarker marker = ResourcesPlugin.getWorkspace().getRoot().createMarker(MARKER_ID);
 			marker.setAttribute(IMarker.MESSAGE, message);
 			marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_ERROR);
 			marker.setAttribute(IMarker.LOCATION, "-");
@@ -309,8 +294,7 @@ public class Utils {
 	public static String reportWarning(String message) {
 
 		try {
-			IMarker marker = ResourcesPlugin.getWorkspace().getRoot()
-					.createMarker(MARKER_ID);
+			IMarker marker = ResourcesPlugin.getWorkspace().getRoot().createMarker(MARKER_ID);
 			marker.setAttribute(IMarker.MESSAGE, message);
 			marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_WARNING);
 			marker.setAttribute(IMarker.LOCATION, "-");
@@ -324,8 +308,7 @@ public class Utils {
 	public static String reportInfo(String message) {
 
 		try {
-			IMarker marker = ResourcesPlugin.getWorkspace().getRoot()
-					.createMarker(MARKER_ID);
+			IMarker marker = ResourcesPlugin.getWorkspace().getRoot().createMarker(MARKER_ID);
 			marker.setAttribute(IMarker.MESSAGE, message);
 			marker.setAttribute(IMarker.SEVERITY, IMarker.SEVERITY_INFO);
 			marker.setAttribute(IMarker.LOCATION, "-");

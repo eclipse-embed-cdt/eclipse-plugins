@@ -22,21 +22,18 @@ import org.eclipse.debug.internal.ui.viewers.model.provisional.IPresentationCont
 import org.eclipse.jface.viewers.TreePath;
 
 @SuppressWarnings("restriction")
-public class PeripheralsVMModelProxyStrategy extends
-		DefaultVMModelProxyStrategy implements ICheckboxModelProxy {
+public class PeripheralsVMModelProxyStrategy extends DefaultVMModelProxyStrategy implements ICheckboxModelProxy {
 
 	@SuppressWarnings("unused")
 	private Object fRootElement;
 
 	// ------------------------------------------------------------------------
 
-	public PeripheralsVMModelProxyStrategy(AbstractVMProvider provider,
-			Object rootElement) {
+	public PeripheralsVMModelProxyStrategy(AbstractVMProvider provider, Object rootElement) {
 		super(provider, rootElement);
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("PeripheralsVMModelProxyStrategy() " + this
-					+ " " + provider + " " + rootElement);
+			System.out.println("PeripheralsVMModelProxyStrategy() " + this + " " + provider + " " + rootElement);
 		}
 
 		fRootElement = rootElement;
@@ -48,20 +45,17 @@ public class PeripheralsVMModelProxyStrategy extends
 	 * This is called when the radio button is checked in the interface.
 	 */
 	@Override
-	public boolean setChecked(IPresentationContext context, Object viewerInput,
-			TreePath path, boolean checked) {
+	public boolean setChecked(IPresentationContext context, Object viewerInput, TreePath path, boolean checked) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("PeripheralsVMModelProxyStrategy.setChecked("
-					+ checked + ")");
+			System.out.println("PeripheralsVMModelProxyStrategy.setChecked(" + checked + ")");
 		}
 
 		Object segment = path.getLastSegment();
 		if ((segment instanceof PeripheralsVMNode.PeripheralsVMContext)) {
 
 			PeripheralsVMNode.PeripheralsVMContext peripheralVMContext = (PeripheralsVMNode.PeripheralsVMContext) segment;
-			PeripheralDMContext peripheralDMContext = (PeripheralDMContext) peripheralVMContext
-					.getDMContext();
+			PeripheralDMContext peripheralDMContext = (PeripheralDMContext) peripheralVMContext.getDMContext();
 			peripheralDMContext.setChecked(checked);
 			peripheralDMContext.displayPeripheralMonitor(context.getWindow());
 			return checked;

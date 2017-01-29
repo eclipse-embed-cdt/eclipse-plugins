@@ -79,14 +79,12 @@ public class DevicesView extends ViewPart implements IDataManagerListener {
 
 			if (Type.VENDOR.equals(type)) {
 				String imageKey = ISharedImages.IMG_OBJ_FOLDER;
-				return PlatformUI.getWorkbench().getSharedImages()
-						.getImage(imageKey);
+				return PlatformUI.getWorkbench().getSharedImages().getImage(imageKey);
 			} else if (Type.FAMILY.equals(type)) {
 				if (node.isBooleanProperty(Property.ENABLED)) {
 					return Activator.getInstance().getImage("hardware_chip");
 				} else {
-					return Activator.getInstance().getImage(
-							"hardware_chip_grey");
+					return Activator.getInstance().getImage("hardware_chip_grey");
 				}
 			} else {
 				return null;
@@ -149,8 +147,7 @@ public class DevicesView extends ViewPart implements IDataManagerListener {
 
 		// System.out.println("DevicesView.createPartControl()");
 
-		fViewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION
-				| SWT.H_SCROLL | SWT.V_SCROLL);
+		fViewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
 
 		ColumnViewerToolTipSupport.enableFor(fViewer);
 
@@ -250,8 +247,8 @@ public class DevicesView extends ViewPart implements IDataManagerListener {
 
 		fRemoveFilters.setText("Remove filters");
 		fRemoveFilters.setToolTipText("Remove all filters based on selections");
-		fRemoveFilters.setImageDescriptor(Activator.imageDescriptorFromPlugin(
-				Activator.PLUGIN_ID, "icons/removeall.png"));
+		fRemoveFilters
+				.setImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/removeall.png"));
 
 		// -----
 		fExpandAll = new Action() {
@@ -263,8 +260,7 @@ public class DevicesView extends ViewPart implements IDataManagerListener {
 
 		fExpandAll.setText("Expand all");
 		fExpandAll.setToolTipText("Expand all children nodes");
-		fExpandAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
-				Activator.PLUGIN_ID, "icons/expandall.png"));
+		fExpandAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/expandall.png"));
 
 		fCollapseAll = new Action() {
 
@@ -275,8 +271,8 @@ public class DevicesView extends ViewPart implements IDataManagerListener {
 
 		fCollapseAll.setText("Collapse all");
 		fCollapseAll.setToolTipText("Collapse all children nodes");
-		fCollapseAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
-				Activator.PLUGIN_ID, "icons/collapseall.png"));
+		fCollapseAll
+				.setImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/collapseall.png"));
 	}
 
 	private void hookDoubleClickAction() {
@@ -397,14 +393,12 @@ public class DevicesView extends ViewPart implements IDataManagerListener {
 
 					int count = 0;
 					try {
-						count = getDevicesRecursive(packsTree, devicesRoot,
-								false);
+						count = getDevicesRecursive(packsTree, devicesRoot, false);
 					} catch (Exception e) {
 						Activator.log(e);
 					}
 					if (devicesRoot.hasChildren()) {
-						fOut.println("Found " + count + " device(s), from "
-								+ devicesRoot.getChildren().size()
+						fOut.println("Found " + count + " device(s), from " + devicesRoot.getChildren().size()
 								+ " vendor(s).");
 					} else {
 						fOut.println("Found none.");
@@ -442,15 +436,13 @@ public class DevicesView extends ViewPart implements IDataManagerListener {
 
 			} else {
 				boolean isVersionInstalled = isInstalled;
-				if (Type.VERSION.equals(type)
-						&& node.isBooleanProperty(Property.INSTALLED)) {
+				if (Type.VERSION.equals(type) && node.isBooleanProperty(Property.INSTALLED)) {
 					isVersionInstalled = true;
 				}
 				for (Leaf child : ((Node) node).getChildren()) {
 
 					// Recurse down
-					count += getDevicesRecursive(child, root,
-							isVersionInstalled);
+					count += getDevicesRecursive(child, root, isVersionInstalled);
 				}
 			}
 		}
@@ -514,8 +506,8 @@ public class DevicesView extends ViewPart implements IDataManagerListener {
 	}
 
 	// Identify outline & external nodes and update devices from inside
-	private void updateDevicesRecursive(Leaf modelNode, Node viewTree,
-			boolean isInstalled, Map<String, Leaf> updatedMap) {
+	private void updateDevicesRecursive(Leaf modelNode, Node viewTree, boolean isInstalled,
+			Map<String, Leaf> updatedMap) {
 
 		String type = modelNode.getType();
 		if (modelNode.hasChildren()) {
@@ -531,30 +523,26 @@ public class DevicesView extends ViewPart implements IDataManagerListener {
 				}
 			} else {
 				boolean isVersionInstalled = isInstalled;
-				if (Type.VERSION.equals(type)
-						&& modelNode.isBooleanProperty(Property.INSTALLED)) {
+				if (Type.VERSION.equals(type) && modelNode.isBooleanProperty(Property.INSTALLED)) {
 					isVersionInstalled = true;
 				}
 				for (Leaf child : ((Node) modelNode).getChildren()) {
 
 					// Recurse down
-					updateDevicesRecursive(child, viewTree, isVersionInstalled,
-							updatedMap);
+					updateDevicesRecursive(child, viewTree, isVersionInstalled, updatedMap);
 				}
 			}
 		}
 	}
 
-	private void updateDevice(Leaf modelFamilyNode, Node viewTree,
-			boolean isInstalled, Map<String, Leaf> updatedList) {
+	private void updateDevice(Leaf modelFamilyNode, Node viewTree, boolean isInstalled, Map<String, Leaf> updatedList) {
 
 		String deviceName = modelFamilyNode.getName();
 		String vendorName = modelFamilyNode.getProperty(Property.VENDOR_NAME);
 		String vendorId = modelFamilyNode.getProperty(Property.VENDOR_ID);
 
 		Node vendorNode = (Node) viewTree.findChild(Type.VENDOR, vendorName);
-		if (vendorNode == null
-				|| !vendorId.equals(vendorNode.getProperty(Property.VENDOR_ID))) {
+		if (vendorNode == null || !vendorId.equals(vendorNode.getProperty(Property.VENDOR_ID))) {
 
 			// Make new vendor node
 			vendorNode = Node.addNewChild(viewTree, Type.VENDOR);

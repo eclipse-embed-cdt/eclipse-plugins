@@ -41,8 +41,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	/**
 	 * The address where the Cortex-M system registers start.
 	 */
-	private static final BigInteger fSystemLimit = new BigInteger("E0000000",
-			16);
+	private static final BigInteger fSystemLimit = new BigInteger("E0000000", 16);
 
 	// ------------------------------------------------------------------------
 
@@ -104,8 +103,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 			}
 		}
 
-		SvdObjectDMNode[] array = list
-				.toArray(new SvdObjectDMNode[list.size()]);
+		SvdObjectDMNode[] array = list.toArray(new SvdObjectDMNode[list.size()]);
 
 		// Preserve apparition order.
 		return array;
@@ -123,8 +121,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	protected Leaf findDerivedFromNode() {
 
 		String derivedFromName = getNode().getPropertyOrNull("derivedFrom");
-		final SvdDerivedFromPath path = SvdDerivedFromPath
-				.createPeripheralPath(derivedFromName);
+		final SvdDerivedFromPath path = SvdDerivedFromPath.createPeripheralPath(derivedFromName);
 
 		if (path == null) {
 			return null;
@@ -243,8 +240,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	public BigInteger getBigAbsoluteAddress() {
 
 		if (fBigAbsoluteAddress == null) {
-			fBigAbsoluteAddress = SvdUtils
-					.parseScaledNonNegativeBigInteger(getBaseAddress());
+			fBigAbsoluteAddress = SvdUtils.parseScaledNonNegativeBigInteger(getBaseAddress());
 		}
 		return fBigAbsoluteAddress;
 	}
@@ -259,8 +255,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	public String getHexAddress() {
 
 		if (fHexAddress == null) {
-			fHexAddress = String.format("0x%08X", getBigAbsoluteAddress()
-					.longValue());
+			fHexAddress = String.format("0x%08X", getBigAbsoluteAddress().longValue());
 		}
 
 		return fHexAddress;
@@ -326,9 +321,8 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	@Override
 	public String toString() {
 
-		return "[" + getClass().getSimpleName() + ": " + getDisplayName()
-				+ ", " + getBaseAddress() + ", " + getBigSizeBytes() + ", "
-				+ getAccess() + ", \"" + getDescription() + "\"]";
+		return "[" + getClass().getSimpleName() + ": " + getDisplayName() + ", " + getBaseAddress() + ", "
+				+ getBigSizeBytes() + ", " + getAccess() + ", \"" + getDescription() + "\"]";
 	}
 
 	// ------------------------------------------------------------------------

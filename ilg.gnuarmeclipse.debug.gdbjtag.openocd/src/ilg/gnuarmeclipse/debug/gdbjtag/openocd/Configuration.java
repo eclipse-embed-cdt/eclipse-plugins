@@ -36,24 +36,20 @@ public class Configuration {
 		String executable = null;
 
 		try {
-			if (!configuration.getAttribute(
-					ConfigurationAttributes.DO_START_GDB_SERVER,
+			if (!configuration.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
 					DefaultPreferences.DO_START_GDB_SERVER_DEFAULT))
 				return null;
 
-			executable = configuration.getAttribute(
-					ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
+			executable = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
 					DefaultPreferences.GDB_SERVER_EXECUTABLE_DEFAULT);
 			// executable = Utils.escapeWhitespaces(executable).trim();
 			executable = executable.trim();
 			if (executable.length() == 0)
 				return null;
 
-			executable = DebugUtils.resolveAll(executable,
-					configuration.getAttributes());
+			executable = DebugUtils.resolveAll(executable, configuration.getAttributes());
 
-			ICConfigurationDescription buildConfig = EclipseUtils
-					.getBuildConfigDescription(configuration);
+			ICConfigurationDescription buildConfig = EclipseUtils.getBuildConfigDescription(configuration);
 			if (buildConfig != null) {
 				executable = DebugUtils.resolveAll(executable, buildConfig);
 			}
@@ -66,21 +62,18 @@ public class Configuration {
 		return executable;
 	}
 
-	public static String getGdbServerCommandLine(
-			ILaunchConfiguration configuration) {
+	public static String getGdbServerCommandLine(ILaunchConfiguration configuration) {
 
 		String cmdLineArray[] = getGdbServerCommandLineArray(configuration);
 		return StringUtils.join(cmdLineArray, " ");
 	}
 
-	public static String[] getGdbServerCommandLineArray(
-			ILaunchConfiguration configuration) {
+	public static String[] getGdbServerCommandLineArray(ILaunchConfiguration configuration) {
 
 		List<String> lst = new ArrayList<String>();
 
 		try {
-			if (!configuration.getAttribute(
-					ConfigurationAttributes.DO_START_GDB_SERVER,
+			if (!configuration.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
 					DefaultPreferences.DO_START_GDB_SERVER_DEFAULT))
 				return null;
 
@@ -92,21 +85,17 @@ public class Configuration {
 
 			lst.add("-c");
 			lst.add("gdb_port "
-					+ Integer.toString(configuration
-							.getAttribute(
-									ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
-									DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
+					+ Integer.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
+							DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
 
 			lst.add("-c");
 			lst.add("telnet_port "
-					+ Integer.toString(configuration
-							.getAttribute(
-									ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
-									DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
+					+ Integer.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
+							DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
 
-			String other = configuration.getAttribute(
-					ConfigurationAttributes.GDB_SERVER_OTHER,
-					DefaultPreferences.GDB_SERVER_OTHER_DEFAULT).trim();
+			String other = configuration
+					.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER, DefaultPreferences.GDB_SERVER_OTHER_DEFAULT)
+					.trim();
 
 			other = DebugUtils.resolveAll(other, configuration.getAttributes());
 
@@ -133,11 +122,11 @@ public class Configuration {
 		return StringUtils.extractNameFromPath(fullCommand);
 	}
 
-	public static String getGdbServerOtherConfig(ILaunchConfiguration config)
-			throws CoreException {
+	public static String getGdbServerOtherConfig(ILaunchConfiguration config) throws CoreException {
 
-		return config.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER,
-				DefaultPreferences.GDB_SERVER_OTHER_DEFAULT).trim();
+		return config
+				.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER, DefaultPreferences.GDB_SERVER_OTHER_DEFAULT)
+				.trim();
 	}
 
 	// ------------------------------------------------------------------------
@@ -146,22 +135,15 @@ public class Configuration {
 
 		String executable = null;
 		try {
-			String defaultGdbCommand = Platform
-					.getPreferencesService()
-					.getString(
-							GdbPlugin.PLUGIN_ID,
-							IGdbDebugPreferenceConstants.PREF_DEFAULT_GDB_COMMAND,
-							IGDBLaunchConfigurationConstants.DEBUGGER_DEBUG_NAME_DEFAULT,
-							null);
+			String defaultGdbCommand = Platform.getPreferencesService().getString(GdbPlugin.PLUGIN_ID,
+					IGdbDebugPreferenceConstants.PREF_DEFAULT_GDB_COMMAND,
+					IGDBLaunchConfigurationConstants.DEBUGGER_DEBUG_NAME_DEFAULT, null);
 
-			executable = configuration.getAttribute(
-					IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
+			executable = configuration.getAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
 					defaultGdbCommand);
-			executable = DebugUtils.resolveAll(executable,
-					configuration.getAttributes());
+			executable = DebugUtils.resolveAll(executable, configuration.getAttributes());
 
-			ICConfigurationDescription buildConfig = EclipseUtils
-					.getBuildConfigDescription(configuration);
+			ICConfigurationDescription buildConfig = EclipseUtils.getBuildConfigDescription(configuration);
 			if (buildConfig != null) {
 				executable = DebugUtils.resolveAll(executable, buildConfig);
 			}
@@ -174,8 +156,7 @@ public class Configuration {
 		return executable;
 	}
 
-	public static String[] getGdbClientCommandLineArray(
-			ILaunchConfiguration configuration) {
+	public static String[] getGdbClientCommandLineArray(ILaunchConfiguration configuration) {
 
 		List<String> lst = new ArrayList<String>();
 
@@ -195,8 +176,7 @@ public class Configuration {
 
 		String other;
 		try {
-			other = configuration.getAttribute(
-					ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
+			other = configuration.getAttribute(ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS,
 					DefaultPreferences.GDB_CLIENT_OTHER_OPTIONS_DEFAULT).trim();
 
 			other = DebugUtils.resolveAll(other, configuration.getAttributes());
@@ -211,8 +191,7 @@ public class Configuration {
 		return lst.toArray(new String[0]);
 	}
 
-	public static String getGdbClientCommandLine(
-			ILaunchConfiguration configuration) {
+	public static String getGdbClientCommandLine(ILaunchConfiguration configuration) {
 
 		String cmdLineArray[] = getGdbClientCommandLineArray(configuration);
 		return StringUtils.join(cmdLineArray, " ");
@@ -226,21 +205,17 @@ public class Configuration {
 
 	// ------------------------------------------------------------------------
 
-	public static boolean getDoStartGdbServer(ILaunchConfiguration config)
-			throws CoreException {
+	public static boolean getDoStartGdbServer(ILaunchConfiguration config) throws CoreException {
 
 		return config.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
 				DefaultPreferences.DO_START_GDB_SERVER_DEFAULT);
 	}
 
-	public static boolean getDoAddServerConsole(ILaunchConfiguration config)
-			throws CoreException {
+	public static boolean getDoAddServerConsole(ILaunchConfiguration config) throws CoreException {
 
 		return getDoStartGdbServer(config)
-				&& config
-						.getAttribute(
-								ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
-								DefaultPreferences.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
+				&& config.getAttribute(ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
+						DefaultPreferences.DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------

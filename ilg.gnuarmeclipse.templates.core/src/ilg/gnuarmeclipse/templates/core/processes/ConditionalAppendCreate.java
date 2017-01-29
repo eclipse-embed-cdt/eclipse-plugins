@@ -40,12 +40,10 @@ import org.eclipse.core.runtime.IStatus;
 public class ConditionalAppendCreate extends ProcessRunner {
 	@SuppressWarnings("deprecation")
 	@Override
-	public void process(TemplateCore template, ProcessArgument[] args,
-			String processId, IProgressMonitor monitor)
+	public void process(TemplateCore template, ProcessArgument[] args, String processId, IProgressMonitor monitor)
 			throws ProcessFailureException {
 		String projectName = args[0].getSimpleValue();
-		IProject projectHandle = ResourcesPlugin.getWorkspace().getRoot()
-				.getProject(projectName);
+		IProject projectHandle = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 
 		String condition = args[1].getSimpleValue();
 		if (!Utils.isConditionSatisfied(condition))
@@ -62,49 +60,38 @@ public class ConditionalAppendCreate extends ProcessRunner {
 			try {
 				File f = new File(fileSourcePath);
 				if (f.isAbsolute()) {
-					sourceURL = f.toURL(); // using .toURI().toURL() fails, due to spaces substitution
+					sourceURL = f.toURL(); // using .toURI().toURL() fails, due
+											// to spaces substitution
 				} else {
-				sourceURL = TemplateEngineHelper
-						.getTemplateResourceURLRelativeToTemplate(template,
-								fileSourcePath);
-				if (sourceURL == null) {
-					throw new ProcessFailureException(
-							getProcessMessage(
-									processId,
-									IStatus.ERROR,
-									Messages.getString("AppendCreate.1") + fileSourcePath)); //$NON-NLS-1$
-				}
+					sourceURL = TemplateEngineHelper.getTemplateResourceURLRelativeToTemplate(template, fileSourcePath);
+					if (sourceURL == null) {
+						throw new ProcessFailureException(getProcessMessage(processId, IStatus.ERROR,
+								Messages.getString("AppendCreate.1") + fileSourcePath)); //$NON-NLS-1$
+					}
 				}
 			} catch (MalformedURLException e2) {
-				throw new ProcessFailureException(
-						Messages.getString("AppendCreate.2") + fileSourcePath); //$NON-NLS-1$
+				throw new ProcessFailureException(Messages.getString("AppendCreate.2") + fileSourcePath); //$NON-NLS-1$
 			} catch (IOException e1) {
-				throw new ProcessFailureException(
-						Messages.getString("AppendCreate.2") + fileSourcePath); //$NON-NLS-1$
+				throw new ProcessFailureException(Messages.getString("AppendCreate.2") + fileSourcePath); //$NON-NLS-1$
 			}
 			String fileContents;
 			try {
 				fileContents = ProcessHelper.readFromFile(sourceURL);
 			} catch (IOException e1) {
-				throw new ProcessFailureException(
-						Messages.getString("AppendCreate.3") + fileSourcePath); //$NON-NLS-1$
+				throw new ProcessFailureException(Messages.getString("AppendCreate.3") + fileSourcePath); //$NON-NLS-1$
 			}
 			if (replaceable) {
-				fileContents = ProcessHelper.getValueAfterExpandingMacros(
-						fileContents,
-						ProcessHelper.getReplaceKeys(fileContents),
-						template.getValueStore());
+				fileContents = ProcessHelper.getValueAfterExpandingMacros(fileContents,
+						ProcessHelper.getReplaceKeys(fileContents), template.getValueStore());
 			}
 			try {
 				// Check whether the file exists
 				IFile iFile = projectHandle.getFile(fileTargetPath);
 				if (!iFile.getParent().exists()) {
-					ProcessHelper.mkdirs(projectHandle, projectHandle
-							.getFolder(iFile.getParent()
-									.getProjectRelativePath()));
+					ProcessHelper.mkdirs(projectHandle,
+							projectHandle.getFolder(iFile.getParent().getProjectRelativePath()));
 				}
-				InputStream contents = new ByteArrayInputStream(
-						fileContents.getBytes());
+				InputStream contents = new ByteArrayInputStream(fileContents.getBytes());
 				if (!iFile.exists()) {
 					// Create the file
 					iFile.create(contents, true, null);
@@ -118,8 +105,7 @@ public class ConditionalAppendCreate extends ProcessRunner {
 				projectHandle.refreshLocal(IResource.DEPTH_INFINITE, null);
 
 			} catch (CoreException e) {
-				throw new ProcessFailureException(
-						Messages.getString("AppendCreate.4"), e); //$NON-NLS-1$
+				throw new ProcessFailureException(Messages.getString("AppendCreate.4"), e); //$NON-NLS-1$
 			}
 		}
 	}

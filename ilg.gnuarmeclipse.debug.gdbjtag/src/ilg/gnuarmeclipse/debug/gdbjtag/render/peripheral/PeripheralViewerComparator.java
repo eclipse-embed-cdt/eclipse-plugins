@@ -72,16 +72,13 @@ public class PeripheralViewerComparator extends ViewerComparator {
 			}
 			break;
 		case 1:
-			if (e1 instanceof PeripheralRegisterFieldVMNode
-					&& e2 instanceof PeripheralRegisterFieldVMNode) {
+			if (e1 instanceof PeripheralRegisterFieldVMNode && e2 instanceof PeripheralRegisterFieldVMNode) {
 				// For bit fields, compare the start bit offset
-				comparison = ((PeripheralRegisterFieldVMNode) e1)
-						.getOffsetBits()
+				comparison = ((PeripheralRegisterFieldVMNode) e1).getOffsetBits()
 						- ((PeripheralRegisterFieldVMNode) e2).getOffsetBits();
 			} else {
 				// For all others, compare hex address, as strings
-				comparison = p1.getDisplayAddress().compareTo(
-						p2.getDisplayAddress());
+				comparison = p1.getDisplayAddress().compareTo(p2.getDisplayAddress());
 			}
 			break;
 		default:

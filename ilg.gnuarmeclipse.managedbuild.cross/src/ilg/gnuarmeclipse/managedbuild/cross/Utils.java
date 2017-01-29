@@ -29,8 +29,7 @@ public class Utils {
 
 	public static String BUILD_ARTEFACT_TYPE = "org.eclipse.cdt.build.core.buildArtefactType";
 	public static String BUILD_ARTEFACT_TYPE_EXE = BUILD_ARTEFACT_TYPE + ".exe";
-	public static String BUILD_ARTEFACT_TYPE_STATICLIB = BUILD_ARTEFACT_TYPE
-			+ ".staticLib";
+	public static String BUILD_ARTEFACT_TYPE_STATICLIB = BUILD_ARTEFACT_TYPE + ".staticLib";
 
 	/**
 	 * Extracts a resource info from a build object. If no resource info can be
@@ -65,8 +64,7 @@ public class Utils {
 		return null;
 	}
 
-	public static IOption setOptionForced(IConfiguration config,
-			IToolChain toolchain, IOption option, String value)
+	public static IOption setOptionForced(IConfiguration config, IToolChain toolchain, IOption option, String value)
 			throws BuildException {
 
 		// System.out.println("setOptionForced(" + config.getName() + ", "
@@ -81,8 +79,8 @@ public class Utils {
 		return config.setOption(toolchain, newOption, value);
 	}
 
-	public static IOption forceOptionRewrite(IConfiguration config,
-			IToolChain toolchain, IOption option) throws BuildException {
+	public static IOption forceOptionRewrite(IConfiguration config, IToolChain toolchain, IOption option)
+			throws BuildException {
 
 		String value = option.getStringValue();
 		// System.out.println("setOptionForced(" + config.getName() + ", "

@@ -16,14 +16,12 @@ import org.eclipse.cdt.managedbuilder.core.IHoldsOptions;
 import org.eclipse.cdt.managedbuilder.core.IManagedOptionValueHandler;
 import org.eclipse.cdt.managedbuilder.core.IOption;
 
-public class ClearProviderManagedOptionValueHandler implements
-		IManagedOptionValueHandler {
+public class ClearProviderManagedOptionValueHandler implements IManagedOptionValueHandler {
 
 	// ------------------------------------------------------------------------
 
 	@Override
-	public boolean handleValue(IBuildObject configuration,
-			IHoldsOptions holder, IOption option, String extraArgument,
+	public boolean handleValue(IBuildObject configuration, IHoldsOptions holder, IOption option, String extraArgument,
 			int event) {
 
 		// ManagedOptionValueHandlerDebug.dump(configuration, holder, option,
@@ -41,17 +39,16 @@ public class ClearProviderManagedOptionValueHandler implements
 	}
 
 	@Override
-	public boolean isDefaultValue(IBuildObject configuration,
-			IHoldsOptions holder, IOption option, String extraArgument) {
+	public boolean isDefaultValue(IBuildObject configuration, IHoldsOptions holder, IOption option,
+			String extraArgument) {
 
 		// no explicit default values
 		return false;
 	}
 
 	@Override
-	public boolean isEnumValueAppropriate(IBuildObject configuration,
-			IHoldsOptions holder, IOption option, String extraArgument,
-			String enumValue) {
+	public boolean isEnumValueAppropriate(IBuildObject configuration, IHoldsOptions holder, IOption option,
+			String extraArgument, String enumValue) {
 
 		// no enum values
 		return false;

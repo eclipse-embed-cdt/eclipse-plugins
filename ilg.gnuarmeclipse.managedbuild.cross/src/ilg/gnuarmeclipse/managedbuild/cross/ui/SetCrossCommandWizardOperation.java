@@ -39,21 +39,17 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 
 	// ------------------------------------------------------------------------
 
-	public void run(IProgressMonitor monitor) throws InvocationTargetException,
-			InterruptedException {
+	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 
 		// System.out.println("SetCrossCommandOperation.run() begin");
 
 		// get local properties
-		String projectName = (String) MBSCustomPageManager.getPageProperty(
-				SetCrossCommandWizardPage.PAGE_ID,
+		String projectName = (String) MBSCustomPageManager.getPageProperty(SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_PROJECT_NAME);
 
-		String toolchainName = (String) MBSCustomPageManager.getPageProperty(
-				SetCrossCommandWizardPage.PAGE_ID,
+		String toolchainName = (String) MBSCustomPageManager.getPageProperty(SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_NAME);
-		String path = (String) MBSCustomPageManager.getPageProperty(
-				SetCrossCommandWizardPage.PAGE_ID,
+		String path = (String) MBSCustomPageManager.getPageProperty(SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_PATH);
 
 		// Store persistent values in Eclipse scope
@@ -61,8 +57,7 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 		PersistentPreferences.putToolchainName(toolchainName);
 		PersistentPreferences.flush();
 
-		IProject project = ResourcesPlugin.getWorkspace().getRoot()
-				.getProject(projectName);
+		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		if (!project.exists())
 			return;
 
@@ -70,8 +65,7 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 		if (buildInfo == null)
 			return;
 
-		IConfiguration[] configs = buildInfo.getManagedProject()
-				.getConfigurations();
+		IConfiguration[] configs = buildInfo.getManagedProject().getConfigurations();
 		for (IConfiguration config : configs) {
 
 			try {
@@ -85,9 +79,7 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 
 		if (true) {
 			for (IConfiguration config : configs) {
-				ScannerConfigBuilder.build(config,
-						ScannerConfigBuilder.PERFORM_CORE_UPDATE,
-						new NullProgressMonitor());
+				ScannerConfigBuilder.build(config, ScannerConfigBuilder.PERFORM_CORE_UPDATE, new NullProgressMonitor());
 			}
 		}
 
@@ -97,14 +89,12 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 
 	private void updateOptions(IConfiguration config) throws BuildException {
 
-		String sToolchainName = (String) MBSCustomPageManager.getPageProperty(
-				SetCrossCommandWizardPage.PAGE_ID,
+		String sToolchainName = (String) MBSCustomPageManager.getPageProperty(SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_NAME);
 
 		int toolchainIndex;
 		try {
-			toolchainIndex = ToolchainDefinition
-					.findToolchainByName(sToolchainName);
+			toolchainIndex = ToolchainDefinition.findToolchainByName(sToolchainName);
 		} catch (IndexOutOfBoundsException e) {
 			toolchainIndex = ToolchainDefinition.getDefault();
 		}

@@ -68,8 +68,8 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 
 @SuppressWarnings("restriction")
-public class PeripheralsVMNode extends AbstractDMVMNode implements
-		IElementLabelProvider, IElementPropertiesProvider, IElementEditor {
+public class PeripheralsVMNode extends AbstractDMVMNode
+		implements IElementLabelProvider, IElementPropertiesProvider, IElementEditor {
 
 	// ------------------------------------------------------------------------
 	// This node uses properties to store content, and these are the names.
@@ -123,8 +123,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 	}
 
 	@Override
-	public void buildDelta(Object event, VMDelta parent, int nodeOffset,
-			RequestMonitor requestMonitor) {
+	public void buildDelta(Object event, VMDelta parent, int nodeOffset, RequestMonitor requestMonitor) {
 
 		if ((event instanceof IRunControl.ISuspendedDMEvent)) {
 			parent.setFlags(parent.getFlags() | IModelDelta.CONTENT);
@@ -133,15 +132,13 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 	}
 
 	@Override
-	public CellEditor getCellEditor(IPresentationContext context,
-			String columnId, Object element, Composite parent) {
+	public CellEditor getCellEditor(IPresentationContext context, String columnId, Object element, Composite parent) {
 
 		return null; // No cell editor.
 	}
 
 	@Override
-	public ICellModifier getCellModifier(IPresentationContext context,
-			Object element) {
+	public ICellModifier getCellModifier(IPresentationContext context, Object element) {
 
 		return null; // No cell modifier.
 	}
@@ -150,8 +147,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 	public void update(final IPropertiesUpdate[] updates) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("PeripheralsVMNode.update() properties " + this
-					+ ", " + updates.length + " objs");
+			System.out.println("PeripheralsVMNode.update() properties " + this + ", " + updates.length + " objs");
 		}
 
 		try {
@@ -171,20 +167,17 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 	public void update(ILabelUpdate[] updates) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("PeripheralsVMNode.update() labels " + this
-					+ ", " + updates.length + " objs");
+			System.out.println("PeripheralsVMNode.update() labels " + this + ", " + updates.length + " objs");
 		}
 
 		{
 			for (int i = 0; i < updates.length; i++) {
 
 				ILabelUpdate update = updates[i];
-				IPresentationContext presentationContext = update
-						.getPresentationContext();
+				IPresentationContext presentationContext = update.getPresentationContext();
 				TreePath path = update.getElementPath();
 				if (((update instanceof ICheckUpdate))
-						&& (Boolean.TRUE.equals(presentationContext
-								.getProperty("org.eclipse.debug.ui.check"))))
+						&& (Boolean.TRUE.equals(presentationContext.getProperty("org.eclipse.debug.ui.check"))))
 					try {
 						boolean checked = getChecked(path, presentationContext);
 						boolean grayed = getGrayed(path, presentationContext);
@@ -218,19 +211,15 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 	protected void updateElementsInSessionThread(final IChildrenUpdate update) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out
-					.println("PeripheralsVMNode.updateElementsInSessionThread() "
-							+ this + " " + update);
+			System.out.println("PeripheralsVMNode.updateElementsInSessionThread() " + this + " " + update);
 		}
 
 		DsfServicesTracker tracker = getServicesTracker();
-		IPeripheralsService peripheralsService = (IPeripheralsService) tracker
-				.getService(IPeripheralsService.class);
+		IPeripheralsService peripheralsService = (IPeripheralsService) tracker.getService(IPeripheralsService.class);
 		// System.out.println("got service " + peripheralsService);
 
 		final IRunControl.IContainerDMContext containerDMContext = (IRunControl.IContainerDMContext) findDmcInPath(
-				update.getViewerInput(), update.getElementPath(),
-				IRunControl.IContainerDMContext.class);
+				update.getViewerInput(), update.getElementPath(), IRunControl.IContainerDMContext.class);
 
 		if ((peripheralsService == null) || (containerDMContext == null)) {
 			// Leave the view empty. This also happens after closing the
@@ -242,8 +231,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 		if (fPeripherals != null) {
 			// On subsequent calls, use cached values.
 			if (Activator.getInstance().isDebugging()) {
-				System.out
-						.println("PeripheralsVMNode.updateElementsInSessionThread() use cached values");
+				System.out.println("PeripheralsVMNode.updateElementsInSessionThread() use cached values");
 			}
 			fillUpdateWithVMCs(update, fPeripherals);
 			update.done();
@@ -256,8 +244,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 
 		// Get peripherals only on first call.
 		peripheralsService.getPeripherals(containerDMContext,
-				new ViewerDataRequestMonitor<IPeripheralDMContext[]>(executor,
-						update) {
+				new ViewerDataRequestMonitor<IPeripheralDMContext[]>(executor, update) {
 
 					public void handleCompleted() {
 
@@ -269,8 +256,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 
 							update.done();
 						} else {
-							EclipseUtils.showStatusErrorMessage(getStatus()
-									.getMessage());
+							EclipseUtils.showStatusErrorMessage(getStatus().getMessage());
 							handleFailedUpdate(update);
 						}
 					}
@@ -282,8 +268,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 	 * 
 	 * @param containerDMContext
 	 */
-	private void addPersistentPeripherals(
-			final IRunControl.IContainerDMContext containerDMContext) {
+	private void addPersistentPeripherals(final IRunControl.IContainerDMContext containerDMContext) {
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("PeripheralsVMNode.addPersistentPeripherals()");
@@ -291,12 +276,9 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 
 		final List<String> persistentPeripherals = new ArrayList<String>();
 
-		Object object = containerDMContext
-				.getAdapter(PeripheralMemoryBlockRetrieval.class);
+		Object object = containerDMContext.getAdapter(PeripheralMemoryBlockRetrieval.class);
 		if (object instanceof PeripheralMemoryBlockRetrieval) {
-			persistentPeripherals
-					.addAll(((PeripheralMemoryBlockRetrieval) object)
-							.getPersistentPeripherals());
+			persistentPeripherals.addAll(((PeripheralMemoryBlockRetrieval) object).getPersistentPeripherals());
 		}
 
 		if (persistentPeripherals.isEmpty()) {
@@ -309,8 +291,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 			@Override
 			public void run() {
 
-				IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench()
-						.getActiveWorkbenchWindow();
+				IWorkbenchWindow workbenchWindow = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
 				IMemoryBlockRetrieval retrieval = (IMemoryBlockRetrieval) containerDMContext
 						.getAdapter(PeripheralMemoryBlockRetrieval.class);
 
@@ -319,19 +300,16 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 						PeripheralDMContext peripheralDMContext = (PeripheralDMContext) fPeripherals[i];
 						if (peripheralName.equals(peripheralDMContext.getName())) {
 							if (Activator.getInstance().isDebugging()) {
-								System.out.println(fPeripherals[i]
-										+ " must be rendered");
+								System.out.println(fPeripherals[i] + " must be rendered");
 							}
 
-							MemoryBlockMonitor.getInstance().addMemoryBlock(
-									workbenchWindow, peripheralDMContext,
+							MemoryBlockMonitor.getInstance().addMemoryBlock(workbenchWindow, peripheralDMContext,
 									retrieval);
 						}
 					}
 				}
 
-				MemoryBlockMonitor.getInstance()
-						.showMemoryView(workbenchWindow);
+				MemoryBlockMonitor.getInstance().showMemoryView(workbenchWindow);
 			}
 		});
 
@@ -341,16 +319,14 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 	protected void updatePropertiesInSessionThread(IPropertiesUpdate[] updates) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out
-					.println("PeripheralsVMNode.updatePropertiesInSessionThread() "
-							+ this + ", " + updates.length + " objs");
+			System.out.println(
+					"PeripheralsVMNode.updatePropertiesInSessionThread() " + this + ", " + updates.length + " objs");
 		}
 
 		for (final IPropertiesUpdate update : updates) {
 
-			IPeripheralDMContext peripheralDMContext = (IPeripheralDMContext) findDmcInPath(
-					update.getViewerInput(), update.getElementPath(),
-					IPeripheralDMContext.class);
+			IPeripheralDMContext peripheralDMContext = (IPeripheralDMContext) findDmcInPath(update.getViewerInput(),
+					update.getElementPath(), IPeripheralDMContext.class);
 
 			if (peripheralDMContext == null) {
 				handleFailedUpdate(update);
@@ -382,17 +358,15 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 		LabelImage labelImage = new LabelImage() {
 
 			@Override
-			public void updateAttribute(ILabelUpdate update, int columnIndex,
-					IStatus status, Map<String, Object> properties) {
+			public void updateAttribute(ILabelUpdate update, int columnIndex, IStatus status,
+					Map<String, Object> properties) {
 
 				ImageDescriptor descriptor = null;
 				Boolean isSystem = (Boolean) properties.get(PROPERTY_ISSYSTEM);
 				if (isSystem != null && isSystem.booleanValue()) {
-					descriptor = Activator.getInstance().getImageDescriptor(
-							"system_peripheral");
+					descriptor = Activator.getInstance().getImageDescriptor("system_peripheral");
 				} else {
-					descriptor = Activator.getInstance().getImageDescriptor(
-							"peripheral");
+					descriptor = Activator.getInstance().getImageDescriptor("peripheral");
 				}
 
 				if (descriptor != null) {
@@ -405,32 +379,23 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 		// it needs to be referred somewhere to be available for tests in the
 		// above updateAttribute().
 		labelAttributes = new LabelAttribute[] {
-				new LabelText("{0}", new String[] { PROPERTY_NAME,
-						PROPERTY_ISSYSTEM }), labelImage };
+				new LabelText("{0}", new String[] { PROPERTY_NAME, PROPERTY_ISSYSTEM }), labelImage };
 		labelColumnInfo = new LabelColumnInfo(labelAttributes);
 
 		// Define content for "Peripheral" column
-		labelProvider.setColumnInfo(
-				PeripheralsColumnPresentation.COLUMN_PERIPHERAL_ID,
-				labelColumnInfo);
+		labelProvider.setColumnInfo(PeripheralsColumnPresentation.COLUMN_PERIPHERAL_ID, labelColumnInfo);
 
-		labelAttributes = new LabelAttribute[] { new LabelText("{0}",
-				new String[] { PROPERTY_ADDRESS }) };
+		labelAttributes = new LabelAttribute[] { new LabelText("{0}", new String[] { PROPERTY_ADDRESS }) };
 		labelColumnInfo = new LabelColumnInfo(labelAttributes);
 
 		// Define content for "Address" column
-		labelProvider.setColumnInfo(
-				PeripheralsColumnPresentation.COLUMN_ADDRESS_ID,
-				labelColumnInfo);
+		labelProvider.setColumnInfo(PeripheralsColumnPresentation.COLUMN_ADDRESS_ID, labelColumnInfo);
 
-		labelAttributes = new LabelAttribute[] { new LabelText("{0}",
-				new String[] { PROPERTY_DESCRIPTION }) };
+		labelAttributes = new LabelAttribute[] { new LabelText("{0}", new String[] { PROPERTY_DESCRIPTION }) };
 		labelColumnInfo = new LabelColumnInfo(labelAttributes);
 
 		// Define content for "Description" column
-		labelProvider.setColumnInfo(
-				PeripheralsColumnPresentation.COLUMN_DESCRIPTION_ID,
-				labelColumnInfo);
+		labelProvider.setColumnInfo(PeripheralsColumnPresentation.COLUMN_DESCRIPTION_ID, labelColumnInfo);
 
 		return labelProvider;
 	}
@@ -445,8 +410,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 	 * @param context
 	 *            the data model context.
 	 */
-	protected void setProperties(IPropertiesUpdate update,
-			IPeripheralDMContext context) {
+	protected void setProperties(IPropertiesUpdate update, IPeripheralDMContext context) {
 
 		assert (context != null);
 
@@ -468,14 +432,12 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 	 * @return true if the peripheral should be checked.
 	 * @throws CoreException
 	 */
-	protected boolean getChecked(TreePath treePath,
-			IPresentationContext presentationContext) throws CoreException {
+	protected boolean getChecked(TreePath treePath, IPresentationContext presentationContext) throws CoreException {
 
 		Object pathSegment = treePath.getLastSegment();
 		if ((pathSegment instanceof PeripheralsVMContext)) {
 			PeripheralsVMContext peripheralVMContext = (PeripheralsVMContext) pathSegment;
-			PeripheralDMContext peripheralDMContext = (PeripheralDMContext) peripheralVMContext
-					.getDMContext();
+			PeripheralDMContext peripheralDMContext = (PeripheralDMContext) peripheralVMContext.getDMContext();
 
 			// System.out.println("PeripheralsVMNode.getChecked()="
 			// + peripheralDMContext.hasMemoryMonitor() + " "
@@ -485,8 +447,7 @@ public class PeripheralsVMNode extends AbstractDMVMNode implements
 		return false;
 	}
 
-	protected boolean getGrayed(TreePath treePath,
-			IPresentationContext presentationContext) throws CoreException {
+	protected boolean getGrayed(TreePath treePath, IPresentationContext presentationContext) throws CoreException {
 		return false;
 	}
 

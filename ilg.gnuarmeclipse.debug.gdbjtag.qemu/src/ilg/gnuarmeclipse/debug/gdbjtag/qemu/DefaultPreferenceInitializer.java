@@ -51,8 +51,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 	public void initializeDefaultPreferences() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out
-					.println("DefaultPreferenceInitializer.initializeDefaultPreferences()");
+			System.out.println("DefaultPreferenceInitializer.initializeDefaultPreferences()");
 		}
 
 		// When the 'ilg.gnuarmeclipse.managedbuild.cross' node is completely
@@ -60,11 +59,9 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		// This is the moment when all final default values are in, possibly
 		// set by product or command line.
 
-		Preferences prefs = Platform.getPreferencesService().getRootNode()
-				.node(DefaultScope.SCOPE);
+		Preferences prefs = Platform.getPreferencesService().getRootNode().node(DefaultScope.SCOPE);
 		if (prefs instanceof IEclipsePreferences) {
-			((IEclipsePreferences) prefs)
-					.addNodeChangeListener(new LateInitializer());
+			((IEclipsePreferences) prefs).addNodeChangeListener(new LateInitializer());
 		}
 	}
 
@@ -77,8 +74,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void added(NodeChangeEvent event) {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("LateInitializer.added() " + event + " "
-						+ event.getChild().name());
+				System.out.println("LateInitializer.added() " + event + " " + event.getChild().name());
 			}
 
 			if (Activator.PLUGIN_ID.equals(event.getChild().name())) {
@@ -86,8 +82,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				finalizeInitializationsDefaultPreferences();
 
 				// We're done, de-register listener.
-				((IEclipsePreferences) (event.getSource()))
-						.removeNodeChangeListener(this);
+				((IEclipsePreferences) (event.getSource())).removeNodeChangeListener(this);
 			}
 		}
 
@@ -105,8 +100,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void finalizeInitializationsDefaultPreferences() {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out
-						.println("LateInitializer.finalizeInitializationsDefaultPreferences()");
+				System.out.println("LateInitializer.finalizeInitializationsDefaultPreferences()");
 			}
 
 			// QEMU executable name
@@ -120,8 +114,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 			}
 
 			// If the search path is known, discover toolchain.
-			String executableName = EclipseUtils
-					.getVariableValue(VariableInitializer.VARIABLE_QEMU_EXECUTABLE);
+			String executableName = EclipseUtils.getVariableValue(VariableInitializer.VARIABLE_QEMU_EXECUTABLE);
 			if (executableName == null || executableName.isEmpty()) {
 				executableName = DefaultPreferences.getExecutableName();
 			}
@@ -159,19 +152,16 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 			if (folder.isEmpty()) {
 
 				// If the search path is known, discover toolchain.
-				folder = Discoverer.getRegistryInstallFolder(executableName,
-						"bin", REG_SUBKEY, REG_NAME);
+				folder = Discoverer.getRegistryInstallFolder(executableName, "bin", REG_SUBKEY, REG_NAME);
 
 				// Search the non standard key too.
 				if (folder == null) {
-					folder = Discoverer.getRegistryInstallFolder(
-							executableName, "bin", REG_SUBKEY,
+					folder = Discoverer.getRegistryInstallFolder(executableName, "bin", REG_SUBKEY,
 							REG_NAME_DEPRECATED);
 				}
 
 				if (folder == null) {
-					folder = Discoverer.searchInstallFolder(executableName,
-							searchPath, "bin");
+					folder = Discoverer.searchInstallFolder(executableName, searchPath, "bin");
 				}
 			}
 

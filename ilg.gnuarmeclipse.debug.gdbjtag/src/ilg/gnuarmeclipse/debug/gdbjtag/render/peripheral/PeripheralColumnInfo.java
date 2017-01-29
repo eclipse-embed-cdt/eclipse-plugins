@@ -33,8 +33,7 @@ public class PeripheralColumnInfo {
 		this(header, weight, type, false);
 	}
 
-	public PeripheralColumnInfo(String header, int weight, ColumnType type,
-			boolean sortable) {
+	public PeripheralColumnInfo(String header, int weight, ColumnType type, boolean sortable) {
 
 		this.header = header;
 		this.weight = weight;

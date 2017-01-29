@@ -14,8 +14,7 @@ package ilg.gnuarmeclipse.managedbuild.cross.xpi;
 import ilg.gnuarmeclipse.debug.core.data.ICProjectExtraDataManager;
 import ilg.gnuarmeclipse.debug.core.data.ICProjectExtraDataManagerFactory;
 
-public class CProjectExtraDataManagerFactory implements
-		ICProjectExtraDataManagerFactory {
+public class CProjectExtraDataManagerFactory implements ICProjectExtraDataManagerFactory {
 
 	// ------------------------------------------------------------------------
 

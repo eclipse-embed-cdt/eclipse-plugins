@@ -28,8 +28,7 @@ public class PeripheralPath {
 		String[] nameSegments = namePath.getSegments();
 		fSegments = new String[parentSegments.length + nameSegments.length];
 		System.arraycopy(parentSegments, 0, fSegments, 0, parentSegments.length);
-		System.arraycopy(nameSegments, 0, fSegments, parentSegments.length,
-				nameSegments.length);
+		System.arraycopy(nameSegments, 0, fSegments, parentSegments.length, nameSegments.length);
 	}
 
 	public PeripheralPath(String name) {

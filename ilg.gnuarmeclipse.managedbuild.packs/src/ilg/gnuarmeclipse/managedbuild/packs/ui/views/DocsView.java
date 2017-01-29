@@ -81,8 +81,7 @@ import org.eclipse.ui.navigator.resources.ProjectExplorer;
 import org.eclipse.ui.part.ViewPart;
 
 @SuppressWarnings("restriction")
-public class DocsView extends ViewPart implements IDataManagerListener,
-		IPropertyChangeListener {
+public class DocsView extends ViewPart implements IDataManagerListener, IPropertyChangeListener {
 
 	/**
 	 * The ID of the view as specified by the extension.
@@ -112,8 +111,7 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 
 			if (Type.FOLDER.equals(type)) {
 				String imageKey = ISharedImages.IMG_OBJ_FOLDER;
-				return PlatformUI.getWorkbench().getSharedImages()
-						.getImage(imageKey);
+				return PlatformUI.getWorkbench().getSharedImages().getImage(imageKey);
 			} else if (Type.BOOK.equals(type)) {
 				return IconUtils.getBookIcon(node);
 			} else {
@@ -194,8 +192,7 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 
 		// System.out.println("DocsView.createPartControl()");
 
-		fViewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION
-				| SWT.H_SCROLL | SWT.V_SCROLL);
+		fViewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
 
 		ColumnViewerToolTipSupport.enableFor(fViewer);
 
@@ -213,8 +210,7 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 
 		fViewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);
 
-		fLatestSelectedConfig = getConfigurationForProject(EclipseUtils
-				.getSelectedProject());
+		fLatestSelectedConfig = getConfigurationForProject(EclipseUtils.getSelectedProject());
 		setInputForConfig(fLatestSelectedConfig, true);
 
 		addProviders();
@@ -236,8 +232,7 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 		fDataManager.removeListener(this);
 
 		if (fPostSelectionListener != null) {
-			getSite().getPage().removePostSelectionListener(
-					fPostSelectionListener);
+			getSite().getPage().removePostSelectionListener(fPostSelectionListener);
 		}
 
 		if (fPartListener != null) {
@@ -271,8 +266,7 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 		if (source instanceof IProject) {
 			// fViewer.setInput(getDocsTree());
 			if (EclipseUtils.getSelectedProject() == (IProject) source) {
-				fLatestSelectedConfig = getConfigurationForProject(EclipseUtils
-						.getSelectedProject());
+				fLatestSelectedConfig = getConfigurationForProject(EclipseUtils.getSelectedProject());
 				setInputForConfig(fLatestSelectedConfig, false);
 			}
 		}
@@ -286,11 +280,9 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 		fPostSelectionListener = new ISelectionListener() {
 
 			@Override
-			public void selectionChanged(IWorkbenchPart part,
-					ISelection selection) {
+			public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 
-				if ((!selection.isEmpty())
-						&& selection instanceof IStructuredSelection) {
+				if ((!selection.isEmpty()) && selection instanceof IStructuredSelection) {
 
 					if (part instanceof ProjectExplorer) {
 
@@ -304,11 +296,9 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 							if (firstSel instanceof IProject) {
 								project = (IProject) firstSel;
 							} else if (firstSel instanceof IncludeRefContainer) {
-								project = ((IncludeRefContainer) firstSel)
-										.getCProject().getProject();
+								project = ((IncludeRefContainer) firstSel).getCProject().getProject();
 							} else if (firstSel instanceof CElement) {
-								project = ((CElement) firstSel).getCProject()
-										.getProject();
+								project = ((CElement) firstSel).getCProject().getProject();
 							} else if (firstSel instanceof File) {
 								project = ((File) firstSel).getProject();
 							} else if (firstSel instanceof Folder) {
@@ -378,10 +368,8 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 		IConfiguration newConfig = null;
 		try {
 
-			if (project != null
-					&& project.hasNature("org.eclipse.cdt.core.cnature")) {
-				IManagedBuildInfo info = ManagedBuildManager
-						.getBuildInfo(project);
+			if (project != null && project.hasNature("org.eclipse.cdt.core.cnature")) {
+				IManagedBuildInfo info = ManagedBuildManager.getBuildInfo(project);
 				IConfiguration config = info.getDefaultConfiguration();
 
 				IToolChain toolchain = config.getToolChain();
@@ -404,9 +392,8 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 		// Perform this complicated thing only if the view is visible
 		if (getSite().getPage().isPartVisible(this)) {
 
-			if (force
-					|| ((newConfig != null && !newConfig.equals(fConfig)) || (fConfig != null && !fConfig
-							.equals(newConfig)))) {
+			if (force || ((newConfig != null && !newConfig.equals(fConfig))
+					|| (fConfig != null && !fConfig.equals(newConfig)))) {
 				fConfig = newConfig;
 				fViewer.setInput(getDocsTree());
 			}
@@ -419,8 +406,7 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 			public void run() {
 
 				ISelection selection = fViewer.getSelection();
-				Object obj = ((IStructuredSelection) selection)
-						.getFirstElement();
+				Object obj = ((IStructuredSelection) selection).getFirstElement();
 				if (obj instanceof Leaf) {
 					try {
 						doubleClickAction((Leaf) obj);
@@ -435,8 +421,7 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 			public void run() {
 
 				ISelection selection = fViewer.getSelection();
-				Object obj = ((IStructuredSelection) selection)
-						.getFirstElement();
+				Object obj = ((IStructuredSelection) selection).getFirstElement();
 				if (obj instanceof Leaf) {
 					try {
 						rightClickAction((Leaf) obj);
@@ -537,14 +522,12 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 
 	// ------------------------------------------------------------------------
 
-	private void doubleClickAction(Leaf node) throws PartInitException,
-			IOException {
+	private void doubleClickAction(Leaf node) throws PartInitException, IOException {
 
 		openBook(node);
 	}
 
-	private void rightClickAction(Leaf node) throws PartInitException,
-			IOException {
+	private void rightClickAction(Leaf node) throws PartInitException, IOException {
 
 		openBook(node);
 	}
@@ -617,25 +600,20 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 		try {
 			st = new CProjectPacksStorage(fConfig);
 
-			String deviceVendorId = st
-					.getOption(CProjectPacksStorage.DEVICE_VENDOR_ID);
+			String deviceVendorId = st.getOption(CProjectPacksStorage.DEVICE_VENDOR_ID);
 			String deviceName = st.getOption(CProjectPacksStorage.DEVICE_NAME);
 
-			String boardVendorName = st
-					.getOption(CProjectPacksStorage.BOARD_VENDOR_NAME);
+			String boardVendorName = st.getOption(CProjectPacksStorage.BOARD_VENDOR_NAME);
 			String boardName = st.getOption(CProjectPacksStorage.BOARD_NAME);
 
 			if (deviceName != null) {
-				Node deviceDocsNode = Node
-						.addNewChild(devicesRoot, Type.FOLDER);
+				Node deviceDocsNode = Node.addNewChild(devicesRoot, Type.FOLDER);
 				deviceDocsNode.setName(deviceName + " device docs");
 
-				Node devicesSubtree = (Node) tree
-						.findChild(Type.DEVICES_SUBTREE);
+				Node devicesSubtree = (Node) tree.findChild(Type.DEVICES_SUBTREE);
 				if (devicesSubtree != null) {
 
-					copyDeviceDocs(devicesSubtree, deviceVendorId, deviceName,
-							deviceDocsNode);
+					copyDeviceDocs(devicesSubtree, deviceVendorId, deviceName, deviceDocsNode);
 				}
 			}
 
@@ -646,8 +624,7 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 				Node boardsSubtree = (Node) tree.findChild(Type.BOARDS_SUBTREE);
 				if (boardsSubtree != null) {
 
-					copyBoardDocs(boardsSubtree, boardVendorName, boardName,
-							boardDocsNode);
+					copyBoardDocs(boardsSubtree, boardVendorName, boardName, boardDocsNode);
 				}
 			}
 		} catch (CoreException e) {
@@ -662,8 +639,7 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 		return devicesRoot;
 	}
 
-	private void copyBoardDocs(Node boards, String boardVendorName,
-			String boardName, Node parent) {
+	private void copyBoardDocs(Node boards, String boardVendorName, String boardName, Node parent) {
 
 		// Identify vendor
 		Node vendor = (Node) boards.findChild(Type.VENDOR, boardVendorName);
@@ -672,27 +648,21 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 			for (Leaf board : vendor.getChildren()) {
 
 				// Identify board
-				if (board.isType(Type.BOARD)
-						&& boardName.equals(board.getName())) {
+				if (board.isType(Type.BOARD) && boardName.equals(board.getName())) {
 
-					String destFolder = fDataManager
-							.getDestinationFolder(board);
+					String destFolder = fDataManager.getDestinationFolder(board);
 
 					if (board != null && board.hasChildren()) {
 						for (Leaf bookNode : ((Node) board).getChildren()) {
 
 							if (bookNode.isType(Type.BOOK)) {
 								// Copy book nodes
-								Leaf newBook = Leaf.addNewChild(parent,
-										Type.BOOK);
+								Leaf newBook = Leaf.addNewChild(parent, Type.BOOK);
 								newBook.copyProperties(bookNode);
 
 								if (newBook.hasProperty(Property.FILE)) {
-									IPath path = new Path(destFolder)
-											.append(newBook
-													.getProperty(Property.FILE));
-									newBook.putProperty(Property.FILE_ABSOLUTE,
-											path.toString());
+									IPath path = new Path(destFolder).append(newBook.getProperty(Property.FILE));
+									newBook.putProperty(Property.FILE_ABSOLUTE, path.toString());
 								}
 							}
 						}
@@ -702,15 +672,12 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 		}
 	}
 
-	private void copyDeviceDocs(Node devicesSubtree, String deviceVendorId,
-			String deviceName, Node parent) {
+	private void copyDeviceDocs(Node devicesSubtree, String deviceVendorId, String deviceName, Node parent) {
 
 		for (Leaf vendor : devicesSubtree.getChildren()) {
 
 			// Identify vendor by vendor ID, not name
-			if (vendor.isType(Type.VENDOR)
-					&& deviceVendorId.equals(vendor
-							.getProperty(Property.VENDOR_ID))) {
+			if (vendor.isType(Type.VENDOR) && deviceVendorId.equals(vendor.getProperty(Property.VENDOR_ID))) {
 
 				ITreeIterator deviceNodes = new AbstractTreePreOrderIterator() {
 
@@ -743,33 +710,26 @@ public class DocsView extends ViewPart implements IDataManagerListener,
 
 						Leaf node = deviceNode;
 
-						String destFolder = fDataManager
-								.getDestinationFolder(node);
+						String destFolder = fDataManager.getDestinationFolder(node);
 						do {
 							if (node.hasChildren()) {
-								for (Leaf bookNode : ((Node) node)
-										.getChildren()) {
+								for (Leaf bookNode : ((Node) node).getChildren()) {
 									if (bookNode.isType(Type.BOOK)) {
 										// Copy book nodes
-										Leaf newBook = Leaf.addNewChild(parent,
-												Type.BOOK);
+										Leaf newBook = Leaf.addNewChild(parent, Type.BOOK);
 										newBook.copyProperties(bookNode);
 
 										if (newBook.hasProperty(Property.FILE)) {
 											IPath path = new Path(destFolder)
-													.append(newBook
-															.getProperty(Property.FILE));
-											newBook.putProperty(
-													Property.FILE_ABSOLUTE,
-													path.toString());
+													.append(newBook.getProperty(Property.FILE));
+											newBook.putProperty(Property.FILE_ABSOLUTE, path.toString());
 										}
 									}
 								}
 							}
 							node = node.getParent();
 							// collect subfamily and family books too
-						} while (node != null
-								&& !node.isType(Type.DEVICES_SUBTREE));
+						} while (node != null && !node.isType(Type.DEVICES_SUBTREE));
 					}
 				}
 			}

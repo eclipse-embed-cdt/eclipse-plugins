@@ -49,17 +49,16 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 	protected String fMode;
 
 	// protected static final String LINESEP = System
-	//			.getProperty("line.separator"); //$NON-NLS-1$
+	// .getProperty("line.separator"); //$NON-NLS-1$
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmDebuggerCommandsService(DsfSession session,
-			ILaunchConfiguration lc, String mode) {
+	public GnuArmDebuggerCommandsService(DsfSession session, ILaunchConfiguration lc, String mode) {
 		this(session, lc, mode, false);
 	}
 
-	public GnuArmDebuggerCommandsService(DsfSession session,
-			ILaunchConfiguration lc, String mode, boolean doubleBackslash) {
+	public GnuArmDebuggerCommandsService(DsfSession session, ILaunchConfiguration lc, String mode,
+			boolean doubleBackslash) {
 		super(session);
 
 		fSession = session;
@@ -98,19 +97,17 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 
 		// Register this service to DSF.
 		// For completeness, use both the interface and the class name.
-		register(new String[] { IGnuArmDebuggerCommandsService.class.getName(),
-				this.getClass().getName() }, new Hashtable());
+		register(new String[] { IGnuArmDebuggerCommandsService.class.getName(), this.getClass().getName() },
+				new Hashtable());
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println(this.getClass().getName() + " registered ");
 		}
 
-		fTracker = new DsfServicesTracker(Activator.getInstance().getBundle()
-				.getBundleContext(), fSession.getId());
+		fTracker = new DsfServicesTracker(Activator.getInstance().getBundle().getBundleContext(), fSession.getId());
 		fGdbBackend = fTracker.getService(IGDBBackend.class);
 		if (fGdbBackend == null) {
-			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
-					"Cannot obtain GDBBackend service", null)); //$NON-NLS-1$
+			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, "Cannot obtain GDBBackend service", null)); //$NON-NLS-1$
 			rm.done();
 			return;
 		}
@@ -142,15 +139,12 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 
 	public IStatus addGnuArmSelectRemoteCommands(List<String> commandsList) {
 
-		String remoteTcpHost = CDebugUtils.getAttribute(fAttributes,
-				IGDBJtagConstants.ATTR_IP_ADDRESS,
+		String remoteTcpHost = CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_IP_ADDRESS,
 				IGDBJtagConstants.DEFAULT_IP_ADDRESS);
-		Integer remoteTcpPort = CDebugUtils.getAttribute(fAttributes,
-				IGDBJtagConstants.ATTR_PORT_NUMBER,
+		Integer remoteTcpPort = CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_PORT_NUMBER,
 				IGDBJtagConstants.DEFAULT_PORT_NUMBER);
 
-		commandsList.add("-target-select remote " + remoteTcpHost + ":"
-				+ remoteTcpPort + "");
+		commandsList.add("-target-select remote " + remoteTcpHost + ":" + remoteTcpPort + "");
 
 		return Status.OK_STATUS;
 	}
@@ -179,8 +173,7 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 
 		IPath programPath = fGdbBackend.getProgramPath();
 
-		if (!CDebugUtils.getAttribute(fAttributes,
-				IGDBJtagConstants.ATTR_LOAD_SYMBOLS,
+		if (!CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_SYMBOLS,
 				IGDBJtagConstants.DEFAULT_LOAD_SYMBOLS)) {
 
 			// Not required.
@@ -191,21 +184,17 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 
 		// New setting in Helios. Default is true. Check for existence
 		// in order to support older launch configs
-		if (fAttributes
-				.containsKey(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS)
-				&& CDebugUtils.getAttribute(fAttributes,
-						IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
+		if (fAttributes.containsKey(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS)
+				&& CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS,
 						IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_SYMBOLS)) {
 			if (programPath != null) {
 				symbolsFileName = programPath.toOSString();
 			}
 		} else {
-			symbolsFileName = CDebugUtils.getAttribute(fAttributes,
-					IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
+			symbolsFileName = CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_SYMBOLS_FILE_NAME,
 					IGDBJtagConstants.DEFAULT_SYMBOLS_FILE_NAME);
 			if (!symbolsFileName.isEmpty()) {
-				symbolsFileName = DebugUtils.resolveAll(symbolsFileName,
-						fAttributes);
+				symbolsFileName = DebugUtils.resolveAll(symbolsFileName, fAttributes);
 			} else {
 				symbolsFileName = null;
 			}
@@ -224,8 +213,7 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 
 		String file = escapeSpaces(symbolsFileName);
 
-		String symbolsOffset = CDebugUtils.getAttribute(fAttributes,
-				IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
+		String symbolsOffset = CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_SYMBOLS_OFFSET,
 				IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
 		if (!symbolsOffset.isEmpty()) {
 			symbolsOffset = "0x" + symbolsOffset;
@@ -251,21 +239,17 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 
 		String imageFileName = null;
 
-		if (fAttributes
-				.containsKey(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE)
-				&& CDebugUtils.getAttribute(fAttributes,
-						IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
+		if (fAttributes.containsKey(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE)
+				&& CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE,
 						IGDBJtagConstants.DEFAULT_USE_PROJ_BINARY_FOR_IMAGE)) {
 			if (programPath != null) {
 				imageFileName = programPath.toOSString();
 			}
 		} else {
-			imageFileName = CDebugUtils.getAttribute(fAttributes,
-					IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
+			imageFileName = CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_IMAGE_FILE_NAME,
 					IGDBJtagConstants.DEFAULT_IMAGE_FILE_NAME);
 			if (!imageFileName.isEmpty()) {
-				imageFileName = DebugUtils.resolveAll(imageFileName,
-						fAttributes);
+				imageFileName = DebugUtils.resolveAll(imageFileName, fAttributes);
 			} else {
 				imageFileName = null;
 			}
@@ -284,14 +268,13 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 			imageFileName = StringUtils.duplicateBackslashes(imageFileName);
 		}
 
-		String imageOffset = CDebugUtils.getAttribute(fAttributes,
-				IGDBJtagConstants.ATTR_IMAGE_OFFSET,
-				IGDBJtagConstants.DEFAULT_IMAGE_OFFSET).trim();
+		String imageOffset = CDebugUtils
+				.getAttribute(fAttributes, IGDBJtagConstants.ATTR_IMAGE_OFFSET, IGDBJtagConstants.DEFAULT_IMAGE_OFFSET)
+				.trim();
 		if (!imageOffset.isEmpty()) {
-			imageOffset = (imageFileName.endsWith(".elf")) ? "" : "0x"
-					+ CDebugUtils.getAttribute(fAttributes,
-							IGDBJtagConstants.ATTR_IMAGE_OFFSET,
-							IGDBJtagConstants.DEFAULT_IMAGE_OFFSET); //$NON-NLS-2$ 
+			imageOffset = (imageFileName.endsWith(".elf")) ? ""
+					: "0x" + CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_IMAGE_OFFSET,
+							IGDBJtagConstants.DEFAULT_IMAGE_OFFSET); // $NON-NLS-2$
 		}
 
 		String file = escapeSpaces(imageFileName);
@@ -303,15 +286,12 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 
 	public IStatus addSetPcCommands(List<String> commandsList) {
 
-		if (CDebugUtils.getAttribute(fAttributes,
-				IGDBJtagConstants.ATTR_SET_PC_REGISTER,
+		if (CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_SET_PC_REGISTER,
 				IGDBJtagConstants.DEFAULT_SET_PC_REGISTER)) {
-			String pcRegister = CDebugUtils.getAttribute(
-					fAttributes,
-					IGDBJtagConstants.ATTR_PC_REGISTER,
-					CDebugUtils.getAttribute(fAttributes,
-							IGDBJtagConstants.ATTR_IMAGE_OFFSET,
-							IGDBJtagConstants.DEFAULT_PC_REGISTER)).trim();
+			String pcRegister = CDebugUtils
+					.getAttribute(fAttributes, IGDBJtagConstants.ATTR_PC_REGISTER, CDebugUtils.getAttribute(fAttributes,
+							IGDBJtagConstants.ATTR_IMAGE_OFFSET, IGDBJtagConstants.DEFAULT_PC_REGISTER))
+					.trim();
 			if (!pcRegister.isEmpty()) {
 				commandsList.add("set $pc=0x" + pcRegister);
 			}
@@ -325,12 +305,11 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 		// This code is also used to start run configurations.
 		// Set the breakpoint only for debug.
 		if (fMode.equals(ILaunchManager.DEBUG_MODE)) {
-			if (CDebugUtils.getAttribute(fAttributes,
-					IGDBJtagConstants.ATTR_SET_STOP_AT,
+			if (CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_SET_STOP_AT,
 					IGDBJtagConstants.DEFAULT_SET_STOP_AT)) {
-				String stopAt = CDebugUtils.getAttribute(fAttributes,
-						IGDBJtagConstants.ATTR_STOP_AT,
-						IGDBJtagConstants.DEFAULT_STOP_AT).trim();
+				String stopAt = CDebugUtils
+						.getAttribute(fAttributes, IGDBJtagConstants.ATTR_STOP_AT, IGDBJtagConstants.DEFAULT_STOP_AT)
+						.trim();
 
 				if (!stopAt.isEmpty()) {
 					// doAtopAt replaced by a simple tbreak

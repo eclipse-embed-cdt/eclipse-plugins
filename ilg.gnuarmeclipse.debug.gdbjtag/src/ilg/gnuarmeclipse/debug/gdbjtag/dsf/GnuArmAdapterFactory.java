@@ -53,13 +53,10 @@ public class GnuArmAdapterFactory extends GdbAdapterFactory {
 			DsfSession session = launch.getSession();
 
 			fSteppingController = new SteppingController(session);
-			session.registerModelAdapter(SteppingController.class,
-					fSteppingController);
+			session.registerModelAdapter(SteppingController.class, fSteppingController);
 
-			fViewModelAdapter = new GnuArmViewModelAdapter(session,
-					fSteppingController);
-			session.registerModelAdapter(IViewerInputProvider.class,
-					fViewModelAdapter);
+			fViewModelAdapter = new GnuArmViewModelAdapter(session, fSteppingController);
+			session.registerModelAdapter(IViewerInputProvider.class, fViewModelAdapter);
 		}
 
 		void dispose() {

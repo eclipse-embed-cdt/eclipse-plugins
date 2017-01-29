@@ -34,8 +34,7 @@ public class GnuArmServicesLaunchSequence extends ServicesLaunchSequence {
 		@Override
 		public void execute(RequestMonitor requestMonitor) {
 			fLaunch.getServiceFactory()
-					.createService(IGdbServerBackendService.class, fSession,
-							fLaunch.getLaunchConfiguration())
+					.createService(IGdbServerBackendService.class, fSession, fLaunch.getLaunchConfiguration())
 					.initialize(requestMonitor);
 		}
 	} };
@@ -44,8 +43,7 @@ public class GnuArmServicesLaunchSequence extends ServicesLaunchSequence {
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmServicesLaunchSequence(DsfSession session, GdbLaunch launch,
-			IProgressMonitor pm) {
+	public GnuArmServicesLaunchSequence(DsfSession session, GdbLaunch launch, IProgressMonitor pm) {
 		super(session, launch, pm);
 
 		if (Activator.getInstance().isDebugging()) {
@@ -66,8 +64,7 @@ public class GnuArmServicesLaunchSequence extends ServicesLaunchSequence {
 
 			fSteps = new Step[fOurSteps.length + superSteps.length];
 			System.arraycopy(fOurSteps, 0, fSteps, 0, fOurSteps.length);
-			System.arraycopy(superSteps, 0, fSteps, fOurSteps.length,
-					superSteps.length);
+			System.arraycopy(superSteps, 0, fSteps, fOurSteps.length, superSteps.length);
 		}
 		return fSteps;
 	}

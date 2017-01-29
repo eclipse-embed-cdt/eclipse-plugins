@@ -79,8 +79,7 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 
 			if (Type.VENDOR.equals(type)) {
 				String imageKey = ISharedImages.IMG_OBJ_FOLDER;
-				return PlatformUI.getWorkbench().getSharedImages()
-						.getImage(imageKey);
+				return PlatformUI.getWorkbench().getSharedImages().getImage(imageKey);
 			} else if (Type.BOARD.equals(type)) {
 				if (node.isBooleanProperty(Property.ENABLED)) {
 					return Activator.getInstance().getImage("board");
@@ -148,8 +147,7 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 
 		// System.out.println("BoardsView.createPartControl()");
 
-		fViewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION
-				| SWT.H_SCROLL | SWT.V_SCROLL);
+		fViewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
 
 		ColumnViewerToolTipSupport.enableFor(fViewer);
 
@@ -249,8 +247,8 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 
 		fRemoveFilters.setText("Remove filters");
 		fRemoveFilters.setToolTipText("Remove all filters based on selections");
-		fRemoveFilters.setImageDescriptor(Activator.imageDescriptorFromPlugin(
-				Activator.PLUGIN_ID, "icons/removeall.png"));
+		fRemoveFilters
+				.setImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/removeall.png"));
 
 		// -----
 		fExpandAll = new Action() {
@@ -262,8 +260,7 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 
 		fExpandAll.setText("Expand all");
 		fExpandAll.setToolTipText("Expand all children nodes");
-		fExpandAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
-				Activator.PLUGIN_ID, "icons/expandall.png"));
+		fExpandAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/expandall.png"));
 
 		fCollapseAll = new Action() {
 
@@ -274,8 +271,8 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 
 		fCollapseAll.setText("Collapse all");
 		fCollapseAll.setToolTipText("Collapse all children nodes");
-		fCollapseAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
-				Activator.PLUGIN_ID, "icons/collapseall.png"));
+		fCollapseAll
+				.setImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/collapseall.png"));
 	}
 
 	private void hookDoubleClickAction() {
@@ -404,8 +401,7 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 						Activator.log(e);
 					}
 					if (boardsRoot.hasChildren()) {
-						fOut.println("Found " + count + " board(s), from "
-								+ boardsRoot.getChildren().size()
+						fOut.println("Found " + count + " board(s), from " + boardsRoot.getChildren().size()
 								+ " vendor(s).");
 					} else {
 						fOut.println("Found none.");
@@ -442,8 +438,7 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 				}
 			} else {
 				boolean isVersionInstalled = isInstalled;
-				if (Type.VERSION.equals(type)
-						&& node.isBooleanProperty(Property.INSTALLED)) {
+				if (Type.VERSION.equals(type) && node.isBooleanProperty(Property.INSTALLED)) {
 					isVersionInstalled = true;
 				}
 				for (Leaf child : ((Node) node).getChildren()) {
@@ -510,8 +505,8 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 	}
 
 	// Identify outline & external nodes and update devices from inside
-	private void updateBoardsRecursive(Leaf modelNode, Node viewTree,
-			boolean isInstalled, Map<String, Leaf> updatedMap) {
+	private void updateBoardsRecursive(Leaf modelNode, Node viewTree, boolean isInstalled,
+			Map<String, Leaf> updatedMap) {
 
 		String type = modelNode.getType();
 		if (modelNode.hasChildren()) {
@@ -527,22 +522,19 @@ public class BoardsView extends ViewPart implements IDataManagerListener {
 				}
 			} else {
 				boolean isVersionInstalled = isInstalled;
-				if (Type.VERSION.equals(type)
-						&& modelNode.isBooleanProperty(Property.INSTALLED)) {
+				if (Type.VERSION.equals(type) && modelNode.isBooleanProperty(Property.INSTALLED)) {
 					isVersionInstalled = true;
 				}
 				for (Leaf child : ((Node) modelNode).getChildren()) {
 
 					// Recurse down
-					updateBoardsRecursive(child, viewTree, isVersionInstalled,
-							updatedMap);
+					updateBoardsRecursive(child, viewTree, isVersionInstalled, updatedMap);
 				}
 			}
 		}
 	}
 
-	private void updateBoard(Leaf modelFamilyNode, Node viewTree,
-			boolean isInstalled, Map<String, Leaf> updatedList) {
+	private void updateBoard(Leaf modelFamilyNode, Node viewTree, boolean isInstalled, Map<String, Leaf> updatedList) {
 
 		String boardName = modelFamilyNode.getName();
 		String vendorName = modelFamilyNode.getProperty(Property.VENDOR_NAME);

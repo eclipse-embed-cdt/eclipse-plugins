@@ -68,9 +68,8 @@ import org.eclipse.debug.core.model.MemoryByte;
 import org.osgi.framework.Filter;
 
 @SuppressWarnings("restriction")
-public class PeripheralMemoryBlockExtension extends PlatformObject implements
-		IMemoryBlockExtension, IMemoryBlockUpdatePolicyProvider,
-		IDebugEventSetListener {
+public class PeripheralMemoryBlockExtension extends PlatformObject
+		implements IMemoryBlockExtension, IMemoryBlockUpdatePolicyProvider, IDebugEventSetListener {
 
 	// ------------------------------------------------------------------------
 
@@ -97,18 +96,15 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 
 	// ------------------------------------------------------------------------
 
-	public PeripheralMemoryBlockExtension(
-			DsfMemoryBlockRetrieval memoryBlockRetrieval,
-			IMemoryDMContext memoryDMContext, String modelId,
-			final PeripheralDMContext peripheralDMContext) {
+	public PeripheralMemoryBlockExtension(DsfMemoryBlockRetrieval memoryBlockRetrieval,
+			IMemoryDMContext memoryDMContext, String modelId, final PeripheralDMContext peripheralDMContext) {
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("PeripheralMemoryBlockExtension()");
 		}
 
 		// Used in scheduleUpdatePeripheralRendering()
-		fUpdatePeripheralRenderingJob = new SystemJob(
-				"Update peripheral rendering") {
+		fUpdatePeripheralRenderingJob = new SystemJob("Update peripheral rendering") {
 
 			protected IStatus run(IProgressMonitor pm) {
 				if (fPeripheralTop == null)
@@ -125,23 +121,17 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 
 					// Notify world that this block possibly changed
 					if (Activator.getInstance().isDebugging()) {
-						System.out.println("PeripheralMemoryBlockExtension "
-								+ fBlockDisplayName
-								+ " fireDebugEventSet(changed)");
+						System.out.println(
+								"PeripheralMemoryBlockExtension " + fBlockDisplayName + " fireDebugEventSet(changed)");
 					}
-					DebugPlugin
-							.getDefault()
-							.fireDebugEventSet(
-									new DebugEvent[] { new DebugEvent(
-											(Object) PeripheralMemoryBlockExtension.this,
-											DebugEvent.CHANGE,
-											DebugEvent.CONTENT) });
+					DebugPlugin.getDefault().fireDebugEventSet(
+							new DebugEvent[] { new DebugEvent((Object) PeripheralMemoryBlockExtension.this,
+									DebugEvent.CHANGE, DebugEvent.CONTENT) });
 				} catch (NullPointerException e) {
 					// Added because of an error report, but obvious no cause
 					// was identified yet.
 					Activator.log(e);
-					return new Status(Status.ERROR, Activator.PLUGIN_ID,
-							"Update peripheral rendering failed", e);
+					return new Status(Status.ERROR, Activator.PLUGIN_ID, "Update peripheral rendering failed", e);
 				}
 				return Status.OK_STATUS;
 			}
@@ -159,8 +149,8 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 		fModelId = modelId;
 
 		String sessionId = memoryBlockRetrieval.getSession().getId();
-		final DsfServicesTracker tracker = new DsfServicesTracker(Activator
-				.getInstance().getBundle().getBundleContext(), sessionId);
+		final DsfServicesTracker tracker = new DsfServicesTracker(
+				Activator.getInstance().getBundle().getBundleContext(), sessionId);
 
 		@SuppressWarnings("rawtypes")
 		Query query = new Query() {
@@ -168,26 +158,20 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 			@Override
 			protected void execute(DataRequestMonitor rm) {
 
-				fCommandControl = (ICommandControl) tracker
-						.getService((Class<ICommandControl>) ICommandControl.class);
+				fCommandControl = (ICommandControl) tracker.getService((Class<ICommandControl>) ICommandControl.class);
 
 				CommandFactory commandFactory = ((IMICommandControl) tracker
-						.getService((Class<IMICommandControl>) IMICommandControl.class))
-						.getCommandFactory();
+						.getService((Class<IMICommandControl>) IMICommandControl.class)).getCommandFactory();
 				if (commandFactory instanceof GnuArmCommandFactory) {
 					fCommandFactory = (GnuArmCommandFactory) commandFactory;
-					fPeripheralDMNode = peripheralDMContext
-							.getPeripheralInstance();
-					fPeripheralDMNode
-							.setMemoryBlock((IMemoryBlockExtension) PeripheralMemoryBlockExtension.this);
+					fPeripheralDMNode = peripheralDMContext.getPeripheralInstance();
+					fPeripheralDMNode.setMemoryBlock((IMemoryBlockExtension) PeripheralMemoryBlockExtension.this);
 				} else {
-					Activator.log("Error: unknown command factory:"
-							+ commandFactory.getClass().getSimpleName());
+					Activator.log("Error: unknown command factory:" + commandFactory.getClass().getSimpleName());
 				}
 
 				// Get the memory service.
-				fMemoryService = (IPeripheralMemoryService) tracker
-						.getService(IPeripheralMemoryService.class);
+				fMemoryService = (IPeripheralMemoryService) tracker.getService(IPeripheralMemoryService.class);
 
 				if (fMemoryService == null) {
 					Activator.log("Error: cannot get IPeripheralMemoryService");
@@ -197,8 +181,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 			}
 
 		};
-		((PeripheralMemoryBlockRetrieval) getMemoryBlockRetrieval())
-				.getExecutor().execute(query);
+		((PeripheralMemoryBlockRetrieval) getMemoryBlockRetrieval()).getExecutor().execute(query);
 		try {
 			query.get();
 			if (Activator.getInstance().isDebugging()) {
@@ -221,8 +204,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 
 		fPeripheralTop = createPeripheralGroupNode();
 		if (fPeripheralTop == null) {
-			Activator.log("Cannot create peripheral group "
-					+ fPeripheralDMNode.getName());
+			Activator.log("Cannot create peripheral group " + fPeripheralDMNode.getName());
 		}
 
 		// Parse all registers and create a map of readable registers.
@@ -269,8 +251,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 				@Override
 				public void run() {
 					// Also add this memory block to the session notifier
-					fRetrieval.getSession().addServiceEventListener(
-							(Object) PeripheralMemoryBlockExtension.this,
+					fRetrieval.getSession().addServiceEventListener((Object) PeripheralMemoryBlockExtension.this,
 							(Filter) null);
 				}
 			});
@@ -285,16 +266,14 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	private void removeDebugEventListeners() {
 
 		// Remove this memory block from the global notifier
-		DebugPlugin.getDefault().removeDebugEventListener(
-				(IDebugEventSetListener) this);
+		DebugPlugin.getDefault().removeDebugEventListener((IDebugEventSetListener) this);
 		try {
 			fRetrieval.getExecutor().execute((Runnable) new Runnable() {
 
 				@Override
 				public void run() {
 					// Also remove this memory block from the session notifier
-					fRetrieval.getSession().removeServiceEventListener(
-							(Object) PeripheralMemoryBlockExtension.this);
+					fRetrieval.getSession().removeServiceEventListener((Object) PeripheralMemoryBlockExtension.this);
 				}
 			});
 		} catch (RejectedExecutionException e) {
@@ -311,12 +290,10 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	public void eventDispatched(IMemory.IMemoryChangedEvent event) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out
-					.println("PeripheralMemoryBlockExtension.eventDispatched(IMemoryChangedEvent) "
-							+ fBlockDisplayName + " " + event);
+			System.out.println("PeripheralMemoryBlockExtension.eventDispatched(IMemoryChangedEvent) "
+					+ fBlockDisplayName + " " + event);
 		}
-		if (((IMemory.IMemoryDMContext) event.getDMContext())
-				.equals(fMemoryDMContext)) {
+		if (((IMemory.IMemoryDMContext) event.getDMContext()).equals(fMemoryDMContext)) {
 			IAddress[] addresses = event.getAddresses();
 			for (int i = 0; i < addresses.length; ++i) {
 				handleMemoryChange(addresses[i].getValue());
@@ -328,9 +305,8 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	public void eventDispatched(IRunControl.ISuspendedDMEvent event) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out
-					.println("PeripheralMemoryBlockExtension.eventDispatched(ISuspendedDMEvent) "
-							+ fBlockDisplayName + " " + event);
+			System.out.println("PeripheralMemoryBlockExtension.eventDispatched(ISuspendedDMEvent) " + fBlockDisplayName
+					+ " " + event);
 		}
 
 		// Each time execution is suspended, the peripheral monitors are
@@ -343,9 +319,8 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	public void handleMemoryChange(BigInteger bigInteger) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out
-					.println("PeripheralMemoryBlockExtension.handleMemoryChange() 0x"
-							+ bigInteger.toString(16) + " not used");
+			System.out.println(
+					"PeripheralMemoryBlockExtension.handleMemoryChange() 0x" + bigInteger.toString(16) + " not used");
 		}
 
 		// updatePeripheralRegisters();
@@ -365,9 +340,8 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	public void handleDebugEvents(DebugEvent[] events) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out
-					.print("PeripheralMemoryBlockExtension.handleDebugEvents() "
-							+ fBlockDisplayName + " " + events.length);
+			System.out.print(
+					"PeripheralMemoryBlockExtension.handleDebugEvents() " + fBlockDisplayName + " " + events.length);
 			for (int i = 0; i < events.length; ++i) {
 				System.out.print(" " + events[i]);
 			}
@@ -395,8 +369,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	 */
 	private PeripheralTopVMNode createPeripheralGroupNode() {
 
-		SvdPeripheralDMNode svdNode = fPeripheralDMContext
-				.getPeripheralInstance();
+		SvdPeripheralDMNode svdNode = fPeripheralDMContext.getPeripheralInstance();
 
 		PeripheralTopVMNode node;
 		node = new PeripheralTopVMNode(null, svdNode, this); // Root node
@@ -419,8 +392,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 		// Get all registers of the peripheral, in svd definition order.
 		collectRegistersRecursive(fPeripheralTop, list);
 
-		PeripheralMemoryRegion[] array = list
-				.toArray(new PeripheralMemoryRegion[list.size()]);
+		PeripheralMemoryRegion[] array = list.toArray(new PeripheralMemoryRegion[list.size()]);
 		// Sort by offset. Beware of duplicates (in case of unions).
 		Arrays.sort(array);
 
@@ -464,16 +436,14 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	 * @param list
 	 *            the list of regions.
 	 */
-	private void collectRegistersRecursive(PeripheralTreeVMNode node,
-			List<PeripheralMemoryRegion> list) {
+	private void collectRegistersRecursive(PeripheralTreeVMNode node, List<PeripheralMemoryRegion> list) {
 
 		// This should match both simple registers and register array elements.
 		if ((node instanceof PeripheralRegisterVMNode) && node.isReadAllowed()) {
 
 			// Register found, create a small region to cover only the register.
-			PeripheralMemoryRegion region = new PeripheralMemoryRegion(node
-					.getPeripheralBigAddressOffset().longValue(), node
-					.getBigSize().longValue());
+			PeripheralMemoryRegion region = new PeripheralMemoryRegion(node.getPeripheralBigAddressOffset().longValue(),
+					node.getBigSize().longValue());
 			region.addNode((PeripheralRegisterVMNode) node);
 
 			// Contribute to the output list; SVD order, to be ordered later.
@@ -492,8 +462,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 
 			// Mainly for cluster nodes, to reach inner registers.
 			for (int i = 0; i < node.getChildren().length; ++i) {
-				PeripheralTreeVMNode child = (PeripheralTreeVMNode) node
-						.getChildren()[i];
+				PeripheralTreeVMNode child = (PeripheralTreeVMNode) node.getChildren()[i];
 				collectRegistersRecursive(child, list);
 			}
 		}
@@ -505,18 +474,13 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	private void readPeripheralMemoryRegions(RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out
-					.println("PeripheralMemoryBlockExtension.readPeripheralMemoryRegions() "
-							+ fBlockDisplayName);
+			System.out.println("PeripheralMemoryBlockExtension.readPeripheralMemoryRegions() " + fBlockDisplayName);
 		}
 
-		IAddress address = getAddressFactory().createAddress(
-				fPeripheralTop.getBigAbsoluteAddress());
+		IAddress address = getAddressFactory().createAddress(fPeripheralTop.getBigAbsoluteAddress());
 
-		DsfExecutor executor = ((PeripheralMemoryBlockRetrieval) getMemoryBlockRetrieval())
-				.getExecutor();
-		final CountingRequestMonitor countingRm = new CountingRequestMonitor(
-				executor, rm);
+		DsfExecutor executor = ((PeripheralMemoryBlockRetrieval) getMemoryBlockRetrieval()).getExecutor();
+		final CountingRequestMonitor countingRm = new CountingRequestMonitor(executor, rm);
 
 		if (fReadableMemoryRegions == null) {
 			return;
@@ -527,8 +491,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 
 		for (final PeripheralMemoryRegion region : fReadableMemoryRegions) {
 
-			DataRequestMonitor<MemoryByte[]> drm = new DataRequestMonitor<MemoryByte[]>(
-					executor, countingRm) {
+			DataRequestMonitor<MemoryByte[]> drm = new DataRequestMonitor<MemoryByte[]>(executor, countingRm) {
 
 				@Override
 				protected void handleCompleted() {
@@ -543,9 +506,8 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 			};
 
 			// Read memory region in
-			fMemoryService.getMemory(fMemoryDMContext, address,
-					region.getAddressOffset(), 1, (int) region.getSizeBytes(),
-					drm);
+			fMemoryService.getMemory(fMemoryDMContext, address, region.getAddressOffset(), 1,
+					(int) region.getSizeBytes(), drm);
 		}
 	}
 
@@ -561,8 +523,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 			}
 		};
 
-		((PeripheralMemoryBlockRetrieval) getMemoryBlockRetrieval())
-				.getExecutor().execute(query);
+		((PeripheralMemoryBlockRetrieval) getMemoryBlockRetrieval()).getExecutor().execute(query);
 
 		try {
 			query.get();
@@ -585,8 +546,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 			// Iterate all registers in a region.
 			for (PeripheralRegisterVMNode node : region.getNodes()) {
 
-				long nodeOffset = node.getPeripheralBigAddressOffset()
-						.longValue();
+				long nodeOffset = node.getPeripheralBigAddressOffset().longValue();
 				int byteOffset = (int) (nodeOffset - regionOffset);
 
 				int widthBytes = node.getWidthBytes();
@@ -614,8 +574,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	 *            the new byte array size.
 	 * @return a byte array with the value bytes.
 	 */
-	private byte[] prepareByteArrayFromBigInteger(BigInteger value,
-			int sizeBytes) {
+	private byte[] prepareByteArrayFromBigInteger(BigInteger value, int sizeBytes) {
 
 		byte buf[] = new byte[sizeBytes];
 		byte valueBuf[] = value.toByteArray();
@@ -623,15 +582,12 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 		// Pad (if too short), truncate (if too long)
 		if (fIsBigEndian) {
 			for (int i = 0; i < buf.length; ++i) {
-				buf[buf.length - i - 1] = (i < valueBuf.length) ? valueBuf[valueBuf.length
-						- i - 1]
-						: 0;
+				buf[buf.length - i - 1] = (i < valueBuf.length) ? valueBuf[valueBuf.length - i - 1] : 0;
 			}
 		} else {
 			// Reverse order
 			for (int i = 0; i < buf.length; ++i) {
-				buf[i] = (i < valueBuf.length) ? valueBuf[valueBuf.length - i
-						- 1] : 0;
+				buf[i] = (i < valueBuf.length) ? valueBuf[valueBuf.length - i - 1] : 0;
 			}
 		}
 		return buf;
@@ -680,8 +636,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	 * @param value
 	 *            the new register value.
 	 */
-	public void writePeripheralRegister(final long offset, final int sizeBytes,
-			final BigInteger value) {
+	public void writePeripheralRegister(final long offset, final int sizeBytes, final BigInteger value) {
 
 		@SuppressWarnings("rawtypes")
 		Query query = new Query() {
@@ -689,18 +644,15 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 			@Override
 			protected void execute(DataRequestMonitor rm) {
 
-				IAddress address = getAddressFactory().createAddress(
-						fPeripheralTop.getBigAbsoluteAddress());
+				IAddress address = getAddressFactory().createAddress(fPeripheralTop.getBigAbsoluteAddress());
 
 				byte buf[] = prepareByteArrayFromBigInteger(value, sizeBytes);
 
-				fMemoryService.setMemory(fMemoryDMContext, address, offset,
-						sizeBytes, 1, buf, rm);
+				fMemoryService.setMemory(fMemoryDMContext, address, offset, sizeBytes, 1, buf, rm);
 			}
 		};
 
-		((PeripheralMemoryBlockRetrieval) getMemoryBlockRetrieval())
-				.getExecutor().execute(query);
+		((PeripheralMemoryBlockRetrieval) getMemoryBlockRetrieval()).getExecutor().execute(query);
 		try {
 			query.get();
 		} catch (InterruptedException e) {
@@ -721,24 +673,20 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	 *            the register size.
 	 * @return a BigInteger with the register value.
 	 */
-	public BigInteger readPeripheralRegister(final long offset,
-			final int sizeBytes) {
+	public BigInteger readPeripheralRegister(final long offset, final int sizeBytes) {
 
 		Query<MemoryByte[]> query = new Query<MemoryByte[]>() {
 
 			@Override
 			protected void execute(DataRequestMonitor<MemoryByte[]> drm) {
 
-				IAddress address = getAddressFactory().createAddress(
-						fPeripheralTop.getBigAbsoluteAddress());
+				IAddress address = getAddressFactory().createAddress(fPeripheralTop.getBigAbsoluteAddress());
 
-				fMemoryService.getMemory(fMemoryDMContext, address, offset,
-						sizeBytes, 1, drm);
+				fMemoryService.getMemory(fMemoryDMContext, address, offset, sizeBytes, 1, drm);
 			}
 		};
 
-		((PeripheralMemoryBlockRetrieval) getMemoryBlockRetrieval())
-				.getExecutor().execute(query);
+		((PeripheralMemoryBlockRetrieval) getMemoryBlockRetrieval()).getExecutor().execute(query);
 
 		BigInteger value = BigInteger.ZERO;
 		try {
@@ -842,8 +790,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 
 	@Override
 	public BigInteger getMemoryBlockEndAddress() throws DebugException {
-		return (fPeripheralDMNode.getBigAbsoluteAddress()).add(getBigLength())
-				.subtract(BigInteger.ONE);
+		return (fPeripheralDMNode.getBigAbsoluteAddress()).add(getBigLength()).subtract(BigInteger.ONE);
 	}
 
 	@Override
@@ -872,8 +819,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	}
 
 	@Override
-	public MemoryByte[] getBytesFromOffset(BigInteger unitOffset,
-			long addressableUnits) throws DebugException {
+	public MemoryByte[] getBytesFromOffset(BigInteger unitOffset, long addressableUnits) throws DebugException {
 
 		// Fake content
 		MemoryByte[] bytes = new MemoryByte[(int) addressableUnits];
@@ -884,8 +830,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject implements
 	}
 
 	@Override
-	public MemoryByte[] getBytesFromAddress(BigInteger address, long units)
-			throws DebugException {
+	public MemoryByte[] getBytesFromAddress(BigInteger address, long units) throws DebugException {
 
 		// Fake content
 		MemoryByte[] bytes = new MemoryByte[(int) units];

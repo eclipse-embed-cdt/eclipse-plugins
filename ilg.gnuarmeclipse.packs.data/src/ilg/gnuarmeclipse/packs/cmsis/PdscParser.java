@@ -59,8 +59,7 @@ public class PdscParser {
 		return extendDescription(description, null, value);
 	}
 
-	protected String extendDescription(String description, String comment,
-			String value) {
+	protected String extendDescription(String description, String comment, String value) {
 
 		if (value.length() > 0) {
 			if (description.length() > 0)
@@ -87,8 +86,7 @@ public class PdscParser {
 		return spath.replace('\\', '/');
 	}
 
-	public Document parseXml(IPath path) throws ParserConfigurationException,
-			SAXException, IOException {
+	public Document parseXml(IPath path) throws ParserConfigurationException, SAXException, IOException {
 
 		File file = path.toFile();
 		if (file == null) {
@@ -98,28 +96,24 @@ public class PdscParser {
 		fPath = path;
 		InputSource inputSource = new InputSource(new FileInputStream(file));
 
-		DocumentBuilder xml = DocumentBuilderFactory.newInstance()
-				.newDocumentBuilder();
+		DocumentBuilder xml = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		fDocument = xml.parse(inputSource);
 
 		return fDocument;
 	}
 
-	public Document parseXml(File file) throws ParserConfigurationException,
-			SAXException, IOException {
+	public Document parseXml(File file) throws ParserConfigurationException, SAXException, IOException {
 
 		fPath = new Path(file.getPath());
 		InputSource inputSource = new InputSource(new FileInputStream(file));
 
-		DocumentBuilder xml = DocumentBuilderFactory.newInstance()
-				.newDocumentBuilder();
+		DocumentBuilder xml = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		fDocument = xml.parse(inputSource);
 
 		return fDocument;
 	}
 
-	public Document parseXml(URL url) throws IOException,
-			ParserConfigurationException, SAXException {
+	public Document parseXml(URL url) throws IOException, ParserConfigurationException, SAXException {
 
 		long beginTime = System.currentTimeMillis();
 
@@ -131,8 +125,7 @@ public class PdscParser {
 
 		InputSource inputSource = new InputSource(new InputStreamReader(is));
 
-		DocumentBuilder xml = DocumentBuilderFactory.newInstance()
-				.newDocumentBuilder();
+		DocumentBuilder xml = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		fDocument = xml.parse(inputSource);
 
 		long endTime = System.currentTimeMillis();

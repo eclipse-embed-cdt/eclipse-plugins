@@ -25,11 +25,9 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IMemoryBlockRetrieval;
 
 @SuppressWarnings("restriction")
-public class GdbArmMemoryBlockRetrievalManager extends
-		GdbMemoryBlockRetrievalManager {
+public class GdbArmMemoryBlockRetrievalManager extends GdbMemoryBlockRetrievalManager {
 
-	public GdbArmMemoryBlockRetrievalManager(String modelId,
-			ILaunchConfiguration config, DsfSession session) {
+	public GdbArmMemoryBlockRetrievalManager(String modelId, ILaunchConfiguration config, DsfSession session) {
 		super(modelId, config, session);
 	}
 
@@ -42,13 +40,12 @@ public class GdbArmMemoryBlockRetrievalManager extends
 	 * org.eclipse.cdt.dsf.service.DsfSession)
 	 */
 	@Override
-	protected IMemoryBlockRetrieval createMemoryBlockRetrieval(String model,
-			ILaunchConfiguration config, DsfSession session) {
+	protected IMemoryBlockRetrieval createMemoryBlockRetrieval(String model, ILaunchConfiguration config,
+			DsfSession session) {
 		DsfMemoryBlockRetrieval memRetrieval = null;
 
 		try {
-			memRetrieval = new PeripheralMemoryBlockRetrieval(model, config,
-					session);
+			memRetrieval = new PeripheralMemoryBlockRetrieval(model, config, session);
 		} catch (DebugException e) {
 			Activator.log(e.getStatus());
 		}
@@ -66,13 +63,10 @@ public class GdbArmMemoryBlockRetrievalManager extends
 		if (event.getDMContext() instanceof IMemoryDMContext) {
 			IMemoryDMContext memDmc = (IMemoryDMContext) event.getDMContext();
 			IMemoryBlockRetrieval memRetrieval = getMemoryBlockRetrieval(memDmc);
-			if (memRetrieval != null
-					&& memRetrieval instanceof PeripheralMemoryBlockRetrieval) {
+			if (memRetrieval != null && memRetrieval instanceof PeripheralMemoryBlockRetrieval) {
 
-				DsfSession.getSession(memDmc.getSessionId())
-						.registerModelAdapter(
-								PeripheralMemoryBlockRetrieval.class,
-								memRetrieval);
+				DsfSession.getSession(memDmc.getSessionId()).registerModelAdapter(PeripheralMemoryBlockRetrieval.class,
+						memRetrieval);
 			}
 		}
 	}

@@ -124,16 +124,13 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 					if (node.isBooleanProperty(Property.INSTALLED)) {
 						return Activator.getInstance().getImage("package_obj");
 					} else {
-						return Activator.getInstance().getImage(
-								"package_obj_grey");
+						return Activator.getInstance().getImage("package_obj_grey");
 					}
 				} else if (Type.VERSION.equals(type)) {
 					if (node.isBooleanProperty(Property.INSTALLED)) {
-						return Activator.getInstance().getImage(
-								"jtypeassist_co");
+						return Activator.getInstance().getImage("jtypeassist_co");
 					} else {
-						return Activator.getInstance().getImage(
-								"jtypeassist_co_grey");
+						return Activator.getInstance().getImage("jtypeassist_co_grey");
 					}
 				} else if (Type.EXAMPLE.equals(type)) {
 					return Activator.getInstance().getImage("binaries_obj");
@@ -160,10 +157,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 								if (n <= 0) {
 									name += " (n/a)";
 								} else {
-									name += " ("
-											+ StringUtils
-													.convertSizeToString(n)
-											+ ")";
+									name += " (" + StringUtils.convertSizeToString(n) + ")";
 								}
 							} catch (NumberFormatException e) {
 								;
@@ -266,8 +260,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 		fPacksFilter = new PacksFilter();
 		fPacksFilters = new PacksFilter[] { fPacksFilter };
 
-		Tree tree = new Tree(parent, SWT.BORDER | SWT.MULTI
-				| SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
+		Tree tree = new Tree(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
 		tree.setHeaderVisible(true);
 		tree.setLinesVisible(true);
 
@@ -319,8 +312,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 		super.dispose();
 
 		if (fPageSelectionListener != null) {
-			getSite().getPage().removePostSelectionListener(
-					fPageSelectionListener);
+			getSite().getPage().removePostSelectionListener(fPageSelectionListener);
 		}
 
 		fDataManager.removeListener(this);
@@ -343,8 +335,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 			@Override
 			public void selectionChanged(SelectionChangedEvent event) {
 
-				IStructuredSelection selection = (IStructuredSelection) event
-						.getSelection();
+				IStructuredSelection selection = (IStructuredSelection) event.getSelection();
 
 				updateButtonsEnableStatus(selection);
 
@@ -358,12 +349,9 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 		fPageSelectionListener = new ISelectionListener() {
 
 			@Override
-			public void selectionChanged(IWorkbenchPart part,
-					ISelection selection) {
+			public void selectionChanged(IWorkbenchPart part, ISelection selection) {
 
-				if ((part instanceof DevicesView)
-						|| (part instanceof BoardsView)
-						|| (part instanceof KeywordsView)) {
+				if ((part instanceof DevicesView) || (part instanceof BoardsView) || (part instanceof KeywordsView)) {
 					friendViewSelectionChanged(part, selection);
 				}
 			}
@@ -372,8 +360,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 	}
 
 	// Called when selection in the _part_View change
-	protected void friendViewSelectionChanged(IWorkbenchPart part,
-			ISelection selection) {
+	protected void friendViewSelectionChanged(IWorkbenchPart part, ISelection selection) {
 
 		if (selection.isEmpty()) {
 
@@ -440,8 +427,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 			if (Type.VERSION.equals(type)) {
 				int size = 0;
 				try {
-					size = Integer.valueOf(node.getProperty(
-							Property.ARCHIVE_SIZE, "0"));
+					size = Integer.valueOf(node.getProperty(Property.ARCHIVE_SIZE, "0"));
 				} catch (NumberFormatException e) {
 					;
 				}
@@ -542,13 +528,11 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 				// or a site from within a editor or view:
 				IServiceLocator serviceLocator = getSite();
 
-				ICommandService commandService = (ICommandService) serviceLocator
-						.getService(ICommandService.class);
+				ICommandService commandService = (ICommandService) serviceLocator.getService(ICommandService.class);
 
 				try {
 					// Lookup commmand with its ID
-					Command command = commandService
-							.getCommand("ilg.gnuarmeclipse.packs.commands.updateCommand");
+					Command command = commandService.getCommand("ilg.gnuarmeclipse.packs.commands.updateCommand");
 
 					// Optionally pass a ExecutionEvent instance, default
 					// no-param arg creates blank event
@@ -561,10 +545,9 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 			}
 		};
 		fUpdateAction.setText(Messages.PacksView_UpdateAction_text);
+		fUpdateAction.setToolTipText(Messages.PacksView_UpdateAction_toolTipText);
 		fUpdateAction
-				.setToolTipText(Messages.PacksView_UpdateAction_toolTipText);
-		fUpdateAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
-				Activator.PLUGIN_ID, "icons/refresh_nav.gif"));
+				.setImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/refresh_nav.gif"));
 
 		// -----
 		fInstallAction = new Action() {
@@ -573,8 +556,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 				// System.out.println("m_installAction.run();");
 
-				TreeSelection selection = (TreeSelection) fViewer
-						.getSelection();
+				TreeSelection selection = (TreeSelection) fViewer.getSelection();
 				if (Activator.getInstance().isDebugging()) {
 					System.out.println(selection);
 				}
@@ -584,10 +566,9 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 			}
 		};
 		fInstallAction.setText(Messages.PacksView_InstallAction_text);
+		fInstallAction.setToolTipText(Messages.PacksView_InstallAction_toolTipText);
 		fInstallAction
-				.setToolTipText(Messages.PacksView_InstallAction_toolTipText);
-		fInstallAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
-				Activator.PLUGIN_ID, "icons/package_mode.png"));
+				.setImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/package_mode.png"));
 		fInstallAction.setEnabled(false);
 
 		// -----
@@ -597,8 +578,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 				// System.out.println("m_removeAction.run();");
 
-				TreeSelection selection = (TreeSelection) fViewer
-						.getSelection();
+				TreeSelection selection = (TreeSelection) fViewer.getSelection();
 				// System.out.println(selection);
 
 				Job job = new RemoveJob("Remove Packs", selection);
@@ -606,10 +586,9 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 			}
 		};
 		fRemoveAction.setText(Messages.PacksView_RemoveAction_text);
+		fRemoveAction.setToolTipText(Messages.PacksView_RemoveAction_toolTipText);
 		fRemoveAction
-				.setToolTipText(Messages.PacksView_RemoveAction_toolTipText);
-		fRemoveAction.setImageDescriptor(Activator.imageDescriptorFromPlugin(
-				Activator.PLUGIN_ID, "icons/removeall.png"));
+				.setImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/removeall.png"));
 		fRemoveAction.setEnabled(false);
 
 		// -----
@@ -617,18 +596,15 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 			public void run() {
 
-				TreeSelection selection = (TreeSelection) fViewer
-						.getSelection();
+				TreeSelection selection = (TreeSelection) fViewer.getSelection();
 				if (!selection.isEmpty()) {
 
-					CopyExampleDialog dlg = new CopyExampleDialog(
-							fComposite.getShell(), selection);
+					CopyExampleDialog dlg = new CopyExampleDialog(fComposite.getShell(), selection);
 					if (dlg.open() == Dialog.OK) {
 						String out[] = dlg.getData();
 
 						if (checkCopyDestinationFolders(selection, out)) {
-							Job job = new CopyExampleJob("Copy example",
-									selection, out);
+							Job job = new CopyExampleJob("Copy example", selection, out);
 							job.schedule();
 						}
 					}
@@ -647,8 +623,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 		fExpandAll.setText(Messages.PacksView_ExpandAll_text);
 		fExpandAll.setToolTipText(Messages.PacksView_ExpandAll_toolTipText);
-		fExpandAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
-				Activator.PLUGIN_ID, "icons/expandall.png"));
+		fExpandAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/expandall.png"));
 
 		fCollapseAll = new Action() {
 
@@ -659,8 +634,8 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 		fCollapseAll.setText(Messages.PacksView_CollapseAll_text);
 		fCollapseAll.setToolTipText(Messages.PacksView_CollapseAll_toolTipText);
-		fCollapseAll.setImageDescriptor(Activator.imageDescriptorFromPlugin(
-				Activator.PLUGIN_ID, "icons/collapseall.png"));
+		fCollapseAll
+				.setImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/collapseall.png"));
 	}
 
 	private void hookDoubleClickAction() {
@@ -719,8 +694,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 	// ------------------------------------------------------------------------
 
-	private boolean checkCopyDestinationFolders(TreeSelection selection,
-			String[] param) {
+	private boolean checkCopyDestinationFolders(TreeSelection selection, String[] param) {
 
 		IPath m_destFolderPath = new Path(param[0]);
 
@@ -729,14 +703,11 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 			PackNode exampleNode = (PackNode) sel;
 
-			Leaf outlineExampleNode = exampleNode.getOutline().findChild(
-					Type.EXAMPLE);
+			Leaf outlineExampleNode = exampleNode.getOutline().findChild(Type.EXAMPLE);
 
-			String exampleRelativeFolder = outlineExampleNode
-					.getProperty(Node.FOLDER_PROPERTY);
+			String exampleRelativeFolder = outlineExampleNode.getProperty(Node.FOLDER_PROPERTY);
 
-			File destFolder = m_destFolderPath.append(exampleRelativeFolder)
-					.toFile();
+			File destFolder = m_destFolderPath.append(exampleRelativeFolder).toFile();
 
 			if (destFolder.isDirectory() && (destFolder.listFiles().length > 0)) {
 				isNonEmpty = true;
@@ -751,8 +722,8 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 			msg += "\nDo you agree to delete the previous content?";
 
 			String[] buttons = new String[] { "OK", "Cancel" };
-			MessageDialog dlg = new MessageDialog(fComposite.getShell(), null,
-					null, msg, MessageDialog.ERROR, buttons, 0);
+			MessageDialog dlg = new MessageDialog(fComposite.getShell(), null, null, msg, MessageDialog.ERROR, buttons,
+					0);
 			if (dlg.open() == 0) {
 				return true; // OK
 			}
@@ -806,19 +777,15 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 		} else if (DataManagerEvent.Type.UPDATE_VERSIONS.equals(type)) {
 
 			@SuppressWarnings("unchecked")
-			final List<PackNode> updatedList = (List<PackNode>) event
-					.getPayload();
+			final List<PackNode> updatedList = (List<PackNode>) event.getPayload();
 
 			final Map<String, Node> parentsMap = new HashMap<String, Node>();
 			for (PackNode versionNode : updatedList) {
-				String vendorName = versionNode
-						.getProperty(Property.VENDOR_NAME);
+				String vendorName = versionNode.getProperty(Property.VENDOR_NAME);
 				String packName = versionNode.getProperty(Property.PACK_NAME);
-				String versionName = versionNode
-						.getProperty(Property.VERSION_NAME);
+				String versionName = versionNode.getProperty(Property.VERSION_NAME);
 
-				Node modelNode = fDataManager.findPackVersion(vendorName,
-						packName, versionName);
+				Node modelNode = fDataManager.findPackVersion(vendorName, packName, versionName);
 				updateVersioNode(versionNode, modelNode);
 
 				String key = fDataManager.makeMapKey(vendorName, packName);
@@ -840,8 +807,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 					}
 				}
 
-				packNode.setBooleanProperty(Property.INSTALLED,
-						hasInstalledChildren);
+				packNode.setBooleanProperty(Property.INSTALLED, hasInstalledChildren);
 			}
 
 			// Run the refresh on the GUI thread
@@ -855,8 +821,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 					// refresh(parentsMap.values());
 					fViewer.refresh();
 
-					updateButtonsEnableStatus((IStructuredSelection) fViewer
-							.getSelection());
+					updateButtonsEnableStatus((IStructuredSelection) fViewer.getSelection());
 				}
 			});
 		}
@@ -889,9 +854,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 						Activator.log(e);
 					}
 					if (packsRoot.hasChildren()) {
-						fOut.println("Found " + count
-								+ " package version(s), from "
-								+ packsRoot.getChildren().size()
+						fOut.println("Found " + count + " package version(s), from " + packsRoot.getChildren().size()
 								+ " vendor(s).");
 					} else {
 						fOut.println("Found none.");
@@ -911,8 +874,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 	}
 
 	// Identify outline & external nodes and collect devices from inside.
-	private int getPacksRecursive(Leaf modelNode, PackNode parentPackNode,
-			Node root) {
+	private int getPacksRecursive(Leaf modelNode, PackNode parentPackNode, Node root) {
 
 		int count = 0;
 
@@ -936,8 +898,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 		return count;
 	}
 
-	private int addVersion(PackNode modelNode, PackNode parentPackNode,
-			Node tree) {
+	private int addVersion(PackNode modelNode, PackNode parentPackNode, Node tree) {
 
 		int count = 0;
 		String vendorName = modelNode.getProperty(Property.VENDOR_NAME);
@@ -947,8 +908,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 		Node vendorNode = Node.addUniqueChild(tree, Type.VENDOR, vendorName);
 
-		PackNode packNode = PackNode.addUniqueChild(vendorNode, Type.PACKAGE,
-				packName);
+		PackNode packNode = PackNode.addUniqueChild(vendorNode, Type.PACKAGE, packName);
 
 		if (parentPackNode != null) {
 			packNode.setDescription(parentPackNode.getDescription());
@@ -961,8 +921,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 		// Copy selectors.
 		packNode.copySelectorsRef(parentPackNode);
 
-		PackNode versionNode = PackNode.addUniqueChild(packNode, Type.VERSION,
-				versionName);
+		PackNode versionNode = PackNode.addUniqueChild(packNode, Type.VERSION, versionName);
 
 		versionNode.setDescription(description);
 

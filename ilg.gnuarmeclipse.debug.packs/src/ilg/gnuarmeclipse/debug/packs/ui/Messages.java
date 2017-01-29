@@ -19,7 +19,6 @@ public class Messages extends NLS {
 
 	private static final String MESSAGES = Activator.PLUGIN_ID + ".ui.messages"; //$NON-NLS-1$
 
-
 	static {
 		// initialise above static strings
 		NLS.initializeMessages(MESSAGES, Messages.class);

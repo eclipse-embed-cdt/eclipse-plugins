@@ -17,8 +17,7 @@ import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.ITreeContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
-public abstract class NodeViewContentProvider implements
-		IStructuredContentProvider, ITreeContentProvider {
+public abstract class NodeViewContentProvider implements IStructuredContentProvider, ITreeContentProvider {
 
 	protected Viewer fViewer;
 

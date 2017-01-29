@@ -61,8 +61,7 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 	public void createInitialLayout(IPageLayout layout) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out
-					.println("CodeRedPerspectiveFactory.createInitialLayout()");
+			System.out.println("CodeRedPerspectiveFactory.createInitialLayout()");
 		}
 
 		createLayout(layout);
@@ -85,8 +84,7 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 		Bundle bundle;
 
 		String editorId = layout.getEditorArea();
-		IFolderLayout topLeftLayout = layout.createFolder("topLeft",
-				IPageLayout.LEFT, 0.33F, editorId);
+		IFolderLayout topLeftLayout = layout.createFolder("topLeft", IPageLayout.LEFT, 0.33F, editorId);
 		topLeftLayout.addView(IPageLayout.ID_PROJECT_EXPLORER);
 		topLeftLayout.addPlaceholder("org.eclipse.cdt.ui.CView");
 		topLeftLayout.addPlaceholder(IPageLayout.ID_BOOKMARKS);
@@ -94,12 +92,10 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 		topLeftLayout.addView(IDebugUIConstants.ID_REGISTER_VIEW);
 		bundle = Platform.getBundle("ilg.gnuarmeclipse.debug.gdbjtag");
 		if (bundle != null) {
-			topLeftLayout
-					.addView("ilg.gnuarmeclipse.debug.gdbjtag.ui.views.PeripheralsView");
+			topLeftLayout.addView("ilg.gnuarmeclipse.debug.gdbjtag.ui.views.PeripheralsView");
 		}
 
-		IFolderLayout bottomLeftLayout = layout.createFolder("bottomLeft",
-				IPageLayout.BOTTOM, 0.5F, "topLeft");
+		IFolderLayout bottomLeftLayout = layout.createFolder("bottomLeft", IPageLayout.BOTTOM, 0.5F, "topLeft");
 
 		// Here the QuickstartView was placed.
 		bottomLeftLayout.addView(IDebugUIConstants.ID_VARIABLE_VIEW);
@@ -107,27 +103,22 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 		bottomLeftLayout.addView(IPageLayout.ID_OUTLINE);
 		bottomLeftLayout.addPlaceholder(IDebugUIConstants.ID_EXPRESSION_VIEW);
 
-		IPlaceholderFolderLayout topLayout = layout.createPlaceholderFolder(
-				"top", 3, 0.175F, editorId);
+		IPlaceholderFolderLayout topLayout = layout.createPlaceholderFolder("top", 3, 0.175F, editorId);
 		topLayout.addPlaceholder(IDebugUIConstants.ID_DEBUG_VIEW);
 
-		IFolderLayout consoleLayout = layout.createFolder("consoleEtc",
-				IPageLayout.BOTTOM, 0.8F, editorId);
+		IFolderLayout consoleLayout = layout.createFolder("consoleEtc", IPageLayout.BOTTOM, 0.8F, editorId);
 		consoleLayout.addView(IConsoleConstants.ID_CONSOLE_VIEW);
 		consoleLayout.addView(IPageLayout.ID_PROBLEM_VIEW);
 		consoleLayout.addPlaceholder(IPageLayout.ID_PROGRESS_VIEW);
 		consoleLayout.addView(IDebugUIConstants.ID_MEMORY_VIEW);
 
-		IFolderLayout bottomLayout = layout.createFolder("bottom",
-				IPageLayout.BOTTOM, 0.75F, editorId);
+		IFolderLayout bottomLayout = layout.createFolder("bottom", IPageLayout.BOTTOM, 0.75F, editorId);
 
 		// TODO: add placeholder for SWV & other tracing, when available.
 
-		IPlaceholderFolderLayout sideRightLayout = layout
-				.createPlaceholderFolder("sideRight", IPageLayout.RIGHT, 0.66F,
-						editorId);
-		sideRightLayout
-				.addPlaceholder("org.eclipse.cdt.dsf.debug.ui.disassembly.view");
+		IPlaceholderFolderLayout sideRightLayout = layout.createPlaceholderFolder("sideRight", IPageLayout.RIGHT, 0.66F,
+				editorId);
+		sideRightLayout.addPlaceholder("org.eclipse.cdt.dsf.debug.ui.disassembly.view");
 
 	}
 
@@ -140,8 +131,7 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 	private boolean isDebugViewVisble() {
 
 		boolean bool = false;
-		IWorkbenchPage[] pages = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getPages();
+		IWorkbenchPage[] pages = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPages();
 		for (int i = 0; i < pages.length; i++) {
 			IViewReference[] refs = pages[i].getViewReferences();
 			for (int j = 0; j < refs.length; j++) {
@@ -165,8 +155,7 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 	 */
 	private void showView(final String id) {
 
-		final IWorkbenchPage[] pages = PlatformUI.getWorkbench()
-				.getActiveWorkbenchWindow().getPages();
+		final IWorkbenchPage[] pages = PlatformUI.getWorkbench().getActiveWorkbenchWindow().getPages();
 
 		Display.getDefault().asyncExec(new Runnable() {
 			public void run() {
@@ -179,8 +168,7 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 		});
 	}
 
-	private static final String[] launchIds = {
-			"ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationType",
+	private static final String[] launchIds = { "ilg.gnuarmeclipse.debug.gdbjtag.jlink.launchConfigurationType",
 			"ilg.gnuarmeclipse.debug.gdbjtag.qemu.launchConfigurationType",
 			"ilg.gnuarmeclipse.debug.gdbjtag.openocd.launchConfigurationType" };
 
@@ -191,10 +179,8 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 	private void setLaunchPerspective() {
 
 		String[] ids = launchIds;
-		ILaunchManager launchManager = DebugPlugin.getDefault()
-				.getLaunchManager();
-		ILaunchConfigurationType[] types = launchManager
-				.getLaunchConfigurationTypes();
+		ILaunchManager launchManager = DebugPlugin.getDefault().getLaunchManager();
+		ILaunchConfigurationType[] types = launchManager.getLaunchConfigurationTypes();
 		ArrayList<ILaunchConfigurationType> list = new ArrayList<ILaunchConfigurationType>();
 		for (int i = 0; i < types.length; i++) {
 			String id = types[i].getIdentifier();

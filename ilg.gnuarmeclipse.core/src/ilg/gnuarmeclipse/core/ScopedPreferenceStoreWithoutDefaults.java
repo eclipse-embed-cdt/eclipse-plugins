@@ -23,8 +23,7 @@ public class ScopedPreferenceStoreWithoutDefaults extends ScopedPreferenceStore 
 
 	// ------------------------------------------------------------------------
 
-	public ScopedPreferenceStoreWithoutDefaults(IScopeContext context,
-			String qualifier) {
+	public ScopedPreferenceStoreWithoutDefaults(IScopeContext context, String qualifier) {
 		super(context, qualifier);
 	}
 
@@ -38,8 +37,7 @@ public class ScopedPreferenceStoreWithoutDefaults extends ScopedPreferenceStore 
 	 * @return a string value or null if not found.
 	 */
 	protected String internalGet(String key) {
-		return Platform.getPreferencesService().get(key, null,
-				getPreferenceNodes(false));
+		return Platform.getPreferencesService().get(key, null, getPreferenceNodes(false));
 	}
 
 	/**

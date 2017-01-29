@@ -48,8 +48,7 @@ public class Repos {
 	public static final String XCDL_CMSIS_PACK_TYPE = "XCDL/CMSIS Pack";
 
 	// Used in NewSiteDialog.java.
-	public static final String[] TYPES = { CMSIS_PACK_TYPE,
-			XCDL_CMSIS_PACK_TYPE };
+	public static final String[] TYPES = { CMSIS_PACK_TYPE, XCDL_CMSIS_PACK_TYPE };
 
 	private static final Repos fgInstance;
 
@@ -90,8 +89,7 @@ public class Repos {
 		map = new HashMap<String, Object>();
 		map.put("type", XCDL_CMSIS_PACK_TYPE);
 		map.put("name", "GNU ARM Eclipse");
-		map.put("url",
-				"http://gnuarmeclipse.sourceforge.net/packages/content.xml");
+		map.put("url", "http://gnuarmeclipse.sourceforge.net/packages/content.xml");
 		list.add(map);
 
 		fList = list;
@@ -158,19 +156,16 @@ public class Repos {
 	}
 
 	// Parse the file containing the list of repositories
-	private List<Map<String, Object>> parseFile() throws IOException,
-			ParserConfigurationException, SAXException {
+	private List<Map<String, Object>> parseFile() throws IOException, ParserConfigurationException, SAXException {
 
 		File file = PacksStorage.getFileObject(REPOS_FILE_NAME);
 		if (!file.exists()) {
-			throw new UsingDefaultFileException("File " + REPOS_FILE_NAME
-					+ " does not exist, using defaults.");
+			throw new UsingDefaultFileException("File " + REPOS_FILE_NAME + " does not exist, using defaults.");
 		}
 
 		InputSource inputSource = new InputSource(new FileInputStream(file));
 
-		DocumentBuilder parser = DocumentBuilderFactory.newInstance()
-				.newDocumentBuilder();
+		DocumentBuilder parser = DocumentBuilderFactory.newInstance().newDocumentBuilder();
 		Document document = parser.parse(inputSource);
 
 		Element repositoriesElement = document.getDocumentElement();
@@ -181,16 +176,14 @@ public class Repos {
 		List<Map<String, Object>> sitesList;
 		sitesList = new ArrayList<Map<String, Object>>();
 
-		List<Element> repositoryElements = Xml.getChildrenElementsList(
-				repositoriesElement, "repository");
+		List<Element> repositoryElements = Xml.getChildrenElementsList(repositoriesElement, "repository");
 		for (Element repositoryElement : repositoryElements) {
 
 			String type = "(unknown)";
 			String url = "(unknown)";
 			String name = "";
 
-			List<Element> childElements = Xml
-					.getChildrenElementsList(repositoryElement);
+			List<Element> childElements = Xml.getChildrenElementsList(repositoryElement);
 			for (Element childElement : childElements) {
 
 				String elementName = childElement.getNodeName();
@@ -239,12 +232,9 @@ public class Repos {
 			for (Map<String, Object> site : sitesList) {
 				writer.println("  <repository>");
 
-				writer.println("    <type>"
-						+ Xml.xmlEscape((String) site.get("type")) + "</type>");
-				writer.println("    <name>"
-						+ Xml.xmlEscape((String) site.get("name")) + "</name>");
-				writer.println("    <url>"
-						+ Xml.xmlEscape((String) site.get("url")) + "</url>");
+				writer.println("    <type>" + Xml.xmlEscape((String) site.get("type")) + "</type>");
+				writer.println("    <name>" + Xml.xmlEscape((String) site.get("name")) + "</name>");
+				writer.println("    <url>" + Xml.xmlEscape((String) site.get("url")) + "</url>");
 				writer.println("  </repository>");
 			}
 			writer.println("</repositories>");
@@ -303,8 +293,7 @@ public class Repos {
 		s = s.replace(' ', '_');
 
 		// Cut suffixes
-		for (String suffix : new String[] { "content.xml", "index.idx",
-				"index.xml", ".xml", ".idx" }) {
+		for (String suffix : new String[] { "content.xml", "index.idx", "index.xml", ".xml", ".idx" }) {
 
 			int ix = s.lastIndexOf(suffix);
 			if (ix > 0) {
@@ -322,10 +311,8 @@ public class Repos {
 
 	public String getRepoContentXmlFromUrl(String url) {
 
-		String fileName = PacksStorage.CACHE_FOLDER + "/"
-				+ PacksStorage.CONTENT_FILE_NAME_PREFIX
-				+ getFileNamePrefixFromUrl(url)
-				+ PacksStorage.CONTENT_FILE_NAME_SUFFIX;
+		String fileName = PacksStorage.CACHE_FOLDER + "/" + PacksStorage.CONTENT_FILE_NAME_PREFIX
+				+ getFileNamePrefixFromUrl(url) + PacksStorage.CONTENT_FILE_NAME_SUFFIX;
 
 		return fileName;
 	}
@@ -344,8 +331,7 @@ public class Repos {
 			// String name = (String) map.get("name");
 			String url = (String) map.get("url");
 
-			if (Repos.CMSIS_PACK_TYPE.equals(type)
-					|| Repos.XCDL_CMSIS_PACK_TYPE.equals(type)) {
+			if (Repos.CMSIS_PACK_TYPE.equals(type) || Repos.XCDL_CMSIS_PACK_TYPE.equals(type)) {
 
 				String fileName = getRepoContentXmlFromUrl(url);
 
@@ -395,13 +381,11 @@ public class Repos {
 		}
 	}
 
-	private Node parseContentFile(File file) throws IOException,
-			ParserConfigurationException, SAXException {
+	private Node parseContentFile(File file) throws IOException, ParserConfigurationException, SAXException {
 
 		long beginTime = System.currentTimeMillis();
 
-		fOut.println("Parsing cached content file \"" + file.getPath()
-				+ "\"...");
+		fOut.println("Parsing cached content file \"" + file.getPath() + "\"...");
 
 		if (!file.exists()) {
 			throw new IOException("File does not exist, ignored.");

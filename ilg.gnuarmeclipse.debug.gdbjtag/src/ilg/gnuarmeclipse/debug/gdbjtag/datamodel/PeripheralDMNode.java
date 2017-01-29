@@ -85,8 +85,7 @@ public class PeripheralDMNode extends SvdPeripheralDMNode implements IAdaptable 
 	@Override
 	public String toString() {
 
-		return "[" + getClass().getSimpleName() + ": " + fMemoryBlock + ", "
-				+ super.toString() + "]";
+		return "[" + getClass().getSimpleName() + ": " + fMemoryBlock + ", " + super.toString() + "]";
 	}
 
 	// ------------------------------------------------------------------------

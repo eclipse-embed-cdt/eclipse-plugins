@@ -30,8 +30,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * preferences can be accessed directly via the preference store.
  */
 
-public class FolderPage extends FieldEditorPreferencePage implements
-		IWorkbenchPreferencePage {
+public class FolderPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	public FolderPage() {
 		super(GRID);
@@ -45,10 +44,8 @@ public class FolderPage extends FieldEditorPreferencePage implements
 	 * editor knows how to save and restore itself.
 	 */
 	public void createFieldEditors() {
-		addField(new DirectoryFieldEditor(Preferences.PACKS_FOLDER_PATH,
-				"&Packages folder:", getFieldEditorParent()));
-		addField(new StringFieldEditor(Preferences.PACKS_MACRO_NAME,
-				"&Macro name:", getFieldEditorParent()));
+		addField(new DirectoryFieldEditor(Preferences.PACKS_FOLDER_PATH, "&Packages folder:", getFieldEditorParent()));
+		addField(new StringFieldEditor(Preferences.PACKS_MACRO_NAME, "&Macro name:", getFieldEditorParent()));
 	}
 
 	public void init(IWorkbench workbench) {

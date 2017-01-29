@@ -29,8 +29,8 @@ public class ExtraPagesProvider implements IPagesAfterTemplateSelectionProvider 
 	IWizardDataPage[] pages;
 
 	@Override
-	public IWizardDataPage[] createAdditionalPages(IWorkbenchWizard wizard,
-			IWorkbench workbench, IStructuredSelection selection) {
+	public IWizardDataPage[] createAdditionalPages(IWorkbenchWizard wizard, IWorkbench workbench,
+			IStructuredSelection selection) {
 
 		pages = new IWizardDataPage[1];
 		pages[0] = new ProcessorExpertPage();
@@ -47,8 +47,7 @@ public class ExtraPagesProvider implements IPagesAfterTemplateSelectionProvider 
 	/**
 	 * An example implementation of {@link IWizardDataPage} for test purposes.
 	 */
-	static class ProcessorExpertPage extends AbstractWizardDataPage implements
-			IWizardDataPage {
+	static class ProcessorExpertPage extends AbstractWizardDataPage implements IWizardDataPage {
 
 		public ProcessorExpertPage() {
 			super("Processor Expert", "Processor Expert Wizard", null);
@@ -67,5 +66,5 @@ public class ExtraPagesProvider implements IPagesAfterTemplateSelectionProvider 
 			setControl(l);
 		}
 	}
-	
+
 }

@@ -253,14 +253,14 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 
 		launch.setServiceFactory(newServiceFactory(config, gdbVersion, launch.getLaunchMode()));
 
-        // Time to start the DSF stuff.  First initialize the launch.
-        // We do this here to avoid having to cleanup in case
-        // the launch is cancelled above.
-        // This initialize() call is the first thing that requires cleanup
-        // followed by the steps further down which also need cleanup.
-    	launch.initialize();
+		// Time to start the DSF stuff. First initialize the launch.
+		// We do this here to avoid having to cleanup in case
+		// the launch is cancelled above.
+		// This initialize() call is the first thing that requires cleanup
+		// followed by the steps further down which also need cleanup.
+		launch.initialize();
 
-    	// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
+		// vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
 		boolean succeed = false;
 
@@ -422,16 +422,16 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 				tracker.dispose();
 				control.completeInitialization(
 						new RequestMonitorWithProgress(ImmediateExecutor.getInstance(), subMon2) {
-					@Override
-					protected void handleCompleted() {
-						if (isCanceled()) {
-							rm.cancel();
-						} else {
-							rm.setStatus(getStatus());
-						}
-						rm.done();
-					}
-				});
+							@Override
+							protected void handleCompleted() {
+								if (isCanceled()) {
+									rm.cancel();
+								} else {
+									rm.setStatus(getStatus());
+								}
+								rm.done();
+							}
+						});
 			}
 		};
 

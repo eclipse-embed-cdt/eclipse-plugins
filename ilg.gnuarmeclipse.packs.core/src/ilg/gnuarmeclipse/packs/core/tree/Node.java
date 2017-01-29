@@ -70,11 +70,9 @@ public class Node extends Leaf {
 	public static final String VENDOR_PROPERTY = "vendor";
 	public static final String VERSION_PROPERTY = "version";
 
-	public static final String CONDITION_ATTRIBUTES[] = { "Dfamily",
-			"DsubFamily", "Dvariant", "Dvendor", "Dname", "Dcore", "Dfpu",
-			"Dmpu", "Dendian", "Cvendor", "Cbundle", "Cclass", "Cgroup",
-			"Csub", "Cvariant", "Cversion", "Capiversion", "Tcompiler",
-			"condition" };
+	public static final String CONDITION_ATTRIBUTES[] = { "Dfamily", "DsubFamily", "Dvariant", "Dvendor", "Dname",
+			"Dcore", "Dfpu", "Dmpu", "Dendian", "Cvendor", "Cbundle", "Cclass", "Cgroup", "Csub", "Cvariant",
+			"Cversion", "Capiversion", "Tcompiler", "condition" };
 
 	protected List<Leaf> fChildren;
 

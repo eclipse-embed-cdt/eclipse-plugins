@@ -16,8 +16,7 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.ui.memory.IMemoryRendering;
 import org.eclipse.debug.ui.memory.IMemoryRenderingTypeDelegate;
 
-public class PeripheralRenderingDelegate implements
-		IMemoryRenderingTypeDelegate {
+public class PeripheralRenderingDelegate implements IMemoryRenderingTypeDelegate {
 
 	// ------------------------------------------------------------------------
 

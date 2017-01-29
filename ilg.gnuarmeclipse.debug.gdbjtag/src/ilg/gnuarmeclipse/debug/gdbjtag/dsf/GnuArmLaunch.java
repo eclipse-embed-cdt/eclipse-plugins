@@ -63,8 +63,7 @@ public class GnuArmLaunch extends GdbLaunch {
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmLaunch(ILaunchConfiguration launchConfiguration, String mode,
-			ISourceLocator locator) {
+	public GnuArmLaunch(ILaunchConfiguration launchConfiguration, String mode, ISourceLocator locator) {
 
 		super(launchConfiguration, mode, locator);
 
@@ -77,8 +76,7 @@ public class GnuArmLaunch extends GdbLaunch {
 	private DsfServicesTracker getTracker() {
 
 		if (fTracker == null)
-			fTracker = new DsfServicesTracker(Activator.getInstance()
-					.getBundle().getBundleContext(), fSession.getId());
+			fTracker = new DsfServicesTracker(Activator.getInstance().getBundle().getBundleContext(), fSession.getId());
 
 		return fTracker;
 	}
@@ -111,16 +109,15 @@ public class GnuArmLaunch extends GdbLaunch {
 			Runnable initRunnable = new DsfRunnable() {
 				@Override
 				public void run() {
-					fTracker = new DsfServicesTracker(Activator.getInstance()
-							.getBundle().getBundleContext(), fSession.getId());
+					fTracker = new DsfServicesTracker(Activator.getInstance().getBundle().getBundleContext(),
+							fSession.getId());
 				}
 			};
 
 			// Invoke the execution code and block waiting for the result.
 			fExecutor.submit(initRunnable).get();
 		} catch (Exception e) {
-			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
-					IDsfStatusConstants.INTERNAL_ERROR,
+			Activator.log(new Status(IStatus.ERROR, Activator.PLUGIN_ID, IDsfStatusConstants.INTERNAL_ERROR,
 					"Error initializing launch", e)); //$NON-NLS-1$
 		}
 	}
@@ -134,18 +131,13 @@ public class GnuArmLaunch extends GdbLaunch {
 	 *            a writable copy of the launch configuration.
 	 * @throws CoreException
 	 */
-	protected void provideDefaults(ILaunchConfigurationWorkingCopy config)
-			throws CoreException {
+	protected void provideDefaults(ILaunchConfigurationWorkingCopy config) throws CoreException {
 
-		if (!config
-				.hasAttribute(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE)) {
-			config.setAttribute(
-					IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE, true);
+		if (!config.hasAttribute(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE)) {
+			config.setAttribute(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_IMAGE, true);
 		}
-		if (!config
-				.hasAttribute(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS)) {
-			config.setAttribute(
-					IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS, true);
+		if (!config.hasAttribute(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS)) {
+			config.setAttribute(IGDBJtagConstants.ATTR_USE_PROJ_BINARY_FOR_SYMBOLS, true);
 		}
 		if (!config.hasAttribute(IGDBJtagConstants.ATTR_USE_REMOTE_TARGET)) {
 			config.setAttribute(IGDBJtagConstants.ATTR_USE_REMOTE_TARGET, true);
@@ -183,25 +175,20 @@ public class GnuArmLaunch extends GdbLaunch {
 			fExecutor.submit(new Callable<Object>() {
 				@Override
 				public Object call() throws CoreException {
-					fMemRetrievalManager = new GdbArmMemoryBlockRetrievalManager(
-							GdbLaunchDelegate.GDB_DEBUG_MODEL_ID,
+					fMemRetrievalManager = new GdbArmMemoryBlockRetrievalManager(GdbLaunchDelegate.GDB_DEBUG_MODEL_ID,
 							getLaunchConfiguration(), fSession);
-					fSession.registerModelAdapter(
-							IMemoryBlockRetrievalManager.class,
-							fMemRetrievalManager);
+					fSession.registerModelAdapter(IMemoryBlockRetrievalManager.class, fMemRetrievalManager);
 					fSession.addServiceEventListener(fMemRetrievalManager, null);
 					return null;
 				}
 			}).get();
 		} catch (InterruptedException e) {
-			throw new CoreException(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, 0,
+			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,
 					"Interrupted while waiting for get process callable.", e)); //$NON-NLS-1$
 		} catch (ExecutionException e) {
 			throw (CoreException) e.getCause();
 		} catch (RejectedExecutionException e) {
-			throw new CoreException(new Status(IStatus.ERROR,
-					Activator.PLUGIN_ID, 0,
+			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, 0,
 					"Debugger shut down before launch was completed.", e)); //$NON-NLS-1$
 		}
 	}
@@ -219,18 +206,16 @@ public class GnuArmLaunch extends GdbLaunch {
 		IProcess newProcess = null;
 		try {
 			// Add the CLI process object to the launch.
-			AbstractCLIProcess cliProc = getDsfExecutor().submit(
-					new Callable<AbstractCLIProcess>() {
-						@Override
-						public AbstractCLIProcess call() throws CoreException {
-							IGDBControl gdb = fTracker
-									.getService(IGDBControl.class);
-							if (gdb != null) {
-								return gdb.getCLIProcess();
-							}
-							return null;
-						}
-					}).get();
+			AbstractCLIProcess cliProc = getDsfExecutor().submit(new Callable<AbstractCLIProcess>() {
+				@Override
+				public AbstractCLIProcess call() throws CoreException {
+					IGDBControl gdb = fTracker.getService(IGDBControl.class);
+					if (gdb != null) {
+						return gdb.getCLIProcess();
+					}
+					return null;
+				}
+			}).get();
 
 			// Need to go through DebugPlugin.newProcess so that we can use
 			// the overrideable process factory to allow others to override.
@@ -239,17 +224,14 @@ public class GnuArmLaunch extends GdbLaunch {
 			Map<String, String> attributes = new HashMap<String, String>();
 			attributes.put(IGdbDebugConstants.PROCESS_TYPE_CREATION_ATTR,
 					IGdbDebugConstants.GDB_PROCESS_CREATION_VALUE);
-			newProcess = DebugPlugin.newProcess(this, cliProc, label,
-					attributes);
+			newProcess = DebugPlugin.newProcess(this, cliProc, label, attributes);
 		} catch (InterruptedException e) {
-			throw new CoreException(new Status(IStatus.ERROR,
-					GdbPlugin.PLUGIN_ID, 0,
+			throw new CoreException(new Status(IStatus.ERROR, GdbPlugin.PLUGIN_ID, 0,
 					"Interrupted while waiting for get process callable.", e)); //$NON-NLS-1$
 		} catch (ExecutionException e) {
 			throw (CoreException) e.getCause();
 		} catch (RejectedExecutionException e) {
-			throw new CoreException(new Status(IStatus.ERROR,
-					GdbPlugin.PLUGIN_ID, 0,
+			throw new CoreException(new Status(IStatus.ERROR, GdbPlugin.PLUGIN_ID, 0,
 					"Debugger shut down before launch was completed.", e)); //$NON-NLS-1$
 		}
 

@@ -42,8 +42,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.osgi.framework.BundleContext;
 
-public class PeripheralsService extends AbstractDsfService implements
-		IPeripheralsService {
+public class PeripheralsService extends AbstractDsfService implements IPeripheralsService {
 
 	private ICommandControlService fCommandControl;
 	private PeripheralDMContext[] fPeripheralsDMContexts = null;
@@ -77,14 +76,13 @@ public class PeripheralsService extends AbstractDsfService implements
 		}
 
 		// Get and remember the command control service
-		fCommandControl = ((ICommandControlService) getServicesTracker()
-				.getService(ICommandControlService.class));
+		fCommandControl = ((ICommandControlService) getServicesTracker().getService(ICommandControlService.class));
 
 		// Register this service to DSF.
 		// For completeness, use both the interface and the class name.
 		// Used in PeripheralVMNode by interface name.
-		register(new String[] { IPeripheralsService.class.getName(),
-				PeripheralsService.class.getName() }, new Hashtable());
+		register(new String[] { IPeripheralsService.class.getName(), PeripheralsService.class.getName() },
+				new Hashtable());
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("PeripheralsService registered " + this);
@@ -114,8 +112,7 @@ public class PeripheralsService extends AbstractDsfService implements
 	}
 
 	@Override
-	public void getPeripherals(IContainerDMContext containerDMContext,
-			DataRequestMonitor<IPeripheralDMContext[]> drm) {
+	public void getPeripherals(IContainerDMContext containerDMContext, DataRequestMonitor<IPeripheralDMContext[]> drm) {
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("PeripheralsService.getPeripherals()");
@@ -137,15 +134,13 @@ public class PeripheralsService extends AbstractDsfService implements
 					.getLaunchConfiguration();
 
 			// The second step is to get the build configuration description.
-			ICConfigurationDescription cConfigDescription = EclipseUtils
-					.getBuildConfigDescription(launchConfiguration);
+			ICConfigurationDescription cConfigDescription = EclipseUtils.getBuildConfigDescription(launchConfiguration);
 
 			if (cConfigDescription != null) {
 				// System.out.println(cConfigDescription);
 
 				// The third step is to get the CDT configuration.
-				IConfiguration config = EclipseUtils
-						.getConfigurationFromDescription(cConfigDescription);
+				IConfiguration config = EclipseUtils.getConfigurationFromDescription(cConfigDescription);
 				if (Activator.getInstance().isDebugging()) {
 					System.out.println(config);
 				}
@@ -154,15 +149,11 @@ public class PeripheralsService extends AbstractDsfService implements
 					String vendorId = null;
 					String deviceName = null;
 
-					CProjectExtraDataManagerProxy dataManager = CProjectExtraDataManagerProxy
-							.getInstance();
-					Map<String, String> propertiesMap = dataManager
-							.getExtraProperties(config);
+					CProjectExtraDataManagerProxy dataManager = CProjectExtraDataManagerProxy.getInstance();
+					Map<String, String> propertiesMap = dataManager.getExtraProperties(config);
 					if (propertiesMap != null) {
-						vendorId = propertiesMap
-								.get(CProjectPacksStorage.DEVICE_VENDOR_ID);
-						deviceName = propertiesMap
-								.get(CProjectPacksStorage.DEVICE_NAME);
+						vendorId = propertiesMap.get(CProjectPacksStorage.DEVICE_VENDOR_ID);
+						deviceName = propertiesMap.get(CProjectPacksStorage.DEVICE_NAME);
 					}
 
 					if (vendorId != null && deviceName != null) {
@@ -170,8 +161,7 @@ public class PeripheralsService extends AbstractDsfService implements
 						Leaf tree = SvdUtils.getTree(vendorId, deviceName);
 						List<Leaf> list = SvdUtils.getPeripherals(tree);
 
-						fPeripheralsDMContexts = createPeripheralsContexts(
-								containerDMContext, list);
+						fPeripheralsDMContexts = createPeripheralsContexts(containerDMContext, list);
 
 						drm.setData(fPeripheralsDMContexts);
 						drm.done();
@@ -179,9 +169,7 @@ public class PeripheralsService extends AbstractDsfService implements
 
 					} else {
 
-						drm.setStatus(new Status(
-								Status.ERROR,
-								Activator.PLUGIN_ID,
+						drm.setStatus(new Status(Status.ERROR, Activator.PLUGIN_ID,
 								"There are no peripheral descriptions available, assign a device to the project."));
 						drm.done();
 						return;
@@ -194,13 +182,11 @@ public class PeripheralsService extends AbstractDsfService implements
 			}
 		}
 
-		drm.setStatus(new Status(Status.ERROR, Activator.PLUGIN_ID,
-				"No peripherals available."));
+		drm.setStatus(new Status(Status.ERROR, Activator.PLUGIN_ID, "No peripherals available."));
 		drm.done();
 	}
 
-	private PeripheralDMContext[] createPeripheralsContexts(
-			IDMContext parentIDMContext, List<Leaf> list) {
+	private PeripheralDMContext[] createPeripheralsContexts(IDMContext parentIDMContext, List<Leaf> list) {
 
 		PeripheralDMContext contexts[] = new PeripheralDMContext[list.size()];
 		IDMContext[] parents;

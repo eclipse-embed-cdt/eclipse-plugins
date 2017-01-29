@@ -28,13 +28,11 @@ public class FloatABIManagedOptionHandleValue extends ManagedOptionValueHandler 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.cdt.managedbuilder.core.IManagedOptionValueHandler#handleValue
-	 * (IConfiguration,IToolChain,IOption,String,int)
+	 * @see org.eclipse.cdt.managedbuilder.core.IManagedOptionValueHandler#
+	 * handleValue (IConfiguration,IToolChain,IOption,String,int)
 	 */
 	@SuppressWarnings("unused")
-	public boolean handleValue(IBuildObject configuration,
-			IHoldsOptions holder, IOption option, String extraArgument,
+	public boolean handleValue(IBuildObject configuration, IHoldsOptions holder, IOption option, String extraArgument,
 			int event) {
 
 		// ManagedOptionValueHandlerDebug.dump(configuration, holder, option,
@@ -45,39 +43,32 @@ public class FloatABIManagedOptionHandleValue extends ManagedOptionValueHandler 
 				FolderInfo oFolderInfo;
 				oFolderInfo = (FolderInfo) configuration;
 
-				IConfiguration config = ((FolderInfo) configuration)
-						.getParent();
+				IConfiguration config = ((FolderInfo) configuration).getParent();
 				IToolChain toolchain = config.getToolChain();
 
 				IOption opt;
 				String val;
 				try {
-					opt = toolchain
-							.getOptionBySuperClassId(Option.OPTION_ARM_TARGET_FAMILY);
+					opt = toolchain.getOptionBySuperClassId(Option.OPTION_ARM_TARGET_FAMILY);
 					val = opt.getStringValue();
 					if (!val.endsWith(Option.OPTION_ARM_MCPU_CORTEXM4))
 						return false;
 
-					opt = toolchain
-							.getOptionBySuperClassId(Option.OPTION_ARM_TARGET_FLOAT_ABI);
+					opt = toolchain.getOptionBySuperClassId(Option.OPTION_ARM_TARGET_FLOAT_ABI);
 					val = opt.getStringValue();
 					if (!val.endsWith(Option.OPTION_ARM_FPU_ABI_HARD)) {
 						val = opt.getStringValue();
 						if (!val.endsWith(Option.OPTION_ARM_FPU_ABI_SOFTFP)) {
 
-							opt = toolchain
-									.getOptionBySuperClassId(Option.OPTION_ARM_TARGET_FLOAT_UNIT);
-							config.setOption(toolchain, opt,
-									Option.OPTION_ARM_FPU_UNIT_DEFAULT);
+							opt = toolchain.getOptionBySuperClassId(Option.OPTION_ARM_TARGET_FLOAT_UNIT);
+							config.setOption(toolchain, opt, Option.OPTION_ARM_FPU_UNIT_DEFAULT);
 
 							return false; // neither hard nor softfp;
 						}
 					}
-					opt = toolchain
-							.getOptionBySuperClassId(Option.OPTION_ARM_TARGET_FLOAT_UNIT);
+					opt = toolchain.getOptionBySuperClassId(Option.OPTION_ARM_TARGET_FLOAT_UNIT);
 					// opt.setValue(Option.OPTION_ARM_FPU_UNIT_FPV4SPD16);
-					config.setOption(toolchain, opt,
-							Option.OPTION_ARM_FPU_UNIT_FPV4SPD16);
+					config.setOption(toolchain, opt, Option.OPTION_ARM_FPU_UNIT_FPV4SPD16);
 
 					return true;
 				} catch (BuildException e) {

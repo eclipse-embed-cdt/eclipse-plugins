@@ -80,8 +80,7 @@ public class ParsePdscRunnable implements IRunnableWithProgress {
 
 			fgVersionNode.setOutline(outlineNode);
 			PackNode packNode = (PackNode) fgVersionNode.getParent();
-			if (packNode.getFirstChild().getName()
-					.equals(fgVersionNode.getName())) {
+			if (packNode.getFirstChild().getName().equals(fgVersionNode.getName())) {
 				// If most recent child, make the outline available for the
 				// package node too.
 				packNode.setOutline(outlineNode);

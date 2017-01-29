@@ -80,21 +80,17 @@ import org.eclipse.ui.internal.PluginActionContributionItem;
 import org.eclipse.ui.progress.UIJob;
 
 @SuppressWarnings("restriction")
-public class PeripheralRendering extends AbstractTableRendering implements
-		IMemoryRendering, IDebugEventSetListener, IPropertyChangeListener,
-		ILinkToolTipListener {
+public class PeripheralRendering extends AbstractTableRendering
+		implements IMemoryRendering, IDebugEventSetListener, IPropertyChangeListener, ILinkToolTipListener {
 
 	// ------------------------------------------------------------------------
 
 	public static final String ID = "ilg.gnuarmeclipse.debug.gdbjtag.memoryRendering";
 
 	private static final PeripheralColumnInfo[] fgColumnInfo = new PeripheralColumnInfo[] {
-			new PeripheralColumnInfo("Register", 4,
-					PeripheralColumnInfo.ColumnType.REGISTER, true), // sortable
-			new PeripheralColumnInfo("Address", 2,
-					PeripheralColumnInfo.ColumnType.ADDRESS, true), // sortable
-			new PeripheralColumnInfo("Value", 2,
-					PeripheralColumnInfo.ColumnType.VALUE, false) };
+			new PeripheralColumnInfo("Register", 4, PeripheralColumnInfo.ColumnType.REGISTER, true), // sortable
+			new PeripheralColumnInfo("Address", 2, PeripheralColumnInfo.ColumnType.ADDRESS, true), // sortable
+			new PeripheralColumnInfo("Value", 2, PeripheralColumnInfo.ColumnType.VALUE, false) };
 
 	// ------------------------------------------------------------------------
 
@@ -118,8 +114,7 @@ public class PeripheralRendering extends AbstractTableRendering implements
 	public PeripheralRendering(String renderingId) {
 		super(renderingId);
 
-		fRefreshJob = new SystemUIJob(
-				String.valueOf(getClass().getSimpleName()) + "#refresh") {
+		fRefreshJob = new SystemUIJob(String.valueOf(getClass().getSimpleName()) + "#refresh") {
 
 			public IStatus runInUIThread(IProgressMonitor pm) {
 				if (!fPeripheralViewer.getTree().isDisposed()) {
@@ -165,8 +160,7 @@ public class PeripheralRendering extends AbstractTableRendering implements
 	public Control createControl(Composite parent) {
 
 		Composite composite = new Composite(parent, SWT.BORDER);
-		fPeripheralViewer = new TreeViewer(composite, SWT.FULL_SELECTION
-				| SWT.H_SCROLL | SWT.V_SCROLL);
+		fPeripheralViewer = new TreeViewer(composite, SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
 		Control control = fPeripheralViewer.getControl();
 		TreeColumnLayout treeColumnLayout = new TreeColumnLayout();
 		composite.setLayout((Layout) treeColumnLayout);
@@ -174,20 +168,17 @@ public class PeripheralRendering extends AbstractTableRendering implements
 		fPeripheralViewer.setAutoExpandLevel(-1);
 		Tree tree = fPeripheralViewer.getTree();
 
-		fPeripheralViewer
-				.setContentProvider((IContentProvider) new PeripheralContentProvider(
-						fMemoryBlock.getPeripheralRegisterGroup()));
+		fPeripheralViewer.setContentProvider(
+				(IContentProvider) new PeripheralContentProvider(fMemoryBlock.getPeripheralRegisterGroup()));
 
 		fComparator = new PeripheralViewerComparator();
 		fPeripheralViewer.setComparator(fComparator);
 
-		LinkToolTip.enableFor((ColumnViewer) fPeripheralViewer,
-				SWT.ICON_INFORMATION, (ILinkToolTipListener) this);
+		LinkToolTip.enableFor((ColumnViewer) fPeripheralViewer, SWT.ICON_INFORMATION, (ILinkToolTipListener) this);
 
 		for (int i = 0; i < PeripheralRendering.fgColumnInfo.length; ++i) {
 
-			TreeViewerColumn treeViewerColumn = new TreeViewerColumn(
-					fPeripheralViewer, SWT.ON_TOP);
+			TreeViewerColumn treeViewerColumn = new TreeViewerColumn(fPeripheralViewer, SWT.ON_TOP);
 			TreeColumn treeColumn = treeViewerColumn.getColumn();
 
 			String headerName = PeripheralRendering.fgColumnInfo[i].header;
@@ -197,29 +188,21 @@ public class PeripheralRendering extends AbstractTableRendering implements
 			treeColumn.setMoveable(true);
 
 			treeColumnLayout.setColumnData((Widget) treeColumn,
-					(ColumnLayoutData) new ColumnWeightData(
-							PeripheralRendering.fgColumnInfo[i].weight,
-							PeripheralRendering.fgColumnInfo[i].weight * 5,
-							true));
+					(ColumnLayoutData) new ColumnWeightData(PeripheralRendering.fgColumnInfo[i].weight,
+							PeripheralRendering.fgColumnInfo[i].weight * 5, true));
 
 			// Set column label provider
-			treeViewerColumn
-					.setLabelProvider((CellLabelProvider) new PeripheralColumnLabelProvider(
-							fPeripheralViewer,
-							(IMemoryBlockExtension) fMemoryBlock,
-							PeripheralRendering.fgColumnInfo[i].type));
+			treeViewerColumn.setLabelProvider((CellLabelProvider) new PeripheralColumnLabelProvider(fPeripheralViewer,
+					(IMemoryBlockExtension) fMemoryBlock, PeripheralRendering.fgColumnInfo[i].type));
 
 			if (PeripheralRendering.fgColumnInfo[i].type == PeripheralColumnInfo.ColumnType.VALUE) {
 
 				// For VALUE columns, add editing support
-				treeViewerColumn
-						.setEditingSupport((EditingSupport) new PeripheralEditingSupport(
-								fPeripheralViewer));
+				treeViewerColumn.setEditingSupport((EditingSupport) new PeripheralEditingSupport(fPeripheralViewer));
 			}
 			if (PeripheralRendering.fgColumnInfo[i].sortable) {
 				// Add a selection listener to make sortable
-				treeColumn.addSelectionListener(getSelectionAdapter(treeColumn,
-						i));
+				treeColumn.addSelectionListener(getSelectionAdapter(treeColumn, i));
 			}
 		}
 
@@ -246,8 +229,7 @@ public class PeripheralRendering extends AbstractTableRendering implements
 		return composite;
 	}
 
-	private SelectionAdapter getSelectionAdapter(final TreeColumn column,
-			final int index) {
+	private SelectionAdapter getSelectionAdapter(final TreeColumn column, final int index) {
 
 		SelectionAdapter selectionAdapter = new SelectionAdapter() {
 			@Override
@@ -272,53 +254,46 @@ public class PeripheralRendering extends AbstractTableRendering implements
 		IMemoryRenderingSynchronizationService synchronizationService = getMemoryRenderingContainer()
 				.getMemoryRenderingSite().getSynchronizationService();
 		if (synchronizationService != null) {
-			synchronizationService.addPropertyChangeListener(
-					(IPropertyChangeListener) this,
+			synchronizationService.addPropertyChangeListener((IPropertyChangeListener) this,
 					new String[] { PROPERTY_SELECTED_ADDRESS });
 		}
 	}
 
 	private void addDebugEventListener() {
-		DebugPlugin.getDefault().addDebugEventListener(
-				(IDebugEventSetListener) this);
+		DebugPlugin.getDefault().addDebugEventListener((IDebugEventSetListener) this);
 	}
 
 	private void removeDebugEventListener() {
-		DebugPlugin.getDefault().removeDebugEventListener(
-				(IDebugEventSetListener) this);
+		DebugPlugin.getDefault().removeDebugEventListener((IDebugEventSetListener) this);
 	}
 
 	// ------------------------------------------------------------------------
 
 	private void trackTreeSelectionChanges() {
 
-		fPeripheralViewer
-				.addSelectionChangedListener((ISelectionChangedListener) new ISelectionChangedListener() {
+		fPeripheralViewer.addSelectionChangedListener((ISelectionChangedListener) new ISelectionChangedListener() {
 
-					public void selectionChanged(
-							SelectionChangedEvent selectionChangedEvent) {
+			public void selectionChanged(SelectionChangedEvent selectionChangedEvent) {
 
-						if (selectionChangedEvent.getSelection() instanceof IStructuredSelection) {
+				if (selectionChangedEvent.getSelection() instanceof IStructuredSelection) {
 
-							Object object;
-							IStructuredSelection selection = (IStructuredSelection) selectionChangedEvent
-									.getSelection();
-							PeripheralRegisterVMNode peripheralRegister = null;
-							object = selection.getFirstElement();
-							if (object instanceof PeripheralRegisterVMNode) {
-								peripheralRegister = (PeripheralRegisterVMNode) object;
-							}
-							postChange(peripheralRegister);
-						}
+					Object object;
+					IStructuredSelection selection = (IStructuredSelection) selectionChangedEvent.getSelection();
+					PeripheralRegisterVMNode peripheralRegister = null;
+					object = selection.getFirstElement();
+					if (object instanceof PeripheralRegisterVMNode) {
+						peripheralRegister = (PeripheralRegisterVMNode) object;
 					}
-				});
+					postChange(peripheralRegister);
+				}
+			}
+		});
 	}
 
 	@Override
 	public void handleDebugEvents(DebugEvent[] events) {
 		for (int i = 0; i < events.length; ++i) {
-			if (events[i].getKind() != 16
-					|| events[i].getSource() != fMemoryBlock)
+			if (events[i].getKind() != 16 || events[i].getSource() != fMemoryBlock)
 				continue;
 			fRefreshJob.schedule();
 		}
@@ -354,8 +329,7 @@ public class PeripheralRendering extends AbstractTableRendering implements
 
 		Object selection = findSelection(bigInteger);
 		if (selection != null) {
-			StructuredSelection structuredSelection = new StructuredSelection(
-					selection);
+			StructuredSelection structuredSelection = new StructuredSelection(selection);
 			fPeripheralViewer.setSelection((ISelection) structuredSelection);
 			Object element = structuredSelection.getFirstElement();
 			if (element != null) {
@@ -369,13 +343,10 @@ public class PeripheralRendering extends AbstractTableRendering implements
 		if (peripheralRegister != null) {
 			try {
 				if (peripheralRegister.isField()) {
-					peripheralRegister = (PeripheralRegisterVMNode) peripheralRegister
-							.getParent();
+					peripheralRegister = (PeripheralRegisterVMNode) peripheralRegister.getParent();
 				}
-				PropertyChangeEvent propertyChangeEvent = new PropertyChangeEvent(
-						(Object) this, PROPERTY_SELECTED_ADDRESS,
-						(Object) null,
-						peripheralRegister.getBigAbsoluteAddress());
+				PropertyChangeEvent propertyChangeEvent = new PropertyChangeEvent((Object) this,
+						PROPERTY_SELECTED_ADDRESS, (Object) null, peripheralRegister.getBigAbsoluteAddress());
 				firePropertyChangedEvent(propertyChangeEvent);
 			} catch (Exception e) {
 			}
@@ -390,8 +361,7 @@ public class PeripheralRendering extends AbstractTableRendering implements
 		}
 		if (propertyChangeEvent.getProperty().equals(PROPERTY_SELECTED_ADDRESS)
 				&& propertyChangeEvent.getNewValue() instanceof BigInteger) {
-			handleSelectedAddressChanged((BigInteger) propertyChangeEvent
-					.getNewValue());
+			handleSelectedAddressChanged((BigInteger) propertyChangeEvent.getNewValue());
 		}
 	}
 
@@ -403,12 +373,10 @@ public class PeripheralRendering extends AbstractTableRendering implements
 		fPeripheralViewer.refresh();
 
 		if (fMemoryBlock != null) {
-			PeripheralTreeVMNode node = fMemoryBlock
-					.getPeripheralRegisterGroup();
+			PeripheralTreeVMNode node = fMemoryBlock.getPeripheralRegisterGroup();
 			node.decrementFadingLevel();
 			if (Activator.getInstance().isDebugging()) {
-				System.out
-						.println("PeripheralRendering.refresh() decrementRecentChanges");
+				System.out.println("PeripheralRendering.refresh() decrementRecentChanges");
 			}
 		}
 	}
@@ -426,9 +394,8 @@ public class PeripheralRendering extends AbstractTableRendering implements
 			};
 			fCollapseRegistersAction.setText("Collapse registers");
 			fCollapseRegistersAction.setToolTipText("Collapse registers");
-			fCollapseRegistersAction.setImageDescriptor(Activator
-					.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-							"icons/register_obj.png"));
+			fCollapseRegistersAction.setImageDescriptor(
+					Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/register_obj.png"));
 		}
 		{
 			fShowFieldsAction = new Action() {
@@ -439,9 +406,8 @@ public class PeripheralRendering extends AbstractTableRendering implements
 			};
 			fShowFieldsAction.setText("Show fields");
 			fShowFieldsAction.setToolTipText("Show fields");
-			fShowFieldsAction.setImageDescriptor(Activator
-					.imageDescriptorFromPlugin(Activator.PLUGIN_ID,
-							"icons/field.png"));
+			fShowFieldsAction
+					.setImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/field.png"));
 		}
 
 		{
@@ -453,8 +419,8 @@ public class PeripheralRendering extends AbstractTableRendering implements
 			};
 			fRefreshMenuAction.setText("Refresh");
 			fRefreshMenuAction.setToolTipText("Refresh view");
-			fRefreshMenuAction.setImageDescriptor(PlatformUI.getWorkbench()
-					.getSharedImages().getImageDescriptor("IMG_TOOL_REDO"));
+			fRefreshMenuAction.setImageDescriptor(
+					PlatformUI.getWorkbench().getSharedImages().getImageDescriptor("IMG_TOOL_REDO"));
 		}
 
 		{
@@ -465,8 +431,7 @@ public class PeripheralRendering extends AbstractTableRendering implements
 				}
 			};
 			fAddFilterAction.setText("Add filter...");
-			fAddFilterAction.setImageDescriptor(Activator.getInstance()
-					.getImageDescriptor("filter"));
+			fAddFilterAction.setImageDescriptor(Activator.getInstance().getImageDescriptor("filter"));
 		}
 
 		{
@@ -477,8 +442,7 @@ public class PeripheralRendering extends AbstractTableRendering implements
 				}
 			};
 			fRemoveFilterAction.setText("Remove filter...");
-			fRemoveFilterAction.setImageDescriptor(Activator.getInstance()
-					.getImageDescriptor("filter_rem"));
+			fRemoveFilterAction.setImageDescriptor(Activator.getInstance().getImageDescriptor("filter_rem"));
 		}
 
 		{
@@ -488,20 +452,16 @@ public class PeripheralRendering extends AbstractTableRendering implements
 					performForceReadAction();
 				}
 			};
-			fForceReadAction
-					.setText("Force read of register with side effects");
+			fForceReadAction.setText("Force read of register with side effects");
 			// TODO: add force_read.png
-			fForceReadAction.setImageDescriptor(Activator.getInstance()
-					.getImageDescriptor("force_read"));
+			fForceReadAction.setImageDescriptor(Activator.getInstance().getImageDescriptor("force_read"));
 		}
 	}
 
 	private void performExpandAction(boolean collapseRegisters) {
 
-		if (!(fPeripheralViewer == null || fPeripheralViewer.getControl()
-				.isDisposed())) {
-			expandRecursive(fPeripheralViewer.getTree().getItems(),
-					!collapseRegisters);
+		if (!(fPeripheralViewer == null || fPeripheralViewer.getControl().isDisposed())) {
+			expandRecursive(fPeripheralViewer.getTree().getItems(), !collapseRegisters);
 		}
 	}
 
@@ -543,8 +503,7 @@ public class PeripheralRendering extends AbstractTableRendering implements
 		}
 		performRemoveFilterAction();
 
-		PeripheralFilterDialog dialog = new PeripheralFilterDialog(getControl()
-				.getShell(), currentFilter);
+		PeripheralFilterDialog dialog = new PeripheralFilterDialog(getControl().getShell(), currentFilter);
 		if (dialog.open() != Window.OK) {
 			return;
 		}
@@ -554,8 +513,7 @@ public class PeripheralRendering extends AbstractTableRendering implements
 			return;
 		}
 
-		PeripheralNameFilter peripheralNameFilter = new PeripheralNameFilter(
-				filter);
+		PeripheralNameFilter peripheralNameFilter = new PeripheralNameFilter(filter);
 		fPeripheralViewer.addFilter(peripheralNameFilter);
 	}
 
@@ -612,8 +570,7 @@ public class PeripheralRendering extends AbstractTableRendering implements
 		boolean hasForceRead = false;
 		Object object = getSelection();
 		if (object instanceof PeripheralRegisterVMNode
-				&& !(peripheralRegister = (PeripheralRegisterVMNode) object)
-						.isField()) {
+				&& !(peripheralRegister = (PeripheralRegisterVMNode) object).isField()) {
 			hasForceRead = peripheralRegister.hasReadAction();
 		}
 		if (hasForceRead) {
@@ -623,14 +580,12 @@ public class PeripheralRendering extends AbstractTableRendering implements
 	}
 
 	@Override
-	public String getString(String renderingTypeId, BigInteger address,
-			MemoryByte[] data) {
+	public String getString(String renderingTypeId, BigInteger address, MemoryByte[] data) {
 		return null;
 	}
 
 	@Override
-	public byte[] getBytes(String renderingTypeId, BigInteger address,
-			MemoryByte[] currentValues, String newValue) {
+	public byte[] getBytes(String renderingTypeId, BigInteger address, MemoryByte[] currentValues, String newValue) {
 		return null;
 	}
 
@@ -662,12 +617,10 @@ public class PeripheralRendering extends AbstractTableRendering implements
 		if (fMemoryBlock != null) {
 			String string2 = new String();
 			try {
-				string2 = fMemoryBlock.getBigBaseAddress().toString(16)
-						.toUpperCase();
+				string2 = fMemoryBlock.getBigBaseAddress().toString(16).toUpperCase();
 			} catch (DebugException e) {
 			}
-			string = String.format("%s: 0x%s", fMemoryBlock
-					.getPeripheralInstance().getDisplayName(), string2);
+			string = String.format("%s: 0x%s", fMemoryBlock.getPeripheralInstance().getDisplayName(), string2);
 		}
 		return string == null ? getClass().getSimpleName() : string;
 	}
@@ -687,8 +640,7 @@ public class PeripheralRendering extends AbstractTableRendering implements
 		TreeSelection treeSelection;
 		Object object = null;
 		ISelection selection = fPeripheralViewer.getSelection();
-		if (selection instanceof TreeSelection
-				&& (treeSelection = (TreeSelection) selection).size() == 1) {
+		if (selection instanceof TreeSelection && (treeSelection = (TreeSelection) selection).size() == 1) {
 			object = treeSelection.getFirstElement();
 		}
 		return object;

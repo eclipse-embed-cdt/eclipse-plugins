@@ -26,18 +26,20 @@ package com.github.zafarkhaja.semver;
 /**
  * A parser interface.
  *
- * @param <T> the type of parser's output
+ * @param <T>
+ *            the type of parser's output
  *
  * @author Zafar Khaja <zafarkhaja@gmail.com>
  * @since 0.7.0
  */
 public interface Parser<T> {
 
-    /**
-     * Parses the input string.
-     *
-     * @param input the string to parse
-     * @return the Abstract Syntax Tree
-     */
-    T parse(String input);
+	/**
+	 * Parses the input string.
+	 *
+	 * @param input
+	 *            the string to parse
+	 * @return the Abstract Syntax Tree
+	 */
+	T parse(String input);
 }

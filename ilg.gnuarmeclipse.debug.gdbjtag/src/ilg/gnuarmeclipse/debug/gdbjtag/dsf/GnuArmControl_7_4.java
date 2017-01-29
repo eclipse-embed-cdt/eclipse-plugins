@@ -20,8 +20,7 @@ import org.eclipse.cdt.dsf.mi.service.command.output.MIInfo;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.debug.core.ILaunchConfiguration;
 
-public class GnuArmControl_7_4 extends GnuArmControl_7_2 implements
-		ILaunchConfigurationProvider {
+public class GnuArmControl_7_4 extends GnuArmControl_7_2 implements ILaunchConfigurationProvider {
 
 	// ------------------------------------------------------------------------
 
@@ -29,8 +28,7 @@ public class GnuArmControl_7_4 extends GnuArmControl_7_2 implements
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmControl_7_4(DsfSession session, ILaunchConfiguration config,
-			CommandFactory factory, String mode) {
+	public GnuArmControl_7_4(DsfSession session, ILaunchConfiguration config, CommandFactory factory, String mode) {
 		super(session, config, factory, mode);
 
 		fConfig = config;
@@ -54,9 +52,7 @@ public class GnuArmControl_7_4 extends GnuArmControl_7_2 implements
 		// "set python print-stack none|full|message".
 		// Bug 367788
 		String errorOption = enabled ? "full" : "none"; //$NON-NLS-1$ //$NON-NLS-2$
-		queueCommand(
-				getCommandFactory().createMIGDBSetPythonPrintStack(
-						getContext(), errorOption),
+		queueCommand(getCommandFactory().createMIGDBSetPythonPrintStack(getContext(), errorOption),
 				new DataRequestMonitor<MIInfo>(getExecutor(), rm));
 	}
 

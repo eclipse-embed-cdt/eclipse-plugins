@@ -40,8 +40,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 	public void initializeDefaultPreferences() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out
-					.println("DefaultPreferenceInitializer.initializeDefaultPreferences()");
+			System.out.println("DefaultPreferenceInitializer.initializeDefaultPreferences()");
 		}
 
 		// Default toolchain name
@@ -53,11 +52,9 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		// This is the moment when all final default values are in, possibly
 		// set by product or command line.
 
-		Preferences prefs = Platform.getPreferencesService().getRootNode()
-				.node(DefaultScope.SCOPE);
+		Preferences prefs = Platform.getPreferencesService().getRootNode().node(DefaultScope.SCOPE);
 		if (prefs instanceof IEclipsePreferences) {
-			((IEclipsePreferences) prefs)
-					.addNodeChangeListener(new LateInitializer());
+			((IEclipsePreferences) prefs).addNodeChangeListener(new LateInitializer());
 		}
 	}
 
@@ -70,8 +67,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void added(NodeChangeEvent event) {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("LateInitializer.added() " + event + " "
-						+ event.getChild().name());
+				System.out.println("LateInitializer.added() " + event + " " + event.getChild().name());
 			}
 
 			if (Activator.PLUGIN_ID.equals(event.getChild().name())) {
@@ -79,8 +75,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				finalizeInitializationsDefaultPreferences();
 
 				// We're done, de-register listener.
-				((IEclipsePreferences) (event.getSource()))
-						.removeNodeChangeListener(this);
+				((IEclipsePreferences) (event.getSource())).removeNodeChangeListener(this);
 			}
 		}
 
@@ -116,38 +111,32 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 
 				// Check if the toolchain path is explictly defined in the
 				// default preferences.
-				String path = DefaultPreferences
-						.getToolchainPath(toolchainName);
+				String path = DefaultPreferences.getToolchainPath(toolchainName);
 				if (!path.isEmpty()) {
 					continue; // Already defined, use it as is.
 				}
 
 				// Check if the search path is defined in the default
 				// preferences.
-				String searchPath = DefaultPreferences
-						.getToolchainSearchPath(toolchainName);
+				String searchPath = DefaultPreferences.getToolchainSearchPath(toolchainName);
 				if (searchPath.isEmpty()) {
 
 					// If not defined, get the OS Specific default
 					// from preferences.ini.
-					searchPath = DefaultPreferences
-							.getToolchainSearchPathOs(toolchainName);
+					searchPath = DefaultPreferences.getToolchainSearchPathOs(toolchainName);
 					if (!searchPath.isEmpty()) {
 						// Store the search path in the preferences
-						DefaultPreferences.putToolchainSearchPath(
-								toolchainName, searchPath);
+						DefaultPreferences.putToolchainSearchPath(toolchainName, searchPath);
 					}
 				}
 
 				if (!searchPath.isEmpty()) {
 					// If the search path is known, discover toolchain.
-					value = DefaultPreferences.discoverToolchainPath(
-							toolchainName, searchPath);
+					value = DefaultPreferences.discoverToolchainPath(toolchainName, searchPath);
 					if (value != null && !value.isEmpty()) {
 						// If the toolchain path was finally discovered, store
 						// it in the preferences.
-						DefaultPreferences.putToolchainPath(toolchainName,
-								value);
+						DefaultPreferences.putToolchainPath(toolchainName, value);
 					}
 				}
 			}

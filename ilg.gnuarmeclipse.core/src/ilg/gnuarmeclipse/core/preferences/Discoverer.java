@@ -53,8 +53,7 @@ public class Discoverer {
 	 *            a String, usually "bin", or null.
 	 * @return a String with the absolute folder path, or null if not found.
 	 */
-	public static String searchInstallFolder(String executableName,
-			String searchPath, String binFolder) {
+	public static String searchInstallFolder(String executableName, String searchPath, String binFolder) {
 
 		String value = null;
 
@@ -65,20 +64,16 @@ public class Discoverer {
 		// Resolve ${user.home}
 		String resolvedPath = searchPath;
 		if (resolvedPath.indexOf("${user.home}") >= 0) {
-			String userHome = new Path(System.getProperty("user.home"))
-					.toString();
-			resolvedPath = resolvedPath.replaceAll("\\$\\{user.home\\}",
-					userHome);
+			String userHome = new Path(System.getProperty("user.home")).toString();
+			resolvedPath = resolvedPath.replaceAll("\\$\\{user.home\\}", userHome);
 
 		}
 
 		// If more macros remain, use the usual substituter.
 		if (resolvedPath.indexOf("${") >= 0) {
-			IStringVariableManager variableManager = VariablesPlugin
-					.getDefault().getStringVariableManager();
+			IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
 			try {
-				resolvedPath = variableManager.performStringSubstitution(
-						resolvedPath, false);
+				resolvedPath = variableManager.performStringSubstitution(resolvedPath, false);
 			} catch (CoreException e) {
 				resolvedPath = null;
 			}
@@ -97,9 +92,7 @@ public class Discoverer {
 		}
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out
-					.println("Discoverer.searchInstallFolder() resolved path "
-							+ resolvedPath);
+			System.out.println("Discoverer.searchInstallFolder() resolved path " + resolvedPath);
 		}
 
 		// Try paths in order; return the first.
@@ -124,8 +117,8 @@ public class Discoverer {
 	 * @param registryName
 	 * @return a String with the absolute folder path, or null if not found.
 	 */
-	public static String getRegistryInstallFolder(String executableName,
-			String binFolder, String registrySubKey, String registryName) {
+	public static String getRegistryInstallFolder(String executableName, String binFolder, String registrySubKey,
+			String registryName) {
 
 		String value = null;
 		if (EclipseUtils.isWindows()) {
@@ -133,16 +126,13 @@ public class Discoverer {
 			WindowsRegistry registry = WindowsRegistry.getRegistry();
 
 			if (registry != null) {
-				value = getRegistryValue(registry, REG_PREFIX, registrySubKey,
-						registryName);
+				value = getRegistryValue(registry, REG_PREFIX, registrySubKey, registryName);
 				if (value == null) {
 					// If on 64-bit, check the 32-bit registry too.
-					value = getRegistryValue(registry, REG32_PREFIX,
-							registrySubKey, registryName);
+					value = getRegistryValue(registry, REG32_PREFIX, registrySubKey, registryName);
 				}
 
-				if (binFolder != null && value != null
-						&& !value.endsWith("\\" + binFolder)) {
+				if (binFolder != null && value != null && !value.endsWith("\\" + binFolder)) {
 					value += "\\" + binFolder;
 				}
 
@@ -151,17 +141,13 @@ public class Discoverer {
 					// Make portable
 					value = path.toString(); // includes /bin, if it exists
 					if (Activator.getInstance().isDebugging()) {
-						System.out
-								.println("Discoverer.getRegistryInstallFolder() "
-										+ registryName + " " + value);
+						System.out.println("Discoverer.getRegistryInstallFolder() " + registryName + " " + value);
 					}
 
 					File folder = path.append(executableName).toFile();
 					if (folder.isFile()) {
 						if (Activator.getInstance().isDebugging()) {
-							System.out
-									.println("Discoverer.getRegistryInstallFolder()="
-											+ value);
+							System.out.println("Discoverer.getRegistryInstallFolder()=" + value);
 						}
 						return value;
 					}
@@ -182,24 +168,21 @@ public class Discoverer {
 	 * @param registryName
 	 * @return a String, or null if not found.
 	 */
-	private static String getRegistryValue(WindowsRegistry registry,
-			String prefix, String registrySubKey, String registryName) {
+	private static String getRegistryValue(WindowsRegistry registry, String prefix, String registrySubKey,
+			String registryName) {
 
 		String value;
 		// TODO: remove kludge after SEGGER fixes the bug
 		if (!registrySubKey.startsWith("\\SEGGER")) {
-			value = registry.getCurrentUserValue(prefix + registrySubKey,
-					registryName);
+			value = registry.getCurrentUserValue(prefix + registrySubKey, registryName);
 		} else {
 			// Kludge to compensate for SEGGER and CDT bug (the value is
 			// terminated with lots of zeroes, more than CDT WindowsRegistry
 			// class can handle).
-			value = AltWindowsRegistry.query("HKEY_CURRENT_USER\\" + prefix
-					+ registrySubKey, registryName);
+			value = AltWindowsRegistry.query("HKEY_CURRENT_USER\\" + prefix + registrySubKey, registryName);
 		}
 		if (value == null) {
-			value = registry.getLocalMachineValue(prefix + registrySubKey,
-					registryName);
+			value = registry.getLocalMachineValue(prefix + registrySubKey, registryName);
 		}
 
 		return value;
@@ -217,14 +200,12 @@ public class Discoverer {
 	 * @param executableName
 	 * @return a String with the folder absolute path, or null if not found.
 	 */
-	public static String getLastExecutable(String folderName,
-			final String binFolder, final String executableName) {
+	public static String getLastExecutable(String folderName, final String binFolder, final String executableName) {
 
 		IPath folderPath = new Path(folderName);
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Discoverer.getLastExecutable(" + folderPath
-					+ ", " + executableName + ")");
+			System.out.println("Discoverer.getLastExecutable(" + folderPath + ", " + executableName + ")");
 		}
 
 		List<String> list = new ArrayList<String>();

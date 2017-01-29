@@ -54,8 +54,7 @@ public class PeripheralContentProvider implements ITreeContentProvider {
 	@Override
 	public Object[] getElements(Object inputElement) {
 
-		if (((inputElement instanceof IMemoryBlockExtension))
-				&& (fPeripheralNode != null)) {
+		if (((inputElement instanceof IMemoryBlockExtension)) && (fPeripheralNode != null)) {
 			// There is a single element below root, the peripheral.
 			return new Object[] { fPeripheralNode };
 		}

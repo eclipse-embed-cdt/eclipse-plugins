@@ -155,16 +155,14 @@ public class DefaultPreferences {
 			try {
 				Properties prop = getToolchainProperties();
 				int hash = Math.abs(toolchainName.trim().hashCode());
-				value = prop.getProperty(
-						DEFAULT_PATH + "." + String.valueOf(hash), "").trim();
+				value = prop.getProperty(DEFAULT_PATH + "." + String.valueOf(hash), "").trim();
 			} catch (IOException e) {
 				value = "";
 			}
 		}
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getToolchainPath()=\"" + value + "\" (" + key
-					+ ")");
+			System.out.println("getToolchainPath()=\"" + value + "\" (" + key + ")");
 		}
 		return value;
 	}
@@ -192,11 +190,9 @@ public class DefaultPreferences {
 
 		String key = PersistentPreferences.getToolchainSearchKey(toolchainName);
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Check " + key + " for \"" + toolchainName
-					+ "\"");
+			System.out.println("Check " + key + " for \"" + toolchainName + "\"");
 		}
-		String value = getString(
-				PersistentPreferences.getToolchainSearchKey(toolchainName), "");
+		String value = getString(PersistentPreferences.getToolchainSearchKey(toolchainName), "");
 
 		return value;
 	}
@@ -222,9 +218,7 @@ public class DefaultPreferences {
 	 */
 	public static String getToolchainSearchPathOs(String toolchainName) {
 
-		String value = getString(
-				PersistentPreferences.getToolchainSearchOsKey(toolchainName),
-				"");
+		String value = getString(PersistentPreferences.getToolchainSearchOsKey(toolchainName), "");
 
 		return value;
 	}
@@ -261,11 +255,9 @@ public class DefaultPreferences {
 		String value = null;
 		if (EclipseUtils.isWindows()) {
 
-			value = Discoverer.getRegistryInstallFolder(EXECUTABLE_NAME, "bin",
-					REG_SUBKEY, REG_NAME);
+			value = Discoverer.getRegistryInstallFolder(EXECUTABLE_NAME, "bin", REG_SUBKEY, REG_NAME);
 			if (value == null) {
-				value = Discoverer.getRegistryInstallFolder(EXECUTABLE_NAME,
-						"bin", REG_SUBKEY, REG_NAME_DEPRECATED);
+				value = Discoverer.getRegistryInstallFolder(EXECUTABLE_NAME, "bin", REG_SUBKEY, REG_NAME_DEPRECATED);
 			}
 
 		} else if (EclipseUtils.isMacOSX()) {
@@ -285,8 +277,7 @@ public class DefaultPreferences {
 		}
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("DefaultPreferences.discoverBuildToolsPath()=\""
-					+ value + "\"");
+			System.out.println("DefaultPreferences.discoverBuildToolsPath()=\"" + value + "\"");
 		}
 
 		return value;
@@ -300,8 +291,7 @@ public class DefaultPreferences {
 	 * @param executableName
 	 * @return a String with the folder absolute path, or null if not found.
 	 */
-	private static String getLastToolchain(String folder,
-			final String executableName) {
+	private static String getLastToolchain(String folder, final String executableName) {
 
 		List<String> list = new ArrayList<String>();
 		File local = new File(folder);
@@ -317,8 +307,7 @@ public class DefaultPreferences {
 			 */
 			@Override
 			public boolean accept(File dir, String name) {
-				IPath path = (new Path(dir.getAbsolutePath())).append(name)
-						.append("bin").append(executableName);
+				IPath path = (new Path(dir.getAbsolutePath())).append(name).append("bin").append(executableName);
 
 				if (path.toFile().isFile()) {
 					return true;
@@ -354,8 +343,7 @@ public class DefaultPreferences {
 	 *            a string with a sequence of folders.
 	 * @return a String with the absolute folder path, or null if not found.
 	 */
-	public static String discoverToolchainPath(String toolchainName,
-			String searchPath) {
+	public static String discoverToolchainPath(String toolchainName, String searchPath) {
 
 		if (searchPath == null || searchPath.isEmpty()) {
 			return null;
@@ -364,18 +352,15 @@ public class DefaultPreferences {
 		// Resolve ${user.home}
 		String resolvedPath = searchPath;
 		if (resolvedPath.indexOf("${user.home}") >= 0) {
-			resolvedPath = resolvedPath.replaceAll("\\$\\{user.home\\}",
-					System.getProperty("user.home"));
+			resolvedPath = resolvedPath.replaceAll("\\$\\{user.home\\}", System.getProperty("user.home"));
 
 		}
 
 		// If more macros remain, use the usual substituter.
 		if (resolvedPath.indexOf("${") >= 0) {
-			IStringVariableManager variableManager = VariablesPlugin
-					.getDefault().getStringVariableManager();
+			IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
 			try {
-				resolvedPath = variableManager.performStringSubstitution(
-						resolvedPath, false);
+				resolvedPath = variableManager.performStringSubstitution(resolvedPath, false);
 			} catch (CoreException e) {
 				resolvedPath = null;
 			}
@@ -397,8 +382,7 @@ public class DefaultPreferences {
 		} catch (IndexOutOfBoundsException e) {
 			ix = ToolchainDefinition.getDefault();
 		}
-		String executableName = ToolchainDefinition.getToolchain(ix)
-				.getFullCmdC();
+		String executableName = ToolchainDefinition.getToolchain(ix).getFullCmdC();
 		if (EclipseUtils.isWindows() && !executableName.endsWith(".exe")) {
 			executableName += ".exe";
 		}
@@ -435,8 +419,7 @@ public class DefaultPreferences {
 			URL url = Platform.getInstallLocation().getURL();
 
 			IPath path = new Path(url.getPath());
-			File file = path.append("configuration")
-					.append(Activator.PLUGIN_ID).append(TOOLCHAIN).toFile();
+			File file = path.append("configuration").append(Activator.PLUGIN_ID).append(TOOLCHAIN).toFile();
 			InputStream is = new FileInputStream(file);
 
 			Properties prop = new Properties();

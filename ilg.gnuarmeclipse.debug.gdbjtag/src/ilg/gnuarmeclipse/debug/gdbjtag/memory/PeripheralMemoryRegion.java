@@ -18,8 +18,7 @@ import java.util.List;
 
 import org.eclipse.debug.core.model.MemoryByte;
 
-public class PeripheralMemoryRegion implements
-		Comparable<PeripheralMemoryRegion> {
+public class PeripheralMemoryRegion implements Comparable<PeripheralMemoryRegion> {
 
 	// ------------------------------------------------------------------------
 
@@ -83,8 +82,7 @@ public class PeripheralMemoryRegion implements
 
 		if ((region.fAddressOffset + region.fSizeBytes) > (fAddressOffset + fSizeBytes)) {
 			// Increase the size
-			fSizeBytes = (region.fAddressOffset + region.fSizeBytes)
-					- fAddressOffset;
+			fSizeBytes = (region.fAddressOffset + region.fSizeBytes) - fAddressOffset;
 		}
 
 		// Take over nodes from given region.
@@ -108,8 +106,7 @@ public class PeripheralMemoryRegion implements
 
 	@Override
 	public String toString() {
-		return String.format("[Region 0x%08X, 0x%X, %d nodes]", fAddressOffset,
-				fSizeBytes, fVMNodes.size());
+		return String.format("[Region 0x%08X, 0x%X, %d nodes]", fAddressOffset, fSizeBytes, fVMNodes.size());
 	}
 
 	// ------------------------------------------------------------------------

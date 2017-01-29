@@ -46,8 +46,7 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * preference store that belongs to the main plug-in class. That way,
  * preferences can be accessed directly via the preference store.
  */
-public class WorkspaceToolsPathsPreferencePage extends
-		FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class WorkspaceToolsPathsPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	// ------------------------------------------------------------------------
 
@@ -58,8 +57,7 @@ public class WorkspaceToolsPathsPreferencePage extends
 	public WorkspaceToolsPathsPreferencePage() {
 		super(GRID);
 
-		setPreferenceStore(new ScopedPreferenceStoreWithoutDefaults(
-				InstanceScope.INSTANCE, Activator.PLUGIN_ID));
+		setPreferenceStore(new ScopedPreferenceStoreWithoutDefaults(InstanceScope.INSTANCE, Activator.PLUGIN_ID));
 
 		setDescription(Messages.WorkspaceToolsPathsPropertyPage_description);
 	}
@@ -83,35 +81,29 @@ public class WorkspaceToolsPathsPreferencePage extends
 	protected void createFieldEditors() {
 
 		boolean isStrict;
-		isStrict = DefaultPreferences.getBoolean(
-				PersistentPreferences.WORKSPACE_BUILDTOOLS_PATH_STRICT, true);
+		isStrict = DefaultPreferences.getBoolean(PersistentPreferences.WORKSPACE_BUILDTOOLS_PATH_STRICT, true);
 		FieldEditor buildToolsPathField;
-		buildToolsPathField = new DirectoryNotStrictFieldEditor(
-				PersistentPreferences.BUILD_TOOLS_PATH_KEY,
+		buildToolsPathField = new DirectoryNotStrictFieldEditor(PersistentPreferences.BUILD_TOOLS_PATH_KEY,
 				Messages.ToolsPaths_label, getFieldEditorParent(), isStrict);
 
 		addField(buildToolsPathField);
 
-		FieldEditor toolchainNameField = new ToolchainsFieldEditor(
-				PersistentPreferences.TOOLCHAIN_NAME_KEY,
+		FieldEditor toolchainNameField = new ToolchainsFieldEditor(PersistentPreferences.TOOLCHAIN_NAME_KEY,
 				Messages.ToolchainName_label, getFieldEditorParent());
 		addField(toolchainNameField);
 
 		Set<String> toolchainNames = new HashSet<String>();
 
-		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot()
-				.getProjects();
+		IProject[] projects = ResourcesPlugin.getWorkspace().getRoot().getProjects();
 		for (int i = 0; i < projects.length; ++i) {
-			IConfiguration[] configs = EclipseUtils
-					.getConfigurationsForProject(projects[i]);
+			IConfiguration[] configs = EclipseUtils.getConfigurationsForProject(projects[i]);
 			if (configs != null) {
 				for (int j = 0; j < configs.length; ++j) {
 					IToolChain toolchain = configs[j].getToolChain();
 					if (toolchain == null) {
 						continue;
 					}
-					IOption option = toolchain
-							.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME);
+					IOption option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME);
 					if (option == null) {
 						continue;
 					}
@@ -133,22 +125,17 @@ public class WorkspaceToolsPathsPreferencePage extends
 
 		for (String toolchainName : toolchainNames) {
 
-			FieldEditor labelField = new LabelFakeFieldEditor(toolchainName,
-					Messages.ToolsPaths_ToolchainName_label,
+			FieldEditor labelField = new LabelFakeFieldEditor(toolchainName, Messages.ToolsPaths_ToolchainName_label,
 					getFieldEditorParent());
 			addField(labelField);
 
 			String key = PersistentPreferences.getToolchainKey(toolchainName);
 
-			isStrict = DefaultPreferences
-					.getBoolean(
-							PersistentPreferences.WORKSPACE_TOOLCHAIN_PATH_STRICT,
-							true);
+			isStrict = DefaultPreferences.getBoolean(PersistentPreferences.WORKSPACE_TOOLCHAIN_PATH_STRICT, true);
 
 			FieldEditor toolchainPathField;
-			toolchainPathField = new DirectoryNotStrictFieldEditor(key,
-					Messages.ToolchainPaths_label, getFieldEditorParent(),
-					isStrict);
+			toolchainPathField = new DirectoryNotStrictFieldEditor(key, Messages.ToolchainPaths_label,
+					getFieldEditorParent(), isStrict);
 
 			addField(toolchainPathField);
 		}

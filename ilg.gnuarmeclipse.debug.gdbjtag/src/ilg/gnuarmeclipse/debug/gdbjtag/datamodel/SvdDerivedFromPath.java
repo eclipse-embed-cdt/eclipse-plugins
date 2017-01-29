@@ -33,8 +33,7 @@ public class SvdDerivedFromPath {
 
 	@Override
 	public String toString() {
-		return String.format("[P=%s,R=%s,F=%s,E=%s]", peripheralName,
-				registerName, fieldName, enumerationName);
+		return String.format("[P=%s,R=%s,F=%s,E=%s]", peripheralName, registerName, fieldName, enumerationName);
 	}
 
 	// ------------------------------------------------------------------------

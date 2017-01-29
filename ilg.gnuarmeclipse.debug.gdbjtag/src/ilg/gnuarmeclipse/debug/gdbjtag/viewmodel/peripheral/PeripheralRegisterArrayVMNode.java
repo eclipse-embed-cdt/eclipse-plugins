@@ -21,8 +21,7 @@ public class PeripheralRegisterArrayVMNode extends PeripheralGroupVMNode {
 
 	// ------------------------------------------------------------------------
 
-	public PeripheralRegisterArrayVMNode(PeripheralTreeVMNode parent,
-			SvdDMNode dmNode) {
+	public PeripheralRegisterArrayVMNode(PeripheralTreeVMNode parent, SvdDMNode dmNode) {
 
 		super(parent, dmNode);
 
@@ -55,8 +54,7 @@ public class PeripheralRegisterArrayVMNode extends PeripheralGroupVMNode {
 
 		BigInteger base;
 		try {
-			base = ((PeripheralGroupVMNode) getRegisterGroup())
-					.getBigAbsoluteAddress();
+			base = ((PeripheralGroupVMNode) getRegisterGroup()).getBigAbsoluteAddress();
 		} catch (DebugException e) {
 			base = BigInteger.ZERO;
 		}

@@ -43,7 +43,7 @@ public class DefaultPreferences {
 
 	public static final boolean USE_REMOTE_TARGET_DEFAULT = true;
 	public static final String REMOTE_IP_ADDRESS_LOCALHOST = "localhost"; //$NON-NLS-1$
-	public static final String REMOTE_IP_ADDRESS_DEFAULT = REMOTE_IP_ADDRESS_LOCALHOST; //$NON-NLS-1$
+	public static final String REMOTE_IP_ADDRESS_DEFAULT = REMOTE_IP_ADDRESS_LOCALHOST; // $NON-NLS-1$
 	public static final int REMOTE_PORT_NUMBER_DEFAULT = SERVER_GDB_PORT_NUMBER_DEFAULT;
 
 	public static final boolean DO_INITIAL_RESET_DEFAULT = false;
@@ -136,13 +136,11 @@ public class DefaultPreferences {
 	// ------------------------------------------------------------------------
 
 	public static String getGdbServerExecutable() {
-		return getString(PersistentPreferences.GDB_SERVER_EXECUTABLE,
-				SERVER_EXECUTABLE_DEFAULT);
+		return getString(PersistentPreferences.GDB_SERVER_EXECUTABLE, SERVER_EXECUTABLE_DEFAULT);
 	}
 
 	public static String getGdbClientExecutable() {
-		return getString(PersistentPreferences.GDB_CLIENT_EXECUTABLE,
-				CLIENT_EXECUTABLE_DEFAULT);
+		return getString(PersistentPreferences.GDB_CLIENT_EXECUTABLE, CLIENT_EXECUTABLE_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------
@@ -160,13 +158,11 @@ public class DefaultPreferences {
 
 	public static String getExecutableNameOs() {
 
-		String key = EclipseUtils
-				.getKeyOs(PersistentPreferences.EXECUTABLE_NAME_OS);
+		String key = EclipseUtils.getKeyOs(PersistentPreferences.EXECUTABLE_NAME_OS);
 
 		String value = getString(key, "");
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getExecutableNameOs()=\"" + value + "\" ("
-					+ key + ")");
+			System.out.println("getExecutableNameOs()=\"" + value + "\" (" + key + ")");
 		}
 		return value;
 	}
@@ -218,12 +214,10 @@ public class DefaultPreferences {
 
 	public static String getSearchPathOs() {
 
-		String key = EclipseUtils
-				.getKeyOs(PersistentPreferences.SEARCH_PATH_OS);
+		String key = EclipseUtils.getKeyOs(PersistentPreferences.SEARCH_PATH_OS);
 		String value = getString(key, "");
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getSearchPathOs()=\"" + value + "\" (" + key
-					+ ")");
+			System.out.println("getSearchPathOs()=\"" + value + "\" (" + key + ")");
 		}
 		return value;
 	}
@@ -242,8 +236,7 @@ public class DefaultPreferences {
 
 	public static boolean getQemuEnableSemihosting() {
 
-		return getBoolean(PersistentPreferences.GDB_QEMU_ENABLE_SEMIHOSTING,
-				ENABLE_SEMIHOSTING_DEFAULT);
+		return getBoolean(PersistentPreferences.GDB_QEMU_ENABLE_SEMIHOSTING, ENABLE_SEMIHOSTING_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------
@@ -256,55 +249,45 @@ public class DefaultPreferences {
 	// ------------------------------------------------------------------------
 
 	public static boolean getGdbServerDoStart() {
-		return getBoolean(PersistentPreferences.GDB_SERVER_DO_START,
-				SERVER_DO_START_DEFAULT);
+		return getBoolean(PersistentPreferences.GDB_SERVER_DO_START, SERVER_DO_START_DEFAULT);
 	}
 
 	public static String getGdbServerOtherOptions() {
-		return getString(PersistentPreferences.GDB_SERVER_OTHER_OPTIONS,
-				SERVER_OTHER_OPTIONS_DEFAULT);
+		return getString(PersistentPreferences.GDB_SERVER_OTHER_OPTIONS, SERVER_OTHER_OPTIONS_DEFAULT);
 	}
 
 	public static String getGdbClientOtherOptions() {
-		return getString(PersistentPreferences.GDB_CLIENT_OTHER_OPTIONS,
-				CLIENT_OTHER_OPTIONS_DEFAULT);
+		return getString(PersistentPreferences.GDB_CLIENT_OTHER_OPTIONS, CLIENT_OTHER_OPTIONS_DEFAULT);
 	}
 
 	public static String getGdbClientCommands() {
-		return getString(PersistentPreferences.GDB_CLIENT_COMMANDS,
-				CLIENT_COMMANDS_DEFAULT);
+		return getString(PersistentPreferences.GDB_CLIENT_COMMANDS, CLIENT_COMMANDS_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------
 
 	public static boolean getQemuDebugInRam() {
-		return getBoolean(PersistentPreferences.GDB_QEMU_DO_DEBUG_IN_RAM,
-				DO_DEBUG_IN_RAM_DEFAULT);
+		return getBoolean(PersistentPreferences.GDB_QEMU_DO_DEBUG_IN_RAM, DO_DEBUG_IN_RAM_DEFAULT);
 	}
 
 	public static boolean getQemuDoInitialReset() {
-		return getBoolean(PersistentPreferences.GDB_QEMU_DO_INITIAL_RESET,
-				DO_INITIAL_RESET_DEFAULT);
+		return getBoolean(PersistentPreferences.GDB_QEMU_DO_INITIAL_RESET, DO_INITIAL_RESET_DEFAULT);
 	}
 
 	public static String getQemuInitOther() {
-		return getString(PersistentPreferences.GDB_QEMU_INIT_OTHER,
-				INIT_OTHER_DEFAULT);
+		return getString(PersistentPreferences.GDB_QEMU_INIT_OTHER, INIT_OTHER_DEFAULT);
 	}
 
 	public static boolean getQemuDoPreRunReset() {
-		return getBoolean(PersistentPreferences.GDB_QEMU_DO_PRERUN_RESET,
-				DO_PRERUN_RESET_DEFAULT);
+		return getBoolean(PersistentPreferences.GDB_QEMU_DO_PRERUN_RESET, DO_PRERUN_RESET_DEFAULT);
 	}
 
 	public static String getQemuPreRunOther() {
-		return getString(PersistentPreferences.GDB_QEMU_PRERUN_OTHER,
-				PRERUN_OTHER_DEFAULT);
+		return getString(PersistentPreferences.GDB_QEMU_PRERUN_OTHER, PRERUN_OTHER_DEFAULT);
 	}
 
 	public static boolean getQemuDisableGraphics() {
-		return getBoolean(PersistentPreferences.GDB_QEMU_DISABLE_GRAPHICS,
-				DISABLE_GRAPHICS_DEFAULT);
+		return getBoolean(PersistentPreferences.GDB_QEMU_DISABLE_GRAPHICS, DISABLE_GRAPHICS_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------

@@ -107,8 +107,7 @@ public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 
 		fCommandControl = getServicesTracker().getService(IGDBControl.class);
 		fBackend = getServicesTracker().getService(IGDBBackend.class);
-		fCommandFactory = getServicesTracker().getService(
-				IMICommandControl.class).getCommandFactory();
+		fCommandFactory = getServicesTracker().getService(IMICommandControl.class).getCommandFactory();
 		rm.done();
 
 		if (Activator.getInstance().isDebugging()) {
@@ -119,22 +118,18 @@ public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 	// ------------------------------------------------------------------------
 
 	@Override
-	protected Sequence getStartOrRestartProcessSequence(DsfExecutor executor,
-			IContainerDMContext containerDmc, Map<String, Object> attributes,
-			boolean restart, DataRequestMonitor<IContainerDMContext> rm) {
+	protected Sequence getStartOrRestartProcessSequence(DsfExecutor executor, IContainerDMContext containerDmc,
+			Map<String, Object> attributes, boolean restart, DataRequestMonitor<IContainerDMContext> rm) {
 
 		if (restart) {
-			return new GnuArmRestartProcessSequence(executor, containerDmc,
-					attributes, restart, rm);
+			return new GnuArmRestartProcessSequence(executor, containerDmc, attributes, restart, rm);
 		}
 
-		return super.getStartOrRestartProcessSequence(executor, containerDmc,
-				attributes, restart, rm);
+		return super.getStartOrRestartProcessSequence(executor, containerDmc, attributes, restart, rm);
 	}
 
 	@Override
-	public void canDetachDebuggerFromProcess(IDMContext dmc,
-			DataRequestMonitor<Boolean> rm) {
+	public void canDetachDebuggerFromProcess(IDMContext dmc, DataRequestMonitor<Boolean> rm) {
 		rm.setData(false);
 		rm.done();
 	}
@@ -152,74 +147,57 @@ public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 		// For a core session, there is no concept of killing the inferior,
 		// so lets kill GDB
 		if (thread instanceof IMIProcessDMContext) {
-			getDebuggingContext(thread,
-					new ImmediateDataRequestMonitor<IDMContext>(rm) {
-						@SuppressWarnings("unused")
-						@Override
-						protected void handleSuccess() {
-							if (getData() instanceof IMIContainerDMContext) {
+			getDebuggingContext(thread, new ImmediateDataRequestMonitor<IDMContext>(rm) {
+				@SuppressWarnings("unused")
+				@Override
+				protected void handleSuccess() {
+					if (getData() instanceof IMIContainerDMContext) {
 
-								if (true) {
-									IMIRunControl runControl = getServicesTracker()
-											.getService(IMIRunControl.class);
-									if (runControl != null
-											&& !runControl
-													.isTargetAcceptingCommands()) {
-										if (Activator.getInstance()
-												.isDebugging()) {
-											System.out
-													.println("GnuArmProcesses_7_2_1.terminate() interrupt");
-										}
-										fBackend.interrupt();
-									}
-
-									// Does nothing on terminate, just exit.
-									fCommandControl.queueCommand(
-											fCommandFactory
-											// .createMIGDBExit
-													.createMIInterpreterExecConsoleKill((IMIContainerDMContext) getData()),
-											new ImmediateDataRequestMonitor<MIInfo>(
-													rm) {
-												@Override
-												protected void handleSuccess() {
-													if (Activator.getInstance()
-															.isDebugging()) {
-														System.out
-																.println("GnuArmProcesses_7_2_1.terminate() dispatchEvent(ProcessStateChangedEvent, TERMINATED)");
-													}
-
-													getSession()
-															.dispatchEvent(
-																	new ProcessStateChangedEvent(
-																			getSession()
-																					.getId(),
-																			State.TERMINATED),
-																	getProperties());
-
-													if (Activator.getInstance()
-															.isDebugging()) {
-														System.out
-																.println("GnuArmProcesses_7_2_1.terminate() done");
-													}
-
-													rm.done();
-												}
-											});
-								} else {
-									if (Activator.getInstance().isDebugging()) {
-										System.out
-												.println("GnuArmProcesses_7_2_1.terminate() done");
-									}
-									rm.done();
+						if (true) {
+							IMIRunControl runControl = getServicesTracker().getService(IMIRunControl.class);
+							if (runControl != null && !runControl.isTargetAcceptingCommands()) {
+								if (Activator.getInstance().isDebugging()) {
+									System.out.println("GnuArmProcesses_7_2_1.terminate() interrupt");
 								}
-							} else {
-								rm.setStatus(new Status(IStatus.ERROR,
-										Activator.PLUGIN_ID, INTERNAL_ERROR,
-										"Invalid process context.", null)); //$NON-NLS-1$
-								rm.done();
+								fBackend.interrupt();
 							}
+
+							// Does nothing on terminate, just exit.
+							fCommandControl.queueCommand(
+									fCommandFactory
+											// .createMIGDBExit
+											.createMIInterpreterExecConsoleKill((IMIContainerDMContext) getData()),
+									new ImmediateDataRequestMonitor<MIInfo>(rm) {
+										@Override
+										protected void handleSuccess() {
+											if (Activator.getInstance().isDebugging()) {
+												System.out.println(
+														"GnuArmProcesses_7_2_1.terminate() dispatchEvent(ProcessStateChangedEvent, TERMINATED)");
+											}
+
+											getSession().dispatchEvent(new ProcessStateChangedEvent(
+													getSession().getId(), State.TERMINATED), getProperties());
+
+											if (Activator.getInstance().isDebugging()) {
+												System.out.println("GnuArmProcesses_7_2_1.terminate() done");
+											}
+
+											rm.done();
+										}
+									});
+						} else {
+							if (Activator.getInstance().isDebugging()) {
+								System.out.println("GnuArmProcesses_7_2_1.terminate() done");
+							}
+							rm.done();
 						}
-					});
+					} else {
+						rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, INTERNAL_ERROR,
+								"Invalid process context.", null)); //$NON-NLS-1$
+						rm.done();
+					}
+				}
+			});
 		} else {
 			super.terminate(thread, rm);
 		}

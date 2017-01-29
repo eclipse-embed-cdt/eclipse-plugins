@@ -20,21 +20,18 @@ import org.eclipse.cdt.managedbuilder.internal.core.MultiFolderInfo;
 import org.eclipse.cdt.managedbuilder.internal.core.ResourceConfiguration;
 
 @SuppressWarnings("restriction")
-public class AdditionalToolsManagedOptionValueHandler extends
-		ManagedOptionValueHandler {
+public class AdditionalToolsManagedOptionValueHandler extends ManagedOptionValueHandler {
 
 	// ------------------------------------------------------------------------
 
 	/*
 	 * (non-Javadoc)
 	 * 
-	 * @see
-	 * org.eclipse.cdt.managedbuilder.core.IManagedOptionValueHandler#handleValue
-	 * (IConfiguration,IToolChain,IOption,String,int)
+	 * @see org.eclipse.cdt.managedbuilder.core.IManagedOptionValueHandler#
+	 * handleValue (IConfiguration,IToolChain,IOption,String,int)
 	 */
 	@SuppressWarnings("unused")
-	public boolean handleValue(IBuildObject configuration,
-			IHoldsOptions holder, IOption option, String extraArgument,
+	public boolean handleValue(IBuildObject configuration, IHoldsOptions holder, IOption option, String extraArgument,
 			int event) {
 
 		// ManagedOptionValueHandlerDebug.dump(configuration, holder, option,
@@ -66,8 +63,7 @@ public class AdditionalToolsManagedOptionValueHandler extends
 				return false; // should we return true?
 
 			} else {
-				Activator.log("unexpected instanceof configuration "
-						+ configuration.getClass().getCanonicalName());
+				Activator.log("unexpected instanceof configuration " + configuration.getClass().getCanonicalName());
 			}
 
 		}

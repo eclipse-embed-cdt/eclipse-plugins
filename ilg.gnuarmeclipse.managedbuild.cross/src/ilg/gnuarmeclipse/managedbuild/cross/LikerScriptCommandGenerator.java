@@ -23,8 +23,7 @@ public class LikerScriptCommandGenerator implements IOptionCommandGenerator {
 	// ------------------------------------------------------------------------
 
 	@Override
-	public String generateCommand(IOption option,
-			IVariableSubstitutor macroSubstitutor) {
+	public String generateCommand(IOption option, IVariableSubstitutor macroSubstitutor) {
 
 		StringBuffer command = new StringBuffer();
 		try {
@@ -35,8 +34,7 @@ public class LikerScriptCommandGenerator implements IOptionCommandGenerator {
 				// versions, keep accepting single strings
 
 				String value = option.getStringValue();
-				value = CdtVariableResolver.resolveToString(value,
-						macroSubstitutor);
+				value = CdtVariableResolver.resolveToString(value, macroSubstitutor);
 
 				command.append("-T ");
 				command.append(Utils.quoteWhitespaces(value));
@@ -49,8 +47,7 @@ public class LikerScriptCommandGenerator implements IOptionCommandGenerator {
 
 					if (value.length() > 0) {
 
-						value = CdtVariableResolver.resolveToString(value,
-								macroSubstitutor);
+						value = CdtVariableResolver.resolveToString(value, macroSubstitutor);
 						command.append("-T ");
 						command.append(Utils.quoteWhitespaces(value));
 						command.append(" ");

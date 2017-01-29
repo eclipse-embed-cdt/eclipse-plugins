@@ -15,8 +15,7 @@ import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdDMNode;
 
 import java.math.BigInteger;
 
-public class PeripheralClusterArrayElementVMNode extends
-		PeripheralClusterVMNode {
+public class PeripheralClusterArrayElementVMNode extends PeripheralClusterVMNode {
 
 	// ------------------------------------------------------------------------
 
@@ -24,8 +23,8 @@ public class PeripheralClusterArrayElementVMNode extends
 
 	// ------------------------------------------------------------------------
 
-	public PeripheralClusterArrayElementVMNode(PeripheralTreeVMNode parent,
-			SvdDMNode dmNode, String index, BigInteger offset) {
+	public PeripheralClusterArrayElementVMNode(PeripheralTreeVMNode parent, SvdDMNode dmNode, String index,
+			BigInteger offset) {
 
 		super(parent, dmNode);
 

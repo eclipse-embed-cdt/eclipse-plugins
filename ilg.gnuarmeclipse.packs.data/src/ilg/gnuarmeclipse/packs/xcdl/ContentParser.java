@@ -80,14 +80,12 @@ public class ContentParser extends GenericParser {
 	}
 
 	@Override
-	public void checkSchemaVersion(String schemaVersion)
-			throws DocumentParseException {
+	public void checkSchemaVersion(String schemaVersion) throws DocumentParseException {
 
 		if (PacksStorage.CONTENT_XML_VERSION.equals(schemaVersion)) {
 			;
 		} else {
-			throw new DocumentParseException("Unrecognised schema version "
-					+ schemaVersion + ", refresh");
+			throw new DocumentParseException("Unrecognised schema version " + schemaVersion + ", refresh");
 		}
 	}
 

@@ -36,8 +36,7 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 
 	// ------------------------------------------------------------------------
 
-	public PeripheralRegisterVMNode(PeripheralTreeVMNode parent,
-			SvdDMNode dmNode) {
+	public PeripheralRegisterVMNode(PeripheralTreeVMNode parent, SvdDMNode dmNode) {
 
 		super(parent, dmNode);
 
@@ -172,8 +171,7 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 
 			long offset = getPeripheralBigAddressOffset().longValue();
 			// Write register.
-			getPeripheral().getMemoryBlock().writePeripheralRegister(offset,
-					getWidthBytes(), newValue);
+			getPeripheral().getMemoryBlock().writePeripheralRegister(offset, getWidthBytes(), newValue);
 
 			// Re-read and update the entire peripheral, since many registers
 			// may be affected by one write.
@@ -189,8 +187,7 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 		Object[] children = getChildren();
 		for (int i = 0; i < children.length; ++i) {
 			if (children[i] instanceof PeripheralRegisterFieldVMNode) {
-				((PeripheralRegisterFieldVMNode) children[i])
-						.updateFieldValueFromParent();
+				((PeripheralRegisterFieldVMNode) children[i]).updateFieldValueFromParent();
 			}
 		}
 	}

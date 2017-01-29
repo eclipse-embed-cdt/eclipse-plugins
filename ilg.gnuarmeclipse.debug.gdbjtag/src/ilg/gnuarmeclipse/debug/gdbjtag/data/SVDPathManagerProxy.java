@@ -46,8 +46,7 @@ public class SVDPathManagerProxy implements ISVDPathManager {
 
 	public SVDPathManagerProxy() {
 
-		IExtension[] extensions = Platform.getExtensionRegistry()
-				.getExtensionPoint(EXTENSION_POINT_ID).getExtensions();
+		IExtension[] extensions = Platform.getExtensionRegistry().getExtensionPoint(EXTENSION_POINT_ID).getExtensions();
 
 		if (extensions.length == 0) {
 			// System.out.println("no svdPath xp");
@@ -61,16 +60,14 @@ public class SVDPathManagerProxy implements ISVDPathManager {
 			fPathManagers[i] = null;
 
 			IExtension extension = extensions[i];
-			IConfigurationElement[] configElements = extension
-					.getConfigurationElements();
+			IConfigurationElement[] configElements = extension.getConfigurationElements();
 			IConfigurationElement configElement = configElements[0];
 
 			if (FACTORY_ELEMENT.equals(configElement.getName())) {
 
 				ISVDPathManagerFactory factory;
 				try {
-					Object obj = configElement
-							.createExecutableExtension(CLASS_ATTRIBUTE);
+					Object obj = configElement.createExecutableExtension(CLASS_ATTRIBUTE);
 
 					if (obj instanceof ISVDPathManagerFactory) {
 						factory = (ISVDPathManagerFactory) obj;
@@ -81,8 +78,7 @@ public class SVDPathManagerProxy implements ISVDPathManager {
 						Activator.log("no ISVDPathManagerFactory");
 					}
 				} catch (CoreException e) {
-					Activator.log("cannot get factory for "
-							+ EXTENSION_POINT_ID);
+					Activator.log("cannot get factory for " + EXTENSION_POINT_ID);
 				}
 			} else {
 				Activator.log("no <factory> element");
@@ -104,8 +100,7 @@ public class SVDPathManagerProxy implements ISVDPathManager {
 		for (int i = 0; i < fPathManagers.length; ++i) {
 			IPath path = null;
 			if (fPathManagers[i] != null) {
-				path = fPathManagers[i].getSVDAbsolutePath(deviceVendorId,
-						deviceName);
+				path = fPathManagers[i].getSVDAbsolutePath(deviceVendorId, deviceName);
 				if (path != null) {
 					return path;
 				}

@@ -31,8 +31,7 @@ public class PeripheralsColumnPresentation implements IColumnPresentation2 {
 	/**
 	 * The ColumnPresentation ID, referred internally by the implementation.
 	 */
-	public static final String ID = Activator.PLUGIN_ID
-			+ ".PERIPHERALS_COLUMN_PRESENTATION_ID";
+	public static final String ID = Activator.PLUGIN_ID + ".PERIPHERALS_COLUMN_PRESENTATION_ID";
 
 	public static final String COLUMN_PERIPHERAL_ID = "column.peripheral";
 	public static final String COLUMN_ADDRESS_ID = "column.address";
@@ -42,8 +41,8 @@ public class PeripheralsColumnPresentation implements IColumnPresentation2 {
 	private static final int COLUMN_ADDRESS_SIZE = 90;
 	private static final int COLUMN_DESCRIPTION_SIZE = 300;
 
-	private static final String[] fgAvailableColumns = { COLUMN_PERIPHERAL_ID,
-			COLUMN_ADDRESS_ID, COLUMN_DESCRIPTION_ID };
+	private static final String[] fgAvailableColumns = { COLUMN_PERIPHERAL_ID, COLUMN_ADDRESS_ID,
+			COLUMN_DESCRIPTION_ID };
 
 	// ------------------------------------------------------------------------
 
@@ -99,8 +98,7 @@ public class PeripheralsColumnPresentation implements IColumnPresentation2 {
 	}
 
 	@Override
-	public int getInitialColumnWidth(String id, int treeWidgetWidth,
-			String[] visibleColumnIds) {
+	public int getInitialColumnWidth(String id, int treeWidgetWidth, String[] visibleColumnIds) {
 
 		if (COLUMN_PERIPHERAL_ID.equals(id)) {
 			return COLUMN_PERIPHERAL_SIZE;
@@ -113,8 +111,7 @@ public class PeripheralsColumnPresentation implements IColumnPresentation2 {
 			// If the table is larger than needed,
 			// make the Description column fill the space.
 			if (treeWidgetWidth > (COLUMN_PERIPHERAL_SIZE + COLUMN_ADDRESS_SIZE + COLUMN_DESCRIPTION_SIZE)) {
-				return treeWidgetWidth
-						- (COLUMN_PERIPHERAL_SIZE + COLUMN_ADDRESS_SIZE);
+				return treeWidgetWidth - (COLUMN_PERIPHERAL_SIZE + COLUMN_ADDRESS_SIZE);
 			} else {
 				return COLUMN_DESCRIPTION_SIZE;
 			}

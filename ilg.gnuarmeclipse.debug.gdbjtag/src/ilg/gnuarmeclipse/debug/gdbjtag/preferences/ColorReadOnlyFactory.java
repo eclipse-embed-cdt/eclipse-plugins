@@ -18,7 +18,6 @@ import ilg.gnuarmeclipse.debug.gdbjtag.render.peripheral.PeripheralColumnLabelPr
 public class ColorReadOnlyFactory extends PeripheralsColorFactory {
 
 	public ColorReadOnlyFactory() {
-		super(PeripheralColumnLabelProvider.COLOR_READONLY,
-				PersistentPreferences.PERIPHERALS_COLOR_READONLY);
+		super(PeripheralColumnLabelProvider.COLOR_READONLY, PersistentPreferences.PERIPHERALS_COLOR_READONLY);
 	}
 }

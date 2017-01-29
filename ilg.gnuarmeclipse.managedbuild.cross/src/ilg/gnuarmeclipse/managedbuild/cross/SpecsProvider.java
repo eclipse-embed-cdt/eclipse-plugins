@@ -18,8 +18,7 @@ public class SpecsProvider {
 
 	// ------------------------------------------------------------------------
 
-	private static String PROVIDER_ID = IDs.getIdPrefix()
-			+ ".GCCBuiltinSpecsDetector";
+	private static String PROVIDER_ID = IDs.getIdPrefix() + ".GCCBuiltinSpecsDetector";
 
 	// ------------------------------------------------------------------------
 
@@ -27,8 +26,7 @@ public class SpecsProvider {
 	// "org.eclipse.cdt.managedbuilder.core.GCCBuiltinSpecsDetector";
 
 	public static ILanguageSettingsProvider getProvider() {
-		ILanguageSettingsProvider p = LanguageSettingsManager
-				.getWorkspaceProvider(PROVIDER_ID);
+		ILanguageSettingsProvider p = LanguageSettingsManager.getWorkspaceProvider(PROVIDER_ID);
 		return LanguageSettingsManager.getRawProvider(p);// ;
 	}
 

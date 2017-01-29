@@ -50,8 +50,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 		fResetMask = null;
 	}
 
-	public SvdRegisterDMNode(Leaf node, String displayName,
-			BigInteger addressOffset) {
+	public SvdRegisterDMNode(Leaf node, String displayName, BigInteger addressOffset) {
 
 		this(node);
 
@@ -104,8 +103,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 			}
 		}
 
-		SvdObjectDMNode[] array = list
-				.toArray(new SvdObjectDMNode[list.size()]);
+		SvdObjectDMNode[] array = list.toArray(new SvdObjectDMNode[list.size()]);
 
 		// Preserve apparition order.
 		return array;
@@ -123,8 +121,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 	protected Leaf findDerivedFromNode() {
 
 		String derivedFromName = getNode().getPropertyOrNull("derivedFrom");
-		final SvdDerivedFromPath path = SvdDerivedFromPath
-				.createRegisterPath(derivedFromName);
+		final SvdDerivedFromPath path = SvdDerivedFromPath.createRegisterPath(derivedFromName);
 
 		if (path == null) {
 			return null;
@@ -214,8 +211,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 				String offset = getNode().getProperty("addressOffset");
 				if (!offset.isEmpty()) {
 
-					fAddressOffset = SvdUtils
-							.parseScaledNonNegativeBigInteger(offset);
+					fAddressOffset = SvdUtils.parseScaledNonNegativeBigInteger(offset);
 				} else {
 					Activator.log("Missing addressOffset, node " + getNode());
 					fAddressOffset = BigInteger.ZERO;
@@ -241,8 +237,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 	public String getDisplayName() {
 
 		if (fDisplayName == null) {
-			fDisplayName = getPropertyWithDerivedWithParent("displayName",
-					getName());
+			fDisplayName = getPropertyWithDerivedWithParent("displayName", getName());
 		}
 		return fDisplayName;
 	}
@@ -260,8 +255,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 			String size = getPropertyWithDerivedWithParent("size", "32");
 
 			try {
-				fSize = new Integer(SvdUtils.parseScaledNonNegativeBigInteger(
-						size).intValue());
+				fSize = new Integer(SvdUtils.parseScaledNonNegativeBigInteger(size).intValue());
 			} catch (NumberFormatException e) {
 				Activator.log("Bad size, node " + getNode());
 				fSize = new Integer(32);
@@ -317,10 +311,8 @@ public class SvdRegisterDMNode extends SvdDMNode {
 	@Override
 	public String toString() {
 
-		String hexAddr = String.format("0x%08X", getBigAddressOffset()
-				.longValue());
-		return "[" + getClass().getSimpleName() + ": " + getDisplayName()
-				+ ", " + hexAddr + ", " + getAccess() + ", \""
+		String hexAddr = String.format("0x%08X", getBigAddressOffset().longValue());
+		return "[" + getClass().getSimpleName() + ": " + getDisplayName() + ", " + hexAddr + ", " + getAccess() + ", \""
 				+ getDescription() + "\"]";
 	}
 	// ------------------------------------------------------------------------

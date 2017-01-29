@@ -75,8 +75,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 
 				// Consider only <enumeratedValues> nodes
 				if (child.isType("enumeratedValues")) {
-					SvdEnumerationDMNode enumeration = new SvdEnumerationDMNode(
-							child);
+					SvdEnumerationDMNode enumeration = new SvdEnumerationDMNode(child);
 
 					if (enumeration.isUsageRead()) {
 						fReadEnumeration = enumeration;
@@ -92,20 +91,17 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 			return; // Mission accomplished
 		}
 
-		if ((getDerivedFromNode() != null)
-				&& getDerivedFromNode().hasChildren()) {
+		if ((getDerivedFromNode() != null) && getDerivedFromNode().hasChildren()) {
 			for (Leaf child : ((Node) getDerivedFromNode()).getChildren()) {
 
 				// Consider only <enumeratedValues> nodes
 				if (child.isType("enumeratedValues")) {
-					SvdEnumerationDMNode enumeration = new SvdEnumerationDMNode(
-							child);
+					SvdEnumerationDMNode enumeration = new SvdEnumerationDMNode(child);
 
 					if ((fReadEnumeration == null) && enumeration.isUsageRead()) {
 						fReadEnumeration = enumeration;
 					}
-					if ((fWriteEnumeration == null)
-							&& enumeration.isUsageWrite()) {
+					if ((fWriteEnumeration == null) && enumeration.isUsageWrite()) {
 						fWriteEnumeration = enumeration;
 					}
 				}
@@ -125,8 +121,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 	protected Leaf findDerivedFromNode() {
 
 		String derivedFromName = getNode().getPropertyOrNull("derivedFrom");
-		final SvdDerivedFromPath path = SvdDerivedFromPath
-				.createFieldPath(derivedFromName);
+		final SvdDerivedFromPath path = SvdDerivedFromPath.createFieldPath(derivedFromName);
 
 		if (path == null) {
 			return null;
@@ -288,8 +283,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 				} else {
 					String lsb = getPropertyWithDerived("lsb");
 					if (!lsb.isEmpty()) {
-						fOffset = (int) SvdUtils
-								.parseScaledNonNegativeLong(lsb);
+						fOffset = (int) SvdUtils.parseScaledNonNegativeLong(lsb);
 					} else {
 						String bitRange = getPropertyWithDerived("bitRange");
 						if (!bitRange.isEmpty()) {
@@ -297,9 +291,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 							bitRange = bitRange.replace(']', ' ');
 							bitRange = bitRange.trim();
 							// Convert the second value
-							fOffset = (int) SvdUtils
-									.parseScaledNonNegativeLong(bitRange
-											.split(":")[1]);
+							fOffset = (int) SvdUtils.parseScaledNonNegativeLong(bitRange.split(":")[1]);
 						} else {
 							Activator.log("Missing offset, node " + getNode());
 							fOffset = new Integer(0);
@@ -330,9 +322,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 				} else {
 					String msb = getPropertyWithDerived("msb");
 					if (!msb.isEmpty()) {
-						fWidth = new Integer(
-								(int) (SvdUtils.parseScaledNonNegativeLong(msb)
-										- getOffset() + 1));
+						fWidth = new Integer((int) (SvdUtils.parseScaledNonNegativeLong(msb) - getOffset() + 1));
 					} else {
 						String bitRange = getPropertyWithDerived("bitRange");
 						if (!bitRange.isEmpty()) {
@@ -340,11 +330,8 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 							bitRange = bitRange.replace(']', ' ');
 							bitRange = bitRange.trim();
 							// Convert the first value and subtract the offset
-							fWidth = new Integer(
-									(int) (SvdUtils
-											.parseScaledNonNegativeLong(bitRange
-													.split(":")[0])
-											- getOffset() + 1));
+							fWidth = new Integer((int) (SvdUtils.parseScaledNonNegativeLong(bitRange.split(":")[0])
+									- getOffset() + 1));
 						} else {
 							Activator.log("Missing width, node " + getNode());
 							fWidth = new Integer(1);
@@ -382,9 +369,8 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 	@Override
 	public String toString() {
 
-		return "[" + getClass().getSimpleName() + ": " + getName() + ", "
-				+ (getOffset() + getWidthBits() - 1) + "-" + getOffset() + ", "
-				+ getAccess() + ", \"" + getDescription() + "\"]";
+		return "[" + getClass().getSimpleName() + ": " + getName() + ", " + (getOffset() + getWidthBits() - 1) + "-"
+				+ getOffset() + ", " + getAccess() + ", \"" + getDescription() + "\"]";
 	}
 
 	// ------------------------------------------------------------------------

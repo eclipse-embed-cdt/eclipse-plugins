@@ -51,8 +51,7 @@ public abstract class AbstractUIActivator extends AbstractUIPlugin {
 		super();
 		fgInstance = this;
 
-		fIsDebugging = "true".equalsIgnoreCase(Platform
-				.getDebugOption(getBundleId() + "/debug"));
+		fIsDebugging = "true".equalsIgnoreCase(Platform.getDebugOption(getBundleId() + "/debug"));
 	}
 
 	// ------------------------------------------------------------------------
@@ -122,8 +121,7 @@ public abstract class AbstractUIActivator extends AbstractUIPlugin {
 		// Image not known, register it.
 		ImageDescriptor imageDescriptor = declareImage(str);
 		if (imageDescriptor == null) {
-			return PlatformUI.getWorkbench().getSharedImages()
-					.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+			return PlatformUI.getWorkbench().getSharedImages().getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
 		}
 		image = getImageRegistry().get(str);
 		return image;
@@ -148,17 +146,15 @@ public abstract class AbstractUIActivator extends AbstractUIPlugin {
 		}
 
 		// Check path in the plug-in name space.
-		ImageDescriptor imageDescriptor = AbstractUIPlugin
-				.imageDescriptorFromPlugin(getBundleId(),
-						((IPath) pathx).toString());
+		ImageDescriptor imageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(getBundleId(),
+				((IPath) pathx).toString());
 		if (imageDescriptor == null) {
 			if ((extension == null) || (extension.isEmpty())) {
 				// If missing, second default extension is '.gif'.
 				pathx = ((IPath) path).addFileExtension("gif");
 
 				// Check gif path in the plug-in name space.
-				imageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(
-						getBundleId(), ((IPath) pathx).toString());
+				imageDescriptor = AbstractUIPlugin.imageDescriptorFromPlugin(getBundleId(), ((IPath) pathx).toString());
 			}
 			if (imageDescriptor == null) {
 				return null;
@@ -192,13 +188,11 @@ public abstract class AbstractUIActivator extends AbstractUIPlugin {
 	}
 
 	public static void log(Throwable e) {
-		log(new Status(IStatus.ERROR, getInstance().getBundleId(), 1,
-				"Internal Error", e)); //$NON-NLS-1$
+		log(new Status(IStatus.ERROR, getInstance().getBundleId(), 1, "Internal Error", e)); //$NON-NLS-1$
 	}
 
 	public static void log(String message) {
-		log(new Status(IStatus.ERROR, getInstance().getBundleId(), 1, message,
-				null)); //$NON-NLS-1$
+		log(new Status(IStatus.ERROR, getInstance().getBundleId(), 1, message, null)); // $NON-NLS-1$
 	}
 
 	// ------------------------------------------------------------------------

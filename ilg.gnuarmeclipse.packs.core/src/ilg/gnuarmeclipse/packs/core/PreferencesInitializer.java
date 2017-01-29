@@ -47,11 +47,9 @@ public class PreferencesInitializer extends AbstractPreferenceInitializer {
 			// System.out.println(packagesFolder + " created");
 		}
 
-		store.setDefault(Preferences.PACKS_FOLDER_PATH,
-				packagesPath.toOSString());
+		store.setDefault(Preferences.PACKS_FOLDER_PATH, packagesPath.toOSString());
 
-		store.setDefault(Preferences.PACKS_MACRO_NAME,
-				Preferences.DEFAULT_MACRO_NAME);
+		store.setDefault(Preferences.PACKS_MACRO_NAME, Preferences.DEFAULT_MACRO_NAME);
 	}
 
 }

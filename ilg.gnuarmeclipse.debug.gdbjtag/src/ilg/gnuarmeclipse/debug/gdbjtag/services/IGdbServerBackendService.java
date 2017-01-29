@@ -35,8 +35,7 @@ public interface IGdbServerBackendService extends IDsfService {
 
 		// --------------------------------------------------------------------
 
-		public ServerBackendStateChangedEvent(String sessionId,
-				String backendId, State state) {
+		public ServerBackendStateChangedEvent(String sessionId, String backendId, State state) {
 			fSessionId = sessionId;
 			fBackendId = backendId;
 			fState = state;

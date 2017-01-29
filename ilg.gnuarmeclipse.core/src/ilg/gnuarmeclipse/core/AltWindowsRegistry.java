@@ -21,8 +21,7 @@ public class AltWindowsRegistry {
 		String value = null;
 		try {
 			Process process = Runtime.getRuntime().exec(query);
-			AltWindowsRegistryStreamReader reader = new AltWindowsRegistryStreamReader(
-					process.getInputStream(), key);
+			AltWindowsRegistryStreamReader reader = new AltWindowsRegistryStreamReader(process.getInputStream(), key);
 			reader.start();
 			process.waitFor();
 			reader.join();

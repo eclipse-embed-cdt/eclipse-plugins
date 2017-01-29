@@ -169,8 +169,7 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 		try {
 			dim = (int) SvdUtils.parseScaledNonNegativeLong(str);
 		} catch (NumberFormatException e) {
-			Activator.log("Node " + getNode().getName()
-					+ ", non integer <dim> " + str);
+			Activator.log("Node " + getNode().getName() + ", non integer <dim> " + str);
 			dim = 0;
 		}
 
@@ -184,8 +183,7 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 		try {
 			return SvdUtils.parseScaledNonNegativeBigInteger(increment);
 		} catch (NumberFormatException e) {
-			Activator.log("Node " + getNode().getName()
-					+ ", non number <dimIncrement> " + increment);
+			Activator.log("Node " + getNode().getName() + ", non number <dimIncrement> " + increment);
 			return BigInteger.ZERO;
 		}
 	}
@@ -249,8 +247,7 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 
 	@Override
 	public String toString() {
-		return "[" + getClass().getSimpleName() + ": " + getDisplayName()
-				+ ", " + getAccess() + "]";
+		return "[" + getClass().getSimpleName() + ": " + getDisplayName() + ", " + getAccess() + "]";
 
 	}
 

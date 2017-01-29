@@ -31,24 +31,21 @@ import org.eclipse.debug.internal.ui.viewers.model.provisional.IPresentationCont
  * peripherals view.
  */
 @SuppressWarnings("restriction")
-public class PeripheralsVMProvider extends AbstractDMVMProvider implements
-		IColumnPresentationFactory {
+public class PeripheralsVMProvider extends AbstractDMVMProvider implements IColumnPresentationFactory {
 
 	// ------------------------------------------------------------------------
 
-	public PeripheralsVMProvider(AbstractVMAdapter adapter,
-			IPresentationContext presentationContext, DsfSession session) {
+	public PeripheralsVMProvider(AbstractVMAdapter adapter, IPresentationContext presentationContext,
+			DsfSession session) {
 
 		super(adapter, presentationContext, session);
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("PeripheralsVMProvider() " + presentationContext
-					+ " " + session);
+			System.out.println("PeripheralsVMProvider() " + presentationContext + " " + session);
 		}
 
 		RootDMVMNode rootDMVMNode = new RootDMVMNode(this);
-		PeripheralsVMNode peripheralVMNode = new PeripheralsVMNode(this,
-				getSession());
+		PeripheralsVMNode peripheralVMNode = new PeripheralsVMNode(this, getSession());
 		addChildNodes(rootDMVMNode, new IVMNode[] { peripheralVMNode });
 		setRootNode(rootDMVMNode);
 	}
@@ -56,8 +53,7 @@ public class PeripheralsVMProvider extends AbstractDMVMProvider implements
 	// Contributed by IColumnPresentationFactory.
 
 	@Override
-	public String getColumnPresentationId(IPresentationContext context,
-			Object element) {
+	public String getColumnPresentationId(IPresentationContext context, Object element) {
 
 		return PeripheralsColumnPresentation.ID;
 	}
@@ -66,8 +62,7 @@ public class PeripheralsVMProvider extends AbstractDMVMProvider implements
 
 	// Factory for the column presentation.
 	@Override
-	public IColumnPresentation createColumnPresentation(
-			IPresentationContext context, Object element) {
+	public IColumnPresentation createColumnPresentation(IPresentationContext context, Object element) {
 
 		return new PeripheralsColumnPresentation();
 	}

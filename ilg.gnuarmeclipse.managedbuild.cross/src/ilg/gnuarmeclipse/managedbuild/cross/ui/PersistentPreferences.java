@@ -39,7 +39,7 @@ public class PersistentPreferences {
 	public static final String WORKSPACE_BUILDTOOLS_PATH_STRICT = "workspace.buildTools.path.strict";
 	public static final String PROJECT_TOOLCHAIN_PATH_STRICT = "project.toolchain.path.strict";
 	public static final String PROJECT_BUILDTOOLS_PATH_STRICT = "project.buildTools.path.strict";
-	
+
 	// Note: The shared defaults keys don't have "cross" in them because we want
 	// to keep
 	// compatibility with defaults that were saved when it used to be a template
@@ -49,11 +49,9 @@ public class PersistentPreferences {
 	// SetCrossCommandWizardPage.CROSS_TOOLCHAIN_PATH;
 
 	// ----- Getters ----------------------------------------------------------
-	private static String getString(String key, String defaultValue,
-			IProject project) {
+	private static String getString(String key, String defaultValue, IProject project) {
 
-		String value = EclipseUtils.getPreferenceValueForId(
-				Activator.PLUGIN_ID, key, null, project);
+		String value = EclipseUtils.getPreferenceValueForId(Activator.PLUGIN_ID, key, null, project);
 		if (value != null && !value.isEmpty()) {
 			return value;
 		}
@@ -62,8 +60,7 @@ public class PersistentPreferences {
 			// TODO: remove DEPRECATED
 			// Keep this a while for compatibility with the first versions
 			// which erroneously stored values in the shared storage.
-			value = SharedDefaults.getInstance().getSharedDefaultsMap()
-					.get(Activator.PLUGIN_ID + "." + key);
+			value = SharedDefaults.getInstance().getSharedDefaultsMap().get(Activator.PLUGIN_ID + "." + key);
 
 			if (value == null)
 				value = "";
@@ -81,8 +78,7 @@ public class PersistentPreferences {
 	private static String getEclipseString(String key, String defaultValue) {
 
 		// Access the Eclipse scope
-		Preferences preferences = ConfigurationScope.INSTANCE
-				.getNode(Activator.PLUGIN_ID);
+		Preferences preferences = ConfigurationScope.INSTANCE.getNode(Activator.PLUGIN_ID);
 
 		String value = preferences.get(key, defaultValue);
 		return value;
@@ -91,8 +87,7 @@ public class PersistentPreferences {
 	private static String getWorkspaceString(String key, String defaultValue) {
 
 		// Access the Eclipse scope
-		Preferences preferences = InstanceScope.INSTANCE
-				.getNode(Activator.PLUGIN_ID);
+		Preferences preferences = InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID);
 
 		String value = preferences.get(key, defaultValue);
 		return value;
@@ -115,8 +110,7 @@ public class PersistentPreferences {
 		value = value.trim();
 
 		// Access the Eclipse scope
-		Preferences preferences = ConfigurationScope.INSTANCE
-				.getNode(Activator.PLUGIN_ID);
+		Preferences preferences = ConfigurationScope.INSTANCE.getNode(Activator.PLUGIN_ID);
 		preferences.put(key, value);
 	}
 
@@ -125,8 +119,7 @@ public class PersistentPreferences {
 		value = value.trim();
 
 		// Access the Workspace scope
-		Preferences preferences = InstanceScope.INSTANCE
-				.getNode(Activator.PLUGIN_ID);
+		Preferences preferences = InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID);
 		preferences.put(key, value);
 	}
 
@@ -140,14 +133,12 @@ public class PersistentPreferences {
 		}
 	}
 
-	private static void putProjectString(String key, String value,
-			IProject project) {
+	private static void putProjectString(String key, String value, IProject project) {
 
 		value = value.trim();
 
 		// Access the Eclipse scope
-		Preferences preferences = new ProjectScope(project)
-				.getNode(Activator.PLUGIN_ID);
+		Preferences preferences = new ProjectScope(project).getNode(Activator.PLUGIN_ID);
 		preferences.put(key, value);
 	}
 
@@ -244,8 +235,7 @@ public class PersistentPreferences {
 	 * @param path
 	 * @param project
 	 */
-	public static void putToolchainPath(String toolchainName, String path,
-			IProject project) {
+	public static void putToolchainPath(String toolchainName, String path, IProject project) {
 
 		putProjectString(getToolchainKey(toolchainName), path, project);
 	}

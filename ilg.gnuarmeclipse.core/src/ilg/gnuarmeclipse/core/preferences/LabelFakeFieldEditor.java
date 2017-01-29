@@ -68,8 +68,7 @@ public class LabelFakeFieldEditor extends FieldEditor {
 
 		init("no_name", labelText);
 		labelValue = value;
-		errorMessage = JFaceResources
-				.getString("StringFieldEditor.errorMessage");//$NON-NLS-1$
+		errorMessage = JFaceResources.getString("StringFieldEditor.errorMessage");//$NON-NLS-1$
 		createControl(parent);
 	}
 
@@ -153,7 +152,7 @@ public class LabelFakeFieldEditor extends FieldEditor {
 	 * @return the current value
 	 */
 	public String getStringValue() {
-		
+
 		if (labelField != null) {
 			return labelField.getText();
 		}

@@ -27,8 +27,7 @@ public class LinkToolTip extends ColumnViewerToolTipSupport {
 
 	// ------------------------------------------------------------------------
 
-	public static final void enableFor(ColumnViewer viewer, int style,
-			ILinkToolTipListener listener) {
+	public static final void enableFor(ColumnViewer viewer, int style, ILinkToolTipListener listener) {
 
 		new LinkToolTip(viewer, style, false, listener);
 	}
@@ -39,8 +38,7 @@ public class LinkToolTip extends ColumnViewerToolTipSupport {
 
 	// ------------------------------------------------------------------------
 
-	protected LinkToolTip(ColumnViewer viewer, int style,
-			boolean manualActivation, ILinkToolTipListener listener) {
+	protected LinkToolTip(ColumnViewer viewer, int style, boolean manualActivation, ILinkToolTipListener listener) {
 		super(viewer, style, manualActivation);
 
 		fListener = listener;

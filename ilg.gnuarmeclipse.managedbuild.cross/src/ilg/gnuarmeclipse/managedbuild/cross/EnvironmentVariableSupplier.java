@@ -30,13 +30,12 @@ import org.eclipse.cdt.managedbuilder.macros.IBuildMacroProvider;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 
-public class EnvironmentVariableSupplier implements
-		IConfigurationEnvironmentVariableSupplier {
+public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVariableSupplier {
 
 	// ------------------------------------------------------------------------
 
-	public IBuildEnvironmentVariable getVariable(String variableName,
-			IConfiguration configuration, IEnvironmentVariableProvider provider) {
+	public IBuildEnvironmentVariable getVariable(String variableName, IConfiguration configuration,
+			IEnvironmentVariableProvider provider) {
 		if (PathEnvironmentVariable.isVar(variableName)) {
 			return PathEnvironmentVariable.create(configuration);
 		} else {
@@ -46,10 +45,9 @@ public class EnvironmentVariableSupplier implements
 		}
 	}
 
-	public IBuildEnvironmentVariable[] getVariables(
-			IConfiguration configuration, IEnvironmentVariableProvider provider) {
-		IBuildEnvironmentVariable path = PathEnvironmentVariable
-				.create(configuration);
+	public IBuildEnvironmentVariable[] getVariables(IConfiguration configuration,
+			IEnvironmentVariableProvider provider) {
+		IBuildEnvironmentVariable path = PathEnvironmentVariable.create(configuration);
 		if (path != null) {
 			return new IBuildEnvironmentVariable[] { path };
 		} else {
@@ -59,8 +57,7 @@ public class EnvironmentVariableSupplier implements
 		}
 	}
 
-	private static class PathEnvironmentVariable implements
-			IBuildEnvironmentVariable {
+	private static class PathEnvironmentVariable implements IBuildEnvironmentVariable {
 
 		public static String name = "PATH"; //$NON-NLS-1$
 
@@ -72,18 +69,15 @@ public class EnvironmentVariableSupplier implements
 		}
 
 		@SuppressWarnings("unused")
-		public static PathEnvironmentVariable create(
-				IConfiguration configuration) {
+		public static PathEnvironmentVariable create(IConfiguration configuration) {
 			IToolChain toolchain = configuration.getToolChain();
 
-			IProject project = (IProject) configuration.getManagedProject()
-					.getOwner();
+			IProject project = (IProject) configuration.getManagedProject().getOwner();
 
 			String path = PersistentPreferences.getBuildToolsPath(project);
 
 			IOption option;
-			option = toolchain
-					.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); //$NON-NLS-1$
+			option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); // $NON-NLS-1$
 			String toolchainName = (String) option.getValue();
 
 			String toolchainPath = null;
@@ -95,34 +89,28 @@ public class EnvironmentVariableSupplier implements
 				// into a single per project path, in case the configuration
 				// paths were different, each usage will override the previous
 				// values.
-				boolean isPathPerProject = ProjectStorage
-						.isToolchainPathPerProject(configuration);
+				boolean isPathPerProject = ProjectStorage.isToolchainPathPerProject(configuration);
 
 				if (isPathPerProject) {
 					// Get per configuration path
-					toolchainPath = ProjectStorage
-							.getToolchainPath(configuration);
+					toolchainPath = ProjectStorage.getToolchainPath(configuration);
 
 					// Copy the toolchain path from the wrong storage to project
 					// preferences.
-					PersistentPreferences.putToolchainPath(toolchainName,
-							toolchainPath, project);
+					PersistentPreferences.putToolchainPath(toolchainName, toolchainPath, project);
 
 					// Disable flag
-					ProjectStorage.putToolchainPathPerProject(configuration,
-							false);
+					ProjectStorage.putToolchainPathPerProject(configuration, false);
 
 					if (Activator.getInstance().isDebugging()) {
-						System.out.println("Path \"" + toolchainPath
-								+ "\" copied to project " + project.getName());
+						System.out.println("Path \"" + toolchainPath + "\" copied to project " + project.getName());
 					}
 				}
 			}
 
 			// Get the most specific toolchain path (project, workspace,
 			// Eclipse, defaults).
-			toolchainPath = PersistentPreferences.getToolchainPath(
-					toolchainName, project);
+			toolchainPath = PersistentPreferences.getToolchainPath(toolchainName, project);
 
 			if (path.isEmpty()) {
 				path = toolchainPath;
@@ -147,15 +135,8 @@ public class EnvironmentVariableSupplier implements
 					sysroot = bin;
 				if (false) {
 					if (Activator.getInstance().isDebugging()) {
-						System.out.println("PATH="
-								+ sysroot
-								+ " opt="
-								+ path
-								+ " cfg="
-								+ configuration
-								+ " prj="
-								+ configuration.getManagedProject().getOwner()
-										.getName());
+						System.out.println("PATH=" + sysroot + " opt=" + path + " cfg=" + configuration + " prj="
+								+ configuration.getManagedProject().getOwner().getName());
 					}
 				}
 				return new PathEnvironmentVariable(sysroot);
@@ -166,16 +147,12 @@ public class EnvironmentVariableSupplier implements
 			return null;
 		}
 
-		private static String resolveMacros(String str,
-				IConfiguration configuration) {
+		private static String resolveMacros(String str, IConfiguration configuration) {
 
 			String result = str;
 			try {
-				result = ManagedBuildManager
-						.getBuildMacroProvider()
-						.resolveValue(
-								str,
-								"", " ", IBuildMacroProvider.CONTEXT_CONFIGURATION, configuration); //$NON-NLS-1$	//$NON-NLS-2$
+				result = ManagedBuildManager.getBuildMacroProvider().resolveValue(str, "", " ", //$NON-NLS-1$ //$NON-NLS-2$
+						IBuildMacroProvider.CONTEXT_CONFIGURATION, configuration);
 			} catch (CdtVariableException e) {
 				Activator.log("resolveMacros " + e.getMessage());
 			}
@@ -186,9 +163,8 @@ public class EnvironmentVariableSupplier implements
 
 		public static boolean isVar(String name) {
 			// Windows has case insensitive env var names
-			return Platform.getOS().equals(Platform.OS_WIN32) ? name
-					.equalsIgnoreCase(PathEnvironmentVariable.name) : name
-					.equals(PathEnvironmentVariable.name);
+			return Platform.getOS().equals(Platform.OS_WIN32) ? name.equalsIgnoreCase(PathEnvironmentVariable.name)
+					: name.equals(PathEnvironmentVariable.name);
 		}
 
 		public String getDelimiter() {

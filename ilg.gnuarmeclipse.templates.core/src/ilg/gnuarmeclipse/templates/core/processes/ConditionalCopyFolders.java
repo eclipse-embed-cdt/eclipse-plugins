@@ -47,8 +47,7 @@ public class ConditionalCopyFolders extends ProcessRunner {
 	 */
 	@SuppressWarnings("deprecation")
 	@Override
-	public void process(TemplateCore template, ProcessArgument[] args,
-			String processId, IProgressMonitor monitor)
+	public void process(TemplateCore template, ProcessArgument[] args, String processId, IProgressMonitor monitor)
 			throws ProcessFailureException {
 		IProject projectHandle = null;
 		ProcessArgument[][] folders = null;
@@ -59,8 +58,7 @@ public class ConditionalCopyFolders extends ProcessRunner {
 		for (ProcessArgument arg : args) {
 			String argName = arg.getName();
 			if (argName.equals("projectName")) { //$NON-NLS-1$
-				projectHandle = ResourcesPlugin.getWorkspace().getRoot()
-						.getProject(arg.getSimpleValue());
+				projectHandle = ResourcesPlugin.getWorkspace().getRoot().getProject(arg.getSimpleValue());
 			} else if (argName.equals("folders")) { //$NON-NLS-1$
 				folders = arg.getComplexArrayValue();
 			} else if (argName.equals("condition")) { //$NON-NLS-1$
@@ -69,12 +67,10 @@ public class ConditionalCopyFolders extends ProcessRunner {
 		}
 
 		if (projectHandle == null)
-			throw new ProcessFailureException(getProcessMessage(processId,
-					IStatus.ERROR, "projectName not specified")); //$NON-NLS-1$
+			throw new ProcessFailureException(getProcessMessage(processId, IStatus.ERROR, "projectName not specified")); //$NON-NLS-1$
 
 		if (folders == null)
-			throw new ProcessFailureException(getProcessMessage(processId,
-					IStatus.ERROR, "No folders")); //$NON-NLS-1$
+			throw new ProcessFailureException(getProcessMessage(processId, IStatus.ERROR, "No folders")); //$NON-NLS-1$
 
 		if (!Utils.isConditionSatisfied(condition))
 			return;
@@ -93,15 +89,11 @@ public class ConditionalCopyFolders extends ProcessRunner {
 			try {
 				if (!dir.isAbsolute()) {
 					URL folderURL;
-					folderURL = TemplateEngineHelper
-							.getTemplateResourceURLRelativeToTemplate(template,
-									folderSourcePath);
+					folderURL = TemplateEngineHelper.getTemplateResourceURLRelativeToTemplate(template,
+							folderSourcePath);
 					if (folderURL == null) {
-						throw new ProcessFailureException(
-								getProcessMessage(
-										processId,
-										IStatus.ERROR,
-										Messages.getString("AddFiles.1") + folderSourcePath)); //$NON-NLS-1$
+						throw new ProcessFailureException(getProcessMessage(processId, IStatus.ERROR,
+								Messages.getString("AddFiles.1") + folderSourcePath)); //$NON-NLS-1$
 					}
 
 					// System.out.println(folderURL.getFile());
@@ -140,57 +132,40 @@ public class ConditionalCopyFolders extends ProcessRunner {
 													// spaces substitution
 
 					} catch (MalformedURLException e2) {
-						throw new ProcessFailureException(
-								Messages.getString("AddFiles.2") + folderSourcePath); //$NON-NLS-1$
+						throw new ProcessFailureException(Messages.getString("AddFiles.2") + folderSourcePath); //$NON-NLS-1$
 					}
 
 					InputStream contents = null;
 					if (replaceable) {
 						String fileContents;
 						try {
-							fileContents = ProcessHelper
-									.readFromFile(sourceURL);
+							fileContents = ProcessHelper.readFromFile(sourceURL);
 						} catch (IOException e) {
-							throw new ProcessFailureException(
-									Messages.getString("AddFiles.3") + folderSourcePath); //$NON-NLS-1$
+							throw new ProcessFailureException(Messages.getString("AddFiles.3") + folderSourcePath); //$NON-NLS-1$
 						}
 						if (startPattern != null && endPattern != null)
-							fileContents = ProcessHelper
-									.getValueAfterExpandingMacros(fileContents,
-											ProcessHelper.getReplaceKeys(
-													fileContents, startPattern,
-													endPattern), template
-													.getValueStore(),
-											startPattern, endPattern);
+							fileContents = ProcessHelper.getValueAfterExpandingMacros(fileContents,
+									ProcessHelper.getReplaceKeys(fileContents, startPattern, endPattern),
+									template.getValueStore(), startPattern, endPattern);
 						else
-							fileContents = ProcessHelper
-									.getValueAfterExpandingMacros(
-											fileContents,
-											ProcessHelper
-													.getReplaceKeys(fileContents),
-											template.getValueStore());
+							fileContents = ProcessHelper.getValueAfterExpandingMacros(fileContents,
+									ProcessHelper.getReplaceKeys(fileContents), template.getValueStore());
 
-						contents = new ByteArrayInputStream(
-								fileContents.getBytes());
+						contents = new ByteArrayInputStream(fileContents.getBytes());
 					} else {
 						try {
 							contents = sourceURL.openStream();
 						} catch (IOException e) {
-							throw new ProcessFailureException(
-									getProcessMessage(
-											processId,
-											IStatus.ERROR,
-											Messages.getString("AddFiles.4") + folderSourcePath)); //$NON-NLS-1$
+							throw new ProcessFailureException(getProcessMessage(processId, IStatus.ERROR,
+									Messages.getString("AddFiles.4") + folderSourcePath)); //$NON-NLS-1$
 						}
 					}
 
 					try {
-						IFolder iFolder = projectHandle
-								.getFolder(folderTargetPath);
+						IFolder iFolder = projectHandle.getFolder(folderTargetPath);
 						if (!iFolder.exists()) {
 							ProcessHelper.mkdirs(projectHandle,
-									projectHandle.getFolder(iFolder
-											.getProjectRelativePath()));
+									projectHandle.getFolder(iFolder.getProjectRelativePath()));
 						}
 
 						// Should be OK on Windows too
@@ -205,8 +180,7 @@ public class ConditionalCopyFolders extends ProcessRunner {
 							if (replaceable) {
 								iFile.setContents(contents, true, true, null);
 							} else {
-								throw new ProcessFailureException(
-										Messages.getString("AddFiles.5")); //$NON-NLS-1$
+								throw new ProcessFailureException(Messages.getString("AddFiles.5")); //$NON-NLS-1$
 							}
 
 						} else {
@@ -214,8 +188,7 @@ public class ConditionalCopyFolders extends ProcessRunner {
 							iFile.refreshLocal(IResource.DEPTH_ONE, null);
 						}
 					} catch (CoreException e) {
-						throw new ProcessFailureException(
-								Messages.getString("AddFiles.6") + e.getMessage(), e); //$NON-NLS-1$
+						throw new ProcessFailureException(Messages.getString("AddFiles.6") + e.getMessage(), e); //$NON-NLS-1$
 					}
 
 				}
@@ -225,8 +198,7 @@ public class ConditionalCopyFolders extends ProcessRunner {
 		try {
 			projectHandle.refreshLocal(IResource.DEPTH_INFINITE, null);
 		} catch (CoreException e) {
-			throw new ProcessFailureException(
-					Messages.getString("AddFiles.7") + e.getMessage(), e); //$NON-NLS-1$
+			throw new ProcessFailureException(Messages.getString("AddFiles.7") + e.getMessage(), e); //$NON-NLS-1$
 		}
 	}
 }

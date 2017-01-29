@@ -129,8 +129,7 @@ public class InstallJob extends Job {
 				break;
 			}
 
-			String packFullName = versionNode
-					.getProperty(Property.ARCHIVE_NAME);
+			String packFullName = versionNode.getProperty(Property.ARCHIVE_NAME);
 
 			// Name the subtask with the pack name
 			monitor.subTask(packFullName);
@@ -151,8 +150,7 @@ public class InstallJob extends Job {
 		}
 
 		if (installedPacksList.size() > 0) {
-			fDataManager.notifyUpdateView(
-					DataManagerEvent.Type.UPDATE_VERSIONS, installedPacksList);
+			fDataManager.notifyUpdateView(DataManagerEvent.Type.UPDATE_VERSIONS, installedPacksList);
 			fDataManager.notifyInstallRemove();
 		}
 
@@ -243,8 +241,7 @@ public class InstallJob extends Job {
 		if (archiveFile == null || !archiveFile.exists()) {
 
 			// Read in the .pack file from url to a local file.
-			File archiveFileDownload = PacksStorage
-					.getCachedFileObject(archiveName + ".download");
+			File archiveFileDownload = PacksStorage.getCachedFileObject(archiveName + ".download");
 
 			// To minimise incomplete file risks, first use a temporary
 			// file, then rename to final name.
@@ -312,15 +309,13 @@ public class InstallJob extends Job {
 	 * @throws IOException
 	 *             for download errors.
 	 */
-	private boolean copyFile(URL sourceUrl, File destinationFile)
-			throws IOException {
+	private boolean copyFile(URL sourceUrl, File destinationFile) throws IOException {
 
 		Utils.copyFile(sourceUrl, destinationFile, fOut, fMonitor);
 		return true;
 	}
 
-	private boolean unzip(File archiveFile, IPath destRelativePath)
-			throws IOException {
+	private boolean unzip(File archiveFile, IPath destRelativePath) throws IOException {
 
 		fOut.println("Unzip \"" + archiveFile + "\".");
 
@@ -356,8 +351,7 @@ public class InstallJob extends Job {
 					try {
 						output.write(buf, 0, bytesRead);
 					} catch (IOException e) {
-						String msg = e.getMessage() + ", file: "
-								+ outFile.getName();
+						String msg = e.getMessage() + ", file: " + outFile.getName();
 						fOut.println("Error: " + msg);
 						Utils.reportError(msg);
 
@@ -369,8 +363,7 @@ public class InstallJob extends Job {
 				try {
 					output.close();
 				} catch (IOException e) {
-					String msg = e.getMessage() + ", file: "
-							+ outFile.getName();
+					String msg = e.getMessage() + ", file: " + outFile.getName();
 					fOut.println("Error: " + msg);
 					Utils.reportError(msg);
 
@@ -390,8 +383,7 @@ public class InstallJob extends Job {
 		zipInput.closeEntry();
 		zipInput.close();
 		if (countBytes > 0) {
-			fOut.println(countFiles + " files written, "
-					+ StringUtils.convertSizeToString(countBytes) + ".");
+			fOut.println(countFiles + " files written, " + StringUtils.convertSizeToString(countBytes) + ".");
 		} else {
 			fOut.println("No files written.");
 			result = false;

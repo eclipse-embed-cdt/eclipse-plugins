@@ -35,8 +35,7 @@ import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.themes.ITheme;
 import org.eclipse.ui.themes.IThemeManager;
 
-public class PeripheralColumnLabelProvider extends ColumnLabelProvider
-		implements IPropertyChangeListener {
+public class PeripheralColumnLabelProvider extends ColumnLabelProvider implements IPropertyChangeListener {
 
 	// ------------------------------------------------------------------------
 
@@ -45,10 +44,8 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 	public static final String COLOR_READONLY = COLOR_PREFIX + "readonly";
 	public static final String COLOR_WRITEONLY = COLOR_PREFIX + "writeonly";
 	public static final String COLOR_CHANGED = COLOR_PREFIX + "changed";
-	public static final String COLOR_CHANGED_MEDIUM = COLOR_PREFIX
-			+ "changed.medium";
-	public static final String COLOR_CHANGED_LIGHT = COLOR_PREFIX
-			+ "changed.light";
+	public static final String COLOR_CHANGED_MEDIUM = COLOR_PREFIX + "changed.medium";
+	public static final String COLOR_CHANGED_LIGHT = COLOR_PREFIX + "changed.light";
 
 	private Color fColorReadOnlyBackground;
 	private Color fColorWriteOnlyBackground;
@@ -63,29 +60,25 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 
 	// ------------------------------------------------------------------------
 
-	public PeripheralColumnLabelProvider(TreeViewer viewer,
-			IMemoryBlockExtension fMemoryBlock, ColumnType type) {
+	public PeripheralColumnLabelProvider(TreeViewer viewer, IMemoryBlockExtension fMemoryBlock, ColumnType type) {
 
 		// System.out.println("PeripheralColumnLabelProvider() " + type);
 
 		fViewer = viewer;
 		fColumnType = type;
 
-		IThemeManager themeManager = PlatformUI.getWorkbench()
-				.getThemeManager();
+		IThemeManager themeManager = PlatformUI.getWorkbench().getThemeManager();
 		themeManager.addPropertyChangeListener(this);
 
 		setupColors();
 
-		fUseFadingBackground = PersistentPreferences
-				.getPeripheralsChangedUseFadingBackground();
+		fUseFadingBackground = PersistentPreferences.getPeripheralsChangedUseFadingBackground();
 	}
 
 	@Override
 	public void dispose() {
 
-		IThemeManager themeManager = PlatformUI.getWorkbench()
-				.getThemeManager();
+		IThemeManager themeManager = PlatformUI.getWorkbench().getThemeManager();
 		themeManager.removePropertyChangeListener(this);
 	}
 
@@ -105,8 +98,7 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 
 	private void setupColors() {
 
-		IThemeManager themeManager = PlatformUI.getWorkbench()
-				.getThemeManager();
+		IThemeManager themeManager = PlatformUI.getWorkbench().getThemeManager();
 		ITheme theme = themeManager.getCurrentTheme();
 		ColorRegistry colorRegistry = theme.getColorRegistry();
 
@@ -254,12 +246,8 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 				String description = "\"" + treeNode.getDescription() + "\"";
 				appendText(sb, "", description);
 				if (treeNode instanceof PeripheralTopVMNode) {
-					appendText(sb, "Version=",
-							((PeripheralTopVMNode) treeNode)
-									.getDisplayVersion());
-					appendText(sb, "Group=",
-							((PeripheralTopVMNode) treeNode)
-									.getDisplayGroupName());
+					appendText(sb, "Version=", ((PeripheralTopVMNode) treeNode).getDisplayVersion());
+					appendText(sb, "Group=", ((PeripheralTopVMNode) treeNode).getDisplayGroupName());
 				}
 				break;
 
@@ -277,9 +265,7 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 					return null; // No value tooltip for groups
 				}
 				if (treeNode instanceof PeripheralRegisterVMNode) {
-					appendText(sb, "Reset=",
-							((PeripheralRegisterVMNode) treeNode)
-									.getDisplayResetValue());
+					appendText(sb, "Reset=", ((PeripheralRegisterVMNode) treeNode).getDisplayResetValue());
 				}
 				break;
 
@@ -293,8 +279,7 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 
 			case VALUE:
 				if (treeNode instanceof PeripheralRegisterFieldVMNode
-						&& (((PeripheralRegisterFieldVMNode) treeNode)
-								.isEnumeration())) {
+						&& (((PeripheralRegisterFieldVMNode) treeNode).isEnumeration())) {
 
 					// For enumerations, add the enumeration description.
 					SvdEnumeratedValueDMNode node = ((PeripheralRegisterFieldVMNode) treeNode)
@@ -303,8 +288,7 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider
 						break;
 					}
 
-					appendText(sb, "Enumeration=", "\"" + node.getDescription()
-							+ "\"");
+					appendText(sb, "Enumeration=", "\"" + node.getDescription() + "\"");
 				}
 				break;
 

@@ -19,8 +19,7 @@ import org.eclipse.cdt.dsf.datamodel.IDMContext;
 /**
  * Data model interface for peripheral blocks.
  */
-public abstract interface IPeripheralDMContext extends IDMContext,
-		Comparable<IPeripheralDMContext> {
+public abstract interface IPeripheralDMContext extends IDMContext, Comparable<IPeripheralDMContext> {
 
 	// ------------------------------------------------------------------------
 

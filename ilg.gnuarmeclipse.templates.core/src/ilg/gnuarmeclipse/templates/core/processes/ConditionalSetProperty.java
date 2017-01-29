@@ -25,8 +25,7 @@ import org.eclipse.core.runtime.IProgressMonitor;
 public class ConditionalSetProperty extends ProcessRunner {
 
 	@Override
-	public void process(TemplateCore template, ProcessArgument[] args,
-			String processId, IProgressMonitor monitor)
+	public void process(TemplateCore template, ProcessArgument[] args, String processId, IProgressMonitor monitor)
 			throws ProcessFailureException {
 
 		String condition = args[1].getSimpleValue();

@@ -22,8 +22,7 @@ public interface IPeripheralsService extends IDsfService {
 
 	// ------------------------------------------------------------------------
 
-	public abstract void getPeripherals(
-			IRunControl.IContainerDMContext containerDMContext,
+	public abstract void getPeripherals(IRunControl.IContainerDMContext containerDMContext,
 			DataRequestMonitor<IPeripheralDMContext[]> dataRequestMonitor);
 
 	// ------------------------------------------------------------------------

@@ -77,8 +77,7 @@ public class SvdEnumerationDMNode extends SvdObjectDMNode {
 			// Consider only <enumeratedValue> nodes
 			if (child.isType("enumeratedValue")) {
 
-				SvdEnumeratedValueDMNode enumeratedValue = new SvdEnumeratedValueDMNode(
-						child);
+				SvdEnumeratedValueDMNode enumeratedValue = new SvdEnumeratedValueDMNode(child);
 
 				String value = enumeratedValue.getValue();
 				if (!value.isEmpty()) {
@@ -88,15 +87,13 @@ public class SvdEnumerationDMNode extends SvdObjectDMNode {
 						fDefaultEnumerationNode = enumeratedValue;
 					} else {
 						// TODO: add issues
-						Activator.log("duplicate isDefault enumeratedValue "
-								+ enumeratedValue.getName());
+						Activator.log("duplicate isDefault enumeratedValue " + enumeratedValue.getName());
 					}
 				}
 			}
 		}
 
-		SvdObjectDMNode[] array = list
-				.toArray(new SvdObjectDMNode[list.size()]);
+		SvdObjectDMNode[] array = list.toArray(new SvdObjectDMNode[list.size()]);
 
 		// Preserve apparition order.
 		return array;
@@ -114,8 +111,7 @@ public class SvdEnumerationDMNode extends SvdObjectDMNode {
 	protected Leaf findDerivedFromNode() {
 
 		String derivedFromName = getNode().getPropertyOrNull("derivedFrom");
-		final SvdDerivedFromPath path = SvdDerivedFromPath
-				.createEnumerationPath(derivedFromName);
+		final SvdDerivedFromPath path = SvdDerivedFromPath.createEnumerationPath(derivedFromName);
 
 		if (path == null) {
 			return null;
@@ -240,11 +236,9 @@ public class SvdEnumerationDMNode extends SvdObjectDMNode {
 	public String toString() {
 
 		if (getName().isEmpty()) {
-			return "[" + getClass().getSimpleName() + ": \"" + getDescription()
-					+ "\"]";
+			return "[" + getClass().getSimpleName() + ": \"" + getDescription() + "\"]";
 		} else {
-			return "[" + getClass().getSimpleName() + ": " + getName() + ", \""
-					+ getDescription() + "\"]";
+			return "[" + getClass().getSimpleName() + ": " + getName() + ", \"" + getDescription() + "\"]";
 		}
 	}
 

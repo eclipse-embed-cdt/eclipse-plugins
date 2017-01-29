@@ -18,8 +18,7 @@ import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
-public class ButtonRestartActionDelegate implements
-		IWorkbenchWindowActionDelegate {
+public class ButtonRestartActionDelegate implements IWorkbenchWindowActionDelegate {
 
 	@Override
 	public void run(IAction action) {
@@ -31,8 +30,7 @@ public class ButtonRestartActionDelegate implements
 	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Restart.selectionChanged(" + action + ","
-					+ selection + ")");
+			System.out.println("Restart.selectionChanged(" + action + "," + selection + ")");
 		}
 	}
 

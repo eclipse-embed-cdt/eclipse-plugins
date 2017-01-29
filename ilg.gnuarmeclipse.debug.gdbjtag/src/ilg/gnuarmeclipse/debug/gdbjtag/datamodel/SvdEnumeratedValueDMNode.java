@@ -46,8 +46,7 @@ public class SvdEnumeratedValueDMNode extends SvdObjectDMNode {
 			// TODO: The value tag in enumeratedValue accepts do not care bits
 			// represented by "x".
 
-			bigEnumerationValue = SvdUtils
-					.parseScaledNonNegativeBigInteger(getValue());
+			bigEnumerationValue = SvdUtils.parseScaledNonNegativeBigInteger(getValue());
 
 			if (bigEnumerationValue.equals(value.getBigValue())) {
 				return true;
@@ -69,8 +68,7 @@ public class SvdEnumeratedValueDMNode extends SvdObjectDMNode {
 			value = "default";
 		}
 
-		return "[" + getClass().getSimpleName() + ": " + getName() + ", "
-				+ value + ", \"" + getDescription() + "\"]";
+		return "[" + getClass().getSimpleName() + ": " + getName() + ", " + value + ", \"" + getDescription() + "\"]";
 	}
 
 	// ------------------------------------------------------------------------

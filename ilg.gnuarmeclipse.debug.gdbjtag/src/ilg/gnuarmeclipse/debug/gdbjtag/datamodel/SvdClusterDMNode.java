@@ -62,8 +62,7 @@ public class SvdClusterDMNode extends SvdDMNode {
 			}
 		}
 
-		SvdObjectDMNode[] array = list
-				.toArray(new SvdObjectDMNode[list.size()]);
+		SvdObjectDMNode[] array = list.toArray(new SvdObjectDMNode[list.size()]);
 
 		// Preserve apparition order.
 		return array;

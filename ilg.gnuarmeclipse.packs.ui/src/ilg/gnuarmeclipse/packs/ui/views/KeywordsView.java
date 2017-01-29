@@ -115,8 +115,7 @@ public class KeywordsView extends ViewPart implements IDataManagerListener {
 
 		// System.out.println("KeywordsView.createPartControl()");
 
-		fViewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION
-				| SWT.H_SCROLL | SWT.V_SCROLL);
+		fViewer = new TreeViewer(parent, SWT.MULTI | SWT.FULL_SELECTION | SWT.H_SCROLL | SWT.V_SCROLL);
 
 		fContentProvider = new ViewContentProvider();
 
@@ -205,8 +204,8 @@ public class KeywordsView extends ViewPart implements IDataManagerListener {
 
 		fRemoveFilters.setText("Remove filters");
 		fRemoveFilters.setToolTipText("Remove all filters based on selections");
-		fRemoveFilters.setImageDescriptor(Activator.imageDescriptorFromPlugin(
-				Activator.PLUGIN_ID, "icons/removeall.png"));
+		fRemoveFilters
+				.setImageDescriptor(Activator.imageDescriptorFromPlugin(Activator.PLUGIN_ID, "icons/removeall.png"));
 
 	}
 
@@ -310,8 +309,7 @@ public class KeywordsView extends ViewPart implements IDataManagerListener {
 
 						// Add keyword nodes to the hierarchy
 						for (String keywordName : set) {
-							Leaf keywordNode = Leaf.addNewChild(keywordsRoot,
-									Type.KEYWORD);
+							Leaf keywordNode = Leaf.addNewChild(keywordsRoot, Type.KEYWORD);
 							keywordNode.setName(keywordName);
 						}
 
