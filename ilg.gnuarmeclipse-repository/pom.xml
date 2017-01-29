@@ -1,59 +1,46 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  
-  <groupId>ilg.gnuarmeclipse</groupId>
-  <artifactId>ilg.gnuarmeclipse.repository</artifactId>
-  <version>3.3.1-SNAPSHOT</version>
-  <packaging>eclipse-repository</packaging>
-  
-  <parent>
-  	<groupId>ilg.gnuarmeclipse</groupId>
-  	<artifactId>ilg.gnuarmeclipse.parent</artifactId>
-  	<version>3.3.1-SNAPSHOT</version>
-  	<relativePath>../pom.xml</relativePath>
-  </parent>
-  
-<build>
-  <plugins>
-    <plugin>
-      <groupId>org.eclipse.tycho</groupId>
-      <artifactId>tycho-p2-director-plugin</artifactId>
-      <version>${tycho.version}</version>
-      <!-- 
-      <configuration>
-          <includeAllDependencies>true</includeAllDependencies>
-      </configuration>
-      <executions>
-        <execution>
-          <id>materialize-products</id>
-          <goals>
-            <goal>materialize-products</goal>
-          </goals>
-        </execution>
-        <execution>
-          <id>archive-products</id>
-          <goals>
-            <goal>archive-products</goal>
-          </goals>
-        </execution>
-      </executions>
-       -->
-    </plugin>
-    <plugin>
-        <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-p2-repository-plugin</artifactId>
-        <version>${tycho.version}</version>
-        <configuration>
-            <compress>true</compress>
-        </configuration>
-        
-    </plugin>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
 
-  </plugins>
-</build>
-  
-    <name>GNU ARM Eclipse repository</name>
+	<groupId>ilg.gnuarmeclipse</groupId>
+	<artifactId>ilg.gnuarmeclipse.repository</artifactId>
+	<version>3.3.1-SNAPSHOT</version>
+	<packaging>eclipse-repository</packaging>
+
+	<parent>
+		<groupId>ilg.gnuarmeclipse</groupId>
+		<artifactId>ilg.gnuarmeclipse.parent</artifactId>
+		<version>3.3.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-director-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<!-- <configuration> <includeAllDependencies>true</includeAllDependencies> 
+					</configuration> <executions> <execution> <id>materialize-products</id> <goals> 
+					<goal>materialize-products</goal> </goals> </execution> <execution> <id>archive-products</id> 
+					<goals> <goal>archive-products</goal> </goals> </execution> </executions> -->
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-p2-repository-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<compress>true</compress>
+				</configuration>
+
+			</plugin>
+
+		</plugins>
+	</build>
+
+	<name>GNU ARM Eclipse repository</name>
 	<url>http://gnuarmeclipse.github.io</url>
 </project>

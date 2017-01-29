@@ -1,4 +1,6 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
@@ -10,7 +12,7 @@
 	<properties>
 		<!-- https://wiki.eclipse.org/Tycho/Release_Notes -->
 		<tycho.version>0.25.0</tycho.version>
-		
+
 		<!-- Silence a Maven warning -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
@@ -58,8 +60,8 @@
 		<module>ilg.gnuarmeclipse.managedbuild.packs</module>
 		<module>ilg.gnuarmeclipse.packs-feature</module>
 
-        <module>ilg.gnuarmeclipse.codered</module>
-        <module>ilg.gnuarmeclipse.codered-feature</module>
+		<module>ilg.gnuarmeclipse.codered</module>
+		<module>ilg.gnuarmeclipse.codered-feature</module>
 
 		<module>ilg.gnuarmeclipse.doc.user</module>
 		<module>ilg.gnuarmeclipse.doc.user-feature</module>
