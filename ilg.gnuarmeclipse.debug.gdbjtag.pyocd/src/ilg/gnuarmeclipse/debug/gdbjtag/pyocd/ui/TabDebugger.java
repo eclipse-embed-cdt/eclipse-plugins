@@ -907,7 +907,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			if (boards == null) {
 				boards = new ArrayList<PyOCD.Board>();
 			}
-			System.out.printf("board = %s\n", boards);
+			if (Activator.getInstance().isDebugging()) {
+				System.out.printf("board = %s\n", boards);
+			}
 
 			Collections.sort(boards, PyOCD.Board.COMPARATOR);
 
@@ -943,7 +945,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			if (targets == null) {
 				targets = new ArrayList<PyOCD.Target>();
 			}
-			System.out.printf("target = %s\n", targets);
+			if (Activator.getInstance().isDebugging()) {
+				System.out.printf("target = %s\n", targets);
+			}
 
 			Collections.sort(targets, PyOCD.Target.COMPARATOR);
 
@@ -954,6 +958,16 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			String[] items = itemList.toArray(new String[itemList.size()]);
 
 			fGdbServerTargetName.setItems(items);
+			
+			// Select current target from config.
+			if (fConfiguration != null) {
+				try {
+					fGdbServerTargetName.setText(fConfiguration.getAttribute(ConfigurationAttributes.GDB_SERVER_TARGET_NAME,
+					DefaultPreferences.GDB_SERVER_TARGET_NAME_DEFAULT));
+				} catch (CoreException e) {
+					Activator.log(e.getStatus());
+				}
+			}
 		} else {
 			// Clear combobox and show error
 			fGdbServerTargetName.setItems(new String[] {});
