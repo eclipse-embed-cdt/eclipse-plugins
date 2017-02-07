@@ -1,0 +1,6 @@
+ilg/gnuarmeclipse/templates/ad/templates/*/ linguist-vendored
+ilg/gnuarmeclipse/templates/core/templates/*/ linguist-vendored
+ilg/gnuarmeclipse/templates/cortexm/templates/*/ linguist-vendored
+ilg/gnuarmeclipse/templates/freescale/templates/*/ linguist-vendored
+ilg/gnuarmeclipse/templates/freescale.pe/templates/*/ linguist-vendored
+ilg/gnuarmeclipse/templates/stm/templates/*/ linguist-vendored
