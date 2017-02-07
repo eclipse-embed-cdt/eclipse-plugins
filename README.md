@@ -45,3 +45,14 @@ Recommended:
 - JavaSE-1.8-111 or later
 - Eclipse Mars.2
 
+## Developer
+
+https://www.eclipse.org/cdt/developers.php
+
+### Formatting
+
+https://wiki.eclipse.org/CDT/policy
+
+- use tabs, at 4
+- code line size: 120 chars
+- comments line size: 80 chars
