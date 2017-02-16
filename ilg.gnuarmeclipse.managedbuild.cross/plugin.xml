@@ -705,7 +705,7 @@
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.base.dirs.include.paths"
 				isAbstract="true"
 				name="%option.compiler.include.paths"
-				useByScannerDiscovery="false"
+				useByScannerDiscovery="true"
 				valueType="includePath">
 			</option>
 			<option
