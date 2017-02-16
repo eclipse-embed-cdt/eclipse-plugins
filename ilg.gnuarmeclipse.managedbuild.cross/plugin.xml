@@ -1634,13 +1634,14 @@
 				</enumeratedOptionValue>
 			</option>
 			<option
-				command="-mthumb-interwork"
-				defaultValue="false"
-				id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.thumbinterwork"
-				isAbstract="true"
-				name="%option.target.arm.thumbInterwork"
-				tip="Generate code that supports calling between the ARM and Thumb instruction sets."
-				valueType="boolean">
+         command="-mthumb-interwork"
+         defaultValue="false"
+         id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.thumbinterwork"
+         isAbstract="true"
+         name="%option.target.arm.thumbInterwork"
+         tip="Generate code that supports calling between the ARM and Thumb instruction sets."
+         useByScannerDiscovery="true"
+         valueType="boolean">
 				<enablement type="UI_ENABLEMENT|CMD_USAGE">
 					<checkOption
 						holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
@@ -1651,10 +1652,11 @@
 				</enablement>
 			</option>
 			<option
-				id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.endianness"
-				isAbstract="true"
-				name="%option.target.arm.endianness"
-				valueType="enumerated">
+         id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.endianness"
+         isAbstract="true"
+         name="%option.target.arm.endianness"
+         useByScannerDiscovery="true"
+         valueType="enumerated">
 				<enablement type="UI_ENABLEMENT|CMD_USAGE">
 					<checkOption
 						holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
@@ -1680,12 +1682,13 @@
 				</enumeratedOptionValue>
 			</option>
 			<option
-				id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.fpu.abi"
-				isAbstract="true"
-				name="%option.target.arm.floatABI"
-				tip="Specifies which floating-point ABI to use. Specifying ‘soft’ causes GCC to generate output containing library calls for floating-point operations. ‘softfp’ allows the generation of code using hardware floating-point instructions, but still uses the soft-float calling conventions. ‘hard’ allows generation of floating-point instructions and uses FPU-specific calling conventions. The default depends on the specific target configuration. Note that the hard-float and soft-float ABIs are not link-compatible; you must compile your entire program with the same ABI, and link with a compatible set of libraries."
-				valueHandler="ilg.gnuarmeclipse.managedbuild.cross.FloatABIManagedOptionHandleValue"
-				valueType="enumerated">
+         id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.fpu.abi"
+         isAbstract="true"
+         name="%option.target.arm.floatABI"
+         tip="Specifies which floating-point ABI to use. Specifying ‘soft’ causes GCC to generate output containing library calls for floating-point operations. ‘softfp’ allows the generation of code using hardware floating-point instructions, but still uses the soft-float calling conventions. ‘hard’ allows generation of floating-point instructions and uses FPU-specific calling conventions. The default depends on the specific target configuration. Note that the hard-float and soft-float ABIs are not link-compatible; you must compile your entire program with the same ABI, and link with a compatible set of libraries."
+         useByScannerDiscovery="true"
+         valueHandler="ilg.gnuarmeclipse.managedbuild.cross.FloatABIManagedOptionHandleValue"
+         valueType="enumerated">
 				<enablement type="UI_ENABLEMENT|CMD_USAGE">
 					<checkOption
 						holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
@@ -1752,11 +1755,12 @@
 				</enumeratedOptionValue>
 			</option>
 			<option
-				id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.fpu.unit"
-				isAbstract="true"
-				name="%option.target.arm.fpuType"
-				tip="This specifies what floating-point hardware (or hardware emulation) is available on the target. If ‘-msoft-float’ is specified this specifies the format of floating-point values."
-				valueType="enumerated">
+         id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.fpu.unit"
+         isAbstract="true"
+         name="%option.target.arm.fpuType"
+         tip="This specifies what floating-point hardware (or hardware emulation) is available on the target. If ‘-msoft-float’ is specified this specifies the format of floating-point values."
+         useByScannerDiscovery="true"
+         valueType="enumerated">
 				<enablement type="UI_ENABLEMENT|CMD_USAGE">
 					<checkOption
 						holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
@@ -1941,11 +1945,12 @@
 				</enumeratedOptionValue>
 			</option>
 			<option
-				id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.unalignedaccess"
-				isAbstract="true"
-				name="%option.target.arm.unalignedaccess"
-				tip="Enables (or disables) reading and writing of 16- and 32- bit values from addresses that are not 16- or 32- bit aligned. By default unaligned access is disabled for all pre-ARMv6 and all ARMv6-M architectures, and enabled for all other architectures. If unaligned access is not enabled then words in packed data structures will be accessed a byte at a time."
-				valueType="enumerated">
+         id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.unalignedaccess"
+         isAbstract="true"
+         name="%option.target.arm.unalignedaccess"
+         tip="Enables (or disables) reading and writing of 16- and 32- bit values from addresses that are not 16- or 32- bit aligned. By default unaligned access is disabled for all pre-ARMv6 and all ARMv6-M architectures, and enabled for all other architectures. If unaligned access is not enabled then words in packed data structures will be accessed a byte at a time."
+         useByScannerDiscovery="true"
+         valueType="enumerated">
 				<enablement type="UI_ENABLEMENT|CMD_USAGE">
 					<checkOption
 						holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
