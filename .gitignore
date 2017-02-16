@@ -1,3 +1,4 @@
 target/
 bin/
 content.xml
+.vscode/
