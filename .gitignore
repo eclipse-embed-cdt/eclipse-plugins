@@ -2,3 +2,4 @@ target/
 bin/
 content.xml
 .vscode/
+.settings/
