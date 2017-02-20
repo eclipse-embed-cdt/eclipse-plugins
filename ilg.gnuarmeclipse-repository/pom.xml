@@ -24,7 +24,9 @@
 				<version>${tycho.version}</version>
 				<configuration>
 					<compress>true</compress>
+					<!-- Nope, it brings all 3rd party plug-ins.
 					<includeAllDependencies>true</includeAllDependencies>
+					-->
 				</configuration>
 				<executions>
 					<execution>
