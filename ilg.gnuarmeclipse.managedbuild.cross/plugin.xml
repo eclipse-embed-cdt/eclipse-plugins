@@ -1208,9 +1208,34 @@
 					name="cortex-a15">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
+					command="-mcpu=cortex-a17"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-a17"
+					name="cortex-a17">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					command="-mcpu=cortex-a32"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-a32"
+					name="cortex-a32">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					command="-mcpu=cortex-a35"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-a35"
+					name="cortex-a35">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
 					command="-mcpu=cortex-a5"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-a5"
 					name="cortex-a5">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					command="-mcpu=cortex-a53"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-a53"
+					name="cortex-a53">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					command="-mcpu=cortex-a57"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-a57"
+					name="cortex-a57">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
 					command="-mcpu=cortex-a7"
@@ -1263,10 +1288,22 @@
 					name="cortex-m1.small-multiply">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
+					command="-mcpu=cortex-m23"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m23"
+					isDefault="true"
+					name="cortex-m23">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
 					command="-mcpu=cortex-m3"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m3"
 					isDefault="true"
 					name="cortex-m3">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					command="-mcpu=cortex-m33"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m33"
+					isDefault="true"
+					name="cortex-m33">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
 					command="-mcpu=cortex-m4"
@@ -1358,11 +1395,11 @@
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.iwmmxt2"
 					name="iwmmxt2">
 				</enumeratedOptionValue>
-            <!-- not supported in 4.8 -->
+            <!-- not supported since 4.8 -->
 				<enumeratedOptionValue
 					command="-mcpu=marvell-f"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.marvell-f"
-					name="marvell-f">
+					name="marvell-f (deprecated)">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
 					command="-mcpu=marvell-pj4"
@@ -1383,6 +1420,11 @@
 					command="-mcpu=native"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.native"
 					name="Native (-mcpu=native)">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					command="-mcpu=qdf24xx"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.qdf24xx"
+					name="qdf24xx">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
 					command="-mcpu=strongarm"
@@ -1435,22 +1477,22 @@
 				<enumeratedOptionValue
 					command="-march=armv2"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv2"
-					name="armv2">
+					name="armv2 (deprecated)">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
 					command="-march=armv2a"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv2a"
-					name="armv2a">
+					name="armv2a (deprecated)">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
 					command="-march=armv3"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv3"
-					name="armv3">
+					name="armv3 (deprecated)">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
 					command="-march=armv3m"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv3m"
-					name="armv3m">
+					name="armv3m (deprecated)">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
 					command="-march=armv4"
@@ -1578,9 +1620,19 @@
 					name="armv8-m.main+dsp">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
+					command="-march=armv8.1-a"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv8-1-a"
+					name="armv8.1-a">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					command="-march=armv8.1-a+crc"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.armv8-1-a-crc"
+					name="armv8.1-a+crc">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
 					command="-march=ep9312"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.arch.ep9312"
-					name="ep9312">
+					name="ep9312 (deprecated)">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
 					command="-march=iwmmxt"
@@ -1833,6 +1885,12 @@
 					isDefault="true"
 					name="%option.target.arm.fpuType.default">
 				</enumeratedOptionValue>
+				
+				<enumeratedOptionValue
+					command="-mfpu=crypto-neon-fp-armv8"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.cryptoneonfparmv8"
+					name="%option.target.arm.fpuType.cryptoneonfparmv8">
+				</enumeratedOptionValue>
 				<enumeratedOptionValue
 					command="-mfpu=fpa"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.fpa"
@@ -1849,10 +1907,52 @@
 					name="%option.target.arm.fpuType.fpe3">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
+					command="-mfpu=fp-armv8"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.fparmv8"
+					name="%option.target.arm.fpuType.fparmv8">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					command="-mfpu=fpv4-sp-d16"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.fpv4spd16"
+					name="%option.target.arm.fpuType.fpv4spd16">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					command="-mfpu=fpv5-d16"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.fpv5d16"
+					name="%option.target.arm.fpuType.fpv5d16">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					command="-mfpu=fpv5-sp-d16"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.fpv5spd16"
+					name="%option.target.arm.fpuType.fpv5spd16">
+				</enumeratedOptionValue>
+				
+				<enumeratedOptionValue
 					command="-mfpu=maverick"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.maverick"
 					name="%option.target.arm.fpuType.maverick">
 				</enumeratedOptionValue>
+				
+				<enumeratedOptionValue
+					command="-mfpu=neon"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.neon"
+					name="%option.target.arm.fpuType.neon">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					command="-mfpu=neon-fp16"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.neonfp16"
+					name="%option.target.arm.fpuType.neonfp16">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					command="-mfpu=neon-fp-armv8"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.neonfparmv8"
+					name="%option.target.arm.fpuType.neonfparmv8">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					command="-mfpu=neon-vfpv4"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.neonvfpv4"
+					name="%option.target.arm.fpuType.neonvfpv4">
+				</enumeratedOptionValue>				
 				<enumeratedOptionValue
 					command="-mfpu=vfp"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.vfp"
@@ -1864,11 +1964,6 @@
 					name="%option.target.arm.fpuType.vfpv3">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
-					command="-mfpu=vfpv3-fp16"
-					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.vfpv3fp16"
-					name="%option.target.arm.fpuType.vfpv3fp16">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
 					command="-mfpu=vfpv3-d16"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.vfpv3d16"
 					name="%option.target.arm.fpuType.vfpv3d16">
@@ -1877,6 +1972,11 @@
 					command="-mfpu=vfpv3-d16-fp16"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.vfpv3d16fp16"
 					name="%option.target.arm.fpuType.vfpv3d16fp16">
+				</enumeratedOptionValue>				
+				<enumeratedOptionValue
+					command="-mfpu=vfpv3-fp16"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.vfpv3fp16"
+					name="%option.target.arm.fpuType.vfpv3fp16">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
 					command="-mfpu=vfpv3xd"
@@ -1889,16 +1989,6 @@
 					name="%option.target.arm.fpuType.vfpv3xdfp16">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
-					command="-mfpu=neon"
-					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.neon"
-					name="%option.target.arm.fpuType.neon">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=neon-fp16"
-					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.neonfp16"
-					name="%option.target.arm.fpuType.neonfp16">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
 					command="-mfpu=vfpv4"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.vfpv4"
 					name="%option.target.arm.fpuType.vfpv4">
@@ -1907,41 +1997,6 @@
 					command="-mfpu=vfpv4-d16"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.vfpv4d16"
 					name="%option.target.arm.fpuType.vfpv4d16">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=fpv4-sp-d16"
-					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.fpv4spd16"
-					name="%option.target.arm.fpuType.fpv4spd16">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=neon-vfpv4"
-					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.neonvfpv4"
-					name="%option.target.arm.fpuType.neonvfpv4">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=fpv5-d16"
-					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.fpv5d16"
-					name="%option.target.arm.fpuType.fpv5d16">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=fpv5-sp-d16"
-					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.fpv5spd16"
-					name="%option.target.arm.fpuType.fpv5spd16">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=fp-armv8"
-					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.fparmv8"
-					name="%option.target.arm.fpuType.fparmv8">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=neon-fp-armv8"
-					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.neonfparmv8"
-					name="%option.target.arm.fpuType.neonfparmv8">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=crypto-neon-fp-armv8"
-					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.cryptoneonfparmv8"
-					name="%option.target.arm.fpuType.cryptoneonfparmv8">
 				</enumeratedOptionValue>
 			</option>
 			<option

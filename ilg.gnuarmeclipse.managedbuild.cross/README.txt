@@ -5,10 +5,10 @@ Supported arch & cpu:
 - updated from 4.8
 
 -march
-	armv2 
-	armv2a 
-	armv3 
-	armv3m 
+	armv2 (DEP 6.2 2017-02-20)
+	armv2a (DEP 6.2 2017-02-20)
+	armv3 (DEP 6.2 2017-02-20)
+	armv3m (DEP 6.2 2017-02-20)
 	armv4 
 	armv4t 
 	armv5 
@@ -34,12 +34,20 @@ Supported arch & cpu:
 	armv8-m.base       +[2017-01-14]
 	armv8-m.main       +[2017-01-14]
 	armv8-m.main+dsp   +[2017-01-14]
-	ep9312
+	armv8.1-a			+[2017-02-20]
+	armv8.1-a+crc		+[2017-02-20]
+	
+		ep9312 (no longer listed in 6.2)
 	iwmmxt 
 	iwmmxt2 
 	native
 
--mcpu
+AArch64 -march=arch{+[no]feature} (not yet supported by the plug-in)
+	armv8-a
+	armv8.1-a
+	native
+	
+-mtune/-mcpu
 	arm1020e 		
 	arm1020t 
 	arm1022e 
@@ -95,11 +103,14 @@ Supported arch & cpu:
 	arm9tdmi 
 	cortex-a12 		+[2015-05-22]
 	cortex-a15 
-	cortex-a53		+?
-	cortex-a57		+?
+	cortex-a17 		+[6.2 2017-02-20]
+	cortex-a32		+[6.2 2017-02-20]
+		cortex-a35 (64-bits) 		+[6.2 2017-02-20]
+		cortex-a53 (64-bits)		+? 
+		cortex-a57 (64-bits)		+?
 	cortex-a5 
 	cortex-a7 
-    cortex-a72          [2017-01-14]
+		cortex-a72 (64-bits)         [2017-01-14]
 	cortex-a8 
 	cortex-a9 
 	cortex-m0 
@@ -108,7 +119,9 @@ Supported arch & cpu:
 	cortex-m0plus.small-multiply	+[2015-05-22] 
 	cortex-m1 
 	cortex-m1.small-multiply		+[2015-05-22]
+	cortex-m23 		+[6.2 2017-02-20]
 	cortex-m3 
+	cortex-m33 		+[6.2 2017-02-20]
 	cortex-m4 
 	cortex-m7		+[2014-11-20] 
 	cortex-r4 
@@ -117,7 +130,7 @@ Supported arch & cpu:
 	cortex-r7 		+[2014-02-20]
 	cortex-r8          [2017-01-14]
 	ep9312 
-	exynos-m1          [2017-01-14]
+		exynos-m1 (64-bits)         [2017-01-14]
 	fa526 
 	fa606te 
 	fa626 
@@ -127,14 +140,56 @@ Supported arch & cpu:
 	generic-armv7-a +[2014-02-20]
 	iwmmxt 
 	iwmmxt2 
-	marvell-f		? not in 4.8
+	marvell-f		? not in 4.8, ... 6.2
 	marvell-pj4 
 	mpcore 
 	mpcorenovfp 
 	native 
+		qdf24xx (64-bits)		+[6.2 2017-02-20]
 	strongarm 
 	strongarm110 
 	strongarm1100 
 	strongarm1110 
-	xgene1             [2017-01-14]
+		xgene1 (64-bits)           [2017-01-14]
 	xscale
+
+AArch -mtune=  (not yet supported by the plug-in)
+	generic 
+	cortex-a35
+	cortex-a53
+	cortex-a57
+	cortex-a72
+	exynos-m1
+	qdf24xx
+	thunderx
+	xgene1
+	
+-mfpu=
+	crypto-neon-fp-armv8
+		fpa (deprecated)
+		fpe2 (deprecated)
+		fpe3 (deprecated)
+	fp-armv8
+	fpv4-sp-d16
+	fpv5-d16
+	fpv5-sp-d16
+		maverick (deprecated)
+	neon
+	neon-fp16
+	neon-fp-armv8
+	neon-vfpv4
+	vfp
+	vfpv3
+	vfpv3-d16
+	vfpv3-d16-fp16
+	vfpv3-fp16
+	vfpv3xd
+	vfpv3xd-fp16 
+	vfpv4
+	vfpv4-d16
+
+
+[2017-02-20]
+
+- updated for 6.2
+- added -mfpu in this file, and sorted definitions in xml
