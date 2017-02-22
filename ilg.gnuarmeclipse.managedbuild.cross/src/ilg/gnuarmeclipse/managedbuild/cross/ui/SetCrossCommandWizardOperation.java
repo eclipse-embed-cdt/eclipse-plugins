@@ -29,6 +29,9 @@ import org.eclipse.core.resources.ResourcesPlugin;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
+import org.eclipse.jface.wizard.IWizard;
+import org.eclipse.jface.wizard.IWizardPage;
+import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
 
 /**
  * An operation that runs when the new project wizard finishes for the Cross GCC
@@ -41,21 +44,35 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 
 	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 
-		// System.out.println("SetCrossCommandOperation.run() begin");
+		System.out.println("SetCrossCommandOperation.run() begin");
 
 		// get local properties
 		String projectName = (String) MBSCustomPageManager.getPageProperty(SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_PROJECT_NAME);
+		if (projectName == null) {
+			// This is to avoid bug 512550
+			// https://bugs.eclipse.org/bugs/show_bug.cgi?id=512550
+			IWizard wizard = (IWizard) MBSCustomPageManager.getPageProperty(SetCrossCommandWizardPage.PAGE_ID,
+					SetCrossCommandWizardPage.CROSS_WIZARD);
+
+			projectName = SetCrossCommandWizardPage.getProjectName(wizard);
+		}
+
+		assert projectName != null;
 
 		String toolchainName = (String) MBSCustomPageManager.getPageProperty(SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_NAME);
 		String path = (String) MBSCustomPageManager.getPageProperty(SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_PATH);
 
-		// Store persistent values in Eclipse scope
-		PersistentPreferences.putToolchainPath(toolchainName, path);
-		PersistentPreferences.putToolchainName(toolchainName);
-		PersistentPreferences.flush();
+		assert toolchainName != null;
+
+		if (!toolchainName.isEmpty() && !path.isEmpty()) {
+			// Store persistent values in Eclipse scope
+			PersistentPreferences.putToolchainPath(toolchainName, path);
+			PersistentPreferences.putToolchainName(toolchainName);
+			PersistentPreferences.flush();
+		}
 
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);
 		if (!project.exists())
@@ -83,8 +100,7 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 			}
 		}
 
-		// System.out.println("SetCrossCommandOperation.run() end");
-
+		System.out.println("SetCrossCommandOperation.run() end");
 	}
 
 	private void updateOptions(IConfiguration config) throws BuildException {

@@ -18,6 +18,7 @@ import ilg.gnuarmeclipse.managedbuild.cross.ToolchainDefinition;
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPage;
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPageManager;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.wizard.IWizard;
 import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
@@ -58,6 +59,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	// must match the plugin.xml <wizardPage ID="">
 	public static final String PAGE_ID = IDs.getIdPrefix() + ".setCrossCommandWizardPage"; //$NON-NLS-1$
 
+	public static final String CROSS_WIZARD = "wizard"; //$NON-NLS-1$
 	public static final String CROSS_PROJECT_NAME = "projectName"; //$NON-NLS-1$
 
 	public static final String CROSS_TOOLCHAIN_NAME = "toolchain.name"; //$NON-NLS-1$
@@ -87,6 +89,13 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 
 	public String getName() {
 		return Messages.SetCrossCommandWizardPage_name;
+	}
+
+	@Override
+	public void setWizard(IWizard newWizard)
+	{
+		super.setWizard(newWizard);
+		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_WIZARD, newWizard);
 	}
 
 	public void createControl(Composite parent) {
@@ -245,14 +254,20 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	}
 
 	private void updateProjectNameProperty() {
-		IWizardPage[] pages = getWizard().getPages();
+		String name = getProjectName(getWizard());
+		if (name != null) {
+			MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_PROJECT_NAME, name);
+		}
+	}
+
+	public static String getProjectName(IWizard wizard) {
+		IWizardPage[] pages = wizard.getPages();
 		for (IWizardPage wizardPage : pages) {
 			if (wizardPage instanceof WizardNewProjectCreationPage) {
-				MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_PROJECT_NAME,
-						((WizardNewProjectCreationPage) wizardPage).getProjectName());
-				break;
+				return ((WizardNewProjectCreationPage) wizardPage).getProjectName();
 			}
 		}
+		return null;
 	}
 
 	// ------------------------------------------------------------------------
