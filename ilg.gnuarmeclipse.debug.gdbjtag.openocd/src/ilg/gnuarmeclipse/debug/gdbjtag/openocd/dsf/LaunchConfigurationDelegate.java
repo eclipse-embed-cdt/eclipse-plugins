@@ -462,7 +462,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 
 		boolean doStartServer = true;
 		try {
-			Configuration.getDoStartGdbServer(config);
+			doStartServer = Configuration.getDoStartGdbServer(config);
 		} catch (CoreException e) {
 			;
 		}
