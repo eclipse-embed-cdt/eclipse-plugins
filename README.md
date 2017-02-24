@@ -24,7 +24,7 @@ For manual installs, the stable version update site is:
 ```
 $ git clone --branch=master https://github.com/gnuarmeclipse/plug-ins.git gnuarmeclipse/plug-ins.git
 $ cd gnuarmeclipse/plug-ins.git
-$ mvn clean install
+$ mvn -Dtycho.localArtifacts=ignore clean install
 ```
 
 The result is a p2 repository, in `ilg.gnuarmeclipse-repository/target/repository`.
