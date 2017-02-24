@@ -4247,7 +4247,7 @@
 					name="%option.print.hex"
 					tip="The size of each section is given in hexadecimal."
 					valueType="boolean">
-					<enablement type="ALL">
+					<enablement type="UI_ENABLEMENT|CMD_USAGE">
 						<checkOption
 							holderId="ilg.gnuarmeclipse.managedbuild.cross.tool.printsize"
 							isRegex="false"
