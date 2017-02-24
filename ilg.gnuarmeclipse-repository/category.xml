@@ -19,9 +19,9 @@
 		<category name="ilg.gnuarmeclipse.category" />
 	</feature>
 	<feature
-		url="features/ilg.gnuarmeclipse.debug.gdbjtag.jlink-feature_4.1.2.qualifier.jar"
+		url="features/ilg.gnuarmeclipse.debug.gdbjtag.jlink-feature_4.1.3.qualifier.jar"
 		id="ilg.gnuarmeclipse.debug.gdbjtag.jlink"
-		version="4.1.2.qualifier">
+		version="4.1.3.qualifier">
 		<category name="ilg.gnuarmeclipse.category" />
 	</feature>
 	<feature
