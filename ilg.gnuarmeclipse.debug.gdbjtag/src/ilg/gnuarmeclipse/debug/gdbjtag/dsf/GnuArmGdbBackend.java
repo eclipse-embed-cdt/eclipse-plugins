@@ -29,9 +29,6 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.dsf;
 
-import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
-import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmProcesses_7_2_1.ProcessStateChangedEvent;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
@@ -66,7 +63,6 @@ import org.eclipse.cdt.dsf.mi.service.command.events.MIStoppedEvent;
 import org.eclipse.cdt.dsf.service.AbstractDsfService;
 import org.eclipse.cdt.dsf.service.DsfServiceEventHandler;
 import org.eclipse.cdt.dsf.service.DsfSession;
-import org.eclipse.cdt.utils.spawner.ProcessFactory;
 import org.eclipse.cdt.utils.spawner.Spawner;
 import org.eclipse.core.resources.IContainer;
 import org.eclipse.core.resources.IProject;
@@ -87,6 +83,10 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.ILaunchManager;
 import org.osgi.framework.BundleContext;
+
+import ilg.gnuarmeclipse.debug.gdbjtag.Activator;
+import ilg.gnuarmeclipse.debug.gdbjtag.DebugUtils;
+import ilg.gnuarmeclipse.debug.gdbjtag.dsf.GnuArmProcesses_7_2_1.ProcessStateChangedEvent;
 
 /**
  * Implementation of {@link IGDBBackend} for the common case where GDB is
@@ -442,14 +442,7 @@ public class GnuArmGdbBackend extends AbstractDsfService implements IGDBBackend,
 		// non-deprecated call to launchGDBProcess.
 		String unmodifiedCmdLine = StringUtil.join(getGDBCommandLineArray(), " ").trim(); //$NON-NLS-1$
 		if (unmodifiedCmdLine.equals(commandLine.trim()) == false) {
-			Process proc = null;
-			try {
-				proc = ProcessFactory.getFactory().exec(commandLine,
-						LaunchUtils.getLaunchEnvironment(fLaunchConfiguration));
-			} catch (IOException e) {
-				String message = "Error while launching command " + commandLine; //$NON-NLS-1$
-				throw new CoreException(new Status(IStatus.ERROR, GdbPlugin.PLUGIN_ID, -1, message, e));
-			}
+			Process proc = DebugUtils.exec(commandLine, LaunchUtils.getLaunchEnvironment(fLaunchConfiguration));
 			return proc;
 		}
 		// End of Backwards-compatibility check
@@ -463,16 +456,9 @@ public class GnuArmGdbBackend extends AbstractDsfService implements IGDBBackend,
 	 * 
 	 * @since 4.6
 	 */
-	protected Process launchGDBProcess(String[] commandLine) throws CoreException {
-		Process proc = null;
-		try {
-			proc = ProcessFactory.getFactory().exec(commandLine,
-					LaunchUtils.getLaunchEnvironment(fLaunchConfiguration));
-		} catch (IOException e) {
-			String message = "Error while launching command: " + StringUtil.join(commandLine, " "); //$NON-NLS-1$ //$NON-NLS-2$
-			throw new CoreException(new Status(IStatus.ERROR, GdbPlugin.PLUGIN_ID, -1, message, e));
-		}
-
+	protected Process launchGDBProcess(String[] commandLineArray) throws CoreException {
+		Process proc = DebugUtils.exec(commandLineArray,
+					LaunchUtils.getLaunchEnvironment(fLaunchConfiguration), null);
 		return proc;
 	}
 

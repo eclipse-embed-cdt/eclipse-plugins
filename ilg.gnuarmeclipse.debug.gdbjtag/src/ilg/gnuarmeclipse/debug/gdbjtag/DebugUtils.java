@@ -459,14 +459,49 @@ public class DebugUtils {
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("exec " + StringUtils.join(commandLineArray, " "));
-			System.out.println("dir " + dir);
+			if (dir != null) {
+				System.out.println("dir " + dir);
+			}
 		}
 
+		Activator.log(StringUtils.join(commandLineArray, " "));
+		
 		Process proc = null;
 		try {
 			proc = ProcessFactory.getFactory().exec(commandLineArray, environ, dir);
 		} catch (IOException e) {
 			String message = "Launching command [" + StringUtils.join(commandLineArray, " ") + "] failed."; //$NON-NLS-2$
+			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, message, e));
+		}
+
+		return proc;
+	}
+
+	/**
+	 * Execute an external process.
+	 * 
+	 * @param commandLineArray
+	 *            a String array with the comman line.
+	 * @param environ
+	 *            a String array with environment variables.
+	 * @param dir
+	 *            the current working directory for the process.
+	 * @return a Process object.
+	 * @throws CoreException
+	 */
+	public static Process exec(String commandLine, String[] environ) throws CoreException {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("exec " + commandLine);
+		}
+
+		Activator.log(commandLine);
+		
+		Process proc = null;
+		try {
+			proc = ProcessFactory.getFactory().exec(commandLine, environ);
+		} catch (IOException e) {
+			String message = "Launching command [" + commandLine + "] failed."; //$NON-NLS-2$
 			throw new CoreException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, message, e));
 		}
 
