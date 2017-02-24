@@ -293,7 +293,6 @@ public class DefaultPreferences {
 	 */
 	private static String getLastToolchain(String folder, final String executableName) {
 
-		List<String> list = new ArrayList<String>();
 		File local = new File(folder);
 		if (!local.isDirectory()) {
 			// System.out.println(folder + " not a folder");
@@ -320,19 +319,19 @@ public class DefaultPreferences {
 			return null;
 		}
 
+		IPath latestPath = null;
+		long latestDate = 0;
+		
 		for (int i = 0; i < files.length; ++i) {
-			list.add(files[i].getName());
+			IPath path = (new Path(files[i].getAbsolutePath())).append("bin").append(executableName);
+			long date = path.toFile().lastModified();
+			if (date > latestDate) {
+				latestPath = (new Path(files[i].getAbsolutePath())).append("bin");
+				latestDate = date;
+			}
 		}
 
-		// The sort criteria is the lexicographical order on folder name.
-		Collections.sort(list);
-
-		// Get the last name in ordered list.
-		String last = list.get(list.size() - 1);
-
-		// System.out.println(last);
-		IPath path = (new Path(folder)).append(last).append("bin");
-		return path.toString();
+		return latestPath.toString();
 	}
 
 	/**
