@@ -722,8 +722,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				if (fGdbServerConnectionUsb.getSelection()) {
 					e.doit = Character.isDigit(e.character) || Character.isISOControl(e.character);
 				} else if (fGdbServerConnectionIp.getSelection()) {
-					e.doit = Character.isLetterOrDigit(e.character) || e.character == '.' || e.character == '-'
-							|| e.character == '_' || Character.isISOControl(e.character);
+					e.doit = Character.isLetterOrDigit(e.character) || e.character == '.' || e.character == ':' 
+							|| e.character == '-' || e.character == '_' || Character.isISOControl(e.character);
 				} else {
 					e.doit = false;
 				}
