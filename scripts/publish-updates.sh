@@ -74,10 +74,17 @@ then
   NUMDATE=$(ls repository/plugins/ilg.gnuarmeclipse.managedbuild.cross* | sed -e 's/.*_[0-9]*[.][0-9]*[.][0-9]*[.]\([0-9]*\)[.]jar/\1/')
   ARCHIVE_PREFIX=$(ls *-SNAPSHOT.zip | sed -e 's/\(.*\)-SNAPSHOT[.]zip/\1/')
 
-  ARCHIVE_FOLDER="${HOME}/My Files/MacBookPro Projects/GNU ARM Eclipse/archive"
+  ARCHIVE_FOLDER="../../../../archive"
+  if [ "${TEST}" == "-test" ]
+  then
+    ARCHIVE_FOLDER="${ARCHIVE_FOLDER}/internal"
+  else
+    ARCHIVE_FOLDER="${ARCHIVE_FOLDER}/releases/plug-ins"
+  fi
   
   mkdir -p "${ARCHIVE_FOLDER}"
   mv -fv "${ARCHIVE_PREFIX}-SNAPSHOT.zip" "${ARCHIVE_FOLDER}/${ARCHIVE_PREFIX}-${NUMDATE}.zip"
+  (cd "${ARCHIVE_FOLDER}"; shasum -a 256 -p "${ARCHIVE_PREFIX}-${NUMDATE}.zip" >"${ARCHIVE_PREFIX}-${NUMDATE}.sha")
 fi
 
 if [ "${TEST}" == "-test" ]
