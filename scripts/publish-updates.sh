@@ -83,14 +83,19 @@ then
   fi
   
   mkdir -p "${ARCHIVE_FOLDER}"
-  mv -fv "${ARCHIVE_PREFIX}-SNAPSHOT.zip" "${ARCHIVE_FOLDER}/${ARCHIVE_PREFIX}-${NUMDATE}.zip"
-  (cd "${ARCHIVE_FOLDER}"; shasum -a 256 -p "${ARCHIVE_PREFIX}-${NUMDATE}.zip" >"${ARCHIVE_PREFIX}-${NUMDATE}.sha")
+
+  P="${ARCHIVE_FOLDER}/${ARCHIVE_PREFIX}-${NUMDATE}.zip"
+  AP="$(cd "$(dirname "${P}")"; pwd)/$(basename "${P}")"
+
+  mv -f "${ARCHIVE_PREFIX}-SNAPSHOT.zip" "${AP}"
+  (cd "${ARCHIVE_FOLDER}"; shasum -a 256 -p "${AP}" >"${AP}.sha")
+
+  echo "Archive available from \"${AP}\""
 fi
 
 if [ "${TEST}" == "-test" ]
 then
   echo "When final, don't forget to publish the archive too!"
-  echo "It is available from ${ARCHIVE_FOLDER}/${ARCHIVE_PREFIX}-${NUMDATE}.zip"
 fi
 
 
