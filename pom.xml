@@ -12,7 +12,7 @@
 	<groupId>ilg.gnuarmeclipse</groupId>
 	<!-- Generally the name that the project is known by. -->
 	<artifactId>plug-ins</artifactId>
-	<version>3.3.1-SNAPSHOT</version>
+	<version>3.4.1-SNAPSHOT</version>
 	<packaging>pom</packaging>
 
 	<properties>
