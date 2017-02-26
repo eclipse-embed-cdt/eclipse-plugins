@@ -223,10 +223,12 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 
 			if (folder.isEmpty()) {
 
-				// If the search path is known, discover toolchain.
-				folder = Discoverer.getRegistryInstallFolder(executableName, "bin", REG_SUBKEY, REG_NAME);
+				if (EclipseUtils.isWindows()) {
+					// If the search path is known, discover toolchain.
+					folder = Discoverer.getRegistryInstallFolder(executableName, "bin", REG_SUBKEY, REG_NAME);
+				}
 
-				if (folder == null) {
+				if (folder == null || folder.isEmpty()) {
 					folder = Discoverer.searchInstallFolder(executableName, searchPath, null);
 				}
 			}
