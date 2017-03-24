@@ -44,6 +44,12 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<item
 				value="cortex-m7"
 				label="Cortex-M7" />
+			<item
+				value="cortex-m23"
+				label="Cortex-M23" />
+			<item
+				value="cortex-m33"
+				label="Cortex-M33" />
 		</property>
 
 		<property
