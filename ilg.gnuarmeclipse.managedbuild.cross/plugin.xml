@@ -1124,7 +1124,6 @@
 				<enumeratedOptionValue
 					command="-mcpu=arm7tdmi"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.arm7tdmi"
-					isDefault="false"
 					name="arm7tdmi">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
@@ -1290,7 +1289,6 @@
 				<enumeratedOptionValue
 					command="-mcpu=cortex-m23"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m23"
-					isDefault="true"
 					name="cortex-m23">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
@@ -1302,7 +1300,6 @@
 				<enumeratedOptionValue
 					command="-mcpu=cortex-m33"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m33"
-					isDefault="true"
 					name="cortex-m33">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
