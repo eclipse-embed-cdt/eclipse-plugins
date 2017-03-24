@@ -43,9 +43,9 @@
 		<category name="ilg.gnuarmeclipse.category" />
 	</feature>
 	<feature
-		url="features/ilg.gnuarmeclipse.templates.cortexm-feature_1.3.1.qualifier.jar"
+		url="features/ilg.gnuarmeclipse.templates.cortexm-feature_1.4.1.qualifier.jar"
 		id="ilg.gnuarmeclipse.templates.cortexm"
-		version="1.3.1.qualifier">
+		version="1.4.1.qualifier">
 		<category name="ilg.gnuarmeclipse.category" />
 	</feature>
 	<feature
