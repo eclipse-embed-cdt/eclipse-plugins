@@ -2,6 +2,9 @@
 set -euo pipefail
 IFS=$'\n\t'
 
+echo "DEPRECATED!"
+exit 1
+
 # This script must be executed in the scripts folder, paths are relative to it.
 # $ cd .../gnuarmeclipse-se-git/scripts
 # $ bash copy-from-micro-os.sh
