@@ -7,7 +7,7 @@
 
 	<groupId>ilg.gnuarmeclipse.features</groupId>
 	<artifactId>ilg.gnuarmeclipse.templates.cortexm</artifactId>
-	<version>1.4.1-SNAPSHOT</version>
+	<version>1.4.2-SNAPSHOT</version>
 	<packaging>eclipse-feature</packaging>
 
 	<parent>
