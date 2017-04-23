@@ -46,9 +46,10 @@ public class Repos {
 
 	public static final String CMSIS_PACK_TYPE = "CMSIS Pack";
 	public static final String XCDL_CMSIS_PACK_TYPE = "XCDL/CMSIS Pack";
+	public static final String UNUSED_PACK_TYPE = "Unused";
 
 	// Used in NewSiteDialog.java.
-	public static final String[] TYPES = { CMSIS_PACK_TYPE, XCDL_CMSIS_PACK_TYPE };
+	public static final String[] TYPES = { CMSIS_PACK_TYPE, XCDL_CMSIS_PACK_TYPE, UNUSED_PACK_TYPE };
 
 	private static final Repos fgInstance;
 

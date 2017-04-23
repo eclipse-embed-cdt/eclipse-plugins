@@ -165,6 +165,8 @@ public class UpdatePacksHandler extends AbstractHandler {
 					// One work unit, to copy the file locally.
 					workUnits++;
 
+				} else if (Repos.UNUSED_PACK_TYPE.equals(type)) {
+					fOut.println(Utils.reportWarning("Repo \"" + indexUrl + "\" ignored."));
 				} else {
 					fOut.println(Utils.reportWarning("Repo type \"" + type + "\" not supported."));
 				}
