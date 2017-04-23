@@ -78,6 +78,8 @@ import org.eclipse.ui.console.MessageConsoleStream;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.services.IServiceLocator;
 
+import com.github.zafarkhaja.semver.Version;
+
 public class PacksView extends ViewPart implements IDataManagerListener {
 
 	/**
@@ -209,8 +211,11 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 			String name2 = ((Leaf) e2).getName();
 
 			if (n1.isType(Type.VERSION)) {
+				Version v1 = Version.valueOf(name1);
+				Version v2 = Version.valueOf(name2);
+
 				// Reverse the order for versions, and use version comparator.
-				return StringUtils.compareNumericVersions(name2, name1);
+				return v2.compareTo(v1);
 				// return getComparator().compare(name2, name1);
 			} else {
 				return getComparator().compare(name1, name2);
