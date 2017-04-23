@@ -253,6 +253,46 @@ public class StringUtils {
 		return lst;
 
 	}
+	
+	/**
+	 * Compare two strings that represent numeric versions.
+	 * Version numbers are expected to be in the format x.y.z...
+	 * 
+	 * Return 
+	 * - -1 if v1 is older than v2 
+	 * - 0 if they are the same 
+	 * - +1 if v1 is newer than v2
+	 */
+	public static int compareNumericVersions(String v1, String v2) {
+		String[] v1digits = v1.split("\\.");
+		String[] v2digits = v2.split("\\.");
+		
+		for (int i = 0; i < v1digits.length && i < v2digits.length; i++) {
+			int d1 = Integer.parseInt(v1digits[i]);
+			int d2 = Integer.parseInt(v2digits[i]);
+			
+			if (d1 < d2)
+				return -1;
+			
+			if (d1 > d2)
+				return 1;
+		}
+		
+		// At this point all digits have the same value.
+		
+		// The version with the longer string wins
+		
+		if (v1digits.length < v2digits.length)
+			return -1; // x.y < x.y.z
+		
+		if (v1digits.length > v2digits.length)
+			return 1; // x.y.z > x.y
+
+		// If digits are the same and the length are 
+		// the same, then versions are identical.
+		return 0;
+	}
+
 
 	// ------------------------------------------------------------------------
 }
