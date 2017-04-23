@@ -84,13 +84,7 @@ public class Repos {
 		map = new HashMap<String, Object>();
 		map.put("type", CMSIS_PACK_TYPE);
 		map.put("name", "Keil");
-		map.put("url", "http://www.keil.com/pack/index.idx");
-		list.add(map);
-
-		map = new HashMap<String, Object>();
-		map.put("type", XCDL_CMSIS_PACK_TYPE);
-		map.put("name", "GNU ARM Eclipse");
-		map.put("url", "http://gnuarmeclipse.sourceforge.net/packages/content.xml");
+		map.put("url", "http://www.keil.com/pack/index.pidx");
 		list.add(map);
 
 		fList = list;
@@ -244,7 +238,7 @@ public class Repos {
 	}
 
 	// Do some magic to obtain a domain name from the url
-	public String getDomaninNameFromUrl(String url) {
+	static public String getDomaninNameFromUrl(String url) {
 
 		String s = url;
 		if (s.startsWith("http://")) {
