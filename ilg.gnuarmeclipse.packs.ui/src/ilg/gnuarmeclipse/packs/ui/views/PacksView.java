@@ -209,8 +209,9 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 			String name2 = ((Leaf) e2).getName();
 
 			if (n1.isType(Type.VERSION)) {
-				// Reverse the order for versions
-				return getComparator().compare(name2, name1);
+				// Reverse the order for versions, and use version comparator.
+				return StringUtils.compareNumericVersions(name2, name1);
+				// return getComparator().compare(name2, name1);
 			} else {
 				return getComparator().compare(name1, name2);
 			}
