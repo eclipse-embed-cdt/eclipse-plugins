@@ -293,6 +293,12 @@ public class StringUtils {
 		return 0;
 	}
 
+	public String capitalizeFirstLetter(String original) {
+	    if (original == null || original.length() == 0) {
+	        return original;
+	    }
+	    return original.substring(0, 1).toUpperCase() + original.substring(1);
+	}
 
 	// ------------------------------------------------------------------------
 }
