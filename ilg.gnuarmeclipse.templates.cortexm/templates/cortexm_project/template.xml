@@ -1970,10 +1970,13 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 
 	<if condition="$(trace)==ITM">
 		<process
-			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -1985,16 +1988,22 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple
 						name="path"
 						value="" />
+					<simple
+						name="buildType"
+						value="debug" />
 				</element>
 			</complex-array>
 		</process>
 	</if>
 	<if condition="$(trace)==STDOUT">
 		<process
-			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -2006,16 +2015,22 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple
 						name="path"
 						value="" />
+					<simple
+						name="buildType"
+						value="debug" />
 				</element>
 			</complex-array>
 		</process>
 	</if>
 	<if condition="$(trace)==DEBUG">
 		<process
-			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
 			<complex-array name="resourcePaths">
 				<element>
 					<simple
@@ -2027,6 +2042,37 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple
 						name="path"
 						value="" />
+					<simple
+						name="buildType"
+						value="debug" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process
+			type="ilg.gnuarmeclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnuarmeclipse.managedbuild.cross.option.*.defs" />
+					<simple-array name="values">
+						<element value="NDEBUG" />
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="release" />
 				</element>
 			</complex-array>
 		</process>
