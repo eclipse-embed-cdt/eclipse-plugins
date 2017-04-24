@@ -11,10 +11,6 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.viewmodel.peripheral;
 
-import java.math.BigInteger;
-
-import org.eclipse.debug.core.DebugException;
-
 import ilg.gnuarmeclipse.debug.gdbjtag.datamodel.SvdDMNode;
 
 public class PeripheralRegisterArrayVMNode extends PeripheralGroupVMNode {
@@ -47,21 +43,6 @@ public class PeripheralRegisterArrayVMNode extends PeripheralGroupVMNode {
 		}
 
 		return null;
-	}
-
-	@Override
-	public BigInteger getBigAbsoluteAddress() {
-
-		BigInteger base;
-		try {
-			base = ((PeripheralGroupVMNode) getRegisterGroup()).getBigAbsoluteAddress();
-		} catch (DebugException e) {
-			base = BigInteger.ZERO;
-		}
-		BigInteger offset;
-		offset = fDMNode.getBigAddressOffset();
-
-		return base.add(offset);
 	}
 
 	// ------------------------------------------------------------------------
