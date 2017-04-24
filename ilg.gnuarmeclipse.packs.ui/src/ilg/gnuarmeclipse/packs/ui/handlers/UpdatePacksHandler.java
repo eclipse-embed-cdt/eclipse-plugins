@@ -242,7 +242,11 @@ public class UpdatePacksHandler extends AbstractHandler {
 
 			int count = Index.readIndex(indexUrl, pdscList);
 
-			fOut.println("Contributed " + count + " pack(s).");
+			if (count == 0) {
+				fOut.println("Malformed index, no packs contributed.");
+			} else {
+				fOut.println("Contributed " + count + " pack(s).");
+			}
 
 			return;
 
