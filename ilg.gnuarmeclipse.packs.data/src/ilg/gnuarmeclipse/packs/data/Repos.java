@@ -39,6 +39,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 public class Repos {
 
@@ -356,6 +357,10 @@ public class Repos {
 					fOut.println(e.getMessage());
 				} catch (ParserConfigurationException e) {
 					fOut.println(e.toString());
+				} catch (SAXParseException e) {
+					String msg = e.getMessage() + ", file: " + fileName + ", line: " + e.getLineNumber() + ", column: "
+							+ e.getColumnNumber();
+					fOut.println("Error: " + msg);
 				} catch (SAXException e) {
 					fOut.println(e.toString());
 				}

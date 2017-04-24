@@ -42,6 +42,7 @@ import java.util.TreeMap;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
+import org.xml.sax.SAXParseException;
 
 /**
  * This singleton class manages all data structures related to packs.
@@ -646,6 +647,12 @@ public class DataManager implements IPacksDataManager {
 			Node node = parser.parse(document);
 			return node;
 
+		} catch (SAXParseException e) {
+			String msg = e.getMessage() + ", file: " + file.getName() + ", line: " + e.getLineNumber() + ", column: "
+					+ e.getColumnNumber();
+			fOut.println("Error: " + msg);
+			Utils.reportError(msg);
+			Activator.log(e);
 		} catch (Exception e) {
 			String msg = e.getMessage() + ", file: " + file.getName();
 			fOut.println("Error: " + msg);
@@ -795,6 +802,12 @@ public class DataManager implements IPacksDataManager {
 			Document document = Xml.parseFile(file);
 			GenericParser parser = new GenericParser();
 			node = parser.parse(document);
+		} catch (SAXParseException e) {
+			String msg = e.getMessage() + ", file: " + file.getName() + ", line: " + e.getLineNumber() + ", column: "
+					+ e.getColumnNumber();
+			fOut.println("Error: " + msg);
+			Utils.reportError(msg);
+			Activator.log(e);
 		} catch (Exception e) {
 			String msg = e.getMessage() + ", file: " + file.getName();
 			fOut.println("Error: " + msg);

@@ -26,6 +26,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.ui.console.MessageConsoleStream;
+import org.xml.sax.SAXParseException;
 
 public class ParsePdscRunnable implements IRunnableWithProgress {
 
@@ -92,6 +93,11 @@ public class ParsePdscRunnable implements IRunnableWithProgress {
 
 		} catch (FileNotFoundException e) {
 			fgOut.println("Failed: " + e.toString());
+		} catch (SAXParseException e) {
+			String msg = e.getMessage() + ", file: " + path.toString() + ", line: " + e.getLineNumber() + ", column: "
+					+ e.getColumnNumber();
+			Activator.log(e);
+			fgOut.println("Failed: " + msg);
 		} catch (Exception e) {
 			Activator.log(e);
 			fgOut.println("Failed: " + e.toString());

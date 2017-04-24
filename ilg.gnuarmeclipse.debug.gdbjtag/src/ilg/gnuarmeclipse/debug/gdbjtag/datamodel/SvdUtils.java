@@ -36,6 +36,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
+import org.xml.sax.SAXParseException;
 
 /**
  * Utilities for processing CMSIS SVD files.
@@ -201,10 +202,15 @@ public class SvdUtils {
 			Activator.log(e);
 			throw new CoreException(
 					new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed to get the peripherals descriptions.", e));
+		} catch (SAXParseException e) {
+			Activator.log(e);
+			String msg = "Failed to parse the peripherals descriptions, line: " + e.getLineNumber() + ", column: "
+					+ e.getColumnNumber() + ".";
+			throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, msg, e));
 		} catch (SAXException e) {
 			Activator.log(e);
 			throw new CoreException(
-					new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed to get the peripherals descriptions.", e));
+					new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed to parse the peripherals descriptions.", e));
 		} catch (IOException e) {
 			Activator.log(e);
 			throw new CoreException(
