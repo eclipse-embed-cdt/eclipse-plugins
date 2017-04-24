@@ -298,7 +298,7 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 		BigInteger offset = getThisBigAddressOffset();
 		PeripheralTreeVMNode parent = (PeripheralTreeVMNode) getParent();
 		if (parent != null) {
-			offset = offset.add(parent.getThisBigAddressOffset());
+			offset = offset.add(parent.getPeripheralBigAddressOffset());
 		}
 
 		return offset;
