@@ -36,7 +36,6 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.ScrolledComposite;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -160,13 +159,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			System.out.println("TabStartup: createControl() ");
 		}
 
-		ScrolledComposite sc = new ScrolledComposite(parent, SWT.V_SCROLL | SWT.H_SCROLL);
-		sc.setExpandHorizontal(true);
-		sc.setExpandVertical(true);
-		setControl(sc);
-
-		Composite comp = new Composite(sc, SWT.NONE);
-		sc.setContent(comp);
+		Composite comp = new Composite(parent, SWT.NONE);
+		setControl(comp);
 		GridLayout layout = new GridLayout();
 		comp.setLayout(layout);
 
@@ -188,8 +182,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
 			restoreDefaults.setLayoutData(gd);
 		}
-
-		sc.setMinSize(comp.computeSize(SWT.DEFAULT, SWT.DEFAULT));
 
 		// --------------------------------------------------------------------
 
