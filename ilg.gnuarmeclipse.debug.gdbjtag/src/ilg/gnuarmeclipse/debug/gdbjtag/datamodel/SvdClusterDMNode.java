@@ -11,6 +11,7 @@
 
 package ilg.gnuarmeclipse.debug.gdbjtag.datamodel;
 
+import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -67,6 +68,16 @@ public class SvdClusterDMNode extends SvdDMNode {
 		// Preserve apparition order.
 		return array;
 	}
+	
+	public BigInteger getBigAddressOffset() {
+		String str = getNode().getProperty("addressOffset");
+		if (!str.isEmpty()) {
+			return SvdUtils.parseScaledNonNegativeBigInteger(str);
+		} else {
+			return BigInteger.ZERO;
+		}
+	}
+
 
 	// ------------------------------------------------------------------------
 }
