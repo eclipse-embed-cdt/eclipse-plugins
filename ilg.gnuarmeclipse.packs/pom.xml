@@ -7,7 +7,7 @@
 
 	<groupId>ilg.gnuarmeclipse</groupId>
 	<artifactId>ilg.gnuarmeclipse.packs</artifactId>
-	<version>1.2.3-SNAPSHOT</version>
+	<version>1.2.4-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 
 	<parent>
