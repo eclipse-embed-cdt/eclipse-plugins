@@ -34,9 +34,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 
 import org.eclipse.core.runtime.IPath;
@@ -535,10 +537,10 @@ public class DataManager implements IPacksDataManager {
 		}
 
 		// Filter installed packages
-		List<PackNode> installedPackages = new LinkedList<PackNode>();
+		Set<PackNode> installedPackages = new HashSet<PackNode>();
 		List<PackNode> packsVersionsList = getPacksVersionsList(dm);
 		if (packsVersionsList != null) {
-			for (PackNode versionNode : getPacksVersionsList(dm)) {
+			for (PackNode versionNode : packsVersionsList) {
 				if (versionNode.isBooleanProperty(Property.INSTALLED)) {
 					installedPackages.add((PackNode) versionNode.getParent());
 				}
