@@ -2,4 +2,5 @@ target/
 bin/
 content.xml
 .vscode/
+vscode.mac.command
 .settings/

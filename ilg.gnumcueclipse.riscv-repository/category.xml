@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+	<feature
+		url="features/ilg.gnumcueclipse.managedbuild.cross.riscv-feature_2.4.1.qualifier.jar"
+		id="ilg.gnumcueclipse.managedbuild.cross.riscv"
+		version="2.4.1.qualifier">
+		<category name="ilg.gnumcueclipse.riscv.category" />
+	</feature>
+	<category-def
+		name="ilg.gnumcueclipse.riscv.category"
+		label="GNU RISC-V C/C++ Cross Development Tools" />
+</site>
