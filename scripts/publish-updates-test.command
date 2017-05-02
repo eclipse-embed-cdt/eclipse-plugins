@@ -24,4 +24,4 @@ popd  > /dev/null
 (cd "${SCRIPT_PATH}"; sh publish-updates.sh test)
 #(cd "${SCRIPT_PATH}"; sh publish-updates.sh test force)
 
-echo "Install new software from http://gnu-mcu-eclipse.sourceforge.net/updates-test"
+echo "Install new software from http://gnu-mcu-eclipse.sourceforge.io/updates-test"

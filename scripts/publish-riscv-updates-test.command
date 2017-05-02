@@ -21,6 +21,6 @@ popd  > /dev/null
 #echo "script=[${SCRIPT_PATH}]"
 #echo "pwd   =[`pwd`]"
 
-(cd "${SCRIPT_PATH}"; sh publish-updates.sh experimental)
+(cd "${SCRIPT_PATH}"; sh publish-riscv-updates.sh test)
 
-echo "Install new software from http://gnu-mcu-eclipse.sourceforge.io/updates-experimental"
+echo "Install new software from http://gnu-riscv-eclipse.sourceforge.io/updates-test"

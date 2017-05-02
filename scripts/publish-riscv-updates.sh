@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # This script runs on Mac OS X and is intended to
-# publish the ilg.gnuarmeclipse-repository site
+# publish the ilg.gnumcueclipse.riscv-repository site
 # to Bintray:
 #
 # https://bintray.com/gnu-mcu-eclipse/updates/p2
@@ -186,13 +186,8 @@ do_upload_to_bintray()
 
 # -----------------------------------------------------------------------------
 
-SF_USER=ilg-ul
-SF_DESTINATION="$SF_USER,gnuarmeclipse@frs.sourceforge.net:/home/frs/project/g/gn/gnuarmeclipse/$SF_FOLDER$TEST"
-SOURCE_LIST="."
-
 BINTRAY_USER=ilg-ul
-# BINTRAY_OWNER=gnuarmeclipse
-BINTRAY_OWNER=gnu-mcu-eclipse
+BINTRAY_OWNER=gnu-riscv-eclipse
 
 API=https://api.bintray.com
 
@@ -203,34 +198,16 @@ echo "Owner: ${BINTRAY_OWNER}"
 
 # -c skip based on checksum, not mod-time & size
 
-RSYNC_OPTS="-vrCt --exclude=scripts --exclude=.*"
-RSYNC_OPTS+=" --delete"
-
-if [ "${DRY}" == "dry" ]
-then
-  RSYNC_OPTS+=" -n"
-fi
-
-if [ "${FORCE}" == "force" ]
-then
-  RSYNC_OPTS+=" --ignore-times"
-else
-  RSYNC_OPTS+=" --checksum"
-fi
-
-if [ ! -d ../ilg.gnuarmeclipse-repository/target/repository ]
+if [ ! -d ../ilg.gnumcueclipse.riscv-repository/target/repository ]
 then
   echo "No repository folder found"
   exit 1
 fi
 
-cd ../ilg.gnuarmeclipse-repository/target
+cd ../ilg.gnumcueclipse.riscv-repository/target
 
 FULL_VERSION="$(grep "unit id='ilg.gnuarmeclipse.core'" targetPlatformRepository/content.xml | sed "s/.*version='\(.*\)'.*/\1/")"
 (cd repository; do_upload_to_bintray "updates${TEST}" "${FULL_VERSION}")
-
-echo "Rsync-ing SourceForge ${SF_FOLDER}${TEST} site (${RSYNC_OPTS})"
-(cd repository; rsync -e ssh ${RSYNC_OPTS} ${SOURCE_LIST} ${SF_DESTINATION})
 
 if [ "${TEST}" == "-test" ]
 then
