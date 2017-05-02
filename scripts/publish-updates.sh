@@ -2,13 +2,26 @@
 
 # This script runs on Mac OS X and is intended to
 # publish the ilg.gnuarmeclipse-repository site
-# to the File Release System (FRS) folder on SourceForge
+# to Bintray:
+#
+# https://bintray.com/gnu-mcu-eclipse/updates/p2
+# https://bintray.com/gnu-mcu-eclipse/updates-test/p2
+# https://bintray.com/gnu-mcu-eclipse/updates-experimental/p2
+#
+# and SourceForge File Release System (FRS):
+#
+# https://sourceforge.net/projects/gnuarmeclipse/files/Eclipse/
+
 
 TEST=""
 
 if [ $# -gt 0 ] && [ "$1" = "test" ]
 then
   TEST="-test"
+  shift
+elif [ $# -gt 0 ] && [ "$1" = "experimental" ]
+then
+  TEST="-experimental"
   shift
 fi
 
@@ -178,7 +191,8 @@ SF_DESTINATION="$SF_USER,gnuarmeclipse@frs.sourceforge.net:/home/frs/project/g/g
 SOURCE_LIST="."
 
 BINTRAY_USER=ilg-ul
-BINTRAY_OWNER=gnuarmeclipse
+# BINTRAY_OWNER=gnuarmeclipse
+BINTRAY_OWNER=gnu-mcu-eclipse
 
 API=https://api.bintray.com
 
@@ -221,6 +235,9 @@ echo "Rsync-ing SourceForge ${SF_FOLDER}${TEST} site (${RSYNC_OPTS})"
 if [ "${TEST}" == "-test" ]
 then
   echo "Published on the test site."
+elif [ "${TEST}" == "-experimental" ]
+then
+  echo "Published on the experimental site."
 else
   echo "Published on the main site."
 fi
@@ -231,7 +248,7 @@ then
   ARCHIVE_PREFIX=$(ls *-SNAPSHOT.zip | sed -e 's/\(.*\)-SNAPSHOT[.]zip/\1/')
 
   ARCHIVE_FOLDER="../../../archive"
-  if [ "${TEST}" == "-test" ]
+  if [ "${TEST}" != "" ]
   then
     ARCHIVE_FOLDER="${ARCHIVE_FOLDER}/internal"
   else
@@ -249,7 +266,7 @@ then
   echo "Archive available from \"${AP}\""
 fi
 
-if [ "${TEST}" == "-test" ]
+if [ "${TEST}" != "" ]
 then
   echo "When final, don't forget to publish the archive too!"
 fi

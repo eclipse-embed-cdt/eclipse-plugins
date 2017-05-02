@@ -21,7 +21,6 @@ popd  > /dev/null
 #echo "script=[${SCRIPT_PATH}]"
 #echo "pwd   =[`pwd`]"
 
-(cd "${SCRIPT_PATH}"; sh publish-updates.sh test)
-#(cd "${SCRIPT_PATH}"; sh publish-updates.sh test force)
+(cd "${SCRIPT_PATH}"; sh publish-updates.sh experimental)
 
-echo "Install new software from http://gnu-mcu-eclipse.sourceforge.net/updates-test"
+echo "Install new software from http://gnu-mcu-eclipse.sourceforge.net/updates-experimental"
