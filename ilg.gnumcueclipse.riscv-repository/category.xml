@@ -8,5 +8,5 @@
 	</feature>
 	<category-def
 		name="ilg.gnumcueclipse.riscv.category"
-		label="GNU RISC-V C/C++ Cross Development Tools" />
+		label="GNU RISC-V Cross C/C++ Development Tools" />
 </site>
