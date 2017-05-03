@@ -6,7 +6,7 @@
          <meta.schema plugin="ilg.gnumcueclipse.managedbuild.cross.riscv" id="toolchains" name="Toolchains Definitions"/>
       </appinfo>
       <documentation>
-         This extension point provides the ability to add custom GNU ARM toolchains.
+         This extension point provides the ability to add custom GNU RISC-V toolchains.
       </documentation>
    </annotation>
 
@@ -110,7 +110,7 @@
       <documentation>
             &lt;extension
       point=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.toolchains&quot;&gt;
-      &lt;toolchain name=&quot;Custom&quot; prefix=&quot;arm-none-eabi-&quot; /&gt;
+      &lt;toolchain name=&quot;Custom&quot; prefix=&quot;riscv64-unknown-linux-gnu-&quot; /&gt;
    &lt;/extension&gt;
 
       </documentation>

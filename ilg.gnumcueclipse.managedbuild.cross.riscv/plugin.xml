@@ -11,6 +11,7 @@
 # Doug Schaefer   (Wind River)     - initial API and implementation 
 # Anna Dushistova (Mentor Graphics)- [329531][crossgcc] crossgcc fails to build a project
 # Liviu Ionescu - ARM version  
+# Liviu Ionescu - RISC-V version
 -->
 <plugin>
 	<extension-point
@@ -932,331 +933,6 @@
 					</checkOption>
 				</enablement>
 				<enumeratedOptionValue
-					command="-mcpu=arm1020e"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm1020e"
-					name="arm1020e">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm1020t"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm1020t"
-					name="arm1020t">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm1022e"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm1022e"
-					name="arm1022e">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm1026ej-s"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm1026ej-s"
-					name="arm1026ej-s">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm10e"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm10e"
-					name="arm10e">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm10tdmi"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm10tdmi"
-					name="arm10tdmi">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm1136j-s"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm1136j-s"
-					name="arm1136j-s">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm1136jf-s"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm1136jf-s"
-					name="arm1136jf-s">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm1156t2-s"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm1156t2-s"
-					name="arm1156t2-s">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm1156t2f-s"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm1156t2f-s"
-					name="arm1156t2f-s">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm1176jz-s"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm1176jz-s"
-					name="arm1176jz-s">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm1176jzf-s"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm1176jzf-s"
-					name="arm1176jzf-s">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm2"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm2"
-					name="arm2">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm250"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm250"
-					name="arm250">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm3"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm3"
-					name="arm3">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm6"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm6"
-					name="arm6">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm60"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm60"
-					name="arm60">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm600"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm600"
-					name="arm600">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm610"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm610"
-					name="arm610">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm620"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm620"
-					name="arm620">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm7"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm7"
-					name="arm7">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm70"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm70"
-					name="arm70">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm700"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm700"
-					name="arm700">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm700i"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm700i"
-					name="arm700i">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm710"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm710"
-					name="arm710">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm7100"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm7100"
-					name="arm7100">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm710c"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm710c"
-					name="arm710c">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm710t"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm710t"
-					name="arm710t">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm720"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm720"
-					name="arm720">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm720t"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm720t"
-					name="arm720t">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm740t"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm740t"
-					name="arm740t">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm7500"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm7500"
-					name="arm7500">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm7500fe"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm7500fe"
-					name="arm7500fe">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm7d"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm7d"
-					name="arm7d">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm7di"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm7di"
-					name="arm7di">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm7dm"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm7dm"
-					name="arm7dm">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm7dmi"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm7dmi"
-					name="arm7dmi">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm7m"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm7m"
-					name="arm7m">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm7tdmi"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm7tdmi"
-					name="arm7tdmi">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm7tdmi-s"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm7tdmi-s"
-					name="arm7tdmi-s">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm8"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm8"
-					name="arm8">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm810"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm810"
-					name="arm810">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm9"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm9"
-					name="arm9">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm920"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm920"
-					name="arm920">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm920t"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm920t"
-					name="arm920t">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm922t"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm922t"
-					name="arm922t">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm926ej-s"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm926ej-s"
-					name="arm926ej-s">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm940t"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm940t"
-					name="arm940t">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm946e-s"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm946e-s"
-					name="arm946e-s">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm966e-s"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm966e-s"
-					name="arm966e-s">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm968e-s"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm968e-s"
-					name="arm968e-s">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm9e"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm9e"
-					name="arm9e">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=arm9tdmi"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.arm9tdmi"
-					name="arm9tdmi">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=cortex-a12"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.cortex-a12"
-					name="cortex-a12">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=cortex-a15"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.cortex-a15"
-					name="cortex-a15">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=cortex-a17"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.cortex-a17"
-					name="cortex-a17">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=cortex-a32"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.cortex-a32"
-					name="cortex-a32">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=cortex-a35"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.cortex-a35"
-					name="cortex-a35">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=cortex-a5"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.cortex-a5"
-					name="cortex-a5">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=cortex-a53"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.cortex-a53"
-					name="cortex-a53">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=cortex-a57"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.cortex-a57"
-					name="cortex-a57">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=cortex-a7"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.cortex-a7"
-					name="cortex-a7">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=cortex-a72"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.cortex-a72"
-					name="cortex-a72">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=cortex-a8"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.cortex-a8"
-					name="cortex-a8">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=cortex-a9"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.cortex-a9"
-					name="cortex-a9">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
 					command="-mcpu=cortex-m0"
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.cortex-m0"
 					name="cortex-m0">
@@ -1317,146 +993,6 @@
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.cortex-r4"
 					name="cortex-r4">
 				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=cortex-r4f"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.cortex-r4f"
-					name="cortex-r4f">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=cortex-r5"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.cortex-r5"
-					name="cortex-r5">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=cortex-r7"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.cortex-r7"
-					name="cortex-r7">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=cortex-r8"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.cortex-r8"
-					name="cortex-r8">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=ep9312"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.ep9312"
-					name="ep9312">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=exynos-m1"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.exynos-m1"
-					name="exynos-m1">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=fa526"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.fa526"
-					name="fa526">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=fa606te"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.fa606te"
-					name="fa606te">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=fa626"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.fa626"
-					name="fa626">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=fa626te"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.fa626te"
-					name="fa626te">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=fa726te"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.fa726te"
-					name="fa726te">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=fmp626"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.fmp626"
-					name="fmp626">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=generic-armv7-a"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.generic-armv7-a"
-					name="generic-armv7-a">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=iwmmxt"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.iwmmxt"
-					name="iwmmxt">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=iwmmxt2"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.iwmmxt2"
-					name="iwmmxt2">
-				</enumeratedOptionValue>
-            <!-- not supported since 4.8 -->
-				<enumeratedOptionValue
-					command="-mcpu=marvell-f"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.marvell-f"
-					name="marvell-f (deprecated)">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=marvell-pj4"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.marvell-pj4"
-					name="marvell-pj4">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=mpcore"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.mpcore"
-					name="mpcore">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=mpcorenovfp"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.mpcorenovfp"
-					name="mpcorenovfp">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=native"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.native"
-					name="Native (-mcpu=native)">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=qdf24xx"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.qdf24xx"
-					name="qdf24xx">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=strongarm"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.strongarm"
-					name="strongarm">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=strongarm110"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.strongarm110"
-					name="strongarm110">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=strongarm1100"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.strongarm1100"
-					name="strongarm1100">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=strongarm1110"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.strongarm1110"
-					name="strongarm1110">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=xgene1"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.xgene1"
-					name="xgene1">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mcpu=xscale"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.xscale"
-					name="xscale">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.mcpu.default"
-					name="%option.toolchain.default">
-				</enumeratedOptionValue>
 			</option>
 			<option
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.arm.target.architecture"
@@ -1472,179 +1008,9 @@
 					</checkOption>
 				</enablement>
 				<enumeratedOptionValue
-					command="-march=armv2"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv2"
-					name="armv2 (deprecated)">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv2a"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv2a"
-					name="armv2a (deprecated)">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv3"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv3"
-					name="armv3 (deprecated)">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv3m"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv3m"
-					name="armv3m (deprecated)">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv4"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv4"
-					name="armv4">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv4t"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv4t"
-					name="armv4t">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv5"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv5"
-					name="armv5">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv5e"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv5e"
-					name="armv5e">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv5t"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv5t"
-					name="armv5t">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv5te"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv5te"
-					name="armv5te">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv6"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv6"
-					name="armv6">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv6-m"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv6-m"
-					name="armv6-m">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv6j"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv6j"
-					name="armv6j">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv6k"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv6k"
-					name="armv6j">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv6s-m"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv6s-m"
-					name="armv6s-m">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv6t2"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv6t2"
-					name="armv6t2">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv6z"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv6z"
-					name="armv6z">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv6zk"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv6zk"
-					name="armv6zk">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv7"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv7"
-					name="armv7">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv7-a"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv7-a"
-					name="armv7-a">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
 					command="-march=armv7-m"
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv7-m"
 					name="armv7-m">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv7-r"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv7-r"
-					name="armv7-r">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv7e-m"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv7e-m"
-					name="armv7e-m">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv7ve"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv7ve"
-					name="armv7ve">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv8-a"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv8-a"
-					name="armv8-a">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv8-a+crc"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv8-a-crc"
-					name="armv8-a+crc">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv8-m.base"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv8-m-base"
-					name="armv8-m.base">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv8-m.main"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv8-m-main"
-					name="armv8-m.main">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv8-m.main+dsp"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv8-m-main-dsp"
-					name="armv8-m.main+dsp">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv8.1-a"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv8-1-a"
-					name="armv8.1-a">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=armv8.1-a+crc"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.armv8-1-a-crc"
-					name="armv8.1-a+crc">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=ep9312"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.ep9312"
-					name="ep9312 (deprecated)">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=iwmmxt"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.iwmmxt"
-					name="iwmmxt">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=iwmmxt2"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.iwmmxt2"
-					name="iwmmxt2">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-march=native"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.native"
-					name="Native (-march=native)">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.arch.none"
@@ -1883,118 +1249,6 @@
 					name="%option.target.arm.fpuType.default">
 				</enumeratedOptionValue>
 				
-				<enumeratedOptionValue
-					command="-mfpu=crypto-neon-fp-armv8"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.cryptoneonfparmv8"
-					name="%option.target.arm.fpuType.cryptoneonfparmv8">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=fpa"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.fpa"
-					name="%option.target.arm.fpuType.fpa">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=fpe2"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.fpe2"
-					name="%option.target.arm.fpuType.fpe2">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=fpe3"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.fpe3"
-					name="%option.target.arm.fpuType.fpe3">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=fp-armv8"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.fparmv8"
-					name="%option.target.arm.fpuType.fparmv8">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=fpv4-sp-d16"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.fpv4spd16"
-					name="%option.target.arm.fpuType.fpv4spd16">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=fpv5-d16"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.fpv5d16"
-					name="%option.target.arm.fpuType.fpv5d16">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=fpv5-sp-d16"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.fpv5spd16"
-					name="%option.target.arm.fpuType.fpv5spd16">
-				</enumeratedOptionValue>
-				
-				<enumeratedOptionValue
-					command="-mfpu=maverick"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.maverick"
-					name="%option.target.arm.fpuType.maverick">
-				</enumeratedOptionValue>
-				
-				<enumeratedOptionValue
-					command="-mfpu=neon"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.neon"
-					name="%option.target.arm.fpuType.neon">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=neon-fp16"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.neonfp16"
-					name="%option.target.arm.fpuType.neonfp16">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=neon-fp-armv8"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.neonfparmv8"
-					name="%option.target.arm.fpuType.neonfparmv8">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=neon-vfpv4"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.neonvfpv4"
-					name="%option.target.arm.fpuType.neonvfpv4">
-				</enumeratedOptionValue>				
-				<enumeratedOptionValue
-					command="-mfpu=vfp"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.vfp"
-					name="%option.target.arm.fpuType.vfp">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=vfpv3"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.vfpv3"
-					name="%option.target.arm.fpuType.vfpv3">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=vfpv3-d16"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.vfpv3d16"
-					name="%option.target.arm.fpuType.vfpv3d16">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=vfpv3-d16-fp16"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.vfpv3d16fp16"
-					name="%option.target.arm.fpuType.vfpv3d16fp16">
-				</enumeratedOptionValue>				
-				<enumeratedOptionValue
-					command="-mfpu=vfpv3-fp16"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.vfpv3fp16"
-					name="%option.target.arm.fpuType.vfpv3fp16">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=vfpv3xd"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.vfpv3xd"
-					name="%option.target.arm.fpuType.vfpv3xd">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=vfpv3xd-fp16"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.vfpv3xdfp16"
-					name="%option.target.arm.fpuType.vfpv3xdfp16">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=vfpv4"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.vfpv4"
-					name="%option.target.arm.fpuType.vfpv4">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					command="-mfpu=vfpv4-d16"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.arm.target.fpu.unit.vfpv4d16"
-					name="%option.target.arm.fpuType.vfpv4d16">
-				</enumeratedOptionValue>
 			</option>
 			<option
          id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.arm.target.unalignedaccess"
@@ -4436,25 +3690,25 @@
 	<extension point="org.eclipse.cdt.core.templates">
 		<template
 			filterPattern=".*g\+\+"
-			id="ilg.gnumcueclipse.managedbuild.cross.riscv.templates.HelloARMWorld_CPP_Project"
+			id="ilg.gnumcueclipse.managedbuild.cross.riscv.templates.HelloRISCVWorld_CPP_Project"
 			location="$nl$/templates/projecttemplates/HelloWorld_CPP_Project/template.xml"
 			projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
 		</template>
 		<template
 			filterPattern=".*gcc"
-			id="ilg.gnumcueclipse.managedbuild.cross.riscv.templates.HelloARMWorld_C_Project"
+			id="ilg.gnumcueclipse.managedbuild.cross.riscv.templates.HelloRISCVWorld_C_Project"
 			location="$nl$/templates/projecttemplates/HelloWorld_C_Project/template.xml"
 			projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
 		</template>
 	</extension>
 	<extension point="org.eclipse.cdt.core.templateAssociations">
 		<template
-			id="ilg.gnumcueclipse.managedbuild.cross.riscv.templates.HelloARMWorld_CPP_Project">
+			id="ilg.gnumcueclipse.managedbuild.cross.riscv.templates.HelloRISCVWorld_CPP_Project">
 			<toolChain id="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.base">
 			</toolChain>
 		</template>
 		<template
-			id="ilg.gnumcueclipse.managedbuild.cross.riscv.templates.HelloARMWorld_C_Project">
+			id="ilg.gnumcueclipse.managedbuild.cross.riscv.templates.HelloRISCVWorld_C_Project">
 			<toolChain id="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.base">
 			</toolChain>
 		</template>
@@ -4515,7 +3769,7 @@
 				<and>
 					<instanceof value="org.eclipse.core.resources.IProject">
 					</instanceof>
-					<test property="ilg.gnumcueclipse.managedbuild.cross.riscv.isGnuArm">
+					<test property="ilg.gnumcueclipse.managedbuild.cross.riscv.isGnuRiscv">
 					</test>
 				</and>
 			</enabledWhen>
@@ -4528,10 +3782,10 @@
 	</extension>
 	<extension point="org.eclipse.core.expressions.propertyTesters">
 		<propertyTester
-			class="ilg.gnumcueclipse.managedbuild.cross.riscv.ui.GnuArmPropertyTester"
+			class="ilg.gnumcueclipse.managedbuild.cross.riscv.ui.GnuRiscvPropertyTester"
 			id="ilg.gnumcueclipse.managedbuild.cross.riscv.propertyTester"
 			namespace="ilg.gnumcueclipse.managedbuild.cross.riscv"
-			properties="isGnuArm"
+			properties="isGnuRiscv"
 			type="java.lang.Object">
 		</propertyTester>
 	</extension>
@@ -4562,6 +3816,6 @@
 	<extension point="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchains">
 		<toolchain
 			name="Custom"
-			prefix="arm-none-eabi-" />
+			prefix="riscv64-unknown-linux-gnu-" />
 	</extension>
 </plugin>

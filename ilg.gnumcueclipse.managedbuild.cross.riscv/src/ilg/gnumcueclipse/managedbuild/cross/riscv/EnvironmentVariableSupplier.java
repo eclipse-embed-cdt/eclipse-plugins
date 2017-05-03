@@ -8,6 +8,7 @@
  * Contributors:
  *     Doug Schaefer - initial API and implementation
  *     Liviu Ionescu - ARM version
+ *     Liviu Ionescu - RISC-V version
  *******************************************************************************/
 
 package ilg.gnumcueclipse.managedbuild.cross.riscv;

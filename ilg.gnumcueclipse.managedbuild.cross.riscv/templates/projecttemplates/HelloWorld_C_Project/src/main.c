@@ -28,6 +28,6 @@
 int
 main(void)
 {
-  printf("$(messagearm)" "\n");
+  printf("$(messageriscv)" "\n");
   return 0;
 }

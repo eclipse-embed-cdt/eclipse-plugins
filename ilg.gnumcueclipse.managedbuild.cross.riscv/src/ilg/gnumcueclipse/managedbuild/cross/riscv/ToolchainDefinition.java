@@ -17,14 +17,12 @@ import java.util.List;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 
-import ilg.gnuarmeclipse.core.EclipseUtils;
-
 public class ToolchainDefinition {
 
 	// ------------------------------------------------------------------------
 
-	public static final String GNU_TOOLS_FOR_ARM_EMBEDDED = "GNU Tools for ARM Embedded Processors";
-	public static final String DEFAULT_TOOLCHAIN_NAME = GNU_TOOLS_FOR_ARM_EMBEDDED;
+	public static final String RISC_V_GCC_NEWLIB = "RISC-V GCC/Newlib";
+	public static final String DEFAULT_TOOLCHAIN_NAME = RISC_V_GCC_NEWLIB;
 
 	// ------------------------------------------------------------------------
 
@@ -51,7 +49,7 @@ public class ToolchainDefinition {
 		fName = sName;
 		fPrefix = "";
 		fSuffix = "";
-		fArchitecture = "arm";
+		fArchitecture = "risc-v";
 		fCmdMake = "make";
 		fCmdRm = "rm";
 		fCmdC = "gcc";
@@ -209,7 +207,7 @@ public class ToolchainDefinition {
 	// Static members
 	private static List<ToolchainDefinition> fgList;
 
-	private static final String CUSTOM_TOOLCHAINS_EXT_POTNT_ID = Activator.PLUGIN_ID + ".toolchains";
+	private static final String CUSTOM_TOOLCHAINS_EXT_POINT_ID = Activator.PLUGIN_ID + ".toolchains";
 
 	public static List<ToolchainDefinition> getList() {
 		return fgList;
@@ -277,7 +275,7 @@ public class ToolchainDefinition {
 	 */
 	private static void addToolchains() {
 		IConfigurationElement[] elements = Platform.getExtensionRegistry()
-				.getConfigurationElementsFor(CUSTOM_TOOLCHAINS_EXT_POTNT_ID);
+				.getConfigurationElementsFor(CUSTOM_TOOLCHAINS_EXT_POINT_ID);
 		for (IConfigurationElement element : elements) {
 			String name = element.getAttribute("name");
 
@@ -317,55 +315,7 @@ public class ToolchainDefinition {
 		fgList = new ArrayList<ToolchainDefinition>();
 
 		// 0
-		fgList.add(new ToolchainDefinition(GNU_TOOLS_FOR_ARM_EMBEDDED, "arm-none-eabi-"));
-		// 1
-		ToolchainDefinition tc;
-		tc = new ToolchainDefinition("Sourcery CodeBench Lite for ARM EABI", "arm-none-eabi-");
-		if (EclipseUtils.isWindows()) {
-			tc.setWin("cs-make", "cs-rm");
-		}
-		fgList.add(tc);
-
-		// 2
-		tc = new ToolchainDefinition("Sourcery CodeBench Lite for ARM GNU/Linux", "arm-none-linux-gnueabi-");
-		if (EclipseUtils.isWindows()) {
-			tc.setWin("cs-make", "cs-rm");
-		}
-		fgList.add(tc);
-
-		// 3
-		fgList.add(new ToolchainDefinition("devkitPro ARM EABI", "arm-eabi-"));
-
-		// 4
-		fgList.add(new ToolchainDefinition("Yagarto, Summon, etc. ARM EABI", "arm-none-eabi-"));
-
-		// 5
-		fgList.add(new ToolchainDefinition("Linaro ARMv7 bare-metal EABI", "arm-none-eabi-"));
-
-		// 6
-		fgList.add(new ToolchainDefinition("Linaro ARMv7 big-endian bare-metal EABI", "armeb-none-eabi-"));
-
-		// 7
-		fgList.add(new ToolchainDefinition("Linaro ARMv7 Linux GNU EABI HF", "arm-linux-gnueabihf-"));
-
-		// 8
-		fgList.add(new ToolchainDefinition("Linaro ARMv7 big-endian Linux GNU EABI HF", "armeb-linux-gnueabihf-"));
-
-		// 64 bit toolchains
-		// 9
-		fgList.add(new ToolchainDefinition("Linaro AArch64 bare-metal ELF", "aarch64-elf-", "aarch64"));
-
-		// 10
-		fgList.add(new ToolchainDefinition("Linaro AArch64 big-endian bare-metal ELF", "aarch64_be-elf-", "aarch64"));
-
-		// 11
-		fgList.add(new ToolchainDefinition("Linaro AArch64 Linux GNU", "aarch64-linux-gnu-", "aarch64"));
-
-		// 12
-		fgList.add(new ToolchainDefinition("Linaro AArch64 big-endian Linux GNU", "aarch64_be-linux-gnu-", "aarch64"));
-
-		// 13 - Moved to extension point
-		// fgList.add(new ToolchainDefinition("Custom", "arm-none-eabi-"));
+		fgList.add(new ToolchainDefinition(RISC_V_GCC_NEWLIB, "riscv64-unknown-linux-gnu-"));
 
 		// Enumerate extension points and add custom toolchains.
 		addToolchains();

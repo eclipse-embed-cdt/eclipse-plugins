@@ -25,6 +25,6 @@ using namespace std;
 int
 main()
 {
-  cout << "$(messagearm)" << endl;
+  cout << "$(messageriscv)" << endl;
   return 0;
 }

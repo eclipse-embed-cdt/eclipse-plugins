@@ -36,7 +36,7 @@
 			hidden="false"
 			persist="true" />
 		<property
-			id="messagearm"
+			id="messageriscv"
 			label="%HelloWorld.message.label"
 			description="%HelloWorld.message.description"
 			type="input"

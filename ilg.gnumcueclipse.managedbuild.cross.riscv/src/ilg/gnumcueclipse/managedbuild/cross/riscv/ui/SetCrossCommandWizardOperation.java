@@ -9,6 +9,7 @@
  *     Doug Schaefer - initial API and implementation
  *     Marc-Andre Laperle - Moved to an operation for a custom wizard page
  *     Liviu Ionescu - ARM version
+ *     Liviu Ionescu - RISC-V version
  *******************************************************************************/
 
 package ilg.gnumcueclipse.managedbuild.cross.riscv.ui;

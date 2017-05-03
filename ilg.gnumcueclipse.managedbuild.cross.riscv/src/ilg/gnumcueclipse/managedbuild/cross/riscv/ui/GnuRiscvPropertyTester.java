@@ -26,17 +26,17 @@ import org.eclipse.core.resources.IProject;
 /**
  * Property tester for the Tools Paths page.
  * 
- * The project must be managed and the type must be one of the GNU ARM defined
+ * The project must be managed and the type must be one of the GNU RISC-V defined
  * type.
  */
-public class GnuArmPropertyTester extends PropertyTester {
+public class GnuRiscvPropertyTester extends PropertyTester {
 
 	public static final String TYPE_PREFIX = "ilg.gnumcueclipse.managedbuild.cross.riscv.target.";
 
 	@Override
 	public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
 
-		if ("isGnuArm".equals(property)) {
+		if ("isGnuRiscv".equals(property)) {
 			if (receiver instanceof IProject) {
 
 				IProject project = (IProject) receiver;

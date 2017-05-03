@@ -9,6 +9,7 @@
  *    Intel Corporation - Initial API and implementation
  *    James Blackburn (Broadcom Corp.)
  *    Liviu Ionescu - ARM version
+ *    Liviu Ionescu - RISC-V version
  *******************************************************************************/
 
 package ilg.gnumcueclipse.managedbuild.cross.riscv.ui;
@@ -127,9 +128,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	@Override
 	public void createControls(final Composite parent) {
 
-		if (EclipseUtils.isLinux()) {
-			WIDTH_HINT = 150;
-		}
+		WIDTH_HINT = 200;
 
 		// fComposite = parent;
 		// Disabled, otherwise toolchain changes fail
