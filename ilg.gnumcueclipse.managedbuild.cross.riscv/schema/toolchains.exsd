@@ -1,9 +1,9 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <!-- Schema file written by PDE -->
-<schema targetNamespace="ilg.gnuarmeclipse.managedbuild.cross" xmlns="http://www.w3.org/2001/XMLSchema">
+<schema targetNamespace="ilg.gnumcueclipse.managedbuild.cross.riscv" xmlns="http://www.w3.org/2001/XMLSchema">
 <annotation>
       <appinfo>
-         <meta.schema plugin="ilg.gnuarmeclipse.managedbuild.cross" id="toolchains" name="Toolchains Definitions"/>
+         <meta.schema plugin="ilg.gnumcueclipse.managedbuild.cross.riscv" id="toolchains" name="Toolchains Definitions"/>
       </appinfo>
       <documentation>
          This extension point provides the ability to add custom GNU ARM toolchains.
@@ -109,7 +109,7 @@
       </appinfo>
       <documentation>
             &lt;extension
-      point=&quot;ilg.gnuarmeclipse.managedbuild.cross.toolchains&quot;&gt;
+      point=&quot;ilg.gnumcueclipse.managedbuild.cross.riscv.toolchains&quot;&gt;
       &lt;toolchain name=&quot;Custom&quot; prefix=&quot;arm-none-eabi-&quot; /&gt;
    &lt;/extension&gt;
 

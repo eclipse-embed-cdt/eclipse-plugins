@@ -113,7 +113,7 @@
 			<element>
 				<simple
 					name="id"
-					value="ilg.gnuarmeclipse.managedbuild.cross.option.*.linker.other" />
+					value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.linker.other" />
 				<simple
 					name="value"
 					value="$(semihostingOptions)" />
