@@ -60,7 +60,7 @@ __assert_func (const char *file, int line, const char *func,
 #if defined(USE_FULL_ASSERT)
 
 void
-assert_failed (uint8_t* file, uint32_t line);
+assert_failed (uint8_t* file, uint32_t line) __attribute__((weak));
 
 // Called from the assert_param() macro, usually defined in the stm32f*_conf.h
 void
