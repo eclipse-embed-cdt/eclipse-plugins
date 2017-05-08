@@ -41,7 +41,7 @@ public class ToolchainDefinition {
 	private String fCmdObjdump;
 	private String fCmdSize;
 
-	private static String fArchitectures[] = { "ARM (AArch32)", "ARM64 (AArch64)" };
+	private static String fArchitectures[] = { "RISC-V" };
 
 	// ------------------------------------------------------------------------
 
@@ -315,7 +315,7 @@ public class ToolchainDefinition {
 		fgList = new ArrayList<ToolchainDefinition>();
 
 		// 0
-		fgList.add(new ToolchainDefinition(RISC_V_GCC_NEWLIB, "riscv64-unknown-linux-gnu-"));
+		fgList.add(new ToolchainDefinition(RISC_V_GCC_NEWLIB, "riscv64-unknown-elf-"));
 
 		// Enumerate extension points and add custom toolchains.
 		addToolchains();
