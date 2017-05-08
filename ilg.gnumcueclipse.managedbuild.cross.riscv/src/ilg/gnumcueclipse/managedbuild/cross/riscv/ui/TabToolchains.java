@@ -853,8 +853,9 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		// compose the architecture ID
 		String sArchitecture = td.getArchitecture();
 		val = Option.OPTION_ARCHITECTURE + "." + sArchitecture;
+		if (false) {
 		Utils.setOptionForced(config, toolchain, option, val);
-
+		
 		if ("arm".equals(sArchitecture)) {
 			option = toolchain.getOptionBySuperClassId(Option.OPTION_ARM_TARGET_FAMILY);
 			Utils.forceOptionRewrite(config, toolchain, option);
@@ -870,6 +871,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 			option = toolchain.getOptionBySuperClassId(Option.OPTION_AARCH64_CMODEL);
 			Utils.setOptionForced(config, toolchain, option, Option.OPTION_AARCH64_CMODEL_SMALL);
+		}
 		}
 
 		option = toolchain.getOptionBySuperClassId(Option.OPTION_COMMAND_PREFIX); // $NON-NLS-1$

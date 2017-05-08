@@ -176,7 +176,7 @@ public class Option {
 				Activator.log(e);
 			}
 		} else {
-			Activator.log(sOptionId + " not found");
+			Activator.log("string value " + sOptionId + " not found");
 		}
 
 		return sReturn;
@@ -194,7 +194,7 @@ public class Option {
 				Activator.log(e);
 			}
 		} else {
-			Activator.log(sOptionId + " not found");
+			Activator.log("enum command "+ sOptionId + " not found");
 		}
 
 		return sReturn;
@@ -211,7 +211,7 @@ public class Option {
 				Activator.log(e);
 			}
 		} else {
-			Activator.log(sOptionId + " not found");
+			Activator.log("boolean value "+sOptionId + " not found");
 		}
 
 		return bReturn;
@@ -232,7 +232,7 @@ public class Option {
 				Activator.log(e);
 			}
 		} else {
-			Activator.log(sOptionId + " not found");
+			Activator.log("boolean value2 "+ sOptionId + " not found");
 		}
 
 		return bReturn;
@@ -250,13 +250,13 @@ public class Option {
 				Activator.log(e);
 			}
 		} else {
-			Activator.log(sOptionId + " not found");
+			Activator.log("boolean command "+sOptionId + " not found");
 		}
 
 		return sReturn;
 	}
 
-	private static String getArmTargetFlags(IConfiguration config) {
+	private static String _getArmTargetFlags(IConfiguration config) {
 
 		String sReturn = "";
 		String sValue;
@@ -526,21 +526,21 @@ public class Option {
 	}
 
 	public static String getToolChainFlags(IConfiguration config) {
-		String sArchitectureId = getOptionStringValue(config, OPTION_ARCHITECTURE);
+		// String sArchitectureId = getOptionStringValue(config, OPTION_ARCHITECTURE);
 		String sReturn = "";
 		String sValue;
 
-		if (sArchitectureId != null) {
-			sValue = null;
-			if (sArchitectureId.endsWith("." + ARCHITECTURE_ARM)) {
-				sValue = getArmTargetFlags(config);
-			} else if (sArchitectureId.endsWith("." + ARCHITECTURE_AARCH64)) {
-				sValue = getAarch64TargetFlags(config);
-			}
-			if (sValue != null && sValue.length() > 0)
-				sReturn += " " + sValue;
-		}
-
+//		if (sArchitectureId != null) {
+//			sValue = null;
+//			if (sArchitectureId.endsWith("." + ARCHITECTURE_ARM)) {
+//				sValue = getArmTargetFlags(config);
+//			} else if (sArchitectureId.endsWith("." + ARCHITECTURE_AARCH64)) {
+//				sValue = getAarch64TargetFlags(config);
+//			}
+//			if (sValue != null && sValue.length() > 0)
+//				sReturn += " " + sValue;
+//		}
+		
 		sValue = getOptionStringValue(config, OPTION_TARGET_OTHER);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
