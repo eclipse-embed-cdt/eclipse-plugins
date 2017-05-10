@@ -9,7 +9,7 @@
 	#
 	# Contributors:
 	# Doug Schaefer (Wind River) - initial API and implementation
-	# Anna Dushistova (Mentor Graphics)- [329531][crossgcc] crossgcc fails to 
+	# Anna Dushistova (Mentor Graphics)- [329531][crossgcc] crossgcc fails to
 	build a project
 	# Liviu Ionescu - ARM version
 	# Liviu Ionescu - RISC-V version
@@ -921,60 +921,28 @@
 			isAbstract="true"
 			name="RISC-V Targets common options">
 			<option
-				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.abi.integer"
-				isAbstract="true"
-				name="%option.target.abi.integer"
-				tip="Specify integer and floating-point calling convention. This defaults to the natural calling convention: e.g. LP64 for RV64I, ILP32 for RV32I, LP64D for RV64G."
-				valueType="enumerated">
-				<enumeratedOptionValue
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.integer.default"
-					isDefault="true"
-					name="%option.target.abi.integer.default">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.integer.ilp32"
-					name="%option.target.abi.integer.ilp32">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.ilp64"
-					name="%option.target.abi.integer.lp64">
-				</enumeratedOptionValue>
-			</option>
-			<option
-				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.abi.fp"
-				isAbstract="true"
-				name="%option.target.abi.fp"
-				valueType="enumerated">
-				<enumeratedOptionValue
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.fp.none"
-					isDefault="true"
-					name="%option.target.abi.fp.none">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.fp.single"
-					name="%option.target.abi.fp.single">
-				</enumeratedOptionValue>
-				<enumeratedOptionValue
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.fp.double"
-					name="%option.target.abi.fp.double">
-				</enumeratedOptionValue>
-			</option>
-			<option
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.base"
 				isAbstract="true"
 				name="%option.target.isa.base"
 				tip="Generate code for given RISC-V ISA (e.g. ‘rv64im’). ISA strings must be lower-case."
 				valueType="enumerated">
 				<enumeratedOptionValue
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv32i"
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.default"
 					isDefault="true"
+					name="%option.target.isa.base.default">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					command="-march=rv32i"
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv32i"
 					name="%option.target.isa.base.rv32i">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
+					command="-march=rv64i"
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv64i"
 					name="%option.target.isa.base.rv64i">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
+					command="-march=rv32e"
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv32e"
 					name="%option.target.isa.base.rv32e">
 				</enumeratedOptionValue>
@@ -990,19 +958,66 @@
 					name="%option.target.isa.fp.none">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
+					command="f"
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.isa.fp.single"
 					name="%option.target.isa.fp.single">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
+					command="d"
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.isa.fp.double"
 					name="%option.target.isa.fp.double">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
+					command="q"
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.isa.fp.quad"
 					name="%option.target.isa.fp.quad">
 				</enumeratedOptionValue>
 			</option>
 			<option
+				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.abi.integer"
+				isAbstract="true"
+				name="%option.target.abi.integer"
+				tip="Specify integer and floating-point calling convention. This defaults to the natural calling convention: e.g. LP64 for RV64I, ILP32 for RV32I, LP64D for RV64G."
+				valueType="enumerated">
+				<enumeratedOptionValue
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.integer.default"
+					isDefault="true"
+					name="%option.target.abi.integer.default">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					command="-mabi=ilp32"
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.integer.ilp32"
+					name="%option.target.abi.integer.ilp32">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					command="-mabi=lp64"
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.lp64"
+					name="%option.target.abi.integer.lp64">
+				</enumeratedOptionValue>
+			</option>
+			<option
+				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.abi.fp"
+				isAbstract="true"
+				name="%option.target.abi.fp"
+				valueType="enumerated">
+				<enumeratedOptionValue
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.fp.none"
+					isDefault="true"
+					name="%option.target.abi.fp.none">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					command="f"
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.fp.single"
+					name="%option.target.abi.fp.single">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					command="d"
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.fp.double"
+					name="%option.target.abi.fp.double">
+				</enumeratedOptionValue>
+			</option>
+			<option
+				command="a"
 				defaultValue="false"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.atomic"
 				isAbstract="true"
@@ -1010,6 +1025,7 @@
 				valueType="boolean">
 			</option>
 			<option
+				command="m"
 				defaultValue="false"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.multiply"
 				isAbstract="true"
@@ -1017,6 +1033,7 @@
 				valueType="boolean">
 			</option>
 			<option
+				command="c"
 				defaultValue="false"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.compressed"
 				isAbstract="true"
@@ -1046,14 +1063,17 @@
 				</enumeratedOptionValue>
 			</option>
 			<option
+				command="-msmall-data-limit="
 				defaultValue="8"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.smalldatalimit"
 				isAbstract="true"
 				name="%option.target.smalldatalimit"
 				tip="Put global and static data smaller than n bytes into a special section (-msmall-data-limit)."
+				value="8"
 				valueType="string">
 			</option>
 			<option
+				command="-msave-restore"
 				defaultValue="false"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.saverestore"
 				isAbstract="true"
@@ -1062,6 +1082,7 @@
 				valueType="boolean">
 			</option>
 			<option
+				command="-mmemcpy"
 				defaultValue="false"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.memcpy"
 				isAbstract="true"
@@ -1070,7 +1091,8 @@
 				valueType="boolean">
 			</option>
 			<option
-				defaultValue="true"
+				command="-mplt"
+				defaultValue="false"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.plt"
 				isAbstract="true"
 				name="%option.target.plt"
@@ -1078,7 +1100,8 @@
 				valueType="boolean">
 			</option>
 			<option
-				defaultValue="true"
+				command="-mfdiv"
+				defaultValue="false"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.fdiv"
 				isAbstract="true"
 				name="%option.target.fdiv"
@@ -1086,7 +1109,8 @@
 				valueType="boolean">
 			</option>
 			<option
-				defaultValue="true"
+				command="-mdiv"
+				defaultValue="false"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.div"
 				isAbstract="true"
 				name="%option.target.div"
@@ -1381,11 +1405,6 @@
 				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.compressed"
 				superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.compressed">
-			</option>
-			<option
-				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"
-				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.embedded"
-				superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.embedded">
 			</option>
 			<option
 				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"

@@ -21,36 +21,28 @@ public class Option {
 
 	public static final String OPTION_PREFIX = IDs.getIdPrefix() + ".option";
 
-	public static final String OPTION_ARCHITECTURE = OPTION_PREFIX + ".architecture";
-
-	public static final String ARCHITECTURE_ARM = "arm";
-	public static final String ARCHITECTURE_AARCH64 = "aarch64";
-
-	public static final String OPTION_ARCHITECTURE_ARM = OPTION_ARCHITECTURE + "." + ARCHITECTURE_ARM;
-	public static final String OPTION_ARCHITECTURE_AARCH64 = OPTION_ARCHITECTURE + "." + ARCHITECTURE_AARCH64;
+	// public static final String OPTION_ARCHITECTURE = OPTION_PREFIX + ".architecture";
+	// public static final String ARCHITECTURE_RISCV = "riscv";
 
 	public static final String OPTION_TARGET = OPTION_PREFIX + ".target.";
 
-	public static final String OPTION_ARM_TARGET = OPTION_PREFIX + "." + ARCHITECTURE_ARM + ".target.";
-	public static final String OPTION_ARM_TARGET_FAMILY = OPTION_ARM_TARGET + "family";
+	public static final String OPTION_TARGET_ISA_BASE = OPTION_TARGET + "isa.base";
+	public static final String OPTION_TARGET_ISA_FP = OPTION_TARGET + "isa.fp";
+	public static final String OPTION_TARGET_ISA_ATOMIC = OPTION_TARGET + "isa.atomic";
+	public static final String OPTION_TARGET_ISA_MULTIPLY = OPTION_TARGET + "isa.multiply";
+	public static final String OPTION_TARGET_ISA_COMPRESSED = OPTION_TARGET + "isa.compressed";
 
-	public static final String OPTION_ARM_TARGET_ARCHITECTURE = OPTION_ARM_TARGET + "architecture";
-	public static final String OPTION_ARM_TARGET_INSTRUCTIONSET = OPTION_ARM_TARGET + "instructionset";
+	public static final String OPTION_TARGET_ABI_INTEGER = OPTION_TARGET + "abi.integer";
+	public static final String OPTION_TARGET_ABI_FP = OPTION_TARGET + "abi.fp";
 
-	public static final String OPTION_ARM_TARGET_THUMB_INTERWORK = OPTION_ARM_TARGET + "thumbinterwork";
-	public static final String OPTION_ARM_TARGET_ENDIANNESS = OPTION_ARM_TARGET + "endianness";
-	public static final String OPTION_ARM_TARGET_FLOAT_ABI = OPTION_ARM_TARGET + "fpu.abi";
-	public static final String OPTION_ARM_TARGET_FLOAT_UNIT = OPTION_ARM_TARGET + "fpu.unit";
-	public static final String OPTION_ARM_TARGET_UNALIGNEDACCESS = OPTION_ARM_TARGET + "unalignedaccess";
-
-	public static final String OPTION_AARCH64_TARGET = OPTION_PREFIX + "." + ARCHITECTURE_AARCH64 + ".target.";
-	public static final String OPTION_AARCH64_TARGET_FAMILY = OPTION_AARCH64_TARGET + "family";
-	public static final String OPTION_AARCH64_TARGET_FEATURE_CRC = OPTION_AARCH64_TARGET + "feature.crc";
-	public static final String OPTION_AARCH64_TARGET_FEATURE_CRYPTO = OPTION_AARCH64_TARGET + "feature.crypto";
-	public static final String OPTION_AARCH64_TARGET_FEATURE_FP = OPTION_AARCH64_TARGET + "feature.fp";
-	public static final String OPTION_AARCH64_TARGET_FEATURE_SIMD = OPTION_AARCH64_TARGET + "feature.simd";
-	public static final String OPTION_AARCH64_TARGET_CMODEL = OPTION_AARCH64_TARGET + "cmodel";
-	public static final String OPTION_AARCH64_TARGET_STRICTALIGN = OPTION_AARCH64_TARGET + "strictalign";
+	public static final String OPTION_TARGET_TUNE = OPTION_TARGET + "tune";
+	public static final String OPTION_TARGET_CODEMODEL = OPTION_TARGET + "codemodel";
+	public static final String OPTION_TARGET_SMALLDATALIMIT = OPTION_TARGET + "smalldatalimit";
+	public static final String OPTION_TARGET_SAVERESTORE = OPTION_TARGET + "saverestore";
+	public static final String OPTION_TARGET_MEMCPY = OPTION_TARGET + "memcpy";
+	public static final String OPTION_TARGET_PLT = OPTION_TARGET + "plt";
+	public static final String OPTION_TARGET_FDIV = OPTION_TARGET + "fdiv";
+	public static final String OPTION_TARGET_DIV = OPTION_TARGET + "div";
 
 	public static final String OPTION_TARGET_OTHER = OPTION_TARGET + "other";
 
@@ -140,29 +132,6 @@ public class Option {
 	public static final String CHOICE_SYMBOLSREC = "symbolsrec";
 	public static final String CHOICE_BINARY = "binary";
 
-	// ARM enumeration values
-	public static final String OPTION_ARM_MCPU_CORTEXM3 = OPTION_PREFIX + ".arm.target.mcpu.cortex-m3";
-	public static final String OPTION_ARM_MCPU_CORTEXM4 = OPTION_PREFIX + ".arm.target.mcpu.cortex-m4";
-
-	public static final String OPTION_ARM_INSTRUCTIONSET_THUMB = OPTION_PREFIX + ".arm.target.instructionset.thumb";
-
-	public static final String OPTION_ARM_FPU_ABI_HARD = OPTION_PREFIX + ".arm.target.fpu.abi.hard";
-
-	public static final String OPTION_ARM_FPU_ABI_SOFTFP = OPTION_PREFIX + ".arm.target.fpu.abi.softfp";
-
-	public static final String OPTION_ARM_FPU_UNIT_DEFAULT = OPTION_PREFIX + ".arm.target.fpu.unit.default";
-
-	public static final String OPTION_ARM_FPU_UNIT_FPV4SPD16 = OPTION_PREFIX + ".arm.target.fpu.unit.fpv4spd16";
-
-	// AARCH64 enumeration values
-	public static final String OPTION_AARCH64_MCPU_GENERIC = OPTION_PREFIX + ".aarch64.target.mcpu.generic";
-
-	public static final String OPTION_AARCH64_FEATURE_SIMD = OPTION_PREFIX + ".aarch64.target.feature.simd";
-	public static final String OPTION_AARCH64_FEATURE_SIMD_ENABLED = OPTION_AARCH64_FEATURE_SIMD + ".enabled";
-
-	public static final String OPTION_AARCH64_CMODEL = OPTION_PREFIX + ".aarch64.target.cmodel";
-	public static final String OPTION_AARCH64_CMODEL_SMALL = OPTION_AARCH64_CMODEL + ".small";
-
 	// ------------------------------------------------------------------------
 
 	public static String getOptionStringValue(IConfiguration config, String sOptionId) {
@@ -194,7 +163,7 @@ public class Option {
 				Activator.log(e);
 			}
 		} else {
-			Activator.log("enum command "+ sOptionId + " not found");
+			Activator.log("enum command " + sOptionId + " not found");
 		}
 
 		return sReturn;
@@ -211,7 +180,7 @@ public class Option {
 				Activator.log(e);
 			}
 		} else {
-			Activator.log("boolean value "+sOptionId + " not found");
+			Activator.log("boolean value " + sOptionId + " not found");
 		}
 
 		return bReturn;
@@ -224,15 +193,15 @@ public class Option {
 		if (option != null) {
 			try {
 				IOption option2 = config.getToolChain().getOptionToSet(option, false);
-				if (option2 == null)
+				if (option2 == null) {
 					return null;
-
+				}
 				bReturn = new Boolean(option.getBooleanValue());
 			} catch (BuildException e) {
 				Activator.log(e);
 			}
 		} else {
-			Activator.log("boolean value2 "+ sOptionId + " not found");
+			Activator.log("boolean value2 " + sOptionId + " not found");
 		}
 
 		return bReturn;
@@ -244,99 +213,91 @@ public class Option {
 		String sReturn = null;
 		if (option != null) {
 			try {
-				if (option.getBooleanValue())
+				if (option.getBooleanValue()) {
 					sReturn = option.getCommand().trim();
+				}
 			} catch (BuildException e) {
 				Activator.log(e);
 			}
 		} else {
-			Activator.log("boolean command "+sOptionId + " not found");
+			Activator.log("boolean command " + sOptionId + " not found");
 		}
 
 		return sReturn;
 	}
 
-	private static String _getArmTargetFlags(IConfiguration config) {
+	public static String getOptionStringCommandValue(IConfiguration config, String sOptionId) {
 
-		String sReturn = "";
-		String sValue;
-
-		sValue = getOptionEnumCommand(config, OPTION_ARM_TARGET_FAMILY);
-		if (sValue != null && sValue.length() > 0)
-			sReturn += " " + sValue;
-
-		sValue = getOptionEnumCommand(config, OPTION_ARM_TARGET_ARCHITECTURE);
-		if (sValue != null && sValue.length() > 0)
-			sReturn += " " + sValue;
-
-		sValue = getOptionEnumCommand(config, OPTION_ARM_TARGET_INSTRUCTIONSET);
-		if (sValue != null && sValue.length() > 0)
-			sReturn += " " + sValue;
-
-		sValue = getOptionBooleanCommand(config, OPTION_ARM_TARGET_THUMB_INTERWORK);
-		if (sValue != null && sValue.length() > 0)
-			sReturn += " " + sValue;
-
-		sValue = getOptionEnumCommand(config, OPTION_ARM_TARGET_ENDIANNESS);
-		if (sValue != null && sValue.length() > 0)
-			sReturn += " " + sValue;
-
-		sValue = getOptionEnumCommand(config, OPTION_ARM_TARGET_FLOAT_ABI);
-		if (sValue != null && sValue.length() > 0) {
-			sReturn += " " + sValue;
-
-			sValue = getOptionEnumCommand(config, OPTION_ARM_TARGET_FLOAT_UNIT);
-			if (sValue != null && sValue.length() > 0)
-				sReturn += " " + sValue;
+		IOption option = config.getToolChain().getOptionBySuperClassId(sOptionId);
+		String sReturn = null;
+		if (option != null) {
+			try {
+				String sValue = option.getStringValue();
+				if (!sValue.isEmpty()) {
+					sReturn = option.getCommand().trim() + sValue.trim();
+				}
+			} catch (BuildException e) {
+				Activator.log(e);
+			}
+		} else {
+			Activator.log("boolean command " + sOptionId + " not found");
 		}
-
-		sValue = getOptionEnumCommand(config, OPTION_ARM_TARGET_UNALIGNEDACCESS);
-		if (sValue != null && sValue.length() > 0)
-			sReturn += " " + sValue;
-
-		if (sReturn != null)
-			sReturn = sReturn.trim();
 
 		return sReturn;
 	}
 
-	private static String getAarch64TargetFlags(IConfiguration config) {
+	private static String getRiscvTargetIsa(IConfiguration config) {
 
 		String sReturn = "";
 		String sValue;
 
-		sValue = getOptionEnumCommand(config, OPTION_AARCH64_TARGET_FAMILY);
+		sValue = getOptionEnumCommand(config, OPTION_TARGET_ISA_BASE);
 		if (sValue != null && sValue.length() > 0) {
-			sReturn += " " + sValue;
+			sReturn += sValue;
 
-			sValue = getOptionEnumCommand(config, OPTION_AARCH64_TARGET_FEATURE_CRC);
-			if (sValue != null && sValue.length() > 0)
-				sReturn += "+" + sValue;
-
-			sValue = getOptionEnumCommand(config, OPTION_AARCH64_TARGET_FEATURE_CRYPTO);
-			if (sValue != null && sValue.length() > 0)
-				sReturn += "+" + sValue;
-
-			sValue = getOptionEnumCommand(config, OPTION_AARCH64_TARGET_FEATURE_FP);
-			if (sValue != null && sValue.length() > 0)
-				sReturn += "+" + sValue;
-
-			sValue = getOptionEnumCommand(config, OPTION_AARCH64_TARGET_FEATURE_SIMD);
-			if (sValue != null && sValue.length() > 0)
-				sReturn += "+" + sValue;
-
+			sValue = getOptionEnumCommand(config, OPTION_TARGET_ISA_FP);
+			if (sValue != null && sValue.length() > 0) {
+				sReturn += sValue;
+			}
+			sValue = getOptionBooleanCommand(config, OPTION_TARGET_ISA_ATOMIC);
+			if (sValue != null && sValue.length() > 0) {
+				sReturn += sValue;
+			}
+			sValue = getOptionBooleanCommand(config, OPTION_TARGET_ISA_MULTIPLY);
+			if (sValue != null && sValue.length() > 0) {
+				sReturn += sValue;
+			}
+			sValue = getOptionBooleanCommand(config, OPTION_TARGET_ISA_COMPRESSED);
+			if (sValue != null && sValue.length() > 0) {
+				sReturn += sValue;
+			}
 		}
 
-		sValue = getOptionEnumCommand(config, OPTION_AARCH64_TARGET_CMODEL);
-		if (sValue != null && sValue.length() > 0)
-			sReturn += " " + sValue;
-
-		sValue = getOptionBooleanCommand(config, OPTION_AARCH64_TARGET_STRICTALIGN);
-		if (sValue != null && sValue.length() > 0)
-			sReturn += " " + sValue;
-
-		if (sReturn != null)
+		if (sReturn != null) {
 			sReturn = sReturn.trim();
+		}
+
+		return sReturn;
+	}
+
+	private static String getRiscvTargetAbi(IConfiguration config) {
+
+		String sReturn = "";
+		String sValue;
+
+		sValue = getOptionEnumCommand(config, OPTION_TARGET_ABI_INTEGER);
+		if (sValue != null && sValue.length() > 0) {
+			sReturn += sValue;
+
+			sValue = getOptionEnumCommand(config, OPTION_TARGET_ABI_FP);
+			if (sValue != null && sValue.length() > 0) {
+				sReturn += sValue;
+			}
+		}
+
+		if (sReturn != null) {
+			sReturn = sReturn.trim();
+		}
 
 		return sReturn;
 	}
@@ -345,8 +306,9 @@ public class Option {
 
 		String sReturn = "";
 		String sValue;
-		if (sReturn != null)
+		if (sReturn != null) {
 			sReturn = sReturn.trim();
+		}
 
 		sValue = getOptionEnumCommand(config, OPTION_OPTIMIZATION_LEVEL);
 		if (sValue != null && sValue.length() > 0) {
@@ -354,59 +316,73 @@ public class Option {
 		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_MESSAGELENGTH);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_SIGNEDCHAR);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_FUNCTIONSECTIONS);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_DATASECTIONS);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_NOCOMMON);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_NOINLINEFUNCTIONS);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_FREESTANDING);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_NOBUILTIN);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_SPCONSTANT);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_PIC);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_LTO);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_OPTIMIZATION_NOMOVELOOPINVARIANTS);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionStringValue(config, OPTION_OPTIMIZATION_OTHER);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
-		if (sReturn != null)
+		if (sReturn != null) {
 			sReturn = sReturn.trim();
+		}
 
 		return sReturn;
 	}
@@ -417,79 +393,98 @@ public class Option {
 		String sValue;
 
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_SYNTAXONLY);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_PEDANTIC);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_PEDANTICERRORS);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_NOWARN);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_TOERRORS);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_UNUSED);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_UNINITIALIZED);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_ALLWARN);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_EXTRAWARN);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_MISSINGDECLARATION);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_CONVERSION);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_POINTERARITH);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_PADDED);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_SHADOW);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_LOGICALOP);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_AGREGGATERETURN);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_WARNINGS_FLOATEQUAL);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionStringValue(config, OPTION_WARNINGS_OTHER);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
-		if (sReturn != null)
+		if (sReturn != null) {
 			sReturn = sReturn.trim();
+		}
 
 		return sReturn;
 	}
@@ -506,59 +501,106 @@ public class Option {
 			sReturn += " " + sValue;
 
 			sValue = getOptionEnumCommand(config, OPTION_DEBUGGING_FORMAT);
-			if (sValue != null && sValue.length() > 0)
+			if (sValue != null && sValue.length() > 0) {
 				sReturn += " " + sValue;
+			}
 		}
 
 		sValue = getOptionStringValue(config, OPTION_DEBUGGING_OTHER);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_DEBUGGING_PROF);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_DEBUGGING_GPROF);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		return sReturn;
 	}
 
 	public static String getToolChainFlags(IConfiguration config) {
-		// String sArchitectureId = getOptionStringValue(config, OPTION_ARCHITECTURE);
 		String sReturn = "";
 		String sValue;
 
-//		if (sArchitectureId != null) {
-//			sValue = null;
-//			if (sArchitectureId.endsWith("." + ARCHITECTURE_ARM)) {
-//				sValue = getArmTargetFlags(config);
-//			} else if (sArchitectureId.endsWith("." + ARCHITECTURE_AARCH64)) {
-//				sValue = getAarch64TargetFlags(config);
-//			}
-//			if (sValue != null && sValue.length() > 0)
-//				sReturn += " " + sValue;
-//		}
-		
-		sValue = getOptionStringValue(config, OPTION_TARGET_OTHER);
-		if (sValue != null && sValue.length() > 0)
+		sValue = getRiscvTargetIsa(config);
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
+
+		sValue = getRiscvTargetAbi(config);
+		if (sValue != null && sValue.length() > 0) {
+			sReturn += " " + sValue;
+		}
+
+		sValue = getOptionEnumCommand(config, OPTION_TARGET_TUNE);
+		if (sValue != null && sValue.length() > 0) {
+			sReturn += " " + sValue;
+		}
+
+		sValue = getOptionEnumCommand(config, OPTION_TARGET_CODEMODEL);
+		if (sValue != null && sValue.length() > 0) {
+			sReturn += " " + sValue;
+		}
+
+		sValue = getOptionStringCommandValue(config, OPTION_TARGET_SMALLDATALIMIT);
+		if (sValue != null && sValue.length() > 0) {
+			sReturn += " " + sValue;
+		}
+
+		sValue = getOptionBooleanCommand(config, OPTION_TARGET_SAVERESTORE);
+		if (sValue != null && sValue.length() > 0) {
+			sReturn += " " + sValue;
+		}
+
+		sValue = getOptionBooleanCommand(config, OPTION_TARGET_MEMCPY);
+		if (sValue != null && sValue.length() > 0) {
+			sReturn += " " + sValue;
+		}
+		
+		sValue = getOptionBooleanCommand(config, OPTION_TARGET_PLT);
+		if (sValue != null && sValue.length() > 0) {
+			sReturn += " " + sValue;
+		}
+
+		sValue = getOptionBooleanCommand(config, OPTION_TARGET_FDIV);
+		if (sValue != null && sValue.length() > 0) {
+			sReturn += " " + sValue;
+		}
+
+		sValue = getOptionBooleanCommand(config, OPTION_TARGET_DIV);
+		if (sValue != null && sValue.length() > 0) {
+			sReturn += " " + sValue;
+		}
+
+		sValue = getOptionStringValue(config, OPTION_TARGET_OTHER);
+		if (sValue != null && sValue.length() > 0) {
+			sReturn += " " + sValue;
+		}
 
 		sValue = getOptimizationFlags(config);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getWarningFlags(config);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
 		sValue = getDebuggingFlags(config);
-		if (sValue != null && sValue.length() > 0)
+		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
+		}
 
-		if (sReturn != null)
+		if (sReturn != null) {
 			sReturn = sReturn.trim();
+		}
 
 		return sReturn;
 	}
