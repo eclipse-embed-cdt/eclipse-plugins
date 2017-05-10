@@ -39,6 +39,6 @@
 		</plugins>
 	</build>
 
-	<name>GNU ARM Eclipse repository</name>
+	<name>GNU MCU Eclipse repository</name>
 	<url>http://gnuarmeclipse.github.io</url>
 </project>
