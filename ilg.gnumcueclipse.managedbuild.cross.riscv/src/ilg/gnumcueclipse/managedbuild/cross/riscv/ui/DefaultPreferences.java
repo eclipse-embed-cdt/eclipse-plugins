@@ -11,20 +11,12 @@
 
 package ilg.gnumcueclipse.managedbuild.cross.riscv.ui;
 
-import ilg.gnuarmeclipse.core.EclipseUtils;
-import ilg.gnuarmeclipse.core.preferences.Discoverer;
-import ilg.gnumcueclipse.managedbuild.cross.riscv.Activator;
-import ilg.gnumcueclipse.managedbuild.cross.riscv.ToolchainDefinition;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.util.Properties;
 
 import org.eclipse.core.runtime.CoreException;
@@ -36,12 +28,18 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 
+import ilg.gnuarmeclipse.core.EclipseUtils;
+import ilg.gnuarmeclipse.core.preferences.Discoverer;
+import ilg.gnumcueclipse.managedbuild.cross.riscv.Activator;
+import ilg.gnumcueclipse.managedbuild.cross.riscv.ToolchainDefinition;
+
 public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
 	// HKCU & HKLM LOCAL_MACHINE
-	private static final String REG_SUBKEY = "\\GNU ARM Eclipse\\Build Tools";
+	private static final String REG_SUBKEY = "\\GNU MCU Eclipse\\Build Tools";
+	private static final String REG_SUBKEY_DEPRECATED = "\\GNU ARM Eclipse\\Build Tools";
 	// Standard Microsoft recommendation.
 	private static final String REG_NAME = "InstallLocation";
 	// Custom name, used before reading the standard.
@@ -257,7 +255,10 @@ public class DefaultPreferences {
 
 			value = Discoverer.getRegistryInstallFolder(EXECUTABLE_NAME, "bin", REG_SUBKEY, REG_NAME);
 			if (value == null) {
-				value = Discoverer.getRegistryInstallFolder(EXECUTABLE_NAME, "bin", REG_SUBKEY, REG_NAME_DEPRECATED);
+				value = Discoverer.getRegistryInstallFolder(EXECUTABLE_NAME, "bin", REG_SUBKEY_DEPRECATED, REG_NAME);
+			}
+			if (value == null) {
+				value = Discoverer.getRegistryInstallFolder(EXECUTABLE_NAME, "bin", REG_SUBKEY_DEPRECATED, REG_NAME_DEPRECATED);
 			}
 
 		} else if (EclipseUtils.isMacOSX()) {

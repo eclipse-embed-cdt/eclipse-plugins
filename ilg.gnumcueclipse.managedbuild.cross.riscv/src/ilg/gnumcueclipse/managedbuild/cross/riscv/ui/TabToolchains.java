@@ -50,7 +50,6 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
-import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.IDs;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.Option;

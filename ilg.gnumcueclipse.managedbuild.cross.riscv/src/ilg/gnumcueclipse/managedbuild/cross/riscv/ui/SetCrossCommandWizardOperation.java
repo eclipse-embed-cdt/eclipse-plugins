@@ -14,9 +14,6 @@
 
 package ilg.gnumcueclipse.managedbuild.cross.riscv.ui;
 
-import ilg.gnuarmeclipse.core.Activator;
-import ilg.gnumcueclipse.managedbuild.cross.riscv.ToolchainDefinition;
-
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.cdt.build.core.scannerconfig.ScannerConfigBuilder;
@@ -31,8 +28,9 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.IWizard;
-import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
+
+import ilg.gnuarmeclipse.core.Activator;
+import ilg.gnumcueclipse.managedbuild.cross.riscv.ToolchainDefinition;
 
 /**
  * An operation that runs when the new project wizard finishes for the Cross GCC
