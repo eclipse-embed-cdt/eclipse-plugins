@@ -1442,9 +1442,10 @@
 			</option>
 
 			<option
-				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"
-				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.memcpy"
-				superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.memcpy">
+         applicabilityCalculator="ilg.gnumcueclipse.managedbuild.cross.riscv.ui.DisabledOption"
+         category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"
+         id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.memcpy"
+         superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.memcpy">
 			</option>
 
 			<option
