@@ -1,0 +1,68 @@
+/*******************************************************************************
+ * Copyright (c) 2015 Liviu Ionescu.
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
+ * 
+ * Contributors:
+ *     Liviu Ionescu - initial version
+ *******************************************************************************/
+
+package ilg.gnumcueclipse.managedbuild.cross.ui.properties;
+
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ProjectScope;
+import org.eclipse.jface.preference.FieldEditor;
+import org.eclipse.jface.preference.IPreferenceStore;
+
+import ilg.gnuarmeclipse.core.ScopedPreferenceStoreWithoutDefaults;
+import ilg.gnuarmeclipse.core.preferences.DirectoryNotStrictFieldEditor;
+import ilg.gnuarmeclipse.core.ui.FieldEditorPropertyPage;
+import ilg.gnumcueclipse.managedbuild.cross.Activator;
+import ilg.gnumcueclipse.managedbuild.cross.ui.DefaultPreferences;
+import ilg.gnumcueclipse.managedbuild.cross.ui.Messages;
+import ilg.gnumcueclipse.managedbuild.cross.ui.PersistentPreferences;
+
+public class BuildToolsProjectPathPropertiesPage extends FieldEditorPropertyPage {
+
+	// ------------------------------------------------------------------------
+
+	public static final String ID = "ilg.gnumcueclipse.managedbuild.cross.ui.properties.toolsPage";
+
+	// ------------------------------------------------------------------------
+
+	private DefaultPreferences fDefaultPreferences;
+
+	// ------------------------------------------------------------------------
+
+	public BuildToolsProjectPathPropertiesPage() {
+		super(GRID);
+
+		fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
+
+		setDescription(Messages.ProjectBuildToolsPathsPropertiesPage_description);
+	}
+
+	// ------------------------------------------------------------------------
+
+	protected IPreferenceStore doGetPreferenceStore() {
+
+		Object element = getElement();
+		if (element instanceof IProject) {
+			return new ScopedPreferenceStoreWithoutDefaults(new ProjectScope((IProject) element), Activator.PLUGIN_ID);
+		}
+		return null;
+	}
+
+	@Override
+	protected void createFieldEditors() {
+		boolean isStrict = fDefaultPreferences.getBoolean(PersistentPreferences.PROJECT_BUILDTOOLS_PATH_STRICT, true);
+		FieldEditor buildToolsPathField = new DirectoryNotStrictFieldEditor(PersistentPreferences.BUILD_TOOLS_PATH_KEY,
+				Messages.BuildToolsPaths_label, getFieldEditorParent(), isStrict);
+		
+		addField(buildToolsPathField);
+	}
+
+	// ------------------------------------------------------------------------
+}

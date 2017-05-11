@@ -38,6 +38,10 @@
 	</licenses>
 
 	<modules>
+		<!-- MCU common modules. -->
+		<module>ilg.gnumcueclipse.managedbuild.cross</module>
+	
+		<!-- ARM specific modules. -->
 		<module>ilg.gnuarmeclipse.core</module>
 		<module>ilg.gnuarmeclipse.managedbuild.cross</module>
 		<module>ilg.gnuarmeclipse.managedbuild.cross-feature</module>

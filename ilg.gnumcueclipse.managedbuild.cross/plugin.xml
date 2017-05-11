@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<!--
+	# Copyright (c) 2009, 2011 Wind River Systems, Inc. and others.
+	# All rights reserved. This program and the accompanying materials
+	# are made available under the terms of the Eclipse Public License v1.0
+	# which accompanies this distribution, and is available at
+	# http://www.eclipse.org/legal/epl-v10.html
+	#
+	# Contributors:
+	# Doug Schaefer (Wind River) - initial API and implementation
+	# Anna Dushistova (Mentor Graphics)- [329531][crossgcc] crossgcc fails to
+	build a project
+	# Liviu Ionescu - MCU version
+-->
+<plugin>
+	<extension point="org.eclipse.ui.preferencePages">
+        <page
+            category="org.eclipse.cdt.ui.preferences.CPluginPreferencePage"
+            class="ilg.gnumcueclipse.managedbuild.cross.ui.preferences.McuPreferencesPage"
+            id="ilg.gnumcueclipse.managedbuild.cross.ui.preferences.mcu"
+            name="%preferences.mcu">
+        </page>
+		<page
+			category="ilg.gnumcueclipse.managedbuild.cross.ui.preferences.mcu"
+			class="ilg.gnumcueclipse.managedbuild.cross.ui.preferences.BuildToolsWorkspacePathsPreferencesPage"
+			id="ilg.gnumcueclipse.managedbuild.cross.ui.preferencePage.workspaceToolsPaths"
+			name="%preferences.workspaceBuildToolsPaths">
+		</page>
+		<page
+			category="ilg.gnumcueclipse.managedbuild.cross.ui.preferences.mcu"
+			class="ilg.gnumcueclipse.managedbuild.cross.ui.preferences.BuildToolsGlobalPathsPreferencesPage"
+			id="ilg.gnumcueclipse.managedbuild.cross.ui.preferencePage.globalToolsPaths"
+			name="%preferences.globalBuildToolsPaths">
+		</page>
+	</extension>
+	<extension point="org.eclipse.ui.propertyPages">
+        <page
+ 			category="org.eclipse.cdt.managedbuilder.ui.properties.Page_head_build"
+            class="ilg.gnumcueclipse.managedbuild.cross.ui.properties.McuPropertiesPage"
+            id="ilg.gnumcueclipse.managedbuild.cross.ui.properties.mcu"
+            name="%properties.mcu">
+        </page>    
+		<page
+			category="ilg.gnumcueclipse.managedbuild.cross.ui.properties.mcu"
+			class="ilg.gnumcueclipse.managedbuild.cross.ui.properties.BuildToolsProjectPathPropertiesPage"
+			id="ilg.gnumcueclipse.managedbuild.cross.ui.properties.toolsPage"
+			name="%properties.projectBuildToolsPaths">
+		</page>
+	</extension>
+</plugin>
