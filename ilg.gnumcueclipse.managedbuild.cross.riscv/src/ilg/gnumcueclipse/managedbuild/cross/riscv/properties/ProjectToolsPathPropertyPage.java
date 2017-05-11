@@ -60,11 +60,8 @@ public class ProjectToolsPathPropertyPage extends FieldEditorPropertyPage {
 
 	@Override
 	protected void createFieldEditors() {
-		boolean isStrict = DefaultPreferences.getBoolean(PersistentPreferences.PROJECT_BUILDTOOLS_PATH_STRICT, true);
-		FieldEditor buildToolsPathField = new DirectoryNotStrictFieldEditor(PersistentPreferences.BUILD_TOOLS_PATH_KEY,
-				Messages.ToolsPaths_label, getFieldEditorParent(), isStrict);
-		addField(buildToolsPathField);
-
+		boolean isStrict;
+		
 		Set<String> toolchainNames = new HashSet<String>();
 
 		Object element = getElement();

@@ -3359,24 +3359,24 @@
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="org.eclipse.cdt.ui.preferences.BuildSettings"
+			category="ilg.gnumcueclipse.managedbuild.cross.ui.preferences.mcu"
 			class="ilg.gnumcueclipse.managedbuild.cross.riscv.preferences.WorkspaceToolsPathsPreferencePage"
 			id="ilg.gnumcueclipse.managedbuild.cross.riscv.preferencePage.workspaceToolsPaths"
-			name="%preferences.toolsPaths">
+			name="%preferences.workspaceToolchainsPaths">
 		</page>
 		<page
-			category="org.eclipse.cdt.ui.preferences.BuildSettings"
+			category="ilg.gnumcueclipse.managedbuild.cross.ui.preferences.mcu"
 			class="ilg.gnumcueclipse.managedbuild.cross.riscv.preferences.GlobalToolsPathsPreferencePage"
 			id="ilg.gnumcueclipse.managedbuild.cross.riscv.preferencePage.globalToolsPaths"
-			name="%preferences.globalToolsPaths">
+			name="%preferences.globalToolchainsPaths">
 		</page>
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
-			category="org.eclipse.cdt.managedbuilder.ui.properties.Page_head_build"
+			category="ilg.gnumcueclipse.managedbuild.cross.ui.properties.mcu"
 			class="ilg.gnumcueclipse.managedbuild.cross.riscv.properties.ProjectToolsPathPropertyPage"
 			id="ilg.gnumcueclipse.managedbuild.cross.riscv.properties.toolsPage"
-			name="%properties.projectToolsPaths">
+			name="%properties.projectToolchainsPaths">
 			<enabledWhen>
 				<and>
 					<instanceof value="org.eclipse.core.resources.IProject">

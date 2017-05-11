@@ -81,12 +81,6 @@ public class WorkspaceToolsPathsPreferencePage extends FieldEditorPreferencePage
 	protected void createFieldEditors() {
 
 		boolean isStrict;
-		isStrict = DefaultPreferences.getBoolean(PersistentPreferences.WORKSPACE_BUILDTOOLS_PATH_STRICT, true);
-		FieldEditor buildToolsPathField;
-		buildToolsPathField = new DirectoryNotStrictFieldEditor(PersistentPreferences.BUILD_TOOLS_PATH_KEY,
-				Messages.ToolsPaths_label, getFieldEditorParent(), isStrict);
-
-		addField(buildToolsPathField);
 
 		FieldEditor toolchainNameField = new ToolchainsFieldEditor(PersistentPreferences.TOOLCHAIN_NAME_KEY,
 				Messages.ToolchainName_label, getFieldEditorParent());
