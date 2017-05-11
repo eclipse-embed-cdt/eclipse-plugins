@@ -4493,13 +4493,13 @@
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="org.eclipse.cdt.ui.preferences.BuildSettings"
+			category="ilg.gnumcueclipse.managedbuild.cross.ui.preferences.mcu"
 			class="ilg.gnuarmeclipse.managedbuild.cross.preferences.WorkspaceToolsPathsPreferencePage"
 			id="ilg.gnuarmeclipse.managedbuild.cross.preferencePage.workspaceToolsPaths"
 			name="%preferences.toolsPaths">
 		</page>
 		<page
-			category="org.eclipse.cdt.ui.preferences.BuildSettings"
+			category="ilg.gnumcueclipse.managedbuild.cross.ui.preferences.mcu"
 			class="ilg.gnuarmeclipse.managedbuild.cross.preferences.GlobalToolsPathsPreferencePage"
 			id="ilg.gnuarmeclipse.managedbuild.cross.preferencePage.globalToolsPaths"
 			name="%preferences.globalToolsPaths">
@@ -4507,7 +4507,7 @@
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
-			category="org.eclipse.cdt.managedbuilder.ui.properties.Page_head_build"
+			category="ilg.gnumcueclipse.managedbuild.cross.ui.properties.mcu"
 			class="ilg.gnuarmeclipse.managedbuild.cross.properties.ProjectToolsPathPropertyPage"
 			id="ilg.gnuarmeclipse.managedbuild.cross.properties.toolsPage"
 			name="%properties.projectToolsPaths">
