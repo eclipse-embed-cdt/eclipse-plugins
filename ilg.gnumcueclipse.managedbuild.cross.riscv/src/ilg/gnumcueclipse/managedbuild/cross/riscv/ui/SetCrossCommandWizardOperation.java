@@ -30,6 +30,7 @@ import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.IWizard;
 
 import ilg.gnuarmeclipse.core.Activator;
+import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.ToolchainDefinition;
 
 /**
@@ -68,9 +69,10 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 
 		if (!toolchainName.isEmpty() && !path.isEmpty()) {
 			// Store persistent values in Eclipse scope
-			PersistentPreferences.putToolchainPath(toolchainName, path);
-			PersistentPreferences.putToolchainName(toolchainName);
-			PersistentPreferences.flush();
+			PersistentPreferences persistentPreferences = new PersistentPreferences(Activator.PLUGIN_ID);
+			persistentPreferences.putToolchainPath(toolchainName, path);
+			persistentPreferences.putToolchainName(toolchainName);
+			persistentPreferences.flush();
 		}
 
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);

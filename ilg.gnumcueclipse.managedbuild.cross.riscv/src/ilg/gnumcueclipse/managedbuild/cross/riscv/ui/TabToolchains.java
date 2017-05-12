@@ -50,14 +50,15 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
+import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.IDs;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.Option;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.ToolchainDefinition;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.Utils;
-import ilg.gnumcueclipse.managedbuild.cross.riscv.preferences.GlobalToolsPathsPreferencePage;
-import ilg.gnumcueclipse.managedbuild.cross.riscv.preferences.WorkspaceToolsPathsPreferencePage;
-import ilg.gnumcueclipse.managedbuild.cross.riscv.properties.ProjectToolsPathPropertyPage;
+import ilg.gnumcueclipse.managedbuild.cross.riscv.ui.preferences.GlobalToolchainsPathsPreferencesPage;
+import ilg.gnumcueclipse.managedbuild.cross.riscv.ui.preferences.WorkspaceToolchainsPathsPreferencesPage;
+import ilg.gnumcueclipse.managedbuild.cross.riscv.ui.properties.ProjectToolchainsPathPropertiesPage;
 
 /**
  * @noextend This class is not intended to be subclassed by clients.
@@ -99,9 +100,17 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	// private boolean fIsExecutable;
 	// private boolean fIsStaticLibrary;
 
+	private PersistentPreferences fPersistentPreferences;
+
 	private static int WIDTH_HINT = 120;
 
 	// ------------------------------------------------------------------------
+
+	public TabToolchains() {
+		super();
+
+		fPersistentPreferences = new PersistentPreferences(Activator.PLUGIN_ID);
+	}
 
 	protected IProject getProject() {
 		assert (fConfig != null);
@@ -353,13 +362,13 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 					int ret = -1;
 					if ("global".equals(text)) {
 						ret = PreferencesUtil.createPreferenceDialogOn(parent.getShell(),
-								GlobalToolsPathsPreferencePage.ID, null, null).open();
+								GlobalToolchainsPathsPreferencesPage.ID, null, null).open();
 					} else if ("workspace".equals(text)) {
 						ret = PreferencesUtil.createPreferenceDialogOn(parent.getShell(),
-								WorkspaceToolsPathsPreferencePage.ID, null, null).open();
+								WorkspaceToolchainsPathsPreferencesPage.ID, null, null).open();
 					} else if ("project".equals(text)) {
 						ret = PreferencesUtil.createPropertyDialogOn(parent.getShell(), getProject(),
-								ProjectToolsPathPropertyPage.ID, null, null, 0).open();
+								ProjectToolchainsPathPropertiesPage.ID, null, null, 0).open();
 					}
 
 					if (ret == Window.OK) {
@@ -449,7 +458,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 		assert (fConfig != null);
 		IProject project = (IProject) fConfig.getManagedProject().getOwner();
-		String toolchainPath = PersistentPreferences.getToolchainPath(toolchainName, project);
+		String toolchainPath = fPersistentPreferences.getToolchainPath(toolchainName, project);
 		fPathLabel.setText(toolchainPath);
 	}
 
@@ -587,7 +596,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			}
 			// This is not a project created with the wizard
 			// (most likely it is the result of a toolchain change)
-			fSelectedToolchainName = PersistentPreferences.getToolchainName();
+			fSelectedToolchainName = fPersistentPreferences.getToolchainName();
 			fSelectedToolchainIndex = ToolchainDefinition.findToolchainByName(fSelectedToolchainName);
 
 			// Initialise .cproject options that were not done at project
@@ -606,7 +615,8 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 		fArchitectureCombo.setItems(ToolchainDefinition.getArchitectures());
 
-		// String sSelectedArchitecture = Option.getOptionStringValue(config, Option.OPTION_ARCHITECTURE);
+		// String sSelectedArchitecture = Option.getOptionStringValue(config,
+		// Option.OPTION_ARCHITECTURE);
 		int index = 0;
 		fArchitectureCombo.setText(ToolchainDefinition.getArchitecture(index));
 
@@ -739,7 +749,9 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			// values are not saved to .cproject.
 
 			// val = Option.ARCHITECTURE_RISCV;
-			// option = toolchain.getOptionBySuperClassId(Option.OPTION_ARCHITECTURE); // $NON-NLS-1$
+			// option =
+			// toolchain.getOptionBySuperClassId(Option.OPTION_ARCHITECTURE); //
+			// $NON-NLS-1$
 			// config.setOption(toolchain, option, val);
 
 			String sSelectedCombo = fToolchainCombo.getText();
@@ -813,7 +825,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		IToolChain toolchain = config.getToolChain();
 
 		IOption option;
-		String val;
+		// String val;
 
 		ToolchainDefinition td = ToolchainDefinition.getToolchain(toolchainIndex);
 
@@ -824,26 +836,35 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); // $NON-NLS-1$
 		config.setOption(toolchain, option, td.getName());
 
-		// option = toolchain.getOptionBySuperClassId(Option.OPTION_ARCHITECTURE); // $NON-NLS-1$
+		// option =
+		// toolchain.getOptionBySuperClassId(Option.OPTION_ARCHITECTURE); //
+		// $NON-NLS-1$
 		// val = Option.ARCHITECTURE_RISCV;
 		// Utils.setOptionForced(config, toolchain, option, val);
-		
-		// option = toolchain.getOptionBySuperClassId(Option.OPTION_TARGET_ISA_BASE);
+
+		// option =
+		// toolchain.getOptionBySuperClassId(Option.OPTION_TARGET_ISA_BASE);
 		// Utils.forceOptionRewrite(config, toolchain, option);
 
-		// option = toolchain.getOptionBySuperClassId(Option.OPTION_TARGET_ISA_FP);
+		// option =
+		// toolchain.getOptionBySuperClassId(Option.OPTION_TARGET_ISA_FP);
 		// Utils.forceOptionRewrite(config, toolchain, option);
 
-		// option = toolchain.getOptionBySuperClassId(Option.OPTION_TARGET_ISA_ATOMIC);
+		// option =
+		// toolchain.getOptionBySuperClassId(Option.OPTION_TARGET_ISA_ATOMIC);
 		// Utils.forceOptionRewrite(config, toolchain, option);
-		// option = toolchain.getOptionBySuperClassId(Option.OPTION_TARGET_ISA_MULTIPLY);
+		// option =
+		// toolchain.getOptionBySuperClassId(Option.OPTION_TARGET_ISA_MULTIPLY);
 		// Utils.forceOptionRewrite(config, toolchain, option);
-		// option = toolchain.getOptionBySuperClassId(Option.OPTION_TARGET_ISA_COMPRESSED);
+		// option =
+		// toolchain.getOptionBySuperClassId(Option.OPTION_TARGET_ISA_COMPRESSED);
 		// Utils.forceOptionRewrite(config, toolchain, option);
-		
-		// option = toolchain.getOptionBySuperClassId(Option.OPTION_TARGET_ABI_INTEGER);
+
+		// option =
+		// toolchain.getOptionBySuperClassId(Option.OPTION_TARGET_ABI_INTEGER);
 		// Utils.forceOptionRewrite(config, toolchain, option);
-		// option = toolchain.getOptionBySuperClassId(Option.OPTION_TARGET_ABI_FP);
+		// option =
+		// toolchain.getOptionBySuperClassId(Option.OPTION_TARGET_ABI_FP);
 		// Utils.forceOptionRewrite(config, toolchain, option);
 
 		// ---

@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnumcueclipse.managedbuild.cross.riscv.preferences;
+package ilg.gnumcueclipse.managedbuild.cross.riscv.ui.preferences;
 
 import ilg.gnumcueclipse.managedbuild.cross.riscv.ToolchainDefinition;
 

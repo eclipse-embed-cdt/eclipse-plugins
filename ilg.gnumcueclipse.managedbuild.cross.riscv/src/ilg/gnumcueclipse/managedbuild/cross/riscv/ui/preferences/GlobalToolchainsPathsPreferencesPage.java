@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnumcueclipse.managedbuild.cross.riscv.preferences;
+package ilg.gnumcueclipse.managedbuild.cross.riscv.ui.preferences;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -17,11 +17,11 @@ import java.util.Set;
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.core.preferences.DirectoryNotStrictFieldEditor;
 import ilg.gnuarmeclipse.core.preferences.LabelFakeFieldEditor;
+import ilg.gnumcueclipse.managedbuild.cross.preferences.DefaultPreferences;
+import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.Option;
-import ilg.gnumcueclipse.managedbuild.cross.riscv.ui.DefaultPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.ui.Messages;
-import ilg.gnumcueclipse.managedbuild.cross.riscv.ui.PersistentPreferences;
 
 import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
@@ -47,20 +47,29 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
  * preferences can be accessed directly via the preference store.
  */
 
-public class GlobalToolsPathsPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class GlobalToolchainsPathsPreferencesPage extends FieldEditorPreferencePage
+		implements IWorkbenchPreferencePage {
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "ilg.gnumcueclipse.managedbuild.cross.riscv.preferencePage.globalToolsPaths";
+	public static final String ID = "ilg.gnumcueclipse.managedbuild.cross.riscv.preferencePage.globalToolchainsPaths";
 
 	// ------------------------------------------------------------------------
 
-	public GlobalToolsPathsPreferencePage() {
+	private PersistentPreferences fPersistentPreferences;
+	private DefaultPreferences fDefaultPreferences;
+
+	// ------------------------------------------------------------------------
+
+	public GlobalToolchainsPathsPreferencesPage() {
 		super(GRID);
+
+		fPersistentPreferences = new PersistentPreferences(Activator.PLUGIN_ID);
+		fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
 
 		setPreferenceStore(new ScopedPreferenceStore(ConfigurationScope.INSTANCE, Activator.PLUGIN_ID));
 
-		setDescription(Messages.GlobalToolsPathsPropertyPage_description);
+		setDescription(Messages.GlobalToolchainsPathsPreferencesPage_description);
 	}
 
 	// ------------------------------------------------------------------------
@@ -69,7 +78,7 @@ public class GlobalToolsPathsPreferencePage extends FieldEditorPreferencePage im
 	@Override
 	public void init(IWorkbench workbench) {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GlobalToolsPathsPage.init()");
+			System.out.println("GlobalToolchainsPathsPreferencesPage.init()");
 		}
 	}
 
@@ -116,7 +125,7 @@ public class GlobalToolsPathsPreferencePage extends FieldEditorPreferencePage im
 		}
 
 		if (toolchainNames.isEmpty()) {
-			toolchainNames.add(PersistentPreferences.getToolchainName());
+			toolchainNames.add(fPersistentPreferences.getToolchainName());
 		}
 
 		for (String toolchainName : toolchainNames) {
@@ -127,7 +136,7 @@ public class GlobalToolsPathsPreferencePage extends FieldEditorPreferencePage im
 
 			String key = PersistentPreferences.getToolchainKey(toolchainName);
 
-			isStrict = DefaultPreferences.getBoolean(PersistentPreferences.GLOBAL_TOOLCHAIN_PATH_STRICT, true);
+			isStrict = fDefaultPreferences.getBoolean(PersistentPreferences.GLOBAL_TOOLCHAIN_PATH_STRICT, true);
 
 			FieldEditor toolchainPathField;
 			toolchainPathField = new DirectoryNotStrictFieldEditor(key, Messages.ToolchainPaths_label,

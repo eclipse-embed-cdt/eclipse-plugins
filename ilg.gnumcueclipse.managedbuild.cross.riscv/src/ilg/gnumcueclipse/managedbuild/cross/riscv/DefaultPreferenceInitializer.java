@@ -9,10 +9,9 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.managedbuild.cross.riscv.ui;
+package ilg.gnumcueclipse.managedbuild.cross.riscv;
 
-import ilg.gnumcueclipse.managedbuild.cross.riscv.Activator;
-import ilg.gnumcueclipse.managedbuild.cross.riscv.ToolchainDefinition;
+import ilg.gnumcueclipse.managedbuild.cross.preferences.DefaultPreferences;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
@@ -43,11 +42,13 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 			System.out.println("DefaultPreferenceInitializer.initializeDefaultPreferences()");
 		}
 
+		DefaultPreferences fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
 		// Default toolchain name
 		String toolchainName = ToolchainDefinition.DEFAULT_TOOLCHAIN_NAME;
-		DefaultPreferences.putToolchainName(toolchainName);
+		fDefaultPreferences.putToolchainName(toolchainName);
 
-		// When the 'ilg.gnumcueclipse.managedbuild.cross.riscv' node is completely
+		// When the 'ilg.gnumcueclipse.managedbuild.cross.riscv' node is
+		// completely
 		// added to /default, a NodeChangeEvent is raised.
 		// This is the moment when all final default values are in, possibly
 		// set by product or command line.
@@ -94,15 +95,20 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 
 			String value;
 
+			DefaultPreferences fCommonDefaultPreferences = new DefaultPreferences(
+					ilg.gnumcueclipse.managedbuild.cross.Activator.PLUGIN_ID);
+
 			// Build tools path
-			value = DefaultPreferences.getBuildToolsPath();
+			value = fCommonDefaultPreferences.getBuildToolsPath();
 			if (value.isEmpty()) {
 				// If not defined elsewhere, discover build tools.
 				value = DefaultPreferences.discoverBuildToolsPath();
 				if (!value.isEmpty()) {
-					DefaultPreferences.putBuildToolsPath(value);
+					fCommonDefaultPreferences.putBuildToolsPath(value);
 				}
 			}
+
+			DefaultPreferences fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
 
 			// Toolchains paths
 			for (ToolchainDefinition toolchain : ToolchainDefinition.getList()) {
@@ -111,32 +117,32 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 
 				// Check if the toolchain path is explictly defined in the
 				// default preferences.
-				String path = DefaultPreferences.getToolchainPath(toolchainName);
+				String path = fDefaultPreferences.getToolchainPath(toolchainName);
 				if (!path.isEmpty()) {
 					continue; // Already defined, use it as is.
 				}
 
 				// Check if the search path is defined in the default
 				// preferences.
-				String searchPath = DefaultPreferences.getToolchainSearchPath(toolchainName);
+				String searchPath = fDefaultPreferences.getToolchainSearchPath(toolchainName);
 				if (searchPath.isEmpty()) {
 
 					// If not defined, get the OS Specific default
 					// from preferences.ini.
-					searchPath = DefaultPreferences.getToolchainSearchPathOs(toolchainName);
+					searchPath = fDefaultPreferences.getToolchainSearchPathOs(toolchainName);
 					if (!searchPath.isEmpty()) {
 						// Store the search path in the preferences
-						DefaultPreferences.putToolchainSearchPath(toolchainName, searchPath);
+						fDefaultPreferences.putToolchainSearchPath(toolchainName, searchPath);
 					}
 				}
 
 				if (!searchPath.isEmpty()) {
 					// If the search path is known, discover toolchain.
-					value = DefaultPreferences.discoverToolchainPath(toolchainName, searchPath);
+					value = fDefaultPreferences.discoverToolchainPath(toolchainName, searchPath);
 					if (value != null && !value.isEmpty()) {
 						// If the toolchain path was finally discovered, store
 						// it in the preferences.
-						DefaultPreferences.putToolchainPath(toolchainName, value);
+						fDefaultPreferences.putToolchainPath(toolchainName, value);
 					}
 				}
 			}

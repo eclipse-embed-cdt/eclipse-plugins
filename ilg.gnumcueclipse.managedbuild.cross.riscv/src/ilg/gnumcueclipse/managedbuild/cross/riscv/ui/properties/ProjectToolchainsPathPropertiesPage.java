@@ -9,18 +9,19 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.managedbuild.cross.riscv.properties;
+package ilg.gnumcueclipse.managedbuild.cross.riscv.ui.properties;
 
 import ilg.gnuarmeclipse.core.EclipseUtils;
 import ilg.gnuarmeclipse.core.ScopedPreferenceStoreWithoutDefaults;
 import ilg.gnuarmeclipse.core.preferences.DirectoryNotStrictFieldEditor;
 import ilg.gnuarmeclipse.core.preferences.LabelFakeFieldEditor;
 import ilg.gnuarmeclipse.core.ui.FieldEditorPropertyPage;
+import ilg.gnumcueclipse.managedbuild.cross.preferences.DefaultPreferences;
+import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.Option;
-import ilg.gnumcueclipse.managedbuild.cross.riscv.ui.DefaultPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.ui.Messages;
-import ilg.gnumcueclipse.managedbuild.cross.riscv.ui.PersistentPreferences;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,18 +34,26 @@ import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
 
-public class ProjectToolsPathPropertyPage extends FieldEditorPropertyPage {
+public class ProjectToolchainsPathPropertiesPage extends FieldEditorPropertyPage {
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "ilg.gnumcueclipse.managedbuild.cross.riscv.properties.toolsPage";
+	public static final String ID = "ilg.gnumcueclipse.managedbuild.cross.riscv.properties.toolchainsPage";
 
 	// ------------------------------------------------------------------------
 
-	public ProjectToolsPathPropertyPage() {
+	private PersistentPreferences fPersistentPreferences;
+	private DefaultPreferences fDefaultPreferences;
+
+	// ------------------------------------------------------------------------
+
+	public ProjectToolchainsPathPropertiesPage() {
 		super(GRID);
 
-		setDescription(Messages.ProjectToolsPathsPropertyPage_description);
+		fPersistentPreferences = new PersistentPreferences(Activator.PLUGIN_ID);
+		fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
+
+		setDescription(Messages.ProjectToolchainsPathsPropertiesPage_description);
 	}
 
 	// ------------------------------------------------------------------------
@@ -61,7 +70,7 @@ public class ProjectToolsPathPropertyPage extends FieldEditorPropertyPage {
 	@Override
 	protected void createFieldEditors() {
 		boolean isStrict;
-		
+
 		Set<String> toolchainNames = new HashSet<String>();
 
 		Object element = getElement();
@@ -91,7 +100,7 @@ public class ProjectToolsPathPropertyPage extends FieldEditorPropertyPage {
 			}
 		}
 		if (toolchainNames.isEmpty()) {
-			toolchainNames.add(PersistentPreferences.getToolchainName());
+			toolchainNames.add(fPersistentPreferences.getToolchainName());
 		}
 
 		for (String toolchainName : toolchainNames) {
@@ -100,7 +109,7 @@ public class ProjectToolsPathPropertyPage extends FieldEditorPropertyPage {
 					getFieldEditorParent());
 			addField(labelField);
 
-			isStrict = DefaultPreferences.getBoolean(PersistentPreferences.PROJECT_TOOLCHAIN_PATH_STRICT, true);
+			isStrict = fDefaultPreferences.getBoolean(PersistentPreferences.PROJECT_TOOLCHAIN_PATH_STRICT, true);
 			String key = PersistentPreferences.getToolchainKey(toolchainName);
 			FieldEditor toolchainPathField = new DirectoryNotStrictFieldEditor(key, Messages.ToolchainPaths_label,
 					getFieldEditorParent(), isStrict);
