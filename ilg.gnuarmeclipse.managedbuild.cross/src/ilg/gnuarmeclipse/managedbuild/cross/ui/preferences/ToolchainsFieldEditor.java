@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.managedbuild.cross.preferences;
+package ilg.gnuarmeclipse.managedbuild.cross.ui.preferences;
 
 import ilg.gnuarmeclipse.managedbuild.cross.ToolchainDefinition;
 

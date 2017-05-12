@@ -13,8 +13,7 @@
 package ilg.gnuarmeclipse.managedbuild.cross;
 
 import ilg.gnuarmeclipse.core.EclipseUtils;
-import ilg.gnuarmeclipse.managedbuild.cross.ui.ProjectStorage;
-import ilg.gnuarmeclipse.managedbuild.cross.ui.PersistentPreferences;
+import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 
 import java.io.File;
 
@@ -31,6 +30,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 
 public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVariableSupplier {
+
+	// ------------------------------------------------------------------------
+
+	private static boolean DEBUG_PATH = true;
 
 	// ------------------------------------------------------------------------
 
@@ -68,49 +71,34 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 			this.path = path;
 		}
 
-		@SuppressWarnings("unused")
 		public static PathEnvironmentVariable create(IConfiguration configuration) {
 			IToolChain toolchain = configuration.getToolChain();
 
 			IProject project = (IProject) configuration.getManagedProject().getOwner();
 
-			String path = PersistentPreferences.getBuildToolsPath(project);
+			PersistentPreferences commonPersistentPreferences = new PersistentPreferences(
+					ilg.gnumcueclipse.managedbuild.cross.Activator.PLUGIN_ID);
 
+			// Get the build tools path from the common store.
+			String path = commonPersistentPreferences.getBuildToolsPath(project);
+			if (path.isEmpty()) {
+				PersistentPreferences persistentPreferences = new PersistentPreferences(
+						Activator.PLUGIN_ID);
+				path = persistentPreferences.getBuildToolsPath(project);
+				// TODO: if moved to other package, also get from original gnuarmeclipse store.
+			}
 			IOption option;
 			option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); // $NON-NLS-1$
 			String toolchainName = (String) option.getValue();
 
 			String toolchainPath = null;
 
-			{
-				// TODO: remove DEPRECATED
-
-				// Warning: since multiple per configuration paths are copied
-				// into a single per project path, in case the configuration
-				// paths were different, each usage will override the previous
-				// values.
-				boolean isPathPerProject = ProjectStorage.isToolchainPathPerProject(configuration);
-
-				if (isPathPerProject) {
-					// Get per configuration path
-					toolchainPath = ProjectStorage.getToolchainPath(configuration);
-
-					// Copy the toolchain path from the wrong storage to project
-					// preferences.
-					PersistentPreferences.putToolchainPath(toolchainName, toolchainPath, project);
-
-					// Disable flag
-					ProjectStorage.putToolchainPathPerProject(configuration, false);
-
-					if (Activator.getInstance().isDebugging()) {
-						System.out.println("Path \"" + toolchainPath + "\" copied to project " + project.getName());
-					}
-				}
-			}
-
+			// Get the toolchain path from this plug-in store.
+			PersistentPreferences persistentPreferences = new PersistentPreferences(Activator.PLUGIN_ID);
 			// Get the most specific toolchain path (project, workspace,
 			// Eclipse, defaults).
-			toolchainPath = PersistentPreferences.getToolchainPath(toolchainName, project);
+			toolchainPath = persistentPreferences.getToolchainPath(toolchainName, project);
+			// TODO: if moved to other package, also get from original gnuarmeclipse store.
 
 			if (path.isEmpty()) {
 				path = toolchainPath;
@@ -133,7 +121,7 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 				File bin = new File(sysroot, "bin"); //$NON-NLS-1$
 				if (bin.isDirectory())
 					sysroot = bin;
-				if (false) {
+				if (DEBUG_PATH) {
 					if (Activator.getInstance().isDebugging()) {
 						System.out.println("PATH=" + sysroot + " opt=" + path + " cfg=" + configuration + " prj="
 								+ configuration.getManagedProject().getOwner().getName());

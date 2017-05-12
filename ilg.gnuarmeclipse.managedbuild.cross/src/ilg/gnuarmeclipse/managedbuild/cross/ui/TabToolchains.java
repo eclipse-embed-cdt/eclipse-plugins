@@ -55,9 +55,10 @@ import ilg.gnuarmeclipse.managedbuild.cross.IDs;
 import ilg.gnuarmeclipse.managedbuild.cross.Option;
 import ilg.gnuarmeclipse.managedbuild.cross.ToolchainDefinition;
 import ilg.gnuarmeclipse.managedbuild.cross.Utils;
-import ilg.gnuarmeclipse.managedbuild.cross.preferences.GlobalToolsPathsPreferencePage;
-import ilg.gnuarmeclipse.managedbuild.cross.preferences.WorkspaceToolsPathsPreferencePage;
-import ilg.gnuarmeclipse.managedbuild.cross.properties.ProjectToolsPathPropertyPage;
+import ilg.gnuarmeclipse.managedbuild.cross.ui.preferences.GlobalToolchainsPathsPreferencesPage;
+import ilg.gnuarmeclipse.managedbuild.cross.ui.preferences.WorkspaceToolchainsPathsPreferencesPage;
+import ilg.gnuarmeclipse.managedbuild.cross.ui.properties.ProjectToolchainsPathPropertiesPage;
+import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 
 /**
  * @noextend This class is not intended to be subclassed by clients.
@@ -99,9 +100,17 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	// private boolean fIsExecutable;
 	// private boolean fIsStaticLibrary;
 
+	private PersistentPreferences fPersistentPreferences;
+
 	private static int WIDTH_HINT = 120;
 
 	// ------------------------------------------------------------------------
+
+	public TabToolchains() {
+		super();
+
+		fPersistentPreferences = new PersistentPreferences(Activator.PLUGIN_ID);
+	}
 
 	protected IProject getProject() {
 		assert (fConfig != null);
@@ -355,13 +364,13 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 					int ret = -1;
 					if ("global".equals(text)) {
 						ret = PreferencesUtil.createPreferenceDialogOn(parent.getShell(),
-								GlobalToolsPathsPreferencePage.ID, null, null).open();
+								GlobalToolchainsPathsPreferencesPage.ID, null, null).open();
 					} else if ("workspace".equals(text)) {
 						ret = PreferencesUtil.createPreferenceDialogOn(parent.getShell(),
-								WorkspaceToolsPathsPreferencePage.ID, null, null).open();
+								WorkspaceToolchainsPathsPreferencesPage.ID, null, null).open();
 					} else if ("project".equals(text)) {
 						ret = PreferencesUtil.createPropertyDialogOn(parent.getShell(), getProject(),
-								ProjectToolsPathPropertyPage.ID, null, null, 0).open();
+								ProjectToolchainsPathPropertiesPage.ID, null, null, 0).open();
 					}
 
 					if (ret == Window.OK) {
@@ -458,7 +467,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 		assert (fConfig != null);
 		IProject project = (IProject) fConfig.getManagedProject().getOwner();
-		String toolchainPath = PersistentPreferences.getToolchainPath(toolchainName, project);
+		String toolchainPath = fPersistentPreferences.getToolchainPath(toolchainName, project);
 		fPathLabel.setText(toolchainPath);
 	}
 
@@ -596,7 +605,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			}
 			// This is not a project created with the wizard
 			// (most likely it is the result of a toolchain change)
-			fSelectedToolchainName = PersistentPreferences.getToolchainName();
+			fSelectedToolchainName = fPersistentPreferences.getToolchainName();
 			fSelectedToolchainIndex = ToolchainDefinition.findToolchainByName(fSelectedToolchainName);
 
 			// Initialise .cproject options that were not done at project

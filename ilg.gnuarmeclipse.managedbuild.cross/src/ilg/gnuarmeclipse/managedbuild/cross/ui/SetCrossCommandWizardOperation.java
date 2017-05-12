@@ -13,9 +13,6 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross.ui;
 
-import ilg.gnuarmeclipse.core.Activator;
-import ilg.gnuarmeclipse.managedbuild.cross.ToolchainDefinition;
-
 import java.lang.reflect.InvocationTargetException;
 
 import org.eclipse.cdt.build.core.scannerconfig.ScannerConfigBuilder;
@@ -30,8 +27,10 @@ import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.IWizard;
-import org.eclipse.jface.wizard.IWizardPage;
-import org.eclipse.ui.dialogs.WizardNewProjectCreationPage;
+
+import ilg.gnuarmeclipse.core.Activator;
+import ilg.gnuarmeclipse.managedbuild.cross.ToolchainDefinition;
+import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 
 /**
  * An operation that runs when the new project wizard finishes for the Cross GCC
@@ -69,9 +68,10 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 
 		if (!toolchainName.isEmpty() && !path.isEmpty()) {
 			// Store persistent values in Eclipse scope
-			PersistentPreferences.putToolchainPath(toolchainName, path);
-			PersistentPreferences.putToolchainName(toolchainName);
-			PersistentPreferences.flush();
+			PersistentPreferences persistentPreferences = new PersistentPreferences(Activator.PLUGIN_ID);
+			persistentPreferences.putToolchainPath(toolchainName, path);
+			persistentPreferences.putToolchainName(toolchainName);
+			persistentPreferences.flush();
 		}
 
 		IProject project = ResourcesPlugin.getWorkspace().getRoot().getProject(projectName);

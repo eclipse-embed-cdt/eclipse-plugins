@@ -12,8 +12,10 @@
 
 package ilg.gnuarmeclipse.managedbuild.cross.ui;
 
+import ilg.gnuarmeclipse.managedbuild.cross.Activator;
 import ilg.gnuarmeclipse.managedbuild.cross.IDs;
 import ilg.gnuarmeclipse.managedbuild.cross.ToolchainDefinition;
+import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPage;
 import org.eclipse.cdt.managedbuilder.ui.wizards.MBSCustomPageManager;
@@ -92,8 +94,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 	}
 
 	@Override
-	public void setWizard(IWizard newWizard)
-	{
+	public void setWizard(IWizard newWizard) {
 		super.setWizard(newWizard);
 		MBSCustomPageManager.addPageProperty(PAGE_ID, CROSS_WIZARD, newWizard);
 	}
@@ -120,9 +121,11 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		}
 		fToolchainCombo.setItems(toolchains);
 
+		final PersistentPreferences persistentPreferences = new PersistentPreferences(Activator.PLUGIN_ID);
+
 		// decide which one is selected
 		try {
-			fSelectedToolchainName = PersistentPreferences.getToolchainName();
+			fSelectedToolchainName = persistentPreferences.getToolchainName();
 			// System.out.println("Previous toolchain name "
 			// + fSelectedToolchainName);
 			if (fSelectedToolchainName != null && fSelectedToolchainName.length() > 0) {
@@ -150,7 +153,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 				fSelectedToolchainName = ToolchainDefinition.getToolchain(fSelectedToolchainIndex).getName();
 				updateToolchainNameProperty();
 
-				String crossCommandPath = PersistentPreferences.getToolchainPath(fSelectedToolchainName, null);
+				String crossCommandPath = persistentPreferences.getToolchainPath(fSelectedToolchainName, null);
 				fPathTxt.setText(crossCommandPath);
 
 			}
@@ -161,7 +164,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		label.setText(Messages.SetCrossCommandWizardPage_path);
 
 		fPathTxt = new Text(fComposite, SWT.SINGLE | SWT.BORDER);
-		String crossCommandPath = PersistentPreferences.getToolchainPath(fSelectedToolchainName, null);
+		String crossCommandPath = persistentPreferences.getToolchainPath(fSelectedToolchainName, null);
 		fPathTxt.setText(crossCommandPath);
 		updatePathProperty();
 

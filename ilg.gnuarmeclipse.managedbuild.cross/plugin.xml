@@ -4494,22 +4494,22 @@
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
 			category="ilg.gnumcueclipse.managedbuild.cross.ui.preferences.mcu"
-			class="ilg.gnuarmeclipse.managedbuild.cross.preferences.WorkspaceToolsPathsPreferencePage"
-			id="ilg.gnuarmeclipse.managedbuild.cross.preferencePage.workspaceToolsPaths"
+			class="ilg.gnuarmeclipse.managedbuild.cross.ui.preferences.WorkspaceToolchainsPathsPreferencesPage"
+			id="ilg.gnuarmeclipse.managedbuild.cross.preferencePage.workspaceToolchainsPaths"
 			name="%preferences.toolsPaths">
 		</page>
 		<page
 			category="ilg.gnumcueclipse.managedbuild.cross.ui.preferences.mcu"
-			class="ilg.gnuarmeclipse.managedbuild.cross.preferences.GlobalToolsPathsPreferencePage"
-			id="ilg.gnuarmeclipse.managedbuild.cross.preferencePage.globalToolsPaths"
+			class="ilg.gnuarmeclipse.managedbuild.cross.ui.preferences.GlobalToolchainsPathsPreferencesPage"
+			id="ilg.gnuarmeclipse.managedbuild.cross.preferencePage.globalToolchainsPaths"
 			name="%preferences.globalToolsPaths">
 		</page>
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
 			category="ilg.gnumcueclipse.managedbuild.cross.ui.properties.mcu"
-			class="ilg.gnuarmeclipse.managedbuild.cross.properties.ProjectToolsPathPropertyPage"
-			id="ilg.gnuarmeclipse.managedbuild.cross.properties.toolsPage"
+			class="ilg.gnuarmeclipse.managedbuild.cross.ui.properties.ProjectToolchainsPathPropertiesPage"
+			id="ilg.gnuarmeclipse.managedbuild.cross.properties.toolchainsPage"
 			name="%properties.projectToolsPaths">
 			<enabledWhen>
 				<and>
@@ -4523,7 +4523,7 @@
 	</extension>
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer
-			class="ilg.gnuarmeclipse.managedbuild.cross.ui.DefaultPreferenceInitializer">
+			class="ilg.gnuarmeclipse.managedbuild.cross.DefaultPreferenceInitializer">
 		</initializer>
 	</extension>
 	<extension point="org.eclipse.core.expressions.propertyTesters">

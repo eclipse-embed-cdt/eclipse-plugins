@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnuarmeclipse.managedbuild.cross.preferences;
+package ilg.gnuarmeclipse.managedbuild.cross.ui.preferences;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,9 +19,9 @@ import ilg.gnuarmeclipse.core.preferences.DirectoryNotStrictFieldEditor;
 import ilg.gnuarmeclipse.core.preferences.LabelFakeFieldEditor;
 import ilg.gnuarmeclipse.managedbuild.cross.Activator;
 import ilg.gnuarmeclipse.managedbuild.cross.Option;
-import ilg.gnuarmeclipse.managedbuild.cross.ui.DefaultPreferences;
 import ilg.gnuarmeclipse.managedbuild.cross.ui.Messages;
-import ilg.gnuarmeclipse.managedbuild.cross.ui.PersistentPreferences;
+import ilg.gnumcueclipse.managedbuild.cross.preferences.DefaultPreferences;
+import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 
 import org.eclipse.cdt.managedbuilder.core.BuildException;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
@@ -47,20 +47,29 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
  * preferences can be accessed directly via the preference store.
  */
 
-public class GlobalToolsPathsPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class GlobalToolchainsPathsPreferencesPage extends FieldEditorPreferencePage
+		implements IWorkbenchPreferencePage {
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "ilg.gnuarmeclipse.managedbuild.cross.preferencePage.globalToolsPaths";
+	public static final String ID = "ilg.gnuarmeclipse.managedbuild.cross.preferencePage.globalToolchainsPaths";
 
 	// ------------------------------------------------------------------------
 
-	public GlobalToolsPathsPreferencePage() {
+	private PersistentPreferences fPersistentPreferences;
+	private DefaultPreferences fDefaultPreferences;
+
+	// ------------------------------------------------------------------------
+
+	public GlobalToolchainsPathsPreferencesPage() {
 		super(GRID);
+
+		fPersistentPreferences = new PersistentPreferences(Activator.PLUGIN_ID);
+		fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
 
 		setPreferenceStore(new ScopedPreferenceStore(ConfigurationScope.INSTANCE, Activator.PLUGIN_ID));
 
-		setDescription(Messages.GlobalToolsPathsPropertyPage_description);
+		setDescription(Messages.GlobalToolchainssPathsPreferencesPage_description);
 	}
 
 	// ------------------------------------------------------------------------
@@ -83,12 +92,6 @@ public class GlobalToolsPathsPreferencePage extends FieldEditorPreferencePage im
 	protected void createFieldEditors() {
 
 		boolean isStrict;
-		isStrict = DefaultPreferences.getBoolean(PersistentPreferences.GLOBAL_BUILDTOOLS_PATH_STRICT, true);
-		FieldEditor buildToolsPathField;
-		buildToolsPathField = new DirectoryNotStrictFieldEditor(PersistentPreferences.BUILD_TOOLS_PATH_KEY,
-				Messages.ToolsPaths_label, getFieldEditorParent(), isStrict);
-
-		addField(buildToolsPathField);
 
 		FieldEditor toolchainNameField = new ToolchainsFieldEditor(PersistentPreferences.TOOLCHAIN_NAME_KEY,
 				Messages.ToolchainName_label, getFieldEditorParent());
@@ -122,7 +125,7 @@ public class GlobalToolsPathsPreferencePage extends FieldEditorPreferencePage im
 		}
 
 		if (toolchainNames.isEmpty()) {
-			toolchainNames.add(PersistentPreferences.getToolchainName());
+			toolchainNames.add(fPersistentPreferences.getToolchainName());
 		}
 
 		for (String toolchainName : toolchainNames) {
@@ -133,7 +136,7 @@ public class GlobalToolsPathsPreferencePage extends FieldEditorPreferencePage im
 
 			String key = PersistentPreferences.getToolchainKey(toolchainName);
 
-			isStrict = DefaultPreferences.getBoolean(PersistentPreferences.GLOBAL_TOOLCHAIN_PATH_STRICT, true);
+			isStrict = fDefaultPreferences.getBoolean(PersistentPreferences.GLOBAL_TOOLCHAIN_PATH_STRICT, true);
 
 			FieldEditor toolchainPathField;
 			toolchainPathField = new DirectoryNotStrictFieldEditor(key, Messages.ToolchainPaths_label,
