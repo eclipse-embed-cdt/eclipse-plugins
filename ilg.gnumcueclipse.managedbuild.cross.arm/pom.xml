@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>ilg.gnuarmeclipse</groupId>
+	<artifactId>ilg.gnumcueclipse.managedbuild.cross.arm</artifactId>
+	<version>2.5.1-SNAPSHOT</version>
+	<packaging>eclipse-plugin</packaging>
+
+	<parent>
+		<groupId>ilg.gnuarmeclipse</groupId>
+		<artifactId>plug-ins</artifactId>
+		<version>4.1.1-SNAPSHOT</version>
+		<relativePath>../pom.xml</relativePath>
+	</parent>
+
+	<name>GNU MCU Eclipse ARM managed build code</name>
+	<url>http://gnuarmeclipse.github.io</url>
+</project>

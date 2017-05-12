@@ -7,7 +7,7 @@ Bundle-Activator: ilg.gnuarmeclipse.debug.packs.Activator
 Require-Bundle: ilg.gnuarmeclipse.core,
  ilg.gnuarmeclipse.packs.core,
  ilg.gnuarmeclipse.packs.data,
- ilg.gnuarmeclipse.managedbuild.cross,
+ ilg.gnumcueclipse.managedbuild.cross.arm,
  org.eclipse.cdt.managedbuilder.ui;bundle-version="8.2.0",
  org.eclipse.cdt.managedbuilder.core;bundle-version="8.2.0",
  org.eclipse.cdt.core;bundle-version="5.5.0",

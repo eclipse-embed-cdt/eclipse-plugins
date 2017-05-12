@@ -43,8 +43,9 @@
 	
 		<!-- ARM specific modules. -->
 		<module>ilg.gnuarmeclipse.core</module>
-		<module>ilg.gnuarmeclipse.managedbuild.cross</module>
-		<module>ilg.gnuarmeclipse.managedbuild.cross-feature</module>
+
+		<module>ilg.gnumcueclipse.managedbuild.cross.arm</module>
+		<module>ilg.gnumcueclipse.managedbuild.cross.arm-feature</module>
 
 		<module>ilg.gnuarmeclipse.templates.core</module>
 		<module>ilg.gnuarmeclipse.templates.cortexm</module>

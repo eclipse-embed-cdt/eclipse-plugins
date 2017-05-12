@@ -13,7 +13,7 @@ package ilg.gnuarmeclipse.managedbuild.packs.ui.views;
 
 import ilg.gnuarmeclipse.core.CProjectPacksStorage;
 import ilg.gnuarmeclipse.core.EclipseUtils;
-import ilg.gnuarmeclipse.managedbuild.cross.IDs;
+import ilg.gnumcueclipse.managedbuild.cross.arm.IDs;
 import ilg.gnuarmeclipse.managedbuild.packs.Activator;
 import ilg.gnuarmeclipse.packs.core.data.PacksStorage;
 import ilg.gnuarmeclipse.packs.core.tree.AbstractTreePreOrderIterator;

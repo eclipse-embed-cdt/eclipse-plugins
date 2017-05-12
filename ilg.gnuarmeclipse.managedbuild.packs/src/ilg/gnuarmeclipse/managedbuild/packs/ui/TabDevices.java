@@ -13,7 +13,7 @@ package ilg.gnuarmeclipse.managedbuild.packs.ui;
 
 import ilg.gnuarmeclipse.core.CProjectPacksStorage;
 import ilg.gnuarmeclipse.core.StringUtils;
-import ilg.gnuarmeclipse.managedbuild.cross.IDs;
+import ilg.gnumcueclipse.managedbuild.cross.arm.IDs;
 import ilg.gnuarmeclipse.packs.core.Activator;
 import ilg.gnuarmeclipse.packs.core.data.IPacksDataManager;
 import ilg.gnuarmeclipse.packs.core.data.PacksDataManagerFactoryProxy;
