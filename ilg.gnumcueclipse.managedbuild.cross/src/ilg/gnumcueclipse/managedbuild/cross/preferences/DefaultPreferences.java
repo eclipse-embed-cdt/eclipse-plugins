@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.managedbuild.cross.ui;
+package ilg.gnumcueclipse.managedbuild.cross.preferences;
 
 import java.io.File;
 import java.io.FileInputStream;

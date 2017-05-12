@@ -23,3 +23,6 @@ Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
+Export-Package: ilg.gnumcueclipse.managedbuild.cross,
+ ilg.gnumcueclipse.managedbuild.cross.preferences,
+ ilg.gnumcueclipse.managedbuild.cross.ui

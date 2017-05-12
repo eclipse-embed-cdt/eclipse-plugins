@@ -20,9 +20,9 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 import ilg.gnuarmeclipse.core.preferences.DirectoryNotStrictFieldEditor;
 import ilg.gnumcueclipse.managedbuild.cross.Activator;
-import ilg.gnumcueclipse.managedbuild.cross.ui.DefaultPreferences;
+import ilg.gnumcueclipse.managedbuild.cross.preferences.DefaultPreferences;
+import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.ui.Messages;
-import ilg.gnumcueclipse.managedbuild.cross.ui.PersistentPreferences;
 
 /**
  * This class represents a preference page that is contributed to the

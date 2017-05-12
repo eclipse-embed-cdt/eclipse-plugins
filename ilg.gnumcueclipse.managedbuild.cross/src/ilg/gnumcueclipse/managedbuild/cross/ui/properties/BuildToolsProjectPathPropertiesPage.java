@@ -20,9 +20,9 @@ import ilg.gnuarmeclipse.core.ScopedPreferenceStoreWithoutDefaults;
 import ilg.gnuarmeclipse.core.preferences.DirectoryNotStrictFieldEditor;
 import ilg.gnuarmeclipse.core.ui.FieldEditorPropertyPage;
 import ilg.gnumcueclipse.managedbuild.cross.Activator;
-import ilg.gnumcueclipse.managedbuild.cross.ui.DefaultPreferences;
+import ilg.gnumcueclipse.managedbuild.cross.preferences.DefaultPreferences;
+import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.ui.Messages;
-import ilg.gnumcueclipse.managedbuild.cross.ui.PersistentPreferences;
 
 public class BuildToolsProjectPathPropertiesPage extends FieldEditorPropertyPage {
 
