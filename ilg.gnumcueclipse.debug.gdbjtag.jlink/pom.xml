@@ -7,7 +7,7 @@
 
 	<groupId>ilg.gnumcueclipse</groupId>
 	<artifactId>ilg.gnumcueclipse.debug.gdbjtag.jlink</artifactId>
-	<version>4.1.4-SNAPSHOT</version>
+	<version>4.1.5-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 
 	<parent>

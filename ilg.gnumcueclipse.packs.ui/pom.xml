@@ -7,7 +7,7 @@
 
 	<groupId>ilg.gnumcueclipse</groupId>
 	<artifactId>ilg.gnumcueclipse.packs.ui</artifactId>
-	<version>1.2.4-SNAPSHOT</version>
+	<version>1.2.5-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 
 	<parent>

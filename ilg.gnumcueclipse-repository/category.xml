@@ -13,27 +13,27 @@
 		<category name="ilg.gnumcueclipse.category" />
 	</feature>
 	<feature
-		url="features/ilg.gnumcueclipse.templates.stm-feature_2.6.2.qualifier.jar"
+		url="features/ilg.gnumcueclipse.templates.stm-feature_2.6.3.qualifier.jar"
 		id="ilg.gnumcueclipse.templates.stm"
-		version="2.6.2.qualifier">
+		version="2.6.3.qualifier">
 		<category name="ilg.gnumcueclipse.category" />
 	</feature>
 	<feature
-		url="features/ilg.gnumcueclipse.templates.freescale-feature_2.2.8.qualifier.jar"
+		url="features/ilg.gnumcueclipse.templates.freescale-feature_2.2.9.qualifier.jar"
 		id="ilg.gnumcueclipse.templates.freescale"
-		version="2.2.8.qualifier">
+		version="2.2.9.qualifier">
 		<category name="ilg.gnumcueclipse.category" />
 	</feature>
 	<feature
-		url="features/ilg.gnumcueclipse.debug.gdbjtag.jlink-feature_4.1.4.qualifier.jar"
+		url="features/ilg.gnumcueclipse.debug.gdbjtag.jlink-feature_4.1.5.qualifier.jar"
 		id="ilg.gnumcueclipse.debug.gdbjtag.jlink"
-		version="4.1.4.qualifier">
+		version="4.1.5.qualifier">
 		<category name="ilg.gnumcueclipse.category" />
 	</feature>
 	<feature
-		url="features/ilg.gnumcueclipse.debug.gdbjtag.openocd-feature_4.1.4.qualifier.jar"
+		url="features/ilg.gnumcueclipse.debug.gdbjtag.openocd-feature_4.1.5.qualifier.jar"
 		id="ilg.gnumcueclipse.debug.gdbjtag.openocd"
-		version="4.1.4.qualifier">
+		version="4.1.5.qualifier">
 		<category name="ilg.gnumcueclipse.category" />
 	</feature>
 	<feature
@@ -43,15 +43,15 @@
 		<category name="ilg.gnumcueclipse.category" />
 	</feature>
 	<feature
-		url="features/ilg.gnumcueclipse.debug.gdbjtag.qemu-feature_3.1.4.qualifier.jar"
+		url="features/ilg.gnumcueclipse.debug.gdbjtag.qemu-feature_3.1.5.qualifier.jar"
 		id="ilg.gnumcueclipse.debug.gdbjtag.qemu"
-		version="3.1.4.qualifier">
+		version="3.1.5.qualifier">
 		<category name="ilg.gnumcueclipse.category" />
 	</feature>
 	<feature
-		url="features/ilg.gnumcueclipse.templates.cortexm-feature_1.4.2.qualifier.jar"
+		url="features/ilg.gnumcueclipse.templates.cortexm-feature_1.4.3.qualifier.jar"
 		id="ilg.gnumcueclipse.templates.cortexm"
-		version="1.4.2.qualifier">
+		version="1.4.3.qualifier">
 		<category name="ilg.gnumcueclipse.category" />
 	</feature>
 	<feature
@@ -61,21 +61,21 @@
 		<category name="ilg.gnumcueclipse.category" />
 	</feature>
 	<feature
-		url="features/ilg.gnumcueclipse.doc.user-feature_1.1.1.qualifier.jar"
+		url="features/ilg.gnumcueclipse.doc.user-feature_1.1.2.qualifier.jar"
 		id="ilg.gnumcueclipse.doc.user"
-		version="1.1.1.qualifier">
+		version="1.1.2.qualifier">
 		<category name="ilg.gnumcueclipse.category" />
 	</feature>
 	<feature
-		url="features/ilg.gnumcueclipse.templates.ad-feature_1.1.4.qualifier.jar"
+		url="features/ilg.gnumcueclipse.templates.ad-feature_1.1.5.qualifier.jar"
 		id="ilg.gnumcueclipse.templates.ad"
-		version="1.1.4.qualifier">
+		version="1.1.5.qualifier">
 		<category name="ilg.gnumcueclipse.category" />
 	</feature>
 	<feature
-		url="features/ilg.gnumcueclipse.codered-feature_1.1.1.qualifier.jar"
+		url="features/ilg.gnumcueclipse.codered-feature_1.1.2.qualifier.jar"
 		id="ilg.gnumcueclipse.codered"
-		version="1.1.1.qualifier">
+		version="1.1.2.qualifier">
 		<category name="ilg.gnumcueclipse.category" />
 	</feature>
 	<category-def

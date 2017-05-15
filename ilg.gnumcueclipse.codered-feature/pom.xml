@@ -7,7 +7,7 @@
 
 	<groupId>ilg.gnumcueclipse.features</groupId>
 	<artifactId>ilg.gnumcueclipse.codered</artifactId>
-	<version>1.1.1-SNAPSHOT</version>
+	<version>1.1.2-SNAPSHOT</version>
 	<packaging>eclipse-feature</packaging>
 
 	<parent>

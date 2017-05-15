@@ -2,7 +2,7 @@
 <feature
 	id="ilg.gnumcueclipse.codered"
 	label="%featureName"
-	version="1.1.1.qualifier"
+	version="1.1.2.qualifier"
 	provider-name="%providerName"
 	plugin="ilg.gnumcueclipse.codered">
 

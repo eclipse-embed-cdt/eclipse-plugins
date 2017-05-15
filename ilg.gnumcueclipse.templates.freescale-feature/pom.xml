@@ -7,7 +7,7 @@
 
 	<groupId>ilg.gnumcueclipse.features</groupId>
 	<artifactId>ilg.gnumcueclipse.templates.freescale</artifactId>
-	<version>2.2.8-SNAPSHOT</version>
+	<version>2.2.9-SNAPSHOT</version>
 	<packaging>eclipse-feature</packaging>
 
 	<parent>

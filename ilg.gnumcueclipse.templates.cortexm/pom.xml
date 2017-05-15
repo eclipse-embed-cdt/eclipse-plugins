@@ -7,7 +7,7 @@
 
 	<groupId>ilg.gnumcueclipse</groupId>
 	<artifactId>ilg.gnumcueclipse.templates.cortexm</artifactId>
-	<version>1.4.2-SNAPSHOT</version>
+	<version>1.4.3-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 
 	<parent>
