@@ -11,10 +11,10 @@
 
 package ilg.gnumcueclipse.managedbuild.cross.arm.ui.preferences;
 
-import ilg.gnuarmeclipse.core.EclipseUtils;
-import ilg.gnuarmeclipse.core.ScopedPreferenceStoreWithoutDefaults;
-import ilg.gnuarmeclipse.core.preferences.DirectoryNotStrictFieldEditor;
-import ilg.gnuarmeclipse.core.preferences.LabelFakeFieldEditor;
+import ilg.gnumcueclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.core.ScopedPreferenceStoreWithoutDefaults;
+import ilg.gnumcueclipse.core.preferences.DirectoryNotStrictFieldEditor;
+import ilg.gnumcueclipse.core.preferences.LabelFakeFieldEditor;
 import ilg.gnumcueclipse.managedbuild.cross.arm.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.arm.Option;
 import ilg.gnumcueclipse.managedbuild.cross.arm.ui.Messages;

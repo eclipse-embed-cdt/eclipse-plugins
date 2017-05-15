@@ -17,7 +17,7 @@ import java.util.List;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.Platform;
 
-import ilg.gnuarmeclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.core.EclipseUtils;
 
 public class ToolchainDefinition {
 

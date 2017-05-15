@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: GNU MCU C/C++ Documentation
+Bundle-SymbolicName: ilg.gnumcueclipse.doc.user;singleton:=true
+Bundle-Version: 1.1.1.qualifier
+Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Require-Bundle: org.eclipse.help;bundle-version="3.6.0"
+Bundle-Vendor: GNU MCU Eclipse
+Bundle-ActivationPolicy: lazy

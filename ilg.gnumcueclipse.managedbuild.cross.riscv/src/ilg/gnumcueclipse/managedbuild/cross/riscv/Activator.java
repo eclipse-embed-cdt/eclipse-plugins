@@ -9,12 +9,11 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-
 package ilg.gnumcueclipse.managedbuild.cross.riscv;
 
-import ilg.gnuarmeclipse.core.AbstractUIActivator;
-
 import org.osgi.framework.BundleContext;
+
+import ilg.gnumcueclipse.core.AbstractUIActivator;
 
 /**
  * The activator class controls the plug-in life cycle

@@ -1,2 +1,0 @@
-# Control if trace messages are shown.
-ilg.gnuarmeclipse.debug.gdbjtag.openocd/debug=false

@@ -9,7 +9,7 @@
 	<!-- https://maven.apache.org/pom.html groupId:artifactId:version are all 
 		required fields, acting much like an address and timestamp in one. -->
 	<!-- Generally unique amongst an organization or a project. -->
-	<groupId>ilg.gnuarmeclipse</groupId>
+	<groupId>ilg.gnumcueclipse</groupId>
 	<!-- Generally the name that the project is known by. -->
 	<artifactId>plug-ins</artifactId>
 	<version>4.1.1-SNAPSHOT</version>
@@ -38,60 +38,58 @@
 	</licenses>
 
 	<modules>
-		<!-- MCU common modules. -->
-		<module>ilg.gnumcueclipse.managedbuild.cross</module>
-	
-		<!-- ARM specific modules. -->
-		<module>ilg.gnuarmeclipse.core</module>
+		<!-- MCU common modules. -->	
+		<module>ilg.gnumcueclipse.core</module>
 
+		<module>ilg.gnumcueclipse.managedbuild.cross</module>
+		<module>ilg.gnumcueclipse.managedbuild.packs</module>
+
+		<module>ilg.gnumcueclipse.templates.core</module>
+		<module>ilg.gnumcueclipse.templates.cortexm</module>
+		<module>ilg.gnumcueclipse.templates.cortexm-feature</module>
+		<module>ilg.gnumcueclipse.templates.stm</module>
+		<module>ilg.gnumcueclipse.templates.stm-feature</module>
+		<module>ilg.gnumcueclipse.templates.freescale</module>
+		<module>ilg.gnumcueclipse.templates.freescale.pe</module>
+		<module>ilg.gnumcueclipse.templates.freescale-feature</module>
+		<module>ilg.gnumcueclipse.templates.ad</module>
+		<module>ilg.gnumcueclipse.templates.ad-feature</module>
+
+		<module>ilg.gnumcueclipse.packs</module>
+		<module>ilg.gnumcueclipse.packs.core</module>
+		<module>ilg.gnumcueclipse.packs.data</module>
+		<module>ilg.gnumcueclipse.packs.ui</module>
+		<module>ilg.gnumcueclipse.packs-feature</module>
+
+		<module>ilg.gnumcueclipse.debug.core</module>
+		<module>ilg.gnumcueclipse.debug.gdbjtag</module>
+		<module>ilg.gnumcueclipse.debug.packs</module>
+
+		<module>ilg.gnumcueclipse.debug.gdbjtag.jlink</module>
+		<module>ilg.gnumcueclipse.debug.gdbjtag.jlink-feature</module>
+
+		<module>ilg.gnumcueclipse.debug.gdbjtag.openocd</module>
+		<module>ilg.gnumcueclipse.debug.gdbjtag.openocd-feature</module>
+
+		<module>ilg.gnumcueclipse.debug.gdbjtag.pyocd</module>
+		<module>ilg.gnumcueclipse.debug.gdbjtag.pyocd-feature</module>
+
+		<module>ilg.gnumcueclipse.debug.gdbjtag.qemu</module>
+		<module>ilg.gnumcueclipse.debug.gdbjtag.qemu-feature</module>
+
+		<module>ilg.gnumcueclipse.debug.gdbjtag.restart</module>
+
+		<module>ilg.gnumcueclipse.codered</module>
+		<module>ilg.gnumcueclipse.codered-feature</module>
+
+		<module>ilg.gnumcueclipse.doc.user</module>
+		<module>ilg.gnumcueclipse.doc.user-feature</module>
+
+		<module>ilg.gnumcueclipse-repository</module>
+
+		<!-- ARM specific modules. -->
 		<module>ilg.gnumcueclipse.managedbuild.cross.arm</module>
 		<module>ilg.gnumcueclipse.managedbuild.cross.arm-feature</module>
-
-		<module>ilg.gnuarmeclipse.templates.core</module>
-		<module>ilg.gnuarmeclipse.templates.cortexm</module>
-		<module>ilg.gnuarmeclipse.templates.cortexm-feature</module>
-		<module>ilg.gnuarmeclipse.templates.stm</module>
-		<module>ilg.gnuarmeclipse.templates.stm-feature</module>
-		<module>ilg.gnuarmeclipse.templates.freescale</module>
-		<module>ilg.gnuarmeclipse.templates.freescale.pe</module>
-		<module>ilg.gnuarmeclipse.templates.freescale-feature</module>
-		<module>ilg.gnuarmeclipse.templates.ad</module>
-		<module>ilg.gnuarmeclipse.templates.ad-feature</module>
-
-		<module>ilg.gnuarmeclipse.debug.core</module>
-
-		<module>ilg.gnuarmeclipse.debug.gdbjtag</module>
-
-		<module>ilg.gnuarmeclipse.debug.gdbjtag.jlink</module>
-		<module>ilg.gnuarmeclipse.debug.gdbjtag.jlink-feature</module>
-
-		<module>ilg.gnuarmeclipse.debug.gdbjtag.openocd</module>
-		<module>ilg.gnuarmeclipse.debug.gdbjtag.openocd-feature</module>
-
-		<module>ilg.gnuarmeclipse.debug.gdbjtag.pyocd</module>
-		<module>ilg.gnuarmeclipse.debug.gdbjtag.pyocd-feature</module>
-
-		<module>ilg.gnuarmeclipse.debug.gdbjtag.qemu</module>
-		<module>ilg.gnuarmeclipse.debug.gdbjtag.qemu-feature</module>
-
-		<module>ilg.gnuarmeclipse.debug.packs</module>
-
-		<module>ilg.gnuarmeclipse.debug.gdbjtag.restart</module>
-
-		<module>ilg.gnuarmeclipse.packs</module>
-		<module>ilg.gnuarmeclipse.packs.core</module>
-		<module>ilg.gnuarmeclipse.packs.data</module>
-		<module>ilg.gnuarmeclipse.packs.ui</module>
-		<module>ilg.gnuarmeclipse.managedbuild.packs</module>
-		<module>ilg.gnuarmeclipse.packs-feature</module>
-
-		<module>ilg.gnuarmeclipse.codered</module>
-		<module>ilg.gnuarmeclipse.codered-feature</module>
-
-		<module>ilg.gnuarmeclipse.doc.user</module>
-		<module>ilg.gnuarmeclipse.doc.user-feature</module>
-
-		<module>ilg.gnuarmeclipse-repository</module>
 
 		<!-- RISC-V specific modules. -->
 		<module>ilg.gnumcueclipse.managedbuild.cross.riscv</module>
@@ -201,6 +199,6 @@
 		</pluginManagement>
 	</build>
 
-	<name>GNU ARM Eclipse parent</name>
+	<name>GNU MCU Eclipse parent</name>
 	<url>http://gnuarmeclipse.github.io</url>
 </project>

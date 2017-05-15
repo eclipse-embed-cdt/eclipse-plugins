@@ -1,8 +1,8 @@
 [![GitHub release](https://img.shields.io/github/release/gnuarmeclipse/plug-ins.svg)](https://github.com/gnuarmeclipse/plug-ins/releases/latest) [![Github Releases](https://img.shields.io/github/downloads/gnuarmeclipse/plug-ins/latest/total.svg)](https://github.com/gnuarmeclipse/plug-ins/releases/latest) [![Github Releases](https://img.shields.io/github/downloads/gnuarmeclipse/plug-ins/total.svg)](https://github.com/gnuarmeclipse/plug-ins/releases/latest) [![SourceForge](https://img.shields.io/sourceforge/dt/gnuarmeclipse.svg?label=SF%20downloads)](https://sourceforge.net/projects/gnuarmeclipse/files/) [![Build Status](https://travis-ci.org/gnuarmeclipse/plug-ins.svg?branch=develop)](https://travis-ci.org/gnuarmeclipse/plug-ins) 
 
-# The GNU ARM Eclipse plug-ins
+# The GNU MCU Eclipse plug-ins
 
-These are the Eclipse projects used to build the [GNU ARM Eclipse](http://gnuarmeclipse.github.io) plug-ins.
+These are the Eclipse projects used to build the [GNU MCU Eclipse](http://gnuarmeclipse.github.io) plug-ins.
 
 ## How to install
 
@@ -27,7 +27,7 @@ $ cd gnuarmeclipse/plug-ins.git
 $ mvn -Dtycho.localArtifacts=ignore clean install
 ```
 
-The result is a p2 repository, in `ilg.gnuarmeclipse-repository/target/repository`.
+The result is a p2 repository, in `ilg.gnumcueclipse-repository/target/repository`.
 
 ### Eclipse
 
@@ -35,7 +35,7 @@ The Eclipse build is described in the [project web](http://gnuarmeclipse.github.
 
 ## Run-time dependencies
 
-The minimum requirements for running the GNU ARM Eclipse plug-ins are:
+The minimum requirements for running the GNU MCU Eclipse plug-ins are:
 
 - JavaSE-1.7
 - CDT 8.6.0 (Luna SR2)

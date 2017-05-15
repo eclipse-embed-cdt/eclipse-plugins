@@ -47,7 +47,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		String toolchainName = ToolchainDefinition.DEFAULT_TOOLCHAIN_NAME;
 		defaultPreferences.putToolchainName(toolchainName);
 
-		// When the 'ilg.gnuarmeclipse.managedbuild.cross' node is completely
+		// When the 'ilg.gnumcueclipse.managedbuild.cross' node is completely
 		// added to /default, a NodeChangeEvent is raised.
 		// This is the moment when all final default values are in, possibly
 		// set by product or command line.
@@ -97,15 +97,18 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 			DefaultPreferences commonDefaultPreferences = new DefaultPreferences(
 					ilg.gnumcueclipse.managedbuild.cross.Activator.PLUGIN_ID);
 			DefaultPreferences defaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
-			DefaultPreferences deprecatedDefaultPreferences = new DefaultPreferences("ilg.gnuarmeclipse.managedbuild.cross");
+			DefaultPreferences deprecatedDefaultPreferences = new DefaultPreferences(
+					"ilg.gnuarmeclipse.managedbuild.cross");
 
 			// Try to get the build tools path from the common store.
 			value = commonDefaultPreferences.getBuildToolsPath();
 			if (value.isEmpty()) {
-				// If not there, try to get it from the GNU MCU ARM Eclipse store.
+				// If not there, try to get it from the GNU MCU ARM Eclipse
+				// store.
 				value = defaultPreferences.getBuildToolsPath();
 				if (value.isEmpty()) {
-					// If not there, try to get it from the GNU ARM Eclipse store.
+					// If not there, try to get it from the GNU MCU Eclipse
+					// store.
 					value = deprecatedDefaultPreferences.getBuildToolsPath();
 					if (value.isEmpty()) {
 						// If not defined elsewhere, discover build tools.

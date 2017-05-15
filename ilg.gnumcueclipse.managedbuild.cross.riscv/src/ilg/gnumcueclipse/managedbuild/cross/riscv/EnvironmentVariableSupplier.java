@@ -27,7 +27,7 @@ import org.eclipse.cdt.managedbuilder.macros.IBuildMacroProvider;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 
-import ilg.gnuarmeclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 
 public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVariableSupplier {

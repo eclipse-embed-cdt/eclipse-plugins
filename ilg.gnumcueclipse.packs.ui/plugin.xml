@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension point="org.eclipse.ui.preferencePages">
+		<page
+			category="org.eclipse.cdt.ui.preferences.CPluginPreferencePage"
+			id="ilg.gnumcueclipse.packs.ui.preferencePage.packages"
+			class="ilg.gnumcueclipse.packs.ui.preferences.FolderPage"
+			name="%preferences.packages">
+		</page>
+		<page
+			category="ilg.gnumcueclipse.packs.ui.preferencePage.packages"
+			class="ilg.gnumcueclipse.packs.ui.preferences.ReposPage"
+			id="ilg.gnumcueclipse.packs.ui.preferences.SitesPage"
+			name="%preferences.sites">
+		</page>
+	</extension>
+	<extension point="org.eclipse.core.runtime.preferences">
+		<initializer class="ilg.gnumcueclipse.packs.ui.preferences.SitesInitializer">
+		</initializer>
+	</extension>
+	<extension point="org.eclipse.ui.perspectives">
+		<perspective
+			class="ilg.gnumcueclipse.packs.ui.perspectives.PacksPerspective"
+			icon="icons/packages.png"
+			id="ilg.gnumcueclipse.packs.ui.perspectives.PacksPerspective"
+			name="%perspectives.packs">
+		</perspective>
+	</extension>
+	<extension point="org.eclipse.ui.views">
+		<category
+			id="ilg.gnumcueclipse.packs"
+			name="%views.packs.category">
+		</category>
+		<view
+			allowMultiple="false"
+			category="ilg.gnumcueclipse.packs"
+			class="ilg.gnumcueclipse.packs.ui.views.DevicesView"
+			icon="icons/hardware_chip.png"
+			id="ilg.gnumcueclipse.packs.ui.views.DevicesView"
+			name="%views.packs.devices">
+		</view>
+		<view
+			allowMultiple="false"
+			category="ilg.gnumcueclipse.packs"
+			class="ilg.gnumcueclipse.packs.ui.views.BoardsView"
+			icon="icons/board.png"
+			id="ilg.gnumcueclipse.packs.ui.views.BoardsView"
+			name="%viwes.packs.boards">
+		</view>
+		<view
+			allowMultiple="false"
+			category="ilg.gnumcueclipse.packs"
+			class="ilg.gnumcueclipse.packs.ui.views.KeywordsView"
+			icon="icons/info_obj.png"
+			id="ilg.gnumcueclipse.packs.ui.views.KeywordsView"
+			name="%viwes.packs.keywords">
+		</view>
+		<view
+			allowMultiple="false"
+			category="ilg.gnumcueclipse.packs"
+			class="ilg.gnumcueclipse.packs.ui.views.PacksView"
+			icon="icons/packages.png"
+			id="ilg.gnumcueclipse.packs.ui.views.PackagesView"
+			name="%viwes.packs.packages">
+		</view>
+		<view
+			allowMultiple="false"
+			category="ilg.gnumcueclipse.packs"
+			class="ilg.gnumcueclipse.packs.ui.views.OutlineView"
+			icon="icons/outline_co.png"
+			id="ilg.gnumcueclipse.packs.ui.views.OutlineView"
+			name="%viwes.packs.outline"
+			restorable="true">
+		</view>
+	</extension>
+	<extension point="org.eclipse.ui.commands">
+		<category
+			id="ilg.gnumcueclipse.packs.commands.category"
+			name="%commands.packs.category">
+		</category>
+		<command
+			categoryId="ilg.gnumcueclipse.packs.commands.category"
+			id="ilg.gnumcueclipse.packs.commands.updateCommand"
+			name="%commands.packs.refresh">
+		</command>
+		<command
+			categoryId="ilg.gnumcueclipse.packs.commands.category"
+			id="ilg.gnumcueclipse.packs.commands.showPerspectiveCommand"
+			name="%commands.packs.showPerspective">
+		</command>
+	</extension>
+	<extension point="org.eclipse.ui.menus">
+		<menuContribution
+			allPopups="false"
+			locationURI="toolbar:org.eclipse.ui.main.toolbar?after=additions">
+			<toolbar id="ilg.gnumcueclipse.packs.toolbar.main.showPerspective">
+				<command
+					commandId="ilg.gnumcueclipse.packs.commands.showPerspectiveCommand"
+					icon="icons/packages.png"
+					style="push"
+					tooltip="%menus.toolbar.showPerspective.tooltip">
+				</command>
+			</toolbar>
+		</menuContribution>
+	</extension>
+	<extension
+		id="ilg.gnumcueclipse.packs.marker"
+		name="Packs"
+		point="org.eclipse.core.resources.markers">
+		<super type="org.eclipse.core.resources.problemmarker">
+		</super>
+		<persistent value="false">
+		</persistent>
+	</extension>
+	<extension point="org.eclipse.ui.handlers">
+		<handler
+			class="ilg.gnumcueclipse.packs.ui.handlers.UpdatePacksHandler"
+			commandId="ilg.gnumcueclipse.packs.commands.updateCommand">
+		</handler>
+		<handler
+			class="ilg.gnumcueclipse.packs.ui.handlers.ShowPerspectiveHandler"
+			commandId="ilg.gnumcueclipse.packs.commands.showPerspectiveCommand">
+		</handler>
+	</extension>
+
+</plugin>

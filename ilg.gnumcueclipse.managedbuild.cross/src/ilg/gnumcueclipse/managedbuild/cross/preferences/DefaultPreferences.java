@@ -28,8 +28,8 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 
-import ilg.gnuarmeclipse.core.EclipseUtils;
-import ilg.gnuarmeclipse.core.preferences.Discoverer;
+import ilg.gnumcueclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.core.preferences.Discoverer;
 import ilg.gnumcueclipse.managedbuild.cross.Activator;
 
 public class DefaultPreferences {

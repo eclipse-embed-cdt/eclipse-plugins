@@ -14,9 +14,9 @@ package ilg.gnumcueclipse.managedbuild.cross.riscv.ui.preferences;
 import java.util.HashSet;
 import java.util.Set;
 
-import ilg.gnuarmeclipse.core.EclipseUtils;
-import ilg.gnuarmeclipse.core.preferences.DirectoryNotStrictFieldEditor;
-import ilg.gnuarmeclipse.core.preferences.LabelFakeFieldEditor;
+import ilg.gnumcueclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.core.preferences.DirectoryNotStrictFieldEditor;
+import ilg.gnumcueclipse.core.preferences.LabelFakeFieldEditor;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.DefaultPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.Activator;

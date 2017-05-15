@@ -49,7 +49,7 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
-import ilg.gnuarmeclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.managedbuild.cross.arm.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.arm.IDs;
 import ilg.gnumcueclipse.managedbuild.cross.arm.Option;

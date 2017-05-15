@@ -28,7 +28,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.IWizard;
 
-import ilg.gnuarmeclipse.core.Activator;
+import ilg.gnumcueclipse.core.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.arm.ToolchainDefinition;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 

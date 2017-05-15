@@ -16,8 +16,8 @@ import java.util.Map;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.core.runtime.CoreException;
 
-import ilg.gnuarmeclipse.core.CProjectPacksStorage;
-import ilg.gnuarmeclipse.debug.core.data.ICProjectExtraDataManager;
+import ilg.gnumcueclipse.core.CProjectPacksStorage;
+import ilg.gnumcueclipse.debug.core.data.ICProjectExtraDataManager;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.Activator;
 
 public class CProjectExtraDataManager implements ICProjectExtraDataManager {

@@ -21,7 +21,8 @@ public class Option {
 
 	public static final String OPTION_PREFIX = IDs.getIdPrefix() + ".option";
 
-	// public static final String OPTION_ARCHITECTURE = OPTION_PREFIX + ".architecture";
+	// public static final String OPTION_ARCHITECTURE = OPTION_PREFIX +
+	// ".architecture";
 	// public static final String ARCHITECTURE_RISCV = "riscv";
 
 	public static final String OPTION_TARGET = OPTION_PREFIX + ".target.";
@@ -562,7 +563,7 @@ public class Option {
 		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
 		}
-		
+
 		sValue = getOptionBooleanCommand(config, OPTION_TARGET_PLT);
 		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;

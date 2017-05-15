@@ -11,11 +11,11 @@
 
 package ilg.gnumcueclipse.managedbuild.cross.riscv.ui.properties;
 
-import ilg.gnuarmeclipse.core.EclipseUtils;
-import ilg.gnuarmeclipse.core.ScopedPreferenceStoreWithoutDefaults;
-import ilg.gnuarmeclipse.core.preferences.DirectoryNotStrictFieldEditor;
-import ilg.gnuarmeclipse.core.preferences.LabelFakeFieldEditor;
-import ilg.gnuarmeclipse.core.ui.FieldEditorPropertyPage;
+import ilg.gnumcueclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.core.ScopedPreferenceStoreWithoutDefaults;
+import ilg.gnumcueclipse.core.preferences.DirectoryNotStrictFieldEditor;
+import ilg.gnumcueclipse.core.preferences.LabelFakeFieldEditor;
+import ilg.gnumcueclipse.core.ui.FieldEditorPropertyPage;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.DefaultPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.Activator;

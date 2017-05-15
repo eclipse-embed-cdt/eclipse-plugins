@@ -11,8 +11,8 @@
 
 package ilg.gnumcueclipse.managedbuild.cross.riscv.xpi;
 
-import ilg.gnuarmeclipse.debug.core.data.ICProjectExtraDataManager;
-import ilg.gnuarmeclipse.debug.core.data.ICProjectExtraDataManagerFactory;
+import ilg.gnumcueclipse.debug.core.data.ICProjectExtraDataManager;
+import ilg.gnumcueclipse.debug.core.data.ICProjectExtraDataManagerFactory;
 
 public class CProjectExtraDataManagerFactory implements ICProjectExtraDataManagerFactory {
 

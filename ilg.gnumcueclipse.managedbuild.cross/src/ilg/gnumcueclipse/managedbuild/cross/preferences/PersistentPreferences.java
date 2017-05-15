@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
-import ilg.gnuarmeclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.core.EclipseUtils;
 
 public class PersistentPreferences {
 

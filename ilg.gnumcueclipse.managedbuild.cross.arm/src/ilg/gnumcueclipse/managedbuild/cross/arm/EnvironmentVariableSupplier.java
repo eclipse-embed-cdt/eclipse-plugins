@@ -12,7 +12,7 @@
 
 package ilg.gnumcueclipse.managedbuild.cross.arm;
 
-import ilg.gnuarmeclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 
 import java.io.File;
@@ -87,7 +87,7 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 			if (path.isEmpty()) {
 				path = deprecatedPersistentPreferences.getBuildToolsPath(project);
 			}
-			
+
 			IOption option;
 			option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); // $NON-NLS-1$
 			String toolchainName = (String) option.getValue();

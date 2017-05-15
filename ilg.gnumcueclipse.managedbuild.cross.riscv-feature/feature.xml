@@ -26,21 +26,21 @@
          unpack="false"/>
 
    <plugin
-         id="ilg.gnuarmeclipse.packs.core"
+         id="ilg.gnumcueclipse.packs.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="ilg.gnuarmeclipse.core"
+         id="ilg.gnumcueclipse.core"
          download-size="0"
          install-size="0"
          version="0.0.0"
          unpack="false"/>
 
    <plugin
-         id="ilg.gnuarmeclipse.debug.core"
+         id="ilg.gnumcueclipse.debug.core"
          download-size="0"
          install-size="0"
          version="0.0.0"

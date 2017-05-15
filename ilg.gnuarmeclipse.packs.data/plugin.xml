@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<?eclipse version="3.4"?>
-<plugin>
-	<extension point="ilg.gnuarmeclipse.packs.core.data">
-		<factory class="ilg.gnuarmeclipse.packs.data.DataManagerFactory">
-		</factory>
-	</extension>
-
-</plugin>

@@ -18,7 +18,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
-import ilg.gnuarmeclipse.core.preferences.DirectoryNotStrictFieldEditor;
+import ilg.gnumcueclipse.core.preferences.DirectoryNotStrictFieldEditor;
 import ilg.gnumcueclipse.managedbuild.cross.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.DefaultPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
@@ -35,7 +35,8 @@ import ilg.gnumcueclipse.managedbuild.cross.ui.Messages;
  * preferences can be accessed directly via the preference store.
  */
 
-public class BuildToolsGlobalPathsPreferencesPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class BuildToolsGlobalPathsPreferencesPage extends FieldEditorPreferencePage
+		implements IWorkbenchPreferencePage {
 
 	// ------------------------------------------------------------------------
 
@@ -51,7 +52,7 @@ public class BuildToolsGlobalPathsPreferencesPage extends FieldEditorPreferenceP
 		super(GRID);
 
 		fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
-		
+
 		setPreferenceStore(new ScopedPreferenceStore(ConfigurationScope.INSTANCE, Activator.PLUGIN_ID));
 
 		setDescription(Messages.GlobalBuildToolsPathsPreferencesPage_description);

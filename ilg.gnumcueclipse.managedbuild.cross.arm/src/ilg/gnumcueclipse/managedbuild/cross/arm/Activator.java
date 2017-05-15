@@ -11,9 +11,9 @@
 
 package ilg.gnumcueclipse.managedbuild.cross.arm;
 
-import ilg.gnuarmeclipse.core.AbstractUIActivator;
-
 import org.osgi.framework.BundleContext;
+
+import ilg.gnumcueclipse.core.AbstractUIActivator;
 
 /**
  * The activator class controls the plug-in life cycle

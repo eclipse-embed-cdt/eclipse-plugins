@@ -21,11 +21,11 @@
 		<Product_UIN>APP-260038506DF6</Product_UIN>
 		<Publish_on_CD></Publish_on_CD>
 		<NewsFeed_Search_String></NewsFeed_Search_String>
-		<Search_String>GNU ARM Eclipse</Search_String>
+		<Search_String>GNU MCU Eclipse</Search_String>
 		<Press_Release_Search_String></Press_Release_Search_String>
 		<Backlink></Backlink>
 		<Comments_For_Reviewer></Comments_For_Reviewer>
-		<Search_String_Unique>GNU ARM Eclipse</Search_String_Unique>
+		<Search_String_Unique>GNU MCU Eclipse</Search_String_Unique>
 		<Search_Engine_Search_String></Search_Engine_Search_String>
 		<Web_Directories_Search_String></Web_Directories_Search_String>
 		<Company_Description></Company_Description>
@@ -67,7 +67,7 @@
 	</Company_Info>
 	<Program_Info>
 		<AppID>app-260038506df6</AppID>
-		<Program_Name>GNU ARM Eclipse</Program_Name>
+		<Program_Name>GNU MCU Eclipse</Program_Name>
 		<Program_Version>2.9.3</Program_Version>
 		<Program_Release_Month>08</Program_Release_Month>
 		<Program_Release_Day>18</Program_Release_Day>
@@ -153,7 +153,7 @@
 				Embedded Processors, Linaro, Mentor Sourcery CodeBench Lite, etc.
 				The project is hosted on SourceForge.
 
-				In short, the GNU ARM Eclipse plug-ins allow to create, build, debug
+				In short, the GNU MCU Eclipse plug-ins allow to create, build, debug
 				and in general to manage ARM and AArch64 projects (executables and
 				static/shared libraries, in both 32 and 64-bit versions) with the
 				Eclipse framework (currently tested up to Eclipse 4.4 Luna). The
@@ -242,7 +242,7 @@
 		<Site_VERSION></Site_VERSION>
 		<Site_URL></Site_URL>
 		<Site_DESCRIPTION></Site_DESCRIPTION>
-		<Site_Site_Title>GNU ARM Eclipse</Site_Site_Title>
+		<Site_Site_Title>GNU MCU Eclipse</Site_Site_Title>
 		<Site_Site_URL>http://gnuarmeclipse.github.io/</Site_Site_URL>
 		<Site_Keywords>GNU, ARM, Eclipse, plug-in, J-Link, OpenOCD, QEMU
 		</Site_Keywords>

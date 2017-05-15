@@ -17,8 +17,8 @@ import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import ilg.gnuarmeclipse.core.ScopedPreferenceStoreWithoutDefaults;
-import ilg.gnuarmeclipse.core.preferences.DirectoryNotStrictFieldEditor;
+import ilg.gnumcueclipse.core.ScopedPreferenceStoreWithoutDefaults;
+import ilg.gnumcueclipse.core.preferences.DirectoryNotStrictFieldEditor;
 import ilg.gnumcueclipse.managedbuild.cross.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.DefaultPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
@@ -34,7 +34,8 @@ import ilg.gnumcueclipse.managedbuild.cross.ui.Messages;
  * preference store that belongs to the main plug-in class. That way,
  * preferences can be accessed directly via the preference store.
  */
-public class BuildToolsWorkspacePathsPreferencesPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class BuildToolsWorkspacePathsPreferencesPage extends FieldEditorPreferencePage
+		implements IWorkbenchPreferencePage {
 
 	// ------------------------------------------------------------------------
 

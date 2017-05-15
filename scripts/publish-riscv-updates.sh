@@ -206,7 +206,7 @@ fi
 
 cd ../ilg.gnumcueclipse.riscv-repository/target
 
-FULL_VERSION="$(grep "unit id='ilg.gnuarmeclipse.core'" targetPlatformRepository/content.xml | sed "s/.*version='\(.*\)'.*/\1/")"
+FULL_VERSION="$(grep "unit id='ilg.gnumcueclipse.core'" targetPlatformRepository/content.xml | sed "s/.*version='\(.*\)'.*/\1/")"
 (cd repository; do_upload_to_bintray "updates${TEST}" "${FULL_VERSION}")
 
 if [ "${TEST}" == "-test" ]
@@ -221,7 +221,7 @@ fi
 
 if [ -f *-SNAPSHOT.zip ]
 then
-  NUMDATE=$(ls repository/plugins/ilg.gnuarmeclipse.core* | sed -e 's/.*_[0-9]*[.][0-9]*[.][0-9]*[.]\([0-9]*\)[.]jar/\1/')
+  NUMDATE=$(ls repository/plugins/ilg.gnumcueclipse.core* | sed -e 's/.*_[0-9]*[.][0-9]*[.][0-9]*[.]\([0-9]*\)[.]jar/\1/')
   ARCHIVE_PREFIX=$(ls *-SNAPSHOT.zip | sed -e 's/\(.*\)-SNAPSHOT[.]zip/\1/')
 
   ARCHIVE_FOLDER="../../../archive"

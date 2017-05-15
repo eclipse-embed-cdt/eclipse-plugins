@@ -6,7 +6,7 @@
          <meta.schema plugin="ilg.gnumcueclipse.managedbuild.cross.arm" id="toolchains" name="Toolchains Definitions"/>
       </appinfo>
       <documentation>
-         This extension point provides the ability to add custom GNU ARM toolchains.
+         This extension point provides the ability to add custom GNU MCU toolchains.
       </documentation>
    </annotation>
 

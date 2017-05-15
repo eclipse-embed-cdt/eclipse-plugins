@@ -1,0 +1,2 @@
+# Control if trace messages are shown.
+ilg.gnumcueclipse.packs.ui/debug=false

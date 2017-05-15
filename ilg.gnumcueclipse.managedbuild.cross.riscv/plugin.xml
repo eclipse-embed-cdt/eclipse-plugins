@@ -3352,7 +3352,7 @@
 
 	</extension>
 
-	<extension point="ilg.gnuarmeclipse.debug.core.cprojectExtra">
+	<extension point="ilg.gnumcueclipse.debug.core.cprojectExtra">
 		<factory
 			class="ilg.gnumcueclipse.managedbuild.cross.riscv.xpi.CProjectExtraDataManagerFactory">
 		</factory>

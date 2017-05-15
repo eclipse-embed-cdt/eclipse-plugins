@@ -1,7 +1,7 @@
 #! /bin/bash
 
 # This script runs on Mac OS X and is intended to
-# publish the ilg.gnuarmeclipse-repository site
+# publish the ilg.gnumcueclipse-repository site
 # to Bintray:
 #
 # https://bintray.com/gnu-mcu-eclipse/updates/p2
@@ -218,15 +218,15 @@ else
   RSYNC_OPTS+=" --checksum"
 fi
 
-if [ ! -d ../ilg.gnuarmeclipse-repository/target/repository ]
+if [ ! -d ../ilg.gnumcueclipse-repository/target/repository ]
 then
   echo "No repository folder found"
   exit 1
 fi
 
-cd ../ilg.gnuarmeclipse-repository/target
+cd ../ilg.gnumcueclipse-repository/target
 
-FULL_VERSION="$(grep "unit id='ilg.gnuarmeclipse.core'" targetPlatformRepository/content.xml | sed "s/.*version='\(.*\)'.*/\1/")"
+FULL_VERSION="$(grep "unit id='ilg.gnumcueclipse.core'" targetPlatformRepository/content.xml | sed "s/.*version='\(.*\)'.*/\1/")"
 (cd repository; do_upload_to_bintray "updates${TEST}" "${FULL_VERSION}")
 
 echo "Rsync-ing SourceForge ${SF_FOLDER}${TEST} site (${RSYNC_OPTS})"
@@ -244,7 +244,7 @@ fi
 
 if [ -f *-SNAPSHOT.zip ]
 then
-  NUMDATE=$(ls repository/plugins/ilg.gnuarmeclipse.core* | sed -e 's/.*_[0-9]*[.][0-9]*[.][0-9]*[.]\([0-9]*\)[.]jar/\1/')
+  NUMDATE=$(ls repository/plugins/ilg.gnumcueclipse.core* | sed -e 's/.*_[0-9]*[.][0-9]*[.][0-9]*[.]\([0-9]*\)[.]jar/\1/')
   ARCHIVE_PREFIX=$(ls *-SNAPSHOT.zip | sed -e 's/\(.*\)-SNAPSHOT[.]zip/\1/')
 
   ARCHIVE_FOLDER="../../../archive"

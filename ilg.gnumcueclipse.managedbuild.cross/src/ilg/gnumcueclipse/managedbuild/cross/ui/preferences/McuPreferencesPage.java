@@ -17,27 +17,27 @@ public class McuPreferencesPage extends PreferencePage implements IWorkbenchPref
 	public McuPreferencesPage() {
 		super();
 		// setPreferenceStore(CUIPlugin.getDefault().getPreferenceStore());
-		setDescription(Messages.McuPropertiesPage_description);		
+		setDescription(Messages.McuPropertiesPage_description);
 	}
-	
+
 	@Override
 	public void init(IWorkbench workbench) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	protected Control createContents(Composite parent) {
 		initializeDialogUnits(parent);
 
-		Composite container= new Composite(parent, SWT.NONE);
-		GridLayout layout= new GridLayout();
-		layout.marginHeight= convertVerticalDLUsToPixels(IDialogConstants.VERTICAL_MARGIN);
-		layout.marginWidth= 0;
-		layout.verticalSpacing= convertVerticalDLUsToPixels(10);
-		layout.horizontalSpacing= convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_SPACING);
+		Composite container = new Composite(parent, SWT.NONE);
+		GridLayout layout = new GridLayout();
+		layout.marginHeight = convertVerticalDLUsToPixels(IDialogConstants.VERTICAL_MARGIN);
+		layout.marginWidth = 0;
+		layout.verticalSpacing = convertVerticalDLUsToPixels(10);
+		layout.horizontalSpacing = convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_SPACING);
 		container.setLayout(layout);
-		
+
 		Dialog.applyDialogFont(container);
 		return container;
 	}

@@ -4,13 +4,13 @@
 	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>ilg.gnuarmeclipse</groupId>
+	<groupId>ilg.gnumcueclipse</groupId>
 	<artifactId>ilg.gnumcueclipse.riscv.repository</artifactId>
 	<version>4.1.1-SNAPSHOT</version>
 	<packaging>eclipse-repository</packaging>
 
 	<parent>
-		<groupId>ilg.gnuarmeclipse</groupId>
+		<groupId>ilg.gnumcueclipse</groupId>
 		<artifactId>plug-ins</artifactId>
 		<version>4.1.1-SNAPSHOT</version>
 		<relativePath>../pom.xml</relativePath>

@@ -16,9 +16,9 @@ import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
 
-import ilg.gnuarmeclipse.core.ScopedPreferenceStoreWithoutDefaults;
-import ilg.gnuarmeclipse.core.preferences.DirectoryNotStrictFieldEditor;
-import ilg.gnuarmeclipse.core.ui.FieldEditorPropertyPage;
+import ilg.gnumcueclipse.core.ScopedPreferenceStoreWithoutDefaults;
+import ilg.gnumcueclipse.core.preferences.DirectoryNotStrictFieldEditor;
+import ilg.gnumcueclipse.core.ui.FieldEditorPropertyPage;
 import ilg.gnumcueclipse.managedbuild.cross.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.DefaultPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
@@ -60,7 +60,7 @@ public class BuildToolsProjectPathPropertiesPage extends FieldEditorPropertyPage
 		boolean isStrict = fDefaultPreferences.getBoolean(PersistentPreferences.PROJECT_BUILDTOOLS_PATH_STRICT, true);
 		FieldEditor buildToolsPathField = new DirectoryNotStrictFieldEditor(PersistentPreferences.BUILD_TOOLS_PATH_KEY,
 				Messages.BuildToolsPaths_label, getFieldEditorParent(), isStrict);
-		
+
 		addField(buildToolsPathField);
 	}
 

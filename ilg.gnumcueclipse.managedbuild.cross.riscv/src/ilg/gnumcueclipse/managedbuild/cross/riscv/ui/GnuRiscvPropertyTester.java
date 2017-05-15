@@ -26,8 +26,8 @@ import org.eclipse.core.resources.IProject;
 /**
  * Property tester for the Tools Paths page.
  * 
- * The project must be managed and the type must be one of the GNU RISC-V defined
- * type.
+ * The project must be managed and the type must be one of the GNU RISC-V
+ * defined type.
  */
 public class GnuRiscvPropertyTester extends PropertyTester {
 
