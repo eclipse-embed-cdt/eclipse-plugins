@@ -946,7 +946,67 @@
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv32e"
 					name="%option.target.isa.base.rv32e">
 				</enumeratedOptionValue>
+    <enumeratedOptionValue
+          command="-march=rv32g"
+          id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv32g"
+          name="%option.target.isa.base.rv32g">
+    </enumeratedOptionValue>
+    <enumeratedOptionValue
+          command="-march=rv64g"
+          id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv64g"
+          name="%option.target.isa.base.rv64g">
+    </enumeratedOptionValue>
 			</option>
+   <option
+         command="m"
+         defaultValue="false"
+         id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.multiply"
+         isAbstract="true"
+         name="%option.target.isa.multiply"
+         valueType="boolean">
+      <enablement
+            type="UI_ENABLEMENT">
+         <not>
+            <or>
+               <checkOption
+                     isRegex="false"
+                     optionId="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.base"
+                     value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv32g">
+               </checkOption>
+               <checkOption
+                     isRegex="false"
+                     optionId="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.base"
+                     value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv64g">
+               </checkOption>
+            </or>
+         </not>
+      </enablement>
+   </option>
+   <option
+         command="a"
+         defaultValue="false"
+         id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.atomic"
+         isAbstract="true"
+         name="%option.target.isa.atomic"
+         valueType="boolean">
+      <enablement
+            type="UI_ENABLEMENT">
+         <not>
+            <or>
+               <checkOption
+                     isRegex="false"
+                     optionId="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.base"
+                     value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv32g">
+               </checkOption>
+               <checkOption
+                     isRegex="false"
+                     optionId="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.base"
+                     value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv64g">
+               </checkOption>
+            </or>
+         </not>
+      </enablement>
+   </option>
 			<option
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.fp"
 				isAbstract="true"
@@ -963,16 +1023,41 @@
 					name="%option.target.isa.fp.single">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
-					command="d"
+					command="fd"
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.isa.fp.double"
 					name="%option.target.isa.fp.double">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
-					command="q"
+					command="fdq"
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.isa.fp.quad"
 					name="%option.target.isa.fp.quad">
 				</enumeratedOptionValue>
+    <enablement
+          type="UI_ENABLEMENT">
+       <not>
+          <or>
+             <checkOption
+                   isRegex="false"
+                   optionId="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.base"
+                   value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv32g">
+             </checkOption>
+             <checkOption
+                   isRegex="false"
+                   optionId="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.base"
+                   value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv64g">
+             </checkOption>
+          </or>
+       </not>
+    </enablement>
 			</option>
+   <option
+         command="c"
+         defaultValue="false"
+         id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.compressed"
+         isAbstract="true"
+         name="%option.target.isa.compressed"
+         valueType="boolean">
+   </option>
 			<option
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.abi.integer"
 				isAbstract="true"
@@ -1015,30 +1100,6 @@
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.fp.double"
 					name="%option.target.abi.fp.double">
 				</enumeratedOptionValue>
-			</option>
-			<option
-				command="a"
-				defaultValue="false"
-				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.atomic"
-				isAbstract="true"
-				name="%option.target.isa.atomic"
-				valueType="boolean">
-			</option>
-			<option
-				command="m"
-				defaultValue="false"
-				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.multiply"
-				isAbstract="true"
-				name="%option.target.isa.multiply"
-				valueType="boolean">
-			</option>
-			<option
-				command="c"
-				defaultValue="false"
-				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.compressed"
-				isAbstract="true"
-				name="%option.target.isa.compressed"
-				valueType="boolean">
 			</option>
 			<option
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.codemodel"
@@ -1386,20 +1447,20 @@
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.base"
 				superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.base">
 			</option>
+   <option
+         category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"
+         id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.multiply"
+         superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.multiply">
+   </option>
+   <option
+         category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"
+         id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.atomic"
+         superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.atomic">
+   </option>
 			<option
 				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.fp"
 				superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.fp">
-			</option>
-			<option
-				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"
-				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.atomic"
-				superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.atomic">
-			</option>
-			<option
-				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"
-				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.multiply"
-				superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.multiply">
 			</option>
 			<option
 				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"

@@ -252,21 +252,24 @@ public class Option {
 		String sReturn = "";
 		String sValue;
 
-		sValue = getOptionEnumCommand(config, OPTION_TARGET_ISA_BASE);
-		if (sValue != null && sValue.length() > 0) {
-			sReturn += sValue;
+		String sIsa = getOptionEnumCommand(config, OPTION_TARGET_ISA_BASE);
+		if (sIsa != null && sIsa.length() > 0) {
+			sReturn += sIsa;
 
-			sValue = getOptionEnumCommand(config, OPTION_TARGET_ISA_FP);
-			if (sValue != null && sValue.length() > 0) {
-				sReturn += sValue;
-			}
-			sValue = getOptionBooleanCommand(config, OPTION_TARGET_ISA_ATOMIC);
-			if (sValue != null && sValue.length() > 0) {
-				sReturn += sValue;
-			}
-			sValue = getOptionBooleanCommand(config, OPTION_TARGET_ISA_MULTIPLY);
-			if (sValue != null && sValue.length() > 0) {
-				sReturn += sValue;
+			if (!("-march=rv32g".equals(sIsa) || "-march=rv64g".equals(sIsa))) {
+				// G equivalent to IMAFD
+				sValue = getOptionBooleanCommand(config, OPTION_TARGET_ISA_MULTIPLY);
+				if (sValue != null && sValue.length() > 0) {
+					sReturn += sValue;
+				}
+				sValue = getOptionBooleanCommand(config, OPTION_TARGET_ISA_ATOMIC);
+				if (sValue != null && sValue.length() > 0) {
+					sReturn += sValue;
+				}
+				sValue = getOptionEnumCommand(config, OPTION_TARGET_ISA_FP);
+				if (sValue != null && sValue.length() > 0) {
+					sReturn += sValue;
+				}
 			}
 			sValue = getOptionBooleanCommand(config, OPTION_TARGET_ISA_COMPRESSED);
 			if (sValue != null && sValue.length() > 0) {
