@@ -99,11 +99,11 @@
 
 	<repositories>
 		<repository>
-			<id>eclipse-luna</id>
+			<id>eclipse-neon</id>
 			<layout>p2</layout>
-			<!-- Explicit reference to Luna SR2 -->
+			<!-- Explicit reference to Neon.3 with CDT 9.2.1 -->
 			<!-- (Do a run without version and retain the most recent one) -->
-			<url>http://download.eclipse.org/releases/luna/201502271000</url>
+			<url>http://download.eclipse.org/releases/neon/201705151400</url>
 		</repository>
 	</repositories>
 

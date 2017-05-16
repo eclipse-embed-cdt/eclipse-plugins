@@ -24,7 +24,7 @@ Require-Bundle: ilg.gnumcueclipse.core,
  org.eclipse.equinox.registry;bundle-version="3.5.300",
  org.eclipse.core.jobs;bundle-version="3.5.300",
  org.eclipse.cdt.managedbuilder.core;bundle-version="8.2.0"
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: %bundle.vendor
 Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin

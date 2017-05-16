@@ -25,6 +25,6 @@ Require-Bundle: ilg.gnumcueclipse.core,
  org.eclipse.ui.navigator;bundle-version="3.5.300",
  org.eclipse.ui.navigator.resources;bundle-version="3.4.500"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin

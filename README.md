@@ -37,7 +37,7 @@ The Eclipse build is described in the [project web](http://gnuarmeclipse.github.
 
 The minimum requirements for running the GNU MCU Eclipse plug-ins are:
 
-- JavaSE-1.7
+- JavaSE-1.8
 - CDT 8.6.0 (Luna SR2)
 
 Recommended:

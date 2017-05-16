@@ -20,7 +20,7 @@ Require-Bundle: ilg.gnumcueclipse.core,
  org.eclipse.core.variables;bundle-version="3.2.700",
  org.eclipse.core.expressions;bundle-version="3.4.500"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Export-Package: ilg.gnumcueclipse.managedbuild.cross,

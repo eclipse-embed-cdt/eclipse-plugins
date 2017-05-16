@@ -4,7 +4,7 @@ Bundle-Name: %bundle.name
 Bundle-SymbolicName: ilg.gnumcueclipse.packs.core;singleton:=true
 Bundle-Version: 1.1.4.qualifier
 Bundle-Activator: ilg.gnumcueclipse.packs.core.Activator
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin

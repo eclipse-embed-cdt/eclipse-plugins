@@ -30,6 +30,6 @@ Require-Bundle: ilg.gnumcueclipse.core,
  org.eclipse.core.jobs;bundle-version="3.5.300",
  org.eclipse.cdt.dsf.gdb;bundle-version="4.2.0"
 Bundle-ActivationPolicy: lazy
-Bundle-RequiredExecutionEnvironment: JavaSE-1.7
+Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
