@@ -95,6 +95,9 @@
 		<module>ilg.gnumcueclipse.managedbuild.cross.riscv</module>
 		<module>ilg.gnumcueclipse.managedbuild.cross.riscv-feature</module>
 		<module>ilg.gnumcueclipse.riscv-repository</module>
+		
+		<!-- ARM specific modules. -->
+		<module>ilg.gnuarmeclipse.core</module>	
 	</modules>
 
 	<repositories>
