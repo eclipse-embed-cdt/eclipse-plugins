@@ -4,6 +4,6 @@ Bundle-Name: GNU MCU C/C++ Documentation
 Bundle-SymbolicName: ilg.gnumcueclipse.doc.user;singleton:=true
 Bundle-Version: 1.1.2.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Require-Bundle: org.eclipse.help;bundle-version="3.6.0"
+Require-Bundle: org.eclipse.help;bundle-version="3.7.0"
 Bundle-Vendor: GNU MCU Eclipse
 Bundle-ActivationPolicy: lazy
