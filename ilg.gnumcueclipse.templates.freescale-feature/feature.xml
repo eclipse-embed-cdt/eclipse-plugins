@@ -1,49 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-	id="ilg.gnumcueclipse.templates.freescale"
-	label="%featureName"
-	version="2.2.9.qualifier"
-	provider-name="%providerName"
-	plugin="ilg.gnumcueclipse.templates.freescale">
+      id="ilg.gnumcueclipse.templates.freescale"
+      label="%featureName"
+      version="2.2.9.qualifier"
+      provider-name="%providerName"
+      plugin="ilg.gnumcueclipse.templates.freescale">
 
-	<description>
-		%description
-	</description>
+   <description>
+      %description
+   </description>
 
-	<copyright>
-		%copyright
-	</copyright>
+   <copyright>
+      %copyright
+   </copyright>
 
-	<license url="%licenseURL">
-		%license
-	</license>
+   <license url="%licenseURL">
+      %license
+   </license>
 
-	<plugin
-		id="ilg.gnumcueclipse.templates.core"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		unpack="false" />
+   <plugin
+         id="ilg.gnumcueclipse.templates.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
-	<plugin
-		id="ilg.gnumcueclipse.templates.freescale"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		unpack="false" />
+   <plugin
+         id="ilg.gnumcueclipse.templates.freescale"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
-	<plugin
-		id="ilg.gnumcueclipse.templates.freescale.pe"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		unpack="false" />
+   <plugin
+         id="ilg.gnumcueclipse.templates.freescale.pe"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
-	<plugin
-		id="ilg.gnumcueclipse.core"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		unpack="false" />
+   <plugin
+         id="ilg.gnumcueclipse.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>

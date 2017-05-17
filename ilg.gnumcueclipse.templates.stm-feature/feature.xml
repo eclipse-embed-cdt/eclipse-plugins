@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-	id="ilg.gnumcueclipse.templates.stm"
-	label="%featureName"
-	version="2.6.3.qualifier"
-	provider-name="%providerName"
-	plugin="ilg.gnumcueclipse.templates.stm">
+      id="ilg.gnumcueclipse.templates.stm"
+      label="%featureName"
+      version="2.6.3.qualifier"
+      provider-name="%providerName"
+      plugin="ilg.gnumcueclipse.templates.stm">
 
-	<description>
-		%description
-	</description>
+   <description>
+      %description
+   </description>
 
-	<copyright>
-		%copyright
-	</copyright>
+   <copyright>
+      %copyright
+   </copyright>
 
-	<license url="%licenseURL">
-		%license
-	</license>
+   <license url="%licenseURL">
+      %license
+   </license>
 
-	<plugin
-		id="ilg.gnumcueclipse.templates.core"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		unpack="false" />
+   <plugin
+         id="ilg.gnumcueclipse.templates.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
-	<plugin
-		id="ilg.gnumcueclipse.templates.stm"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		unpack="false" />
+   <plugin
+         id="ilg.gnumcueclipse.templates.stm"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
-	<plugin
-		id="ilg.gnumcueclipse.core"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		unpack="false" />
+   <plugin
+         id="ilg.gnumcueclipse.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>

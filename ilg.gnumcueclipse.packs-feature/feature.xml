@@ -1,70 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-	id="ilg.gnumcueclipse.packs"
-	label="%featureName"
-	version="2.2.2.qualifier"
-	provider-name="%providerName"
-	plugin="ilg.gnumcueclipse.packs">
+      id="ilg.gnumcueclipse.packs"
+      label="%featureName"
+      version="2.2.2.qualifier"
+      provider-name="%providerName"
+      plugin="ilg.gnumcueclipse.debug.packs">
 
-	<description>
-		%description
-	</description>
+   <description>
+      %description
+   </description>
 
-	<copyright>
-		%copyright
-	</copyright>
+   <copyright>
+      %copyright
+   </copyright>
 
-	<license url="%licenseURL">
-		%license
-	</license>
+   <license url="%licenseURL">
+      %license
+   </license>
 
-	<plugin
-		id="ilg.gnumcueclipse.packs"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		unpack="false" />
+   <plugin
+         id="ilg.gnumcueclipse.packs"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
-	<plugin
-		id="ilg.gnumcueclipse.packs.core"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		unpack="false" />
+   <plugin
+         id="ilg.gnumcueclipse.packs.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
-	<plugin
-		id="ilg.gnumcueclipse.packs.data"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		unpack="false" />
+   <plugin
+         id="ilg.gnumcueclipse.packs.data"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
-	<plugin
-		id="ilg.gnumcueclipse.packs.ui"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		unpack="false" />
+   <plugin
+         id="ilg.gnumcueclipse.packs.ui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
-	<plugin
-		id="ilg.gnumcueclipse.managedbuild.packs"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		unpack="false" />
+   <plugin
+         id="ilg.gnumcueclipse.managedbuild.packs"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
-	<plugin
-		id="ilg.gnumcueclipse.debug.packs"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		unpack="false" />
+   <plugin
+         id="ilg.gnumcueclipse.debug.packs"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
-	<plugin
-		id="ilg.gnumcueclipse.core"
-		download-size="0"
-		install-size="0"
-		version="0.0.0"
-		unpack="false" />
+   <plugin
+         id="ilg.gnumcueclipse.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
 
 </feature>
