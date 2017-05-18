@@ -1,12 +1,7 @@
 
 # add update sites
 instructions.configure=\
- org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(location:http${#58}//gnuarmeclipse.sourceforge.net/updates,type:0,name:GNU MCU Eclipse Plug-ins);\
- org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(location:http${#58}//gnuarmeclipse.sourceforge.net/updates,type:1,name:GNU MCU Eclipse Plug-ins);
+ org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(location:http${#58}//gnu-mcu-eclipse.sourceforge.io/v4-neon-updates,type:0,name:GNU MCU Eclipse Plug-ins);\
+ org.eclipse.equinox.p2.touchpoint.eclipse.addRepository(location:http${#58}//gnu-mcu-eclipse.sourceforge.io/v4-neon-updates,type:1,name:GNU MCU Eclipse Plug-ins);
  
-# remove update sites
-instructions.unconfigure=\
- org.eclipse.equinox.p2.touchpoint.eclipse.removeRepository(location:http${#58}//gnuarmeclipse.sourceforge.net/updates,type:0,name:GNU MCU Eclipse Plug-ins);\
- org.eclipse.equinox.p2.touchpoint.eclipse.removeRepository(location:http${#58}//gnuarmeclipse.sourceforge.net/updates,type:1,name:GNU MCU Eclipse Plug-ins);
-
 # eof

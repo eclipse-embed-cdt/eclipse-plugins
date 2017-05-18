@@ -3,13 +3,13 @@
 SourceForce recently updated the security certificates, making Eclipse install/upgrades fail with messages like this:
 
 ```
-No repository found at http://gnuarmeclipse.sourceforge.net/updates
+No repository found at http://gnu-mcu-eclipse.sourceforge.io/v4-neon-updates
 ```
 
 or 
 
 ```
-!MESSAGE Unable to read repository at http://gnuarmeclipse.sourceforge.net/updates-test/content.xml.
+!MESSAGE Unable to read repository at http://gnu-mcu-eclipse.sourceforge.io/v4-neon-updates-test/content.xml.
 !STACK 0
 javax.net.ssl.SSLHandshakeException: Received fatal alert: handshake_failure
 ```
