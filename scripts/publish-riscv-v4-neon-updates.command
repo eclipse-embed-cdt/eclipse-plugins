@@ -21,6 +21,8 @@ popd  > /dev/null
 #echo "script=[${SCRIPT_PATH}]"
 #echo "pwd   =[`pwd`]"
 
-(cd "${SCRIPT_PATH}"; sh publish-updates.sh updates-experimental)
-
-echo "Install new software from http://gnu-mcu-eclipse.sourceforge.io/updates-experimental"
+read -p "Do you really want to publish? (Yes)? " answer
+case $answer in
+	Yes ) (cd "${SCRIPT_PATH}"; sh publish-updates.sh v4-neon-updates riscv);;
+	* ) echo "You need to enter Yes to publish."; exit;;
+esac

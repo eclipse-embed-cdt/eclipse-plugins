@@ -21,6 +21,6 @@ popd  > /dev/null
 #echo "script=[${SCRIPT_PATH}]"
 #echo "pwd   =[`pwd`]"
 
-(cd "${SCRIPT_PATH}"; sh publish-riscv-updates.sh experimental)
+(cd "${SCRIPT_PATH}"; sh publish-updates.sh v4-neon-updates-experimental riscv)
 
-echo "Install new software from http://gnu-riscv-eclipse.sourceforge.io/updates-experimental"
+echo "Install new software from http://gnu-riscv-eclipse.sourceforge.io/v4-neon-updates-experimental"

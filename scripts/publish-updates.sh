@@ -4,28 +4,29 @@
 # publish the ilg.gnumcueclipse-repository site
 # to Bintray:
 #
-# https://bintray.com/gnu-mcu-eclipse/updates/p2
-# https://bintray.com/gnu-mcu-eclipse/updates-test/p2
-# https://bintray.com/gnu-mcu-eclipse/updates-experimental/p2
+# https://bintray.com/gnu-mcu-eclipse/*/p2
 #
 # and SourceForge File Release System (FRS):
 #
 # https://sourceforge.net/projects/gnuarmeclipse/files/Eclipse/
 
 
-TEST=""
+TEST="updates"
 
-if [ $# -gt 0 ] && [ "$1" = "test" ]
+if [ $# -gt 0 ]
 then
-  TEST="-test"
-  shift
-elif [ $# -gt 0 ] && [ "$1" = "experimental" ]
-then
-  TEST="-experimental"
+  TEST=$1
   shift
 fi
 
-SF_FOLDER="Eclipse/updates"
+RISCV=""
+if [ $# -gt 0 ]
+then
+  RISCV=$1
+  shift
+fi
+
+SF_FOLDER="Eclipse/"
 
 echo "Updating $SF_FOLDER$TEST"
 
@@ -191,8 +192,13 @@ SF_DESTINATION="$SF_USER,gnuarmeclipse@frs.sourceforge.net:/home/frs/project/g/g
 SOURCE_LIST="."
 
 BINTRAY_USER=ilg-ul
-# BINTRAY_OWNER=gnuarmeclipse
-BINTRAY_OWNER=gnu-mcu-eclipse
+
+if [ "${RISCV}" == "" ]
+then
+  BINTRAY_OWNER=gnu-mcu-eclipse
+else
+  BINTRAY_OWNER=gnu-riscv-eclipse
+fi
 
 API=https://api.bintray.com
 
@@ -218,29 +224,44 @@ else
   RSYNC_OPTS+=" --checksum"
 fi
 
-if [ ! -d ../ilg.gnumcueclipse-repository/target/repository ]
+if [ "${RISCV}" == "" ]
+then
+  REPO_FOLDER="ilg.gnumcueclipse-repository"
+else
+  REPO_FOLDER="ilg.gnumcueclipse.riscv-repository"
+fi
+
+if [ ! -d ../${REPO_FOLDER}/target/repository ]
 then
   echo "No repository folder found"
   exit 1
 fi
 
-cd ../ilg.gnumcueclipse-repository/target
+cd ../${REPO_FOLDER}/target
 
 FULL_VERSION="$(grep "unit id='ilg.gnumcueclipse.core'" targetPlatformRepository/content.xml | sed "s/.*version='\(.*\)'.*/\1/")"
-(cd repository; do_upload_to_bintray "updates${TEST}" "${FULL_VERSION}")
+(cd repository; do_upload_to_bintray "${TEST}" "${FULL_VERSION}")
+
+if [ "${RISCV}" == "" ]
+then
 
 echo "Rsync-ing SourceForge ${SF_FOLDER}${TEST} site (${RSYNC_OPTS})"
 (cd repository; rsync -e ssh ${RSYNC_OPTS} ${SOURCE_LIST} ${SF_DESTINATION})
 
-if [ "${TEST}" == "-test" ]
+fi
+
+if [[ "${TEST}" == *-test ]]
 then
   echo "Published on the test site."
-elif [ "${TEST}" == "-experimental" ]
+elif [[ "${TEST}" == *-experimental ]]
 then
   echo "Published on the experimental site."
 else
   echo "Published on the main site."
 fi
+
+if [ "${RISCV}" == "" ]
+then
 
 if [ -f *-SNAPSHOT.zip ]
 then
@@ -264,6 +285,8 @@ then
   (cd "${ARCHIVE_FOLDER}"; shasum -a 256 -p "${AP}" >"${AP}.sha")
 
   echo "Archive available from \"${AP}\""
+fi
+
 fi
 
 if [ "${TEST}" != "" ]
