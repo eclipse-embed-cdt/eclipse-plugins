@@ -39,8 +39,10 @@
    <feature url="features/ilg.gnumcueclipse.codered-feature_1.1.2.qualifier.jar" id="ilg.gnumcueclipse.codered" version="1.1.2.qualifier">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
+   <!-- 
    <feature url="features/ilg.gnuarmeclipse.remover-feature_4.1.1.qualifier.jar" id="ilg.gnuarmeclipse.remover" version="4.1.1.qualifier">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
+    -->
    <category-def name="ilg.gnumcueclipse.category" label="GNU ARM &amp; RISC-V C/C++ Cross Development Tools"/>
 </site>

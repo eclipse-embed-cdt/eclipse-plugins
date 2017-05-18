@@ -97,8 +97,10 @@
 		<module>ilg.gnumcueclipse.riscv-repository</module>
 		
 		<!-- Modules used to remove the deprecated GNU ARM Eclipse -->
+		<!-- 
 		<module>ilg.gnuarmeclipse.remover</module>	
 		<module>ilg.gnuarmeclipse.remover-feature</module>	
+		-->
 	</modules>
 
 	<repositories>
