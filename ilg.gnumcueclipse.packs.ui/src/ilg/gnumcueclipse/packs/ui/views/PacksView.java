@@ -11,25 +11,6 @@
 
 package ilg.gnumcueclipse.packs.ui.views;
 
-import ilg.gnumcueclipse.core.StringUtils;
-import ilg.gnumcueclipse.packs.core.ConsoleStream;
-import ilg.gnumcueclipse.packs.core.data.DurationMonitor;
-import ilg.gnumcueclipse.packs.core.tree.Leaf;
-import ilg.gnumcueclipse.packs.core.tree.Node;
-import ilg.gnumcueclipse.packs.core.tree.NodeViewContentProvider;
-import ilg.gnumcueclipse.packs.core.tree.PackNode;
-import ilg.gnumcueclipse.packs.core.tree.Property;
-import ilg.gnumcueclipse.packs.core.tree.Selector;
-import ilg.gnumcueclipse.packs.core.tree.Type;
-import ilg.gnumcueclipse.packs.data.DataManager;
-import ilg.gnumcueclipse.packs.data.DataManagerEvent;
-import ilg.gnumcueclipse.packs.data.IDataManagerListener;
-import ilg.gnumcueclipse.packs.jobs.CopyExampleJob;
-import ilg.gnumcueclipse.packs.jobs.InstallJob;
-import ilg.gnumcueclipse.packs.jobs.RemoveJob;
-import ilg.gnumcueclipse.packs.ui.Activator;
-import ilg.gnumcueclipse.packs.ui.Messages;
-
 import java.io.File;
 import java.util.Collection;
 import java.util.HashMap;
@@ -60,8 +41,8 @@ import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.jface.viewers.ViewerFilter;
-import org.eclipse.jface.viewers.ViewerSorter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -79,6 +60,25 @@ import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.services.IServiceLocator;
 
 import com.github.zafarkhaja.semver.Version;
+
+import ilg.gnumcueclipse.core.StringUtils;
+import ilg.gnumcueclipse.packs.core.ConsoleStream;
+import ilg.gnumcueclipse.packs.core.data.DurationMonitor;
+import ilg.gnumcueclipse.packs.core.tree.Leaf;
+import ilg.gnumcueclipse.packs.core.tree.Node;
+import ilg.gnumcueclipse.packs.core.tree.NodeViewContentProvider;
+import ilg.gnumcueclipse.packs.core.tree.PackNode;
+import ilg.gnumcueclipse.packs.core.tree.Property;
+import ilg.gnumcueclipse.packs.core.tree.Selector;
+import ilg.gnumcueclipse.packs.core.tree.Type;
+import ilg.gnumcueclipse.packs.data.DataManager;
+import ilg.gnumcueclipse.packs.data.DataManagerEvent;
+import ilg.gnumcueclipse.packs.data.IDataManagerListener;
+import ilg.gnumcueclipse.packs.jobs.CopyExampleJob;
+import ilg.gnumcueclipse.packs.jobs.InstallJob;
+import ilg.gnumcueclipse.packs.jobs.RemoveJob;
+import ilg.gnumcueclipse.packs.ui.Activator;
+import ilg.gnumcueclipse.packs.ui.Messages;
 
 public class PacksView extends ViewPart implements IDataManagerListener {
 
@@ -201,9 +201,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 	// ------------------------------------------------------------------------
 
-	class NameSorter extends ViewerSorter {
-
-		@SuppressWarnings("unchecked")
+	class NameComparator extends ViewerComparator {
 		public int compare(Viewer viewer, Object e1, Object e2) {
 
 			Leaf n1 = (Leaf) e1;
@@ -298,7 +296,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 
 		fViewer.setContentProvider(fContentProvider);
 		fViewer.setLabelProvider(new TableLabelProvider());
-		fViewer.setSorter(new NameSorter());
+		fViewer.setComparator(new NameComparator());
 
 		fViewer.setAutoExpandLevel(AUTOEXPAND_LEVEL);
 		fViewer.setInput(getPacksTree());

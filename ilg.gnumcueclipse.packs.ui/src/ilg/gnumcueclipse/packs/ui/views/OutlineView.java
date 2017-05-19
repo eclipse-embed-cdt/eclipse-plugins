@@ -11,19 +11,6 @@
 
 package ilg.gnumcueclipse.packs.ui.views;
 
-import ilg.gnumcueclipse.core.EclipseUtils;
-import ilg.gnumcueclipse.packs.core.data.PacksStorage;
-import ilg.gnumcueclipse.packs.core.tree.Leaf;
-import ilg.gnumcueclipse.packs.core.tree.Node;
-import ilg.gnumcueclipse.packs.core.tree.NodeViewContentProvider;
-import ilg.gnumcueclipse.packs.core.tree.PackNode;
-import ilg.gnumcueclipse.packs.core.tree.Property;
-import ilg.gnumcueclipse.packs.core.tree.Type;
-import ilg.gnumcueclipse.packs.data.DataManager;
-import ilg.gnumcueclipse.packs.jobs.ParsePdscRunnable;
-import ilg.gnumcueclipse.packs.ui.Activator;
-import ilg.gnumcueclipse.packs.ui.IconUtils;
-
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.MalformedURLException;
@@ -48,7 +35,7 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerCell;
-import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -61,6 +48,19 @@ import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.part.ViewPart;
 import org.eclipse.ui.progress.IProgressService;
+
+import ilg.gnumcueclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.packs.core.data.PacksStorage;
+import ilg.gnumcueclipse.packs.core.tree.Leaf;
+import ilg.gnumcueclipse.packs.core.tree.Node;
+import ilg.gnumcueclipse.packs.core.tree.NodeViewContentProvider;
+import ilg.gnumcueclipse.packs.core.tree.PackNode;
+import ilg.gnumcueclipse.packs.core.tree.Property;
+import ilg.gnumcueclipse.packs.core.tree.Type;
+import ilg.gnumcueclipse.packs.data.DataManager;
+import ilg.gnumcueclipse.packs.jobs.ParsePdscRunnable;
+import ilg.gnumcueclipse.packs.ui.Activator;
+import ilg.gnumcueclipse.packs.ui.IconUtils;
 
 public class OutlineView extends ViewPart {
 
@@ -233,7 +233,7 @@ public class OutlineView extends ViewPart {
 
 	// ------------------------------------------------------------------------
 
-	class NameSorter extends ViewerSorter {
+	class NameComparator extends ViewerComparator {
 
 		public int compare(Viewer viewer, Object e1, Object e2) {
 			// Always in order
@@ -284,7 +284,7 @@ public class OutlineView extends ViewPart {
 		fContentProvider = new ViewContentProvider();
 		fViewer.setContentProvider(fContentProvider);
 		fViewer.setLabelProvider(new ViewLabelProvider());
-		fViewer.setSorter(new NameSorter());
+		fViewer.setComparator(new NameComparator());
 
 		fViewer.setInput(fNoOutlineNode);
 

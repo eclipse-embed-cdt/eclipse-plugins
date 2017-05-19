@@ -35,7 +35,7 @@ import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.viewers.CellLabelProvider;
 import org.eclipse.jface.viewers.TreeViewer;
 import org.eclipse.jface.viewers.ViewerCell;
-import org.eclipse.jface.viewers.ViewerSorter;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
@@ -86,7 +86,7 @@ public class KeywordsView extends ViewPart implements IDataManagerListener {
 
 	// ------------------------------------------------------------------------
 
-	class NameSorter extends ViewerSorter {
+	class NameComparator extends ViewerComparator {
 		// Default ascending sorter
 	}
 
@@ -124,7 +124,7 @@ public class KeywordsView extends ViewPart implements IDataManagerListener {
 
 		fViewer.setContentProvider(fContentProvider);
 		fViewer.setLabelProvider(new ViewLabelProvider());
-		fViewer.setSorter(new NameSorter());
+		fViewer.setComparator(new NameComparator());
 
 		fViewer.setInput(getKeywordsTree());
 
