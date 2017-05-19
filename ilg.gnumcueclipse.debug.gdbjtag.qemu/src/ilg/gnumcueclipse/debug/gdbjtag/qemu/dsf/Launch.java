@@ -23,7 +23,6 @@ import org.eclipse.cdt.dsf.concurrent.DefaultDsfExecutor;
 import org.eclipse.cdt.dsf.concurrent.DsfRunnable;
 import org.eclipse.cdt.dsf.concurrent.IDsfStatusConstants;
 import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
-import org.eclipse.cdt.dsf.gdb.IGdbDebugConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
 import org.eclipse.cdt.dsf.service.DsfServicesTracker;
 import org.eclipse.cdt.dsf.service.DsfSession;

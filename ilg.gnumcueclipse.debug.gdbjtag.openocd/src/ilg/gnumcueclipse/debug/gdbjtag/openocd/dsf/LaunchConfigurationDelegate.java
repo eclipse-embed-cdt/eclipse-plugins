@@ -163,7 +163,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 
 		monitor.beginTask(LaunchMessages.getString("GdbLaunchDelegate.0"), totalWork); //$NON-NLS-1$
 		if (monitor.isCanceled()) {
-			cleanupLaunchLocal(launch);
+			cleanupLaunch(launch);
 			return;
 		}
 
@@ -188,7 +188,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 		// --------------------------------------------------------------------
 
 		if (monitor.isCanceled()) {
-			cleanupLaunchLocal(l);
+			cleanupLaunch(l);
 			return;
 		}
 
@@ -230,7 +230,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 		// First make sure non-stop is supported, if the user want to use this
 		// mode
 		if (LaunchUtils.getIsNonStopMode(config) && !isNonStopSupportedInGdbVersion(gdbVersion)) {
-			cleanupLaunchLocal(launch);
+			cleanupLaunch(launch);
 			throw new DebugException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, DebugException.REQUEST_FAILED,
 					"Non-stop mode is not supported for GDB " + gdbVersion + ", GDB " + NON_STOP_FIRST_VERSION //$NON-NLS-1$ //$NON-NLS-2$
 							+ " or higher is required.", //$NON-NLS-1$
@@ -238,7 +238,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 		}
 
 		if (LaunchUtils.getIsPostMortemTracing(config) && !isPostMortemTracingSupportedInGdbVersion(gdbVersion)) {
-			cleanupLaunchLocal(launch);
+			cleanupLaunch(launch);
 			throw new DebugException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, DebugException.REQUEST_FAILED,
 					"Post-mortem tracing is not supported for GDB " + gdbVersion + ", GDB " + NON_STOP_FIRST_VERSION //$NON-NLS-1$ //$NON-NLS-2$
 							+ " or higher is required.", //$NON-NLS-1$
@@ -283,7 +283,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 			return;
 		} finally {
 			if (!succeed) {
-				cleanupLaunchLocal(launch);
+				cleanupLaunch(launch);
 			}
 		}
 
@@ -319,7 +319,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 							System.out
 									.println("LaunchConfigurationDelegate.launchDebugSession() sleep cancelled" + this);
 						}
-						cleanupLaunchLocal(launch);
+						cleanupLaunch(launch);
 						return;
 					}
 					Thread.sleep(10);
@@ -331,7 +331,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 
 				if (serverStatus != Status.OK_STATUS) {
 					if ("TERMINATED".equals(serverStatus.getMessage())) {
-						cleanupLaunchLocal(launch);
+						cleanupLaunch(launch);
 						return;
 					}
 					if (Activator.getInstance().isDebugging()) {
@@ -374,12 +374,12 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 			return;
 		} finally {
 			if (!succeed) {
-				cleanupLaunchLocal(launch);
+				cleanupLaunch(launch);
 			}
 		}
 
 		if (monitor.isCanceled()) {
-			cleanupLaunchLocal(launch);
+			cleanupLaunch(launch);
 			return;
 		}
 
@@ -448,7 +448,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 				// finalLaunchSequence failed. Shutdown the session so that all
 				// started
 				// services including any GDB process are shutdown. (bug 251486)
-				cleanupLaunchLocal(launch);
+				cleanupLaunch(launch);
 			}
 		}
 		// --------------------------------------------------------------------

@@ -12,60 +12,16 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.dsf;
 
-import java.util.concurrent.ExecutionException;
-
 import org.eclipse.cdt.debug.gdbjtag.core.GDBJtagDSFLaunchConfigurationDelegate;
-import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
-import org.eclipse.cdt.dsf.concurrent.Query;
 import org.eclipse.cdt.dsf.gdb.launching.GdbLaunch;
 import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
-import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunch;
 import org.eclipse.debug.core.ILaunchConfiguration;
-
-import ilg.gnumcueclipse.debug.gdbjtag.Activator;
 
 /**
  * @since 3.0
  */
 public abstract class AbstractGnuArmLaunchConfigurationDelegate extends GDBJtagDSFLaunchConfigurationDelegate {
-
-	/**
-	 * @deprecated While waiting to drop support for CDT < 9.0 we need this
-	 *             method copied from CDT 9.0. Once support for old CDT is
-	 *             removed this should become simply
-	 *             super.cleanupLaunch(ILaunch).
-	 */
-	@Deprecated
-	protected void cleanupLaunchLocal(ILaunch launch) throws DebugException {
-		if (launch instanceof GdbLaunch) {
-			final GdbLaunch gdbLaunch = (GdbLaunch) launch;
-			Query<Object> launchShutdownQuery = new Query<Object>() {
-				@Override
-				protected void execute(DataRequestMonitor<Object> rm) {
-					gdbLaunch.shutdownSession(rm);
-				}
-			};
-
-			gdbLaunch.getSession().getExecutor().execute(launchShutdownQuery);
-
-			// wait for the shutdown to finish.
-			// The Query.get() method is a synchronous call which blocks until
-			// the query completes.
-			try {
-				launchShutdownQuery.get();
-			} catch (InterruptedException e) {
-				throw new DebugException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, DebugException.INTERNAL_ERROR,
-						"InterruptedException while shutting down debugger launch " + launch, e)); //$NON-NLS-1$
-			} catch (ExecutionException e) {
-				throw new DebugException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, DebugException.REQUEST_FAILED,
-						"Error in shutting down debugger launch " + launch, e)); //$NON-NLS-1$
-			}
-		}
-
-	}
 
 	// This is the first method to be called in the launch sequence, even before
 	// preLaunchCheck()
