@@ -46,6 +46,14 @@
 		</device>
 	</extension>
 
+	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
+		<device
+			class="ilg.gnumcueclipse.debug.gdbjtag.jlink.JTagDevice"
+			id="ilg.gnumcueclipse.debug.gdbjtag.jlink.core.jtagdevice"
+			name="%JTagDevice.deprecated.name">
+		</device>
+	</extension>
+
 	<!-- legacy from early versions -->
 	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
 		<device

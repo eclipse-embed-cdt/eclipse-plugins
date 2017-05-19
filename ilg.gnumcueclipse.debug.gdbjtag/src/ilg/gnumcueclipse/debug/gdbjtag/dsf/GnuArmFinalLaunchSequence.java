@@ -309,7 +309,7 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		}
 		if (fGdbJtagDevice == null) {
 			// Abort the launch
-			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, "Cannot get Jtag device", exception)); //$NON-NLS-1$
+			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, "Cannot get JTAG device", exception)); //$NON-NLS-1$
 			rm.done();
 		} else {
 			super.stepRetrieveJTAGDevice(rm);

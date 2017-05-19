@@ -22,7 +22,8 @@ public interface ConfigurationAttributes {
 	// TabDebugger
 
 	// Must be in sync with plugin.xml definition
-	public static final String JTAG_DEVICE = "GNU ARM J-Link";
+	public static final String JTAG_DEVICE = "GNU MCU J-Link";
+	public static final String JTAG_DEVICE_DEPRECATED = "GNU ARM J-Link";
 
 	public static final String INTERFACE_COMPAT = PREFIX + ".interface"; //$NON-NLS-1$
 	public static final String GDB_SERVER_DEBUG_INTERFACE = PREFIX + ".gdbServerDebugInterface"; //$NON-NLS-1$
