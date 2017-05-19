@@ -179,7 +179,7 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 		return null;
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Object getAdapter(Class adapter) {
 		return null;

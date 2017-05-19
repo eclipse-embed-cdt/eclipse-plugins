@@ -150,7 +150,7 @@ public class PeripheralRendering extends AbstractTableRendering
 		removeDebugEventListener();
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Object getAdapter(Class clazz) {
 		return super.getAdapter(clazz);

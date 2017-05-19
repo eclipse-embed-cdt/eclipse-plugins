@@ -53,7 +53,7 @@ public class PeripheralDMNode extends SvdPeripheralDMNode implements IAdaptable 
 		disposeChildren();
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Object getAdapter(Class clazz) {
 		return null;
 	}

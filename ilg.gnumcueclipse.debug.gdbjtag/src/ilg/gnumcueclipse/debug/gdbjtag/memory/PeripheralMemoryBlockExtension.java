@@ -900,6 +900,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 
 	// ------------------------------------------------------------------------
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public Object getAdapter(@SuppressWarnings("rawtypes") Class adapter) {
 

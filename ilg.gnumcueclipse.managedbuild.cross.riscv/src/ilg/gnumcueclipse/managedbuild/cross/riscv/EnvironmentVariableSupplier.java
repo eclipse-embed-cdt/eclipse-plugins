@@ -72,7 +72,6 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 			this.path = path;
 		}
 
-		@SuppressWarnings("unused")
 		public static PathEnvironmentVariable create(IConfiguration configuration) {
 			IToolChain toolchain = configuration.getToolChain();
 

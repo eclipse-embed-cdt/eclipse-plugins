@@ -106,7 +106,7 @@ public class GnuArmAdapterFactory extends GdbAdapterFactory {
 		DebugPlugin.getDefault().getLaunchManager().addLaunchListener(this);
 	}
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Object getAdapter(Object adaptableObject, Class adapterType) {
 

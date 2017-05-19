@@ -228,7 +228,7 @@ public class PeripheralsView extends VariablesView implements IMemoryBlockListen
 
 	// ------------------------------------------------------------------------
 
-	@SuppressWarnings("rawtypes")
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Object getAdapter(Class required) {
 		return super.getAdapter(required);
