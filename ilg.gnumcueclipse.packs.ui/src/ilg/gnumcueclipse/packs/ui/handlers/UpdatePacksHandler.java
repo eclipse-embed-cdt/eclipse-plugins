@@ -269,7 +269,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 		String repoUrl = (String) repo.get("url");
 		Node contentRoot = new Node(Type.REPOSITORY);
 
-		String domainName = fRepos.getDomaninNameFromUrl(repoUrl);
+		String domainName = Repos.getDomaninNameFromUrl(repoUrl);
 		domainName = StringUtils.capitalizeFirst(domainName);
 
 		contentRoot.setName(domainName);

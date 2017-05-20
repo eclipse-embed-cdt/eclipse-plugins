@@ -138,7 +138,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 
 				if (!searchPath.isEmpty()) {
 					// If the search path is known, discover toolchain.
-					value = fDefaultPreferences.discoverToolchainPath(toolchainName, searchPath);
+					value = DefaultPreferences.discoverToolchainPath(toolchainName, searchPath);
 					if (value != null && !value.isEmpty()) {
 						// If the toolchain path was finally discovered, store
 						// it in the preferences.
