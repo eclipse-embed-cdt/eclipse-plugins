@@ -25,5 +25,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Export-Package: ilg.gnumcueclipse.managedbuild.cross.riscv,
- ilg.gnumcueclipse.managedbuild.cross.riscv.ui,
- ilg.gnumcueclipse.managedbuild.cross.riscv.xpi
+ ilg.gnumcueclipse.managedbuild.cross.riscv.ui

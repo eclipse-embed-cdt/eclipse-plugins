@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.managedbuild.cross.riscv;
+package ilg.gnumcueclipse.managedbuild.cross;
 
 import org.eclipse.cdt.core.cdtvariables.CdtVariableException;
 import org.eclipse.cdt.managedbuilder.core.BuildException;
@@ -18,7 +18,7 @@ import org.eclipse.cdt.managedbuilder.core.IOptionCommandGenerator;
 import org.eclipse.cdt.utils.cdtvariables.CdtVariableResolver;
 import org.eclipse.cdt.utils.cdtvariables.IVariableSubstitutor;
 
-public class LikerScriptCommandGenerator implements IOptionCommandGenerator {
+public class LinkerScriptCommandGenerator implements IOptionCommandGenerator {
 
 	// ------------------------------------------------------------------------
 

@@ -25,5 +25,4 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Export-Package: ilg.gnumcueclipse.managedbuild.cross.arm,
- ilg.gnumcueclipse.managedbuild.cross.arm.ui,
- ilg.gnumcueclipse.managedbuild.cross.arm.xpi
+ ilg.gnumcueclipse.managedbuild.cross.arm.ui

@@ -1,4 +1,4 @@
-package ilg.gnumcueclipse.managedbuild.cross.riscv;
+package ilg.gnumcueclipse.managedbuild.cross;
 
 import org.eclipse.cdt.managedbuilder.core.IManagedCommandLineInfo;
 import org.eclipse.cdt.managedbuilder.core.ITool;

@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.managedbuild.cross.arm.xpi;
+package ilg.gnumcueclipse.managedbuild.cross.xpi;
 
 import java.util.Map;
 
@@ -18,7 +18,7 @@ import org.eclipse.core.runtime.CoreException;
 
 import ilg.gnumcueclipse.core.CProjectPacksStorage;
 import ilg.gnumcueclipse.debug.core.data.ICProjectExtraDataManager;
-import ilg.gnumcueclipse.managedbuild.cross.arm.Activator;
+import ilg.gnumcueclipse.managedbuild.cross.Activator;
 
 public class CProjectExtraDataManager implements ICProjectExtraDataManager {
 

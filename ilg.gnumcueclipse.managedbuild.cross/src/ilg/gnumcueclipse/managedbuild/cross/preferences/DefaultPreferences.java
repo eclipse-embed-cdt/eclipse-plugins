@@ -387,24 +387,25 @@ public class DefaultPreferences {
 	// Non-standard location:
 	// eclipse/configuration/ilg.gnumcueclipse.managedbuild.cross.riscv/toolchain.prefs/name=value
 
-//	private Properties getToolchainProperties() throws IOException {
-//
-//		if (fToolchainProperties == null) {
-//
-//			URL url = Platform.getInstallLocation().getURL();
-//
-//			IPath path = new Path(url.getPath());
-//			File file = path.append("configuration").append(fPluginId).append(TOOLCHAIN).toFile();
-//			InputStream is = new FileInputStream(file);
-//
-//			Properties prop = new Properties();
-//			prop.load(is);
-//
-//			fToolchainProperties = prop;
-//		}
-//
-//		return fToolchainProperties;
-//	}
+	// private Properties getToolchainProperties() throws IOException {
+	//
+	// if (fToolchainProperties == null) {
+	//
+	// URL url = Platform.getInstallLocation().getURL();
+	//
+	// IPath path = new Path(url.getPath());
+	// File file =
+	// path.append("configuration").append(fPluginId).append(TOOLCHAIN).toFile();
+	// InputStream is = new FileInputStream(file);
+	//
+	// Properties prop = new Properties();
+	// prop.load(is);
+	//
+	// fToolchainProperties = prop;
+	// }
+	//
+	// return fToolchainProperties;
+	// }
 
 	// ------------------------------------------------------------------------
 }

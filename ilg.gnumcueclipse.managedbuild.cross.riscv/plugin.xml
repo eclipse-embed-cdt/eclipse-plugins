@@ -573,7 +573,7 @@
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.toolchain.createflash"
 				isAbstract="true"
 				name="%option.toolchain.flash"
-				valueHandler="ilg.gnumcueclipse.managedbuild.cross.riscv.AdditionalToolsManagedOptionValueHandler"
+				valueHandler="ilg.gnumcueclipse.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
 				valueType="boolean">
 				<enablement
 					attribute="value"
@@ -590,7 +590,7 @@
 				isAbstract="true"
 				name="%option.toolchain.listing"
 				defaultValue="false"
-				valueHandler="ilg.gnumcueclipse.managedbuild.cross.riscv.AdditionalToolsManagedOptionValueHandler"
+				valueHandler="ilg.gnumcueclipse.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
 				valueType="boolean">
 				<enablement
 					attribute="value"
@@ -607,7 +607,7 @@
 				isAbstract="true"
 				name="%option.toolchain.size"
 				defaultValue="false"
-				valueHandler="ilg.gnumcueclipse.managedbuild.cross.riscv.AdditionalToolsManagedOptionValueHandler"
+				valueHandler="ilg.gnumcueclipse.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
 				valueType="boolean">
 				<enablement
 					attribute="value"
@@ -624,7 +624,7 @@
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.toolchain.useglobalpath"
 				isAbstract="true"
 				name="%option.toolchain.useglobalpath"
-				valueHandler="ilg.gnumcueclipse.managedbuild.cross.riscv.AdditionalToolsManagedOptionValueHandler"
+				valueHandler="ilg.gnumcueclipse.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
 				valueType="boolean">
 				<enablement
 					attribute="value"
@@ -741,7 +741,7 @@
 			</option>
 			<option
 				browseType="file"
-				commandGenerator="ilg.gnumcueclipse.managedbuild.cross.riscv.LikerScriptCommandGenerator"
+				commandGenerator="ilg.gnumcueclipse.managedbuild.cross.LinkerScriptCommandGenerator"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.linker.scriptfile"
 				isAbstract="true"
 				name="%option.linker.scriptfile"
@@ -1747,7 +1747,7 @@
 
 			<tool
 				command="${cross_prefix}${cross_c}${cross_suffix}"
-				commandLineGenerator="ilg.gnumcueclipse.managedbuild.cross.riscv.CompilerCommandLineGenerator"
+				commandLineGenerator="ilg.gnumcueclipse.managedbuild.cross.CompilerCommandLineGenerator"
 				commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
 				errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.assembler"
@@ -1877,7 +1877,7 @@
 
 			<tool
 				command="${cross_prefix}${cross_c}${cross_suffix}"
-				commandLineGenerator="ilg.gnumcueclipse.managedbuild.cross.riscv.CompilerCommandLineGenerator"
+				commandLineGenerator="ilg.gnumcueclipse.managedbuild.cross.CompilerCommandLineGenerator"
 				commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
 				errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.c.compiler"
@@ -2060,7 +2060,7 @@
 			</tool>
 			<tool
 				command="${cross_prefix}${cross_cpp}${cross_suffix}"
-				commandLineGenerator="ilg.gnumcueclipse.managedbuild.cross.riscv.CompilerCommandLineGenerator"
+				commandLineGenerator="ilg.gnumcueclipse.managedbuild.cross.CompilerCommandLineGenerator"
 				commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
 				errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.tool.cpp.compiler"
@@ -3415,7 +3415,7 @@
 
 	<extension point="ilg.gnumcueclipse.debug.core.cprojectExtra">
 		<factory
-			class="ilg.gnumcueclipse.managedbuild.cross.riscv.xpi.CProjectExtraDataManagerFactory">
+			class="ilg.gnumcueclipse.managedbuild.cross.xpi.CProjectExtraDataManagerFactory">
 		</factory>
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">

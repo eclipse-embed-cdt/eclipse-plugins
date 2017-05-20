@@ -50,11 +50,11 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.managedbuild.cross.Utils;
 import ilg.gnumcueclipse.managedbuild.cross.arm.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.arm.IDs;
 import ilg.gnumcueclipse.managedbuild.cross.arm.Option;
 import ilg.gnumcueclipse.managedbuild.cross.arm.ToolchainDefinition;
-import ilg.gnumcueclipse.managedbuild.cross.arm.Utils;
 import ilg.gnumcueclipse.managedbuild.cross.arm.ui.preferences.GlobalToolchainsPathsPreferencesPage;
 import ilg.gnumcueclipse.managedbuild.cross.arm.ui.preferences.WorkspaceToolchainsPathsPreferencesPage;
 import ilg.gnumcueclipse.managedbuild.cross.arm.ui.properties.ProjectToolchainsPathPropertiesPage;

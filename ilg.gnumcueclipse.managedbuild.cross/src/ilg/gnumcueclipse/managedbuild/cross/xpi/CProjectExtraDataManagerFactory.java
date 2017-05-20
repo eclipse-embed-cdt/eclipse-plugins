@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.managedbuild.cross.riscv.xpi;
+package ilg.gnumcueclipse.managedbuild.cross.xpi;
 
 import ilg.gnumcueclipse.debug.core.data.ICProjectExtraDataManager;
 import ilg.gnumcueclipse.debug.core.data.ICProjectExtraDataManagerFactory;

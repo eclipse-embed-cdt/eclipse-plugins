@@ -50,12 +50,12 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
+import ilg.gnumcueclipse.managedbuild.cross.Utils;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.IDs;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.Option;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.ToolchainDefinition;
-import ilg.gnumcueclipse.managedbuild.cross.riscv.Utils;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.ui.preferences.GlobalToolchainsPathsPreferencesPage;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.ui.preferences.WorkspaceToolchainsPathsPreferencesPage;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.ui.properties.ProjectToolchainsPathPropertiesPage;

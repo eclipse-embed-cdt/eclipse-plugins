@@ -571,7 +571,7 @@
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.base.toolchain.createflash"
 				isAbstract="true"
 				name="%option.toolchain.flash"
-				valueHandler="ilg.gnumcueclipse.managedbuild.cross.arm.AdditionalToolsManagedOptionValueHandler"
+				valueHandler="ilg.gnumcueclipse.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
 				valueType="boolean">
 				<enablement
 					attribute="value"
@@ -588,7 +588,7 @@
 				isAbstract="true"
 				name="%option.toolchain.listing"
 				defaultValue="false"
-				valueHandler="ilg.gnumcueclipse.managedbuild.cross.arm.AdditionalToolsManagedOptionValueHandler"
+				valueHandler="ilg.gnumcueclipse.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
 				valueType="boolean">
 				<enablement
 					attribute="value"
@@ -605,7 +605,7 @@
 				isAbstract="true"
 				name="%option.toolchain.size"
 				defaultValue="false"
-				valueHandler="ilg.gnumcueclipse.managedbuild.cross.arm.AdditionalToolsManagedOptionValueHandler"
+				valueHandler="ilg.gnumcueclipse.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
 				valueType="boolean">
 				<enablement
 					attribute="value"
@@ -622,7 +622,7 @@
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.base.toolchain.useglobalpath"
 				isAbstract="true"
 				name="%option.toolchain.useglobalpath"
-				valueHandler="ilg.gnumcueclipse.managedbuild.cross.arm.AdditionalToolsManagedOptionValueHandler"
+				valueHandler="ilg.gnumcueclipse.managedbuild.cross.AdditionalToolsManagedOptionValueHandler"
 				valueType="boolean">
 				<enablement
 					attribute="value"
@@ -739,7 +739,7 @@
 			</option>
 			<option
 				browseType="file"
-				commandGenerator="ilg.gnumcueclipse.managedbuild.cross.arm.LikerScriptCommandGenerator"
+				commandGenerator="ilg.gnumcueclipse.managedbuild.cross.LinkerScriptCommandGenerator"
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.base.linker.scriptfile"
 				isAbstract="true"
 				name="%option.linker.scriptfile"
@@ -2826,7 +2826,7 @@
 
 			<tool
 				command="${cross_prefix}${cross_c}${cross_suffix}"
-				commandLineGenerator="ilg.gnumcueclipse.managedbuild.cross.arm.CompilerCommandLineGenerator"
+				commandLineGenerator="ilg.gnumcueclipse.managedbuild.cross.CompilerCommandLineGenerator"
 				commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
 				errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GASErrorParser"
 				id="ilg.gnuarmeclipse.managedbuild.cross.tool.assembler"
@@ -2956,7 +2956,7 @@
 
 			<tool
 				command="${cross_prefix}${cross_c}${cross_suffix}"
-				commandLineGenerator="ilg.gnumcueclipse.managedbuild.cross.arm.CompilerCommandLineGenerator"
+				commandLineGenerator="ilg.gnumcueclipse.managedbuild.cross.CompilerCommandLineGenerator"
 				commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
 				errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser"
 				id="ilg.gnuarmeclipse.managedbuild.cross.tool.c.compiler"
@@ -3139,7 +3139,7 @@
 			</tool>
 			<tool
 				command="${cross_prefix}${cross_cpp}${cross_suffix}"
-				commandLineGenerator="ilg.gnumcueclipse.managedbuild.cross.arm.CompilerCommandLineGenerator"
+				commandLineGenerator="ilg.gnumcueclipse.managedbuild.cross.CompilerCommandLineGenerator"
 				commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} -c ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
 				errorParsers="org.eclipse.cdt.core.GCCErrorParser;org.eclipse.cdt.core.GLDErrorParser"
 				id="ilg.gnuarmeclipse.managedbuild.cross.tool.cpp.compiler"
@@ -4488,7 +4488,7 @@
 
 	<extension point="ilg.gnumcueclipse.debug.core.cprojectExtra">
 		<factory
-			class="ilg.gnumcueclipse.managedbuild.cross.arm.xpi.CProjectExtraDataManagerFactory">
+			class="ilg.gnumcueclipse.managedbuild.cross.xpi.CProjectExtraDataManagerFactory">
 		</factory>
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
