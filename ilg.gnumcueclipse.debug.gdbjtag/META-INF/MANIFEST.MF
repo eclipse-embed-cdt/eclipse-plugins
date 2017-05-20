@@ -36,4 +36,6 @@ Export-Package: ilg.gnumcueclipse.debug.gdbjtag,
  ilg.gnumcueclipse.debug.gdbjtag.data,
  ilg.gnumcueclipse.debug.gdbjtag.datamodel,
  ilg.gnumcueclipse.debug.gdbjtag.dsf,
- ilg.gnumcueclipse.debug.gdbjtag.services
+ ilg.gnumcueclipse.debug.gdbjtag.memory,
+ ilg.gnumcueclipse.debug.gdbjtag.services,
+ ilg.gnumcueclipse.debug.gdbjtag.viewmodel.peripheral

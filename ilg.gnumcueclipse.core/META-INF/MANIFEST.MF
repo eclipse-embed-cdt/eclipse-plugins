@@ -9,6 +9,7 @@ Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Export-Package: com.github.zafarkhaja.semver,
+ com.github.zafarkhaja.semver.expr,
  ilg.gnumcueclipse.core,
  ilg.gnumcueclipse.core.preferences,
  ilg.gnumcueclipse.core.ui
