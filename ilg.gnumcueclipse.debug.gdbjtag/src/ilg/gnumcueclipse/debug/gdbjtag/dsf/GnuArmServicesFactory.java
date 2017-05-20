@@ -46,7 +46,7 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 	// ------------------------------------------------------------------------
 
 	public GnuArmServicesFactory(String version, String mode) {
-		super(version);
+		super(version, null);
 
 		fVersion = version;
 		fMode = mode;
