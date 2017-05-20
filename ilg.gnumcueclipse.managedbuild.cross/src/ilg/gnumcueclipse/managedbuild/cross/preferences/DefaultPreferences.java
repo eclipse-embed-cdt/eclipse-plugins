@@ -12,17 +12,11 @@
 package ilg.gnumcueclipse.managedbuild.cross.preferences;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FilenameFilter;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.Properties;
 
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.variables.IStringVariableManager;
@@ -385,7 +379,7 @@ public class DefaultPreferences {
 
 	public static final String TOOLCHAIN = "toolchains.prefs";
 
-	private Properties fToolchainProperties;
+	// private Properties fToolchainProperties;
 
 	// ------------------------------------------------------------------------
 
@@ -393,24 +387,24 @@ public class DefaultPreferences {
 	// Non-standard location:
 	// eclipse/configuration/ilg.gnumcueclipse.managedbuild.cross.riscv/toolchain.prefs/name=value
 
-	private Properties getToolchainProperties() throws IOException {
-
-		if (fToolchainProperties == null) {
-
-			URL url = Platform.getInstallLocation().getURL();
-
-			IPath path = new Path(url.getPath());
-			File file = path.append("configuration").append(fPluginId).append(TOOLCHAIN).toFile();
-			InputStream is = new FileInputStream(file);
-
-			Properties prop = new Properties();
-			prop.load(is);
-
-			fToolchainProperties = prop;
-		}
-
-		return fToolchainProperties;
-	}
+//	private Properties getToolchainProperties() throws IOException {
+//
+//		if (fToolchainProperties == null) {
+//
+//			URL url = Platform.getInstallLocation().getURL();
+//
+//			IPath path = new Path(url.getPath());
+//			File file = path.append("configuration").append(fPluginId).append(TOOLCHAIN).toFile();
+//			InputStream is = new FileInputStream(file);
+//
+//			Properties prop = new Properties();
+//			prop.load(is);
+//
+//			fToolchainProperties = prop;
+//		}
+//
+//		return fToolchainProperties;
+//	}
 
 	// ------------------------------------------------------------------------
 }

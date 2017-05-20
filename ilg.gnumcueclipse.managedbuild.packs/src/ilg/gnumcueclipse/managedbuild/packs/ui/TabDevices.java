@@ -11,19 +11,6 @@
 
 package ilg.gnumcueclipse.managedbuild.packs.ui;
 
-import ilg.gnumcueclipse.core.CProjectPacksStorage;
-import ilg.gnumcueclipse.core.StringUtils;
-import ilg.gnumcueclipse.managedbuild.cross.arm.IDs;
-import ilg.gnumcueclipse.packs.core.Activator;
-import ilg.gnumcueclipse.packs.core.data.IPacksDataManager;
-import ilg.gnumcueclipse.packs.core.data.PacksDataManagerFactoryProxy;
-import ilg.gnumcueclipse.packs.core.tree.Leaf;
-import ilg.gnumcueclipse.packs.core.tree.Node;
-import ilg.gnumcueclipse.packs.core.tree.NodeViewContentProvider;
-import ilg.gnumcueclipse.packs.core.tree.Property;
-import ilg.gnumcueclipse.packs.core.tree.Type;
-import ilg.gnumcueclipse.packs.data.DataManager;
-
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +18,6 @@ import java.util.TreeMap;
 
 import org.eclipse.cdt.core.settings.model.ICResourceDescription;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
-import org.eclipse.cdt.managedbuilder.core.IToolChain;
 import org.eclipse.cdt.managedbuilder.internal.core.Configuration;
 import org.eclipse.cdt.managedbuilder.internal.core.MultiConfiguration;
 import org.eclipse.cdt.managedbuilder.ui.properties.AbstractCBuildPropertyTab;
@@ -58,6 +44,18 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
+
+import ilg.gnumcueclipse.core.CProjectPacksStorage;
+import ilg.gnumcueclipse.core.StringUtils;
+import ilg.gnumcueclipse.packs.core.Activator;
+import ilg.gnumcueclipse.packs.core.data.IPacksDataManager;
+import ilg.gnumcueclipse.packs.core.data.PacksDataManagerFactoryProxy;
+import ilg.gnumcueclipse.packs.core.tree.Leaf;
+import ilg.gnumcueclipse.packs.core.tree.Node;
+import ilg.gnumcueclipse.packs.core.tree.NodeViewContentProvider;
+import ilg.gnumcueclipse.packs.core.tree.Property;
+import ilg.gnumcueclipse.packs.core.tree.Type;
+import ilg.gnumcueclipse.packs.data.DataManager;
 
 /**
  * @noextend This class is not intended to be sub-classed by clients.
@@ -903,20 +901,20 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 	 * Check if the configuration refers to a GNU MCU Eclipse project by
 	 * checking the toolchain prefix.
 	 */
-	private boolean isThisPlugin() {
-
-		fConfig = getCfg();
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Devices.isThisPlugin() fConfig=" + fConfig);
-		}
-
-		IToolChain toolchain = fConfig.getToolChain();
-		String sToolchainId = toolchain.getBaseId();
-		if (sToolchainId.startsWith(IDs.TOOLCHAIN_ID + "."))
-			return true;
-
-		return false;
-	}
+//	private boolean isThisPlugin() {
+//
+//		fConfig = getCfg();
+//		if (Activator.getInstance().isDebugging()) {
+//			System.out.println("Devices.isThisPlugin() fConfig=" + fConfig);
+//		}
+//
+//		IToolChain toolchain = fConfig.getToolChain();
+//		String sToolchainId = toolchain.getBaseId();
+//		if (sToolchainId.startsWith(IDs.TOOLCHAIN_ID + "."))
+//			return true;
+//
+//		return false;
+//	}
 
 	private Node getDevicesTree() {
 
