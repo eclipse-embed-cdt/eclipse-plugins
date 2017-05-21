@@ -1,23 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
-<!--
-# Copyright (c) 2009, 2011 Wind River Systems, Inc. and others.
-# All rights reserved. This program and the accompanying materials
-# are made available under the terms of the Eclipse Public License v1.0
-# which accompanies this distribution, and is available at
-# http://www.eclipse.org/legal/epl-v10.html
-#
-# Contributors:
-# Doug Schaefer   (Wind River)     - initial API and implementation 
-# Anna Dushistova (Mentor Graphics)- [329531][crossgcc] crossgcc fails to build a project
-# Liviu Ionescu - ARM version  
+<!-- 
+	# Copyright (c) 2009, 2011 Wind River Systems, Inc. and others. 
+	# All rights reserved. This program and the accompanying materials 
+	# are made available under the terms of the Eclipse Public License v1.0 
+	# which accompanies this distribution, and is available at 
+	# http://www.eclipse.org/legal/epl-v10.html 
+	# 
+	# Contributors: 
+	# Doug Schaefer (Wind River) - initial API and implementation 
+	# Anna Dushistova (Mentor Graphics)- [329531][crossgcc] crossgcc fails to build a project 
+	# Liviu Ionescu - ARM version 
 -->
 <plugin>
 	<extension-point
 		id="toolchains"
 		name="Extra toolchains"
 		schema="schema/toolchains.exsd" />
-
 	<extension point="org.eclipse.cdt.managedbuilder.core.buildDefinitions">
 		<managedBuildRevision fileVersion="4.0.0">
 		</managedBuildRevision>
@@ -25,7 +24,6 @@
 			id="ilg.gnuarmeclipse.managedbuild.cross.tool.common"
 			isAbstract="false"
 			name="Common options">
-
 			<option
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.base.debugging.level"
 				isAbstract="true"
@@ -142,7 +140,6 @@
 					name="%option.debugging.dwarf5">
 				</enumeratedOptionValue>
 			</option>
-
 			<option
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.base.optimization.level"
 				isAbstract="true"
@@ -203,7 +200,6 @@
 				</enumeratedOptionValue>
 			</option>
 		</tool>
-		
 		<tool
 			id="ilg.gnuarmeclipse.managedbuild.cross.tool.compiler"
 			isAbstract="true"
@@ -692,7 +688,7 @@
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.iwmmxt2"
 					name="iwmmxt2">
 				</enumeratedOptionValue>
-            <!-- not supported since 4.8 -->
+				<!-- not supported since 4.8 -->
 				<enumeratedOptionValue
 					command="-mcpu=marvell-f"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.marvell-f"
@@ -983,14 +979,14 @@
 				</enumeratedOptionValue>
 			</option>
 			<option
-         command="-mthumb-interwork"
-         defaultValue="false"
-         id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.thumbinterwork"
-         isAbstract="true"
-         name="%option.target.arm.thumbInterwork"
-         tip="Generate code that supports calling between the ARM and Thumb instruction sets."
-         useByScannerDiscovery="true"
-         valueType="boolean">
+				command="-mthumb-interwork"
+				defaultValue="false"
+				id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.thumbinterwork"
+				isAbstract="true"
+				name="%option.target.arm.thumbInterwork"
+				tip="Generate code that supports calling between the ARM and Thumb instruction sets."
+				useByScannerDiscovery="true"
+				valueType="boolean">
 				<enablement type="UI_ENABLEMENT|CMD_USAGE">
 					<checkOption
 						holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
@@ -1001,11 +997,11 @@
 				</enablement>
 			</option>
 			<option
-         id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.endianness"
-         isAbstract="true"
-         name="%option.target.arm.endianness"
-         useByScannerDiscovery="true"
-         valueType="enumerated">
+				id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.endianness"
+				isAbstract="true"
+				name="%option.target.arm.endianness"
+				useByScannerDiscovery="true"
+				valueType="enumerated">
 				<enablement type="UI_ENABLEMENT|CMD_USAGE">
 					<checkOption
 						holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
@@ -1031,13 +1027,13 @@
 				</enumeratedOptionValue>
 			</option>
 			<option
-         id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.fpu.abi"
-         isAbstract="true"
-         name="%option.target.arm.floatABI"
-         tip="Specifies which floating-point ABI to use. Specifying ‘soft’ causes GCC to generate output containing library calls for floating-point operations. ‘softfp’ allows the generation of code using hardware floating-point instructions, but still uses the soft-float calling conventions. ‘hard’ allows generation of floating-point instructions and uses FPU-specific calling conventions. The default depends on the specific target configuration. Note that the hard-float and soft-float ABIs are not link-compatible; you must compile your entire program with the same ABI, and link with a compatible set of libraries."
-         useByScannerDiscovery="true"
-         valueHandler="ilg.gnumcueclipse.managedbuild.cross.arm.FloatABIManagedOptionHandleValue"
-         valueType="enumerated">
+				id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.fpu.abi"
+				isAbstract="true"
+				name="%option.target.arm.floatABI"
+				tip="Specifies which floating-point ABI to use. Specifying ‘soft’ causes GCC to generate output containing library calls for floating-point operations. ‘softfp’ allows the generation of code using hardware floating-point instructions, but still uses the soft-float calling conventions. ‘hard’ allows generation of floating-point instructions and uses FPU-specific calling conventions. The default depends on the specific target configuration. Note that the hard-float and soft-float ABIs are not link-compatible; you must compile your entire program with the same ABI, and link with a compatible set of libraries."
+				useByScannerDiscovery="true"
+				valueHandler="ilg.gnumcueclipse.managedbuild.cross.arm.FloatABIManagedOptionHandleValue"
+				valueType="enumerated">
 				<enablement type="UI_ENABLEMENT|CMD_USAGE">
 					<checkOption
 						holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
@@ -1104,12 +1100,12 @@
 				</enumeratedOptionValue>
 			</option>
 			<option
-         id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.fpu.unit"
-         isAbstract="true"
-         name="%option.target.arm.fpuType"
-         tip="This specifies what floating-point hardware (or hardware emulation) is available on the target. If ‘-msoft-float’ is specified this specifies the format of floating-point values."
-         useByScannerDiscovery="true"
-         valueType="enumerated">
+				id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.fpu.unit"
+				isAbstract="true"
+				name="%option.target.arm.fpuType"
+				tip="This specifies what floating-point hardware (or hardware emulation) is available on the target. If ‘-msoft-float’ is specified this specifies the format of floating-point values."
+				useByScannerDiscovery="true"
+				valueType="enumerated">
 				<enablement type="UI_ENABLEMENT|CMD_USAGE">
 					<checkOption
 						holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
@@ -1164,25 +1160,17 @@
 						</or>
 					</not>
 				</enablement>
-            <!--
-            <enablement
-                  attribute="defaultValue"
-                  extensionAdjustment="false"
-                  type="CONTAINER_ATTRIBUTE"
-                  value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.fpv4spd16">
-               <checkOption
-                     holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
-                     optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.family"
-                     value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m4">
-               </checkOption>
-            </enablement>
-            -->
+				<!-- <enablement attribute="defaultValue" extensionAdjustment="false" 
+					type="CONTAINER_ATTRIBUTE" value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.fpv4spd16"> 
+					<checkOption holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base" 
+					optionId="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.family" 
+					value="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcpu.cortex-m4"> 
+					</checkOption> </enablement> -->
 				<enumeratedOptionValue
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.default"
 					isDefault="true"
 					name="%option.target.arm.fpuType.default">
 				</enumeratedOptionValue>
-				
 				<enumeratedOptionValue
 					command="-mfpu=crypto-neon-fp-armv8"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.cryptoneonfparmv8"
@@ -1223,13 +1211,11 @@
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.fpv5spd16"
 					name="%option.target.arm.fpuType.fpv5spd16">
 				</enumeratedOptionValue>
-				
 				<enumeratedOptionValue
 					command="-mfpu=maverick"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.maverick"
 					name="%option.target.arm.fpuType.maverick">
 				</enumeratedOptionValue>
-				
 				<enumeratedOptionValue
 					command="-mfpu=neon"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.neon"
@@ -1249,7 +1235,7 @@
 					command="-mfpu=neon-vfpv4"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.neonvfpv4"
 					name="%option.target.arm.fpuType.neonvfpv4">
-				</enumeratedOptionValue>				
+				</enumeratedOptionValue>
 				<enumeratedOptionValue
 					command="-mfpu=vfp"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.vfp"
@@ -1269,7 +1255,7 @@
 					command="-mfpu=vfpv3-d16-fp16"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.vfpv3d16fp16"
 					name="%option.target.arm.fpuType.vfpv3d16fp16">
-				</enumeratedOptionValue>				
+				</enumeratedOptionValue>
 				<enumeratedOptionValue
 					command="-mfpu=vfpv3-fp16"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.fpu.unit.vfpv3fp16"
@@ -1297,12 +1283,12 @@
 				</enumeratedOptionValue>
 			</option>
 			<option
-         id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.unalignedaccess"
-         isAbstract="true"
-         name="%option.target.arm.unalignedaccess"
-         tip="Enables (or disables) reading and writing of 16- and 32- bit values from addresses that are not 16- or 32- bit aligned. By default unaligned access is disabled for all pre-ARMv6 and all ARMv6-M architectures, and enabled for all other architectures. If unaligned access is not enabled then words in packed data structures will be accessed a byte at a time."
-         useByScannerDiscovery="true"
-         valueType="enumerated">
+				id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.unalignedaccess"
+				isAbstract="true"
+				name="%option.target.arm.unalignedaccess"
+				tip="Enables (or disables) reading and writing of 16- and 32- bit values from addresses that are not 16- or 32- bit aligned. By default unaligned access is disabled for all pre-ARMv6 and all ARMv6-M architectures, and enabled for all other architectures. If unaligned access is not enabled then words in packed data structures will be accessed a byte at a time."
+				useByScannerDiscovery="true"
+				valueType="enumerated">
 				<enablement type="UI_ENABLEMENT|CMD_USAGE">
 					<checkOption
 						holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
@@ -1328,13 +1314,12 @@
 				</enumeratedOptionValue>
 			</option>
 		</tool>
-
 		<tool
 			id="ilg.gnuarmeclipse.managedbuild.cross.tool.base.aarch64"
 			isAbstract="true"
 			name="ARM64 Targets common options">
 
-         <!-- ===== AArch64 Target ======================================== -->
+			<!-- ===== AArch64 Target ======================================== -->
 			<option
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.base.aarch64.target.family"
 				name="%option.target.aarch64.family"
@@ -1363,7 +1348,6 @@
 					name="Toolchain Default">
 				</enumeratedOptionValue>
 			</option>
-
 			<option
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.base.aarch64.target.feature.crc"
 				name="%option.target.aarch64.feature.crc"
@@ -1564,11 +1548,8 @@
 					</checkOption>
 				</enablement>
 			</option>
-         <!-- ============================================================= -->
-
+			<!-- ============================================================= -->
 		</tool>
-
-
 		<toolChain
 			archList="all"
 			configurationEnvironmentSupplier="ilg.gnumcueclipse.managedbuild.cross.arm.EnvironmentVariableSupplier"
@@ -1608,223 +1589,88 @@
 					name="%option.toolchain.architecture.aarch64">
 				</enumeratedOptionValue>
 				<enablement type="UI_VISIBILITY">
-					<false>
-						false body text
+					<false> false body text
 					</false>
 				</enablement>
 			</option>
 			<option
 				category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.command.prefix"
-				isAbstract="false"
-				name="%option.toolchain.prefix"
-				resourceFilter="all"
-				valueType="string">
-				<enablement type="UI_VISIBILITY">
-					<false>
-						false body text
-					</false>
-				</enablement>
+				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.command.prefix">
 			</option>
 			<option
 				category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.command.suffix"
-				isAbstract="false"
-				name="%option.toolchain.suffix"
-				resourceFilter="all"
-				valueType="string">
-				<enablement type="UI_VISIBILITY">
-					<false>
-						false body text
-					</false>
-				</enablement>
+				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.command.suffix">
 			</option>
 			<option
 				category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
 				defaultValue="echo"
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.command.c"
-				isAbstract="false"
-				name="%option.toolchain.command.c"
-				resourceFilter="all"
-				valueType="string">
-				<enablement type="UI_VISIBILITY">
-					<false>
-						false body text
-					</false>
-				</enablement>
+				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.command.c">
 			</option>
 			<option
 				category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
-				defaultValue="echo"
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.command.cpp"
-				isAbstract="false"
-				name="%option.toolchain.command.cpp"
-				resourceFilter="all"
-				valueType="string">
-				<enablement type="UI_VISIBILITY">
-					<false>
-						false body text
-					</false>
-				</enablement>
+				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.command.cpp">
 			</option>
 			<option
 				category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.command.ar"
-				isAbstract="false"
-				name="%option.toolchain.command.ar"
-				resourceFilter="all"
-				valueType="string">
-				<enablement type="UI_VISIBILITY|UI_ENABLEMENT|CMD_USAGE">
-					<checkBuildProperty
-						property="org.eclipse.cdt.build.core.buildArtefactType"
-						value="org.eclipse.cdt.build.core.buildArtefactType.staticLib">
-					</checkBuildProperty>
-				</enablement>
-				<enablement type="UI_VISIBILITY">
-					<false>
-						false body text
-					</false>
-				</enablement>
+				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.command.ar">
 			</option>
 			<option
 				category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.command.objcopy"
-				isAbstract="false"
-				name="%option.toolchain.command.objcopy"
-				resourceFilter="all"
-				valueType="string">
-				<enablement type="UI_VISIBILITY|UI_ENABLEMENT|CMD_USAGE">
-					<checkBuildProperty
-						property="org.eclipse.cdt.build.core.buildArtefactType"
-						value="org.eclipse.cdt.build.core.buildArtefactType.exe">
-					</checkBuildProperty>
-				</enablement>
-				<enablement type="UI_VISIBILITY">
-					<false>
-						false body text
-					</false>
-				</enablement>
+				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.command.objcopy">
 			</option>
 			<option
 				category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.command.objdump"
-				isAbstract="false"
-				name="%option.toolchain.command.listing"
-				resourceFilter="all"
-				valueType="string">
-				<enablement type="UI_VISIBILITY|UI_ENABLEMENT|CMD_USAGE">
-					<checkBuildProperty
-						property="org.eclipse.cdt.build.core.buildArtefactType"
-						value="org.eclipse.cdt.build.core.buildArtefactType.exe">
-					</checkBuildProperty>
-				</enablement>
-				<enablement type="UI_VISIBILITY">
-					<false>
-						false body text
-					</false>
-				</enablement>
+				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.command.objdump">
 			</option>
 			<option
 				category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.command.size"
-				isAbstract="false"
-				name="%option.toolchain.command.size"
-				resourceFilter="all"
-				valueType="string">
-				<enablement type="UI_VISIBILITY|UI_ENABLEMENT|CMD_USAGE">
-					<checkBuildProperty
-						property="org.eclipse.cdt.build.core.buildArtefactType"
-						value="org.eclipse.cdt.build.core.buildArtefactType.exe">
-					</checkBuildProperty>
-				</enablement>
-				<enablement type="UI_VISIBILITY">
-					<false>
-						false body text
-					</false>
-				</enablement>
+				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.command.size">
 			</option>
 			<option
 				category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.command.make"
-				isAbstract="false"
-				name="%option.toolchain.command.make"
-				resourceFilter="all"
-				valueType="string">
-				<enablement type="UI_VISIBILITY">
-					<false>
-						false body text
-					</false>
-				</enablement>
+				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.command.make">
 			</option>
 			<option
 				category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.command.rm"
-				isAbstract="false"
-				name="%option.toolchain.command.rm"
-				resourceFilter="all"
-				valueType="string">
-				<enablement type="UI_VISIBILITY">
-					<false>
-						false body text
-					</false>
-				</enablement>
+				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.command.rm">
 			</option>
 			<option
 				category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.useglobalpath"
 				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.toolchain.useglobalpath">
-				<enablement type="UI_VISIBILITY">
-					<false>
-						false body text
-					</false>
-				</enablement>
 			</option>
 			<option
-				browseType="directory"
 				category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.path"
-				isAbstract="false"
-				name="%option.toolchain.path"
-				resourceFilter="all"
-				valueType="string">
-				<enablement type="UI_VISIBILITY">
-					<false>
-						false body text
-					</false>
-				</enablement>
+				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.toolchain.path">
 			</option>
 			<option
 				category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createflash"
 				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.toolchain.createflash">
-				<enablement type="UI_VISIBILITY">
-					<false>
-						false body text
-					</false>
-				</enablement>
 			</option>
 			<option
 				category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.createlisting"
 				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.toolchain.createlisting">
-				<enablement type="UI_VISIBILITY">
-					<false>
-						false body text
-					</false>
-				</enablement>
 			</option>
 			<option
 				category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.addtools.printsize"
 				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.toolchain.printsize">
-				<enablement type="UI_VISIBILITY">
-					<false>
-						false body text
-					</false>
-				</enablement>
 			</option>
-         
-         <!-- ===== Target ================================================ -->
+
+			<!-- ===== Target ================================================ -->
 			<optionCategory
 				id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
 				name="%optionCategory.target">
@@ -1849,7 +1695,6 @@
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.thumbinterwork"
 				superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.thumbinterwork">
 			</option>
-
 			<option
 				category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.endianness"
@@ -1910,8 +1755,8 @@
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.target.other"
 				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.target.other">
 			</option>
-           
-            <!-- ===== Debugging ========================================== -->
+
+			<!-- ===== Debugging ========================================== -->
 			<optionCategory
 				id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.optimization"
 				name="%optionCategory.optimization">
@@ -1993,8 +1838,7 @@
 				resourceFilter="all"
 				valueType="string">
 				<enablement type="UI_VISIBILITY">
-					<false>
-						false body text
+					<false> false body text
 					</false>
 				</enablement>
 			</option>
@@ -2121,8 +1965,6 @@
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.debugging.other"
 				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.debugging.other">
 			</option>
-
-
 			<tool
 				command="${cross_prefix}${cross_c}${cross_suffix}"
 				commandLineGenerator="ilg.gnumcueclipse.managedbuild.cross.CompilerCommandLineGenerator"
@@ -2163,17 +2005,8 @@
 				</optionCategory>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.preprocessor"
-					command="-x assembler-with-cpp"
-					commandFalse="-x assembler"
-					defaultValue="false"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.usepreprocessor"
-					name="%option.assembler.usepreprocessor"
-					valueType="boolean">
-					<enablement
-						attribute="value"
-						type="CONTAINER_ATTRIBUTE"
-						value="true">
-					</enablement>
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.assembler.usepreprocessor">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.preprocessor"
@@ -2224,10 +2057,8 @@
 				</optionCategory>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.misc"
-					command="-Xassembler ${VALUE}"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.flags"
-					name="%option.assembler.flags"
-					valueType="stringList">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.assembler.flags">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.misc"
@@ -2247,12 +2078,9 @@
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.misc"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.other"
-					name="%option.assembler.other"
-					valueType="string">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.assembler.other">
 				</option>
 			</tool>
-
-
 			<tool
 				command="${cross_prefix}${cross_c}${cross_suffix}"
 				commandLineGenerator="ilg.gnumcueclipse.managedbuild.cross.CompilerCommandLineGenerator"
@@ -2378,33 +2206,18 @@
 				</optionCategory>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
-					command="-Wmissing-prototypes"
-					defaultValue="false"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.warning.missingprototypes"
-					name="%option.warnings.missingprototypes"
-					tip="Warn if a global function is defined without a previous prototype declaration. This warning is issued even if the definition itself provides a prototype. Use this option to detect global functions that do not have a matching prototype declaration in a header file."
-					useByScannerDiscovery="true"
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.c.compiler.warning.missingprototypes">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
-					command="-Wstrict-prototypes"
-					defaultValue="false"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.warning.strictprototypes"
-					name="%option.warnings.strictprototypes"
-					tip="Warn if a function is declared or defined without specifying the argument types. (An old-style function definition is permitted without a warning if preceded by a declaration that specifies the argument types.)"
-					useByScannerDiscovery="true"
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.c.compiler.warning.strictprototypes">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
-					command="-Wbad-function-cast"
-					defaultValue="false"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.warning.badfunctioncast"
-					name="%option.warnings.badfunctioncast"
-					tip="Warn whenever a function call is cast to a non-matching type. For example, warn if int malloc() is cast to anything *."
-					useByScannerDiscovery="true"
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.c.compiler.warning.badfunctioncast">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.warnings"
@@ -2477,13 +2290,8 @@
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.preprocessor"
-					command="-nostdinc++"
-					defaultValue="false"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nostdincpp"
-					name="%option.compiler.nostdincpp"
-					tip="Do not search for header files in the C++-specific standard directories, but do still search the other standard directories."
-					useByScannerDiscovery="true"
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.cpp.compiler.nostdincpp">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.preprocessor"
@@ -2654,43 +2462,23 @@
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.optimization"
-					command="-fno-exceptions"
-					defaultValue="false"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.noexceptions"
-					name="%option.cpp.compiler.noexceptions"
-					tip="Do not generates extra code needed to propagate exceptions."
-					useByScannerDiscovery="true"
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.cpp.compiler.noexceptions">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.optimization"
-					command="-fno-rtti"
-					defaultValue="false"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nortti"
-					name="%option.cpp.compiler.nortti"
-					tip="Disable generation of information about every class with virtual functions for use by the C++ run-time type identification features (‘dynamic_cast’ and ‘typeid’). If you don’t use those parts of the language, you can save some space by using this flag. Note that exception handling uses the same information, but G++ generates it as needed. The ‘dynamic_cast’ operator can still be used for casts that do not require run-time type information, i.e. casts to void * or to unambiguous base classes."
-					useByScannerDiscovery="true"
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.cpp.compiler.nortti">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.optimization"
-					command="-fno-use-cxa-atexit"
-					defaultValue="false"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nousecxaatexit"
-					name="%option.cpp.compiler.nousecxaatexit"
-					tip="Do not register destructors for objects with static storage duration with the __cxa_ atexit() function."
-					useByScannerDiscovery="true"
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.cpp.compiler.nousecxaatexit">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.optimization"
-					command="-fno-threadsafe-statics"
-					defaultValue="false"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.nothreadsafestatics"
-					name="%option.cpp.compiler.nothreadsafestatics"
-					tip="Do not emit the extra code to use the routines specified in the C++ ABI for thread-safe initialization of local statics. You can use this option to reduce code size slightly in code that doesn’t need to be thread-safe."
-					useByScannerDiscovery="true"
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.cpp.compiler.nothreadsafestatics">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.optimization"
@@ -2703,73 +2491,38 @@
 				</optionCategory>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
-					command="-Wabi"
-					defaultValue="false"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warnabi"
-					name="%option.compiler.warnabi"
-					tip="Warn when G++ generates code that is probably not compatible with the vendor-neutral C++ ABI. Although an effort has been made to warn about all such cases, there are probably some cases that are not warned about, even though G++ is generating incompatible code. There may also be cases where warnings are emitted even though the code that is generated is compatible."
-					useByScannerDiscovery="true"
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.cpp.compiler.warnabi">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
-					command="-Wctor-dtor-privacy"
-					defaultValue="false"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.ctordtorprivacy"
-					name="%option.compiler.warning.ctordtorprivacy"
-					tip="Warn when a class seems unusable because all the constructors or destructors in that class are private, and it has neither friends nor public static member functions. Also warn if there are no non-private methods, and there’s at least one private member function that isn’t a constructor or destructor."
-					useByScannerDiscovery="true"
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.cpp.compiler.warning.ctordtorprivacy">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
-					command="-Wnoexcept"
-					defaultValue="false"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.noexcept"
-					name="%option.compiler.warning.noexcept"
-					tip="Warn when a noexcept-expression evaluates to false because of a call to a function that does not have a non-throwing exception specification (i.e. ‘throw()’ or ‘noexcept’) but is known by the compiler to never throw an exception."
-					useByScannerDiscovery="true"
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.cpp.compiler.warning.noexcept">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
-					command="-Wnon-virtual-dtor"
-					defaultValue="false"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.nonvirtualdtor"
-					name="%option.compiler.warning.nonvirtualdtor"
-					tip="Warn when a class has virtual functions and an accessible non-virtual destructor, in which case it is possible but unsafe to delete an instance of a derived class through a pointer to the base class. This warning is also enabled if ‘-Weffc++’ is specified."
-					useByScannerDiscovery="true"
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.cpp.compiler.warning.nonvirtualdtor">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
-					command="-Wstrict-null-sentinel"
-					defaultValue="false"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.strictnullsentinel"
-					name="%option.compiler.warning.strictnullsentinel"
-					tip="Warn about the use of an uncasted NULL as sentinel. When compiling only with GCC this is a valid sentinel, as NULL is defined to __null. Although it is a null pointer constant rather than a null pointer, it is guaranteed to be of the same size as a pointer. But this use is not portable across different compilers."
-					useByScannerDiscovery="true"
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.cpp.compiler.warning.strictnullsentinel">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
-					command="-Wsign-promo"
-					defaultValue="false"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.signpromo"
-					name="%option.compiler.warning.signpromo"
-					tip="Warn when overload resolution chooses a promotion from unsigned or enumerated type to a signed type, over a conversion to an unsigned type of the same size. Previous versions of G++ tried to preserve unsignedness, but the standard mandates the current behavior."
-					useByScannerDiscovery="true"
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.cpp.compiler.warning.signpromo">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
-					command="-Weffc++"
-					defaultValue="false"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warneffc"
-					name="%option.compiler.warneffc"
-					tip="Warn about violations of the style guidelines from Scott Meyers’ Effective C++, Second Edition book."
-					useByScannerDiscovery="true"
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.cpp.compiler.warneffc">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.warnings"
@@ -2801,7 +2554,6 @@
 					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.compiler.other">
 				</option>
 			</tool>
-
 			<tool
 				command="${cross_prefix}${cross_c}${cross_suffix}"
 				commandLinePattern="${COMMAND} ${cross_toolchain_flags} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT} ${INPUTS}"
@@ -3172,7 +2924,6 @@
 					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.defname">
 				</option>
 			</tool>
-
 			<tool
 				command="${cross_prefix}${cross_ar}${cross_suffix}"
 				id="ilg.gnuarmeclipse.managedbuild.cross.tool.archiver"
@@ -3187,10 +2938,8 @@
 					</checkBuildProperty>
 				</enablement>
 			</tool>
-         
-         
-         <!-- ===== Additional Tools for secondary targets ================ -->
 
+			<!-- ===== Additional Tools for secondary targets ================ -->
 			<tool
 				command="${cross_prefix}${cross_objcopy}${cross_suffix}"
 				commandLinePattern="${COMMAND} ${FLAGS} ${OUTPUT_FLAG} ${OUTPUT_PREFIX}${OUTPUT}"
@@ -3259,45 +3008,27 @@
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.createflash.general"
-					command="-j .text"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.createflash.textsection"
-					isAbstract="false"
-					name="%option.flash.textsections"
-					resourceFilter="all"
-					tip="Copy only the named section from the input file to the output file. This option may be given more than once."
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.createflash.textsection">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.createflash.general"
-					command="-j .data"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.createflash.datasection"
-					isAbstract="false"
-					name="%option.flash.datasections"
-					resourceFilter="all"
-					tip="Copy only the named section from the input file to the output file. This option may be given more than once."
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.createflash.datasection">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.createflash.general"
-					command="-j "
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.createflash.othersection"
-					isAbstract="false"
-					name="%option.flash.othersections"
-					resourceFilter="all"
-					tip="Copy only the named section from the input file to the output file. This option may be given more than once."
-					valueType="stringList">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.createflash.othersection">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.createflash.general"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.createflash.other"
-					name="%option.flash.other"
-					valueType="string">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.createflash.other">
 				</option>
 				<option
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.createflash.InFileName"
-					resourceFilter="all"
-					value="&quot;${BuildArtifactFileName}&quot;"
-					valueType="string">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.createflash.InFileName">
 				</option>
 			</tool>
 			<tool
@@ -3340,140 +3071,62 @@
 				</optionCategory>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.createlisting.general"
-					command="--source"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.source"
-					isAbstract="false"
-					name="%option.listing.source"
-					resourceFilter="all"
-					tip="Display source code intermixed with disassembly, if possible. Implies -d."
-					valueType="boolean">
-					<enablement
-						attribute="value"
-						type="CONTAINER_ATTRIBUTE"
-						value="true">
-					</enablement>
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.createlisting.source">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.createlisting.general"
-					command="--all-headers"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.allheaders"
-					isAbstract="false"
-					name="%option.listing.allheaders"
-					resourceFilter="all"
-					tip="Display all available header information, including the symbol table and relocation entries. Using -x is equivalent to specifying all of -a -f -h -p -r -t."
-					valueType="boolean">
-					<enablement
-						attribute="value"
-						type="CONTAINER_ATTRIBUTE"
-						value="true">
-					</enablement>
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.createlisting.allheaders">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.createlisting.general"
-					command="--demangle"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.demangle"
-					isAbstract="false"
-					name="%option.listing.demangle"
-					resourceFilter="all"
-					tip="Decode (demangle) low-level symbol names into user-level names. Besides removing any initial underscore prepended by the system, this makes C++ function names readable."
-					valueType="boolean">
-					<enablement
-						attribute="value"
-						type="CONTAINER_ATTRIBUTE"
-						value="true">
-					</enablement>
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.createlisting.demangle">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.createlisting.general"
-					command="--debugging"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.debugging"
-					isAbstract="false"
-					name="%option.listing.debugging"
-					resourceFilter="all"
-					tip="Display debugging information. This attempts to parse STABS and IEEE debugging format information stored in the file and print it out using a C like syntax. If neither of these formats are found this option falls back on the -W option to print any DWARF information in the file."
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.createlisting.debugging">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.createlisting.general"
-					command="--disassemble"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.disassemble"
-					isAbstract="false"
-					name="%option.listing.disassemble"
-					resourceFilter="all"
-					tip="Display the assembler mnemonics for the machine instructions from objfile. This option only disassembles those sections which are expected to contain instructions."
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.createlisting.disassemble">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.createlisting.general"
-					command="--file-headers"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.fileheaders"
-					isAbstract="false"
-					name="%option.listing.fileheaders"
-					resourceFilter="all"
-					tip="Display summary information from the overall header of each of the objfile files."
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.createlisting.fileheaders">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.createlisting.general"
-					command="--line-numbers"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.linenumbers"
-					isAbstract="false"
-					name="%option.listing.linenumbers"
-					resourceFilter="all"
-					tip="Label the display (using debugging information) with the filename and source line numbers corresponding to the object code or relocs shown. Only useful with -d, -D, or -r."
-					valueType="boolean">
-					<enablement
-						attribute="value"
-						type="CONTAINER_ATTRIBUTE"
-						value="true">
-					</enablement>
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.createlisting.linenumbers">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.createlisting.general"
-					command="--reloc"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.reloc"
-					isAbstract="false"
-					name="%option.listing.reloc"
-					resourceFilter="all"
-					tip="Print the relocation entries of the file. If used with -d or -D, the relocations are printed interspersed with the disassembly."
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.createlisting.reloc">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.createlisting.general"
-					command="--syms"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.symbols"
-					isAbstract="false"
-					name="%option.listing.symbols"
-					resourceFilter="all"
-					tip="Print the symbol table entries of the file. This is similar to the information provided by the `nm&apos; program, although the display format is different. The format of the output depends upon the format of the file being dumped."
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.createlisting.symbols">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.createlisting.general"
-					command="--wide"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.wide"
-					isAbstract="false"
-					name="%option.listing.wide"
-					resourceFilter="all"
-					tip="Format some lines for output devices that have more than 80 columns. Also do not truncate symbol names when they are displayed."
-					valueType="boolean">
-					<enablement
-						attribute="value"
-						type="CONTAINER_ATTRIBUTE"
-						value="true">
-					</enablement>
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.createlisting.wide">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.createlisting.general"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.other"
-					name="%option.listing.other"
-					valueType="string">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.createlisting.other">
 				</option>
 				<option
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.createlisting.InFileName"
-					resourceFilter="all"
-					value="&quot;${BuildArtifactFileName}&quot;"
-					valueType="string">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.createlisting.InFileName">
 				</option>
 			</tool>
 			<tool
@@ -3537,49 +3190,27 @@
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.printsize.general"
-					command="-x"
-					defaultValue="false"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.printsize.hex"
-					name="%option.print.hex"
-					tip="The size of each section is given in hexadecimal."
-					valueType="boolean">
-					<enablement type="UI_ENABLEMENT|CMD_USAGE">
-						<checkOption
-							holderId="ilg.gnuarmeclipse.managedbuild.cross.tool.printsize"
-							isRegex="false"
-							optionId="ilg.gnuarmeclipse.managedbuild.cross.option.printsize.format"
-							value="ilg.gnuarmeclipse.managedbuild.cross.option.printsize.format.berkeley">
-						</checkOption>
-					</enablement>
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.printsize.hex">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.printsize.general"
-					command="--totals"
-					defaultValue="false"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.printsize.totals"
-					name="%option.print.totals"
-					tip="Show totals of all objects listed (Berkeley format listing mode only). "
-					valueType="boolean">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.printsize.totals">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.printsize.general"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.printsize.other"
-					name="%option.print.other"
-					valueType="string">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.printsize.other">
 				</option>
 				<option
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.printsize.InFileName"
-					resourceFilter="all"
-					value="&quot;${BuildArtifactFileName}&quot;"
-					valueType="string">
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.printsize.InFileName">
 				</option>
 			</tool>
 
-         
-         <!-- ============================================================= -->
-
+			<!-- ============================================================= -->
 		</toolChain>
-
 		<projectType
 			buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.exe"
 			id="ilg.gnuarmeclipse.managedbuild.cross.target.elf"
@@ -3614,7 +3245,6 @@
 				</toolChain>
 			</configuration>
 		</projectType>
-
 		<projectType
 			buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.sharedLib"
 			id="ilg.gnuarmeclipse.managedbuild.cross.target.so"
@@ -3643,7 +3273,6 @@
 				</toolChain>
 			</configuration>
 		</projectType>
-
 		<projectType
 			buildArtefactType="org.eclipse.cdt.build.core.buildArtefactType.staticLib"
 			id="ilg.gnuarmeclipse.managedbuild.cross.target.lib"
@@ -3705,33 +3334,15 @@
 			name="FLASH Hex file"
 			priority="normal">
 		</content-type>
-      <!--
-      <content-type 
-      		id="ilg.gnuarmeclipse.managedbuild.cross.content-type.s"
-			name=".s Assembly file"
-			base-type="org.eclipse.cdt.core.asmSource" 
-			file-extensions="s"
-			priority="high" />
-      <file-association
-            content-type="org.eclipse.cdt.core.asmSource"
-            file-extensions="s,S,asm">
-      </file-association>
-      			-->
-
+		<!-- <content-type id="ilg.gnuarmeclipse.managedbuild.cross.content-type.s" 
+			name=".s Assembly file" base-type="org.eclipse.cdt.core.asmSource" file-extensions="s" 
+			priority="high" /> <file-association content-type="org.eclipse.cdt.core.asmSource" 
+			file-extensions="s,S,asm"> </file-association> -->
 	</extension>
-   <!--
-   <extension 
-   		 point="org.eclipse.cdt.core.language">
-	  <language
-			class="org.eclipse.cdt.core.model.AssemblyLanguage"
-			id="ilg.gnuarmeclipse.managedbuild.cross.assembly" 
-			name="Assembly">
-			<contentType 
-				id="ilg.gnuarmeclipse.managedbuild.cross.content-type.s">
-			</contentType>
-	  </language>
-   </extension>
-   -->
+	<!-- <extension point="org.eclipse.cdt.core.language"> <language class="org.eclipse.cdt.core.model.AssemblyLanguage" 
+		id="ilg.gnuarmeclipse.managedbuild.cross.assembly" name="Assembly"> <contentType 
+		id="ilg.gnuarmeclipse.managedbuild.cross.content-type.s"> </contentType> 
+		</language> </extension> -->
 	<extension point="org.eclipse.cdt.core.templates">
 		<template
 			filterPattern=".*g\+\+"
@@ -3781,10 +3392,7 @@
 			tooltip="Select and configure the toolchain  "
 			weight="012">
 		</tab>
-
-
 	</extension>
-
 	<extension point="ilg.gnumcueclipse.debug.core.cprojectExtra">
 		<factory
 			class="ilg.gnumcueclipse.managedbuild.cross.xpi.CProjectExtraDataManagerFactory">
@@ -3834,7 +3442,6 @@
 			type="java.lang.Object">
 		</propertyTester>
 	</extension>
-    
 	<extension point="ilg.gnumcueclipse.managedbuild.cross.arm.toolchains">
 		<toolchain
 			name="Custom"
