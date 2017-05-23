@@ -265,6 +265,11 @@
 							<checkOption
 								isRegex="false"
 								optionId="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.base"
+								value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.default">
+							</checkOption>
+							<checkOption
+								isRegex="false"
+								optionId="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.base"
 								value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv32g">
 							</checkOption>
 							<checkOption
@@ -286,6 +291,11 @@
 				<enablement type="UI_ENABLEMENT">
 					<not>
 						<or>
+							<checkOption
+								isRegex="false"
+								optionId="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.base"
+								value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.default">
+							</checkOption>
 							<checkOption
 								isRegex="false"
 								optionId="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.base"
@@ -331,6 +341,11 @@
 							<checkOption
 								isRegex="false"
 								optionId="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.base"
+								value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.default">
+							</checkOption>
+							<checkOption
+								isRegex="false"
+								optionId="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.base"
 								value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv32g">
 							</checkOption>
 							<checkOption
@@ -349,6 +364,17 @@
 				isAbstract="true"
 				name="%option.target.isa.compressed"
 				valueType="boolean">
+				<enablement type="UI_ENABLEMENT">
+					<not>
+						<or>
+							<checkOption
+								isRegex="false"
+								optionId="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.isa.base"
+								value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.default">
+							</checkOption>
+						</or>
+					</not>
+				</enablement>
 			</option>
 			<option
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.abi.integer"
@@ -392,6 +418,17 @@
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.fp.double"
 					name="%option.target.abi.fp.double">
 				</enumeratedOptionValue>
+				<enablement type="UI_ENABLEMENT">
+					<not>
+						<or>
+							<checkOption
+								isRegex="false"
+								optionId="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.abi.integer"
+								value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.integer.default">
+							</checkOption>
+						</or>
+					</not>
+				</enablement>
 			</option>
 			<option
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.codemodel"
