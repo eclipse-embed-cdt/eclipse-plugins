@@ -397,6 +397,10 @@
 						value="org.eclipse.cdt.build.core.buildArtefactType.exe">
 					</checkBuildProperty>
 				</enablement>
+				<enablement type="UI_VISIBILITY">
+					<false> false body text
+					</false>
+				</enablement>
 			</option>
 			<option
 				defaultValue="false"
@@ -414,6 +418,10 @@
 						value="org.eclipse.cdt.build.core.buildArtefactType.exe">
 					</checkBuildProperty>
 				</enablement>
+				<enablement type="UI_VISIBILITY">
+					<false> false body text
+					</false>
+				</enablement>
 			</option>
 			<option
 				defaultValue="false"
@@ -430,6 +438,10 @@
 						property="org.eclipse.cdt.build.core.buildArtefactType"
 						value="org.eclipse.cdt.build.core.buildArtefactType.exe">
 					</checkBuildProperty>
+				</enablement>
+				<enablement type="UI_VISIBILITY">
+					<false> false body text
+					</false>
 				</enablement>
 			</option>
 		</tool>
