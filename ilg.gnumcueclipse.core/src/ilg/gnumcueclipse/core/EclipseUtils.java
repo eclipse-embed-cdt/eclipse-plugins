@@ -376,7 +376,7 @@ public class EclipseUtils {
 			IScopeContext[] contexts) {
 
 		String value = null;
-
+		String from = null;
 		for (int i = 0; i < contexts.length; ++i) {
 			value = contexts[i].getNode(pluginId).get(key, null);
 
@@ -384,15 +384,24 @@ public class EclipseUtils {
 				value = value.trim();
 
 				if (!value.isEmpty()) {
+					from = contexts[i].getName();
 					break;
 				}
 			}
 		}
 
 		if (value != null) {
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("EclipseUtils.getPreferenceValueForId(\"" + pluginId + "\", \"" + key + "\",\""
+						+ defaultValue + "\") = \"" + value + "\" from " + from);
+			}
 			return value;
 		}
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("EclipseUtils.getPreferenceValueForId(\"" + pluginId + "\", \"" + key + "\",\""
+					+ defaultValue + "\") = \"" + defaultValue + "\" default");
+		}
 		return defaultValue;
 	}
 
@@ -440,7 +449,7 @@ public class EclipseUtils {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Get the variable value. The variables are accesible in the Run/Debug ->
+	 * Get the variable value. The variables are accessible in the Run/Debug ->
 	 * String Substitution preferences page.
 	 * 
 	 * @param name
@@ -451,9 +460,12 @@ public class EclipseUtils {
 
 		IValueVariable variable = VariablesPlugin.getDefault().getStringVariableManager().getValueVariable(name);
 		if (variable != null) {
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("EclipseUtils.getVariableValue(\"" + name + "\") = \"" + variable.getValue() + "\"");
+			}
 			return variable.getValue();
 		} else {
-			Activator.log("Variable \"" + name + "\" not found.");
+			System.out.println("EclipseUtils.getVariableValue(\"" + name + "\" ) not found");
 		}
 
 		return null;
@@ -470,14 +482,14 @@ public class EclipseUtils {
 	 */
 	public static void setVariableValue(String name, String value) {
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("EclipseUtils.setVariableValue(\"" + name + "\", \"" + value + "\")");
+		}
 		IValueVariable variable = VariablesPlugin.getDefault().getStringVariableManager().getValueVariable(name);
 		if (variable != null) {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println("Variable \"" + name + "\"=\"" + value + "\"");
-			}
 			variable.setValue(value);
 		} else {
-			Activator.log("Variable \"" + name + "\" not set.");
+			System.out.println("EclipseUtils.setVariableValue(\"" + name + "\", \"" + value + "\") not set");
 		}
 	}
 
@@ -510,7 +522,7 @@ public class EclipseUtils {
 		}
 		if (variable != null) {
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("Variable \"" + name + "\"=\"" + value + "\"");
+				System.out.println("Variable \"" + name + "\" = \"" + value + "\"");
 			}
 			variable.setValue(value);
 		} else {

@@ -39,7 +39,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 	public void initializeDefaultPreferences() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("DefaultPreferenceInitializer.initializeDefaultPreferences()");
+			System.out.println("arm.DefaultPreferenceInitializer.initializeDefaultPreferences()");
 		}
 
 		DefaultPreferences defaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
@@ -67,7 +67,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void added(NodeChangeEvent event) {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("LateInitializer.added() " + event + " " + event.getChild().name());
+				System.out.println("arm.LateInitializer.added() " + event + " " + event.getChild().name());
 			}
 
 			if (Activator.PLUGIN_ID.equals(event.getChild().name())) {
@@ -83,7 +83,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void removed(NodeChangeEvent event) {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("LateInitializer.removed() " + event);
+				System.out.println("arm.LateInitializer.removed() " + event);
 			}
 		}
 
@@ -156,7 +156,15 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 
 				if (!searchPath.isEmpty()) {
 					// If the search path is known, discover toolchain.
-					value = DefaultPreferences.discoverToolchainPath(toolchainName, searchPath);
+					int ix;
+					try {
+						ix = ToolchainDefinition.findToolchainByName(toolchainName);
+					} catch (IndexOutOfBoundsException e) {
+						ix = ToolchainDefinition.getDefault();
+					}
+
+					String executableName = ToolchainDefinition.getToolchain(ix).getFullCmdC();
+					value = DefaultPreferences.discoverToolchainPath(toolchainName, searchPath, executableName);
 					if (value != null && !value.isEmpty()) {
 						// If the toolchain path was finally discovered, store
 						// it in the preferences.
