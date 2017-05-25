@@ -1,2 +1,2 @@
 # Control if trace messages are shown.
-ilg.gnumcueclipse.managedbuild.cross.arm/debug=false
+ilg.gnumcueclipse.managedbuild.cross.arm/debug=true
