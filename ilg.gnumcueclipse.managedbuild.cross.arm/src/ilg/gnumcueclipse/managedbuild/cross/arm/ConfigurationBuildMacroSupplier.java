@@ -59,7 +59,7 @@ public class ConfigurationBuildMacroSupplier implements IConfigurationBuildMacro
 				}
 
 				if (Activator.getInstance().isDebugging()) {
-					System.out.println("Missing value of " + sId);
+					System.out.println("arm.ConfigurationBuildMacroSupplier.getMacro() Missing value of " + sId);
 				}
 				return null;
 			}

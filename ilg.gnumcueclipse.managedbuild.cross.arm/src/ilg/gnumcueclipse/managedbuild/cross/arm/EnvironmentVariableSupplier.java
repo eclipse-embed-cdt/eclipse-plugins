@@ -127,7 +127,8 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 					sysroot = bin;
 				if (DEBUG_PATH) {
 					if (Activator.getInstance().isDebugging()) {
-						System.out.println("PATH=" + sysroot + " opt=" + path + " cfg=" + configuration + " prj="
+						System.out.println("arm.PathEnvironmentVariable.create() PATH=" + sysroot + " opt=" + path
+								+ " cfg=" + configuration + " prj="
 								+ configuration.getManagedProject().getOwner().getName());
 					}
 				}

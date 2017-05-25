@@ -77,7 +77,7 @@ public class WorkspaceToolchainsPathsPreferencesPage extends FieldEditorPreferen
 	@Override
 	public void init(IWorkbench workbench) {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("WorkspaceToolchainsPathsPreferencesPage.init()");
+			System.out.println("riscv.WorkspaceToolchainsPathsPreferencesPage.init()");
 		}
 	}
 

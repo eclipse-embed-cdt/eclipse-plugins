@@ -78,7 +78,7 @@ public class GlobalToolchainsPathsPreferencesPage extends FieldEditorPreferenceP
 	@Override
 	public void init(IWorkbench workbench) {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GlobalToolsPathsPage.init()");
+			System.out.println("arm.GlobalToolchainsPathsPreferencesPage.init()");
 		}
 	}
 

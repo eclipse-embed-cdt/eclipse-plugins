@@ -19,6 +19,7 @@ import org.osgi.service.prefs.BackingStoreException;
 import org.osgi.service.prefs.Preferences;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.managedbuild.cross.Activator;
 
 public class PersistentPreferences {
 
@@ -94,6 +95,10 @@ public class PersistentPreferences {
 
 		value = value.trim();
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("putEclipseString(\"" + key + "\", \"" + value + "\") " + fPluginId);
+		}
+
 		// Access the Eclipse scope
 		Preferences preferences = ConfigurationScope.INSTANCE.getNode(fPluginId);
 		preferences.put(key, value);
@@ -102,6 +107,10 @@ public class PersistentPreferences {
 	private void putWorkspaceString(String key, String value) {
 
 		value = value.trim();
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("putWorkspaceString(\"" + key + "\", \"" + value + "\") " + fPluginId);
+		}
 
 		// Access the Workspace scope
 		Preferences preferences = InstanceScope.INSTANCE.getNode(fPluginId);

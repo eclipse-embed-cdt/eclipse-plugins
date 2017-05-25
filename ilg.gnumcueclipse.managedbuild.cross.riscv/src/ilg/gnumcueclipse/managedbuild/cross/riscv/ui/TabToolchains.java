@@ -141,12 +141,12 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		// fComposite = parent;
 		// Disabled, otherwise toolchain changes fail
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabToolchains.createControls()");
+			System.out.println("riscv.TabToolchains.createControls()");
 		}
 
 		if (!page.isForProject()) {
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("not this project");
+				System.out.println("riscv.TabToolchains.createControls() not this project");
 			}
 			return;
 		}
@@ -156,7 +156,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		fConfig = getCfg();
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("createControls() fConfig=" + fConfig);
+			System.out.println("riscv.TabToolchains.createControls() fConfig=" + fConfig);
 		}
 
 		// usercomp is defined in parent class
@@ -417,7 +417,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	private void updateInterfaceAfterToolchainChange() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabToolchains.updateInterfaceAfterToolchainChange()");
+			System.out.println("riscv.TabToolchains.updateInterfaceAfterToolchainChange()");
 		}
 		int index;
 		try {
@@ -472,7 +472,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 		// fConfig = getCfg();
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabToolchains.updateData() " + getCfg().getName());
+			System.out.println("riscv.TabToolchains.updateData() " + getCfg().getName());
 		}
 
 		boolean isExecutable;
@@ -522,7 +522,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	protected void performApply(ICResourceDescription src, ICResourceDescription dst) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabToolchains.performApply() " + src.getName());
+			System.out.println("riscv.TabToolchains.performApply() " + src.getName());
 		}
 
 		// need to apply changes in both configurations
@@ -545,14 +545,14 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 		IConfiguration config = getCfg();
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Toolchains.performOK() " + config);
+			System.out.println("riscv.Toolchains.performOK() " + config);
 		}
 
 		if (fLastUpdatedConfig != null && fLastUpdatedConfig.equals(config)) {
 			updateOptions(config);
 		} else {
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("skipped " + fConfig);
+				System.out.println("riscv.Toolchains.performOK() skipped " + fConfig);
 			}
 		}
 	}
@@ -560,7 +560,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	private void updateControlsForConfig(IConfiguration config) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Toolchains.updateControlsForConfig() " + config.getName());
+			System.out.println("riscv.Toolchains.updateControlsForConfig() " + config.getName());
 		}
 
 		// int fSelectedToolchainIndex;
@@ -592,7 +592,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			}
 		} else {
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("No toolchain selected");
+				System.out.println("riscv.Toolchains.updateControlsForConfig() no toolchain selected");
 			}
 			// This is not a project created with the wizard
 			// (most likely it is the result of a toolchain change)
@@ -715,7 +715,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 		fConfig = config;
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("updateControlsForConfig() fConfig=" + fConfig);
+			System.out.println("riscv.Toolchains.updateControlsForConfig() fConfig=" + fConfig);
 		}
 
 		fLastUpdatedConfig = config;
@@ -726,7 +726,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	private void updateOptions(IConfiguration config) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Toolchains.updateOptions() " + config.getName());
+			System.out.println("riscv.Toolchains.updateOptions() " + config.getName());
 		}
 
 		if (config instanceof MultiConfiguration) {
@@ -911,7 +911,10 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	}
 
 	private void propagateCommandRmUpdate(IConfiguration config) {
-		// System.out.println("propagateCommandRmUpdate()");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("riscv.Toolchains.propagateCommandRmUpdate(" + config.getName() + ")");
+		}
+
 		if (true) {
 			IProject project = (IProject) config.getOwner();
 
@@ -936,7 +939,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	protected void performDefaults() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Toolchains.performDefaults()");
+			System.out.println("riscv.Toolchains.performDefaults()");
 		}
 		updateInterfaceAfterToolchainChange();
 
@@ -986,7 +989,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 		fConfig = getCfg();
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("isThisPlugin() fConfig=" + fConfig);
+			System.out.println("riscv.Toolchains.isThisPlugin() fConfig=" + fConfig);
 		}
 
 		IToolChain toolchain = fConfig.getToolChain();

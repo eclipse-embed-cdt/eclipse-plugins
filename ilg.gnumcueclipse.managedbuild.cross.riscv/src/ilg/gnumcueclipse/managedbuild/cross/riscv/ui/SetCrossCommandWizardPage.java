@@ -13,8 +13,8 @@
 
 package ilg.gnumcueclipse.managedbuild.cross.riscv.ui;
 
-import ilg.gnumcueclipse.core.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
+import ilg.gnumcueclipse.managedbuild.cross.riscv.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.IDs;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.ToolchainDefinition;
 

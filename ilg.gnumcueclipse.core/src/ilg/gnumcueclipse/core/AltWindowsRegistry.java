@@ -33,6 +33,9 @@ public class AltWindowsRegistry {
 		} catch (Exception e) {
 			;
 		}
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("AltWindowsRegistry.query(\"" + location + "\", \"" + key + "\") = \"" + value + "\"");
+		}
 		return value;
 	}
 }

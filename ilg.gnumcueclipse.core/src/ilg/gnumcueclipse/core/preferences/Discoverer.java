@@ -185,6 +185,11 @@ public class Discoverer {
 			value = registry.getLocalMachineValue(prefix + registrySubKey, registryName);
 		}
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Discoverer.getRegistryValue(\"" + prefix + "\", \"" + registrySubKey + "\", \""
+					+ registryName + "\") = \"" + value + "\"");
+		}
+
 		return value;
 	}
 

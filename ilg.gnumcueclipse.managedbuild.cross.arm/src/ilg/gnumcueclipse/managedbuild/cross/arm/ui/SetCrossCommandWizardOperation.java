@@ -28,7 +28,7 @@ import org.eclipse.core.runtime.NullProgressMonitor;
 import org.eclipse.jface.operation.IRunnableWithProgress;
 import org.eclipse.jface.wizard.IWizard;
 
-import ilg.gnumcueclipse.core.Activator;
+import ilg.gnumcueclipse.managedbuild.cross.arm.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.arm.ToolchainDefinition;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 
@@ -43,7 +43,9 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 
 	public void run(IProgressMonitor monitor) throws InvocationTargetException, InterruptedException {
 
-		System.out.println("SetCrossCommandOperation.run() begin");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("arm.SetCrossCommandWizardOperation.run() begin");
+		}
 
 		// get local properties
 		String projectName = (String) MBSCustomPageManager.getPageProperty(SetCrossCommandWizardPage.PAGE_ID,
@@ -63,6 +65,11 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_NAME);
 		String path = (String) MBSCustomPageManager.getPageProperty(SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_PATH);
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println(
+					"arm.SetCrossCommandWizardOperation.run() name=\"" + toolchainName + "\", path=\"" + path + "\")");
+		}
 
 		assert toolchainName != null;
 
@@ -100,13 +107,20 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 			}
 		}
 
-		System.out.println("SetCrossCommandOperation.run() end");
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("arm.SetCrossCommandWizardOperation.run() end");
+		}
 	}
 
 	private void updateOptions(IConfiguration config) throws BuildException {
 
 		String sToolchainName = (String) MBSCustomPageManager.getPageProperty(SetCrossCommandWizardPage.PAGE_ID,
 				SetCrossCommandWizardPage.CROSS_TOOLCHAIN_NAME);
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("arm.SetCrossCommandWizardOperation.updateOptions(" + config.getName() + ") name=\""
+					+ sToolchainName + "\"");
+		}
 
 		int toolchainIndex;
 		try {

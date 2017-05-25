@@ -63,27 +63,40 @@ public class DefaultPreferences {
 	 * 
 	 * @param key
 	 *            a string with the key to search.
-	 * @param defaulValue
+	 * @param defaultValue
 	 *            a string with the default, possibly null.
 	 * @return a trimmed string, or a null default.
 	 */
-	public String getString(String key, String defaulValue) {
+	public String getString(String key, String defaultValue) {
 
 		String value;
-		value = fPreferences.get(key, defaulValue);
+		value = fPreferences.get(key, defaultValue);
 
 		if (value != null) {
 			value = value.trim();
+		}
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.getString(" + key + ", \"" + defaultValue + "\") "
+					+ fPreferences.name() + " = \"" + value + "\"");
 		}
 
 		return value;
 	}
 
 	public boolean getBoolean(String key, boolean defaultValue) {
-		return fPreferences.getBoolean(key, defaultValue);
+		boolean value = fPreferences.getBoolean(key, defaultValue);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.getString(" + key + ", \"" + defaultValue + "\") "
+					+ fPreferences.name() + " = " + value);
+		}
+		return value;
 	}
 
 	private void putString(String key, String value) {
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.putString(" + key + ", \"" + value + "\") " + fPreferences.name());
+		}
 		fPreferences.put(key, value);
 	}
 
@@ -103,17 +116,18 @@ public class DefaultPreferences {
 		}
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getToolchainName()=\"" + value + "\"");
+			System.out.println("DefaultPreferences.getToolchainName() = \"" + value + "\"");
 		}
 		return value;
 	}
 
 	public void putToolchainName(String value) {
 
-		String key = PersistentPreferences.TOOLCHAIN_NAME_KEY;
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Default " + key + "=" + value);
+			System.out.println("DefaultPreferences.putToolchainName(\"" + value + "\")");
 		}
+
+		String key = PersistentPreferences.TOOLCHAIN_NAME_KEY;
 		putString(key, value);
 	}
 
@@ -136,17 +150,17 @@ public class DefaultPreferences {
 		}
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getToolchainPath()=\"" + value + "\" (" + key + ")");
+			System.out.println("DefaultPreferences.getToolchainPath(\"" + toolchainName + "\") = \"" + value + "\")");
 		}
 		return value;
 	}
 
 	public void putToolchainPath(String toolchainName, String value) {
 
-		String key = PersistentPreferences.getToolchainKey(toolchainName);
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Default " + key + "=" + value);
+			System.out.println("DefaultPreferences.putToolchainPath(\"" + toolchainName + "\", \"" + value + "\")");
 		}
+		String key = PersistentPreferences.getToolchainKey(toolchainName);
 		putString(key, value);
 	}
 
@@ -162,9 +176,12 @@ public class DefaultPreferences {
 	 */
 	public String getToolchainSearchPath(String toolchainName) {
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.getToolchainSearchPath(\"" + toolchainName + "\")");
+		}
 		String key = PersistentPreferences.getToolchainSearchKey(toolchainName);
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Check " + key + " for \"" + toolchainName + "\"");
+			System.out.println("DefaultPreferences.getToolchainSearchPath(\"" + toolchainName + "\") (" + key + ")");
 		}
 		String value = getString(PersistentPreferences.getToolchainSearchKey(toolchainName), "");
 
@@ -175,7 +192,8 @@ public class DefaultPreferences {
 
 		String key = PersistentPreferences.getToolchainSearchKey(toolchainName);
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Default " + key + "=" + value);
+			System.out.println("DefaultPreferences.putToolchainSearchPath(\"" + toolchainName + "\", \"" + value
+					+ "\") (" + key + ")");
 		}
 		putString(key, value);
 	}
@@ -212,7 +230,7 @@ public class DefaultPreferences {
 
 		String key = PersistentPreferences.BUILD_TOOLS_PATH_KEY;
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Default " + key + "=" + value);
+			System.out.println("DefaultPreferences.putBuildToolsPath(\"" + value + "\") (" + key + ")");
 		}
 
 		putString(key, value);
@@ -255,7 +273,7 @@ public class DefaultPreferences {
 		}
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("DefaultPreferences.discoverBuildToolsPath()=\"" + value + "\"");
+			System.out.println("DefaultPreferences.discoverBuildToolsPath() = \"" + value + "\"");
 		}
 
 		return value;
@@ -271,6 +289,9 @@ public class DefaultPreferences {
 	 */
 	private static String getLastToolchain(String folder, final String executableName) {
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.getLastToolchain(\"" + folder + "\", \"" + executableName + "\") ");
+		}
 		File local = new File(folder);
 		if (!local.isDirectory()) {
 			// System.out.println(folder + " not a folder");
@@ -309,6 +330,11 @@ public class DefaultPreferences {
 			}
 		}
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.getLastToolchain(\"" + folder + "\", \"" + executableName
+					+ "\") = \"" + latestPath.toString() + "\"");
+		}
+
 		return latestPath.toString();
 	}
 
@@ -320,7 +346,12 @@ public class DefaultPreferences {
 	 *            a string with a sequence of folders.
 	 * @return a String with the absolute folder path, or null if not found.
 	 */
-	public static String discoverToolchainPath(String toolchainName, String searchPath) {
+	public static String discoverToolchainPath(String toolchainName, String searchPath, String executableName) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.discoverToolchainPath(\"" + toolchainName + "\", \"" + searchPath
+					+ "\", " + executableName + ") ");
+		}
 
 		if (searchPath == null || searchPath.isEmpty()) {
 			return null;
@@ -353,13 +384,6 @@ public class DefaultPreferences {
 			return null;
 		}
 
-		/*
-		 * int ix; try { ix =
-		 * ToolchainDefinition.findToolchainByName(toolchainName); } catch
-		 * (IndexOutOfBoundsException e) { ix =
-		 * ToolchainDefinition.getDefault(); }
-		 */
-		String executableName = ""; // ToolchainDefinition.getToolchain(ix).getFullCmdC();
 		if (EclipseUtils.isWindows() && !executableName.endsWith(".exe")) {
 			executableName += ".exe";
 		}
