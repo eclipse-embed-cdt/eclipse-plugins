@@ -245,8 +245,9 @@ FULL_VERSION="$(grep "unit id='ilg.gnumcueclipse.core'" targetPlatformRepository
 if [ "${RISCV}" == "" ]
 then
 
-echo "Rsync-ing SourceForge ${SF_FOLDER}${TEST} site (${RSYNC_OPTS})"
-(cd repository; rsync -e ssh ${RSYNC_OPTS} ${SOURCE_LIST} ${SF_DESTINATION})
+echo
+# echo "Rsync-ing SourceForge ${SF_FOLDER}${TEST} site (${RSYNC_OPTS})"
+# (cd repository; rsync -e ssh ${RSYNC_OPTS} ${SOURCE_LIST} ${SF_DESTINATION})
 
 fi
 
