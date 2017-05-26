@@ -79,29 +79,47 @@ public class PersistentPreferences {
 
 	// ----- Getters ----------------------------------------------------------
 
-	private static String getString(String id, String defaultValue) {
+	private static String getString(String key, String defaultValue) {
 
-		return Platform.getPreferencesService().getString(Activator.PLUGIN_ID, id, defaultValue, null);
+		String value = Platform.getPreferencesService().getString(Activator.PLUGIN_ID, key, defaultValue, null);
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("qemu.PersistentPreferences.getString(\"" + key + "\", \"" + defaultValue + "\") = \""
+					+ value + "\"");
+		}
+		return value;
 	}
 
-	private static boolean getBoolean(String id, boolean defaultValue) {
+	private static boolean getBoolean(String key, boolean defaultValue) {
 
-		return Platform.getPreferencesService().getBoolean(Activator.PLUGIN_ID, id, defaultValue, null);
+		boolean value = Platform.getPreferencesService().getBoolean(Activator.PLUGIN_ID, key, defaultValue, null);
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("qemu.PersistentPreferences.getBoolean(\"" + key + "\", " + defaultValue + ") = " + value);
+		}
+		return value;
 	}
 
 	// ----- Setters ----------------------------------------------------------
 
-	private static void putWorkspaceString(String id, String value) {
+	private static void putWorkspaceString(String key, String value) {
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("qemu.PersistentPreferences.putWorkspaceString(\"" + key + "\", \"" + value + "\")");
+		}
 		value = value.trim();
 
 		// Access the instanceScope
 		Preferences preferences = InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID);
-		preferences.put(id, value);
+		preferences.put(key, value);
 	}
 
 	public static void flush() {
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("qemu.PersistentPreferences.flush()");
+		}
 		try {
 			InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).flush();
 		} catch (BackingStoreException e) {

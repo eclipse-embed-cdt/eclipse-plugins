@@ -95,17 +95,22 @@ public class DefaultPreferences {
 	 * 
 	 * @param key
 	 *            a string with the key to search.
-	 * @param defaulValue
+	 * @param defaultValue
 	 *            a string with the default, possibly null.
 	 * @return a trimmed string, or a null default.
 	 */
-	private static String getString(String key, String defaulValue) {
+	private static String getString(String key, String defaultValue) {
 
 		String value;
-		value = getPreferences().get(key, defaulValue);
+		value = getPreferences().get(key, defaultValue);
 
 		if (value != null) {
 			value = value.trim();
+		}
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println(
+					"qemu.DefaultPreferences.getString(\"" + key + "\", \"" + defaultValue + "\") = \"" + value + "\"");
 		}
 
 		return value;
@@ -113,23 +118,45 @@ public class DefaultPreferences {
 
 	public static boolean getBoolean(String key, boolean defaultValue) {
 
-		return getPreferences().getBoolean(key, defaultValue);
+		boolean value = getPreferences().getBoolean(key, defaultValue);
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("qemu.DefaultPreferences.getBoolean(\"" + key + "\", " + defaultValue + ") = " + value);
+		}
+		return value;
 	}
 
-	public static int getInt(String name, int defValue) {
+	public static int getInt(String key, int defaultValue) {
 
-		return getPreferences().getInt(name, defValue);
+		int value = getPreferences().getInt(key, defaultValue);
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("qemu.DefaultPreferences.getInt(\"" + key + "\", " + defaultValue + ") = " + value);
+		}
+		return value;
 	}
 
 	public static void putString(String key, String value) {
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("qemu.DefaultPreferences.putString(\"" + key + "\", \"" + value + "\")");
+		}
+
 		getPreferences().put(key, value);
 	}
 
 	public static void putInt(String key, int value) {
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("qemu.DefaultPreferences.putInt(\"" + key + "\", " + value + ")");
+		}
+
 		getPreferences().putInt(key, value);
 	}
 
 	public static void putBoolean(String key, boolean value) {
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("qemu.DefaultPreferences.putBoolean(\"" + key + "\", " + value + ")");
+		}
+
 		getPreferences().putBoolean(key, value);
 	}
 
@@ -151,7 +178,7 @@ public class DefaultPreferences {
 		String value = getString(key, "");
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getExecutableName()=\"" + value + "\"");
+			System.out.println("qemu.DefaultPreferences.getExecutableName()=\"" + value + "\"");
 		}
 		return value;
 	}
@@ -162,7 +189,7 @@ public class DefaultPreferences {
 
 		String value = getString(key, "");
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getExecutableNameOs()=\"" + value + "\" (" + key + ")");
+			System.out.println("qemu.DefaultPreferences.getExecutableNameOs()=\"" + value + "\" (" + key + ")");
 		}
 		return value;
 	}
@@ -172,7 +199,7 @@ public class DefaultPreferences {
 		String key = PersistentPreferences.EXECUTABLE_NAME;
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Default " + key + "=" + value);
+			System.out.println("qemu.DefaultPreferences.putExecutableName(\"" + value + "\")");
 		}
 		putString(key, value);
 	}
@@ -185,7 +212,7 @@ public class DefaultPreferences {
 		String value = getString(key, "");
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getInstallFolder()=\"" + value + "\"");
+			System.out.println("qemu.DefaultPreferences.getInstallFolder() = \"" + value + "\"");
 		}
 		return value;
 	}
@@ -195,7 +222,7 @@ public class DefaultPreferences {
 		String key = PersistentPreferences.INSTALL_FOLDER;
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Default " + key + "=" + value);
+			System.out.println("qemu.DefaultPreferences.putInstallFolder(\"" + value + "\")");
 		}
 		putString(key, value);
 	}
@@ -206,8 +233,9 @@ public class DefaultPreferences {
 
 		String key = PersistentPreferences.SEARCH_PATH;
 		String value = getString(key, "");
+
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getSearchPath()=\"" + value + "\"");
+			System.out.println("qemu.DefaultPreferences.getSearchPath()=\"" + value + "\"");
 		}
 		return value;
 	}
@@ -216,8 +244,9 @@ public class DefaultPreferences {
 
 		String key = EclipseUtils.getKeyOs(PersistentPreferences.SEARCH_PATH_OS);
 		String value = getString(key, "");
+
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getSearchPathOs()=\"" + value + "\" (" + key + ")");
+			System.out.println("qemu.DefaultPreferences.getSearchPathOs()=\"" + value + "\" (" + key + ")");
 		}
 		return value;
 	}
@@ -227,7 +256,7 @@ public class DefaultPreferences {
 		String key = PersistentPreferences.SEARCH_PATH;
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Default " + key + "=" + value);
+			System.out.println("qemu.DefaultPreferences.putSearchPath(\"" + value + "\")");
 		}
 		putString(key, value);
 	}

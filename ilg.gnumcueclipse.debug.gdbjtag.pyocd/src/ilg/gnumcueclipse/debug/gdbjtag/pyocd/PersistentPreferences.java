@@ -72,21 +72,26 @@ public class PersistentPreferences {
 	public static final String TAB_MAIN_CHECK_PROGRAM = "tab.main.checkProgram";
 	public static final boolean TAB_MAIN_CHECK_PROGRAM_DEFAULT = false;
 
-	// TODO: remove DEPRECATED
-	public static final String PYOCD_EXECUTABLE_DEPRECATED = "pyocd_executable";
-	public static final String PYOCD_PATH_DEPRECATED = "pyocd_path";
-
 	// ----- Getters ----------------------------------------------------------
 
 	private static String getString(String key, String defaultValue) {
 
-		return Platform.getPreferencesService().getString(Activator.PLUGIN_ID, key, defaultValue, null);
+		String value = Platform.getPreferencesService().getString(Activator.PLUGIN_ID, key, defaultValue, null);
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("pyocd.PersistentPreferences.getString(\"" + key + "\", \"" + defaultValue + "\") = \""
+					+ value + "\"");
+		}
+		return value;
 	}
 
 	// ----- Setters ----------------------------------------------------------
 
 	private static void putWorkspaceString(String key, String value) {
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("pyocd.PersistentPreferences.putWorkspaceString(\"" + key + "\", \"" + value + "\")");
+		}
 		value = value.trim();
 
 		// Access the instanceScope
@@ -96,6 +101,9 @@ public class PersistentPreferences {
 
 	public static void flush() {
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("pyocd.PersistentPreferences.flush()");
+		}
 		try {
 			InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).flush();
 		} catch (BackingStoreException e) {

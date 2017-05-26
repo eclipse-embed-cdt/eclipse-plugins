@@ -126,20 +126,6 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
-	// TODO: remove DEPRECATED
-	// These values are deprecated. Use the definitions in PersistentValues.
-	private static final String GDB_SERVER_EXECUTABLE_DEPRECATED = "gdb.server.executable.default";
-	private static final String GDB_CLIENT_EXECUTABLE_DEPRECATED = "gdb.client.executable.default";
-
-	private static final String JLINK_INTRFACE_DEPRECATED = "interface.default";
-	private static final String JLINK_ENABLE_SEMIHOSTING_DEPRECATED = "enableSemihosting.default";
-	private static final String JLINK_ENABLE_SWO_DEPRECATED = "enableSwo.default";
-
-	private static final String JLINK_GDBSERVER_DEPRECATED = "jlink_gdbserver.default";
-	private static final String JLINK_PATH_DEPRECATED = "jlink_path.default";
-
-	// ------------------------------------------------------------------------
-
 	/**
 	 * The DefaultScope preference store.
 	 */
@@ -161,17 +147,22 @@ public class DefaultPreferences {
 	 * 
 	 * @param key
 	 *            a string with the key to search.
-	 * @param defaulValue
+	 * @param defaultValue
 	 *            a string with the default, possibly null.
 	 * @return a trimmed string, or a null default.
 	 */
-	private static String getString(String key, String defaulValue) {
+	private static String getString(String key, String defaultValue) {
 
 		String value;
-		value = getPreferences().get(key, defaulValue);
+		value = getPreferences().get(key, defaultValue);
 
 		if (value != null) {
 			value = value.trim();
+		}
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("jlink.DefaultPreferences.getString(\"" + key + "\", \"" + defaultValue + "\") = \""
+					+ value + "\"");
 		}
 
 		return value;
@@ -179,42 +170,60 @@ public class DefaultPreferences {
 
 	public static boolean getBoolean(String key, boolean defaultValue) {
 
-		return getPreferences().getBoolean(key, defaultValue);
+		boolean value = getPreferences().getBoolean(key, defaultValue);
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("openocd.DefaultPreferences.getBoolean(\"" + key + "\", " + defaultValue + ") = " + value);
+		}
+		return value;
 	}
 
-	private static int getInt(String name, int defValue) {
+	private static int getInt(String key, int defaultValue) {
 
-		return getPreferences().getInt(name, defValue);
+		int value = getPreferences().getInt(key, defaultValue);
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("openocd.DefaultPreferences.getBoolean(\"" + key + "\", " + defaultValue + ") = " + value);
+		}
+		return value;
 	}
 
 	public static void putString(String key, String value) {
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("jlink.DefaultPreferences.putString(\"" + key + "\", \"" + value + "\")");
+		}
+
 		getPreferences().put(key, value);
 	}
 
 	public static void putInt(String key, int value) {
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("jlink.DefaultPreferences.putInt(\"" + key + "\", " + value + ")");
+		}
+
 		getPreferences().putInt(key, value);
 	}
 
 	public static void putBoolean(String key, boolean value) {
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("jlink.DefaultPreferences.putBoolean(\"" + key + "\", " + value + ")");
+		}
+
 		getPreferences().putBoolean(key, value);
 	}
 
 	// ------------------------------------------------------------------------
 
 	public static String getGdbServerExecutable() {
-		String value = getString(PersistentPreferences.GDB_SERVER_EXECUTABLE, null);
-		if (value != null) {
-			return value;
-		}
-		return getString(GDB_SERVER_EXECUTABLE_DEPRECATED, GDB_SERVER_EXECUTABLE_DEFAULT);
+		String value = getString(PersistentPreferences.GDB_SERVER_EXECUTABLE, GDB_SERVER_EXECUTABLE_DEFAULT);
+		return value;
 	}
 
 	public static String getGdbClientExecutable() {
-		String value = getString(PersistentPreferences.GDB_CLIENT_EXECUTABLE, null);
-		if (value != null) {
-			return value;
-		}
-		return getString(GDB_CLIENT_EXECUTABLE_DEPRECATED, GDB_CLIENT_EXECUTABLE_DEFAULT);
+		String value = getString(PersistentPreferences.GDB_CLIENT_EXECUTABLE, GDB_CLIENT_EXECUTABLE_DEFAULT);
+		return value;
 	}
 
 	// ------------------------------------------------------------------------
@@ -222,18 +231,10 @@ public class DefaultPreferences {
 	public static String getExecutableName() {
 
 		String key = PersistentPreferences.EXECUTABLE_NAME;
-		String value = getString(key, null);
-		if (value == null) {
-
-			// TODO: remove DEPRECATED
-			value = getString(PersistentPreferences.JLINK_GDBSERVER_DEPRECATED, null);
-			if (value == null) {
-				value = getString(JLINK_GDBSERVER_DEPRECATED, "");
-			}
-		}
+		String value = getString(key, "");
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getExecutableName()=\"" + value + "\"");
+			System.out.println("jlink.DefaultPreferences.getExecutableName() = \"" + value + "\"");
 		}
 		return value;
 
@@ -242,10 +243,10 @@ public class DefaultPreferences {
 	public static String getExecutableNameOs() {
 
 		String key = EclipseUtils.getKeyOs(PersistentPreferences.EXECUTABLE_NAME_OS);
-
 		String value = getString(key, "");
+
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getExecutableNameOs()=\"" + value + "\" (" + key + ")");
+			System.out.println("jlink.DefaultPreferences.getExecutableNameOs() = \"" + value + "\" (" + key + ")");
 		}
 		return value;
 	}
@@ -255,7 +256,7 @@ public class DefaultPreferences {
 		String key = PersistentPreferences.EXECUTABLE_NAME;
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Default " + key + "=" + value);
+			System.out.println("jlink.DefaultPreferences.putExecutableName(\"" + value + "\")");
 		}
 		putString(key, value);
 	}
@@ -265,18 +266,10 @@ public class DefaultPreferences {
 	public static String getInstallFolder() {
 
 		String key = PersistentPreferences.INSTALL_FOLDER;
-		String value = getString(key, null);
-		if (value == null) {
-
-			// TODO: remove DEPRECATED
-			value = getString(PersistentPreferences.JLINK_PATH_DEPRECATED, null);
-			if (value == null) {
-				value = getString(JLINK_PATH_DEPRECATED, "");
-			}
-		}
+		String value = getString(key, "");
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getInstallFolder()=\"" + value + "\"");
+			System.out.println("jlink.DefaultPreferences.getInstallFolder()=\"" + value + "\"");
 		}
 		return value;
 	}
@@ -286,7 +279,7 @@ public class DefaultPreferences {
 		String key = PersistentPreferences.INSTALL_FOLDER;
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Default " + key + "=" + value);
+			System.out.println("jlink.DefaultPreferences.putInstallFolder(\"" + value + "\")");
 		}
 		putString(key, value);
 	}
@@ -297,8 +290,9 @@ public class DefaultPreferences {
 
 		String key = PersistentPreferences.SEARCH_PATH;
 		String value = getString(key, "");
+
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getSearchPath()=\"" + value + "\"");
+			System.out.println("jlink.DefaultPreferences.getSearchPath() = \"" + value + "\"");
 		}
 		return value;
 	}
@@ -307,8 +301,9 @@ public class DefaultPreferences {
 
 		String key = EclipseUtils.getKeyOs(PersistentPreferences.SEARCH_PATH_OS);
 		String value = getString(key, "");
+
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getSearchPathOs()=\"" + value + "\" (" + key + ")");
+			System.out.println("jlink.DefaultPreferences.getSearchPathOs() = \"" + value + "\" (" + key + ")");
 		}
 		return value;
 	}
@@ -318,7 +313,7 @@ public class DefaultPreferences {
 		String key = PersistentPreferences.SEARCH_PATH;
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Default " + key + "=" + value);
+			System.out.println("jlink.DefaultPreferences.putSearchPath(\"" + value + "\")");
 		}
 		putString(key, value);
 	}
@@ -326,11 +321,8 @@ public class DefaultPreferences {
 	// ------------------------------------------------------------------------
 
 	public static String getGdbServerInterface() {
-		String value = getString(PersistentPreferences.GDB_SERVER_INTERFACE, null);
-		if (value != null) {
-			return value;
-		}
-		return getString(JLINK_INTRFACE_DEPRECATED, SERVER_INTERFACE_DEFAULT);
+		String value = getString(PersistentPreferences.GDB_SERVER_INTERFACE, SERVER_INTERFACE_DEFAULT);
+		return value;
 	}
 
 	public static boolean getJLinkEnableSemihosting() {
@@ -342,7 +334,7 @@ public class DefaultPreferences {
 		} catch (BackingStoreException e) {
 			;
 		}
-		return getBoolean(JLINK_ENABLE_SEMIHOSTING_DEPRECATED, ENABLE_SEMIHOSTING_DEFAULT);
+		return ENABLE_SEMIHOSTING_DEFAULT;
 	}
 
 	public static boolean getJLinkEnableSwo() {
@@ -353,7 +345,7 @@ public class DefaultPreferences {
 		} catch (BackingStoreException e) {
 			;
 		}
-		return getBoolean(JLINK_ENABLE_SWO_DEPRECATED, ENABLE_SWO_DEFAULT);
+		return ENABLE_SWO_DEFAULT;
 	}
 
 	// ------------------------------------------------------------------------

@@ -83,18 +83,6 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
-	// TODO: remove DEPRECATED
-	// These values are deprecated. Use the definitions in PersistentValues.
-	private static final String GDB_SERVER_EXECUTABLE_DEPRECATED = "gdb.server.executable.default";
-	private static final String GDB_CLIENT_EXECUTABLE_DEPRECATED = "gdb.client.executable.default";
-
-	private static final String OPENOCD_CONFIG_DEPRECATED = "openocd.config.default";
-
-	private static final String OPENOCD_EXECUTABLE_DEPRECATED = "openocd_executable.default";
-	private static final String OPENOCD_PATH_DEPRECATED = "openocd_path.default";
-
-	// ------------------------------------------------------------------------
-
 	/**
 	 * The DefaultScope preference store.
 	 */
@@ -116,17 +104,22 @@ public class DefaultPreferences {
 	 * 
 	 * @param key
 	 *            a string with the key to search.
-	 * @param defaulValue
+	 * @param defaultValue
 	 *            a string with the default, possibly null.
 	 * @return a trimmed string, or a null default.
 	 */
-	private static String getString(String key, String defaulValue) {
+	private static String getString(String key, String defaultValue) {
 
 		String value;
-		value = getPreferences().get(key, defaulValue);
+		value = getPreferences().get(key, defaultValue);
 
 		if (value != null) {
 			value = value.trim();
+		}
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("openocd.DefaultPreferences.getString(\"" + key + "\", \"" + defaultValue + "\") = \""
+					+ value + "\"");
 		}
 
 		return value;
@@ -134,47 +127,58 @@ public class DefaultPreferences {
 
 	public static boolean getBoolean(String key, boolean defaultValue) {
 
-		return getPreferences().getBoolean(key, defaultValue);
+		boolean value = getPreferences().getBoolean(key, defaultValue);
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("openocd.DefaultPreferences.getBoolean(\"" + key + "\", " + defaultValue + ") = " + value);
+		}
+		return value;
 	}
 
 	public static void putString(String key, String value) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("openocd.DefaultPreferences.putString(\"" + key + "\", \"" + value + "\")");
+		}
+
 		getPreferences().put(key, value);
 	}
 
 	public static void putInt(String key, int value) {
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("openocd.DefaultPreferences.putInt(\"" + key + "\", " + value + ")");
+		}
+
 		getPreferences().putInt(key, value);
 	}
 
 	public static void putBoolean(String key, boolean value) {
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("openocd.DefaultPreferences.putBoolean(\"" + key + "\", " + value + ")");
+		}
+
 		getPreferences().putBoolean(key, value);
 	}
 
 	// ------------------------------------------------------------------------
 
 	public static String getGdbServerExecutable() {
-		String value = getString(PersistentPreferences.GDB_SERVER_EXECUTABLE, null);
-		if (value != null) {
-			return value;
-		}
-		return getString(GDB_SERVER_EXECUTABLE_DEPRECATED, GDB_SERVER_EXECUTABLE_DEFAULT);
+		String value = getString(PersistentPreferences.GDB_SERVER_EXECUTABLE, GDB_SERVER_EXECUTABLE_DEFAULT);
+		return value;
 	}
 
 	public static String getGdbClientExecutable() {
-		String value = getString(PersistentPreferences.GDB_CLIENT_EXECUTABLE, null);
-		if (value != null) {
-			return value;
-		}
-		return getString(GDB_CLIENT_EXECUTABLE_DEPRECATED, GDB_CLIENT_EXECUTABLE_DEFAULT);
+		String value = getString(PersistentPreferences.GDB_CLIENT_EXECUTABLE, GDB_CLIENT_EXECUTABLE_DEFAULT);
+		return value;
 	}
 
 	// ------------------------------------------------------------------------
 
 	public static String getOpenocdConfig() {
-		String value = getString(PersistentPreferences.GDB_SERVER_OTHER_OPTIONS, null);
-		if (value != null) {
-			return value;
-		}
-		return getString(OPENOCD_CONFIG_DEPRECATED, DefaultPreferences.GDB_SERVER_OTHER_DEFAULT);
+		String value = getString(PersistentPreferences.GDB_SERVER_OTHER_OPTIONS,
+				DefaultPreferences.GDB_SERVER_OTHER_DEFAULT);
+		return value;
 	}
 
 	// ------------------------------------------------------------------------
@@ -189,18 +193,10 @@ public class DefaultPreferences {
 	public static String getExecutableName() {
 
 		String key = PersistentPreferences.EXECUTABLE_NAME;
-		String value = getString(key, null);
-		if (value == null) {
-
-			// TODO: remove DEPRECATED
-			value = getString(PersistentPreferences.OPENOCD_EXECUTABLE_DEPRECATED, null);
-			if (value == null) {
-				value = getString(OPENOCD_EXECUTABLE_DEPRECATED, "");
-			}
-		}
+		String value = getString(key, "");
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getExecutableName()=\"" + value + "\"");
+			System.out.println("openocd.DefaultPreferences.getExecutableName() = \"" + value + "\"");
 		}
 		return value;
 	}
@@ -208,10 +204,10 @@ public class DefaultPreferences {
 	public static String getExecutableNameOs() {
 
 		String key = EclipseUtils.getKeyOs(PersistentPreferences.EXECUTABLE_NAME_OS);
-
 		String value = getString(key, "");
+
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getExecutableNameOs()=\"" + value + "\" (" + key + ")");
+			System.out.println("openocd.DefaultPreferences.getExecutableNameOs() = \"" + value + "\" (" + key + ")");
 		}
 		return value;
 	}
@@ -221,7 +217,7 @@ public class DefaultPreferences {
 		String key = PersistentPreferences.EXECUTABLE_NAME;
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Default " + key + "=" + value);
+			System.out.println("openocd.DefaultPreferences.putExecutableName(\"" + value + "\")");
 		}
 		putString(key, value);
 	}
@@ -231,18 +227,10 @@ public class DefaultPreferences {
 	public static String getInstallFolder() {
 
 		String key = PersistentPreferences.INSTALL_FOLDER;
-		String value = getString(key, null);
-		if (value == null) {
-
-			// TODO: remove DEPRECATED
-			value = getString(PersistentPreferences.OPENOCD_PATH_DEPRECATED, null);
-			if (value == null) {
-				value = getString(OPENOCD_PATH_DEPRECATED, "");
-			}
-		}
+		String value = getString(key, "");
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getInstallFolder()=\"" + value + "\"");
+			System.out.println("openocd.DefaultPreferences.getInstallFolder() = \"" + value + "\"");
 		}
 		return value;
 	}
@@ -252,7 +240,7 @@ public class DefaultPreferences {
 		String key = PersistentPreferences.INSTALL_FOLDER;
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Default " + key + "=" + value);
+			System.out.println("openocd.DefaultPreferences.putInstallFolder(\"" + value + "\")");
 		}
 		putString(key, value);
 	}
@@ -263,8 +251,9 @@ public class DefaultPreferences {
 
 		String key = PersistentPreferences.SEARCH_PATH;
 		String value = getString(key, "");
+
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getSearchPath()=\"" + value + "\"");
+			System.out.println("openocd.DefaultPreferences.getSearchPath() = \"" + value + "\"");
 		}
 		return value;
 	}
@@ -273,8 +262,9 @@ public class DefaultPreferences {
 
 		String key = EclipseUtils.getKeyOs(PersistentPreferences.SEARCH_PATH_OS);
 		String value = getString(key, "");
+
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getSearchPathOs()=\"" + value + "\" (" + key + ")");
+			System.out.println("openocd.DefaultPreferences.getSearchPathOs() = \"" + value + "\"");
 		}
 		return value;
 	}
@@ -284,7 +274,7 @@ public class DefaultPreferences {
 		String key = PersistentPreferences.SEARCH_PATH;
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Default " + key + "=" + value);
+			System.out.println("openocd.DefaultPreferences.putSearchPath(\"" + value + "\")");
 		}
 		putString(key, value);
 	}

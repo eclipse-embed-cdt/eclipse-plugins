@@ -70,21 +70,26 @@ public class PersistentPreferences {
 	public static final String TAB_MAIN_CHECK_PROGRAM = "tab.main.checkProgram";
 	public static final boolean TAB_MAIN_CHECK_PROGRAM_DEFAULT = false;
 
-	// TODO: remove DEPRECATED
-	public static final String OPENOCD_EXECUTABLE_DEPRECATED = "openocd_executable";
-	public static final String OPENOCD_PATH_DEPRECATED = "openocd_path";
-
 	// ----- Getters ----------------------------------------------------------
 
 	private static String getString(String key, String defaultValue) {
 
-		return Platform.getPreferencesService().getString(Activator.PLUGIN_ID, key, defaultValue, null);
+		String value = Platform.getPreferencesService().getString(Activator.PLUGIN_ID, key, defaultValue, null);
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("openocd.PersistentPreferences.getString(\"" + key + "\", \"" + defaultValue + "\") = \""
+					+ value + "\"");
+		}
+		return value;
 	}
 
 	// ----- Setters ----------------------------------------------------------
 
 	private static void putWorkspaceString(String key, String value) {
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("openocd.PersistentPreferences.putWorkspaceString(\"" + key + "\", \"" + value + "\")");
+		}
 		value = value.trim();
 
 		// Access the instanceScope
@@ -94,6 +99,9 @@ public class PersistentPreferences {
 
 	public static void flush() {
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("openocd.PersistentPreferences.flush()");
+		}
 		try {
 			InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).flush();
 		} catch (BackingStoreException e) {
