@@ -92,7 +92,7 @@ public class Discoverer {
 		}
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Discoverer.searchInstallFolder() resolved path " + resolvedPath);
+			System.out.println("Discoverer.searchInstallFolder() resolved path \"" + resolvedPath + "\"");
 		}
 
 		// Try paths in order; return the first.
@@ -210,7 +210,7 @@ public class Discoverer {
 		IPath folderPath = new Path(folderName);
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Discoverer.getLastExecutable(" + folderPath + ", " + executableName + ")");
+			System.out.println("Discoverer.getLastExecutable(\"" + folderPath + "\", \"" + executableName + "\")");
 		}
 
 		List<String> list = new ArrayList<String>();
@@ -235,6 +235,9 @@ public class Discoverer {
 					path = path.append(executableName);
 				}
 				if (path.toFile().isFile()) {
+					if (Activator.getInstance().isDebugging()) {
+						System.out.println("Discoverer.getLastExecutable() found \"" + path.toString() + "\"");
+					}
 					return true;
 				}
 				return false;
@@ -258,6 +261,9 @@ public class Discoverer {
 			if (binFolder != null) {
 				path = path.append(binFolder);
 			}
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("Discoverer.getLastExecutable() = \"" + path.toString() + "\"");
+			}
 			return path.toString();
 		} else {
 			IPath path = (new Path(folderName));
@@ -273,10 +279,16 @@ public class Discoverer {
 				if (binFolder != null) {
 					path = path.append(binFolder);
 				}
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("Discoverer.getLastExecutable() = \"" + path.toString() + "\"");
+				}
 				return path.toString();
 			}
 		}
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Discoverer.getLastExecutable() not found");
+		}
 		return null;
 	}
 
