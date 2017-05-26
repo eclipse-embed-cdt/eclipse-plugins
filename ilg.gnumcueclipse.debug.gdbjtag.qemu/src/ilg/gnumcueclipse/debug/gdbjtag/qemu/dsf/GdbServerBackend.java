@@ -36,7 +36,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		super(session, lc);
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GdbServerBackend(" + session + "," + lc.getName() + ")");
+			System.out.println("qemu.GdbServerBackend(" + session + "," + lc.getName() + ")");
 		}
 	}
 
@@ -46,7 +46,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	public void initialize(final RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GdbServerBackend.initialize()");
+			System.out.println("qemu.GdbServerBackend.initialize()");
 		}
 
 		try {
@@ -71,7 +71,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	private void doInitialize(RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GdbServerBackend.doInitialize()");
+			System.out.println("qemu.GdbServerBackend.doInitialize()");
 		}
 		rm.done();
 	}
@@ -80,7 +80,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	public void shutdown(final RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GdbServerBackend.shutdown()");
+			System.out.println("qemu.GdbServerBackend.shutdown()");
 		}
 
 		super.shutdown(rm);
@@ -90,7 +90,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	public void destroy() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GdbServerBackend.destroy() " + Thread.currentThread());
+			System.out.println("qemu.GdbServerBackend.destroy() " + Thread.currentThread());
 		}
 
 		// Destroy the parent (the GDB server; the client is also destroyed

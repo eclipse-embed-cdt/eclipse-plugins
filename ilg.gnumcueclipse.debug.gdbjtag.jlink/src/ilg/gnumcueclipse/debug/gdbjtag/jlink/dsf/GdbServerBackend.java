@@ -62,7 +62,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		super(session, lc);
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GdbServerBackend(" + session + "," + lc.getName() + ")");
+			System.out.println("jlink.GdbServerBackend(" + session + "," + lc.getName() + ")");
 		}
 	}
 
@@ -72,7 +72,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	public void initialize(final RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GdbServerBackend.initialize()");
+			System.out.println("jlink.GdbServerBackend.initialize()");
 		}
 
 		try {
@@ -99,7 +99,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	private void doInitialize(RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GdbServerBackend.doInitialize()");
+			System.out.println("jlink.GdbServerBackend.doInitialize()");
 		}
 
 		if (fDoStartGdbServer && fDoStartSemihostingConsole) {
@@ -126,7 +126,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	public void shutdown(final RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GdbServerBackend.shutdown()");
+			System.out.println("jlink.GdbServerBackend.shutdown()");
 		}
 
 		if (fDoStartGdbServer && fDoStartSemihostingConsole) {
@@ -156,7 +156,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 	public void destroy() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GdbServerBackend.destroy() " + Thread.currentThread());
+			System.out.println("jlink.GdbServerBackend.destroy() " + Thread.currentThread());
 		}
 
 		// Destroy the semihosting process
@@ -293,12 +293,12 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		public void initialize(final RequestMonitor rm) {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("SemihostingStep.initialise()");
+				System.out.println("jlink.SemihostingStep.initialise()");
 			}
 
 			if (fServerBackendState != State.STARTED) {
 				if (Activator.getInstance().isDebugging()) {
-					System.out.println("SemihostingStep.initialise() skipped");
+					System.out.println("jlink.SemihostingStep.initialise() skipped");
 				}
 				// rm.cancel();
 				rm.done();
@@ -317,7 +317,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 				@Override
 				protected void handleCompleted() {
 					if (Activator.getInstance().isDebugging()) {
-						System.out.println("SemihostingStep.initialise() handleCompleted()");
+						System.out.println("jlink.SemihostingStep.initialise() handleCompleted()");
 					}
 					if (!fSemihostingLaunchMonitor.fTimedOut) {
 						fSemihostingLaunchMonitor.fLaunched = true;
@@ -340,7 +340,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 					if (fTmpLaunchRequestMonitor.isCanceled()) {
 
 						if (Activator.getInstance().isDebugging()) {
-							System.out.println("startSemihostingJob run cancel");
+							System.out.println("jlink.SemihostingStep startSemihostingJob run cancel");
 						}
 						fTmpLaunchRequestMonitor.setStatus(new Status(IStatus.CANCEL, Activator.PLUGIN_ID, -1,
 								getStartingSemihostingJobName() + " cancelled.", null)); //$NON-NLS-1$
@@ -362,7 +362,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 							@Override
 							public void run() {
 								if (Activator.getInstance().isDebugging()) {
-									System.out.println("startSemihostingJob run State.STARTED");
+									System.out.println("jlink.SemihostingStep startSemihostingJob run State.STARTED");
 								}
 								fSemihostingBackendState = State.STARTED;
 							}
@@ -379,7 +379,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 
 					fTmpLaunchRequestMonitor.done();
 					if (Activator.getInstance().isDebugging()) {
-						System.out.println("startSemihostingJob run completed");
+						System.out.println("jlink.SemihostingStep startSemihostingJob run completed");
 					}
 					return Status.OK_STATUS;
 				}
@@ -387,7 +387,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 			startSemihostingJob.schedule();
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("SemihostingStep.initialise() after job schedule");
+				System.out.println("jlink.SemihostingStep.initialise() after job schedule");
 			}
 
 			getExecutor().schedule(new Runnable() {
@@ -402,7 +402,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 						Thread jobThread = startSemihostingJob.getThread();
 						if (jobThread != null) {
 							if (Activator.getInstance().isDebugging()) {
-								System.out.println("interrupt thread " + jobThread);
+								System.out.println("jlink.SemihostingStep interrupt thread " + jobThread);
 							}
 
 							jobThread.interrupt();
@@ -416,7 +416,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 			}, getServerLaunchTimeoutSeconds(), TimeUnit.SECONDS);
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("SemihostingStep.initialise() return");
+				System.out.println("jlink.SemihostingStep.initialise() return");
 			}
 		}
 
@@ -424,7 +424,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		protected void shutdown(final RequestMonitor requestMonitor) {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("SemihostingStep.shutdown()");
+				System.out.println("jlink.SemihostingStep.shutdown()");
 			}
 
 			if (fSemihostingBackendState != State.STARTED) {
@@ -446,13 +446,13 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 						// And we should wait for it to complete since we then
 						// check if the killing of GDB worked.
 						if (Activator.getInstance().isDebugging()) {
-							System.out.println("SemihostingStep.shutdown() run()");
+							System.out.println("jlink.SemihostingStep.shutdown() run()");
 						}
 						getExecutor().submit(new DsfRunnable() {
 							@Override
 							public void run() {
 								if (Activator.getInstance().isDebugging()) {
-									System.out.println("SemihostingStep.shutdown() run() run()");
+									System.out.println("jlink.SemihostingStep.shutdown() run() run()");
 								}
 								destroy();
 
@@ -463,7 +463,8 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 									// we need to set our state and send the
 									// event
 									if (Activator.getInstance().isDebugging()) {
-										System.out.println("SemihostingStep.shutdown() run() run() State.TERMINATED");
+										System.out.println(
+												"jlink.SemihostingStep.shutdown() run() run() State.TERMINATED");
 									}
 									fSemihostingBackendState = State.TERMINATED;
 
@@ -479,7 +480,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 					}
 
 					if (Activator.getInstance().isDebugging()) {
-						System.out.println("SemihostingStep shutdown() run() before getting exitValue");
+						System.out.println("jlink.SemihostingStep.shutdown() run() before getting exitValue");
 					}
 					int attempts = 0;
 					while (attempts < 10) {
@@ -490,7 +491,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 							fSemihostingExitValue = fSemihostingProcess.exitValue();
 
 							if (Activator.getInstance().isDebugging()) {
-								System.out.println("SemihostingStep shutdown() run() return");
+								System.out.println("jlink.SemihostingStep.shutdown() run() return");
 							}
 							requestMonitor.done();
 							return Status.OK_STATUS;
@@ -503,7 +504,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 						attempts++;
 					}
 					if (Activator.getInstance().isDebugging()) {
-						System.out.println("SemihostingStep shutdown() run() REQUEST_FAILED");
+						System.out.println("jlink.SemihostingStep.shutdown() run() REQUEST_FAILED");
 					}
 					requestMonitor.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID,
 							IDsfStatusConstants.REQUEST_FAILED, "GDB semihosting terminate failed", null)); //$NON-NLS-1$
@@ -512,7 +513,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 				}
 			}.schedule();
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("SemihostingStep shutdown() return");
+				System.out.println("jlink.SemihostingStep.shutdown() return");
 			}
 		}
 
@@ -524,7 +525,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 			proc.submit();
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("launchSemihostingProcess() return " + proc);
+				System.out.println("jlink.SemihostingStep.launchSemihostingProcess() return " + proc);
 			}
 			return proc;
 		}
@@ -555,7 +556,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 			synchronized (fProcess) {
 				if (Activator.getInstance().isDebugging()) {
 					System.out.println(
-							"SemihostingMonitorJob.run() submit " + fMonitorStarted + " thread " + getThread());
+							"jlink.SemihostingMonitorJob.run() submit " + fMonitorStarted + " thread " + getThread());
 				}
 				getExecutor().submit(fMonitorStarted);
 				try {
@@ -567,13 +568,13 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 						@Override
 						public void run() {
 							if (Activator.getInstance().isDebugging()) {
-								System.out.println("SemihostingMonitorJob.run() run() thread " + getThread());
+								System.out.println("jlink.SemihostingMonitorJob.run() run() thread " + getThread());
 							}
 
 							// Destroy the entire backend
 							destroy();
 							if (Activator.getInstance().isDebugging()) {
-								System.out.println("SemihostingMonitorJob.run() run() State.TERMINATED");
+								System.out.println("jlink.SemihostingMonitorJob.run() run() State.TERMINATED");
 							}
 							fSemihostingBackendState = State.TERMINATED;
 
@@ -589,7 +590,7 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 				}
 
 				if (Activator.getInstance().isDebugging()) {
-					System.out.println("SemihostingMonitorJob.run() fMonitorExited = true thread " + getThread());
+					System.out.println("jlink.SemihostingMonitorJob.run() fMonitorExited = true thread " + getThread());
 				}
 				fMonitorExited = true;
 			}
@@ -602,11 +603,11 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 					Thread thread = getThread();
 					if (thread != null) {
 						if (Activator.getInstance().isDebugging()) {
-							System.out.println("SemihostingMonitorJob.kill() interrupt " + thread.toString());
+							System.out.println("jlink.SemihostingMonitorJob.kill() interrupt " + thread.toString());
 						}
 						thread.interrupt();
 					} else {
-						Activator.log("SemihostingMonitorJob.kill() null thread");
+						Activator.log("jlink.SemihostingMonitorJob.kill() null thread");
 					}
 				}
 			}
@@ -628,12 +629,12 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		public void initialize(final RequestMonitor rm) {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("SemihostingMonitorStep.initialize()");
+				System.out.println("jlink.SemihostingMonitorStep.initialize()");
 			}
 
 			if (fServerBackendState != State.STARTED) {
 				if (Activator.getInstance().isDebugging()) {
-					System.out.println("SemihostingMonitorStep.initialise() skipped");
+					System.out.println("jlink.SemihostingMonitorStep.initialise() skipped");
 				}
 				// rm.cancel();
 				rm.done();
@@ -653,14 +654,14 @@ public class GdbServerBackend extends GnuArmGdbServerBackend {
 		protected void shutdown(RequestMonitor requestMonitor) {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("SemihostingMonitorStep.shutdown()");
+				System.out.println("jlink.SemihostingMonitorStep.shutdown()");
 			}
 			if (fSemihostingMonitorJob != null) {
 				fSemihostingMonitorJob.kill();
 			}
 			requestMonitor.done();
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("SemihostingMonitorStep.shutdown() return");
+				System.out.println("jlink.SemihostingMonitorStep.shutdown() return");
 			}
 		}
 	}

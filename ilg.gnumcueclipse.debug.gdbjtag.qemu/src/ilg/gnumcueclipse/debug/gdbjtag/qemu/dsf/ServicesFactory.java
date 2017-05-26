@@ -33,7 +33,7 @@ public class ServicesFactory extends GnuArmServicesFactory {
 		super(version, mode);
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("ServicesFactory(" + version + "," + mode + ") " + this);
+			System.out.println("qemu.ServicesFactory(" + version + "," + mode + ") " + this);
 		}
 		fVersion = version;
 	}

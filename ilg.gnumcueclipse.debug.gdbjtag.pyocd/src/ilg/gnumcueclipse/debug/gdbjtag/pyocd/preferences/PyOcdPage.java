@@ -62,7 +62,7 @@ public class PyOcdPage extends FieldEditorPreferencePage implements IWorkbenchPr
 	public void init(IWorkbench workbench) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("PyOcdPage.init()");
+			System.out.println("pyocd.PyOcdPage.init()");
 		}
 	}
 

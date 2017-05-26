@@ -173,6 +173,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	@Override
 	public void createControl(Composite parent) {
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("pyocd.TabDebugger.createControl() ");
+		}
+
 		Composite comp = new Composite(parent, SWT.NONE);
 		setControl(comp);
 		GridLayout layout = new GridLayout();
@@ -972,6 +976,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("pyocd.TabDebugger.initializeFrom() " + configuration.getName());
+		}
+
 		try {
 			Boolean booleanDefault;
 			String stringDefault;
@@ -1114,9 +1123,17 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		} catch (CoreException e) {
 			Activator.log(e.getStatus());
 		}
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("pyocd.TabDebugger.initializeFrom() completed " + configuration.getName());
+		}
 	}
 
 	public void initializeFromDefaults() {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("pyocd.TabDebugger.initializeFromDefaults()");
+		}
 
 		String stringDefault;
 
@@ -1218,18 +1235,28 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("pyocd.TabDebugger.activated() " + workingCopy.getName());
+		}
 		// Do nothing. Override is necessary to avoid heavy cost of
 		// reinitialization (see super implementation)
 	}
 
 	@Override
 	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("pyocd.TabDebugger.deactivated() " + workingCopy.getName());
+		}
 		// Do nothing. Override is necessary to avoid heavy unnecessary Apply
 		// (see super implementation)
 	}
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("pyocd.TabDebugger.performApply() " + configuration.getName() + ", dirty=" + isDirty());
+		}
 
 		{
 			// legacy definition; although the jtag device class is not used,
@@ -1359,12 +1386,21 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fUpdateThreadlistOnSuspend.getSelection());
 
 		PersistentPreferences.flush();
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println(
+					"pyocd.TabDebugger.performApply() completed " + configuration.getName() + ", dirty=" + isDirty());
+		}
 	}
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 
 		configuration.setAttribute(IGDBJtagConstants.ATTR_JTAG_DEVICE, ConfigurationAttributes.JTAG_DEVICE);
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("pyocd.TabDebugger.setDefaults() " + configuration.getName());
+		}
 
 		String defaultString;
 		boolean defaultBoolean;

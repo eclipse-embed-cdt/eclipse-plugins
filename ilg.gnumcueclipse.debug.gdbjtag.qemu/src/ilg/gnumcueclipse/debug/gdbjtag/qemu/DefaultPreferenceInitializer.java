@@ -51,7 +51,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 	public void initializeDefaultPreferences() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("DefaultPreferenceInitializer.initializeDefaultPreferences()");
+			System.out.println("qemu.DefaultPreferenceInitializer.initializeDefaultPreferences()");
 		}
 
 		// When the 'ilg.gnumcueclipse.managedbuild.cross' node is completely
@@ -74,7 +74,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void added(NodeChangeEvent event) {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("LateInitializer.added() " + event + " " + event.getChild().name());
+				System.out.println("qemu.LateInitializer.added() " + event + " " + event.getChild().name());
 			}
 
 			if (Activator.PLUGIN_ID.equals(event.getChild().name())) {
@@ -90,7 +90,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void removed(NodeChangeEvent event) {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("LateInitializer.removed() " + event);
+				System.out.println("qemu.LateInitializer.removed() " + event);
 			}
 		}
 
@@ -100,7 +100,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void finalizeInitializationsDefaultPreferences() {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("LateInitializer.finalizeInitializationsDefaultPreferences()");
+				System.out.println("qemu.LateInitializer.finalizeInitializationsDefaultPreferences()");
 			}
 
 			// QEMU executable name

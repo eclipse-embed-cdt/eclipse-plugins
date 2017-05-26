@@ -156,7 +156,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	public void createControl(Composite parent) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabStartup: createControl() ");
+			System.out.println("jlink.TabStartup.createControl() ");
 		}
 
 		Composite comp = new Composite(parent, SWT.NONE);
@@ -1017,7 +1017,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	public void doConnectToRunningChanged(boolean flag) {
 
-		// System.out.println(flag);
 		fDoFirstReset.setEnabled(!flag);
 		fFirstResetType.setEnabled(!flag);
 
@@ -1119,7 +1118,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	public void initializeFrom(ILaunchConfiguration configuration) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabStartup: initializeFrom() " + configuration.getName() + ", dirty=" + isDirty());
+			System.out.println("jlink.TabStartup.initializeFrom() " + configuration.getName() + ", dirty=" + isDirty());
 		}
 
 		try {
@@ -1199,8 +1198,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 						.getAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT, booleanDefault));
 
 				booleanDefault = PersistentPreferences.getJLinkEnableSwo();
-				// System.out.println("getJLinkEnableSwo()="+booleanDefault+"
-				// "+configuration.getName());
 				fEnableSwo.setSelection(configuration.getAttribute(ConfigurationAttributes.ENABLE_SWO, booleanDefault));
 
 				intDefault = PersistentPreferences.getJLinkSwoEnableTargetCpuFreq();
@@ -1326,14 +1323,14 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println(
-					"TabStartup: initializeFrom() completed " + configuration.getName() + ", dirty=" + isDirty());
+					"jlink.TabStartup.initializeFrom() completed " + configuration.getName() + ", dirty=" + isDirty());
 		}
 	}
 
 	public void initializeFromDefaults() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabDebugger: initializeFromDefaults()");
+			System.out.println("jlink.TabStartup.initializeFromDefaults()");
 		}
 
 		String stringDefault;
@@ -1393,8 +1390,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			fSemihostingGdbClient.setSelection(booleanDefault);
 
 			booleanDefault = DefaultPreferences.getJLinkEnableSwo();
-			// System.out.println("getJLinkEnableSwo()="+booleanDefault+"
-			// "+configuration.getName());
 			fEnableSwo.setSelection(booleanDefault);
 
 			intDefault = DefaultPreferences.getJLinkSwoEnableTargetCpuFreq();
@@ -1478,14 +1473,14 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	@Override
 	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabStartup: activated() " + workingCopy.getName());
+			System.out.println("jlink.TabStartup.activated() " + workingCopy.getName());
 		}
 	}
 
 	@Override
 	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabStartup: deactivated() " + workingCopy.getName());
+			System.out.println("jlink.TabStartup.deactivated() " + workingCopy.getName());
 		}
 	}
 
@@ -1493,7 +1488,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabStartup: performApply() " + configuration.getName() + ", dirty=" + isDirty());
+			System.out.println("jlink.TabStartup.performApply() " + configuration.getName() + ", dirty=" + isDirty());
 		}
 
 		// ILaunchConfigurationDialog dialog = getLaunchConfigurationDialog();
@@ -1558,8 +1553,6 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Enable swo
 			booleanValue = fEnableSwo.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.ENABLE_SWO, booleanValue);
-			// System.out.println("putJLinkEnableSwo "+booleanValue+"
-			// "+configuration.getName());
 			PersistentPreferences.putJLinkEnableSwo(booleanValue);
 
 			// target speed
@@ -1648,7 +1641,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println(
-					"TabStartup: performApply() completed " + configuration.getName() + ", dirty=" + isDirty());
+					"jlink.TabStartup.performApply() completed " + configuration.getName() + ", dirty=" + isDirty());
 		}
 	}
 
@@ -1656,7 +1649,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabStartup: setDefaults() " + configuration.getName());
+			System.out.println("jlink.TabStartup.setDefaults() " + configuration.getName());
 		}
 
 		boolean defaultBoolean;

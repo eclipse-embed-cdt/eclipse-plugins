@@ -60,7 +60,7 @@ public class JlinkPage extends FieldEditorPreferencePage implements IWorkbenchPr
 	public void init(IWorkbench workbench) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("OpenOcdPage.init()");
+			System.out.println("jlink.JlinkPage.init()");
 		}
 	}
 

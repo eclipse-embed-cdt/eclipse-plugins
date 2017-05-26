@@ -58,7 +58,7 @@ public class Launch extends GnuArmLaunch {
 		super(launchConfiguration, mode, locator);
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Launch(" + launchConfiguration.getName() + "," + mode + ") " + this);
+			System.out.println("openocd.Launch.launch(" + launchConfiguration.getName() + "," + mode + ") " + this);
 		}
 
 		fConfig = launchConfiguration;
@@ -72,7 +72,7 @@ public class Launch extends GnuArmLaunch {
 	public void initialize() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Launch.initialize() " + this);
+			System.out.println("openocd.Launch.initialize() " + this);
 		}
 
 		super.initialize();
@@ -129,7 +129,7 @@ public class Launch extends GnuArmLaunch {
 	public void initializeServerConsole(IProgressMonitor monitor) throws CoreException {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Launch.initializeServerConsole()");
+			System.out.println("openocd.Launch.initializeServerConsole()");
 		}
 
 		IProcess newProcess;
@@ -148,7 +148,7 @@ public class Launch extends GnuArmLaunch {
 	public void initializeConsoles(IProgressMonitor monitor) throws CoreException {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Launch.initializeConsoles()");
+			System.out.println("openocd.Launch.initializeConsoles()");
 		}
 
 		IProcess newProcess;

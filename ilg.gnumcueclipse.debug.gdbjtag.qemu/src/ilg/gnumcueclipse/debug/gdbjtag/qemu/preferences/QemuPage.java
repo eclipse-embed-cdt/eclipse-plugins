@@ -60,7 +60,7 @@ public class QemuPage extends FieldEditorPreferencePage implements IWorkbenchPre
 	public void init(IWorkbench workbench) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("OpenOcdPage.init()");
+			System.out.println("qemu.QemuPage.init()");
 		}
 	}
 

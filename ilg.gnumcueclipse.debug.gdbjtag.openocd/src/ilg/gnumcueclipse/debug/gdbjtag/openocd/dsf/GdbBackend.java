@@ -42,7 +42,7 @@ public class GdbBackend extends GnuArmGdbBackend {
 		super(session, lc);
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GdbBackend() " + this);
+			System.out.println("openocd.GdbBackend() " + this);
 		}
 		fLaunchConfiguration = lc;
 	}
@@ -53,7 +53,7 @@ public class GdbBackend extends GnuArmGdbBackend {
 	public void initialize(final RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GdbBackend.initialize() " + Thread.currentThread());
+			System.out.println("openocd.GdbBackend.initialize() " + Thread.currentThread());
 		}
 
 		super.initialize(rm);
@@ -63,7 +63,7 @@ public class GdbBackend extends GnuArmGdbBackend {
 	public void destroy() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GdbBackend.destroy() " + Thread.currentThread());
+			System.out.println("openocd.GdbBackend.destroy() " + Thread.currentThread());
 		}
 		super.destroy();
 	}
@@ -72,7 +72,7 @@ public class GdbBackend extends GnuArmGdbBackend {
 	public void shutdown(final RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GdbBackend.shutdown() " + Thread.currentThread());
+			System.out.println("openocd.GdbBackend.shutdown() " + Thread.currentThread());
 		}
 		super.shutdown(rm);
 	}
@@ -128,7 +128,7 @@ public class GdbBackend extends GnuArmGdbBackend {
 		}
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("getGDBWorkingDirectory() " + path);
+			System.out.println("openocd.GdbBackend.getGDBWorkingDirectory() " + path);
 		}
 		return path;
 	}

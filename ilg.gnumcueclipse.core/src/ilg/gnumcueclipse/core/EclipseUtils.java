@@ -392,14 +392,14 @@ public class EclipseUtils {
 
 		if (value != null) {
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("EclipseUtils.getPreferenceValueForId(\"" + pluginId + "\", \"" + key + "\",\""
+				System.out.println("EclipseUtils.getPreferenceValueForId(\"" + pluginId + "\", \"" + key + "\", \""
 						+ defaultValue + "\") = \"" + value + "\" from " + from);
 			}
 			return value;
 		}
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("EclipseUtils.getPreferenceValueForId(\"" + pluginId + "\", \"" + key + "\",\""
+			System.out.println("EclipseUtils.getPreferenceValueForId(\"" + pluginId + "\", \"" + key + "\", \""
 					+ defaultValue + "\") = \"" + defaultValue + "\" default");
 		}
 		return defaultValue;

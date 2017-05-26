@@ -146,7 +146,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	public void createControl(Composite parent) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabDebugger: createControl() ");
+			System.out.println("jlink.TabDebugger.createControl() ");
 		}
 
 		// gdbPrevUsbAddress = "";
@@ -1075,7 +1075,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	public void initializeFrom(ILaunchConfiguration configuration) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabDebugger: initializeFrom() " + configuration.getName());
+			System.out.println("jlink.TabDebugger.initializeFrom() " + configuration.getName());
 		}
 
 		try {
@@ -1112,8 +1112,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						stringDefault);
 				String deviceName = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_DEVICE_NAME,
 						defaultDeviceName);
-				// System.out.println("got " + deviceName + " from: "
-				// + configuration);
 				fGdbFlashDeviceName.setText(deviceName);
 
 				// Endianness
@@ -1313,14 +1311,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabDebugger: initializeFrom() completed " + configuration.getName());
+			System.out.println("jlink.TabDebugger.initializeFrom() completed " + configuration.getName());
 		}
 	}
 
 	public void initializeFromDefaults() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabDebugger: initializeFromDefaults()");
+			System.out.println("jlink.TabDebugger.initializeFromDefaults()");
 		}
 
 		String stringDefault;
@@ -1491,14 +1489,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	@Override
 	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabDebugger: activated() " + workingCopy.getName());
+			System.out.println("jlink.TabDebugger.activated() " + workingCopy.getName());
 		}
 	}
 
 	@Override
 	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabDebugger: deactivated() " + workingCopy.getName());
+			System.out.println("jlink.TabDebugger.deactivated() " + workingCopy.getName());
 		}
 	}
 
@@ -1506,7 +1504,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabDebugger: performApply() " + configuration.getName() + ", dirty=" + isDirty());
+			System.out.println("jlink.TabDebugger.performApply() " + configuration.getName() + ", dirty=" + isDirty());
 		}
 
 		{
@@ -1537,8 +1535,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			// Device name
 			stringValue = fGdbFlashDeviceName.getText().trim();
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_DEVICE_NAME, stringValue);
-			// System.out.println("stored " + stringValue + " to: "
-			// + configuration);
 			PersistentPreferences.putFlashDeviceName(stringValue);
 
 			// Endianness
@@ -1691,7 +1687,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println(
-					"TabDebugger: performApply() completed " + configuration.getName() + ", dirty=" + isDirty());
+					"jlink.TabDebugger.performApply() completed " + configuration.getName() + ", dirty=" + isDirty());
 		}
 	}
 
@@ -1699,7 +1695,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("TabDebugger: setDefaults() " + configuration.getName());
+			System.out.println("jlink.TabDebugger.setDefaults() " + configuration.getName());
 		}
 
 		boolean defaultBoolean;

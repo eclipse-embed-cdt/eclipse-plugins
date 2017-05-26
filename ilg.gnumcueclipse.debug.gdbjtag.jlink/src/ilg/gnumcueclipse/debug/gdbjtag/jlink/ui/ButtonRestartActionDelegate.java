@@ -23,7 +23,7 @@ public class ButtonRestartActionDelegate implements IWorkbenchWindowActionDelega
 	@Override
 	public void run(IAction action) {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Restart.run(" + action + ")");
+			System.out.println("jlink.ButtonRestartActionDelegate.run(" + action + ")");
 		}
 
 	}
@@ -31,14 +31,14 @@ public class ButtonRestartActionDelegate implements IWorkbenchWindowActionDelega
 	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Restart.selectionChanged(" + action + "," + selection + ")");
+			System.out.println("jlink.ButtonRestartActionDelegate.selectionChanged(" + action + ", " + selection + ")");
 		}
 	}
 
 	@Override
 	public void dispose() {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Restart.dispose()");
+			System.out.println("jlink.ButtonRestartActionDelegate.dispose()");
 		}
 
 	}
@@ -46,7 +46,7 @@ public class ButtonRestartActionDelegate implements IWorkbenchWindowActionDelega
 	@Override
 	public void init(IWorkbenchWindow window) {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("Restart.init()");
+			System.out.println("jlink.ButtonRestartActionDelegate.init()");
 		}
 
 	}

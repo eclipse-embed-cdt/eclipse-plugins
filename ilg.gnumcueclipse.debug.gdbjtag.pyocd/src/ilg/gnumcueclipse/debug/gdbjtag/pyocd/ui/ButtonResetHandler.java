@@ -27,7 +27,7 @@ public class ButtonResetHandler extends AbstractHandler {
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("ButtonResetHandler.execute(" + event + ")");
+			System.out.println("pyocd.ButtonResetHandler.execute(" + event + ")");
 		}
 		return null;
 	}

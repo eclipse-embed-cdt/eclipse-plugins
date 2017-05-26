@@ -51,7 +51,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 	public void initializeDefaultPreferences() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("DefaultPreferenceInitializer.initializeDefaultPreferences()");
+			System.out.println("openocd.DefaultPreferenceInitializer.initializeDefaultPreferences()");
 		}
 
 		DefaultPreferences.putBoolean(PersistentPreferences.GDB_SERVER_DO_START,
@@ -83,7 +83,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void added(NodeChangeEvent event) {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("LateInitializer.added() " + event + " " + event.getChild().name());
+				System.out.println("openocd.LateInitializer.added() " + event + " " + event.getChild().name());
 			}
 
 			if (Activator.PLUGIN_ID.equals(event.getChild().name())) {
@@ -99,7 +99,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void removed(NodeChangeEvent event) {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("LateInitializer.removed() " + event);
+				System.out.println("openocd.LateInitializer.removed() " + event);
 			}
 		}
 
@@ -109,7 +109,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void finalizeInitializationsDefaultPreferences() {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("LateInitializer.finalizeInitializationsDefaultPreferences()");
+				System.out.println("openocd.LateInitializer.finalizeInitializationsDefaultPreferences()");
 			}
 
 			// OpenOCD executable name

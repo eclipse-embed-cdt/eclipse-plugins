@@ -79,8 +79,8 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 	protected IDsfDebugServicesFactory newServiceFactory(ILaunchConfiguration config, String version) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println(
-					"LaunchConfigurationDelegate.newServiceFactory(" + config.getName() + "," + version + ") " + this);
+			System.out.println("jlink.LaunchConfigurationDelegate.newServiceFactory(" + config.getName() + "," + version
+					+ ") " + this);
 		}
 
 		fConfig = config;
@@ -91,8 +91,8 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 	protected IDsfDebugServicesFactory newServiceFactory(ILaunchConfiguration config, String version, String mode) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("LaunchConfigurationDelegate.newServiceFactory(" + config.getName() + "," + version + ","
-					+ mode + ") " + this);
+			System.out.println("jlink.LaunchConfigurationDelegate.newServiceFactory(" + config.getName() + "," + version
+					+ "," + mode + ") " + this);
 		}
 
 		fConfig = config;
@@ -107,8 +107,8 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 			throws CoreException {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("LaunchConfigurationDelegate.createGdbLaunch(" + configuration.getName() + "," + mode
-					+ ") " + this);
+			System.out.println("jlink.LaunchConfigurationDelegate.createGdbLaunch(" + configuration.getName() + ","
+					+ mode + ") " + this);
 		}
 
 		fDoStartGdbServer = Configuration.getDoStartGdbServer(configuration);
@@ -126,7 +126,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 		String gdbClientCommand = Configuration.getGdbClientCommand(config);
 		String version = DebugUtils.getGDBVersion(config, gdbClientCommand);
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("LaunchConfigurationDelegate.getGDBVersion " + version);
+			System.out.println("jlink.LaunchConfigurationDelegate.getGDBVersion() = " + version);
 		}
 		return version;
 	}
@@ -141,7 +141,8 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 			throws CoreException {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("LaunchConfigurationDelegate.launch(" + config.getName() + "," + mode + ") " + this);
+			System.out.println(
+					"jlink.LaunchConfigurationDelegate.launch(" + config.getName() + ", " + mode + ") " + this);
 		}
 
 		org.eclipse.cdt.launch.LaunchUtils.enableActivity("org.eclipse.cdt.debug.dsfgdbActivity", true); //$NON-NLS-1$
@@ -157,7 +158,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 			throws CoreException {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("LaunchConfigurationDelegate.launchDebugger(" + config.getName() + ") " + this);
+			System.out.println("jlink.LaunchConfigurationDelegate.launchDebugger(" + config.getName() + ") " + this);
 		}
 
 		int totalWork = 10;
@@ -191,7 +192,8 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 			throws CoreException {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("LaunchConfigurationDelegate.launchDebugSession(" + config.getName() + ") " + this);
+			System.out
+					.println("jlink.LaunchConfigurationDelegate.launchDebugSession(" + config.getName() + ") " + this);
 		}
 
 		// From here it is almost identical with the system one, except
@@ -289,7 +291,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 		} catch (CancellationException e1) {
 			// Launch aborted, so exit cleanly
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("Launch aborted, so exit cleanly");
+				System.out.println("jlink.LaunchConfigurationDelegate.launchDebugSession() aborted, so exit cleanly");
 			}
 			return;
 		} finally {
@@ -346,7 +348,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 						return;
 					}
 					if (Activator.getInstance().isDebugging()) {
-						System.out.println(serverStatus);
+						System.out.println("jlink.LaunchConfigurationDelegate.launchDebugSession() " + serverStatus);
 					}
 					throw new CoreException(serverStatus);
 				}
@@ -358,7 +360,8 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 			}
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("launchDebugSession() * Server start confirmed. *");
+				System.out
+						.println("jlink.LaunchConfigurationDelegate.launchDebugSession() * Server start confirmed. *");
 			}
 		}
 
@@ -385,7 +388,8 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 		} catch (CancellationException e1) {
 			// Launch aborted, so exit cleanly
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("Launch aborted, so exit cleanly");
+				System.out.println(
+						"jlink.LaunchConfigurationDelegate.launchDebugSession() Launch aborted, so exit cleanly");
 			}
 			return;
 		} finally {
@@ -509,7 +513,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 	protected Sequence getServicesSequence(DsfSession session, ILaunch launch, IProgressMonitor progressMonitor) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("LaunchConfigurationDelegate.getServicesSequence()");
+			System.out.println("jlink.LaunchConfigurationDelegate.getServicesSequence()");
 		}
 
 		return new ServicesLaunchSequence(session, (GdbLaunch) launch, progressMonitor);
@@ -518,7 +522,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 	protected Sequence getServerServicesSequence(DsfSession session, ILaunch launch, IProgressMonitor progressMonitor) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("LaunchConfigurationDelegate.getServerServicesSequence()");
+			System.out.println("jlink.LaunchConfigurationDelegate.getServerServicesSequence()");
 		}
 
 		return new GnuArmServerServicesLaunchSequence(session, (GdbLaunch) launch, progressMonitor);

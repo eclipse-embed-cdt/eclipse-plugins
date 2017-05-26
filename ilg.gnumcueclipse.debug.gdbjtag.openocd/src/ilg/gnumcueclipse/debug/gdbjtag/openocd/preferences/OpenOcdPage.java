@@ -60,7 +60,7 @@ public class OpenOcdPage extends FieldEditorPreferencePage implements IWorkbench
 	public void init(IWorkbench workbench) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("OpenOcdPage.init()");
+			System.out.println("openocd.OpenOcdPage.init()");
 		}
 	}
 

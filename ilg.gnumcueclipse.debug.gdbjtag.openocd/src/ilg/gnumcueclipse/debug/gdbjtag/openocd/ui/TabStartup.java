@@ -139,6 +139,10 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	@Override
 	public void createControl(Composite parent) {
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("openocd.TabStartup.createControl() ");
+		}
+
 		Composite comp = new Composite(parent, SWT.NONE);
 		setControl(comp);
 		GridLayout layout = new GridLayout();
@@ -837,6 +841,12 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("openocd.TabStartup.initializeFrom() " + configuration.getName() + ", dirty=" + isDirty());
+		}
+
 		try {
 			String stringDefault;
 			boolean booleanDefault;
@@ -957,9 +967,19 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		} catch (CoreException e) {
 			Activator.log(e.getStatus());
 		}
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("openocd.TabStartup.initializeFrom() completed " + configuration.getName() + ", dirty="
+					+ isDirty());
+		}
+
 	}
 
 	public void initializeFromDefaults() {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("openocd.TabStartup.initializeFromDefaults()");
+		}
 
 		// Initialisation Commands
 		{
@@ -1036,18 +1056,24 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
-		// System.out.println("TabStartup: activated() "
-		// + workingCopy.getName());
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("openocd.TabStartup.activated() " + workingCopy.getName());
+		}
 	}
 
 	@Override
 	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
-		// System.out.println("TabStartup: deactivated() "
-		// + workingCopy.getName());
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("openocd.TabStartup.deactivated() " + workingCopy.getName());
+		}
 	}
 
 	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("openocd.TabStartup.performApply() " + configuration.getName() + ", dirty=" + isDirty());
+		}
 
 		boolean booleanValue;
 		String stringValue;
@@ -1132,6 +1158,10 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("openocd.TabStartup.setDefaults() " + configuration.getName());
+		}
 
 		String defaultString;
 		boolean defaultBoolean;
