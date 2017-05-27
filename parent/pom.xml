@@ -1,0 +1,149 @@
+<project
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<prerequisites>
+		<maven>3.0.5</maven>
+	</prerequisites>
+
+	<!-- https://maven.apache.org/pom.html groupId:artifactId:version are all 
+		required fields, acting much like an address and timestamp in one. -->
+	<!-- Generally unique amongst an organization or a project. -->
+	<groupId>ilg.gnumcueclipse</groupId>
+	<!-- Generally the name that the project is known by. -->
+	<artifactId>ilg.gnumcueclipse.parent</artifactId>
+	<version>4.1.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<properties>
+		<!-- https://wiki.eclipse.org/Tycho/Release_Notes -->
+		<tycho.version>0.25.0</tycho.version>
+
+		<!-- Silence a Maven warning -->
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    
+    	<!-- Upstream p2 repository, used as a source for pre-compiled build artifacts -->
+		<eclipse.simultaneous.release.repository>http://download.eclipse.org/staging/neon/</eclipse.simultaneous.release.repository>
+
+		<gnumcueclipse.version>4.1.1</gnumcueclipse.version>
+	</properties>
+
+	<licenses>
+		<license>
+			<name>Eclipse Public License v1.0</name>
+			<comments>
+       All rights reserved.
+
+       This program and the accompanying materials are made
+       available under the terms of the Eclipse Public License v1.0
+       which accompanies this distribution, and is available at
+       http://www.eclipse.org/legal/epl-v10.htm
+      		</comments>
+		</license>
+	</licenses>
+
+	<repositories>
+		<repository>
+			<id>eclipse-neon</id>
+			<layout>p2</layout>
+			<!-- Explicit reference to Neon.3 with CDT 9.2.1 -->
+			<!-- (Do a run without version and retain the most recent one) -->
+			<url>http://download.eclipse.org/releases/neon/201705151400</url>
+		</repository>
+	</repositories>
+
+	<build>
+		<plugins>
+			<plugin>
+				<!-- Used by eclipse-plugin & eclipse-feature packagings. -->
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>tycho-maven-plugin</artifactId>
+				<version>${tycho.version}</version>
+				<extensions>true</extensions>
+			</plugin>
+			
+			<plugin>
+				<!-- Used by eclipse-repository packagings.  -->
+				<groupId>org.eclipse.tycho</groupId>
+				<artifactId>target-platform-configuration</artifactId>
+				<version>${tycho.version}</version>
+				<configuration>
+					<resolver>p2</resolver>
+					<pomDependencies>consider</pomDependencies>
+					<environments>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>linux</os>
+							<ws>gtk</ws>
+							<arch>ppc64</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86</arch>
+						</environment>
+						<environment>
+							<os>win32</os>
+							<ws>win32</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>macosx</os>
+							<ws>cocoa</ws>
+							<arch>x86_64</arch>
+						</environment>
+						<environment>
+							<os>aix</os>
+							<ws>gtk</ws>
+							<arch>ppc</arch>
+						</environment>
+					</environments>
+				</configuration>
+			</plugin>
+		</plugins>
+
+		<pluginManagement>
+			<!-- Default plugin information. -->
+			<plugins>
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-compiler-plugin</artifactId>
+					<version>${tycho.version}</version>
+					<configuration>
+						<encoding>UTF-8</encoding>
+						<useProjectSettings>true</useProjectSettings>
+					</configuration>
+				</plugin>
+
+				<plugin>
+					<groupId>org.eclipse.tycho</groupId>
+					<artifactId>tycho-source-plugin</artifactId>
+					<version>${tycho-version}</version>
+					<executions>
+						<execution>
+							<id>plugin-source</id>
+							<goals>
+								<goal>plugin-source</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+
+			</plugins>
+		</pluginManagement>
+	</build>
+
+	<name>GNU MCU Eclipse parent</name>
+	<url>http://gnuarmeclipse.github.io</url>
+</project>

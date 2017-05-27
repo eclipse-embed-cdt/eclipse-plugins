@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="ilg.gnumcueclipse.managedbuild.cross.riscv"
+      id="ilg.gnumcueclipse.managedbuild.cross.riscv.feature"
       label="%featureName"
       version="2.5.1.qualifier"
       provider-name="%providerName"

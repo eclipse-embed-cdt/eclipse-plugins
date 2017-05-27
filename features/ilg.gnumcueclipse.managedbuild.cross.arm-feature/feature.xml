@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="ilg.gnumcueclipse.managedbuild.cross.arm"
+      id="ilg.gnumcueclipse.managedbuild.cross.arm.feature"
       label="%featureName"
       version="2.5.1.qualifier"
       provider-name="%providerName"
