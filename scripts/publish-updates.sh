@@ -26,9 +26,9 @@ then
   shift
 fi
 
-SF_FOLDER="Eclipse/"
+# SF_FOLDER="Eclipse/"
 
-echo "Updating $SF_FOLDER$TEST"
+# echo "Updating $SF_FOLDER$TEST"
 
 if [ $# -gt 0 ] && [ "$1" == "dry" ]
 then
@@ -187,9 +187,9 @@ do_upload_to_bintray()
 
 # -----------------------------------------------------------------------------
 
-SF_USER=ilg-ul
-SF_DESTINATION="$SF_USER,gnuarmeclipse@frs.sourceforge.net:/home/frs/project/g/gn/gnuarmeclipse/$SF_FOLDER$TEST"
-SOURCE_LIST="."
+# SF_USER=ilg-ul
+# SF_DESTINATION="$SF_USER,gnuarmeclipse@frs.sourceforge.net:/home/frs/project/g/gn/gnuarmeclipse/$SF_FOLDER$TEST"
+# SOURCE_LIST="."
 
 BINTRAY_USER=ilg-ul
 
@@ -209,20 +209,20 @@ echo "Owner: ${BINTRAY_OWNER}"
 
 # -c skip based on checksum, not mod-time & size
 
-RSYNC_OPTS="-vrCt --exclude=scripts --exclude=.*"
-RSYNC_OPTS+=" --delete"
+# RSYNC_OPTS="-vrCt --exclude=scripts --exclude=.*"
+# RSYNC_OPTS+=" --delete"
 
-if [ "${DRY}" == "dry" ]
-then
-  RSYNC_OPTS+=" -n"
-fi
+# if [ "${DRY}" == "dry" ]
+# then
+#   RSYNC_OPTS+=" -n"
+# fi
 
-if [ "${FORCE}" == "force" ]
-then
-  RSYNC_OPTS+=" --ignore-times"
-else
-  RSYNC_OPTS+=" --checksum"
-fi
+# if [ "${FORCE}" == "force" ]
+# then
+#   RSYNC_OPTS+=" --ignore-times"
+# else
+#   RSYNC_OPTS+=" --checksum"
+# fi
 
 if [ "${RISCV}" == "" ]
 then
@@ -231,25 +231,25 @@ else
   REPO_FOLDER="ilg.gnumcueclipse.riscv-repository"
 fi
 
-if [ ! -d ../${REPO_FOLDER}/target/repository ]
+if [ ! -d ../repos/${REPO_FOLDER}/target/repository ]
 then
   echo "No repository folder found"
   exit 1
 fi
 
-cd ../${REPO_FOLDER}/target
+cd ../repos/${REPO_FOLDER}/target
 
 FULL_VERSION="$(grep "unit id='ilg.gnumcueclipse.core'" targetPlatformRepository/content.xml | sed "s/.*version='\(.*\)'.*/\1/")"
 (cd repository; do_upload_to_bintray "${TEST}" "${FULL_VERSION}")
 
-if [ "${RISCV}" == "" ]
-then
+# if [ "${RISCV}" == "" ]
+# then
 
-echo
+# echo
 # echo "Rsync-ing SourceForge ${SF_FOLDER}${TEST} site (${RSYNC_OPTS})"
 # (cd repository; rsync -e ssh ${RSYNC_OPTS} ${SOURCE_LIST} ${SF_DESTINATION})
 
-fi
+# fi
 
 if [[ "${TEST}" == *-test ]]
 then
@@ -269,7 +269,7 @@ then
   NUMDATE=$(ls repository/plugins/ilg.gnumcueclipse.core* | sed -e 's/.*_[0-9]*[.][0-9]*[.][0-9]*[.]\([0-9]*\)[.]jar/\1/')
   ARCHIVE_PREFIX=$(ls *-SNAPSHOT.zip | sed -e 's/\(.*\)-SNAPSHOT[.]zip/\1/')
 
-  ARCHIVE_FOLDER="../../../archive"
+  ARCHIVE_FOLDER="../../../../archive"
   if [ "${TEST}" != "" ]
   then
     ARCHIVE_FOLDER="${ARCHIVE_FOLDER}/internal"
