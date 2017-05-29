@@ -91,6 +91,6 @@
 		<module>repos/ilg.gnumcueclipse.riscv-repository</module>
 	</modules>
 
-	<name>GNU MCU Eclipse plug-ins</name>
+	<name>GNU MCU Eclipse plug-ins root</name>
 	<url>http://gnuarmeclipse.github.io</url>
 </project>

@@ -23,11 +23,9 @@
 
 		<!-- Silence a Maven warning -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    
-    	<!-- Upstream p2 repository, used as a source for pre-compiled build artifacts -->
-		<eclipse.simultaneous.release.repository>http://download.eclipse.org/staging/neon/</eclipse.simultaneous.release.repository>
 
-		<gnumcueclipse.version>4.1.1</gnumcueclipse.version>
+		<!-- The usual Eclipse timestamp, down to minutes. -->
+		<maven.build.timestamp.format>yyyyMMddHHmm</maven.build.timestamp.format>
 	</properties>
 
 	<licenses>
@@ -57,13 +55,30 @@
 	<build>
 		<plugins>
 			<plugin>
-				<!-- Used by eclipse-plugin & eclipse-feature packagings. -->
+				<!-- Enable Tycho. -->
 				<groupId>org.eclipse.tycho</groupId>
 				<artifactId>tycho-maven-plugin</artifactId>
 				<version>${tycho.version}</version>
-				<extensions>true</extensions>
+				<!-- Mandatory, without it eclipse-* POMs are not accepted. -->
+				<extensions>true</extensions> 
 			</plugin>
-			
+
+			<!-- 
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>build-helper-maven-plugin</artifactId>
+				<version>3.0.0</version>
+				<executions>
+					<execution>
+						<id>gme-parse-version</id>
+						<goals>
+							<goal>parse-version</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			-->
+ 
 			<plugin>
 				<!-- Used by eclipse-repository packagings.  -->
 				<groupId>org.eclipse.tycho</groupId>
@@ -72,6 +87,8 @@
 				<configuration>
 					<resolver>p2</resolver>
 					<pomDependencies>consider</pomDependencies>
+					
+					<!-- Mandatory, without it Build is platform dependent. -->
 					<environments>
 						<environment>
 							<os>linux</os>
@@ -82,11 +99,6 @@
 							<os>linux</os>
 							<ws>gtk</ws>
 							<arch>x86_64</arch>
-						</environment>
-						<environment>
-							<os>linux</os>
-							<ws>gtk</ws>
-							<arch>ppc64</arch>
 						</environment>
 						<environment>
 							<os>win32</os>
@@ -103,41 +115,37 @@
 							<ws>cocoa</ws>
 							<arch>x86_64</arch>
 						</environment>
-						<environment>
-							<os>aix</os>
-							<ws>gtk</ws>
-							<arch>ppc</arch>
-						</environment>
 					</environments>
 				</configuration>
 			</plugin>
+
 		</plugins>
 
 		<pluginManagement>
-			<!-- Default plugin information. -->
+			<!-- Defaults, applied when plug-ins are actually used. -->
 			<plugins>
+
 				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
 					<artifactId>tycho-compiler-plugin</artifactId>
 					<version>${tycho.version}</version>
 					<configuration>
 						<encoding>UTF-8</encoding>
-						<useProjectSettings>true</useProjectSettings>
+						<!-- <useProjectSettings>true</useProjectSettings> -->
+						<!-- <showDeprecation>true</showDeprecation> -->
 					</configuration>
 				</plugin>
 
 				<plugin>
 					<groupId>org.eclipse.tycho</groupId>
-					<artifactId>tycho-source-plugin</artifactId>
-					<version>${tycho-version}</version>
-					<executions>
-						<execution>
-							<id>plugin-source</id>
-							<goals>
-								<goal>plugin-source</goal>
-							</goals>
-						</execution>
-					</executions>
+					<artifactId>tycho-p2-repository-plugin</artifactId>
+					<version>${tycho.version}</version>
+					<configuration>
+						<compress>true</compress>
+						<!-- Nope, it brings all 3rd party plug-ins.
+						<includeAllDependencies>true</includeAllDependencies>
+						-->
+					</configuration>
 				</plugin>
 
 			</plugins>

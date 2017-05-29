@@ -24,7 +24,7 @@ For manual installs, the stable version update site is:
 ```
 $ git clone --branch=master https://github.com/gnuarmeclipse/plug-ins.git gnuarmeclipse/plug-ins.git
 $ cd gnuarmeclipse/plug-ins.git
-$ mvn -Dtycho.localArtifacts=ignore clean install
+$ mvn -Dtycho.localArtifacts=ignore clean verify
 ```
 
 The result is a p2 repository, in `ilg.gnumcueclipse-repository/target/repository`.
@@ -37,13 +37,13 @@ The Eclipse build is described in the [project web](http://gnuarmeclipse.github.
 
 The minimum requirements for running the GNU MCU Eclipse plug-ins are:
 
-- JavaSE-1.8
-- CDT 8.6.0 (Luna SR2)
+- JavaSE-1.8-111 or later
+- CDT 9.2.1 (Neon.3)
 
 Recommended:
 
 - JavaSE-1.8-111 or later
-- Eclipse Mars.2
+- Eclipse Neon.3
 
 ## Developer
 

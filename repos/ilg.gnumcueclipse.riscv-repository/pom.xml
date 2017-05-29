@@ -28,29 +28,6 @@
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.eclipse.tycho</groupId>
-				<artifactId>tycho-p2-repository-plugin</artifactId>
-				<version>${tycho.version}</version>
-				<configuration>
-					<compress>true</compress>
-					<!-- Nope, it brings all 3rd party plug-ins.
-					<includeAllDependencies>true</includeAllDependencies>
-					-->
-				</configuration>
-				<executions>
-					<execution>
-						<goals>
-							<goal>archive-repository</goal>
-						</goals>
-					</execution>
-				</executions>
-			</plugin>
-		</plugins>
-	</build>
-
 	<name>GNU MCU Eclipse RISC-V repository</name>
 	<url>http://gnuarmeclipse.github.io</url>
 </project>
