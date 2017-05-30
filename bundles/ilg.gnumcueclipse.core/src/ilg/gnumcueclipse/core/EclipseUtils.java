@@ -509,6 +509,10 @@ public class EclipseUtils {
 	 */
 	public static void setVariableValue(String name, String description, String value) {
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println(
+					"EclipseUtils.setVariableValue(\"" + name + "\", \"" + description + "\", \"" + value + "\")");
+		}
 		IStringVariableManager manager = VariablesPlugin.getDefault().getStringVariableManager();
 		IValueVariable variable = manager.getValueVariable(name);
 		if (variable == null) {
@@ -521,12 +525,9 @@ public class EclipseUtils {
 			}
 		}
 		if (variable != null) {
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println("Variable \"" + name + "\" = \"" + value + "\"");
-			}
 			variable.setValue(value);
 		} else {
-			Activator.log("Variable \"" + name + "\" not set.");
+			System.out.println("EclipseUtils.setVariableValue(\"" + name + "\", \"" + value + "\") not set");
 		}
 	}
 
