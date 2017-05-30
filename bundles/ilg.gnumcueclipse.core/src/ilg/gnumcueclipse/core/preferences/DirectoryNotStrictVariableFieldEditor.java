@@ -13,6 +13,7 @@ package ilg.gnumcueclipse.core.preferences;
 
 import org.eclipse.swt.widgets.Composite;
 
+import ilg.gnumcueclipse.core.Activator;
 import ilg.gnumcueclipse.core.EclipseUtils;
 
 public class DirectoryNotStrictVariableFieldEditor extends DirectoryNotStrictFieldEditor {
@@ -42,8 +43,11 @@ public class DirectoryNotStrictVariableFieldEditor extends DirectoryNotStrictFie
 
 		if (getTextControl() != null) {
 			String value = EclipseUtils.getVariableValue(fVariableName);
-			if (value == null) {
+			if (value == null || value.isEmpty()) {
 				value = getPreferenceStore().getString(getPreferenceName());
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("DirectoryNotStrictVariableFieldEditor.doLoad() got \"" + value + "\"");
+				}
 				setPresentsDefaultValue(false);
 			}
 			getTextControl().setText(value);
