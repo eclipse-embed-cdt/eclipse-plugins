@@ -56,8 +56,13 @@ public class DirectoryNotStrictVariableFieldEditor extends DirectoryNotStrictFie
 	 */
 	@Override
 	protected void doStore() {
+
+		// Store the value as a variable, to be used during substitutions.
 		String value = getTextControl().getText();
 		EclipseUtils.setVariableValue(fVariableName, fVariableDescription, value);
+
+		// Also store the value in the persistent store.
+		super.doStore();
 	}
 
 	// ------------------------------------------------------------------------

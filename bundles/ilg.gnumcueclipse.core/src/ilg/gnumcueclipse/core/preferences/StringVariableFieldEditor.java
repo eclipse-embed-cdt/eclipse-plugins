@@ -44,7 +44,7 @@ public class StringVariableFieldEditor extends StringFieldEditor {
 		if (getTextControl() != null) {
 			String value = EclipseUtils.getVariableValue(fVariableName);
 			if (value == null) {
-				value = getPreferenceStore().getDefaultString(getPreferenceName());
+				value = getPreferenceStore().getString(getPreferenceName());
 				setPresentsDefaultValue(false);
 			}
 			getTextControl().setText(value);
@@ -57,8 +57,13 @@ public class StringVariableFieldEditor extends StringFieldEditor {
 	 */
 	@Override
 	protected void doStore() {
+
+		// Store the value as a variable, to be used during substitutions.
 		String value = getTextControl().getText();
 		EclipseUtils.setVariableValue(fVariableName, fVariableDescription, value);
+
+		// Also store the value in the persistent store.
+		super.doStore();
 	}
 
 	// ------------------------------------------------------------------------
