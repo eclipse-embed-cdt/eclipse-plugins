@@ -226,18 +226,18 @@ echo "Owner: ${BINTRAY_OWNER}"
 
 if [ "${RISCV}" == "" ]
 then
-  REPO_FOLDER="ilg.gnumcueclipse-repository"
+  REPO_FOLDER="ilg.gnumcueclipse.repository"
 else
-  REPO_FOLDER="ilg.gnumcueclipse.riscv-repository"
+  REPO_FOLDER="ilg.gnumcueclipse.riscv.repository"
 fi
 
-if [ ! -d ../repos/${REPO_FOLDER}/target/repository ]
+if [ ! -d ../repositories/${REPO_FOLDER}/target/repository ]
 then
   echo "No repository folder found"
   exit 1
 fi
 
-cd ../repos/${REPO_FOLDER}/target
+cd ../repositories/${REPO_FOLDER}/target
 
 FULL_VERSION="$(grep "unit id='ilg.gnumcueclipse.core'" targetPlatformRepository/content.xml | sed "s/.*version='\(.*\)'.*/\1/")"
 (cd repository; do_upload_to_bintray "${TEST}" "${FULL_VERSION}")
