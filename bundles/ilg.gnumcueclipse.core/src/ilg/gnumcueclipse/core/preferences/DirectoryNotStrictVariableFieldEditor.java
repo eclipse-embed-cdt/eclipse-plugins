@@ -43,7 +43,7 @@ public class DirectoryNotStrictVariableFieldEditor extends DirectoryNotStrictFie
 		if (getTextControl() != null) {
 			String value = EclipseUtils.getVariableValue(fVariableName);
 			if (value == null) {
-				value = getPreferenceStore().getDefaultString(getPreferenceName());
+				value = getPreferenceStore().getString(getPreferenceName());
 				setPresentsDefaultValue(false);
 			}
 			getTextControl().setText(value);
