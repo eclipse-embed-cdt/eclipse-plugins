@@ -1,5 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?eclipse version="3.4"?>
 <plugin>
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="ilg.gnumcueclipse.core.ui.preferences.McuPreferencesPage"
+            id="ilg.gnumcueclipse.core.ui.preferences.mcu"
+            name="%preferences.mcu">
+      </page>
+   </extension>
+   <extension
+         point="org.eclipse.ui.propertyPages">
+      <page
+            class="ilg.gnumcueclipse.core.ui.properties.McuPropertiesPage"
+            id="ilg.gnumcueclipse.core.ui.properties.mcu"
+            name="%properties.mcu">
+      </page>
+   </extension>
 
 </plugin>

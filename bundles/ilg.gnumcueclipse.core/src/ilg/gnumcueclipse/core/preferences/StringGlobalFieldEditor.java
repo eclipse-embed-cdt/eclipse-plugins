@@ -16,7 +16,6 @@ import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.widgets.Composite;
 
 import ilg.gnumcueclipse.core.Activator;
-import ilg.gnumcueclipse.core.EclipseUtils;
 
 public class StringGlobalFieldEditor extends StringFieldEditor {
 

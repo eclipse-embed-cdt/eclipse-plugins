@@ -27,4 +27,5 @@ Require-Bundle: org.eclipse.cdt;bundle-version="9.2.1",
  org.eclipse.osgi;bundle-version="3.11.3",
  org.eclipse.ui;bundle-version="3.108.1",
  org.eclipse.ui.ide;bundle-version="3.12.3",
- org.eclipse.ui.workbench;bundle-version="3.108.3"
+ org.eclipse.ui.workbench;bundle-version="3.108.3",
+ org.eclipse.cdt.ui;bundle-version="6.1.0"
