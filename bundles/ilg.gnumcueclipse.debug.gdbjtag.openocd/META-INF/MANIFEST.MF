@@ -21,7 +21,8 @@ Require-Bundle: ilg.gnumcueclipse.core,
  org.eclipse.debug.core;bundle-version="3.10.100",
  org.eclipse.debug.ui;bundle-version="3.11.202",
  org.eclipse.ui;bundle-version="3.108.1",
- org.eclipse.ui.ide;bundle-version="3.12.3"
+ org.eclipse.ui.ide;bundle-version="3.12.3",
+ org.eclipse.core.resources
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Bundle-Vendor: %bundle.vendor
 Bundle-ActivationPolicy: lazy

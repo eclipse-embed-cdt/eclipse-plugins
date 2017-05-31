@@ -11,6 +11,7 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.openocd;
 
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;
@@ -135,13 +136,13 @@ public class PersistentPreferences {
 		return getString(INSTALL_FOLDER, INSTALL_FOLDER_DEFAULT);
 	}
 
-	// ----- OpenOCD executable name -------------------------------------------
+	// ----- OpenOCD executable name ------------------------------------------
 	public static String getExecutableName() {
 
 		return getString(EXECUTABLE_NAME, EXECUTABLE_NAME_DEFAULT);
 	}
 
-	// ----- OpenOCD is strict -------------------------------------------
+	// ----- OpenOCD is strict ------------------------------------------------
 	public static boolean getFolderStrict() {
 
 		return getBoolean(FOLDER_STRICT, FOLDER_STRICT_DEFAULT);

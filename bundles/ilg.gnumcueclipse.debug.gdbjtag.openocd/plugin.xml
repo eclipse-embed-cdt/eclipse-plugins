@@ -55,33 +55,36 @@
 
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="org.eclipse.debug.ui.DebugPreferencePage"
-			class="ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences.WorkspaceOpenOcdPage"
-			id="ilg.gnumcueclipse.debug.gdbjtag.openocd.preferencePage"
+			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
+			class="ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.preferences.WorkspaceOpenOcdPage"
+			id="ilg.gnumcueclipse.debug.gdbjtag.openocd.workspacePreferencePage"
 			name="%preferences.workspaceOpenOcd">
+		</page>
+		<page
+			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
+			class="ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.preferences.GlobalOpenOcdPage"
+			id="ilg.gnumcueclipse.debug.gdbjtag.openocd.globalPreferencePage"
+			name="%preferences.globalOpenOcd">
+		</page>
+	</extension>
+	<extension point="org.eclipse.ui.propertyPages">
+		<page
+			category="ilg.gnumcueclipse.core.ui.properties.mcu"
+			class="ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.properties.ProjectOpenOcdPage"
+			id="ilg.gnumcueclipse.debug.gdbjtag.openocd.propertiesPage"
+			name="%properties.openOcd">
+			<enabledWhen>
+				<and>
+					<instanceof value="org.eclipse.core.resources.IProject">
+					</instanceof>
+				</and>
+			</enabledWhen>
 		</page>
 	</extension>
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer
 			class="ilg.gnumcueclipse.debug.gdbjtag.openocd.DefaultPreferenceInitializer">
 		</initializer>
-	</extension>
-
-	<extension point="org.eclipse.core.variables.dynamicVariables">
-		<variable
-        description="%variable.path.description"
-        name="openocd_executable"
-        resolver="ilg.gnumcueclipse.debug.gdbjtag.openocd.DynamicVariableResolver"
-        supportsArgument="false">
-		</variable>
-	</extension>
-
-	<extension point="org.eclipse.core.variables.dynamicVariables">
-		<variable
-        description="%variable.executable.description"
-        name="openocd_path"
-        resolver="ilg.gnumcueclipse.debug.gdbjtag.openocd.DynamicVariableResolver"
-        supportsArgument="false"/>
 	</extension>
 
 </plugin>

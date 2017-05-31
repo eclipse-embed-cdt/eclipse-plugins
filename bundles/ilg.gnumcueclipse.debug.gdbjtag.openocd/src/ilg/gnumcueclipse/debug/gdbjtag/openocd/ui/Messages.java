@@ -25,12 +25,12 @@ public class Messages {
 
 	private static final String MESSAGES = Activator.PLUGIN_ID + ".ui.messages"; //$NON-NLS-1$
 
+	public static String ProjectOpenOCDPagePropertyPage_description;
 	public static String WorkspaceOpenOCDPagePropertyPage_description;
-	public static String OpenOCDPagePropertyPage_executable_label;
-	public static String OpenOCDPagePropertyPage_executable_folder;
+	public static String GlobalOpenOCDPagePropertyPage_description;
 
-	public static String Variable_executable_description;
-	public static String Variable_path_description;
+	public static String OpenOCDPage_executable_label;
+	public static String OpenOCDPage_executable_folder;
 
 	// ------------------------------------------------------------------------
 

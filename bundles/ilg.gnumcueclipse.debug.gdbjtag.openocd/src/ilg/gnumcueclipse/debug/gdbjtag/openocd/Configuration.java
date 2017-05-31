@@ -22,6 +22,7 @@ import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
 import org.eclipse.cdt.dsf.gdb.IGdbDebugPreferenceConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -47,11 +48,22 @@ public class Configuration {
 			if (executable.length() == 0)
 				return null;
 
-			executable = DebugUtils.resolveAll(executable, configuration.getAttributes());
+			IProject project = EclipseUtils.getProjectByLaunchConfigurationDescription(configuration);
+			if (project != null) {
+				executable = DynamicVariableResolver.resolveAll(executable, project);
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("openocd.getGdbServerCommand() substituted \"" + executable + "\"");
+				}
+			}
 
-			ICConfigurationDescription buildConfig = EclipseUtils.getBuildConfigDescription(configuration);
-			if (buildConfig != null) {
-				executable = DebugUtils.resolveAll(executable, buildConfig);
+			if (executable.indexOf("${") >= 0) {
+				// If more macros to process.
+				executable = DebugUtils.resolveAll(executable, configuration.getAttributes());
+
+				ICConfigurationDescription buildConfig = EclipseUtils.getBuildConfigDescription(configuration);
+				if (buildConfig != null) {
+					executable = DebugUtils.resolveAll(executable, buildConfig);
+				}
 			}
 
 		} catch (CoreException e) {

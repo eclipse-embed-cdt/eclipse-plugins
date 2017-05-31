@@ -11,31 +11,36 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.openocd;
 
-import org.eclipse.core.runtime.CoreException;
-import org.eclipse.core.variables.IDynamicVariable;
-import org.eclipse.core.variables.IDynamicVariableResolver;
+import org.eclipse.core.resources.IProject;
+
+import ilg.gnumcueclipse.core.EclipseUtils;
 
 // Resolves variables from persistent preferences.
 
-public class DynamicVariableResolver implements IDynamicVariableResolver {
+public class DynamicVariableResolver {
 
 	public static final String VARIABLE_OPENOCD_EXECUTABLE = "openocd_executable";
 	public static final String VARIABLE_OPENOCD_PATH = "openocd_path";
 
-	@Override
-	public String resolveValue(IDynamicVariable variable, String argument) throws CoreException {
+	public static String resolveAll(String input, IProject project) {
 
-		String value = null;
-		if (VARIABLE_OPENOCD_EXECUTABLE.equals(variable.getName())) {
-			value = PersistentPreferences.getExecutableName();
-		} else if (VARIABLE_OPENOCD_PATH.equals(variable.getName())) {
-			value = PersistentPreferences.getInstallFolder();
+		String macros[] = { VARIABLE_OPENOCD_EXECUTABLE, VARIABLE_OPENOCD_PATH };
+		String preferences[] = { PersistentPreferences.EXECUTABLE_NAME, PersistentPreferences.INSTALL_FOLDER };
+		String defaults[] = { PersistentPreferences.EXECUTABLE_NAME_DEFAULT,
+				PersistentPreferences.INSTALL_FOLDER_DEFAULT };
+
+		String output = input;
+		if (input.indexOf("${") >= 0) {
+			for (int i = 0; i < macros.length; i++) {
+				if (input.indexOf("${" + macros[i] + "}") >= 0) {
+					String tmp = EclipseUtils.getPreferenceValueForId(Activator.PLUGIN_ID, preferences[i], defaults[i],
+							project);
+
+					output = output.replaceAll("\\$\\{" + macros[i] + "\\}", tmp);
+				}
+			}
 		}
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("openocd.DynamicVariableResolver.resolveValue(\"" + variable.getName() + "\", \""
-					+ argument + "\") = \"" + value + "\"");
-		}
-		return value;
+		return output;
 	}
 
 }
