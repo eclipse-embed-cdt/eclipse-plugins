@@ -216,6 +216,20 @@ public class EclipseUtils {
 	}
 
 	/**
+	 * Find the project associated with the given configuration.
+	 * 
+	 * @param configuration
+	 * @return the project or null, if not found.
+	 */
+	public static IProject getProjectByLaunchConfigurationDescription(ILaunchConfiguration configuration) {
+		ICConfigurationDescription buildConfig = EclipseUtils.getBuildConfigDescription(configuration);
+		if (buildConfig != null) {
+			return buildConfig.getProjectDescription().getProject();
+		}
+		return null;
+	}
+
+	/**
 	 * Find the project selected in the Project viewer. This works only if the
 	 * project is really selected (i.e. the Project Explorer has the focus, and
 	 * the project name is coloured in blue); if the focus is lost, the function
