@@ -28,7 +28,7 @@ public class McuPreferencesPage extends PreferencePage implements IWorkbenchPref
 	public McuPreferencesPage() {
 		super();
 		// setPreferenceStore(CUIPlugin.getDefault().getPreferenceStore());
-		setDescription(Messages.McuPropertiesPage_description);
+		setDescription(Messages.McuPreferencesPage_description);
 	}
 
 	@Override
