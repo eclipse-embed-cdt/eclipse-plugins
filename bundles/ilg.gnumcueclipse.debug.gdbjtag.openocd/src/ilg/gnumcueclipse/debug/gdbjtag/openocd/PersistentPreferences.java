@@ -59,13 +59,22 @@ public class PersistentPreferences {
 
 	// ----- Defaults ---------------------------------------------------------
 
+	// EXECUTABLE_NAME, INSTALL_FOLDER, FOLDER_STRICT are used as dynamic
+	// variables.
 	public static final String EXECUTABLE_NAME = "executable.name";
-	public static final String EXECUTABLE_NAME_OS = EXECUTABLE_NAME + ".%s";
+	public static final String EXECUTABLE_NAME_DEFAULT = "";
+
 	public static final String INSTALL_FOLDER = "install.folder";
-	public static final String SEARCH_PATH = "search.path";
-	public static final String SEARCH_PATH_OS = SEARCH_PATH + ".%s";
+	public static final String INSTALL_FOLDER_DEFAULT = "";
 
 	public static final String FOLDER_STRICT = "folder.strict";
+	public static final boolean FOLDER_STRICT_DEFAULT = true;
+
+	public static final String SEARCH_PATH = "search.path";
+	public static final String SEARCH_PATH_DEFAULT = "";
+
+	public static final String EXECUTABLE_NAME_OS = EXECUTABLE_NAME + ".%s";
+	public static final String SEARCH_PATH_OS = SEARCH_PATH + ".%s";
 
 	public static final String TAB_MAIN_CHECK_PROGRAM = "tab.main.checkProgram";
 	public static final boolean TAB_MAIN_CHECK_PROGRAM_DEFAULT = false;
@@ -79,6 +88,17 @@ public class PersistentPreferences {
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("openocd.PersistentPreferences.getString(\"" + key + "\", \"" + defaultValue + "\") = \""
 					+ value + "\"");
+		}
+		return value;
+	}
+
+	private static boolean getBoolean(String key, boolean defaultValue) {
+
+		boolean value = Platform.getPreferencesService().getBoolean(Activator.PLUGIN_ID, key, defaultValue, null);
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("openocd.PersistentPreferences.getBoolean(\"" + key + "\", \"" + defaultValue
+					+ "\") = \"" + value + "\"");
 		}
 		return value;
 	}
@@ -107,6 +127,24 @@ public class PersistentPreferences {
 		} catch (BackingStoreException e) {
 			Activator.log(e);
 		}
+	}
+
+	// ----- OpenOCD install folder -------------------------------------------
+	public static String getInstallFolder() {
+
+		return getString(INSTALL_FOLDER, INSTALL_FOLDER_DEFAULT);
+	}
+
+	// ----- OpenOCD executable name -------------------------------------------
+	public static String getExecutableName() {
+
+		return getString(EXECUTABLE_NAME, EXECUTABLE_NAME_DEFAULT);
+	}
+
+	// ----- OpenOCD is strict -------------------------------------------
+	public static boolean getFolderStrict() {
+
+		return getBoolean(FOLDER_STRICT, FOLDER_STRICT_DEFAULT);
 	}
 
 	// ----- gdb server doStart -----------------------------------------------
