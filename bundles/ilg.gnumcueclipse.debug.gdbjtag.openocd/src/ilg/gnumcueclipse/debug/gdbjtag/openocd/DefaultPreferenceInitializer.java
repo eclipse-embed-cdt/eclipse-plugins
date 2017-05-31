@@ -122,7 +122,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				}
 			}
 
-			String executableName = EclipseUtils.getVariableValue(VariableInitializer.VARIABLE_OPENOCD_EXECUTABLE);
+			String executableName = EclipseUtils.getVariableValue(DynamicVariableResolver.VARIABLE_OPENOCD_EXECUTABLE);
 			if (executableName == null || executableName.isEmpty()) {
 				executableName = DefaultPreferences.getExecutableName();
 			}
@@ -180,6 +180,10 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				// If the install folder was finally discovered, store
 				// it in the preferences.
 				DefaultPreferences.putInstallFolder(folder);
+			}
+
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("openocd.LateInitializer.finalizeInitializationsDefaultPreferences() done");
 			}
 		}
 	}

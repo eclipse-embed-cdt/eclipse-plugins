@@ -11,20 +11,18 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences;
 
-import ilg.gnumcueclipse.core.preferences.DirectoryNotStrictVariableFieldEditor;
-import ilg.gnumcueclipse.core.preferences.StringVariableFieldEditor;
-import ilg.gnumcueclipse.debug.gdbjtag.openocd.Activator;
-import ilg.gnumcueclipse.debug.gdbjtag.openocd.DefaultPreferences;
-import ilg.gnumcueclipse.debug.gdbjtag.openocd.PersistentPreferences;
-import ilg.gnumcueclipse.debug.gdbjtag.openocd.VariableInitializer;
-import ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.Messages;
-
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
+
+import ilg.gnumcueclipse.core.preferences.DirectoryNotStrictGlobalFieldEditor;
+import ilg.gnumcueclipse.core.preferences.StringGlobalFieldEditor;
+import ilg.gnumcueclipse.debug.gdbjtag.openocd.Activator;
+import ilg.gnumcueclipse.debug.gdbjtag.openocd.PersistentPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.Messages;
 
 /**
  * This class represents a preference page that is contributed to the
@@ -46,8 +44,7 @@ public class OpenOcdPage extends FieldEditorPreferencePage implements IWorkbench
 	public OpenOcdPage() {
 		super(GRID);
 
-		// Not really used, the field editors directly access the variables
-		// store.
+		// Explicit use of the workspace preferences.
 		setPreferenceStore(new ScopedPreferenceStore(InstanceScope.INSTANCE, Activator.PLUGIN_ID));
 
 		setDescription(Messages.OpenOCDPagePropertyPage_description);
@@ -73,18 +70,16 @@ public class OpenOcdPage extends FieldEditorPreferencePage implements IWorkbench
 	protected void createFieldEditors() {
 
 		FieldEditor executable;
-		executable = new StringVariableFieldEditor(PersistentPreferences.EXECUTABLE_NAME,
-				VariableInitializer.VARIABLE_OPENOCD_EXECUTABLE, Messages.Variable_executable_description,
-				Messages.OpenOCDPagePropertyPage_executable_label, getFieldEditorParent());
+		executable = new StringGlobalFieldEditor(PersistentPreferences.EXECUTABLE_NAME, Activator.PLUGIN_ID,
+				Messages.Variable_executable_description, getFieldEditorParent());
 		addField(executable);
 
 		boolean isStrict;
-		isStrict = DefaultPreferences.getBoolean(PersistentPreferences.FOLDER_STRICT, true);
+		isStrict = PersistentPreferences.getFolderStrict();
 
 		FieldEditor folder;
-		folder = new DirectoryNotStrictVariableFieldEditor(PersistentPreferences.INSTALL_FOLDER,
-				VariableInitializer.VARIABLE_OPENOCD_PATH, Messages.Variable_path_description,
-				Messages.OpenOCDPagePropertyPage_executable_folder, getFieldEditorParent(), isStrict);
+		folder = new DirectoryNotStrictGlobalFieldEditor(PersistentPreferences.INSTALL_FOLDER, Activator.PLUGIN_ID,
+				Messages.Variable_path_description, getFieldEditorParent(), isStrict);
 		addField(folder);
 	}
 

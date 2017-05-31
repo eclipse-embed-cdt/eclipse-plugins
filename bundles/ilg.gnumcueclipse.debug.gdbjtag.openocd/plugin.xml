@@ -53,17 +53,6 @@
 		</device>
 	</extension>
 
-	<extension point="org.eclipse.core.variables.valueVariables">
-		<variable
-			initializerClass="ilg.gnumcueclipse.debug.gdbjtag.openocd.VariableInitializer"
-			name="openocd_path" />
-	</extension>
-
-	<extension point="org.eclipse.core.variables.valueVariables">
-		<variable
-			initializerClass="ilg.gnumcueclipse.debug.gdbjtag.openocd.VariableInitializer"
-			name="openocd_executable" />
-	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
 			category="org.eclipse.debug.ui.DebugPreferencePage"
@@ -76,6 +65,23 @@
 		<initializer
 			class="ilg.gnumcueclipse.debug.gdbjtag.openocd.DefaultPreferenceInitializer">
 		</initializer>
+	</extension>
+
+	<extension point="org.eclipse.core.variables.dynamicVariables">
+		<variable
+        description="%variable.path.description"
+        name="openocd_executable"
+        resolver="ilg.gnumcueclipse.debug.gdbjtag.openocd.DynamicVariableResolver"
+        supportsArgument="false">
+		</variable>
+	</extension>
+
+	<extension point="org.eclipse.core.variables.dynamicVariables">
+		<variable
+        description="%variable.executable.description"
+        name="openocd_path"
+        resolver="ilg.gnumcueclipse.debug.gdbjtag.openocd.DynamicVariableResolver"
+        supportsArgument="false"/>
 	</extension>
 
 </plugin>
