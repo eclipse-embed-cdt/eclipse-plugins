@@ -3400,13 +3400,13 @@
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="ilg.gnumcueclipse.managedbuild.cross.ui.preferences.mcu"
+			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
 			class="ilg.gnumcueclipse.managedbuild.cross.arm.ui.preferences.WorkspaceToolchainsPathsPreferencesPage"
 			id="ilg.gnumcueclipse.managedbuild.cross.arm.preferencePage.workspaceToolchainsPaths"
 			name="%preferences.toolsPaths">
 		</page>
 		<page
-			category="ilg.gnumcueclipse.managedbuild.cross.ui.preferences.mcu"
+			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
 			class="ilg.gnumcueclipse.managedbuild.cross.arm.ui.preferences.GlobalToolchainsPathsPreferencesPage"
 			id="ilg.gnumcueclipse.managedbuild.cross.arm.preferencePage.globalToolchainsPaths"
 			name="%preferences.globalToolsPaths">
@@ -3414,7 +3414,7 @@
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
-			category="ilg.gnumcueclipse.managedbuild.cross.ui.properties.mcu"
+			category="ilg.gnumcueclipse.core.ui.properties.mcu"
 			class="ilg.gnumcueclipse.managedbuild.cross.arm.ui.properties.ProjectToolchainsPathPropertiesPage"
 			id="ilg.gnumcueclipse.managedbuild.cross.arm.properties.toolchainsPage"
 			name="%properties.projectToolsPaths">

@@ -2368,13 +2368,13 @@
 	</extension>
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
-			category="ilg.gnumcueclipse.managedbuild.cross.ui.preferences.mcu"
+			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
 			class="ilg.gnumcueclipse.managedbuild.cross.riscv.ui.preferences.WorkspaceToolchainsPathsPreferencesPage"
 			id="ilg.gnumcueclipse.managedbuild.cross.riscv.preferencePage.workspaceToolchainsPaths"
 			name="%preferences.workspaceToolchainsPaths">
 		</page>
 		<page
-			category="ilg.gnumcueclipse.managedbuild.cross.ui.preferences.mcu"
+			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
 			class="ilg.gnumcueclipse.managedbuild.cross.riscv.ui.preferences.GlobalToolchainsPathsPreferencesPage"
 			id="ilg.gnumcueclipse.managedbuild.cross.riscv.preferencePage.globalToolchainsPaths"
 			name="%preferences.globalToolchainsPaths">
@@ -2382,7 +2382,7 @@
 	</extension>
 	<extension point="org.eclipse.ui.propertyPages">
 		<page
-			category="ilg.gnumcueclipse.managedbuild.cross.ui.properties.mcu"
+			category="ilg.gnumcueclipse.core.ui.properties.mcu"
 			class="ilg.gnumcueclipse.managedbuild.cross.riscv.ui.properties.ProjectToolchainsPathPropertiesPage"
 			id="ilg.gnumcueclipse.managedbuild.cross.riscv.properties.toolchainsPage"
 			name="%properties.projectToolchainsPaths">
