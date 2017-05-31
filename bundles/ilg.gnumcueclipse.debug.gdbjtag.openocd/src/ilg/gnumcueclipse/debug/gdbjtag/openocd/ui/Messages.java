@@ -25,7 +25,7 @@ public class Messages {
 
 	private static final String MESSAGES = Activator.PLUGIN_ID + ".ui.messages"; //$NON-NLS-1$
 
-	public static String OpenOCDPagePropertyPage_description;
+	public static String WorkspaceOpenOCDPagePropertyPage_description;
 	public static String OpenOCDPagePropertyPage_executable_label;
 	public static String OpenOCDPagePropertyPage_executable_folder;
 

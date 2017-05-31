@@ -56,9 +56,9 @@
 	<extension point="org.eclipse.ui.preferencePages">
 		<page
 			category="org.eclipse.debug.ui.DebugPreferencePage"
-			class="ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences.OpenOcdPage"
+			class="ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences.WorkspaceOpenOcdPage"
 			id="ilg.gnumcueclipse.debug.gdbjtag.openocd.preferencePage"
-			name="%preferences.openOcd">
+			name="%preferences.workspaceOpenOcd">
 		</page>
 	</extension>
 	<extension point="org.eclipse.core.runtime.preferences">

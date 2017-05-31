@@ -33,7 +33,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.Messages;
  * This page uses special filed editors, that get the default values from the
  * preferences store, but the values are from the variables store.
  */
-public class OpenOcdPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class WorkspaceOpenOcdPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	// ------------------------------------------------------------------------
 
@@ -41,13 +41,13 @@ public class OpenOcdPage extends FieldEditorPreferencePage implements IWorkbench
 
 	// ------------------------------------------------------------------------
 
-	public OpenOcdPage() {
+	public WorkspaceOpenOcdPage() {
 		super(GRID);
 
 		// Explicit use of the workspace preferences.
 		setPreferenceStore(new ScopedPreferenceStore(InstanceScope.INSTANCE, Activator.PLUGIN_ID));
 
-		setDescription(Messages.OpenOCDPagePropertyPage_description);
+		setDescription(Messages.WorkspaceOpenOCDPagePropertyPage_description);
 	}
 
 	// ------------------------------------------------------------------------
