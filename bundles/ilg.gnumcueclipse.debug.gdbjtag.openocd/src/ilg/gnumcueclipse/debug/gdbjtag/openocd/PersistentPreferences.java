@@ -11,7 +11,6 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.openocd;
 
-import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.service.prefs.BackingStoreException;

@@ -71,7 +71,7 @@
 		<page
 			category="ilg.gnumcueclipse.core.ui.properties.mcu"
 			class="ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.properties.ProjectOpenOcdPage"
-			id="ilg.gnumcueclipse.debug.gdbjtag.openocd.propertiesPage"
+			id="ilg.gnumcueclipse.debug.gdbjtag.openocd.projectPropertiesPage"
 			name="%properties.openOcd">
 			<enabledWhen>
 				<and>

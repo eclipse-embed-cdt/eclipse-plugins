@@ -32,23 +32,23 @@ public class Configuration {
 
 	// ------------------------------------------------------------------------
 
-	public static String getGdbServerCommand(ILaunchConfiguration configuration) {
-
-		String executable = null;
+	public static String getGdbServerCommand(ILaunchConfiguration configuration, String executable) {
 
 		try {
-			if (!configuration.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
-					DefaultPreferences.DO_START_GDB_SERVER_DEFAULT))
-				return null;
+			if (executable == null) {
+				if (!configuration.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
+						DefaultPreferences.DO_START_GDB_SERVER_DEFAULT))
+					return null;
 
-			executable = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
-					DefaultPreferences.GDB_SERVER_EXECUTABLE_DEFAULT);
-			// executable = Utils.escapeWhitespaces(executable).trim();
-			executable = executable.trim();
-			if (executable.length() == 0)
-				return null;
+				executable = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
+						DefaultPreferences.GDB_SERVER_EXECUTABLE_DEFAULT);
+				// executable = Utils.escapeWhitespaces(executable).trim();
+				executable = executable.trim();
+				if (executable.length() == 0)
+					return null;
+			}
 
-			IProject project = EclipseUtils.getProjectByLaunchConfigurationDescription(configuration);
+			IProject project = EclipseUtils.getProjectByLaunchConfiguration(configuration);
 			if (project != null) {
 				executable = DynamicVariableResolver.resolveAll(executable, project);
 				if (Activator.getInstance().isDebugging()) {
@@ -89,7 +89,7 @@ public class Configuration {
 					DefaultPreferences.DO_START_GDB_SERVER_DEFAULT))
 				return null;
 
-			String executable = getGdbServerCommand(configuration);
+			String executable = getGdbServerCommand(configuration, null);
 			if (executable == null || executable.length() == 0)
 				return null;
 
@@ -130,7 +130,7 @@ public class Configuration {
 
 	public static String getGdbServerCommandName(ILaunchConfiguration config) {
 
-		String fullCommand = getGdbServerCommand(config);
+		String fullCommand = getGdbServerCommand(config, null);
 		return StringUtils.extractNameFromPath(fullCommand);
 	}
 

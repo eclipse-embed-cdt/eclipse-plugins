@@ -221,7 +221,7 @@ public class EclipseUtils {
 	 * @param configuration
 	 * @return the project or null, if not found.
 	 */
-	public static IProject getProjectByLaunchConfigurationDescription(ILaunchConfiguration configuration) {
+	public static IProject getProjectByLaunchConfiguration(ILaunchConfiguration configuration) {
 		ICConfigurationDescription buildConfig = EclipseUtils.getBuildConfigDescription(configuration);
 		if (buildConfig != null) {
 			return buildConfig.getProjectDescription().getProject();
