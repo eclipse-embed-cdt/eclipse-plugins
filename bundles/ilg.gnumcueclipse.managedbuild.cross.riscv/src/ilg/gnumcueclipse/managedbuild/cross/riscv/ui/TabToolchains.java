@@ -59,6 +59,9 @@ import ilg.gnumcueclipse.managedbuild.cross.riscv.ToolchainDefinition;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.ui.preferences.GlobalToolchainsPathsPreferencesPage;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.ui.preferences.WorkspaceToolchainsPathsPreferencesPage;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.ui.properties.ProjectToolchainsPathPropertiesPage;
+import ilg.gnumcueclipse.managedbuild.cross.ui.preferences.BuildToolsGlobalPathsPreferencesPage;
+import ilg.gnumcueclipse.managedbuild.cross.ui.preferences.BuildToolsWorkspacePathsPreferencesPage;
+import ilg.gnumcueclipse.managedbuild.cross.ui.properties.BuildToolsProjectPathPropertiesPage;
 
 /**
  * @noextend This class is not intended to be subclassed by clients.
@@ -91,7 +94,8 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	private Text fCommandSizeText;
 	private Text fCommandMakeText;
 	private Text fCommandRmText;
-	private Text fPathLabel;
+	private Text fToolchainPathLabel;
+	private Text fBuildToolsPathLabel;
 
 	private Button fFlashButton;
 	private Button fListingButton;
@@ -331,51 +335,50 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			Label label = new Label(usercomp, SWT.NONE);
 			label.setText(Messages.ToolChainSettingsTab_path_label);
 
-			fPathLabel = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
+			fToolchainPathLabel = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
 			layoutData = new GridData(SWT.FILL, 0, true, false);
 			layoutData.horizontalSpan = 2;
-			fPathLabel.setLayoutData(layoutData);
+			fToolchainPathLabel.setLayoutData(layoutData);
 
-			fPathLabel.setEnabled(true);
-			fPathLabel.setEditable(false);
+			fToolchainPathLabel.setEnabled(true);
+			fToolchainPathLabel.setEditable(false);
 		}
 
+		Link toolchainLink;
 		{
 			Label label = new Label(usercomp, SWT.NONE);
 			label.setText("");
 
-			Link link = new Link(usercomp, SWT.NONE);
-			link.setText(Messages.ToolChainSettingsTab_path_link);
+			toolchainLink = new Link(usercomp, SWT.NONE);
+			toolchainLink.setText(Messages.ToolChainSettingsTab_path_link);
 			layoutData = new GridData();
 			layoutData.horizontalSpan = 2;
-			link.setLayoutData(layoutData);
+			toolchainLink.setLayoutData(layoutData);
+		}
 
-			link.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
+		{
+			Label label = new Label(usercomp, SWT.NONE);
+			label.setText(Messages.ToolsSettingsTab_path_label);
 
-					String text = e.text;
-					if (Activator.getInstance().isDebugging()) {
-						System.out.println(text);
-					}
+			fBuildToolsPathLabel = new Text(usercomp, SWT.SINGLE | SWT.BORDER);
+			layoutData = new GridData(SWT.FILL, 0, true, false);
+			layoutData.horizontalSpan = 2;
+			fBuildToolsPathLabel.setLayoutData(layoutData);
 
-					int ret = -1;
-					if ("global".equals(text)) {
-						ret = PreferencesUtil.createPreferenceDialogOn(parent.getShell(),
-								GlobalToolchainsPathsPreferencesPage.ID, null, null).open();
-					} else if ("workspace".equals(text)) {
-						ret = PreferencesUtil.createPreferenceDialogOn(parent.getShell(),
-								WorkspaceToolchainsPathsPreferencesPage.ID, null, null).open();
-					} else if ("project".equals(text)) {
-						ret = PreferencesUtil.createPropertyDialogOn(parent.getShell(), getProject(),
-								ProjectToolchainsPathPropertiesPage.ID, null, null, 0).open();
-					}
+			fBuildToolsPathLabel.setEnabled(true);
+			fBuildToolsPathLabel.setEditable(false);
+		}
 
-					if (ret == Window.OK) {
-						updateToolchainPath(getSelectedToolchainName());
-					}
-				}
-			});
+		Link buildToolsLink;
+		{
+			Label label = new Label(usercomp, SWT.NONE);
+			label.setText("");
+
+			buildToolsLink = new Link(usercomp, SWT.NONE);
+			buildToolsLink.setText(Messages.ToolsSettingsTab_path_link);
+			layoutData = new GridData();
+			layoutData.horizontalSpan = 2;
+			buildToolsLink.setLayoutData(layoutData);
 		}
 
 		{
@@ -407,6 +410,64 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 
 			// fIsCreated = true;
 		}
+
+		// ----- Actions ------------------------------------------------------
+
+		toolchainLink.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				String text = e.text;
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println(text);
+				}
+
+				int ret = -1;
+				if ("global".equals(text)) {
+					ret = PreferencesUtil.createPreferenceDialogOn(parent.getShell(),
+							GlobalToolchainsPathsPreferencesPage.ID, null, null).open();
+				} else if ("workspace".equals(text)) {
+					ret = PreferencesUtil.createPreferenceDialogOn(parent.getShell(),
+							WorkspaceToolchainsPathsPreferencesPage.ID, null, null).open();
+				} else if ("project".equals(text)) {
+					ret = PreferencesUtil.createPropertyDialogOn(parent.getShell(), getProject(),
+							ProjectToolchainsPathPropertiesPage.ID, null, null, 0).open();
+				}
+
+				if (ret == Window.OK) {
+					updateToolchainPath(getSelectedToolchainName());
+				}
+			}
+		});
+
+		buildToolsLink.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				String text = e.text;
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println(text);
+				}
+
+				int ret = -1;
+				if ("global".equals(text)) {
+					ret = PreferencesUtil.createPreferenceDialogOn(parent.getShell(),
+							BuildToolsGlobalPathsPreferencesPage.ID, null, null).open();
+				} else if ("workspace".equals(text)) {
+					ret = PreferencesUtil.createPreferenceDialogOn(parent.getShell(),
+							BuildToolsWorkspacePathsPreferencesPage.ID, null, null).open();
+				} else if ("project".equals(text)) {
+					ret = PreferencesUtil.createPropertyDialogOn(parent.getShell(), getProject(),
+							BuildToolsProjectPathPropertiesPage.ID, null, null, 0).open();
+				}
+
+				if (ret == Window.OK) {
+					updateBuildToolsPath();
+				}
+			}
+		});
+
+		// --------------------------------------------------------------------
 
 		updateControlsForConfig(fConfig);
 
@@ -459,7 +520,15 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		assert (fConfig != null);
 		IProject project = (IProject) fConfig.getManagedProject().getOwner();
 		String toolchainPath = fPersistentPreferences.getToolchainPath(toolchainName, project);
-		fPathLabel.setText(toolchainPath);
+		fToolchainPathLabel.setText(toolchainPath);
+	}
+
+	protected void updateBuildToolsPath() {
+
+		assert (fConfig != null);
+		IProject project = (IProject) fConfig.getManagedProject().getOwner();
+		String toolchainPath = fPersistentPreferences.getBuildToolsPath(project);
+		fBuildToolsPathLabel.setText(toolchainPath);
 	}
 
 	// This event comes when the tab is selected after the windows is
@@ -721,6 +790,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		fLastUpdatedConfig = config;
 
 		updateToolchainPath(toolchainDefinition.getName());
+		updateBuildToolsPath();
 	}
 
 	private void updateOptions(IConfiguration config) {

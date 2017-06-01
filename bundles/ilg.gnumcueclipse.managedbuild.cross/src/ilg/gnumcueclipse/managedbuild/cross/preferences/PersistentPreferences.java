@@ -60,6 +60,16 @@ public class PersistentPreferences {
 		return defaultValue;
 	}
 
+	private String getCommonString(String key, String defaultValue, IProject project) {
+
+		String value = EclipseUtils.getPreferenceValueForId(Activator.PLUGIN_ID, key, null, project);
+		if (value != null && !value.isEmpty()) {
+			return value;
+		}
+
+		return defaultValue;
+	}
+
 	@SuppressWarnings("unused")
 	private String getEclipseString(String key, String defaultValue) {
 
@@ -246,12 +256,13 @@ public class PersistentPreferences {
 
 	/**
 	 * Get the build tools path. Search all possible scopes.
+	 * The definition is common to all build plug-ins.
 	 * 
 	 * @return a string, possibly empty.
 	 */
 	public String getBuildToolsPath(IProject project) {
 
-		return getString(BUILD_TOOLS_PATH_KEY, "", project);
+		return getCommonString(BUILD_TOOLS_PATH_KEY, "", project);
 	}
 
 	// ------------------------------------------------------------------------

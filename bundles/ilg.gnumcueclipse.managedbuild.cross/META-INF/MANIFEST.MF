@@ -26,4 +26,6 @@ Bundle-Localization: plugin
 Export-Package: ilg.gnumcueclipse.managedbuild.cross,
  ilg.gnumcueclipse.managedbuild.cross.preferences,
  ilg.gnumcueclipse.managedbuild.cross.ui,
+ ilg.gnumcueclipse.managedbuild.cross.ui.preferences,
+ ilg.gnumcueclipse.managedbuild.cross.ui.properties,
  ilg.gnumcueclipse.managedbuild.cross.xpi

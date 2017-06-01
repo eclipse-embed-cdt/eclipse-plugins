@@ -33,7 +33,7 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 
 	// ------------------------------------------------------------------------
 
-	private static boolean DEBUG_PATH = false;
+	private static boolean DEBUG_PATH = true;
 
 	// ------------------------------------------------------------------------
 
@@ -42,8 +42,10 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 		if (PathEnvironmentVariable.isVar(variableName)) {
 			return PathEnvironmentVariable.create(configuration);
 		} else {
-			// System.out.println("getVariable(" + variableName + ","
-			// + configuration.getName() + ") returns null");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("arm.EnvironmentVariableSupplier.getVariable(" + variableName + ","
+						+ configuration.getName() + ") returns null");
+			}
 			return null;
 		}
 	}
@@ -54,8 +56,10 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 		if (path != null) {
 			return new IBuildEnvironmentVariable[] { path };
 		} else {
-			// System.out.println("getVariables(" + configuration.getName()
-			// + ") returns empty array");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("arm.EnvironmentVariableSupplier.getVariables(" + configuration.getName()
+						+ ") returns empty array");
+			}
 			return new IBuildEnvironmentVariable[0];
 		}
 	}
@@ -122,21 +126,22 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 				}
 
 				File sysroot = new File(path);
-				File bin = new File(sysroot, "bin"); //$NON-NLS-1$
-				if (bin.isDirectory())
-					sysroot = bin;
+				// File bin = new File(sysroot, "bin"); //$NON-NLS-1$
+				// if (bin.isDirectory()) {
+				// 	sysroot = bin;
+				// }
 				if (DEBUG_PATH) {
 					if (Activator.getInstance().isDebugging()) {
-						System.out.println("arm.PathEnvironmentVariable.create() PATH=" + sysroot + " opt=" + path
-								+ " cfg=" + configuration + " prj="
-								+ configuration.getManagedProject().getOwner().getName());
+						System.out.println("arm.PathEnvironmentVariable.create() PATH=\"" + sysroot + "\" cfg="
+								+ configuration + " prj=" + configuration.getManagedProject().getOwner().getName());
 					}
 				}
 				return new PathEnvironmentVariable(sysroot);
 			}
 
-			// System.out.println("create(" + configuration.getName()
-			// + ") returns null");
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("arm.PathEnvironmentVariable.create(" + configuration.getName() + ") returns null");
+			}
 			return null;
 		}
 
@@ -147,9 +152,11 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 				result = ManagedBuildManager.getBuildMacroProvider().resolveValue(str, "", " ", //$NON-NLS-1$ //$NON-NLS-2$
 						IBuildMacroProvider.CONTEXT_CONFIGURATION, configuration);
 			} catch (CdtVariableException e) {
-				Activator.log("resolveMacros " + e.getMessage());
+				Activator.log("arm.PathEnvironmentVariable.resolveMacros " + e.getMessage());
 			}
 
+			Activator.log("arm.PathEnvironmentVariable.resolveMacros(\"" + str + "\", \"" + configuration.getName()
+					+ "\") = \"" + "\"");
 			return result;
 
 		}
