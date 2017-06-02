@@ -11,8 +11,8 @@
 
 package ilg.gnumcueclipse.packs.jobs;
 
-import ilg.gnumcueclipse.core.Activator;
 import ilg.gnumcueclipse.core.StringUtils;
+import ilg.gnumcueclipse.packs.Activator;
 import ilg.gnumcueclipse.packs.core.ConsoleStream;
 import ilg.gnumcueclipse.packs.core.data.PacksStorage;
 import ilg.gnumcueclipse.packs.core.tree.Leaf;

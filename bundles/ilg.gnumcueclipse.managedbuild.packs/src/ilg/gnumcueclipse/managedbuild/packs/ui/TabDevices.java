@@ -47,7 +47,7 @@ import org.eclipse.swt.widgets.TreeColumn;
 
 import ilg.gnumcueclipse.core.CProjectPacksStorage;
 import ilg.gnumcueclipse.core.StringUtils;
-import ilg.gnumcueclipse.packs.core.Activator;
+import ilg.gnumcueclipse.managedbuild.packs.Activator;
 import ilg.gnumcueclipse.packs.core.data.IPacksDataManager;
 import ilg.gnumcueclipse.packs.core.data.PacksDataManagerFactoryProxy;
 import ilg.gnumcueclipse.packs.core.tree.Leaf;

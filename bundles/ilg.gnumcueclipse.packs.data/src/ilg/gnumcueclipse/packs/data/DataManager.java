@@ -11,7 +11,6 @@
 
 package ilg.gnumcueclipse.packs.data;
 
-import ilg.gnumcueclipse.core.Activator;
 import ilg.gnumcueclipse.core.Xml;
 import ilg.gnumcueclipse.packs.cmsis.PdscGenericParser;
 import ilg.gnumcueclipse.packs.cmsis.PdscTreeParserForBuild;
