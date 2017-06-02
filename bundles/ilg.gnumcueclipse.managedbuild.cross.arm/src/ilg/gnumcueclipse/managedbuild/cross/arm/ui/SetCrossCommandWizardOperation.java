@@ -75,7 +75,7 @@ public class SetCrossCommandWizardOperation implements IRunnableWithProgress {
 
 		if (!toolchainName.isEmpty() && !path.isEmpty()) {
 			// Store persistent values in Eclipse scope
-			PersistentPreferences persistentPreferences = new PersistentPreferences(Activator.PLUGIN_ID);
+			PersistentPreferences persistentPreferences = Activator.getInstance().getPersistentPreferences();
 			persistentPreferences.putToolchainPath(toolchainName, path);
 			persistentPreferences.putToolchainName(toolchainName);
 			persistentPreferences.flush();

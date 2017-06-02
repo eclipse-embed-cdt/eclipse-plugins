@@ -63,7 +63,7 @@ public class WorkspaceToolchainsPathsPreferencesPage extends FieldEditorPreferen
 	public WorkspaceToolchainsPathsPreferencesPage() {
 		super(GRID);
 
-		fPersistentPreferences = new PersistentPreferences(Activator.PLUGIN_ID);
+		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
 		fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
 
 		setPreferenceStore(new ScopedPreferenceStoreWithoutDefaults(InstanceScope.INSTANCE, Activator.PLUGIN_ID));

@@ -122,7 +122,7 @@ public class SetCrossCommandWizardPage extends MBSCustomPage {
 		}
 		fToolchainCombo.setItems(toolchains);
 
-		final PersistentPreferences persistentPreferences = new PersistentPreferences(Activator.PLUGIN_ID);
+		final PersistentPreferences persistentPreferences = Activator.getInstance().getPersistentPreferences();
 
 		// decide which one is selected
 		try {

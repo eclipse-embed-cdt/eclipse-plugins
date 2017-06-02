@@ -12,16 +12,11 @@
 package ilg.gnumcueclipse.managedbuild.cross.preferences;
 
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ProjectScope;
-import org.eclipse.core.runtime.preferences.ConfigurationScope;
-import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.osgi.service.prefs.BackingStoreException;
-import org.osgi.service.prefs.Preferences;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.managedbuild.cross.Activator;
 
-public class PersistentPreferences {
+public class PersistentPreferences extends ilg.gnumcueclipse.core.PersistentPreferences {
 
 	// ------------------------------------------------------------------------
 
@@ -41,118 +36,20 @@ public class PersistentPreferences {
 
 	// ------------------------------------------------------------------------
 
-	private String fPluginId;
+	public PersistentPreferences(String pluginId) {
+		super(pluginId);
+	}
 
 	// ------------------------------------------------------------------------
 
-	public PersistentPreferences(String pluginId) {
-		fPluginId = pluginId;
-	}
-
-	// ----- Getters ----------------------------------------------------------
-	private String getString(String key, String defaultValue, IProject project) {
-
-		String value = EclipseUtils.getPreferenceValueForId(fPluginId, key, null, project);
-		if (value != null && !value.isEmpty()) {
-			return value;
-		}
-
-		return defaultValue;
-	}
-
 	private String getCommonString(String key, String defaultValue, IProject project) {
 
-		String value = EclipseUtils.getPreferenceValueForId(Activator.PLUGIN_ID, key, null, project);
+		String value = getPreferenceValueForId(Activator.PLUGIN_ID, key, null, project);
 		if (value != null && !value.isEmpty()) {
 			return value;
 		}
 
 		return defaultValue;
-	}
-
-	@SuppressWarnings("unused")
-	private String getEclipseString(String key, String defaultValue) {
-
-		// Access the Eclipse scope
-		Preferences preferences = ConfigurationScope.INSTANCE.getNode(fPluginId);
-
-		String value = preferences.get(key, defaultValue);
-		return value;
-	}
-
-	private String getWorkspaceString(String key, String defaultValue) {
-
-		// Access the Eclipse scope
-		Preferences preferences = InstanceScope.INSTANCE.getNode(fPluginId);
-
-		String value = preferences.get(key, defaultValue);
-		return value;
-	}
-
-	// ----- Setters ----------------------------------------------------------
-
-	private void putString(String key, String value) {
-
-		String oldValue = getWorkspaceString(key, null);
-		if (oldValue != null) {
-			putWorkspaceString(key, value);
-		} else {
-			putEclipseString(key, value);
-		}
-	}
-
-	private void putEclipseString(String key, String value) {
-
-		value = value.trim();
-
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("putEclipseString(\"" + key + "\", \"" + value + "\") " + fPluginId);
-		}
-
-		// Access the Eclipse scope
-		Preferences preferences = ConfigurationScope.INSTANCE.getNode(fPluginId);
-		preferences.put(key, value);
-	}
-
-	private void putWorkspaceString(String key, String value) {
-
-		value = value.trim();
-
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("putWorkspaceString(\"" + key + "\", \"" + value + "\") " + fPluginId);
-		}
-
-		// Access the Workspace scope
-		Preferences preferences = InstanceScope.INSTANCE.getNode(fPluginId);
-		preferences.put(key, value);
-	}
-
-	public void flush() {
-
-		try {
-			ConfigurationScope.INSTANCE.getNode(fPluginId).flush();
-			InstanceScope.INSTANCE.getNode(fPluginId).flush();
-		} catch (BackingStoreException e) {
-			;
-		}
-	}
-
-	private void putProjectString(String key, String value, IProject project) {
-
-		value = value.trim();
-
-		// Access the Eclipse scope
-		Preferences preferences = new ProjectScope(project).getNode(fPluginId);
-		preferences.put(key, value);
-	}
-
-	public void flush(IProject project) {
-
-		try {
-			new ProjectScope(project).getNode(fPluginId).flush();
-		} catch (BackingStoreException e) {
-			;
-		}
 	}
 
 	// ------------------------------------------------------------------------
@@ -255,8 +152,8 @@ public class PersistentPreferences {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Get the build tools path. Search all possible scopes.
-	 * The definition is common to all build plug-ins.
+	 * Get the build tools path. Search all possible scopes. The definition is
+	 * common to all build plug-ins.
 	 * 
 	 * @return a string, possibly empty.
 	 */

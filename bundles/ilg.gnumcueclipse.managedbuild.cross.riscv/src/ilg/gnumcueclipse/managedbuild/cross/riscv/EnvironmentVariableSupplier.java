@@ -78,8 +78,8 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 			IProject project = (IProject) configuration.getManagedProject().getOwner();
 
 			// Get the build tools path from the common store.
-			PersistentPreferences commonPersistentPreferences = new PersistentPreferences(
-					ilg.gnumcueclipse.managedbuild.cross.Activator.PLUGIN_ID);
+			PersistentPreferences commonPersistentPreferences = ilg.gnumcueclipse.managedbuild.cross.Activator
+					.getInstance().getPersistentPreferences();
 
 			String path = commonPersistentPreferences.getBuildToolsPath(project);
 
@@ -90,7 +90,7 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 			String toolchainPath = null;
 
 			// Get the toolchain path from this plug-in store.
-			PersistentPreferences persistentPreferences = new PersistentPreferences(Activator.PLUGIN_ID);
+			PersistentPreferences persistentPreferences = Activator.getInstance().getPersistentPreferences();
 			// Get the most specific toolchain path (project, workspace,
 			// Eclipse, defaults).
 			toolchainPath = persistentPreferences.getToolchainPath(toolchainName, project);
@@ -113,14 +113,14 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 				}
 
 				File sysroot = new File(path);
-				File bin = new File(sysroot, "bin"); //$NON-NLS-1$
-				if (bin.isDirectory())
-					sysroot = bin;
+				// File bin = new File(sysroot, "bin"); //$NON-NLS-1$
+				// if (bin.isDirectory()) {
+				// sysroot = bin;
+				// }
 				if (DEBUG_PATH) {
 					if (Activator.getInstance().isDebugging()) {
-						System.out.println("riscv.PathEnvironmentVariable.create() PATH=" + sysroot + " opt=" + path
-								+ " cfg=" + configuration + " prj="
-								+ configuration.getManagedProject().getOwner().getName());
+						System.out.println("riscv.PathEnvironmentVariable.create() PATH=" + sysroot + " cfg="
+								+ configuration + " prj=" + configuration.getManagedProject().getOwner().getName());
 					}
 				}
 				return new PathEnvironmentVariable(sysroot);

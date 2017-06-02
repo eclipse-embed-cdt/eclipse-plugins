@@ -113,7 +113,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	public TabToolchains() {
 		super();
 
-		fPersistentPreferences = new PersistentPreferences(Activator.PLUGIN_ID);
+		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
 	}
 
 	protected IProject getProject() {

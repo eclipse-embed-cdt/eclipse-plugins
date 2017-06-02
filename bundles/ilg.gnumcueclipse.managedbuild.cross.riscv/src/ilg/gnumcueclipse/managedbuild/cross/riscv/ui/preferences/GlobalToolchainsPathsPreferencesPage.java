@@ -64,7 +64,7 @@ public class GlobalToolchainsPathsPreferencesPage extends FieldEditorPreferenceP
 	public GlobalToolchainsPathsPreferencesPage() {
 		super(GRID);
 
-		fPersistentPreferences = new PersistentPreferences(Activator.PLUGIN_ID);
+		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
 		fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
 
 		setPreferenceStore(new ScopedPreferenceStore(ConfigurationScope.INSTANCE, Activator.PLUGIN_ID));

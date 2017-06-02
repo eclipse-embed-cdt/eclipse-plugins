@@ -14,6 +14,7 @@ package ilg.gnumcueclipse.managedbuild.cross.arm;
 import org.osgi.framework.BundleContext;
 
 import ilg.gnumcueclipse.core.AbstractUIActivator;
+import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -39,10 +40,14 @@ public class Activator extends AbstractUIActivator {
 		return fgInstance;
 	}
 
+	protected PersistentPreferences fPersistentPreferences;
+
 	public Activator() {
 
 		super();
 		fgInstance = this;
+
+		fPersistentPreferences = new PersistentPreferences(PLUGIN_ID);
 	}
 
 	// ------------------------------------------------------------------------
@@ -53,6 +58,10 @@ public class Activator extends AbstractUIActivator {
 
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
+	}
+
+	public PersistentPreferences getPersistentPreferences() {
+		return fPersistentPreferences;
 	}
 
 	// ------------------------------------------------------------------------

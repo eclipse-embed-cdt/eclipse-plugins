@@ -50,7 +50,7 @@ public class ProjectToolchainsPathPropertiesPage extends FieldEditorPropertyPage
 	public ProjectToolchainsPathPropertiesPage() {
 		super(GRID);
 
-		fPersistentPreferences = new PersistentPreferences(Activator.PLUGIN_ID);
+		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
 		fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
 
 		setDescription(Messages.ProjectToolchainsPathsPropertiesPage_description);

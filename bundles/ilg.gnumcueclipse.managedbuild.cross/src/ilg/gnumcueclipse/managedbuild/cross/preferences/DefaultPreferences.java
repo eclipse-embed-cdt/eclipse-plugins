@@ -17,8 +17,6 @@ import java.io.FilenameFilter;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-import org.eclipse.core.runtime.preferences.DefaultScope;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.variables.IStringVariableManager;
 import org.eclipse.core.variables.VariablesPlugin;
 
@@ -26,7 +24,7 @@ import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.core.preferences.Discoverer;
 import ilg.gnumcueclipse.managedbuild.cross.Activator;
 
-public class DefaultPreferences {
+public class DefaultPreferences extends ilg.gnumcueclipse.core.DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
@@ -42,62 +40,8 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
-	private String fPluginId;
-
-	/**
-	 * The DefaultScope preference store.
-	 */
-	private IEclipsePreferences fPreferences;
-
-	// ------------------------------------------------------------------------
-
 	public DefaultPreferences(String pluginId) {
-		fPluginId = pluginId;
-		fPreferences = DefaultScope.INSTANCE.getNode(fPluginId);
-	}
-
-	// ------------------------------------------------------------------------
-
-	/**
-	 * Get a string preference value, or the default.
-	 * 
-	 * @param key
-	 *            a string with the key to search.
-	 * @param defaultValue
-	 *            a string with the default, possibly null.
-	 * @return a trimmed string, or a null default.
-	 */
-	public String getString(String key, String defaultValue) {
-
-		String value;
-		value = fPreferences.get(key, defaultValue);
-
-		if (value != null) {
-			value = value.trim();
-		}
-
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("DefaultPreferences.getString(" + key + ", \"" + defaultValue + "\") "
-					+ fPreferences.name() + " = \"" + value + "\"");
-		}
-
-		return value;
-	}
-
-	public boolean getBoolean(String key, boolean defaultValue) {
-		boolean value = fPreferences.getBoolean(key, defaultValue);
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("DefaultPreferences.getString(" + key + ", \"" + defaultValue + "\") "
-					+ fPreferences.name() + " = " + value);
-		}
-		return value;
-	}
-
-	private void putString(String key, String value) {
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("DefaultPreferences.putString(" + key + ", \"" + value + "\") " + fPreferences.name());
-		}
-		fPreferences.put(key, value);
+		super(pluginId);
 	}
 
 	// ------------------------------------------------------------------------
