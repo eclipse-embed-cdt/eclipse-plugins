@@ -9,20 +9,20 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.preferences;
+package ilg.gnumcueclipse.debug.gdbjtag.pyocd.ui.preferences;
 
-import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
-import ilg.gnumcueclipse.core.ScopedPreferenceStoreWithoutDefaults;
 import ilg.gnumcueclipse.core.preferences.DirectoryNotStrictFieldEditor;
-import ilg.gnumcueclipse.debug.gdbjtag.openocd.Activator;
-import ilg.gnumcueclipse.debug.gdbjtag.openocd.PersistentPreferences;
-import ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.Messages;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.PersistentPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.ui.Messages;
 
 /**
  * This class represents a preference page that is contributed to the
@@ -33,24 +33,31 @@ import ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.Messages;
  * This page uses special filed editors, that get the default values from the
  * preferences store, but the values are from the variables store.
  */
-public class WorkspaceOpenOcdPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class GlobalMcuPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "ilg.gnumcueclipse.debug.gdbjtag.openocd.workspacePreferencePage";
+	public static final String ID = "ilg.gnumcueclipse.debug.gdbjtag.pyocd.globalPreferencePage";
 
 	// ------------------------------------------------------------------------
 
-	public WorkspaceOpenOcdPage() {
+	private PersistentPreferences fPersistentPreferences;
+
+	// ------------------------------------------------------------------------
+
+	public GlobalMcuPage() {
 		super(GRID);
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("openocd.WorkspaceOpenOcdPage()");
+			System.out.println("pyocd.GlobalMcuPage()");
 		}
-		// Explicit use of the workspace preferences.
-		setPreferenceStore(new ScopedPreferenceStoreWithoutDefaults(InstanceScope.INSTANCE, Activator.PLUGIN_ID));
 
-		setDescription(Messages.WorkspaceOpenOCDPagePropertyPage_description);
+		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
+
+		// Explicit use of the workspace preferences.
+		setPreferenceStore(new ScopedPreferenceStore(ConfigurationScope.INSTANCE, Activator.PLUGIN_ID));
+
+		setDescription(Messages.GlobalMcuPagePropertyPage_description);
 	}
 
 	// ------------------------------------------------------------------------
@@ -60,7 +67,7 @@ public class WorkspaceOpenOcdPage extends FieldEditorPreferencePage implements I
 	public void init(IWorkbench workbench) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("openocd.WorkspaceOpenOcdPage.init()");
+			System.out.println("pyocd.GlobalMcuPage.init()");
 		}
 	}
 
@@ -73,16 +80,16 @@ public class WorkspaceOpenOcdPage extends FieldEditorPreferencePage implements I
 	protected void createFieldEditors() {
 
 		FieldEditor executable;
-		executable = new StringFieldEditor(PersistentPreferences.EXECUTABLE_NAME, Messages.OpenOCDPage_executable_label,
+		executable = new StringFieldEditor(PersistentPreferences.EXECUTABLE_NAME, Messages.McuPage_executable_label,
 				getFieldEditorParent());
 		addField(executable);
 
 		boolean isStrict;
-		isStrict = PersistentPreferences.getFolderStrict();
+		isStrict = fPersistentPreferences.getFolderStrict();
 
 		FieldEditor folder;
 		folder = new DirectoryNotStrictFieldEditor(PersistentPreferences.INSTALL_FOLDER,
-				Messages.OpenOCDPage_executable_folder, getFieldEditorParent(), isStrict);
+				Messages.McuPage_executable_folder, getFieldEditorParent(), isStrict);
 		addField(folder);
 	}
 

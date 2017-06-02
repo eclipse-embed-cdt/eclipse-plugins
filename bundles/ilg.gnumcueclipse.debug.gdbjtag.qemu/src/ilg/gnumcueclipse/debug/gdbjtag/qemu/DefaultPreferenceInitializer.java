@@ -103,20 +103,24 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				System.out.println("qemu.LateInitializer.finalizeInitializationsDefaultPreferences()");
 			}
 
+			DefaultPreferences fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
+
 			// QEMU executable name
-			String name = DefaultPreferences.getExecutableName();
+			String name = fDefaultPreferences.getExecutableName();
 			if (name.isEmpty()) {
 				// If not defined elsewhere, get platform specific name.
-				name = DefaultPreferences.getExecutableNameOs();
+				name = fDefaultPreferences.getExecutableNameOs();
 				if (!name.isEmpty()) {
-					DefaultPreferences.putExecutableName(name);
+					fDefaultPreferences.putExecutableName(name);
 				}
 			}
 
+			PersistentPreferences fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
+
 			// If the search path is known, discover toolchain.
-			String executableName = EclipseUtils.getVariableValue(VariableInitializer.VARIABLE_QEMU_EXECUTABLE);
+			String executableName = fPersistentPreferences.getExecutableName();
 			if (executableName == null || executableName.isEmpty()) {
-				executableName = DefaultPreferences.getExecutableName();
+				executableName = fDefaultPreferences.getExecutableName();
 			}
 			if (EclipseUtils.isWindows() && !executableName.endsWith(".exe")) {
 				executableName += ".exe";
@@ -124,22 +128,22 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 
 			// Check if the search path is defined in the default
 			// preferences.
-			String searchPath = DefaultPreferences.getSearchPath();
+			String searchPath = fDefaultPreferences.getSearchPath();
 			if (searchPath.isEmpty()) {
 
 				// If not defined, get the OS Specific default
 				// from preferences.ini.
-				searchPath = DefaultPreferences.getSearchPathOs();
+				searchPath = fDefaultPreferences.getSearchPathOs();
 				if (!searchPath.isEmpty()) {
 					// Store the search path in the preferences
-					DefaultPreferences.putSearchPath(searchPath);
+					fDefaultPreferences.putSearchPath(searchPath);
 				}
 			}
 
 			// QEMU install folder
 			// Check if the toolchain path is explictly defined in the
 			// default preferences.
-			String folder = DefaultPreferences.getInstallFolder();
+			String folder = fDefaultPreferences.getInstallFolder();
 			if (!folder.isEmpty()) {
 				IPath path = (new Path(folder)).append(executableName);
 				if (!path.toFile().isFile()) {
@@ -170,7 +174,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 			if (folder != null && !folder.isEmpty()) {
 				// If the install folder was finally discovered, store
 				// it in the preferences.
-				DefaultPreferences.putInstallFolder(folder);
+				fDefaultPreferences.putInstallFolder(folder);
 			}
 		}
 	}

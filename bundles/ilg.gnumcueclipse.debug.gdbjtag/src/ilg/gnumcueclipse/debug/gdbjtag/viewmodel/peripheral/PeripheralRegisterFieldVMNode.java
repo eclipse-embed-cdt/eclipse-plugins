@@ -11,7 +11,7 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.viewmodel.peripheral;
 
-import ilg.gnumcueclipse.core.Activator;
+import ilg.gnumcueclipse.debug.gdbjtag.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdDMNode;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdEnumeratedValueDMNode;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdEnumerationDMNode;

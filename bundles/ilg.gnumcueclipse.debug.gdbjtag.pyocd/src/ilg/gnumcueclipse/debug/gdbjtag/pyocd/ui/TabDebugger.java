@@ -35,11 +35,13 @@ import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.debug.gdbjtag.core.IGDBJtagConstants;
 import org.eclipse.cdt.debug.gdbjtag.ui.GDBJtagImages;
 import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.ui.AbstractLaunchConfigurationTab;
 import org.eclipse.debug.ui.StringVariableSelectionDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
@@ -58,9 +60,15 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Configuration;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.ui.preferences.GlobalMcuPage;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.ui.preferences.WorkspaceMcuPage;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.ui.properties.ProjectMcuPage;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.ui.Messages;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.ConfigurationAttributes;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.DefaultPreferences;
@@ -89,6 +97,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Text fGdbClientExecutable;
 	private Text fGdbClientOtherOptions;
 	private Text fGdbClientOtherCommands;
+
+	private Text fPathLabel;
+	private Link fLink;
 
 	private Text fTargetIpAddress;
 	private Text fTargetPortNumber;
@@ -127,6 +138,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	/** Active errors , if any. When any, only first is shown */
 	private Set<String> fErrors = new LinkedHashSet<String>();
 
+	private DefaultPreferences fDefaultPreferences;
+	private PersistentPreferences fPersistentPreferences;
+
 	/**
 	 * Where widgets in a row are rendered in columns, the amount of padding (in
 	 * pixels) between columns
@@ -140,6 +154,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	protected TabDebugger(TabStartup tabStartup) {
 		super();
+
+		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
+		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
 	}
 
 	// ------------------------------------------------------------------------
@@ -194,13 +211,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				.setToolTipText(Messages.getString("DebuggerTab.update_thread_list_on_suspend_ToolTipText"));
 
 		Link restoreDefaults;
-		GridData gd;
 		{
 			restoreDefaults = new Link(comp, SWT.NONE);
 			restoreDefaults.setText(Messages.getString("DebuggerTab.restoreDefaults_Link"));
 			restoreDefaults.setToolTipText(Messages.getString("DebuggerTab.restoreDefaults_ToolTipText"));
 
-			gd = new GridData();
+			GridData gd = new GridData();
 			gd.grabExcessHorizontalSpace = true;
 			gd.horizontalAlignment = SWT.RIGHT;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
@@ -247,49 +263,53 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private void createGdbServerGroup(Composite parent) {
 
 		Group group = new Group(parent, SWT.NONE);
-		GridLayout layout = new GridLayout();
-		group.setLayout(layout);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		group.setLayoutData(gd);
-		group.setText(Messages.getString("DebuggerTab.gdbServerGroup_Text"));
+		{
+			GridLayout layout = new GridLayout();
+			group.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			group.setLayoutData(gd);
+			group.setText(Messages.getString("DebuggerTab.gdbServerGroup_Text"));
+		}
 
 		Composite comp = new Composite(group, SWT.NONE);
-		layout = new GridLayout();
-		layout.numColumns = 5;
-		layout.marginHeight = 0;
-		comp.setLayout(layout);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		comp.setLayoutData(gd);
+		{
+			GridLayout layout = new GridLayout();
+			layout.numColumns = 5;
+			layout.marginHeight = 0;
+			comp.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			comp.setLayoutData(gd);
+		}
 
-		Composite local;
-		Label label;
 		{
 			fDoStartGdbServer = new Button(comp, SWT.CHECK);
 			fDoStartGdbServer.setText(Messages.getString("DebuggerTab.doStartGdbServer_Text"));
 			fDoStartGdbServer.setToolTipText(Messages.getString("DebuggerTab.doStartGdbServer_ToolTipText"));
-			gd = new GridData();
+			GridData gd = new GridData();
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
 			fDoStartGdbServer.setLayoutData(gd);
 		}
 
 		{
 			Composite subcomp = new Composite(comp, SWT.NONE);
-			gd = new GridData(SWT.FILL, SWT.TOP, true, false);
-			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
-			subcomp.setLayoutData(gd);
-			layout = new GridLayout(2, false);
-			layout.marginWidth = layout.marginHeight = 0;
-			subcomp.setLayout(layout);
-
-			label = new Label(subcomp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.gdbServerExecutable_Label"));
-			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerExecutable_ToolTipText"));
+			{
+				GridData gd = new GridData(SWT.FILL, SWT.TOP, true, false);
+				gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
+				subcomp.setLayoutData(gd);
+				GridLayout layout = new GridLayout(2, false);
+				layout.marginWidth = layout.marginHeight = 0;
+				subcomp.setLayout(layout);
+			}
 
 			{
-				local = createHorizontalLayout(subcomp, 3, 1);
+				Label label = new Label(subcomp, SWT.NONE);
+				label.setText(Messages.getString("DebuggerTab.gdbServerExecutable_Label"));
+				label.setToolTipText(Messages.getString("DebuggerTab.gdbServerExecutable_ToolTipText"));
+
+				Composite local = createHorizontalLayout(subcomp, 3, 1);
 				{
 					fGdbServerExecutable = new Text(local, SWT.SINGLE | SWT.BORDER);
-					gd = new GridData(GridData.FILL_HORIZONTAL);
+					GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 					fGdbServerExecutable.setLayoutData(gd);
 
 					fGdbServerBrowseButton = new Button(local, SWT.NONE);
@@ -300,15 +320,39 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				}
 			}
 
-			label = new Label(subcomp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.gdbServerGdbPort_Label"));
-			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerGdbPort_ToolTipText"));
+			{
+				Label label = new Label(subcomp, SWT.NONE);
+				label.setText(Messages.getString("DebuggerTab.gdbServerActualPath_Label"));
+
+				fPathLabel = new Text(subcomp, SWT.SINGLE | SWT.BORDER);
+				GridData gd = new GridData(SWT.FILL, 0, true, false);
+				gd.horizontalSpan = 1;
+				fPathLabel.setLayoutData(gd);
+
+				fPathLabel.setEnabled(true);
+				fPathLabel.setEditable(false);
+			}
 
 			{
+				Label label = new Label(subcomp, SWT.NONE);
+				label.setText("");
+
+				fLink = new Link(subcomp, SWT.NONE);
+				fLink.setText(Messages.getString("DebuggerTab.gdbServerActualPath_link"));
+				GridData gd = new GridData();
+				gd.horizontalSpan = 1;
+				fLink.setLayoutData(gd);
+			}
+
+			{
+				Label label = new Label(subcomp, SWT.NONE);
+				label.setText(Messages.getString("DebuggerTab.gdbServerGdbPort_Label"));
+				label.setToolTipText(Messages.getString("DebuggerTab.gdbServerGdbPort_ToolTipText"));
+
 				Composite subcomp2 = new Composite(subcomp, SWT.NONE);
-				gd = new GridData(SWT.FILL, SWT.TOP, true, false);
+				GridData gd = new GridData(SWT.FILL, SWT.TOP, true, false);
 				subcomp2.setLayoutData(gd);
-				layout = new GridLayout(2, false);
+				GridLayout layout = new GridLayout(2, false);
 				layout.horizontalSpacing = COLUMN_PAD;
 				layout.marginWidth = layout.marginHeight = 0;
 				subcomp2.setLayout(layout);
@@ -325,15 +369,15 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						.setToolTipText(Messages.getString("DebuggerTab.gdbServerAllocateConsole_ToolTipText"));
 			}
 
-			label = new Label(subcomp, SWT.NONE);
-			label.setText(Messages.getString("DebuggerTab.gdbServerTelnetPort_Label"));
-			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerTelnetPort_ToolTipText"));
-
 			{
+				Label label = new Label(subcomp, SWT.NONE);
+				label.setText(Messages.getString("DebuggerTab.gdbServerTelnetPort_Label"));
+				label.setToolTipText(Messages.getString("DebuggerTab.gdbServerTelnetPort_ToolTipText"));
+
 				Composite subcomp2 = new Composite(subcomp, SWT.NONE);
-				gd = new GridData(SWT.FILL, SWT.TOP, true, false);
+				GridData gd = new GridData(SWT.FILL, SWT.TOP, true, false);
 				subcomp2.setLayoutData(gd);
-				layout = new GridLayout(2, false);
+				GridLayout layout = new GridLayout(2, false);
 				layout.horizontalSpacing = COLUMN_PAD;
 				layout.marginWidth = layout.marginHeight = 0;
 				subcomp2.setLayout(layout);
@@ -356,14 +400,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		createSeparator(comp, ((GridLayout) comp.getLayout()).numColumns);
 
 		{
-			label = new Label(comp, SWT.NONE);
+			Label label = new Label(comp, SWT.NONE);
 			label.setText(Messages.getString("DebuggerTab.gdbServerBoardId_Label"));
 			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerBoardId_ToolTipText"));
 
-			local = createHorizontalLayout(comp, 2, 1);
+			Composite local = createHorizontalLayout(comp, 2, 1);
 			{
 				fGdbServerBoardId = new Combo(local, SWT.DROP_DOWN | SWT.READ_ONLY);
-				gd = new GridData(GridData.FILL_HORIZONTAL);
+				GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 				fGdbServerBoardId.setLayoutData(gd);
 				fGdbServerBoardId.setItems(new String[] {});
 				fGdbServerBoardId.select(0);
@@ -378,7 +422,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fGdbServerOverrideTarget.setText(Messages.getString("DebuggerTab.gdbServerOverrideTarget_Label"));
 			fGdbServerOverrideTarget
 					.setToolTipText(Messages.getString("DebuggerTab.gdbServerOverrideTarget_ToolTipText"));
-			gd = new GridData();
+			GridData gd = new GridData();
 			fGdbServerOverrideTarget.setLayoutData(gd);
 
 			fGdbServerTargetName = new Combo(comp, SWT.DROP_DOWN);
@@ -389,12 +433,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		{
-			label = new Label(comp, SWT.NONE);
+			Label label = new Label(comp, SWT.NONE);
 			label.setText(Messages.getString("DebuggerTab.gdbServerBusSpeed_Label"));
 			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerBusSpeed_ToolTipText"));
 
 			fGdbServerBusSpeed = new Combo(comp, SWT.DROP_DOWN);
-			gd = new GridData();
+			GridData gd = new GridData();
 			gd.widthHint = 120;
 			fGdbServerBusSpeed.setLayoutData(gd);
 			fGdbServerBusSpeed.setItems(new String[] { "1000000", "2000000", "8000000", "12000000" });
@@ -408,10 +452,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		{
-			label = new Label(comp, SWT.NONE);
+			Label label = new Label(comp, SWT.NONE);
 			label.setText(Messages.getString("DebuggerTab.gdbServerFlashMode_Label")); //$NON-NLS-1$
 			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerFlashMode_ToolTipText"));
-			gd = new GridData();
+			GridData gd = new GridData();
 			label.setLayoutData(gd);
 
 			fGdbServerFlashMode = new Combo(comp, SWT.DROP_DOWN | SWT.READ_ONLY);
@@ -437,10 +481,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		// Composite for next four checkboxes. Will render using two columns
 		{
 			Composite subcomp = new Composite(comp, SWT.NONE);
-			gd = new GridData();
+			GridData gd = new GridData();
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
 			subcomp.setLayoutData(gd);
-			layout = new GridLayout(2, false);
+			GridLayout layout = new GridLayout(2, false);
 			layout.horizontalSpacing = COLUMN_PAD;
 			layout.marginWidth = layout.marginHeight = 0;
 			subcomp.setLayout(layout);
@@ -480,10 +524,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		{
-			label = new Label(comp, SWT.NONE);
+			Label label = new Label(comp, SWT.NONE);
 			label.setText(Messages.getString("DebuggerTab.gdbServerOther_Label")); //$NON-NLS-1$
 			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerOther_ToolTipText"));
-			gd = new GridData();
+			GridData gd = new GridData();
 			gd.verticalAlignment = SWT.TOP;
 			label.setLayoutData(gd);
 
@@ -527,9 +571,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				if (fConfiguration != null) {
 					updateBoards();
 					updateTargets();
-					scheduleUpdateJob(); // provides much better performance for
-											// Text listeners
 				}
+				scheduleUpdateJob(); // provides much better performance for
+										// Text listeners
+				updateActualpath();
 			}
 		});
 
@@ -545,6 +590,36 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				variablesButtonSelected(fGdbServerExecutable);
+			}
+		});
+
+		fLink.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				String text = e.text;
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println(text);
+				}
+
+				int ret = -1;
+				if ("global".equals(text)) {
+					ret = PreferencesUtil.createPreferenceDialogOn(parent.getShell(), GlobalMcuPage.ID, null, null)
+							.open();
+				} else if ("workspace".equals(text)) {
+					ret = PreferencesUtil.createPreferenceDialogOn(parent.getShell(), WorkspaceMcuPage.ID, null, null)
+							.open();
+				} else if ("project".equals(text)) {
+					assert (fConfiguration != null);
+					IProject project = EclipseUtils.getProjectByLaunchConfiguration(fConfiguration);
+					ret = PreferencesUtil
+							.createPropertyDialogOn(parent.getShell(), project, ProjectMcuPage.ID, null, null, 0)
+							.open();
+				}
+
+				if (ret == Window.OK) {
+					updateActualpath();
+				}
 			}
 		});
 
@@ -607,32 +682,35 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private void createGdbClientControls(Composite parent) {
 
 		Group group = new Group(parent, SWT.NONE);
-		group.setText(Messages.getString("DebuggerTab.gdbSetupGroup_Text"));
-		GridLayout layout = new GridLayout();
-		group.setLayout(layout);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		group.setLayoutData(gd);
+		{
+			group.setText(Messages.getString("DebuggerTab.gdbSetupGroup_Text"));
+			GridLayout layout = new GridLayout();
+			group.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			group.setLayoutData(gd);
+		}
 
 		Composite comp = new Composite(group, SWT.NONE);
-		layout = new GridLayout();
-		layout.numColumns = 2;
-		layout.marginHeight = 0;
-		comp.setLayout(layout);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		comp.setLayoutData(gd);
+		{
+			GridLayout layout = new GridLayout();
+			layout.numColumns = 2;
+			layout.marginHeight = 0;
+			comp.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			comp.setLayoutData(gd);
+		}
 
-		Label label;
 		Button browseButton;
 		Button variableButton;
 		{
-			label = new Label(comp, SWT.NONE);
+			Label label = new Label(comp, SWT.NONE);
 			label.setText(Messages.getString("DebuggerTab.gdbCommand_Label"));
 			label.setToolTipText(Messages.getString("DebuggerTab.gdbCommand_ToolTipText"));
 
 			Composite local = createHorizontalLayout(comp, 3, -1);
 			{
 				fGdbClientExecutable = new Text(local, SWT.SINGLE | SWT.BORDER);
-				gd = new GridData(GridData.FILL_HORIZONTAL);
+				GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 				fGdbClientExecutable.setLayoutData(gd);
 
 				browseButton = new Button(local, SWT.NONE);
@@ -644,10 +722,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		{
-			label = new Label(comp, SWT.NONE);
+			Label label = new Label(comp, SWT.NONE);
 			label.setText(Messages.getString("DebuggerTab.gdbOtherOptions_Label"));
 			label.setToolTipText(Messages.getString("DebuggerTab.gdbOtherOptions_ToolTipText"));
-			gd = new GridData();
+			GridData gd = new GridData();
 			label.setLayoutData(gd);
 
 			fGdbClientOtherOptions = new Text(comp, SWT.SINGLE | SWT.BORDER);
@@ -656,10 +734,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		{
-			label = new Label(comp, SWT.NONE);
+			Label label = new Label(comp, SWT.NONE);
 			label.setText(Messages.getString("DebuggerTab.gdbOtherCommands_Label"));
 			label.setToolTipText(Messages.getString("DebuggerTab.gdbOtherCommands_ToolTipText"));
-			gd = new GridData();
+			GridData gd = new GridData();
 			gd.verticalAlignment = SWT.TOP;
 			label.setLayoutData(gd);
 
@@ -712,23 +790,27 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private void createRemoteControl(Composite parent) {
 
 		Group group = new Group(parent, SWT.NONE);
-		group.setText(Messages.getString("DebuggerTab.remoteGroup_Text"));
-		GridLayout layout = new GridLayout();
-		group.setLayout(layout);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		group.setLayoutData(gd);
+		{
+			group.setText(Messages.getString("DebuggerTab.remoteGroup_Text"));
+			GridLayout layout = new GridLayout();
+			group.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			group.setLayoutData(gd);
+		}
 
 		Composite comp = createHorizontalLayout(group, 2, -1);
-		comp.setLayoutData(gd);
+		{
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			comp.setLayoutData(gd);
+		}
 
 		// Create entry fields for TCP/IP connections
-		Label label;
 		{
-			label = new Label(comp, SWT.NONE);
+			Label label = new Label(comp, SWT.NONE);
 			label.setText(Messages.getString("DebuggerTab.ipAddressLabel")); //$NON-NLS-1$
 
 			fTargetIpAddress = new Text(comp, SWT.BORDER);
-			gd = new GridData();
+			GridData gd = new GridData();
 			gd.widthHint = 125;
 			fTargetIpAddress.setLayoutData(gd);
 
@@ -766,6 +848,16 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		});
 	}
 
+	private void updateActualpath() {
+
+		assert (fConfiguration != null);
+		String fullCommand = Configuration.getGdbServerCommand(fConfiguration, fGdbServerExecutable.getText());
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("pyocd.TabDebugger.updateActualpath() \"" + fullCommand + "\"");
+		}
+		fPathLabel.setText(fullCommand);
+	}
+
 	private void doStartGdbServerChanged() {
 
 		boolean enabled = fDoStartGdbServer.getSelection();
@@ -791,6 +883,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		// Disable remote target params when the server is started
 		fTargetIpAddress.setEnabled(!enabled);
 		fTargetPortNumber.setEnabled(!enabled);
+
+		fPathLabel.setEnabled(enabled);
+		fLink.setEnabled(enabled);
 	}
 
 	private void overrideTargetChanged() {
@@ -981,6 +1076,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			System.out.println("pyocd.TabDebugger.initializeFrom() " + configuration.getName());
 		}
 
+		fConfiguration = configuration;
+
 		try {
 			Boolean booleanDefault;
 			String stringDefault;
@@ -988,12 +1085,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			// PyOCD GDB server
 			{
 				// Start server locally
-				booleanDefault = PersistentPreferences.getGdbServerDoStart();
+				booleanDefault = fPersistentPreferences.getGdbServerDoStart();
 				fDoStartGdbServer.setSelection(
 						configuration.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER, booleanDefault));
 
 				// Executable
-				stringDefault = PersistentPreferences.getGdbServerExecutable();
+				stringDefault = fPersistentPreferences.getGdbServerExecutable();
 				fGdbServerExecutable.setText(
 						configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_EXECUTABLE, stringDefault));
 
@@ -1051,7 +1148,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 								DefaultPreferences.GDB_SERVER_BUS_SPEED_DEFAULT)));
 
 				// Other options
-				stringDefault = PersistentPreferences.getGdbServerOtherOptions();
+				stringDefault = fPersistentPreferences.getGdbServerOtherOptions();
 				fGdbServerOtherOptions
 						.setText(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER, stringDefault));
 
@@ -1074,17 +1171,17 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			// GDB Client Setup
 			{
 				// Executable
-				stringDefault = PersistentPreferences.getGdbClientExecutable();
+				stringDefault = fPersistentPreferences.getGdbClientExecutable();
 				String gdbCommandAttr = configuration.getAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
 						stringDefault);
 				fGdbClientExecutable.setText(gdbCommandAttr);
 
 				// Other options
-				stringDefault = PersistentPreferences.getGdbClientOtherOptions();
+				stringDefault = fPersistentPreferences.getGdbClientOtherOptions();
 				fGdbClientOtherOptions.setText(
 						configuration.getAttribute(ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS, stringDefault));
 
-				stringDefault = PersistentPreferences.getGdbClientCommands();
+				stringDefault = fPersistentPreferences.getGdbClientCommands();
 				fGdbClientOtherCommands.setText(
 						configuration.getAttribute(ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS, stringDefault));
 			}
@@ -1106,8 +1203,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				String portString = Integer.toString(storedPort); // $NON-NLS-1$
 				fTargetPortNumber.setText(portString);
 			}
-
-			fConfiguration = configuration;
 
 			doStartGdbServerChanged();
 			overrideTargetChanged();
@@ -1143,7 +1238,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fDoStartGdbServer.setSelection(DefaultPreferences.DO_START_GDB_SERVER_DEFAULT);
 
 			// Executable
-			stringDefault = DefaultPreferences.getGdbServerExecutable();
+			stringDefault = fDefaultPreferences.getGdbServerExecutable();
 			fGdbServerExecutable.setText(stringDefault);
 
 			// Ports
@@ -1178,7 +1273,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fGdbServerBusSpeed.setText(Integer.toString(DefaultPreferences.GDB_SERVER_BUS_SPEED_DEFAULT));
 
 			// Other options
-			stringDefault = DefaultPreferences.getPyocdConfig();
+			stringDefault = fDefaultPreferences.getPyocdConfig();
 			fGdbServerOtherOptions.setText(stringDefault);
 
 			// Allocate server console
@@ -1197,7 +1292,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		// GDB Client Setup
 		{
 			// Executable
-			stringDefault = DefaultPreferences.getGdbClientExecutable();
+			stringDefault = fDefaultPreferences.getGdbClientExecutable();
 			fGdbClientExecutable.setText(stringDefault);
 
 			// Other options
@@ -1272,12 +1367,12 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			// Start server
 			booleanValue = fDoStartGdbServer.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_START_GDB_SERVER, booleanValue);
-			PersistentPreferences.putGdbServerDoStart(booleanValue);
+			fPersistentPreferences.putGdbServerDoStart(booleanValue);
 
 			// Executable
 			stringValue = fGdbServerExecutable.getText().trim();
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_EXECUTABLE, stringValue);
-			PersistentPreferences.putGdbServerExecutable(stringValue);
+			fPersistentPreferences.putGdbServerExecutable(stringValue);
 
 			// Ports
 			int port;
@@ -1327,7 +1422,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			// Other options
 			stringValue = fGdbServerOtherOptions.getText().trim();
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_OTHER, stringValue);
-			PersistentPreferences.putGdbServerOtherOptions(stringValue);
+			fPersistentPreferences.putGdbServerOtherOptions(stringValue);
 
 			// Allocate server console
 			configuration.setAttribute(ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
@@ -1346,15 +1441,15 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			stringValue = fGdbClientExecutable.getText().trim();
 			configuration.setAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME, stringValue); // DSF
-			PersistentPreferences.putGdbClientExecutable(stringValue);
+			fPersistentPreferences.putGdbClientExecutable(stringValue);
 
 			stringValue = fGdbClientOtherOptions.getText().trim();
 			configuration.setAttribute(ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS, stringValue);
-			PersistentPreferences.putGdbClientOtherOptions(stringValue);
+			fPersistentPreferences.putGdbClientOtherOptions(stringValue);
 
 			stringValue = fGdbClientOtherCommands.getText().trim();
 			configuration.setAttribute(ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS, stringValue);
-			PersistentPreferences.putGdbClientCommands(stringValue);
+			fPersistentPreferences.putGdbClientCommands(stringValue);
 		}
 
 		{
@@ -1385,7 +1480,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
 				fUpdateThreadlistOnSuspend.getSelection());
 
-		PersistentPreferences.flush();
+		fPersistentPreferences.flush();
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println(
@@ -1414,10 +1509,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		// PyOCD GDB server setup
 		{
-			defaultBoolean = PersistentPreferences.getGdbServerDoStart();
+			defaultBoolean = fPersistentPreferences.getGdbServerDoStart();
 			configuration.setAttribute(ConfigurationAttributes.DO_START_GDB_SERVER, defaultBoolean);
 
-			defaultString = PersistentPreferences.getGdbServerExecutable();
+			defaultString = fPersistentPreferences.getGdbServerExecutable();
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_EXECUTABLE, defaultString);
 
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_CONNECTION_ADDRESS,
@@ -1471,7 +1566,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_LOG,
 					DefaultPreferences.GDB_SERVER_LOG_DEFAULT);
 
-			defaultString = PersistentPreferences.getGdbServerOtherOptions();
+			defaultString = fPersistentPreferences.getGdbServerOtherOptions();
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_OTHER, defaultString);
 
 			configuration.setAttribute(ConfigurationAttributes.DO_GDB_SERVER_ALLOCATE_CONSOLE,
@@ -1483,16 +1578,16 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		// GDB client setup
 		{
-			defaultString = PersistentPreferences.getGdbClientExecutable();
+			defaultString = fPersistentPreferences.getGdbClientExecutable();
 			configuration.setAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME, defaultString);
 
 			configuration.setAttribute(IGDBJtagConstants.ATTR_USE_REMOTE_TARGET,
 					DefaultPreferences.USE_REMOTE_TARGET_DEFAULT);
 
-			defaultString = PersistentPreferences.getGdbClientOtherOptions();
+			defaultString = fPersistentPreferences.getGdbClientOtherOptions();
 			configuration.setAttribute(ConfigurationAttributes.GDB_CLIENT_OTHER_OPTIONS, defaultString);
 
-			defaultString = PersistentPreferences.getGdbClientCommands();
+			defaultString = fPersistentPreferences.getGdbClientCommands();
 			configuration.setAttribute(ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS, defaultString);
 		}
 

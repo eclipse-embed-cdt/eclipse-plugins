@@ -11,12 +11,9 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.openocd;
 
-import org.eclipse.core.runtime.preferences.DefaultScope;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-
 import ilg.gnumcueclipse.core.EclipseUtils;
 
-public class DefaultPreferences {
+public class DefaultPreferences extends ilg.gnumcueclipse.core.DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
@@ -83,99 +80,25 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
-	/**
-	 * The DefaultScope preference store.
-	 */
-	private static IEclipsePreferences fgPreferences;
-
-	// ------------------------------------------------------------------------
-
-	public static IEclipsePreferences getPreferences() {
-
-		if (fgPreferences == null) {
-			fgPreferences = DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID);
-		}
-
-		return fgPreferences;
-	}
-
-	/**
-	 * Get a string preference value, or the default.
-	 * 
-	 * @param key
-	 *            a string with the key to search.
-	 * @param defaultValue
-	 *            a string with the default, possibly null.
-	 * @return a trimmed string, or a null default.
-	 */
-	private static String getString(String key, String defaultValue) {
-
-		String value;
-		value = getPreferences().get(key, defaultValue);
-
-		if (value != null) {
-			value = value.trim();
-		}
-
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("openocd.DefaultPreferences.getString(\"" + key + "\", \"" + defaultValue + "\") = \""
-					+ value + "\"");
-		}
-
-		return value;
-	}
-
-	public static boolean getBoolean(String key, boolean defaultValue) {
-
-		boolean value = getPreferences().getBoolean(key, defaultValue);
-
-		if (Activator.getInstance().isDebugging()) {
-			System.out
-					.println("openocd.DefaultPreferences.getBoolean(\"" + key + "\", " + defaultValue + ") = " + value);
-		}
-		return value;
-	}
-
-	public static void putString(String key, String value) {
-
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("openocd.DefaultPreferences.putString(\"" + key + "\", \"" + value + "\")");
-		}
-
-		getPreferences().put(key, value);
-	}
-
-	public static void putInt(String key, int value) {
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("openocd.DefaultPreferences.putInt(\"" + key + "\", " + value + ")");
-		}
-
-		getPreferences().putInt(key, value);
-	}
-
-	public static void putBoolean(String key, boolean value) {
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("openocd.DefaultPreferences.putBoolean(\"" + key + "\", " + value + ")");
-		}
-
-		getPreferences().putBoolean(key, value);
+	public DefaultPreferences(String pluginId) {
+		super(pluginId);
 	}
 
 	// ------------------------------------------------------------------------
 
-	public static String getGdbServerExecutable() {
+	public String getGdbServerExecutable() {
 		String value = getString(PersistentPreferences.GDB_SERVER_EXECUTABLE, GDB_SERVER_EXECUTABLE_DEFAULT);
 		return value;
 	}
 
-	public static String getGdbClientExecutable() {
+	public String getGdbClientExecutable() {
 		String value = getString(PersistentPreferences.GDB_CLIENT_EXECUTABLE, GDB_CLIENT_EXECUTABLE_DEFAULT);
 		return value;
 	}
 
 	// ------------------------------------------------------------------------
 
-	public static String getOpenocdConfig() {
+	public String getOpenocdConfig() {
 		String value = getString(PersistentPreferences.GDB_SERVER_OTHER_OPTIONS,
 				DefaultPreferences.GDB_SERVER_OTHER_DEFAULT);
 		return value;
@@ -183,14 +106,14 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
-	public static boolean getTabMainCheckProgram() {
+	public boolean getTabMainCheckProgram() {
 		return getBoolean(PersistentPreferences.TAB_MAIN_CHECK_PROGRAM,
 				PersistentPreferences.TAB_MAIN_CHECK_PROGRAM_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------
 
-	public static String getExecutableName() {
+	public String getExecutableName() {
 
 		String key = PersistentPreferences.EXECUTABLE_NAME;
 		String value = getString(key, "");
@@ -201,7 +124,7 @@ public class DefaultPreferences {
 		return value;
 	}
 
-	public static String getExecutableNameOs() {
+	public String getExecutableNameOs() {
 
 		String key = EclipseUtils.getKeyOs(PersistentPreferences.EXECUTABLE_NAME_OS);
 		String value = getString(key, "");
@@ -212,7 +135,7 @@ public class DefaultPreferences {
 		return value;
 	}
 
-	public static void putExecutableName(String value) {
+	public void putExecutableName(String value) {
 
 		String key = PersistentPreferences.EXECUTABLE_NAME;
 
@@ -224,7 +147,7 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
-	public static String getInstallFolder() {
+	public String getInstallFolder() {
 
 		String key = PersistentPreferences.INSTALL_FOLDER;
 		String value = getString(key, "");
@@ -235,7 +158,7 @@ public class DefaultPreferences {
 		return value;
 	}
 
-	public static void putInstallFolder(String value) {
+	public void putInstallFolder(String value) {
 
 		String key = PersistentPreferences.INSTALL_FOLDER;
 
@@ -247,7 +170,7 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
-	public static String getSearchPath() {
+	public String getSearchPath() {
 
 		String key = PersistentPreferences.SEARCH_PATH;
 		String value = getString(key, "");
@@ -258,7 +181,7 @@ public class DefaultPreferences {
 		return value;
 	}
 
-	public static String getSearchPathOs() {
+	public String getSearchPathOs() {
 
 		String key = EclipseUtils.getKeyOs(PersistentPreferences.SEARCH_PATH_OS);
 		String value = getString(key, "");
@@ -269,7 +192,7 @@ public class DefaultPreferences {
 		return value;
 	}
 
-	public static void putSearchPath(String value) {
+	public void putSearchPath(String value) {
 
 		String key = PersistentPreferences.SEARCH_PATH;
 

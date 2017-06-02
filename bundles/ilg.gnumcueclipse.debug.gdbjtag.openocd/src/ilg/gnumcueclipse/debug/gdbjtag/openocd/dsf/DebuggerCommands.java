@@ -13,9 +13,9 @@ package ilg.gnumcueclipse.debug.gdbjtag.openocd.dsf;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.core.StringUtils;
-import ilg.gnumcueclipse.debug.gdbjtag.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuArmDebuggerCommandsService;
+import ilg.gnumcueclipse.debug.gdbjtag.openocd.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.DefaultPreferences;
 

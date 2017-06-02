@@ -11,8 +11,8 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.dsf;
 
+import ilg.gnumcueclipse.debug.gdbjtag.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.memory.PeripheralMemoryBlockRetrieval;
-import ilg.gnumcueclipse.packs.core.Activator;
 
 import org.eclipse.cdt.dsf.debug.model.DsfMemoryBlockRetrieval;
 import org.eclipse.cdt.dsf.debug.service.IMemory.IMemoryDMContext;

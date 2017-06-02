@@ -13,9 +13,9 @@ package ilg.gnumcueclipse.debug.gdbjtag.qemu.dsf;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.core.StringUtils;
-import ilg.gnumcueclipse.debug.gdbjtag.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuArmDebuggerCommandsService;
+import ilg.gnumcueclipse.debug.gdbjtag.qemu.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.qemu.ConfigurationAttributes;
 import ilg.gnumcueclipse.debug.gdbjtag.qemu.DefaultPreferences;
 
@@ -33,8 +33,14 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 	// ------------------------------------------------------------------------
 
+	private DefaultPreferences fDefaultPreferences;
+
+	// ------------------------------------------------------------------------
+
 	public DebuggerCommands(DsfSession session, ILaunchConfiguration lc, String mode) {
 		super(session, lc, mode, true); // do double backslash
+
+		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
 	}
 
 	// ------------------------------------------------------------------------
@@ -50,7 +56,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 	public IStatus addGdbInitCommandsCommands(List<String> commandsList) {
 
 		String otherInits = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.GDB_CLIENT_OTHER_COMMANDS,
-				DefaultPreferences.getGdbClientCommands()).trim();
+				fDefaultPreferences.getGdbClientCommands()).trim();
 
 		otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
 		DebugUtils.addMultiLine(otherInits, commandsList);
@@ -77,7 +83,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 		if (CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_IMAGE,
 				IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
 				&& !CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_DEBUG_IN_RAM,
-						DefaultPreferences.getQemuDebugInRam())) {
+						fDefaultPreferences.getQemuDebugInRam())) {
 
 			status = addLoadImageCommands(commandsList);
 
@@ -107,7 +113,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 	public IStatus addFirstResetCommands(List<String> commandsList) {
 
 		if (CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_FIRST_RESET,
-				DefaultPreferences.getQemuDoInitialReset())) {
+				fDefaultPreferences.getQemuDoInitialReset())) {
 
 			String commandStr = DefaultPreferences.DO_INITIAL_RESET_COMMAND;
 			commandsList.add(commandStr);
@@ -119,7 +125,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 		}
 
 		String otherInits = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.OTHER_INIT_COMMANDS,
-				DefaultPreferences.getQemuInitOther()).trim();
+				fDefaultPreferences.getQemuInitOther()).trim();
 
 		otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
 		if (fDoDoubleBackslash && EclipseUtils.isWindows()) {
@@ -135,7 +141,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 
 		if (doReset) {
 			if (CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_SECOND_RESET,
-					DefaultPreferences.getQemuDoPreRunReset())) {
+					fDefaultPreferences.getQemuDoPreRunReset())) {
 				String commandStr = DefaultPreferences.DO_PRERUN_RESET_COMMAND;
 				commandsList.add(commandStr);
 
@@ -149,7 +155,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 		if (CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_IMAGE,
 				IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
 				&& CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_DEBUG_IN_RAM,
-						DefaultPreferences.getQemuDebugInRam())) {
+						fDefaultPreferences.getQemuDebugInRam())) {
 
 			IStatus status = addLoadImageCommands(commandsList);
 
@@ -159,7 +165,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 		}
 
 		String userCmd = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.OTHER_RUN_COMMANDS,
-				DefaultPreferences.getQemuPreRunOther()).trim();
+				fDefaultPreferences.getQemuPreRunOther()).trim();
 
 		userCmd = DebugUtils.resolveAll(userCmd, fAttributes);
 

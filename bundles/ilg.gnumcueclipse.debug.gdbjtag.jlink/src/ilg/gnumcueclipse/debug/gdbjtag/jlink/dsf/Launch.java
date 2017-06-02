@@ -119,8 +119,9 @@ public class Launch extends GnuArmLaunch {
 		}
 
 		if (!config.hasAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME)) {
+			DefaultPreferences fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
 			config.setAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
-					DefaultPreferences.getGdbClientExecutable());
+					fDefaultPreferences.getGdbClientExecutable());
 		}
 	}
 

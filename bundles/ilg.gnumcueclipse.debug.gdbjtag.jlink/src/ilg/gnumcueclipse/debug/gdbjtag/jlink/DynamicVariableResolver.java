@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.debug.gdbjtag.openocd;
+package ilg.gnumcueclipse.debug.gdbjtag.jlink;
 
 import org.eclipse.core.resources.IProject;
 
@@ -19,8 +19,8 @@ import ilg.gnumcueclipse.core.EclipseUtils;
 
 public class DynamicVariableResolver {
 
-	public static final String VARIABLE_EXECUTABLE = "openocd_executable";
-	public static final String VARIABLE_PATH = "openocd_path";
+	public static final String VARIABLE_EXECUTABLE = "jlink_gdbserver";
+	public static final String VARIABLE_PATH = "jlink_path";
 
 	static String macros[] = { VARIABLE_EXECUTABLE, VARIABLE_PATH };
 	static String preferences[] = { PersistentPreferences.EXECUTABLE_NAME, PersistentPreferences.INSTALL_FOLDER };

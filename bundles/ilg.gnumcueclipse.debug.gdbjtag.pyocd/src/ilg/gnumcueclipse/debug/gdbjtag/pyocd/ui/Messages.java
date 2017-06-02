@@ -26,12 +26,12 @@ public class Messages {
 
 	private static final String MESSAGES = Activator.PLUGIN_ID + ".ui.messages"; //$NON-NLS-1$
 
-	public static String PyOCDPagePropertyPage_description;
-	public static String PyOCDPagePropertyPage_executable_label;
-	public static String PyOCDPagePropertyPage_executable_folder;
+	public static String ProjectMcuPagePropertyPage_description;
+	public static String WorkspaceMcuPagePropertyPage_description;
+	public static String GlobalMcuPagePropertyPage_description;
 
-	public static String Variable_executable_description;
-	public static String Variable_path_description;
+	public static String McuPage_executable_label;
+	public static String McuPage_executable_folder;
 
 	// ------------------------------------------------------------------------
 

@@ -11,11 +11,6 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.jlink;
 
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.osgi.service.prefs.BackingStoreException;
-import org.osgi.service.prefs.Preferences;
-
 /**
  * Manage a workspace preference file stored in:
  * 
@@ -25,7 +20,9 @@ import org.osgi.service.prefs.Preferences;
  *
  * Some of the values may be retrieved from the EclipseDefaults.
  */
-public class PersistentPreferences {
+public class PersistentPreferences extends ilg.gnumcueclipse.debug.gdbjtag.PersistentPreferences {
+
+	// ------------------------------------------------------------------------
 
 	// Tab Debugger
 	// GDB Server Setup
@@ -88,403 +85,381 @@ public class PersistentPreferences {
 
 	public static final String GDB_JLINK_PRERUN_OTHER = GDB_JLINK + "preRun.other";
 
-	// ----- Defaults ---------------------------------------------------------
+	// ------------------------------------------------------------------------
 
-	public static final String EXECUTABLE_NAME = "executable.name";
-	public static final String EXECUTABLE_NAME_OS = EXECUTABLE_NAME + ".%s";
-	public static final String INSTALL_FOLDER = "install.folder";
-	public static final String SEARCH_PATH = "search.path";
-	public static final String SEARCH_PATH_OS = SEARCH_PATH + ".%s";
+	private DefaultPreferences fDefaultPreferences;
 
-	public static final String FOLDER_STRICT = "folder.strict";
+	// ------------------------------------------------------------------------
 
-	public static final String TAB_MAIN_CHECK_PROGRAM = "tab.main.checkProgram";
+	public PersistentPreferences(String pluginId) {
+		super(pluginId);
 
-	// ----- Getters ----------------------------------------------------------
-
-	private static String getString(String key, String defaultValue) {
-
-		String value;
-		value = Platform.getPreferencesService().getString(Activator.PLUGIN_ID, key, defaultValue, null);
-
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("jlink.PersistentPreferences.getString(\"" + key + "\", \"" + defaultValue + "\") = \""
-					+ value + "\"");
-		}
-		return value;
+		fDefaultPreferences = new DefaultPreferences(pluginId);
 	}
 
-	// ----- Setters ----------------------------------------------------------
+	// ----- Install folder -------------------------------------------
+	public String getInstallFolder() {
 
-	private static void putWorkspaceString(String key, String value) {
-
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("jlink.PersistentPreferences.putWorkspaceString(\"" + key + "\", \"" + value + "\")");
-		}
-		value = value.trim();
-
-		// Access the instanceScope
-		Preferences preferences = InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID);
-		preferences.put(key, value);
+		return getString(INSTALL_FOLDER, INSTALL_FOLDER_DEFAULT);
 	}
 
-	public static void flush() {
+	// ----- Executable name ------------------------------------------
+	public String getExecutableName() {
 
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("jlink.PersistentPreferences.flush()");
-		}
-		try {
-			InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).flush();
-		} catch (BackingStoreException e) {
-			Activator.log(e);
-		}
+		return getString(EXECUTABLE_NAME, EXECUTABLE_NAME_DEFAULT);
+	}
+
+	// ----- Is strict ------------------------------------------------
+	public boolean getFolderStrict() {
+
+		return getBoolean(FOLDER_STRICT, FOLDER_STRICT_DEFAULT);
 	}
 
 	// ----- gdb server doStart -----------------------------------------------
-	public static boolean getGdbServerDoStart() {
+	public boolean getGdbServerDoStart() {
 
 		return Boolean
 				.valueOf(getString(GDB_SERVER_DO_START, Boolean.toString(DefaultPreferences.SERVER_DO_START_DEFAULT)));
 	}
 
-	public static void putGdbServerDoStart(boolean value) {
+	public void putGdbServerDoStart(boolean value) {
 
 		putWorkspaceString(GDB_SERVER_DO_START, Boolean.toString(value));
 	}
 
 	// ----- gdb server executable --------------------------------------------
-	public static String getGdbServerExecutable() {
+	public String getGdbServerExecutable() {
 
 		String value = getString(GDB_SERVER_EXECUTABLE, null);
 		if (value != null) {
 			return value;
 		}
-		return DefaultPreferences.getGdbServerExecutable();
+		return fDefaultPreferences.getGdbServerExecutable();
 	}
 
-	public static void putGdbServerExecutable(String value) {
+	public void putGdbServerExecutable(String value) {
 
 		putWorkspaceString(GDB_SERVER_EXECUTABLE, value);
 	}
 
 	// ----- flash device id --------------------------------------------------
-	public static String getFlashDeviceName() {
+	public String getFlashDeviceName() {
 
 		return getString(FLASH_DEVICE_NAME, DefaultPreferences.FLASH_DEVICE_NAME_DEFAULT);
 	}
 
-	public static void putFlashDeviceName(String value) {
+	public void putFlashDeviceName(String value) {
 
 		putWorkspaceString(FLASH_DEVICE_NAME, value);
 	}
 
 	// ----- gdb server endianness --------------------------------------------
-	public static String getGdbServerEndianness() {
+	public String getGdbServerEndianness() {
 
 		return getString(GDB_SERVER_ENDIANNESS, DefaultPreferences.SERVER_ENDIANNESS_DEFAULT);
 	}
 
-	public static void putGdbServerEndianness(String value) {
+	public void putGdbServerEndianness(String value) {
 
 		putWorkspaceString(GDB_SERVER_ENDIANNESS, value);
 	}
 
 	// ----- gdb server connection --------------------------------------------
-	public static String getGdbServerConnection() {
+	public String getGdbServerConnection() {
 
 		return getString(GDB_SERVER_CONNECTION, DefaultPreferences.SERVER_CONNECTION_DEFAULT);
 	}
 
-	public static void putGdbServerConnection(String value) {
+	public void putGdbServerConnection(String value) {
 
 		putWorkspaceString(GDB_SERVER_CONNECTION, value);
 	}
 
 	// ----- gdb server connection address ------------------------------------
-	public static String getGdbServerConnectionAddress() {
+	public String getGdbServerConnectionAddress() {
 
 		return getString(GDB_SERVER_CONNECTION_ADDRESS, DefaultPreferences.SERVER_CONNECTION_ADDRESS_DEFAULT);
 	}
 
-	public static void putGdbServerConnectionAddress(String value) {
+	public void putGdbServerConnectionAddress(String value) {
 
 		putWorkspaceString(GDB_SERVER_CONNECTION_ADDRESS, value);
 	}
 
 	// ----- gdb server interface ---------------------------------------------
-	public static String getGdbServerInterface() {
+	public String getGdbServerInterface() {
 
 		String value = getString(GDB_SERVER_INTERFACE, null);
 		if (value != null) {
 			return value;
 		}
-		return DefaultPreferences.getGdbServerInterface();
+		return fDefaultPreferences.getGdbServerInterface();
 	}
 
-	public static void putGdbServerInterface(String value) {
+	public void putGdbServerInterface(String value) {
 
 		putWorkspaceString(GDB_SERVER_INTERFACE, value);
 	}
 
 	// ----- gdb server initial speed -----------------------------------------
-	public static String getGdbServerInitialSpeed() {
+	public String getGdbServerInitialSpeed() {
 
 		return getString(GDB_SERVER_INITIAL_SPEED, DefaultPreferences.SERVER_INITIAL_SPEED_DEFAULT);
 	}
 
-	public static void putGdbServerInitialSpeed(String value) {
+	public void putGdbServerInitialSpeed(String value) {
 
 		putWorkspaceString(GDB_SERVER_INITIAL_SPEED, value);
 	}
 
 	// ----- gdb server other options -----------------------------------------
-	public static String getGdbServerOtherOptions() {
+	public String getGdbServerOtherOptions() {
 
 		return getString(GDB_SERVER_OTHER_OPTIONS, DefaultPreferences.SERVER_OTHER_OPTIONS_DEFAULT);
 	}
 
-	public static void putGdbServerOtherOptions(String value) {
+	public void putGdbServerOtherOptions(String value) {
 
 		putWorkspaceString(GDB_SERVER_OTHER_OPTIONS, value);
 	}
 
 	// ----- gdb client executable --------------------------------------------
-	public static String getGdbClientExecutable() {
+	public String getGdbClientExecutable() {
 
 		String value = getString(GDB_CLIENT_EXECUTABLE, null);
 		if (value != null) {
 			return value;
 		}
-		return DefaultPreferences.getGdbClientExecutable();
+		return fDefaultPreferences.getGdbClientExecutable();
 	}
 
-	public static void putGdbClientExecutable(String value) {
+	public void putGdbClientExecutable(String value) {
 
 		putWorkspaceString(GDB_CLIENT_EXECUTABLE, value);
 	}
 
 	// ----- gdb client other options -----------------------------------------
-	public static String getGdbClientOtherOptions() {
+	public String getGdbClientOtherOptions() {
 
 		return getString(GDB_CLIENT_OTHER_OPTIONS, DefaultPreferences.CLIENT_OTHER_OPTIONS_DEFAULT);
 	}
 
-	public static void putGdbClientOtherOptions(String value) {
+	public void putGdbClientOtherOptions(String value) {
 
 		putWorkspaceString(GDB_CLIENT_OTHER_OPTIONS, value);
 	}
 
 	// ----- gdb client commands ----------------------------------------------
-	public static String getGdbClientCommands() {
+	public String getGdbClientCommands() {
 
 		return getString(GDB_CLIENT_COMMANDS, DefaultPreferences.CLIENT_COMMANDS_DEFAULT);
 	}
 
-	public static void putGdbClientCommands(String value) {
+	public void putGdbClientCommands(String value) {
 
 		putWorkspaceString(GDB_CLIENT_COMMANDS, value);
 	}
 
 	// ----- jlink do initial reset -------------------------------------------
-	public static boolean getJLinkDoInitialReset() {
+	public boolean getJLinkDoInitialReset() {
 
 		return Boolean.valueOf(
 				getString(GDB_JLINK_DO_INITIAL_RESET, Boolean.toString(DefaultPreferences.DO_INITIAL_RESET_DEFAULT)));
 	}
 
-	public static void putJLinkDoInitialReset(boolean value) {
+	public void putJLinkDoInitialReset(boolean value) {
 
 		putWorkspaceString(GDB_JLINK_DO_INITIAL_RESET, Boolean.toString(value));
 	}
 
 	// ----- jlink initial reset type -----------------------------------------
-	public static String getJLinkInitialResetType() {
+	public String getJLinkInitialResetType() {
 
 		return getString(GDB_JLINK_INITIAL_RESET_TYPE, DefaultPreferences.INITIAL_RESET_TYPE_DEFAULT);
 	}
 
-	public static void putJLinkInitialResetType(String value) {
+	public void putJLinkInitialResetType(String value) {
 
 		putWorkspaceString(GDB_JLINK_INITIAL_RESET_TYPE, value);
 	}
 
 	// ----- jlink initial reset speed ----------------------------------------
-	public static int getJLinkInitialResetSpeed() {
+	public int getJLinkInitialResetSpeed() {
 
 		return Integer.valueOf(getString(GDB_JLINK_INITIAL_RESET_SPEED,
 				Integer.toString(DefaultPreferences.INITIAL_RESET_SPEED_DEFAULT)));
 	}
 
-	public static void putJLinkInitialResetSpeed(int value) {
+	public void putJLinkInitialResetSpeed(int value) {
 
 		putWorkspaceString(GDB_JLINK_INITIAL_RESET_SPEED, Integer.toString(value));
 	}
 
 	// ----- jlink speed ------------------------------------------------------
-	public static String getJLinkSpeed() {
+	public String getJLinkSpeed() {
 
 		return getString(GDB_JLINK_SPEED, DefaultPreferences.JLINK_SPEED_DEFAULT);
 	}
 
-	public static void putJLinkSpeed(String value) {
+	public void putJLinkSpeed(String value) {
 
 		putWorkspaceString(GDB_JLINK_SPEED, value);
 	}
 
 	// ----- jlink enable flash breakpoints -----------------------------------
-	public static boolean getJLinkEnableFlashBreakpoints() {
+	public boolean getJLinkEnableFlashBreakpoints() {
 
 		return Boolean.valueOf(getString(GDB_JLINK_ENABLE_FLASH_BREAKPOINTS,
 				Boolean.toString(DefaultPreferences.ENABLE_FLASH_BREAKPOINTS_DEFAULT)));
 	}
 
-	public static void putJLinkEnableFlashBreakpoints(boolean value) {
+	public void putJLinkEnableFlashBreakpoints(boolean value) {
 
 		putWorkspaceString(GDB_JLINK_ENABLE_FLASH_BREAKPOINTS, Boolean.toString(value));
 	}
 
 	// ----- jlink enable semihosting -----------------------------------------
-	public static boolean getJLinkEnableSemihosting() {
+	public boolean getJLinkEnableSemihosting() {
 
 		String value = getString(GDB_JLINK_ENABLE_SEMIHOSTING, null);
 		if (value != null) {
 			return Boolean.valueOf(value);
 		}
-		return DefaultPreferences.getJLinkEnableSemihosting();
+		return fDefaultPreferences.getJLinkEnableSemihosting();
 	}
 
-	public static void putJLinkEnableSemihosting(boolean value) {
+	public void putJLinkEnableSemihosting(boolean value) {
 
 		putWorkspaceString(GDB_JLINK_ENABLE_SEMIHOSTING, Boolean.toString(value));
 	}
 
 	// ----- jlink semihosting telnet -----------------------------------------
-	public static boolean getJLinkSemihostingTelnet() {
+	public boolean getJLinkSemihostingTelnet() {
 
 		return Boolean.valueOf(getString(GDB_JLINK_SEMIHOSTING_TELNET,
 				Boolean.toString(DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT)));
 	}
 
-	public static void putJLinkSemihostingTelnet(boolean value) {
+	public void putJLinkSemihostingTelnet(boolean value) {
 
 		putWorkspaceString(GDB_JLINK_SEMIHOSTING_TELNET, Boolean.toString(value));
 	}
 
 	// ----- jlink semihosting client -----------------------------------------
-	public static boolean getJLinkSemihostingClient() {
+	public boolean getJLinkSemihostingClient() {
 
 		return Boolean.valueOf(getString(GDB_JLINK_SEMIHOSTING_CLIENT,
 				Boolean.toString(DefaultPreferences.SEMIHOSTING_CLIENT_DEFAULT)));
 	}
 
-	public static void putJLinkSemihostingClient(boolean value) {
+	public void putJLinkSemihostingClient(boolean value) {
 
 		putWorkspaceString(GDB_JLINK_SEMIHOSTING_CLIENT, Boolean.toString(value));
 	}
 
 	// ----- jlink enable swo -------------------------------------------------
-	public static boolean getJLinkEnableSwo() {
+	public boolean getJLinkEnableSwo() {
 
 		String value = getString(GDB_JLINK_ENABLE_SWO, null);
 		if (value != null) {
 			return Boolean.valueOf(value);
 		}
-		return DefaultPreferences.getJLinkEnableSwo();
+		return fDefaultPreferences.getJLinkEnableSwo();
 	}
 
-	public static void putJLinkEnableSwo(boolean value) {
+	public void putJLinkEnableSwo(boolean value) {
 
 		putWorkspaceString(GDB_JLINK_ENABLE_SWO, Boolean.toString(value));
 	}
 
 	// ----- jlink swo cpu frequency ------------------------------------------
-	public static int getJLinkSwoEnableTargetCpuFreq() {
+	public int getJLinkSwoEnableTargetCpuFreq() {
 
 		return Integer.valueOf(getString(GDB_JLINK_SWO_ENABLE_TARGET_CPU_FREQ,
 				Integer.toString(DefaultPreferences.SWO_ENABLE_TARGET_CPU_FREQ_DEFAULT)));
 	}
 
-	public static void putJLinkSwoEnableTargetCpuFreq(int value) {
+	public void putJLinkSwoEnableTargetCpuFreq(int value) {
 
 		putWorkspaceString(GDB_JLINK_SWO_ENABLE_TARGET_CPU_FREQ, Integer.toString(value));
 	}
 
 	// ----- jlink swo frequency ----------------------------------------------
-	public static int getJLinkSwoEnableTargetSwoFreq() {
+	public int getJLinkSwoEnableTargetSwoFreq() {
 
 		return Integer.valueOf(getString(GDB_JLINK_SWO_ENABLE_TARGET_SWO_FREQ,
 				Integer.toString(DefaultPreferences.SWO_ENABLE_TARGET_SWO_FREQ_DEFAULT)));
 	}
 
-	public static void putJLinkSwoEnableTargetSwoFreq(int value) {
+	public void putJLinkSwoEnableTargetSwoFreq(int value) {
 
 		putWorkspaceString(GDB_JLINK_SWO_ENABLE_TARGET_SWO_FREQ, Integer.toString(value));
 	}
 
 	// ----- jlink swo mask ---------------------------------------------------
-	public static String getJLinkSwoEnableTargetPortMask() {
+	public String getJLinkSwoEnableTargetPortMask() {
 
 		return getString(GDB_JLINK_SWO_ENABLE_TARGET_PORT_MASK, DefaultPreferences.SWO_ENABLE_TARGET_PORT_MASK_DEFAULT);
 	}
 
-	public static void putJLinkSwoEnableTargetPortMask(String value) {
+	public void putJLinkSwoEnableTargetPortMask(String value) {
 
 		putWorkspaceString(GDB_JLINK_SWO_ENABLE_TARGET_PORT_MASK, value);
 	}
 
 	// ----- jlink init other -------------------------------------------------
-	public static String getJLinkInitOther() {
+	public String getJLinkInitOther() {
 
 		return getString(GDB_JLINK_INIT_OTHER, DefaultPreferences.INIT_OTHER_DEFAULT);
 	}
 
-	public static void putJLinkInitOther(String value) {
+	public void putJLinkInitOther(String value) {
 
 		putWorkspaceString(GDB_JLINK_INIT_OTHER, value);
 	}
 
 	// ----- jlink debug in ram -----------------------------------------------
-	public static boolean getJLinkDebugInRam() {
+	public boolean getJLinkDebugInRam() {
 
 		return Boolean.valueOf(
 				getString(GDB_JLINK_DO_DEBUG_IN_RAM, Boolean.toString(DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT)));
 	}
 
-	public static void putJLinkDebugInRam(boolean value) {
+	public void putJLinkDebugInRam(boolean value) {
 
 		putWorkspaceString(GDB_JLINK_DO_DEBUG_IN_RAM, Boolean.toString(value));
 	}
 
 	// ----- jlink do prerun reset -----------------------------------
-	public static boolean getJLinkDoPreRunReset() {
+	public boolean getJLinkDoPreRunReset() {
 
 		return Boolean.valueOf(
 				getString(GDB_JLINK_DO_PRERUN_RESET, Boolean.toString(DefaultPreferences.DO_PRERUN_RESET_DEFAULT)));
 	}
 
-	public static void putJLinkDoPreRunReset(boolean value) {
+	public void putJLinkDoPreRunReset(boolean value) {
 
 		putWorkspaceString(GDB_JLINK_DO_PRERUN_RESET, Boolean.toString(value));
 	}
 
 	// ----- jlink prerun reset type ------------------------------------------
-	public static String getJLinkPreRunResetType() {
+	public String getJLinkPreRunResetType() {
 
 		return getString(GDB_JLINK_PRERUN_RESET_TYPE, DefaultPreferences.PRERUN_RESET_TYPE_DEFAULT);
 	}
 
-	public static void putJLinkPreRunResetType(String value) {
+	public void putJLinkPreRunResetType(String value) {
 
 		putWorkspaceString(GDB_JLINK_PRERUN_RESET_TYPE, value);
 	}
 
 	// ----- jlink init other -------------------------------------------------
-	public static String getJLinkPreRunOther() {
+	public String getJLinkPreRunOther() {
 
 		return getString(GDB_JLINK_PRERUN_OTHER, DefaultPreferences.PRERUN_OTHER_DEFAULT);
 	}
 
-	public static void putJLinkPreRunOther(String value) {
+	public void putJLinkPreRunOther(String value) {
 
 		putWorkspaceString(GDB_JLINK_PRERUN_OTHER, value);
 	}

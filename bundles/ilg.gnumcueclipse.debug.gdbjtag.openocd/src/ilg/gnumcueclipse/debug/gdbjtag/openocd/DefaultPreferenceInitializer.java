@@ -54,13 +54,15 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 			System.out.println("openocd.DefaultPreferenceInitializer.initializeDefaultPreferences()");
 		}
 
-		DefaultPreferences.putBoolean(PersistentPreferences.GDB_SERVER_DO_START,
+		DefaultPreferences fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
+
+		fDefaultPreferences.putBoolean(PersistentPreferences.GDB_SERVER_DO_START,
 				DefaultPreferences.DO_START_GDB_SERVER_DEFAULT);
 
-		DefaultPreferences.putString(PersistentPreferences.GDB_CLIENT_COMMANDS,
+		fDefaultPreferences.putString(PersistentPreferences.GDB_CLIENT_COMMANDS,
 				DefaultPreferences.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
 
-		DefaultPreferences.putBoolean(PersistentPreferences.TAB_MAIN_CHECK_PROGRAM,
+		fDefaultPreferences.putBoolean(PersistentPreferences.TAB_MAIN_CHECK_PROGRAM,
 				DefaultPreferences.TAB_MAIN_CHECK_PROGRAM_DEFAULT);
 
 		// When the 'ilg.gnumcueclipse.managedbuild.cross' node is completely
@@ -112,19 +114,22 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				System.out.println("openocd.LateInitializer.finalizeInitializationsDefaultPreferences()");
 			}
 
-			// OpenOCD executable name
-			String name = DefaultPreferences.getExecutableName();
+			DefaultPreferences fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
+
+			// Executable name
+			String name = fDefaultPreferences.getExecutableName();
 			if (name.isEmpty()) {
 				// If not defined elsewhere, get platform specific name.
-				name = DefaultPreferences.getExecutableNameOs();
+				name = fDefaultPreferences.getExecutableNameOs();
 				if (!name.isEmpty()) {
-					DefaultPreferences.putExecutableName(name);
+					fDefaultPreferences.putExecutableName(name);
 				}
 			}
+			PersistentPreferences fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
 
-			String executableName = EclipseUtils.getVariableValue(DynamicVariableResolver.VARIABLE_OPENOCD_EXECUTABLE);
+			String executableName = fPersistentPreferences.getExecutableName();
 			if (executableName == null || executableName.isEmpty()) {
-				executableName = DefaultPreferences.getExecutableName();
+				executableName = fDefaultPreferences.getExecutableName();
 			}
 			if (EclipseUtils.isWindows() && !executableName.endsWith(".exe")) {
 				executableName += ".exe";
@@ -132,23 +137,23 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 
 			// Check if the search path is defined in the default
 			// preferences.
-			String searchPath = DefaultPreferences.getSearchPath();
+			String searchPath = fDefaultPreferences.getSearchPath();
 			if (searchPath.isEmpty()) {
 
 				// If not defined, get the OS Specific default
 				// from preferences.ini.
-				searchPath = DefaultPreferences.getSearchPathOs();
+				searchPath = fDefaultPreferences.getSearchPathOs();
 
 				if (!searchPath.isEmpty()) {
 					// Store the search path in the preferences
-					DefaultPreferences.putSearchPath(searchPath);
+					fDefaultPreferences.putSearchPath(searchPath);
 				}
 			}
 
 			// OpenOCD install folder
 			// Check if the toolchain path is explictly defined in the
 			// default preferences.
-			String folder = DefaultPreferences.getInstallFolder();
+			String folder = fDefaultPreferences.getInstallFolder();
 			if (!folder.isEmpty()) {
 				IPath path = (new Path(folder)).append(executableName);
 				if (!path.toFile().isFile()) {
@@ -179,7 +184,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 			if (folder != null && !folder.isEmpty()) {
 				// If the install folder was finally discovered, store
 				// it in the preferences.
-				DefaultPreferences.putInstallFolder(folder);
+				fDefaultPreferences.putInstallFolder(folder);
 			}
 
 			if (Activator.getInstance().isDebugging()) {

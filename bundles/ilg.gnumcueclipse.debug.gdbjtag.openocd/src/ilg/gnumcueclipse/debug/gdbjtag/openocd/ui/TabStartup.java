@@ -116,12 +116,16 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	private String fSavedProgName;
 
+	private PersistentPreferences fPersistentPreferences;
+
 	// ------------------------------------------------------------------------
 
 	public TabStartup() {
 		super();
 
 		fSavedProgName = null;
+
+		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
 	}
 
 	// ------------------------------------------------------------------------
@@ -154,13 +158,12 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		createRunGroup(comp);
 
 		Link restoreDefaults;
-		GridData gd;
 		{
 			restoreDefaults = new Link(comp, SWT.NONE);
 			restoreDefaults.setText(Messages.getString("DebuggerTab.restoreDefaults_Link"));
 			restoreDefaults.setToolTipText(Messages.getString("DebuggerTab.restoreDefaults_ToolTipText"));
 
-			gd = new GridData();
+			GridData gd = new GridData();
 			gd.grabExcessHorizontalSpace = true;
 			gd.horizontalAlignment = SWT.RIGHT;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
@@ -209,23 +212,27 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	public void createInitGroup(Composite parent) {
 
 		Group group = new Group(parent, SWT.NONE);
-		group.setText(Messages.getString("StartupTab.initGroup_Text"));
-		GridLayout layout = new GridLayout();
-		group.setLayout(layout);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		group.setLayoutData(gd);
+		{
+			group.setText(Messages.getString("StartupTab.initGroup_Text"));
+			GridLayout layout = new GridLayout();
+			group.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			group.setLayoutData(gd);
+		}
 
 		Composite comp = new Composite(group, SWT.NONE);
-		layout = new GridLayout();
-		layout.numColumns = 1;
-		layout.marginHeight = 0;
-		comp.setLayout(layout);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		comp.setLayoutData(gd);
+		{
+			GridLayout layout = new GridLayout();
+			layout.numColumns = 1;
+			layout.marginHeight = 0;
+			comp.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			comp.setLayoutData(gd);
+		}
 
 		{
 			Composite local = new Composite(comp, SWT.NONE);
-			layout = new GridLayout();
+			GridLayout layout = new GridLayout();
 			layout.numColumns = 3;
 			layout.marginHeight = 0;
 			layout.marginWidth = 0;
@@ -242,7 +249,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			fFirstResetType = new Text(local, SWT.BORDER);
 			fFirstResetType.setToolTipText(Messages.getString("StartupTab.firstResetType_ToolTipText"));
-			gd = new GridData();
+			GridData gd = new GridData();
 			gd.widthHint = 30;
 			fFirstResetType.setLayoutData(gd);
 		}
@@ -250,14 +257,14 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		{
 			fInitCommands = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
 			fInitCommands.setToolTipText(Messages.getString("StartupTab.initCommands_ToolTipText"));
-			gd = new GridData(GridData.FILL_BOTH);
+			GridData gd = new GridData(GridData.FILL_BOTH);
 			gd.heightHint = 60;
 			fInitCommands.setLayoutData(gd);
 		}
 
 		{
 			Composite local = new Composite(comp, SWT.NONE);
-			layout = new GridLayout();
+			GridLayout layout = new GridLayout();
 			layout.numColumns = 1;
 			layout.marginHeight = 0;
 			layout.marginWidth = 0;
@@ -308,19 +315,23 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	private void createLoadGroup(Composite parent) {
 
 		Group group = new Group(parent, SWT.NONE);
-		GridLayout layout = new GridLayout();
-		group.setLayout(layout);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		group.setLayoutData(gd);
-		group.setText(Messages.getString("StartupTab.loadGroup_Text"));
+		{
+			GridLayout layout = new GridLayout();
+			group.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			group.setLayoutData(gd);
+			group.setText(Messages.getString("StartupTab.loadGroup_Text"));
+		}
 
 		Composite comp = new Composite(group, SWT.NONE);
-		layout = new GridLayout();
-		layout.numColumns = 1;
-		layout.marginHeight = 0;
-		comp.setLayout(layout);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		comp.setLayoutData(gd);
+		{
+			GridLayout layout = new GridLayout();
+			layout.numColumns = 1;
+			layout.marginHeight = 0;
+			comp.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			comp.setLayoutData(gd);
+		}
 
 		Composite local;
 
@@ -331,7 +342,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		{
 			local = new Composite(comp, SWT.NONE);
-			layout = new GridLayout();
+			GridLayout layout = new GridLayout();
 			layout.numColumns = 4;
 			layout.marginHeight = 0;
 			local.setLayout(layout);
@@ -343,7 +354,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				fUseProjectBinaryForSymbols.setToolTipText(Messages.getString("StartupTab.useProjectBinary_ToolTip"));
 
 				fProjBinaryLabel2 = new Label(local, SWT.NONE);
-				gd = new GridData(GridData.FILL_HORIZONTAL);
+				GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
 				fProjBinaryLabel2.setLayoutData(gd);
 			}
@@ -353,7 +364,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				fUseFileForSymbols.setText(Messages.getString("StartupTab.useFile_Label"));
 
 				fSymbolsFileName = new Text(local, SWT.BORDER);
-				gd = new GridData(GridData.FILL_HORIZONTAL);
+				GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 				fSymbolsFileName.setLayoutData(gd);
 
 				fSymbolsFileBrowseWs = createPushButton(local, Messages.getString("StartupTab.FileBrowseWs_Label"),
@@ -367,7 +378,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				fSymbolsOffsetLabel.setText(Messages.getString("StartupTab.symbolsOffsetLabel_Text"));
 
 				fSymbolsOffset = new Text(local, SWT.BORDER);
-				gd = new GridData();
+				GridData gd = new GridData();
 				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
 				gd.widthHint = 100;
 				fSymbolsOffset.setLayoutData(gd);
@@ -381,7 +392,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		{
 			local = new Composite(comp, SWT.NONE);
-			layout = new GridLayout();
+			GridLayout layout = new GridLayout();
 			layout.numColumns = 4;
 			layout.marginHeight = 0;
 			local.setLayout(layout);
@@ -393,7 +404,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				fUseProjectBinaryForImage.setToolTipText(Messages.getString("StartupTab.useProjectBinary_ToolTipText"));
 
 				fProjBinaryLabel1 = new Label(local, SWT.NONE);
-				gd = new GridData(GridData.FILL_HORIZONTAL);
+				GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
 				fProjBinaryLabel1.setLayoutData(gd);
 			}
@@ -403,7 +414,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				fUseFileForImage.setText(Messages.getString("StartupTab.useFile_Label"));
 
 				fImageFileName = new Text(local, SWT.BORDER);
-				gd = new GridData(GridData.FILL_HORIZONTAL);
+				GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 				fImageFileName.setLayoutData(gd);
 
 				fImageFileBrowseWs = createPushButton(local, Messages.getString("StartupTab.FileBrowseWs_Label"), null);
@@ -416,7 +427,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				fImageOffsetLabel.setText(Messages.getString("StartupTab.imageOffsetLabel_Text"));
 
 				fImageOffset = new Text(local, SWT.BORDER);
-				gd = new GridData();
+				GridData gd = new GridData();
 				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
 				gd.widthHint = ((GridData) fSymbolsOffset.getLayoutData()).widthHint;
 				fImageOffset.setLayoutData(gd);
@@ -547,19 +558,23 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	public void createRunOptionGroup(Composite parent) {
 
 		Group group = new Group(parent, SWT.NONE);
-		group.setText(Messages.getString("StartupTab.runOptionGroup_Text"));
-		GridLayout layout = new GridLayout();
-		group.setLayout(layout);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		group.setLayoutData(gd);
+		{
+			group.setText(Messages.getString("StartupTab.runOptionGroup_Text"));
+			GridLayout layout = new GridLayout();
+			group.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			group.setLayoutData(gd);
+		}
 
 		Composite comp = new Composite(group, SWT.NONE);
-		layout = new GridLayout();
-		layout.numColumns = 2;
-		layout.marginHeight = 0;
-		comp.setLayout(layout);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		comp.setLayoutData(gd);
+		{
+			GridLayout layout = new GridLayout();
+			layout.numColumns = 2;
+			layout.marginHeight = 0;
+			comp.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			comp.setLayoutData(gd);
+		}
 
 		fDoDebugInRam = new Button(comp, SWT.CHECK);
 		fDoDebugInRam.setText(Messages.getString("StartupTab.doDebugInRam_Text"));
@@ -610,19 +625,23 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	public void createRunGroup(Composite parent) {
 
 		Group group = new Group(parent, SWT.NONE);
-		group.setText(Messages.getString("StartupTab.runGroup_Text"));
-		GridLayout layout = new GridLayout();
-		group.setLayout(layout);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		group.setLayoutData(gd);
+		{
+			group.setText(Messages.getString("StartupTab.runGroup_Text"));
+			GridLayout layout = new GridLayout();
+			group.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			group.setLayoutData(gd);
+		}
 
 		Composite comp = new Composite(group, SWT.NONE);
-		layout = new GridLayout();
-		layout.numColumns = 4;
-		layout.marginHeight = 0;
-		comp.setLayout(layout);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		comp.setLayoutData(gd);
+		{
+			GridLayout layout = new GridLayout();
+			layout.numColumns = 4;
+			layout.marginHeight = 0;
+			comp.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			comp.setLayoutData(gd);
+		}
 
 		{
 			fDoSecondReset = new Button(comp, SWT.CHECK);
@@ -635,7 +654,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			fSecondResetType = new Text(comp, SWT.BORDER);
 			fSecondResetType.setToolTipText(Messages.getString("StartupTab.secondResetType_ToolTipText"));
-			gd = new GridData();
+			GridData gd = new GridData();
 			gd.widthHint = 30;
 			fSecondResetType.setLayoutData(gd);
 
@@ -649,7 +668,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		{
 			fRunCommands = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
 			fRunCommands.setToolTipText(Messages.getString("StartupTab.runCommands_ToolTipText"));
-			gd = new GridData(GridData.FILL_BOTH);
+			GridData gd = new GridData(GridData.FILL_BOTH);
 			gd.heightHint = 60;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
 			fRunCommands.setLayoutData(gd);
@@ -662,7 +681,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			fPcRegister = new Text(comp, SWT.BORDER);
 			fPcRegister.setToolTipText(Messages.getString("StartupTab.pcRegister_ToolTipText"));
-			gd = new GridData();
+			GridData gd = new GridData();
 			gd.widthHint = 100;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			fPcRegister.setLayoutData(gd);
@@ -674,7 +693,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			fSetStopAt.setToolTipText(Messages.getString("StartupTab.setStopAt_ToolTipText"));
 
 			fStopAt = new Text(comp, SWT.BORDER);
-			gd = new GridData();
+			GridData gd = new GridData();
 			gd.widthHint = 100;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			fStopAt.setLayoutData(gd);
@@ -685,7 +704,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			fDoContinue.setText(Messages.getString("StartupTab.doContinue_Text"));
 			fDoContinue.setToolTipText(Messages.getString("StartupTab.doContinue_ToolTipText"));
 
-			gd = new GridData();
+			GridData gd = new GridData();
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
 			fDoContinue.setLayoutData(gd);
 		}
@@ -854,22 +873,22 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Initialisation Commands
 			{
 				// Do initial reset
-				booleanDefault = PersistentPreferences.getOpenOCDDoInitialReset();
+				booleanDefault = fPersistentPreferences.getOpenOCDDoInitialReset();
 				fDoFirstReset.setSelection(
 						configuration.getAttribute(ConfigurationAttributes.DO_FIRST_RESET, booleanDefault));
 
 				// Reset type
-				stringDefault = PersistentPreferences.getOpenOCDInitialResetType();
+				stringDefault = fPersistentPreferences.getOpenOCDInitialResetType();
 				fFirstResetType
 						.setText(configuration.getAttribute(ConfigurationAttributes.FIRST_RESET_TYPE, stringDefault));
 
 				// Enable semihosting
-				booleanDefault = PersistentPreferences.getOpenOCDEnableSemihosting();
+				booleanDefault = fPersistentPreferences.getOpenOCDEnableSemihosting();
 				fEnableSemihosting.setSelection(
 						configuration.getAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING, booleanDefault));
 
 				// Other commands
-				stringDefault = PersistentPreferences.getOpenOCDInitOther();
+				stringDefault = fPersistentPreferences.getOpenOCDInitOther();
 				fInitCommands.setText(
 						configuration.getAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS, stringDefault));
 			}
@@ -918,7 +937,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			// Runtime Options
 			{
-				booleanDefault = PersistentPreferences.getOpenOCDDebugInRam();
+				booleanDefault = fPersistentPreferences.getOpenOCDDebugInRam();
 				fDoDebugInRam.setSelection(
 						configuration.getAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM, booleanDefault));
 			}
@@ -926,17 +945,17 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Run Commands
 			{
 				// Do pre-run reset
-				booleanDefault = PersistentPreferences.getOpenOCDDoPreRunReset();
+				booleanDefault = fPersistentPreferences.getOpenOCDDoPreRunReset();
 				fDoSecondReset.setSelection(
 						configuration.getAttribute(ConfigurationAttributes.DO_SECOND_RESET, booleanDefault));
 
 				// Pre-run reset type
-				stringDefault = PersistentPreferences.getOpenOCDPreRunResetType();
+				stringDefault = fPersistentPreferences.getOpenOCDPreRunResetType();
 				fSecondResetType
 						.setText(configuration.getAttribute(ConfigurationAttributes.SECOND_RESET_TYPE, stringDefault));
 
 				// Other commands
-				stringDefault = PersistentPreferences.getOpenOCDPreRunOther();
+				stringDefault = fPersistentPreferences.getOpenOCDPreRunOther();
 				fRunCommands
 						.setText(configuration.getAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS, stringDefault));
 
@@ -1083,22 +1102,22 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Do first reset
 			booleanValue = fDoFirstReset.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET, booleanValue);
-			PersistentPreferences.putOpenOCDDoInitialReset(booleanValue);
+			fPersistentPreferences.putOpenOCDDoInitialReset(booleanValue);
 
 			// First reset type
 			stringValue = fFirstResetType.getText().trim();
 			configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE, stringValue);
-			PersistentPreferences.putOpenOCDInitialResetType(stringValue);
+			fPersistentPreferences.putOpenOCDInitialResetType(stringValue);
 
 			// Other commands
 			stringValue = fInitCommands.getText().trim();
 			configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS, stringValue);
-			PersistentPreferences.putOpenOCDInitOther(stringValue);
+			fPersistentPreferences.putOpenOCDInitOther(stringValue);
 
 			// Enable semihosting
 			booleanValue = fEnableSemihosting.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING, booleanValue);
-			PersistentPreferences.putOpenOCDEnableSemihosting(booleanValue);
+			fPersistentPreferences.putOpenOCDEnableSemihosting(booleanValue);
 		}
 
 		// Load Symbols & Image...
@@ -1124,7 +1143,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		{
 			booleanValue = fDoDebugInRam.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM, booleanValue);
-			PersistentPreferences.putOpenOCDDebugInRam(booleanValue);
+			fPersistentPreferences.putOpenOCDDebugInRam(booleanValue);
 		}
 
 		// Run Commands
@@ -1132,17 +1151,17 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Pre-run reset
 			booleanValue = fDoSecondReset.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET, booleanValue);
-			PersistentPreferences.putOpenOCDDoPreRunReset(booleanValue);
+			fPersistentPreferences.putOpenOCDDoPreRunReset(booleanValue);
 
 			// reset type
 			stringValue = fSecondResetType.getText().trim();
 			configuration.setAttribute(ConfigurationAttributes.SECOND_RESET_TYPE, stringValue);
-			PersistentPreferences.putOpenOCDPreRunResetType(stringValue);
+			fPersistentPreferences.putOpenOCDPreRunResetType(stringValue);
 
 			// Other commands
 			stringValue = fRunCommands.getText().trim();
 			configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS, stringValue);
-			PersistentPreferences.putOpenOCDPreRunOther(stringValue);
+			fPersistentPreferences.putOpenOCDPreRunOther(stringValue);
 
 			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER, fSetPcRegister.getSelection());
 			configuration.setAttribute(IGDBJtagConstants.ATTR_PC_REGISTER, fPcRegister.getText());
@@ -1153,7 +1172,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(ConfigurationAttributes.DO_CONTINUE, fDoContinue.getSelection());
 		}
 
-		PersistentPreferences.flush();
+		fPersistentPreferences.flush();
 	}
 
 	@Override
@@ -1167,16 +1186,16 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		boolean defaultBoolean;
 
 		// Initialisation Commands
-		defaultBoolean = PersistentPreferences.getOpenOCDDoInitialReset();
+		defaultBoolean = fPersistentPreferences.getOpenOCDDoInitialReset();
 		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET, defaultBoolean);
 
-		defaultString = PersistentPreferences.getOpenOCDInitialResetType();
+		defaultString = fPersistentPreferences.getOpenOCDInitialResetType();
 		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE, defaultString);
 
-		defaultBoolean = PersistentPreferences.getOpenOCDEnableSemihosting();
+		defaultBoolean = fPersistentPreferences.getOpenOCDEnableSemihosting();
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING, defaultBoolean);
 
-		defaultString = PersistentPreferences.getOpenOCDInitOther();
+		defaultString = fPersistentPreferences.getOpenOCDInitOther();
 		configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS, defaultString);
 
 		// Load Image...
@@ -1199,17 +1218,17 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(IGDBJtagConstants.ATTR_SYMBOLS_OFFSET, IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
 
 		// Runtime Options
-		defaultBoolean = PersistentPreferences.getOpenOCDDebugInRam();
+		defaultBoolean = fPersistentPreferences.getOpenOCDDebugInRam();
 		configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM, defaultBoolean);
 
 		// Run Commands
-		defaultBoolean = PersistentPreferences.getOpenOCDDoPreRunReset();
+		defaultBoolean = fPersistentPreferences.getOpenOCDDoPreRunReset();
 		configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET, defaultBoolean);
 
-		defaultString = PersistentPreferences.getOpenOCDPreRunResetType();
+		defaultString = fPersistentPreferences.getOpenOCDPreRunResetType();
 		configuration.setAttribute(ConfigurationAttributes.SECOND_RESET_TYPE, defaultString);
 
-		defaultString = PersistentPreferences.getOpenOCDPreRunOther();
+		defaultString = fPersistentPreferences.getOpenOCDPreRunOther();
 		configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS, defaultString);
 
 		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER, IGDBJtagConstants.DEFAULT_SET_PC_REGISTER);

@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.preferences;
+package ilg.gnumcueclipse.debug.gdbjtag.jlink.ui.preferences;
 
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.jface.preference.FieldEditor;
@@ -20,9 +20,9 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 import ilg.gnumcueclipse.core.preferences.DirectoryNotStrictFieldEditor;
-import ilg.gnumcueclipse.debug.gdbjtag.openocd.Activator;
-import ilg.gnumcueclipse.debug.gdbjtag.openocd.PersistentPreferences;
-import ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.Messages;
+import ilg.gnumcueclipse.debug.gdbjtag.jlink.Activator;
+import ilg.gnumcueclipse.debug.gdbjtag.jlink.PersistentPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.jlink.ui.Messages;
 
 /**
  * This class represents a preference page that is contributed to the
@@ -33,24 +33,31 @@ import ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.Messages;
  * This page uses special filed editors, that get the default values from the
  * preferences store, but the values are from the variables store.
  */
-public class GlobalOpenOcdPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class GlobalMcuPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "ilg.gnumcueclipse.debug.gdbjtag.openocd.globalPreferencePage";
+	public static final String ID = "ilg.gnumcueclipse.debug.gdbjtag.jlink.globalPreferencePage";
 
 	// ------------------------------------------------------------------------
 
-	public GlobalOpenOcdPage() {
+	private PersistentPreferences fPersistentPreferences;
+
+	// ------------------------------------------------------------------------
+
+	public GlobalMcuPage() {
 		super(GRID);
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("openocd.GlobalOpenOcdPage()");
+			System.out.println("jlink.GlobalMcuPage()");
 		}
+
+		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
+
 		// Explicit use of the workspace preferences.
 		setPreferenceStore(new ScopedPreferenceStore(ConfigurationScope.INSTANCE, Activator.PLUGIN_ID));
 
-		setDescription(Messages.GlobalOpenOCDPagePropertyPage_description);
+		setDescription(Messages.GlobalMcuPagePropertyPage_description);
 	}
 
 	// ------------------------------------------------------------------------
@@ -60,7 +67,7 @@ public class GlobalOpenOcdPage extends FieldEditorPreferencePage implements IWor
 	public void init(IWorkbench workbench) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("openocd.GlobalOpenOcdPage.init()");
+			System.out.println("jlink.GlobalMcuPage.init()");
 		}
 	}
 
@@ -73,16 +80,16 @@ public class GlobalOpenOcdPage extends FieldEditorPreferencePage implements IWor
 	protected void createFieldEditors() {
 
 		FieldEditor executable;
-		executable = new StringFieldEditor(PersistentPreferences.EXECUTABLE_NAME, Messages.OpenOCDPage_executable_label,
+		executable = new StringFieldEditor(PersistentPreferences.EXECUTABLE_NAME, Messages.McuPage_executable_label,
 				getFieldEditorParent());
 		addField(executable);
 
 		boolean isStrict;
-		isStrict = PersistentPreferences.getFolderStrict();
+		isStrict = fPersistentPreferences.getFolderStrict();
 
 		FieldEditor folder;
 		folder = new DirectoryNotStrictFieldEditor(PersistentPreferences.INSTALL_FOLDER,
-				Messages.OpenOCDPage_executable_folder, getFieldEditorParent(), isStrict);
+				Messages.McuPage_executable_folder, getFieldEditorParent(), isStrict);
 		addField(folder);
 	}
 

@@ -11,16 +11,13 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.qemu;
 
-import org.eclipse.core.runtime.preferences.DefaultScope;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-
 import ilg.gnumcueclipse.core.EclipseUtils;
 
-public class DefaultPreferences {
+public class DefaultPreferences extends ilg.gnumcueclipse.core.DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
-	protected static final boolean SERVER_DO_START_DEFAULT = true;
+	public static final boolean SERVER_DO_START_DEFAULT = true;
 	public static final boolean DO_START_GDB_SERVER_DEFAULT = true;
 	public static final String SERVER_EXECUTABLE_DEFAULT = "${qemu_path}/${qemu_executable}";
 	protected static final String CLIENT_EXECUTABLE_DEFAULT = "${cross_prefix}gdb${cross_suffix}";
@@ -74,105 +71,23 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
-	/**
-	 * The DefaultScope preference store.
-	 */
-	private static IEclipsePreferences fgPreferences;
-
-	// ------------------------------------------------------------------------
-
-	public static IEclipsePreferences getPreferences() {
-
-		if (fgPreferences == null) {
-			fgPreferences = DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID);
-		}
-
-		return fgPreferences;
-	}
-
-	/**
-	 * Get a string preference value, or the default.
-	 * 
-	 * @param key
-	 *            a string with the key to search.
-	 * @param defaultValue
-	 *            a string with the default, possibly null.
-	 * @return a trimmed string, or a null default.
-	 */
-	private static String getString(String key, String defaultValue) {
-
-		String value;
-		value = getPreferences().get(key, defaultValue);
-
-		if (value != null) {
-			value = value.trim();
-		}
-
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println(
-					"qemu.DefaultPreferences.getString(\"" + key + "\", \"" + defaultValue + "\") = \"" + value + "\"");
-		}
-
-		return value;
-	}
-
-	public static boolean getBoolean(String key, boolean defaultValue) {
-
-		boolean value = getPreferences().getBoolean(key, defaultValue);
-
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.DefaultPreferences.getBoolean(\"" + key + "\", " + defaultValue + ") = " + value);
-		}
-		return value;
-	}
-
-	public static int getInt(String key, int defaultValue) {
-
-		int value = getPreferences().getInt(key, defaultValue);
-
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.DefaultPreferences.getInt(\"" + key + "\", " + defaultValue + ") = " + value);
-		}
-		return value;
-	}
-
-	public static void putString(String key, String value) {
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.DefaultPreferences.putString(\"" + key + "\", \"" + value + "\")");
-		}
-
-		getPreferences().put(key, value);
-	}
-
-	public static void putInt(String key, int value) {
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.DefaultPreferences.putInt(\"" + key + "\", " + value + ")");
-		}
-
-		getPreferences().putInt(key, value);
-	}
-
-	public static void putBoolean(String key, boolean value) {
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.DefaultPreferences.putBoolean(\"" + key + "\", " + value + ")");
-		}
-
-		getPreferences().putBoolean(key, value);
+	public DefaultPreferences(String pluginId) {
+		super(pluginId);
 	}
 
 	// ------------------------------------------------------------------------
 
-	public static String getGdbServerExecutable() {
+	public String getGdbServerExecutable() {
 		return getString(PersistentPreferences.GDB_SERVER_EXECUTABLE, SERVER_EXECUTABLE_DEFAULT);
 	}
 
-	public static String getGdbClientExecutable() {
+	public String getGdbClientExecutable() {
 		return getString(PersistentPreferences.GDB_CLIENT_EXECUTABLE, CLIENT_EXECUTABLE_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------
 
-	public static String getExecutableName() {
+	public String getExecutableName() {
 
 		String key = PersistentPreferences.EXECUTABLE_NAME;
 		String value = getString(key, "");
@@ -183,7 +98,7 @@ public class DefaultPreferences {
 		return value;
 	}
 
-	public static String getExecutableNameOs() {
+	public String getExecutableNameOs() {
 
 		String key = EclipseUtils.getKeyOs(PersistentPreferences.EXECUTABLE_NAME_OS);
 
@@ -194,7 +109,7 @@ public class DefaultPreferences {
 		return value;
 	}
 
-	public static void putExecutableName(String value) {
+	public void putExecutableName(String value) {
 
 		String key = PersistentPreferences.EXECUTABLE_NAME;
 
@@ -206,7 +121,7 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
-	public static String getInstallFolder() {
+	public String getInstallFolder() {
 
 		String key = PersistentPreferences.INSTALL_FOLDER;
 		String value = getString(key, "");
@@ -217,7 +132,7 @@ public class DefaultPreferences {
 		return value;
 	}
 
-	public static void putInstallFolder(String value) {
+	public void putInstallFolder(String value) {
 
 		String key = PersistentPreferences.INSTALL_FOLDER;
 
@@ -229,7 +144,7 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
-	public static String getSearchPath() {
+	public String getSearchPath() {
 
 		String key = PersistentPreferences.SEARCH_PATH;
 		String value = getString(key, "");
@@ -240,7 +155,7 @@ public class DefaultPreferences {
 		return value;
 	}
 
-	public static String getSearchPathOs() {
+	public String getSearchPathOs() {
 
 		String key = EclipseUtils.getKeyOs(PersistentPreferences.SEARCH_PATH_OS);
 		String value = getString(key, "");
@@ -251,7 +166,7 @@ public class DefaultPreferences {
 		return value;
 	}
 
-	public static void putSearchPath(String value) {
+	public void putSearchPath(String value) {
 
 		String key = PersistentPreferences.SEARCH_PATH;
 
@@ -263,59 +178,59 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
-	public static boolean getQemuEnableSemihosting() {
+	public boolean getQemuEnableSemihosting() {
 
 		return getBoolean(PersistentPreferences.GDB_QEMU_ENABLE_SEMIHOSTING, ENABLE_SEMIHOSTING_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------
 
-	public static boolean getTabMainCheckProgram() {
+	public boolean getTabMainCheckProgram() {
 		return getBoolean(PersistentPreferences.TAB_MAIN_CHECK_PROGRAM,
 				PersistentPreferences.TAB_MAIN_CHECK_PROGRAM_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------
 
-	public static boolean getGdbServerDoStart() {
+	public boolean getGdbServerDoStart() {
 		return getBoolean(PersistentPreferences.GDB_SERVER_DO_START, SERVER_DO_START_DEFAULT);
 	}
 
-	public static String getGdbServerOtherOptions() {
+	public String getGdbServerOtherOptions() {
 		return getString(PersistentPreferences.GDB_SERVER_OTHER_OPTIONS, SERVER_OTHER_OPTIONS_DEFAULT);
 	}
 
-	public static String getGdbClientOtherOptions() {
+	public String getGdbClientOtherOptions() {
 		return getString(PersistentPreferences.GDB_CLIENT_OTHER_OPTIONS, CLIENT_OTHER_OPTIONS_DEFAULT);
 	}
 
-	public static String getGdbClientCommands() {
+	public String getGdbClientCommands() {
 		return getString(PersistentPreferences.GDB_CLIENT_COMMANDS, CLIENT_COMMANDS_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------
 
-	public static boolean getQemuDebugInRam() {
+	public boolean getQemuDebugInRam() {
 		return getBoolean(PersistentPreferences.GDB_QEMU_DO_DEBUG_IN_RAM, DO_DEBUG_IN_RAM_DEFAULT);
 	}
 
-	public static boolean getQemuDoInitialReset() {
+	public boolean getQemuDoInitialReset() {
 		return getBoolean(PersistentPreferences.GDB_QEMU_DO_INITIAL_RESET, DO_INITIAL_RESET_DEFAULT);
 	}
 
-	public static String getQemuInitOther() {
+	public String getQemuInitOther() {
 		return getString(PersistentPreferences.GDB_QEMU_INIT_OTHER, INIT_OTHER_DEFAULT);
 	}
 
-	public static boolean getQemuDoPreRunReset() {
+	public boolean getQemuDoPreRunReset() {
 		return getBoolean(PersistentPreferences.GDB_QEMU_DO_PRERUN_RESET, DO_PRERUN_RESET_DEFAULT);
 	}
 
-	public static String getQemuPreRunOther() {
+	public String getQemuPreRunOther() {
 		return getString(PersistentPreferences.GDB_QEMU_PRERUN_OTHER, PRERUN_OTHER_DEFAULT);
 	}
 
-	public static boolean getQemuDisableGraphics() {
+	public boolean getQemuDisableGraphics() {
 		return getBoolean(PersistentPreferences.GDB_QEMU_DISABLE_GRAPHICS, DISABLE_GRAPHICS_DEFAULT);
 	}
 

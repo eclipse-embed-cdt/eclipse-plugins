@@ -122,7 +122,7 @@ public class PyOCD {
 
 	public static List<Board> getBoards(ILaunchConfiguration configuration) {
 
-		String pyOCDPath = Configuration.getGdbServerCommand(configuration);
+		String pyOCDPath = Configuration.getGdbServerCommand(configuration, null);
 		if (pyOCDPath == null) {
 			return null;
 		}
@@ -131,7 +131,7 @@ public class PyOCD {
 
 	public static List<Target> getTargets(ILaunchConfiguration configuration) {
 
-		String pyOCDPath = Configuration.getGdbServerCommand(configuration);
+		String pyOCDPath = Configuration.getGdbServerCommand(configuration, null);
 		if (pyOCDPath == null) {
 			return null;
 		}

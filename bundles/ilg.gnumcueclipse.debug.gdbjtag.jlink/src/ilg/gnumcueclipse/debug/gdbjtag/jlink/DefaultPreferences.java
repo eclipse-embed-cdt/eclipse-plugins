@@ -11,13 +11,11 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.jlink;
 
-import org.eclipse.core.runtime.preferences.DefaultScope;
-import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.osgi.service.prefs.BackingStoreException;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
 
-public class DefaultPreferences {
+public class DefaultPreferences extends ilg.gnumcueclipse.core.DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
@@ -126,109 +124,25 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
-	/**
-	 * The DefaultScope preference store.
-	 */
-	private static IEclipsePreferences fgPreferences;
-
-	// ------------------------------------------------------------------------
-
-	public static IEclipsePreferences getPreferences() {
-
-		if (fgPreferences == null) {
-			fgPreferences = DefaultScope.INSTANCE.getNode(Activator.PLUGIN_ID);
-		}
-
-		return fgPreferences;
-	}
-
-	/**
-	 * Get a string preference value, or the default.
-	 * 
-	 * @param key
-	 *            a string with the key to search.
-	 * @param defaultValue
-	 *            a string with the default, possibly null.
-	 * @return a trimmed string, or a null default.
-	 */
-	private static String getString(String key, String defaultValue) {
-
-		String value;
-		value = getPreferences().get(key, defaultValue);
-
-		if (value != null) {
-			value = value.trim();
-		}
-
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("jlink.DefaultPreferences.getString(\"" + key + "\", \"" + defaultValue + "\") = \""
-					+ value + "\"");
-		}
-
-		return value;
-	}
-
-	public static boolean getBoolean(String key, boolean defaultValue) {
-
-		boolean value = getPreferences().getBoolean(key, defaultValue);
-
-		if (Activator.getInstance().isDebugging()) {
-			System.out
-					.println("openocd.DefaultPreferences.getBoolean(\"" + key + "\", " + defaultValue + ") = " + value);
-		}
-		return value;
-	}
-
-	private static int getInt(String key, int defaultValue) {
-
-		int value = getPreferences().getInt(key, defaultValue);
-
-		if (Activator.getInstance().isDebugging()) {
-			System.out
-					.println("openocd.DefaultPreferences.getBoolean(\"" + key + "\", " + defaultValue + ") = " + value);
-		}
-		return value;
-	}
-
-	public static void putString(String key, String value) {
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("jlink.DefaultPreferences.putString(\"" + key + "\", \"" + value + "\")");
-		}
-
-		getPreferences().put(key, value);
-	}
-
-	public static void putInt(String key, int value) {
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("jlink.DefaultPreferences.putInt(\"" + key + "\", " + value + ")");
-		}
-
-		getPreferences().putInt(key, value);
-	}
-
-	public static void putBoolean(String key, boolean value) {
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("jlink.DefaultPreferences.putBoolean(\"" + key + "\", " + value + ")");
-		}
-
-		getPreferences().putBoolean(key, value);
+	public DefaultPreferences(String pluginId) {
+		super(pluginId);
 	}
 
 	// ------------------------------------------------------------------------
 
-	public static String getGdbServerExecutable() {
+	public String getGdbServerExecutable() {
 		String value = getString(PersistentPreferences.GDB_SERVER_EXECUTABLE, GDB_SERVER_EXECUTABLE_DEFAULT);
 		return value;
 	}
 
-	public static String getGdbClientExecutable() {
+	public String getGdbClientExecutable() {
 		String value = getString(PersistentPreferences.GDB_CLIENT_EXECUTABLE, GDB_CLIENT_EXECUTABLE_DEFAULT);
 		return value;
 	}
 
 	// ------------------------------------------------------------------------
 
-	public static String getExecutableName() {
+	public String getExecutableName() {
 
 		String key = PersistentPreferences.EXECUTABLE_NAME;
 		String value = getString(key, "");
@@ -240,7 +154,7 @@ public class DefaultPreferences {
 
 	}
 
-	public static String getExecutableNameOs() {
+	public String getExecutableNameOs() {
 
 		String key = EclipseUtils.getKeyOs(PersistentPreferences.EXECUTABLE_NAME_OS);
 		String value = getString(key, "");
@@ -251,7 +165,7 @@ public class DefaultPreferences {
 		return value;
 	}
 
-	public static void putExecutableName(String value) {
+	public void putExecutableName(String value) {
 
 		String key = PersistentPreferences.EXECUTABLE_NAME;
 
@@ -263,7 +177,7 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
-	public static String getInstallFolder() {
+	public String getInstallFolder() {
 
 		String key = PersistentPreferences.INSTALL_FOLDER;
 		String value = getString(key, "");
@@ -274,7 +188,7 @@ public class DefaultPreferences {
 		return value;
 	}
 
-	public static void putInstallFolder(String value) {
+	public void putInstallFolder(String value) {
 
 		String key = PersistentPreferences.INSTALL_FOLDER;
 
@@ -286,7 +200,7 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
-	public static String getSearchPath() {
+	public String getSearchPath() {
 
 		String key = PersistentPreferences.SEARCH_PATH;
 		String value = getString(key, "");
@@ -297,7 +211,7 @@ public class DefaultPreferences {
 		return value;
 	}
 
-	public static String getSearchPathOs() {
+	public String getSearchPathOs() {
 
 		String key = EclipseUtils.getKeyOs(PersistentPreferences.SEARCH_PATH_OS);
 		String value = getString(key, "");
@@ -308,7 +222,7 @@ public class DefaultPreferences {
 		return value;
 	}
 
-	public static void putSearchPath(String value) {
+	public void putSearchPath(String value) {
 
 		String key = PersistentPreferences.SEARCH_PATH;
 
@@ -320,15 +234,15 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
-	public static String getGdbServerInterface() {
+	public String getGdbServerInterface() {
 		String value = getString(PersistentPreferences.GDB_SERVER_INTERFACE, SERVER_INTERFACE_DEFAULT);
 		return value;
 	}
 
-	public static boolean getJLinkEnableSemihosting() {
+	public boolean getJLinkEnableSemihosting() {
 
 		try {
-			if (getPreferences().nodeExists(PersistentPreferences.GDB_JLINK_ENABLE_SEMIHOSTING)) {
+			if (fPreferences.nodeExists(PersistentPreferences.GDB_JLINK_ENABLE_SEMIHOSTING)) {
 				return getBoolean(PersistentPreferences.GDB_JLINK_ENABLE_SEMIHOSTING, ENABLE_SEMIHOSTING_DEFAULT);
 			}
 		} catch (BackingStoreException e) {
@@ -337,9 +251,10 @@ public class DefaultPreferences {
 		return ENABLE_SEMIHOSTING_DEFAULT;
 	}
 
-	public static boolean getJLinkEnableSwo() {
+	public boolean getJLinkEnableSwo() {
+
 		try {
-			if (getPreferences().nodeExists(PersistentPreferences.GDB_JLINK_ENABLE_SWO)) {
+			if (fPreferences.nodeExists(PersistentPreferences.GDB_JLINK_ENABLE_SWO)) {
 				return getBoolean(PersistentPreferences.GDB_JLINK_ENABLE_SWO, ENABLE_SWO_DEFAULT);
 			}
 		} catch (BackingStoreException e) {
@@ -350,102 +265,102 @@ public class DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 
-	public static boolean getTabMainCheckProgram() {
+	public boolean getTabMainCheckProgram() {
 		return getBoolean(PersistentPreferences.TAB_MAIN_CHECK_PROGRAM, TAB_MAIN_CHECK_PROGRAM_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------
 
-	public static boolean getGdbServerDoStart() {
+	public boolean getGdbServerDoStart() {
 		return getBoolean(PersistentPreferences.GDB_SERVER_DO_START, SERVER_DO_START_DEFAULT);
 	}
 
-	public static String getGdbServerEndianness() {
+	public String getGdbServerEndianness() {
 		return getString(PersistentPreferences.GDB_SERVER_ENDIANNESS, SERVER_ENDIANNESS_DEFAULT);
 	}
 
-	public static String getGdbServerConnection() {
+	public String getGdbServerConnection() {
 		return getString(PersistentPreferences.GDB_SERVER_CONNECTION, SERVER_CONNECTION_DEFAULT);
 	}
 
-	public static String getGdbServerConnectionAddress() {
+	public String getGdbServerConnectionAddress() {
 		return getString(PersistentPreferences.GDB_SERVER_CONNECTION_ADDRESS, SERVER_CONNECTION_ADDRESS_DEFAULT);
 	}
 
-	public static String getGdbServerInitialSpeed() {
+	public String getGdbServerInitialSpeed() {
 		return getString(PersistentPreferences.GDB_SERVER_INITIAL_SPEED, SERVER_INITIAL_SPEED_DEFAULT);
 	}
 
-	public static String getGdbServerOtherOptions() {
+	public String getGdbServerOtherOptions() {
 		return getString(PersistentPreferences.GDB_SERVER_OTHER_OPTIONS, SERVER_OTHER_OPTIONS_DEFAULT);
 	}
 
-	public static String getGdbClientOtherOptions() {
+	public String getGdbClientOtherOptions() {
 		return getString(PersistentPreferences.GDB_CLIENT_OTHER_OPTIONS, CLIENT_OTHER_OPTIONS_DEFAULT);
 	}
 
-	public static String getGdbClientCommands() {
+	public String getGdbClientCommands() {
 		return getString(PersistentPreferences.GDB_CLIENT_COMMANDS, CLIENT_COMMANDS_DEFAULT);
 	}
 
-	public static boolean getJLinkDoInitialReset() {
+	public boolean getJLinkDoInitialReset() {
 		return getBoolean(PersistentPreferences.GDB_JLINK_DO_INITIAL_RESET, DO_INITIAL_RESET_DEFAULT);
 	}
 
-	public static String getJLinkInitialResetType() {
+	public String getJLinkInitialResetType() {
 		return getString(PersistentPreferences.GDB_JLINK_INITIAL_RESET_TYPE, INITIAL_RESET_TYPE_DEFAULT);
 	}
 
-	public static int getJLinkInitialResetSpeed() {
+	public int getJLinkInitialResetSpeed() {
 		return getInt(PersistentPreferences.GDB_JLINK_INITIAL_RESET_SPEED, INITIAL_RESET_SPEED_DEFAULT);
 	}
 
-	public static String getJLinkSpeed() {
+	public String getJLinkSpeed() {
 		return getString(PersistentPreferences.GDB_JLINK_SPEED, JLINK_SPEED_DEFAULT);
 	}
 
-	public static boolean getJLinkEnableFlashBreakpoints() {
+	public boolean getJLinkEnableFlashBreakpoints() {
 		return getBoolean(PersistentPreferences.GDB_JLINK_ENABLE_FLASH_BREAKPOINTS, ENABLE_FLASH_BREAKPOINTS_DEFAULT);
 	}
 
-	public static boolean getJLinkSemihostingTelnet() {
+	public boolean getJLinkSemihostingTelnet() {
 		return getBoolean(PersistentPreferences.GDB_JLINK_SEMIHOSTING_TELNET, SEMIHOSTING_TELNET_DEFAULT);
 	}
 
-	public static boolean getJLinkSemihostingClient() {
+	public boolean getJLinkSemihostingClient() {
 		return getBoolean(PersistentPreferences.GDB_JLINK_SEMIHOSTING_CLIENT, SEMIHOSTING_CLIENT_DEFAULT);
 	}
 
-	public static int getJLinkSwoEnableTargetCpuFreq() {
+	public int getJLinkSwoEnableTargetCpuFreq() {
 		return getInt(PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_CPU_FREQ, SWO_ENABLE_TARGET_CPU_FREQ_DEFAULT);
 	}
 
-	public static int getJLinkSwoEnableTargetSwoFreq() {
+	public int getJLinkSwoEnableTargetSwoFreq() {
 		return getInt(PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_SWO_FREQ, SWO_ENABLE_TARGET_SWO_FREQ_DEFAULT);
 	}
 
-	public static String getJLinkSwoEnableTargetPortMask() {
+	public String getJLinkSwoEnableTargetPortMask() {
 		return getString(PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_PORT_MASK,
 				SWO_ENABLE_TARGET_PORT_MASK_DEFAULT);
 	}
 
-	public static String getJLinkInitOther() {
+	public String getJLinkInitOther() {
 		return getString(PersistentPreferences.GDB_JLINK_INIT_OTHER, INIT_OTHER_DEFAULT);
 	}
 
-	public static boolean getJLinkDebugInRam() {
+	public boolean getJLinkDebugInRam() {
 		return getBoolean(PersistentPreferences.GDB_JLINK_DO_DEBUG_IN_RAM, DO_DEBUG_IN_RAM_DEFAULT);
 	}
 
-	public static boolean getJLinkDoPreRunReset() {
+	public boolean getJLinkDoPreRunReset() {
 		return getBoolean(PersistentPreferences.GDB_JLINK_DO_PRERUN_RESET, DO_PRERUN_RESET_DEFAULT);
 	}
 
-	public static String getJLinkPreRunResetType() {
+	public String getJLinkPreRunResetType() {
 		return getString(PersistentPreferences.GDB_JLINK_PRERUN_RESET_TYPE, PRERUN_RESET_TYPE_DEFAULT);
 	}
 
-	public static String getJLinkPreRunOther() {
+	public String getJLinkPreRunOther() {
 		return getString(PersistentPreferences.GDB_JLINK_PRERUN_OTHER, PRERUN_OTHER_DEFAULT);
 	}
 

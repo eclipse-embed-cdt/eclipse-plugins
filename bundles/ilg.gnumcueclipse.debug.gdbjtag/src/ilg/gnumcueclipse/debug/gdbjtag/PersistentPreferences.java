@@ -11,11 +11,6 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag;
 
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.osgi.service.prefs.BackingStoreException;
-import org.osgi.service.prefs.Preferences;
-
 /**
  * Manage a workspace preference file stored in:
  * 
@@ -26,7 +21,29 @@ import org.osgi.service.prefs.Preferences;
  * Some of the values may be retrieved from the EclipseDefaults.
  */
 
-public class PersistentPreferences {
+public class PersistentPreferences extends ilg.gnumcueclipse.core.PersistentPreferences {
+
+	// ------------------------------------------------------------------------
+
+	// EXECUTABLE_NAME, INSTALL_FOLDER, FOLDER_STRICT are used as dynamic
+	// variables.
+	public static final String EXECUTABLE_NAME = "executable.name";
+	public static final String EXECUTABLE_NAME_DEFAULT = "";
+
+	public static final String INSTALL_FOLDER = "install.folder";
+	public static final String INSTALL_FOLDER_DEFAULT = "";
+
+	public static final String FOLDER_STRICT = "folder.strict";
+	public static final boolean FOLDER_STRICT_DEFAULT = true;
+
+	public static final String SEARCH_PATH = "search.path";
+	public static final String SEARCH_PATH_DEFAULT = "";
+
+	public static final String EXECUTABLE_NAME_OS = EXECUTABLE_NAME + ".%s";
+	public static final String SEARCH_PATH_OS = SEARCH_PATH + ".%s";
+
+	public static final String TAB_MAIN_CHECK_PROGRAM = "tab.main.checkProgram";
+	public static final boolean TAB_MAIN_CHECK_PROGRAM_DEFAULT = false;
 
 	// ------------------------------------------------------------------------
 
@@ -39,52 +56,33 @@ public class PersistentPreferences {
 	public static final String PERIPHERALS_CHANGED_USE_FADING_BACKGROUND = "peripherals.changed.useFadingBackground";
 	public static final boolean PERIPHERALS_CHANGED_USE_FADING_BACKGROUND_DEFAULT = true;
 
-	// ----- Getters ----------------------------------------------------------
+	// ------------------------------------------------------------------------
 
-	public static String getString(String key, String defaultValue) {
-
-		String value;
-		value = Platform.getPreferencesService().getString(Activator.PLUGIN_ID, key, null, null);
-		// System.out.println("Value of " + id + " is " + value);
-
-		if (value != null) {
-			return value;
-		}
-
-		return defaultValue;
+	public PersistentPreferences(String pluginId) {
+		super(pluginId);
 	}
 
-	public static boolean getBoolean(String key, boolean defaultValue) {
+	// ----- Install folder -------------------------------------------
+	public String getInstallFolder() {
 
-		boolean value;
-		value = Platform.getPreferencesService().getBoolean(Activator.PLUGIN_ID, key, defaultValue, null);
-		// System.out.println("Value of " + id + " is " + value);
-		return value;
+		return getString(INSTALL_FOLDER, INSTALL_FOLDER_DEFAULT);
 	}
 
-	// ----- Setters ----------------------------------------------------------
+	// ----- Executable name ------------------------------------------
+	public String getExecutableName() {
 
-	public static void putWorkspaceString(String key, String value) {
-
-		value = value.trim();
-
-		// Access the instanceScope
-		Preferences preferences = InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID);
-		preferences.put(key, value);
+		return getString(EXECUTABLE_NAME, EXECUTABLE_NAME_DEFAULT);
 	}
 
-	public static void flush() {
+	// ----- Is strict ------------------------------------------------
+	public boolean getFolderStrict() {
 
-		try {
-			InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).flush();
-		} catch (BackingStoreException e) {
-			Activator.log(e);
-		}
+		return getBoolean(FOLDER_STRICT, FOLDER_STRICT_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------
 
-	public static boolean getPeripheralsChangedUseFadingBackground() {
+	public boolean getPeripheralsChangedUseFadingBackground() {
 		return getBoolean(PERIPHERALS_CHANGED_USE_FADING_BACKGROUND, PERIPHERALS_CHANGED_USE_FADING_BACKGROUND_DEFAULT);
 	}
 

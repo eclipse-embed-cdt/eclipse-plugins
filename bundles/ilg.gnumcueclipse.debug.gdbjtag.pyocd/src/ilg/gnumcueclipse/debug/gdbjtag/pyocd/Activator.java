@@ -16,6 +16,7 @@ package ilg.gnumcueclipse.debug.gdbjtag.pyocd;
 import org.osgi.framework.BundleContext;
 
 import ilg.gnumcueclipse.core.AbstractUIActivator;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.PersistentPreferences;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -41,10 +42,15 @@ public class Activator extends AbstractUIActivator {
 		return fgInstance;
 	}
 
+	protected DefaultPreferences fDefaultPreferences = null;
+	protected PersistentPreferences fPersistentPreferences = null;
+
 	public Activator() {
 
 		super();
 		fgInstance = this;
+
+		fPersistentPreferences = new PersistentPreferences(PLUGIN_ID);
 	}
 
 	// ------------------------------------------------------------------------
@@ -55,6 +61,22 @@ public class Activator extends AbstractUIActivator {
 
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
+	}
+
+	public DefaultPreferences getDefaultPreferences() {
+
+		if (fDefaultPreferences == null) {
+			fDefaultPreferences = new DefaultPreferences(PLUGIN_ID);
+		}
+		return fDefaultPreferences;
+	}
+
+	public PersistentPreferences getPersistentPreferences() {
+
+		if (fPersistentPreferences == null) {
+			fPersistentPreferences = new PersistentPreferences(PLUGIN_ID);
+		}
+		return fPersistentPreferences;
 	}
 
 	// ------------------------------------------------------------------------

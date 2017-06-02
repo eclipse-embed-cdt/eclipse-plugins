@@ -132,12 +132,18 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 	private String fSavedProgName;
 
+	private DefaultPreferences fDefaultPreferences;
+	private PersistentPreferences fPersistentPreferences;
+
 	// ------------------------------------------------------------------------
 
 	public TabStartup() {
 		super();
 
 		fSavedProgName = null;
+
+		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
+		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
 	}
 
 	// ------------------------------------------------------------------------
@@ -225,23 +231,27 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	public void createInitGroup(Composite parent) {
 
 		Group group = new Group(parent, SWT.NONE);
-		group.setText(Messages.getString("StartupTab.initGroup_Text"));
-		GridLayout layout = new GridLayout();
-		group.setLayout(layout);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		group.setLayoutData(gd);
+		{
+			group.setText(Messages.getString("StartupTab.initGroup_Text"));
+			GridLayout layout = new GridLayout();
+			group.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			group.setLayoutData(gd);
+		}
 
 		Composite comp = new Composite(group, SWT.NONE);
-		layout = new GridLayout();
-		layout.numColumns = 1;
-		layout.marginHeight = 0;
-		comp.setLayout(layout);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		comp.setLayoutData(gd);
+		{
+			GridLayout layout = new GridLayout();
+			layout.numColumns = 1;
+			layout.marginHeight = 0;
+			comp.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			comp.setLayoutData(gd);
+		}
 
 		{
 			Composite local = new Composite(comp, SWT.NONE);
-			layout = new GridLayout();
+			GridLayout layout = new GridLayout();
 			layout.numColumns = 6;
 			layout.marginHeight = 0;
 			layout.marginWidth = 0;
@@ -258,7 +268,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			fFirstResetType = new Text(local, SWT.BORDER);
 			fFirstResetType.setToolTipText(Messages.getString("StartupTab.firstResetType_ToolTipText"));
-			gd = new GridData();
+			GridData gd = new GridData();
 			gd.widthHint = 100;
 			fFirstResetType.setLayoutData(gd);
 
@@ -278,7 +288,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		{
 			Composite local = new Composite(comp, SWT.NONE);
-			layout = new GridLayout();
+			GridLayout layout = new GridLayout();
 			layout.numColumns = 6;
 			layout.marginHeight = 0;
 			layout.marginWidth = 0;
@@ -298,7 +308,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			fInterfaceSpeedFixed.setText(Messages.getString("StartupTab.interfaceSpeedFixed_Text"));
 
 			fInterfaceSpeedFixedValue = new Text(local, SWT.BORDER);
-			gd = new GridData();
+			GridData gd = new GridData();
 			gd.widthHint = 40;
 			fInterfaceSpeedFixedValue.setLayoutData(gd);
 
@@ -308,7 +318,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		{
 			Composite local = new Composite(comp, SWT.NONE);
-			layout = new GridLayout();
+			GridLayout layout = new GridLayout();
 			layout.numColumns = 1;
 			layout.marginHeight = 0;
 			layout.marginWidth = 0;
@@ -321,7 +331,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		{
 			Composite local = new Composite(comp, SWT.NONE);
-			layout = new GridLayout();
+			GridLayout layout = new GridLayout();
 			layout.numColumns = 4;
 			layout.marginHeight = 0;
 			layout.marginWidth = 0;
@@ -347,7 +357,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		{
 			Composite local = new Composite(comp, SWT.NONE);
-			layout = new GridLayout();
+			GridLayout layout = new GridLayout();
 			layout.numColumns = 9;
 			layout.marginHeight = 0;
 			layout.marginWidth = 0;
@@ -364,7 +374,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			fSwoEnableTargetCpuFreq = new Text(local, SWT.BORDER);
 			fSwoEnableTargetCpuFreq.setToolTipText(Messages.getString("StartupTab.swoEnableTargetCpuFreq_ToolTipText"));
-			gd = new GridData();
+			GridData gd = new GridData();
 			gd.widthHint = 80;
 			fSwoEnableTargetCpuFreq.setLayoutData(gd);
 
@@ -399,7 +409,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		{
 			fInitCommands = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
 			fInitCommands.setToolTipText(Messages.getString("StartupTab.initCommands_ToolTipText"));
-			gd = new GridData(GridData.FILL_BOTH);
+			GridData gd = new GridData(GridData.FILL_BOTH);
 			gd.heightHint = 60;
 			fInitCommands.setLayoutData(gd);
 		}
@@ -558,21 +568,23 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	private void createLoadGroup(Composite parent) {
 
 		Group group = new Group(parent, SWT.NONE);
-		GridLayout layout = new GridLayout();
-		group.setLayout(layout);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		group.setLayoutData(gd);
-		group.setText(Messages.getString("StartupTab.loadGroup_Text"));
+		{
+			GridLayout layout = new GridLayout();
+			group.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			group.setLayoutData(gd);
+			group.setText(Messages.getString("StartupTab.loadGroup_Text"));
+		}
 
 		Composite comp = new Composite(group, SWT.NONE);
-		layout = new GridLayout();
-		layout.numColumns = 1;
-		layout.marginHeight = 0;
-		comp.setLayout(layout);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		comp.setLayoutData(gd);
-
-		Composite local;
+		{
+			GridLayout layout = new GridLayout();
+			layout.numColumns = 1;
+			layout.marginHeight = 0;
+			comp.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			comp.setLayoutData(gd);
+		}
 
 		{
 			fLoadSymbols = new Button(comp, SWT.CHECK);
@@ -580,8 +592,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		}
 
 		{
-			local = new Composite(comp, SWT.NONE);
-			layout = new GridLayout();
+			Composite local = new Composite(comp, SWT.NONE);
+			GridLayout layout = new GridLayout();
 			layout.numColumns = 4;
 			layout.marginHeight = 0;
 			local.setLayout(layout);
@@ -593,7 +605,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				fUseProjectBinaryForSymbols.setToolTipText(Messages.getString("StartupTab.useProjectBinary_ToolTip"));
 
 				fProjBinaryLabel2 = new Label(local, SWT.NONE);
-				gd = new GridData(GridData.FILL_HORIZONTAL);
+				GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
 				fProjBinaryLabel2.setLayoutData(gd);
 			}
@@ -603,7 +615,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				fUseFileForSymbols.setText(Messages.getString("StartupTab.useFile_Label"));
 
 				fSymbolsFileName = new Text(local, SWT.BORDER);
-				gd = new GridData(GridData.FILL_HORIZONTAL);
+				GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 				fSymbolsFileName.setLayoutData(gd);
 
 				fSymbolsFileBrowseWs = createPushButton(local, Messages.getString("StartupTab.FileBrowseWs_Label"),
@@ -617,7 +629,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				fSymbolsOffsetLabel.setText(Messages.getString("StartupTab.symbolsOffsetLabel_Text"));
 
 				fSymbolsOffset = new Text(local, SWT.BORDER);
-				gd = new GridData();
+				GridData gd = new GridData();
 				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
 				gd.widthHint = 100;
 				fSymbolsOffset.setLayoutData(gd);
@@ -630,8 +642,8 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		}
 
 		{
-			local = new Composite(comp, SWT.NONE);
-			layout = new GridLayout();
+			Composite local = new Composite(comp, SWT.NONE);
+			GridLayout layout = new GridLayout();
 			layout.numColumns = 4;
 			layout.marginHeight = 0;
 			local.setLayout(layout);
@@ -643,7 +655,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				fUseProjectBinaryForImage.setToolTipText(Messages.getString("StartupTab.useProjectBinary_ToolTipText"));
 
 				fProjBinaryLabel1 = new Label(local, SWT.NONE);
-				gd = new GridData(GridData.FILL_HORIZONTAL);
+				GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
 				fProjBinaryLabel1.setLayoutData(gd);
 			}
@@ -653,7 +665,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				fUseFileForImage.setText(Messages.getString("StartupTab.useFile_Label"));
 
 				fImageFileName = new Text(local, SWT.BORDER);
-				gd = new GridData(GridData.FILL_HORIZONTAL);
+				GridData gd = new GridData(GridData.FILL_HORIZONTAL);
 				fImageFileName.setLayoutData(gd);
 
 				fImageFileBrowseWs = createPushButton(local, Messages.getString("StartupTab.FileBrowseWs_Label"), null);
@@ -666,7 +678,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				fImageOffsetLabel.setText(Messages.getString("StartupTab.imageOffsetLabel_Text"));
 
 				fImageOffset = new Text(local, SWT.BORDER);
-				gd = new GridData();
+				GridData gd = new GridData();
 				gd.horizontalSpan = ((GridLayout) local.getLayout()).numColumns - 1;
 				gd.widthHint = ((GridData) fSymbolsOffset.getLayoutData()).widthHint;
 				fImageOffset.setLayoutData(gd);
@@ -798,19 +810,23 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	public void createRunOptionGroup(Composite parent) {
 
 		Group group = new Group(parent, SWT.NONE);
-		group.setText(Messages.getString("StartupTab.runOptionGroup_Text"));
-		GridLayout layout = new GridLayout();
-		group.setLayout(layout);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		group.setLayoutData(gd);
+		{
+			group.setText(Messages.getString("StartupTab.runOptionGroup_Text"));
+			GridLayout layout = new GridLayout();
+			group.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			group.setLayoutData(gd);
+		}
 
 		Composite comp = new Composite(group, SWT.NONE);
-		layout = new GridLayout();
-		layout.numColumns = 2;
-		layout.marginHeight = 0;
-		comp.setLayout(layout);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		comp.setLayoutData(gd);
+		{
+			GridLayout layout = new GridLayout();
+			layout.numColumns = 2;
+			layout.marginHeight = 0;
+			comp.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			comp.setLayoutData(gd);
+		}
 
 		fDoDebugInRam = new Button(comp, SWT.CHECK);
 		fDoDebugInRam.setText(Messages.getString("StartupTab.doDebugInRam_Text"));
@@ -861,19 +877,23 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	public void createRunGroup(Composite parent) {
 
 		Group group = new Group(parent, SWT.NONE);
-		group.setText(Messages.getString("StartupTab.runGroup_Text"));
-		GridLayout layout = new GridLayout();
-		group.setLayout(layout);
-		GridData gd = new GridData(GridData.FILL_HORIZONTAL);
-		group.setLayoutData(gd);
+		{
+			group.setText(Messages.getString("StartupTab.runGroup_Text"));
+			GridLayout layout = new GridLayout();
+			group.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			group.setLayoutData(gd);
+		}
 
 		Composite comp = new Composite(group, SWT.NONE);
-		layout = new GridLayout();
-		layout.numColumns = 4;
-		layout.marginHeight = 0;
-		comp.setLayout(layout);
-		gd = new GridData(GridData.FILL_HORIZONTAL);
-		comp.setLayoutData(gd);
+		{
+			GridLayout layout = new GridLayout();
+			layout.numColumns = 4;
+			layout.marginHeight = 0;
+			comp.setLayout(layout);
+			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
+			comp.setLayoutData(gd);
+		}
 
 		{
 			fDoSecondReset = new Button(comp, SWT.CHECK);
@@ -884,7 +904,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			label.setText(Messages.getString("StartupTab.secondResetType_Text"));
 
 			fSecondResetType = new Text(comp, SWT.BORDER);
-			gd = new GridData();
+			GridData gd = new GridData();
 			gd.widthHint = 100;
 			fSecondResetType.setLayoutData(gd);
 
@@ -898,7 +918,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		{
 			fRunCommands = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
 			fRunCommands.setToolTipText(Messages.getString("StartupTab.runCommands_ToolTipText"));
-			gd = new GridData(GridData.FILL_BOTH);
+			GridData gd = new GridData(GridData.FILL_BOTH);
 			gd.heightHint = 60;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
 			fRunCommands.setLayoutData(gd);
@@ -910,7 +930,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			fSetPcRegister.setToolTipText(Messages.getString("StartupTab.setPcRegister_ToolTipText"));
 
 			fPcRegister = new Text(comp, SWT.BORDER);
-			gd = new GridData();
+			GridData gd = new GridData();
 			gd.widthHint = 100;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			fPcRegister.setLayoutData(gd);
@@ -922,7 +942,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			fSetStopAt.setToolTipText(Messages.getString("StartupTab.setStopAt_ToolTipText"));
 
 			fStopAt = new Text(comp, SWT.BORDER);
-			gd = new GridData();
+			GridData gd = new GridData();
 			gd.widthHint = 100;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			fStopAt.setLayoutData(gd);
@@ -933,7 +953,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			fDoContinue.setText(Messages.getString("StartupTab.doContinue_Text"));
 			fDoContinue.setToolTipText(Messages.getString("StartupTab.doContinue_ToolTipText"));
 
-			gd = new GridData();
+			GridData gd = new GridData();
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
 			fDoContinue.setLayoutData(gd);
 		}
@@ -1129,16 +1149,16 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Initialisation Commands
 			{
 				// Do initial reset
-				booleanDefault = PersistentPreferences.getJLinkDoInitialReset();
+				booleanDefault = fPersistentPreferences.getJLinkDoInitialReset();
 				fDoFirstReset.setSelection(
 						configuration.getAttribute(ConfigurationAttributes.DO_FIRST_RESET, booleanDefault));
 
 				// Reset type
-				stringDefault = PersistentPreferences.getJLinkInitialResetType();
+				stringDefault = fPersistentPreferences.getJLinkInitialResetType();
 				fFirstResetType
 						.setText(configuration.getAttribute(ConfigurationAttributes.FIRST_RESET_TYPE, stringDefault));
 
-				intDefault = PersistentPreferences.getJLinkInitialResetSpeed();
+				intDefault = fPersistentPreferences.getJLinkInitialResetSpeed();
 
 				// Type change from string to int, compatibility preserved
 				try {
@@ -1147,14 +1167,14 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				} catch (CoreException e) {
 					try {
 						stringDefault = configuration.getAttribute(ConfigurationAttributes.FIRST_RESET_SPEED,
-								String.valueOf(DefaultPreferences.getJLinkInitialResetSpeed()));
+								String.valueOf(fDefaultPreferences.getJLinkInitialResetSpeed()));
 						fFirstResetSpeed.setText(stringDefault);
 					} catch (CoreException e2) {
-						fFirstResetSpeed.setText(String.valueOf(DefaultPreferences.getJLinkInitialResetSpeed()));
+						fFirstResetSpeed.setText(String.valueOf(fDefaultPreferences.getJLinkInitialResetSpeed()));
 					}
 				}
 				// Speed
-				stringDefault = PersistentPreferences.getJLinkSpeed();
+				stringDefault = fPersistentPreferences.getJLinkSpeed();
 				String physicalInterfaceSpeed = configuration.getAttribute(ConfigurationAttributes.INTERFACE_SPEED,
 						stringDefault);
 
@@ -1180,46 +1200,46 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				}
 
 				// Enable flash breakpoints
-				booleanDefault = PersistentPreferences.getJLinkEnableFlashBreakpoints();
+				booleanDefault = fPersistentPreferences.getJLinkEnableFlashBreakpoints();
 				fEnableFlashBreakpoints.setSelection(
 						configuration.getAttribute(ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS, booleanDefault));
 
 				// Enable semihosting
-				booleanDefault = PersistentPreferences.getJLinkEnableSemihosting();
+				booleanDefault = fPersistentPreferences.getJLinkEnableSemihosting();
 				fEnableSemihosting.setSelection(
 						configuration.getAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING, booleanDefault));
 
-				booleanDefault = PersistentPreferences.getJLinkSemihostingTelnet();
+				booleanDefault = fPersistentPreferences.getJLinkSemihostingTelnet();
 				fSemihostingTelnet.setSelection(configuration
 						.getAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET, booleanDefault));
 
-				booleanDefault = PersistentPreferences.getJLinkSemihostingClient();
+				booleanDefault = fPersistentPreferences.getJLinkSemihostingClient();
 				fSemihostingGdbClient.setSelection(configuration
 						.getAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT, booleanDefault));
 
-				booleanDefault = PersistentPreferences.getJLinkEnableSwo();
+				booleanDefault = fPersistentPreferences.getJLinkEnableSwo();
 				fEnableSwo.setSelection(configuration.getAttribute(ConfigurationAttributes.ENABLE_SWO, booleanDefault));
 
-				intDefault = PersistentPreferences.getJLinkSwoEnableTargetCpuFreq();
+				intDefault = fPersistentPreferences.getJLinkSwoEnableTargetCpuFreq();
 				fSwoEnableTargetCpuFreq.setText(String.valueOf(
 						configuration.getAttribute(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ, intDefault)));
-				intDefault = PersistentPreferences.getJLinkSwoEnableTargetSwoFreq();
+				intDefault = fPersistentPreferences.getJLinkSwoEnableTargetSwoFreq();
 				fSwoEnableTargetSwoFreq.setText(String.valueOf(
 						configuration.getAttribute(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ, intDefault)));
 
-				stringDefault = PersistentPreferences.getJLinkSwoEnableTargetPortMask();
+				stringDefault = fPersistentPreferences.getJLinkSwoEnableTargetPortMask();
 				Object oValue = configuration.getAttribute(ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK,
 						stringDefault);
 				String sValue;
 				sValue = String.valueOf(oValue);
 				if (sValue.length() == 0) {
-					sValue = DefaultPreferences.getJLinkSwoEnableTargetPortMask();
+					sValue = fDefaultPreferences.getJLinkSwoEnableTargetPortMask();
 				}
 
 				fSwoEnableTargetPortMask.setText(sValue);
 
 				// Other commands
-				stringDefault = PersistentPreferences.getJLinkInitOther();
+				stringDefault = fPersistentPreferences.getJLinkInitOther();
 				fInitCommands.setText(
 						configuration.getAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS, stringDefault));
 			}
@@ -1268,7 +1288,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			// Runtime Options
 			{
-				booleanDefault = PersistentPreferences.getJLinkDebugInRam();
+				booleanDefault = fPersistentPreferences.getJLinkDebugInRam();
 				fDoDebugInRam.setSelection(
 						configuration.getAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM, booleanDefault));
 			}
@@ -1276,17 +1296,17 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Run Commands
 			{
 				// Do pre-run reset
-				booleanDefault = PersistentPreferences.getJLinkDoPreRunReset();
+				booleanDefault = fPersistentPreferences.getJLinkDoPreRunReset();
 				fDoSecondReset.setSelection(
 						configuration.getAttribute(ConfigurationAttributes.DO_SECOND_RESET, booleanDefault));
 
 				// Pre-run reset type
-				stringDefault = PersistentPreferences.getJLinkPreRunResetType();
+				stringDefault = fPersistentPreferences.getJLinkPreRunResetType();
 				fSecondResetType
 						.setText(configuration.getAttribute(ConfigurationAttributes.SECOND_RESET_TYPE, stringDefault));
 
 				// Other commands
-				stringDefault = PersistentPreferences.getJLinkPreRunOther();
+				stringDefault = fPersistentPreferences.getJLinkPreRunOther();
 				fRunCommands
 						.setText(configuration.getAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS, stringDefault));
 
@@ -1340,19 +1360,19 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		// Initialisation Commands
 		{
 			// Do initial reset
-			booleanDefault = DefaultPreferences.getJLinkDoInitialReset();
+			booleanDefault = fDefaultPreferences.getJLinkDoInitialReset();
 			fDoFirstReset.setSelection(booleanDefault);
 
 			// Reset type
-			stringDefault = DefaultPreferences.getJLinkInitialResetType();
+			stringDefault = fDefaultPreferences.getJLinkInitialResetType();
 			fFirstResetType.setText(stringDefault);
 
 			// Type change from string to int, compatibility preserved
-			intDefault = DefaultPreferences.getJLinkInitialResetSpeed();
+			intDefault = fDefaultPreferences.getJLinkInitialResetSpeed();
 			fFirstResetSpeed.setText(String.valueOf(intDefault));
 
 			// Speed
-			String physicalInterfaceSpeed = DefaultPreferences.getJLinkSpeed();
+			String physicalInterfaceSpeed = fDefaultPreferences.getJLinkSpeed();
 
 			if (DefaultPreferences.INTERFACE_SPEED_AUTO.equals(physicalInterfaceSpeed)) {
 				fInterfaceSpeedAuto.setSelection(true);
@@ -1376,33 +1396,33 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			}
 
 			// Enable flash breakpoints
-			booleanDefault = DefaultPreferences.getJLinkEnableFlashBreakpoints();
+			booleanDefault = fDefaultPreferences.getJLinkEnableFlashBreakpoints();
 			fEnableFlashBreakpoints.setSelection(booleanDefault);
 
 			// Enable semihosting
-			booleanDefault = DefaultPreferences.getJLinkEnableSemihosting();
+			booleanDefault = fDefaultPreferences.getJLinkEnableSemihosting();
 			fEnableSemihosting.setSelection(booleanDefault);
 
-			booleanDefault = DefaultPreferences.getJLinkSemihostingTelnet();
+			booleanDefault = fDefaultPreferences.getJLinkSemihostingTelnet();
 			fSemihostingTelnet.setSelection(booleanDefault);
 
-			booleanDefault = DefaultPreferences.getJLinkSemihostingClient();
+			booleanDefault = fDefaultPreferences.getJLinkSemihostingClient();
 			fSemihostingGdbClient.setSelection(booleanDefault);
 
-			booleanDefault = DefaultPreferences.getJLinkEnableSwo();
+			booleanDefault = fDefaultPreferences.getJLinkEnableSwo();
 			fEnableSwo.setSelection(booleanDefault);
 
-			intDefault = DefaultPreferences.getJLinkSwoEnableTargetCpuFreq();
+			intDefault = fDefaultPreferences.getJLinkSwoEnableTargetCpuFreq();
 			fSwoEnableTargetCpuFreq.setText(String.valueOf(intDefault));
 
-			intDefault = DefaultPreferences.getJLinkSwoEnableTargetSwoFreq();
+			intDefault = fDefaultPreferences.getJLinkSwoEnableTargetSwoFreq();
 			fSwoEnableTargetSwoFreq.setText(String.valueOf(intDefault));
 
-			stringDefault = DefaultPreferences.getJLinkSwoEnableTargetPortMask();
+			stringDefault = fDefaultPreferences.getJLinkSwoEnableTargetPortMask();
 			fSwoEnableTargetPortMask.setText(stringDefault);
 
 			// Other commands
-			stringDefault = DefaultPreferences.getJLinkInitOther();
+			stringDefault = fDefaultPreferences.getJLinkInitOther();
 			fInitCommands.setText(stringDefault);
 		}
 
@@ -1429,22 +1449,22 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		// Runtime Options
 		{
-			booleanDefault = DefaultPreferences.getJLinkDebugInRam();
+			booleanDefault = fDefaultPreferences.getJLinkDebugInRam();
 			fDoDebugInRam.setSelection(booleanDefault);
 		}
 
 		// Run Commands
 		{
 			// Do pre-run reset
-			booleanDefault = DefaultPreferences.getJLinkDoPreRunReset();
+			booleanDefault = fDefaultPreferences.getJLinkDoPreRunReset();
 			fDoSecondReset.setSelection(booleanDefault);
 
 			// Pre-run reset type
-			stringDefault = DefaultPreferences.getJLinkPreRunResetType();
+			stringDefault = fDefaultPreferences.getJLinkPreRunResetType();
 			fSecondResetType.setText(stringDefault);
 
 			// Other commands
-			stringDefault = DefaultPreferences.getJLinkPreRunOther();
+			stringDefault = fDefaultPreferences.getJLinkPreRunOther();
 			fRunCommands.setText(stringDefault);
 
 			fSetPcRegister.setSelection(IGDBJtagConstants.DEFAULT_SET_PC_REGISTER);
@@ -1502,24 +1522,24 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Do first reset
 			booleanValue = fDoFirstReset.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET, booleanValue);
-			PersistentPreferences.putJLinkDoInitialReset(booleanValue);
+			fPersistentPreferences.putJLinkDoInitialReset(booleanValue);
 
 			// First reset type
 			stringValue = fFirstResetType.getText().trim();
 			configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE, stringValue);
-			PersistentPreferences.putJLinkInitialResetType(stringValue);
+			fPersistentPreferences.putJLinkInitialResetType(stringValue);
 
 			// First reset speed
 			try {
 				intValue = Integer.valueOf(fFirstResetSpeed.getText());
 			} catch (NumberFormatException e) {
-				intValue = DefaultPreferences.getJLinkInitialResetSpeed();
+				intValue = fDefaultPreferences.getJLinkInitialResetSpeed();
 			}
 			configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_SPEED, intValue);
-			PersistentPreferences.putJLinkInitialResetSpeed(intValue);
+			fPersistentPreferences.putJLinkInitialResetSpeed(intValue);
 
 			// Interface speed
-			stringValue = DefaultPreferences.getJLinkSpeed();
+			stringValue = fDefaultPreferences.getJLinkSpeed();
 			if (fInterfaceSpeedAuto.getSelection()) {
 				stringValue = DefaultPreferences.INTERFACE_SPEED_AUTO;
 			} else if (fInterfaceSpeedAdaptive.getSelection()) {
@@ -1528,60 +1548,60 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 				stringValue = fInterfaceSpeedFixedValue.getText().trim();
 			}
 			configuration.setAttribute(ConfigurationAttributes.INTERFACE_SPEED, stringValue);
-			PersistentPreferences.putJLinkSpeed(stringValue);
+			fPersistentPreferences.putJLinkSpeed(stringValue);
 
 			// Enable flash breakpoints
 			booleanValue = fEnableFlashBreakpoints.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS, booleanValue);
-			PersistentPreferences.putJLinkEnableFlashBreakpoints(booleanValue);
+			fPersistentPreferences.putJLinkEnableFlashBreakpoints(booleanValue);
 
 			// Enable semihosting
 			booleanValue = fEnableSemihosting.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING, booleanValue);
-			PersistentPreferences.putJLinkEnableSemihosting(booleanValue);
+			fPersistentPreferences.putJLinkEnableSemihosting(booleanValue);
 
 			// Semihosting via telnet
 			booleanValue = fSemihostingTelnet.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET, booleanValue);
-			PersistentPreferences.putJLinkSemihostingTelnet(booleanValue);
+			fPersistentPreferences.putJLinkSemihostingTelnet(booleanValue);
 
 			// Semihosting via client
 			booleanValue = fSemihostingGdbClient.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT, booleanValue);
-			PersistentPreferences.putJLinkSemihostingClient(booleanValue);
+			fPersistentPreferences.putJLinkSemihostingClient(booleanValue);
 
 			// Enable swo
 			booleanValue = fEnableSwo.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.ENABLE_SWO, booleanValue);
-			PersistentPreferences.putJLinkEnableSwo(booleanValue);
+			fPersistentPreferences.putJLinkEnableSwo(booleanValue);
 
 			// target speed
 			try {
 				intValue = Integer.parseInt(fSwoEnableTargetCpuFreq.getText());
 			} catch (NumberFormatException e) {
-				intValue = DefaultPreferences.getJLinkSwoEnableTargetCpuFreq();
+				intValue = fDefaultPreferences.getJLinkSwoEnableTargetCpuFreq();
 			}
 			configuration.setAttribute(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ, intValue);
-			PersistentPreferences.putJLinkSwoEnableTargetCpuFreq(intValue);
+			fPersistentPreferences.putJLinkSwoEnableTargetCpuFreq(intValue);
 
 			// Swo speed
 			try {
 				intValue = Integer.parseInt(fSwoEnableTargetSwoFreq.getText());
 			} catch (NumberFormatException e) {
-				intValue = DefaultPreferences.getJLinkSwoEnableTargetSwoFreq();
+				intValue = fDefaultPreferences.getJLinkSwoEnableTargetSwoFreq();
 			}
 			configuration.setAttribute(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ, intValue);
-			PersistentPreferences.putJLinkSwoEnableTargetSwoFreq(intValue);
+			fPersistentPreferences.putJLinkSwoEnableTargetSwoFreq(intValue);
 
 			// Swo port mask
 			stringValue = fSwoEnableTargetPortMask.getText().trim();
 			configuration.setAttribute(ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK, stringValue);
-			PersistentPreferences.putJLinkSwoEnableTargetPortMask(stringValue);
+			fPersistentPreferences.putJLinkSwoEnableTargetPortMask(stringValue);
 
 			// Other commands
 			stringValue = fInitCommands.getText().trim();
 			configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS, stringValue);
-			PersistentPreferences.putJLinkInitOther(stringValue);
+			fPersistentPreferences.putJLinkInitOther(stringValue);
 		}
 
 		// Load Symbols & Image...
@@ -1608,7 +1628,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		{
 			booleanValue = fDoDebugInRam.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM, booleanValue);
-			PersistentPreferences.putJLinkDebugInRam(booleanValue);
+			fPersistentPreferences.putJLinkDebugInRam(booleanValue);
 		}
 
 		// Run Commands
@@ -1616,17 +1636,17 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Pre-run reset
 			booleanValue = fDoSecondReset.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET, fDoSecondReset.getSelection());
-			PersistentPreferences.putJLinkDoPreRunReset(booleanValue);
+			fPersistentPreferences.putJLinkDoPreRunReset(booleanValue);
 
 			// reset type
 			stringValue = fSecondResetType.getText().trim();
 			configuration.setAttribute(ConfigurationAttributes.SECOND_RESET_TYPE, stringValue);
-			PersistentPreferences.putJLinkPreRunResetType(stringValue);
+			fPersistentPreferences.putJLinkPreRunResetType(stringValue);
 
 			// Other commands
 			stringValue = fRunCommands.getText().trim();
 			configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS, stringValue);
-			PersistentPreferences.putJLinkPreRunOther(stringValue);
+			fPersistentPreferences.putJLinkPreRunOther(stringValue);
 
 			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER, fSetPcRegister.getSelection());
 			configuration.setAttribute(IGDBJtagConstants.ATTR_PC_REGISTER, fPcRegister.getText());
@@ -1637,7 +1657,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(ConfigurationAttributes.DO_CONTINUE, fDoContinue.getSelection());
 		}
 
-		PersistentPreferences.flush();
+		fPersistentPreferences.flush();
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println(
@@ -1657,43 +1677,43 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		int defaultInt;
 
 		// Initialisation Commands
-		defaultBoolean = PersistentPreferences.getJLinkDoInitialReset();
+		defaultBoolean = fPersistentPreferences.getJLinkDoInitialReset();
 		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET, defaultBoolean);
 
-		defaultString = PersistentPreferences.getJLinkInitialResetType();
+		defaultString = fPersistentPreferences.getJLinkInitialResetType();
 		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_TYPE, defaultString);
 
-		defaultInt = PersistentPreferences.getJLinkInitialResetSpeed();
+		defaultInt = fPersistentPreferences.getJLinkInitialResetSpeed();
 		configuration.setAttribute(ConfigurationAttributes.FIRST_RESET_SPEED, defaultInt);
 
-		defaultString = PersistentPreferences.getJLinkSpeed();
+		defaultString = fPersistentPreferences.getJLinkSpeed();
 		configuration.setAttribute(ConfigurationAttributes.INTERFACE_SPEED, defaultString);
 
-		defaultBoolean = PersistentPreferences.getJLinkEnableFlashBreakpoints();
+		defaultBoolean = fPersistentPreferences.getJLinkEnableFlashBreakpoints();
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_FLASH_BREAKPOINTS, defaultBoolean);
 
-		defaultBoolean = PersistentPreferences.getJLinkEnableSemihosting();
+		defaultBoolean = fPersistentPreferences.getJLinkEnableSemihosting();
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING, defaultBoolean);
 
-		defaultBoolean = PersistentPreferences.getJLinkSemihostingTelnet();
+		defaultBoolean = fPersistentPreferences.getJLinkSemihostingTelnet();
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_TELNET, defaultBoolean);
 
-		defaultBoolean = PersistentPreferences.getJLinkSemihostingClient();
+		defaultBoolean = fPersistentPreferences.getJLinkSemihostingClient();
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING_IOCLIENT_GDBCLIENT, defaultBoolean);
 
-		defaultBoolean = PersistentPreferences.getJLinkEnableSwo();
+		defaultBoolean = fPersistentPreferences.getJLinkEnableSwo();
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SWO, defaultBoolean);
 
-		defaultInt = PersistentPreferences.getJLinkSwoEnableTargetCpuFreq();
+		defaultInt = fPersistentPreferences.getJLinkSwoEnableTargetCpuFreq();
 		configuration.setAttribute(ConfigurationAttributes.SWO_ENABLETARGET_CPUFREQ, defaultInt);
 
-		defaultInt = PersistentPreferences.getJLinkSwoEnableTargetSwoFreq();
+		defaultInt = fPersistentPreferences.getJLinkSwoEnableTargetSwoFreq();
 		configuration.setAttribute(ConfigurationAttributes.SWO_ENABLETARGET_SWOFREQ, defaultInt);
 
-		defaultString = PersistentPreferences.getJLinkSwoEnableTargetPortMask();
+		defaultString = fPersistentPreferences.getJLinkSwoEnableTargetPortMask();
 		configuration.setAttribute(ConfigurationAttributes.SWO_ENABLETARGET_PORTMASK, defaultString);
 
-		defaultString = PersistentPreferences.getJLinkInitOther();
+		defaultString = fPersistentPreferences.getJLinkInitOther();
 		configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS, defaultString);
 
 		// Load Image...
@@ -1716,17 +1736,17 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(IGDBJtagConstants.ATTR_SYMBOLS_OFFSET, IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
 
 		// Runtime Options
-		defaultBoolean = PersistentPreferences.getJLinkDebugInRam();
+		defaultBoolean = fPersistentPreferences.getJLinkDebugInRam();
 		configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM, defaultBoolean);
 
 		// Run Commands
-		defaultBoolean = PersistentPreferences.getJLinkDoPreRunReset();
+		defaultBoolean = fPersistentPreferences.getJLinkDoPreRunReset();
 		configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET, defaultBoolean);
 
-		defaultString = PersistentPreferences.getJLinkPreRunResetType();
+		defaultString = fPersistentPreferences.getJLinkPreRunResetType();
 		configuration.setAttribute(ConfigurationAttributes.SECOND_RESET_TYPE, defaultString);
 
-		defaultString = PersistentPreferences.getJLinkPreRunOther();
+		defaultString = fPersistentPreferences.getJLinkPreRunOther();
 		configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS, defaultString);
 
 		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER, IGDBJtagConstants.DEFAULT_SET_PC_REGISTER);

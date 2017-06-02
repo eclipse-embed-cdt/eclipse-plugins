@@ -24,7 +24,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.openocd.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.PersistentPreferences;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.Messages;
 
-public class ProjectOpenOcdPage extends FieldEditorPropertyPage {
+public class ProjectMcuPage extends FieldEditorPropertyPage {
 
 	// ------------------------------------------------------------------------
 
@@ -32,13 +32,20 @@ public class ProjectOpenOcdPage extends FieldEditorPropertyPage {
 
 	// ------------------------------------------------------------------------
 
-	public ProjectOpenOcdPage() {
+	private PersistentPreferences fPersistentPreferences;
+
+	// ------------------------------------------------------------------------
+
+	public ProjectMcuPage() {
 		super(GRID);
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("openocd.ProjectOpenOcdPage()");
+			System.out.println("openocd.ProjectMcuPage()");
 		}
-		setDescription(Messages.ProjectOpenOCDPagePropertyPage_description);
+
+		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
+
+		setDescription(Messages.ProjectMcuPagePropertyPage_description);
 	}
 
 	// ------------------------------------------------------------------------
@@ -48,7 +55,7 @@ public class ProjectOpenOcdPage extends FieldEditorPropertyPage {
 		Object element = getElement();
 		if (element instanceof IProject) {
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("openocd.doGetPreferenceStore() project store");
+				System.out.println("openocd.ProjectMcuPage.doGetPreferenceStore() project store");
 			}
 			return new ScopedPreferenceStoreWithoutDefaults(new ProjectScope((IProject) element), Activator.PLUGIN_ID);
 		}
@@ -59,13 +66,13 @@ public class ProjectOpenOcdPage extends FieldEditorPropertyPage {
 	protected void createFieldEditors() {
 
 		FieldEditor executable = new StringFieldEditor(PersistentPreferences.EXECUTABLE_NAME,
-				Messages.OpenOCDPage_executable_label, getFieldEditorParent());
+				Messages.McuPage_executable_label, getFieldEditorParent());
 		addField(executable);
 
-		boolean isStrict = PersistentPreferences.getFolderStrict();
+		boolean isStrict = fPersistentPreferences.getFolderStrict();
 
 		FieldEditor folder = new DirectoryNotStrictFieldEditor(PersistentPreferences.INSTALL_FOLDER,
-				Messages.OpenOCDPage_executable_folder, getFieldEditorParent(), isStrict);
+				Messages.McuPage_executable_folder, getFieldEditorParent(), isStrict);
 		addField(folder);
 	}
 

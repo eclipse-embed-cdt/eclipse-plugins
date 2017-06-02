@@ -16,6 +16,8 @@ package ilg.gnumcueclipse.debug.gdbjtag.pyocd;
 import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.core.StringUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.DynamicVariableResolver;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.dsf.gdb.IGDBLaunchConfigurationConstants;
 import org.eclipse.cdt.dsf.gdb.IGdbDebugPreferenceConstants;
 import org.eclipse.cdt.dsf.gdb.internal.GdbPlugin;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.debug.core.ILaunchConfiguration;
@@ -33,27 +36,38 @@ public class Configuration {
 
 	// ------------------------------------------------------------------------
 
-	public static String getGdbServerCommand(ILaunchConfiguration configuration) {
-
-		String executable = null;
+	public static String getGdbServerCommand(ILaunchConfiguration configuration, String executable) {
 
 		try {
-			if (!configuration.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
-					DefaultPreferences.DO_START_GDB_SERVER_DEFAULT))
-				return null;
+			if (executable == null) {
+				if (!configuration.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
+						DefaultPreferences.DO_START_GDB_SERVER_DEFAULT))
+					return null;
 
-			executable = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
-					DefaultPreferences.GDB_SERVER_EXECUTABLE_DEFAULT);
-			// executable = Utils.escapeWhitespaces(executable).trim();
-			executable = executable.trim();
-			if (executable.length() == 0)
-				return null;
+				executable = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
+						DefaultPreferences.GDB_SERVER_EXECUTABLE_DEFAULT);
+				// executable = Utils.escapeWhitespaces(executable).trim();
+				executable = executable.trim();
+				if (executable.length() == 0)
+					return null;
+			}
 
-			executable = DebugUtils.resolveAll(executable, configuration.getAttributes());
+			IProject project = EclipseUtils.getProjectByLaunchConfiguration(configuration);
+			if (project != null) {
+				executable = DynamicVariableResolver.resolveAll(executable, project);
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("pyocd.getGdbServerCommand() substituted \"" + executable + "\"");
+				}
+			}
 
-			ICConfigurationDescription buildConfig = EclipseUtils.getBuildConfigDescription(configuration);
-			if (buildConfig != null) {
-				executable = DebugUtils.resolveAll(executable, buildConfig);
+			if (executable.indexOf("${") >= 0) {
+				// If more macros to process.
+				executable = DebugUtils.resolveAll(executable, configuration.getAttributes());
+
+				ICConfigurationDescription buildConfig = EclipseUtils.getBuildConfigDescription(configuration);
+				if (buildConfig != null) {
+					executable = DebugUtils.resolveAll(executable, buildConfig);
+				}
 			}
 
 		} catch (CoreException e) {
@@ -79,7 +93,7 @@ public class Configuration {
 					DefaultPreferences.DO_START_GDB_SERVER_DEFAULT))
 				return null;
 
-			String executable = getGdbServerCommand(configuration);
+			String executable = getGdbServerCommand(configuration, null);
 			if (executable == null || executable.length() == 0)
 				return null;
 
@@ -184,7 +198,7 @@ public class Configuration {
 
 	public static String getGdbServerCommandName(ILaunchConfiguration config) {
 
-		String fullCommand = getGdbServerCommand(config);
+		String fullCommand = getGdbServerCommand(config, null);
 		return StringUtils.extractNameFromPath(fullCommand);
 	}
 

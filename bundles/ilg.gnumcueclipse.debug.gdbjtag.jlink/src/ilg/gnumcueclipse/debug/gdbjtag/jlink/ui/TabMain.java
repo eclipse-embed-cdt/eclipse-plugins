@@ -14,7 +14,7 @@ package ilg.gnumcueclipse.debug.gdbjtag.jlink.ui;
 
 import org.eclipse.cdt.dsf.gdb.internal.ui.launching.CMainTab;
 
-import ilg.gnumcueclipse.debug.gdbjtag.jlink.DefaultPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.jlink.Activator;
 
 /**
  * @since 7.0
@@ -28,7 +28,7 @@ public class TabMain extends CMainTab {
 	 * not check program, to allow project-less debug sessions.
 	 */
 	public TabMain() {
-		super((DefaultPreferences.getTabMainCheckProgram() ? 0 : CMainTab.DONT_CHECK_PROGRAM)
-				| CMainTab.INCLUDE_BUILD_SETTINGS);
+		super((Activator.getInstance().getDefaultPreferences().getTabMainCheckProgram() ? 0
+				: CMainTab.DONT_CHECK_PROGRAM) | CMainTab.INCLUDE_BUILD_SETTINGS);
 	}
 }

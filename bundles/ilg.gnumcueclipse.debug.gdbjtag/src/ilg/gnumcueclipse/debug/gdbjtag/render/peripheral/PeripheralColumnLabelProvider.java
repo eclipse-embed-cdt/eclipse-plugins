@@ -72,7 +72,8 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider implement
 
 		setupColors();
 
-		fUseFadingBackground = PersistentPreferences.getPeripheralsChangedUseFadingBackground();
+		PersistentPreferences fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
+		fUseFadingBackground = fPersistentPreferences.getPeripheralsChangedUseFadingBackground();
 	}
 
 	@Override

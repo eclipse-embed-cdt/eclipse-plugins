@@ -51,80 +51,82 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 			System.out.println("jlink.DefaultPreferenceInitializer.initializeDefaultPreferences()");
 		}
 
-		DefaultPreferences.putString(PersistentPreferences.GDB_SERVER_INTERFACE,
+		DefaultPreferences fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
+		fDefaultPreferences.putString(PersistentPreferences.GDB_SERVER_INTERFACE,
 				DefaultPreferences.SERVER_INTERFACE_DEFAULT);
 
-		DefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_ENABLE_SEMIHOSTING,
+		fDefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_ENABLE_SEMIHOSTING,
 				DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT);
 
-		DefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_ENABLE_SWO,
+		fDefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_ENABLE_SWO,
 				DefaultPreferences.ENABLE_SWO_DEFAULT);
 
-		DefaultPreferences.putBoolean(PersistentPreferences.TAB_MAIN_CHECK_PROGRAM,
+		fDefaultPreferences.putBoolean(PersistentPreferences.TAB_MAIN_CHECK_PROGRAM,
 				DefaultPreferences.TAB_MAIN_CHECK_PROGRAM_DEFAULT);
 
-		DefaultPreferences.putBoolean(PersistentPreferences.GDB_SERVER_DO_START,
+		fDefaultPreferences.putBoolean(PersistentPreferences.GDB_SERVER_DO_START,
 				DefaultPreferences.SERVER_DO_START_DEFAULT);
 
-		DefaultPreferences.putString(PersistentPreferences.GDB_SERVER_ENDIANNESS,
+		fDefaultPreferences.putString(PersistentPreferences.GDB_SERVER_ENDIANNESS,
 				DefaultPreferences.SERVER_ENDIANNESS_DEFAULT);
 
-		DefaultPreferences.putString(PersistentPreferences.GDB_SERVER_CONNECTION,
+		fDefaultPreferences.putString(PersistentPreferences.GDB_SERVER_CONNECTION,
 				DefaultPreferences.SERVER_CONNECTION_DEFAULT);
 
-		DefaultPreferences.putString(PersistentPreferences.GDB_SERVER_CONNECTION_ADDRESS,
+		fDefaultPreferences.putString(PersistentPreferences.GDB_SERVER_CONNECTION_ADDRESS,
 				DefaultPreferences.SERVER_CONNECTION_ADDRESS_DEFAULT);
 
-		DefaultPreferences.putString(PersistentPreferences.GDB_SERVER_INITIAL_SPEED,
+		fDefaultPreferences.putString(PersistentPreferences.GDB_SERVER_INITIAL_SPEED,
 				DefaultPreferences.SERVER_INITIAL_SPEED_DEFAULT);
 
-		DefaultPreferences.putString(PersistentPreferences.GDB_SERVER_OTHER_OPTIONS,
+		fDefaultPreferences.putString(PersistentPreferences.GDB_SERVER_OTHER_OPTIONS,
 				DefaultPreferences.SERVER_OTHER_OPTIONS_DEFAULT);
 
-		DefaultPreferences.putString(PersistentPreferences.GDB_CLIENT_COMMANDS,
+		fDefaultPreferences.putString(PersistentPreferences.GDB_CLIENT_COMMANDS,
 				DefaultPreferences.CLIENT_COMMANDS_DEFAULT);
 
-		DefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_DO_INITIAL_RESET,
+		fDefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_DO_INITIAL_RESET,
 				DefaultPreferences.DO_INITIAL_RESET_DEFAULT);
 
-		DefaultPreferences.putString(PersistentPreferences.GDB_JLINK_INITIAL_RESET_TYPE,
+		fDefaultPreferences.putString(PersistentPreferences.GDB_JLINK_INITIAL_RESET_TYPE,
 				DefaultPreferences.INITIAL_RESET_TYPE_DEFAULT);
 
-		DefaultPreferences.putInt(PersistentPreferences.GDB_JLINK_INITIAL_RESET_SPEED,
+		fDefaultPreferences.putInt(PersistentPreferences.GDB_JLINK_INITIAL_RESET_SPEED,
 				DefaultPreferences.INITIAL_RESET_SPEED_DEFAULT);
 
-		DefaultPreferences.putString(PersistentPreferences.GDB_JLINK_SPEED, DefaultPreferences.JLINK_SPEED_DEFAULT);
+		fDefaultPreferences.putString(PersistentPreferences.GDB_JLINK_SPEED, DefaultPreferences.JLINK_SPEED_DEFAULT);
 
-		DefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_ENABLE_FLASH_BREAKPOINTS,
+		fDefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_ENABLE_FLASH_BREAKPOINTS,
 				DefaultPreferences.ENABLE_FLASH_BREAKPOINTS_DEFAULT);
 
-		DefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_SEMIHOSTING_TELNET,
+		fDefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_SEMIHOSTING_TELNET,
 				DefaultPreferences.SEMIHOSTING_TELNET_DEFAULT);
 
-		DefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_SEMIHOSTING_CLIENT,
+		fDefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_SEMIHOSTING_CLIENT,
 				DefaultPreferences.SEMIHOSTING_CLIENT_DEFAULT);
 
-		DefaultPreferences.putInt(PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_CPU_FREQ,
+		fDefaultPreferences.putInt(PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_CPU_FREQ,
 				DefaultPreferences.SWO_ENABLE_TARGET_CPU_FREQ_DEFAULT);
 
-		DefaultPreferences.putInt(PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_SWO_FREQ,
+		fDefaultPreferences.putInt(PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_SWO_FREQ,
 				DefaultPreferences.SWO_ENABLE_TARGET_SWO_FREQ_DEFAULT);
 
-		DefaultPreferences.putString(PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_PORT_MASK,
+		fDefaultPreferences.putString(PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_PORT_MASK,
 				DefaultPreferences.SWO_ENABLE_TARGET_PORT_MASK_DEFAULT);
 
-		DefaultPreferences.putString(PersistentPreferences.GDB_JLINK_INIT_OTHER, DefaultPreferences.INIT_OTHER_DEFAULT);
+		fDefaultPreferences.putString(PersistentPreferences.GDB_JLINK_INIT_OTHER,
+				DefaultPreferences.INIT_OTHER_DEFAULT);
 
-		DefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_DO_DEBUG_IN_RAM,
+		fDefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_DO_DEBUG_IN_RAM,
 				DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT);
 
-		DefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_DO_PRERUN_RESET,
+		fDefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_DO_PRERUN_RESET,
 				DefaultPreferences.DO_PRERUN_RESET_DEFAULT);
 
-		DefaultPreferences.putString(PersistentPreferences.GDB_JLINK_PRERUN_RESET_TYPE,
+		fDefaultPreferences.putString(PersistentPreferences.GDB_JLINK_PRERUN_RESET_TYPE,
 				DefaultPreferences.PRERUN_RESET_TYPE_DEFAULT);
 
-		DefaultPreferences.putString(PersistentPreferences.GDB_JLINK_PRERUN_OTHER,
+		fDefaultPreferences.putString(PersistentPreferences.GDB_JLINK_PRERUN_OTHER,
 				DefaultPreferences.PRERUN_OTHER_DEFAULT);
 
 		// When the 'ilg.gnumcueclipse.managedbuild.cross' node is completely
@@ -176,19 +178,22 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				System.out.println("jlink.LateInitializer.finalizeInitializationsDefaultPreferences()");
 			}
 
+			DefaultPreferences fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
 			// J-Link GDB Server executable name
-			String name = DefaultPreferences.getExecutableName();
+			String name = fDefaultPreferences.getExecutableName();
 			if (name.isEmpty()) {
 				// If not defined elsewhere, get platform specific name.
-				name = DefaultPreferences.getExecutableNameOs();
+				name = fDefaultPreferences.getExecutableNameOs();
 				if (!name.isEmpty()) {
-					DefaultPreferences.putExecutableName(name);
+					fDefaultPreferences.putExecutableName(name);
 				}
 			}
 
-			String executableName = EclipseUtils.getVariableValue(VariableInitializer.VARIABLE_JLINK_EXECUTABLE);
+			PersistentPreferences fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
+
+			String executableName = fPersistentPreferences.getExecutableName();
 			if (executableName == null || executableName.isEmpty()) {
-				executableName = DefaultPreferences.getExecutableName();
+				executableName = fDefaultPreferences.getExecutableName();
 			}
 			if (EclipseUtils.isWindows() && !executableName.endsWith(".exe")) {
 				executableName += ".exe";
@@ -196,22 +201,22 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 
 			// Check if the search path is defined in the default
 			// preferences.
-			String searchPath = DefaultPreferences.getSearchPath();
+			String searchPath = fDefaultPreferences.getSearchPath();
 			if (searchPath.isEmpty()) {
 
 				// If not defined, get the OS Specific default
 				// from preferences.ini.
-				searchPath = DefaultPreferences.getSearchPathOs();
+				searchPath = fDefaultPreferences.getSearchPathOs();
 				if (!searchPath.isEmpty()) {
 					// Store the search path in the preferences
-					DefaultPreferences.putSearchPath(searchPath);
+					fDefaultPreferences.putSearchPath(searchPath);
 				}
 			}
 
 			// J-Link GDB Server install folder
 			// Check if the toolchain path is explictly defined in the
 			// default preferences.
-			String folder = DefaultPreferences.getInstallFolder();
+			String folder = fDefaultPreferences.getInstallFolder();
 			if (!folder.isEmpty()) {
 				IPath path = (new Path(folder)).append(executableName);
 				if (!path.toFile().isFile()) {
@@ -236,7 +241,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 			if (folder != null && !folder.isEmpty()) {
 				// If the install folder was finally discovered, store
 				// it in the preferences.
-				DefaultPreferences.putInstallFolder(folder);
+				fDefaultPreferences.putInstallFolder(folder);
 			}
 		}
 	}

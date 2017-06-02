@@ -39,6 +39,8 @@ public class Activator extends AbstractUIActivator {
 		return fgInstance;
 	}
 
+	protected PersistentPreferences fPersistentPreferences = null;
+
 	public Activator() {
 
 		super();
@@ -53,6 +55,14 @@ public class Activator extends AbstractUIActivator {
 
 	public void stop(BundleContext context) throws Exception {
 		super.stop(context);
+	}
+
+	public PersistentPreferences getPersistentPreferences() {
+
+		if (fPersistentPreferences == null) {
+			fPersistentPreferences = new PersistentPreferences(PLUGIN_ID);
+		}
+		return fPersistentPreferences;
 	}
 
 	// ------------------------------------------------------------------------

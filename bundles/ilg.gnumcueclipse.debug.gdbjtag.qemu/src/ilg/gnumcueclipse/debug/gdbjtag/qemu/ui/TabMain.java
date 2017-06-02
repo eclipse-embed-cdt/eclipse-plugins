@@ -14,7 +14,7 @@ package ilg.gnumcueclipse.debug.gdbjtag.qemu.ui;
 
 import org.eclipse.cdt.dsf.gdb.internal.ui.launching.CMainTab;
 
-import ilg.gnumcueclipse.debug.gdbjtag.qemu.DefaultPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.qemu.Activator;
 
 /**
  * @since 7.0
@@ -23,7 +23,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.qemu.DefaultPreferences;
 public class TabMain extends CMainTab {
 
 	public TabMain() {
-		super((DefaultPreferences.getTabMainCheckProgram() ? 0 : CMainTab.DONT_CHECK_PROGRAM)
-				| CMainTab.INCLUDE_BUILD_SETTINGS);
+		super((Activator.getInstance().getDefaultPreferences().getTabMainCheckProgram() ? 0
+				: CMainTab.DONT_CHECK_PROGRAM) | CMainTab.INCLUDE_BUILD_SETTINGS);
 	}
 }

@@ -13,12 +13,7 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.pyocd;
 
-import org.eclipse.core.runtime.Platform;
-import org.eclipse.core.runtime.preferences.InstanceScope;
-import org.osgi.service.prefs.BackingStoreException;
-import org.osgi.service.prefs.Preferences;
-
-public class PersistentPreferences {
+public class PersistentPreferences extends ilg.gnumcueclipse.debug.gdbjtag.PersistentPreferences {
 
 	// ------------------------------------------------------------------------
 
@@ -59,225 +54,185 @@ public class PersistentPreferences {
 
 	public static final String GDB_PYOCD_PRERUN_OTHER = GDB_PYOCD + "preRun.other";
 
-	// ----- Defaults ---------------------------------------------------------
+	// ------------------------------------------------------------------------
 
-	public static final String EXECUTABLE_NAME = "executable.name";
-	public static final String EXECUTABLE_NAME_OS = EXECUTABLE_NAME + ".%s";
-	public static final String INSTALL_FOLDER = "install.folder";
-	public static final String SEARCH_PATH = "search.path";
-	public static final String SEARCH_PATH_OS = SEARCH_PATH + ".%s";
+	private DefaultPreferences fDefaultPreferences;
 
-	public static final String FOLDER_STRICT = "folder.strict";
+	// ------------------------------------------------------------------------
 
-	public static final String TAB_MAIN_CHECK_PROGRAM = "tab.main.checkProgram";
-	public static final boolean TAB_MAIN_CHECK_PROGRAM_DEFAULT = false;
+	public PersistentPreferences(String pluginId) {
+		super(pluginId);
 
-	// ----- Getters ----------------------------------------------------------
-
-	private static String getString(String key, String defaultValue) {
-
-		String value = Platform.getPreferencesService().getString(Activator.PLUGIN_ID, key, defaultValue, null);
-
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("pyocd.PersistentPreferences.getString(\"" + key + "\", \"" + defaultValue + "\") = \""
-					+ value + "\"");
-		}
-		return value;
-	}
-
-	// ----- Setters ----------------------------------------------------------
-
-	private static void putWorkspaceString(String key, String value) {
-
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("pyocd.PersistentPreferences.putWorkspaceString(\"" + key + "\", \"" + value + "\")");
-		}
-		value = value.trim();
-
-		// Access the instanceScope
-		Preferences preferences = InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID);
-		preferences.put(key, value);
-	}
-
-	public static void flush() {
-
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("pyocd.PersistentPreferences.flush()");
-		}
-		try {
-			InstanceScope.INSTANCE.getNode(Activator.PLUGIN_ID).flush();
-		} catch (BackingStoreException e) {
-			Activator.log(e);
-		}
+		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
 	}
 
 	// ----- gdb server doStart -----------------------------------------------
-	public static boolean getGdbServerDoStart() {
+	public boolean getGdbServerDoStart() {
 
 		return Boolean.valueOf(
 				getString(GDB_SERVER_DO_START, Boolean.toString(DefaultPreferences.DO_START_GDB_SERVER_DEFAULT)));
 	}
 
-	public static void putGdbServerDoStart(boolean value) {
+	public void putGdbServerDoStart(boolean value) {
 
 		putWorkspaceString(GDB_SERVER_DO_START, Boolean.toString(value));
 	}
 
 	// ----- gdb server executable --------------------------------------------
-	public static String getGdbServerExecutable() {
+	public String getGdbServerExecutable() {
 
 		String value = getString(GDB_SERVER_EXECUTABLE, null);
 		if (value != null) {
 			return value;
 		}
-		return DefaultPreferences.getGdbServerExecutable();
+		return fDefaultPreferences.getGdbServerExecutable();
 	}
 
-	public static void putGdbServerExecutable(String value) {
+	public void putGdbServerExecutable(String value) {
 
 		putWorkspaceString(GDB_SERVER_EXECUTABLE, value);
 	}
 
 	// ----- gdb server other options -----------------------------------------
-	public static String getGdbServerOtherOptions() {
+	public String getGdbServerOtherOptions() {
 
 		String value = getString(GDB_SERVER_OTHER_OPTIONS, null);
 		if (value != null) {
 			return value;
 		}
-		return DefaultPreferences.getPyocdConfig();
+		return fDefaultPreferences.getPyocdConfig();
 	}
 
-	public static void putGdbServerOtherOptions(String value) {
+	public void putGdbServerOtherOptions(String value) {
 
 		putWorkspaceString(GDB_SERVER_OTHER_OPTIONS, value);
 	}
 
 	// ----- gdb client executable --------------------------------------------
-	public static String getGdbClientExecutable() {
+	public String getGdbClientExecutable() {
 
 		String value = getString(GDB_CLIENT_EXECUTABLE, null);
 		if (value != null) {
 			return value;
 		}
-		return DefaultPreferences.getGdbClientExecutable();
+		return fDefaultPreferences.getGdbClientExecutable();
 	}
 
-	public static void putGdbClientExecutable(String value) {
+	public void putGdbClientExecutable(String value) {
 
 		putWorkspaceString(GDB_CLIENT_EXECUTABLE, value);
 	}
 
 	// ----- gdb client other options -----------------------------------------
-	public static String getGdbClientOtherOptions() {
+	public String getGdbClientOtherOptions() {
 
 		return getString(GDB_CLIENT_OTHER_OPTIONS, DefaultPreferences.GDB_CLIENT_OTHER_OPTIONS_DEFAULT);
 	}
 
-	public static void putGdbClientOtherOptions(String value) {
+	public void putGdbClientOtherOptions(String value) {
 
 		putWorkspaceString(GDB_CLIENT_OTHER_OPTIONS, value);
 	}
 
 	// ----- gdb client commands ----------------------------------------------
-	public static String getGdbClientCommands() {
+	public String getGdbClientCommands() {
 
 		return getString(GDB_CLIENT_COMMANDS, DefaultPreferences.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
 	}
 
-	public static void putGdbClientCommands(String value) {
+	public void putGdbClientCommands(String value) {
 
 		putWorkspaceString(GDB_CLIENT_COMMANDS, value);
 	}
 
 	// ----- pyOCD do initial reset -----------------------------------------
-	public static boolean getPyOCDDoInitialReset() {
+	public boolean getPyOCDDoInitialReset() {
 
 		return Boolean.valueOf(
 				getString(GDB_PYOCD_DO_INITIAL_RESET, Boolean.toString(DefaultPreferences.DO_FIRST_RESET_DEFAULT)));
 	}
 
-	public static void putPyOCDDoInitialReset(boolean value) {
+	public void putPyOCDDoInitialReset(boolean value) {
 
 		putWorkspaceString(GDB_PYOCD_DO_INITIAL_RESET, Boolean.toString(value));
 	}
 
 	// ----- pyOCD initial reset type ---------------------------------------
-	public static String getPyOCDInitialResetType() {
+	public String getPyOCDInitialResetType() {
 
 		return getString(GDB_PYOCD_INITIAL_RESET_TYPE, DefaultPreferences.FIRST_RESET_TYPE_DEFAULT);
 	}
 
-	public static void putPyOCDInitialResetType(String value) {
+	public void putPyOCDInitialResetType(String value) {
 
 		putWorkspaceString(GDB_PYOCD_INITIAL_RESET_TYPE, value);
 	}
 
 	// ----- pyOCD enable semihosting ---------------------------------------
-	public static boolean getPyOCDEnableSemihosting() {
+	public boolean getPyOCDEnableSemihosting() {
 
 		return Boolean.valueOf(getString(GDB_PYOCD_ENABLE_SEMIHOSTING,
 				Boolean.toString(DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT)));
 	}
 
-	public static void putPyOCDEnableSemihosting(boolean value) {
+	public void putPyOCDEnableSemihosting(boolean value) {
 
 		putWorkspaceString(GDB_PYOCD_ENABLE_SEMIHOSTING, Boolean.toString(value));
 	}
 
 	// ----- pyOCD init other -----------------------------------------------
-	public static String getPyOCDInitOther() {
+	public String getPyOCDInitOther() {
 
 		return getString(GDB_PYOCD_INIT_OTHER, DefaultPreferences.OTHER_INIT_COMMANDS_DEFAULT);
 	}
 
-	public static void putPyOCDInitOther(String value) {
+	public void putPyOCDInitOther(String value) {
 
 		putWorkspaceString(GDB_PYOCD_INIT_OTHER, value);
 	}
 
 	// ----- pyOCD debug in ram ---------------------------------------------
-	public static boolean getPyOCDDebugInRam() {
+	public boolean getPyOCDDebugInRam() {
 
 		return Boolean.valueOf(
 				getString(GDB_PYOCD_DO_DEBUG_IN_RAM, Boolean.toString(DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT)));
 	}
 
-	public static void putPyOCDDebugInRam(boolean value) {
+	public void putPyOCDDebugInRam(boolean value) {
 
 		putWorkspaceString(GDB_PYOCD_DO_DEBUG_IN_RAM, Boolean.toString(value));
 	}
 
 	// ----- pyOCD do prerun reset ------------------------------------------
-	public static boolean getPyOCDDoPreRunReset() {
+	public boolean getPyOCDDoPreRunReset() {
 
 		return Boolean.valueOf(
 				getString(GDB_PYOCD_DO_PRERUN_RESET, Boolean.toString(DefaultPreferences.DO_SECOND_RESET_DEFAULT)));
 	}
 
-	public static void putPyOCDDoPreRunReset(boolean value) {
+	public void putPyOCDDoPreRunReset(boolean value) {
 
 		putWorkspaceString(GDB_PYOCD_DO_PRERUN_RESET, Boolean.toString(value));
 	}
 
 	// ----- pyOCD prerun reset type ----------------------------------------
-	public static String getPyOCDPreRunResetType() {
+	public String getPyOCDPreRunResetType() {
 
 		return getString(GDB_PYOCD_PRERUN_RESET_TYPE, DefaultPreferences.SECOND_RESET_TYPE_DEFAULT);
 	}
 
-	public static void putPyOCDPreRunResetType(String value) {
+	public void putPyOCDPreRunResetType(String value) {
 
 		putWorkspaceString(GDB_PYOCD_PRERUN_RESET_TYPE, value);
 	}
 
 	// ----- pyOCD init other -----------------------------------------------
-	public static String getPyOCDPreRunOther() {
+	public String getPyOCDPreRunOther() {
 
 		return getString(GDB_PYOCD_PRERUN_OTHER, DefaultPreferences.OTHER_RUN_COMMANDS_DEFAULT);
 	}
 
-	public static void putPyOCDPreRunOther(String value) {
+	public void putPyOCDPreRunOther(String value) {
 
 		putWorkspaceString(GDB_PYOCD_PRERUN_OTHER, value);
 	}

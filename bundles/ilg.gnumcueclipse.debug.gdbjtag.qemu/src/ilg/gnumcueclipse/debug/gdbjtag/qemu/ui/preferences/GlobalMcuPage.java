@@ -9,22 +9,20 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.debug.gdbjtag.jlink.preferences;
+package ilg.gnumcueclipse.debug.gdbjtag.qemu.ui.preferences;
 
-import ilg.gnumcueclipse.core.preferences.DirectoryNotStrictVariableFieldEditor;
-import ilg.gnumcueclipse.core.preferences.StringVariableFieldEditor;
-import ilg.gnumcueclipse.debug.gdbjtag.jlink.Activator;
-import ilg.gnumcueclipse.debug.gdbjtag.jlink.DefaultPreferences;
-import ilg.gnumcueclipse.debug.gdbjtag.jlink.PersistentPreferences;
-import ilg.gnumcueclipse.debug.gdbjtag.jlink.VariableInitializer;
-import ilg.gnumcueclipse.debug.gdbjtag.jlink.ui.Messages;
-
-import org.eclipse.core.runtime.preferences.InstanceScope;
+import org.eclipse.core.runtime.preferences.ConfigurationScope;
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
+import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
+
+import ilg.gnumcueclipse.core.preferences.DirectoryNotStrictFieldEditor;
+import ilg.gnumcueclipse.debug.gdbjtag.qemu.Activator;
+import ilg.gnumcueclipse.debug.gdbjtag.qemu.PersistentPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.qemu.ui.Messages;
 
 /**
  * This class represents a preference page that is contributed to the
@@ -35,22 +33,26 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
  * This page uses special filed editors, that get the default values from the
  * preferences store, but the values are from the variables store.
  */
-public class JlinkPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
+public class GlobalMcuPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "ilg.gnumcueclipse.debug.gdbjtag.openocd.preferencePage";
+	public static final String ID = "ilg.gnumcueclipse.debug.gdbjtag.qemu.globalPreferencePage";
 
 	// ------------------------------------------------------------------------
 
-	public JlinkPage() {
+	private PersistentPreferences fPersistentPreferences;
+
+	// ------------------------------------------------------------------------
+
+	public GlobalMcuPage() {
 		super(GRID);
 
-		// Not really used, the field editors directly access the variables
-		// store.
-		setPreferenceStore(new ScopedPreferenceStore(InstanceScope.INSTANCE, Activator.PLUGIN_ID));
+		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
 
-		setDescription(Messages.JLinkPreferencePage_description);
+		setPreferenceStore(new ScopedPreferenceStore(ConfigurationScope.INSTANCE, Activator.PLUGIN_ID));
+
+		setDescription(Messages.GlobalMcuPagePropertyPage_description);
 	}
 
 	// ------------------------------------------------------------------------
@@ -60,7 +62,7 @@ public class JlinkPage extends FieldEditorPreferencePage implements IWorkbenchPr
 	public void init(IWorkbench workbench) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("jlink.JlinkPage.init()");
+			System.out.println("qemu.GlobalMcuPage.init()");
 		}
 	}
 
@@ -73,18 +75,16 @@ public class JlinkPage extends FieldEditorPreferencePage implements IWorkbenchPr
 	protected void createFieldEditors() {
 
 		FieldEditor executable;
-		executable = new StringVariableFieldEditor(PersistentPreferences.EXECUTABLE_NAME,
-				VariableInitializer.VARIABLE_JLINK_EXECUTABLE, Messages.Variable_executable_description,
-				Messages.JLinkPreferencePage_executable_label, getFieldEditorParent());
+		executable = new StringFieldEditor(PersistentPreferences.EXECUTABLE_NAME, Messages.McuPage_executable_label,
+				getFieldEditorParent());
 		addField(executable);
 
 		boolean isStrict;
-		isStrict = DefaultPreferences.getBoolean(PersistentPreferences.FOLDER_STRICT, true);
+		isStrict = fPersistentPreferences.getFolderStrict();
 
 		FieldEditor folder;
-		folder = new DirectoryNotStrictVariableFieldEditor(PersistentPreferences.INSTALL_FOLDER,
-				VariableInitializer.VARIABLE_JLINK_PATH, Messages.Variable_path_description,
-				Messages.JLinkPropertyPage_executable_folder, getFieldEditorParent(), isStrict);
+		folder = new DirectoryNotStrictFieldEditor(PersistentPreferences.INSTALL_FOLDER,
+				Messages.McuPage_executable_folder, getFieldEditorParent(), isStrict);
 		addField(folder);
 	}
 
