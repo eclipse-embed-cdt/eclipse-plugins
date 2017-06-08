@@ -35,7 +35,7 @@ public class DynamicVariableResolver {
 					String tmp = EclipseUtils.getPreferenceValueForId(Activator.PLUGIN_ID, preferences[i], defaults[i],
 							project);
 
-					output = output.replaceAll("\\$\\{" + macros[i] + "\\}", tmp);
+					output = output.replaceAll("[$][{]" + macros[i] + "[}]", tmp);
 				}
 			}
 		}
