@@ -61,7 +61,7 @@ public class PersistentPreferences extends ilg.gnumcueclipse.core.PersistentPref
 	 */
 	public String getToolchainName() {
 
-		String toolchainName = getString(TOOLCHAIN_NAME_KEY, null, null);
+		String toolchainName = getString(TOOLCHAIN_NAME_KEY, null);
 		if (toolchainName != null && !toolchainName.isEmpty()) {
 			return toolchainName;
 		}
@@ -71,7 +71,7 @@ public class PersistentPreferences extends ilg.gnumcueclipse.core.PersistentPref
 
 	/**
 	 * Store the toolchain name in the Workspace/Eclipse scope. Used in the
-	 * project wizard, to maintain global persistency.
+	 * project wizard, to maintain global persistence.
 	 * 
 	 * @param toolchainName
 	 *            a string.
@@ -97,7 +97,12 @@ public class PersistentPreferences extends ilg.gnumcueclipse.core.PersistentPref
 	 */
 	public String getToolchainPath(String toolchainName, IProject project) {
 
-		String value = getString(getToolchainKey(toolchainName), null, project);
+		String value;
+		if (project != null) {
+			value = getString(getToolchainKey(toolchainName), null, project);
+		} else {
+			value = getString(getToolchainKey(toolchainName), null);
+		}
 		if (value != null && !value.isEmpty()) {
 			return value;
 		}

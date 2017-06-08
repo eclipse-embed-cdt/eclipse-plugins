@@ -129,6 +129,15 @@ public class PersistentPreferences {
 
 	// ----- Getters ----------------------------------------------------------
 
+	/**
+	 * Search string in persistent store. Explicitly define the list of scopes,
+	 * starting with project scope.
+	 * 
+	 * @param key
+	 * @param defaultValue
+	 * @param project
+	 * @return
+	 */
 	protected String getString(String key, String defaultValue, IProject project) {
 
 		assert (project != null);
@@ -143,6 +152,14 @@ public class PersistentPreferences {
 		return defaultValue;
 	}
 
+	/**
+	 * Search string in persistent stores. Explicitly define the list of scopes,
+	 * excluding the project scope.
+	 * 
+	 * @param key
+	 * @param defaultValue
+	 * @return
+	 */
 	protected String getString(String key, String defaultValue) {
 
 		String value = getPreferenceValueForId(fPluginId, key, defaultValue, fgContexts);
@@ -168,7 +185,7 @@ public class PersistentPreferences {
 
 	private String getWorkspaceString(String key, String defaultValue) {
 
-		// Access the Eclipse scope.
+		// Access the Workspace scope.
 		Preferences preferences = InstanceScope.INSTANCE.getNode(fPluginId);
 
 		String value = preferences.get(key, defaultValue);
@@ -194,6 +211,13 @@ public class PersistentPreferences {
 
 	// ----- Setters ----------------------------------------------------------
 
+	/**
+	 * Store a string in the persistent store. If the key was already present in
+	 * the workspace, store it there, otherwise use the glonbal store.
+	 * 
+	 * @param key
+	 * @param value
+	 */
 	protected void putString(String key, String value) {
 
 		String oldValue = getWorkspaceString(key, null);
