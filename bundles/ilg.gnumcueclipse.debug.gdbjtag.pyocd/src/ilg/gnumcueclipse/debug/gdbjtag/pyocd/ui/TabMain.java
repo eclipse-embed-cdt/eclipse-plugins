@@ -14,18 +14,19 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.pyocd.ui;
 
-import org.eclipse.cdt.dsf.gdb.internal.ui.launching.CMainTab;
+import org.eclipse.cdt.launch.ui.CMainTab2;
 
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator;
 
-/**
- * @since 7.0
- */
-@SuppressWarnings({ "restriction", "deprecation" })
-public class TabMain extends CMainTab {
+public class TabMain extends CMainTab2 {
 
+	/**
+	 * If the preference is set to true, check program and disable Debug button
+	 * if not found. The default GDB Hardware Debug plug-in behaviour is to do
+	 * not check program, to allow project-less debug sessions.
+	 */
 	public TabMain() {
 		super((Activator.getInstance().getDefaultPreferences().getTabMainCheckProgram() ? 0
-				: CMainTab.DONT_CHECK_PROGRAM) | CMainTab.INCLUDE_BUILD_SETTINGS);
+				: CMainTab2.DONT_CHECK_PROGRAM) | CMainTab2.INCLUDE_BUILD_SETTINGS);
 	}
 }

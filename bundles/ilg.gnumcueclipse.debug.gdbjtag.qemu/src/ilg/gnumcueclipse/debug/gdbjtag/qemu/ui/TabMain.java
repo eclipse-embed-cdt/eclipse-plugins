@@ -12,18 +12,14 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.qemu.ui;
 
-import org.eclipse.cdt.dsf.gdb.internal.ui.launching.CMainTab;
+import org.eclipse.cdt.launch.ui.CMainTab2;
 
 import ilg.gnumcueclipse.debug.gdbjtag.qemu.Activator;
 
-/**
- * @since 7.0
- */
-@SuppressWarnings({ "restriction", "deprecation" })
-public class TabMain extends CMainTab {
+public class TabMain extends CMainTab2 {
 
 	public TabMain() {
 		super((Activator.getInstance().getDefaultPreferences().getTabMainCheckProgram() ? 0
-				: CMainTab.DONT_CHECK_PROGRAM) | CMainTab.INCLUDE_BUILD_SETTINGS);
+				: CMainTab2.DONT_CHECK_PROGRAM) | CMainTab2.INCLUDE_BUILD_SETTINGS);
 	}
 }
