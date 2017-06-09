@@ -164,7 +164,13 @@ public class PersistentPreferences extends ilg.gnumcueclipse.core.PersistentPref
 	 */
 	public String getBuildToolsPath(IProject project) {
 
-		return getCommonString(BUILD_TOOLS_PATH_KEY, "", project);
+		String value = getCommonString(BUILD_TOOLS_PATH_KEY, "", project);
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println(
+					"PersistentPreferences.getBuildToolsPath(\"" + project.getName() + "\") = \"" + value + "\"");
+		}
+		return value;
 	}
 
 	// ------------------------------------------------------------------------
