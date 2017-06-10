@@ -11,7 +11,7 @@
 
 package ilg.gnumcueclipse.managedbuild.cross.arm;
 
-import ilg.gnumcueclipse.managedbuild.cross.preferences.DefaultPreferences;
+import ilg.gnumcueclipse.managedbuild.cross.arm.preferences.DefaultPreferences;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
@@ -63,6 +63,8 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 	 */
 	private class LateInitializer implements INodeChangeListener {
 
+		private DefaultPreferences defaultPreferences;
+
 		@Override
 		public void added(NodeChangeEvent event) {
 
@@ -92,87 +94,36 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		 */
 		public void finalizeInitializationsDefaultPreferences() {
 
-			String value;
-
-			DefaultPreferences commonDefaultPreferences = new DefaultPreferences(
-					ilg.gnumcueclipse.managedbuild.cross.Activator.PLUGIN_ID);
-			DefaultPreferences defaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
+			defaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
 			DefaultPreferences deprecatedDefaultPreferences = new DefaultPreferences(
 					"ilg.gnuarmeclipse.managedbuild.cross");
-
-			// Try to get the build tools path from the common store.
-			value = commonDefaultPreferences.getBuildToolsPath();
-			if (value.isEmpty()) {
-				// If not there, try to get it from the GNU MCU ARM Eclipse
-				// store.
-				value = defaultPreferences.getBuildToolsPath();
-				if (value.isEmpty()) {
-					// If not there, try to get it from the GNU MCU Eclipse
-					// store.
-					value = deprecatedDefaultPreferences.getBuildToolsPath();
-					if (value.isEmpty()) {
-						// If not defined elsewhere, discover build tools.
-						value = DefaultPreferences.discoverBuildToolsPath();
-					}
-				}
-				if (!value.isEmpty()) {
-					// Copy from old store to new store.
-					commonDefaultPreferences.putBuildToolsPath(value);
-				}
-			}
 
 			// Toolchains paths
 			for (ToolchainDefinition toolchain : ToolchainDefinition.getList()) {
 
 				String toolchainName = toolchain.getName();
 
-				// Check if the toolchain path is explictly defined in the
-				// default preferences.
+				// Try to get the build tools path from the GNU MCU ARM Eclipse
+				// store.
 				String path = defaultPreferences.getToolchainPath(toolchainName);
 				if (path.isEmpty()) {
+					// If not there, try to get it from the GNU ARM Eclipse
+					// store.
 					path = deprecatedDefaultPreferences.getToolchainPath(toolchainName);
-					if (!path.isEmpty()) {
-						// Copy from deprecated store to new store.
-						defaultPreferences.putToolchainPath(toolchainName, path);
-					}
 				}
+
+				if (path.isEmpty()) {
+					// If not defined elsewhere, discover build tools.
+					path = defaultPreferences.discoverToolchainPath(toolchainName);
+				}
+
 				if (!path.isEmpty()) {
-					continue; // Already defined, use it as is.
-				}
-
-				// Check if the search path is defined in the default
-				// preferences.
-				String searchPath = defaultPreferences.getToolchainSearchPath(toolchainName);
-				if (searchPath.isEmpty()) {
-
-					// If not defined, get the OS Specific default
-					// from preferences.ini.
-					searchPath = defaultPreferences.getToolchainSearchPathOs(toolchainName);
-					if (!searchPath.isEmpty()) {
-						// Store the search path in the preferences
-						defaultPreferences.putToolchainSearchPath(toolchainName, searchPath);
-					}
-				}
-
-				if (!searchPath.isEmpty()) {
-					// If the search path is known, discover toolchain.
-					int ix;
-					try {
-						ix = ToolchainDefinition.findToolchainByName(toolchainName);
-					} catch (IndexOutOfBoundsException e) {
-						ix = ToolchainDefinition.getDefault();
-					}
-
-					String executableName = ToolchainDefinition.getToolchain(ix).getFullCmdC();
-					value = DefaultPreferences.discoverToolchainPath(toolchainName, searchPath, executableName);
-					if (value != null && !value.isEmpty()) {
-						// If the toolchain path was finally discovered, store
-						// it in the preferences.
-						defaultPreferences.putToolchainPath(toolchainName, value);
-					}
+					// Copy from deprecated store to new store.
+					defaultPreferences.putToolchainPath(toolchainName, path);
 				}
 			}
 		}
+
 	}
 
 	// ------------------------------------------------------------------------
