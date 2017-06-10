@@ -1338,4 +1338,11 @@
 			name="%properties.projectBuildToolsPaths">
 		</page>
 	</extension>
+
+	<extension point="org.eclipse.core.runtime.preferences">
+		<initializer
+			class="ilg.gnumcueclipse.managedbuild.cross.DefaultPreferenceInitializer">
+		</initializer>
+	</extension>
+
 </plugin>

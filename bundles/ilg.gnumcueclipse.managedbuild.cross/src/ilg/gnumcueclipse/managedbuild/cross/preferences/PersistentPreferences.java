@@ -25,6 +25,9 @@ public class PersistentPreferences extends ilg.gnumcueclipse.core.PersistentPref
 	public static final String WORKSPACE_BUILDTOOLS_PATH_STRICT = "workspace.buildTools.path.strict";
 	public static final String PROJECT_BUILDTOOLS_PATH_STRICT = "project.buildTools.path.strict";
 
+	public static final String BUILD_TOOLS_SEARCH_PATH_KEY = "buildTools.search.path";
+	public static final String BUILD_TOOLS_SEARCH_PATH_OS_KEY = "buildTools.search.path.%s";
+
 	public static final String TOOLCHAIN_NAME_KEY = "toolchain.name";
 	private static final String TOOLCHAIN_PATH_KEY = "toolchain.path.%d";
 	private static final String TOOLCHAIN_SEARCH_PATH_KEY = "toolchain.search.path.%d";

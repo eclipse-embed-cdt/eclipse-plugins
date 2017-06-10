@@ -16,6 +16,7 @@ import java.io.FilenameFilter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.regex.Matcher;
 
 import org.eclipse.cdt.utils.WindowsRegistry;
 import org.eclipse.core.runtime.CoreException;
@@ -65,8 +66,8 @@ public class Discoverer {
 		String resolvedPath = searchPath;
 		if (resolvedPath.indexOf("${user.home}") >= 0) {
 			String userHome = new Path(System.getProperty("user.home")).toString();
+			userHome = Matcher.quoteReplacement(userHome);
 			resolvedPath = resolvedPath.replaceAll("\\$\\{user.home\\}", userHome);
-
 		}
 
 		// If more macros remain, use the usual substituter.
@@ -141,13 +142,14 @@ public class Discoverer {
 					// Make portable
 					value = path.toString(); // includes /bin, if it exists
 					if (Activator.getInstance().isDebugging()) {
-						System.out.println("Discoverer.getRegistryInstallFolder() " + registryName + " " + value);
+						System.out.println(
+								"Discoverer.getRegistryInstallFolder() " + registryName + " \"" + value + "\"");
 					}
 
 					File folder = path.append(executableName).toFile();
 					if (folder.isFile()) {
 						if (Activator.getInstance().isDebugging()) {
-							System.out.println("Discoverer.getRegistryInstallFolder()=" + value);
+							System.out.println("Discoverer.getRegistryInstallFolder() = \"" + value + "\"");
 						}
 						return value;
 					}
