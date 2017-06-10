@@ -93,21 +93,6 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		 */
 		public void finalizeInitializationsDefaultPreferences() {
 
-			String value;
-
-			DefaultPreferences fCommonDefaultPreferences = new DefaultPreferences(
-					ilg.gnumcueclipse.managedbuild.cross.Activator.PLUGIN_ID);
-
-			// Build tools path
-			value = fCommonDefaultPreferences.getBuildToolsPath();
-			if (value.isEmpty()) {
-				// If not defined elsewhere, discover build tools.
-				value = DefaultPreferences.discoverBuildToolsPath();
-				if (!value.isEmpty()) {
-					fCommonDefaultPreferences.putBuildToolsPath(value);
-				}
-			}
-
 			DefaultPreferences fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
 
 			// Toolchains paths
@@ -146,7 +131,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 					}
 
 					String executableName = ToolchainDefinition.getToolchain(ix).getFullCmdC();
-					value = DefaultPreferences.discoverToolchainPath(toolchainName, searchPath, executableName);
+					String value = fDefaultPreferences.searchLatestExecutable(searchPath, executableName);
 					if (value != null && !value.isEmpty()) {
 						// If the toolchain path was finally discovered, store
 						// it in the preferences.
