@@ -3430,7 +3430,7 @@
 	</extension>
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer
-			class="ilg.gnumcueclipse.managedbuild.cross.arm.DefaultPreferenceInitializer">
+			class="ilg.gnumcueclipse.managedbuild.cross.arm.preferences.DefaultPreferenceInitializer">
 		</initializer>
 	</extension>
 	<extension point="org.eclipse.core.expressions.propertyTesters">

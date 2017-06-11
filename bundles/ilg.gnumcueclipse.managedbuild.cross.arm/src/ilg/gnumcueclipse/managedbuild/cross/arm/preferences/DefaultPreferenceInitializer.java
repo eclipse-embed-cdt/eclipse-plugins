@@ -9,9 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.managedbuild.cross.arm;
-
-import ilg.gnumcueclipse.managedbuild.cross.arm.preferences.DefaultPreferences;
+package ilg.gnumcueclipse.managedbuild.cross.arm.preferences;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
@@ -20,6 +18,9 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.INodeChangeListener;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.NodeChangeEvent;
 import org.osgi.service.prefs.Preferences;
+
+import ilg.gnumcueclipse.managedbuild.cross.arm.Activator;
+import ilg.gnumcueclipse.managedbuild.cross.arm.ToolchainDefinition;
 
 /**
  * Initialisations are executed in two different moments: as the first step
@@ -63,7 +64,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 	 */
 	private class LateInitializer implements INodeChangeListener {
 
-		private DefaultPreferences defaultPreferences;
+		private DefaultPreferences fDefaultPreferences;
 
 		@Override
 		public void added(NodeChangeEvent event) {
@@ -94,7 +95,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		 */
 		public void finalizeInitializationsDefaultPreferences() {
 
-			defaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
+			fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
 			DefaultPreferences deprecatedDefaultPreferences = new DefaultPreferences(
 					"ilg.gnuarmeclipse.managedbuild.cross");
 
@@ -105,7 +106,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 
 				// Try to get the build tools path from the GNU MCU ARM Eclipse
 				// store.
-				String path = defaultPreferences.getToolchainPath(toolchainName);
+				String path = fDefaultPreferences.getToolchainPath(toolchainName);
 				if (path.isEmpty()) {
 					// If not there, try to get it from the GNU ARM Eclipse
 					// store.
@@ -114,12 +115,12 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 
 				if (path.isEmpty()) {
 					// If not defined elsewhere, discover build tools.
-					path = defaultPreferences.discoverToolchainPath(toolchainName);
+					path = fDefaultPreferences.discoverToolchainPath(toolchainName);
 				}
 
 				if (!path.isEmpty()) {
 					// Copy from deprecated store to new store.
-					defaultPreferences.putToolchainPath(toolchainName, path);
+					fDefaultPreferences.putToolchainPath(toolchainName, path);
 				}
 			}
 		}
