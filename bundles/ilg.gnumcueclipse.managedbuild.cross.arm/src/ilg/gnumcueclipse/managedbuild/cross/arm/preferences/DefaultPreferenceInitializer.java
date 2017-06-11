@@ -21,6 +21,7 @@ import org.osgi.service.prefs.Preferences;
 
 import ilg.gnumcueclipse.managedbuild.cross.arm.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.arm.ToolchainDefinition;
+import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 
 /**
  * Initialisations are executed in two different moments: as the first step
@@ -29,6 +30,11 @@ import ilg.gnumcueclipse.managedbuild.cross.arm.ToolchainDefinition;
  * 
  */
 public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer {
+
+	// ------------------------------------------------------------------------
+
+	DefaultPreferences fDefaultPreferences;
+	PersistentPreferences fPersistentPreferences;
 
 	// ------------------------------------------------------------------------
 
@@ -43,10 +49,12 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 			System.out.println("arm.DefaultPreferenceInitializer.initializeDefaultPreferences()");
 		}
 
-		DefaultPreferences defaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
+		fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
+		fPersistentPreferences = new PersistentPreferences(Activator.PLUGIN_ID);
+
 		// Default toolchain name
 		String toolchainName = ToolchainDefinition.DEFAULT_TOOLCHAIN_NAME;
-		defaultPreferences.putToolchainName(toolchainName);
+		fDefaultPreferences.putToolchainName(toolchainName);
 
 		// When the 'ilg.gnumcueclipse.managedbuild.cross' node is completely
 		// added to /default, a NodeChangeEvent is raised.
@@ -63,8 +71,6 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 	 * INodeChangeListener for late initialisations.
 	 */
 	private class LateInitializer implements INodeChangeListener {
-
-		private DefaultPreferences fDefaultPreferences;
 
 		@Override
 		public void added(NodeChangeEvent event) {
@@ -99,7 +105,6 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				System.out.println("arm.LateInitializer.finalizeInitializationsDefaultPreferences()");
 			}
 
-			fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
 			DefaultPreferences deprecatedDefaultPreferences = new DefaultPreferences(
 					"ilg.gnuarmeclipse.managedbuild.cross");
 
@@ -108,27 +113,45 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 
 				String toolchainName = toolchain.getName();
 
-				// Try to get the build tools path from the GNU MCU ARM Eclipse
-				// store.
+				// If the search path is known, discover toolchain.
+				int ix;
+				try {
+					ix = ToolchainDefinition.findToolchainByName(toolchainName);
+				} catch (IndexOutOfBoundsException e) {
+					ix = ToolchainDefinition.getDefault();
+				}
+
+				String executableName = ToolchainDefinition.getToolchain(ix).getFullCmdC();
+
+				// Try the defaults from the GNU MCU Eclipse store.
 				String path = fDefaultPreferences.getToolchainPath(toolchainName);
-				if (path.isEmpty()) {
-					// If not there, try to get it from the GNU ARM Eclipse
-					// store.
+
+				if (!fDefaultPreferences.checkFolderExecutable(path, executableName)) {
+					// Try the deprecated GNU ARM Eclipse store.
 					path = deprecatedDefaultPreferences.getToolchainPath(toolchainName);
 				}
 
-				if (path.isEmpty()) {
-					// If not defined elsewhere, discover build tools.
-					path = fDefaultPreferences.discoverToolchainPath(toolchainName);
+				if (!fDefaultPreferences.checkFolderExecutable(path, executableName)) {
+					// Try the persistent preferences.
+					path = fPersistentPreferences.getToolchainPath(toolchainName, null);
 				}
 
-				if (!path.isEmpty()) {
-					// Copy from deprecated store to new store.
+				if (!fDefaultPreferences.checkFolderExecutable(path, executableName)) {
+					// If not defined elsewhere, discover.
+					path = fDefaultPreferences.discoverToolchainPath(toolchainName, executableName);
+				}
+
+				if (path != null && !path.isEmpty()) {
+					// If the toolchain path was finally discovered, store
+					// it in the default preferences.
 					fDefaultPreferences.putToolchainPath(toolchainName, path);
+				}
+
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("arm.LateInitializer.finalizeInitializationsDefaultPreferences() done");
 				}
 			}
 		}
-
 	}
 
 	// ------------------------------------------------------------------------

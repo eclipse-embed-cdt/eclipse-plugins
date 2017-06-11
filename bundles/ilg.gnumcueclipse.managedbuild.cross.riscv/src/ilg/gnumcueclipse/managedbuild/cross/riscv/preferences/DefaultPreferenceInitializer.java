@@ -19,6 +19,7 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences.INodeChangeListe
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.NodeChangeEvent;
 import org.osgi.service.prefs.Preferences;
 
+import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.ToolchainDefinition;
 
@@ -29,6 +30,11 @@ import ilg.gnumcueclipse.managedbuild.cross.riscv.ToolchainDefinition;
  * 
  */
 public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer {
+
+	// ------------------------------------------------------------------------
+
+	DefaultPreferences fDefaultPreferences;
+	PersistentPreferences fPersistentPreferences;
 
 	// ------------------------------------------------------------------------
 
@@ -43,7 +49,9 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 			System.out.println("riscv.DefaultPreferenceInitializer.initializeDefaultPreferences()");
 		}
 
-		DefaultPreferences fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
+		fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
+		fPersistentPreferences = new PersistentPreferences(Activator.PLUGIN_ID);
+
 		// Default toolchain name
 		String toolchainName = ToolchainDefinition.DEFAULT_TOOLCHAIN_NAME;
 		fDefaultPreferences.putToolchainName(toolchainName);
@@ -98,25 +106,42 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				System.out.println("riscv.LateInitializer.finalizeInitializationsDefaultPreferences()");
 			}
 
-			DefaultPreferences fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
-
 			// Toolchains paths
 			for (ToolchainDefinition toolchain : ToolchainDefinition.getList()) {
 
 				String toolchainName = toolchain.getName();
 
-				// Try to get the build tools path from the GNU MCU ARM Eclipse
-				// store.
-				String path = fDefaultPreferences.getToolchainPath(toolchainName);
-
-				if (path.isEmpty()) {
-					// If not defined elsewhere, discover build tools.
-					path = fDefaultPreferences.discoverToolchainPath(toolchainName);
+				// If the search path is known, discover toolchain.
+				int ix;
+				try {
+					ix = ToolchainDefinition.findToolchainByName(toolchainName);
+				} catch (IndexOutOfBoundsException e) {
+					ix = ToolchainDefinition.getDefault();
 				}
 
-				if (!path.isEmpty()) {
-					// Copy from deprecated store to new store.
+				String executableName = ToolchainDefinition.getToolchain(ix).getFullCmdC();
+
+				// Try the defaults.
+				String path = fDefaultPreferences.getToolchainPath(toolchainName);
+
+				if (!fDefaultPreferences.checkFolderExecutable(path, executableName)) {
+					// Try the persistent preferences.
+					path = fPersistentPreferences.getToolchainPath(toolchainName, null);
+				}
+
+				if (!fDefaultPreferences.checkFolderExecutable(path, executableName)) {
+					// If not defined elsewhere, discover.
+					path = fDefaultPreferences.discoverToolchainPath(toolchainName, executableName);
+				}
+
+				if (path != null && !path.isEmpty()) {
+					// If the toolchain path was finally discovered, store
+					// it in the default preferences.
 					fDefaultPreferences.putToolchainPath(toolchainName, path);
+				}
+
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("riscv.LateInitializer.finalizeInitializationsDefaultPreferences() done");
 				}
 			}
 		}

@@ -12,6 +12,7 @@
 package ilg.gnumcueclipse.debug.gdbjtag.qemu.preferences;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.core.preferences.Discoverer;
 import ilg.gnumcueclipse.debug.gdbjtag.qemu.Activator;
 
 public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.DefaultPreferences {
@@ -69,6 +70,13 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 
 	public static final String DO_CONTINUE_COMMAND = "continue";
 	public static final boolean DISABLE_GRAPHICS_DEFAULT = false;
+
+	// ------------------------------------------------------------------------
+
+	// HKCU & HKLM LOCAL_MACHINE
+	private static final String REG_SUBKEY = "\\GNU ARM Eclipse\\QEMU";
+	// Standard Microsoft recommendation.
+	private static final String REG_NAME = "InstallLocation";
 
 	// ------------------------------------------------------------------------
 
@@ -233,6 +241,52 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 
 	public boolean getQemuDisableGraphics() {
 		return getBoolean(PersistentPreferences.GDB_QEMU_DISABLE_GRAPHICS, DISABLE_GRAPHICS_DEFAULT);
+	}
+
+	// ------------------------------------------------------------------------
+
+	public String discoverInstallPath(String executableName) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("qemu.DefaultPreferences.discoverInstallPath(\"" + executableName + "\")");
+		}
+
+		String path = null;
+
+		if (EclipseUtils.isWindows()) {
+			// Try Windows registry keys.
+			path = Discoverer.getRegistryInstallFolder(executableName, "bin", REG_SUBKEY, REG_NAME);
+		}
+
+		String searchPath = null;
+
+		if (path == null) {
+
+			// Check if the search path is defined in the default
+			// preferences.
+			searchPath = getSearchPath();
+			if (searchPath.isEmpty()) {
+
+				// If not defined, get the OS Specific default
+				// from preferences.ini.
+				searchPath = getSearchPathOs();
+				if (!searchPath.isEmpty()) {
+					// Store the search path in the preferences.
+					putSearchPath(searchPath);
+				}
+			}
+
+			if (searchPath != null && !searchPath.isEmpty()) {
+				path = searchLatestExecutable(searchPath, executableName);
+			}
+		}
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println(
+					"qemu.DefaultPreferences.discoverInstallPath(\"" + executableName + "\") = \"" + path + "\"");
+		}
+
+		return path;
 	}
 
 	// ------------------------------------------------------------------------

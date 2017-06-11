@@ -11,8 +11,6 @@
 
 package ilg.gnumcueclipse.managedbuild.cross.riscv.preferences;
 
-import java.io.File;
-
 import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.core.preferences.Discoverer;
 import ilg.gnumcueclipse.managedbuild.cross.Activator;
@@ -35,31 +33,23 @@ public class DefaultPreferences extends ilg.gnumcueclipse.managedbuild.cross.pre
 
 	// ------------------------------------------------------------------------
 
-	public String discoverToolchainPath(String toolchainName) {
+	public String discoverToolchainPath(String toolchainName, String executableName) {
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("riscv.DefaultPreferences.discoverToolchainPath(\"" + toolchainName + "\")");
 		}
 
-		// If the search path is known, discover toolchain.
-		int ix;
-		try {
-			ix = ToolchainDefinition.findToolchainByName(toolchainName);
-		} catch (IndexOutOfBoundsException e) {
-			ix = ToolchainDefinition.getDefault();
-		}
-
-		String executableName = ToolchainDefinition.getToolchain(ix).getFullCmdC();
-
 		String path = null;
-		if (EclipseUtils.isWindows()) {
 
+		if (EclipseUtils.isWindows()) {
+			// Try Windows registry keys.
 			if (ToolchainDefinition.RISC_V_GCC_NEWLIB.equals(toolchainName)) {
 				path = Discoverer.getRegistryInstallFolder(executableName + ".exe", "bin", REG_SUBKEY, REG_NAME);
 			}
 		}
 
 		String searchPath = null;
+
 		if (path == null) {
 
 			// Check if the search path is defined in the default
@@ -71,25 +61,13 @@ public class DefaultPreferences extends ilg.gnumcueclipse.managedbuild.cross.pre
 				// from preferences.ini.
 				searchPath = getToolchainSearchPathOs(toolchainName);
 				if (!searchPath.isEmpty()) {
-					// Store the search path in the preferences
+					// Store the search path in the preferences.
 					putToolchainSearchPath(toolchainName, searchPath);
 				}
 			}
 
 			if (searchPath != null && !searchPath.isEmpty()) {
 				path = searchLatestExecutable(searchPath, executableName);
-			}
-
-			if (path != null) {
-				path = path.trim();
-
-				// Validate registry path. If folder does not exist, ignore.
-				File file = new File(path);
-				if (!file.isDirectory()) {
-					path = "";
-				}
-			} else {
-				path = "";
 			}
 		}
 

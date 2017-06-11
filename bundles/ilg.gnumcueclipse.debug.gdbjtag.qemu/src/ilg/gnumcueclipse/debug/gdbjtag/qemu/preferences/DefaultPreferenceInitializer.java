@@ -11,8 +11,6 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.qemu.preferences;
 
-import org.eclipse.core.runtime.IPath;
-import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
 import org.eclipse.core.runtime.preferences.DefaultScope;
@@ -21,8 +19,6 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences.INodeChangeListe
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.NodeChangeEvent;
 import org.osgi.service.prefs.Preferences;
 
-import ilg.gnumcueclipse.core.EclipseUtils;
-import ilg.gnumcueclipse.core.preferences.Discoverer;
 import ilg.gnumcueclipse.debug.gdbjtag.qemu.Activator;
 
 /**
@@ -35,12 +31,8 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 
 	// ------------------------------------------------------------------------
 
-	// HKCU & HKLM LOCAL_MACHINE
-	private static final String REG_SUBKEY = "\\GNU ARM Eclipse\\QEMU";
-	// Standard Microsoft recommendation.
-	private static final String REG_NAME = "InstallLocation";
-	// Custom name, used before reading the standard.
-	private static final String REG_NAME_DEPRECATED = "InstallFolder";
+	DefaultPreferences fDefaultPreferences;
+	PersistentPreferences fPersistentPreferences;
 
 	// ------------------------------------------------------------------------
 
@@ -54,6 +46,9 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("qemu.DefaultPreferenceInitializer.initializeDefaultPreferences()");
 		}
+
+		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
+		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
 
 		// When the 'ilg.gnumcueclipse.managedbuild.cross' node is completely
 		// added to /default, a NodeChangeEvent is raised.
@@ -104,78 +99,47 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				System.out.println("qemu.LateInitializer.finalizeInitializationsDefaultPreferences()");
 			}
 
-			DefaultPreferences fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
+			// ----------------------------------------------------------------
 
-			// QEMU executable name
-			String name = fDefaultPreferences.getExecutableName();
-			if (name.isEmpty()) {
-				// If not defined elsewhere, get platform specific name.
-				name = fDefaultPreferences.getExecutableNameOs();
-				if (!name.isEmpty()) {
-					fDefaultPreferences.putExecutableName(name);
-				}
+			// Try the default executable name.
+			String executableName = fDefaultPreferences.getExecutableName();
+			if (executableName.isEmpty()) {
+				// Try the platform specific name.
+				executableName = fDefaultPreferences.getExecutableNameOs();
 			}
 
-			PersistentPreferences fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
-
-			// If the search path is known, discover toolchain.
-			String executableName = fPersistentPreferences.getExecutableName();
-			if (executableName == null || executableName.isEmpty()) {
-				executableName = fDefaultPreferences.getExecutableName();
-			}
-			if (EclipseUtils.isWindows() && !executableName.endsWith(".exe")) {
-				executableName += ".exe";
+			if (executableName.isEmpty()) {
+				// Try the persistent preferences.
+				executableName = fPersistentPreferences.getExecutableName();
 			}
 
-			// Check if the search path is defined in the default
-			// preferences.
-			String searchPath = fDefaultPreferences.getSearchPath();
-			if (searchPath.isEmpty()) {
-
-				// If not defined, get the OS Specific default
-				// from preferences.ini.
-				searchPath = fDefaultPreferences.getSearchPathOs();
-				if (!searchPath.isEmpty()) {
-					// Store the search path in the preferences
-					fDefaultPreferences.putSearchPath(searchPath);
-				}
+			if (!executableName.isEmpty()) {
+				// Save the result back as default.
+				fDefaultPreferences.putExecutableName(executableName);
 			}
 
-			// QEMU install folder
-			// Check if the toolchain path is explictly defined in the
-			// default preferences.
-			String folder = fDefaultPreferences.getInstallFolder();
-			if (!folder.isEmpty()) {
-				IPath path = (new Path(folder)).append(executableName);
-				if (!path.toFile().isFile()) {
-					// If the file does not exist, refuse the given folder
-					// and prefer to search.
-					folder = "";
-				}
+			// ----------------------------------------------------------------
+
+			// Try the defaults.
+			String path = fDefaultPreferences.getInstallFolder();
+			if (!fDefaultPreferences.checkFolderExecutable(path, executableName)) {
+				// Try the persistent preferences.
+				path = fPersistentPreferences.getInstallFolder();
 			}
 
-			if (folder.isEmpty()) {
-
-				if (EclipseUtils.isWindows()) {
-					// If the search path is known, discover toolchain.
-					folder = Discoverer.getRegistryInstallFolder(executableName, "bin", REG_SUBKEY, REG_NAME);
-
-					// Search the non standard key too.
-					if (folder == null) {
-						folder = Discoverer.getRegistryInstallFolder(executableName, "bin", REG_SUBKEY,
-								REG_NAME_DEPRECATED);
-					}
-				}
-
-				if (folder == null || folder.isEmpty()) {
-					folder = Discoverer.searchInstallFolder(executableName, searchPath, "bin");
-				}
+			if (!fDefaultPreferences.checkFolderExecutable(path, executableName)) {
+				// If not defined elsewhere, discover.
+				path = fDefaultPreferences.discoverInstallPath(executableName);
 			}
 
-			if (folder != null && !folder.isEmpty()) {
-				// If the install folder was finally discovered, store
-				// it in the preferences.
-				fDefaultPreferences.putInstallFolder(folder);
+			if (path != null && !path.isEmpty()) {
+				// If the path was finally discovered, store
+				// it in the default preferences.
+				fDefaultPreferences.putInstallFolder(path);
+			}
+
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("qemu.LateInitializer.finalizeInitializationsDefaultPreferences() done");
 			}
 		}
 	}

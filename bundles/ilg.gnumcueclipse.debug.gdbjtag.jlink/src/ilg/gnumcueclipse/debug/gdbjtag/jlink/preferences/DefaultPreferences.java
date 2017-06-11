@@ -14,6 +14,7 @@ package ilg.gnumcueclipse.debug.gdbjtag.jlink.preferences;
 import org.osgi.service.prefs.BackingStoreException;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.core.preferences.Discoverer;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.Activator;
 
 public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.DefaultPreferences {
@@ -122,6 +123,12 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 	public static final String ENABLE_SWO_COMMAND = "monitor SWO EnableTarget ";
 
 	public static final String DO_CONTINUE_COMMAND = "continue";
+
+	// ------------------------------------------------------------------------
+
+	// Current SEGGER versions use HKEY_CURRENT_USER
+	private static final String REG_SUBKEY = "\\SEGGER\\J-Link";
+	private static final String REG_NAME = "InstallPath";
 
 	// ------------------------------------------------------------------------
 
@@ -363,6 +370,52 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 
 	public String getJLinkPreRunOther() {
 		return getString(PersistentPreferences.GDB_JLINK_PRERUN_OTHER, PRERUN_OTHER_DEFAULT);
+	}
+
+	// ------------------------------------------------------------------------
+
+	public String discoverInstallPath(String executableName) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("jlink.DefaultPreferences.discoverInstallPath(\"" + executableName + "\")");
+		}
+
+		String path = null;
+
+		if (EclipseUtils.isWindows()) {
+			// Try Windows registry keys.
+			path = Discoverer.getRegistryInstallFolder(executableName, "bin", REG_SUBKEY, REG_NAME);
+		}
+
+		String searchPath = null;
+
+		if (path == null) {
+
+			// Check if the search path is defined in the default
+			// preferences.
+			searchPath = getSearchPath();
+			if (searchPath.isEmpty()) {
+
+				// If not defined, get the OS Specific default
+				// from preferences.ini.
+				searchPath = getSearchPathOs();
+				if (!searchPath.isEmpty()) {
+					// Store the search path in the preferences.
+					putSearchPath(searchPath);
+				}
+			}
+
+			if (searchPath != null && !searchPath.isEmpty()) {
+				path = searchLatestExecutable(searchPath, executableName);
+			}
+		}
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println(
+					"jlink.DefaultPreferences.discoverInstallPath(\"" + executableName + "\") = \"" + path + "\"");
+		}
+
+		return path;
 	}
 
 	// ------------------------------------------------------------------------
