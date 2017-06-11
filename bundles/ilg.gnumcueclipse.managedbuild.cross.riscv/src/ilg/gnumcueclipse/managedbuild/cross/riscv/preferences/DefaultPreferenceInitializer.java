@@ -9,9 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.managedbuild.cross.riscv;
-
-import ilg.gnumcueclipse.managedbuild.cross.preferences.DefaultPreferences;
+package ilg.gnumcueclipse.managedbuild.cross.riscv.preferences;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.AbstractPreferenceInitializer;
@@ -20,6 +18,9 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.INodeChangeListener;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences.NodeChangeEvent;
 import org.osgi.service.prefs.Preferences;
+
+import ilg.gnumcueclipse.managedbuild.cross.riscv.Activator;
+import ilg.gnumcueclipse.managedbuild.cross.riscv.ToolchainDefinition;
 
 /**
  * Initialisations are executed in two different moments: as the first step
@@ -100,43 +101,18 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 
 				String toolchainName = toolchain.getName();
 
-				// Check if the toolchain path is explictly defined in the
-				// default preferences.
+				// Try to get the build tools path from the GNU MCU ARM Eclipse
+				// store.
 				String path = fDefaultPreferences.getToolchainPath(toolchainName);
+
+				if (path.isEmpty()) {
+					// If not defined elsewhere, discover build tools.
+					path = fDefaultPreferences.discoverToolchainPath(toolchainName);
+				}
+
 				if (!path.isEmpty()) {
-					continue; // Already defined, use it as is.
-				}
-
-				// Check if the search path is defined in the default
-				// preferences.
-				String searchPath = fDefaultPreferences.getToolchainSearchPath(toolchainName);
-				if (searchPath.isEmpty()) {
-
-					// If not defined, get the OS Specific default
-					// from preferences.ini.
-					searchPath = fDefaultPreferences.getToolchainSearchPathOs(toolchainName);
-					if (!searchPath.isEmpty()) {
-						// Store the search path in the preferences
-						fDefaultPreferences.putToolchainSearchPath(toolchainName, searchPath);
-					}
-				}
-
-				if (!searchPath.isEmpty()) {
-					// If the search path is known, discover toolchain.
-					int ix;
-					try {
-						ix = ToolchainDefinition.findToolchainByName(toolchainName);
-					} catch (IndexOutOfBoundsException e) {
-						ix = ToolchainDefinition.getDefault();
-					}
-
-					String executableName = ToolchainDefinition.getToolchain(ix).getFullCmdC();
-					String value = fDefaultPreferences.searchLatestExecutable(searchPath, executableName);
-					if (value != null && !value.isEmpty()) {
-						// If the toolchain path was finally discovered, store
-						// it in the preferences.
-						fDefaultPreferences.putToolchainPath(toolchainName, value);
-					}
+					// Copy from deprecated store to new store.
+					fDefaultPreferences.putToolchainPath(toolchainName, path);
 				}
 			}
 		}
