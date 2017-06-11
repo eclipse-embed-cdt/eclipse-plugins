@@ -39,7 +39,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuArmLaunch;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.Configuration;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
-import ilg.gnumcueclipse.debug.gdbjtag.jlink.DefaultPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.jlink.preferences.DefaultPreferences;
 
 @SuppressWarnings("restriction")
 public class Launch extends GnuArmLaunch {

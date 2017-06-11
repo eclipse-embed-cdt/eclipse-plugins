@@ -22,7 +22,7 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
 import ilg.gnumcueclipse.core.ScopedPreferenceStoreWithoutDefaults;
 import ilg.gnumcueclipse.core.preferences.DirectoryNotStrictFieldEditor;
 import ilg.gnumcueclipse.debug.gdbjtag.qemu.Activator;
-import ilg.gnumcueclipse.debug.gdbjtag.qemu.PersistentPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.qemu.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.debug.gdbjtag.qemu.ui.Messages;
 
 /**

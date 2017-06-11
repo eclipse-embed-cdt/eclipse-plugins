@@ -21,7 +21,7 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 import ilg.gnumcueclipse.core.preferences.DirectoryNotStrictFieldEditor;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator;
-import ilg.gnumcueclipse.debug.gdbjtag.pyocd.PersistentPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.ui.Messages;
 
 /**

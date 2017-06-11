@@ -9,9 +9,10 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.debug.gdbjtag.openocd;
+package ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.debug.gdbjtag.openocd.Activator;
 
 public class DefaultPreferences extends ilg.gnumcueclipse.core.DefaultPreferences {
 
@@ -25,7 +26,7 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.DefaultPreference
 	// Preferences
 	protected static final boolean TAB_MAIN_CHECK_PROGRAM_DEFAULT = false;
 
-	protected static final String GDB_SERVER_EXECUTABLE_DEFAULT = "${openocd_path}/${openocd_executable}";
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT = "${openocd_path}/${openocd_executable}";
 
 	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_NAME = "openocd";
 	protected static final String GDB_CLIENT_EXECUTABLE_DEFAULT = "${cross_prefix}gdb${cross_suffix}";

@@ -14,6 +14,7 @@ package ilg.gnumcueclipse.debug.gdbjtag.openocd;
 import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.core.StringUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
+import ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences.DefaultPreferences;
 
 import java.util.ArrayList;
 import java.util.List;

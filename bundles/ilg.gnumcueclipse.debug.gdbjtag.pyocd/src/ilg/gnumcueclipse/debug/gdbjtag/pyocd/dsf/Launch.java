@@ -42,7 +42,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuArmLaunch;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Configuration;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.ConfigurationAttributes;
-import ilg.gnumcueclipse.debug.gdbjtag.pyocd.DefaultPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences.DefaultPreferences;
 
 @SuppressWarnings("restriction")
 public class Launch extends GnuArmLaunch {

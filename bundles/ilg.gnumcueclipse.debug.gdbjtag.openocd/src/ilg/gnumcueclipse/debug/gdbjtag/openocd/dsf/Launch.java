@@ -39,7 +39,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuArmLaunch;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.Configuration;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
-import ilg.gnumcueclipse.debug.gdbjtag.openocd.DefaultPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences.DefaultPreferences;
 
 @SuppressWarnings("restriction")
 public class Launch extends GnuArmLaunch {

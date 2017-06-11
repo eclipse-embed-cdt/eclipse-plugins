@@ -29,4 +29,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Export-Package: ilg.gnumcueclipse.debug.gdbjtag.openocd,
  ilg.gnumcueclipse.debug.gdbjtag.openocd.dsf,
+ ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences,
  ilg.gnumcueclipse.debug.gdbjtag.openocd.ui

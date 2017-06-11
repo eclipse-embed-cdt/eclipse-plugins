@@ -14,7 +14,8 @@ package ilg.gnumcueclipse.debug.gdbjtag.openocd;
 import org.osgi.framework.BundleContext;
 
 import ilg.gnumcueclipse.core.AbstractUIActivator;
-import ilg.gnumcueclipse.debug.gdbjtag.openocd.PersistentPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences.DefaultPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences.PersistentPreferences;
 
 /**
  * The activator class controls the plug-in life cycle

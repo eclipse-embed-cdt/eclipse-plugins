@@ -84,7 +84,7 @@
 	
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer
-			class="ilg.gnumcueclipse.debug.gdbjtag.openocd.DefaultPreferenceInitializer">
+			class="ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences.DefaultPreferenceInitializer">
 		</initializer>
 	</extension>
 

@@ -40,7 +40,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuArmLaunch;
 import ilg.gnumcueclipse.debug.gdbjtag.qemu.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.qemu.Configuration;
 import ilg.gnumcueclipse.debug.gdbjtag.qemu.ConfigurationAttributes;
-import ilg.gnumcueclipse.debug.gdbjtag.qemu.DefaultPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.qemu.preferences.DefaultPreferences;
 
 @SuppressWarnings("restriction")
 public class Launch extends GnuArmLaunch {

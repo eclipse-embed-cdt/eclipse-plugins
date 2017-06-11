@@ -18,6 +18,8 @@ import ilg.gnumcueclipse.core.StringUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.DynamicVariableResolver;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences.DefaultPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences.PreferenceConstants;
 
 import java.util.ArrayList;
 import java.util.List;

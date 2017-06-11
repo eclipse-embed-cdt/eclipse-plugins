@@ -16,7 +16,8 @@ package ilg.gnumcueclipse.debug.gdbjtag.pyocd;
 import org.osgi.framework.BundleContext;
 
 import ilg.gnumcueclipse.core.AbstractUIActivator;
-import ilg.gnumcueclipse.debug.gdbjtag.pyocd.PersistentPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences.DefaultPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences.PersistentPreferences;
 
 /**
  * The activator class controls the plug-in life cycle

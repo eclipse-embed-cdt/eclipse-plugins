@@ -11,7 +11,7 @@
  *     Chris Reed - pyOCD changes
  *******************************************************************************/
 
-package ilg.gnumcueclipse.debug.gdbjtag.pyocd;
+package ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences;
 
 public interface PreferenceConstants {
 

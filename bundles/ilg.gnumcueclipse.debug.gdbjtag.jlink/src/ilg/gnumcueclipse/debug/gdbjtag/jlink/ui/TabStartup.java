@@ -17,8 +17,8 @@ package ilg.gnumcueclipse.debug.gdbjtag.jlink.ui;
 import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
-import ilg.gnumcueclipse.debug.gdbjtag.jlink.DefaultPreferences;
-import ilg.gnumcueclipse.debug.gdbjtag.jlink.PersistentPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.jlink.preferences.DefaultPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.jlink.preferences.PersistentPreferences;
 
 import java.io.File;
 

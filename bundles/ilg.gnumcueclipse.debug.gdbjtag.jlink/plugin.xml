@@ -65,7 +65,7 @@
 
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer
-			class="ilg.gnumcueclipse.debug.gdbjtag.jlink.DefaultPreferenceInitializer">
+			class="ilg.gnumcueclipse.debug.gdbjtag.jlink.preferences.DefaultPreferenceInitializer">
 		</initializer>
 	</extension>
 	

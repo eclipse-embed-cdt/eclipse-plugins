@@ -17,8 +17,8 @@ package ilg.gnumcueclipse.debug.gdbjtag.openocd.ui;
 import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
-import ilg.gnumcueclipse.debug.gdbjtag.openocd.DefaultPreferences;
-import ilg.gnumcueclipse.debug.gdbjtag.openocd.PersistentPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences.DefaultPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences.PersistentPreferences;
 
 import java.io.File;
 

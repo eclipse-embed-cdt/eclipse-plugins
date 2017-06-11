@@ -16,6 +16,7 @@ import java.util.regex.Matcher;
 import org.eclipse.core.resources.IProject;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences.PersistentPreferences;
 
 // Resolves variables from persistent preferences.
 
@@ -37,7 +38,8 @@ public class DynamicVariableResolver {
 					String tmp = EclipseUtils.getPreferenceValueForId(Activator.PLUGIN_ID, preferences[i], defaults[i],
 							project);
 
-					// The replacer gives a special meaning to '\' and '$'; to prevent this
+					// The replacer gives a special meaning to '\' and '$'; to
+					// prevent this
 					// the string must be quoted.
 					tmp = Matcher.quoteReplacement(tmp);
 					output = output.replaceAll("[$][{]" + macros[i] + "[}]", tmp);

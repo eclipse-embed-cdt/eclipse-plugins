@@ -11,10 +11,11 @@
  *     Chris Reed - pyOCD changes
  *******************************************************************************/
 
-package ilg.gnumcueclipse.debug.gdbjtag.pyocd;
+package ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
-import ilg.gnumcueclipse.debug.gdbjtag.pyocd.PreferenceConstants;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences.PreferenceConstants;
 
 public class DefaultPreferences extends ilg.gnumcueclipse.core.DefaultPreferences {
 
@@ -28,7 +29,7 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.DefaultPreference
 	// Preferences
 	protected static final boolean TAB_MAIN_CHECK_PROGRAM_DEFAULT = false;
 
-	protected static final String GDB_SERVER_EXECUTABLE_DEFAULT = "${pyocd_path}/${pyocd_executable}";
+	public static final String GDB_SERVER_EXECUTABLE_DEFAULT = "${pyocd_path}/${pyocd_executable}";
 
 	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_NAME = "pyocd-gdbserver";
 	protected static final String GDB_CLIENT_EXECUTABLE_DEFAULT = "${cross_prefix}gdb${cross_suffix}";

@@ -71,9 +71,9 @@ import ilg.gnumcueclipse.debug.gdbjtag.pyocd.ui.properties.ProjectMcuPage;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.ui.Messages;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.ConfigurationAttributes;
-import ilg.gnumcueclipse.debug.gdbjtag.pyocd.DefaultPreferences;
-import ilg.gnumcueclipse.debug.gdbjtag.pyocd.PersistentPreferences;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.PyOCD;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences.DefaultPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences.PersistentPreferences;
 
 /**
  * @since 7.0

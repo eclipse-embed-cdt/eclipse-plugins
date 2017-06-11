@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.debug.gdbjtag.jlink;
+package ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences;
 
 public interface PreferenceConstants {
 

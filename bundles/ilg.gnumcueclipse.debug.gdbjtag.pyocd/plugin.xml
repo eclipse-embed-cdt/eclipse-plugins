@@ -84,7 +84,7 @@
 
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer
-			class="ilg.gnumcueclipse.debug.gdbjtag.pyocd.DefaultPreferenceInitializer">
+			class="ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences.DefaultPreferenceInitializer">
 		</initializer>
 	</extension>
 

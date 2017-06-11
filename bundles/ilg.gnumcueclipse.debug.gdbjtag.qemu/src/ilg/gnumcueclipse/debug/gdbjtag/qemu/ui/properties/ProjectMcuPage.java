@@ -21,7 +21,7 @@ import ilg.gnumcueclipse.core.ScopedPreferenceStoreWithoutDefaults;
 import ilg.gnumcueclipse.core.preferences.DirectoryNotStrictFieldEditor;
 import ilg.gnumcueclipse.core.ui.FieldEditorPropertyPage;
 import ilg.gnumcueclipse.debug.gdbjtag.qemu.Activator;
-import ilg.gnumcueclipse.debug.gdbjtag.qemu.PersistentPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.qemu.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.debug.gdbjtag.qemu.ui.Messages;
 
 public class ProjectMcuPage extends FieldEditorPropertyPage {

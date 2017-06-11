@@ -1,15 +1,19 @@
 /*******************************************************************************
  * Copyright (c) 2013 Liviu Ionescu.
+ * Copyright (c) 2015-2016 Chris Reed.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- * 
+ *
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Chris Reed - pyOCD changes
  *******************************************************************************/
 
-package ilg.gnumcueclipse.debug.gdbjtag.openocd;
+package ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences;
+
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator;
 
 public class PersistentPreferences extends ilg.gnumcueclipse.debug.gdbjtag.PersistentPreferences {
 
@@ -36,21 +40,21 @@ public class PersistentPreferences extends ilg.gnumcueclipse.debug.gdbjtag.Persi
 
 	// Tab Startup
 	// Initialisation Commands
-	public static final String GDB_OPENOCD = "gdb.openocd.";
+	public static final String GDB_PYOCD = "gdb.pyocd.";
 
-	public static final String GDB_OPENOCD_DO_INITIAL_RESET = GDB_OPENOCD + "doInitialReset";
-	public static final String GDB_OPENOCD_INITIAL_RESET_TYPE = GDB_OPENOCD + "initialReset.type";
-	public static final String GDB_OPENOCD_INIT_OTHER = GDB_OPENOCD + "init.other";
+	public static final String GDB_PYOCD_DO_INITIAL_RESET = GDB_PYOCD + "doInitialReset";
+	public static final String GDB_PYOCD_INITIAL_RESET_TYPE = GDB_PYOCD + "initialReset.type";
+	public static final String GDB_PYOCD_INIT_OTHER = GDB_PYOCD + "init.other";
 
-	public static final String GDB_OPENOCD_ENABLE_SEMIHOSTING = GDB_OPENOCD + "enableSemihosting";
+	public static final String GDB_PYOCD_ENABLE_SEMIHOSTING = GDB_PYOCD + "enableSemihosting";
 
-	public static final String GDB_OPENOCD_DO_DEBUG_IN_RAM = GDB_OPENOCD + "doDebugInRam";
+	public static final String GDB_PYOCD_DO_DEBUG_IN_RAM = GDB_PYOCD + "doDebugInRam";
 
 	// Run Commands
-	public static final String GDB_OPENOCD_DO_PRERUN_RESET = GDB_OPENOCD + "doPreRunReset";
-	public static final String GDB_OPENOCD_PRERUN_RESET_TYPE = GDB_OPENOCD + "preRunReset.type";
+	public static final String GDB_PYOCD_DO_PRERUN_RESET = GDB_PYOCD + "doPreRunReset";
+	public static final String GDB_PYOCD_PRERUN_RESET_TYPE = GDB_PYOCD + "preRunReset.type";
 
-	public static final String GDB_OPENOCD_PRERUN_OTHER = GDB_OPENOCD + "preRun.other";
+	public static final String GDB_PYOCD_PRERUN_OTHER = GDB_PYOCD + "preRun.other";
 
 	// ------------------------------------------------------------------------
 
@@ -61,7 +65,7 @@ public class PersistentPreferences extends ilg.gnumcueclipse.debug.gdbjtag.Persi
 	public PersistentPreferences(String pluginId) {
 		super(pluginId);
 
-		fDefaultPreferences = new DefaultPreferences(pluginId);
+		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
 	}
 
 	// ----- gdb server doStart -----------------------------------------------
@@ -98,7 +102,7 @@ public class PersistentPreferences extends ilg.gnumcueclipse.debug.gdbjtag.Persi
 		if (value != null) {
 			return value;
 		}
-		return fDefaultPreferences.getOpenocdConfig();
+		return fDefaultPreferences.getPyocdConfig();
 	}
 
 	public void putGdbServerOtherOptions(String value) {
@@ -143,96 +147,96 @@ public class PersistentPreferences extends ilg.gnumcueclipse.debug.gdbjtag.Persi
 		putWorkspaceString(GDB_CLIENT_COMMANDS, value);
 	}
 
-	// ----- OpenOCD do initial reset -----------------------------------------
-	public boolean getOpenOCDDoInitialReset() {
+	// ----- pyOCD do initial reset -----------------------------------------
+	public boolean getPyOCDDoInitialReset() {
 
 		return Boolean.valueOf(
-				getString(GDB_OPENOCD_DO_INITIAL_RESET, Boolean.toString(DefaultPreferences.DO_FIRST_RESET_DEFAULT)));
+				getString(GDB_PYOCD_DO_INITIAL_RESET, Boolean.toString(DefaultPreferences.DO_FIRST_RESET_DEFAULT)));
 	}
 
-	public void putOpenOCDDoInitialReset(boolean value) {
+	public void putPyOCDDoInitialReset(boolean value) {
 
-		putWorkspaceString(GDB_OPENOCD_DO_INITIAL_RESET, Boolean.toString(value));
+		putWorkspaceString(GDB_PYOCD_DO_INITIAL_RESET, Boolean.toString(value));
 	}
 
-	// ----- OpenOCD initial reset type ---------------------------------------
-	public String getOpenOCDInitialResetType() {
+	// ----- pyOCD initial reset type ---------------------------------------
+	public String getPyOCDInitialResetType() {
 
-		return getString(GDB_OPENOCD_INITIAL_RESET_TYPE, DefaultPreferences.FIRST_RESET_TYPE_DEFAULT);
+		return getString(GDB_PYOCD_INITIAL_RESET_TYPE, DefaultPreferences.FIRST_RESET_TYPE_DEFAULT);
 	}
 
-	public void putOpenOCDInitialResetType(String value) {
+	public void putPyOCDInitialResetType(String value) {
 
-		putWorkspaceString(GDB_OPENOCD_INITIAL_RESET_TYPE, value);
+		putWorkspaceString(GDB_PYOCD_INITIAL_RESET_TYPE, value);
 	}
 
-	// ----- OpenOCD enable semihosting ---------------------------------------
-	public boolean getOpenOCDEnableSemihosting() {
+	// ----- pyOCD enable semihosting ---------------------------------------
+	public boolean getPyOCDEnableSemihosting() {
 
-		return Boolean.valueOf(getString(GDB_OPENOCD_ENABLE_SEMIHOSTING,
+		return Boolean.valueOf(getString(GDB_PYOCD_ENABLE_SEMIHOSTING,
 				Boolean.toString(DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT)));
 	}
 
-	public void putOpenOCDEnableSemihosting(boolean value) {
+	public void putPyOCDEnableSemihosting(boolean value) {
 
-		putWorkspaceString(GDB_OPENOCD_ENABLE_SEMIHOSTING, Boolean.toString(value));
+		putWorkspaceString(GDB_PYOCD_ENABLE_SEMIHOSTING, Boolean.toString(value));
 	}
 
-	// ----- OpenOCD init other -----------------------------------------------
-	public String getOpenOCDInitOther() {
+	// ----- pyOCD init other -----------------------------------------------
+	public String getPyOCDInitOther() {
 
-		return getString(GDB_OPENOCD_INIT_OTHER, DefaultPreferences.OTHER_INIT_COMMANDS_DEFAULT);
+		return getString(GDB_PYOCD_INIT_OTHER, DefaultPreferences.OTHER_INIT_COMMANDS_DEFAULT);
 	}
 
-	public void putOpenOCDInitOther(String value) {
+	public void putPyOCDInitOther(String value) {
 
-		putWorkspaceString(GDB_OPENOCD_INIT_OTHER, value);
+		putWorkspaceString(GDB_PYOCD_INIT_OTHER, value);
 	}
 
-	// ----- OpenOCD debug in ram ---------------------------------------------
-	public boolean getOpenOCDDebugInRam() {
+	// ----- pyOCD debug in ram ---------------------------------------------
+	public boolean getPyOCDDebugInRam() {
 
 		return Boolean.valueOf(
-				getString(GDB_OPENOCD_DO_DEBUG_IN_RAM, Boolean.toString(DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT)));
+				getString(GDB_PYOCD_DO_DEBUG_IN_RAM, Boolean.toString(DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT)));
 	}
 
-	public void putOpenOCDDebugInRam(boolean value) {
+	public void putPyOCDDebugInRam(boolean value) {
 
-		putWorkspaceString(GDB_OPENOCD_DO_DEBUG_IN_RAM, Boolean.toString(value));
+		putWorkspaceString(GDB_PYOCD_DO_DEBUG_IN_RAM, Boolean.toString(value));
 	}
 
-	// ----- OpenOCD do prerun reset ------------------------------------------
-	public boolean getOpenOCDDoPreRunReset() {
+	// ----- pyOCD do prerun reset ------------------------------------------
+	public boolean getPyOCDDoPreRunReset() {
 
 		return Boolean.valueOf(
-				getString(GDB_OPENOCD_DO_PRERUN_RESET, Boolean.toString(DefaultPreferences.DO_SECOND_RESET_DEFAULT)));
+				getString(GDB_PYOCD_DO_PRERUN_RESET, Boolean.toString(DefaultPreferences.DO_SECOND_RESET_DEFAULT)));
 	}
 
-	public void putOpenOCDDoPreRunReset(boolean value) {
+	public void putPyOCDDoPreRunReset(boolean value) {
 
-		putWorkspaceString(GDB_OPENOCD_DO_PRERUN_RESET, Boolean.toString(value));
+		putWorkspaceString(GDB_PYOCD_DO_PRERUN_RESET, Boolean.toString(value));
 	}
 
-	// ----- OpenOCD prerun reset type ----------------------------------------
-	public String getOpenOCDPreRunResetType() {
+	// ----- pyOCD prerun reset type ----------------------------------------
+	public String getPyOCDPreRunResetType() {
 
-		return getString(GDB_OPENOCD_PRERUN_RESET_TYPE, DefaultPreferences.SECOND_RESET_TYPE_DEFAULT);
+		return getString(GDB_PYOCD_PRERUN_RESET_TYPE, DefaultPreferences.SECOND_RESET_TYPE_DEFAULT);
 	}
 
-	public void putOpenOCDPreRunResetType(String value) {
+	public void putPyOCDPreRunResetType(String value) {
 
-		putWorkspaceString(GDB_OPENOCD_PRERUN_RESET_TYPE, value);
+		putWorkspaceString(GDB_PYOCD_PRERUN_RESET_TYPE, value);
 	}
 
-	// ----- OpenOCD init other -----------------------------------------------
-	public String getOpenOCDPreRunOther() {
+	// ----- pyOCD init other -----------------------------------------------
+	public String getPyOCDPreRunOther() {
 
-		return getString(GDB_OPENOCD_PRERUN_OTHER, DefaultPreferences.OTHER_RUN_COMMANDS_DEFAULT);
+		return getString(GDB_PYOCD_PRERUN_OTHER, DefaultPreferences.OTHER_RUN_COMMANDS_DEFAULT);
 	}
 
-	public void putOpenOCDPreRunOther(String value) {
+	public void putPyOCDPreRunOther(String value) {
 
-		putWorkspaceString(GDB_OPENOCD_PRERUN_OTHER, value);
+		putWorkspaceString(GDB_PYOCD_PRERUN_OTHER, value);
 	}
 
 	// ------------------------------------------------------------------------

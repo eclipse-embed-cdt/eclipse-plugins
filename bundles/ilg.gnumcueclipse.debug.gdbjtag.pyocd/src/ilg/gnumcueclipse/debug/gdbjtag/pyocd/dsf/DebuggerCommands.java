@@ -19,7 +19,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuArmDebuggerCommandsService;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.ConfigurationAttributes;
-import ilg.gnumcueclipse.debug.gdbjtag.pyocd.DefaultPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences.DefaultPreferences;
 
 import java.util.List;
 

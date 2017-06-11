@@ -18,8 +18,8 @@ package ilg.gnumcueclipse.debug.gdbjtag.pyocd.ui;
 import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.ConfigurationAttributes;
-import ilg.gnumcueclipse.debug.gdbjtag.pyocd.DefaultPreferences;
-import ilg.gnumcueclipse.debug.gdbjtag.pyocd.PersistentPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences.DefaultPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences.PersistentPreferences;
 
 import java.io.File;
 

@@ -21,7 +21,7 @@ import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
 import ilg.gnumcueclipse.core.preferences.DirectoryNotStrictFieldEditor;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.Activator;
-import ilg.gnumcueclipse.debug.gdbjtag.jlink.PersistentPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.jlink.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.ui.Messages;
 
 /**

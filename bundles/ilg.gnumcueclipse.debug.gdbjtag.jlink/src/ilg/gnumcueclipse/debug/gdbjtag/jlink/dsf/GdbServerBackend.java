@@ -16,8 +16,8 @@ import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuArmGdbServerBackend;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.Configuration;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
-import ilg.gnumcueclipse.debug.gdbjtag.jlink.DefaultPreferences;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.SemihostingProcess;
+import ilg.gnumcueclipse.debug.gdbjtag.jlink.preferences.DefaultPreferences;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;

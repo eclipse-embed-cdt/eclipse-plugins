@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.debug.gdbjtag.qemu;
+package ilg.gnumcueclipse.debug.gdbjtag.qemu.preferences;
 
 public interface PreferenceConstants {
 

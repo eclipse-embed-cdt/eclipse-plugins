@@ -1,17 +1,15 @@
 /*******************************************************************************
  * Copyright (c) 2015 Liviu Ionescu.
- * Copyright (c) 2015-2016 Chris Reed.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/epl-v10.html
- *
+ * 
  * Contributors:
  *     Liviu Ionescu - initial version
- *     Chris Reed - pyOCD changes
  *******************************************************************************/
 
-package ilg.gnumcueclipse.debug.gdbjtag.pyocd;
+package ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -25,21 +23,20 @@ import org.osgi.service.prefs.Preferences;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.core.preferences.Discoverer;
-import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator;
-import ilg.gnumcueclipse.debug.gdbjtag.pyocd.PersistentPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.openocd.Activator;
 
 /**
  * Initialisations are executed in two different moments: as the first step
  * during bundle inits and after all defaults are loaded from all possible
  * sources
- *
+ * 
  */
 public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer {
 
 	// ------------------------------------------------------------------------
 
 	// HKCU & HKLM LOCAL_MACHINE
-	private static final String REG_SUBKEY = "\\GNU ARM Eclipse\\PyOCD";
+	private static final String REG_SUBKEY = "\\GNU ARM Eclipse\\OpenOCD";
 	// Standard Microsoft recommendation.
 	private static final String REG_NAME = "InstallLocation";
 	// Custom name, used before reading the standard.
@@ -55,7 +52,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 	public void initializeDefaultPreferences() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("pyocd.DefaultPreferenceInitializer.initializeDefaultPreferences()");
+			System.out.println("openocd.DefaultPreferenceInitializer.initializeDefaultPreferences()");
 		}
 
 		DefaultPreferences fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
@@ -89,7 +86,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void added(NodeChangeEvent event) {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("pyocd.LateInitializer.added() " + event + " " + event.getChild().name());
+				System.out.println("openocd.LateInitializer.added() " + event + " " + event.getChild().name());
 			}
 
 			if (Activator.PLUGIN_ID.equals(event.getChild().name())) {
@@ -105,7 +102,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void removed(NodeChangeEvent event) {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("pyocd.LateInitializer.removed() " + event);
+				System.out.println("openocd.LateInitializer.removed() " + event);
 			}
 		}
 
@@ -115,7 +112,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void finalizeInitializationsDefaultPreferences() {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("pyocd.LateInitializer.finalizeInitializationsDefaultPreferences()");
+				System.out.println("openocd.LateInitializer.finalizeInitializationsDefaultPreferences()");
 			}
 
 			DefaultPreferences fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
@@ -129,7 +126,6 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 					fDefaultPreferences.putExecutableName(name);
 				}
 			}
-
 			PersistentPreferences fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
 
 			String executableName = fPersistentPreferences.getExecutableName();
@@ -155,7 +151,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				}
 			}
 
-			// pyOCD install folder
+			// OpenOCD install folder
 			// Check if the toolchain path is explictly defined in the
 			// default preferences.
 			String folder = fDefaultPreferences.getInstallFolder();
@@ -193,7 +189,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 			}
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("pyocd.LateInitializer.finalizeInitializationsDefaultPreferences() done");
+				System.out.println("openocd.LateInitializer.finalizeInitializationsDefaultPreferences() done");
 			}
 		}
 	}

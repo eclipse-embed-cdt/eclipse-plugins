@@ -17,8 +17,8 @@ package ilg.gnumcueclipse.debug.gdbjtag.qemu.ui;
 import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.qemu.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.qemu.ConfigurationAttributes;
-import ilg.gnumcueclipse.debug.gdbjtag.qemu.DefaultPreferences;
-import ilg.gnumcueclipse.debug.gdbjtag.qemu.PersistentPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.qemu.preferences.DefaultPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.qemu.preferences.PersistentPreferences;
 
 import java.io.File;
 

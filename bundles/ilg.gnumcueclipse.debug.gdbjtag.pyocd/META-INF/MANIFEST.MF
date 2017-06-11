@@ -28,4 +28,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Export-Package: ilg.gnumcueclipse.debug.gdbjtag.pyocd,
  ilg.gnumcueclipse.debug.gdbjtag.pyocd.dsf,
+ ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences,
  ilg.gnumcueclipse.debug.gdbjtag.pyocd.ui

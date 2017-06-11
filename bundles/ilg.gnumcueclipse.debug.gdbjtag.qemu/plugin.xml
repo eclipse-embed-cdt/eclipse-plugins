@@ -55,7 +55,7 @@
 
 	<extension point="org.eclipse.core.runtime.preferences">
 		<initializer
-			class="ilg.gnumcueclipse.debug.gdbjtag.qemu.DefaultPreferenceInitializer">
+			class="ilg.gnumcueclipse.debug.gdbjtag.qemu.preferences.DefaultPreferenceInitializer">
 		</initializer>
 	</extension>
 

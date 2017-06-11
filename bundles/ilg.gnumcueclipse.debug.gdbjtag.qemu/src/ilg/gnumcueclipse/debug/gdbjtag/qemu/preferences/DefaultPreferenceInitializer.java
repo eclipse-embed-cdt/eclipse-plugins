@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.debug.gdbjtag.qemu;
+package ilg.gnumcueclipse.debug.gdbjtag.qemu.preferences;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -23,6 +23,7 @@ import org.osgi.service.prefs.Preferences;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.core.preferences.Discoverer;
+import ilg.gnumcueclipse.debug.gdbjtag.qemu.Activator;
 
 /**
  * Initialisations are executed in two different moments: as the first step

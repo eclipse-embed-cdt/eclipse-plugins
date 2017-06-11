@@ -30,4 +30,5 @@ Bundle-ActivationPolicy: lazy
 Bundle-Localization: plugin
 Export-Package: ilg.gnumcueclipse.debug.gdbjtag.jlink,
  ilg.gnumcueclipse.debug.gdbjtag.jlink.dsf,
+ ilg.gnumcueclipse.debug.gdbjtag.jlink.preferences,
  ilg.gnumcueclipse.debug.gdbjtag.jlink.ui

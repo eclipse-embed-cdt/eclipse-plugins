@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.debug.gdbjtag.openocd;
+package ilg.gnumcueclipse.debug.gdbjtag.jlink.preferences;
 
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
@@ -23,6 +23,7 @@ import org.osgi.service.prefs.Preferences;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.core.preferences.Discoverer;
+import ilg.gnumcueclipse.debug.gdbjtag.jlink.Activator;
 
 /**
  * Initialisations are executed in two different moments: as the first step
@@ -34,12 +35,9 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 
 	// ------------------------------------------------------------------------
 
-	// HKCU & HKLM LOCAL_MACHINE
-	private static final String REG_SUBKEY = "\\GNU ARM Eclipse\\OpenOCD";
-	// Standard Microsoft recommendation.
-	private static final String REG_NAME = "InstallLocation";
-	// Custom name, used before reading the standard.
-	private static final String REG_NAME_DEPRECATED = "InstallFolder";
+	// Current SEGGER versions use HKEY_CURRENT_USER
+	private static final String REG_SUBKEY = "\\SEGGER\\J-Link";
+	private static final String REG_NAME = "InstallPath";
 
 	// ------------------------------------------------------------------------
 
@@ -51,19 +49,86 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 	public void initializeDefaultPreferences() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("openocd.DefaultPreferenceInitializer.initializeDefaultPreferences()");
+			System.out.println("jlink.DefaultPreferenceInitializer.initializeDefaultPreferences()");
 		}
 
 		DefaultPreferences fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
+		fDefaultPreferences.putString(PersistentPreferences.GDB_SERVER_INTERFACE,
+				DefaultPreferences.SERVER_INTERFACE_DEFAULT);
 
-		fDefaultPreferences.putBoolean(PersistentPreferences.GDB_SERVER_DO_START,
-				DefaultPreferences.DO_START_GDB_SERVER_DEFAULT);
+		fDefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_ENABLE_SEMIHOSTING,
+				DefaultPreferences.ENABLE_SEMIHOSTING_DEFAULT);
 
-		fDefaultPreferences.putString(PersistentPreferences.GDB_CLIENT_COMMANDS,
-				DefaultPreferences.GDB_CLIENT_OTHER_COMMANDS_DEFAULT);
+		fDefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_ENABLE_SWO,
+				DefaultPreferences.ENABLE_SWO_DEFAULT);
 
 		fDefaultPreferences.putBoolean(PersistentPreferences.TAB_MAIN_CHECK_PROGRAM,
 				DefaultPreferences.TAB_MAIN_CHECK_PROGRAM_DEFAULT);
+
+		fDefaultPreferences.putBoolean(PersistentPreferences.GDB_SERVER_DO_START,
+				DefaultPreferences.SERVER_DO_START_DEFAULT);
+
+		fDefaultPreferences.putString(PersistentPreferences.GDB_SERVER_ENDIANNESS,
+				DefaultPreferences.SERVER_ENDIANNESS_DEFAULT);
+
+		fDefaultPreferences.putString(PersistentPreferences.GDB_SERVER_CONNECTION,
+				DefaultPreferences.SERVER_CONNECTION_DEFAULT);
+
+		fDefaultPreferences.putString(PersistentPreferences.GDB_SERVER_CONNECTION_ADDRESS,
+				DefaultPreferences.SERVER_CONNECTION_ADDRESS_DEFAULT);
+
+		fDefaultPreferences.putString(PersistentPreferences.GDB_SERVER_INITIAL_SPEED,
+				DefaultPreferences.SERVER_INITIAL_SPEED_DEFAULT);
+
+		fDefaultPreferences.putString(PersistentPreferences.GDB_SERVER_OTHER_OPTIONS,
+				DefaultPreferences.SERVER_OTHER_OPTIONS_DEFAULT);
+
+		fDefaultPreferences.putString(PersistentPreferences.GDB_CLIENT_COMMANDS,
+				DefaultPreferences.CLIENT_COMMANDS_DEFAULT);
+
+		fDefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_DO_INITIAL_RESET,
+				DefaultPreferences.DO_INITIAL_RESET_DEFAULT);
+
+		fDefaultPreferences.putString(PersistentPreferences.GDB_JLINK_INITIAL_RESET_TYPE,
+				DefaultPreferences.INITIAL_RESET_TYPE_DEFAULT);
+
+		fDefaultPreferences.putInt(PersistentPreferences.GDB_JLINK_INITIAL_RESET_SPEED,
+				DefaultPreferences.INITIAL_RESET_SPEED_DEFAULT);
+
+		fDefaultPreferences.putString(PersistentPreferences.GDB_JLINK_SPEED, DefaultPreferences.JLINK_SPEED_DEFAULT);
+
+		fDefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_ENABLE_FLASH_BREAKPOINTS,
+				DefaultPreferences.ENABLE_FLASH_BREAKPOINTS_DEFAULT);
+
+		fDefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_SEMIHOSTING_TELNET,
+				DefaultPreferences.SEMIHOSTING_TELNET_DEFAULT);
+
+		fDefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_SEMIHOSTING_CLIENT,
+				DefaultPreferences.SEMIHOSTING_CLIENT_DEFAULT);
+
+		fDefaultPreferences.putInt(PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_CPU_FREQ,
+				DefaultPreferences.SWO_ENABLE_TARGET_CPU_FREQ_DEFAULT);
+
+		fDefaultPreferences.putInt(PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_SWO_FREQ,
+				DefaultPreferences.SWO_ENABLE_TARGET_SWO_FREQ_DEFAULT);
+
+		fDefaultPreferences.putString(PersistentPreferences.GDB_JLINK_SWO_ENABLE_TARGET_PORT_MASK,
+				DefaultPreferences.SWO_ENABLE_TARGET_PORT_MASK_DEFAULT);
+
+		fDefaultPreferences.putString(PersistentPreferences.GDB_JLINK_INIT_OTHER,
+				DefaultPreferences.INIT_OTHER_DEFAULT);
+
+		fDefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_DO_DEBUG_IN_RAM,
+				DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT);
+
+		fDefaultPreferences.putBoolean(PersistentPreferences.GDB_JLINK_DO_PRERUN_RESET,
+				DefaultPreferences.DO_PRERUN_RESET_DEFAULT);
+
+		fDefaultPreferences.putString(PersistentPreferences.GDB_JLINK_PRERUN_RESET_TYPE,
+				DefaultPreferences.PRERUN_RESET_TYPE_DEFAULT);
+
+		fDefaultPreferences.putString(PersistentPreferences.GDB_JLINK_PRERUN_OTHER,
+				DefaultPreferences.PRERUN_OTHER_DEFAULT);
 
 		// When the 'ilg.gnumcueclipse.managedbuild.cross' node is completely
 		// added to /default, a NodeChangeEvent is raised.
@@ -85,7 +150,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void added(NodeChangeEvent event) {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("openocd.LateInitializer.added() " + event + " " + event.getChild().name());
+				System.out.println("jlink.LateInitializer.added() " + event + " " + event.getChild().name());
 			}
 
 			if (Activator.PLUGIN_ID.equals(event.getChild().name())) {
@@ -101,7 +166,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void removed(NodeChangeEvent event) {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("openocd.LateInitializer.removed() " + event);
+				System.out.println("jlink.LateInitializer.removed() " + event);
 			}
 		}
 
@@ -111,12 +176,11 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void finalizeInitializationsDefaultPreferences() {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("openocd.LateInitializer.finalizeInitializationsDefaultPreferences()");
+				System.out.println("jlink.LateInitializer.finalizeInitializationsDefaultPreferences()");
 			}
 
 			DefaultPreferences fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
-
-			// Executable name
+			// J-Link GDB Server executable name
 			String name = fDefaultPreferences.getExecutableName();
 			if (name.isEmpty()) {
 				// If not defined elsewhere, get platform specific name.
@@ -125,6 +189,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 					fDefaultPreferences.putExecutableName(name);
 				}
 			}
+
 			PersistentPreferences fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
 
 			String executableName = fPersistentPreferences.getExecutableName();
@@ -143,14 +208,13 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				// If not defined, get the OS Specific default
 				// from preferences.ini.
 				searchPath = fDefaultPreferences.getSearchPathOs();
-
 				if (!searchPath.isEmpty()) {
 					// Store the search path in the preferences
 					fDefaultPreferences.putSearchPath(searchPath);
 				}
 			}
 
-			// OpenOCD install folder
+			// J-Link GDB Server install folder
 			// Check if the toolchain path is explictly defined in the
 			// default preferences.
 			String folder = fDefaultPreferences.getInstallFolder();
@@ -168,16 +232,10 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				if (EclipseUtils.isWindows()) {
 					// If the search path is known, discover toolchain.
 					folder = Discoverer.getRegistryInstallFolder(executableName, "bin", REG_SUBKEY, REG_NAME);
-
-					// Search the non standard key too.
-					if (folder == null) {
-						folder = Discoverer.getRegistryInstallFolder(executableName, "bin", REG_SUBKEY,
-								REG_NAME_DEPRECATED);
-					}
 				}
 
 				if (folder == null || folder.isEmpty()) {
-					folder = Discoverer.searchInstallFolder(executableName, searchPath, "bin");
+					folder = Discoverer.searchInstallFolder(executableName, searchPath, null);
 				}
 			}
 
@@ -185,10 +243,6 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 				// If the install folder was finally discovered, store
 				// it in the preferences.
 				fDefaultPreferences.putInstallFolder(folder);
-			}
-
-			if (Activator.getInstance().isDebugging()) {
-				System.out.println("openocd.LateInitializer.finalizeInitializationsDefaultPreferences() done");
 			}
 		}
 	}

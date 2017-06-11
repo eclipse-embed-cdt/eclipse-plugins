@@ -17,7 +17,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuArmDebuggerCommandsService;
 import ilg.gnumcueclipse.debug.gdbjtag.qemu.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.qemu.ConfigurationAttributes;
-import ilg.gnumcueclipse.debug.gdbjtag.qemu.DefaultPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.qemu.preferences.DefaultPreferences;
 
 import java.util.List;
 

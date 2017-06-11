@@ -9,11 +9,12 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.debug.gdbjtag.jlink;
+package ilg.gnumcueclipse.debug.gdbjtag.jlink.preferences;
 
 import org.osgi.service.prefs.BackingStoreException;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.debug.gdbjtag.jlink.Activator;
 
 public class DefaultPreferences extends ilg.gnumcueclipse.core.DefaultPreferences {
 

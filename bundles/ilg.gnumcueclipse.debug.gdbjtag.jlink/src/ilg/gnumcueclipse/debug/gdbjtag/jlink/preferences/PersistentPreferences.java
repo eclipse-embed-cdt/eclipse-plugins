@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.debug.gdbjtag.jlink;
+package ilg.gnumcueclipse.debug.gdbjtag.jlink.preferences;
 
 /**
  * Manage a workspace preference file stored in:
