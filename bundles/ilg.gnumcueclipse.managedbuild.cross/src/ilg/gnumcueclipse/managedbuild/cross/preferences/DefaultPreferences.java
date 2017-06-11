@@ -280,65 +280,6 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.DefaultPreference
 	}
 
 	/**
-	 * Return the last (in lexicographical order) folder that contain
-	 * "bin/executable".
-	 * 
-	 * @param folder
-	 * @param executableName
-	 * @return a String with the folder absolute path, or null if not found.
-	 */
-	private static String getLastToolchain(String folder, final String executableName) {
-
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("DefaultPreferences.getLastToolchain(\"" + folder + "\", \"" + executableName + "\") ");
-		}
-		File local = new File(folder);
-		if (!local.isDirectory()) {
-			// System.out.println(folder + " not a folder");
-			return null;
-		}
-
-		File[] files = local.listFiles(new FilenameFilter() {
-
-			/**
-			 * Filter to select only
-			 */
-			@Override
-			public boolean accept(File dir, String name) {
-				IPath path = (new Path(dir.getAbsolutePath())).append(name).append("bin").append(executableName);
-
-				if (path.toFile().isFile()) {
-					return true;
-				}
-				return false;
-			}
-		});
-
-		if (files == null || files.length == 0) {
-			return null;
-		}
-
-		IPath latestPath = null;
-		long latestDate = 0;
-
-		for (int i = 0; i < files.length; ++i) {
-			IPath path = (new Path(files[i].getAbsolutePath())).append("bin").append(executableName);
-			long date = path.toFile().lastModified();
-			if (date > latestDate) {
-				latestPath = (new Path(files[i].getAbsolutePath())).append("bin");
-				latestDate = date;
-			}
-		}
-
-		if (Activator.getInstance().isDebugging()) {
-			System.out.println("DefaultPreferences.getLastToolchain(\"" + folder + "\", \"" + executableName
-					+ "\") = \"" + latestPath.toString() + "\"");
-		}
-
-		return latestPath.toString();
-	}
-
-	/**
 	 * Search subfolders for an executable and remember date of version folders.
 	 * "<searchPath>/<version>/bin/<executable>"
 	 * 
