@@ -9,10 +9,12 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.core;
+package ilg.gnumcueclipse.core.preferences;
 
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
+
+import ilg.gnumcueclipse.core.Activator;
 
 public class DefaultPreferences {
 

@@ -95,6 +95,10 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		 */
 		public void finalizeInitializationsDefaultPreferences() {
 
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("arm.LateInitializer.finalizeInitializationsDefaultPreferences()");
+			}
+
 			fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
 			DefaultPreferences deprecatedDefaultPreferences = new DefaultPreferences(
 					"ilg.gnuarmeclipse.managedbuild.cross");

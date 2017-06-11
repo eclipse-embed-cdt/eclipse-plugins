@@ -16,7 +16,7 @@ import org.eclipse.core.resources.IProject;
 import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.managedbuild.cross.Activator;
 
-public class PersistentPreferences extends ilg.gnumcueclipse.core.PersistentPreferences {
+public class PersistentPreferences extends ilg.gnumcueclipse.core.preferences.PersistentPreferences {
 
 	// ------------------------------------------------------------------------
 

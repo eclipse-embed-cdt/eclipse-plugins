@@ -17,7 +17,7 @@ import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences.PreferenceConstants;
 
-public class DefaultPreferences extends ilg.gnumcueclipse.core.DefaultPreferences {
+public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 

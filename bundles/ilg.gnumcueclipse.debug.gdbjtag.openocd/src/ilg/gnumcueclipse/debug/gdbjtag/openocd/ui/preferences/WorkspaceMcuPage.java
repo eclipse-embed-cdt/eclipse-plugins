@@ -18,8 +18,8 @@ import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 
-import ilg.gnumcueclipse.core.ScopedPreferenceStoreWithoutDefaults;
-import ilg.gnumcueclipse.core.preferences.DirectoryNotStrictFieldEditor;
+import ilg.gnumcueclipse.core.preferences.ScopedPreferenceStoreWithoutDefaults;
+import ilg.gnumcueclipse.core.ui.DirectoryNotStrictFieldEditor;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.Messages;

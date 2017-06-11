@@ -9,7 +9,7 @@
  *    Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.core.preferences;
+package ilg.gnumcueclipse.core.ui;
 
 import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.resource.JFaceResources;

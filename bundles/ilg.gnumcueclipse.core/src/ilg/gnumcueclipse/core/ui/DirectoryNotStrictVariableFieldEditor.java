@@ -6,18 +6,17 @@
  * http://www.eclipse.org/legal/epl-v10.html
  * 
  * Contributors:
- *     Liviu Ionescu - initial version
+ *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnumcueclipse.core.preferences;
+package ilg.gnumcueclipse.core.ui;
 
-import org.eclipse.jface.preference.StringFieldEditor;
 import org.eclipse.swt.widgets.Composite;
 
 import ilg.gnumcueclipse.core.Activator;
 import ilg.gnumcueclipse.core.EclipseUtils;
 
-public class StringVariableFieldEditor extends StringFieldEditor {
+public class DirectoryNotStrictVariableFieldEditor extends DirectoryNotStrictFieldEditor {
 
 	// ------------------------------------------------------------------------
 
@@ -26,9 +25,9 @@ public class StringVariableFieldEditor extends StringFieldEditor {
 
 	// ------------------------------------------------------------------------
 
-	public StringVariableFieldEditor(String name, String variableName, String variableDescription, String labelText,
-			Composite parent) {
-		super(name, labelText, parent);
+	public DirectoryNotStrictVariableFieldEditor(String buildToolsPathKey, String variableName,
+			String variableDescription, String toolsPaths_label, Composite fieldEditorParent, boolean isStrict) {
+		super(buildToolsPathKey, toolsPaths_label, fieldEditorParent, isStrict);
 
 		fVariableName = variableName;
 		fVariableDescription = variableDescription;
@@ -47,7 +46,7 @@ public class StringVariableFieldEditor extends StringFieldEditor {
 			if (value == null || value.isEmpty()) {
 				value = getPreferenceStore().getString(getPreferenceName());
 				if (Activator.getInstance().isDebugging()) {
-					System.out.println("StringVariableFieldEditor.doLoad() got \"" + value + "\"");
+					System.out.println("DirectoryNotStrictVariableFieldEditor.doLoad() got \"" + value + "\"");
 				}
 				setPresentsDefaultValue(false);
 			}

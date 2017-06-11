@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnumcueclipse.core.preferences;
+package ilg.gnumcueclipse.core.ui;
 
 import java.io.File;
 

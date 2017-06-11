@@ -17,8 +17,8 @@ import org.eclipse.jface.preference.FieldEditor;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.StringFieldEditor;
 
-import ilg.gnumcueclipse.core.ScopedPreferenceStoreWithoutDefaults;
-import ilg.gnumcueclipse.core.preferences.DirectoryNotStrictFieldEditor;
+import ilg.gnumcueclipse.core.preferences.ScopedPreferenceStoreWithoutDefaults;
+import ilg.gnumcueclipse.core.ui.DirectoryNotStrictFieldEditor;
 import ilg.gnumcueclipse.core.ui.FieldEditorPropertyPage;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences.PersistentPreferences;

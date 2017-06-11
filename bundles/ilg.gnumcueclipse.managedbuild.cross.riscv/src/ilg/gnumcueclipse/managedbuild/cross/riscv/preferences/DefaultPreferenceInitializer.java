@@ -94,6 +94,10 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		 */
 		public void finalizeInitializationsDefaultPreferences() {
 
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("riscv.LateInitializer.finalizeInitializationsDefaultPreferences()");
+			}
+
 			DefaultPreferences fDefaultPreferences = new DefaultPreferences(Activator.PLUGIN_ID);
 
 			// Toolchains paths

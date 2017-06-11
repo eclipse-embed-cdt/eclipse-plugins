@@ -14,7 +14,7 @@ package ilg.gnumcueclipse.debug.gdbjtag.qemu.preferences;
 import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.qemu.Activator;
 
-public class DefaultPreferences extends ilg.gnumcueclipse.core.DefaultPreferences {
+public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 

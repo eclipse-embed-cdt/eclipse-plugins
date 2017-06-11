@@ -9,7 +9,7 @@
  *    Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.core;
+package ilg.gnumcueclipse.core.preferences;
 
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.preferences.IScopeContext;

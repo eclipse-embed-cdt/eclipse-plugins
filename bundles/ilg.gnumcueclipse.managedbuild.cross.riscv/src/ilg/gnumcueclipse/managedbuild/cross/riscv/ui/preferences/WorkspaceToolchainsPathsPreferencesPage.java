@@ -12,9 +12,9 @@
 package ilg.gnumcueclipse.managedbuild.cross.riscv.ui.preferences;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
-import ilg.gnumcueclipse.core.ScopedPreferenceStoreWithoutDefaults;
-import ilg.gnumcueclipse.core.preferences.DirectoryNotStrictFieldEditor;
-import ilg.gnumcueclipse.core.preferences.LabelFakeFieldEditor;
+import ilg.gnumcueclipse.core.preferences.ScopedPreferenceStoreWithoutDefaults;
+import ilg.gnumcueclipse.core.ui.DirectoryNotStrictFieldEditor;
+import ilg.gnumcueclipse.core.ui.LabelFakeFieldEditor;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.DefaultPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.Activator;

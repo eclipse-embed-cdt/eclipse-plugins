@@ -16,7 +16,7 @@ import org.osgi.service.prefs.BackingStoreException;
 import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.Activator;
 
-public class DefaultPreferences extends ilg.gnumcueclipse.core.DefaultPreferences {
+public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.DefaultPreferences {
 
 	// ------------------------------------------------------------------------
 

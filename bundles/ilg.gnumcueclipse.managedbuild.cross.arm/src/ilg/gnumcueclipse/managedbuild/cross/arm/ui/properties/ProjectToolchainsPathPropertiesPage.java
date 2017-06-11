@@ -12,10 +12,10 @@
 package ilg.gnumcueclipse.managedbuild.cross.arm.ui.properties;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
-import ilg.gnumcueclipse.core.ScopedPreferenceStoreWithoutDefaults;
-import ilg.gnumcueclipse.core.preferences.DirectoryNotStrictFieldEditor;
-import ilg.gnumcueclipse.core.preferences.LabelFakeFieldEditor;
+import ilg.gnumcueclipse.core.preferences.ScopedPreferenceStoreWithoutDefaults;
+import ilg.gnumcueclipse.core.ui.DirectoryNotStrictFieldEditor;
 import ilg.gnumcueclipse.core.ui.FieldEditorPropertyPage;
+import ilg.gnumcueclipse.core.ui.LabelFakeFieldEditor;
 import ilg.gnumcueclipse.managedbuild.cross.arm.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.arm.Option;
 import ilg.gnumcueclipse.managedbuild.cross.arm.ui.Messages;
