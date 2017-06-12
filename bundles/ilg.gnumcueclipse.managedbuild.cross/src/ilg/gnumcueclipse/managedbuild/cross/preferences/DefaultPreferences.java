@@ -146,7 +146,6 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 	public String getToolchainSearchPathOs(String toolchainName) {
 
 		String value = getString(PersistentPreferences.getToolchainSearchOsKey(toolchainName), "");
-
 		return value;
 	}
 
@@ -207,14 +206,16 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 
 		String path = null;
 		String executableName = "make";
+		String subPath = "bin";
+		
 		if (EclipseUtils.isWindows()) {
 
-			path = Discoverer.getRegistryInstallFolder(executableName + ".exe", "bin", REG_SUBKEY, REG_NAME);
+			String exe = addExeExtension(executableName);
+			path = Discoverer.getRegistryInstallFolder(exe, subPath, REG_SUBKEY, REG_NAME);
 
 			// If the GNU MCU name is not found, try the GNU ARM key.
 			if (path == null) {
-				path = Discoverer.getRegistryInstallFolder(executableName + ".exe", "bin", REG_SUBKEY_DEPRECATED,
-						REG_NAME);
+				path = Discoverer.getRegistryInstallFolder(exe, subPath, REG_SUBKEY_DEPRECATED, REG_NAME);
 			}
 		}
 
@@ -237,7 +238,7 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 		}
 
 		if (searchPath != null && !searchPath.isEmpty()) {
-			path = searchLatestExecutable(searchPath, executableName);
+			path = searchLatestExecutable(searchPath, subPath, executableName);
 		}
 
 		if (path != null) {
@@ -254,6 +255,57 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("DefaultPreferences.discoverBuildToolsPath() = \"" + path + "\"");
+		}
+
+		return path;
+	}
+
+	protected String getRegistryToolchainInstallFolder(String toolchainName, String subPath, String executableName) {
+
+		String path = null;
+		return path;
+	}
+
+	public String discoverToolchainPath(String toolchainName, String executableName) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.discoverToolchainPath(\"" + toolchainName + "\")");
+		}
+
+		String path = null;
+		String subPath = "bin";
+
+		if (EclipseUtils.isWindows()) {
+			String exe = addExeExtension(executableName);
+			path = getRegistryToolchainInstallFolder(toolchainName, subPath, exe);
+		}
+
+		String searchPath = null;
+
+		if (path == null) {
+
+			// Check if the search path is defined in the default
+			// preferences.
+			searchPath = getToolchainSearchPath(toolchainName);
+			if (searchPath.isEmpty()) {
+
+				// If not defined, get the OS Specific default
+				// from preferences.ini.
+				searchPath = getToolchainSearchPathOs(toolchainName);
+				if (!searchPath.isEmpty()) {
+					// Store the search path in the preferences.
+					putToolchainSearchPath(toolchainName, searchPath);
+				}
+			}
+
+			if (searchPath != null && !searchPath.isEmpty()) {
+				path = searchLatestExecutable(searchPath, subPath, executableName);
+			}
+		}
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out
+					.println("DefaultPreferences.discoverToolchainPath(\"" + toolchainName + "\") = \"" + path + "\"");
 		}
 
 		return path;
