@@ -27,7 +27,7 @@ import org.eclipse.ui.themes.ITheme;
 import org.eclipse.ui.themes.IThemeManager;
 
 import ilg.gnumcueclipse.debug.gdbjtag.Activator;
-import ilg.gnumcueclipse.debug.gdbjtag.PersistentPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdEnumeratedValueDMNode;
 import ilg.gnumcueclipse.debug.gdbjtag.render.peripheral.PeripheralColumnInfo.ColumnType;
 import ilg.gnumcueclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralRegisterFieldVMNode;

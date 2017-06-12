@@ -14,6 +14,7 @@ package ilg.gnumcueclipse.debug.gdbjtag;
 import org.osgi.framework.BundleContext;
 
 import ilg.gnumcueclipse.core.AbstractUIActivator;
+import ilg.gnumcueclipse.debug.gdbjtag.preferences.PersistentPreferences;
 
 /**
  * The activator class controls the plug-in life cycle

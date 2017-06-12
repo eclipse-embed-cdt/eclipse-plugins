@@ -140,7 +140,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 
 			if (!fDefaultPreferences.checkFolderExecutable(path, executableName)) {
 				// If not defined elsewhere, discover.
-				path = fDefaultPreferences.discoverInstallPath(executableName);
+				path = fDefaultPreferences.discoverInstallPath(null, executableName);
 			}
 
 			if (path != null && !path.isEmpty()) {

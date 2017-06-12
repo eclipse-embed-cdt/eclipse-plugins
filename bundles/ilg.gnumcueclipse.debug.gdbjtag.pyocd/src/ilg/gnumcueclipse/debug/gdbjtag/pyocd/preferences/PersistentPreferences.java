@@ -15,7 +15,7 @@ package ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences;
 
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator;
 
-public class PersistentPreferences extends ilg.gnumcueclipse.debug.gdbjtag.PersistentPreferences {
+public class PersistentPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferences.PersistentPreferences {
 
 	// ------------------------------------------------------------------------
 

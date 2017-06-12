@@ -20,7 +20,7 @@ package ilg.gnumcueclipse.debug.gdbjtag.jlink.preferences;
  *
  * Some of the values may be retrieved from the EclipseDefaults.
  */
-public class PersistentPreferences extends ilg.gnumcueclipse.debug.gdbjtag.PersistentPreferences {
+public class PersistentPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferences.PersistentPreferences {
 
 	// ------------------------------------------------------------------------
 

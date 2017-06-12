@@ -112,13 +112,13 @@ public class Discoverer {
 	 * path is known to be an existing folder.
 	 * 
 	 * @param executableName
-	 * @param binFolder
+	 * @param subFolder
 	 *            a String, usually "bin", or null.
 	 * @param registrySubKey
 	 * @param registryName
 	 * @return a String with the absolute folder path, or null if not found.
 	 */
-	public static String getRegistryInstallFolder(String executableName, String binFolder, String registrySubKey,
+	public static String getRegistryInstallFolder(String executableName, String subFolder, String registrySubKey,
 			String registryName) {
 
 		String value = null;
@@ -133,8 +133,8 @@ public class Discoverer {
 					value = getRegistryValue(registry, REG32_PREFIX, registrySubKey, registryName);
 				}
 
-				if (binFolder != null && value != null && !value.endsWith("\\" + binFolder)) {
-					value += "\\" + binFolder;
+				if (subFolder != null && value != null && !value.endsWith("\\" + subFolder)) {
+					value += "\\" + subFolder;
 				}
 
 				if (value != null) {

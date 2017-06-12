@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2015 Liviu Ionescu.
+ * Copyright (c) 2013 Liviu Ionescu.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -9,22 +9,11 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.debug.gdbjtag;
-
-/**
- * Manage a workspace preference file stored in:
- * 
- * <pre>
- * workspace/.metadata/.plugins/org.eclipse.core.runtime/.settings/<plug-in-id>.prefs
- * </pre>
- *
- * Some of the values may be retrieved from the EclipseDefaults.
- */
+package ilg.gnumcueclipse.debug.gdbjtag.preferences;
 
 public class PersistentPreferences extends ilg.gnumcueclipse.core.preferences.PersistentPreferences {
 
 	// ------------------------------------------------------------------------
-
 	// EXECUTABLE_NAME, INSTALL_FOLDER, FOLDER_STRICT are used as dynamic
 	// variables.
 	public static final String EXECUTABLE_NAME = "executable.name";

@@ -12,7 +12,7 @@
 package ilg.gnumcueclipse.debug.gdbjtag.preferences;
 
 import ilg.gnumcueclipse.debug.gdbjtag.PeripheralsColorFactory;
-import ilg.gnumcueclipse.debug.gdbjtag.PersistentPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.debug.gdbjtag.render.peripheral.PeripheralColumnLabelProvider;
 
 public class ColorChangedLightFactory extends PeripheralsColorFactory {

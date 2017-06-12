@@ -11,7 +11,7 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences;
 
-public class PersistentPreferences extends ilg.gnumcueclipse.debug.gdbjtag.PersistentPreferences {
+public class PersistentPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferences.PersistentPreferences {
 
 	// ------------------------------------------------------------------------
 

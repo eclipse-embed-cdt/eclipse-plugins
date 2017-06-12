@@ -121,17 +121,27 @@ public class DefaultPreferences {
 		fPreferences.putBoolean(key, value);
 	}
 
+	// ------------------------------------------------------------------------
+
+	public String addExeExtension(String executableName) {
+		if (!executableName.endsWith(".exe")) {
+			return executableName + ".exe";
+		} else {
+			return executableName;
+		}
+	}
+
 	public boolean checkFolderExecutable(String folder, String executableName) {
-		
+
 		if (folder == null || folder.isEmpty()) {
 			return false;
 		}
 		if (executableName == null || executableName.isEmpty()) {
 			return false;
 		}
-		
-		if (EclipseUtils.isWindows() && !executableName.endsWith(".exe")) {
-			executableName += ".exe";
+
+		if (EclipseUtils.isWindows()) {
+			executableName = addExeExtension(executableName);
 		}
 
 		IPath path = (new Path(folder)).append(executableName);
@@ -143,18 +153,19 @@ public class DefaultPreferences {
 	}
 
 	/**
-	 * Search subfolders for an executable and remember date of version folders.
-	 * "<searchPath>/<version>/bin/<executable>"
+	 * Search subfolders for an executable and remember timestamp of version
+	 * folders. "<searchPath>/<version>/bin/<executable>"
 	 * 
 	 * @param searchPath
+	 * @param subFolder
 	 * @param executableName
 	 * @return
 	 */
-	public String searchLatestExecutable(String searchPath, String executableName) {
+	public String searchLatestExecutable(String searchPath, String subFolder, String executableName) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println(
-					"DefaultPreferences.searchLatestExecutable(\"" + searchPath + "\", " + executableName + ") ");
+			System.out.println("DefaultPreferences.searchLatestExecutable(\"" + searchPath + "\", " + subFolder + "\", "
+					+ executableName + ") ");
 		}
 
 		if (searchPath == null || searchPath.isEmpty()) {
@@ -189,14 +200,14 @@ public class DefaultPreferences {
 			return null;
 		}
 
-		if (EclipseUtils.isWindows() && !executableName.endsWith(".exe")) {
-			executableName += ".exe";
+		if (EclipseUtils.isWindows()) {
+			executableName = addExeExtension(executableName);
 		}
 
 		Map<Long, String> map = new HashMap<Long, String>();
 		// Try paths in order; collect dates.
 		for (int i = 0; i < paths.length; ++i) {
-			searchExecutable(paths[i], executableName, map);
+			searchExecutable(paths[i], subFolder, executableName, map);
 		}
 
 		if (map.isEmpty()) {
@@ -214,10 +225,11 @@ public class DefaultPreferences {
 		return map.get(latestKey);
 	}
 
-	private void searchExecutable(String folder, final String executableName, Map<Long, String> map) {
+	private void searchExecutable(String folder, String subFolder, final String executableName, Map<Long, String> map) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("DefaultPreferences.searchExecutable(\"" + folder + "\", \"" + executableName + "\") ");
+			System.out.println("DefaultPreferences.searchExecutable(\"" + folder + "\", \"" + subFolder + "\", \""
+					+ executableName + "\") ");
 		}
 		File local = new File(folder);
 		if (!local.isDirectory()) {
@@ -233,7 +245,7 @@ public class DefaultPreferences {
 			@Override
 			public boolean accept(File dir, String name) {
 				IPath versionPath = (new Path(dir.getAbsolutePath())).append(name);
-				IPath basePath = versionPath.append("bin");
+				IPath basePath = subFolder != null ? versionPath.append("bin") : versionPath;
 				IPath path = basePath.append(executableName);
 
 				File file = path.toFile();
@@ -243,8 +255,9 @@ public class DefaultPreferences {
 					map.put(key, basePath.toPortableString());
 
 					if (Activator.getInstance().isDebugging()) {
-						System.out.println("DefaultPreferences.searchExecutable(\"" + folder + "\", \"" + executableName
-								+ "\") = add \"" + basePath.toPortableString() + "\" " + new Date(key.longValue()));
+						System.out.println("DefaultPreferences.searchExecutable(\"" + folder + "\", \"" + subFolder
+								+ "\", \"" + executableName + "\") = add \"" + basePath.toPortableString() + "\" "
+								+ new Date(key.longValue()));
 					}
 					return true;
 				}
@@ -252,7 +265,6 @@ public class DefaultPreferences {
 			}
 		});
 	}
-
 
 	// ------------------------------------------------------------------------
 }

@@ -13,7 +13,7 @@ package ilg.gnumcueclipse.debug.gdbjtag.preferences;
 
 import ilg.gnumcueclipse.core.ui.ThemeColorFieldEditor;
 import ilg.gnumcueclipse.debug.gdbjtag.Activator;
-import ilg.gnumcueclipse.debug.gdbjtag.PersistentPreferences;
+import ilg.gnumcueclipse.debug.gdbjtag.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.debug.gdbjtag.render.peripheral.PeripheralColumnLabelProvider;
 import ilg.gnumcueclipse.debug.gdbjtag.ui.Messages;
 
