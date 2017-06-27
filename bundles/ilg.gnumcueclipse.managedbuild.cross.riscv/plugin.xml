@@ -1660,6 +1660,11 @@
 				</option>
 				<option
 					category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.c.linker.misc"
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.usenewlibnosys"
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.usenewlibnosys">
+				</option>
+				<option
+					category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.c.linker.misc"
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.verbose"
 					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.verbose">
 				</option>
@@ -1842,6 +1847,11 @@
 					category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.cpp.linker.misc"
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.usescanffloat"
 					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.usescanffloat">
+				</option>
+				<option
+					category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.cpp.linker.misc"
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.usenewlibnosys"
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.usenewlibnosys">
 				</option>
 				<option
 					category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.cpp.linker.misc"

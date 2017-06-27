@@ -723,6 +723,14 @@
 				name="%option.linker.usescanffloat"
 				valueType="boolean">
 			</option>
+   <option
+         command="--specs=nosys.specs"
+         defaultValue="false"
+         id="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.usenewlibnosys"
+         isAbstract="true"
+         name="%option.linker.usenewlibnosys"
+         valueType="boolean">
+   </option>
 		</tool>
 		<tool
 			id="ilg.gnumcueclipse.managedbuild.cross.toolchain"

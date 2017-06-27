@@ -2700,6 +2700,11 @@
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.linker.misc"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.usenewlibnosys"
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.usenewlibnosys">
+				</option>
+				<option
+					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.linker.misc"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.c.linker.verbose"
 					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.verbose">
 				</option>
@@ -2882,6 +2887,11 @@
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.misc"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.usescanffloat"
 					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.usescanffloat">
+				</option>
+				<option
+					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.misc"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.linker.usenewlibnosys"
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.linker.usenewlibnosys">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.linker.misc"
