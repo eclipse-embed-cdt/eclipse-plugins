@@ -18,7 +18,7 @@ public class DefaultPreferences extends ilg.gnumcueclipse.managedbuild.cross.pre
 
 	// ------------------------------------------------------------------------
 
-	private static final String REG_SUBKEY = "\\GNU MCU Eclipse\\Build Tools for RISC-V Embedded Processors";
+	private static final String REG_SUBKEY = "\\GNU MCU Eclipse\\RISC-V Embedded GCC";
 
 	// Standard Microsoft recommendation.
 	private static final String REG_NAME = "InstallFolder";
