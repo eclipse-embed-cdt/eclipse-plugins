@@ -16,24 +16,24 @@ javax.net.ssl.SSLHandshakeException: Received fatal alert: handshake_failure
 
 The solution is to upgrade JDK to a version higher than 8u101 and possibly install the Java Cryptographic Extensions.
 
-For more details see [GNU ARM Eclipse plug-ins sun.security.validator.ValidatorException](http://gnuarmeclipse.github.io/blog/2016/12/02/plugins-install-issue/) and [GNU ARM Eclipse plug-ins: Received fatal alert: handshake_failure](http://gnuarmeclipse.github.io/blog/2017/01/29/plugins-install-issue/).
+For more details see [GNU MCU Eclipse plug-ins sun.security.validator.ValidatorException](http://gnu-mcu-eclipse.github.io/blog/2016/12/02/plugins-install-issue/) and [GNU MCU Eclipse plug-ins: Received fatal alert: handshake_failure](http://gnu-mcu-eclipse.github.io/blog/2017/01/29/plugins-install-issue/).
 
 ### Prerequisites
 
 In case you encounter problems while using the plug-ins, please consider the following:
 
 * [ ] read the documentation pages carefully
-* [ ] check the [Known issues](http://gnuarmeclipse.github.io/support/known-issues/)
-* [ ] check the [FAQ](http://gnuarmeclipse.github.io/support/faq/)
-* [ ] check the [GNU ARM Eclipse forum](http://gnuarmeclipse.github.io/support/forum/) for similar problems
-* [ ] check the GitHub Issues [tracker](https://github.com/gnuarmeclipse/plug-ins/issues/)
+* [ ] check the [Known issues](http://gnu-mcu-eclipse.github.io/support/known-issues/)
+* [ ] check the [FAQ](http://gnu-mcu-eclipse.github.io/support/faq/)
+* [ ] check the [GNU MCU Eclipse forum](http://gnu-mcu-eclipse.github.io/support/forum/) for similar problems
+* [ ] check the GitHub Issues [tracker](https://github.com/gnu-mcu-eclipse/plug-ins/issues/)
 
 If you still could not find a solution, if you have interesting use cases, if you have custom 
 configurations, and generally if you have any experience that you want to share with others, 
-use the [GNU ARM Eclipse forum](http://gnuarmeclipse.github.io/support/forum/).
+use the [GNU MCU Eclipse forum](http://gnu-mcu-eclipse.github.io/support/forum/).
 
 If you are convinced that you identified a bug (if you have doubts, use the forum), or you have a 
-pertinent suggestion how to enhance the GNU ARM Eclipse plug-ins, continue and register
+pertinent suggestion how to enhance the GNU MCU Eclipse plug-ins, continue and register
 an issue.
 
 ### Description

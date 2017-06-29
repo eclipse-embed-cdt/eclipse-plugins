@@ -4,17 +4,17 @@ There are many ways you can contribute to this project, and all contributions ar
 
 ## Post your findings & questions
 
-If you have interesting use cases, if you have custom configurations, and generally if you have any experience that you want to share with others, please use the [GNU ARM Eclipse forum](http://www.element14.com/community/groups/gnu-arm-eclipse).
+If you have interesting use cases, if you have custom configurations, and generally if you have any experience that you want to share with others, please use the [GNU MCU Eclipse forum](http://www.element14.com/community/groups/gnu-arm-eclipse).
 
 Just [register](http://www.element14.com/community/create-account.jspa) to element14 community and use the [Start a discussion](http://www.element14.com/community/discussion/create.jspa?containerID=2436&containerType=700) link.
 
 ## Submit bug reports & enhancement requests
 
-If you are convinced you identified a bug (if you have doubts, use the forum), or you have a pertinent suggestion how to enhance the GNU ARM Eclipse **plug-ins**, please use the [GitHub Issues](https://github.com/gnuarmeclipse/plug-ins/issues) tracker.
+If you are convinced you identified a bug (if you have doubts, use the forum), or you have a pertinent suggestion how to enhance the GNU MCU Eclipse **plug-ins**, please use the [GitHub Issues](https://github.com/gnuarmeclipse/plug-ins/issues) tracker.
 
-Be sure you report only issues related to the GNU ARM Eclipse **plug-ins**. **DO NOT** use it for issues related to the tools (QEMU, OpenOCD, Build tools, etc), which should be addressed to their corresponding trackers. Web content issues should be addressed to the [Web Issues](https://github.com/gnuarmeclipse/gnuarmeclipse.github.io/issues/1) tracker. J-Link specific questions should be addresses to SEGGER support.
+Be sure you report only issues related to the GNU MCU Eclipse **plug-ins**. **DO NOT** use it for issues related to the tools (QEMU, OpenOCD, Build tools, etc), which should be addressed to their corresponding trackers. Web content issues should be addressed to the [Web Issues](https://github.com/gnuarmeclipse/gnu-mcu-eclipse.github.io/issues/1) tracker. J-Link specific questions should be addresses to SEGGER support.
 
-Before reporting issues, please check the list of [Known Issues](http://gnuarmeclipse.github.io/support/known-issues/) and the [FAQ](http://gnuarmeclipse.github.io/support/faq/).
+Before reporting issues, please check the list of [Known Issues](http://gnu-mcu-eclipse.github.io/support/known-issues/) and the [FAQ](http://gnu-mcu-eclipse.github.io/support/faq/).
 
 When entering a new issue, be sure you provide:
 

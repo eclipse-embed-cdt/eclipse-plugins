@@ -153,5 +153,5 @@
 	</build>
 
 	<name>GNU MCU Eclipse parent</name>
-	<url>http://gnuarmeclipse.github.io</url>
+	<url>http://gnu-mcu-eclipse.github.io</url>
 </project>

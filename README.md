@@ -2,7 +2,7 @@
 
 # The GNU MCU Eclipse plug-ins
 
-These are the Eclipse projects used to build the [GNU MCU Eclipse](http://gnuarmeclipse.github.io) plug-ins.
+These are the Eclipse projects used to build the [GNU MCU Eclipse](http://gnu-mcu-eclipse.github.io) plug-ins.
 
 ## How to install
 
@@ -31,7 +31,7 @@ The result is a p2 repository, in `ilg.gnumcueclipse-repository/target/repositor
 
 ### Eclipse
 
-The Eclipse build is described in the [project web](http://gnuarmeclipse.github.io/developer/build-procedure/).
+The Eclipse build is described in the [project web](http://gnu-mcu-eclipse.github.io/developer/build-procedure/).
 
 ## Run-time dependencies
 

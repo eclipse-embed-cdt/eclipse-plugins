@@ -243,7 +243,7 @@
 		<Site_URL></Site_URL>
 		<Site_DESCRIPTION></Site_DESCRIPTION>
 		<Site_Site_Title>GNU MCU Eclipse</Site_Site_Title>
-		<Site_Site_URL>http://gnuarmeclipse.github.io/</Site_Site_URL>
+		<Site_Site_URL>http://gnu-mcu-eclipse.github.io/</Site_Site_URL>
 		<Site_Keywords>GNU, ARM, Eclipse, plug-in, J-Link, OpenOCD, QEMU
 		</Site_Keywords>
 		<Site_Description_100></Site_Description_100>
