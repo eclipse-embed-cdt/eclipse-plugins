@@ -23,4 +23,4 @@ popd  > /dev/null
 
 (cd "${SCRIPT_PATH}"; sh publish-updates.sh v4-neon-updates-experimental)
 
-echo "Install new software from http://gnu-mcu-eclipse.sourceforge.io/v4-neon-updates-experimental"
+echo "Install new software from http://gnu-mcu-eclipse.netlify.com/v4-neon-updates-experimental"

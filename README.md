@@ -10,7 +10,7 @@ The recommended install method is via Eclipse Marketplace.
 
 For manual installs, the stable version update site is:
 
-- http://gnu-mcu-eclipse.sourceforge.io/v4-neon-updates
+- http://gnu-mcu-eclipse.netlify.com/v4-neon-updates
 
 ## How to build
 
