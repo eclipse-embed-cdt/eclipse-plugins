@@ -1,23 +1,3 @@
-### Important notice
-
-SourceForce recently updated the security certificates, making Eclipse install/upgrades fail with messages like this:
-
-```
-No repository found at http://gnu-mcu-eclipse.sourceforge.io/v4-neon-updates
-```
-
-or 
-
-```
-!MESSAGE Unable to read repository at http://gnu-mcu-eclipse.sourceforge.io/v4-neon-updates-test/content.xml.
-!STACK 0
-javax.net.ssl.SSLHandshakeException: Received fatal alert: handshake_failure
-```
-
-The solution is to upgrade JDK to a version higher than 8u101 and possibly install the Java Cryptographic Extensions.
-
-For more details see [GNU MCU Eclipse plug-ins sun.security.validator.ValidatorException](http://gnu-mcu-eclipse.github.io/blog/2016/12/02/plugins-install-issue/) and [GNU MCU Eclipse plug-ins: Received fatal alert: handshake_failure](http://gnu-mcu-eclipse.github.io/blog/2017/01/29/plugins-install-issue/).
-
 ### Prerequisites
 
 In case you encounter problems while using the plug-ins, please consider the following:
