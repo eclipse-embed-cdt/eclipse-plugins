@@ -264,6 +264,9 @@ fi
 if [ "${RISCV}" == "" ]
 then
 
+echo
+ls repository/features repository/plugins
+
 if [ -f *-SNAPSHOT.zip ]
 then
   NUMDATE=$(ls repository/plugins/ilg.gnumcueclipse.core* | sed -e 's/.*_[0-9]*[.][0-9]*[.][0-9]*[.]\([0-9]*\)[.]jar/\1/')
@@ -285,6 +288,7 @@ then
   mv -f "${ARCHIVE_PREFIX}-SNAPSHOT.zip" "${AP}"
   (cd "${ARCHIVE_FOLDER}"; shasum -a 256 -p "${AP}" >"${AP}.sha")
 
+  echo
   echo "Archive available from \"${AP}\""
 fi
 
