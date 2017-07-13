@@ -44,6 +44,7 @@ public class DefaultPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferen
 	public static final boolean DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT = true;
 	public static final boolean DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE_DEFAULT = false;
 
+	public static final boolean DO_START_GDB_CLIENT_DEFAULT = true;
 	public static final String GDB_CLIENT_OTHER_OPTIONS_DEFAULT = "";
 
 	public static final boolean USE_REMOTE_TARGET_DEFAULT = true;

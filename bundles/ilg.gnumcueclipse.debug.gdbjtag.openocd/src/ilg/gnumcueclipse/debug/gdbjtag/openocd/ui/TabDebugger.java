@@ -77,16 +77,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private ILaunchConfiguration fConfiguration;
 
 	private Button fDoStartGdbServer;
-	private Text fGdbClientExecutable;
-	private Text fGdbClientOtherOptions;
-	private Text fGdbClientOtherCommands;
-
-	private Text fPathLabel;
-	private Link fLink;
-
-	private Text fTargetIpAddress;
-	private Text fTargetPortNumber;
-
 	private Text fGdbServerGdbPort;
 	private Text fGdbServerTelnetPort;
 
@@ -98,6 +88,19 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private Button fDoGdbServerAllocateConsole;
 	private Button fDoGdbServerAllocateTelnetConsole;
+
+	private Button fDoStartGdbClient;
+	private Text fGdbClientExecutable;
+	private Button fGdbClientBrowseButton;
+	private Button fGdbClientVariablesButton;
+	private Text fGdbClientOtherOptions;
+	private Text fGdbClientOtherCommands;
+
+	private Text fPathLabel;
+	private Link fLink;
+
+	private Text fTargetIpAddress;
+	private Text fTargetPortNumber;
 
 	protected Button fUpdateThreadlistOnSuspend;
 
@@ -470,8 +473,15 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			comp.setLayoutData(gd);
 		}
 
-		Button browseButton;
-		Button variableButton;
+		{
+			fDoStartGdbClient = new Button(comp, SWT.CHECK);
+			fDoStartGdbClient.setText(Messages.getString("DebuggerTab.doStartGdbClient_Text"));
+			fDoStartGdbClient.setToolTipText(Messages.getString("DebuggerTab.doStartGdbClient_ToolTipText"));
+			GridData gd = new GridData();
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns;
+			fDoStartGdbClient.setLayoutData(gd);
+		}
+
 		{
 			Label label = new Label(comp, SWT.NONE);
 			label.setText(Messages.getString("DebuggerTab.gdbCommand_Label"));
@@ -490,11 +500,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				gd = new GridData(GridData.FILL_HORIZONTAL);
 				fGdbClientExecutable.setLayoutData(gd);
 
-				browseButton = new Button(local, SWT.NONE);
-				browseButton.setText(Messages.getString("DebuggerTab.gdbCommandBrowse"));
+				fGdbClientBrowseButton = new Button(local, SWT.NONE);
+				fGdbClientBrowseButton.setText(Messages.getString("DebuggerTab.gdbCommandBrowse"));
 
-				variableButton = new Button(local, SWT.NONE);
-				variableButton.setText(Messages.getString("DebuggerTab.gdbCommandVariable"));
+				fGdbClientVariablesButton = new Button(local, SWT.NONE);
+				fGdbClientVariablesButton.setText(Messages.getString("DebuggerTab.gdbCommandVariable"));
 			}
 		}
 
@@ -526,6 +536,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		// ----- Actions ------------------------------------------------------
 
+		fDoStartGdbClient.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				doStartGdbClientChanged();
+				scheduleUpdateJob();
+			}
+		});
+
 		fGdbClientExecutable.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
@@ -549,14 +567,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 		});
 
-		browseButton.addSelectionListener(new SelectionAdapter() {
+		fGdbClientBrowseButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				browseButtonSelected(Messages.getString("DebuggerTab.gdbCommandBrowse_Title"), fGdbClientExecutable);
 			}
 		});
 
-		variableButton.addSelectionListener(new SelectionAdapter() {
+		fGdbClientVariablesButton.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				variablesButtonSelected(fGdbClientExecutable);
@@ -666,6 +684,17 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fLink.setEnabled(enabled);
 	}
 
+	private void doStartGdbClientChanged() {
+
+		boolean enabled = fDoStartGdbClient.getSelection();
+
+		fGdbClientExecutable.setEnabled(enabled);
+		fGdbClientBrowseButton.setEnabled(enabled);
+		fGdbClientVariablesButton.setEnabled(enabled);
+		fGdbClientOtherOptions.setEnabled(enabled);
+		fGdbClientOtherCommands.setEnabled(enabled);
+	}
+
 	@Override
 	public void initializeFrom(ILaunchConfiguration configuration) {
 
@@ -723,6 +752,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			// GDB Client Setup
 			{
+				booleanDefault = fPersistentPreferences.getGdbClientDoStart();
+				fDoStartGdbClient.setSelection(
+						configuration.getAttribute(ConfigurationAttributes.DO_START_GDB_CLIENT, booleanDefault));
+
 				// Executable
 				stringDefault = fPersistentPreferences.getGdbClientExecutable();
 				String gdbCommandAttr = configuration.getAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
@@ -815,6 +848,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		// GDB Client Setup
 		{
+			fDoStartGdbClient.setSelection(DefaultPreferences.DO_START_GDB_CLIENT_DEFAULT);
+
 			// Executable
 			stringDefault = fDefaultPreferences.getGdbClientExecutable();
 			fGdbClientExecutable.setText(stringDefault);
@@ -916,6 +951,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		// GDB client
 		{
+			// Start client
+			booleanValue = fDoStartGdbClient.getSelection();
+			configuration.setAttribute(ConfigurationAttributes.DO_START_GDB_CLIENT, booleanValue);
+			fPersistentPreferences.putGdbClientDoStart(booleanValue);
+
 			// always use remote
 			configuration.setAttribute(IGDBJtagConstants.ATTR_USE_REMOTE_TARGET,
 					DefaultPreferences.USE_REMOTE_TARGET_DEFAULT);
@@ -1036,6 +1076,17 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		// Force thread update
 		configuration.setAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
 				DefaultPreferences.UPDATE_THREAD_LIST_DEFAULT);
+	}
+
+	@Override
+	public boolean canSave() {
+		if (fDoStartGdbServer != null && fDoStartGdbServer.getSelection()) {
+			return true;
+		}
+		if (fDoStartGdbClient != null && fDoStartGdbClient.getSelection()) {
+			return true;
+		}
+		return false;
 	}
 
 	// ------------------------------------------------------------------------

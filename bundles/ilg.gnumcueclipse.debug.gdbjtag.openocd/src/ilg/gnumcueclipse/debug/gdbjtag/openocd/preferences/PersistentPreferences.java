@@ -28,6 +28,8 @@ public class PersistentPreferences extends ilg.gnumcueclipse.debug.gdbjtag.prefe
 	// GDB Client Setup
 	public static final String GDB_CLIENT = "gdb.client.";
 
+	public static final String GDB_CLIENT_DO_START = GDB_CLIENT + "doStart";
+
 	public static final String GDB_CLIENT_EXECUTABLE = GDB_CLIENT + "executable";
 
 	public static final String GDB_CLIENT_OTHER_OPTIONS = GDB_CLIENT + "other";
@@ -104,6 +106,18 @@ public class PersistentPreferences extends ilg.gnumcueclipse.debug.gdbjtag.prefe
 	public void putGdbServerOtherOptions(String value) {
 
 		putWorkspaceString(GDB_SERVER_OTHER_OPTIONS, value);
+	}
+
+	// ----- gdb client doStart -----------------------------------------------
+	public boolean getGdbClientDoStart() {
+
+		return Boolean.valueOf(
+				getString(GDB_CLIENT_DO_START, Boolean.toString(DefaultPreferences.DO_START_GDB_CLIENT_DEFAULT)));
+	}
+
+	public void putGdbClientDoStart(boolean value) {
+
+		putWorkspaceString(GDB_CLIENT_DO_START, Boolean.toString(value));
 	}
 
 	// ----- gdb client executable --------------------------------------------

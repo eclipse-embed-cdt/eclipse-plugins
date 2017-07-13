@@ -42,6 +42,8 @@ public interface ConfigurationAttributes {
 
 	public static final String DO_GDB_SERVER_ALLOCATE_TELNET_CONSOLE = PREFIX + ".doGdbServerAllocateTelnetConsole"; //$NON-NLS-1$
 
+	public static final String DO_START_GDB_CLIENT = PREFIX + ".doStartGdbCLient"; //$NON-NLS-1$
+
 	public static final String GDB_CLIENT_OTHER_OPTIONS = PREFIX + ".gdbClientOtherOptions"; //$NON-NLS-1$
 
 	public static final String GDB_CLIENT_OTHER_COMMANDS = PREFIX + ".gdbClientOtherCommands"; //$NON-NLS-1$
