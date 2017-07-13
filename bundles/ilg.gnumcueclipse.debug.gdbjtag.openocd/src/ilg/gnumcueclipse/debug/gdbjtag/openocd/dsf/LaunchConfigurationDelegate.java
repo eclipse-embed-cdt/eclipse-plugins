@@ -69,6 +69,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 	@SuppressWarnings("unused")
 	private boolean fIsNonStopSession = false;
 	private boolean fDoStartGdbServer = false;
+	private boolean fDoStartGdbClient = true;
 
 	// ------------------------------------------------------------------------
 
@@ -109,6 +110,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 		}
 
 		fDoStartGdbServer = Configuration.getDoStartGdbServer(configuration);
+		fDoStartGdbClient = Configuration.getDoStartGdbClient(configuration);
 
 		DebugUtils.checkLaunchConfigurationStarted(configuration);
 
@@ -352,6 +354,14 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 				System.out.println(
 						"openocd.LaunchConfigurationDelegate.launchDebugSession() * Server start confirmed. *");
 			}
+		}
+
+		if (!fDoStartGdbClient) {
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println(
+						"openocd.LaunchConfigurationDelegate.launchDebugSession() No GDB client, abruptly return.");
+			}
+			return;
 		}
 
 		// ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

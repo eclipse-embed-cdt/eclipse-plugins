@@ -232,4 +232,12 @@ public class Configuration {
 	}
 
 	// ------------------------------------------------------------------------
+
+	public static boolean getDoStartGdbClient(ILaunchConfiguration config) throws CoreException {
+
+		return config.getAttribute(ConfigurationAttributes.DO_START_GDB_CLIENT,
+				DefaultPreferences.DO_START_GDB_CLIENT_DEFAULT);
+	}
+
+	// ------------------------------------------------------------------------
 }
