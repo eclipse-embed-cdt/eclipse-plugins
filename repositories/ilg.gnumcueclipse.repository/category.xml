@@ -12,13 +12,13 @@
    <feature url="features/ilg.gnumcueclipse.templates.freescale.feature_2.2.9.qualifier.jar" id="ilg.gnumcueclipse.templates.freescale.feature" version="2.2.9.qualifier">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature url="features/ilg.gnumcueclipse.debug.gdbjtag.jlink.feature_4.1.5.qualifier.jar" id="ilg.gnumcueclipse.debug.gdbjtag.jlink.feature" version="4.1.5.qualifier">
+   <feature url="features/ilg.gnumcueclipse.debug.gdbjtag.jlink.feature_4.1.6.qualifier.jar" id="ilg.gnumcueclipse.debug.gdbjtag.jlink.feature" version="4.1.6.qualifier">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
    <feature url="features/ilg.gnumcueclipse.debug.gdbjtag.openocd.feature_4.2.1.qualifier.jar" id="ilg.gnumcueclipse.debug.gdbjtag.openocd.feature" version="4.2.1.qualifier">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature url="features/ilg.gnumcueclipse.debug.gdbjtag.pyocd.feature_1.1.4.qualifier.jar" id="ilg.gnumcueclipse.debug.gdbjtag.pyocd.feature" version="1.1.4.qualifier">
+   <feature url="features/ilg.gnumcueclipse.debug.gdbjtag.pyocd.feature_1.1.5.qualifier.jar" id="ilg.gnumcueclipse.debug.gdbjtag.pyocd.feature" version="1.1.5.qualifier">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
    <feature url="features/ilg.gnumcueclipse.templates.cortexm.feature_1.4.3.qualifier.jar" id="ilg.gnumcueclipse.templates.cortexm.feature" version="1.4.3.qualifier">
@@ -36,7 +36,7 @@
    <feature url="features/ilg.gnumcueclipse.codered.feature_1.1.2.qualifier.jar" id="ilg.gnumcueclipse.codered.feature" version="1.1.2.qualifier">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature url="features/ilg.gnumcueclipse.debug.gdbjtag.qemu.feature_3.1.5.qualifier.jar" id="ilg.gnumcueclipse.debug.gdbjtag.qemu.feature" version="3.1.5.qualifier">
+   <feature url="features/ilg.gnumcueclipse.debug.gdbjtag.qemu.feature_3.1.6.qualifier.jar" id="ilg.gnumcueclipse.debug.gdbjtag.qemu.feature" version="3.1.6.qualifier">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
    <category-def name="ilg.gnumcueclipse.category" label="GNU ARM &amp; RISC-V C/C++ Cross Development Tools"/>
