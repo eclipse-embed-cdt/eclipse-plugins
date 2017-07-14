@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+	<extension point="org.eclipse.cdt.core.templates">
+		<template
+			filterPattern=".*g[c\+][c\+]"
+			id="ilg.gnumcueclipse.templates.sifive.exe.c.project"
+			location="$nl$/templates/sifive_exe_c_project/template.xml"
+			projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
+		</template>
+	</extension>
+	<extension point="org.eclipse.cdt.core.templateAssociations">
+		<template id="ilg.gnumcueclipse.templates.sifive.exe.c.project">
+			<toolChain id="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.base">
+			</toolChain>
+		</template>
+	</extension>
+</plugin>
+

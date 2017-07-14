@@ -38,17 +38,6 @@
 		<module>bundles/ilg.gnumcueclipse.managedbuild.cross</module>
 		<module>bundles/ilg.gnumcueclipse.managedbuild.packs</module>
 
-		<module>bundles/ilg.gnumcueclipse.templates.core</module>
-		<module>bundles/ilg.gnumcueclipse.templates.cortexm</module>
-		<module>features/ilg.gnumcueclipse.templates.cortexm.feature</module>
-		<module>bundles/ilg.gnumcueclipse.templates.stm</module>
-		<module>features/ilg.gnumcueclipse.templates.stm.feature</module>
-		<module>bundles/ilg.gnumcueclipse.templates.freescale</module>
-		<module>bundles/ilg.gnumcueclipse.templates.freescale.pe</module>
-		<module>features/ilg.gnumcueclipse.templates.freescale.feature</module>
-		<module>bundles/ilg.gnumcueclipse.templates.ad</module>
-		<module>features/ilg.gnumcueclipse.templates.ad.feature</module>
-
 		<module>bundles/ilg.gnumcueclipse.packs</module>
 		<module>bundles/ilg.gnumcueclipse.packs.core</module>
 		<module>bundles/ilg.gnumcueclipse.packs.data</module>
@@ -85,10 +74,25 @@
 		<module>bundles/ilg.gnumcueclipse.managedbuild.cross.arm</module>
 		<module>features/ilg.gnumcueclipse.managedbuild.cross.arm.feature</module>
 
+		<module>bundles/ilg.gnumcueclipse.templates.core</module>
+		<module>bundles/ilg.gnumcueclipse.templates.cortexm</module>
+		<module>features/ilg.gnumcueclipse.templates.cortexm.feature</module>
+		<module>bundles/ilg.gnumcueclipse.templates.stm</module>
+		<module>features/ilg.gnumcueclipse.templates.stm.feature</module>
+		<module>bundles/ilg.gnumcueclipse.templates.freescale</module>
+		<module>bundles/ilg.gnumcueclipse.templates.freescale.pe</module>
+		<module>features/ilg.gnumcueclipse.templates.freescale.feature</module>
+		<module>bundles/ilg.gnumcueclipse.templates.ad</module>
+		<module>features/ilg.gnumcueclipse.templates.ad.feature</module>
+
 		<!-- RISC-V specific modules. -->
 		<module>bundles/ilg.gnumcueclipse.managedbuild.cross.riscv</module>
 		<module>features/ilg.gnumcueclipse.managedbuild.cross.riscv.feature</module>
 		<module>repositories/ilg.gnumcueclipse.riscv.repository</module>
+		
+		<module>bundles/ilg.gnumcueclipse.templates.sifive</module>
+		<module>features/ilg.gnumcueclipse.templates.sifive.feature</module>
+		
 	</modules>
 
 	<name>GNU MCU Eclipse plug-ins root</name>
