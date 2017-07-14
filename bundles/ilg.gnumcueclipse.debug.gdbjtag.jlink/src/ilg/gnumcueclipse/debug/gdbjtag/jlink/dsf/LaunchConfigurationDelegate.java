@@ -45,8 +45,8 @@ import org.eclipse.debug.core.ILaunchManager;
 import org.eclipse.debug.core.model.ISourceLocator;
 
 import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
-import ilg.gnumcueclipse.debug.gdbjtag.dsf.AbstractGnuArmLaunchConfigurationDelegate;
-import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuArmServerServicesLaunchSequence;
+import ilg.gnumcueclipse.debug.gdbjtag.dsf.AbstractGnuMcuLaunchConfigurationDelegate;
+import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuMcuServerServicesLaunchSequence;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.Configuration;
 
@@ -59,7 +59,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.jlink.Configuration;
  *
  */
 @SuppressWarnings("restriction")
-public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurationDelegate {
+public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurationDelegate {
 
 	// ------------------------------------------------------------------------
 
@@ -525,7 +525,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuArmLaunchConfigurati
 			System.out.println("jlink.LaunchConfigurationDelegate.getServerServicesSequence()");
 		}
 
-		return new GnuArmServerServicesLaunchSequence(session, (GdbLaunch) launch, progressMonitor);
+		return new GnuMcuServerServicesLaunchSequence(session, (GdbLaunch) launch, progressMonitor);
 	}
 
 	// ------------------------------------------------------------------------

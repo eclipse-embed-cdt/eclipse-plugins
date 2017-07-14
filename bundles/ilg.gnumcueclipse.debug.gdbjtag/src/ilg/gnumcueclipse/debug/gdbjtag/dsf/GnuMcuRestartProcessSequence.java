@@ -32,9 +32,9 @@ import org.eclipse.core.runtime.Status;
 
 import ilg.gnumcueclipse.debug.gdbjtag.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
-import ilg.gnumcueclipse.debug.gdbjtag.services.IGnuArmDebuggerCommandsService;
+import ilg.gnumcueclipse.debug.gdbjtag.services.IGnuMcuDebuggerCommandsService;
 
-public class GnuArmRestartProcessSequence extends ReflectionSequence {
+public class GnuMcuRestartProcessSequence extends ReflectionSequence {
 
 	// ------------------------------------------------------------------------
 
@@ -44,7 +44,7 @@ public class GnuArmRestartProcessSequence extends ReflectionSequence {
 	// private IReverseRunControl fReverseService;
 	// private IGDBBackend fBackend;
 	// private IGDBJtagDevice fGdbJtagDevice;
-	private IGnuArmDebuggerCommandsService fDebuggerCommands;
+	private IGnuMcuDebuggerCommandsService fDebuggerCommands;
 
 	private DsfServicesTracker fTracker;
 
@@ -74,7 +74,7 @@ public class GnuArmRestartProcessSequence extends ReflectionSequence {
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmRestartProcessSequence(DsfExecutor executor, IContainerDMContext containerDmc,
+	public GnuMcuRestartProcessSequence(DsfExecutor executor, IContainerDMContext containerDmc,
 			Map<String, Object> attributes, boolean restart, DataRequestMonitor<IContainerDMContext> rm) {
 		super(executor, rm);
 
@@ -124,7 +124,7 @@ public class GnuArmRestartProcessSequence extends ReflectionSequence {
 		fCommandControl = fTracker.getService(IGDBControl.class);
 		fCommandFactory = fTracker.getService(IMICommandControl.class).getCommandFactory();
 		fProcService = fTracker.getService(IGDBProcesses.class);
-		fDebuggerCommands = fTracker.getService(IGnuArmDebuggerCommandsService.class);
+		fDebuggerCommands = fTracker.getService(IGnuMcuDebuggerCommandsService.class);
 		if (fCommandControl == null || fCommandFactory == null || fProcService == null || fDebuggerCommands == null) {
 			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, IDsfStatusConstants.INTERNAL_ERROR,
 					"Cannot obtain service", null)); //$NON-NLS-1$
@@ -142,7 +142,7 @@ public class GnuArmRestartProcessSequence extends ReflectionSequence {
 
 		List<String> commandsList = new ArrayList<String>();
 
-		IStatus status = fDebuggerCommands.addGnuArmRestartCommands(commandsList);
+		IStatus status = fDebuggerCommands.addGnuMcuRestartCommands(commandsList);
 
 		if (!status.isOK()) {
 			rm.setStatus(status);

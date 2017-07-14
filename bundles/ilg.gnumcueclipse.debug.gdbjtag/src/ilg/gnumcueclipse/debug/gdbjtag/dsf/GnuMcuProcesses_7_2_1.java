@@ -39,7 +39,7 @@ import org.eclipse.core.runtime.Status;
 import ilg.gnumcueclipse.debug.gdbjtag.Activator;
 
 // Used to redefine the ProcessSequence, where the reset happens
-public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
+public class GnuMcuProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 
 	// ========================================================================
 
@@ -83,7 +83,7 @@ public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmProcesses_7_2_1(DsfSession session) {
+	public GnuMcuProcesses_7_2_1(DsfSession session) {
 		super(session);
 	}
 
@@ -93,7 +93,7 @@ public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 	public void initialize(final RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmProcesses_7_2_1.initialize()");
+			System.out.println("GnuMcuProcesses_7_2_1.initialize()");
 		}
 		super.initialize(new ImmediateRequestMonitor(rm) {
 			@Override
@@ -111,7 +111,7 @@ public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 		rm.done();
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmProcesses_7_2_1.initialize() done");
+			System.out.println("GnuMcuProcesses_7_2_1.initialize() done");
 		}
 	}
 
@@ -122,7 +122,7 @@ public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 			Map<String, Object> attributes, boolean restart, DataRequestMonitor<IContainerDMContext> rm) {
 
 		if (restart) {
-			return new GnuArmRestartProcessSequence(executor, containerDmc, attributes, restart, rm);
+			return new GnuMcuRestartProcessSequence(executor, containerDmc, attributes, restart, rm);
 		}
 
 		return super.getStartOrRestartProcessSequence(executor, containerDmc, attributes, restart, rm);
@@ -141,7 +141,7 @@ public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 	public void terminate(IThreadDMContext thread, final RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmProcesses_7_2_1.terminate()");
+			System.out.println("GnuMcuProcesses_7_2_1.terminate()");
 		}
 
 		// For a core session, there is no concept of killing the inferior,
@@ -157,7 +157,7 @@ public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 							IMIRunControl runControl = getServicesTracker().getService(IMIRunControl.class);
 							if (runControl != null && !runControl.isTargetAcceptingCommands()) {
 								if (Activator.getInstance().isDebugging()) {
-									System.out.println("GnuArmProcesses_7_2_1.terminate() interrupt");
+									System.out.println("GnuMcuProcesses_7_2_1.terminate() interrupt");
 								}
 								fBackend.interrupt();
 							}
@@ -172,14 +172,14 @@ public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 										protected void handleSuccess() {
 											if (Activator.getInstance().isDebugging()) {
 												System.out.println(
-														"GnuArmProcesses_7_2_1.terminate() dispatchEvent(ProcessStateChangedEvent, TERMINATED)");
+														"GnuMcuProcesses_7_2_1.terminate() dispatchEvent(ProcessStateChangedEvent, TERMINATED)");
 											}
 
 											getSession().dispatchEvent(new ProcessStateChangedEvent(
 													getSession().getId(), State.TERMINATED), getProperties());
 
 											if (Activator.getInstance().isDebugging()) {
-												System.out.println("GnuArmProcesses_7_2_1.terminate() done");
+												System.out.println("GnuMcuProcesses_7_2_1.terminate() done");
 											}
 
 											rm.done();
@@ -187,7 +187,7 @@ public class GnuArmProcesses_7_2_1 extends GDBProcesses_7_2_1 {
 									});
 						} else {
 							if (Activator.getInstance().isDebugging()) {
-								System.out.println("GnuArmProcesses_7_2_1.terminate() done");
+								System.out.println("GnuMcuProcesses_7_2_1.terminate() done");
 							}
 							rm.done();
 						}

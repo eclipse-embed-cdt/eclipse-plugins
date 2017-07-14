@@ -20,7 +20,7 @@ import org.eclipse.core.runtime.IPath;
 import org.eclipse.debug.core.ILaunchConfiguration;
 
 import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
-import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuArmGdbBackend;
+import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuMcuGdbBackend;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.Configuration;
 
@@ -29,7 +29,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.openocd.Configuration;
  * to copy a newer version locally and use it.
  */
 
-public class GdbBackend extends GnuArmGdbBackend {
+public class GdbBackend extends GnuMcuGdbBackend {
 
 	// ------------------------------------------------------------------------
 

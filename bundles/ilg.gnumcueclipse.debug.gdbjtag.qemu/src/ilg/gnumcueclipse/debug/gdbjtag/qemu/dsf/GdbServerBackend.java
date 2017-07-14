@@ -12,7 +12,7 @@
 package ilg.gnumcueclipse.debug.gdbjtag.qemu.dsf;
 
 import ilg.gnumcueclipse.core.StringUtils;
-import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuArmGdbServerBackend;
+import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuMcuGdbServerBackend;
 import ilg.gnumcueclipse.debug.gdbjtag.qemu.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.qemu.Configuration;
 
@@ -24,7 +24,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.osgi.framework.BundleContext;
 
-public class GdbServerBackend extends GnuArmGdbServerBackend {
+public class GdbServerBackend extends GnuMcuGdbServerBackend {
 
 	// ------------------------------------------------------------------------
 

@@ -25,9 +25,9 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.model.IMemoryBlockRetrieval;
 
 @SuppressWarnings("restriction")
-public class GdbArmMemoryBlockRetrievalManager extends GdbMemoryBlockRetrievalManager {
+public class GdbMcuMemoryBlockRetrievalManager extends GdbMemoryBlockRetrievalManager {
 
-	public GdbArmMemoryBlockRetrievalManager(String modelId, ILaunchConfiguration config, DsfSession session) {
+	public GdbMcuMemoryBlockRetrievalManager(String modelId, ILaunchConfiguration config, DsfSession session) {
 		super(modelId, config, session);
 	}
 

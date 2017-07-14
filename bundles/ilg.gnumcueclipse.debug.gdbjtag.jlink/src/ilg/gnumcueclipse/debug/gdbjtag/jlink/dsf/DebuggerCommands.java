@@ -14,7 +14,7 @@ package ilg.gnumcueclipse.debug.gdbjtag.jlink.dsf;
 import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.core.StringUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
-import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuArmDebuggerCommandsService;
+import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuMcuDebuggerCommandsService;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.preferences.DefaultPreferences;
@@ -29,7 +29,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.osgi.framework.BundleContext;
 
-public class DebuggerCommands extends GnuArmDebuggerCommandsService {
+public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 
 	// ------------------------------------------------------------------------
 
@@ -67,7 +67,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 	// ------------------------------------------------------------------------
 
 	@Override
-	public IStatus addGnuArmResetCommands(List<String> commandsList) {
+	public IStatus addGnuMcuResetCommands(List<String> commandsList) {
 
 		IStatus status = addFirstResetCommands(commandsList);
 		if (!status.isOK()) {
@@ -100,7 +100,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 	}
 
 	@Override
-	public IStatus addGnuArmStartCommands(List<String> commandsList) {
+	public IStatus addGnuMcuStartCommands(List<String> commandsList) {
 
 		boolean doReset = !CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_CONNECT_TO_RUNNING,
 				DefaultPreferences.DO_CONNECT_TO_RUNNING_DEFAULT);
@@ -115,7 +115,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 	}
 
 	@Override
-	public IStatus addGnuArmRestartCommands(List<String> commandsList) {
+	public IStatus addGnuMcuRestartCommands(List<String> commandsList) {
 
 		return addStartRestartCommands(true, commandsList);
 	}

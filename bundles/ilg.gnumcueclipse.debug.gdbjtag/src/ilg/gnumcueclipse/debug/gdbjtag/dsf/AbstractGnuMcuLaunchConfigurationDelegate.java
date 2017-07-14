@@ -21,7 +21,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 /**
  * @since 3.0
  */
-public abstract class AbstractGnuArmLaunchConfigurationDelegate extends GDBJtagDSFLaunchConfigurationDelegate {
+public abstract class AbstractGnuMcuLaunchConfigurationDelegate extends GDBJtagDSFLaunchConfigurationDelegate {
 
 	// This is the first method to be called in the launch sequence, even before
 	// preLaunchCheck()

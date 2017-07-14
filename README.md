@@ -1,4 +1,4 @@
-[![GitHub release](https://img.shields.io/github/release/gnuarmeclipse/plug-ins.svg)](https://github.com/gnuarmeclipse/plug-ins/releases/latest) [![Github Releases](https://img.shields.io/github/downloads/gnuarmeclipse/plug-ins/latest/total.svg)](https://github.com/gnuarmeclipse/plug-ins/releases/latest) [![Github Releases](https://img.shields.io/github/downloads/gnuarmeclipse/plug-ins/total.svg)](https://github.com/gnuarmeclipse/plug-ins/releases/latest) [![SourceForge](https://img.shields.io/sourceforge/dt/gnuarmeclipse.svg?label=SF%20downloads)](https://sourceforge.net/projects/gnuarmeclipse/files/) [![Build Status](https://travis-ci.org/gnuarmeclipse/plug-ins.svg?branch=develop)](https://travis-ci.org/gnuarmeclipse/plug-ins) 
+[![GitHub release](https://img.shields.io/github/release/gnu-mcu-eclipse/eclipse-plugins.svg)](https://github.com/gnu-mcu-eclipse/eclipse-plugins/releases/latest) [![Github Releases](https://img.shields.io/github/downloads/gnu-mcu-eclipse/eclipse-plugins/latest/total.svg)](https://github.com/gnu-mcu-eclipse/eclipse-plugins/releases/latest) [![Github Releases](https://img.shields.io/github/downloads/gnu-mcu-eclipse/eclipse-plugins/total.svg)](https://github.com/gnu-mcu-eclipse/eclipse-plugins/releases/latest) [![SourceForge](https://img.shields.io/sourceforge/dt/gnuarmeclipse.svg?label=SF%20downloads)](https://sourceforge.net/projects/gnuarmeclipse/files/) [![Build Status](https://travis-ci.org/gnu-mcu-eclipse/eclipse-plugins.svg?branch=develop)](https://travis-ci.org/gnu-mcu-eclipse/eclipse-plugins) 
 
 # The GNU MCU Eclipse plug-ins
 
@@ -22,8 +22,8 @@ For manual installs, the stable version update site is:
 ### Command line
 
 ```
-$ git clone --branch=master https://github.com/gnuarmeclipse/plug-ins.git gnuarmeclipse/plug-ins.git
-$ cd gnuarmeclipse/plug-ins.git
+$ git clone --branch=master https://github.com/gnu-mcu-eclipse/eclipse-plugins.git gnu-mcu-eclipse/eclipse-plugins.git
+$ cd gnu-mcu-eclipse/eclipse-plugins.git
 $ mvn -Dtycho.localArtifacts=ignore clean verify
 ```
 

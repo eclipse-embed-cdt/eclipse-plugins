@@ -21,11 +21,11 @@ import ilg.gnumcueclipse.debug.gdbjtag.render.peripherals.PeripheralsView;
 import ilg.gnumcueclipse.debug.gdbjtag.viewmodel.peripherals.PeripheralsVMProvider;
 
 @SuppressWarnings("restriction")
-public class GnuArmViewModelAdapter extends GdbViewModelAdapter {
+public class GnuMcuViewModelAdapter extends GdbViewModelAdapter {
 
 	// ------------------------------------------------------------------------
 
-	GnuArmViewModelAdapter(DsfSession session, SteppingController controller) {
+	GnuMcuViewModelAdapter(DsfSession session, SteppingController controller) {
 
 		// Parent will register IColumnPresentationFactory as modelAdapter
 		super(session, controller);

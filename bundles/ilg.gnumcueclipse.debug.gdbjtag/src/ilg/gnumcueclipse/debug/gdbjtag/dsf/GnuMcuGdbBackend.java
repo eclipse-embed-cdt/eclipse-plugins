@@ -86,7 +86,7 @@ import org.osgi.framework.BundleContext;
 
 import ilg.gnumcueclipse.debug.gdbjtag.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
-import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuArmProcesses_7_2_1.ProcessStateChangedEvent;
+import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuMcuProcesses_7_2_1.ProcessStateChangedEvent;
 
 /**
  * Implementation of {@link IGDBBackend} for the common case where GDB is
@@ -98,7 +98,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuArmProcesses_7_2_1.ProcessStateCha
  * @since 1.1
  */
 @SuppressWarnings("restriction")
-public class GnuArmGdbBackend extends AbstractDsfService implements IGDBBackend, IMIBackend2 {
+public class GnuMcuGdbBackend extends AbstractDsfService implements IGDBBackend, IMIBackend2 {
 
 	private final ILaunchConfiguration fLaunchConfiguration;
 
@@ -136,7 +136,7 @@ public class GnuArmGdbBackend extends AbstractDsfService implements IGDBBackend,
 	 */
 	private MonitorInterruptJob fInterruptFailedJob;
 
-	public GnuArmGdbBackend(DsfSession session, ILaunchConfiguration lc) {
+	public GnuMcuGdbBackend(DsfSession session, ILaunchConfiguration lc) {
 		super(session);
 		fBackendId = "gdb[" + Integer.toString(fgInstanceCounter++) + "]"; //$NON-NLS-1$//$NON-NLS-2$
 		fLaunchConfiguration = lc;
@@ -155,7 +155,7 @@ public class GnuArmGdbBackend extends AbstractDsfService implements IGDBBackend,
 	public void initialize(final RequestMonitor requestMonitor) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmGdbBackend.initialize()");
+			System.out.println("GnuMcuGdbBackend.initialize()");
 		}
 
 		super.initialize(new ImmediateRequestMonitor(requestMonitor) {
@@ -186,7 +186,7 @@ public class GnuArmGdbBackend extends AbstractDsfService implements IGDBBackend,
 	public void shutdown(final RequestMonitor requestMonitor) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmGdbBackend.shutdown()");
+			System.out.println("GnuMcuGdbBackend.shutdown()");
 		}
 
 		final Sequence.Step[] shutdownSteps = new Sequence.Step[] {
@@ -196,7 +196,7 @@ public class GnuArmGdbBackend extends AbstractDsfService implements IGDBBackend,
 		Sequence shutdownSequence = new Sequence(getExecutor(), new RequestMonitor(getExecutor(), requestMonitor) {
 			@Override
 			protected void handleCompleted() {
-				GnuArmGdbBackend.super.shutdown(requestMonitor);
+				GnuMcuGdbBackend.super.shutdown(requestMonitor);
 			}
 		}) {
 			@Override
@@ -553,7 +553,7 @@ public class GnuArmGdbBackend extends AbstractDsfService implements IGDBBackend,
 		// Bug 339379
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmGdbBackend.destroy()");
+			System.out.println("GnuMcuGdbBackend.destroy()");
 		}
 
 		// destroy() should be supported even if it's not spawner.
@@ -874,7 +874,7 @@ public class GnuArmGdbBackend extends AbstractDsfService implements IGDBBackend,
 			register(new String[] { IMIBackend.class.getName(), IMIBackend2.class.getName(),
 					IGDBBackend.class.getName() }, new Hashtable<String, String>());
 
-			getSession().addServiceEventListener(GnuArmGdbBackend.this, null);
+			getSession().addServiceEventListener(GnuMcuGdbBackend.this, null);
 
 			/*
 			 * This event is not consumed by any one at present, instead it's
@@ -894,7 +894,7 @@ public class GnuArmGdbBackend extends AbstractDsfService implements IGDBBackend,
 		@Override
 		protected void shutdown(RequestMonitor requestMonitor) {
 			unregister();
-			getSession().removeServiceEventListener(GnuArmGdbBackend.this);
+			getSession().removeServiceEventListener(GnuMcuGdbBackend.this);
 			requestMonitor.done();
 		}
 	}
@@ -1056,7 +1056,7 @@ public class GnuArmGdbBackend extends AbstractDsfService implements IGDBBackend,
 	public void eventDispatched(final ProcessStateChangedEvent e) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmGdbBackend.eventDispatched() " + e);
+			System.out.println("GnuMcuGdbBackend.eventDispatched() " + e);
 		}
 
 		// When the process is terminated, also terminate the backend.

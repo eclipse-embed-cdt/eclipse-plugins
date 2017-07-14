@@ -30,11 +30,11 @@ import org.eclipse.debug.internal.ui.viewers.model.provisional.IViewerInputProvi
 
 /**
  * Common adapter factory, used by adaptable type
- * "ilg.gnumcueclipse.debug.core.gdbjtag.dsf.GnuArmLaunch" to provide
- * GnuArmViewModelAdapter() in addition to those provided by parent.
+ * "ilg.gnumcueclipse.debug.core.gdbjtag.dsf.GnuMcuLaunch" to provide
+ * GnuMcuViewModelAdapter() in addition to those provided by parent.
  */
 @SuppressWarnings("restriction")
-public class GnuArmAdapterFactory extends GdbAdapterFactory {
+public class GnuMcuAdapterFactory extends GdbAdapterFactory {
 
 	// ------------------------------------------------------------------------
 
@@ -46,7 +46,7 @@ public class GnuArmAdapterFactory extends GdbAdapterFactory {
 
 		final GdbLaunch fLaunch;
 		final SteppingController fSteppingController;
-		final GnuArmViewModelAdapter fViewModelAdapter;
+		final GnuMcuViewModelAdapter fViewModelAdapter;
 
 		SessionAdapters(GdbLaunch launch) {
 			fLaunch = launch;
@@ -55,7 +55,7 @@ public class GnuArmAdapterFactory extends GdbAdapterFactory {
 			fSteppingController = new SteppingController(session);
 			session.registerModelAdapter(SteppingController.class, fSteppingController);
 
-			fViewModelAdapter = new GnuArmViewModelAdapter(session, fSteppingController);
+			fViewModelAdapter = new GnuMcuViewModelAdapter(session, fSteppingController);
 			session.registerModelAdapter(IViewerInputProvider.class, fViewModelAdapter);
 		}
 
@@ -102,7 +102,7 @@ public class GnuArmAdapterFactory extends GdbAdapterFactory {
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmAdapterFactory() {
+	public GnuMcuAdapterFactory() {
 		DebugPlugin.getDefault().getLaunchManager().addLaunchListener(this);
 	}
 

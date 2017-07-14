@@ -34,14 +34,14 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import org.osgi.framework.BundleContext;
 
 import ilg.gnumcueclipse.core.StringUtils;
-import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuArmGdbServerBackend;
+import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuMcuGdbServerBackend;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Configuration;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.ConfigurationAttributes;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.SemihostingProcess;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences.DefaultPreferences;
 
-public class GdbServerBackend extends GnuArmGdbServerBackend {
+public class GdbServerBackend extends GnuMcuGdbServerBackend {
 
 	// ------------------------------------------------------------------------
 

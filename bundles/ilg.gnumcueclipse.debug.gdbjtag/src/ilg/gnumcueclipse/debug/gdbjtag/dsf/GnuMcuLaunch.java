@@ -51,7 +51,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.Activator;
  * To be used as parent by implementation (JLink, OpenOCD) launchers.
  */
 @SuppressWarnings("restriction")
-public class GnuArmLaunch extends GdbLaunch {
+public class GnuMcuLaunch extends GdbLaunch {
 
 	// ------------------------------------------------------------------------
 
@@ -63,7 +63,7 @@ public class GnuArmLaunch extends GdbLaunch {
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmLaunch(ILaunchConfiguration launchConfiguration, String mode, ISourceLocator locator) {
+	public GnuMcuLaunch(ILaunchConfiguration launchConfiguration, String mode, ISourceLocator locator) {
 
 		super(launchConfiguration, mode, locator);
 
@@ -85,7 +85,7 @@ public class GnuArmLaunch extends GdbLaunch {
 	public void initialize() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmLaunch.initialize() " + this);
+			System.out.println("GnuMcuLaunch.initialize() " + this);
 		}
 
 		ILaunchConfigurationWorkingCopy config;
@@ -148,7 +148,7 @@ public class GnuArmLaunch extends GdbLaunch {
 	public void shutdownSession(final RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmLaunch.shutdownSession() " + this);
+			System.out.println("GnuMcuLaunch.shutdownSession() " + this);
 		}
 		super.shutdownSession(rm);
 	}
@@ -160,7 +160,7 @@ public class GnuArmLaunch extends GdbLaunch {
 	public void initializeControl() throws CoreException {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmLaunch.initializeControl()");
+			System.out.println("GnuMcuLaunch.initializeControl()");
 		}
 
 		// The parent defines and register GdbMemoryBlockRetrievalManager
@@ -175,7 +175,7 @@ public class GnuArmLaunch extends GdbLaunch {
 			fExecutor.submit(new Callable<Object>() {
 				@Override
 				public Object call() throws CoreException {
-					fMemRetrievalManager = new GdbArmMemoryBlockRetrievalManager(GdbLaunchDelegate.GDB_DEBUG_MODEL_ID,
+					fMemRetrievalManager = new GdbMcuMemoryBlockRetrievalManager(GdbLaunchDelegate.GDB_DEBUG_MODEL_ID,
 							getLaunchConfiguration(), fSession);
 					fSession.registerModelAdapter(IMemoryBlockRetrievalManager.class, fMemRetrievalManager);
 					fSession.addServiceEventListener(fMemRetrievalManager, null);

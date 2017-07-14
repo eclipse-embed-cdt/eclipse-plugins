@@ -24,7 +24,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 import ilg.gnumcueclipse.debug.gdbjtag.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.services.IGdbServerBackendService;
-import ilg.gnumcueclipse.debug.gdbjtag.services.IGnuArmDebuggerCommandsService;
+import ilg.gnumcueclipse.debug.gdbjtag.services.IGnuMcuDebuggerCommandsService;
 import ilg.gnumcueclipse.debug.gdbjtag.services.IPeripheralMemoryService;
 import ilg.gnumcueclipse.debug.gdbjtag.services.IPeripheralsService;
 import ilg.gnumcueclipse.debug.gdbjtag.services.PeripheralMemoryService;
@@ -36,7 +36,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.services.PeripheralsService;
  * To be used as parent class by actual implementations (J-Link and OpenOCD
  * factories).
  */
-public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
+public abstract class GnuMcuServicesFactory extends GdbDebugServicesFactory {
 
 	// ------------------------------------------------------------------------
 
@@ -45,7 +45,7 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmServicesFactory(String version, String mode) {
+	public GnuMcuServicesFactory(String version, String mode) {
 		super(version, null);
 
 		fVersion = version;
@@ -65,7 +65,7 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 					return (V) createPeripheralMemoryService(session, (ILaunchConfiguration) arg);
 				}
 			}
-		} else if (IGnuArmDebuggerCommandsService.class.isAssignableFrom(clazz)) {
+		} else if (IGnuMcuDebuggerCommandsService.class.isAssignableFrom(clazz)) {
 			for (Object arg : optionalArguments) {
 				if (arg instanceof ILaunchConfiguration) {
 					return (V) createDebuggerCommandsService(session, (ILaunchConfiguration) arg, fMode);
@@ -83,10 +83,10 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 
 	// ------------------------------------------------------------------------
 
-	protected abstract GnuArmDebuggerCommandsService createDebuggerCommandsService(DsfSession session,
+	protected abstract GnuMcuDebuggerCommandsService createDebuggerCommandsService(DsfSession session,
 			ILaunchConfiguration lc, String mode);
 
-	protected abstract GnuArmGdbServerBackend createGdbServerBackendService(DsfSession session,
+	protected abstract GnuMcuGdbServerBackend createGdbServerBackendService(DsfSession session,
 			ILaunchConfiguration lc);
 
 	// ------------------------------------------------------------------------
@@ -105,11 +105,11 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println(
-					"GnuArmServicesFactory.createCommandControl(" + session + "," + config.getName() + ") " + this);
+					"GnuMcuServicesFactory.createCommandControl(" + session + "," + config.getName() + ") " + this);
 		}
 
 		if (DebugUtils.compareVersions(GDB_7_4_VERSION, fVersion) <= 0) {
-			return new GnuArmControl_7_4(session, config, new GnuArmCommandFactory(), fMode);
+			return new GnuMcuControl_7_4(session, config, new GnuMcuCommandFactory(), fMode);
 		}
 
 		return super.createCommandControl(session, config);
@@ -119,11 +119,11 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 	protected IProcesses createProcessesService(DsfSession session) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmServicesFactory.createProcessesService(" + session + ") " + this);
+			System.out.println("GnuMcuServicesFactory.createProcessesService(" + session + ") " + this);
 		}
 
 		if (DebugUtils.compareVersions(GDB_7_2_1_VERSION, fVersion) <= 0) {
-			return new GnuArmProcesses_7_2_1(session);
+			return new GnuMcuProcesses_7_2_1(session);
 		}
 
 		return super.createProcessesService(session);
@@ -137,16 +137,16 @@ public abstract class GnuArmServicesFactory extends GdbDebugServicesFactory {
 		// TODO: copy control locally, to make it work on 4.3 SR2
 		// if (GDB_7_7_VERSION.compareTo(fVersion) <= 0) {
 		// return new GDBControl_7_7(session, config,
-		// new GnuArmCommandFactory());
+		// new GnuMcuCommandFactory());
 		// }
 		if (DebugUtils.compareVersions(GDB_7_4_VERSION, fVersion) <= 0) {
-			return new GDBControl_7_4(session, config, new GnuArmCommandFactory());
+			return new GDBControl_7_4(session, config, new GnuMcuCommandFactory());
 		}
 		if (DebugUtils.compareVersions(GDB_7_2_VERSION, fVersion) <= 0) {
-			return new GDBControl_7_2(session, config, new GnuArmCommandFactory());
+			return new GDBControl_7_2(session, config, new GnuMcuCommandFactory());
 		}
 		if (DebugUtils.compareVersions(GDB_7_0_VERSION, fVersion) <= 0) {
-			return new GDBControl_7_0(session, config, new GnuArmCommandFactory());
+			return new GDBControl_7_0(session, config, new GnuMcuCommandFactory());
 		}
 
 		return super.createCommandControl(session, config);

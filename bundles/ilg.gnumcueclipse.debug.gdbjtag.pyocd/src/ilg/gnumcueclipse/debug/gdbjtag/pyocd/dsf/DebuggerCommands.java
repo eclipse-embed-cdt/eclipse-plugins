@@ -16,7 +16,7 @@ package ilg.gnumcueclipse.debug.gdbjtag.pyocd.dsf;
 import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.core.StringUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
-import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuArmDebuggerCommandsService;
+import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuMcuDebuggerCommandsService;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.ConfigurationAttributes;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences.DefaultPreferences;
@@ -31,7 +31,7 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.osgi.framework.BundleContext;
 
-public class DebuggerCommands extends GnuArmDebuggerCommandsService {
+public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 
 	// ------------------------------------------------------------------------
 
@@ -63,7 +63,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 	// ------------------------------------------------------------------------
 
 	@Override
-	public IStatus addGnuArmResetCommands(List<String> commandsList) {
+	public IStatus addGnuMcuResetCommands(List<String> commandsList) {
 
 		IStatus status = addFirstResetCommands(commandsList);
 		if (!status.isOK()) {
@@ -92,7 +92,7 @@ public class DebuggerCommands extends GnuArmDebuggerCommandsService {
 	}
 
 	@Override
-	public IStatus addGnuArmStartCommands(List<String> commandsList) {
+	public IStatus addGnuMcuStartCommands(List<String> commandsList) {
 
 		IStatus status = addStartRestartCommands(true, commandsList);
 

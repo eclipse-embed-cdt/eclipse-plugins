@@ -20,7 +20,7 @@ import org.eclipse.debug.core.ILaunchConfiguration;
 
 import ilg.gnumcueclipse.debug.gdbjtag.ILaunchConfigurationProvider;
 
-public class GnuArmControl_7_4 extends GnuArmControl_7_2 implements ILaunchConfigurationProvider {
+public class GnuMcuControl_7_4 extends GnuMcuControl_7_2 implements ILaunchConfigurationProvider {
 
 	// ------------------------------------------------------------------------
 
@@ -28,7 +28,7 @@ public class GnuArmControl_7_4 extends GnuArmControl_7_2 implements ILaunchConfi
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmControl_7_4(DsfSession session, ILaunchConfiguration config, CommandFactory factory, String mode) {
+	public GnuMcuControl_7_4(DsfSession session, ILaunchConfiguration config, CommandFactory factory, String mode) {
 		super(session, config, factory, mode);
 
 		fConfig = config;

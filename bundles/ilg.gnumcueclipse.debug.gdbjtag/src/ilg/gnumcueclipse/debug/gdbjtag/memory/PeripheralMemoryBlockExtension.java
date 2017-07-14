@@ -17,7 +17,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.PeripheralDMContext;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.PeripheralDMNode;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdPeripheralDMNode;
-import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuArmCommandFactory;
+import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuMcuCommandFactory;
 import ilg.gnumcueclipse.debug.gdbjtag.services.IPeripheralMemoryService;
 import ilg.gnumcueclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralGroupVMNode;
 import ilg.gnumcueclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralRegisterFieldVMNode;
@@ -75,7 +75,7 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 
 	private PeripheralDMNode fPeripheralDMNode;
 	@SuppressWarnings("unused")
-	private GnuArmCommandFactory fCommandFactory;
+	private GnuMcuCommandFactory fCommandFactory;
 	@SuppressWarnings("unused")
 	private ICommandControl fCommandControl;
 	private DsfMemoryBlockRetrieval fRetrieval;
@@ -162,8 +162,8 @@ public class PeripheralMemoryBlockExtension extends PlatformObject
 
 				CommandFactory commandFactory = ((IMICommandControl) tracker
 						.getService((Class<IMICommandControl>) IMICommandControl.class)).getCommandFactory();
-				if (commandFactory instanceof GnuArmCommandFactory) {
-					fCommandFactory = (GnuArmCommandFactory) commandFactory;
+				if (commandFactory instanceof GnuMcuCommandFactory) {
+					fCommandFactory = (GnuMcuCommandFactory) commandFactory;
 					fPeripheralDMNode = peripheralDMContext.getPeripheralInstance();
 					fPeripheralDMNode.setMemoryBlock((IMemoryBlockExtension) PeripheralMemoryBlockExtension.this);
 				} else {

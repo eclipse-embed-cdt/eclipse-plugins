@@ -55,7 +55,7 @@ import org.osgi.framework.BundleContext;
  * It should be used as base class for an implementation specific GDB server
  * backend.
  */
-public abstract class GnuArmGdbServerBackend extends AbstractDsfService implements IGdbServerBackendService {
+public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implements IGdbServerBackendService {
 
 	// ------------------------------------------------------------------------
 
@@ -93,13 +93,13 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService implemen
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmGdbServerBackend(DsfSession session, ILaunchConfiguration lc) {
+	public GnuMcuGdbServerBackend(DsfSession session, ILaunchConfiguration lc) {
 		super(session);
 		fLaunchConfiguration = lc;
 		fBackendId = "gdbServer[" + Integer.toString(fgInstanceCounter++) + "]"; //$NON-NLS-1$//$NON-NLS-2$
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmGdbServerBackend(" + session + "," + lc.getName() + ")");
+			System.out.println("GnuMcuGdbServerBackend(" + session + "," + lc.getName() + ")");
 		}
 	}
 
@@ -109,7 +109,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService implemen
 	public void initialize(final RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmGdbServerBackend.initialize()");
+			System.out.println("GnuMcuGdbServerBackend.initialize()");
 		}
 
 		// Initialise parent, and, when ready, initialise this class too.
@@ -146,7 +146,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService implemen
 	public void shutdown(final RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmGdbServerBackend.shutdown()");
+			System.out.println("GnuMcuGdbServerBackend.shutdown()");
 		}
 
 		final Sequence.Step[] shutdownSteps;
@@ -164,7 +164,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService implemen
 			@Override
 			protected void handleSuccess() {
 				// We're done here, shutdown parent.
-				GnuArmGdbServerBackend.super.shutdown(rm);
+				GnuMcuGdbServerBackend.super.shutdown(rm);
 			}
 		}) {
 			@Override
@@ -182,7 +182,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService implemen
 	public void destroy() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmGdbServerBackend.destroy() " + Thread.currentThread());
+			System.out.println("GnuMcuGdbServerBackend.destroy() " + Thread.currentThread());
 		}
 		if (fStartGdbServerJob != null && fStartGdbServerJob.getThread() != null) {
 			// Try to terminate read loop.
@@ -191,7 +191,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService implemen
 
 		if (getServerProcess() != null && getServerState() == State.STARTED) {
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("GnuArmGdbServerBackend.destroy() fServerProcess " + fServerProcess);
+				System.out.println("GnuMcuGdbServerBackend.destroy() fServerProcess " + fServerProcess);
 			}
 			getServerProcess().destroy();
 		} else if (fServerProcess != null) {
@@ -200,7 +200,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService implemen
 
 		if (fTimeoutFuture != null) {
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("GnuArmGdbServerBackend.destroy() cancel timeout");
+				System.out.println("GnuMcuGdbServerBackend.destroy() cancel timeout");
 			}
 			fTimeoutFuture.cancel(true);
 		}
@@ -218,7 +218,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService implemen
 	@DsfServiceEventHandler
 	public void eventDispatched(final MIStoppedEvent e) {
 
-		// System.out.println("GnuArmGdbServerBackend.eventDispatched() " + e);
+		// System.out.println("GnuMcuGdbServerBackend.eventDispatched() " + e);
 	}
 
 	/**
@@ -234,7 +234,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService implemen
 	public void eventDispatched(final BackendStateChangedEvent e) {
 		// Only BackendStateChangedEvent debug events come here.
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmGdbServerBackend.eventDispatched() " + e);
+			System.out.println("GnuMcuGdbServerBackend.eventDispatched() " + e);
 		}
 
 		if (fDoStartGdbServer) {
@@ -246,7 +246,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService implemen
 		} else {
 			if (Activator.getInstance().isDebugging()) {
 				System.out.println(
-						"GnuArmGdbServerBackend.eventDispatched() -> dispatchEvent(ServerBackendStateChangedEvent, TERMINATED)");
+						"GnuMcuGdbServerBackend.eventDispatched() -> dispatchEvent(ServerBackendStateChangedEvent, TERMINATED)");
 			}
 			getSession().dispatchEvent(
 					new ServerBackendStateChangedEvent(getSession().getId(), getId(), State.TERMINATED),
@@ -347,7 +347,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService implemen
 			StringBuffer outBuffer, StringBuffer errBuffer) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmGdbServerBackend.checkServer()");
+			System.out.println("GnuMcuGdbServerBackend.checkServer()");
 		}
 
 		// The strategy is to parse the output stream and stop
@@ -571,13 +571,13 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService implemen
 			// Register the service, by interface and by actual name;
 			// it is searched later, to shut it down or to get processes.
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("register " + GnuArmGdbServerBackend.this.getClass().getName());
+				System.out.println("register " + GnuMcuGdbServerBackend.this.getClass().getName());
 			}
 			register(new String[] { IGdbServerBackendService.class.getName(),
-					GnuArmGdbServerBackend.this.getClass().getName() }, new Hashtable<String, String>());
+					GnuMcuGdbServerBackend.this.getClass().getName() }, new Hashtable<String, String>());
 
 			// Register listener.
-			getSession().addServiceEventListener(GnuArmGdbServerBackend.this, null);
+			getSession().addServiceEventListener(GnuMcuGdbServerBackend.this, null);
 
 			// Notify world that server backend started.
 			getSession().dispatchEvent(new ServerBackendStateChangedEvent(getSession().getId(), getId(), State.STARTED),
@@ -593,7 +593,7 @@ public abstract class GnuArmGdbServerBackend extends AbstractDsfService implemen
 			unregister();
 
 			// Unregister listener.
-			getSession().removeServiceEventListener(GnuArmGdbServerBackend.this);
+			getSession().removeServiceEventListener(GnuMcuGdbServerBackend.this);
 
 			rm.done();
 		}

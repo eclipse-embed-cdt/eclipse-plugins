@@ -29,5 +29,5 @@
 	</parent>
 
 	<name>GNU MCU Eclipse PyOCD debug feature</name>
-	<url>http://gnuarmeclipse.livius.net</url>
+	<url>http://gnu-mcu-eclipse.github.io</url>
 </project>

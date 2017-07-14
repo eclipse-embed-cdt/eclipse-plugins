@@ -15,7 +15,7 @@ import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.core.StringUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
-import ilg.gnumcueclipse.debug.gdbjtag.services.IGnuArmDebuggerCommandsService;
+import ilg.gnumcueclipse.debug.gdbjtag.services.IGnuMcuDebuggerCommandsService;
 
 import java.util.Hashtable;
 import java.util.List;
@@ -35,8 +35,8 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.debug.core.ILaunchManager;
 
-public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
-		implements IGnuArmDebuggerCommandsService {
+public abstract class GnuMcuDebuggerCommandsService extends AbstractDsfService
+		implements IGnuMcuDebuggerCommandsService {
 
 	// ------------------------------------------------------------------------
 
@@ -53,11 +53,11 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmDebuggerCommandsService(DsfSession session, ILaunchConfiguration lc, String mode) {
+	public GnuMcuDebuggerCommandsService(DsfSession session, ILaunchConfiguration lc, String mode) {
 		this(session, lc, mode, false);
 	}
 
-	public GnuArmDebuggerCommandsService(DsfSession session, ILaunchConfiguration lc, String mode,
+	public GnuMcuDebuggerCommandsService(DsfSession session, ILaunchConfiguration lc, String mode,
 			boolean doubleBackslash) {
 		super(session);
 
@@ -73,7 +73,7 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 	public void initialize(final RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmDebuggerCommandsService.initialize()");
+			System.out.println("GnuMcuDebuggerCommandsService.initialize()");
 		}
 
 		super.initialize(new RequestMonitor(getExecutor(), rm) {
@@ -88,7 +88,7 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 	private void doInitialize(RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmDebuggerCommandsService.doInitialize()");
+			System.out.println("GnuMcuDebuggerCommandsService.doInitialize()");
 		}
 
 		// Get and remember the command control service
@@ -97,7 +97,7 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 
 		// Register this service to DSF.
 		// For completeness, use both the interface and the class name.
-		register(new String[] { IGnuArmDebuggerCommandsService.class.getName(), this.getClass().getName() },
+		register(new String[] { IGnuMcuDebuggerCommandsService.class.getName(), this.getClass().getName() },
 				new Hashtable());
 
 		if (Activator.getInstance().isDebugging()) {
@@ -119,7 +119,7 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 	public void shutdown(RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmDebuggerCommandsService.shutdown()");
+			System.out.println("GnuMcuDebuggerCommandsService.shutdown()");
 		}
 
 		// Remove this service from DSF.
@@ -137,7 +137,7 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 
 	// ------------------------------------------------------------------------
 
-	public IStatus addGnuArmSelectRemoteCommands(List<String> commandsList) {
+	public IStatus addGnuMcuSelectRemoteCommands(List<String> commandsList) {
 
 		String remoteTcpHost = CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_IP_ADDRESS,
 				IGDBJtagConstants.DEFAULT_IP_ADDRESS);
@@ -150,7 +150,7 @@ public abstract class GnuArmDebuggerCommandsService extends AbstractDsfService
 	}
 
 	@Override
-	public IStatus addGnuArmRestartCommands(List<String> commandsList) {
+	public IStatus addGnuMcuRestartCommands(List<String> commandsList) {
 
 		return addStartRestartCommands(true, commandsList);
 	}

@@ -16,7 +16,7 @@ import java.util.Map;
 
 import org.eclipse.core.runtime.IStatus;
 
-public interface IGnuArmDebuggerCommandsService {
+public interface IGnuMcuDebuggerCommandsService {
 
 	public void setAttributes(Map<String, Object> attributes);
 
@@ -34,13 +34,13 @@ public interface IGnuArmDebuggerCommandsService {
 
 	// ------------------------------------------------------------------------
 
-	public IStatus addGnuArmSelectRemoteCommands(List<String> commandsList);
+	public IStatus addGnuMcuSelectRemoteCommands(List<String> commandsList);
 
-	public IStatus addGnuArmResetCommands(List<String> commandsList);
+	public IStatus addGnuMcuResetCommands(List<String> commandsList);
 
-	public IStatus addGnuArmStartCommands(List<String> commandsList);
+	public IStatus addGnuMcuStartCommands(List<String> commandsList);
 
-	public IStatus addGnuArmRestartCommands(List<String> commandsList);
+	public IStatus addGnuMcuRestartCommands(List<String> commandsList);
 
 	// ------------------------------------------------------------------------
 

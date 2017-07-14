@@ -13,7 +13,7 @@ package ilg.gnumcueclipse.debug.gdbjtag.dsf;
 
 import org.eclipse.cdt.dsf.gdb.service.command.CommandFactory_6_8;
 
-public class GnuArmCommandFactory extends CommandFactory_6_8 {
+public class GnuMcuCommandFactory extends CommandFactory_6_8 {
 
 	// ------------------------------------------------------------------------
 

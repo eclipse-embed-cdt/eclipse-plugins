@@ -27,7 +27,7 @@ import org.eclipse.core.runtime.Status;
 
 import ilg.gnumcueclipse.debug.gdbjtag.Activator;
 
-public class GnuArmFinalLaunchSequence_7_2 extends GnuArmFinalLaunchSequence {
+public class GnuMcuFinalLaunchSequence_7_2 extends GnuMcuFinalLaunchSequence {
 
 	// ------------------------------------------------------------------------
 
@@ -39,7 +39,7 @@ public class GnuArmFinalLaunchSequence_7_2 extends GnuArmFinalLaunchSequence {
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmFinalLaunchSequence_7_2(DsfSession session, Map<String, Object> attributes, String mode,
+	public GnuMcuFinalLaunchSequence_7_2(DsfSession session, Map<String, Object> attributes, String mode,
 			RequestMonitorWithProgress rm) {
 		super(session, attributes, mode, rm);
 		fSession = session;

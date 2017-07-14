@@ -12,7 +12,7 @@
 package ilg.gnumcueclipse.debug.gdbjtag.jlink.dsf;
 
 import ilg.gnumcueclipse.core.StringUtils;
-import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuArmGdbServerBackend;
+import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuMcuGdbServerBackend;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.Configuration;
 import ilg.gnumcueclipse.debug.gdbjtag.jlink.ConfigurationAttributes;
@@ -39,7 +39,7 @@ import org.eclipse.debug.core.DebugException;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.osgi.framework.BundleContext;
 
-public class GdbServerBackend extends GnuArmGdbServerBackend {
+public class GdbServerBackend extends GnuMcuGdbServerBackend {
 
 	// ------------------------------------------------------------------------
 

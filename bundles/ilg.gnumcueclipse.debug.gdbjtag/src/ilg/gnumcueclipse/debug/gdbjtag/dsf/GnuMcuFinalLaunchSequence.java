@@ -34,11 +34,11 @@ import org.eclipse.debug.core.ILaunchManager;
 
 import ilg.gnumcueclipse.debug.gdbjtag.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
-import ilg.gnumcueclipse.debug.gdbjtag.services.IGnuArmDebuggerCommandsService;
+import ilg.gnumcueclipse.debug.gdbjtag.services.IGnuMcuDebuggerCommandsService;
 import ilg.gnumcueclipse.debug.gdbjtag.services.IPeripheralMemoryService;
 import ilg.gnumcueclipse.debug.gdbjtag.services.IPeripheralsService;
 
-public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
+public class GnuMcuFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	// ------------------------------------------------------------------------
 
@@ -52,7 +52,7 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	private IGDBJtagDevice fGdbJtagDevice;
 	private String fMode;
 
-	private IGnuArmDebuggerCommandsService fDebuggerCommands;
+	private IGnuMcuDebuggerCommandsService fDebuggerCommands;
 
 	// ------------------------------------------------------------------------
 
@@ -63,8 +63,8 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	private String[] jtagPreInitSteps = {};
 
-	private String[] jtagResetStep = { "stepGnuArmReset" };
-	private String[] jtagStartStep = { "stepGnuArmStart" };
+	private String[] jtagResetStep = { "stepGnuMcuReset" };
+	private String[] jtagStartStep = { "stepGnuMcuStart" };
 
 	private String[] jtagToRemove = { "stepLoadSymbols", "stepResetBoard", "stepDelayStartup", "stepHaltBoard",
 			"stepUserInitCommands", "stepLoadImage", "stepSetProgramCounter", "stepStopScript", "stepResumeScript",
@@ -72,7 +72,7 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmFinalLaunchSequence(DsfSession session, Map<String, Object> attributes, String mode,
+	public GnuMcuFinalLaunchSequence(DsfSession session, Map<String, Object> attributes, String mode,
 			RequestMonitorWithProgress rm) {
 		super(session, attributes, rm);
 		fAttributes = attributes;
@@ -86,7 +86,7 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	protected String[] getExecutionOrder(String group) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmFinalLaunchSequence.getExecutionOrder(" + group + ")");
+			System.out.println("GnuMcuFinalLaunchSequence.getExecutionOrder(" + group + ")");
 		}
 
 		// Initialise the list with the base class' steps
@@ -138,7 +138,7 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		IPeripheralsService service = (IPeripheralsService) launch.getServiceFactory()
 				.createService(IPeripheralsService.class, launch.getSession(), new Object[0]);
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmFinalLaunchSequence.stepCreatePeripheralService() " + service);
+			System.out.println("GnuMcuFinalLaunchSequence.stepCreatePeripheralService() " + service);
 		}
 		if (service != null) {
 			service.initialize(rm);
@@ -155,7 +155,7 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 		IPeripheralMemoryService service = (IPeripheralMemoryService) launch.getServiceFactory()
 				.createService(IPeripheralMemoryService.class, launch.getSession(), launch.getLaunchConfiguration());
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmFinalLaunchSequence.stepCreatePeripheralMemoryService() " + service);
+			System.out.println("GnuMcuFinalLaunchSequence.stepCreatePeripheralMemoryService() " + service);
 		}
 		if (service != null) {
 			service.initialize(rm);
@@ -171,17 +171,17 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	public void stepCreateDebuggerCommandsService(RequestMonitor rm) {
 
 		GdbLaunch launch = ((GdbLaunch) this.fSession.getModelAdapter(ILaunch.class));
-		GnuArmDebuggerCommandsService service = (GnuArmDebuggerCommandsService) launch.getServiceFactory()
-				.createService(IGnuArmDebuggerCommandsService.class, launch.getSession(),
+		GnuMcuDebuggerCommandsService service = (GnuMcuDebuggerCommandsService) launch.getServiceFactory()
+				.createService(IGnuMcuDebuggerCommandsService.class, launch.getSession(),
 						launch.getLaunchConfiguration());
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmFinalLaunchSequence.stepCreateDebuggerCommandsService() " + service);
+			System.out.println("GnuMcuFinalLaunchSequence.stepCreateDebuggerCommandsService() " + service);
 		}
 		if (service != null) {
 			service.initialize(rm);
 		} else {
 			rm.setStatus(
-					new Status(Status.ERROR, Activator.PLUGIN_ID, "Unable to start GnuArmDebuggerCommandsService"));
+					new Status(Status.ERROR, Activator.PLUGIN_ID, "Unable to start GnuMcuDebuggerCommandsService"));
 			rm.done();
 		}
 	}
@@ -193,7 +193,7 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	public void stepInitializeFinalLaunchSequence(RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmFinalLaunchSequence.stepInitializeFinalLaunchSequence()");
+			System.out.println("GnuMcuFinalLaunchSequence.stepInitializeFinalLaunchSequence()");
 		}
 
 		fTracker = new DsfServicesTracker(Activator.getInstance().getBundle().getBundleContext(), fSession.getId());
@@ -220,7 +220,7 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 			return;
 		}
 
-		fDebuggerCommands = fTracker.getService(IGnuArmDebuggerCommandsService.class);
+		fDebuggerCommands = fTracker.getService(IGnuMcuDebuggerCommandsService.class);
 		if (fDebuggerCommands == null) {
 			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, "Cannot obtain debugger commands service", //$NON-NLS-1$
 					null));
@@ -236,7 +236,7 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	public void stepInitializeJTAGFinalLaunchSequence(RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmFinalLaunchSequence.stepInitializeJTAGFinalLaunchSequence()");
+			System.out.println("GnuMcuFinalLaunchSequence.stepInitializeJTAGFinalLaunchSequence()");
 		}
 
 		super.stepInitializeJTAGFinalLaunchSequence(rm);
@@ -341,7 +341,7 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 
 		List<String> commandsList = new ArrayList<String>();
 
-		IStatus status = fDebuggerCommands.addGnuArmSelectRemoteCommands(commandsList);
+		IStatus status = fDebuggerCommands.addGnuMcuSelectRemoteCommands(commandsList);
 		if (!status.isOK()) {
 			rm.setStatus(status);
 			rm.done();
@@ -352,11 +352,11 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	}
 
 	@Execute
-	public void stepGnuArmReset(RequestMonitor rm) {
+	public void stepGnuMcuReset(RequestMonitor rm) {
 
 		List<String> commandsList = new ArrayList<String>();
 
-		IStatus status = fDebuggerCommands.addGnuArmResetCommands(commandsList);
+		IStatus status = fDebuggerCommands.addGnuMcuResetCommands(commandsList);
 		if (!status.isOK()) {
 			rm.setStatus(status);
 			rm.done();
@@ -367,11 +367,11 @@ public class GnuArmFinalLaunchSequence extends GDBJtagDSFFinalLaunchSequence {
 	}
 
 	@Execute
-	public void stepGnuArmStart(RequestMonitor rm) {
+	public void stepGnuMcuStart(RequestMonitor rm) {
 
 		List<String> commandsList = new ArrayList<String>();
 
-		IStatus status = fDebuggerCommands.addGnuArmStartCommands(commandsList);
+		IStatus status = fDebuggerCommands.addGnuMcuStartCommands(commandsList);
 		if (!status.isOK()) {
 			rm.setStatus(status);
 			rm.done();

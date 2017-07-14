@@ -23,7 +23,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.services.IGdbServerBackendService;
 /**
  * Define the step of creating the GdbServerBackend.
  */
-public class GnuArmServerServicesLaunchSequence extends Sequence {
+public class GnuMcuServerServicesLaunchSequence extends Sequence {
 
 	// ------------------------------------------------------------------------
 
@@ -41,11 +41,11 @@ public class GnuArmServerServicesLaunchSequence extends Sequence {
 
 	// ------------------------------------------------------------------------
 
-	public GnuArmServerServicesLaunchSequence(DsfSession session, GdbLaunch launch, IProgressMonitor progressMonitor) {
+	public GnuMcuServerServicesLaunchSequence(DsfSession session, GdbLaunch launch, IProgressMonitor progressMonitor) {
 		super(session.getExecutor(), progressMonitor, "Start Server", "Start Server Rollback");
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("GnuArmServerServicesLaunchSequence()");
+			System.out.println("GnuMcuServerServicesLaunchSequence()");
 		}
 
 		fSession = session;
@@ -56,7 +56,7 @@ public class GnuArmServerServicesLaunchSequence extends Sequence {
 
 	@Override
 	public Step[] getSteps() {
-		// System.out.println("GnuArmServerServicesLaunchSequence.getSteps()");
+		// System.out.println("GnuMcuServerServicesLaunchSequence.getSteps()");
 		return fSteps;
 	}
 

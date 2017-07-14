@@ -35,14 +35,14 @@ import org.eclipse.debug.core.ILaunchConfigurationWorkingCopy;
 import org.eclipse.debug.core.model.IProcess;
 import org.eclipse.debug.core.model.ISourceLocator;
 
-import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuArmLaunch;
+import ilg.gnumcueclipse.debug.gdbjtag.dsf.GnuMcuLaunch;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.Configuration;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.ConfigurationAttributes;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences.DefaultPreferences;
 
 @SuppressWarnings("restriction")
-public class Launch extends GnuArmLaunch {
+public class Launch extends GnuMcuLaunch {
 
 	// ------------------------------------------------------------------------
 
