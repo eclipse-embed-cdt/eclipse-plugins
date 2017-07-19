@@ -754,7 +754,7 @@
 			<option
 				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.optimization"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.noinlinefunctions"
-				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.optimization.nocommon">
+				superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.optimization.noinlinefunctions">
 			</option>
 			<option
 				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.optimization"
