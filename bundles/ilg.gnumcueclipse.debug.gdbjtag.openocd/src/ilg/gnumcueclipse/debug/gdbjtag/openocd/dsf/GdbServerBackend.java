@@ -29,6 +29,7 @@ public class GdbServerBackend extends GnuMcuGdbServerBackend {
 	// ------------------------------------------------------------------------
 
 	protected int fGdbServerLaunchTimeout = 15;
+	protected boolean fDoStartGdbClient;
 
 	// ------------------------------------------------------------------------
 
@@ -52,6 +53,15 @@ public class GdbServerBackend extends GnuMcuGdbServerBackend {
 		try {
 			// Update parent data member before calling initialise.
 			fDoStartGdbServer = Configuration.getDoStartGdbServer(fLaunchConfiguration);
+		} catch (CoreException e) {
+			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, "Cannot get configuration", e)); //$NON-NLS-1$
+			rm.done();
+			return;
+		}
+
+		try {
+			// Update parent data member before calling initialise.
+			fDoStartGdbClient = Configuration.getDoStartGdbClient(fLaunchConfiguration);
 		} catch (CoreException e) {
 			rm.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1, "Cannot get configuration", e)); //$NON-NLS-1$
 			rm.done();
@@ -137,7 +147,8 @@ public class GdbServerBackend extends GnuMcuGdbServerBackend {
 	}
 
 	public boolean canMatchStdErr() {
-		return true;
+		// Do not match stderr if we do not start the client.
+		return fDoStartGdbClient ? true : false;
 	}
 
 	public boolean matchStdErrExpectedPattern(String line) {

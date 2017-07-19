@@ -354,6 +354,15 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 		// when a certain pattern is matched.
 		boolean success = false;
 
+		if (!canMatchStdOut() && !canMatchStdErr()) {
+			// If the backend does not need to match any stream, start it
+			// anyway.
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("GnuMcuGdbServerBackend.checkServer() no need to match streams");
+			}
+			success = true;
+		}
+
 		if (canMatchStdOut()) {
 
 			InputStream inputStream = null;
@@ -391,34 +400,7 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 					}
 				}
 
-				if (success) {
-
-					// The expected pattern was identified, the server
-					// is ready so we can proceed to the next step.
-					try {
-						getExecutor().submit(new DsfRunnable() {
-							@Override
-							public void run() {
-								if (Activator.getInstance().isDebugging()) {
-									System.out.println("startGdbServerJob run() State.STARTED");
-								}
-								// Need to do this on the executor for
-								// thread-safety
-								fServerBackendState = State.STARTED;
-
-								// The launcher will wait for this.
-								if (fGdbServerExitStatus == null) {
-									fGdbServerExitStatus = Status.OK_STATUS;
-								}
-							}
-						}).get(); // Wait for it to complete.
-					} catch (InterruptedException e) {
-						;
-					} catch (ExecutionException e) {
-						Activator.log(e);
-					}
-
-				} else {
+				if (!success) {
 
 					// Failure means the sever exited with error,
 					// otherwise the server would be still reading.
@@ -491,34 +473,7 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 					}
 				}
 
-				if (success) {
-
-					// The expected pattern was identified, the server
-					// is ready so we can proceed to the next step.
-					try {
-						getExecutor().submit(new DsfRunnable() {
-							@Override
-							public void run() {
-								if (Activator.getInstance().isDebugging()) {
-									System.out.println("startGdbServerJob run() State.STARTED");
-								}
-								// Need to do this on the executor for
-								// thread-safety
-								fServerBackendState = State.STARTED;
-
-								// The launcher will wait for this.
-								if (fGdbServerExitStatus == null) {
-									fGdbServerExitStatus = Status.OK_STATUS;
-								}
-							}
-						}).get(); // Wait for it to complete.
-					} catch (InterruptedException e) {
-						;
-					} catch (ExecutionException e) {
-						Activator.log(e);
-					}
-
-				} else {
+				if (!success) {
 
 					// Failure means the sever exited with error,
 					// otherwise the server would be still reading.
@@ -551,6 +506,34 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 				success = false;
 				serverLaunchRequestMonitor.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
 						"Error reading " + getServerName() + " stderr", e)); //$NON-NLS-1$
+			}
+		}
+
+		if (success) {
+
+			// The expected pattern was identified, the server
+			// is ready so we can proceed to the next step.
+			try {
+				getExecutor().submit(new DsfRunnable() {
+					@Override
+					public void run() {
+						if (Activator.getInstance().isDebugging()) {
+							System.out.println("startGdbServerJob run() State.STARTED");
+						}
+						// Need to do this on the executor for
+						// thread-safety
+						fServerBackendState = State.STARTED;
+
+						// The launcher will wait for this.
+						if (fGdbServerExitStatus == null) {
+							fGdbServerExitStatus = Status.OK_STATUS;
+						}
+					}
+				}).get(); // Wait for it to complete.
+			} catch (InterruptedException e) {
+				;
+			} catch (ExecutionException e) {
+				Activator.log(e);
 			}
 		}
 
