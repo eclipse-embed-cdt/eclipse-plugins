@@ -112,7 +112,7 @@ extern "C"
 
   static void
   os_initialize_data (uint32_t* from, uint32_t* region_begin,
-		      uint32_t* region_end);
+                      uint32_t* region_end);
 
   static void
   os_initialize_bss (uint32_t* region_begin, uint32_t* region_end);
@@ -127,10 +127,10 @@ extern "C"
 
 // ----------------------------------------------------------------------------
 
-inline __attribute__((always_inline))
-void
+inline void
+__attribute__((always_inline))
 os_initialize_data (uint32_t* from, uint32_t* region_begin,
-		    uint32_t* region_end)
+                    uint32_t* region_end)
 {
   // Iterate and copy word by word.
   // It is assumed that the pointers are word aligned.
@@ -141,8 +141,8 @@ os_initialize_data (uint32_t* from, uint32_t* region_begin,
     }
 }
 
-inline __attribute__((always_inline))
-void
+inline void
+__attribute__((always_inline))
 os_initialize_bss (uint32_t* region_begin, uint32_t* region_end)
 {
   // Iterate and clear word by word.
@@ -297,9 +297,9 @@ _start (void)
       || (__data_end_guard != DATA_END_GUARD_VALUE))
     {
       while (true)
-	{
-	  riscv::arch::nop ();
-	}
+        {
+          riscv::arch::nop ();
+        }
     }
 
 #endif
@@ -335,9 +335,9 @@ _start (void)
   if ((__bss_begin_guard != 0) || (__bss_end_guard != 0))
     {
       while (true)
-	{
-	  riscv::arch::nop ();
-	}
+        {
+          riscv::arch::nop ();
+        }
     }
 
 #endif
@@ -393,7 +393,8 @@ _start (void)
 // The application can redefine it to fetch some args from a
 // non-volatile memory.
 
-void __attribute__((weak))
+void
+__attribute__((weak))
 os_startup_initialize_args (int* p_argc, char*** p_argv)
 {
   // By the time we reach this, the data and bss should have been initialised.
@@ -444,7 +445,8 @@ os_terminate (int code __attribute__((unused)))
 #pragma GCC diagnostic ignored "-Wunused-parameter"
 
 // Redefine this function to initialise the free store.
-void __attribute__((weak))
+void
+__attribute__((weak))
 os_startup_initialize_free_store (void* heap_address, size_t heap_size_bytes)
 {
   ;
@@ -452,7 +454,8 @@ os_startup_initialize_free_store (void* heap_address, size_t heap_size_bytes)
 
 // Redefine this function to display memory allocator reports or
 // other statistics.
-void __attribute__((weak))
+void
+__attribute__((weak))
 os_terminate_goodbye (void)
 {
   os::trace::printf ("\nHasta la Vista!\n");
