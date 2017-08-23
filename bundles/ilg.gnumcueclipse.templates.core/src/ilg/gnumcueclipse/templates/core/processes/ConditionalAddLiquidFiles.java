@@ -56,13 +56,9 @@ public class ConditionalAddLiquidFiles extends ProcessRunner {
 
 		Map<String, String> valueStore = template.getValueStore();
 		Map<String, Object> liquidMap = new HashMap<String, Object>();
-		liquidMap.put("projectName", valueStore.get("projectName"));
-		liquidMap.put("fileExtension", valueStore.get("fileExtension"));
+		// Use all definitions in the store, including from other plug-ins.
+		liquidMap.putAll(valueStore);
 		liquidMap.put("language", valueStore.get("fileExtension"));
-		liquidMap.put("content", valueStore.get("content"));
-		liquidMap.put("syscalls", valueStore.get("syscalls"));
-		liquidMap.put("boardDescription", valueStore.get("boardDescription"));
-		liquidMap.put("nl", valueStore.get("\n"));
 
 		for (ProcessArgument arg : args) {
 			String argName = arg.getName();
@@ -84,7 +80,7 @@ public class ConditionalAddLiquidFiles extends ProcessRunner {
 			throw new ProcessFailureException(
 					getProcessMessage(processId, IStatus.ERROR, Messages.getString("AddFiles.9"))); //$NON-NLS-1$
 		}
-		
+
 		if (!Utils.isConditionSatisfied(condition)) {
 			return;
 		}
@@ -123,11 +119,15 @@ public class ConditionalAddLiquidFiles extends ProcessRunner {
 				} catch (IOException e) {
 					throw new ProcessFailureException(Messages.getString("AddFiles.3") + fileSourcePath); //$NON-NLS-1$
 				}
-				
+
 				// Do not substitute old macros, use only liquid syntax.
-				
+
 				try {
-					liqp.Template liqTemplate = liqp.Template.parse(fileContents);
+					// The option simplifies usage, by automatically stripping spaces around tags;
+					// All previous \n are preserved; the first next \n is stripped.
+					liqp.ParseSettings liqSettings = new liqp.ParseSettings.Builder().withStripSpaceAroundTags(true)
+							.build();
+					liqp.Template liqTemplate = liqp.Template.parse(fileContents, liqSettings);
 					String liqRendered = liqTemplate.render(liquidMap);
 					System.out.println(liqRendered);
 					contents = new ByteArrayInputStream(liqRendered.getBytes());

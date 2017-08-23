@@ -26,26 +26,33 @@
  */
 
 #include <micro-os-plus/board.h>
+{% if trace != 'NONE' %}
 #include <micro-os-plus/diag/trace.h>
+{% endif %}
 
 #include <sysclock.h>
+{% if content == 'blinky' %}
 #include <led.h>
+{% endif %}
 
 #include <stdint.h>
-{%- if language == 'c' %}
 #include <stdio.h>
-{%- endif %}
+{% if language == 'c' %}
+#include <stdbool.h>
+{% endif %}
 
 // ----------------------------------------------------------------------------
+//
 {% if content == 'blinky' %}
 // This program blinks all LEDs on the SiFive {{ boardDescription }} board.
-{%- elsif content == 'empty' %}
+{% elsif content == 'empty' %}
 // This program counts seconds on the SiFive {{ boardDescription }} board.
-{%- endif %}
-
+{% endif %}
+//
 // ----------------------------------------------------------------------------
+
 {% if content == 'blinky' %}
-{%- if language == 'cpp' %}
+{% if language == 'cpp' %}
 // Definitions visible only within this translation unit.
 namespace
 {
@@ -56,13 +63,12 @@ namespace
   constexpr clock::duration_t BLINK_OFF_TICKS = sysclock.frequency_hz
       - BLINK_ON_TICKS;
 }
-{%- elsif language == 'c' %}
-
+{% elsif language == 'c' %}
 // ----- Timing definitions ---------------------------------------------------
 // Keep the LED on for 3/4 of a second.
 #define BLINK_ON_TICKS (OS_INTEGER_SYSCLOCK_FREQUENCY_HZ * 3 / 4)
 #define BLINK_OFF_TICKS (OS_INTEGER_SYSCLOCK_FREQUENCY_HZ - BLINK_ON_TICKS)
-{%- endif %}
+{% endif %}
 
 // ----- LED definitions ------------------------------------------------------
 
@@ -70,7 +76,7 @@ namespace
 #define BLINK_ACTIVE_LOW          (true)
 
 // Instantiate a static array of led objects.
-{%- if language == 'cpp' %}
+{% if language == 'cpp' %}
 led blink_leds[] =
   {
     { BLINK_PORT_NUMBER, RED_LED_OFFSET, BLINK_ACTIVE_LOW },
@@ -78,7 +84,7 @@ led blink_leds[] =
     { BLINK_PORT_NUMBER, BLUE_LED_OFFSET, BLINK_ACTIVE_LOW },
   /**/
   };
-{%- elsif language == 'c' %}
+{% elsif language == 'c' %}
 led_t blink_leds[3];
 
 #pragma GCC diagnostic push
@@ -100,127 +106,154 @@ led_array_construct (void)
 }
 
 #pragma GCC diagnostic pop
-{%- endif %}
+{% endif %}
 
 // ----------------------------------------------------------------------------
+
 {% endif %}
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Wunused-parameter"
+#pragma GCC diagnostic ignored "-Wmissing-declarations"
 
 int
 main (int argc, char* argv[])
 {
+{% if trace != 'NONE' %}
   // Send a greeting to the trace device (skipped on Release).
-{%- if language == 'cpp' %}
+{% if language == 'cpp' %}
   os::trace::puts ("Hello RISC-V World!");
-{%- elsif language == 'c' %}
+{% elsif language == 'c' %}
   trace_puts ("Hello RISC-V World!");
-{%- endif %}
+{% endif %}
 
+{% endif %}
+{% if syscalls != 'none' %}
   // Send a message to the standard output.
   puts ("Standard output message.");
 
   // Send a message to the standard error.
   fprintf (stderr, "Standard error message.\n");
 
+{% endif %}
   // At this stage the system clock should have already been configured
   // at high speed.
-{%- if language == 'cpp' %}
+{% if trace != 'NONE' %}
+{% if language == 'cpp' %}
   os::trace::printf ("System clock: %u Hz\n", riscv::core::cpu_frequency ());
-{%- elsif language == 'c' %}
+{% elsif language == 'c' %}
   trace_printf ("System clock: %u Hz\n", riscv_core_get_cpu_frequency ());
-{%- endif %}
+{% endif %}
+{% endif %}
+
 {% if content == 'blinky' %}
   // Power up all LEDs.
   for (size_t i = 0; i < (sizeof(blink_leds) / sizeof(blink_leds[0])); ++i)
     {
-{%- if language == 'cpp' %}
+{% if language == 'cpp' %}
       blink_leds[i].power_up ();
-{%- elsif language == 'c' %}
+{% elsif language == 'c' %}
       led_power_up (&blink_leds[i]);
-{%- endif %}
-    }
 {% endif %}
+    }
+
+{% endif %}
+{% if trace != 'NONE' %}
   uint32_t seconds = 0;
+
+{% endif %}
 {% if content == 'blinky' %}
   // Turn on all LEDs.
   for (size_t i = 0; i < (sizeof(blink_leds) / sizeof(blink_leds[0])); ++i)
     {
-{%- if language == 'cpp' %}
+{% if language == 'cpp' %}
       blink_leds[i].turn_on ();
-{%- elsif language == 'c' %}
+{% elsif language == 'c' %}
       led_turn_on (&blink_leds[i]);
-{%- endif %}
+{% endif %}
     }
 
   // First interval is longer (one full second).
-{%- if language == 'cpp' %}
+{% if language == 'cpp' %}
   sysclock.sleep_for (sysclock.frequency_hz);
-{%- elsif language == 'c' %}
+{% elsif language == 'c' %}
   os_sysclock_sleep_for (os_sysclock_get_frequency_hz ());
-{%- endif %}
+{% endif %}
 
   // Turn off all LEDs.
   for (size_t i = 0; i < (sizeof(blink_leds) / sizeof(blink_leds[0])); ++i)
     {
-{%- if language == 'cpp' %}
+{% if language == 'cpp' %}
       blink_leds[i].turn_off ();
-{%- elsif language == 'c' %}
+{% elsif language == 'c' %}
       led_turn_off (&blink_leds[i]);
-{%- endif %}
+{% endif %}
     }
+
 {% if language == 'cpp' %}
   sysclock.sleep_for (BLINK_OFF_TICKS);
+{% if trace != 'NONE' %}
 
   ++seconds;
   os::trace::printf ("Second %u\n", seconds);
-{%- elsif language == 'c' %}
+{% endif %}
+{% elsif language == 'c' %}
   os_sysclock_sleep_for (BLINK_OFF_TICKS);
+{% if trace != 'NONE' %}
 
   ++seconds;
   trace_printf ("Second %u\n", seconds);
-{%- endif %}
 {% endif %}
-  // Loop forever.
+{% endif %}
+
+{% endif %}
+  // Loop forever, one second at a time.
   while (true)
     {
-{%- if content == 'blinky' %}
+{% if content == 'blinky' %}
       // Blink individual LEDs.
       for (size_t i = 0; i < (sizeof(blink_leds) / sizeof(blink_leds[0])); ++i)
         {
-{%- if language == 'cpp' %}
+{% if language == 'cpp' %}
           blink_leds[i].turn_on ();
           sysclock.sleep_for (BLINK_ON_TICKS);
 
           blink_leds[i].turn_off ();
           sysclock.sleep_for (BLINK_OFF_TICKS);
+{% if trace != 'NONE' %}
 
           ++seconds;
           os::trace::printf ("Second %u\n", seconds);
-{%- elsif language == 'c' %}
+{% endif %}
+{% elsif language == 'c' %}
           led_turn_on (&blink_leds[i]);
           os_sysclock_sleep_for (BLINK_ON_TICKS);
 
           led_turn_off (&blink_leds[i]);
           os_sysclock_sleep_for (BLINK_OFF_TICKS);
+{% if trace != 'NONE' %}
 
           ++seconds;
           trace_printf ("Second %u\n", seconds);
-{%- endif %}
+{% endif %}
+{% endif %}
         }
-{%- elsif content == 'empty' %}
-{%- if language == 'cpp' %}
+{% elsif content == 'empty' %}
+{% if language == 'cpp' %}
       sysclock.sleep_for (sysclock.frequency_hz);
+{% if trace != 'NONE' %}
 
       ++seconds;
       os::trace::printf ("Second %u\n", seconds);
-{%- elsif language == 'c' %}
+{% endif %}
+{% elsif language == 'c' %}
       os_sysclock_sleep_for (os_sysclock_get_frequency_hz ());
+{% if trace != 'NONE' %}
 
       ++seconds;
       trace_printf ("Second %u\n", seconds);
-{%- endif %}
-{%- endif %}
+{% endif %}
+{% endif %}
+{% endif %}
     }
 }
 

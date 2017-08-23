@@ -471,7 +471,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="" />
+				value="$(content) == blinky" />
 			<complex-array name="files">
 				<element>
 					<simple
@@ -484,6 +484,17 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="replaceable"
 						value="true" />
 				</element>
+			</complex-array>
+		</process>
+		
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="files">
 				<element>
 					<simple
 						name="source"
@@ -612,7 +623,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="" />
+				value="$(content) == blinky" />
 			<complex-array name="files">
 				<element>
 					<simple
@@ -625,6 +636,17 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="replaceable"
 						value="true" />
 				</element>
+			</complex-array>
+		</process>
+
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="$(syscalls) == retarget" />
+			<complex-array name="files">
 				<element>
 					<simple
 						name="source"
@@ -636,6 +658,17 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="replaceable"
 						value="true" />
 				</element>
+			</complex-array>
+		</process>
+		
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="files">
 				<element>
 					<simple
 						name="source"
@@ -2395,7 +2428,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		</process>
 	</if>
 
-	<if condition="$(trace)!=none">
+	<if condition="$(trace)!=NONE">
 		<!-- Define TRACE only if one of the devices is selected, on DEBUG -->
 		<process
 			type="ilg.gnumcueclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
