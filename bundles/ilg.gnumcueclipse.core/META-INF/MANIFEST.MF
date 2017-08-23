@@ -12,7 +12,8 @@ Export-Package: com.github.zafarkhaja.semver,
  com.github.zafarkhaja.semver.expr,
  ilg.gnumcueclipse.core,
  ilg.gnumcueclipse.core.preferences,
- ilg.gnumcueclipse.core.ui
+ ilg.gnumcueclipse.core.ui,
+ liqp
 Require-Bundle: org.eclipse.cdt;bundle-version="9.2.1",
  org.eclipse.cdt.core;bundle-version="6.2.0",
  org.eclipse.cdt.debug.core;bundle-version="8.1.0",
@@ -29,3 +30,10 @@ Require-Bundle: org.eclipse.cdt;bundle-version="9.2.1",
  org.eclipse.ui.ide;bundle-version="3.12.3",
  org.eclipse.ui.workbench;bundle-version="3.108.3",
  org.eclipse.cdt.ui;bundle-version="6.1.0"
+Bundle-ClassPath: lib/antlr-runtime-3.5.1.jar,
+ lib/jackson-annotations-2.2.3.jar,
+ lib/jackson-core-2.2.3.jar,
+ lib/jackson-databind-2.2.3.jar,
+ lib/liqp-0.6.8.jar,
+ lib/ST4-4.0.7.jar,
+ .
