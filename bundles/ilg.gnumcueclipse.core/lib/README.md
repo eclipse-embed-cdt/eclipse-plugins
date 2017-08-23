@@ -8,3 +8,5 @@ To add them to the project, in the `plugin.xml` editor, the _Runtime_ tab,
 _Classpath_ -> _Add..._; then, to export the `liqp` class, in the 
 _Exported Packages_ -> _Add..._.
 
+Note: The Liquid parser is patched, to allow for more convenient white space
+processing.
