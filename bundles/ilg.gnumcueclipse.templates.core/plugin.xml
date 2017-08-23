@@ -255,6 +255,31 @@
 				</baseType>
 			</complexArray>
 		</processType>
+  <processType
+        name="ConditionalAddLiquidFiles"
+        processRunner="ilg.gnumcueclipse.templates.core.processes.ConditionalAddLiquidFiles">
+     <simple
+           name="projectName">
+     </simple>
+     <simple
+           name="condition"
+           nullable="true">
+     </simple>
+     <complexArray
+           name="files">
+        <baseType>
+           <simple
+                 name="source">
+           </simple>
+           <simple
+                 name="target">
+           </simple>
+           <simple
+                 name="replaceable">
+           </simple>
+        </baseType>
+     </complexArray>
+  </processType>
 
 	</extension>
 
