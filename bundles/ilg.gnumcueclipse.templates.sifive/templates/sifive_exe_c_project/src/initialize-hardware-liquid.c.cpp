@@ -36,12 +36,24 @@ void
 os_startup_initialize_hardware_early (void)
 {
   // Disable all interrupts.
+{%- if language == 'cpp' %}
   riscv::csr::clear_mstatus (MSTATUS_MIE);
+{%- elsif language == 'c' %}
+  riscv_csr_clear_mstatus (MSTATUS_MIE);
+{%- endif %}
   // Disable all individual interrupts.
+{%- if language == 'cpp' %}
   riscv::csr::mie (0);
+{%- elsif language == 'c' %}
+  riscv_csr_write_mie (0);
+{%- endif %}
 
   // Set the trap assembly handler.
+{%- if language == 'cpp' %}
   riscv::csr::mtvec ((riscv::arch::register_t) riscv_trap_entry);
+{%- elsif language == 'c' %}
+  riscv_csr_write_mtvec ((riscv_arch_register_t) riscv_trap_entry);
+{%- endif %}
 
   // TODO: add support for the PRCI peripheral and use it.
 
@@ -61,21 +73,42 @@ void
 os_startup_initialize_hardware (void)
 {
   // Measure the CPU frequency in cycles, with the RTC as reference.
+{%- if language == 'cpp' %}
   riscv::core::update_cpu_frequency ();
+{%- elsif language == 'c' %}
+  riscv_core_update_cpu_frequency ();
+{%- endif %}
 
   // Disable M timer interrupt.
+{%- if language == 'cpp' %}
   riscv::csr::clear_mie (MIP_MTIP);
+{%- elsif language == 'c' %}
+  riscv_csr_clear_mie (MIP_MTIP);
+{%- endif %}
 
   // Clear both mtime and mtimecmp to start afresh.
   // Should trigger an interrupt as soon as enabled.
+{%- if language == 'cpp' %}
   riscv::device::mtime (0);
   riscv::device::mtimecmp (0);
+{%- elsif language == 'c' %}
+  riscv_device_write_mtime (0);
+  riscv_device_write_mtimecmp (0);
+{%- endif %}
 
   // Enable M timer interrupt.
+{%- if language == 'cpp' %}
   riscv::csr::set_mie (MIP_MTIP);
+{%- elsif language == 'c' %}
+  riscv_csr_set_mie (MIP_MTIP);
+{%- endif %}
 
   // Enable interrupts.
+{%- if language == 'cpp' %}
   riscv::csr::set_mstatus (MSTATUS_MIE);
+{%- elsif language == 'c' %}
+  riscv_csr_set_mstatus (MSTATUS_MIE);
+{%- endif %}
 }
 
 // ----------------------------------------------------------------------------

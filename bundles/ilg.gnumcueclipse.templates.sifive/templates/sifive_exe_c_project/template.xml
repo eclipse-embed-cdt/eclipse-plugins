@@ -617,28 +617,6 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="src/initialize-hardware.$(fileExtension)" />
-					<simple
-						name="target"
-						value="src/initialize-hardware.$(fileExtension)" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-				<element>
-					<simple
-						name="source"
-						value="src/interrupt-handlers.$(fileExtension)" />
-					<simple
-						name="target"
-						value="src/interrupt-handlers.$(fileExtension)" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-				<element>
-					<simple
-						name="source"
 						value="src/led.$(fileExtension)" />
 					<simple
 						name="target"
@@ -680,6 +658,28 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				name="condition"
 				value="" />
 			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="src/initialize-hardware-liquid.c.cpp" />
+					<simple
+						name="target"
+						value="src/initialize-hardware.$(fileExtension)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="src/interrupt-handlers-liquid.c.cpp" />
+					<simple
+						name="target"
+						value="src/interrupt-handlers.$(fileExtension)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
 				<element>
 					<simple
 						name="source"

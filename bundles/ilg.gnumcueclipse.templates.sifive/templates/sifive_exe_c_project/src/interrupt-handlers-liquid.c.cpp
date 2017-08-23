@@ -35,9 +35,15 @@ void
 riscv_irq_handle_machine_timer (void)
 {
   // Disable M timer interrupt.
+{%- if language == 'cpp' %}
+  riscv::csr::clear_mie (MIP_MTIP);
+
+  uint64_t tim = riscv::device::mtime ();
+{%- elsif language == 'c' %}
   riscv_csr_clear_mie (MIP_MTIP);
 
   uint64_t tim = riscv_device_read_mtime ();
+{%- endif %}
   uint64_t cmp;
 
   // The simple method to compute mtimecmp by adding a value to the
@@ -57,20 +63,36 @@ riscv_irq_handle_machine_timer (void)
   // system clock, but this should not be a problem.
   do
     {
+{%- if language == 'cpp' %}
+      sysclock.internal_increment_count ();
+      cmp = sysclock.steady_now () * riscv::board::rtc_frequency_hz ()
+          / sysclock.frequency_hz;
+{%- elsif language == 'c' %}
       os_sysclock_internal_increment_count ();
-      cmp = os_sysclock_steady_now () * riscv_board_get_rtc_frequency_hz ()
-          / os_sysclock_get_frequency_hz ();
+       cmp = os_sysclock_steady_now () * riscv_board_get_rtc_frequency_hz ()
+           / os_sysclock_get_frequency_hz ();
+{%- endif %}
     }
   while (cmp <= tim);
 
   // The interrupt remains posted until it is cleared by writing
   // the mtimecmp register.
+{%- if language == 'cpp' %}
+  riscv::device::mtimecmp (cmp);
+
+  // os::trace::putchar('.');
+{%- elsif language == 'c' %}
   riscv_device_write_mtimecmp (cmp);
 
   // trace_putchar('.');
+{%- endif %}
 
   // Enable M timer interrupt.
+{%- if language == 'cpp' %}
+  riscv::csr::set_mie (MIP_MTIP);
+{%- elsif language == 'c' %}
   riscv_csr_set_mie (MIP_MTIP);
+{%- endif %}
 }
 
 // ----------------------------------------------------------------------------
