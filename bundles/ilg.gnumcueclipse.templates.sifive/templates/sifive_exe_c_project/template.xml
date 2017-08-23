@@ -35,10 +35,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<!-- 
 			<item
 				value="E31ARTY"
-				label="E31 Coreplex Arty" />
+				label="Coreplex E31 Arty" />
 			<item
 				value="E51ARTY"
-				label="E51 Coreplex Arty" />
+				label="Coreplex E51 Arty" />
 			 -->
 		</property>
 
@@ -204,6 +204,14 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			persist="false" />
 
 		<property
+			id="boardDescription"
+			label="Board description"
+			mandatory="true"
+			hidden="true"
+			default="undefined"
+			persist="false" />
+
+		<property
 			id="trace"
 			label="Trace output (NONE/USART0FTDI)"
 			description="Will be set to content"
@@ -321,14 +329,17 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				name="propertyValue"
 				value="$(SiFiveBoard)" />
 		</process>
+		
+	</if>
 
+	<if condition="$(SiFiveBoard)==FE310">
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(SiFiveBoard) == FE310" />
+				value="" />
 			<simple
 				name="propertyName"
 				value="deviceName" />
@@ -336,14 +347,32 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				name="propertyValue"
 				value="FE310" />
 		</process>
-
+		
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(SiFiveBoard) == E31ARTY" />
+				value="" />
+			<simple
+				name="propertyName"
+				value="boardDescription" />
+			<simple
+				name="propertyValue"
+				value="Freedom E310 HiFive1" />
+		</process>
+		
+	</if>
+
+	<if condition="$(SiFiveBoard)==E31ARTY">
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
 			<simple
 				name="propertyName"
 				value="deviceName" />
@@ -351,20 +380,53 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				name="propertyValue"
 				value="E31" />
 		</process>
-
+		
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
 				value="$(projectName)" />
 			<simple
 				name="condition"
-				value="$(SiFiveBoard) == E51ARTY" />
+				value="" />
+			<simple
+				name="propertyName"
+				value="boardDescription" />
+			<simple
+				name="propertyValue"
+				value="Coreplex E31 Arty" />
+		</process>
+		
+	</if>
+
+	<if condition="$(SiFiveBoard)==E51ARTY">
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
 			<simple
 				name="propertyName"
 				value="deviceName" />
 			<simple
 				name="propertyValue"
 				value="E51" />
+		</process>
+				
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<simple
+				name="propertyName"
+				value="boardDescription" />
+			<simple
+				name="propertyValue"
+				value="Coreplex E31 Arty" />
 		</process>
 		
 	</if>
@@ -588,32 +650,43 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="src/main-$(content).$(fileExtension)" />
+						value="src/newlib-syscalls.c" />
+					<simple
+						name="target"
+						value="src/newlib-syscalls.c" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="src/sysclock.$(fileExtension)" />
+					<simple
+						name="target"
+						value="src/sysclock.$(fileExtension)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddLiquidFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="src/main-liquid.c.cpp" />
 					<simple
 						name="target"
 						value="src/main.$(fileExtension)" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-				<element>
-					<simple
-						name="source"
-						value="src/newlib-syscalls.c" />
-					<simple
-						name="target"
-						value="src/newlib-syscalls.c" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-				<element>
-					<simple
-						name="source"
-						value="src/sysclock.$(fileExtension)" />
-					<simple
-						name="target"
-						value="src/sysclock.$(fileExtension)" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1149,7 +1222,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						value="system/libcpp/src" />
 					<simple
 						name="target"
-						value="system/libc/src" />
+						value="system/libcpp/src" />
 					<simple
 						name="pattern"
 						value=".*[.](c|cpp|h)" />
