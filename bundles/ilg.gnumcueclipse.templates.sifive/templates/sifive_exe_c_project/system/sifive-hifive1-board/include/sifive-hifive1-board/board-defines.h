@@ -25,8 +25,8 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef HIFIVE1_BOARD_DEFINES_H_
-#define HIFIVE1_BOARD_DEFINES_H_
+#ifndef SIFIVE_HIFIVE1_BOARD_BOARD_DEFINES_H_
+#define SIFIVE_HIFIVE1_BOARD_BOARD_DEFINES_H_
 
 // ----------------------------------------------------------------------------
 
@@ -99,4 +99,4 @@
 
 // ----------------------------------------------------------------------------
 
-#endif /* HIFIVE1_BOARD_DEFINES_H_ */
+#endif /* SIFIVE_HIFIVE1_BOARD_BOARD_DEFINES_H_ */

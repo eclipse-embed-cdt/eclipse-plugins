@@ -25,20 +25,24 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef RISCV_ARCHITECTURE_H_
-#define RISCV_ARCHITECTURE_H_
+#ifndef MICRO_OS_PLUS_DEVICE_H_
+#define MICRO_OS_PLUS_DEVICE_H_
 
-#include <riscv/arch-defines.h>
+#include <micro-os-plus/architecture.h>
+#include <sifive-freedom-e310-device/device-defines.h>
 
-#include <riscv/arch-instructions.h>
-#include <riscv/arch-instructions-inlines.h>
+#include <sifive-freedom-e310-device/device-functions.h>
+#include <sifive-freedom-e310-device/device-functions-inlines.h>
 
-#include <riscv/csr-functions.h>
-#include <riscv/csr-functions-inlines.h>
+// The names of the RISCV_MMIO_ symbols are architecture specific,
+// but their values depend on a specific implementation.
+// These definitions will be used in <riscv-arch/device-functions-inlines.h>,
+// included below.
 
-#include <riscv/core-functions.h>
-#include <riscv/core-functions-inlines.h>
+#define RISCV_MMIO_MTIME_ADDR (CLINT_CTRL_ADDR + CLINT_MTIME)
+#define RISCV_MMIO_MTIMECMP_ADDR (CLINT_CTRL_ADDR + CLINT_MTIMECMP)
 
-#include <riscv/trap-handlers.h>
+#include <riscv-arch/device-functions.h>
+#include <riscv-arch/device-functions-inlines.h>
 
-#endif /* RISCV_ARCHITECTURE_H_ */
+#endif /* MICRO_OS_PLUS_DEVICE_H_ */

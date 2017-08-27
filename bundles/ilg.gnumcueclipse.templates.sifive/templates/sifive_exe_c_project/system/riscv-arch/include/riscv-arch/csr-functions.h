@@ -28,7 +28,7 @@
 #ifndef RISCV_CSR_FUNCTIONS_H_
 #define RISCV_CSR_FUNCTIONS_H_
 
-#include <riscv/arch-types.h>
+#include <riscv-arch/arch-types.h>
 
 /*
  * RISC-V CSR support functions.

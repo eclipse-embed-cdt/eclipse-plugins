@@ -25,15 +25,21 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef FE310_DEVICE_FUNCTIONS_INLINES_H_
-#define FE310_DEVICE_FUNCTIONS_INLINES_H_
+#ifndef SIFIVE_FREEDOM_E310_DEVICE_DEVICE_FUNCTIONS_H_
+#define SIFIVE_FREEDOM_E310_DEVICE_DEVICE_FUNCTIONS_H_
 
-#include <fe310/device-defines.h>
+#include <sifive-freedom-e310-device/device-defines.h>
 
 #include <stdint.h>
 
 /*
- * Inline implementations for the Freedom E310 support functions.
+ * Freedom E310 support functions.
+ *
+ * Inline functions are first defined in C (prefixed with `riscv_device_`),
+ * then, for convenience, are redefined in C++ in the `riscv::device::`
+ * namespace.
+ *
+ * Regular functions are first defined in C++ then aliased to C.
  */
 
 // ----------------------------------------------------------------------------
@@ -42,7 +48,7 @@ extern "C"
 {
 #endif /* defined(__cplusplus) */
 
-// ----------------------------------------------------------------------------
+// --------------------------------------------------------------------------
 // Device support functions in C.
 
 // TODO: add functions.
@@ -67,11 +73,10 @@ namespace riscv
 
   // --------------------------------------------------------------------------
   } /* namespace device */
-// ----------------------------------------------------------------------------
 } /* namespace riscv */
 
 #endif /* defined(__cplusplus) */
 
 // ----------------------------------------------------------------------------
 
-#endif /* FE310_DEVICE_FUNCTIONS_INLINES_H_ */
+#endif /* SIFIVE_FREEDOM_E310_DEVICE_DEVICE_FUNCTIONS_H_ */

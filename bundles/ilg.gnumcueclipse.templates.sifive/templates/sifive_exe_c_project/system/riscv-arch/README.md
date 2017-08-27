@@ -19,7 +19,7 @@ The portable way to include board specifc definitions in an application is:
 
 In µOS++, the board specific definitions are grouped in the `riscv::board` namespace.
  
-An example of a board package is **hifive1** with the SiFive HiFive1 board.
+An example of a board package is **sifive-hifive1** with the SiFive HiFive1 board.
 
 ### Device
 
@@ -41,7 +41,7 @@ The portable way to include device specifc definitions in an application is:
 #include <micro-os-plus/device.h>
 ```
 
-Example of device packages are **fe310** with the SiFive Freedom E310 device.
+Example of device packages are **sifive-freedom-e310** with the SiFive Freedom E310 device.
 
 ### Core
 

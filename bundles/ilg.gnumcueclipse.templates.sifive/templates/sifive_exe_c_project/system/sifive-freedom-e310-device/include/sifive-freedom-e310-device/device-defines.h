@@ -25,8 +25,8 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef FE310_DEVICE_DEFINES_H_
-#define FE310_DEVICE_DEFINES_H_
+#ifndef SIFIVE_FREEDOM_E310_DEVICE_DEVICE_DEFINES_H_
+#define SIFIVE_FREEDOM_E310_DEVICE_DEVICE_DEFINES_H_
 
 #include <stdint.h>
 
@@ -166,4 +166,4 @@
 
 // ----------------------------------------------------------------------------
 
-#endif /* FE310_DEVICE_DEFINES_H_ */
+#endif /* SIFIVE_FREEDOM_E310_DEVICE_DEVICE_DEFINES_H_ */

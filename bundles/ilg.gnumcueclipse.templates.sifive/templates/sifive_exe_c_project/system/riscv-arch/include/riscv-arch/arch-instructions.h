@@ -25,57 +25,80 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef HIFIVE1_BOARD_FUNCTIONS_INLINES_H_
-#define HIFIVE1_BOARD_FUNCTIONS_INLINES_H_
+#ifndef RISCV_ARCH_INSTRUCTIONS_H_
+#define RISCV_ARCH_INSTRUCTIONS_H_
+
+#include <riscv-arch/arch-defines.h>
 
 #include <stdint.h>
 
 /*
- * Freedom E300 HiFive1 support functions.
- *
- * Inline functions are first defined in C (prefixed with `riscv_board_`),
- * then, for convenience, are redefined in C++ in the `riscv::board::`
- * namespace.
- *
- * Regular functions are first defined in C++ then aliased to C.
+ * Declarations of RISC-V functions to wrap architecture instructions.
  */
 
-// ----------------------------------------------------------------------------
 #if defined(__cplusplus)
 extern "C"
 {
 #endif /* defined(__cplusplus) */
 
-  static inline uint32_t
-  __attribute__((always_inline))
-  riscv_board_get_rtc_frequency_hz (void)
-  {
-    return RISCV_BOARD_RTC_FREQUENCY_HZ;
-  }
+  // --------------------------------------------------------------------------
+  // Architecture assembly instructions in C.
+
+  /**
+   * `nop` instruction.
+   */
+  static void
+  riscv_arch_nop (void);
+
+  /**
+   * `ebreak` instruction.
+   */
+  static void
+  riscv_arch_ebreak (void);
+
+  /**
+   * `wfi` instruction.
+   */
+  static void
+  riscv_arch_wfi (void);
+
+// ----------------------------------------------------------------------------
 
 #if defined(__cplusplus)
 }
 #endif /* defined(__cplusplus) */
 
-// ----------------------------------------------------------------------------
+// ============================================================================
 
 #if defined(__cplusplus)
 
 namespace riscv
 {
-  namespace board
+  namespace arch
   {
     // ------------------------------------------------------------------------
+    // Architecture assembly instructions in C++.
 
-    uint32_t
-    inline __attribute__((always_inline))
-    rtc_frequency_hz (void)
-    {
-      return riscv_board_get_rtc_frequency_hz ();
-    }
+    /**
+     * The assembler `nop` instruction.
+     */
+    void
+    nop (void);
 
-  } /* namespace board */
+    /**
+     * The assembler `ebreak` instruction.
+     */
+    void
+    ebreak (void);
 
+    /**
+     * The assembler `wfi` instruction.
+     */
+    void
+    wfi (void);
+
+  // --------------------------------------------------------------------------
+  } /* namespace arch */
 // ----------------------------------------------------------------------------
 } /* namespace riscv */
 
@@ -83,4 +106,4 @@ namespace riscv
 
 // ----------------------------------------------------------------------------
 
-#endif /* HIFIVE1_BOARD_FUNCTIONS_INLINES_H_ */
+#endif /* RISCV_CORE_FUNCTIONS_H_ */

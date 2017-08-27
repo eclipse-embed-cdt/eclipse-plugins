@@ -838,7 +838,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		
 	</if>
 
-	<!-- system/fe310 -->
+	<!-- system/sifive-freedom-e310-device -->
 	<if condition="$(deviceName)==FE310">
 		
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -852,10 +852,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/fe310/include/fe310" />
+						value="system/sifive-freedom-e310-device/include/sifive-freedom-e310-device" />
 					<simple
 						name="target"
-						value="system/fe310/include/fe310" />
+						value="system/sifive-freedom-e310-device/include/sifive-freedom-e310-device" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -866,10 +866,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/fe310/include/micro-os-plus" />
+						value="system/sifive-freedom-e310-device/include/micro-os-plus" />
 					<simple
 						name="target"
-						value="system/fe310/include/micro-os-plus" />
+						value="system/sifive-freedom-e310-device/include/micro-os-plus" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -880,10 +880,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/fe310/include/sifive/peripherals" />
+						value="system/sifive-freedom-e310-device/include/sifive/peripherals" />
 					<simple
 						name="target"
-						value="system/fe310/include/sifive/peripherals" />
+						value="system/sifive-freedom-e310-device/include/sifive/peripherals" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -894,10 +894,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/fe310/include/sifive" />
+						value="system/sifive-freedom-e310-device/include/sifive" />
 					<simple
 						name="target"
-						value="system/fe310/include/sifive" />
+						value="system/sifive-freedom-e310-device/include/sifive" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -920,7 +920,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="id"
 						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.include.paths" />
 					<simple-array name="values">
-						<element value="&quot;../system/fe310/include&quot;" />
+						<element value="&quot;../system/sifive-freedom-e310-device/include&quot;" />
 					</simple-array>
 					<simple
 						name="path"
@@ -935,7 +935,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="$(projectName)" />
 			<simple
 				name="path"
-				value="system/fe310/src" />
+				value="system/sifive-freedom-e310-device/src" />
 		</process>
 
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -949,10 +949,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/fe310/src" />
+						value="system/sifive-freedom-e310-device/src" />
 					<simple
 						name="target"
-						value="system/fe310/src" />
+						value="system/sifive-freedom-e310-device/src" />
 					<simple
 						name="pattern"
 						value=".*[.](c|cpp|h)" />
@@ -974,10 +974,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/fe310/README.md" />
+						value="system/sifive-freedom-e310-device/README.md" />
 					<simple
 						name="target"
-						value="system/fe310/README.md" />
+						value="system/sifive-freedom-e310-device/README.md" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -987,7 +987,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		
 	</if>
 
-	<!-- system/hifive1 -->
+	<!-- system/sifive-hifive1-board -->
 	<if condition="$(boardName)==FE310">
 		
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -1001,10 +1001,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/hifive1/include/hifive1" />
+						value="system/sifive-hifive1-board/include/sifive-hifive1-board" />
 					<simple
 						name="target"
-						value="system/hifive1/include/hifive1" />
+						value="system/sifive-hifive1-board/include/sifive-hifive1-board" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1015,10 +1015,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/hifive1/include/micro-os-plus" />
+						value="system/sifive-hifive1-board/include/micro-os-plus" />
 					<simple
 						name="target"
-						value="system/hifive1/include/micro-os-plus" />
+						value="system/sifive-hifive1-board/include/micro-os-plus" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1041,7 +1041,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="id"
 						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.include.paths" />
 					<simple-array name="values">
-						<element value="&quot;../system/hifive1/include&quot;" />
+						<element value="&quot;../system/sifive-hifive1-board/include&quot;" />
 					</simple-array>
 					<simple
 						name="path"
@@ -1056,7 +1056,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="$(projectName)" />
 			<simple
 				name="path"
-				value="system/hifive1/src" />
+				value="system/sifive-hifive1-board/src" />
 		</process>
 
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -1070,10 +1070,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/hifive1/src" />
+						value="system/sifive-hifive1-board/src" />
 					<simple
 						name="target"
-						value="system/hifive1/src" />
+						value="system/sifive-hifive1-board/src" />
 					<simple
 						name="pattern"
 						value=".*[.](c|cpp|h)" />
@@ -1095,10 +1095,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/hifive1/README.md" />
+						value="system/sifive-hifive1-board/README.md" />
 					<simple
 						name="target"
-						value="system/hifive1/README.md" />
+						value="system/sifive-hifive1-board/README.md" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1304,10 +1304,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/riscv/include/micro-os-plus" />
+						value="system/riscv-arch/include/micro-os-plus" />
 					<simple
 						name="target"
-						value="system/riscv/include/micro-os-plus" />
+						value="system/riscv-arch/include/micro-os-plus" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1318,10 +1318,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/riscv/include/riscv" />
+						value="system/riscv-arch/include/riscv-arch" />
 					<simple
 						name="target"
-						value="system/riscv/include/riscv" />
+						value="system/riscv-arch/include/riscv-arch" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1332,10 +1332,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/riscv/include/sifive" />
+						value="system/riscv-arch/include/sifive" />
 					<simple
 						name="target"
-						value="system/riscv/include/sifive" />
+						value="system/riscv-arch/include/sifive" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1358,7 +1358,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="id"
 						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.include.paths" />
 					<simple-array name="values">
-						<element value="&quot;../system/riscv/include&quot;" />
+						<element value="&quot;../system/riscv-arch/include&quot;" />
 					</simple-array>
 					<simple
 						name="path"
@@ -1373,7 +1373,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="$(projectName)" />
 			<simple
 				name="path"
-				value="system/riscv/src" />
+				value="system/riscv-arch/src" />
 		</process>
 
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -1387,10 +1387,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/riscv/src" />
+						value="system/riscv-arch/src" />
 					<simple
 						name="target"
-						value="system/riscv/src" />
+						value="system/riscv-arch/src" />
 					<simple
 						name="pattern"
 						value=".*[.](c|cpp|h|S)" />
@@ -1412,10 +1412,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/riscv/README.md" />
+						value="system/riscv-arch/README.md" />
 					<simple
 						name="target"
-						value="system/riscv/README.md" />
+						value="system/riscv-arch/README.md" />
 					<simple
 						name="replaceable"
 						value="true" />

@@ -25,80 +25,48 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef RISCV_ARCH_INSTRUCTIONS_H_
-#define RISCV_ARCH_INSTRUCTIONS_H_
+#ifndef SIFIVE_FREEDOM_E310_DEVICE_DEVICE_FUNCTIONS_INLINES_H_
+#define SIFIVE_FREEDOM_E310_DEVICE_DEVICE_FUNCTIONS_INLINES_H_
 
-#include <riscv/arch-defines.h>
+#include <sifive-freedom-e310-device/device-defines.h>
 
 #include <stdint.h>
 
 /*
- * Declarations of RISC-V functions to wrap architecture instructions.
+ * Inline implementations for the Freedom E310 support functions.
  */
 
+// ----------------------------------------------------------------------------
 #if defined(__cplusplus)
 extern "C"
 {
 #endif /* defined(__cplusplus) */
 
-  // --------------------------------------------------------------------------
-  // Architecture assembly instructions in C.
-
-  /**
-   * `nop` instruction.
-   */
-  static void
-  riscv_arch_nop (void);
-
-  /**
-   * `ebreak` instruction.
-   */
-  static void
-  riscv_arch_ebreak (void);
-
-  /**
-   * `wfi` instruction.
-   */
-  static void
-  riscv_arch_wfi (void);
-
 // ----------------------------------------------------------------------------
+// Device support functions in C.
+
+// TODO: add functions.
+// Prefix them with `riscv_device_`.
 
 #if defined(__cplusplus)
 }
 #endif /* defined(__cplusplus) */
 
-// ============================================================================
+// ----------------------------------------------------------------------------
 
 #if defined(__cplusplus)
 
 namespace riscv
 {
-  namespace arch
+  namespace device
   {
-    // ------------------------------------------------------------------------
-    // Architecture assembly instructions in C++.
+  // --------------------------------------------------------------------------
+  // Device support functions in C++.
 
-    /**
-     * The assembler `nop` instruction.
-     */
-    void
-    nop (void);
-
-    /**
-     * The assembler `ebreak` instruction.
-     */
-    void
-    ebreak (void);
-
-    /**
-     * The assembler `wfi` instruction.
-     */
-    void
-    wfi (void);
+  // TODO: add functions.
 
   // --------------------------------------------------------------------------
-  } /* namespace arch */
+  } /* namespace device */
 // ----------------------------------------------------------------------------
 } /* namespace riscv */
 
@@ -106,4 +74,4 @@ namespace riscv
 
 // ----------------------------------------------------------------------------
 
-#endif /* RISCV_CORE_FUNCTIONS_H_ */
+#endif /* SIFIVE_FREEDOM_E310_DEVICE_DEVICE_FUNCTIONS_INLINES_H_ */

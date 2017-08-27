@@ -28,14 +28,14 @@
 #ifndef RISCV_DEVICE_FUNCTIONS_H_
 #define RISCV_DEVICE_FUNCTIONS_H_
 
-#include <riscv/arch-types.h>
+#include <riscv-arch/arch-types.h>
 
 /*
  * RISC-V device support functions.
  *
  * The declarations are part of the common design, but each device
  * must define the actual address and include the file
- * <riscv/device-functions-inlines.h>.
+ * <riscv-arch/device-functions-inlines.h>.
  */
 
 // ----------------------------------------------------------------------------

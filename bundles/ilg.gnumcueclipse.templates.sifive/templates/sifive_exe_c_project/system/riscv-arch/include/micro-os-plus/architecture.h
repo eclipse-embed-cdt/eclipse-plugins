@@ -25,24 +25,20 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef MICRO_OS_PLUS_DEVICE_H_
-#define MICRO_OS_PLUS_DEVICE_H_
+#ifndef RISCV_ARCH_ARCHITECTURE_H_
+#define RISCV_ARCH_ARCHITECTURE_H_
 
-#include <micro-os-plus/architecture.h>
-#include <fe310/device-defines.h>
+#include <riscv-arch/arch-defines.h>
 
-#include <fe310/device-functions.h>
-#include <fe310/device-functions-inlines.h>
+#include <riscv-arch/arch-instructions.h>
+#include <riscv-arch/arch-instructions-inlines.h>
 
-// The names of the RISCV_MMIO_ symbols are architecture specific,
-// but their values depend on a specific implementation.
-// These definitions will be used in <riscv/device-functions-inlines.h>,
-// included below.
+#include <riscv-arch/csr-functions.h>
+#include <riscv-arch/csr-functions-inlines.h>
 
-#define RISCV_MMIO_MTIME_ADDR (CLINT_CTRL_ADDR + CLINT_MTIME)
-#define RISCV_MMIO_MTIMECMP_ADDR (CLINT_CTRL_ADDR + CLINT_MTIMECMP)
+#include <riscv-arch/core-functions.h>
+#include <riscv-arch/core-functions-inlines.h>
 
-#include <riscv/device-functions.h>
-#include <riscv/device-functions-inlines.h>
+#include <riscv-arch/trap-handlers.h>
 
-#endif /* MICRO_OS_PLUS_DEVICE_H_ */
+#endif /* RISCV_ARCH_ARCHITECTURE_H_ */

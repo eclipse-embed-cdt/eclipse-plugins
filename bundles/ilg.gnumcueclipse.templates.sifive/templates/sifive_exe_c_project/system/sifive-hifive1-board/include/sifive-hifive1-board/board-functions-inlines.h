@@ -25,18 +25,16 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef FE310_DEVICE_FUNCTIONS_H_
-#define FE310_DEVICE_FUNCTIONS_H_
-
-#include <fe310/device-defines.h>
+#ifndef SIFIVE_HIFIVE1_BOARD_BOARD_FUNCTIONS_INLINES_H_
+#define SIFIVE_HIFIVE1_BOARD_BOARD_FUNCTIONS_INLINES_H_
 
 #include <stdint.h>
 
 /*
- * Freedom E310 support functions.
+ * Freedom E300 HiFive1 support functions.
  *
- * Inline functions are first defined in C (prefixed with `riscv_device_`),
- * then, for convenience, are redefined in C++ in the `riscv::device::`
+ * Inline functions are first defined in C (prefixed with `riscv_board_`),
+ * then, for convenience, are redefined in C++ in the `riscv::board::`
  * namespace.
  *
  * Regular functions are first defined in C++ then aliased to C.
@@ -48,11 +46,12 @@ extern "C"
 {
 #endif /* defined(__cplusplus) */
 
-// --------------------------------------------------------------------------
-// Device support functions in C.
-
-// TODO: add functions.
-// Prefix them with `riscv_device_`.
+  static inline uint32_t
+  __attribute__((always_inline))
+  riscv_board_get_rtc_frequency_hz (void)
+  {
+    return RISCV_BOARD_RTC_FREQUENCY_HZ;
+  }
 
 #if defined(__cplusplus)
 }
@@ -64,19 +63,24 @@ extern "C"
 
 namespace riscv
 {
-  namespace device
+  namespace board
   {
-  // --------------------------------------------------------------------------
-  // Device support functions in C++.
+    // ------------------------------------------------------------------------
 
-  // TODO: add functions.
+    uint32_t
+    inline __attribute__((always_inline))
+    rtc_frequency_hz (void)
+    {
+      return riscv_board_get_rtc_frequency_hz ();
+    }
 
-  // --------------------------------------------------------------------------
-  } /* namespace device */
+  } /* namespace board */
+
+// ----------------------------------------------------------------------------
 } /* namespace riscv */
 
 #endif /* defined(__cplusplus) */
 
 // ----------------------------------------------------------------------------
 
-#endif /* FE310_DEVICE_FUNCTIONS_H_ */
+#endif /* SIFIVE_HIFIVE1_BOARD_BOARD_FUNCTIONS_INLINES_H_ */

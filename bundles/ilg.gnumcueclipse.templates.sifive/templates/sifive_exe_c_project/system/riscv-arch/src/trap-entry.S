@@ -25,8 +25,8 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#include "riscv/arch-defines.h"
-#include "sifive/bits.h"
+#include <riscv-arch/arch-defines.h>
+#include <sifive/bits.h>
 
 // ----------------------------------------------------------------------------
 

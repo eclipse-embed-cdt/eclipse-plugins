@@ -25,10 +25,10 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef HIFIVE1_BOARD_FUNCTIONS_H_
-#define HIFIVE1_BOARD_FUNCTIONS_H_
+#ifndef SIFIVE_HIFIVE1_BOARD_BOARD_FUNCTIONS_H_
+#define SIFIVE_HIFIVE1_BOARD_BOARD_FUNCTIONS_H_
 
-#include <hifive1/board-defines.h>
+#include <sifive-hifive1-board/board-defines.h>
 
 #include <stdint.h>
 
@@ -74,4 +74,4 @@ namespace riscv
 
 // ----------------------------------------------------------------------------
 
-#endif /* HIFIVE1_BOARD_FUNCTIONS_H_ */
+#endif /* SIFIVE_HIFIVE1_BOARD_BOARD_FUNCTIONS_H_ */
