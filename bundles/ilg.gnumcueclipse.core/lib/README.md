@@ -9,4 +9,4 @@ _Classpath_ -> _Add..._; then, to export the `liqp` class, in the
 _Exported Packages_ -> _Add..._.
 
 Note: The Liquid parser is patched, to allow for more convenient white space
-processing.
+processing. Only `{% %}` tags are affected.
