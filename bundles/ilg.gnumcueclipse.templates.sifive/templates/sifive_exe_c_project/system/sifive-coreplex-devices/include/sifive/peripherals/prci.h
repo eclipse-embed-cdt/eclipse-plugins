@@ -53,4 +53,4 @@
 #define PROCMON_SEL_PLLOUTDIV 2
 #define PROCMON_SEL_PROCMON   3
 
-#endif // _SIFIVE_PRCI_H
+#endif /* _SIFIVE_PRCI_H */

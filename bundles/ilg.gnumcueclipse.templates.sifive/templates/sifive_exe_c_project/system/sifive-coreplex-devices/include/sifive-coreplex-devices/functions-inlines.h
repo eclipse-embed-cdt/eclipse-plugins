@@ -1,7 +1,7 @@
 /*
  * This file is part of the µOS++ distribution.
  *   (https://github.com/micro-os-plus)
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2017 Liviu Ionescu.
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -25,47 +25,53 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Do not compile on semihosting configurations and when freestanding.
-#if !defined(OS_USE_SEMIHOSTING) && !(__STDC_HOSTED__ == 0)
+#ifndef SIFIVE_COREPLEX_DEVICES_FUNCTIONS_INLINES_H_
+#define SIFIVE_COREPLEX_DEVICES_FUNCTIONS_INLINES_H_
+
+#include <sifive-coreplex-devices/defines.h>
+
+#include <stdint.h>
+
+/*
+ * Inline implementations for the Coreplex IP support functions.
+ */
 
 // ----------------------------------------------------------------------------
-
-#include <micro-os-plus/diag/trace.h>
-#include <newlib/c-syscalls.h>
-
-#include <errno.h>
-
-// ----------------------------------------------------------------------------
-
-// When using retargetted configurations, the standard write() system call,
-// after a long way inside newlib, finally calls this implementation function.
-
-// Based on the file descriptor, it can send arrays of characters to
-// different physical devices.
-
-// Currently only the output and error file descriptors are tested,
-// and the characters are forwarded to the trace device, mainly
-// for demonstration purposes. Adjust it for your specific needs.
-
-// For freestanding applications this file is not used and can be safely
-// ignored.
-
-ssize_t
-_write (int fd __attribute__((unused)), const void* buf __attribute__((unused)),
-	size_t nbyte __attribute__((unused)))
+#if defined(__cplusplus)
+extern "C"
 {
-#if defined(TRACE)
-  // STDOUT and STDERR are routed to the trace device
-  if (fd == 1 || fd == 2)
-    {
-      return trace_write (buf, nbyte);
-    }
-#endif /* TRACE */
+#endif /* defined(__cplusplus) */
 
-  errno = ENOSYS;
-  return -1;
+// ----------------------------------------------------------------------------
+// Device support functions in C.
+
+// TODO: add functions.
+// Prefix them with `riscv_device_`.
+
+#if defined(__cplusplus)
 }
+#endif /* defined(__cplusplus) */
 
 // ----------------------------------------------------------------------------
 
-#endif /* !defined(OS_USE_SEMIHOSTING) && !(__STDC_HOSTED__ == 0) */
+#if defined(__cplusplus)
+
+namespace riscv
+{
+  namespace device
+  {
+  // --------------------------------------------------------------------------
+  // Device support functions in C++.
+
+  // TODO: add functions.
+
+  // --------------------------------------------------------------------------
+  } /* namespace device */
+// ----------------------------------------------------------------------------
+} /* namespace riscv */
+
+#endif /* defined(__cplusplus) */
+
+// ----------------------------------------------------------------------------
+
+#endif /* SIFIVE_COREPLEX_DEVICES_FUNCTIONS_INLINES_H_ */

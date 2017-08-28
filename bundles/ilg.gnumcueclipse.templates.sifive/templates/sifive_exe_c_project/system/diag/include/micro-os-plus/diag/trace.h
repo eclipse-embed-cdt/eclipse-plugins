@@ -39,7 +39,7 @@
 #include <stdint.h>
 #include <stdarg.h>
 #include <stdlib.h>
-#endif
+#endif /* __cplusplus */
 
 #include <sys/types.h>
 
@@ -53,9 +53,9 @@
 // the use of putchar() in other name spaces.
 #if defined(putchar)
 #undef putchar
-#endif
+#endif /* defined(putchar) */
 
-#endif
+#endif /* __cplusplus */
 
 // ----------------------------------------------------------------------------
 
@@ -173,7 +173,7 @@ namespace os
 #if defined(__cplusplus)
 extern "C"
 {
-#endif
+#endif /* defined(__cplusplus) */
 
   // ----- Implementation -----------------------------------------------------
   // These functions must be implemented for a specific trace channel.
@@ -209,7 +209,7 @@ extern "C"
 
 #if defined(__cplusplus)
 }
-#endif
+#endif /* defined(__cplusplus) */
 
 #else /* !defined(TRACE) */
 
@@ -309,7 +309,7 @@ namespace os
 #if defined(__cplusplus)
 extern "C"
   {
-#endif
+#endif /* defined(__cplusplus) */
 
     inline void
     trace_initialize (void);
@@ -338,7 +338,7 @@ extern "C"
 
 #if defined(__cplusplus)
   }
-#endif
+#endif /* defined(__cplusplus) */
 
 inline void
 __attribute__((always_inline))
@@ -353,7 +353,7 @@ trace_initialize (void)
 #pragma GCC diagnostic push
 #if defined(__cplusplus)
 #pragma GCC diagnostic ignored "-Wold-style-cast"
-#endif
+#endif /* defined(__cplusplus) */
 
 inline ssize_t
 __attribute__((always_inline))

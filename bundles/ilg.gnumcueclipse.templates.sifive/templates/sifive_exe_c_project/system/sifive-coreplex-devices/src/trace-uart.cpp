@@ -45,12 +45,17 @@ namespace os
     void
     initialize (void)
     {
+#if defined(SIFIVE_FREEDOM_E310)
+      // IOF0_UART0_MASK is defined only for FE310
+      // TODO: check if this is correct.
       GPIO_REG(GPIO_IOF_SEL) &= ~IOF0_UART0_MASK;
       // Enable.
       GPIO_REG(GPIO_IOF_EN) |= IOF0_UART0_MASK;
+#endif
+
       // Set baud rate.
       UART0_REG(UART_REG_DIV) = (riscv::core::cpu_frequency ()
-	  / OS_INTEGER_TRACE_UART0_BAUD_RATE) - 1;
+                              / OS_INTEGER_TRACE_UART0_BAUD_RATE) - 1;
       // Enable transmitter.
       UART0_REG(UART_REG_TXCTRL) |= UART_TXEN;
 
@@ -61,9 +66,9 @@ namespace os
       // start of the stream.
       volatile int i = 0;
       while (i < 10000)
-	{
-	  i++;
-	}
+        {
+          i++;
+        }
     }
 
     // ------------------------------------------------------------------------
@@ -72,29 +77,29 @@ namespace os
     write (const void* buf, std::size_t nbyte)
     {
       if (buf == nullptr || nbyte == 0)
-	{
-	  return 0;
-	}
+        {
+          return 0;
+        }
 
       const char* cbuf = (const char*) buf;
 
       for (size_t i = 0; i < nbyte; i++)
-	{
-	  uint8_t ch = (*cbuf++);
+        {
+          uint8_t ch = (*cbuf++);
 
-	  if (ch == '\n')
-	    {
-	      // Wait until FIFO is ready...
-	      while ((int32_t) UART0_REG(UART_REG_TXFIFO) < 0)
-		;
-	      UART0_REG(UART_REG_TXFIFO) = '\r';
-	    }
+          if (ch == '\n')
+            {
+              // Wait until FIFO is ready...
+              while ((int32_t) UART0_REG(UART_REG_TXFIFO) < 0)
+                ;
+              UART0_REG(UART_REG_TXFIFO) = '\r';
+            }
 
-	  // Wait until FIFO is ready...
-	  while ((int32_t) UART0_REG(UART_REG_TXFIFO) < 0)
-	    ;
-	  UART0_REG(UART_REG_TXFIFO) = ch;
-	}
+          // Wait until FIFO is ready...
+          while ((int32_t) UART0_REG(UART_REG_TXFIFO) < 0)
+            ;
+          UART0_REG(UART_REG_TXFIFO) = ch;
+        }
 
       // All characters successfully sent.
       return (ssize_t) nbyte;

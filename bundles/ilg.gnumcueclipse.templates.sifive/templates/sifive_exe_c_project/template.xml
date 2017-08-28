@@ -26,20 +26,18 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			label="%SiFive.board.label"
 			description="%SiFive.board.description"
 			type="select"
-			default="FE310"
+			default="hifive1"
 			hidden="false"
 			persist="true">
 			<item
-				value="FE310"
+				value="hifive1"
 				label="Freedom E310 HiFive1" />
-			<!-- 
 			<item
-				value="E31ARTY"
-				label="Coreplex E31 Arty" />
+				value="e31arty"
+				label="Coreplex IP E31 Arty" />
 			<item
-				value="E51ARTY"
-				label="Coreplex E51 Arty" />
-			 -->
+				value="e51arty"
+				label="Coreplex IP E51 Arty" />
 		</property>
 
 		<property
@@ -175,7 +173,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			description="Will be set to content"
 			mandatory="true"
 			hidden="true"
-			default="undefined"
+			default="undefined-content"
 			persist="false" />
 
 		<property
@@ -184,23 +182,47 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			description="Will be set to SiFiveSyscalls"
 			mandatory="true"
 			hidden="true"
-			default="undefined"
+			default="undefined-syscalls"
 			persist="false" />
 
 		<property
 			id="deviceName"
-			label="Device name"
+			label="Device name (fe310, e31, e51)"
 			mandatory="true"
 			hidden="true"
-			default="undefined"
+			default="undefined-deviceName"
+			persist="false" />
+
+		<property
+			id="deviceMacro"
+			label="Device macro definition"
+			mandatory="true"
+			hidden="true"
+			default="undefined-deviceMacro"
 			persist="false" />
 
 		<property
 			id="boardName"
-			label="Board name"
+			label="Board name (hifive1, e31arty, e51arty)"
 			mandatory="true"
 			hidden="true"
-			default="undefined"
+			default="undefined-boardName"
+			persist="false" />
+
+		<property
+			id="boardMacro"
+			label="Board macro definition"
+			mandatory="true"
+			hidden="true"
+			default="undefined-boardMacro"
+			persist="false" />
+
+		<property
+			id="boardFolder"
+			label="Board folder"
+			mandatory="true"
+			hidden="true"
+			default="undefined-boardFolder"
 			persist="false" />
 
 		<property
@@ -208,7 +230,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			label="Board description"
 			mandatory="true"
 			hidden="true"
-			default="undefined"
+			default="undefined-boardDescription"
 			persist="false" />
 
 		<property
@@ -217,7 +239,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			description="Will be set to content"
 			mandatory="true"
 			hidden="true"
-			default="undefined"
+			default="undefined-trace"
 			persist="false" />
 
 	</property-group>
@@ -332,7 +354,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		
 	</if>
 
-	<if condition="$(SiFiveBoard)==FE310">
+	<if condition="$(SiFiveBoard)==hifive1">
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
@@ -345,9 +367,54 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="deviceName" />
 			<simple
 				name="propertyValue"
-				value="FE310" />
+				value="fe310" />
 		</process>
 		
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<simple
+				name="propertyName"
+				value="deviceMacro" />
+			<simple
+				name="propertyValue"
+				value="SIFIVE_FREEDOM_E310" />
+		</process>
+
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<simple
+				name="propertyName"
+				value="boardMacro" />
+			<simple
+				name="propertyValue"
+				value="SIFIVE_HIFIVE1_BOARD" />
+		</process>
+
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<simple
+				name="propertyName"
+				value="boardFolder" />
+			<simple
+				name="propertyValue"
+				value="sifive-hifive1-board" />
+		</process>
+
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
@@ -365,7 +432,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		
 	</if>
 
-	<if condition="$(SiFiveBoard)==E31ARTY">
+	<if condition="$(SiFiveBoard)==e31arty">
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
@@ -378,9 +445,54 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="deviceName" />
 			<simple
 				name="propertyValue"
-				value="E31" />
+				value="e31" />
 		</process>
 		
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<simple
+				name="propertyName"
+				value="deviceMacro" />
+			<simple
+				name="propertyValue"
+				value="SIFIVE_COREPLEX_IP_31" />
+		</process>
+
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<simple
+				name="propertyName"
+				value="boardMacro" />
+			<simple
+				name="propertyValue"
+				value="SIFIVE_COREPLEX_IP_31_ARTY_BOARD" />
+		</process>
+		
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<simple
+				name="propertyName"
+				value="boardFolder" />
+			<simple
+				name="propertyValue"
+				value="sifive-coreplex-arty-boards" />
+		</process>
+
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
@@ -393,12 +505,12 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="boardDescription" />
 			<simple
 				name="propertyValue"
-				value="Coreplex E31 Arty" />
+				value="Coreplex IP E31 Arty" />
 		</process>
-		
+
 	</if>
 
-	<if condition="$(SiFiveBoard)==E51ARTY">
+	<if condition="$(SiFiveBoard)==e51arty">
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
 			<simple
 				name="projectName"
@@ -411,7 +523,22 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="deviceName" />
 			<simple
 				name="propertyValue"
-				value="E51" />
+				value="e51" />
+		</process>
+		
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<simple
+				name="propertyName"
+				value="deviceMacro" />
+			<simple
+				name="propertyValue"
+				value="SIFIVE_COREPLEX_IP_51" />
 		</process>
 				
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
@@ -426,7 +553,37 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="boardDescription" />
 			<simple
 				name="propertyValue"
-				value="Coreplex E31 Arty" />
+				value="Coreplex E51 Arty" />
+		</process>
+		
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<simple
+				name="propertyName"
+				value="boardFolder" />
+			<simple
+				name="propertyValue"
+				value="sifive-coreplex-arty-boards" />
+		</process>
+		
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<simple
+				name="propertyName"
+				value="boardMacro" />
+			<simple
+				name="propertyValue"
+				value="SIFIVE_COREPLEX_IP_51_ARTY_BOARD" />
 		</process>
 		
 	</if>
@@ -515,7 +672,6 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 
 	<!-- ldscripts -->
 	<if condition="1==1">
-		<!-- TODO: customise for SiFiveBoard -->
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
 			<simple
 				name="projectName"
@@ -538,21 +694,32 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="ldscripts/mem.ld" />
+						value="ldscripts/sections.ld" />
 					<simple
 						name="target"
-						value="ldscripts/mem.ld" />
+						value="ldscripts/sections.ld" />
 					<simple
 						name="replaceable"
 						value="true" />
 				</element>
+			</complex-array>
+		</process>
+
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="files">
 				<element>
 					<simple
 						name="source"
-						value="ldscripts/sections.ld" />
+						value="ldscripts/mem-$(boardName).ld" />
 					<simple
 						name="target"
-						value="ldscripts/sections.ld" />
+						value="ldscripts/mem.ld" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -838,8 +1005,8 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		
 	</if>
 
-	<!-- system/sifive-freedom-e310-device -->
-	<if condition="$(deviceName)==FE310">
+	<!-- system/sifive-coreplex-devices -->
+	<if condition="1==1">
 		
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
 			<simple
@@ -852,10 +1019,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/sifive-freedom-e310-device/include/sifive-freedom-e310-device" />
+						value="system/sifive-coreplex-devices/include/sifive-coreplex-devices" />
 					<simple
 						name="target"
-						value="system/sifive-freedom-e310-device/include/sifive-freedom-e310-device" />
+						value="system/sifive-coreplex-devices/include/sifive-coreplex-devices" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -866,10 +1033,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/sifive-freedom-e310-device/include/micro-os-plus" />
+						value="system/sifive-coreplex-devices/include/micro-os-plus" />
 					<simple
 						name="target"
-						value="system/sifive-freedom-e310-device/include/micro-os-plus" />
+						value="system/sifive-coreplex-devices/include/micro-os-plus" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -880,10 +1047,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/sifive-freedom-e310-device/include/sifive/peripherals" />
+						value="system/sifive-coreplex-devices/include/sifive/coreplex-ip-e31" />
 					<simple
 						name="target"
-						value="system/sifive-freedom-e310-device/include/sifive/peripherals" />
+						value="system/sifive-coreplex-devices/include/sifive/coreplex-ip-e31" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -894,10 +1061,52 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/sifive-freedom-e310-device/include/sifive" />
+						value="system/sifive-coreplex-devices/include/sifive/coreplex-ip-e51" />
 					<simple
 						name="target"
-						value="system/sifive-freedom-e310-device/include/sifive" />
+						value="system/sifive-coreplex-devices/include/sifive/coreplex-ip-e51" />
+					<simple
+						name="pattern"
+						value=".*[.](h)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="system/sifive-coreplex-devices/include/sifive/freedom-e310" />
+					<simple
+						name="target"
+						value="system/sifive-coreplex-devices/include/sifive/freedom-e310" />
+					<simple
+						name="pattern"
+						value=".*[.](h)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="system/sifive-coreplex-devices/include/sifive/peripherals" />
+					<simple
+						name="target"
+						value="system/sifive-coreplex-devices/include/sifive/peripherals" />
+					<simple
+						name="pattern"
+						value=".*[.](h)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="system/sifive-coreplex-devices/include/sifive" />
+					<simple
+						name="target"
+						value="system/sifive-coreplex-devices/include/sifive" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -920,7 +1129,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="id"
 						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.include.paths" />
 					<simple-array name="values">
-						<element value="&quot;../system/sifive-freedom-e310-device/include&quot;" />
+						<element value="&quot;../system/sifive-coreplex-devices/include&quot;" />
 					</simple-array>
 					<simple
 						name="path"
@@ -935,7 +1144,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="$(projectName)" />
 			<simple
 				name="path"
-				value="system/sifive-freedom-e310-device/src" />
+				value="system/sifive-coreplex-devices/src" />
 		</process>
 
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -949,10 +1158,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/sifive-freedom-e310-device/src" />
+						value="system/sifive-coreplex-devices/src" />
 					<simple
 						name="target"
-						value="system/sifive-freedom-e310-device/src" />
+						value="system/sifive-coreplex-devices/src" />
 					<simple
 						name="pattern"
 						value=".*[.](c|cpp|h)" />
@@ -974,10 +1183,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/sifive-freedom-e310-device/README.md" />
+						value="system/sifive-coreplex-devices/README.md" />
 					<simple
 						name="target"
-						value="system/sifive-freedom-e310-device/README.md" />
+						value="system/sifive-coreplex-devices/README.md" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -987,8 +1196,8 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		
 	</if>
 
-	<!-- system/sifive-hifive1-board -->
-	<if condition="$(boardName)==FE310">
+	<!-- system/sifive-*-board* -->
+	<if condition="1==1">
 		
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
 			<simple
@@ -1001,10 +1210,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/sifive-hifive1-board/include/sifive-hifive1-board" />
+						value="system/$(boardFolder)/include/$(boardFolder)" />
 					<simple
 						name="target"
-						value="system/sifive-hifive1-board/include/sifive-hifive1-board" />
+						value="system/$(boardFolder)/include/$(boardFolder)" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1015,10 +1224,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/sifive-hifive1-board/include/micro-os-plus" />
+						value="system/$(boardFolder)/include/micro-os-plus" />
 					<simple
 						name="target"
-						value="system/sifive-hifive1-board/include/micro-os-plus" />
+						value="system/$(boardFolder)/include/micro-os-plus" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1041,7 +1250,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="id"
 						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.include.paths" />
 					<simple-array name="values">
-						<element value="&quot;../system/sifive-hifive1-board/include&quot;" />
+						<element value="&quot;../system/$(boardFolder)/include&quot;" />
 					</simple-array>
 					<simple
 						name="path"
@@ -1056,7 +1265,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="$(projectName)" />
 			<simple
 				name="path"
-				value="system/sifive-hifive1-board/src" />
+				value="system/$(boardFolder)/src" />
 		</process>
 
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -1070,10 +1279,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/sifive-hifive1-board/src" />
+						value="system/$(boardFolder)/src" />
 					<simple
 						name="target"
-						value="system/sifive-hifive1-board/src" />
+						value="system/$(boardFolder)/src" />
 					<simple
 						name="pattern"
 						value=".*[.](c|cpp|h)" />
@@ -1095,10 +1304,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/sifive-hifive1-board/README.md" />
+						value="system/$(boardFolder)/README.md" />
 					<simple
 						name="target"
-						value="system/sifive-hifive1-board/README.md" />
+						value="system/$(boardFolder)/README.md" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1329,20 +1538,6 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="replaceable"
 						value="true" />
 				</element>
-				<element>
-					<simple
-						name="source"
-						value="system/riscv-arch/include/sifive" />
-					<simple
-						name="target"
-						value="system/riscv-arch/include/sifive" />
-					<simple
-						name="pattern"
-						value=".*[.](h)" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
 			</complex-array>
 		</process>
 		
@@ -1562,7 +1757,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 	<!-- ================================================================== -->
 
 	<!-- Target options -->
-	<if condition="$(deviceName)==FE310">
+	<if condition="$(deviceName)==fe310">
 		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
 			<simple
 				name="projectName"
@@ -1669,7 +1864,219 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		</process>		
 	</if>
 
-	<!-- TODO Add E31 E51 -->
+	<if condition="$(deviceName)==e31">
+		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.base" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv32i" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.fp" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.isa.fp.none" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.abi.integer" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.integer.ilp32" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.abi.fp" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.fp.none" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.codemodel" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.codemodel.any" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+		
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.multiply" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.atomic" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.compressed" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>		
+	</if>
+
+	<if condition="$(deviceName)==e51">
+		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.base" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv64i" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.fp" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.isa.fp.none" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.abi.integer" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.integer.lp64" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.abi.fp" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.fp.none" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.codemodel" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.codemodel.any" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+		
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.multiply" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.atomic" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.compressed" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>		
+	</if>
 
 	<!-- ================================================================== -->
 	
@@ -2508,6 +2915,39 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple
 						name="buildType"
 						value="release" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.defs" />
+					<simple-array name="values">
+						<element value="$(deviceMacro)" />
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.defs" />
+					<simple-array name="values">
+						<element value="$(boardMacro)" />
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
 				</element>
 			</complex-array>
 		</process>

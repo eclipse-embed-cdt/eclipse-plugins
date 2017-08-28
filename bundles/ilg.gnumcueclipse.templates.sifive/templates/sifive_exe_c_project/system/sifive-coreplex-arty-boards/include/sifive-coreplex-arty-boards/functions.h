@@ -25,17 +25,53 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef MICRO_OS_PLUS_BOARD_H_
-#define MICRO_OS_PLUS_BOARD_H_
+#ifndef SIFIVE_COREPLEX_IP_ARTY_BOARDS_FUNCTIONS_H_
+#define SIFIVE_COREPLEX_IP_ARTY_BOARDS_FUNCTIONS_H_
 
-#include <micro-os-plus/device.h>
+#include <sifive-coreplex-arty-boards/defines.h>
 
-#include <sifive-hifive1-board/defines.h>
+#include <stdint.h>
 
-// Include common declarations.
-#include <riscv-arch/board-functions.h>
+/*
+ * Coreplex IP Arty support functions.
+ *
+ * Inline functions are first defined in C (prefixed with `riscv_board_`),
+ * then, for convenience, are redefined in C++ in the `riscv::board::`
+ * namespace.
+ *
+ * Regular functions are first defined in C++ then aliased to C.
+ */
 
-#include <sifive-hifive1-board/functions.h>
-#include <sifive-hifive1-board/functions-inlines.h>
+// ----------------------------------------------------------------------------
+#if defined(__cplusplus)
+extern "C"
+{
+#endif /* defined(__cplusplus) */
 
-#endif /* MICRO_OS_PLUS_BOARD_H_ */
+// ...
+
+#if defined(__cplusplus)
+}
+#endif /* defined(__cplusplus) */
+
+// ----------------------------------------------------------------------------
+
+#if defined(__cplusplus)
+
+namespace riscv
+{
+  namespace board
+  {
+  // ------------------------------------------------------------------------
+
+  // ...
+
+  } /* namespace board */
+// ----------------------------------------------------------------------------
+} /* namespace riscv */
+
+#endif /* defined(__cplusplus) */
+
+// ----------------------------------------------------------------------------
+
+#endif /* SIFIVE_COREPLEX_IP_ARTY_BOARDS_FUNCTIONS_H_ */

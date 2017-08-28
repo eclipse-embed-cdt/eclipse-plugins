@@ -85,7 +85,7 @@ __assert_func (const char* file, int line, const char* func,
   /* NOTREACHED */
 }
 
-#endif
+#endif /* !defined(TRACE) && !defined(OS_USE_SEMIHOSTING_SYSCALLS) */
 
 // ----------------------------------------------------------------------------
 

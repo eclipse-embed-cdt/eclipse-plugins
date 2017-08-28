@@ -25,58 +25,24 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef SIFIVE_FREEDOM_E310_DEVICE_DEVICE_FUNCTIONS_H_
-#define SIFIVE_FREEDOM_E310_DEVICE_DEVICE_FUNCTIONS_H_
-
-#include <sifive-freedom-e310-device/device-defines.h>
-
-#include <stdint.h>
-
-/*
- * Freedom E310 support functions.
- *
- * Inline functions are first defined in C (prefixed with `riscv_device_`),
- * then, for convenience, are redefined in C++ in the `riscv::device::`
- * namespace.
- *
- * Regular functions are first defined in C++ then aliased to C.
- */
+#include <micro-os-plus/board.h>
 
 // ----------------------------------------------------------------------------
-#if defined(__cplusplus)
-extern "C"
-{
-#endif /* defined(__cplusplus) */
-
-// --------------------------------------------------------------------------
-// Device support functions in C.
-
-// TODO: add functions.
-// Prefix them with `riscv_device_`.
-
-#if defined(__cplusplus)
-}
-#endif /* defined(__cplusplus) */
-
-// ----------------------------------------------------------------------------
-
-#if defined(__cplusplus)
 
 namespace riscv
 {
-  namespace device
+  namespace board
   {
-  // --------------------------------------------------------------------------
-  // Device support functions in C++.
+  // ------------------------------------------------------------------------
 
-  // TODO: add functions.
+  // ...
 
   // --------------------------------------------------------------------------
-  } /* namespace device */
+  } /* namespace board */
 } /* namespace riscv */
 
-#endif /* defined(__cplusplus) */
-
 // ----------------------------------------------------------------------------
+// C aliases to the C++ functions.
 
-#endif /* SIFIVE_FREEDOM_E310_DEVICE_DEVICE_FUNCTIONS_H_ */
+// ...
+// ----------------------------------------------------------------------------

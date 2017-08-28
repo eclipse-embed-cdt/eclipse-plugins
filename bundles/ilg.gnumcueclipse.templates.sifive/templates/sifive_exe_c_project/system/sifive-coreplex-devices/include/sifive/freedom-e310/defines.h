@@ -25,32 +25,25 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef SIFIVE_FREEDOM_E310_DEVICE_DEVICE_DEFINES_H_
-#define SIFIVE_FREEDOM_E310_DEVICE_DEVICE_DEFINES_H_
+#ifndef SIFIVE_FREEDOM_E310_DEFINES_H_
+#define SIFIVE_FREEDOM_E310_DEFINES_H_
 
 #include <stdint.h>
 
-// ----------------------------------------------------------------------------
-
-// The 'official' identification of the SiFive FE310 device.
-// TODO: Check with SiFive if this name is ok.
-#define FREEDOM_E310
-
-// ----------------------------------------------------------------------------
-// Definitions from SiFive bsp/include/sifive/const.h
-
-#define _AC(X,Y)        (X##Y)
-#define _AT(T,X)        ((T)(X))
-
-#define _BITUL(x)       (_AC(1,UL) << (x))
-#define _BITULL(x)      (_AC(1,ULL) << (x))
+#include <sifive/const.h>
 
 // ----------------------------------------------------------------------------
 // Definitions from SiFive bsp/env/freedom-e300-hifive1/platform.h
 
-// Some things missing from the official encoding.h
-#define MCAUSE_INT         0x80000000
-#define MCAUSE_CAUSE       0x7FFFFFFF
+#include <sifive/peripherals/aon.h>
+#include <sifive/peripherals/clint.h>
+#include <sifive/peripherals/gpio.h>
+#include <sifive/peripherals/otp.h>
+#include <sifive/peripherals/plic.h>
+#include <sifive/peripherals/prci.h>
+#include <sifive/peripherals/pwm.h>
+#include <sifive/peripherals/spi.h>
+#include <sifive/peripherals/uart.h>
 
 // Memory map
 #define MASKROM_MEM_ADDR _AC(0x00001000,UL)
@@ -128,8 +121,9 @@
 #define INT_PWM2_BASE 48
 
 // Helper functions
-#define _REG32(p, i) (*(volatile uint32_t *) ((p) + (i)))
-#define _REG32P(p, i) ((volatile uint32_t *) ((p) + (i)))
+#define _REG32(p, i) (*(volatile uint32_t *) ((p) + (uint32_t)(i)))
+#define _REG32P(p, i) ((volatile uint32_t *) ((p) + (uint32_t)(i)))
+
 #define AON_REG(offset) _REG32(AON_CTRL_ADDR, offset)
 #define CLINT_REG(offset) _REG32(CLINT_CTRL_ADDR, offset)
 #define GPIO_REG(offset) _REG32(GPIO_CTRL_ADDR, offset)
@@ -154,16 +148,4 @@
 
 // ----------------------------------------------------------------------------
 
-#include <sifive/peripherals/aon.h>
-#include <sifive/peripherals/clint.h>
-#include <sifive/peripherals/gpio.h>
-#include <sifive/peripherals/otp.h>
-#include <sifive/peripherals/plic.h>
-#include <sifive/peripherals/prci.h>
-#include <sifive/peripherals/pwm.h>
-#include <sifive/peripherals/spi.h>
-#include <sifive/peripherals/uart.h>
-
-// ----------------------------------------------------------------------------
-
-#endif /* SIFIVE_FREEDOM_E310_DEVICE_DEVICE_DEFINES_H_ */
+#endif /* SIFIVE_FREEDOM_E310_DEFINES_H_ */

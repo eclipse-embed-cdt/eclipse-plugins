@@ -25,15 +25,15 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef SIFIVE_HIFIVE1_BOARD_BOARD_DEFINES_H_
-#define SIFIVE_HIFIVE1_BOARD_BOARD_DEFINES_H_
+#ifndef SIFIVE_HIFIVE1_BOARD_DEFINES_H_
+#define SIFIVE_HIFIVE1_BOARD_DEFINES_H_
 
 // ----------------------------------------------------------------------------
 
-// The 'official' identification of the SiFive HiFive1 board.
-#define FREEDOM_E300_HIFIVE1
-
-// ----------------------------------------------------------------------------
+#if defined(SIFIVE_HIFIVE1_BOARD)
+#else
+#error "Only SIFIVE_HIFIVE1_BOARD is supported."
+#endif /* _BOARD */
 
 #define RISCV_BOARD_RTC_FREQUENCY_HZ		(32768)
 
@@ -99,4 +99,4 @@
 
 // ----------------------------------------------------------------------------
 
-#endif /* SIFIVE_HIFIVE1_BOARD_BOARD_DEFINES_H_ */
+#endif /* SIFIVE_HIFIVE1_BOARD_DEFINES_H_ */

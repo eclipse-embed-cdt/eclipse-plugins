@@ -39,7 +39,7 @@ extern "C"
 typedef uint32_t riscv_arch_register_t;
 #elif __riscv_xlen == 64
 typedef uint64_t riscv_arch_register_t;
-#endif
+#endif /* __riscv_xlen */
 
 // ----------------------------------------------------------------------------
 

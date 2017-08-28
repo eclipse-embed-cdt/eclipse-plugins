@@ -20,4 +20,4 @@
 #define OTP_Q            0x30
 #define OTP_READ_TIMINGS 0x34
 
-#endif
+#endif /* _SIFIVE_OTP_H */

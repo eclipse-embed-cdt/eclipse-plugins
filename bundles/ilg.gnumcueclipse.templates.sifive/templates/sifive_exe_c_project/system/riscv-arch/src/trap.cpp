@@ -215,7 +215,7 @@ riscv_core_handle_trap (riscv::arch::register_t mcause,
 
 #if defined(DEBUG)
   riscv::arch::ebreak ();
-#endif
+#endif /* defined(DEBUG) */
 
   while (true)
     {
@@ -229,7 +229,7 @@ riscv_trap_handle_unused (void)
 {
 #if defined(DEBUG)
   riscv::arch::ebreak ();
-#endif
+#endif /* defined(DEBUG) */
 
   while (true)
     {

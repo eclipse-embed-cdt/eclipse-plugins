@@ -61,7 +61,7 @@
 
 #if !defined(OS_INCLUDE_STARTUP_GUARD_CHECKS)
 #define OS_BOOL_STARTUP_GUARD_CHECKS (true)
-#endif
+#endif /* !defined(OS_INCLUDE_STARTUP_GUARD_CHECKS) */
 
 // ----------------------------------------------------------------------------
 
@@ -93,7 +93,7 @@ extern uint32_t __data_regions_array_end__;
 extern uint32_t __bss_regions_array_begin__;
 extern uint32_t __bss_regions_array_end__;
 
-#endif
+#endif /* OS_INCLUDE_STARTUP_INIT_MULTIPLE_RAM_SECTIONS */
 
 extern uint32_t __heap_begin__;
 extern uint32_t __heap_end__;
@@ -175,7 +175,7 @@ os_run_init_array (void)
 {
   os::trace::printf ("%s()\n", __func__);
 
-  int count = __preinit_array_end__ - __preinit_array_begin__;
+  int count = static_cast<int> (__preinit_array_end__ - __preinit_array_begin__);
   for (int i = 0; i < count; i++)
     {
       __preinit_array_begin__[i] ();
@@ -186,7 +186,7 @@ os_run_init_array (void)
   // crti.o and crtn.o to add the function prologue/epilogue.
   //_init(); // DO NOT ENABLE THIS!
 
-  count = __init_array_end__ - __init_array_begin__;
+  count = static_cast<int> (__init_array_end__ - __init_array_begin__);
   for (int i = 0; i < count; i++)
     {
       __init_array_begin__[i] ();
@@ -199,7 +199,7 @@ os_run_fini_array (void)
 {
   os::trace::printf ("%s()\n", __func__);
 
-  int count = __fini_array_end__ - __fini_array_begin__;
+  int count = static_cast<int> (__fini_array_end__ - __fini_array_begin__);
   for (int i = count; i > 0; i--)
     {
       __fini_array_begin__[i - 1] ();
@@ -269,7 +269,7 @@ _start (void)
   __data_begin_guard = DATA_GUARD_BAD_VALUE;
   __data_end_guard = DATA_GUARD_BAD_VALUE;
 
-#endif
+#endif /* OS_BOOL_STARTUP_GUARD_CHECKS */
 
 #if !defined(OS_INCLUDE_STARTUP_INIT_MULTIPLE_RAM_SECTIONS)
 
@@ -289,7 +289,7 @@ _start (void)
       os_initialize_data (from, region_begin, region_end);
     }
 
-#endif
+#endif /* OS_INCLUDE_STARTUP_INIT_MULTIPLE_RAM_SECTIONS */
 
 #if defined(DEBUG) && (OS_BOOL_STARTUP_GUARD_CHECKS)
 
@@ -302,7 +302,7 @@ _start (void)
         }
     }
 
-#endif
+#endif /* OS_BOOL_STARTUP_GUARD_CHECKS */
 
 #if defined(DEBUG) && (OS_BOOL_STARTUP_GUARD_CHECKS)
 
@@ -328,7 +328,7 @@ _start (void)
       os_initialize_bss (region_begin, region_end);
     }
 
-#endif
+#endif /* OS_INCLUDE_STARTUP_INIT_MULTIPLE_RAM_SECTIONS */
 
 #if defined(DEBUG) && (OS_BOOL_STARTUP_GUARD_CHECKS)
 
@@ -340,7 +340,7 @@ _start (void)
         }
     }
 
-#endif
+#endif /* OS_BOOL_STARTUP_GUARD_CHECKS */
 
   // Hook to continue the initialisations. Usually compute and store the
   // clock frequency in a global variable, cleared above.
@@ -431,7 +431,7 @@ os_terminate (int code __attribute__((unused)))
   NVIC_SystemReset ();
 #elif defined(__riscv)
   // TODO: find a RISC-V soft reset
-#endif
+#endif /* arch */
   while (true)
     {
       ;

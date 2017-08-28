@@ -67,7 +67,7 @@ atexit (exit_func_t fn)
 {
 #if defined(OS_TRACE_LIBC_ATEXIT)
   trace_printf ("%s(%p)\n", __func__, fn);
-#endif
+#endif /* defined(OS_TRACE_LIBC_ATEXIT) */
 
   return __register_exitproc (__et_atexit, fn, NULL, NULL);
 }
@@ -120,7 +120,7 @@ __register_exitproc (int type, exit_func_t fn,
     {
       return -1;
     }
-#endif
+#endif /* defined(NDEBUG) */
 
   // Use scheduler lock to synchronise access to the array.
   // os::rtos::scheduler::critical_section scs;

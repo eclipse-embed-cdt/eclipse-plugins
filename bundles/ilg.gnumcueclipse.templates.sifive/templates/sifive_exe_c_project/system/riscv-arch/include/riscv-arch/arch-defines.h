@@ -196,7 +196,7 @@
 # define MSTATUS_SD MSTATUS64_SD
 # define SSTATUS_SD SSTATUS64_SD
 # define RISCV_PGLEVEL_BITS 9
-#endif
+#endif /* __riscv_xlen */
 
 #define RISCV_PGSHIFT 12
 #define RISCV_PGSIZE (1 << RISCV_PGSHIFT)
@@ -417,7 +417,9 @@
 #elif __riscv_xlen == 64
 #define MCAUSE_INT         0x8000000000000000
 #define MCAUSE_CAUSE       0x7FFFFFFFFFFFFFFF
-#endif
+#else
+#error "Unsupported __riscv_xlen"
+#endif /* __riscv_xlen */
 
 #define IRQ_ARRAY_SIZE	IRQ_HOST + 1
 

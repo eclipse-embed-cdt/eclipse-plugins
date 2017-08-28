@@ -196,7 +196,7 @@ trace_printf (const char* format, ...);
 int __attribute__((weak, alias ("_ZN2os5trace7vprintfEPKcSt9__va_list")))
 #elif defined(__riscv)
 int __attribute__((weak, alias ("_ZN2os5trace7vprintfEPKcPv")))
-#endif
+#endif /* defined(__ARM_EABI__) */
 trace_vprintf (const char* format, ...);
 
 int __attribute__((weak, alias("_ZN2os5trace4putsEPKc")))
@@ -249,8 +249,8 @@ trace_dump_args (int argc, char* argv[])
     trace::dump_args (argc, argv);
   }
 
-#endif
+#endif /* __ARM_EABI__ __riscv */
 
 // ----------------------------------------------------------------------------
 
-#endif // defined(TRACE)
+#endif /* defined(TRACE) */

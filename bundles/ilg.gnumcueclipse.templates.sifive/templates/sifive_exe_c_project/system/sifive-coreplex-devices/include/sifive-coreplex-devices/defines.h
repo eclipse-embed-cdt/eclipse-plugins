@@ -25,53 +25,22 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef SIFIVE_HIFIVE1_BOARD_BOARD_FUNCTIONS_H_
-#define SIFIVE_HIFIVE1_BOARD_BOARD_FUNCTIONS_H_
-
-#include <sifive-hifive1-board/board-defines.h>
-
-#include <stdint.h>
-
-/*
- * Freedom E300 HiFive1 support functions.
- *
- * Inline functions are first defined in C (prefixed with `riscv_board_`),
- * then, for convenience, are redefined in C++ in the `riscv::board::`
- * namespace.
- *
- * Regular functions are first defined in C++ then aliased to C.
- */
-
-// ----------------------------------------------------------------------------
-#if defined(__cplusplus)
-extern "C"
-{
-#endif /* defined(__cplusplus) */
-
-// ...
-
-#if defined(__cplusplus)
-}
-#endif /* defined(__cplusplus) */
+#ifndef SIFIVE_COREPLEX_DEVICES_DEFINES_H_
+#define SIFIVE_COREPLEX_DEVICES_DEFINES_H_
 
 // ----------------------------------------------------------------------------
 
-#if defined(__cplusplus)
-
-namespace riscv
-{
-  namespace board
-  {
-  // ------------------------------------------------------------------------
-
-  // ...
-
-  } /* namespace board */
-// ----------------------------------------------------------------------------
-} /* namespace riscv */
-
-#endif /* defined(__cplusplus) */
+// Select one of the definition files based on device.
+#if defined (SIFIVE_FREEDOM_E310)
+#include <sifive/freedom-e310/defines.h>
+#elif defined (SIFIVE_COREPLEX_IP_31)
+#include <sifive/coreplex-ip-e31/defines.h>
+#elif defined (SIFIVE_COREPLEX_IP_51)
+#include <sifive/coreplex-ip-e51/defines.h>
+#else
+#error "Unsupported device"
+#endif
 
 // ----------------------------------------------------------------------------
 
-#endif /* SIFIVE_HIFIVE1_BOARD_BOARD_FUNCTIONS_H_ */
+#endif /* SIFIVE_COREPLEX_DEVICES_DEFINES_H_ */

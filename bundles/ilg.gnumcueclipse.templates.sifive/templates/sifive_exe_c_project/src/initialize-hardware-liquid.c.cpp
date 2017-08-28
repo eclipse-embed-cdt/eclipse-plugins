@@ -57,6 +57,8 @@ os_startup_initialize_hardware_early (void)
 
   // TODO: add support for the PRCI peripheral and use it.
 
+#if defined(SIFIVE_FREEDOM_E310)
+  // TODO: add to C/C++ API
   // Make sure the HFROSC is on before the next line:
   PRCI_REG(PRCI_HFROSCCFG) |= ROSC_EN(1);
   // Run off 16 MHz Crystal for accuracy.
@@ -64,6 +66,7 @@ os_startup_initialize_hardware_early (void)
   PRCI_REG(PRCI_PLLCFG) |= (PLL_SEL(1));
   // Turn off HFROSC to save power
   PRCI_REG(PRCI_HFROSCCFG) &= ~((uint32_t)ROSC_EN(1));
+#endif /* defined(SIFIVE_FREEDOM_E310) */
 
   // TODO: check Arduino main.cpp for more/better initialisations.
 }

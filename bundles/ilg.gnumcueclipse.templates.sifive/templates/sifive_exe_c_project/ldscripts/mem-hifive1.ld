@@ -1,5 +1,5 @@
 /*
- * Memory Spaces Definitions.
+ * Memory Spaces Definitions for the SiFive HiFive1 board.
  *
  * The values below can be addressed in further linker scripts
  * using functions like 'ORIGIN(RAM)' or 'LENGTH(RAM)'.

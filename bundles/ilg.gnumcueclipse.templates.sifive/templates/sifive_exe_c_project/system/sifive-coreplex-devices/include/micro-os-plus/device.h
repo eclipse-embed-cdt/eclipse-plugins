@@ -29,10 +29,10 @@
 #define MICRO_OS_PLUS_DEVICE_H_
 
 #include <micro-os-plus/architecture.h>
-#include <sifive-freedom-e310-device/device-defines.h>
+#include <sifive-coreplex-devices/defines.h>
 
-#include <sifive-freedom-e310-device/device-functions.h>
-#include <sifive-freedom-e310-device/device-functions-inlines.h>
+#include <sifive-coreplex-devices/functions.h>
+#include <sifive-coreplex-devices/functions-inlines.h>
 
 // The names of the RISCV_MMIO_ symbols are architecture specific,
 // but their values depend on a specific implementation.

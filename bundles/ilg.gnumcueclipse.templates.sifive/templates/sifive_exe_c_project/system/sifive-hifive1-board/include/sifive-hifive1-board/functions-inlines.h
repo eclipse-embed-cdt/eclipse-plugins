@@ -1,7 +1,7 @@
 /*
  * This file is part of the µOS++ distribution.
  *   (https://github.com/micro-os-plus)
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2017 Liviu Ionescu.
  *
  * Permission is hereby granted, free of charge, to any person
  * obtaining a copy of this software and associated documentation
@@ -25,47 +25,62 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-// Do not compile on semihosting configurations and when freestanding.
-#if !defined(OS_USE_SEMIHOSTING) && !(__STDC_HOSTED__ == 0)
+#ifndef SIFIVE_HIFIVE1_BOARD_FUNCTIONS_INLINES_H_
+#define SIFIVE_HIFIVE1_BOARD_FUNCTIONS_INLINES_H_
+
+#include <stdint.h>
+
+/*
+ * Freedom E300 HiFive1 support functions.
+ *
+ * Inline functions are first defined in C (prefixed with `riscv_board_`),
+ * then, for convenience, are redefined in C++ in the `riscv::board::`
+ * namespace.
+ *
+ * Regular functions are first defined in C++ then aliased to C.
+ */
 
 // ----------------------------------------------------------------------------
-
-#include <micro-os-plus/diag/trace.h>
-#include <newlib/c-syscalls.h>
-
-#include <errno.h>
-
-// ----------------------------------------------------------------------------
-
-// When using retargetted configurations, the standard write() system call,
-// after a long way inside newlib, finally calls this implementation function.
-
-// Based on the file descriptor, it can send arrays of characters to
-// different physical devices.
-
-// Currently only the output and error file descriptors are tested,
-// and the characters are forwarded to the trace device, mainly
-// for demonstration purposes. Adjust it for your specific needs.
-
-// For freestanding applications this file is not used and can be safely
-// ignored.
-
-ssize_t
-_write (int fd __attribute__((unused)), const void* buf __attribute__((unused)),
-	size_t nbyte __attribute__((unused)))
+#if defined(__cplusplus)
+extern "C"
 {
-#if defined(TRACE)
-  // STDOUT and STDERR are routed to the trace device
-  if (fd == 1 || fd == 2)
-    {
-      return trace_write (buf, nbyte);
-    }
-#endif /* TRACE */
+#endif /* defined(__cplusplus) */
 
-  errno = ENOSYS;
-  return -1;
+  static inline uint32_t
+  __attribute__((always_inline))
+  riscv_board_get_rtc_frequency_hz (void)
+  {
+    return RISCV_BOARD_RTC_FREQUENCY_HZ;
+  }
+
+#if defined(__cplusplus)
 }
+#endif /* defined(__cplusplus) */
 
 // ----------------------------------------------------------------------------
 
-#endif /* !defined(OS_USE_SEMIHOSTING) && !(__STDC_HOSTED__ == 0) */
+#if defined(__cplusplus)
+
+namespace riscv
+{
+  namespace board
+  {
+    // ------------------------------------------------------------------------
+
+    uint32_t
+    inline __attribute__((always_inline))
+    rtc_frequency_hz (void)
+    {
+      return riscv_board_get_rtc_frequency_hz ();
+    }
+
+  } /* namespace board */
+
+// ----------------------------------------------------------------------------
+} /* namespace riscv */
+
+#endif /* defined(__cplusplus) */
+
+// ----------------------------------------------------------------------------
+
+#endif /* SIFIVE_HIFIVE1_BOARD_FUNCTIONS_INLINES_H_ */

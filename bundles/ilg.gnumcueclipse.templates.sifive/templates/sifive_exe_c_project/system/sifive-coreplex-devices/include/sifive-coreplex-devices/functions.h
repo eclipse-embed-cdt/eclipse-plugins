@@ -25,16 +25,18 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef SIFIVE_HIFIVE1_BOARD_BOARD_FUNCTIONS_INLINES_H_
-#define SIFIVE_HIFIVE1_BOARD_BOARD_FUNCTIONS_INLINES_H_
+#ifndef SIFIVE_COREPLEX_DEVICES_FUNCTIONS_H_
+#define SIFIVE_COREPLEX_DEVICES_FUNCTIONS_H_
+
+#include <sifive-coreplex-devices/defines.h>
 
 #include <stdint.h>
 
 /*
- * Freedom E300 HiFive1 support functions.
+ * Coreplex IP support functions.
  *
- * Inline functions are first defined in C (prefixed with `riscv_board_`),
- * then, for convenience, are redefined in C++ in the `riscv::board::`
+ * Inline functions are first defined in C (prefixed with `riscv_device_`),
+ * then, for convenience, are redefined in C++ in the `riscv::device::`
  * namespace.
  *
  * Regular functions are first defined in C++ then aliased to C.
@@ -46,12 +48,11 @@ extern "C"
 {
 #endif /* defined(__cplusplus) */
 
-  static inline uint32_t
-  __attribute__((always_inline))
-  riscv_board_get_rtc_frequency_hz (void)
-  {
-    return RISCV_BOARD_RTC_FREQUENCY_HZ;
-  }
+// --------------------------------------------------------------------------
+// Device support functions in C.
+
+// TODO: add functions.
+// Prefix them with `riscv_device_`.
 
 #if defined(__cplusplus)
 }
@@ -63,24 +64,19 @@ extern "C"
 
 namespace riscv
 {
-  namespace board
+  namespace device
   {
-    // ------------------------------------------------------------------------
+  // --------------------------------------------------------------------------
+  // Device support functions in C++.
 
-    uint32_t
-    inline __attribute__((always_inline))
-    rtc_frequency_hz (void)
-    {
-      return riscv_board_get_rtc_frequency_hz ();
-    }
+  // TODO: add functions.
 
-  } /* namespace board */
-
-// ----------------------------------------------------------------------------
+  // --------------------------------------------------------------------------
+  } /* namespace device */
 } /* namespace riscv */
 
 #endif /* defined(__cplusplus) */
 
 // ----------------------------------------------------------------------------
 
-#endif /* SIFIVE_HIFIVE1_BOARD_BOARD_FUNCTIONS_INLINES_H_ */
+#endif /* SIFIVE_COREPLEX_DEVICES_FUNCTIONS_H_ */

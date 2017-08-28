@@ -344,7 +344,7 @@ extern "C"
       return tmp;
     }
 
-#endif
+#endif /* __riscv_xlen == 64 */
 
   static inline uint32_t
   __attribute__((always_inline))
@@ -365,9 +365,9 @@ extern "C"
 
 #elif __riscv_xlen == 64
 
-    return riscv_csr_read_mcycle ();
+    return (uint32_t)riscv_csr_read_mcycle ();
 
-#endif
+#endif /* __riscv_xlen */
   }
 
   static inline uint32_t
@@ -389,9 +389,9 @@ extern "C"
 
 #elif __riscv_xlen == 64
 
-    return (riscv_csr_read_mcycle() >> 32);
+    return (uint32_t)(riscv_csr_read_mcycle() >> 32);
 
-#endif
+#endif /* __riscv_xlen */
   }
 
 // ----------------------------------------------------------------------------
@@ -495,7 +495,7 @@ namespace riscv
         return riscv_csr_read_mcycle();
       }
 
-#endif
+#endif /* __riscv_xlen == 64 */
 
     inline uint32_t
     __attribute__((always_inline))
