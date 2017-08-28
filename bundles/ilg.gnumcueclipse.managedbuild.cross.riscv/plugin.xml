@@ -394,7 +394,7 @@
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
 					command="-mabi=lp64"
-					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.lp64"
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.integer.lp64"
 					name="%option.target.abi.integer.lp64">
 				</enumeratedOptionValue>
 			</option>
