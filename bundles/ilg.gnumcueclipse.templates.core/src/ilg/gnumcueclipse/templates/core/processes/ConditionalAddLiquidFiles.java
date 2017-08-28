@@ -129,7 +129,7 @@ public class ConditionalAddLiquidFiles extends ProcessRunner {
 							.build();
 					liqp.Template liqTemplate = liqp.Template.parse(fileContents, liqSettings);
 					String liqRendered = liqTemplate.render(liquidMap);
-					System.out.println(liqRendered);
+					// System.out.println(liqRendered);
 					contents = new ByteArrayInputStream(liqRendered.getBytes());
 				} catch (Exception e) {
 					throw new ProcessFailureException(getProcessMessage(processId, IStatus.ERROR,
