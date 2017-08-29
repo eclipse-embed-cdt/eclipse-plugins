@@ -45,16 +45,9 @@ namespace os
     void
     initialize (void)
     {
-#if defined(SIFIVE_FREEDOM_E310)
-      // IOF0_UART0_MASK is defined only for FE310
-      // TODO: check if this is correct.
-      GPIO_REG(GPIO_IOF_SEL) &= ~IOF0_UART0_MASK;
-      // Enable.
-      GPIO_REG(GPIO_IOF_EN) |= IOF0_UART0_MASK;
-#endif
-
       // Set baud rate.
-      UART0_REG(UART_REG_DIV) = (riscv::core::cpu_frequency ()
+      // Coreplex boards have the peripheral clock at half the core clock.
+      UART0_REG(UART_REG_DIV) = (riscv::core::cpu_frequency () / 2
                               / OS_INTEGER_TRACE_UART0_BAUD_RATE) - 1;
       // Enable transmitter.
       UART0_REG(UART_REG_TXCTRL) |= UART_TXEN;
