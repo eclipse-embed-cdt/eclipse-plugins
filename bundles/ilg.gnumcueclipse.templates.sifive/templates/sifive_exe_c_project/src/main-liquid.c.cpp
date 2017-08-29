@@ -74,14 +74,21 @@ namespace
 
 #define BLINK_PORT_NUMBER         (0)
 #define BLINK_ACTIVE_LOW          (true)
+#define BLINK_ACTIVE_HIGH         (false)
 
 // Instantiate a static array of led objects.
 {% if language == 'cpp' %}
 led blink_leds[] =
   {
+{% if board == 'hifive1' %}
     { BLINK_PORT_NUMBER, RED_LED_OFFSET, BLINK_ACTIVE_LOW },
     { BLINK_PORT_NUMBER, GREEN_LED_OFFSET, BLINK_ACTIVE_LOW },
     { BLINK_PORT_NUMBER, BLUE_LED_OFFSET, BLINK_ACTIVE_LOW },
+{% else %}
+    { BLINK_PORT_NUMBER, RED_LED_OFFSET, BLINK_ACTIVE_HIGH },
+    { BLINK_PORT_NUMBER, GREEN_LED_OFFSET, BLINK_ACTIVE_HIGH },
+    { BLINK_PORT_NUMBER, BLUE_LED_OFFSET, BLINK_ACTIVE_HIGH },
+{% endif %}
   /**/
   };
 {% elsif language == 'c' %}
@@ -97,12 +104,21 @@ void
 __attribute__((constructor))
 led_array_construct (void)
 {
+{% if board == 'hifive1' %}
   led_construct (&blink_leds[0], BLINK_PORT_NUMBER, RED_LED_OFFSET,
-  BLINK_ACTIVE_LOW);
+                 BLINK_ACTIVE_LOW);
   led_construct (&blink_leds[1], BLINK_PORT_NUMBER, GREEN_LED_OFFSET,
-  BLINK_ACTIVE_LOW);
+                 BLINK_ACTIVE_LOW);
   led_construct (&blink_leds[2], BLINK_PORT_NUMBER, BLUE_LED_OFFSET,
-  BLINK_ACTIVE_LOW);
+                 BLINK_ACTIVE_LOW);
+{% else %}
+  led_construct (&blink_leds[0], BLINK_PORT_NUMBER, RED_LED_OFFSET,
+                 BLINK_ACTIVE_HIGH);
+  led_construct (&blink_leds[1], BLINK_PORT_NUMBER, GREEN_LED_OFFSET,
+                 BLINK_ACTIVE_HIGH);
+  led_construct (&blink_leds[2], BLINK_PORT_NUMBER, BLUE_LED_OFFSET,
+                 BLINK_ACTIVE_HIGH);
+{% endif %}
 }
 
 #pragma GCC diagnostic pop
