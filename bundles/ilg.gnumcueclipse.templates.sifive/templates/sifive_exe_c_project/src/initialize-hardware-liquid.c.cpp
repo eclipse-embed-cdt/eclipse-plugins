@@ -68,6 +68,13 @@ os_startup_initialize_hardware_early (void)
   PRCI_REG(PRCI_HFROSCCFG) &= ~((uint32_t)ROSC_EN(1));
 #endif /* defined(SIFIVE_FREEDOM_E310) */
 
+#if defined(SIFIVE_COREPLEX_IP_31_ARTY_BOARD) || defined(SIFIVE_COREPLEX_IP_51_ARTY_BOARD)
+  // For the Arty board, be sure LED1 is off, since it is very bright.
+  PWM0_REG(PWM_CMP1)  = 0xFF;
+  PWM0_REG(PWM_CMP2)  = 0xFF;
+  PWM0_REG(PWM_CMP3)  = 0xFF;
+#endif /* SIFIVE_COREPLEX_IP_[35]1_ARTY_BOARD */
+
   // TODO: check Arduino main.cpp for more/better initialisations.
 }
 
