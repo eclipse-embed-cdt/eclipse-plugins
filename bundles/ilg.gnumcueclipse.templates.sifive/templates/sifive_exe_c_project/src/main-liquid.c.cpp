@@ -155,9 +155,9 @@ main (int argc, char* argv[])
   // at high speed.
 {% if trace != 'NONE' %}
 {% if language == 'cpp' %}
-  os::trace::printf ("System clock: %u Hz\n", riscv::core::cpu_frequency ());
+  os::trace::printf ("System clock: %u Hz\n", riscv::core::running_frequency_hz ());
 {% elsif language == 'c' %}
-  trace_printf ("System clock: %u Hz\n", riscv_core_get_cpu_frequency ());
+  trace_printf ("System clock: %u Hz\n", riscv_core_get_running_frequency_hz ());
 {% endif %}
 {% endif %}
 

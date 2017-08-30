@@ -47,7 +47,7 @@ namespace os
     {
       // Set baud rate.
       // Coreplex boards have the peripheral clock at half the core clock.
-      UART0_REG(UART_REG_DIV) = (riscv::core::cpu_frequency () / 2
+      UART0_REG(UART_REG_DIV) = (riscv::core::running_frequency_hz () / 2
                               / OS_INTEGER_TRACE_UART0_BAUD_RATE) - 1;
       // Enable transmitter.
       UART0_REG(UART_REG_TXCTRL) |= UART_TXEN;

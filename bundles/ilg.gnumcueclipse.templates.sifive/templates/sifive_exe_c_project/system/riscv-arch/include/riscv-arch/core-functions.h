@@ -43,10 +43,10 @@ extern "C"
   // Support functions.
 
   uint32_t
-  riscv_core_get_cpu_frequency (void);
+  riscv_core_get_running_frequency_hz (void);
 
   void
-  riscv_core_update_cpu_frequency (void);
+  riscv_core_update_running_frequency (void);
 
 // ----------------------------------------------------------------------------
 
@@ -69,14 +69,14 @@ namespace riscv
      * Get the previously computed CPU frequency.
      */
     uint32_t
-    cpu_frequency (void);
+    running_frequency_hz (void);
 
     /**
      * Compute the CPU frequency. Call this after changing the
      * clock settings.
      */
     void
-    update_cpu_frequency (void);
+    update_running_frequency (void);
 
   // --------------------------------------------------------------------------
   } /* namespace core */

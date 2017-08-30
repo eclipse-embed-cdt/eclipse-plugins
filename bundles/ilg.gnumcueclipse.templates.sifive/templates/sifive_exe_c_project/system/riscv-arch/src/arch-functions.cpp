@@ -33,10 +33,10 @@
 // Anonymous namespace, functions visible only in this file.
 namespace
 {
-  uint32_t cpu_frequency_;
+  uint32_t running_frequency_hz_;
 
   uint32_t
-  measure_cpu_frequency_ (size_t mtime_counts)
+  measure_running_frequency_hz_ (size_t mtime_counts)
   {
     uint32_t start_mtime;
     uint32_t delta_mtime;
@@ -63,7 +63,7 @@ namespace
     uint32_t delta_mcycle = riscv::csr::mcycle_low () - start_mcycle;
 
     return (delta_mcycle / delta_mtime) * mtime_freq
-        + ((delta_mcycle % delta_mtime) * mtime_freq) / delta_mtime;
+         + ((delta_mcycle % delta_mtime) * mtime_freq) / delta_mtime;
   }
 
 }
@@ -98,23 +98,23 @@ namespace core
 // Support functions.
 
 uint32_t
-cpu_frequency (void)
+running_frequency_hz (void)
 {
-  if (cpu_frequency_ == 0)
+  if (running_frequency_hz_ == 0)
     {
-      update_cpu_frequency ();
+      update_running_frequency ();
     }
 
-  return cpu_frequency_;
+  return running_frequency_hz_;
 }
 
 void
-update_cpu_frequency (void)
+update_running_frequency (void)
 {
   // warm up I$
-  measure_cpu_frequency_ (1);
+  measure_running_frequency_hz_ (1);
   // measure for real
-  cpu_frequency_ = measure_cpu_frequency_ (10);
+  running_frequency_hz_ = measure_running_frequency_hz_ (10);
 }
 
    // --------------------------------------------------------------------------
@@ -198,12 +198,12 @@ riscv_csr_read_mcycle (void);
 #endif /* __riscv_xlen == 32 */
 
 uint32_t
-__attribute__((alias("_ZN5riscv4core13cpu_frequencyEv")))
-riscv_core_get_cpu_frequency (void);
+__attribute__((alias("_ZN5riscv4core20running_frequency_hzEv")))
+riscv_core_get_running_frequency_hz (void);
 
 void
-__attribute__((alias("_ZN5riscv4core20update_cpu_frequencyEv")))
-riscv_core_update_cpu_frequency (void);
+__attribute__((alias("_ZN5riscv4core24update_running_frequencyEv")))
+riscv_core_update_running_frequency (void);
 
 #if __riscv_xlen == 32
 

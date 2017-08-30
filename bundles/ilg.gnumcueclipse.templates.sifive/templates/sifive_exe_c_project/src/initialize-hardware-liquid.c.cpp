@@ -84,9 +84,9 @@ os_startup_initialize_hardware (void)
 {
   // Measure the CPU frequency in cycles, with the RTC as reference.
 {% if language == 'cpp' %}
-  riscv::core::update_cpu_frequency ();
+  riscv::core::update_running_frequency ();
 {% elsif language == 'c' %}
-  riscv_core_update_cpu_frequency ();
+  riscv_core_update_running_frequency ();
 {% endif %}
 
   // Disable M timer interrupt.
