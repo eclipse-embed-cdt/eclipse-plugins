@@ -1075,6 +1075,20 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
+						value="system/sifive-coreplex-devices/include/sifive/fe300prci" />
+					<simple
+						name="target"
+						value="system/sifive-coreplex-devices/include/sifive/fe300prci" />
+					<simple
+						name="pattern"
+						value=".*[.](h)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
 						value="system/sifive-coreplex-devices/include/sifive/freedom-e310" />
 					<simple
 						name="target"
@@ -1093,6 +1107,20 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple
 						name="target"
 						value="system/sifive-coreplex-devices/include/sifive/peripherals" />
+					<simple
+						name="pattern"
+						value=".*[.](h)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="system/sifive-coreplex-devices/include/sifive/plic" />
+					<simple
+						name="target"
+						value="system/sifive-coreplex-devices/include/sifive/plic" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1162,6 +1190,20 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 					<simple
 						name="target"
 						value="system/sifive-coreplex-devices/src" />
+					<simple
+						name="pattern"
+						value=".*[.](c|cpp|h)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="system/sifive-coreplex-devices/src/sifive" />
+					<simple
+						name="target"
+						value="system/sifive-coreplex-devices/src/sifive" />
 					<simple
 						name="pattern"
 						value=".*[.](c|cpp|h)" />
