@@ -15,8 +15,8 @@ Most of the files are part of the [µOS++](http://micro-os-plus.github.io) proje
 ### Portable files
 
 - `diag` - diagnostic trace functions
-- `libc` - functions to complement the C library
-- `libcpp` -  functions to complement the C++ functions
+- `c-libs` - functions to complement the C library
+- `cpp-libs` -  functions to complement the C++ functions
 - `startup` - portable startup
 
 ### Architecture/device/board files

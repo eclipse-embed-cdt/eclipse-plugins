@@ -1317,7 +1317,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		
 	</if>
 
-	<!-- system/libc -->
+	<!-- system/c-libs -->
 	<if condition="1==1">
 		
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -1331,10 +1331,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/libc/include/newlib" />
+						value="system/c-libs/include/newlib" />
 					<simple
 						name="target"
-						value="system/libc/include/newlib" />
+						value="system/c-libs/include/newlib" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1357,7 +1357,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="id"
 						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.include.paths" />
 					<simple-array name="values">
-						<element value="&quot;../system/libc/include&quot;" />
+						<element value="&quot;../system/c-libs/include&quot;" />
 					</simple-array>
 					<simple
 						name="path"
@@ -1372,7 +1372,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="$(projectName)" />
 			<simple
 				name="path"
-				value="system/libc/src" />
+				value="system/c-libs/src" />
 		</process>
 
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -1386,10 +1386,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/libc/src/stdlib" />
+						value="system/c-libs/src/stdlib" />
 					<simple
 						name="target"
-						value="system/libc/src/stdlib" />
+						value="system/c-libs/src/stdlib" />
 					<simple
 						name="pattern"
 						value=".*[.](c|cpp|h)" />
@@ -1400,10 +1400,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/libc/src" />
+						value="system/c-libs/src" />
 					<simple
 						name="target"
-						value="system/libc/src" />
+						value="system/c-libs/src" />
 					<simple
 						name="pattern"
 						value=".*[.](c|cpp|h)" />
@@ -1425,10 +1425,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/libc/README.md" />
+						value="system/c-libs/README.md" />
 					<simple
 						name="target"
-						value="system/libc/README.md" />
+						value="system/c-libs/README.md" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1438,7 +1438,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		
 	</if>
 
-	<!-- system/libcpp -->
+	<!-- system/cpp-libs -->
 	<if condition="1==1">
 		
 		<process type="org.eclipse.cdt.core.CreateSourceFolder">
@@ -1447,7 +1447,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="$(projectName)" />
 			<simple
 				name="path"
-				value="system/libcpp/src" />
+				value="system/cpp-libs/src" />
 		</process>
 
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -1461,10 +1461,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/libcpp/src" />
+						value="system/cpp-libs/src" />
 					<simple
 						name="target"
-						value="system/libcpp/src" />
+						value="system/cpp-libs/src" />
 					<simple
 						name="pattern"
 						value=".*[.](c|cpp|h)" />
@@ -1486,10 +1486,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/libcpp/README.md" />
+						value="system/cpp-libs/README.md" />
 					<simple
 						name="target"
-						value="system/libcpp/README.md" />
+						value="system/cpp-libs/README.md" />
 					<simple
 						name="replaceable"
 						value="true" />
