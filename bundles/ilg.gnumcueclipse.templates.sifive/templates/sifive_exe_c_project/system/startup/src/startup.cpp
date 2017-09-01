@@ -250,7 +250,6 @@ void
 __attribute__ ((noreturn,weak))
 _start (void)
 {
-
   // --------------------------------------------------------------------------
 
   // Initialise hardware right after reset, to switch clock to higher
@@ -342,15 +341,15 @@ _start (void)
 
 #endif /* OS_BOOL_STARTUP_GUARD_CHECKS */
 
-  // Hook to continue the initialisations. Usually compute and store the
-  // clock frequency in a global variable, cleared above.
-  os_startup_initialize_hardware ();
-
   // Initialise the trace output device. From this moment on,
   // os::trace::printf() calls are available (including in static constructors).
   os::trace::initialize ();
 
   os::trace::printf ("Hardware initialised.\n");
+
+  // Hook to continue the initialisations. Usually compute and store the
+  // clock frequency in a global variable, cleared above.
+  os_startup_initialize_hardware ();
 
   os_startup_initialize_free_store (
       &__heap_begin__,
