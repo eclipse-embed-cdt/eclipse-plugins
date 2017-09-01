@@ -30,6 +30,12 @@
 
 // ----------------------------------------------------------------------------
 
+#if defined(IRQ_GLOBAL_ARRAY_SIZE)
+
+extern plic_instance_t g_plic;
+
+#endif /* defined(IRQ_GLOBAL_ARRAY_SIZE) */
+
 // Called early, before copying .data and clearing .bss.
 // Should initialise the clocks and possible other RAM areas.
 void
@@ -58,6 +64,7 @@ os_startup_initialize_hardware_early (void)
   // TODO: add support for the PRCI peripheral and use it.
 
 #if defined(SIFIVE_FREEDOM_E310)
+
   // TODO: add to C/C++ API
   // Make sure the HFROSC is on before the next line:
   PRCI_REG(PRCI_HFROSCCFG) |= ROSC_EN(1);
@@ -66,13 +73,16 @@ os_startup_initialize_hardware_early (void)
   PRCI_REG(PRCI_PLLCFG) |= (PLL_SEL(1));
   // Turn off HFROSC to save power
   PRCI_REG(PRCI_HFROSCCFG) &= ~((uint32_t)ROSC_EN(1));
+
 #endif /* defined(SIFIVE_FREEDOM_E310) */
 
 #if defined(SIFIVE_COREPLEX_IP_31_ARTY_BOARD) || defined(SIFIVE_COREPLEX_IP_51_ARTY_BOARD)
+
   // For the Arty board, be sure LED1 is off, since it is very bright.
   PWM0_REG(PWM_CMP1)  = 0xFF;
   PWM0_REG(PWM_CMP2)  = 0xFF;
   PWM0_REG(PWM_CMP3)  = 0xFF;
+
 #endif /* SIFIVE_COREPLEX_IP_[35]1_ARTY_BOARD */
 
   // TODO: check Arduino main.cpp for more/better initialisations.
@@ -88,6 +98,17 @@ os_startup_initialize_hardware (void)
 {% elsif language == 'c' %}
   riscv_core_update_running_frequency ();
 {% endif %}
+
+#if defined(IRQ_GLOBAL_ARRAY_SIZE)
+
+  extern plic_instance_t g_plic;
+
+  PLIC_init(&g_plic,
+      PLIC_CTRL_ADDR,
+      PLIC_NUM_INTERRUPTS,
+      PLIC_NUM_PRIORITIES);
+
+#endif /* defined(IRQ_GLOBAL_ARRAY_SIZE) */
 
   // Disable M timer interrupt.
 {% if language == 'cpp' %}
@@ -105,6 +126,38 @@ os_startup_initialize_hardware (void)
   riscv_device_write_mtime (0);
   riscv_device_write_mtimecmp (0);
 {% endif %}
+
+#if defined(BUTTON_0_OFFSET)
+
+  // -------------------------------------------------------------------
+  // Configure Button 0 as a global GPIO irq.
+
+  // Disable output.
+  GPIO_REG(GPIO_OUTPUT_EN) &= ~((0x1 << BUTTON_0_OFFSET));
+
+  // Disable hw io function
+  GPIO_REG(GPIO_IOF_EN) &= ~(1 << BUTTON_0_OFFSET);
+
+  // Configure as input
+  GPIO_REG(GPIO_INPUT_EN) |= (1 << BUTTON_0_OFFSET);
+  GPIO_REG(GPIO_PULLUP_EN) |= (1 << BUTTON_0_OFFSET);
+
+  // Configure to interrupt on falling edge
+  GPIO_REG(GPIO_FALL_IE) |= (1 << BUTTON_0_OFFSET);
+
+  // Enable the BUTTON interrupt in PLIC.
+  PLIC_enable_interrupt (&g_plic, INT_DEVICE_BUTTON_0);
+
+  // Configure the BUTTON priority in PLIC. 2 out of 7.
+  PLIC_set_priority (&g_plic, INT_DEVICE_BUTTON_0, 2);
+
+  // Enable Global (PLIC) interrupt.
+  riscv::csr::set_mie (MIP_MEIP);
+
+#endif /* defined(BUTTON_0_OFFSET) */
+
+  // -------------------------------------------------------------------
+  // When everything else is ready...
 
   // Enable M timer interrupt.
 {% if language == 'cpp' %}

@@ -25,15 +25,15 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef SIFIVE_COREPLEX_IP_E51_DEFINES_H_
-#define SIFIVE_COREPLEX_IP_E51_DEFINES_H_
+#ifndef SIFIVE_COREPLEX_IP_E31_DEFINES_H_
+#define SIFIVE_COREPLEX_IP_E31_DEFINES_H_
 
 #include <stdint.h>
 
 #include <sifive/const.h>
 
 // ----------------------------------------------------------------------------
-// Definitions from SiFive bsp/env/coreplexip-51-arty/platform.h
+// Definitions from SiFive bsp/env/coreplexip-31-arty/platform.h
 
 #ifdef VECT_IRQ
     #define MTVEC_VECTORED     0x01
@@ -78,9 +78,9 @@
 #define PWM0_INT_BASE 23
 
 // Helper functions
-#define _REG64(p, i) (*(volatile uint64_t *)((p) + (uint64_t)(i)))
-#define _REG32(p, i) (*(volatile uint32_t *)((p) + (uint64_t)(i)))
-#define _REG16(p, i) (*(volatile uint16_t *)((p) + (uint64_t)(i)))
+#define _REG64(p, i) (*(volatile uint64_t *)((p) + (uint32_t)(i)))
+#define _REG32(p, i) (*(volatile uint32_t *)((p) + (uint32_t)(i)))
+#define _REG16(p, i) (*(volatile uint16_t *)((p) + (uint32_t)(i)))
 
 // Bulk set bits in `reg` to either 0 or 1.
 // E.g. SET_BITS(MY_REG, 0x00000007, 0) would generate MY_REG &= ~0x7
@@ -108,6 +108,11 @@
 #define PLIC_NUM_INTERRUPTS 28
 #define PLIC_NUM_PRIORITIES 7
 
+// End of SiFive definitions.
 // ----------------------------------------------------------------------------
 
-#endif /* SIFIVE_COREPLEX_IP_E51_DEFINES_H_ */
+#define IRQ_GLOBAL_ARRAY_SIZE (PLIC_NUM_INTERRUPTS - 1)
+
+// ----------------------------------------------------------------------------
+
+#endif /* SIFIVE_COREPLEX_IP_E31_DEFINES_H_ */

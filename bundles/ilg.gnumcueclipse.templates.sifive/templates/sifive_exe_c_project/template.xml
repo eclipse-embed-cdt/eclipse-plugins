@@ -872,10 +872,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="src/interrupt-handlers-liquid.c.cpp" />
+						value="src/interrupts-handlers-liquid.c.cpp" />
 					<simple
 						name="target"
-						value="src/interrupt-handlers.$(fileExtension)" />
+						value="src/interrupts-handlers.$(fileExtension)" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1019,20 +1019,6 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/sifive-coreplex-devices/include/sifive-coreplex-devices" />
-					<simple
-						name="target"
-						value="system/sifive-coreplex-devices/include/sifive-coreplex-devices" />
-					<simple
-						name="pattern"
-						value=".*[.](h)" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-				<element>
-					<simple
-						name="source"
 						value="system/sifive-coreplex-devices/include/micro-os-plus" />
 					<simple
 						name="target"
@@ -1047,52 +1033,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/sifive-coreplex-devices/include/sifive/coreplex-ip-e31" />
-					<simple
-						name="target"
-						value="system/sifive-coreplex-devices/include/sifive/coreplex-ip-e31" />
-					<simple
-						name="pattern"
-						value=".*[.](h)" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-				<element>
-					<simple
-						name="source"
-						value="system/sifive-coreplex-devices/include/sifive/coreplex-ip-e51" />
-					<simple
-						name="target"
-						value="system/sifive-coreplex-devices/include/sifive/coreplex-ip-e51" />
-					<simple
-						name="pattern"
-						value=".*[.](h)" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-				<element>
-					<simple
-						name="source"
 						value="system/sifive-coreplex-devices/include/sifive/fe300prci" />
 					<simple
 						name="target"
 						value="system/sifive-coreplex-devices/include/sifive/fe300prci" />
-					<simple
-						name="pattern"
-						value=".*[.](h)" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-				<element>
-					<simple
-						name="source"
-						value="system/sifive-coreplex-devices/include/sifive/freedom-e310" />
-					<simple
-						name="target"
-						value="system/sifive-coreplex-devices/include/sifive/freedom-e310" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1142,6 +1086,76 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="replaceable"
 						value="true" />
 				</element>
+                <element>
+                    <simple
+                        name="source"
+                        value="system/sifive-coreplex-devices/include/sifive-coreplex-devices" />
+                    <simple
+                        name="target"
+                        value="system/sifive-coreplex-devices/include/sifive-coreplex-devices" />
+                    <simple
+                        name="pattern"
+                        value=".*[.](h)" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
+                <element>
+                    <simple
+                        name="source"
+                        value="system/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip" />
+                    <simple
+                        name="target"
+                        value="system/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip" />
+                    <simple
+                        name="pattern"
+                        value=".*[.](h)" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
+                <element>
+                    <simple
+                        name="source"
+                        value="system/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip/e31" />
+                    <simple
+                        name="target"
+                        value="system/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip/e31" />
+                    <simple
+                        name="pattern"
+                        value=".*[.](h)" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
+                <element>
+                    <simple
+                        name="source"
+                        value="system/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip/e51" />
+                    <simple
+                        name="target"
+                        value="system/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip/e51" />
+                    <simple
+                        name="pattern"
+                        value=".*[.](h)" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
+                <element>
+                    <simple
+                        name="source"
+                        value="system/sifive-coreplex-devices/include/sifive-coreplex-devices/freedom-e310" />
+                    <simple
+                        name="target"
+                        value="system/sifive-coreplex-devices/include/sifive-coreplex-devices/freedom-e310" />
+                    <simple
+                        name="pattern"
+                        value=".*[.](h)" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
 			</complex-array>
 		</process>
 		

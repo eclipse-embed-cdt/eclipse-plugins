@@ -26,9 +26,11 @@
  */
 
 #include <micro-os-plus/board.h>
+#include <micro-os-plus/diag/trace.h>
 
 #include <stddef.h>
 #include <stdbool.h>
+#include <inttypes.h>
 
 // ----------------------------------------------------------------------------
 
@@ -36,14 +38,10 @@ extern "C"
 {
   // Forward declarations.
   void
-  riscv_core_handle_trap (riscv::arch::register_t mcause,
-			  riscv::arch::register_t epc,
-			  riscv::arch::register_t sp);
+  riscv_core_handle_trap (void);
+
   void
   riscv_trap_handle_unused (void);
-
-  typedef void
-  (*trap_handler_ptr_t) (void);
 }
 
 // ----------------------------------------------------------------------------
@@ -51,52 +49,66 @@ extern "C"
 // To provide the desired functionality, redefine any of these
 // functions in the application.
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
 riscv_exc_handle_misaligned_fetch (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
 riscv_exc_handle_fault_fetch (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
 riscv_exc_handle_illegal_instruction (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
 riscv_exc_handle_breakpoint (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
 riscv_exc_handle_misaligned_load (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
 riscv_exc_handle_fault_load (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
 riscv_exc_handle_misaligned_store (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
 riscv_exc_handle_fault_store (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
 riscv_exc_handle_user_ecall (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
 riscv_exc_handle_supervisor_ecall (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
 riscv_exc_handle_machine_ecall (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
 riscv_exc_handle_page_fetch (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
 riscv_exc_handle_page_load (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
 riscv_exc_handle_page_store (void);
 
 /*
  * Array of pointers to exception handlers. See Table 3.6 from Volume II.
  */
-trap_handler_ptr_t __attribute__ ((section(".trap_array")))
+riscv_trap_handler_ptr_t __attribute__ ((section(".exceptions_array")))
 riscv_exc_handlers[] =
   { //
     riscv_exc_handle_misaligned_fetch, /* 0 */
@@ -123,94 +135,108 @@ static_assert(
 
 // ----------------------------------------------------------------------------
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
-riscv_irq_handle_user_software (void);
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+riscv_irq_local_handle_user_software (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
-riscv_irq_handle_supervisor_software (void);
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+riscv_irq_local_handle_supervisor_software (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
-riscv_irq_handle_machine_software (void);
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+riscv_irq_local_handle_machine_software (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
-riscv_irq_handle_user_timer (void);
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+riscv_irq_local_handle_user_timer (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
-riscv_irq_handle_supervisor_timer (void);
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+riscv_irq_local_handle_supervisor_timer (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
-riscv_irq_handle_machine_timer (void);
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+riscv_irq_local_handle_machine_timer (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
-riscv_irq_handle_user_ext (void);
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+riscv_irq_local_handle_user_ext (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
-riscv_irq_handle_supervisor_ext (void);
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+riscv_irq_local_handle_supervisor_ext (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
-riscv_irq_handle_machine_ext (void);
+#if !defined(IRQ_GLOBAL_ARRAY_SIZE)
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
-riscv_irq_handle_cop (void);
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+riscv_irq_local_handle_machine_ext (void);
 
-void __attribute__ ((weak, alias ("riscv_trap_handle_unused")))
-riscv_irq_handle_host (void);
+#endif /* defined(IRQ_GLOBAL_ARRAY_SIZE) */
+
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+riscv_irq_local_handle_cop (void);
+
+void
+__attribute__ ((weak, alias ("riscv_trap_handle_unused")))
+riscv_irq_local_handle_host (void);
 
 /*
  * Array of pointers to interrupt handlers. See Table 3.6 from Volume II.
  */
-trap_handler_ptr_t __attribute__ ((section(".trap_array")))
-riscv_irq_handlers[] =
+riscv_trap_handler_ptr_t __attribute__ ((section(".local_interrupts_array")))
+riscv_irq_local_handlers[] =
   { //
-    riscv_irq_handle_user_software, /* 0 */
-    riscv_irq_handle_supervisor_software, /* 1 */
+    riscv_irq_local_handle_user_software, /* 0 */
+    riscv_irq_local_handle_supervisor_software, /* 1 */
     riscv_trap_handle_unused, /* 2 */
-    riscv_irq_handle_machine_software, /* 3 */
-    riscv_irq_handle_user_timer, /* 4 */
-    riscv_irq_handle_supervisor_timer, /* 5 */
+    riscv_irq_local_handle_machine_software, /* 3 */
+    riscv_irq_local_handle_user_timer, /* 4 */
+    riscv_irq_local_handle_supervisor_timer, /* 5 */
     riscv_trap_handle_unused, /* 6 */
-    riscv_irq_handle_machine_timer, /* 7 */
-    riscv_irq_handle_user_ext, /* 8 */
-    riscv_irq_handle_supervisor_ext, /* 9 */
+    riscv_irq_local_handle_machine_timer, /* 7 */
+    riscv_irq_local_handle_user_ext, /* 8 */
+    riscv_irq_local_handle_supervisor_ext, /* 9 */
     riscv_trap_handle_unused, /* 10 */
-    riscv_irq_handle_machine_ext, /* 11 */
+    riscv_irq_local_handle_machine_ext, /* 11 */
     /* Warning, not in the specs. */
     /* TODO: perhaps a more elaborate solution is needed for custom IRQs. */
-    riscv_irq_handle_cop, /* 12 */
-    riscv_irq_handle_host /* 13 */
+    riscv_irq_local_handle_cop, /* 12 */
+    riscv_irq_local_handle_host /* 13 */
     };
 
 static_assert(
-    sizeof(riscv_irq_handlers)/sizeof(riscv_irq_handlers[0]) == IRQ_ARRAY_SIZE,
-    "riscv_irq_handlers[] size must match IRQ_ARRAY_SIZE");
+    sizeof(riscv_irq_local_handlers)/sizeof(riscv_irq_local_handlers[0]) == IRQ_ARRAY_SIZE,
+    "riscv_irq_local_handlers[] size must match IRQ_ARRAY_SIZE");
 
 // ----------------------------------------------------------------------------
 
 extern "C" void
 __attribute__ ((section(".trap_handlers")))
-riscv_core_handle_trap (riscv::arch::register_t mcause,
-			riscv::arch::register_t epc __attribute__((unused)),
-			riscv::arch::register_t sp __attribute__((unused)))
+riscv_core_handle_trap (void)
 {
+  riscv::arch::register_t mcause = riscv::csr::mcause ();
   if ((mcause & MCAUSE_INT) != 0)
     {
       size_t index = (mcause & MCAUSE_CAUSE);
       if (index < IRQ_ARRAY_SIZE)
-	{
-	  // Call the interrupt handler via the pointer.
-	  riscv_irq_handlers[index] ();
-	  return;
-	}
+        {
+          // Call the local interrupt handler via the pointer.
+          riscv_irq_local_handlers[index] ();
+          return;
+        }
     }
   else
     {
       size_t index = mcause;
       if (index < EXC_ARRAY_SIZE)
-	{
-	  // Call the exception handler via the pointer.
-	  riscv_exc_handlers[index] ();
-	  return;
-	}
+        {
+          // Call the exception handler via the pointer.
+          riscv_exc_handlers[index] ();
+          return;
+        }
     }
 
 #if defined(DEBUG)
@@ -223,10 +249,43 @@ riscv_core_handle_trap (riscv::arch::register_t mcause,
     }
 }
 
+#if defined(IRQ_GLOBAL_ARRAY_SIZE)
+
+plic_instance_t g_plic;
+
+void
+__attribute__ ((section(".trap_handlers")))
+riscv_irq_local_handle_machine_ext (void)
+{
+  // TODO: redo PLIC API to use static inlines.
+  size_t int_num = PLIC_claim_interrupt (&g_plic);
+  if (int_num < IRQ_GLOBAL_ARRAY_SIZE)
+    {
+      // Call the global interrupt handler via the pointer.
+      riscv_irq_global_handlers[int_num] ();
+      PLIC_complete_interrupt (&g_plic, (plic_source) int_num);
+      return;
+    }
+
+#if defined(DEBUG)
+  riscv::arch::ebreak ();
+#endif /* defined(DEBUG) */
+
+  while (true)
+    {
+      riscv::arch::nop ();
+    }
+
+}
+#endif /* defined(IRQ_GLOBAL_ARRAY_SIZE) */
+
 void
 __attribute__ ((section(".trap_handlers"),weak))
 riscv_trap_handle_unused (void)
 {
+  riscv::arch::register_t mcause = riscv::csr::mcause ();
+  os::trace::printf ("%s() mcause=0x%0" PRIX64 "\n", __func__, mcause);
+
 #if defined(DEBUG)
   riscv::arch::ebreak ();
 #endif /* defined(DEBUG) */

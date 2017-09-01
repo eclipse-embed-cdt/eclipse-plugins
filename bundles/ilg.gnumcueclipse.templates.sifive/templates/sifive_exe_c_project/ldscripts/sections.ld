@@ -43,36 +43,39 @@ PHDRS
 
 SECTIONS
 {
-	/*
-	 * On RISC-V devices the startup address is a regular address, so this
-	 * must be the very first section.
-	 * Apart from the assembly code used to initialise the stack,
-	 * do not place anything else into this section.
-	 */ 
+    /*
+     * On RISC-V devices the startup address is a regular address, so this
+     * must be the very first section.
+     * Apart from the assembly code used to initialise the stack,
+     * do not place anything else into this section.
+     */ 
     .reset_entry : ALIGN(4)
     {
-    	KEEP(*(SORT_NONE(.reset_entry) SORT_NONE(.reset_entry.*)))
+        KEEP(*(SORT_NONE(.reset_entry) SORT_NONE(.reset_entry.*)))
     } >FLASH AT>FLASH :phdr_flash
 
-	/* 
-	 * Dynamic Run Time Metadata.
-	 * Normally the debugger reaches this section by resolving a symbol, 
-	 * but in case it should scan memory for the magic, better place this
-	 * section as early as possible. 
-	 */
+    /* 
+     * Dynamic Run Time Metadata.
+     * Normally the debugger reaches this section by resolving a symbol, 
+     * but in case it should scan memory for the magic, better place this
+     * section as early as possible. 
+     */
     .drtm : ALIGN(4)
     {
-		KEEP(*(.drtm .drtm.*))    
+        KEEP(*(.drtm .drtm.*))    
     } >FLASH AT>FLASH :phdr_flash
 
-	/*
-	 * For convenience, place the trap code early.
-	 */
+    /*
+     * For convenience, place the trap code early.
+     */
     .trap_entry : ALIGN(4)
     {
-		*(.trap_array .trap_array.*)
-		*(.trap_entry .trap_entry.*)
-		*(.trap_handlers .trap_handlers.*)
+        *(.exceptions_array .exceptions_array.*)
+        *(.local_interrupts_array .local_interrupts_array.*)
+        *(.device_local_interrupts_array .device_local_interrupts_array.*)
+        *(.global_interrupts_array .global_interrupts_array.*)
+        *(.trap_entry .trap_entry.*)
+        *(.traps_handlers .traps_handlers.*)
     } >FLASH AT>FLASH :phdr_flash
 
     /* 
@@ -116,63 +119,63 @@ SECTIONS
         PROVIDE_HIDDEN(__bss_regions_array_end__ = .); /* µOS++ specific. */
     } >FLASH AT>FLASH :phdr_flash
 
-	/*
+    /*
      * The preinit code, i.e. an array of pointers to initialisation 
      * functions to be performed before constructors.
      */
     .preinit_array : ALIGN(4)
     {
-    	/* 
-    	 * PROVIDE not used intentionally, 
-    	 * this symbol must not be used for other purposes. 
-    	 */
-		__preinit_array_begin__ = .;	/* µOS++ specific. */
+        /* 
+         * PROVIDE not used intentionally, 
+         * this symbol must not be used for other purposes. 
+         */
+        __preinit_array_begin__ = .;    /* µOS++ specific. */
         
         /*
          * Used to run the system inits before anything else.
          */
-		KEEP(*(.preinit_array_sysinit .preinit_array_sysinit.*))
+        KEEP(*(.preinit_array_sysinit .preinit_array_sysinit.*))
         
         /* 
          * Used for other platform inits.
          */
-		KEEP(*(.preinit_array_platform .preinit_array_platform.*))
+        KEEP(*(.preinit_array_platform .preinit_array_platform.*))
         
         /*
          * The application inits. If you need to enforce some order in 
          * execution, create new sections, as before.
          */
-		KEEP(*(.preinit_array .preinit_array.*))
+        KEEP(*(.preinit_array .preinit_array.*))
 
-		__preinit_array_end__ = .;	 /* µOS++ specific. */
+        __preinit_array_end__ = .;     /* µOS++ specific. */
     } >FLASH AT>FLASH :phdr_flash
 
-	/*
+    /*
      * The init code, i.e. an array of pointers to static constructors.
      */
     .init_array : ALIGN(4)
     {
-    	/* PROVIDE not used intentionally, this symbol must not be used. */
-    	__init_array_start = .;		/* Standard newlib definition. */
-    	__init_array_begin__ = .;	/* µOS++ specific. */
-    	KEEP(*(SORT_BY_INIT_PRIORITY(.init_array.*) SORT_BY_INIT_PRIORITY(.ctors.*)))
-    	KEEP(*(.init_array EXCLUDE_FILE(*crtbegin.o *crtbegin?.o *crtend.o *crtend?.o ) .ctors))
-    	__init_array_end = .;		/* Standard newlib definition. */
-    	__init_array_end__ = .;		/* µOS++ specific. */
+        /* PROVIDE not used intentionally, this symbol must not be used. */
+        __init_array_start = .;        /* Standard newlib definition. */
+        __init_array_begin__ = .;    /* µOS++ specific. */
+        KEEP(*(SORT_BY_INIT_PRIORITY(.init_array.*) SORT_BY_INIT_PRIORITY(.ctors.*)))
+        KEEP(*(.init_array EXCLUDE_FILE(*crtbegin.o *crtbegin?.o *crtend.o *crtend?.o ) .ctors))
+        __init_array_end = .;        /* Standard newlib definition. */
+        __init_array_end__ = .;        /* µOS++ specific. */
     } >FLASH AT>FLASH :phdr_flash
 
-	/*
+    /*
      * The fini code, i.e. an array of pointers to static destructors.
      */
     .fini_array : ALIGN(4)
     {
-    	/* PROVIDE not used intentionally, this symbol must not be used. */
-    	__fini_array_start = .;		/* Standard newlib definition. */
-    	__fini_array_begin__ = .;	/* µOS++ specific. */
-    	KEEP(*(SORT_BY_INIT_PRIORITY(.fini_array.*) SORT_BY_INIT_PRIORITY(.dtors.*)))
-    	KEEP(*(.fini_array EXCLUDE_FILE(*crtbegin.o *crtbegin?.o *crtend.o *crtend?.o ) .dtors))
-    	__fini_array_end = .;		/* Standard newlib definition. */
-    	__fini_array_end__ = .;		/* µOS++ specific. */
+        /* PROVIDE not used intentionally, this symbol must not be used. */
+        __fini_array_start = .;        /* Standard newlib definition. */
+        __fini_array_begin__ = .;    /* µOS++ specific. */
+        KEEP(*(SORT_BY_INIT_PRIORITY(.fini_array.*) SORT_BY_INIT_PRIORITY(.dtors.*)))
+        KEEP(*(.fini_array EXCLUDE_FILE(*crtbegin.o *crtbegin?.o *crtend.o *crtend?.o ) .dtors))
+        __fini_array_end = .;        /* Standard newlib definition. */
+        __fini_array_end__ = .;        /* µOS++ specific. */
     } >FLASH AT>FLASH :phdr_flash
     
     /*
@@ -180,23 +183,23 @@ SECTIONS
      */
     .text : ALIGN(4)
     {
-    	*(.text.unlikely .text.unlikely.*)
-    	*(.text.startup .text.startup.*)
-        *(.text .text.*)			
-   		*(.gnu.linkonce.t.*)
+        *(.text.unlikely .text.unlikely.*)
+        *(.text.startup .text.startup.*)
+        *(.text .text.*)            
+           *(.gnu.linkonce.t.*)
     } >FLASH AT>FLASH :phdr_flash
 
     . = ALIGN(4);
-  	PROVIDE(__etext = .);
-  	PROVIDE(_etext = .);
-  	PROVIDE(etext = .);
+      PROVIDE(__etext = .);
+      PROVIDE(_etext = .);
+      PROVIDE(etext = .);
  
     /*
      * C++ virtual tables.
      */
     .vtable : ALIGN(4)
     {
-        KEEP(*(vtable))			
+        KEEP(*(vtable))            
     } >FLASH AT>FLASH :phdr_flash
  
     /*
@@ -204,18 +207,18 @@ SECTIONS
      */
     .exceptions : ALIGN(4)
     {
-		KEEP(*(.eh_frame*))
-		*(.gcc_except_table)
+        KEEP(*(.eh_frame*))
+        *(.gcc_except_table)
     } >FLASH AT>FLASH :phdr_flash
  
- 	/*
- 	 * Read-only data (constants) 
- 	 */
+     /*
+      * Read-only data (constants) 
+      */
     .rodata : ALIGN(4)
     {
-        *(.rodata .rodata.*) 		
-        *(.constdata .constdata.*) 		
-    	*(.gnu.linkonce.r.*)
+        *(.rodata .rodata.*)         
+        *(.constdata .constdata.*)         
+        *(.gnu.linkonce.r.*)
     } >FLASH AT>FLASH :phdr_flash
 
     . = ALIGN(4);
@@ -230,52 +233,52 @@ SECTIONS
      */
     .data : ALIGN(4)
     {
-    	FILL(0xFF)
-    	
-        __data_start__ = . ;			/* Standard newlib definition. */
-        __data_begin__ = . ;			/* µOS++ specific */
-		*(.data_begin .data_begin.*)	/* µOS++ __data_begin_guard */
+        FILL(0xFF)
+        
+        __data_start__ = . ;            /* Standard newlib definition. */
+        __data_begin__ = . ;            /* µOS++ specific */
+        *(.data_begin .data_begin.*)    /* µOS++ __data_begin_guard */
 
-		*(.data .data.*)
-    	*(.gnu.linkonce.d.*)
-    	
-    	. = ALIGN(8);
-		/* 
-		 * RISC-V specific; the compiler optimises memory accesses
-		 * in the +/- 2K range around __global_pointer$ to GP relative.
-		 * For this to work, GP must be loaded during startup with the
-		 * address of __global_pointer$.
-		 * This optimisation favours a 4K range. Newlib places
-		 * several impure and malloc pointers in the .sdata section.
-		 */
-    	PROVIDE( __global_pointer$ = . + (4K / 2) );
-    	
-    	*(.sdata .sdata.*)
-    	*(.gnu.linkonce.s.*)
+        *(.data .data.*)
+        *(.gnu.linkonce.d.*)
+        
+        . = ALIGN(8);
+        /* 
+         * RISC-V specific; the compiler optimises memory accesses
+         * in the +/- 2K range around __global_pointer$ to GP relative.
+         * For this to work, GP must be loaded during startup with the
+         * address of __global_pointer$.
+         * This optimisation favours a 4K range. Newlib places
+         * several impure and malloc pointers in the .sdata section.
+         */
+        PROVIDE( __global_pointer$ = . + (4K / 2) );
+        
+        *(.sdata .sdata.*)
+        *(.gnu.linkonce.s.*)
 
-		/* RISC-V specific; not sure if needed. */
-    	. = ALIGN(8);
-    	*(.srodata.cst16)
-    	*(.srodata.cst8)
-    	*(.srodata.cst4)
-    	*(.srodata.cst2)
-    	*(.srodata .srodata.*)
-		
-		*(.data_end .data_end.*)		/* µOS++ __data_end_guard; must be last */		
-	    . = ALIGN(4);
-        __data_end__ = . ;				/* Standard newlib definition. */
+        /* RISC-V specific; not sure if needed. */
+        . = ALIGN(8);
+        *(.srodata.cst16)
+        *(.srodata.cst8)
+        *(.srodata.cst4)
+        *(.srodata.cst2)
+        *(.srodata .srodata.*)
+        
+        *(.data_end .data_end.*)        /* µOS++ __data_end_guard; must be last */        
+        . = ALIGN(4);
+        __data_end__ = . ;                /* Standard newlib definition. */
     } >RAM AT>FLASH :phdr_ram_init
 
-	/* 
+    /* 
      * This address is used by the µOS++ startup code to 
      * initialise the .data section.
      */
     __data_load_addr__ = LOADADDR(.data);
 
-  	. = ALIGN(4);
-  	PROVIDE( __edata = . );
-  	PROVIDE( _edata = . );
-  	PROVIDE( edata = . );
+      . = ALIGN(4);
+      PROVIDE( __edata = . );
+      PROVIDE( _edata = . );
+      PROVIDE( edata = . );
     
     /*
      * The uninitialised data sections. NOLOAD is used to avoid
@@ -285,51 +288,51 @@ SECTIONS
     /* The primary uninitialised data section. */
     .bss (NOLOAD) : ALIGN(4)
     {
-        __bss_start = .;     			/* Standard newlib definition. */
-        __bss_start__ = .;     			/* Standard newlib definition. */
-       	__bss_begin__ = .;     			/* µOS++ specific */
-         *(.bss_begin .bss_begin.*) 	/* µOS++ __bss_begin_guard */ 
+        __bss_start = .;                 /* Standard newlib definition. */
+        __bss_start__ = .;                 /* Standard newlib definition. */
+           __bss_begin__ = .;                 /* µOS++ specific */
+         *(.bss_begin .bss_begin.*)     /* µOS++ __bss_begin_guard */ 
 
-    	*(.sbss .sbss.*)
-    	*(.gnu.linkonce.sb.*)
-    	
-    	*(.bss .bss.*)
-    	*(.gnu.linkonce.b.*)
+        *(.sbss .sbss.*)
+        *(.gnu.linkonce.sb.*)
+        
+        *(.bss .bss.*)
+        *(.gnu.linkonce.b.*)
         *(COMMON)
         
-        *(.bss_end .bss_end.*) 			/* µOS++ __bss_end_guard; must be last */
-	    . = ALIGN(4);
-        __bss_end__ = .;        		/* Standard newlib definition. */
-        __bss_end = .;        			/* Standard newlib definition. */
+        *(.bss_end .bss_end.*)             /* µOS++ __bss_end_guard; must be last */
+        . = ALIGN(4);
+        __bss_end__ = .;                /* Standard newlib definition. */
+        __bss_end = .;                    /* Standard newlib definition. */
      } >RAM AT>RAM :phdr_ram
 
-	/* 
-	 * Similar to .bss, but not initialised to zero. µOS++ extension.
-	 */
+    /* 
+     * Similar to .bss, but not initialised to zero. µOS++ extension.
+     */
     .noinit (NOLOAD) : ALIGN(4)
     {
-        __noinit_begin__ = .;			/* µOS++ extension. */
+        __noinit_begin__ = .;            /* µOS++ extension. */
         
         *(.noinit .noinit.*) 
         
          . = ALIGN(4) ;
-        __noinit_end__ = .;   			/* µOS++ extension. */
+        __noinit_end__ = .;               /* µOS++ extension. */
     } >RAM AT>RAM :phdr_ram
     
     /* _sbrk() expects at least word alignment. */
-  	. = ALIGN(8);
+      . = ALIGN(8);
     PROVIDE( __end = . );
     PROVIDE( _end = . );
     PROVIDE( end = . ); 
     
-    PROVIDE( __heap_begin__ = . );		/* µOS++ extension. */
+    PROVIDE( __heap_begin__ = . );        /* µOS++ extension. */
     
-  	.stack __stack - __stack_size :
-  	{
-    	PROVIDE( _heap_end = . );		/* Standard newlib definition. */
-    	PROVIDE( __heap_end__ = . );	/* µOS++ extension. */
-    	. += __stack_size;
-  	} >RAM AT>RAM :phdr_ram
+      .stack __stack - __stack_size :
+      {
+        PROVIDE( _heap_end = . );        /* Standard newlib definition. */
+        PROVIDE( __heap_end__ = . );    /* µOS++ extension. */
+        . += __stack_size;
+      } >RAM AT>RAM :phdr_ram
     
 
     /* 

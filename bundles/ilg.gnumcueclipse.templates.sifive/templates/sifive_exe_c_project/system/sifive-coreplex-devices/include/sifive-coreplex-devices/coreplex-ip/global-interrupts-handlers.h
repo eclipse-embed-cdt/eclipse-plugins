@@ -25,11 +25,13 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef RISCV_TRAP_HANDLERS_H_
-#define RISCV_TRAP_HANDLERS_H_
+#ifndef SIFIVE_COREPLEX_DEVICES_COREPLEX_IP_GLOBAL_INTERRUPTS_HANDLERS_H_
+#define SIFIVE_COREPLEX_DEVICES_COREPLEX_IP_GLOBAL_INTERRUPTS_HANDLERS_H_
 
 /*
- * RISC-V core trap handler functions.
+ * SiFive Coreplex IP E31/E51 global interrupts handler functions.
+ *
+ * TODO: split into
  */
 
 // ----------------------------------------------------------------------------
@@ -40,95 +42,74 @@ extern "C"
 
   // --------------------------------------------------------------------------
 
-  /**
-   * Hardware trap entry point (assembly).
-   */
   void
-  riscv_trap_entry (void);
-
-  // --------------------------------------------------------------------------
-  // Exception handlers.
+  riscv_irq_global_handle_uart0 (void);
 
   void
-  riscv_exc_handle_misaligned_fetch (void);
+  riscv_irq_global_handle_external (void);
 
   void
-  riscv_exc_handle_fault_fetch (void);
+  riscv_irq_global_handle_spi0 (void);
 
   void
-  riscv_exc_handle_illegal_instruction (void);
+  riscv_irq_global_handle_gpio0 (void);
 
   void
-  riscv_exc_handle_breakpoint (void);
+  riscv_irq_global_handle_gpio1 (void);
 
   void
-  riscv_exc_handle_misaligned_load (void);
+  riscv_irq_global_handle_gpio2 (void);
 
   void
-  riscv_exc_handle_fault_load (void);
+  riscv_irq_global_handle_gpio3 (void);
 
   void
-  riscv_exc_handle_misaligned_store (void);
+  riscv_irq_global_handle_gpio4 (void);
 
   void
-  riscv_exc_handle_fault_store (void);
+  riscv_irq_global_handle_gpio5 (void);
 
   void
-  riscv_exc_handle_user_ecall (void);
+  riscv_irq_global_handle_gpio6 (void);
 
   void
-  riscv_exc_handle_supervisor_ecall (void);
+  riscv_irq_global_handle_gpio7 (void);
 
   void
-  riscv_exc_handle_machine_ecall (void);
+  riscv_irq_global_handle_gpio8 (void);
 
   void
-  riscv_exc_handle_page_fetch (void);
+  riscv_irq_global_handle_gpio9 (void);
 
   void
-  riscv_exc_handle_page_load (void);
+  riscv_irq_global_handle_gpio10 (void);
 
   void
-  riscv_exc_handle_page_store (void);
-
-  // --------------------------------------------------------------------------
-  // Interrupt handlers.
+  riscv_irq_global_handle_gpio11 (void);
 
   void
-  riscv_trap_entry (void);
+  riscv_irq_global_handle_gpio12 (void);
 
   void
-  riscv_irq_handle_user_software (void);
+  riscv_irq_global_handle_gpio13 (void);
 
   void
-  riscv_irq_handle_supervisor_software (void);
+  riscv_irq_global_handle_gpio14 (void);
 
   void
-  riscv_irq_handle_machine_software (void);
+  riscv_irq_global_handle_gpio15 (void);
 
   void
-  riscv_irq_handle_user_timer (void);
+  riscv_irq_global_handle_pwm0cmp0 (void);
 
   void
-  riscv_irq_handle_supervisor_timer (void);
+  riscv_irq_global_handle_pwm0cmp1 (void);
 
   void
-  riscv_irq_handle_machine_timer (void);
+  riscv_irq_global_handle_pwm0cmp2 (void);
 
   void
-  riscv_irq_handle_user_ext (void);
-
-  void
-  riscv_irq_handle_supervisor_ext (void);
-
-  void
-  riscv_irq_handle_machine_ext (void);
-
-  void
-  riscv_irq_handle_cop (void);
-
-  void
-  riscv_irq_handle_host (void);
+  riscv_irq_global_handle_pwm0cmp3 (void);
 
 // ----------------------------------------------------------------------------
 
@@ -138,4 +119,4 @@ extern "C"
 
 // ----------------------------------------------------------------------------
 
-#endif /* RISCV_TRAP_HANDLERS_H_ */
+#endif /* SIFIVE_COREPLEX_DEVICES_COREPLEX_IP_GLOBAL_INTERRUPTS_HANDLERS_H_ */

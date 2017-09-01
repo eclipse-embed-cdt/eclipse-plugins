@@ -25,8 +25,10 @@
  * OTHER DEALINGS IN THE SOFTWARE.
  */
 
-#ifndef RISCV_ARCH_TYPES_H_
-#define RISCV_ARCH_TYPES_H_
+#ifndef RISCV_ARCH_DECLARATIONS_H_
+#define RISCV_ARCH_DECLARATIONS_H_
+
+#include <riscv-arch/arch-types.h>
 
 #include <stdint.h>
 
@@ -35,14 +37,7 @@ extern "C"
 {
 #endif /* defined(__cplusplus) */
 
-#if __riscv_xlen == 32
-  typedef uint32_t riscv_arch_register_t;
-#elif __riscv_xlen == 64
-  typedef uint64_t riscv_arch_register_t;
-#endif /* __riscv_xlen */
-
-  typedef void
-  (*riscv_trap_handler_ptr_t) (void);
+  extern riscv_trap_handler_ptr_t riscv_irq_global_handlers[];
 
 // ----------------------------------------------------------------------------
 
@@ -60,9 +55,9 @@ namespace riscv
   {
     // ------------------------------------------------------------------------
 
-    using register_t = riscv_arch_register_t;
+    // TODO: add C++ declarations here.
 
-  // --------------------------------------------------------------------------
+    // ------------------------------------------------------------------------
   } /* namespace arch */
 // ----------------------------------------------------------------------------
 } /* namespace riscv */

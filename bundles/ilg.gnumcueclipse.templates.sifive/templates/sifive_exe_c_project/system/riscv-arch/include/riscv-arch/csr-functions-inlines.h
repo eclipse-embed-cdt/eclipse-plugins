@@ -221,6 +221,24 @@ extern "C"
 
   static inline riscv_arch_register_t
   __attribute__((always_inline))
+  riscv_csr_read_mcause (void)
+  {
+    riscv_arch_register_t tmp;
+
+    asm volatile (
+        "csrr %[r],mcause"
+
+        : [r] "=r"(tmp) /* Outputs */
+        : /* Inputs */
+        : /* Clobbers */
+    );
+    return tmp;
+  }
+
+  // --------------------------------------------------------------------------
+
+  static inline riscv_arch_register_t
+  __attribute__((always_inline))
   riscv_csr_read_mie (void)
   {
     riscv_arch_register_t tmp;
@@ -455,6 +473,15 @@ namespace riscv
     }
 
     // ------------------------------------------------------------------------
+
+    inline arch::register_t
+    __attribute__((always_inline))
+    mcause (void)
+    {
+      return riscv_csr_read_mcause ();
+    }
+
+// ------------------------------------------------------------------------
 
     inline arch::register_t
     __attribute__((always_inline))

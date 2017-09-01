@@ -32,7 +32,7 @@
 // ----------------------------------------------------------------------------
 
 void
-riscv_irq_handle_machine_timer (void)
+riscv_irq_local_handle_machine_timer (void)
 {
   // Disable M timer interrupt.
 {% if language == 'cpp' %}
@@ -93,6 +93,16 @@ riscv_irq_handle_machine_timer (void)
 {% elsif language == 'c' %}
   riscv_csr_set_mie (MIP_MTIP);
 {% endif %}
+}
+
+// The button is connected to GPIO4.
+void
+riscv_irq_global_handle_gpio4(void)
+{
+  os::trace::putchar('B');
+
+  // Clear irq - interrupt pending register is write 1 to clear
+  GPIO_REG(GPIO_FALL_IP) |= (1<<BUTTON_0_OFFSET);
 }
 
 // ----------------------------------------------------------------------------

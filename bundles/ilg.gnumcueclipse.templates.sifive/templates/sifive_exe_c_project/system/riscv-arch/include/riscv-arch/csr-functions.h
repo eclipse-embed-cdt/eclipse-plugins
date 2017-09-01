@@ -96,6 +96,15 @@ extern "C"
   riscv_csr_write_mtvec (riscv_arch_register_t value);
 
   // --------------------------------------------------------------------------
+  // `mcause`
+
+  /**
+   * Read `mcause` CSR.
+   */
+  static riscv_arch_register_t
+  riscv_csr_read_mcause (void);
+
+  // --------------------------------------------------------------------------
   // `mie`
 
   /**
@@ -177,6 +186,12 @@ namespace riscv
 
     void
     mtvec (arch::register_t value);
+
+    // ------------------------------------------------------------------------
+    // `mcause`
+
+    arch::register_t
+    mcause (void);
 
     // ------------------------------------------------------------------------
     // `mie`

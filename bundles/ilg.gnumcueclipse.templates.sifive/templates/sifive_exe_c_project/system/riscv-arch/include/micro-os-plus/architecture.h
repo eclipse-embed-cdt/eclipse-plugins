@@ -30,6 +30,9 @@
 
 #include <riscv-arch/arch-defines.h>
 
+#include <riscv-arch/arch-types.h>
+#include <riscv-arch/arch-declarations.h>
+
 #include <riscv-arch/arch-instructions.h>
 #include <riscv-arch/arch-instructions-inlines.h>
 
@@ -39,6 +42,6 @@
 #include <riscv-arch/core-functions.h>
 #include <riscv-arch/core-functions-inlines.h>
 
-#include <riscv-arch/trap-handlers.h>
+#include <riscv-arch/traps-handlers.h>
 
 #endif /* RISCV_ARCH_ARCHITECTURE_H_ */

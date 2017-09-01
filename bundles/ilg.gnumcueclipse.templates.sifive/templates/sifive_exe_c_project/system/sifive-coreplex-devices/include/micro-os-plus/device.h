@@ -34,6 +34,16 @@
 #include <sifive-coreplex-devices/functions.h>
 #include <sifive-coreplex-devices/functions-inlines.h>
 
+#if defined (SIFIVE_FREEDOM_E310)
+
+#include <sifive-coreplex-devices/freedom-e310/global-interrupts-handlers.h>
+
+#elif defined (SIFIVE_COREPLEX_IP_31) || defined (SIFIVE_COREPLEX_IP_51)
+
+#include <sifive-coreplex-devices/coreplex-ip/global-interrupts-handlers.h>
+
+#endif
+
 // The names of the RISCV_MMIO_ symbols are architecture specific,
 // but their values depend on a specific implementation.
 // These definitions will be used in <riscv-arch/device-functions-inlines.h>,

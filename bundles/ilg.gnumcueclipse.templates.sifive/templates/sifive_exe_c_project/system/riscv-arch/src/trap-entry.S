@@ -70,13 +70,8 @@ riscv_trap_entry:
   STORE x30, 30*REGBYTES(sp)
   STORE x31, 31*REGBYTES(sp)
 
-  # riscv_core_handle_trap(mcause, mepc, sp)
-  csrr a0, mcause
-  csrr a1, mepc
-  mv a2, sp
+  # riscv_core_handle_trap(void)
   call riscv_core_handle_trap
-  # If needed, mepc can be written inside the handler.
-  # csrw mepc, a0
 
   # Remain in M-mode after mret
   li t0, MSTATUS_MPP

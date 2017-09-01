@@ -146,6 +146,11 @@
 #define PLIC_NUM_INTERRUPTS 52
 #define PLIC_NUM_PRIORITIES 7
 
+// End of SiFive definitions.
+// ----------------------------------------------------------------------------
+
+#define IRQ_GLOBAL_ARRAY_SIZE PLIC_NUM_INTERRUPTS
+
 // ----------------------------------------------------------------------------
 
 #endif /* SIFIVE_FREEDOM_E310_DEFINES_H_ */
