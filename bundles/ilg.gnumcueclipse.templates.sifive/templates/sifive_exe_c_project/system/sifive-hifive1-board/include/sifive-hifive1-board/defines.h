@@ -47,6 +47,7 @@
 // These are the GPIO bit offsets for the RGB LED on HiFive1 Board.
 // These are also mapped to RGB LEDs on the Freedom E300 Arty
 // FPGA Dev Kit.
+// The LEDs are active low.
 #define RED_LED_OFFSET   22
 #define GREEN_LED_OFFSET 19
 #define BLUE_LED_OFFSET  21
@@ -94,6 +95,14 @@
 
 #define HAS_HFXOSC 1
 #define HAS_LFROSC_BYPASS 1
+
+// #define HAS_BOARD_BUTTONS
+// The HiFive1 board does not have a dedicated user button,
+// but the WAKE button can be connected with an external wire
+// to GPIO18. The button is active low.
+#define BUTTON_0_OFFSET  18
+
+#define INT_DEVICE_BUTTON_0 (INT_GPIO_BASE + BUTTON_0_OFFSET)
 
 #define RTC_FREQ 32768
 
