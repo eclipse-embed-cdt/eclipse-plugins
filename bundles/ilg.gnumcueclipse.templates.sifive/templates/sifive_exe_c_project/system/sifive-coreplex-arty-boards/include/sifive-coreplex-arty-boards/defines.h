@@ -51,6 +51,7 @@
 // RGB LEDs on the Freedom Exx Coreplex IP Evaluation Arty FPGA Dev Kit.
 // Additional RGB LEDs are driven by the 3 PWM outputs.
 
+// The LEDs are active high.
 #define RED_LED_OFFSET   0
 #define GREEN_LED_OFFSET 1
 #define BLUE_LED_OFFSET  2
@@ -64,6 +65,7 @@
 
 #define HAS_BOARD_BUTTONS
 
+// The buttons are active high.
 #define BUTTON_0_OFFSET  4
 #define BUTTON_1_OFFSET  5
 #define BUTTON_2_OFFSET  6

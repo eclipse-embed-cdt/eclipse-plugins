@@ -29,6 +29,10 @@
 #include <micro-os-plus/diag/trace.h>
 #include <sysclock.h>
 
+{% if language == 'c' %}
+#include <stdbool.h>
+
+{% endif %}
 // ----------------------------------------------------------------------------
 
 void
@@ -95,14 +99,68 @@ riscv_irq_local_handle_machine_timer (void)
 {% endif %}
 }
 
-// The button is connected to GPIO4.
-void
-riscv_irq_global_handle_gpio4(void)
-{
-  os::trace::putchar('B');
+{% if content == 'blinky' %}
+extern bool button_pushed;
+extern bool button_released;
 
-  // Clear irq - interrupt pending register is write 1 to clear
-  GPIO_REG(GPIO_FALL_IP) |= (1<<BUTTON_0_OFFSET);
+{% if boardName == 'hifive1' %}
+// The button is connected to GPIO18, active low.
+void
+riscv_irq_global_handle_gpio18 (void)
+{% elsif boardName == 'e31arty' or  boardName == 'e51arty' %}
+// The button is connected to GPIO4, active high.
+void
+riscv_irq_global_handle_gpio4 (void)
+{% endif %}
+{
+  if (GPIO_REG(GPIO_RISE_IP) & (1 << BUTTON_0_OFFSET))
+    {
+
+{% if boardName == 'hifive1' %}
+{% if language == 'cpp' %}
+      os::trace::putchar ('u');
+{% elsif language == 'c' %}
+      trace_putchar ('u');
+{% endif %}
+      button_released = true;
+{% elsif boardName == 'e31arty' or  boardName == 'e51arty' %}
+{% if language == 'cpp' %}
+      os::trace::putchar ('d');
+{% elsif language == 'c' %}
+      trace_putchar ('d');
+{% endif %}
+      button_pushed = true;
+{% endif %}
+
+      // Clear rising interrupt.
+      GPIO_REG(GPIO_RISE_IP) |= (1 << BUTTON_0_OFFSET);
+
+    }
+
+  if (GPIO_REG(GPIO_FALL_IP) & (1 << BUTTON_0_OFFSET))
+    {
+
+{% if boardName == 'hifive1' %}
+{% if language == 'cpp' %}
+      os::trace::putchar ('d');
+{% elsif language == 'c' %}
+      trace_putchar ('d');
+{% endif %}
+      button_pushed = true;
+{% elsif boardName == 'e31arty' or  boardName == 'e51arty' %}
+{% if language == 'cpp' %}
+      os::trace::putchar ('u');
+{% elsif language == 'c' %}
+      trace_putchar ('u');
+{% endif %}
+      button_released = true;
+{% endif %}
+
+      // Clear falling interrupt.
+      GPIO_REG(GPIO_FALL_IP) |= (1 << BUTTON_0_OFFSET);
+
+    }
 }
 
+{% endif %}
 // ----------------------------------------------------------------------------
