@@ -1000,6 +1000,28 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="replaceable"
 						value="true" />
 				</element>
+                <element>
+                    <simple
+                        name="source"
+                        value="xpacks/micro-os-plus-diag-trace/package.json" />
+                    <simple
+                        name="target"
+                        value="xpacks/micro-os-plus-diag-trace/package.json" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
+                <element>
+                    <simple
+                        name="source"
+                        value="xpacks/micro-os-plus-diag-trace/LICENSE" />
+                    <simple
+                        name="target"
+                        value="xpacks/micro-os-plus-diag-trace/LICENSE" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
 			</complex-array>
 		</process>
 		
@@ -1247,6 +1269,28 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="replaceable"
 						value="true" />
 				</element>
+                <element>
+                    <simple
+                        name="source"
+                        value="xpacks/sifive-coreplex-devices/package.json" />
+                    <simple
+                        name="target"
+                        value="xpacks/sifive-coreplex-devices/package.json" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
+                <element>
+                    <simple
+                        name="source"
+                        value="xpacks/sifive-coreplex-devices/LICENSE" />
+                    <simple
+                        name="target"
+                        value="xpacks/sifive-coreplex-devices/LICENSE" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
 			</complex-array>
 		</process>
 		
@@ -1368,6 +1412,28 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="replaceable"
 						value="true" />
 				</element>
+                <element>
+                    <simple
+                        name="source"
+                        value="xpacks/$(boardFolder)/package.json" />
+                    <simple
+                        name="target"
+                        value="xpacks/$(boardFolder)/package.json" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
+                <element>
+                    <simple
+                        name="source"
+                        value="xpacks/$(boardFolder)/LICENSE" />
+                    <simple
+                        name="target"
+                        value="xpacks/$(boardFolder)/LICENSE" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
 			</complex-array>
 		</process>
 		
@@ -1489,6 +1555,28 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="replaceable"
 						value="true" />
 				</element>
+                <element>
+                    <simple
+                        name="source"
+                        value="xpacks/micro-os-plus-c-libs/package.json" />
+                    <simple
+                        name="target"
+                        value="xpacks/micro-os-plus-c-libs/package.json" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
+                <element>
+                    <simple
+                        name="source"
+                        value="xpacks/micro-os-plus-c-libs/LICENSE" />
+                    <simple
+                        name="target"
+                        value="xpacks/micro-os-plus-c-libs/LICENSE" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
 			</complex-array>
 		</process>
 		
@@ -1550,6 +1638,28 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="replaceable"
 						value="true" />
 				</element>
+                <element>
+                    <simple
+                        name="source"
+                        value="xpacks/micro-os-plus-cpp-libs/package.json" />
+                    <simple
+                        name="target"
+                        value="xpacks/micro-os-plus-cpp-libs/package.json" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
+                <element>
+                    <simple
+                        name="source"
+                        value="xpacks/micro-os-plus-cpp-libs/LICENSE" />
+                    <simple
+                        name="target"
+                        value="xpacks/micro-os-plus-cpp-libs/LICENSE" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
 			</complex-array>
 		</process>
 		
@@ -1671,6 +1781,28 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="replaceable"
 						value="true" />
 				</element>
+                <element>
+                    <simple
+                        name="source"
+                        value="xpacks/micro-os-plus-riscv-arch/package.json" />
+                    <simple
+                        name="target"
+                        value="xpacks/micro-os-plus-riscv-arch/package.json" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
+                <element>
+                    <simple
+                        name="source"
+                        value="xpacks/micro-os-plus-riscv-arch/LICENSE" />
+                    <simple
+                        name="target"
+                        value="xpacks/micro-os-plus-riscv-arch/LICENSE" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
 			</complex-array>
 		</process>
 		
@@ -1778,6 +1910,28 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="replaceable"
 						value="true" />
 				</element>
+                <element>
+                    <simple
+                        name="source"
+                        value="xpacks/micro-os-plus-startup/package.json" />
+                    <simple
+                        name="target"
+                        value="xpacks/micro-os-plus-startup/package.json" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
+                <element>
+                    <simple
+                        name="source"
+                        value="xpacks/micro-os-plus-startup/LICENSE" />
+                    <simple
+                        name="target"
+                        value="xpacks/micro-os-plus-startup/LICENSE" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
 			</complex-array>
 		</process>
 		
