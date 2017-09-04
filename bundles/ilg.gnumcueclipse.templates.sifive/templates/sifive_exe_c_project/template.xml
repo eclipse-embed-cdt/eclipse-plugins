@@ -898,7 +898,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 
 	<!-- ================================================================== -->
 	
-	<!-- system/diag -->
+	<!-- xpacks/diag -->
 	<if condition="1==1">
 		
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -912,10 +912,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/diag/include/micro-os-plus/diag" />
+						value="xpacks/micro-os-plus-diag-trace/include/micro-os-plus/diag" />
 					<simple
 						name="target"
-						value="system/diag/include/micro-os-plus/diag" />
+						value="xpacks/micro-os-plus-diag-trace/include/micro-os-plus/diag" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -938,7 +938,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="id"
 						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.include.paths" />
 					<simple-array name="values">
-						<element value="&quot;../system/diag/include&quot;" />
+						<element value="&quot;../xpacks/micro-os-plus-diag-trace/include&quot;" />
 					</simple-array>
 					<simple
 						name="path"
@@ -953,7 +953,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="$(projectName)" />
 			<simple
 				name="path"
-				value="system/diag/src" />
+				value="xpacks/micro-os-plus-diag-trace/src" />
 		</process>
 
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -967,10 +967,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/diag/src" />
+						value="xpacks/micro-os-plus-diag-trace/src" />
 					<simple
 						name="target"
-						value="system/diag/src" />
+						value="xpacks/micro-os-plus-diag-trace/src" />
 					<simple
 						name="pattern"
 						value=".*[.](c|cpp|h)" />
@@ -992,10 +992,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/diag/README.md" />
+						value="xpacks/micro-os-plus-diag-trace/README.md" />
 					<simple
 						name="target"
-						value="system/diag/README.md" />
+						value="xpacks/micro-os-plus-diag-trace/README.md" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1005,7 +1005,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		
 	</if>
 
-	<!-- system/sifive-coreplex-devices -->
+	<!-- xpacks/sifive-coreplex-devices -->
 	<if condition="1==1">
 		
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -1019,10 +1019,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/sifive-coreplex-devices/include/micro-os-plus" />
+						value="xpacks/sifive-coreplex-devices/include/micro-os-plus" />
 					<simple
 						name="target"
-						value="system/sifive-coreplex-devices/include/micro-os-plus" />
+						value="xpacks/sifive-coreplex-devices/include/micro-os-plus" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1033,10 +1033,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/sifive-coreplex-devices/include/sifive/fe300prci" />
+						value="xpacks/sifive-coreplex-devices/include/sifive/fe300prci" />
 					<simple
 						name="target"
-						value="system/sifive-coreplex-devices/include/sifive/fe300prci" />
+						value="xpacks/sifive-coreplex-devices/include/sifive/fe300prci" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1047,10 +1047,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/sifive-coreplex-devices/include/sifive/peripherals" />
+						value="xpacks/sifive-coreplex-devices/include/sifive/peripherals" />
 					<simple
 						name="target"
-						value="system/sifive-coreplex-devices/include/sifive/peripherals" />
+						value="xpacks/sifive-coreplex-devices/include/sifive/peripherals" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1061,10 +1061,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/sifive-coreplex-devices/include/sifive/plic" />
+						value="xpacks/sifive-coreplex-devices/include/sifive/plic" />
 					<simple
 						name="target"
-						value="system/sifive-coreplex-devices/include/sifive/plic" />
+						value="xpacks/sifive-coreplex-devices/include/sifive/plic" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1075,10 +1075,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/sifive-coreplex-devices/include/sifive" />
+						value="xpacks/sifive-coreplex-devices/include/sifive" />
 					<simple
 						name="target"
-						value="system/sifive-coreplex-devices/include/sifive" />
+						value="xpacks/sifive-coreplex-devices/include/sifive" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1089,10 +1089,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
                 <element>
                     <simple
                         name="source"
-                        value="system/sifive-coreplex-devices/include/sifive-coreplex-devices" />
+                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices" />
                     <simple
                         name="target"
-                        value="system/sifive-coreplex-devices/include/sifive-coreplex-devices" />
+                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices" />
                     <simple
                         name="pattern"
                         value=".*[.](h)" />
@@ -1103,10 +1103,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
                 <element>
                     <simple
                         name="source"
-                        value="system/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip" />
+                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip" />
                     <simple
                         name="target"
-                        value="system/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip" />
+                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip" />
                     <simple
                         name="pattern"
                         value=".*[.](h)" />
@@ -1117,10 +1117,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
                 <element>
                     <simple
                         name="source"
-                        value="system/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip/e31" />
+                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip/e31" />
                     <simple
                         name="target"
-                        value="system/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip/e31" />
+                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip/e31" />
                     <simple
                         name="pattern"
                         value=".*[.](h)" />
@@ -1131,10 +1131,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
                 <element>
                     <simple
                         name="source"
-                        value="system/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip/e51" />
+                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip/e51" />
                     <simple
                         name="target"
-                        value="system/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip/e51" />
+                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip/e51" />
                     <simple
                         name="pattern"
                         value=".*[.](h)" />
@@ -1145,10 +1145,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
                 <element>
                     <simple
                         name="source"
-                        value="system/sifive-coreplex-devices/include/sifive-coreplex-devices/freedom-e310" />
+                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices/freedom-e310" />
                     <simple
                         name="target"
-                        value="system/sifive-coreplex-devices/include/sifive-coreplex-devices/freedom-e310" />
+                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices/freedom-e310" />
                     <simple
                         name="pattern"
                         value=".*[.](h)" />
@@ -1171,7 +1171,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="id"
 						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.include.paths" />
 					<simple-array name="values">
-						<element value="&quot;../system/sifive-coreplex-devices/include&quot;" />
+						<element value="&quot;../xpacks/sifive-coreplex-devices/include&quot;" />
 					</simple-array>
 					<simple
 						name="path"
@@ -1186,7 +1186,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="$(projectName)" />
 			<simple
 				name="path"
-				value="system/sifive-coreplex-devices/src" />
+				value="xpacks/sifive-coreplex-devices/src" />
 		</process>
 
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -1200,10 +1200,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/sifive-coreplex-devices/src" />
+						value="xpacks/sifive-coreplex-devices/src" />
 					<simple
 						name="target"
-						value="system/sifive-coreplex-devices/src" />
+						value="xpacks/sifive-coreplex-devices/src" />
 					<simple
 						name="pattern"
 						value=".*[.](c|cpp|h)" />
@@ -1214,10 +1214,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/sifive-coreplex-devices/src/sifive" />
+						value="xpacks/sifive-coreplex-devices/src/sifive" />
 					<simple
 						name="target"
-						value="system/sifive-coreplex-devices/src/sifive" />
+						value="xpacks/sifive-coreplex-devices/src/sifive" />
 					<simple
 						name="pattern"
 						value=".*[.](c|cpp|h)" />
@@ -1239,10 +1239,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/sifive-coreplex-devices/README.md" />
+						value="xpacks/sifive-coreplex-devices/README.md" />
 					<simple
 						name="target"
-						value="system/sifive-coreplex-devices/README.md" />
+						value="xpacks/sifive-coreplex-devices/README.md" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1252,7 +1252,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		
 	</if>
 
-	<!-- system/sifive-*-board* -->
+	<!-- xpacks/sifive-*-board* -->
 	<if condition="1==1">
 		
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -1266,10 +1266,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/$(boardFolder)/include/$(boardFolder)" />
+						value="xpacks/$(boardFolder)/include/$(boardFolder)" />
 					<simple
 						name="target"
-						value="system/$(boardFolder)/include/$(boardFolder)" />
+						value="xpacks/$(boardFolder)/include/$(boardFolder)" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1280,10 +1280,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/$(boardFolder)/include/micro-os-plus" />
+						value="xpacks/$(boardFolder)/include/micro-os-plus" />
 					<simple
 						name="target"
-						value="system/$(boardFolder)/include/micro-os-plus" />
+						value="xpacks/$(boardFolder)/include/micro-os-plus" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1306,7 +1306,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="id"
 						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.include.paths" />
 					<simple-array name="values">
-						<element value="&quot;../system/$(boardFolder)/include&quot;" />
+						<element value="&quot;../xpacks/$(boardFolder)/include&quot;" />
 					</simple-array>
 					<simple
 						name="path"
@@ -1321,7 +1321,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="$(projectName)" />
 			<simple
 				name="path"
-				value="system/$(boardFolder)/src" />
+				value="xpacks/$(boardFolder)/src" />
 		</process>
 
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -1335,10 +1335,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/$(boardFolder)/src" />
+						value="xpacks/$(boardFolder)/src" />
 					<simple
 						name="target"
-						value="system/$(boardFolder)/src" />
+						value="xpacks/$(boardFolder)/src" />
 					<simple
 						name="pattern"
 						value=".*[.](c|cpp|h)" />
@@ -1360,10 +1360,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/$(boardFolder)/README.md" />
+						value="xpacks/$(boardFolder)/README.md" />
 					<simple
 						name="target"
-						value="system/$(boardFolder)/README.md" />
+						value="xpacks/$(boardFolder)/README.md" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1373,7 +1373,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		
 	</if>
 
-	<!-- system/c-libs -->
+	<!-- xpacks/c-libs -->
 	<if condition="1==1">
 		
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -1387,10 +1387,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/c-libs/include/newlib" />
+						value="xpacks/micro-os-plus-c-libs/include/newlib" />
 					<simple
 						name="target"
-						value="system/c-libs/include/newlib" />
+						value="xpacks/micro-os-plus-c-libs/include/newlib" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1413,7 +1413,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="id"
 						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.include.paths" />
 					<simple-array name="values">
-						<element value="&quot;../system/c-libs/include&quot;" />
+						<element value="&quot;../xpacks/micro-os-plus-c-libs/include&quot;" />
 					</simple-array>
 					<simple
 						name="path"
@@ -1428,7 +1428,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="$(projectName)" />
 			<simple
 				name="path"
-				value="system/c-libs/src" />
+				value="xpacks/micro-os-plus-c-libs/src" />
 		</process>
 
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -1442,10 +1442,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/c-libs/src/stdlib" />
+						value="xpacks/micro-os-plus-c-libs/src/stdlib" />
 					<simple
 						name="target"
-						value="system/c-libs/src/stdlib" />
+						value="xpacks/micro-os-plus-c-libs/src/stdlib" />
 					<simple
 						name="pattern"
 						value=".*[.](c|cpp|h)" />
@@ -1456,10 +1456,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/c-libs/src" />
+						value="xpacks/micro-os-plus-c-libs/src" />
 					<simple
 						name="target"
-						value="system/c-libs/src" />
+						value="xpacks/micro-os-plus-c-libs/src" />
 					<simple
 						name="pattern"
 						value=".*[.](c|cpp|h)" />
@@ -1481,10 +1481,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/c-libs/README.md" />
+						value="xpacks/micro-os-plus-c-libs/README.md" />
 					<simple
 						name="target"
-						value="system/c-libs/README.md" />
+						value="xpacks/micro-os-plus-c-libs/README.md" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1494,7 +1494,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		
 	</if>
 
-	<!-- system/cpp-libs -->
+	<!-- xpacks/cpp-libs -->
 	<if condition="1==1">
 		
 		<process type="org.eclipse.cdt.core.CreateSourceFolder">
@@ -1503,7 +1503,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="$(projectName)" />
 			<simple
 				name="path"
-				value="system/cpp-libs/src" />
+				value="xpacks/micro-os-plus-cpp-libs/src" />
 		</process>
 
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -1517,10 +1517,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/cpp-libs/src" />
+						value="xpacks/micro-os-plus-cpp-libs/src" />
 					<simple
 						name="target"
-						value="system/cpp-libs/src" />
+						value="xpacks/micro-os-plus-cpp-libs/src" />
 					<simple
 						name="pattern"
 						value=".*[.](c|cpp|h)" />
@@ -1542,10 +1542,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/cpp-libs/README.md" />
+						value="xpacks/micro-os-plus-cpp-libs/README.md" />
 					<simple
 						name="target"
-						value="system/cpp-libs/README.md" />
+						value="xpacks/micro-os-plus-cpp-libs/README.md" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1555,7 +1555,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		
 	</if>
 
-	<!-- system/riscv -->
+	<!-- xpacks/riscv -->
 	<if condition="1==1">
 		
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -1569,10 +1569,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/riscv-arch/include/micro-os-plus" />
+						value="xpacks/micro-os-plus-riscv-arch/include/micro-os-plus" />
 					<simple
 						name="target"
-						value="system/riscv-arch/include/micro-os-plus" />
+						value="xpacks/micro-os-plus-riscv-arch/include/micro-os-plus" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1583,10 +1583,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/riscv-arch/include/riscv-arch" />
+						value="xpacks/micro-os-plus-riscv-arch/include/riscv-arch" />
 					<simple
 						name="target"
-						value="system/riscv-arch/include/riscv-arch" />
+						value="xpacks/micro-os-plus-riscv-arch/include/riscv-arch" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1609,7 +1609,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="id"
 						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.include.paths" />
 					<simple-array name="values">
-						<element value="&quot;../system/riscv-arch/include&quot;" />
+						<element value="&quot;../xpacks/micro-os-plus-riscv-arch/include&quot;" />
 					</simple-array>
 					<simple
 						name="path"
@@ -1624,7 +1624,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="$(projectName)" />
 			<simple
 				name="path"
-				value="system/riscv-arch/src" />
+				value="xpacks/micro-os-plus-riscv-arch/src" />
 		</process>
 
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -1638,10 +1638,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/riscv-arch/src" />
+						value="xpacks/micro-os-plus-riscv-arch/src" />
 					<simple
 						name="target"
-						value="system/riscv-arch/src" />
+						value="xpacks/micro-os-plus-riscv-arch/src" />
 					<simple
 						name="pattern"
 						value=".*[.](c|cpp|h|S)" />
@@ -1663,10 +1663,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/riscv-arch/README.md" />
+						value="xpacks/micro-os-plus-riscv-arch/README.md" />
 					<simple
 						name="target"
-						value="system/riscv-arch/README.md" />
+						value="xpacks/micro-os-plus-riscv-arch/README.md" />
 					<simple
 						name="replaceable"
 						value="true" />
@@ -1676,7 +1676,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		
 	</if>
 	
-	<!-- system/startup -->
+	<!-- xpacks/startup -->
 	<if condition="1==1">
 		
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -1690,10 +1690,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/startup/include/micro-os-plus/startup" />
+						value="xpacks/micro-os-plus-startup/include/micro-os-plus/startup" />
 					<simple
 						name="target"
-						value="system/startup/include/micro-os-plus/startup" />
+						value="xpacks/micro-os-plus-startup/include/micro-os-plus/startup" />
 					<simple
 						name="pattern"
 						value=".*[.](h)" />
@@ -1716,7 +1716,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="id"
 						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.include.paths" />
 					<simple-array name="values">
-						<element value="&quot;../system/startup/include&quot;" />
+						<element value="&quot;../xpacks/micro-os-plus-startup/include&quot;" />
 					</simple-array>
 					<simple
 						name="path"
@@ -1731,7 +1731,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="$(projectName)" />
 			<simple
 				name="path"
-				value="system/startup/src" />
+				value="xpacks/micro-os-plus-startup/src" />
 		</process>
 
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
@@ -1745,10 +1745,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/startup/src" />
+						value="xpacks/micro-os-plus-startup/src" />
 					<simple
 						name="target"
-						value="system/startup/src" />
+						value="xpacks/micro-os-plus-startup/src" />
 					<simple
 						name="pattern"
 						value=".*[.](c|cpp|h)" />
@@ -1770,10 +1770,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="system/startup/README.md" />
+						value="xpacks/micro-os-plus-startup/README.md" />
 					<simple
 						name="target"
-						value="system/startup/README.md" />
+						value="xpacks/micro-os-plus-startup/README.md" />
 					<simple
 						name="replaceable"
 						value="true" />
