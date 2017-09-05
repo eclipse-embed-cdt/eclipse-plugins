@@ -2,6 +2,7 @@
   "name": "{{ projectName }}",
   "version": "1.0.0",
   "description": "An xPack with a {{ content }} application running on {{ boardDescription }}",
+  "xpack": {},
   "main": "",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -15,8 +16,10 @@
   },
   "homepage": "https://github.com/<user-id>/{{ projectName }}",
   "keywords": [
+    "c",
     "c++",
-    "micro-os-plus"
+    "micro-os-plus",
+    "risc-v"
   ],
   "author": {
     "name": "",
@@ -39,6 +42,5 @@
 {% elsif boardName == 'e31arty' or boardName == 'e51arty' %}
     ,"@sifive/coreplex-arty-boards": "^0.0.2"
 {% endif %}
-  },
-  "xpack": {}
+  }
 }
