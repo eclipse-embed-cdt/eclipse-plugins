@@ -34,6 +34,7 @@
 #include <newlib/c-syscalls.h>
 
 #include <errno.h>
+#include <unistd.h>
 
 // ----------------------------------------------------------------------------
 
@@ -51,12 +52,13 @@
 // ignored.
 
 ssize_t
-_write (int fd __attribute__((unused)), const void* buf __attribute__((unused)),
-	size_t nbyte __attribute__((unused)))
+_write (int fildes __attribute__((unused)),
+        const void* buf __attribute__((unused)),
+        size_t nbyte __attribute__((unused)))
 {
 #if defined(TRACE)
   // STDOUT and STDERR are routed to the trace device
-  if (fd == 1 || fd == 2)
+  if (fildes == STDOUT_FILENO || fildes == STDERR_FILENO)
     {
       return trace_write (buf, nbyte);
     }
