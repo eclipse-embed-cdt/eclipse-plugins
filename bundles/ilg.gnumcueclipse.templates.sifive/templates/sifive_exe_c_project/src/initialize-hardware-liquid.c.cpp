@@ -97,6 +97,7 @@ os_startup_initialize_hardware (void)
 {% endif %}
 
 {% if content == 'blinky' %}
+  // TODO: make PLIC static inline.
   PLIC_init (&g_plic, PLIC_CTRL_ADDR, PLIC_NUM_INTERRUPTS, PLIC_NUM_PRIORITIES);
 
 {% endif %}
