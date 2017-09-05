@@ -1993,7 +1993,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 
 	<!-- ================================================================== -->
 
-	<!-- README.md -->
+	<!-- README.md & package.json-->
 	<if condition="1==1">
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddLiquidFiles">
 			<simple
@@ -2014,6 +2014,17 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="replaceable"
 						value="true" />
 				</element>
+                <element>
+                    <simple
+                        name="source"
+                        value="package-liquid.json" />
+                    <simple
+                        name="target"
+                        value="package.json" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
 			</complex-array>
 		</process>
 	</if>
