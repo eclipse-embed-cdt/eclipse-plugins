@@ -71,19 +71,19 @@ SECTIONS
     .trap_entry : ALIGN(4)
     {
         *(.exceptions_array .exceptions_array.*)
-        *(.local_interrupts_array .local_interrupts_array.*)
-        *(.device_local_interrupts_array .device_local_interrupts_array.*)
-        *(.global_interrupts_array .global_interrupts_array.*)
+        *(.interrupts_local_arch_array .interrupts_local_arch_array.*)
+        *(.interrupts_local_device_array .interrupts_local_device_array.*)
+        *(.interrupts_global_array .interrupts_global_array.*)
         *(.trap_entry .trap_entry.*)
         *(.traps_handlers .traps_handlers.*)
     } >FLASH AT>FLASH :phdr_flash
 
     /* 
-     * Memory regions initialisation arrays.
+     * Memory regions initialization arrays.
      *
      * There are two kinds of arrays for each RAM region, one for 
-     * data and one for bss. Each is iterrated at startup and the   
-     * region initialisation is performed.
+     * data and one for bss. Each is iterated at startup and the   
+     * region initialization is performed.
      * 
      * The data array includes:
      * - from (LOADADDR())
@@ -95,7 +95,7 @@ SECTIONS
      * - region_end (ADDR()+SIZEOF())
      *
      * WARNING: It is mandatory that the regions are word aligned, 
-     * since the initialisation code works only on words.
+     * since the initialization code works only on words.
      */
     .mem_inits : ALIGN(4)
     {     
@@ -120,7 +120,7 @@ SECTIONS
     } >FLASH AT>FLASH :phdr_flash
 
     /*
-     * The preinit code, i.e. an array of pointers to initialisation 
+     * The preinit code, i.e. an array of pointers to initialization 
      * functions to be performed before constructors.
      */
     .preinit_array : ALIGN(4)
