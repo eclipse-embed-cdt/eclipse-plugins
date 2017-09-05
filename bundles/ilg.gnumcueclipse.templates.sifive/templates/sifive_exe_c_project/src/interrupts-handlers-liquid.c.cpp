@@ -36,7 +36,7 @@
 // ----------------------------------------------------------------------------
 
 void
-riscv_irq_local_handle_machine_timer (void)
+riscv_interrupt_local_handle_machine_timer (void)
 {
   // Disable M timer interrupt.
 {% if language == 'cpp' %}
@@ -106,11 +106,11 @@ extern bool button_released;
 {% if boardName == 'hifive1' %}
 // The button is connected to GPIO18, active low.
 void
-riscv_irq_global_handle_gpio18 (void)
+riscv_interrupt_global_handle_gpio18 (void)
 {% elsif boardName == 'e31arty' or  boardName == 'e51arty' %}
 // The button is connected to GPIO4, active high.
 void
-riscv_irq_global_handle_gpio4 (void)
+riscv_interrupt_global_handle_gpio4 (void)
 {% endif %}
 {
   if (GPIO_REG(GPIO_RISE_IP) & (1 << BUTTON_0_OFFSET))
