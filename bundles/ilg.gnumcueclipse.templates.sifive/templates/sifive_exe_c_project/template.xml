@@ -1083,20 +1083,6 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="xpacks/sifive-coreplex-devices/include/sifive/plic" />
-					<simple
-						name="target"
-						value="xpacks/sifive-coreplex-devices/include/sifive/plic" />
-					<simple
-						name="pattern"
-						value=".*[.](h)" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-				<element>
-					<simple
-						name="source"
 						value="xpacks/sifive-coreplex-devices/include/sifive" />
 					<simple
 						name="target"
