@@ -135,7 +135,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			label="%useOg.label"
 			description="%useOg.description"
 			type="boolean"
-			default="true"
+			default="false"
 			hidden="false"
 			persist="true" />
 
