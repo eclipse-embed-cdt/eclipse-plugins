@@ -30,10 +30,6 @@
 
 // ----------------------------------------------------------------------------
 
-{% if content == 'blinky' %}
-extern plic_instance_t g_plic;
-
-{% endif %}
 // Called early, before copying .data and clearing .bss.
 // Should initialise the clocks and possible other RAM areas.
 void
@@ -97,8 +93,17 @@ os_startup_initialize_hardware (void)
 {% endif %}
 
 {% if content == 'blinky' %}
-  // TODO: make PLIC static inline.
-  PLIC_init (&g_plic, PLIC_CTRL_ADDR, PLIC_NUM_INTERRUPTS, PLIC_NUM_PRIORITIES);
+{% if language == 'cpp' %}
+  riscv::plic::clear_priorities ();
+{% elsif language == 'c' %}
+  riscv_plic_clear_priorities ();
+{% endif %}
+  // Hart specific initializations.
+{% if language == 'cpp' %}
+  riscv::plic::initialize ();
+{% elsif language == 'c' %}
+  riscv_plic_initialize ();
+{% endif %}
 
 {% endif %}
   // Disable M timer interrupt.
@@ -137,16 +142,24 @@ os_startup_initialize_hardware (void)
   GPIO_REG(GPIO_RISE_IE) |= (1 << BUTTON_0_OFFSET);
 
   // Enable the BUTTON interrupt in PLIC.
-  PLIC_enable_interrupt (&g_plic, INT_DEVICE_BUTTON_0);
+{% if language == 'cpp' %}
+  riscv::plic::enable_interrupt (INT_DEVICE_BUTTON_0);
+{% elsif language == 'c' %}
+  riscv_plic_enable_interrupt (INT_DEVICE_BUTTON_0);
+{% endif %}
 
   // Configure the BUTTON priority in PLIC. 2 out of 7.
-  PLIC_set_priority (&g_plic, INT_DEVICE_BUTTON_0, 2);
+{% if language == 'cpp' %}
+  riscv::plic::priority (INT_DEVICE_BUTTON_0, 2);
+{% elsif language == 'c' %}
+  riscv_plic_write_priority (INT_DEVICE_BUTTON_0, 2);
+{% endif %}
 
   // Enable Global (PLIC) interrupt.
 {% if language == 'cpp' %}
-  riscv::csr::set_mie (MIP_MEIP);
+  riscv::core::enable_machine_external_interrupts ();
 {% elsif language == 'c' %}
-  riscv_csr_set_mie (MIP_MEIP);
+  riscv_core_enable_machine_external_interrupts (MIP_MEIP);
 {% endif %}
 
 {% endif %}
