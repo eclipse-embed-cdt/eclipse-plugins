@@ -52,6 +52,10 @@ The referred files are available in the GNU MCU Eclipse OpenOCD distribution.
 If you use other distributions, you can get the files from [GitHub](https://github.com/gnu-mcu-eclipse/openocd/tree/gnu-mcu-eclipse-dev/tcl/board); download the `sifive-*.cfg` files and 
 copy them in the `scripts/interface` OpenOCD folder.
 
+## Eclipse preferences
+
+If you do not like the large number of source folders shown by Eclipse in the Project Explorer, you can go to Eclipse menu -> Preferences... -> C/C++ -> Appearance and disable **Show source roots at top of project**.
+
 ## License
 
 Unless otherwise mentioned, all **µOS++** components are provided **free of charge** 
