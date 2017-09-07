@@ -460,7 +460,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="deviceMacro" />
 			<simple
 				name="propertyValue"
-				value="SIFIVE_COREPLEX_IP_31" />
+				value="SIFIVE_COREPLEX_31" />
 		</process>
 
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
@@ -475,7 +475,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="boardMacro" />
 			<simple
 				name="propertyValue"
-				value="SIFIVE_COREPLEX_IP_31_ARTY_BOARD" />
+				value="SIFIVE_COREPLEX_31_ARTY_BOARD" />
 		</process>
 		
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
@@ -538,7 +538,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="deviceMacro" />
 			<simple
 				name="propertyValue"
-				value="SIFIVE_COREPLEX_IP_51" />
+				value="SIFIVE_COREPLEX_51" />
 		</process>
 				
 		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
@@ -583,7 +583,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				value="boardMacro" />
 			<simple
 				name="propertyValue"
-				value="SIFIVE_COREPLEX_IP_51_ARTY_BOARD" />
+				value="SIFIVE_COREPLEX_51_ARTY_BOARD" />
 		</process>
 		
 	</if>
@@ -1111,10 +1111,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
                 <element>
                     <simple
                         name="source"
-                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip" />
+                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex" />
                     <simple
                         name="target"
-                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip" />
+                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex" />
                     <simple
                         name="pattern"
                         value=".*[.](h)" />
@@ -1125,10 +1125,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
                 <element>
                     <simple
                         name="source"
-                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip/e31" />
+                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex/e31" />
                     <simple
                         name="target"
-                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip/e31" />
+                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex/e31" />
                     <simple
                         name="pattern"
                         value=".*[.](h)" />
@@ -1139,10 +1139,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
                 <element>
                     <simple
                         name="source"
-                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip/e51" />
+                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex/e51" />
                     <simple
                         name="target"
-                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex-ip/e51" />
+                        value="xpacks/sifive-coreplex-devices/include/sifive-coreplex-devices/coreplex/e51" />
                     <simple
                         name="pattern"
                         value=".*[.](h)" />
