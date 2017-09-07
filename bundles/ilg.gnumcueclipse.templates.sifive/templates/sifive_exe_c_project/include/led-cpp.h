@@ -28,6 +28,8 @@
 #ifndef LED_H_
 #define LED_H_
 
+#include <micro-os-plus/device.h>
+
 #include <stdint.h>
 
 // ----------------------------------------------------------------------------
@@ -59,7 +61,7 @@ public:
   is_on ();
 
 private:
-  uint32_t port_addr_;
+  riscv::device::gpio_t* gpio_ptr_;
   uint16_t port_number_;
   uint16_t bit_number_;
   uint32_t bit_mask_;

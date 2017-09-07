@@ -35,7 +35,7 @@ void
 led_construct (led_t* _this, unsigned int port, unsigned int bit,
                bool active_low)
 {
-  _this->port_addr_ = GPIO_CTRL_ADDR; // Fixed, there is only one GPIO port.
+  _this->gpio_ptr_ = riscv_device_gpio_ptr; // Fixed, there is only one GPIO port.
   _this->port_number_ = (uint16_t) port;
   _this->bit_number_ = (uint16_t) bit;
   _this->is_active_low_ = active_low;
@@ -46,11 +46,11 @@ void
 led_power_up (led_t* _this)
 {
   // Disable I/O Functions on this bit, keep it as plain digital pin.
-  _REG32 (_this->port_addr_, GPIO_IOF_EN) &= ~_this->bit_mask_;
+  _this->gpio_ptr_->iof_en &= ~_this->bit_mask_;
   // Clear the toggle bit.
-  _REG32 (_this->port_addr_, GPIO_OUTPUT_XOR) &= ~_this->bit_mask_;
+  _this->gpio_ptr_->out_xor &= ~_this->bit_mask_;
   // Enable output.
-  _REG32 (_this->port_addr_, GPIO_OUTPUT_EN) |= _this->bit_mask_;
+  _this->gpio_ptr_->output_en |= _this->bit_mask_;
 
   // Start with led turned off
   led_turn_off (_this);
@@ -61,11 +61,11 @@ led_turn_on (led_t* _this)
 {
   if (_this->is_active_low_)
     {
-      _REG32 (_this->port_addr_, GPIO_OUTPUT_VAL) &= ~_this->bit_mask_;
+      _this->gpio_ptr_->value &= ~_this->bit_mask_;
     }
   else
     {
-      _REG32 (_this->port_addr_, GPIO_OUTPUT_VAL) |= _this->bit_mask_;
+      _this->gpio_ptr_->value |= _this->bit_mask_;
     }
 }
 
@@ -74,18 +74,18 @@ led_turn_off (led_t* _this)
 {
   if (_this->is_active_low_)
     {
-      _REG32 (_this->port_addr_, GPIO_OUTPUT_VAL) |= _this->bit_mask_;
+      _this->gpio_ptr_->value |= _this->bit_mask_;
     }
   else
     {
-      _REG32 (_this->port_addr_, GPIO_OUTPUT_VAL) &= ~_this->bit_mask_;
+      _this->gpio_ptr_->value &= ~_this->bit_mask_;
     }
 }
 
 void
 led_toggle (led_t* _this)
 {
-  _REG32 (_this->port_addr_, GPIO_OUTPUT_XOR) |= _this->bit_mask_;
+  _this->gpio_ptr_->out_xor |= _this->bit_mask_;
 }
 
 bool
@@ -95,13 +95,11 @@ led_is_on (led_t* _this)
   // is more appropriate, due to XOR and input actually not being enabled.
   if (_this->is_active_low_)
     {
-      return (_REG32 (_this->port_addr_, GPIO_INPUT_VAL) & _this->bit_mask_)
-          == 0;
+      return (_this->gpio_ptr_->value & _this->bit_mask_) == 0;
     }
   else
     {
-      return (_REG32 (_this->port_addr_, GPIO_INPUT_VAL) & _this->bit_mask_)
-          != 0;
+      return (_this->gpio_ptr_->value & _this->bit_mask_) != 0;
     }
 }
 

@@ -28,6 +28,8 @@
 #ifndef LED_H_
 #define LED_H_
 
+#include <micro-os-plus/device.h>
+
 #include <stdint.h>
 #include <stdbool.h>
 
@@ -48,7 +50,7 @@ extern "C"
 // Instance data.
   typedef struct led_s
   {
-    uint32_t port_addr_;
+    riscv_device_gpio_t* gpio_ptr_;
     uint16_t port_number_;
     uint16_t bit_number_;
     uint32_t bit_mask_;
