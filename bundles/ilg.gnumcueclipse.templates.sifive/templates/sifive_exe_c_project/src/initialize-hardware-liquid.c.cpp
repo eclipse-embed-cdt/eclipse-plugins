@@ -31,7 +31,7 @@
 // ----------------------------------------------------------------------------
 
 // Called early, before copying .data and clearing .bss.
-// Should initialise the clocks and possible other RAM areas.
+// Should initialize the clocks and possible other RAM areas.
 void
 os_startup_initialize_hardware_early (void)
 {
@@ -60,19 +60,19 @@ os_startup_initialize_hardware_early (void)
 {% if deviceName == 'fe310' %}
   // TODO: add to C/C++ API
   // Make sure the HFROSC is on before the next line:
-  PRCI_REG(PRCI_HFROSCCFG) |= ROSC_EN(1);
+  riscv_device_prci_ptr->hfrosccfg |= ROSC_EN(1);
   // Run off 16 MHz Crystal for accuracy.
-  PRCI_REG(PRCI_PLLCFG) = (PLL_REFSEL(1) | PLL_BYPASS(1));
-  PRCI_REG(PRCI_PLLCFG) |= (PLL_SEL(1));
+  riscv_device_prci_ptr->pllcfg = (PLL_REFSEL(1) | PLL_BYPASS(1));
+  riscv_device_prci_ptr->pllcfg |= (PLL_SEL(1));
   // Turn off HFROSC to save power
-  PRCI_REG(PRCI_HFROSCCFG) &= ~((uint32_t)ROSC_EN(1));
+  riscv_device_prci_ptr->hfrosccfg &= ~((uint32_t)ROSC_EN(1));
 
 {% endif %}
 {% if boardName == 'e31arty' or  boardName == 'e51arty' %}
   // For the Arty board, be sure LED1 is off, since it is very bright.
-  PWM0_REG(PWM_CMP1) = 0xFF;
-  PWM0_REG(PWM_CMP2) = 0xFF;
-  PWM0_REG(PWM_CMP3) = 0xFF;
+  riscv_device_pwm0_ptr->pwmcmp1 = 0xFF;
+  riscv_device_pwm0_ptr->pwmcmp2 = 0xFF;
+  riscv_device_pwm0_ptr->pwmcmp3 = 0xFF;
 
 {% endif %}
   // TODO: check Arduino main.cpp for more/better initialisations.
@@ -128,18 +128,18 @@ os_startup_initialize_hardware (void)
   // Configure Button 0 as a global GPIO irq.
 
   // Disable output.
-  GPIO_REG(GPIO_OUTPUT_EN) &= ~((0x1 << BUTTON_0_OFFSET));
+  riscv_device_gpio_ptr->output_en &= ~(1u << BUTTON_0_OFFSET);
 
   // Disable hw io function
-  GPIO_REG(GPIO_IOF_EN) &= ~(1 << BUTTON_0_OFFSET);
+  riscv_device_gpio_ptr->iof_en &= ~(1u << BUTTON_0_OFFSET);
 
   // Configure as input
-  GPIO_REG(GPIO_INPUT_EN) |= (1 << BUTTON_0_OFFSET);
-  GPIO_REG(GPIO_PULLUP_EN) |= (1 << BUTTON_0_OFFSET);
+  riscv_device_gpio_ptr->input_en |= (1u << BUTTON_0_OFFSET);
+  riscv_device_gpio_ptr->pue |= (1u << BUTTON_0_OFFSET);
 
   // Configure to interrupt on both falling and rising edges.
-  GPIO_REG(GPIO_FALL_IE) |= (1 << BUTTON_0_OFFSET);
-  GPIO_REG(GPIO_RISE_IE) |= (1 << BUTTON_0_OFFSET);
+  riscv_device_gpio_ptr->fall_ie |= (1u << BUTTON_0_OFFSET);
+  riscv_device_gpio_ptr->rise_ie |= (1u << BUTTON_0_OFFSET);
 
   // Enable the BUTTON interrupt in PLIC.
 {% if language == 'cpp' %}
@@ -159,7 +159,7 @@ os_startup_initialize_hardware (void)
 {% if language == 'cpp' %}
   riscv::core::enable_machine_external_interrupts ();
 {% elsif language == 'c' %}
-  riscv_core_enable_machine_external_interrupts (MIP_MEIP);
+  riscv_core_enable_machine_external_interrupts ();
 {% endif %}
 
 {% endif %}
