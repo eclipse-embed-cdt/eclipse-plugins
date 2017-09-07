@@ -35,6 +35,27 @@
 {% endif %}
 // ----------------------------------------------------------------------------
 
+/**
+ * In µOS++, the interrupt processing uses fixed names functions for each
+ * interrupt handler. Defining a C function with one of the reserved names
+ * is all the developer must do, forwarding the interrupt to the handler
+ * is automatically handled by the system.
+ *
+ * There are three types of handlers:
+ *
+ * - `riscv_interrupt_local_handle_*`
+ * - `riscv_interrupt_global_handle_*`
+ * - `riscv_exception_handle_*`
+ *
+ * The definitions are part in the architecture package, part in the
+ * device package.
+ *
+ * The system provides weak defaults for all handlers; to help debugging
+ * these default handlers break to the debugger.
+ */
+
+// ----------------------------------------------------------------------------
+
 void
 riscv_interrupt_local_handle_machine_timer (void)
 {
@@ -113,7 +134,7 @@ void
 riscv_interrupt_global_handle_gpio4 (void)
 {% endif %}
 {
-  if (GPIO_REG(GPIO_RISE_IP) & (1 << BUTTON_0_OFFSET))
+  if (riscv_device_gpio_ptr->rise_ip & (1 << BUTTON_0_OFFSET))
     {
 
 {% if boardName == 'hifive1' %}
@@ -133,11 +154,11 @@ riscv_interrupt_global_handle_gpio4 (void)
 {% endif %}
 
       // Clear rising interrupt.
-      GPIO_REG(GPIO_RISE_IP) |= (1 << BUTTON_0_OFFSET);
+      riscv_device_gpio_ptr->rise_ip |= (1 << BUTTON_0_OFFSET);
 
     }
 
-  if (GPIO_REG(GPIO_FALL_IP) & (1 << BUTTON_0_OFFSET))
+  if (riscv_device_gpio_ptr->fall_ip & (1 << BUTTON_0_OFFSET))
     {
 
 {% if boardName == 'hifive1' %}
@@ -157,7 +178,7 @@ riscv_interrupt_global_handle_gpio4 (void)
 {% endif %}
 
       // Clear falling interrupt.
-      GPIO_REG(GPIO_FALL_IP) |= (1 << BUTTON_0_OFFSET);
+      riscv_device_gpio_ptr->fall_ip |= (1 << BUTTON_0_OFFSET);
 
     }
 }
