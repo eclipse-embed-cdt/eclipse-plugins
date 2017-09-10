@@ -18,6 +18,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -59,6 +60,11 @@ public class ConditionalAddLiquidFiles extends ProcessRunner {
 		// Use all definitions in the store, including from other plug-ins.
 		liquidMap.putAll(valueStore);
 		liquidMap.put("language", valueStore.get("fileExtension"));
+		
+		Calendar now = Calendar.getInstance();   // Gets the current date and time
+		int year = now.get(Calendar.YEAR);
+		liquidMap.put("year", Integer.toString(year));
+		liquidMap.put("authorName", "<your-name-here>");
 
 		for (ProcessArgument arg : args) {
 			String argName = arg.getName();

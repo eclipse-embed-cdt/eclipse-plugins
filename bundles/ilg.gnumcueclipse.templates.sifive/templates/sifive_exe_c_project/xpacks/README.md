@@ -5,6 +5,7 @@ Each xPack is a separate GitHub project, referred here as a git submodule.
 To link new submodules, use:
 
 ```bash
+$ git submodule add -b xpack https://github.com/micro-os-plus/sifive-coreplex-templates.git bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-coreplex-templates
 $ git submodule add -b xpack https://github.com/micro-os-plus/diag-trace.git bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-diag-trace
 $ git submodule add -b xpack https://github.com/micro-os-plus/startup.git bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-startup
 $ git submodule add -b xpack https://github.com/micro-os-plus/c-libs.git bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-c-libs

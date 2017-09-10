@@ -30,3 +30,7 @@
 	path = bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-hifive1-board
 	url = https://github.com/micro-os-plus/sifive-hifive1-board.git
 	branch = xpack
+[submodule "bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-coreplex-templates"]
+	path = bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-coreplex-templates
+	url = https://github.com/micro-os-plus/sifive-coreplex-templates.git
+	branch = xpack

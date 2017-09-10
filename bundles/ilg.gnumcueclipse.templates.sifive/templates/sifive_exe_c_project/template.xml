@@ -633,7 +633,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="include/led-$(fileExtension).h" />
+						value="xpacks/sifive-coreplex-templates/liquid/include/led-$(fileExtension).h" />
 					<simple
 						name="target"
 						value="include/led.h" />
@@ -655,7 +655,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="include/sysclock-$(fileExtension).h" />
+						value="xpacks/sifive-coreplex-templates/liquid/include/sysclock-$(fileExtension).h" />
 					<simple
 						name="target"
 						value="include/sysclock.h" />
@@ -683,7 +683,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="ldscripts/libs.ld" />
+						value="xpacks/sifive-coreplex-templates/liquid/ldscripts/libs.ld" />
 					<simple
 						name="target"
 						value="ldscripts/libs.ld" />
@@ -694,7 +694,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="ldscripts/sections.ld" />
+						value="xpacks/sifive-coreplex-templates/liquid/ldscripts/sections.ld" />
 					<simple
 						name="target"
 						value="ldscripts/sections.ld" />
@@ -716,7 +716,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="ldscripts/mem-$(boardName).ld" />
+						value="xpacks/sifive-coreplex-templates/liquid/ldscripts/mem-$(boardName).ld" />
 					<simple
 						name="target"
 						value="ldscripts/mem.ld" />
@@ -795,7 +795,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="src/led.$(fileExtension)" />
+						value="xpacks/sifive-coreplex-templates/liquid/src/led.$(fileExtension)" />
 					<simple
 						name="target"
 						value="src/led.$(fileExtension)" />
@@ -817,7 +817,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="src/newlib-syscalls.c" />
+						value="xpacks/sifive-coreplex-templates/liquid/src/newlib-syscalls.c" />
 					<simple
 						name="target"
 						value="src/newlib-syscalls.c" />
@@ -839,7 +839,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="src/sysclock.$(fileExtension)" />
+						value="xpacks/sifive-coreplex-templates/liquid/src/sysclock.$(fileExtension)" />
 					<simple
 						name="target"
 						value="src/sysclock.$(fileExtension)" />
@@ -861,7 +861,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="src/initialize-hardware-liquid.c.cpp" />
+						value="xpacks/sifive-coreplex-templates/liquid/src/initialize-hardware-liquid.c.cpp" />
 					<simple
 						name="target"
 						value="src/initialize-hardware.$(fileExtension)" />
@@ -872,7 +872,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="src/interrupts-handlers-liquid.c.cpp" />
+						value="xpacks/sifive-coreplex-templates/liquid/src/interrupts-handlers-liquid.c.cpp" />
 					<simple
 						name="target"
 						value="src/interrupts-handlers.$(fileExtension)" />
@@ -883,7 +883,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="src/main-liquid.c.cpp" />
+						value="xpacks/sifive-coreplex-templates/liquid/src/main-liquid.c.cpp" />
 					<simple
 						name="target"
 						value="src/main.$(fileExtension)" />
@@ -1927,27 +1927,27 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 
 	<!-- LICENSE -->
 	<if condition="1==1">
-		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
-			<simple
-				name="projectName"
-				value="$(projectName)" />
-			<simple
-				name="condition"
-				value="" />
-			<complex-array name="files">
-				<element>
-					<simple
-						name="source"
-						value="LICENSE" />
-					<simple
-						name="target"
-						value="LICENSE" />
-					<simple
-						name="replaceable"
-						value="true" />
-				</element>
-			</complex-array>
-		</process>
+        <process type="ilg.gnumcueclipse.templates.core.ConditionalAddLiquidFiles">
+            <simple
+                name="projectName"
+                value="$(projectName)" />
+            <simple
+                name="condition"
+                value="" />
+            <complex-array name="files">
+                <element>
+                    <simple
+                        name="source"
+                        value="xpacks/sifive-coreplex-templates/liquid/LICENSE-liquid" />
+                    <simple
+                        name="target"
+                        value="LICENSE" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
+            </complex-array>
+        </process>
 	</if>
 
 	<!-- ================================================================== -->
@@ -1965,7 +1965,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="oocd-liquid.launch" />
+						value="xpacks/sifive-coreplex-templates/liquid/oocd-liquid.launch" />
 					<simple
 						name="target"
 						value="$(projectName)-debug-oocd.launch" />
@@ -1992,7 +1992,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="source"
-						value="README-liquid.md" />
+						value="xpacks/sifive-coreplex-templates/liquid/README-liquid.md" />
 					<simple
 						name="target"
 						value="README.md" />
@@ -2003,7 +2003,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
                 <element>
                     <simple
                         name="source"
-                        value="package-liquid.json" />
+                        value="xpacks/sifive-coreplex-templates/liquid/package-liquid.json" />
                     <simple
                         name="target"
                         value="package.json" />
