@@ -17,15 +17,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import java.util.regex.Matcher;
 
-import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.preferences.DefaultScope;
 import org.eclipse.core.runtime.preferences.IEclipsePreferences;
-import org.eclipse.core.variables.IStringVariableManager;
-import org.eclipse.core.variables.VariablesPlugin;
 
 import ilg.gnumcueclipse.core.Activator;
 import ilg.gnumcueclipse.core.EclipseUtils;
@@ -133,9 +129,11 @@ public class DefaultPreferences {
 
 	public boolean checkFolderExecutable(String folder, String executableName) {
 
+		folder = EclipseUtils.performStringSubstitution(folder);
 		if (folder == null || folder.isEmpty()) {
 			return false;
 		}
+		executableName = EclipseUtils.performStringSubstitution(executableName);
 		if (executableName == null || executableName.isEmpty()) {
 			return false;
 		}
@@ -168,28 +166,7 @@ public class DefaultPreferences {
 					+ executableName + ") ");
 		}
 
-		if (searchPath == null || searchPath.isEmpty()) {
-			return null;
-		}
-
-		// Resolve ${user.home}
-		String resolvedPath = searchPath;
-		if (resolvedPath.indexOf("${user.home}") >= 0) {
-			String userHome = System.getProperty("user.home");
-			userHome = Matcher.quoteReplacement(userHome);
-			resolvedPath = resolvedPath.replaceAll("\\$\\{user.home\\}", userHome);
-		}
-
-		// If more macros remain, use the usual substituter.
-		if (resolvedPath.indexOf("${") >= 0) {
-			IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
-			try {
-				resolvedPath = variableManager.performStringSubstitution(resolvedPath, false);
-			} catch (CoreException e) {
-				resolvedPath = null;
-			}
-		}
-
+		String resolvedPath = EclipseUtils.performStringSubstitution(searchPath);
 		if (resolvedPath == null || resolvedPath.isEmpty()) {
 			return null;
 		}

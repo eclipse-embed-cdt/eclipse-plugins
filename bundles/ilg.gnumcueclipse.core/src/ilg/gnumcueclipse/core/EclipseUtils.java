@@ -14,6 +14,7 @@ package ilg.gnumcueclipse.core;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.regex.Matcher;
 
 import org.eclipse.cdt.core.model.CoreModel;
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
@@ -32,6 +33,7 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.preferences.ConfigurationScope;
@@ -637,5 +639,33 @@ public class EclipseUtils {
 		return cfg;
 	}
 
+	// ------------------------------------------------------------------------
+
+	public static String performStringSubstitution(String expression) {
+
+		if (expression == null || expression.isEmpty()) {
+			return null;
+		}
+
+		// Resolve ${user.home}
+		String result = expression;
+		if (result.indexOf("${user.home}") >= 0) {
+			String userHome = new Path(System.getProperty("user.home")).toString();
+			userHome = Matcher.quoteReplacement(userHome);
+			result = result.replaceAll("\\$\\{user.home\\}", userHome);
+		}
+
+		// If more macros remain, use the usual substituter.
+		if (result.indexOf("${") >= 0) {
+			IStringVariableManager variableManager = VariablesPlugin.getDefault().getStringVariableManager();
+			try {
+				result = variableManager.performStringSubstitution(result, false);
+			} catch (CoreException e) {
+				result = null;
+			}
+		}
+		return result;
+	}
+	
 	// ------------------------------------------------------------------------
 }
