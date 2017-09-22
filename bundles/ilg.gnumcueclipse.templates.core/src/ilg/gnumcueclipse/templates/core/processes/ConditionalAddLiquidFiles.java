@@ -131,7 +131,7 @@ public class ConditionalAddLiquidFiles extends ProcessRunner {
 				try {
 					// The option simplifies usage, by automatically stripping spaces around tags;
 					// All previous \n are preserved; the first next \n is stripped.
-					liqp.ParseSettings liqSettings = new liqp.ParseSettings.Builder().withStripSpaceAroundTags(true)
+					liqp.ParseSettings liqSettings = new liqp.ParseSettings.Builder().withStripSpaceAroundTags(false)
 							.build();
 					liqp.Template liqTemplate = liqp.Template.parse(fileContents, liqSettings);
 					String liqRendered = liqTemplate.render(liquidMap);
