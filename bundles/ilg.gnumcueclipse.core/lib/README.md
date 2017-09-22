@@ -8,5 +8,12 @@ To add them to the project, in the `plugin.xml` editor, the _Runtime_ tab,
 _Classpath_ -> _Add..._; then, to export the `liqp` class, in the 
 _Exported Packages_ -> _Add..._.
 
-Note: The Liquid parser is patched, to allow for more convenient white space
-processing. Only `{% %}` tags are affected.
+Note: The [Liquid parser](https://github.com/bkiers/Liqp) is [patched](https://github.com/gnu-mcu-eclipse/Liqp), to allow for more convenient white space processing, i.e. `-%}` should not be greedy and stop after the first line terminator.
+
+To build the liqp library
+
+- go to the `libq-fork.git` folder
+- add maven to PATH (amaven)
+- mvn clean package
+- copy target/liqp-0.6.8.jar
+
