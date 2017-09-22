@@ -34,10 +34,10 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				label="Freedom E310 HiFive1" />
 			<item
 				value="e31arty"
-				label="Coreplex IP E31 Arty" />
+				label="Coreplex E31 Arty" />
 			<item
 				value="e51arty"
-				label="Coreplex IP E51 Arty" />
+				label="Coreplex E51 Arty" />
 		</property>
 
 		<property
@@ -45,7 +45,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			label="%SiFive.content.label"
 			description="%SiFive.content.description"
 			type="select"
-			default="empty"
+			default="blinky"
 			hidden="false"
 			persist="true">
 			<item
@@ -63,7 +63,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			label="%syscalls.label"
 			description="%syscalls.description"
 			type="select"
-			default="none"
+			default="retarget"
 			hidden="false"
 			persist="true">
 			<item
@@ -84,21 +84,21 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			label="%trace.label"
 			description="%trace.description"
 			type="select"
-			default="UART0FTDI"
+			default="uart0ftdi"
 			hidden="false"
 			persist="true">
 			<item
-				value="NONE"
+				value="none"
 				label="None (no trace output)" />
 			<item
-				value="UART0FTDI"
+				value="uart0ftdi"
 				label="UART0 (via FTDI)" />
 			<!-- 
 			<item
-				value="STDOUT"
+				value="stdout"
 				label="Semihosting STDOUT stream" />
 			<item
-				value="DEBUG"
+				value="debug"
 				label="Semihosting DEBUG channel" />
 			 -->
 		</property>
@@ -178,7 +178,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 
 		<property
 			id="syscalls"
-			label="Project syscalls (none/reterget/semihosting)"
+			label="Project syscalls (none/retarget/semihosting)"
 			description="Will be set to SiFiveSyscalls"
 			mandatory="true"
 			hidden="true"
@@ -235,7 +235,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 
 		<property
 			id="trace"
-			label="Trace output (NONE/USART0FTDI)"
+			label="Trace output (none/USART0FTDI)"
 			description="Will be set to content"
 			mandatory="true"
 			hidden="true"
@@ -1938,7 +1938,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
                 <element>
                     <simple
                         name="source"
-                        value="xpacks/sifive-coreplex-templates/liquid/LICENSE-liquid" />
+                        value="xpacks/sifive-coreplex-templates/liquid/LICENSE.liquid" />
                     <simple
                         name="target"
                         value="LICENSE" />
@@ -3096,7 +3096,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		</process>
 	</if>
 
-	<if condition="$(trace)!=NONE">
+	<if condition="$(trace)!=none">
 		<!-- Define TRACE only if one of the devices is selected, on DEBUG -->
 		<process
 			type="ilg.gnumcueclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
@@ -3125,7 +3125,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		</process>
 	</if>
 
-	<if condition="$(trace)==UART0FTDI">
+	<if condition="$(trace)==uart0ftdi">
 		<process
 			type="ilg.gnumcueclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
 			<simple
