@@ -334,6 +334,84 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 		return proc;
 	}
 
+	private boolean checkServerStream(RequestMonitor serverLaunchRequestMonitor, IProgressMonitor monitor, 
+			StringBuffer buffer, boolean isStdoutStream) {
+		
+		final String streamName = (isStdoutStream) ? "stdout" : "stderr";
+		
+		InputStream stream = null;
+		try {
+			byte b[] = new byte[1024];
+			
+			if (isStdoutStream) {				
+				stream = fServerProcess.getInputStream();				
+			}
+			else {
+				stream = fServerProcess.getErrorStream();				
+			}
+
+			// Awfully inefficient
+			int count;
+
+			// The input stream will block until the process ends.
+			while ((count = stream.read(b, 0, b.length)) != -1) {
+
+				String str = new String(b, 0, count, "ascii");
+				if (Activator.getInstance().isDebugging()) {
+					System.out.print(str);
+				}
+				buffer.append(new String(b, 0, count, "ascii"));
+				if ( isStdoutStream  && matchStdOutExpectedPattern(buffer.toString())  ||
+					 !isStdoutStream && matchStdErrExpectedPattern(buffer.toString()) ) {				
+					return true;
+				}
+
+				if (serverLaunchRequestMonitor.isCanceled() || monitor.isCanceled()) {
+
+					if (Activator.getInstance().isDebugging()) {
+						System.out.println("startGdbServerJob run canceled read");
+					}
+					serverLaunchRequestMonitor.setStatus(new Status(IStatus.CANCEL, Activator.PLUGIN_ID, -1,
+							getStartingServerJobName() + " cancelled.", null)); //$NON-NLS-1$
+					serverLaunchRequestMonitor.done();
+					return false;
+				}
+			}
+
+			// Failure means the sever exited with error,
+			// otherwise the server would be still reading.
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("startGdbServerJob run() EOF " + streamName);
+			}
+
+			// try {
+			// No need to preserve the capture thread, it is
+			// already terminated.
+			// fCaptureHandler.join();
+
+			// Add errors to the end of the output buffer.
+			// outBuffer.append(fErrorStreamBuffer);
+
+			// } catch (InterruptedException e) {
+			// ;
+			// }
+
+			if (stream != null) {
+				try {
+					stream.close();
+				} catch (IOException e) {
+					Activator.log(e);
+				}
+			}
+		} catch (IOException e) {
+			serverLaunchRequestMonitor.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
+					"Error reading " + getServerName() + " " + streamName, e)); //$NON-NLS-1$
+			return false;
+		}
+		
+		return false;
+	}
+	
 	/**
 	 * A best effort to determine if the GDB server started properly.
 	 * 
@@ -363,150 +441,12 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 			success = true;
 		}
 
-		if (canMatchStdOut()) {
-
-			InputStream inputStream = null;
-			try {
-
-				inputStream = fServerProcess.getInputStream();
-				byte b[] = new byte[1024];
-
-				// Awfully inefficient
-				int count;
-
-				// The input stream will block until the process ends.
-				while ((count = inputStream.read(b, 0, b.length)) != -1) {
-
-					String str = new String(b, 0, count, "ascii");
-					if (Activator.getInstance().isDebugging()) {
-						System.out.print(str);
-					}
-					outBuffer.append(new String(b, 0, count, "ascii"));
-					if (matchStdOutExpectedPattern(outBuffer.toString())) {
-						success = true;
-						break;
-					}
-
-					if (serverLaunchRequestMonitor.isCanceled() || monitor.isCanceled()) {
-
-						if (Activator.getInstance().isDebugging()) {
-							System.out.println("startGdbServerJob run canceled read");
-						}
-						serverLaunchRequestMonitor.setStatus(new Status(IStatus.CANCEL, Activator.PLUGIN_ID, -1,
-								getStartingServerJobName() + " cancelled.", null)); //$NON-NLS-1$
-						serverLaunchRequestMonitor.done();
-						// return Status.OK_STATUS;
-						return false;
-					}
-				}
-
-				if (!success) {
-
-					// Failure means the sever exited with error,
-					// otherwise the server would be still reading.
-					if (Activator.getInstance().isDebugging()) {
-						System.out.println("startGdbServerJob run() EOF stdout");
-					}
-
-					// try {
-					// No need to preserve the capture thread, it is
-					// already terminated.
-					// fCaptureHandler.join();
-
-					// Add errors to the end of the output buffer.
-					// outBuffer.append(fErrorStreamBuffer);
-
-					// } catch (InterruptedException e) {
-					// ;
-					// }
-
-					if (inputStream != null) {
-						try {
-							inputStream.close();
-						} catch (IOException e) {
-							Activator.log(e);
-						}
-					}
-				}
-
-			} catch (IOException e) {
-				success = false;
-				serverLaunchRequestMonitor.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
-						"Error reading " + getServerName() + " stdout", e)); //$NON-NLS-1$
-			}
+		if (canMatchStdOut() && checkServerStream(serverLaunchRequestMonitor, monitor, outBuffer, true)) {
+			success = true;
 		}
 
-		if (canMatchStdErr()) {
-
-			InputStream errorStream = null;
-			try {
-
-				errorStream = fServerProcess.getErrorStream();
-				byte b[] = new byte[1024];
-
-				// Awfully inefficient
-				int count;
-
-				// The input stream will block until the process ends.
-				while ((count = errorStream.read(b, 0, b.length)) != -1) {
-
-					String str = new String(b, 0, count, "ascii");
-					if (Activator.getInstance().isDebugging()) {
-						System.out.print(str);
-					}
-					errBuffer.append(new String(b, 0, count, "ascii"));
-					if (matchStdErrExpectedPattern(errBuffer.toString())) {
-						success = true;
-						break;
-					}
-
-					if (serverLaunchRequestMonitor.isCanceled() || monitor.isCanceled()) {
-
-						if (Activator.getInstance().isDebugging()) {
-							System.out.println("startGdbServerJob run canceled read");
-						}
-						serverLaunchRequestMonitor.setStatus(new Status(IStatus.CANCEL, Activator.PLUGIN_ID, -1,
-								getStartingServerJobName() + " cancelled.", null)); //$NON-NLS-1$
-						serverLaunchRequestMonitor.done();
-						// return Status.OK_STATUS;
-						return false;
-					}
-				}
-
-				if (!success) {
-
-					// Failure means the sever exited with error,
-					// otherwise the server would be still reading.
-					if (Activator.getInstance().isDebugging()) {
-						System.out.println("startGdbServerJob run() EOF stderr");
-					}
-
-					// try {
-					// No need to preserve the capture thread, it is
-					// already terminated.
-					// fCaptureHandler.join();
-
-					// Add errors to the end of the output buffer.
-					// outBuffer.append(fErrorStreamBuffer);
-
-					// } catch (InterruptedException e) {
-					// ;
-					// }
-
-					if (errorStream != null) {
-						try {
-							errorStream.close();
-						} catch (IOException e) {
-							Activator.log(e);
-						}
-					}
-				}
-
-			} catch (IOException e) {
-				success = false;
-				serverLaunchRequestMonitor.setStatus(new Status(IStatus.ERROR, Activator.PLUGIN_ID, -1,
-						"Error reading " + getServerName() + " stderr", e)); //$NON-NLS-1$
-			}
+		if (canMatchStdErr() && checkServerStream(serverLaunchRequestMonitor, monitor, errBuffer, false)) {
+			success = true;
 		}
 
 		if (success) {
