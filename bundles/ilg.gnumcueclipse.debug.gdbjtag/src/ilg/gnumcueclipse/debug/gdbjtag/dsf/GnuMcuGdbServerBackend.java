@@ -334,20 +334,19 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 		return proc;
 	}
 
-	private boolean checkServerStream(RequestMonitor serverLaunchRequestMonitor, IProgressMonitor monitor, 
+	private boolean checkServerStream(RequestMonitor serverLaunchRequestMonitor, IProgressMonitor monitor,
 			StringBuffer buffer, boolean isStdoutStream) {
-		
+
 		final String streamName = (isStdoutStream) ? "stdout" : "stderr";
-		
+
 		InputStream stream = null;
 		try {
 			byte b[] = new byte[1024];
-			
-			if (isStdoutStream) {				
-				stream = fServerProcess.getInputStream();				
-			}
-			else {
-				stream = fServerProcess.getErrorStream();				
+
+			if (isStdoutStream) {
+				stream = fServerProcess.getInputStream();
+			} else {
+				stream = fServerProcess.getErrorStream();
 			}
 
 			// Awfully inefficient
@@ -361,8 +360,8 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 					System.out.print(str);
 				}
 				buffer.append(new String(b, 0, count, "ascii"));
-				if ( isStdoutStream  && matchStdOutExpectedPattern(buffer.toString())  ||
-					 !isStdoutStream && matchStdErrExpectedPattern(buffer.toString()) ) {				
+				if (isStdoutStream && matchStdOutExpectedPattern(buffer.toString())
+						|| !isStdoutStream && matchStdErrExpectedPattern(buffer.toString())) {
 					return true;
 				}
 
@@ -408,10 +407,10 @@ public abstract class GnuMcuGdbServerBackend extends AbstractDsfService implemen
 					"Error reading " + getServerName() + " " + streamName, e)); //$NON-NLS-1$
 			return false;
 		}
-		
+
 		return false;
 	}
-	
+
 	/**
 	 * A best effort to determine if the GDB server started properly.
 	 * 
