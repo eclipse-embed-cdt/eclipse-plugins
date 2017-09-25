@@ -31,7 +31,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			persist="true">
 			<item
 				value="hifive1"
-				label="Freedom E310 HiFive1" />
+				label="HiFive1" />
 			<item
 				value="e31arty"
 				label="Coreplex E31 Arty" />
