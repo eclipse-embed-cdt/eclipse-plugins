@@ -30,10 +30,4 @@
 
 	<name>GNU MCU Eclipse core</name>
 	<url>http://gnu-mcu-eclipse.github.io</url>
-	<dependencies>
-		<!-- <dependency>
-			<groupId>nl.big-o</groupId>
-			<artifactId>liqp</artifactId>
-		</dependency>  -->
-	</dependencies>
 </project>
