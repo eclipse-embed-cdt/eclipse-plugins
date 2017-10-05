@@ -2015,6 +2015,68 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		</process>
 	</if>
 
+    <!-- ================================================================== -->
+
+    <!-- XCDL metadata -->
+    <if condition="$(deviceName)==fe310">
+        <process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
+            <simple
+                name="projectName"
+                value="$(projectName)" />
+            <simple
+                name="condition"
+                value="" />
+            <complex-array name="files">
+                <element>
+                    <simple
+                        name="source"
+                        value="xpacks/sifive-coreplex-devices/xsvd/fe310-g000-xsvd.json" />
+                    <simple
+                        name="target"
+                        value="xpacks/sifive-coreplex-devices/xsvd/fe310-g000-xsvd.json" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
+                <element>
+                    <simple
+                        name="source"
+                        value="xpacks/sifive-coreplex-devices/devices-xcdl.json" />
+                    <simple
+                        name="target"
+                        value="xpacks/sifive-coreplex-devices/devices-xcdl.json" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
+            </complex-array>
+        </process>
+    </if>
+    
+    <if condition="$(SiFiveBoard)==hifive1">
+        <process type="ilg.gnumcueclipse.templates.core.ConditionalAddFiles">
+            <simple
+                name="projectName"
+                value="$(projectName)" />
+            <simple
+                name="condition"
+                value="" />
+            <complex-array name="files">
+                <element>
+                    <simple
+                        name="source"
+                        value="xpacks/sifive-hifive1-board/boards-xcdl.json" />
+                    <simple
+                        name="target"
+                        value="xpacks/sifive-hifive1-board/boards-xcdl.json" />
+                    <simple
+                        name="replaceable"
+                        value="true" />
+                </element>
+            </complex-array>
+        </process>
+    </if>
+    
 	<!-- ================================================================== -->
 
 	<!-- Target options -->
