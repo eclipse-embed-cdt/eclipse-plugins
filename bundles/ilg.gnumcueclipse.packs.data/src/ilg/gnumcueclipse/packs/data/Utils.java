@@ -133,6 +133,8 @@ public class Utils {
 				break;
 			}
 			if (connection instanceof HttpURLConnection) {
+				connection.setConnectTimeout(60*1000);
+				connection.setReadTimeout(60*1000);
 				int responseCode = ((HttpURLConnection) connection).getResponseCode();
 				if (responseCode == HttpURLConnection.HTTP_OK) {
 					break;
