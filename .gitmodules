@@ -1,36 +1,36 @@
 [submodule "bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-diag-trace"]
 	path = bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-diag-trace
-	url = https://github.com/micro-os-plus/diag-trace.git
+	url = https://github.com/micro-os-plus/diag-trace-xpack.git
 	branch = xpack
 [submodule "bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-startup"]
 	path = bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-startup
-	url = https://github.com/micro-os-plus/startup.git
+	url = https://github.com/micro-os-plus/startup-xpack.git
 	branch = xpack
 [submodule "bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-c-libs"]
 	path = bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-c-libs
-	url = https://github.com/micro-os-plus/c-libs.git
+	url = https://github.com/micro-os-plus/c-libs-xpack.git
 	branch = xpack
 [submodule "bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-cpp-libs"]
 	path = bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-cpp-libs
-	url = https://github.com/micro-os-plus/cpp-libs.git
+	url = https://github.com/micro-os-plus/cpp-libs-xpack.git
 	branch = xpack
 [submodule "bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-riscv-arch"]
 	path = bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/micro-os-plus-riscv-arch
-	url = https://github.com/micro-os-plus/riscv-arch.git
-	branch = xpack
-[submodule "bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-coreplex-devices"]
-	path = bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-coreplex-devices
-	url = https://github.com/micro-os-plus/sifive-coreplex-devices.git
-	branch = xpack
-[submodule "bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-coreplex-arty-boards"]
-	path = bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-coreplex-arty-boards
-	url = https://github.com/micro-os-plus/sifive-coreplex-arty-boards.git
+	url = https://github.com/micro-os-plus/riscv-arch-xpack.git
 	branch = xpack
 [submodule "bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-hifive1-board"]
 	path = bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-hifive1-board
-	url = https://github.com/micro-os-plus/sifive-hifive1-board.git
+	url = https://github.com/micro-os-plus/sifive-hifive1-board-xpack.git
 	branch = xpack
-[submodule "bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-coreplex-templates"]
-	path = bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-coreplex-templates
-	url = https://github.com/micro-os-plus/sifive-coreplex-templates.git
+[submodule "bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-templates"]
+	path = bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-templates
+	url = https://github.com/micro-os-plus/sifive-templates-xpack.git
+	branch = xpack
+[submodule "bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-devices"]
+	path = bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-devices
+	url = https://github.com/micro-os-plus/sifive-devices-xpack.git
+	branch = xpack
+[submodule "bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-arty-boards"]
+	path = bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-arty-boards
+	url = https://github.com/micro-os-plus/sifive-arty-boards-xpack.git
 	branch = xpack
