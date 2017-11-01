@@ -3216,6 +3216,34 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		</process>
 	</if>
 
+    <if condition="$(fileExtension)==cpp">
+        <process
+            type="ilg.gnumcueclipse.templates.core.ConditionalAppendToMBSStringListOptionValues">
+            <simple
+                name="projectName"
+                value="$(projectName)" />
+            <simple
+                name="condition"
+                value="" />
+            <complex-array name="resourcePaths">
+                <element>
+                    <simple
+                        name="id"
+                        value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.defs" />
+                    <simple-array name="values">
+                        <element value="OS_USE_CPP_INTERRUPTS" />
+                    </simple-array>
+                    <simple
+                        name="path"
+                        value="" />
+                    <simple
+                        name="buildType"
+                        value="" />
+                </element>
+            </complex-array>
+        </process>
+    </if>
+
 	<if condition="$(trace)!=none">
 		<!-- Define TRACE only if one of the devices is selected, on DEBUG -->
 		<process
