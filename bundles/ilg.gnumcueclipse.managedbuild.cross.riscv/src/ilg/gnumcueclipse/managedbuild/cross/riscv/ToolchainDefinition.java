@@ -27,8 +27,10 @@ public class ToolchainDefinition {
 	public static final String RISC_V_GCC_LINUX = "RISC-V GCC/Linux";
 	// 339524431
 	public static final String RISC_V_GCC_RTEMS = "RISC-V GCC/RTEMS";
+	// 512258282
+	public static final String GME_RISCV_GCC = "GNU MCU RISC-V GCC";
 
-	public static final String DEFAULT_TOOLCHAIN_NAME = RISC_V_GCC_NEWLIB;
+	public static final String DEFAULT_TOOLCHAIN_NAME = GME_RISCV_GCC;
 
 	// ------------------------------------------------------------------------
 
@@ -321,12 +323,15 @@ public class ToolchainDefinition {
 		fgList = new ArrayList<ToolchainDefinition>();
 
 		// 0
+		fgList.add(new ToolchainDefinition(GME_RISCV_GCC, "riscv-none-embed-"));
+		
+		// 1
 		fgList.add(new ToolchainDefinition(RISC_V_GCC_NEWLIB, "riscv64-unknown-elf-"));
 
-		// 1
+		// 2
 		fgList.add(new ToolchainDefinition(RISC_V_GCC_LINUX, "riscv64-unknown-linux-gnu-"));
 
-		// 2
+		// 3
 		fgList.add(new ToolchainDefinition(RISC_V_GCC_RTEMS, "riscv64-unknown-rtems-"));
 
 		// Enumerate extension points and add custom toolchains.
