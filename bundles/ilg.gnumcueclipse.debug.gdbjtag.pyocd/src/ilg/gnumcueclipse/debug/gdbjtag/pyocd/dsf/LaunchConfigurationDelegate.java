@@ -123,7 +123,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 
 	protected String getGDBVersion(ILaunchConfiguration config) throws CoreException {
 
-		String gdbClientCommand = Configuration.getGdbClientCommand(config);
+		String gdbClientCommand = Configuration.getGdbClientCommand(config, null);
 		String version = DebugUtils.getGDBVersion(config, gdbClientCommand);
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("pyocd.LaunchConfigurationDelegate.getGDBVersion " + version);
