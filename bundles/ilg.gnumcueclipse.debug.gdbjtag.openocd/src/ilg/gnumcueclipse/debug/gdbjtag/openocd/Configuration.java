@@ -36,6 +36,7 @@ public class Configuration {
 	public static String getGdbServerCommand(ILaunchConfiguration configuration, String executable) {
 
 		try {
+			
 			if (executable == null) {
 				if (!configuration.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
 						DefaultPreferences.DO_START_GDB_SERVER_DEFAULT))
@@ -44,28 +45,9 @@ public class Configuration {
 				executable = configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_EXECUTABLE,
 						DefaultPreferences.GDB_SERVER_EXECUTABLE_DEFAULT);
 				// executable = Utils.escapeWhitespaces(executable).trim();
-				executable = executable.trim();
-				if (executable.length() == 0)
-					return null;
 			}
 
-			IProject project = EclipseUtils.getProjectByLaunchConfiguration(configuration);
-			if (project != null) {
-				executable = DynamicVariableResolver.resolveAll(executable, project);
-				if (Activator.getInstance().isDebugging()) {
-					System.out.println("openocd.getGdbServerCommand() substituted \"" + executable + "\"");
-				}
-			}
-
-			if (executable.indexOf("${") >= 0) {
-				// If more macros to process.
-				executable = DebugUtils.resolveAll(executable, configuration.getAttributes());
-
-				ICConfigurationDescription buildConfig = EclipseUtils.getBuildConfigDescription(configuration);
-				if (buildConfig != null) {
-					executable = DebugUtils.resolveAll(executable, buildConfig);
-				}
-			}
+			executable = resolveAll(executable, configuration);
 
 		} catch (CoreException e) {
 			Activator.log(e);
@@ -110,9 +92,9 @@ public class Configuration {
 					.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER, DefaultPreferences.GDB_SERVER_OTHER_DEFAULT)
 					.trim();
 
-			other = DebugUtils.resolveAll(other, configuration.getAttributes());
+			other = resolveAll(other, configuration);
 
-			if (!other.isEmpty()) {
+			if (other != null && !other.isEmpty()) {
 				lst.addAll(StringUtils.splitCommandLineOptions(other));
 			}
 
@@ -144,22 +126,20 @@ public class Configuration {
 
 	// ------------------------------------------------------------------------
 
-	public static String getGdbClientCommand(ILaunchConfiguration configuration) {
+	public static String getGdbClientCommand(ILaunchConfiguration configuration, String executable) {
 
-		String executable = null;
 		try {
-			String defaultGdbCommand = Platform.getPreferencesService().getString(GdbPlugin.PLUGIN_ID,
-					IGdbDebugPreferenceConstants.PREF_DEFAULT_GDB_COMMAND,
-					IGDBLaunchConfigurationConstants.DEBUGGER_DEBUG_NAME_DEFAULT, null);
+			
+			if (executable == null) {
+				String defaultGdbCommand = Platform.getPreferencesService().getString(GdbPlugin.PLUGIN_ID,
+						IGdbDebugPreferenceConstants.PREF_DEFAULT_GDB_COMMAND,
+						IGDBLaunchConfigurationConstants.DEBUGGER_DEBUG_NAME_DEFAULT, null);
 
-			executable = configuration.getAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
-					defaultGdbCommand);
-			executable = DebugUtils.resolveAll(executable, configuration.getAttributes());
-
-			ICConfigurationDescription buildConfig = EclipseUtils.getBuildConfigDescription(configuration);
-			if (buildConfig != null) {
-				executable = DebugUtils.resolveAll(executable, buildConfig);
+				executable = configuration.getAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUG_NAME,
+						defaultGdbCommand);
 			}
+
+			executable = resolveAll(executable, configuration);
 
 		} catch (CoreException e) {
 			Activator.log(e);
@@ -173,7 +153,7 @@ public class Configuration {
 
 		List<String> lst = new ArrayList<String>();
 
-		String executable = getGdbClientCommand(configuration);
+		String executable = getGdbClientCommand(configuration, null);
 		if (executable == null || executable.length() == 0)
 			return null;
 
@@ -212,7 +192,7 @@ public class Configuration {
 
 	public static String getGdbClientCommandName(ILaunchConfiguration config) {
 
-		String fullCommand = getGdbClientCommand(config);
+		String fullCommand = getGdbClientCommand(config, null);
 		return StringUtils.extractNameFromPath(fullCommand);
 	}
 
