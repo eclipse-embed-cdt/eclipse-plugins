@@ -3,13 +3,13 @@
    <feature url="features/ilg.gnumcueclipse.managedbuild.cross.riscv.feature_2.6.1.qualifier.jar" id="ilg.gnumcueclipse.managedbuild.cross.riscv.feature" version="2.6.1.qualifier">
       <category name="ilg.gnumcueclipse.riscv.category"/>
    </feature>
-   <feature url="features/ilg.gnumcueclipse.debug.gdbjtag.jlink.feature_4.1.6.qualifier.jar" id="ilg.gnumcueclipse.debug.gdbjtag.jlink.feature" version="4.1.6.qualifier">
+   <feature url="features/ilg.gnumcueclipse.debug.gdbjtag.jlink.feature_4.2.1.qualifier.jar" id="ilg.gnumcueclipse.debug.gdbjtag.jlink.feature" version="4.2.1.qualifier">
       <category name="ilg.gnumcueclipse.riscv.category"/>
    </feature>
    <feature url="features/ilg.gnumcueclipse.debug.gdbjtag.openocd.feature_4.2.1.qualifier.jar" id="ilg.gnumcueclipse.debug.gdbjtag.openocd.feature" version="4.2.1.qualifier">
       <category name="ilg.gnumcueclipse.riscv.category"/>
    </feature>
-   <feature url="features/ilg.gnumcueclipse.debug.gdbjtag.qemu.feature_3.1.6.qualifier.jar" id="ilg.gnumcueclipse.debug.gdbjtag.qemu.feature" version="3.1.6.qualifier">
+   <feature url="features/ilg.gnumcueclipse.debug.gdbjtag.qemu.feature_3.2.1.qualifier.jar" id="ilg.gnumcueclipse.debug.gdbjtag.qemu.feature" version="3.2.1.qualifier">
       <category name="ilg.gnumcueclipse.riscv.category"/>
    </feature>
    <feature url="features/ilg.gnumcueclipse.codered.feature_1.1.2.qualifier.jar" id="ilg.gnumcueclipse.codered.feature" version="1.1.2.qualifier">
