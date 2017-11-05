@@ -216,6 +216,33 @@ public class Configuration {
 		return StringUtils.extractNameFromPath(fullCommand);
 	}
 
+	public static String resolveAll(String str, ILaunchConfiguration configuration) throws CoreException {
+		String value = str;
+		value = value.trim();
+		if (value.length() == 0)
+			return null;
+
+		if (value.indexOf("${") >= 0) {
+			IProject project = EclipseUtils.getProjectByLaunchConfiguration(configuration);
+			if (project != null) {
+				value = DynamicVariableResolver.resolveAll(value, project);
+			}
+		}
+
+		if (value.indexOf("${") >= 0) {
+			// If more macros to process.
+			value = DebugUtils.resolveAll(value, configuration.getAttributes());
+
+			ICConfigurationDescription buildConfig = EclipseUtils.getBuildConfigDescription(configuration);
+			if (buildConfig != null) {
+				value = DebugUtils.resolveAll(value, buildConfig);
+			}
+		}
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("openocd.resolveAll(\""+ str +"\") = \"" + value + "\"");
+		}
+		return value;
+	}
 	// ------------------------------------------------------------------------
 
 	public static boolean getDoStartGdbServer(ILaunchConfiguration config) throws CoreException {
