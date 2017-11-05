@@ -935,9 +935,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		boolean result = true;
 		boolean hasContent = false;
 
-		if (fDoStartGdbServer!=null && fDoStartGdbServer.getSelection()) {
+		if (fDoStartGdbServer != null && fDoStartGdbServer.getSelection()) {
 
-			hasContent  = true;
+			hasContent = true;
 			if (fGdbServerExecutable != null && fGdbServerExecutable.getText().trim().isEmpty())
 				result = false;
 
@@ -949,19 +949,41 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		}
 
-		if (fDoStartGdbClient!=null && fDoStartGdbClient.getSelection()) {
-			
-			hasContent  = true;
+		if (fDoStartGdbClient != null && fDoStartGdbClient.getSelection()) {
+
+			hasContent = true;
 			if (fGdbClientExecutable != null && fGdbClientExecutable.getText().trim().isEmpty())
 				result = false;
-			
+
 		}
-		
-		if (Activator.getInstance().isDebugging())
-		{
+
+		if (Activator.getInstance().isDebugging()) {
 			System.out.println("openocd.TabDebugger.isValid() " + launchConfig.getName() + " = " + result);
 		}
 		return hasContent && result;
+	}
+
+	@Override
+	public boolean canSave() {
+		if (fDoStartGdbServer != null && fDoStartGdbServer.getSelection()) {
+			if (fGdbServerExecutable != null && fGdbServerExecutable.getText().trim().isEmpty())
+				return false;
+
+			if (fGdbServerGdbPort != null && fGdbServerGdbPort.getText().trim().isEmpty())
+				return false;
+
+			if (fGdbServerTelnetPort != null && fGdbServerTelnetPort.getText().trim().isEmpty())
+				return false;
+		}
+
+		// Now, if any of server or client is enabled, return true
+		if (fDoStartGdbServer != null && fDoStartGdbServer.getSelection()) {
+			return true;
+		}
+		if (fDoStartGdbClient != null && fDoStartGdbClient.getSelection()) {
+			return true;
+		}
+		return false;
 	}
 
 	@Override
@@ -1150,27 +1172,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		// Force thread update
 		configuration.setAttribute(IGDBLaunchConfigurationConstants.ATTR_DEBUGGER_UPDATE_THREADLIST_ON_SUSPEND,
 				DefaultPreferences.UPDATE_THREAD_LIST_DEFAULT);
-	}
-
-	@Override
-	public boolean canSave() {
-		if (fGdbServerExecutable != null && fGdbServerExecutable.getText().trim().isEmpty())
-			return false;
-
-		if (fGdbServerGdbPort != null && fGdbServerGdbPort.getText().trim().isEmpty())
-			return false;
-
-		if (fGdbServerTelnetPort != null && fGdbServerTelnetPort.getText().trim().isEmpty())
-			return false;
-
-		// Now, if any of server or client is enabled, return true
-		if (fDoStartGdbServer != null && fDoStartGdbServer.getSelection()) {
-			return true;
-		}
-		if (fDoStartGdbClient != null && fDoStartGdbClient.getSelection()) {
-			return true;
-		}
-		return false;
 	}
 
 	// ------------------------------------------------------------------------

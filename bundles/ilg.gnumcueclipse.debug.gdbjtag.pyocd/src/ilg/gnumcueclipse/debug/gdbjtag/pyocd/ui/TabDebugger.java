@@ -1373,6 +1373,53 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	}
 
 	@Override
+	public boolean isValid(ILaunchConfiguration launchConfig) {
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("pyocd.TabDebugger.isValid() " + launchConfig.getName());
+		}
+
+		boolean result = true;
+
+		if (fDoStartGdbServer != null && fDoStartGdbServer.getSelection()) {
+
+			if (fGdbServerExecutable != null && fGdbServerExecutable.getText().trim().isEmpty())
+				result = false;
+
+			if (fGdbServerGdbPort != null && fGdbServerGdbPort.getText().trim().isEmpty())
+				result = false;
+
+			if (fGdbServerTelnetPort != null && fGdbServerTelnetPort.getText().trim().isEmpty())
+				result = false;
+
+		}
+
+		if (fGdbClientExecutable != null && fGdbClientExecutable.getText().trim().isEmpty())
+			result = false;
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("pyocd.TabDebugger.isValid() " + launchConfig.getName() + " = " + result);
+		}
+
+		return result;
+	}
+
+	@Override
+	public boolean canSave() {
+		if (fDoStartGdbServer != null && fDoStartGdbServer.getSelection()) {
+			if (fGdbServerExecutable != null && fGdbServerExecutable.getText().trim().isEmpty())
+				return false;
+
+			if (fGdbServerGdbPort != null && fGdbServerGdbPort.getText().trim().isEmpty())
+				return false;
+
+			if (fGdbServerTelnetPort != null && fGdbServerTelnetPort.getText().trim().isEmpty())
+				return false;
+		}
+
+		return true;
+	}
+
+	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 
 		if (Activator.getInstance().isDebugging()) {
@@ -1402,11 +1449,19 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			// Ports
 			int port;
-			port = Integer.parseInt(fGdbServerGdbPort.getText().trim());
-			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER, port);
+			if (!fGdbServerGdbPort.getText().trim().isEmpty()) {
+				port = Integer.parseInt(fGdbServerGdbPort.getText().trim());
+				configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER, port);
+			} else {
+				Activator.log("empty fGdbServerGdbPort");
+			}
 
-			port = Integer.parseInt(fGdbServerTelnetPort.getText().trim());
-			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER, port);
+			if (!fGdbServerTelnetPort.getText().trim().isEmpty()) {
+				port = Integer.parseInt(fGdbServerTelnetPort.getText().trim());
+				configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER, port);
+			} else {
+				Activator.log("empty fGdbServerTelnetPort");
+			}
 
 			// Board ID
 			if (fSelectedBoardId != null) {

@@ -36,7 +36,7 @@ public class Configuration {
 	public static String getGdbServerCommand(ILaunchConfiguration configuration, String executable) {
 
 		try {
-			
+
 			if (executable == null) {
 				if (!configuration.getAttribute(ConfigurationAttributes.DO_START_GDB_SERVER,
 						DefaultPreferences.DO_START_GDB_SERVER_DEFAULT))
@@ -129,7 +129,7 @@ public class Configuration {
 	public static String getGdbClientCommand(ILaunchConfiguration configuration, String executable) {
 
 		try {
-			
+
 			if (executable == null) {
 				String defaultGdbCommand = Platform.getPreferencesService().getString(GdbPlugin.PLUGIN_ID,
 						IGdbDebugPreferenceConstants.PREF_DEFAULT_GDB_COMMAND,
@@ -219,7 +219,7 @@ public class Configuration {
 			}
 		}
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("openocd.resolveAll(\""+ str +"\") = \"" + value + "\"");
+			System.out.println("openocd.resolveAll(\"" + str + "\") = \"" + value + "\"");
 		}
 		return value;
 	}
