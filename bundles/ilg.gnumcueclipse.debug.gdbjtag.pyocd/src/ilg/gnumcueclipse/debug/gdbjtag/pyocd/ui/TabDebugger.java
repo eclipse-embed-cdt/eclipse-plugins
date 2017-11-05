@@ -93,12 +93,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private List<PyOCD.Board> fBoards;
 	private String fSelectedBoardId;
 
-	private Button fDoStartGdbServer;
 	private Text fGdbClientExecutable;
+	private Text fGdbClientPathLabel;
 	private Text fGdbClientOtherOptions;
 	private Text fGdbClientOtherCommands;
 
-	private Text fPathLabel;
+	private Button fDoStartGdbServer;
+	private Text fGdbServerPathLabel;
 	private Link fLink;
 
 	private Text fTargetIpAddress;
@@ -184,7 +185,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 		local.setLayoutData(gd);
 		return local;
-
 	}
 
 	@Override
@@ -324,13 +324,13 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				Label label = new Label(subcomp, SWT.NONE);
 				label.setText(Messages.getString("DebuggerTab.gdbServerActualPath_Label"));
 
-				fPathLabel = new Text(subcomp, SWT.SINGLE | SWT.BORDER);
+				fGdbServerPathLabel = new Text(subcomp, SWT.SINGLE | SWT.BORDER);
 				GridData gd = new GridData(SWT.FILL, 0, true, false);
 				gd.horizontalSpan = 1;
-				fPathLabel.setLayoutData(gd);
+				fGdbServerPathLabel.setLayoutData(gd);
 
-				fPathLabel.setEnabled(true);
-				fPathLabel.setEditable(false);
+				fGdbServerPathLabel.setEnabled(true);
+				fGdbServerPathLabel.setEditable(false);
 			}
 
 			{
@@ -574,7 +574,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				}
 				scheduleUpdateJob(); // provides much better performance for
 										// Text listeners
-				updateActualpath();
+				updateGdbServerActualPath();
 			}
 		});
 
@@ -618,7 +618,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				}
 
 				if (ret == Window.OK) {
-					updateActualpath();
+					updateGdbServerActualPath();
 				}
 			}
 		});
@@ -693,7 +693,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		Composite comp = new Composite(group, SWT.NONE);
 		{
 			GridLayout layout = new GridLayout();
-			layout.numColumns = 2;
+			layout.numColumns = 5;
 			layout.marginHeight = 0;
 			comp.setLayout(layout);
 			GridData gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -707,7 +707,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			label.setText(Messages.getString("DebuggerTab.gdbCommand_Label"));
 			label.setToolTipText(Messages.getString("DebuggerTab.gdbCommand_ToolTipText"));
 
-			Composite local = createHorizontalLayout(comp, 3, -1);
+			Composite local = createHorizontalLayout(comp, 3, 1);
 			{
 				fGdbClientExecutable = new Text(local, SWT.SINGLE | SWT.BORDER);
 				GridData gd = new GridData(GridData.FILL_HORIZONTAL);
@@ -723,6 +723,19 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		{
 			Label label = new Label(comp, SWT.NONE);
+			label.setText(Messages.getString("DebuggerTab.gdbCommandActualPath_Label"));
+
+			fGdbClientPathLabel = new Text(comp, SWT.SINGLE | SWT.BORDER);
+			GridData gd = new GridData(SWT.FILL, 0, true, false);
+			gd.horizontalSpan = 4;
+			fGdbClientPathLabel.setLayoutData(gd);
+
+			fGdbClientPathLabel.setEnabled(true);
+			fGdbClientPathLabel.setEditable(false);
+		}
+
+		{
+			Label label = new Label(comp, SWT.NONE);
 			label.setText(Messages.getString("DebuggerTab.gdbOtherOptions_Label"));
 			label.setToolTipText(Messages.getString("DebuggerTab.gdbOtherOptions_ToolTipText"));
 			GridData gd = new GridData();
@@ -730,6 +743,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			fGdbClientOtherOptions = new Text(comp, SWT.SINGLE | SWT.BORDER);
 			gd = new GridData(GridData.FILL_HORIZONTAL);
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			fGdbClientOtherOptions.setLayoutData(gd);
 		}
 
@@ -744,6 +758,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			fGdbClientOtherCommands = new Text(comp, SWT.MULTI | SWT.WRAP | SWT.BORDER | SWT.V_SCROLL);
 			gd = new GridData(SWT.FILL, SWT.FILL, true, true);
 			gd.heightHint = 60;
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			fGdbClientOtherCommands.setLayoutData(gd);
 		}
 
@@ -755,6 +770,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 				scheduleUpdateJob(); // provides much better performance for
 										// Text listeners
+				updateGdbClientActualPath();
 			}
 		});
 
@@ -848,14 +864,24 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		});
 	}
 
-	private void updateActualpath() {
+	private void updateGdbServerActualPath() {
 
 		assert (fConfiguration != null);
 		String fullCommand = Configuration.getGdbServerCommand(fConfiguration, fGdbServerExecutable.getText());
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("pyocd.TabDebugger.updateActualpath() \"" + fullCommand + "\"");
 		}
-		fPathLabel.setText(fullCommand);
+		fGdbServerPathLabel.setText(fullCommand);
+	}
+
+	private void updateGdbClientActualPath() {
+
+		assert (fConfiguration != null);
+		String fullCommand = Configuration.getGdbClientCommand(fConfiguration, fGdbClientExecutable.getText());
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("openocd.TabDebugger.updateGdbClientActualPath() \"" + fullCommand + "\"");
+		}
+		fGdbClientPathLabel.setText(fullCommand);
 	}
 
 	private void doStartGdbServerChanged() {
@@ -884,7 +910,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fTargetIpAddress.setEnabled(!enabled);
 		fTargetPortNumber.setEnabled(!enabled);
 
-		fPathLabel.setEnabled(enabled);
+		fGdbServerPathLabel.setEnabled(enabled);
 		fLink.setEnabled(enabled);
 	}
 
