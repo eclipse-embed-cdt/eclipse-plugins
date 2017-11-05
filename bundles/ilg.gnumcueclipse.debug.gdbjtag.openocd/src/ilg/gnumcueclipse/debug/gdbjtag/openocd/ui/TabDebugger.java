@@ -899,6 +899,44 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	}
 
 	@Override
+	public boolean isValid(ILaunchConfiguration launchConfig) {
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("openocd.TabDebugger.isValid() " + launchConfig.getName());
+		}
+
+		boolean result = true;
+		boolean hasContent = false;
+
+		if (fDoStartGdbServer!=null && fDoStartGdbServer.getSelection()) {
+
+			hasContent  = true;
+			if (fGdbServerExecutable != null && fGdbServerExecutable.getText().trim().isEmpty())
+				result = false;
+
+			if (fGdbServerGdbPort != null && fGdbServerGdbPort.getText().trim().isEmpty())
+				result = false;
+
+			if (fGdbServerTelnetPort != null && fGdbServerTelnetPort.getText().trim().isEmpty())
+				result = false;
+
+		}
+
+		if (fDoStartGdbClient!=null && fDoStartGdbClient.getSelection()) {
+			
+			hasContent  = true;
+			if (fGdbClientExecutable != null && fGdbClientExecutable.getText().trim().isEmpty())
+				result = false;
+			
+		}
+		
+		if (Activator.getInstance().isDebugging())
+		{
+			System.out.println("openocd.TabDebugger.isValid() " + launchConfig.getName() + " = " + result);
+		}
+		return hasContent && result;
+	}
+
+	@Override
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 
 		if (Activator.getInstance().isDebugging()) {
@@ -929,11 +967,19 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			// Ports
 			int port;
-			port = Integer.parseInt(fGdbServerGdbPort.getText().trim());
-			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER, port);
+			if (!fGdbServerGdbPort.getText().trim().isEmpty()) {
+				port = Integer.parseInt(fGdbServerGdbPort.getText().trim());
+				configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER, port);
+			} else {
+				Activator.log("empty fGdbServerGdbPort");
+			}
 
-			port = Integer.parseInt(fGdbServerTelnetPort.getText().trim());
-			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER, port);
+			if (!fGdbServerTelnetPort.getText().trim().isEmpty()) {
+				port = Integer.parseInt(fGdbServerTelnetPort.getText().trim());
+				configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER, port);
+			} else {
+				Activator.log("empty fGdbServerTelnetPort");
+			}
 
 			// Other options
 			stringValue = fGdbServerOtherOptions.getText().trim();
@@ -1080,6 +1126,16 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	@Override
 	public boolean canSave() {
+		if (fGdbServerExecutable != null && fGdbServerExecutable.getText().trim().isEmpty())
+			return false;
+
+		if (fGdbServerGdbPort != null && fGdbServerGdbPort.getText().trim().isEmpty())
+			return false;
+
+		if (fGdbServerTelnetPort != null && fGdbServerTelnetPort.getText().trim().isEmpty())
+			return false;
+
+		// Now, if any of server or client is enabled, return true
 		if (fDoStartGdbServer != null && fDoStartGdbServer.getSelection()) {
 			return true;
 		}
