@@ -23,11 +23,13 @@ To pull all submodules after cloning the main repo:
 $ git submodule update --init --remote
 ```
 
-For further updates to new submodule commits:
+For get further updates:
 
 ```console
-$ git submodule update --remote
+$ git submodule foreach 'git pull'
 ```
+
+To remove the submodules
 
 ```console
 $ git rm --cached bundles/ilg.gnumcueclipse.templates.sifive/templates/sifive_exe_c_project/xpacks/sifive-templates
