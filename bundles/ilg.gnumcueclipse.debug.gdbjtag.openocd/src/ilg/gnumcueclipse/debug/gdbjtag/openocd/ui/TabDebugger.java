@@ -79,6 +79,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	private Button fDoStartGdbServer;
 	private Text fGdbServerGdbPort;
 	private Text fGdbServerTelnetPort;
+	private Text fGdbServerTCLPort;
 
 	private Text fGdbServerExecutable;
 	private Button fGdbServerBrowseButton;
@@ -309,6 +310,18 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		{
 			Label label = new Label(comp, SWT.NONE);
+			label.setText(Messages.getString("DebuggerTab.gdbServerTCLPort_Label"));
+			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerTCLPort_ToolTipText"));
+
+			fGdbServerTCLPort = new Text(comp, SWT.SINGLE | SWT.BORDER);
+			GridData gd = new GridData();
+			gd.widthHint = 60;
+			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
+			fGdbServerTCLPort.setLayoutData(gd);
+		}
+
+		{
+			Label label = new Label(comp, SWT.NONE);
 			label.setText(Messages.getString("DebuggerTab.gdbServerOther_Label")); //$NON-NLS-1$
 			label.setToolTipText(Messages.getString("DebuggerTab.gdbServerOther_ToolTipText"));
 			GridData gd = new GridData();
@@ -446,6 +459,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		});
 
 		fGdbServerTelnetPort.addModifyListener(scheduleUpdateJobModifyListener);
+		fGdbServerTCLPort.addModifyListener(scheduleUpdateJobModifyListener);
 
 		fGdbServerOtherOptions.addModifyListener(scheduleUpdateJobModifyListener);
 
@@ -696,6 +710,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		fGdbServerGdbPort.setEnabled(enabled);
 		fGdbServerTelnetPort.setEnabled(enabled);
+		fGdbServerTCLPort.setEnabled(enabled);
 
 		if (EclipseUtils.isWindows()) {
 			// Prevent disable it on Windows
@@ -752,10 +767,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				fGdbServerGdbPort.setText(
 						Integer.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
 								DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT)));
-
 				fGdbServerTelnetPort.setText(Integer
 						.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 								DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
+				fGdbServerTCLPort.setText(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_TCL_PORT_NUMBER,
+						DefaultPreferences.GDB_SERVER_TCL_PORT_NUMBER_DEFAULT));
 
 				// Other options
 				stringDefault = fPersistentPreferences.getGdbServerOtherOptions();
@@ -854,8 +870,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			// Ports
 			fGdbServerGdbPort.setText(Integer.toString(DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT));
-
 			fGdbServerTelnetPort.setText(Integer.toString(DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT));
+			fGdbServerTCLPort.setText(DefaultPreferences.GDB_SERVER_TCL_PORT_NUMBER_DEFAULT);
 
 			// Other options
 			stringDefault = fDefaultPreferences.getOpenocdConfig();
@@ -946,6 +962,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			if (fGdbServerTelnetPort != null && fGdbServerTelnetPort.getText().trim().isEmpty())
 				result = false;
+			if (fGdbServerTCLPort != null && fGdbServerTCLPort.getText().trim().isEmpty())
+				result = false;
 
 		}
 
@@ -973,6 +991,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 				return false;
 
 			if (fGdbServerTelnetPort != null && fGdbServerTelnetPort.getText().trim().isEmpty())
+				return false;
+			if (fGdbServerTCLPort != null && fGdbServerTCLPort.getText().trim().isEmpty())
 				return false;
 		}
 
@@ -1023,12 +1043,18 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			} else {
 				Activator.log("empty fGdbServerGdbPort");
 			}
-
 			if (!fGdbServerTelnetPort.getText().trim().isEmpty()) {
 				port = Integer.parseInt(fGdbServerTelnetPort.getText().trim());
 				configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER, port);
 			} else {
 				Activator.log("empty fGdbServerTelnetPort");
+			}
+			if (!fGdbServerTCLPort.getText().trim().isEmpty()) {
+				// Not integer, since it can be 'disabled'
+				String str = fGdbServerTCLPort.getText().trim();
+				configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TCL_PORT_NUMBER, str);
+			} else {
+				Activator.log("empty fGdbServerTCLPort");
 			}
 
 			// Other options
@@ -1137,9 +1163,10 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_GDB_PORT_NUMBER,
 					DefaultPreferences.GDB_SERVER_GDB_PORT_NUMBER_DEFAULT);
-
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 					DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT);
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TCL_PORT_NUMBER,
+					DefaultPreferences.GDB_SERVER_TCL_PORT_NUMBER_DEFAULT);
 
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_LOG,
 					DefaultPreferences.GDB_SERVER_LOG_DEFAULT);

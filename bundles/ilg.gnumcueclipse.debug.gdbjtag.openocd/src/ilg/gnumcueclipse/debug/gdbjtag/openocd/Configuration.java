@@ -88,6 +88,10 @@ public class Configuration {
 					+ Integer.toString(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_TELNET_PORT_NUMBER,
 							DefaultPreferences.GDB_SERVER_TELNET_PORT_NUMBER_DEFAULT)));
 
+			lst.add("-c");
+			lst.add("tcl_port " + configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_TCL_PORT_NUMBER,
+					DefaultPreferences.GDB_SERVER_TCL_PORT_NUMBER_DEFAULT));
+
 			String other = configuration
 					.getAttribute(ConfigurationAttributes.GDB_SERVER_OTHER, DefaultPreferences.GDB_SERVER_OTHER_DEFAULT)
 					.trim();
