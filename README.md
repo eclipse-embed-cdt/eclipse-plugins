@@ -22,9 +22,8 @@ For manual installs, the stable version update site is:
 ### Command line
 
 ```bash
-$ git clone --branch=master https://github.com/gnu-mcu-eclipse/eclipse-plugins.git gnu-mcu-eclipse/eclipse-plugins.git
-$ cd gnu-mcu-eclipse/eclipse-plugins.git
-$ git submodule update --init --recursive
+$ git clone --branch=master --recurse-submodules https://github.com/gnu-mcu-eclipse/eclipse-plugins.git eclipse-plugins.git
+$ cd eclipse-plugins.git
 $ mvn clean verify
 ```
 
