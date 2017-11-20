@@ -22,7 +22,9 @@ public class Messages extends NLS {
 	public static String PeripheralsView_NameColumn_text;
 	public static String PeripheralsView_AddressColumn_text;
 	public static String PeripheralsView_DescriptionColumn_text;
-
+	public static String PeripheralsView_FileAction_text;
+	public static String PeripheralsView_FileAction_toolTipText;
+	
 	public static String PeripheralRegister_Msg_Unknown_expression;
 	public static String PeripheralRegister_Msg_Not_a_number;
 
@@ -39,7 +41,13 @@ public class Messages extends NLS {
 	public static String AddMemoryBlockAction_noMemoryBlock;
 	public static String AddMemoryBlockAction_failed;
 	public static String AddMemoryBlockAction_input_invalid;
-
+	
+	public static String SvdPathProperties_intro_label;
+	public static String SvdPathProperties_file_label;
+	public static String SvdPathProperties_file_button;
+	public static String SvdPathProperties_file_tooltip;
+	public static String SvdPathProperties_file_dialog;
+	
 	static {
 		// initialise above static strings
 		NLS.initializeMessages(MESSAGES, Messages.class);

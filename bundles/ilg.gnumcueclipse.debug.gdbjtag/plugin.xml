@@ -148,6 +148,33 @@
 			name="%preferences.peripherals">
 		</page>
 	</extension>
+ <extension
+       point="org.eclipse.cdt.ui.cPropertyTab">
+    <tab
+          class="ilg.gnumcueclipse.debug.gdbjtag.ui.properties.SvdTab"
+          name="%properties.svd.tab.name"
+          parent="ilg.gnumcueclipse.debug.gdbjtag.ui.properties.SvdPage"
+          weight="010">
+    </tab>
+ </extension>
+ <extension
+       point="org.eclipse.ui.propertyPages">
+    <page
+          category="ilg.gnumcueclipse.core.ui.properties.mcu"
+          class="ilg.gnumcueclipse.debug.gdbjtag.ui.properties.SvdPage"
+          id="ilg.gnumcueclipse.debug.gdbjtag.ui.properties.PeripheralsPage"
+          name="%properties.svd.page.name">
+       <enabledWhen>
+          <adapt
+                type="org.eclipse.core.resources.IResource">
+             <test
+                   property="org.eclipse.core.resources.projectNature"
+                   value="org.eclipse.cdt.managedbuilder.core.managedBuildNature">
+             </test>
+          </adapt>
+       </enabledWhen>
+    </page>
+ </extension>
 
 
 </plugin>
