@@ -21,8 +21,10 @@ import ilg.gnumcueclipse.debug.gdbjtag.datamodel.IPeripheralDMContext;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.PeripheralDMContext;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.PeripheralDMNode;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdUtils;
+import ilg.gnumcueclipse.debug.gdbjtag.properties.PersistentProperties;
 import ilg.gnumcueclipse.packs.core.tree.Leaf;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
@@ -37,15 +39,29 @@ import org.eclipse.cdt.dsf.debug.service.command.ICommandControlService;
 import org.eclipse.cdt.dsf.service.AbstractDsfService;
 import org.eclipse.cdt.dsf.service.DsfSession;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.osgi.framework.BundleContext;
+import org.osgi.service.prefs.Preferences;
 
 public class PeripheralsService extends AbstractDsfService implements IPeripheralsService {
 
 	private ICommandControlService fCommandControl;
 	private PeripheralDMContext[] fPeripheralsDMContexts = null;
+
+	// Add the launch configuration name hash.
+	public static String SVD_ABSOLUTE_PATH_KEY_PREFIX = "explicitSvdAbsolutePath.";
+
+	// Launch config attributes. To be used in the peripheral register window.
+	public static String SVD_ABSOLUTE_PATH_ATTRIBUTE_KEY = Activator.PLUGIN_ID + ".svdAbsolutePath";
+	public static String DEVICE_NAME_ATTRIBUTE_KEY = Activator.PLUGIN_ID + ".deviceName";
+	public static String DEVICE_VENDOR_NAME_ATTRIBUTE_KEY = Activator.PLUGIN_ID + ".deviceVendorName";
 
 	// ------------------------------------------------------------------------
 
@@ -133,53 +149,103 @@ public class PeripheralsService extends AbstractDsfService implements IPeriphera
 			ILaunchConfiguration launchConfiguration = ((ILaunchConfigurationProvider) fCommandControl)
 					.getLaunchConfiguration();
 
-			// The second step is to get the build configuration description.
-			ICConfigurationDescription cConfigDescription = EclipseUtils.getBuildConfigDescription(launchConfiguration);
-
-			if (cConfigDescription != null) {
-				// System.out.println(cConfigDescription);
-
-				// The third step is to get the CDT configuration.
-				IConfiguration config = EclipseUtils.getConfigurationFromDescription(cConfigDescription);
-				if (Activator.getInstance().isDebugging()) {
-					System.out.println(config);
+			IProject project = EclipseUtils.getProjectByLaunchConfiguration(launchConfiguration);
+			ICConfigurationDescription desc = EclipseUtils.getBuildConfigDescription(launchConfiguration);
+			Preferences preferences = new ProjectScope(project).getNode(Activator.PLUGIN_ID);
+			String key = PersistentProperties.getSvdAbsolutePathKey(desc.getId());
+			String value = preferences.get(key, "").trim();
+		
+			IPath svdPath = null;
+			if (!value.isEmpty()) {
+				// System.out.println("Custom SVD path: " + value);
+				File f = new File(value);
+				if (f.exists() && !f.isDirectory()) {
+					svdPath = new Path(value);
 				}
+			}
 
+			String deviceName = null;
+			String vendorName = null;
+
+			if (svdPath == null) {
+				// The second step is to get the build configuration description.
+				ICConfigurationDescription cConfigDescription = EclipseUtils
+						.getBuildConfigDescription(launchConfiguration);
+
+				if (cConfigDescription != null) {
+					// System.out.println(cConfigDescription);
+
+					// The third step is to get the CDT configuration.
+					IConfiguration config = EclipseUtils.getConfigurationFromDescription(cConfigDescription);
+					if (Activator.getInstance().isDebugging()) {
+						System.out.println(config);
+					}
+
+					try {
+						String vendorId = null;
+
+						CProjectExtraDataManagerProxy dataManager = CProjectExtraDataManagerProxy.getInstance();
+						Map<String, String> propertiesMap = dataManager.getExtraProperties(config);
+						if (propertiesMap != null) {
+							vendorId = propertiesMap.get(CProjectPacksStorage.DEVICE_VENDOR_ID);
+							deviceName = propertiesMap.get(CProjectPacksStorage.DEVICE_NAME);
+							vendorName = propertiesMap.get(CProjectPacksStorage.DEVICE_VENDOR_NAME);
+						}
+
+						if (vendorId != null && deviceName != null) {
+
+							// Leaf tree = SvdUtils.getTree(vendorId, deviceName);
+
+							svdPath = SvdUtils.getSvdPath(vendorId, deviceName);
+
+						} else {
+
+							drm.setStatus(new Status(Status.ERROR, Activator.PLUGIN_ID,
+									"There is no peripheral description available, assign a device to the project."));
+							drm.done();
+							return;
+						}
+					} catch (CoreException e) {
+						drm.setStatus(e.getStatus());
+						drm.done();
+						return;
+					}
+				}
+			}
+
+			if (Activator.getInstance().isDebugging()) {
+				System.out.println("SVD path: " + svdPath);
+			}
+
+			if (svdPath != null) {
 				try {
-					String vendorId = null;
-					String deviceName = null;
+					Leaf tree = SvdUtils.getTree(svdPath);
 
-					CProjectExtraDataManagerProxy dataManager = CProjectExtraDataManagerProxy.getInstance();
-					Map<String, String> propertiesMap = dataManager.getExtraProperties(config);
-					if (propertiesMap != null) {
-						vendorId = propertiesMap.get(CProjectPacksStorage.DEVICE_VENDOR_ID);
-						deviceName = propertiesMap.get(CProjectPacksStorage.DEVICE_NAME);
+					// Store the actual SVD path, device name, vendor name as attributes.
+					// The button in the Peripherals view will use them to help the selection.
+					Map<String, Object> attributes = launchConfiguration.getAttributes();
+					attributes.put(SVD_ABSOLUTE_PATH_ATTRIBUTE_KEY, svdPath);
+					if (deviceName != null) {
+						attributes.put(DEVICE_NAME_ATTRIBUTE_KEY, deviceName);
+					}
+					if (vendorName != null) {
+						attributes.put(DEVICE_VENDOR_NAME_ATTRIBUTE_KEY, vendorName);
 					}
 
-					if (vendorId != null && deviceName != null) {
+					List<Leaf> list = SvdUtils.getPeripherals(tree);
 
-						Leaf tree = SvdUtils.getTree(vendorId, deviceName);
-						List<Leaf> list = SvdUtils.getPeripherals(tree);
+					fPeripheralsDMContexts = createPeripheralsContexts(containerDMContext, list);
 
-						fPeripheralsDMContexts = createPeripheralsContexts(containerDMContext, list);
-
-						drm.setData(fPeripheralsDMContexts);
-						drm.done();
-						return;
-
-					} else {
-
-						drm.setStatus(new Status(Status.ERROR, Activator.PLUGIN_ID,
-								"There are no peripheral descriptions available, assign a device to the project."));
-						drm.done();
-						return;
-					}
+					drm.setData(fPeripheralsDMContexts);
+					drm.done();
+					return;
 				} catch (CoreException e) {
 					drm.setStatus(e.getStatus());
 					drm.done();
 					return;
 				}
 			}
+
 		}
 
 		drm.setStatus(new Status(Status.ERROR, Activator.PLUGIN_ID, "No peripherals available."));

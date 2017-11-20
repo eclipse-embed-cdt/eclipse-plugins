@@ -144,21 +144,18 @@ public class SvdUtils {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Identify the SVD file associated with the given device and parse it with
-	 * the generic parser.
+	 * Identify the SVD file associated with the given device.
 	 * 
 	 * @param deviceVendorId
 	 *            a string with the numeric vendor id.
 	 * @param deviceName
 	 *            a string with the CMSIS device name.
-	 * @return a tree with the parsed SVD.
+	 * @return a path.
 	 * @throws CoreException
 	 *             differentiate when the Packs plug-in is not installed or when
 	 *             the device is not found in the installed packages.
 	 */
-	public static Leaf getTree(String deviceVendorId, String deviceName) throws CoreException {
-
-		MessageConsoleStream out = ConsoleStream.getConsoleOut();
+	public static IPath getSvdPath(String deviceVendorId, String deviceName) throws CoreException {
 
 		IPath path = null;
 
@@ -183,7 +180,25 @@ public class SvdUtils {
 						"There are no peripherals descriptions available, install the required packs."));
 			}
 		}
+		assert path != null;
+		return path;
+	}
 
+	/**
+	 * Parse the SVD file with the generic parser.
+	 * 
+	 * @param path
+	 *            an absolute path to the SVD file.
+	 * @return a tree with the parsed SVD.
+	 * @throws CoreException
+	 *             differentiate when the Packs plug-in is not installed or when
+	 *             the device is not found in the installed packages.
+	 */
+	public static Leaf getTree(IPath path) throws CoreException {
+
+		assert path != null;
+		
+		MessageConsoleStream out = ConsoleStream.getConsoleOut();
 		try {
 
 			out.println("Parsing SVD file \"" + path.toOSString() + "\"...");
