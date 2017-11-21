@@ -17,6 +17,6 @@ public class PersistentProperties {
 
 	public static String getSvdAbsolutePathKey(String id) {
 		String[] parts = id.split("\\.");
-		return SVD_ABSOLUTE_PATH + "." + parts[parts.length - 1];
+		return SVD_ABSOLUTE_PATH + "." + parts[parts.length - 2] + "." + parts[parts.length - 1];
 	}
 }
