@@ -1,3 +1,5 @@
+## Liquid
+
 I could not find an easy way to bring those JARs automatically, so I copied
 them manually from ${HOME}/.m2/repository.
 
@@ -17,3 +19,16 @@ To build the liqp library
 - mvn clean package
 - copy target/liqp-0.6.8.jar
 
+## JSON
+
+The JSON.simple library `json-simple-1.1.1.json` is downloaded from:
+
+https://code.google.com/archive/p/json-simple/downloads
+
+* copy `json-simple-1.1.1.json` to `lib`
+* in plugin.xml editor -> **Runtime**
+  * **Classpath**
+    * **Add...** `lib/json-simple-1.1.1.json`
+  * **Exported Packages**
+    * **Add...** `org.json.simple`
+     
