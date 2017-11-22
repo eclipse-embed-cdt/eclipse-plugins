@@ -14,6 +14,7 @@ package ilg.gnumcueclipse.debug.gdbjtag.datamodel;
 import ilg.gnumcueclipse.core.StringUtils;
 import ilg.gnumcueclipse.core.Xml;
 import ilg.gnumcueclipse.packs.core.tree.Leaf;
+import ilg.gnumcueclipse.packs.core.tree.Type;
 
 public class SvdObjectDMNode {
 
@@ -23,6 +24,8 @@ public class SvdObjectDMNode {
 	 * Reference to the original node in the generic tree parsed from SVD.
 	 */
 	private Leaf fNode;
+
+	private String fName;
 
 	/**
 	 * Reference to the node referenced, or null.
@@ -44,6 +47,7 @@ public class SvdObjectDMNode {
 	public SvdObjectDMNode(Leaf node) {
 
 		fNode = node;
+		fName = null;
 		fDerivedFromNode = null;
 
 		fDescription = null;
@@ -98,7 +102,13 @@ public class SvdObjectDMNode {
 	 * @return a short (usually upper case) string.
 	 */
 	public String getName() {
-		return fNode.getProperty("name");
+		if (fName == null) {
+			fName = fNode.getProperty("name");
+			if (fName == null) {
+				fName = fNode.getProperty(Type._KEY);
+			}
+		}
+		return fName;
 	}
 
 	/**
@@ -140,9 +150,9 @@ public class SvdObjectDMNode {
 	}
 
 	/**
-	 * Get field description. In case the description spans multiple lines,
-	 * these lines are joined together in a single line, with each of the
-	 * individual lines trimmed.
+	 * Get field description. In case the description spans multiple lines, these
+	 * lines are joined together in a single line, with each of the individual lines
+	 * trimmed.
 	 * <p>
 	 * If not present, the derived from node description is returned.
 	 * 
@@ -210,8 +220,7 @@ public class SvdObjectDMNode {
 	 *            a string with the property name.
 	 * @param defaultValue
 	 *            a string with the default value.
-	 * @return a string with the property value or the defaultValue if not
-	 *         found.
+	 * @return a string with the property value or the defaultValue if not found.
 	 */
 	public String getPropertyWithDerived(String name, String defaultValue) {
 
@@ -249,8 +258,7 @@ public class SvdObjectDMNode {
 	 *            a string with the property name.
 	 * @param defaultValue
 	 *            a string with the default value.
-	 * @return a string with the property value or the defaultValue if not
-	 *         found.
+	 * @return a string with the property value or the defaultValue if not found.
 	 */
 	public String getPropertyWithDerivedWithParent(String name, String defaultValue) {
 
