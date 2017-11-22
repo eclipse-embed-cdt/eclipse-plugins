@@ -12,18 +12,6 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.services;
 
-import ilg.gnumcueclipse.core.CProjectPacksStorage;
-import ilg.gnumcueclipse.core.EclipseUtils;
-import ilg.gnumcueclipse.debug.gdbjtag.Activator;
-import ilg.gnumcueclipse.debug.gdbjtag.ILaunchConfigurationProvider;
-import ilg.gnumcueclipse.debug.gdbjtag.data.CProjectExtraDataManagerProxy;
-import ilg.gnumcueclipse.debug.gdbjtag.datamodel.IPeripheralDMContext;
-import ilg.gnumcueclipse.debug.gdbjtag.datamodel.PeripheralDMContext;
-import ilg.gnumcueclipse.debug.gdbjtag.datamodel.PeripheralDMNode;
-import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdUtils;
-import ilg.gnumcueclipse.debug.gdbjtag.properties.PersistentProperties;
-import ilg.gnumcueclipse.packs.core.tree.Leaf;
-
 import java.io.File;
 import java.util.Arrays;
 import java.util.Hashtable;
@@ -45,23 +33,26 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.core.runtime.preferences.IScopeContext;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.osgi.framework.BundleContext;
 import org.osgi.service.prefs.Preferences;
+
+import ilg.gnumcueclipse.core.CProjectPacksStorage;
+import ilg.gnumcueclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.debug.gdbjtag.Activator;
+import ilg.gnumcueclipse.debug.gdbjtag.ILaunchConfigurationProvider;
+import ilg.gnumcueclipse.debug.gdbjtag.data.CProjectExtraDataManagerProxy;
+import ilg.gnumcueclipse.debug.gdbjtag.datamodel.IPeripheralDMContext;
+import ilg.gnumcueclipse.debug.gdbjtag.datamodel.PeripheralDMContext;
+import ilg.gnumcueclipse.debug.gdbjtag.datamodel.PeripheralDMNode;
+import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdUtils;
+import ilg.gnumcueclipse.debug.gdbjtag.properties.PersistentProperties;
+import ilg.gnumcueclipse.packs.core.tree.Leaf;
 
 public class PeripheralsService extends AbstractDsfService implements IPeripheralsService {
 
 	private ICommandControlService fCommandControl;
 	private PeripheralDMContext[] fPeripheralsDMContexts = null;
-
-	// Add the launch configuration name hash.
-	public static String SVD_ABSOLUTE_PATH_KEY_PREFIX = "explicitSvdAbsolutePath.";
-
-	// Launch config attributes. To be used in the peripheral register window.
-	public static String SVD_ABSOLUTE_PATH_ATTRIBUTE_KEY = Activator.PLUGIN_ID + ".svdAbsolutePath";
-	public static String DEVICE_NAME_ATTRIBUTE_KEY = Activator.PLUGIN_ID + ".deviceName";
-	public static String DEVICE_VENDOR_NAME_ATTRIBUTE_KEY = Activator.PLUGIN_ID + ".deviceVendorName";
 
 	// ------------------------------------------------------------------------
 
@@ -154,7 +145,7 @@ public class PeripheralsService extends AbstractDsfService implements IPeriphera
 			Preferences preferences = new ProjectScope(project).getNode(Activator.PLUGIN_ID);
 			String key = PersistentProperties.getSvdAbsolutePathKey(desc.getId());
 			String value = preferences.get(key, "").trim();
-		
+
 			IPath svdPath = null;
 			if (!value.isEmpty()) {
 				// System.out.println("Custom SVD path: " + value);
@@ -165,7 +156,7 @@ public class PeripheralsService extends AbstractDsfService implements IPeriphera
 			}
 
 			String deviceName = null;
-			String vendorName = null;
+			// String vendorName = null;
 
 			if (svdPath == null) {
 				// The second step is to get the build configuration description.
@@ -189,7 +180,7 @@ public class PeripheralsService extends AbstractDsfService implements IPeriphera
 						if (propertiesMap != null) {
 							vendorId = propertiesMap.get(CProjectPacksStorage.DEVICE_VENDOR_ID);
 							deviceName = propertiesMap.get(CProjectPacksStorage.DEVICE_NAME);
-							vendorName = propertiesMap.get(CProjectPacksStorage.DEVICE_VENDOR_NAME);
+							// vendorName = propertiesMap.get(CProjectPacksStorage.DEVICE_VENDOR_NAME);
 						}
 
 						if (vendorId != null && deviceName != null) {
@@ -220,20 +211,7 @@ public class PeripheralsService extends AbstractDsfService implements IPeriphera
 			if (svdPath != null) {
 				try {
 					Leaf tree = SvdUtils.getTree(svdPath);
-
-					// Store the actual SVD path, device name, vendor name as attributes.
-					// The button in the Peripherals view will use them to help the selection.
-					Map<String, Object> attributes = launchConfiguration.getAttributes();
-					attributes.put(SVD_ABSOLUTE_PATH_ATTRIBUTE_KEY, svdPath);
-					if (deviceName != null) {
-						attributes.put(DEVICE_NAME_ATTRIBUTE_KEY, deviceName);
-					}
-					if (vendorName != null) {
-						attributes.put(DEVICE_VENDOR_NAME_ATTRIBUTE_KEY, vendorName);
-					}
-
 					List<Leaf> list = SvdUtils.getPeripherals(tree);
-
 					fPeripheralsDMContexts = createPeripheralsContexts(containerDMContext, list);
 
 					drm.setData(fPeripheralsDMContexts);
