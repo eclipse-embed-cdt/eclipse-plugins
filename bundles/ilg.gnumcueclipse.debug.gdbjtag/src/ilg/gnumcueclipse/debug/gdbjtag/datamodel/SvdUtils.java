@@ -11,18 +11,8 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.datamodel;
 
-import ilg.gnumcueclipse.core.Xml;
-import ilg.gnumcueclipse.debug.gdbjtag.Activator;
-import ilg.gnumcueclipse.debug.gdbjtag.data.SVDPathManagerProxy;
-import ilg.gnumcueclipse.packs.core.ConsoleStream;
-import ilg.gnumcueclipse.packs.core.data.IPacksDataManager;
-import ilg.gnumcueclipse.packs.core.data.PacksDataManagerFactoryProxy;
-import ilg.gnumcueclipse.packs.core.data.SvdGenericParser;
-import ilg.gnumcueclipse.packs.core.tree.AbstractTreePreOrderIterator;
-import ilg.gnumcueclipse.packs.core.tree.ITreeIterator;
-import ilg.gnumcueclipse.packs.core.tree.Leaf;
-
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.LinkedList;
@@ -34,9 +24,25 @@ import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.console.MessageConsoleStream;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
+
+import ilg.gnumcueclipse.core.Xml;
+import ilg.gnumcueclipse.debug.gdbjtag.Activator;
+import ilg.gnumcueclipse.debug.gdbjtag.data.SVDPathManagerProxy;
+import ilg.gnumcueclipse.packs.core.ConsoleStream;
+import ilg.gnumcueclipse.packs.core.data.IPacksDataManager;
+import ilg.gnumcueclipse.packs.core.data.JsonSimpleParser;
+import ilg.gnumcueclipse.packs.core.data.PacksDataManagerFactoryProxy;
+import ilg.gnumcueclipse.packs.core.data.SvdGenericParser;
+import ilg.gnumcueclipse.packs.core.data.XsvdGenericParser;
+import ilg.gnumcueclipse.packs.core.tree.AbstractTreePreOrderIterator;
+import ilg.gnumcueclipse.packs.core.tree.ITreeIterator;
+import ilg.gnumcueclipse.packs.core.tree.Leaf;
 
 /**
  * Utilities for processing CMSIS SVD files.
@@ -152,8 +158,8 @@ public class SvdUtils {
 	 *            a string with the CMSIS device name.
 	 * @return a path.
 	 * @throws CoreException
-	 *             differentiate when the Packs plug-in is not installed or when
-	 *             the device is not found in the installed packages.
+	 *             differentiate when the Packs plug-in is not installed or when the
+	 *             device is not found in the installed packages.
 	 */
 	public static IPath getSvdPath(String deviceVendorId, String deviceName) throws CoreException {
 
@@ -191,13 +197,13 @@ public class SvdUtils {
 	 *            an absolute path to the SVD file.
 	 * @return a tree with the parsed SVD.
 	 * @throws CoreException
-	 *             differentiate when the Packs plug-in is not installed or when
-	 *             the device is not found in the installed packages.
+	 *             differentiate when the Packs plug-in is not installed or when the
+	 *             device is not found in the installed packages.
 	 */
 	public static Leaf getTree(IPath path) throws CoreException {
 
 		assert path != null;
-		
+
 		MessageConsoleStream out = ConsoleStream.getConsoleOut();
 		try {
 
@@ -208,10 +214,28 @@ public class SvdUtils {
 				throw new IOException(path + " File object null.");
 			}
 
-			Document document = Xml.parseFile(file);
+			FileReader reader = null;
+			reader = new FileReader(file);
+			char[] chars = new char[10];
+			reader.read(chars);
+			reader.close();
+			String str = (new String(chars)).trim();
 
-			SvdGenericParser parser = new SvdGenericParser();
-			return parser.parse(document);
+			if (str.startsWith("<?xml ")) {
+				Document document = Xml.parseFile(file);
+				SvdGenericParser parser = new SvdGenericParser();
+				return parser.parse(document);
+			} else if (str.startsWith("{")) {
+				JSONParser parser = new JSONParser();
+				reader = new FileReader(file);
+				JSONObject json = (JSONObject) parser.parse(reader);
+				JsonSimpleParser jsonParser = new XsvdGenericParser();
+				return jsonParser.parse(json);
+			} else {
+				String serr = "File format does not look like XML or JSON.";
+				Activator.log(serr);
+				throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, serr));
+			}
 
 		} catch (ParserConfigurationException e) {
 			Activator.log(e);
@@ -230,6 +254,9 @@ public class SvdUtils {
 			Activator.log(e);
 			throw new CoreException(
 					new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed to get the peripherals descriptions.", e));
+		} catch (ParseException e) {
+			Activator.log(e);
+			throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, "Failed to parse the JSON.", e));
 		}
 	}
 
