@@ -102,8 +102,8 @@ public class SvdEnumerationDMNode extends SvdObjectDMNode {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Enumerate all enumerations and find the derived from node. The name is
-	 * taken from the derivedFrom attribute.
+	 * Enumerate all enumerations and find the derived from node. The name is taken
+	 * from the derivedFrom attribute.
 	 * 
 	 * @return a register node, or null if not found.
 	 */

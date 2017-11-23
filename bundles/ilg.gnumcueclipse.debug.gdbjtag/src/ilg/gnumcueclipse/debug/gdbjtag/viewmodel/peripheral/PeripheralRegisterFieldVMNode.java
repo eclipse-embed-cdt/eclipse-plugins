@@ -78,8 +78,8 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 	}
 
 	/**
-	 * Try to find the current field value in the list of possible enumeration
-	 * combo selections.
+	 * Try to find the current field value in the list of possible enumeration combo
+	 * selections.
 	 * 
 	 * @return an Integer with the index, or null if not found.
 	 */

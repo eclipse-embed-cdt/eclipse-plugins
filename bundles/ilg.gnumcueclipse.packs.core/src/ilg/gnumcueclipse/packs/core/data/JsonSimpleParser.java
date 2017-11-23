@@ -53,6 +53,7 @@ public class JsonSimpleParser {
 	@SuppressWarnings("unchecked")
 	private void parseRecursive(String name, Object value, Node parent) {
 		if (value instanceof JSONObject) {
+			// An object can be considered a collection if all values are objects.
 			boolean canBeCollection = true;
 			for (Object childKey : ((JSONObject) value).keySet()) {
 				Object childValue = ((JSONObject) value).get(childKey);

@@ -118,8 +118,8 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 	// Functions used in the view classes.
 
 	/**
-	 * Get the children nodes. If the node has not children, return an empty
-	 * array, not null.
+	 * Get the children nodes. If the node has not children, return an empty array,
+	 * not null.
 	 * 
 	 * @return an array of children nodes.
 	 */
@@ -305,8 +305,8 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 	}
 
 	/**
-	 * Compute the absolute address of the node, by adding the total offset to
-	 * the peripheral base.
+	 * Compute the absolute address of the node, by adding the total offset to the
+	 * peripheral base.
 	 * 
 	 * @return a big integer with the absolute address.
 	 */
@@ -460,8 +460,8 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 			SvdObjectDMNode child = svdChildren[i];
 
 			/**
-			 * Based on context and node type, create the proper nodes which
-			 * will automatically register as children of the current node.
+			 * Based on context and node type, create the proper nodes which will
+			 * automatically register as children of the current node.
 			 */
 			if (this instanceof PeripheralGroupVMNode) {
 				processDimGroup((SvdDMNode) child);
@@ -541,8 +541,8 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Inform node when content changed. If really changed, set the fading level
-	 * to 3.
+	 * Inform node when content changed. If really changed, set the fading level to
+	 * 3.
 	 * 
 	 * @param hasChanged
 	 */

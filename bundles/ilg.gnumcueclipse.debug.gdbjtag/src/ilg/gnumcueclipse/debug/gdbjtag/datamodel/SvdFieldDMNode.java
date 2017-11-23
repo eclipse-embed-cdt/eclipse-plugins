@@ -121,8 +121,8 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Enumerate all fields and find the derived from node. The name is taken
-	 * from the derivedFrom attribute.
+	 * Enumerate all fields and find the derived from node. The name is taken from
+	 * the derivedFrom attribute.
 	 * 
 	 * @return a register node, or null if not found.
 	 */

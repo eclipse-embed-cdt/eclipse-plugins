@@ -46,8 +46,8 @@ public class GenericParser {
 	}
 
 	/**
-	 * Callback to be defined in derived classes, to define elements that
-	 * generate properties instead of new nodes.
+	 * Callback to be defined in derived classes, to define elements that generate
+	 * properties instead of new nodes.
 	 * 
 	 * @param name
 	 *            the current xml element name.
@@ -78,8 +78,8 @@ public class GenericParser {
 	}
 
 	/**
-	 * Parse the current xml element and its children, adding a new subtree to
-	 * the given parent node.
+	 * Parse the current xml element and its children, adding a new subtree to the
+	 * given parent node.
 	 * 
 	 * @param el
 	 *            the current xml element to parse.

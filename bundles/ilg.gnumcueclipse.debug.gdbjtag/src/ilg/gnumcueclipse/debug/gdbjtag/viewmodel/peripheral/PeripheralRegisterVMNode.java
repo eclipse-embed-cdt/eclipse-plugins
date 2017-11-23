@@ -156,8 +156,7 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 	/**
 	 * Update the current value and related children values.
 	 * <p>
-	 * If the new value is different from the previous value, the dirty flag is
-	 * set.
+	 * If the new value is different from the previous value, the dirty flag is set.
 	 * 
 	 * @param newValue
 	 *            the new value.
@@ -195,8 +194,8 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 	/**
 	 * Get the bit mask corresponding to the current register or field width.
 	 * <p>
-	 * The bit mask is computed as ((1&lt;&lt;width)-1) and it looks like 0x1,
-	 * 0x3, 0x7...
+	 * The bit mask is computed as ((1&lt;&lt;width)-1) and it looks like 0x1, 0x3,
+	 * 0x7...
 	 * 
 	 * @return a BigInteger with some right side bits set.
 	 */
@@ -286,8 +285,8 @@ public class PeripheralRegisterVMNode extends PeripheralTreeVMNode {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Perform an explicit read of the register, usually when the register has
-	 * read side effects and is not automatically fetched.
+	 * Perform an explicit read of the register, usually when the register has read
+	 * side effects and is not automatically fetched.
 	 */
 	public void forceReadRegister() {
 

@@ -112,8 +112,8 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Enumerate all peripherals of the same device and find the derived from
-	 * node. The name is taken from the derivedFrom attribute.
+	 * Enumerate all peripherals of the same device and find the derived from node.
+	 * The name is taken from the derivedFrom attribute.
 	 * 
 	 * @return a peripheral node, or null if not found.
 	 */
@@ -187,8 +187,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	/**
 	 * Get peripheral block length.
 	 * 
-	 * @return a big integer value with the length in bytes, or null if not
-	 *         found.
+	 * @return a big integer value with the length in bytes, or null if not found.
 	 */
 	@Override
 	public BigInteger getBigSizeBytes() {
@@ -276,8 +275,8 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	}
 
 	/**
-	 * Check if the peripheral is a Cortex-M system peripheral, i.e. has an
-	 * address higher then 0xE0000000.
+	 * Check if the peripheral is a Cortex-M system peripheral, i.e. has an address
+	 * higher then 0xE0000000.
 	 * 
 	 * @return true if the peripheral is a system peripheral.
 	 */

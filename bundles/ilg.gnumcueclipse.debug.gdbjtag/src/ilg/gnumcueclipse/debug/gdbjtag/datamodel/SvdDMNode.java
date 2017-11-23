@@ -21,9 +21,9 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 	// ------------------------------------------------------------------------
 
 	/**
-	 * The content of the SVD <tt>&lt;access&gt;</tt> element. Defines the
-	 * default access rights for all registers. Access rights can be redefined
-	 * on any lower level of the description using the access element there.
+	 * The content of the SVD <tt>&lt;access&gt;</tt> element. Defines the default
+	 * access rights for all registers. Access rights can be redefined on any lower
+	 * level of the description using the access element there.
 	 * <p>
 	 * <ul>
 	 * <li><b>read-only</b>: read access is permitted. Write operations have an
@@ -33,11 +33,11 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 	 * <li><b>read-write</b>: both read and write accesses are permitted. Writes
 	 * affect the state of the register and reads return a value related to the
 	 * register.
-	 * <li><b>writeOnce</b>: only the first write after reset has an effect on
-	 * the register. Read operations deliver undefined results.
-	 * <li><b>read-writeOnce</b>: Read operations deliver a result related to
-	 * the register content. Only the first write access to this register after
-	 * a reset will have an effect on the register content.
+	 * <li><b>writeOnce</b>: only the first write after reset has an effect on the
+	 * register. Read operations deliver undefined results.
+	 * <li><b>read-writeOnce</b>: Read operations deliver a result related to the
+	 * register content. Only the first write access to this register after a reset
+	 * will have an effect on the register content.
 	 * </ul>
 	 */
 	private String fAccess;
@@ -45,23 +45,22 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 	/**
 	 * The content of the SVD <tt>&lt;readAction&gt;</tt> element.
 	 * <p>
-	 * If set, it specifies the side effect following a read operation. If not
-	 * set, the register is not modified.
+	 * If set, it specifies the side effect following a read operation. If not set,
+	 * the register is not modified.
 	 * <p>
 	 * The defined side effects are:
 	 * <ul>
 	 * <li><b>clear</b>: The register is cleared (set to zero) following a read
 	 * operation.
-	 * <li><b>set</b>: The register is set (set to ones) following a read
-	 * operation.
+	 * <li><b>set</b>: The register is set (set to ones) following a read operation.
 	 * <li><b>modify</b>: The register is modified in some way after a read
 	 * operation.
 	 * <li><b>modifyExternal</b>: One or more dependent resources other than the
 	 * current register are immediately affected by a read operation (it is
 	 * recommended that the register description specifies these dependencies).
 	 * </ul>
-	 * Debuggers are not expected to read this register location unless
-	 * explicitly instructed by the user.
+	 * Debuggers are not expected to read this register location unless explicitly
+	 * instructed by the user.
 	 */
 	private String fReadAction;
 

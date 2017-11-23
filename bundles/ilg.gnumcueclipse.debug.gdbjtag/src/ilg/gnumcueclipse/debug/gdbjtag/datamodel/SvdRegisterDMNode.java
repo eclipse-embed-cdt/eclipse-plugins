@@ -228,8 +228,8 @@ public class SvdRegisterDMNode extends SvdDMNode {
 	/**
 	 * Get the display name; if missing, use the name.
 	 * <p>
-	 * It may contain special characters and white spaces. The place holder %s
-	 * can be used and is replaced by the dimIndex substring.
+	 * It may contain special characters and white spaces. The place holder %s can
+	 * be used and is replaced by the dimIndex substring.
 	 * 
 	 * @return a short string.
 	 */

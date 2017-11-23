@@ -115,8 +115,8 @@ public class PeripheralDMContext extends AbstractDMContext
 	}
 
 	/**
-	 * Support function, to forward the action to the service, with more
-	 * details, the DMcontext and the flag. Called from UI thread.
+	 * Support function, to forward the action to the service, with more details,
+	 * the DMcontext and the flag. Called from UI thread.
 	 * 
 	 * @param workbenchWindow
 	 *            the window where the check widget is displayed.

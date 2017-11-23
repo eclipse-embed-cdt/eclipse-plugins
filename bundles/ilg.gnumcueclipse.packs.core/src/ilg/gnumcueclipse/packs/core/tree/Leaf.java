@@ -229,8 +229,8 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 	 * 
 	 * @param name
 	 *            a string with the property name.
-	 * @return a string with the value of the property, or an empty string if
-	 *         not found.
+	 * @return a string with the value of the property, or an empty string if not
+	 *         found.
 	 */
 	public String getProperty(String name) {
 		return getProperty(name, "");
