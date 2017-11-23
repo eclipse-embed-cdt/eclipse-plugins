@@ -308,11 +308,11 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider implement
 	public String getDisplayAccess(PeripheralTreeVMNode element) {
 
 		String str = element.getAccess();
-		if ("read-only".equals(str)) {
+		if ("read-only".equals(str) || "r".equals(str)) {
 			return "Read only";
-		} else if ("write-only".equals(str)) {
+		} else if ("write-only".equals(str) || "w".equals(str)) {
 			return "Write only";
-		} else if ("read-write".equals(str)) {
+		} else if ("read-write".equals(str) || "rw".equals(str)) {
 			return "Read/Write";
 		} else if ("writeOnce".equals(str)) {
 			return "Write once";
