@@ -267,6 +267,8 @@ public class PeripheralColumnLabelProvider extends ColumnLabelProvider implement
 				}
 				if (treeNode instanceof PeripheralRegisterVMNode) {
 					appendText(sb, "Reset=", ((PeripheralRegisterVMNode) treeNode).getDisplayResetValue());
+				} else if (treeNode instanceof PeripheralRegisterVMNode) {
+					appendText(sb, "Reset=", ((PeripheralRegisterFieldVMNode) treeNode).getDisplayResetValue());
 				}
 				break;
 

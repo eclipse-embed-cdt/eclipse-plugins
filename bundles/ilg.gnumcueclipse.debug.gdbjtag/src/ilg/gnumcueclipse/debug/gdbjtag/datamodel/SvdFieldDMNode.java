@@ -32,6 +32,9 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 	private SvdEnumerationDMNode fReadEnumeration;
 	private SvdEnumerationDMNode fWriteEnumeration;
 
+	private String fResetValue;
+	private String fResetMask;
+
 	// ------------------------------------------------------------------------
 
 	public SvdFieldDMNode(Leaf node) {
@@ -43,6 +46,9 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 
 		fReadEnumeration = null;
 		fWriteEnumeration = null;
+
+		fResetValue = null;
+		fResetMask = null;
 
 		prepareEnumerations();
 	}
@@ -62,6 +68,9 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 			fWriteEnumeration.dispose();
 			fWriteEnumeration = null;
 		}
+
+		fResetValue = null;
+		fResetMask = null;
 
 		super.dispose();
 	}
@@ -344,6 +353,24 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 			}
 		}
 		return fWidth.intValue();
+	}
+
+	public String getResetValue() {
+
+		if (fResetValue == null) {
+			fResetValue = getPropertyWithDerivedWithParent("resetValue");
+		}
+
+		return fResetValue;
+	}
+
+	public String getResetMask() {
+
+		if (fResetMask == null) {
+			fResetMask = getPropertyWithDerivedWithParent("resetMask");
+		}
+
+		return fResetMask;
 	}
 
 	// ------------------------------------------------------------------------

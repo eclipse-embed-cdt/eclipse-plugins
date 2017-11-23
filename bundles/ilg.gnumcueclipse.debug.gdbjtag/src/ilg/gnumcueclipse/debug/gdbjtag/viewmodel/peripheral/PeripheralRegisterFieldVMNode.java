@@ -11,6 +11,12 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.viewmodel.peripheral;
 
+import java.math.BigInteger;
+import java.util.LinkedList;
+import java.util.List;
+
+import org.eclipse.debug.core.DebugException;
+
 import ilg.gnumcueclipse.debug.gdbjtag.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdDMNode;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdEnumeratedValueDMNode;
@@ -18,12 +24,6 @@ import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdEnumerationDMNode;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdFieldDMNode;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdObjectDMNode;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdUtils;
-
-import java.math.BigInteger;
-import java.util.LinkedList;
-import java.util.List;
-
-import org.eclipse.debug.core.DebugException;
 
 public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 
@@ -226,6 +226,32 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 	@Override
 	public String getDisplayOffset() {
 		return convertFieldToString();
+	}
+
+	/**
+	 * Get the value to be displayed for the reset value, possibly with mask.
+	 * 
+	 * @return a string or null if no value is available.
+	 */
+	public String getDisplayResetValue() {
+
+		if (fDMNode instanceof SvdFieldDMNode) {
+
+			// Only registers have reset definitions
+			String resetValue = ((SvdFieldDMNode) fDMNode).getResetValue();
+			if (resetValue.isEmpty()) {
+				return null;
+			}
+
+			String resetMask = ((SvdFieldDMNode) fDMNode).getResetMask();
+			if (resetValue.isEmpty()) {
+				return resetValue;
+			}
+
+			return resetValue + "/" + resetMask;
+		}
+
+		return null;
 	}
 
 	private String convertFieldToString() {
