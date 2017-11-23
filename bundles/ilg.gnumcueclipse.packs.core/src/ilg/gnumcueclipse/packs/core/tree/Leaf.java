@@ -42,14 +42,14 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		fProperties = null;
 		fParent = null;
 
-		String name = node.getPropertyOrNull(Property.NAME);
 		fPackType = 0;
 
+		String name = node.getPropertyOrNull(Property.NAME_);
 		if (name != null) {
 			setName(name.trim());
 		}
 
-		String description = node.getPropertyOrNull(Property.DESCRIPTION);
+		String description = node.getPropertyOrNull(Property.DESCRIPTION_);
 		if (description != null) {
 			setDescription(description.trim());
 		}
@@ -69,22 +69,22 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 
 	public String getName() {
 
-		String name = getProperty(Property.NAME);
+		String name = getProperty(Property.NAME_);
 		return name;
 	}
 
 	public void setName(String name) {
-		putProperty(Property.NAME, name);
+		putProperty(Property.NAME_, name);
 	}
 
 	public String getDescription() {
 
-		String description = getProperty(Property.DESCRIPTION);
+		String description = getProperty(Property.DESCRIPTION_);
 		return description;
 	}
 
 	public void setDescription(String description) {
-		putProperty(Property.DESCRIPTION, description);
+		putProperty(Property.DESCRIPTION_, description);
 	}
 
 	public int getPackType() {
@@ -146,10 +146,10 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 			return false;
 		}
 		for (String key : fProperties.keySet()) {
-			if (Property.NAME.equals(key)) {
+			if (Property.NAME_.equals(key)) {
 				continue; // skip name
 			}
-			if (Property.DESCRIPTION.equals(key)) {
+			if (Property.DESCRIPTION_.equals(key)) {
 				continue; // skip description
 			}
 			return true;
@@ -250,12 +250,12 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 
 		if (node.hasProperties()) {
 			for (String key : node.fProperties.keySet()) {
-				if (Property.NAME.equals(key)) {
-					if (getPropertyOrNull(Property.NAME) != null) {
+				if (Property.NAME_.equals(key)) {
+					if (getPropertyOrNull(Property.NAME_) != null) {
 						continue; // leave name unchanged
 					}
-				} else if (Property.DESCRIPTION.equals(key)) {
-					if (getPropertyOrNull(Property.DESCRIPTION) != null) {
+				} else if (Property.DESCRIPTION_.equals(key)) {
+					if (getPropertyOrNull(Property.DESCRIPTION_) != null) {
 						continue; // leave description unchanged
 					}
 				}

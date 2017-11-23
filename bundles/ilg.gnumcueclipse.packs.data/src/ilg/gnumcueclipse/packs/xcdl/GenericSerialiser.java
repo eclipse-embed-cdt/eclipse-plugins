@@ -163,11 +163,11 @@ public class GenericSerialiser {
 
 				Map<String, String> properties = node.getProperties();
 				for (Object key : properties.keySet()) {
-					if (Property.NAME.equals(key)) {
+					if (Property.NAME_.equals(key)) {
 						// Skip special name property
 						continue;
 					}
-					if (Property.DESCRIPTION.equals(key)) {
+					if (Property.DESCRIPTION_.equals(key)) {
 						// Skip special description property
 						continue;
 					}

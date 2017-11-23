@@ -13,6 +13,10 @@ package ilg.gnumcueclipse.packs.core.tree;
 
 public class Property {
 
+	// Special properties for name & description.
+	public static final String NAME_ = "$NAME";
+	public static final String DESCRIPTION_ = "$DESC";
+
 	// Node properties (sorted)
 	public static final String ACCESS = "access";
 	public static final String ALIAS = "alias";
@@ -28,7 +32,6 @@ public class Property {
 	public static final String DATE = "date";
 	// public static final String DEFAULT = "default";
 	public static final String DEFINE = "define";
-	public static final String DESCRIPTION = "DESC";
 	public static final String DEST_FOLDER = "dest.folder";
 	public static final String ENABLED = "enabled";
 	public static final String ENDIAN = "endian";
@@ -41,7 +44,6 @@ public class Property {
 	// public static final String INIT = "init";
 	public static final String INSTALLED = "installed";
 	public static final String MPU = "mpu";
-	public static final String NAME = "NAME";
 	public static final String PACK_NAME = "pack.name";
 	public static final String PACK_VENDOR = "pack.vendor";
 	public static final String PACK_VERSION = "pack.version";
