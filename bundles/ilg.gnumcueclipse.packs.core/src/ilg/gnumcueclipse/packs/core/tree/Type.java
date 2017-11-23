@@ -13,9 +13,6 @@ package ilg.gnumcueclipse.packs.core.tree;
 
 public class Type {
 
-	// Special attribute for JSON keys used to identify collection members.
-	public static final String _KEY = "$KEY";
-
 	// Node types (sorted)
 	public static final String ACCEPT = "accept";
 	public static final String API = "api";

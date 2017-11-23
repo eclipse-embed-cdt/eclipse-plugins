@@ -49,6 +49,11 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 			setName(name.trim());
 		}
 
+		String keyName = node.getPropertyOrNull(Property.KEY_);
+		if (keyName != null) {
+			setKeyName(keyName.trim());
+		}
+
 		String description = node.getPropertyOrNull(Property.DESCRIPTION_);
 		if (description != null) {
 			setDescription(description.trim());
@@ -75,6 +80,16 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 
 	public void setName(String name) {
 		putProperty(Property.NAME_, name);
+	}
+
+	public String getKeyName() {
+
+		String name = getProperty(Property.KEY_);
+		return name;
+	}
+
+	public void setKeyName(String name) {
+		putProperty(Property.KEY_, name);
 	}
 
 	public String getDescription() {

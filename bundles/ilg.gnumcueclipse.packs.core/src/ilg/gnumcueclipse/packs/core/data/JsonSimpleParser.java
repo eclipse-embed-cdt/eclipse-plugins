@@ -67,7 +67,8 @@ public class JsonSimpleParser {
 					for (Object key : ((JSONObject) value).keySet()) {
 						JSONObject child = (JSONObject) ((JSONObject) value).get(key);
 						if (child.containsKey("name")) {
-							child.put(Type._KEY, key);
+							System.out.println("name already present in " + child);
+							child.put(Property.KEY_, key);
 						} else {
 							child.put("name", key);
 						}

@@ -17,6 +17,9 @@ public class Property {
 	public static final String NAME_ = "$NAME";
 	public static final String DESCRIPTION_ = "$DESC";
 
+	// Special property for JSON keys used to identify collection members.
+	public static final String KEY_ = "$KEY";
+
 	// Node properties (sorted)
 	public static final String ACCESS = "access";
 	public static final String ALIAS = "alias";
