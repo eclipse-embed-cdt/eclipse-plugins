@@ -105,6 +105,8 @@ public class JsonSimpleParser {
 			// Assume the value can be converted to string. (true/false?)
 			if ("description".equals(name)) {
 				parent.setDescription(value.toString());
+			} else if ("name".equals(name)) {
+				parent.setName(value.toString());
 			} else if (value == null) {
 				parent.putNonEmptyProperty(name, "null");
 			} else {

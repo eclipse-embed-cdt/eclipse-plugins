@@ -84,7 +84,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 			return null;
 		}
 
-		// System.out.println("prepareChildren(" + node.getProperty("name") +
+		// System.out.println("prepareChildren(" + node.getName() +
 		// ")");
 
 		Leaf group = ((Node) node).findChild("registers");
@@ -140,7 +140,7 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 				if (node.isType("peripherals")) {
 					return true;
 				} else if (node.isType("peripheral")) {
-					if (path.peripheralName.equals(node.getProperty("name"))) {
+					if (path.peripheralName.equals(node.getName())) {
 						return true;
 					}
 					return false;

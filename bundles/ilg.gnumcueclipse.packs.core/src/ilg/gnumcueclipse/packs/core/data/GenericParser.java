@@ -120,6 +120,8 @@ public class GenericParser {
 			if (attributes == null || attributes.getLength() == 0) {
 				if ("description".equals(type)) {
 					parent.setDescription(content);
+				} else if ("name".equals(type)) {
+					parent.setName(content);
 				} else {
 					parent.putNonEmptyProperty(type, content);
 				}

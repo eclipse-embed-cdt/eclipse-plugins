@@ -14,7 +14,6 @@ package ilg.gnumcueclipse.debug.gdbjtag.datamodel;
 import ilg.gnumcueclipse.core.StringUtils;
 import ilg.gnumcueclipse.core.Xml;
 import ilg.gnumcueclipse.packs.core.tree.Leaf;
-import ilg.gnumcueclipse.packs.core.tree.Type;
 
 public class SvdObjectDMNode {
 
@@ -103,9 +102,13 @@ public class SvdObjectDMNode {
 	 */
 	public String getName() {
 		if (fName == null) {
-			fName = fNode.getProperty("name");
-			if (fName == null) {
-				fName = fNode.getProperty(Type._KEY);
+			fName = fNode.getName();
+			if (fName.isEmpty()) {
+				fName = fNode.getKeyName();
+				if (fName.isEmpty()) {
+					fName = null;
+					return "";
+				}
 			}
 		}
 		return fName;

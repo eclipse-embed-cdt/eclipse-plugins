@@ -133,7 +133,7 @@ public class SvdEnumerationDMNode extends SvdObjectDMNode {
 					if (path.peripheralName == null) {
 						return true;
 					}
-					if (path.peripheralName.equals(node.getProperty("name"))) {
+					if (path.peripheralName.equals(node.getName())) {
 						return true;
 					}
 					return false;
@@ -145,7 +145,7 @@ public class SvdEnumerationDMNode extends SvdObjectDMNode {
 					if (path.registerName == null) {
 						return true;
 					}
-					if (path.registerName.equals(node.getProperty("name"))) {
+					if (path.registerName.equals(node.getName())) {
 						return true;
 					}
 					return false;
@@ -155,7 +155,7 @@ public class SvdEnumerationDMNode extends SvdObjectDMNode {
 					if (path.fieldName == null) {
 						return true;
 					}
-					if (path.fieldName.equals(node.getProperty("name"))) {
+					if (path.fieldName.equals(node.getName())) {
 						return true;
 					}
 					return false;
@@ -163,7 +163,7 @@ public class SvdEnumerationDMNode extends SvdObjectDMNode {
 					if (path.enumerationName == null) {
 						return true;
 					}
-					if (path.enumerationName.equals(node.getProperty("name"))) {
+					if (path.enumerationName.equals(node.getName())) {
 						return true;
 					}
 					return false;

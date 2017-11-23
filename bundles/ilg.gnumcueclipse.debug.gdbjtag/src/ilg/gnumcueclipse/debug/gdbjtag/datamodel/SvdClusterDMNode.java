@@ -49,7 +49,7 @@ public class SvdClusterDMNode extends SvdDMNode {
 			return null;
 		}
 
-		// System.out.println("prepareChildren(" + node.getProperty("name") +
+		// System.out.println("prepareChildren(" + node.getName() +
 		// ")");
 
 		List<SvdObjectDMNode> list = new LinkedList<SvdObjectDMNode>();

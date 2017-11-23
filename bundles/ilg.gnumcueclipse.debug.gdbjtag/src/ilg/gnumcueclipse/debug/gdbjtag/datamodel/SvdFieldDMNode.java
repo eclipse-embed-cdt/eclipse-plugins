@@ -152,7 +152,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 					if (path.peripheralName == null) {
 						return true;
 					}
-					if (path.peripheralName.equals(node.getProperty("name"))) {
+					if (path.peripheralName.equals(node.getName())) {
 						return true;
 					}
 					return false;
@@ -164,7 +164,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 					if (path.registerName == null) {
 						return true;
 					}
-					if (path.registerName.equals(node.getProperty("name"))) {
+					if (path.registerName.equals(node.getName())) {
 						return true;
 					}
 					return false;
@@ -174,7 +174,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 					if (path.fieldName == null) {
 						return true;
 					}
-					if (path.fieldName.equals(node.getProperty("name"))) {
+					if (path.fieldName.equals(node.getName())) {
 						return true;
 					}
 					return false;

@@ -86,7 +86,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 			return null;
 		}
 
-		// System.out.println("prepareChildren(" + node.getProperty("name") +
+		// System.out.println("prepareChildren(" + node.getName() +
 		// ")");
 
 		Leaf group = ((Node) node).findChild("fields");
@@ -143,7 +143,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 					if (path.peripheralName == null) {
 						return true;
 					}
-					if (path.peripheralName.equals(node.getProperty("name"))) {
+					if (path.peripheralName.equals(node.getName())) {
 						return true;
 					}
 					return false;
@@ -155,7 +155,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 					if (path.registerName == null) {
 						return true;
 					}
-					if (path.registerName.equals(node.getProperty("name"))) {
+					if (path.registerName.equals(node.getName())) {
 						return true;
 					}
 					return false;
@@ -237,7 +237,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 	public String getDisplayName() {
 
 		if (fDisplayName == null) {
-			fDisplayName = getPropertyWithDerivedWithParent("displayName", getName());
+			fDisplayName = getPropertyWithDerived("displayName", getName());
 		}
 		return fDisplayName;
 	}
