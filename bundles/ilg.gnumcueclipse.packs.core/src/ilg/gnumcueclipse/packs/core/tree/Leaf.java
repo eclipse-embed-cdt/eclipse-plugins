@@ -22,11 +22,17 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 	protected String fType;
 	protected Node fParent;
 	protected Map<String, String> fProperties;
+	protected int fPackType;
+
+	public static int PACK_TYPE_CMSIS = 1;
+	public static int PACK_TYPE_XPACK = 2;
 
 	public Leaf(String type) {
 		fType = type;
 		fParent = null;
 		fProperties = null;
+
+		fPackType = 0;
 	}
 
 	// Does not copy properties!
@@ -37,6 +43,8 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		fParent = null;
 
 		String name = node.getPropertyOrNull(Property.NAME);
+		fPackType = 0;
+
 		if (name != null) {
 			setName(name.trim());
 		}
@@ -77,6 +85,14 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 
 	public void setDescription(String description) {
 		putProperty(Property.DESCRIPTION, description);
+	}
+
+	public int getPackType() {
+		return fPackType;
+	}
+
+	public void setPackType(int type) {
+		fPackType = type;
 	}
 
 	public boolean hasChildren() {

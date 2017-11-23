@@ -252,7 +252,12 @@ public class SvdRegisterDMNode extends SvdDMNode {
 
 		if (fSize == null) {
 
-			String size = getPropertyWithDerivedWithParent("size", "32");
+			String size = "32";
+			if (getNode().getPackType() == Leaf.PACK_TYPE_CMSIS) {
+				size = getPropertyWithDerivedWithParent("size", "32");
+			} else if (getNode().getPackType() == Leaf.PACK_TYPE_XPACK) {
+				size = getPropertyWithDerivedWithParent("regWidth", "32");
+			}
 
 			try {
 				fSize = new Integer(SvdUtils.parseScaledNonNegativeBigInteger(size).intValue());

@@ -71,6 +71,7 @@ public class GenericParser {
 		Element packageElement = document.getDocumentElement();
 
 		Node tree = new Node(Type.ROOT);
+		tree.setPackType(Leaf.PACK_TYPE_CMSIS);
 		parseRecusive(packageElement, tree);
 
 		return tree;
@@ -94,6 +95,7 @@ public class GenericParser {
 		if (!children.isEmpty()) {
 
 			node = Node.addNewChild(parent, type);
+			node.setPackType(Leaf.PACK_TYPE_CMSIS);
 
 			// The element has children, some can be optimised as properties,
 			// the rest will generate children nodes.
@@ -124,6 +126,7 @@ public class GenericParser {
 				return;
 			}
 			node = Leaf.addNewChild(parent, type);
+			node.setPackType(Leaf.PACK_TYPE_CMSIS);
 
 			node.putNonEmptyProperty(Property.XML_CONTENT, content);
 			// System.out.println();

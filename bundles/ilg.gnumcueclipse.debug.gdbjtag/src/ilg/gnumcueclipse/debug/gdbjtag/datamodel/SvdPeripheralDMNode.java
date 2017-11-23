@@ -216,15 +216,20 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 	 */
 	private String getAddressBlockSizeElement(Leaf node) {
 
-		if (node.hasChildren()) {
-			for (Leaf child : ((Node) node).getChildren()) {
-				if (child.isType("addressBlock")) {
-					String usage = child.getProperty("usage", "");
-					if ("registers".equals(usage)) {
-						return child.getProperty("size", null);
+		if (getNode().getPackType() == Leaf.PACK_TYPE_CMSIS) {
+			if (node.hasChildren()) {
+				for (Leaf child : ((Node) node).getChildren()) {
+					if (child.isType("addressBlock")) {
+						String usage = child.getProperty("usage", "");
+						if ("registers".equals(usage)) {
+							return child.getProperty("size", null);
+						}
 					}
 				}
 			}
+			return null;
+		} else if (getNode().getPackType() == Leaf.PACK_TYPE_XPACK) {
+			return getNode().getProperty("size", "32");
 		}
 		return null;
 	}

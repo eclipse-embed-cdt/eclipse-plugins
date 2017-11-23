@@ -117,14 +117,21 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 	public boolean isReadOnly() {
 
 		String access = getAccess();
-		return "read-only".equals(access);
+		if (getNode().getPackType() == Leaf.PACK_TYPE_CMSIS) {
+			return ("read-only".equals(access));
+		} else if (getNode().getPackType() == Leaf.PACK_TYPE_XPACK) {
+			return ("r".equals(access));
+		}
+		return false;
 	}
 
 	public boolean isWriteOnly() {
 
 		String access = getAccess();
-		if ("write-only".equals(access) || "writeOnce".equals(access)) {
-			return true;
+		if (getNode().getPackType() == Leaf.PACK_TYPE_CMSIS) {
+			return ("write-only".equals(access) || "writeOnce".equals(access));
+		} else if (getNode().getPackType() == Leaf.PACK_TYPE_XPACK) {
+			return ("w".equals(access));
 		}
 		return false;
 	}

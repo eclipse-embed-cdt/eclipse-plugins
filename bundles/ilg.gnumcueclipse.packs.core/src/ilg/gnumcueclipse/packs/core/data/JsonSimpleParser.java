@@ -14,7 +14,9 @@ package ilg.gnumcueclipse.packs.core.data;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import ilg.gnumcueclipse.packs.core.tree.Leaf;
 import ilg.gnumcueclipse.packs.core.tree.Node;
+import ilg.gnumcueclipse.packs.core.tree.Property;
 import ilg.gnumcueclipse.packs.core.tree.Type;
 
 /**
@@ -40,6 +42,8 @@ public class JsonSimpleParser {
 	public Node parse(JSONObject json) {
 
 		Node tree = new Node(Type.ROOT);
+		tree.setPackType(Leaf.PACK_TYPE_XPACK);
+
 		for (Object key : json.keySet()) {
 			parseRecursive(key.toString(), json.get(key), tree);
 		}
@@ -72,6 +76,8 @@ public class JsonSimpleParser {
 				}
 			} else {
 				Node node = Node.addNewChild(parent, name);
+				node.setPackType(Leaf.PACK_TYPE_XPACK);
+
 				for (Object key : ((JSONObject) value).keySet()) {
 					parseRecursive(key.toString(), ((JSONObject) value).get(key), node);
 				}
@@ -79,6 +85,8 @@ public class JsonSimpleParser {
 		} else if (value instanceof JSONArray) {
 			for (Object arrValue : (JSONArray) value) {
 				Node node = Node.addNewChild(parent, name);
+				node.setPackType(Leaf.PACK_TYPE_XPACK);
+
 				parseRecursive(name, (JSONObject) arrValue, node);
 			}
 		} else {
