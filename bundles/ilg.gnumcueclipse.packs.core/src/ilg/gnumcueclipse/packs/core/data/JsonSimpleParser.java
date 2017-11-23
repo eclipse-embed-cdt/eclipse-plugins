@@ -64,6 +64,16 @@ public class JsonSimpleParser {
 			if (canBeCollection) {
 				String type = isCollection(name);
 				if (type != null) {
+					Node node;
+					if (type.equals(name)) {
+						// If the type of the collection nodes is the same as the collection, link
+						// the children directly to the parent.
+						node = parent;
+					} else {
+						// Otherwise keep an intermediate node to group all similar children.
+						node = Node.addNewChild(parent, name);
+						node.setPackType(Leaf.PACK_TYPE_XPACK);
+					}
 					for (Object key : ((JSONObject) value).keySet()) {
 						JSONObject child = (JSONObject) ((JSONObject) value).get(key);
 						if (child.containsKey("name")) {
@@ -72,7 +82,7 @@ public class JsonSimpleParser {
 						} else {
 							child.put("name", key);
 						}
-						parseRecursive(type, child, parent);
+						parseRecursive(type, child, node);
 					}
 				}
 			} else {
