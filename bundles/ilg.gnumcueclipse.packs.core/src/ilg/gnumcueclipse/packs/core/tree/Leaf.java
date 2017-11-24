@@ -221,7 +221,11 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 			return null;
 		}
 
-		return fProperties.get(name);
+		String value = fProperties.get(name);
+		if (value != null) {
+			value = value.trim();
+		}
+		return value;
 	}
 
 	/**
