@@ -324,8 +324,8 @@ public class DataManager implements IPacksDataManager {
 	}
 
 	/**
-	 * Construct an internal representation of the map key, inspired from CMSIS
-	 * Pack examples.
+	 * Construct an internal representation of the map key, inspired from CMSIS Pack
+	 * examples.
 	 * 
 	 * @param vendorName
 	 *            a string with the package vendor name (for example ARM)
@@ -418,8 +418,8 @@ public class DataManager implements IPacksDataManager {
 	}
 
 	/**
-	 * Add unique selectors to each package, by inspecting the outline and
-	 * external definitions in the latest version.
+	 * Add unique selectors to each package, by inspecting the outline and external
+	 * definitions in the latest version.
 	 * <p>
 	 * Used to support filtering in the PacksView tree.
 	 */
@@ -693,8 +693,8 @@ public class DataManager implements IPacksDataManager {
 	}
 
 	/**
-	 * Get the devices from all installed packs, to be used by the device
-	 * selection properties page in project settings page.
+	 * Get the devices from all installed packs, to be used by the device selection
+	 * properties page in project settings page.
 	 * 
 	 * @return a tree of nodes, with Devices/Boards, Vendors, Family, Subfamily,
 	 *         Device.
@@ -1032,9 +1032,9 @@ public class DataManager implements IPacksDataManager {
 	 * @param name
 	 *            a string with the property name
 	 * @param type
-	 *            a string with the node type where the search stops; the node
-	 *            of this type is not inspected; if null, the search will stop
-	 *            at the tree root
+	 *            a string with the node type where the search stops; the node of
+	 *            this type is not inspected; if null, the search will stop at the
+	 *            tree root
 	 * @return the property value or an empty string if not found
 	 */
 	public static String collectProperty(Leaf node, String name, String type) {
@@ -1101,8 +1101,8 @@ public class DataManager implements IPacksDataManager {
 
 	// Will be called from template code
 	/**
-	 * Get the list of files referring to CMSIS Core (ARM headers and vendor
-	 * headers and source files), for the given device and compiler.
+	 * Get the list of files referring to CMSIS Core (ARM headers and vendor headers
+	 * and source files), for the given device and compiler.
 	 * 
 	 * @param deviceName
 	 * @param compiler
@@ -1116,8 +1116,8 @@ public class DataManager implements IPacksDataManager {
 
 	// Will be called from debugger
 	/**
-	 * Get the register details (address and bit fields) for display/modify in
-	 * the debug perspective.
+	 * Get the register details (address and bit fields) for display/modify in the
+	 * debug perspective.
 	 * 
 	 * @param deviceName
 	 * @return (to be defined)
