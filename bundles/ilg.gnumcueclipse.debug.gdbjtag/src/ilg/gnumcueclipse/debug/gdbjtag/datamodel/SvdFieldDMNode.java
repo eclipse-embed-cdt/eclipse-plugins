@@ -146,6 +146,13 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 			@Override
 			public boolean isIterable(Leaf node) {
 
+				String clustersElement = "";
+				if (node.getPackType() == Node.PACK_TYPE_CMSIS) {
+					clustersElement = "cluster";
+				} else if (node.getPackType() == Node.PACK_TYPE_XPACK) {
+					clustersElement = "clusters";
+				}
+
 				if (node.isType("peripherals")) {
 					return true;
 				} else if (node.isType("peripheral")) {
@@ -158,7 +165,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 					return false;
 				} else if (node.isType("registers")) {
 					return true;
-				} else if (node.isType("cluster")) {
+				} else if (node.isType(clustersElement)) {
 					return true;
 				} else if (node.isType("register")) {
 					if (path.registerName == null) {

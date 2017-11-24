@@ -87,20 +87,33 @@ public class SvdPeripheralDMNode extends SvdDMNode {
 		// System.out.println("prepareChildren(" + node.getName() +
 		// ")");
 
+		List<SvdObjectDMNode> list = new LinkedList<SvdObjectDMNode>();
+
 		Leaf group = ((Node) node).findChild("registers");
-		if (!group.hasChildren()) {
-			return null;
+		if (group != null && group.hasChildren()) {
+			for (Leaf child : ((Node) group).getChildren()) {
+
+				// Keep only <register> and <cluster> nodes
+				if (child.isType("register")) {
+					list.add(new SvdRegisterDMNode(child));
+				} else if (child.isType("cluster")) {
+					list.add(new SvdClusterDMNode(child));
+				}
+			}
 		}
 
-		List<SvdObjectDMNode> list = new LinkedList<SvdObjectDMNode>();
-		for (Leaf child : ((Node) group).getChildren()) {
+		Leaf clusters = ((Node) node).findChild("clusters");
+		if (clusters != null && clusters.hasChildren()) {
+			for (Leaf child : ((Node) clusters).getChildren()) {
 
-			// Keep only <register> and <cluster> nodes
-			if (child.isType("register")) {
-				list.add(new SvdRegisterDMNode(child));
-			} else if (child.isType("cluster")) {
-				list.add(new SvdClusterDMNode(child));
+				if (child.isType("cluster")) {
+					list.add(new SvdClusterDMNode(child));
+				}
 			}
+		}
+
+		if (list.isEmpty()) {
+			return null;
 		}
 
 		SvdObjectDMNode[] array = list.toArray(new SvdObjectDMNode[list.size()]);

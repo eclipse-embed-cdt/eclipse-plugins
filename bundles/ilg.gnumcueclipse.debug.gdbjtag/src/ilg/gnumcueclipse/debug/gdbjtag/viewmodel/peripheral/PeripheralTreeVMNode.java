@@ -29,6 +29,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdFieldDMNode;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdObjectDMNode;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdPeripheralDMNode;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdRegisterDMNode;
+import ilg.gnumcueclipse.packs.core.tree.Node;
 
 public abstract class PeripheralTreeVMNode implements IRegister, Comparable<PeripheralTreeVMNode> {
 
@@ -69,6 +70,17 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 		// The implementation display name is used for views.
 		fName = fDMNode.getDisplayName();
 		assert fName != null;
+
+		if (fDMNode.getNode().getPackType() == Node.PACK_TYPE_XPACK) {
+			if (fName.indexOf("%s") < 0) {
+				// If XPack, and the %s was not used, use defaults.
+				if (fDMNode.isArray()) {
+					fName += "[%s]";
+				} else if (fDMNode.isRepetition()) {
+					fName += "%s";
+				}
+			}
+		}
 
 		// Only the root node is fully functional as a group node, the
 		// intermediate cluster nodes are only for presentation (this might
@@ -430,6 +442,10 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 
 	public boolean isArray() {
 		return fDMNode.isArray();
+	}
+
+	public boolean isRepetition() {
+		return fDMNode.isRepetition();
 	}
 
 	// public int getArrayDim() {

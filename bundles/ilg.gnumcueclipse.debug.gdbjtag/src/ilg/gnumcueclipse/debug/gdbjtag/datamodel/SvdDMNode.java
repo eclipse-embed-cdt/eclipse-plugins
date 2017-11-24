@@ -91,6 +91,10 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 		return null;
 	}
 
+	public BigInteger getBigMaxAbsoluteAddress() {
+		return null;
+	}
+
 	/**
 	 * Get the register access info.
 	 * <p>
@@ -165,31 +169,65 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 	}
 
 	public boolean isArray() {
-		return !(getNode().getProperty("dim").isEmpty());
+		String element = null;
+		if (getNode().getPackType() == Leaf.PACK_TYPE_CMSIS) {
+			element = "dim";
+		} else if (getNode().getPackType() == Leaf.PACK_TYPE_XPACK) {
+			element = "arraySize";
+		}
+		return !(getNode().getProperty(element).isEmpty());
+	}
+
+	public boolean isRepetition() {
+		if (getNode().getPackType() == Leaf.PACK_TYPE_XPACK) {
+			return !(getNode().getProperty("repeatGenerator").isEmpty());
+		}
+		// In CMSIS there are no explicit repetitions.
+		return false;
 	}
 
 	public int getArrayDim() {
 
-		String str = getNode().getProperty("dim");
+		String element = null;
+		if (getNode().getPackType() == Leaf.PACK_TYPE_CMSIS) {
+			element = "dim";
+		} else if (getNode().getPackType() == Leaf.PACK_TYPE_XPACK) {
+			element = "arraySize";
+		}
+
+		String str = getNode().getProperty(element);
+
 		int dim;
 		try {
 			dim = (int) SvdUtils.parseScaledNonNegativeLong(str);
 		} catch (NumberFormatException e) {
-			Activator.log("Node " + getNode().getName() + ", non integer <dim> " + str);
+			Activator.log("Node " + getNode().getName() + ", non integer <" + element + "> " + str);
 			dim = 0;
 		}
 
 		return dim;
 	}
 
+	/**
+	 * 
+	 * @return BigInteger or null.
+	 */
 	public BigInteger getBigIntegerArrayAddressIncrement() {
 
-		String increment = getNode().getProperty("dimIncrement");
-
+		String element = null;
+		if (getNode().getPackType() == Leaf.PACK_TYPE_CMSIS) {
+			element = "dimIncrement";
+		} else if (getNode().getPackType() == Leaf.PACK_TYPE_XPACK) {
+			element = "repeatIncrement";
+		}
+		String increment = getNode().getProperty(element);
+		if (increment.isEmpty()) {
+			return BigInteger.ZERO;
+		}
 		try {
 			return SvdUtils.parseScaledNonNegativeBigInteger(increment);
 		} catch (NumberFormatException e) {
-			Activator.log("Node " + getNode().getName() + ", non number <dimIncrement> " + increment);
+			Activator.log("Node " + getNode().getName() + ", non number <" + element + "> " + increment);
 			return BigInteger.ZERO;
 		}
 	}
@@ -209,7 +247,14 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 			arr[i] = String.valueOf(i);
 		}
 
-		String index = getNode().getProperty("dimIndex");
+		String element = null;
+		if (getNode().getPackType() == Leaf.PACK_TYPE_CMSIS) {
+			element = "dimIndex";
+		} else if (getNode().getPackType() == Leaf.PACK_TYPE_XPACK) {
+			element = "repeatGenerator";
+		}
+
+		String index = getNode().getProperty(element);
 		if (!index.isEmpty()) {
 			// "[0-9]+\-[0-9]+|[A-Z]-[A-Z]|[_0-9a-zA-Z]+(,\s*[_0-9a-zA-Z]+)+"
 			if (index.contains("-")) {

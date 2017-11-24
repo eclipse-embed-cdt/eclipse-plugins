@@ -24,6 +24,9 @@ public class XsvdGenericParser extends JsonSimpleParser {
 		if ("peripherals".equals(name)) {
 			return "peripheral";
 		}
+		if ("clusters".equals(name)) {
+			return "cluster";
+		}
 		if ("registers".equals(name)) {
 			return "register";
 		}

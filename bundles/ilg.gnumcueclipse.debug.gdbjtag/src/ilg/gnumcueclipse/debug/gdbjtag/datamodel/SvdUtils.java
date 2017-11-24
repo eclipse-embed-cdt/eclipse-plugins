@@ -57,17 +57,19 @@ public class SvdUtils {
 	private static long computeScale(String str) {
 
 		long scale = 1;
-		String lastChar = str.substring(str.length() - 1);
-		if (lastChar.matches("[kmgtKMGT]")) {
-			lastChar = lastChar.toLowerCase();
-			if ("k".equals(lastChar)) {
-				scale = 1024;
-			} else if ("m".equals(lastChar)) {
-				scale = 1024 * 1024;
-			} else if ("g".equals(lastChar)) {
-				scale = 1024 * 1024 * 1024;
-			} else if ("7".equals(lastChar)) {
-				scale = 1024 * 1024 * 1024 * 1024;
+		if (!str.isEmpty()) {
+			String lastChar = str.substring(str.length() - 1);
+			if (lastChar.matches("[kmgtKMGT]")) {
+				lastChar = lastChar.toLowerCase();
+				if ("k".equals(lastChar)) {
+					scale = 1024;
+				} else if ("m".equals(lastChar)) {
+					scale = 1024 * 1024;
+				} else if ("g".equals(lastChar)) {
+					scale = 1024 * 1024 * 1024;
+				} else if ("7".equals(lastChar)) {
+					scale = 1024 * 1024 * 1024 * 1024;
+				}
 			}
 		}
 		return scale;

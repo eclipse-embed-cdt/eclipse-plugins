@@ -63,6 +63,32 @@ public class SvdClusterDMNode extends SvdDMNode {
 			}
 		}
 
+		if (getNode().getPackType() == Node.PACK_TYPE_XPACK) {
+
+			Leaf group = ((Node) node).findChild("registers");
+			if (group != null && group.hasChildren()) {
+				for (Leaf child : ((Node) group).getChildren()) {
+
+					// Keep only <register> and <cluster> nodes
+					if (child.isType("register")) {
+						list.add(new SvdRegisterDMNode(child));
+					} else if (child.isType("cluster")) {
+						list.add(new SvdClusterDMNode(child));
+					}
+				}
+			}
+
+			Leaf clusters = ((Node) node).findChild("clusters");
+			if (clusters != null && clusters.hasChildren()) {
+				for (Leaf child : ((Node) clusters).getChildren()) {
+
+					if (child.isType("cluster")) {
+						list.add(new SvdClusterDMNode(child));
+					}
+				}
+			}
+		}
+
 		SvdObjectDMNode[] array = list.toArray(new SvdObjectDMNode[list.size()]);
 
 		// Preserve apparition order.
