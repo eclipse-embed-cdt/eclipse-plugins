@@ -16,7 +16,7 @@ import ilg.gnumcueclipse.packs.core.ConsoleStream;
 import ilg.gnumcueclipse.packs.core.tree.Node;
 import ilg.gnumcueclipse.packs.core.tree.PackNode;
 import ilg.gnumcueclipse.packs.core.tree.Type;
-import ilg.gnumcueclipse.packs.data.DocumentParseException;
+import ilg.gnumcueclipse.packs.core.xml.DocumentParseException;
 
 import java.util.List;
 

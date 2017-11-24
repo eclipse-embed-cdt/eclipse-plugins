@@ -16,6 +16,7 @@ import java.util.TreeMap;
 
 import ilg.gnumcueclipse.packs.core.data.PacksStorage;
 import ilg.gnumcueclipse.packs.core.tree.Type;
+import ilg.gnumcueclipse.packs.core.xml.GenericSerialiser;
 
 public class ContentSerialiser extends GenericSerialiser {
 

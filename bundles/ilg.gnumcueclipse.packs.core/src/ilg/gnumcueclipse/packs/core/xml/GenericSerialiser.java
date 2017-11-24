@@ -9,14 +9,14 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnumcueclipse.packs.xcdl;
+package ilg.gnumcueclipse.packs.core.xml;
 
 import ilg.gnumcueclipse.core.Xml;
+import ilg.gnumcueclipse.packs.core.Activator;
 import ilg.gnumcueclipse.packs.core.tree.Leaf;
 import ilg.gnumcueclipse.packs.core.tree.Node;
 import ilg.gnumcueclipse.packs.core.tree.Property;
 import ilg.gnumcueclipse.packs.core.tree.Type;
-import ilg.gnumcueclipse.packs.data.Activator;
 
 import java.io.File;
 import java.io.IOException;

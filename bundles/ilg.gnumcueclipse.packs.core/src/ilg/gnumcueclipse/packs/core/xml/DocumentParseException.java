@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnumcueclipse.packs.data;
+package ilg.gnumcueclipse.packs.core.xml;
 
 import java.io.IOException;
 

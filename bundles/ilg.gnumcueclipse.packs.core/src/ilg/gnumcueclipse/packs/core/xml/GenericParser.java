@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnumcueclipse.packs.xcdl;
+package ilg.gnumcueclipse.packs.core.xml;
 
 import java.util.List;
 import java.util.Map;
@@ -21,7 +21,6 @@ import ilg.gnumcueclipse.packs.core.tree.Leaf;
 import ilg.gnumcueclipse.packs.core.tree.Node;
 import ilg.gnumcueclipse.packs.core.tree.Property;
 import ilg.gnumcueclipse.packs.core.tree.Type;
-import ilg.gnumcueclipse.packs.data.DocumentParseException;
 
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.w3c.dom.Document;

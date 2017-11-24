@@ -26,8 +26,8 @@ import ilg.gnumcueclipse.packs.core.tree.PackNode;
 import ilg.gnumcueclipse.packs.core.tree.Property;
 import ilg.gnumcueclipse.packs.core.tree.Selector;
 import ilg.gnumcueclipse.packs.core.tree.Type;
-import ilg.gnumcueclipse.packs.xcdl.GenericParser;
-import ilg.gnumcueclipse.packs.xcdl.GenericSerialiser;
+import ilg.gnumcueclipse.packs.core.xml.GenericParser;
+import ilg.gnumcueclipse.packs.core.xml.GenericSerialiser;
 
 import java.io.File;
 import java.io.IOException;

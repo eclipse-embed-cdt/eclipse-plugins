@@ -16,7 +16,8 @@ import ilg.gnumcueclipse.packs.core.tree.Leaf;
 import ilg.gnumcueclipse.packs.core.tree.Node;
 import ilg.gnumcueclipse.packs.core.tree.PackNode;
 import ilg.gnumcueclipse.packs.core.tree.Type;
-import ilg.gnumcueclipse.packs.data.DocumentParseException;
+import ilg.gnumcueclipse.packs.core.xml.DocumentParseException;
+import ilg.gnumcueclipse.packs.core.xml.GenericParser;
 
 import java.util.HashMap;
 import java.util.HashSet;
