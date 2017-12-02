@@ -33,6 +33,12 @@ public class XsvdGenericParser extends JsonSimpleParser {
 		if ("fields".equals(name)) {
 			return "field";
 		}
+		if ("enumeration".equals(name)) {
+			return "enumeration";
+		}
+		if ("values".equals(name)) {
+			return "value";
+		}
 		return null;
 	}
 
