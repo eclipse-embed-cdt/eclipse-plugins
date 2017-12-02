@@ -24,6 +24,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdEnumerationDMNode;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdFieldDMNode;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdObjectDMNode;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdUtils;
+import ilg.gnumcueclipse.packs.core.tree.Leaf;
 
 public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 
@@ -67,7 +68,7 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 			SvdObjectDMNode children[] = enumeration.getChildren();
 			for (int i = 0; i < children.length; ++i) {
 				SvdEnumeratedValueDMNode child = (SvdEnumeratedValueDMNode) children[i];
-				String name = child.getName();
+				String name = child.getDisplayName();
 				BigInteger bigValue = SvdUtils.parseScaledNonNegativeBigInteger(child.getValue());
 				// Use the same format as for displaying, "value: name"
 				list.add(String.format("0x%X: %s", bigValue, name));
@@ -121,7 +122,12 @@ public class PeripheralRegisterFieldVMNode extends PeripheralRegisterVMNode {
 		}
 
 		// Append the enumeration name to the existing value.
-		String enumerationName = node.getName();
+		String enumerationName = "";
+		if (node.getNode().getPackType() == Leaf.PACK_TYPE_CMSIS) {
+			enumerationName = node.getName();
+		} else if (node.getNode().getPackType() == Leaf.PACK_TYPE_XPACK) {
+			enumerationName = node.getDisplayName();
+		}
 		if (!enumerationName.isEmpty()) {
 			value += ": " + enumerationName;
 		}

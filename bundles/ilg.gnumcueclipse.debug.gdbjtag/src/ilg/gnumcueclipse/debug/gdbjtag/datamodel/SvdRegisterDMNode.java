@@ -29,6 +29,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 	private BigInteger fAddressOffset;
 	private Integer fSize;
 	private BigInteger fBigSizeBytes;
+	private BigInteger fBigRepeatIncrement;
 
 	private String fReadAction;
 	private String fResetValue;
@@ -44,6 +45,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 		fAddressOffset = null;
 		fSize = null;
 		fBigSizeBytes = null;
+		fBigRepeatIncrement = null;
 		fReadAction = null;
 
 		fResetValue = null;
@@ -69,6 +71,8 @@ public class SvdRegisterDMNode extends SvdDMNode {
 		fAddressOffset = null;
 		fSize = null;
 		fBigSizeBytes = null;
+		fBigRepeatIncrement = null;
+
 		fReadAction = null;
 
 		fResetValue = null;
@@ -288,6 +292,21 @@ public class SvdRegisterDMNode extends SvdDMNode {
 			fBigSizeBytes = new BigInteger(sizeBytes);
 		}
 		return fBigSizeBytes;
+	}
+
+	@Override
+	public BigInteger getBigRepeatIncrement() {
+
+		if (fBigRepeatIncrement == null) {
+			fBigRepeatIncrement = getBigSizeBytes();
+			BigInteger arrayAddressIncrement = getBigArrayAddressIncrement();
+			if (arrayAddressIncrement != BigInteger.ZERO) {
+				if (arrayAddressIncrement.compareTo(fBigRepeatIncrement) > 0) {
+					fBigRepeatIncrement = arrayAddressIncrement;
+				}
+			}
+		}
+		return fBigRepeatIncrement;
 	}
 
 	// ------------------------------------------------------------------------

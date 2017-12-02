@@ -24,19 +24,36 @@ public class SvdEnumeratedValueDMNode extends SvdObjectDMNode {
 		super(node);
 	}
 
+	/**
+	 * 
+	 * @return The enumeration value or an empty string, for default.
+	 */
 	public String getValue() {
-		return getNode().getProperty("value");
-
+		if (getNode().getPackType() == Leaf.PACK_TYPE_CMSIS) {
+			return getNode().getProperty("value");
+		} else if (getNode().getPackType() == Leaf.PACK_TYPE_XPACK) {
+			String str = getNode().getName();
+			if ("*".equals(str)) {
+				return "";
+			}
+			return str;
+		}
+		return "";
 	}
 
 	public boolean isDefault() {
 
-		String isDefault = getNode().getProperty("isDefault");
-		if (isDefault.isEmpty()) {
-			return false;
-		}
+		if (getNode().getPackType() == Leaf.PACK_TYPE_CMSIS) {
+			String isDefault = getNode().getProperty("isDefault");
+			if (isDefault.isEmpty()) {
+				return false;
+			}
 
-		return "true".equalsIgnoreCase(isDefault);
+			return "true".equalsIgnoreCase(isDefault);
+		} else if (getNode().getPackType() == Leaf.PACK_TYPE_XPACK) {
+			return ("*".equals(getNode().getName()));
+		}
+		return false;
 	}
 
 	public boolean isMatchForValue(PeripheralValue value) {

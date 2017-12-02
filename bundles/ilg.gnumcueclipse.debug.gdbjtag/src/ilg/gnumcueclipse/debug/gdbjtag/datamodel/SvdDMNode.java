@@ -64,6 +64,7 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 	 */
 	private String fReadAction;
 
+	private BigInteger fBigArrayAddressIncrement;
 	// ------------------------------------------------------------------------
 
 	public SvdDMNode(Leaf node) {
@@ -72,6 +73,7 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 
 		fAccess = null;
 		fReadAction = null;
+		fBigArrayAddressIncrement = null;
 	}
 
 	/**
@@ -92,6 +94,10 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 	}
 
 	public BigInteger getBigMaxAbsoluteAddress() {
+		return null;
+	}
+
+	public BigInteger getBigRepeatIncrement() {
 		return null;
 	}
 
@@ -210,26 +216,30 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 
 	/**
 	 * 
-	 * @return BigInteger or null.
+	 * @return BigInteger or ZERO.
 	 */
-	public BigInteger getBigIntegerArrayAddressIncrement() {
+	public BigInteger getBigArrayAddressIncrement() {
 
-		String element = null;
-		if (getNode().getPackType() == Leaf.PACK_TYPE_CMSIS) {
-			element = "dimIncrement";
-		} else if (getNode().getPackType() == Leaf.PACK_TYPE_XPACK) {
-			element = "repeatIncrement";
+		if (fBigArrayAddressIncrement == null) {
+			String element = null;
+			if (getNode().getPackType() == Leaf.PACK_TYPE_CMSIS) {
+				element = "dimIncrement";
+			} else if (getNode().getPackType() == Leaf.PACK_TYPE_XPACK) {
+				element = "repeatIncrement";
+			}
+			String increment = getNode().getProperty(element);
+			if (increment.isEmpty()) {
+				fBigArrayAddressIncrement = BigInteger.ZERO;
+			} else {
+				try {
+					fBigArrayAddressIncrement = SvdUtils.parseScaledNonNegativeBigInteger(increment);
+				} catch (NumberFormatException e) {
+					Activator.log("Node " + getNode().getName() + ", non number <" + element + "> " + increment);
+					fBigArrayAddressIncrement = BigInteger.ZERO;
+				}
+			}
 		}
-		String increment = getNode().getProperty(element);
-		if (increment.isEmpty()) {
-			return BigInteger.ZERO;
-		}
-		try {
-			return SvdUtils.parseScaledNonNegativeBigInteger(increment);
-		} catch (NumberFormatException e) {
-			Activator.log("Node " + getNode().getName() + ", non number <" + element + "> " + increment);
-			return BigInteger.ZERO;
-		}
+		return fBigArrayAddressIncrement;
 	}
 
 	public String[] getArrayIndices() {

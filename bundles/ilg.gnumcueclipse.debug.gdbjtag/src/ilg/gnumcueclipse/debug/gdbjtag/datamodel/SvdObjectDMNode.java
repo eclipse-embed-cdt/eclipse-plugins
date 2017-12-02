@@ -149,6 +149,10 @@ public class SvdObjectDMNode {
 	 * @return a string.
 	 */
 	public String getDisplayName() {
+		String str = getNode().getProperty("displayName");
+		if (!str.isEmpty()) {
+			return str;
+		}
 		return getName();
 	}
 

@@ -509,7 +509,7 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 			return;
 		}
 
-		BigInteger increment = child.getBigIntegerArrayAddressIncrement();
+		BigInteger increment = child.getBigRepeatIncrement();
 		String[] indices = child.getArrayIndices();
 
 		// For arrays, create an intermediate group and below it add the
@@ -522,7 +522,9 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 			for (int i = 0; i < indices.length; ++i) {
 				new PeripheralClusterArrayElementVMNode(arrayNode, child, indices[i], offset);
 
-				offset = offset.add(increment);
+				if (increment != null) {
+					offset = offset.add(increment);
+				}
 			}
 		} else if (child instanceof SvdRegisterDMNode) {
 
@@ -532,6 +534,8 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 			for (int i = 0; i < indices.length; ++i) {
 				new PeripheralRegisterArrayElementVMNode(arrayNode, child, indices[i], offset);
 
+				assert (increment != null);
+				assert (increment.compareTo(BigInteger.ZERO) > 0);
 				offset = offset.add(increment);
 			}
 		} else {

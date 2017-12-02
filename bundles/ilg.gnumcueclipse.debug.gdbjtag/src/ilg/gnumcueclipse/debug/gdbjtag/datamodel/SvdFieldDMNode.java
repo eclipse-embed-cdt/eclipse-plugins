@@ -82,8 +82,15 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 		if (((Node) getNode()).hasChildren()) {
 			for (Leaf child : ((Node) getNode()).getChildren()) {
 
+				String element = "";
+				if (child.getPackType() == Leaf.PACK_TYPE_CMSIS) {
+					element = "enumeratedValues";
+				} else if (child.getPackType() == Leaf.PACK_TYPE_XPACK) {
+					element = "enumeration";
+				}
+
 				// Consider only <enumeratedValues> nodes
-				if (child.isType("enumeratedValues")) {
+				if (child.isType(element)) {
 					SvdEnumerationDMNode enumeration = new SvdEnumerationDMNode(child);
 
 					if (enumeration.isUsageRead()) {
@@ -103,8 +110,14 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 		if ((getDerivedFromNode() != null) && getDerivedFromNode().hasChildren()) {
 			for (Leaf child : ((Node) getDerivedFromNode()).getChildren()) {
 
-				// Consider only <enumeratedValues> nodes
-				if (child.isType("enumeratedValues")) {
+				String element = "";
+				if (child.getPackType() == Leaf.PACK_TYPE_CMSIS) {
+					element = "enumeratedValues";
+				} else if (child.getPackType() == Leaf.PACK_TYPE_XPACK) {
+					element = "enumeration";
+				}
+
+				if (child.isType(element)) {
 					SvdEnumerationDMNode enumeration = new SvdEnumerationDMNode(child);
 
 					if ((fReadEnumeration == null) && enumeration.isUsageRead()) {

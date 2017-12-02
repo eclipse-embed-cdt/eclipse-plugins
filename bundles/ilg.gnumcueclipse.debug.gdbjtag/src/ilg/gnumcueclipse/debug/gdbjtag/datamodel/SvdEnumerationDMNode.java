@@ -70,26 +70,59 @@ public class SvdEnumerationDMNode extends SvdObjectDMNode {
 			return null;
 		}
 
+		String element = "";
+		List<Leaf> children = ((Node) startNode).getChildren();
+		if (getNode().getPackType() == Leaf.PACK_TYPE_CMSIS) {
+			element = "enumeratedValue";
+		} else if (getNode().getPackType() == Leaf.PACK_TYPE_XPACK) {
+			if (!startNode.isType("enumeration")) {
+				return null;
+			}
+			Node valuesNode = (Node) children.get(0);
+			if (!valuesNode.isType("values")) {
+				return null;
+			}
+			if (!valuesNode.hasChildren()) {
+				return null;
+			}
+			children = valuesNode.getChildren();
+			element = "value";
+		}
+
 		List<SvdObjectDMNode> list = new LinkedList<SvdObjectDMNode>();
 
-		for (Leaf child : ((Node) startNode).getChildren()) {
+		for (Leaf child : children) {
 
 			// Consider only <enumeratedValue> nodes
-			if (child.isType("enumeratedValue")) {
+			if (child.isType(element)) {
 
 				SvdEnumeratedValueDMNode enumeratedValue = new SvdEnumeratedValueDMNode(child);
 
 				String value = enumeratedValue.getValue();
-				if (!value.isEmpty()) {
-					list.add(enumeratedValue);
-				} else if (enumeratedValue.isDefault()) {
-					if (fDefaultEnumerationNode == null) {
-						fDefaultEnumerationNode = enumeratedValue;
-					} else {
-						// TODO: add issues
-						Activator.log("duplicate isDefault enumeratedValue " + enumeratedValue.getName());
+				if (getNode().getPackType() == Leaf.PACK_TYPE_CMSIS) {
+					if (!value.isEmpty()) {
+						list.add(enumeratedValue);
+					} else if (enumeratedValue.isDefault()) {
+						if (fDefaultEnumerationNode == null) {
+							fDefaultEnumerationNode = enumeratedValue;
+						} else {
+							// TODO: add issues
+							Activator.log("duplicate isDefault enumeratedValue " + enumeratedValue.getName());
+						}
+					}
+				} else if (getNode().getPackType() == Leaf.PACK_TYPE_XPACK) {
+					if (!value.isEmpty()) {
+						list.add(enumeratedValue);
+					} else if (enumeratedValue.isDefault()) {
+						if (fDefaultEnumerationNode == null) {
+							fDefaultEnumerationNode = enumeratedValue;
+						} else {
+							// TODO: add issues
+							Activator.log("duplicate isDefault enumeratedValue " + enumeratedValue.getName());
+						}
 					}
 				}
+
 			}
 		}
 
@@ -214,6 +247,15 @@ public class SvdEnumerationDMNode extends SvdObjectDMNode {
 		return fDefaultEnumerationNode;
 	}
 
+	/**
+	 * This allows specifying two different enumerated values depending whether it
+	 * is to be used for a read or a write access. If not specified, the default
+	 * value read-write is used.
+	 * 
+	 * @return `read`, `write`, or `read-write`.
+	 * 
+	 * @note: XSVD does not implement it yet, default to `read-write`.
+	 */
 	public String getUsage() {
 
 		if (fUsage == null) {
