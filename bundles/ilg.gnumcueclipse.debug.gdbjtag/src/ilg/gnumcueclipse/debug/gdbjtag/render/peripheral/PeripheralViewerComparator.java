@@ -33,7 +33,8 @@ public class PeripheralViewerComparator extends ViewerComparator {
 	private int fDirection;
 
 	public PeripheralViewerComparator() {
-		fColumnIndex = 0;
+		// By default, sort by the Address column, ascending.
+		fColumnIndex = 1;
 		fDirection = ASCENDING;
 	}
 
