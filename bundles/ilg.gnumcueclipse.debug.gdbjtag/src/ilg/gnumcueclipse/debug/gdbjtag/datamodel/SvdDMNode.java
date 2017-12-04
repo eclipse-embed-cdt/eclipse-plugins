@@ -12,6 +12,8 @@
 package ilg.gnumcueclipse.debug.gdbjtag.datamodel;
 
 import java.math.BigInteger;
+import java.util.LinkedList;
+import java.util.List;
 
 import ilg.gnumcueclipse.debug.gdbjtag.Activator;
 import ilg.gnumcueclipse.packs.core.tree.Leaf;
@@ -192,13 +194,19 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 		return false;
 	}
 
-	public int getArrayDim() {
+	/**
+	 * 
+	 * @return Number or 0, if not an array.
+	 */
+	public int getArraySize() {
 
 		String element = null;
 		if (getNode().getPackType() == Leaf.PACK_TYPE_CMSIS) {
 			element = "dim";
 		} else if (getNode().getPackType() == Leaf.PACK_TYPE_XPACK) {
 			element = "arraySize";
+		} else {
+			return 0;
 		}
 
 		String str = getNode().getProperty(element);
@@ -242,20 +250,9 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 		return fBigArrayAddressIncrement;
 	}
 
-	public String[] getArrayIndices() {
+	public String[] getRepetitionSubstitutions() {
 
-		int dim = getArrayDim();
-		if (dim == 0) {
-			return new String[] { "0" };
-		}
-
-		// Create the array of string indices
-		String[] arr = new String[dim];
-
-		// Init with increasing numbers
-		for (int i = 0; i < dim; ++i) {
-			arr[i] = String.valueOf(i);
-		}
+		List<String> lst = new LinkedList<String>();
 
 		String element = null;
 		if (getNode().getPackType() == Leaf.PACK_TYPE_CMSIS) {
@@ -268,40 +265,30 @@ public class SvdDMNode extends SvdObjectDMNode implements Comparable<SvdDMNode> 
 		if (!index.isEmpty()) {
 			// "[0-9]+\-[0-9]+|[A-Z]-[A-Z]|[_0-9a-zA-Z]+(,\s*[_0-9a-zA-Z]+)+"
 			if (index.contains("-")) {
-				// First two cases, range of numbers or of letters.
+				// Range of numbers.
 				String[] range = index.split("-");
 				try {
 					int from = Integer.parseInt(range[0]);
 					int to = Integer.parseInt(range[1]);
 
-					int i = 0;
 					// Expand inclusive range of numbers.
-					for (int j = from; (j <= to) && (i < arr.length); j++, i++) {
-						arr[i] = String.valueOf(j);
+					for (int i = from; i <= to; i++) {
+						lst.add(String.valueOf(i));
 					}
 				} catch (NumberFormatException e) {
-					// Range of characters.
-					char from = range[0].charAt(0);
-					char to = range[1].charAt(0);
-
-					int i = 0;
-					// Expand inclusive range of upper case letters.
-					for (char j = from; (j <= to) && (i < arr.length); j++, i++) {
-						arr[i] = String.valueOf(j);
-					}
+					Activator.log("Node " + getNode().getName() + ", non number range " + range + ", ignored.");
 				}
 			} else if (index.contains(",")) {
-				// Third case, comma separated list of strings.
+				// Comma separated list of strings.
 				String[] indices = index.split(",");
 				// Trim and copy.
-				for (int i = 0; (i < indices.length) && (i < arr.length); ++i) {
-					arr[i] = indices[i].trim();
+				for (int i = 0; i < indices.length; ++i) {
+					lst.add(String.valueOf(i));
 				}
 			}
-
 		}
 
-		return arr;
+		return lst.toArray(new String[0]);
 	}
 
 	// ------------------------------------------------------------------------

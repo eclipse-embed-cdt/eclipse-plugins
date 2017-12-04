@@ -37,7 +37,7 @@ public class PeripheralRegisterArrayVMNode extends PeripheralGroupVMNode {
 
 	@Override
 	public String getDisplaySize() {
-		int dim = fDMNode.getArrayDim();
+		int dim = fDMNode.getArraySize();
 		if (dim != 0) {
 			return dim + " elements";
 		}

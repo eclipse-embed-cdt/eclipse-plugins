@@ -308,9 +308,16 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 	public BigInteger getPeripheralBigAddressOffset() {
 
 		BigInteger offset = getThisBigAddressOffset();
+		if (offset == null) {
+			System.out.println("");
+		}
 		PeripheralTreeVMNode parent = (PeripheralTreeVMNode) getParent();
 		if (parent != null) {
-			offset = offset.add(parent.getPeripheralBigAddressOffset());
+			BigInteger b = parent.getPeripheralBigAddressOffset();
+			if (b == null) {
+				System.out.println();
+			}
+			offset = offset.add(b);
 		}
 
 		return offset;
@@ -448,9 +455,9 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 		return fDMNode.isRepetition();
 	}
 
-	// public int getArrayDim() {
-	// return fDMNode.getArrayDim();
-	// }
+	public int getArraySize() {
+		return fDMNode.getArraySize();
+	}
 
 	// ------------------------------------------------------------------------
 
@@ -473,54 +480,88 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 		assert svdChildren != null;
 
 		for (int i = 0; i < svdChildren.length; ++i) {
-			SvdObjectDMNode child = svdChildren[i];
+			SvdDMNode child = (SvdDMNode) svdChildren[i];
 
 			/**
 			 * Based on context and node type, create the proper nodes which will
 			 * automatically register as children of the current node.
 			 */
-			if (this instanceof PeripheralGroupVMNode) {
-				processDimGroup((SvdDMNode) child);
-			} else if (this instanceof PeripheralRegisterVMNode) {
-				if (child instanceof SvdFieldDMNode) {
-					new PeripheralRegisterFieldVMNode(this, (SvdFieldDMNode) child);
+			if (child.isArray()) {
+				processArray((SvdDMNode) child);
+			} else if (child.isRepetition()) {
+				processRepetitions((SvdDMNode) child);
+			} else {
+				// Simple case, a single element.
+				if (child instanceof SvdClusterDMNode) {
+					new PeripheralClusterVMNode(this, child);
+				} else if (child instanceof SvdRegisterDMNode) {
+					new PeripheralRegisterVMNode(this, child);
+				} else if (child instanceof SvdFieldDMNode) {
+					new PeripheralRegisterFieldVMNode(this, child);
 				} else {
 					Activator.log(child.getClass().getSimpleName() + " not processed");
 				}
-			} else {
-				Activator.log(this.getClass().getSimpleName() + " not processed");
 			}
+
 		}
 	}
 
-	private void processDimGroup(SvdDMNode child) {
+	private void processRepetitions(SvdDMNode child) {
 
-		boolean isArray = child.isArray();
-		if (!isArray) {
-			// Simple case, not an array.
-			if (child instanceof SvdClusterDMNode) {
-				new PeripheralClusterVMNode(this, child);
-			} else if (child instanceof SvdRegisterDMNode) {
-				new PeripheralRegisterVMNode(this, child);
-			} else {
-				Activator.log(child.getClass().getSimpleName() + " not processed");
-			}
-
+		BigInteger increment = child.getBigRepeatIncrement();
+		String[] indices = child.getRepetitionSubstitutions();
+		if (indices.length == 0) {
+			Activator.log(child.getClass().getSimpleName() + " has no repetitions");
 			return;
 		}
 
+		if (child instanceof SvdClusterDMNode) {
+
+			BigInteger offset = BigInteger.ZERO;
+			for (int i = 0; i < indices.length; ++i) {
+				new PeripheralClusterRepetitionVMNode(this, child, indices[i], offset);
+
+				if (increment != null) {
+					offset = offset.add(increment);
+				}
+			}
+		} else if (child instanceof SvdRegisterDMNode) {
+
+			BigInteger offset = BigInteger.ZERO;
+			for (int i = 0; i < indices.length; ++i) {
+				new PeripheralRegisterRepetitionVMNode(this, child, indices[i], offset);
+
+				assert (increment != null);
+				assert (increment.compareTo(BigInteger.ZERO) > 0);
+				offset = offset.add(increment);
+			}
+		} else if (child instanceof SvdFieldDMNode) {
+
+			int offset = 0;
+			int intIncrement = increment.intValue();
+			for (int i = 0; i < indices.length; ++i) {
+				new PeripheralRegisterFieldRepetitionVMNode(this, child, indices[i], offset);
+
+				assert (intIncrement > 0);
+				offset += intIncrement;
+			}
+		} else {
+			Activator.log(child.getClass().getSimpleName() + " not processed");
+		}
+	}
+
+	private void processArray(SvdDMNode child) {
 		BigInteger increment = child.getBigRepeatIncrement();
-		String[] indices = child.getArrayIndices();
 
 		// For arrays, create an intermediate group and below it add the
 		// array elements.
 		if (child instanceof SvdClusterDMNode) {
 
 			PeripheralTreeVMNode arrayNode = new PeripheralClusterArrayVMNode(this, child);
-			arrayNode.substituteIndex("");
+			arrayNode.substituteRepetition("");
 			BigInteger offset = BigInteger.ZERO;
-			for (int i = 0; i < indices.length; ++i) {
-				new PeripheralClusterArrayElementVMNode(arrayNode, child, indices[i], offset);
+			for (int i = 0; i < child.getArraySize(); ++i) {
+				new PeripheralClusterArrayElementVMNode(arrayNode, child, i, offset);
 
 				if (increment != null) {
 					offset = offset.add(increment);
@@ -529,10 +570,10 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 		} else if (child instanceof SvdRegisterDMNode) {
 
 			PeripheralTreeVMNode arrayNode = new PeripheralRegisterArrayVMNode(this, child);
-			arrayNode.substituteIndex("");
+			arrayNode.substituteRepetition("");
 			BigInteger offset = BigInteger.ZERO;
-			for (int i = 0; i < indices.length; ++i) {
-				new PeripheralRegisterArrayElementVMNode(arrayNode, child, indices[i], offset);
+			for (int i = 0; i < child.getArraySize(); ++i) {
+				new PeripheralRegisterArrayElementVMNode(arrayNode, child, i, offset);
 
 				assert (increment != null);
 				assert (increment.compareTo(BigInteger.ZERO) > 0);
@@ -544,17 +585,18 @@ public abstract class PeripheralTreeVMNode implements IRegister, Comparable<Peri
 	}
 
 	/**
-	 * For array elements, substitute the %s with the actual index.
+	 * For array elements, substitute the %s with the actual index; for repetitions,
+	 * substitute with the generated value.
 	 * 
-	 * @param index
+	 * @param str
 	 *            a string, must be a valid C variable name.
 	 */
-	protected void substituteIndex(String index) {
+	protected void substituteRepetition(String str) {
 		if (fName.indexOf("%s") >= 0) {
-			if (index.isEmpty() && fName.indexOf("[%s]") < 0) {
-				index = "[]";
+			if (str.isEmpty() && fName.indexOf("[%s]") < 0) {
+				str = "[]";
 			}
-			fName = String.format(fName, index);
+			fName = String.format(fName, str);
 		}
 	}
 

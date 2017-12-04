@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2017 Liviu Ionescu.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -15,7 +15,7 @@ import java.math.BigInteger;
 
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdDMNode;
 
-public class PeripheralClusterArrayElementVMNode extends PeripheralClusterVMNode {
+public class PeripheralRegisterRepetitionVMNode extends PeripheralRegisterVMNode {
 
 	// ------------------------------------------------------------------------
 
@@ -23,22 +23,20 @@ public class PeripheralClusterArrayElementVMNode extends PeripheralClusterVMNode
 
 	// ------------------------------------------------------------------------
 
-	public PeripheralClusterArrayElementVMNode(PeripheralTreeVMNode parent, SvdDMNode dmNode, int index,
+	public PeripheralRegisterRepetitionVMNode(PeripheralTreeVMNode parent, SvdDMNode dmNode, String subst,
 			BigInteger offset) {
 
 		super(parent, dmNode);
 
-		// The node name must have a %s, substitute it with the actual index
-		substituteRepetition(String.valueOf(index));
-		fBigIntegerAddressOffset = offset;
+		// The node name must have a %s, substitute it with the actual substitution value.
+		substituteRepetition(subst);
+		fBigIntegerAddressOffset = dmNode.getBigAddressOffset().add(offset);
 	}
 
-	/**
-	 * Get the local offset to the array base.
-	 */
 	@Override
 	public BigInteger getThisBigAddressOffset() {
 		return fBigIntegerAddressOffset;
 	}
 
+	// ------------------------------------------------------------------------
 }

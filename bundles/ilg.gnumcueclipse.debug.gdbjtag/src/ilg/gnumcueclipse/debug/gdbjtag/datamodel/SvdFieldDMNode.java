@@ -11,6 +11,8 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.datamodel;
 
+import java.math.BigInteger;
+
 import ilg.gnumcueclipse.debug.gdbjtag.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.viewmodel.peripheral.PeripheralValue;
 import ilg.gnumcueclipse.packs.core.tree.AbstractTreePreOrderIterator;
@@ -28,6 +30,9 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 
 	private Integer fOffset;
 	private Integer fWidth;
+
+	// Not really big, but must match the parent prototype.
+	private BigInteger fBigRepeatIncrement;
 
 	private SvdEnumerationDMNode fReadEnumeration;
 	private SvdEnumerationDMNode fWriteEnumeration;
@@ -373,6 +378,21 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 			}
 		}
 		return fWidth.intValue();
+	}
+
+	@Override
+	public BigInteger getBigRepeatIncrement() {
+
+		if (fBigRepeatIncrement == null) {
+			fBigRepeatIncrement = BigInteger.valueOf(getWidthBits());
+			BigInteger repeatIncrement = getBigArrayAddressIncrement();
+			if (repeatIncrement != BigInteger.ZERO) {
+				if (repeatIncrement.compareTo(fBigRepeatIncrement) > 0) {
+					fBigRepeatIncrement = repeatIncrement;
+				}
+			}
+		}
+		return fBigRepeatIncrement;
 	}
 
 	public String getResetValue() {

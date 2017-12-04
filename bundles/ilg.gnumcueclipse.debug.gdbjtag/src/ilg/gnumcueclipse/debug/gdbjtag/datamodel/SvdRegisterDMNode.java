@@ -56,7 +56,7 @@ public class SvdRegisterDMNode extends SvdDMNode {
 
 		this(node);
 
-		// Start with given name and address offset
+		// Start with given name and address offset.
 		fDisplayName = displayName;
 		fAddressOffset = addressOffset;
 	}

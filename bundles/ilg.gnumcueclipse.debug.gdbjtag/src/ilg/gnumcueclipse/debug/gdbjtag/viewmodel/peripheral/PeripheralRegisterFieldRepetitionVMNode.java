@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2014 Liviu Ionescu.
+ * Copyright (c) 2017 Liviu Ionescu.
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,34 +11,32 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.viewmodel.peripheral;
 
-import java.math.BigInteger;
-
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdDMNode;
+import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdFieldDMNode;
 
-public class PeripheralClusterArrayElementVMNode extends PeripheralClusterVMNode {
-
-	// ------------------------------------------------------------------------
-
-	protected BigInteger fBigIntegerAddressOffset;
+public class PeripheralRegisterFieldRepetitionVMNode extends PeripheralRegisterFieldVMNode {
 
 	// ------------------------------------------------------------------------
 
-	public PeripheralClusterArrayElementVMNode(PeripheralTreeVMNode parent, SvdDMNode dmNode, int index,
-			BigInteger offset) {
+	private int fBitOffset;
+
+	// ------------------------------------------------------------------------
+
+	public PeripheralRegisterFieldRepetitionVMNode(PeripheralTreeVMNode parent, SvdDMNode dmNode, String subst,
+			int offset) {
 
 		super(parent, dmNode);
 
-		// The node name must have a %s, substitute it with the actual index
-		substituteRepetition(String.valueOf(index));
-		fBigIntegerAddressOffset = offset;
+		// The node name must have a %s, substitute it with the actual substitution
+		// value.
+		substituteRepetition(subst);
+		fBitOffset = ((SvdFieldDMNode) fDMNode).getOffset() + offset;
 	}
 
-	/**
-	 * Get the local offset to the array base.
-	 */
 	@Override
-	public BigInteger getThisBigAddressOffset() {
-		return fBigIntegerAddressOffset;
+	public int getOffsetBits() {
+		return fBitOffset;
 	}
 
+	// ------------------------------------------------------------------------
 }

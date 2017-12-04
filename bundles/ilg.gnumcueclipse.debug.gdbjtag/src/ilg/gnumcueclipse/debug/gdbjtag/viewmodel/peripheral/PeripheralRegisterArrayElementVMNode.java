@@ -19,18 +19,18 @@ public class PeripheralRegisterArrayElementVMNode extends PeripheralRegisterVMNo
 
 	// ------------------------------------------------------------------------
 
-	protected BigInteger fBigArrayAddressOffset;
+	protected BigInteger fBigIntegerAddressOffset;
 
 	// ------------------------------------------------------------------------
 
-	public PeripheralRegisterArrayElementVMNode(PeripheralTreeVMNode parent, SvdDMNode dmNode, String index,
+	public PeripheralRegisterArrayElementVMNode(PeripheralTreeVMNode parent, SvdDMNode dmNode, int index,
 			BigInteger offset) {
 
 		super(parent, dmNode);
 
 		// The node name must have a %s, substitute it with the actual index
-		substituteIndex(index);
-		fBigArrayAddressOffset = offset;
+		substituteRepetition(String.valueOf(index));
+		fBigIntegerAddressOffset = offset;
 	}
 
 	/**
@@ -38,7 +38,7 @@ public class PeripheralRegisterArrayElementVMNode extends PeripheralRegisterVMNo
 	 */
 	@Override
 	public BigInteger getThisBigAddressOffset() {
-		return fBigArrayAddressOffset;
+		return fBigIntegerAddressOffset;
 	}
 
 	// ------------------------------------------------------------------------
