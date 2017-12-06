@@ -266,11 +266,18 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 
 			// Return first match.
 			if (((SvdEnumeratedValueDMNode) children[i]).isMatchForValue(value)) {
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("findEnumeratedValue("+value+") " + children[i]);
+				}
 				return (SvdEnumeratedValueDMNode) children[i];
 			}
 		}
 
-		return fReadEnumeration.getDefaultEnumerationNode();
+		SvdEnumeratedValueDMNode defNode = fReadEnumeration.getDefaultEnumerationNode();
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("findEnumeratedValue("+value+") default " + defNode);
+		}
+		return defNode;
 	}
 
 	/**

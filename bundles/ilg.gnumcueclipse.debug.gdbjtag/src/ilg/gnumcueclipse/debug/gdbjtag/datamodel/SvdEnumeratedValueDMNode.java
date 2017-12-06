@@ -62,8 +62,11 @@ public class SvdEnumeratedValueDMNode extends SvdObjectDMNode {
 		try {
 			// TODO: The value tag in enumeratedValue accepts do not care bits
 			// represented by "x".
-
-			bigEnumerationValue = SvdUtils.parseScaledNonNegativeBigInteger(getValue());
+			String val = getValue();
+			if (val.isEmpty()) {
+				return false;
+			}
+			bigEnumerationValue = SvdUtils.parseScaledNonNegativeBigInteger(val);
 
 			if (bigEnumerationValue.equals(value.getBigValue())) {
 				return true;
