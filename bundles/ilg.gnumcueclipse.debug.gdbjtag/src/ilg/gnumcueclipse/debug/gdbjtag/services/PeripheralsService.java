@@ -178,8 +178,8 @@ public class PeripheralsService extends AbstractDsfService implements IPeriphera
 						CProjectExtraDataManagerProxy dataManager = CProjectExtraDataManagerProxy.getInstance();
 						Map<String, String> propertiesMap = dataManager.getExtraProperties(config);
 						if (propertiesMap != null) {
-							vendorId = propertiesMap.get(CProjectPacksStorage.DEVICE_VENDOR_ID);
-							deviceName = propertiesMap.get(CProjectPacksStorage.DEVICE_NAME);
+							vendorId = propertiesMap.get(CProjectPacksStorage.CMSIS_DEVICE_VENDOR_ID);
+							deviceName = propertiesMap.get(CProjectPacksStorage.CMSIS_DEVICE_NAME);
 							// vendorName = propertiesMap.get(CProjectPacksStorage.DEVICE_VENDOR_NAME);
 						}
 

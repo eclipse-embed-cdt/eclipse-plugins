@@ -710,22 +710,22 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 			try {
 				CProjectPacksStorage st = new CProjectPacksStorage(config);
 
-				String deviceName = st.getOption(CProjectPacksStorage.DEVICE_NAME);
+				String deviceName = st.getOption(CProjectPacksStorage.CMSIS_DEVICE_NAME);
 				if (deviceName != null) {
 					fDeviceLabel.setText(deviceName);
 				}
 
-				String coreName = st.getOption(CProjectPacksStorage.CORE_NAME);
+				String coreName = st.getOption(CProjectPacksStorage.CMSIS_CORE_NAME);
 				if (coreName != null) {
 					fArchitectureLabel.setText(coreName);
 				}
 
 				boolean wasSelected = false;
 				// Select the device in the selection tree.
-				String boardName = st.getOption(CProjectPacksStorage.BOARD_NAME);
-				String boardVendorName = st.getOption(CProjectPacksStorage.BOARD_VENDOR_NAME);
+				String boardName = st.getOption(CProjectPacksStorage.CMSIS_BOARD_NAME);
+				String boardVendorName = st.getOption(CProjectPacksStorage.CMSIS_BOARD_VENDOR_NAME);
 
-				String deviceVendorId = st.getOption(CProjectPacksStorage.DEVICE_VENDOR_ID);
+				String deviceVendorId = st.getOption(CProjectPacksStorage.CMSIS_DEVICE_VENDOR_ID);
 
 				if (boardName != null && boardName.length() > 0 && boardVendorName != null
 						&& boardVendorName.length() > 0 && deviceName != null && deviceName.length() > 0
@@ -812,22 +812,25 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 				Leaf node = fSelectedDeviceNode;
 				while (node != null) {
 					if (node.isType(Type.DEVICE)) {
-						st.setOption(CProjectPacksStorage.DEVICE_NAME, node.getName());
+						st.setOption(CProjectPacksStorage.CMSIS_DEVICE_NAME, node.getName());
 						if (Activator.getInstance().isDebugging()) {
 							System.out.println("Devices.updateStorage() device.name=" + node.getName());
 						}
 					} else if (node.isType(Type.SUBFAMILY)) {
-						st.setOption(CProjectPacksStorage.SUBFAMILY_NAME, node.getName());
+						st.setOption(CProjectPacksStorage.CMSIS_SUBFAMILY_NAME, node.getName());
 					} else if (node.isType(Type.FAMILY)) {
-						st.setOption(CProjectPacksStorage.FAMILY_NAME, node.getName());
+						st.setOption(CProjectPacksStorage.CMSIS_FAMILY_NAME, node.getName());
 
-						st.setOption(CProjectPacksStorage.DEVICE_VENDOR_NAME, node.getProperty(Property.VENDOR_NAME));
-						st.setOption(CProjectPacksStorage.DEVICE_VENDOR_ID, node.getProperty(Property.VENDOR_ID));
+						st.setOption(CProjectPacksStorage.CMSIS_DEVICE_VENDOR_NAME,
+								node.getProperty(Property.VENDOR_NAME));
+						st.setOption(CProjectPacksStorage.CMSIS_DEVICE_VENDOR_ID, node.getProperty(Property.VENDOR_ID));
 
 						// Package details
-						st.setOption(CProjectPacksStorage.DEVICE_PACK_VENDOR, node.getProperty(Property.PACK_VENDOR));
-						st.setOption(CProjectPacksStorage.DEVICE_PACK_NAME, node.getProperty(Property.PACK_NAME));
-						st.setOption(CProjectPacksStorage.DEVICE_PACK_VERSION, node.getProperty(Property.PACK_VERSION));
+						st.setOption(CProjectPacksStorage.CMSIS_DEVICE_PACK_VENDOR,
+								node.getProperty(Property.PACK_VENDOR));
+						st.setOption(CProjectPacksStorage.CMSIS_DEVICE_PACK_NAME, node.getProperty(Property.PACK_NAME));
+						st.setOption(CProjectPacksStorage.CMSIS_DEVICE_PACK_VERSION,
+								node.getProperty(Property.PACK_VERSION));
 
 					}
 					node = node.getParent();
@@ -837,23 +840,27 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 					node = fSelectedBoardDeviceNode.getParent();
 
 					if (node.isType(Type.BOARD)) {
-						st.setOption(CProjectPacksStorage.BOARD_NAME, node.getName());
-						st.setOption(CProjectPacksStorage.BOARD_REVISION, node.getProperty(Property.BOARD_REVISION));
-						st.setOption(CProjectPacksStorage.BOARD_VENDOR_NAME, node.getProperty(Property.VENDOR_NAME));
-						st.setNonEmptyOption(CProjectPacksStorage.BOARD_CLOCK, node.getProperty(Property.CLOCK));
+						st.setOption(CProjectPacksStorage.CMSIS_BOARD_NAME, node.getName());
+						st.setOption(CProjectPacksStorage.CMSIS_BOARD_REVISION,
+								node.getProperty(Property.BOARD_REVISION));
+						st.setOption(CProjectPacksStorage.CMSIS_BOARD_VENDOR_NAME,
+								node.getProperty(Property.VENDOR_NAME));
+						st.setNonEmptyOption(CProjectPacksStorage.CMSIS_BOARD_CLOCK, node.getProperty(Property.CLOCK));
 
 						// Package details
-						st.setOption(CProjectPacksStorage.BOARD_PACK_VENDOR, node.getProperty(Property.PACK_VENDOR));
-						st.setOption(CProjectPacksStorage.BOARD_PACK_NAME, node.getProperty(Property.PACK_NAME));
-						st.setOption(CProjectPacksStorage.BOARD_PACK_VERSION, node.getProperty(Property.PACK_VERSION));
+						st.setOption(CProjectPacksStorage.CMSIS_BOARD_PACK_VENDOR,
+								node.getProperty(Property.PACK_VENDOR));
+						st.setOption(CProjectPacksStorage.CMSIS_BOARD_PACK_NAME, node.getProperty(Property.PACK_NAME));
+						st.setOption(CProjectPacksStorage.CMSIS_BOARD_PACK_VERSION,
+								node.getProperty(Property.PACK_VERSION));
 					}
 				}
 
 				String core = DataManager.collectProperty(fSelectedDeviceNode, Property.CORE, Type.DEVICES_SUBTREE);
-				st.setOption(CProjectPacksStorage.CORE_NAME, core);
+				st.setOption(CProjectPacksStorage.CMSIS_CORE_NAME, core);
 
 				String define = DataManager.collectProperty(fSelectedDeviceNode, Property.DEFINE, Type.DEVICES_SUBTREE);
-				st.setOption(CProjectPacksStorage.COMPILER_DEFINE, define);
+				st.setOption(CProjectPacksStorage.CMSIS_COMPILER_DEFINE, define);
 
 				for (int i = 0; i < fMemoryTable.getItemCount(); ++i) {
 					TableItem item = fMemoryTable.getItem(i);
@@ -898,23 +905,23 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 	}
 
 	/**
-	 * Check if the configuration refers to a GNU MCU Eclipse project by
-	 * checking the toolchain prefix.
+	 * Check if the configuration refers to a GNU MCU Eclipse project by checking
+	 * the toolchain prefix.
 	 */
-//	private boolean isThisPlugin() {
-//
-//		fConfig = getCfg();
-//		if (Activator.getInstance().isDebugging()) {
-//			System.out.println("Devices.isThisPlugin() fConfig=" + fConfig);
-//		}
-//
-//		IToolChain toolchain = fConfig.getToolChain();
-//		String sToolchainId = toolchain.getBaseId();
-//		if (sToolchainId.startsWith(IDs.TOOLCHAIN_ID + "."))
-//			return true;
-//
-//		return false;
-//	}
+	// private boolean isThisPlugin() {
+	//
+	// fConfig = getCfg();
+	// if (Activator.getInstance().isDebugging()) {
+	// System.out.println("Devices.isThisPlugin() fConfig=" + fConfig);
+	// }
+	//
+	// IToolChain toolchain = fConfig.getToolChain();
+	// String sToolchainId = toolchain.getBaseId();
+	// if (sToolchainId.startsWith(IDs.TOOLCHAIN_ID + "."))
+	// return true;
+	//
+	// return false;
+	// }
 
 	private Node getDevicesTree() {
 

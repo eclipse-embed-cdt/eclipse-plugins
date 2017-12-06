@@ -29,26 +29,27 @@ public class CProjectPacksStorage {
 
 	public static final String STORAGE_NAME = "ilg.gnumcueclipse.managedbuild.packs";
 
-	public static final String DEVICE_NAME = "cmsis.device.name";
-	public static final String DEVICE_VENDOR_NAME = "cmsis.device.vendor.name";
-	public static final String DEVICE_VENDOR_ID = "cmsis.device.vendor.id";
-	public static final String FAMILY_NAME = "cmsis.family.name";
-	public static final String SUBFAMILY_NAME = "cmsis.subfamily.name";
-	public static final String CORE_NAME = "cmsis.core.name";
-	public static final String COMPILER_DEFINE = "cmsis.compiler.define";
+	public static final String CMSIS_DEVICE_NAME = "cmsis.device.name";
+	public static final String CMSIS_DEVICE_VENDOR_NAME = "cmsis.device.vendor.name";
+	public static final String CMSIS_DEVICE_VENDOR_ID = "cmsis.device.vendor.id";
+	public static final String CMSIS_FAMILY_NAME = "cmsis.family.name";
+	public static final String CMSIS_SUBFAMILY_NAME = "cmsis.subfamily.name";
+	public static final String CMSIS_CORE_NAME = "cmsis.core.name";
+	public static final String CMSIS_COMPILER_DEFINE = "cmsis.compiler.define";
 
-	public static final String DEVICE_PACK_VENDOR = "cmsis.device.pack.vendor";
-	public static final String DEVICE_PACK_NAME = "cmsis.device.pack.name";
-	public static final String DEVICE_PACK_VERSION = "cmsis.device.pack.version";
+	public static final String CMSIS_DEVICE_PACK_VENDOR = "cmsis.device.pack.vendor";
+	public static final String CMSIS_DEVICE_PACK_NAME = "cmsis.device.pack.name";
+	public static final String CMSIS_DEVICE_PACK_VERSION = "cmsis.device.pack.version";
 
-	public static final String BOARD_NAME = "cmsis.board.name";
-	public static final String BOARD_REVISION = "cmsis.board.revision";
-	public static final String BOARD_VENDOR_NAME = "cmsis.board.vendor.name";
-	public static final String BOARD_CLOCK = "cmsis.board.clock";
+	public static final String CMSIS_BOARD_NAME = "cmsis.board.name";
+	public static final String CMSIS_BOARD_REVISION = "cmsis.board.revision";
+	public static final String CMSIS_BOARD_VENDOR_NAME = "cmsis.board.vendor.name";
+	public static final String CMSIS_BOARD_CLOCK = "cmsis.board.clock";
 
-	public static final String BOARD_PACK_VENDOR = "cmsis.board.pack.vendor";
-	public static final String BOARD_PACK_NAME = "cmsis.board.pack.name";
-	public static final String BOARD_PACK_VERSION = "cmsis.board.pack.version";
+	public static final String CMSIS_BOARD_PACK_VENDOR = "cmsis.board.pack.vendor";
+	public static final String CMSIS_BOARD_PACK_NAME = "cmsis.board.pack.name";
+	public static final String CMSIS_BOARD_PACK_VERSION = "cmsis.board.pack.version";
+
 
 	// ------------------------------------------------------------------------
 
@@ -58,9 +59,9 @@ public class CProjectPacksStorage {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Create a new custom storage for packs related config options. The new
-	 * storage is specific for each build configuration, so it is created inside
-	 * the "cconfiguration" element.
+	 * Create a new custom storage for packs related config options. The new storage
+	 * is specific for each build configuration, so it is created inside the
+	 * "cconfiguration" element.
 	 * 
 	 * @param config
 	 *            a Configuration object (like Debug/Release).
@@ -150,8 +151,8 @@ public class CProjectPacksStorage {
 	 * @param id
 	 *            a string uniquely identifying the option
 	 * @param value
-	 *            a string to be assigned as option value; if null, the empty
-	 *            string is assigned
+	 *            a string to be assigned as option value; if null, the empty string
+	 *            is assigned
 	 */
 	public void setOption(String id, String value) {
 
@@ -185,8 +186,8 @@ public class CProjectPacksStorage {
 	}
 
 	/**
-	 * Store the value of an option. If the value is null or empty, the
-	 * operation is not performed..
+	 * Store the value of an option. If the value is null or empty, the operation is
+	 * not performed..
 	 * 
 	 * @param id
 	 *            a string uniquely identifying the option
@@ -207,15 +208,15 @@ public class CProjectPacksStorage {
 	 * Store the description of a memory section.
 	 * 
 	 * @param section
-	 *            a string with the section name, using the CMSIS convention
-	 *            (like IRAM1, IROM1)
+	 *            a string with the section name, using the CMSIS convention (like
+	 *            IRAM1, IROM1)
 	 * @param start
 	 *            a string with the hex value of the start address
 	 * @param size
 	 *            a string with the hex value of the size, in bytes
 	 * @param startup
-	 *            a string with 1 if the section will be used for startup (to
-	 *            host the vectors table)
+	 *            a string with 1 if the section will be used for startup (to host
+	 *            the vectors table)
 	 */
 	public void setMemory(String section, String start, String size, String startup) {
 

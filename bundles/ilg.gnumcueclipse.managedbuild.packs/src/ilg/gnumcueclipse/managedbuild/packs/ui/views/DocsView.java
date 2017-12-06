@@ -185,8 +185,7 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 	}
 
 	/**
-	 * This is a callback that will allow us to create the viewer and initialise
-	 * it.
+	 * This is a callback that will allow us to create the viewer and initialise it.
 	 */
 	public void createPartControl(Composite parent) {
 
@@ -600,11 +599,11 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 		try {
 			st = new CProjectPacksStorage(fConfig);
 
-			String deviceVendorId = st.getOption(CProjectPacksStorage.DEVICE_VENDOR_ID);
-			String deviceName = st.getOption(CProjectPacksStorage.DEVICE_NAME);
+			String deviceVendorId = st.getOption(CProjectPacksStorage.CMSIS_DEVICE_VENDOR_ID);
+			String deviceName = st.getOption(CProjectPacksStorage.CMSIS_DEVICE_NAME);
 
-			String boardVendorName = st.getOption(CProjectPacksStorage.BOARD_VENDOR_NAME);
-			String boardName = st.getOption(CProjectPacksStorage.BOARD_NAME);
+			String boardVendorName = st.getOption(CProjectPacksStorage.CMSIS_BOARD_VENDOR_NAME);
+			String boardName = st.getOption(CProjectPacksStorage.CMSIS_BOARD_NAME);
 
 			if (deviceName != null) {
 				Node deviceDocsNode = Node.addNewChild(devicesRoot, Type.FOLDER);

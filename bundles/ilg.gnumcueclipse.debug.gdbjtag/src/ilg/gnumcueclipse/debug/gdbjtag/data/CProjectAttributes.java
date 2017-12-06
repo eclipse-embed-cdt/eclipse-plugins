@@ -59,12 +59,12 @@ public class CProjectAttributes {
 
 	public static String getCmsisDeviceName(ILaunchConfiguration configuration) {
 
-		return getCmsisAttribute(configuration, CProjectPacksStorage.DEVICE_NAME);
+		return getCmsisAttribute(configuration, CProjectPacksStorage.CMSIS_DEVICE_NAME);
 	}
 
 	public static String getCmsisBoardName(ILaunchConfiguration configuration) {
 
-		return getCmsisAttribute(configuration, CProjectPacksStorage.BOARD_NAME);
+		return getCmsisAttribute(configuration, CProjectPacksStorage.CMSIS_BOARD_NAME);
 	}
 
 }
