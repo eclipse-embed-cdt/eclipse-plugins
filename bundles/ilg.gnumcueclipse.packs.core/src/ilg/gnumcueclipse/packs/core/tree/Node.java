@@ -95,6 +95,10 @@ public class Node extends Leaf {
 		return (fChildren != null && !fChildren.isEmpty());
 	}
 
+	/**
+	 * Get the node children, if any.
+	 * @return List of children or null.
+	 */
 	public List<Leaf> getChildren() {
 		return fChildren;
 	}
