@@ -17,9 +17,15 @@ public class XsvdGenericParser extends JsonSimpleParser {
 		;
 	}
 
+	/**
+	 * Identify properties that are collections.
+	 * 
+	 * @return the type of the children nodes or null if not collection.
+	 */
 	public String isCollection(String name) {
 		if ("device".equals(name)) {
-			return "device";
+			// Return the same name, this means no intermediate node.
+			return "device"; 
 		}
 		if ("peripherals".equals(name)) {
 			return "peripheral";
@@ -33,7 +39,7 @@ public class XsvdGenericParser extends JsonSimpleParser {
 		if ("fields".equals(name)) {
 			return "field";
 		}
-		if ("enumeration".equals(name)) {
+		if ("enumerations".equals(name)) {
 			return "enumeration";
 		}
 		if ("values".equals(name)) {
