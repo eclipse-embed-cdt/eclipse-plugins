@@ -17,23 +17,34 @@ import java.io.IOException;
 import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
+import org.eclipse.cdt.managedbuilder.core.IConfiguration;
+import org.eclipse.core.resources.IProject;
+import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
+import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.osgi.service.prefs.Preferences;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
 
+import ilg.gnumcueclipse.core.CProjectPacksStorage;
+import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.core.Xml;
 import ilg.gnumcueclipse.debug.gdbjtag.Activator;
+import ilg.gnumcueclipse.debug.gdbjtag.data.CProjectExtraDataManagerProxy;
 import ilg.gnumcueclipse.debug.gdbjtag.data.SVDPathManagerProxy;
+import ilg.gnumcueclipse.debug.gdbjtag.properties.PersistentProperties;
 import ilg.gnumcueclipse.packs.core.ConsoleStream;
 import ilg.gnumcueclipse.packs.core.data.IPacksDataManager;
 import ilg.gnumcueclipse.packs.core.data.JsonSimpleParser;
@@ -150,6 +161,64 @@ public class SvdUtils {
 	}
 
 	// ------------------------------------------------------------------------
+
+	/**
+	 * 
+	 * @param cConfigDescription
+	 * @return Absolute path.
+	 * @throws CoreException
+	 */
+	public static IPath getSvdPath(ICConfigurationDescription cConfigDescription) throws CoreException {
+
+		// The first place to search for is a per project (actually per build
+		// configuration) key in the project preferences store.
+		IProject project = cConfigDescription.getProjectDescription().getProject();
+		Preferences preferences = new ProjectScope(project).getNode(Activator.PLUGIN_ID);
+		String key = PersistentProperties.getSvdAbsolutePathKey(cConfigDescription.getId());
+		String value = preferences.get(key, "").trim();
+
+		if (!value.isEmpty()) {
+			// System.out.println("Custom SVD path: " + value);
+			File f = new File(value);
+			if (f.exists() && !f.isDirectory()) {
+				// Accept path only if the file exists.
+				return new Path(value);
+			}
+		}
+
+		// If not explicitly set by the user, search for the SVD/XSVD.
+		IConfiguration config = EclipseUtils.getConfigurationFromDescription(cConfigDescription);
+
+		// This requires the device name and supplier id, which can be found in
+		// a custom storageModule in the build configuration, or in the config.xcdl
+		// object of the package.json.
+
+		String deviceName = null;
+		String vendorId = null;
+
+		// TODO: add a new version of the extension point, with a third parameter,
+		// the package type (CMSIS Pack vs xPack XCDL)
+
+		CProjectExtraDataManagerProxy dataManager = CProjectExtraDataManagerProxy.getInstance();
+		Map<String, String> propertiesMap = dataManager.getExtraProperties(config);
+		if (propertiesMap != null) {
+			vendorId = propertiesMap.get(CProjectPacksStorage.CMSIS_DEVICE_VENDOR_ID);
+			deviceName = propertiesMap.get(CProjectPacksStorage.CMSIS_DEVICE_NAME);
+			// vendorName = propertiesMap.get(CProjectPacksStorage.DEVICE_VENDOR_NAME);
+		}
+
+		if (vendorId == null || deviceName == null) {
+			throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, "Assign a device to the project."));
+		}
+
+		IPath svdPath = SvdUtils.getSvdPath(vendorId, deviceName);
+
+		if (svdPath == null) {
+			throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, "No peripherals available."));
+		}
+
+		return svdPath;
+	}
 
 	/**
 	 * Identify the SVD file associated with the given device.
