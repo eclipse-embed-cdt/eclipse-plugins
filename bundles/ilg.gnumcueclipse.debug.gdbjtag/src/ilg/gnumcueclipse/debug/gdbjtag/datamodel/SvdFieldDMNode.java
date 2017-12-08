@@ -84,55 +84,81 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 
 	private void prepareEnumerations() {
 
-		if (((Node) getNode()).hasChildren()) {
-			for (Leaf child : ((Node) getNode()).getChildren()) {
+		if (getNode().getPackType() == Leaf.PACK_TYPE_CMSIS) {
+			
+			if (((Node) getNode()).hasChildren()) {
+				for (Leaf child : ((Node) getNode()).getChildren()) {
 
-				String element = "";
-				if (child.getPackType() == Leaf.PACK_TYPE_CMSIS) {
+					String element = "";
 					element = "enumeratedValues";
-				} else if (child.getPackType() == Leaf.PACK_TYPE_XPACK) {
-					element = "enumeration";
-				}
 
-				// Consider only <enumeratedValues> nodes
-				if (child.isType(element)) {
-					SvdEnumerationDMNode enumeration = new SvdEnumerationDMNode(child);
+					// Consider only <enumeratedValues> nodes
+					if (child.isType(element)) {
+						SvdEnumerationDMNode enumeration = null;
+						enumeration = new SvdEnumerationDMNode(child);
 
-					if (enumeration.isUsageRead()) {
-						fReadEnumeration = enumeration;
-					}
-					if (enumeration.isUsageWrite()) {
-						fWriteEnumeration = enumeration;
+						if ((fReadEnumeration == null) && enumeration.isUsageRead()) {
+							fReadEnumeration = enumeration;
+						}
+						if ((fWriteEnumeration == null) && enumeration.isUsageWrite()) {
+							fWriteEnumeration = enumeration;
+						}
 					}
 				}
 			}
-		}
 
-		if ((fReadEnumeration != null) && (fWriteEnumeration != null)) {
-			return; // Mission accomplished
-		}
+			// TODO: possibly merge values.
+			if ((fReadEnumeration != null) && (fWriteEnumeration != null)) {
+				return; // Mission accomplished.
+			}
 
-		if ((getDerivedFromNode() != null) && getDerivedFromNode().hasChildren()) {
-			for (Leaf child : ((Node) getDerivedFromNode()).getChildren()) {
+			if ((getDerivedFromNode() != null) && getDerivedFromNode().hasChildren()) {
+				for (Leaf child : ((Node) getDerivedFromNode()).getChildren()) {
 
-				String element = "";
-				if (child.getPackType() == Leaf.PACK_TYPE_CMSIS) {
+					String element = "";
 					element = "enumeratedValues";
-				} else if (child.getPackType() == Leaf.PACK_TYPE_XPACK) {
-					element = "enumeration";
-				}
 
-				if (child.isType(element)) {
-					SvdEnumerationDMNode enumeration = new SvdEnumerationDMNode(child);
+					if (child.isType(element)) {
+						SvdEnumerationDMNode enumeration = null;
+						enumeration = new SvdEnumerationDMNode(child);
 
-					if ((fReadEnumeration == null) && enumeration.isUsageRead()) {
-						fReadEnumeration = enumeration;
-					}
-					if ((fWriteEnumeration == null) && enumeration.isUsageWrite()) {
-						fWriteEnumeration = enumeration;
+						if ((fReadEnumeration == null) && enumeration.isUsageRead()) {
+							fReadEnumeration = enumeration;
+						}
+						if ((fWriteEnumeration == null) && enumeration.isUsageWrite()) {
+							fWriteEnumeration = enumeration;
+						}
 					}
 				}
 			}
+			
+		} else if (getNode().getPackType() == Leaf.PACK_TYPE_XPACK) {
+			
+			if (((Node) getNode()).hasChildren()) {
+				for (Leaf child : ((Node) getNode()).getChildren()) {
+
+					if (!child.isType("enumerations") || !child.hasChildren()) {
+						continue;
+					}
+
+					for (Leaf grandChild : ((Node) child).getChildren()) {
+						
+						if (!grandChild.isType("enumeration")) {
+							continue;
+						}
+
+						SvdEnumerationDMNode enumeration = new SvdEnumerationDMNode(grandChild);
+
+						if ((fReadEnumeration == null) && enumeration.isUsageRead()) {
+							fReadEnumeration = enumeration;
+						}
+						if ((fWriteEnumeration == null) && enumeration.isUsageWrite()) {
+							fWriteEnumeration = enumeration;
+						}
+					}
+				}
+			}
+			
 		}
 	}
 
@@ -267,7 +293,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 			// Return first match.
 			if (((SvdEnumeratedValueDMNode) children[i]).isMatchForValue(value)) {
 				if (Activator.getInstance().isDebugging()) {
-					System.out.println("findEnumeratedValue("+value+") " + children[i]);
+					System.out.println("findEnumeratedValue(" + value + ") " + children[i]);
 				}
 				return (SvdEnumeratedValueDMNode) children[i];
 			}
@@ -275,7 +301,7 @@ public class SvdFieldDMNode extends SvdDMNode implements Comparable<SvdDMNode> {
 
 		SvdEnumeratedValueDMNode defNode = fReadEnumeration.getDefaultEnumerationNode();
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("findEnumeratedValue("+value+") default " + defNode);
+			System.out.println("findEnumeratedValue(" + value + ") default " + defNode);
 		}
 		return defNode;
 	}
