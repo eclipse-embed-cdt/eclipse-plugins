@@ -55,6 +55,8 @@ public class CProjectPacksStorage {
 
 	private ICStorageElement fStorage;
 	private Configuration fConfig;
+	private String fStorageId = null;
+	private ICConfigurationDescription fConfigDesc;
 
 	// ------------------------------------------------------------------------
 
@@ -69,18 +71,44 @@ public class CProjectPacksStorage {
 	 */
 	public CProjectPacksStorage(IConfiguration config) throws CoreException {
 
+		this(config, STORAGE_NAME);
+	}
+
+	public CProjectPacksStorage(IConfiguration config, String storageId) throws CoreException {
+
+		fStorageId = storageId;
+
 		if (config instanceof Configuration) {
 			fConfig = (Configuration) config;
-			ICConfigurationDescription configDesc = fConfig.getConfigurationDescription();
-			fStorage = configDesc.getStorage(STORAGE_NAME, true);
+			fConfigDesc = fConfig.getConfigurationDescription();
+
+			// if (fConfigDesc instanceof CConfigurationDescriptionCache) {
+			// CConfigurationSpecSettings ss = ((CConfigurationDescriptionCache)
+			// fConfigDesc).getSpecSettings();
+			// ICExternalSetting[] ics = ss.getExternalSettings();
+			// System.out.println(ics.length);
+			// // ss.setReadOnly(true, true);
+			// }
+			fStorage = fConfigDesc.getStorage(storageId, true);
+			if (fStorage == null) {
+				throw new CoreException(
+						new Status(Status.ERROR, Activator.PLUGIN_ID, "Storage " + storageId + " not found."));
+			}
+			// if (!fConfigDesc.isReadOnly()) {
+			// fStorage = st; //.createCopy();
+			// } else {
+			// fStorage = st.createCopy();
+			// }
+			// System.out.println(fStorage.getName());
+
 		} else {
 			throw new CoreException(
-					new Status(Status.ERROR, Activator.PLUGIN_ID, "ConfigStorage() requires Configuration"));
+					new Status(Status.ERROR, Activator.PLUGIN_ID, "CProjectPacksStorage() requires Configuration"));
 		}
 	}
 
 	public void update() {
-		// No need for it, apparently Apply & OK perform it automatically.
+		;
 	}
 
 	/**
