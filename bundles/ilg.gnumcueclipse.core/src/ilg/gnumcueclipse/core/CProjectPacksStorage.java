@@ -55,7 +55,7 @@ public class CProjectPacksStorage {
 
 	private ICStorageElement fStorage;
 	private Configuration fConfig;
-	private String fStorageId = null;
+	// private String fStorageId = null;
 	private ICConfigurationDescription fConfigDesc;
 
 	// ------------------------------------------------------------------------
@@ -76,7 +76,7 @@ public class CProjectPacksStorage {
 
 	public CProjectPacksStorage(IConfiguration config, String storageId) throws CoreException {
 
-		fStorageId = storageId;
+		// fStorageId = storageId;
 
 		if (config instanceof Configuration) {
 			fConfig = (Configuration) config;
