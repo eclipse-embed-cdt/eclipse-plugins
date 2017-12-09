@@ -129,7 +129,7 @@ public class PeripheralsService extends AbstractDsfService implements IPeriphera
 			// dedicated interface.
 			ILaunchConfiguration launchConfiguration = ((ILaunchConfigurationProvider) fCommandControl)
 					.getLaunchConfiguration();
-			
+
 			// From the launch config, get the configuration description. (Eclipse stuff).
 			ICConfigurationDescription cConfigDescription = EclipseUtils.getBuildConfigDescription(launchConfiguration);
 

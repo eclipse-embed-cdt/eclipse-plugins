@@ -12,7 +12,9 @@
 package ilg.gnumcueclipse.debug.gdbjtag.datamodel;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FilenameFilter;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.LinkedList;
@@ -40,12 +42,14 @@ import org.xml.sax.SAXParseException;
 
 import ilg.gnumcueclipse.core.CProjectPacksStorage;
 import ilg.gnumcueclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.core.JsonUtils;
 import ilg.gnumcueclipse.core.Xml;
 import ilg.gnumcueclipse.debug.gdbjtag.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.data.CProjectExtraDataManagerProxy;
 import ilg.gnumcueclipse.debug.gdbjtag.data.SVDPathManagerProxy;
 import ilg.gnumcueclipse.debug.gdbjtag.properties.PersistentProperties;
 import ilg.gnumcueclipse.packs.core.ConsoleStream;
+import ilg.gnumcueclipse.packs.core.PackTypes;
 import ilg.gnumcueclipse.packs.core.data.IPacksDataManager;
 import ilg.gnumcueclipse.packs.core.data.JsonSimpleParser;
 import ilg.gnumcueclipse.packs.core.data.PacksDataManagerFactoryProxy;
@@ -195,6 +199,7 @@ public class SvdUtils {
 
 		String deviceName = null;
 		String vendorId = null;
+		String packType = "";
 
 		// TODO: add a new version of the extension point, with a third parameter,
 		// the package type (CMSIS Pack vs xPack XCDL)
@@ -204,20 +209,133 @@ public class SvdUtils {
 		if (propertiesMap != null) {
 			vendorId = propertiesMap.get(CProjectPacksStorage.CMSIS_DEVICE_VENDOR_ID);
 			deviceName = propertiesMap.get(CProjectPacksStorage.CMSIS_DEVICE_NAME);
-			// vendorName = propertiesMap.get(CProjectPacksStorage.DEVICE_VENDOR_NAME);
+			packType = PackTypes.CMSIS;
+		}
+
+		IPath svdPath = null;
+
+		if (vendorId == null || deviceName == null) {
+			IPath projectPath = project.getLocation();
+			File packageFile = projectPath.append("package.json").toFile();
+			if (packageFile.exists() && !packageFile.isDirectory()) {
+				JSONParser parser = new JSONParser();
+				FileReader reader;
+				try {
+					reader = new FileReader(packageFile);
+					JSONObject packageJson = (JSONObject) parser.parse(reader);
+					deviceName = (String) JsonUtils.get(packageJson, "config.xcdl.device.name");
+					vendorId = (String) JsonUtils.get(packageJson, "config.xcdl.device.supplier.id");
+					packType = PackTypes.XPACK_XCDL;
+				} catch (FileNotFoundException e) {
+				} catch (IOException e) {
+					Activator.log(e.getMessage());
+				} catch (ParseException e) {
+					Activator.log(e.getMessage());
+				}
+
+				svdPath = SvdUtils.getSvdProjectPath(project, vendorId, deviceName, packType);
+				File svdFile = svdPath.toFile();
+				if (svdFile.isFile()) {
+					return svdPath;
+				}
+			}
 		}
 
 		if (vendorId == null || deviceName == null) {
 			throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, "Assign a device to the project."));
 		}
 
-		IPath svdPath = SvdUtils.getSvdPath(vendorId, deviceName);
+		svdPath = SvdUtils.getSvdPath(vendorId, deviceName, packType);
 
 		if (svdPath == null) {
 			throw new CoreException(new Status(Status.ERROR, Activator.PLUGIN_ID, "No peripherals available."));
 		}
 
-		return svdPath;
+		File svdFile = svdPath.toFile();
+		if (svdFile.isFile()) {
+			return svdPath;
+		}
+
+		return null;
+	}
+
+	protected static IPath getSvdProjectPath(IProject project, String vendorId, String deviceName, String packType) {
+
+		IPath path = null;
+		if (PackTypes.XPACK_XCDL.equals(packType)) {
+			IPath projectPath = project.getLocation();
+
+			// Search only the xpacks folder, if it exists.
+			File xpacksFolder = projectPath.append("xpacks").toFile();
+			if (!xpacksFolder.isDirectory()) {
+				return null;
+			}
+			File[] folders = xpacksFolder.listFiles();
+			for (int i = 0; i < folders.length; ++i) {
+				if (folders[i].isDirectory()) {
+					// System.out.println(folders[i]);
+					File[] xcdlFiles = folders[i].listFiles(new FilenameFilter() {
+
+						@Override
+						public boolean accept(File dir, String name) {
+							return name.endsWith("xcdl.json");
+						}
+					});
+					for (int j = 0; j < xcdlFiles.length; ++j) {
+						System.out.println(xcdlFiles[j]);
+						String xsvd = getSvdFromXcdl(xcdlFiles[j], vendorId, deviceName);
+						if (xsvd != null) {
+							path = new Path(folders[i].toString());
+							return path.append(xsvd);
+						}
+					}
+				}
+			}
+		}
+
+		return path;
+	}
+
+	public static String getSvdFromXcdl(File xcdlFile, String vendorId, String deviceName) {
+
+		JSONParser parser = new JSONParser();
+		try {
+			FileReader reader = new FileReader(xcdlFile);
+			JSONObject xcdlJson = (JSONObject) parser.parse(reader);
+			JSONObject families = (JSONObject) JsonUtils.get(xcdlJson, "mcus.families");
+			if (families == null) {
+				return null;
+			}
+			// System.out.println(families);
+			for (Object familyName : families.keySet()) {
+				if (familyName instanceof String) {
+					JSONObject family = (JSONObject) families.get(familyName);
+					// System.out.println(family);
+					String supplier = (String) JsonUtils.get(family, "supplier.id");
+					if (!vendorId.equals(supplier)) {
+						return null;
+					}
+					JSONObject devices = (JSONObject) family.get("devices");
+					if (devices == null) {
+						return null;
+					}
+					JSONObject device = (JSONObject) devices.get(deviceName);
+					if (device == null) {
+						return null;
+					}
+					String xsvd = (String) JsonUtils.get(device, "debug.xsvd");
+					// System.out.println(xsvd);
+					return xsvd;
+				}
+			}
+		} catch (FileNotFoundException e) {
+		} catch (IOException e) {
+			Activator.log(e.getMessage());
+		} catch (ParseException e) {
+			Activator.log(e.getMessage());
+		}
+
+		return null;
 	}
 
 	/**
@@ -232,9 +350,11 @@ public class SvdUtils {
 	 *             differentiate when the Packs plug-in is not installed or when the
 	 *             device is not found in the installed packages.
 	 */
-	public static IPath getSvdPath(String deviceVendorId, String deviceName) throws CoreException {
+	public static IPath getSvdPath(String deviceVendorId, String deviceName, String packType) throws CoreException {
 
 		IPath path = null;
+
+		// TODO: use packType
 
 		// Try to get the SVD from a custom provider, like in DAVE.
 		SVDPathManagerProxy pathManager = SVDPathManagerProxy.getInstance();
