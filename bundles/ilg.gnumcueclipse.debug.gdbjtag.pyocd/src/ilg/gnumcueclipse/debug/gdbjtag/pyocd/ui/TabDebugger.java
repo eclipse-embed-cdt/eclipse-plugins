@@ -879,7 +879,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		assert (fConfiguration != null);
 		String fullCommand = Configuration.getGdbClientCommand(fConfiguration, fGdbClientExecutable.getText());
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("openocd.TabDebugger.updateGdbClientActualPath() \"" + fullCommand + "\"");
+			System.out.println("pyocd.TabDebugger.updateGdbClientActualPath() \"" + fullCommand + "\"");
 		}
 		fGdbClientPathLabel.setText(fullCommand);
 	}
@@ -921,11 +921,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	}
 
 	/**
-	 * Resolve the string in the gdbserver field and validate it. Return the
-	 * result if valid, otherwise return null.
+	 * Resolve the string in the gdbserver field and validate it. Return the result
+	 * if valid, otherwise return null.
 	 * 
-	 * @return an absolute path, relative path or just the name of the
-	 *         executable (if it's in PATH)
+	 * @return an absolute path, relative path or just the name of the executable
+	 *         (if it's in PATH)
 	 */
 	private String getPyOCDExecutablePath() {
 		String path = null;
@@ -1681,8 +1681,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	 * Register an error
 	 * 
 	 * <p>
-	 * Any number of unique errors can be registered. Only one is shown to the
-	 * user. First come first serve.
+	 * Any number of unique errors can be registered. Only one is shown to the user.
+	 * First come first serve.
 	 */
 	private void registerError(String msg) {
 		if (fErrors.isEmpty()) {
@@ -1694,8 +1694,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	/**
 	 * Remove a previously registered error.
 	 * 
-	 * If the removed error was being displayed, the next in line (if any) is
-	 * shown.
+	 * If the removed error was being displayed, the next in line (if any) is shown.
 	 */
 	private void deregisterError(String msg) {
 		if (fErrors.remove(msg)) {

@@ -265,7 +265,7 @@ public class Configuration {
 			}
 		}
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("openocd.resolveAll(\"" + str + "\") = \"" + value + "\"");
+			System.out.println("qemu.resolveAll(\"" + str + "\") = \"" + value + "\"");
 		}
 		return value;
 	}

@@ -1132,7 +1132,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		assert (fConfiguration != null);
 		String fullCommand = Configuration.getGdbClientCommand(fConfiguration, fGdbClientExecutable.getText());
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("openocd.TabDebugger.updateGdbClientActualPath() \"" + fullCommand + "\"");
+			System.out.println("jlink.TabDebugger.updateGdbClientActualPath() \"" + fullCommand + "\"");
 		}
 		fGdbClientPathLabel.setText(fullCommand);
 	}

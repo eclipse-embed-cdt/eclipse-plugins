@@ -288,7 +288,7 @@ public class Configuration {
 			}
 		}
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("openocd.resolveAll(\"" + str + "\") = \"" + value + "\"");
+			System.out.println("pyocd.resolveAll(\"" + str + "\") = \"" + value + "\"");
 		}
 		return value;
 	}
