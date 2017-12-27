@@ -11,7 +11,9 @@
 
 package ilg.gnumcueclipse.packs.core;
 
-public class PackTypes {
+public class PackType {
 	public static final String CMSIS = "cmsis";
 	public static final String XPACK_XCDL = "xpack.xcdl";
+
+	public static final String DEFAULT = CMSIS;
 }

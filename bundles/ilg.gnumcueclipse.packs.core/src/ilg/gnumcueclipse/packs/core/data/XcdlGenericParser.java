@@ -11,39 +11,30 @@
 
 package ilg.gnumcueclipse.packs.core.data;
 
-public class XsvdGenericParser extends JsonGenericParser {
+public class XcdlGenericParser extends JsonGenericParser {
 
-	public XsvdGenericParser() {
+	public XcdlGenericParser() {
 		;
 	}
-
+	
 	/**
 	 * Identify properties that are collections.
 	 * 
 	 * @return the type of the children nodes or null if not collection.
 	 */
 	public String isCollection(String name) {
-		if ("device".equals(name)) {
+		if ("boards".equals(name)) {
 			// Return the same name, this means no intermediate node.
+			return "board"; 
+		}
+		if ("families".equals(name)) {
+			return "family";
+		}
+		if ("devices".equals(name)) {
 			return "device";
 		}
-		if ("peripherals".equals(name)) {
-			return "peripheral";
-		}
-		if ("clusters".equals(name)) {
-			return "cluster";
-		}
-		if ("registers".equals(name)) {
-			return "register";
-		}
-		if ("fields".equals(name)) {
-			return "field";
-		}
-		if ("enumerations".equals(name)) {
-			return "enumeration";
-		}
-		if ("values".equals(name)) {
-			return "value";
+		if ("memoryRegions".equals(name)) {
+			return "memoryRegion";
 		}
 		return null;
 	}

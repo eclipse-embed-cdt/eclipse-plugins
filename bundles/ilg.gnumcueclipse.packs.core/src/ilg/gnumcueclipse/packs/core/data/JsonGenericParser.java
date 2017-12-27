@@ -22,11 +22,14 @@ import ilg.gnumcueclipse.packs.core.tree.Type;
 /**
  * Very simple parser, to convert the tree created by JSON.Simple into the same
  * tree used by the DOM parser. (Objects in the JSON tree do not have parents).
+ * 
+ * To make things simpler, there are no Leaf objects, all nodes are Node
+ * objects. All nodes are tagged with PACK_TYPE_XPACK.
  */
-public class JsonSimpleParser {
+public class JsonGenericParser {
 
-	public JsonSimpleParser() {
-
+	public JsonGenericParser() {
+		;
 	}
 
 	/**
@@ -68,7 +71,7 @@ public class JsonSimpleParser {
 					Node node;
 					if (type.equals(name)) {
 						// If the type of the collection nodes is the same as the collection, link
-						// the children directly to the parent.
+						// the children directly to the parent, without the grouping node.
 						node = parent;
 					} else {
 						// Otherwise keep an intermediate node to group all similar children.
@@ -77,13 +80,15 @@ public class JsonSimpleParser {
 					}
 					for (Object key : ((JSONObject) value).keySet()) {
 						JSONObject child = (JSONObject) ((JSONObject) value).get(key);
-						if (child.containsKey("name")) {
-							System.out.println("name already present in " + child);
-							child.put(Property.KEY_, key);
-						} else {
-							child.put("name", key);
-						}
+						child.put(Property.KEY_, key);
 						parseRecursive(type, child, node);
+					}
+				} else {
+					Node node = Node.addNewChild(parent, name);
+					node.setPackType(Leaf.PACK_TYPE_XPACK);
+
+					for (Object key : ((JSONObject) value).keySet()) {
+						parseRecursive(key.toString(), ((JSONObject) value).get(key), node);
 					}
 				}
 			} else {
@@ -95,19 +100,22 @@ public class JsonSimpleParser {
 				}
 			}
 		} else if (value instanceof JSONArray) {
+			Node node = Node.addNewChild(parent, name);
+			node.setPackType(Leaf.PACK_TYPE_XPACK);
 			for (Object arrValue : (JSONArray) value) {
-				Node node = Node.addNewChild(parent, name);
-				node.setPackType(Leaf.PACK_TYPE_XPACK);
-
-				parseRecursive(name, (JSONObject) arrValue, node);
+				if (arrValue instanceof JSONObject) {
+					parseRecursive(name, (JSONObject) arrValue, node);
+				} else if (arrValue instanceof String) {
+					Node subNode = Node.addNewChild(node, Type.ARRAY_ELEMENT_);
+					subNode.setPackType(Leaf.PACK_TYPE_XPACK);
+					subNode.putProperty(Property.VALUE_, (String) arrValue);
+				}
 			}
 		} else {
 			// Scalar, add as property.
 			// Assume the value can be converted to string. (true/false?)
 			if ("description".equals(name)) {
 				parent.setDescription(value.toString());
-			} else if ("name".equals(name)) {
-				parent.setName(value.toString());
 			} else if (value == null) {
 				parent.putNonEmptyProperty(name, "null");
 			} else {

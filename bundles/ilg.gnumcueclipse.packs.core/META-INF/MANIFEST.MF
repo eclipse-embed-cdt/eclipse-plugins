@@ -10,6 +10,7 @@ Bundle-Vendor: %bundle.vendor
 Bundle-Localization: plugin
 Export-Package: ilg.gnumcueclipse.packs.core,
  ilg.gnumcueclipse.packs.core.data,
+ ilg.gnumcueclipse.packs.core.jstree,
  ilg.gnumcueclipse.packs.core.tree,
  ilg.gnumcueclipse.packs.core.xml
 Require-Bundle: ilg.gnumcueclipse.core,
@@ -19,5 +20,5 @@ Require-Bundle: ilg.gnumcueclipse.core,
  org.eclipse.jface;bundle-version="3.12.2",
  org.eclipse.osgi;bundle-version="3.11.3",
  org.eclipse.ui.console;bundle-version="3.6.201",
- org.eclipse.ui.workbench;bundle-version="3.108.3"
-Import-Package: org.eclipse.core.runtime
+ org.eclipse.ui.workbench;bundle-version="3.108.3",
+ org.eclipse.cdt.managedbuilder.core;bundle-version="8.4.0"
