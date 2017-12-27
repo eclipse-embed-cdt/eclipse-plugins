@@ -40,5 +40,6 @@ Export-Package: ilg.gnumcueclipse.debug.gdbjtag,
  ilg.gnumcueclipse.debug.gdbjtag.memory,
  ilg.gnumcueclipse.debug.gdbjtag.preferences,
  ilg.gnumcueclipse.debug.gdbjtag.services,
+ ilg.gnumcueclipse.debug.gdbjtag.ui,
  ilg.gnumcueclipse.debug.gdbjtag.viewmodel.peripheral
 Import-Package: ilg.gnumcueclipse.packs.xcdl

@@ -16,7 +16,6 @@ import java.util.Arrays;
 import java.util.Hashtable;
 import java.util.List;
 
-import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.RequestMonitor;
 import org.eclipse.cdt.dsf.datamodel.IDMContext;
@@ -30,13 +29,13 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.debug.core.ILaunchConfiguration;
 import org.osgi.framework.BundleContext;
 
-import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.ILaunchConfigurationProvider;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.IPeripheralDMContext;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.PeripheralDMContext;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.PeripheralDMNode;
 import ilg.gnumcueclipse.debug.gdbjtag.datamodel.SvdUtils;
+import ilg.gnumcueclipse.packs.core.data.DurationMonitor;
 import ilg.gnumcueclipse.packs.core.tree.Leaf;
 
 public class PeripheralsService extends AbstractDsfService implements IPeripheralsService {
@@ -130,14 +129,11 @@ public class PeripheralsService extends AbstractDsfService implements IPeriphera
 			ILaunchConfiguration launchConfiguration = ((ILaunchConfigurationProvider) fCommandControl)
 					.getLaunchConfiguration();
 
-			// From the launch config, get the configuration description. (Eclipse stuff).
-			ICConfigurationDescription cConfigDescription = EclipseUtils.getBuildConfigDescription(launchConfiguration);
-
 			try {
 
 				// Search for the SVD/XSVD in various locations (packages, extension points,
 				// etc)
-				IPath svdPath = SvdUtils.getSvdPath(cConfigDescription);
+				IPath svdPath = SvdUtils.getSvdPath(launchConfiguration);
 
 				if (Activator.getInstance().isDebugging()) {
 					System.out.println("SVD path: " + svdPath);
@@ -147,8 +143,8 @@ public class PeripheralsService extends AbstractDsfService implements IPeriphera
 				{
 					DurationMonitor dm = new DurationMonitor();
 					dm.start();
-				// Read in the file, parse the original format (XML or JSON) and build the
-				// internal tree.
+					// Read in the file, parse the original format (XML or JSON) and build the
+					// internal tree.
 					tree = SvdUtils.getTree(svdPath);
 					dm.stop();
 				}

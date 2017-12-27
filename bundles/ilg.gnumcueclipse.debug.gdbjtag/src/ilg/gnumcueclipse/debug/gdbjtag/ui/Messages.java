@@ -11,6 +11,9 @@
 
 package ilg.gnumcueclipse.debug.gdbjtag.ui;
 
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
+
 import org.eclipse.osgi.util.NLS;
 
 import ilg.gnumcueclipse.debug.gdbjtag.Activator;
@@ -24,7 +27,7 @@ public class Messages extends NLS {
 	public static String PeripheralsView_DescriptionColumn_text;
 	public static String PeripheralsView_FileAction_text;
 	public static String PeripheralsView_FileAction_toolTipText;
-	
+
 	public static String PeripheralRegister_Msg_Unknown_expression;
 	public static String PeripheralRegister_Msg_Not_a_number;
 
@@ -41,19 +44,40 @@ public class Messages extends NLS {
 	public static String AddMemoryBlockAction_noMemoryBlock;
 	public static String AddMemoryBlockAction_failed;
 	public static String AddMemoryBlockAction_input_invalid;
-	
+
 	public static String SvdPathProperties_intro_label;
 	public static String SvdPathProperties_file_label;
 	public static String SvdPathProperties_file_button;
 	public static String SvdPathProperties_file_tooltip;
 	public static String SvdPathProperties_file_dialog;
-	
+
 	static {
 		// initialise above static strings
 		NLS.initializeMessages(MESSAGES, Messages.class);
 	}
 
+	private static ResourceBundle RESOURCE_BUNDLE;
+	static {
+		try {
+			RESOURCE_BUNDLE = ResourceBundle.getBundle(MESSAGES);
+		} catch (MissingResourceException e) {
+			Activator.log(e);
+		}
+	}
+
 	private Messages() {
+	}
+
+	public static String getString(String key) {
+		try {
+			return RESOURCE_BUNDLE.getString(key);
+		} catch (MissingResourceException e) {
+			return '!' + key + '!';
+		}
+	}
+
+	public static ResourceBundle getResourceBundle() {
+		return RESOURCE_BUNDLE;
 	}
 
 }

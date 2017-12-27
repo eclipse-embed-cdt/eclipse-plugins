@@ -37,6 +37,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.properties.PersistentProperties;
 import ilg.gnumcueclipse.debug.gdbjtag.ui.Messages;
 
+// DEPRECATED, functionality moved to debugger launch configuration.
 public class SvdTab extends AbstractCPropertyTab {
 
 	protected Text fFileText;

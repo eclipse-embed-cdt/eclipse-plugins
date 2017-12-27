@@ -9,20 +9,19 @@
  *     Liviu Ionescu - initial version
  *******************************************************************************/
 
-package ilg.gnumcueclipse.debug.gdbjtag.ui.properties;
+package ilg.gnumcueclipse.debug.gdbjtag;
 
-import org.eclipse.cdt.ui.newui.AbstractPage;
+public interface ConfigurationAttributes {
 
-// Warning: tabs attach to a parent class, not id. Since it is not clear if/where the id
-// is used, better make the id match the class name (in plugin.xml).
+	// ------------------------------------------------------------------------
 
-// DEPRECATED, functionality moved to debugger launch configuration.
-public class SvdPage extends AbstractPage {
+	public static final String PREFIX = Activator.PLUGIN_ID;
 
-	@Override
-	protected boolean isSingle() {
-		// False: create Tabs, True: then single page, no tabs
-		return true;
-	}
+	// ------------------------------------------------------------------------
 
+	// TabSvd
+
+	public static final String SVD_PATH = PREFIX + ".svdPath"; //$NON-NLS-1$
+
+	// ------------------------------------------------------------------------
 }

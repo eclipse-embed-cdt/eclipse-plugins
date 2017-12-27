@@ -27,16 +27,15 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.core.resources.IProject;
-import org.eclipse.core.resources.ProjectScope;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.debug.core.ILaunchConfiguration;
 import org.eclipse.ui.console.MessageConsoleStream;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
-import org.osgi.service.prefs.Preferences;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import org.xml.sax.SAXParseException;
@@ -46,9 +45,10 @@ import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.core.JsonUtils;
 import ilg.gnumcueclipse.core.Xml;
 import ilg.gnumcueclipse.debug.gdbjtag.Activator;
+import ilg.gnumcueclipse.debug.gdbjtag.ConfigurationAttributes;
+import ilg.gnumcueclipse.debug.gdbjtag.DebugUtils;
 import ilg.gnumcueclipse.debug.gdbjtag.data.CProjectExtraDataManagerProxy;
 import ilg.gnumcueclipse.debug.gdbjtag.data.SVDPathManagerProxy;
-import ilg.gnumcueclipse.debug.gdbjtag.properties.PersistentProperties;
 import ilg.gnumcueclipse.packs.core.ConsoleStream;
 import ilg.gnumcueclipse.packs.core.PackType;
 import ilg.gnumcueclipse.packs.core.data.IPacksDataManager;
@@ -177,17 +177,15 @@ public class SvdUtils {
 	 * @return Absolute path.
 	 * @throws CoreException
 	 */
-	public static IPath getSvdPath(ICConfigurationDescription cConfigDescription) throws CoreException {
+	public static IPath getSvdPath(ILaunchConfiguration launchConfiguration) throws CoreException {
 
-		// The first place to search for is a per project (actually per build
-		// configuration) key in the project preferences store.
+		ICConfigurationDescription cConfigDescription = EclipseUtils.getBuildConfigDescription(launchConfiguration);
 		IProject project = cConfigDescription.getProjectDescription().getProject();
-		Preferences preferences = new ProjectScope(project).getNode(Activator.PLUGIN_ID);
-		String key = PersistentProperties.getSvdAbsolutePathKey(cConfigDescription.getId());
-		String value = preferences.get(key, "").trim();
+
+		String value = launchConfiguration.getAttribute(ConfigurationAttributes.SVD_PATH, "");
 
 		if (!value.isEmpty()) {
-			// System.out.println("Custom SVD path: " + value);
+			value = resolveAll(value, launchConfiguration);
 			File f = new File(value);
 			if (f.exists() && !f.isDirectory()) {
 				// Accept path only if the file exists.
@@ -501,6 +499,27 @@ public class SvdUtils {
 		}
 
 		return list;
+	}
+
+	public static String resolveAll(String str, ILaunchConfiguration configuration) throws CoreException {
+		String value = str;
+		value = value.trim();
+		if (value.length() == 0)
+			return null;
+
+		if (value.indexOf("${") >= 0) {
+			// If more macros to process.
+			value = DebugUtils.resolveAll(value, configuration.getAttributes());
+
+			ICConfigurationDescription buildConfig = EclipseUtils.getBuildConfigDescription(configuration);
+			if (buildConfig != null) {
+				value = DebugUtils.resolveAll(value, buildConfig);
+			}
+		}
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("gdbjtag.resolveAll(\"" + str + "\") = \"" + value + "\"");
+		}
+		return value;
 	}
 
 	// ------------------------------------------------------------------------
