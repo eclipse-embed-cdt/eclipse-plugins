@@ -19,4 +19,5 @@ Require-Bundle: ilg.gnumcueclipse.core,
  org.eclipse.jface;bundle-version="3.12.2",
  org.eclipse.osgi;bundle-version="3.11.3",
  org.eclipse.ui.console;bundle-version="3.6.201",
- org.eclipse.ui.workbench;bundle-version="3.108.3"
+ org.eclipse.ui.workbench;bundle-version="3.108.3",
+ org.eclipse.cdt.managedbuilder.core;bundle-version="8.4.0"

@@ -745,7 +745,7 @@ public class OutlineView extends ViewPart {
 			String packName = node.getProperty(Property.PACK_NAME);
 			String versionName = node.getName();
 
-			input = (Node) fDataManager.findPackVersion(vendorName, packName, versionName);
+			input = (Node) fDataManager.findCmsisPackVersion(vendorName, packName, versionName);
 		}
 
 		assert (input != null);

@@ -29,6 +29,12 @@ public class CProjectPacksStorage {
 
 	public static final String STORAGE_NAME = "ilg.gnumcueclipse.managedbuild.packs";
 
+	// If missing, assume CMSIS.
+	public static final String PACK_TYPE = "pack.type";
+	// Values are in ilg.gnumcueclipse.packs.core.PackTypes
+
+	// ------------------------------------------------------------------------
+
 	public static final String CMSIS_DEVICE_NAME = "cmsis.device.name";
 	public static final String CMSIS_DEVICE_VENDOR_NAME = "cmsis.device.vendor.name";
 	public static final String CMSIS_DEVICE_VENDOR_ID = "cmsis.device.vendor.id";
@@ -50,6 +56,31 @@ public class CProjectPacksStorage {
 	public static final String CMSIS_BOARD_PACK_NAME = "cmsis.board.pack.name";
 	public static final String CMSIS_BOARD_PACK_VERSION = "cmsis.board.pack.version";
 
+	// ------------------------------------------------------------------------
+
+	public static final String DEVICE_KEY = "device.id";
+	public static final String DEVICE_VENDOR_NAME = "device.vendor.name";
+	public static final String DEVICE_VENDOR_ID = "device.vendor.id";
+	public static final String DEVICE_COMPILER_DEFINES = "device.compiler.defines";
+	public static final String DEVICE_COMPILER_HEADERS = "device.compiler.headers";
+	public static final String FAMILY_KEY = "family.id";
+	public static final String SUBFAMILY_KEY = "subfamily.key";
+	public static final String CORE_NAME = "core.name";
+	public static final String CORE_ARCH = "core.arch";
+
+	public static final String DEVICE_PACK_NAME = "device.pack.name";
+	public static final String DEVICE_PACK_VERSION = "device.pack.version";
+
+	public static final String BOARD_KEY = "board.id";
+	public static final String BOARD_REVISION = "board.revision";
+	public static final String BOARD_VENDOR_NAME = "board.vendor.name";
+	public static final String BOARD_VENDOR_ID = "board.vendor.id";
+	public static final String BOARD_COMPILER_DEFINES = "board.compiler.defines";
+	public static final String BOARD_COMPILER_HEADERS = "board.compiler.headers";
+	public static final String BOARD_CLOCK = "board.clock";
+
+	public static final String BOARD_PACK_NAME = "board.pack.name";
+	public static final String BOARD_PACK_VERSION = "board.pack.version";
 
 	// ------------------------------------------------------------------------
 
@@ -94,6 +125,10 @@ public class CProjectPacksStorage {
 				throw new CoreException(
 						new Status(Status.ERROR, Activator.PLUGIN_ID, "Storage " + storageId + " not found."));
 			}
+			if (Activator.getInstance().isDebugging()) {
+				System.out
+						.println("CProjectPacksStorage() " + fStorage + " " + (fConfigDesc.isReadOnly() ? "ro" : "rw"));
+			}
 			// if (!fConfigDesc.isReadOnly()) {
 			// fStorage = st; //.createCopy();
 			// } else {
@@ -115,6 +150,9 @@ public class CProjectPacksStorage {
 	 * Clear all definitions inside this storage.
 	 */
 	public void clear() {
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("CProjectPacksStorage.clear()");
+		}
 		fStorage.clear();
 	}
 
@@ -156,10 +194,17 @@ public class CProjectPacksStorage {
 		for (ICStorageElement child : fStorage.getChildrenByName("option")) {
 
 			if (child.hasAttribute("id") && id.equals(child.getAttribute("id"))) {
-				return child.getAttribute("value");
+				String value = child.getAttribute("value");
+				if (Activator.getInstance().isDebugging()) {
+					System.out.println("CProjectPacksStorage.getOption(" + id + ") = " + value);
+				}
+				return value;
 			}
 		}
 
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("CProjectPacksStorage.getOption(" + id + ") = null");
+		}
 		return null;
 	}
 
@@ -209,6 +254,9 @@ public class CProjectPacksStorage {
 			value = "";
 		} else {
 			value = value.trim();
+		}
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("CProjectPacksStorage.setOption(" + id + "," + value + ") ");
 		}
 		option.setAttribute("value", value);
 	}
@@ -275,12 +323,15 @@ public class CProjectPacksStorage {
 
 		Map<String, String[]> map = new TreeMap<String, String[]>();
 
-		for (ICStorageElement child : fStorage.getChildrenByName("memory")) {
+		ICStorageElement[] memory = fStorage.getChildrenByName("memory");
+		if (memory != null) {
+			for (ICStorageElement child : memory) {
 
-			String section = child.getAttribute("section");
-			String arr[] = new String[] { section, child.getAttribute("start"), child.getAttribute("size"),
-					child.getAttribute("startup") };
-			map.put(section, arr);
+				String section = child.getAttribute("section");
+				String arr[] = new String[] { section, child.getAttribute("start"), child.getAttribute("size"),
+						child.getAttribute("startup") };
+				map.put(section, arr);
+			}
 		}
 
 		return map;

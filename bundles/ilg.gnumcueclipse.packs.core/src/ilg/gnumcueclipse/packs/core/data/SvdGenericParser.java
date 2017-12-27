@@ -17,7 +17,7 @@ import ilg.gnumcueclipse.packs.core.tree.Leaf;
  * Specific implementation of the generic parser used to convert the SVD files
  * into a more regular and compact representation.
  */
-public class SvdGenericParser extends GenericParser {
+public class SvdGenericParser extends XmlGenericParser {
 
 	public SvdGenericParser() {
 		;

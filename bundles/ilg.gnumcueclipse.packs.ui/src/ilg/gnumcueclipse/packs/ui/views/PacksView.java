@@ -63,6 +63,7 @@ import com.github.zafarkhaja.semver.Version;
 
 import ilg.gnumcueclipse.core.StringUtils;
 import ilg.gnumcueclipse.packs.core.ConsoleStream;
+import ilg.gnumcueclipse.packs.core.PackType;
 import ilg.gnumcueclipse.packs.core.data.DurationMonitor;
 import ilg.gnumcueclipse.packs.core.tree.Leaf;
 import ilg.gnumcueclipse.packs.core.tree.Node;
@@ -789,10 +790,10 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 				String packName = versionNode.getProperty(Property.PACK_NAME);
 				String versionName = versionNode.getProperty(Property.VERSION_NAME);
 
-				Node modelNode = fDataManager.findPackVersion(vendorName, packName, versionName);
+				Node modelNode = fDataManager.findCmsisPackVersion(vendorName, packName, versionName);
 				updateVersioNode(versionNode, modelNode);
 
-				String key = fDataManager.makeMapKey(vendorName, packName);
+				String key = fDataManager.makeMapKey(PackType.CMSIS, vendorName, packName);
 
 				Node parent = versionNode.getParent();
 				if (!parentsMap.containsKey(key)) {

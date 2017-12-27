@@ -11,6 +11,7 @@
 
 package ilg.gnumcueclipse.packs.core.data;
 
+import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.core.runtime.IPath;
 
 import ilg.gnumcueclipse.packs.core.tree.Leaf;
@@ -25,55 +26,77 @@ public interface IPacksDataManager {
 	/**
 	 * Provide access to the summary data.
 	 * <p>
-	 * If the data is not in memory, load it from the disk cache (the
-	 * .content_*.xml files, one per repository)
+	 * If the data is not in memory, load it from the disk cache (the .content_*.xml
+	 * files, one per repository)
 	 *
 	 * @return a tree of repositories/packages/versions/...
 	 */
 	public Node getRepositoriesTree();
 
-	public Node getInstalledObjectsForBuild();
+	public Node getInstalledObjectsForBuild(IConfiguration config);
 
 	public Node getCmsisCoreFiles(String deviceName, String compiler);
 
 	public Node getRegisterDetailsForDebug(String deviceName);
 
 	/**
-	 * Find a device in the tree of installed boards & devices.
 	 * 
-	 * @param deviceVendorId
-	 *            a string with the numeric id of the device vendor.
-	 * @param deviceName
-	 *            a string with the device name.
-	 * @return the device node or null if not found.
+	 * @param node
+	 * @return
 	 */
-	public Leaf findInstalledDevice(String deviceVendorId, String deviceName);
+	public String getCmsisDestinationFolder(Leaf node);
 
 	/**
-	 * Find a board in the tree of installed boards & devices.
+	 * Find a device in the tree of installed boards & devices. Also use the local
+	 * project definitions.
 	 * 
-	 * @param boardVendorName
-	 *            a string with the vendor name
-	 * @param boardName
-	 *            a string with the board name
+	 * @param packType
+	 *            a string with the package type
+	 * @param deviceSupplierId
+	 *            a string with the supplier id
+	 * @param deviceId
+	 *            a string with the device id
+	 * @param config
+	 *            project configuration; may be null;
+	 * @return the device node or null if not found.
+	 */
+	public Leaf findInstalledDevice(String packType, String deviceSupplierId, String deviceId, IConfiguration config);
+
+	/**
+	 * Find a board in the tree of installed boards & devices. Also use the local
+	 * project definitions.
+	 * 
+	 * @param packType
+	 *            a string with the package type
+	 * @param boardSupplierId
+	 *            a string with the supplier id; may be null;
+	 * @param boardSupplierName
+	 *            a string with the supplier name, if the supplier id is null;
+	 * @param boardId
+	 *            a string with the board id
+	 * @param config
+	 *            project configuration
 	 * @return the board node or null, if not found
 	 */
-	public Leaf findInstalledBoard(String boardVendorName, String boardName);
-
-	public String getDestinationFolder(Leaf node);
+	public Leaf findInstalledBoard(String packType, String boardSupplierId, String boardSupplierName, String boardId,
+			IConfiguration config);
 
 	/**
 	 * Get the absolute path of a SVD file associated with the given device.
 	 * <p>
 	 * For unsupported devices, this should return null.
 	 * 
-	 * @param deviceVendorId
+	 * @param packType
+	 *            a string with the package type
+	 * @param deviceSupplierId
 	 *            a string with the CMSIS device vendor id.
-	 * @param deviceName
-	 *            a string with the CMSIS device name.
+	 * @param deviceId
+	 *            a string with the CMSIS device id.
+	 * @param config
+	 *            project configuration
 	 * @return the absolute path to the SVD file, or null.
 	 */
-	public IPath getSVDAbsolutePath(String deviceVendorId, String deviceName);
+	public IPath getSVDAbsolutePath(String packType, String deviceSupplierId, String deviceId, IConfiguration config);
 
 	// ------------------------------------------------------------------------
 }

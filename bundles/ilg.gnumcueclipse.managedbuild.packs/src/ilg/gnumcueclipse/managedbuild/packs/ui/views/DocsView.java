@@ -590,7 +590,7 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 	// Return a two level hierarchy of vendor and device nodes.
 	private Node getDocsTree() {
 
-		Node tree = DataManager.getInstance().getInstalledObjectsForBuild();
+		Node tree = DataManager.getInstance().getInstalledObjectsForBuild(fConfig);
 
 		Node devicesRoot = new Node(Type.ROOT);
 		devicesRoot.setName("Docs");
@@ -609,10 +609,12 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 				Node deviceDocsNode = Node.addNewChild(devicesRoot, Type.FOLDER);
 				deviceDocsNode.setName(deviceName + " device docs");
 
-				Node devicesSubtree = (Node) tree.findChild(Type.DEVICES_SUBTREE);
-				if (devicesSubtree != null) {
+				if (tree != null) {
+					Node devicesSubtree = (Node) tree.findChild(Type.DEVICES_SUBTREE);
+					if (devicesSubtree != null) {
 
-					copyDeviceDocs(devicesSubtree, deviceVendorId, deviceName, deviceDocsNode);
+						copyDeviceDocs(devicesSubtree, deviceVendorId, deviceName, deviceDocsNode);
+					}
 				}
 			}
 
@@ -620,10 +622,12 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 				Node boardDocsNode = Node.addNewChild(devicesRoot, Type.FOLDER);
 				boardDocsNode.setName(boardName + " board docs");
 
-				Node boardsSubtree = (Node) tree.findChild(Type.BOARDS_SUBTREE);
-				if (boardsSubtree != null) {
+				if (tree != null) {
+					Node boardsSubtree = (Node) tree.findChild(Type.BOARDS_SUBTREE);
+					if (boardsSubtree != null) {
 
-					copyBoardDocs(boardsSubtree, boardVendorName, boardName, boardDocsNode);
+						copyBoardDocs(boardsSubtree, boardVendorName, boardName, boardDocsNode);
+					}
 				}
 			}
 		} catch (CoreException e) {
@@ -649,7 +653,7 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 				// Identify board
 				if (board.isType(Type.BOARD) && boardName.equals(board.getName())) {
 
-					String destFolder = fDataManager.getDestinationFolder(board);
+					String destFolder = fDataManager.getCmsisDestinationFolder(board);
 
 					if (board != null && board.hasChildren()) {
 						for (Leaf bookNode : ((Node) board).getChildren()) {
@@ -709,7 +713,7 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 
 						Leaf node = deviceNode;
 
-						String destFolder = fDataManager.getDestinationFolder(node);
+						String destFolder = fDataManager.getCmsisDestinationFolder(node);
 						do {
 							if (node.hasChildren()) {
 								for (Leaf bookNode : ((Node) node).getChildren()) {

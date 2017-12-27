@@ -39,9 +39,9 @@ import org.w3c.dom.NamedNodeMap;
  * All other children elements are turned into children nodes, recursively.
  * 
  */
-public class GenericParser {
+public class XmlGenericParser {
 
-	public GenericParser() {
+	public XmlGenericParser() {
 		;
 	}
 

@@ -67,13 +67,25 @@ public class Xml {
 		return null;
 	}
 
+	/**
+	 * Get the list of all direct children elements.
+	 * 
+	 * @param el
+	 * @return a list of elements.
+	 */
 	// Return the list of all direct children elements
 	public static List<Element> getChildrenElementsList(Element el) {
 
 		return getChildrenElementsList(el, null);
 	}
 
-	// Return the list of direct children elements with the given name
+	/**
+	 * Get the list of direct children elements with the given name.
+	 * 
+	 * @param el
+	 * @param name
+	 * @return a list of elements.
+	 */
 	public static List<Element> getChildrenElementsList(Element el, String name) {
 
 		NodeList nodeList = el.getChildNodes();
@@ -93,7 +105,12 @@ public class Xml {
 		return list;
 	}
 
-	// Return a string, even an empty one.
+	/**
+	 * Get the text content of an element.
+	 * 
+	 * @param el
+	 * @return a trimmed string, even an empty one.
+	 */
 	public static String getElementContent(Element el) {
 
 		String content = "";
@@ -187,8 +204,8 @@ public class Xml {
 	}
 
 	/**
-	 * If the string contains line separators, split the string in lines, trim
-	 * each line and then join everything back to a single string.
+	 * If the string contains line separators, split the string in lines, trim each
+	 * line and then join everything back to a single string.
 	 * 
 	 * @param str
 	 *            a string that might span multiple lines.

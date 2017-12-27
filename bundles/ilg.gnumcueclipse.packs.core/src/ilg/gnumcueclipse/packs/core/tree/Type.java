@@ -13,6 +13,10 @@ package ilg.gnumcueclipse.packs.core.tree;
 
 public class Type {
 
+	// Internal node, used to merge multiple JSONs.
+	public static final String FILE_ = "$FILE";
+	public static final String ARRAY_ELEMENT_ = "$ARRAY_ELEMENT";
+
 	// Node types (sorted)
 	public static final String ACCEPT = "accept";
 	public static final String API = "api";
@@ -22,11 +26,13 @@ public class Type {
 	public static final String BUNDLE = "bundle";
 	public static final String CATEGORY = "category";
 	public static final String COMPATIBLEDEVICE = "compatibledevice";
+	public static final String COMPILER = "compiler";
 	public static final String COMPONENT = "component";
 	public static final String CONDITION = "condition";
 	public static final String DEBUGINTERFACE = "debuginterface";
 	public static final String DEBUG = "debug";
 	public static final String DEFINE = "define";
+	public static final String DEFINES = "defines";
 	public static final String DENY = "deny";
 	public static final String DEVICE = "device";
 	public static final String DEVICES_SUBTREE = "devices";
@@ -34,13 +40,18 @@ public class Type {
 	public static final String EXAMPLE = "example";
 	public static final String EXTERNAL = "external";
 	public static final String FAMILY = "family";
+	public static final String FAMILIES_SUBTREE = "families";
 	public static final String FEATURE = "feature";
+	public static final String FEATURES = "features";
 	public static final String FILE = "file";
+	public static final String INSTALLED_DEVICE = "installedDevice";
 	public static final String FOLDER = "folder";
 	public static final String HEADER = "header";
+	public static final String HEADERS = "headers";
 	public static final String KEYWORD = "keyword";
 	public static final String KEYWORDS_SELECT = "keywords";
 	public static final String MEMORY = "memory";
+	public static final String MEMORY_REGIONS = "memoryRegions";
 	public static final String NONE = "none";
 	public static final String OUTLINE = "outline";
 	public static final String PACKAGE = "package";
@@ -50,6 +61,7 @@ public class Type {
 	public static final String REQUIRE = "require";
 	public static final String ROOT = "root";
 	public static final String SUBFAMILY = "subfamily";
+	public static final String SUPPLIER = "supplier";
 	public static final String TAXONOMY = "taxonomy";
 	public static final String VARIANT = "variant";
 	public static final String VENDOR = "vendor";

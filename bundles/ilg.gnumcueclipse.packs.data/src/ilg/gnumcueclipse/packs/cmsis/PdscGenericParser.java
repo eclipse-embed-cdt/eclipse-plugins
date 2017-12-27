@@ -11,22 +11,22 @@
 
 package ilg.gnumcueclipse.packs.cmsis;
 
-import ilg.gnumcueclipse.packs.core.data.GenericParser;
+import ilg.gnumcueclipse.packs.core.data.XmlGenericParser;
 import ilg.gnumcueclipse.packs.core.tree.Leaf;
 
 /**
  * Specific implementation of the generic parser used to convert the messy PDSC
  * files into a more regular and compact representation.
  */
-public class PdscGenericParser extends GenericParser {
+public class PdscGenericParser extends XmlGenericParser {
 
 	public PdscGenericParser() {
 		;
 	}
 
 	/**
-	 * Configure all elements that generate properties, mainly <description> for
-	 * a list of nodes, and a few ones for <package> nodes, are automatically
+	 * Configure all elements that generate properties, mainly <description> for a
+	 * list of nodes, and a few ones for <package> nodes, are automatically
 	 * identified by the generic parser, no need to define them explicitly.
 	 */
 	@Override

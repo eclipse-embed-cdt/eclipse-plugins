@@ -11,6 +11,8 @@
 
 package ilg.gnumcueclipse.managedbuild.packs.ui;
 
+import java.io.IOException;
+import java.math.BigInteger;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +23,7 @@ import org.eclipse.cdt.managedbuilder.core.IConfiguration;
 import org.eclipse.cdt.managedbuilder.internal.core.Configuration;
 import org.eclipse.cdt.managedbuilder.internal.core.MultiConfiguration;
 import org.eclipse.cdt.managedbuilder.ui.properties.AbstractCBuildPropertyTab;
+import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.CoreException;
 import org.eclipse.jface.layout.TreeColumnLayout;
 import org.eclipse.jface.viewers.ColumnPixelData;
@@ -31,6 +34,8 @@ import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.SelectionChangedEvent;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TreeViewer;
+import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.jface.viewers.ViewerComparator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
@@ -44,10 +49,15 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeColumn;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.ParseException;
 
 import ilg.gnumcueclipse.core.CProjectPacksStorage;
+import ilg.gnumcueclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.core.JsonUtils;
 import ilg.gnumcueclipse.core.StringUtils;
 import ilg.gnumcueclipse.managedbuild.packs.Activator;
+import ilg.gnumcueclipse.packs.core.PackType;
 import ilg.gnumcueclipse.packs.core.data.IPacksDataManager;
 import ilg.gnumcueclipse.packs.core.data.PacksDataManagerFactoryProxy;
 import ilg.gnumcueclipse.packs.core.tree.Leaf;
@@ -56,6 +66,7 @@ import ilg.gnumcueclipse.packs.core.tree.NodeViewContentProvider;
 import ilg.gnumcueclipse.packs.core.tree.Property;
 import ilg.gnumcueclipse.packs.core.tree.Type;
 import ilg.gnumcueclipse.packs.data.DataManager;
+import ilg.gnumcueclipse.packs.xcdl.Utils;
 
 /**
  * @noextend This class is not intended to be sub-classed by clients.
@@ -158,6 +169,9 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 				if (description.length() > 0) {
 					description += ", ";
 				}
+				if (!revision.toLowerCase().startsWith("rev") && !revision.toLowerCase().startsWith("ver")) {
+					description += "Rev ";
+				}
 				description += revision;
 			}
 
@@ -173,6 +187,22 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 				} catch (NumberFormatException e) {
 					// Ignore not number
 				}
+			}
+
+			String hfosc = node.getProperty(Property.HFXTAL);
+			if (hfosc.length() > 0) {
+				if (description.length() > 0) {
+					description += ", ";
+				}
+				description += hfosc + " HFXTAL";
+			}
+
+			String lfosc = node.getProperty(Property.LFXTAL);
+			if (lfosc.length() > 0) {
+				if (description.length() > 0) {
+					description += ", ";
+				}
+				description += lfosc + " LFXTAL";
 			}
 
 			String prefix = "Board";
@@ -199,48 +229,81 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 			}
 
 			String summary = "";
-			String core = node.getProperty(Property.CORE);
-			if (core.length() > 0) {
-				if (summary.length() > 0) {
-					summary += ", ";
-				}
-				summary += core;
 
-				String version = node.getProperty(Property.CORE_VERSION);
-				if (version.length() > 0) {
+			String packType = node.getProperty(Property.PACK_TYPE);
+			if (PackType.XPACK_XCDL.equals(packType)) {
+
+				String arch = node.getProperty(Property.ARCH);
+				if (arch.length() > 0) {
 					if (summary.length() > 0) {
 						summary += ", ";
 					}
-					summary += version;
+					summary += arch;
 				}
-			}
 
-			String fpu = node.getProperty(Property.FPU);
-			if (fpu.length() > 0 && "1".equals(fpu)) {
-				if (summary.length() > 0) {
-					summary += ", ";
-				}
-				summary += "FPU";
-			}
-
-			String mpu = node.getProperty(Property.MPU);
-			if (mpu.length() > 0 && "1".equals(mpu)) {
-				if (summary.length() > 0) {
-					summary += ", ";
-				}
-				summary += "MPU";
-			}
-
-			String clock = node.getProperty(Property.CLOCK);
-			if (clock.length() > 0) {
-				try {
-					int clockMHz = Integer.parseInt(clock) / 1000000;
+				String hfosc = node.getProperty(Property.HFOSC);
+				if (hfosc.length() > 0) {
 					if (summary.length() > 0) {
 						summary += ", ";
 					}
-					summary += String.valueOf(clockMHz) + " MHz";
-				} catch (NumberFormatException e) {
-					// Ignore not number
+					summary += hfosc + " HFOSC";
+				}
+
+				String lfosc = node.getProperty(Property.LFOSC);
+				if (lfosc.length() > 0) {
+					if (summary.length() > 0) {
+						summary += ", ";
+					}
+					summary += lfosc + " LFOSC";
+				}
+
+			} else {
+				String core = node.getProperty(Property.CORE);
+				if (core.length() > 0) {
+					if (summary.length() > 0) {
+						summary += ", ";
+					}
+					summary += core;
+
+					String version = node.getProperty(Property.CORE_VERSION);
+					if (version.length() > 0) {
+						if (summary.length() > 0) {
+							summary += ", ";
+						}
+						if (!version.toLowerCase().startsWith("rev") && !version.toLowerCase().startsWith("ver")) {
+							summary += "Rev ";
+						}
+						summary += version;
+					}
+				}
+
+				String fpu = node.getProperty(Property.FPU);
+				if (fpu.length() > 0 && "1".equals(fpu)) {
+					if (summary.length() > 0) {
+						summary += ", ";
+					}
+					summary += "FPU";
+				}
+
+				String mpu = node.getProperty(Property.MPU);
+				if (mpu.length() > 0 && "1".equals(mpu)) {
+					if (summary.length() > 0) {
+						summary += ", ";
+					}
+					summary += "MPU";
+				}
+
+				String clock = node.getProperty(Property.CLOCK);
+				if (clock.length() > 0) {
+					try {
+						int clockMHz = Integer.parseInt(clock) / 1000000;
+						if (summary.length() > 0) {
+							summary += ", ";
+						}
+						summary += String.valueOf(clockMHz) + " MHz";
+					} catch (NumberFormatException e) {
+						// Ignore not number
+					}
 				}
 			}
 
@@ -297,6 +360,24 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 	}
 
+	class DevicesViewerComparator extends ViewerComparator {
+
+		public DevicesViewerComparator() {
+			;
+		}
+
+		@Override
+		public int compare(Viewer viewer, Object e1, Object e2) {
+
+			Node p1 = (Node) e1;
+			Node p2 = (Node) e2;
+
+			int comparison = p1.getName().compareToIgnoreCase(p2.getName());
+			return comparison;
+		}
+
+	}
+
 	// ------------------------------------------------------------------------
 
 	private TreeViewer fDevicesTree;
@@ -337,6 +418,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 		super.createControls(parent);
 
 		fConfig = getCfg();
+
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("Devices.createControls() fConfig=" + fConfig);
 		}
@@ -407,8 +489,10 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 		fDevicesTree.setLabelProvider(new DevicesLabelProvider());
 
+		fDevicesTree.setComparator(new DevicesViewerComparator());
+
 		fDevicesTree.setAutoExpandLevel(AUTOEXPAND_LEVEL);
-		fDevicesTree.setInput(getDevicesTree());
+		fDevicesTree.setInput(getDevicesTree(fConfig));
 		// ---
 
 		Label label = new Label(group, SWT.NONE);
@@ -512,7 +596,9 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 		IStructuredSelection selection = (IStructuredSelection) event.getSelection();
 
-		// System.out.println(selection);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("Devices.devicesTreeSelectionChanged() " + selection);
+		}
 
 		Object element = selection.getFirstElement();
 		if (!(element instanceof Node)) {
@@ -558,10 +644,16 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 	private Leaf findBoardDevice(Node boardDevice) {
 
-		String deviceName = boardDevice.getName();
+		String packType = boardDevice.getProperty(Property.PACK_TYPE, PackType.DEFAULT);
 		String deviceVendorId = boardDevice.getProperty(Property.VENDOR_ID);
+		String deviceName;
+		if (PackType.XPACK_XCDL.equals(packType)) {
+			deviceName = boardDevice.getProperty(Property.KEY_);
+		} else {
+			deviceName = boardDevice.getName();
+		}
 
-		return fDataManager.findInstalledDevice(deviceVendorId, deviceName);
+		return fDataManager.findInstalledDevice(packType, deviceVendorId, deviceName, null);
 	}
 
 	private Map<String, String[]> collectMemoryMap(Leaf node) {
@@ -665,7 +757,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 		updateControlsForConfig(config);
 
-		fDevicesTree.setInput(getDevicesTree());
+		fDevicesTree.setInput(getDevicesTree(config));
 	}
 
 	@Override
@@ -705,40 +797,96 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 		fConfig = config;
 
+		boolean mustUpdate = false;
+
 		if (config instanceof Configuration) {
 
 			try {
 				CProjectPacksStorage st = new CProjectPacksStorage(config);
 
-				String deviceName = st.getOption(CProjectPacksStorage.CMSIS_DEVICE_NAME);
-				if (deviceName != null) {
-					fDeviceLabel.setText(deviceName);
+				String packType;
+				packType = st.getOption(CProjectPacksStorage.PACK_TYPE);
+
+				String deviceId = "";
+				String coreName = "";
+				String boardId = "";
+				String boardSupplierName = "";
+				String boardSupplierId = "";
+				String deviceSupplierId = "";
+
+				if (packType == null || PackType.CMSIS.equals(packType)) {
+					packType = PackType.CMSIS;
+					deviceId = st.getOption(CProjectPacksStorage.CMSIS_DEVICE_NAME, "");
+					deviceSupplierId = st.getOption(CProjectPacksStorage.CMSIS_DEVICE_VENDOR_ID, "");
+
+					coreName = st.getOption(CProjectPacksStorage.CMSIS_CORE_NAME, "");
+
+					boardId = st.getOption(CProjectPacksStorage.CMSIS_BOARD_NAME, "");
+					boardSupplierName = st.getOption(CProjectPacksStorage.CMSIS_BOARD_VENDOR_NAME, "");
+				} else if (PackType.XPACK_XCDL.equals(packType)) {
+					deviceId = st.getOption(CProjectPacksStorage.DEVICE_KEY, "");
+					deviceSupplierId = st.getOption(CProjectPacksStorage.DEVICE_VENDOR_ID, "");
+
+					coreName = st.getOption(CProjectPacksStorage.CORE_ARCH, "");
+
+					boardId = st.getOption(CProjectPacksStorage.BOARD_KEY, "");
+					boardSupplierName = st.getOption(CProjectPacksStorage.BOARD_VENDOR_NAME, "");
+					boardSupplierId = st.getOption(CProjectPacksStorage.BOARD_VENDOR_ID, "");
+				} else {
+					System.out.println("Unsupported pack type.");
 				}
 
-				String coreName = st.getOption(CProjectPacksStorage.CMSIS_CORE_NAME);
-				if (coreName != null) {
-					fArchitectureLabel.setText(coreName);
+				IProject project = EclipseUtils.getProjectFromConfiguration(config);
+				if (project != null) {
+					try {
+						JSONObject packageJson = Utils.getPackageJson(project);
+
+						packType = PackType.XPACK_XCDL;
+						if (deviceId.isEmpty()) {
+							deviceId = (String) JsonUtils.get(packageJson, "config.xcdl.device.id", "");
+							mustUpdate = true;
+						}
+						if (deviceSupplierId.isEmpty()) {
+							deviceSupplierId = (String) JsonUtils.get(packageJson, "config.xcdl.device.supplier.id",
+									"");
+							mustUpdate = true;
+						}
+						if (boardId.isEmpty()) {
+							boardId = (String) JsonUtils.get(packageJson, "config.xcdl.board.id", "");
+							mustUpdate = true;
+						}
+						if (boardSupplierId.isEmpty()) {
+							boardSupplierId = (String) JsonUtils.get(packageJson, "config.xcdl.board.supplier.id", "");
+							mustUpdate = true;
+						}
+					} catch (IOException e) {
+						Activator.log(e);
+					} catch (ParseException e) {
+						Activator.log(e);
+					}
 				}
 
 				boolean wasSelected = false;
-				// Select the device in the selection tree.
-				String boardName = st.getOption(CProjectPacksStorage.CMSIS_BOARD_NAME);
-				String boardVendorName = st.getOption(CProjectPacksStorage.CMSIS_BOARD_VENDOR_NAME);
 
-				String deviceVendorId = st.getOption(CProjectPacksStorage.CMSIS_DEVICE_VENDOR_ID);
-
-				if (boardName != null && boardName.length() > 0 && boardVendorName != null
-						&& boardVendorName.length() > 0 && deviceName != null && deviceName.length() > 0
-						&& deviceVendorId != null && deviceVendorId.length() > 0) {
+				if (!boardId.isEmpty() && (!boardSupplierId.isEmpty() || !boardSupplierName.isEmpty())
+						&& !deviceId.isEmpty() && !deviceSupplierId.isEmpty()) {
 
 					// First try to select the device below board.
-					Leaf board = fDataManager.findInstalledBoard(boardVendorName, boardName);
+					Leaf board;
+					board = fDataManager.findInstalledBoard(packType, boardSupplierId, boardSupplierName, boardId,
+							config);
 					if (board != null && board.hasChildren()) {
 
 						for (Leaf child : ((Node) board).getChildren()) {
 
-							if (child.isType(Type.DEVICE) && deviceName.equals(child.getName())
-									&& deviceVendorId.equals(child.getProperty(Property.VENDOR_ID))) {
+							String name;
+							if (PackType.XPACK_XCDL.equals(packType)) {
+								name = child.getProperty(Property.KEY_);
+							} else {
+								name = child.getName();
+							}
+							if (child.isType(Type.DEVICE) && deviceId.equals(name)
+									&& deviceSupplierId.equals(child.getProperty(Property.VENDOR_ID))) {
 
 								fDevicesTree.reveal(child);
 								fDevicesTree.setSelection(new StructuredSelection(child), true);
@@ -751,15 +899,26 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 
 				if (!wasSelected) {
 					// Was not selected by the board, try device.
-					if (deviceName != null && deviceName.length() > 0 && deviceVendorId != null
-							&& deviceVendorId.length() > 0) {
+					if (!deviceId.isEmpty() && !deviceSupplierId.isEmpty()) {
 
-						Leaf device = fDataManager.findInstalledDevice(deviceVendorId, deviceName);
+						Leaf device = fDataManager.findInstalledDevice(packType, deviceSupplierId, deviceId, config);
 						if (device != null) {
 							fDevicesTree.setSelection(new StructuredSelection(device), true);
 							wasSelected = true;
 						}
 					}
+				}
+
+				if (!deviceId.isEmpty()) {
+					fDeviceLabel.setText(deviceId);
+				}
+
+				if (!coreName.isEmpty()) {
+					fArchitectureLabel.setText(coreName);
+				}
+
+				if (mustUpdate) {
+					updateStorage(config);
 				}
 
 				// Clear any possible selection
@@ -769,6 +928,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 				updateMemoryTableContent(st.getMemoryMap());
 
 			} catch (CoreException e) {
+				;
 			}
 
 		}
@@ -809,29 +969,59 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 				CProjectPacksStorage st = new CProjectPacksStorage(config);
 				st.clear();
 
+				String packType = null;
 				Leaf node = fSelectedDeviceNode;
 				while (node != null) {
 					if (node.isType(Type.DEVICE)) {
-						st.setOption(CProjectPacksStorage.CMSIS_DEVICE_NAME, node.getName());
+						packType = node.getProperty(Property.PACK_TYPE, PackType.CMSIS);
+						if (PackType.CMSIS.equals(packType)) {
+							st.setOption(CProjectPacksStorage.CMSIS_DEVICE_NAME, node.getName());
+						} else if (PackType.XPACK_XCDL.equals(packType)) {
+							st.setOption(CProjectPacksStorage.PACK_TYPE, packType);
+							st.setOption(CProjectPacksStorage.DEVICE_KEY, node.getProperty(Property.KEY_));
+
+							st.setOption(CProjectPacksStorage.DEVICE_COMPILER_DEFINES,
+									node.getProperty(Property.COMPILER_DEFINES));
+							st.setOption(CProjectPacksStorage.DEVICE_COMPILER_HEADERS,
+									node.getProperty(Property.COMPILER_HEADERS));
+						}
 						if (Activator.getInstance().isDebugging()) {
 							System.out.println("Devices.updateStorage() device.name=" + node.getName());
 						}
 					} else if (node.isType(Type.SUBFAMILY)) {
-						st.setOption(CProjectPacksStorage.CMSIS_SUBFAMILY_NAME, node.getName());
+						if (PackType.CMSIS.equals(packType)) {
+							st.setOption(CProjectPacksStorage.CMSIS_SUBFAMILY_NAME, node.getName());
+						} else if (PackType.XPACK_XCDL.equals(packType)) {
+							st.setOption(CProjectPacksStorage.SUBFAMILY_KEY, node.getProperty(Property.KEY_));
+						}
 					} else if (node.isType(Type.FAMILY)) {
-						st.setOption(CProjectPacksStorage.CMSIS_FAMILY_NAME, node.getName());
+						if (PackType.CMSIS.equals(packType)) {
+							st.setOption(CProjectPacksStorage.CMSIS_FAMILY_NAME, node.getName());
 
-						st.setOption(CProjectPacksStorage.CMSIS_DEVICE_VENDOR_NAME,
-								node.getProperty(Property.VENDOR_NAME));
-						st.setOption(CProjectPacksStorage.CMSIS_DEVICE_VENDOR_ID, node.getProperty(Property.VENDOR_ID));
+							st.setOption(CProjectPacksStorage.CMSIS_DEVICE_VENDOR_NAME,
+									node.getProperty(Property.VENDOR_NAME));
+							st.setOption(CProjectPacksStorage.CMSIS_DEVICE_VENDOR_ID,
+									node.getProperty(Property.VENDOR_ID));
 
-						// Package details
-						st.setOption(CProjectPacksStorage.CMSIS_DEVICE_PACK_VENDOR,
-								node.getProperty(Property.PACK_VENDOR));
-						st.setOption(CProjectPacksStorage.CMSIS_DEVICE_PACK_NAME, node.getProperty(Property.PACK_NAME));
-						st.setOption(CProjectPacksStorage.CMSIS_DEVICE_PACK_VERSION,
-								node.getProperty(Property.PACK_VERSION));
+							// Package details
+							st.setOption(CProjectPacksStorage.CMSIS_DEVICE_PACK_VENDOR,
+									node.getProperty(Property.PACK_VENDOR));
+							st.setOption(CProjectPacksStorage.CMSIS_DEVICE_PACK_NAME,
+									node.getProperty(Property.PACK_NAME));
+							st.setOption(CProjectPacksStorage.CMSIS_DEVICE_PACK_VERSION,
+									node.getProperty(Property.PACK_VERSION));
+						} else if (PackType.XPACK_XCDL.equals(packType)) {
+							st.setOption(CProjectPacksStorage.FAMILY_KEY, node.getProperty(Property.KEY_));
 
+							st.setOption(CProjectPacksStorage.DEVICE_VENDOR_NAME,
+									node.getProperty(Property.VENDOR_NAME));
+							st.setOption(CProjectPacksStorage.DEVICE_VENDOR_ID, node.getProperty(Property.VENDOR_ID));
+
+							// Package details
+							st.setOption(CProjectPacksStorage.DEVICE_PACK_NAME, node.getProperty(Property.PACK_NAME));
+							st.setOption(CProjectPacksStorage.DEVICE_PACK_VERSION,
+									node.getProperty(Property.PACK_VERSION));
+						}
 					}
 					node = node.getParent();
 				}
@@ -840,27 +1030,64 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 					node = fSelectedBoardDeviceNode.getParent();
 
 					if (node.isType(Type.BOARD)) {
-						st.setOption(CProjectPacksStorage.CMSIS_BOARD_NAME, node.getName());
-						st.setOption(CProjectPacksStorage.CMSIS_BOARD_REVISION,
-								node.getProperty(Property.BOARD_REVISION));
-						st.setOption(CProjectPacksStorage.CMSIS_BOARD_VENDOR_NAME,
-								node.getProperty(Property.VENDOR_NAME));
-						st.setNonEmptyOption(CProjectPacksStorage.CMSIS_BOARD_CLOCK, node.getProperty(Property.CLOCK));
+						if (PackType.CMSIS.equals(packType)) {
+							st.setOption(CProjectPacksStorage.CMSIS_BOARD_NAME, node.getName());
+							st.setOption(CProjectPacksStorage.CMSIS_BOARD_REVISION,
+									node.getProperty(Property.BOARD_REVISION));
+							st.setOption(CProjectPacksStorage.CMSIS_BOARD_VENDOR_NAME,
+									node.getProperty(Property.VENDOR_NAME));
+							st.setNonEmptyOption(CProjectPacksStorage.CMSIS_BOARD_CLOCK,
+									node.getProperty(Property.CLOCK));
 
-						// Package details
-						st.setOption(CProjectPacksStorage.CMSIS_BOARD_PACK_VENDOR,
-								node.getProperty(Property.PACK_VENDOR));
-						st.setOption(CProjectPacksStorage.CMSIS_BOARD_PACK_NAME, node.getProperty(Property.PACK_NAME));
-						st.setOption(CProjectPacksStorage.CMSIS_BOARD_PACK_VERSION,
-								node.getProperty(Property.PACK_VERSION));
+							// Package details
+							st.setOption(CProjectPacksStorage.CMSIS_BOARD_PACK_VENDOR,
+									node.getProperty(Property.PACK_VENDOR));
+							st.setOption(CProjectPacksStorage.CMSIS_BOARD_PACK_NAME,
+									node.getProperty(Property.PACK_NAME));
+							st.setOption(CProjectPacksStorage.CMSIS_BOARD_PACK_VERSION,
+									node.getProperty(Property.PACK_VERSION));
+						} else if (PackType.XPACK_XCDL.equals(packType)) {
+							st.setOption(CProjectPacksStorage.BOARD_KEY, node.getProperty(Property.KEY_));
+							st.setOption(CProjectPacksStorage.BOARD_REVISION,
+									node.getProperty(Property.BOARD_REVISION));
+							st.setOption(CProjectPacksStorage.BOARD_VENDOR_NAME,
+									node.getProperty(Property.VENDOR_NAME));
+							st.setOption(CProjectPacksStorage.BOARD_VENDOR_ID, node.getProperty(Property.VENDOR_ID)); // Mandatory
+
+							String hfxtal = node.getProperty(Property.HFXTAL);
+							if (!hfxtal.isEmpty()) {
+								try {
+									BigInteger clock = Utils.convertUnits(hfxtal);
+									st.setOption(CProjectPacksStorage.BOARD_CLOCK, clock.toString());
+								} catch (NumberFormatException ex) {
+									;
+								}
+							}
+
+							// Package details
+							st.setOption(CProjectPacksStorage.BOARD_PACK_NAME, node.getProperty(Property.PACK_NAME));
+							st.setOption(CProjectPacksStorage.BOARD_PACK_VERSION,
+									node.getProperty(Property.PACK_VERSION));
+
+							st.setOption(CProjectPacksStorage.BOARD_COMPILER_DEFINES,
+									node.getProperty(Property.COMPILER_DEFINES));
+							st.setOption(CProjectPacksStorage.BOARD_COMPILER_HEADERS,
+									node.getProperty(Property.COMPILER_HEADERS));
+						}
 					}
 				}
 
-				String core = DataManager.collectProperty(fSelectedDeviceNode, Property.CORE, Type.DEVICES_SUBTREE);
-				st.setOption(CProjectPacksStorage.CMSIS_CORE_NAME, core);
+				if (PackType.CMSIS.equals(packType)) {
+					String core = DataManager.collectProperty(fSelectedDeviceNode, Property.CORE, Type.DEVICES_SUBTREE);
+					st.setOption(CProjectPacksStorage.CMSIS_CORE_NAME, core);
 
-				String define = DataManager.collectProperty(fSelectedDeviceNode, Property.DEFINE, Type.DEVICES_SUBTREE);
-				st.setOption(CProjectPacksStorage.CMSIS_COMPILER_DEFINE, define);
+					String define = DataManager.collectProperty(fSelectedDeviceNode, Property.DEFINE,
+							Type.DEVICES_SUBTREE);
+					st.setOption(CProjectPacksStorage.CMSIS_COMPILER_DEFINE, define);
+				} else if (PackType.XPACK_XCDL.equals(packType)) {
+					String arch = DataManager.collectProperty(fSelectedDeviceNode, Property.ARCH, Type.DEVICES_SUBTREE);
+					st.setOption(CProjectPacksStorage.CORE_ARCH, arch);
+				}
 
 				for (int i = 0; i < fMemoryTable.getItemCount(); ++i) {
 					TableItem item = fMemoryTable.getItem(i);
@@ -871,6 +1098,7 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 				Activator.log(e);
 			}
 		}
+
 	}
 
 	@Override
@@ -923,12 +1151,18 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 	// return false;
 	// }
 
-	private Node getDevicesTree() {
+	private Node getDevicesTree(IConfiguration config) {
 
 		// Call the data manager. If the tree is not cached, will busy wait.
-		Node devicesRoot = fDataManager.getInstalledObjectsForBuild();
+		Node devicesRoot = fDataManager.getInstalledObjectsForBuild(config);
 
-		assert devicesRoot != null;
+		if (devicesRoot == null) {
+
+			devicesRoot = new Node(Type.ROOT);
+			Node emptyNode = Node.addNewChild(devicesRoot, Type.NONE);
+			emptyNode.setName("No devices available, install xPacks or CMSIS Packs first.");
+		}
+
 		return devicesRoot;
 	}
 }

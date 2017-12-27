@@ -177,6 +177,14 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		return fProperties;
 	}
 
+	/**
+	 * Add a property with string value.
+	 * 
+	 * @param name
+	 * @param value
+	 * @return the previous value associated with name, or null if there was no
+	 *         mapping for it.
+	 */
 	public Object putProperty(String name, String value) {
 
 		if (fProperties == null) {
@@ -188,6 +196,13 @@ public class Leaf implements Comparable<Leaf>, IAdaptable {
 		return fProperties.put(name, value.trim());
 	}
 
+	/**
+	 * Add the property only if the value has content.
+	 * 
+	 * @param name
+	 * @param value
+	 * @return
+	 */
 	public Object putNonEmptyProperty(String name, String value) {
 
 		if (value != null && value.trim().length() > 0) {
