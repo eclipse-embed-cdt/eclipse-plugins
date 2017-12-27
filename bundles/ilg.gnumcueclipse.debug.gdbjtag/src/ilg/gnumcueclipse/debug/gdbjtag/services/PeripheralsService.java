@@ -143,9 +143,15 @@ public class PeripheralsService extends AbstractDsfService implements IPeriphera
 					System.out.println("SVD path: " + svdPath);
 				}
 
+				Leaf tree;
+				{
+					DurationMonitor dm = new DurationMonitor();
+					dm.start();
 				// Read in the file, parse the original format (XML or JSON) and build the
 				// internal tree.
-				Leaf tree = SvdUtils.getTree(svdPath);
+					tree = SvdUtils.getTree(svdPath);
+					dm.stop();
+				}
 
 				// Extract the peripherals in a separate list.
 				List<Leaf> list = SvdUtils.getPeripherals(tree);
