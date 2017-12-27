@@ -233,9 +233,9 @@ public class EclipseUtils {
 
 	/**
 	 * Find the project selected in the Project viewer. This works only if the
-	 * project is really selected (i.e. the Project Explorer has the focus, and
-	 * the project name is coloured in blue); if the focus is lost, the function
-	 * returns null.
+	 * project is really selected (i.e. the Project Explorer has the focus, and the
+	 * project name is coloured in blue); if the focus is lost, the function returns
+	 * null.
 	 *
 	 * @return the project or null, if not found
 	 */
@@ -259,8 +259,8 @@ public class EclipseUtils {
 	}
 
 	/**
-	 * Find the active page. Used, for example, to check if a part (like a view)
-	 * is visible (page.ispartVisible(part)).
+	 * Find the active page. Used, for example, to check if a part (like a view) is
+	 * visible (page.ispartVisible(part)).
 	 * <p>
 	 * Preferably use getSite().getPage().
 	 * 
@@ -488,8 +488,8 @@ public class EclipseUtils {
 	}
 
 	/**
-	 * Set a variable value. The variables are accessible in the Run/Debug ->
-	 * String Substitution preferences page.
+	 * Set a variable value. The variables are accessible in the Run/Debug -> String
+	 * Substitution preferences page.
 	 * 
 	 * @param name
 	 *            a String with the variable name.
@@ -510,11 +510,11 @@ public class EclipseUtils {
 	}
 
 	/**
-	 * Set a variable value. The variables are accessible in the Run/Debug ->
-	 * String Substitution preferences page.
+	 * Set a variable value. The variables are accessible in the Run/Debug -> String
+	 * Substitution preferences page.
 	 * 
-	 * If the variable does not exist, it is created. Unfortunately the
-	 * 'Contributed By' field is not filled in.
+	 * If the variable does not exist, it is created. Unfortunately the 'Contributed
+	 * By' field is not filled in.
 	 * 
 	 * @param name
 	 *            a String with the variable name.
@@ -590,8 +590,8 @@ public class EclipseUtils {
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Get the build configuration associated with the debug launch
-	 * configuration, if defined in the first tab.
+	 * Get the build configuration associated with the debug launch configuration,
+	 * if defined in the first tab.
 	 * 
 	 * @param config
 	 *            a debug launch configuration.
@@ -666,6 +666,13 @@ public class EclipseUtils {
 		}
 		return result;
 	}
-	
+
+	// ------------------------------------------------------------------------
+
+	public static IProject getProjectFromConfiguration(IConfiguration config) {
+		ICConfigurationDescription configDesc = ManagedBuildManager.getDescriptionForConfiguration(config);
+		IProject project = configDesc.getProjectDescription().getProject();
+		return project;
+	}
 	// ------------------------------------------------------------------------
 }
