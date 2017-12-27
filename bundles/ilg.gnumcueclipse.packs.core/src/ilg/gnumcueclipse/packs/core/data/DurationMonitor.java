@@ -20,6 +20,7 @@ public class DurationMonitor {
 
 	private int fDepth;
 	private MessageConsoleStream fOut;
+	long fBeginTime;
 
 	public DurationMonitor() {
 
@@ -29,18 +30,24 @@ public class DurationMonitor {
 
 	public void displayTimeAndRun(Runnable runnable) {
 
+		start();
+		runnable.run();
+		stop();
+	}
+
+	public void start() {
 		fDepth++;
-		long beginTime = System.currentTimeMillis();
+		fBeginTime = System.currentTimeMillis();
 
 		if (fDepth == 1) {
 			fOut.println();
 			fOut.println(Utils.getCurrentDateTime());
 		}
+	}
 
-		runnable.run();
-
+	public void stop() {
 		long endTime = System.currentTimeMillis();
-		long duration = endTime - beginTime;
+		long duration = endTime - fBeginTime;
 		if (duration == 0) {
 			duration = 1;
 		}
@@ -48,7 +55,5 @@ public class DurationMonitor {
 		fOut.println(duration + "ms.");
 
 		fDepth--;
-
 	}
-
 }
