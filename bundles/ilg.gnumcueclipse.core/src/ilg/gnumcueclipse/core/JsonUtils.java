@@ -15,7 +15,15 @@ import org.json.simple.JSONObject;
 
 public class JsonUtils {
 
-	public static Object get(JSONObject json, String dottedPath) {
+	/**
+	 * Get a JSON property, or the default.
+	 * 
+	 * @param json
+	 * @param dottedPath
+	 * @param defaultValue
+	 * @return an object or the default value.
+	 */
+	public static Object get(JSONObject json, String dottedPath, Object defaultValue) {
 
 		String[] parts = dottedPath.split("[.]");
 		Object obj = json;
@@ -24,10 +32,14 @@ public class JsonUtils {
 				obj = ((JSONObject) obj).get(parts[i]);
 			}
 			if (obj == null) {
-				return null;
+				return defaultValue;
 			}
 		}
 
 		return obj;
+	}
+
+	public static Object get(JSONObject json, String dottedPath) {
+		return get(json, dottedPath, null);
 	}
 }
