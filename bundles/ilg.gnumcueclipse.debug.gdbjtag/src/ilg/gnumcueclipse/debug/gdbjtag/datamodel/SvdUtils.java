@@ -190,6 +190,8 @@ public class SvdUtils {
 			if (f.exists() && !f.isDirectory()) {
 				// Accept path only if the file exists.
 				return new Path(value);
+			} else {
+				Activator.log("File '" + value + "' does not exist, searching packages.");
 			}
 		}
 
