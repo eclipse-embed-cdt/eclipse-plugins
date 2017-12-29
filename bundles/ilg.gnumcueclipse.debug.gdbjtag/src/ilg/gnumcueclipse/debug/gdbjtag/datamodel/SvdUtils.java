@@ -238,7 +238,7 @@ public class SvdUtils {
 					return svdPath;
 				}
 			} catch (IOException e) {
-				Activator.log(e);
+				;
 			} catch (ParseException e) {
 				Activator.log(e);
 			}
