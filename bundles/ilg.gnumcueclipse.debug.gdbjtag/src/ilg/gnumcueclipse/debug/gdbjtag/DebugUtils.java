@@ -27,10 +27,12 @@ import java.util.Map.Entry;
 import org.eclipse.cdt.core.CCorePlugin;
 import org.eclipse.cdt.core.cdtvariables.CdtVariableException;
 import org.eclipse.cdt.core.cdtvariables.ICdtVariable;
+import org.eclipse.cdt.core.cdtvariables.ICdtVariableManager;
 import org.eclipse.cdt.core.envvar.IEnvironmentVariable;
 import org.eclipse.cdt.core.model.ICProject;
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
 import org.eclipse.cdt.debug.core.ICDTLaunchConfigurationConstants;
+import org.eclipse.cdt.debug.internal.core.DebugStringVariableSubstitutor;
 import org.eclipse.cdt.dsf.concurrent.CountingRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DataRequestMonitor;
 import org.eclipse.cdt.dsf.concurrent.DsfExecutor;
@@ -117,8 +119,8 @@ public class DebugUtils {
 	}
 
 	/**
-	 * Get environment from workspace. Useful when project-less launching when
-	 * there is no environment available from the configuration.
+	 * Get environment from workspace. Useful when project-less launching when there
+	 * is no environment available from the configuration.
 	 * 
 	 * @return String [] of environment variables in variable=value format.
 	 * @throws CoreException
@@ -199,8 +201,7 @@ public class DebugUtils {
 				path = project.getLocation();
 			} else {
 				/*
-				 * If project-less launch then PROGRAM_NAME will be an absolute
-				 * path
+				 * If project-less launch then PROGRAM_NAME will be an absolute path
 				 */
 				String executableName = configuration.getAttribute("org.eclipse.cdt.launch.PROGRAM_NAME", "");
 				path = new Path(executableName).removeLastSegments(1);
@@ -233,9 +234,19 @@ public class DebugUtils {
 	}
 
 	public static String resolveAll(String value, ICConfigurationDescription cfgDescription) {
+
 		try {
-			return CCorePlugin.getDefault().getCdtVariableManager().resolveValue(value, "", " ", cfgDescription); //$NON-NLS-1$ //$NON-NLS-2$
+			ICdtVariableManager manager = CCorePlugin.getDefault().getCdtVariableManager();
+			value = manager.resolveValue(value, "", " ", cfgDescription); //$NON-NLS-1$ //$NON-NLS-2$
 		} catch (CdtVariableException e) {
+			;
+		}
+
+		try {
+			DebugStringVariableSubstitutor substitutor = new DebugStringVariableSubstitutor(
+					cfgDescription.getProjectDescription().getProject());
+			value = substitutor.performStringSubstitution(value);
+		} catch (CoreException e) {
 			;
 		}
 		return value;
@@ -316,9 +327,9 @@ public class DebugUtils {
 	}
 
 	/**
-	 * This method actually launches 'arm-none-eabi-gdb --vesion' to determine
-	 * the version of the GDB that is being used. This method should ideally be
-	 * called only once and the resulting version string stored for future uses.
+	 * This method actually launches 'arm-none-eabi-gdb --vesion' to determine the
+	 * version of the GDB that is being used. This method should ideally be called
+	 * only once and the resulting version string stored for future uses.
 	 */
 	public static String getGDBVersion(final ILaunchConfiguration configuration, String gdbClientCommand)
 			throws CoreException {
@@ -404,8 +415,8 @@ public class DebugUtils {
 	}
 
 	/**
-	 * Test if the launch configuration is already started. Enumerate all
-	 * launches and check by name and non terminated status.
+	 * Test if the launch configuration is already started. Enumerate all launches
+	 * and check by name and non terminated status.
 	 * 
 	 * @param configuration
 	 * @return true if already present.
@@ -620,8 +631,8 @@ public class DebugUtils {
 	}
 
 	/**
-	 * Compares two version numbers. Returns -1, 0, or 1 if v1 is less than,
-	 * equal to, or greater than v2, respectively.
+	 * Compares two version numbers. Returns -1, 0, or 1 if v1 is less than, equal
+	 * to, or greater than v2, respectively.
 	 * 
 	 * @param v1
 	 *            The first version
