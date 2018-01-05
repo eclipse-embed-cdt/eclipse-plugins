@@ -73,10 +73,20 @@
 			class="ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.properties.ProjectMcuPage"
 			id="ilg.gnumcueclipse.debug.gdbjtag.openocd.projectPropertiesPage"
 			name="%properties.mcu">
+			<filter
+				name="projectNature"
+				value="org.eclipse.cdt.core.cnature">
+			</filter>
 			<enabledWhen>
 				<and>
 					<instanceof value="org.eclipse.core.resources.IProject">
 					</instanceof>
+					<or>
+						<test forcePluginActivation="true" property="ilg.gnumcueclipse.managedbuild.cross.riscv.isGnuRiscv">
+						</test>
+						<test forcePluginActivation="true" property="ilg.gnuarmeclipse.managedbuild.cross.isGnuArm">
+						</test>
+					</or>
 				</and>
 			</enabledWhen>
 		</page>

@@ -1344,6 +1344,22 @@
 			class="ilg.gnumcueclipse.managedbuild.cross.ui.properties.BuildToolsProjectPathPropertiesPage"
 			id="ilg.gnumcueclipse.managedbuild.cross.ui.properties.toolsPage"
 			name="%properties.projectBuildToolsPaths">
+			<filter
+				name="projectNature"
+				value="org.eclipse.cdt.core.cnature">
+			</filter>
+			<enabledWhen>
+				<and>
+					<instanceof value="org.eclipse.core.resources.IProject">
+					</instanceof>
+					<or>
+						<test forcePluginActivation="true" property="ilg.gnumcueclipse.managedbuild.cross.riscv.isGnuRiscv">
+						</test>
+						<test forcePluginActivation="true" property="ilg.gnuarmeclipse.managedbuild.cross.isGnuArm">
+						</test>
+					</or>
+				</and>
+			</enabledWhen>
 		</page>
 	</extension>
 

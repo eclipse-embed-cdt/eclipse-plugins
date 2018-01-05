@@ -3428,6 +3428,10 @@
 			class="ilg.gnumcueclipse.managedbuild.cross.arm.ui.properties.ProjectToolchainsPathPropertiesPage"
 			id="ilg.gnumcueclipse.managedbuild.cross.arm.properties.toolchainsPage"
 			name="%properties.projectToolsPaths">
+         <filter
+               name="projectNature"
+               value="org.eclipse.cdt.core.cnature">
+         </filter>
 			<enabledWhen>
 				<and>
 					<instanceof value="org.eclipse.core.resources.IProject">

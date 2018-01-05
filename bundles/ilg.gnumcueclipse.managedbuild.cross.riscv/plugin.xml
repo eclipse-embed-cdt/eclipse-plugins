@@ -2396,11 +2396,15 @@
 			class="ilg.gnumcueclipse.managedbuild.cross.riscv.ui.properties.ProjectToolchainsPathPropertiesPage"
 			id="ilg.gnumcueclipse.managedbuild.cross.riscv.properties.toolchainsPage"
 			name="%properties.projectToolchainsPaths">
+         <filter
+               name="projectNature"
+               value="org.eclipse.cdt.core.cnature">
+         </filter>
 			<enabledWhen>
 				<and>
 					<instanceof value="org.eclipse.core.resources.IProject">
 					</instanceof>
-					<test property="ilg.gnumcueclipse.managedbuild.cross.riscv.isGnuRiscv">
+					<test forcePluginActivation="true" property="ilg.gnumcueclipse.managedbuild.cross.riscv.isGnuRiscv">
 					</test>
 				</and>
 			</enabledWhen>
