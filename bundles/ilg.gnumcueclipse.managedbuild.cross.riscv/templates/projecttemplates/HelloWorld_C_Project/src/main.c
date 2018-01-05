@@ -11,9 +11,11 @@
 #include <stdio.h>
 
 /*
- * Print a greeting message on standard output and exit.
+ * Demonstrate how to print a greeting message on standard output
+ * and exit.
  *
- * On embedded platforms this might require semi-hosting or similar.
+ * WARNING: This is a build-only project. Do not try to run it on a
+ * physical board, since it lacks the device specific startup.
  */
 
 int
