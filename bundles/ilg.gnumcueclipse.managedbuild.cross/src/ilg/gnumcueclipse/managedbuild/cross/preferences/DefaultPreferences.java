@@ -102,8 +102,8 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 	// ------------------------------------------------------------------------
 
 	/**
-	 * Get the default toolchain search path for a given toolchain name.
-	 * Toolchains are identified by their absolute hash code.
+	 * Get the default toolchain search path for a given toolchain name. Toolchains
+	 * are identified by their absolute hash code.
 	 * 
 	 * @param toolchainName
 	 *            a string.
@@ -118,7 +118,7 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("DefaultPreferences.getToolchainSearchPath(\"" + toolchainName + "\") (" + key + ")");
 		}
-		String value = getString(PersistentPreferences.getToolchainSearchKey(toolchainName), "");
+		String value = getString(key, "");
 
 		return value;
 	}
@@ -146,6 +146,20 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 	public String getToolchainSearchPathOs(String toolchainName) {
 
 		String value = getString(PersistentPreferences.getToolchainSearchOsKey(toolchainName), "");
+		return value;
+	}
+
+	public String getToolchainXpackName(String toolchainName) {
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.getToolchainXpackName(\"" + toolchainName + "\")");
+		}
+		String key = PersistentPreferences.getToolchainXpackKey(toolchainName);
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.getToolchainXpackName(\"" + toolchainName + "\") (" + key + ")");
+		}
+		String value = getString(key, "");
+
 		return value;
 	}
 
@@ -192,9 +206,20 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 		putString(key, value);
 	}
 
+	public String getBuildToolsXpackName() {
+
+		String key = PersistentPreferences.BUILD_TOOLS_XPACK_NAME;
+		String value = getString(key, "");
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.getBuildToolsXpackName() = \"" + value + "\"");
+		}
+		return value;
+	}
+
 	/**
-	 * Find where the build tools might have been installed. The returned folder
-	 * is known to be an existing folder.
+	 * Find where the build tools might have been installed. The returned folder is
+	 * known to be an existing folder.
 	 * 
 	 * @return a trimmed string, possibly empty.
 	 */
@@ -207,7 +232,7 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 		String path = null;
 		String executableName = "make";
 		String subPath = "bin";
-		
+
 		if (EclipseUtils.isWindows()) {
 
 			String exe = addExeExtension(executableName);
@@ -238,7 +263,8 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 		}
 
 		if (searchPath != null && !searchPath.isEmpty()) {
-			path = searchLatestExecutable(searchPath, subPath, executableName);
+			String xpackName = getBuildToolsXpackName();
+			path = searchLatestExecutable(xpackName, searchPath, subPath, executableName);
 		}
 
 		if (path != null) {
@@ -299,7 +325,8 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 			}
 
 			if (searchPath != null && !searchPath.isEmpty()) {
-				path = searchLatestExecutable(searchPath, subPath, executableName);
+				String xpackName = getToolchainXpackName(toolchainName);
+				path = searchLatestExecutable(xpackName, searchPath, subPath, executableName);
 			}
 		}
 

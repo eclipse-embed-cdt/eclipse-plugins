@@ -38,6 +38,7 @@ import org.xml.sax.SAXParseException;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.core.Xml;
+import ilg.gnumcueclipse.core.XpackUtils;
 import ilg.gnumcueclipse.packs.cmsis.PdscGenericParser;
 import ilg.gnumcueclipse.packs.cmsis.PdscTreeParserForBuild;
 import ilg.gnumcueclipse.packs.core.ConsoleStream;
@@ -59,7 +60,6 @@ import ilg.gnumcueclipse.packs.core.tree.Selector;
 import ilg.gnumcueclipse.packs.core.tree.Type;
 import ilg.gnumcueclipse.packs.core.xml.GenericParser;
 import ilg.gnumcueclipse.packs.core.xml.GenericSerialiser;
-import ilg.gnumcueclipse.packs.xpack.XpackUtils;
 
 /**
  * This singleton class manages all data structures related to packs.

@@ -36,6 +36,11 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 		return value;
 	}
 
+	/**
+	 * Get an OS specific path.
+	 * 
+	 * @return string. May be empty or null.
+	 */
 	public String getSearchPathOs() {
 
 		String key = EclipseUtils.getKeyOs(PersistentPreferences.SEARCH_PATH_OS);
@@ -57,6 +62,17 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 		putString(key, value);
 	}
 
+	public String getXpackName() {
+
+		String key = PersistentPreferences.XPACK_NAME;
+		String value = getString(key, "");
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.getXpackName() = \"" + value + "\"");
+		}
+		return value;
+	}
+
 	// ------------------------------------------------------------------------
 
 	// Override it in each plug-in with actual code.
@@ -65,6 +81,13 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 		return null;
 	}
 
+	/**
+	 * 
+	 * @param subFolder
+	 *            may be null, usually "bin".
+	 * @param executableName
+	 * @return
+	 */
 	public String discoverInstallPath(String subFolder, String executableName) {
 
 		if (Activator.getInstance().isDebugging()) {
@@ -98,7 +121,8 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 			}
 
 			if (searchPath != null && !searchPath.isEmpty()) {
-				path = searchLatestExecutable(searchPath, subFolder, executableName);
+				String xpackName = getXpackName();
+				path = searchLatestExecutable(xpackName, searchPath, subFolder, executableName);
 			}
 		}
 

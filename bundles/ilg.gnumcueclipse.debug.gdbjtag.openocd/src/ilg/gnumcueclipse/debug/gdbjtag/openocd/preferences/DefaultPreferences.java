@@ -32,6 +32,8 @@ public class DefaultPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferen
 	public static final String GDB_SERVER_EXECUTABLE_DEFAULT_NAME = "openocd";
 	protected static final String GDB_CLIENT_EXECUTABLE_DEFAULT = "${cross_prefix}gdb${cross_suffix}";
 
+	public static final String XPACK_NAME_DEFAULT = "@gnu-mcu-eclipse/openocd";
+
 	// ------------------------------------------------------------------------
 
 	// Not yet preferences
@@ -180,6 +182,10 @@ public class DefaultPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferen
 	}
 
 	// ------------------------------------------------------------------------
+
+	public String getXpackName() {
+		return "@gnu-mcu-eclipse/openocd";
+	}
 
 	public String getSearchPath() {
 

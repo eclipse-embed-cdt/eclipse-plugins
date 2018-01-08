@@ -9,7 +9,7 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnumcueclipse.packs.xpack;
+package ilg.gnumcueclipse.core;
 
 import java.io.File;
 import java.util.Map;
@@ -17,8 +17,6 @@ import java.util.Map;
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
-
-import ilg.gnumcueclipse.core.EclipseUtils;
 
 public class XpackUtils {
 

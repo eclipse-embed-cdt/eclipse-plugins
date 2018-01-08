@@ -25,6 +25,7 @@ import org.eclipse.core.runtime.preferences.IEclipsePreferences;
 
 import ilg.gnumcueclipse.core.Activator;
 import ilg.gnumcueclipse.core.EclipseUtils;
+import ilg.gnumcueclipse.core.XpackUtils;
 
 public class DefaultPreferences {
 
@@ -156,14 +157,21 @@ public class DefaultPreferences {
 	 * 
 	 * @param searchPath
 	 * @param subFolder
+	 *            may be null; usually "bin".
 	 * @param executableName
 	 * @return
 	 */
-	public String searchLatestExecutable(String searchPath, String subFolder, String executableName) {
+	public String searchLatestExecutable(String xpackName, String searchPath, String subFolder, String executableName) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("DefaultPreferences.searchLatestExecutable(\"" + searchPath + "\", " + subFolder + "\", "
-					+ executableName + ") ");
+			System.out.println("DefaultPreferences.searchLatestExecutable(" + xpackName + ", \"" + searchPath + "\", "
+					+ subFolder + "\", " + executableName + ") ");
+		}
+
+		if (xpackName != null && !xpackName.isEmpty()) {
+			// Add xPack path in front of the search path.
+			String xpackPath = XpackUtils.getRepoPath().append(xpackName).toPortableString();
+			searchPath = xpackPath + EclipseUtils.getPathSeparator() + searchPath;
 		}
 
 		String resolvedPath = EclipseUtils.performStringSubstitution(searchPath);
@@ -202,6 +210,14 @@ public class DefaultPreferences {
 		return map.get(latestKey);
 	}
 
+	/**
+	 * 
+	 * @param folder
+	 * @param subFolder
+	 *            may be null; usually "bin".
+	 * @param executableName
+	 * @param map
+	 */
 	private void searchExecutable(String folder, String subFolder, final String executableName, Map<Long, String> map) {
 
 		if (Activator.getInstance().isDebugging()) {
@@ -214,6 +230,7 @@ public class DefaultPreferences {
 			return;
 		}
 
+		// Enumerate the version folders; in each, check if the executable is present.
 		local.listFiles(new FilenameFilter() {
 
 			/**
@@ -222,7 +239,16 @@ public class DefaultPreferences {
 			@Override
 			public boolean accept(File dir, String name) {
 				IPath versionPath = (new Path(dir.getAbsolutePath())).append(name);
-				IPath basePath = subFolder != null ? versionPath.append("bin") : versionPath;
+				IPath basePath;
+				if (subFolder != null) {
+					// If there is a .content subfolder, use it.
+					basePath = versionPath.append(".content").append(subFolder);
+					if (!basePath.toFile().isDirectory()) {
+						basePath = versionPath.append(subFolder);
+					}
+				} else {
+					basePath = versionPath;
+				}
 				IPath path = basePath.append(executableName);
 
 				File file = path.toFile();
