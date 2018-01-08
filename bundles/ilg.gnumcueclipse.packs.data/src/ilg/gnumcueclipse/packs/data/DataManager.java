@@ -1673,9 +1673,7 @@ public class DataManager implements IPacksDataManager {
 
 		String packageName = collectProperty(node, Property.PACK_NAME, Type.DEVICES_SUBTREE);
 		String version = collectProperty(node, Property.PACK_VERSION, Type.DEVICES_SUBTREE);
-
 		// System.out.println(packageName + " " + version);
-		String arr[] = packageName.split("[/]");
 
 		IProject project = EclipseUtils.getProjectFromConfiguration(config);
 		assert project != null;
@@ -1683,26 +1681,22 @@ public class DataManager implements IPacksDataManager {
 
 			// If the project is an xPack, try to identify the device package locally,
 			// in the xpacks folder.
-			String f = packageName;
+			String linearFolderName = packageName;
+			String arr[] = packageName.split("[/]");
 			if (arr.length > 1) {
-				f = arr[0].substring(1) + "-" + arr[1];
+				linearFolderName = arr[0].substring(1) + "-" + arr[1];
 			}
-			// System.out.println(f);
+			// System.out.println(linearFolderName);
 
 			IPath projectPath = project.getLocation();
-			IPath packageFolderPath = projectPath.append("xpacks").append(f);
+			IPath packageFolderPath = projectPath.append("xpacks").append(linearFolderName);
 			if (checkPackage(packageFolderPath, packageName, version)) {
 				return packageFolderPath.toString();
 			}
 		}
 
 		// Check the user xPacks repo.
-		IPath repoPath = XpackUtils.getRepoPath();
-		// System.out.println(repoPath);
-		IPath packPath = repoPath.append(arr[0]);
-		if (arr.length > 1) {
-			packPath = repoPath.append(arr[0]).append(arr[1]);
-		}
+		IPath packPath = XpackUtils.getPackPath(packageName);
 
 		// Give priority to linked packages.
 		if (checkPackage(packPath.append(".link"), packageName, version)) {

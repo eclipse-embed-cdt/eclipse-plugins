@@ -18,9 +18,10 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.StringFieldEditor;
 
 import ilg.gnumcueclipse.core.preferences.ScopedPreferenceStoreWithoutDefaults;
-import ilg.gnumcueclipse.core.ui.DirectoryNotStrictFieldEditor;
 import ilg.gnumcueclipse.core.ui.FieldEditorPropertyPage;
+import ilg.gnumcueclipse.core.ui.XpackDirectoryNotStrictFieldEditor;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.Activator;
+import ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences.DefaultPreferences;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.debug.gdbjtag.openocd.ui.Messages;
 
@@ -33,6 +34,7 @@ public class ProjectMcuPage extends FieldEditorPropertyPage {
 	// ------------------------------------------------------------------------
 
 	private PersistentPreferences fPersistentPreferences;
+	private DefaultPreferences fDefaultPreferences;
 
 	// ------------------------------------------------------------------------
 
@@ -44,6 +46,7 @@ public class ProjectMcuPage extends FieldEditorPropertyPage {
 		}
 
 		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
+		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
 
 		setDescription(Messages.ProjectMcuPagePropertyPage_description);
 	}
@@ -71,7 +74,9 @@ public class ProjectMcuPage extends FieldEditorPropertyPage {
 
 		boolean isStrict = fPersistentPreferences.getFolderStrict();
 
-		FieldEditor folder = new DirectoryNotStrictFieldEditor(PersistentPreferences.INSTALL_FOLDER,
+		String xpackName = fDefaultPreferences.getXpackName();
+
+		FieldEditor folder = new XpackDirectoryNotStrictFieldEditor(xpackName, PersistentPreferences.INSTALL_FOLDER,
 				Messages.McuPage_executable_folder, getFieldEditorParent(), isStrict);
 		addField(folder);
 	}

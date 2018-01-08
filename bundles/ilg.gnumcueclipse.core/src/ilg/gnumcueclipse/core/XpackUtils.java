@@ -12,11 +12,18 @@
 package ilg.gnumcueclipse.core;
 
 import java.io.File;
+import java.io.FilenameFilter;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 import org.eclipse.core.resources.IProject;
 import org.eclipse.core.runtime.IPath;
 import org.eclipse.core.runtime.Path;
+
+import com.github.zafarkhaja.semver.Version;
 
 public class XpackUtils {
 
@@ -62,5 +69,67 @@ public class XpackUtils {
 			return path.append("xPacks");
 		}
 		return null;
+	}
+
+	public static IPath getPackPath(String packName) {
+		IPath repoPath = getRepoPath();
+		String arr[] = packName.split("[/]", 2);
+		if (arr.length == 1) {
+			return repoPath.append(arr[0]);
+		} else {
+			return repoPath.append(arr[0]).append(arr[1]);
+		}
+	}
+
+	public static String[] getPackVersions(String packName) {
+
+		IPath packPath = getPackPath(packName);
+		File folder = packPath.toFile();
+		if (!folder.isDirectory()) {
+			return new String[] {};
+		}
+
+		List<String> list = new LinkedList<String>();
+
+		folder.listFiles(new FilenameFilter() {
+
+			@Override
+			public boolean accept(File dir, String name) {
+				IPath path = (new Path(dir.getAbsolutePath())).append(name);
+				if (path.toFile().isDirectory()) {
+					IPath packagePath = path.append("package.json");
+					if (packagePath.toFile().isFile()) {
+						if (".link".equals(name)) {
+							list.add("current");
+						} else {
+							list.add(name);
+						}
+						return true;
+					}
+
+				}
+				return false;
+			}
+
+		});
+
+		Collections.sort(list, new Comparator<String>() {
+			@Override
+			public int compare(String lhs, String rhs) {
+				if (lhs.equals("current")) {
+					return -1;
+				}
+				if (rhs.equals("current")) {
+					return 1;
+				}
+
+				Version vlhs = Version.valueOf(lhs);
+				Version vrhs = Version.valueOf(rhs);
+
+				// Reverse order.
+				return vrhs.compareTo(vlhs);
+			}
+		});
+		return list.toArray(new String[list.size()]);
 	}
 }

@@ -18,7 +18,7 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.preferences.ScopedPreferenceStore;
 
-import ilg.gnumcueclipse.core.ui.DirectoryNotStrictFieldEditor;
+import ilg.gnumcueclipse.core.ui.XpackDirectoryNotStrictFieldEditor;
 import ilg.gnumcueclipse.managedbuild.cross.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.DefaultPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
@@ -69,9 +69,9 @@ public class BuildToolsGlobalPathsPreferencesPage extends FieldEditorPreferenceP
 	}
 
 	/**
-	 * Creates the field editors. Field editors are abstractions of the common
-	 * GUI blocks needed to manipulate various types of preferences. Each field
-	 * editor knows how to save and restore itself.
+	 * Creates the field editors. Field editors are abstractions of the common GUI
+	 * blocks needed to manipulate various types of preferences. Each field editor
+	 * knows how to save and restore itself.
 	 */
 
 	@Override
@@ -79,9 +79,12 @@ public class BuildToolsGlobalPathsPreferencesPage extends FieldEditorPreferenceP
 
 		boolean isStrict;
 		isStrict = fDefaultPreferences.getBoolean(PersistentPreferences.GLOBAL_BUILDTOOLS_PATH_STRICT, true);
-		FieldEditor buildToolsPathField;
-		buildToolsPathField = new DirectoryNotStrictFieldEditor(PersistentPreferences.BUILD_TOOLS_PATH_KEY,
-				Messages.BuildToolsPaths_label, getFieldEditorParent(), isStrict);
+
+		String xpackName = fDefaultPreferences.getBuildToolsXpackName();
+
+		FieldEditor buildToolsPathField = new XpackDirectoryNotStrictFieldEditor(xpackName,
+				PersistentPreferences.BUILD_TOOLS_PATH_KEY, Messages.BuildToolsPaths_label, getFieldEditorParent(),
+				isStrict);
 
 		addField(buildToolsPathField);
 	}

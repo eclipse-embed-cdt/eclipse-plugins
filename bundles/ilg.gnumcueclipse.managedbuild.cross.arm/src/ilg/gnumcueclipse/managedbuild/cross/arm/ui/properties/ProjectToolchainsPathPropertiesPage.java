@@ -13,9 +13,9 @@ package ilg.gnumcueclipse.managedbuild.cross.arm.ui.properties;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.core.preferences.ScopedPreferenceStoreWithoutDefaults;
-import ilg.gnumcueclipse.core.ui.DirectoryNotStrictFieldEditor;
 import ilg.gnumcueclipse.core.ui.FieldEditorPropertyPage;
 import ilg.gnumcueclipse.core.ui.LabelFakeFieldEditor;
+import ilg.gnumcueclipse.core.ui.XpackDirectoryNotStrictFieldEditor;
 import ilg.gnumcueclipse.managedbuild.cross.arm.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.arm.Option;
 import ilg.gnumcueclipse.managedbuild.cross.arm.ui.Messages;
@@ -110,9 +110,12 @@ public class ProjectToolchainsPathPropertiesPage extends FieldEditorPropertyPage
 			addField(labelField);
 
 			isStrict = fDefaultPreferences.getBoolean(PersistentPreferences.PROJECT_TOOLCHAIN_PATH_STRICT, true);
+
+			String xpackName = fDefaultPreferences.getToolchainXpackName(toolchainName);
+
 			String key = PersistentPreferences.getToolchainKey(toolchainName);
-			FieldEditor toolchainPathField = new DirectoryNotStrictFieldEditor(key, Messages.ToolchainPaths_label,
-					getFieldEditorParent(), isStrict);
+			FieldEditor toolchainPathField = new XpackDirectoryNotStrictFieldEditor(xpackName, key,
+					Messages.ToolchainPaths_label, getFieldEditorParent(), isStrict);
 			addField(toolchainPathField);
 		}
 	}

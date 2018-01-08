@@ -170,7 +170,7 @@ public class DefaultPreferences {
 
 		if (xpackName != null && !xpackName.isEmpty()) {
 			// Add xPack path in front of the search path.
-			String xpackPath = XpackUtils.getRepoPath().append(xpackName).toPortableString();
+			String xpackPath = XpackUtils.getPackPath(xpackName).toPortableString();
 			searchPath = xpackPath + EclipseUtils.getPathSeparator() + searchPath;
 		}
 

@@ -206,6 +206,10 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 		putString(key, value);
 	}
 
+	/**
+	 * 
+	 * @return string, possibly empty.
+	 */
 	public String getBuildToolsXpackName() {
 
 		String key = PersistentPreferences.BUILD_TOOLS_XPACK_NAME;

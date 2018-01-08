@@ -13,8 +13,8 @@ package ilg.gnumcueclipse.managedbuild.cross.arm.ui.preferences;
 
 import ilg.gnumcueclipse.core.EclipseUtils;
 import ilg.gnumcueclipse.core.preferences.ScopedPreferenceStoreWithoutDefaults;
-import ilg.gnumcueclipse.core.ui.DirectoryNotStrictFieldEditor;
 import ilg.gnumcueclipse.core.ui.LabelFakeFieldEditor;
+import ilg.gnumcueclipse.core.ui.XpackDirectoryNotStrictFieldEditor;
 import ilg.gnumcueclipse.managedbuild.cross.arm.Activator;
 import ilg.gnumcueclipse.managedbuild.cross.arm.Option;
 import ilg.gnumcueclipse.managedbuild.cross.arm.ui.Messages;
@@ -82,9 +82,9 @@ public class WorkspaceToolchainsPathsPreferencesPage extends FieldEditorPreferen
 	}
 
 	/**
-	 * Creates the field editors. Field editors are abstractions of the common
-	 * GUI blocks needed to manipulate various types of preferences. Each field
-	 * editor knows how to save and restore itself.
+	 * Creates the field editors. Field editors are abstractions of the common GUI
+	 * blocks needed to manipulate various types of preferences. Each field editor
+	 * knows how to save and restore itself.
 	 */
 	@Override
 	protected void createFieldEditors() {
@@ -132,13 +132,13 @@ public class WorkspaceToolchainsPathsPreferencesPage extends FieldEditorPreferen
 					getFieldEditorParent());
 			addField(labelField);
 
-			String key = PersistentPreferences.getToolchainKey(toolchainName);
-
 			isStrict = fDefaultPreferences.getBoolean(PersistentPreferences.WORKSPACE_TOOLCHAIN_PATH_STRICT, true);
 
-			FieldEditor toolchainPathField;
-			toolchainPathField = new DirectoryNotStrictFieldEditor(key, Messages.ToolchainPaths_label,
-					getFieldEditorParent(), isStrict);
+			String xpackName = fDefaultPreferences.getToolchainXpackName(toolchainName);
+
+			String key = PersistentPreferences.getToolchainKey(toolchainName);
+			FieldEditor toolchainPathField = new XpackDirectoryNotStrictFieldEditor(xpackName, key,
+					Messages.ToolchainPaths_label, getFieldEditorParent(), isStrict);
 
 			addField(toolchainPathField);
 		}
