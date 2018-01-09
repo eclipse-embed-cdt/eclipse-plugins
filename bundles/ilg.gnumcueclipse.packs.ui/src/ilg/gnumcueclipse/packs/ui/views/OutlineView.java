@@ -57,10 +57,10 @@ import ilg.gnumcueclipse.packs.core.tree.NodeViewContentProvider;
 import ilg.gnumcueclipse.packs.core.tree.PackNode;
 import ilg.gnumcueclipse.packs.core.tree.Property;
 import ilg.gnumcueclipse.packs.core.tree.Type;
+import ilg.gnumcueclipse.packs.core.ui.IconUtils;
 import ilg.gnumcueclipse.packs.data.DataManager;
 import ilg.gnumcueclipse.packs.jobs.ParsePdscRunnable;
 import ilg.gnumcueclipse.packs.ui.Activator;
-import ilg.gnumcueclipse.packs.ui.IconUtils;
 
 public class OutlineView extends ViewPart {
 

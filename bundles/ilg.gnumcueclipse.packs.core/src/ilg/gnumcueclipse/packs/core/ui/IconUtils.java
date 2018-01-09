@@ -9,16 +9,17 @@
  *     Liviu Ionescu - initial implementation.
  *******************************************************************************/
 
-package ilg.gnumcueclipse.packs.ui;
+package ilg.gnumcueclipse.packs.core.ui;
 
 import org.eclipse.swt.graphics.Image;
 
+import ilg.gnumcueclipse.packs.core.Activator;
 import ilg.gnumcueclipse.packs.core.tree.Leaf;
 import ilg.gnumcueclipse.packs.core.tree.Node;
 
 public class IconUtils {
 
-	public static final String ICONS_PLUGIN_ID = "ilg.gnumcueclipse.packs.ui";
+	public static final String ICONS_PLUGIN_ID = "ilg.gnumcueclipse.packs.core";
 
 	public static Image getBookIcon(Leaf node) {
 

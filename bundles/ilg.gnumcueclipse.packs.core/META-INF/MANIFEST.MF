@@ -12,6 +12,7 @@ Export-Package: ilg.gnumcueclipse.packs.core,
  ilg.gnumcueclipse.packs.core.data,
  ilg.gnumcueclipse.packs.core.jstree,
  ilg.gnumcueclipse.packs.core.tree,
+ ilg.gnumcueclipse.packs.core.ui,
  ilg.gnumcueclipse.packs.core.xml
 Require-Bundle: ilg.gnumcueclipse.core,
  org.eclipse.core.resources;bundle-version="3.11.1",

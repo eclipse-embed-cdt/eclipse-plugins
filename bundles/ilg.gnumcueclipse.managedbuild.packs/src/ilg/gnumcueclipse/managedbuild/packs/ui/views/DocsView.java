@@ -13,7 +13,7 @@ package ilg.gnumcueclipse.managedbuild.packs.ui.views;
 
 import ilg.gnumcueclipse.core.CProjectPacksStorage;
 import ilg.gnumcueclipse.core.EclipseUtils;
-import ilg.gnumcueclipse.managedbuild.cross.arm.IDs;
+import ilg.gnumcueclipse.core.IDs;
 import ilg.gnumcueclipse.managedbuild.packs.Activator;
 import ilg.gnumcueclipse.packs.core.data.PacksStorage;
 import ilg.gnumcueclipse.packs.core.tree.AbstractTreePreOrderIterator;
@@ -23,10 +23,10 @@ import ilg.gnumcueclipse.packs.core.tree.Node;
 import ilg.gnumcueclipse.packs.core.tree.NodeViewContentProvider;
 import ilg.gnumcueclipse.packs.core.tree.Property;
 import ilg.gnumcueclipse.packs.core.tree.Type;
+import ilg.gnumcueclipse.packs.core.ui.IconUtils;
 import ilg.gnumcueclipse.packs.data.DataManager;
 import ilg.gnumcueclipse.packs.data.DataManagerEvent;
 import ilg.gnumcueclipse.packs.data.IDataManagerListener;
-import ilg.gnumcueclipse.packs.ui.IconUtils;
 
 import java.io.IOException;
 import java.net.URL;
@@ -373,7 +373,7 @@ public class DocsView extends ViewPart implements IDataManagerListener, IPropert
 
 				IToolChain toolchain = config.getToolChain();
 				String sToolchainId = toolchain.getBaseId();
-				if (sToolchainId.startsWith(IDs.TOOLCHAIN_ID + ".")) {
+				if (sToolchainId.startsWith(IDs.TOOLCHAIN_ARM_ID + ".")) {
 
 					// Only our projects are candidates
 					newConfig = config;
