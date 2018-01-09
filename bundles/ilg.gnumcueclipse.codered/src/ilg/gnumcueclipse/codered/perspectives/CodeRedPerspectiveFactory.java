@@ -43,7 +43,7 @@ public class CodeRedPerspectiveFactory implements IPerspectiveFactory {
 
 	// ------------------------------------------------------------------------
 
-	public static final String ID = "ilg.gnumcueclipse.packs.ui.perspectives.CodeRedPerspective";
+	public static final String ID = "ilg.gnumcueclipse.codered.perspectives.CodeRedPerspective";
 
 	// ------------------------------------------------------------------------
 
