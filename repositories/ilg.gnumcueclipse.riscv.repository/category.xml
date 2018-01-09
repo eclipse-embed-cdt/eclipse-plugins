@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/ilg.gnumcueclipse.managedbuild.cross.riscv.feature_2.6.1.qualifier.jar" id="ilg.gnumcueclipse.managedbuild.cross.riscv.feature" version="2.6.1.qualifier">
+   <feature url="features/ilg.gnumcueclipse.managedbuild.cross.riscv.feature_2.7.1.qualifier.jar" id="ilg.gnumcueclipse.managedbuild.cross.riscv.feature" version="2.7.1.qualifier">
       <category name="ilg.gnumcueclipse.riscv.category"/>
    </feature>
-   <feature url="features/ilg.gnumcueclipse.debug.gdbjtag.jlink.feature_4.2.1.qualifier.jar" id="ilg.gnumcueclipse.debug.gdbjtag.jlink.feature" version="4.2.1.qualifier">
+   <feature url="features/ilg.gnumcueclipse.debug.gdbjtag.jlink.feature_4.3.1.qualifier.jar" id="ilg.gnumcueclipse.debug.gdbjtag.jlink.feature" version="4.3.1.qualifier">
       <category name="ilg.gnumcueclipse.riscv.category"/>
    </feature>
-   <feature url="features/ilg.gnumcueclipse.debug.gdbjtag.openocd.feature_4.2.1.qualifier.jar" id="ilg.gnumcueclipse.debug.gdbjtag.openocd.feature" version="4.2.1.qualifier">
+   <feature url="features/ilg.gnumcueclipse.debug.gdbjtag.openocd.feature_4.3.1.qualifier.jar" id="ilg.gnumcueclipse.debug.gdbjtag.openocd.feature" version="4.3.1.qualifier">
       <category name="ilg.gnumcueclipse.riscv.category"/>
    </feature>
-   <feature url="features/ilg.gnumcueclipse.debug.gdbjtag.qemu.feature_3.2.1.qualifier.jar" id="ilg.gnumcueclipse.debug.gdbjtag.qemu.feature" version="3.2.1.qualifier">
+   <feature url="features/ilg.gnumcueclipse.debug.gdbjtag.qemu.feature_3.3.1.qualifier.jar" id="ilg.gnumcueclipse.debug.gdbjtag.qemu.feature" version="3.3.1.qualifier">
       <category name="ilg.gnumcueclipse.riscv.category"/>
    </feature>
    <feature url="features/ilg.gnumcueclipse.codered.feature_1.1.2.qualifier.jar" id="ilg.gnumcueclipse.codered.feature" version="1.1.2.qualifier">
       <category name="ilg.gnumcueclipse.riscv.category"/>
    </feature>
-   <feature url="features/ilg.gnumcueclipse.templates.sifive.feature_1.1.1.qualifier.jar" id="ilg.gnumcueclipse.templates.sifive.feature" version="1.1.1.qualifier">
+   <feature url="features/ilg.gnumcueclipse.templates.sifive.feature_1.2.1.qualifier.jar" id="ilg.gnumcueclipse.templates.sifive.feature" version="1.2.1.qualifier">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
    <category-def name="ilg.gnumcueclipse.riscv.category" label="GNU RISC-V C/C++ Cross Development Tools"/>
