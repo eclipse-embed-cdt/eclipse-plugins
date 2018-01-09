@@ -16,7 +16,7 @@
       <category name="ilg.gnumcueclipse.riscv.category"/>
    </feature>
    <feature url="features/ilg.gnumcueclipse.templates.sifive.feature_1.2.1.qualifier.jar" id="ilg.gnumcueclipse.templates.sifive.feature" version="1.2.1.qualifier">
-      <category name="ilg.gnumcueclipse.category"/>
+      <category name="ilg.gnumcueclipse.riscv.category"/>
    </feature>
    <category-def name="ilg.gnumcueclipse.riscv.category" label="GNU RISC-V C/C++ Cross Development Tools"/>
 </site>
