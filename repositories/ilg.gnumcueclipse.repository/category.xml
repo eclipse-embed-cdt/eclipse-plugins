@@ -6,7 +6,7 @@
    <feature url="features/ilg.gnumcueclipse.managedbuild.cross.riscv.feature_2.7.1.qualifier.jar" id="ilg.gnumcueclipse.managedbuild.cross.riscv.feature" version="2.7.1.qualifier">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature url="features/ilg.gnumcueclipse.templates.stm.feature_2.6.3.qualifier.jar" id="ilg.gnumcueclipse.templates.stm.feature" version="2.6.3.qualifier">
+   <feature url="features/ilg.gnumcueclipse.templates.stm.feature_2.6.4.qualifier.jar" id="ilg.gnumcueclipse.templates.stm.feature" version="2.6.4.qualifier">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
    <feature url="features/ilg.gnumcueclipse.templates.freescale.feature_2.2.9.qualifier.jar" id="ilg.gnumcueclipse.templates.freescale.feature" version="2.2.9.qualifier">
