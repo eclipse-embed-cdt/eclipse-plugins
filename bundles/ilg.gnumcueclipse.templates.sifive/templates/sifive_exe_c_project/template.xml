@@ -68,11 +68,9 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			<item
 				value="retarget"
 				label="POSIX (system calls implemented by application code)" />
-			<!-- 
 			<item
 				value="semihosting"
-				label="Semihosting (POSIX system calls via host) [not available yet]" />
-			 -->
+				label="Semihosting (POSIX system calls via host)" />
 		</property>
 		<property
 			id="SiFiveTrace"
@@ -1083,6 +1081,22 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			</complex-array>
 		</process>
 	</if>
+	<if condition="$(syscalls)!=semihosting">
+		<process type="org.eclipse.cdt.managedbuilder.core.ExcludeResources">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="configIdPattern"
+				value=".*" />
+			<simple-array name="filePatterns">
+				<element value=".*/xpacks/micro-os-plus-semihosting/src/syscalls-semihosting.cpp" />
+			</simple-array>
+			<simple
+				name="invertConfigMatching"
+				value="false" />
+		</process>
+	</if>
 
 	<!-- xpacks/sifive-devices -->
 	<if condition="1==1">
@@ -1593,6 +1607,22 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						value="true" />
 				</element>
 			</complex-array>
+		</process>
+	</if>
+	<if condition="$(syscalls)==semihosting">
+		<process type="org.eclipse.cdt.managedbuilder.core.ExcludeResources">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="configIdPattern"
+				value=".*" />
+			<simple-array name="filePatterns">
+				<element value=".*/xpacks/micro-os-plus-c-libs/src/c-syscalls-empty.cpp" />
+			</simple-array>
+			<simple
+				name="invertConfigMatching"
+				value="false" />
 		</process>
 	</if>
 
@@ -3257,7 +3287,7 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 						name="id"
 						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.defs" />
 					<simple-array name="values">
-						<element value="OS_USE_SEMIHOSTING" />
+						<element value="OS_USE_SEMIHOSTING_SYSCALLS" />
 					</simple-array>
 					<simple
 						name="path"
