@@ -1991,6 +1991,54 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 		</process>
 	</if>
 
+	<!-- jlink.launch -->
+	<if condition="$(deviceName)==e31arty">
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddLiquidFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="xpacks/sifive-templates/assets/sources/jlink.launch.liquid" />
+					<simple
+						name="target"
+						value="$(projectName)-debug-jlink.launch" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(deviceName)==e51arty">
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddLiquidFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="xpacks/sifive-templates/assets/sources/jlink.launch.liquid" />
+					<simple
+						name="target"
+						value="$(projectName)-debug-jlink.launch" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
 	<!-- ================================================================== -->
 
 	<!-- README.md & package.json-->
