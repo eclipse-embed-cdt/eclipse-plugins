@@ -1333,6 +1333,54 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 			</complex-array>
 		</process>
 	</if>
+	<if condition="$(deviceName)!=fe310">
+		<process type="org.eclipse.cdt.managedbuilder.core.ExcludeResources">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="configIdPattern"
+				value=".*" />
+			<simple-array name="filePatterns">
+				<element value=".*/xpacks/sifive-devices/src/fe310/device-interrupts.cpp" />
+			</simple-array>
+			<simple
+				name="invertConfigMatching"
+				value="false" />
+		</process>
+	</if>
+	<if condition="$(deviceName)!=e31arty">
+		<process type="org.eclipse.cdt.managedbuilder.core.ExcludeResources">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="configIdPattern"
+				value=".*" />
+			<simple-array name="filePatterns">
+				<element value=".*/xpacks/sifive-devices/src/arty/e31/device-interrupts.cpp" />
+			</simple-array>
+			<simple
+				name="invertConfigMatching"
+				value="false" />
+		</process>
+	</if>
+	<if condition="$(deviceName)!=e51arty">
+		<process type="org.eclipse.cdt.managedbuilder.core.ExcludeResources">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="configIdPattern"
+				value=".*" />
+			<simple-array name="filePatterns">
+				<element value=".*/xpacks/sifive-devices/src/arty/e51/device-interrupts.cpp" />
+			</simple-array>
+			<simple
+				name="invertConfigMatching"
+				value="false" />
+		</process>
+	</if>
 
 	<!-- xpacks/sifive-*-board* -->
 	<if condition="1==1">
