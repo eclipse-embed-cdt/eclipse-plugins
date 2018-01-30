@@ -25,8 +25,6 @@ public class Messages extends NLS {
 	public static String PeripheralsView_NameColumn_text;
 	public static String PeripheralsView_AddressColumn_text;
 	public static String PeripheralsView_DescriptionColumn_text;
-	public static String PeripheralsView_FileAction_text;
-	public static String PeripheralsView_FileAction_toolTipText;
 
 	public static String PeripheralRegister_Msg_Unknown_expression;
 	public static String PeripheralRegister_Msg_Not_a_number;
@@ -50,6 +48,12 @@ public class Messages extends NLS {
 	public static String SvdPathProperties_file_button;
 	public static String SvdPathProperties_file_tooltip;
 	public static String SvdPathProperties_file_dialog;
+
+	public static String TabSvd_group_text;
+	public static String TabSvd_label_text;
+	public static String TabSvd_label_tooltip;
+	public static String TabSvd_button_Browse_text;
+	public static String TabSvd_button_Variables_text;
 
 	static {
 		// initialise above static strings
