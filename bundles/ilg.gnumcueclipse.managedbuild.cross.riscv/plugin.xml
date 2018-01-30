@@ -393,6 +393,11 @@
 					name="%option.target.abi.integer.ilp32">
 				</enumeratedOptionValue>
 				<enumeratedOptionValue
+					command="-mabi=ilp32e"
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.integer.ilp32e"
+					name="%option.target.abi.integer.ilp32e">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
 					command="-mabi=lp64"
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.integer.lp64"
 					name="%option.target.abi.integer.lp64">
