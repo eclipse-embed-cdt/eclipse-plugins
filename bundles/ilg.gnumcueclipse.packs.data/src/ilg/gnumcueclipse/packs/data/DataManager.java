@@ -833,6 +833,47 @@ public class DataManager implements IPacksDataManager {
 			;
 		}
 
+		if (rootNode != null) {
+			ITreeIterator packNodes = new AbstractTreePreOrderIterator() {
+
+				@Override
+				public boolean isIterable(Leaf node) {
+
+					if (node.isType("family")) {
+						return true;
+					} else if (node.isType("board")) {
+						return true;
+					}
+					return false;
+				}
+
+				@Override
+				public boolean isLeaf(Leaf node) {
+
+					if (node.isType("family")) {
+						return true;
+					} else if (node.isType("board")) {
+						return true;
+					}
+					return false;
+				}
+			};
+
+			// Iterate only the current device children nodes
+			packNodes.setTreeNode(rootNode);
+
+			for (Leaf node : packNodes) {
+
+				// System.out.println(node);
+				String packName = node.getProperty("pack.name");
+				if (packName.isEmpty()) {
+					rootNode = null;
+					Activator.log("Buggy cache detected, ignored.");
+					break;
+				}
+			}
+		}
+
 		if (rootNode == null) {
 
 			// Extract devices/boards/books from all installed packages
