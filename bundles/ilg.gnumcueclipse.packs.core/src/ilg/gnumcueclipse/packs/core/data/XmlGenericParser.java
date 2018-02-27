@@ -122,6 +122,7 @@ public class XmlGenericParser {
 					parent.setDescription(content);
 				} else if ("name".equals(type)) {
 					parent.setName(content);
+					parent.putProperty("name", content);
 				} else {
 					parent.putNonEmptyProperty(type, content);
 				}
