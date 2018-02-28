@@ -6,7 +6,9 @@ These are the Eclipse projects used to build the [GNU MCU Eclipse](http://gnu-mc
 
 ## How to install
 
-The recommended install method is via Eclipse Marketplace.
+For new installs, the preferred method is via [GNU MCU Eclipse IDE for C/C++ Developers ](https://github.com/gnu-mcu-eclipse/org.eclipse.epp.packages/releases), which packs the oficial **Eclipse IDE for C/C++ Developers** release with all **GNU MCU Eclipse plug-ins** already installed. 
+
+For existing Eclipse instances, the recommended install method is via Eclipse Marketplace; search for **GNU MCU Eclipse**.
 
 For manual installs, the stable version update site is:
 
