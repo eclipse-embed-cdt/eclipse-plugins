@@ -76,14 +76,14 @@ This project exists thanks to all the people who contribute. [[Contribute](CONTR
 
 ## Backers
 
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/eclipse-plugins#backer)]
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/gnu-mcu-eclipse#backer)]
 
-<a href="https://opencollective.com/eclipse-plugins#backers" target="_blank"><img src="https://opencollective.com/gnu-mcu-eclipse/backers.svg?width=890"></a>
+<a href="https://opencollective.com/gnu-mcu-eclipse#backers" target="_blank"><img src="https://opencollective.com/gnu-mcu-eclipse/backers.svg?width=890"></a>
 
 
 ## Sponsors
 
-Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/eclipse-plugins#sponsor)]
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/gnu-mcu-eclipse#sponsor)]
 
 <a href="https://opencollective.com/gnu-mcu-eclipse/sponsor/0/website" target="_blank"><img src="https://opencollective.com/gnu-mcu-eclipse/sponsor/0/avatar.svg"></a>
 <a href="https://opencollective.com/gnu-mcu-eclipse/sponsor/1/website" target="_blank"><img src="https://opencollective.com/gnu-mcu-eclipse/sponsor/1/avatar.svg"></a>
