@@ -69,7 +69,7 @@ Currently these settings are provided by the default Eclipse Java formatter.
 
 ## Contributors
 
-This project exists thanks to all the people who contribute. [[Contribute](https://opencollective.com/gnu-mcu-eclipse#contribute)].
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
 
 <a href="graphs/contributors"><img src="https://opencollective.com/gnu-mcu-eclipse/contributors.svg?width=890&button=false" /></a>
 
