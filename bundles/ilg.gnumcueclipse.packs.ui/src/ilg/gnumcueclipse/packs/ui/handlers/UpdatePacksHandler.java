@@ -287,6 +287,8 @@ public class UpdatePacksHandler extends AbstractHandler {
 		PdscParserForContent parser = new PdscParserForContent();
 		// parser.setIsBrief(true);
 
+		boolean ignoreError = false;
+
 		// String[] { url, name, version }
 		for (String[] pdsc : list) {
 
@@ -310,11 +312,16 @@ public class UpdatePacksHandler extends AbstractHandler {
 				if (!cachedFile.exists()) {
 
 					// If local file does not exist, create it
-					if (Utils.copyFileWithShell(sourceUrl, cachedFile, fOut, null, window.getShell())) {
+					int ret = Utils.copyFileWithShell(sourceUrl, cachedFile, fOut, null, window.getShell(),
+							ignoreError);
+					if (ret == 0) {
 
 						Utils.reportInfo("File " + pdscName + " version " + pdscVersion + " cached locally.");
 					} else {
 						fOut.println(Utils.reportWarning("Missing \"" + cachedFile + "\", ignored by user request."));
+						if (ret == 3) {
+							ignoreError = true;
+						}
 						continue;
 					}
 				}

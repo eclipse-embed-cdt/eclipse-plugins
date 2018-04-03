@@ -84,14 +84,28 @@ public class Utils {
 		return length;
 	}
 
-	public static boolean copyFileWithShell(final URL sourceUrl, File destinationFile, MessageConsoleStream out,
-			IProgressMonitor monitor, final Shell shell) throws IOException {
+	/**
+	 * 
+	 * @param sourceUrl
+	 * @param destinationFile
+	 * @param out
+	 * @param monitor
+	 * @param shell
+	 * @return 0 = Ok, 1 = Retry, 2 = Ignore, 3 = Ignore All, 4 = Abort
+	 * @throws IOException
+	 */
+	public static int copyFileWithShell(final URL sourceUrl, File destinationFile, MessageConsoleStream out,
+			IProgressMonitor monitor, final Shell shell, final boolean ignoreError) throws IOException {
 
 		while (true) {
 			try {
 				Utils.copyFile(sourceUrl, destinationFile, out, monitor);
-				return true;
+				return 0;
 			} catch (final IOException e) {
+
+				if (ignoreError) {
+					return 3; // Ignore All
+				}
 
 				class ErrorMessageDialog implements Runnable {
 
@@ -99,7 +113,7 @@ public class Utils {
 
 					@Override
 					public void run() {
-						String[] buttons = new String[] { "Retry", "Ignore", "Abort" };
+						String[] buttons = new String[] { "Retry", "Ignore", "Ignore All", "Abort" };
 						MessageDialog dialog = new MessageDialog(shell, "Read error", null,
 								sourceUrl.toString() + "\n" + e.getMessage(), MessageDialog.ERROR, buttons, 0);
 						retCode = dialog.open();
@@ -109,10 +123,10 @@ public class Utils {
 				ErrorMessageDialog messageDialog = new ErrorMessageDialog();
 				Display.getDefault().syncExec(messageDialog);
 
-				if (messageDialog.retCode == 2) {
+				if (messageDialog.retCode == 3) {
 					throw e; // Abort
-				} else if (messageDialog.retCode == 1) {
-					return false; // Ignore
+				} else if (messageDialog.retCode == 1 || messageDialog.retCode == 2) {
+					return messageDialog.retCode + 1; // Ignore & Ignore All
 				}
 
 				// Else try again
@@ -133,8 +147,8 @@ public class Utils {
 				break;
 			}
 			if (connection instanceof HttpURLConnection) {
-				connection.setConnectTimeout(60*1000);
-				connection.setReadTimeout(60*1000);
+				connection.setConnectTimeout(60 * 1000);
+				connection.setReadTimeout(60 * 1000);
 				int responseCode = ((HttpURLConnection) connection).getResponseCode();
 				if (responseCode == HttpURLConnection.HTTP_OK) {
 					break;
