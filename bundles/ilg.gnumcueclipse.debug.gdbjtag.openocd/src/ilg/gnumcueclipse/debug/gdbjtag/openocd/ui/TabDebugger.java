@@ -948,31 +948,43 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			System.out.println("openocd.TabDebugger.isValid() " + launchConfig.getName());
 		}
 
+		setErrorMessage(null);
+		setMessage(null);
+
 		boolean result = true;
 		boolean hasContent = false;
 
 		if (fDoStartGdbServer != null && fDoStartGdbServer.getSelection()) {
 
 			hasContent = true;
-			if (fGdbServerExecutable != null && fGdbServerExecutable.getText().trim().isEmpty())
+			if (fGdbServerExecutable != null && fGdbServerExecutable.getText().trim().isEmpty()) {
+				setErrorMessage("GDB server executable path?");
 				result = false;
+			}
 
-			if (fGdbServerGdbPort != null && fGdbServerGdbPort.getText().trim().isEmpty())
+			if (fGdbServerGdbPort != null && fGdbServerGdbPort.getText().trim().isEmpty()) {
+				setErrorMessage("GDB port?");
 				result = false;
+			}
 
-			if (fGdbServerTelnetPort != null && fGdbServerTelnetPort.getText().trim().isEmpty())
+			if (fGdbServerTelnetPort != null && fGdbServerTelnetPort.getText().trim().isEmpty()) {
+				setErrorMessage("Telnet port?");
 				result = false;
-			if (fGdbServerTclPort != null && fGdbServerTclPort.getText().trim().isEmpty())
-				result = false;
+			}
 
+			if (fGdbServerTclPort != null && fGdbServerTclPort.getText().trim().isEmpty()) {
+				setErrorMessage("Tcl port?");
+				result = false;
+			}
 		}
 
 		if (fDoStartGdbClient != null && fDoStartGdbClient.getSelection()) {
 
 			hasContent = true;
-			if (fGdbClientExecutable != null && fGdbClientExecutable.getText().trim().isEmpty())
+			if (fGdbClientExecutable != null && fGdbClientExecutable.getText().trim().isEmpty()) {
 				result = false;
-
+				setErrorMessage("GDB client executable name?");
+			}
 		}
 
 		if (Activator.getInstance().isDebugging()) {
@@ -1099,22 +1111,28 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			if (fDoStartGdbServer.getSelection()) {
 				configuration.setAttribute(IGDBJtagConstants.ATTR_IP_ADDRESS, "localhost");
 
-				try {
-					int port;
-					port = Integer.parseInt(fGdbServerGdbPort.getText().trim());
-					configuration.setAttribute(IGDBJtagConstants.ATTR_PORT_NUMBER, port);
-				} catch (NumberFormatException e) {
-					Activator.log(e);
+				String str = fGdbServerGdbPort.getText().trim();
+				if (!str.isEmpty()) {
+					try {
+						int port;
+						port = Integer.parseInt(str);
+						configuration.setAttribute(IGDBJtagConstants.ATTR_PORT_NUMBER, port);
+					} catch (NumberFormatException e) {
+						Activator.log(e);
+					}
 				}
 			} else {
 				String ip = fTargetIpAddress.getText().trim();
 				configuration.setAttribute(IGDBJtagConstants.ATTR_IP_ADDRESS, ip);
 
-				try {
-					int port = Integer.valueOf(fTargetPortNumber.getText().trim()).intValue();
-					configuration.setAttribute(IGDBJtagConstants.ATTR_PORT_NUMBER, port);
-				} catch (NumberFormatException e) {
-					Activator.log(e);
+				String str = fTargetPortNumber.getText().trim();
+				if (!str.isEmpty()) {
+					try {
+						int port = Integer.valueOf(str).intValue();
+						configuration.setAttribute(IGDBJtagConstants.ATTR_PORT_NUMBER, port);
+					} catch (NumberFormatException e) {
+						Activator.log(e);
+					}
 				}
 			}
 		}
