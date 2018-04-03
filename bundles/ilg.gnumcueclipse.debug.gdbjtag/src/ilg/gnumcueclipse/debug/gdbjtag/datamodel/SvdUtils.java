@@ -18,6 +18,7 @@ import java.io.FileReader;
 import java.io.FilenameFilter;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
@@ -414,7 +415,14 @@ public class SvdUtils {
 			char[] chars = new char[10];
 			reader.read(chars);
 			reader.close();
-			String str = (new String(chars)).trim();
+			String str = "";
+			// If the file starts with the Unicode BOM (0xEF,0xBB,0xBF),
+			// the first char must be skipped.
+			if (chars[0] == '\ufeff') {
+				str = (new String(Arrays.copyOfRange(chars, 1, chars.length - 1))).trim();
+			} else {
+				str = (new String(chars)).trim();
+			}
 
 			if (str.startsWith("<?xml ")) {
 				Document document = Xml.parseFile(file);
