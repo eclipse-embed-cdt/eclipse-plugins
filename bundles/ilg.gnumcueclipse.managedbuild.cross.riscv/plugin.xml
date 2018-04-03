@@ -538,6 +538,27 @@
 					name="%option.target.tune.size">
 				</enumeratedOptionValue>
 			</option>
+			<option
+				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.align"
+				isAbstract="true"
+				name="%option.target.align"
+				valueType="enumerated">
+				<enumeratedOptionValue
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.align.default"
+					isDefault="true"
+					name="%option.target.align.default">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.align.strict"
+					command="-mstrict-align"
+					name="%option.target.align.strict">
+				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.align.nostrict"
+					command="-mno-strict-align"
+					name="%option.target.align.nostrict">
+				</enumeratedOptionValue>
+			</option>			
 		</tool>
 		<toolChain
 			archList="all"
@@ -693,6 +714,11 @@
 				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.smalldatalimit"
 				superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.smalldatalimit">
+			</option>
+			<option
+				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"
+				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.align"
+				superClass="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.align">
 			</option>
 			<option
 				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"

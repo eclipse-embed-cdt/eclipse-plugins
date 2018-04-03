@@ -39,6 +39,7 @@ public class Option {
 	public static final String OPTION_TARGET_TUNE = OPTION_TARGET + "tune";
 	public static final String OPTION_TARGET_CODEMODEL = OPTION_TARGET + "codemodel";
 	public static final String OPTION_TARGET_SMALLDATALIMIT = OPTION_TARGET + "smalldatalimit";
+	public static final String OPTION_TARGET_ALIGN = OPTION_TARGET + "align";
 	public static final String OPTION_TARGET_SAVERESTORE = OPTION_TARGET + "saverestore";
 	public static final String OPTION_TARGET_MEMCPY = OPTION_TARGET + "memcpy";
 	public static final String OPTION_TARGET_PLT = OPTION_TARGET + "plt";
@@ -553,6 +554,11 @@ public class Option {
 		}
 
 		sValue = getOptionStringCommandValue(config, OPTION_TARGET_SMALLDATALIMIT);
+		if (sValue != null && sValue.length() > 0) {
+			sReturn += " " + sValue;
+		}
+
+		sValue = getOptionEnumCommand(config, OPTION_TARGET_ALIGN);
 		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
 		}
