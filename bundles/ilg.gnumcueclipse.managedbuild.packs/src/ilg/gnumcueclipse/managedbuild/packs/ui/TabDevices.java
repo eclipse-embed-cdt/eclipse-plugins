@@ -11,6 +11,7 @@
 
 package ilg.gnumcueclipse.managedbuild.packs.ui;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.util.LinkedList;
@@ -859,6 +860,8 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 							boardSupplierId = (String) JsonUtils.get(packageJson, "config.xcdl.board.supplier.id", "");
 							mustUpdate = true;
 						}
+					} catch (FileNotFoundException e) {
+						;
 					} catch (IOException e) {
 						Activator.log(e);
 					} catch (ParseException e) {
