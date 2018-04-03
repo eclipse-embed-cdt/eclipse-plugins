@@ -532,6 +532,11 @@
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.tune.generic"
 					name="%option.target.tune.generic">
 				</enumeratedOptionValue>
+				<enumeratedOptionValue
+					command="-mtune=size"
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.tune.size"
+					name="%option.target.tune.size">
+				</enumeratedOptionValue>
 			</option>
 		</tool>
 		<toolChain
