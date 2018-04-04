@@ -30,6 +30,7 @@ public class ToolchainDefinition {
 	// ------------------------------------------------------------------------
 
 	private String fName;
+	private int fHash;
 	private String fPrefix;
 	private String fSuffix;
 	private String fArchitecture;
@@ -50,6 +51,7 @@ public class ToolchainDefinition {
 
 	public ToolchainDefinition(String sName) {
 		fName = sName;
+		fHash = fName.hashCode();
 		fPrefix = "";
 		fSuffix = "";
 		fArchitecture = "arm";
@@ -93,6 +95,14 @@ public class ToolchainDefinition {
 
 	public void setName(String name) {
 		fName = name;
+	}
+
+	public int getHash() {
+		return fHash;
+	}
+
+	public void setHash(int hash) {
+		fHash = hash;
 	}
 
 	public String getPrefix() {

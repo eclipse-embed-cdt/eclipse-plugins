@@ -853,6 +853,9 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_NAME); // $NON-NLS-1$
 			config.setOption(toolchain, option, td.getName());
 
+			option = toolchain.getOptionBySuperClassId(Option.OPTION_TOOLCHAIN_ID); // $NON-NLS-1$
+			config.setOption(toolchain, option, String.valueOf(td.getHash()));
+
 			option = toolchain.getOptionBySuperClassId(Option.OPTION_COMMAND_PREFIX); // $NON-NLS-1$
 			config.setOption(toolchain, option, fPrefixText.getText().trim());
 
@@ -1113,14 +1116,13 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 		switch (kind) {
 		case ICPropertyTab.UPDATE: {
 			/*
-			 * If the page needs updating fire the handleMessage() method. This
-			 * redraws the tabs and if the page visibility has been modified the
-			 * tab will be updated (removed or added). This is necessary to
-			 * solved the following problem: When in project properties > C/C++
-			 * Build > Settings, if you change to another configuration that
-			 * uses a different toolchain (eg Linux GCC) using the Configuration
-			 * combo (at the top of the dialog) the tabs in Settings do not get
-			 * updated. Note, data is not used so set to null.
+			 * If the page needs updating fire the handleMessage() method. This redraws the
+			 * tabs and if the page visibility has been modified the tab will be updated
+			 * (removed or added). This is necessary to solved the following problem: When
+			 * in project properties > C/C++ Build > Settings, if you change to another
+			 * configuration that uses a different toolchain (eg Linux GCC) using the
+			 * Configuration combo (at the top of the dialog) the tabs in Settings do not
+			 * get updated. Note, data is not used so set to null.
 			 */
 			Page_BuildSettings pageConcrete = (Page_BuildSettings) ((ICPropertyProvider2) page);
 			pageConcrete.handleMessage(ICPropertyTab.MANAGEDBUILDSTATE, null);

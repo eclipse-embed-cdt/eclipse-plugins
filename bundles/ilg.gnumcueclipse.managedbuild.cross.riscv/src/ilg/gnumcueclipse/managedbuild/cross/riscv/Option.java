@@ -96,6 +96,7 @@ public class Option {
 
 	// other
 	public static final String OPTION_TOOLCHAIN_NAME = OPTION_PREFIX + ".toolchain.name";
+	public static final String OPTION_TOOLCHAIN_ID = OPTION_PREFIX + ".toolchain.id";
 
 	// public static final String OPTION_TOOLCHAIN_PATH = OPTION_PREFIX
 	// + ".toolchain.path";

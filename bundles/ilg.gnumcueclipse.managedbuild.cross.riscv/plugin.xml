@@ -838,6 +838,17 @@
 					</false>
 				</enablement>
 			</option>
+			<option
+				category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"
+				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.toolchain.id"
+				isAbstract="false"
+				resourceFilter="all"
+				valueType="string">
+				<enablement type="UI_VISIBILITY">
+					<false> false body text
+					</false>
+				</enablement>
+			</option>
 			<optionCategory
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.warnings"
 				name="%optionCategory.warnings">

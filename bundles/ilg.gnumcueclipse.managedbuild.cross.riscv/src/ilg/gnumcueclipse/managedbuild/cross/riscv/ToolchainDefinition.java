@@ -35,6 +35,7 @@ public class ToolchainDefinition {
 	// ------------------------------------------------------------------------
 
 	private String fName;
+	private int fHash;
 	private String fPrefix;
 	private String fSuffix;
 	private String fArchitecture;
@@ -55,6 +56,7 @@ public class ToolchainDefinition {
 
 	public ToolchainDefinition(String sName) {
 		fName = sName;
+		fHash = fName.hashCode();
 		fPrefix = "";
 		fSuffix = "";
 		fArchitecture = "risc-v";
@@ -98,6 +100,14 @@ public class ToolchainDefinition {
 
 	public void setName(String name) {
 		fName = name;
+	}
+
+	public int getHash() {
+		return fHash;
+	}
+
+	public void setHash(int hash) {
+		fHash = hash;
 	}
 
 	public String getPrefix() {
@@ -324,7 +334,7 @@ public class ToolchainDefinition {
 
 		// 0
 		fgList.add(new ToolchainDefinition(GME_RISCV_GCC, "riscv-none-embed-"));
-		
+
 		// 1
 		fgList.add(new ToolchainDefinition(RISC_V_GCC_NEWLIB, "riscv64-unknown-elf-"));
 

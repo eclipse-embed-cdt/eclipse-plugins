@@ -1842,6 +1842,17 @@
 					</false>
 				</enablement>
 			</option>
+			<option
+				category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
+				id="ilg.gnuarmeclipse.managedbuild.cross.option.toolchain.id"
+				isAbstract="false"
+				resourceFilter="all"
+				valueType="string">
+				<enablement type="UI_VISIBILITY">
+					<false> false body text
+					</false>
+				</enablement>
+			</option>
 			<optionCategory
 				id="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.warnings"
 				name="%optionCategory.warnings">
