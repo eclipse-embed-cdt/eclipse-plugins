@@ -2039,6 +2039,11 @@
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.dirs"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.systempaths"
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.dirs.include.systempaths">
+				</option>
+				<option
+					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.assembler.dirs"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.assembler.include.files"
 					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.dirs.include.files">
 				</option>
@@ -2143,6 +2148,11 @@
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.dirs"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.paths"
 					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.dirs.include.paths">
+				</option>
+				<option
+					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.dirs"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.c.compiler.include.systempaths"
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.dirs.include.systempaths">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.c.compiler.dirs"
@@ -2316,6 +2326,11 @@
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.dirs"
 					id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.paths"
 					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.dirs.include.paths">
+				</option>
+				<option
+					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.dirs"
+					id="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.include.systempaths"
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.dirs.include.systempaths">
 				</option>
 				<option
 					category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.cpp.compiler.dirs"

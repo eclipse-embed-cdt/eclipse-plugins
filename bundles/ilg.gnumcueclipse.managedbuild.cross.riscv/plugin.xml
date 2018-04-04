@@ -1035,6 +1035,11 @@
 				</option>
 				<option
 					category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.assembler.dirs"
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.include.systempaths"
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.dirs.include.systempaths">
+				</option>
+				<option
+					category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.assembler.dirs"
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.include.files"
 					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.dirs.include.files">
 				</option>
@@ -1139,6 +1144,11 @@
 					category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.c.compiler.dirs"
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.include.paths"
 					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.dirs.include.paths">
+				</option>
+				<option
+					category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.c.compiler.dirs"
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.include.systempaths"
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.dirs.include.systempaths">
 				</option>
 				<option
 					category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.c.compiler.dirs"
@@ -1312,6 +1322,11 @@
 					category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.cpp.compiler.dirs"
 					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.include.paths"
 					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.dirs.include.paths">
+				</option>
+				<option
+					category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.cpp.compiler.dirs"
+					id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.include.systempaths"
+					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.dirs.include.systempaths">
 				</option>
 				<option
 					category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.cpp.compiler.dirs"

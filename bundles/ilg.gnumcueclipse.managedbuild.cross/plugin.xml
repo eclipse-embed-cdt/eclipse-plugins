@@ -519,6 +519,15 @@
 				valueType="includePath">
 			</option>
 			<option
+				browseType="directory"
+				command="-isystem"
+				id="ilg.gnumcueclipse.managedbuild.cross.option.base.dirs.include.systempaths"
+				isAbstract="true"
+				name="%option.compiler.include.systempaths"
+				useByScannerDiscovery="true"
+				valueType="includePath">
+			</option>
+			<option
 				browseType="file"
 				command="-include"
 				id="ilg.gnumcueclipse.managedbuild.cross.option.base.dirs.include.files"
