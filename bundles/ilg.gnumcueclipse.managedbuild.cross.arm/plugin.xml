@@ -3244,6 +3244,12 @@
 					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.printsize.InFileName">
 				</option>
 			</tool>
+   <option
+         category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
+         id="ilg.gnuarmeclipse.managedbuild.cross.option.showDevicesTab"
+         name="showDevicesTab"
+         superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.showDevicesTab">
+   </option>
 
 			<!-- ============================================================= -->
 		</toolChain>

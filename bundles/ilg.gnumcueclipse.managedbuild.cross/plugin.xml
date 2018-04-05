@@ -905,6 +905,19 @@
 					</false>
 				</enablement>
 			</option>
+   <option
+         id="ilg.gnumcueclipse.managedbuild.cross.option.base.showDevicesTab"
+         isAbstract="true"
+         name="showDevicesTab"
+         resourceFilter="all"
+         valueType="string">
+      <enablement
+            type="ALL">
+         <false>
+            false body text
+         </false>
+      </enablement>
+   </option>
 		</tool>
 		<tool
 			id="ilg.gnumcueclipse.managedbuild.cross.tool.assembler"

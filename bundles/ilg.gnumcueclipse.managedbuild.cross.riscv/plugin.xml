@@ -2241,6 +2241,12 @@
 					superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.printsize.InFileName">
 				</option>
 			</tool>
+   <option
+         category="ilg.gnumcueclipse.managedbuild.cross.riscv.optionCategory.target"
+         id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.showDevicesTab"
+         name="showDevicesTab"
+         superClass="ilg.gnumcueclipse.managedbuild.cross.option.base.showDevicesTab">
+   </option>
 
 
 			<!-- ============================================================= -->

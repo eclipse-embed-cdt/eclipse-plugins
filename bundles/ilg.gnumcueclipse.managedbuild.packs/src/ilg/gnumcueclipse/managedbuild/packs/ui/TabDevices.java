@@ -21,6 +21,7 @@ import java.util.TreeMap;
 
 import org.eclipse.cdt.core.settings.model.ICResourceDescription;
 import org.eclipse.cdt.managedbuilder.core.IConfiguration;
+import org.eclipse.cdt.managedbuilder.core.IOption;
 import org.eclipse.cdt.managedbuilder.internal.core.Configuration;
 import org.eclipse.cdt.managedbuilder.internal.core.MultiConfiguration;
 import org.eclipse.cdt.managedbuilder.ui.properties.AbstractCBuildPropertyTab;
@@ -1117,10 +1118,21 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 	@Override
 	public boolean canBeVisible() {
 
-		if (page.isForProject()) {
-			return true;
-		} else
+		if (!page.isForProject()) {
 			return false;
+		}
+
+		if (!getCfg().getBuilder().isManagedBuildOn()) {
+			return false;
+		}
+
+		// GNU MCU Eclipse toolchains have this hidden option.
+		if (getCfg().getToolChain()
+				.getOptionBySuperClassId("ilg.gnumcueclipse.managedbuild.cross.option.base.showDevicesTab") == null) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**
