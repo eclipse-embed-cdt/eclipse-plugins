@@ -1027,25 +1027,31 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 	@Override
 	public boolean canBeVisible() {
 
-		if (!isThisPlugin())
+		if (!isThisPlugin()) {
 			return false;
+		}
 
-		if (page.isForProject()) {
-			return true;
-			// if (page.isMultiCfg()) {
-			// ICMultiItemsHolder mih = (ICMultiItemsHolder) getCfg();
-			// IConfiguration[] cfs = (IConfiguration[]) mih.getItems();
-			// for (int i = 0; i < cfs.length; i++) {
-			// if (cfs[i].getBuilder().isManagedBuildOn())
-			// return true;
-			// }
-			// return false;
-			// } else {
-			//
-			// return getCfg().getBuilder().isManagedBuildOn();
-			// }
-		} else
+		if (!page.isForProject()) {
 			return false;
+		}
+
+		if (!getCfg().getBuilder().isManagedBuildOn()) {
+			return false;
+		}
+
+		return true;
+		// if (page.isMultiCfg()) {
+		// ICMultiItemsHolder mih = (ICMultiItemsHolder) getCfg();
+		// IConfiguration[] cfs = (IConfiguration[]) mih.getItems();
+		// for (int i = 0; i < cfs.length; i++) {
+		// if (cfs[i].getBuilder().isManagedBuildOn())
+		// return true;
+		// }
+		// return false;
+		// } else {
+		//
+		// return getCfg().getBuilder().isManagedBuildOn();
+		// }
 	}
 
 	// Must be true, otherwise the page is not shown
