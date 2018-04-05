@@ -18,7 +18,7 @@
 
 	<groupId>ilg.gnumcueclipse</groupId>
 	<artifactId>ilg.gnumcueclipse.debug.gdbjtag.jlink.feature</artifactId>
-	<version>4.3.1-SNAPSHOT</version>
+	<version>4.3.2-SNAPSHOT</version>
 	<packaging>eclipse-feature</packaging>
 
 	<parent>
