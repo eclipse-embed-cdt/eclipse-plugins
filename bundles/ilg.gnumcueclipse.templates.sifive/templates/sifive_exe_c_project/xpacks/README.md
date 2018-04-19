@@ -2,6 +2,8 @@
 
 Each xPack is a separate GitHub project, referred here as a git submodule.
 
+### Initial link submodules
+
 To link new submodules, use:
 
 ```console
@@ -23,11 +25,15 @@ To pull all submodules after cloning the main repo:
 $ git submodule update --init --remote
 ```
 
+### Further updates
+
 For get further updates:
 
 ```console
 $ git submodule foreach 'git pull'
 ```
+
+### Remove
 
 To remove the submodules
 

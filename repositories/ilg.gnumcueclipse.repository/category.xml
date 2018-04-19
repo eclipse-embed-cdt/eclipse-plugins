@@ -12,7 +12,7 @@
    <feature url="features/ilg.gnumcueclipse.templates.freescale.feature_2.2.9.qualifier.jar" id="ilg.gnumcueclipse.templates.freescale.feature" version="2.2.9.qualifier">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
-   <feature url="features/ilg.gnumcueclipse.templates.sifive.feature_1.3.1.qualifier.jar" id="ilg.gnumcueclipse.templates.sifive.feature" version="1.3.1.qualifier">
+   <feature url="features/ilg.gnumcueclipse.templates.sifive.feature_1.3.2.qualifier.jar" id="ilg.gnumcueclipse.templates.sifive.feature" version="1.3.2.qualifier">
       <category name="ilg.gnumcueclipse.category"/>
    </feature>
    <feature url="features/ilg.gnumcueclipse.debug.gdbjtag.jlink.feature_4.3.2.qualifier.jar" id="ilg.gnumcueclipse.debug.gdbjtag.jlink.feature" version="4.3.2.qualifier">
