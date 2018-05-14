@@ -28,7 +28,7 @@ public class GdbServerBackend extends GnuMcuGdbServerBackend {
 
 	// ------------------------------------------------------------------------
 
-	protected int fGdbServerLaunchTimeout = 15;
+	protected int fGdbServerLaunchTimeout = 60;
 
 	// ------------------------------------------------------------------------
 
@@ -129,7 +129,7 @@ public class GdbServerBackend extends GnuMcuGdbServerBackend {
 	}
 
 	public String getServerName() {
-		return "QEMU";
+		return "Jumper";
 	}
 
 	public boolean canMatchStdOut() {
@@ -141,7 +141,7 @@ public class GdbServerBackend extends GnuMcuGdbServerBackend {
 	}
 
 	public boolean matchStdOutExpectedPattern(String line) {
-		if (line.indexOf("GDB Server listening on:") >= 0) {
+		if (line.indexOf("Virtual device is running") >= 0) {
 			return true;
 		}
 
@@ -166,7 +166,7 @@ public class GdbServerBackend extends GnuMcuGdbServerBackend {
 
 		String name = getServerCommandName();
 		if (name == null) {
-			name = "GDB Server";
+			name = "Jumper";
 		}
 		String tail = "\n\nFor more details, see the " + name + " console.";
 
