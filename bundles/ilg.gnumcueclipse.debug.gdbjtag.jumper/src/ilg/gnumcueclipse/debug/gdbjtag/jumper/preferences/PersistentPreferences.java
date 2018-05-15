@@ -34,7 +34,7 @@ public class PersistentPreferences extends ilg.gnumcueclipse.debug.gdbjtag.prefe
 	public static final String GDB_CLIENT_COMMANDS = GDB_CLIENT + "commands";
 
 	// Tab Startup
-	public static final String GDB_QEMU = "gdb.qemu.";
+	public static final String GDB_QEMU = "gdb.jumper.";
 
 	public static final String GDB_QEMU_DO_INITIAL_RESET = GDB_QEMU + "doInitialReset";
 

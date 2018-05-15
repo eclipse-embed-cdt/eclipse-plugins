@@ -42,7 +42,7 @@ public class GdbBackend extends GnuMcuGdbBackend {
 		super(session, lc);
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.GdbBackend() " + this);
+			System.out.println("jumper.GdbBackend() " + this);
 		}
 		fLaunchConfiguration = lc;
 	}
@@ -53,7 +53,7 @@ public class GdbBackend extends GnuMcuGdbBackend {
 	public void initialize(final RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.GdbBackend.initialize() " + Thread.currentThread());
+			System.out.println("jumper.GdbBackend.initialize() " + Thread.currentThread());
 		}
 		super.initialize(rm);
 	}
@@ -62,7 +62,7 @@ public class GdbBackend extends GnuMcuGdbBackend {
 	public void destroy() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.GdbBackend.destroy() " + Thread.currentThread());
+			System.out.println("jumper.GdbBackend.destroy() " + Thread.currentThread());
 		}
 		super.destroy();
 	}
@@ -71,7 +71,7 @@ public class GdbBackend extends GnuMcuGdbBackend {
 	public void shutdown(final RequestMonitor rm) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.GdbBackend.shutdown() " + Thread.currentThread());
+			System.out.println("jumper.GdbBackend.shutdown() " + Thread.currentThread());
 		}
 		super.shutdown(rm);
 	}
@@ -80,7 +80,7 @@ public class GdbBackend extends GnuMcuGdbBackend {
 
 	/**
 	 * Overridden to get the full command line, including all options, from the
-	 * QEMU configuration.
+	 * Jumper Virtual Lab configuration.
 	 */
 	protected String[] getGDBCommandLineArray() {
 		String[] commandLineArray = Configuration.getGdbClientCommandLineArray(fLaunchConfiguration);
@@ -127,7 +127,7 @@ public class GdbBackend extends GnuMcuGdbBackend {
 		}
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.GdbBackend.getGDBWorkingDirectory() " + path);
+			System.out.println("jumper.GdbBackend.getGDBWorkingDirectory() " + path);
 		}
 		return path;
 	}

@@ -33,7 +33,7 @@ public class ServicesFactory extends GnuMcuServicesFactory {
 		super(version, mode);
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.ServicesFactory(" + version + "," + mode + ") " + this);
+			System.out.println("jumper.ServicesFactory(" + version + "," + mode + ") " + this);
 		}
 		fVersion = version;
 	}

@@ -23,28 +23,28 @@ public class ButtonRestartActionDelegate implements IWorkbenchWindowActionDelega
 	@Override
 	public void run(IAction action) {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.ButtonRestartActionDelegate.run(" + action + ")");
+			System.out.println("jumper.ButtonRestartActionDelegate.run(" + action + ")");
 		}
 	}
 
 	@Override
 	public void selectionChanged(IAction action, ISelection selection) {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.ButtonRestartActionDelegate.selectionChanged(" + action + "," + selection + ")");
+			System.out.println("jumper.ButtonRestartActionDelegate.selectionChanged(" + action + "," + selection + ")");
 		}
 	}
 
 	@Override
 	public void dispose() {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.ButtonRestartActionDelegate.dispose()");
+			System.out.println("jumper.ButtonRestartActionDelegate.dispose()");
 		}
 	}
 
 	@Override
 	public void init(IWorkbenchWindow window) {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.ButtonRestartActionDelegate.init()");
+			System.out.println("jumper.ButtonRestartActionDelegate.init()");
 		}
 	}
 

@@ -137,7 +137,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	public void createControl(Composite parent) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.TabDebugger.createControl() ");
+			System.out.println("jumper.TabDebugger.createControl() ");
 		}
 
 		Composite comp = new Composite(parent, SWT.NONE);
@@ -593,7 +593,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		assert (fConfiguration != null);
 		String fullCommand = Configuration.getGdbClientCommand(fConfiguration, fGdbClientExecutable.getText());
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.TabDebugger.updateGdbClientActualPath() \"" + fullCommand + "\"");
+			System.out.println("jumper.TabDebugger.updateGdbClientActualPath() \"" + fullCommand + "\"");
 		}
 		fGdbClientPathLabel.setText(fullCommand);
 	}
@@ -648,7 +648,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	public void initializeFrom(ILaunchConfiguration configuration) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.TabDebugger.initializeFrom() " + configuration.getName());
+			System.out.println("jumper.TabDebugger.initializeFrom() " + configuration.getName());
 		}
 
 		fConfiguration = configuration;
@@ -752,14 +752,14 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.TabDebugger.initializeFrom() completed " + configuration.getName());
+			System.out.println("jumper.TabDebugger.initializeFrom() completed " + configuration.getName());
 		}
 	}
 
 	public void initializeFromDefaults() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.TabDebugger.initializeFromDefaults()");
+			System.out.println("jumper.TabDebugger.initializeFromDefaults()");
 		}
 
 		String stringDefault;
@@ -835,21 +835,21 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	@Override
 	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.TabDebugger.activated() " + workingCopy.getName());
+			System.out.println("jumper.TabDebugger.activated() " + workingCopy.getName());
 		}
 	}
 
 	@Override
 	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.TabDebugger.deactivated() " + workingCopy.getName());
+			System.out.println("jumper.TabDebugger.deactivated() " + workingCopy.getName());
 		}
 	}
 
 	@Override
 	public boolean isValid(ILaunchConfiguration launchConfig) {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.TabDebugger.isValid() " + launchConfig.getName());
+			System.out.println("jumper.TabDebugger.isValid() " + launchConfig.getName());
 		}
 
 		setErrorMessage(null);
@@ -876,7 +876,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		}
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.TabDebugger.isValid() " + launchConfig.getName() + " = " + result);
+			System.out.println("jumper.TabDebugger.isValid() " + launchConfig.getName() + " = " + result);
 		}
 
 		return result;
@@ -899,7 +899,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.TabDebugger.performApply() " + configuration.getName());
+			System.out.println("jumper.TabDebugger.performApply() " + configuration.getName());
 		}
 
 		{
@@ -1014,7 +1014,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println(
-					"qemu.TabDebugger.performApply() completed " + configuration.getName() + ", dirty=" + isDirty());
+					"jumper.TabDebugger.performApply() completed " + configuration.getName() + ", dirty=" + isDirty());
 		}
 	}
 
@@ -1022,7 +1022,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.TabDebugger.setDefaults() " + configuration.getName());
+			System.out.println("jumper.TabDebugger.setDefaults() " + configuration.getName());
 		}
 
 		boolean defaultBoolean;

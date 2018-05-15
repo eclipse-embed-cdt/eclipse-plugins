@@ -28,6 +28,6 @@
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 
-	<name>GNU MCU Eclipse QEMU debug</name>
+	<name>GNU MCU Eclipse Jumper Virtual Lab debug</name>
 	<url>http://gnu-mcu-eclipse.github.io</url>
 </project>

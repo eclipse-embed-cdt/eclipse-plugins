@@ -65,7 +65,7 @@ public class WorkspaceMcuPage extends FieldEditorPreferencePage implements IWork
 	public void init(IWorkbench workbench) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.WorkspaceMcuPage.init()");
+			System.out.println("jumper.WorkspaceMcuPage.init()");
 		}
 	}
 

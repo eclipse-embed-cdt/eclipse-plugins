@@ -76,7 +76,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 	protected IDsfDebugServicesFactory newServiceFactory(ILaunchConfiguration config, String version) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.LaunchConfigurationDelegate.newServiceFactory(" + config.getName() + "," + version
+			System.out.println("jumper.LaunchConfigurationDelegate.newServiceFactory(" + config.getName() + "," + version
 					+ ") " + this);
 		}
 
@@ -88,7 +88,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 	protected IDsfDebugServicesFactory newServiceFactory(ILaunchConfiguration config, String version, String mode) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.LaunchConfigurationDelegate.newServiceFactory(" + config.getName() + "," + version
+			System.out.println("jumper.LaunchConfigurationDelegate.newServiceFactory(" + config.getName() + "," + version
 					+ "," + mode + ") " + this);
 		}
 
@@ -104,7 +104,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 			throws CoreException {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.LaunchConfigurationDelegate.createGdbLaunch(" + configuration.getName() + ","
+			System.out.println("jumper.LaunchConfigurationDelegate.createGdbLaunch(" + configuration.getName() + ","
 					+ mode + ") " + this);
 		}
 
@@ -121,7 +121,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 		String gdbClientCommand = Configuration.getGdbClientCommand(config, null);
 		String version = DebugUtils.getGDBVersion(config, gdbClientCommand);
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.LaunchConfigurationDelegate.getGDBVersion " + version);
+			System.out.println("jumper.LaunchConfigurationDelegate.getGDBVersion " + version);
 		}
 		return version;
 	}
@@ -137,7 +137,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out
-					.println("qemu.LaunchConfigurationDelegate.launch(" + config.getName() + "," + mode + ") " + this);
+					.println("jumper.LaunchConfigurationDelegate.launch(" + config.getName() + "," + mode + ") " + this);
 		}
 
 		org.eclipse.cdt.launch.LaunchUtils.enableActivity("org.eclipse.cdt.debug.dsfgdbActivity", true); //$NON-NLS-1$
@@ -153,7 +153,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 			throws CoreException {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.LaunchConfigurationDelegate.launchDebugger(" + config.getName() + ") " + this);
+			System.out.println("jumper.LaunchConfigurationDelegate.launchDebugger(" + config.getName() + ") " + this);
 		}
 
 		int totalWork = 10;
@@ -180,7 +180,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 			throws CoreException {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.LaunchConfigurationDelegate.launchDebugSession(" + config.getName() + ") " + this);
+			System.out.println("jumper.LaunchConfigurationDelegate.launchDebugSession(" + config.getName() + ") " + this);
 		}
 
 		// From here it is almost identical with the system one, except
@@ -278,7 +278,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 		} catch (CancellationException e1) {
 			// Launch aborted, so exit cleanly
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("qemu.LaunchConfigurationDelegate.launchDebugSession() aborted, so exit cleanly");
+				System.out.println("jumper.LaunchConfigurationDelegate.launchDebugSession() aborted, so exit cleanly");
 			}
 			return;
 		} finally {
@@ -335,7 +335,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 						return;
 					}
 					if (Activator.getInstance().isDebugging()) {
-						System.out.println("qemu.LaunchConfigurationDelegate.launchDebugSession() " + serverStatus);
+						System.out.println("jumper.LaunchConfigurationDelegate.launchDebugSession() " + serverStatus);
 					}
 					throw new CoreException(serverStatus);
 				}
@@ -347,7 +347,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 			}
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("qemu.LaunchConfigurationDelegate.launchDebugSession() * Server start confirmed. *");
+				System.out.println("jumper.LaunchConfigurationDelegate.launchDebugSession() * Server start confirmed. *");
 			}
 		}
 
@@ -496,7 +496,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 	protected Sequence getServicesSequence(DsfSession session, ILaunch launch, IProgressMonitor progressMonitor) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.LaunchConfigurationDelegate.getServicesSequence()");
+			System.out.println("jumper.LaunchConfigurationDelegate.getServicesSequence()");
 		}
 
 		return new ServicesLaunchSequence(session, (GdbLaunch) launch, progressMonitor);
@@ -505,7 +505,7 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 	protected Sequence getServerServicesSequence(DsfSession session, ILaunch launch, IProgressMonitor progressMonitor) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.LaunchConfigurationDelegate.getServerServicesSequence()");
+			System.out.println("jumper.LaunchConfigurationDelegate.getServerServicesSequence()");
 		}
 
 		return new GnuMcuServerServicesLaunchSequence(session, (GdbLaunch) launch, progressMonitor);

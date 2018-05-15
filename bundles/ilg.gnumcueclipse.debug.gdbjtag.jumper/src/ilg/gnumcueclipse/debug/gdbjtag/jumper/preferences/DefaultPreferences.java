@@ -102,7 +102,7 @@ public class DefaultPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferen
 		String value = getString(key, "");
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.DefaultPreferences.getExecutableName()=\"" + value + "\"");
+			System.out.println("jumper.DefaultPreferences.getExecutableName()=\"" + value + "\"");
 		}
 		return value;
 	}
@@ -113,7 +113,7 @@ public class DefaultPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferen
 
 		String value = getString(key, "");
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.DefaultPreferences.getExecutableNameOs()=\"" + value + "\" (" + key + ")");
+			System.out.println("jumper.DefaultPreferences.getExecutableNameOs()=\"" + value + "\" (" + key + ")");
 		}
 		return value;
 	}
@@ -123,7 +123,7 @@ public class DefaultPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferen
 		String key = PersistentPreferences.EXECUTABLE_NAME;
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.DefaultPreferences.putExecutableName(\"" + value + "\")");
+			System.out.println("jumper.DefaultPreferences.putExecutableName(\"" + value + "\")");
 		}
 		putString(key, value);
 	}
@@ -136,7 +136,7 @@ public class DefaultPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferen
 		String value = getString(key, "");
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.DefaultPreferences.getInstallFolder() = \"" + value + "\"");
+			System.out.println("jumper.DefaultPreferences.getInstallFolder() = \"" + value + "\"");
 		}
 		return value;
 	}
@@ -146,7 +146,7 @@ public class DefaultPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferen
 		String key = PersistentPreferences.INSTALL_FOLDER;
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.DefaultPreferences.putInstallFolder(\"" + value + "\")");
+			System.out.println("jumper.DefaultPreferences.putInstallFolder(\"" + value + "\")");
 		}
 		putString(key, value);
 	}
@@ -159,7 +159,7 @@ public class DefaultPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferen
 		String value = getString(key, "");
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.DefaultPreferences.getSearchPath()=\"" + value + "\"");
+			System.out.println("jumper.DefaultPreferences.getSearchPath()=\"" + value + "\"");
 		}
 		return value;
 	}
@@ -170,7 +170,7 @@ public class DefaultPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferen
 		String value = getString(key, "");
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.DefaultPreferences.getSearchPathOs()=\"" + value + "\" (" + key + ")");
+			System.out.println("jumper.DefaultPreferences.getSearchPathOs()=\"" + value + "\" (" + key + ")");
 		}
 		return value;
 	}
@@ -180,7 +180,7 @@ public class DefaultPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferen
 		String key = PersistentPreferences.SEARCH_PATH;
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.DefaultPreferences.putSearchPath(\"" + value + "\")");
+			System.out.println("jumper.DefaultPreferences.putSearchPath(\"" + value + "\")");
 		}
 		putString(key, value);
 	}

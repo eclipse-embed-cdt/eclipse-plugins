@@ -104,7 +104,7 @@ public class Configuration {
 	        }
 	    }
 	    
-	    throw new AssertionError("should have found the executable");	    	
+	    throw new AssertionError("Jumper Virtual Lab was not installed. Please head to https://docs.jumper.io for installation instructions.");	    	
 	}
 
 	public static String[] getGdbServerCommandLineArray(ILaunchConfiguration configuration) {
@@ -120,6 +120,10 @@ public class Configuration {
 			String executable = getGdbServerCommand(configuration, null);
 			if (executable == null || executable.length() == 0)
 				return null;
+			
+			if (EclipseUtils.isWindows()) {
+				executable += ".exe";
+			}
 			
 			String pathToExe = findExecutableOnPath(executable);
 
@@ -156,6 +160,10 @@ public class Configuration {
 				if ((file.exists()) && (file.getParent() != null)) {
 					lst.add("--directory=" + file.getParent());					
 				}
+			} else {
+				File file = new File(exePath.toString());
+
+				lst.add("--directory=" + file.getParent());					
 			}
 
 			lst.add("--gdb");
@@ -300,7 +308,7 @@ public class Configuration {
 			}
 		}
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.resolveAll(\"" + str + "\") = \"" + value + "\"");
+			System.out.println("jumper.resolveAll(\"" + str + "\") = \"" + value + "\"");
 		}
 		return value;
 	}

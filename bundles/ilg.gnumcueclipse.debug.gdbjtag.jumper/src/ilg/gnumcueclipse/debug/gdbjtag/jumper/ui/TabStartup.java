@@ -135,7 +135,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	public void createControl(Composite parent) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.TabStartup.createControl() ");
+			System.out.println("jumper.TabStartup.createControl() ");
 		}
 
 		Composite comp = new Composite(parent, SWT.NONE);
@@ -825,7 +825,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	public void initializeFrom(ILaunchConfiguration configuration) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.TabStartup.initializeFrom() " + configuration.getName() + ", dirty=" + isDirty());
+			System.out.println("jumper.TabStartup.initializeFrom() " + configuration.getName() + ", dirty=" + isDirty());
 		}
 
 		try {
@@ -937,14 +937,14 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println(
-					"qemu.TabStartup.initializeFrom() completed " + configuration.getName() + ", dirty=" + isDirty());
+					"jumper.TabStartup.initializeFrom() completed " + configuration.getName() + ", dirty=" + isDirty());
 		}
 	}
 
 	public void initializeFromDefaults() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.TabStartup.initializeFromDefaults()");
+			System.out.println("jumper.TabStartup.initializeFromDefaults()");
 		}
 
 		String stringDefault;
@@ -1022,14 +1022,14 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	@Override
 	public void activated(ILaunchConfigurationWorkingCopy workingCopy) {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.TabStartup.activated() " + workingCopy.getName());
+			System.out.println("jumper.TabStartup.activated() " + workingCopy.getName());
 		}
 	}
 
 	@Override
 	public void deactivated(ILaunchConfigurationWorkingCopy workingCopy) {
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.TabStartup.deactivated() " + workingCopy.getName());
+			System.out.println("jumper.TabStartup.deactivated() " + workingCopy.getName());
 		}
 	}
 
@@ -1037,7 +1037,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	public void performApply(ILaunchConfigurationWorkingCopy configuration) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.TabStartup.performApply() " + configuration.getName() + ", dirty=" + isDirty());
+			System.out.println("jumper.TabStartup.performApply() " + configuration.getName() + ", dirty=" + isDirty());
 		}
 
 		boolean booleanValue;
@@ -1107,7 +1107,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println(
-					"qemu.TabStartup.performApply() completed " + configuration.getName() + ", dirty=" + isDirty());
+					"jumper.TabStartup.performApply() completed " + configuration.getName() + ", dirty=" + isDirty());
 		}
 	}
 
@@ -1115,7 +1115,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 	public void setDefaults(ILaunchConfigurationWorkingCopy configuration) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.TabStartup.setDefaults() " + configuration.getName());
+			System.out.println("jumper.TabStartup.setDefaults() " + configuration.getName());
 		}
 
 		boolean defaultBoolean;

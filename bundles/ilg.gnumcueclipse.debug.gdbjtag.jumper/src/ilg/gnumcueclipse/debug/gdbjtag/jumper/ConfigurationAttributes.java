@@ -18,7 +18,7 @@ public interface ConfigurationAttributes {
 	// TabDebugger
 
 	// Must be in sync with plugin.xml definition
-	public static final String JTAG_DEVICE = "GNU MCU QEMU";
+	public static final String JTAG_DEVICE = "GNU MCU J-Link";
 
 	public static final String DO_START_GDB_SERVER = PREFIX + ".doStartGdbServer"; //$NON-NLS-1$
 

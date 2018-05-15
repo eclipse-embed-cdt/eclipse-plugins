@@ -42,7 +42,7 @@ public class ProjectMcuPage extends FieldEditorPropertyPage {
 		super(GRID);
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.ProjectMcuPage()");
+			System.out.println("jumper.ProjectMcuPage()");
 		}
 
 		fPersistentPreferences = Activator.getInstance().getPersistentPreferences();
@@ -58,7 +58,7 @@ public class ProjectMcuPage extends FieldEditorPropertyPage {
 		Object element = getElement();
 		if (element instanceof IProject) {
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("qemu.ProjectMcuPage.doGetPreferenceStore() project store");
+				System.out.println("jumper.ProjectMcuPage.doGetPreferenceStore() project store");
 			}
 			return new ScopedPreferenceStoreWithoutDefaults(new ProjectScope((IProject) element), Activator.PLUGIN_ID);
 		}

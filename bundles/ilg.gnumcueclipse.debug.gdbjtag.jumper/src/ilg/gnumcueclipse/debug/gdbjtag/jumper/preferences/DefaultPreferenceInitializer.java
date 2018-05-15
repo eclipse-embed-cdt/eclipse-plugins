@@ -44,7 +44,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 	public void initializeDefaultPreferences() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.DefaultPreferenceInitializer.initializeDefaultPreferences()");
+			System.out.println("jumper.DefaultPreferenceInitializer.initializeDefaultPreferences()");
 		}
 
 		fDefaultPreferences = Activator.getInstance().getDefaultPreferences();
@@ -70,7 +70,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void added(NodeChangeEvent event) {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("qemu.LateInitializer.added() " + event + " " + event.getChild().name());
+				System.out.println("jumper.LateInitializer.added() " + event + " " + event.getChild().name());
 			}
 
 			if (Activator.PLUGIN_ID.equals(event.getChild().name())) {
@@ -86,7 +86,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void removed(NodeChangeEvent event) {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("qemu.LateInitializer.removed() " + event);
+				System.out.println("jumper.LateInitializer.removed() " + event);
 			}
 		}
 
@@ -96,7 +96,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 		public void finalizeInitializationsDefaultPreferences() {
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("qemu.LateInitializer.finalizeInitializationsDefaultPreferences()");
+				System.out.println("jumper.LateInitializer.finalizeInitializationsDefaultPreferences()");
 			}
 
 			// ----------------------------------------------------------------
@@ -139,7 +139,7 @@ public class DefaultPreferenceInitializer extends AbstractPreferenceInitializer 
 			}
 
 			if (Activator.getInstance().isDebugging()) {
-				System.out.println("qemu.LateInitializer.finalizeInitializationsDefaultPreferences() done");
+				System.out.println("jumper.LateInitializer.finalizeInitializationsDefaultPreferences() done");
 			}
 		}
 	}

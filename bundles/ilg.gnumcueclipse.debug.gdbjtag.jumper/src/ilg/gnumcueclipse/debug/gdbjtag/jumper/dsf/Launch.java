@@ -59,7 +59,7 @@ public class Launch extends GnuMcuLaunch {
 		super(launchConfiguration, mode, locator);
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.Launch(" + launchConfiguration.getName() + "," + mode + ") " + this);
+			System.out.println("jumper.Launch(" + launchConfiguration.getName() + "," + mode + ") " + this);
 		}
 
 		fConfig = launchConfiguration;
@@ -73,7 +73,7 @@ public class Launch extends GnuMcuLaunch {
 	public void initialize() {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.Launch.initialize() " + this);
+			System.out.println("jumper.Launch.initialize() " + this);
 		}
 
 		super.initialize();
@@ -129,7 +129,7 @@ public class Launch extends GnuMcuLaunch {
 	public void initializeServerConsole(IProgressMonitor monitor) throws CoreException {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.Launch.initializeServerConsole()");
+			System.out.println("jumper.Launch.initializeServerConsole()");
 		}
 
 		IProcess newProcess;
@@ -148,7 +148,7 @@ public class Launch extends GnuMcuLaunch {
 	public void initializeConsoles(IProgressMonitor monitor) throws CoreException {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.Launch.initializeConsoles()");
+			System.out.println("jumper.Launch.initializeConsoles()");
 		}
 
 		IProcess newProcess;

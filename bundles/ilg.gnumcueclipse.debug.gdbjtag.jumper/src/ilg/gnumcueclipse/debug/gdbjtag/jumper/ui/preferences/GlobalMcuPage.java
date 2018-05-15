@@ -65,7 +65,7 @@ public class GlobalMcuPage extends FieldEditorPreferencePage implements IWorkben
 	public void init(IWorkbench workbench) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("qemu.GlobalMcuPage.init()");
+			System.out.println("jumper.GlobalMcuPage.init()");
 		}
 	}
 
