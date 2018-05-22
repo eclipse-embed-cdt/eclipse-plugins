@@ -68,14 +68,6 @@ public class DefaultPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferen
 	public static final boolean DO_CONTINUE_DEFAULT = true;
 
 	public static final String DO_CONTINUE_COMMAND = "continue";
-	public static final boolean DISABLE_GRAPHICS_DEFAULT = false;
-
-	// ------------------------------------------------------------------------
-
-	// HKCU & HKLM LOCAL_MACHINE
-	private static final String REG_SUBKEY = "\\GNU ARM Eclipse\\Jumper";
-	// Standard Microsoft recommendation.
-	private static final String REG_NAME = "InstallLocation";
 
 	// ------------------------------------------------------------------------
 
@@ -236,18 +228,6 @@ public class DefaultPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferen
 
 	public String getJumperPreRunOther() {
 		return getString(PersistentPreferences.GDB_JUMPER_PRERUN_OTHER, PRERUN_OTHER_DEFAULT);
-	}
-
-	public boolean getJumperDisableGraphics() {
-		return getBoolean(PersistentPreferences.GDB_JUMPER_DISABLE_GRAPHICS, DISABLE_GRAPHICS_DEFAULT);
-	}
-
-	// ------------------------------------------------------------------------
-
-	protected String getRegistryInstallFolder(String subFolder, String executableName) {
-
-		String path = Discoverer.getRegistryInstallFolder(executableName, subFolder, REG_SUBKEY, REG_NAME);
-		return path;
 	}
 
 	// ------------------------------------------------------------------------
