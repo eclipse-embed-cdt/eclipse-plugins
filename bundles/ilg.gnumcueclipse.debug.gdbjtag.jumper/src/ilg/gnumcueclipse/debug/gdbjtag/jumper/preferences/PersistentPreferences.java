@@ -34,30 +34,30 @@ public class PersistentPreferences extends ilg.gnumcueclipse.debug.gdbjtag.prefe
 	public static final String GDB_CLIENT_COMMANDS = GDB_CLIENT + "commands";
 
 	// Tab Startup
-	public static final String GDB_QEMU = "gdb.jumper.";
+	public static final String GDB_JUMPER = "gdb.jumper.";
 
-	public static final String GDB_QEMU_DO_INITIAL_RESET = GDB_QEMU + "doInitialReset";
+	public static final String GDB_JUMPER_DO_INITIAL_RESET = GDB_JUMPER + "doInitialReset";
 
-	public static final String GDB_QEMU_INIT_OTHER = GDB_QEMU + "init.other";
+	public static final String GDB_JUMPER_INIT_OTHER = GDB_JUMPER + "init.other";
 
-	public static final String GDB_QEMU_ENABLE_SEMIHOSTING = GDB_QEMU + "enableSemihosting";
+	public static final String GDB_JUMPER_ENABLE_SEMIHOSTING = GDB_JUMPER + "enableSemihosting";
 
-	public static final String GDB_QEMU_BOARD_NAME = GDB_QEMU + "boardName";
+	public static final String GDB_JUMPER_BOARD_NAME = GDB_JUMPER + "boardName";
 
-	public static final String GDB_QEMU_MACHINE_NAME = GDB_QEMU + "machineName";
+	public static final String GDB_JUMPER_MACHINE_NAME = GDB_JUMPER + "machineName";
 
-	public static final String GDB_QEMU_DEVICE_NAME = GDB_QEMU + "deviceName";
+	public static final String GDB_JUMPER_DEVICE_NAME = GDB_JUMPER + "deviceName";
 
-	private static final String GDB_QEMU_IS_VERBOSE = GDB_QEMU + "isVerbose";
+	private static final String GDB_JUMPER_IS_VERBOSE = GDB_JUMPER + "isVerbose";
 
-	public static final String GDB_QEMU_DISABLE_GRAPHICS = GDB_QEMU + "disableGraphics";
+	public static final String GDB_JUMPER_DISABLE_GRAPHICS = GDB_JUMPER + "disableGraphics";
 
 	// Run Commands
-	public static final String GDB_QEMU_DO_DEBUG_IN_RAM = GDB_QEMU + "doDebugInRam";
+	public static final String GDB_JUMPER_DO_DEBUG_IN_RAM = GDB_JUMPER + "doDebugInRam";
 
-	public static final String GDB_QEMU_DO_PRERUN_RESET = GDB_QEMU + "doPreRunReset";
+	public static final String GDB_JUMPER_DO_PRERUN_RESET = GDB_JUMPER + "doPreRunReset";
 
-	public static final String GDB_QEMU_PRERUN_OTHER = GDB_QEMU + "preRun.other";
+	public static final String GDB_JUMPER_PRERUN_OTHER = GDB_JUMPER + "preRun.other";
 
 	// ------------------------------------------------------------------------
 
@@ -146,126 +146,126 @@ public class PersistentPreferences extends ilg.gnumcueclipse.debug.gdbjtag.prefe
 		putWorkspaceString(GDB_CLIENT_COMMANDS, value);
 	}
 
-	// ----- QEMU do initial reset -----------------------------------------
-	public boolean getQemuDoInitialReset() {
+	// ----- Jumper do initial reset -----------------------------------------
+	public boolean getJumperDoInitialReset() {
 
-		return Boolean.valueOf(
-				getString(GDB_QEMU_DO_INITIAL_RESET, Boolean.toString(DefaultPreferences.DO_INITIAL_RESET_DEFAULT)));
+		return false;
 	}
 
-	public void putQemuDoInitialReset(boolean value) {
+	public void putJumperDoInitialReset(boolean value) {
 
-		putWorkspaceString(GDB_QEMU_DO_INITIAL_RESET, Boolean.toString(value));
+		putWorkspaceString(GDB_JUMPER_DO_INITIAL_RESET, Boolean.toString(value));
 	}
 
-	// ----- QEMU enable semihosting ---------------------------------------
-	public boolean getQemuEnableSemihosting() {
+	// ----- Jumper do initial reset -----------------------------------------
+	// ----- Jumper enable semihosting ---------------------------------------
+	public boolean getJumperEnableSemihosting() {
 
-		String value = getString(GDB_QEMU_ENABLE_SEMIHOSTING, null);
+		String value = getString(GDB_JUMPER_ENABLE_SEMIHOSTING, null);
 		if (value != null) {
 			return Boolean.valueOf(value);
 		}
-		return fDefaultPreferences.getQemuEnableSemihosting();
+		return fDefaultPreferences.getJumperEnableSemihosting();
 
 	}
 
-	public void putQemuEnableSemihosting(boolean value) {
+	public void putJumperEnableSemihosting(boolean value) {
 
-		putWorkspaceString(GDB_QEMU_ENABLE_SEMIHOSTING, Boolean.toString(value));
+		putWorkspaceString(GDB_JUMPER_ENABLE_SEMIHOSTING, Boolean.toString(value));
 	}
 
-	// ----- QEMU init other -----------------------------------------------
-	public String getQemuInitOther() {
+	// ----- Jumper init other -----------------------------------------------
+	public String getJumperInitOther() {
 
-		return getString(GDB_QEMU_INIT_OTHER, DefaultPreferences.INIT_OTHER_DEFAULT);
+		return getString(GDB_JUMPER_INIT_OTHER, DefaultPreferences.INIT_OTHER_DEFAULT);
 	}
 
-	public void putQemuInitOther(String value) {
+	public void putJumperInitOther(String value) {
 
-		putWorkspaceString(GDB_QEMU_INIT_OTHER, value);
+		putWorkspaceString(GDB_JUMPER_INIT_OTHER, value);
 	}
 
-	// ----- QEMU board name ------------------------------------------------
-	public String getQemuBoardName() {
+	// ----- Jumper board name ------------------------------------------------
+	public String getJumperBoardName() {
 
-		String value = getString(GDB_QEMU_BOARD_NAME, null);
+		String value = getString(GDB_JUMPER_BOARD_NAME, null);
 		if (value != null) {
 			return value;
 		}
-		return getString(GDB_QEMU_MACHINE_NAME, DefaultPreferences.QEMU_BOARD_NAME_DEFAULT);
+		return getString(GDB_JUMPER_MACHINE_NAME, DefaultPreferences.JUMPER_BOARD_NAME_DEFAULT);
 	}
 
-	public void putQemuBoardName(String value) {
+	public void putJumperBoardName(String value) {
 
-		putWorkspaceString(GDB_QEMU_BOARD_NAME, value);
+		putWorkspaceString(GDB_JUMPER_BOARD_NAME, value);
 	}
 
-	// ----- QEMU device name ------------------------------------------------
-	public String getQemuDeviceName() {
+	// ----- Jumper device name ------------------------------------------------
+	public String getJumperDeviceName() {
 
-		return getString(GDB_QEMU_DEVICE_NAME, DefaultPreferences.QEMU_DEVICE_NAME_DEFAULT);
+		return getString(GDB_JUMPER_DEVICE_NAME, DefaultPreferences.JUMPER_DEVICE_NAME_DEFAULT);
 	}
 
-	public void putQemuDeviceName(String value) {
+	public void putJumperDeviceName(String value) {
 
-		putWorkspaceString(GDB_QEMU_DEVICE_NAME, value);
+		putWorkspaceString(GDB_JUMPER_DEVICE_NAME, value);
 	}
 
-	// ----- QEMU is verbose ---------------------------------------------
-	public Boolean getQemuIsVerbose() {
-		return getBoolean(GDB_QEMU_IS_VERBOSE, DefaultPreferences.QEMU_IS_VERBOSE_DEFAULT);
+	// ----- Jumper is verbose ---------------------------------------------
+	public Boolean getJumperIsVerbose() {
+		return getBoolean(GDB_JUMPER_IS_VERBOSE, DefaultPreferences.JUMPER_IS_VERBOSE_DEFAULT);
 	}
 
-	public void putQemuIsVerbose(boolean value) {
+	public void putJumperIsVerbose(boolean value) {
 
-		putWorkspaceString(GDB_QEMU_IS_VERBOSE, Boolean.toString(value));
+		putWorkspaceString(GDB_JUMPER_IS_VERBOSE, Boolean.toString(value));
 	}
 
-	// ----- QEMU debug in ram ---------------------------------------------
-	public boolean getQemuDebugInRam() {
+	// ----- Jumper debug in ram ---------------------------------------------
+	public boolean getJumperDebugInRam() {
 
 		return Boolean.valueOf(
-				getString(GDB_QEMU_DO_DEBUG_IN_RAM, Boolean.toString(DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT)));
+				getString(GDB_JUMPER_DO_DEBUG_IN_RAM, Boolean.toString(DefaultPreferences.DO_DEBUG_IN_RAM_DEFAULT)));
 	}
 
-	public void putQemuDebugInRam(boolean value) {
+	public void putJumperDebugInRam(boolean value) {
 
-		putWorkspaceString(GDB_QEMU_DO_DEBUG_IN_RAM, Boolean.toString(value));
+		putWorkspaceString(GDB_JUMPER_DO_DEBUG_IN_RAM, Boolean.toString(value));
 	}
 
-	// ----- QEMU do prerun reset ------------------------------------------
-	public boolean getQemuDoPreRunReset() {
+	// ----- Jumper do prerun reset ------------------------------------------
+	public boolean getJumperDoPreRunReset() {
 
 		return Boolean.valueOf(
-				getString(GDB_QEMU_DO_PRERUN_RESET, Boolean.toString(DefaultPreferences.DO_PRERUN_RESET_DEFAULT)));
+				getString(GDB_JUMPER_DO_PRERUN_RESET, Boolean.toString(DefaultPreferences.DO_PRERUN_RESET_DEFAULT)));
 	}
 
-	public void putQemuDoPreRunReset(boolean value) {
+	public void putJumperDoPreRunReset(boolean value) {
 
-		putWorkspaceString(GDB_QEMU_DO_PRERUN_RESET, Boolean.toString(value));
+		putWorkspaceString(GDB_JUMPER_DO_PRERUN_RESET, Boolean.toString(value));
 	}
 
-	// ----- QEMU init other --------------------------------------------------
-	public String getQemuPreRunOther() {
+	// ----- Jumper init other --------------------------------------------------
+	public String getJumperPreRunOther() {
 
-		return getString(GDB_QEMU_PRERUN_OTHER, DefaultPreferences.PRERUN_OTHER_DEFAULT);
+		return getString(GDB_JUMPER_PRERUN_OTHER, DefaultPreferences.PRERUN_OTHER_DEFAULT);
 	}
 
-	public void putQemuPreRunOther(String value) {
+	public void putJumperPreRunOther(String value) {
 
-		putWorkspaceString(GDB_QEMU_PRERUN_OTHER, value);
+		putWorkspaceString(GDB_JUMPER_PRERUN_OTHER, value);
 	}
 
-	// ----- QEMU debug in ram ---------------------------------------------
-	public boolean getQemuDisableGraphics() {
+	// ----- Jumper debug in ram ---------------------------------------------
+	public boolean getJumperDisableGraphics() {
 
 		return Boolean.valueOf(
-				getString(GDB_QEMU_DISABLE_GRAPHICS, Boolean.toString(DefaultPreferences.DISABLE_GRAPHICS_DEFAULT)));
+				getString(GDB_JUMPER_DISABLE_GRAPHICS, Boolean.toString(DefaultPreferences.DISABLE_GRAPHICS_DEFAULT)));
 	}
 
-	public void putQemuDisableGraphics(boolean value) {
+	public void putJumperDisableGraphics(boolean value) {
 
-		putWorkspaceString(GDB_QEMU_DO_DEBUG_IN_RAM, Boolean.toString(value));
+		putWorkspaceString(GDB_JUMPER_DO_DEBUG_IN_RAM, Boolean.toString(value));
 	}
 
 	// ------------------------------------------------------------------------

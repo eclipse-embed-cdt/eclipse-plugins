@@ -21,20 +21,18 @@ public class DefaultPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferen
 
 	public static final boolean SERVER_DO_START_DEFAULT = true;
 	public static final boolean DO_START_GDB_SERVER_DEFAULT = true;
-	public static final String SERVER_EXECUTABLE_DEFAULT = "${qemu_path}/${qemu_executable}";
+	public static final String SERVER_EXECUTABLE_DEFAULT = "jumper";
 	protected static final String CLIENT_EXECUTABLE_DEFAULT = "${cross_prefix}gdb${cross_suffix}";
 
-	public static final String SERVER_EXECUTABLE_DEFAULT_NAME = "qemu-system-gnuarmeclipse";
-
-	public static final String QEMU_BOARD_NAME_DEFAULT = "nrf52832";
-	public static final String QEMU_DEVICE_NAME_DEFAULT = "";
+	public static final String JUMPER_BOARD_NAME_DEFAULT = "nrf52832";
+	public static final String JUMPER_DEVICE_NAME_DEFAULT = "";
 
 	public static final int SERVER_GDB_PORT_NUMBER_DEFAULT = 5555;
 	public static final String SERVER_OTHER_OPTIONS_DEFAULT = "--uart"; //$NON-NLS-1$
 
 	public static final boolean DO_GDB_SERVER_ALLOCATE_CONSOLE_DEFAULT = true;
 
-	public static final boolean QEMU_IS_VERBOSE_DEFAULT = false;
+	public static final boolean JUMPER_IS_VERBOSE_DEFAULT = false;
 
 	public static final String CLIENT_OTHER_OPTIONS_DEFAULT = "";
 
@@ -74,7 +72,7 @@ public class DefaultPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferen
 	// ------------------------------------------------------------------------
 
 	// HKCU & HKLM LOCAL_MACHINE
-	private static final String REG_SUBKEY = "\\GNU ARM Eclipse\\QEMU";
+	private static final String REG_SUBKEY = "\\GNU ARM Eclipse\\Jumper";
 	// Standard Microsoft recommendation.
 	private static final String REG_NAME = "InstallLocation";
 
@@ -187,9 +185,9 @@ public class DefaultPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferen
 
 	// ------------------------------------------------------------------------
 
-	public boolean getQemuEnableSemihosting() {
+	public boolean getJumperEnableSemihosting() {
 
-		return getBoolean(PersistentPreferences.GDB_QEMU_ENABLE_SEMIHOSTING, ENABLE_SEMIHOSTING_DEFAULT);
+		return getBoolean(PersistentPreferences.GDB_JUMPER_ENABLE_SEMIHOSTING, ENABLE_SEMIHOSTING_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------
@@ -219,28 +217,28 @@ public class DefaultPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferen
 
 	// ------------------------------------------------------------------------
 
-	public boolean getQemuDebugInRam() {
-		return getBoolean(PersistentPreferences.GDB_QEMU_DO_DEBUG_IN_RAM, DO_DEBUG_IN_RAM_DEFAULT);
+	public boolean getJumperDebugInRam() {
+		return getBoolean(PersistentPreferences.GDB_JUMPER_DO_DEBUG_IN_RAM, DO_DEBUG_IN_RAM_DEFAULT);
 	}
 
-	public boolean getQemuDoInitialReset() {
-		return getBoolean(PersistentPreferences.GDB_QEMU_DO_INITIAL_RESET, DO_INITIAL_RESET_DEFAULT);
+	public boolean getJumperDoInitialReset() {
+		return getBoolean(PersistentPreferences.GDB_JUMPER_DO_INITIAL_RESET, DO_INITIAL_RESET_DEFAULT);
 	}
 
-	public String getQemuInitOther() {
-		return getString(PersistentPreferences.GDB_QEMU_INIT_OTHER, INIT_OTHER_DEFAULT);
+	public String getJumperInitOther() {
+		return getString(PersistentPreferences.GDB_JUMPER_INIT_OTHER, INIT_OTHER_DEFAULT);
 	}
 
-	public boolean getQemuDoPreRunReset() {
-		return getBoolean(PersistentPreferences.GDB_QEMU_DO_PRERUN_RESET, DO_PRERUN_RESET_DEFAULT);
+	public boolean getJumperDoPreRunReset() {
+		return getBoolean(PersistentPreferences.GDB_JUMPER_DO_PRERUN_RESET, DO_PRERUN_RESET_DEFAULT);
 	}
 
-	public String getQemuPreRunOther() {
-		return getString(PersistentPreferences.GDB_QEMU_PRERUN_OTHER, PRERUN_OTHER_DEFAULT);
+	public String getJumperPreRunOther() {
+		return getString(PersistentPreferences.GDB_JUMPER_PRERUN_OTHER, PRERUN_OTHER_DEFAULT);
 	}
 
-	public boolean getQemuDisableGraphics() {
-		return getBoolean(PersistentPreferences.GDB_QEMU_DISABLE_GRAPHICS, DISABLE_GRAPHICS_DEFAULT);
+	public boolean getJumperDisableGraphics() {
+		return getBoolean(PersistentPreferences.GDB_JUMPER_DISABLE_GRAPHICS, DISABLE_GRAPHICS_DEFAULT);
 	}
 
 	// ------------------------------------------------------------------------

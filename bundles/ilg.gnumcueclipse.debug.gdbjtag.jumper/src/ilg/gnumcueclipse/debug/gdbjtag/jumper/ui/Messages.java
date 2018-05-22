@@ -25,13 +25,6 @@ public class Messages {
 
 	private static final String MESSAGES = Activator.PLUGIN_ID + ".ui.messages"; //$NON-NLS-1$
 
-	public static String ProjectMcuPagePropertyPage_description;
-	public static String WorkspaceMcuPagePropertyPage_description;
-	public static String GlobalMcuPagePropertyPage_description;
-
-	public static String McuPage_executable_label;
-	public static String McuPage_executable_folder;
-
 	// ------------------------------------------------------------------------
 
 	static {

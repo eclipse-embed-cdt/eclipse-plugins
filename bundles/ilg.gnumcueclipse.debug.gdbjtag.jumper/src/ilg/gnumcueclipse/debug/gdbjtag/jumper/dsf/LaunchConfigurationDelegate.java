@@ -473,8 +473,8 @@ public class LaunchConfigurationDelegate extends AbstractGnuMcuLaunchConfigurati
 			String boardName = "";
 			String deviceName = "";
 			try {
-				boardName = Configuration.getQemuBoardName(config);
-				deviceName = Configuration.getQemuDeviceName(config);
+				boardName = Configuration.getJumperBoardName(config);
+				deviceName = Configuration.getJumperDeviceName(config);
 			} catch (CoreException e) {
 				;
 			}

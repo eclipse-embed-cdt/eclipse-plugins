@@ -83,7 +83,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 		if (CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_IMAGE,
 				IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
 				&& !CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_DEBUG_IN_RAM,
-						fDefaultPreferences.getQemuDebugInRam())) {
+						fDefaultPreferences.getJumperDebugInRam())) {
 
 			status = addLoadImageCommands(commandsList);
 
@@ -113,7 +113,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 	public IStatus addFirstResetCommands(List<String> commandsList) {
 
 		if (CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_FIRST_RESET,
-				fDefaultPreferences.getQemuDoInitialReset())) {
+				fDefaultPreferences.getJumperDoInitialReset())) {
 
 			String commandStr = DefaultPreferences.DO_INITIAL_RESET_COMMAND;
 			commandsList.add(commandStr);
@@ -125,7 +125,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 		}
 
 		String otherInits = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.OTHER_INIT_COMMANDS,
-				fDefaultPreferences.getQemuInitOther()).trim();
+				fDefaultPreferences.getJumperInitOther()).trim();
 
 		otherInits = DebugUtils.resolveAll(otherInits, fAttributes);
 		if (fDoDoubleBackslash && EclipseUtils.isWindows()) {
@@ -141,7 +141,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 
 		if (doReset) {
 			if (CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_SECOND_RESET,
-					fDefaultPreferences.getQemuDoPreRunReset())) {
+					fDefaultPreferences.getJumperDoPreRunReset())) {
 				String commandStr = DefaultPreferences.DO_PRERUN_RESET_COMMAND;
 				commandsList.add(commandStr);
 
@@ -155,7 +155,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 		if (CDebugUtils.getAttribute(fAttributes, IGDBJtagConstants.ATTR_LOAD_IMAGE,
 				IGDBJtagConstants.DEFAULT_LOAD_IMAGE)
 				&& CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.DO_DEBUG_IN_RAM,
-						fDefaultPreferences.getQemuDebugInRam())) {
+						fDefaultPreferences.getJumperDebugInRam())) {
 
 			IStatus status = addLoadImageCommands(commandsList);
 
@@ -165,7 +165,7 @@ public class DebuggerCommands extends GnuMcuDebuggerCommandsService {
 		}
 
 		String userCmd = CDebugUtils.getAttribute(fAttributes, ConfigurationAttributes.OTHER_RUN_COMMANDS,
-				fDefaultPreferences.getQemuPreRunOther()).trim();
+				fDefaultPreferences.getJumperPreRunOther()).trim();
 
 		userCmd = DebugUtils.resolveAll(userCmd, fAttributes);
 

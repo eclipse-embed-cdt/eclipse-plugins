@@ -22,8 +22,8 @@ import ilg.gnumcueclipse.debug.gdbjtag.jumper.preferences.PersistentPreferences;
 
 public class DynamicVariableResolver {
 
-	public static final String VARIABLE_EXECUTABLE = "qemu_executable";
-	public static final String VARIABLE_PATH = "qemu_path";
+	public static final String VARIABLE_EXECUTABLE = "jumper_executable";
+	public static final String VARIABLE_PATH = "jumper_path";
 
 	static String macros[] = { VARIABLE_EXECUTABLE, VARIABLE_PATH };
 	static String preferences[] = { PersistentPreferences.EXECUTABLE_NAME, PersistentPreferences.INSTALL_FOLDER };

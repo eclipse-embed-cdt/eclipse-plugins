@@ -130,10 +130,6 @@ public class Configuration {
 			lst.add(pathToExe);
 			lst.add("run");
 
-//			if (configuration.getAttribute(ConfigurationAttributes.IS_GDB_SERVER_VERBOSE,
-//					DefaultPreferences.QEMU_IS_VERBOSE_DEFAULT)) {
-//				lst.add("--verbose");
-//			}
 			
 //			ICProject project = verifyCProject(configuration);
 			// Now verify we know the program to debug.
@@ -204,12 +200,12 @@ public class Configuration {
 				.trim();
 	}
 
-	public static String getQemuBoardName(ILaunchConfiguration config) throws CoreException {
+	public static String getJumperBoardName(ILaunchConfiguration config) throws CoreException {
 
 		return config.getAttribute(ConfigurationAttributes.GDB_SERVER_BOARD_NAME, "").trim();
 	}
 
-	public static String getQemuDeviceName(ILaunchConfiguration config) throws CoreException {
+	public static String getJumperDeviceName(ILaunchConfiguration config) throws CoreException {
 
 		return config.getAttribute(ConfigurationAttributes.GDB_SERVER_DEVICE_NAME, "").trim();
 	}

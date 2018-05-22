@@ -835,12 +835,12 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Initialisation Commands
 			{
 				// Do initial reset
-				booleanDefault = fPersistentPreferences.getQemuDoInitialReset();
+				booleanDefault = fPersistentPreferences.getJumperDoInitialReset();
 				fDoFirstReset.setSelection(
 						configuration.getAttribute(ConfigurationAttributes.DO_FIRST_RESET, booleanDefault));
 
 				// Other commands
-				stringDefault = fPersistentPreferences.getQemuInitOther();
+				stringDefault = fPersistentPreferences.getJumperInitOther();
 				fInitCommands.setText(
 						configuration.getAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS, stringDefault));
 			}
@@ -889,7 +889,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 			// Runtime Options
 			{
-				booleanDefault = fPersistentPreferences.getQemuDebugInRam();
+				booleanDefault = fPersistentPreferences.getJumperDebugInRam();
 				fDoDebugInRam.setSelection(
 						configuration.getAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM, booleanDefault));
 			}
@@ -897,12 +897,12 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Run Commands
 			{
 				// Do pre-run reset
-				booleanDefault = fPersistentPreferences.getQemuDoPreRunReset();
+				booleanDefault = fPersistentPreferences.getJumperDoPreRunReset();
 				fDoSecondReset.setSelection(
 						configuration.getAttribute(ConfigurationAttributes.DO_SECOND_RESET, booleanDefault));
 
 				// Other commands
-				stringDefault = fPersistentPreferences.getQemuPreRunOther();
+				stringDefault = fPersistentPreferences.getJumperPreRunOther();
 				fRunCommands
 						.setText(configuration.getAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS, stringDefault));
 
@@ -953,11 +953,11 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		// Initialisation Commands
 		{
 			// Do initial reset
-			booleanDefault = fDefaultPreferences.getQemuDoInitialReset();
+			booleanDefault = fDefaultPreferences.getJumperDoInitialReset();
 			fDoFirstReset.setSelection(booleanDefault);
 
 			// Other commands
-			stringDefault = fDefaultPreferences.getQemuInitOther();
+			stringDefault = fDefaultPreferences.getJumperInitOther();
 			fInitCommands.setText(stringDefault);
 		}
 
@@ -984,18 +984,18 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 
 		// Runtime Options
 		{
-			booleanDefault = fDefaultPreferences.getQemuDebugInRam();
+			booleanDefault = fDefaultPreferences.getJumperDebugInRam();
 			fDoDebugInRam.setSelection(booleanDefault);
 		}
 
 		// Run Commands
 		{
 			// Do pre-run reset
-			booleanDefault = fDefaultPreferences.getQemuDoPreRunReset();
+			booleanDefault = fDefaultPreferences.getJumperDoPreRunReset();
 			fDoSecondReset.setSelection(booleanDefault);
 
 			// Other commands
-			stringDefault = fDefaultPreferences.getQemuPreRunOther();
+			stringDefault = fDefaultPreferences.getJumperPreRunOther();
 			fRunCommands.setText(stringDefault);
 
 			fSetPcRegister.setSelection(IGDBJtagConstants.DEFAULT_SET_PC_REGISTER);
@@ -1048,12 +1048,12 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Do first reset
 			booleanValue = fDoFirstReset.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET, booleanValue);
-			fPersistentPreferences.putQemuDoInitialReset(booleanValue);
+			fPersistentPreferences.putJumperDoInitialReset(booleanValue);
 
 			// Other commands
 			stringValue = fInitCommands.getText().trim();
 			configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS, stringValue);
-			fPersistentPreferences.putQemuInitOther(stringValue);
+			fPersistentPreferences.putJumperInitOther(stringValue);
 		}
 
 		// Load Symbols & Image...
@@ -1079,7 +1079,7 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		{
 			booleanValue = fDoDebugInRam.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM, booleanValue);
-			fPersistentPreferences.putQemuDebugInRam(booleanValue);
+			fPersistentPreferences.putJumperDebugInRam(booleanValue);
 		}
 
 		// Run Commands
@@ -1087,12 +1087,12 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 			// Pre-run reset
 			booleanValue = fDoSecondReset.getSelection();
 			configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET, booleanValue);
-			fPersistentPreferences.putQemuDoPreRunReset(booleanValue);
+			fPersistentPreferences.putJumperDoPreRunReset(booleanValue);
 
 			// Other commands
 			stringValue = fRunCommands.getText().trim();
 			configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS, stringValue);
-			fPersistentPreferences.putQemuPreRunOther(stringValue);
+			fPersistentPreferences.putJumperPreRunOther(stringValue);
 
 			configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER, fSetPcRegister.getSelection());
 			configuration.setAttribute(IGDBJtagConstants.ATTR_PC_REGISTER, fPcRegister.getText());
@@ -1122,13 +1122,13 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		String defaultString;
 
 		// Initialisation Commands
-		defaultBoolean = fPersistentPreferences.getQemuDoInitialReset();
+		defaultBoolean = fPersistentPreferences.getJumperDoInitialReset();
 		configuration.setAttribute(ConfigurationAttributes.DO_FIRST_RESET, defaultBoolean);
 
-		defaultBoolean = fPersistentPreferences.getQemuEnableSemihosting();
+		defaultBoolean = fPersistentPreferences.getJumperEnableSemihosting();
 		configuration.setAttribute(ConfigurationAttributes.ENABLE_SEMIHOSTING, defaultBoolean);
 
-		defaultString = fPersistentPreferences.getQemuInitOther();
+		defaultString = fPersistentPreferences.getJumperInitOther();
 		configuration.setAttribute(ConfigurationAttributes.OTHER_INIT_COMMANDS, defaultString);
 
 		// Load Image...
@@ -1151,14 +1151,14 @@ public class TabStartup extends AbstractLaunchConfigurationTab {
 		configuration.setAttribute(IGDBJtagConstants.ATTR_SYMBOLS_OFFSET, IGDBJtagConstants.DEFAULT_SYMBOLS_OFFSET);
 
 		// Runtime Options
-		defaultBoolean = fPersistentPreferences.getQemuDebugInRam();
+		defaultBoolean = fPersistentPreferences.getJumperDebugInRam();
 		configuration.setAttribute(ConfigurationAttributes.DO_DEBUG_IN_RAM, defaultBoolean);
 
 		// Run Commands
-		defaultBoolean = fPersistentPreferences.getQemuDoPreRunReset();
+		defaultBoolean = fPersistentPreferences.getJumperDoPreRunReset();
 		configuration.setAttribute(ConfigurationAttributes.DO_SECOND_RESET, defaultBoolean);
 
-		defaultString = fPersistentPreferences.getQemuPreRunOther();
+		defaultString = fPersistentPreferences.getJumperPreRunOther();
 		configuration.setAttribute(ConfigurationAttributes.OTHER_RUN_COMMANDS, defaultString);
 
 		configuration.setAttribute(IGDBJtagConstants.ATTR_SET_PC_REGISTER, IGDBJtagConstants.DEFAULT_SET_PC_REGISTER);
