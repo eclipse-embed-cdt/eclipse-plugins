@@ -7,6 +7,7 @@
  * 
  * Contributors:
  *     Liviu Ionescu - initial version
+ *     Jonathan Seroussi - Jumper Virtual Lab adjustments
  *******************************************************************************/
 
 package ilg.gnumcueclipse.debug.gdbjtag.jumper.dsf;

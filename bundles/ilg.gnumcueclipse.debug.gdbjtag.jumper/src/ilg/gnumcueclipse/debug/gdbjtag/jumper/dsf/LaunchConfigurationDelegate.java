@@ -8,6 +8,7 @@
  * Contributors:
  *     Liviu Ionescu - initial version
  *     Jonah Graham - fix for Neon
+ *     Jonathan Seroussi - Jumper Virtual Lab adjustments
  *******************************************************************************/
 
 package ilg.gnumcueclipse.debug.gdbjtag.jumper.dsf;
