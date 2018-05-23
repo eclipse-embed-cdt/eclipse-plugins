@@ -59,4 +59,42 @@
 		</initializer>
 	</extension>
 
+	<extension point="org.eclipse.ui.preferencePages">
+		<page
+			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
+			class="ilg.gnumcueclipse.debug.gdbjtag.jumper.ui.preferences.WorkspaceMcuPage"
+			id="ilg.gnumcueclipse.debug.gdbjtag.jumper.workspacePreferencePage"
+			name="%preferences.workspaceMcu">
+		</page>
+		<page
+			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
+			class="ilg.gnumcueclipse.debug.gdbjtag.jumper.ui.preferences.GlobalMcuPage"
+			id="ilg.gnumcueclipse.debug.gdbjtag.jumper.globalPreferencePage"
+			name="%preferences.globalMcu">
+		</page>
+	</extension>
+	<extension point="org.eclipse.ui.propertyPages">
+		<page
+			category="ilg.gnumcueclipse.core.ui.properties.mcu"
+			class="ilg.gnumcueclipse.debug.gdbjtag.jumper.ui.properties.ProjectMcuPage"
+			id="ilg.gnumcueclipse.debug.gdbjtag.jumper.projectPropertiesPage"
+			name="%properties.mcu">
+			<filter
+				name="projectNature"
+				value="org.eclipse.cdt.core.cnature">
+			</filter>
+			<enabledWhen>
+				<and>
+					<instanceof value="org.eclipse.core.resources.IProject">
+					</instanceof>
+					<or>
+						<test forcePluginActivation="true" property="ilg.gnumcueclipse.managedbuild.cross.riscv.isGnuRiscv">
+						</test>
+						<test forcePluginActivation="true" property="ilg.gnuarmeclipse.managedbuild.cross.isGnuArm">
+						</test>
+					</or>
+				</and>
+			</enabledWhen>
+		</page>
+	</extension>
 </plugin>

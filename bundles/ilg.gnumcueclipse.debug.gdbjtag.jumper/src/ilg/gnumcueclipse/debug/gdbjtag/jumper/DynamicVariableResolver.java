@@ -28,7 +28,7 @@ public class DynamicVariableResolver {
 
 	static String macros[] = { VARIABLE_EXECUTABLE, VARIABLE_PATH };
 	static String preferences[] = { PersistentPreferences.EXECUTABLE_NAME, PersistentPreferences.INSTALL_FOLDER };
-	static String defaults[] = { "none", "/undefined_path" };
+	static String defaults[] = { "jumper", "/undefined_path" };
 
 	public static String resolveAll(String input, IProject project) {
 

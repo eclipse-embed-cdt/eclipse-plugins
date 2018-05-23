@@ -22,7 +22,7 @@ public class DefaultPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferen
 
 	public static final boolean SERVER_DO_START_DEFAULT = true;
 	public static final boolean DO_START_GDB_SERVER_DEFAULT = true;
-	public static final String SERVER_EXECUTABLE_DEFAULT = "jumper";
+	public static final String SERVER_EXECUTABLE_DEFAULT = "${jumper_path}/${jumper_executable}";
 	protected static final String CLIENT_EXECUTABLE_DEFAULT = "${cross_prefix}gdb${cross_suffix}";
 
 	public static final String JUMPER_BOARD_NAME_DEFAULT = "nrf52832";
@@ -57,7 +57,7 @@ public class DefaultPreferences extends ilg.gnumcueclipse.debug.gdbjtag.preferen
 
 	public static final boolean DO_DEBUG_IN_RAM_DEFAULT = false;
 
-	public static final boolean DO_PRERUN_RESET_DEFAULT = true;
+	public static final boolean DO_PRERUN_RESET_DEFAULT = false;
 	public static final String DO_PRERUN_RESET_COMMAND = DO_INITIAL_RESET_COMMAND;
 
 	public static final boolean DO_STOP_AT_DEFAULT = true;

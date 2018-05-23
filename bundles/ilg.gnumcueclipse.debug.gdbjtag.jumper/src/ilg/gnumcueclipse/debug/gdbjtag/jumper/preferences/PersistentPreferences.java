@@ -257,17 +257,5 @@ public class PersistentPreferences extends ilg.gnumcueclipse.debug.gdbjtag.prefe
 		putWorkspaceString(GDB_JUMPER_PRERUN_OTHER, value);
 	}
 
-	// ----- Jumper debug in ram ---------------------------------------------
-	public boolean getJumperDisableGraphics() {
-
-		return Boolean.valueOf(
-				getString(GDB_JUMPER_DISABLE_GRAPHICS, Boolean.toString(DefaultPreferences.DISABLE_GRAPHICS_DEFAULT)));
-	}
-
-	public void putJumperDisableGraphics(boolean value) {
-
-		putWorkspaceString(GDB_JUMPER_DO_DEBUG_IN_RAM, Boolean.toString(value));
-	}
-
 	// ------------------------------------------------------------------------
 }
