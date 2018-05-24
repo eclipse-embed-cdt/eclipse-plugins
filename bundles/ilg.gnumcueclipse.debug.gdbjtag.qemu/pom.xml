@@ -18,7 +18,7 @@
 
 	<groupId>ilg.gnumcueclipse</groupId>
 	<artifactId>ilg.gnumcueclipse.debug.gdbjtag.qemu</artifactId>
-	<version>3.3.2-SNAPSHOT</version>
+	<version>3.3.3-SNAPSHOT</version>
 	<packaging>eclipse-plugin</packaging>
 
 	<parent>
