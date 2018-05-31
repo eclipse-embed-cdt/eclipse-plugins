@@ -1374,12 +1374,8 @@
 				<and>
 					<instanceof value="org.eclipse.core.resources.IProject">
 					</instanceof>
-					<or>
-						<test forcePluginActivation="true" property="ilg.gnumcueclipse.managedbuild.cross.riscv.isGnuRiscv">
-						</test>
-						<test forcePluginActivation="true" property="ilg.gnuarmeclipse.managedbuild.cross.isGnuArm">
-						</test>
-					</or>
+					<test forcePluginActivation="true" property="ilg.gnumcueclipse.managedbuild.cross.isGnuMcu">
+					</test>
 				</and>
 			</enabledWhen>
 		</page>
@@ -1389,6 +1385,16 @@
 		<initializer
 			class="ilg.gnumcueclipse.managedbuild.cross.DefaultPreferenceInitializer">
 		</initializer>
+	</extension>
+
+	<extension point="org.eclipse.core.expressions.propertyTesters">
+		<propertyTester
+			class="ilg.gnumcueclipse.managedbuild.cross.GnuMcuPropertyTester"
+			id="ilg.gnumcueclipse.managedbuild.cross.propertyTester"
+			namespace="ilg.gnumcueclipse.managedbuild.cross"
+			properties="isGnuMcu"
+			type="java.lang.Object">
+		</propertyTester>
 	</extension>
 
 </plugin>

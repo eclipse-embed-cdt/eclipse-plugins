@@ -7,6 +7,7 @@ Bundle-Activator: ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator
 Require-Bundle: ilg.gnumcueclipse.core,
  ilg.gnumcueclipse.debug.core,
  ilg.gnumcueclipse.debug.gdbjtag,
+ ilg.gnumcueclipse.managedbuild.cross,
  org.eclipse.cdt.core;bundle-version="6.2.0",
  org.eclipse.cdt.debug.core;bundle-version="8.1.0",
  org.eclipse.cdt.debug.gdbjtag.core;bundle-version="9.0.0",

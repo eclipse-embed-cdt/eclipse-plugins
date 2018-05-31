@@ -21,12 +21,8 @@
 				<and>
 					<instanceof value="org.eclipse.core.resources.IProject">
 					</instanceof>
-					<or>
-						<test forcePluginActivation="true" property="ilg.gnumcueclipse.managedbuild.cross.riscv.isGnuRiscv">
-						</test>
-						<test forcePluginActivation="true" property="ilg.gnuarmeclipse.managedbuild.cross.isGnuArm">
-						</test>
-					</or>
+					<test forcePluginActivation="true" property="ilg.gnumcueclipse.managedbuild.cross.isGnuMcu">
+					</test>
 				</and>
 			</enabledWhen>
 		</page>
