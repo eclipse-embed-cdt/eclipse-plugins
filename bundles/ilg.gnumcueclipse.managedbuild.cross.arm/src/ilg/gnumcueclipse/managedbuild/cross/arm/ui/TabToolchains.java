@@ -1048,9 +1048,9 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 			return false;
 		}
 
-		if (!getCfg().getBuilder().isManagedBuildOn()) {
-			return false;
-		}
+		// if (!getCfg().getBuilder().isManagedBuildOn()) {
+		// return false;
+		// }
 
 		return true;
 		// if (page.isMultiCfg()) {
