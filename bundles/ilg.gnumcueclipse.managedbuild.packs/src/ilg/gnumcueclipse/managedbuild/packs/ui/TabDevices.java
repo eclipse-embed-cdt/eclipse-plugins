@@ -1122,9 +1122,9 @@ public class TabDevices extends AbstractCBuildPropertyTab {
 			return false;
 		}
 
-		if (!getCfg().getBuilder().isManagedBuildOn()) {
-			return false;
-		}
+		// if (!getCfg().getBuilder().isManagedBuildOn()) {
+		// return false;
+		// }
 
 		// GNU MCU Eclipse toolchains have this hidden option.
 		if (getCfg().getToolChain()
