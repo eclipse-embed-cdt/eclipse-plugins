@@ -17,9 +17,9 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>ilg.gnumcueclipse</groupId>
-	<artifactId>ilg.gnumcueclipse.debug.gdbjtag.jumper</artifactId>
+	<artifactId>ilg.gnumcueclipse.debug.gdbjtag.jumper.feature</artifactId>
 	<version>1.1.1-SNAPSHOT</version>
-	<packaging>eclipse-plugin</packaging>
+	<packaging>eclipse-feature</packaging>
 
 	<parent>
 		<groupId>ilg.gnumcueclipse</groupId>
@@ -28,6 +28,6 @@
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 
-	<name>GNU MCU Eclipse Jumper Virtual Lab debug</name>
+	<name>GNU MCU Eclipse Jumper Virtual Lab debug feature</name>
 	<url>http://gnu-mcu-eclipse.github.io</url>
 </project>

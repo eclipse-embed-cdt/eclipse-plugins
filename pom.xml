@@ -60,6 +60,9 @@
 		<module>bundles/ilg.gnumcueclipse.debug.gdbjtag.qemu</module>
 		<module>features/ilg.gnumcueclipse.debug.gdbjtag.qemu.feature</module>
 
+		<module>bundles/ilg.gnumcueclipse.debug.gdbjtag.jumper</module>
+		<module>features/ilg.gnumcueclipse.debug.gdbjtag.jumper.feature</module>
+
 		<module>bundles/ilg.gnumcueclipse.debug.gdbjtag.restart</module>
 
 		<module>bundles/ilg.gnumcueclipse.codered</module>
