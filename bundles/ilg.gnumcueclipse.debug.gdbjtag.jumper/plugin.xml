@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+
+	<extension point="org.eclipse.debug.core.launchConfigurationTypes">
+		<launchConfigurationType
+			id="ilg.gnumcueclipse.debug.gdbjtag.jumper.launchConfigurationType"
+			modes="debug, run"
+			name="%launchConfig.name"
+			public="true" />
+	</extension>
+
+	<extension point="org.eclipse.debug.core.launchDelegates">
+		<launchDelegate
+			delegate="ilg.gnumcueclipse.debug.gdbjtag.jumper.dsf.LaunchConfigurationDelegate"
+			delegateDescription="%launchDelegate.jtagDsf.description"
+			id="ilg.gnumcueclipse.debug.gdbjtag.jumper.core.dsfLaunchDelegate"
+			modes="debug,run"
+			name="%launchDelegate.jtagDsf.name"
+			sourceLocatorId="org.eclipse.cdt.debug.core.sourceLocator"
+			sourcePathComputerId="org.eclipse.cdt.debug.core.sourcePathComputer"
+			type="ilg.gnumcueclipse.debug.gdbjtag.jumper.launchConfigurationType">
+		</launchDelegate>
+	</extension>
+
+	<extension point="org.eclipse.debug.ui.launchConfigurationTypeImages">
+		<launchConfigurationTypeImage
+			configTypeID="ilg.gnumcueclipse.debug.gdbjtag.jumper.launchConfigurationType"
+			icon="icons/obj16/c_app.gif"
+			id="ilg.gnumcueclipse.debug.gdbjtag.jumper.launchConfigurationTypeImage" />
+	</extension>
+
+	<extension point="org.eclipse.debug.ui.launchConfigurationTabGroups">
+		<launchConfigurationTabGroup
+			class="ilg.gnumcueclipse.debug.gdbjtag.jumper.ui.TabGroupLaunchConfiguration"
+			id="ilg.gnumcueclipse.debug.gdbjtag.jumper.launchConfigurationTabGroup"
+			type="ilg.gnumcueclipse.debug.gdbjtag.jumper.launchConfigurationType" />
+	</extension>
+
+	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
+		<device
+			class="ilg.gnumcueclipse.debug.gdbjtag.jumper.JTagDevice"
+			id="ilg.gnumcueclipse.debug.gdbjtag.jumper.core.jtagdevice"
+			name="%JTagDevice.generic.name">
+		</device>
+	</extension>
+
+	<extension point="org.eclipse.cdt.debug.gdbjtag.core.JTagDevice">
+		<device
+			class="ilg.gnumcueclipse.debug.gdbjtag.jumper.JTagDevice"
+			id="ilg.gnumcueclipse.debug.gdbjtag.jumper.core.jtagdevice"
+			name="%JTagDevice.deprecated.name">
+		</device>
+	</extension>
+
+	<extension point="org.eclipse.core.runtime.preferences">
+		<initializer
+			class="ilg.gnumcueclipse.debug.gdbjtag.jumper.preferences.DefaultPreferenceInitializer">
+		</initializer>
+	</extension>
+
+	<extension point="org.eclipse.ui.preferencePages">
+		<page
+			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
+			class="ilg.gnumcueclipse.debug.gdbjtag.jumper.ui.preferences.WorkspaceMcuPage"
+			id="ilg.gnumcueclipse.debug.gdbjtag.jumper.workspacePreferencePage"
+			name="%preferences.workspaceMcu">
+		</page>
+		<page
+			category="ilg.gnumcueclipse.core.ui.preferences.mcu"
+			class="ilg.gnumcueclipse.debug.gdbjtag.jumper.ui.preferences.GlobalMcuPage"
+			id="ilg.gnumcueclipse.debug.gdbjtag.jumper.globalPreferencePage"
+			name="%preferences.globalMcu">
+		</page>
+	</extension>
+	<extension point="org.eclipse.ui.propertyPages">
+		<page
+			category="ilg.gnumcueclipse.core.ui.properties.mcu"
+			class="ilg.gnumcueclipse.debug.gdbjtag.jumper.ui.properties.ProjectMcuPage"
+			id="ilg.gnumcueclipse.debug.gdbjtag.jumper.projectPropertiesPage"
+			name="%properties.mcu">
+			<filter
+				name="projectNature"
+				value="org.eclipse.cdt.core.cnature">
+			</filter>
+			<enabledWhen>
+				<and>
+					<instanceof value="org.eclipse.core.resources.IProject">
+					</instanceof>
+					<or>
+						<test forcePluginActivation="true" property="ilg.gnumcueclipse.managedbuild.cross.riscv.isGnuRiscv">
+						</test>
+						<test forcePluginActivation="true" property="ilg.gnuarmeclipse.managedbuild.cross.isGnuArm">
+						</test>
+					</or>
+				</and>
+			</enabledWhen>
+		</page>
+	</extension>
+</plugin>
