@@ -1,4 +1,10 @@
-[![GitHub release](https://img.shields.io/github/release/gnu-mcu-eclipse/eclipse-plugins.svg)](https://github.com/gnu-mcu-eclipse/eclipse-plugins/releases/latest) [![Github Releases](https://img.shields.io/github/downloads/gnu-mcu-eclipse/eclipse-plugins/latest/total.svg)](https://github.com/gnu-mcu-eclipse/eclipse-plugins/releases/latest) [![Github Releases](https://img.shields.io/github/downloads/gnu-mcu-eclipse/eclipse-plugins/total.svg)](https://github.com/gnu-mcu-eclipse/eclipse-plugins/releases/latest) [![SourceForge](https://img.shields.io/sourceforge/dt/gnuarmeclipse.svg?label=SF%20downloads)](https://sourceforge.net/projects/gnuarmeclipse/files/) [![Build Status](https://travis-ci.org/gnu-mcu-eclipse/eclipse-plugins.svg?branch=develop)](https://travis-ci.org/gnu-mcu-eclipse/eclipse-plugins) [![Backers on Open Collective](https://opencollective.com/gnu-mcu-eclipse/backers/badge.svg)](#backers) [![Sponsors on Open Collective](https://opencollective.com/gnu-mcu-eclipse/sponsors/badge.svg)](#sponsors)
+[![GitHub release](https://img.shields.io/github/release/gnu-mcu-eclipse/eclipse-plugins.svg)](https://github.com/gnu-mcu-eclipse/eclipse-plugins/releases/latest) 
+[![Github Releases](https://img.shields.io/github/downloads/gnu-mcu-eclipse/eclipse-plugins/latest/total.svg)](https://github.com/gnu-mcu-eclipse/eclipse-plugins/releases/latest) 
+[![Github Releases](https://img.shields.io/github/downloads/gnu-mcu-eclipse/eclipse-plugins/total.svg)](https://github.com/gnu-mcu-eclipse/eclipse-plugins/releases/latest) 
+[![SourceForge](https://img.shields.io/sourceforge/dt/gnuarmeclipse.svg?label=SF%20downloads)](https://sourceforge.net/projects/gnuarmeclipse/files/) 
+[![Build Status](https://travis-ci.org/gnu-mcu-eclipse/eclipse-plugins.svg?branch=develop)](https://travis-ci.org/gnu-mcu-eclipse/eclipse-plugins) 
+[![Backers on Open Collective](https://opencollective.com/gnu-mcu-eclipse/backers/badge.svg)](#backers) 
+[![Sponsors on Open Collective](https://opencollective.com/gnu-mcu-eclipse/sponsors/badge.svg)](#sponsors)
 
 # The GNU MCU Eclipse plug-ins
 
@@ -8,13 +14,14 @@ These are the Eclipse projects used to build the [GNU MCU Eclipse](http://gnu-mc
 
 ## How to install
 
-For new installs, the preferred method is via [GNU MCU Eclipse IDE for C/C++ Developers ](https://github.com/gnu-mcu-eclipse/org.eclipse.epp.packages/releases), which packs the oficial **Eclipse IDE for C/C++ Developers** release with all **GNU MCU Eclipse plug-ins** already installed. 
+For new installs, the preferred method is via [GNU MCU Eclipse IDE for C/C++ Developers ](https://github.com/gnu-mcu-eclipse/org.eclipse.epp.packages/releases), which packs the official **Eclipse IDE for C/C++ Developers** release with all **GNU MCU Eclipse plug-ins** already installed. 
 
 For existing Eclipse instances, the recommended install method is via Eclipse Marketplace; search for **GNU MCU Eclipse**.
 
-## Update Sites (For manual installs)
+## Update Sites (for manual installs)
 
- * Stable: http://gnu-mcu-eclipse.netlify.com/v4-neon-updates 
+ * Stable: http://gnu-mcu-eclipse.netlify.com/v4-neon-updates  
+    This is the official release; it is also referred by the Eclipse Marketplace and the same content is packed as **Eclipse IDE for C/C++ Developers**.
  * Pre-release versions: http://gnu-mcu-eclipse.netlify.com/v4-neon-updates-test  
     Usually this site should be safe to use, but use it with caution.
  * Experimental versions: http://gnu-mcu-eclipse.netlify.com/v4-neon-updates-experimental  
@@ -41,7 +48,7 @@ The result are two p2 repositories:
 * `repositories/ilg.gnumcueclipse.repository/target/repository`
 * `repositories/ilg.gnumcueclipse.riscv.repository/target/repository`
 
-Note: in some older versions, maven complained something about local artifacts; in case this happens, add `-Dtycho.localArtifacts=ignore` when invoking maven.
+Note: in some older versions, maven complained something about local artefacts; in case this happens, add `-Dtycho.localArtifacts=ignore` when invoking maven.
 
 ### Eclipse
 
