@@ -4,15 +4,22 @@
 
 These are the Eclipse projects used to build the [GNU MCU Eclipse](http://gnu-mcu-eclipse.github.io) plug-ins.
 
+
+
 ## How to install
 
 For new installs, the preferred method is via [GNU MCU Eclipse IDE for C/C++ Developers ](https://github.com/gnu-mcu-eclipse/org.eclipse.epp.packages/releases), which packs the oficial **Eclipse IDE for C/C++ Developers** release with all **GNU MCU Eclipse plug-ins** already installed. 
 
 For existing Eclipse instances, the recommended install method is via Eclipse Marketplace; search for **GNU MCU Eclipse**.
 
-For manual installs, the stable version update site is:
+## Update Sites (For manual installs)
 
-* http://gnu-mcu-eclipse.netlify.com/v4-neon-updates
+ * Stable: http://gnu-mcu-eclipse.netlify.com/v4-neon-updates 
+ * Pre-release versions: http://gnu-mcu-eclipse.netlify.com/v4-neon-updates-test  
+    Usually this site should be safe to use, but use it with caution.
+ * Experimental versions: http://gnu-mcu-eclipse.netlify.com/v4-neon-updates-experimental  
+    Sometimes you can use this site to test some features that are not completely implemented, or that might change before a final version is released.  
+**Note:** This site is not always updated; use it carefully, back up your workspace, and do not use it for production projects.
 
 ## How to build
 
