@@ -1171,7 +1171,11 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		fGdbServerLog.setEnabled(enabled);
 		fGdbServerLogBrowse.setEnabled(enabled);
 
-		fDoGdbServerAllocateConsole.setEnabled(enabled);
+		// [#312]
+		// Temporarily disable it, the logic to detect when 
+		// the server is ready needs the console.
+		// fDoGdbServerAllocateConsole.setEnabled(enabled);
+		fDoGdbServerAllocateConsole.setEnabled(false);
 
 		fDoGdbServerAllocateSemihostingConsole.setEnabled(enabled);
 
