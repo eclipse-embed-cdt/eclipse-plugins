@@ -41,10 +41,9 @@ $ cd eclipse-plugins.git
 $ mvn clean verify
 ```
 
-The result are two p2 repositories:
+The result is a p2 repository:
 
 * `repositories/ilg.gnumcueclipse.repository/target/repository`
-* `repositories/ilg.gnumcueclipse.riscv.repository/target/repository`
 
 Note: in some older versions, maven complained something about local artefacts; in case this happens, add `-Dtycho.localArtifacts=ignore` when invoking maven.
 
@@ -83,7 +82,7 @@ Currently these settings are provided by the default Eclipse Java formatter.
 
 This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
 
-<a href="graphs/contributors"><img src="https://opencollective.com/gnu-mcu-eclipse/contributors.svg?width=890&button=false" /></a>
+<img src="https://opencollective.com/gnu-mcu-eclipse/contributors.svg?width=890&button=false" />
 
 
 
