@@ -155,8 +155,10 @@ public class EnvironmentVariableSupplier implements IConfigurationEnvironmentVar
 				Activator.log("arm.PathEnvironmentVariable.resolveMacros " + e.getMessage());
 			}
 
-			Activator.log("arm.PathEnvironmentVariable.resolveMacros(\"" + str + "\", \"" + configuration.getName()
+			if (Activator.getInstance().isDebugging()) {
+				Activator.log("arm.PathEnvironmentVariable.resolveMacros(\"" + str + "\", \"" + configuration.getName()
 					+ "\") = \"" + "\"");
+			}
 			return result;
 
 		}
