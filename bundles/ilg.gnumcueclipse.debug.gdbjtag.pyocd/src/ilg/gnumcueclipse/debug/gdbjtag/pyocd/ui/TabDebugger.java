@@ -928,60 +928,43 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	 *         (if it's in PATH)
 	 */
 	private String getPyOCDExecutablePath() {
-		String path = null;
+		String path = Configuration.getGdbServerCommand(fConfiguration, fGdbServerExecutable.getText());
+		if (path.length() == 0) {
+			return null;
+		}
 
-		try {
-			path = fGdbServerExecutable.getText().trim();
-			if (path.length() == 0) {
-				return null;
-			}
-			if (Activator.getInstance().isDebugging()) {
-				System.out.printf("pyOCD path = %s\n", path);
-			}
-			path = DebugUtils.resolveAll(path, fConfiguration.getAttributes());
+		if (Activator.getInstance().isDebugging()) {
+			System.out.printf("pyOCD resolved path = %s\n", path);
+		}
 
-			ICConfigurationDescription buildConfig = EclipseUtils.getBuildConfigDescription(fConfiguration);
-			if (buildConfig != null) {
-				path = DebugUtils.resolveAll(path, buildConfig);
-			}
+		// Validate path.
 
-			if (Activator.getInstance().isDebugging()) {
-				System.out.printf("pyOCD resolved path = %s\n", path);
-			}
-
-			// Validate path.
-
-			// First check using the most efficient means: see if the file
-			// exists. If it does, that's good enough.
-			File file = new File(path);
-			if (!file.exists()) {
-				// Support pyOCD being in PATH and specified sans path (issue#
-				// 102)
+		// First check using the most efficient means: see if the file
+		// exists. If it does, that's good enough.
+		File file = new File(path);
+		if (!file.exists()) {
+			// Support pyOCD being in PATH and specified sans path (issue#
+			// 102)
+			try {
+				Process process = Runtime.getRuntime().exec(path + " --version");
+				// If no exception, then it's an executable in PATH
 				try {
-					Process process = Runtime.getRuntime().exec(path + " --version");
-					// If no exception, then it's an executable in PATH
-					try {
-						process.waitFor();
-					} catch (InterruptedException e) {
-						// No harm, no foul
-					}
-				} catch (IOException e) {
-					if (Activator.getInstance().isDebugging()) {
-						System.out.printf("pyOCD path is invalid\n");
-					}
-					return null;
+					process.waitFor();
+				} catch (InterruptedException e) {
+					// No harm, no foul
 				}
-			} else if (file.isDirectory()) {
-				// TODO: Use java.nio.Files when we move to Java 7 to also check
-				// that file is executable
+			} catch (IOException e) {
 				if (Activator.getInstance().isDebugging()) {
 					System.out.printf("pyOCD path is invalid\n");
 				}
 				return null;
 			}
-
-		} catch (CoreException e) {
-			Activator.log(e);
+		} else if (file.isDirectory()) {
+			// TODO: Use java.nio.Files when we move to Java 7 to also check
+			// that file is executable
+			if (Activator.getInstance().isDebugging()) {
+				System.out.printf("pyOCD path is invalid\n");
+			}
 			return null;
 		}
 
