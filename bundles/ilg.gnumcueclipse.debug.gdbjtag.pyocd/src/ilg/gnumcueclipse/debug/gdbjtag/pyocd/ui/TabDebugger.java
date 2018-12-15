@@ -642,6 +642,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				boardSelected(((Combo) e.widget).getSelectionIndex());
+				scheduleUpdateJob();
 			}
 		});
 
