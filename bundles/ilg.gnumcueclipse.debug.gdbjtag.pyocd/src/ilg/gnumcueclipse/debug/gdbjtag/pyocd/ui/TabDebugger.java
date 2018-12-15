@@ -155,6 +155,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private static class Msgs {
 		public static final String INVALID_PYOCD_EXECUTABLE = "pyOCD gdbserver not found where specified";
+		public static final String INVALID_GDBSERVER_PORT = "pyOCD gdbserver port not specified";
+		public static final String INVALID_TELNET_PORT = "pyOCD telnet port not specified";
+		public static final String INVALID_GDBCLIENT_EXECUTABLE = "gdb client path is not valid";
 	}
 	// ------------------------------------------------------------------------
 
@@ -1383,32 +1386,42 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			System.out.println("pyocd.TabDebugger.isValid() " + launchConfig.getName());
 		}
 
-		setErrorMessage(null);
 		setMessage(null);
 
 		boolean result = true;
 
 		if (fDoStartGdbServer != null && fDoStartGdbServer.getSelection()) {
-
-			if (fGdbServerExecutable != null && fGdbServerExecutable.getText().trim().isEmpty()) {
-				setErrorMessage("GDB server executable path?");
-				result = false;
+			String path = getPyOCDExecutablePath();
+			if (path == null) {
+				registerError(Msgs.INVALID_PYOCD_EXECUTABLE);
+			}
+			else {
+				deregisterError(Msgs.INVALID_PYOCD_EXECUTABLE);
 			}
 
 			if (fGdbServerGdbPort != null && fGdbServerGdbPort.getText().trim().isEmpty()) {
-				setErrorMessage("GDB port?");
+				registerError(Msgs.INVALID_GDBSERVER_PORT);
 				result = false;
+			}
+			else {
+				deregisterError(Msgs.INVALID_GDBSERVER_PORT);
 			}
 
 			if (fGdbServerTelnetPort != null && fGdbServerTelnetPort.getText().trim().isEmpty()) {
-				setErrorMessage("Telnet port?");
+				registerError(Msgs.INVALID_TELNET_PORT);
 				result = false;
+			}
+			else {
+				deregisterError(Msgs.INVALID_TELNET_PORT);
 			}
 		}
 
 		if (fGdbClientExecutable != null && fGdbClientExecutable.getText().trim().isEmpty()) {
-			setErrorMessage("GDB client executable name?");
+			registerError(Msgs.INVALID_GDBCLIENT_EXECUTABLE);
 			result = false;
+		}
+		else {
+			deregisterError(Msgs.INVALID_GDBCLIENT_EXECUTABLE);
 		}
 
 		if (Activator.getInstance().isDebugging()) {
