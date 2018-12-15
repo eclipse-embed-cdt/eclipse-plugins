@@ -27,8 +27,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.eclipse.cdt.core.settings.model.ICConfigurationDescription;
@@ -72,6 +74,7 @@ import ilg.gnumcueclipse.debug.gdbjtag.pyocd.ui.Messages;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.Activator;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.ConfigurationAttributes;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.PyOCD;
+import ilg.gnumcueclipse.debug.gdbjtag.pyocd.PyOCD.Target;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences.DefaultPreferences;
 import ilg.gnumcueclipse.debug.gdbjtag.pyocd.preferences.PersistentPreferences;
 
@@ -92,6 +95,8 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private List<PyOCD.Board> fBoards;
 	private String fSelectedBoardId;
+	private Map<String, PyOCD.Target> fTargetsByPartNumber; //!< Maps part number (user friendly name) to target object.
+	private Map<String, PyOCD.Target> fTargetsByName; //!< Maps target name to target object.
 
 	private Text fGdbClientExecutable;
 	private Text fGdbClientPathLabel;
@@ -150,6 +155,9 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 	private static class Msgs {
 		public static final String INVALID_PYOCD_EXECUTABLE = "pyOCD gdbserver not found where specified";
+		public static final String INVALID_GDBSERVER_PORT = "pyOCD gdbserver port not specified";
+		public static final String INVALID_TELNET_PORT = "pyOCD telnet port not specified";
+		public static final String INVALID_GDBCLIENT_EXECUTABLE = "gdb client path is not valid";
 	}
 	// ------------------------------------------------------------------------
 
@@ -427,7 +435,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 
 			fGdbServerTargetName = new Combo(comp, SWT.DROP_DOWN);
 			gd = new GridData();
-			gd.widthHint = 120;
+			gd.widthHint = 360;
 			gd.horizontalSpan = ((GridLayout) comp.getLayout()).numColumns - 1;
 			fGdbServerTargetName.setLayoutData(gd);
 		}
@@ -637,6 +645,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				boardSelected(((Combo) e.widget).getSelectionIndex());
+				scheduleUpdateJob();
 			}
 		});
 
@@ -928,60 +937,43 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 	 *         (if it's in PATH)
 	 */
 	private String getPyOCDExecutablePath() {
-		String path = null;
+		String path = Configuration.getGdbServerCommand(fConfiguration, fGdbServerExecutable.getText());
+		if (path.length() == 0) {
+			return null;
+		}
 
-		try {
-			path = fGdbServerExecutable.getText().trim();
-			if (path.length() == 0) {
-				return null;
-			}
-			if (Activator.getInstance().isDebugging()) {
-				System.out.printf("pyOCD path = %s\n", path);
-			}
-			path = DebugUtils.resolveAll(path, fConfiguration.getAttributes());
+		if (Activator.getInstance().isDebugging()) {
+			System.out.printf("pyOCD resolved path = %s\n", path);
+		}
 
-			ICConfigurationDescription buildConfig = EclipseUtils.getBuildConfigDescription(fConfiguration);
-			if (buildConfig != null) {
-				path = DebugUtils.resolveAll(path, buildConfig);
-			}
+		// Validate path.
 
-			if (Activator.getInstance().isDebugging()) {
-				System.out.printf("pyOCD resolved path = %s\n", path);
-			}
-
-			// Validate path.
-
-			// First check using the most efficient means: see if the file
-			// exists. If it does, that's good enough.
-			File file = new File(path);
-			if (!file.exists()) {
-				// Support pyOCD being in PATH and specified sans path (issue#
-				// 102)
+		// First check using the most efficient means: see if the file
+		// exists. If it does, that's good enough.
+		File file = new File(path);
+		if (!file.exists()) {
+			// Support pyOCD being in PATH and specified sans path (issue#
+			// 102)
+			try {
+				Process process = Runtime.getRuntime().exec(path + " --version");
+				// If no exception, then it's an executable in PATH
 				try {
-					Process process = Runtime.getRuntime().exec(path + " --version");
-					// If no exception, then it's an executable in PATH
-					try {
-						process.waitFor();
-					} catch (InterruptedException e) {
-						// No harm, no foul
-					}
-				} catch (IOException e) {
-					if (Activator.getInstance().isDebugging()) {
-						System.out.printf("pyOCD path is invalid\n");
-					}
-					return null;
+					process.waitFor();
+				} catch (InterruptedException e) {
+					// No harm, no foul
 				}
-			} else if (file.isDirectory()) {
-				// TODO: Use java.nio.Files when we move to Java 7 to also check
-				// that file is executable
+			} catch (IOException e) {
 				if (Activator.getInstance().isDebugging()) {
 					System.out.printf("pyOCD path is invalid\n");
 				}
 				return null;
 			}
-
-		} catch (CoreException e) {
-			Activator.log(e);
+		} else if (file.isDirectory()) {
+			// TODO: Use java.nio.Files when we move to Java 7 to also check
+			// that file is executable
+			if (Activator.getInstance().isDebugging()) {
+				System.out.printf("pyOCD path is invalid\n");
+			}
 			return null;
 		}
 
@@ -1015,7 +1007,26 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 		} else {
 
 		}
-
+	}
+	
+	private void selectActiveTarget() {
+		if (fConfiguration != null) {
+			try {
+				// Convert target name to part number.
+				String configTargetName = fConfiguration.getAttribute(ConfigurationAttributes.GDB_SERVER_TARGET_NAME,
+						DefaultPreferences.GDB_SERVER_TARGET_NAME_DEFAULT);
+				Target target = fTargetsByName.get(configTargetName);
+				if (target != null) {
+					fGdbServerTargetName.setText(target.fPartNumber);
+				}
+				else {
+					// Support arbitrary target names entered by the user.
+					fGdbServerTargetName.setText(configTargetName);
+				}
+			} catch (CoreException e) {
+				Activator.log(e.getStatus());
+			}
+		}
 	}
 
 	private void updateBoards() {
@@ -1069,25 +1080,23 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 
 			Collections.sort(targets, PyOCD.Target.COMPARATOR);
+			
+			// Create maps to go between target part number and name.
+			fTargetsByPartNumber = new HashMap<>();
+			fTargetsByName = new HashMap<>();
 
 			final ArrayList<String> itemList = new ArrayList<String>();
 			for (PyOCD.Target target : targets) {
 				itemList.add(String.format("%s", target.fPartNumber));
+				fTargetsByPartNumber.put(target.fPartNumber, target);
+				fTargetsByName.put(target.fName, target);
 			}
 			String[] items = itemList.toArray(new String[itemList.size()]);
 
 			fGdbServerTargetName.setItems(items);
 
 			// Select current target from config.
-			if (fConfiguration != null) {
-				try {
-					fGdbServerTargetName
-							.setText(fConfiguration.getAttribute(ConfigurationAttributes.GDB_SERVER_TARGET_NAME,
-									DefaultPreferences.GDB_SERVER_TARGET_NAME_DEFAULT));
-				} catch (CoreException e) {
-					Activator.log(e.getStatus());
-				}
-			}
+			selectActiveTarget();
 		} else {
 			// Clear combobox and show error
 			fGdbServerTargetName.setItems(new String[] {});
@@ -1139,8 +1148,7 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 						.setSelection(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_OVERRIDE_TARGET,
 								DefaultPreferences.GDB_SERVER_OVERRIDE_TARGET_DEFAULT));
 
-				fGdbServerTargetName.setText(configuration.getAttribute(ConfigurationAttributes.GDB_SERVER_TARGET_NAME,
-						DefaultPreferences.GDB_SERVER_TARGET_NAME_DEFAULT));
+				fGdbServerTargetName.setText(""); // will be updated with updateTargets() call below. 
 
 				// Misc options
 				fGdbServerHaltAtHardFault
@@ -1378,32 +1386,42 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			System.out.println("pyocd.TabDebugger.isValid() " + launchConfig.getName());
 		}
 
-		setErrorMessage(null);
 		setMessage(null);
 
 		boolean result = true;
 
 		if (fDoStartGdbServer != null && fDoStartGdbServer.getSelection()) {
-
-			if (fGdbServerExecutable != null && fGdbServerExecutable.getText().trim().isEmpty()) {
-				setErrorMessage("GDB server executable path?");
-				result = false;
+			String path = getPyOCDExecutablePath();
+			if (path == null) {
+				registerError(Msgs.INVALID_PYOCD_EXECUTABLE);
+			}
+			else {
+				deregisterError(Msgs.INVALID_PYOCD_EXECUTABLE);
 			}
 
 			if (fGdbServerGdbPort != null && fGdbServerGdbPort.getText().trim().isEmpty()) {
-				setErrorMessage("GDB port?");
+				registerError(Msgs.INVALID_GDBSERVER_PORT);
 				result = false;
+			}
+			else {
+				deregisterError(Msgs.INVALID_GDBSERVER_PORT);
 			}
 
 			if (fGdbServerTelnetPort != null && fGdbServerTelnetPort.getText().trim().isEmpty()) {
-				setErrorMessage("Telnet port?");
+				registerError(Msgs.INVALID_TELNET_PORT);
 				result = false;
+			}
+			else {
+				deregisterError(Msgs.INVALID_TELNET_PORT);
 			}
 		}
 
 		if (fGdbClientExecutable != null && fGdbClientExecutable.getText().trim().isEmpty()) {
-			setErrorMessage("GDB client executable name?");
+			registerError(Msgs.INVALID_GDBCLIENT_EXECUTABLE);
 			result = false;
+		}
+		else {
+			deregisterError(Msgs.INVALID_GDBCLIENT_EXECUTABLE);
 		}
 
 		if (Activator.getInstance().isDebugging()) {
@@ -1482,7 +1500,19 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_OVERRIDE_TARGET,
 					fGdbServerOverrideTarget.getSelection());
 
-			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TARGET_NAME, fGdbServerTargetName.getText());
+			String targetPartNumber = fGdbServerTargetName.getText().trim();
+			String targetName = "";
+			if (!targetPartNumber.isEmpty()) {
+				Target target = fTargetsByPartNumber.get(targetPartNumber);
+				if (target != null) {
+					targetName = target.fName;
+				}
+				else {
+					// If the user enters a target name that we can't find, just use as-is.
+					targetName = targetPartNumber;
+				}
+			}
+			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_TARGET_NAME, targetName);
 
 			// Misc options
 			configuration.setAttribute(ConfigurationAttributes.GDB_SERVER_HALT_AT_HARD_FAULT,
