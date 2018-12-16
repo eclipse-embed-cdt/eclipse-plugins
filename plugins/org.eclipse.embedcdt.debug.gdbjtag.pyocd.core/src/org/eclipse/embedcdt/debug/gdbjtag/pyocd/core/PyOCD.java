@@ -122,6 +122,72 @@ public class PyOCD {
 			return String.format("<Target: %s [%s]>", fName, fPartNumber);
 		}
 	}
+	
+	/**
+	 * pyOCD version number.
+	 *
+	 */
+	public static class Version {
+		public final int fMajor;
+		public final int fMinor;
+		public final int fMicro;
+		
+		Version(int major, int minor, int micro) {
+			fMajor = major;
+			fMinor = minor;
+			fMicro = micro;
+		}
+		
+		/**
+		 * Parse the given version string, returning a Version object or null.
+		 */
+		public static Version fromString(String versionString) {
+			if (versionString.isEmpty() ) {
+				return null;
+			}
+			// remove initial 'v' if present
+			if (versionString.startsWith("v")) {
+				versionString = versionString.substring(1);
+			}
+			String[] pieces = versionString.split("\\.", 4);
+			
+			if (pieces.length == 0) {
+				return null;
+			}
+			
+			int major = 0;
+			int minor = 0;
+			int micro = 0;
+			try {
+				major = Integer.parseUnsignedInt(pieces[0]);
+			} catch (NumberFormatException e) {
+				if (Activator.getInstance().isDebugging()) {
+					System.out.printf("failed to parse pyocd major version:" + String.join(".", pieces) + "\n");
+				}
+			}
+			try {
+				minor = Integer.parseUnsignedInt(pieces[1]);
+			} catch (NumberFormatException e) {
+				if (Activator.getInstance().isDebugging()) {
+					System.out.printf("failed to parse pyocd minor version:" + String.join(".", pieces) + "\n");
+				}
+			}
+			try {
+				micro = Integer.parseUnsignedInt(pieces[2]);
+			} catch (NumberFormatException e) {
+				if (Activator.getInstance().isDebugging()) {
+					System.out.printf("failed to parse pyocd micro version:" + String.join(".", pieces) + "\n");
+				}
+			}
+			
+			return new Version(major, minor, micro);
+		}
+
+		@Override
+		public String toString() {
+			return String.format("<Version: %d.%d.%d>", fMajor, fMinor, fMicro);
+		}
+	}
 
 	public static List<Board> getBoards(ILaunchConfiguration configuration) {
 
@@ -267,7 +333,12 @@ public class PyOCD {
 
 	private static JSONObject getJsonOutput(final String pyOCDPath, String listArg) {
 		try {
-			String result = getOutput(pyOCDPath, listArg);
+			String[] cmdArray = new String[3];
+			cmdArray[0] = pyOCDPath;
+			cmdArray[1] = "json";
+			cmdArray[2] = listArg;
+			
+			String result = getOutput(cmdArray);
 			JSONParser parser = new JSONParser();
 			Object obj = parser.parse(result);
 			return (JSONObject) obj;
@@ -283,20 +354,30 @@ public class PyOCD {
 			return null;
 		}
 	}
+	
+	public static Version getVersion(final String pyOCDPath) {
+		try {
+			String[] args = new String[2];
+			args[0] = pyOCDPath;
+			args[1] = "--version";
+			
+			String output = getOutput(args).trim();
+			return Version.fromString(output);
+		} catch (CoreException e) {
+			if (Activator.getInstance().isDebugging()) {
+				System.out.printf("Core exception while reading pyocd version: %s\n", e);
+			}
+			return null;
+		}
+	}
 
-	private static String getOutput(final String pyOCDPath, String listArg) throws CoreException {
-
-		String[] cmdArray = new String[3];
-		cmdArray[0] = pyOCDPath;
-		cmdArray[1] = "json";
-		cmdArray[2] = listArg;
-
+	public static String getOutput(final String[] args) throws CoreException {
 		final Process process;
 		try {
-			process = ProcessFactory.getFactory().exec(cmdArray);
+			process = ProcessFactory.getFactory().exec(args);
 		} catch (IOException e) {
 			throw new DebugException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, DebugException.REQUEST_FAILED,
-					"Error while launching command: " + StringUtils.join(cmdArray, " "), e.getCause()));//$NON-NLS-2$
+					"Error while launching command: " + StringUtils.join(args, " "), e.getCause()));//$NON-NLS-2$
 		}
 
 		// Start a timeout job to make sure we don't get stuck waiting for
@@ -317,21 +398,12 @@ public class PyOCD {
 		};
 		timeoutJob.schedule(10000);
 
-		InputStream stream = null;
-		StringBuilder cmdOutput = new StringBuilder(200);
+		String cmdOutput = null;
 		try {
-			stream = process.getInputStream();
-			Reader r = new InputStreamReader(stream);
-			BufferedReader reader = new BufferedReader(r);
-
-			String line;
-			while ((line = reader.readLine()) != null) {
-				cmdOutput.append(line);
-				cmdOutput.append('\n');
-			}
+			cmdOutput = readStream(process.getInputStream());
 		} catch (IOException e) {
 			throw new DebugException(new Status(IStatus.ERROR, Activator.PLUGIN_ID, DebugException.REQUEST_FAILED,
-					"Error reading pyOCD stdout after sending: " + StringUtils.join(cmdArray, " ") + ", response: "
+					"Error reading pyOCD stdout after sending: " + StringUtils.join(args, " ") + ", response: "
 							+ cmdOutput,
 					e.getCause()));// $NON-NLS-1$
 		} finally {
@@ -341,19 +413,40 @@ public class PyOCD {
 			// problem.
 			timeoutJob.cancel();
 
-			// Cleanup to avoid leaking pipes
-			// Close the stream we used, and then destroy the process
-			// Bug 345164
-			if (stream != null) {
-				try {
-					stream.close();
-				} catch (IOException e) {
-				}
-			}
 			process.destroy();
 		}
 
-		return cmdOutput.toString();
+		return cmdOutput;
+	}
+
+	/**
+	 * Read from the specified stream and return what was read.
+	 * 
+	 * @param stream The input stream to be used to read the data.  This method will close the stream.
+	 * @return The data read from the stream
+	 * @throws IOException If an IOException happens when reading the stream
+	 */
+	public static String readStream(InputStream stream) throws IOException {
+        StringBuilder cmdOutput = new StringBuilder(200);
+        try {
+        	Reader r = new InputStreamReader(stream);
+        	BufferedReader reader = new BufferedReader(r);
+        	
+        	String line;
+        	while ((line = reader.readLine()) != null) {
+        		cmdOutput.append(line);
+        		cmdOutput.append('\n');
+        	}
+        	return cmdOutput.toString();
+        } finally {
+        	// Cleanup to avoid leaking pipes
+        	// Bug 345164
+        	if (stream != null) {
+				try { 
+					stream.close(); 
+				} catch (IOException e) {}
+        	}
+        }
 	}
 
 }
