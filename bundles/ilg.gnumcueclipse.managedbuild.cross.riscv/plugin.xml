@@ -469,6 +469,7 @@
 			</option>
 			<option
 				command="-msave-restore"
+				commandFalse="-mno-save-restore"
 				defaultValue="false"
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.saverestore"
 				isAbstract="true"
@@ -493,6 +494,10 @@
 				name="%option.target.plt"
 				tip="When generating PIC code, allow the use of PLTs. Ignored for non-PIC."
 				valueType="boolean">
+				<enablement type="UI_VISIBILITY">
+					<false> false body text
+					</false>
+				</enablement>
 			</option>
 			<option
 				command="-mfdiv"
@@ -502,6 +507,10 @@
 				name="%option.target.fdiv"
 				tip="Use hardware floating-point divide and square root instructions. This requires the F or D extensions for floating-point registers.  Setting this option without the F or D extension has no effect."
 				valueType="boolean">
+				<enablement type="UI_VISIBILITY">
+					<false> false body text
+					</false>
+				</enablement>
 			</option>
 			<option
 				command="-mdiv"
@@ -511,6 +520,10 @@
 				name="%option.target.div"
 				tip="Use hardware instructions for integer division. This requires the M extension. Setting this option without the M extension has no effect."
 				valueType="boolean">
+				<enablement type="UI_VISIBILITY">
+					<false> false body text
+					</false>
+				</enablement>
 			</option>
 			<option
 				id="ilg.gnumcueclipse.managedbuild.cross.riscv.option.base.target.tune"

@@ -42,6 +42,8 @@ public class Option {
 	public static final String OPTION_TARGET_ALIGN = OPTION_TARGET + "align";
 	public static final String OPTION_TARGET_SAVERESTORE = OPTION_TARGET + "saverestore";
 	public static final String OPTION_TARGET_MEMCPY = OPTION_TARGET + "memcpy";
+	
+	// Deprecated since 2019-01-01
 	public static final String OPTION_TARGET_PLT = OPTION_TARGET + "plt";
 	public static final String OPTION_TARGET_FDIV = OPTION_TARGET + "fdiv";
 	public static final String OPTION_TARGET_DIV = OPTION_TARGET + "div";
@@ -218,6 +220,8 @@ public class Option {
 			try {
 				if (option.getBooleanValue()) {
 					sReturn = option.getCommand().trim();
+				} else {
+					sReturn = option.getCommandFalse().trim();
 				}
 			} catch (BuildException e) {
 				Activator.log(e);
@@ -570,21 +574,6 @@ public class Option {
 		}
 
 		sValue = getOptionBooleanCommand(config, OPTION_TARGET_MEMCPY);
-		if (sValue != null && sValue.length() > 0) {
-			sReturn += " " + sValue;
-		}
-
-		sValue = getOptionBooleanCommand(config, OPTION_TARGET_PLT);
-		if (sValue != null && sValue.length() > 0) {
-			sReturn += " " + sValue;
-		}
-
-		sValue = getOptionBooleanCommand(config, OPTION_TARGET_FDIV);
-		if (sValue != null && sValue.length() > 0) {
-			sReturn += " " + sValue;
-		}
-
-		sValue = getOptionBooleanCommand(config, OPTION_TARGET_DIV);
 		if (sValue != null && sValue.length() > 0) {
 			sReturn += " " + sValue;
 		}
