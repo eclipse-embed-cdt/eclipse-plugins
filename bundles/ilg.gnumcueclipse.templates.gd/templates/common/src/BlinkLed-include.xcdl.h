@@ -1,0 +1,6 @@
+//@XCDL @include "../common/src/BlinkLed-10-begin.h"
+//@XCDL @include "src/BlinkLed-20-headers.h"
+//@XCDL @include "../common/src/BlinkLed-30-defs.h"
+//@XCDL @include "src/BlinkLed-40-defs.h"
+//@XCDL @include "src/BlinkLed-50-$(fileExtension).h"
+//@XCDL @include "../common/src/BlinkLed-60-end.h"
