@@ -1,0 +1,1372 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template type="ProjTempl" 
+		 version="1.0"
+	 	 supplier="GNU MCU Eclipse"
+	     revision="1.0"
+	     author="Liviu Ionescu"
+	     copyright="Copyright (c) 2019 Liviu Ionescu."
+		 id="gd32vf103.exe.c.project"
+		 label="%GD32VF103.Ctemplate.label" 
+		 description="%GD32VF103.Ctemplate.description"
+		 help="help.html">
+	
+	<!-- Note: the redundant 'condition="1==1"' is a workaround to control the 
+		evaluation order. Without it, processes are evaluated after all ifs. -->
+	<!-- ================================================================== -->
+	
+	<if condition="1==1">
+		<!-- Add ccnature always. -->
+		<process type="org.eclipse.cdt.core.AddNature">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="natureId"
+				value="org.eclipse.cdt.core.ccnature" />
+		</process>
+	</if>
+
+	<!-- Create include header folders -->
+	<!-- The order must be: -->
+	<!-- inc -->
+	<!-- firmware/gd32vf103_standard_peripheral/include/ -->
+	<!-- firmware/gd32vf103/include -->
+	<!-- firmware/drivers -->
+	<!-- firmware/env_eclipse -->
+	<!-- firmware/stubs -->
+
+	<if condition="1==1">
+		<!-- inc -->
+		<process type="org.eclipse.cdt.core.CreateFolder">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="path"
+				value="$(includeTitle)" />
+		</process>
+
+		<!-- add to include paths -->
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;../$(includeTitle)&quot;" />
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+	    <!-- firmware/gd32vf103_standard_peripheral/include/ -->
+	    <!-- firmware/gd32vf103/include -->
+		<process type="org.eclipse.cdt.core.CreateFolder">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="path"
+				value="$(firmwareTitle)/gd32vf103/gd32vf103_standard_peripheral/include" />
+		</process>
+		<process type="org.eclipse.cdt.core.CreateFolder">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="path"
+				value="$(firmwareTitle)/gd32vf103/include" />
+		</process>
+
+		<!-- add to include paths -->
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;../$(firmwareTitle)/gd32vf103/gd32vf103_standard_peripheral/include&quot;" />
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;../$(firmwareTitle)/gd32vf103/include&quot;" />
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<!-- firmware/riscv/drivers -->
+		<!-- firmware/riscv/env_eclipse -->
+	    <!-- firmware/riscv/stubs -->
+		<process type="org.eclipse.cdt.core.CreateFolder">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="path"
+				value="$(firmwareTitle)/riscv/drivers" />
+		</process>
+		<process type="org.eclipse.cdt.core.CreateFolder">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="path"
+				value="$(firmwareTitle)/riscv/env_eclipse" />
+		</process>
+		<process type="org.eclipse.cdt.core.CreateFolder">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="path"
+				value="$(firmwareTitle)/riscv/stubs" />
+		</process>
+
+		<!-- add to include paths -->
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;../$(firmwareTitle)/riscv/drivers&quot;" />
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;../$(firmwareTitle)/riscv/env_eclipse&quot;" />
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;../$(firmwareTitle)/riscv/stubs&quot;" />
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
+
+	<!-- Create folders -->
+	<if condition="1==1">
+		<!-- src -->
+		<process type="org.eclipse.cdt.core.CreateFolder">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="path"
+				value="$(sourceTitle)" />
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<!-- ldscripts -->
+		<process type="org.eclipse.cdt.core.CreateFolder">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="path"
+				value="$(includeTitle)" />
+		</process>
+	</if>
+	
+	<if condition="1==1">
+		<!-- firmware -->
+		<process type="org.eclipse.cdt.core.CreateFolder">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="path"
+				value="$(firmwareTitle)" />
+		</process>
+	</if>
+	
+	<if condition="1==1">
+		<!-- ldscripts -->
+		<process type="org.eclipse.cdt.core.CreateFolder">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="path"
+				value="$(ldTitle)" />
+		</process>
+	</if>
+	
+	<!-- ================================================================== -->
+
+    <!-- inc files -->
+	<!-- src files -->
+	<!-- ldscripts files -->
+	<if condition="1==1">
+		<!-- inc -->
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="folders">
+				<element>
+					<simple
+						name="source"
+						value="inc" />
+					<simple
+						name="target"
+						value="$(includeTitle)" />
+					<simple
+						name="pattern"
+						value="" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+
+	</if>
+	
+	<if condition="1==1">
+		<!-- src -->
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="folders">
+				<element>
+					<simple
+						name="source"
+						value="src" />
+					<simple
+						name="target"
+						value="$(sourceTitle)" />
+					<simple
+						name="pattern"
+						value="" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>	
+	</if>
+	
+	<if condition="1==1">
+	<!-- ldscripts -->
+		<process type="org.eclipse.cdt.core.AddFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="ldscripts/$(lds)" />
+					<simple
+						name="target"
+						value="$(ldTitle)/$(lds)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>	
+
+	<!-- ================================================================== -->
+
+	<!-- riscv files -->
+	<!-- peripheral files -->
+	<if condition="1==1">
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="folders">
+				<element>
+					<simple
+						name="source"
+						value="../micro-os-plus/gd32vf103.pack/gd32vf103/include" />
+					<simple
+						name="target"
+						value="$(firmwareTitle)/gd32vf103/include" />
+					<simple
+						name="pattern"
+						value="" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="../micro-os-plus/gd32vf103.pack/gd32vf103/src" />
+					<simple
+						name="target"
+						value="$(firmwareTitle)/gd32vf103/source" />
+					<simple
+						name="pattern"
+						value="" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="../micro-os-plus/gd32vf103.pack/riscv/drivers" />
+					<simple
+						name="target"
+						value="$(firmwareTitle)/riscv/drivers" />
+					<simple
+						name="pattern"
+						value="" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="../micro-os-plus/gd32vf103.pack/riscv/stubs" />
+					<simple
+						name="target"
+						value="$(firmwareTitle)/riscv/stubs" />
+					<simple
+						name="pattern"
+						value="" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="../micro-os-plus/gd32vf103.pack/riscv/env_eclipse" />
+					<simple
+						name="target"
+						value="$(firmwareTitle)/riscv/env_eclipse" />
+					<simple
+						name="pattern"
+						value="" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="../micro-os-plus/gd32vf103_standard_peripheral.park/include" />
+					<simple
+						name="target"
+						value="$(firmwareTitle)/gd32vf103/gd32vf103_standard_peripheral/include" />
+					<simple
+						name="pattern"
+						value="" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="../micro-os-plus/gd32vf103_standard_peripheral.park/src" />
+					<simple
+						name="target"
+						value="$(firmwareTitle)/gd32vf103/gd32vf103_standard_peripheral/source" />
+					<simple
+						name="pattern"
+						value="" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	
+	<!-- ================================================================== -->
+
+	<!-- Target options -->
+	<if condition="1==1">
+		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.base" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv32i" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.fp" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.isa.fp.none" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.abi.integer" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.integer.ilp32" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.abi.fp" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.fp.none" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.codemodel" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.codemodel.low" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.multiply" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.atomic" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.compressed" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	
+	<!-- ================================================================== -->
+	
+	<!-- Global options -->
+	<if condition="1==1">
+		<process
+			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="$(checkSomeWarnings) == true" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.allwarn" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.extrawarn" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+		<process
+			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="$(checkMostWarnings) == true" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.unused" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.uninitialized" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.missingdeclaration" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.conversion" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.pointerarith" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.padded" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.shadow" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.logicalop" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.agreggatereturn" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.floatequal" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="1==1">
+		<process
+			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="$(enableWerror) == true" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.warnings.toerrors" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(useOg)==true">
+		<process
+			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.level" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.level.debug" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="debug" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="$(useOg)!=true">
+		<process
+			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.level" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.level.size" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="debug" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="1==1">
+		<process
+			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.nomoveloopinvariants" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="debug" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="1==1">
+		<process
+			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.debugging.format" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.debugging.format.default" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="debug" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<if condition="1==1">
+		<process
+			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSStringOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.level" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.level.size" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="release" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	
+    <!-- ================================================================== -->
+
+	<!-- C options -->
+	<if condition="1==1">
+		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.std" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.std.gnu11" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+		<process
+			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="$(checkMostWarnings) == true" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.warning.missingprototypes" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.warning.strictprototypes" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.warning.badfunctioncast" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<!-- ================================================================== -->
+
+	<!-- C++ options -->
+	<if condition="1==1">
+		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.std" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.std.gnucpp11" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.noexceptions" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.nortti" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.nousecxaatexit" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.nothreadsafestatics" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+		<process
+			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="$(checkMostWarnings) == true" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.warnabi" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.warning.ctordtorprivacy" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.warning.noexcept" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.warning.nonvirtualdtor" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.warning.strictnullsentinel" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.compiler.warning.signpromo" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<!-- ================================================================== -->
+	
+    <!-- Linker options -->
+	<if condition="1==1">
+	    <process
+			type="org.eclipse.cdt.managedbuilder.core.SetMBSStringListOptionValues">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.linker.paths" />
+					<simple-array name="values">
+						<element value="&quot;../$(ldTitle)&quot;" />
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.SetMBSStringListOptionValues">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.linker.paths" />
+					<simple-array name="values">
+						<element value="&quot;../$(ldTitle)&quot;" />
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.SetMBSStringListOptionValues">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.linker.scriptfile" />
+					<simple-array name="values">
+						<element value="$(lds)" />
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	
+	<if condition="$(useNano)==true">
+		<process
+			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.linker.usenewlibnano" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+
+	<if condition="$(useLinkOpt)==true">
+		<process
+			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.lto" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	
+	<if condition="1==1">
+		<process
+			type="ilg.gnumcueclipse.templates.core.ConditionalSetMBSBooleanOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.linker.nostart" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+					<simple
+						name="buildType"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<!-- ================================================================== -->
+
+	<!-- Macro definitions -->
+	<if condition="1==1">
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.defs" />
+					<simple-array name="values">
+						<element value="USE_STDPERIPH_DRIVER" />
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+		
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.*.defs" />
+					<simple-array name="values">
+						<element value="HXTAL_VALUE=$(chipClock)" />
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+	</if>	
+	
+	<!-- ================================================================== -->
+
+	<!-- Open editor -->
+	<process type="org.eclipse.cdt.ui.OpenFiles">
+		<simple
+			name="projectName"
+			value="$(projectName)" />
+		<complex-array name="files">
+			<element>
+				<simple
+					name="target"
+					value="$(sourceTitle)/main.c" />
+			</element>
+		</complex-array>
+	</process>
+	
+</template>
+
+
+
+	

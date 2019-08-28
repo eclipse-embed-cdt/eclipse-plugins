@@ -95,6 +95,9 @@
 		<module>bundles/ilg.gnumcueclipse.templates.sifive</module>
 		<module>features/ilg.gnumcueclipse.templates.sifive.feature</module>
 		
+		<module>bundles/ilg.gnumcueclipse.templates.gd</module>
+		<module>features/ilg.gnumcueclipse.templates.gd.feature</module>
+		
 	</modules>
 
 	<name>GNU MCU Eclipse plug-ins root</name>

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.cdt.core.templates">
+      <template
+            filterPattern=".*g[c\+][c\+]"
+            id="ilg.gnumcueclipse.templates.gd.gd32e23x.exe.c.project"
+            location="$nl$/templates/gd32e23x_exe_c_project/template.xml"
+            pagesAfterTemplateSelectionProvider="ilg.gnumcueclipse.templates.gd.ui.PagesAfterTemplateSelectionProvider"
+            projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
+      </template>
+      <template
+            filterPattern=".*g[c\+][c\+]"
+            id="ilg.gnumcueclipse.templates.gd.gd32vf103.exe.c.project"
+            location="$nl$/templates/gd32vf103_exe_c_project/template.xml"
+            pagesAfterTemplateSelectionProvider="ilg.gnumcueclipse.templates.gd.ui.PagesAfterVF103TemplateSelectionProvider"
+            projectType="org.eclipse.cdt.build.core.buildArtefactType.exe">
+      </template>
+   </extension>
+   <extension
+         point="org.eclipse.cdt.core.templateAssociations">
+      <template
+            id="ilg.gnumcueclipse.templates.gd.gd32e23x.exe.c.project">
+         <toolChain
+               id="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base">
+         </toolChain>
+      </template>
+      <template
+            id="ilg.gnumcueclipse.templates.gd.gd32vf103.exe.c.project">
+         <toolChain
+               id="ilg.gnumcueclipse.managedbuild.cross.riscv.toolchain.base">
+         </toolChain>
+      </template>
+   </extension>
+
+</plugin>
