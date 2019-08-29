@@ -9,7 +9,7 @@ Require-Bundle: ilg.gnumcueclipse.core,
  org.eclipse.ui,
  org.eclipse.cdt.ui;bundle-version="6.1.0",
  org.eclipse.core.runtime,
- org.eclipse.cdt.managedbuilder.ui;bundle-version="9.1.0"
+ org.eclipse.cdt.managedbuilder.ui;bundle-version="9.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Automatic-Module-Name: ilg.gnumcueclipse.templates.gd
 Bundle-ActivationPolicy: lazy
