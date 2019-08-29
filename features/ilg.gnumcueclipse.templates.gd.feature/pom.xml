@@ -18,7 +18,7 @@
   
   <groupId>ilg.gnumcueclipse.templates.gd.feature</groupId>
   <artifactId>ilg.gnumcueclipse.templates.gd.feature</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>eclipse-feature</packaging>
   
   <parent>
