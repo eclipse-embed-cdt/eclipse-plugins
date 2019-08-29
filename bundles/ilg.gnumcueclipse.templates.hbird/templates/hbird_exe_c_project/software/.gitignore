@@ -1,0 +1,12 @@
+demo_i2c/demo_i2c
+demo_spi/demo_spi
+demo_uart/demo_uart
+fpu_perf/fpu_perf
+pwm_3_test/pwm_3_test
+uart_read/uart_read
+coremark/coremark
+demo_gpio4sim/demo_gpio4sim
+coremark4sim/coremark4sim
+dhrystone4sim/dhrystone4sim
+dhrystone4sim_best/dhrystone4sim_best
+

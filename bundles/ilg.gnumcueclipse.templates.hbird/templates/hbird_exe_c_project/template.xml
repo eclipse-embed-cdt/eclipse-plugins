@@ -1,0 +1,1393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<template
+	type="ProjTempl"
+	version="1.0"
+	supplier="Eclipse.org"
+	revision="1.0"
+	author="Hbird"
+	copyright="Copyright (c) 2017 Liviu Ionescu. All rights reserved. This \
+program and the accompanying materials are made available under the terms \
+of the Eclipse Public License v1.0 which accompanies this distribution, \
+and is available athttp://www.eclipse.org/legal/epl-v10.html"
+	id="Hbird.exe.c.project"
+	label="%Hbird.template.label"
+	description="%Hbird.template.description"
+	help="help.html">
+	<property-group
+		id="chip"
+		label="%Hbird.group.target.label"
+		description="%Hbird.group.target.description"
+		type="PAGES-ONLY"
+		help="help.html">
+		
+		<property
+			id="HbirdCore"
+			label="%Hbird.core.label"
+			description="%Hbird.core.description"
+			type="select"
+			default="e203"
+			hidden="false"
+			persist="true">
+			<item
+				value="e203"
+				label="E203" />
+
+		</property>
+		</property-group>
+		
+		
+		
+		<property-group
+		id="softwave"
+		label="%Hbird.group.target.label"
+		description="%Hbird.group.target.description"
+		type="PAGES-ONLY"
+		help="help.html">
+		
+		<property
+			id="HbirdContent"
+			label="%Hbird.content.label"
+			description="%Hbird.content.description"
+			type="select"
+			default="hello"
+			hidden="false"
+			persist="true">
+			<item
+				value="empty"
+				label="Empty_Project" />
+			<item
+				value="hello"
+				label="Hello_World" />
+
+		</property>
+
+		<!-- ============================================================== -->
+		<property
+			id="HbirdSyscalls"
+			label="%syscalls.label"
+			description="%syscalls.description"
+			type="select"
+			default="retarget"
+			hidden="false"
+			persist="true">
+			<item
+				value="none"
+				label="Freestanding (no POSIX system calls)" />
+			<item
+				value="retarget"
+				label="POSIX (system calls implemented by application code)" />
+			<item
+				value="semihosting"
+				label="Semihosting (POSIX system calls via host)" />
+		</property>
+		<property
+			id="HbirdTrace"
+			label="%trace.label"
+			description="%trace.description"
+			type="select"
+			default="uart0ftdi"
+			hidden="false"
+			persist="true">
+			<item
+				value="none"
+				label="None (no trace output)" />
+			<item
+				value="uart0ftdi"
+				label="UART0 (via FTDI)" />
+			<item
+				value="stdout"
+				label="Semihosting STDOUT stream" />
+			<item
+				value="debug"
+				label="Semihosting DEBUG channel" />
+		</property>
+		<property
+			id="useSomeWarnings"
+			label="%someWarnings.label"
+			description="%someWarnings.description"
+			type="boolean"
+			default="true"
+			hidden="false"
+			persist="true" />
+		<property
+			id="useMostWarnings"
+			label="%mostWarnings.label"
+			description="%mostWarnings.description"
+			type="boolean"
+			default="false"
+			hidden="false"
+			persist="true" />
+		<property
+			id="useWerror"
+			label="%useWerror.label"
+			description="%useWerror.description"
+			type="boolean"
+			default="false"
+			hidden="false"
+			persist="true" />
+		<property
+			id="useOg"
+			label="%useOg.label"
+			description="%useOg.description"
+			type="boolean"
+			default="false"
+			hidden="false"
+			persist="true" />
+		<property
+			id="useNano"
+			label="%useNano.label"
+			description="%useNano.description"
+			type="boolean"
+			default="true"
+			hidden="false"
+			persist="true" />
+	</property-group>
+	
+	
+
+	
+	
+	<property-group
+	
+		id="folders"
+		label="%group.folders.label"
+		description="%group.folders.description"
+		type="PAGES-ONLY"
+		help="help.html">
+
+		<!-- ============================================================== -->
+		<property
+			id="fileExtension"
+			label="Source file extension"
+			description="Will be set to cpp for ccnature"
+			mandatory="true"
+			hidden="true"
+			default="c"
+			persist="false" />
+		<property
+			id="content"
+			label="Project content (empty/hello/demo/rtos)"
+			description="Will be set to content"
+			mandatory="true"
+			hidden="true"
+			default="undefined-content"
+			persist="false" />
+		<property
+			id="syscalls"
+			label="Project syscalls (none/retarget/semihosting)"
+			description="Will be set to HbirdSyscalls"
+			mandatory="true"
+			hidden="true"
+			default="undefined-syscalls"
+			persist="false" />
+		<property
+			id="coreName"
+			label="Core name (E203, N200)"
+			mandatory="true"
+			hidden="true"
+			default="undefined-coreName"
+			persist="false" />
+		<property
+			id="coreFolder"
+			label="Core folder"
+			mandatory="true"
+			hidden="true"
+			default="undefined-coreFolder"
+			persist="false" />
+		<property
+			id="trace"
+			label="Trace output (none/uart0ftdi)"
+			description="Will be set to content"
+			mandatory="true"
+			hidden="true"
+			default="undefined-trace"
+			persist="false" />
+	</property-group>
+
+	<!-- Note: the redundant 'condition="1==1"' is a workaround to control the 
+		evaluation order. Without it, processes are evaluated after all ifs. -->
+	<if condition="1==1">
+		<!-- Create the project, with elf artifact extension. -->
+		<process type="org.eclipse.cdt.managedbuilder.core.NewManagedProject">
+			<simple
+				name="name"
+				value="$(projectName)" />
+			<simple
+				name="artifactExtension"
+				value="elf" />
+			<simple
+				name="isCProject"
+				value="true" />
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<!-- Set fileExtension="cpp" if ccnature; default was "c". -->
+		<process type="ilg.gnumcueclipse.templates.core.SetPropertyIfHasNature">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="natureString"
+				value="org.eclipse.cdt.core.ccnature" />
+			<simple
+				name="propertyName"
+				value="fileExtension" />
+			<simple
+				name="propertyValue"
+				value="cpp" />
+		</process>
+
+		<!-- Add ccnature always. -->
+		<process type="org.eclipse.cdt.core.AddNature">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="natureId"
+				value="org.eclipse.cdt.core.ccnature" />
+		</process>
+	</if>
+
+	<if condition="1==1">
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<simple
+				name="propertyName"
+				value="content" />
+			<simple
+				name="propertyValue"
+				value="$(HbirdContent)" />
+		</process>
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<simple
+				name="propertyName"
+				value="syscalls" />
+			<simple
+				name="propertyValue"
+				value="$(HbirdSyscalls)" />
+		</process>
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<simple
+				name="propertyName"
+				value="trace" />
+			<simple
+				name="propertyValue"
+				value="$(HbirdTrace)" />
+		</process>
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<simple
+				name="propertyName"
+				value="coreName" />
+			<simple
+				name="propertyValue"
+				value="$(HbirdCore)" />
+		</process>
+	</if>
+
+	<if condition="$(HbirdCore)==e203">
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<simple
+				name="propertyName"
+				value="coreFolder" />
+			<simple
+				name="propertyValue"
+				value="hbird-e200" />
+		</process>
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<simple
+				name="propertyName"
+				value="coreDescription" />
+			<simple
+				name="propertyValue"
+				value="E203" />
+		</process>
+	</if>
+	<if condition="$(HbirdCore)==n200">
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<simple
+				name="propertyName"
+				value="coreFolder" />
+			<simple
+				name="propertyValue"
+				value="Hbird-n200" />
+		</process>
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalSetProperty">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<simple
+				name="propertyName"
+				value="coreDescription" />
+			<simple
+				name="propertyValue"
+				value="N200" />
+		</process>
+	</if>
+	
+	<!-- ==============================E203================================ -->
+
+	<if condition="$(HbirdCore)==e203">
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="folders">
+				<element>
+					<simple
+						name="source"
+						value="bsp/$(coreFolder)/drivers/plic" />
+					<simple
+						name="target"
+						value="bsp/$(coreFolder)/drivers/plic" />
+					<simple
+						name="pattern"
+						value=".*[.](c|h)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="bsp/$(coreFolder)/env" />
+					<simple
+						name="target"
+						value="bsp/$(coreFolder)/env" />
+					<simple
+						name="pattern"
+						value=".*[.](c|h|S|mk|lds|cfg)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="bsp/$(coreFolder)/include/headers" />
+					<simple
+						name="target"
+						value="bsp/$(coreFolder)/include/headers" />
+					<simple
+						name="pattern"
+						value=".*[.](h)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="bsp/$(coreFolder)/include/headers/devices" />
+					<simple
+						name="target"
+						value="bsp/$(coreFolder)/include/headers/devices" />
+					<simple
+						name="pattern"
+						value=".*[.](h)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="bsp/$(coreFolder)/stubs" />
+					<simple
+						name="target"
+						value="bsp/$(coreFolder)/stubs" />
+					<simple
+						name="pattern"
+						value=".*[.](c|h)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="bsp/$(coreFolder)/tools" />
+					<simple
+						name="target"
+						value="bsp/$(coreFolder)/tools" />
+					<simple
+						name="pattern"
+						value=".*[.](sh)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="software/hello_world" />
+					<simple
+						name="target"
+						value="src" />
+					<simple
+						name="pattern"
+						value=".*[.](c|h)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	
+	<!-- Target options -->
+	<if condition="$(HbirdCore)==e203">
+		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.base" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv32i" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.fp" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.isa.fp.none" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.abi.integer" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.integer.ilp32" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.abi.fp" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.fp.none" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.codemodel" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.codemodel.any" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.debugging.level" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.debugging.level.default" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.multiply" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.atomic" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.compressed" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.div" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.nocommon" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.gcsections" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.gcsections" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.nostart" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.usenewlibnano" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+		<process type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;${workspace_loc:/${ProjName}/bsp/$(coreFolder)/drivers}&quot;" />
+						<element value="&quot;${workspace_loc:/${ProjName}/bsp/$(coreFolder)/include}&quot;" />
+						<element value="&quot;${workspace_loc:/${ProjName}/bsp/$(coreFolder)/env}&quot;" />
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;${workspace_loc:/${ProjName}/bsp/$(coreFolder)/drivers}&quot;" />
+						<element value="&quot;${workspace_loc:/${ProjName}/bsp/$(coreFolder)/include}&quot;" />
+						<element value="&quot;${workspace_loc:/${ProjName}/bsp/$(coreFolder)/env}&quot;" />
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+
+		<process type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+				<complex-array name="resourcePaths">
+					<element>
+						<simple
+							name="id"
+							value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.scriptfile" />
+						<simple-array name="values">
+							<element value="&quot;${workspace_loc:/${ProjName}/bsp/$(coreFolder)/env/link_flash.lds}&quot;" />
+						</simple-array>
+						<simple
+							name="path"
+							value="" />
+					</element>
+				</complex-array>
+		</process>
+	</if>
+
+	<!-- ==============================E203================================ -->
+	
+	
+	<!-- ==============================N200================================ -->
+		
+	<if condition="$(HbirdCore)==n200" >
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+		
+		
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="folders">
+				<element>
+					<simple
+						name="source"
+						value="bsp/$(coreFolder)/n200/drivers" />
+					<simple
+						name="target"
+						value="bsp/$(coreFolder)/n200/drivers" />
+					<simple
+						name="pattern"
+						value=".*[.](c|h)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="bsp/$(coreFolder)/n200/env" />
+					<simple
+						name="target"
+						value="bsp/$(coreFolder)/n200/env" />
+					<simple
+						name="pattern"
+						value=".*[.](c|h|S|mk|lds|cfg)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="bsp/$(coreFolder)/n200/stubs" />
+					<simple
+						name="target"
+						value="bsp/$(coreFolder)/n200/stubs" />
+					<simple
+						name="pattern"
+						value=".*[.](c|h)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				<element>
+					<simple
+						name="source"
+						value="bsp/$(coreFolder)/soc/drivers" />
+					<simple
+						name="target"
+						value="bsp/$(coreFolder)/soc/drivers" />
+					<simple
+						name="pattern"
+						value=".*[.](c|h)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				
+			</complex-array>
+		</process>
+		
+	</if>
+
+	<if condition="$(HbirdContent)==demo">
+
+	<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+		
+		
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="folders">
+				
+				<element>
+					<simple
+						name="source"
+						value="software/demo_pic" />
+					<simple
+						name="target"
+						value="src" />
+					<simple
+						name="pattern"
+						value=".*[.](c|h)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				
+				
+			</complex-array>
+		</process>
+		
+	</if>
+	
+<if condition="$(HbirdContent)==hello">
+
+	<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+		
+		
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="folders">
+				
+				<element>
+					<simple
+						name="source"
+						value="software/hello_world" />
+					<simple
+						name="target"
+						value="src" />
+					<simple
+						name="pattern"
+						value=".*[.](c|h)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				
+				
+			</complex-array>
+		</process>
+		
+	</if>
+	
+<!-- ==============================RTOS================================ -->
+	
+<if condition="$(HbirdContent)==rtos">
+
+	<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+		
+		
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="folders">
+				
+				<element>
+					<simple
+						name="source"
+						value="software/FreeRTOSv9.0.0/Demo" />
+					<simple
+						name="target"
+						value="src" />
+					<simple
+						name="pattern"
+						value=".*[.](c|h)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				
+				<element>
+					<simple
+						name="source"
+						value="software/FreeRTOSv9.0.0/Source/" />
+					<simple
+						name="target"
+						value="Source" />
+					<simple
+						name="pattern"
+						value=".*[.](c|h)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				
+				
+				<element>
+					<simple
+						name="source"
+						value="software/FreeRTOSv9.0.0/Source/include" />
+					<simple
+						name="target"
+						value="Source/include" />
+					<simple
+						name="pattern"
+						value=".*[.](c|h)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				
+				<element>
+					<simple
+						name="source"
+						value="software/FreeRTOSv9.0.0/Source/portable/GCC/N200" />
+					<simple
+						name="target"
+						value="Source/portable/GCC/N200" />
+					<simple
+						name="pattern"
+						value=".*[.](c|S|h)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				
+				<element>
+					<simple
+						name="source"
+						value="software/FreeRTOSv9.0.0/Source/portable/MemMang" />
+					<simple
+						name="target"
+						value="Source/portable/MemMang" />
+					<simple
+						name="pattern"
+						value=".*[.](c)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				
+				
+				
+			</complex-array>
+		</process>
+		
+	</if>
+	
+<!-- ==============================END RTOS================================= -->
+
+
+
+<!-- ==============================empty================================ -->
+	
+	<if condition="$(HbirdContent)==empty">
+
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalCopyFolders">
+		
+		
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="folders">
+				
+				<element>
+					<simple
+						name="source"
+						value="software/empty" />
+					<simple
+						name="target"
+						value="src" />
+					<simple
+						name="pattern"
+						value=".*[.](c)" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+				
+				
+			</complex-array>
+		</process>
+		
+	</if>
+	
+<!-- ==============================END empty================================= -->
+
+
+
+
+	<!-- Target options -->
+	<if condition="$(HbirdCore)==n200">
+		<process type="org.eclipse.cdt.managedbuilder.core.SetMBSStringOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.base" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.arch.rv32i" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.fp" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.isa.fp.none" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.abi.integer" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.integer.ilp32" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.abi.fp" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.abi.fp.none" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.codemodel" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.codemodel.any" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.debugging.level" />
+					<simple
+						name="value"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.debugging.level.default" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+		<process
+			type="org.eclipse.cdt.managedbuilder.core.SetMBSBooleanOptionValue">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.multiply" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.atomic" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.isa.compressed" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.target.div" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.optimization.nocommon" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.linker.gcsections" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.gcsections" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.nostart" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.usenewlibnano" />
+					<simple
+						name="value"
+						value="true" />
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+		<process type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;${workspace_loc:/${ProjName}/bsp/$(coreFolder)/n200/drivers}&quot;" />
+						<element value="&quot;${workspace_loc:/${ProjName}/bsp/$(coreFolder)/n200/env}&quot;" />
+						<element value="&quot;${workspace_loc:/${ProjName}/bsp/$(coreFolder)/n200/stubs}&quot;" />
+						<element value="&quot;${workspace_loc:/${ProjName}/bsp/$(coreFolder)/soc/drivers}&quot;" />
+						<element value="&quot;${workspace_loc:/${ProjName}/bsp/$(coreFolder)}&quot;" />
+						
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+		
+
+
+		<process type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;${workspace_loc:/${ProjName}/bsp/$(coreFolder)/n200/drivers}&quot;" />
+						<element value="&quot;${workspace_loc:/${ProjName}/bsp/$(coreFolder)/n200/env}&quot;" />
+						<element value="&quot;${workspace_loc:/${ProjName}/bsp/$(coreFolder)/n200/stubs}&quot;" />
+						<element value="&quot;${workspace_loc:/${ProjName}/bsp/$(coreFolder)/soc/drivers}&quot;" />
+						<element value="&quot;${workspace_loc:/${ProjName}/bsp/$(coreFolder)}&quot;" />
+						
+
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+		
+
+
+		<process type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+				<complex-array name="resourcePaths">
+					<element>
+						<simple
+							name="id"
+							value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.cpp.linker.scriptfile" />
+						<simple-array name="values">
+							<element value="&quot;${workspace_loc:/${ProjName}/bsp/$(coreFolder)/n200/env/link_flash.lds}&quot;" />
+						</simple-array>
+						<simple
+							name="path"
+							value="" />
+					</element>
+				</complex-array>
+		</process>
+	</if>
+	
+	
+		<if condition="$(HbirdContent)==rtos">
+		<process type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.assembler.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;${workspace_loc:/${ProjName}/src}&quot;" />
+						<element value="&quot;${workspace_loc:/${ProjName}/Source}&quot;" />
+						<element value="&quot;${workspace_loc:/${ProjName}/Source/include}&quot;" />
+						<element value="&quot;${workspace_loc:/${ProjName}/Source/portable/GCC/N200}&quot;" />
+						
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+		</if>
+		
+		
+		<if condition="$(HbirdContent)==rtos">
+		<process type="org.eclipse.cdt.managedbuilder.core.AppendToMBSStringListOptionValues">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<complex-array name="resourcePaths">
+				<element>
+					<simple
+						name="id"
+						value="ilg.gnumcueclipse.managedbuild.cross.riscv.option.c.compiler.include.paths" />
+					<simple-array name="values">
+						<element value="&quot;${workspace_loc:/${ProjName}/src}&quot;" />
+						<element value="&quot;${workspace_loc:/${ProjName}/Source}&quot;" />
+						<element value="&quot;${workspace_loc:/${ProjName}/Source/include}&quot;" />
+						<element value="&quot;${workspace_loc:/${ProjName}/Source/portable/GCC/N200}&quot;" />
+
+					</simple-array>
+					<simple
+						name="path"
+						value="" />
+				</element>
+			</complex-array>
+		</process>
+		</if>
+	<!-- ==============================N200================================ -->
+	
+	<!-- ==============================N200 OpenOCD================================ -->	
+	
+	<if condition="$(HbirdCore)==n200" >
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddLiquidFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="openocd/n200_openocd.xml" />
+					<simple
+						name="target"
+						value="$(projectName)_Debug_OpenOCD.launch" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<!-- ==============================END N200 OpenOCD================================ -->	
+	
+	<!-- ==============================E203 OpenOCD================================ -->	
+	
+	<if condition="$(HbirdCore)==e203" >
+		<process type="ilg.gnumcueclipse.templates.core.ConditionalAddLiquidFiles">
+			<simple
+				name="projectName"
+				value="$(projectName)" />
+			<simple
+				name="condition"
+				value="" />
+			<complex-array name="files">
+				<element>
+					<simple
+						name="source"
+						value="openocd/e203_openocd.xml" />
+					<simple
+						name="target"
+						value="$(projectName)_Debug_OpenOCD.launch" />
+					<simple
+						name="replaceable"
+						value="true" />
+				</element>
+			</complex-array>
+		</process>
+	</if>
+	<!-- ==============================END E203 OpenOCD================================ -->	
+	
+	<!-- Open main.* in editor -->
+	<process type="org.eclipse.cdt.ui.OpenFiles">
+		<simple
+			name="projectName"
+			value="$(projectName)" />
+		<complex-array name="files">
+			<element>
+				<simple
+					name="target"
+					value="src/main.c" />
+			</element>
+		</complex-array>
+	</process>
+</template>

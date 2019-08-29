@@ -94,6 +94,12 @@
 
 		<module>bundles/ilg.gnumcueclipse.templates.sifive</module>
 		<module>features/ilg.gnumcueclipse.templates.sifive.feature</module>
+
+		<module>bundles/ilg.gnumcueclipse.templates.nuclei</module>
+		<module>features/ilg.gnumcueclipse.templates.nuclei.feature</module>
+		
+		<module>bundles/ilg.gnumcueclipse.templates.hbird</module>
+		<module>features/ilg.gnumcueclipse.templates.hbird.feature</module>
 		
 	</modules>
 
