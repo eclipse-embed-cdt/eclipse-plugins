@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: ilg.gnumcueclipse.templates.stm;singleton:=true
-Bundle-Version: 2.6.5.qualifier
+Bundle-Version: 2.7.1.qualifier
 Bundle-Activator: ilg.gnumcueclipse.templates.stm.Activator
 Require-Bundle: ilg.gnumcueclipse.core,
  ilg.gnumcueclipse.templates.core,

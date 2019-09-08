@@ -2,7 +2,7 @@
 <feature
       id="ilg.gnumcueclipse.templates.freescale.feature"
       label="%featureName"
-      version="2.2.9.qualifier"
+      version="2.3.1.qualifier"
       provider-name="%providerName"
       plugin="ilg.gnumcueclipse.templates.freescale">
 

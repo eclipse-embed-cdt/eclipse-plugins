@@ -2,7 +2,7 @@
 <feature
       id="ilg.gnumcueclipse.templates.stm.feature"
       label="%featureName"
-      version="2.6.5.qualifier"
+      version="2.7.1.qualifier"
       provider-name="%providerName"
       plugin="ilg.gnumcueclipse.templates.stm">
 

@@ -18,7 +18,7 @@
 
 	<groupId>ilg.gnumcueclipse</groupId>
 	<artifactId>ilg.gnumcueclipse.templates.sifive.feature</artifactId>
-	<version>1.3.2-SNAPSHOT</version>
+	<version>1.4.1-SNAPSHOT</version>
 	<packaging>eclipse-feature</packaging>
 
 	<parent>
