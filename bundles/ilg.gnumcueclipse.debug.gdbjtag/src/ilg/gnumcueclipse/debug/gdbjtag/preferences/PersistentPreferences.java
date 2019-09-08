@@ -28,7 +28,7 @@ public class PersistentPreferences extends ilg.gnumcueclipse.core.preferences.Pe
 	public static final String SEARCH_PATH = "search.path";
 	public static final String SEARCH_PATH_DEFAULT = "";
 
-	public static final String XPACK_NAME = "xpack.name";
+	public static final String XPACK_NAMES = "xpack.names";
 
 	public static final String EXECUTABLE_NAME_OS = EXECUTABLE_NAME + ".%s";
 	public static final String SEARCH_PATH_OS = SEARCH_PATH + ".%s";

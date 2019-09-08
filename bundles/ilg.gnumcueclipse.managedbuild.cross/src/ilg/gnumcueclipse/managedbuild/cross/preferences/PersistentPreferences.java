@@ -28,14 +28,14 @@ public class PersistentPreferences extends ilg.gnumcueclipse.core.preferences.Pe
 	public static final String BUILD_TOOLS_SEARCH_PATH_KEY = "buildTools.search.path";
 	public static final String BUILD_TOOLS_SEARCH_PATH_OS_KEY = "buildTools.search.path.%s";
 
-	public static final String BUILD_TOOLS_XPACK_NAME = "buildTools.xpack.name";
+	public static final String BUILD_TOOLS_XPACK_NAMES = "buildTools.xpack.names";
 
 	public static final String TOOLCHAIN_NAME_KEY = "toolchain.name";
 	private static final String TOOLCHAIN_PATH_KEY = "toolchain.path.%d";
 	private static final String TOOLCHAIN_SEARCH_PATH_KEY = "toolchain.search.path.%d";
 	private static final String TOOLCHAIN_SEARCH_PATH_OS_KEY = "toolchain.search.path.%s.%d";
 
-	private static final String TOOLCHAIN_XPACK_NAME_KEY = "toolchain.xpack.name.%d";
+	private static final String TOOLCHAIN_XPACK_NAMES_KEY = "toolchain.xpack.names.%d";
 
 	public static final String GLOBAL_TOOLCHAIN_PATH_STRICT = "global.toolchain.path.strict";
 	public static final String WORKSPACE_TOOLCHAIN_PATH_STRICT = "workspace.toolchain.path.strict";
@@ -164,7 +164,7 @@ public class PersistentPreferences extends ilg.gnumcueclipse.core.preferences.Pe
 	public static String getToolchainXpackKey(String toolchainName) {
 
 		int hash = Math.abs(toolchainName.trim().hashCode());
-		String key = String.format(TOOLCHAIN_XPACK_NAME_KEY, hash);
+		String key = String.format(TOOLCHAIN_XPACK_NAMES_KEY, hash);
 		// System.out.println(key);
 		return key;
 	}

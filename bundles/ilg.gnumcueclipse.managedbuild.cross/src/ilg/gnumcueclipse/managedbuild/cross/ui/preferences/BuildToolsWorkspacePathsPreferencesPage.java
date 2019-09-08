@@ -78,9 +78,9 @@ public class BuildToolsWorkspacePathsPreferencesPage extends FieldEditorPreferen
 		boolean isStrict;
 		isStrict = fDefaultPreferences.getBoolean(PersistentPreferences.WORKSPACE_BUILDTOOLS_PATH_STRICT, true);
 
-		String xpackName = fDefaultPreferences.getBuildToolsXpackName();
+		String[] xpackNames = fDefaultPreferences.getBuildToolsXpackNames();
 
-		FieldEditor buildToolsPathField = new XpackDirectoryNotStrictFieldEditor(xpackName,
+		FieldEditor buildToolsPathField = new XpackDirectoryNotStrictFieldEditor(xpackNames,
 				PersistentPreferences.BUILD_TOOLS_PATH_KEY, Messages.BuildToolsPaths_label, getFieldEditorParent(),
 				isStrict);
 

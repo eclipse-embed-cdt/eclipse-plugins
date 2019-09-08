@@ -149,7 +149,7 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 		return value;
 	}
 
-	public String getToolchainXpackName(String toolchainName) {
+	public String[] getToolchainXpackNames(String toolchainName) {
 
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("DefaultPreferences.getToolchainXpackName(\"" + toolchainName + "\")");
@@ -158,9 +158,9 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 		if (Activator.getInstance().isDebugging()) {
 			System.out.println("DefaultPreferences.getToolchainXpackName(\"" + toolchainName + "\") (" + key + ")");
 		}
-		String value = getString(key, "");
+		String[] values = getStringArray(key, "");
 
-		return value;
+		return values;
 	}
 
 	// ------------------------------------------------------------------------
@@ -210,15 +210,15 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 	 * 
 	 * @return string, possibly empty.
 	 */
-	public String getBuildToolsXpackName() {
+	public String[] getBuildToolsXpackNames() {
 
-		String key = PersistentPreferences.BUILD_TOOLS_XPACK_NAME;
-		String value = getString(key, "");
+		String key = PersistentPreferences.BUILD_TOOLS_XPACK_NAMES;
+		String[] values = getStringArray(key, "");
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("DefaultPreferences.getBuildToolsXpackName() = \"" + value + "\"");
+			System.out.println("DefaultPreferences.getBuildToolsXpackNames() = \"" + String.join(";", values) + "\"");
 		}
-		return value;
+		return values;
 	}
 
 	/**
@@ -267,8 +267,8 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 		}
 
 		if (searchPath != null && !searchPath.isEmpty()) {
-			String xpackName = getBuildToolsXpackName();
-			path = searchLatestExecutable(xpackName, searchPath, subPath, executableName);
+			String[] xpackNames = getBuildToolsXpackNames();
+			path = searchLatestExecutable(xpackNames, searchPath, subPath, executableName);
 		}
 
 		if (path != null) {
@@ -329,8 +329,8 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 			}
 
 			if (searchPath != null && !searchPath.isEmpty()) {
-				String xpackName = getToolchainXpackName(toolchainName);
-				path = searchLatestExecutable(xpackName, searchPath, subPath, executableName);
+				String[] xpackNames = getToolchainXpackNames(toolchainName);
+				path = searchLatestExecutable(xpackNames, searchPath, subPath, executableName);
 			}
 		}
 

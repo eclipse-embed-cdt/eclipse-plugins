@@ -134,10 +134,10 @@ public class WorkspaceToolchainsPathsPreferencesPage extends FieldEditorPreferen
 
 			isStrict = fDefaultPreferences.getBoolean(PersistentPreferences.WORKSPACE_TOOLCHAIN_PATH_STRICT, true);
 
-			String xpackName = fDefaultPreferences.getToolchainXpackName(toolchainName);
+			String[] xpackNames = fDefaultPreferences.getToolchainXpackNames(toolchainName);
 
 			String key = PersistentPreferences.getToolchainKey(toolchainName);
-			FieldEditor toolchainPathField = new XpackDirectoryNotStrictFieldEditor(xpackName, key,
+			FieldEditor toolchainPathField = new XpackDirectoryNotStrictFieldEditor(xpackNames, key,
 					Messages.ToolchainPaths_label, getFieldEditorParent(), isStrict);
 
 			addField(toolchainPathField);

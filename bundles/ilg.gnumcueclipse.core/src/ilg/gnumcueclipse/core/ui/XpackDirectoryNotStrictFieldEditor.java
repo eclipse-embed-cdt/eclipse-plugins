@@ -25,23 +25,26 @@ import ilg.gnumcueclipse.core.XpackUtils;
 
 public class XpackDirectoryNotStrictFieldEditor extends DirectoryNotStrictFieldEditor {
 
-	protected String fXpackName;
+	protected String[] fXpackNames;
 	protected Button fXpackButton;
 	String[] fVersions;
 
-	public XpackDirectoryNotStrictFieldEditor(String xpackName, String buildToolsPathKey, String toolsPaths_label,
+	public XpackDirectoryNotStrictFieldEditor(String[] xpackNames, String buildToolsPathKey, String toolsPaths_label,
 			Composite fieldEditorParent, boolean isStrict) {
 		super(buildToolsPathKey, toolsPaths_label, fieldEditorParent, isStrict);
 
-		assert xpackName != null;
-		fXpackName = xpackName;
+		assert xpackNames != null;
+		fXpackNames = xpackNames;
 
-		fVersions = XpackUtils.getPackVersions(fXpackName);
+		fVersions = XpackUtils.getPackVersions(fXpackNames);
 
-		if (!fXpackName.isEmpty() && fVersions.length > 0) {
-			IPath packPath = XpackUtils.getPackPath(fXpackName);
-			if (packPath.toFile().isDirectory()) {
-				fXpackButton.setEnabled(true);
+		if (fVersions.length > 0) {
+			for (String xpackName : xpackNames) {
+				IPath packPath = XpackUtils.getPackPath(xpackName);
+				if (packPath.toFile().isDirectory()) {
+					fXpackButton.setEnabled(true);
+					break;
+				}
 			}
 		}
 	}
@@ -83,7 +86,7 @@ public class XpackDirectoryNotStrictFieldEditor extends DirectoryNotStrictFieldE
 		if (dlg.open() == Dialog.OK) {
 			int index = dlg.getData();
 			String version = fVersions[index];
-			IPath path = XpackUtils.getPackPath(fXpackName);
+			IPath path = XpackUtils.getPackPath(fXpackNames[index]);
 			// TODO: remove hard reference to .content/bin
 			path = path.append(version).append(".content").append("bin");
 			setStringValue(path.toString());

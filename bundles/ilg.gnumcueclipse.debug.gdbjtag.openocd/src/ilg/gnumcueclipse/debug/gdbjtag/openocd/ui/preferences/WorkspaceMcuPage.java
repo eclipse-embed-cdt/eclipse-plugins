@@ -88,9 +88,9 @@ public class WorkspaceMcuPage extends FieldEditorPreferencePage implements IWork
 
 		boolean isStrict = fPersistentPreferences.getFolderStrict();
 
-		String xpackName = fDefaultPreferences.getXpackName();
+		String[] xpackNames = fDefaultPreferences.getXpackNames();
 
-		FieldEditor folder = new XpackDirectoryNotStrictFieldEditor(xpackName, PersistentPreferences.INSTALL_FOLDER,
+		FieldEditor folder = new XpackDirectoryNotStrictFieldEditor(xpackNames, PersistentPreferences.INSTALL_FOLDER,
 				Messages.McuPage_executable_folder, getFieldEditorParent(), isStrict);
 		addField(folder);
 	}

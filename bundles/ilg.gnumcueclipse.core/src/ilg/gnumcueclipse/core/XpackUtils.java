@@ -81,37 +81,43 @@ public class XpackUtils {
 		}
 	}
 
-	public static String[] getPackVersions(String packName) {
-
-		IPath packPath = getPackPath(packName);
-		File folder = packPath.toFile();
-		if (!folder.isDirectory()) {
-			return new String[] {};
-		}
+	public static String[] getPackVersions(String[] packNames) {
 
 		List<String> list = new LinkedList<String>();
 
-		folder.listFiles(new FilenameFilter() {
+		for (String packName : packNames) {
+			IPath packPath = getPackPath(packName);
+			File folder = packPath.toFile();
+			if (folder.isDirectory()) {
+				
+				folder.listFiles(new FilenameFilter() {
 
-			@Override
-			public boolean accept(File dir, String name) {
-				IPath path = (new Path(dir.getAbsolutePath())).append(name);
-				if (path.toFile().isDirectory()) {
-					IPath packagePath = path.append("package.json");
-					if (packagePath.toFile().isFile()) {
-						if (".link".equals(name)) {
-							list.add("current");
-						} else {
-							list.add(name);
+					@Override
+					public boolean accept(File dir, String name) {
+						IPath path = (new Path(dir.getAbsolutePath())).append(name);
+						if (path.toFile().isDirectory()) {
+							IPath packagePath = path.append("package.json");
+							if (packagePath.toFile().isFile()) {
+								if (".link".equals(name)) {
+									list.add("current");
+								} else {
+									list.add(name);
+								}
+								return true;
+							}
+
 						}
-						return true;
+						return false;
 					}
 
-				}
-				return false;
+				});
 			}
+		}
+		
+		if (list.isEmpty()) {
+			return new String[] {};		
+		}
 
-		});
 
 		Collections.sort(list, new Comparator<String>() {
 			@Override

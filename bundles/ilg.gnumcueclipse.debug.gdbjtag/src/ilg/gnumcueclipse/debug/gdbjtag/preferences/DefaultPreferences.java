@@ -62,15 +62,15 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 		putString(key, value);
 	}
 
-	public String getXpackName() {
+	public String[] getXpackNames() {
 
-		String key = PersistentPreferences.XPACK_NAME;
-		String value = getString(key, "");
+		String key = PersistentPreferences.XPACK_NAMES;
+		String[] values = getStringArray(key, "");
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("DefaultPreferences.getXpackName() = \"" + value + "\"");
+			System.out.println("DefaultPreferences.getXpackNames() = \"" + String.join(";", values) + "\"");
 		}
-		return value;
+		return values;
 	}
 
 	// ------------------------------------------------------------------------
@@ -121,8 +121,8 @@ public class DefaultPreferences extends ilg.gnumcueclipse.core.preferences.Defau
 			}
 
 			if (searchPath != null && !searchPath.isEmpty()) {
-				String xpackName = getXpackName();
-				path = searchLatestExecutable(xpackName, searchPath, subFolder, executableName);
+				String[] xpackNames = getXpackNames();
+				path = searchLatestExecutable(xpackNames, searchPath, subFolder, executableName);
 			}
 		}
 

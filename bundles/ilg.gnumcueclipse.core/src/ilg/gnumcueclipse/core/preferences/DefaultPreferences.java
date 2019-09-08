@@ -50,10 +50,8 @@ public class DefaultPreferences {
 	/**
 	 * Get a string preference value, or the default.
 	 * 
-	 * @param key
-	 *            a string with the key to search.
-	 * @param defaultValue
-	 *            a string with the default, possibly null.
+	 * @param key          a string with the key to search.
+	 * @param defaultValue a string with the default, possibly null.
 	 * @return a trimmed string, or a null default.
 	 */
 	public String getString(String key, String defaultValue) {
@@ -71,6 +69,36 @@ public class DefaultPreferences {
 		}
 
 		return value;
+	}
+
+	/**
+	 * Get an array of strings, or the default.
+	 * 
+	 * @param key           a string with the key to search.
+	 * @param defaultValuea string with the default, possibly null.
+	 * @return an array of strings, possibly with an empty element
+	 */
+	public String[] getStringArray(String key, String defaultValue) {
+
+		String value;
+		value = fPreferences.get(key, defaultValue);
+
+		if (value != null) {
+			value = value.trim();
+		} else {
+			value = "";
+		}
+
+		if (Activator.getInstance().isDebugging()) {
+			System.out.println("DefaultPreferences.getStringArray(\"" + key + "\", \"" + defaultValue + "\") "
+					+ fPreferences.name() + " = \"" + value + "\"");
+		}
+
+		String[] values = value.split(";");
+		for (int i = 0; i < values.length; i++)
+			values[i] = values[i].trim();
+
+		return values;
 	}
 
 	public boolean getBoolean(String key, boolean defaultValue) {
@@ -156,22 +184,25 @@ public class DefaultPreferences {
 	 * folders. "<searchPath>/<version>/bin/<executable>"
 	 * 
 	 * @param searchPath
-	 * @param subFolder
-	 *            may be null; usually "bin".
+	 * @param subFolder      may be null; usually "bin".
 	 * @param executableName
 	 * @return
 	 */
-	public String searchLatestExecutable(String xpackName, String searchPath, String subFolder, String executableName) {
+	public String searchLatestExecutable(String[] xpackNames, String searchPath, String subFolder,
+			String executableName) {
 
 		if (Activator.getInstance().isDebugging()) {
-			System.out.println("DefaultPreferences.searchLatestExecutable(" + xpackName + ", \"" + searchPath + "\", "
-					+ subFolder + "\", " + executableName + ") ");
+			System.out.println("DefaultPreferences.searchLatestExecutable(" + String.join(";", xpackNames) + ", \""
+					+ searchPath + "\", " + subFolder + "\", " + executableName + ") ");
 		}
 
-		if (xpackName != null && !xpackName.isEmpty()) {
-			// Add xPack path in front of the search path.
-			String xpackPath = XpackUtils.getPackPath(xpackName).toPortableString();
-			searchPath = xpackPath + EclipseUtils.getPathSeparator() + searchPath;
+		// Iterate in reverse order.
+		for (int i = xpackNames.length - 1; i >= 0; --i) {
+			if (!xpackNames[i].isEmpty()) {
+				// Add xPack path in front of the search path.
+				String xpackPath = XpackUtils.getPackPath(xpackNames[i]).toPortableString();
+				searchPath = xpackPath + EclipseUtils.getPathSeparator() + searchPath;
+			}
 		}
 
 		String resolvedPath = EclipseUtils.performStringSubstitution(searchPath);
@@ -191,8 +222,8 @@ public class DefaultPreferences {
 
 		Map<Long, String> map = new HashMap<Long, String>();
 		// Try paths in order; collect dates.
-		for (int i = 0; i < paths.length; ++i) {
-			searchExecutable(paths[i], subFolder, executableName, map);
+		for (String path : paths) {
+			searchExecutable(path, subFolder, executableName, map);
 		}
 
 		if (map.isEmpty()) {
@@ -213,8 +244,7 @@ public class DefaultPreferences {
 	/**
 	 * 
 	 * @param folder
-	 * @param subFolder
-	 *            may be null; usually "bin".
+	 * @param subFolder      may be null; usually "bin".
 	 * @param executableName
 	 * @param map
 	 */
