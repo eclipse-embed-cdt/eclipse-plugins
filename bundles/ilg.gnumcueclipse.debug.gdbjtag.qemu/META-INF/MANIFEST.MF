@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: ilg.gnumcueclipse.debug.gdbjtag.qemu;singleton:=true
-Bundle-Version: 3.3.3.qualifier
+Bundle-Version: 3.4.1.qualifier
 Bundle-Activator: ilg.gnumcueclipse.debug.gdbjtag.qemu.Activator
 Require-Bundle: ilg.gnumcueclipse.core,
  ilg.gnumcueclipse.debug.core,

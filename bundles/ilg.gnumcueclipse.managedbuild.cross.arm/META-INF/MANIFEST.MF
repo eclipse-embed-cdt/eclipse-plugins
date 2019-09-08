@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: %bundle.name
 Bundle-SymbolicName: ilg.gnumcueclipse.managedbuild.cross.arm;singleton:=true
-Bundle-Version: 2.6.4.qualifier
+Bundle-Version: 2.7.1.qualifier
 Bundle-Activator: ilg.gnumcueclipse.managedbuild.cross.arm.Activator
 Require-Bundle: ilg.gnumcueclipse.core,
  ilg.gnumcueclipse.packs.core,

@@ -2,7 +2,7 @@
 <feature
       id="ilg.gnumcueclipse.managedbuild.cross.arm.feature"
       label="%featureName"
-      version="2.6.4.qualifier"
+      version="2.7.1.qualifier"
       provider-name="%providerName"
       plugin="ilg.gnumcueclipse.managedbuild.cross.arm">
 
