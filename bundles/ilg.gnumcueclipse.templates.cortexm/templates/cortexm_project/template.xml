@@ -1667,20 +1667,6 @@ and is available athttp://www.eclipse.org/legal/epl-v10.html"
 				<element>
 					<simple
 						name="id"
-						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warnabi" />
-					<simple
-						name="value"
-						value="true" />
-					<simple
-						name="path"
-						value="" />
-					<simple
-						name="buildType"
-						value="" />
-				</element>
-				<element>
-					<simple
-						name="id"
 						value="ilg.gnuarmeclipse.managedbuild.cross.option.cpp.compiler.warning.ctordtorprivacy" />
 					<simple
 						name="value"
