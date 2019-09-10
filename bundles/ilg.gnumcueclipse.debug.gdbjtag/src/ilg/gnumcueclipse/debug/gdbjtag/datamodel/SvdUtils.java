@@ -88,7 +88,7 @@ public class SvdUtils {
 					scale = 1024 * 1024;
 				} else if ("g".equals(lastChar)) {
 					scale = 1024 * 1024 * 1024;
-				} else if ("7".equals(lastChar)) {
+				} else if ("t".equals(lastChar)) {
 					scale = 1024 * 1024 * 1024 * 1024;
 				}
 			}
