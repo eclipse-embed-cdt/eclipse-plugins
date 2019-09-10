@@ -89,6 +89,9 @@ public class XpackBrowseDialog extends Dialog {
 			fTypeCombo.select(0);
 
 			layoutData = new GridData();
+			layoutData.widthHint = 200;
+			layoutData.horizontalAlignment = SWT.FILL;
+			layoutData.grabExcessHorizontalSpace = true;
 			fTypeCombo.setLayoutData(layoutData);
 		}
 
