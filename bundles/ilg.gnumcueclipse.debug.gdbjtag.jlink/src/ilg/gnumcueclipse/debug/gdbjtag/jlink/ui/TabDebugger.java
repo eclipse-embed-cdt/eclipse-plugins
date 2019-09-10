@@ -1093,14 +1093,6 @@ public class TabDebugger extends AbstractLaunchConfigurationTab {
 			}
 		});
 
-		fTargetIpAddress.addVerifyListener(new VerifyListener() {
-			@Override
-			public void verifyText(VerifyEvent e) {
-				e.doit = Character.isLetterOrDigit(e.character) || e.character == '.' || e.character == '-'
-						|| e.character == '_' || Character.isISOControl(e.character);
-			}
-		});
-
 		fTargetPortNumber.addVerifyListener(new VerifyListener() {
 			@Override
 			public void verifyText(VerifyEvent e) {
