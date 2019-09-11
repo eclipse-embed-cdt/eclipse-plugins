@@ -29,8 +29,6 @@ public class PreferencesInitializer extends AbstractPreferenceInitializer {
 		// System.out
 		// .println("PreferenceInitializer.initializeDefaultPreferences()");
 
-		IPreferenceStore store = Preferences.getPreferenceStore();
-
 		// Get workspace
 		IWorkspace workspace = ResourcesPlugin.getWorkspace();
 
@@ -40,16 +38,19 @@ public class PreferencesInitializer extends AbstractPreferenceInitializer {
 		IPath packagesPath = workspaceParentPath.append("Packages");
 		// System.out.println(packagesPath.toOSString());
 
-		// Create folder if needed
-		File packagesFolder = new File(packagesPath.toOSString());
+		IPreferenceStore store = Preferences.getPreferenceStore();
+		store.setDefault(Preferences.PACKS_FOLDER_PATH, packagesPath.toOSString());
+		store.setDefault(Preferences.PACKS_MACRO_NAME, Preferences.DEFAULT_MACRO_NAME);
+		
+		// Read back the actual value.
+		String folderPath = store.getString(Preferences.PACKS_FOLDER_PATH);
+
+		File packagesFolder = new File(folderPath);
 		if (!packagesFolder.exists()) {
 			packagesFolder.mkdir();
-			// System.out.println(packagesFolder + " created");
+			if (Activator.getInstance().isDebugging()) {
+			  System.out.println(packagesFolder + " created");
+			}
 		}
-
-		store.setDefault(Preferences.PACKS_FOLDER_PATH, packagesPath.toOSString());
-
-		store.setDefault(Preferences.PACKS_MACRO_NAME, Preferences.DEFAULT_MACRO_NAME);
 	}
-
 }
