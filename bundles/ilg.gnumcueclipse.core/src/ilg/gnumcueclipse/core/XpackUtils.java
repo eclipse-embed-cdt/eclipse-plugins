@@ -44,30 +44,44 @@ public class XpackUtils {
 		return true;
 	}
 
+	public static IPath getRepoBasePath() {
+		
+		Map<String, String> env = System.getenv();
+		
+		if (EclipseUtils.isMacOSX()) {
+			String homeFolder = env.get("HOME");
+			IPath path = new Path(homeFolder);
+			return path.append("/Library");
+		} else if (EclipseUtils.isLinux()) {
+			String homeFolder = env.get("HOME");
+			IPath path = new Path(homeFolder);
+			return path.append("/opt");
+		} else if (EclipseUtils.isWindows()) {
+			String homeFolder = env.get("APPDATA");
+			IPath path = new Path(homeFolder);
+			return path;
+		}
+		return null;
+	}
+	
 	public static IPath getRepoPath() {
 
 		Map<String, String> env = System.getenv();
 		String folder = env.get("XPACKS_REPO_FOLDER");
+		
+		IPath path;
 		if (folder != null) {
-			IPath path = new Path(folder);
+			path = new Path(folder);
 			if (path.toFile().isDirectory()) {
 				return path;
 			}
 		}
 
-		if (EclipseUtils.isMacOSX()) {
-			String homeFolder = env.get("HOME");
-			IPath path = new Path(homeFolder);
-			return path.append("/Library/xPacks");
-		} else if (EclipseUtils.isLinux()) {
-			String homeFolder = env.get("HOME");
-			IPath path = new Path(homeFolder);
-			return path.append("/opt/xPacks");
-		} else if (EclipseUtils.isWindows()) {
-			String homeFolder = env.get("APPDATA");
-			IPath path = new Path(homeFolder);
+		path = getRepoBasePath();
+		if (path != null) {
 			return path.append("xPacks");
 		}
+
 		return null;
 	}
 
