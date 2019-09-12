@@ -50,6 +50,7 @@ import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
+import ilg.gnumcueclipse.managedbuild.cross.GnuMcuMakefileGenerator;
 import ilg.gnumcueclipse.managedbuild.cross.Utils;
 import ilg.gnumcueclipse.managedbuild.cross.preferences.PersistentPreferences;
 import ilg.gnumcueclipse.managedbuild.cross.riscv.Activator;
@@ -998,7 +999,7 @@ public class TabToolchains extends AbstractCBuildPropertyTab {
 				try {
 					makefileResource.delete(true, new NullProgressMonitor());
 
-					GnuMakefileGenerator makefileGenerator = new GnuMakefileGenerator();
+					GnuMakefileGenerator makefileGenerator = new GnuMcuMakefileGenerator();
 					makefileGenerator.initialize(0, config, config.getBuilder(), new NullProgressMonitor());
 					makefileGenerator.regenerateMakefiles();
 				} catch (CoreException e) {

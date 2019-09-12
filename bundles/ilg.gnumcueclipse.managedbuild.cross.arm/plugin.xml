@@ -1663,6 +1663,7 @@
 				osList="all">
 			</targetPlatform>
 			<builder
+				buildfileGenerator="ilg.gnumcueclipse.managedbuild.cross.GnuMcuMakefileGenerator"
 				command="${cross_make}"
 				id="ilg.gnuarmeclipse.managedbuild.cross.builder"
 				superClass="cdt.managedbuild.target.gnu.builder">
