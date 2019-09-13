@@ -42,6 +42,7 @@ public class Option {
 	public static final String OPTION_ARM_TARGET_FLOAT_ABI = OPTION_ARM_TARGET + "fpu.abi";
 	public static final String OPTION_ARM_TARGET_FLOAT_UNIT = OPTION_ARM_TARGET + "fpu.unit";
 	public static final String OPTION_ARM_TARGET_UNALIGNEDACCESS = OPTION_ARM_TARGET + "unalignedaccess";
+	public static final String OPTION_ARM_TARGET_MCMSE = OPTION_ARM_TARGET + "mcmse";
 
 	public static final String OPTION_AARCH64_TARGET = OPTION_PREFIX + "." + ARCHITECTURE_AARCH64 + ".target.";
 	public static final String OPTION_AARCH64_TARGET_FAMILY = OPTION_AARCH64_TARGET + "family";
@@ -292,6 +293,10 @@ public class Option {
 		}
 
 		sValue = getOptionEnumCommand(config, OPTION_ARM_TARGET_UNALIGNEDACCESS);
+		if (sValue != null && sValue.length() > 0)
+			sReturn += " " + sValue;
+
+		sValue = getOptionBooleanCommand(config, OPTION_ARM_TARGET_MCMSE);
 		if (sValue != null && sValue.length() > 0)
 			sReturn += " " + sValue;
 

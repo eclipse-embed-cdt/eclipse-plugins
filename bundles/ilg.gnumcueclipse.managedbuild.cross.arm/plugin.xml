@@ -1408,6 +1408,25 @@
 					name="%option.target.arm.unalignedaccess.default">
 				</enumeratedOptionValue>
 			</option>
+   <option
+         command="-mcmse"
+         defaultValue="false"
+         id="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.mcmse"
+         isAbstract="true"
+         name="%option.target.arm.mcmse"
+         tip="Generate code that supports ARM TrustZone."
+         useByScannerDiscovery="true"
+         valueType="boolean">
+      <enablement
+            type="UI_ENABLEMENT|CMD_USAGE">
+         <checkOption
+               holderId="ilg.gnuarmeclipse.managedbuild.cross.toolchain.base"
+               isRegex="false"
+               optionId="ilg.gnuarmeclipse.managedbuild.cross.option.architecture"
+               value="ilg.gnuarmeclipse.managedbuild.cross.option.architecture.arm">
+         </checkOption>
+      </enablement>
+   </option>
 		</tool>
 		<tool
 			id="ilg.gnuarmeclipse.managedbuild.cross.tool.base.aarch64"
@@ -1811,6 +1830,11 @@
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.unalignedaccess"
 				superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.unalignedaccess">
 			</option>
+   <option
+         category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
+         id="ilg.gnuarmeclipse.managedbuild.cross.option.arm.target.mcmse"
+         superClass="ilg.gnuarmeclipse.managedbuild.cross.option.base.arm.target.mcmse">
+   </option>
 			<option
 				category="ilg.gnuarmeclipse.managedbuild.cross.optionCategory.target"
 				id="ilg.gnuarmeclipse.managedbuild.cross.option.aarch64.target.family"
