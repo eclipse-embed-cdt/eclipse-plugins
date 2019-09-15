@@ -95,6 +95,7 @@ public class SvdClusterDMNode extends SvdDMNode {
 		return array;
 	}
 
+	@Override
 	public BigInteger getBigAddressOffset() {
 		String str = getNode().getProperty("addressOffset");
 		if (!str.isEmpty()) {
