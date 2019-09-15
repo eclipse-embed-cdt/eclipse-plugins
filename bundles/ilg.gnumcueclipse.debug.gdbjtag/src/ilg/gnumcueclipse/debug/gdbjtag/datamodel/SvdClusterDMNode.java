@@ -104,5 +104,14 @@ public class SvdClusterDMNode extends SvdDMNode {
 		}
 	}
 
+	@Override
+	public BigInteger getBigRepeatIncrement() {
+		BigInteger bigRepeatIncrement = getBigArrayAddressIncrement();
+		if (bigRepeatIncrement != BigInteger.ZERO) {
+			return bigRepeatIncrement;
+		}
+		return null;
+	}
+
 	// ------------------------------------------------------------------------
 }
