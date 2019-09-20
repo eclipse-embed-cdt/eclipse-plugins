@@ -127,17 +127,19 @@ public class PdscParserForContent extends PdscParser {
 			verNode.putProperty(Property.ARCHIVE_URL, archiveUrl);
 			verNode.putProperty(Property.ARCHIVE_NAME, archiveName);
 
-			// Default as for unavailable packages
-			String size = "0";
-			try {
-				int sz = Utils.getRemoteFileSize(new URL(archiveUrl));
-				if (sz > 0) {
-					size = String.valueOf(sz);
+			if (isFirst) {
+				// Default as for unavailable packages
+				String size = "0";
+				try {
+					int sz = Utils.getRemoteFileSize(new URL(archiveUrl));
+					if (sz > 0) {
+						size = String.valueOf(sz);
+					}
+				} catch (IOException e) {
+					;
 				}
-			} catch (IOException e) {
-				;
+				verNode.putProperty(Property.ARCHIVE_SIZE, size);
 			}
-			verNode.putProperty(Property.ARCHIVE_SIZE, size);
 
 			String unpackFolder = packVendorName + "/" + packName + "/" + releaseName;
 			verNode.putProperty(Property.DEST_FOLDER, unpackFolder);

@@ -436,7 +436,7 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 				} catch (NumberFormatException e) {
 					;
 				}
-				if (!isInstalled && size > 0) {
+				if (!isInstalled && size >= 0) {
 					fIsInstallEnabled = true;
 				}
 				if (isInstalled) {

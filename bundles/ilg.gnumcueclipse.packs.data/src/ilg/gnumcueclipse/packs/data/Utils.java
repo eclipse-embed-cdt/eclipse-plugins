@@ -33,6 +33,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.console.MessageConsoleStream;
 
 import ilg.gnumcueclipse.core.StringUtils;
+import ilg.gnumcueclipse.packs.core.data.PacksStorage;
+import ilg.gnumcueclipse.packs.core.tree.Node;
+import ilg.gnumcueclipse.packs.xcdl.ContentSerialiser;
 
 public class Utils {
 
@@ -69,7 +72,7 @@ public class Utils {
 
 						// System.out.println("Redirect to URL : " + newUrl);
 					} else {
-						throw new IOException("Failed to open connection, response code " + responseCode);
+						throw new FileNotFoundException("Failed to open connection, response code " + responseCode);
 					}
 				}
 			}
@@ -160,6 +163,8 @@ public class Utils {
 						url = new URL(newUrl);
 
 						// System.out.println("Redirect to URL : " + newUrl);
+					} else if (responseCode == HttpURLConnection.HTTP_NOT_FOUND) {
+						throw new FileNotFoundException("File \"" + url + "\" not found (" + responseCode + "), pack not installed.");
 					} else {
 						throw new IOException("Failed to open connection, response code " + responseCode);
 					}
@@ -334,5 +339,4 @@ public class Utils {
 
 		return message;
 	}
-
 }

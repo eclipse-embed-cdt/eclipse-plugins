@@ -11,18 +11,6 @@
 
 package ilg.gnumcueclipse.packs.jobs;
 
-import ilg.gnumcueclipse.core.StringUtils;
-import ilg.gnumcueclipse.packs.Activator;
-import ilg.gnumcueclipse.packs.core.ConsoleStream;
-import ilg.gnumcueclipse.packs.core.data.PacksStorage;
-import ilg.gnumcueclipse.packs.core.tree.Leaf;
-import ilg.gnumcueclipse.packs.core.tree.Node;
-import ilg.gnumcueclipse.packs.core.tree.Property;
-import ilg.gnumcueclipse.packs.core.tree.Type;
-import ilg.gnumcueclipse.packs.data.DataManager;
-import ilg.gnumcueclipse.packs.data.DataManagerEvent;
-import ilg.gnumcueclipse.packs.data.Utils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -43,6 +31,19 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.ui.console.MessageConsoleStream;
+
+import ilg.gnumcueclipse.core.StringUtils;
+import ilg.gnumcueclipse.packs.Activator;
+import ilg.gnumcueclipse.packs.core.ConsoleStream;
+import ilg.gnumcueclipse.packs.core.data.PacksStorage;
+import ilg.gnumcueclipse.packs.core.tree.Leaf;
+import ilg.gnumcueclipse.packs.core.tree.Node;
+import ilg.gnumcueclipse.packs.core.tree.Property;
+import ilg.gnumcueclipse.packs.core.tree.Type;
+import ilg.gnumcueclipse.packs.data.DataManager;
+import ilg.gnumcueclipse.packs.data.DataManagerEvent;
+import ilg.gnumcueclipse.packs.data.FileNotFoundException;
+import ilg.gnumcueclipse.packs.data.Utils;
 
 public class InstallJob extends Job {
 
@@ -121,6 +122,8 @@ public class InstallJob extends Job {
 		// Set the total number of work units
 		monitor.beginTask("Install packs", workUnits);
 
+		Boolean notifyUpdate = false;
+		
 		List<Leaf> installedPacksList = new LinkedList<Leaf>();
 
 		for (Node versionNode : packsToInstall) {
@@ -142,14 +145,18 @@ public class InstallJob extends Job {
 
 					// Mark node as 'installed'.
 					versionNode.setBooleanProperty(Property.INSTALLED, true);
+				} else {
+					// Mark package as not available.
+					versionNode.putProperty(Property.ARCHIVE_SIZE, "-1");
 				}
-
+				notifyUpdate =  true;
+				
 			} catch (IOException e) {
 				fOut.println(Utils.reportError(e.toString()));
 			}
 		}
 
-		if (installedPacksList.size() > 0) {
+		if (notifyUpdate) {
 			fDataManager.notifyUpdateView(DataManagerEvent.Type.UPDATE_VERSIONS, installedPacksList);
 			fDataManager.notifyInstallRemove();
 		}
@@ -188,7 +195,7 @@ public class InstallJob extends Job {
 
 			status = Status.OK_STATUS;
 		}
-
+		
 		fgRunning = false;
 		return status;
 	}
@@ -224,10 +231,9 @@ public class InstallJob extends Job {
 	 * Try to install a specific version of a pack.
 	 * 
 	 * @param versionNode
-	 * @return true if the pack was correctly downloaded and expanded, false it
-	 *         the user decided to ignore this pack.
-	 * @throws IOException
-	 *             for download errors.
+	 * @return true if the pack was correctly downloaded and expanded, false it the
+	 *         user decided to ignore this pack.
+	 * @throws IOException for download errors.
 	 */
 	private boolean installPack(Node versionNode) throws IOException {
 
@@ -243,14 +249,22 @@ public class InstallJob extends Job {
 			// Read in the .pack file from url to a local file.
 			File archiveFileDownload = PacksStorage.getCachedFileObject(archiveName + ".download");
 
-			// To minimise incomplete file risks, first use a temporary
-			// file, then rename to final name.
-			if (copyFile(packUrl, archiveFileDownload)) {
+			try {
+				// To minimise incomplete file risks, first use a temporary
+				// file, then rename to final name.
+				if (copyFile(packUrl, archiveFileDownload)) {
 
-				archiveFileDownload.renameTo(archiveFile);
+					archiveFileDownload.renameTo(archiveFile);
 
-				Utils.reportInfo("Pack " + archiveName + " downloaded.");
-			} else {
+					Utils.reportInfo("Pack " + archiveName + " downloaded.");
+				} else {
+					return false;
+				}
+			} catch (FileNotFoundException e) {
+				String msg = e.getMessage();
+				Utils.reportError(msg);
+				fOut.println(msg);
+				
 				return false;
 			}
 		} else {
@@ -304,10 +318,8 @@ public class InstallJob extends Job {
 	 * 
 	 * @param sourceUrl
 	 * @param destinationFile
-	 * @return true for successful download; false if the user decided to ignore
-	 *         it.
-	 * @throws IOException
-	 *             for download errors.
+	 * @return true for successful download; false if the user decided to ignore it.
+	 * @throws IOException for download errors.
 	 */
 	private boolean copyFile(URL sourceUrl, File destinationFile) throws IOException {
 
