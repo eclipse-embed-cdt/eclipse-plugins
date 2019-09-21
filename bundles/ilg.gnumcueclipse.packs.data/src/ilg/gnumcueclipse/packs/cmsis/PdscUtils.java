@@ -18,11 +18,12 @@ import com.github.zafarkhaja.semver.Version;
  */
 public class PdscUtils {
 
+	private static int highestMinorForOne = 6;
+
 	/**
 	 * Validate the schema version.
 	 * 
-	 * @param semVer
-	 *            a semantic version object.
+	 * @param semVer a semantic version object.
 	 * @return true if the value is valid.
 	 */
 	public static boolean isSchemaValid(Version semVer) {
@@ -30,7 +31,7 @@ public class PdscUtils {
 		int major = semVer.getMajorVersion();
 		int minor = semVer.getMinorVersion();
 
-		if ((major == 1) && (minor <= 4)) {
+		if ((major == 1) && (minor <= highestMinorForOne)) {
 			return true;
 		} else {
 			return false;
@@ -40,8 +41,7 @@ public class PdscUtils {
 	/**
 	 * Convert a Windows path into a POSIX path.
 	 * 
-	 * @param spath
-	 *            the string representing the Windows path.
+	 * @param spath the string representing the Windows path.
 	 * @return the corresponding POSIX path.
 	 */
 	public static String updatePosixSeparators(String spath) {
