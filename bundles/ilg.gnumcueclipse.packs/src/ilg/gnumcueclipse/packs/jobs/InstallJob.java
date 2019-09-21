@@ -114,7 +114,7 @@ public class InstallJob extends Job {
 
 		int workUnits = 0;
 		for (int i = 0; i < packsToInstall.size(); ++i) {
-			workUnits += computeWorkUnits(packsToInstall.get(i));
+			workUnits += computeWorkUnits(packsToInstall.get(i), fOut);
 		}
 
 		workUnits++;
@@ -200,7 +200,7 @@ public class InstallJob extends Job {
 		return status;
 	}
 
-	private int computeWorkUnits(Node versionNode) {
+	private int computeWorkUnits(Node versionNode, MessageConsoleStream out) {
 
 		int workUnits = 0;
 
@@ -215,7 +215,7 @@ public class InstallJob extends Job {
 		String pdscUrl = packNode.getProperty(Property.ARCHIVE_URL);
 		if (pdscUrl.length() > 0) {
 			try {
-				int sz = Utils.getRemoteFileSize(new URL(pdscUrl));
+				int sz = Utils.getRemoteFileSize(new URL(pdscUrl), out);
 				if (sz > 0) {
 					workUnits += sz;
 				}

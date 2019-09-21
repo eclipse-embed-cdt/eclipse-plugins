@@ -33,9 +33,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.console.MessageConsoleStream;
 
 import ilg.gnumcueclipse.core.StringUtils;
-import ilg.gnumcueclipse.packs.core.data.PacksStorage;
-import ilg.gnumcueclipse.packs.core.tree.Node;
-import ilg.gnumcueclipse.packs.xcdl.ContentSerialiser;
 
 public class Utils {
 
@@ -51,10 +48,11 @@ public class Utils {
 		return pushbackInputStream;
 	}
 
-	public static int getRemoteFileSize(URL url) throws IOException {
+	public static int getRemoteFileSize(URL url, MessageConsoleStream out) throws IOException {
 
 		URLConnection connection;
 		while (true) {
+			out.println("Getting size of \"" + url + "\"...");
 			connection = url.openConnection();
 			if ("file".equals(url.getProtocol())) { //$NON-NLS-1$
 				break;
@@ -79,6 +77,20 @@ public class Utils {
 		}
 
 		int length = connection.getContentLength();
+		if (length < 0) {
+			// conn.getContentLength() returns -1 when the file is sent in
+			// chunks, so it cannot be used; instead it is computed.
+			InputStream input = connection.getInputStream();
+			int totalBytes = 0;
+			byte[] buf = new byte[1024];
+			int bytesRead;
+			while ((bytesRead = input.read(buf)) > 0) {
+				totalBytes += bytesRead;
+			}
+			input.close();
+			
+			length = totalBytes;
+		}
 
 		if (connection instanceof HttpURLConnection) {
 			((HttpURLConnection) connection).disconnect();
@@ -172,29 +184,15 @@ public class Utils {
 			}
 		}
 
-		int size = connection.getContentLength();
-		if (size <= 0) {
-			throw new IOException("Illegal PDSC file size " + size);
-		}
-		String sizeString = StringUtils.convertSizeToString(size);
-		if (out != null) {
-			String s = destinationFile.getPath();
-			if (s.endsWith(".download")) {
-				s = s.substring(0, s.length() - ".download".length());
-			}
-			out.println("Copy " + sizeString);
-			out.println(" from \"" + url + "\"");
-			if (!url.equals(sourceUrl)) {
-				out.println(" redirected from \"" + sourceUrl + "\"");
-			}
-			out.println(" to   \"" + s + "\"");
-		}
-
 		destinationFile.getParentFile().mkdirs();
 
 		InputStream input = connection.getInputStream();
 		OutputStream output = new FileOutputStream(destinationFile);
 
+		// conn.getContentLength() returns -1 when the file is sent in
+		// chunks, so it cannot be used; instead it is computed.
+		int totalBytes = 0;
+		
 		byte[] buf = new byte[1024];
 		int bytesRead;
 		while ((bytesRead = input.read(buf)) > 0) {
@@ -202,9 +200,23 @@ public class Utils {
 			if (monitor != null) {
 				monitor.worked(bytesRead);
 			}
+			totalBytes += bytesRead;
 		}
 		output.close();
 		input.close();
+
+		if (out != null) {
+			String s = destinationFile.getPath();
+			if (s.endsWith(".download")) {
+				s = s.substring(0, s.length() - ".download".length());
+			}
+			out.println("Copied " + totalBytes + " bytes");
+			out.println(" from \"" + url + "\"");
+			if (!url.equals(sourceUrl)) {
+				out.println(" redirected from \"" + sourceUrl + "\"");
+			}
+			out.println(" to   \"" + s + "\"");
+		}
 
 		if (connection instanceof HttpURLConnection) {
 			((HttpURLConnection) connection).disconnect();

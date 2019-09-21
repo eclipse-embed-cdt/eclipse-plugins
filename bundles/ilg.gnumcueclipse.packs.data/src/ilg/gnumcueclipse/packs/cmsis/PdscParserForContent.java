@@ -11,13 +11,6 @@
 
 package ilg.gnumcueclipse.packs.cmsis;
 
-import ilg.gnumcueclipse.core.Xml;
-import ilg.gnumcueclipse.packs.core.tree.Node;
-import ilg.gnumcueclipse.packs.core.tree.Property;
-import ilg.gnumcueclipse.packs.core.tree.Type;
-import ilg.gnumcueclipse.packs.data.Activator;
-import ilg.gnumcueclipse.packs.data.Utils;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
@@ -25,6 +18,13 @@ import java.util.List;
 import org.w3c.dom.Element;
 
 import com.github.zafarkhaja.semver.Version;
+
+import ilg.gnumcueclipse.core.Xml;
+import ilg.gnumcueclipse.packs.core.tree.Node;
+import ilg.gnumcueclipse.packs.core.tree.Property;
+import ilg.gnumcueclipse.packs.core.tree.Type;
+import ilg.gnumcueclipse.packs.data.Activator;
+import ilg.gnumcueclipse.packs.data.Utils;
 
 public class PdscParserForContent extends PdscParser {
 
@@ -131,7 +131,7 @@ public class PdscParserForContent extends PdscParser {
 				// Default as for unavailable packages
 				String size = "0";
 				try {
-					int sz = Utils.getRemoteFileSize(new URL(archiveUrl));
+					int sz = Utils.getRemoteFileSize(new URL(archiveUrl), fOut);
 					if (sz > 0) {
 						size = String.valueOf(sz);
 					}
