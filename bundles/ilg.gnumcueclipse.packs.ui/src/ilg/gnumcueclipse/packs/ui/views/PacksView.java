@@ -149,24 +149,39 @@ public class PacksView extends ViewPart implements IDataManagerListener {
 			switch (columnIndex) {
 			case 0:
 				String name = node.getName();
+				String extra = "";
 				if (node.isBooleanProperty(Property.INSTALLED)) {
-					name += " (installed)";
+					extra = "installed";
 				} else {
 					if (node.isType(Type.VERSION)) {
 						String size = node.getProperty(Property.ARCHIVE_SIZE);
-						if (size.length() > 0) {
+						if (!size.isEmpty()) {
+							if (!extra.isEmpty()) {
+								extra += ", ";
+							}
 							try {
 								int n = Integer.parseInt(size);
 								if (n <= 0) {
-									name += " (n/a)";
+									extra += "n/a";
 								} else {
-									name += " (" + StringUtils.convertSizeToString(n) + ")";
+									extra += StringUtils.convertSizeToString(n);
 								}
 							} catch (NumberFormatException e) {
 								;
 							}
 						}
+						String date = node.getProperty(Property.DATE);
+						if (!date.isEmpty()) {
+							if (!extra.isEmpty()) {
+								extra += ", ";
+							}
+							extra += date;
+						}
+
 					}
+				}
+				if (!extra.isEmpty()) {
+					name += " (" + extra + ")";
 				}
 				return " " + name;
 
