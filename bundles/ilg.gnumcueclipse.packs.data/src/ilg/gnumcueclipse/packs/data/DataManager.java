@@ -1306,7 +1306,13 @@ public class DataManager implements IPacksDataManager {
 	 */
 	private Node loadCachedInstalledObjectsForBuild(File file) {
 
-		fOut.println("Parsing cached file \"" + file.getCanonicalPath() + "\".");
+		String str;
+		try {
+			str = file.getCanonicalPath();
+		} catch (IOException e) {
+			str = file.getPath();
+		}
+		fOut.println("Parsing cached file \"" + str + "\".");
 
 		Node node = null;
 		try {
