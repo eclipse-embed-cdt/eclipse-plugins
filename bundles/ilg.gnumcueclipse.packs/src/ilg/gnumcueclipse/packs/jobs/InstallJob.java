@@ -35,6 +35,7 @@ import org.eclipse.ui.console.MessageConsoleStream;
 import ilg.gnumcueclipse.core.StringUtils;
 import ilg.gnumcueclipse.packs.Activator;
 import ilg.gnumcueclipse.packs.core.ConsoleStream;
+import ilg.gnumcueclipse.packs.core.data.FileNotFoundException;
 import ilg.gnumcueclipse.packs.core.data.PacksStorage;
 import ilg.gnumcueclipse.packs.core.tree.Leaf;
 import ilg.gnumcueclipse.packs.core.tree.Node;
@@ -42,7 +43,6 @@ import ilg.gnumcueclipse.packs.core.tree.Property;
 import ilg.gnumcueclipse.packs.core.tree.Type;
 import ilg.gnumcueclipse.packs.data.DataManager;
 import ilg.gnumcueclipse.packs.data.DataManagerEvent;
-import ilg.gnumcueclipse.packs.data.FileNotFoundException;
 import ilg.gnumcueclipse.packs.data.Utils;
 
 public class InstallJob extends Job {
@@ -136,7 +136,7 @@ public class InstallJob extends Job {
 
 			// Name the subtask with the pack name
 			monitor.subTask(packFullName);
-			fOut.println("Install \"" + packFullName + "\".");
+			fOut.println("Installing \"" + packFullName + "\"...");
 
 			try {
 
@@ -215,7 +215,7 @@ public class InstallJob extends Job {
 		String pdscUrl = packNode.getProperty(Property.ARCHIVE_URL);
 		if (pdscUrl.length() > 0) {
 			try {
-				int sz = Utils.getRemoteFileSize(new URL(pdscUrl), out);
+				int sz = PacksStorage.getRemoteFileSize(new URL(pdscUrl), out);
 				if (sz > 0) {
 					workUnits += sz;
 				}
@@ -308,7 +308,7 @@ public class InstallJob extends Job {
 
 		Utils.reportInfo("Pack " + archiveName + " installed.");
 
-		fOut.println("All files write protected.");
+		fOut.println("All files set to read only.");
 
 		return true;
 	}
@@ -329,7 +329,7 @@ public class InstallJob extends Job {
 
 	private boolean unzip(File archiveFile, IPath destRelativePath) throws IOException {
 
-		fOut.println("Unzip \"" + archiveFile + "\".");
+		fOut.println("Unzipping \"" + archiveFile + "\"...");
 
 		boolean result = true;
 
@@ -353,7 +353,7 @@ public class InstallJob extends Job {
 				if (!outFile.getParentFile().exists()) {
 					outFile.getParentFile().mkdirs();
 				}
-				fOut.println("Write \"" + outFile + "\".");
+				fOut.println("Writing \"" + outFile + "\"...");
 
 				OutputStream output = new FileOutputStream(outFile);
 

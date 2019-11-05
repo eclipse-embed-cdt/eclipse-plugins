@@ -33,6 +33,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.console.MessageConsoleStream;
 
 import ilg.gnumcueclipse.core.StringUtils;
+import ilg.gnumcueclipse.packs.core.data.FileNotFoundException;
 
 public class Utils {
 
@@ -46,57 +47,6 @@ public class Utils {
 			}
 		}
 		return pushbackInputStream;
-	}
-
-	public static int getRemoteFileSize(URL url, MessageConsoleStream out) throws IOException {
-
-		URLConnection connection;
-		while (true) {
-			out.println("Getting size of \"" + url + "\"...");
-			connection = url.openConnection();
-			if ("file".equals(url.getProtocol())) { //$NON-NLS-1$
-				break;
-			}
-			if (connection instanceof HttpURLConnection) {
-				int responseCode = ((HttpURLConnection) connection).getResponseCode();
-				if (responseCode == HttpURLConnection.HTTP_OK) {
-					break;
-				} else {
-					if (responseCode == HttpURLConnection.HTTP_MOVED_TEMP
-							|| responseCode == HttpURLConnection.HTTP_MOVED_PERM
-							|| responseCode == HttpURLConnection.HTTP_SEE_OTHER) {
-						String newUrl = connection.getHeaderField("Location");
-						url = new URL(newUrl);
-
-						// System.out.println("Redirect to URL : " + newUrl);
-					} else {
-						throw new FileNotFoundException("Failed to open connection, response code " + responseCode);
-					}
-				}
-			}
-		}
-
-		int length = connection.getContentLength();
-		if (length < 0) {
-			// conn.getContentLength() returns -1 when the file is sent in
-			// chunks, so it cannot be used; instead it is computed.
-			InputStream input = connection.getInputStream();
-			int totalBytes = 0;
-			byte[] buf = new byte[1024];
-			int bytesRead;
-			while ((bytesRead = input.read(buf)) > 0) {
-				totalBytes += bytesRead;
-			}
-			input.close();
-			
-			length = totalBytes;
-		}
-
-		if (connection instanceof HttpURLConnection) {
-			((HttpURLConnection) connection).disconnect();
-		}
-
-		return length;
 	}
 
 	/**

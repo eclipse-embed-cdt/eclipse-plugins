@@ -20,6 +20,7 @@ import org.w3c.dom.Element;
 import com.github.zafarkhaja.semver.Version;
 
 import ilg.gnumcueclipse.core.Xml;
+import ilg.gnumcueclipse.packs.core.data.PacksStorage;
 import ilg.gnumcueclipse.packs.core.tree.Node;
 import ilg.gnumcueclipse.packs.core.tree.Property;
 import ilg.gnumcueclipse.packs.core.tree.Type;
@@ -131,7 +132,7 @@ public class PdscParserForContent extends PdscParser {
 				// Default as for unavailable packages
 				String size = "0";
 				try {
-					int sz = Utils.getRemoteFileSize(new URL(archiveUrl), fOut);
+					long sz = PacksStorage.getPackSize(archiveName, new URL(archiveUrl), fOut);
 					if (sz > 0) {
 						size = String.valueOf(sz);
 					}
