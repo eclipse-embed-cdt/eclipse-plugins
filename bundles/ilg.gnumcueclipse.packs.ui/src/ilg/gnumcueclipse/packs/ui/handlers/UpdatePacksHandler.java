@@ -364,7 +364,7 @@ public class UpdatePacksHandler extends AbstractHandler {
 
 				File file;
 				file = PacksStorage.getFileObject(fileName);
-				fOut.println("File \"" + file.getPath() + "\" written.");
+				fOut.println("File \"" + file.getCanonicalPath() + "\" written.");
 				fOut.println();
 
 			} catch (IOException e) {

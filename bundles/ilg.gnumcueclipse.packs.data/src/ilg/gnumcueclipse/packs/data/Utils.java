@@ -156,7 +156,7 @@ public class Utils {
 		input.close();
 
 		if (out != null) {
-			String s = destinationFile.getPath();
+			String s = destinationFile.getCanonicalPath();
 			if (s.endsWith(".download")) {
 				s = s.substring(0, s.length() - ".download".length());
 			}

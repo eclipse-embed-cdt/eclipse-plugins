@@ -665,7 +665,7 @@ public class DataManager implements IPacksDataManager {
 
 		try {
 
-			fOut.println("Parsing PDSC file \"" + file.getPath() + "\"...");
+			fOut.println("Parsing PDSC file \"" + file.getCanonicalPath() + "\"...");
 			Document document = Xml.parseFile(file);
 
 			PdscGenericParser parser = new PdscGenericParser();
@@ -692,7 +692,7 @@ public class DataManager implements IPacksDataManager {
 
 		FileReader reader;
 		try {
-			fOut.println("Parsing XCDL file \"" + file.getPath() + "\"...");
+			fOut.println("Parsing XCDL file \"" + file.getCanonicalPath() + "\"...");
 
 			JSONParser parser = new JSONParser();
 			reader = new FileReader(file);
@@ -1306,7 +1306,7 @@ public class DataManager implements IPacksDataManager {
 	 */
 	private Node loadCachedInstalledObjectsForBuild(File file) {
 
-		fOut.println("Parsing cached file \"" + file.getPath() + "\".");
+		fOut.println("Parsing cached file \"" + file.getCanonicalPath() + "\".");
 
 		Node node = null;
 		try {

@@ -394,7 +394,7 @@ public class Repos {
 
 		long beginTime = System.currentTimeMillis();
 
-		fOut.println("Parsing cached content file \"" + file.getPath() + "\"...");
+		fOut.println("Parsing cached content file \"" + file.getCanonicalPath() + "\"...");
 
 		if (!file.exists()) {
 			throw new IOException("File does not exist, ignored.");
