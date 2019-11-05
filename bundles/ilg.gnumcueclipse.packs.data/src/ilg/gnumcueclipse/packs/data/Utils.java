@@ -182,8 +182,8 @@ public class Utils {
 			String sizeString = StringUtils.convertSizeToString(size);
 
 			out.println("Copy " + sizeString);
-			out.println(" from \"" + sourceFile + "\"");
-			out.println(" to   \"" + destinationFile + "\"");
+			out.println(" from \"" + sourceFile.getCanonicalPath() + "\"");
+			out.println(" to   \"" + destinationFile.getCanonicalPath() + "\"");
 		}
 
 		destinationFile.getParentFile().mkdirs();
