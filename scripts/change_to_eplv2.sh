@@ -42,6 +42,7 @@ find . -type f ! -name "change_to_eplv2.sh" ! -path "./.git/*" -name "build.prop
 
 mkdir -p /tmp/eplv2
 curl -s https://www.eclipse.org/legal/epl/epl-2.0/about.html > /tmp/eplv2/about.html
+curl -s https://www.eclipse.org/org/documents/epl-2.0/EPL-2.0.txt > /tmp/eplv2/EPL-2.0.txt
 curl -s http://www.eclipse.org/legal/epl/notice.html > /tmp/eplv2/notice.html
 curl -s http://www.eclipse.org/legal/epl/notice.html > /tmp/eplv2/license.html
 curl -s http://www.eclipse.org/legal/epl/feature.properties.txt > /tmp/eplv2/feature.properties.txt
@@ -60,3 +61,4 @@ for i in `find . -name feature.properties`; do
   cat /tmp/eplv2/feature.properties.txt >> $i
 done
 
+cp /tmp/eplv2/EPL-2.0.txt LICENSE
