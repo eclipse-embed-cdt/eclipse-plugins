@@ -30,6 +30,6 @@
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 
-	<name>GNU MCU Eclipse debug packs</name>
-	<url>http://gnu-mcu-eclipse.github.io</url>
+	<name>Eclipse Embedded CDT debug packs</name>
+	<url>https://www.eclipse.org/embed-cdt</url>
 </project>

@@ -30,6 +30,6 @@
 		<relativePath>../../parent/pom.xml</relativePath>
 	</parent>
 
-	<name>GNU MCU Eclipse J-Link debug feature</name>
-	<url>http://gnu-mcu-eclipse.github.io</url>
+	<name>Eclipse Embedded CDT J-Link debug feature</name>
+	<url>https://www.eclipse.org/embed-cdt</url>
 </project>

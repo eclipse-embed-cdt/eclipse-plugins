@@ -99,6 +99,6 @@
 		
 	</modules>
 
-	<name>GNU MCU Eclipse plug-ins root</name>
-	<url>http://gnu-mcu-eclipse.github.io</url>
+	<name>Eclipse Embedded CDT plug-ins root</name>
+	<url>https://www.eclipse.org/embed-cdt</url>
 </project>
